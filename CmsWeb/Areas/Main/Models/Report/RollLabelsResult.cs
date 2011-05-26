@@ -60,6 +60,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 case "Individual":
                     q = ctl.FetchIndividualList(STR_Name, qid.Value);
                     break;
+                case "FamilyMembers":
                 case "Family":
                     q = ctl.FetchFamilyList(STR_Name, qid.Value);
                     break;

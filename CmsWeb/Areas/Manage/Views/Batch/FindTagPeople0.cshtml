@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "FindTagPeople";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<h2>FindTagPeople</h2>
+<em>One row each, tab separated columns with First, Last, Birthday, CellPhone, HomePhone, Email</em>
+<em>First row should have the column headings First, Last, Birthday, CellPhone, HomePhone, Email</em>
+<form action="/Batch/FindTagPeople" method="post">
+    <label>Tag name: </label> @Html.TextBox("tagname")
+    <input type="submit" class="bt" value="Submit" />
+    @Html.TextArea("text", "", new { rows = "20", cols = "100", wrap = "off", style = "width:90%" })<br />
+</form>

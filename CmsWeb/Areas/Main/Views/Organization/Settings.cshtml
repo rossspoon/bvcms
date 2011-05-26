@@ -4,7 +4,7 @@
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
 @if (User.IsInRole("Edit"))
 { 
-<a class="displayedit" href="/Organization/SettingsEdit/@Model.OrganizationId">Edit</a>
+<a class="displayedit bt edit" href="/Organization/SettingsEdit/@Model.OrganizationId">Edit</a>
 }
 <table class="Design2">
     <tr>
@@ -128,11 +128,9 @@
     </tr>
     <tr>
         <th title="old:@Model.org.EmailAddresses">Online Notify Persons:</th>
-        <td>
-            @foreach (var p in DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))
-            { 
-               <div>@p.FromEmail &mdash; (@p.PeopleId)</div>
-            }
+        <td><a id="notifylist" href="/Organization/NotifyIds">
+            @Html.Partial("NotifyList", DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))
+            </a>
         </td>
     </tr>
     <tr>

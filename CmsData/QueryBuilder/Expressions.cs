@@ -421,7 +421,7 @@ namespace CmsData
                 Db.ContributionCount(p.PeopleId, days, fund);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
-            if (HttpContext.Current.User.IsInRole("Finance"))
+            if (Db.CurrentUser.Roles.Any(rr => rr =="Finance"))
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
@@ -436,7 +436,7 @@ namespace CmsData
                 Db.ContributionAmount(p.PeopleId, days, fund);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(amt), left.Type);
-            if (HttpContext.Current.User.IsInRole("Finance"))
+            if (Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
@@ -452,7 +452,7 @@ namespace CmsData
                 Db.ContributionAmount2(p.PeopleId, start.Value, end.Value, fund);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(amt), left.Type);
-            if (HttpContext.Current.User.IsInRole("Finance"))
+            if (Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
@@ -467,7 +467,7 @@ namespace CmsData
                 Db.ContributionChange(p.PeopleId, start.Value, end.Value);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(pct), left.Type);
-            if (HttpContext.Current.User.IsInRole("Finance"))
+            if (Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
@@ -478,7 +478,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (!HttpContext.Current.User.IsInRole("Finance"))
+            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
             var mindt = Util.Now.AddDays(-days).Date;

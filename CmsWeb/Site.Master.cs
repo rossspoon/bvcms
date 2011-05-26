@@ -39,7 +39,7 @@ namespace CmsWeb
             if (NoCache)
                 Response.NoCache();
             cssbundle.Text = SquishIt.Framework.Bundle.Css()
-                            .Add("/Content/jquery-ui-1.8.9.custom.css")
+                            .Add("/Content/jquery-ui-1.8.13.custom.css")
                             .Add("/Content/site.css")
                             .Add("/Content/Style2.css")
                             .Add("/Content/cmenu.css")

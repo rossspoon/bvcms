@@ -113,7 +113,7 @@ You have the following subscriptions:<br/>
             SetHeaders(m.divid);
             return View(m);
         }
-        public ActionResult VoteLink(string id, string smallgroup, string message, bool confirm)
+        public ActionResult VoteLink(string id, string smallgroup, string message, bool? confirm)
         {
             if (!id.HasValue())
                 return Content("bad link");
@@ -133,17 +133,39 @@ You have the following subscriptions:<br/>
             var pid = a[1].ToInt();
             var emailid = a[2].ToInt();
             var pre = a[3];
-            var org = DbUtil.Db.LoadOrganizationById(oid);
-            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(omm => omm.OrganizationId == oid && omm.PeopleId == pid);
-            if (om == null && org.Limit <= org.MemberCount)
+            var q = (from pp in DbUtil.Db.People
+                     where pp.PeopleId == pid
+                     let org = DbUtil.Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == oid)
+                     let om = DbUtil.Db.OrganizationMembers.SingleOrDefault(oo => oo.OrganizationId == oid && oo.PeopleId == pid)
+                     select new { p=pp, org = org, om = om }).Single();
+
+            if(q.org == null)
+                return Content("org missing, bad link");
+
+            if (q.om == null && q.org.Limit <= q.org.MemberCount)
                 return Content("sorry, maximum limit has been reached");
 
-            om = OrganizationMember.InsertOrgMembers(oid, pid, 220, DateTime.Now, null, false);
+            var omb = q.om;
+            omb = OrganizationMember.InsertOrgMembers(oid, pid, 220, DateTime.Now, null, false);
             
-            om.AddToGroup(DbUtil.Db, smallgroup);
-            om.AddToGroup(DbUtil.Db, "emailid:" + emailid);
+            omb.AddToGroup(DbUtil.Db, smallgroup);
+            omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
             ot.Used = true;
             DbUtil.Db.SubmitChanges();
+
+            if (confirm == true)
+            {
+                var subject = Util.PickFirst(q.org.EmailSubject, "no subject");
+                var msg = Util.PickFirst(q.org.EmailMessage, "no message");
+                msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
+                var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
+
+                DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
+                DbUtil.Db.Email(q.p.FromEmail,
+                        DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId), // notify the staff
+                        q.org.OrganizationName,
+                        "{0} has registered for {1}".Fmt(q.p.Name, q.org.OrganizationName));
+            }
 
             return Content(message);
         }

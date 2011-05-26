@@ -3,10 +3,11 @@
     ViewBag.Title = "Edit Content";
 }
 <script type="text/javascript">
-    $(function() {
-        $("#ishtml").click(function() {
+    $(function () {
+        $("#ishtml").click(function () {
             window.location = "/Display/EditPage/" + $('#id').val() + "?ishtml=" + $('#ishtml').attr('checked');
         });
+        $(".bt").button();
     });
 </script>
 @using (Html.BeginForm("UpdatePage", "Display", FormMethod.Post))
@@ -19,7 +20,7 @@
     <div>Title: @Html.TextBox("title") @Html.CheckBox("ishtml") Is Html</div>
     <div>@Html.TextArea("html", new { @class = "editor", rows = "16", style = "width:90%" })
     </div>
-    <input type="submit" value="Post" />
+    <input type="submit" class="bt" value="Post" />
     </div>
 } 
 @if((bool)ViewData["ishtml"])

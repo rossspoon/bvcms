@@ -2,46 +2,47 @@
 @using CmsWeb
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
 @{ CmsData.Organization o = Model.org; }
-<table class="Design2">
+<table cellspacing="5">
     <tr>
-        <th>Name:</th>
+        <th align="right">Name:</th>
         <td>@o.OrganizationName</td> 
-@if (User.IsInRole("Edit"))
-{ 
-        <td align="right">&nbsp;&nbsp;<a class="displayedit2" href="/Organization/OrgInfoEdit/@Model.OrganizationId">Edit</a></td>
-} 
     </tr>
     <tr>
-        <th>Schedule:</th>
+        <th align="right">Schedule:</th>
         <td>@o.MeetingTime.ToString2("dddd h:mm tt")</td>
     </tr>
     <tr>
-        <th>Main Division:</th>
+        <th align="right">Main Division:</th>
         <td>@o.DivisionName</td>
     </tr>
     <tr>
-        <th>Other Divisions:</th>
+        <th align="right">Other Divisions:</th>
         <td>@string.Join(", ", o.DivOrgs.Where(d => d.DivId != o.DivisionId).Select(d => (d.Division.Program != null ? d.Division.Program.Name : "null") + ":" + d.Division.Name).ToArray())</td>
     </tr>
     <tr>
-        <th>Location:</th>
+        <th align="right">Location:</th>
         <td>@o.Location</td>
     </tr>
     <tr>
-        <th>Campus:</th>
+        <th align="right">Campus:</th>
         <td>@Html.CodeDesc("org.CampusId", Model.CampusList())</td>
     </tr>
     <tr>
-        <th>Status:</th>
+        <th align="right">Status:</th>
         <td>@Html.CodeDesc("org.OrganizationStatusId", Model.OrgStatusList())</td>
     </tr>
     <tr>
-        <th>Leader Type:</th>
+        <th align="right">Leader Type:</th>
         <td>@Html.CodeDesc("org.LeaderMemberTypeId", Model.LeaderTypeList())</td>
     </tr>
     <tr>
-        <th>Main Fellowship:</th>
+        <th align="right">Main Fellowship:</th>
         <td>@Html.CheckBoxReadonly(o.IsBibleFellowshipOrg)</td>
     </tr>
+@if (User.IsInRole("Edit"))
+{ 
+    <tr><td colspan="2" align="right">
+        <a class="displayedit2 bt" href="/Organization/OrgInfoEdit/@Model.OrganizationId">Edit</a></td></tr>
+}
 </table>
 

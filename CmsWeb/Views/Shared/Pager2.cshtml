@@ -20,7 +20,7 @@
     <span class="current page-numbers" title="goto page">@p</span>
     }
 }
-@if (Model.Page < Model.LastPage)
+@if (Model.Page < Model.LastPage())
 { 
     <a href='#' class="page-numbers" title='goto page @(Model.Page + 1)' onclick='return $.gotoPage(this,@(Model.Page + 1))'>next</a>
 }

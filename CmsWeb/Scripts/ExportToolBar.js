@@ -42,9 +42,9 @@
         $.post(this.href, null, function(ret) {
             $.unblock();
             if (ret < 0)
-                alert("too many people to add to a contact (max 100)");
+                $.growlUI("error", "too many people to add to a contact (max 100)");
             else if (ret == 0)
-                alert("no results");
+                $.growlUI("error", "no results");
             else
                 window.location = "/Contact.aspx?id=" + ret;
         });
@@ -58,9 +58,9 @@
         $.post(this.href, null, function(ret) {
             $.unblock();
             if (ret < 0)
-                alert("too many people to add tasks for (max 100)");
+                $.growlUI("error", "too many people to add tasks for (max 100)");
             else if (ret == 0)
-                alert("no results");
+                $.growlUI("error", "no results");
             else
                 window.location = "/Task";
         });

@@ -50,7 +50,7 @@ namespace CmsWeb.Models
                 var m = new CheckInModel();
                 List<Attendee> q;
                 if (kioskmode == true)
-                    q = m.FamilyMembersKiosk(fid, campus);
+                    q = m.FamilyMembersKiosk(fid, campus, thisday);
                 else
                     q = m.FamilyMembers(fid, campus, thisday);
                 w.WriteAttributeString("familyid", fid.ToString());

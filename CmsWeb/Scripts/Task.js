@@ -108,7 +108,7 @@ function DoAction() {
             d.dialog("open");
             return;
         case 'sharelist':
-            alert('not implemented yet');
+            $.growlUI("error", "not implemented yet");
             return;
         case 'deletelist':
             if (confirm('Are you sure you want to delete the list?')) {
@@ -188,7 +188,7 @@ function Deselect() {
 function SetPriority(id, priority) {
     $.post('/Task/Priority/' + id + '?priority=' + priority, null, function(ret) {
         $('#Priority').text(ret.Priority);
-    }, "json");
+    });
     return false;
 }
 function SetComplete(id) {
@@ -255,7 +255,7 @@ function CompleteWithContact() {
     var taskid = $('#TaskId').val();
     $.post('/Task/CompleteWithContact/' + taskid, null, function(ret) {
         window.location = "/Contact.aspx?edit=1&id=" + ret.ContactId;
-    }, "json");
+    });
 }
 function ActOnPerson(action, peopleid) {
     var taskid = $('#TaskId').val();

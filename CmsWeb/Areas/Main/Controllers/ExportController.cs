@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Models;
+using CmsData;
+using UtilityExtensions;
+using System.Linq.Dynamic;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -17,5 +20,10 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new MucketyMapResult(id);
         }
+        public ActionResult QueryBits(int id)
+        {
+            return new QueryBitsExcelResult(id);
+        }
+
     }
 }

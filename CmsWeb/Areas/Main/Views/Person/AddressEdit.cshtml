@@ -1,10 +1,10 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Models.PersonPage.AddressInfo
-<a class="displayedit" href="/Person/AddressDisplay/@Model.PeopleId?type=@Model.Name">Cancel</a>
 <table class="Design2">
     <tr>
         <th>Address:</th>
         <td>@Html.TextBox("Address1")</td>
+        <td><a id="verifyaddress" href="/Person/VerifyAddress/" class="bt">Verify Address</a></td>
     </tr>
     <tr>
         <th>Address2:</th>
@@ -20,7 +20,7 @@
     </tr>
     <tr>
         <th>Zip:</th>
-        <td>@Html.TextBox("Zip", Model.Zip.FmtZip()) <a id="verifyaddress" href="/Person/VerifyAddress/" class="button">Verify</a></td>
+        <td>@Html.TextBox("Zip", Model.Zip.FmtZip())</td>
     </tr>
     @if (Model.person.CanUserEditAll)
        { 
@@ -52,6 +52,8 @@
         <th>Preferred Address</th>
         <td>@Html.CheckBox("Preferred", Model.Preferred, Model.Preferred ? new { disabled = "disabled" } : null)</td>
     </tr>
-    <tr><td></td><td><a href="/Person/AddressUpdate/@Model.PeopleId?type=@Model.Name" class="submitbutton">Save Changes</a></td></tr>
+    <tr><td align="right" colspan="2">
+            <a href="/Person/AddressUpdate/@Model.PeopleId?type=@Model.Name" class="submitbutton">Save Changes</a>
+            <a class="displayedit bt" href="/Person/AddressDisplay/@Model.PeopleId?type=@Model.Name">Cancel</a></td></tr>
 </table>
 

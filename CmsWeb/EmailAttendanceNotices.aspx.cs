@@ -13,6 +13,7 @@ using System.Web.UI.WebControls;
 using CMSPresenter;
 using UtilityExtensions;
 using CmsData;
+using System.Text;
 
 namespace CmsWeb
 {
@@ -68,8 +69,7 @@ namespace CmsWeb
         {
             if (!Page.IsValid)
                 return;
-            var ctl = new OrganizationController();
-            ctl.SendNotices(DivOrg.SelectedValue.ToInt(),
+            SendNotices(DivOrg.SelectedValue.ToInt(),
                 SubDivOrg.SelectedValue.ToInt(),
                 Organization.SelectedValue.ToInt(),
                 EndDate.Text.ToDate().Value,
@@ -77,6 +77,58 @@ namespace CmsWeb
             Label1.Visible = true;
             Button1.Enabled = false;
         }
+        private void SendNotices(
+            int progid,
+            int divid,
+            int orgid,
+            DateTime date,
+            ITaskNotify notify)
+        {
+            var q = from m in DbUtil.Db.OrganizationMembers
+                    where m.OrganizationId == orgid || orgid == 0
+                    where m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0
+                    where m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0
+                    where m.Organization.Meetings.Any(meeting => meeting.MeetingDate.Value.Date == date.Date)
+                    where m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                    let u = m.Person.Users.FirstOrDefault(uu => uu.UserRoles.Any(r => r.Role.RoleName == "Access"))
+                    where u != null
+                    group m by m.PeopleId into g
+                    select g;
+            var sb2 = new StringBuilder("Notices sent to:</br>\n<table>\n");
+            foreach (var g in q)
+            {
+                var person = g.First().Person;
+                var sb = new StringBuilder("The following meetings are ready to be viewed:<br/>\n");
+                foreach (var om in g)
+                {
+                    var q2 = from mt in DbUtil.Db.Meetings
+                             where mt.OrganizationId == om.OrganizationId
+                             where mt.MeetingDate.Value.Date == date.Date
+                             select new
+                             {
+                                 mt.MeetingId,
+                                 mt.Organization.OrganizationName,
+                                 mt.MeetingDate,
+                                 mt.Organization.LeaderName,
+                                 mt.Organization.Location
+                             };
+                    foreach (var mt in q2)
+                    {
+                        string orgname = CmsData.Organization.FormatOrgName(mt.OrganizationName, mt.LeaderName, mt.Location);
+                        sb.AppendFormat("<a href='{0}/Meeting.aspx?id={1}'>{2} - {3}</a><br/>\n",
+                            DbUtil.Db.CmsHost, mt.MeetingId, orgname, mt.MeetingDate);
+                        sb2.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2:M/d/yy h:mmtt}</td></tr>\n",
+                            person.Name, orgname, mt.MeetingDate);
+                    }
+                }
+                notify.EmailNotification(DbUtil.Db.CurrentUser.Person, person,
+                    "Attendance reports ready for viewing on CMS", sb.ToString());
+            }
+            sb2.Append("</table>\n");
+            notify.EmailNotification(DbUtil.Db.CurrentUser.Person, DbUtil.Db.CurrentUser.Person,
+                "Attendance emails sent", sb2.ToString());
+        }
+
 
         protected void CustomValidator2_ServerValidate(object source, ServerValidateEventArgs args)
         {

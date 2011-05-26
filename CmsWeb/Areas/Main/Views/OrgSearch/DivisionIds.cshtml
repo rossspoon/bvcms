@@ -1,2 +1,5 @@
-﻿@model IEnumerable<SelectListItem>
-@Html.DropDownList("DivisionId", Model)
+﻿@model CmsWeb.Models.OrgSearchModel
+@foreach (var i in Model.DivisionIds())
+{
+    <option value="@i.Value">@i.Text</option>
+}

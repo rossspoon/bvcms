@@ -19,6 +19,7 @@
                 });
         });
         $("#settings tr:even").attr("style", "background-color:#eee");
+        $(".bt").button();
     });
 </script>
 <h2>Settings</h2>
@@ -45,6 +46,6 @@
 { 
 <p>
     New Setting: @Html.TextBox("Id")
-    <input type="submit" value="Create" />
+    <input type="submit" class="bt" value="Create" />
 </p>
 } 

@@ -42,12 +42,12 @@ namespace CmsWeb.Models
                     orderby g.Name
                     select new
                     {
-                        Value = g.Id,
-                        Text = g.Name,
+                        value = g.Id,
+                        text = g.Name,
                     };
             var list = q.ToList();
-            list.Insert(0, new { Value = 0, Text = "(not specified)" });
-            return new SelectList(list, "Value", "Text", groupid);
+            list.Insert(0, new { value = 0, text = "(not specified)" });
+            return new SelectList(list, "value", "text", groupid);
         }
         private List<SelectListItem> mtypes;
         private List<SelectListItem> MemberTypes()

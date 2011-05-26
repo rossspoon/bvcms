@@ -102,10 +102,10 @@ namespace CmsWeb
             if (Util.SessionId != null)
                 HttpRuntime.Cache.Remove(Util.SessionId);
         }
-        protected void Application_BeginRequest(object sender, EventArgs e)
-        {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-        }
+        //protected void Application_BeginRequest(object sender, EventArgs e)
+        //{
+        //    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        //}
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)

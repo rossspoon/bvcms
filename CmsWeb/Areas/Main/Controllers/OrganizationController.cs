@@ -316,7 +316,33 @@ namespace CmsWeb.Areas.Main.Controllers
             c.Content = Task.AddTasks(id).ToString();
             return c;
         }
-
+        public ActionResult NotifyIds()
+        {
+            Response.NoCache();
+            var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
+            DbUtil.Db.TagPeople.DeleteAllOnSubmit(t.PersonTags);
+            DbUtil.Db.SubmitChanges();
+            var o = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
+            var q = DbUtil.Db.PeopleFromPidString(o.NotifyIds).Select(p => p.PeopleId);
+            foreach(var pid in q)
+                t.PersonTags.Add(new TagPerson { PeopleId = pid });
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/SearchUsers?ordered=true&topid=" + q.FirstOrDefault());
+        }
+        [HttpPost]
+        public ActionResult UpdateNotifyIds(int topid)
+        {
+            var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
+            var selected_pids = (from p in t.People(DbUtil.Db)
+                                 orderby p.PeopleId == topid ? "0" : "1"
+                                 select p.PeopleId).ToArray();
+            var o = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
+            o.NotifyIds = string.Join(",", selected_pids);
+            DbUtil.Db.TagPeople.DeleteAllOnSubmit(t.PersonTags);
+            DbUtil.Db.Tags.DeleteOnSubmit(t);
+            DbUtil.Db.SubmitChanges();
+            return View("NotifyList", DbUtil.Db.PeopleFromPidString(o.NotifyIds));
+        }
 
     }
 }

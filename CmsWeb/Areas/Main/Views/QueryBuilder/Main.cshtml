@@ -19,20 +19,18 @@
 )
 </div>
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
-<h3 id="Description">@Model.Description</h3>
-<table class="modalPopup">
-    <tr class="QBConditionTitle"><td colspan="3">Configure the query condition</td></tr>
+<div id="Description"><b>@Model.Description</b></div>
+<div class="roundbox floatleft">
+<h2 title="Then update or add it to the Conditions below">Configure a query condition</h2>
+<table id="selectconditions" cellspacing="5">
     <tr>
-        <td valign="top">
-            <table>
-                <tr><th colspan="2">Left Side</th></tr>
+        <td>
+            <table style="border: 1px dashed #999" cellspacing="5">
                 <tr id="CategoryDiv2">
-                    <td>
-                      <input id="SelectCondition" type="button" value="Select Condition" />
-                    </td>
-                    <td>
-                        <span id='ConditionText'>Group</span>
-                        @Html.Hidden("ConditionName")
+                    <td colspan="2">
+                      <a id="SelectCondition" href=#" class="bt">Select Condition</a>
+                      <span id='ConditionText'>Group</span>
+                      @Html.Hidden("ConditionName")
                     </td>
                 </tr>
                 <tr id="DaysDiv" style="display:none">
@@ -116,46 +114,36 @@
             </table>
         </td>
         <td valign="top">
-            <table>
-                <tr><th>Comparison</th></tr>
-                <tr>
-                    <td>
-                        @Html.DropDownList("Comparison", Model.Comparisons())
-                    </td>
-                </tr>
-            </table>
+            <b style="color:#999">Comparison</b><hr />
+            @Html.DropDownList("Comparison", Model.Comparisons())
         </td>
-        <td id="RightPanel" valign="top" style="display:none">
-            <table>
-                <tr><th>Right Side</th></tr>
-                <tr>
-                    <td>
-                        <span id="values" style="display:none"></span>
-                        @Html.TextBoxClass("TextValue", "validate")
-                        @Html.TextBoxClass("NumberValue", "validate")
-                        @Html.TextBoxClass("IntegerValue", "validate")
-                        @Html.TextBoxClass("DateValue", "datepicker validate")
-                    </td>
-                </tr>
-            </table>
+        <td valign="top" id="RightPanel" style="display:none">
+            <b style="color:#999">To Value</b><hr />
+                <span id="values" style="display:none"></span>
+                @Html.TextBoxClass("TextValue", "validate")
+                @Html.TextBoxClass("NumberValue", "validate")
+                @Html.TextBoxClass("IntegerValue", "validate")
+                @Html.TextBoxClass("DateValue", "datepicker validate")
         </td>
     </tr>
     <tr>
-        <td align="right" colspan="3">
-            <input id="Update" type="button" class="conditionButton" value="Update" disabled="disabled" />
-            <input id="Add" type="button" class="conditionButton" value="Add" disabled="disabled" />
-            <input id="AddToGroup" type="button" class="conditionButton" value="Add To Group" />
-            <input id="Remove" type="button" class="conditionButton" value="Remove" disabled="disabled" />
+        <td align="right">
+            <a id="Update" class="conditionButton bt disabled"
+                title="Copies the above condition into the selected condition below">Update</a>
+            <a id="Add" class="conditionButton bt disabled"
+                title="Adds the above condition after the selected condition below">Add</a>
+            <a id="AddToGroup" href="#" class="conditionButton bt" 
+                title="Adds the above condition to the group">Add To Group</a>
+            <a id="Remove" class="conditionButton bt disabled"
+                title="Removes the selected condition below">Remove</a>
         </td>
     </tr>
 </table>
 @Html.Hidden("SelectedId")
-<table class="modalPopup" style="margin-top: 6px">
-    <tr><td colspan="2" style="background-color: #a9cfe2; border: solid 1px Gray; color: Black;
-            font-size: medium">Conditions</td>
-    </tr>
+<h2>Conditions</h2>
+<table cellspacing="5">
     <tr>
-        <td>
+        <td title="Select a condition to edit it">
             <ul id="ConditionGrid">
              @Html.Partial("Conditions", Model) 
             </ul>
@@ -168,6 +156,8 @@
         </td>
     </tr>
 </table>
+</div>
+<div class="floatclear"></div>
 <ul id="InsCopyMenu" class="popupMenu">
     <li><a href="#ins">Insert Group Above</a></li>
     <li><a href="#copy">Copy As New</a></li>

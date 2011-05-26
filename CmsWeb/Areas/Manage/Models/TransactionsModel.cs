@@ -53,16 +53,15 @@ namespace CmsWeb.Models
                  where t.Amt > gtamount || gtamount == null
                  where t.Amt <= ltamount || ltamount == null
                  where t.TransactionDate >= startdt || startdt == null
-                 where t.TransactionDate <= enddt || enddt == null
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
                  where t.Testing == testtransactions
                  select t;
-            if (!enddt.HasValue && startdt.HasValue)
-            {
-                var edt = startdt.Value.AddHours(24);
+            var edt = enddt;
+            if (!edt.HasValue && startdt.HasValue)
+                 edt = startdt.Value.AddHours(24);
+            if (edt.HasValue)
                 _transactions = _transactions.Where(t => t.TransactionDate < edt);
-            }
             return _transactions;
         }
         public IQueryable<Transaction> ApplySort()
@@ -168,12 +167,15 @@ namespace CmsWeb.Models
                  where t.TransactionDate >= startdt || startdt == null
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
+                 where t.Testing == testtransactions
                  select t;
-            if (!enddt.HasValue && startdt.HasValue)
-            {
-                var edt = startdt.Value.AddHours(24);
+
+            var edt = enddt;
+            if (!edt.HasValue && startdt.HasValue)
+                 edt = startdt.Value.AddHours(24);
+            if (edt.HasValue)
                 q = q.Where(t => t.TransactionDate < edt);
-            }
+
             var q2 = from t in q
                      select new
                  {

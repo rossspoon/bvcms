@@ -114,6 +114,12 @@ namespace CmsData
                     select m;
             return q.Distinct();
         }
+        public IQueryable<Person> PeopleQuery(string name)
+        {
+            var qB = this.QueryBuilderClauses.FirstOrDefault(c => c.Description == name);
+            var q = People.Where(qB.Predicate(this));
+            return q;
+        }
         public QueryBuilderClause QueryBuilderScratchPad()
         {
             var qb = LoadQueryById(Util.QueryBuilderScratchPadId);
@@ -387,6 +393,18 @@ namespace CmsData
             }
             return tag;
         }
+        public Tag FetchOrCreateSystemTag(string tagname)
+        {
+            var tag = Tags.FirstOrDefault(t => t.Name == tagname && t.TypeId == 100);
+            if (tag == null)
+            {
+                tag = new Tag { Name = tagname, TypeId = 100 };
+                Tags.InsertOnSubmit(tag);
+                SubmitChanges();
+            }
+            return tag;
+        }
+
         public void SetOrgMembersOnly()
         {
             var me = Util.UserPeopleId;
@@ -607,6 +625,12 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), mid);
             return ((int)(result.ReturnValue));
         }
+        [Function(Name = "dbo.DeletePeopleExtras")]
+        public int DeletePeopleExtras([Parameter(DbType = "varchar(50)")] string field)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), field);
+            return ((int)(result.ReturnValue));
+        }
         [Function(Name = "dbo.DeleteSpecialTags")]
         public int DeleteSpecialTags([Parameter(DbType = "Int")] int? pid)
         {
@@ -635,6 +659,12 @@ namespace CmsData
         public int QueuePriorityEmail([Parameter(DbType = "Int")] int? id, [Parameter(DbType = "varchar(50)")] string CmsHost, [Parameter(DbType = "varchar(50)")] string Host)
         {
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, CmsHost, Host);
+            return ((int)(result.ReturnValue));
+        }
+        [Function(Name = "dbo.DeleteQueryBitTags")]
+        public int DeleteQueryBitTags()
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
             return ((int)(result.ReturnValue));
         }
     }

@@ -5,7 +5,7 @@
     $("#growth-tab").tabs();
     $("#system-tab").tabs();
     var maintabs = $("#main-tab").tabs();
-    $(".submitbutton").button();
+    $(".submitbutton,.bt").button();
     addrtabs.tabs('select', $('#addrtab').val());
     $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
     $('#clipaddr').live('click', function () {
@@ -29,7 +29,7 @@
                     $.blockUI({ message: "person deleted" });
                     $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
                         $.unblockUI();
-                        window.location = "/Home";
+                        window.location = "/";
                     });
                 }
             });
@@ -147,7 +147,7 @@
                     changeMonth: true,
                     changeYear: true
                 });
-                $(".submitbutton").button();
+                $(".submitbutton,.bt").button();
                 $("#verifyaddress").click(function () {
                     var f = $(this).closest('form');
                     var q = f.serialize();
@@ -159,7 +159,7 @@
                             $('#State', f).val(ret.State);
                             $('#Zip', f).val(ret.Zip);
                         }
-                    },"json");
+                    });
                     return false;
                 });
                 return false;
@@ -179,7 +179,7 @@
                 $.post($(bc).attr("href"), null, function (ret) {
                     $(bc).html(ret);
                 });
-                $(".submitbutton").button();
+                $(".submitbutton,.bt").button();
             });
         });
         return false;

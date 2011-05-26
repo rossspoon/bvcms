@@ -171,11 +171,10 @@ namespace CmsCheckin
         {
             var ab = sender as Button;
             var c = ab.Tag as ClassInfo;
-            var ra = new Util.ClassCheckedInfo { c = c, ischecked = true };
             if (JoiningNotAttending)
-                Util.JoinUnJoin(ra);
+                Util.JoinUnJoin(c, true);
             else
-                Util.AttendUnAttend(ra);
+                Util.AttendUnAttend(new Util.ClassCheckedInfo { c = c, ischecked = true });
             ShowAllClasses = false;
             JoiningNotAttending = false;
             this.Swap(Program.family);

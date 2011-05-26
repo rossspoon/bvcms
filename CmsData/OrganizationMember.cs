@@ -48,6 +48,8 @@ namespace CmsData
                                 && (a.MeetingDate < DateTime.Today || a.AttendanceFlag == true))
                             select new { count, Organization.DaysToIgnoreHistory };
                     var i = q.Single();
+                    if (!EnrollmentDate.HasValue)
+                        EnrollmentDate = CreatedDate;
                     EnrollmentTransaction droptrans = null;
                     if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays
                         < (i.DaysToIgnoreHistory ?? 60) 

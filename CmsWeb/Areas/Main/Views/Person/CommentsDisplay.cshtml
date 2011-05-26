@@ -2,7 +2,7 @@
 
 @if (User.IsInRole("Edit"))
    { 
-<a class="displayedit" href="/Person/CommentsEdit/@ViewData["PeopleId"]">Edit</a>
+<a class="displayedit bt edit" href="/Person/CommentsEdit/@ViewData["PeopleId"]">Edit</a>
  } 
 <strong>Comments:</strong><br />
 @Html.Raw((string)ViewData["Comments"])

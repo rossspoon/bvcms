@@ -1,0 +1,43 @@
+﻿@using CmsWeb.Models
+@model SearchUsersModel
+<html>
+<head>
+<title>Index</title>
+<link rel="stylesheet" type="text/css"  href="Content/jquery-ui-1.8.9.custom.css" />
+<link rel="stylesheet" type="text/css"  href="Content/site.css" />
+<link rel="stylesheet" type="text/css"  href="Content/Style2.css" />
+<link rel="stylesheet" type="text/css"  href="Content/pager.css" />
+<link rel="stylesheet" type="text/css"  href="Content/jquery.tooltip.css" />
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.5.2.js")
+        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
+        .Add("/Content/js/jquery.blockUI.js")
+        .Add("/Scripts/SearchUsers.js")
+        .Render("/Content/usersearch_#.js"))
+</head>
+<body>
+<form name="form1">
+@Html.Hidden("ordered", Model.ordered)
+@Html.Hidden("singlemode", Model.singlemode)
+  <table id="searchvalues" class="roundbox" cellspacing="5">
+      <tr>
+        <th align="right"> Name/ID#: </th>
+        <td><input id="name" name="name" title="Starting letters of First&lt;space>Last or just Last" type="text" value="" /></td>
+      </tr>
+      <tr>
+        <td>
+@if (!Model.singlemode)
+{
+            <input type="button" class="bt" value="Update Selected" id="UpdateSelected" />
+}
+        </td>
+        <td align="right">
+            <a href="/SearchUsers/Results" id="search" class="bt default formlink">Search</a>
+            <a id="clear" href="#" class="bt">Clear</a>
+        </td>
+      </tr>
+  </table>
+@Html.Partial("Results", Model)
+</form>
+</body>
+</html>

@@ -16,6 +16,8 @@ using System.Web;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.IO;
+using System.Xml.Linq;
+using Sgml;
 
 namespace CmsData
 {
@@ -156,7 +158,7 @@ namespace CmsData
             var q = from u in Users
                     where u.Person.EmailAddress == email || u.Person.EmailAddress2 == email
                     select u.Person;
-            var p = q.SingleOrDefault();
+            var p = q.FirstOrDefault();
             if (p == null)
                 p = CMSRoleProvider.provider.GetAdmins().First();
             return p;
@@ -251,24 +253,9 @@ namespace CmsData
             else
                 text = text.Replace("{first}", p.PreferredName);
             text = text.Replace("{occupation}", p.OccupationOther);
-            
-            var list = new Dictionary<string, OneTimeLink>();
-            const string VoteLinkRE = @"{votelink\s+id=(?<id>\d+)\s+confirm=(?<confirm>true|false)\s+smallgroup=""(?<smallgroup>[^""]*)""\s+text=""(?<text>.[^""]*)""\s+message=""(?<message>.[^""]*)""}";
-            var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
-            var match = re.Match(text);
-            while (match.Success)
-            {
-                text = DoVoteLink(text, CmsHost, emailqueueto, list, match);
-                match = match.NextMatch();
-            }
-            const string VoteLinkRE0 = @"{votelink:(?<id>\d*),(?<smallgroup>[^,]*),(?<text>[^}]*)}";
-            var re0 = new Regex(VoteLinkRE0, RegexOptions.Singleline | RegexOptions.Multiline);
-            match = re0.Match(text);
-            while (match.Success)
-            {
-                text = DoVoteLink(text, CmsHost, emailqueueto, list, match);
-                match = match.NextMatch();
-            }
+
+            text = DoVoteLinkAnchorStyle(text, CmsHost, emailqueueto);
+            text = DoVoteLinkRegExStyle(text, CmsHost, emailqueueto);
             
             if (emailqueueto.Guid.HasValue)
             {
@@ -297,27 +284,89 @@ namespace CmsData
             }
             return aa.DistinctEmails();
         }
-        private string DoVoteLink(string text, string CmsHost, EmailQueueTo emailqueueto, Dictionary<string, OneTimeLink> list, Match match)
+        private string DoVoteLinkAnchorStyle(string text, string CmsHost, EmailQueueTo emailqueueto)
         {
-            var votelink = match.Value;
-            var orgid = match.Groups["id"].Value;
-            var smallgroup = match.Groups["smallgroup"].Value;
-            var pre = "";
-            var a = smallgroup.SplitStr(":");
-            if (a.Length > 1)
-                pre = a[0];
-            var txt = match.Groups["text"].Value;
-
-            string msg = "Thank you for responding.";
-            string confirm = "false";
-
-            var g = match.Groups["confirm"];
-            if (g != null)
+            var list = new Dictionary<string, OneTimeLink>();
+            const string VoteLinkRE = @"{votelink(?<inside>[^}]*)}";
+            var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
+            var match = re.Match(text);
+            while (match.Success)
             {
-                confirm = g.Value;
-                msg = match.Groups["message"].Value;
+                var votelink = match.Value;
+                var anchor = "<a " + match.Groups["inside"].Value + ">text</a>";
+                anchor = anchor.Replace("&quot;", "\"");
+                var rd = new SgmlReader();
+                rd.DocType = "HTML";
+                rd.InputStream = new StringReader(anchor);
+                var e = XDocument.Load(rd).Descendants("a").First();
+                var txt = "click here";
+                var d = e.Attributes().ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+                if (d.ContainsKey("text"))
+                    txt = d["text"];
+
+                string msg = "Thank you for responding.";
+                if (d.ContainsKey("message"))
+                    msg = d["message"];
+
+                string confirm = "false";
+                if (d.ContainsKey("confirm"))
+                    confirm = d["confirm"];
+
+                var smallgroup = d["smallgroup"];
+                var pre = "";
+                var a = smallgroup.SplitStr(":");
+                if (a.Length > 1)
+                    pre = a[0];
+
+                var id = d["id"];
+
+                text = ReplaceVotelink(text, CmsHost, emailqueueto, 
+                    list, votelink, txt, id, msg, confirm, smallgroup, pre);
+                match = match.NextMatch();
             }
-            var qs = "{0},{1},{2},{3}".Fmt(orgid, emailqueueto.PeopleId, emailqueueto.Id, pre);
+            return text;
+        }
+        private string DoVoteLinkRegExStyle(string text, string CmsHost, EmailQueueTo emailqueueto)
+        {
+            var list = new Dictionary<string, OneTimeLink>();
+            const string VoteLinkRE = @"{votelink:(?<id>\d*),(?<smallgroup>[^,]*),(?<text>[^}]*)}";
+            var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
+            var match = re.Match(text);
+            while (match.Success)
+            {
+                var votelink = match.Value;
+                var id = match.Groups["id"].Value;
+                var smallgroup = match.Groups["smallgroup"].Value;
+                var pre = "";
+                var a = smallgroup.SplitStr(":");
+                if (a.Length > 1)
+                    pre = a[0];
+                var txt = match.Groups["text"].Value;
+                string msg = "Thank you for responding.";
+
+                string confirm = "false";
+                var g = match.Groups["confirm"];
+                if (g != null)
+                    confirm = g.Value;
+                text =  ReplaceVotelink(text, CmsHost, emailqueueto, 
+                    list, votelink, txt, id, msg, confirm, smallgroup, pre);
+                match = match.NextMatch();
+            }
+            return text;
+        }
+        private string ReplaceVotelink(string text, 
+            string CmsHost, 
+            EmailQueueTo emailqueueto, 
+            Dictionary<string, OneTimeLink> list, 
+            string votelink, 
+            string txt, 
+            string id, 
+            string msg, 
+            string confirm, 
+            string smallgroup, 
+            string pre)
+        {
+            var qs = "{0},{1},{2},{3}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id, pre);
             OneTimeLink ot;
             if (list.ContainsKey(qs))
                 ot = list[qs];
@@ -333,8 +382,8 @@ namespace CmsData
                 list.Add(qs, ot);
             }
             var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}&confirm={2}&message={3}"
-                .Fmt(ot.Id.ToCode(), smallgroup, confirm, msg));
-            return text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(HttpUtility.UrlEncode(url), txt));
+                .Fmt(ot.Id.ToCode(), HttpUtility.UrlEncode(smallgroup), confirm, HttpUtility.UrlEncode(msg)));
+            return text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, txt));
         }
         public List<MailAddress> GetAddressList(Person p)
         {

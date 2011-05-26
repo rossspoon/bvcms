@@ -2,7 +2,7 @@
 @model CmsWeb.Models.PersonPage.MemberInfo
 @if (User.IsInRole("Membership"))
 { 
-<a class="displayedit" href="/Person/MemberEdit/@Model.PeopleId">Edit</a>
+<a class="displayedit bt edit" href="/Person/MemberEdit/@Model.PeopleId">Edit</a>
 }
 <table>
     <tr>

@@ -67,7 +67,7 @@
             var d = $('#visitorDialog');
             d.dialog("close");
             if (ret.error)
-                alert(ret.error);
+                $.growlUI("error", ret.error);
             else
                 $('#<%= AddedSelectedVisitors.ClientID %>').click();
         }

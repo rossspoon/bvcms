@@ -22,13 +22,15 @@ $(function () {
                     $.blockUI({ message: "org deleted" });
                     $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
                         $.unblockUI();
-                        window.location = "/Home";
+                        window.location = "/";
                     });
                 }
             });
         }
         return false;
     });
+    $(".bt").button();
+    $("#buttondiv bt").css("width", "100%");
     $("#DivisionsList").delegate("#DivisionsList", "change", function () {
         $.getTable($('#Members-tab form'));
         return false;
@@ -124,7 +126,8 @@ $(function () {
                     matchContains: 1
                 };
                 $.initDatePicker();
-                $(".submitbutton").button();
+                $(".submitbutton,.bt").button();
+                $(".roundbox select").css("width", "100%");
                 $("#DivisionsList").multiSelect();
             });
         });
@@ -138,7 +141,7 @@ $(function () {
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
             $(f).html(ret);
-            $(".submitbutton").button();
+            $(".submitbutton,.bt").button();
         });
         return false;
     });
@@ -299,11 +302,11 @@ $(function () {
         var t = $('#NewMeetingTime').val();
         var v = true;
         if (!reTime.test(t)) {
-            alert('enter valid time');
+            $.growlUI("error", "enter valid time");
             v = false;
         }
         if (!reDate.test(d)) {
-            alert('enter valid date');
+            $.growlUI("error", "enter valid date");
             v = false;
         }
         return { date: d, time: t, valid: v };
@@ -329,6 +332,26 @@ $(function () {
             });
         return false;
     });
+    $('#usersDialog').dialog({
+        title: 'Select Users Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 690,
+        height: 650,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+        }
+    });
+    $('#notifylist').live("click", function (e) {
+        e.preventDefault();
+        var d = $('#usersDialog');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("open");
+    });
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#Members-tab form'));
@@ -337,4 +360,10 @@ function RebindMemberGrids(from) {
     $.updateTable($('#Priors-tab form'));
     $.updateTable($('#Visitors-tab form'));
     $("#memberDialog").dialog("close");
+}
+function UpdateSelectedUsers(topid) {
+    $.post("/Organization/UpdateNotifyIds", { topid: topid }, function (ret) {
+        $("#notifylist").html(ret);
+        $("#usersDialog").dialog("close");
+    });
 }

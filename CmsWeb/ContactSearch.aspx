@@ -7,96 +7,101 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
-    <div>
-        <asp:LinkButton ID="NewSearch" runat="server" OnClick="NewSearch_Click">New Search (clear)</asp:LinkButton>
-        <table width="100%">
+<script type="text/javascript">
+    $(function () {
+        $(".bt").button();
+        $(".roundbox select").css("width", "100%");
+    });
+</script>
+    <div class="roundbox floatleft">
+        <h2>Contacts</h2>
+        <table cellspacing="5">
             <tr>
+                <th align="right">
+                    Contactee Name:
+                </th>
                 <td>
-                    <table class="modalPopup">
-                        <tr>
-                            <th>
-                                Contactee Name:
-                            </th>
-                            <td>
-                                <asp:TextBox ID="ContacteeNameSearch" runat="server" ToolTip="Part of the Contactees Name"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Contactor Name:
-                            </th>
-                            <td>
-                                <asp:TextBox ID="ContactorNameSearch" runat="server" ToolTip="Part of the Contactors Name"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Contact Start Date: 
-                            </th>
-                            <td>
-                                <asp:TextBox ID="startDate" runat="server"></asp:TextBox>
-                                <cc2:CalendarExtender ID="TextBox1_CalendarExtender" runat="server" 
-                                    Enabled="True" TargetControlID="startDate">
-                                </cc2:CalendarExtender>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Contact End Date: 
-                            </th>
-                            <td>
-                                <asp:TextBox ID="endDate" runat="server"></asp:TextBox>
-                                <cc2:CalendarExtender ID="TextBox2_CalendarExtender" runat="server" 
-                                    Enabled="True" TargetControlID="endDate">
-                                </cc2:CalendarExtender>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Contact Type:
-                            </th>
-                            <td>
-                                <cc1:DropDownCC ID="TypeList" runat="server" DataTextField="Value" DataSourceID="TypeListData"
-                                    DataValueField="Id" AppendDataBoundItems="True">
-                                    <asp:ListItem Value="0">(not specified)</asp:ListItem>
-                                </cc1:DropDownCC>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Contact Reason:
-                            </th>
-                            <td>
-                                <cc1:DropDownCC ID="ReasonList" runat="server" DataTextField="Value" DataSourceID="ReasonListData"
-                                    DataValueField="Id" AppendDataBoundItems="True">
-                                    <asp:ListItem Value="0">(not specified)</asp:ListItem>
-                                </cc1:DropDownCC>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Ministry:
-                            </th>
-                            <td>
-                                <cc1:DropDownCC ID="MinistryList" runat="server" DataTextField="Value" DataSourceID="MinistryListData"
-                                    DataValueField="Id" AppendDataBoundItems="False">
-                                </cc1:DropDownCC>
-                            </td>
-                        </tr>
-                    </table>
+                    <asp:TextBox ID="ContacteeNameSearch" runat="server" ToolTip="Part of the Contactees Name"></asp:TextBox>
                 </td>
             </tr>
-        </table>
-        <hr />
-        <asp:Button ID="SearchButton" Style="margin-bottom: .5em; margin-left: .5em" runat="server"
-            Text="Search" OnClick="SearchButton_Click" TabIndex="6" />
-        <br />
+            <tr>
+                <th align="right">
+                    Contactor Name:
+                </th>
+                <td>
+                    <asp:TextBox ID="ContactorNameSearch" runat="server" ToolTip="Part of the Contactors Name"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <th align="right">
+                    Contact Start Date: 
+                </th>
+                <td>
+                    <asp:TextBox ID="startDate" runat="server"></asp:TextBox>
+                    <cc2:CalendarExtender ID="TextBox1_CalendarExtender" runat="server" 
+                        Enabled="True" TargetControlID="startDate">
+                    </cc2:CalendarExtender>
+                </td>
+            </tr>
+            <tr>
+                <th align="right">
+                    Contact End Date: 
+                </th>
+                <td>
+                    <asp:TextBox ID="endDate" runat="server"></asp:TextBox>
+                    <cc2:CalendarExtender ID="TextBox2_CalendarExtender" runat="server" 
+                        Enabled="True" TargetControlID="endDate">
+                    </cc2:CalendarExtender>
+                </td>
+            </tr>
+            <tr>
+                <th align="right">
+                    Contact Type:
+                </th>
+                <td>
+                    <cc1:DropDownCC ID="TypeList" runat="server" DataTextField="Value" DataSourceID="TypeListData"
+                        DataValueField="Id" AppendDataBoundItems="True">
+                        <asp:ListItem Value="0">(not specified)</asp:ListItem>
+                    </cc1:DropDownCC>
+                </td>
+            </tr>
+            <tr>
+                <th align="right">
+                    Contact Reason:
+                </th>
+                <td>
+                    <cc1:DropDownCC ID="ReasonList" runat="server" DataTextField="Value" DataSourceID="ReasonListData"
+                        DataValueField="Id" AppendDataBoundItems="True">
+                        <asp:ListItem Value="0">(not specified)</asp:ListItem>
+                    </cc1:DropDownCC>
+                </td>
+            </tr>
+            <tr>
+                <th align="right">
+                    Ministry:
+                </th>
+                <td>
+                    <cc1:DropDownCC ID="MinistryList" runat="server" DataTextField="Value" DataSourceID="MinistryListData"
+                        DataValueField="Id" AppendDataBoundItems="False">
+                    </cc1:DropDownCC>
+                </td>
+            </tr>
+            <tr>
+                <td>Count:<asp:Label ID="GridCount" style="font-weight:bold" runat="server" Text="0"></asp:Label>
+                            
+                </td>
+                <td align="right">
+                    <asp:LinkButton ID="NewSearch" runat="server" OnClick="NewSearch_Click" CssClass="bt">Clear</asp:LinkButton>
+                    <asp:Button ID="SearchButton" Style="margin-bottom: .5em; margin-left: .5em" runat="server"
+                        Text="Search" OnClick="SearchButton_Click" TabIndex="6"  CssClass="bt"/>
+                </td>
+            </tr>
+                    </table>
     </div>
-    Count:
-    <asp:Label ID="GridCount" style="font-weight:bold" runat="server" Text="0"></asp:Label>
-    &nbsp;&nbsp;&nbsp;<asp:LinkButton ID="QuerySearch" runat="server" 
-        onclick="QuerySearch_Click">Convert to Query</asp:LinkButton>
+<br /><br /><br /><br />
+&nbsp;&nbsp;&nbsp;<asp:LinkButton ID="QuerySearch" runat="server" 
+                                onclick="QuerySearch_Click" CssClass="bt">Convert to Query</asp:LinkButton>
+    <div class="floatclear"></div>
 
     <asp:GridView ID="ContactGrid" CssClass="aspgrid" runat="server" AllowPaging="True"
         PagerSettings-Position="Bottom" AutoGenerateColumns="False" PageSize="10" 

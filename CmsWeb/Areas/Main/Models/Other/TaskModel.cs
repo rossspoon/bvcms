@@ -208,7 +208,7 @@ namespace CmsWeb.Models
                 case "Due DESC":
                 default:
                     q = from t in q
-                        orderby (t.StatusId == completedcode ? 3 : (t.StatusId == somedaycode ? 2 : 1)), t.CompletedOn ?? (t.Due ?? DateTime.MaxValue.Date), t.Priority ?? 4, t.Description
+                        orderby (t.StatusId == completedcode ? 3 : (t.StatusId == somedaycode ? 2 : 1)), t.CompletedOn ?? (t.Due ?? DateTime.MaxValue.Date) descending, t.Priority ?? 4, t.Description
                         select t;
                     break;
             }

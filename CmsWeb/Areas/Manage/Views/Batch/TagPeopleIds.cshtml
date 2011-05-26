@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "TagPeopleIds";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<h2>Tag PeopleIds</h2>
+<em>One row per PeopleId</em>
+<form action="/Batch/TagUploadPeopleIds" method="post" enctype="multipart/form-data">
+    <label>Filename: <input type="file" name="file" /></label>
+    <label>Tag name: </label> @Html.TextBox("name")
+    <input type="submit" class="bt" value="Submit" />
+    @Html.TextArea("text", "", new { rows = "20", cols = "100", wrap = "off", style = "width:90%" })<br />
+</form>

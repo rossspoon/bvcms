@@ -15,7 +15,6 @@ using System.IO;
 using System.Collections;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -25,6 +24,16 @@ namespace CmsWeb.Areas.Main.Models.Report
 {
     public class RollsheetResult : ActionResult
     {
+        public class PersonVisitorInfo
+        {
+            public int PeopleId { get; set; }
+            public string Name2 { get; set; }
+            public string BirthDate { get; set; }
+            public DateTime? LastAttended { get; set; }
+            public string NameParent1 { get; set; }
+            public string NameParent2 { get; set; }
+            public string VisitorType { get; set; }
+        }
         public int? qid, pid, div, schedule, meetingid, orgid;
         public int[] groups;
         public bool? bygroup;
@@ -154,7 +163,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                     p.BirthMonth,
                                     p.BirthDay),
                             };
-                    foreach(var m in q)
+                    foreach (var m in q)
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
                 }
                 if (t.Rows.Count > 0)

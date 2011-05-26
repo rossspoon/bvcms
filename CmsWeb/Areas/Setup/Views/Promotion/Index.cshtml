@@ -39,6 +39,7 @@
                 });
             return false;
         });
+        $(".bt").button();
     });
 </script>
 <h2>Promotion Setup</h2>
@@ -84,5 +85,5 @@
 </table>
 @using (Html.BeginForm("Create", "Promotion"))
 { 
-<p><input type="submit" value="Create" /></p>
+<p><input type="submit" class="bt" value="Create" /></p>
 } 

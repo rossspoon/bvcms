@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CMSPresenter;
 using UtilityExtensions;
 using System.Collections;
 using CmsData;
 using System.IO;
+using CmsWeb.Models;
 
 namespace CmsWeb
 {
@@ -47,7 +47,7 @@ namespace CmsWeb
                 r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
             }
             r.Write(header);
-            var ctl = new MailingController();
+            var ctl = new CMSPresenter.MailingController();
             var useTitles = Request.QueryString["titles"];
             ctl.UseTitles = useTitles == "true";
             var dg = new DataGrid();
@@ -55,24 +55,24 @@ namespace CmsWeb
             switch (labelNameFormat)
             {
                 case "Individual":
-                    dg.DataSource = PersonSearchController.FetchExcelList(qid.Value, maxExcelRows);
+                    dg.DataSource = ExportPeople.FetchExcelList(qid.Value, maxExcelRows);
                     break;
                 case "IndividualPicture":
                     GridView1.EnableViewState = false;
                     GridView1.AllowPaging = false;
-                    GridView1.DataSource = PersonSearchController.FetchExcelListPics(qid.Value, maxExcelRows);
+                    GridView1.DataSource = ExportPeople.FetchExcelListPics(qid.Value, maxExcelRows);
                     break;
                 case "Library":
-                    dg.DataSource = PersonSearchController.FetchExcelLibraryList(qid.Value);
+                    dg.DataSource = ExportPeople.FetchExcelLibraryList(qid.Value);
                     break;
                 case "Family":
                     dg.DataSource = ctl.FetchExcelFamily(qid.Value, maxExcelRows);
                     break;
                 case "FamilyMembers":
-                    dg.DataSource = PersonSearchController.FetchExcelListFamilyMembers(qid.Value);
+                    dg.DataSource = ExportPeople.FetchExcelListFamilyMembers(qid.Value);
                     break;
                 case "AllFamily":
-                    dg.DataSource = PersonSearchController.FetchExcelListFamily(qid.Value);
+                    dg.DataSource = ExportPeople.FetchExcelListFamily(qid.Value);
                     break;
                 case "ParentsOf":
                     dg.DataSource = ctl.FetchExcelParents(qid.Value, maxExcelRows);
@@ -84,25 +84,25 @@ namespace CmsWeb
                     dg.DataSource = ctl.FetchExcelCouplesBoth(qid.Value, maxExcelRows);
                     break;
                 case "Involvement":
-                    dg.DataSource = InvolvementController.InvolvementList(qid.Value);
+                    dg.DataSource = ExportInvolvements.InvolvementList(qid.Value);
                     break;
                 case "Children":
-                    dg.DataSource = InvolvementController.ChildrenList(qid.Value, maxExcelRows);
+                    dg.DataSource = ExportInvolvements.ChildrenList(qid.Value, maxExcelRows);
                     break;
                 case "Church":
-                    dg.DataSource = InvolvementController.ChurchList(qid.Value, maxExcelRows);
+                    dg.DataSource = ExportInvolvements.ChurchList(qid.Value, maxExcelRows);
                     break;
                 case "Attend":
-                    dg.DataSource = InvolvementController.AttendList(qid.Value, maxExcelRows);
+                    dg.DataSource = ExportInvolvements.AttendList(qid.Value, maxExcelRows);
                     break;
                 case "Organization":
-                    dg.DataSource = InvolvementController.OrgMemberList(qid.Value, maxExcelRows);
+                    dg.DataSource = ExportInvolvements.OrgMemberList(qid.Value, maxExcelRows);
                     break;
                 case "Groups":
-                    dg.DataSource = InvolvementController.OrgMemberListGroups();
+                    dg.DataSource = ExportInvolvements.OrgMemberListGroups();
                     break;
                 case "Promotion":
-                    dg.DataSource = InvolvementController.PromoList(qid.Value, maxExcelRows);
+                    dg.DataSource = ExportInvolvements.PromoList(qid.Value, maxExcelRows);
                     break;
             }
             if (labelNameFormat == "IndividualPicture")

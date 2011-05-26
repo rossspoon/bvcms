@@ -106,7 +106,7 @@ CKEditorFuncNum, baseurl + fn, error));
                     return Redirect(DbUtil.Db.CmsHost + "Logon");
 
             if (User.Identity.IsAuthenticated)
-                return Redirect("/Home");
+                return Redirect("/");
 
             return View();
         }
@@ -118,7 +118,7 @@ CKEditorFuncNum, baseurl + fn, error));
             {
                 var lc = returnUrl.ToLower();
                 if (lc.StartsWith("/default.aspx") || lc.StartsWith("/login.aspx"))
-                    returnUrl = "/Home";
+                    returnUrl = "/";
             }
 
             if (!userName.HasValue())
@@ -139,7 +139,7 @@ CKEditorFuncNum, baseurl + fn, error));
                     return Redirect("/Person/Index/" + Util.UserPeopleId);
             if (returnUrl.HasValue())
                 return Redirect(returnUrl);
-            return Redirect("/Home");
+            return Redirect("/");
         }
         public static object AuthenticateLogon(string userName, string password, HttpSessionStateBase Session, HttpRequestBase Request)
         {
@@ -330,7 +330,7 @@ The bvCMS Team</p>
         public ActionResult LogOff()
         {
             FormsAuth.SignOut();
-            return Redirect("/Home");
+            return Redirect("/");
         }
 
         public ActionResult ForgotUsername(string email)

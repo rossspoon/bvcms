@@ -138,7 +138,6 @@
     <Reference Include="NPOI">
       <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="RouteDebug, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SquishIt.Contrib.Mvc, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SquishIt.Contrib.Mvc.0.1.1\lib\net40\SquishIt.Contrib.Mvc.dll</HintPath>
     </Reference>
@@ -196,19 +195,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Dialog\DialogAreaRegistration.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
+    <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
+    <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
     <Compile Include="Areas\Main\Controllers\iPhoneController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
-    <Compile Include="Areas\Main\Controllers\OrgMembersDialogController.cs" />
+    <Compile Include="Areas\Dialog\Controllers\OrgMembersDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\PostBundleController.cs" />
-    <Compile Include="Areas\Main\Controllers\SearchAddController.cs" />
-    <Compile Include="Areas\Main\Controllers\OrgMemberDialogController.cs" />
+    <Compile Include="Areas\Main\Controllers\QuickSearchController.cs" />
+    <Compile Include="Areas\Dialog\Controllers\SearchAddController.cs" />
+    <Compile Include="Areas\Dialog\Controllers\OrgMemberDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrganizationController.cs" />
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
     <Compile Include="Areas\Main\Controllers\ReportsController.cs" />
@@ -218,7 +221,14 @@
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\ClassesResult0.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\FamilyResult0.cs" />
+    <Compile Include="Areas\Main\Models\Export\ExportPeople.cs" />
+    <Compile Include="Areas\Main\Models\Export\ExportInvolvements.cs" />
+    <Compile Include="Areas\Main\Models\Export\InvovementInfo.cs" />
+    <Compile Include="Areas\Main\Models\Export\QueryBitsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\MucketyMapResult.cs" />
+    <Compile Include="Areas\Dialog\Models\SearchUsersModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailResult.cs" />
@@ -235,7 +245,7 @@
     <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\AttendInfo.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgGroupsModel.cs" />
-    <Compile Include="Areas\Main\Models\Organization\OrgMembersDialogModel.cs" />
+    <Compile Include="Areas\Dialog\Models\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PrevMemberModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\PersonMemberInfo.cs" />
     <Compile Include="Areas\Main\Models\Other\MassEmailer.cs" />
@@ -244,8 +254,8 @@
     <Compile Include="Areas\Main\Models\Other\TaskNotesExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\CouponModel.cs" />
     <Compile Include="Areas\Main\Models\Export\OrgExcelResult.cs" />
-    <Compile Include="Areas\Main\Models\Other\SearchModel.cs" />
-    <Compile Include="Areas\Main\Models\Other\SearchPersonModel.cs" />
+    <Compile Include="Areas\Dialog\Models\SearchModel.cs" />
+    <Compile Include="Areas\Dialog\Models\SearchPersonModel.cs" />
     <Compile Include="Areas\Main\Models\Person\FamilyMemberInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\DuplicatesModel.cs" />
     <Compile Include="Areas\Main\Models\Report\AttendanceDetailModel.cs" />
@@ -399,13 +409,6 @@
     </Compile>
     <Compile Include="Areas\Manage\Models\VolunteerCommitmentsModel.cs" />
     <Compile Include="Areas\Public\Controllers\TrackController.cs" />
-    <Compile Include="Dialog\AddTagShareds.aspx.cs">
-      <DependentUpon>AddTagShareds.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\AddTagShareds.aspx.designer.cs">
-      <DependentUpon>AddTagShareds.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\Activity.aspx.cs">
       <DependentUpon>Activity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -618,26 +621,12 @@
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
     <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
     <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="Default2.aspx.cs">
+      <DependentUpon>Default2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\EditMember.aspx.cs">
-      <DependentUpon>EditMember.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\EditMember.aspx.designer.cs">
-      <DependentUpon>EditMember.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Dialog\EditMembers.aspx.cs">
-      <DependentUpon>EditMembers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Dialog\EditMembers.aspx.designer.cs">
-      <DependentUpon>EditMembers.aspx</DependentUpon>
+    <Compile Include="Default2.aspx.designer.cs">
+      <DependentUpon>Default2.aspx</DependentUpon>
     </Compile>
     <Compile Include="EmailAttendanceNotices.aspx.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
@@ -722,13 +711,6 @@
     <Compile Include="Areas\Main\Models\Other\TaskModel.cs" />
     <Compile Include="Areas\Public\Models\VolunteerModel.cs" />
     <Compile Include="Areas\Manage\Models\VolunteersModel.cs" />
-    <Compile Include="MyTags.aspx.cs">
-      <DependentUpon>MyTags.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MyTags.aspx.designer.cs">
-      <DependentUpon>MyTags.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -805,13 +787,6 @@
     <Compile Include="SavedQueries.aspx.designer.cs">
       <DependentUpon>SavedQueries.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Search.aspx.cs">
-      <DependentUpon>Search.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Search.aspx.designer.cs">
-      <DependentUpon>Search.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -861,23 +836,12 @@
     <Compile Include="UserControls\QueryConditions.ascx.designer.cs">
       <DependentUpon>QueryConditions.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\QuickSearchParameters.ascx.cs">
-      <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\QuickSearchParameters.ascx.designer.cs">
-      <DependentUpon>QuickSearchParameters.ascx</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\UserArea.ascx.cs">
       <DependentUpon>UserArea.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserControls\UserArea.ascx.designer.cs">
       <DependentUpon>UserArea.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="WebService.asmx.cs">
-      <DependentUpon>WebService.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -1039,6 +1003,24 @@
     <Content Include="ckeditor\skins\v2\templates.css" />
     <Content Include="ckeditor\themes\default\theme.js" />
     <Content Include="Content\bvcms132x55.png" />
+    <Content Include="Content\images\select_arrow.gif" />
+    <Content Include="Content\images\select_arrow_bg.gif" />
+    <Content Include="Content\images\select_arrow_bg_hover.gif" />
+    <Content Include="Content\images\ui-bg_flat_0_eeeeee_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_75_cccccc_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_100_dadada_1x400.png" />
+    <Content Include="Content\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
+    <Content Include="Content\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\jquery-ui-1.8.13.custom.css" />
+    <Content Include="Content\jquery.sb.css" />
+    <Content Include="Content\js\jquery-ui-1.8.13.custom.js" />
+    <Content Include="Content\js\jquery.sb.js" />
+    <Content Include="Content\js\jquery.tie.js" />
+    <Content Include="images\dropdown.gif" />
+    <Content Include="images\linkselect_bkgrd.png" />
+    <Content Include="Content\jquery.linkselect.css" />
+    <Content Include="Content\jquery.linkselect.style.select.css" />
+    <Content Include="Content\js\jquery.linkselect.js" />
     <Content Include="Errors\SessionTimeout.htm" />
     <Content Include="favicon.ico" />
     <Content Include="Content\cmenu.css" />
@@ -1063,7 +1045,6 @@
     <Content Include="Content\js\jquery-1.4.4.js" />
     <Content Include="Content\js\jquery-1.4.4.min.js" />
     <Content Include="Content\js\jquery-ui-1.8.9.custom.js" />
-    <Content Include="Content\js\jquery-ui-1.8.9.custom.min.js" />
     <Content Include="Content\js\jquery.ba-bbq.min.js" />
     <Content Include="Content\js\jquery.bgiframe-2.1.2.js" />
     <Content Include="Content\js\jquery.showpassword-1.0.js" />
@@ -1073,6 +1054,9 @@
     <Content Include="images\notreq.gif" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\SearchUsers.js" />
+    <Content Include="Scripts\Tags.js" />
+    <Content Include="Scripts\QuickSearch.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />
@@ -1101,11 +1085,10 @@
     <Content Include="Content\images\treeview-red.gif" />
     <Content Include="Content\js\jquery.showpassword.js" />
     <Content Include="Errors\AccessDenied.htm" />
-    <Content Include="Dialog\AddTagShareds.aspx" />
     <Content Include="App_Offline1.htm" />
     <Content Include="AttendStrDetail.aspx" />
     <Content Include="BadEts.aspx" />
-    <Content Include="Default.aspx" />
+    <Content Include="Default2.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Content\bodybg.png" />
     <Content Include="images\bvcms120.png" />
@@ -1140,16 +1123,14 @@
     <Content Include="Areas\Manage\Views\Batch\LookupDataPage.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\View.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\Index.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\Results.cshtml" />
-    <Content Include="Areas\Main\Views\OrgSearch\TagDivIds.cshtml" />
     <Content Include="Areas\Main\Views\Person\AddressDisplay.cshtml" />
     <Content Include="Areas\Main\Views\Person\AddressEdit.cshtml" />
     <Content Include="Areas\Main\Views\Person\AttendanceGrid.cshtml" />
     <Content Include="Areas\Main\Views\Person\BasicDisplay.cshtml" />
     <Content Include="Areas\Main\Views\Person\BasicEdit.cshtml" />
-    <Content Include="Areas\Main\Views\Person\BatchPeopleIds.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\TagPeopleIds.cshtml" />
     <Content Include="Areas\Main\Views\Person\BusinessCard.cshtml" />
     <Content Include="Areas\Main\Views\Person\CommentsDisplay.cshtml" />
     <Content Include="Areas\Main\Views\Person\CommentsEdit.cshtml" />
@@ -1188,19 +1169,17 @@
     <Content Include="Areas\Main\Views\Organization\SettingsEdit.cshtml" />
     <Content Include="Areas\Main\Views\Organization\SmallGroups.cshtml" />
     <Content Include="Areas\Main\Views\Organization\VisitorGrid.cshtml" />
-    <Content Include="Areas\Main\Views\OrgGroups\Form.cshtml" />
     <Content Include="Areas\Main\Views\OrgGroups\Index.cshtml" />
-    <Content Include="Areas\Main\Views\OrgGroups\ManageGroups.cshtml" />
     <Content Include="Areas\Main\Views\OrgGroups\Rows.cshtml" />
-    <Content Include="Areas\Main\Views\OrgMemberDialog\Display.cshtml" />
-    <Content Include="Areas\Main\Views\OrgMemberDialog\Edit.cshtml" />
-    <Content Include="Areas\Main\Views\OrgMemberDialog\Index.cshtml">
+    <Content Include="Areas\Dialog\Views\OrgMemberDialog\Display.cshtml" />
+    <Content Include="Areas\Dialog\Views\OrgMemberDialog\Edit.cshtml" />
+    <Content Include="Areas\Dialog\Views\OrgMemberDialog\Index.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Main\Views\OrgMemberDialog\Move.cshtml" />
-    <Content Include="Areas\Main\Views\OrgMembersDialog\Index.cshtml" />
-    <Content Include="Areas\Main\Views\OrgMembersDialog\Rows.cshtml" />
-    <Content Include="Areas\Main\Views\OrgMembersDialog\Update.cshtml" />
+    <Content Include="Areas\Dialog\Views\OrgMemberDialog\Move.cshtml" />
+    <Content Include="Areas\Dialog\Views\OrgMembersDialog\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\OrgMembersDialog\Rows.cshtml" />
+    <Content Include="Areas\Dialog\Views\OrgMembersDialog\Update.cshtml" />
     <Content Include="Areas\Main\Views\Email\EmailQueued.cshtml" />
     <Content Include="Areas\Main\Views\Email\Index.cshtml" />
     <Content Include="Areas\Main\Views\Email\Progress.cshtml" />
@@ -1239,18 +1218,18 @@
     <Content Include="Areas\Main\Views\QueryBuilder\Main.cshtml" />
     <Content Include="Areas\Main\Views\QueryBuilder\Results.cshtml" />
     <Content Include="Areas\Main\Views\QueryBuilder\TryConditions.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\EditAddress.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\EditPerson.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\FormAbbreviated.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\FormFull.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\HiddenPerson.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\Index.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\List.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\PersonDisplay.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\Results.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\ResultsFamily.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\SearchFamily.cshtml" />
-    <Content Include="Areas\Main\Views\SearchAdd\SearchPerson.cshtml">
+    <Content Include="Areas\Dialog\Views\SearchAdd\EditAddress.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\EditPerson.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\FormAbbreviated.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\FormFull.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\HiddenPerson.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\List.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\PersonDisplay.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\Results.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\ResultsFamily.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\SearchFamily.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchAdd\SearchPerson.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Areas\Main\Views\Reports\Attendance.cshtml">
@@ -1493,6 +1472,19 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\AskDonation.cshtml" />
     <Content Include="Areas\m\Views\Web.config" />
     <Content Include="Areas\m\Views\Meeting\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\FindTagPeople0.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\FindTagPeople.cshtml" />
+    <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml" />
+    <Content Include="Areas\Main\Views\QuickSearch\Results.cshtml" />
+    <Content Include="Areas\Main\Views\Tags\Index.cshtml" />
+    <Content Include="Areas\Main\Views\Tags\Results.cshtml" />
+    <Content Include="Areas\Main\Views\Tags\Tags.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchUsers\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchUsers\Results.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\NotifyList.cshtml" />
+    <Content Include="Areas\Dialog\Views\Web.config" />
+    <Content Include="Areas\Main\Views\OrgGroups\Form.cshtml" />
+    <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
@@ -1505,7 +1497,6 @@
     </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
-    <Content Include="WebService.asmx" />
     <Content Include="Views\Shared\SiteLayout.cshtml" />
     <Content Include="Views\Shared\Pager.cshtml" />
     <Content Include="Views\Shared\Pager2.cshtml" />
@@ -1536,8 +1527,6 @@
     <Content Include="ChangePassword.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="ContactSearch.aspx" />
-    <Content Include="Dialog\EditMember.aspx" />
-    <Content Include="Dialog\EditMembers.aspx" />
     <Content Include="EmailAttendanceNotices.aspx" />
     <Content Include="EnrollmentControlReport.aspx" />
     <Content Include="Errors\Error.aspx" />
@@ -1548,11 +1537,9 @@
     <Content Include="Meeting.aspx" />
     <Content Include="Meetings.aspx" />
     <Content Include="MemberMap.aspx" />
-    <Content Include="MyTags.aspx" />
     <Content Include="NoRemoteAccess.htm" />
     <Content Include="PurgeProgress.aspx" />
     <Content Include="SavedQueries.aspx" />
-    <Content Include="Search.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Activity.aspx" />
@@ -1643,40 +1630,6 @@
     <Content Include="Content\edgechurch.png" />
     <Content Include="Content\grace.png" />
     <Content Include="Content\header-gradient.png" />
-    <Content Include="Content\images\222222_11x11_icon_arrows_leftright.gif" />
-    <Content Include="Content\images\222222_11x11_icon_arrows_updown.gif" />
-    <Content Include="Content\images\222222_11x11_icon_doc.gif" />
-    <Content Include="Content\images\222222_11x11_icon_minus.gif" />
-    <Content Include="Content\images\222222_11x11_icon_plus.gif" />
-    <Content Include="Content\images\222222_11x11_icon_resize_se.gif" />
-    <Content Include="Content\images\222222_7x7_arrow_down.gif" />
-    <Content Include="Content\images\222222_7x7_arrow_left.gif" />
-    <Content Include="Content\images\222222_7x7_arrow_right.gif" />
-    <Content Include="Content\images\222222_7x7_arrow_up.gif" />
-    <Content Include="Content\images\454545_11x11_icon_arrows_leftright.gif" />
-    <Content Include="Content\images\454545_11x11_icon_arrows_updown.gif" />
-    <Content Include="Content\images\454545_11x11_icon_close.gif" />
-    <Content Include="Content\images\454545_11x11_icon_doc.gif" />
-    <Content Include="Content\images\454545_11x11_icon_folder_closed.gif" />
-    <Content Include="Content\images\454545_11x11_icon_folder_open.gif" />
-    <Content Include="Content\images\454545_11x11_icon_minus.gif" />
-    <Content Include="Content\images\454545_11x11_icon_plus.gif" />
-    <Content Include="Content\images\454545_7x7_arrow_down.gif" />
-    <Content Include="Content\images\454545_7x7_arrow_left.gif" />
-    <Content Include="Content\images\454545_7x7_arrow_right.gif" />
-    <Content Include="Content\images\454545_7x7_arrow_up.gif" />
-    <Content Include="Content\images\888888_11x11_icon_arrows_leftright.gif" />
-    <Content Include="Content\images\888888_11x11_icon_arrows_updown.gif" />
-    <Content Include="Content\images\888888_11x11_icon_close.gif" />
-    <Content Include="Content\images\888888_11x11_icon_doc.gif" />
-    <Content Include="Content\images\888888_11x11_icon_folder_closed.gif" />
-    <Content Include="Content\images\888888_11x11_icon_folder_open.gif" />
-    <Content Include="Content\images\888888_11x11_icon_minus.gif" />
-    <Content Include="Content\images\888888_11x11_icon_plus.gif" />
-    <Content Include="Content\images\888888_7x7_arrow_down.gif" />
-    <Content Include="Content\images\888888_7x7_arrow_left.gif" />
-    <Content Include="Content\images\888888_7x7_arrow_right.gif" />
-    <Content Include="Content\images\888888_7x7_arrow_up.gif" />
     <Content Include="Content\images\dadada_40x100_textures_02_glass_75.png" />
     <Content Include="Content\images\e6e6e6_40x100_textures_02_glass_75.png" />
     <Content Include="Content\images\ffffff_40x100_textures_01_flat_75.png" />
@@ -1790,7 +1743,6 @@
     <Content Include="UserControls\GridPager.ascx" />
     <Content Include="UserControls\PersonGrid.ascx" />
     <Content Include="UserControls\QueryConditions.ascx" />
-    <Content Include="UserControls\QuickSearchParameters.ascx" />
     <Content Include="UserControls\UserArea.ascx" />
   </ItemGroup>
   <ItemGroup>
@@ -1987,6 +1939,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Dialog\Views\Shared\" />
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\Manage\Views\Reports\" />

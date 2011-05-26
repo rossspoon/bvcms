@@ -13,7 +13,7 @@ Examples:
 
 @{
     SquishIt.Css.Add("~/Content/Site.css");
-    SquishIt.JavaScript.Add("~/Scripts/jquery-1.4.4.min.js");
+    SquishIt.JavaScript.Add("~/Scripts/jquery-1.5.2.min.js");
 }
 <!DOCTYPE html>
 <html>

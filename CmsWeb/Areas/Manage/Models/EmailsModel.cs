@@ -44,36 +44,6 @@ namespace CmsWeb.Models
         public DateTime? enddt { get; set; }
         public bool transactional { get; set; }
         public PagerModel2 Pager { get; set; }
-        //public string Sort { get; set; }
-        //private int? _Page;
-        //public int? Page
-        //{
-        //    get { return _Page ?? 1; }
-        //    set { _Page = value; }
-        //}
-        //public int StartRow
-        //{
-        //    get { return (Page.Value - 1) * PageSize; }
-        //}
-        //public int PageSize
-        //{
-        //    get { return DbUtil.Db.UserPreference("PageSize", "10").ToInt(); }
-        //    set
-        //    {
-        //        DbUtil.Db.SetUserPreference("PageSize", value);
-        //    }
-        //}
-        //public PagerModel pagerModel()
-        //{
-        //    return new PagerModel
-        //    {
-        //        Page = Page.Value,
-        //        PageSize = PageSize,
-        //        Action = "List",
-        //        Controller = "Task",
-        //        Count = Count(),
-        //    };
-        //}
         int? _count;
         public int Count()
         {
@@ -118,11 +88,11 @@ namespace CmsWeb.Models
                  where senderid == null || t.QueuedBy == senderid
                  where (t.Transactional ?? false) == transactional
                  select t;
-            if (!enddt.HasValue && startdt.HasValue)
-            {
-                var edt = startdt.Value.AddHours(24);
+            var edt = enddt;
+            if (!edt.HasValue && startdt.HasValue)
+                 edt = startdt.Value.AddHours(24);
+            if (edt.HasValue)
                 _emails = _emails.Where(t => t.Sent < edt);
-            }
             if(!DbUtil.Db.CurrentUser.Roles.Contains("Admin"))
             {
                 var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);

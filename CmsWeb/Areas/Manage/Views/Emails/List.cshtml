@@ -1,25 +1,28 @@
 ﻿@using CmsWeb;
 @using UtilityExtensions;
 @model CmsWeb.Models.EmailsModel
-<div class="modalPopup">
-<table cellpadding="4">
-<tr><td>From</td><td>@Html.TextBox("from")</td>
-    <td>SentById</td><td>@Html.TextBox("senderid")
+<div class="roundbox floatleft">
+<h2>Emails</h2>
+<table cellspacing="5">
+<tr><td align="right">From:</td><td>@Html.TextBox("from")</td>
+    <td align="right">SentById:</td><td>@Html.TextBox("senderid")
         @if(Model.senderid.HasValue) { <a href="/Person/Index/@Model.senderid">@Model.sender</a>}</td>
 </tr>
-<tr><td>Subject</td><td>@Html.TextBox("subject")</td>
-    <td>Body</td><td>@Html.TextBox("body")</td>
+<tr><td align="right">Subject:</td><td>@Html.TextBox("subject")</td>
+    <td align="right">Body:</td><td>@Html.TextBox("body")</td>
 </tr>
-<tr><td>Start Date</td><td>@Html.DatePicker("startdt")</td>
-    <td>End Date</td><td>@Html.DatePicker("enddt")</td>
+<tr><td align="right">Start Date:</td><td>@Html.DatePicker("startdt")</td>
+    <td align="right">End Date:</td><td>@Html.DatePicker("enddt")</td>
 </tr>
-<tr><td>RecipientId</td><td>@Html.TextBox("peopleid") 
+<tr><td align="right">RecipientId:</td><td>@Html.TextBox("peopleid") 
         @if(Model.peopleid.HasValue) { <a href="/Person/Index/@Model.peopleid">@Model.name</a>}</td>
-    <td>Transactional</td><td>@Html.CheckBox("transactional")</td></tr>
+    <td align="right">Transactional</td><td>@Html.CheckBox("transactional")</td></tr>
+<tr><td align="right" colspan="4">
+    <a href="#" class="submitbutton bt">Filter</a>
+    <a href="/Manage/Emails" class="bt">Clear</a></td></tr>
 </table>
-<input type="submit" class="submitbutton" value="Filter" />
-<a href="/Manage/Emails">clear</a>
 </div>
+<div class="floatclear"></div>
 <table id="Emails" class="grid" cellpadding="4">
     <thead>
     <tr>

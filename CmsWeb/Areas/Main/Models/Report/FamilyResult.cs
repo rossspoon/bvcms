@@ -77,6 +77,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                          select new
                          {
                              members = from m in g.First().Family.People
+                                       where !m.DeceasedDate.HasValue
                                        select new
                                        {
                                            order = g.Any(p => p.PeopleId == m.PeopleId) ? 1 :

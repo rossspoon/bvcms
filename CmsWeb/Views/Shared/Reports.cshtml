@@ -3,7 +3,7 @@
 <head>
     <title></title>
 @Html.Raw(SquishIt.Framework.Bundle.Css()
-        .Add("/Content/jquery-ui-1.8.9.custom.css")
+        .Add("/Content/jquery-ui-1.8.13.custom.css")
         .Add("/Content/style.css")
         .Render("/Content/report_#.css")
 )
@@ -15,8 +15,8 @@
 </head>
 <body>
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.4.4.js")
-        .Add("/Content/js/jquery-ui-1.8.9.custom.js")
+        .Add("/Content/js/jquery-1.5.2.js")
+        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
         .Render("/Content/report_#.js")
 )
 @RenderBody()

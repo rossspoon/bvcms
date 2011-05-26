@@ -21,7 +21,7 @@ namespace CmsWeb.Areas.Main.Controllers
     //[RequireBasicAuthentication]
     public class Checkin2Controller : CmsController
     {
-        public ActionResult Match(string id, int campus, int thisday, int? page, string kiosk)
+        public ActionResult Match(string id, int campus, int thisday, int? page, string kiosk, bool? kioskmode)
         {
             if (!Authenticate())
                 return Content("not authorized");
@@ -32,18 +32,18 @@ namespace CmsWeb.Areas.Main.Controllers
             var matches = m.Match(id, campus, thisday);
 
             if (matches.Count() == 0)
-                return new FamilyResult(0, campus, thisday, 0, false); // not found
+                return new FamilyResult(0, campus, thisday, 0, false, false); // not found
             if (matches.Count() == 1)
-                return new FamilyResult(matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked);
+                return new FamilyResult(matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked, kioskmode ?? false);
             return new MultipleResult(matches, page);
         }
-        public ActionResult Family(int id, int campus, int thisday, string kiosk)
+        public ActionResult Family(int id, int campus, int thisday, string kiosk, bool? kioskmode)
         {
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
-            return new FamilyResult(id, campus, thisday, 0, false);
+            return new FamilyResult(id, campus, thisday, 0, false, kioskmode ?? false);
         }
         public ActionResult Class(int id, int thisday)
         {
@@ -53,14 +53,15 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SetNoLock();
             return new ClassResult(id, thisday);
         }
-        public ActionResult Classes(int id, int campus, int thisday, bool? noagecheck)
+        public ActionResult Classes(int id, int campus, int thisday, bool? noagecheck, bool? kioskmode)
         {
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
-            return new ClassesResult(id, thisday, campus, noagecheck ?? false);
+            return new ClassesResult(id, thisday, campus, noagecheck ?? false, kioskmode ?? false);
         }
+        
         public ActionResult NameSearch(string id, int? page)
         {
             if (!Authenticate())

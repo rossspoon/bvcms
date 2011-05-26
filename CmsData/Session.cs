@@ -21,6 +21,7 @@ namespace CmsData
             }
             return def;
         }
+        
         public static string CurrentTag
         {
             get

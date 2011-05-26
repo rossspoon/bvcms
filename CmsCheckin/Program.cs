@@ -29,7 +29,14 @@ namespace CmsCheckin
             var r = login.ShowDialog();
             if (r == DialogResult.Cancel)
                 return;
+#if DEBUG
             URL = "http://" + login.URL.Text;
+#else
+            if (Settings1.Default.UseSSL)
+                URL = "https://" + login.URL.Text;
+            else
+                URL = "http://" + login.URL.Text;
+#endif
             Username = login.username.Text;
             Password = login.password.Text;
 
@@ -52,6 +59,7 @@ namespace CmsCheckin
             AskChurch = f.AskChurch.Checked;
             AskChurchName = f.AskChurchName.Checked;
             EnableTimer = f.EnableTimer.Checked;
+            KioskMode = f.KioskMode.Checked;
 
             f.Dispose();
 
@@ -89,10 +97,11 @@ namespace CmsCheckin
         public static bool AskChurch { get; set; }
         public static bool AskChurchName { get; set; }
         public static bool AskLabels { get; set; }
+        public static bool KioskMode { get; set; }
 
         public static string QueryString
         {
-            get { return string.Format("?campus={0}&thisday={1}&kiosk={2}", CampusId, ThisDay, KioskName); }
+            get { return string.Format("?campus={0}&thisday={1}&kioskmode={2}&kiosk={3}", CampusId, ThisDay, KioskMode, KioskName); }
         }
         public static int MaxLabels { get; set; }
         public static Timer timer1;

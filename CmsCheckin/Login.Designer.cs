@@ -577,8 +577,8 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(11, 70);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(102, 25);
-            this.label6.TabIndex = 3;
+            this.label6.Size = new System.Drawing.Size(83, 20);
+            this.label6.TabIndex = 2;
             this.label6.Text = "Username";
             // 
             // label7
@@ -587,8 +587,8 @@
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(15, 110);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(98, 25);
-            this.label7.TabIndex = 1;
+            this.label7.Size = new System.Drawing.Size(78, 20);
+            this.label7.TabIndex = 4;
             this.label7.Text = "Password";
             // 
             // bdot
@@ -610,8 +610,8 @@
             this.username.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.username.Location = new System.Drawing.Point(116, 61);
             this.username.Name = "username";
-            this.username.Size = new System.Drawing.Size(289, 38);
-            this.username.TabIndex = 2;
+            this.username.Size = new System.Drawing.Size(289, 32);
+            this.username.TabIndex = 3;
             // 
             // password
             // 
@@ -619,16 +619,16 @@
             this.password.Location = new System.Drawing.Point(116, 105);
             this.password.Name = "password";
             this.password.PasswordChar = '*';
-            this.password.Size = new System.Drawing.Size(289, 38);
-            this.password.TabIndex = 0;
+            this.password.Size = new System.Drawing.Size(289, 32);
+            this.password.TabIndex = 5;
             // 
             // URL
             // 
             this.URL.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.URL.Location = new System.Drawing.Point(116, 17);
             this.URL.Name = "URL";
-            this.URL.Size = new System.Drawing.Size(289, 38);
-            this.URL.TabIndex = 4;
+            this.URL.Size = new System.Drawing.Size(289, 32);
+            this.URL.TabIndex = 1;
             // 
             // label8
             // 
@@ -636,8 +636,8 @@
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(60, 26);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(50, 25);
-            this.label8.TabIndex = 5;
+            this.label8.Size = new System.Drawing.Size(42, 20);
+            this.label8.TabIndex = 0;
             this.label8.Text = "URL";
             // 
             // bang

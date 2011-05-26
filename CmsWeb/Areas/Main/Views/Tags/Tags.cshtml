@@ -1,0 +1,10 @@
+﻿@using CmsData
+@model CmsWeb.Models.TagsModel
+<select name="tag" id="tag">
+@{var tid = DbUtil.Db.TagCurrent().Id;}
+@foreach (var t in Model.Tags())
+{
+    var selecteditem = t.Id == tid ? "selected='true'" : "";
+    <option value="@t.Code" @selecteditem>@t.Value</option>
+}
+</select>

@@ -43,6 +43,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     q = ctl.FetchIndividualList(STR_Name, id.Value);
                     break;
                 case "Family":
+                case "FamilyMembers":
                     q = ctl.FetchFamilyList(STR_Name, id.Value);
                     break;
                 case "ParentsOf":

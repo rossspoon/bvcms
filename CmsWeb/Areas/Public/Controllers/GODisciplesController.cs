@@ -118,7 +118,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!(oldname.HasValue() && newname.HasValue() && newname != oldname))
                 return View();
             GODisciplesModel.RenameGroups(oldname, newname);
-            return Content(Util.EndShowMessage("rename successful", "/Home", "home"));
+            return Content(Util.EndShowMessage("rename successful", "/", "home"));
         }
         public ActionResult Confirm(int id)
         {

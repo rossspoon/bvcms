@@ -99,6 +99,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var org = Db.LoadOrganizationById(ti.OrgId);
             ti.Amt = Amount;
             ti.Amtdue -= Amount;
+            ti.TransactionId = TransactionID;
+            ti.TransactionDate = DateTime.Now;
             var amt = Amount;
             string paylink = null;
             foreach (var pi in ti.TransactionPeople)
@@ -142,14 +144,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (ti.Amtdue > 0)
                 msg += "<br/>\n<a href='{0}'>PayLink</a>".Fmt(paylink);
 
-            var pid = ti.TransactionPeople.Select(t => t.PeopleId).First();
+            var pid = ti.TransactionPeople.Select(t => t.PeopleId).FirstOrDefault();
             var p0 = Db.LoadPersonById(pid);
-            Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
-                p0, Util.ToMailAddressList(ti.Emails), "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), false);
-            Db.Email(p0.FromEmail, 
-                Db.PeopleFromPidString(org.NotifyIds), 
-                "payment received for " + ti.Description, 
-                "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Description, ti.Amtdue, names));
+            if (p0 == null)
+                Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(Db.StaffEmailForOrg(org.OrganizationId)),
+                    "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), Util.FirstAddress(ti.Emails), 0);
+            else
+            {
+                Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
+                    p0, Util.ToMailAddressList(ti.Emails), "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), false);
+                Db.Email(p0.FromEmail,
+                    Db.PeopleFromPidString(org.NotifyIds),
+                    "payment received for " + ti.Description,
+                    "{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Description, ti.Amtdue, names));
+            }
 
             ViewData["timeout"] = INT_timeout;
 

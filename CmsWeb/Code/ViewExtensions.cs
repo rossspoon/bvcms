@@ -28,7 +28,7 @@ namespace CmsWeb
         public static string StandardCss()
         {
             return SquishIt.Framework.Bundle.Css()
-                           .Add("/Content/jquery-ui-1.8.9.custom.css")
+                           .Add("/Content/jquery-ui-1.8.13.custom.css")
                            .Add("/Content/pager.css")
                            .Add("/Content/style2.css")
                            .Add("/Content/superfish.css")

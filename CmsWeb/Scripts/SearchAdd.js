@@ -31,7 +31,7 @@
                         showURL: false,
                         showBody: "|"
                     });
-                    $('#people > tbody > tr:even').addClass('altrow');
+                    $('#people > tbody > tr:even').addClass('alt');
                 });
         });
         return false;
@@ -56,7 +56,7 @@
                 $('#state', f).val(ret.State);
                 $('#zip', f).val(ret.Zip);
             }
-        }, "json");
+        });
         return false;
     });
     $("#zip").live("blur", function() {

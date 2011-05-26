@@ -17,12 +17,14 @@ namespace CmsWeb.Models
         private int? peopleid;
         private DateTime? bd;
         private int? grade;
+        private bool kioskmode;
 
         public bool noagecheck { get; set; }
-        public ClassesResult(int id, int thisday, int campusid, bool noagecheck)
+        public ClassesResult(int id, int thisday, int campusid, bool noagecheck, bool kioskmode)
         {
             this.thisday = thisday;
             this.campusid = campusid;
+            this.kioskmode = kioskmode;
             var i = (from p in DbUtil.Db.People
                      where p.PeopleId == id
                      select new
@@ -41,6 +43,11 @@ namespace CmsWeb.Models
 
             this.noagecheck = noagecheck;
         }
+        private class OrgHourInfo
+        {
+            public Organization o { get; set; }
+            public DateTime Hour { get; set; }
+        }
         public override void ExecuteResult(ControllerContext context)
         {
             if (!peopleid.HasValue)
@@ -53,32 +60,42 @@ namespace CmsWeb.Models
                 w.WriteStartElement("Results");
                 w.WriteAttributeString("pid", peopleid.ToString());
                 w.WriteAttributeString("fid", familyid.ToString());
-                //if (kioskmode == true)
-                //    q = from o in q
-                //        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                //        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
-                //        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
-                //        where grade <= o.GradeAgeEnd || o.GradeAgeEnd == null || noagecheck
-                //        where grade >= o.GradeAgeStart || o.GradeAgeStart == null || noagecheck
-                //        where o.AllowKioskRegister == true
-                //        where (o.ClassFilled ?? false) == false
-                //        where o.CampusId == campusid || campusid == 0
-                //        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
-                //        orderby bdaystart, o.OrganizationName
-                //        select o;
-                //else
-                var q = from o in DbUtil.Db.Organizations
-                    let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday)
-                    let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                    where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
-                    where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
-                    where o.CanSelfCheckin == true
-                    where (o.ClassFilled ?? false) == false
-                    where o.CampusId == campusid || campusid == 0
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
-                    orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
-                    from meeting in meetingHours
-                    select new { o, Hour = meeting.Hour.Value };
+                IEnumerable<OrgHourInfo> q;
+                if (kioskmode == true)
+                {
+                    q = from o in DbUtil.Db.Organizations
+                        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
+                        let tm = o.SchedTime ?? DateTime.Today
+                        //let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, (int)DateTime.Now.DayOfWeek)
+                        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
+                        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
+                        where o.AllowKioskRegister == true
+                        where (o.ClassFilled ?? false) == false
+                        where o.CampusId == campusid || campusid == 0
+                        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                        orderby bdaystart, o.OrganizationName
+                        //from meeting in meetingHours
+                        select new OrgHourInfo 
+                        { 
+                            o = o, 
+                            Hour = DateTime.Today + tm.TimeOfDay 
+                        };
+                }
+                else
+                {
+                    q = from o in DbUtil.Db.Organizations
+                        let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday)
+                        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
+                        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
+                        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
+                        where o.CanSelfCheckin == true
+                        where (o.ClassFilled ?? false) == false
+                        where o.CampusId == campusid || campusid == 0
+                        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                        orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
+                        from meeting in meetingHours
+                        select new OrgHourInfo { o = o, Hour = meeting.Hour.Value };
+                }
 
                 var q2 = from i in q
                          select new
@@ -111,8 +128,12 @@ namespace CmsWeb.Models
                     var bdays = " [{0:M/d/yy}-{1:M/d/yy}]".Fmt(o.BirthDayStart, o.BirthDayEnd);
                     if (bdays == " [-]")
                         bdays = null;
-                    w.WriteAttributeString("display", "{0:hh:mm tt} {1}{2}{3}{4}"
-                            .Fmt(o.Hour, o.OrganizationName, leader, loc, bdays));
+                    if (kioskmode)
+                        w.WriteAttributeString("display", "{0}{1}{2}{3} ({4})"
+                                .Fmt(o.OrganizationName, leader, loc, bdays, o.MemberCount));
+                    else
+                        w.WriteAttributeString("display", "{0:hh:mm tt} {1}{2}{3}{4}"
+                                .Fmt(o.Hour, o.OrganizationName, leader, loc, bdays));
                     w.WriteAttributeString("nlabels", o.NumCheckInLabels.ToString());
                     w.WriteAttributeString("hour", o.Hour.ToString("M/d/yy h:mm tt"));
                     w.WriteEndElement();

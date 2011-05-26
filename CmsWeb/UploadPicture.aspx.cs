@@ -70,7 +70,7 @@ namespace CmsWeb
         protected override void OnError(EventArgs e)
         {
             var ex = Server.GetLastError();
-            Util.EndShowMessage(Response, ex.Message, "/Home", "click here");
+            Util.EndShowMessage(Response, ex.Message, "/", "click here");
             Server.ClearError();
         }
     }

@@ -1,0 +1,41 @@
+﻿@model CmsWeb.Models.SearchModel
+<input type="hidden" name="m.type" value="@Model.type" />
+<input type="hidden" name="m.typeid" value="@Model.typeid" />
+<input type="hidden" name="m.from" value="@Model.from" />
+<input type="hidden" name="m.dob" value="@Model.dob" />
+<div class="roundbox">
+<table class="searchenter" width="100%" cellspacing="5">
+    <tr>
+        <td nowrap="nowrap"><b>Search for Family</b></td>
+        <td align="right" valign="top">
+            <a class="helplink bt" target="_blank" href='@Model.HelpLinkWithType("SearchFamily")'>help</a></td>
+    </tr>
+    <tr>
+        <td align="right"><label for="name">Last Name</label></td>
+        <td width="100%"><input id="name" type="text" name="m.name" value="@Model.name" /></td>
+    </tr>
+    <tr>
+        <td align="right"><label for="phone">Communication</label></td>
+        <td><input id="phone" type="text" name="m.phone" value="@Model.phone" /></td>
+    </tr>
+    <tr>
+        <td align="right"><label for="address">Address</label></td>
+        <td><input id="address" type="text" name="m.address" value="@Model.address" /></td>
+    </tr>
+    <tr><td colspan="2" align="right">
+    <a href="/SearchAdd/ResultsFamily/" class="bt formlink default">Search</a>
+    <a href="/SearchAdd/SearchFamilyCancel/" class="bt formlink" title="back to person search">Go back</a>
+    <a href="#" class="clear bt">Clear</a></td>
+    </tr>
+</table>
+</div>
+<div class="floatclear"></div>
+@{ 
+    int n = 0;
+    foreach (var p in Model.List)
+    {
+        p.index = n++;
+        @Html.Partial("HiddenPerson", p)
+    }
+}
+

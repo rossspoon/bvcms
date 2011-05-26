@@ -68,6 +68,7 @@ namespace CmsCheckin
             Settings1.Default.AskEmFriend = AskEmFriend.Checked;
             Settings1.Default.AskGrade = AskGrade.Checked;
             Settings1.Default.KioskName = KioskName.Text;
+            Settings1.Default.KioskMode = KioskMode.Checked;
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
             Settings1.Default.LeadHours = LeadHours.Text.ToInt();
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
@@ -116,7 +117,7 @@ namespace CmsCheckin
             AskChurch.Checked = Settings1.Default.AskChurch;
             AskChurchName.Checked = Settings1.Default.AskChurchName;
             KioskName.Text = Settings1.Default.KioskName;
-
+            KioskMode.Checked = Settings1.Default.KioskMode;
         }
     }
     class DayOfWeek

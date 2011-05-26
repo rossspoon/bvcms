@@ -121,6 +121,9 @@
     <OutputPath>bin\x86\CMS2Production\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SgmlReaderDll">
+      <HintPath>..\CmsWeb\Binaries\SgmlReaderDll.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -161,6 +164,8 @@
     <Compile Include="Generated\EmailResponse.cs" />
     <Compile Include="Generated\EmailToText.cs" />
     <Compile Include="Generated\Functions\GetTodaysMeetingHour.cs" />
+    <Compile Include="Generated\Functions\GetTodaysMeetingHours2.cs" />
+    <Compile Include="Generated\PeopleQueryBit.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />

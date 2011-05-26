@@ -11,6 +11,7 @@ using LumenWorks.Framework.IO.Csv;
 using System.IO;
 using CmsWeb.Models;
 using CMSPresenter;
+using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -46,6 +47,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                         var toid = csv[1].ToInt();
                         var Db = new CMSDataContext(Util.GetConnectionString(host));
                         var p = Db.LoadPersonById(fromid);
+
                         if (p == null)
                         {
                             sb.AppendFormat("fromid {0} not found<br/>\n", fromid);
@@ -312,7 +314,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                     }
                 DbUtil.Db.SubmitChanges();
             }
-            return Redirect("/Home");
+            return Redirect("/");
         }
         Dictionary<string, int> names;
         StringBuilder psb;
@@ -324,7 +326,10 @@ namespace CmsWeb.Areas.Manage.Controllers
                 ViewData["text"] = "";
                 return View();
             }
-            var list = text.Split('\n').Select(li => li.Split('\t'));
+
+            var csv = new CsvReader(new StringReader(text), false, '\t');
+            var list = csv.ToList();
+
             var list0 = list.First().ToList();
             names = list0.ToDictionary(i => i.TrimEnd(),
                 i => list0.FindIndex(s => s == i));
@@ -356,7 +361,31 @@ namespace CmsWeb.Areas.Manage.Controllers
                     group li by li[names["FamilyId"]] into fam
                     select fam;
 
-            var standardnames = new List<string> { "FamilyId", "Title", "First", "Last", "GoesBy", "AltName", "Gender", "Married", "Address", "Address2", "City", "State", "Zip", "Position", "Birthday", "CellPhone", "HomePhone", "WorkPhone", "Email", "Email2", };
+            var standardnames = new List<string> 
+            { 
+                "FamilyId", 
+                "Title", 
+                "First", 
+                "Last", 
+                "GoesBy", 
+                "AltName", 
+                "Gender", 
+                "Married", 
+                "Address", 
+                "Address2", 
+                "City", 
+                "State", 
+                "Zip", 
+                "Position", 
+                "Birthday", 
+                "CellPhone", 
+                "HomePhone", 
+                "WorkPhone", 
+                "Email", 
+                "Email2", 
+                "Suffix",
+                "Middle",
+            };
 
             foreach (var fam in q)
             {
@@ -396,6 +425,8 @@ namespace CmsWeb.Areas.Manage.Controllers
                         UpdateField(p, a, "EmailAddress2", "Email2");
                         UpdateField(p, a, "DOB", "Birthday");
                         UpdateField(p, a, "AltName", "AltName");
+                        UpdateField(p, a, "SuffixCode", "Suffix");
+                        UpdateField(p, a, "MiddleName", "Middle");
 
                         UpdateField(p, a, "CellPhone", "CellPhone", GetDigits(a, "CellPhone"));
                         UpdateField(p, a, "WorkPhone", "WorkPhone", GetDigits(a, "WorkPhone"));
@@ -442,18 +473,24 @@ namespace CmsWeb.Areas.Manage.Controllers
                             DbUtil.Db.Families.InsertOnSubmit(f);
                             DbUtil.Db.SubmitChanges();
                         }
-                        
+
                         string goesby = null;
                         if (names.ContainsKey("GoesBy"))
                             goesby = a[names["GoesBy"]];
-                        p = Person.Add(DbUtil.Db, false, f, 10, null, 
-                            a[names["First"]], 
-                            goesby, 
-                            a[names["Last"]], 
+                        p = Person.Add(DbUtil.Db, false, f, 10, null,
+                            a[names["First"]],
+                            goesby,
+                            a[names["Last"]],
                             dob.FormatDate(),
                             0, 0, 0, null);
                         if (names.ContainsKey("AltName"))
                             p.AltName = a[names["AltName"]];
+
+                        if (names.ContainsKey("Suffix"))
+                            p.SuffixCode = a[names["Suffix"]];
+                        if (names.ContainsKey("Middle"))
+                            p.MiddleName = a[names["Middle"]];
+
                         if (names.ContainsKey("CellPhone"))
                             p.CellPhone = a[names["CellPhone"]].GetDigits();
                         if (names.ContainsKey("WorkPhone"))
@@ -479,18 +516,13 @@ namespace CmsWeb.Areas.Manage.Controllers
                              select name;
                     var now = DateTime.Now;
                     foreach (var name in nq)
-                        p.PeopleExtras.Add(new PeopleExtra
-                        {
-                            Field = name,
-                            StrValue = a[names[name]].Trim(),
-                            TransactionTime = now
-                        });
+                        p.SetExtra(name, a[names[name]].Trim());
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Redirect("/Home");
+            return Redirect("/");
         }
-        void UpdateField(Family f, string[] a, string prop, string s)
+        private void UpdateField(Family f, string[] a, string prop, string s)
         {
             if (names.ContainsKey(s))
                 if (a[names[s]].HasValue())
@@ -508,7 +540,6 @@ namespace CmsWeb.Areas.Manage.Controllers
                 if (a[names[s]].HasValue())
                     p.UpdateValue(psb, prop, value);
         }
-        
         string GetDigits(string[] a, string s)
         {
             if (names.ContainsKey(s))
@@ -707,7 +738,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                     }
                 DbUtil.Db.SubmitChanges();
             }
-            return Redirect("/Home");
+            return Redirect("/");
         }
         public ActionResult UpdateFields()
         {
@@ -789,6 +820,47 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(new UpdateFieldsModel().TitleItems());
         }
 
+        [AsyncTimeout(600000)]
+        public void UpdateQueryBitsAsync()
+        {
+            AsyncManager.OutstandingOperations.Increment();
+            string host = Util.Host;
+            var uid = Util.UserId;
+            ThreadPool.QueueUserWorkItem((e) =>
+            {
+                var Db = new CMSDataContext(Util.GetConnectionString(host));
+                var u = Db.Users.SingleOrDefault(uu => uu.UserId == uid);
+                Db.CurrentUser = u;
+                Db.DeleteQueryBitTags();
+                foreach (var a in QueryBitsFlags(Db))
+                {
+                    var t = Db.FetchOrCreateSystemTag(a[0]);
+                    Db.TagAll(Db.PeopleQuery(a[0] + ":" + a[1]), t);
+                    Db.SubmitChanges();
+                }
+                AsyncManager.OutstandingOperations.Decrement();
+            });
+        }
+        public static IEnumerable<string[]> QueryBitsFlags(CMSDataContext Db)
+        {
+            var q = from c in Db.QueryBuilderClauses
+                    where c.GroupId == null && c.Field == "Group"
+                    where c.Description.StartsWith("F") && c.Description.Contains(":")
+                    select c.Description;
+
+            const string FindPrefix = @"^F\d+:.*";
+            var re = new Regex(FindPrefix, RegexOptions.Singleline | RegexOptions.Multiline);
+            var q2 = from s in q.ToList()
+                     where re.Match(s).Success
+                     let a = s.SplitStr(":", 2)
+                     select new string[] { a[0], a[1] };
+            return q2;
+        }
+        public ActionResult UpdateQueryBitsCompleted()
+        {
+            return Redirect("/");
+        }
+
         public ActionResult DoVisits()
         {
             var q = from p in DbUtil.Db.People
@@ -810,6 +882,84 @@ namespace CmsWeb.Areas.Manage.Controllers
             DbUtil.Db.UpdateMeetingCounters(4272907);
 
             return Content("done");
+        }
+        public class FindInfo
+        {
+            public int? PeopleId { get; set; }
+            public int Found { get; set; }
+            public string First { get; set; }
+            public string Last { get; set; }
+            public string Email { get; set; }
+            public string CellPhone { get; set; }
+            public string HomePhone { get; set; }
+            public DateTime? Birthday { get; set; }
+        }
+        [HttpGet]
+        public ActionResult FindTagPeople()
+        {
+            return View("FindTagPeople0");
+        }
+        [HttpPost]
+        public ActionResult FindTagPeople(string text, string tagname)
+        {
+            var csv = new CsvReader(new StringReader(text), false, '\t').ToList();
+
+            var line0 = csv.First().ToList();
+            names = line0.ToDictionary(i => i.TrimEnd(),
+                i => line0.FindIndex(s => s == i));
+
+            var list = new List<FindInfo>();
+            foreach (var a in csv)
+            {
+                var row = new FindInfo();
+                if (names.ContainsKey("First"))
+                    row.First = a[names["First"]];
+                if (names.ContainsKey("Last"))
+                    row.Last = a[names["Last"]];
+                DateTime dt;
+                if (names.ContainsKey("Birthday"))
+                    if (DateTime.TryParse(a[names["Birthday"]], out dt))
+                        row.Birthday = dt;
+                if (names.ContainsKey("Email"))
+                    row.Email = a[names["Email"]].Trim();
+                if (names.ContainsKey("CellPhone"))
+                    row.CellPhone = a[names["CellPhone"]].GetDigits();
+                if (names.ContainsKey("HomePhone"))
+                    row.HomePhone = a[names["HomePhone"]].GetDigits();
+                var pids = DbUtil.Db.FindPerson3(row.First, row.Last, row.Birthday, row.Email, row.CellPhone, row.HomePhone, null);
+                row.Found = pids.Count();
+                if (row.Found == 1)
+                    row.PeopleId = pids.Single().PeopleId.Value;
+                list.Add(row);
+                if (row.PeopleId.HasValue)
+                    Person.Tag(row.PeopleId.Value, tagname, DbUtil.Db.CurrentPeopleId, DbUtil.TagTypeId_Personal);
+            }
+            return View(list);
+        }
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult TagPeopleIds()
+        {
+            return View();
+        }
+        public ActionResult TagUploadPeopleIds(string name, HttpPostedFileBase file, string text)
+        {
+            string s;
+            if (file != null)
+            {
+                byte[] buffer = new byte[file.ContentLength];
+                file.InputStream.Read(buffer, 0, file.ContentLength);
+                var enc = new System.Text.ASCIIEncoding();
+                s = enc.GetString(buffer);
+            }
+            else
+                s = text;
+
+            var q = from line in s.Split('\n')
+                    select line.ToInt();
+            foreach (var pid in q)
+                Person.Tag(pid, name, DbUtil.Db.CurrentUser.PeopleId, (int)DbUtil.TagTypeId_Personal);
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/Tags?tag=" + name);
         }
     }
 }

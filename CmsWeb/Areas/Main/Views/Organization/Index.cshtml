@@ -19,45 +19,36 @@
     @{ CmsData.Organization o = Model.org; }
     @Html.Hidden("refreshed", "no")
     @Html.Hidden("OrganizationId")
-    <div class="PersonHead">
-        @o.OrganizationName,
-        @o.LeaderName
-    </div>
+<div class="roundbox floatleft">
+<h2>@o.OrganizationName@(o.LeaderId.HasValue? ",":"") @o.LeaderName</h2>
 
-<table>
-<tr>
-    <td valign="top">
-    <form action="/Organization/OrgInfoUpdate/@Model.OrganizationId" class="DisplayEdit" method="post">
-         @Html.Partial("OrgInfo", Model) 
-    </form>
-    </td>
+<form action="/Organization/OrgInfoUpdate/@Model.OrganizationId" class="DisplayEdit" method="post">
+    @Html.Partial("OrgInfo", Model) 
+</form>
+</div>
+<div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
+<div><a href="#">Other Management</a></div>
+<div class="sublinks">
 @if (User.IsInRole("ManageGroups"))
 { 
-    <td>
     <a href="/OrgGroups/Index/@Model.OrganizationId">Group Member Management</a>
-    </td>
 } 
-</tr>
-</table>
-
-<div style="margin-bottom: 20px">
-@if (User.IsInRole("Admin"))
-{ 
-<a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">
-            <img border="0" src="/images/delete.gif" align="middle" /></a> @:|
-} 
-        <a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank">Recent Attendance Report</a> |
-        <a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId">Attendance Percentages</a> | 
-        <a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId">Volunteer Calendar</a>
+    <a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank">Recent Attendance Report</a>
+    <a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId">Attendance Percentages</a>
+    <a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId">Volunteer Calendar</a>
 @if (User.IsInRole("Edit"))
 { 
-        @:| <a class="CreateAndGo" href="/Organization/Clone/@o.OrganizationId" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>
+    <a class="CreateAndGo" href="/Organization/Clone/@o.OrganizationId" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>
 }
 @if (User.IsInRole("Admin"))
 { 
-        @:| <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
-}
-    </div>
+    <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
+    <a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">Delete Organization</a>
+} 
+</div>
+<div style="border-bottom: 4px solid #ddd"></div>
+</div>
+<div class="floatclear"></div>
     <div id="main-tab" class="ui-tabs">
         <ul class="ui-tabs-nav">
             <li><a href="#Members-tab"><span>Members</span></a></li>
@@ -146,3 +137,6 @@
         </select>
         </form>
     </div>
+<div id="usersDialog">
+<iframe style="width:99%;height:99%"></iframe>
+</div>

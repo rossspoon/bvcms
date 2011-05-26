@@ -10,7 +10,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <a href="/Home">Home</a>
+        <a href="/">Home</a>
         <br />
         <asp:FileUpload ID="FileUpload1" runat="server" /><br />
         <br />

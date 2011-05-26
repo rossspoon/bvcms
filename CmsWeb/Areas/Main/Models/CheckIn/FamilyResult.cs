@@ -13,14 +13,16 @@ namespace CmsWeb.Models
     {
         int fid, campus, thisday, page;
         bool waslocked;
+        bool kioskmode;
 
-        public FamilyResult(int fid, int campus, int thisday, int page, bool waslocked)
+        public FamilyResult(int fid, int campus, int thisday, int page, bool waslocked, bool kioskmode)
         {
             this.fid = fid;
             this.campus = campus;
             this.thisday = thisday;
             this.page = page;
             this.waslocked = waslocked;
+            this.kioskmode = kioskmode;
             if (fid > 0)
             {
                 var db = new CMSDataContext(Util.ConnectionString);
@@ -47,7 +49,10 @@ namespace CmsWeb.Models
                 w.WriteStartElement("Attendees");
                 var m = new CheckInModel();
                 List<Attendee> q;
-                q = m.FamilyMembers(fid, campus, thisday);
+                if (kioskmode == true)
+                    q = m.FamilyMembersKiosk(fid, campus, thisday);
+                else
+                    q = m.FamilyMembers(fid, campus, thisday);
                 w.WriteAttributeString("familyid", fid.ToString());
                 w.WriteAttributeString("waslocked", waslocked.ToString());
 

@@ -19,6 +19,7 @@
                     window.location = "/Setup/Ministry/";
                 });
         });
+        $(".bt").button();
     });
 </script>
 <h2>Ministries</h2>
@@ -45,5 +46,5 @@
 </table>
 @using (Html.BeginForm("Create", "Ministry"))
 { 
-<p><input type="submit" value="Create" /></p>
+<p><input type="submit" class="bt" value="Create" /></p>
 } 

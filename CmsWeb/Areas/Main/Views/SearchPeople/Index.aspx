@@ -8,7 +8,7 @@
 <table class="modalPopup">
     <tr style="font-size: 90%">
         <td colspan="2">
-            <a id="ClearForm" href="#">clear</a>
+            <a id="ClearForm" href="#" class="bt">Clear</a>
         </td>
         <th>Campus:</th>
         <td colspan="2" nowrap="nowrap">

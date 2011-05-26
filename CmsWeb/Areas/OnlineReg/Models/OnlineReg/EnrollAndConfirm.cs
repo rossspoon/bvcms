@@ -175,13 +175,10 @@ namespace CmsWeb.Models
 
             var subject = Util.PickFirst(EmailSubject, "no subject");
             var message = Util.PickFirst(EmailMessage, "no message");
-            message = message.Replace("{first}", p0.PreferredName);
-            message = message.Replace("{name}", p0.Name);
+
+            MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
+
             message = message.Replace("{tickets}", List[0].ntickets.ToString());
-            message = message.Replace("{division}", DivisionName);
-            message = message.Replace("{org}", OrganizationName);
-            message = message.Replace("{location}", Location);
-            message = message.Replace("{cmshost}", DbUtil.Db.CmsHost);
             message = message.Replace("{details}", details.ToString());
             message = message.Replace("{paid}", amtpaid.ToString("c"));
             message = message.Replace("{participants}", details.ToString());
@@ -226,11 +223,20 @@ namespace CmsWeb.Models
             foreach (var p in List)
             {
                 Db.Email(p.person.FromEmail, 
-                    Db.StaffPeopleForOrg(p.org.OrganizationId),
-                    "{0}".Fmt(Header),
+                    Db.StaffPeopleForOrg(p.org.OrganizationId), Header,
 @"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
 <pre>{4}</pre>".Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
             }
+        }
+        public static string MessageReplacements(Person p, string DivisionName, string OrganizationName, string Location, string message)
+        {
+             message = message.Replace("{first}", p.PreferredName);
+             message = message.Replace("{name}", p.Name);
+             message = message.Replace("{division}", DivisionName);
+             message = message.Replace("{org}", OrganizationName);
+             message = message.Replace("{location}", Location);
+             message = message.Replace("{cmshost}", DbUtil.Db.CmsHost);
+            return message;
         }
         public void UseCoupon(string TransactionID)
         {

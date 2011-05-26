@@ -249,10 +249,11 @@ namespace CmsWeb.Models
             var len = q.SingleOrDefault();
             return len > 0;
         }
-        public List<Attendee> FamilyMembersKiosk(int id, int campus)
+        public List<Attendee> FamilyMembersKiosk(int id, int campus, int thisday)
         {
             DbUtil.Db.SetNoLock();
             var now = Util.Now;
+            var day = now.Date.AddDays(-(int)now.DayOfWeek).AddDays(thisday);
             // get org members first
             var members =
                 from om in DbUtil.Db.OrganizationMembers
@@ -261,7 +262,14 @@ namespace CmsWeb.Models
                 where om.Person.FamilyId == id
                 where (om.Pending ?? false) == false
                 where om.Person.DeceasedDate == null
+                let meetingHours = DbUtil.Db.GetTodaysMeetingHours2(om.OrganizationId, thisday, true)
                 let recreg = om.Person.RecRegs.FirstOrDefault()
+                from meeting in meetingHours
+                let CheckedIn = DbUtil.Db.Attends.SingleOrDefault(aa =>
+                    aa.OrganizationId == om.OrganizationId
+                    && aa.PeopleId == om.PeopleId
+                    && aa.MeetingDate == meeting.Hour
+                    && aa.AttendanceFlag == true) != null
                 select new Attendee
                 {
                     Id = om.PeopleId,
@@ -283,8 +291,8 @@ namespace CmsWeb.Models
                         (int)CmsData.OrganizationMember.MemberTypeCode.Member ?
                             (om.Organization.NumCheckInLabels ?? 1)
                             : (om.Organization.NumWorkerCheckInLabels ?? 0),
-                    CheckedIn = true,
-
+                    CheckedIn = CheckedIn,
+                    Hour = meeting.Hour,
                     goesby = om.Person.NickName,
                     email = om.Person.EmailAddress,
                     addr = om.Person.Family.AddressLineOne,
@@ -307,12 +315,12 @@ namespace CmsWeb.Models
             var list = members.ToList();
 
             // now get rest of family
-            const string PleaseVisit = "No class assigned yet";
+            const string PleaseVisit = "Choose a Class";
             var otherfamily =
                 from p in DbUtil.Db.People
                 where p.FamilyId == id
                 where p.DeceasedDate == null
-                where !list.Select(a => a.Id).Contains(p.PeopleId)
+                //where !list.Select(a => a.Id).Contains(p.PeopleId)
                 let recreg = p.RecRegs.FirstOrDefault()
                 select new Attendee
                 {

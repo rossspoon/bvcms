@@ -34,10 +34,10 @@ Generics
 .popupMenu
 {
 	position: absolute;
-    display:none;
+	display:none;
 	background-color: white;
 	border: 1px outset white;
-	padding: 2px;
+	padding: 5px;
 	z-index: 2004; /*	opacity:.9; 	filter: alpha(opacity=90); */
 }
 .modalBackground
@@ -57,7 +57,7 @@ Generics
 }
 .SelectedRow
 {
-	background-color: #d0ddee;
+	background-color: #DDD;
 }
 
 table.Design2 th {

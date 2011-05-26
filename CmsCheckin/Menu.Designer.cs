@@ -128,7 +128,7 @@
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(179, 45);
             this.Print.TabIndex = 17;
-            this.Print.Text = "Test Label";
+            this.Print.Text = "Print Label";
             this.Print.UseVisualStyleBackColor = false;
             this.Print.Click += new System.EventHandler(this.Print_Click);
             // 

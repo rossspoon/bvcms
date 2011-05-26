@@ -1,0 +1,38 @@
+﻿using System.Web.Mvc;
+
+namespace CmsWeb.Areas.Dialog
+{
+    public class DialogAreaRegistration : AreaRegistration
+    {
+        public override string AreaName
+        {
+            get
+            {
+                return "Dialog";
+            }
+        }
+
+        public override void RegisterArea(AreaRegistrationContext context)
+        {
+            AddRoute(context, "SearchAdd");
+            AddRoute(context, "SearchUsers");
+            AddRoute(context, "OrgMemberDialog");
+            AddRoute(context, "OrgMembersDialog");
+            context.MapRoute(
+                "Dialog_default",
+                "Dialog/{controller}/{action}/{id}",
+                new { action = "Index", id = UrlParameter.Optional }
+            );
+        }
+        private void AddRoute(AreaRegistrationContext context, string controller)
+        {
+            context.MapRoute(controller, controller + "/{action}/{id}",
+                new { controller = controller, action = "Index", id = "" });
+        }
+        private static void AddRoute(AreaRegistrationContext context, string name, string controller, string path, string action)
+        {
+            context.MapRoute(name, path,
+                new { controller = controller, action = action, id = "" });
+        }
+    }
+}

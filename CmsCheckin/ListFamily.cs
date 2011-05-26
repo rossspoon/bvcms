@@ -416,7 +416,7 @@ namespace CmsCheckin
                 allergies = c.allergies,
                 pid = c.cinfo.pid,
                 mv = c.cinfo.mv,
-                n = 1,
+                n = c.NumLabels,
                 first = c.first,
                 last = c.last,
                 location = c.location,
@@ -426,7 +426,7 @@ namespace CmsCheckin
                 transport = c.transport,
                 requiressecuritylabel = c.RequiresSecurityLabel,
             };
-            CmsCheckin.Print.Label(li, li.n, Program.SecurityCode);
+            CmsCheckin.Print.LabelKiosk(li);
             RemoveMenu();
         }
 
@@ -506,7 +506,16 @@ namespace CmsCheckin
             menu.EditRecord += EditRecord_Click;
             menu.PrintLabel += PrintLabel_Click;
             menu.AddFamily += AddToFamily_Click;
-            menu.JoinClass += new EventHandler(menu_JoinClass);
+            if (c.cinfo.oid == 0)
+            {
+                menu.JoinClass += new EventHandler(menu_JoinClass);
+                menu.Join.Text = "Join Class";
+            }
+            else
+            {
+                menu.JoinClass += new EventHandler(menu_UnJoinClass);
+                menu.Join.Text = "Drop Class";
+            }
             menu.CancelMenu += new EventHandler(CancelMenu_Click);
             menu.Show();
             menu.BringToFront();
@@ -515,13 +524,21 @@ namespace CmsCheckin
         void menu_JoinClass(object sender, EventArgs e)
         {
             var c = list[(int)menu.Tag];
-            var org = this.Controls[this.Controls.IndexOfKey("org" + menu.Tag.ToString())] as Label;
-            org.ForeColor = Color.Blue;
             SaveClasses();
             RemoveMenu();
             this.Swap(Program.classes);
             Program.classes.JoiningNotAttending = true;
             Program.classes.ShowResults(c.cinfo.pid);
+        }
+        void menu_UnJoinClass(object sender, EventArgs e)
+        {
+            var c = list[(int)menu.Tag];
+            var org = this.Controls[this.Controls.IndexOfKey("org" + menu.Tag.ToString())] as Label;
+            SaveClasses();
+
+            Util.JoinUnJoin(c.cinfo, false);
+            RemoveMenu();
+            Program.family.ShowFamily(Program.FamilyId);
         }
 
         void CancelMenu_Click(object sender, EventArgs e)
@@ -614,12 +631,13 @@ namespace CmsCheckin
         {
             Util.UnLockFamily();
             PrintLabels();
-            if (LabelsPrinted > 0)
-            {
-                if (RequiresSecurityLabel)
-                    LabelsPrinted += CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
-                CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
-            }
+            if (Program.KioskMode == false)
+                if (LabelsPrinted > 0)
+                {
+                    if (RequiresSecurityLabel)
+                        LabelsPrinted += CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
+                    CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
+                }
         }
         private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -676,7 +694,6 @@ namespace CmsCheckin
             }
             foreach (var li in q)
                 LabelsPrinted += CmsCheckin.Print.LocationLabel(li);
-
             RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
         }
         private void ClearControls()

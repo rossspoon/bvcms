@@ -1,5 +1,4 @@
 ﻿@model CmsWeb.Models.PersonPage.GrowthInfo
-<a class="displayedit" href="/Person/GrowthDisplay/@Model.PeopleId">cancel</a>
 <table class="Design2">
     <tr>
         <th>How did you hear about our Church?</th>
@@ -41,6 +40,9 @@
         </td>
     </tr>
 <tr><td></td></tr>
-     <tr><td></td><td><a href="/Person/GrowthUpdate/@Model.PeopleId" class="submitbutton">Save Changes</a></td></tr>
+     <tr><td colspan="2" align="right">
+        <a href="/Person/GrowthUpdate/@Model.PeopleId" class="submitbutton">Save Changes</a>
+        <a class="displayedit" href="/Person/GrowthDisplay/@Model.PeopleId">Cancel</a>
+     </td></tr>
 </table>
 

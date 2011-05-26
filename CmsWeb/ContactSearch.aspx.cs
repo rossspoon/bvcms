@@ -30,7 +30,7 @@ namespace CmsWeb
         protected void ContactData_Selected(object sender, ObjectDataSourceStatusEventArgs e)
         {
             if (e.ReturnValue is int)
-                GridCount.Text = e.ReturnValue.ToString();
+                GridCount.Text = e.ReturnValue.ToInt().ToString("N0");
         }
 
         protected void SearchButton_Click(object sender, EventArgs e)

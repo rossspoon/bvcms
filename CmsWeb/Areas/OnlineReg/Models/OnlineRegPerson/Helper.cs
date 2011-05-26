@@ -184,21 +184,31 @@ namespace CmsWeb.Models
              * we need to notify them */
             if (person.EmailAddress.HasValue() || person.EmailAddress2.HasValue())
             {
-                string subj = "{0}, different email address than one on record".Fmt(orgname);
-                string msg = @"Hi {0},
-<p>You registered for {1} using a different email address than the one we have on record.
-It is important that you call the church <strong>{2}</strong> to update our records
-so that you will receive future important notices regarding this registration.</p>"
-                    .Fmt(person.Name, orgname, phone.FmtFone());
-
+                var c = DbUtil.Content("DiffEmailMessage");
+                if (c == null)
+                {
+                    c = new Content();
+                    c.Body = @"Hi {name},
+<p>You registered for {orgname} using a different email address than the one we have on record.
+It is important that you call the church <strong>{phone}</strong> to update our records
+so that you will receive future important notices regarding this registration.</p>";
+                    c.Title = "{orgname}, different email address than one on record".Fmt(orgname);
+                }
+                var msg = c.Body.Replace("{name}", person.Name);
+                msg = msg.Replace("{orgname}", orgname);
+                msg = msg.Replace("{orgphone}", phone.FmtFone());
+                var subj = c.Title.Replace("{orgname}", orgname);
                 DbUtil.Db.Email(fromemail, 
                     person, Util.ToMailAddressList(regemail), 
                     subj, msg, false);
             }
             else
             {
-                string subj = "{0}, no email on your record".Fmt(orgname);
-                string msg = @"Hi {0},
+                var c = DbUtil.Content("NoEmailMessage");
+                if (c == null)
+                {
+                    c = new Content();
+                    c.Body = @"Hi {0},
 <p>You registered for {1}, and we found your record, 
 but there was no email address on your existing record in our database.
 If you would like for us to update your record with this email address or another,
@@ -207,9 +217,13 @@ It is important that we have your email address so that
 you will receive future important notices regarding this registration.
 But we won't add that to your record without your permission.
 
-Thank you</p>"
-                    .Fmt(person.Name, orgname, phone.FmtFone());
-
+Thank you</p>";
+                    c.Title = "{orgname}, no email on your record";
+                }
+                var msg = c.Body.Replace("{name}", person.Name);
+                msg = msg.Replace("{orgname}", orgname);
+                msg = msg.Replace("{orgphone}", phone.FmtFone());
+                var subj = c.Title.Replace("{orgname}", orgname);
                 DbUtil.Db.Email(fromemail, 
                     person, Util.ToMailAddressList(regemail), 
                     subj, msg, false);

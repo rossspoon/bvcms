@@ -2,6 +2,7 @@
 @using CmsWeb
 @using UtilityExtensions
 @model CmsWeb.Models.TaskDetail
+@{var link=Server.UrlEncode(DbUtil.Db.CmsHost + "/Task/List/" + Model.Id + "#detail#select"); }
 <td colspan="7"><a name="detail"></a>
     <table class="Design2" style="border: 3px solid black">
     <tr><td align="right" colspan="2"><a href="#" onclick="Deselect();return false">
@@ -23,7 +24,7 @@
         <tr>
             <th>Owner</th>
             <td>
-                <a href="mailto:@Model.OwnerEmail?subject=@Model.Description&body=@Server.UrlEncode(DbUtil.Db.CmsHost + "/Task/List/" + Model.Id + "#detail#select")>@Model.Owner</a>
+                <a href="mailto:@Model.OwnerEmail?subject=@Model.Description&body=@link">@Model.Owner</a>
 @if (Model.IsOwner)
 { 
                 <a id="changeowner" href="/SearchAdd/Index/@Model.Id?type=taskowner">(transfer)</a>

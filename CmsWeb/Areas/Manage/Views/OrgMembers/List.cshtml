@@ -1,8 +1,9 @@
 ﻿@model CmsWeb.Models.OrgMembersModel
 @Html.Hidden("Sort")
 @Html.Hidden("Dir")
-<div class="modalPopup">
-    <table>
+<div class="roundbox floatleft">
+<h2>Org Members Management</h2>
+    <table id="manage" cellspacing="5">
         <tr>
             <th>Program:</th>
             <td>@Html.DropDownList("ProgId", Model.Programs())</td>
@@ -16,18 +17,22 @@
             <td>@Html.DropDownList("TargetId", Model.Organizations2())</td>
         </tr>
         <tr>
+            <td>Grades:</td>
+            <td>@Html.TextBox("Grades")</td>
             <td></td>
-            <td colspan="3">
-                Grades: @Html.TextBox("Grades")&nbsp;&nbsp;&nbsp;
-                @Html.CheckBox("MembersOnly") Exclude Teachers&nbsp;&nbsp;&nbsp;
-                <input type="submit" id="move" name="move" value="Move" />
-                <a href="#" id="EmailNotices">Email Room Notices(@Model.MovedCount())</a>
+            <td>@Html.CheckBox("MembersOnly") Exclude Teachers</td>
+        </tr>
+        <tr><td colspan="4">&nbsp;</td></tr>
+        <tr>
+            <td colspan="2"><b>Count: @Model.Count()</b></td>
+            <td colspan="2">
+                <input type="submit" class="bt" id="move" name="move" value="Move" />
+                <a href="#" id="EmailNotices" class="bt">Email Room Notices(@Model.MovedCount())</a>
             </td>
         </tr>
     </table>
 </div>
-<br />
-Count: @Model.Count()
+<div class="floatclear"></div>
 <table class="grid">
 <thead>
 <tr>

@@ -249,9 +249,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="InfoClasses\SavedQueryInfo.cs" />
-    <Compile Include="OrganizationController.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="OrganizationSearchController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -259,21 +256,11 @@
     <Compile Include="InfoClasses\ContactorInfo.cs" />
     <Compile Include="InfoClasses\MemberTypeInfo.cs" />
     <Compile Include="InfoClasses\ToggleAttendanceReturn.cs" />
-    <Compile Include="PersonSearchController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PersonSearchDialogController.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="FamilyController.cs" />
-    <Compile Include="QueryController.cs" />
-    <Compile Include="TagController.cs" />
-    <Compile Include="InfoClasses\InvovementInfo.cs" />
     <Compile Include="InfoClasses\MailingInfo.cs" />
     <Compile Include="InfoClasses\ToggleTagReturn.cs" />
     <Compile Include="InfoClasses\TaggedPersonInfo.cs" />
     <Compile Include="ContactController.cs" />
-    <Compile Include="InvolvementController.cs" />
     <Compile Include="InfoClasses\ContactInfo.cs" />
     <Compile Include="InfoClasses\FamilyMember.cs" />
     <Compile Include="InfoClasses\ExcelInfo.cs" />
@@ -285,8 +272,8 @@
     <Compile Include="InfoClasses\OrganizationInfo.cs" />
     <Compile Include="InfoClasses\PastAttendeeInfo.cs" />
     <Compile Include="InfoClasses\PersonInfo.cs" />
-    <Compile Include="InfoClasses\PersonMemberInfo.cs" />
     <Compile Include="CodeValueController.cs" />
+    <Compile Include="QueryController.cs" />
     <Compile Include="RoleController.cs" />
     <Compile Include="UserController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

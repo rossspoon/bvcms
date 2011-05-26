@@ -26,13 +26,14 @@
 <script src="/Content/js/jquery.form.js" type="text/javascript"></script>
 <script src="/Content/js/jquery.form2.js" type="text/javascript"></script>
 <script type="text/javascript">
-    $(function() {
+    $(function () {
+        $(".bt").button();
         $('#PromotionId').change(RefreshPage);
         $('#ScheduleId').change(RefreshPage);
         $('#FilterUnassigned').click(RefreshPage);
         $('#NormalMembersOnly').click(RefreshPage);
         $('input.check').click(UpdateTotals);
-        $('#Promotions > thead a.sortable').click(function(ev) {
+        $('#Promotions > thead a.sortable').click(function (ev) {
             ev.preventDefault();
             var newsort = $(this).text();
             var oldsort = $("#Sort").val();
@@ -44,10 +45,10 @@
                 $("#Dir").val('asc');
             RefreshList();
         });
-        $(window).scroll(function() {
+        $(window).scroll(function () {
             $('#float_box').animate({ top: $(window).scrollTop() + "px" }, { queue: false, duration: 350 });
         });
-        $('#close_float').click(function() {
+        $('#close_float').click(function () {
             $('#float_box').animate({ top: "+=15px", opacity: 0 }, "slow");
         });
         var ttotal = $('.check').length;
@@ -125,7 +126,7 @@
    @Html.CheckBox("FilterUnassigned") Unassigned Only
    @Html.CheckBox("NormalMembersOnly") Exclude Teachers<br />
    Target Class: @Html.DropDownList("TargetClassId", Model.TargetClasses())
-   <input type="submit" name="submit" value="Assign to Class" />
+   <input type="submit" class="bt" name="submit" value="Assign to Class" />
 @Html.Hidden("Sort", Model.Sort)
 @Html.Hidden("Dir", Model.Dir)
 </div>

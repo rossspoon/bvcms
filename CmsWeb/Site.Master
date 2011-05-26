@@ -13,8 +13,8 @@
 </head>
 <body>
     <%= SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.4.4.js")
-        .Add("/Content/js/jquery-ui-1.8.9.custom.js")
+        .Add("/Content/js/jquery-1.5.2.js")
+        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
         .Add("/Content/js/jquery.bgiframe-2.1.2.js")
         .Add("/Content/js/hoverIntent.js")
         .Add("/Content/js/jquery-cookie.js")
@@ -30,7 +30,7 @@
                     e.preventDefault();
                     var s = $('#SearchText').val();
                     if (s != "")
-                        window.location = '/Search.aspx?name=' + escape(s);
+                        window.location = '/QuickSearch?name=' + escape(s);
                 }
                 return true;
             });
@@ -57,7 +57,7 @@
         <table cellpadding="0" cellspacing="0" style="width: 100%">
             <tr>
                 <td class="left">
-                    <a href="/Home">
+                    <a href="/">
                         <%=DbUtil.HeaderImage(@"<img src=""/Content/bvcms132x55.png"" width=""132"" height=""55"" />") %></a>
                 </td>
                 <td class="center">
@@ -68,25 +68,25 @@
                         <div id="welcome" class="dropdown left">
                             <div><a href="#">Welcome,
                                 <%=DbUtil.Db.CurrentUserPerson.PreferredName %>!
-                                <img src="/Content/Welcome.png" width="39" height="16"></a></div>
+                                <img src="/Content/Welcome.png" width="11" height="16"></a></div>
                             <div class="sublinks">
                                 <a href="/Account/LogOff/">Logout</a>
                                 <a href="/ChangePassword.aspx">Change Password</a>
-                                <% if(Page.User.IsInRole("Admin"))
-                                   { %>
+<% if(Page.User.IsInRole("Admin"))
+   { %>
                                 <a href="/Admin/Users.aspx">Manage Users</a>
                                 <a href="/Admin/Activity.aspx">Activity Log</a>
                                 <a href="/Admin/LastActivity.aspx">Last Activity</a>
                                 <a href="/Admin/UrgentMessage.aspx">Urgent Message</a>
-                                <% } %>
+<% } %>
                             </div>
                         </div>
-                        <% if (Page.User.IsInRole("Access"))
-                           { %>
-                        <strong>Active Tag:</strong> <a href="/MyTags.aspx">
+<% if (Page.User.IsInRole("Access"))
+   { %>
+                        <strong>Active Tag:</strong> <a id="activetag" href="/Tags">
                             <%=Util2.CurrentTagName%></a><br />
                         <input id="SearchText" type="text" />
-                        <% } %>
+<% } %>
                     </div>
                 </td>
             </tr>
@@ -100,25 +100,25 @@
             </tr>
         </table>
 
-        <% if(Page.User.IsInRole("Access"))
-           { %>
+<% if(Page.User.IsInRole("Access"))
+   { %>
         <table id="cmenu">
         <tr>
             <td class="dropdown">
-                <div><a href="/home">Home</a></div>
+                <div><a href="/">Home</a></div>
             </td>
             <td class="dropdown">
-                <div><a href="/Search.aspx">People</a></div>
+                <div><a href="/QuickSearch">People</a></div>
                 <div class="sublinks">
-                    <a href="/Search.aspx">Quick Search</a>
-                    <a href="/MyTags.aspx">Manage Tags</a>
+                    <a href="/QuickSearch">Quick Search</a>
+                    <a href="/Tags">Manage Tags</a>
                     <a href="/Task/List/">Tasks</a>
                     <a href="/ContactSearch.aspx">Contact Search</a>
-                    <% if(Util2.CurrentPeopleId != 0)
-                        { %>
+    <% if(Util2.CurrentPeopleId != 0)
+       { %>
                     <a href="/Person/Index/<%=Util2.CurrentPeopleId%>">
                         <%=Session["ActivePerson"] %></a>
-                    <% } %>
+    <% } %>
                 </div>
             </td>
             <td class="dropdown">
@@ -127,17 +127,19 @@
                     <a href="/OrgSearch">Search</a>
                     <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a>
                     <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a>
-                    <asp:PlaceHolder ID="edit1" runat="server">
-                    <% if (Page.User.IsInRole("Edit"))
-                        { %>
+    <% if (Page.User.IsInRole("Edit"))
+       { %>
                     <a href="/OrgMembers">Org Members Management</a>
-                    <% } %>
-                    </asp:PlaceHolder>
-                    <% if (((string)Session["ActiveOrganization"]).HasValue())
-                        { %>
+    <% }
+       if (Page.User.IsInRole("Coupon"))
+       { %>
+                    <a href="/Coupon/">Coupons</a>
+    <% }
+       if (((string)Session["ActiveOrganization"]).HasValue())
+       { %>
                     <a href="/Organization/Index/<%=Util2.CurrentOrgId%>">
                         <%=Session["ActiveOrganization"] %></a>
-                    <% } %> 
+    <% } %>
                 </div>
             </td>
             <td class="dropdown">
@@ -158,8 +160,8 @@
                     <a href="/SavedQueries.aspx">Saved Queries</a>
                 </div>
             </td>
-            <% if (Page.User.IsInRole("Finance"))
-                { %>
+    <% if (Page.User.IsInRole("Finance"))
+       { %>
             <td class="dropdown">
                 <div><a href="/Contributions/Bundles.aspx">Contributions</a></div>
                 <div class="sublinks">
@@ -169,8 +171,8 @@
                     <a href="/Reports/ContributionStatements" target="_blank">Statements (All)</a>
                     <a href="/Contributions/GLExtract.aspx">GL Extract</a>
                     <a href="/Contributions/Reports/TotalsByFund2.aspx" target="_blank">Totals by Fund</a>
-                    <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">Totals
-                        by Fund Age Range</a>
+                    <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">
+                        Totals by Fund Age Range</a>
                     <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">
                         Totals by Fund Age Range (pledges included)</a>
                     <a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">Totals by
@@ -182,9 +184,9 @@
                     <a href="/Contributions/Reports/PledgeReport.aspx" target="_blank">Pledge Report</a>
                 </div>
             </td>
-            <% }
-                if (Page.User.IsInRole("Admin"))
-                { %>
+    <% }
+       if (Page.User.IsInRole("Admin"))
+       { %>
             <td class="dropdown">
                 <div><a href="/Admin/Users.aspx">Admin</a></div>
                 <div class="sublinks">
@@ -196,31 +198,33 @@
                     <a href="/Manage/Transactions">Transactions</a>
                     <a href="/Manage/Emails">Emails</a>
                     <a href="/Setup/Lookup/">Lookups</a>
-                    <a href="/Batch/UpdateFields/">Update for a Tag</a>
                     <a href="/Admin/ToggleOrgMembersOnly.ashx">
                         <%=Util2.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On" %></a>
+                    <a href="/Batch/UpdateQueryBits">Update QueryBits</a>
+                    <a href="/Batch/FindTagPeople">Find Tag People</a>
+                    <a href="/Batch/TagPeopleIds">Tag PeopleIds</a>
                     <a href="/Admin/ClearCache.aspx">Clear Cache</a>
                 </div>
             </td>
-            <% } %>
+    <% } %>
             <td class="dropdown left">
                 <div><a href="<%=Util.HelpLink(Util.Helpfile) %>" target="_blank">Help</a></div>
                 <div class="sublinks">
                     <a href="<%=Util.HelpLink(Util.Helpfile) %>" target="_blank">Wiki Documentation</a>
-                    <% if (Page.User.IsInRole("Admin"))
-                        { %>
+    <% if (Page.User.IsInRole("Admin"))
+       { %>
                     <a href="http://bvcms.com/Page/Bug/">Bug Report</a>
-                    <% }
-                        if (Request.Url.Authority == "bvcms.com" || Request.Url.Authority == "bellevue.org")
-                        { %>
+    <% }
+       if (Request.Url.Authority == "bvcms.com" || Request.Url.Authority == "bellevue.org")
+       { %>
                     <a href="http://bvcms.com/Page/OnlineReg/" target="_blank">Online Registration Request
                         Form</a>
-                    <% } %>
+    <% } %>
                 </div>
             </td>
         </tr>
         </table>
-        <% } %>
+<% } %>
         <div style="clear: both; border-bottom: 4px solid #ddd"></div>
     </div>
 

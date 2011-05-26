@@ -9,39 +9,90 @@
         .Add("/Scripts/OrgSearch.js")
         .Render("/Content/OrgSearch_#.js")))
 
-    <h3>Organization Search</h3>
-    <form method="post">
-    <table>
+<form method="post">
+<div class="roundbox floatleft">
+
+  <h2>Organization Search</h2>
+  <table id="searchvalues" cellspacing="5">
+      <tr>
+        <td align="right">Name:</td>
+        <td>@Html.TextBox("Name", Model.Name, new { title = "OrganizationId, Location or part of Name (organization, leader, division)" })</td>
+        <td align="right">Campus:</td>
+        <td>@Html.DropDownList("CampusId", Model.CampusIds())</td>
+      </tr>
+      <tr>
+        <td align="right">Program:</td>
+        <td>@Html.DropDownList("ProgramId", Model.ProgramIds())</td>
+        <td align="right">Schedule:</td>
+        <td>@Html.DropDownList("ScheduleId", Model.ScheduleIds())</td>
+      </tr>
+      <tr>
+        <td align="right">Division:</td>
+        <td>@Html.DropDownList("DivisionId", Model.DivisionIds())</td>
+        <td align="right">Online Reg:</td>
+        <td>@Html.DropDownList("OnlineReg", Model.RegistrationTypeIds())</td>
+      </tr>
+      <tr>
+          <td valign="top" align="right">Status:</td>
+          <td valign="top">@Html.DropDownList("StatusId", Model.StatusIds())</td>
+          <td colspan="2" align="center">
+          <a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a>
+          <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a></td>
+      </tr>
+    </table>
+</div>
+@if (User.IsInRole("OrgTagger"))
+{ 
+<div style="margin-left:1%;float:left;">&nbsp;</div>
+<div class="roundbox floatleft">
+    <h2>Manage Divisions</h2>
+    <table id="managedivisions">
+      <tr>
+        <td>Target Program:<br />
+            @Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
+      </tr>
+      <tr>
+        <td><br />Target Divsion:<br />
+            @Html.DropDownList("TagDiv", Model.DivisionIds())</td>
+      </tr>
+    </table>
+</div>
+}
+<div class="floatclear"></div>
+<hr />
+<!--<div class="roundbox floatleft">
+<h2>Organization Search</h2>
+    <table id="searchvalues">
         <tr>
             <td>
-                <table class="modalPopup">
+                <table>
                     <tr>
                         <th>Name:</th>
-                        <td>@Html.TextBox("Name", Model.Name, new { title = "OrganizationId, Location or part of Name (organization, leader, division)" })</td>
+                        <td></td>
                         <th>Status:</th>
-                        <td>@Html.DropDownList("StatusId", Model.StatusIds())</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th>Program:</th>
-                        <td>@Html.DropDownList("ProgramId", Model.ProgramIds())</td>
+                        <td></td>
                         <th>Schedule:</th>
-                        <td>@Html.DropDownList("ScheduleId", Model.ScheduleIds())</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th>Division:</th>
                         <td colspan="3">
-                        @Html.DropDownList("DivisionId", Model.DivisionIds())
+                        
                         </td>
                     </tr>
                     <tr>
                         <th>Campus:</th>
-                        <td colspan="2">@Html.DropDownList("CampusId", Model.CampusIds())</td>
-                        <td align="right"><a href="/OrgSearch/Results?clear=true" id="clear">clear</a></td>
+                        <td colspan="2"></td>
+                        <td align="right"></td>
                     </tr>
                     <tr>
                         <th>Online Reg.:</th>
-                        <td colspan="2">@Html.DropDownList("OnlineReg", Model.RegistrationTypeIds())</td>
-                        <td align="right"><a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a></td>
+                        <td colspan="2"></td>
+                        <td align="right"></td>
                     </tr>
                 </table>
             </td>
@@ -54,19 +105,20 @@
                     </tr>
                     <tr>
                         <th align="right">Program:</th>
-                        <td>@Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th align="right">Target Division:</th>
-                        <td>@Html.DropDownList("TagDiv", Model.DivisionIds())</td>
+                        <td></td>
                     </tr>
                 </table>
 } 
             </td>
-
         </tr>
     </table>
+</div>
     <hr />
+    -->
      @Html.Partial("Results", Model) 
     </form>
     <div>

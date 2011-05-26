@@ -29,8 +29,8 @@
             $('div.jscroll div.drow:even').addClass('alt');
         });
     </script>
-    <div class="roundbox">
-        <h2><a href="MyTags.aspx?tag=0,TrackBirthdays">Birthdays</a></h2>
+    <div class="homebox roundbox">
+        <h2><a href="Tags?tag=TrackBirthdays">Birthdays</a></h2>
         <div class="jscroll" style="height:10em">
 @foreach (var bi in Model.Birthdays())
 {
@@ -53,7 +53,7 @@
         </div>
     </div>
     <div style="margin-left:1%;float:left;">&nbsp;</div>
-    <div class="roundbox">
+    <div class="homebox roundbox">
     <div style="width:1%"></div>
         <h2><a href="@DbUtil.Db.Setting("BlogAppUrl", "#")">BVCMS News</a></h2>
         <div class="jscroll" style="height:17em">
@@ -73,12 +73,12 @@
         </div>
     </div>
     <div style="margin-left:1%;float:left;">&nbsp;</div>
-    <div class="roundbox">
-        <h2><a href="/MyTags.aspx">My Tags</a></h2>
+    <div class="homebox roundbox">
+        <h2><a href="/Tags">My Tags</a></h2>
         <div class="jscroll" style="height:10em">
 @foreach (var t in Model.Tags())
 {
-            <div class="drow"><a href="/MyTags.aspx?tag=@t.Code">@t.Value</a></div>
+            <div class="drow"><a href="/Tags?tag=@t.Value">@t.Value</a></div>
 }
         </div>
         <h2><a href="/Task/List">My Tasks</a></h2>

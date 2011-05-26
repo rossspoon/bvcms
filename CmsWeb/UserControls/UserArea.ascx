@@ -17,6 +17,6 @@
 </asp:LoginView>
 <div>
     Active Tag:
-    <asp:HyperLink ID="TagLink" NavigateUrl="~/MyTags.aspx" runat="server"></asp:HyperLink>
+    <asp:HyperLink ID="TagLink" NavigateUrl="~/Tags" runat="server"></asp:HyperLink>
 </div>
 <asp:HiddenField ID="HiddenField1" runat="server" />

@@ -6,9 +6,15 @@
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
         .Add("/Scripts/OrgGroups.js")
         .Render("/Content/OrgGroups_#.js")
-)        
+)
+<style>
+    td.wide100 * 
+    {
+        width: 98%;
+    }
+</style>
 <form id="groupsform" action="/OrgGroups/Update" method="post">
-@Html.Partial("Form", Model) 
+@Html.Partial("Form", Model)
 </form>
 
 

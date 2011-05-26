@@ -13,15 +13,6 @@ namespace CmsWeb {
     public partial class ContactSearch {
         
         /// <summary>
-        /// NewSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton NewSearch;
-        
-        /// <summary>
         /// ContacteeNameSearch control.
         /// </summary>
         /// <remarks>
@@ -103,15 +94,6 @@ namespace CmsWeb {
         protected global::CustomControls.DropDownCC MinistryList;
         
         /// <summary>
-        /// SearchButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SearchButton;
-        
-        /// <summary>
         /// GridCount control.
         /// </summary>
         /// <remarks>
@@ -119,6 +101,24 @@ namespace CmsWeb {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label GridCount;
+        
+        /// <summary>
+        /// NewSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton NewSearch;
+        
+        /// <summary>
+        /// SearchButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SearchButton;
         
         /// <summary>
         /// QuerySearch control.

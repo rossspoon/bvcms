@@ -58,12 +58,15 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DivisionIds(int id)
         {
-            return View(OrgSearchModel.DivisionIds(id));
+            var m = new OrgSearchModel { ProgramId = id };
+            return View(m);
+            //return Json(OrgSearchModel.DivisionIds(id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult TagDivIds(int id)
         {
-            return View(OrgSearchModel.DivisionIds(id));
+            var m = new OrgSearchModel { ProgramId = id };
+            return View("DivisionIds", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DefaultMeetingDate(int id)

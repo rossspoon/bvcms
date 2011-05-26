@@ -30,7 +30,7 @@
                     });
                 }, 3000);
             }
-        }, "json");
+        });
     };
     $.TestSend = function () {
         var d = $("#progress");

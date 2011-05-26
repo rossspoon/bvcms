@@ -12,17 +12,21 @@
                 showURL: false,
                 showBody: "|"
             });
-            $("form input.submitbutton").live('click', function (ev) {
+            $("form a.submitbutton").live('click', function (ev) {
                 ev.preventDefault();
                 var f = $(this).closest('form');
                 var q = f.serialize();
                 $.post(f.attr('action'), q, function (ret) {
-                    $(f).html(ret);
-                    $('table.grid > tbody > tr:even').addClass('alt');
+                    $(f).html(ret).ready(function () {
+                        $('table.grid > tbody > tr:even').addClass('alt');
+                        $(".bt").button();
+                        $(".datepicker").datepicker();
+                    });
                 });
                 return false;
             });
             $('table.grid > tbody > tr:even').addClass('alt');
+            $(".bt").button();
         });
 function GotoPage(pg) {
     var q = $('#form').formSerialize2();
@@ -36,7 +40,6 @@ function SetPageSize(sz) {
 }
 </script>
 <script src="/Scripts/Pager.js" type="text/javascript"></script>
-<h2>Emails</h2>
 <form id="form" method="post" action="/Manage/Emails/List">
 @{Html.RenderPartial("List", Model);}
 </form>

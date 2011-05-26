@@ -18,9 +18,5 @@ namespace CmsData
         {
             return Db.People.Where(p => p.Tags.Any(tp => tp.Id == Id));
         }
-        public string SharedWithCountString()
-        {
-            return "Shared with {0} users".Fmt(TagShares.Count());
-        }
     }
 }

@@ -64,9 +64,9 @@ namespace CmsWeb.Models
             get { return _Page ?? 1; }
             set { _Page = value; }
         }
-        public int LastPage
+        public int LastPage()
         {
-            get { return (int)Math.Ceiling(count / (double)PageSize); }
+            return (int)Math.Ceiling(count / (double)PageSize); 
         }
         public int StartRow
         {
@@ -79,16 +79,16 @@ namespace CmsWeb.Models
         }
         public IEnumerable<int> PageList()
         {
-            for (var i = 1; i <= LastPage; i++)
+            for (var i = 1; i <= LastPage(); i++)
             {
                 if (i > 1 && i < Page - 2)
                 {
                     i = Page.Value - 3;
                     yield return 0;
                 }
-                else if (i < LastPage && i > Page + 2)
+                else if (i < LastPage() && i > Page + 2)
                 {
-                    i = LastPage - 1;
+                    i = LastPage() - 1;
                     yield return 0;
                 }
                 else

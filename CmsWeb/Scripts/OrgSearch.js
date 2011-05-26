@@ -1,5 +1,18 @@
 ﻿$(function () {
     $('#Name').focus();
+    $(".bt").button();
+    $("#clear").click(function (ev) {
+        ev.preventDefault();
+        $("input:text").val("");
+        //$("#ProgramId,#CampusId,#ScheduleId").linkselect("val", 0);
+        $("#ProgramId,#CampusId,#ScheduleId").val(0); //.sb("refresh");
+        //$("#OnlineReg").linkselect("val", -1);
+        $("#OnlineReg").val(-1); //.sb("refresh");
+        $.post('/OrgSearch/DivisionIds/0', null, function (ret) {
+            $('#DivisionId').html(ret); //.sb("refresh");
+        });
+        return false;
+    });
     $("#search").click(function () {
         var name = $('#Name').val();
         if (name.match("^" + "M\.") == "M.") {
@@ -104,20 +117,6 @@
         $.getTable();
         return false;
     });
-    $('#clear').click(function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest('form');
-        $(f).find(':input').each(function () {
-            $(this).val('');
-        });
-        $(f).find('select').each(function () {
-            $(this).val("0");
-        });
-        $("#OnlineReg").val("-1");
-        $('#DivisionId').html('<option value="0">(select a program)</option>');
-        $('#StatusId').val("30");
-        return $.getTable();
-    });
     $.maxZIndex = $.fn.maxZIndex = function (opt) {
         var def = { inc: 10, group: "*" };
         $.extend(def, opt);
@@ -133,19 +132,23 @@
             $(this).css("z-index", zmax);
         });
     }
+    $("#searchvalues select,#managedivisions select").css("width", "100%");
     $('#ProgramId').change(function () {
-        $.post('/OrgSearch/DivisionIds/' + $('#ProgramId').val(), null, function (ret) {
-            $('#DivisionId').replaceWith(ret);
+        $.post('/OrgSearch/DivisionIds/' + $(this).val(), null, function (ret) {
+            $('#DivisionId').html(ret);
         });
     });
-    $('#TagProgramId').change(function () {
-        $.post('/OrgSearch/TagDivIds/' + $('#TagProgramId').val(), null, function (ret) {
-            $('#TagDiv').replaceWith(ret);
-            $('#TagDiv').change(function () {
-                $.getTable();
-            });
+
+    $("#TagProgramId").change(function () {
+        $.post('/OrgSearch/TagDivIds/' + $(this).val(), null, function (ret) {
+            $('#TagDiv').html(ret);
+            //$('#TagDiv').sb("refresh");
         });
     });
+    $("#TagDiv").change(function () {
+        $("#search").click();
+    });
+
     $("form input").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();
@@ -161,7 +164,7 @@
             $('#MeetingTime').val(ret.time);
             var d = $('#PanelRollsheet')
             d.dialog('open');
-        }, "json");
+        });
         return false;
     });
     $('#attdetail1').click(function (ev) {
@@ -176,7 +179,7 @@
         var pid = $('#ProgramId').val();
         var did = $('#DivisionId').val();
         if (pid == '0') {
-            alert('must choose program');
+            $.growlUI("error", 'must choose program');
             return false;
         }
         var args = "?div=" + did + "&pid=" + pid +
@@ -217,7 +220,7 @@
         $('div.dialog').dialog('close');
         var did = $('#DivisionId').val();
         if (did == '0') {
-            alert('must choose division');
+            $.growlUI("error", 'must choose division');
             return false;
         }
         var args = "?divid=" + did +
@@ -232,7 +235,7 @@
         ev.preventDefault();
         var did = $('#DivisionId').val();
         if (did == '0') {
-            alert('must choose division');
+            $.growlUI("error", 'must choose division');
             return false;
         }
         var args = "?div=" + did + "&schedule=" + $('#ScheduleId').val();
@@ -254,7 +257,7 @@
         ev.preventDefault();
         var did = $('#DivisionId').val();
         if (did == '0') {
-            alert('must choose division');
+            $.growlUI("error", 'must choose division');
             return false;
         }
         var args = "?div=" + did +
@@ -270,7 +273,7 @@
         if (td > 0)
             $.post(a.attr('href'), { tagdiv: td }, function (ret) {
                 a.text(ret.value);
-            }, "json");
+            });
         return false;
     });
     $('a.maindiv').live('click', function (ev) {
@@ -278,7 +281,7 @@
         var a = $(this);
         $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function (ret) {
             a.text("");
-        }, "json");
+        });
         return false;
     });
 });

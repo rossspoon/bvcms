@@ -18,13 +18,8 @@ namespace CmsCheckin
     {
         public static string ServiceUrl()
         {
-            if (Program.TestMode)
-            {
-                //return "http://ipv4.fiddler:58724/";
-                return "http://localhost:58724/";
-            }
-            else
-                return Program.URL;
+            //return "http://ipv4.fiddler:58724/";
+            return Program.URL;
         }
         public static WebClient CreateWebClient()
         {
@@ -351,18 +346,18 @@ namespace CmsCheckin
             {
             }
         }
-        public static void JoinUnJoin(ClassCheckedInfo info)
+        public static void JoinUnJoin(ClassInfo c, bool joining)
         {
-            if (info.c.oid == 0)
+            if (c.oid == 0)
                 return;
             try
             {
                 var wc = CreateWebClient();
                 var coll = new NameValueCollection();
-                coll.Add("PeopleId", info.c.pid.ToString());
-                coll.Add("OrgId", info.c.oid.ToString());
+                coll.Add("PeopleId", c.pid.ToString());
+                coll.Add("OrgId", c.oid.ToString());
                 Uri url = null;
-                coll.Add("Member", info.ischecked.ToString());
+                coll.Add("Member", joining.ToString());
                 url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/Membership/");
 
                 var resp = wc.UploadValues(url, "POST", coll);

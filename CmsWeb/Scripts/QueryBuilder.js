@@ -1,7 +1,7 @@
 ﻿var qs = "";
-$(function() {
+$(function () {
     $("#SelectCondition").SelectCondition();
-    $('#Tags').click(function(ev) {
+    $('#Tags').click(function (ev) {
         $('#TagsPopup').show();
     });
     $(".datepicker").datepicker({
@@ -9,52 +9,55 @@ $(function() {
         changeMonth: true,
         changeYear: true
     });
+    $(".bt").button();
+    $("#selectconditions select").css("width", "100%");
+
     HighlightCondition();
-    $('#Program').change(function(ev) {
-        $.post('/QueryBuilder/GetDivisions/' + $(this).val(), null, function(ret) {
+    $('#Program').change(function (ev) {
+        $.post('/QueryBuilder/GetDivisions/' + $(this).val(), null, function (ret) {
             $('#Division').fillOptions(ret.Divisions);
             $('#Organization').fillOptions(ret.Organizations);
             CascadeDivision();
-        }, "json");
+        });
     });
-    $('#AddToGroup').click(function() {
+    $('#AddToGroup[href]').live("click", function () {
         qs = $('#conditionForm').serialize();
-        $.post('/QueryBuilder/AddToGroup/', qs, function(ret) {
+        $.post('/QueryBuilder/AddToGroup/', qs, function (ret) {
             var a = ret.split("<---------->");
             if (!ShowErrors(a[1]))
                 FillConditionGrid(a[0]);
         });
         return false;
     });
-    $('#Add').click(function() {
+    $('#Add[href]').live("click", function () {
         qs = $('#conditionForm').serialize();
-        $.post('/QueryBuilder/Add/', qs, function(ret) {
+        $.post('/QueryBuilder/Add/', qs, function (ret) {
             var a = ret.split("<---------->");
             if (!ShowErrors(a[1]))
                 FillConditionGrid(a[0]);
         });
         return false;
     });
-    $('#Update').click(function() {
+    $('#Update[href]').live("click", function () {
         qs = $('#conditionForm').serialize();
-        $.post('/QueryBuilder/Update/', qs, function(ret) {
+        $.post('/QueryBuilder/Update/', qs, function (ret) {
             var a = ret.split("<---------->");
             if (!ShowErrors(a[1]))
                 FillConditionGrid(a[0]);
         });
         return false;
     });
-    $('#Remove').click(function() {
+    $('#Remove[href]').live("click", function () {
         qs = $('#conditionForm').serialize();
-        $.post('/QueryBuilder/Remove/', qs, function(ret) {
+        $.post('/QueryBuilder/Remove/', qs, function (ret) {
             UpdateView(ret);
-            $.post('/QueryBuilder/Conditions/', null, function(ret) {
+            $.post('/QueryBuilder/Conditions/', null, function (ret) {
                 FillConditionGrid(ret);
             });
-        }, "json");
+        });
         return false;
     });
-    $('#Run').click(function(ev) {
+    $('#Run').click(function (ev) {
         qs = $('#conditionForm').serialize();
         RefreshList();
         return false;
@@ -70,27 +73,27 @@ $(function() {
     $('#SaveQueryDiv').dialog(dialogOptions);
     $('#OpenQueryDiv').dialog(dialogOptions);
 
-    $('#ShowSaveQuery').click(function(ev) {
-        $('#SaveQueryDesc').val($('#Description').text()); 
+    $('#ShowSaveQuery').click(function (ev) {
+        $('#SaveQueryDesc').val($('#Description').text());
         $('#SaveQueryDiv').dialog("open");
     });
-    $('#ShowOpenQuery').click(function(ev) {
-        $.post("/QueryBuilder/SavedQueries", null, function(ret) {
+    $('#ShowOpenQuery').click(function (ev) {
+        $.post("/QueryBuilder/SavedQueries", null, function (ret) {
             $('#ExistingQueries').fillOptions(ret);
-        }, "json");
+        });
         $('#OpenQueryDiv').dialog("open");
         return false;
     });
-    $('#OpenQuery').click(function(ev) {
+    $('#OpenQuery').click(function (ev) {
         $('#OpenQueryDiv').dialog("close");
         window.location = "/QueryBuilder/Main/" + $("#ExistingQueries").val();
     });
-    $('#SaveQuery').click(function(ev) {
+    $('#SaveQuery').click(function (ev) {
         $('#SaveQueryDiv').dialog("close");
         $.post("/QueryBuilder/SaveQuery/", {
             SavedQueryDesc: $('#SaveQueryDesc').val(),
             IsPublic: $('#IsPublic').is(':checked')
-        }, function(ret) {
+        }, function (ret) {
             $("#Description").text(ret);
         });
         return false;
@@ -148,9 +151,9 @@ function FillConditionGrid(html) {
     };
     $.fn.enabled = function(bool) {
         if (bool)
-            $(this).removeAttr("disabled");
+            $(this).attr("href", "#").removeClass("disabled");
         else
-            $(this).attr("disabled", "disabled");
+            $(this).removeAttr("href").addClass("disabled");
         return this;
     };
     $.fn.fillOptions = function(a, multiple) {
@@ -166,7 +169,7 @@ function FillConditionGrid(html) {
             var s = "<select id='" + this.id + "' name='" + this.id + "'";
             if (multiple)
                 s += " multiple='multiple'";
-            s += ">" + options + "</select>";
+            s += " style='width:100%'>" + options + "</select>";
             $(this).replaceWith(s);
         });
     };
@@ -188,7 +191,7 @@ function RefreshList() {
         $('a.taguntag').click(function(ev) {
             $.post('/QueryBuilder/ToggleTag/' + $(this).attr('value'), null, function(ret) {
                 $(ev.target).text(ret.HasTag ? "Remove" : "Add");
-            }, "json");
+            });
             return false;
         });
         $('#people thead a.sortable').click(function(ev) {
@@ -221,7 +224,7 @@ function CascadeDivision() {
     $('#Division').change(function(ev) {
         $.post('/QueryBuilder/GetOrganizations/' + $(this).val(), null, function(ret) {
             $('#Organization').fillOptions(ret);
-        }, "json");
+        });
     });
 }
 function CascadeComparison() {
@@ -232,7 +235,7 @@ function CascadeComparison() {
             Comparison: $('#Comparison').val()
         }, function(ret) {
             UpdateCodes(ret);
-        }, "json");
+        });
     });
 }
 function EditCondition(ev) {
@@ -241,7 +244,7 @@ function EditCondition(ev) {
     $('#ConditionGrid li#' + qid).addClass('SelectedRow');
     $.post('/QueryBuilder/EditCondition/' + qid, null, function(ret) {
         UpdateView(ret);
-    }, "json");
+    });
     return false;
 }
 
@@ -287,7 +290,7 @@ function EditCondition(ev) {
                 //$.unblockUI();
                 $('#QueryConditionSelect').dialog("close");
                 UpdateView(ret);
-            }, "json");
+            });
             return false;
         });
         $("a.closeit").click(function(ev) {
@@ -342,7 +345,8 @@ function UpdateView(vs) {
         $('#tagvalues').after('<select id="Tags"></select>');
         $('#Tags').fillOptions(vs.TagData, true);
         $('#Tags').multiSelect({ oneOrMoreSelected: '*' });
-    }
+    } 
+
     $('#ConditionName').val(vs.ConditionName);
     $('#ConditionText').text(vs.ConditionText);
     $('#TextValue').val(vs.TextValue);

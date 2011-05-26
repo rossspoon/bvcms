@@ -1857,6 +1857,21 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.GetTodaysMeetingHours2", IsComposable = true)]
+		public IQueryable< View.GetTodaysMeetingHours2 > GetTodaysMeetingHours2(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? thisday,
+            [Parameter(DbType="bit")] bool? kioskmode
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTodaysMeetingHours2>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                thisday,
+                kioskmode
+                );
+		}
+
 		[Function(Name="dbo.MembersAsOf", IsComposable = true)]
 		public IQueryable< View.MembersAsOf > MembersAsOf(
             [Parameter(DbType="datetime")] DateTime? from,
@@ -2996,27 +3011,6 @@ namespace CmsData
                 dt
 			);
 			return ((ISingleResult< SecurityCode>)(result.ReturnValue));
-		}
-
-		[Function(Name="dbo.ForumNewEntry")]
-		public ISingleResult< ForumEntry> ForumNewEntry(
-            [Parameter(Name = "forumid", DbType="int")] int? forumid,
-            [Parameter(Name = "replytoid", DbType="int")] int? replytoid,
-            [Parameter(Name = "title", DbType="nvarchar")] string title,
-            [Parameter(Name = "entry", DbType="text")] string entry,
-            [Parameter(Name = "created", DbType="datetime")] DateTime? created,
-            [Parameter(Name = "createdby", DbType="nvarchar")] string createdby
-            )
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                forumid,
-                replytoid,
-                title,
-                entry,
-                created,
-                createdby
-			);
-			return ((ISingleResult< ForumEntry>)(result.ReturnValue));
 		}
 
 		[Function(Name="dbo.TopGivers")]

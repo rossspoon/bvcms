@@ -15,7 +15,9 @@
     </div>
     <form id="form" action="/Task/List" method="get">
     @Html.Hidden("SortTask")
-    <table class="modalPopup">
+    <div class="roundbox floatleft">
+    <h2>Tasks</h2>
+    <table>
 @if (User.IsInRole("AdvancedTask"))
 { 
         <tr>
@@ -39,6 +41,8 @@
             </td>
         </tr>
     </table>
+    </div>
+    <div class="floatclear"></div>
     @Html.Hidden("CurTab", Model.MyListId())
     <div id="tabs">
         <ul>

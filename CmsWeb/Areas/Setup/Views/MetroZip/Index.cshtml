@@ -22,6 +22,7 @@
                 });
             return false;
         });
+        $(".bt").button();
     });
 </script>
 <h2>Zips</h2>
@@ -50,12 +51,12 @@
 { 
 <p>
     New ZipCode: @Html.TextBox("zipcode")
-    <input type="submit" value="Create" />
+    <input type="submit" class="bt" value="Create" />
 </p>
 } 
 @using (Html.BeginForm("UpdateMetroZips", "MetroZip"))
 { 
 <p>
-    <input type="submit" value="Update all Metro Zips" />
+    <input type="submit" class="bt" value="Update all Metro Zips" />
 </p>
 } 

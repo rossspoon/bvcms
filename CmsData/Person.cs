@@ -937,5 +937,22 @@ namespace CmsData
         {
             return Name + "(" + PeopleId + ")";
         }
+        public void SetExtra(string field, string value)
+        {
+            var e = PeopleExtras.FirstOrDefault(ee => ee.Field == field);
+            if (e == null)
+            {
+                e = new PeopleExtra { Field = field, PeopleId = PeopleId, TransactionTime = DateTime.Now };
+                this.PeopleExtras.Add(e);
+            }
+            e.StrValue = value;
+        }
+        public string GetExtra(string field)
+        {
+            var e = PeopleExtras.SingleOrDefault(ee => ee.Field == field);
+            if (e == null)
+                return "";
+            return e.Data;
+        }
     }
 }

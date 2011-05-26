@@ -34,11 +34,11 @@ namespace CmsData
         {
             return DbUtil.Db.ForumEntries.SingleOrDefault(fe => fe.Id == id);
         }
-        public ForumEntry NewReply(string title, string entry)
-        {
-            return DbUtil.Db.ForumNewEntry(ForumId, Id, title, entry,
-                Util.Now, HttpContext.Current.User.Identity.Name).Single();
-        }
+        //public ForumEntry NewReply(string title, string entry)
+        //{
+        //    return DbUtil.Db.ForumNewEntry(ForumId, Id, title, entry,
+        //        Util.Now, HttpContext.Current.User.Identity.Name).Single();
+        //}
         public ICollection<MailAddress> GetNotificationList()
         {
             var mp = Membership.Providers["AdminMembershipProvider"];

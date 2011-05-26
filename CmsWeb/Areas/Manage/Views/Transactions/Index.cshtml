@@ -12,17 +12,19 @@
                 showURL: false,
                 showBody: "|"
             });
-            $('input[value="Filter"].submitbutton').live('click', function (ev) {
+            $('#filter').live('click', function (ev) {
                 ev.preventDefault();
                 var f = $(this).closest('form');
                 var q = f.serialize();
                 $.post("/Manage/Transactions/List", q, function (ret) {
                     $(f).html(ret);
                     $('table.grid > tbody > tr:even').addClass('alt');
+                    $(".bt").button();
+                    $(".datepicker").datepicker();
                 });
                 return false;
             });
-            $('input[value="Export"].submitbutton').live('click', function (ev) {
+            $('#export').live('click', function (ev) {
                 ev.preventDefault();
                 var f = $(this).closest('form');
                 f.attr("action", "/Manage/Transactions/Export");
@@ -31,10 +33,10 @@
                 return false;
             });
             $('table.grid > tbody > tr:even').addClass('alt');
+            $(".bt").button();
         });
 </script>
 <script src="/Scripts/Pager.js" type="text/javascript"></script>
-<h2>Transactions</h2>
 <form id="form" method="post" action="/Manage/Transactions/List">
 @{Html.RenderPartial("List", Model);}
 </form>

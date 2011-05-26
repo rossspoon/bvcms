@@ -408,8 +408,7 @@ namespace CmsWeb.Models
         public static IEnumerable<SelectListItem> DivisionIds(int ProgId)
         {
             var q = from d in DbUtil.Db.Divisions
-                    where d.ProgId == ProgId
-                    || d.ProgDivs.Any(p => p.ProgId == ProgId)
+                    where d.ProgId == ProgId || d.ProgDivs.Any(p => p.ProgId == ProgId)
                     orderby d.Name
                     select new SelectListItem
                     {

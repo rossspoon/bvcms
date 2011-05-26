@@ -20,7 +20,7 @@
             else {
                 window.location = ret.confirm;
             }
-        }, "json");
+        });
         return false;
     });
     $('form').showPassword();

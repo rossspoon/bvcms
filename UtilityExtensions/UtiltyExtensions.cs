@@ -927,8 +927,8 @@ namespace UtilityExtensions
         {
             if (!email.HasValue())
                 return false;
-            var re1 = new Regex(@"^(.*\<)[A-Z0-9-+._]+@([^.]|\w)[A-Z0-9-._]*[^.]\.[A-Z]{2,4}\>$", RegexOptions.IgnoreCase);
-            var re2 = new Regex(@"^[A-Z0-9-+._]+@([^.]|\w)[A-Z0-9-._]*[^.]\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
+            var re1 = new Regex(@"^(.*\<)^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$\>$", RegexOptions.IgnoreCase);
+            var re2 = new Regex(@"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
             var a = email.SplitStr(",;");
             foreach (var m in a)
             {

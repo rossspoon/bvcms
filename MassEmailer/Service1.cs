@@ -310,9 +310,10 @@ WAITFOR(
             msg.ReplyToList.Add(from);
             msg.Headers.Add("X-bvcms-host", host);
             msg.Headers.Add("X-bvcms-mail-id", id.ToString());
+            msg.Headers.Add("X-bvcms-peopleid", pid.ToString());
             var addrs = to.EmailAddressListToString();
             if (addrs.HasValue())
-                msg.Headers.Add("X-bvcms-cc", addrs);
+                msg.Headers.Add("X-bvcms-addresses", addrs);
 
             var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 

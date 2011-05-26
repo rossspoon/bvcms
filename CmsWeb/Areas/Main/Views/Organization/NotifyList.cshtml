@@ -1,0 +1,7 @@
+﻿@using CmsData
+@model IQueryable<Person>
+<b>choose users to notify (confirmation comes from first)</b>
+@foreach (var p in Model.Select(p => new { p.FromEmail, p.PeopleId }))
+{
+    <div>@p.FromEmail &mdash; (@p.PeopleId)</div>
+}

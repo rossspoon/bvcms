@@ -21,11 +21,11 @@ namespace CmsData
         {
             get { return Group.LoadById(GroupId.Value).IsMember; }
         }
-        public ForumEntry NewEntry(string title, string entry)
-        {
-            return DbUtil.Db.ForumNewEntry(Id, null, title, entry,
-                Util.Now, HttpContext.Current.User.Identity.Name).Single();
-        }
+        //public ForumEntry NewEntry(string title, string entry)
+        //{
+        //    return DbUtil.Db.ForumNewEntry(Id, null, title, entry,
+        //        Util.Now, HttpContext.Current.User.Identity.Name).Single();
+        //}
         public static Forum LoadFromId(int id)
         {
             return DbUtil.Db.Forums.SingleOrDefault(f => f.Id == id);

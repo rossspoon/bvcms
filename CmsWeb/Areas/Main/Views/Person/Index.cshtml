@@ -1,4 +1,5 @@
 ﻿@using CmsWeb
+@using CmsData
 @using UtilityExtensions
 @model CmsWeb.Models.PersonPage.PersonModel
 @{
@@ -17,43 +18,25 @@
 )
               
     @{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
-    <div class="PersonHead">@Model.Name</div>
-    <table>
+    <div class="roundbox floatleft">
+    <h2>@Model.Name</h2>
+    <table cellspacing="5">
         <tr>
-            <td>
-                <div id="businesscard" href="/Person/BusinessCard/@p.PeopleId">
-                 @Html.Partial("BusinessCard", p) 
-                </div>
-                <table>
-                    <tr>
-                        <td>@p.basic.DoNotCall</td>
-                        <td>
-                            @if (User.IsInRole("Finance"))
-                            { <a href="/Reports/ContributionYears/@p.PeopleId">Contributions</a> }
-                            @if (Model.CanCheckIn)
-                            { <a href="/CheckIn/CheckIn/@Model.ckorg?pid=@p.PeopleId">CheckIn</a> }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                        @if (User.IsInRole("Admin"))
-                        { 
-                            <a id="deleteperson" href="/Person/Delete/@p.PeopleId"><img border="0" src="/images/delete.gif" /></a>
-                            <a id="moveperson" href="/Person/Move/@p.PeopleId">move</a>
-                        } 
-                        </td>
-                    </tr>
-                </table>
-            </td>
             <td valign="top">
                 <a id="Picture" href="/UploadPicture.aspx?id=@p.PeopleId" title="Click to see larger version or upload new">
                 <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
                 </a>
             </td>
-            <td></td>
+            <td>&nbsp;</td>
             <td valign="top">
-                <br />
-                <table>
+                <div id="businesscard" href="/Person/BusinessCard/@p.PeopleId">
+                 @Html.Partial("BusinessCard", p) 
+                </div>
+                <div> @p.basic.DoNotCall </div>
+            </td>
+            <td>&nbsp;</td>
+            <td valign="top">
+                <table cellspacing="4">
                     <tr>
                         <th align="left" colspan="4">
                         @if (User.IsInRole("Access"))
@@ -72,7 +55,6 @@
                         <td><a href="/Person/Index/@m.Id"><span style='color: @m.Color'>@m.Name</span></a></td>
                         <td>@Html.Raw(m.SpouseIndicator)</td>
                         <td>@m.Age</td>
-                        <td>@m.PositionInFamily</td>
                         <td>@m.Email</td>
                     </tr>
                 }
@@ -80,6 +62,31 @@
             </td>
        </tr>
     </table>
+    </div>
+    <div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
+<div><a>Other Management</a></div>
+<div class="sublinks">
+    <a href="http://www.bing.com/maps/?q=@p.PrimaryAddr.AddrCityStateZip()">Bing Map</a>
+    <a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PrimaryAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a>
+    <a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PrimaryAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a>
+@if (User.IsInRole("Finance"))
+{
+    <a href="/Reports/ContributionYears/@p.PeopleId">Contributions</a> 
+}
+@if (Model.CanCheckIn)
+{ 
+    <a href="/CheckIn/CheckIn/@Model.ckorg?pid=@p.PeopleId">CheckIn</a>
+}
+@if (User.IsInRole("Admin"))
+{ 
+    <a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a>
+    <a id="moveperson" href="/Person/Move/@p.PeopleId">Move Person</a>
+} 
+</div>
+<div style="border-bottom: 4px solid #ddd"></div>
+</div>
+<div class="floatclear"></div>
+
     <div id="main-tab" class="ui-tabs">
         <ul class="ui-tabs-nav">
             <li><a href="#basic-tab"><span>Basic</span></a></li>
