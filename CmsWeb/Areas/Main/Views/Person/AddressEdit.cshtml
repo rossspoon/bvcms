@@ -54,6 +54,8 @@
     </tr>
     <tr><td align="right" colspan="2">
             <a href="/Person/AddressUpdate/@Model.PeopleId?type=@Model.Name" class="submitbutton">Save Changes</a>
-            <a class="displayedit bt" href="/Person/AddressDisplay/@Model.PeopleId?type=@Model.Name">Cancel</a></td></tr>
+            <a class="displayedit bt" href="/Person/AddressDisplay/@Model.PeopleId?type=@Model.Name">Cancel</a>
+            <div>@Html.ValidationMessage("error")</div>
+            </td></tr>
 </table>
 

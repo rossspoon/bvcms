@@ -117,7 +117,7 @@ namespace CmsWeb.Models.PersonPage
             return a;
         }
 
-        public void UpdateAddress()
+        public void UpdateAddress(ModelStateDictionary ModelState)
         {
             if (ResCodeId == 0)
                 ResCodeId = null;
@@ -179,14 +179,22 @@ namespace CmsWeb.Models.PersonPage
                 };
                 DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
             }
-            DbUtil.Db.SubmitChanges();
+            try
+            {
+                DbUtil.Db.SubmitChanges();
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError("error", ex.Message);
+            }
+
             if (!HttpContext.Current.User.IsInRole("Access"))
                 if (psb.Length > 0 || fsb.Length > 0)
                 {
                     DbUtil.Db.EmailRedacted(p.FromEmail, DbUtil.Db.GetNewPeopleManagers(),
                         "Address Info Changed",
                         "{0} changed the following information:<br />\n<table>{1}{2}</table>"
-                        .Fmt(Util.UserName, psb.ToString(),fsb.ToString()));
+                        .Fmt(Util.UserName, psb.ToString(), fsb.ToString()));
                 }
         }
         private StringBuilder fsb = new StringBuilder();

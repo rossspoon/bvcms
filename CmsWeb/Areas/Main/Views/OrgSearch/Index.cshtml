@@ -10,15 +10,13 @@
         .Render("/Content/OrgSearch_#.js")))
 
 <form method="post">
-<div class="roundbox floatleft">
-
-  <h2>Organization Search</h2>
-  <table id="searchvalues" cellspacing="5">
+  <table id="searchvalues" cellspacing="5" class="roundbox floatleft">
+  <tr><td colspan="4"> <h2>Organization Search</h2> </td></tr>
       <tr>
         <td align="right">Name:</td>
         <td>@Html.TextBox("Name", Model.Name, new { title = "OrganizationId, Location or part of Name (organization, leader, division)" })</td>
         <td align="right">Campus:</td>
-        <td>@Html.DropDownList("CampusId", Model.CampusIds())</td>
+        <td style="min-width:10em">@Html.DropDownList("CampusId", Model.CampusIds())</td>
       </tr>
       <tr>
         <td align="right">Program:</td>
@@ -40,85 +38,23 @@
           <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a></td>
       </tr>
     </table>
-</div>
 @if (User.IsInRole("OrgTagger"))
 { 
 <div style="margin-left:1%;float:left;">&nbsp;</div>
-<div class="roundbox floatleft">
-    <h2>Manage Divisions</h2>
-    <table id="managedivisions">
-      <tr>
-        <td>Target Program:<br />
-            @Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
-      </tr>
-      <tr>
-        <td><br />Target Divsion:<br />
-            @Html.DropDownList("TagDiv", Model.DivisionIds())</td>
-      </tr>
-    </table>
-</div>
+<table id="managedivisions" class="roundbox floatleft">
+<tr><td><h2>Manage Divisions</h2></td></tr>
+  <tr>
+    <td>Target Program:<br />
+        @Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
+  </tr>
+  <tr>
+    <td><br />Target Divsion:<br />
+        @Html.DropDownList("TagDiv", Model.DivisionIds())</td>
+  </tr>
+</table>
 }
 <div class="floatclear"></div>
 <hr />
-<!--<div class="roundbox floatleft">
-<h2>Organization Search</h2>
-    <table id="searchvalues">
-        <tr>
-            <td>
-                <table>
-                    <tr>
-                        <th>Name:</th>
-                        <td></td>
-                        <th>Status:</th>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th>Program:</th>
-                        <td></td>
-                        <th>Schedule:</th>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th>Division:</th>
-                        <td colspan="3">
-                        
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Campus:</th>
-                        <td colspan="2"></td>
-                        <td align="right"></td>
-                    </tr>
-                    <tr>
-                        <th>Online Reg.:</th>
-                        <td colspan="2"></td>
-                        <td align="right"></td>
-                    </tr>
-                </table>
-            </td>
-            <td>
-@if (User.IsInRole("OrgTagger"))
-{ 
-                <table>
-                    <tr>
-                        <th colspan="2">Manage Divisions</th>
-                    </tr>
-                    <tr>
-                        <th align="right">Program:</th>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th align="right">Target Division:</th>
-                        <td></td>
-                    </tr>
-                </table>
-} 
-            </td>
-        </tr>
-    </table>
-</div>
-    <hr />
-    -->
      @Html.Partial("Results", Model) 
     </form>
     <div>

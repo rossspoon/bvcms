@@ -2,9 +2,9 @@
 @Html.Hidden("orgid")
 @Html.Hidden("newgid")
 @Html.Hidden("sort")
-<div class="roundbox floatleft">
-<h2><a href="/Organization/Index/@Model.orgid">Manage Groups for @Model.OrgName</a></h2>
-<table id="ManageGroups" cellspacing="5">
+<table id="ManageGroups" cellspacing="5" class="roundbox">
+    <tr><td colspan="3">
+        <h2><a href="/Organization/Index/@Model.orgid">Manage Groups for @Model.OrgName</a></h2></td></tr>
     <tr>
         <th align="right">Change Target Group:</th>
         <td colspan="2" class="wide100">@Html.DropDownList("groupid", Model.Groups())</td>
@@ -38,8 +38,6 @@
 	</tr>
 
 </table>
-</div>
-<div class="floatclear"></div>
 <input id="SelectAll" type="checkbox" /> Select All
 <input type="submit" class="bt" id="AssignSelectedToTargetGroup" value="Assign Selected to Target Group" />
 <input type="submit" class="bt" id="RemoveSelectedFromTargetGroup" value="Remove Selected from Target Group" />

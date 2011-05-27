@@ -2,8 +2,7 @@
 <input type="hidden" name="m.type" value="@Model.type" />
 <input type="hidden" name="m.typeid" value="@Model.typeid" />
 <input type="hidden" name="m.from" value="@Model.from" />
-<div class="roundbox">
-<table class="searchenter" width="100%" cellspacing="5">
+<table class="searchenter" width="100%" cellspacing="5" class="roundbox">
     <tr>
         <td nowrap="nowrap"><b>Search for Person</b></td>
         <td align="right" valign="top">
@@ -39,8 +38,6 @@ else
     <a href="#" class="clear bt">Clear</a></td>
     </tr>
 </table>
-</div>
-<div class="floatclear"></div>
 @{ 
     int n = 0;
     foreach (var p in Model.List)

@@ -6,15 +6,13 @@
 }
 <script src="/Scripts/QuickSearch.js" type="text/javascript"></script>
 <form id="quicksearch" method="post" action="/QuickSearch/Index">
-@*<table class="center"><tr><td>*@
-<div class="roundbox floatleft">
-<h2>Quick Search</h2>
-<table id="searchvalues" cellspacing="5">
+<table id="searchvalues" cellspacing="5" class="roundbox">
+<tr><td colspan="4"><h2>Quick Search</h2></td></tr>
 	<tr>
 		<th align="right"> Name/ID#: </th>
 		<td> @Html.TextBox("name", Model.m.name, new { title = "Starting letters of First<space>Last or just Last" })</td>
 		<th align="right"> Campus: </th>
-		<td>
+		<td style="min-width:10em">
 			@Html.DropDownList("campus", Model.Campuses())
 		</td>
 	</tr>
@@ -36,7 +34,7 @@
 		<th align="right"> Date of Birth: </th>
 		<td> @Html.TextBox("birthdate", Model.m.birthdate, new { title = "YYYY or MM or MM/DD or MM/DD/YY" })</td>
 		<th align="right"> Married: </th>
-		<td> @Html.DropDownList("marital", Model.MaritalCodes())
+		<td> @Html.DropDownList("marital", Model.MaritalCodes())</td>
 	</tr>
 	<tr>
 	  <td colspan="3" valign="bottom"><b>Total Count: <span id="totalcount">@Model.Count().ToString("N0")</span></b></td>
@@ -47,7 +45,5 @@
 	</tr>
 </table>
 </div>
-@*</td></tr></table>*@
-<div class="floatclear"></div>
 @Html.Partial("Results", Model)
 </form>

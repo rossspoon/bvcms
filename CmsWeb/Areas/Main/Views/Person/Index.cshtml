@@ -16,11 +16,10 @@
             .Add("/Scripts/Person.js")
         .Render("/Content/Person_#.js")
 )
-              
     @{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
-    <div class="roundbox floatleft">
-    <h2>@Model.Name</h2>
-    <table cellspacing="5">
+
+    <table cellspacing="5" class="roundbox floatleft">
+        <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
         <tr>
             <td valign="top">
                 <a id="Picture" href="/UploadPicture.aspx?id=@p.PeopleId" title="Click to see larger version or upload new">
@@ -62,28 +61,39 @@
             </td>
        </tr>
     </table>
+<div class="floatleft">
+    <div id="buttondiv" class="dropdown" style="margin-top:1em;margin-left: 1em;font-size:1.2em;">
+        <div><a>Maps and Directions</a></div>
+        <div class="sublinks">
+            <a href="http://www.google.com/maps?q=@p.PrimaryAddr.AddrCityStateZip()" target="_blank">Google Map</a>
+            <a href="http://www.bing.com/maps/?q=@p.PrimaryAddr.AddrCityStateZip()">Bing Map</a>
+            <a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PrimaryAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a>
+            <a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PrimaryAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a>
+        </div>
+        <div style="border-bottom: 4px solid #ddd"></div>
     </div>
-    <div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
-<div><a>Other Management</a></div>
-<div class="sublinks">
-    <a href="http://www.bing.com/maps/?q=@p.PrimaryAddr.AddrCityStateZip()">Bing Map</a>
-    <a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PrimaryAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a>
-    <a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PrimaryAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a>
-@if (User.IsInRole("Finance"))
+@if (User.IsInRole("Finance") || User.IsInRole("Admin"))
 {
-    <a href="/Reports/ContributionYears/@p.PeopleId">Contributions</a> 
+    <div id="buttondiv" class="dropdown" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
+        <div><a>Other Management</a></div>
+        <div class="sublinks">
+    @if (User.IsInRole("Finance"))
+    {
+            <a href="/Reports/ContributionYears/@p.PeopleId">Contributions</a> 
+    }
+    @if (Model.CanCheckIn)
+    { 
+            <a href="/CheckIn/CheckIn/@Model.ckorg?pid=@p.PeopleId">CheckIn</a>
+    }
+    @if (User.IsInRole("Admin"))
+    { 
+            <a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a>
+            <a id="moveperson" href="/Person/Move/@p.PeopleId">Move Person</a>
+    } 
+        </div>
+        <div style="border-bottom: 4px solid #ddd"></div>
+    </div>
 }
-@if (Model.CanCheckIn)
-{ 
-    <a href="/CheckIn/CheckIn/@Model.ckorg?pid=@p.PeopleId">CheckIn</a>
-}
-@if (User.IsInRole("Admin"))
-{ 
-    <a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a>
-    <a id="moveperson" href="/Person/Move/@p.PeopleId">Move Person</a>
-} 
-</div>
-<div style="border-bottom: 4px solid #ddd"></div>
 </div>
 <div class="floatclear"></div>
 

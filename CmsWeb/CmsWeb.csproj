@@ -1032,15 +1032,6 @@
     <Content Include="Content\js\jquery.mousewheel.js" />
     <Content Include="Content\magnifier.png" />
     <Content Include="Content\Welcome.png" />
-    <Content Include="newhome\Content\bvcms132x55.png" />
-    <Content Include="newhome\Content\cmenu.css" />
-    <Content Include="newhome\Content\cssreset.css" />
-    <Content Include="newhome\Content\magnifier.png" />
-    <Content Include="newhome\Content\site.css" />
-    <Content Include="newhome\Content\style2.css" />
-    <Content Include="newhome\Content\StyleSheet1.css" />
-    <Content Include="newhome\Content\Welcome.png" />
-    <Content Include="newhome\default.htm" />
     <Content Include="Content\jquery-ui-1.8.9.custom.css" />
     <Content Include="Content\js\jquery-1.4.4.js" />
     <Content Include="Content\js\jquery-1.4.4.min.js" />

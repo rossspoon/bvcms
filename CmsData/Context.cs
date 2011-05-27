@@ -41,33 +41,57 @@ namespace CmsData
         }
         public override void SubmitChanges(System.Data.Linq.ConflictMode failureMode)
         {
-            //if (Util.Auditing)
-            //{
-            //    this.Audit<Person>(p => p.PeopleId);
-            //    this.Audit<Organization>(o => o.OrganizationId);
-            //    this.Audit<Family>(f => f.FamilyId);
-            //    this.Audit<EnrollmentTransaction>(et => et.TransactionId);
-            //    this.Audit<NewContact>(c => c.ContactId);
-
-            //AuditUtility.ProcessInserts(GetChangeSet().Inserts);
-            //AuditUtility.ProcessUpdates(GetChangeSet().Updates);
-            //}
-
-            //base.SubmitChanges(failureMode);
-            int t = Thread.CurrentThread.ManagedThreadId;
-            if (LogFile.HasValue())
-            {
-                this.Log = File.AppendText(HttpContext.Current.Server.MapPath(LogFile));
-                DateTime n = Util.Now;
-                this.Log.WriteLine("-->> {0} at {1:d};{2:T}, by {3}", t, n, n, Util.UserName);
-            }
+            ChangeSet cs = this.GetChangeSet();
+            var typesToCheck = new Type[] { typeof(string), typeof(System.Data.Linq.Binary) };
+            var insertsUpdates = (
+                from i in cs.Inserts.Union(cs.Updates)
+                join m in this.Mapping.GetTables() on i.GetType() equals m.RowType.Type
+                select new
+                {
+                    Entity = i,
+                    Members = m.RowType.DataMembers.Where(dm => typesToCheck.Contains(dm.Type)).ToList()
+                }).Where(m => m.Members.Any()).ToList();
+            foreach (var ins in insertsUpdates)
+                foreach (var mm in ins.Members)
+                {
+                    var maxLength = GetMaxLength(mm.DbType);
+                    if (mm.MemberAccessor.HasValue(ins.Entity))
+                    {
+                        var memberValueLength = GetMemberValueLength(mm.MemberAccessor.GetBoxedValue(ins.Entity));
+                        if (maxLength > 0 && memberValueLength > maxLength)
+                        {
+                            var iex = new InvalidOperationException(mm.Name + " in " + mm.DeclaringType.Name + " has a value that will not fit into " + mm.DbType);
+                            throw iex;
+                        }
+                    }
+                }
             base.SubmitChanges(failureMode);
-            if (LogFile.HasValue())
-            {
-                this.Log.WriteLine("--<< {0}", t);
-                this.Log.Close();
-                this.Log = null;
-            }
+        }
+
+        private int GetMaxLength(string dbType)
+        {
+            int maxLength = 0;
+
+            if (dbType == null)
+                return maxLength;
+            if (dbType.Contains("("))
+                dbType = dbType.Substring(dbType.IndexOf("(") + 1);
+            if (dbType.Contains(")"))
+                dbType = dbType.Substring(0, dbType.IndexOf(")"));
+            int.TryParse(dbType, out maxLength);
+            return maxLength;
+        }
+
+        private int GetMemberValueLength(object value)
+        {
+            if (value == null)
+                return 0;
+            if (value.GetType() == typeof(string))
+                return ((string)value).Length;
+            else if (value.GetType() == typeof(Binary))
+                return ((Binary)value).Length;
+            else
+                throw new ArgumentException("Unknown type.");
         }
         public Person LoadPersonById(int id)
         {
@@ -378,7 +402,7 @@ namespace CmsData
         }
         public Tag OrgMembersOnlyTag2()
         {
-             return FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_OrgMembersOnly); 
+            return FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_OrgMembersOnly);
         }
 
         public Tag FetchOrCreateTag(string tagname, int? OwnerId, int tagtypeid)
@@ -424,13 +448,13 @@ namespace CmsData
             // prev members of any of my orgs excluding unshared orgs
 
             q = from p in People
-                    where p.EnrollmentTransactions.Any(et =>
-                            et.TransactionDate > dt
-                            && et.TransactionTypeId >= 4
-                            && et.Organization.SecurityTypeId != 3
-                            && OrganizationMembers.Any(um =>
-                                um.OrganizationId == et.OrganizationId && um.PeopleId == me))
-                    select p;
+                where p.EnrollmentTransactions.Any(et =>
+                        et.TransactionDate > dt
+                        && et.TransactionTypeId >= 4
+                        && et.Organization.SecurityTypeId != 3
+                        && OrganizationMembers.Any(um =>
+                            um.OrganizationId == et.OrganizationId && um.PeopleId == me))
+                select p;
             TagAll(q, tag);
             PopulateSpecialTag(q, "OrgMemberOnlyPrevInMyOrg");
 

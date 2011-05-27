@@ -18,6 +18,7 @@ $(function () {
             $('#Division').fillOptions(ret.Divisions);
             $('#Organization').fillOptions(ret.Organizations);
             CascadeDivision();
+            $("#selectconditions select").css("width", "100%");
         });
     });
     $('#AddToGroup[href]').live("click", function () {
@@ -169,7 +170,7 @@ function FillConditionGrid(html) {
             var s = "<select id='" + this.id + "' name='" + this.id + "'";
             if (multiple)
                 s += " multiple='multiple'";
-            s += " style='width:100%'>" + options + "</select>";
+            s += ">" + options + "</select>";
             $(this).replaceWith(s);
         });
     };
@@ -224,6 +225,7 @@ function CascadeDivision() {
     $('#Division').change(function(ev) {
         $.post('/QueryBuilder/GetOrganizations/' + $(this).val(), null, function(ret) {
             $('#Organization').fillOptions(ret);
+            $("#selectconditions select").css("width", "100%");
         });
     });
 }
@@ -267,21 +269,6 @@ function EditCondition(ev) {
             $('#QueryConditionSelect').dialog("open");
             return false;
         });
-//            $.blockUI({ 
-//                message: $('#QueryConditionSelect'),
-//                css: { 
-//                    padding:        0, 
-//                    top: '10%',
-//                    left: '2em',
-//                    margin:         0, 
-//                    width:          '750px', 
-//                    textAlign:      'left',
-//                    cursor:         'arrow'
-//                } 
-//            });
-//            $('.blockOverlay').click($.unblockUI); 
-//            return false;
-//        });
         $('div.FieldLink a').click(function(ev) {
             $.post('/QueryBuilder/SelectCondition/', {
                 ConditionName: ev.target.id,
@@ -400,4 +387,13 @@ function UpdateView(vs) {
     $('#Add').enabled(vs.AddEnabled);
     $('#AddToGroup').enabled(vs.AddToGroupEnabled);
     $('#Remove').enabled(vs.RemoveEnabled);
+//    var widest = null;
+//    $("#selectconditions select").each(function() {
+//      if (widest == null)
+//        widest = $(this);
+//      else
+//      if ($(this).width() > widest.width())
+//        widest = $(this);
+//    });
+    $("#selectconditions select").css("width", "100%");
 }

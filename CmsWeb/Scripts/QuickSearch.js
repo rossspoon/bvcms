@@ -59,11 +59,9 @@
     $('a.taguntag').live('click', function (ev) {
         ev.preventDefault();
         var a = $(this);
-        var td = $('#TagDiv').val()
-        if (td > 0)
-            $.post(a.attr('href'), { tagdiv: td }, function (ret) {
-                a.text(ret.value);
-            });
+        $.post('/Tags/ToggleTag/' + $(this).attr('value'), null, function (ret) {
+            $(ev.target).text(ret);
+        });
         return false;
     });
 });

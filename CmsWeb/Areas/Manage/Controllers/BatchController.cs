@@ -12,6 +12,7 @@ using System.IO;
 using CmsWeb.Models;
 using CMSPresenter;
 using System.Text.RegularExpressions;
+using System.Data.SqlTypes;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -399,7 +400,11 @@ namespace CmsWeb.Areas.Manage.Controllers
                     DateTime? dob = null;
                     if (names.ContainsKey("Birthday"))
                         if (DateTime.TryParse(a[names["Birthday"]], out dt))
+                        {
                             dob = dt;
+                            if (dob.Value < SqlDateTime.MinValue)
+                                dob = null;
+                        }
                     string email = null;
                     string cell = null;
                     string homephone = null;
