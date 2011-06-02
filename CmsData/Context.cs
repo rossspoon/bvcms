@@ -41,30 +41,33 @@ namespace CmsData
         }
         public override void SubmitChanges(System.Data.Linq.ConflictMode failureMode)
         {
-            ChangeSet cs = this.GetChangeSet();
-            var typesToCheck = new Type[] { typeof(string), typeof(System.Data.Linq.Binary) };
-            var insertsUpdates = (
-                from i in cs.Inserts.Union(cs.Updates)
-                join m in this.Mapping.GetTables() on i.GetType() equals m.RowType.Type
-                select new
-                {
-                    Entity = i,
-                    Members = m.RowType.DataMembers.Where(dm => typesToCheck.Contains(dm.Type)).ToList()
-                }).Where(m => m.Members.Any()).ToList();
-            foreach (var ins in insertsUpdates)
-                foreach (var mm in ins.Members)
-                {
-                    var maxLength = GetMaxLength(mm.DbType);
-                    if (mm.MemberAccessor.HasValue(ins.Entity))
+            if (this.ObjectTrackingEnabled == true)
+            {
+                ChangeSet cs = this.GetChangeSet();
+                var typesToCheck = new Type[] { typeof(string), typeof(System.Data.Linq.Binary) };
+                var insertsUpdates = (
+                    from i in cs.Inserts.Union(cs.Updates)
+                    join m in this.Mapping.GetTables() on i.GetType() equals m.RowType.Type
+                    select new
                     {
-                        var memberValueLength = GetMemberValueLength(mm.MemberAccessor.GetBoxedValue(ins.Entity));
-                        if (maxLength > 0 && memberValueLength > maxLength)
+                        Entity = i,
+                        Members = m.RowType.DataMembers.Where(dm => typesToCheck.Contains(dm.Type)).ToList()
+                    }).Where(m => m.Members.Any()).ToList();
+                foreach (var ins in insertsUpdates)
+                    foreach (var mm in ins.Members)
+                    {
+                        var maxLength = GetMaxLength(mm.DbType);
+                        if (mm.MemberAccessor.HasValue(ins.Entity))
                         {
-                            var iex = new InvalidOperationException(mm.Name + " in " + mm.DeclaringType.Name + " has a value that will not fit into " + mm.DbType);
-                            throw iex;
+                            var memberValueLength = GetMemberValueLength(mm.MemberAccessor.GetBoxedValue(ins.Entity));
+                            if (maxLength > 0 && memberValueLength > maxLength)
+                            {
+                                var iex = new InvalidOperationException(mm.Name + " in " + mm.DeclaringType.Name + " has a value that will not fit into " + mm.DbType);
+                                throw iex;
+                            }
                         }
                     }
-                }
+            }
             base.SubmitChanges(failureMode);
         }
 

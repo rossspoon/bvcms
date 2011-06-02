@@ -38,8 +38,9 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult Delete()
         {
             var t = DbUtil.Db.TagCurrent();
-            if (t.TagShares.Count() > 0)
-                return Content("sharesexist");
+            if (t.TagShares.Count() > 0 || t.PeopleId != Util.UserPeopleId)
+                return Content("error");
+
             t.DeleteTag(DbUtil.Db);
             DbUtil.Db.SubmitChanges();
             Util2.CurrentTag = "UnNamed";

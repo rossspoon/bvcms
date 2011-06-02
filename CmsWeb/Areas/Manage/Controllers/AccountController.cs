@@ -472,13 +472,13 @@ The bvCMS Team</p>
                 }
                 else
                 {
-                    ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
+                    ModelState.AddModelError("form", "The current password is incorrect or the new password is invalid.");
                     return View();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                ModelState.AddModelError("_FORM", "The current password is incorrect or the new password is invalid.");
+                ModelState.AddModelError("form", ex.Message);
                 return View();
             }
         }
@@ -515,7 +515,7 @@ The bvCMS Team</p>
 
             if (!String.Equals(newPassword, confirmPassword, StringComparison.Ordinal))
             {
-                ModelState.AddModelError("_FORM", "The new password and confirmation password do not match.");
+                ModelState.AddModelError("form", "The new password and confirmation password do not match.");
             }
 
             return ModelState.IsValid;

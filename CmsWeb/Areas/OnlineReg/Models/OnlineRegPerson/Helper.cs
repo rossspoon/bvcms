@@ -192,11 +192,11 @@ namespace CmsWeb.Models
 <p>You registered for {orgname} using a different email address than the one we have on record.
 It is important that you call the church <strong>{phone}</strong> to update our records
 so that you will receive future important notices regarding this registration.</p>";
-                    c.Title = "{orgname}, different email address than one on record".Fmt(orgname);
+                    c.Title = "{orgname}, different email address than one on record";
                 }
                 var msg = c.Body.Replace("{name}", person.Name);
                 msg = msg.Replace("{orgname}", orgname);
-                msg = msg.Replace("{orgphone}", phone.FmtFone());
+                msg = msg.Replace("{phone}", phone.FmtFone());
                 var subj = c.Title.Replace("{orgname}", orgname);
                 DbUtil.Db.Email(fromemail, 
                     person, Util.ToMailAddressList(regemail), 
@@ -208,11 +208,11 @@ so that you will receive future important notices regarding this registration.</
                 if (c == null)
                 {
                     c = new Content();
-                    c.Body = @"Hi {0},
-<p>You registered for {1}, and we found your record, 
+                    c.Body = @"Hi {name},
+<p>You registered for {orgname}, and we found your record, 
 but there was no email address on your existing record in our database.
 If you would like for us to update your record with this email address or another,
-Please contact the church at <strong>{2}</strong> to let us know.
+Please contact the church at <strong>{phone}</strong> to let us know.
 It is important that we have your email address so that
 you will receive future important notices regarding this registration.
 But we won't add that to your record without your permission.
@@ -222,7 +222,7 @@ Thank you</p>";
                 }
                 var msg = c.Body.Replace("{name}", person.Name);
                 msg = msg.Replace("{orgname}", orgname);
-                msg = msg.Replace("{orgphone}", phone.FmtFone());
+                msg = msg.Replace("{phone}", phone.FmtFone());
                 var subj = c.Title.Replace("{orgname}", orgname);
                 DbUtil.Db.Email(fromemail, 
                     person, Util.ToMailAddressList(regemail), 

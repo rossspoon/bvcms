@@ -75,8 +75,8 @@ namespace CmsWeb.Models
             if (org.YesNoQuestions.HasValue())
                 foreach (var g in YesNoQuestion)
                     om.AddToGroup(DbUtil.Db, (g.Value == true ? "Yes:" : "No:") + g.Key);
-            foreach (var ck in Checkboxes())
-                om.RemoveFromGroup(DbUtil.Db, ck.name);
+            foreach (var ck in Checkboxes().Keys)
+                om.RemoveFromGroup(DbUtil.Db, ck);
             if (org.Checkboxes.HasValue() && Checkbox != null)
                 foreach (var g in Checkbox)
                     om.AddToGroup(DbUtil.Db, g);
@@ -264,6 +264,20 @@ namespace CmsWeb.Models
                     menulabel = string.Empty;
                 }
             }
+            if (org.Checkboxes.HasValue())
+            {
+                var menulabel = "Checkbox Items";
+                foreach (var i in CheckboxItemsChosen())
+                {
+                    string row;
+                    if (i.amt > 0)
+                        row = "<tr><td>{0}</td><td>{1} (${2:N2}</td></tr>\n".Fmt(menulabel, i.desc, i.amt);
+                    else
+                        row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, i.desc);
+                    sb.AppendFormat(row);
+                    menulabel = string.Empty;
+                }
+            }
             if (org.GradeOptions.HasValue())
                 sb.AppendFormat("<tr><td>GradeOption:</td><td>{0}</td></tr>\n",
                     GradeOptions().SingleOrDefault(s => s.Value == (gradeoption ?? "00")).Text);
@@ -275,8 +289,8 @@ namespace CmsWeb.Models
                     if (a.Value.HasValue())
                         sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
             if (org.Checkboxes.HasValue())
-                foreach (var a in Checkboxes())
-                    sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, CheckboxChecked(a.name) == true ? "checked" : ""));
+                foreach (var a in Checkboxes().Values)
+                    sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, CheckboxChecked(a.desc) == true ? "checked" : ""));
 
             //if (donation > 0)
             //    sb.AppendFormat("<tr><td>Donation:</td><td>{0:c}</td></tr>\n", donation);

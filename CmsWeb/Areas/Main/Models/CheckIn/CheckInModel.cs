@@ -456,7 +456,7 @@ namespace CmsWeb.Models
             if (om == null && Member)
                 om = OrganizationMember.InsertOrgMembers(OrgId, PeopleId, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
             else if (om != null && !Member)
-                om.Drop(DbUtil.Db);
+                om.Drop(DbUtil.Db, addToHistory:true);
             DbUtil.Db.SubmitChanges();
 
             var org = DbUtil.Db.LoadOrganizationById(OrgId);

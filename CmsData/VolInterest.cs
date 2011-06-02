@@ -70,7 +70,7 @@ namespace CmsData
                 var memb = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
                     om.OrganizationId == OrgId && om.PeopleId == pid);
                 if (memb != null)
-                    memb.Drop(DbUtil.Db);
+                    memb.Drop(DbUtil.Db, addToHistory:true);
                 DbUtil.Db.SubmitChanges();
             }
         }

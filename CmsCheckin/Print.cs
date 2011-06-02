@@ -218,6 +218,7 @@ namespace CmsCheckin
             memStrm.Position = 0;
             PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
             sw.Close();
+            BlankLabel(true);
         }
         public static int SecurityLabel(DateTime time, string code)
         {

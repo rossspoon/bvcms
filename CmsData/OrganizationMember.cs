@@ -33,7 +33,7 @@ namespace CmsData
             VIP = 700,
             Drop = -1,
         }
-        public EnrollmentTransaction Drop(CMSDataContext Db)
+        public EnrollmentTransaction Drop(CMSDataContext Db, bool addToHistory)
         {
             Db.SubmitChanges();
             int ntries = 2;

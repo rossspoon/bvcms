@@ -70,13 +70,58 @@ namespace CmsWeb.Models
                     select new YesNoQuestionItem { name = a[0].Trim(), desc = a[1], n = i++ };
             return q;
         }
-        public IEnumerable<YesNoQuestionItem> Checkboxes()
+        public class CheckBoxItem
         {
-            var i = 0;
-            var q = from s in (org.Checkboxes ?? string.Empty).Split(',')
-                    let a = s.Split('=')
-                    where s.HasValue()
-                    select new YesNoQuestionItem { name = a[0].Trim(), desc = a[1], n = i++ };
+            public string sg { get; set; }
+            public string desc { get; set; }
+            public decimal amt { get; set; }
+            public int n { get; set; }
+        }
+        //public IEnumerable<CheckBoxItem> Checkboxes()
+        //{
+        //    var i = 0;
+        //    var q = from s in (org.Checkboxes ?? string.Empty).Split(',')
+        //            let a = s.Split('=')
+        //            where s.HasValue()
+        //            select new CheckBoxItem { name = a[0].Trim(), desc = a[1], n = i++ };
+        //    return q;
+        //}
+        [NonSerialized]
+        Dictionary<string, CheckBoxItem> checkboxitems;
+        public Dictionary<string, CheckBoxItem> Checkboxes()
+        {
+            if (checkboxitems == null)
+            {
+                var re = new Regex(@"(?:(?<sg>[^=]*)=)?(?<desc>[^,[]+)(?:\[(?<amt>\d+)\])?,?");
+                checkboxitems = new Dictionary<string, CheckBoxItem>();
+                if (org.Checkboxes.HasValue())
+                {
+                    var i = 0;
+                    var m = re.Match(org.Checkboxes);
+                    while (m.Success)
+                    {
+                        var ci = new CheckBoxItem();
+                        ci.n = i++;
+                        ci.desc = m.Groups["desc"].Value;
+                        ci.sg = m.Groups["sg"].Value;
+                        if (!ci.sg.HasValue())
+                            ci.sg = ci.desc;
+                        Decimal amt = 0;
+                        Decimal.TryParse(m.Groups["amt"].Value, out amt);
+                        ci.amt = amt;
+                        checkboxitems.Add(ci.sg, ci);
+                        m = m.NextMatch();
+                    }
+                }
+            }
+            return checkboxitems;
+        }
+        public IEnumerable<CheckBoxItem> CheckboxItemsChosen()
+        {
+            var items = Checkboxes();
+            var q = from i in Checkbox
+                    join c in items on i equals c.Key
+                    select c.Value;
             return q;
         }
         public class ExtraQuestionItem

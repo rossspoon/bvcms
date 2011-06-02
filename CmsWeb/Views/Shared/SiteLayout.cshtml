@@ -98,7 +98,7 @@ function CloseAddDialog() {
                                         <img src="/Content/Welcome.png" width="11" height="16"></a></div>
                                 <div class="sublinks">
                                     <a href="/Account/LogOff/" title="@Util.UserName">Logout</a>
-                                    <a href="/ChangePassword.aspx">Change Password</a>
+                                    <a href="/Account/ChangePassword">Change Password</a>
 @if (User.IsInRole("Admin"))
 {
                                         <a href="/Admin/Users.aspx">Manage Users</a>
@@ -228,7 +228,7 @@ function CloseAddDialog() {
                                     <a href="/Setup/MetroZip/">Metro Zips</a> <a href="/Manage/Transactions">Transactions</a>
                                     <a href="/Manage/Emails">Emails</a> <a href="/Setup/Lookup/">Lookups</a>
                                     <a href="/Batch/UpdateFields/"> Update for a Tag</a> 
-                                    <a href="/Admin/ToggleOrgMembersOnly.ashx">@(Util2.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On")</a>
+                                    <a href="/Admin/ToggleOrgMembersOnly.ashx">@(Util2.OrgMembersOnly ? "Turn Off OrgMembersOnly" : "Turn On OrgMembersOnly")</a>
                                     <a href="/Batch/UpdateQueryBits">Update QueryBits</a>
                                     <a href="/Batch/FindTagPeople">Find Tag People</a>
                                     <a href="/Batch/TagPeopleIds">Tag PeopleIds</a>
@@ -241,10 +241,7 @@ function CloseAddDialog() {
                                 <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help</a></div>
                             <div class="sublinks">
                                 <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Wiki Documentation</a>
-    @if (User.IsInRole("Admin"))
-    {
-                                    <a href="http://bvcms.com/Page/Bug/">Bug Report</a>
-    }
+                                <a href="mailto:support@bvcms.com?subject=Support request from @DbUtil.Db.CurrentUserPerson.Name at @Util.CmsHost2" target="_blank">Email Support</a>
     @if (Request.Url.Authority == "bvcms.com" || Request.Url.Authority == "bellevue.org")
     {
                                     <a href="http://bvcms.com/Page/OnlineReg/" target="_blank">Online Registration Request

@@ -98,7 +98,8 @@ namespace CmsWeb
 				var q = from r in rollsheet
 						join pid in attended on r.PeopleId equals pid into j
 						from pid in j.DefaultIfEmpty()
-						where ((r.AttendFlag == true) != (pid > 0)) || (r.isMember && r.noRecord) // different or needs a record
+						where ((r.AttendFlag == true) != (pid > 0)) 
+                            || (r.isMember && r.noRecord) // different or needs a record
 						select new
 						{
 							r.PeopleId,

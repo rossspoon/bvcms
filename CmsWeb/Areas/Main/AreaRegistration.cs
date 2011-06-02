@@ -32,6 +32,7 @@ namespace CmsWeb.Areas.Main
             AddRoute(context, "OrgGroups");
             AddRoute(context, "Reports");
             AddRoute(context, "Person");
+            AddRoute(context, "Family");
             AddRoute(context, "Contact");
             AddRoute(context, "TaskDetail", "Task", "Task/Detail/{id}/Row/{rowid}", "Detail");
             AddRoute(context, "QueryBuilderMain", "QueryBuilder", "QueryBuilder/{action}/{id}", "Main");

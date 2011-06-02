@@ -24,6 +24,12 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new QueryBitsExcelResult(id);
         }
+        [Authorize(Roles="Finance")]
+        [Authorize(Roles="Admin")]
+        public ActionResult Contributions(string tag, string start, string end)
+        {
+            return new ContributionsExcelResult(tag, start, end);
+        }
 
     }
 }

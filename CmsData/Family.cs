@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace CmsData
 {
-    public partial class Family : IAuditable
+    public partial class Family
     {
         public enum PositionInFamily
         {

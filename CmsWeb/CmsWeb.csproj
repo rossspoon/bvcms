@@ -200,6 +200,7 @@
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
+    <Compile Include="Areas\Main\Controllers\FamilyController.cs" />
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
@@ -229,6 +230,8 @@
     <Compile Include="Areas\Dialog\Models\SearchUsersModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\ContributionsExcelResult.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailResult.cs" />
@@ -503,13 +506,6 @@
     <Compile Include="BadEts.aspx.designer.cs">
       <DependentUpon>BadEts.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ChangePassword.aspx.cs">
-      <DependentUpon>ChangePassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ChangePassword.aspx.designer.cs">
-      <DependentUpon>ChangePassword.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Code\WebEmailer.cs" />
     <Compile Include="Code\Geocode.cs" />
     <Compile Include="Code\IMetaWebLog.cs" />
@@ -621,13 +617,6 @@
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
     <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
     <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
-    <Compile Include="Default2.aspx.cs">
-      <DependentUpon>Default2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default2.aspx.designer.cs">
-      <DependentUpon>Default2.aspx</DependentUpon>
-    </Compile>
     <Compile Include="EmailAttendanceNotices.aspx.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -648,13 +637,6 @@
     </Compile>
     <Compile Include="ExportExcel.aspx.designer.cs">
       <DependentUpon>ExportExcel.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Family.aspx.cs">
-      <DependentUpon>Family.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Family.aspx.designer.cs">
-      <DependentUpon>Family.aspx</DependentUpon>
     </Compile>
     <Compile Include="ForceError.aspx.cs">
       <DependentUpon>ForceError.aspx</DependentUpon>
@@ -1079,7 +1061,6 @@
     <Content Include="App_Offline1.htm" />
     <Content Include="AttendStrDetail.aspx" />
     <Content Include="BadEts.aspx" />
-    <Content Include="Default2.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Content\bodybg.png" />
     <Content Include="images\bvcms120.png" />
@@ -1476,6 +1457,7 @@
     <Content Include="Areas\Dialog\Views\Web.config" />
     <Content Include="Areas\Main\Views\OrgGroups\Form.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.cshtml" />
+    <Content Include="Areas\Main\Views\Family\Index.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
@@ -1515,13 +1497,11 @@
     <Content Include="Areas\m\Views\Shared\Mobile.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ChangePassword.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="ContactSearch.aspx" />
     <Content Include="EmailAttendanceNotices.aspx" />
     <Content Include="EnrollmentControlReport.aspx" />
     <Content Include="Errors\Error.aspx" />
-    <Content Include="Family.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ForceError.aspx" />

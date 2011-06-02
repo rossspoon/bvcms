@@ -41,6 +41,7 @@ namespace CmsWeb.Models
             var query = Db.PeopleQuery(queryid);
             var q = from p in query
                     let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
+                    let oid = p.PeopleExtras.SingleOrDefault(pe => pe.Field == "OtherId").Data
                     select new
                     {
                         PeopleId = p.PeopleId,
@@ -69,6 +70,7 @@ namespace CmsWeb.Models
                         FamilyId = p.FamilyId,
                         FamilyPosition = p.PositionInFamilyId,
                         AltName = p.AltName,
+                        OtherId = oid ?? ""
                     };
             return q.Take(maximumRows);
         }

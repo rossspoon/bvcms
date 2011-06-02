@@ -223,12 +223,20 @@
     </tr>
     <tr>
         <th>Checkboxes:</th>
-        <td>@Html.TextBox("org.Checkboxes") 
+        <td>@Html.TextArea("org.Checkboxes", new { style = "height:200px;width:200px" }) 
         @Html.ValidationMessage("checkboxes")</td>
     </tr>
     <tr>
         <th>Checkboxes Label:</th>
         <td>@Html.TextBox("org.CheckboxesLabel")</td>
+    </tr>
+    <tr>
+        <th>Min # Checkboxes:</th>
+        <td>@Html.TextBox("org.CheckboxesMin")</td>
+    </tr>
+    <tr>
+        <th>Max # Checkboxes:</th>
+        <td>@Html.TextBox("org.CheckboxesMax")</td>
     </tr>
     <tr>
         <th>Extra Questions:</th>

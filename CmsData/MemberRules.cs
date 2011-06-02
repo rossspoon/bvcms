@@ -178,7 +178,7 @@ namespace CmsData
                         where om.Organization.OrganizationName == "Step 1"
                         select om;
                 foreach (var om in q)
-                    om.Drop(Db);
+                    om.Drop(Db, addToHistory:true);
             }
         }
         private void DropMembership(CMSDataContext Db)
@@ -225,7 +225,7 @@ namespace CmsData
 
             var list = OrganizationMembers.ToList();
             foreach(var om in list)
-                om.Drop(Db);
+                om.Drop(Db, addToHistory:true);
         }
     }
 }

@@ -72,7 +72,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
             if (om != null)
             {
-                om.Drop(DbUtil.Db);
+                om.Drop(DbUtil.Db, addToHistory:true);
                 DbUtil.Db.SubmitChanges();
             }
             return Content("dropped");
@@ -107,7 +107,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             om2.Request = om1.Request;
             om2.Amount = om1.Amount;
             om2.UserData = om1.UserData;
-            om1.Drop(DbUtil.Db);
+            om1.Drop(DbUtil.Db, addToHistory:true);
             DbUtil.Db.SubmitChanges();
             return Content("moved");
         }

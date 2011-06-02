@@ -176,7 +176,7 @@ namespace CmsWeb.Models
             var subject = Util.PickFirst(EmailSubject, "no subject");
             var message = Util.PickFirst(EmailMessage, "no message");
 
-            MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
+            message = MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
 
             message = message.Replace("{tickets}", List[0].ntickets.ToString());
             message = message.Replace("{details}", details.ToString());

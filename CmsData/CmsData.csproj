@@ -147,10 +147,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attend.cs" />
-    <Compile Include="AuditExtensions.cs" />
     <Compile Include="Batch\ExpressionVisitor.cs" />
     <Compile Include="Batch\LinqToSqlExtensions.cs" />
-    <Compile Include="AuditUtility.cs" />
     <Compile Include="Blog.cs" />
     <Compile Include="BlogCategoryController.cs" />
     <Compile Include="BlogComment.cs" />
@@ -332,7 +330,6 @@
     <Compile Include="Resource1.Designer.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Generated\Task.cs" />
-    <Compile Include="IAuditable.cs" />
     <Compile Include="DbUtil.cs" />
     <Compile Include="Family.cs" />
     <Compile Include="Generated\BaptismStatus.cs" />

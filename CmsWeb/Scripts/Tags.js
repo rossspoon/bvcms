@@ -13,8 +13,12 @@
         }
         if (confirm($(this).attr("confirm"))) {
             $.post("Tags/Delete", null, function (ret) {
-                $("#tag").replaceWith(ret);
-                $.getTable();
+                if (ret == "error") {
+                    $.growlUI("Error", "cannot delete tag", 3000, null);
+                } else {
+                    $("#tag").replaceWith(ret);
+                    $.getTable();
+                }
             });
         }
         return false;

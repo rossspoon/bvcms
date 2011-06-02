@@ -295,6 +295,8 @@ namespace CmsData
                 var votelink = match.Value;
                 var anchor = "<a " + match.Groups["inside"].Value + ">text</a>";
                 anchor = anchor.Replace("&quot;", "\"");
+                anchor = anchor.Replace("&rdquo;", "\"");
+                anchor = anchor.Replace("&ldquo;", "\"");
                 var rd = new SgmlReader();
                 rd.DocType = "HTML";
                 rd.InputStream = new StringReader(anchor);

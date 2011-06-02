@@ -213,12 +213,22 @@
 @if (Model.Checkboxes().Count() > 0)
 { 
    <tr>
-       <td><div class="wraparound">@Model.org.CheckboxesLabel</div></td>
-       <td>
-    @foreach (var a in Model.Checkboxes())
+       <td valign="top"><div class="wraparound">@Model.org.CheckboxesLabel</div></td>
+       <td style="padding:3px">
+            <table>
+    @foreach (var a in Model.Checkboxes().Values)
     { 
-           <input type="checkbox" value="@a.name" name='@Model.inputname("Checkbox")' @(Model.CheckboxChecked(a.name) ? "checked='checked'" : "") /> @a.desc<br />
+            <tr><td valign="top"><input type="checkbox" value="@a.sg" name='@Model.inputname("Checkbox")' @(Model.CheckboxChecked(a.sg) ? "checked='checked'" : "") /></td>
+                <td>@a.desc 
+        @if (a.amt > 0) 
+        { 
+            @:&nbsp;($@a.amt.ToString("N2")) 
+        }
+            </td>
+            </tr>
     }
+            </table>
+            <div>@Html.ValidationMessage("checkboxes")</div>
        </td>
    </tr>
 }

@@ -45,7 +45,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             foreach (var om in q)
             {
                 if (m.MemberType == (int)OrganizationMember.MemberTypeCode.Drop)
-                    om.Drop(DbUtil.Db);
+                    om.Drop(DbUtil.Db, addToHistory:true);
                 else
                 {
                     if (m.MemberType > 0)

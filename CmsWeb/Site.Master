@@ -199,7 +199,7 @@
                     <a href="/Manage/Emails">Emails</a>
                     <a href="/Setup/Lookup/">Lookups</a>
                     <a href="/Admin/ToggleOrgMembersOnly.ashx">
-                        <%=Util2.OrgMembersOnly ? "Turn OrgMembersOnly Off" : "Turn OrgMembersOnly On" %></a>
+                        <%=Util2.OrgMembersOnly ? "Turn Off OrgMembersOnly" : "Turn On OrgMembersOnly" %></a>
                     <a href="/Batch/UpdateQueryBits">Update QueryBits</a>
                     <a href="/Batch/FindTagPeople">Find Tag People</a>
                     <a href="/Batch/TagPeopleIds">Tag PeopleIds</a>

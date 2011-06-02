@@ -81,6 +81,8 @@ namespace CmsWeb.Models
                 if (q.Count() > 0)
                     amt += q.First();
             }
+            if (Checkboxes().Values.Any(vv => vv.amt > 0))
+                amt += CheckboxItemsChosen().Sum(c => c.amt);
             return amt;
         }
     }

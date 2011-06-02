@@ -142,11 +142,11 @@
         <td> @(Model.YesNoQuestion[a.name] == true ? "Yes" : "No") </td>
     </tr>
 }
-@foreach (var a in Model.Checkboxes())
+@foreach (var a in Model.Checkboxes().Values)
 { 
     <tr>
         <td><div class="wraparound">@a.desc</div></td>
-        <td> @(Model.CheckboxChecked(a.name) == true ? "Checked" : "") </td>
+        <td> @(Model.CheckboxChecked(a.sg) == true ? "Checked" : "") </td>
     </tr>
 }
 @foreach (var i in Model.MenuItemsChosen())

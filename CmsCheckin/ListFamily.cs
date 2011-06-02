@@ -277,8 +277,10 @@ namespace CmsCheckin
                     c.cinfo.mv = "G";
                 if (classlist.Count > 0)
                 {
-                    var li = classlist.SingleOrDefault(cl => cl.oid == c.cinfo.oid && cl.pid == c.cinfo.pid);
-                    if (li != null && c.CheckedIn)
+                    var q = from cl in classlist
+                            where cl.oid == c.cinfo.oid && cl.pid == c.cinfo.pid
+                            select cl;
+                    if (q.Count() > 0 && c.CheckedIn)
                         c.WasChecked = true;
                 }
 
@@ -506,16 +508,30 @@ namespace CmsCheckin
             menu.EditRecord += EditRecord_Click;
             menu.PrintLabel += PrintLabel_Click;
             menu.AddFamily += AddToFamily_Click;
-            if (c.cinfo.oid == 0)
+            if (Program.KioskMode)
             {
-                menu.JoinClass += new EventHandler(menu_JoinClass);
-                menu.Join.Text = "Join Class";
+                if (c.cinfo.oid == 0)
+                {
+                    menu.JoinClass += new EventHandler(menu_JoinClass);
+                    menu.Join.Text = "Join Class";
+                }
+                else
+                {
+                    menu.JoinClass += new EventHandler(menu_UnJoinClass);
+                    menu.Join.Text = "Drop Class";
+                }
             }
-            else
-            {
-                menu.JoinClass += new EventHandler(menu_UnJoinClass);
-                menu.Join.Text = "Drop Class";
-            }
+            else if (c.cinfo.oid != 0)
+                if (c.cinfo.mv == "M")
+                {
+                    menu.JoinClass += new EventHandler(menu_UnJoinClass);
+                    menu.Join.Text = "Drop Class";
+                }
+                else
+                {
+                    menu.JoinClass += new EventHandler(menu_JoinClass);
+                    menu.Join.Text = "Join Class";
+                }
             menu.CancelMenu += new EventHandler(CancelMenu_Click);
             menu.Show();
             menu.BringToFront();

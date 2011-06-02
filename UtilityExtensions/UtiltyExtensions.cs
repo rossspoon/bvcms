@@ -60,6 +60,11 @@ namespace UtilityExtensions
         }
         public static DateTime? ToDate(this string s)
         {
+            if (s != null && s.AllDigits() && s.Length == 8)
+            {
+                s = s.Insert(4, "/");
+                s = s.Insert(2, "/");
+            }
             DateTime dt;
             if (DateTime.TryParse(s, out dt))
                 return dt;
@@ -235,6 +240,7 @@ namespace UtilityExtensions
         {
             return DateTime.TryParse(date, out dt);
         }
+        
         public static string Age(this string birthday)
         {
             DateTime bd;
@@ -335,7 +341,9 @@ namespace UtilityExtensions
         }
         public static bool AllDigits(this string str)
         {
-            Regex patt = new Regex("[^0-9]");
+            if (!str.HasValue())
+                return false;
+            var patt = new Regex("[^0-9]");
             return !(patt.IsMatch(str));
         }
         public static string FmtFone(this string phone)

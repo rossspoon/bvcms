@@ -66,7 +66,7 @@ namespace CmsWeb.Controllers
                 if (om == null)
                     continue;
                 om.Person.Comments = "InactiveDrop: {0}({1})\n{2}".Fmt(om.Organization.OrganizationName, om.Organization.OrganizationId, om.Person.Comments);
-                om.Drop(DbUtil.Db);
+                om.Drop(DbUtil.Db, addToHistory:true);
 
                 DbUtil.Db.SubmitChanges();
                 n++;

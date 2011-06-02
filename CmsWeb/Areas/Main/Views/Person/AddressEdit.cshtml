@@ -1,10 +1,18 @@
 ﻿@using UtilityExtensions
+@using CmsData
 @model CmsWeb.Models.PersonPage.AddressInfo
 <table class="Design2">
     <tr>
         <th>Address:</th>
         <td>@Html.TextBox("Address1")</td>
+@if (DbUtil.Db.Setting("VerifyAddressEnabled", "true") == "true")
+{
         <td><a id="verifyaddress" href="/Person/VerifyAddress/" class="bt">Verify Address</a></td>
+}
+else
+{
+        <td><a id="verifyaddress" class="bt">Verify Address (out of service)</a></td>
+}
     </tr>
     <tr>
         <th>Address2:</th>

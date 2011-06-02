@@ -759,42 +759,37 @@ namespace CmsWeb.Areas.Manage.Controllers
             UpdateModel(m);
             var tag = DbUtil.Db.TagById(m.Tag.ToInt());
             var q = tag.People(DbUtil.Db);
-            switch (m.Field)
+            foreach (var p in q)
             {
-                case "Member Status":
-                    foreach (var p in q)
+                switch (m.Field)
+                {
+                    case "Member Status":
                         p.MemberStatusId = m.NewValue.ToInt();
-                    break;
-                case "Campus":
-                    foreach (var p in q)
+                        break;
+                    case "Campus":
                         p.CampusId = m.NewValue.ToInt();
-                    break;
-                case "Marital Status":
-                    foreach (var p in q)
+                        break;
+                    case "Marital Status":
                         p.MaritalStatusId = m.NewValue.ToInt();
-                    break;
-                case "Family Position":
-                    foreach (var p in q)
+                        break;
+                    case "Family Position":
                         p.PositionInFamilyId = m.NewValue.ToInt();
-                    break;
-                case "Gender":
-                    foreach (var p in q)
+                        break;
+                    case "Gender":
                         p.GenderId = m.NewValue.ToInt();
-                    break;
-                case "Occupation":
-                    foreach (var p in q)
+                        break;
+                    case "Occupation":
                         p.OccupationOther = m.NewValue;
-                    break;
-                case "School":
-                    foreach (var p in q)
+                        break;
+                    case "School":
                         p.SchoolOther = m.NewValue;
-                    break;
-                case "Employer":
-                    foreach (var p in q)
+                        break;
+                    case "Employer":
                         p.EmployerOther = m.NewValue;
-                    break;
+                        break;
+                }
+                DbUtil.Db.SubmitChanges();
             }
-            DbUtil.Db.SubmitChanges();
             TempData["success"] = m.Field + " Updated";
             return RedirectToAction("UpdateFields");
         }
@@ -937,7 +932,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                     row.PeopleId = pids.Single().PeopleId.Value;
                 list.Add(row);
                 if (row.PeopleId.HasValue)
-                    Person.Tag(row.PeopleId.Value, tagname, DbUtil.Db.CurrentPeopleId, DbUtil.TagTypeId_Personal);
+                    Person.Tag(DbUtil.Db, row.PeopleId.Value, tagname, DbUtil.Db.CurrentPeopleId, DbUtil.TagTypeId_Personal);
             }
             return View(list);
         }
@@ -962,7 +957,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             var q = from line in s.Split('\n')
                     select line.ToInt();
             foreach (var pid in q)
-                Person.Tag(pid, name, DbUtil.Db.CurrentUser.PeopleId, (int)DbUtil.TagTypeId_Personal);
+                Person.Tag(DbUtil.Db, pid, name, DbUtil.Db.CurrentUser.PeopleId, (int)DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return Redirect("/Tags?tag=" + name);
         }

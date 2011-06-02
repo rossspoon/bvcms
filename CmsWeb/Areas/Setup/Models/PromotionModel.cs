@@ -65,7 +65,7 @@ namespace CmsWeb.Areas.Setup.Models
             var qlist = q.ToList();
             foreach (var i in qlist)
             {
-                i.om.Drop(DbUtil.Db);
+                i.om.Drop(DbUtil.Db, addToHistory:true);
                 DbUtil.Db.SubmitChanges();
                 i.pc.Pending = false;
                 DbUtil.Db.SubmitChanges();

@@ -23,7 +23,7 @@ using System.Web;
 
 namespace CmsData
 {
-    public partial class Person : IAuditable
+    public partial class Person
     {
         public enum OriginCode
         {
@@ -741,9 +741,8 @@ namespace CmsData
             Db.TagPeople.DeleteOnSubmit(tp);
             return false;
         }
-        public static void Tag(int PeopleId, string TagName, int? OwnerId, int TagTypeId)
+        public static void Tag(CMSDataContext Db, int PeopleId, string TagName, int? OwnerId, int TagTypeId)
         {
-            var Db = DbUtil.Db;
             var tag = Db.FetchOrCreateTag(TagName, OwnerId, TagTypeId);
             var tp = Db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == PeopleId);
             var isperson = Db.People.Count(p => p.PeopleId == PeopleId) > 0;

@@ -263,74 +263,74 @@ namespace CmsData
 		
 		private string _PreferredName;
 		
+   		
+   		private EntitySet< Contactee> _contactsHad;
 		
-		private EntitySet< Contactee> _contactsHad;
+   		private EntitySet< Contactor> _contactsMade;
 		
-		private EntitySet< Contactor> _contactsMade;
+   		private EntitySet< EnrollmentTransaction> _EnrollmentTransactions;
 		
-		private EntitySet< EnrollmentTransaction> _EnrollmentTransactions;
+   		private EntitySet< Family> _FamiliesHeaded;
 		
-		private EntitySet< Family> _FamiliesHeaded;
+   		private EntitySet< Family> _FamiliesHeaded2;
 		
-		private EntitySet< Family> _FamiliesHeaded2;
+   		private EntitySet< MOBSReg> _MOBSRegs;
 		
-		private EntitySet< MOBSReg> _MOBSRegs;
+   		private EntitySet< Attend> _Attends;
 		
-		private EntitySet< Attend> _Attends;
+   		private EntitySet< CardIdentifier> _CardIdentifiers;
 		
-		private EntitySet< CardIdentifier> _CardIdentifiers;
+   		private EntitySet< CheckInTime> _CheckInTimes;
 		
-		private EntitySet< CheckInTime> _CheckInTimes;
+   		private EntitySet< Contribution> _Contributions;
 		
-		private EntitySet< Contribution> _Contributions;
+   		private EntitySet< Coupon> _Coupons;
 		
-		private EntitySet< Coupon> _Coupons;
+   		private EntitySet< EmailOptOut> _EmailOptOuts;
 		
-		private EntitySet< EmailOptOut> _EmailOptOuts;
+   		private EntitySet< EmailQueue> _EmailQueues;
 		
-		private EntitySet< EmailQueue> _EmailQueues;
+   		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
-		private EntitySet< EmailQueueTo> _EmailQueueTos;
+   		private EntitySet< EmailResponse> _EmailResponses;
 		
-		private EntitySet< EmailResponse> _EmailResponses;
+   		private EntitySet< PendingNotification> _PendingNotifications;
 		
-		private EntitySet< PendingNotification> _PendingNotifications;
+   		private EntitySet< PeopleExtra> _PeopleExtras;
 		
-		private EntitySet< PeopleExtra> _PeopleExtras;
+   		private EntitySet< PrayerSlot> _PrayerSlots;
 		
-		private EntitySet< PrayerSlot> _PrayerSlots;
+   		private EntitySet< RecReg> _RecRegs;
 		
-		private EntitySet< RecReg> _RecRegs;
+   		private EntitySet< SaleTransaction> _SaleTransactions;
 		
-		private EntitySet< SaleTransaction> _SaleTransactions;
+   		private EntitySet< TagShare> _TagShares;
 		
-		private EntitySet< TagShare> _TagShares;
+   		private EntitySet< TaskListOwner> _TaskListOwners;
 		
-		private EntitySet< TaskListOwner> _TaskListOwners;
+   		private EntitySet< TransactionPerson> _TransactionPeople;
 		
-		private EntitySet< TransactionPerson> _TransactionPeople;
+   		private EntitySet< User> _Users;
 		
-		private EntitySet< User> _Users;
+   		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
 		
-		private EntitySet< VolInterestInterestCode> _VolInterestInterestCodes;
+   		private EntitySet< Volunteer> _Volunteers;
 		
-		private EntitySet< Volunteer> _Volunteers;
+   		private EntitySet< VolunteerForm> _VolunteerForms;
 		
-		private EntitySet< VolunteerForm> _VolunteerForms;
+   		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
-		private EntitySet< OrganizationMember> _OrganizationMembers;
+   		private EntitySet< TagPerson> _Tags;
 		
-		private EntitySet< TagPerson> _Tags;
+   		private EntitySet< Tag> _TagsOwned;
 		
-		private EntitySet< Tag> _TagsOwned;
+   		private EntitySet< Task> _Tasks;
 		
-		private EntitySet< Task> _Tasks;
+   		private EntitySet< Task> _TasksAboutPerson;
 		
-		private EntitySet< Task> _TasksAboutPerson;
+   		private EntitySet< Task> _TasksCoOwned;
 		
-		private EntitySet< Task> _TasksCoOwned;
-		
-		
+    	
 		private EntityRef< ResidentCode> _AltResidentCode;
 		
 		private EntityRef< Organization> _BFClass;
@@ -377,10 +377,10 @@ namespace CmsData
 		
 	#endregion
 	
-	#region Extensibility Method Definitions
-	partial void OnLoaded();
-	partial void OnValidate(System.Data.Linq.ChangeAction action);
-	partial void OnCreated();
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
 		
 		partial void OnPeopleIdChanging(int value);
 		partial void OnPeopleIdChanged();
@@ -751,7 +751,7 @@ namespace CmsData
 		partial void OnPreferredNameChanging(string value);
 		partial void OnPreferredNameChanged();
 		
-	#endregion
+    #endregion
 		public Person()
 		{
 			
@@ -870,7 +870,7 @@ namespace CmsData
 		}
 
 		
-	#region Columns
+    #region Columns
 		
 		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int PeopleId
@@ -882,7 +882,7 @@ namespace CmsData
 				if (this._PeopleId != value)
 				{
 				
-					this.OnPeopleIdChanging(value);
+                    this.OnPeopleIdChanging(value);
 					this.SendPropertyChanging();
 					this._PeopleId = value;
 					this.SendPropertyChanged("PeopleId");
@@ -904,7 +904,7 @@ namespace CmsData
 				if (this._CreatedBy != value)
 				{
 				
-					this.OnCreatedByChanging(value);
+                    this.OnCreatedByChanging(value);
 					this.SendPropertyChanging();
 					this._CreatedBy = value;
 					this.SendPropertyChanged("CreatedBy");
@@ -926,7 +926,7 @@ namespace CmsData
 				if (this._CreatedDate != value)
 				{
 				
-					this.OnCreatedDateChanging(value);
+                    this.OnCreatedDateChanging(value);
 					this.SendPropertyChanging();
 					this._CreatedDate = value;
 					this.SendPropertyChanged("CreatedDate");
@@ -951,7 +951,7 @@ namespace CmsData
 					if (this._DropType.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnDropCodeIdChanging(value);
+                    this.OnDropCodeIdChanging(value);
 					this.SendPropertyChanging();
 					this._DropCodeId = value;
 					this.SendPropertyChanged("DropCodeId");
@@ -976,7 +976,7 @@ namespace CmsData
 					if (this._Gender.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnGenderIdChanging(value);
+                    this.OnGenderIdChanging(value);
 					this.SendPropertyChanging();
 					this._GenderId = value;
 					this.SendPropertyChanged("GenderId");
@@ -998,7 +998,7 @@ namespace CmsData
 				if (this._DoNotMailFlag != value)
 				{
 				
-					this.OnDoNotMailFlagChanging(value);
+                    this.OnDoNotMailFlagChanging(value);
 					this.SendPropertyChanging();
 					this._DoNotMailFlag = value;
 					this.SendPropertyChanged("DoNotMailFlag");
@@ -1020,7 +1020,7 @@ namespace CmsData
 				if (this._DoNotCallFlag != value)
 				{
 				
-					this.OnDoNotCallFlagChanging(value);
+                    this.OnDoNotCallFlagChanging(value);
 					this.SendPropertyChanging();
 					this._DoNotCallFlag = value;
 					this.SendPropertyChanged("DoNotCallFlag");
@@ -1042,7 +1042,7 @@ namespace CmsData
 				if (this._DoNotVisitFlag != value)
 				{
 				
-					this.OnDoNotVisitFlagChanging(value);
+                    this.OnDoNotVisitFlagChanging(value);
 					this.SendPropertyChanging();
 					this._DoNotVisitFlag = value;
 					this.SendPropertyChanged("DoNotVisitFlag");
@@ -1064,7 +1064,7 @@ namespace CmsData
 				if (this._AddressTypeId != value)
 				{
 				
-					this.OnAddressTypeIdChanging(value);
+                    this.OnAddressTypeIdChanging(value);
 					this.SendPropertyChanging();
 					this._AddressTypeId = value;
 					this.SendPropertyChanged("AddressTypeId");
@@ -1086,7 +1086,7 @@ namespace CmsData
 				if (this._PhonePrefId != value)
 				{
 				
-					this.OnPhonePrefIdChanging(value);
+                    this.OnPhonePrefIdChanging(value);
 					this.SendPropertyChanging();
 					this._PhonePrefId = value;
 					this.SendPropertyChanged("PhonePrefId");
@@ -1111,7 +1111,7 @@ namespace CmsData
 					if (this._MaritalStatus.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnMaritalStatusIdChanging(value);
+                    this.OnMaritalStatusIdChanging(value);
 					this.SendPropertyChanging();
 					this._MaritalStatusId = value;
 					this.SendPropertyChanged("MaritalStatusId");
@@ -1136,7 +1136,7 @@ namespace CmsData
 					if (this._FamilyPosition.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnPositionInFamilyIdChanging(value);
+                    this.OnPositionInFamilyIdChanging(value);
 					this.SendPropertyChanging();
 					this._PositionInFamilyId = value;
 					this.SendPropertyChanged("PositionInFamilyId");
@@ -1161,7 +1161,7 @@ namespace CmsData
 					if (this._MemberStatus.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnMemberStatusIdChanging(value);
+                    this.OnMemberStatusIdChanging(value);
 					this.SendPropertyChanging();
 					this._MemberStatusId = value;
 					this.SendPropertyChanged("MemberStatusId");
@@ -1186,7 +1186,7 @@ namespace CmsData
 					if (this._Family.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnFamilyIdChanging(value);
+                    this.OnFamilyIdChanging(value);
 					this.SendPropertyChanging();
 					this._FamilyId = value;
 					this.SendPropertyChanged("FamilyId");
@@ -1208,7 +1208,7 @@ namespace CmsData
 				if (this._BirthMonth != value)
 				{
 				
-					this.OnBirthMonthChanging(value);
+                    this.OnBirthMonthChanging(value);
 					this.SendPropertyChanging();
 					this._BirthMonth = value;
 					this.SendPropertyChanged("BirthMonth");
@@ -1230,7 +1230,7 @@ namespace CmsData
 				if (this._BirthDay != value)
 				{
 				
-					this.OnBirthDayChanging(value);
+                    this.OnBirthDayChanging(value);
 					this.SendPropertyChanging();
 					this._BirthDay = value;
 					this.SendPropertyChanged("BirthDay");
@@ -1252,7 +1252,7 @@ namespace CmsData
 				if (this._BirthYear != value)
 				{
 				
-					this.OnBirthYearChanging(value);
+                    this.OnBirthYearChanging(value);
 					this.SendPropertyChanging();
 					this._BirthYear = value;
 					this.SendPropertyChanged("BirthYear");
@@ -1277,7 +1277,7 @@ namespace CmsData
 					if (this._Origin.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnOriginIdChanging(value);
+                    this.OnOriginIdChanging(value);
 					this.SendPropertyChanging();
 					this._OriginId = value;
 					this.SendPropertyChanged("OriginId");
@@ -1302,7 +1302,7 @@ namespace CmsData
 					if (this._EntryPoint.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnEntryPointIdChanging(value);
+                    this.OnEntryPointIdChanging(value);
 					this.SendPropertyChanging();
 					this._EntryPointId = value;
 					this.SendPropertyChanged("EntryPointId");
@@ -1327,7 +1327,7 @@ namespace CmsData
 					if (this._InterestPoint.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnInterestPointIdChanging(value);
+                    this.OnInterestPointIdChanging(value);
 					this.SendPropertyChanging();
 					this._InterestPointId = value;
 					this.SendPropertyChanged("InterestPointId");
@@ -1352,7 +1352,7 @@ namespace CmsData
 					if (this._BaptismType.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnBaptismTypeIdChanging(value);
+                    this.OnBaptismTypeIdChanging(value);
 					this.SendPropertyChanging();
 					this._BaptismTypeId = value;
 					this.SendPropertyChanged("BaptismTypeId");
@@ -1377,7 +1377,7 @@ namespace CmsData
 					if (this._BaptismStatus.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnBaptismStatusIdChanging(value);
+                    this.OnBaptismStatusIdChanging(value);
 					this.SendPropertyChanging();
 					this._BaptismStatusId = value;
 					this.SendPropertyChanged("BaptismStatusId");
@@ -1402,7 +1402,7 @@ namespace CmsData
 					if (this._DecisionType.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnDecisionTypeIdChanging(value);
+                    this.OnDecisionTypeIdChanging(value);
 					this.SendPropertyChanging();
 					this._DecisionTypeId = value;
 					this.SendPropertyChanged("DecisionTypeId");
@@ -1427,7 +1427,7 @@ namespace CmsData
 					if (this._DiscoveryClassStatus.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnDiscoveryClassStatusIdChanging(value);
+                    this.OnDiscoveryClassStatusIdChanging(value);
 					this.SendPropertyChanging();
 					this._DiscoveryClassStatusId = value;
 					this.SendPropertyChanged("DiscoveryClassStatusId");
@@ -1449,7 +1449,7 @@ namespace CmsData
 				if (this._NewMbrClassStatusId != value)
 				{
 				
-					this.OnNewMbrClassStatusIdChanging(value);
+                    this.OnNewMbrClassStatusIdChanging(value);
 					this.SendPropertyChanging();
 					this._NewMbrClassStatusId = value;
 					this.SendPropertyChanged("NewMbrClassStatusId");
@@ -1474,7 +1474,7 @@ namespace CmsData
 					if (this._MemberLetterStatus.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnLetterStatusIdChanging(value);
+                    this.OnLetterStatusIdChanging(value);
 					this.SendPropertyChanging();
 					this._LetterStatusId = value;
 					this.SendPropertyChanged("LetterStatusId");
@@ -1499,7 +1499,7 @@ namespace CmsData
 					if (this._JoinType.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnJoinCodeIdChanging(value);
+                    this.OnJoinCodeIdChanging(value);
 					this.SendPropertyChanging();
 					this._JoinCodeId = value;
 					this.SendPropertyChanged("JoinCodeId");
@@ -1524,7 +1524,7 @@ namespace CmsData
 					if (this._EnvelopeOption.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnEnvelopeOptionsIdChanging(value);
+                    this.OnEnvelopeOptionsIdChanging(value);
 					this.SendPropertyChanging();
 					this._EnvelopeOptionsId = value;
 					this.SendPropertyChanged("EnvelopeOptionsId");
@@ -1546,7 +1546,7 @@ namespace CmsData
 				if (this._BadAddressFlag != value)
 				{
 				
-					this.OnBadAddressFlagChanging(value);
+                    this.OnBadAddressFlagChanging(value);
 					this.SendPropertyChanging();
 					this._BadAddressFlag = value;
 					this.SendPropertyChanged("BadAddressFlag");
@@ -1568,7 +1568,7 @@ namespace CmsData
 				if (this._AltBadAddressFlag != value)
 				{
 				
-					this.OnAltBadAddressFlagChanging(value);
+                    this.OnAltBadAddressFlagChanging(value);
 					this.SendPropertyChanging();
 					this._AltBadAddressFlag = value;
 					this.SendPropertyChanged("AltBadAddressFlag");
@@ -1593,7 +1593,7 @@ namespace CmsData
 					if (this._ResidentCode.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnResCodeIdChanging(value);
+                    this.OnResCodeIdChanging(value);
 					this.SendPropertyChanging();
 					this._ResCodeId = value;
 					this.SendPropertyChanged("ResCodeId");
@@ -1618,7 +1618,7 @@ namespace CmsData
 					if (this._AltResidentCode.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnAltResCodeIdChanging(value);
+                    this.OnAltResCodeIdChanging(value);
 					this.SendPropertyChanging();
 					this._AltResCodeId = value;
 					this.SendPropertyChanged("AltResCodeId");
@@ -1640,7 +1640,7 @@ namespace CmsData
 				if (this._AddressFromDate != value)
 				{
 				
-					this.OnAddressFromDateChanging(value);
+                    this.OnAddressFromDateChanging(value);
 					this.SendPropertyChanging();
 					this._AddressFromDate = value;
 					this.SendPropertyChanged("AddressFromDate");
@@ -1662,7 +1662,7 @@ namespace CmsData
 				if (this._AddressToDate != value)
 				{
 				
-					this.OnAddressToDateChanging(value);
+                    this.OnAddressToDateChanging(value);
 					this.SendPropertyChanging();
 					this._AddressToDate = value;
 					this.SendPropertyChanged("AddressToDate");
@@ -1684,7 +1684,7 @@ namespace CmsData
 				if (this._AltAddressFromDate != value)
 				{
 				
-					this.OnAltAddressFromDateChanging(value);
+                    this.OnAltAddressFromDateChanging(value);
 					this.SendPropertyChanging();
 					this._AltAddressFromDate = value;
 					this.SendPropertyChanged("AltAddressFromDate");
@@ -1706,7 +1706,7 @@ namespace CmsData
 				if (this._AltAddressToDate != value)
 				{
 				
-					this.OnAltAddressToDateChanging(value);
+                    this.OnAltAddressToDateChanging(value);
 					this.SendPropertyChanging();
 					this._AltAddressToDate = value;
 					this.SendPropertyChanged("AltAddressToDate");
@@ -1728,7 +1728,7 @@ namespace CmsData
 				if (this._WeddingDate != value)
 				{
 				
-					this.OnWeddingDateChanging(value);
+                    this.OnWeddingDateChanging(value);
 					this.SendPropertyChanging();
 					this._WeddingDate = value;
 					this.SendPropertyChanged("WeddingDate");
@@ -1750,7 +1750,7 @@ namespace CmsData
 				if (this._OriginDate != value)
 				{
 				
-					this.OnOriginDateChanging(value);
+                    this.OnOriginDateChanging(value);
 					this.SendPropertyChanging();
 					this._OriginDate = value;
 					this.SendPropertyChanged("OriginDate");
@@ -1772,7 +1772,7 @@ namespace CmsData
 				if (this._BaptismSchedDate != value)
 				{
 				
-					this.OnBaptismSchedDateChanging(value);
+                    this.OnBaptismSchedDateChanging(value);
 					this.SendPropertyChanging();
 					this._BaptismSchedDate = value;
 					this.SendPropertyChanged("BaptismSchedDate");
@@ -1794,7 +1794,7 @@ namespace CmsData
 				if (this._BaptismDate != value)
 				{
 				
-					this.OnBaptismDateChanging(value);
+                    this.OnBaptismDateChanging(value);
 					this.SendPropertyChanging();
 					this._BaptismDate = value;
 					this.SendPropertyChanged("BaptismDate");
@@ -1816,7 +1816,7 @@ namespace CmsData
 				if (this._DecisionDate != value)
 				{
 				
-					this.OnDecisionDateChanging(value);
+                    this.OnDecisionDateChanging(value);
 					this.SendPropertyChanging();
 					this._DecisionDate = value;
 					this.SendPropertyChanged("DecisionDate");
@@ -1838,7 +1838,7 @@ namespace CmsData
 				if (this._DiscoveryClassDate != value)
 				{
 				
-					this.OnDiscoveryClassDateChanging(value);
+                    this.OnDiscoveryClassDateChanging(value);
 					this.SendPropertyChanging();
 					this._DiscoveryClassDate = value;
 					this.SendPropertyChanged("DiscoveryClassDate");
@@ -1860,7 +1860,7 @@ namespace CmsData
 				if (this._NewMbrClassDateCompleted != value)
 				{
 				
-					this.OnNewMbrClassDateCompletedChanging(value);
+                    this.OnNewMbrClassDateCompletedChanging(value);
 					this.SendPropertyChanging();
 					this._NewMbrClassDateCompleted = value;
 					this.SendPropertyChanged("NewMbrClassDateCompleted");
@@ -1882,7 +1882,7 @@ namespace CmsData
 				if (this._LetterDateRequested != value)
 				{
 				
-					this.OnLetterDateRequestedChanging(value);
+                    this.OnLetterDateRequestedChanging(value);
 					this.SendPropertyChanging();
 					this._LetterDateRequested = value;
 					this.SendPropertyChanged("LetterDateRequested");
@@ -1904,7 +1904,7 @@ namespace CmsData
 				if (this._LetterDateReceived != value)
 				{
 				
-					this.OnLetterDateReceivedChanging(value);
+                    this.OnLetterDateReceivedChanging(value);
 					this.SendPropertyChanging();
 					this._LetterDateReceived = value;
 					this.SendPropertyChanged("LetterDateReceived");
@@ -1926,7 +1926,7 @@ namespace CmsData
 				if (this._JoinDate != value)
 				{
 				
-					this.OnJoinDateChanging(value);
+                    this.OnJoinDateChanging(value);
 					this.SendPropertyChanging();
 					this._JoinDate = value;
 					this.SendPropertyChanged("JoinDate");
@@ -1948,7 +1948,7 @@ namespace CmsData
 				if (this._DropDate != value)
 				{
 				
-					this.OnDropDateChanging(value);
+                    this.OnDropDateChanging(value);
 					this.SendPropertyChanging();
 					this._DropDate = value;
 					this.SendPropertyChanged("DropDate");
@@ -1970,7 +1970,7 @@ namespace CmsData
 				if (this._DeceasedDate != value)
 				{
 				
-					this.OnDeceasedDateChanging(value);
+                    this.OnDeceasedDateChanging(value);
 					this.SendPropertyChanging();
 					this._DeceasedDate = value;
 					this.SendPropertyChanged("DeceasedDate");
@@ -1992,7 +1992,7 @@ namespace CmsData
 				if (this._TitleCode != value)
 				{
 				
-					this.OnTitleCodeChanging(value);
+                    this.OnTitleCodeChanging(value);
 					this.SendPropertyChanging();
 					this._TitleCode = value;
 					this.SendPropertyChanged("TitleCode");
@@ -2014,7 +2014,7 @@ namespace CmsData
 				if (this._FirstName != value)
 				{
 				
-					this.OnFirstNameChanging(value);
+                    this.OnFirstNameChanging(value);
 					this.SendPropertyChanging();
 					this._FirstName = value;
 					this.SendPropertyChanged("FirstName");
@@ -2036,7 +2036,7 @@ namespace CmsData
 				if (this._MiddleName != value)
 				{
 				
-					this.OnMiddleNameChanging(value);
+                    this.OnMiddleNameChanging(value);
 					this.SendPropertyChanging();
 					this._MiddleName = value;
 					this.SendPropertyChanged("MiddleName");
@@ -2058,7 +2058,7 @@ namespace CmsData
 				if (this._MaidenName != value)
 				{
 				
-					this.OnMaidenNameChanging(value);
+                    this.OnMaidenNameChanging(value);
 					this.SendPropertyChanging();
 					this._MaidenName = value;
 					this.SendPropertyChanged("MaidenName");
@@ -2080,7 +2080,7 @@ namespace CmsData
 				if (this._LastName != value)
 				{
 				
-					this.OnLastNameChanging(value);
+                    this.OnLastNameChanging(value);
 					this.SendPropertyChanging();
 					this._LastName = value;
 					this.SendPropertyChanged("LastName");
@@ -2102,7 +2102,7 @@ namespace CmsData
 				if (this._SuffixCode != value)
 				{
 				
-					this.OnSuffixCodeChanging(value);
+                    this.OnSuffixCodeChanging(value);
 					this.SendPropertyChanging();
 					this._SuffixCode = value;
 					this.SendPropertyChanged("SuffixCode");
@@ -2124,7 +2124,7 @@ namespace CmsData
 				if (this._NickName != value)
 				{
 				
-					this.OnNickNameChanging(value);
+                    this.OnNickNameChanging(value);
 					this.SendPropertyChanging();
 					this._NickName = value;
 					this.SendPropertyChanged("NickName");
@@ -2146,7 +2146,7 @@ namespace CmsData
 				if (this._AddressLineOne != value)
 				{
 				
-					this.OnAddressLineOneChanging(value);
+                    this.OnAddressLineOneChanging(value);
 					this.SendPropertyChanging();
 					this._AddressLineOne = value;
 					this.SendPropertyChanged("AddressLineOne");
@@ -2168,7 +2168,7 @@ namespace CmsData
 				if (this._AddressLineTwo != value)
 				{
 				
-					this.OnAddressLineTwoChanging(value);
+                    this.OnAddressLineTwoChanging(value);
 					this.SendPropertyChanging();
 					this._AddressLineTwo = value;
 					this.SendPropertyChanged("AddressLineTwo");
@@ -2190,7 +2190,7 @@ namespace CmsData
 				if (this._CityName != value)
 				{
 				
-					this.OnCityNameChanging(value);
+                    this.OnCityNameChanging(value);
 					this.SendPropertyChanging();
 					this._CityName = value;
 					this.SendPropertyChanged("CityName");
@@ -2212,7 +2212,7 @@ namespace CmsData
 				if (this._StateCode != value)
 				{
 				
-					this.OnStateCodeChanging(value);
+                    this.OnStateCodeChanging(value);
 					this.SendPropertyChanging();
 					this._StateCode = value;
 					this.SendPropertyChanged("StateCode");
@@ -2234,7 +2234,7 @@ namespace CmsData
 				if (this._ZipCode != value)
 				{
 				
-					this.OnZipCodeChanging(value);
+                    this.OnZipCodeChanging(value);
 					this.SendPropertyChanging();
 					this._ZipCode = value;
 					this.SendPropertyChanged("ZipCode");
@@ -2256,7 +2256,7 @@ namespace CmsData
 				if (this._CountryName != value)
 				{
 				
-					this.OnCountryNameChanging(value);
+                    this.OnCountryNameChanging(value);
 					this.SendPropertyChanging();
 					this._CountryName = value;
 					this.SendPropertyChanged("CountryName");
@@ -2278,7 +2278,7 @@ namespace CmsData
 				if (this._StreetName != value)
 				{
 				
-					this.OnStreetNameChanging(value);
+                    this.OnStreetNameChanging(value);
 					this.SendPropertyChanging();
 					this._StreetName = value;
 					this.SendPropertyChanged("StreetName");
@@ -2300,7 +2300,7 @@ namespace CmsData
 				if (this._AltAddressLineOne != value)
 				{
 				
-					this.OnAltAddressLineOneChanging(value);
+                    this.OnAltAddressLineOneChanging(value);
 					this.SendPropertyChanging();
 					this._AltAddressLineOne = value;
 					this.SendPropertyChanged("AltAddressLineOne");
@@ -2322,7 +2322,7 @@ namespace CmsData
 				if (this._AltAddressLineTwo != value)
 				{
 				
-					this.OnAltAddressLineTwoChanging(value);
+                    this.OnAltAddressLineTwoChanging(value);
 					this.SendPropertyChanging();
 					this._AltAddressLineTwo = value;
 					this.SendPropertyChanged("AltAddressLineTwo");
@@ -2344,7 +2344,7 @@ namespace CmsData
 				if (this._AltCityName != value)
 				{
 				
-					this.OnAltCityNameChanging(value);
+                    this.OnAltCityNameChanging(value);
 					this.SendPropertyChanging();
 					this._AltCityName = value;
 					this.SendPropertyChanged("AltCityName");
@@ -2366,7 +2366,7 @@ namespace CmsData
 				if (this._AltStateCode != value)
 				{
 				
-					this.OnAltStateCodeChanging(value);
+                    this.OnAltStateCodeChanging(value);
 					this.SendPropertyChanging();
 					this._AltStateCode = value;
 					this.SendPropertyChanged("AltStateCode");
@@ -2388,7 +2388,7 @@ namespace CmsData
 				if (this._AltZipCode != value)
 				{
 				
-					this.OnAltZipCodeChanging(value);
+                    this.OnAltZipCodeChanging(value);
 					this.SendPropertyChanging();
 					this._AltZipCode = value;
 					this.SendPropertyChanged("AltZipCode");
@@ -2410,7 +2410,7 @@ namespace CmsData
 				if (this._AltCountryName != value)
 				{
 				
-					this.OnAltCountryNameChanging(value);
+                    this.OnAltCountryNameChanging(value);
 					this.SendPropertyChanging();
 					this._AltCountryName = value;
 					this.SendPropertyChanged("AltCountryName");
@@ -2432,7 +2432,7 @@ namespace CmsData
 				if (this._AltStreetName != value)
 				{
 				
-					this.OnAltStreetNameChanging(value);
+                    this.OnAltStreetNameChanging(value);
 					this.SendPropertyChanging();
 					this._AltStreetName = value;
 					this.SendPropertyChanged("AltStreetName");
@@ -2454,7 +2454,7 @@ namespace CmsData
 				if (this._CellPhone != value)
 				{
 				
-					this.OnCellPhoneChanging(value);
+                    this.OnCellPhoneChanging(value);
 					this.SendPropertyChanging();
 					this._CellPhone = value;
 					this.SendPropertyChanged("CellPhone");
@@ -2476,7 +2476,7 @@ namespace CmsData
 				if (this._WorkPhone != value)
 				{
 				
-					this.OnWorkPhoneChanging(value);
+                    this.OnWorkPhoneChanging(value);
 					this.SendPropertyChanging();
 					this._WorkPhone = value;
 					this.SendPropertyChanged("WorkPhone");
@@ -2498,7 +2498,7 @@ namespace CmsData
 				if (this._EmailAddress != value)
 				{
 				
-					this.OnEmailAddressChanging(value);
+                    this.OnEmailAddressChanging(value);
 					this.SendPropertyChanging();
 					this._EmailAddress = value;
 					this.SendPropertyChanged("EmailAddress");
@@ -2520,7 +2520,7 @@ namespace CmsData
 				if (this._OtherPreviousChurch != value)
 				{
 				
-					this.OnOtherPreviousChurchChanging(value);
+                    this.OnOtherPreviousChurchChanging(value);
 					this.SendPropertyChanging();
 					this._OtherPreviousChurch = value;
 					this.SendPropertyChanged("OtherPreviousChurch");
@@ -2542,7 +2542,7 @@ namespace CmsData
 				if (this._OtherNewChurch != value)
 				{
 				
-					this.OnOtherNewChurchChanging(value);
+                    this.OnOtherNewChurchChanging(value);
 					this.SendPropertyChanging();
 					this._OtherNewChurch = value;
 					this.SendPropertyChanged("OtherNewChurch");
@@ -2564,7 +2564,7 @@ namespace CmsData
 				if (this._SchoolOther != value)
 				{
 				
-					this.OnSchoolOtherChanging(value);
+                    this.OnSchoolOtherChanging(value);
 					this.SendPropertyChanging();
 					this._SchoolOther = value;
 					this.SendPropertyChanged("SchoolOther");
@@ -2586,7 +2586,7 @@ namespace CmsData
 				if (this._EmployerOther != value)
 				{
 				
-					this.OnEmployerOtherChanging(value);
+                    this.OnEmployerOtherChanging(value);
 					this.SendPropertyChanging();
 					this._EmployerOther = value;
 					this.SendPropertyChanged("EmployerOther");
@@ -2608,7 +2608,7 @@ namespace CmsData
 				if (this._OccupationOther != value)
 				{
 				
-					this.OnOccupationOtherChanging(value);
+                    this.OnOccupationOtherChanging(value);
 					this.SendPropertyChanging();
 					this._OccupationOther = value;
 					this.SendPropertyChanged("OccupationOther");
@@ -2630,7 +2630,7 @@ namespace CmsData
 				if (this._HobbyOther != value)
 				{
 				
-					this.OnHobbyOtherChanging(value);
+                    this.OnHobbyOtherChanging(value);
 					this.SendPropertyChanging();
 					this._HobbyOther = value;
 					this.SendPropertyChanged("HobbyOther");
@@ -2652,7 +2652,7 @@ namespace CmsData
 				if (this._SkillOther != value)
 				{
 				
-					this.OnSkillOtherChanging(value);
+                    this.OnSkillOtherChanging(value);
 					this.SendPropertyChanging();
 					this._SkillOther = value;
 					this.SendPropertyChanged("SkillOther");
@@ -2674,7 +2674,7 @@ namespace CmsData
 				if (this._InterestOther != value)
 				{
 				
-					this.OnInterestOtherChanging(value);
+                    this.OnInterestOtherChanging(value);
 					this.SendPropertyChanging();
 					this._InterestOther = value;
 					this.SendPropertyChanged("InterestOther");
@@ -2696,7 +2696,7 @@ namespace CmsData
 				if (this._LetterStatusNotes != value)
 				{
 				
-					this.OnLetterStatusNotesChanging(value);
+                    this.OnLetterStatusNotesChanging(value);
 					this.SendPropertyChanging();
 					this._LetterStatusNotes = value;
 					this.SendPropertyChanged("LetterStatusNotes");
@@ -2718,7 +2718,7 @@ namespace CmsData
 				if (this._Comments != value)
 				{
 				
-					this.OnCommentsChanging(value);
+                    this.OnCommentsChanging(value);
 					this.SendPropertyChanging();
 					this._Comments = value;
 					this.SendPropertyChanged("Comments");
@@ -2740,7 +2740,7 @@ namespace CmsData
 				if (this._ChristAsSavior != value)
 				{
 				
-					this.OnChristAsSaviorChanging(value);
+                    this.OnChristAsSaviorChanging(value);
 					this.SendPropertyChanging();
 					this._ChristAsSavior = value;
 					this.SendPropertyChanged("ChristAsSavior");
@@ -2762,7 +2762,7 @@ namespace CmsData
 				if (this._MemberAnyChurch != value)
 				{
 				
-					this.OnMemberAnyChurchChanging(value);
+                    this.OnMemberAnyChurchChanging(value);
 					this.SendPropertyChanging();
 					this._MemberAnyChurch = value;
 					this.SendPropertyChanged("MemberAnyChurch");
@@ -2784,7 +2784,7 @@ namespace CmsData
 				if (this._InterestedInJoining != value)
 				{
 				
-					this.OnInterestedInJoiningChanging(value);
+                    this.OnInterestedInJoiningChanging(value);
 					this.SendPropertyChanging();
 					this._InterestedInJoining = value;
 					this.SendPropertyChanged("InterestedInJoining");
@@ -2806,7 +2806,7 @@ namespace CmsData
 				if (this._PleaseVisit != value)
 				{
 				
-					this.OnPleaseVisitChanging(value);
+                    this.OnPleaseVisitChanging(value);
 					this.SendPropertyChanging();
 					this._PleaseVisit = value;
 					this.SendPropertyChanged("PleaseVisit");
@@ -2828,7 +2828,7 @@ namespace CmsData
 				if (this._InfoBecomeAChristian != value)
 				{
 				
-					this.OnInfoBecomeAChristianChanging(value);
+                    this.OnInfoBecomeAChristianChanging(value);
 					this.SendPropertyChanging();
 					this._InfoBecomeAChristian = value;
 					this.SendPropertyChanged("InfoBecomeAChristian");
@@ -2850,7 +2850,7 @@ namespace CmsData
 				if (this._ContributionsStatement != value)
 				{
 				
-					this.OnContributionsStatementChanging(value);
+                    this.OnContributionsStatementChanging(value);
 					this.SendPropertyChanging();
 					this._ContributionsStatement = value;
 					this.SendPropertyChanged("ContributionsStatement");
@@ -2872,7 +2872,7 @@ namespace CmsData
 				if (this._ModifiedBy != value)
 				{
 				
-					this.OnModifiedByChanging(value);
+                    this.OnModifiedByChanging(value);
 					this.SendPropertyChanging();
 					this._ModifiedBy = value;
 					this.SendPropertyChanged("ModifiedBy");
@@ -2894,7 +2894,7 @@ namespace CmsData
 				if (this._ModifiedDate != value)
 				{
 				
-					this.OnModifiedDateChanging(value);
+                    this.OnModifiedDateChanging(value);
 					this.SendPropertyChanging();
 					this._ModifiedDate = value;
 					this.SendPropertyChanged("ModifiedDate");
@@ -2919,7 +2919,7 @@ namespace CmsData
 					if (this._Picture.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnPictureIdChanging(value);
+                    this.OnPictureIdChanging(value);
 					this.SendPropertyChanging();
 					this._PictureId = value;
 					this.SendPropertyChanged("PictureId");
@@ -2944,7 +2944,7 @@ namespace CmsData
 					if (this._ContributionStatementOption.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnContributionOptionsIdChanging(value);
+                    this.OnContributionOptionsIdChanging(value);
 					this.SendPropertyChanging();
 					this._ContributionOptionsId = value;
 					this.SendPropertyChanged("ContributionOptionsId");
@@ -2966,7 +2966,7 @@ namespace CmsData
 				if (this._PrimaryCity != value)
 				{
 				
-					this.OnPrimaryCityChanging(value);
+                    this.OnPrimaryCityChanging(value);
 					this.SendPropertyChanging();
 					this._PrimaryCity = value;
 					this.SendPropertyChanged("PrimaryCity");
@@ -2988,7 +2988,7 @@ namespace CmsData
 				if (this._PrimaryZip != value)
 				{
 				
-					this.OnPrimaryZipChanging(value);
+                    this.OnPrimaryZipChanging(value);
 					this.SendPropertyChanging();
 					this._PrimaryZip = value;
 					this.SendPropertyChanged("PrimaryZip");
@@ -3010,7 +3010,7 @@ namespace CmsData
 				if (this._PrimaryAddress != value)
 				{
 				
-					this.OnPrimaryAddressChanging(value);
+                    this.OnPrimaryAddressChanging(value);
 					this.SendPropertyChanging();
 					this._PrimaryAddress = value;
 					this.SendPropertyChanged("PrimaryAddress");
@@ -3032,7 +3032,7 @@ namespace CmsData
 				if (this._PrimaryState != value)
 				{
 				
-					this.OnPrimaryStateChanging(value);
+                    this.OnPrimaryStateChanging(value);
 					this.SendPropertyChanging();
 					this._PrimaryState = value;
 					this.SendPropertyChanged("PrimaryState");
@@ -3054,7 +3054,7 @@ namespace CmsData
 				if (this._HomePhone != value)
 				{
 				
-					this.OnHomePhoneChanging(value);
+                    this.OnHomePhoneChanging(value);
 					this.SendPropertyChanging();
 					this._HomePhone = value;
 					this.SendPropertyChanged("HomePhone");
@@ -3076,7 +3076,7 @@ namespace CmsData
 				if (this._SpouseId != value)
 				{
 				
-					this.OnSpouseIdChanging(value);
+                    this.OnSpouseIdChanging(value);
 					this.SendPropertyChanging();
 					this._SpouseId = value;
 					this.SendPropertyChanged("SpouseId");
@@ -3098,7 +3098,7 @@ namespace CmsData
 				if (this._PrimaryAddress2 != value)
 				{
 				
-					this.OnPrimaryAddress2Changing(value);
+                    this.OnPrimaryAddress2Changing(value);
 					this.SendPropertyChanging();
 					this._PrimaryAddress2 = value;
 					this.SendPropertyChanged("PrimaryAddress2");
@@ -3120,7 +3120,7 @@ namespace CmsData
 				if (this._PrimaryResCode != value)
 				{
 				
-					this.OnPrimaryResCodeChanging(value);
+                    this.OnPrimaryResCodeChanging(value);
 					this.SendPropertyChanging();
 					this._PrimaryResCode = value;
 					this.SendPropertyChanged("PrimaryResCode");
@@ -3142,7 +3142,7 @@ namespace CmsData
 				if (this._PrimaryBadAddrFlag != value)
 				{
 				
-					this.OnPrimaryBadAddrFlagChanging(value);
+                    this.OnPrimaryBadAddrFlagChanging(value);
 					this.SendPropertyChanging();
 					this._PrimaryBadAddrFlag = value;
 					this.SendPropertyChanged("PrimaryBadAddrFlag");
@@ -3164,7 +3164,7 @@ namespace CmsData
 				if (this._LastContact != value)
 				{
 				
-					this.OnLastContactChanging(value);
+                    this.OnLastContactChanging(value);
 					this.SendPropertyChanging();
 					this._LastContact = value;
 					this.SendPropertyChanged("LastContact");
@@ -3186,7 +3186,7 @@ namespace CmsData
 				if (this._Grade != value)
 				{
 				
-					this.OnGradeChanging(value);
+                    this.OnGradeChanging(value);
 					this.SendPropertyChanging();
 					this._Grade = value;
 					this.SendPropertyChanged("Grade");
@@ -3208,7 +3208,7 @@ namespace CmsData
 				if (this._CellPhoneLU != value)
 				{
 				
-					this.OnCellPhoneLUChanging(value);
+                    this.OnCellPhoneLUChanging(value);
 					this.SendPropertyChanging();
 					this._CellPhoneLU = value;
 					this.SendPropertyChanged("CellPhoneLU");
@@ -3230,7 +3230,7 @@ namespace CmsData
 				if (this._WorkPhoneLU != value)
 				{
 				
-					this.OnWorkPhoneLUChanging(value);
+                    this.OnWorkPhoneLUChanging(value);
 					this.SendPropertyChanging();
 					this._WorkPhoneLU = value;
 					this.SendPropertyChanged("WorkPhoneLU");
@@ -3255,7 +3255,7 @@ namespace CmsData
 					if (this._BFClass.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnBibleFellowshipClassIdChanging(value);
+                    this.OnBibleFellowshipClassIdChanging(value);
 					this.SendPropertyChanging();
 					this._BibleFellowshipClassId = value;
 					this.SendPropertyChanged("BibleFellowshipClassId");
@@ -3280,7 +3280,7 @@ namespace CmsData
 					if (this._Campu.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-					this.OnCampusIdChanging(value);
+                    this.OnCampusIdChanging(value);
 					this.SendPropertyChanging();
 					this._CampusId = value;
 					this.SendPropertyChanged("CampusId");
@@ -3302,7 +3302,7 @@ namespace CmsData
 				if (this._CellPhoneAC != value)
 				{
 				
-					this.OnCellPhoneACChanging(value);
+                    this.OnCellPhoneACChanging(value);
 					this.SendPropertyChanging();
 					this._CellPhoneAC = value;
 					this.SendPropertyChanged("CellPhoneAC");
@@ -3324,7 +3324,7 @@ namespace CmsData
 				if (this._CheckInNotes != value)
 				{
 				
-					this.OnCheckInNotesChanging(value);
+                    this.OnCheckInNotesChanging(value);
 					this.SendPropertyChanging();
 					this._CheckInNotes = value;
 					this.SendPropertyChanged("CheckInNotes");
@@ -3346,7 +3346,7 @@ namespace CmsData
 				if (this._Age != value)
 				{
 				
-					this.OnAgeChanging(value);
+                    this.OnAgeChanging(value);
 					this.SendPropertyChanging();
 					this._Age = value;
 					this.SendPropertyChanged("Age");
@@ -3368,7 +3368,7 @@ namespace CmsData
 				if (this._AltName != value)
 				{
 				
-					this.OnAltNameChanging(value);
+                    this.OnAltNameChanging(value);
 					this.SendPropertyChanging();
 					this._AltName = value;
 					this.SendPropertyChanged("AltName");
@@ -3390,7 +3390,7 @@ namespace CmsData
 				if (this._CustodyIssue != value)
 				{
 				
-					this.OnCustodyIssueChanging(value);
+                    this.OnCustodyIssueChanging(value);
 					this.SendPropertyChanging();
 					this._CustodyIssue = value;
 					this.SendPropertyChanged("CustodyIssue");
@@ -3412,7 +3412,7 @@ namespace CmsData
 				if (this._OkTransport != value)
 				{
 				
-					this.OnOkTransportChanging(value);
+                    this.OnOkTransportChanging(value);
 					this.SendPropertyChanging();
 					this._OkTransport = value;
 					this.SendPropertyChanged("OkTransport");
@@ -3434,7 +3434,7 @@ namespace CmsData
 				if (this._BDate != value)
 				{
 				
-					this.OnBDateChanging(value);
+                    this.OnBDateChanging(value);
 					this.SendPropertyChanging();
 					this._BDate = value;
 					this.SendPropertyChanged("BDate");
@@ -3456,7 +3456,7 @@ namespace CmsData
 				if (this._HasDuplicates != value)
 				{
 				
-					this.OnHasDuplicatesChanging(value);
+                    this.OnHasDuplicatesChanging(value);
 					this.SendPropertyChanging();
 					this._HasDuplicates = value;
 					this.SendPropertyChanged("HasDuplicates");
@@ -3478,7 +3478,7 @@ namespace CmsData
 				if (this._FirstName2 != value)
 				{
 				
-					this.OnFirstName2Changing(value);
+                    this.OnFirstName2Changing(value);
 					this.SendPropertyChanging();
 					this._FirstName2 = value;
 					this.SendPropertyChanged("FirstName2");
@@ -3500,7 +3500,7 @@ namespace CmsData
 				if (this._EmailAddress2 != value)
 				{
 				
-					this.OnEmailAddress2Changing(value);
+                    this.OnEmailAddress2Changing(value);
 					this.SendPropertyChanging();
 					this._EmailAddress2 = value;
 					this.SendPropertyChanged("EmailAddress2");
@@ -3522,7 +3522,7 @@ namespace CmsData
 				if (this._SendEmailAddress1 != value)
 				{
 				
-					this.OnSendEmailAddress1Changing(value);
+                    this.OnSendEmailAddress1Changing(value);
 					this.SendPropertyChanging();
 					this._SendEmailAddress1 = value;
 					this.SendPropertyChanged("SendEmailAddress1");
@@ -3544,7 +3544,7 @@ namespace CmsData
 				if (this._SendEmailAddress2 != value)
 				{
 				
-					this.OnSendEmailAddress2Changing(value);
+                    this.OnSendEmailAddress2Changing(value);
 					this.SendPropertyChanging();
 					this._SendEmailAddress2 = value;
 					this.SendPropertyChanged("SendEmailAddress2");
@@ -3566,7 +3566,7 @@ namespace CmsData
 				if (this._Name != value)
 				{
 				
-					this.OnNameChanging(value);
+                    this.OnNameChanging(value);
 					this.SendPropertyChanging();
 					this._Name = value;
 					this.SendPropertyChanged("Name");
@@ -3588,7 +3588,7 @@ namespace CmsData
 				if (this._Name2 != value)
 				{
 				
-					this.OnName2Changing(value);
+                    this.OnName2Changing(value);
 					this.SendPropertyChanging();
 					this._Name2 = value;
 					this.SendPropertyChanged("Name2");
@@ -3610,7 +3610,7 @@ namespace CmsData
 				if (this._HashNum != value)
 				{
 				
-					this.OnHashNumChanging(value);
+                    this.OnHashNumChanging(value);
 					this.SendPropertyChanging();
 					this._HashNum = value;
 					this.SendPropertyChanged("HashNum");
@@ -3632,7 +3632,7 @@ namespace CmsData
 				if (this._PreferredName != value)
 				{
 				
-					this.OnPreferredNameChanging(value);
+                    this.OnPreferredNameChanging(value);
 					this.SendPropertyChanging();
 					this._PreferredName = value;
 					this.SendPropertyChanged("PreferredName");
@@ -3644,344 +3644,344 @@ namespace CmsData
 		}
 
 		
-	#endregion
-		
-	#region Foreign Key Tables
-		
-		[Association(Name="contactsHad__person", Storage="_contactsHad", OtherKey="PeopleId")]
-		public EntitySet< Contactee> contactsHad
-		{
-			get { return this._contactsHad; }
+    #endregion
+        
+    #region Foreign Key Tables
+   		
+   		[Association(Name="contactsHad__person", Storage="_contactsHad", OtherKey="PeopleId")]
+   		public EntitySet< Contactee> contactsHad
+   		{
+   		    get { return this._contactsHad; }
 
 			set	{ this._contactsHad.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="contactsMade__person", Storage="_contactsMade", OtherKey="PeopleId")]
-		public EntitySet< Contactor> contactsMade
-		{
-			get { return this._contactsMade; }
+   		[Association(Name="contactsMade__person", Storage="_contactsMade", OtherKey="PeopleId")]
+   		public EntitySet< Contactor> contactsMade
+   		{
+   		    get { return this._contactsMade; }
 
 			set	{ this._contactsMade.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="ENROLLMENT_TRANSACTION_PPL_FK", Storage="_EnrollmentTransactions", OtherKey="PeopleId")]
-		public EntitySet< EnrollmentTransaction> EnrollmentTransactions
-		{
-			get { return this._EnrollmentTransactions; }
+   		[Association(Name="ENROLLMENT_TRANSACTION_PPL_FK", Storage="_EnrollmentTransactions", OtherKey="PeopleId")]
+   		public EntitySet< EnrollmentTransaction> EnrollmentTransactions
+   		{
+   		    get { return this._EnrollmentTransactions; }
 
 			set	{ this._EnrollmentTransactions.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FamiliesHeaded__HeadOfHousehold", Storage="_FamiliesHeaded", OtherKey="HeadOfHouseholdId")]
-		public EntitySet< Family> FamiliesHeaded
-		{
-			get { return this._FamiliesHeaded; }
+   		[Association(Name="FamiliesHeaded__HeadOfHousehold", Storage="_FamiliesHeaded", OtherKey="HeadOfHouseholdId")]
+   		public EntitySet< Family> FamiliesHeaded
+   		{
+   		    get { return this._FamiliesHeaded; }
 
 			set	{ this._FamiliesHeaded.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FamiliesHeaded2__HeadOfHouseholdSpouse", Storage="_FamiliesHeaded2", OtherKey="HeadOfHouseholdSpouseId")]
-		public EntitySet< Family> FamiliesHeaded2
-		{
-			get { return this._FamiliesHeaded2; }
+   		[Association(Name="FamiliesHeaded2__HeadOfHouseholdSpouse", Storage="_FamiliesHeaded2", OtherKey="HeadOfHouseholdSpouseId")]
+   		public EntitySet< Family> FamiliesHeaded2
+   		{
+   		    get { return this._FamiliesHeaded2; }
 
 			set	{ this._FamiliesHeaded2.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_Attender_People", Storage="_MOBSRegs", OtherKey="PeopleId")]
-		public EntitySet< MOBSReg> MOBSRegs
-		{
-			get { return this._MOBSRegs; }
+   		[Association(Name="FK_Attender_People", Storage="_MOBSRegs", OtherKey="PeopleId")]
+   		public EntitySet< MOBSReg> MOBSRegs
+   		{
+   		    get { return this._MOBSRegs; }
 
 			set	{ this._MOBSRegs.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_AttendWithAbsents_TBL_PEOPLE_TBL", Storage="_Attends", OtherKey="PeopleId")]
-		public EntitySet< Attend> Attends
-		{
-			get { return this._Attends; }
+   		[Association(Name="FK_AttendWithAbsents_TBL_PEOPLE_TBL", Storage="_Attends", OtherKey="PeopleId")]
+   		public EntitySet< Attend> Attends
+   		{
+   		    get { return this._Attends; }
 
 			set	{ this._Attends.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_CardIdentifiers_People", Storage="_CardIdentifiers", OtherKey="PeopleId")]
-		public EntitySet< CardIdentifier> CardIdentifiers
-		{
-			get { return this._CardIdentifiers; }
+   		[Association(Name="FK_CardIdentifiers_People", Storage="_CardIdentifiers", OtherKey="PeopleId")]
+   		public EntitySet< CardIdentifier> CardIdentifiers
+   		{
+   		    get { return this._CardIdentifiers; }
 
 			set	{ this._CardIdentifiers.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_CheckInTimes_People", Storage="_CheckInTimes", OtherKey="PeopleId")]
-		public EntitySet< CheckInTime> CheckInTimes
-		{
-			get { return this._CheckInTimes; }
+   		[Association(Name="FK_CheckInTimes_People", Storage="_CheckInTimes", OtherKey="PeopleId")]
+   		public EntitySet< CheckInTime> CheckInTimes
+   		{
+   		    get { return this._CheckInTimes; }
 
 			set	{ this._CheckInTimes.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_Contribution_People", Storage="_Contributions", OtherKey="PeopleId")]
-		public EntitySet< Contribution> Contributions
-		{
-			get { return this._Contributions; }
+   		[Association(Name="FK_Contribution_People", Storage="_Contributions", OtherKey="PeopleId")]
+   		public EntitySet< Contribution> Contributions
+   		{
+   		    get { return this._Contributions; }
 
 			set	{ this._Contributions.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_Coupons_People", Storage="_Coupons", OtherKey="PeopleId")]
-		public EntitySet< Coupon> Coupons
-		{
-			get { return this._Coupons; }
+   		[Association(Name="FK_Coupons_People", Storage="_Coupons", OtherKey="PeopleId")]
+   		public EntitySet< Coupon> Coupons
+   		{
+   		    get { return this._Coupons; }
 
 			set	{ this._Coupons.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_EmailOptOut_People", Storage="_EmailOptOuts", OtherKey="ToPeopleId")]
-		public EntitySet< EmailOptOut> EmailOptOuts
-		{
-			get { return this._EmailOptOuts; }
+   		[Association(Name="FK_EmailOptOut_People", Storage="_EmailOptOuts", OtherKey="ToPeopleId")]
+   		public EntitySet< EmailOptOut> EmailOptOuts
+   		{
+   		    get { return this._EmailOptOuts; }
 
 			set	{ this._EmailOptOuts.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_EmailQueue_People", Storage="_EmailQueues", OtherKey="QueuedBy")]
-		public EntitySet< EmailQueue> EmailQueues
-		{
-			get { return this._EmailQueues; }
+   		[Association(Name="FK_EmailQueue_People", Storage="_EmailQueues", OtherKey="QueuedBy")]
+   		public EntitySet< EmailQueue> EmailQueues
+   		{
+   		    get { return this._EmailQueues; }
 
 			set	{ this._EmailQueues.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_EmailQueueTo_People", Storage="_EmailQueueTos", OtherKey="PeopleId")]
-		public EntitySet< EmailQueueTo> EmailQueueTos
-		{
-			get { return this._EmailQueueTos; }
+   		[Association(Name="FK_EmailQueueTo_People", Storage="_EmailQueueTos", OtherKey="PeopleId")]
+   		public EntitySet< EmailQueueTo> EmailQueueTos
+   		{
+   		    get { return this._EmailQueueTos; }
 
 			set	{ this._EmailQueueTos.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_EmailResponses_People", Storage="_EmailResponses", OtherKey="PeopleId")]
-		public EntitySet< EmailResponse> EmailResponses
-		{
-			get { return this._EmailResponses; }
+   		[Association(Name="FK_EmailResponses_People", Storage="_EmailResponses", OtherKey="PeopleId")]
+   		public EntitySet< EmailResponse> EmailResponses
+   		{
+   		    get { return this._EmailResponses; }
 
 			set	{ this._EmailResponses.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_PendingNotifications_People", Storage="_PendingNotifications", OtherKey="PeopleId")]
-		public EntitySet< PendingNotification> PendingNotifications
-		{
-			get { return this._PendingNotifications; }
+   		[Association(Name="FK_PendingNotifications_People", Storage="_PendingNotifications", OtherKey="PeopleId")]
+   		public EntitySet< PendingNotification> PendingNotifications
+   		{
+   		    get { return this._PendingNotifications; }
 
 			set	{ this._PendingNotifications.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_PeopleExtra_People", Storage="_PeopleExtras", OtherKey="PeopleId")]
-		public EntitySet< PeopleExtra> PeopleExtras
-		{
-			get { return this._PeopleExtras; }
+   		[Association(Name="FK_PeopleExtra_People", Storage="_PeopleExtras", OtherKey="PeopleId")]
+   		public EntitySet< PeopleExtra> PeopleExtras
+   		{
+   		    get { return this._PeopleExtras; }
 
 			set	{ this._PeopleExtras.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_PrayerSlot_People", Storage="_PrayerSlots", OtherKey="PeopleId")]
-		public EntitySet< PrayerSlot> PrayerSlots
-		{
-			get { return this._PrayerSlots; }
+   		[Association(Name="FK_PrayerSlot_People", Storage="_PrayerSlots", OtherKey="PeopleId")]
+   		public EntitySet< PrayerSlot> PrayerSlots
+   		{
+   		    get { return this._PrayerSlots; }
 
 			set	{ this._PrayerSlots.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_RecReg_People", Storage="_RecRegs", OtherKey="PeopleId")]
-		public EntitySet< RecReg> RecRegs
-		{
-			get { return this._RecRegs; }
+   		[Association(Name="FK_RecReg_People", Storage="_RecRegs", OtherKey="PeopleId")]
+   		public EntitySet< RecReg> RecRegs
+   		{
+   		    get { return this._RecRegs; }
 
 			set	{ this._RecRegs.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_SaleTransaction_People", Storage="_SaleTransactions", OtherKey="PeopleId")]
-		public EntitySet< SaleTransaction> SaleTransactions
-		{
-			get { return this._SaleTransactions; }
+   		[Association(Name="FK_SaleTransaction_People", Storage="_SaleTransactions", OtherKey="PeopleId")]
+   		public EntitySet< SaleTransaction> SaleTransactions
+   		{
+   		    get { return this._SaleTransactions; }
 
 			set	{ this._SaleTransactions.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_TagShare_People", Storage="_TagShares", OtherKey="PeopleId")]
-		public EntitySet< TagShare> TagShares
-		{
-			get { return this._TagShares; }
+   		[Association(Name="FK_TagShare_People", Storage="_TagShares", OtherKey="PeopleId")]
+   		public EntitySet< TagShare> TagShares
+   		{
+   		    get { return this._TagShares; }
 
 			set	{ this._TagShares.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_TaskListOwners_PEOPLE_TBL", Storage="_TaskListOwners", OtherKey="PeopleId")]
-		public EntitySet< TaskListOwner> TaskListOwners
-		{
-			get { return this._TaskListOwners; }
+   		[Association(Name="FK_TaskListOwners_PEOPLE_TBL", Storage="_TaskListOwners", OtherKey="PeopleId")]
+   		public EntitySet< TaskListOwner> TaskListOwners
+   		{
+   		    get { return this._TaskListOwners; }
 
 			set	{ this._TaskListOwners.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_TransactionPeople_Person", Storage="_TransactionPeople", OtherKey="PeopleId")]
-		public EntitySet< TransactionPerson> TransactionPeople
-		{
-			get { return this._TransactionPeople; }
+   		[Association(Name="FK_TransactionPeople_Person", Storage="_TransactionPeople", OtherKey="PeopleId")]
+   		public EntitySet< TransactionPerson> TransactionPeople
+   		{
+   		    get { return this._TransactionPeople; }
 
 			set	{ this._TransactionPeople.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_Users_People", Storage="_Users", OtherKey="PeopleId")]
-		public EntitySet< User> Users
-		{
-			get { return this._Users; }
+   		[Association(Name="FK_Users_People", Storage="_Users", OtherKey="PeopleId")]
+   		public EntitySet< User> Users
+   		{
+   		    get { return this._Users; }
 
 			set	{ this._Users.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_VolInterestInterestCodes_People", Storage="_VolInterestInterestCodes", OtherKey="PeopleId")]
-		public EntitySet< VolInterestInterestCode> VolInterestInterestCodes
-		{
-			get { return this._VolInterestInterestCodes; }
+   		[Association(Name="FK_VolInterestInterestCodes_People", Storage="_VolInterestInterestCodes", OtherKey="PeopleId")]
+   		public EntitySet< VolInterestInterestCode> VolInterestInterestCodes
+   		{
+   		    get { return this._VolInterestInterestCodes; }
 
 			set	{ this._VolInterestInterestCodes.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_Volunteer_PEOPLE_TBL", Storage="_Volunteers", OtherKey="PeopleId")]
-		public EntitySet< Volunteer> Volunteers
-		{
-			get { return this._Volunteers; }
+   		[Association(Name="FK_Volunteer_PEOPLE_TBL", Storage="_Volunteers", OtherKey="PeopleId")]
+   		public EntitySet< Volunteer> Volunteers
+   		{
+   		    get { return this._Volunteers; }
 
 			set	{ this._Volunteers.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="FK_VolunteerForm_PEOPLE_TBL", Storage="_VolunteerForms", OtherKey="PeopleId")]
-		public EntitySet< VolunteerForm> VolunteerForms
-		{
-			get { return this._VolunteerForms; }
+   		[Association(Name="FK_VolunteerForm_PEOPLE_TBL", Storage="_VolunteerForms", OtherKey="PeopleId")]
+   		public EntitySet< VolunteerForm> VolunteerForms
+   		{
+   		    get { return this._VolunteerForms; }
 
 			set	{ this._VolunteerForms.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="ORGANIZATION_MEMBERS_PPL_FK", Storage="_OrganizationMembers", OtherKey="PeopleId")]
-		public EntitySet< OrganizationMember> OrganizationMembers
-		{
-			get { return this._OrganizationMembers; }
+   		[Association(Name="ORGANIZATION_MEMBERS_PPL_FK", Storage="_OrganizationMembers", OtherKey="PeopleId")]
+   		public EntitySet< OrganizationMember> OrganizationMembers
+   		{
+   		    get { return this._OrganizationMembers; }
 
 			set	{ this._OrganizationMembers.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="Tags__Person", Storage="_Tags", OtherKey="PeopleId")]
-		public EntitySet< TagPerson> Tags
-		{
-			get { return this._Tags; }
+   		[Association(Name="Tags__Person", Storage="_Tags", OtherKey="PeopleId")]
+   		public EntitySet< TagPerson> Tags
+   		{
+   		    get { return this._Tags; }
 
 			set	{ this._Tags.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="TagsOwned__PersonOwner", Storage="_TagsOwned", OtherKey="PeopleId")]
-		public EntitySet< Tag> TagsOwned
-		{
-			get { return this._TagsOwned; }
+   		[Association(Name="TagsOwned__PersonOwner", Storage="_TagsOwned", OtherKey="PeopleId")]
+   		public EntitySet< Tag> TagsOwned
+   		{
+   		    get { return this._TagsOwned; }
 
 			set	{ this._TagsOwned.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="Tasks__Owner", Storage="_Tasks", OtherKey="OwnerId")]
-		public EntitySet< Task> Tasks
-		{
-			get { return this._Tasks; }
+   		[Association(Name="Tasks__Owner", Storage="_Tasks", OtherKey="OwnerId")]
+   		public EntitySet< Task> Tasks
+   		{
+   		    get { return this._Tasks; }
 
 			set	{ this._Tasks.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="TasksAboutPerson__AboutWho", Storage="_TasksAboutPerson", OtherKey="WhoId")]
-		public EntitySet< Task> TasksAboutPerson
-		{
-			get { return this._TasksAboutPerson; }
+   		[Association(Name="TasksAboutPerson__AboutWho", Storage="_TasksAboutPerson", OtherKey="WhoId")]
+   		public EntitySet< Task> TasksAboutPerson
+   		{
+   		    get { return this._TasksAboutPerson; }
 
 			set	{ this._TasksAboutPerson.Assign(value); }
 
-		}
+   		}
 
 		
-		[Association(Name="TasksCoOwned__CoOwner", Storage="_TasksCoOwned", OtherKey="CoOwnerId")]
-		public EntitySet< Task> TasksCoOwned
-		{
-			get { return this._TasksCoOwned; }
+   		[Association(Name="TasksCoOwned__CoOwner", Storage="_TasksCoOwned", OtherKey="CoOwnerId")]
+   		public EntitySet< Task> TasksCoOwned
+   		{
+   		    get { return this._TasksCoOwned; }
 
 			set	{ this._TasksCoOwned.Assign(value); }
 
-		}
+   		}
 
 		
 	#endregion
 	
 	#region Foreign Keys
-		
+    	
 		[Association(Name="AltResCodePeople__AltResidentCode", Storage="_AltResidentCode", ThisKey="AltResCodeId", IsForeignKey=true)]
 		public ResidentCode AltResidentCode
 		{
@@ -4922,7 +4922,7 @@ namespace CmsData
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		
+   		
 		private void attach_contactsHad(Contactee entity)
 		{
 			this.SendPropertyChanging();

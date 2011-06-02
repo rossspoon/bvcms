@@ -245,7 +245,7 @@ namespace CmsWeb.Models
                         select om;
                 foreach (var pc in q)
                 {
-                    pc.Drop(DbUtil.Db);
+                    pc.Drop(DbUtil.Db, true);
                     DbUtil.Db.SubmitChanges();
                 }
                 var fom = DbUtil.Db.OrganizationMembers.Single(m => m.OrganizationId == a[1].ToInt() && m.PeopleId == a[0].ToInt());

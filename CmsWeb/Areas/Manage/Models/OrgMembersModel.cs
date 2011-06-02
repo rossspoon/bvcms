@@ -289,7 +289,7 @@ namespace CmsWeb.Models
                     tom.AddToGroup(DbUtil.Db, s);
                 if (om.OrganizationId != tom.OrganizationId)
                     tom.Moved = true;
-                om.Drop(DbUtil.Db);
+                om.Drop(DbUtil.Db, addToHistory:true);
                 DbUtil.Db.SubmitChanges();
             }
         }

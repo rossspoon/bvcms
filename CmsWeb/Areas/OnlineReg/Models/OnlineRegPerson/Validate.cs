@@ -310,6 +310,10 @@ Please search with a different email, phone, or birthday.";
                 if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(q.question) || !ExtraQuestion[q.question].HasValue())
                     modelState.AddModelError(inputname("ExtraQuestion[" + q.n + "].Value"), "please give some answer");
             }
+            if (org.CheckboxesMax.HasValue && Checkbox != null && Checkbox.Length > org.CheckboxesMax)
+                modelState.AddModelError("checkboxes", "Max of {0} exceded".Fmt(org.CheckboxesMax));
+            if (org.CheckboxesMin.HasValue && (Checkbox == null || Checkbox.Length < org.CheckboxesMin))
+                modelState.AddModelError("checkboxes", "Min of {0} required".Fmt(org.CheckboxesMin));
             OtherOK = modelState.IsValid;
         }
     }

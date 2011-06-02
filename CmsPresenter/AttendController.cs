@@ -131,7 +131,8 @@ namespace CMSPresenter
                         )
                     || // members
                         (p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId 
-                            && (om.Pending ?? false) == false))
+                            && (om.Pending ?? false) == false
+                            && (om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive)))
                     select new AttendedInfo
                     {
                         PeopleId = p.PeopleId,

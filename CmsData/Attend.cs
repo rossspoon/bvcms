@@ -52,9 +52,9 @@ namespace CmsData
             var o = Db.AttendMeetingInfo0(MeetingId, PeopleId);
 
             // do not record inactive members
-            if (o.info.MemberTypeId.HasValue // member of this class
-                && o.info.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive)
-                return null;
+            //if (o.info.MemberTypeId.HasValue // member of this class
+            //    && o.info.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive)
+            //    return null;
 
             if (o.info.AttendedElsewhere > 0 && attended)
                 return "{0}({1}) already attended elsewhere".Fmt(o.info.Name, PeopleId);

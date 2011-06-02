@@ -241,6 +241,10 @@ namespace CmsData
 		
 		private int? _DonationFundId;
 		
+		private int? _CheckboxesMin;
+		
+		private int? _CheckboxesMax;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -627,6 +631,12 @@ namespace CmsData
 		
 		partial void OnDonationFundIdChanging(int? value);
 		partial void OnDonationFundIdChanged();
+		
+		partial void OnCheckboxesMinChanging(int? value);
+		partial void OnCheckboxesMinChanged();
+		
+		partial void OnCheckboxesMaxChanging(int? value);
+		partial void OnCheckboxesMaxChanged();
 		
     #endregion
 		public Organization()
@@ -3165,6 +3175,50 @@ namespace CmsData
 					this._DonationFundId = value;
 					this.SendPropertyChanged("DonationFundId");
 					this.OnDonationFundIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CheckboxesMin", UpdateCheck=UpdateCheck.Never, Storage="_CheckboxesMin", DbType="int")]
+		public int? CheckboxesMin
+		{
+			get { return this._CheckboxesMin; }
+
+			set
+			{
+				if (this._CheckboxesMin != value)
+				{
+				
+                    this.OnCheckboxesMinChanging(value);
+					this.SendPropertyChanging();
+					this._CheckboxesMin = value;
+					this.SendPropertyChanged("CheckboxesMin");
+					this.OnCheckboxesMinChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CheckboxesMax", UpdateCheck=UpdateCheck.Never, Storage="_CheckboxesMax", DbType="int")]
+		public int? CheckboxesMax
+		{
+			get { return this._CheckboxesMax; }
+
+			set
+			{
+				if (this._CheckboxesMax != value)
+				{
+				
+                    this.OnCheckboxesMaxChanging(value);
+					this.SendPropertyChanging();
+					this._CheckboxesMax = value;
+					this.SendPropertyChanged("CheckboxesMax");
+					this.OnCheckboxesMaxChanged();
 				}
 
 			}
