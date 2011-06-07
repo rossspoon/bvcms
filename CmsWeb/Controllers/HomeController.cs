@@ -19,6 +19,8 @@ namespace CmsWeb.Controllers
     {
         public ActionResult Index()
         {
+            if (Util.UserId == null)
+                return Redirect("/Logon?ReturnUrl=" + Request.Path);
             if (!Util2.OrgMembersOnly && User.IsInRole("OrgMembersOnly"))
             {
                 Util2.OrgMembersOnly = true;

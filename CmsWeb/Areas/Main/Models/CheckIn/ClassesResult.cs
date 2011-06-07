@@ -46,7 +46,7 @@ namespace CmsWeb.Models
         private class OrgHourInfo
         {
             public Organization o { get; set; }
-            public DateTime Hour { get; set; }
+            public DateTime? Hour { get; set; }
         }
         public override void ExecuteResult(ControllerContext context)
         {
@@ -129,13 +129,15 @@ namespace CmsWeb.Models
                     if (bdays == " [-]")
                         bdays = null;
                     if (kioskmode)
-                        w.WriteAttributeString("display", "{0}{1}{2}{3} ({4})"
-                                .Fmt(o.OrganizationName, leader, loc, bdays, o.MemberCount));
+                        w.WriteAttributeString("display", "{0}{1}{2}{3} ({4}{5})"
+                                .Fmt(o.OrganizationName, leader, loc, bdays, 
+                                (o.Limit ?? 0) == 0 ? "" : o.Limit + "max, ", 
+                                o.MemberCount));
                     else
                         w.WriteAttributeString("display", "{0:hh:mm tt} {1}{2}{3}{4}"
                                 .Fmt(o.Hour, o.OrganizationName, leader, loc, bdays));
                     w.WriteAttributeString("nlabels", o.NumCheckInLabels.ToString());
-                    w.WriteAttributeString("hour", o.Hour.ToString("M/d/yy h:mm tt"));
+                    w.WriteAttributeString("hour", o.Hour.ToString2("M/d/yy h:mm tt"));
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();

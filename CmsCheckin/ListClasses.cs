@@ -95,13 +95,15 @@ namespace CmsCheckin
             list = new List<ClassInfo>();
             foreach (var e in x.Descendants("class"))
             {
+                var hr = DateTime.Today;
+                DateTime.TryParse(e.Attribute("hour").Value, out hr);
                 list.Add(new ClassInfo
                 {
                     display = e.Attribute("display").Value,
                     oid = e.Attribute("orgid").Value.ToInt(),
                     pid = PeopleId,
                     nlabels = e.Attribute("nlabels").Value.ToInt(),
-                    hour = DateTime.Parse(e.Attribute("hour").Value),
+                    hour = hr
                 });
             }
             ShowPage(1);

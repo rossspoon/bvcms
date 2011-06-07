@@ -49,6 +49,7 @@ namespace CmsWeb.Models
         {
             Db = DbUtil.Db;
             Direction = "asc";
+            Sort = "Name";
             TagTypeId = DbUtil.TagTypeId_Personal;
             TagName = Util2.CurrentTagName;
             TagOwner = Util2.CurrentTagOwnerId;

@@ -99,7 +99,7 @@
                     </table>
     </div>
 <br /><br /><br /><br />
-&nbsp;&nbsp;&nbsp;<asp:LinkButton ID="QuerySearch" runat="server" 
+&nbsp;&nbsp;&nbsp;<asp:LinkButton ID="QuerySearch" runat="server" ToolTip="Query results are the Contactors, not the Contactees"
                                 onclick="QuerySearch_Click" CssClass="bt">Convert to Query</asp:LinkButton>
     <div class="floatclear"></div>
 

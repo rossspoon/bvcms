@@ -16,10 +16,26 @@ namespace CmsWeb.Areas.Setup.Controllers
         {
 
         }
+        public class MemberTypeInfo
+        {
+            public int Id { get; set; }
+            public string Code { get; set; }
+            public string Description { get; set; }
+            public string AttendType { get; set; }
+            public int? AttendTypeId { get; set; }
+        }
         public ActionResult Index()
         {
-            var m = DbUtil.Db.MemberTypes.AsEnumerable();
-            return View(m);
+            var q = from mt in DbUtil.Db.MemberTypes
+                    select new MemberTypeInfo
+                    {
+                        Id = mt.Id,
+                        Code = mt.Code,
+                        Description = mt.Description,
+                        AttendType = mt.AttendType.Description,
+                        AttendTypeId = mt.AttendanceTypeId,
+                    };
+            return View(q);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -59,15 +75,23 @@ namespace CmsWeb.Areas.Setup.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public EmptyResult Delete(string id)
+        public ActionResult Delete(string id)
         {
             var iid = id.Substring(1).ToInt();
             var mt = DbUtil.Db.MemberTypes.SingleOrDefault(m => m.Id == iid);
             if (mt == null)
                 return new EmptyResult();
+            var IsUsed = (from m in DbUtil.Db.MemberTypes
+                            where m.Id == mt.Id
+                            let mta = m.Attends.Any()
+                            let mto = m.OrganizationMembers.Any()
+                            let mte = m.EnrollmentTransactions.Any()
+                            select (mta || mto || mte)).SingleOrDefault();
+            if (IsUsed)
+                return Content("used");
             DbUtil.Db.MemberTypes.DeleteOnSubmit(mt);
             DbUtil.Db.SubmitChanges();
-            return new EmptyResult();
+            return Content("done");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult AttendTypeCodes()

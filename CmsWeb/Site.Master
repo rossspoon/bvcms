@@ -1,6 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="True" CodeBehind="Site.master.cs" Inherits="CmsWeb.Site" %>
 
-<%@ Register Src="UserControls/UserArea.ascx" TagName="UserArea" TagPrefix="uc1" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -71,7 +70,7 @@
                                 <img src="/Content/Welcome.png" width="11" height="16"></a></div>
                             <div class="sublinks">
                                 <a href="/Account/LogOff/">Logout</a>
-                                <a href="/ChangePassword.aspx">Change Password</a>
+                                <a href="/Account/ChangePassword">Change Password</a>
 <% if(Page.User.IsInRole("Admin"))
    { %>
                                 <a href="/Admin/Users.aspx">Manage Users</a>
@@ -110,7 +109,7 @@
             <td class="dropdown">
                 <div><a href="/QuickSearch">People</a></div>
                 <div class="sublinks">
-                    <a href="/QuickSearch">Quick Search</a>
+                    <a href="/QuickSearch">People Search</a>
                     <a href="/Tags">Manage Tags</a>
                     <a href="/Task/List/">Tasks</a>
                     <a href="/ContactSearch.aspx">Contact Search</a>

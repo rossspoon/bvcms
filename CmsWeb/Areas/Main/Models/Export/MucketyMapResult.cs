@@ -39,7 +39,7 @@ namespace CmsWeb.Models
         public override void ExecuteResult(ControllerContext context)
         {
             var fs = new FileStream(context.HttpContext.Server.MapPath(
-                @"\Content\MucketyTemplate.xls"), FileMode.Open, FileAccess.Read);
+                "/Content/MucketyTemplate.xls"), FileMode.Open, FileAccess.Read);
             var wb = new HSSFWorkbook(fs, true);
             var sheet = wb.GetSheet("Sheet1");
             var r = 1;

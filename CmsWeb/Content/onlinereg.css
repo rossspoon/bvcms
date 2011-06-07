@@ -370,3 +370,7 @@ div.instructions.find, div.instructions.options
 {
     color: Red;
 }
+#username, #password 
+{
+    width: 20em;
+}

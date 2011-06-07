@@ -83,11 +83,15 @@ namespace CmsData
         }
         public void Email(string from, IEnumerable<Person> list, string subject, string body)
         {
+            if (list.Count() == 0)
+                return;
             var aa = PersonListToMailAddressList(list);
             Email(from, list.First(), aa, subject, body, false);
         }
         public void EmailRedacted(string from, IEnumerable<Person> list, string subject, string body)
         {
+            if (list.Count() == 0)
+                return;
             var aa = PersonListToMailAddressList(list);
             Email(from, list.First(), aa, subject, body, redacted: true);
         }

@@ -183,6 +183,7 @@ namespace CmsData
             var Db = GetDb();
             var user = Db.Users.Single(u => u.Username == username);
             user.Password = EncodePassword(newPwd);
+            user.MustChangePassword = false;
             user.LastPasswordChangedDate = Util.Now;
             Db.SubmitChanges();
             return true;

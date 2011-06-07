@@ -113,10 +113,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 m.orgid = m.classid;
             var p = m.LoadExistingPerson(id);
             p.index = m.List.Count - 1;
-            m.List[p.index] = p;
             p.ValidateModelForFind(ModelState, m);
             if (!ModelState.IsValid)
                 return View("Flow/List", m);
+            m.List[p.index] = p;
             if (p.ManageSubscriptions() && p.Found == true)
             {
                 //p.OtherOK = true;
@@ -236,18 +236,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 //if (!p.AnyOtherInfo())
                 //    p.OtherOK = true;
             }
-            if (p.ShowDisplay() && p.ComputesOrganizationByAge())
+            if (p.org != null && p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
-#if DEBUG
-            if (Util.Host == "redeemer")
-            {
-                p.option = "For-Profit";
-                p.option2 = "The Art of the Pitch";
-                p.ExtraQuestion["Church Affiliation:"] = "Bellevue";
-                p.ExtraQuestion["JobTitle:"] = "developer";
-                p.ExtraQuestion["Employer:"] = "self";
-            }
-#endif
             return View("Flow/List", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -285,7 +275,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             p.IsValidForExisting = ModelState.IsValid == false;
             if (p.IsNew)
                 p.FillPriorInfo();
-            if (p.ShowDisplay() && p.ComputesOrganizationByAge())
+            if (p.org != null && p.ShowDisplay() && p.ComputesOrganizationByAge())
                 p.classid = p.org.OrganizationId;
             //if (!p.AnyOtherInfo())
             //    p.OtherOK = ModelState.IsValid;

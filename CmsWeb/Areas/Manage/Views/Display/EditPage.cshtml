@@ -1,6 +1,5 @@
 ﻿@{
     Layout = "/Views/Shared/SiteLayout.cshtml";
-    ViewBag.Title = "Edit Content";
 }
 <script type="text/javascript">
     $(function () {
@@ -17,8 +16,8 @@
     <a href="/Display/Index">Menu of Content</a>
     <hr />
     @Html.Hidden("id")
-    <div>Title: @Html.TextBox("title") @Html.CheckBox("ishtml") Is Html</div>
-    <div>@Html.TextArea("html", new { @class = "editor", rows = "16", style = "width:90%" })
+    <div>Title: @Html.TextBox("title") @Html.CheckBox("ishtml") Show HTML Only</div>
+    <div>@Html.TextArea("html", new { @class = "editor", rows = "26", style = "width:90%" })
     </div>
     <input type="submit" class="bt" value="Post" />
     </div>

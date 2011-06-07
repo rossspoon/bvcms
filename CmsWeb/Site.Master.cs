@@ -63,7 +63,7 @@ namespace CmsWeb
                 Response.Redirect(r);
 
             if (CMSMembershipProvider.provider.UserMustChangePassword)
-                Response.Redirect(ResolveUrl("/ChangePassword.aspx"));
+                Response.Redirect(ResolveUrl("/Account/ChangePassword"));
             Membership.GetUser(); // record activity
 
             string pa = System.IO.Path.ChangeExtension(Request.Url.AbsolutePath, "");

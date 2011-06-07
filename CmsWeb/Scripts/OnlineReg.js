@@ -126,8 +126,14 @@
     });
     $("form.DisplayEdit").validate({
         rules: {
-            "m.donation": { number: true },
+            "m.donation": { number: true }
         }
     });
+    $(".personheader a").live("click", function (e) {
+        e.preventDefault();
+        $(this).closest('div').nextAll('table').slideToggle();
+        return false;
+    });
+
 });
 

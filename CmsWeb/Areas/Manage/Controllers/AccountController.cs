@@ -132,8 +132,8 @@ CKEditorFuncNum, baseurl + fn, error));
             }
             var user = ret as User;
 
-            if (CMSMembershipProvider.provider.UserMustChangePassword)
-                Redirect("/ChangePassword.aspx");
+            if (user.MustChangePassword)
+                return Redirect("/Account/ChangePassword");
             if (!returnUrl.HasValue())
                 if (!CMSRoleProvider.provider.IsUserInRole(user.Username, "Access"))
                     return Redirect("/Person/Index/" + Util.UserPeopleId);
@@ -156,6 +156,11 @@ CKEditorFuncNum, baseurl + fn, error));
                 if (u.TempPassword != null && password == u.TempPassword)
                 {
                     u.TempPassword = null;
+                    if (password == "bvcms") // set this up so Admin/bvcms works until password is changed
+                    {
+                        u.Password = "";
+                        u.MustChangePassword = true;
+                    }
                     u.IsLockedOut = false;
                     DbUtil.Db.SubmitChanges();
                     user = u;
@@ -485,7 +490,6 @@ The bvCMS Team</p>
 
         public ActionResult ChangePasswordSuccess()
         {
-
             return View();
         }
 

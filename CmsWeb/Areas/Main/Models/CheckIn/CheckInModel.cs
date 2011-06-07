@@ -39,6 +39,11 @@ namespace CmsWeb.Models
         }
         public List<Attendee> FamilyMembers(int id, int campus, int thisday)
         {
+            var normalLabelsMemTypes = new int[] 
+            {
+                (int)OrganizationMember.MemberTypeCode.Member,
+                (int)OrganizationMember.MemberTypeCode.InActive
+            };
             var now = Util.Now;
             // get org members first
             var members =
@@ -74,9 +79,8 @@ namespace CmsWeb.Models
                     Location = om.Organization.Location,
                     Age = om.Person.Age ?? 0,
                     Gender = om.Person.Gender.Code,
-                    NumLabels = om.MemberTypeId ==
-                        (int)CmsData.OrganizationMember.MemberTypeCode.Member ?
-                            (om.Organization.NumCheckInLabels ?? 1)
+                    NumLabels = normalLabelsMemTypes.Contains(om.MemberTypeId)
+                            ? (om.Organization.NumCheckInLabels ?? 1)
                             : (om.Organization.NumWorkerCheckInLabels ?? 0),
                     Hour = meeting.Hour,
                     CheckedIn = CheckedIn,

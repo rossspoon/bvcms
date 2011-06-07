@@ -28,6 +28,7 @@
             <td colspan="2">
                 <input type="submit" class="bt" id="move" name="move" value="Move" />
                 <a href="#" id="EmailNotices" class="bt">Email Room Notices(@Model.MovedCount())</a>
+                @Html.CheckBox("EmailAllNotices") Email All
             </td>
         </tr>
     </table>

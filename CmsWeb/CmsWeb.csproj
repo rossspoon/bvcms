@@ -783,20 +783,6 @@
     <Compile Include="UploadPicture.aspx.designer.cs">
       <DependentUpon>UploadPicture.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Address.ascx.cs">
-      <DependentUpon>Address.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\Address.ascx.designer.cs">
-      <DependentUpon>Address.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ExportToolBar.ascx.cs">
-      <DependentUpon>ExportToolBar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\ExportToolBar.ascx.designer.cs">
-      <DependentUpon>ExportToolBar.ascx</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\GridPager.ascx.cs">
       <DependentUpon>GridPager.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -810,20 +796,6 @@
     </Compile>
     <Compile Include="UserControls\PersonGrid.ascx.designer.cs">
       <DependentUpon>PersonGrid.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\QueryConditions.ascx.cs">
-      <DependentUpon>QueryConditions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\QueryConditions.ascx.designer.cs">
-      <DependentUpon>QueryConditions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UserArea.ascx.cs">
-      <DependentUpon>UserArea.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\UserArea.ascx.designer.cs">
-      <DependentUpon>UserArea.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -1075,7 +1047,6 @@
     <Content Include="Scripts\UserDialog.js" />
     <Content Include="SquishIt.Contrib.MvcReadMe.txt" />
     <Content Include="UploadPicture.aspx" />
-    <Content Include="UserControls\ExportToolBar.ascx" />
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\Row.cshtml" />
     <Content Include="Areas\Main\Views\Contact\Index.cshtml" />
@@ -1461,6 +1432,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
+    <None Include="Content\MucketyTemplate.xls" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1710,11 +1682,8 @@
     <Content Include="Report\DecisionSummary.aspx" />
     <Content Include="Report\WorshipDetail.aspx" />
     <Content Include="Site.Master" />
-    <Content Include="UserControls\Address.ascx" />
     <Content Include="UserControls\GridPager.ascx" />
     <Content Include="UserControls\PersonGrid.ascx" />
-    <Content Include="UserControls\QueryConditions.ascx" />
-    <Content Include="UserControls\UserArea.ascx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CmsData\CmsData.csproj">

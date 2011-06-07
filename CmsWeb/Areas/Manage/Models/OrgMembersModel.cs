@@ -23,6 +23,7 @@ namespace CmsWeb.Models
         public int SourceId { get; set; }
         public int ProgId { get; set; }
         public int DivId { get; set; }
+        public bool EmailAllNotices { get; set; }
         public string Grades { get; set; }
         public string Sort { get; set; }
         public string Dir { get; set; }
@@ -301,6 +302,14 @@ namespace CmsWeb.Models
                     select om;
             return q.Count();
         }
+        public int AllCount()
+        {
+            var q = from om in DbUtil.Db.OrganizationMembers
+                    where om.Organization.DivOrgs.Any(di => di.DivId == DivId)
+                    where om.Moved == true || EmailAllNotices
+                    select om;
+            return q.Count();
+        }
         public void SendMovedNotices()
         {
             var Db = DbUtil.Db;
@@ -315,7 +324,7 @@ namespace CmsWeb.Models
 
             var q = from om in Db.OrganizationMembers
                     where om.Organization.DivOrgs.Any(di => di.DivId == DivId)
-                    where om.Moved == true
+                    where om.Moved == true || EmailAllNotices
                     select new
                     {
                         om,
@@ -343,19 +352,20 @@ Please call {4} if you have any questions.
 Thanks for registering!
 ".Fmt(i.Name, i.OrganizationName, i.Location, i.LeaderName, i.PhoneNumber.FmtFone(), onlineorg.OrganizationName);
 
-                if (i.RegisterEmail.HasValue())
+                if (i.om.Moved == true || EmailAllNotices)
                 {
-                    Db.Email(Db.CurrentUser.Person.FromEmail, 
-                        i.om.Person, Util.ToMailAddressList(i.RegisterEmail),
-                        subj, msg, false);
-                    sb.AppendFormat("\"{0}\" [{1}]R ({2}): {3}\r\n".Fmt(i.Name, i.FromEmail, i.PeopleId, i.Location));
-                    i.om.Moved = false;
-                }
+                    if (i.RegisterEmail.HasValue())
+                    {
+                        Db.Email(Db.CurrentUser.Person.FromEmail, 
+                            i.om.Person, Util.ToMailAddressList(i.RegisterEmail),
+                            subj, msg, false);
+                        sb.AppendFormat("\"{0}\" [{1}]R ({2}): {3}\r\n".Fmt(i.Name, i.FromEmail, i.PeopleId, i.Location));
+                        i.om.Moved = false;
+                    }
                 
-                if (i.om.Moved == true) // need to email parents
-                {
                     var flist = (from fm in i.om.Person.Family.People
                                  where fm.EmailAddress != null && fm.EmailAddress != ""
+                                 where fm.EmailAddress != i.RegisterEmail
                                  where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
                                  select fm);
                     Db.Email(Db.CurrentUser.Person.FromEmail, flist, subj, msg);

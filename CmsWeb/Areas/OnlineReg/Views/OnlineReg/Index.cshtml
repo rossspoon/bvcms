@@ -35,11 +35,6 @@
                 });
             else
                 $.idleTimer(tmout);
-            $(".personheader a").live("click", function (e) {
-                e.preventDefault();
-                $(this).closest('div').nextAll('table').slideToggle();
-                return false;
-            });
         });
     </script>
     <h2>@Model.Header</h2>

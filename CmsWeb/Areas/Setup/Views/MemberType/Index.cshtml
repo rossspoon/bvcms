@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CmsData.MemberType>
+﻿@model IEnumerable<CmsWeb.Areas.Setup.Controllers.MemberTypeController.MemberTypeInfo>
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "MemberType";
@@ -7,25 +7,29 @@
 <script type="text/javascript">
         //id=elements_id&value=user_edited_content
     $(function () {
-        $(".clickEdit").editable("/MemberType/Edit/", {
+        $(".clickEdit").editable("/Setup/MemberType/Edit/", {
             indicator: "<img src='/images/loading.gif'>",
             tooltip: "Click to edit...",
             style: 'display: inline',
             width: '200px',
             height: 25
         });
-        $(".clickSelect").editable("/MemberType/EditAttendType/", {
+        $(".clickSelect").editable("/Setup/MemberType/EditAttendType/", {
             indicator: '<img src="/images/loading.gif">',
-            loadurl: "/MemberType/AttendTypeCodes/",
+            loadurl: "/Setup/MemberType/AttendTypeCodes/",
             loadtype: "POST",
             type: "select",
             submit: "OK",
             style: 'display: inline'
         });
         $("a.delete").click(function (ev) {
+            ev.preventDefault();
             if (confirm("are you sure?"))
-                $.post("/MemberType/Delete/" + $(this).attr("id"), null, function (ret) {
-                    window.location = "/MemberType/";
+                $.post("/Setup/MemberType/Delete/" + $(this).attr("id"), null, function (ret) {
+                    if (ret == "used")
+                        alert("that member type is being used");
+                    else
+                        window.location = "/Setup/MemberType/";
                 });
             return false;
         });
@@ -55,7 +59,7 @@
         </td>
         <td>
             <span id='a@(item.Id)' 
-                class='clickSelect'>@(item.AttendType == null ? "" : item.AttendType.Description)</span>
+                class='clickSelect'>@(item.AttendTypeId == null ? "" : item.AttendType)</span>
         </td>
         <td>
             <a id='d@(item.Id)' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
