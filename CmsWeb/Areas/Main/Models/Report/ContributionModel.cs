@@ -81,12 +81,11 @@ namespace CmsWeb.Areas.Main.Models.Report
         //    return q;
         //}
 
-        public static IEnumerable<ContributorInfo> contributors(CMSDataContext Db, DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId)
+        public static IEnumerable<ContributorInfo> contributors(CMSDataContext Db, DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId, bool noaddressok, bool useMinAmt)
         {
-            //var pids = new int[] { 817023, 865610, 828611, 828612 };
-
-            var noaddressok = Db.Setting("NoAddressOK", "false") == "true";
             var MinAmt = Db.Setting("MinContributionAmount", "5").ToDecimal();
+            if (!useMinAmt)
+                MinAmt = 0;
             var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok)
                       let option = (p.ContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.ContributionOptionsId
                       let option2 = (p.SpouseContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.SpouseContributionOptionsId
@@ -102,7 +101,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                              p.SpouseTitle + " and Mrs. " + p.SpouseName
                                              : "Mr. and Mrs. " + p.SpouseName))))
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
-                      where option != 9
+                      where option != 9 || noaddressok
                       where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
                       select new ContributorInfo
@@ -133,9 +132,9 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
                     where c.ContributionTypeId != (int)Contribution.TypeCode.BrokeredProperty
                     where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
-                    where c.ContributionDate >= fromDate.Date && c.ContributionDate <= toDate.Date
+                    where c.ContributionDate >= fromDate && c.ContributionDate.Value.Date <= toDate
                     where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
-                    where !c.PledgeFlag
+                    where c.PledgeFlag == false
                     orderby c.ContributionDate
                     select new ContributionInfo
                     {

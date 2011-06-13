@@ -566,13 +566,6 @@
     <Compile Include="Contributions\Individual.aspx.designer.cs">
       <DependentUpon>Individual.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Contributions\Reports\ContributionStatementExtract.aspx.cs">
-      <DependentUpon>ContributionStatementExtract.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Reports\ContributionStatementExtract.aspx.designer.cs">
-      <DependentUpon>ContributionStatementExtract.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Contributions\Reports\JournalDetails.aspx.cs">
       <DependentUpon>JournalDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -706,20 +699,6 @@
     <Compile Include="PurgeProgress.aspx.designer.cs">
       <DependentUpon>PurgeProgress.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\BFCAvgWeeklyAttendanceRpt.aspx.cs">
-      <DependentUpon>BFCAvgWeeklyAttendanceRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\BFCAvgWeeklyAttendanceRpt.aspx.designer.cs">
-      <DependentUpon>BFCAvgWeeklyAttendanceRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\BFCWeeklyAttendanceSummaryRpt.aspx.cs">
-      <DependentUpon>BFCWeeklyAttendanceSummaryRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\BFCWeeklyAttendanceSummaryRpt.aspx.designer.cs">
-      <DependentUpon>BFCWeeklyAttendanceSummaryRpt.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\ChurchAttendanceRpt.aspx.cs">
       <DependentUpon>ChurchAttendanceRpt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -754,13 +733,6 @@
     </Compile>
     <Compile Include="Report\Reports.Master.designer.cs">
       <DependentUpon>Reports.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Report\WorshipDetail.aspx.cs">
-      <DependentUpon>WorshipDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\WorshipDetail.aspx.designer.cs">
-      <DependentUpon>WorshipDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="SavedQueries.aspx.cs">
       <DependentUpon>SavedQueries.aspx</DependentUpon>
@@ -1432,7 +1404,7 @@
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
-    <None Include="Content\MucketyTemplate.xls" />
+    <Content Include="Content\MucketyTemplate.xls" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1645,7 +1617,6 @@
     <Content Include="Contributions\Deposit.aspx" />
     <Content Include="Contributions\GLExtract.aspx" />
     <Content Include="Contributions\Individual.aspx" />
-    <Content Include="Contributions\Reports\ContributionStatementExtract.aspx" />
     <Content Include="Contributions\Reports\JournalDetails.aspx" />
     <Content Include="Contributions\Reports\PledgeReport.aspx" />
     <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
@@ -1675,12 +1646,9 @@
     <Content Include="images\tags.png" />
     <Content Include="images\unknown.jpg" />
     <Content Include="images\work.gif" />
-    <Content Include="Report\BFCAvgWeeklyAttendanceRpt.aspx" />
-    <Content Include="Report\BFCWeeklyAttendanceSummaryRpt.aspx" />
     <Content Include="Report\ChurchAttendanceRpt.aspx" />
     <Content Include="Report\ChurchAttendanceSummaryRpt.aspx" />
     <Content Include="Report\DecisionSummary.aspx" />
-    <Content Include="Report\WorshipDetail.aspx" />
     <Content Include="Site.Master" />
     <Content Include="UserControls\GridPager.ascx" />
     <Content Include="UserControls\PersonGrid.ascx" />
@@ -1851,7 +1819,6 @@
     <Content Include="Scripts\QueryBuilder.js" />
     <Content Include="Scripts\Task.js" />
     <Content Include="StaffOnly\Web.config" />
-    <Content Include="Views\Shared\ExportToolBar2.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -31,7 +31,7 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="City", Storage="_CityX", DbType="varchar(50)")]
+		[Column(Name="City", Storage="_CityX", DbType="varchar(30)")]
 		public string CityX
 		{
 			get
@@ -48,7 +48,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="State", Storage="_State", DbType="varchar(5)")]
+		[Column(Name="State", Storage="_State", DbType="varchar(20)")]
 		public string State
 		{
 			get
@@ -65,7 +65,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Zip", Storage="_Zip", DbType="varchar(11)")]
+		[Column(Name="Zip", Storage="_Zip", DbType="varchar(15)")]
 		public string Zip
 		{
 			get

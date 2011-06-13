@@ -397,6 +397,18 @@ namespace CmsData
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
         }
+        internal static Expression EmailRecipient(
+            ParameterExpression parm,
+            CompareType op,
+            int id)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                p.EmailQueueTos.Any(e => e.Id == id);
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual)
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression RecentEmailCount(
             ParameterExpression parm,
             int days,

@@ -20,7 +20,7 @@ using System.Data.Linq.SqlClient;
 namespace CMSPresenter
 {
     [DataObject]
-    public class ChurchAttendanceController : ChurchAttendanceConstants
+    public class ChurchAttendanceController 
     {
 
         public class WorshipAttendInfo
@@ -57,98 +57,6 @@ namespace CMSPresenter
             qlist = q.ToList();
         }
 
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<WorshipAttendInfo> ChurchAttendance(DateTime sunday)
-        {
-            var sunday1200 = sunday.AddHours(12);
-            LoadMeetings(sunday);
-
-            var q2 = from m in qlist
-                     where m.MeetingDate < sunday1200
-                     where MorningWorship.Contains(m.OrganizationId)
-                         || ExtendedSessions.Contains(m.OrganizationId)
-                         || ChoirTags.Contains(m.ProgramId ?? 0)
-                     let m1 = ExtendedSessions.Contains(m.OrganizationId) ? "dExtended Session" :
-                        m.ProgramId == VocalTagId ? "bChoir" :
-                        m.ProgramId == OrchestraTagId ? "cOrchestra" :
-                        "a" + m.MeetingDate.TimeOfDay.Hours.ToString().PadLeft(2, ' ') + ":" + m.MeetingDate.Minute.ToString().PadLeft(2, '0') + " AM"
-                     group m by m1 into g
-                     orderby g.Key
-                     select new WorshipAttendInfo
-                     {
-                         Name = g.Key.Substring(1),
-                         Count = g.Sum(m => m.NumPresent),
-                     };
-            var list = q2.ToList();
-            if (list.Count > 0)
-                list.Add(new WorshipAttendInfo
-                {
-                    Name = "Total",
-                    Count = q2.Sum(i => i.Count)
-                });
-            int pm = qlist.Where(m => EveningWorship.Contains(m.OrganizationId)).Sum(m => m.NumPresent);
-            if (pm > 0)
-            {
-                list.Add(new WorshipAttendInfo { Name = "&nbsp;" });
-                list.Add(new WorshipAttendInfo
-                {
-                    Name = "6:00 P.M.",
-                    Count = pm
-                });
-            }
-
-            return list;
-        }
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable ChurchAttendanceDetail(DateTime sunday)
-        {
-            var sunday1200 = sunday.AddHours(12);
-            LoadMeetings(sunday);
-
-            var q2 = from m in qlist
-                     where m.MeetingDate < sunday1200
-                     where MorningWorship.Contains(m.OrganizationId)
-                         || ExtendedSessions.Contains(m.OrganizationId)
-                         || ChoirTags.Contains(m.ProgramId ?? 0)
-                     let m1 = ExtendedSessions.Contains(m.OrganizationId) ? "dExtended Session" :
-                        m.ProgramId == VocalTagId ? "bChoir" :
-                        m.ProgramId == OrchestraTagId ? "cOrchestra" :
-                        "a" + m.MeetingDate.TimeOfDay.Hours.ToString().PadLeft(2, ' ') + ":" + m.MeetingDate.Minute.ToString().PadLeft(2, '0') + " AM"
-                     orderby m1
-                     select new
-                     {
-                         Row = m1,
-                         Name = m.Name,
-                         Count = m.NumPresent,
-                     };
-            var list = q2.ToList();
-            return q2;
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<WorshipAttendInfo> BFCAttendance(DateTime sunday)
-        {
-            LoadMeetings(sunday);
-            var q2 = from m in qlist
-                     where m.ProgramId == BFCProgramTagId
-                     group m by m.MeetingDate into g
-                     orderby g.Key
-                     select new WorshipAttendInfo
-                     {
-                         Name = g.Key.Hour + ":" + g.Key.Minute.ToString().PadLeft(2, '0') + " A.M.",
-                         Count = g.Sum(m => m.NumPresent)
-                     };
-            var list = q2.ToList();
-            if (list.Count > 0)
-                list.Add(new WorshipAttendInfo
-                {
-                    Name = "Total",
-                    Count = q2.Sum(i => i.Count)
-                });
-            return list;
-        }
-
-
         public IEnumerable<WorshipAttendInfo> Baptisms(DateTime sunday)
         {
             var dt1 = sunday.AddDays(-4);
@@ -184,43 +92,6 @@ namespace CMSPresenter
                      {
                          Name = g.Key,
                          Count = g.Count()
-                     };
-            var list = q3.ToList();
-            if (list.Count > 0)
-                list.Add(new WorshipAttendInfo
-                {
-                    Name = "Total",
-                    Count = q3.Sum(i => i.Count)
-                });
-            return list;
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public IEnumerable<WorshipAttendInfo> WednesdayAttendance(DateTime sunday)
-        {
-            var wednesday = sunday.AddDays(-4).AddHours(17);
-
-            var q3 = from m in DbUtil.Db.Meetings
-                     where m.MeetingDate.Value.Date == wednesday.Date
-                     where m.MeetingDate.Value >= wednesday
-                     where m.NumPresent > 0
-                     let div = m.Organization.DivOrgs.First(t => t.Division.Program.Name != DbUtil.MiscTagsString).Division
-                     group m by
-                        WedWorship.Contains(m.OrganizationId) ? "Prayer and Praise Service" :
-                        div.Id == CrownTagId ? "Crown Ministry" :
-                        div.Id == StringsId ? "Strings Group Class" :
-                        div.Id == WedBFSmallGroups ? "BF Small Groups" :
-                        discipleLifeTags.Contains(div.Id) ? "Disciple Life" :
-                        div.ProgId == VocalTagId ? "Adult Choir" :
-                        div.ProgId == OrchestraTagId ? "Orchestra" :
-                        div.ProgId == GradedChoirTagId ? "Graded Choirs" :
-                        div.ProgId == CareTagId ? "Care" :
-                        m.Organization.OrganizationName into g
-                     orderby g.Key
-                     select new WorshipAttendInfo
-                     {
-                         Name = g.Key,
-                         Count = g.Sum(m => m.NumPresent)
                      };
             var list = q3.ToList();
             if (list.Count > 0)

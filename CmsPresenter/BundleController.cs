@@ -655,12 +655,12 @@ namespace CMSPresenter
                 (int)Contribution.TypeCode.Reversed, 
             };
             var q = from c in DbUtil.Db.Contributions
-                    where dt1 <= c.ContributionDate.Value.Date
-                    where c.ContributionDate.Value.Date <= dt2
-                    where Pledges || c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     where !contributionTypes.Contains(c.ContributionTypeId)
+                    where c.ContributionTypeId != (int)Contribution.TypeCode.BrokeredProperty
+                    where Pledges || c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
+                    where c.ContributionDate >= dt1 && c.ContributionDate.Value.Date <= dt2
                     where c.PledgeFlag == Pledges
-                    where Pledges || c.PostingDate != null
+                    //where Pledges || c.PostingDate != null
                     where CampusId == 0 || c.Person.CampusId == CampusId
                     group c by c.FundId into g
                     orderby g.Key

@@ -52,14 +52,14 @@ namespace CmsWeb.Areas.Main.Models.Report
             {
                 case 1:
                     SpouseId = DbUtil.Db.People.Where(p => p.PeopleId == PeopleId).Single().SpouseId.ToInt();
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok: false, useMinAmt: true);
                     break;
                 case 2:
                     FamilyId = DbUtil.Db.People.Where(p => p.PeopleId == PeopleId).Single().FamilyId;
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId, noaddressok: false, useMinAmt: true);
                     break;
                 case 3:
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0, noaddressok: false, useMinAmt: true);
                     break;
             }
             int current = 0;

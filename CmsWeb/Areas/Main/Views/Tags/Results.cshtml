@@ -7,7 +7,7 @@
 		<h4>Count: @Model.Count()</h4>
 		@Html.Partial("ExportToolBar")
 		@Html.Partial("Pager2", Model)
-		@Html.Hidden("actag", Util2.CurrentTagName)</td></tr>
+		@Html.Hidden("actag", Util2.CurrentTagName)
 		@Html.Hidden("shcnt", Model.SharedCount())</td></tr>
 	<tr>
 		<th> <a href="#" class="sortable">Name</a> </th>

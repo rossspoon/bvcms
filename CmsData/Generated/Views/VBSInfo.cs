@@ -70,7 +70,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name", Storage="_Name", DbType="varchar(36)")]
+		[Column(Name="Name", Storage="_Name", DbType="varchar(126)")]
 		public string Name
 		{
 			get
@@ -87,7 +87,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name2", Storage="_Name2", DbType="varchar(37)")]
+		[Column(Name="Name2", Storage="_Name2", DbType="varchar(127)")]
 		public string Name2
 		{
 			get
@@ -257,7 +257,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="OrgName", Storage="_OrgName", DbType="varchar(60)")]
+		[Column(Name="OrgName", Storage="_OrgName", DbType="varchar(100)")]
 		public string OrgName
 		{
 			get

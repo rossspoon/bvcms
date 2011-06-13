@@ -24,9 +24,8 @@ namespace CmsWeb.Reports
                 DateTime.TryParse(SundayDate.Text, out dt);
             if (!IsPostBack || dt.Year < 1900)
             {
-                var caids = new ChurchAttendanceConstants();
                 var date = this.QueryString<DateTime?>("date");
-                dt = date.HasValue ? date.Value : caids.MostRecentAttendedSunday();
+                dt = date.HasValue ? date.Value : MostRecentAttendedSunday();
             }
             var reportDate = dt.AddDays(-(int)dt.DayOfWeek); //Sunday Date equal/before date selected
             SundayDate.Text = reportDate.ToString("d");
@@ -35,6 +34,16 @@ namespace CmsWeb.Reports
         protected void ODS_ObjectCreating(object sender, ObjectDataSourceEventArgs e)
         {
             e.ObjectInstance = ods;
+        }
+        public static DateTime MostRecentAttendedSunday()
+        {
+            var q = from m in DbUtil.Db.Meetings
+                    where m.MeetingDate.Value.Date.DayOfWeek == 0
+                    where m.NumPresent > 0
+                    orderby m.MeetingDate descending
+                    select m.MeetingDate.Value.Date;
+            var dt = q.FirstOrDefault();
+            return dt == DateTime.MinValue ? DateTime.Today : dt;
         }
     }
 }

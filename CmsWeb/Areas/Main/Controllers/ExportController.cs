@@ -26,10 +26,9 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         [Authorize(Roles="Finance")]
         [Authorize(Roles="Admin")]
-        public ActionResult Contributions(string tag, string start, string end)
+        public ActionResult Contributions(int id, string start, string end)
         {
-            return new ContributionsExcelResult(tag, start, end);
+            return new ContributionsExcelResult(id, start, end);
         }
-
     }
 }

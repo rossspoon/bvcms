@@ -112,7 +112,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 Count = 0;
                 CurrentTask = "Fetching Contributors...";
 
-                var qc = ContributionModel.contributors(Db, fd, td, 0, 0, 0);
+                var qc = ContributionModel.contributors(Db, fd, td, 0, 0, 0, noaddressok: true, useMinAmt: true);
                 Count = qc.Count();
                 if (PDF)
                 {

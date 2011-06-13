@@ -18,7 +18,6 @@
         .Add("/Content/js/hoverIntent.js")
         .Add("/Content/js/jquery-cookie.js")
         .Add("/Content/js/jquery.blockUI.js")
-        .Add("/Scripts/ExportToolBar.js")
         .Add("/Scripts/menu.js")
         .Render("/Content/combined1_#.js")          
     %>
@@ -49,9 +48,9 @@
        { %>
     <div id='TopNotice'><%=DbUtil.TopNotice()%></div>
     <% } %>
-  <form runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-    <div id="container">
+<form runat="server">
+<asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+<div id="container">
     <div class="header">
         <table cellpadding="0" cellspacing="0" style="width: 100%">
             <tr>
@@ -146,7 +145,11 @@
                 <div class="sublinks">
                     <a href="/Reports/ChurchAttendance" target="_blank">Week at a Glance</a>
                     <a href="/Reports/ChurchAttendance2" target="_blank">Average Week at a Glance</a>
+    <% if (DbUtil.Db.Setting("Bellevue", "false") == "true")
+       { %>
+
                     <a href="/Report/ChurchAttendanceSummaryRpt.aspx" target="_blank">Church Attendance Summary</a>
+    <% } %>
                     <a href="/Report/ChurchAttendanceRpt.aspx" target="_blank">Weekly Decisions</a>
                     <a href="/Report/DecisionSummary.aspx" target="_blank">Decision Summary</a>
                 </div>
@@ -210,15 +213,7 @@
                 <div><a href="<%=Util.HelpLink(Util.Helpfile) %>" target="_blank">Help</a></div>
                 <div class="sublinks">
                     <a href="<%=Util.HelpLink(Util.Helpfile) %>" target="_blank">Wiki Documentation</a>
-    <% if (Page.User.IsInRole("Admin"))
-       { %>
-                    <a href="http://bvcms.com/Page/Bug/">Bug Report</a>
-    <% }
-       if (Request.Url.Authority == "bvcms.com" || Request.Url.Authority == "bellevue.org")
-       { %>
-                    <a href="http://bvcms.com/Page/OnlineReg/" target="_blank">Online Registration Request
-                        Form</a>
-    <% } %>
+                    <a href="mailto:support@bvcms.com?subject=Support request from <%=DbUtil.Db.CurrentUserPerson.Name%> at <%=Util.CmsHost2%>" target="_blank">Email Support</a>
                 </div>
             </td>
         </tr>
@@ -231,39 +226,7 @@
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
     </asp:ContentPlaceHolder>
     </div>
-    <div id="ChooseLabelType" class="modalPopup" style="display:none; width: 400px; padding: 10px">
-        <table>
-            <tr>
-                <td style="margin: 3px; border: solid thin black" nowrap="nowrap">
-                    <input type="radio" id="addressedto1" name="addressedto" value="Individual" checked="checked"
-                        title="Addressed to individuals" />
-                    Individual<br />
-                    <input type="radio" id="addressedto2" name="addressedto" value="Family" title="Addressed as a family when there are children" />
-                    Family<br />
-                    <input type="radio" id="addressedto6" name="addressedto" value="FamilyMembers" title="Includes entire Family as individuals" />
-                    Family Members<br />
-                    <input type="radio" id="addressedto3" name="addressedto" value="CouplesBoth" title="Addressed to a couple, if both are in selection" />
-                    Couples (both)<br />
-                    <input type="radio" id="addressedto4" name="addressedto" value="CouplesEither" title="Addressed to a couple, if one or both are in selection" />
-                    Couples (either)<br />
-                    <input type="radio" id="addressedto5" name="addressedto" value="ParentsOf" title="Addressed to parents or parent" />
-                    Parents Of<br />
-                </td>
-                <td>
-                    <input type="checkbox" id="UseTitle" name="UseTitle" />
-                    Use Titles<br />
-                    <input type="checkbox" id="UsePhone" name="UsePhone" />
-                    Include Phone
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="right">
-                    <input id="cmdOK" type="button" value="OK" />
-                </td>
-            </tr>
-        </table>
-    </div>
-    </div>
-    </form>
+</div>
+</form>
 </body>
 </html>

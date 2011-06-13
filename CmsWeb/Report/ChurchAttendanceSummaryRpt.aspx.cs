@@ -23,8 +23,7 @@ namespace CmsWeb
                 DateTime.TryParse(SundayDate.Text, out dt);
             if (!IsPostBack || dt.Year < 1900)
             {
-                var caids = new ChurchAttendanceConstants();
-                dt = caids.MostRecentAttendedSunday();
+                dt = Reports.ChurchAttendanceRpt.MostRecentAttendedSunday();
             }
             var reportDate = dt.AddDays(-(int)dt.DayOfWeek); //Sunday Date equal/before date selected
             SundayDate.Text = reportDate.ToString("d");

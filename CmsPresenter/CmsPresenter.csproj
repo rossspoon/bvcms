@@ -222,7 +222,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttendController.cs" />
-    <Compile Include="BFCAttendSummaryController.cs" />
     <Compile Include="BundleController.cs" />
     <Compile Include="ChurchAttendanceConstants.cs" />
     <Compile Include="ChurchAttendanceSummaryController.cs" />
@@ -241,39 +240,25 @@
     <Compile Include="com.qas.proweb\QuickAddress.cs" />
     <Compile Include="com.qas.proweb\SearchResult.cs" />
     <Compile Include="ContactSearchController.cs" />
-    <Compile Include="ContributionStatementController.cs" />
     <Compile Include="ChurchAttendanceController.cs" />
     <Compile Include="ActivityController.cs" />
     <Compile Include="DecisionSummaryController.cs" />
-    <Compile Include="InfoClasses\ContributorInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="InfoClasses\SavedQueryInfo.cs" />
-    <Compile Include="OrganizationSearchController.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="InfoClasses\ContacteeInfo.cs" />
     <Compile Include="InfoClasses\ContactorInfo.cs" />
-    <Compile Include="InfoClasses\MemberTypeInfo.cs" />
-    <Compile Include="InfoClasses\ToggleAttendanceReturn.cs" />
-    <Compile Include="FamilyController.cs" />
     <Compile Include="InfoClasses\MailingInfo.cs" />
-    <Compile Include="InfoClasses\ToggleTagReturn.cs" />
     <Compile Include="InfoClasses\TaggedPersonInfo.cs" />
     <Compile Include="ContactController.cs" />
     <Compile Include="InfoClasses\ContactInfo.cs" />
-    <Compile Include="InfoClasses\FamilyMember.cs" />
-    <Compile Include="InfoClasses\ExcelInfo.cs" />
     <Compile Include="MailingController.cs" />
     <Compile Include="MeetingController.cs" />
     <Compile Include="InfoClasses\AttendInfo.cs" />
     <Compile Include="InfoClasses\CodeValueItem.cs" />
     <Compile Include="InfoClasses\MeetingInfo.cs" />
-    <Compile Include="InfoClasses\OrganizationInfo.cs" />
     <Compile Include="InfoClasses\PastAttendeeInfo.cs" />
     <Compile Include="InfoClasses\PersonInfo.cs" />
     <Compile Include="CodeValueController.cs" />
-    <Compile Include="QueryController.cs" />
+    <Compile Include="SavedQueryController.cs" />
     <Compile Include="RoleController.cs" />
     <Compile Include="UserController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

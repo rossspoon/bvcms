@@ -187,5 +187,26 @@ namespace CmsWeb.Models
                 }
             }
         }
+        public static void AddRelatedFamily(int familyId, int relatedPersonId)
+        {
+            var p = DbUtil.Db.LoadPersonById(relatedPersonId);
+            var rf = DbUtil.Db.RelatedFamilies.SingleOrDefault(r =>
+                (r.FamilyId == familyId && r.RelatedFamilyId == p.FamilyId)
+                || (r.FamilyId == p.FamilyId && r.RelatedFamilyId == familyId)
+                );
+            if (rf == null)
+            {
+                rf = new RelatedFamily
+                {
+                    FamilyId = familyId,
+                    RelatedFamilyId = p.FamilyId,
+                    FamilyRelationshipDesc = "Add Description",
+                    CreatedBy = Util.UserId1,
+                    CreatedDate = Util.Now,
+                };
+                DbUtil.Db.RelatedFamilies.InsertOnSubmit(rf);
+                DbUtil.Db.SubmitChanges();
+            }
+        }
     }
 }

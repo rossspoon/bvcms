@@ -148,6 +148,11 @@ namespace CmsData
                                parm,
                                CompType,
                                c.CodeIds == "1");
+                // E ----------------------------
+                case QueryType.EmailRecipient:
+                    return Expressions.EmailRecipient(parm,
+                               CompType,
+                               c.TextValue.ToInt());
                 // F ----------------------------
                 case QueryType.FamHasPrimAdultChurchMemb:
                     return Expressions.FamHasPrimAdultChurchMemb(parm, CompType, c.CodeIds == "1");

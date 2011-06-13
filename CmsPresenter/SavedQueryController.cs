@@ -17,10 +17,10 @@ using System.Configuration;
 namespace CMSPresenter
 {
     [DataObject]
-    public class QueryController
+    public class SavedQueryController
     {
         private CMSDataContext Db;
-        public QueryController()
+        public SavedQueryController()
         {
             Db = DbUtil.Db;
         }
@@ -112,59 +112,5 @@ namespace CMSPresenter
             Db.DeleteQueryBuilderClauseOnSubmit(qb);
             Db.SubmitChanges();
         }
-
-        //public int count;
-        //public int Count(int startRowIndex, int maximumRows,
-        //    string sortExpression, int QueryId)
-        //{
-        //    return count;
-        //}
-
-        //[DataObjectMethod(DataObjectMethodType.Select, false)]
-        //public IEnumerable<TaggedPersonInfo> FetchPeopleList(int startRowIndex, int maximumRows,
-        //    string sortExpression, int QueryId)
-        //{
-        //    var q = PersonQuery(QueryId);
-        //    count = q.Count();
-        //    if (sortExpression.HasValue())
-        //        q = PersonSearchController.ApplySort(q, sortExpression);
-        //    q = q.Skip(startRowIndex).Take(maximumRows);
-        //    return new PersonSearchController().FetchPeopleList(q);
-        //}
-        //public string QueryDescription { get; set; }
-        //public IQueryable<Person> PersonQuery(int QueryId)
-        //{
-        //    Db.SetNoLock();
-        //    var Qb = Db.LoadQueryById(QueryId);
-        //    QueryDescription = Qb.Description;
-        //    return Db.PeopleQuery(QueryId);
-        //}
-        //public void TagAll(int QueryId)
-        //{
-        //    Db.SetNoLock();
-        //    var q = Db.PeopleQuery(QueryId);
-        //    Db.TagAll(q);
-        //}
-        //public void UnTagAll(int QueryId)
-        //{
-        //    Db.SetNoLock();
-        //    var q = Db.PeopleQuery(QueryId);
-        //    Db.UnTagAll(q);
-        //}
-        //public NewContact AddContact(int QueryId)
-        //{
-        //    var q = Db.PeopleQuery(QueryId);
-        //    var c = new NewContact { ContactDate = Util.Now.Date };
-        //    c.CreatedDate = c.ContactDate;
-        //    c.ContactTypeId = (int)NewContact.ContactTypeCode.Other;
-        //    c.ContactReasonId = (int)NewContact.ContactReasonCode.Other;
-        //    if (q.Count() > 500)
-        //        return null;
-        //    foreach (var p in q)
-        //        c.contactees.Add(new Contactee { PeopleId = p.PeopleId });
-        //    Db.NewContacts.InsertOnSubmit(c);
-        //    Db.SubmitChanges();
-        //    return c;
-        //}
     }
 }

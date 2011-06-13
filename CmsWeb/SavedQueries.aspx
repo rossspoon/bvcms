@@ -60,7 +60,7 @@
         </PagerTemplate>
     </asp:GridView>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="FetchSavedQueries"
-        TypeName="CMSPresenter.QueryController" UpdateMethod="Update" SelectCountMethod="SavedQueryCount"
+        TypeName="CMSPresenter.SavedQueryController" UpdateMethod="Update" SelectCountMethod="SavedQueryCount"
         EnablePaging="True" SortParameterName="sortExpression" DeleteMethod="Delete">
         <DeleteParameters>
             <asp:Parameter Name="queryId" Type="Int32" />

@@ -2136,7 +2136,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AddressLineOne", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineOne", DbType="varchar(60)")]
+		[Column(Name="AddressLineOne", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineOne", DbType="varchar(100)")]
 		public string AddressLineOne
 		{
 			get { return this._AddressLineOne; }
@@ -3000,7 +3000,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryAddress", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress", DbType="varchar(60)")]
+		[Column(Name="PrimaryAddress", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress", DbType="varchar(100)")]
 		public string PrimaryAddress
 		{
 			get { return this._PrimaryAddress; }

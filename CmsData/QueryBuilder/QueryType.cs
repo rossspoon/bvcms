@@ -44,6 +44,7 @@ namespace CmsData
         DropDate,
         DropCodeId,
         EmailAddress,
+        EmailRecipient,
         EmployerOther,
         EntryPointId,
         EnvelopeOptionsId,

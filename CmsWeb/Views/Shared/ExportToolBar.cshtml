@@ -41,10 +41,15 @@
             <a href='/Export/QueryBits/@ViewData["queryid"]' 
                 title="QueryBits in Columns"><img src="/images/Excel.png" /> 
                 Query Bits Export</a>
+    if (User.IsInRole("Finance"))
+    {
+            <a href='/Export/Contributions/@ViewData["queryid"]' class="ChooseStartEnd" 
+                title="Contributions Export"><img src="/images/Excel.png" /> 
+                Contribution Data</a>
+    }
 }
 @if ((bool?)ViewData["OrganizationContext"] ?? false)
 { 
-            
                 <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Organization' title="Includes Org Member info"><img src="/images/Excel.png" /> 
                     Member Export</a>
      if ((bool?)ViewData["OrgMemberContext"] ?? false)
@@ -53,7 +58,6 @@
                 <a href='/ExportExcel.aspx?format=Groups' title="Includes Org Member and Small Group columns"><img src="/images/Excel.png" /> 
                     Groups Export</a>
      } 
-            
                 <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Promotion' title="Just for Promotion Mail Merge"><img src="/images/Excel.png" />
                     Promotion Export</a>
  } 
@@ -85,17 +89,17 @@
                 target="_blank"><img src="/images/Report.png" /> 
                 Volunteer Report</a>
 @if ((bool?)ViewData["OrganizationContext"] ?? false)
-   { 
+{ 
             <a href='/Reports/Registration/@ViewData["queryid"]?oid=@Util2.CurrentOrgId' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Registration Report</a>
- }
-   else
-   { 
+}
+else
+{ 
             <a href='/Reports/Registration/@ViewData["queryid"]' 
                 target="_blank"><img src="/images/Report.png" /> 
                 Registration Rpt</a>
- }    
+}    
             <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Attend' 
                 target="_blank" title="Contains attendance information for their class"><img src="/images/Excel.png" />
                 BF Attendance</a>

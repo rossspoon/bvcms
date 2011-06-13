@@ -27,7 +27,7 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="LastName", Storage="_LastNameX", DbType="varchar(20) NOT NULL")]
+		[Column(Name="LastName", Storage="_LastNameX", DbType="varchar(100) NOT NULL")]
 		public string LastNameX
 		{
 			get

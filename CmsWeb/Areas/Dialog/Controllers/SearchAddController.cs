@@ -304,7 +304,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, (int)Person.OriginCode.NewFamilyMember, 0);
-                    FamilyController.AddRelatedFamily(id, p.PeopleId.Value);
+                    SearchModel.AddRelatedFamily(id, p.PeopleId.Value);
                 }
                 DbUtil.Db.SubmitChanges();
             }

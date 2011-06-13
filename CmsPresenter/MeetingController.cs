@@ -70,11 +70,53 @@ namespace CMSPresenter
         {
             return meetingsfordatecount;
         }
+        public IQueryable<Organization> ApplySearch(IQueryable<Organization> query, string NameSearch, int ProgId, int DivId, int scheduleid, int statusid, int campusid)
+        {
+            if (NameSearch.HasValue())
+            {
+                if (NameSearch.AllDigits())
+                    query = from o in query
+                            where o.OrganizationId == NameSearch.ToInt()
+                            select o;
+                else
+                    query = from o in query
+                            where o.OrganizationName.Contains(NameSearch)
+                                || o.LeaderName.Contains(NameSearch)
+                                || o.Location.Contains(NameSearch)
+                                || o.DivOrgs.Any(t => t.Division.Name.Contains(NameSearch))
+                            select o;
+            }
+            if (DivId > 0)
+                query = from o in query
+                        where o.DivOrgs.Any(t => t.DivId == DivId)
+                        select o;
+            else if (ProgId > 0)
+                query = from o in query
+                        where o.DivOrgs.Any(t => t.Division.ProgId == ProgId)
+                        select o;
+
+            if (scheduleid > 0)
+                query = from o in query
+                        where o.ScheduleId == scheduleid
+                        select o;
+
+            if (statusid > 0)
+                query = from o in query
+                        where o.OrganizationStatusId == statusid
+                        select o;
+
+            if (campusid > 0)
+                query = from o in query
+                        where o.CampusId == campusid
+                        select o;
+
+            return query;
+        }
         public IEnumerable<MeetingInfo2> MeetingsForDate(DateTime MeetingDate, string Name, int StatusId, int ProgId, int DivId, int SchedId, int CampusId, string SortOn)
         {
             var name = HttpContext.Current.Server.UrlDecode(Name);
             var q = DbUtil.Db.Organizations.Select(o => o);
-            q = OrganizationSearchController.ApplySearch(q, name, ProgId, DivId, SchedId, StatusId, CampusId);
+            q = ApplySearch(q, name, ProgId, DivId, SchedId, StatusId, CampusId);
             var q2 = from o in q
                      where o.AttendTrkLevelId != 0 && o.AttendTrkLevelId != null
                      join m in DbUtil.Db.Meetings on o.OrganizationId equals m.OrganizationId into mr
