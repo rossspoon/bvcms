@@ -7,10 +7,14 @@
     <title>Index</title>
 @Html.Raw(SquishIt.Framework.Bundle.Css()
         .Add("/Content/jquery-ui-1.8.13.custom.css")
-        .Add("/Content/Dialog.css")
+        .Add("/Content/site.css")
         .Add("/Content/jquery.tooltip.css")
     .Render("/Content/OrgMember_#.css")
 )
+<style type="text/css">
+.bt { font-size: 8pt; }
+body { margin: 1px; }
+</style>
 </head>
 
 <body>
@@ -24,37 +28,38 @@
 
 @{ string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; }
 @Html.Hidden("from")
-<h4>@Model.Person.Name</h4>
+<div class="roundbox">
+<h2>@Model.Person.Name</h2>
 <a class="helplink" target="_blank" href='@Util.HelpLink("UpdateOrgMember")'>help</a>
-<table>
+<table cellspacing="5">
     <tr>
-    <td>Attendance:</td>
-        <td colspan="3">
+    <td colspan="3">Attendance:
             <a href="/AttendStrDetail.aspx?id=@Model.PeopleId&oid=@Model.OrganizationId" 
             target="_blank" style="font-family: Courier New">@Model.AttendStr</a>
         </td>
     </tr>
     <tr>
     <td valign="top">
-    <div style="border: solid 1px black; padding:1em">
     <form class="DisplayEdit" action="/OrgMemberDialog/Update/@Model.OrganizationId&pid=@Model.PeopleId" method="post">
      @Html.Partial("Display", Model) 
     </form>
-    </div>
     </td>
     <td></td>
     <td valign="top">
-        <div style="border: solid 1px black; padding:1em">
+        <div style="border: solid 1px #555; padding:1em">
         <strong>Groups:</strong><br />
+        <table>
         @foreach (var mt in Model.Organization.MemberTags.OrderBy(t => t.Name))
         { 
-           <input id="smallgroup@(comboid)-@mt.Id" class="ckbox" type="checkbox" @(Model.OrgMemMemTags.Any(omt => omt.MemberTagId == mt.Id) ? "checked='checked'" : "") />
-           @mt.Name<br />
+           <tr><td><input id="smallgroup@(comboid)-@mt.Id" class="ckbox" type="checkbox" @(Model.OrgMemMemTags.Any(omt => omt.MemberTagId == mt.Id) ? "checked='checked'" : "") /></td>
+           <td>@mt.Name</td></tr>
         }
+        </table>
         </div>
     </td>
     </tr>
 </table>
+</div>
 </body>
 </html>
 

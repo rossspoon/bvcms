@@ -141,7 +141,8 @@
             <table runat="server">
                 <tr runat="server">
                     <td runat="server">
-                        <table id="itemPlaceholderContainer" runat="server" border="0" style="">
+                        <table id="itemPlaceholderContainer" runat="server" border="0" class="grid">
+                        <thead>
                             <tr runat="server" style="">
                                 <th runat="server">
                                     Fund
@@ -168,6 +169,7 @@
                                     Notes
                                 </th>
                             </tr>
+                        </thead>
                             <tr id="itemPlaceholder" runat="server">
                             </tr>
                         </table>
@@ -180,7 +182,7 @@
             </table>
         </LayoutTemplate>
         <ItemTemplate>
-            <tr style="">
+            <tr style='background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>'>
                 <td>
                     <asp:Label ID="FundLabel" runat="server" Text='<%# Eval("Fund") %>' />
                 </td>

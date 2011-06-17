@@ -15,6 +15,7 @@ namespace CmsWeb.Models.PersonPage
         {
             person = DbUtil.Db.LoadPersonById(id);
             Pager = new PagerModel2(Count);
+            Pager.pagesize = 10;
         }
         private IQueryable<NewContact> _contacts;
         private IQueryable<NewContact> FetchContacts()

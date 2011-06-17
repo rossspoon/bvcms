@@ -219,9 +219,8 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new QueryModel();
             m.LoadScratchPad();
-            var c = new ContentResult();
-            c.Content = NewContact.AddContact(m.QueryId.Value).ToString();
-            return c;
+            var cid = NewContact.AddContact(m.QueryId.Value);
+            return Content("/Contact.aspx?id=" + cid);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddTasks()

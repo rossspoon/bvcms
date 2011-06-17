@@ -837,7 +837,12 @@ namespace UtilityExtensions
                 if (Name.Contains("?"))
                     return Email;
                 else
-                    return Name + " <" + Email + ">";
+                {
+                    var a = Email.SplitStr(",;");
+                    var q = from ad in a
+                            select Name + " <" + ad.Trim() + ">";
+                    return string.Join(";", q);
+                }
             return String.Empty;
         }
         public static List<MailAddress> DistinctEmails(this List<MailAddress> list)

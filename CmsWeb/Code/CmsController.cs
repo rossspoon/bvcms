@@ -70,6 +70,12 @@ namespace CmsWeb
                 filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
                 filterContext.ActionDescriptor.ActionName);
         }
+        public ActionResult RedirectShowError(string message)
+        {
+            return new RedirectResult(
+                "/Home/ShowError/?error={0}&url={1}".Fmt(Server.UrlEncode(message),
+                Request.Url.OriginalString));
+        }
     }
     public class CmsStaffAsyncController : System.Web.Mvc.AsyncController
     {

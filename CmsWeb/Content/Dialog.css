@@ -60,16 +60,6 @@ form.DisplayEdit input[type=text]
 .field-validation-error
 { color: Red;
 }
-a.bt 
-{
-    font-size: 11pt;
-}
-a.helplink
-{
-    position:absolute;
-    top: 0; 
-    right: 20px;
-}
 /*
 a.submitbutton{
   padding:5px;

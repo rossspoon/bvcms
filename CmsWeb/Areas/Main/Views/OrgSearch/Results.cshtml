@@ -1,6 +1,15 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Models.OrgSearchModel
-<table id="results" @(User.IsInRole("Edit") ? "class='edit'" : "")>
+@if (User.IsInRole("edit"))
+{
+<script type="text/javascript">
+    $(function () {
+        $("#results").addClass("edit2");
+    });
+</script>
+}
+
+<table id="results" class="grid">
 <thead>
     <tr><td colspan="10">
 <div>Count: @Model.Count()</div>

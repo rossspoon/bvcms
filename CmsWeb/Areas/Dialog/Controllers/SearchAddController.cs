@@ -213,7 +213,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                         return Json(new { close = true, how = "addselected", url = "/Task/ChangeOwner/", pid = m.List[0].PeopleId });
                     break;
             }
-            return new EmptyResult();
+            return Json(new { close = true });
         }
 
         private JsonResult AddContactees(int id, SearchModel m)

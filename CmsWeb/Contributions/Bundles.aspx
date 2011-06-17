@@ -7,12 +7,13 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div style="font-size: 110%">
-        <asp:LinkButton ID="NewBundle" runat="server" OnClick="NewBundle_Click">Create New Bundle</asp:LinkButton>
+        <asp:LinkButton ID="NewBundle" runat="server" OnClick="NewBundle_Click" CssClass="bt">Create New Bundle</asp:LinkButton>
     </div>
     <asp:ListView ID="ListView1" runat="server" DataKeyNames="BundleId" DataSourceID="ObjectDataSource1">
         <LayoutTemplate>
-            <table id="itemPlaceholderContainer" runat="server" border="0" style="">
-                <tr runat="server" style="">
+            <table id="itemPlaceholderContainer" runat="server" border="0" class="grid">
+                <thead>
+                <tr runat="server">
                     <th id="Th3" runat="server">
                         <asp:LinkButton ID="LinkButton2" CommandName="Sort" CommandArgument="BundleId" runat="server">BundleId</asp:LinkButton>
                     </th>
@@ -40,6 +41,7 @@
                     </th>
                     <th></th>
                 </tr>
+                </thead>
                 <tr id="itemPlaceholder" runat="server">
                 </tr>
             </table>

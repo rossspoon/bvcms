@@ -66,11 +66,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 p.MovePersonStuff(DbUtil.Db, to);
                 DbUtil.Db.SubmitChanges();
             }
-            catch(Exception )
+            catch(Exception ex)
             {
-                return Content("error");
+                return Content(ex.Message);
             }
-            return new EmptyResult();
+            return Content("ok");
         }
         [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
@@ -94,10 +94,8 @@ namespace CmsWeb.Areas.Main.Controllers
 
             if (!person.PurgePerson(DbUtil.Db))
                 return Content("error, not deleted");
-            //if (!person.PurgePerson(DbUtil.Db))
-            //    return Content("error, not deleted");
 
-            return Content("");
+            return Content("ok");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Tag(int id)
@@ -112,6 +110,13 @@ namespace CmsWeb.Areas.Main.Controllers
             Person.UnTag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult FamilyGrid(int id)
+        {
+            var m = new PersonFamilyModel(id);
+            UpdateModel(m.Pager);
+            return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult EnrollGrid(int id)
@@ -460,7 +465,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (password2.HasValue())
                 u.ChangePassword(password2);
             DbUtil.Db.SubmitChanges();
-            return Content("");
+            return Content("ok");
             //return View("UserDialog", u.Person);
         }
         [Authorize(Roles = "Admin")]
@@ -472,7 +477,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.ActivityLogs.DeleteAllOnSubmit(u.ActivityLogs);
             DbUtil.Db.Users.DeleteOnSubmit(u);
             DbUtil.Db.SubmitChanges();
-            return Content("");
+            return Content("ok");
             //return View("UserDialog", u.Person);
         }
         [AcceptVerbs(HttpVerbs.Post)]

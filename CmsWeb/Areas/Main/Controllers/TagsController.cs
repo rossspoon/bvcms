@@ -97,9 +97,8 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddContact(int id)
         {
-            var c = new ContentResult();
-            c.Content = NewContact.AddContact(id).ToString();
-            return c;
+            var cid = NewContact.AddContact(id);
+            return Content("/Contact.aspx?id=" + cid);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddTasks(int id)

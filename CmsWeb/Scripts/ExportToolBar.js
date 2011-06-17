@@ -46,7 +46,7 @@
             else if (ret == 0)
                 $.growlUI("error", "no results");
             else
-                window.location = "/Contact.aspx?id=" + ret;
+                window.location = ret;
         });
         return false;
     });

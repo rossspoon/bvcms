@@ -1,7 +1,7 @@
 ﻿@model CmsWeb.Models.QueryModel
 <h4>Total Count: @Model.FetchCount().ToString("N0")</h4>
 @Html.Partial("Pager", Model.pagerModel()) 
-<table id="people">
+<table id="people" class="grid">
 <thead>
     <tr>
         <th> <a href="#" class="sortable">Name</a> </th>

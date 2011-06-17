@@ -18,12 +18,13 @@ namespace CmsWeb.Models
 {
     public class PagerModel2
     {
-        public PagerModel2(CountDelegate count)
+        public PagerModel2(CountDelegate count) : this()
         {
             GetCount = new CountDelegate(count);
         }
         public PagerModel2()
         {
+            ShowPageSize = true;
         }
         public string Sort { get; set; }
         public string Direction { get; set; }
@@ -53,10 +54,21 @@ namespace CmsWeb.Models
             }
         }
 
+        public bool ShowPageSize { get; set; }
+        public int? pagesize;
         public int PageSize
         {
-            get { return DbUtil.Db.UserPreference("PageSize", "10").ToInt(); }
-            set { DbUtil.Db.SetUserPreference("PageSize", value); }
+            get
+            {
+                if (pagesize.HasValue)
+                    return pagesize.Value;
+                return DbUtil.Db.UserPreference("PageSize", "10").ToInt();
+            }
+            set
+            {
+                DbUtil.Db.SetUserPreference("PageSize", value);
+                pagesize = value;
+            }
         }
         private int? _Page;
         public int? Page

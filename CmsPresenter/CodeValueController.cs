@@ -761,6 +761,7 @@ namespace CMSPresenter
 			if (list == null)
 			{
 				var q = from c in DbUtil.Db.Campus
+                        orderby c.Description
 						select new CodeValueItem
 						{
 							Id = c.Id,

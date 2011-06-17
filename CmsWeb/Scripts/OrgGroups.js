@@ -63,7 +63,7 @@
             var q = f.serialize();
             $.blockUI();
             $.post($(this).attr('href'), q, function (ret) {
-                if (ret) {
+                if (ret.substring(0, 5) != "error") {
                     f.html(ret).ready(function () {
                         if ($('#newgid').val())
                             $('#groupid').val($('#newgid').val());

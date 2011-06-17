@@ -63,7 +63,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult MakeNewGroup(OrgGroupsModel m)
         {
             if (!m.GroupName.HasValue())
-                return new EmptyResult();
+                return Content("error: no group name");
             var Db = DbUtil.Db;
             var group = Db.MemberTags.SingleOrDefault(g =>
                 g.Name == m.GroupName && g.OrgId == m.orgid);
@@ -85,7 +85,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult RenameGroup(OrgGroupsModel m)
         {
             if (!m.GroupName.HasValue() || m.groupid == 0)
-                return new EmptyResult(); ;
+                return Content("error: no group name");
             var group = DbUtil.Db.MemberTags.SingleOrDefault(d => d.Id == m.groupid);
             group.Name = m.GroupName;
             DbUtil.Db.SubmitChanges();

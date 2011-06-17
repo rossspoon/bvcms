@@ -5,10 +5,7 @@
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
-            if (ret)
-                $(f).html(ret);
-            else
-                self.parent.RebindUserInfoGrid();
+            self.parent.RebindUserInfoGrid();
         });
         return false;
     });
@@ -19,10 +16,7 @@
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
-            if (ret)
-                $(f).html(ret);
-            else
-                self.parent.RebindUserInfoGrid();
+            self.parent.RebindUserInfoGrid();
         });
         return false;
     });

@@ -14,7 +14,7 @@ $(function () {
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
             $.post(href, null, function (ret) {
-                if (ret) {
+                if (ret != "ok") {
                     $.blockUI({ message: ret });
                     $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
                 }
@@ -286,7 +286,7 @@ $(function () {
                 var url = "?d=" + dt.date + "&t=" + dt.time +
                 "&group=" + ($('#group').is(":checked") ? "true" : "false");
                 $.post("/Organization/NewMeeting" + url, null, function (ret) {
-                    if (ret)
+                    if (!ret.startsWith("error"))
                         window.location = ret;
                 });
                 $(this).dialog("close");
@@ -317,7 +317,7 @@ $(function () {
             $.post("/Organization/DeleteMeeting/",
                 { id: this.id, future: $('#future').is(":checked") },
                 function (ret) {
-                    if (ret)
+                    if (ret == "ok")
                         $.updateTable($('#Meetings-tab form'));
                 });
         }
@@ -327,7 +327,7 @@ $(function () {
         ev.preventDefault();
         $.post("/Organization/Join/", { id: this.id },
             function (ret) {
-                if (ret)
+                if (ret == "ok")
                     RebindMemberGrids();
             });
         return false;

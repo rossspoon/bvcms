@@ -28,9 +28,9 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View("Index", m);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string filter)
         {
-            var m = new EmailModel { id = id };
+            var m = new EmailModel { id = id, filter = filter ?? "All" };
             if (!DbUtil.Db.CurrentUser.Roles.Contains("Admin"))
             {
                 var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
@@ -53,9 +53,9 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(em);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Recipients(int id)
+        public ActionResult Recipients(int id, string filter)
         {
-            var m = new EmailModel { id = id };
+            var m = new EmailModel { id = id, filter = filter };
             UpdateModel(m.Pager);
             return View(m);
         }

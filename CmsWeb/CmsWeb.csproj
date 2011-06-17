@@ -232,6 +232,7 @@
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
     <Compile Include="Areas\Main\Models\Other\ContributionsExcelResult.cs" />
+    <Compile Include="Areas\Main\Models\Person\FamilyModel.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailResult.cs" />
@@ -1401,6 +1402,7 @@
     <Content Include="Areas\Main\Views\OrgGroups\Form.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.cshtml" />
     <Content Include="Areas\Main\Views\Family\Index.cshtml" />
+    <Content Include="Areas\Main\Views\Person\FamilyGrid.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

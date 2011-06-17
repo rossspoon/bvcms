@@ -24,8 +24,11 @@
 { 
     <a href='#' class="page-numbers" title='goto page @(Model.Page + 1)' onclick='return $.gotoPage(this,@(Model.Page + 1))'>next</a>
 }
+@if (Model.ShowPageSize)
+{
     <span class="page-numbers desc">Set # rows:</span>
     @Html.DropDownList("PageSize", Model.PageSizeList(), new { onchange = "$.setPageSize(this)" })
+}
 </div>
 <div style="clear:both"></div>
 @Html.Hidden("Page")

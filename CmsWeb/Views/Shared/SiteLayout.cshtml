@@ -245,11 +245,7 @@ function CloseAddDialog() {
                             <div class="sublinks">
                                 <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Wiki Documentation</a>
                                 <a href="mailto:support@bvcms.com?subject=Support request from @DbUtil.Db.CurrentUserPerson.Name at @Util.CmsHost2" target="_blank">Email Support</a>
-    @if (Request.Url.Authority == "bvcms.com" || Request.Url.Authority == "bellevue.org")
-    {
-                                    <a href="http://bvcms.com/Page/OnlineReg/" target="_blank">Online Registration Request
-                                        Form</a>
-    }
+                                <a href="/Home/About">About</a>
                             </div>
                         </td>
                     </tr>
@@ -306,7 +302,7 @@ function CloseAddDialog() {
         </table>
     </div>
     <div id="AddDialog">
-    <iframe id="AddDialogiframe" style="width:99%;height:99%"></iframe>
+    <iframe id="AddDialogiframe" style="width:100%;height:99%;border-width:0px"></iframe>
     </div>
     @RenderSection("PopupsPlaceholder", required: false)
 </body>

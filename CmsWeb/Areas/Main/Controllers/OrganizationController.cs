@@ -60,7 +60,7 @@ namespace CmsWeb.Areas.Main.Controllers
             Util2.CurrentOrgId = 0;
             Util2.CurrentGroups = null;
             Session.Remove("ActiveOrganization");
-            return new EmptyResult();
+            return Content("ok");
         }
         public ActionResult Clone(int id)
         {
@@ -75,15 +75,15 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var organization = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
             if (organization == null)
-                return Content("");
+                return Content("error: no org");
             DateTime dt;
             if (!DateTime.TryParse(d + " " + t, out dt))
-                return new EmptyResult();
+                return Content("error: bad date");
             var mt = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingDate == dt
                     && m.OrganizationId == organization.OrganizationId);
 
             if (mt != null)
-                return new EmptyResult();
+                return Content("/Meeting.aspx?edit=1&id=" + mt.MeetingId);
 
             mt = new CmsData.Meeting
             {
@@ -105,10 +105,10 @@ namespace CmsWeb.Areas.Main.Controllers
             var aa = id.Split('.');
             var mid = aa[1].ToInt2();
             if (!mid.HasValue)
-                return new EmptyResult();
+                return Content("error: no meetingid");
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == mid);
             if (meeting == null)
-                return new EmptyResult();
+                return Content("error: no meeting");
             var orgid = meeting.OrganizationId;
             var q = from a in DbUtil.Db.Attends
                     where a.MeetingId == mid
@@ -122,7 +122,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SoulMates.DeleteAllOnSubmit(meeting.SoulMates);
             DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
             DbUtil.Db.SubmitChanges();
-            return Content("true");
+            return Content("ok");
         }
         [AcceptVerbs(HttpVerbs.Post)]
 
@@ -249,7 +249,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         [AcceptVerbs(HttpVerbs.Post)]
 
-        public EmptyResult AddFromTag(int id, int tagid, bool? pending)
+        public ActionResult AddFromTag(int id, int tagid, bool? pending)
         {
             var o = DbUtil.Db.LoadOrganizationById(id);
             var q = from t in DbUtil.Db.TagPeople
@@ -257,7 +257,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     select t.PeopleId;
             foreach (var pid in q)
                 OrganizationMember.InsertOrgMembers(id, pid, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, pending ?? false);
-            return new EmptyResult();
+            return Content("ok");
         }
         [Authorize(Roles = "Admin")]
         public ActionResult CopySettings()
@@ -270,13 +270,13 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var aa = id.Split('.');
             if (aa.Length != 3)
-                return new EmptyResult();
+                return Content("error: bad info");
             var pid = aa[1].ToInt();
             var oid = aa[2].ToInt();
             OrganizationMember.InsertOrgMembers(oid, pid,
                 (int)OrganizationMember.MemberTypeCode.Member,
                 DateTime.Now, null, false);
-            return Content("true");
+            return Content("ok");
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -305,9 +305,8 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddContact(int id)
         {
-            var c = new ContentResult();
-            c.Content = NewContact.AddContact(id).ToString();
-            return c;
+            var cid = NewContact.AddContact(id);
+            return Content("/Contact.aspx?id=" + cid);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddTasks(int id)

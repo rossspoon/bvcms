@@ -21,7 +21,7 @@
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
             $.post(href, null, function (ret) {
-                if (ret) {
+                if (ret != "ok") {
                     $.blockUI({ message: "delete Failed: " + ret });
                     $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
                 }
@@ -41,7 +41,7 @@
         $('#dialogbox').SearchPeople(ev, function (id, peopleid) {
             $.post(href, { to: peopleid }, function (ret) {
                 $('#dialogbox').dialog("close");
-                if (ret) {
+                if (ret != "ok") {
                     $.blockUI({ message: "Move Failed: " + ret });
                     $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
                 }
@@ -119,6 +119,7 @@
             $.showTable($(this));
         });
     });
+    $('#family table.grid > tbody > tr:even').addClass('alt');
     $("#recreg-link").click(function () {
         var f = $('#recreg-tab form')
         if ($('table', f).size() > 0)

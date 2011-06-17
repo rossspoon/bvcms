@@ -21,10 +21,12 @@ namespace CmsWeb.Areas.Dialog.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public EmptyResult CheckBoxChanged(string id, bool ck)
+        public ActionResult CheckBoxChanged(string id, bool ck)
         {
             var a = id.Split('-');
-            var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
+            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
+            if (om == null)
+                return Content("error");
             if (ck)
                 om.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = a[3].ToInt() });
             else
@@ -33,7 +35,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(mt);
             }
             DbUtil.Db.SubmitChanges();
-            return new EmptyResult();
+            return Content("ok");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(int id, int pid)

@@ -1,6 +1,6 @@
 ﻿@using CmsWeb.Models
 @model QuickSearchModel
-<table id="results">
+<table id="results" class="grid">
 <thead>
 	<tr><td colspan="6">@Html.Partial("Pager2", Model)
             @Html.Hidden("totcnt", Model.Count().ToString("N0"))</td></tr>

@@ -6,6 +6,20 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Person";
 }
+@section head
+{
+<style type="text/css">
+#family td
+{
+    padding: 2px;
+}
+div.pager
+{
+    padding: 0px;
+    margin-bottom:0px;
+}
+</style>
+}
 
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
             .Add("/Content/js/jquery.pagination.js")
@@ -16,7 +30,7 @@
             .Add("/Scripts/Person.js")
         .Render("/Content/Person_#.js")
 )
-    @{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
+@{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
 
     <table cellspacing="5" class="roundbox floatleft">
         <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
@@ -35,29 +49,9 @@
             </td>
             <td>&nbsp;</td>
             <td valign="top">
-                <table cellspacing="4">
-                    <tr>
-                        <th align="left" colspan="4">
-                        @if (User.IsInRole("Access"))
-                        { 
-                            <a href="/Family/Index/@p.FamilyId"><strong>Family Members</strong></a>
-                        }
-                        else
-                        { 
-                           <strong>Family Members</strong>
-                        } 
-                        </th>
-                    </tr>
-                @foreach (var m in Model.displayperson.familymembers)
-                { 
-                    <tr>
-                        <td><a href="/Person/Index/@m.Id"><span style='color: @m.Color'>@m.Name</span></a></td>
-                        <td>@Html.Raw(m.SpouseIndicator)</td>
-                        <td>@m.Age</td>
-                        <td>@m.Email</td>
-                    </tr>
-                }
-                </table>
+                <form id="family" action="/Person/FamilyGrid/@p.PeopleId">
+                @Html.Partial("FamilyGrid", new CmsWeb.Models.PersonPage.PersonFamilyModel(p.PeopleId))
+                </form>
             </td>
        </tr>
     </table>
@@ -252,7 +246,7 @@
     <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
     </div>
     <div id="memberDialog">
-    <iframe style="width:99%;height:99%"></iframe>
+    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
     </div>
 
 

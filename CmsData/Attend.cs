@@ -89,8 +89,7 @@ namespace CmsData
                 o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
                 o.path = 2;
             }
-            else if (o.info.MemberTypeId.HasValue // member of this class
-                && o.info.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive) 
+            else if (o.info.MemberTypeId.HasValue) 
             {
                 o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
                 o.Attendance.AttendanceTypeId = GetAttendType(Db, o.Attendance.AttendanceFlag, o.Attendance.MemberTypeId, null);

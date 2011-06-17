@@ -85,7 +85,7 @@ namespace CmsWeb.Models
                 return _count.Value;
             }
         }
-        private const int SHOWCOUNT = 20;
+        private const int SHOWCOUNT = 15;
         public int Showcount
         {
             get { return Count > SHOWCOUNT ? SHOWCOUNT : Count; }

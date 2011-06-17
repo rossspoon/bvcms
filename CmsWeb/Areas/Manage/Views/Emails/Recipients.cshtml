@@ -1,13 +1,18 @@
 ﻿@using UtilityExtensions;
 @using CmsWeb;
 @model CmsWeb.Models.EmailModel
-<table>
+@Html.Hidden("filter")
+<table class="grid">
+<thead>
 <tr><th>Name</th><th>Address</th><th>Opens</th></tr>
+</thead>
+<tbody>
 @foreach(var p in Model.Recipients())
 {
 <tr><td><a href="/Manage/Emails/SentTo/@p.peopleid">@p.name</a></td>
     <td>@p.address</td>
     <td>@p.nopens</td></tr>    
 }
+</tbody>
 </table>
 @{Html.RenderPartial("Pager2", Model.Pager);}

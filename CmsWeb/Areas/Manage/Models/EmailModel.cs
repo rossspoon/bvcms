@@ -17,6 +17,7 @@ namespace CmsWeb.Models
     public class EmailModel
     {
         public int id { get; set; }
+        public string filter { get; set; }
         private EmailQueue _Queue;
         public EmailQueue queue
         {
@@ -38,6 +39,7 @@ namespace CmsWeb.Models
         public EmailModel()
         {
             Pager = new PagerModel2(Count);
+            filter = "All";
         }
         public IEnumerable<RecipientInfo> Recipients()
         {
@@ -53,10 +55,12 @@ namespace CmsWeb.Models
                      };
             return q2;
         }
-        private IQueryable<EmailQueueTo> GetEmailTos()
+        public IQueryable<EmailQueueTo> GetEmailTos()
         {
             var q = from t in DbUtil.Db.EmailQueueTos
+                    let opened = t.Person.EmailResponses.Any(er => er.EmailQueueId == t.Id)
                     where t.Id == id
+                    where filter == "All" || (opened == true && filter == "Opened") || (opened == false && filter == "Not Opened")
                     select t;
             if (!DbUtil.Db.CurrentUser.Roles.Contains("Admin")
                     && queue.QueuedBy != Util.UserPeopleId)

@@ -135,7 +135,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var Db = DbUtil.Db;
             var organization = Db.LoadOrganizationById(id);
             if (tagdiv == 0)
-                return new EmptyResult();
+                return Json(new { error = "bad tagdiv" });
             bool t = organization.ToggleTag(DbUtil.Db, tagdiv);
             var r = new ToggleTagReturn
             {
@@ -153,7 +153,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var o = Db.LoadOrganizationById(id);
             o.DivisionId = tagdiv;
             Db.SubmitChanges();
-            return new EmptyResult();
+            return Content("ok");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PasteSettings(OrgSearchModel m)
@@ -171,25 +171,16 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var n = name.ToCharArray().Count(c => c == 'M');
             if (n > 1)
-            {
-                Util.ShowError("More than one barcode string found({0})".Fmt(name));
-                return new EmptyResult();
-            }
+                return RedirectShowError("More than one barcode string found({0})".Fmt(name));
             var a = name.SplitStr(".");
             var orgid = a[1].ToInt();
             var organization = DbUtil.Db.LoadOrganizationById(orgid);
             if (organization == null)
-            {
-                Util.ShowError("Cannot interpret barcode orgid({0})".Fmt(name));
-                return new EmptyResult();
-            }
+                return RedirectShowError("Cannot interpret barcode orgid({0})".Fmt(name));
 
             var re = new Regex(@"\A(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])([0-9]{2})([01][0-9])([0-5][0-9])\Z");
             if (!re.IsMatch(a[2]))
-            {
-                Util.ShowError("Cannot interpret barcode datetime({0})".Fmt(name));
-                return new EmptyResult();
-            }
+                return RedirectShowError("Cannot interpret barcode datetime({0})".Fmt(name));
             var g = re.Match(a[2]);
             var dt = new DateTime(
                 g.Groups[3].Value.ToInt() + 2000,

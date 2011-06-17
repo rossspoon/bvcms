@@ -305,6 +305,25 @@ namespace CmsData
                     c.contact.contactees.Add(new Contactee { PeopleId = otherid });
                 Db.Contactees.DeleteOnSubmit(c);
             }
+            foreach (var e in this.PeopleExtras)
+            {
+                var cp = Db.PeopleExtras.SingleOrDefault(c2 => c2.PeopleId == otherid && c2.Field == e.Field);
+                var e2 = new PeopleExtra 
+                { 
+                    PeopleId = otherid, 
+                    Field = e.Field, 
+                    Data = e.Data, 
+                    StrValue = e.StrValue, 
+                    DateValue = e.DateValue, 
+                    IntValue = e.IntValue, 
+                    IntValue2 = e.IntValue2, 
+                    TransactionTime = e.TransactionTime 
+                };
+                if (cp != null && cp.StrValue != e.StrValue)
+                    e2.Field = e.Field + ".mv";
+                Db.PeopleExtras.InsertOnSubmit(e2);
+                Db.PeopleExtras.DeleteOnSubmit(e);
+            }
 
             var torecreg = toperson.RecRegs.SingleOrDefault();
             var frrecreg = RecRegs.SingleOrDefault();
