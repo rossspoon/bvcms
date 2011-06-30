@@ -33,7 +33,7 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                 p.OrganizationMembers.Any(m =>
                     ids.Contains(m.MemberTypeId)
-                    && (sched == 0 || m.Organization.ScheduleId == sched)
+                    && (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
                     && (org == 0 || m.OrganizationId == org)
                     && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
                     && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -54,7 +54,7 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.OrganizationMembers.Any(m =>
-                    ids.Contains(m.Organization.ScheduleId.Value)
+                    m.Organization.OrgSchedules.Any(os => ids.Contains(os.ScheduleId.Value))
                     && (org == 0 || m.OrganizationId == org)
                     && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
                     && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -525,7 +525,7 @@ namespace CmsData
         {
             Expression<Func<Person, int>> pred = p =>
                 p.OrganizationMembers.Count(m =>
-                    (sched == 0 || m.Organization.ScheduleId == sched)
+                    (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
                     && (org == 0 || m.OrganizationId == org)
                     && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
                     && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))

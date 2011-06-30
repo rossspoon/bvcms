@@ -2,6 +2,7 @@ body, html {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	background-image: none;
 	font-size: 12px;
+	color: #222;
 }
 table, tbody, tfoot, thead, tr, th, td
 {
@@ -148,19 +149,19 @@ img {
 }
 a, a:visited, a:focus {
 	text-decoration:none;
-	color: #212121;
+	color: #3E553B;
 }
 a:hover, a:active {
 	text-decoration:underline;
-	color: #212121;
+	color: #3E553B;
 }
 .grid a, .grid a:visited {
 	text-decoration:none;
-	color: #212121;
+	color: #3E553B;
 }
 .grid a:hover, .grid a:active {
 	text-decoration:underline;
-	color: #212121;
+	color: #3E553B;
 }
 
 #main {
@@ -218,9 +219,6 @@ a:hover, a:active {
 }
 .roundbox p  {
 	font-size: 90%;
-}
-#main li {
-	list-style:none;
 }
 #ConditionGrid {
 	font-size: 120%;
@@ -382,8 +380,9 @@ table.grid
 }
 table.grid th
 {
-	font-size: 110%;
 	padding: 5px;
+	font-weight: bold;
+	color: #555;
 }
 table.grid thead
 {

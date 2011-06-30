@@ -99,6 +99,8 @@ CKEditorFuncNum, baseurl + fn, error));
 
         public ActionResult LogOn()
         {
+            if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
+                return Content("Site is down for maintenance, check back later");
             if (Request.Url.Scheme == "http" && DbUtil.Db.CmsHost.StartsWith("https://"))
                 if (Request.QueryString.Count > 0)
                     return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);

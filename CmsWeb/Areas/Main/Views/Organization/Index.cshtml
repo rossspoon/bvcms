@@ -6,8 +6,15 @@
 }
 @section head {
 <link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
-<style>
+<link href="/Content/jquery.ui.timepicker.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
 #memberDialog { padding: 0px; }
+#schedules { padding-left: 0px; margin-top:0px; }
+#schedules input { width: 60px; }
+#schedulehead { font-weight: bold; margin-top:1em; }
+#schedulehead span { display: inline-block; }
+#schedules span { display: inline-block; }
+a.ui-state-default { cursor: pointer; }
 </style>
 }
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
@@ -15,6 +22,7 @@
                 .Add("/Scripts/Pager.js")
                 .Add("/Content/js/jquery.multiSelect.js")
                 .Add("/Content/js/jquery.validate.js")
+                .Add("/Content/js/jquery.ui.timepicker.js")
                 .Add("/Scripts/Organization.js")
                 .Render("/Content/Organization_#.js")
 )
@@ -95,11 +103,20 @@
             </form>
         </div>
 </div>
-    <div id="NewMeetingDialog" class="modalDiv" style="display:none">
+    <div id="NewMeetingDialog" class="roundbox" style="display:none">
     <table>
         <tr>
-            <th colspan="2" style="font-size: larger; font-weight: bold">
-                Please select a meeting date and time:
+            <th colspan="2">
+                <h2>Choose a Schedule</h2>
+            </th>
+        </tr>
+        <tr>
+            <th>Schedule:</th>
+            <td><select id="ScheduleList"></select></td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <h2>Or Please select a meeting date and time</h2>
             </th>
         </tr>
         <tr>
@@ -109,6 +126,10 @@
         <tr>
             <th>Meeting Time:</th>
             <td>@Html.TextBox("NewMeetingTime", Model.NewMeetingTime, new { title = "Time in Format hh:mm am or pm" })</td>
+        </tr>
+        <tr>
+            <th>Attend Credit:</th>
+            <td>@Html.DropDownList("AttendCreditList", Model.AttendCreditList())</td>
         </tr>
         <tr>
             <th id="grouplabel"></th>

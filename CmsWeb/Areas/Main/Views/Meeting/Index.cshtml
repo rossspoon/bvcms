@@ -1,0 +1,124 @@
+﻿@using UtilityExtensions
+@model CmsWeb.Models.MeetingModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        tr.visitor td
+        {
+            font-weight:bold;
+        }
+    </style>
+}
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+            .Add("/Content/js/jquery.jeditable.js")
+            .Add("/Scripts/Meeting.js")
+        .Render("/Content/Meeting_#.js")
+)
+@Html.Hidden("meetingid", Model.meeting.MeetingId)
+@if (!Model.meeting.GroupMeetingFlag)
+{
+    <script type="text/javascript">
+        $(function () { $(".numpresent").editable("disable"); });
+    </script>
+}
+<table><tr><td>
+<table class="roundbox" cellspacing="5">
+    <tr><td colspan="2">
+        <h2><a href="/Organization/Index/@Model.meeting.OrganizationId">@Model.meeting.Organization.OrganizationName</a> &ndash; @Model.meeting.MeetingDate.ToString2("M/d/yy h:mm tt")</h2></td></tr>
+@if (User.IsInRole("Attendance"))
+{
+    <tr><td align="right">Description:</td>
+        <td><span id="d-@Model.meeting.MeetingId" class="clickEdit">@Model.meeting.Description</span></td></tr>
+    <tr><td align="right">Meeting Type:</td>
+        <td><span id='g-@Model.meeting.MeetingId' class='clickSelect'>@(Model.meeting.GroupMeetingFlag ? "Group (headcount)" : "Regular")</span>
+            @Model.AttendCreditType()
+        </td></tr>
+    <tr><td align="right">Number Present:</td>
+        <td id="NumPresent"><span id="n=@Model.meeting.MeetingId" class="clickEdit numpresent">@Model.meeting.NumPresent</span></td></tr>
+}
+else
+{
+    <tr><td align="right">Description:</td>
+        <td>@Model.meeting.Description</td></tr>
+    <tr><td align="right">Meeting Type:</td>
+        <td>@(Model.meeting.GroupMeetingFlag ? "Group (headcount)" : "Regular") 
+            @Model.AttendCreditType()
+        </td></tr>
+    <tr><td align="right">Number Present:</td>
+        <td id="NumPresent">@Model.meeting.NumPresent</td></tr>
+}
+    <tr><td align="right">Members:</td>
+        <td id="NumMembers"><span>@Model.meeting.NumMembers</span></td></tr>
+    <tr><td align="right">Visiting Members:</td>
+        <td id="NumVstMembers"><span>@Model.meeting.NumVstMembers</span></td></tr>
+    <tr><td align="right">Repeat Visitors:</td>
+        <td id="NumRepeatVst"><span>@Model.meeting.NumRepeatVst</span></td></tr>
+    <tr><td align="right">New Visitors:</td>
+        <td id="NumNewVisit"><span>@Model.meeting.NumNewVisit</span></td></tr>
+    <tr><td align="right">Other Attends:</td>
+        <td id="NumOtherAttends"><span>@Model.meeting.NumOtherAttends</span></td></tr>
+    <tr><td align="right">Show:</td>
+        <td id="showbuttons">
+            @Html.RadioButton("show", "attends", true)Attends Only&nbsp;
+            @Html.RadioButton("show", "absents", false)Absents Only&nbsp;
+            @Html.RadioButton("show", "all", false)All
+        </td></tr>
+@if (User.IsInRole("Attendance"))
+{
+    <tr><td align="left">@Html.CheckBox("editing") Enable Editing</td>
+        <td align="right"><a id="addvisitor" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=visitor" style="margin-top: 10px;" class="bt">Add Visitors</a></td></tr>
+}
+</table>
+</td>
+<td width="2em"> &nbsp; </td>
+<td valign="top">
+<div id="buttondiv" class="dropdown" style="font-size:1.2em;margin-top:2em;margin-left: 2em;">
+<div><a href="#">Other Management</a></div>
+<div class="sublinks">
+    <a id="RecentAttendRpt" href="/Reports/PastAttendee/@Model.meeting.OrganizationId" target="_blank">Recent Attendance Report</a>
+</div>
+<div style="border-bottom: 4px solid #ddd"></div>
+</div>
+@if (User.IsInRole("Attendance"))
+{ 
+<div style="margin-top:15em;margin-left: 3em;">
+Wand Target<br />
+<input type="text" id="wandtarget" />
+</div>
+}
+</td>
+</tr>
+</table>
+<hr />
+<table class="grid">
+<thead>
+    <tr>
+        <th>Attended</th>
+        <th>Name</th>
+        <th>Current Member Type</th>
+        <th>Attend Member Type</th>
+        <th>Attend Type</th>
+        <th>Other Attend</th>
+    </tr>
+</thead>
+<tbody>
+@foreach(var a in Model.Attends())
+{
+    <tr @(!a.Member ? "class=visitor" : "")>
+        <td align="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" disabled="disabled" /></td>
+        <td><a href="/Person/Index/@a.PeopleId" title="@a.Age">@a.Name</a></td>
+        <td>@a.CurrMemberType</td>
+        <td>@a.MemberType</td>
+        <td>@a.AttendType</td>
+        <td>@a.OtherAttend</td>
+    </tr>
+}
+</tbody>
+</table>
+<div id="visitorDialog" title="Add Visitors">
+<iframe style="width:100%;height:99%;border-width:0px;"></iframe>
+</div>

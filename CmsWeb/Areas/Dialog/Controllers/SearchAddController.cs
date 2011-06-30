@@ -13,6 +13,7 @@ using CMSPresenter;
 using CmsWeb.Models;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
+using System.Data.Linq;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
@@ -372,10 +373,11 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     if (isnew)
                         p.person.CampusId = meeting.Organization.CampusId;
                     var err = Attend.RecordAttendance(p.PeopleId.Value, id, true);
-                    if (err.HasValue())
+                    if (err != "ok")
                         sb.AppendLine(err);
                 }
                 DbUtil.Db.SubmitChanges();
+                DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
             }
             return Json(new { close = true, how = "addselected", error = sb.ToString() });
         }

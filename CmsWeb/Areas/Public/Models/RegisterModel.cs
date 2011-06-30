@@ -130,7 +130,7 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> OrgList()
         {
             var q = from o in DbUtil.Db.Organizations
-                    let Hour = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
+                    let Hour = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday).First().Hour
                     let loc = (o.Location == "" || o.Location == null)? "" : ", " + o.Location
                     let leader = o.LeaderName == "" ? "" : ", " + o.LeaderName
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
@@ -289,10 +289,11 @@ namespace CmsWeb.Models
         public void RecordAttend(int PeopleId, int OrgId)
         {
             var ret = (from o in DbUtil.Db.Organizations
+                       let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                        where o.OrganizationId == OrgId
                        select new 
                        { 
-                           o.SchedTime.Value.TimeOfDay,
+                           sc.SchedTime.Value.TimeOfDay,
                            o.AttendTrkLevelId,
                            o.Location
                        }).Single();

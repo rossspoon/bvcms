@@ -145,6 +145,8 @@ namespace CmsWeb.Models
             }
             if (m.campus > 0)
                 people = people.Where(p => p.CampusId == m.campus);
+            else if (m.campus == -1)
+                people = people.Where(p => p.CampusId == null);
             if (m.gender != 99)
                 people = people.Where(p => p.GenderId == m.gender);
             if (m.marital != 99)
@@ -303,9 +305,26 @@ namespace CmsWeb.Models
         {
             return new SelectList(cv.MaritalStatusCodes99(), "Id", "Value", m.marital);
         }
-        public SelectList Campuses()
+        public IEnumerable<SelectListItem> Campuses()
         {
-            return new SelectList(cv.AllCampuses0(), "Id", "Value", m.campus);
+            var q = from c in DbUtil.Db.Campus
+                    select new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Description
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Value = "-1",
+                Text = "(not assigned)"
+            });
+            list.Insert(0, new SelectListItem
+            {
+                Value = "0",
+                Text = "(not specified)"
+            });
+            return list;
         }
         public SelectList MemberStatusCodes()
         {

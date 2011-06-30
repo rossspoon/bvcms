@@ -3,7 +3,7 @@
 <p>
 @if(User.IsInRole("Attendance"))
 { 
-<a id="NewMeeting" href="Organization/NewMeeting">Create New Meeting</a> @:| 
+<a id="NewMeeting" href="Organization/NewMeeting" class="bt">Create New Meeting</a>
 } 
 @Html.CheckBox("future") Show Future Meetings</p>
 <table id="MemberGrid" class="grid" cellpadding="4">
@@ -22,7 +22,7 @@
 @foreach(var m in Model.Meetings())
 { 
 <tr>
-    <td><a href="/Meeting.aspx?id=@m.MeetingId">@m.MeetingDate.FormatDate()</a></td>
+    <td><a href="/Meeting/Index/@m.MeetingId">@m.MeetingDate.FormatDate()</a></td>
     <td>@m.MeetingDate.ToString2("t")</td>
     <td>@m.NumPresent</td>
     <td>@m.NumVisitors</td>

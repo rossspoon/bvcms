@@ -18,6 +18,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -672,48 +673,6 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Forum\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forum\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forum\Edit.aspx.cs">
-      <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forum\Edit.aspx.designer.cs">
-      <DependentUpon>Edit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forum\EditForumEntry.ascx.cs">
-      <DependentUpon>EditForumEntry.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forum\EditForumEntry.ascx.designer.cs">
-      <DependentUpon>EditForumEntry.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Forum\NewEntry.aspx.cs">
-      <DependentUpon>NewEntry.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forum\NewEntry.aspx.designer.cs">
-      <DependentUpon>NewEntry.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forum\Thread.aspx.cs">
-      <DependentUpon>Thread.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forum\Thread.aspx.designer.cs">
-      <DependentUpon>Thread.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forum\Topics.aspx.cs">
-      <DependentUpon>Topics.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forum\Topics.aspx.designer.cs">
-      <DependentUpon>Topics.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -842,12 +801,6 @@
     <Content Include="Blog\Feed.aspx" />
     <Content Include="Blog\New.aspx" />
     <Content Include="CMSFiles\openbible.jpg" />
-    <Content Include="Forum\Default.aspx" />
-    <Content Include="Forum\Edit.aspx" />
-    <Content Include="Forum\EditForumEntry.ascx" />
-    <Content Include="Forum\NewEntry.aspx" />
-    <Content Include="Forum\Thread.aspx" />
-    <Content Include="Forum\Topics.aspx" />
     <Content Include="App_Themes\Default\arrows-ffffff.png" />
     <Content Include="js\hoverIntent.js" />
     <Content Include="js\jquery-1.2.6.js" />

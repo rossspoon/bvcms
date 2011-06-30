@@ -3,8 +3,8 @@
 @Html.Partial("ExportToolBar") 
 &nbsp;<div style="clear: both"></div>
 <p style="bottom-margin:5px">
-Count: <strong>@Model.Count()</strong></p>
-<a class="filtergroupslink" href="#">Filter by name/group@(Model.isFiltered ? "(filtered)" : "")</a>
+Count: <strong>@Model.Count()</strong>
+<a class="filtergroupslink bt" href="#" title="Filter by name/group">Filter@(Model.isFiltered ? "(filtered)" : "")</a></p>
 <table id="MemberGrid" class="grid" cellpadding="4">
 <thead>
 <tr>

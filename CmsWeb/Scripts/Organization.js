@@ -129,6 +129,8 @@ $(function () {
                 $(".submitbutton,.bt").button();
                 $(".roundbox select").css("width", "100%");
                 $("#DivisionsList").multiSelect();
+                $("#schedules").sortable({ stop: $.renumberListItems });
+                $("#schedules input").timepicker({ showPeriod: true });
             });
         });
         return false;
@@ -150,25 +152,9 @@ $(function () {
         var q = f.serialize();
         $.post($(f).attr("action"), q, function (ret) {
             $(f).html(ret);
+            $(".bt", f).button();
         });
     });
-    //    $("a.groupmanager").live("click", function (ev) { // this is no longer needed?
-    //        ev.preventDefault();
-    //        var f = $(this).closest('form');
-    //        var q = f.serialize();
-    //        $.post($(this).attr("href"), q, function (ret) {
-    //            if (ret) {
-    //                $(f).html(ret);
-    //                $.post('/Organization/SmallGroups/', null, function (ret) {
-    //                    var op = $('#smallgroupid');
-    //                    var id = $(op).val();
-    //                    $(op).replaceWith(ret);
-    //                    $('#').val(id);
-    //                });
-    //            }
-    //        });
-    //        return false;
-    //    });
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
@@ -233,6 +219,27 @@ $(function () {
         });
         return false;
     });
+    $("#addsch").live("click", function (ev) {
+        ev.preventDefault();
+        $.post("/Organization/NewSchedule", null, function (ret) {
+            $("#schedules").append(ret).ready(function () {
+                $.renumberListItems();
+                $("#schedules input").timepicker({ showPeriod: true });
+            });
+        });
+    });
+    $("a.deleteschedule").live("click", function (ev) {
+        ev.preventDefault();
+        $(this).parent().remove();
+        $.renumberListItems();
+    });
+    $.renumberListItems = function () {
+        i = 1;
+        $(".renumberMe").each(function () {
+            $(this).val(i);
+            i++;
+        });
+    }
     $("#addfromtaglink").live("click", function (ev) {
         ev.preventDefault();
         var link = this;
@@ -274,6 +281,7 @@ $(function () {
         });
         d.dialog('open');
     });
+    $("#NewMeetingTime").timepicker({ showPeriod: true });
     $('#NewMeeting').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("Group Meeting");
@@ -285,18 +293,27 @@ $(function () {
                     return false;
                 var url = "?d=" + dt.date + "&t=" + dt.time +
                 "&group=" + ($('#group').is(":checked") ? "true" : "false");
-                $.post("/Organization/NewMeeting" + url, null, function (ret) {
+                $.post("/Organization/NewMeeting", { d: dt.date, t: dt.time, AttendCredit: $("#AttendCreditList").val(), group: $('#group').is(":checked") }, function (ret) {
                     if (!ret.startsWith("error"))
                         window.location = ret;
                 });
                 $(this).dialog("close");
             }
         });
+        $.post("/Organization/ScheduleList", { id: $("#OrganizationId").val() }, function (ret) {
+            $("#ScheduleList").html(ret);
+            $("#ScheduleList").change(function () {
+                var a = $(this).val().split(",");
+                $("#NewMeetingDate").val(a[0]);
+                $("#NewMeetingTime").val(a[1]);
+                $("#AttendCreditList").val(a[2]);
+            });
+        });
         d.dialog('open');
         return false;
     });
     $.GetMeetingDateTime = function () {
-        var reTime = /^ *(1[0-2]|[1-9]):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
+        var reTime = /^ *(\d{1,2}):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
         var reDate = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
         var d = $('#NewMeetingDate').val();
         var t = $('#NewMeetingTime').val();

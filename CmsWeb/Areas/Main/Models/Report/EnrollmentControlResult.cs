@@ -96,7 +96,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             var q = from m in DbUtil.Db.OrganizationMembers
                     where m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0
                     where m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid)
-                    where m.Organization.ScheduleId == schedule || schedule == 0
+                    where m.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0
                     where m.Organization.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     orderby m.Person.Name2
                     select new MemberInfo

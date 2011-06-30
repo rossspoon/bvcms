@@ -14,10 +14,35 @@ namespace CmsWeb.Models.OrganizationPage
     {
         public CmsData.Organization org { get; set; }
         public int? OrganizationId { get; set; }
+        public List<ScheduleInfo> schedules { get; set; }
+        public string Schedule { get; set; }
         public OrganizationModel(int? id, int[] groups)
         {
             OrganizationId = id;
-            org = DbUtil.Db.LoadOrganizationById(id);
+            var q = from o in DbUtil.Db.Organizations
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                    where o.OrganizationId == id
+                    select new
+                    {
+                        o,
+                        sch = DbUtil.Db.GetScheduleDesc(sc.MeetingTime),
+                        sc = o.OrgSchedules
+                    };
+            var i = q.SingleOrDefault();
+            if (i == null)
+                return;
+            org = i.o;
+            Schedule = i.sch;
+            var u = from s in i.sc
+                    orderby s.Id
+                    select new ScheduleInfo
+                    {
+                        DayOfWeek = s.SchedDay ?? 0,
+                        Time = s.SchedTime.ToString2("h:mm tt"),
+                        AttendCreditId = s.AttendCreditId.Value,
+                        Id = s.Id
+                    };
+            schedules = u.ToList();
             MemberModel = new MemberModel(id, groups, MemberModel.GroupSelect.Active, String.Empty);
         }
         public MemberModel MemberModel;
@@ -36,19 +61,6 @@ namespace CmsWeb.Models.OrganizationPage
                 org.CampusId = null;
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, org);
-        }
-        public List<SelectListItem> DaysOfWeek()
-        {
-            return new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Sunday", Value = "0" },
-                new SelectListItem { Text = "Monday", Value = "1" },
-                new SelectListItem { Text = "Tuesday", Value = "2" },
-                new SelectListItem { Text = "Wednesday", Value = "3" },
-                new SelectListItem { Text = "Thursday", Value = "4" },
-                new SelectListItem { Text = "Friday", Value = "5" },
-                new SelectListItem { Text = "Saturday", Value = "6" },
-            };
         }
         public IEnumerable<SelectListItem> Groups()
         {
@@ -84,6 +96,22 @@ namespace CmsWeb.Models.OrganizationPage
             var list = q1.Select(name => new SelectListItem { Text = name, Selected = true }).ToList();
             list.AddRange(q2.Select(name => new SelectListItem { Text = name }).ToList());
             return list;
+        }
+        public void UpdateSchedules()
+        {
+            DbUtil.Db.OrgSchedules.DeleteAllOnSubmit(org.OrgSchedules);
+            org.OrgSchedules.Clear();
+            DbUtil.Db.SubmitChanges();
+            foreach (var s in schedules.OrderBy(ss => ss.Id))
+                org.OrgSchedules.Add(new OrgSchedule
+                {
+                    OrganizationId = OrganizationId.Value,
+                    Id = s.Id,
+                    SchedDay = s.DayOfWeek,
+                    SchedTime = s.Time.ToDate(),
+                    AttendCreditId = s.AttendCreditId
+                });
+            DbUtil.Db.SubmitChanges();
         }
         public void ValidateSettings(ModelStateDictionary ModelState)
         {
@@ -251,6 +279,10 @@ namespace CmsWeb.Models.OrganizationPage
         {
             return QueryModel.ConvertToSelect(cv.AttendanceClassifications(), "Id");
         }
+        public IEnumerable<SelectListItem> AttendCreditList()
+        {
+            return QueryModel.ConvertToSelect(CodeValueController.AttendCredits(), "Id");
+        }
         public IEnumerable<SelectListItem> SecurityTypeList()
         {
             return QueryModel.ConvertToSelect(cv.SecurityTypeCodes(), "Id");
@@ -267,8 +299,9 @@ namespace CmsWeb.Models.OrganizationPage
         {
             get
             {
-                if (org.SchedTime != null)
-                    return org.SchedTime.Value.ToShortTimeString();
+                var sc = org.OrgSchedules.FirstOrDefault(); // SCHED
+                if (sc != null && sc.SchedTime != null)
+                    return sc.SchedTime.Value.ToShortTimeString();
                 return "8:00 AM";
             }
         }
@@ -276,11 +309,12 @@ namespace CmsWeb.Models.OrganizationPage
         {
             get
             {
-                if (org.SchedTime != null)
+                var sc = org.OrgSchedules.FirstOrDefault(); // SCHED
+                if (sc != null && sc.SchedTime != null && sc.SchedDay < 9)
                 {
                     var d = Util.Now.Date;
                     d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
-                    d = d.AddDays(org.SchedDay ?? 0);
+                    d = d.AddDays(sc.SchedDay ?? 0);
                     if (d > Util.Now.Date)
                         d = d.AddDays(-7);
                     return d;

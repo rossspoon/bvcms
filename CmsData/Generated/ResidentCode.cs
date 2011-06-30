@@ -24,10 +24,6 @@ namespace CmsData
 		private string _Description;
 		
    		
-   		private EntitySet< Family> _AltResCodeFamilies;
-		
-   		private EntitySet< Person> _AltResCodePeople;
-		
    		private EntitySet< Zip> _Zips;
 		
    		private EntitySet< Family> _ResCodeFamilies;
@@ -54,10 +50,6 @@ namespace CmsData
     #endregion
 		public ResidentCode()
 		{
-			
-			this._AltResCodeFamilies = new EntitySet< Family>(new Action< Family>(this.attach_AltResCodeFamilies), new Action< Family>(this.detach_AltResCodeFamilies)); 
-			
-			this._AltResCodePeople = new EntitySet< Person>(new Action< Person>(this.attach_AltResCodePeople), new Action< Person>(this.detach_AltResCodePeople)); 
 			
 			this._Zips = new EntitySet< Zip>(new Action< Zip>(this.attach_Zips), new Action< Zip>(this.detach_Zips)); 
 			
@@ -142,26 +134,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="AltResCodeFamilies__AltResidentCode", Storage="_AltResCodeFamilies", OtherKey="AltResCodeId")]
-   		public EntitySet< Family> AltResCodeFamilies
-   		{
-   		    get { return this._AltResCodeFamilies; }
-
-			set	{ this._AltResCodeFamilies.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="AltResCodePeople__AltResidentCode", Storage="_AltResCodePeople", OtherKey="AltResCodeId")]
-   		public EntitySet< Person> AltResCodePeople
-   		{
-   		    get { return this._AltResCodePeople; }
-
-			set	{ this._AltResCodePeople.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_Zips_ResidentCode", Storage="_Zips", OtherKey="MetroMarginalCode")]
    		public EntitySet< Zip> Zips
    		{
@@ -213,32 +185,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_AltResCodeFamilies(Family entity)
-		{
-			this.SendPropertyChanging();
-			entity.AltResidentCode = this;
-		}
-
-		private void detach_AltResCodeFamilies(Family entity)
-		{
-			this.SendPropertyChanging();
-			entity.AltResidentCode = null;
-		}
-
-		
-		private void attach_AltResCodePeople(Person entity)
-		{
-			this.SendPropertyChanging();
-			entity.AltResidentCode = this;
-		}
-
-		private void detach_AltResCodePeople(Person entity)
-		{
-			this.SendPropertyChanging();
-			entity.AltResidentCode = null;
-		}
-
-		
 		private void attach_Zips(Zip entity)
 		{
 			this.SendPropertyChanging();

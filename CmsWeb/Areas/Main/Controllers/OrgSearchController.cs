@@ -205,7 +205,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 DbUtil.Db.SubmitChanges();
                 DbUtil.LogActivity("Creating new meeting for {0}".Fmt(dt));
             }
-            return Redirect("~/Meeting.aspx?edit=1&id=" + newMtg.MeetingId);
+            return Redirect("/Meeting/Index/" + newMtg.MeetingId);
         }
     }
 }

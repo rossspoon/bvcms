@@ -525,13 +525,14 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> Schedules()
         {
             var q = from o in DbUtil.Db.Organizations
-                    where o.ScheduleId != null
-                    group o by new { o.ScheduleId, o.MeetingTime } into g
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                    where sc != null
+                    group o by new { sc.ScheduleId, sc.MeetingTime } into g
                     orderby g.Key.ScheduleId
                     select new SelectListItem
                     {
-                        Value = g.Key.ScheduleId.ToString(),
-                        Text = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
+                        Value = "{0},{0}".Fmt(g.Key.ScheduleId),
+                        Text = DbUtil.Db.GetScheduleDesc(g.Key.MeetingTime)
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });

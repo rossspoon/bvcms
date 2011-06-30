@@ -44,7 +44,7 @@ namespace CmsData
             if (this.ObjectTrackingEnabled == true)
             {
                 ChangeSet cs = this.GetChangeSet();
-                var typesToCheck = new Type[] { typeof(string), typeof(System.Data.Linq.Binary) };
+                var typesToCheck = new Type[] { typeof(string), typeof(System.Data.Linq.Binary) };//, typeof(DateTime) };
                 var insertsUpdates = (
                     from i in cs.Inserts.Union(cs.Updates)
                     join m in this.Mapping.GetTables() on i.GetType() equals m.RowType.Type
@@ -56,14 +56,26 @@ namespace CmsData
                 foreach (var ins in insertsUpdates)
                     foreach (var mm in ins.Members)
                     {
-                        var maxLength = GetMaxLength(mm.DbType);
-                        if (mm.MemberAccessor.HasValue(ins.Entity))
+                        //if (mm.DbType == "datetime NOT NULL")
+                        //{
+                        //    var dt = mm.MemberAccessor.GetBoxedValue(ins.Entity).ToDate();
+                        //    if (dt < DateTime.Parse("1/1/1753"))
+                        //    {
+                        //        var iex = new InvalidOperationException(mm.Name + " in " + mm.DeclaringType.Name + " has a value that will not fit into " + mm.DbType + " " + dt.FormatDate());
+                        //        throw iex;
+                        //    }
+                        //}
+                        //else
                         {
-                            var memberValueLength = GetMemberValueLength(mm.MemberAccessor.GetBoxedValue(ins.Entity));
-                            if (maxLength > 0 && memberValueLength > maxLength)
+                            var maxLength = GetMaxLength(mm.DbType);
+                            if (mm.MemberAccessor.HasValue(ins.Entity))
                             {
-                                var iex = new InvalidOperationException(mm.Name + " in " + mm.DeclaringType.Name + " has a value that will not fit into " + mm.DbType);
-                                throw iex;
+                                var memberValueLength = GetMemberValueLength(mm.MemberAccessor.GetBoxedValue(ins.Entity));
+                                if (maxLength > 0 && memberValueLength > maxLength)
+                                {
+                                    var iex = new InvalidOperationException(mm.Name + " in " + mm.DeclaringType.Name + " has a value that will not fit into " + mm.DbType);
+                                    throw iex;
+                                }
                             }
                         }
                     }

@@ -64,7 +64,9 @@
     }
     $.InstructionsShow = function () {
         $("div.instructions").hide();
-        if ($("#personedit").attr("id")) {
+        if ($("#selectfamily").attr("id"))
+            $("div.instructions.select").show();
+        else if ($("#personedit").attr("id")) {
             $("#fillout").hide();
             $("div.instructions.find").show();
         }

@@ -235,6 +235,26 @@
     $('#addrf').validate();
     $('#addrp').validate();
     $('#basic').validate();
+    $(".atck").live("change", function (ev) {
+        var ck = $(this);
+        $.post("/Meeting/MarkAttendance/", {
+            MeetingId: $(this).attr("mid"),
+            PeopleId: $(this).attr("pid"),
+            Present: ck.is(':checked')
+        }, function (ret) {
+            if (ret.error) {
+                ck.attr("checked", !ck.is(':checked'));
+                alert(ret.error);
+            }
+            else {
+                var f = ck.closest('form');
+                var q = f.serialize();
+                $.post($(f).attr("action"), q, function (ret) {
+                    $(f).html(ret);
+                });
+            }
+        });
+    });
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#current-tab form'));

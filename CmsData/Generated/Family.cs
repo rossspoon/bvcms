@@ -37,10 +37,6 @@ namespace CmsData
 		
 		private DateTime? _AddressToDate;
 		
-		private DateTime? _AltAddressFromDate;
-		
-		private DateTime? _AltAddressToDate;
-		
 		private string _AddressLineOne;
 		
 		private string _AddressLineTwo;
@@ -54,20 +50,6 @@ namespace CmsData
 		private string _CountryName;
 		
 		private string _StreetName;
-		
-		private string _AltAddressLineOne;
-		
-		private string _AltAddressLineTwo;
-		
-		private string _AltCityName;
-		
-		private string _AltStateCode;
-		
-		private string _AltZipCode;
-		
-		private string _AltCountryName;
-		
-		private string _AltStreetName;
 		
 		private string _HomePhone;
 		
@@ -97,8 +79,6 @@ namespace CmsData
    		private EntitySet< RelatedFamily> _RelatedFamilies2;
 		
     	
-		private EntityRef< ResidentCode> _AltResidentCode;
-		
 		private EntityRef< Person> _HeadOfHousehold;
 		
 		private EntityRef< Person> _HeadOfHouseholdSpouse;
@@ -142,12 +122,6 @@ namespace CmsData
 		partial void OnAddressToDateChanging(DateTime? value);
 		partial void OnAddressToDateChanged();
 		
-		partial void OnAltAddressFromDateChanging(DateTime? value);
-		partial void OnAltAddressFromDateChanged();
-		
-		partial void OnAltAddressToDateChanging(DateTime? value);
-		partial void OnAltAddressToDateChanged();
-		
 		partial void OnAddressLineOneChanging(string value);
 		partial void OnAddressLineOneChanged();
 		
@@ -168,27 +142,6 @@ namespace CmsData
 		
 		partial void OnStreetNameChanging(string value);
 		partial void OnStreetNameChanged();
-		
-		partial void OnAltAddressLineOneChanging(string value);
-		partial void OnAltAddressLineOneChanged();
-		
-		partial void OnAltAddressLineTwoChanging(string value);
-		partial void OnAltAddressLineTwoChanged();
-		
-		partial void OnAltCityNameChanging(string value);
-		partial void OnAltCityNameChanged();
-		
-		partial void OnAltStateCodeChanging(string value);
-		partial void OnAltStateCodeChanged();
-		
-		partial void OnAltZipCodeChanging(string value);
-		partial void OnAltZipCodeChanged();
-		
-		partial void OnAltCountryNameChanging(string value);
-		partial void OnAltCountryNameChanged();
-		
-		partial void OnAltStreetNameChanging(string value);
-		partial void OnAltStreetNameChanged();
 		
 		partial void OnHomePhoneChanging(string value);
 		partial void OnHomePhoneChanged();
@@ -229,8 +182,6 @@ namespace CmsData
 			
 			this._RelatedFamilies2 = new EntitySet< RelatedFamily>(new Action< RelatedFamily>(this.attach_RelatedFamilies2), new Action< RelatedFamily>(this.detach_RelatedFamilies2)); 
 			
-			
-			this._AltResidentCode = default(EntityRef< ResidentCode>); 
 			
 			this._HeadOfHousehold = default(EntityRef< Person>); 
 			
@@ -411,9 +362,6 @@ namespace CmsData
 				if (this._AltResCodeId != value)
 				{
 				
-					if (this._AltResidentCode.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnAltResCodeIdChanging(value);
 					this.SendPropertyChanging();
 					this._AltResCodeId = value;
@@ -463,50 +411,6 @@ namespace CmsData
 					this._AddressToDate = value;
 					this.SendPropertyChanged("AddressToDate");
 					this.OnAddressToDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltAddressFromDate", UpdateCheck=UpdateCheck.Never, Storage="_AltAddressFromDate", DbType="datetime")]
-		public DateTime? AltAddressFromDate
-		{
-			get { return this._AltAddressFromDate; }
-
-			set
-			{
-				if (this._AltAddressFromDate != value)
-				{
-				
-                    this.OnAltAddressFromDateChanging(value);
-					this.SendPropertyChanging();
-					this._AltAddressFromDate = value;
-					this.SendPropertyChanged("AltAddressFromDate");
-					this.OnAltAddressFromDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltAddressToDate", UpdateCheck=UpdateCheck.Never, Storage="_AltAddressToDate", DbType="datetime")]
-		public DateTime? AltAddressToDate
-		{
-			get { return this._AltAddressToDate; }
-
-			set
-			{
-				if (this._AltAddressToDate != value)
-				{
-				
-                    this.OnAltAddressToDateChanging(value);
-					this.SendPropertyChanging();
-					this._AltAddressToDate = value;
-					this.SendPropertyChanged("AltAddressToDate");
-					this.OnAltAddressToDateChanged();
 				}
 
 			}
@@ -580,7 +484,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="StateCode", UpdateCheck=UpdateCheck.Never, Storage="_StateCode", DbType="varchar(20)")]
+		[Column(Name="StateCode", UpdateCheck=UpdateCheck.Never, Storage="_StateCode", DbType="varchar(30)")]
 		public string StateCode
 		{
 			get { return this._StateCode; }
@@ -661,160 +565,6 @@ namespace CmsData
 					this._StreetName = value;
 					this.SendPropertyChanged("StreetName");
 					this.OnStreetNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltAddressLineOne", UpdateCheck=UpdateCheck.Never, Storage="_AltAddressLineOne", DbType="varchar(60)")]
-		public string AltAddressLineOne
-		{
-			get { return this._AltAddressLineOne; }
-
-			set
-			{
-				if (this._AltAddressLineOne != value)
-				{
-				
-                    this.OnAltAddressLineOneChanging(value);
-					this.SendPropertyChanging();
-					this._AltAddressLineOne = value;
-					this.SendPropertyChanged("AltAddressLineOne");
-					this.OnAltAddressLineOneChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltAddressLineTwo", UpdateCheck=UpdateCheck.Never, Storage="_AltAddressLineTwo", DbType="varchar(40)")]
-		public string AltAddressLineTwo
-		{
-			get { return this._AltAddressLineTwo; }
-
-			set
-			{
-				if (this._AltAddressLineTwo != value)
-				{
-				
-                    this.OnAltAddressLineTwoChanging(value);
-					this.SendPropertyChanging();
-					this._AltAddressLineTwo = value;
-					this.SendPropertyChanged("AltAddressLineTwo");
-					this.OnAltAddressLineTwoChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltCityName", UpdateCheck=UpdateCheck.Never, Storage="_AltCityName", DbType="varchar(30)")]
-		public string AltCityName
-		{
-			get { return this._AltCityName; }
-
-			set
-			{
-				if (this._AltCityName != value)
-				{
-				
-                    this.OnAltCityNameChanging(value);
-					this.SendPropertyChanging();
-					this._AltCityName = value;
-					this.SendPropertyChanged("AltCityName");
-					this.OnAltCityNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltStateCode", UpdateCheck=UpdateCheck.Never, Storage="_AltStateCode", DbType="varchar(20)")]
-		public string AltStateCode
-		{
-			get { return this._AltStateCode; }
-
-			set
-			{
-				if (this._AltStateCode != value)
-				{
-				
-                    this.OnAltStateCodeChanging(value);
-					this.SendPropertyChanging();
-					this._AltStateCode = value;
-					this.SendPropertyChanged("AltStateCode");
-					this.OnAltStateCodeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltZipCode", UpdateCheck=UpdateCheck.Never, Storage="_AltZipCode", DbType="varchar(15)")]
-		public string AltZipCode
-		{
-			get { return this._AltZipCode; }
-
-			set
-			{
-				if (this._AltZipCode != value)
-				{
-				
-                    this.OnAltZipCodeChanging(value);
-					this.SendPropertyChanging();
-					this._AltZipCode = value;
-					this.SendPropertyChanged("AltZipCode");
-					this.OnAltZipCodeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltCountryName", UpdateCheck=UpdateCheck.Never, Storage="_AltCountryName", DbType="varchar(30)")]
-		public string AltCountryName
-		{
-			get { return this._AltCountryName; }
-
-			set
-			{
-				if (this._AltCountryName != value)
-				{
-				
-                    this.OnAltCountryNameChanging(value);
-					this.SendPropertyChanging();
-					this._AltCountryName = value;
-					this.SendPropertyChanged("AltCountryName");
-					this.OnAltCountryNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AltStreetName", UpdateCheck=UpdateCheck.Never, Storage="_AltStreetName", DbType="varchar(40)")]
-		public string AltStreetName
-		{
-			get { return this._AltStreetName; }
-
-			set
-			{
-				if (this._AltStreetName != value)
-				{
-				
-                    this.OnAltStreetNameChanging(value);
-					this.SendPropertyChanging();
-					this._AltStreetName = value;
-					this.SendPropertyChanged("AltStreetName");
-					this.OnAltStreetNameChanged();
 				}
 
 			}
@@ -1074,48 +824,6 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="AltResCodeFamilies__AltResidentCode", Storage="_AltResidentCode", ThisKey="AltResCodeId", IsForeignKey=true)]
-		public ResidentCode AltResidentCode
-		{
-			get { return this._AltResidentCode.Entity; }
-
-			set
-			{
-				ResidentCode previousValue = this._AltResidentCode.Entity;
-				if (((previousValue != value) 
-							|| (this._AltResidentCode.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._AltResidentCode.Entity = null;
-						previousValue.AltResCodeFamilies.Remove(this);
-					}
-
-					this._AltResidentCode.Entity = value;
-					if (value != null)
-					{
-						value.AltResCodeFamilies.Add(this);
-						
-						this._AltResCodeId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._AltResCodeId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("AltResidentCode");
-				}
-
-			}
-
-		}
-
-		
 		[Association(Name="FamiliesHeaded__HeadOfHousehold", Storage="_HeadOfHousehold", ThisKey="HeadOfHouseholdId", IsForeignKey=true)]
 		public Person HeadOfHousehold
 		{

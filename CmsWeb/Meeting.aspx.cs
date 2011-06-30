@@ -111,7 +111,7 @@ namespace CmsWeb
 				foreach (var a in qlist)
 				{
 					var s = Attend.RecordAttendance(a.PeopleId, meeting.MeetingId, a.attended);
-					if (s.HasValue())
+					if (s!="ok")
 						errors.Add(s);
 				}
 				if (errors.Count > 0)

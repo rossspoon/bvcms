@@ -38,6 +38,10 @@ namespace CmsData
         partial void UpdateAttendanceClassification(AttendanceClassification instance);
         partial void DeleteAttendanceClassification(AttendanceClassification instance);
         
+        partial void InsertAttendCredit(AttendCredit instance);
+        partial void UpdateAttendCredit(AttendCredit instance);
+        partial void DeleteAttendCredit(AttendCredit instance);
+        
         partial void InsertAttendTrackLevel(AttendTrackLevel instance);
         partial void UpdateAttendTrackLevel(AttendTrackLevel instance);
         partial void DeleteAttendTrackLevel(AttendTrackLevel instance);
@@ -374,6 +378,10 @@ namespace CmsData
         partial void UpdateOrgMemMemTag(OrgMemMemTag instance);
         partial void DeleteOrgMemMemTag(OrgMemMemTag instance);
         
+        partial void InsertOrgSchedule(OrgSchedule instance);
+        partial void UpdateOrgSchedule(OrgSchedule instance);
+        partial void DeleteOrgSchedule(OrgSchedule instance);
+        
         partial void InsertOrigin(Origin instance);
         partial void UpdateOrigin(Origin instance);
         partial void DeleteOrigin(Origin instance);
@@ -695,6 +703,12 @@ namespace CmsData
 		public Table< AttendanceClassification> AttendanceClassifications
 		{
 			get	{ return this.GetTable< AttendanceClassification>(); }
+
+		}
+
+		public Table< AttendCredit> AttendCredits
+		{
+			get	{ return this.GetTable< AttendCredit>(); }
 
 		}
 
@@ -1202,6 +1216,12 @@ namespace CmsData
 
 		}
 
+		public Table< OrgSchedule> OrgSchedules
+		{
+			get	{ return this.GetTable< OrgSchedule>(); }
+
+		}
+
 		public Table< Origin> Origins
 		{
 			get	{ return this.GetTable< Origin>(); }
@@ -1700,6 +1720,19 @@ namespace CmsData
     #endregion
 	#region Table Functions
 		
+		[Function(Name="dbo.AttendanceCredits", IsComposable = true)]
+		public IQueryable< View.AttendanceCredit > AttendanceCredits(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? pid
+            )
+		{
+			return this.CreateMethodCallQuery< View.AttendanceCredit>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                pid
+                );
+		}
+
 		[Function(Name="dbo.AttendMemberTypeAsOf", IsComposable = true)]
 		public IQueryable< View.AttendMemberTypeAsOf > AttendMemberTypeAsOf(
             [Parameter(DbType="datetime")] DateTime? from,
@@ -2021,13 +2054,17 @@ namespace CmsData
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? GetTodaysMeetingHour(
             [Parameter(Name = "orgid", DbType="int")] int? orgid,
-            [Parameter(Name = "thisday", DbType="int")] int? thisday
+            [Parameter(Name = "thisday", DbType="int")] int? thisday,
+            [Parameter(Name = "MeetingTime", DbType="datetime")] DateTime? MeetingTime,
+            [Parameter(Name = "SchedDay", DbType="int")] int? SchedDay
             )
 		{
 			return ((DateTime?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 orgid,
-                thisday
+                thisday,
+                MeetingTime,
+                SchedDay
                 ).ReturnValue));
 		}
 
@@ -2917,6 +2954,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.GetWeekDayNameOfDate", IsComposable = true)]
+		[return: Parameter(DbType = "nvarchar")]
+		public string GetWeekDayNameOfDate(
+            [Parameter(Name = "DateX", DbType="datetime")] DateTime? DateX
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                DateX
+                ).ReturnValue));
+		}
+
 		[Function(Name="disc.GetProfile", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string GetProfile(
@@ -2928,6 +2977,18 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 Username,
                 PropertyName
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetScheduleDesc", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string GetScheduleDesc(
+            [Parameter(Name = "meetingtime", DbType="datetime")] DateTime? meetingtime
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                meetingtime
                 ).ReturnValue));
 		}
 

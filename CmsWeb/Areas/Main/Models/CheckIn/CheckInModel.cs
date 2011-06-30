@@ -176,23 +176,25 @@ namespace CmsWeb.Models
 
             // now get rest of family
             const string PleaseVisit = "No self check-in meetings available";
-            var VisitorOrgName = PleaseVisit;
-            var VisitorOrgId = 0;
-            var VisitorOrgHour = (DateTime?)null;
             // find a org on campus that allows an older, new visitor to check in to
             var qv = from o in DbUtil.Db.Organizations
+                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                      where o.CampusId == campus || o.CampusId == null
                      where o.CanSelfCheckin == true
                      where o.AllowNonCampusCheckIn == true
-                     where o.SchedDay == thisday
-                     select o;
-            var vo = qv.FirstOrDefault();
-            if (vo != null)
-            {
-                VisitorOrgName = vo.OrganizationName;
-                VisitorOrgId = vo.OrganizationId;
-                VisitorOrgHour = vo.SchedTime;
-            }
+                     where sc.SchedDay == thisday
+                     select new
+                     {
+                         VisitorOrgName = o.OrganizationName,
+                         VisitorOrgId = o.OrganizationId,
+                         VisitorOrgHour = sc.SchedTime
+                     };
+            var vo = qv.FirstOrDefault() ?? new 
+                                            { 
+                                                VisitorOrgName = PleaseVisit, 
+                                                VisitorOrgId = 0, 
+                                                VisitorOrgHour = (DateTime?)null 
+                                            }; 
             var otherfamily =
                 from p in DbUtil.Db.People
                 where p.FamilyId == id
@@ -210,13 +212,13 @@ namespace CmsWeb.Models
                     BYear = p.BirthYear,
                     BMon = p.BirthMonth,
                     BDay = p.BirthDay,
-                    Class = oldervisitor ? VisitorOrgName : PleaseVisit,
-                    OrgId = oldervisitor ? VisitorOrgId : 0,
+                    Class = oldervisitor ? vo.VisitorOrgName : PleaseVisit,
+                    OrgId = oldervisitor ? vo.VisitorOrgId : 0,
                     Leader = "",
                     Age = p.Age ?? 0,
                     Gender = p.Gender.Code,
                     NumLabels = 1,
-                    Hour = VisitorOrgHour,
+                    Hour = vo.VisitorOrgHour,
 
                     goesby = p.NickName,
                     email = p.EmailAddress,
@@ -382,7 +384,7 @@ namespace CmsWeb.Models
                     select new
                     {
                         MeetingId = DbUtil.Db.GetTodaysMeetingId(OrgId, thisday),
-                        MeetingTime = DbUtil.Db.GetTodaysMeetingHour(OrgId, thisday),
+                        MeetingTime = DbUtil.Db.GetTodaysMeetingHours(OrgId, thisday).First().Hour,
                         o.AttendTrkLevelId,
                         o.Location,
                         OrgEntryPoint = o.EntryPointId,

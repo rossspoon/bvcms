@@ -47,7 +47,7 @@
                         Text='<%# Eval("Organization") %>' ToolTip='<%# Eval("Tracking") %>'></asp:HyperLink>
                 </td>
                 <td>
-                    <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl='<%# Eval("MeetingId", "~/Meeting.aspx?id={0}") %>'
+                    <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl='<%# Eval("MeetingId", "/Meeting/Index/{0}") %>'
                         Text='<%# Eval("Time", "{0:t}") %>'></asp:HyperLink>
                 </td>
                 <td>

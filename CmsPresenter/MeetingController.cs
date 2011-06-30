@@ -97,7 +97,7 @@ namespace CMSPresenter
 
             if (scheduleid > 0)
                 query = from o in query
-                        where o.ScheduleId == scheduleid
+                        where o.OrgSchedules.Any(os => os.ScheduleId == scheduleid)
                         select o;
 
             if (statusid > 0)
@@ -232,27 +232,6 @@ namespace CMSPresenter
                     break;
             }
             return q;
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Delete, false)]
-        public void DeleteMeeting(int MeetingId)
-        {
-            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == MeetingId);
-            if (meeting == null)
-                return;
-            var q = from a in DbUtil.Db.Attends
-                    where a.MeetingId == MeetingId
-                    select a.PeopleId;
-            var list = q.ToList();
-
-            var attendees = DbUtil.Db.Attends.Where(a => a.MeetingId == MeetingId);
-            foreach (var a in attendees)
-                if (a.AttendanceFlag == true)
-                    Attend.RecordAttendance(a.PeopleId, MeetingId, false);
-            DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
-            DbUtil.Db.SoulMates.DeleteAllOnSubmit(meeting.SoulMates);
-            DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
-            DbUtil.Db.SubmitChanges();
         }
     }
 }

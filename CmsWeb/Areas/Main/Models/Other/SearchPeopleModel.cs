@@ -184,6 +184,8 @@ namespace CmsWeb.Models
                 query = query.Where(p => p.GenderId == GenderId);
             if (CampusId != 0)
                 query = query.Where(p => p.CampusId == CampusId);
+            else if (CampusId == -1)
+                query = query.Where(p => p.CampusId == null);
             if (MaritalStatusId != 99)
                 query = query.Where(p => p.MaritalStatusId == MaritalStatusId);
 
@@ -271,6 +273,11 @@ namespace CmsWeb.Models
                         Text = c.Description
                     };
             var list = q.ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Value = "-1",
+                Text = "(not assigned)"
+            });
             list.Insert(0, new SelectListItem
             {
                 Value = "0",

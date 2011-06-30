@@ -26,12 +26,13 @@ namespace CmsWeb.Report
             var campusid = this.QueryString<int?>("campusid");
 
             var q = from dio in DbUtil.Db.DivOrgs
+                    let sc = dio.Organization.OrgSchedules.FirstOrDefault() // SCHED
                     where dio.DivId == divid
                     from m in dio.Organization.Meetings
                     where m.MeetingDate >= dt1
                     where m.MeetingDate < dt2
                     where campusid == null || campusid == 0 || m.Organization.CampusId == campusid
-                    where schedid == null || schedid == 0 || m.Organization.ScheduleId == schedid
+                    where schedid == null || schedid == 0 || sc.ScheduleId == schedid
                     where name == null || name == "" || m.Organization.OrganizationName.Contains(name)
                     orderby m.Organization.OrganizationName, m.OrganizationId, m.MeetingDate descending
                     select new

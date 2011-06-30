@@ -46,14 +46,15 @@ namespace CmsWeb
             var divid = SubDivOrg.SelectedValue.ToInt();
             var progid = DivOrg.SelectedValue.ToInt();
             var q = from o in DbUtil.Db.Organizations
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0
                     where o.DivOrgs.Any(t => t.Division.ProgId == progid)
-                    where o.ScheduleId != null
-                    group o by new { o.ScheduleId, o.MeetingTime } into g
+                    where sc.ScheduleId != null
+                    group o by new { sc.ScheduleId, sc.MeetingTime } into g
                     select new CodeValueItem
                     {
                         Id = g.Key.ScheduleId.Value,
-                        Value = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
+                        Value = DbUtil.Db.GetScheduleDesc(g.Key.MeetingTime)
                     };
             var list = q.ToList();
             list.Insert(0, new CodeValueItem { Id = 0, Value = "(not specified)" });

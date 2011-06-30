@@ -103,7 +103,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     let o = om.Organization
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.DivId == div) || div == 0 || div == null
-                    where o.ScheduleId == schedule || schedule == 0 || schedule == null
+                    where om.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule || schedule == 0 || schedule == null)
                     group om.Person by om.Person.RecRegs.First().ShirtSize into g
                     select new ShirtSizeInfo
                     {

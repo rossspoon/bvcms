@@ -417,5 +417,61 @@ namespace CmsWeb
             }
             return new HtmlString("");
         }
+        
+        public static CollectionItemNamePrefixScope BeginCollectionItem<TModel>(this HtmlHelper<TModel> html, string collectionName)
+        {
+            string itemIndex = GetCollectionItemIndex(collectionName);
+            var collectionItemName = String.Format("{0}[{1}]", collectionName, itemIndex);
+
+            var indexField = new TagBuilder("input");
+            indexField.MergeAttributes(new Dictionary<string, string>() 
+            {
+                { "name", String.Format("{0}.Index", collectionName) },
+                { "value", itemIndex },
+                { "type", "hidden" },
+                { "autocomplete", "off" }
+            });
+
+            return new CollectionItemNamePrefixScope(
+                html.ViewData.TemplateInfo, 
+                collectionItemName, 
+                indexField.ToString(TagRenderMode.SelfClosing));
+        }
+        private static string GetCollectionItemIndex(string collectionIndexFieldName)
+        {
+            Queue<string> previousIndices = (Queue<string>) HttpContext.Current.Items[collectionIndexFieldName];
+            if (previousIndices == null) {
+                HttpContext.Current.Items[collectionIndexFieldName] = previousIndices = new Queue<string>();
+         
+                var previousIndicesValues = HttpContext.Current.Request[collectionIndexFieldName];
+                if (!string.IsNullOrWhiteSpace(previousIndicesValues)) {
+                    foreach (var index in previousIndicesValues.Split(','))
+                        previousIndices.Enqueue(index);
+                }
+            }
+         
+            return previousIndices.Count > 0 ? previousIndices.Dequeue() : Guid.NewGuid().ToString();
+        }
+
+        public class CollectionItemNamePrefixScope : IDisposable
+        {
+            private readonly TemplateInfo _templateInfo;
+            private readonly string _previousPrefix;
+            public string hiddenindex { get; set; }
+
+            public CollectionItemNamePrefixScope(TemplateInfo templateInfo, string collectionItemName, string hiddenindex)
+            {
+                this._templateInfo = templateInfo;
+
+                _previousPrefix = templateInfo.HtmlFieldPrefix;
+                templateInfo.HtmlFieldPrefix = collectionItemName;
+                this.hiddenindex = hiddenindex;
+            }
+
+            public void Dispose()
+            {
+                _templateInfo.HtmlFieldPrefix = _previousPrefix;
+            }
+        }
     }
 }

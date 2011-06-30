@@ -42,8 +42,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             document.Open();
             dc = w.DirectContent;
 
-            var ctl = new RollsheetModel();
-
             var cols = new float[3 * 2 - 1];
             var twid = 0f;
             var t = new PdfPTable(cols.Length);

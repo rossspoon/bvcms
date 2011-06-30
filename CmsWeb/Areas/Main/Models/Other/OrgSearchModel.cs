@@ -55,6 +55,7 @@ namespace CmsWeb.Models
         public IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query)
         {
             var q = from o in query
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     select new OrganizationInfo
                     {
                         Id = o.OrganizationId,
@@ -70,7 +71,7 @@ namespace CmsWeb.Models
                         Divisions = string.Join(",", o.DivOrgs.Select(d => d.Division.Name).ToArray()),
                         FirstMeetingDate = o.FirstMeetingDate.FormatDate(),
                         LastMeetingDate = o.LastMeetingDate.FormatDate(),
-                        MeetingTime = o.MeetingTime,
+                        Schedule = DbUtil.Db.GetScheduleDesc(sc.MeetingTime),
                         Location = o.Location,
                         AllowSelfCheckIn = o.CanSelfCheckin ?? false,
                         BDayStart = o.BirthDayStart.FormatDate("na"),
@@ -85,6 +86,7 @@ namespace CmsWeb.Models
             var q = from o in DbUtil.Db.Organizations select o;
             q = FetchOrgs();
             var q2 = from o in q
+                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                      select new
                      {
                          OrgId = o.OrganizationId,
@@ -96,7 +98,7 @@ namespace CmsWeb.Models
                          Division = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
                          FirstMeeting = o.FirstMeetingDate.FormatDate(),
                          LastMeeting = o.LastMeetingDate.FormatDate(),
-                         Schedule = "{0:dddd h:mm tt}".Fmt(o.MeetingTime),
+                         Schedule = DbUtil.Db.GetScheduleDesc(sc.MeetingTime),
                          o.Location,
                          RollSheetVisitorWks = o.RollSheetVisitorWks ?? 0,
                          o.AgeFee,
@@ -184,6 +186,7 @@ namespace CmsWeb.Models
                 if (Name.AllDigits())
                     organizations = from o in organizations
                                     where o.OrganizationId == Name.ToInt()
+                                        || o.Location == Name
                                     select o;
                 else
                     organizations = from o in organizations
@@ -205,7 +208,7 @@ namespace CmsWeb.Models
 
             if (ScheduleId > 0)
                 organizations = from o in organizations
-                                where o.ScheduleId == ScheduleId
+                                where o.OrgSchedules.Any(os => os.ScheduleId == ScheduleId)
                                 select o;
 
             if (StatusId > 0)
@@ -216,6 +219,10 @@ namespace CmsWeb.Models
             if (CampusId > 0)
                 organizations = from o in organizations
                                 where o.CampusId == CampusId
+                                select o;
+            else if (CampusId == -1)
+                organizations = from o in organizations
+                                where o.CampusId == null
                                 select o;
 
             if (this.OnlineReg == 99)
@@ -261,7 +268,8 @@ namespace CmsWeb.Models
                         break;
                     case "Schedule":
                         query = from o in query
-                                orderby o.ScheduleId
+                                let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                                orderby sc.ScheduleId
                                 select o;
                         break;
                     case "Self CheckIn":
@@ -320,7 +328,8 @@ namespace CmsWeb.Models
                         break;
                     case "Schedule":
                         query = from o in query
-                                orderby o.ScheduleId descending
+                                let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                                orderby sc.ScheduleId descending
                                 select o;
                         break;
                     case "Self CheckIn":
@@ -379,6 +388,11 @@ namespace CmsWeb.Models
             var list = q.ToList();
             list.Insert(0, new SelectListItem
             {
+                Value = "-1",
+                Text = "(not assigned)"
+            });
+            list.Insert(0, new SelectListItem
+            {
                 Value = "0",
                 Text = "(not specified)"
             });
@@ -426,13 +440,15 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> ScheduleIds()
         {
             var q = from o in DbUtil.Db.Organizations
-                    where o.ScheduleId != null
-                    group o by new { o.ScheduleId, o.MeetingTime } into g
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                    where sc != null
+                    group o by new { sc.ScheduleId, sc.MeetingTime } into g
                     orderby g.Key.ScheduleId
+                    where g.Key.ScheduleId != null
                     select new SelectListItem
                     {
                         Value = g.Key.ScheduleId.Value.ToString(),
-                        Text = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
+                        Text = DbUtil.Db.GetScheduleDesc(g.Key.MeetingTime)
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem
@@ -493,8 +509,7 @@ namespace CmsWeb.Models
             public string FirstMeetingDate { get; set; }
             public string LastMeetingDate { get; set; }
             public int SchedDay { get; set; }
-            public DateTime? MeetingTime { get; set; }
-            public string Schedule { get { return "{0:ddd h:mm tt}".Fmt(MeetingTime); } }
+            public string Schedule { get; set; }
             public string Location { get; set; }
             public string Tag { get; set; }
             public bool? ChangeMain { get; set; }

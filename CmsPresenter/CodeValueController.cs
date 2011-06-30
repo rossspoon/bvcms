@@ -73,7 +73,27 @@ namespace CMSPresenter
 			return list;
 		}
 
-		[DataObjectMethod(DataObjectMethodType.Select, false)]
+        public static List<CodeValueItem> AttendCredits()
+        {
+            const string NAME = "AttendCredits";
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
+            if (list == null)
+            {
+                var q = from ms in DbUtil.Db.AttendCredits
+                        orderby ms.Id
+                        select new CodeValueItem
+                        {
+                            Id = ms.Id,
+                            Code = ms.Code,
+                            Value = ms.Description
+                        };
+                list = q.ToList();
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
+            }
+            return list;
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
 		public List<CodeValueItem> EnvelopeOptions()
 		{
 			const string NAME = "EnvelopeOptions";
@@ -1007,13 +1027,16 @@ namespace CMSPresenter
 		public IEnumerable<CodeValueItem> Schedules()
 		{
 			var q = from o in DbUtil.Db.Organizations
-					where o.ScheduleId != null
-					group o by new { o.ScheduleId, o.MeetingTime } into g
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+					where sc != null
+					group o by new { sc.ScheduleId, sc.MeetingTime } into g
 					orderby g.Key.ScheduleId
+                    where g.Key.ScheduleId != null
 					select new CodeValueItem
 					{
-						Id = g.Key.ScheduleId.Value,
-						Value = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
+						Id = (g.Key.ScheduleId.Value),
+                        Code = g.Key.ScheduleId.ToString(),
+                        Value = DbUtil.Db.GetScheduleDesc(g.Key.MeetingTime)
 					};
 			return q;
 		}

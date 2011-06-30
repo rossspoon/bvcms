@@ -7,7 +7,6 @@ using CmsData;
 using UtilityExtensions;
 using System.Text;
 using CmsWeb.Models.OrganizationPage;
-using CmsWeb.Models;
 using System.Diagnostics;
 
 namespace CmsWeb.Areas.Main.Controllers
@@ -32,7 +31,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     return NotAllowed("You do not have access to this page", m.org.OrganizationName);
                 else if (!m.org.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId))
                     return NotAllowed("You must be a member of this organization", m.org.OrganizationName);
-            
+
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 
             Util2.CurrentOrgId = m.org.OrganizationId;
@@ -71,7 +70,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NewMeeting(string d, string t, bool group)
+        public ActionResult NewMeeting(string d, string t, int AttendCredit, bool group)
         {
             var organization = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
             if (organization == null)
@@ -83,7 +82,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     && m.OrganizationId == organization.OrganizationId);
 
             if (mt != null)
-                return Content("/Meeting.aspx?edit=1&id=" + mt.MeetingId);
+                return Content("/Meeting/Index/" + mt.MeetingId);
 
             mt = new CmsData.Meeting
             {
@@ -93,11 +92,12 @@ namespace CmsWeb.Areas.Main.Controllers
                 GroupMeetingFlag = group,
                 Location = organization.Location,
                 MeetingDate = dt,
+                AttendCreditId = AttendCredit
             };
             DbUtil.Db.Meetings.InsertOnSubmit(mt);
             DbUtil.Db.SubmitChanges();
             DbUtil.LogActivity("Creating new meeting for {0}".Fmt(dt));
-            return Content("/Meeting.aspx?edit=1&id=" + mt.MeetingId);
+            return Content("/Meeting/Index/" + mt.MeetingId);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DeleteMeeting(string id, bool future)
@@ -119,7 +119,6 @@ namespace CmsWeb.Areas.Main.Controllers
                 if (a.AttendanceFlag == true)
                     Attend.RecordAttendance(a.PeopleId, mid.Value, false);
             DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
-            DbUtil.Db.SoulMates.DeleteAllOnSubmit(meeting.SoulMates);
             DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
             DbUtil.Db.SubmitChanges();
             return Content("ok");
@@ -211,10 +210,23 @@ namespace CmsWeb.Areas.Main.Controllers
             m.ValidateSettings(ModelState);
             if (ModelState.IsValid)
             {
-                DbUtil.Db.SubmitChanges();
+                m.UpdateSchedules();
+                DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, m.org.OrgSchedules);
                 return View("Settings", m);
             }
             return View("SettingsEdit", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult NewSchedule()
+        {
+            var s = new ScheduleInfo
+            {
+                Id = 0, // this will get renumbered on the client
+                DayOfWeek = 0, // default to Sunday
+                Time = "8:00 AM", // default
+                AttendCreditId = 1
+            };
+            return View("ScheduleEditor", s);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -240,7 +252,6 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("OrgInfo", m);
         }
 
-
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SmallGroups()
         {
@@ -248,7 +259,6 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-
         public ActionResult AddFromTag(int id, int tagid, bool? pending)
         {
             var o = DbUtil.Db.LoadOrganizationById(id);
@@ -323,7 +333,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             var o = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
             var q = DbUtil.Db.PeopleFromPidString(o.NotifyIds).Select(p => p.PeopleId);
-            foreach(var pid in q)
+            foreach (var pid in q)
                 t.PersonTags.Add(new TagPerson { PeopleId = pid });
             DbUtil.Db.SubmitChanges();
             return Redirect("/SearchUsers?ordered=true&topid=" + q.FirstOrDefault());
@@ -342,6 +352,12 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return View("NotifyList", DbUtil.Db.PeopleFromPidString(o.NotifyIds));
         }
-
+        [HttpPost]
+        public ActionResult ScheduleList(int id)
+        {
+            var m = new OrganizationModel(id, null);
+            var q = new SelectList(m.schedules.OrderBy(cc => cc.Id), "Value", "Display");
+            return View(q);
+        }
     }
 }

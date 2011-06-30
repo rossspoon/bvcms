@@ -108,12 +108,14 @@ namespace CmsWeb.Models
 
         public IQueryable<Person> ApplySort(IQueryable<Person> query)
         {
+            if (!Sort.HasValue())
+                Sort = "Name";
             switch (Direction)
             {
                 case "asc":
                     switch (Sort)
                     {
-                        case "Member":
+                        case "Status":
                             query = from p in query
                                     orderby p.MemberStatus.Code,
                                     p.LastName,
@@ -162,7 +164,7 @@ namespace CmsWeb.Models
                                     p.PeopleId
                                     select p;
                             break;
-                        case "Member":
+                        case "Status":
                             query = from p in query
                                     orderby p.MemberStatus.Code descending,
                                     p.LastName descending,

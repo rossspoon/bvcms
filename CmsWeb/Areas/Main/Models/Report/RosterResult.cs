@@ -39,7 +39,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             w.PageEvent = pageEvents;
             doc.Open();
 
-            var ctl = new RollsheetModel();
             dc = w.DirectContent;
 
             if (qid.HasValue)
@@ -48,7 +47,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 StartPageSet(o);
                 var q = DbUtil.Db.PeopleQuery(qid.Value);
                 var q2 = from p in q
-                         join m in ctl.FetchOrgMembers(o.OrgId, null) on p.PeopleId equals m.PeopleId into j
+                         join m in RollsheetModel.FetchOrgMembers(o.OrgId, null) on p.PeopleId equals m.PeopleId into j
                          from m in j.DefaultIfEmpty()
                          orderby p.Name2
                          select new
@@ -67,7 +66,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             else
                 foreach (var o in list(org, div, schedule))
                 {
-                    var q = from m in ctl.FetchOrgMembers(o.OrgId, null)
+                    var q = from m in RollsheetModel.FetchOrgMembers(o.OrgId, null)
                             orderby m.Name2
                             select new
                             {
@@ -150,7 +149,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-                    where o.ScheduleId == schedule || schedule == 0 || schedule == null
+                    where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
                     select new OrgInfo

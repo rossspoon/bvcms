@@ -73,7 +73,8 @@ namespace CmsWeb.Models
                         select o;
                 else
                     q = from o in q
-                        let Hour1 = DbUtil.Db.GetTodaysMeetingHour(o.OrganizationId, thisday)
+                        let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                        let Hour1 = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday).First().Hour
                         let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
                         where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
                         where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
@@ -82,7 +83,7 @@ namespace CmsWeb.Models
                         where o.CampusId == campusid || campusid == 0
                         where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                         where Hour1 != null
-                        orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
+                        orderby sc.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
                         select o;
 
                 var count = q.Count();
@@ -98,6 +99,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("prev", "");
 
                 var q2 = from o in q
+                         let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                          select new
                          {
                              o.LeaderName,
@@ -105,7 +107,7 @@ namespace CmsWeb.Models
                              o.Location,
                              o.BirthDayStart,
                              o.BirthDayEnd,
-                             o.MeetingTime,
+                             sc.MeetingTime,
                              o.OrganizationName,
                              o.NumCheckInLabels,
                              o.Limit,

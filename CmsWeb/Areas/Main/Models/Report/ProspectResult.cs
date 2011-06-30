@@ -318,6 +318,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                          Memberships = from om in p.OrganizationMembers
                                        where dt > om.EnrollmentDate
                                        let o = om.Organization
+                                       let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                                        let l = Db.People.SingleOrDefault(l => l.PeopleId == o.LeaderId)
                                        orderby om.Organization.OrganizationName
                                        select new OrganizationView
@@ -326,7 +327,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                            Name = o.OrganizationName,
                                            Location = o.Location,
                                            LeaderName = l.Name,
-                                           MeetingTime = o.MeetingTime,
+                                           MeetingTime = sc.MeetingTime,
                                            MemberType = om.MemberType.Description,
                                            EnrollDate = om.EnrollmentDate,
                                            DivisionName = o.Division.Name

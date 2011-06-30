@@ -82,7 +82,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             box.Border = PdfPCell.NO_BORDER;
             box.CellEvent = new CellEvent();
 
-            var ctl = new RollsheetModel();
             foreach (var o in list1)
             {
                 var mct = StartPageSet(o);
@@ -135,7 +134,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
                 if (bygroup == false && groups[0] == 0 && meeting == null)
                 {
-                    foreach (var m in ctl.FetchVisitors(o.OrgId, dt.Value))
+                    foreach (var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
                     var wks = 3; // default lookback
                     var org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == o.OrgId);
@@ -265,7 +264,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-                    where o.ScheduleId == schedule || schedule == 0 || schedule == null
+                    where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
@@ -289,7 +288,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-                    where o.ScheduleId == schedule || schedule == 0 || schedule == null
+                    where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)

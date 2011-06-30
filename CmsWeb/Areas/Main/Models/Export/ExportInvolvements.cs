@@ -231,7 +231,8 @@ namespace CmsWeb.Models
             var q = Db.PeopleQuery(queryid);
             var q2 = from p in q
                      let bfm = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util2.CurrentOrgId && om.PeopleId == p.PeopleId)
-                     let tm = bfm.Organization.SchedTime.Value
+                     let sc = bfm.Organization.OrgSchedules.FirstOrDefault() // SCHED
+                     let tm = sc.SchedTime.Value
                      select new
                      {
                          PeopleId = p.PeopleId,

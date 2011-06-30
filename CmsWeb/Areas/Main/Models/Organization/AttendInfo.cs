@@ -29,5 +29,6 @@ namespace CmsWeb.Models
         public bool AttendFlag { get; set; }
         public bool RegisteredFlag { get; set; }
         public int RollSheetSectionId { get; set; }
+        public int OtherAttends { get; set; }
     }
 }

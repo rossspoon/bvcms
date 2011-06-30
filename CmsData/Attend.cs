@@ -51,49 +51,62 @@ namespace CmsData
 
             var o = Db.AttendMeetingInfo0(MeetingId, PeopleId);
 
-            // do not record inactive members
-            //if (o.info.MemberTypeId.HasValue // member of this class
-            //    && o.info.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive)
-            //    return null;
-
             if (o.info.AttendedElsewhere > 0 && attended)
                 return "{0}({1}) already attended elsewhere".Fmt(o.info.Name, PeopleId);
 
+            Attend attend = null;
             if (o.Attendance == null)
-            {
-                o.Attendance = new Attend
+                attend = new Attend
                 {
                     OrganizationId = o.Meeting.OrganizationId,
                     PeopleId = PeopleId,
                     MeetingDate = o.Meeting.MeetingDate.Value,
+                    AttendanceFlag = attended,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
+                    AttendanceTypeId = 0,
+                    BFCAttendance = null,
+                    OtherAttends = 0,
+                    MemberTypeId = 0,
+                    OtherOrgId = 0,
                 };
-                o.Meeting.Attends.Add(o.Attendance);
-            }
-            o.Attendance.AttendanceFlag = attended;
+            else
+                attend = new Attend
+                {
+                    OrganizationId = o.Attendance.OrganizationId,
+                    PeopleId = o.Attendance.PeopleId,
+                    MeetingDate = o.Attendance.MeetingDate,
+                    AttendanceFlag = attended,
+                    CreatedDate = o.Attendance.CreatedDate,
+                    CreatedBy = o.Attendance.CreatedBy,
+                    AttendanceTypeId = o.Attendance.AttendanceTypeId,
+                    BFCAttendance = o.Attendance.BFCAttendance,
+                    OtherAttends = o.Attendance.OtherAttends,
+                    MemberTypeId = o.Attendance.MemberTypeId,
+                    OtherOrgId = o.Attendance.OtherOrgId,
+                };
 
             if (o.Meeting.GroupMeetingFlag && o.info.MemberTypeId.HasValue)
             {
-                o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
+                attend.MemberTypeId = o.info.MemberTypeId.Value;
                 if (o.VIPAttendance.Count > 0 && o.VIPAttendance.Any(a => a.AttendanceFlag == true))
-                    o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                    attend.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                 else
-                    o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
+                    attend.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
                 o.path = 1;
             }
             else if (o.info.IsOffSite == true && attended == false)
             {
-                o.Attendance.OtherAttends = 1;
-                o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Offsite;
-                o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
+                attend.OtherAttends = 1;
+                attend.AttendanceTypeId = (int)Attend.AttendTypeCode.Offsite;
+                attend.MemberTypeId = o.info.MemberTypeId.Value;
                 o.path = 2;
             }
             else if (o.info.MemberTypeId.HasValue) 
             {
-                o.Attendance.MemberTypeId = o.info.MemberTypeId.Value;
-                o.Attendance.AttendanceTypeId = GetAttendType(Db, o.Attendance.AttendanceFlag, o.Attendance.MemberTypeId, null);
-                o.Attendance.BFCAttendance = o.Attendance.OrganizationId == o.info.BFClassId;
+                attend.MemberTypeId = o.info.MemberTypeId.Value;
+                attend.AttendanceTypeId = GetAttendType(Db, attend.AttendanceFlag, attend.MemberTypeId, null);
+                attend.BFCAttendance = attend.OrganizationId == o.info.BFClassId;
 
                 if (o.BFCMember != null && (attended || o.BFCAttendance != null)) // related BFC
                 {
@@ -104,9 +117,9 @@ namespace CmsData
                      */
                     if (o.BFCAttendance == null)
                         o.BFCAttendance = CreateOtherAttend(Db, o.Meeting, o.BFCMember);
-
                     o.BFCAttendance.OtherAttends = attended ? 1 : 0;
-                    o.Attendance.OtherAttends = o.BFCAttendance.AttendanceFlag ? 1 : 0;
+
+                    attend.OtherAttends = o.BFCAttendance.AttendanceFlag ? 1 : 0;
 
                     if (o.info.MemberTypeId == (int)OrganizationMember.MemberTypeCode.VIP)
                     {
@@ -125,6 +138,7 @@ namespace CmsData
                         o.path = 4;
                     }
                     OtherMeetings.Add(o.BFCAttendance);
+                    DbUtil.Db.SubmitChanges(); // commit other attendance
                 }
                 else if (o.VIPAttendance.Count > 0) // need to indicate BFCAttendance or not
                 {
@@ -135,11 +149,12 @@ namespace CmsData
                     {
                         a.OtherAttends = attended ? 1 : 0;
                         if (a.AttendanceFlag == true)
-                            o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                            attend.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
                         OtherMeetings.Add(a);
                     }
-                    o.Attendance.OtherAttends = o.VIPAttendance.Any(a => a.AttendanceFlag == true) ? 1 : 0;
+                    attend.OtherAttends = o.VIPAttendance.Any(a => a.AttendanceFlag == true) ? 1 : 0;
                     o.path = 6;
+                    DbUtil.Db.SubmitChanges(); // commit other attendance
                 }
             }
             else // not a member of this class 
@@ -147,11 +162,11 @@ namespace CmsData
                 if (o.BFCMember == null)
                 // not a member of another class (visitor)
                 {
-                    o.Attendance.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
+                    attend.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
                     if (o.info.IsRecentVisitor.Value)
-                        o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.RecentVisitor;
+                        attend.AttendanceTypeId = (int)Attend.AttendTypeCode.RecentVisitor;
                     else
-                        o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.NewVisitor;
+                        attend.AttendanceTypeId = (int)Attend.AttendTypeCode.NewVisitor;
                     o.path = 7;
                 }
                 else
@@ -159,12 +174,11 @@ namespace CmsData
                 {
                     if (attended)
                     {
-                        o.Attendance.MemberTypeId = (int)Attend.MemberTypeCode.VisitingMember;
-                        o.Attendance.AttendanceTypeId = (int)Attend.AttendTypeCode.VisitingMember;
+                        attend.MemberTypeId = (int)Attend.MemberTypeCode.VisitingMember;
+                        attend.AttendanceTypeId = (int)Attend.AttendTypeCode.VisitingMember;
                     }
                     if (o.BFCAttendance == null)
                         o.BFCAttendance = CreateOtherAttend(Db, o.Meeting, o.BFCMember);
-
                     o.BFCAttendance.OtherAttends = attended ? 1 : 0;
 
                     if (o.BFCAttendance.OtherAttends > 0)
@@ -174,7 +188,19 @@ namespace CmsData
                     o.path = 8;
 
                     OtherMeetings.Add(o.BFCAttendance);
+                    DbUtil.Db.SubmitChanges(); // commit other attendance
                 }
+            }
+            if (o.Attendance == null) // add the new one
+                o.Meeting.Attends.Add(attend);
+            else // update existing
+            {
+                o.Attendance.AttendanceTypeId = attend.AttendanceTypeId;
+                o.Attendance.BFCAttendance = attend.BFCAttendance;
+                o.Attendance.OtherAttends = attend.OtherAttends;
+                o.Attendance.MemberTypeId = attend.MemberTypeId;
+                o.Attendance.OtherOrgId = attend.OtherOrgId;
+                o.Attendance.AttendanceFlag = attend.AttendanceFlag;
             }
             try
             {
@@ -193,7 +219,7 @@ namespace CmsData
                 Db.UpdateAttendStr(m.OrganizationId, PeopleId);
                 Db.UpdateMeetingCounters(m.MeetingId);
             }
-            return null; // no error
+            return "ok"; // no error
         }
         private static Attend CreateOtherAttend(CMSDataContext Db, Meeting meeting, OrganizationMember member)
         {
@@ -215,6 +241,7 @@ namespace CmsData
                     Location = member.Organization.Location,
                 };
                 Db.Meetings.InsertOnSubmit(othMeeting);
+                Db.SubmitChanges();
             }
             var q2 = from a in Db.Attends
                      where a.PeopleId == member.PeopleId

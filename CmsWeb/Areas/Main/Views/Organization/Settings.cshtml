@@ -1,6 +1,7 @@
 ﻿@using CmsWeb
 @using UtilityExtensions
 @using CmsData
+@using CmsWeb.Models.OrganizationPage
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
 @if (User.IsInRole("Edit"))
 { 
@@ -9,8 +10,22 @@
 <table class="Design2">
     <tr>
         <th>Schedule:</th>
-        <td>@Html.CodeDesc("org.SchedDay", Model.DaysOfWeek()) 
-        @Model.org.SchedTime.ToString2("h:mm tt")</td>
+        <td>
+            <div id="schedulehead">
+                <span style="margin-left:22px;width: 55px" >Day</span> 
+                <span style="width: 68px">Time</span> 
+                <span>Attendance Credit</span>
+            </div>
+            <ul id="schedules">
+            @foreach (var ci in Model.schedules.OrderBy(cc => cc.Id))
+            {
+<li><span style="margin-left:22px;width: 55px" >@ci.DisplayDay</span> 
+    <span style="width: 68px">@ci.Time</span> 
+    <span>@ci.DisplayAttendCredit</span>
+</li>
+            }
+            </ul>
+        </td>
     </tr>
     <tr>
         <th>Allow Attendance Overlap:</th>

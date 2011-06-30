@@ -159,10 +159,13 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="Generated\AttendCredit.cs" />
     <Compile Include="Generated\EmailResponse.cs" />
     <Compile Include="Generated\EmailToText.cs" />
+    <Compile Include="Generated\Functions\AttendanceCredit.cs" />
     <Compile Include="Generated\Functions\GetTodaysMeetingHour.cs" />
     <Compile Include="Generated\Functions\GetTodaysMeetingHours2.cs" />
+    <Compile Include="Generated\OrgSchedule.cs" />
     <Compile Include="Generated\PeopleQueryBit.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />

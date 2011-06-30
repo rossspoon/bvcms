@@ -63,9 +63,10 @@ namespace CmsWeb.Models
                 IEnumerable<OrgHourInfo> q;
                 if (kioskmode == true)
                 {
-                    q = from o in DbUtil.Db.Organizations
+                    q = from o in DbUtil.Db.Organizations //todo: change this to work with multiple schedules
                         let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                        let tm = o.SchedTime ?? DateTime.Today
+                        let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                        let tm = sc != null ? (sc.SchedTime ?? DateTime.Today) : DateTime.Today
                         //let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, (int)DateTime.Now.DayOfWeek)
                         where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
                         where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
@@ -84,6 +85,7 @@ namespace CmsWeb.Models
                 else
                 {
                     q = from o in DbUtil.Db.Organizations
+                        let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                         let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday)
                         let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
                         where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
@@ -92,7 +94,7 @@ namespace CmsWeb.Models
                         where (o.ClassFilled ?? false) == false
                         where o.CampusId == campusid || campusid == 0
                         where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
-                        orderby o.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
+                        orderby sc.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
                         from meeting in meetingHours
                         select new OrgHourInfo { o = o, Hour = meeting.Hour.Value };
                 }

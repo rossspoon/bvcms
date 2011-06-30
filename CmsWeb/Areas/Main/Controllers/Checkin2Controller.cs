@@ -193,7 +193,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
                     SetRecReg(p).ActiveInAnotherChurch = m.activeother.ToBool();
             if (m.AskChurchName)
-                p.OtherNewChurch = m.churchname;
+                p.OtherPreviousChurch = m.churchname;
             DbUtil.Db.SubmitChanges();
         }
         private RecReg GetRecReg(Person p)

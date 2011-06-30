@@ -58,7 +58,7 @@ namespace Disciples
             if (!Page.User.Identity.IsAuthenticated)
             {
                 var registerlink = LoginView1.FindControl("RegisterLink") as HyperLink;
-                registerlink.NavigateUrl = Util.CmsHost + "GODisciples/Individual";
+                registerlink.NavigateUrl = DbUtil.Db.CmsHost + "GODisciples/Individual";
             }
 
             m = NewTopMenu(MainMenu, "Bible Tools", "#");

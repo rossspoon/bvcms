@@ -27,8 +27,12 @@
                 if ((e.keyCode || e.which) == 13) {
                     e.preventDefault();
                     var s = $('#SearchText').val();
-                    if (s != "")
-                        window.location = '/QuickSearch?name=' + escape(s);
+                    if (s != "") {
+                        s = s.replace(/^\s+/g, "");
+                        s = s.replace(/\s+$/g, " ");
+                        var u = '/QuickSearch?name=' + escape(s);
+                        window.location = u;
+                    }
                 }
                 return true;
             });
@@ -83,7 +87,7 @@
    { %>
                         <strong>Active Tag:</strong> <a id="activetag" href="/Tags">
                             <%=Util2.CurrentTagName%></a><br />
-                        <input id="SearchText" type="text" />
+                        <input id="SearchText" type="text" title='Partial names: "last" or "first last" or "first "' />
 <% } %>
                     </div>
                 </td>

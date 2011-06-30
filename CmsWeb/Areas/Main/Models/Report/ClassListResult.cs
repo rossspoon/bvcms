@@ -48,13 +48,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             dc = w.DirectContent;
 
             var haddata = false;
-            var ctl = new RollsheetModel();
             foreach (var o in list1)
             {
                 var t = StartPageSet(o);
 
                 var color = Color.BLACK;
-                foreach (var m in ctl.FetchOrgMembers(o.OrgId, null))
+                foreach (var m in RollsheetModel.FetchOrgMembers(o.OrgId, null))
                 {
                     if (color == Color.WHITE)
                         color = new GrayColor(240);
@@ -158,7 +157,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             var q = from o in DbUtil.Db.Organizations
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
-                    where o.ScheduleId == schedule || schedule == 0 || schedule == null
+                    where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)

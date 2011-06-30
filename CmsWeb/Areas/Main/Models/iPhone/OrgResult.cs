@@ -19,17 +19,19 @@ namespace CmsWeb.Models.iPhone
         private IEnumerable<OrgInfo> OrgList()
         {
             var q = from o in DbUtil.Db.Organizations
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                    where sc != null
                     where o.OrganizationMembers.Any(om => om.PeopleId == pid
                         && (om.Pending ?? false) == false
                         && (om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive))
-                    where o.SchedDay != null
-                    where o.SchedTime != null
+                    where sc.SchedDay != null
+                    where sc.SchedTime != null
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,
                         OrgName = o.OrganizationName,
-                        MeetingTime = o.SchedTime.Value,
-                        MeetingDay = o.SchedDay.Value
+                        MeetingTime = sc.SchedTime.Value,
+                        MeetingDay = sc.SchedDay.Value
                     };
             return q;
         }

@@ -131,8 +131,9 @@ namespace CmsWeb.Models
             var todiv = Promotion.ToDivId;
 
             var q = from om in DbUtil.Db.OrganizationMembers
+                    let sc = om.Organization.OrgSchedules.FirstOrDefault() // SCHED
                     where om.Organization.DivOrgs.Any(d => d.DivId == fromdiv)
-                    where om.Organization.ScheduleId == ScheduleId || ScheduleId == 0
+                    where sc.ScheduleId == ScheduleId || ScheduleId == 0
                     where (om.Pending ?? false) == false
                     where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
                     let pc = DbUtil.Db.OrganizationMembers.FirstOrDefault(op =>
@@ -142,6 +143,7 @@ namespace CmsWeb.Models
                     let pt = pc.Organization.OrganizationMembers.FirstOrDefault(om2 =>
                         om2.Pending == true
                         && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
+                    let psc = pc.Organization.OrgSchedules.FirstOrDefault() // SCHED
                     where !FilterUnassigned || pc == null
                     select new PromoteInfo
                     {
@@ -157,13 +159,13 @@ namespace CmsWeb.Models
                         CurrOrgName = om.Organization.OrganizationName,
                         CurrLeader = om.Organization.LeaderName,
                         CurrLoc = om.Organization.Location,
-                        CurrSchedule = om.Organization.MeetingTime.ToString2("H:mm t"),
+                        CurrSchedule = sc.MeetingTime.ToString2("H:mm t"),
                         Gender = om.Person.GenderId == 1 ? "M" : "F",
                         PendingClassId = pc == null ? (int?)null : pc.OrganizationId,
                         PendingOrgName = pc == null ? "" : pc.Organization.OrganizationName,
                         PendingLeader = pc == null ? "" : (pt != null ? pt.Person.Name : pc.Organization.LeaderName),
                         PendingLoc = pc == null ? "" : pc.Organization.Location,
-                        PendingSchedule = pc.Organization.MeetingTime.ToString2("H:mm t"),
+                        PendingSchedule = psc.MeetingTime.ToString2("H:mm t"),
                         Hash = om.Person.HashNum.Value,
                     };
             if (Dir == "asc")
@@ -238,10 +240,11 @@ namespace CmsWeb.Models
             {
                 var a = i.Split(',');
                 var q = from om in DbUtil.Db.OrganizationMembers
+                        let sc = om.Organization.OrgSchedules.FirstOrDefault() // SCHED
                         where om.Pending == true
                         where om.PeopleId == a[0].ToInt()
                         where om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
-                        where om.Organization.ScheduleId == ScheduleId || ScheduleId == 0
+                        where sc.ScheduleId == ScheduleId || ScheduleId == 0
                         select om;
                 foreach (var pc in q)
                 {
@@ -270,7 +273,8 @@ namespace CmsWeb.Models
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
                        && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
-                    let tm = pc.Organization.SchedTime.Value
+                    let sc = pc.Organization.OrgSchedules.FirstOrDefault() // SCHED
+                    let tm = sc.SchedTime.Value
                     let pt = pc.Organization.OrganizationMembers.FirstOrDefault(om2 => 
                         om2.Pending == true 
                         && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
@@ -313,13 +317,14 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> Schedules()
         {
             var q = from o in DbUtil.Db.Organizations
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     where o.DivOrgs.Any(dd => dd.DivId == Promotion.FromDivId)
-                    group o by new { o.ScheduleId, o.MeetingTime } into g
+                    group o by new { sc.ScheduleId, sc.MeetingTime } into g
                     orderby g.Key.ScheduleId
                     select new SelectListItem
                     {
                         Value = g.Key.ScheduleId.ToString(),
-                        Text = "{0:dddd h:mm tt}".Fmt(g.Key.MeetingTime)
+                        Text = DbUtil.Db.GetScheduleDesc(g.Key.MeetingTime)
                     };
 
             var list = q.ToList();
@@ -333,8 +338,9 @@ namespace CmsWeb.Models
         {
             var todiv = Promotion.ToDivId;
             var q = from o in DbUtil.Db.Organizations
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     where o.DivOrgs.Any(dd => dd.DivId == todiv)
-                    where o.ScheduleId == ScheduleId || ScheduleId == 0
+                    where sc.ScheduleId == ScheduleId || ScheduleId == 0
                     where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
                     orderby o.OrganizationName
                     let pt = o.OrganizationMembers.FirstOrDefault(om2 =>
@@ -343,7 +349,7 @@ namespace CmsWeb.Models
                     select new
                     {
                         Text = CmsData.Organization.FormatOrgName(o.OrganizationName, pt != null ? pt.Person.Name : o.LeaderName, o.Location),
-                        Time = o.MeetingTime,
+                        Time = sc.MeetingTime,
                         Value = o.OrganizationId.ToString(),
                     };
             var list = q.ToList();

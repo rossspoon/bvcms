@@ -1,5 +1,6 @@
 ﻿@using UtilityExtensions
 @using CmsWeb
+@using CmsData
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
 @{ CmsData.Organization o = Model.org; }
 <table cellspacing="5" width="100%">
@@ -9,11 +10,11 @@
     </tr>
     <tr>
         <th align="right">Schedule:</th>
-        <td>@o.MeetingTime.ToString2("dddd h:mm tt")</td>
+        <td>@Model.Schedule</td>
     </tr>
     <tr>
         <th align="right">Main Division:</th>
-        <td>@o.DivisionName</td>
+        <td>@Html.Raw(o.DivisionName)</td>
     </tr>
     <tr>
         <th align="right">Other Divisions:</th>

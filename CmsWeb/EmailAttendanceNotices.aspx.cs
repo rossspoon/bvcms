@@ -115,7 +115,7 @@ namespace CmsWeb
                     foreach (var mt in q2)
                     {
                         string orgname = CmsData.Organization.FormatOrgName(mt.OrganizationName, mt.LeaderName, mt.Location);
-                        sb.AppendFormat("<a href='{0}/Meeting.aspx?id={1}'>{2} - {3}</a><br/>\n",
+                        sb.AppendFormat("<a href='{0}/Meeting/Index/{1}'>{2} - {3}</a><br/>\n",
                             DbUtil.Db.CmsHost, mt.MeetingId, orgname, mt.MeetingDate);
                         sb2.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2:M/d/yy h:mmtt}</td></tr>\n",
                             person.Name, orgname, mt.MeetingDate);

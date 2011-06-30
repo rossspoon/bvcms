@@ -19,7 +19,7 @@ namespace CmsWeb.Areas.Main.Models.Report
     {
         public class PersonInfo
         {
-             public int PeopleId { get; set; }
+            public int PeopleId { get; set; }
             public string Name { get; set; }
             public string Name2 { get; set; }
             public string BirthDate { get; set; }
@@ -53,7 +53,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string NameParent1 { get; set; }
             public string NameParent2 { get; set; }
         }
-        public IEnumerable<PersonMemberInfo> FetchOrgMembers (int orgid, int[] groups)
+        public static IEnumerable<PersonMemberInfo> FetchOrgMembers (int orgid, int[] groups)
         {
             if (groups == null)
                 groups = new int[] { 0 };
@@ -107,7 +107,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             (int)Attend.AttendTypeCode.NewVisitor 
         };
 
-        public IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate)
+        public static IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate)
         {
             var wks = 3; // default lookback
             var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
@@ -119,8 +119,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where p.Attends.Any(a => a.AttendanceFlag == true
                         && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
                         && a.OrganizationId == orgid
-                        && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
-                        && a.MeetingDate >= a.Organization.FirstMeetingDate)
+                        && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
+                        && VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
                     where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
                     orderby p.Name2, p.Name                           
                     orderby p.LastName, p.FamilyId, p.Name2
@@ -154,6 +154,70 @@ namespace CmsWeb.Areas.Main.Models.Report
                             && x.PeopleId != p.Family.HeadOfHouseholdId).FirstOrDefault().Name,
                     };
             return q;
+        }
+        public static IEnumerable<AttendInfo> RollList(int? MeetingId, int OrgId, DateTime MeetingDate)
+        {
+            var q = from a in DbUtil.Db.Attends
+                    where a.MeetingId == MeetingId
+                    where a.EffAttendFlag == null || a.EffAttendFlag == true
+                    select a;
+
+            var q1 = from p in FetchOrgMembers(OrgId, null)
+                     join pa in q on p.PeopleId equals pa.PeopleId into j
+                     from pa in j.DefaultIfEmpty()
+                     select new AttendInfo
+                     {
+                         PeopleId = p.PeopleId,
+                         Name = p.Name2,
+                         Attended = pa != null ? pa.AttendanceFlag : false,
+                         Member = true,
+                         CurrMemberType = p.MemberType,
+                         MemberType = pa != null ? (pa.MemberType != null? pa.MemberType.Description : "") : "",
+                         AttendType = pa != null ? (pa.AttendType != null? pa.AttendType.Description : "") : "",
+                         Age = p.Age,
+                         OtherAttend = pa != null ? (int?)pa.OtherAttends : null
+                     };
+            var q2 = from p in FetchVisitors(OrgId, MeetingDate)
+                     join pa in q on p.PeopleId equals pa.PeopleId into j
+                     from pa in j.DefaultIfEmpty()
+                     select new AttendInfo
+                     {
+                         PeopleId = p.PeopleId,
+                         Name = p.Name2,
+                         Attended = pa != null ? pa.AttendanceFlag : false,
+                         Member = false,
+                         CurrMemberType = "",
+                         MemberType = pa != null ? (pa.MemberType != null? pa.MemberType.Description : "") : "",
+                         AttendType = pa != null ? (pa.AttendType != null? pa.AttendType.Description : "") : "",
+                         Age = p.Age,
+                         OtherAttend = pa != null ? (int?)pa.OtherAttends : null
+                     };
+            var q3 = from p in q1.Union(q2)
+                     select new AttendInfo
+                     {
+                         PeopleId = p.PeopleId,
+                         Name = p.Name,
+                         Attended = p.Attended,
+                         Member = p.Member,
+                         CurrMemberType = p.CurrMemberType,
+                         MemberType = p.MemberType,
+                         AttendType = p.AttendType,
+                         OtherAttend = p.OtherAttend
+                     };
+            return q3;
+        }
+        public class AttendInfo
+        {
+            public int PeopleId { get; set; }
+            public string Name { get; set; }
+            public string Age { get; set; }
+            public bool Attended { get; set; }
+            public bool CanAttend { get; set; }
+            public bool Member { get; set; }
+            public string CurrMemberType { get; set; }
+            public string MemberType { get; set; }
+            public string AttendType { get; set; }
+            public int? OtherAttend { get; set; }
         }
     }
 }

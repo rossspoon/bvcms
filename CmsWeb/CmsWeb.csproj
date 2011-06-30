@@ -200,6 +200,7 @@
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
+    <Compile Include="Areas\Main\Controllers\MeetingController.cs" />
     <Compile Include="Areas\Main\Controllers\FamilyController.cs" />
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
@@ -228,6 +229,8 @@
     <Compile Include="Areas\Main\Models\Export\QueryBitsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\MucketyMapResult.cs" />
     <Compile Include="Areas\Dialog\Models\SearchUsersModel.cs" />
+    <Compile Include="Areas\Main\Models\Organization\ScheduleInfo.cs" />
+    <Compile Include="Areas\Main\Models\Other\MeetingModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
@@ -280,8 +283,6 @@
     <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
     <Compile Include="Areas\Manage\Controllers\EmailsController.cs" />
     <Compile Include="Areas\Manage\Controllers\TransactionsController.cs" />
-    <Compile Include="Areas\m\Controllers\MeetingController.cs" />
-    <Compile Include="Areas\m\mAreaRegistration.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
@@ -939,10 +940,14 @@
     <Content Include="Content\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
     <Content Include="Content\jquery-ui-1.8.13.custom.css" />
+    <Content Include="Content\jquery-ui-timepicker.css" />
     <Content Include="Content\jquery.sb.css" />
     <Content Include="Content\js\jquery-ui-1.8.13.custom.js" />
     <Content Include="Content\js\jquery.sb.js" />
     <Content Include="Content\js\jquery.tie.js" />
+    <Content Include="Content\js\jquery.ui.timepicker.js" />
+    <Content Include="images\arrowdnup.png" />
+    <Content Include="images\draggable-icon.png" />
     <Content Include="images\dropdown.gif" />
     <Content Include="images\linkselect_bkgrd.png" />
     <Content Include="Content\jquery.linkselect.css" />
@@ -970,8 +975,11 @@
     <Content Include="images\discovercard.jpg" />
     <Content Include="images\mastercard.jpg" />
     <Content Include="images\notreq.gif" />
+    <Content Include="images\plus1.png" />
+    <Content Include="images\plus2.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\meeting.js" />
     <Content Include="Scripts\SearchUsers.js" />
     <Content Include="Scripts\Tags.js" />
     <Content Include="Scripts\QuickSearch.js" />
@@ -1386,8 +1394,6 @@
     </Content>
     <Content Include="Areas\Main\Views\Reports\ShirtSizes.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\AskDonation.cshtml" />
-    <Content Include="Areas\m\Views\Web.config" />
-    <Content Include="Areas\m\Views\Meeting\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\FindTagPeople0.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\FindTagPeople.cshtml" />
     <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml" />
@@ -1403,6 +1409,9 @@
     <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.cshtml" />
     <Content Include="Areas\Main\Views\Family\Index.cshtml" />
     <Content Include="Areas\Main\Views\Person\FamilyGrid.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\ScheduleEditor.cshtml" />
+    <Content Include="Areas\Main\Views\Meeting\Index.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\ScheduleList.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
@@ -1440,7 +1449,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Shared\ExportToolBar.cshtml" />
-    <Content Include="Areas\m\Views\Shared\Mobile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -1544,8 +1552,6 @@
     <Content Include="Content\dropdown.gif" />
     <Content Include="Content\dropdown_active.gif" />
     <Content Include="Content\Easy.gif" />
-    <Content Include="Content\edgechurch.png" />
-    <Content Include="Content\grace.png" />
     <Content Include="Content\header-gradient.png" />
     <Content Include="Content\images\dadada_40x100_textures_02_glass_75.png" />
     <Content Include="Content\images\e6e6e6_40x100_textures_02_glass_75.png" />
@@ -1852,7 +1858,6 @@
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\Manage\Views\Reports\" />
-    <Folder Include="Areas\m\Models\" />
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />

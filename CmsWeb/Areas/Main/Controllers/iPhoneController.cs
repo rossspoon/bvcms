@@ -146,7 +146,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     "meeting created with iphone on " + Util.Host, 
                     "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
                         .Fmt(meeting.Organization.OrganizationName, 
-                        Util.ResolveServerUrl("/Meeting.aspx?id=" + meeting.MeetingId), u.Name));
+                        Util.ResolveServerUrl("/Meeting/Index/" + meeting.MeetingId), u.Name));
             }
             return new RollListResult(meeting);
         }
@@ -359,7 +359,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     "meeting created with iphone on {0}".Fmt(Util.Host), 
                     "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
                         .Fmt(meeting.Organization.OrganizationName, 
-                        Util.ResolveServerUrl("/Meeting.aspx?id={0}".Fmt(meeting.MeetingId))));
+                        Util.ResolveServerUrl("/Meeting/Index/" + meeting.MeetingId)));
             }
             Attend.RecordAttendance(PeopleId, meeting.MeetingId, Present);
             DbUtil.Db.UpdateMeetingCounters(id);

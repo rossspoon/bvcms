@@ -55,8 +55,6 @@ namespace CmsData
 		
 		private DateTime? _ModifiedDate;
 		
-		private int? _ScheduleId;
-		
 		private int? _EntryPointId;
 		
 		private int? _ParentOrgId;
@@ -84,12 +82,6 @@ namespace CmsData
 		private bool? _AllowNonCampusCheckIn;
 		
 		private int? _NumWorkerCheckInLabels;
-		
-		private DateTime? _SchedTime;
-		
-		private int? _SchedDay;
-		
-		private DateTime? _MeetingTime;
 		
 		private bool? _ShowOnlyRegisteredAtCheckIn;
 		
@@ -268,6 +260,8 @@ namespace CmsData
 		
    		private EntitySet< MemberTag> _MemberTags;
 		
+   		private EntitySet< OrgSchedule> _OrgSchedules;
+		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
     	
@@ -353,9 +347,6 @@ namespace CmsData
 		partial void OnModifiedDateChanging(DateTime? value);
 		partial void OnModifiedDateChanged();
 		
-		partial void OnScheduleIdChanging(int? value);
-		partial void OnScheduleIdChanged();
-		
 		partial void OnEntryPointIdChanging(int? value);
 		partial void OnEntryPointIdChanged();
 		
@@ -397,15 +388,6 @@ namespace CmsData
 		
 		partial void OnNumWorkerCheckInLabelsChanging(int? value);
 		partial void OnNumWorkerCheckInLabelsChanged();
-		
-		partial void OnSchedTimeChanging(DateTime? value);
-		partial void OnSchedTimeChanged();
-		
-		partial void OnSchedDayChanging(int? value);
-		partial void OnSchedDayChanged();
-		
-		partial void OnMeetingTimeChanging(DateTime? value);
-		partial void OnMeetingTimeChanged();
 		
 		partial void OnShowOnlyRegisteredAtCheckInChanging(bool? value);
 		partial void OnShowOnlyRegisteredAtCheckInChanged();
@@ -663,6 +645,8 @@ namespace CmsData
 			this._Meetings = new EntitySet< Meeting>(new Action< Meeting>(this.attach_Meetings), new Action< Meeting>(this.detach_Meetings)); 
 			
 			this._MemberTags = new EntitySet< MemberTag>(new Action< MemberTag>(this.attach_MemberTags), new Action< MemberTag>(this.detach_MemberTags)); 
+			
+			this._OrgSchedules = new EntitySet< OrgSchedule>(new Action< OrgSchedule>(this.attach_OrgSchedules), new Action< OrgSchedule>(this.detach_OrgSchedules)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
@@ -1118,28 +1102,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ScheduleId", UpdateCheck=UpdateCheck.Never, Storage="_ScheduleId", DbType="int")]
-		public int? ScheduleId
-		{
-			get { return this._ScheduleId; }
-
-			set
-			{
-				if (this._ScheduleId != value)
-				{
-				
-                    this.OnScheduleIdChanging(value);
-					this.SendPropertyChanging();
-					this._ScheduleId = value;
-					this.SendPropertyChanged("ScheduleId");
-					this.OnScheduleIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="EntryPointId", UpdateCheck=UpdateCheck.Never, Storage="_EntryPointId", DbType="int")]
 		public int? EntryPointId
 		{
@@ -1450,72 +1412,6 @@ namespace CmsData
 					this._NumWorkerCheckInLabels = value;
 					this.SendPropertyChanged("NumWorkerCheckInLabels");
 					this.OnNumWorkerCheckInLabelsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="SchedTime", UpdateCheck=UpdateCheck.Never, Storage="_SchedTime", DbType="datetime")]
-		public DateTime? SchedTime
-		{
-			get { return this._SchedTime; }
-
-			set
-			{
-				if (this._SchedTime != value)
-				{
-				
-                    this.OnSchedTimeChanging(value);
-					this.SendPropertyChanging();
-					this._SchedTime = value;
-					this.SendPropertyChanged("SchedTime");
-					this.OnSchedTimeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="SchedDay", UpdateCheck=UpdateCheck.Never, Storage="_SchedDay", DbType="int")]
-		public int? SchedDay
-		{
-			get { return this._SchedDay; }
-
-			set
-			{
-				if (this._SchedDay != value)
-				{
-				
-                    this.OnSchedDayChanging(value);
-					this.SendPropertyChanging();
-					this._SchedDay = value;
-					this.SendPropertyChanged("SchedDay");
-					this.OnSchedDayChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="MeetingTime", UpdateCheck=UpdateCheck.Never, Storage="_MeetingTime", DbType="datetime")]
-		public DateTime? MeetingTime
-		{
-			get { return this._MeetingTime; }
-
-			set
-			{
-				if (this._MeetingTime != value)
-				{
-				
-                    this.OnMeetingTimeChanging(value);
-					this.SendPropertyChanging();
-					this._MeetingTime = value;
-					this.SendPropertyChanged("MeetingTime");
-					this.OnMeetingTimeChanged();
 				}
 
 			}
@@ -3340,6 +3236,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_OrgSchedule_Organizations", Storage="_OrgSchedules", OtherKey="OrganizationId")]
+   		public EntitySet< OrgSchedule> OrgSchedules
+   		{
+   		    get { return this._OrgSchedules; }
+
+			set	{ this._OrgSchedules.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="ORGANIZATION_MEMBERS_ORG_FK", Storage="_OrganizationMembers", OtherKey="OrganizationId")]
    		public EntitySet< OrganizationMember> OrganizationMembers
    		{
@@ -3886,6 +3792,19 @@ namespace CmsData
 		}
 
 		private void detach_MemberTags(MemberTag entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+
+		
+		private void attach_OrgSchedules(OrgSchedule entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+
+		private void detach_OrgSchedules(OrgSchedule entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

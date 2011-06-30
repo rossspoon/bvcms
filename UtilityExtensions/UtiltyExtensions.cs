@@ -23,6 +23,7 @@ using System.Security.Cryptography;
 using System.Web.Configuration;
 using System.Diagnostics;
 using System.Web.Caching;
+using System.Globalization;
 
 namespace UtilityExtensions
 {
@@ -1227,6 +1228,14 @@ namespace UtilityExtensions
                     result = s.Contains(c);
             }
             return result;
+        }
+        public static int? GetWeekNumber(this DateTime? dt)
+        {
+            if (!dt.HasValue)
+                return null;
+            var cc = CultureInfo.CurrentCulture;
+            int wk = cc.Calendar.GetWeekOfYear(dt.Value, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+            return wk;
         }
     }
     public class EventArg<T> : EventArgs

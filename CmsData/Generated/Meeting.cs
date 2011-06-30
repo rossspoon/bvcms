@@ -47,6 +47,8 @@ namespace CmsData
 		
 		private int? _NumOtherAttends;
 		
+		private int? _AttendCreditId;
+		
    		
    		private EntitySet< SoulMate> _ChildSoulMates;
 		
@@ -57,6 +59,8 @@ namespace CmsData
    		private EntitySet< SoulMate> _SoulMates;
 		
     	
+		private EntityRef< AttendCredit> _AttendCredit;
+		
 		private EntityRef< Organization> _Organization;
 		
 	#endregion
@@ -111,6 +115,9 @@ namespace CmsData
 		partial void OnNumOtherAttendsChanging(int? value);
 		partial void OnNumOtherAttendsChanged();
 		
+		partial void OnAttendCreditIdChanging(int? value);
+		partial void OnAttendCreditIdChanged();
+		
     #endregion
 		public Meeting()
 		{
@@ -123,6 +130,8 @@ namespace CmsData
 			
 			this._SoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_SoulMates), new Action< SoulMate>(this.detach_SoulMates)); 
 			
+			
+			this._AttendCredit = default(EntityRef< AttendCredit>); 
 			
 			this._Organization = default(EntityRef< Organization>); 
 			
@@ -465,6 +474,31 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="AttendCreditId", UpdateCheck=UpdateCheck.Never, Storage="_AttendCreditId", DbType="int")]
+		public int? AttendCreditId
+		{
+			get { return this._AttendCreditId; }
+
+			set
+			{
+				if (this._AttendCreditId != value)
+				{
+				
+					if (this._AttendCredit.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnAttendCreditIdChanging(value);
+					this.SendPropertyChanging();
+					this._AttendCreditId = value;
+					this.SendPropertyChanged("AttendCreditId");
+					this.OnAttendCreditIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -513,6 +547,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_Meetings_AttendCredit", Storage="_AttendCredit", ThisKey="AttendCreditId", IsForeignKey=true)]
+		public AttendCredit AttendCredit
+		{
+			get { return this._AttendCredit.Entity; }
+
+			set
+			{
+				AttendCredit previousValue = this._AttendCredit.Entity;
+				if (((previousValue != value) 
+							|| (this._AttendCredit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._AttendCredit.Entity = null;
+						previousValue.Meetings.Remove(this);
+					}
+
+					this._AttendCredit.Entity = value;
+					if (value != null)
+					{
+						value.Meetings.Add(this);
+						
+						this._AttendCreditId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._AttendCreditId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("AttendCredit");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_MEETINGS_TBL_ORGANIZATIONS_TBL", Storage="_Organization", ThisKey="OrganizationId", IsForeignKey=true)]
 		public Organization Organization
 		{

@@ -199,7 +199,7 @@ namespace CmsData
             YesNoQuestions = frorg.YesNoQuestions;
             Db.SubmitChanges();
         }
-        public Organization CloneOrg(CMSDataContext Db)
+        public Organization CloneOrg(CMSDataContext Db, int? DivisionId)
         {
             var neworg = new Organization
             {
@@ -209,7 +209,6 @@ namespace CmsData
                 DivisionId = DivisionId,
                 LeaderMemberTypeId = LeaderMemberTypeId,
                 OrganizationName = OrganizationName + " (copy)",
-                ScheduleId = ScheduleId,
                 EntryPointId = EntryPointId,
                 OrganizationStatusId = OrganizationStatusId,
                 AllowAttendOverlap = AllowAttendOverlap,
@@ -217,23 +216,34 @@ namespace CmsData
                 GradeAgeStart = GradeAgeStart,
                 GradeAgeEnd = GradeAgeEnd,
                 CampusId = CampusId,
-                SchedDay = SchedDay,
-                SchedTime = SchedTime,
                 IsBibleFellowshipOrg = IsBibleFellowshipOrg,
-                AttendTrackLevel = AttendTrackLevel,
                 RollSheetVisitorWks = RollSheetVisitorWks,
             };
             Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in DivOrgs)
                 neworg.DivOrgs.Add(new DivOrg { Organization = neworg, DivId = div.DivId });
+            foreach (var sc in OrgSchedules)
+                neworg.OrgSchedules.Add(new OrgSchedule
+                {
+                    OrganizationId = OrganizationId,
+                    AttendCreditId = sc.AttendCreditId,
+                    SchedDay = sc.SchedDay,
+                    SchedTime = sc.SchedTime
+                });
             Db.SubmitChanges();
             neworg.CopySettings(Db, this.OrganizationId);
             return neworg;
+        }
+        public Organization CloneOrg(CMSDataContext Db)
+        {
+            return CloneOrg(Db, DivisionId);
         }
         public static DateTime? GetDateFromScheduleId(int id)
         {
             int dw = id / 10000 - 1;
             id %= 10000;
+            if (dw == 10) // any day
+                dw = DateTime.Today.DayOfWeek.ToInt();
             if (dw == 0)
                 dw = 7;
             int hour = id / 100;

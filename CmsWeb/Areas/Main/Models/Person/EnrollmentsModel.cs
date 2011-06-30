@@ -46,6 +46,7 @@ namespace CmsWeb.Models.PersonPage
             q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
             var q2 = from om in q
                      let div = om.Organization.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division
+                     let sc = om.Organization.OrgSchedules.FirstOrDefault() // SCHED
                      select new OrgMemberInfo
                      {
                          OrgId = om.OrganizationId,
@@ -53,7 +54,7 @@ namespace CmsWeb.Models.PersonPage
                          Name = om.Organization.OrganizationName,
                          Location = om.Organization.Location,
                          LeaderName = om.Organization.LeaderName,
-                         MeetingTime = om.Organization.MeetingTime,
+                         MeetingTime = sc.MeetingTime,
                          MemberType = om.MemberType.Description,
                          LeaderId = om.Organization.LeaderId,
                          EnrollDate = om.EnrollmentDate,

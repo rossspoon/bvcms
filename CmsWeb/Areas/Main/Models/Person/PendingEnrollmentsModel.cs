@@ -20,6 +20,7 @@ namespace CmsWeb.Models.PersonPage
         {
             var dt = Util.Now;
             var q = from o in DbUtil.Db.Organizations
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     from om in o.OrganizationMembers
                     where om.PeopleId == PeopleId && om.Pending.Value == true
                     let leader = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == o.LeaderId)
@@ -32,7 +33,7 @@ namespace CmsWeb.Models.PersonPage
                         Name = o.OrganizationName,
                         Location = o.Location,
                         LeaderName = leader.Name,
-                        MeetingTime = o.MeetingTime,
+                        MeetingTime = sc.MeetingTime,
                         LeaderId = o.LeaderId,
                         EnrollDate = om.EnrollmentDate,
                         MemberType = om.MemberType.Description,

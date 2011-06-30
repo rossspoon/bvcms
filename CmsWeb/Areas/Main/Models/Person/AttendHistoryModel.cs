@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CmsData;
 using UtilityExtensions;
+using System.Globalization;
 
 namespace CmsWeb.Models.PersonPage
 {
@@ -28,20 +29,12 @@ namespace CmsWeb.Models.PersonPage
                            where a.PeopleId == PeopleId
                            where !(a.Meeting.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
                            select a;
+                if (!HttpContext.Current.User.IsInRole("Admin"))
+                    _attends = _attends.Where(a => a.EffAttendFlag == null || a.EffAttendFlag == true);
                 if (future)
-                {
-                    _attends = from a in _attends
-                               where a.MeetingDate >= midnight
-                               where a.AttendanceTypeId != (int)Attend.AttendTypeCode.Absent
-                               select a;
-                }
+                    _attends = _attends.Where(aa => aa.MeetingDate >= midnight);
                 else
-                {
-                    _attends = from a in _attends
-                               where a.MeetingDate < midnight
-                               where a.AttendanceTypeId != (int)Attend.AttendTypeCode.Absent
-                               select a;
-                }
+                    _attends = _attends.Where(aa => aa.MeetingDate < midnight);
             }
             return _attends;
         }
@@ -60,15 +53,17 @@ namespace CmsWeb.Models.PersonPage
                      let o = a.Meeting.Organization
                      select new AttendInfo
                      {
+                         PeopleId = a.PeopleId,
                          MeetingId = a.MeetingId,
                          OrganizationId = a.Meeting.OrganizationId,
                          OrganizationName = CmsData.Organization
-                            .FormatOrgName(o.OrganizationName, o.LeaderName,
-                                o.Location),
+                            .FormatOrgName(o.OrganizationName, o.LeaderName, null),
                          AttendType = a.AttendType.Description ?? "(null)",
                          MeetingName = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name + ": " + o.OrganizationName,
                          MeetingDate = a.MeetingDate,
                          MemberType = a.MemberType.Description ?? "(null)",
+                         AttendFlag = a.AttendanceFlag,
+                         OtherAttends = a.OtherAttends,
                      };
             return q2;
         }
@@ -102,7 +97,7 @@ namespace CmsWeb.Models.PersonPage
                     q = q.OrderByDescending(a => a.MeetingDate);
                     break;
                 default:
-                    if(future)
+                    if (future)
                         q = q.OrderBy(a => a.MeetingDate);
                     else
                         q = q.OrderByDescending(a => a.MeetingDate);

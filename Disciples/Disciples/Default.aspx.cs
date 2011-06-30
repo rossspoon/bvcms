@@ -13,19 +13,19 @@ namespace Disciples
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Page.IsPostBack)
-                return;
             if (!User.Identity.IsAuthenticated)
             {
                 defaultTop.ContentName = "default_welcome";
                 Panel1.Visible = true;
                 Label1.Text = defaultTop.HeaderText;
                 var forgotusername = Login1.FindControl("ForgotUsername") as HyperLink;
-                forgotusername.NavigateUrl = Util.CmsHost + "Account/ForgotUsername"; ;
+                forgotusername.NavigateUrl = DbUtil.Db.CmsHost + "Account/ForgotUsername"; ;
                 var forgotpassword = Login1.FindControl("ForgotPassword") as HyperLink;
-                forgotpassword.NavigateUrl = Util.CmsHost + "Account/ForgotPassword"; ;
+                forgotpassword.NavigateUrl = DbUtil.Db.CmsHost + "Account/ForgotPassword"; ;
             }
-            else
+            if (Page.IsPostBack)
+                return;
+            if (User.Identity.IsAuthenticated)
             {
                 var u = DbUtil.Db.CurrentUser;
                 Panel1.Visible = false;

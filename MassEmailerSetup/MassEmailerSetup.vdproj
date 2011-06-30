@@ -33,6 +33,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B3E87B856E8D4A41B853FEE2DDA1F330"
+        "OwnerKey" = "8:_DC3605C2F30115C3C7AB8FEC3F1785EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B3E87B856E8D4A41B853FEE2DDA1F330"
+        "OwnerKey" = "8:_CF69F13EE5B74A21B63B2BCAC462B17D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_CF69F13EE5B74A21B63B2BCAC462B17D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -65,6 +77,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_4E594934CE7A4B3C795E9BDFB3F9721D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B3E87B856E8D4A41B853FEE2DDA1F330"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -290,6 +308,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B3E87B856E8D4A41B853FEE2DDA1F330"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SgmlReaderDll, Version=1.8.7.14535, Culture=neutral, PublicKeyToken=46b2db9ca481831b, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B3E87B856E8D4A41B853FEE2DDA1F330"
+                    {
+                    "Name" = "8:SgmlReaderDll.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:SgmlReaderDll.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_EE121880C0F942A48D3E7D660984F742"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DC3605C2F30115C3C7AB8FEC3F1785EA"
             {
             "AssemblyRegister" = "3:1"
@@ -378,7 +427,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BVCMS MassEmailer2"
         "ProductCode" = "8:{B2DD59DB-53BF-42B5-9060-28235C87F052}"
-        "PackageCode" = "8:{FCEC51FE-0FCD-4672-B0AD-BE7D1132967C}"
+        "PackageCode" = "8:{B5C070F2-9DC8-4AC7-9E3E-170EB9E046E0}"
         "UpgradeCode" = "8:{0AC37215-529E-40F5-8000-BDFBAA5C13F6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
