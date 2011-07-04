@@ -60,6 +60,7 @@ namespace CmsCheckin
             AskChurchName = f.AskChurchName.Checked;
             EnableTimer = f.EnableTimer.Checked;
             KioskMode = f.KioskMode.Checked;
+            TwoInchLabel = f.TwoInchLabel.Checked;
 
             f.Dispose();
 
@@ -98,6 +99,7 @@ namespace CmsCheckin
         public static bool AskChurchName { get; set; }
         public static bool AskLabels { get; set; }
         public static bool KioskMode { get; set; }
+        public static bool TwoInchLabel { get; set; }
 
         public static string QueryString
         {

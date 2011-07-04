@@ -148,7 +148,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var p0 = Db.LoadPersonById(pid);
             if (p0 == null)
                 Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(Db.StaffEmailForOrg(org.OrganizationId)),
-                    "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), Util.FirstAddress(ti.Emails), 0);
+                    "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), Util.ToMailAddressList(Util.FirstAddress(ti.Emails)), 0, pid, true);
             else
             {
                 Db.Email(Db.StaffEmailForOrg(org.OrganizationId),

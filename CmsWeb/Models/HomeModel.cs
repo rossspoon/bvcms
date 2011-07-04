@@ -31,6 +31,9 @@ namespace CmsWeb.Models
         public IEnumerable<BirthdayInfo> Birthdays()
         {
             var up = DbUtil.Db.CurrentUserPerson;
+            if (up == null)
+                return new List<BirthdayInfo>();
+
             var n = UtilityExtensions.Util.Now;
             var tag = DbUtil.Db.FetchOrCreateTag("TrackBirthdays", up.PeopleId, DbUtil.TagTypeId_Personal);
             var q = tag.People(DbUtil.Db);

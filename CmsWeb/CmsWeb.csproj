@@ -200,6 +200,7 @@
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
+    <Compile Include="Areas\Main\Controllers\ContactSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\MeetingController.cs" />
     <Compile Include="Areas\Main\Controllers\FamilyController.cs" />
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Areas\Main\Models\Export\MucketyMapResult.cs" />
     <Compile Include="Areas\Dialog\Models\SearchUsersModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\ScheduleInfo.cs" />
+    <Compile Include="Areas\Main\Models\Other\ContactSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\MeetingModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />

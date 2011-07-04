@@ -284,7 +284,7 @@ namespace CmsData
             var list = new List<MailAddress>();
             foreach (var mu in GetUsersInRole(GroupType.Admin))
                 Util.AddGoodAddress(list, mu.EmailAddress);
-            Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost, from, subject, body, list, 0, Record: true);
+            Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost, from, subject, body, list, 0, u.PeopleId, Record: true);
         }
     }
     public enum FetchType

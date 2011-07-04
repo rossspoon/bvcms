@@ -38,7 +38,12 @@
 <tr><td>Unique Opens</td><td>@Model.queue.EmailResponses.Select(er => er.PeopleId).Distinct().Count()</td></tr>
 <tr><td>SendWhen</td><td>@Model.queue.SendWhen.FormatDate()</td></tr>
 <tr><td>Sent</td><td>@Model.queue.Sent.FormatDateTm()</td></tr>
-<tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm()</td></tr>
+<tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm() 
+@if (!Model.queue.Sent.HasValue && Model.queue.SendWhen.HasValue)
+{
+                       <a href="/Manage/Emails/Requeue/@Model.queue.Id" class="bt">Requeue</a>
+}
+                   </td></tr>
 <tr><td>Started</td><td>@Model.queue.Started.FormatDateTm()</td></tr>
 <tr><td>RunTime</td><td>@dt.ToString("H:mm:ss")</td></tr>
 </table>

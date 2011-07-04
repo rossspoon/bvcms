@@ -712,6 +712,44 @@ namespace CmsCheckin
                 LabelsPrinted += CmsCheckin.Print.LocationLabel(li);
             RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
         }
+        private void PrintLabels2()
+        {
+            if (list == null)
+                return;
+
+            var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
+            if (!PrintAll.Text.HasValue())
+                qlist = qlist.Where(c => c.WasChecked);
+
+            var q = from c in qlist
+                    group c by c.cinfo.pid into g
+                    select from c in g
+                           select new LabelInfo
+                           {
+                               allergies = c.allergies,
+                               pid = c.cinfo.pid,
+                               mv = c.cinfo.mv,
+                               n = c.NumLabels,
+                               first = c.first,
+                               last = c.last,
+                               location = c.location,
+                               hour = c.cinfo.hour,
+                               org = c.org,
+                               custody = c.custody,
+                               transport = c.transport,
+                               requiressecuritylabel = c.RequiresSecurityLabel,
+                           };
+
+            foreach (var li in q)
+            {
+                LabelsPrinted += CmsCheckin.Print.Label2(li, li.First().n, Program.SecurityCode);
+                foreach (var i in li)
+                    LabelsPrinted += CmsCheckin.Print.AllergyLabel(i);
+            }
+            //foreach (var li in q)
+            //    LabelsPrinted += CmsCheckin.Print.LocationLabel2(li);
+            RequiresSecurityLabel = qlist.Any(li => li.RequiresSecurityLabel == true && li.NumLabels > 0);
+        }
         private void ClearControls()
         {
             foreach (var c in controls)

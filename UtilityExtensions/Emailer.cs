@@ -13,11 +13,7 @@ namespace UtilityExtensions
 {
     public static partial class Util
     {
-        public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, MailAddress to, int id)
-        {
-            SendMsg(SysFromEmail, CmsHost, From, subject, Message, Util.ToMailAddressList(to), id, Record: true);
-        }
-        public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, bool Record)
+        public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, int? pid, bool Record)
         {
             if (WebConfigurationManager.AppSettings["sendemail"] == "false")
                 return;
@@ -27,7 +23,28 @@ namespace UtilityExtensions
             var msg = new MailMessage();
             if (From == null)
                 From = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
-            msg.From = From;
+
+            if (WebConfigurationManager.AppSettings["useAmazon"] == "true")
+            {
+                var awsfrom = WebConfigurationManager.AppSettings["awsfromemail"];
+                msg.From = new MailAddress(awsfrom, From.DisplayName);
+                msg.ReplyToList.Add(From);
+            }
+            else
+            {
+                msg.From = From;
+                if (SysFromEmail.HasValue())
+                {
+                    var sysmail = new MailAddress(SysFromEmail);
+                    if (From.Host != sysmail.Host)
+                        msg.Sender = sysmail;
+                }
+            }
+            msg.Headers.Add("X-bvcms-host", CmsHost);
+            msg.Headers.Add("X-bvcms-mail-id", id.ToString());
+            if (pid.HasValue)
+                msg.Headers.Add("X-bvcms-peopleid", pid.ToString());
+
             foreach (var ma in to)
             {
                 if (ma.Host != "nowhere.name")
@@ -64,15 +81,6 @@ namespace UtilityExtensions
                 htmlView.TransferEncoding = TransferEncoding.SevenBit;
             msg.AlternateViews.Add(htmlView);
 
-            if (SysFromEmail.HasValue())
-            {
-                var sysmail = new MailAddress(SysFromEmail);
-                if (From.Host != sysmail.Host)
-                    msg.Sender = sysmail;
-            }
-            msg.Headers.Add("bvcms-host", CmsHost);
-            msg.Headers.Add("bvcms-mail-id", id.ToString());
-
             try
             {
                 var smtp = Util.Smtp();
@@ -81,10 +89,10 @@ namespace UtilityExtensions
             catch (Exception ex)
             {
                 if (!msg.Subject.StartsWith("(smtp error)"))
-                    SendMsg(SysFromEmail, CmsHost, From, 
-                        "(smtp error) " + subject, 
-                        "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addrs, ex.Message, Message), 
-                        Util.SendErrorsTo(), id, Record:true);
+                    SendMsg(SysFromEmail, CmsHost, From,
+                        "(smtp error) " + subject,
+                        "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addrs, ex.Message, Message),
+                        Util.SendErrorsTo(), id, pid, Record: true);
             }
             htmlView.Dispose();
             htmlStream.Dispose();

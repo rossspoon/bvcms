@@ -1069,7 +1069,7 @@ namespace UtilityExtensions
         public static SmtpClient Smtp()
         {
             var smtp = new SmtpClient();
-#if DEBUG
+#if DEBUG2
             smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
             smtp.PickupDirectoryLocation = "c:/email";
             smtp.Host = "localhost";

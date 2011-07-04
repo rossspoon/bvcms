@@ -408,7 +408,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     var msg = kiosk + " at " + DateTime.Now.ToShortTimeString();
                     Util.SendMsg(Util.SysFromEmail, DbUtil.Db.CmsHost,
                         Util.TryGetMailAddress(Util.SysFromEmail),
-                        "Printer Problem", msg, Util.ToMailAddressList(address), 0, Record: true);
+                        "Printer Problem", msg, Util.ToMailAddressList(address), 0, null, Record: true);
                 }
                 catch (Exception)
                 {

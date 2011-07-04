@@ -48,8 +48,16 @@ namespace CmsWeb.Areas.Main.Controllers
             if (Db.UseMassEmailer)
                 Db.QueueEmail(emailqueue.Id, DbUtil.Db.CmsHost, Util.Host);
             else
-                Db.SendPeopleEmail(DbUtil.Db.CmsHost, emailqueue);
-
+            {
+                try
+                {
+                    Db.SendPeopleEmail(DbUtil.Db.CmsHost, emailqueue);
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { id = 0, content = "<h2>Error Email Sent</h2>" + ex.Message });
+                }
+            }
             return Json(new { id = emailqueue.Id });
         }
         [HttpPost]
@@ -60,7 +68,14 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("timeout");
             var From = Util.FirstAddress(m.FromAddress, m.FromName);
             var p = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
-            DbUtil.Db.Email(From.ToString(), p, m.Subject, m.Body);
+            try
+            {
+                DbUtil.Db.Email(From.ToString(), p, m.Subject, m.Body);
+            }
+            catch (Exception ex)
+            {
+                return Content("<h2>Error Email Sent</h2>" + ex.Message);
+            }
             return Content("<h2>Test Email Sent</h2>");
         }
         private bool SessionTimedOut()

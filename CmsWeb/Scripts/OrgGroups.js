@@ -68,6 +68,7 @@
                         if ($('#newgid').val())
                             $('#groupid').val($('#newgid').val());
                         $('#GroupName').val('');
+                        $(".bt").button();
                         $.fmtTable();
                     });
                 }

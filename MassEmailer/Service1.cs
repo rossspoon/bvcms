@@ -203,38 +203,49 @@ WAITFOR(
         private void SendPersonEmail(CMSDataContext Db, string CmsHost, int id, int pid)
         {
             var useSES = HttpRuntime.Cache["awscreds"] != null;
-
             var SysFromEmail = Db.Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
             var emailqueue = Db.EmailQueues.Single(eq => eq.Id == id);
             var emailqueueto = Db.EmailQueueTos.Single(eq => eq.Id == id && eq.PeopleId == pid);
             var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
-            var Message = emailqueue.Body;
 
-            var q = from p in Db.People
-                    where p.PeopleId == emailqueueto.PeopleId
-                    select p;
-            var qp = q.Single();
-            string text = emailqueue.Body;
-            var aa = Db.DoReplacements(ref text, CmsHost, qp, emailqueueto);
-
-            var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
-            var url = Util.URLCombine(CmsHost, qs);
-            var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
-            text = text.Replace("{unsubscribe}", link);
-            text = text.Replace("{Unsubscribe}", link);
-            if (aa.Count > 0)
+            try
             {
-                text = text.Replace("{toemail}", aa[0].Address);
-                text = text.Replace("%7Btoemail%7D", aa[0].Address);
-            }
-            text = text.Replace("{fromemail}", From.Address);
-            text = text.Replace("%7Bfromemail%7D", From.Address);
+                var Message = emailqueue.Body;
 
-            emailqueueto.Messageid = EmailRoute(
-                SysFromEmail, From.DisplayName, From.Address,
-                aa, emailqueue.Subject, text, CmsHost, id, pid);
-            emailqueueto.Sent = DateTime.Now;
-            Db.SubmitChanges();
+                var q = from p in Db.People
+                        where p.PeopleId == emailqueueto.PeopleId
+                        select p;
+                var qp = q.Single();
+                string text = emailqueue.Body;
+                var aa = Db.DoReplacements(ref text, CmsHost, qp, emailqueueto);
+
+                var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
+                var url = Util.URLCombine(CmsHost, qs);
+                var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
+                text = text.Replace("{unsubscribe}", link);
+                text = text.Replace("{Unsubscribe}", link);
+                if (aa.Count > 0)
+                {
+                    text = text.Replace("{toemail}", aa[0].Address);
+                    text = text.Replace("%7Btoemail%7D", aa[0].Address);
+                }
+                text = text.Replace("{fromemail}", From.Address);
+                text = text.Replace("%7Bfromemail%7D", From.Address);
+
+                emailqueueto.Messageid = EmailRoute(
+                    SysFromEmail, From.DisplayName, From.Address,
+                    aa, emailqueue.Subject, text, CmsHost, id, pid);
+                emailqueueto.Sent = DateTime.Now;
+                Db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                Util.SendMsg(SysFromEmail, CmsHost, From,
+                    "sent emails - error", ex.Message,
+                    Util.ToMailAddressList(From),
+                    emailqueue.Id, Record: true);
+                throw ex;
+            }
         }
         private Boolean SESCanSend()
         {

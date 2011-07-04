@@ -109,7 +109,7 @@ namespace CmsWeb
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-#if DEBUG
+#if DEBUG2
             if (HttpContext.Current != null)
                 return;
 #endif

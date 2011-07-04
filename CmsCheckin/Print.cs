@@ -269,6 +269,31 @@ namespace CmsCheckin
                 sw.WriteLine("Q0001");
                 sw.WriteLine("E");
             }
+            else if (Program.Printer.Contains("Godex"))
+            {
+                sw.WriteLine("^Q51,3");
+                sw.WriteLine("^W76");
+                sw.WriteLine("^H10");
+                sw.WriteLine("^P1");
+                sw.WriteLine("^S4");
+                sw.WriteLine("^AD");
+                sw.WriteLine("^C1");
+                sw.WriteLine("^R0");
+                sw.WriteLine("~Q+0");
+                sw.WriteLine("^O0");
+                sw.WriteLine("^D0");
+                sw.WriteLine("^E12");
+                sw.WriteLine("~R200");
+                sw.WriteLine("^L");
+                sw.WriteLine("Dy2-me-dd");
+                sw.WriteLine("Th:m:s");
+                sw.WriteLine("AH,68,78,1,1,0,0," + code);
+                sw.WriteLine("AH,376,78,1,1,0,0," + code);
+                sw.WriteLine("Lo,296,36,303,379");
+                sw.WriteLine("AE,74,174,1,1,0,0,{0:M/d/yy}".Fmt(time));
+                sw.WriteLine("AE,380,174,1,1,0,0,{0:M/d/yy}".Fmt(time));
+                sw.WriteLine("E");
+            }
             sw.Flush();
             memStrm.Position = 0;
             PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
@@ -329,6 +354,57 @@ namespace CmsCheckin
                 sw.WriteLine("1911A2400140219" + code);
 
                 sw.WriteLine("Q" + nlabels.ToString("0000"));
+                sw.WriteLine("E");
+            }
+            
+            sw.Flush();
+
+            memStrm.Position = 0;
+            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
+            sw.Close();
+            return nlabels;
+        }
+        public static int Label2(IEnumerable<LabelInfo> li, int nlabels, string code)
+        {
+            if (nlabels <= 0 || !Program.Printer.HasValue())
+                return 0;
+            var memStrm = new MemoryStream();
+            var sw = new StreamWriter(memStrm);
+            if (Program.Printer.Contains("Godex"))
+            {
+                sw.WriteLine("^Q51,3");
+                sw.WriteLine("^W76");
+                sw.WriteLine("^H10");
+                sw.WriteLine("^P" + nlabels);
+                sw.WriteLine("^S4");
+                sw.WriteLine("^AD");
+                sw.WriteLine("^C1");
+                sw.WriteLine("^R0");
+                sw.WriteLine("~Q+0");
+                sw.WriteLine("^O0");
+                sw.WriteLine("^D0");
+                sw.WriteLine("^E12");
+                sw.WriteLine("~R200");
+                sw.WriteLine("^L");
+                sw.WriteLine("Dy2-me-dd");
+                sw.WriteLine("Th:m:s");
+                sw.WriteLine("AH,16,0,1,1,0,0," + li.First().first);
+                sw.WriteLine("AE,18,84,1,1,0,0," + li.First().last);
+                sw.WriteLine("AH,428,184,1,1,0,0," + code);
+                sw.WriteLine("AD,441,156,1,1,0,0,{0:M/d/yy}".Fmt(li.First().hour));
+                sw.WriteLine("AD,19,129,1,1,0,0,{0}{1}{2}".Fmt(
+                    li.First().allergies.HasValue() ? " A |" : "",
+                    li.First().transport ? " T |" : "",
+                    li.First().custody ? " C |" : ""));
+
+                var vertpos = 290;
+                foreach (var i in li)
+                {
+                    sw.WriteLine("AC,16,{0},1,1,0,0,{1}".Fmt(vertpos, i.location));
+                    sw.WriteLine("AC,120,{0},1,1,0,0,{1:h:mm t}".Fmt(vertpos, i.hour));
+                    sw.WriteLine("AB,220,{0},1,1,0,0,{1} ({2})".Fmt(vertpos + 4, i.org, i.mv));
+                    vertpos += 35;
+                }
                 sw.WriteLine("E");
             }
             sw.Flush();
@@ -431,6 +507,35 @@ namespace CmsCheckin
                 sw.WriteLine("Q0001");
                 sw.WriteLine("E");
             }
+            sw.Flush();
+            memStrm.Position = 0;
+            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
+            sw.Close();
+            return 1;
+        }
+        public static int LocationLabel2(IEnumerable<LabelInfo> list)
+        {
+            var li = list.First();
+            if (li.n == 0 || !Program.Printer.HasValue())
+                return 0;
+            if (!li.mv.Contains("G") || !li.location.HasValue())
+                return 0;
+            var memStrm = new MemoryStream();
+            var sw = new StreamWriter(memStrm);
+            if (Program.Printer.Contains("Godex"))
+            {
+                sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
+                sw.WriteLine("^XA");
+                sw.WriteLine("^MMT");
+                sw.WriteLine("^PW609");
+                sw.WriteLine("^LL0406");
+                sw.WriteLine("^LS0");
+                sw.WriteLine(@"^FT29,83^A0N,62,62^FH\^FD{0}^FS".Fmt(li.first));
+                sw.WriteLine(@"^FT30,155^A0N,45,45^FH\^FDLocation/time: {0}, {1:h:mm tt}^FS"
+                    .Fmt(li.location, li.hour));
+                sw.WriteLine("^PQ1,0,1,Y^XZ");
+            }
+            
             sw.Flush();
             memStrm.Position = 0;
             PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
