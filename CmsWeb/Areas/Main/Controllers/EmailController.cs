@@ -66,6 +66,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (SessionTimedOut())
                 return Content("timeout");
+            m.FromName = m.EmailFroms().First(ef => ef.Value == m.FromAddress).Text;
             var From = Util.FirstAddress(m.FromAddress, m.FromName);
             var p = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
             try
@@ -157,6 +158,16 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return View();
         }
+        public ActionResult CheckQueued()
+        {
+            var q = from e in DbUtil.Db.EmailQueues
+                    where e.SendWhen < DateTime.Now
+                    where e.Sent == null
+                    select e;
+
+            foreach (var emailqueue in q)
+                DbUtil.Db.SendPeopleEmail(DbUtil.Db.CmsHost, emailqueue);
+            return Content("done");
+        }
     }
-    
 }

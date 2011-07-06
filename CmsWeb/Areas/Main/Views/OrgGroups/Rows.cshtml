@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.OrgGroupsModel
+<tr><td colspan="7">Count: @Model.FetchOrgMemberList().Count()</td></tr>
 @foreach(var om in Model.FetchOrgMemberList())
 { 
 	<tr @om.IsInGroup()>

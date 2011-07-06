@@ -127,7 +127,7 @@ namespace CmsWeb.Models.OrganizationPage
                             p.PeopleId
                             select om;
                         break;
-                    case "Member":
+                    case "MemberType":
                         q = from om in q
                             let p = om.Person
                             orderby om.MemberType.Code,
@@ -182,7 +182,7 @@ namespace CmsWeb.Models.OrganizationPage
                             p.PeopleId descending
                             select om;
                         break;
-                    case "Member":
+                    case "MemberType":
                         q = from om in q
                             let p = om.Person
                             orderby om.MemberType.Code descending,

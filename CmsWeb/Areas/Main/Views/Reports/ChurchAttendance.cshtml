@@ -71,7 +71,11 @@
            </tr>
         </thead>
     @foreach (var d in p.Divs)
-    { 
+    {
+        if (d.Meetings.Sum(m => m.Present) == 0 && d.NoDisplayZero)
+        {
+            continue;
+        }
            <tr>
            <td align="left">@d.Name</td>
         @foreach (var c in p.Cols)

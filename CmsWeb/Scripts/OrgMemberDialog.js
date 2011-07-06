@@ -52,7 +52,12 @@
                 changeMonth: true,
                 changeYear: true
             });
-            $(".bt").button();
+            $(".bt").button(); 
+            $("a.move").tooltip({
+                showBody: "|",
+                showURL: false
+            });
+
         });
     }
 });

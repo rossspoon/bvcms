@@ -49,6 +49,7 @@ namespace CmsWeb.Models
                          ProgId = d.ProgId,
                          Program = d.Program.Name,
                          ReportLine = d.ReportLine,
+                         NoDisplayZero = (d.NoDisplayZero ?? false) ? "yes" : "no",
                          MeetingCount = DbUtil.Db.Organizations.Where(o => o.OrganizationStatusId == 30 && (o.DivisionId == d.Id || o.DivOrgs.Any(dg => dg.DivId == d.Id))).Sum(o => o.Meetings.Count()),
                          OrgCount = d.Organizations.Count(o => o.OrganizationStatusId == 30),
                          DivOrgsCount = d.DivOrgs.Count(o => o.Organization.OrganizationStatusId == 30),
@@ -86,6 +87,7 @@ namespace CmsWeb.Models
         public int? MeetingCount { get; set; }
         public int OrgCount { get; set; }
         public int DivOrgsCount { get; set; }
+        public string NoDisplayZero { get; set; }
         public string NoZero(int? arg)
         {
             if (arg == 0)

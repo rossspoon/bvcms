@@ -17,6 +17,24 @@
         });
         return false;
     });
+    $.editable.addInputType("checkbox", {
+        element: function (settings, original) {
+            var input = $('<input type="checkbox">');
+            $(this).append(input);
+            $(input).click(function () {
+                var value = $(input).attr("checked") ? 'yes' : 'no';
+                $(input).val(value);
+            });
+            return (input);
+        },
+        content: function (string, settings, original) {
+            var checked = string == "yes" ? 1 : 0;
+            var input = $(':input:first', this);
+            $(input).attr("checked", checked);
+            var value = $(input).attr("checked") ? 'yes' : 'no';
+            $(input).val(value);
+        }
+    });
     $('span.clickEdit').bind('keydown', function(event) {
         if (event.keyCode == 9) {
             $(this).find("input").blur();
@@ -83,6 +101,11 @@
         $("#results td.tip").tooltip({ showBody: "|" });
         $("#results tbody tr:even").attr("style", "background-color:#ddd");
         $("span.clickEdit").editable("/Setup/Division/Edit/", $.editableOptions);
+        $('span.yesno').editable('/Setup/Division/Edit', {
+            type: 'checkbox',
+            onblur: 'ignore',
+            submit: 'OK'
+        });
     }
     $.fmtTable();
 });

@@ -133,7 +133,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="StrValue", UpdateCheck=UpdateCheck.Never, Storage="_StrValue", DbType="varchar(100)")]
+		[Column(Name="StrValue", UpdateCheck=UpdateCheck.Never, Storage="_StrValue", DbType="varchar(200)")]
 		public string StrValue
 		{
 			get { return this._StrValue; }
@@ -265,7 +265,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FieldValue", UpdateCheck=UpdateCheck.Never, Storage="_FieldValue", DbType="varchar(151)", IsDbGenerated=true)]
+		[Column(Name="FieldValue", UpdateCheck=UpdateCheck.Never, Storage="_FieldValue", DbType="varchar(251)", IsDbGenerated=true)]
 		public string FieldValue
 		{
 			get { return this._FieldValue; }

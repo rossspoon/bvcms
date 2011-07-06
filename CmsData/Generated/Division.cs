@@ -35,6 +35,8 @@ namespace CmsData
 		
 		private int? _ReportLine;
 		
+		private bool? _NoDisplayZero;
+		
    		
    		private EntitySet< Coupon> _Coupons;
 		
@@ -86,6 +88,9 @@ namespace CmsData
 		
 		partial void OnReportLineChanging(int? value);
 		partial void OnReportLineChanged();
+		
+		partial void OnNoDisplayZeroChanging(bool? value);
+		partial void OnNoDisplayZeroChanged();
 		
     #endregion
 		public Division()
@@ -308,6 +313,28 @@ namespace CmsData
 					this._ReportLine = value;
 					this.SendPropertyChanged("ReportLine");
 					this.OnReportLineChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NoDisplayZero", UpdateCheck=UpdateCheck.Never, Storage="_NoDisplayZero", DbType="bit")]
+		public bool? NoDisplayZero
+		{
+			get { return this._NoDisplayZero; }
+
+			set
+			{
+				if (this._NoDisplayZero != value)
+				{
+				
+                    this.OnNoDisplayZeroChanging(value);
+					this.SendPropertyChanging();
+					this._NoDisplayZero = value;
+					this.SendPropertyChanged("NoDisplayZero");
+					this.OnNoDisplayZeroChanged();
 				}
 
 			}

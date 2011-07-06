@@ -157,6 +157,10 @@ namespace CmsData
             AskTickets = frorg.AskTickets;
             AskTylenolEtc = frorg.AskTylenolEtc;
             CanSelfCheckin = frorg.CanSelfCheckin;
+            Checkboxes = frorg.Checkboxes;
+            CheckboxesMax = frorg.CheckboxesMax;
+            CheckboxesMin = frorg.CheckboxesMin;
+            CheckboxesLabel = frorg.CheckboxesLabel;
             Deposit = frorg.Deposit;
             NotifyIds = frorg.NotifyIds;
             EmailMessage = frorg.EmailMessage;

@@ -787,6 +787,9 @@ namespace CmsWeb.Areas.Manage.Controllers
                     case "Employer":
                         p.EmployerOther = m.NewValue;
                         break;
+                    case "Grade":
+                        p.Grade = m.NewValue.ToInt();
+                        break;
                 }
                 DbUtil.Db.SubmitChanges();
             }

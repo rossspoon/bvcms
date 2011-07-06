@@ -61,6 +61,10 @@ namespace CmsWeb.Areas.Setup.Controllers
                         div.ReportLine = value.ToInt2();
                         DbUtil.Db.SubmitChanges();
                         return Content(value);
+                    case "z":
+                        div.NoDisplayZero = value == "yes";
+                        DbUtil.Db.SubmitChanges();
+                        return Content(value);
                 }
             return new EmptyResult();
         }

@@ -30,14 +30,15 @@ namespace CmsWeb.Models
         {
             return new SelectList(new[] { 
                 "(not specified)",
-                "Member Status",
                 "Campus",
-                "Marital Status",
+                "Employer",
+                "Family Position",
                 "Gender",
+                "Grade",
+                "Marital Status",
+                "Member Status",
                 "Occupation",
                 "School",
-                "Employer",
-                "Family Position"
             }.Select(x => new { value = x, text = x }),
                 "value", "text");
         }

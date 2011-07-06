@@ -10,7 +10,7 @@
 {
     foreach (var o in Model)
     { 
-        <a class="move" href="/OrgMemberDialog/MoveSelect/@o.id">@o.OrgName</a><br />
+        <a class="move" title="@o.Tip" href="/OrgMemberDialog/MoveSelect/@o.id">@o.OrgName</a><br />
     }
 }
 else

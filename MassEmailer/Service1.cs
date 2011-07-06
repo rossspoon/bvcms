@@ -23,6 +23,7 @@ using System.Web.Caching;
 using System.IO;
 using System.Net.Mime;
 using System.Reflection;
+using DKIM;
 
 namespace MassEmailer
 {
@@ -60,6 +61,17 @@ namespace MassEmailer
             {
                 var a = ConfigurationManager.AppSettings["awscreds"].Split(',');
                 Util.InsertCacheNotRemovable("awscreds", a);
+            }
+            string privatekey = Path.Combine(GetApplicationPath(), "privatekey.txt");
+            if (File.Exists(privatekey))
+            {
+                var s = File.ReadAllText(privatekey);
+                Util.InsertCacheNotRemovable("privatekey", s);
+            }
+            else if (ConfigurationManager.AppSettings["privatekey"].HasValue())
+            {
+                var s = ConfigurationManager.AppSettings["privatekey"];
+                Util.InsertCacheNotRemovable("privatekey", s);
             }
             SleepTime = ConfigurationManager.AppSettings["SleepTime"].ToInt();
         }
@@ -192,7 +204,7 @@ WAITFOR(
                         Util.SendMsg(SysFromEmail, CmsHost, senderrorsto[0],
                             "Mass Emailer Error " + Host + " id:" + id + " pid:" + pid,
                             Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace),
-                            senderrorsto, 0, Record: false);
+                            senderrorsto, 0, pid, Record: false);
                         lasterror = ex.Message;
                     }
                     Thread.Sleep(5000);
@@ -243,7 +255,7 @@ WAITFOR(
                 Util.SendMsg(SysFromEmail, CmsHost, From,
                     "sent emails - error", ex.Message,
                     Util.ToMailAddressList(From),
-                    emailqueue.Id, Record: true);
+                    emailqueue.Id, pid, Record: true);
                 throw ex;
             }
         }
@@ -346,8 +358,17 @@ WAITFOR(
             htmlView.TransferEncoding = TransferEncoding.Base64;
             msg.AlternateViews.Add(htmlView);
 
+            var pkey = (string)HttpRuntime.Cache["privatekey"];
+            var privateKey = PrivateKeySigner.Create(pkey, SigningAlgorithm.RSASha256);
+			var dkim = new DkimSigner(
+				privateKey,
+				ConfigurationManager.AppSettings["domain"],
+				ConfigurationManager.AppSettings["dkimselector"],
+                new string[] { "Content-Type", "From", "To", "Subject" }
+				);
+			var signedMsg = dkim.SignMessage(msg);
             var rawMessage = new RawMessage();
-            using (var memoryStream = ConvertMailMessageToMemoryStream(msg))
+            using (var memoryStream = DKIM.MailMessageMemoryStream.ConvertMailMessageToMemoryStream(signedMsg))
                 rawMessage.WithData(memoryStream);
 
             var request = new SendRawEmailRequest();
@@ -383,7 +404,7 @@ WAITFOR(
                     "({0}) {1}".Fmt(ex.ErrorCode, Subject),
                     "<p>to: {0}<br>host:{1} id:{2} pid:{3}</p><pre>{4}</pre>{5}<br><br>{6}".Fmt(
                         addrs, host, id, pid, ex.Message, body, resp),
-                        Util.SendErrorsTo(), id, Record: true);
+                        Util.SendErrorsTo(), id, pid, Record: true);
             }
             catch (Exception ex)
             {
@@ -401,7 +422,7 @@ WAITFOR(
                 {
                     // resort to SMTP instead of Amazon
                     Util.SendMsg(SysEmailFrom, host, from, Subject, body,
-                        to, id, Record: true);
+                        to, id, pid, Record: true);
                 }
                 else if (!msg.Subject.StartsWith("(sending error)"))
                 {
@@ -412,31 +433,31 @@ WAITFOR(
                         "(sending error) " + Subject,
                         "<p>to: {0}<br>host:{1} id:{2} pid:{3}</p><pre>{4}</pre>{5}<br><br>{6}".Fmt(
                             addrs, host, id, pid, ex.Message, body, resp),
-                            Util.SendErrorsTo(), id, Record: true);
+                            Util.SendErrorsTo(), id, pid, Record: true);
                 }
             }
             return "no messageid";
         }
-        public static MemoryStream ConvertMailMessageToMemoryStream(MailMessage message)
-        {
-            var assembly = typeof(SmtpClient).Assembly;
-            var mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
-            var fileStream = new MemoryStream();
-            var mailWriterContructor = mailWriterType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
-            var mailWriter = mailWriterContructor.Invoke(new object[] { fileStream });
-            var sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
-            sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
-            var closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
-            closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
-            return fileStream;
-        }
+        //public static MemoryStream ConvertMailMessageToMemoryStream(MailMessage message)
+        //{
+        //    var assembly = typeof(SmtpClient).Assembly;
+        //    var mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
+        //    var fileStream = new MemoryStream();
+        //    var mailWriterContructor = mailWriterType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
+        //    var mailWriter = mailWriterContructor.Invoke(new object[] { fileStream });
+        //    var sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
+        //    sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
+        //    var closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
+        //    closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
+        //    return fileStream;
+        //}
         private string EmailRoute(string SysFrom, string fromname, string fromaddress, List<MailAddress> to, string subject, string body, string CmsHost, int id, int pid)
         {
             var useSES = HttpRuntime.Cache["awscreds"] != null;
             if (useSES && SESCanSend())
                 return SendAmazonSESRawEmail(SysFrom, fromname, fromaddress, to, subject, body, CmsHost, id, pid);
             else
-                Util.SendMsg(SysFrom, CmsHost, new MailAddress(fromaddress, fromname), subject, body, to, id, Record: true);
+                Util.SendMsg(SysFrom, CmsHost, new MailAddress(fromaddress, fromname), subject, body, to, id, pid, Record: true);
             return "no messageid";
         }
         private void NotifySentEmails(CMSDataContext Db, string CmsHost, string FromAddress, string FromName, string subject, int count, int id)

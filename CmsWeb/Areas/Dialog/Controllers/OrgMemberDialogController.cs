@@ -96,7 +96,10 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     select new OrgMove
                     {
                          OrgName = o.OrganizationName,
-                         id = "m-{0}-{1}-{2}".Fmt(id, pid, o.OrganizationId)
+                         OrgId = o.OrganizationId,
+                         id = "m-{0}-{1}-{2}".Fmt(id, pid, o.OrganizationId),
+                         Program = o.Division.Program.Name,
+                         Division = o.Division.Name,
                     };
             return View(q.ToList());
         }
@@ -117,6 +120,16 @@ namespace CmsWeb.Areas.Dialog.Controllers
         {
             public string OrgName { get; set; }
             public string id { get; set; }
+            public int OrgId { get; set; }
+            public string Program { get; set; }
+            public string Division { get; set; }
+            public string Tip
+            {
+                get
+                {
+                    return "{0} ({1})|Program:{2}|Division: {3}".Fmt(OrgName, OrgId, Program, Division);
+                }
+            }
         }
         public string HelpLink()
         {

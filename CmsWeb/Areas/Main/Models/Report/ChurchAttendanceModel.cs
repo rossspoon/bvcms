@@ -58,6 +58,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             public int DivId { get; set; }
             public string Name { get; set; }
+            public bool NoDisplayZero { get; set; }
             public DateTime Dt1 { get; set; }
             public DateTime Dt2 { get; set; }
             public IEnumerable<MeetInfo> Meetings { get; set; }
@@ -91,6 +92,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                {
                                    DivId = pd.DivId,
                                    Name = pd.Division.Name,
+                                   NoDisplayZero = pd.Division.NoDisplayZero ?? false,
                                    Dt1 = dt1,
                                    Dt2 = dt2,
                                    Meetings = from dg in pd.Division.DivOrgs
