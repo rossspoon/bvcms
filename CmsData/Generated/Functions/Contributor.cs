@@ -71,7 +71,7 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="PrimaryAddress", Storage="_PrimaryAddress", DbType="varchar(100)")]
+		[Column(Name="PrimaryAddress", Storage="_PrimaryAddress", DbType="varchar(60)")]
 		public string PrimaryAddress
 		{
 			get
@@ -190,7 +190,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="LastName", Storage="_LastName", DbType="varchar(100) NOT NULL")]
+		[Column(Name="LastName", Storage="_LastName", DbType="varchar(30) NOT NULL")]
 		public string LastName
 		{
 			get
@@ -207,7 +207,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name", Storage="_Name", DbType="varchar(126)")]
+		[Column(Name="Name", Storage="_Name", DbType="varchar(56) NOT NULL")]
 		public string Name
 		{
 			get
@@ -360,7 +360,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(126)")]
+		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(56)")]
 		public string SpouseName
 		{
 			get
@@ -462,7 +462,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="HouseName", Storage="_HouseName", DbType="varchar(100)")]
+		[Column(Name="HouseName", Storage="_HouseName", DbType="varchar(30)")]
 		public string HouseName
 		{
 			get

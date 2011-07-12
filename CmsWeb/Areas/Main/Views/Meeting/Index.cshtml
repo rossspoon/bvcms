@@ -63,13 +63,13 @@ else
         <td id="NumOtherAttends"><span>@Model.meeting.NumOtherAttends</span></td></tr>
     <tr><td align="right">Show:</td>
         <td id="showbuttons">
-            @Html.RadioButton("show", "attends", true)Attends Only&nbsp;
+            @Html.RadioButton("show", "attends", !Model.showall)Attends Only&nbsp;
             @Html.RadioButton("show", "absents", false)Absents Only&nbsp;
-            @Html.RadioButton("show", "all", false)All
+            @Html.RadioButton("show", "all", Model.showall)All
         </td></tr>
 @if (User.IsInRole("Attendance"))
 {
-    <tr><td align="left">@Html.CheckBox("editing") Enable Editing</td>
+    <tr><td align="left">@Html.CheckBox("editing", Model.showall) Enable Editing</td>
         <td align="right"><a id="addvisitor" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=visitor" style="margin-top: 10px;" class="bt">Add Visitors</a></td></tr>
 }
 </table>
@@ -79,7 +79,12 @@ else
 <div id="buttondiv" class="dropdown" style="font-size:1.2em;margin-top:2em;margin-left: 2em;">
 <div><a href="#">Other Management</a></div>
 <div class="sublinks">
-    <a id="RecentAttendRpt" href="/Reports/PastAttendee/@Model.meeting.OrganizationId" target="_blank">Recent Attendance Report</a>
+    <a href="/Reports/PastAttendee/@Model.meeting.OrganizationId" target="_blank">Recent Attendance Report</a>
+    <a href="/Reports/Attendee/@Model.meeting.MeetingId" target="_blank">Attendee Report</a>
+    <a href="/Reports/VisitsAbsents/@Model.meeting.MeetingId" target="_blank">Visits/Absents Report</a>
+    <a href="/Meeting/QueryAttendees/@Model.meeting.MeetingId">Attendees to Query</a>
+    <a href="/Meeting/QueryVisitors/@Model.meeting.MeetingId">Visitors to Query</a>
+    <a href="/Meeting/QueryAbsents/@Model.meeting.MeetingId">Absents to Query</a>
 </div>
 <div style="border-bottom: 4px solid #ddd"></div>
 </div>

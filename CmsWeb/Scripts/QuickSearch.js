@@ -12,6 +12,15 @@
         $.getTable();
         return false;
     });
+    $("#convert").click(function (ev) {
+        ev.preventDefault();
+        var f = $('#results').closest('form');
+        var q = f.serialize();
+        $.post($('#convert').attr('href'), q, function (ret) {
+            window.location = ret;
+        });
+        return false;
+    });
     $.gotoPage = function (e, pg) {
         $("#Page").val(pg);
         $.getTable();

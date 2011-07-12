@@ -123,6 +123,7 @@ namespace CmsCheckin
         }
         public static bool SendDocToPrinter(string szPrinterName, MemoryStream ms)
         {
+            ms.Position = 0;
             // Open the file.
             //FileStream fs = new FileStream(szFileName, FileMode.Open);
             // Create a BinaryReader on the file.

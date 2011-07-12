@@ -21,7 +21,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #endif
 
         // Main page
-        public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin)
+        public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login)
         {
             Util.NoCache(Response);
             if (!id.HasValue && !div.HasValue)
@@ -60,11 +60,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 m.CreateList();
                 m.List[0].email = email;
             }
-            else if (nologin == true)
-            {
+
+            if(login != true)
                 m.nologin = true;
-                m.CreateList();
-            }
+            m.CreateList();
             return View(m);
         }
         // authenticate user

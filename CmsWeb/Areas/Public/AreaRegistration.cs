@@ -21,6 +21,7 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "Prayer");
             AddRoute(context, "Register");
             AddRoute(context, "Sales");
+            AddRoute(context, "SGMap");
             AddRoute(context, "OptOut");
             AddRoute(context, "Track");
             AddRoute(context, "StepClass");

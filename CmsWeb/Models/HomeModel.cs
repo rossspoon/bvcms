@@ -58,7 +58,11 @@ namespace CmsWeb.Models
         }
         public IEnumerable<MyInvolvementInfo> MyInvolvements()
         {
-            var pid = DbUtil.Db.CurrentUser.PeopleId;
+            var u = DbUtil.Db.CurrentUser;
+            if (u == null)
+                return new List<MyInvolvementInfo>();
+
+            var pid = u.PeopleId;
 
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.PeopleId == pid

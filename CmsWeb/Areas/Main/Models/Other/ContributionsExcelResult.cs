@@ -17,24 +17,38 @@ namespace CmsWeb.Models
         public DateTime startdt { get; set; }
         public DateTime enddt { get; set; }
         public int qid { get; set; }
+        public bool totals { get; set; }
 
-        public ContributionsExcelResult(int qid, string start, string end)
+        public ContributionsExcelResult(int qid, string start, string end, bool totals)
         {
             startdt = start.ToDate() ?? DateTime.Now.AddYears(-1);
             enddt = end.ToDate() ?? DateTime.Now;
             this.qid = qid;
+            this.totals = totals;
         }
         public override void ExecuteResult(ControllerContext context)
         {
             var Response = context.HttpContext.Response;
             Response.Buffer = true;
             Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", "attachment;filename=CMSOrganizations.xls");
             Response.Charset = "";
-            var q = ExportPeople.ExcelContributions(qid, startdt, enddt);
             var dg = new DataGrid();
-            dg.DataSource = q;
+            string filename = null;
+            if (totals)
+            {
+
+                filename = "ContributionTotals";
+                dg.DataSource =
+                    ExportPeople.ExcelContributionTotals(qid, startdt, enddt);
+            }
+            else
+            {
+                filename = "ContributionDetails";
+                dg.DataSource =
+                    ExportPeople.ExcelContributions(qid, startdt, enddt);
+            }
             dg.DataBind();
+            Response.AddHeader("Content-Disposition", "attachment;filename={0}.xls".Fmt(filename));
             dg.RenderControl(new HtmlTextWriter(Response.Output));
         }
     }

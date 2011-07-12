@@ -51,6 +51,12 @@
     <Field Name="NickName" Title="Nick Name" Type="String">
       Searchs all or part of "goes by" Name
     </Field>
+    <Field Name="MaidenName" Title="Maiden Name" Type="String">
+      Searchs all or part of Maiden Name
+    </Field>
+    <Field Name="MiddleName" Title="Middle Name" Type="String">
+      Searchs all or part of Middle Name
+    </Field>
     <Field Name="LastName" Title="Last Name" Type="String">
       Searchs all or part of Lastname
     </Field>

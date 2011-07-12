@@ -45,7 +45,10 @@
     {
             <a href='/Export/Contributions/@ViewData["queryid"]' class="ChooseStartEnd" 
                 title="Contributions Export"><img src="/images/Excel.png" /> 
-                Contribution Data</a>
+                Contributions</a>
+            <a href='/Export/Contributions/@ViewData["queryid"]?totals=true' class="ChooseStartEnd" 
+                title="Contributions Export"><img src="/images/Excel.png" /> 
+                Contribution Totals</a>
     }
 }
 @if ((bool?)ViewData["OrganizationContext"] ?? false)

@@ -98,10 +98,38 @@ namespace CmsWeb.Models
                          GiverId = c.PeopleId ?? 0,
                          HeadOfHouseholdId = (f.HeadOfHouseholdId == sp.PeopleId ? sp.PeopleId : c.PeopleId) ?? 0,
                          Id = c.ContributionId,
+                         Name = c.Person.Name,
                          Amount = c.ContributionAmount ?? 0,
                          Date = c.ContributionDate,
                          c.FundId,
                          //IsSpouse = f.HeadOfHouseholdId == sp.PeopleId ? true : false,
+                     };
+            return q2;
+        }
+        public static IEnumerable ExcelContributionTotals(int? qid, DateTime startdt, DateTime enddt)
+        {
+            int[] ReturnedReversedTypes = new int[] 
+            { 
+                (int)Contribution.TypeCode.ReturnedCheck, 
+                (int)Contribution.TypeCode.Reversed 
+            };
+            var q = DbUtil.Db.PeopleQuery(qid.Value);
+            var q2 = from c in DbUtil.Db.Contributions
+                     let sp = c.Person.Family.People.SingleOrDefault(ss => ss.PeopleId == c.Person.SpouseId)
+                     where q.Any(p => p.PeopleId == c.PeopleId 
+                         || (p.SpouseId == c.PeopleId 
+                            && sp.ContributionOptionsId == 2 && p.ContributionOptionsId == 2))
+                     where c.ContributionStatusId == 0
+                     where c.ContributionAmount > 0
+                     where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                     where c.ContributionDate >= startdt && c.ContributionDate <= enddt
+                     group c by c.Person.Family.HeadOfHousehold into g
+                     select new
+                     {
+                         HeadOfHouseholdId = g.Key,
+                         Count = g.Count(),
+                         Amount = g.Sum(gg => gg.ContributionAmount ?? 0),
+                         Name = g.First().Person.Family.HeadOfHousehold.Name,
                      };
             return q2;
         }

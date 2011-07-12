@@ -45,9 +45,12 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    $(".atck:not(:checked)").parent().parent().hide();
+    if($("#showbuttons input[@name=show]:checked").val() == "attends")
+        $(".atck:not(:checked)").parent().parent().hide();
+    if($('#editing').is(':checked'))
+        $(".atck").removeAttr("disabled");
+
     $("table.grid > tbody > tr:visible:even").addClass("alt");
-    $('#showbuttons input:radio[value=attends]').attr('checked', 'checked');
 
     $('#showbuttons input:radio').change(function () {
         $("table.grid > tbody > tr").show().removeClass("alt");
@@ -118,7 +121,9 @@
     });
     $("#wandtarget").focus();
 });
-function AddSelected() {
+function AddSelected(ret) {
     $('#visitorDialog').dialog("close");
+    if (ret.error)
+        alert(ret.error);
     window.location.reload(true);
 }

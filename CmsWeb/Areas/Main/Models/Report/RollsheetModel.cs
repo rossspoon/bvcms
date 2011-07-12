@@ -37,7 +37,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string BFTeacher { get; set; }
             public int? BFTeacherId { get; set; }
             public DateTime? LastAttended { get; set; }
-       }
+        }
         public class PersonMemberInfo : PersonInfo
         {
             public string MemberTypeCode { get; set; }
@@ -53,7 +53,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string NameParent1 { get; set; }
             public string NameParent2 { get; set; }
         }
-        public static IEnumerable<PersonMemberInfo> FetchOrgMembers (int orgid, int[] groups)
+        // This gets current org members
+        public static IEnumerable<PersonMemberInfo> FetchOrgMembers(int orgid, int[] groups)
         {
             if (groups == null)
                 groups = new int[] { 0 };
@@ -99,6 +100,52 @@ namespace CmsWeb.Areas.Main.Models.Report
                     };
             return q;
         }
+        // This gets OrgMembers as of the date of the meeting and 7 days back.
+        public static IEnumerable<PersonMemberInfo> FetchOrgMembers(int meetingid)
+        {
+            var tagownerid = Util2.CurrentTagOwnerId;
+            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == meetingid);
+            var startdt = m.MeetingDate.Value.AddDays(-7);
+            var enddt = m.MeetingDate.Value.AddDays(1);
+            var q = from p in DbUtil.Db.People
+                    let etlist = p.EnrollmentTransactions.Where(ee =>
+                        ee.TransactionTypeId <= 3 // things that start a change
+                        && ee.TransactionStatus == false
+                        && ee.TransactionDate <= enddt // transaction starts <= looked for end
+                        && (ee.Pending ?? false) == false
+                        && (ee.NextTranChangeDate ?? DateTime.Now) >= startdt // transaction ends >= looked for start
+                        && ee.OrganizationId == m.OrganizationId)
+                    let et = etlist.OrderByDescending(et => et.TransactionDate).FirstOrDefault()
+                    where et != null
+                    orderby p.LastName, p.FamilyId, p.PreferredName
+                    select new PersonMemberInfo
+                    {
+                        PeopleId = p.PeopleId,
+                        Name = p.Name,
+                        Name2 = p.Name2,
+                        BirthDate = Util.FormatBirthday(
+                            p.BirthYear,
+                            p.BirthMonth,
+                            p.BirthDay),
+                        Address = p.PrimaryAddress,
+                        Address2 = p.PrimaryAddress2,
+                        CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
+                        PhonePref = p.PhonePrefId,
+                        HomePhone = p.HomePhone,
+                        CellPhone = p.CellPhone,
+                        WorkPhone = p.WorkPhone,
+                        MemberStatus = p.MemberStatus.Description,
+                        Email = p.EmailAddress,
+                        BFTeacher = p.BFClass.LeaderName,
+                        BFTeacherId = p.BFClass.LeaderId,
+                        Age = p.Age.ToString(),
+                        MemberTypeCode = et.MemberType.Code,
+                        MemberType = et.MemberType.Description,
+                        MemberTypeId = et.MemberTypeId,
+                        Joined = et.EnrollmentDate,
+                    };
+            return q;
+        }
 
         private static int[] VisitAttendTypes = new int[] 
         { 
@@ -122,7 +169,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
                         && VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
                     where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
-                    orderby p.Name2, p.Name                           
+                    orderby p.Name2, p.Name
                     orderby p.LastName, p.FamilyId, p.Name2
                     select new PersonVisitorInfo
                     {
@@ -149,8 +196,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                         LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
                         HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == Util2.CurrentTagOwnerId),
                         NameParent1 = p.Family.HohName,
-                        NameParent2 = p.Family.People.Where(x => 
-                            x.FamilyPosition.Id == (int)Family.PositionInFamily.PrimaryAdult 
+                        NameParent2 = p.Family.People.Where(x =>
+                            x.FamilyPosition.Id == (int)Family.PositionInFamily.PrimaryAdult
                             && x.PeopleId != p.Family.HeadOfHouseholdId).FirstOrDefault().Name,
                     };
             return q;
@@ -162,7 +209,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where a.EffAttendFlag == null || a.EffAttendFlag == true
                     select a;
 
-            var q1 = from p in FetchOrgMembers(OrgId, null)
+            var q1 = from p in FetchOrgMembers(MeetingId.Value)
                      join pa in q on p.PeopleId equals pa.PeopleId into j
                      from pa in j.DefaultIfEmpty()
                      select new AttendInfo
@@ -172,8 +219,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                          Attended = pa != null ? pa.AttendanceFlag : false,
                          Member = true,
                          CurrMemberType = p.MemberType,
-                         MemberType = pa != null ? (pa.MemberType != null? pa.MemberType.Description : "") : "",
-                         AttendType = pa != null ? (pa.AttendType != null? pa.AttendType.Description : "") : "",
+                         MemberType = pa != null ? (pa.MemberType != null ? pa.MemberType.Description : "") : "",
+                         AttendType = pa != null ? (pa.AttendType != null ? pa.AttendType.Description : "") : "",
                          Age = p.Age,
                          OtherAttend = pa != null ? (int?)pa.OtherAttends : null
                      };
@@ -187,8 +234,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                          Attended = pa != null ? pa.AttendanceFlag : false,
                          Member = false,
                          CurrMemberType = "",
-                         MemberType = pa != null ? (pa.MemberType != null? pa.MemberType.Description : "") : "",
-                         AttendType = pa != null ? (pa.AttendType != null? pa.AttendType.Description : "") : "",
+                         MemberType = pa != null ? (pa.MemberType != null ? pa.MemberType.Description : "") : "",
+                         AttendType = pa != null ? (pa.AttendType != null ? pa.AttendType.Description : "") : "",
                          Age = p.Age,
                          OtherAttend = pa != null ? (int?)pa.OtherAttends : null
                      };

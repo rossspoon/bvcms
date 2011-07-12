@@ -9,7 +9,7 @@ using System.Net;
 
 namespace CmsCheckin
 {
-    public class Print
+    public static class Print
     {
         public static void MemberList(string orgid)
         {
@@ -28,8 +28,9 @@ namespace CmsCheckin
             if (n % 5 > 0)
                 n++;
             n = n * 5 - 1;
+            var ms = new MemoryStream();
             for (; n > 0; n -= 5)
-                PrintLabel5(list, n);
+                ms.PrintLabel5(list, n);
 
             list = new List<string>();
             list.Add(x.Root.Attribute("Name").Value);
@@ -37,14 +38,12 @@ namespace CmsCheckin
             list.Add(x.Root.Attribute("Date").Value);
             list.Add(x.Root.Attribute("Time").Value);
             list.Add("Count: " + x.Root.Attribute("Count").Value);
-            PrintLabel5(list, 4);
-
-            BlankLabel(true);
+            ms.PrintLabel5(list, 4);
+            ms.BlankLabel(true);
         }
-        private static void PrintLabel5(List<string> list, int n)
+        private static void PrintLabel5(this MemoryStream ms, List<string> list, int n)
         {
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
+            var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("Datamax"))
             {
                 sw.WriteLine("\x02n");
@@ -123,15 +122,11 @@ namespace CmsCheckin
                 n--;
             }
             sw.Flush();
-
-            memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
-            sw.Close();
+            //PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
         }
 
-        public static void BlankLabel(bool datamaxonly)
+        public static void BlankLabel(this MemoryStream ms, bool datamaxonly)
         {
-            var ms = new MemoryStream();
             var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("Datamax"))
             {
@@ -139,9 +134,6 @@ namespace CmsCheckin
                 sw.WriteLine("H07");
                 sw.WriteLine("D11");
                 sw.WriteLine("E");
-                sw.Flush();
-                ms.Position = 0;
-                PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
             }
             else if (!datamaxonly && Program.Printer.Contains("ZDesigner"))
             {
@@ -152,18 +144,14 @@ namespace CmsCheckin
                 sw.WriteLine("^LL0406");
                 sw.WriteLine("^LS0");
                 sw.WriteLine("^PQ1,0,1,Y^XZ");
-                sw.Flush();
-                ms.Position = 0;
-                PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
             }
-            sw.Close();
+            sw.Flush();
         }
-        public static void LabelKiosk(LabelInfo li)
+        public static void LabelKiosk(this MemoryStream ms, LabelInfo li)
         {
             if (!Program.Printer.HasValue())
                 return;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
+            var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("ZDesigner"))
             {
                 //sw.WriteLine("CT~~CD,~CC^~CT~");
@@ -214,18 +202,13 @@ namespace CmsCheckin
             }
 
             sw.Flush();
-
-            memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
-            sw.Close();
-            BlankLabel(true);
+            ms.BlankLabel(true);
         }
-        public static int SecurityLabel(DateTime time, string code)
+        public static int SecurityLabel(this MemoryStream ms, DateTime time, string code)
         {
             if (!Program.Printer.HasValue())
                 return 0;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
+            var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("ZDesigner"))
             {
                 sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
@@ -269,24 +252,19 @@ namespace CmsCheckin
                 sw.WriteLine("Q0001");
                 sw.WriteLine("E");
             }
-            else if (Program.Printer.Contains("Godex"))
+
+            sw.Flush();
+            return 1;
+        }
+        public static int SecurityLabel2(this MemoryStream ms, DateTime time, string code)
+        {
+            if (!Program.Printer.HasValue())
+                return 0;
+            var sw = new StreamWriter(ms);
+
+            if (Program.Printer.Contains("Godex"))
             {
-                sw.WriteLine("^Q51,3");
-                sw.WriteLine("^W76");
-                sw.WriteLine("^H10");
-                sw.WriteLine("^P1");
-                sw.WriteLine("^S4");
-                sw.WriteLine("^AD");
-                sw.WriteLine("^C1");
-                sw.WriteLine("^R0");
-                sw.WriteLine("~Q+0");
-                sw.WriteLine("^O0");
-                sw.WriteLine("^D0");
-                sw.WriteLine("^E12");
-                sw.WriteLine("~R200");
-                sw.WriteLine("^L");
-                sw.WriteLine("Dy2-me-dd");
-                sw.WriteLine("Th:m:s");
+                StartGodexLabel(sw, 1);
                 sw.WriteLine("AH,68,78,1,1,0,0," + code);
                 sw.WriteLine("AH,376,78,1,1,0,0," + code);
                 sw.WriteLine("Lo,296,36,303,379");
@@ -295,17 +273,13 @@ namespace CmsCheckin
                 sw.WriteLine("E");
             }
             sw.Flush();
-            memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
-            sw.Close();
             return 1;
         }
-        public static int Label(LabelInfo li, int nlabels, string code)
+        public static int Label(this MemoryStream ms, LabelInfo li, int nlabels, string code)
         {
             if (nlabels <= 0 || !Program.Printer.HasValue())
                 return 0;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
+            var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("ZDesigner"))
             {
                 sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
@@ -356,73 +330,82 @@ namespace CmsCheckin
                 sw.WriteLine("Q" + nlabels.ToString("0000"));
                 sw.WriteLine("E");
             }
-            
             sw.Flush();
-
-            memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
-            sw.Close();
             return nlabels;
         }
-        public static int Label2(IEnumerable<LabelInfo> li, int nlabels, string code)
+        public static int Label2(this MemoryStream ms, IEnumerable<LabelInfo> li, int nlabels, string code)
         {
             if (nlabels <= 0 || !Program.Printer.HasValue())
                 return 0;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
+            var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("Godex"))
             {
-                sw.WriteLine("^Q51,3");
-                sw.WriteLine("^W76");
-                sw.WriteLine("^H10");
-                sw.WriteLine("^P" + nlabels);
-                sw.WriteLine("^S4");
-                sw.WriteLine("^AD");
-                sw.WriteLine("^C1");
-                sw.WriteLine("^R0");
-                sw.WriteLine("~Q+0");
-                sw.WriteLine("^O0");
-                sw.WriteLine("^D0");
-                sw.WriteLine("^E12");
-                sw.WriteLine("~R200");
-                sw.WriteLine("^L");
-                sw.WriteLine("Dy2-me-dd");
-                sw.WriteLine("Th:m:s");
+                StartGodexLabel(sw, 1);
                 sw.WriteLine("AH,16,0,1,1,0,0," + li.First().first);
                 sw.WriteLine("AE,18,84,1,1,0,0," + li.First().last);
-                sw.WriteLine("AH,428,184,1,1,0,0," + code);
-                sw.WriteLine("AD,441,156,1,1,0,0,{0:M/d/yy}".Fmt(li.First().hour));
-                sw.WriteLine("AD,19,129,1,1,0,0,{0}{1}{2}".Fmt(
+                sw.WriteLine("AD,433,115,1,1,0,0,{0:M/d/yy}".Fmt(li.First().hour));
+                sw.WriteLine("AH,428,136,1,1,0,0," + code);
+                var list = new List<string>();
+                if (li.First().allergies.HasValue())
+                    list.Add(" A ");
+                if (li.First().transport)
+                    list.Add(" T ");
+                if (li.First().custody)
+                    list.Add(" C ");
+                var s = string.Join("|", list.ToArray());
+                sw.WriteLine("R14,140,239,181,1,1");
+                sw.WriteLine("AD,22,140,1,1,0,0,Wear this label  " + s);
+
+                var vertpos = 338;
+                foreach (var i in li.OrderByDescending(ll => ll.hour))
+                {
+                    var loc = i.location;
+                    if (!loc.HasValue())
+                        loc = "n/a";
+                    sw.WriteLine("AC,17,{0},1,1,0,0,{1}".Fmt(vertpos, loc));
+                    sw.WriteLine("AC,120,{0},1,1,0,0,{1}".Fmt(vertpos, 
+                        "{0:h:mm t}".Fmt(i.hour).PadLeft(7,'~').Replace("~","  ")));
+                    sw.WriteLine("AB,36,{0},1,1,0,0,{1} ({2})".Fmt(vertpos + 31, i.org, i.mv));
+                    vertpos -= 68;
+                }
+                sw.WriteLine("E");
+                sw.Flush();
+                foreach (var i in li)
+                    AllergyLabel2(ms, i, code);
+                foreach (var i in li.Where(ll => ll.n > 1))
+                {
+                    StartGodexLabel(sw, i.n - 1);
+                    sw.WriteLine("AH,16,0,1,1,0,0," + li.First().first);
+                    sw.WriteLine("AE,18,84,1,1,0,0," + li.First().last);
+                    sw.WriteLine("AD,286,161,1,1,0,0,{0:M/d/yy}".Fmt(li.First().hour));
+                    sw.WriteLine("AH,422,129,1,1,0,0," + code);
+                    sw.WriteLine("AD,19,129,1,1,0,0,Extra | {0}{1}{2}".Fmt(
                     li.First().allergies.HasValue() ? " A |" : "",
                     li.First().transport ? " T |" : "",
                     li.First().custody ? " C |" : ""));
 
-                var vertpos = 290;
-                foreach (var i in li)
-                {
-                    sw.WriteLine("AC,16,{0},1,1,0,0,{1}".Fmt(vertpos, i.location));
-                    sw.WriteLine("AC,120,{0},1,1,0,0,{1:h:mm t}".Fmt(vertpos, i.hour));
-                    sw.WriteLine("AB,220,{0},1,1,0,0,{1} ({2})".Fmt(vertpos + 4, i.org, i.mv));
-                    vertpos += 35;
+                    var loc = i.location;
+                    if (!loc.HasValue())
+                        loc = "n/a";
+                    sw.WriteLine("AC,17,202,1,1,0,0," + loc);
+                    sw.WriteLine("AC,120,202,1,1,0,0," + 
+                        "{0:h:mm t}".Fmt(i.hour).PadLeft(7,'~').Replace("~","  "));
+                    sw.WriteLine("AB,36,233,1,1,0,0,{0} ({1})".Fmt(i.org, i.mv));
+                    vertpos += 68;
+                    sw.WriteLine("E");
                 }
-                sw.WriteLine("E");
             }
             sw.Flush();
-
-            memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
-            sw.Close();
             return nlabels;
         }
 
-        public static int AllergyLabel(LabelInfo li)
+        public static int AllergyLabel(this MemoryStream ms, LabelInfo li)
         {
             if (li.n == 0 || !Program.Printer.HasValue())
                 return 0;
             if (!li.mv.Contains("G"))
                 return 0;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
+            var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("ZDesigner"))
             {
                 sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
@@ -459,19 +442,46 @@ namespace CmsCheckin
                 sw.WriteLine("E");
             }
             sw.Flush();
-            memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
-            sw.Close();
             return 1;
         }
-        public static int LocationLabel(LabelInfo li)
+        public static int AllergyLabel2(this MemoryStream ms, LabelInfo li, string code)
+        {
+            if (li.n == 0 || !Program.Printer.HasValue())
+                return 0;
+            if (!li.mv.Contains("G"))
+                return 0;
+            var sw = new StreamWriter(ms);
+            if (Program.Printer.Contains("Godex"))
+            {
+                var loc = li.location;
+                if (!loc.HasValue())
+                    loc = "n/a";
+                var allergies = li.allergies;
+                if (allergies.HasValue())
+                    allergies = "(" + allergies + ")";
+                StartGodexLabel(sw, 1);
+                sw.WriteLine("AG,16,0,1,1,0,0," + li.first);
+                sw.WriteLine("AE,18,66,1,1,0,0," + li.last);
+                sw.WriteLine("AD,18,108,1,1,0,0,Guest " + allergies);
+                sw.WriteLine("AB,18,152,1,1,0,0,{0} ({1})".Fmt(li.org, li.mv));
+                sw.WriteLine("AD,18,195,1,1,0,0," + loc);
+                sw.WriteLine("AD,158,195,1,1,0,0,{0:M/d/yy}".Fmt(li.hour));
+                sw.WriteLine("AD,303,195,1,1,0,0,{0:h:mm t}".Fmt(li.hour));
+                sw.WriteLine("AH,433,162,1,1,0,0," + code);
+                sw.WriteLine("BA,57,241,3,7,100,0,2," + li.pid);
+                sw.WriteLine("E");
+            }
+            
+            sw.Flush();
+            return 1;
+        }
+        public static int LocationLabel(this MemoryStream ms, LabelInfo li)
         {
             if (li.n == 0 || !Program.Printer.HasValue())
                 return 0;
             if (!li.mv.Contains("G") || !li.location.HasValue())
                 return 0;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
+            var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("ZDesigner"))
             {
                 sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
@@ -508,39 +518,67 @@ namespace CmsCheckin
                 sw.WriteLine("E");
             }
             sw.Flush();
-            memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
-            sw.Close();
             return 1;
         }
-        public static int LocationLabel2(IEnumerable<LabelInfo> list)
+        public static int LocationLabel2(this MemoryStream ms, IEnumerable<IEnumerable<LabelInfo>> list)
         {
-            var li = list.First();
-            if (li.n == 0 || !Program.Printer.HasValue())
+            if (!Program.Printer.HasValue())
                 return 0;
-            if (!li.mv.Contains("G") || !li.location.HasValue())
+            if (!list.Any(li => li.Any(i => i.mv.Contains("G") && i.location.HasValue())))
                 return 0;
-            var memStrm = new MemoryStream();
-            var sw = new StreamWriter(memStrm);
+            if (list.Sum(li => li.Sum(i => i.n)) == 0)
+                return 0;
+
+            var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("Godex"))
             {
-                sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
-                sw.WriteLine("^XA");
-                sw.WriteLine("^MMT");
-                sw.WriteLine("^PW609");
-                sw.WriteLine("^LL0406");
-                sw.WriteLine("^LS0");
-                sw.WriteLine(@"^FT29,83^A0N,62,62^FH\^FD{0}^FS".Fmt(li.first));
-                sw.WriteLine(@"^FT30,155^A0N,45,45^FH\^FDLocation/time: {0}, {1:h:mm tt}^FS"
-                    .Fmt(li.location, li.hour));
-                sw.WriteLine("^PQ1,0,1,Y^XZ");
+                StartGodexLabel(sw, 1);
+                var vertpos = 6;
+                foreach (var li in list)
+                {
+                    foreach (var i in li)
+                    {
+                        if (vertpos > 340)
+                        {
+                            sw.WriteLine("E");
+                            StartGodexLabel(sw, 1);
+                            vertpos = 6;
+                        }
+                        var loc = i.location;
+                        if (!loc.HasValue())
+                            loc = "n/a";
+                        sw.WriteLine("AE,16,{0},1,1,0,0,{1}".Fmt(vertpos, i.first));
+                        sw.WriteLine("AC,394,{0},1,1,0,0,{1}".Fmt(vertpos + 5, loc));
+                        sw.WriteLine("AC,500,{0},1,1,0,0,{1}".Fmt(vertpos + 5, "{0:h:mm t}".Fmt(i.hour).PadLeft(7, '~').Replace("~", "  ")));
+                        vertpos += 42;
+                        sw.WriteLine("AB,16,{0},1,1,0,0,{1} ({2})".Fmt(vertpos + 4, i.org, i.mv));
+                        vertpos += 42;
+                    }
+                    sw.WriteLine("Lo,13,{0},584,{1}".Fmt(vertpos+3, vertpos+4));
+                }
+                sw.WriteLine("E");
             }
-            
             sw.Flush();
-            memStrm.Position = 0;
-            PrintRawHelper.SendDocToPrinter(Program.Printer, memStrm);
-            sw.Close();
             return 1;
+        }
+        private static void StartGodexLabel(StreamWriter sw, int nlabels)
+        {
+            sw.WriteLine("^Q51,3");
+            sw.WriteLine("^W76");
+            sw.WriteLine("^H10");
+            sw.WriteLine("^P" + nlabels);
+            sw.WriteLine("^S4");
+            sw.WriteLine("^AD");
+            sw.WriteLine("^C1");
+            sw.WriteLine("^R0");
+            sw.WriteLine("~Q+0");
+            sw.WriteLine("^O0");
+            sw.WriteLine("^D0");
+            sw.WriteLine("^E12");
+            sw.WriteLine("~R200");
+            sw.WriteLine("^L");
+            sw.WriteLine("Dy2-me-dd");
+            sw.WriteLine("Th:m:s");
         }
     }
 }

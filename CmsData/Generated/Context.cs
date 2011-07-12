@@ -2832,6 +2832,30 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.GetWeekDayNameOfDate", IsComposable = true)]
+		[return: Parameter(DbType = "nvarchar")]
+		public string GetWeekDayNameOfDate(
+            [Parameter(Name = "DateX", DbType="datetime")] DateTime? DateX
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                DateX
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetScheduleDesc", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string GetScheduleDesc(
+            [Parameter(Name = "meetingtime", DbType="datetime")] DateTime? meetingtime
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                meetingtime
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.FindResCode", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? FindResCode(
@@ -2954,18 +2978,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.GetWeekDayNameOfDate", IsComposable = true)]
-		[return: Parameter(DbType = "nvarchar")]
-		public string GetWeekDayNameOfDate(
-            [Parameter(Name = "DateX", DbType="datetime")] DateTime? DateX
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                DateX
-                ).ReturnValue));
-		}
-
 		[Function(Name="disc.GetProfile", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string GetProfile(
@@ -2977,18 +2989,6 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 Username,
                 PropertyName
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.GetScheduleDesc", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string GetScheduleDesc(
-            [Parameter(Name = "meetingtime", DbType="datetime")] DateTime? meetingtime
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                meetingtime
                 ).ReturnValue));
 		}
 

@@ -25,7 +25,14 @@ namespace CmsData
     {
         public bool UseMassEmailer
         {
-            get { return Setting("UseMassEmailer", "false").ToBool(); }
+            get
+            {
+#if DEBUG
+                return false;
+#else
+                return Setting("UseMassEmailer", "false").ToBool();
+#endif
+            }
         }
         public string CmsHost
         {
@@ -484,11 +491,16 @@ namespace CmsData
                         SubmitChanges();
                     }
                 }
-                NotifySentEmails(CmsHost, From.Address, From.DisplayName,
-                    emailqueue.Subject, i, emailqueue.Id);
+                emailqueue.Sent = DateTime.Now;
                 if (emailqueue.Redacted ?? false)
                     emailqueue.Body = "redacted";
-                emailqueue.Sent = DateTime.Now;
+                else
+                {
+                    var nitems = emailqueue.EmailQueueTos.Count();
+                    if (nitems > 1)
+                        NotifySentEmails(CmsHost, From.Address, From.DisplayName,
+                            emailqueue.Subject, nitems, emailqueue.Id);
+                }
                 SubmitChanges();
             }
             catch (Exception ex)

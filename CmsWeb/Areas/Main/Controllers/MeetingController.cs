@@ -18,11 +18,12 @@ namespace CmsWeb.Areas.Main.Controllers
 {
     public class MeetingController : CmsStaffController
     {
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? id, bool? showall)
         {
             if (!id.HasValue)
                 return RedirectShowError("no id");
             var m = new MeetingModel(id.Value);
+            m.showall = showall == true;
             if (m.meeting == null)
                 return RedirectShowError("no meeting");
 
@@ -120,7 +121,46 @@ namespace CmsWeb.Areas.Main.Controllers
 				DbUtil.Db.SubmitChanges();
 				DbUtil.LogActivity("Created new meeting for {0}".Fmt(dt));
 			}
-			return Content("/Meeting/Index/" + newMtg.MeetingId);
+			return Content("/Meeting/Index/{0}?showall=true".Fmt(newMtg.MeetingId));
+        }
+        public ActionResult QueryAttendees(int Id)
+        {
+            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == Id);
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            qb.AddNewClause(QueryType.MeetingId, CompareType.Equal, m.MeetingId);
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+        }
+        public ActionResult QueryVisitors(int Id)
+        {
+            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == Id);
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            qb.AddNewClause(QueryType.MeetingId, CompareType.Equal, m.MeetingId);
+            var c = qb.AddNewClause(QueryType.AttendTypeAsOf, CompareType.OneOf, "40,VM;50,RV;60,NV");
+            c.StartDate = m.MeetingDate;
+            c.Program = m.Organization.Division.Program.Id;
+            c.Division = m.Organization.DivisionId.Value;
+            c.Organization = m.OrganizationId;
+
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+        }
+        public ActionResult QueryAbsents(int Id)
+        {
+            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == Id);
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            qb.AddNewClause(QueryType.MeetingId, CompareType.NotEqual, m.MeetingId);
+            var c = qb.AddNewClause(QueryType.WasMemberAsOf, CompareType.Equal, "1,T");
+            c.StartDate = m.MeetingDate;
+            c.Program = m.Organization.Division.Program.Id;
+            c.Division = m.Organization.DivisionId.Value;
+            c.Organization = m.OrganizationId;
+
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
         }
     }
 }

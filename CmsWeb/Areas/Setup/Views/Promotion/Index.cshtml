@@ -66,11 +66,11 @@
         </td>
         <td>
             <span id='f@(item.Id)' 
-                class='clickSelect'>@item.FromDivId == null? "click to set" : item.FromDivision.Name</span>
+                class='clickSelect'>@(item.FromDivId == null? "click to set" : item.FromDivision.Name)</span>
         </td>
         <td>
             <span id='t@(item.Id)' 
-                class='clickSelect'>@item.ToDivId == null ? "click to set" : item.ToDivision.Name</span>
+                class='clickSelect'>@(item.ToDivId == null ? "click to set" : item.ToDivision.Name)</span>
         </td>
         <td>
             @if (Model.CanPromote(item.Id))

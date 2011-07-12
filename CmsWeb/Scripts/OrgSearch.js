@@ -16,12 +16,16 @@
     $("#search").click(function () {
         var name = $('#Name').val();
         if (name.match("^" + "M\.") == "M.") {
+            $('#Name').val("");
             var f = $('#results').closest('form');
-            f.attr("action", "/OrgSearch/CreateMeeting/");
+            f.attr("action", "/OrgSearch/CreateMeeting/" + name);
             f.submit();
         }
         $.getTable();
         return false;
+    });
+    $("#hideshow").click(function () {
+        $("#managedivisions").toggle();
     });
     $.gotoPage = function (e, pg) {
         $("#Page").val(pg);
@@ -139,10 +143,25 @@
         });
     });
 
+    $("#MakeNewDiv").click(function (ev) {
+        ev.preventDefault();
+        $.post('/OrgSearch/MakeNewDiv/', { id: $("#TagProgramId").val(), name: $("#NewDiv").val() }, function (ret) {
+            $('#TagDiv').html(ret);
+            $("#NewDiv").val("");
+        });
+        return false;
+    });
+    $("#RenameDiv").click(function (ev) {
+        ev.preventDefault();
+        $.post('/OrgSearch/RenameDiv/', { id: $("#TagProgramId").val(), divid: $("#TagDiv").val(), name: $("#NewDiv").val() }, function (ret) {
+            $('#TagDiv').html(ret);
+            $("#NewDiv").val("");
+        });
+        return false;
+    });
     $("#TagProgramId").change(function () {
         $.post('/OrgSearch/TagDivIds/' + $(this).val(), null, function (ret) {
             $('#TagDiv').html(ret);
-            //$('#TagDiv').sb("refresh");
         });
     });
     $("#TagDiv").change(function () {

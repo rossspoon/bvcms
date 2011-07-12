@@ -345,6 +345,15 @@ namespace CmsData
             qb.SetComparisonType(CompareType.AllTrue);
             return qb;
         }
+        public QueryBuilderClause AddNewGroupClause(CompareType op)
+        {
+            var qb = new QueryBuilderClause();
+            qb.ClauseOrder = qb.MaxClauseOrder() + 1;
+            qb.SetQueryType(QueryType.Group);
+            this.Clauses.Add(qb);
+            qb.SetComparisonType(op);
+            return qb;
+        }
         public QueryBuilderClause AddNewClause(QueryType type, CompareType op, object value)
         {
             var qb = new QueryBuilderClause();

@@ -237,6 +237,10 @@ namespace CmsData
 		
 		private int? _CheckboxesMax;
 		
+		private double? _Lat;
+		
+		private double? _LongX;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -619,6 +623,12 @@ namespace CmsData
 		
 		partial void OnCheckboxesMaxChanging(int? value);
 		partial void OnCheckboxesMaxChanged();
+		
+		partial void OnLatChanging(double? value);
+		partial void OnLatChanged();
+		
+		partial void OnLongXChanging(double? value);
+		partial void OnLongXChanged();
 		
     #endregion
 		public Organization()
@@ -1014,7 +1024,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(40)")]
+		[Column(Name="Location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(200)")]
 		public string Location
 		{
 			get { return this._Location; }
@@ -3115,6 +3125,50 @@ namespace CmsData
 					this._CheckboxesMax = value;
 					this.SendPropertyChanged("CheckboxesMax");
 					this.OnCheckboxesMaxChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="lat", UpdateCheck=UpdateCheck.Never, Storage="_Lat", DbType="float")]
+		public double? Lat
+		{
+			get { return this._Lat; }
+
+			set
+			{
+				if (this._Lat != value)
+				{
+				
+                    this.OnLatChanging(value);
+					this.SendPropertyChanging();
+					this._Lat = value;
+					this.SendPropertyChanged("Lat");
+					this.OnLatChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="long", UpdateCheck=UpdateCheck.Never, Storage="_LongX", DbType="float")]
+		public double? LongX
+		{
+			get { return this._LongX; }
+
+			set
+			{
+				if (this._LongX != value)
+				{
+				
+                    this.OnLongXChanging(value);
+					this.SendPropertyChanging();
+					this._LongX = value;
+					this.SendPropertyChanged("LongX");
+					this.OnLongXChanged();
 				}
 
 			}

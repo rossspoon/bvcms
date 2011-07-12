@@ -151,6 +151,9 @@ function AddTaskEnter(e) {
     return false;
 }
 function AddTaskClick() {
+    var desc = $("#TaskDesc").val().replace(/\s/g,"");
+    if (!desc || desc.length == 0)
+        return;
     var qs = "TaskDesc=" + $("#TaskDesc").val() + "&CurTab=" + $("#CurTab").val();
     $.post('/Task/AddTask/', qs, function(ret) {
         $("#nomatch").remove();

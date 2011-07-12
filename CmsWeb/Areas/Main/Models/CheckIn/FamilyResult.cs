@@ -93,7 +93,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("first", c.First);
                     w.WriteAttributeString("last", c.Last);
                     w.WriteAttributeString("org", c.DisplayClass);
-                    w.WriteAttributeString("orgname", c.Class);
+                    w.WriteAttributeString("orgname", c.OrgName);
                     w.WriteAttributeString("leader", c.Leader);
                     w.WriteAttributeString("orgid", c.OrgId.ToString());
                     w.WriteAttributeString("loc", c.Location);

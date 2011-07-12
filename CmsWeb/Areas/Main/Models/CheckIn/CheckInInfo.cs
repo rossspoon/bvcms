@@ -54,6 +54,16 @@ namespace CmsWeb.Models
                 return s;
             }
         }
+        public string OrgName
+        {
+            get
+            {
+                string s = Class;
+                if (Leader.HasValue())
+                    s += ", " + Leader;
+                return s;
+            }
+        }
         public bool CheckedIn { get; set; }
         public bool Custody { get; set; }
         public bool Transport { get; set; }

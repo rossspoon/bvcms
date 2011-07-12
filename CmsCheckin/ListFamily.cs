@@ -45,7 +45,11 @@ namespace CmsCheckin
                         return true;
                     case Keys.Return:
                         Program.TimerStop();
-                        PrintLabels();
+                        using (var ms = new MemoryStream())
+                        {
+                            PrintLabels(ms);
+                            PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
+                        }
                         this.GoHome(string.Empty);
                         return true;
                     case Keys.S | Keys.Alt:
@@ -428,7 +432,12 @@ namespace CmsCheckin
                 transport = c.transport,
                 requiressecuritylabel = c.RequiresSecurityLabel,
             };
-            CmsCheckin.Print.LabelKiosk(li);
+            using (var ms = new MemoryStream())
+            {
+                ms.LabelKiosk(li);
+                PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
+            }
+                
             RemoveMenu();
         }
 
@@ -645,15 +654,25 @@ namespace CmsCheckin
         PleaseWait PleaseWaitForm = null;
         private void DoPrinting(object sender, DoWorkEventArgs e)
         {
-            Util.UnLockFamily();
-            PrintLabels();
-            if (Program.KioskMode == false)
-                if (LabelsPrinted > 0)
-                {
-                    if (RequiresSecurityLabel)
-                        LabelsPrinted += CmsCheckin.Print.SecurityLabel(time, Program.SecurityCode);
-                    CmsCheckin.Print.BlankLabel(LabelsPrinted == 1); // force blank if only 1
-                }
+            using (var ms = new MemoryStream())
+            {
+                Util.UnLockFamily();
+                if (Program.TwoInchLabel)
+                    PrintLabels2(ms);
+                else
+                    PrintLabels(ms);
+                if (Program.KioskMode == false)
+                    if (LabelsPrinted > 0)
+                    {
+                        if (RequiresSecurityLabel)
+                            if (Program.TwoInchLabel)
+                                LabelsPrinted += ms.SecurityLabel2(time, Program.SecurityCode);
+                            else
+                                LabelsPrinted += ms.SecurityLabel(time, Program.SecurityCode);
+                        ms.BlankLabel(LabelsPrinted == 1); // force blank if only 1
+                    }
+                PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
+            }
         }
         private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -678,7 +697,7 @@ namespace CmsCheckin
             }
             this.GoHome(string.Empty);
         }
-        private void PrintLabels()
+        private void PrintLabels(MemoryStream ms)
         {
             if (list == null)
                 return;
@@ -698,21 +717,21 @@ namespace CmsCheckin
                         last = c.last,
                         location = c.location,
                         hour = c.cinfo.hour,
-                        org = c.org,
+                        org = c.orgname,
                         custody = c.custody,
                         transport = c.transport,
                         requiressecuritylabel = c.RequiresSecurityLabel,
                     };
             foreach (var li in q)
             {
-                LabelsPrinted += CmsCheckin.Print.Label(li, li.n, Program.SecurityCode);
-                LabelsPrinted += CmsCheckin.Print.AllergyLabel(li);
+                LabelsPrinted += ms.Label(li, li.n, Program.SecurityCode);
+                LabelsPrinted += ms.AllergyLabel(li);
             }
             foreach (var li in q)
-                LabelsPrinted += CmsCheckin.Print.LocationLabel(li);
+                LabelsPrinted += ms.LocationLabel(li);
             RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
         }
-        private void PrintLabels2()
+        private void PrintLabels2(MemoryStream ms)
         {
             if (list == null)
                 return;
@@ -734,20 +753,15 @@ namespace CmsCheckin
                                last = c.last,
                                location = c.location,
                                hour = c.cinfo.hour,
-                               org = c.org,
+                               org = c.orgname,
                                custody = c.custody,
                                transport = c.transport,
                                requiressecuritylabel = c.RequiresSecurityLabel,
                            };
 
             foreach (var li in q)
-            {
-                LabelsPrinted += CmsCheckin.Print.Label2(li, li.First().n, Program.SecurityCode);
-                foreach (var i in li)
-                    LabelsPrinted += CmsCheckin.Print.AllergyLabel(i);
-            }
-            //foreach (var li in q)
-            //    LabelsPrinted += CmsCheckin.Print.LocationLabel2(li);
+                LabelsPrinted += ms.Label2(li, li.Max(ll => ll.n), Program.SecurityCode);
+            LabelsPrinted += ms.LocationLabel2(q);
             RequiresSecurityLabel = qlist.Any(li => li.RequiresSecurityLabel == true && li.NumLabels > 0);
         }
         private void ClearControls()

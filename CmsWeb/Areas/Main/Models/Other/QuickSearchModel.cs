@@ -337,5 +337,94 @@ namespace CmsWeb.Models
                 _count = FetchPeople().Count();
             return _count.Value;
         }
+        public int ConvertToQuery()
+        {
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+
+            if (m.memberstatus > 0)
+                qb.AddNewClause(QueryType.MemberStatusId, CompareType.Equal, m.memberstatus);
+
+            if (m.name.HasValue())
+            {
+                string First, Last;
+                NameSplit(m.name, out First, out Last);
+                if (First.HasValue())
+                {
+                    var g = qb.AddNewGroupClause(CompareType.AnyTrue);
+                    g.AddNewClause(QueryType.LastName, CompareType.StartsWith, Last);
+                    g.AddNewClause(QueryType.MaidenName, CompareType.StartsWith, Last);
+                    g = qb.AddNewGroupClause(CompareType.AnyTrue);
+                    g.AddNewClause(QueryType.FirstName, CompareType.StartsWith, First);
+                    g.AddNewClause(QueryType.NickName, CompareType.StartsWith, First);
+                    g.AddNewClause(QueryType.MiddleName, CompareType.StartsWith, First);
+                }
+                else
+                {
+                    if (Last.AllDigits())
+                        qb.AddNewClause(QueryType.PeopleId, CompareType.Equal, Last.ToInt());
+                    else
+                        qb.AddNewClause(QueryType.LastName, CompareType.StartsWith, Last);
+                }
+            }
+            if (m.address.IsNotNull())
+            {
+                if (AddrRegex.IsMatch(m.address))
+                {
+                    var match = AddrRegex.Match(m.address);
+                    m.address = match.Groups["addr"].Value;
+                }
+                m.address = m.address.Trim();
+                if (m.address.HasValue())
+                {
+                    var g = qb.AddNewGroupClause(CompareType.AnyTrue);
+                    g.AddNewClause(QueryType.PrimaryAddress, CompareType.Contains, m.address);
+                    g.AddNewClause(QueryType.PrimaryAddress2, CompareType.Contains, m.address);
+                    g.AddNewClause(QueryType.PrimaryCity, CompareType.Contains, m.address);
+                    g.AddNewClause(QueryType.PrimaryZip, CompareType.Contains, m.address);
+                }
+            }
+            if (m.communication.IsNotNull())
+            {
+                m.communication = m.communication.Trim();
+                if (m.communication.HasValue())
+                {
+                    var g = qb.AddNewGroupClause(CompareType.AnyTrue);
+                    g.AddNewClause(QueryType.CellPhone, CompareType.Contains, m.communication);
+                    g.AddNewClause(QueryType.EmailAddress, CompareType.Contains, m.communication);
+                    g.AddNewClause(QueryType.HomePhone, CompareType.Contains, m.communication);
+                    g.AddNewClause(QueryType.WorkPhone, CompareType.Contains, m.communication);
+                }
+            }
+            if (m.birthdate.HasValue() && m.birthdate != "na")
+            {
+                DateTime dt;
+                if (DateTime.TryParse(m.birthdate, out dt))
+                    if (Regex.IsMatch(m.birthdate, @"\d+/\d+/\d+"))
+                        qb.AddNewClause(QueryType.Birthday, CompareType.Equal, m.birthdate);
+                    else
+                        qb.AddNewClause(QueryType.Birthday, CompareType.Equal, m.birthdate);
+                else
+                {
+                    int n;
+                    if (int.TryParse(m.birthdate, out n))
+                        if (n >= 1 && n <= 12)
+                            qb.AddNewClause(QueryType.Birthday, CompareType.Equal, m.birthdate);
+                        else
+                            qb.AddNewClause(QueryType.Birthday, CompareType.Equal, m.birthdate);
+                }
+            }
+            if (m.campus > 0)
+                qb.AddNewClause(QueryType.CampusId, CompareType.Equal, m.campus);
+            else if (m.campus == -1)
+                qb.AddNewClause(QueryType.CampusId, CompareType.IsNull, m.campus);
+            if (m.gender != 99)
+                qb.AddNewClause(QueryType.GenderId, CompareType.Equal, m.gender);
+            if (m.marital != 99)
+                qb.AddNewClause(QueryType.MaritalStatusId, CompareType.Equal, m.marital);
+            qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
+            DbUtil.Db.SubmitChanges();
+            return qb.QueryId;
+        }
     }
 }

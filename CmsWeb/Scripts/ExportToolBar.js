@@ -97,8 +97,9 @@
         d.dialog("open");
         $("#ExportStartEndRun").unbind("click").click(function (ev2) {
             ev2.preventDefault();
-            var url = ev.target.href + "?start=" + $("#startdt", d).val()
-                + "&end=" + $('#enddt', d).val();
+            var url = ev.target.href;
+            url = url.appendQuery("start=" + $("#startdt", d).val());
+            url = url.appendQuery("end=" + $("#enddt", d).val());
             $("#ExportStartEnd").dialog("close");
             window.open(url);
             return false;
@@ -111,12 +112,18 @@ String.prototype.startsWith = function(t, i) {
 }
 String.prototype.appendQuery = function(q) {
     if (this && this.length > 0)
-        return this + '&' + q;
+        if (this.contains("?"))
+            return this + '&' + q;
+        else
+            return this + '?' + q;
     return q;
-}
+};
+String.prototype.contains = function(it) { 
+    return this.indexOf(it) != -1; 
+};
 String.prototype.endsWith = function(t, i) {
     return (t == this.substring(this.length - t.length));
-}
+};
 String.prototype.addCommas = function() {
     var x = this.split('.');
     var x1 = x[0];
@@ -126,7 +133,7 @@ String.prototype.addCommas = function() {
         x1 = x1.replace(rgx, '$1' + ',' + '$2');
     }
     return x1 + x2;
-}
+};
 
 
 

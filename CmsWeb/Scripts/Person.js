@@ -149,6 +149,7 @@
                     changeYear: true
                 });
                 $(".submitbutton,.bt").button();
+                $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
                 $("#verifyaddress").click(function () {
                     var f = $(this).closest('form');
                     var q = f.serialize();
@@ -180,6 +181,7 @@
                 $.post($(bc).attr("href"), null, function (ret) {
                     $(bc).html(ret);
                 });
+                $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
                 $(".submitbutton,.bt").button();
             });
         });

@@ -41,5 +41,14 @@ namespace CmsWeb.Areas.Main.Controllers
             Session["QuickSearchInfo"] = m.m;
             return View(m);
         }
+        [HttpPost]
+        public ActionResult ConvertToQuery()
+        {
+            var m = new QuickSearchModel();
+            UpdateModel(m);
+            UpdateModel(m.m);
+            Session["QuickSearchInfo"] = m.m;
+            return Content("/QueryBuilder/Main/" + m.ConvertToQuery());
+        }
     }
 }

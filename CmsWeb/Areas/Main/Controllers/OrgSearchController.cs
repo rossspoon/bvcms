@@ -69,6 +69,25 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("DivisionIds", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RenameDiv(int id, int divid, string name)
+        {
+            var d = DbUtil.Db.Divisions.Single(dd => dd.Id == divid);
+            d.Name = name;
+            DbUtil.Db.SubmitChanges();
+            var m = new OrgSearchModel { ProgramId = id };
+            return View("DivisionIds", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MakeNewDiv(int id, string name)
+        {
+            var d = new Division { Name = name, ProgId = id };
+            d.ProgDivs.Add(new ProgDiv { ProgId = id });
+            DbUtil.Db.Divisions.InsertOnSubmit(d);
+            DbUtil.Db.SubmitChanges();
+            var m = new OrgSearchModel { ProgramId = id };
+            return View("DivisionIds", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DefaultMeetingDate(int id)
         {
             var dt = OrgSearchModel.DefaultMeetingDate(id);
@@ -167,20 +186,20 @@ namespace CmsWeb.Areas.Main.Controllers
             return new EmptyResult();
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CreateMeeting(string name)
+        public ActionResult CreateMeeting(string id)
         {
-            var n = name.ToCharArray().Count(c => c == 'M');
+            var n = id.ToCharArray().Count(c => c == 'M');
             if (n > 1)
-                return RedirectShowError("More than one barcode string found({0})".Fmt(name));
-            var a = name.SplitStr(".");
+                return RedirectShowError("More than one barcode string found({0})".Fmt(id));
+            var a = id.SplitStr(".");
             var orgid = a[1].ToInt();
             var organization = DbUtil.Db.LoadOrganizationById(orgid);
             if (organization == null)
-                return RedirectShowError("Cannot interpret barcode orgid({0})".Fmt(name));
+                return RedirectShowError("Cannot interpret barcode orgid({0})".Fmt(id));
 
             var re = new Regex(@"\A(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])([0-9]{2})([01][0-9])([0-5][0-9])\Z");
             if (!re.IsMatch(a[2]))
-                return RedirectShowError("Cannot interpret barcode datetime({0})".Fmt(name));
+                return RedirectShowError("Cannot interpret barcode datetime({0})".Fmt(id));
             var g = re.Match(a[2]);
             var dt = new DateTime(
                 g.Groups[3].Value.ToInt() + 2000,
@@ -205,7 +224,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 DbUtil.Db.SubmitChanges();
                 DbUtil.LogActivity("Creating new meeting for {0}".Fmt(dt));
             }
-            return Redirect("/Meeting/Index/" + newMtg.MeetingId);
+            return Redirect("/Meeting/Index/{0}?showall=true".Fmt(newMtg.MeetingId));
         }
     }
 }

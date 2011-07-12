@@ -11,6 +11,7 @@ using CmsWeb.Models;
 using System.Diagnostics;
 using System.Web.Routing;
 using System.Threading;
+using System.Web.Security;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -466,19 +467,30 @@ namespace CmsWeb.Areas.Main.Controllers
                 u.ChangePassword(password2);
             DbUtil.Db.SubmitChanges();
             return Content("ok");
-            //return View("UserDialog", u.Person);
         }
         [Authorize(Roles = "Admin")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UserDelete(int id)
         {
-            var u = DbUtil.Db.Users.Single(us => us.UserId == id);
+            var Db = DbUtil.Db;
+            var u = Db.Users.Single(us => us.UserId == id);
+            Db.UserCanEmailFors.DeleteAllOnSubmit(u.UsersWhoCanEmailForMe);
+			Db.UserCanEmailFors.DeleteAllOnSubmit(u.UsersICanEmailFor);
+			Db.Preferences.DeleteAllOnSubmit(u.Preferences);
+            Db.ActivityLogs.DeleteAllOnSubmit(u.ActivityLogs);
+            Db.BlogNotifications.DeleteAllOnSubmit(u.BlogNotifications);
+            Db.PageVisits.DeleteAllOnSubmit(u.PageVisits);
+            Db.UserRoles.DeleteAllOnSubmit(u.UserRoles);
+            Db.UserGroupRoles.DeleteAllOnSubmit(u.UserGroupRoles);
+            foreach (var f in u.VolunteerFormsUploaded)
+				f.UploaderId = null;
+            Db.SubmitChanges();
+            Membership.DeleteUser(u.Username, true);
             DbUtil.Db.UserRoles.DeleteAllOnSubmit(u.UserRoles);
             DbUtil.Db.ActivityLogs.DeleteAllOnSubmit(u.ActivityLogs);
             DbUtil.Db.Users.DeleteOnSubmit(u);
             DbUtil.Db.SubmitChanges();
             return Content("ok");
-            //return View("UserDialog", u.Person);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UserInfoGrid(int id)

@@ -13,6 +13,8 @@ namespace CmsWeb.Models
     {
         public CmsData.Meeting meeting;
 
+        public bool showall { get; set; }
+
         public MeetingModel(int id)
         {
             meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == id);

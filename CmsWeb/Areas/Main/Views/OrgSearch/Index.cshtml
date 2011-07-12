@@ -35,14 +35,19 @@
           <td valign="top">@Html.DropDownList("StatusId", Model.StatusIds())</td>
           <td colspan="2" align="center">
           <a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a>
-          <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a></td>
+          <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a>
+@if (User.IsInRole("OrgTagger"))
+{ 
+          <a href="#" id="hideshow">Manager</a>
+}
+          </td>
       </tr>
     </table>
 @if (User.IsInRole("OrgTagger"))
 { 
 <div style="margin-left:1%;float:left;">&nbsp;</div>
 <table id="managedivisions" class="roundbox floatleft">
-<tr><td><h2>Manage Divisions</h2></td></tr>
+<tr><td><h2>Manage Divisions</h2></td><td></td></tr>
   <tr>
     <td>Target Program:<br />
         @Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
@@ -50,6 +55,13 @@
   <tr>
     <td><br />Target Divsion:<br />
         @Html.DropDownList("TagDiv", Model.DivisionIds())</td>
+  </tr>
+  <tr>
+    <td><br />New Divsion:<br />
+        @Html.TextBox("NewDiv") 
+        <a id="MakeNewDiv" href="/OrgSearch/MakeNewDiv" class="bt">New</a>
+        <a id="RenameDiv" href="/OrgSearch/RenameDiv" class="bt">Rename</a>
+        </td>
   </tr>
 </table>
 }

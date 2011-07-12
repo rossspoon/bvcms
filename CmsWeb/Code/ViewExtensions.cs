@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Web.Routing;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Script.Serialization;
 
 namespace CmsWeb
 {
@@ -416,6 +417,13 @@ namespace CmsWeb
                 return new HtmlString(tb.ToString());
             }
             return new HtmlString("");
+        }
+        public static string Json(this HtmlHelper html, string variableName, object model) {
+            TagBuilder tag = new TagBuilder("script");
+            tag.Attributes.Add("type", "text/javascript");
+            var jsonSerializer = new JavaScriptSerializer();
+            tag.InnerHtml = "var " + variableName + " = " + jsonSerializer.Serialize(model) + ";";
+            return tag.ToString();
         }
         
         public static CollectionItemNamePrefixScope BeginCollectionItem<TModel>(this HtmlHelper<TModel> html, string collectionName)

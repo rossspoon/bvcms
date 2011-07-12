@@ -2,9 +2,9 @@
     $.fmtTable = function () {
         $("table.grid td.tip").tooltip({ showBody: "|" });
         $('table.grid > tbody > tr:even').addClass('alt');
+        $(".bt").button();
     }
     $.fmtTable();
-    $(".bt").button();
     $.loadTable = function () {
         $.blockUI();
         $.getTable($('#groupsform'));
@@ -68,7 +68,6 @@
                         if ($('#newgid').val())
                             $('#groupid').val($('#newgid').val());
                         $('#GroupName').val('');
-                        $(".bt").button();
                         $.fmtTable();
                     });
                 }

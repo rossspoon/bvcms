@@ -285,6 +285,8 @@
     <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
     <Compile Include="Areas\Manage\Controllers\EmailsController.cs" />
     <Compile Include="Areas\Manage\Controllers\TransactionsController.cs" />
+    <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
+    <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
@@ -945,6 +947,8 @@
     <Content Include="Content\jquery-ui-timepicker.css" />
     <Content Include="Content\jquery.sb.css" />
     <Content Include="Content\js\jquery-ui-1.8.13.custom.js" />
+    <Content Include="Content\js\jquery.gmap.js" />
+    <Content Include="Content\js\jquery.gmap.min.js" />
     <Content Include="Content\js\jquery.sb.js" />
     <Content Include="Content\js\jquery.tie.js" />
     <Content Include="Content\js\jquery.ui.timepicker.js" />
@@ -981,6 +985,7 @@
     <Content Include="images\plus2.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\markers.js" />
     <Content Include="Scripts\meeting.js" />
     <Content Include="Scripts\SearchUsers.js" />
     <Content Include="Scripts\Tags.js" />
@@ -1414,6 +1419,8 @@
     <Content Include="Areas\Main\Views\Organization\ScheduleEditor.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\Index.cshtml" />
     <Content Include="Areas\Main\Views\Organization\ScheduleList.cshtml" />
+    <Content Include="Areas\Public\Views\SGMap\popup.cshtml" />
+    <Content Include="Areas\Public\Views\SGMap\Index.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
