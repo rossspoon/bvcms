@@ -232,7 +232,8 @@ namespace CmsWeb.Areas.Main.Controllers
             var t = new Task
             {
                 OwnerId = pid,
-                Description = "NewTask",
+                Description = "Please Contact",
+                ForceCompleteWContact = true,
                 ListId = TaskModel.InBoxId(pid),
                 StatusId = active,
             };

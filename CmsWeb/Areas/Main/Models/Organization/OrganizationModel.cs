@@ -35,13 +35,7 @@ namespace CmsWeb.Models.OrganizationPage
             Schedule = i.sch;
             var u = from s in i.sc
                     orderby s.Id
-                    select new ScheduleInfo
-                    {
-                        DayOfWeek = s.SchedDay ?? 0,
-                        Time = s.SchedTime.ToString2("h:mm tt"),
-                        AttendCreditId = s.AttendCreditId.Value,
-                        Id = s.Id
-                    };
+                    select new ScheduleInfo(s);
             schedules = u.ToList();
             MemberModel = new MemberModel(id, groups, MemberModel.GroupSelect.Active, String.Empty);
         }
@@ -107,7 +101,7 @@ namespace CmsWeb.Models.OrganizationPage
                 {
                     OrganizationId = OrganizationId.Value,
                     Id = s.Id,
-                    SchedDay = s.DayOfWeek,
+                    SchedDay = s.SchedDay,
                     SchedTime = s.Time.ToDate(),
                     AttendCreditId = s.AttendCreditId
                 });

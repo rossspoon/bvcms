@@ -243,8 +243,8 @@ namespace CmsData
                         PeopleId = om.PeopleId,
                         MemberTypeId = om.MemberTypeId,
                         OrganizationName = name,
-                        TransactionDate = Util.Now,
-                        EnrollmentDate = om.EnrollmentDate,
+                        TransactionDate = EnrollmentDate,
+                        EnrollmentDate = EnrollmentDate,
                         TransactionTypeId = 1, // join
                         CreatedBy = Util.UserId1,
                         CreatedDate = Util.Now,

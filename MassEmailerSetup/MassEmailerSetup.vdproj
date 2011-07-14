@@ -21,25 +21,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4E594934CE7A4B3C795E9BDFB3F9721D"
+        "MsmKey" = "8:_1E9868DBF5F35DFB4D598D421970F229"
         "OwnerKey" = "8:_DC3605C2F30115C3C7AB8FEC3F1785EA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4E594934CE7A4B3C795E9BDFB3F9721D"
+        "MsmKey" = "8:_1E9868DBF5F35DFB4D598D421970F229"
         "OwnerKey" = "8:_CF69F13EE5B74A21B63B2BCAC462B17D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_B3E87B856E8D4A41B853FEE2DDA1F330"
+        "MsmKey" = "8:_4E594934CE7A4B3C795E9BDFB3F9721D"
         "OwnerKey" = "8:_DC3605C2F30115C3C7AB8FEC3F1785EA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_B3E87B856E8D4A41B853FEE2DDA1F330"
+        "MsmKey" = "8:_4E594934CE7A4B3C795E9BDFB3F9721D"
         "OwnerKey" = "8:_CF69F13EE5B74A21B63B2BCAC462B17D"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -64,12 +64,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0D4027CBC69C6D98CECAA0D892E2732D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_DC3605C2F30115C3C7AB8FEC3F1785EA"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -82,7 +76,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B3E87B856E8D4A41B853FEE2DDA1F330"
+        "OwnerKey" = "8:_0D4027CBC69C6D98CECAA0D892E2732D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_1E9868DBF5F35DFB4D598D421970F229"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -277,20 +277,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E594934CE7A4B3C795E9BDFB3F9721D"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1E9868DBF5F35DFB4D598D421970F229"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:UtilityExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:SgmlReaderDll, Version=1.8.7.14535, Culture=neutral, PublicKeyToken=46b2db9ca481831b, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_4E594934CE7A4B3C795E9BDFB3F9721D"
+                    "_1E9868DBF5F35DFB4D598D421970F229"
                     {
-                    "Name" = "8:UtilityExtensions.dll"
+                    "Name" = "8:SgmlReaderDll.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:UtilityExtensions.dll"
+            "SourcePath" = "8:SgmlReaderDll.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_EE121880C0F942A48D3E7D660984F742"
@@ -308,20 +308,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B3E87B856E8D4A41B853FEE2DDA1F330"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E594934CE7A4B3C795E9BDFB3F9721D"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SgmlReaderDll, Version=1.8.7.14535, Culture=neutral, PublicKeyToken=46b2db9ca481831b, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:UtilityExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_B3E87B856E8D4A41B853FEE2DDA1F330"
+                    "_4E594934CE7A4B3C795E9BDFB3F9721D"
                     {
-                    "Name" = "8:SgmlReaderDll.dll"
+                    "Name" = "8:UtilityExtensions.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:SgmlReaderDll.dll"
+            "SourcePath" = "8:UtilityExtensions.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_EE121880C0F942A48D3E7D660984F742"
@@ -427,7 +427,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BVCMS MassEmailer2"
         "ProductCode" = "8:{B2DD59DB-53BF-42B5-9060-28235C87F052}"
-        "PackageCode" = "8:{B5C070F2-9DC8-4AC7-9E3E-170EB9E046E0}"
+        "PackageCode" = "8:{E8ABCF25-E36B-4BAF-863E-CC6DB2A5614C}"
         "UpgradeCode" = "8:{0AC37215-529E-40F5-8000-BDFBAA5C13F6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

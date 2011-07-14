@@ -42,6 +42,17 @@
             });
         return false;
     });
+    $("#ClearFilter").live("click", function (ev) {
+        ev.preventDefault();
+        $("#memtype,#tag").val("0");
+        $("#inactivedt").val(""); 
+        var q = $("form").serialize();
+        $.post("/OrgMembersDialog/Filter", q, function (ret) {
+            $("table.grid > tbody").html(ret).ready($.fmtTable);
+        });
+
+        return false;
+    });
     $("a.move").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');

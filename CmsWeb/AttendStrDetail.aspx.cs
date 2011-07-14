@@ -49,10 +49,13 @@ namespace CmsWeb
                      select new
                      {
                          et.TransactionId,
+                         et.EnrollmentTransactionId,
                          et.TransactionDate,
                          et.TransactionTypeId,
                          MemberType = et.MemberType.Description,
+                         Pending = et.Pending,
                          et.TransactionStatus,
+                         et.EnrollmentDate,
                          et.NextTranChangeDate
                      };
             GridView2.DataSource = q2;

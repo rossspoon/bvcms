@@ -52,6 +52,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
                         om.MemberTypeId = m.MemberType;
                     if (m.InactiveDate.HasValue)
                         om.InactiveDate = m.InactiveDate;
+                    if (m.EnrollmentDate.HasValue)
+                        om.EnrollmentDate = m.EnrollmentDate;
                     om.Pending = m.Pending;
                 }
             }

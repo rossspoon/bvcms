@@ -277,7 +277,7 @@ namespace CmsData
             text = text.Replace("{occupation}", p.OccupationOther);
 
             text = DoVoteLinkAnchorStyle(text, CmsHost, emailqueueto);
-            text = DoVoteLinkRegExStyle(text, CmsHost, emailqueueto);
+            text = DoVoteTag(text, CmsHost, emailqueueto);
 
             if (emailqueueto.Guid.HasValue)
             {
@@ -348,46 +348,60 @@ namespace CmsData
                     throw new Exception("Votelink: no id attribute");
                 var id = d["id"];
 
-                text = ReplaceVotelink(text, CmsHost, emailqueueto,
-                    list, votelink, txt, id, msg, confirm, smallgroup, pre);
+                var url = VoteLinkUrl(text, CmsHost, emailqueueto, list, votelink, id, msg, confirm, smallgroup, pre);
+                text = text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, txt));
+
                 match = match.NextMatch();
             }
             return text;
         }
-        private string DoVoteLinkRegExStyle(string text, string CmsHost, EmailQueueTo emailqueueto)
+        private string DoVoteTag(string text, string CmsHost, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
-            const string VoteLinkRE = @"{votelink:(?<id>\d*),(?<smallgroup>[^,]*),(?<text>[^}]*)}";
+            const string VoteLinkRE = @"<votetag[^>]*>(?<inside>.+?)</votetag>";
             var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
             var match = re.Match(text);
             while (match.Success)
             {
-                var votelink = match.Value;
-                var id = match.Groups["id"].Value;
-                var smallgroup = match.Groups["smallgroup"].Value;
+                var tag = match.Value;
+                var inside = match.Groups["inside"].Value;
+                var rd = new SgmlReader();
+                rd.DocType = "HTML";
+                rd.InputStream = new StringReader(tag);
+                var e = XDocument.Load(rd).Descendants("votetag").First();
+                var d = e.Attributes().ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+
+                string msg = "Thank you for responding.";
+                if (d.ContainsKey("message"))
+                    msg = d["message"];
+
+                string confirm = "false";
+                if (d.ContainsKey("confirm"))
+                    confirm = d["confirm"];
+
+                if (!d.ContainsKey("smallgroup"))
+                    throw new Exception("Votelink: no smallgroup attribute");
+                var smallgroup = d["smallgroup"];
                 var pre = "";
                 var a = smallgroup.SplitStr(":");
                 if (a.Length > 1)
                     pre = a[0];
-                var txt = match.Groups["text"].Value;
-                string msg = "Thank you for responding.";
 
-                string confirm = "false";
-                var g = match.Groups["confirm"];
-                if (g != null)
-                    confirm = g.Value;
-                text = ReplaceVotelink(text, CmsHost, emailqueueto,
-                    list, votelink, txt, id, msg, confirm, smallgroup, pre);
+                if (!d.ContainsKey("id"))
+                    throw new Exception("Votelink: no id attribute");
+                var id = d["id"];
+
+                var url = VoteLinkUrl(text, CmsHost, emailqueueto, list, tag, id, msg, confirm, smallgroup, pre);
+                text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
             }
             return text;
         }
-        private string ReplaceVotelink(string text,
+        private string VoteLinkUrl(string text,
             string CmsHost,
             EmailQueueTo emailqueueto,
             Dictionary<string, OneTimeLink> list,
             string votelink,
-            string txt,
             string id,
             string msg,
             string confirm,
@@ -411,7 +425,7 @@ namespace CmsData
             }
             var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}&confirm={2}&message={3}"
                 .Fmt(ot.Id.ToCode(), HttpUtility.UrlEncode(smallgroup), confirm, HttpUtility.UrlEncode(msg)));
-            return text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, txt));
+            return url;
         }
         public List<MailAddress> GetAddressList(Person p)
         {

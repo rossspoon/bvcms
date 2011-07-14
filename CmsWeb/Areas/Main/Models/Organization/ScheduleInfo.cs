@@ -5,28 +5,46 @@ using System.Web;
 using System.Web.Mvc;
 using CMSPresenter;
 using UtilityExtensions;
+using CmsData;
 
 namespace CmsWeb.Models.OrganizationPage
 {
     public class ScheduleInfo
     {
-        public int Id { get; set; }
-        public int DayOfWeek { get; set; }
-        private string _Time;
+        private OrgSchedule sc;
+        public ScheduleInfo (OrgSchedule sc)
+    	{
+            this.sc = sc;
+    	}
+        public ScheduleInfo ()
+    	{
+            sc = new OrgSchedule();
+    	}
+        public int Id
+        {
+            get { return sc.Id; }
+            set { sc.Id = value; }
+        }
+        public int SchedDay
+        {
+            get { return sc.SchedDay ?? 0; }
+            set { sc.SchedDay = value; }
+        }
         public string Time
         {
             get
             {
-                if (!_Time.HasValue())
+                if (!sc.SchedTime.HasValue)
                     return "8:00 AM";
-                return _Time;
+                return sc.SchedTime.ToString2("h:mm tt");
             }
-            set
-            {
-                _Time = value;
-            }
+            set { sc.SchedTime = value.ToDate(); }
         }
-        public int AttendCreditId { get; set; }
+        public int AttendCreditId
+        {
+            get { return sc.AttendCreditId ?? 1; }
+            set { sc.AttendCreditId = value; }
+        }
         public SelectList DaysOfWeek()
         {
             return new SelectList(new[] {
@@ -38,7 +56,7 @@ namespace CmsWeb.Models.OrganizationPage
                 new { Text = "Fri", Value = "5" },
                 new { Text = "Sat", Value = "6" },
                 new { Text = "Any", Value = "10" }
-                }, "Value", "Text", DayOfWeek.ToString());
+                }, "Value", "Text", SchedDay.ToString());
         }
         public SelectList AttendCredits()
         {
@@ -59,7 +77,7 @@ namespace CmsWeb.Models.OrganizationPage
             get
             {
                 return (from i in DaysOfWeek()
-                        where i.Value == DayOfWeek.ToString()
+                        where i.Value == SchedDay.ToString()
                         select i.Text).Single();
             }
         }
@@ -82,11 +100,11 @@ namespace CmsWeb.Models.OrganizationPage
             get
             {
                 DateTime dt;
-                if (DayOfWeek < 9)
+                if (sc.SchedDay < 9)
                 {
                     dt = Util.Now.Date;
                     dt = dt.AddDays(-(int)dt.DayOfWeek); // prev sunday
-                    dt = dt.AddDays(DayOfWeek);
+                    dt = dt.AddDays(sc.SchedDay ?? 0);
                     if (dt > Util.Now.Date)
                         dt = dt.AddDays(-7);
                 }

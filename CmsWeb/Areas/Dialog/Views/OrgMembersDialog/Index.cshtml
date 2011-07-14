@@ -5,7 +5,7 @@
     <title>Index</title>
 @Html.Raw(SquishIt.Framework.Bundle.Css()
         .Add("/Content/jquery-ui-1.8.13.custom.css")
-        .Add("/Content/Dialog.css")
+        .Add("/Content/site.css")
         .Add("/Content/jquery.tooltip.css")
     .Render("/Content/OrgMembers_#.css")
 )
@@ -24,10 +24,8 @@
 @Html.Hidden("inactives")
 <h4>@Model.title()</h4>
 <a class="helplink" target="_blank" href='@Model.HelpLink()'>help</a>
-<table class="modalPopup">
-	<tr>
-		<td colspan="2"><a id="ClearSearch" class="bt" href="#">clear</a></td>
-	</tr>
+<table class="roundbox">
+	<tr> <td colspan="2"><h2>Fitler Members</h2></td> </tr>
 	<tr>
 		<th>Tag: </th>
 		<td>@Html.DropDownList("tag", Model.Tags(), new { @class="filter" })</td>
@@ -38,15 +36,18 @@
 	</tr>
 	<tr>
 		<th>Inactive Date: </th>
-		<td valign="top">@Html.TextBox("inactivedt", "", new { @class="filter datepicker" })</td>
+		<td valign="top">@Html.TextBox("inactivedt", "", new { @class="filter datepicker" })
+		&nbsp;&nbsp;&nbsp;&nbsp;
+        <a id="ClearFilter" class="bt" href="#">clear</a></td>
 	</tr>
+	<tr> <td colspan="2"> <h2>New Values</h2></td></tr>
+    <tr><td colspan="2">
+    Membertype:@Html.DropDownList("MemberType", Model.MemberTypeCodesWithDrop())
+    Enrollment:@Html.TextBox("EnrollmentDate", "", new { @class = "datepicker", style = "width:100px" })
+    InActive:@Html.TextBox("InactiveDate", "", new { @class = "datepicker", style = "width:100px" })
+    Pending:@Html.CheckBox("Pending")
+    </td></tr>
 </table>
-<div id="EditSection">
-    New Values: 
-    Membertype @Html.DropDownList("MemberType", Model.MemberTypeCodesWithDrop())
-    InActive Date @Html.TextBox("InactiveDate", "", new { @class = "datepicker", style = "width:100px" })
-    Pending @Html.CheckBox("Pending")
-</div>
 <input id="SelectAll" type="checkbox" /> Select All
 <input type="submit" class="bt" name="Update" class="bt" value="Update Selected" />
 <div>
@@ -55,9 +56,10 @@
 	<tr>
 		<th>Select </th>
 		<th>Name </th>
-		<th>Address </th>
-		<th>CityStateZip </th>
 		<th>Age </th>
+		<th>Enrollment </th>
+		<th>MemberType </th>
+		<th>Inactive </th>
 	</tr>
 	</thead>
 	<tbody>

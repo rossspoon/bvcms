@@ -71,6 +71,7 @@ namespace CmsData
                     ListId = Task.GetRequiredTaskList("InBox", Util.UserPeopleId.Value).Id,
                     OwnerId = Util.UserPeopleId.Value,
                     Description = "Please Contact",
+                    ForceCompleteWContact = true,
                     StatusId = (int)Task.StatusCode.Active,
                 };
                 p.TasksAboutPerson.Add(t);

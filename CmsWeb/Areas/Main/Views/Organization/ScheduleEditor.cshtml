@@ -6,7 +6,7 @@
     @Html.Raw(ci.hiddenindex)
     @Html.HiddenFor(m => m.Id, new { @class = "renumberMe" } )
     <img src="/images/arrowdnup.png" title="drag this up or down to re-order the schedule" />
-    @Html.DropDownListFor(m => m.DayOfWeek, Model.DaysOfWeek())
+    @Html.DropDownListFor(m => m.SchedDay, Model.DaysOfWeek())
     @Html.EditorFor(m => m.Time)
     @Html.DropDownListFor(m => m.AttendCreditId, Model.AttendCredits())
     <a href="#" class="deleteschedule"><img src="/images/delete.gif" /></a>

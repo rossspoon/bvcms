@@ -23,6 +23,7 @@ namespace CmsWeb.Models
 
         public int MemberType { get; set; }
         public DateTime? InactiveDate { get; set; }
+        public DateTime? EnrollmentDate { get; set; }
         public bool Pending { get; set; }
 
         private IList<int> list = new List<int>();
@@ -71,7 +72,7 @@ namespace CmsWeb.Models
         }
 
         public int count;
-        public IEnumerable<PersonDialogSearchInfo> FetchOrgMemberList()
+        public IEnumerable<MemberSearchInfo> FetchOrgMemberList()
         {
             var q = OrgMembers();
             if (memtype != 0)
@@ -85,12 +86,14 @@ namespace CmsWeb.Models
             var q1 = q.OrderBy(m => m.Person.Name2);
             var q2 = from m in q1
                      let p = m.Person
-                     select new PersonDialogSearchInfo
+                     select new MemberSearchInfo
                      {
                          PeopleId = m.PeopleId,
                          Name = p.Name,
                          LastName = p.LastName,
-                         JoinDate = p.JoinDate,
+                         JoinDate = m.EnrollmentDate,
+                         InactiveDt = m.InactiveDate,
+                         MemberType = m.MemberType.Description,
                          BirthDate = p.DOB,
                          Address = p.PrimaryAddress,
                          CityStateZip = p.CityStateZip,
@@ -137,12 +140,14 @@ namespace CmsWeb.Models
             return Util.HelpLink("UpdateOrgMember_{0}".Fmt(type()));
         }
 
-        public class PersonDialogSearchInfo
+        public class MemberSearchInfo
         {
             public int PeopleId { get; set; }
             public string Name { get; set; }
             public string LastName { get; set; }
             public DateTime? JoinDate { get; set; }
+            public DateTime? InactiveDt { get; set; }
+            public string MemberType { get; set; }
             public string Email { get; set; }
             public string BirthDate { get; set; }
             public string Address { get; set; }

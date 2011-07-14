@@ -61,11 +61,12 @@ else
         <td id="NumNewVisit"><span>@Model.meeting.NumNewVisit</span></td></tr>
     <tr><td align="right">Other Attends:</td>
         <td id="NumOtherAttends"><span>@Model.meeting.NumOtherAttends</span></td></tr>
-    <tr><td align="right">Show:</td>
+    <tr><td align="right" valign="top">Show:</td>
         <td id="showbuttons">
             @Html.RadioButton("show", "attends", !Model.showall)Attends Only&nbsp;
             @Html.RadioButton("show", "absents", false)Absents Only&nbsp;
-            @Html.RadioButton("show", "all", Model.showall)All
+            @Html.RadioButton("show", "all", Model.showall)All<br />
+            (All only shows members as of the meeting date)
         </td></tr>
 @if (User.IsInRole("Attendance"))
 {

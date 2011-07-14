@@ -23,7 +23,7 @@ using System.Web.Caching;
 using System.IO;
 using System.Net.Mime;
 using System.Reflection;
-using DKIM;
+//using DKIM;
 
 namespace MassEmailer
 {
@@ -62,17 +62,17 @@ namespace MassEmailer
                 var a = ConfigurationManager.AppSettings["awscreds"].Split(',');
                 Util.InsertCacheNotRemovable("awscreds", a);
             }
-            string privatekey = Path.Combine(GetApplicationPath(), "privatekey.txt");
-            if (File.Exists(privatekey))
-            {
-                var s = File.ReadAllText(privatekey);
-                Util.InsertCacheNotRemovable("privatekey", s);
-            }
-            else if (ConfigurationManager.AppSettings["privatekey"].HasValue())
-            {
-                var s = ConfigurationManager.AppSettings["privatekey"];
-                Util.InsertCacheNotRemovable("privatekey", s);
-            }
+            //string privatekey = Path.Combine(GetApplicationPath(), "privatekey.txt");
+            //if (File.Exists(privatekey))
+            //{
+            //    var s = File.ReadAllText(privatekey);
+            //    Util.InsertCacheNotRemovable("privatekey", s);
+            //}
+            //else if (ConfigurationManager.AppSettings["privatekey"].HasValue())
+            //{
+            //    var s = ConfigurationManager.AppSettings["privatekey"];
+            //    Util.InsertCacheNotRemovable("privatekey", s);
+            //}
             SleepTime = ConfigurationManager.AppSettings["SleepTime"].ToInt();
         }
         private static string GetApplicationPath()
@@ -358,17 +358,20 @@ WAITFOR(
             htmlView.TransferEncoding = TransferEncoding.Base64;
             msg.AlternateViews.Add(htmlView);
 
-            var pkey = (string)HttpRuntime.Cache["privatekey"];
-            var privateKey = PrivateKeySigner.Create(pkey, SigningAlgorithm.RSASha256);
-			var dkim = new DkimSigner(
-				privateKey,
-				ConfigurationManager.AppSettings["domain"],
-				ConfigurationManager.AppSettings["dkimselector"],
-                new string[] { "Content-Type", "From", "To", "Subject" }
-				);
-			var signedMsg = dkim.SignMessage(msg);
+   //         var pkey = (string)HttpRuntime.Cache["privatekey"];
+   //         var privateKey = PrivateKeySigner.Create(pkey, SigningAlgorithm.RSASha256);
+			//var dkim = new DkimSigner(
+			//	privateKey,
+			//	ConfigurationManager.AppSettings["domain"],
+			//	ConfigurationManager.AppSettings["dkimselector"],
+   //             new string[] { "Content-Type", "From", "To", "Subject" }
+			//	);
+			//var signedMsg = dkim.SignMessage(msg);
+   //         var rawMessage = new RawMessage();
+   //         using (var memoryStream = DKIM.MailMessageMemoryStream.ConvertMailMessageToMemoryStream(signedMsg))
+   //             rawMessage.WithData(memoryStream);
             var rawMessage = new RawMessage();
-            using (var memoryStream = DKIM.MailMessageMemoryStream.ConvertMailMessageToMemoryStream(signedMsg))
+            using (var memoryStream = ConvertMailMessageToMemoryStream(msg))
                 rawMessage.WithData(memoryStream);
 
             var request = new SendRawEmailRequest();
@@ -438,19 +441,19 @@ WAITFOR(
             }
             return "no messageid";
         }
-        //public static MemoryStream ConvertMailMessageToMemoryStream(MailMessage message)
-        //{
-        //    var assembly = typeof(SmtpClient).Assembly;
-        //    var mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
-        //    var fileStream = new MemoryStream();
-        //    var mailWriterContructor = mailWriterType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
-        //    var mailWriter = mailWriterContructor.Invoke(new object[] { fileStream });
-        //    var sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
-        //    sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
-        //    var closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
-        //    closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
-        //    return fileStream;
-        //}
+        public static MemoryStream ConvertMailMessageToMemoryStream(MailMessage message)
+        {
+            var assembly = typeof(SmtpClient).Assembly;
+            var mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
+            var fileStream = new MemoryStream();
+            var mailWriterContructor = mailWriterType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
+            var mailWriter = mailWriterContructor.Invoke(new object[] { fileStream });
+            var sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
+            sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
+            var closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
+            closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
+            return fileStream;
+        }
         private string EmailRoute(string SysFrom, string fromname, string fromaddress, List<MailAddress> to, string subject, string body, string CmsHost, int id, int pid)
         {
             var useSES = HttpRuntime.Cache["awscreds"] != null;

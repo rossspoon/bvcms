@@ -33,9 +33,8 @@ body { margin: 1px; }
 <a class="helplink" target="_blank" href='@Util.HelpLink("UpdateOrgMember")'>help</a>
 <table cellspacing="5">
     <tr>
-    <td colspan="3">Attendance:
-            <a href="/AttendStrDetail.aspx?id=@Model.PeopleId&oid=@Model.OrganizationId" 
-            target="_blank" style="font-family: Courier New">@Model.AttendStr</a>
+    <td colspan="3"><a href="/AttendStrDetail.aspx?id=@Model.PeopleId&oid=@Model.OrganizationId" 
+            target="_blank" style="font-family: Courier New">Attendance</a>: @Model.AttendStr
         </td>
     </tr>
     <tr>

@@ -443,10 +443,11 @@ The bvCMS Team</p>
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.EmailRedacted(DbUtil.AdminMail, user.Person, "bvcms new password", @"Hi {0},
 <p>Your new password is {1}</p>
+<p>Login here: <a href=""{2}"">{2}</a></p>
 <p>If you did not request a new password, please notify us ASAP.</p>
 <p>Thanks,<br />
 The bvCMS Team</p>
-".Fmt(user.Name, newpassword));
+".Fmt(user.Name, newpassword, DbUtil.Db.CmsHost));
 
             return View();
         }

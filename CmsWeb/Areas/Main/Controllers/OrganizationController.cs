@@ -219,13 +219,13 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NewSchedule()
         {
-            var s = new ScheduleInfo
-            {
-                Id = 0, // this will get renumbered on the client
-                DayOfWeek = 0, // default to Sunday
-                Time = "8:00 AM", // default
-                AttendCreditId = 1
-            };
+            var s = new ScheduleInfo(
+                new OrgSchedule 
+                { 
+                    SchedDay = 0, 
+                    SchedTime = DateTime.Parse("8:00 AM"), 
+                    AttendCreditId = 1 
+                });
             return View("ScheduleEditor", s);
         }
 

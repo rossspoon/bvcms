@@ -7,6 +7,7 @@ using CmsData;
 using UtilityExtensions;
 using CMSPresenter;
 using CmsWeb.Models;
+using CmsWeb.Models.OrganizationPage;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
@@ -60,7 +61,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 om.ShirtSize = om.ShirtSize.MaxString(20);
                 DbUtil.Db.SubmitChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ViewData["MemberTypes"] = QueryModel.ConvertToSelect(CodeValueController.MemberTypeCodes(), "Id");
                 return View("Edit", om);
@@ -100,6 +101,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                          id = "m-{0}-{1}-{2}".Fmt(id, pid, o.OrganizationId),
                          Program = o.Division.Program.Name,
                          Division = o.Division.Name,
+                         orgSchedule = o.OrgSchedules.First()
                     };
             return View(q.ToList());
         }
@@ -123,11 +125,13 @@ namespace CmsWeb.Areas.Dialog.Controllers
             public int OrgId { get; set; }
             public string Program { get; set; }
             public string Division { get; set; }
+            public OrgSchedule orgSchedule { get; set; }
             public string Tip
             {
                 get
                 {
-                    return "{0} ({1})|Program:{2}|Division: {3}".Fmt(OrgName, OrgId, Program, Division);
+                    var si = new ScheduleInfo(orgSchedule);
+                    return "{0} ({1})|Program:{2}|Division: {3}|Schedule: {4}".Fmt(OrgName, OrgId, Program, Division, si.Display);
                 }
             }
         }
