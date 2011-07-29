@@ -259,9 +259,13 @@ namespace CmsWeb.Areas.Main.Controllers
         [Authorize(Roles = "Finance")]
         public ActionResult ContributionStatementsDownload()
         {
-            var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
-            HttpContext.Cache.Remove(CSE);
-            return new ContributionStatementsResult(m.OutputFile);
+            if (HttpContext != null)
+            {
+                var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
+                HttpContext.Cache.Remove(CSE);
+                return new ContributionStatementsResult(m.OutputFile);
+            }
+            return Content("no session");
         }
         public ActionResult ChurchAttendance(DateTime? id)
         {

@@ -17,11 +17,11 @@ namespace CmsWeb.Models.PersonPage
             Pager = new PagerModel2(Count);
             Pager.pagesize = 10;
         }
-        private IQueryable<NewContact> _contacts;
-        private IQueryable<NewContact> FetchContacts()
+        private IQueryable<CmsData.Contact> _contacts;
+        private IQueryable<CmsData.Contact> FetchContacts()
         {
             if (_contacts == null)
-                _contacts = from c in DbUtil.Db.NewContacts
+                _contacts = from c in DbUtil.Db.Contacts
                     where c.contactsMakers.Any(p => p.PeopleId == person.PeopleId)
                     orderby c.ContactDate descending
                     select c;
@@ -43,10 +43,10 @@ namespace CmsWeb.Models.PersonPage
                          ContactId = c.ContactId,
                          Comments = c.Comments,
                          ContactDate = c.ContactDate,
-                         ContactReason = c.NewContactReason.Description,
+                         ContactReason = c.ContactReason.Description,
                          Program = "",
                          Teacher = "",
-                         TypeOfContact = c.NewContactType.Description
+                         TypeOfContact = c.ContactType.Description
                      };
             return q2.Skip(Pager.StartRow).Take(Pager.PageSize);
         }

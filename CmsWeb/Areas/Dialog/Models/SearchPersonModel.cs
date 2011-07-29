@@ -8,6 +8,7 @@ using CmsData;
 using System.Text;
 using System.Data.Linq;
 using CMSPresenter;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -172,14 +173,14 @@ namespace CmsWeb.Models
 
             if (goesby != null)
                 goesby = goesby.Trim();
-            var position = (int)Family.PositionInFamily.Child;
+            var position = PositionInFamily.Child;
             if (age >= 18)
                 if (f.People.Count(per =>
-                     per.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
+                     per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
                      < 2)
-                    position = (int)Family.PositionInFamily.PrimaryAdult;
+                    position = PositionInFamily.PrimaryAdult;
                 else
-                    position = (int)Family.PositionInFamily.SecondaryAdult;
+                    position = PositionInFamily.SecondaryAdult;
 
             _Person = Person.Add(f, position,
                 null, first.Trim(), goesby, last.Trim(), dob, false, gender,

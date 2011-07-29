@@ -7,134 +7,191 @@ using System.Text.RegularExpressions;
 using System.Data.Linq;
 using System.Xml.Linq;
 using System.Data.Linq.SqlClient;
+using IronPython.Hosting;
+using System.IO;
+using CmsData.Codes;
+using System.Web;
 
 namespace CmsData
 {
     public partial class Person
     {
-        private int[] DiscClassStatuses = new int[] 
-        { 
-            (int)Person.DiscoveryClassStatusCode.AdminApproval, 
-            (int)Person.DiscoveryClassStatusCode.Attended, 
-            (int)Person.DiscoveryClassStatusCode.ExemptedChild 
-        };
-        public void MemberProfileAutomation(CMSDataContext Db)
+        public bool FamilyHasPrimaryMemberForMoreThanDays(int days)
+        {
+            return Family.People.Any(p =>
+                p.PositionInFamilyId == PositionInFamily.PrimaryAdult
+                   && p.MemberStatusId == MemberStatusCode.Member
+                   && SqlMethods.DateDiffDay(p.JoinDate, Util.Now) >= days);
+        }
+        public void DropAllMemberships(CMSDataContext Db)
+        {
+            var list = (from om in Db.OrganizationMembers
+                        where om.PeopleId == PeopleId
+                        select om).ToList();
+            foreach (var om in list)
+                om.Drop(Db, true);
+        }
+        public string errorReturn;
+
+        public string MemberProfileAutomation(CMSDataContext Db)
+        {
+            var script = DbUtil.Content("MemberProfileAutomation");
+            if (script == null)
+                return "ok";
+            var path = HttpContext.Current.Server.MapPath("/");
+#if DEBUG
+            var options = new Dictionary<string, object>();
+            options["Debug"] = true;
+            var engine = Python.CreateEngine(options);
+            var paths = engine.GetSearchPaths();
+            paths.Add(path);
+            engine.SetSearchPaths(paths);
+            var sc = engine.CreateScriptSourceFromFile(HttpContext.Current.Server.MapPath("/MembershipAutomation2.py"));
+#else
+            var engine = Python.CreateEngine();
+            var paths = engine.GetSearchPaths();
+            paths.Add(path);
+            engine.SetSearchPaths(paths);
+            var sc = engine.CreateScriptSourceFromString(script.Body);
+#endif
+
+            try
+            {
+                var code = sc.Compile();
+                var scope = engine.CreateScope();
+                code.Execute(scope);
+
+                dynamic MembershipAutomation = scope.GetVariable("MembershipAutomation");
+                dynamic m = MembershipAutomation();
+                var ret = m.Run(DbUtil.Db, this);
+
+                //var m = scope.GetVariable("MembershipAutomation");
+                //dynamic instance = engine.Operations.CreateInstance(m);
+                //var value = instance.Run(DbUtil.Db, this);
+                return errorReturn;
+            }
+            catch (Exception ex)
+            {
+                return "MemberProfileAutomation script error: " + ex.Message;
+            }
+        }
+        public void MemberProfileAutomation0(CMSDataContext Db)
         {
             if (DecisionTypeIdChanged)
                 switch (DecisionTypeId ?? 0)
                 {
-                    case (int)Person.DecisionCode.ProfessionForMembership:
-                        MemberStatusId = (int)Person.MemberStatusCode.Pending;
-                        if (DiscoveryClassStatusId != (int)Person.DiscoveryClassStatusCode.Attended)
-                            DiscoveryClassStatusId = (int)Person.DiscoveryClassStatusCode.Pending;
+                    case DecisionCode.ProfessionForMembership:
+                        MemberStatusId = MemberStatusCode.Pending;
+                        if (NewMemberClassStatusId != NewMemberClassStatusCode.Attended)
+                            NewMemberClassStatusId = NewMemberClassStatusCode.Pending;
                         if (Age <= 12 && Family.People.Any(p =>
-                                p.PositionInFamilyId == (int)Person.PositionInFamilyCode.Primary
-                                && p.MemberStatusId == (int)Person.MemberStatusCode.Member
+                                p.PositionInFamilyId == PositionInFamily.PrimaryAdult
+                                && p.MemberStatusId == MemberStatusCode.Member
                                 && SqlMethods.DateDiffMonth(p.JoinDate, Util.Now) >= 12))
-                            BaptismTypeId = (int)Person.BaptismTypeCode.Biological;
+                            BaptismTypeId = BaptismTypeCode.Biological;
                         else
-                            BaptismTypeId = (int)Person.BaptismTypeCode.Original;
-                        BaptismStatusId = (int)Person.BaptismStatusCode.NotScheduled;
+                            BaptismTypeId = BaptismTypeCode.Original;
+                        BaptismStatusId = BaptismStatusCode.NotScheduled;
                         break;
-                    case (int)Person.DecisionCode.ProfessionNotForMembership:
-                        MemberStatusId = (int)Person.MemberStatusCode.NotMember;
-                        if (DiscoveryClassStatusId != (int)Person.DiscoveryClassStatusCode.Attended)
-                            DiscoveryClassStatusId = (int)Person.DiscoveryClassStatusCode.NotSpecified;
-                        if (BaptismStatusId != (int)Person.BaptismStatusCode.Completed)
+                    case DecisionCode.ProfessionNotForMembership:
+                        MemberStatusId = MemberStatusCode.NotMember;
+                        if (NewMemberClassStatusId != NewMemberClassStatusCode.Attended)
+                            NewMemberClassStatusId = NewMemberClassStatusCode.NotSpecified;
+                        if (BaptismStatusId != BaptismStatusCode.Completed)
                         {
-                            BaptismTypeId = (int)Person.BaptismTypeCode.NonMember;
-                            BaptismStatusId = (int)Person.BaptismStatusCode.NotScheduled;
+                            BaptismTypeId = BaptismTypeCode.NonMember;
+                            BaptismStatusId = BaptismStatusCode.NotScheduled;
                         }
                         break;
-                    case (int)Person.DecisionCode.Letter:
-                        MemberStatusId = (int)Person.MemberStatusCode.Pending;
-                        if (DiscoveryClassStatusId != (int)Person.DiscoveryClassStatusCode.Attended)
-                            DiscoveryClassStatusId = (int)Person.DiscoveryClassStatusCode.Pending;
-                        if (BaptismStatusId != (int)Person.BaptismStatusCode.Completed)
+                    case DecisionCode.Letter:
+                        MemberStatusId = MemberStatusCode.Pending;
+                        if (NewMemberClassStatusId != NewMemberClassStatusCode.Attended)
+                            NewMemberClassStatusId = NewMemberClassStatusCode.Pending;
+                        if (BaptismStatusId != BaptismStatusCode.Completed)
                         {
-                            BaptismTypeId = (int)Person.BaptismTypeCode.NotSpecified;
-                            BaptismStatusId = (int)Person.BaptismStatusCode.NotSpecified;
+                            BaptismTypeId = BaptismTypeCode.NotSpecified;
+                            BaptismStatusId = BaptismStatusCode.NotSpecified;
                         }
                         break;
-                    case (int)Person.DecisionCode.Statement:
-                        MemberStatusId = (int)Person.MemberStatusCode.Pending;
-                        if (DiscoveryClassStatusId != (int)Person.DiscoveryClassStatusCode.Attended)
-                            DiscoveryClassStatusId = (int)Person.DiscoveryClassStatusCode.Pending;
-                        if (BaptismStatusId != (int)Person.BaptismStatusCode.Completed)
+                    case DecisionCode.Statement:
+                        MemberStatusId = MemberStatusCode.Pending;
+                        if (NewMemberClassStatusId != NewMemberClassStatusCode.Attended)
+                            NewMemberClassStatusId = NewMemberClassStatusCode.Pending;
+                        if (BaptismStatusId != BaptismStatusCode.Completed)
                         {
-                            BaptismTypeId = (int)Person.BaptismTypeCode.NotSpecified;
-                            BaptismStatusId = (int)Person.BaptismStatusCode.NotSpecified;
+                            BaptismTypeId = BaptismTypeCode.NotSpecified;
+                            BaptismStatusId = BaptismStatusCode.NotSpecified;
                         }
                         break;
-                    case (int)Person.DecisionCode.StatementReqBaptism:
-                        MemberStatusId = (int)Person.MemberStatusCode.Pending;
-                        if (DiscoveryClassStatusId != (int)Person.DiscoveryClassStatusCode.Attended)
-                            DiscoveryClassStatusId = (int)Person.DiscoveryClassStatusCode.Pending;
-                        if (BaptismStatusId != (int)Person.BaptismStatusCode.Completed)
+                    case DecisionCode.StatementReqBaptism:
+                        MemberStatusId = MemberStatusCode.Pending;
+                        if (NewMemberClassStatusId != NewMemberClassStatusCode.Attended)
+                            NewMemberClassStatusId = NewMemberClassStatusCode.Pending;
+                        if (BaptismStatusId != BaptismStatusCode.Completed)
                         {
-                            BaptismTypeId = (int)Person.BaptismTypeCode.Required;
-                            BaptismStatusId = (int)Person.BaptismStatusCode.NotScheduled;
+                            BaptismTypeId = BaptismTypeCode.Required;
+                            BaptismStatusId = BaptismStatusCode.NotScheduled;
                         }
                         break;
-                    case (int)Person.DecisionCode.Cancelled:
-                        MemberStatusId = (int)Person.MemberStatusCode.NotMember;
-                        if (DiscoveryClassStatusId != (int)Person.DiscoveryClassStatusCode.Attended)
-                            DiscoveryClassStatusId = (int)Person.DiscoveryClassStatusCode.NotSpecified;
-                        if (BaptismStatusId != (int)Person.BaptismStatusCode.Completed)
-                            if (BaptismStatusId != (int)Person.BaptismStatusCode.Completed)
+                    case DecisionCode.Cancelled:
+                        MemberStatusId = MemberStatusCode.NotMember;
+                        if (NewMemberClassStatusId != NewMemberClassStatusCode.Attended)
+                            NewMemberClassStatusId = NewMemberClassStatusCode.NotSpecified;
+                        if (BaptismStatusId != BaptismStatusCode.Completed)
+                            if (BaptismStatusId != BaptismStatusCode.Completed)
                             {
-                                BaptismTypeId = (int)Person.BaptismTypeCode.NotSpecified;
-                                BaptismStatusId = (int)Person.BaptismStatusCode.Canceled;
+                                BaptismTypeId = BaptismTypeCode.NotSpecified;
+                                BaptismStatusId = BaptismStatusCode.Canceled;
                             }
-                        EnvelopeOptionsId = (int)Person.EnvelopeOptionCode.None;
+                        EnvelopeOptionsId = EnvelopeOptionCode.None;
                         break;
                 }
             // This section sets join codes
-            if (DiscoveryClassStatusIdChanged || BaptismStatusIdChanged)
+            if (NewMemberClassStatusIdChanged || BaptismStatusIdChanged)
                 switch (DecisionTypeId ?? 0)
                 {
-                    case (int)Person.DecisionCode.ProfessionForMembership:
-                        if (DiscClassStatuses.Contains(DiscoveryClassStatusId ?? 0)
-                            && BaptismStatusId == (int)Person.BaptismStatusCode.Completed)
+                    case DecisionCode.ProfessionForMembership:
+                        if (DiscClassStatusCompletedCodes.Contains(NewMemberClassStatusId ?? 0)
+                            && BaptismStatusId == BaptismStatusCode.Completed)
                         {
-                            MemberStatusId = (int)Person.MemberStatusCode.Member;
-                            if (BaptismTypeId == (int)Person.BaptismTypeCode.Biological)
-                                JoinCodeId = (int)Person.JoinTypeCode.BaptismBIO;
+                            MemberStatusId = MemberStatusCode.Member;
+                            if (BaptismTypeId == BaptismTypeCode.Biological)
+                                JoinCodeId = JoinTypeCode.BaptismBIO;
                             else
-                                JoinCodeId = (int)Person.JoinTypeCode.BaptismPOF;
-                            if (DiscoveryClassDate.HasValue && BaptismDate.HasValue)
-                                JoinDate = DiscoveryClassDate.Value > BaptismDate.Value ?
-                                    DiscoveryClassDate.Value : BaptismDate.Value;
+                                JoinCodeId = JoinTypeCode.BaptismPOF;
+                            if (NewMemberClassDate.HasValue && BaptismDate.HasValue)
+                                JoinDate = NewMemberClassDate.Value > BaptismDate.Value ?
+                                    NewMemberClassDate.Value : BaptismDate.Value;
                         }
                         break;
-                    case (int)Person.DecisionCode.Letter:
-                        if (DiscoveryClassStatusIdChanged)
-                            if (DiscClassStatuses.Contains(DiscoveryClassStatusId ?? 0)
-                                || DiscoveryClassStatusId == (int)Person.DiscoveryClassStatusCode.AdminApproval)
+                    case DecisionCode.Letter:
+                        if (NewMemberClassStatusIdChanged)
+                            if (DiscClassStatusCompletedCodes.Contains(NewMemberClassStatusId ?? 0)
+                                || NewMemberClassStatusId == NewMemberClassStatusCode.AdminApproval)
                             {
-                                MemberStatusId = (int)Person.MemberStatusCode.Member;
-                                JoinCodeId = (int)Person.JoinTypeCode.Letter;
-                                JoinDate = DiscoveryClassDate.HasValue ? DiscoveryClassDate : DecisionDate;
+                                MemberStatusId = MemberStatusCode.Member;
+                                JoinCodeId = JoinTypeCode.Letter;
+                                JoinDate = NewMemberClassDate.HasValue ? NewMemberClassDate : DecisionDate;
                             }
                         break;
-                    case (int)Person.DecisionCode.Statement:
-                        if (DiscoveryClassStatusIdChanged)
-                            if (DiscClassStatuses.Contains(DiscoveryClassStatusId ?? 0))
+                    case DecisionCode.Statement:
+                        if (NewMemberClassStatusIdChanged)
+                            if (DiscClassStatusCompletedCodes.Contains(NewMemberClassStatusId ?? 0))
                             {
-                                MemberStatusId = (int)Person.MemberStatusCode.Member;
-                                JoinCodeId = (int)Person.JoinTypeCode.Statement;
-                                JoinDate = DiscoveryClassDate.HasValue ? DiscoveryClassDate : DecisionDate;
+                                MemberStatusId = MemberStatusCode.Member;
+                                JoinCodeId = JoinTypeCode.Statement;
+                                JoinDate = NewMemberClassDate.HasValue ? NewMemberClassDate : DecisionDate;
                             }
                         break;
-                    case (int)Person.DecisionCode.StatementReqBaptism:
-                        if (DiscClassStatuses.Contains(DiscoveryClassStatusId ?? 0)
-                            && BaptismStatusId == (int)Person.BaptismStatusCode.Completed)
+                    case DecisionCode.StatementReqBaptism:
+                        if (DiscClassStatusCompletedCodes.Contains(NewMemberClassStatusId ?? 0)
+                            && BaptismStatusId == BaptismStatusCode.Completed)
                         {
-                            MemberStatusId = (int)Person.MemberStatusCode.Member;
-                            JoinCodeId = (int)Person.JoinTypeCode.BaptismSRB;
-                            if (DiscoveryClassDate.HasValue)
-                                JoinDate = DiscoveryClassDate.Value > BaptismDate.Value ?
-                                    DiscoveryClassDate.Value : BaptismDate.Value;
+                            MemberStatusId = MemberStatusCode.Member;
+                            JoinCodeId = JoinTypeCode.BaptismSRB;
+                            if (NewMemberClassDate.HasValue)
+                                JoinDate = NewMemberClassDate.Value > BaptismDate.Value ?
+                                    NewMemberClassDate.Value : BaptismDate.Value;
                             else
                                 JoinDate = BaptismDate;
                         }
@@ -149,36 +206,36 @@ namespace CmsData
             {
                 switch (DropCodeId)
                 {
-                    case (int)Person.DropTypeCode.Administrative:
+                    case DropTypeCode.Administrative:
                         DropMembership(Db);
                         break;
-                    case (int)Person.DropTypeCode.AnotherDenomination:
+                    case DropTypeCode.AnotherDenomination:
                         DropMembership(Db);
                         break;
-                    case (int)Person.DropTypeCode.Duplicate:
+                    case DropTypeCode.Duplicate:
                         DropMembership(Db);
-                        MemberStatusId = (int)Person.MemberStatusCode.NotMember;
+                        MemberStatusId = MemberStatusCode.NotMember;
                         break;
-                    case (int)Person.DropTypeCode.LetteredOut:
-                        DropMembership(Db);
-                        break;
-                    case (int)Person.DropTypeCode.Other:
+                    case DropTypeCode.LetteredOut:
                         DropMembership(Db);
                         break;
-                    case (int)Person.DropTypeCode.Requested:
+                    case DropTypeCode.Other:
+                        DropMembership(Db);
+                        break;
+                    case DropTypeCode.Requested:
                         DropMembership(Db);
                         break;
                 }
             }
-            if (DiscoveryClassStatusIdChanged
-                && DiscoveryClassStatusId == (int)Person.DiscoveryClassStatusCode.Attended)
+            if (NewMemberClassStatusIdChanged
+                && NewMemberClassStatusId == NewMemberClassStatusCode.Attended)
             {
                 var q = from om in Db.OrganizationMembers
                         where om.PeopleId == PeopleId
                         where om.Organization.OrganizationName == "Step 1"
                         select om;
                 foreach (var om in q)
-                    om.Drop(Db, addToHistory:true);
+                    om.Drop(Db, addToHistory: true);
             }
         }
         private void DropMembership(CMSDataContext Db)
@@ -191,11 +248,11 @@ namespace CmsData
         }
         private void dropMembership(bool Deceased, CMSDataContext Db)
         {
-            if (MemberStatusId == (int)Person.MemberStatusCode.Member)
+            if (MemberStatusId == MemberStatusCode.Member)
             {
                 if (Deceased)
-                    DropCodeId = (int)Person.DropTypeCode.Deceased;
-                MemberStatusId = (int)Person.MemberStatusCode.Previous;
+                    DropCodeId = DropTypeCode.Deceased;
+                MemberStatusId = MemberStatusCode.Previous;
                 DropDate = Util.Now.Date;
             }
             if (Deceased)
@@ -210,22 +267,22 @@ namespace CmsData
                 var spouse = Db.LoadPersonById(SpouseId.Value);
                 if (Deceased)
                 {
-                    spouse.MaritalStatusId = (int)Person.MaritalStatusCode.Widowed;
+                    spouse.MaritalStatusId = MaritalStatusCode.Widowed;
                     if (spouse.EnvelopeOptionsId.HasValue)
-                        if (spouse.EnvelopeOptionsId != (int)Person.EnvelopeOptionCode.None)
-                            spouse.EnvelopeOptionsId = (int)Person.EnvelopeOptionCode.Individual;
-                    spouse.ContributionOptionsId = (int)Person.EnvelopeOptionCode.Individual;
+                        if (spouse.EnvelopeOptionsId != EnvelopeOptionCode.None)
+                            spouse.EnvelopeOptionsId = EnvelopeOptionCode.Individual;
+                    spouse.ContributionOptionsId = EnvelopeOptionCode.Individual;
                 }
 
-                if (spouse.MemberStatusId == (int)Person.MemberStatusCode.Member)
-                    if (spouse.EnvelopeOptionsId == (int)Person.EnvelopeOptionCode.Joint)
-                        spouse.EnvelopeOptionsId = (int)Person.EnvelopeOptionCode.Individual;
+                if (spouse.MemberStatusId == MemberStatusCode.Member)
+                    if (spouse.EnvelopeOptionsId == EnvelopeOptionCode.Joint)
+                        spouse.EnvelopeOptionsId = EnvelopeOptionCode.Individual;
             }
-            EnvelopeOptionsId = (int)Person.EnvelopeOptionCode.None;
+            EnvelopeOptionsId = EnvelopeOptionCode.None;
 
             var list = OrganizationMembers.ToList();
-            foreach(var om in list)
-                om.Drop(Db, addToHistory:true);
+            foreach (var om in list)
+                om.Drop(Db, addToHistory: true);
         }
     }
 }

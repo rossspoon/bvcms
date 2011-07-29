@@ -8,6 +8,7 @@ using UtilityExtensions;
 using System.Web.Mvc;
 using CMSPresenter;
 using System.Collections;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -135,14 +136,14 @@ namespace CmsWeb.Models
                     where om.Organization.DivOrgs.Any(d => d.DivId == fromdiv)
                     where sc.ScheduleId == ScheduleId || ScheduleId == 0
                     where (om.Pending ?? false) == false
-                    where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
+                    where !NormalMembersOnly || om.MemberTypeId == MemberTypeCode.Member
                     let pc = DbUtil.Db.OrganizationMembers.FirstOrDefault(op =>
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
                        && op.Organization.DivOrgs.Any(dd => dd.DivId == todiv))
                     let pt = pc.Organization.OrganizationMembers.FirstOrDefault(om2 =>
                         om2.Pending == true
-                        && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
+                        && om2.MemberTypeId == MemberTypeCode.Teacher)
                     let psc = pc.Organization.OrgSchedules.FirstOrDefault() // SCHED
                     where !FilterUnassigned || pc == null
                     select new PromoteInfo
@@ -252,7 +253,7 @@ namespace CmsWeb.Models
                     DbUtil.Db.SubmitChanges();
                 }
                 var fom = DbUtil.Db.OrganizationMembers.Single(m => m.OrganizationId == a[1].ToInt() && m.PeopleId == a[0].ToInt());
-                OrganizationMember.InsertOrgMembers(
+                OrganizationMember.InsertOrgMembers(DbUtil.Db,
                     t.OrganizationId,
                     a[0].ToInt(),
                     fom.MemberTypeId,
@@ -268,7 +269,7 @@ namespace CmsWeb.Models
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.Organization.DivOrgs.Any(d => d.DivId == fromdiv)
                     where (om.Pending ?? false) == false
-                    where om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
+                    where om.MemberTypeId == MemberTypeCode.Member
                     let pc = DbUtil.Db.OrganizationMembers.FirstOrDefault(op =>
                        op.Pending == true
                        && op.PeopleId == om.PeopleId
@@ -277,7 +278,8 @@ namespace CmsWeb.Models
                     let tm = sc.SchedTime.Value
                     let pt = pc.Organization.OrganizationMembers.FirstOrDefault(om2 => 
                         om2.Pending == true 
-                        && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
+                        && om2.MemberTypeId == MemberTypeCode.Teacher)
+                    let ploc = pc.Organization.PendingLoc
                     where pc != null
                     select new
                     {
@@ -294,7 +296,7 @@ namespace CmsWeb.Models
                         MemberType = om.MemberType.Description,
                         Parent = om.Person.Family.HeadOfHousehold.Name,
                         Parent2 = om.Person.Family.HeadOfHouseholdSpouse.Name,
-                        Location = string.IsNullOrEmpty(pc.Organization.PendingLoc) ? pc.Organization.Location : pc.Organization.PendingLoc,
+                        Location = (ploc == null || ploc == "") ? pc.Organization.Location : ploc,
                         Leader = pt != null ? pt.Person.Name : pc.Organization.LeaderName,
                         OrgName = pc.Organization.OrganizationName,
                         Schedule = tm.Hour + ":" + tm.Minute.ToString().PadLeft(2, '0'),
@@ -341,11 +343,11 @@ namespace CmsWeb.Models
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     where o.DivOrgs.Any(dd => dd.DivId == todiv)
                     where sc.ScheduleId == ScheduleId || ScheduleId == 0
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName
                     let pt = o.OrganizationMembers.FirstOrDefault(om2 =>
                         om2.Pending == true
-                        && om2.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
+                        && om2.MemberTypeId == MemberTypeCode.Teacher)
                     select new
                     {
                         Text = CmsData.Organization.FormatOrgName(o.OrganizationName, pt != null ? pt.Person.Name : o.LeaderName, o.Location),

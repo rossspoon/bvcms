@@ -63,9 +63,7 @@ namespace CmsData
 		
 		private int? _DecisionTypeId;
 		
-		private int? _DiscoveryClassStatusId;
-		
-		private int? _NewMbrClassStatusId;
+		private int? _NewMemberClassStatusId;
 		
 		private int? _LetterStatusId;
 		
@@ -90,10 +88,6 @@ namespace CmsData
 		private DateTime? _BaptismDate;
 		
 		private DateTime? _DecisionDate;
-		
-		private DateTime? _DiscoveryClassDate;
-		
-		private DateTime? _NewMbrClassDateCompleted;
 		
 		private DateTime? _LetterDateRequested;
 		
@@ -241,6 +235,8 @@ namespace CmsData
 		
 		private string _PreferredName;
 		
+		private DateTime? _NewMemberClassDate;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -321,7 +317,7 @@ namespace CmsData
 		
 		private EntityRef< DecisionType> _DecisionType;
 		
-		private EntityRef< DiscoveryClassStatus> _DiscoveryClassStatus;
+		private EntityRef< NewMemberClassStatus> _NewMemberClassStatus;
 		
 		private EntityRef< DropType> _DropType;
 		
@@ -427,11 +423,8 @@ namespace CmsData
 		partial void OnDecisionTypeIdChanging(int? value);
 		partial void OnDecisionTypeIdChanged();
 		
-		partial void OnDiscoveryClassStatusIdChanging(int? value);
-		partial void OnDiscoveryClassStatusIdChanged();
-		
-		partial void OnNewMbrClassStatusIdChanging(int? value);
-		partial void OnNewMbrClassStatusIdChanged();
+		partial void OnNewMemberClassStatusIdChanging(int? value);
+		partial void OnNewMemberClassStatusIdChanged();
 		
 		partial void OnLetterStatusIdChanging(int? value);
 		partial void OnLetterStatusIdChanged();
@@ -468,12 +461,6 @@ namespace CmsData
 		
 		partial void OnDecisionDateChanging(DateTime? value);
 		partial void OnDecisionDateChanged();
-		
-		partial void OnDiscoveryClassDateChanging(DateTime? value);
-		partial void OnDiscoveryClassDateChanged();
-		
-		partial void OnNewMbrClassDateCompletedChanging(DateTime? value);
-		partial void OnNewMbrClassDateCompletedChanged();
 		
 		partial void OnLetterDateRequestedChanging(DateTime? value);
 		partial void OnLetterDateRequestedChanged();
@@ -694,6 +681,9 @@ namespace CmsData
 		partial void OnPreferredNameChanging(string value);
 		partial void OnPreferredNameChanged();
 		
+		partial void OnNewMemberClassDateChanging(DateTime? value);
+		partial void OnNewMemberClassDateChanged();
+		
     #endregion
 		public Person()
 		{
@@ -777,7 +767,7 @@ namespace CmsData
 			
 			this._DecisionType = default(EntityRef< DecisionType>); 
 			
-			this._DiscoveryClassStatus = default(EntityRef< DiscoveryClassStatus>); 
+			this._NewMemberClassStatus = default(EntityRef< NewMemberClassStatus>); 
 			
 			this._DropType = default(EntityRef< DropType>); 
 			
@@ -1355,46 +1345,24 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="DiscoveryClassStatusId", UpdateCheck=UpdateCheck.Never, Storage="_DiscoveryClassStatusId", DbType="int")]
-		public int? DiscoveryClassStatusId
+		[Column(Name="NewMemberClassStatusId", UpdateCheck=UpdateCheck.Never, Storage="_NewMemberClassStatusId", DbType="int")]
+		public int? NewMemberClassStatusId
 		{
-			get { return this._DiscoveryClassStatusId; }
+			get { return this._NewMemberClassStatusId; }
 
 			set
 			{
-				if (this._DiscoveryClassStatusId != value)
+				if (this._NewMemberClassStatusId != value)
 				{
 				
-					if (this._DiscoveryClassStatus.HasLoadedOrAssignedValue)
+					if (this._NewMemberClassStatus.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-                    this.OnDiscoveryClassStatusIdChanging(value);
+                    this.OnNewMemberClassStatusIdChanging(value);
 					this.SendPropertyChanging();
-					this._DiscoveryClassStatusId = value;
-					this.SendPropertyChanged("DiscoveryClassStatusId");
-					this.OnDiscoveryClassStatusIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NewMbrClassStatusId", UpdateCheck=UpdateCheck.Never, Storage="_NewMbrClassStatusId", DbType="int")]
-		public int? NewMbrClassStatusId
-		{
-			get { return this._NewMbrClassStatusId; }
-
-			set
-			{
-				if (this._NewMbrClassStatusId != value)
-				{
-				
-                    this.OnNewMbrClassStatusIdChanging(value);
-					this.SendPropertyChanging();
-					this._NewMbrClassStatusId = value;
-					this.SendPropertyChanged("NewMbrClassStatusId");
-					this.OnNewMbrClassStatusIdChanged();
+					this._NewMemberClassStatusId = value;
+					this.SendPropertyChanged("NewMemberClassStatusId");
+					this.OnNewMemberClassStatusIdChanged();
 				}
 
 			}
@@ -1671,50 +1639,6 @@ namespace CmsData
 					this._DecisionDate = value;
 					this.SendPropertyChanged("DecisionDate");
 					this.OnDecisionDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="DiscoveryClassDate", UpdateCheck=UpdateCheck.Never, Storage="_DiscoveryClassDate", DbType="datetime")]
-		public DateTime? DiscoveryClassDate
-		{
-			get { return this._DiscoveryClassDate; }
-
-			set
-			{
-				if (this._DiscoveryClassDate != value)
-				{
-				
-                    this.OnDiscoveryClassDateChanging(value);
-					this.SendPropertyChanging();
-					this._DiscoveryClassDate = value;
-					this.SendPropertyChanged("DiscoveryClassDate");
-					this.OnDiscoveryClassDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NewMbrClassDateCompleted", UpdateCheck=UpdateCheck.Never, Storage="_NewMbrClassDateCompleted", DbType="datetime")]
-		public DateTime? NewMbrClassDateCompleted
-		{
-			get { return this._NewMbrClassDateCompleted; }
-
-			set
-			{
-				if (this._NewMbrClassDateCompleted != value)
-				{
-				
-                    this.OnNewMbrClassDateCompletedChanging(value);
-					this.SendPropertyChanging();
-					this._NewMbrClassDateCompleted = value;
-					this.SendPropertyChanged("NewMbrClassDateCompleted");
-					this.OnNewMbrClassDateCompletedChanged();
 				}
 
 			}
@@ -3340,6 +3264,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="NewMemberClassDate", UpdateCheck=UpdateCheck.Never, Storage="_NewMemberClassDate", DbType="datetime")]
+		public DateTime? NewMemberClassDate
+		{
+			get { return this._NewMemberClassDate; }
+
+			set
+			{
+				if (this._NewMemberClassDate != value)
+				{
+				
+                    this.OnNewMemberClassDateChanging(value);
+					this.SendPropertyChanging();
+					this._NewMemberClassDate = value;
+					this.SendPropertyChanged("NewMemberClassDate");
+					this.OnNewMemberClassDateChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3930,41 +3876,41 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_People_DiscoveryClassStatus", Storage="_DiscoveryClassStatus", ThisKey="DiscoveryClassStatusId", IsForeignKey=true)]
-		public DiscoveryClassStatus DiscoveryClassStatus
+		[Association(Name="FK_People_DiscoveryClassStatus", Storage="_NewMemberClassStatus", ThisKey="NewMemberClassStatusId", IsForeignKey=true)]
+		public NewMemberClassStatus NewMemberClassStatus
 		{
-			get { return this._DiscoveryClassStatus.Entity; }
+			get { return this._NewMemberClassStatus.Entity; }
 
 			set
 			{
-				DiscoveryClassStatus previousValue = this._DiscoveryClassStatus.Entity;
+				NewMemberClassStatus previousValue = this._NewMemberClassStatus.Entity;
 				if (((previousValue != value) 
-							|| (this._DiscoveryClassStatus.HasLoadedOrAssignedValue == false)))
+							|| (this._NewMemberClassStatus.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if (previousValue != null)
 					{
-						this._DiscoveryClassStatus.Entity = null;
+						this._NewMemberClassStatus.Entity = null;
 						previousValue.People.Remove(this);
 					}
 
-					this._DiscoveryClassStatus.Entity = value;
+					this._NewMemberClassStatus.Entity = value;
 					if (value != null)
 					{
 						value.People.Add(this);
 						
-						this._DiscoveryClassStatusId = value.Id;
+						this._NewMemberClassStatusId = value.Id;
 						
 					}
 
 					else
 					{
 						
-						this._DiscoveryClassStatusId = default(int?);
+						this._NewMemberClassStatusId = default(int?);
 						
 					}
 
-					this.SendPropertyChanged("DiscoveryClassStatus");
+					this.SendPropertyChanged("NewMemberClassStatus");
 				}
 
 			}

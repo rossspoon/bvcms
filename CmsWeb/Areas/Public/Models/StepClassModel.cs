@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Text;
 using System.Configuration;
 using UtilityExtensions;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -92,10 +93,10 @@ namespace CmsWeb.Models
             var member = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
                 om.OrganizationId == meeting.OrganizationId && om.PeopleId == person.PeopleId);
             if (member == null)
-                OrganizationMember.InsertOrgMembers(
+                OrganizationMember.InsertOrgMembers(DbUtil.Db,
                     meeting.OrganizationId,
                     person.PeopleId,
-                    (int)OrganizationMember.MemberTypeCode.Member,
+                    MemberTypeCode.Member,
                     DateTime.Today, null, false);
 
             var attend = DbUtil.Db.Attends.SingleOrDefault(a =>

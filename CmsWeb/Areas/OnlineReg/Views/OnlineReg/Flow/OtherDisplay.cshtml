@@ -107,6 +107,13 @@
         <td>@Model.ntickets </td>
     </tr>
 }
+@if (Model.org.SuggestedFee == true)
+{ 
+    <tr>
+        <td><label for="suggestedfee">Suggested Fee</label></td>
+        <td>@Model.suggestedfee.ToString2("f2") </td>
+    </tr>
+}
 @if(Model.org.AskOptions.HasValue())
 { 
     <tr>

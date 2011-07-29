@@ -19,13 +19,13 @@ using CustomControls;
 using System.Configuration;
 using System.Data;
 using System.Web.Security;
-
+using CmsData.Codes;
 
 namespace CmsWeb
 {
     public partial class Contact : System.Web.UI.Page
     {
-        public NewContact contact;
+        public CmsData.Contact contact;
         private ContactController ctrl = new ContactController();
 
         public bool CanEdit()
@@ -37,7 +37,7 @@ namespace CmsWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             int? id = this.QueryString<int?>("id");
-            contact = DbUtil.Db.NewContacts.SingleOrDefault(c => c.ContactId == id);
+            contact = DbUtil.Db.Contacts.SingleOrDefault(c => c.ContactId == id);
             if (contact == null)
                 Response.EndShowMessage("no contact", "/", "home");
 
@@ -86,7 +86,7 @@ namespace CmsWeb
 
         protected void AddTeamContact_Click(object sender, EventArgs e)
         {
-            var c = new NewContact
+            var c = new CmsData.Contact
             {
                 ContactDate = contact.ContactDate,
                 ContactTypeId = contact.ContactTypeId,
@@ -95,7 +95,7 @@ namespace CmsWeb
                 CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
             };
-            DbUtil.Db.NewContacts.InsertOnSubmit(c);
+            DbUtil.Db.Contacts.InsertOnSubmit(c);
             foreach (var cp in contact.contactsMakers)
                 c.contactsMakers.Add(new Contactor { PeopleId = cp.PeopleId });
             DbUtil.Db.SubmitChanges();
@@ -114,7 +114,7 @@ namespace CmsWeb
                 SourceContactId = contact.ContactId,
                 Description = "Follow up",
                 ListId = Models.TaskModel.InBoxId(uid),
-                StatusId = (int)Task.StatusCode.Active,
+                StatusId = TaskStatusCode.Active,
                 Project = contact.MinistryId == null ? null : contact.Ministry.MinistryName,
             };
             DbUtil.Db.Tasks.InsertOnSubmit(task);

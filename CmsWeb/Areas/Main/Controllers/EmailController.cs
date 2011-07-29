@@ -14,7 +14,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [ValidateInput(false)]
         public ActionResult Index(int id, string body, string subj, bool? ishtml, bool? parents)
         {
-            if (SessionTimedOut())
+            if (Util.SessionTimedOut())
                 return Redirect("/Errors/SessionTimeout.htm");
             var m = new MassEmailer(id, parents);
             m.CmsHost = DbUtil.Db.CmsHost;
@@ -38,6 +38,9 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Json(new { id = 0, content = "<h2>Both Subject and Body need some text</h2>" });
 
             DbUtil.LogActivity("Emailing people");
+
+            if(m.EmailFroms().Count(ef => ef.Value == m.FromAddress) == 0)
+                return Json(new { id = 0, content = "No email address to send from" });
             m.FromName = m.EmailFroms().First(ef => ef.Value == m.FromAddress).Text;
 
             var emailqueue = m.CreateQueue();
@@ -64,8 +67,10 @@ namespace CmsWeb.Areas.Main.Controllers
         [ValidateInput(false)]
         public ActionResult TestEmail(MassEmailer m)
         {
-            if (SessionTimedOut())
+            if (Util.SessionTimedOut())
                 return Content("timeout");
+            if(m.EmailFroms().Count(ef => ef.Value == m.FromAddress) == 0)
+                return Content("No email address to send from" );
             m.FromName = m.EmailFroms().First(ef => ef.Value == m.FromAddress).Text;
             var From = Util.FirstAddress(m.FromAddress, m.FromName);
             var p = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
@@ -79,17 +84,17 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return Content("<h2>Test Email Sent</h2>");
         }
-        private bool SessionTimedOut()
-        {
-            if (Session != null)
-                if (Session.IsNewSession)
-                {
-                    string sessionCookie = Request.Headers["Cookie"];
-                    if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
-                        return true;
-                }
-            return false;
-        }
+        //private bool SessionTimedOut()
+        //{
+        //    if (Session != null)
+        //        if (Session.IsNewSession)
+        //        {
+        //            string sessionCookie = Request.Headers["Cookie"];
+        //            if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
+        //                return true;
+        //        }
+        //    return false;
+        //}
         [HttpPost]
         public ActionResult TaskProgress(int id)
         {

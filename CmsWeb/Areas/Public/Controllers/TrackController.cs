@@ -30,6 +30,25 @@ namespace CmsWeb.Areas.Public.Controllers
             var b = Convert.FromBase64String("R0lGODlhAQABAIAAANvf7wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
             return new FileContentResult(b, "image/gif");
         }
-
+        public ActionResult Key(string id)
+        {
+            var g = id.QuerystringToGuid();
+            var et = DbUtil.Db.EmailQueueTos.SingleOrDefault(e => e.Guid == g);
+            if (et != null)
+            {
+                var r = new EmailResponse
+                {
+                    EmailQueueId = et.Id,
+                    PeopleId = et.PeopleId,
+                    Dt = DateTime.Now,
+                    Type = "o",
+                };
+                DbUtil.Db.EmailResponses.InsertOnSubmit(r);
+                DbUtil.Db.SubmitChanges();
+            }
+            // this is an invisible 1 pixel image
+            var b = Convert.FromBase64String("R0lGODlhAQABAIAAANvf7wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
+            return new FileContentResult(b, "image/gif");
+        }
     }
 }

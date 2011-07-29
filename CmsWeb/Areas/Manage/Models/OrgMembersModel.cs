@@ -12,6 +12,7 @@ using System.Text;
 using System.Net.Mail;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -118,7 +119,7 @@ namespace CmsWeb.Models
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(di => di.DivId == DivId)
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName
                     select new SelectListItem
                     {
@@ -131,10 +132,10 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Organizations2()
         {
-            var member = (int)OrganizationMember.MemberTypeCode.Member;
+            var member = MemberTypeCode.Member;
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(di => di.DivId == DivId)
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName
                     let cmales = o.OrganizationMembers.Count(m => m.Person.GenderId == 1 && m.MemberTypeId == member)
                     let cfemales = o.OrganizationMembers.Count(m => m.Person.GenderId == 2 && m.MemberTypeId == member)
@@ -160,7 +161,7 @@ namespace CmsWeb.Models
                         where om.Organization.DivOrgs.Any(di => di.DivId == DivId)
                         where SourceId == 0 || om.OrganizationId == SourceId
                         where glist.Length == 0 || glist.Contains(om.Grade.Value)
-                        where !MembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
+                        where !MembersOnly || om.MemberTypeId == MemberTypeCode.Member
                         select om;
                 _members = q;
             }
@@ -274,7 +275,8 @@ namespace CmsWeb.Models
                 var tom = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == pid && m.OrganizationId == TargetId);
                 if (tom == null)
                 {
-                    tom = OrganizationMember.InsertOrgMembers(TargetId, pid, (int)OrganizationMember.MemberTypeCode.Member, om.EnrollmentDate.Value, om.InactiveDate, om.Pending ?? false);
+                    tom = OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                        TargetId, pid, MemberTypeCode.Member, om.EnrollmentDate.Value, om.InactiveDate, om.Pending ?? false);
                     if (tom == null)
                         continue;
                 }
@@ -366,7 +368,7 @@ Thanks for registering!
                     var flist = (from fm in i.om.Person.Family.People
                                  where fm.EmailAddress != null && fm.EmailAddress != ""
                                  where fm.EmailAddress != i.RegisterEmail
-                                 where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
+                                 where fm.PositionInFamilyId == PositionInFamily.PrimaryAdult
                                  select fm);
                     Db.Email(Db.CurrentUser.Person.FromEmail, flist, subj, msg);
                     foreach (var m in flist)

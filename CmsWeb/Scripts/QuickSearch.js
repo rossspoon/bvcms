@@ -1,15 +1,28 @@
 ﻿$(function () {
     $(".bt").button();
     $("#searchvalues select").css("width", "100%");
-    $("#clear").click(function () {
+    $("#clear").click(function (ev) {
+        ev.preventDefault();
         $("input:text").val("");
         $("#memberstatus,#campus").val(0); //.sb("refresh");
         $("#gender,#marital").val(99); //.sb("refresh");
+        return false;
     });
     $('#Name').focus();
     $("#search").click(function (ev) {
         ev.preventDefault();
         $.getTable();
+        return false;
+    });
+    $("a.bt").bind("contextmenu", function (e) {
+        e.preventDefault();
+    });
+    $("#targetpeople").click(function (ev) {
+        ev.preventDefault();
+        if ($('a.target[target="people"]').length == 0)
+            $("a.target").attr("target", "people");
+        else
+            $("a.target").removeAttr("target");
         return false;
     });
     $("#convert").click(function (ev) {

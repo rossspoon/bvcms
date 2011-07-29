@@ -8,6 +8,7 @@ using CmsData;
 using System.Configuration;
 using UtilityExtensions;
 using System.Net.Mail;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -101,15 +102,15 @@ namespace CmsWeb.Areas.Public.Controllers
                     ModelState.AddModelError("_FORM", "Cannot find your church record.");
                 else
                 {
-                    switch (m.person.DiscoveryClassStatusId)
+                    switch (m.person.NewMemberClassStatusId)
                     {
-                        case (int)Person.DiscoveryClassStatusCode.Attended:
+                        case NewMemberClassStatusCode.Attended:
                             break;
-                        case (int)Person.DiscoveryClassStatusCode.GrandFathered:
+                        case NewMemberClassStatusCode.GrandFathered:
                             break;
-                        case (int)Person.DiscoveryClassStatusCode.AdminApproval:
+                        case NewMemberClassStatusCode.AdminApproval:
                             break;
-                        case (int)Person.DiscoveryClassStatusCode.ExemptedChild:
+                        case NewMemberClassStatusCode.ExemptedChild:
                             break;
                         default:
                             ModelState.AddModelError("_FORM", "I'm sorry, but our records indicate that you have not attended Step 1 which is a prerequite for this class");

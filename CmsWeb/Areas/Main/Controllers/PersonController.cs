@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Web.Routing;
 using System.Threading;
 using System.Web.Security;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -171,7 +172,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var p = DbUtil.Db.LoadPersonById(id);
             DbUtil.LogActivity("Adding contact from: {0}".Fmt(p.Name));
-            var c = new NewContact
+            var c = new CmsData.Contact
             {
                 CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
@@ -180,7 +181,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 ContactReasonId = 99,
             };
 
-            DbUtil.Db.NewContacts.InsertOnSubmit(c);
+            DbUtil.Db.Contacts.InsertOnSubmit(c);
             DbUtil.Db.SubmitChanges();
 
             var cp = new Contactor
@@ -199,7 +200,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var p = DbUtil.Db.LoadPersonById(id);
             DbUtil.LogActivity("Adding contact to: {0}".Fmt(p.Name));
-            var c = new NewContact
+            var c = new CmsData.Contact
             {
                 CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
@@ -208,7 +209,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 ContactReasonId = 99,
             };
 
-            DbUtil.Db.NewContacts.InsertOnSubmit(c);
+            DbUtil.Db.Contacts.InsertOnSubmit(c);
             DbUtil.Db.SubmitChanges();
 
             var pc = new Contactee
@@ -228,7 +229,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var p = DbUtil.Db.LoadPersonById(id);
 
             var pid = Util.UserPeopleId.Value;
-            var active = (int)Task.StatusCode.Active;
+            var active = TaskStatusCode.Active;
             var t = new Task
             {
                 OwnerId = pid,
@@ -341,7 +342,12 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = MemberInfo.GetMemberInfo(id);
             UpdateModel(m);
-            m.UpdateMember();
+            var ret = m.UpdateMember();
+            if (ret != "ok")
+            {
+                ModelState.AddModelError("MemberTab", ret);
+                return View("MemberEdit", m);
+            }
             m = MemberInfo.GetMemberInfo(id);
             return View("MemberDisplay", m);
         }
@@ -433,7 +439,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult AddContact(int id)
         {
             var c = new ContentResult();
-            c.Content = NewContact.AddContact(id).ToString();
+            c.Content = CmsData.Contact.AddContact(id).ToString();
             return c;
         }
         [AcceptVerbs(HttpVerbs.Post)]

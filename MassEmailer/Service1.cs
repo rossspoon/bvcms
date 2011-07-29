@@ -23,7 +23,7 @@ using System.Web.Caching;
 using System.IO;
 using System.Net.Mime;
 using System.Reflection;
-//using DKIM;
+using Elmah;
 
 namespace MassEmailer
 {
@@ -38,10 +38,12 @@ namespace MassEmailer
         public DateTime lastRun { get; set; }
         public DateTime lastThrottle { get; set; }
         public int sentSinceQuotaCheck { get; set; }
+        public Elmah.SqlErrorLog ErrorLog;
 
         public MassEmailer()
         {
             InitializeComponent();
+
 
             var sSource = "MassEmailer2";
             var sLog = "Application";
@@ -50,29 +52,44 @@ namespace MassEmailer
             eventLog1.Source = "MassEmailer2";
 
             ConnStr = ConfigurationManager.ConnectionStrings["CMSEmailQueue"].ConnectionString;
+            var cb = new SqlConnectionStringBuilder(ConnStr);
+            cb.InitialCatalog = "ELMAH";
+            ErrorLog = new SqlErrorLog(cb.ConnectionString);
+            ErrorLog.ApplicationName = "BVCMS";
 
             string awscreds = Path.Combine(GetApplicationPath(), "awscreds.txt");
             if (File.Exists(awscreds))
             {
-                var a = File.ReadAllText(awscreds).Split(',');
-                Util.InsertCacheNotRemovable("awscreds", a);
+                var lines = File.ReadAllLines(awscreds);
+                foreach (var line in lines)
+                {
+                    var a = line.Split(':');
+                    Util.InsertCacheNotRemovable(a[0], a[1]);
+                }
             }
-            else if (ConfigurationManager.AppSettings["awscreds"].HasValue())
+            else if (ConfigurationManager.AppSettings["AccessId"].HasValue())
             {
-                var a = ConfigurationManager.AppSettings["awscreds"].Split(',');
-                Util.InsertCacheNotRemovable("awscreds", a);
+                Util.InsertCacheNotRemovable("AccessId",
+                    ConfigurationManager.AppSettings["AccessId"]);
+                Util.InsertCacheNotRemovable("SecretKey",
+                    ConfigurationManager.AppSettings["SecretKey"]);
+                Util.InsertCacheNotRemovable("ChilkatMailKey",
+                    ConfigurationManager.AppSettings["ChilkatMailKey"]);
+                Util.InsertCacheNotRemovable("ChilkatMimeKey",
+                    ConfigurationManager.AppSettings["ChilkatMimeKey"]);
             }
-            //string privatekey = Path.Combine(GetApplicationPath(), "privatekey.txt");
-            //if (File.Exists(privatekey))
-            //{
-            //    var s = File.ReadAllText(privatekey);
-            //    Util.InsertCacheNotRemovable("privatekey", s);
-            //}
-            //else if (ConfigurationManager.AppSettings["privatekey"].HasValue())
-            //{
-            //    var s = ConfigurationManager.AppSettings["privatekey"];
-            //    Util.InsertCacheNotRemovable("privatekey", s);
-            //}
+            // You should create your own privatekey.txt file
+            string privatekey = Path.Combine(GetApplicationPath(), "privatekey.txt");
+            if (File.Exists(privatekey))
+            {
+                var s = File.ReadAllText(privatekey);
+                Util.InsertCacheNotRemovable("privatekey", s);
+            }
+            else if (ConfigurationManager.AppSettings["privatekey"].HasValue())
+            {
+                var s = ConfigurationManager.AppSettings["privatekey"];
+                Util.InsertCacheNotRemovable("privatekey", s);
+            }
             SleepTime = ConfigurationManager.AppSettings["SleepTime"].ToInt();
         }
         private static string GetApplicationPath()
@@ -95,7 +112,7 @@ namespace MassEmailer
 
         protected override void OnStart(string[] args)
         {
-            WriteLog("MassEmailer service started");
+            WriteLog2("MassEmailer service started");
             StartListening();
         }
         public void StartListening()
@@ -106,6 +123,9 @@ namespace MassEmailer
         }
         private void Listen()
         {
+            //var currentDomain = AppDomain.CurrentDomain;
+            //currentDomain.AssemblyResolve += new ResolveEventHandler(currentDomain_AssemblyResolve);
+
             string Host = "";
             string CmsHost = "";
             int id = 0;
@@ -121,7 +141,7 @@ namespace MassEmailer
                         if (DateTime.Now >= scheduledtime // at or past the scheduled time
                             && lastRun < scheduledtime) // have not run for this time
                         {
-                            WriteLog("Check for scheduled emails {0}".Fmt(scheduledtime));
+                            WriteLog2("Check for scheduled emails {0}".Fmt(scheduledtime));
                             var t = DateTime.Now;
                             var cb = new SqlConnectionStringBuilder(ConnStr);
                             cb.InitialCatalog = "BlogData";
@@ -134,19 +154,27 @@ namespace MassEmailer
                             }
                         }
                     }
-                    using (var cn = new SqlConnection(ConnStr))
-                    {
-                        cn.Open();
-                        const string sql = @"
+                }
+                catch (Exception ex)
+                {
+                    WriteLog2("Error checking for scheduled emails ", EventLogEntryType.Error);
+                    ErrorLog.Log(new Error(ex));
+                }
+                using (var cn = new SqlConnection(ConnStr))
+                {
+                    cn.Open();
+                    const string sql = @"
 WAITFOR(
     RECEIVE TOP(20) CONVERT(VARCHAR(max), message_body) AS message 
     FROM EmailQueue
 ), TIMEOUT 10000";
-                        using (var cmdr = new SqlCommand(sql, cn))
+                    using (var cmdr = new SqlCommand(sql, cn))
+                    {
+                        cmdr.CommandTimeout = 0;
+                        var reader = cmdr.ExecuteReader();
+                        while (reader.Read())
                         {
-                            cmdr.CommandTimeout = 0;
-                            var reader = cmdr.ExecuteReader();
-                            while (reader.Read())
+                            try
                             {
                                 var s = reader.GetString(0);
                                 if (!s.HasValue())
@@ -170,7 +198,7 @@ WAITFOR(
                                             Db.SubmitChanges();
                                             var nitems = equeue.EmailQueueTos.Count();
                                             if (nitems > 5)
-                                                WriteLog("Processing Queue for " + nitems);
+                                                WriteLog2("Processing Queue for " + nitems);
                                             break;
                                         case "END":
                                             equeue.Sent = DateTime.Now;
@@ -190,74 +218,68 @@ WAITFOR(
                                     }
                                 }
                             }
+                            catch (Exception ex)
+                            {
+                                if (lasterror != ex.Message)
+                                {
+                                    WriteLog2("Error sending emails ", EventLogEntryType.Error);
+                                    ErrorLog.Log(new Error(ex));
+
+                                    var SysFromEmail = ConfigurationManager.AppSettings["sysfromemail"];
+                                    var senderrorsto = Util.SendErrorsTo();
+                                    Util.SendMsg(SysFromEmail, CmsHost, senderrorsto[0],
+                                        "Mass Emailer Error " + Host,
+                                        Util.SafeFormat(ex.Message) +
+            @"
+<div><a href='{0}Manage/Emails/Details/{1}'>message {1}</a></div>
+<div><a href='{0}Person/Index/{2}'>to person {2}</a></div>
+<div><a href='{0}elmah.axd'>elmah.axd</a></div>
+".Fmt(CmsHost, id, pid),
+                                        senderrorsto, 0, pid, Record: false);
+                                    lasterror = ex.Message;
+                                }
+                                Thread.Sleep(5000);
+                            }
+                            lasterror = null;
                         }
                     }
-                    lasterror = null;
-                }
-                catch (Exception ex)
-                {
-                    if (lasterror != ex.Message)
-                    {
-                        WriteLog("Error sending emails ", EventLogEntryType.Error);
-                        var SysFromEmail = ConfigurationManager.AppSettings["sysfromemail"];
-                        var senderrorsto = Util.SendErrorsTo();
-                        Util.SendMsg(SysFromEmail, CmsHost, senderrorsto[0],
-                            "Mass Emailer Error " + Host + " id:" + id + " pid:" + pid,
-                            Util.SafeFormat(ex.Message + "\n\n" + ex.StackTrace),
-                            senderrorsto, 0, pid, Record: false);
-                        lasterror = ex.Message;
-                    }
-                    Thread.Sleep(5000);
                 }
             }
             Thread.CurrentThread.Abort();
         }
         private void SendPersonEmail(CMSDataContext Db, string CmsHost, int id, int pid)
         {
-            var useSES = HttpRuntime.Cache["awscreds"] != null;
+            var useSES = HttpRuntime.Cache["AccessId"] != null;
             var SysFromEmail = Db.Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
             var emailqueue = Db.EmailQueues.Single(eq => eq.Id == id);
             var emailqueueto = Db.EmailQueueTos.Single(eq => eq.Id == id && eq.PeopleId == pid);
             var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
 
-            try
+            var Message = emailqueue.Body;
+
+            var q = from p in Db.People
+                    where p.PeopleId == emailqueueto.PeopleId
+                    select p;
+            var qp = q.Single();
+            string text = emailqueue.Body;
+            var aa = Db.DoReplacements(ref text, CmsHost, qp, emailqueueto);
+
+            var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
+            var url = Util.URLCombine(CmsHost, qs);
+            var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
+            text = text.Replace("{unsubscribe}", link);
+            text = text.Replace("{Unsubscribe}", link);
+            if (aa.Count > 0)
             {
-                var Message = emailqueue.Body;
+                text = text.Replace("{toemail}", aa[0].Address);
+                text = text.Replace("%7Btoemail%7D", aa[0].Address);
+            }
+            text = text.Replace("{fromemail}", From.Address);
+            text = text.Replace("%7Bfromemail%7D", From.Address);
 
-                var q = from p in Db.People
-                        where p.PeopleId == emailqueueto.PeopleId
-                        select p;
-                var qp = q.Single();
-                string text = emailqueue.Body;
-                var aa = Db.DoReplacements(ref text, CmsHost, qp, emailqueueto);
-
-                var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
-                var url = Util.URLCombine(CmsHost, qs);
-                var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
-                text = text.Replace("{unsubscribe}", link);
-                text = text.Replace("{Unsubscribe}", link);
-                if (aa.Count > 0)
-                {
-                    text = text.Replace("{toemail}", aa[0].Address);
-                    text = text.Replace("%7Btoemail%7D", aa[0].Address);
-                }
-                text = text.Replace("{fromemail}", From.Address);
-                text = text.Replace("%7Bfromemail%7D", From.Address);
-
-                emailqueueto.Messageid = EmailRoute(
+            emailqueueto.Messageid = EmailRoute(
                     SysFromEmail, From.DisplayName, From.Address,
                     aa, emailqueue.Subject, text, CmsHost, id, pid);
-                emailqueueto.Sent = DateTime.Now;
-                Db.SubmitChanges();
-            }
-            catch (Exception ex)
-            {
-                Util.SendMsg(SysFromEmail, CmsHost, From,
-                    "sent emails - error", ex.Message,
-                    Util.ToMailAddressList(From),
-                    emailqueue.Id, pid, Record: true);
-                throw ex;
-            }
         }
         private Boolean SESCanSend()
         {
@@ -270,16 +292,17 @@ WAITFOR(
                 else
                     lastThrottle = DateTime.MinValue;
 
-            var o = HttpRuntime.Cache["awscreds"];
-            if (o != null)
+            var AccessId = HttpRuntime.Cache["AccessId"];
+            if (AccessId != null)
             {
                 var resp = (GetSendQuotaResponse)HttpRuntime.Cache["ses_quota"];
                 if (resp == null)
                 {
-                    string[] a = (string[])o;
-                    var cfg = new AmazonSimpleEmailServiceConfig();
-                    cfg.UseSecureStringForAwsSecretKey = false;
-                    var ses = new AmazonSimpleEmailServiceClient(a[0], a[1], cfg);
+                    //var cfg = new AmazonSimpleEmailServiceConfig();
+                    //cfg.UseSecureStringForAwsSecretKey = false;
+                    var ses = new AmazonSimpleEmailServiceClient(
+                        (string)AccessId,
+                        (string)HttpRuntime.Cache["SecretKey"]);
                     var req = new GetSendQuotaRequest();
                     resp = ses.GetSendQuota(req);
                     HttpRuntime.Cache.Insert("ses_quota", resp, null,
@@ -312,85 +335,88 @@ WAITFOR(
             else
                 fromname = fromname.Replace("\"", "");
             var from = new MailAddress(fromaddress, fromname);
-            var msg = new MailMessage();
-            msg.From = new MailAddress(awsfrom, fromname);
+
+            var mailman = new Chilkat.MailMan();
+            mailman.UnlockComponent((string)HttpRuntime.Cache["ChilkatMailKey"]);
+
+            var email = new Chilkat.Email();
+
+            var ma = new MailAddress(awsfrom, fromname);
+            email.From = ma.ToString();
+
             Util.RecordEmailSent(host, from, Subject, to, id, true);
 
+            var tolist = new List<string>();
             foreach (var t in to)
             {
                 if (t.Host != "nowhere.name")
-                    msg.To.Add(t);
+                    tolist.Add(t.ToString());
             }
-            if (msg.To.Count == 0)
+            if (tolist.Count == 0)
             {
-                msg.To.Add(msg.From);
+                tolist.Add(from.ToString());
                 Subject += "-- NO GOOD EMAIL({0},{1})".Fmt(host, pid);
             }
+            email.AddMultipleTo(string.Join(",", tolist));
+
             if (Subject.HasValue())
-                msg.Subject = Subject;
+                email.Subject = Subject;
             else
-                msg.Subject = "no subject";
-            msg.ReplyToList.Add(from);
-            msg.Headers.Add("X-bvcms-host", host);
-            msg.Headers.Add("X-bvcms-mail-id", id.ToString());
-            msg.Headers.Add("X-bvcms-peopleid", pid.ToString());
+                email.Subject = "no subject";
+            email.ReplyTo = from.ToString();
+            email.AddHeaderField("X-bvcms-host", host);
+            email.AddHeaderField("X-bvcms-mail-id", id.ToString());
+            email.AddHeaderField("X-bvcms-peopleid", pid.ToString());
             var addrs = to.EmailAddressListToString();
             if (addrs.HasValue())
-                msg.Headers.Add("X-bvcms-addresses", addrs);
+                email.AddHeaderField("X-bvcms-addresses", addrs);
 
             var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
             var text = regex.Replace(body, string.Empty);
 
-            var bytes1 = Encoding.UTF8.GetBytes(text);
-            var textStream1 = new MemoryStream(bytes1);
-            var textView1 = new AlternateView(textStream1, MediaTypeNames.Text.Plain);
-            var lines = Regex.Split(text, @"\r?\n|\r");
-            if (lines.Any(li => li.Length > 990))
-                textView1.TransferEncoding = TransferEncoding.QuotedPrintable;
-            else
-                textView1.TransferEncoding = TransferEncoding.SevenBit;
-            msg.AlternateViews.Add(textView1);
+            email.AddPlainTextAlternativeBody(text);
 
-            var bytes = Encoding.UTF8.GetBytes(body);
-            var htmlStream = new MemoryStream(bytes);
-            var htmlView = new AlternateView(htmlStream, MediaTypeNames.Text.Html);
-            htmlView.TransferEncoding = TransferEncoding.Base64;
-            msg.AlternateViews.Add(htmlView);
+            email.AddHtmlAlternativeBody(body);
 
-   //         var pkey = (string)HttpRuntime.Cache["privatekey"];
-   //         var privateKey = PrivateKeySigner.Create(pkey, SigningAlgorithm.RSASha256);
-			//var dkim = new DkimSigner(
-			//	privateKey,
-			//	ConfigurationManager.AppSettings["domain"],
-			//	ConfigurationManager.AppSettings["dkimselector"],
-   //             new string[] { "Content-Type", "From", "To", "Subject" }
-			//	);
-			//var signedMsg = dkim.SignMessage(msg);
-   //         var rawMessage = new RawMessage();
-   //         using (var memoryStream = DKIM.MailMessageMemoryStream.ConvertMailMessageToMemoryStream(signedMsg))
-   //             rawMessage.WithData(memoryStream);
+            var dkim = new Chilkat.Dkim();
+            dkim.UnlockComponent((string)HttpRuntime.Cache["ChilkatMimeKey"]);
+
+            byte[] mimeData = null;
+            mimeData = mailman.RenderToMimeBytes(email);
+
+            System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+            var str = enc.GetString(mimeData);
+
+            dkim.DkimDomain = ConfigurationManager.AppSettings["domain"];
+            dkim.DkimSelector = ConfigurationManager.AppSettings["dkimselector"];
+            dkim.LoadDkimPk((string)HttpRuntime.Cache["privatekey"], null);
+            dkim.DkimHeaders = "mime-version:subject:from:to:content-type";
+            var dkimSignedMime = dkim.AddDkimSignature(mimeData);
+            var str2 = enc.GetString(dkimSignedMime);
+
             var rawMessage = new RawMessage();
-            using (var memoryStream = ConvertMailMessageToMemoryStream(msg))
-                rawMessage.WithData(memoryStream);
+
+            var fileStream = new MemoryStream(dkimSignedMime);
+            rawMessage.WithData(fileStream);
 
             var request = new SendRawEmailRequest();
             request.WithRawMessage(rawMessage);
-            var tolist = msg.To.Select(tt => tt.ToString());
             request.WithDestinations(tolist);
             var fullsys = new MailAddress(awsfrom, fromname);
             request.WithSource(fullsys.ToString());
 
             SendRawEmailResponse response = null;
-            SendRawEmailResult result = null;
-            string[] a = (string[])HttpRuntime.Cache["awscreds"];
+
+            //var cfg = new AmazonSimpleEmailServiceConfig();
+            //cfg.UseSecureStringForAwsSecretKey = false;
+            var ses = new AmazonSimpleEmailServiceClient(
+                (string)HttpRuntime.Cache["AccessId"],
+                (string)HttpRuntime.Cache["SecretKey"]);
             try
             {
-                var cfg = new AmazonSimpleEmailServiceConfig();
-                cfg.UseSecureStringForAwsSecretKey = false;
-                var ses = new AmazonSimpleEmailServiceClient(a[0], a[1], cfg);
                 response = ses.SendRawEmail(request);
-                result = response.SendRawEmailResult;
+                var result = response.SendRawEmailResult;
                 return result.MessageId;
             }
             catch (AmazonSimpleEmailServiceException ex)
@@ -403,11 +429,7 @@ WAITFOR(
                 string resp = "no response";
                 if (response.IsNotNull())
                     resp = response.SendRawEmailResult.ToString();
-                Util.SendMsg(SysEmailFrom, host, from,
-                    "({0}) {1}".Fmt(ex.ErrorCode, Subject),
-                    "<p>to: {0}<br>host:{1} id:{2} pid:{3}</p><pre>{4}</pre>{5}<br><br>{6}".Fmt(
-                        addrs, host, id, pid, ex.Message, body, resp),
-                        Util.SendErrorsTo(), id, pid, Record: true);
+                throw;
             }
             catch (Exception ex)
             {
@@ -418,6 +440,7 @@ WAITFOR(
                         || ex.Message.StartsWith("The remote name could not be resolved")
                         ))
                 {
+                    ErrorLog.Log(new Error(ex));
                     return EmailRoute(SysEmailFrom, fromname, fromaddress, to,
                         Subject + " .rs", body, host, id, pid);
                 }
@@ -427,16 +450,12 @@ WAITFOR(
                     Util.SendMsg(SysEmailFrom, host, from, Subject, body,
                         to, id, pid, Record: true);
                 }
-                else if (!msg.Subject.StartsWith("(sending error)"))
+                else if (!email.Subject.StartsWith("(sending error)"))
                 {
                     string resp = "no response";
                     if (response.IsNotNull())
                         resp = response.SendRawEmailResult.ToString();
-                    Util.SendMsg(SysEmailFrom, host, from,
-                        "(sending error) " + Subject,
-                        "<p>to: {0}<br>host:{1} id:{2} pid:{3}</p><pre>{4}</pre>{5}<br><br>{6}".Fmt(
-                            addrs, host, id, pid, ex.Message, body, resp),
-                            Util.SendErrorsTo(), id, pid, Record: true);
+                    throw;
                 }
             }
             return "no messageid";
@@ -456,7 +475,7 @@ WAITFOR(
         }
         private string EmailRoute(string SysFrom, string fromname, string fromaddress, List<MailAddress> to, string subject, string body, string CmsHost, int id, int pid)
         {
-            var useSES = HttpRuntime.Cache["awscreds"] != null;
+            var useSES = HttpRuntime.Cache["AccessId"] != null;
             if (useSES && SESCanSend())
                 return SendAmazonSESRawEmail(SysFrom, fromname, fromaddress, to, subject, body, CmsHost, id, pid);
             else
@@ -495,17 +514,17 @@ WAITFOR(
             }
         }
 
-        private void WriteLog(string message)
+        private void WriteLog2(string message)
         {
-            WriteLog(message, EventLogEntryType.Information);
+            WriteLog2(message, EventLogEntryType.Information);
         }
-        private void WriteLog(string message, EventLogEntryType err)
+        private void WriteLog2(string message, EventLogEntryType err)
         {
             eventLog1.WriteEntry(message, err);
         }
         protected override void OnStop()
         {
-            WriteLog("MassEmailer2 service stopped");
+            WriteLog2("MassEmailer2 service stopped");
             serviceStarted = false;
             // give it a little time to finish any pending work
             listener.Join(new TimeSpan(0, 0, 20));
@@ -517,5 +536,38 @@ WAITFOR(
             cb.InitialCatalog = "CMS_{0}".Fmt(a[0]);
             return cb.ConnectionString;
         }
+	
+        //Assembly currentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        //{
+        //    //This handler is called only when the common language runtime tries to bind to the assembly and fails.
+	
+        //    //Retrieve the list of referenced assemblies in an array of AssemblyName.
+        //    Assembly MyAssembly, objExecutingAssemblies;
+        //    string strTempAssmbPath = "";
+	
+        //    objExecutingAssemblies = Assembly.GetExecutingAssembly();
+        //    AssemblyName[] arrReferencedAssmbNames = objExecutingAssemblies.GetReferencedAssemblies();
+	
+        //    //Loop through the array of referenced assembly names.
+        //    foreach (AssemblyName strAssmbName in arrReferencedAssmbNames)
+        //    {
+        //        //Check for the assembly names that have raised the "AssemblyResolve" event.
+        //        if (strAssmbName.FullName.Substring(0, strAssmbName.FullName.IndexOf(",")) == args.Name.Substring(0, args.Name.IndexOf(",")))
+        //        {
+        //            //Build the path of the assembly from where it has to be loaded.
+        //            //The following line is probably the only line of code in this method you may need to modify:
+        //            strTempAssmbPath = "c:\\Program Files (x86)\\Usage Defined Software\\BVCMS MassEmailer2\\";
+        //            if (!strTempAssmbPath.EndsWith("\\")) strTempAssmbPath += "\\";
+        //            strTempAssmbPath += args.Name.Substring(0, args.Name.IndexOf(",")) + ".dll";
+        //            break;
+        //        }
+        //    }
+        //    //Load the assembly from the specified path.
+        //    MyAssembly = Assembly.LoadFrom(strTempAssmbPath);
+	
+        //    //Return the loaded assembly.
+        //    return MyAssembly;
+        //}
+	
     }
 }

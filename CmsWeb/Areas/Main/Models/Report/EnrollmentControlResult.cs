@@ -19,6 +19,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Diagnostics;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -97,7 +98,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0
                     where m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid)
                     where m.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0
-                    where m.Organization.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where m.Organization.OrganizationStatusId == OrgStatusCode.Active
                     orderby m.Person.Name2
                     select new MemberInfo
                     {

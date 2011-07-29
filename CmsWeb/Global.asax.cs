@@ -16,6 +16,7 @@ using System.Threading;
 using System.Globalization;
 using CmsWeb.Areas.Manage.Controllers;
 using System.Web.Caching;
+using Elmah;
 
 namespace CmsWeb
 {
@@ -71,6 +72,7 @@ namespace CmsWeb
             routes.IgnoreRoute("{myReport}.rdlc");
             routes.IgnoreRoute("{dir1}/{dir2}/{file}.js");
             routes.IgnoreRoute("{dir1}/{dir2}/{file}.css");
+            routes.IgnoreRoute("elmah.axd");
 
             routes.MapRoute(
                 "Default", // Route name
@@ -107,46 +109,11 @@ namespace CmsWeb
                     Response.Redirect(r);
             }
         }
-        protected void Application_Error(object sender, EventArgs e)
+        public void ErrorMail_Filtering(object sender, ExceptionFilterEventArgs e)
         {
-#if DEBUG2
-            if (HttpContext.Current != null)
-                return;
-#endif
-            var ex = Server.GetLastError();
-            if (ex is HttpException)
-            {
-                var code = ((HttpException)ex).GetHttpCode();
-                if (code == (int)HttpStatusCode.NotFound
-                    || code == (int)HttpStatusCode.Forbidden)
-                    return;
-            }
-
-            var u = DbUtil.Db.CurrentUserPerson;
-
-            var sb = new StringBuilder();
-            if (Request.RequestType == "POST")
-                foreach (var s in Request.Form.AllKeys)
-                    if (!s.Contains("VIEWSTATE"))
-                        sb.AppendFormat("\n{0}: {1}", s, Request.Form[s]);
-
-            var subject = "bvcms error on " + Request.Url.Authority;
-            var from = string.Empty;
-            var body = string.Empty;
-            if (u != null)
-            {
-                from = u.FromEmail;
-                body = "\n{0} ({1}, {2})\n{3}\n".Fmt(u.EmailAddress, u.PeopleId, u.Name, Request.Url.OriginalString)
-                    + ex.ToString() + sb.ToString();
-            }
-            else
-            {
-                from = WebConfigurationManager.AppSettings["errorsfromemail"];
-                body = "\nanonymous\n{0}\n".Fmt(Request.Url.OriginalString)
-                    + ex.ToString() + sb.ToString();
-            }
-            DbUtil.Db.EmailRedacted(from, CMSRoleProvider.provider.GetDevelopers(), 
-                subject, Util.SafeFormat(body));
+            var httpException = e.Exception as HttpException;
+            if (httpException != null && httpException.GetHttpCode() == 404)
+                e.Dismiss();
         }
     }
 }

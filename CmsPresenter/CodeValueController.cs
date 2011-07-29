@@ -15,6 +15,7 @@ using System.Web;
 using System.Configuration;
 using System.Data.Linq.SqlClient;
 using System.Web.Security;
+using CmsData.Codes;
 
 namespace CMSPresenter
 {
@@ -324,13 +325,13 @@ namespace CMSPresenter
 		}
 
 		[DataObjectMethod(DataObjectMethodType.Select, false)]
-		public List<CodeValueItem> DiscoveryClassStatusCodes()
+		public List<CodeValueItem> NewMemberClassStatusCodes()
 		{
-			const string NAME = "DiscoveryClassStatusCodes";
+			const string NAME = "NewMemberClassStatusCodes";
 			var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
 			if (list == null)
 			{
-				var q = from c in DbUtil.Db.DiscoveryClassStatuses
+				var q = from c in DbUtil.Db.NewMemberClassStatuses
 						select new CodeValueItem
 						{
 							Id = c.Id,
@@ -516,7 +517,7 @@ namespace CMSPresenter
 			var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
 			if (list == null)
 			{
-				var q = from c in DbUtil.Db.NewContactReasons
+				var q = from c in DbUtil.Db.ContactReasons
 						orderby c.Description
 						select new CodeValueItem
 						{
@@ -541,7 +542,7 @@ namespace CMSPresenter
 			var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
 			if (list == null)
 			{
-				var q = from c in DbUtil.Db.NewContactTypes
+				var q = from c in DbUtil.Db.ContactTypes
 						orderby c.Description
 						select new CodeValueItem
 						{
@@ -759,7 +760,7 @@ namespace CMSPresenter
 					new CodeValueItem { Id =  3, Value = "Decision", Code = "DecisionDate" },
 					new CodeValueItem { Id =  4, Value = "Baptism", Code = "BaptismDate" },
 					new CodeValueItem { Id =  5, Value = "Wedding", Code = "WeddingDate" },
-					new CodeValueItem { Id =  6, Value = "New Member Class", Code = "DiscoveryClassDate" },
+					new CodeValueItem { Id =  6, Value = "New Member Class", Code = "NewMemberClassDate" },
 					new CodeValueItem { Id =  7, Value = "Letter Req'd", Code = "LetterDateRequested" },
 					new CodeValueItem { Id =  8, Value = "Letter Rec'd", Code = "LetterDateReceived" },
 					new CodeValueItem { Id =  9, Value = "Addr From", Code = "AddressFromDate" },
@@ -1089,8 +1090,8 @@ namespace CMSPresenter
 			if (list == null)
 			{
 				var q = from mt in DbUtil.Db.MemberTypes
-						where mt.Id != (int)OrganizationMember.MemberTypeCode.Visitor
-						where mt.Id != (int)OrganizationMember.MemberTypeCode.VisitingMember
+						where mt.Id != MemberTypeCode.Visitor
+						where mt.Id != MemberTypeCode.VisitingMember
 						orderby mt.Description
 						select new MemberTypeItem
 						{

@@ -14,6 +14,7 @@ using CmsWeb.Models;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 using System.Data.Linq;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
@@ -221,10 +222,10 @@ namespace CmsWeb.Areas.Dialog.Controllers
         {
             if (id > 0)
             {
-                var c = DbUtil.Db.NewContacts.Single(ct => ct.ContactId == id);
+                var c = DbUtil.Db.Contacts.Single(ct => ct.ContactId == id);
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, (int)Person.OriginCode.Visit, 0);
+                    AddPerson(p, m.List, OriginCode.Visit, 0);
                     var ctee = c.contactees.SingleOrDefault(ct =>
                         ct.ContactId == id && ct.PeopleId == p.person.PeopleId);
                     if (ctee == null)
@@ -245,7 +246,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
         {
             if (id > 0)
             {
-                var c = DbUtil.Db.NewContacts.SingleOrDefault(ct => ct.ContactId == id);
+                var c = DbUtil.Db.Contacts.SingleOrDefault(ct => ct.ContactId == id);
                 if (c == null)
                     return Json(new { close = true, how = "CloseAddDialog" });
                 foreach (var p in m.List)
@@ -276,7 +277,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var p in m.List)
                 {
                     var isnew = p.IsNew;
-                    AddPerson(p, m.List, (int)Person.OriginCode.NewFamilyMember, 0);
+                    AddPerson(p, m.List, OriginCode.NewFamilyMember, 0);
                     if (!isnew)
                     {
                         var fm = f.People.SingleOrDefault(fa => fa.PeopleId == p.person.PeopleId);
@@ -284,13 +285,13 @@ namespace CmsWeb.Areas.Dialog.Controllers
                             continue; // already a member of this family
 
                         if (p.person.Age < 18)
-                            p.person.PositionInFamilyId = (int)Family.PositionInFamily.Child;
+                            p.person.PositionInFamilyId = PositionInFamily.Child;
                         else if (p.family.People.Count(per =>
-                                    per.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
+                                    per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
                                     < 2)
-                            p.person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
+                            p.person.PositionInFamilyId = PositionInFamily.PrimaryAdult;
                         else
-                            p.person.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
+                            p.person.PositionInFamilyId = PositionInFamily.SecondaryAdult;
                         p.family.People.Add(p.person);
                     }
                 }
@@ -304,7 +305,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             {
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, (int)Person.OriginCode.NewFamilyMember, 0);
+                    AddPerson(p, m.List, OriginCode.NewFamilyMember, 0);
                     SearchModel.AddRelatedFamily(id, p.PeopleId.Value);
                 }
                 DbUtil.Db.SubmitChanges();
@@ -325,8 +326,9 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 var org = DbUtil.Db.LoadOrganizationById(id);
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, (int)Person.OriginCode.Enrollment, org.EntryPointId ?? 0);
-                    OrganizationMember.InsertOrgMembers(id, p.PeopleId.Value, 220, Util.Now, null, pending);
+                    AddPerson(p, m.List, OriginCode.Enrollment, org.EntryPointId ?? 0);
+                    OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                        id, p.PeopleId.Value, 220, Util.Now, null, pending);
                 }
                 DbUtil.Db.SubmitChanges();
             }
@@ -338,7 +340,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             {
                 var p = m.List[0];
                 var c = DbUtil.Db.Contributions.Single(cc => cc.ContributionId == id);
-                AddPerson(p, m.List, (int)Person.OriginCode.Contribution, 0);
+                AddPerson(p, m.List, OriginCode.Contribution, 0);
                 c.PeopleId = p.PeopleId;
 
                 if (c.BankAccount.HasValue())
@@ -369,7 +371,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var p in m.List)
                 {
                     var isnew = p.IsNew;
-                    AddPerson(p, m.List, (int)Person.OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
+                    AddPerson(p, m.List, OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
                     if (isnew)
                         p.person.CampusId = meeting.Organization.CampusId;
                     var err = Attend.RecordAttendance(p.PeopleId.Value, id, true);

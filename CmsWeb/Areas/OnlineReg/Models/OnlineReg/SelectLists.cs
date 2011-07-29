@@ -14,6 +14,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.Runtime.Serialization;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -23,15 +24,15 @@ namespace CmsWeb.Models
         {
             var a = new int[] 
             { 
-                (int)Organization.RegistrationEnum.UserSelectsOrganization,
-                (int)Organization.RegistrationEnum.ComputeOrganizationByAge,
-                (int)Organization.RegistrationEnum.ManageSubscriptions
+                RegistrationEnum.UserSelectsOrganization,
+                RegistrationEnum.ComputeOrganizationByAge,
+                RegistrationEnum.ManageSubscriptions
             };
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(od => od.DivId == divid)
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     where a.Contains(o.RegistrationTypeId.Value)
-                    where o.OnLineCatalogSort != null || o.RegistrationTypeId == (int)Organization.RegistrationEnum.ComputeOrganizationByAge
+                    where o.OnLineCatalogSort != null || o.RegistrationTypeId == RegistrationEnum.ComputeOrganizationByAge
                     select o;
             return q;
         }

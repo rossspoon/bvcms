@@ -17,6 +17,7 @@ using System.IO;
 using System.Xml.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -240,7 +241,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<TaskInfo> Tasks()
         {
-            var completedcode = (int)Task.StatusCode.Complete;
+            var completedcode = TaskStatusCode.Complete;
             var pid = DbUtil.Db.CurrentUser.PeopleId;
             var q = from t in DbUtil.Db.Tasks
                     where t.Archive == false // not archived

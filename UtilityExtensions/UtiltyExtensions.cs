@@ -1077,6 +1077,8 @@ namespace UtilityExtensions
             string[] a = (string[])HttpRuntime.Cache["smtpcreds"];
             if (a != null)
                 smtp.Credentials = new NetworkCredential(a[0], a[1]);
+            if (ConfigurationManager.AppSettings["requiresSSL"] == "true")
+                smtp.EnableSsl = true;
 #endif
             return smtp;
         }
@@ -1217,6 +1219,22 @@ namespace UtilityExtensions
                 return null;
             }
         }
+        public static string GuidToQuerystring(this Guid guid)
+        {
+            return HttpUtility.UrlEncode(guid.ToString());
+        }
+        public static Guid? QuerystringToGuid(this string value)
+        {
+            try
+            {
+                value = HttpUtility.UrlDecode(value);
+                return new Guid(value);
+            }
+            catch (Exception )
+            {
+                return null;
+            }
+        }
         public static bool Contains(this string s, string c, bool ignoreCase)
         {
             bool result = false;
@@ -1236,6 +1254,17 @@ namespace UtilityExtensions
             var cc = CultureInfo.CurrentCulture;
             int wk = cc.Calendar.GetWeekOfYear(dt.Value, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
             return wk;
+        }
+        public static bool SessionTimedOut()
+        {
+            if (HttpContext.Current.Session != null)
+                if (HttpContext.Current.Session.IsNewSession)
+                {
+                    string sessionCookie = HttpContext.Current.Request.Headers["Cookie"];
+                    if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
+                        return true;
+                }
+            return false;
         }
     }
     public class EventArg<T> : EventArgs

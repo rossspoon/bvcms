@@ -434,7 +434,10 @@ namespace CmsCheckin
             };
             using (var ms = new MemoryStream())
             {
-                ms.LabelKiosk(li);
+                if (Program.TwoInchLabel)
+                    ms.LabelKiosk2(li);
+                else
+                    ms.LabelKiosk(li);
                 PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
             }
                 

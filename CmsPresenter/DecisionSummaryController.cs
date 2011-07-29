@@ -15,6 +15,7 @@ using UtilityExtensions;
 using System.Web;
 using System.Collections;
 using System.Diagnostics;
+using CmsData.Codes;
 
 namespace CMSPresenter
 {
@@ -37,9 +38,9 @@ namespace CMSPresenter
     {
         private int[] decisionTypes = new int[] 
         { 
-            (int)Person.DecisionCode.Unknown,
-            (int)Person.DecisionCode.ProfessionNotForMembership,
-            (int)Person.DecisionCode.Cancelled,
+            DecisionCode.Unknown,
+            DecisionCode.ProfessionNotForMembership,
+            DecisionCode.Cancelled,
         };
         IEnumerable<TypeCountInfo> Total(int? count)
         {

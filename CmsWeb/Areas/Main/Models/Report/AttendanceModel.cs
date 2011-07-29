@@ -5,6 +5,7 @@ using System.Web;
 using CmsData;
 using System.Text;
 using System.Collections;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -112,16 +113,16 @@ namespace CmsWeb.Areas.Main.Models.Report
                 if (a.EffAttendFlag == null)
                     switch (a.AttendanceTypeId)
                     {
-                        case (int)Attend.AttendTypeCode.Volunteer:
+                        case AttendTypeCode.Volunteer:
                             indicator = 'V';
                             break;
-                        case (int)Attend.AttendTypeCode.InService:
+                        case AttendTypeCode.InService:
                             indicator = 'I';
                             break;
-                        case (int)Attend.AttendTypeCode.Group:
+                        case AttendTypeCode.Group:
                             indicator = 'G';
                             break;
-                        case (int)Attend.AttendTypeCode.Offsite:
+                        case AttendTypeCode.Offsite:
                             indicator = 'O';
                             break;
                         default:

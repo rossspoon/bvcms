@@ -30,7 +30,7 @@ namespace CMSPresenter
         public IEnumerable<ContactInfo> ContactList(int pid)
         {
             var Teacher = Db.People.Where(p => p.PeopleId == pid).Select(p => p.BFClass.LeaderName).SingleOrDefault();
-            var q = from c in Db.NewContacts
+            var q = from c in Db.Contacts
                     where c.contactees.Any(p => p.PeopleId == pid)
                     orderby c.ContactDate descending
                     select new ContactInfo
@@ -38,10 +38,10 @@ namespace CMSPresenter
                         ContactId = c.ContactId,
                         Comments = c.Comments,
                         ContactDate = c.ContactDate,
-                        ContactReason = c.NewContactReason.Description,
+                        ContactReason = c.ContactReason.Description,
                         Program = c.Ministry.MinistryDescription,
                         Teacher = Teacher,
-                        TypeOfContact = c.NewContactType.Description
+                        TypeOfContact = c.ContactType.Description
                     };
             return q;
         }
@@ -56,7 +56,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<ContactInfo> ContactedList(int startRowIndex, int maximumRows, string sortExpression, int pid)
         {
-            var q = from c in Db.NewContacts
+            var q = from c in Db.Contacts
                     where c.contactees.Any(p => p.PeopleId == pid)
                     orderby c.ContactDate descending
                     select new ContactInfo
@@ -64,10 +64,10 @@ namespace CMSPresenter
                         ContactId = c.ContactId,
                         Comments = c.Comments,
                         ContactDate = c.ContactDate,
-                        ContactReason = c.NewContactReason.Description,
+                        ContactReason = c.ContactReason.Description,
                         Program = "",
                         Teacher = "",
-                        TypeOfContact = c.NewContactType.Description
+                        TypeOfContact = c.ContactType.Description
                     };
             _contactsCount = q.Count();
             return q.Skip(startRowIndex).Take(maximumRows);
@@ -83,7 +83,7 @@ namespace CMSPresenter
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<ContactInfo> ContactsMadeList(int startRowIndex, int maximumRows, string sortExpression, int pid)
         {
-            var q = from c in Db.NewContacts
+            var q = from c in Db.Contacts
                     where c.contactsMakers.Any(p => p.PeopleId == pid)
                     orderby c.ContactDate descending
                     select c;
@@ -94,10 +94,10 @@ namespace CMSPresenter
                          ContactId = c.ContactId,
                          Comments = c.Comments,
                          ContactDate = c.ContactDate,
-                         ContactReason = c.NewContactReason.Description,
+                         ContactReason = c.ContactReason.Description,
                          Program = "",
                          Teacher = "",
-                         TypeOfContact = c.NewContactType.Description
+                         TypeOfContact = c.ContactType.Description
                      };
             return q2;
         }
@@ -207,12 +207,12 @@ namespace CMSPresenter
         public void DeleteContact(int ContactId)
         {
 
-            var contact = Db.NewContacts.Single(c => c.ContactId == ContactId);
+            var contact = Db.Contacts.Single(c => c.ContactId == ContactId);
             foreach (var t in contact.TasksAssigned)
                 t.SourceContactId = null;
             foreach (var t in contact.TasksCompleted)
                 t.CompletedContactId = null;
-            Db.NewContacts.DeleteOnSubmit(contact);
+            Db.Contacts.DeleteOnSubmit(contact);
             var contactees = Db.Contactees.Where(tees => tees.ContactId == ContactId);
             Db.Contactees.DeleteAllOnSubmit(contactees);
             var contactors = Db.Contactors.Where(tors => tors.ContactId == ContactId);

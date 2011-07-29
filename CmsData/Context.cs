@@ -17,6 +17,7 @@ using System.Data.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Data;
+using CmsData.Codes;
 
 namespace CmsData
 {
@@ -115,6 +116,10 @@ namespace CmsData
         public Organization LoadOrganizationById(int? id)
         {
             return this.Organizations.FirstOrDefault(o => o.OrganizationId == id);
+        }
+        public Organization LoadOrganizationByName(string name)
+        {
+            return this.Organizations.FirstOrDefault(o => o.OrganizationName == name);
         }
         public string FetchExtra(int pid, string field)
         {
@@ -454,7 +459,7 @@ namespace CmsData
                     where p.OrganizationMembers.Any(m =>
                         OrganizationMembers.Any(um =>
                             (um.Organization.SecurityTypeId != 3
-                                || um.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Teacher)
+                                || um.MemberTypeId == MemberTypeCode.Teacher)
                              && um.OrganizationId == m.OrganizationId && um.PeopleId == me))
                     select p;
             var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgMembersOnly);
@@ -705,6 +710,16 @@ namespace CmsData
         {
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
             return ((int)(result.ReturnValue));
+        }
+        public OrganizationMember LoadOrgMember(int PeopleId, string OrgName, bool orgmustexist)
+        {
+            if (orgmustexist)
+            {
+                var org = Organizations.SingleOrDefault(oo => oo.OrganizationName == OrgName);
+                if (org == null)
+                    throw new Exception("Org Named '" + OrgName + "' does not exist");
+            }
+            return OrganizationMember.Load(this, PeopleId, OrgName);
         }
     }
 }

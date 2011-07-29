@@ -9,38 +9,18 @@ using System.IO;
 using System.Net.Mail;
 using System.Web.Configuration;
 using System.Data.SqlClient;
+using CmsData.Codes;
 
 namespace CmsData
 {
     public partial class Attend
     {
-        public enum AttendTypeCode
-        {
-            Absent = 0,
-            Leader = 10,
-            Volunteer = 20,
-            Member = 30,
-            VisitingMember = 40,
-            RecentVisitor = 50,
-            NewVisitor = 60,
-            InService = 70,
-            Offsite = 80,
-            Group = 90,
-            Homebound = 100,
-            OtherClass = 110,
-        };
         public static int[] VisitAttendTypes = new int[] 
         { 
-            (int)Attend.AttendTypeCode.VisitingMember, 
-            (int)Attend.AttendTypeCode.RecentVisitor, 
-            (int)Attend.AttendTypeCode.NewVisitor 
+            AttendTypeCode.VisitingMember, 
+            AttendTypeCode.RecentVisitor, 
+            AttendTypeCode.NewVisitor 
         };
-        public enum MemberTypeCode
-        {
-            VisitingMember = 300,
-            Visitor = 310,
-            InServiceMember = 500,
-        }
         public static string RecordAttendance(int PeopleId, int MeetingId, bool attended)
         {
             return RecordAttendance(DbUtil.Db, PeopleId, MeetingId, attended);
@@ -90,15 +70,15 @@ namespace CmsData
             {
                 attend.MemberTypeId = o.info.MemberTypeId.Value;
                 if (o.VIPAttendance.Count > 0 && o.VIPAttendance.Any(a => a.AttendanceFlag == true))
-                    attend.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                    attend.AttendanceTypeId = AttendTypeCode.Volunteer;
                 else
-                    attend.AttendanceTypeId = (int)Attend.AttendTypeCode.Group;
+                    attend.AttendanceTypeId = AttendTypeCode.Group;
                 o.path = 1;
             }
             else if (o.info.IsOffSite == true && attended == false)
             {
                 attend.OtherAttends = 1;
-                attend.AttendanceTypeId = (int)Attend.AttendTypeCode.Offsite;
+                attend.AttendanceTypeId = AttendTypeCode.Offsite;
                 attend.MemberTypeId = o.info.MemberTypeId.Value;
                 o.path = 2;
             }
@@ -121,20 +101,20 @@ namespace CmsData
 
                     attend.OtherAttends = o.BFCAttendance.AttendanceFlag ? 1 : 0;
 
-                    if (o.info.MemberTypeId == (int)OrganizationMember.MemberTypeCode.VIP)
+                    if (o.info.MemberTypeId == MemberTypeCode.VIP)
                     {
                         if (o.BFCAttendance.OtherAttends > 0)
-                            o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                            o.BFCAttendance.AttendanceTypeId = AttendTypeCode.Volunteer;
                         else
                             o.BFCAttendance.AttendanceTypeId = GetAttendType(Db, o.BFCAttendance.AttendanceFlag, o.BFCMember.MemberTypeId, o.BFCMeeting);
                         o.path = 3;
                     }
-                    else if (o.BFCMember.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InServiceMember)
+                    else if (o.BFCMember.MemberTypeId == MemberTypeCode.InServiceMember)
                     {
                         if (o.BFCAttendance.OtherAttends > 0)
-                            o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.InService;
+                            o.BFCAttendance.AttendanceTypeId = AttendTypeCode.InService;
                         else
-                            o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.Member;
+                            o.BFCAttendance.AttendanceTypeId = AttendTypeCode.Member;
                         o.path = 4;
                     }
                     OtherMeetings.Add(o.BFCAttendance);
@@ -149,7 +129,7 @@ namespace CmsData
                     {
                         a.OtherAttends = attended ? 1 : 0;
                         if (a.AttendanceFlag == true)
-                            attend.AttendanceTypeId = (int)Attend.AttendTypeCode.Volunteer;
+                            attend.AttendanceTypeId = AttendTypeCode.Volunteer;
                         OtherMeetings.Add(a);
                     }
                     attend.OtherAttends = o.VIPAttendance.Any(a => a.AttendanceFlag == true) ? 1 : 0;
@@ -162,11 +142,11 @@ namespace CmsData
                 if (o.BFCMember == null)
                 // not a member of another class (visitor)
                 {
-                    attend.MemberTypeId = (int)Attend.MemberTypeCode.Visitor;
+                    attend.MemberTypeId = MemberTypeCode.Visitor;
                     if (o.info.IsRecentVisitor.Value)
-                        attend.AttendanceTypeId = (int)Attend.AttendTypeCode.RecentVisitor;
+                        attend.AttendanceTypeId = AttendTypeCode.RecentVisitor;
                     else
-                        attend.AttendanceTypeId = (int)Attend.AttendTypeCode.NewVisitor;
+                        attend.AttendanceTypeId = AttendTypeCode.NewVisitor;
                     o.path = 7;
                 }
                 else
@@ -174,15 +154,15 @@ namespace CmsData
                 {
                     if (attended)
                     {
-                        attend.MemberTypeId = (int)Attend.MemberTypeCode.VisitingMember;
-                        attend.AttendanceTypeId = (int)Attend.AttendTypeCode.VisitingMember;
+                        attend.MemberTypeId = MemberTypeCode.VisitingMember;
+                        attend.AttendanceTypeId = AttendTypeCode.VisitingMember;
                     }
                     if (o.BFCAttendance == null)
                         o.BFCAttendance = CreateOtherAttend(Db, o.Meeting, o.BFCMember);
                     o.BFCAttendance.OtherAttends = attended ? 1 : 0;
 
                     if (o.BFCAttendance.OtherAttends > 0)
-                        o.BFCAttendance.AttendanceTypeId = (int)Attend.AttendTypeCode.OtherClass;
+                        o.BFCAttendance.AttendanceTypeId = AttendTypeCode.OtherClass;
                     else
                         o.BFCAttendance.AttendanceTypeId = GetAttendType(Db, o.BFCAttendance.AttendanceFlag, o.BFCMember.MemberTypeId, o.BFCMeeting);
                     o.path = 8;
@@ -267,7 +247,7 @@ namespace CmsData
         private static int? GetAttendType(CMSDataContext Db, bool attended, int? memberTypeId, Meeting meeting)
         {
             if (meeting != null && meeting.GroupMeetingFlag == true)
-                return (int)Attend.AttendTypeCode.Group;
+                return AttendTypeCode.Group;
             if (!attended)
                 return null;
 

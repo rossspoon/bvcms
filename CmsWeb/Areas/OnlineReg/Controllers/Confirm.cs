@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CmsWeb.Areas.Manage.Controllers;
 using CmsWeb.Areas.OnlineReg.Models.Payments;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -23,6 +24,15 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ProcessPayment(int? id, PaymentForm pf)
         {
+            if (pf.ti.Amt < 0)
+                pf.ti.Amt = 0;
+            if (pf.ti.Donate < 0)
+                pf.ti.Donate = 0;
+            if ((pf.ti.Amt ?? 0) <= 0 && (pf.ti.Donate ?? 0) <= 0)
+            {
+                DbUtil.Db.SubmitChanges();
+                return RedirectToAction("Confirm", new { id = id, TransactionID = "zero paid", });
+            }
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
             if (ed == null)
                 return Content("no pending confirmation found");
@@ -104,9 +114,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (pf.ti.Donate > 0)
                 t.Donate = pf.ti.Donate;
             DbUtil.Db.SubmitChanges();
-            return RedirectToAction("Confirm", new { id = id, TransactionID = "paid" });
+            return RedirectToAction("Confirm", new { id = id, TransactionID = tinfo.TransactionId, Amount = pf.ti.Amt });
         }
-        public ActionResult Confirm(int? id, string TransactionID)
+        public ActionResult Confirm(int? id, string TransactionID, decimal? Amount)
         {
             if (!id.HasValue)
                 return View("Unknown");
@@ -122,7 +132,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var t = m.Transaction;
             t.Approved = true;
 
-            if (m.org != null && m.org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
+            if (m.org != null && m.org.RegistrationTypeId == RegistrationEnum.CreateAccount)
             {
                 m.List[0].CreateAccount();
                 ViewData["CreatedAccount"] = true;

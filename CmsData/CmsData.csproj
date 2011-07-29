@@ -66,7 +66,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -120,7 +120,39 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CMS2Production|x86'">
     <OutputPath>bin\x86\CMS2Production\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Rackspace|AnyCPU'">
+    <OutputPath>bin\Rackspace\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Rackspace|x86'">
+    <OutputPath>bin\x86\Rackspace\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\IronPython 2.7\IronPython.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\IronPython 2.7\IronPython.Modules.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\IronPython 2.7\Microsoft.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\IronPython 2.7\Microsoft.Scripting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\IronPython 2.7\Microsoft.Scripting.Metadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SgmlReaderDll">
       <HintPath>..\CmsWeb\Binaries\SgmlReaderDll.dll</HintPath>
     </Reference>
@@ -156,15 +188,20 @@
     <Compile Include="BundleHeader.cs" />
     <Compile Include="CMSMembershipProvider.cs" />
     <Compile Include="CMSRoleProvider.cs" />
+    <Compile Include="Codes.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
     <Compile Include="Generated\AttendCredit.cs" />
+    <Compile Include="Generated\Contact.cs" />
+    <Compile Include="Generated\ContactReason.cs" />
+    <Compile Include="Generated\ContactType.cs" />
     <Compile Include="Generated\EmailResponse.cs" />
     <Compile Include="Generated\EmailToText.cs" />
     <Compile Include="Generated\Functions\AttendanceCredit.cs" />
     <Compile Include="Generated\Functions\GetTodaysMeetingHour.cs" />
     <Compile Include="Generated\Functions\GetTodaysMeetingHours2.cs" />
+    <Compile Include="Generated\NewMemberClassStatus.cs" />
     <Compile Include="Generated\OrgSchedule.cs" />
     <Compile Include="Generated\PeopleQueryBit.cs" />
     <Compile Include="Transaction.cs" />
@@ -282,7 +319,6 @@
     <Compile Include="Generated\ChurchAttReportId.cs" />
     <Compile Include="Generated\Content.cs" />
     <Compile Include="Generated\Contribution.cs" />
-    <Compile Include="Generated\DiscoveryClassStatus.cs" />
     <Compile Include="Generated\Division.cs" />
     <Compile Include="Generated\DivOrg.cs" />
     <Compile Include="Generated\DropType.cs" />
@@ -346,9 +382,6 @@
     <Compile Include="Generated\InterestPoint.cs" />
     <Compile Include="Generated\MeetingType.cs" />
     <Compile Include="Generated\MemberLetterStatus.cs" />
-    <Compile Include="Generated\NewContact.cs" />
-    <Compile Include="Generated\NewContactReason.cs" />
-    <Compile Include="Generated\NewContactType.cs" />
     <Compile Include="Generated\OrganizationStatus.cs" />
     <Compile Include="Generated\Origin.cs" />
     <Compile Include="Generated\ResidentCode.cs" />

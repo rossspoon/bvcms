@@ -16,6 +16,7 @@ using System.Web;
 using System.Web.Mvc;
 using CMSPresenter;
 using CmsData;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -155,10 +156,10 @@ namespace CmsWeb.Models
             get { return CoOwnerId == null ? "(delegate)" : "(redelegate)"; }
         }
         public int StatusId { get; set; }
-        public Task.StatusCode StatusEnum
+        public int StatusEnum
         {
-            get { return (Task.StatusCode)StatusId; }
-            set { StatusId = (int)value; }
+            get { return StatusId; }
+            set { StatusId = value; }
         }
         public string Location { get; set; }
         public string Project { get; set; }
@@ -187,15 +188,15 @@ namespace CmsWeb.Models
         }
         public bool CanComplete
         {
-            get { return IsAnOwner && this.StatusEnum != Task.StatusCode.Complete && !ForceCompleteWContact; }
+            get { return IsAnOwner && this.StatusId != TaskStatusCode.Complete && !ForceCompleteWContact; }
         }
         public bool CanCompleteWithContact
         {
-            get { return IsAnOwner && this.StatusEnum != Task.StatusCode.Complete && WhoId != null; }
+            get { return IsAnOwner && this.StatusId != TaskStatusCode.Complete && WhoId != null; }
         }
         public bool CanAccept
         {
-            get { return IsCoOwner && this.StatusEnum == Task.StatusCode.Pending; }
+            get { return IsCoOwner && this.StatusId == TaskStatusCode.Pending; }
         }
         public string ProspectReportLink()
         {

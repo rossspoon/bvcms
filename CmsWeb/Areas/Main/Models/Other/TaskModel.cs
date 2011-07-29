@@ -17,6 +17,7 @@ using System.Web;
 using CMSPresenter;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -112,8 +113,8 @@ namespace CmsWeb.Models
             }
         }
 
-        private int completedcode = (int)Task.StatusCode.Complete;
-        private int somedaycode = (int)Task.StatusCode.Someday;
+        private int completedcode = TaskStatusCode.Complete;
+        private int somedaycode = TaskStatusCode.Someday;
 
         public int CurListId
         {
@@ -242,8 +243,8 @@ namespace CmsWeb.Models
         }
         public TaskDetail FetchTask(int id)
         {
-            var completedcode = (int)Task.StatusCode.Complete;
-            var somedaycode = (int)Task.StatusCode.Someday;
+            var completedcode = TaskStatusCode.Complete;
+            var somedaycode = TaskStatusCode.Someday;
 
             var iPhone = HttpContext.Current.Request.UserAgent.Contains("iPhone");
             var q2 = from t in DbUtil.Db.Tasks
@@ -295,7 +296,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<ContactTaskInfo> FetchContactTasks()
         {
-            var completedcode = (int)Task.StatusCode.Complete;
+            var completedcode = TaskStatusCode.Complete;
             var q = from t in DbUtil.Db.Tasks
                     // not archived
                     where t.Archive == false // not archived
@@ -339,7 +340,7 @@ namespace CmsWeb.Models
         public IEnumerable<TasksAbout> TasksAboutList(int pid)
         {
             var q2 = from t in DbUtil.Db.Tasks
-                     where t.StatusId != (int)Task.StatusCode.Complete
+                     where t.StatusId != TaskStatusCode.Complete
                      where t.WhoId == pid
                      select new TasksAbout
                      {
@@ -390,8 +391,8 @@ namespace CmsWeb.Models
                     if (task.StatusId != (int)value)
                     {
                         sb.AppendFormat("Status changed from {0:g} to {1:g}<br />\n",
-                            task.StatusEnum, (Task.StatusCode)value);
-                        if ((int)value == (int)Task.StatusCode.Complete)
+                            task.StatusId, value);
+                        if ((int)value == TaskStatusCode.Complete)
                             task.CompletedOn = Util.Now;
                         else
                             task.CompletedOn = null;
@@ -431,8 +432,12 @@ namespace CmsWeb.Models
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == TaskId);
             if (task == null)
                 return;
-
-            if (task.OwnerId == PeopleId)
+            if (HttpContext.Current.User.IsInRole("Admin"))
+            {
+                DbUtil.Db.Tasks.DeleteOnSubmit(task);
+                DbUtil.Db.SubmitChanges();
+            }
+            else if (task.OwnerId == PeopleId)
             {
                 if (task.CoOwnerId != null)
                     notify.EmailNotification(task.Owner, task.CoOwner,
@@ -522,7 +527,7 @@ namespace CmsWeb.Models
         public int AddCompletedContact(int id, ITaskNotify notify)
         {
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == id);
-            var c = new NewContact { ContactDate = Util.Now.Date };
+            var c = new CmsData.Contact { ContactDate = Util.Now.Date };
             c.CreatedDate = c.ContactDate;
             c.ContactTypeId = 7;
             c.ContactReasonId = 160;
@@ -533,7 +538,7 @@ namespace CmsWeb.Models
             c.contactsMakers.Add(new Contactor { PeopleId = PeopleId });
             c.Comments = task.Notes;
             task.CompletedContact = c;
-            task.StatusId = (int)Task.StatusCode.Complete;
+            task.StatusId = TaskStatusCode.Complete;
             if (task.CoOwnerId == PeopleId)
                 notify.EmailNotification(task.CoOwner, task.Owner,
                         "Task Completed with a Contact by " + task.CoOwner.Name,
@@ -550,7 +555,7 @@ namespace CmsWeb.Models
         public void AcceptTask(int id, ITaskNotify notify)
         {
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == id);
-            task.StatusId = (int)Task.StatusCode.Active;
+            task.StatusId = TaskStatusCode.Active;
             DbUtil.Db.SubmitChanges();
             notify.EmailNotification(task.CoOwner, task.Owner,
                 "Task Accepted from " + task.CoOwner.Name,
@@ -559,7 +564,7 @@ namespace CmsWeb.Models
         public void AddSourceContact(int id, int contactid)
         {
             var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
-            task.SourceContact = DbUtil.Db.NewContacts.SingleOrDefault(nc => nc.ContactId == contactid);
+            task.SourceContact = DbUtil.Db.Contacts.SingleOrDefault(nc => nc.ContactId == contactid);
             DbUtil.Db.SubmitChanges();
         }
         public Task Delegate(int taskid, int toid, ITaskNotify notify)
@@ -569,7 +574,7 @@ namespace CmsWeb.Models
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == taskid);
             if (task == null)
                 return null;
-            task.StatusId = (int)Task.StatusCode.Pending;
+            task.StatusId = TaskStatusCode.Pending;
             task.CoOwnerId = toid;
 
             // if the owner's list is shared by the coowner
@@ -719,7 +724,7 @@ namespace CmsWeb.Models
                 ListId = listid,
                 Description = text,
                 OwnerId = pid,
-                StatusId = (int)Task.StatusCode.Active,
+                StatusId = TaskStatusCode.Active,
             };
             DbUtil.Db.Tasks.InsertOnSubmit(task);
             DbUtil.Db.SubmitChanges();
@@ -768,7 +773,7 @@ namespace CmsWeb.Models
         {
             var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var sb = new StringBuilder();
-            var statusid = (int)Task.StatusCode.Complete;
+            var statusid = TaskStatusCode.Complete;
             ChangeTask(sb, task, "StatusId", statusid);
             NotifyIfNeeded(notify, sb, task);
             DbUtil.Db.SubmitChanges();

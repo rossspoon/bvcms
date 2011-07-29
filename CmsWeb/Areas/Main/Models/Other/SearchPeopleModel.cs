@@ -15,6 +15,7 @@ using System.Web.Routing;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Data.Linq;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -338,7 +339,7 @@ namespace CmsWeb.Models
                 fam = q.SingleOrDefault();
                 if (fam == null)
                     return null;
-                PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
+                PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == PositionInFamily.PrimaryAdult).Count();
                 if (name.StartsWith("New"))
                     name = fam.HeadOfHousehold.LastName;
             }
@@ -358,15 +359,15 @@ namespace CmsWeb.Models
                 DbUtil.Db.SubmitChanges();
             }
             Person p;
-            p = Person.Add(fam, (int)Family.PositionInFamily.PrimaryAdult,
+            p = Person.Add(fam, PositionInFamily.PrimaryAdult,
                 null, name, DateOfBirth, false, GenderId, Origin ?? 0, EntryPoint);
             var age = p.GetAge();
             p.MaritalStatusId = MaritalStatusId;
             p.FixTitle();
             if (PrimaryCount == 2)
-                p.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
-            if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
-                p.PositionInFamilyId = (int)Family.PositionInFamily.Child;
+                p.PositionInFamilyId = PositionInFamily.SecondaryAdult;
+            if (age < 18 && p.MaritalStatusId == MaritalStatusCode.Single)
+                p.PositionInFamilyId = PositionInFamily.Child;
             if (AddToExisting)
                 p.CellPhone = Communication.GetDigits();
             p.CampusId = CampusId;

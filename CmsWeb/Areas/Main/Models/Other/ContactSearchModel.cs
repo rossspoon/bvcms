@@ -36,7 +36,7 @@ namespace CmsWeb.Models
         }
 
 
-        private IQueryable<CmsData.NewContact> contacts;
+        private IQueryable<CmsData.Contact> contacts;
         public IEnumerable<ContactInfo> ContactList()
         {
             contacts = FetchContacts();
@@ -45,15 +45,15 @@ namespace CmsWeb.Models
             contacts = ApplySort(contacts).Skip(StartRow).Take(PageSize);
             return ContactList(contacts);
         }
-        public IEnumerable<ContactInfo> ContactList(IQueryable<NewContact> query)
+        public IEnumerable<ContactInfo> ContactList(IQueryable<CmsData.Contact> query)
         {
             var q = from o in query
                     select new ContactInfo
                     {
                         ContactId = o.ContactId,
                         ContactDate = o.ContactDate,
-                        ContactReason = o.NewContactReason.Description,
-                        TypeOfContact = o.NewContactType.Description,
+                        ContactReason = o.ContactReason.Description,
+                        TypeOfContact = o.ContactType.Description,
                         ContacteeList = string.Join(", ", (from c in DbUtil.Db.Contactees
                                                            where c.ContactId == o.ContactId
                                                            select c.person.Name).Take(3))
@@ -68,12 +68,12 @@ namespace CmsWeb.Models
                 _count = FetchContacts().Count();
             return _count.Value;
         }
-        private IQueryable<NewContact> FetchContacts()
+        private IQueryable<CmsData.Contact> FetchContacts()
         {
             if (contacts != null)
                 return contacts;
 
-            contacts = DbUtil.Db.NewContacts.AsQueryable();
+            contacts = DbUtil.Db.Contacts.AsQueryable();
             if (ContacteeName.HasValue())
                 contacts = from c in contacts
                            where c.contactees.Any(p => p.person.Name.Contains(ContacteeName))
@@ -127,7 +127,7 @@ namespace CmsWeb.Models
 
             return contacts;
         }
-        public IQueryable<NewContact> ApplySort(IQueryable<NewContact> query)
+        public IQueryable<CmsData.Contact> ApplySort(IQueryable<CmsData.Contact> query)
         {
             if (Direction == "asc")
                 switch (Sort)

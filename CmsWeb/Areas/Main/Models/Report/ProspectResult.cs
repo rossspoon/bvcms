@@ -340,8 +340,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                                         ContactId = c.ContactId,
                                         Comments = c.Comments,
                                         ContactDate = c.ContactDate,
-                                        ContactReason = c.NewContactReason.Description,
-                                        TypeOfContact = c.NewContactType.Description,
+                                        ContactReason = c.ContactReason.Description,
+                                        TypeOfContact = c.ContactType.Description,
                                         Team = string.Join(",", c.contactsMakers.Select(cm => cm.person.Name).ToArray())
                                     },
                          Attends = (from a in p.Attends

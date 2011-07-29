@@ -16,6 +16,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using CmsWeb.Models;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -159,9 +160,9 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             var visitors = new int[] 
             { 
-                (int)Attend.AttendTypeCode.VisitingMember, 
-                (int)Attend.AttendTypeCode.RecentVisitor, 
-                (int)Attend.AttendTypeCode.NewVisitor 
+                AttendTypeCode.VisitingMember, 
+                AttendTypeCode.RecentVisitor, 
+                AttendTypeCode.NewVisitor 
             };
             var q = from a in DbUtil.Db.Attends
                     where a.MeetingId == mtgid

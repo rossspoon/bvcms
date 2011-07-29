@@ -20,6 +20,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Diagnostics;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -99,7 +100,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     SetDefaults(t2);
                     if (i.h != null 
                         && i.h.PeopleId != i.p.PeopleId 
-                        && i.h.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
+                        && i.h.PositionInFamilyId == PositionInFamily.PrimaryAdult)
                     {
                         t2.AddCell(i.h.Name);
                         if (i.h.CellPhone.HasValue())

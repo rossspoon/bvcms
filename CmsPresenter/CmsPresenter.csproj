@@ -191,6 +191,12 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Rackspace|AnyCPU'">
+    <OutputPath>bin\Rackspace\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Rackspace|x86'">
+    <OutputPath>bin\x86\Rackspace\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="sysglobl" />
     <Reference Include="System" />

@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
 using System.Text.RegularExpressions;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -45,8 +46,8 @@ namespace CmsWeb.Models
             if (mtypes == null)
             {
                 var q = from mt in DbUtil.Db.MemberTypes
-                        where mt.Id != (int)OrganizationMember.MemberTypeCode.Visitor
-                        where mt.Id != (int)OrganizationMember.MemberTypeCode.VisitingMember
+                        where mt.Id != MemberTypeCode.Visitor
+                        where mt.Id != MemberTypeCode.VisitingMember
                         orderby mt.Description
                         select new SelectListItem
                         {
@@ -109,7 +110,7 @@ namespace CmsWeb.Models
         }
         public IQueryable<OrganizationMember> OrgMembers()
         {
-            int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
+            int inactive = MemberTypeCode.InActive;
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
                     where om.OrgMemMemTags.Any(g => g.MemberTagId == sg) || (sg ?? 0) == 0

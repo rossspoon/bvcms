@@ -130,6 +130,10 @@ namespace CmsData
         partial void UpdateChurchAttReportId(ChurchAttReportId instance);
         partial void DeleteChurchAttReportId(ChurchAttReportId instance);
         
+        partial void InsertContact(Contact instance);
+        partial void UpdateContact(Contact instance);
+        partial void DeleteContact(Contact instance);
+        
         partial void InsertContactee(Contactee instance);
         partial void UpdateContactee(Contactee instance);
         partial void DeleteContactee(Contactee instance);
@@ -141,6 +145,14 @@ namespace CmsData
         partial void InsertContactPreference(ContactPreference instance);
         partial void UpdateContactPreference(ContactPreference instance);
         partial void DeleteContactPreference(ContactPreference instance);
+        
+        partial void InsertContactReason(ContactReason instance);
+        partial void UpdateContactReason(ContactReason instance);
+        partial void DeleteContactReason(ContactReason instance);
+        
+        partial void InsertContactType(ContactType instance);
+        partial void UpdateContactType(ContactType instance);
+        partial void DeleteContactType(ContactType instance);
         
         partial void InsertContent(Content instance);
         partial void UpdateContent(Content instance);
@@ -173,10 +185,6 @@ namespace CmsData
         partial void InsertDecisionType(DecisionType instance);
         partial void UpdateDecisionType(DecisionType instance);
         partial void DeleteDecisionType(DecisionType instance);
-        
-        partial void InsertDiscoveryClassStatus(DiscoveryClassStatus instance);
-        partial void UpdateDiscoveryClassStatus(DiscoveryClassStatus instance);
-        partial void DeleteDiscoveryClassStatus(DiscoveryClassStatus instance);
         
         partial void InsertDivision(Division instance);
         partial void UpdateDivision(Division instance);
@@ -346,17 +354,9 @@ namespace CmsData
         partial void UpdateNameTitle(NameTitle instance);
         partial void DeleteNameTitle(NameTitle instance);
         
-        partial void InsertNewContact(NewContact instance);
-        partial void UpdateNewContact(NewContact instance);
-        partial void DeleteNewContact(NewContact instance);
-        
-        partial void InsertNewContactReason(NewContactReason instance);
-        partial void UpdateNewContactReason(NewContactReason instance);
-        partial void DeleteNewContactReason(NewContactReason instance);
-        
-        partial void InsertNewContactType(NewContactType instance);
-        partial void UpdateNewContactType(NewContactType instance);
-        partial void DeleteNewContactType(NewContactType instance);
+        partial void InsertNewMemberClassStatus(NewMemberClassStatus instance);
+        partial void UpdateNewMemberClassStatus(NewMemberClassStatus instance);
+        partial void DeleteNewMemberClassStatus(NewMemberClassStatus instance);
         
         partial void InsertOneTimeLink(OneTimeLink instance);
         partial void UpdateOneTimeLink(OneTimeLink instance);
@@ -844,6 +844,12 @@ namespace CmsData
 
 		}
 
+		public Table< Contact> Contacts
+		{
+			get	{ return this.GetTable< Contact>(); }
+
+		}
+
 		public Table< Contactee> Contactees
 		{
 			get	{ return this.GetTable< Contactee>(); }
@@ -859,6 +865,18 @@ namespace CmsData
 		public Table< ContactPreference> ContactPreferences
 		{
 			get	{ return this.GetTable< ContactPreference>(); }
+
+		}
+
+		public Table< ContactReason> ContactReasons
+		{
+			get	{ return this.GetTable< ContactReason>(); }
+
+		}
+
+		public Table< ContactType> ContactTypes
+		{
+			get	{ return this.GetTable< ContactType>(); }
 
 		}
 
@@ -907,12 +925,6 @@ namespace CmsData
 		public Table< DecisionType> DecisionTypes
 		{
 			get	{ return this.GetTable< DecisionType>(); }
-
-		}
-
-		public Table< DiscoveryClassStatus> DiscoveryClassStatuses
-		{
-			get	{ return this.GetTable< DiscoveryClassStatus>(); }
 
 		}
 
@@ -1168,21 +1180,9 @@ namespace CmsData
 
 		}
 
-		public Table< NewContact> NewContacts
+		public Table< NewMemberClassStatus> NewMemberClassStatuses
 		{
-			get	{ return this.GetTable< NewContact>(); }
-
-		}
-
-		public Table< NewContactReason> NewContactReasons
-		{
-			get	{ return this.GetTable< NewContactReason>(); }
-
-		}
-
-		public Table< NewContactType> NewContactTypes
-		{
-			get	{ return this.GetTable< NewContactType>(); }
+			get	{ return this.GetTable< NewMemberClassStatus>(); }
 
 		}
 

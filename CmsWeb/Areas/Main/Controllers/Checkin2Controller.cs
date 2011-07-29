@@ -11,6 +11,7 @@ using CmsWeb.Models;
 using System.Xml;
 using System.IO;
 using System.Net.Mail;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -108,18 +109,18 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 f = new CmsData.Family();
 
-            var position = (int)CmsData.Family.PositionInFamily.Child;
+            var position = PositionInFamily.Child;
             if (Util.Age0(m.dob) >= 18)
                 if (f.People.Count(per =>
-                     per.PositionInFamilyId == (int)CmsData.Family.PositionInFamily.PrimaryAdult)
+                     per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
                      < 2)
-                    position = (int)CmsData.Family.PositionInFamily.PrimaryAdult;
+                    position = PositionInFamily.PrimaryAdult;
                 else
-                    position = (int)CmsData.Family.PositionInFamily.SecondaryAdult;
+                    position = PositionInFamily.SecondaryAdult;
 
             var p = Person.Add(f, position,
                 null, m.first, m.goesby, m.last, m.dob, false, m.gender,
-                    (int)Person.OriginCode.Visit, null);
+                    OriginCode.Visit, null);
 
             UpdatePerson(p, m);
             return Content(f.FamilyId.ToString() + "." + p.PeopleId);
@@ -150,6 +151,24 @@ namespace CmsWeb.Areas.Main.Controllers
                 var username = cred[0];
                 var password = cred[1];
                 return CMSMembershipProvider.provider.ValidateUser(username, password);
+            }
+            return false;
+        }
+        private bool AuthenticateAndLog()
+        {
+            var auth = Request.Headers["Authorization"];
+            if (auth.HasValue())
+            {
+                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
+                    Convert.FromBase64String(auth.Substring(6))).Split(':');
+                var username = cred[0];
+                var password = cred[1];
+                var ret = CMSMembershipProvider.provider.ValidateUser(username, password);
+                if (ret)
+                    DbUtil.LogActivity("checkin {0} authenticated".Fmt(username));
+                else
+                    DbUtil.LogActivity("checkin {0} not authenticated".Fmt(username));
+                return ret;
             }
             return false;
         }
@@ -220,7 +239,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult Campuses()
         {
-            if (!Authenticate())
+            if (!AuthenticateAndLog())
                 return Content("not authorized");
             var q = from c in DbUtil.Db.Campus
                     where c.Organizations.Any(o => o.CanSelfCheckin == true)
@@ -230,6 +249,7 @@ namespace CmsWeb.Areas.Main.Controllers
                         Campus = c,
                         password = DbUtil.Db.Setting("kioskpassword" + c.Id, "kio.")
                     };
+            DbUtil.LogActivity("Logged in to Checkin");
             return View(q);
         }
         [AcceptVerbs(HttpVerbs.Post)]

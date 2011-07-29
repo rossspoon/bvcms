@@ -30,6 +30,8 @@ namespace CmsWeb.Models
             if (org.AskTickets == true)
                 // fee based on number of tickets
                 amt = (org.Fee ?? 0) * (ntickets ?? 0);
+            if (org.SuggestedFee == true)
+                amt = suggestedfee ?? 0;
             if (org.AgeFee.HasValue())
                 // fee based on age
             {
@@ -56,7 +58,7 @@ namespace CmsWeb.Models
                     amt = q.First();
             }
             // just use the simple fee if nothing else has been used yet.
-            if (amt == 0 && countorgs == 0)
+            if (amt == 0 && countorgs == 0 && (org.SuggestedFee ?? false) == false)
                 amt = org.Fee ?? 0;
 
             amt += TotalOther();

@@ -8,6 +8,7 @@ using CMSPresenter;
 using System.Web.Mvc;
 using System.Text;
 using System.Net.Mail;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -35,17 +36,17 @@ namespace CmsWeb.Models
         public bool UserSelectsOrganization()
         {
             return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization);
+                    o.RegistrationTypeId == RegistrationEnum.UserSelectsOrganization);
         }
         public bool ComputesOrganizationByAge()
         {
             return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge);
+                    o.RegistrationTypeId == RegistrationEnum.ComputeOrganizationByAge);
         }
         public bool ManageSubscriptions()
         {
             return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ManageSubscriptions);
+                    o.RegistrationTypeId == RegistrationEnum.ManageSubscriptions);
         }
         public bool MemberOnly()
         {
@@ -76,7 +77,7 @@ namespace CmsWeb.Models
         private CmsData.Organization GetAppropriateOrg()
         {
             var q = from o in DbUtil.Db.Organizations
-                    where o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ComputeOrganizationByAge
+                    where o.RegistrationTypeId == RegistrationEnum.ComputeOrganizationByAge
                     where o.DivOrgs.Any(di => di.DivId == divid)
                     where gender == null || o.GenderId == gender || o.GenderId == 0
                     select o;
@@ -106,9 +107,9 @@ namespace CmsWeb.Models
         public bool AnyOtherInfo()
         {
             if (org != null)
-                if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
+                if (org.RegistrationTypeId == RegistrationEnum.CreateAccount)
                     return false;
-                else if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot)
+                else if (org.RegistrationTypeId == RegistrationEnum.ChooseSlot)
                     return false;
                 else return (org.AskShirtSize == true ||
                     org.AskRequest == true ||
@@ -168,7 +169,7 @@ namespace CmsWeb.Models
                  * has the email address used in registration
                  * if so then that is OK too. */
                 var flist = from fm in person.Family.People
-                            where fm.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
+                            where fm.PositionInFamilyId == PositionInFamily.PrimaryAdult
                             select fm;
                 foreach (var fm in flist)
                 {

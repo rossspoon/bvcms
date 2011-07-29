@@ -5,6 +5,7 @@ using System.Web;
 using CmsData;
 using UtilityExtensions;
 using System.Web.Mvc;
+using CmsData.Codes;
 
 namespace CmsWeb.Models.OrganizationPage
 {
@@ -57,7 +58,7 @@ namespace CmsWeb.Models.OrganizationPage
         private IQueryable<OrganizationMember> _members;
         private IQueryable<OrganizationMember> FetchMembers()
         {
-            int inactive = (int)OrganizationMember.MemberTypeCode.InActive;
+            int inactive = MemberTypeCode.InActive;
             bool Active = true;
             bool Pending = false;
             switch (Select)

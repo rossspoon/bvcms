@@ -14,6 +14,7 @@ using CMSPresenter;
 using UtilityExtensions;
 using CmsData;
 using System.Text;
+using CmsData.Codes;
 
 namespace CmsWeb
 {
@@ -89,7 +90,7 @@ namespace CmsWeb
                     where m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0
                     where m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0
                     where m.Organization.Meetings.Any(meeting => meeting.MeetingDate.Value.Date == date.Date)
-                    where m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                    where m.MemberTypeId != MemberTypeCode.InActive
                     let u = m.Person.Users.FirstOrDefault(uu => uu.UserRoles.Any(r => r.Role.RoleName == "Access"))
                     where u != null
                     group m by m.PeopleId into g

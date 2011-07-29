@@ -241,6 +241,8 @@ namespace CmsData
 		
 		private double? _LongX;
 		
+		private bool? _SuggestedFee;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -629,6 +631,9 @@ namespace CmsData
 		
 		partial void OnLongXChanging(double? value);
 		partial void OnLongXChanged();
+		
+		partial void OnSuggestedFeeChanging(bool? value);
+		partial void OnSuggestedFeeChanged();
 		
     #endregion
 		public Organization()
@@ -3169,6 +3174,28 @@ namespace CmsData
 					this._LongX = value;
 					this.SendPropertyChanged("LongX");
 					this.OnLongXChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="SuggestedFee", UpdateCheck=UpdateCheck.Never, Storage="_SuggestedFee", DbType="bit")]
+		public bool? SuggestedFee
+		{
+			get { return this._SuggestedFee; }
+
+			set
+			{
+				if (this._SuggestedFee != value)
+				{
+				
+                    this.OnSuggestedFeeChanging(value);
+					this.SendPropertyChanging();
+					this._SuggestedFee = value;
+					this.SendPropertyChanged("SuggestedFee");
+					this.OnSuggestedFeeChanged();
 				}
 
 			}

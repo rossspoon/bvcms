@@ -7,6 +7,7 @@ using System.Text;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -55,7 +56,7 @@ namespace CmsWeb.Models
             //var emails = string.Join(",", elist.ToArray());
             string paylink = string.Empty;
             var amtdue = TotalAmountDue();
-            var amtpaid = Amount();
+            var amtpaid = ti.Amt ?? 0;
 
             var pids2 = new List<TransactionPerson>();
             foreach (var p in List)
@@ -88,12 +89,12 @@ namespace CmsWeb.Models
                 var others = string.Join(",", q.ToArray());
 
                 others += "(Total due {0:c})".Fmt(amtdue);
-                var om = p.Enroll(ti.TransactionId, paylink, testing, others);
+                var om = p.Enroll(ti, paylink, testing, others);
                 details.AppendFormat(@"
 <tr><td colspan='2'><hr/></td></tr>
 <tr><th valign='top'>{0}</th><td>
 {1}
-</td></tr>", i + 1, p.PrepareSummaryText());
+</td></tr>", i + 1, p.PrepareSummaryText(ti));
 
                 om.RegisterEmail = p.email;
                 if (p.org.GiveOrgMembAccess == true)
@@ -141,24 +142,27 @@ namespace CmsWeb.Models
                 DivisionName = org.DivisionName;
 
             string OrganizationName = null;
-            if (div != null)
-                OrganizationName = "";
-            else if (org != null)
+            if (org != null)
                 OrganizationName = org.OrganizationName;
+            else if (div != null)
+                OrganizationName = DivisionName;
+
             if (!OrganizationName.HasValue())
                 OrganizationName = DivisionName;
 
             string EmailSubject = null;
-            if (div != null)
-                EmailSubject = div.EmailSubject;
-            else if (org != null)
-                EmailSubject = org.EmailSubject;
-
             string EmailMessage = null;
-            if (div != null)
-                EmailMessage = div.EmailMessage;
-            else if (org != null)
+
+            if (org != null && org.EmailMessage.HasValue())
+            {
+                EmailSubject = org.EmailSubject;
                 EmailMessage = org.EmailMessage;
+            }
+            else if (div != null)
+            {
+                EmailSubject = div.EmailSubject;
+                EmailMessage = div.EmailMessage;
+            }
 
             List<Person> NotifyIds = null;
             if (div != null)
@@ -225,7 +229,7 @@ namespace CmsWeb.Models
                 Db.Email(p.person.FromEmail, 
                     Db.StaffPeopleForOrg(p.org.OrganizationId), Header,
 @"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
-<pre>{4}</pre>".Fmt(p.person.Name, Header, p.AmountToPay(), p.AmountDue(), p.PrepareSummaryText()));
+<pre>{4}</pre>".Fmt(p.person.Name, Header, amtpaid, p.AmountDue(), p.PrepareSummaryText(ti)));
             }
         }
         public static string MessageReplacements(Person p, string DivisionName, string OrganizationName, string Location, string message)
@@ -275,7 +279,7 @@ namespace CmsWeb.Models
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(dd => dd.DivId == divid)
-                    where o.RegistrationTypeId != (int)Organization.RegistrationEnum.None
+                    where o.RegistrationTypeId != RegistrationEnum.None
                     where o.EntryPointId > 0
                     select o.EntryPointId;
             return q.FirstOrDefault() ?? 0;

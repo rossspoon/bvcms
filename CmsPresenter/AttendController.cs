@@ -16,6 +16,7 @@ using CMSPresenter.InfoClasses;
 using System.Data.Linq;
 using System.Data.SqlClient;
 using System.Web;
+using CmsData.Codes;
 
 namespace CMSPresenter
 {
@@ -63,7 +64,7 @@ namespace CMSPresenter
                     || // members
                         (inEditMode && !meeting.GroupMeetingFlag
                         && p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId
-                            && om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                            && om.MemberTypeId != MemberTypeCode.InActive
                             && (om.Pending ?? false) == false))
                     || // intended
                         (attend.Registered == true)
@@ -72,15 +73,15 @@ namespace CMSPresenter
                     {
                         AttendType = DbUtil.Db.AttendDesc(attend == null ?
                             (ismember ?
-                                (int)Attend.AttendTypeCode.Member :
-                                (int)Attend.AttendTypeCode.RecentVisitor) :
+                                AttendTypeCode.Member :
+                                AttendTypeCode.RecentVisitor) :
                             attend.AttendanceTypeId),
                         MeetingName = "Test",
                         MeetingDate = meeting.MeetingDate,
                         MemberType = DbUtil.Db.MemberDesc(attend == null ?
                             (ismember ?
                                 membership.MemberTypeId :
-                                (int)OrganizationMember.MemberTypeCode.Visitor) :
+                                MemberTypeCode.Visitor) :
                             attend.MemberTypeId),
                         Name = p.Name2,
                         PeopleId = p.PeopleId,
@@ -132,7 +133,7 @@ namespace CMSPresenter
                     || // members
                         (p.OrganizationMembers.Any(om => om.OrganizationId == meeting.OrganizationId 
                             && (om.Pending ?? false) == false
-                            && (om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive)))
+                            && (om.MemberTypeId != MemberTypeCode.InActive)))
                     select new AttendedInfo
                     {
                         PeopleId = p.PeopleId,

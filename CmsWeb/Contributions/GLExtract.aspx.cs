@@ -47,6 +47,8 @@ namespace CmsWeb.Contributions
                     "\"00000\",\"001{0}{1:00}{2}{3}\",\"000\",\"{4:MMddyy}\",\"{5}\",\"\",\"{6}0000{7}\",\"{8:00000000000}\",\"\"\r\n"
                     .Fmt(i.Fund, i.Month, GLBundlePrefix, i.HeaderId.PadLeft(5, '0'), i.ContributionDate, i.FundName, i.FundDept, i.FundAcct, i.Amount * 100));
             }
+            Response.Flush();
+            Response.Close();
         }
     }
 }

@@ -7,6 +7,7 @@ using CmsData;
 using UtilityExtensions;
 using CmsWeb.Models;
 using CMSPresenter;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
@@ -44,7 +45,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     select om;
             foreach (var om in q)
             {
-                if (m.MemberType == (int)OrganizationMember.MemberTypeCode.Drop)
+                if (m.MemberType == MemberTypeCode.Drop)
                     om.Drop(DbUtil.Db, addToHistory:true);
                 else
                 {

@@ -8,6 +8,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using CmsWeb.Models;
 using CmsWeb.Models.OrganizationPage;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
@@ -92,7 +93,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(dd => dd.DivId == o.DivisionId)
                     where o.OrganizationId != id
-                    where o.OrganizationStatusId == (int)Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName
                     select new OrgMove
                     {
@@ -110,7 +111,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
         {
             var a = id.Split('-');
             var om1 = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
-            var om2 = CmsData.OrganizationMember.InsertOrgMembers(a[3].ToInt(), om1.PeopleId, om1.MemberTypeId, DateTime.Now, om1.InactiveDate, om1.Pending ?? false);
+            var om2 = CmsData.OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                a[3].ToInt(), om1.PeopleId, om1.MemberTypeId, DateTime.Now, om1.InactiveDate, om1.Pending ?? false);
             om2.Request = om1.Request;
             om2.Amount = om1.Amount;
             om2.UserData = om1.UserData;

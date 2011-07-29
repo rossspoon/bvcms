@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using UtilityExtensions;
+using CmsData.Codes;
+
 
 namespace CmsData
 {
@@ -157,7 +159,7 @@ namespace CmsData
                         CreatedDate = Util.Now,
                         CreatedBy = Util.UserId1,
                         Registered = true,
-                        MemberTypeId = (int)OrganizationMember.MemberTypeCode.Member,
+                        MemberTypeId = MemberTypeCode.Member,
                     };
                     meeting.Attends.Add(Att);
                 }
@@ -166,9 +168,9 @@ namespace CmsData
             public void AddMember(int pid)
             {
                 if (oi != null)
-                    OrganizationMember.InsertOrgMembers(oi.OrgId,
-                        pid,
-                        (int)OrganizationMember.MemberTypeCode.Member,
+                    OrganizationMember.InsertOrgMembers(DbUtil.Db, 
+                        oi.OrgId, pid,
+                        MemberTypeCode.Member,
                         Util.Now,
                         null, false);
                 if (!smallgroup.HasValue())

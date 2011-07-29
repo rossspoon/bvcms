@@ -5,16 +5,17 @@ using System.Web;
 using CmsData;
 using UtilityExtensions;
 using System.Text;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
     public partial class OnlineRegPersonModel
     {
-        public OrganizationMember Enroll(string TransactionID, string paylink, bool? testing, string others)
+        public OrganizationMember Enroll(Transaction ti, string paylink, bool? testing, string others)
         {
-            //(int)RegistrationEnum.AttendMeeting)
-            var om = OrganizationMember.InsertOrgMembers(org.OrganizationId, person.PeopleId,
-                (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
+            var om = OrganizationMember.InsertOrgMembers(DbUtil.Db, 
+                org.OrganizationId, person.PeopleId,
+                MemberTypeCode.Member, DateTime.Now, null, false);
             om.Amount = TotalAmount();
             om.AmountPaid = AmountToPay();
 
@@ -119,7 +120,7 @@ namespace CmsWeb.Models
             string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
             om.AddToMemberData(tstamp);
             var tran = "{0:C} ({1}{2})".Fmt(
-                    om.AmountPaid.ToString2("C"), TransactionID, testing == true ? " test" : "");
+                    om.AmountPaid.ToString2("C"), ti.TransactionId, testing == true ? " test" : "");
             if (om.AmountPaid > 0)
             {
                 om.AddToMemberData(tran);
@@ -175,7 +176,7 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
             return om;
         }
-        public string PrepareSummaryText()
+        public string PrepareSummaryText(Transaction ti)
         {
             var om = GetOrgMember();
             var sb = new StringBuilder();
@@ -295,9 +296,8 @@ namespace CmsWeb.Models
             //if (donation > 0)
             //    sb.AppendFormat("<tr><td>Donation:</td><td>{0:c}</td></tr>\n", donation);
 
-            var amt = AmountToPay();
-            if (amt > 0)
-                sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0:c}</td></tr>\n", amt);
+            if (ti.Amt > 0)
+                sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0:c}</td></tr>\n", ti.Amt);
             sb.Append("</table>");
 
             return sb.ToString();

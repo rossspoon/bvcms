@@ -14,7 +14,7 @@ namespace CmsWeb.Areas.Main.Controllers
 
         public ActionResult Index()
         {
-            var m = from c in DbUtil.Db.NewContacts
+            var m = from c in DbUtil.Db.Contacts
                     select c;
             return View(m.Take(50));
         }
@@ -24,7 +24,7 @@ namespace CmsWeb.Areas.Main.Controllers
 
         public ActionResult Details(int id)
         {
-            var m = DbUtil.Db.NewContacts.Single(c => c.ContactId == id);
+            var m = DbUtil.Db.Contacts.Single(c => c.ContactId == id);
             return View(m);
         }
 

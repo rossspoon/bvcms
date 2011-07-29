@@ -39,15 +39,16 @@
 } 
     <p>
         When you click the 'Pay with Credit Card' button you will be redirected to ServiceU.com
-        to process your payment of
-        $@ti.Amt.Value.ToString("N"). After you are finished there, you will be redirected
+        to process your payment of the amount shown below.
+        After you are finished there, you will be redirected
         back here to get your confirmation. Your information will not be committed until
         you complete the transaction on the next page.
     </p>
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
+    Amount: @ti.Amt.ToString2("N2")
+    @Html.Hidden("Amount", ti.Amt)
     @Html.Hidden("OrgID", ti.ServiceUOrgID)
     @Html.Hidden("OrgAccountID", ti.ServiceUOrgAccountID)
-    @Html.Hidden("Amount", ti.Amt)
     @Html.Hidden("PostbackURL", Util.ServerLink("/OnlineReg/Confirm/" + ti.DatumId))
     @Html.Hidden("NameOnAccount", ti.Name)
     @Html.Hidden("Address", ti.Address)

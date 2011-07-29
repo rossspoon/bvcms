@@ -16,6 +16,7 @@ using System.Threading;
 using System.Data.Linq;
 using CmsData;
 using System.Collections;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -34,7 +35,7 @@ namespace CmsWeb.Models
 
         public OrgSearchModel()
         {
-            StatusId = (int)CmsData.Organization.OrgStatusCode.Active;
+            StatusId = OrgStatusCode.Active;
             GetCount = Count;
         }
         public Division Division()
@@ -176,23 +177,20 @@ namespace CmsWeb.Models
                 return organizations;
 
             organizations = DbUtil.Db.Organizations.AsQueryable();
-            //if (OnlineReg)
-            //{
-            //    organizations = from o in organizations
-            //                    where
-            //}
             if (Name.HasValue())
             {
                 if (Name.AllDigits())
                     organizations = from o in organizations
                                     where o.OrganizationId == Name.ToInt()
                                         || o.Location == Name
+                                        || o.PendingLoc == Name
                                     select o;
                 else
                     organizations = from o in organizations
                                     where o.OrganizationName.Contains(Name)
                                         || o.LeaderName.Contains(Name)
-                                        || o.Location.Contains(Name)
+                                        || o.Location == Name
+                                        || o.PendingLoc == Name
                                         || o.DivOrgs.Any(t => t.Division.Name.Contains(Name))
                                     select o;
             }

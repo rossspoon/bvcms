@@ -165,6 +165,14 @@
             <div>@Html.ValidationMessage(Model.inputname("ntickets"))</div></td>
     </tr>
 }
+@if (Model.org.SuggestedFee == true)
+{ 
+    <tr>
+        <td><label for="suggestedfee">Suggested Fee</label></td>
+        <td>@Html.TextBox(Model.inputname("suggestedfee"), (Model.suggestedfee ?? Model.org.Fee).ToString2("N2"), new { @class = "short" })
+            <div>@Html.ValidationMessage(Model.inputname("suggestedfee"))</div></td>
+    </tr>
+}
 @if(Model.org.AskOptions.HasValue())
 { 
     <tr>

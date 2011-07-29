@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using UtilityExtensions;
 using System.Linq;
 using CmsData;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -73,7 +74,7 @@ namespace CmsWeb.Models
                         where o.AllowKioskRegister == true
                         where (o.ClassFilled ?? false) == false
                         where o.CampusId == campusid || campusid == 0
-                        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                        where o.OrganizationStatusId == OrgStatusCode.Active
                         orderby bdaystart, o.OrganizationName
                         //from meeting in meetingHours
                         select new OrgHourInfo 
@@ -93,7 +94,7 @@ namespace CmsWeb.Models
                         where o.CanSelfCheckin == true
                         where (o.ClassFilled ?? false) == false
                         where o.CampusId == campusid || campusid == 0
-                        where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                        where o.OrganizationStatusId == OrgStatusCode.Active
                         orderby sc.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
                         from meeting in meetingHours
                         select new OrgHourInfo { o = o, Hour = meeting.Hour.Value };
@@ -112,7 +113,7 @@ namespace CmsWeb.Models
                              i.o.NumCheckInLabels,
                              i.o.Limit,
                              MemberCount = i.o.OrganizationMembers.Count(om =>
-                                 om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
+                                 om.MemberTypeId == MemberTypeCode.Member
                                  && om.Pending != true
                                  ),
                          };

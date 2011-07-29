@@ -93,6 +93,8 @@ namespace UtilityExtensions
                         "(smtp error) " + subject,
                         "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addrs, ex.Message, Message),
                         Util.SendErrorsTo(), id, pid, Record: true);
+                else
+                    throw;
             }
             htmlView.Dispose();
             htmlStream.Dispose();

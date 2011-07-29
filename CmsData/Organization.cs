@@ -8,33 +8,6 @@ namespace CmsData
 {
     public partial class Organization
     {
-        public enum OrgStatusCode
-        {
-            Active = 30,
-            Inactive = 40,
-        }
-        public enum AttendTrackLevelCode
-        {
-            None = 0,
-            Headcount = 10,
-            Individual = 20,
-            Registered = 30
-        }
-        public enum AttendanceClassificationCode
-        {
-            Normal = 0,
-        }
-        public enum RegistrationEnum
-        {
-            None = 0,
-            JoinOrganization = 1,
-            AttendMeeting = 2,
-            UserSelectsOrganization = 3,
-            ComputeOrganizationByAge = 4,
-            CreateAccount = 5,
-            ChooseSlot = 6,
-            ManageSubscriptions = 7,
-        }
         public static string FormatOrgName(string name, string leader, string loc)
         {
             if (loc.HasValue())
@@ -232,7 +205,8 @@ namespace CmsData
                     OrganizationId = OrganizationId,
                     AttendCreditId = sc.AttendCreditId,
                     SchedDay = sc.SchedDay,
-                    SchedTime = sc.SchedTime
+                    SchedTime = sc.SchedTime,
+                    Id = sc.Id
                 });
             Db.SubmitChanges();
             neworg.CopySettings(Db, this.OrganizationId);

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using UtilityExtensions;
 using System.Linq;
 using CmsData;
+using CmsData.Codes;
 
 namespace CmsWeb.Models.iPhone
 {
@@ -23,7 +24,7 @@ namespace CmsWeb.Models.iPhone
                     where sc != null
                     where o.OrganizationMembers.Any(om => om.PeopleId == pid
                         && (om.Pending ?? false) == false
-                        && (om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive))
+                        && (om.MemberTypeId != MemberTypeCode.InActive))
                     where sc.SchedDay != null
                     where sc.SchedTime != null
                     select new OrgInfo

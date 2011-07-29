@@ -73,7 +73,7 @@ a.submitbutton,a.button {
     </script>
 
     <h2>Terms of Agreement</h2>
-@Model.Terms
+@Html.Raw(Model.Terms)
 <form action="@Model.PostbackURL" method="post">
     @Html.Hidden("TransactionID", "zero due")
     <p>@Html.CheckBox("IAgree") I agree to the above terms and conditions.</p>

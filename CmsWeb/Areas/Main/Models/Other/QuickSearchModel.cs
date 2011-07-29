@@ -65,6 +65,8 @@ namespace CmsWeb.Models
             if (people != null)
                 return people;
 
+            DbUtil.Db.SetNoLock();
+
             if (Util2.OrgMembersOnly)
                 people = DbUtil.Db.OrgMembersOnlyTag2().People(DbUtil.Db);
             else

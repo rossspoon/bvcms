@@ -167,7 +167,13 @@ namespace CmsWeb.Models.PersonPage
             p.UpdateValue(psb, "WeddingDate", WeddingDate);
             p.UpdateValue(psb, "WorkPhone", WorkPhone.GetDigits());
             if (p.DeceasedDateChanged)
-                p.MemberProfileAutomation(DbUtil.Db);
+            {
+                var ret = p.MemberProfileAutomation(DbUtil.Db);
+                if (ret != "ok")
+                    Elmah.ErrorSignal.FromCurrentContext().Raise(
+                        new Exception(ret + " for PeopleId:" + p.PeopleId));
+            }
+                    
 
             p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId.Value);
             p.Family.LogChanges(DbUtil.Db, psb, p.PeopleId, Util.UserPeopleId.Value);

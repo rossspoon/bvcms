@@ -3,24 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UtilityExtensions;
+using CmsData.Codes;
 
 namespace CmsData
 {
     public partial class Task
     {
-        public enum StatusCode
-        {
-            Active = 10,
-            Waiting = 20,
-            Someday = 30,
-            Complete = 40,
-            Pending = 50,
-            Redelegated = 60,
-        }
-        public StatusCode StatusEnum
-        {
-            get { return (StatusCode)StatusId; }
-        }
         public string AboutName { get { return AboutWho == null ? "" : AboutWho.Name; } }
         partial void OnCreated()
         {
@@ -48,7 +36,7 @@ namespace CmsData
                 OwnerId = NewPeopleManagerId,
                 Description = "New Person Data Entry",
                 WhoId = newpersonid,
-                StatusId = (int)Task.StatusCode.Active,
+                StatusId = TaskStatusCode.Active,
             };
             if (Util.UserPeopleId.HasValue && Util.UserPeopleId.Value != NewPeopleManagerId)
             {
@@ -72,7 +60,7 @@ namespace CmsData
                     OwnerId = Util.UserPeopleId.Value,
                     Description = "Please Contact",
                     ForceCompleteWContact = true,
-                    StatusId = (int)Task.StatusCode.Active,
+                    StatusId = TaskStatusCode.Active,
                 };
                 p.TasksAboutPerson.Add(t);
             }

@@ -12,6 +12,7 @@ using System.Xml;
 using System.IO;
 using System.Web.Security;
 using CmsWeb.Areas.Manage.Controllers;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -216,18 +217,18 @@ namespace CmsWeb.Areas.Main.Controllers
 
             if (m.goesby == "(Null)")
                 m.goesby = null;
-            var position = (int)CmsData.Family.PositionInFamily.Child;
+            var position = PositionInFamily.Child;
             if (Util.Age0(m.dob) >= 18)
                 if (f.People.Count(per =>
-                     per.PositionInFamilyId == (int)CmsData.Family.PositionInFamily.PrimaryAdult)
+                     per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
                      < 2)
-                    position = (int)CmsData.Family.PositionInFamily.PrimaryAdult;
+                    position = PositionInFamily.PrimaryAdult;
                 else
-                    position = (int)CmsData.Family.PositionInFamily.SecondaryAdult;
+                    position = PositionInFamily.SecondaryAdult;
 
             var p = Person.Add(f, position,
                 null, Trim(m.first), Trim(m.goesby), Trim(m.last), m.dob, false, m.gender,
-                    (int)Person.OriginCode.Visit, null);
+                    OriginCode.Visit, null);
 
             var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == m.zip.Zip5());
             if (!m.home.HasValue() && m.cell.HasValue())
@@ -263,7 +264,8 @@ namespace CmsWeb.Areas.Main.Controllers
 #endif
             var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == PeopleId && m.OrganizationId == OrgId);
             if (om == null && Member)
-                om = OrganizationMember.InsertOrgMembers(OrgId, PeopleId, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
+                om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                    OrgId, PeopleId, MemberTypeCode.Member, DateTime.Now, null, false);
             else if (om != null && !Member)
                 om.Drop(DbUtil.Db, addToHistory:true);
             DbUtil.Db.SubmitChanges();

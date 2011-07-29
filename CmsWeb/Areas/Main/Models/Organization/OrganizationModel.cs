@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
 using System.Text.RegularExpressions;
+using CmsData.Codes;
 
 namespace CmsWeb.Models.OrganizationPage
 {
@@ -229,7 +230,7 @@ namespace CmsWeb.Models.OrganizationPage
                 if (g.Count() > 0)
                     ModelState.AddModelError("NotifyIds", "Id: " + g.First() + " not found");
             }
-            else if (org.RegistrationTypeId > (int)Organization.RegistrationEnum.None)
+            else if (org.RegistrationTypeId > RegistrationEnum.None)
                 ModelState.AddModelError("NotifyIds", "Need a PeopleId in the NotifyIds field");
 
             if (org.DonationFundId.HasValue)

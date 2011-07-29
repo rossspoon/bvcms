@@ -16,6 +16,7 @@ using System.Collections;
 using System.Data.Linq.SqlClient;
 using System.Text.RegularExpressions;
 using System.Web;
+using CmsData.Codes;
 
 namespace CmsData
 {
@@ -155,7 +156,7 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                 p.Attends.Any(a => a.MeetingDate >= from
                     && a.MeetingDate < to
-                    && (a.AttendanceFlag == true || (ids.Length == 1 && ids[0] == (int)Attend.AttendTypeCode.Offsite))
+                    && (a.AttendanceFlag == true || (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite))
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && (org == 0 || a.Meeting.OrganizationId == org)
                     && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
@@ -203,7 +204,7 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred = p =>
                 p.Attends.Any(a => a.MeetingDate >= mindt
-                    && (a.AttendanceFlag == true || (ids.Length == 1 && ids[0] == (int)Attend.AttendTypeCode.Offsite))
+                    && (a.AttendanceFlag == true || (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite))
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && (org == 0 || a.Meeting.OrganizationId == org)
                     && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
@@ -222,7 +223,7 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.TasksAboutPerson.Any(t => t.Description.Contains(task)
-                    && t.StatusId != (int)Task.StatusCode.Complete);
+                    && t.StatusId != TaskStatusCode.Complete);
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual)
                 expr = Expression.Not(expr);
@@ -542,9 +543,9 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-Db.VisitLookbackDays).Date;
             var ids = new int[] 
             { 
-                (int)Attend.AttendTypeCode.NewVisitor, 
-                (int)Attend.AttendTypeCode.RecentVisitor, 
-                (int)Attend.AttendTypeCode.VisitingMember 
+                AttendTypeCode.NewVisitor, 
+                AttendTypeCode.RecentVisitor, 
+                AttendTypeCode.VisitingMember 
             };
             Expression<Func<Person, bool>> pred = p =>
                 p.Attends.Any(a =>
@@ -1116,7 +1117,7 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
-                    m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                    m.MemberTypeId != MemberTypeCode.InActive
                     && (m.Pending ?? false) == false
                     && (org == 0 || m.OrganizationId == org)
                     && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
@@ -1137,7 +1138,7 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
-                    m.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive
+                    m.MemberTypeId == MemberTypeCode.InActive
                     && (org == 0 || m.OrganizationId == org)
                     && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
                     && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -1358,7 +1359,7 @@ namespace CmsData
                         m.OrganizationId == Db.CurrentOrgId
                         && (m.OrgMemMemTags.Any(mt => cg.Contains(mt.MemberTagId)) || cg[0] <= 0)
                         && (m.OrgMemMemTags.Count() == 0 || cg[0] != -1)
-                        && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                        && m.MemberTypeId != MemberTypeCode.InActive
                         && (m.Pending ?? false) == false
                         && (m.AmountPaid > 0 && m.AmountPaid < m.Amount));
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
@@ -1377,7 +1378,7 @@ namespace CmsData
                         m.OrganizationId == Db.CurrentOrgId
                         && (m.OrgMemMemTags.Any(mt => cg.Contains(mt.MemberTagId)) || cg[0] <= 0)
                         && (m.OrgMemMemTags.Count() == 0 || cg[0] != -1)
-                        && m.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                        && m.MemberTypeId != MemberTypeCode.InActive
                         && (m.Pending ?? false) == false);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
@@ -1392,7 +1393,7 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                     p.OrganizationMembers.Any(m =>
                         m.OrganizationId == Db.CurrentOrgId
-                        && m.MemberTypeId == (int)OrganizationMember.MemberTypeCode.InActive);
+                        && m.MemberTypeId == MemberTypeCode.InActive);
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -1588,7 +1589,7 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.Family.People.Any(m =>
-                    m.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult
+                    m.PositionInFamilyId == PositionInFamily.PrimaryAdult
                     && m.MemberStatusId == 10 // church member
                     //&& m.PeopleId != p.PeopleId // someone else in family
                     );

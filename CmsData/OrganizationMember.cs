@@ -17,22 +17,6 @@ namespace CmsData
     public partial class OrganizationMember
     {
         private const string STR_MeetingsToUpdate = "MeetingsToUpdate";
-        public enum MemberTypeCode
-        {
-            Administrator = 100,
-            President = 101,
-            Leader = 140,
-            AssistantLeader = 142,
-            Teacher = 160,
-            AssistantTeacher = 161,
-            Member = 220,
-            InActive = 230,
-            VisitingMember = 300,
-            Visitor = 310,
-            InServiceMember = 500,
-            VIP = 700,
-            Drop = -1,
-        }
         public EnrollmentTransaction Drop(CMSDataContext Db, bool addToHistory)
         {
             Db.SubmitChanges();
@@ -128,6 +112,14 @@ namespace CmsData
                 foreach (var mid in mids)
                     Db.UpdateMeetingCounters(mid);
         }
+        public static OrganizationMember Load(CMSDataContext Db, int PeopleId, string OrgName)
+        {
+            var q = from om in Db.OrganizationMembers
+                    where om.PeopleId == PeopleId
+                    where om.Organization.OrganizationName == OrgName
+                    select om;
+            return q.SingleOrDefault();
+        }
         public bool ToggleGroup(CMSDataContext Db, int groupid)
         {
             var group = OrgMemMemTags.SingleOrDefault(g => 
@@ -190,16 +182,16 @@ namespace CmsData
             UserData += s;
         }
 
-        public static OrganizationMember InsertOrgMembers
-            (int OrganizationId,
-            int PeopleId,
-            int MemberTypeId,
-            DateTime EnrollmentDate,
-            DateTime? InactiveDate, bool pending
-            )
-        {
-            return OrganizationMember.InsertOrgMembers(DbUtil.Db, OrganizationId, PeopleId, MemberTypeId, EnrollmentDate, InactiveDate, pending);
-        }
+        //public static OrganizationMember InsertOrgMembers
+        //    (int OrganizationId,
+        //    int PeopleId,
+        //    int MemberTypeId,
+        //    DateTime EnrollmentDate,
+        //    DateTime? InactiveDate, bool pending
+        //    )
+        //{
+        //    return OrganizationMember.InsertOrgMembers(DbUtil.Db, OrganizationId, PeopleId, MemberTypeId, EnrollmentDate, InactiveDate, pending);
+        //}
         public static OrganizationMember InsertOrgMembers
             (CMSDataContext Db, 
             int OrganizationId,

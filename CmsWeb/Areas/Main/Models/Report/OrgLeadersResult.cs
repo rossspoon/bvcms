@@ -19,6 +19,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Diagnostics;
 using System.Text;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -53,7 +54,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
                 var color = Color.BLACK;
                 foreach (var m in RollsheetModel.FetchOrgMembers(o.OrgId, null)
-                    .Where(om => om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.Member))
+                    .Where(om => om.MemberTypeId != MemberTypeCode.Member))
                 {
                     if (color == Color.WHITE)
                         color = new GrayColor(240);
@@ -141,7 +142,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
                     select new OrgInfo

@@ -41,7 +41,6 @@
     @Html.Hidden("pf.ti.DatumId", Model.ti.DatumId)
     @Html.Hidden("pf.ti.Url", Model.ti.Url)
     @Html.Hidden("pf.AskDonation", Model.AskDonation)
-    @Html.Hidden("pf.ti.Amt", Model.ti.Amt)
 @if (Model.AskDonation)
 { 
     @Html.Hidden("pf.ti.Regfees", Model.ti.Regfees)
@@ -64,7 +63,8 @@
     <tr><td>Email</td>
         <td>@Html.TextBox("pf.ti.Emails", Model.ti.Emails, new { @class = "wide" })</td></tr>
     <tr><td>Total Transaction Amount</td>
-        <td><span id="amt" class="right">@Model.ti.Amt.ToString2("N2")</span></td></tr>
+        <td><span id="amt" class="right">@Model.ti.Amt.ToString2("N2")</span>
+            @Html.Hidden("pf.ti.Amt", Model.ti.Amt)</td></tr>
     <tr><td>Credit Card</td>
         <td>@Html.TextBox("pf.CreditCard", Model.CreditCard, new { @class = "wide", autocomplete = "off" })</td></tr>
     <tr><td>Card ID number<br /><a id="findidclick" href="#"><span style="font-size:65%">How to find your ID#</span></a></td>

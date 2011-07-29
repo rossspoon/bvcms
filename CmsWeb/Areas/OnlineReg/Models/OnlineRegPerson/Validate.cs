@@ -5,6 +5,7 @@ using System.Web;
 using CmsData;
 using UtilityExtensions;
 using System.Web.Mvc;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -89,7 +90,7 @@ Please call the church to resolve this before we can complete your information."
                         ModelState.AddModelError(inputname("dob"), "Sorry, cannot find an appropriate age group");
                         IsValidForContinue = false;
                     }
-                    else if (MemberOnly() && person.MemberStatusId != (int)Person.MemberStatusCode.Member)
+                    else if (MemberOnly() && person.MemberStatusId != MemberStatusCode.Member)
                     {
                         ModelState.AddModelError(ErrorTarget, "Sorry, must be a member of church");
                         IsValidForContinue = false;
@@ -97,7 +98,7 @@ Please call the church to resolve this before we can complete your information."
                     else if (org != null)
                     {
                         var om = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
-                        if (org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount)
+                        if (org.RegistrationTypeId == RegistrationEnum.CreateAccount)
                         {
 #if DEBUG2
 #else
@@ -117,7 +118,7 @@ Please call the church to resolve this before we can complete your account.<br /
                             }
 #endif
                         }
-                        else if (om != null && org.RegistrationTypeId != (int)Organization.RegistrationEnum.ChooseSlot)
+                        else if (om != null && org.RegistrationTypeId != RegistrationEnum.ChooseSlot)
                         {
 #if DEBUG
 #else

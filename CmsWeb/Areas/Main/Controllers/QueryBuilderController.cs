@@ -219,7 +219,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new QueryModel();
             m.LoadScratchPad();
-            var cid = NewContact.AddContact(m.QueryId.Value);
+            var cid = CmsData.Contact.AddContact(m.QueryId.Value);
             return Content("/Contact.aspx?id=" + cid);
         }
         [AcceptVerbs(HttpVerbs.Post)]

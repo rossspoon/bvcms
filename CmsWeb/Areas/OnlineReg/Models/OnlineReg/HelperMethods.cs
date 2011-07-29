@@ -14,6 +14,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.Runtime.Serialization;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -26,7 +27,7 @@ namespace CmsWeb.Models
                 return new Organization
                 {
                     OrganizationName = "My Data",
-                    RegistrationTypeId = (int)Organization.RegistrationEnum.CreateAccount,
+                    RegistrationTypeId = RegistrationEnum.CreateAccount,
                     AllowOnlyOne = true,
                 };
             }
@@ -65,7 +66,7 @@ namespace CmsWeb.Models
         public bool IsCreateAccount()
         {
             if (org != null)
-                return org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
+                return org.RegistrationTypeId == RegistrationEnum.CreateAccount;
             return false;
         }
         public bool IsEnded()
@@ -96,21 +97,22 @@ namespace CmsWeb.Models
         {
             if (divid != null)
                 return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationClosed == true);
-            return org.RegistrationClosed == true;
+                   o.RegistrationClosed == true);
+            return org.RegistrationClosed == true
+                    || org.OrganizationStatusId == OrgStatusCode.Inactive;
         }
         public bool UserSelectsOrganization()
         {
             return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.UserSelectsOrganization);
+                    o.RegistrationTypeId == RegistrationEnum.UserSelectsOrganization);
         }
         public bool OnlyOneAllowed()
         {
             if (org != null)
                 return org.AllowOnlyOne == true
                     || org.AskTickets == true
-                    || org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot
-                    || org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount
+                    || org.RegistrationTypeId == RegistrationEnum.ChooseSlot
+                    || org.RegistrationTypeId == RegistrationEnum.CreateAccount
                     || org.GiveOrgMembAccess == true;
 
             var q = from o in DbUtil.Db.Organizations
@@ -122,15 +124,15 @@ namespace CmsWeb.Models
         public bool ChoosingSlots()
         {
             if (org != null)
-                return org.RegistrationTypeId == (int)Organization.RegistrationEnum.ChooseSlot;
+                return org.RegistrationTypeId == RegistrationEnum.ChooseSlot;
             return false;
         }
         public bool ManagingSubscriptions()
         {
             if (org != null)
-                return org.RegistrationTypeId == (int)Organization.RegistrationEnum.ManageSubscriptions;
+                return org.RegistrationTypeId == RegistrationEnum.ManageSubscriptions;
             return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == (int)CmsData.Organization.RegistrationEnum.ManageSubscriptions);
+                    o.RegistrationTypeId == RegistrationEnum.ManageSubscriptions);
         }
         public bool AskDonation()
         {

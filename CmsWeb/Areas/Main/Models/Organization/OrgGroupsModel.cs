@@ -8,6 +8,7 @@ using UtilityExtensions;
 using CMSPresenter;
 using System.Text.RegularExpressions;
 using System.Collections;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -57,7 +58,7 @@ namespace CmsWeb.Models
                 var q = from om in DbUtil.Db.OrganizationMembers
                         where om.OrganizationId == orgid
                         where (om.Pending ?? false) == false
-                        where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                        where om.MemberTypeId != MemberTypeCode.InActive
                         group om by om.MemberType into g
                         orderby g.Key.Description
                         select new SelectListItem

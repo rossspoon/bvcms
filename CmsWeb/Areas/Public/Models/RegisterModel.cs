@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Text;
 using System.Configuration;
 using UtilityExtensions;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -133,7 +134,7 @@ namespace CmsWeb.Models
                     let Hour = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday).First().Hour
                     let loc = (o.Location == "" || o.Location == null)? "" : ", " + o.Location
                     let leader = o.LeaderName == "" ? "" : ", " + o.LeaderName
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     where campusid == null || campusid == o.CampusId
                     where o.CanSelfCheckin == true
                     where Hour != null
@@ -240,14 +241,14 @@ namespace CmsWeb.Models
                 HomePhone = phone.GetDigits(),
             };
             var organization = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == org);
-            var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
+            var p = Person.Add(f, PositionInFamily.PrimaryAdult,
                 null, first, nickname, last, dob, false, gender.Value,
                 DbUtil.Db.Setting("RegOrigin", "10").ToInt(), 
                 organization == null? null : organization.EntryPointId);
             var age = p.GetAge();
-            var pos = (int)Family.PositionInFamily.PrimaryAdult;
-            if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
-                pos = (int)Family.PositionInFamily.Child;
+            var pos = PositionInFamily.PrimaryAdult;
+            if (age < 18 && p.MaritalStatusId == MaritalStatusCode.Single)
+                pos = PositionInFamily.Child;
             p.PositionInFamilyId = pos;
             p.MaritalStatusId = married.Value;
             p.FixTitle();
@@ -264,14 +265,14 @@ namespace CmsWeb.Models
         {
             var f = DbUtil.Db.Families.Single(fam => fam.FamilyId == FamilyId);
             var organization = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == org);
-            var p = Person.Add(f, (int)Family.PositionInFamily.PrimaryAdult,
+            var p = Person.Add(f, PositionInFamily.PrimaryAdult,
                 null, first, nickname, last, dob, false, gender.Value,
                 DbUtil.Db.Setting("RegOrigin", "10").ToInt(),
                 organization == null ? null : organization.EntryPointId);
             var age = p.GetAge();
-            var pos = (int)Family.PositionInFamily.PrimaryAdult;
-            if (age < 18 && p.MaritalStatusId == (int)Person.MaritalStatusCode.Single)
-                pos = (int)Family.PositionInFamily.Child;
+            var pos = PositionInFamily.PrimaryAdult;
+            if (age < 18 && p.MaritalStatusId == MaritalStatusCode.Single)
+                pos = PositionInFamily.Child;
             p.PositionInFamilyId = pos;
 
             p.CellPhone = cellphone.GetDigits();
@@ -313,8 +314,7 @@ namespace CmsWeb.Models
                     MeetingDate = dt,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = ret.AttendTrkLevelId
-                        == (int)CmsData.Organization.AttendTrackLevelCode.Headcount,
+                    GroupMeetingFlag = ret.AttendTrkLevelId == AttendTrackLevelCode.Headcount,
                     Location = ret.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);

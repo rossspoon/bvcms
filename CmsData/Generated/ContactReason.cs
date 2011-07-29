@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace CmsData
 {
-	[Table(Name="lookup.NewContactType")]
-	public partial class NewContactType : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="lookup.ContactReason")]
+	public partial class ContactReason : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -24,7 +24,7 @@ namespace CmsData
 		private string _Description;
 		
    		
-   		private EntitySet< NewContact> _NewContacts;
+   		private EntitySet< Contact> _Contacts;
 		
     	
 	#endregion
@@ -44,10 +44,10 @@ namespace CmsData
 		partial void OnDescriptionChanged();
 		
     #endregion
-		public NewContactType()
+		public ContactReason()
 		{
 			
-			this._NewContacts = new EntitySet< NewContact>(new Action< NewContact>(this.attach_NewContacts), new Action< NewContact>(this.detach_NewContacts)); 
+			this._Contacts = new EntitySet< Contact>(new Action< Contact>(this.attach_Contacts), new Action< Contact>(this.detach_Contacts)); 
 			
 			
 			OnCreated();
@@ -126,12 +126,12 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_Contacts_ContactTypes", Storage="_NewContacts", OtherKey="ContactTypeId")]
-   		public EntitySet< NewContact> NewContacts
+   		[Association(Name="FK_NewContacts_ContactReasons", Storage="_Contacts", OtherKey="ContactReasonId")]
+   		public EntitySet< Contact> Contacts
    		{
-   		    get { return this._NewContacts; }
+   		    get { return this._Contacts; }
 
-			set	{ this._NewContacts.Assign(value); }
+			set	{ this._Contacts.Assign(value); }
 
    		}
 
@@ -157,16 +157,16 @@ namespace CmsData
 		}
 
    		
-		private void attach_NewContacts(NewContact entity)
+		private void attach_Contacts(Contact entity)
 		{
 			this.SendPropertyChanging();
-			entity.NewContactType = this;
+			entity.ContactReason = this;
 		}
 
-		private void detach_NewContacts(NewContact entity)
+		private void detach_Contacts(Contact entity)
 		{
 			this.SendPropertyChanging();
-			entity.NewContactType = null;
+			entity.ContactReason = null;
 		}
 
 		

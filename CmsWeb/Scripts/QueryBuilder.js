@@ -11,6 +11,14 @@ $(function () {
     });
     $(".bt").button();
     $("#selectconditions select").css("width", "100%");
+    $("#targetpeople").click(function (ev) {
+        ev.preventDefault();
+        if ($('a.target[target="people"]').length == 0)
+            $("a.target").attr("target", "people");
+        else
+            $("a.target").removeAttr("target");
+        return false;
+    });
 
     HighlightCondition();
     $('#Program').change(function (ev) {

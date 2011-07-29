@@ -78,7 +78,7 @@ namespace CmsWeb.Models
             Db = DbUtil.Db;
         }
 
-        public IEnumerable<ContactInfo> ContactList(IQueryable<NewContact> query)
+        public IEnumerable<ContactInfo> ContactList(IQueryable<CmsData.Contact> query)
         {
             var q = from c in query
                     select new ContactInfo
@@ -86,8 +86,8 @@ namespace CmsWeb.Models
                         ContactId = c.ContactId,
                         ContactDate = c.ContactDate,
                         Comments = c.Comments,
-                        ContactReason = c.NewContactReason.Description,
-                        TypeOfContact = c.NewContactType.Description,
+                        ContactReason = c.ContactReason.Description,
+                        TypeOfContact = c.ContactType.Description,
                     };
             return q;
         }
@@ -110,9 +110,9 @@ namespace CmsWeb.Models
             }
         }
 
-        private IQueryable<NewContact> ApplySearch()
+        private IQueryable<CmsData.Contact> ApplySearch()
         {
-            var query = from c in Db.NewContacts select c;
+            var query = from c in Db.Contacts select c;
             if (ContacteeName.HasValue())
                 query = from c in query
                         where c.contactees.Any(p => p.person.Name.Contains(ContacteeName))
@@ -144,7 +144,7 @@ namespace CmsWeb.Models
             return query;
         }
 
-        public IQueryable<NewContact> ApplySort(IQueryable<NewContact> query, string sort)
+        public IQueryable<CmsData.Contact> ApplySort(IQueryable<CmsData.Contact> query, string sort)
         {
             if (!sort.HasValue())
                 sort = "Date";
@@ -162,12 +162,12 @@ namespace CmsWeb.Models
                     break;
                 case "Reason":
                     query = from c in query
-                            orderby c.NewContactReason.Description, c.ContactDate descending
+                            orderby c.ContactReason.Description, c.ContactDate descending
                             select c;
                     break;
                 case "Type":
                     query = from c in query
-                            orderby c.NewContactType.Description, c.ContactDate descending
+                            orderby c.ContactType.Description, c.ContactDate descending
                             select c;
                     break;
                 case "ID DESC":
@@ -182,12 +182,12 @@ namespace CmsWeb.Models
                     break;
                 case "Reason DESC":
                     query = from c in query
-                            orderby c.NewContactReason.Description descending, c.ContactDate descending
+                            orderby c.ContactReason.Description descending, c.ContactDate descending
                             select c;
                     break;
                 case "Type DESC":
                     query = from c in query
-                            orderby c.NewContactType.Description descending, c.ContactDate descending
+                            orderby c.ContactType.Description descending, c.ContactDate descending
                             select c;
                     break;
             }
@@ -204,7 +204,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> ContactTypeCodes()
         {
-            var q = from c in Db.NewContactTypes
+            var q = from c in Db.ContactTypes
                     orderby c.Description
                     select new SelectListItem
                     {
@@ -217,7 +217,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> ReasonTypeCodes()
         {
-            var q = from c in Db.NewContactReasons
+            var q = from c in Db.ContactReasons
                     orderby c.Description
                     select new SelectListItem
                     {

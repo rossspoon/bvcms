@@ -136,6 +136,9 @@
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Rackspace|AnyCPU'">
+    <OutputPath>bin\Rackspace\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DirectShowLib-2005">
       <HintPath>..\CmsWeb\Binaries\DirectShowLib-2005.dll</HintPath>

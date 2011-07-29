@@ -29,7 +29,7 @@ namespace CMSPresenter
 
         public int count;
 
-        public static IEnumerable<ContactInfo> FetchContactList(IQueryable<NewContact> query)
+        public static IEnumerable<ContactInfo> FetchContactList(IQueryable<Contact> query)
         {
             var q = from c in query
                     select new ContactInfo
@@ -37,8 +37,8 @@ namespace CMSPresenter
                         ContactId = c.ContactId,
                         ContactDate = c.ContactDate,
                         Comments = c.Comments,
-                        ContactReason = c.NewContactReason.Description,
-                        TypeOfContact = c.NewContactType.Description,
+                        ContactReason = c.ContactReason.Description,
+                        TypeOfContact = c.ContactType.Description,
                     };
             return q;
         }
@@ -57,7 +57,7 @@ namespace CMSPresenter
         {
             var sDate = startDate.ToDate();
             var eDate = endDate.ToDate();
-            var query = from c in Db.NewContacts select c;
+            var query = from c in Db.Contacts select c;
             query = ApplySearch(query, contacteeNameSearch, contactorNameSearch, sDate, eDate, reasonCode, typeCode, ministryCode);
             count = query.Count();
             query = ApplySort(query, sortExpression).Skip(startRowIndex).Take(maximumRows);
@@ -78,7 +78,7 @@ namespace CMSPresenter
             return count;
         }
 
-        private static IQueryable<NewContact> ApplySearch(IQueryable<NewContact> query, 
+        private static IQueryable<Contact> ApplySearch(IQueryable<Contact> query, 
             string contacteeNameSearch, 
             string contactorNameSearch, 
             DateTime? startDate, 
@@ -141,7 +141,7 @@ namespace CMSPresenter
             return query;
         }
 
-        public static IQueryable<NewContact> ApplySort(IQueryable<NewContact> query, string sort)
+        public static IQueryable<Contact> ApplySort(IQueryable<Contact> query, string sort)
         {
             if (!sort.HasValue())
                 sort = "Date DESC";

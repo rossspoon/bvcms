@@ -37,14 +37,10 @@
                     <td>
                         <asp:Button ID="btnSubmit" ToolTip="Click to download report" CausesValidation="true"
                             runat="server" Text="Download" CssClass="noPrint" 
-                            ValidationGroup="vgDates" OnClick="btnSubmit_Click" />
+                            OnClick="btnSubmit_Click" />
                     </td>
                 </tr>
             </table>
-            <asp:CompareValidator ID="ToDateValidator" runat="server" ErrorMessage="CompareValidator"
-                ControlToValidate="ToDate" ControlToCompare="FromDate" Operator="GreaterThanEqual"
-                SetFocusOnError="True" ValidationGroup="vgDates" Type="Date" Text="To Date must be on or after From Date."
-                CssClass="noPrint"></asp:CompareValidator>
         </div>
     </div>
 </asp:Content>

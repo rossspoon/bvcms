@@ -8,6 +8,7 @@ using CmsWeb.Areas.Manage.Controllers;
 using CmsWeb.Areas.OnlineReg.Models.Payments;
 using System.Text;
 using System.Collections.Generic;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -36,7 +37,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             if (m.org != null)
             {
-                if ((m.org.RegistrationTypeId ?? 0) == (int)CmsData.Organization.RegistrationEnum.None)
+                if ((m.org.RegistrationTypeId ?? 0) == RegistrationEnum.None)
                     return Content("no registration allowed on this org");
             }
             else if (m.div != null)
@@ -358,7 +359,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 Description = m.Header,
                 OrgId = m.orgid,
                 Url = m.URL,
-                DatumId = d.Id
+                DatumId = d.Id,
             };
             if (m.UserPeopleId.HasValue || p.IsNew)
             {

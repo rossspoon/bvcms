@@ -6,6 +6,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Runtime.Serialization;
 using System.Web.Mvc;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -85,6 +86,13 @@ namespace CmsWeb.Models
         public string inputname(string field) 
         {
             return "m.List[" + index + "]." + field;
+        }
+        [OptionalField]
+        private decimal? _Suggestedfee;
+        public decimal? suggestedfee
+        {
+            get { return _Suggestedfee; }
+            set { _Suggestedfee = value; }
         }
         [OptionalField]
         private string _Option2;
@@ -188,15 +196,15 @@ namespace CmsWeb.Models
             else
                 f = p.Family;
 
-            _Person = Person.Add(f, (int)Family.PositionInFamily.Child,
+            _Person = Person.Add(f, PositionInFamily.Child,
                 null, first.Trim(), null, last.Trim(), dob, married == 20, gender ?? 0,
-                    (int)Person.OriginCode.Enrollment, entrypoint);
+                    OriginCode.Enrollment, entrypoint);
             person.EmailAddress = email.Trim();
             person.SuffixCode = suffix;
             person.MiddleName = middle;
             person.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
             if (person.Age >= 18)
-                person.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
+                person.PositionInFamilyId = PositionInFamily.PrimaryAdult;
             person.CellPhone = phone.GetDigits();
 
             DbUtil.Db.SubmitChanges();
@@ -206,7 +214,7 @@ namespace CmsWeb.Models
         public bool IsCreateAccount()
         {
             if (org != null)
-                return org.RegistrationTypeId == (int)Organization.RegistrationEnum.CreateAccount;
+                return org.RegistrationTypeId == RegistrationEnum.CreateAccount;
             return false;
         }
     }

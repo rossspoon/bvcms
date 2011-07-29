@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CmsData;
+using CmsData.Codes;
 
 namespace CMSPresenter
 {
@@ -38,8 +39,8 @@ namespace CMSPresenter
         }
         public int[] guestAttendanceTypes = new int[] 
         { 
-            (int)CmsData.Attend.AttendTypeCode.NewVisitor, 
-            (int)CmsData.Attend.AttendTypeCode.RecentVisitor 
+            AttendTypeCode.NewVisitor, 
+            AttendTypeCode.RecentVisitor 
         };
         private int[] _guestsOutOfTown;
         public int[] guestsOutOfTown

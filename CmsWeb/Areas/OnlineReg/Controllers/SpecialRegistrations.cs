@@ -29,7 +29,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var m = new SlotModel(id, oid);
             var om = m.org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == id);
             if (om == null)
-                om = OrganizationMember.InsertOrgMembers(oid, id, 220, Util.Now, null, false);
+                om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                    oid, id, 220, Util.Now, null, false);
             if (ck)
                 om.AddToGroup(DbUtil.Db, slot);
             else
@@ -146,7 +147,8 @@ You have the following subscriptions:<br/>
                 return Content("sorry, maximum limit has been reached");
 
             var omb = q.om;
-            omb = OrganizationMember.InsertOrgMembers(oid, pid, 220, DateTime.Now, null, false);
+            omb = OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                oid, pid, 220, DateTime.Now, null, false);
             
             omb.AddToGroup(DbUtil.Db, smallgroup);
             omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);

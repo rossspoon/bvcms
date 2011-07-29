@@ -903,40 +903,81 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View("FindTagPeople0");
         }
         [HttpPost]
+        string FindColumn(Dictionary<string, int> names, string[] a, string col)
+        {
+            if (names.ContainsKey(col))
+                return a[names[col]];
+            return null;
+        }
+        string FindColumnDigits(Dictionary<string, int> names, string[] a, string col)
+        {
+            var s = FindColumn(names, a, col);
+            if (s.HasValue())
+                return s.GetDigits();
+            return s;
+        }
+        DateTime? FindColumnDate(Dictionary<string, int> names, string[] a, string col)
+        {
+            var s = FindColumn(names, a, col);
+            DateTime dt;
+            if (names.ContainsKey(col))
+                if (DateTime.TryParse(a[names[col]], out dt))
+                    return dt;
+            return null;
+        }
         public ActionResult FindTagPeople(string text, string tagname)
         {
+            if (!tagname.HasValue())
+                return Content("no tag");
             var csv = new CsvReader(new StringReader(text), false, '\t').ToList();
 
             var line0 = csv.First().ToList();
             names = line0.ToDictionary(i => i.TrimEnd(),
                 i => line0.FindIndex(s => s == i));
+            var ActiveNames = new List<string>
+            {
+                "First",
+                "Last",
+                "Birthday",
+                "Email",
+                "CellPhone",
+                "HomePhone",
+            };
+            var hasvalidcolumn = false;
+            foreach (var name in names.Keys)
+                if (ActiveNames.Contains(name))
+                {
+                    hasvalidcolumn = true;
+                    break;
+                }
+            if (!hasvalidcolumn)
+                return Content("no valid column");
+                    
 
             var list = new List<FindInfo>();
-            foreach (var a in csv)
+            foreach (var a in csv.Skip(1))
             {
                 var row = new FindInfo();
-                if (names.ContainsKey("First"))
-                    row.First = a[names["First"]];
-                if (names.ContainsKey("Last"))
-                    row.Last = a[names["Last"]];
-                DateTime dt;
-                if (names.ContainsKey("Birthday"))
-                    if (DateTime.TryParse(a[names["Birthday"]], out dt))
-                        row.Birthday = dt;
-                if (names.ContainsKey("Email"))
-                    row.Email = a[names["Email"]].Trim();
-                if (names.ContainsKey("CellPhone"))
-                    row.CellPhone = a[names["CellPhone"]].GetDigits();
-                if (names.ContainsKey("HomePhone"))
-                    row.HomePhone = a[names["HomePhone"]].GetDigits();
+                row.First = FindColumn(names, a, "First");
+                row.Last = FindColumn(names, a, "Last");
+                row.Birthday = FindColumnDate(names, a, "Birthday");
+                row.Email = FindColumn(names, a, "Email");
+                row.CellPhone = FindColumnDigits(names, a, "CellPhone");
+                row.HomePhone = FindColumnDigits(names, a, "HomePhone");
+
                 var pids = DbUtil.Db.FindPerson3(row.First, row.Last, row.Birthday, row.Email, row.CellPhone, row.HomePhone, null);
                 row.Found = pids.Count();
                 if (row.Found == 1)
                     row.PeopleId = pids.Single().PeopleId.Value;
                 list.Add(row);
-                if (row.PeopleId.HasValue)
-                    Person.Tag(DbUtil.Db, row.PeopleId.Value, tagname, DbUtil.Db.CurrentPeopleId, DbUtil.TagTypeId_Personal);
             }
+            var q = from pi in list
+                    where pi.PeopleId.HasValue
+                    select pi.PeopleId;
+            foreach (var pid in q.Distinct())
+                Person.Tag(DbUtil.Db, pid.Value, tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+            DbUtil.Db.SubmitChanges();
+
             return View(list);
         }
         [AcceptVerbs(HttpVerbs.Get)]

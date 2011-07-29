@@ -50,6 +50,8 @@ namespace CmsWeb.Areas.Main.Controllers
         [HttpPost]
         public ActionResult RenameTag(TagsModel m)
         {
+            if (!m.tagname.HasValue())
+                return View("Tags", m);
             DbUtil.Db.TagCurrent().Name = m.tagname;
             DbUtil.Db.SubmitChanges();
             Util2.CurrentTag = m.tagname;
@@ -97,7 +99,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddContact(int id)
         {
-            var cid = NewContact.AddContact(id);
+            var cid = CmsData.Contact.AddContact(id);
             return Content("/Contact.aspx?id=" + cid);
         }
         [AcceptVerbs(HttpVerbs.Post)]

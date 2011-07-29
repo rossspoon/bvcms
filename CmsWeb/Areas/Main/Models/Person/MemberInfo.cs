@@ -39,7 +39,7 @@ namespace CmsWeb.Models.PersonPage
         public string NewChurch { get; set; }
         public string PrevChurch { get; set; }
         public int? NewMemberClassStatusId { get; set; }
-        public string NewMemberClassStatus { get { return cv.DiscoveryClassStatusCodes().ItemValue(NewMemberClassStatusId ?? 0); } }
+        public string NewMemberClassStatus { get { return cv.NewMemberClassStatusCodes().ItemValue(NewMemberClassStatusId ?? 0); } }
         public DateTime? NewMemberClassDate { get; set; }
         public int MemberStatusId { get; set; }
         public string MemberStatus { get { return cv.MemberStatusCodes().ItemValue(MemberStatusId); } }
@@ -59,7 +59,7 @@ namespace CmsWeb.Models.PersonPage
                         JoinTypeId = p.JoinCodeId,
                         NewChurch = p.OtherNewChurch,
                         PrevChurch = p.OtherPreviousChurch,
-                        NewMemberClassDate = p.DiscoveryClassDate,
+                        NewMemberClassDate = p.NewMemberClassDate,
                         MemberStatusId = p.MemberStatusId,
                         JoinDate = p.JoinDate,
                         BaptismTypeId = p.BaptismTypeId ?? 0,
@@ -67,12 +67,12 @@ namespace CmsWeb.Models.PersonPage
                         DecisionTypeId = p.DecisionTypeId ?? 0,
                         EnvelopeOptionId = p.EnvelopeOptionsId ?? 0,
                         StatementOptionId = p.ContributionOptionsId ?? 0,
-                        NewMemberClassStatusId = p.DiscoveryClassStatusId ?? 0,
+                        NewMemberClassStatusId = p.NewMemberClassStatusId ?? 0,
                     };
             return q.Single();
         }
 
-        public void UpdateMember()
+        public string UpdateMember()
         {
             if (NewMemberClassStatusId == 0)
                 NewMemberClassStatusId = null;
@@ -103,13 +103,20 @@ namespace CmsWeb.Models.PersonPage
             p.JoinDate = JoinDate;
             p.OtherNewChurch = NewChurch;
             p.OtherPreviousChurch = PrevChurch;
-            p.DiscoveryClassDate = NewMemberClassDate;
-            p.DiscoveryClassStatusId = NewMemberClassStatusId;
+            p.NewMemberClassDate = NewMemberClassDate;
+            p.NewMemberClassStatusId = NewMemberClassStatusId;
             p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId.Value);
-            p.MemberProfileAutomation(DbUtil.Db);
-            DbUtil.Db.SubmitChanges();
-            DbUtil.LogActivity("Updated Person: {0}".Fmt(p.Name), false);
+            var ret = p.MemberProfileAutomation(DbUtil.Db);
+            if (ret == "ok")
+            {
+                DbUtil.Db.SubmitChanges();
+                DbUtil.LogActivity("Updated Person: {0}".Fmt(p.Name), false);
+            }
+            else
+               Elmah.ErrorSignal.FromCurrentContext().Raise(
+                    new Exception(ret + " for PeopleId:" + p.PeopleId));
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
+            return ret;
         }
         private static int? CviOrNull(CodeValueItem cvi)
         {
@@ -148,7 +155,7 @@ namespace CmsWeb.Models.PersonPage
         }
         public static IEnumerable<SelectListItem> NewMemberClassStatuses()
         {
-            return QueryModel.ConvertToSelect(cv.DiscoveryClassStatusCodes(), "Id");
+            return QueryModel.ConvertToSelect(cv.NewMemberClassStatusCodes(), "Id");
         }
 
     }

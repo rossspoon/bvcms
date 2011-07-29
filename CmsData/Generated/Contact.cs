@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace CmsData
 {
-	[Table(Name="dbo.NewContact")]
-	public partial class NewContact : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.Contact")]
+	public partial class Contact : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -61,11 +61,11 @@ namespace CmsData
    		private EntitySet< Task> _TasksCompleted;
 		
     	
-		private EntityRef< NewContactType> _NewContactType;
+		private EntityRef< ContactType> _ContactType;
 		
 		private EntityRef< Ministry> _Ministry;
 		
-		private EntityRef< NewContactReason> _NewContactReason;
+		private EntityRef< ContactReason> _ContactReason;
 		
 	#endregion
 	
@@ -126,7 +126,7 @@ namespace CmsData
 		partial void OnModifiedDateChanged();
 		
     #endregion
-		public NewContact()
+		public Contact()
 		{
 			
 			this._contactees = new EntitySet< Contactee>(new Action< Contactee>(this.attach_contactees), new Action< Contactee>(this.detach_contactees)); 
@@ -138,11 +138,11 @@ namespace CmsData
 			this._TasksCompleted = new EntitySet< Task>(new Action< Task>(this.attach_TasksCompleted), new Action< Task>(this.detach_TasksCompleted)); 
 			
 			
-			this._NewContactType = default(EntityRef< NewContactType>); 
+			this._ContactType = default(EntityRef< ContactType>); 
 			
 			this._Ministry = default(EntityRef< Ministry>); 
 			
-			this._NewContactReason = default(EntityRef< NewContactReason>); 
+			this._ContactReason = default(EntityRef< ContactReason>); 
 			
 			OnCreated();
 		}
@@ -226,7 +226,7 @@ namespace CmsData
 				if (this._ContactTypeId != value)
 				{
 				
-					if (this._NewContactType.HasLoadedOrAssignedValue)
+					if (this._ContactType.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnContactTypeIdChanging(value);
@@ -273,7 +273,7 @@ namespace CmsData
 				if (this._ContactReasonId != value)
 				{
 				
-					if (this._NewContactReason.HasLoadedOrAssignedValue)
+					if (this._ContactReason.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnContactReasonIdChanging(value);
@@ -581,28 +581,28 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_Contacts_ContactTypes", Storage="_NewContactType", ThisKey="ContactTypeId", IsForeignKey=true)]
-		public NewContactType NewContactType
+		[Association(Name="FK_Contacts_ContactTypes", Storage="_ContactType", ThisKey="ContactTypeId", IsForeignKey=true)]
+		public ContactType ContactType
 		{
-			get { return this._NewContactType.Entity; }
+			get { return this._ContactType.Entity; }
 
 			set
 			{
-				NewContactType previousValue = this._NewContactType.Entity;
+				ContactType previousValue = this._ContactType.Entity;
 				if (((previousValue != value) 
-							|| (this._NewContactType.HasLoadedOrAssignedValue == false)))
+							|| (this._ContactType.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if (previousValue != null)
 					{
-						this._NewContactType.Entity = null;
-						previousValue.NewContacts.Remove(this);
+						this._ContactType.Entity = null;
+						previousValue.Contacts.Remove(this);
 					}
 
-					this._NewContactType.Entity = value;
+					this._ContactType.Entity = value;
 					if (value != null)
 					{
-						value.NewContacts.Add(this);
+						value.Contacts.Add(this);
 						
 						this._ContactTypeId = value.Id;
 						
@@ -615,7 +615,7 @@ namespace CmsData
 						
 					}
 
-					this.SendPropertyChanged("NewContactType");
+					this.SendPropertyChanged("ContactType");
 				}
 
 			}
@@ -638,13 +638,13 @@ namespace CmsData
 					if (previousValue != null)
 					{
 						this._Ministry.Entity = null;
-						previousValue.NewContacts.Remove(this);
+						previousValue.Contacts.Remove(this);
 					}
 
 					this._Ministry.Entity = value;
 					if (value != null)
 					{
-						value.NewContacts.Add(this);
+						value.Contacts.Add(this);
 						
 						this._MinistryId = value.MinistryId;
 						
@@ -665,28 +665,28 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_NewContacts_ContactReasons", Storage="_NewContactReason", ThisKey="ContactReasonId", IsForeignKey=true)]
-		public NewContactReason NewContactReason
+		[Association(Name="FK_NewContacts_ContactReasons", Storage="_ContactReason", ThisKey="ContactReasonId", IsForeignKey=true)]
+		public ContactReason ContactReason
 		{
-			get { return this._NewContactReason.Entity; }
+			get { return this._ContactReason.Entity; }
 
 			set
 			{
-				NewContactReason previousValue = this._NewContactReason.Entity;
+				ContactReason previousValue = this._ContactReason.Entity;
 				if (((previousValue != value) 
-							|| (this._NewContactReason.HasLoadedOrAssignedValue == false)))
+							|| (this._ContactReason.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if (previousValue != null)
 					{
-						this._NewContactReason.Entity = null;
-						previousValue.NewContacts.Remove(this);
+						this._ContactReason.Entity = null;
+						previousValue.Contacts.Remove(this);
 					}
 
-					this._NewContactReason.Entity = value;
+					this._ContactReason.Entity = value;
 					if (value != null)
 					{
-						value.NewContacts.Add(this);
+						value.Contacts.Add(this);
 						
 						this._ContactReasonId = value.Id;
 						
@@ -699,7 +699,7 @@ namespace CmsData
 						
 					}
 
-					this.SendPropertyChanged("NewContactReason");
+					this.SendPropertyChanged("ContactReason");
 				}
 
 			}

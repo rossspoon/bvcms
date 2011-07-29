@@ -7,6 +7,7 @@ using System.Text;
 using UtilityExtensions;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -62,7 +63,7 @@ namespace CmsWeb.Models
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(dd => dd.DivId == divid)
-                    where o.RegistrationTypeId == (int)Organization.RegistrationEnum.ManageSubscriptions
+                    where o.RegistrationTypeId == RegistrationEnum.ManageSubscriptions
                     select new OrgSub
                     {
                         OrgId = o.OrganizationId,
@@ -81,7 +82,7 @@ namespace CmsWeb.Models
                 {
                     var q = from om in DbUtil.Db.OrganizationMembers
                             where om.Organization.DivOrgs.Any(dd => dd.DivId == divid)
-                            where om.Organization.RegistrationTypeId == (int)Organization.RegistrationEnum.ManageSubscriptions
+                            where om.Organization.RegistrationTypeId == RegistrationEnum.ManageSubscriptions
                             where om.PeopleId == pid
                             select new { om.Organization.OrganizationName, om.Organization.Description };
                     var sb = new StringBuilder();
@@ -97,7 +98,7 @@ namespace CmsWeb.Models
         {
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.Organization.DivOrgs.Any(dd => dd.DivId == divid)
-                    where om.Organization.RegistrationTypeId == (int)Organization.RegistrationEnum.ManageSubscriptions
+                    where om.Organization.RegistrationTypeId == RegistrationEnum.ManageSubscriptions
                     where om.PeopleId == pid
                     select om;
             var current = q.ToList();
@@ -124,7 +125,8 @@ namespace CmsWeb.Models
             }
             foreach (var id in joins)
             {
-                OrganizationMember.InsertOrgMembers(id, pid, 220, DateTime.Now, null, false);
+                OrganizationMember.InsertOrgMembers(DbUtil.Db, 
+                    id, pid, 220, DateTime.Now, null, false);
                 DbUtil.Db.SubmitChanges();
             }
         }

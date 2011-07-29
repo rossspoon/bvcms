@@ -20,114 +20,30 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Data.Linq.SqlClient;
 using System.Web;
+using CmsData.Codes;
 
 namespace CmsData
 {
+
     public partial class Person
     {
-        public enum OriginCode
+        public static int[] DiscClassStatusCompletedCodes = new int[] 
+        { 
+            NewMemberClassStatusCode.AdminApproval, 
+            NewMemberClassStatusCode.Attended, 
+            NewMemberClassStatusCode.ExemptedChild 
+        };
+        public static int[] DropCodesThatDrop = new int[] 
+        { 
+            DropTypeCode.Administrative,
+            DropTypeCode.AnotherDenomination,
+            DropTypeCode.LetteredOut,
+            DropTypeCode.Requested,
+            DropTypeCode.Other,
+        };
+        public DateTime Now()
         {
-            Visit = 10,
-            Request = 40,
-            PhoneIn = 50,
-            SurveyEE = 60,
-            Enrollment = 70,
-            Contribution = 90,
-            NewFamilyMember = 100,
-        }
-        public enum DecisionCode
-        {
-            Unknown = 0,
-            ProfessionForMembership = 10,
-            ProfessionNotForMembership = 20,
-            Letter = 30,
-            Statement = 40,
-            StatementReqBaptism = 50,
-            Cancelled = 60,
-        }
-        public enum MemberStatusCode
-        {
-            Member = 10,
-            NotMember = 20,
-            Pending = 30,
-            Previous = 40,
-            JustAdded = 50,
-            //InactiveMember = 100,
-            //DeletedMember = 110,
-            //DeletedProspect = 120,
-            //ProspectActive = 130,
-            //ProspectInactive = 140,
-            //MiscActive = 150,
-            //MiscInactive = 160,
-            //Unknown = 170
-        }
-        public enum DiscoveryClassStatusCode
-        {
-            NotSpecified = 0,
-            Pending = 10,
-            Attended = 20,
-            AdminApproval = 30,
-            GrandFathered = 40,
-            ExemptedChild = 50,
-            Unknown = 99
-        }
-        public enum BaptismTypeCode
-        {
-            NotSpecified = 0,
-            Original = 10, // first time at pof
-            Subsequent = 20, // already member
-            Biological = 30, // children of members
-            NonMember = 40, // pof, baptism, but not joining
-            Required = 50, // statement, not dunked
-        }
-        public enum BaptismStatusCode
-        {
-            NotSpecified = 0,
-            Scheduled = 10,
-            NotScheduled = 20,
-            Completed = 30,
-            Canceled = 40,
-        }
-        public enum PositionInFamilyCode
-        {
-            Primary = 10,
-            Secondary = 20,
-            Child = 30
-        }
-        public enum JoinTypeCode
-        {
-            Unknown = 0,
-            BaptismPOF = 10,
-            BaptismSRB = 20,
-            BaptismBIO = 30,
-            Statement = 40,
-            Letter = 50,
-        }
-        public enum DropTypeCode
-        {
-            NotDropped = 0,
-            Duplicate = 10,
-            Administrative = 20,
-            Deceased = 30,
-            LetteredOut = 40,
-            Requested = 50,
-            AnotherDenomination = 60,
-            Other = 98,
-        }
-        public enum EnvelopeOptionCode
-        {
-            None = 9,
-            Individual = 1,
-            Joint = 2,
-        }
-        public enum MaritalStatusCode
-        {
-            Unknown = 0,
-            Single = 10,
-            Married = 20,
-            Separated = 30,
-            Divorced = 40,
-            Widowed = 50,
+            return Util.Now;
         }
         /* Origins
         10		Visit						Worship or BFClass Visit
@@ -474,7 +390,7 @@ namespace CmsData
                 p.BirthMonth = dt.Month;
                 p.BirthYear = dt.Year;
                 if (p.GetAge() < 18 && MarriedCode == 0)
-                    p.MaritalStatusId = (int)Person.MaritalStatusCode.Single;
+                    p.MaritalStatusId = MaritalStatusCode.Single;
             }
             else if (DateTime.TryParse(dob, out dt))
             {
@@ -484,11 +400,11 @@ namespace CmsData
                 {
                     p.BirthYear = dt.Year;
                     if (p.GetAge() < 18 && MarriedCode == 0)
-                        p.MaritalStatusId = (int)Person.MaritalStatusCode.Single;
+                        p.MaritalStatusId = MaritalStatusCode.Single;
                 }
             }
 
-            p.MemberStatusId = (int)Person.MemberStatusCode.JustAdded;
+            p.MemberStatusId = MemberStatusCode.JustAdded;
             if (fam == null)
             {
                 fam = new Family();
@@ -498,9 +414,9 @@ namespace CmsData
             else
                 fam.People.Add(p);
 
-            var PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult).Count();
-            if (PrimaryCount > 2 && p.PositionInFamilyId == (int)Family.PositionInFamily.PrimaryAdult)
-                p.PositionInFamilyId = (int)Family.PositionInFamily.SecondaryAdult;
+            var PrimaryCount = fam.People.Where(c => c.PositionInFamilyId == PositionInFamily.PrimaryAdult).Count();
+            if (PrimaryCount > 2 && p.PositionInFamilyId == PositionInFamily.PrimaryAdult)
+                p.PositionInFamilyId = PositionInFamily.SecondaryAdult;
 
             if (tag != null)
                 tag.PersonTags.Add(new TagPerson { Person = p });
@@ -790,14 +706,14 @@ namespace CmsData
         {
             _DecisionTypeIdChanged = true;
         }
-        private bool _DiscoveryClassStatusIdChanged;
-        public bool DiscoveryClassStatusIdChanged
+        private bool _NewMemberClassStatusIdChanged;
+        public bool NewMemberClassStatusIdChanged
         {
-            get { return _DiscoveryClassStatusIdChanged; }
+            get { return _NewMemberClassStatusIdChanged; }
         }
-        partial void OnDiscoveryClassStatusIdChanged()
+        partial void OnNewMemberClassStatusIdChanged()
         {
-            _DiscoveryClassStatusIdChanged = true;
+            _NewMemberClassStatusIdChanged = true;
         }
         private bool _BaptismStatusIdChanged;
         public bool BaptismStatusIdChanged
@@ -901,18 +817,18 @@ namespace CmsData
             }
             return rr;
         }
-        public NewContact AddContactReceived(DateTime dt, NewContact.ContactTypeCode type, NewContact.ContactReasonCode reason, string notes)
+        public Contact AddContactReceived(DateTime dt, int type, int reason, string notes)
         {
-            var c = new NewContact
+            var c = new Contact
             {
                 CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
                 ContactDate = dt,
-                ContactTypeId = (int)type,
-                ContactReasonId = (int)reason,
+                ContactTypeId = type,
+                ContactReasonId = reason,
                 Comments = notes
             };
-            DbUtil.Db.NewContacts.InsertOnSubmit(c);
+            DbUtil.Db.Contacts.InsertOnSubmit(c);
             c.contactees.Add(new Contactee { PeopleId = PeopleId });
             DbUtil.Db.SubmitChanges();
             return c;

@@ -10,6 +10,7 @@ using UtilityExtensions;
 using CmsWeb.Models;
 using System.Xml;
 using System.IO;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -90,18 +91,18 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 f = new CmsData.Family();
 
-            var position = (int)CmsData.Family.PositionInFamily.Child;
+            var position = PositionInFamily.Child;
             if (Util.Age0(m.dob) >= 18)
                 if (f.People.Count(per =>
-                     per.PositionInFamilyId == (int)CmsData.Family.PositionInFamily.PrimaryAdult)
+                     per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
                      < 2)
-                    position = (int)CmsData.Family.PositionInFamily.PrimaryAdult;
+                    position = PositionInFamily.PrimaryAdult;
                 else
-                    position = (int)CmsData.Family.PositionInFamily.SecondaryAdult;
+                    position = PositionInFamily.SecondaryAdult;
 
             var p = Person.Add(f, position,
                 null, m.first, m.goesby, m.last, m.dob, false, m.gender,
-                    (int)Person.OriginCode.Visit, null);
+                    OriginCode.Visit, null);
 
             UpdatePerson(p, m);
             return Content(f.FamilyId.ToString());
@@ -314,6 +315,7 @@ namespace CmsWeb.Areas.Main.Controllers
             p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
             p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;
             DbUtil.Db.SubmitChanges();
+            DbUtil.LogActivity("check-in uploaded picture for {0} on {1}".Fmt(person.Name));
             return Content("done");
         }
         [AcceptVerbs(HttpVerbs.Post)]

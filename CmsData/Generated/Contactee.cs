@@ -27,7 +27,7 @@ namespace CmsData
 		
    		
     	
-		private EntityRef< NewContact> _contact;
+		private EntityRef< Contact> _contact;
 		
 		private EntityRef< Person> _person;
 		
@@ -55,7 +55,7 @@ namespace CmsData
 		{
 			
 			
-			this._contact = default(EntityRef< NewContact>); 
+			this._contact = default(EntityRef< Contact>); 
 			
 			this._person = default(EntityRef< Person>); 
 			
@@ -168,13 +168,13 @@ namespace CmsData
 	#region Foreign Keys
     	
 		[Association(Name="contactees__contact", Storage="_contact", ThisKey="ContactId", IsForeignKey=true)]
-		public NewContact contact
+		public Contact contact
 		{
 			get { return this._contact.Entity; }
 
 			set
 			{
-				NewContact previousValue = this._contact.Entity;
+				Contact previousValue = this._contact.Entity;
 				if (((previousValue != value) 
 							|| (this._contact.HasLoadedOrAssignedValue == false)))
 				{

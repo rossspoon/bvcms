@@ -71,9 +71,9 @@ namespace CmsData
 		
 		private EntityRef< Person> _AboutWho;
 		
-		private EntityRef< NewContact> _SourceContact;
+		private EntityRef< Contact> _SourceContact;
 		
-		private EntityRef< NewContact> _CompletedContact;
+		private EntityRef< Contact> _CompletedContact;
 		
 		private EntityRef< Person> _CoOwner;
 		
@@ -162,9 +162,9 @@ namespace CmsData
 			
 			this._AboutWho = default(EntityRef< Person>); 
 			
-			this._SourceContact = default(EntityRef< NewContact>); 
+			this._SourceContact = default(EntityRef< Contact>); 
 			
-			this._CompletedContact = default(EntityRef< NewContact>); 
+			this._CompletedContact = default(EntityRef< Contact>); 
 			
 			this._CoOwner = default(EntityRef< Person>); 
 			
@@ -879,13 +879,13 @@ namespace CmsData
 
 		
 		[Association(Name="TasksAssigned__SourceContact", Storage="_SourceContact", ThisKey="SourceContactId", IsForeignKey=true)]
-		public NewContact SourceContact
+		public Contact SourceContact
 		{
 			get { return this._SourceContact.Entity; }
 
 			set
 			{
-				NewContact previousValue = this._SourceContact.Entity;
+				Contact previousValue = this._SourceContact.Entity;
 				if (((previousValue != value) 
 							|| (this._SourceContact.HasLoadedOrAssignedValue == false)))
 				{
@@ -921,13 +921,13 @@ namespace CmsData
 
 		
 		[Association(Name="TasksCompleted__CompletedContact", Storage="_CompletedContact", ThisKey="CompletedContactId", IsForeignKey=true)]
-		public NewContact CompletedContact
+		public Contact CompletedContact
 		{
 			get { return this._CompletedContact.Entity; }
 
 			set
 			{
-				NewContact previousValue = this._CompletedContact.Entity;
+				Contact previousValue = this._CompletedContact.Entity;
 				if (((previousValue != value) 
 							|| (this._CompletedContact.HasLoadedOrAssignedValue == false)))
 				{

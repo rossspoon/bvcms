@@ -7,6 +7,7 @@ using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
 using System.Data.Linq.SqlClient;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -41,8 +42,8 @@ namespace CmsWeb.Models
         {
             var normalLabelsMemTypes = new int[] 
             {
-                (int)OrganizationMember.MemberTypeCode.Member,
-                (int)OrganizationMember.MemberTypeCode.InActive
+                MemberTypeCode.Member,
+                MemberTypeCode.InActive
             };
             var now = Util.Now;
             // get org members first
@@ -53,7 +54,7 @@ namespace CmsWeb.Models
                 where om.Organization.CanSelfCheckin.Value
                 where (om.Pending ?? false) == false
                 where om.Organization.CampusId == campus || om.Organization.CampusId == null
-                where om.Organization.OrganizationStatusId == (int)Organization.OrgStatusCode.Active
+                where om.Organization.OrganizationStatusId == OrgStatusCode.Active
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
                 from meeting in meetingHours
@@ -293,8 +294,7 @@ namespace CmsWeb.Models
                     Location = om.Organization.Location,
                     Age = om.Person.Age ?? 0,
                     Gender = om.Person.Gender.Code,
-                    NumLabels = om.MemberTypeId ==
-                        (int)CmsData.OrganizationMember.MemberTypeCode.Member ?
+                    NumLabels = om.MemberTypeId == MemberTypeCode.Member ?
                             (om.Organization.NumCheckInLabels ?? 1)
                             : (om.Organization.NumWorkerCheckInLabels ?? 0),
                     CheckedIn = CheckedIn,
@@ -406,8 +406,7 @@ namespace CmsWeb.Models
                     MeetingDate = info.MeetingTime,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = info.AttendTrkLevelId
-                        == (int)CmsData.Organization.AttendTrackLevelCode.Headcount,
+                    GroupMeetingFlag = info.AttendTrkLevelId == AttendTrackLevelCode.Headcount,
                     Location = info.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
@@ -446,8 +445,7 @@ namespace CmsWeb.Models
                     MeetingDate = dt,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = info.AttendTrkLevelId
-                        == (int)CmsData.Organization.AttendTrackLevelCode.Headcount,
+                    GroupMeetingFlag = info.AttendTrkLevelId == AttendTrackLevelCode.Headcount,
                     Location = info.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
@@ -460,7 +458,8 @@ namespace CmsWeb.Models
         {
             var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == PeopleId && m.OrganizationId == OrgId);
             if (om == null && Member)
-                om = OrganizationMember.InsertOrgMembers(OrgId, PeopleId, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, false);
+                om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                    OrgId, PeopleId, MemberTypeCode.Member, DateTime.Now, null, false);
             else if (om != null && !Member)
                 om.Drop(DbUtil.Db, addToHistory:true);
             DbUtil.Db.SubmitChanges();
@@ -470,10 +469,11 @@ namespace CmsWeb.Models
             {
                 var p = DbUtil.Db.LoadPersonById(PeopleId);
                 var what = Member ? "joined" : "dropped";
-                DbUtil.Db.Email(DbUtil.AdminMail, 
-                    DbUtil.Db.PeopleFromPidString(org.NotifyIds), 
-                    "cms check-in, {0} class on ".Fmt(what) + DbUtil.Db.CmsHost, 
-                    "<a href='{0}/Person/Index/{1}'>{2}</a> {3} {4}".Fmt(Util.ServerLink("/Person/Index/" + PeopleId), PeopleId, p.Name, what, org.OrganizationName));
+                //DbUtil.Db.Email(DbUtil.AdminMail, 
+                //    DbUtil.Db.PeopleFromPidString(org.NotifyIds), 
+                //    "cms check-in, {0} class on ".Fmt(what) + DbUtil.Db.CmsHost, 
+                //    "<a href='{0}/Person/Index/{1}'>{2}</a> {3} {4}".Fmt(Util.ServerLink("/Person/Index/" + PeopleId), PeopleId, p.Name, what, org.OrganizationName));
+                DbUtil.LogActivity("cms check-in, {0} class ({1})".Fmt(what, p.PeopleId));
             }
         }
     }

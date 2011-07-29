@@ -8,6 +8,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Web.Mvc;
 using CMSPresenter;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -142,7 +143,7 @@ namespace CmsWeb.Models
         {
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == AgeDivId
-                    where !NormalMembersOnly || om.MemberTypeId == (int)OrganizationMember.MemberTypeCode.Member
+                    where !NormalMembersOnly || om.MemberTypeId == MemberTypeCode.Member
                     let team = om.OrgMemMemTags.Count(mt => mt.MemberTag.Name.StartsWith("TM:")) > 0
                     let recreg = om.Person.RecRegs.Single()
                     where !FilterUnassigned || team == false

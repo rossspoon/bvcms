@@ -10,6 +10,7 @@ using System.Configuration;
 using UtilityExtensions;
 using System.Net.Mail;
 using System.Web.Security;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -174,7 +175,7 @@ namespace CmsWeb.Models
             p.EmailAddress = email.Trim();
             p.CampusId = DbUtil.Db.Setting("DefaultCampusId", campus.ToString()).ToInt2();
             if (p.Age >= 18)
-                p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
+                p.PositionInFamilyId = PositionInFamily.PrimaryAdult;
             switch (homecell)
             {
                 case "h":
@@ -252,13 +253,13 @@ namespace CmsWeb.Models
                     }
                     leaderorg = new CmsData.Organization
                     {
-                        AttendTrkLevelId = (int)CmsData.Organization.AttendTrackLevelCode.Individual,
-                        OrganizationStatusId = (int)CmsData.Organization.OrgStatusCode.Active,
+                        AttendTrkLevelId = AttendTrackLevelCode.Individual,
+                        OrganizationStatusId = OrgStatusCode.Active,
                         CreatedDate = Util.Now,
                         CreatedBy = Util.UserId1,
                         OrganizationName = STR_GODisciplesLeaders,
                         SecurityTypeId = 0,
-                        AttendClassificationId = (int)CmsData.Organization.AttendanceClassificationCode.Normal,
+                        AttendClassificationId = AttendanceClassificationCode.Normal,
                         CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2(),
                         AllowAttendOverlap = false,
                     };
@@ -298,19 +299,22 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
 
             // make member of leaders
-            OrganizationMember.InsertOrgMembers(leaderorg.OrganizationId, person.PeopleId,
-                (int)OrganizationMember.MemberTypeCode.Member,
+            OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                leaderorg.OrganizationId, person.PeopleId,
+                MemberTypeCode.Member,
                 Util.Now, null, false);
 
             // make leader of own new org
-            OrganizationMember.InsertOrgMembers(neworg.OrganizationId, person.PeopleId,
-                (int)OrganizationMember.MemberTypeCode.Leader,
+            OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                neworg.OrganizationId, person.PeopleId,
+                MemberTypeCode.Leader,
                 Util.Now, null, false);
         }
         public void PerformMemberSetup()
         {
-            OrganizationMember.InsertOrgMembers(neworg.OrganizationId, person.PeopleId,
-                (int)OrganizationMember.MemberTypeCode.Member,
+            OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                neworg.OrganizationId, person.PeopleId,
+                MemberTypeCode.Member,
                 Util.Now, null, false);
             MakeDiscUser();
             if (!person.EmailAddress.HasValue())

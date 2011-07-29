@@ -8,6 +8,7 @@ using UtilityExtensions;
 using System.Text;
 using CmsWeb.Models.OrganizationPage;
 using System.Diagnostics;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -266,12 +267,15 @@ namespace CmsWeb.Areas.Main.Controllers
                     where t.Id == tagid
                     select t.PeopleId;
             foreach (var pid in q)
-                OrganizationMember.InsertOrgMembers(id, pid, (int)OrganizationMember.MemberTypeCode.Member, DateTime.Now, null, pending ?? false);
+                OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                    id, pid, MemberTypeCode.Member, DateTime.Now, null, pending ?? false);
             return Content("ok");
         }
         [Authorize(Roles = "Admin")]
         public ActionResult CopySettings()
         {
+            if (Util.SessionTimedOut() || Util2.CurrentOrgId == 0)
+                return Redirect("/");
             Session["OrgCopySettings"] = Util2.CurrentOrgId;
             return Redirect("/OrgSearch/");
         }
@@ -283,8 +287,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("error: bad info");
             var pid = aa[1].ToInt();
             var oid = aa[2].ToInt();
-            OrganizationMember.InsertOrgMembers(oid, pid,
-                (int)OrganizationMember.MemberTypeCode.Member,
+            OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                oid, pid, MemberTypeCode.Member,
                 DateTime.Now, null, false);
             return Content("ok");
         }
@@ -315,7 +319,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddContact(int id)
         {
-            var cid = NewContact.AddContact(id);
+            var cid = CmsData.Contact.AddContact(id);
             return Content("/Contact.aspx?id=" + cid);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -327,6 +331,8 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult NotifyIds()
         {
+            if (Util.SessionTimedOut() || Util2.CurrentOrgId == 0)
+                return Content("<script type='text/javascript'>window.onload = function() { parent.location = '/'; }</script>");
             Response.NoCache();
             var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(t.PersonTags);

@@ -181,6 +181,10 @@
         <td>@Model.org.Fee.ToString2("n2")</td>
     </tr>
     <tr>
+        <th>Suggested:</th>
+        <td>@Html.CheckBoxReadonly(Model.org.SuggestedFee)</td>
+    </tr>
+    <tr>
         <th>Deposit:</th>
         <td>@Model.org.Deposit.ToString2("n2")</td>
     </tr>

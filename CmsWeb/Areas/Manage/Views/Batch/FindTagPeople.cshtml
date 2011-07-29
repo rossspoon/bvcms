@@ -4,9 +4,14 @@
     ViewBag.Title = "FindTagPeople";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
+<script type="text/javascript">
+    $(function () {
+        $("table.grid > tbody > tr:even").addClass("alt");
+    });
+</script>
 <h2>FindTagPeople</h2>
 
-<table>
+<table class="grid" cellpadding="4">
     <tr>
         <th> PeopleId </th>
         <th> Found </th>
@@ -20,7 +25,7 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td> @item.PeopleId </td>
+        <td> <a href="/Person/Index/@item.PeopleId" target="person">@item.PeopleId</a> </td>
         <td> @item.Found </td>
         <td> @item.First </td>
         <td> @item.Last </td>

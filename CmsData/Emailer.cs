@@ -27,7 +27,7 @@ namespace CmsData
         {
             get
             {
-#if DEBUG
+#if DEBUG2
                 return false;
 #else
                 return Setting("UseMassEmailer", "false").ToBool();
@@ -227,7 +227,12 @@ namespace CmsData
             var SysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
             var emailqueue = EmailQueues.Single(eq => eq.Id == id);
             var emailqueueto = EmailQueueTos.Single(eq => eq.Id == id && eq.PeopleId == pid);
-            var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
+            var fromname = emailqueue.FromName;
+            if (!fromname.HasValue())
+                fromname = emailqueue.FromAddr;
+            else
+                fromname = emailqueue.FromName.Replace("\"", "");
+            var From = Util.FirstAddress(emailqueue.FromAddr, fromname);
 
             try
             {
@@ -240,22 +245,33 @@ namespace CmsData
                 var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
                 text = text.Replace("{unsubscribe}", link);
                 text = text.Replace("{Unsubscribe}", link);
-                text = text.Replace("{toemail}", aa[0].Address);
-                text = text.Replace("%7Btoemail%7D", aa[0].Address);
+                if (aa.Count > 0)
+                {
+                    text = text.Replace("{toemail}", aa[0].Address);
+                    text = text.Replace("%7Btoemail%7D", aa[0].Address);
+                }
                 text = text.Replace("{fromemail}", From.Address);
                 text = text.Replace("%7Bfromemail%7D", From.Address);
 
                 if (Setting("sendemail", "true") != "false")
                 {
-                    Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, pid, Record: true);
+                    if (aa.Count > 0)
+                        Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, pid, Record: true);
+                    else
+                        Util.SendMsg(SysFromEmail, CmsHost, From, 
+                            "(no email address) " + emailqueue.Subject, 
+                            "<p>No email address for {0}({1})</p>\n{2}".Fmt(p.Name, p.PeopleId, text), 
+                            Util.ToMailAddressList(From), 
+                            emailqueue.Id, pid, Record: true);
                     emailqueueto.Sent = DateTime.Now;
+                    emailqueue.Sent = DateTime.Now;
                     SubmitChanges();
                 }
             }
             catch (Exception ex)
             {
                 Util.SendMsg(SysFromEmail, CmsHost, From,
-                    "sent emails - error", ex.Message,
+                    "sent emails - error", ex.ToString(),
                     Util.ToMailAddressList(From),
                     emailqueue.Id, null, Record: true);
                 throw ex;
@@ -281,7 +297,7 @@ namespace CmsData
 
             if (emailqueueto.Guid.HasValue)
             {
-                var turl = Util.URLCombine(CmsHost, "/Track/Index/" + emailqueueto.Guid.Value.ToCode());
+                var turl = Util.URLCombine(CmsHost, "/Track/Key/" + emailqueueto.Guid.Value.GuidToQuerystring());
                 text = text.Replace("{track}", "<img src=\"{0}\" />".Fmt(turl));
             }
 
@@ -489,8 +505,11 @@ namespace CmsData
                     var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
                     text = text.Replace("{unsubscribe}", link);
                     text = text.Replace("{Unsubscribe}", link);
-                    text = text.Replace("{toemail}", aa[0].Address);
-                    text = text.Replace("%7Btoemail%7D", aa[0].Address);
+                    if (aa.Count > 0)
+                    {
+                        text = text.Replace("{toemail}", aa[0].Address);
+                        text = text.Replace("%7Btoemail%7D", aa[0].Address);
+                    }
                     text = text.Replace("{fromemail}", From.Address);
                     text = text.Replace("%7Bfromemail%7D", From.Address);
 

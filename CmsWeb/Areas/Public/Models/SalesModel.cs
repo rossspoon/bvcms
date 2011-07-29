@@ -7,6 +7,7 @@ using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
 using System.Net.Mail;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -201,7 +202,7 @@ namespace CmsWeb.Models
             p.EmailAddress = email.Trim();
             p.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
             if (p.Age >= 18)
-                p.PositionInFamilyId = (int)Family.PositionInFamily.PrimaryAdult;
+                p.PositionInFamilyId = PositionInFamily.PrimaryAdult;
             switch (homecell)
             {
                 case "h":

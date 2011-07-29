@@ -19,6 +19,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Diagnostics;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -112,7 +113,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                             where om.OrgMemMemTags.Any(mt => Groups.Contains(mt.MemberTagId)) || (Groups[0] == 0)
                             where !Groups.Contains(-1) || (Groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
                             where (om.Pending ?? false) == false
-                            where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                            where om.MemberTypeId != MemberTypeCode.InActive
                             where om.EnrollmentDate <= Util.Now
                             orderby om.Person.LastName, om.Person.FamilyId, om.Person.Name2
                             let p = om.Person
@@ -154,7 +155,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                             orderby p.LastName, p.FamilyId, p.Name2
                             select new PersonVisitorInfo
                             {
-                                VisitorType = p.MemberStatusId == (int)Person.MemberStatusCode.Member ? "VM" : "VS",
+                                VisitorType = p.MemberStatusId == (int)MemberStatusCode.Member ? "VM" : "VS",
                                 PeopleId = p.PeopleId,
                                 Name2 = ch ? p.AltName : p.Name2,
                                 BirthDate = Util.FormatBirthday(
@@ -177,9 +178,9 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         private static int[] VisitAttendTypes = new int[] 
         { 
-            (int)Attend.AttendTypeCode.VisitingMember,
-            (int)Attend.AttendTypeCode.RecentVisitor, 
-            (int)Attend.AttendTypeCode.NewVisitor 
+            AttendTypeCode.VisitingMember,
+            AttendTypeCode.RecentVisitor, 
+            AttendTypeCode.NewVisitor 
         };
 
         public class MemberInfo
@@ -265,7 +266,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
                     orderby divorg.Division.Name, o.OrganizationName
@@ -289,7 +290,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-                    where o.OrganizationStatusId == (int)CmsData.Organization.OrgStatusCode.Active
+                    where o.OrganizationStatusId == OrgStatusCode.Active
                     where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
                     let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
                     select new OrgInfo

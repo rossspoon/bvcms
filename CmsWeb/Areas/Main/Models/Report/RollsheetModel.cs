@@ -12,6 +12,7 @@ using CmsData;
 using System.ComponentModel;
 using System.Collections;
 using System.Diagnostics;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -64,7 +65,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where om.OrgMemMemTags.Any(mt => groups.Contains(mt.MemberTagId)) || (groups[0] == 0)
                     where !groups.Contains(-1) || (groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
                     where (om.Pending ?? false) == false
-                    where om.MemberTypeId != (int)OrganizationMember.MemberTypeCode.InActive
+                    where om.MemberTypeId != MemberTypeCode.InActive
                     where om.EnrollmentDate <= Util.Now
                     orderby om.Person.LastName, om.Person.FamilyId, om.Person.Name2
                     let p = om.Person
@@ -101,22 +102,21 @@ namespace CmsWeb.Areas.Main.Models.Report
             return q;
         }
         // This gets OrgMembers as of the date of the meeting and 7 days back.
-        public static IEnumerable<PersonMemberInfo> FetchOrgMembers(int meetingid)
+        private static IEnumerable<PersonMemberInfo> FetchOrgMembers(int OrganizationId, DateTime MeetingDate)
         {
             var tagownerid = Util2.CurrentTagOwnerId;
-            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == meetingid);
-            var startdt = m.MeetingDate.Value.AddDays(-7);
-            var enddt = m.MeetingDate.Value.AddDays(1);
+            var startdt = MeetingDate.AddDays(-7);
+            var enddt = MeetingDate.AddDays(1);
             var q = from p in DbUtil.Db.People
                     let etlist = p.EnrollmentTransactions.Where(ee =>
                         ee.TransactionTypeId <= 3 // things that start a change
                         && ee.TransactionStatus == false
-                        && ee.TransactionDate <= enddt // transaction starts <= looked for end
+                        //&& ee.TransactionDate <= enddt // transaction starts <= looked for end
                         && (ee.Pending ?? false) == false
                         && (ee.NextTranChangeDate ?? DateTime.Now) >= startdt // transaction ends >= looked for start
-                        && ee.OrganizationId == m.OrganizationId)
-                    let et = etlist.OrderByDescending(et => et.TransactionDate).FirstOrDefault()
-                    where et != null
+                        && ee.OrganizationId == OrganizationId)
+                    let enrolled = etlist.OrderByDescending(laet => laet.TransactionDate).FirstOrDefault()
+                    where enrolled != null
                     orderby p.LastName, p.FamilyId, p.PreferredName
                     select new PersonMemberInfo
                     {
@@ -139,19 +139,19 @@ namespace CmsWeb.Areas.Main.Models.Report
                         BFTeacher = p.BFClass.LeaderName,
                         BFTeacherId = p.BFClass.LeaderId,
                         Age = p.Age.ToString(),
-                        MemberTypeCode = et.MemberType.Code,
-                        MemberType = et.MemberType.Description,
-                        MemberTypeId = et.MemberTypeId,
-                        Joined = et.EnrollmentDate,
+                        MemberTypeCode = enrolled.MemberType.Code,
+                        MemberType = enrolled.MemberType.Description,
+                        MemberTypeId = enrolled.MemberTypeId,
+                        Joined = enrolled.EnrollmentDate ?? enrolled.TransactionDate,
                     };
             return q;
         }
 
         private static int[] VisitAttendTypes = new int[] 
         { 
-            (int)Attend.AttendTypeCode.VisitingMember,
-            (int)Attend.AttendTypeCode.RecentVisitor, 
-            (int)Attend.AttendTypeCode.NewVisitor 
+            AttendTypeCode.VisitingMember,
+            AttendTypeCode.RecentVisitor, 
+            AttendTypeCode.NewVisitor 
         };
 
         public static IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate)
@@ -173,7 +173,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     orderby p.LastName, p.FamilyId, p.Name2
                     select new PersonVisitorInfo
                     {
-                        VisitorType = p.MemberStatusId == (int)Person.MemberStatusCode.Member ? "VM" : "VS",
+                        VisitorType = p.MemberStatusId == MemberStatusCode.Member ? "VM" : "VS",
                         PeopleId = p.PeopleId,
                         Name = p.Name,
                         Name2 = p.Name2,
@@ -197,7 +197,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == Util2.CurrentTagOwnerId),
                         NameParent1 = p.Family.HohName,
                         NameParent2 = p.Family.People.Where(x =>
-                            x.FamilyPosition.Id == (int)Family.PositionInFamily.PrimaryAdult
+                            x.FamilyPosition.Id == PositionInFamily.PrimaryAdult
                             && x.PeopleId != p.Family.HeadOfHouseholdId).FirstOrDefault().Name,
                     };
             return q;
@@ -209,9 +209,14 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where a.EffAttendFlag == null || a.EffAttendFlag == true
                     select a;
 
-            var q1 = from p in FetchOrgMembers(MeetingId.Value)
+            var qm = FetchOrgMembers(OrgId, MeetingDate);
+
+            var q1 = from p in qm
                      join pa in q on p.PeopleId equals pa.PeopleId into j
                      from pa in j.DefaultIfEmpty()
+                     where MeetingDate > p.Joined // they were either a member at the time
+                            // or they attended as a member (workaround for bad transaction history)
+                            || (pa != null && !VisitAttendTypes.Contains(pa.AttendanceTypeId.Value))
                      select new AttendInfo
                      {
                          PeopleId = p.PeopleId,
