@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CmsWeb.Areas.Main.Models;
 using UtilityExtensions;
 using CmsData;
+using Elmah;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -39,29 +40,46 @@ namespace CmsWeb.Areas.Main.Controllers
 
             DbUtil.LogActivity("Emailing people");
 
-            if(m.EmailFroms().Count(ef => ef.Value == m.FromAddress) == 0)
+            if (m.EmailFroms().Count(ef => ef.Value == m.FromAddress) == 0)
                 return Json(new { id = 0, content = "No email address to send from" });
             m.FromName = m.EmailFroms().First(ef => ef.Value == m.FromAddress).Text;
 
-            var emailqueue = m.CreateQueue();
+            int id = 0;
+            try
+            {
+                id = m.CreateQueue();
+                if (m.Schedule.HasValue)
+                    return Json(new { id = 0, content = "<h2>Emails Queued</h2>" });
+            }
+            catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+                return Json(new { id = 0, content = "<h2>Error</h2><p>{0}</p>".Fmt(ex.Message) });
+            }
 
-            var Db = DbUtil.Db;
-            if (emailqueue.SendWhen.HasValue)
-                return Json(new { id = 0, content = "<h2>Emails Queued</h2>" });
-            if (Db.UseMassEmailer)
-                Db.QueueEmail(emailqueue.Id, DbUtil.Db.CmsHost, Util.Host);
-            else
+            string host = Util.Host;
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    Db.SendPeopleEmail(DbUtil.Db.CmsHost, emailqueue);
+                    var Db = new CMSDataContext(Util.GetConnectionString(host));
+                    Db.Host = host;
+                    Db.SendPeopleEmail(id);
                 }
                 catch (Exception ex)
                 {
-                    return Json(new { id = 0, content = "<h2>Error Email Sent</h2>" + ex.Message });
+                    var ex2 = new Exception("Emailing error for queueid " + id, ex);
+                    ErrorLog errorLog = ErrorLog.GetDefault(null);
+                    errorLog.Log(new Error(ex2));
+
+                    var Db = new CMSDataContext(Util.GetConnectionString(host));
+                    Db.Host = host;
+                    var equeue = Db.EmailQueues.Single(ee => ee.Id == id);
+                    equeue.Error = ex.Message.Truncate(200);
+                    Db.SubmitChanges();
                 }
-            }
-            return Json(new { id = emailqueue.Id });
+            });
+            return Json(new { id = id });
         }
         [HttpPost]
         [ValidateInput(false)]
@@ -69,8 +87,8 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (Util.SessionTimedOut())
                 return Content("timeout");
-            if(m.EmailFroms().Count(ef => ef.Value == m.FromAddress) == 0)
-                return Content("No email address to send from" );
+            if (m.EmailFroms().Count(ef => ef.Value == m.FromAddress) == 0)
+                return Content("No email address to send from");
             m.FromName = m.EmailFroms().First(ef => ef.Value == m.FromAddress).Text;
             var From = Util.FirstAddress(m.FromAddress, m.FromName);
             var p = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
@@ -84,17 +102,6 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return Content("<h2>Test Email Sent</h2>");
         }
-        //private bool SessionTimedOut()
-        //{
-        //    if (Session != null)
-        //        if (Session.IsNewSession)
-        //        {
-        //            string sessionCookie = Request.Headers["Cookie"];
-        //            if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
-        //                return true;
-        //        }
-        //    return false;
-        //}
         [HttpPost]
         public ActionResult TaskProgress(int id)
         {
@@ -127,13 +134,16 @@ namespace CmsWeb.Areas.Main.Controllers
                     var max = q.Max(et => et.Sent);
                     max = max ?? DateTime.Now;
 
-                    if (emailqueue.Sent == null)
+                    if (emailqueue.Sent == null && !emailqueue.Error.HasValue())
                         ViewData["completed"] = "running";
                     else
                     {
                         ViewData["completed"] = max;
-                        emailqueue.Sent.Value.ToString("M/d/yy h:mm tt");
-                        ViewData["finished"] = true;
+                        //emailqueue.Sent.Value.ToString("M/d/yy h:mm tt");
+                        if (emailqueue.Error.HasValue())
+                            ViewData["Error"] = emailqueue.Error;
+                        else
+                            ViewData["finished"] = true;
                     }
                     ViewData["elapsed"] = max.Value.Subtract(emailqueue.Started.Value).ToString(@"h\:mm\:ss");
                 }
@@ -171,7 +181,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     select e;
 
             foreach (var emailqueue in q)
-                DbUtil.Db.SendPeopleEmail(DbUtil.Db.CmsHost, emailqueue);
+                DbUtil.Db.SendPeopleEmail(emailqueue.Id);
             return Content("done");
         }
     }

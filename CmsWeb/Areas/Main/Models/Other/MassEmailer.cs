@@ -56,10 +56,10 @@ namespace CmsWeb.Areas.Main.Models
             Count = q.Count();
         }
 
-        public EmailQueue CreateQueue()
+        public int CreateQueue()
         {
             var From = new MailAddress(FromAddress, FromName);
-            return DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , false); 
+            return DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , false).Id; 
         }
 
         public IEnumerable<SelectListItem> EmailFroms()

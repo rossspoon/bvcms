@@ -24,7 +24,7 @@
             else {
                 var intervalid = window.setInterval(function () {
                     $.post('/Email/TaskProgress/' + taskid, null, function (ret) {
-                        if (ret.substr(0, 20).toLowerCase().indexOf('<!--completed-->') >= 0)
+                        if (ret.substr(0, 20).indexOf('<!--completed-->') >= 0)
                             window.clearInterval(intervalid);
                         d.html(ret);
                     });

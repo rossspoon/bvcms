@@ -13,6 +13,7 @@ using CmsWeb.Models;
 using CMSPresenter;
 using System.Text.RegularExpressions;
 using System.Data.SqlTypes;
+using Alias = System.Threading.Tasks;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -952,7 +953,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                 }
             if (!hasvalidcolumn)
                 return Content("no valid column");
-                    
+
 
             var list = new List<FindInfo>();
             foreach (var a in csv.Skip(1))
@@ -1004,6 +1005,64 @@ namespace CmsWeb.Areas.Manage.Controllers
                 Person.Tag(DbUtil.Db, pid, name, DbUtil.Db.CurrentUser.PeopleId, (int)DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return Redirect("/Tags?tag=" + name);
+        }
+        [HttpGet]
+        public ActionResult Test()
+        {
+            ViewData["guid"] = Guid.NewGuid().ToString();
+            return View();
+        }
+        class LongRunningStatus
+        {
+            private static object lockobject = new object();
+            private static Dictionary<string, int> Status { get; set; }
+            public LongRunningStatus()
+            {
+                if (Status == null)
+                    Status = new Dictionary<string, int>();
+            }
+            public void SetStatus(string id, int i)
+            {
+                lock (lockobject)
+                    Status[id] = i;
+            }
+            public int GetStatus(string id)
+            {
+                lock (lockobject)
+                    if (Status.Keys.Count(i => i == id) == 1)
+                        return Status[id];
+                return 0;
+            }
+            public void RemoveStatus(string id)
+            {
+                lock (lockobject)
+                    Status.Remove(id);
+            }
+        }
+        [HttpPost]
+        public ActionResult TestStart(string id)
+        {
+            var i = 100;
+            string host = Util.Host;
+            Alias.Task.Factory.StartNew(() =>
+            {
+                var e = new LongRunningStatus();
+                for (; i > 0; i--)
+                {
+                    var Db = new CMSDataContext(Util.GetConnectionString(host));
+                    e.SetStatus(id, i);
+                    Thread.Sleep(150);
+                    Db.Dispose();
+                }
+                e.RemoveStatus(id);
+            });
+            return Content(i.ToString());
+        }
+        [HttpPost]
+        public ActionResult TestProgress(string id)
+        {
+            var e = new LongRunningStatus();
+            return Content(e.GetStatus(id).ToString());
         }
     }
 }

@@ -148,6 +148,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\packages\Glimpse.0.84\lib\net40\Glimpse.Core.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
     <Reference Include="LumenWorks.Framework.IO, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -673,13 +676,6 @@
     <Compile Include="Image.aspx.designer.cs">
       <DependentUpon>Image.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Meeting.aspx.cs">
-      <DependentUpon>Meeting.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Meeting.aspx.designer.cs">
-      <DependentUpon>Meeting.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Meetings.aspx.cs">
       <DependentUpon>Meetings.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -796,6 +792,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml" />
     <Content Include="Binaries\AWSSDK.dll" />
     <Content Include="Binaries\NPOI\Ionic.Zip.dll" />
@@ -1442,6 +1439,7 @@
     <Content Include="Areas\Main\Views\Organization\ScheduleList.cshtml" />
     <Content Include="Areas\Public\Views\SGMap\popup.cshtml" />
     <Content Include="Areas\Public\Views\SGMap\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\Test.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
@@ -1493,7 +1491,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ForceError.aspx" />
-    <Content Include="Meeting.aspx" />
     <Content Include="Meetings.aspx" />
     <Content Include="MemberMap.aspx" />
     <Content Include="NoRemoteAccess.htm" />

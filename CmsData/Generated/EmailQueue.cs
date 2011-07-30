@@ -43,6 +43,8 @@ namespace CmsData
 		
 		private bool? _PublicX;
 		
+		private string _Error;
+		
    		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
@@ -96,6 +98,9 @@ namespace CmsData
 		
 		partial void OnPublicXChanging(bool? value);
 		partial void OnPublicXChanged();
+		
+		partial void OnErrorChanging(string value);
+		partial void OnErrorChanged();
 		
     #endregion
 		public EmailQueue()
@@ -396,6 +401,28 @@ namespace CmsData
 					this._PublicX = value;
 					this.SendPropertyChanged("PublicX");
 					this.OnPublicXChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Error", UpdateCheck=UpdateCheck.Never, Storage="_Error", DbType="varchar(200)")]
+		public string Error
+		{
+			get { return this._Error; }
+
+			set
+			{
+				if (this._Error != value)
+				{
+				
+                    this.OnErrorChanging(value);
+					this.SendPropertyChanging();
+					this._Error = value;
+					this.SendPropertyChanged("Error");
+					this.OnErrorChanged();
 				}
 
 			}

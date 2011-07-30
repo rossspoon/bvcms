@@ -55,10 +55,10 @@ namespace UtilityExtensions
             if (msg.To.Count == 0)
             {
                 msg.To.Add(msg.From);
-                msg.Subject += "-- bad addr:" + addrs;
+                msg.Subject += "-- bad addr for " + pid;
             }
-            var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
+            var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
             var text = regex.Replace(Message, string.Empty);
             var bytes1 = Encoding.UTF8.GetBytes(text);
             var htmlStream1 = new MemoryStream(bytes1);

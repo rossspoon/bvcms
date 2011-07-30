@@ -27,7 +27,7 @@ namespace CmsData
         {
             get
             {
-#if DEBUG2
+#if DEBUG
                 return false;
 #else
                 return Setting("UseMassEmailer", "false").ToBool();
@@ -469,8 +469,9 @@ namespace CmsData
             var r = string.Compare(exist.Address, add.Address, true);
             return r == 0;
         }
-        public void SendPeopleEmail(string CmsHost, EmailQueue emailqueue)
+        public void SendPeopleEmail(int queueid)
         {
+            var emailqueue = EmailQueues.Single(ee => ee.Id == queueid);
             var sysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
             var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
             if (!emailqueue.Subject.HasValue() || !emailqueue.Body.HasValue())
@@ -486,7 +487,6 @@ namespace CmsData
             SubmitChanges();
 
             var sb = new StringBuilder("<pre>\r\n");
-            var i = 0;
 
             var q = from To in EmailQueueTos
                     where To.Id == emailqueue.Id
