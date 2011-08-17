@@ -110,135 +110,135 @@ namespace CmsWeb.Models.OrganizationPage
         }
         public void ValidateSettings(ModelStateDictionary ModelState)
         {
-            const string STR_NotFormedCorrectly = "not formed correctly";
+            //const string STR_NotFormedCorrectly = "not formed correctly";
 
-            if (org.ShirtSizes.HasValue())
-                try
-                {
-                    var q = from s in (org.ShirtSizes).Split(',')
-                            let a = s.Split('=')
-                            select new { Text = a[1].Trim(), Value = a[0].Trim() };
-                    var list = q.ToList();
+            //if (org.ShirtSizes.HasValue())
+            //    try
+            //    {
+            //        var q = from s in (org.ShirtSizes).Split(',')
+            //                let a = s.Split('=')
+            //                select new { Text = a[1].Trim(), Value = a[0].Trim() };
+            //        var list = q.ToList();
 
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("shirtsizes", STR_NotFormedCorrectly);
-                }
+            //    }
+            //    catch (Exception)
+            //    {
+            //        ModelState.AddModelError("shirtsizes", STR_NotFormedCorrectly);
+            //    }
 
-            if (org.AskOptions.HasValue())
-                try
-                {
-                    var q = from s in (org.AskOptions).Split(',')
-                            let a = s.Split('=')
-                            let amt = a.Length > 1 ? " ({0:C})".Fmt(decimal.Parse(a[1])) : ""
-                            select new { Text = a[0].Trim() + amt, Value = a[0].Trim() };
-                    var list = q.ToList();
+            //if (org.AskOptions.HasValue())
+            //    try
+            //    {
+            //        var q = from s in (org.AskOptions).Split(',')
+            //                let a = s.Split('=')
+            //                let amt = a.Length > 1 ? " ({0:C})".Fmt(decimal.Parse(a[1])) : ""
+            //                select new { Text = a[0].Trim() + amt, Value = a[0].Trim() };
+            //        var list = q.ToList();
 
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("askoptions", STR_NotFormedCorrectly);
-                }
+            //    }
+            //    catch (Exception)
+            //    {
+            //        ModelState.AddModelError("askoptions", STR_NotFormedCorrectly);
+            //    }
 
-            if (org.ExtraOptions.HasValue())
-                try
-                {
-                    var q = from s in org.ExtraOptions.Split(',')
-                            where s.HasValue()
-                            let a = s.Split('=')
-                            select new { Text = a[1].Trim(), Value = a[0].ToInt().ToString() };
-                    var list = q.ToList();
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("extraoptions", STR_NotFormedCorrectly);
-                }
+            //if (org.ExtraOptions.HasValue())
+            //    try
+            //    {
+            //        var q = from s in org.ExtraOptions.Split(',')
+            //                where s.HasValue()
+            //                let a = s.Split('=')
+            //                select new { Text = a[1].Trim(), Value = a[0].ToInt().ToString() };
+            //        var list = q.ToList();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        ModelState.AddModelError("extraoptions", STR_NotFormedCorrectly);
+            //    }
 
-            if (org.GradeOptions.HasValue())
-                try
-                {
-                    var q = from s in (org.GradeOptions).Split(',')
-                            where s.HasValue()
-                            let a = s.Split('=')
-                            select new { Text = a[1].Trim(), Value = int.Parse(a[0]) };
-                    var list = q.ToList();
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("gradeoptions", STR_NotFormedCorrectly);
-                }
+            //if (org.GradeOptions.HasValue())
+            //    try
+            //    {
+            //        var q = from s in (org.GradeOptions).Split(',')
+            //                where s.HasValue()
+            //                let a = s.Split('=')
+            //                select new { Text = a[1].Trim(), Value = int.Parse(a[0]) };
+            //        var list = q.ToList();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        ModelState.AddModelError("gradeoptions", STR_NotFormedCorrectly);
+            //    }
 
-            if (org.AgeFee.HasValue())
-                try
-                {
-                    var q = from o in org.AgeFee.Split(',')
-                            let b = o.Split('=')
-                            let a = b[0].Split('-')
-                            select new { startage = int.Parse(a[0]), endage = int.Parse(a[1]), amt = decimal.Parse(b[1]) };
-                    var list = q.ToList();
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("agefee", STR_NotFormedCorrectly);
-                }
+            //if (org.AgeFee.HasValue())
+            //    try
+            //    {
+            //        var q = from o in org.AgeFee.Split(',')
+            //                let b = o.Split('=')
+            //                let a = b[0].Split('-')
+            //                select new { startage = int.Parse(a[0]), endage = int.Parse(a[1]), amt = decimal.Parse(b[1]) };
+            //        var list = q.ToList();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        ModelState.AddModelError("agefee", STR_NotFormedCorrectly);
+            //    }
 
-            if (org.AgeGroups.HasValue())
-                try
-                {
-                    var q = from o in (org.AgeGroups ?? string.Empty).Split(',')
-                            where o.HasValue()
-                            let b = o.Split('=')
-                            let a = b[0].Split('-')
-                            select new
-                            {
-                                StartAge = a[0].ToInt(),
-                                EndAge = a[1].ToInt(),
-                                Name = b[1]
-                            };
-                    var list = q.ToList();
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("agegroups", STR_NotFormedCorrectly);
-                }
+            //if (org.AgeGroups.HasValue())
+            //    try
+            //    {
+            //        var q = from o in (org.AgeGroups ?? string.Empty).Split(',')
+            //                where o.HasValue()
+            //                let b = o.Split('=')
+            //                let a = b[0].Split('-')
+            //                select new
+            //                {
+            //                    StartAge = a[0].ToInt(),
+            //                    EndAge = a[1].ToInt(),
+            //                    Name = b[1]
+            //                };
+            //        var list = q.ToList();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        ModelState.AddModelError("agegroups", STR_NotFormedCorrectly);
+            //    }
 
-            if (org.YesNoQuestions.HasValue())
-                try
-                {
-                    var q = from s in (org.YesNoQuestions ?? string.Empty).Split(',')
-                            let a = s.Split('=')
-                            where s.HasValue()
-                            select new { name = a[0].Trim(), desc = a[1] };
-                    var list = q.ToList();
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("yesnoquestions", STR_NotFormedCorrectly);
-                }
-            if (org.NotifyIds.HasValue())
-            {
-                var a = org.NotifyIds.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
-                var q = from p in DbUtil.Db.People
-                        where a.Contains(p.PeopleId)
-                        select p.PeopleId;
-                var g = from i in a
-                        join p in q on i equals p into j
-                        from pid in j.DefaultIfEmpty()
-                        where pid == 0
-                        select i;
-                if (g.Count() > 0)
-                    ModelState.AddModelError("NotifyIds", "Id: " + g.First() + " not found");
-            }
-            else if (org.RegistrationTypeId > RegistrationEnum.None)
-                ModelState.AddModelError("NotifyIds", "Need a PeopleId in the NotifyIds field");
+            //if (org.YesNoQuestions.HasValue())
+            //    try
+            //    {
+            //        var q = from s in (org.YesNoQuestions ?? string.Empty).Split(',')
+            //                let a = s.Split('=')
+            //                where s.HasValue()
+            //                select new { name = a[0].Trim(), desc = a[1] };
+            //        var list = q.ToList();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        ModelState.AddModelError("yesnoquestions", STR_NotFormedCorrectly);
+            //    }
+            //if (org.NotifyIds.HasValue())
+            //{
+            //    var a = org.NotifyIds.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
+            //    var q = from p in DbUtil.Db.People
+            //            where a.Contains(p.PeopleId)
+            //            select p.PeopleId;
+            //    var g = from i in a
+            //            join p in q on i equals p into j
+            //            from pid in j.DefaultIfEmpty()
+            //            where pid == 0
+            //            select i;
+            //    if (g.Count() > 0)
+            //        ModelState.AddModelError("NotifyIds", "Id: " + g.First() + " not found");
+            //}
+            //else if (org.RegistrationTypeId > RegistrationEnum.None)
+            //    ModelState.AddModelError("NotifyIds", "Need a PeopleId in the NotifyIds field");
 
-            if (org.DonationFundId.HasValue)
-            {
-                var f = DbUtil.Db.ContributionFunds.SingleOrDefault(ff => ff.FundId == org.DonationFundId);
-                if (f == null)
-                    ModelState.AddModelError("DonationFundId", "fund not found");
-            }
+            //if (org.DonationFundId.HasValue)
+            //{
+            //    var f = DbUtil.Db.ContributionFunds.SingleOrDefault(ff => ff.FundId == org.DonationFundId);
+            //    if (f == null)
+            //        ModelState.AddModelError("DonationFundId", "fund not found");
+            //}
 
         }
         public IEnumerable<SelectListItem> Divisions()

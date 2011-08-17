@@ -26,7 +26,7 @@ namespace CmsWeb.Models
         public decimal Amount()
         {
             var amt = List.Sum(p => p.AmountToPay());
-            var max = List.Max(p => p.org != null ? p.org.MaximumFee ?? 0 : 0);
+            var max = List.Max(p => p.org != null ? p.setting.MaximumFee ?? 0 : 0);
             if (max == 0)
                 return amt;
             var totalother = List.Sum(p => p.TotalOther());
@@ -47,7 +47,7 @@ namespace CmsWeb.Models
                 var p = List[0];
                 if (user != null)
                     return user.Name;
-                if (p.org != null && p.org.AskParents == true)
+                if (p.org != null && p.setting.AskParents == true)
                     return p.fname.HasValue() ? p.fname : p.mname;
                 return p.first + " " + p.last;
             }

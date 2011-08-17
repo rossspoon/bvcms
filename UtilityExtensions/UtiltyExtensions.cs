@@ -841,7 +841,7 @@ namespace UtilityExtensions
                 {
                     var a = Email.SplitStr(",;");
                     var q = from ad in a
-                            select Name + " <" + ad.Trim() + ">";
+                            select Name.Replace(",", "").Replace(";", "") + " <" + ad.Trim() + ">";
                     return string.Join(";", q);
                 }
             return String.Empty;
@@ -1044,6 +1044,10 @@ namespace UtilityExtensions
         {
             var Request = HttpContext.Current.Request;
             return Request.Url.Scheme + "://" + Request.Url.Authority + path;
+        }
+        public static string ToSuitableId(this string s)
+        {
+            return s.Replace('[', '_').Replace(']', '_');
         }
         public static string PickFirst(params string[] args)
         {

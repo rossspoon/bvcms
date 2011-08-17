@@ -15,6 +15,8 @@
 <div>Count: @Model.Count()</div>
  @Html.Partial("Pager2", Model) 
     </td></tr>
+@if ((Model.OnlineReg ?? -1) <= 0)
+{
     <tr>
         <th><a href="#" class="sortable">ID</a></th>
         <th align="left"><a href="#" class="sortable">Name</a></th>
@@ -27,10 +29,26 @@
         <th><a href="#" class="sortable">TargetDiv</a></th>
         <th><a href="#" class="sortable">MainDiv</a></th>
     </tr>
+}
+else
+{
+    <tr>
+        <th><a href="#" class="sortable">ID</a></th>
+        <th><a href="#" class="sortable">Program/Division</a></th>
+        <th><a href="#" class="sortable">Name</a></th>
+        <th><a href="#" class="sortable">Filled</a></th>
+        <th><a href="#" class="sortable">Closed</a></th>
+        <th><a href="#" class="sortable">Members</a></th>
+        <th><a href="#" class="sortable">Type</a></th>
+        <th><a href="#" class="sortable">FirstDate</a></th>
+    </tr>
+}
 </thead>
 <tbody>
 @foreach (var o in Model.OrganizationList())
 { 
+    if ((Model.OnlineReg ?? -1) <= 0)
+    {
     <tr>
         <td class="tip" title="@o.ToolTip"><img src="/content/images/group.png" /></td>
         <td><a href="/Organization/Index/@o.Id">@o.OrganizationName</a></td>
@@ -43,6 +61,20 @@
         <td><a id='tt-@o.Id' href="/OrgSearch/ToggleTag/@o.Id" class="taguntag" title="Add to/Remove from Target Division">@o.Tag</a></td>
         <td><a id='mm-@o.Id' href="/OrgSearch/MainDiv/@o.Id" class="maindiv" title="Make Target Main Division">@(o.ChangeMain == true ? "Make Main" : "")</a></td>
     </tr>
+    }
+    else
+    {
+    <tr>
+        <td class="tip" title="@o.ToolTip"><img src="/content/images/group.png" /></td>
+        <td>@o.ProgramName:@o.DivisionName</td>
+        <td><a href="/Organization/Index/@o.Id" target="reg">@o.OrganizationName</a></td>
+        <td>@o.ClassFilled</td>
+        <td>@o.RegClosed</td>
+        <td align="right">@o.MemberCount</td>
+        <td>@o.RegType</td>
+        <td>@o.FirstMeetingDate</td>
+    </tr>
+    }
 }
 </tbody>
     <tr><td colspan="10">

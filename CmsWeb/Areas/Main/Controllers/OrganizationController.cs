@@ -221,11 +221,11 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult NewSchedule()
         {
             var s = new ScheduleInfo(
-                new OrgSchedule 
-                { 
-                    SchedDay = 0, 
-                    SchedTime = DateTime.Parse("8:00 AM"), 
-                    AttendCreditId = 1 
+                new OrgSchedule
+                {
+                    SchedDay = 0,
+                    SchedTime = DateTime.Parse("8:00 AM"),
+                    AttendCreditId = 1
                 });
             return View("ScheduleEditor", s);
         }

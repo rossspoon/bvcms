@@ -414,11 +414,8 @@ namespace CmsWeb.Models
                 var pid = q.SingleOrDefault();
                 if (pid != null)
                     bd.Contribution.PeopleId = pid;
-                else
-                {
-                    bd.Contribution.BankAccount = eac;
-                    bd.Contribution.ContributionDesc = ck;
-                }
+                bd.Contribution.BankAccount = eac;
+                bd.Contribution.ContributionDesc = ck;
 
                 m = m.NextMatch();
             }
@@ -623,8 +620,7 @@ namespace CmsWeb.Models
                 var pid = q.SingleOrDefault();
                 if (pid != null)
                     bd.Contribution.PeopleId = pid;
-                else
-                    bd.Contribution.BankAccount = eac;
+                bd.Contribution.BankAccount = eac;
                 bh.BundleDetails.Add(bd);
             }
             FinishBundle(bh);

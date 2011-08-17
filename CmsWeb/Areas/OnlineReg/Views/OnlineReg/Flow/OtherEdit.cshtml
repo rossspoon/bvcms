@@ -10,7 +10,7 @@
         </tr>
     }
 }
-@if (Model.org.AskShirtSize == true)
+@if (Model.setting.AskShirtSize == true)
 {
     <tr>
         <td><label for="shirtsize">ShirtSize</label></td>
@@ -18,23 +18,23 @@
             <div>@Html.ValidationMessage(Model.inputname("shirtsize"))</div></td>
     </tr>
 } 
-@if (Model.org.AskRequest == true)
+@if (Model.setting.AskRequest == true)
 { 
     <tr>
-        <td><label for="request">@Util.PickFirst(Model.org.RequestLabel, "Request")</label></td>
+        <td><label for="request">@Model.setting.RequestLabel</label></td>
         <td>@Html.TextBox(Model.inputname("request"), Model.request, new { maxlength = "100", @class="wide" })
             <div>@Html.ValidationMessage(Model.inputname("request"))</div></td>
     </tr>
 } 
-@if (Model.org.AskGrade == true)
+@if (Model.setting.AskGrade == true)
 { 
     <tr>
-        <td><label for="grade">@Util.PickFirst(Model.org.GradeLabel, "Grade")</label></td>
+        <td><label for="grade">@Model.setting.GradeLabel</label></td>
         <td>@Html.TextBox(Model.inputname("grade"), Model.grade, new { @class = "short" })
             <div>@Html.ValidationMessage(Model.inputname("grade"))</div></td>
     </tr>
 } 
-@if (Model.org.AskEmContact == true)
+@if (Model.setting.AskEmContact == true)
 { 
     <tr>
         <td><label for="emcontact">Emergency Friend</label></td>
@@ -47,7 +47,7 @@
             <div>@Html.ValidationMessage(Model.inputname("emphone"))</div></td>
     </tr>
 } 
-@if (Model.org.AskInsurance == true)
+@if (Model.setting.AskInsurance == true)
 { 
     <tr>
         <td><label for="insurance">Health Insurance Carrier</label></td>
@@ -60,7 +60,7 @@
             <div>@Html.ValidationMessage(Model.inputname("policy"))</div></td>
     </tr>
 } 
-@if (Model.org.AskDoctor == true)
+@if (Model.setting.AskDoctor == true)
 { 
     <tr>
         <td><label for="doctor">Family Physician Name</label></td>
@@ -73,7 +73,7 @@
             <div>@Html.ValidationMessage(Model.inputname("docphone"))</div></td>
     </tr>
  } 
-@if (Model.org.AskAllergies == true)
+@if (Model.setting.AskAllergies == true)
 { 
     <tr>
         <td><label for="medical">Allergies or<br />
@@ -82,7 +82,7 @@
             <div class="red"> Leave blank if none</div></td>
     </tr>
  }
-@if (Model.org.AskTylenolEtc == true)
+@if (Model.setting.AskTylenolEtc == true)
 {
     <tr>
         <td><label for="medical">May we give your child</label></td>
@@ -91,32 +91,32 @@
             <tr>
                 <td>Tylenol?:</td>
                 <td>
-                    @Html.RadioButton(Model.inputname("tylenol"), true, Model.tylenol) Yes
-                    @Html.RadioButton(Model.inputname("tylenol"), false, Model.tylenol) No
+                    @Html.RadioButton(Model.inputname("tylenol"), true, Model.tylenol == true) Yes
+                    @Html.RadioButton(Model.inputname("tylenol"), false, Model.tylenol == false) No
                     <div>@Html.ValidationMessage(Model.inputname("tylenol"))</div>
                 </td>
             </tr>
             <tr>
                 <td>Advil?:</td>
                 <td>
-                    @Html.RadioButton(Model.inputname("advil"), true, Model.advil) Yes
-                    @Html.RadioButton(Model.inputname("advil"), false, Model.advil) No
+                    @Html.RadioButton(Model.inputname("advil"), true, Model.advil == true) Yes
+                    @Html.RadioButton(Model.inputname("advil"), false, Model.advil == false) No
                     <div>@Html.ValidationMessage(Model.inputname("advil"))</div>
                 </td>
             </tr>
             <tr>
                 <td>Maalox?:</td>
                 <td>
-                    @Html.RadioButton(Model.inputname("maalox"), true, Model.maalox) Yes
-                    @Html.RadioButton(Model.inputname("maalox"), false, Model.maalox) No
+                    @Html.RadioButton(Model.inputname("maalox"), true, Model.maalox == true) Yes
+                    @Html.RadioButton(Model.inputname("maalox"), false, Model.maalox == false) No
                     <div>@Html.ValidationMessage(Model.inputname("maalox"))</div>
                 </td>
             </tr>
             <tr>
                 <td>Robitussin?:</td>
                 <td>
-                    @Html.RadioButton(Model.inputname("robitussin"), true, Model.robitussin) Yes
-                    @Html.RadioButton(Model.inputname("robitussin"), false, Model.robitussin) No
+                    @Html.RadioButton(Model.inputname("robitussin"), true, Model.robitussin == true) Yes
+                    @Html.RadioButton(Model.inputname("robitussin"), false, Model.robitussin == false) No
                     <div>@Html.ValidationMessage(Model.inputname("robitussin"))</div>
                 </td>
             </tr>
@@ -124,7 +124,7 @@
         </td>
     </tr>
 }
-@if (Model.org.AskParents == true)
+@if (Model.setting.AskParents == true)
 { 
     <tr>
         <td><label for="mname">Mother's Name (first last)</label></td>
@@ -137,100 +137,102 @@
             <div>@Html.ValidationMessage(Model.inputname("fname"))</div></td>
     </tr>
 }
-@if (Model.org.AskCoaching == true)
+@if (Model.setting.AskCoaching == true)
 { 
      <tr>
         <td><label for="coaching">Interested in Coaching?</label></td>
         <td>
-            @Html.RadioButton(Model.inputname("coaching"), true, Model.coaching) Yes
-            @Html.RadioButton(Model.inputname("coaching"), false, Model.coaching) No
+            @Html.RadioButton(Model.inputname("coaching"), true, Model.coaching == true) Yes
+            @Html.RadioButton(Model.inputname("coaching"), false, Model.coaching == false) No
             <div>@Html.ValidationMessage(Model.inputname("coaching"))</div>
         </td>
     </tr>
 }
-@if (Model.org.AskChurch == true)
+@if (Model.setting.AskChurch == true)
 { 
     <tr>
-        <td><label for="church">@(Model.org.AskParents == true ? "Parent's Church" : "Church")</label></td>
+        <td><label for="church">@(Model.setting.AskParents == true ? "Parent's Church" : "Church")</label></td>
         <td>@Html.CheckBox(Model.inputname("memberus"), Model.memberus) Member of this Church<br />
             @Html.CheckBox(Model.inputname("otherchurch"), Model.otherchurch) Active in another Local Church
             <div>@Html.ValidationMessage("member")</div></td>
     </tr>
 }
-@if (Model.org.AskTickets == true)
+@if (Model.setting.AskTickets == true)
 { 
     <tr>
-        <td><label for="ntickets">@Util.PickFirst(Model.org.NumItemsLabel, "No. of Items")</label></td>
+        <td><label for="ntickets">@Model.setting.NumItemsLabel</label></td>
         <td>@Html.TextBox(Model.inputname("ntickets"), Model.ntickets, new { @class = "short" })
             <div>@Html.ValidationMessage(Model.inputname("ntickets"))</div></td>
     </tr>
 }
-@if (Model.org.SuggestedFee == true)
+@if (Model.setting.SuggestedFee == true)
 { 
     <tr>
         <td><label for="suggestedfee">Suggested Fee</label></td>
-        <td>@Html.TextBox(Model.inputname("suggestedfee"), (Model.suggestedfee ?? Model.org.Fee).ToString2("N2"), new { @class = "short" })
+        <td>@Html.TextBox(Model.inputname("suggestedfee"), (Model.suggestedfee ?? Model.setting.Fee).ToString2("N2"), new { @class = "short" })
             <div>@Html.ValidationMessage(Model.inputname("suggestedfee"))</div></td>
     </tr>
 }
-@if(Model.org.AskOptions.HasValue())
+@if(Model.setting.AskOptions.Count > 0)
 { 
     <tr>
-        <td><div class="wraparound">@Util.PickFirst(Model.org.OptionsLabel, "Options")</div></td>
+        <td><div class="wraparound">@Model.setting.AskOptionsLabel</div></td>
         <td>@Html.DropDownList3("", Model.inputname("option"), Model.Options(), Model.option)
             <div>@Html.ValidationMessage(Model.inputname("option"))</div></td>
     </tr>
   }
-@if(Model.org.ExtraOptions.HasValue())
+@if(Model.setting.ExtraOptions.Count > 0)
 { 
     <tr>
-        <td><div class="wraparound">@Util.PickFirst(Model.org.ExtraOptionsLabel, "Extra Options")</div></td>
+        <td><div class="wraparound">@Model.setting.ExtraOptionsLabel</div></td>
         <td>@Html.DropDownList3("", Model.inputname("option2"), Model.ExtraOptions(), Model.option2)
             <div>@Html.ValidationMessage(Model.inputname("option2"))</div></td>
     </tr>
   }
-@if(Model.org.GradeOptions.HasValue())
+@if(Model.setting.GradeOptions.Count > 0)
 { 
     <tr>
-        <td>Grade</td>
+        <td>@Model.setting.GradeOptionsLabel</td>
         <td>@Html.DropDownList3("", Model.inputname("gradeoption"), Model.GradeOptions(), Model.gradeoption)
             <div>@Html.ValidationMessage(Model.inputname("gradeoption"))</div></td>
     </tr>
 }
-@foreach (var a in Model.ExtraQuestions())
-{ 
+@for(int n = 0; n < Model.setting.ExtraQuestions.Count; n++)
+{
+    var a = Model.setting.ExtraQuestions[n];
     <tr>
-        <td><div class="wraparound">@a.question</div></td>
+        <td><div class="wraparound">@a.Question</div></td>
         <td>
-            @Html.Hidden(Model.inputname("ExtraQuestion[" + a.n + "].Key"), a.question)
-            @Html.TextBox(Model.inputname("ExtraQuestion[" + a.n + "].Value"), Model.ExtraQuestionValue(a.question), new { @class = "wide" })
-            <div>@Html.ValidationMessage(Model.inputname("ExtraQuestion[" + a.n + "].Value"))</div></td>
+            @Html.Hidden(Model.inputname("ExtraQuestion[" + n + "].Key"), a.Question)
+            @Html.TextBox(Model.inputname("ExtraQuestion[" + n + "].Value"), Model.ExtraQuestionValue(a.Question), new { @class = "wide" })
+            <div>@Html.ValidationMessage(Model.inputname("ExtraQuestion[" + n + "].Value"))</div></td>
     </tr>
 }
-@foreach (var a in Model.YesNoQuestions())
+@for(int n = 0; n < Model.setting.YesNoQuestions.Count; n++)
 { 
+    var a = Model.setting.YesNoQuestions[n];
     <tr>
-        <td><div class="wraparound">@a.desc</div></td>
+        <td><div class="wraparound">@a.Question</div></td>
         <td>
-            @Html.Hidden(Model.inputname("YesNoQuestion[" + a.n + "].Key"), a.name)
-            @Html.RadioButton(Model.inputname("YesNoQuestion[" + a.n + "].Value"), true, Model.YesNoChecked(a.name, true)) Yes
-            @Html.RadioButton(Model.inputname("YesNoQuestion[" + a.n + "].Value"), false, Model.YesNoChecked(a.name, false)) No
-            <div>@Html.ValidationMessage(Model.inputname("YesNoQuestion[" + a.n + "].Value"))</div></td>
+            @Html.Hidden(Model.inputname("YesNoQuestion[" + n + "].Key"), a.SmallGroup)
+            @Html.RadioButton(Model.inputname("YesNoQuestion[" + n + "].Value"), true, Model.YesNoChecked(a.SmallGroup, true)) Yes
+            @Html.RadioButton(Model.inputname("YesNoQuestion[" + n + "].Value"), false, Model.YesNoChecked(a.SmallGroup, false)) No
+            <div>@Html.ValidationMessage(Model.inputname("YesNoQuestion[" + n + "].Value"))</div></td>
     </tr>
 }
-@if (Model.Checkboxes().Count() > 0)
+@if (Model.setting.Checkboxes.Count > 0)
 { 
    <tr>
-       <td valign="top"><div class="wraparound">@Model.org.CheckboxesLabel</div></td>
+       <td valign="top"><div class="wraparound">@Model.setting.CheckBoxLabel</div></td>
        <td style="padding:3px">
             <table>
-    @foreach (var a in Model.Checkboxes().Values)
+    @foreach (var a in Model.setting.Checkboxes)
     { 
-            <tr><td valign="top"><input type="checkbox" value="@a.sg" name='@Model.inputname("Checkbox")' @(Model.CheckboxChecked(a.sg) ? "checked='checked'" : "") /></td>
-                <td>@a.desc 
-        @if (a.amt > 0) 
+            <tr><td valign="top"><input type="checkbox" value="@a.SmallGroup" name='@Model.inputname("Checkbox")' @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") /></td>
+                <td>@a.Description
+        @if (a.Fee > 0) 
         { 
-            @:&nbsp;($@a.amt.ToString("N2")) 
+            @:&nbsp;($@a.Fee.ToString2("N2")) 
         }
             </td>
             </tr>
@@ -240,23 +242,52 @@
        </td>
    </tr>
 }
-@foreach(var i in Model.MenuItems())
+@if (Model.setting.Checkboxes2.Count > 0)
 { 
+   <tr>
+       <td valign="top"><div class="wraparound">@Model.setting.CheckBox2Label</div></td>
+       <td style="padding:3px">
+            <table>
+    @foreach (var a in Model.setting.Checkboxes2)
+    { 
+            <tr><td valign="top"><input type="checkbox" value="@a.SmallGroup" name='@Model.inputname("Checkbox2")' @(Model.Checkbox2Checked(a.SmallGroup) ? "checked='checked'" : "") /></td>
+                <td>@a.Description
+        @if (a.Fee > 0) 
+        { 
+            @:&nbsp;($@a.Fee.ToString2("N2")) 
+        }
+            </td>
+            </tr>
+    }
+            </table>
+            <div>@Html.ValidationMessage("checkboxes2")</div>
+       </td>
+   </tr>
+}
+@if (Model.setting.MenuItems.Count > 0)
+{
     <tr>
-        <td></td>
-        <td>
-            @Html.Hidden(Model.inputname("MenuItem[" + i.n + "].Key"), i.sg)
-            @Html.TextBox(Model.inputname("MenuItem[" + i.n + "].Value"), Model.MenuItemValue(i.sg), new { @class = "short" })
-            @i.desc @if (i.amt > 0) { <text>(@i.amt.ToString("N2"))</text> }
-            <div>@Html.ValidationMessage(Model.inputname("MenuItem[" + i.n + "].Value"))</div></td>
+        <td><strong>@Model.setting.MenuItemsLabel</strong></td>
+        <td><strong># Items</strong></td>
     </tr>
 }
-@if (Model.org.Deposit > 0)
+@for (var n = 0; n < Model.setting.MenuItems.Count; n++ )
+{
+    var i = Model.setting.MenuItems[n];
+    <tr>
+        <td>@i.Description </td>
+        <td>@Html.Hidden(Model.inputname("MenuItem[" + n + "].Key"), i.SmallGroup)
+            @Html.TextBox(Model.inputname("MenuItem[" + n + "].Value"), Model.MenuItemValue(i.SmallGroup), new { @class = "short" })
+            @if (i.Fee > 0) { <text> at $@i.Fee.ToString2("N2")</text> }
+            <div>@Html.ValidationMessage(Model.inputname("MenuItem[" + n + "].Value"))</div></td>
+    </tr>
+}
+@if (Model.setting.Deposit > 0)
 { 
     <tr>
         <td><label for="deposit">Payment</label></td>
-        <td>@Html.RadioButton(Model.inputname("paydeposit"), true, Model.paydeposit) Pay Deposit Only<br />
-            @Html.RadioButton(Model.inputname("paydeposit"), false, Model.paydeposit) Pay Full Amount
+        <td>@Html.RadioButton(Model.inputname("paydeposit"), true, Model.paydeposit == true) Pay Deposit Only<br />
+            @Html.RadioButton(Model.inputname("paydeposit"), false, Model.paydeposit == false) Pay Full Amount
             <div>@Html.ValidationMessage(Model.inputname("paydeposit"))</div></td>
     </tr>
 }

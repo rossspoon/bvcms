@@ -47,26 +47,6 @@
         <th valign="top">Organization Description</th>
         <td>@Model.org.Description</td>
     </tr>
-@if (User.IsInRole("Admin"))
-{ 
-    <tr>
-        <th valign="top">Edit Online Reg Messages</th>
-        <td>
-            <a href="/Display/OrgContent/@Model.org.OrganizationId?what=message">
-               confirmation (org)</a>
-            <a href="/Display/OrgContent/@Model.org.OrganizationId?what=message&div=true">
-               (div)</a><br />
-            <a href="/Display/OrgContent/@Model.org.OrganizationId?what=instructions">
-               instructions (org)</a>
-            <a href="/Display/OrgContent/@Model.org.OrganizationId?what=instructions&div=true">
-               (div)</a><br />
-            <a href="/Display/OrgContent/@Model.org.OrganizationId?what=terms">
-               terms (org)</a>
-            <a href="/Display/OrgContent/@Model.org.OrganizationId?what=terms&div=true">
-               (div)</a>
-        </td>
-    </tr>
-} 
     <tr>
         <td></td>
     </tr>
@@ -142,7 +122,7 @@
         <td>@Model.org.Limit</td>
     </tr>
     <tr>
-        <th title="old:@Model.org.EmailAddresses">Online Notify Persons:</th>
+        <th>Online Notify Persons:</th>
         <td><a id="notifylist" href="/Organization/NotifyIds">
             @Html.Partial("NotifyList", DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))
             </a>
@@ -169,184 +149,30 @@
         <td>@Html.CodeDesc("org.GenderId", Model.GenderList())</td>
     </tr>
     <tr>
-        <th>Registration Type:</th>
-        <td>@Html.CodeDesc("org.RegistrationTypeId", Model.RegistrationTypes())</td>
-    </tr>
-    <tr>
-        <th>HTML Shell<br />(blank for default)</th>
-        <td>@Model.org.Shell</td>
-    </tr>
-    <tr>
-        <th>Fee:</th>
-        <td>@Model.org.Fee.ToString2("n2")</td>
-    </tr>
-    <tr>
-        <th>Suggested:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.SuggestedFee)</td>
-    </tr>
-    <tr>
-        <th>Deposit:</th>
-        <td>@Model.org.Deposit.ToString2("n2")</td>
-    </tr>
-    <tr>
-        <th>Shirt Fee:</th>
-        <td>@Model.org.ShirtFee.ToString2("n2")</td>
-    </tr>
-    <tr>
-        <th>Extra Fee:</th>
-        <td>@Model.org.ExtraFee.ToString2("n2")</td>
-    </tr>
-    <tr>
-        <th>Maximum Fee:</th>
-        <td>@Model.org.MaximumFee.ToString2("n2")</td>
-    </tr>
-    <tr>
-        <th>Org Member Fees:</th>
-        <td>@Model.org.OrgMemberFees</td>
-    </tr>
-    <tr>
-        <th>Ask How Many Items:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskTickets)</td>
-    </tr>
-    <tr>
-        <th>Num Items Label:</th>
-        <td>@Model.org.NumItemsLabel</td>
-    </tr>
-    <tr>
-        <th>Allow Only One:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AllowOnlyOne)</td>
-    </tr>
-    <tr>
-        <th>Ask Options:</th>
-        <td>@Model.org.AskOptions</td>
-    </tr>
-    <tr>
-        <th>Extra Options:</th>
-        <td>@Model.org.ExtraOptions</td>
-    </tr>
-    <tr>
-        <th>Grade Options:</th>
-        <td>@Model.org.GradeOptions</td>
-    </tr>
-    <tr>
-        <th>Age Fees:</th>
-        <td>@Model.org.AgeFee</td>
-    </tr>
-    <tr>
-        <th>Age Groups:</th>
-        <td>@Model.org.AgeGroups</td>
-    </tr>
-    <tr>
         <th>Last Day Before Extra:</th>
         <td>@Model.org.LastDayBeforeExtra.FormatDate2()</td>
     </tr>
     <tr>
-        <th>Shirt Sizes<br />(blank for default)</th>
-        <td>@Model.org.ShirtSizes</td>
+        <th>Registration Type:</th>
+        <td>@Html.CodeDesc("org.RegistrationTypeId", Model.RegistrationTypes())</td>
+    </tr>
+@if (User.IsInRole("Admin"))
+{ 
+    <tr>
+        <td colspan="2"><br />Edit Online Reg Messages For Division type Registrations<br />
+        (specifics in registration settings when present, override these)</td>
     </tr>
     <tr>
-        <th>Yes No Questions:</th>
-        <td>@Model.org.YesNoQuestions</td>
+        <td></td>
+        <td>
+            <a href="/Display/OrgContent/@Model.OrganizationId?what=message&div=true">
+               Confirmation for division</a><br />
+            <a href="/Display/OrgContent/@Model.OrganizationId?what=instructions&div=true">
+               Instructions</a><br />
+            <a href="/Display/OrgContent/@Model.OrganizationId?what=terms&div=true">
+               Terms</a>
+        </td>
     </tr>
-    <tr>
-        <th>Checkboxes:</th>
-        <td>@Model.org.Checkboxes</td>
-    </tr>
-    <tr>
-        <th>Checkboxes Label:</th>
-        <td>@Model.org.CheckboxesLabel</td>
-    </tr>
-    <tr>
-        <th>Min # Checkboxes:</th>
-        <td>@Model.org.CheckboxesMin</td>
-    </tr>
-    <tr>
-        <th>Max # Checkboxes:</th>
-        <td>@Model.org.CheckboxesMax</td>
-    </tr>
-    <tr>
-        <th>Extra Questions:</th>
-        <td>@Model.org.ExtraQuestions</td>
-    </tr>
-    <tr>
-        <th>Menu Items:</th>
-        <td>@Model.org.MenuItems</td>
-    </tr>
-    <tr>
-        <th>Validate Member in OrgIds:</th>
-        <td>@Model.org.ValidateOrgs</td>
-    </tr>
-    <tr>
-        <th>Link Groups from Orgs:</th>
-        <td>@Model.org.LinkGroupsFromOrgs</td>
-    </tr>
-    <tr>
-        <th>Ask About Allergies:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskAllergies)</td>
-    </tr>
-    <tr>
-        <th>Ask About Tylenol, Etc:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskTylenolEtc)</td>
-    </tr>
-    <tr>
-        <th>Ask For Grade:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskGrade)</td>
-    </tr>
-    <tr>
-        <th>Grade Label:</th>
-        <td>@Util.PickFirst(Model.org.GradeLabel, "Grade")</td>
-    </tr>
-    <tr>
-        <th>Ask About Shirt Size:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskShirtSize)</td>
-    </tr>
-    <tr>
-        <th>Ask About Request:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskRequest)</td>
-    </tr>
-    <tr>
-        <th>Request Label:</th>
-        <td>@Util.PickFirst(Model.org.RequestLabel, "Request")</td>
-    </tr>
-    <tr>
-        <th>Ask For Parents:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskParents)</td>
-    </tr>
-    <tr>
-        <th>Ask For Emergency Contact:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskEmContact)</td>
-    </tr>
-    <tr>
-        <th>Ask For Insurance:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskInsurance)</td>
-    </tr>
-    <tr>
-        <th>Ask For Doctor:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskDoctor)</td>
-    </tr>
-    <tr>
-        <th>Allow Last Year Shirt:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AllowLastYearShirt)</td>
-    </tr>
-    <tr>
-        <th>Ask About Coaching:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskCoaching)</td>
-    </tr>
-    <tr>
-        <th>Ask About Church:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskChurch)</td>
-    </tr>
-    <tr>
-        <th>Members Only:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.MemberOnly)</td>
-    </tr>
-    <tr>
-        <th>Ask Donation:</th>
-        <td>@Html.CheckBoxReadonly(Model.org.AskDonation)</td>
-    </tr>
-    <tr>
-        <th>Donation Fund:</th>
-        <td>@(Model.org.ContributionFund != null ? Model.org.ContributionFund.FundName : "" )</td>
-    </tr>
+} 
 </table>
 

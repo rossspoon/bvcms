@@ -1,0 +1,286 @@
+﻿@model CmsData.RegSettings
+@using CmsWeb
+@using UtilityExtensions
+@{
+    ViewBag.Title = "EditRegSetting";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+@section head
+{
+<style type="text/css">
+input { margin: 3px; }
+.text {
+	height: 20px;
+	margin-top: 5px;
+}
+.sgfee 
+{
+    width:80px;
+    display: inline-block;
+}
+.long { width: 400px; }
+.short { width: 50px; }
+.keyword 
+{
+    width: 170px;
+    display: inline-block;
+}
+.keyword2
+{
+    width: 60px;
+    display: inline-block;
+}
+.bold { font-weight: bold; }
+.big { font-size: 16px; }
+i { color:Blue; }
+ul.sort { list-style-type: none; }
+textarea.html { display:none; }
+</style>
+}
+<h2>
+    Editing Registration Settings for <a href="/Organization/Index/@ViewData["OrganizationId"]">@ViewData["orgname"]</a></h2>
+    <p><i>Drag the blue up/down arrow to reorder items.</i></p>
+<form id="settings" action="/RegSetting/UpdateGui/@ViewData["OrganizationId"]" method="post">
+@if (User.IsInRole("Edit"))
+{
+<input id="save" type="submit" class="bt" value="Save Changes" />
+}
+else
+{
+<input id="save" type="submit" class="bt" value="Save Changes" disabled /> <i>You must have Edit role to save changes</i>
+}
+@Html.Hidden("Id", ViewData["OrganizationId"])
+<a href="/Organization/Index/@ViewData["OrganizationId"]" class="bt">Cancel</a>
+<ul>
+  <li><i>This is the confirmation email</i>
+    <div class="text big">Confirmation: </div>
+    <ul>
+      <li> <span class="keyword2">Subject:</span> @Html.TextBox("Subject", Model.Subject, new { @class = "long" }) </li>
+      <li>
+        <div class="text"><span class="keyword2">Body:</span> 
+        @Html.TextBox("Body.Text", Model.Body.Text, new { @class = "long" })
+        <a href="#" class="editor" tb="Body">
+        <span class="edithtml">edit html</span></a>
+        <textarea class="html" id="Body" name="Body.Html">@Html.Raw(Model.Body.Html)</textarea>
+        </div>
+      </li>
+    </ul><br />
+  </li>
+  <li><i>These will let you create votetags to store in the structured settings document. They will not be displayed on the registration screen but are intended to be used in an email.</i>
+    <div class="text big">VoteTags: </div>
+    <ul id=VoteTags" class="sort">
+    @foreach(var i in Model.VoteTags.OrderBy(cc => cc.Id))
+    {
+        Html.RenderPartial("VoteTagEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewVoteTag"><img src="/images/plus1.png" /> Add Item</a></div><br />
+  </li>
+  <li> <span class="keyword big">Fee:</span> @Html.TextBox("Fee", Model.Fee) </li>
+  <li> <span class="keyword big">Deposit:</span> @Html.TextBox("Deposit", Model.Deposit) </li>
+  <li> <span class="keyword big">AskSuggestedFee:</span> @Html.CheckBox("SuggestedFee", Model.SuggestedFee) </li>
+  <li> <span class="keyword big">ExtraFee:</span> @Html.TextBox("ExtraFee", Model.ExtraFee) </li>
+  <li> <span class="keyword big">MaximumFee:</span> @Html.TextBox("MaximumFee", Model.MaximumFee) </li>
+  <li> <span class="keyword big">AskDonation:</span> @Html.CheckBox("AskDonation", Model.AskDonation) </li>
+  <li> <span class="keyword big">DonationFundId:</span> @Html.TextBox("DonationFundId", Model.DonationFundId) </li>
+  <li> <span class="keyword big">ValidateOrgs:</span> @Html.TextBox("ValidateOrgs", string.Join(",", Model.ValidateOrgs))<br />&nbsp; </li>
+  <li>
+    <i>This will put registrant in a particular small group automatically based on their age, with an optional age-based fee</i>
+    <div class="text big">AgeGroups:</div>
+    <ul id="AgeGroups" class="sort">
+    @foreach(var i in Model.AgeGroups)
+    {
+        Html.RenderPartial("AgeGroupEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewAgeGroup"><img src="/images/plus1.png" /> Add Item</a></div><br />
+  </li>
+  <li> <span class="keyword big">AskRequest:</span> @Html.CheckBox("AskRequest", Model.AskRequest)
+    <ul>
+      <li> <span class="keyword">Label:</span> @Html.TextBox("RequestLabel", Model.RequestLabel, new { @class = "long" }) </li>
+    </ul><br />
+  </li>
+  <li><div><i>This will ask for a number of items to purchase and will multiple by the fee</i></div>
+    <span class="keyword big">AskTickets:</span> @Html.CheckBox("AskTickets", Model.AskTickets)
+    <ul>
+      <li> <span class="keyword">Label:</span> @Html.TextBox("NumItemsLabel", Model.NumItemsLabel, new { @class = "long" }) </li>
+    </ul><br />
+  </li>
+  <li>
+    <div><i>This allows you to specify the grade being registered for</i></div>
+    <span class="keyword big">GradeOptions:</span> @Html.TextBox("GradeOptionsLabel", Model.GradeOptionsLabel, new { @class = "long" })
+    <ul id="GradeOptions" class="sort">
+    @foreach(var i in Model.GradeOptions.OrderBy(cc => cc.Id))
+    {
+        Html.RenderPartial("GradeOptionEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewGradeOption"><img src="/images/plus1.png" /> Add Item</a></div><br />
+  </li>
+  <li><i>These are questions that that will force a yes or no answer</i>
+    <div class="text big">YesNoQuestions:</div>
+    <ul id="YesNoQuestions" class="sort">
+    @foreach(var i in Model.YesNoQuestions.OrderBy(cc => cc.Id))
+    {
+        Html.RenderPartial("YesNoQuestionEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewYesNoQuestion"><img src="/images/plus1.png" /> Add Item</a></div><br />
+  </li>
+  <li><i>These questions can be answered with text</i>
+    <div class="text big">ExtraQuestions:</div>
+    <ul id="ExtraQuestions" class="sort">
+    @foreach(var i in Model.ExtraQuestions.OrderBy(cc => cc.Id))
+    {
+        Html.RenderPartial("ExtraQuestionEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewExtraQuestion"><img src="/images/plus1.png" /> Add Item</a></div> <br />
+  </li>
+  <li><i>These will present a series of textboxes next to a label allowing you to enter the number of items to purchase or select for each</i>
+    <div class="text big">MenuItems:</div>
+    <ul id="MenuItems" class="sort">
+    @foreach(var i in Model.MenuItems.OrderBy(cc => cc.Id))
+    {
+        Html.RenderPartial("MenuItemEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewMenuItem"><img src="/images/plus1.png" alt="" /> Add Item</a></div> <br />
+  </li>
+  <li><div><i>This will be presented as a dropdown selection</i></div>
+    <span class="keyword big">AskOptions:</span> @Html.TextBox("AskOptionsLabel", Model.AskOptionsLabel, new { @class = "long" })
+    <ul id="AskOptions" class="sort">
+    @foreach(var i in Model.AskOptions.OrderBy(cc => cc.Id))
+    {
+        Html.RenderPartial("AskOptionEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewAskOption"><img src="/images/plus1.png" alt="" /> Add Item</a></div> <br />
+  </li>
+  <li><div><i>This is another dropdown</i></div>
+    <span class="keyword big">ExtraOptions:</span> @Html.TextBox("ExtraOptionsLabel", Model.ExtraOptionsLabel, new { @class = "long" })
+    <ul id="ExtraOptions" class="sort">
+    @foreach(var i in Model.ExtraOptions.OrderBy(cc => cc.Id))
+    {
+        Html.RenderPartial("ExtraOptionEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewExtraOption"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
+    <br />
+  </li>
+  <li><div><i>This is a group of checkboxes where you can check more than one</i></div>
+    <span class="keyword big">Checkboxes:</span> @Html.TextBox("CheckBoxLabel", Model.CheckBoxLabel, new { @class = "long" })
+    <ul>
+      <li> <span class="keyword">Minimum:</span> @Html.TextBox("CheckBoxMin", Model.CheckboxMin) </li>
+      <li> <span class="keyword">Maximum:</span> @Html.TextBox("CheckBoxMax", Model.CheckboxMax) 
+        <ul id="Checkboxes" class="sort">
+    @foreach(var i in Model.Checkboxes.OrderBy(cc => cc.Id))
+    {
+          Html.RenderPartial("CheckboxEditor", i);
+    }
+        </ul>
+        <div><a class="newitem" href="/RegSetting/NewCheckbox"><img src="/images/plus1.png" alt="" /> Add Item</a></div> <br />
+      </li>
+    </ul>
+  </li>
+  <li><div><i>In case you need two groups of checkboxes</i></div>
+    <span class="keyword big">Checkboxes2:</span> @Html.TextBox("CheckBox2Label", Model.CheckBox2Label, new { @class = "long" })
+    <ul>
+      <li> <span class="keyword">Minimum:</span> @Html.TextBox("CheckBox2Min", Model.Checkbox2Min) </li>
+      <li> <span class="keyword">Maximum:</span> @Html.TextBox("CheckBox2Max", Model.Checkbox2Max) 
+      <ul id="Checkboxes2" class="sort">
+    @foreach(var i in Model.Checkboxes2.OrderBy(cc => cc.Id))
+    {
+          Html.RenderPartial("Checkbox2Editor", i);
+    }
+        </ul>
+        <div><a class="newitem" href="/RegSetting/NewCheckbox2"><img src="/images/plus1.png" alt="" /> Add Item</a></div> <br />
+      </li>
+    </ul>
+  </li>
+  <li> <span class="keyword big">AskShirtsize:</span> @Html.CheckBox("AskShirtsize", Model.AskShirtSize) </li>
+  <li> <span class="keyword big">ShirtFee:</span> @Html.TextBox("ShirtFee", Model.ShirtFee) </li>
+  <li> <span class="keyword big">AllowLastYearShirt:</span> @Html.CheckBox("AllowLastYearShirt", Model.AllowLastYearShirt) </li>
+  <li>
+    <div class="text big">ShirtSizes:</div>
+    <ul id="ShirtSizes" class="sort">
+    @foreach(var i in Model.ShirtSizes.OrderBy(cc => cc.Id))
+    {
+      Html.RenderPartial("ShirtSizeEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewShirtSize"><img src="/images/plus1.png" alt="" />Add Item</a></div> <br />
+  </li>
+  <li> <span class="keyword big">Shell:</span> @Html.TextBox("Shell", Model.Shell) </li>
+  <li> <span class="keyword big">AllowOnlyOne:</span> @Html.CheckBox("AllowOnlyOne", Model.AllowOnlyOne) </li>
+  <li> <span class="keyword big">MemberOnly:</span> @Html.CheckBox("MemberOnly", Model.MemberOnly) </li>
+  <li> <span class="keyword big">AskParents:</span> @Html.CheckBox("AskParents", Model.AskParents) </li>
+  <li> <span class="keyword big">AskInsurance:</span> @Html.CheckBox("AskInsurance", Model.AskInsurance) </li>
+  <li> <span class="keyword big">AskEmContact:</span> @Html.CheckBox("AskEmContact", Model.AskEmContact) </li>
+  <li> <span class="keyword big">AskAllergies:</span> @Html.CheckBox("AskAllergies", Model.AskAllergies) </li>
+  <li> <span class="keyword big">AskChurch:</span> @Html.CheckBox("AskChurch", Model.AskChurch) </li>
+  <li> <span class="keyword big">AskTylenolEtc:</span> @Html.CheckBox("AskTylenolEtc", Model.AskTylenolEtc) </li>
+  <li> <span class="keyword big">AskCoaching:</span> @Html.CheckBox("AskCoaching", Model.AskCoaching) </li>
+  <li> <span class="keyword big">AskGrade:</span> @Html.CheckBox("AskGrade", Model.AskGrade)
+    <ul>
+      <li> Label: @Html.TextBox("GradeLabel", Model.GradeLabel, new { @class = "long" }) </li>
+    </ul>
+  </li>
+  <li><div><i>A discipleship small group to join (works with GoDisciples)</i></div>
+    <span class="keyword big">GroupToJoin:</span> @Html.TextBox("GroupToJoin", Model.GroupToJoin) </li>
+  <li> <span class="keyword big">GiveOrgMembAccess:</span> @Html.CheckBox("GiveOrgMembAccess", Model.GiveOrgMembAccess) </li>
+  <li> <span class="keyword big">NotReqDOB:</span> @Html.CheckBox("NotReqDOB", Model.NotReqDOB) </li>
+  <li> <span class="keyword big">NotReqAddr:</span> @Html.CheckBox("NotReqAddr", Model.NotReqAddr) </li>
+  <li> <span class="keyword big">NotReqZip:</span> @Html.CheckBox("NotReqZip", Model.NotReqZip) </li>
+  <li> <span class="keyword big">NotReqPhone:</span> @Html.CheckBox("NotReqPhone", Model.NotReqPhone) </li>
+  <li> <span class="keyword big">NotReqGender:</span> @Html.CheckBox("NotReqGender", Model.NotReqGender) </li>
+  <li> <span class="keyword big">NotReqMarital:</span> @Html.CheckBox("NotReqMarital", Model.NotReqMarital)<br />&nbsp;</li>
+  <li><i>These are special instructions that show up on various sections</i>
+    <div class="text big">Instructions:</div>
+      <ul>
+      <li> <span class="keyword2">Login:</span> @Html.TextBox("InstructionLogin.Text", Model.InstructionLogin.Text, new { @class = "long" })
+        <a href="#" class="editor" tb="InstructionLogin">
+        <span class="edithtml">edit html</span></a>
+        <textarea class="html" id="InstructionLogin" name="InstructionLogin.Html">@Html.Raw(Model.InstructionLogin.Html)</textarea>
+        </li>
+      <li> <span class="keyword2">Select:</span> @Html.TextBox("InstructionSelect.Text", Model.InstructionSelect.Text, new { @class = "long" })
+        <a href="#" class="editor" tb="InstructionSelect">
+        <span class="edithtml">edit html</span></a>
+        <textarea class="html" id="InstructionSelect" name="InstructionSelect.Html">@Html.Raw(Model.InstructionSelect.Html)</textarea>
+        </li>
+      <li> <span class="keyword2">Find:</span> @Html.TextBox("InstructionFind.Text", Model.InstructionFind.Text, new { @class = "long" })
+        <a href="#" class="editor" tb="InstructionFind">
+        <span class="edithtml">edit html</span></a>
+        <textarea class="html" id="InstructionFind" name="InstructionFind.Html">@Html.Raw(Model.InstructionFind.Html)</textarea>
+        </li>
+      <li> <span class="keyword2">Options:</span> @Html.TextBox("InstructionOptions.Text", Model.InstructionOptions.Text, new { @class = "long" })
+        <a href="#" class="editor" tb="InstructionOptions">
+        <span class="edithtml">edit html</span></a>
+        <textarea class="html" id="InstructionOptions" name="InstructionOptions.Html">@Html.Raw(Model.InstructionOptions.Html)</textarea>
+        </li>
+      <li> <span class="keyword2">Submit:</span> @Html.TextBox("InstructionSubmit.Text", Model.InstructionSubmit.Text, new { @class = "long" })
+        <a href="#" class="editor" tb="InstructionSubmit">
+        <span class="edithtml">edit html</span></a>
+        <textarea class="html" id="InstructionSubmit" name="InstructionSubmit.Html">@Html.Raw(Model.InstructionSubmit.Html)</textarea>
+        </li>
+      <li> <span class="keyword2">Sorry:</span> @Html.TextBox("InstructionSorry.Text", Model.InstructionSorry.Text, new { @class = "long" })
+        <a href="#" class="editor" tb="InstructionSorry">
+        <span style="font-weight: @(Model.InstructionSorry.Html.HasValue() ? "bold" : "normal")">edit html</span></a>
+        <textarea class="html" id="InstructionSorry" name="InstructionSorry.Html">@Html.Raw(Model.InstructionSorry.Html)</textarea>
+        </li>
+    </ul><br />
+  </li>
+  <li><div><i>Some registrations like a camp, or sports team, require you to agree to terms (indemnification)</i></div>
+    <span class="keyword2 big">Terms:</span> @Html.TextBox("Terms.Text", Model.Terms.Text, new { @class = "long" })
+        <a href="#" class="editor" tb="Terms">
+        <span class="edithtml">edit html</span></a>
+        <textarea class="html" id="Terms" name="Terms.Html">@Html.Raw(Model.Terms.Html)</textarea>
+  </li>
+</ul>
+</form>
+<div id="EditorDialog" style="display:none">
+    @Html.TextArea("editor", "", new { style="display:none", @class = "editor", rows="16", cols="20" })
+</div>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>
+<script src="/Scripts/RegSetting.js?v=3" type="text/javascript"></script>

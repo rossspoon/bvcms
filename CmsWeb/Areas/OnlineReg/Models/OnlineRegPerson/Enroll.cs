@@ -13,7 +13,7 @@ namespace CmsWeb.Models
     {
         public OrganizationMember Enroll(Transaction ti, string paylink, bool? testing, string others)
         {
-            var om = OrganizationMember.InsertOrgMembers(DbUtil.Db, 
+            var om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 org.OrganizationId, person.PeopleId,
                 MemberTypeCode.Member, DateTime.Now, null, false);
             om.Amount = TotalAmount();
@@ -26,92 +26,95 @@ namespace CmsWeb.Models
                 reg = new RecReg();
                 person.RecRegs.Add(reg);
             }
-            if (org.AskShirtSize == true)
+            if (setting.AskShirtSize == true)
             {
                 om.ShirtSize = shirtsize;
                 reg.ShirtSize = shirtsize;
             }
-            if (org.AskChurch == true)
+            if (setting.AskChurch == true)
             {
                 reg.ActiveInAnotherChurch = otherchurch;
                 reg.Member = memberus;
             }
-            if (org.AskAllergies == true)
+            if (setting.AskAllergies == true)
             {
                 reg.MedAllergy = medical.HasValue();
                 reg.MedicalDescription = medical;
             }
-            if (org.AskParents == true)
+            if (setting.AskParents == true)
             {
                 reg.Mname = mname;
                 reg.Fname = fname;
             }
-            if (org.AskEmContact == true)
+            if (setting.AskEmContact == true)
             {
                 reg.Emcontact = emcontact;
                 reg.Emphone = emphone;
             }
-            if (org.AskDoctor == true)
+            if (setting.AskDoctor == true)
             {
                 reg.Docphone = docphone;
                 reg.Doctor = doctor;
             }
-            if (org.AskCoaching == true)
+            if (setting.AskCoaching == true)
                 reg.Coaching = coaching;
-            if (org.AskInsurance == true)
+            if (setting.AskInsurance == true)
             {
                 reg.Insurance = insurance;
                 reg.Policy = policy;
             }
-            if (org.AskGrade == true)
+            if (setting.AskGrade == true)
                 om.Grade = grade.ToInt();
-            if (org.AskTickets == true)
+            if (setting.AskTickets == true)
                 om.Tickets = ntickets;
 
-            foreach (var yn in YesNoQuestions())
+            foreach (var yn in setting.YesNoQuestions)
             {
-                om.RemoveFromGroup(DbUtil.Db, "Yes:" + yn.name);
-                om.RemoveFromGroup(DbUtil.Db, "No:" + yn.name);
+                om.RemoveFromGroup(DbUtil.Db, "Yes:" + yn.SmallGroup);
+                om.RemoveFromGroup(DbUtil.Db, "No:" + yn.SmallGroup);
             }
-            if (org.YesNoQuestions.HasValue())
+            if (setting.YesNoQuestions.Count > 0)
                 foreach (var g in YesNoQuestion)
                     om.AddToGroup(DbUtil.Db, (g.Value == true ? "Yes:" : "No:") + g.Key);
-            foreach (var ck in Checkboxes().Keys)
-                om.RemoveFromGroup(DbUtil.Db, ck);
-            if (org.Checkboxes.HasValue() && Checkbox != null)
+            foreach (var ck in setting.Checkboxes)
+                om.RemoveFromGroup(DbUtil.Db, ck.SmallGroup);
+            if (setting.Checkboxes.Count > 0 && Checkbox != null)
                 foreach (var g in Checkbox)
                     om.AddToGroup(DbUtil.Db, g);
-            if (org.ExtraQuestions.HasValue())
+            if (setting.Checkboxes2.Count > 0 && Checkbox2 != null)
+                foreach (var g in Checkbox2)
+                    om.AddToGroup(DbUtil.Db, g);
+            if (setting.ExtraQuestions.Count > 0)
                 foreach (var g in ExtraQuestion)
                     if (g.Value.HasValue())
                         om.AddToMemberData("{0}: {1}".Fmt(g.Key, g.Value));
-            if (org.MenuItems.HasValue())
+            if (setting.MenuItems.Count > 0)
                 foreach (var i in MenuItem)
                     om.AddToGroup(DbUtil.Db, i.Key, i.Value);
 
             foreach (var op in Options())
                 om.RemoveFromGroup(DbUtil.Db, op.Value);
-            if (org.AskOptions.HasValue())
+            if (setting.AskOptions.Count > 0)
                 om.AddToGroup(DbUtil.Db, option);
 
             foreach (var op in ExtraOptions())
                 om.RemoveFromGroup(DbUtil.Db, op.Value);
-            if (org.ExtraOptions.HasValue())
+            if (setting.ExtraOptions.Count > 0)
                 om.AddToGroup(DbUtil.Db, option2);
 
-            if (org.GradeOptions.HasValue())
+            if (setting.GradeOptions.Count > 0)
                 om.Grade = gradeoption.ToInt();
 
-            foreach (var ag in AgeGroups())
-                om.RemoveFromGroup(DbUtil.Db, ag.Name);
-            if (org.AgeGroups.HasValue())
+            foreach (var ag in setting.AgeGroups)
+                om.RemoveFromGroup(DbUtil.Db, ag.SmallGroup);
+            if (setting.AgeGroups.Count > 0)
                 om.AddToGroup(DbUtil.Db, AgeGroup());
 
-            if (org.LinkGroupsFromOrgs.HasValue())
+            if (setting.LinkGroupsFromOrgs.Count > 0)
             {
-                var a = org.LinkGroupsFromOrgs.Split(',').Select(s => s.ToInt()).ToArray();
                 var q = from omt in DbUtil.Db.OrgMemMemTags
-                        where a.Contains(omt.OrgId) && omt.PeopleId == om.PeopleId
+                        where setting.LinkGroupsFromOrgs.Contains(omt.OrgId)
+                        where omt.PeopleId == om.PeopleId
                         select omt.MemberTag.Name;
                 foreach (var name in q)
                     om.AddToGroup(DbUtil.Db, name);
@@ -127,7 +130,7 @@ namespace CmsWeb.Models
                 if (others.HasValue())
                     om.AddToMemberData("Others: " + others);
             }
-            if (org.MenuItems.HasValue())
+            if (setting.MenuItems.Count > 0)
             {
                 var menulabel = "Menu Items";
                 foreach (var i in MenuItemsChosen())
@@ -143,7 +146,7 @@ namespace CmsWeb.Models
                 }
             }
 
-            if (org.AskTylenolEtc == true)
+            if (setting.AskTylenolEtc == true)
             {
                 reg.Tylenol = tylenol;
                 reg.Advil = advil;
@@ -198,60 +201,62 @@ namespace CmsWeb.Models
 
             var rr = person.RecRegs.Single();
 
-            if (org.AskTickets == true)
+            if (setting.AskTickets == true)
                 sb.AppendFormat("<tr><td>Tickets:</td><td>{0}</td></tr>\n", om.Tickets);
-            if (org.AskShirtSize == true)
+            if (setting.AskShirtSize == true)
                 sb.AppendFormat("<tr><td>Shirt:</td><td>{0}</td></tr>\n", om.ShirtSize);
-            if (org.AskEmContact == true)
+            if (setting.AskEmContact == true)
             {
                 sb.AppendFormat("<tr><td>Emerg Contact:</td><td>{0}</td></tr>\n", rr.Emcontact);
                 sb.AppendFormat("<tr><td>Emerg Phone:</td><td>{0}</td></tr>\n", rr.Emphone);
             }
-            if (org.AskDoctor == true)
+            if (setting.AskDoctor == true)
             {
                 sb.AppendFormat("<tr><td>Physician Name:</td><td>{0}</td></tr>\n", rr.Doctor);
                 sb.AppendFormat("<tr><td>Physician Phone:</td><td>{0}</td></tr>\n", rr.Docphone);
             }
-            if (org.AskInsurance == true)
+            if (setting.AskInsurance == true)
             {
                 sb.AppendFormat("<tr><td>Insurance Carrier:</td><td>{0}</td></tr>\n", rr.Insurance);
                 sb.AppendFormat("<tr><td>Insurance Policy:</td><td>{0}</td></tr>\n", rr.Policy);
             }
-            if (org.AskRequest == true)
-                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", om.Request, om.Organization.RequestLabel.HasValue() ? om.Organization.RequestLabel : "Request");
-            if (org.AskAllergies == true)
+            if (setting.AskRequest == true)
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", om.Request, setting.RequestLabel.HasValue() ? setting.RequestLabel : "Request");
+            if (setting.AskAllergies == true)
                 sb.AppendFormat("<tr><td>Medical:</td><td>{0}</td></tr>\n", rr.MedicalDescription);
 
-            if (org.AskTylenolEtc == true)
+            if (setting.AskTylenolEtc == true)
             {
                 sb.AppendFormat("<tr><td>Tylenol?: {0},", tylenol == true ? "Yes" : tylenol == false ? "No" : "");
                 sb.AppendFormat(" Advil?: {0},", advil == true ? "Yes" : advil == false ? "No" : "");
                 sb.AppendFormat(" Robitussin?: {0},", robitussin == true ? "Yes" : robitussin == false ? "No" : "");
                 sb.AppendFormat(" Maalox?: {0}</td></tr>\n", maalox == true ? "Yes" : maalox == false ? "No" : "");
             }
-            if (org.AskChurch == true)
+            if (setting.AskChurch == true)
             {
                 sb.AppendFormat("<tr><td>Member:</td><td>{0}</td></tr>\n", rr.Member);
                 sb.AppendFormat("<tr><td>OtherChurch:</td><td>{0}</td></tr>\n", rr.ActiveInAnotherChurch);
             }
-            if (org.AskParents == true)
+            if (setting.AskParents == true)
             {
                 sb.AppendFormat("<tr><td>Mother's name:</td><td>{0}</td></tr>\n", rr.Mname);
                 sb.AppendFormat("<tr><td>Father's name:</td><td>{0}</td></tr>\n", rr.Fname);
             }
-            if (org.AskCoaching == true)
+            if (setting.AskCoaching == true)
                 sb.AppendFormat("<tr><td>Coaching:</td><td>{0}</td></tr>\n", rr.Coaching);
-            if (org.AskGrade == true)
+            if (setting.AskGrade == true)
                 sb.AppendFormat("<tr><td>Grade:</td><td>{0}</td></tr>\n", om.Grade);
 
-            if (org.AgeGroups.HasValue())
+            if (setting.AgeGroups.Count > 0)
                 sb.AppendFormat("<tr><td>AgeGroup:</td><td>{0}</td></tr>\n", AgeGroup());
 
-            if (org.AskOptions.HasValue())
-                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option, Util.PickFirst(om.Organization.OptionsLabel, "Options"));
-            if (org.ExtraOptions.HasValue())
-                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option2, Util.PickFirst(om.Organization.ExtraOptionsLabel, "Extra Options"));
-            if (org.MenuItems.HasValue())
+            if (setting.AskOptions.Count > 0)
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option, 
+                    Util.PickFirst(setting.AskOptionsLabel, "Options"));
+            if (setting.ExtraOptions.Count > 0)
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option2, 
+                    Util.PickFirst(setting.ExtraOptionsLabel, "Extra Options"));
+            if (setting.MenuItems.Count > 0)
             {
                 var menulabel = "Menu Items";
                 foreach (var i in MenuItemsChosen())
@@ -265,33 +270,44 @@ namespace CmsWeb.Models
                     menulabel = string.Empty;
                 }
             }
-            if (org.Checkboxes.HasValue())
+            if (setting.Checkboxes.Count > 0)
             {
-                var menulabel = "Checkbox Items";
+                var menulabel = setting.CheckBoxLabel;
                 foreach (var i in CheckboxItemsChosen())
                 {
                     string row;
-                    if (i.amt > 0)
-                        row = "<tr><td>{0}</td><td>{1} (${2:N2}</td></tr>\n".Fmt(menulabel, i.desc, i.amt);
+                    if (i.Fee > 0)
+                        row = "<tr><td>{0}</td><td>{1} (${2:N2}</td></tr>\n".Fmt(menulabel, i.Description, i.Fee);
                     else
-                        row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, i.desc);
+                        row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, i.Description);
                     sb.AppendFormat(row);
                     menulabel = string.Empty;
                 }
             }
-            if (org.GradeOptions.HasValue())
+            if (setting.Checkboxes2.Count > 0)
+            {
+                var menulabel = setting.CheckBox2Label;
+                foreach (var i in Checkbox2ItemsChosen())
+                {
+                    string row;
+                    if (i.Fee > 0)
+                        row = "<tr><td>{0}</td><td>{1} (${2:N2}</td></tr>\n".Fmt(menulabel, i.Description, i.Fee);
+                    else
+                        row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, i.Description);
+                    sb.AppendFormat(row);
+                    menulabel = string.Empty;
+                }
+            }
+            if (setting.GradeOptions.Count > 0)
                 sb.AppendFormat("<tr><td>GradeOption:</td><td>{0}</td></tr>\n",
                     GradeOptions().SingleOrDefault(s => s.Value == (gradeoption ?? "00")).Text);
-            if (org.YesNoQuestions.HasValue())
-                foreach (var a in YesNoQuestions())
-                    sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, YesNoQuestion[a.name] == true ? "Yes" : "No"));
-            if (org.ExtraQuestions.HasValue())
+            if (setting.YesNoQuestions.Count > 0)
+                foreach (var a in setting.YesNoQuestions)
+                    sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Question, YesNoQuestion[a.SmallGroup] == true ? "Yes" : "No"));
+            if (setting.ExtraQuestions.Count > 0)
                 foreach (var a in ExtraQuestion)
                     if (a.Value.HasValue())
                         sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
-            if (org.Checkboxes.HasValue())
-                foreach (var a in Checkboxes().Values)
-                    sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.desc, CheckboxChecked(a.desc) == true ? "checked" : ""));
 
             //if (donation > 0)
             //    sb.AppendFormat("<tr><td>Donation:</td><td>{0:c}</td></tr>\n", donation);
@@ -304,9 +320,9 @@ namespace CmsWeb.Models
         }
         private string AgeGroup()
         {
-            foreach (var i in AgeGroups())
+            foreach (var i in setting.AgeGroups)
                 if (person.Age >= i.StartAge && person.Age <= i.EndAge)
-                    return i.Name;
+                    return i.SmallGroup;
             return string.Empty;
         }
     }

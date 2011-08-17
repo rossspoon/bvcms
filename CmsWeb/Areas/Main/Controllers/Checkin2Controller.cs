@@ -191,46 +191,29 @@ namespace CmsWeb.Areas.Main.Controllers
             p.CellPhone = m.cell.GetDigits();
             p.MaritalStatusId = m.marital;
             p.GenderId = m.gender;
-            var rr = GetRecReg(p);
+            var rr = p.GetRecReg();
             if (m.allergies != rr.MedicalDescription)
-                SetRecReg(p).MedicalDescription = m.allergies;
+                p.SetRecReg().MedicalDescription = m.allergies;
             if (m.AskGrade)
                 if (m.grade.ToInt2() != p.Grade)
                     p.Grade = m.grade.ToInt2();
             if (m.AskEmFriend)
             {
                 if (m.parent != rr.Mname)
-                    SetRecReg(p).Mname = m.parent;
+                    p.SetRecReg().Mname = m.parent;
                 if (m.emfriend != rr.Emcontact)
-                    SetRecReg(p).Emcontact = m.emfriend;
+                    p.SetRecReg().Emcontact = m.emfriend;
                 if (m.emphone != rr.Emphone)
-                    SetRecReg(p).Emphone = m.emphone;
+                    p.SetRecReg().Emphone = m.emphone;
             }
             if (m.campusid > 0)
                 p.CampusId = m.campusid;
             if (m.AskChurch)
                 if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
-                    SetRecReg(p).ActiveInAnotherChurch = m.activeother.ToBool();
+                    p.SetRecReg().ActiveInAnotherChurch = m.activeother.ToBool();
             if (m.AskChurchName)
                 p.OtherPreviousChurch = m.churchname;
             DbUtil.Db.SubmitChanges();
-        }
-        private RecReg GetRecReg(Person p)
-        {
-            var rr = p.RecRegs.SingleOrDefault();
-            if (rr == null)
-                return new RecReg();
-            return rr;
-        }
-        private RecReg SetRecReg(Person p)
-        {
-            var rr = p.RecRegs.SingleOrDefault();
-            if (rr == null)
-            {
-                rr = new RecReg();
-                p.RecRegs.Add(rr);
-            }
-            return rr;
         }
         public class CampusItem
         {

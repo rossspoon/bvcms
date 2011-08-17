@@ -19,11 +19,22 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         }
         private void SetHeaders(int id)
         {
+            RegSettings setting = null;
             var org = DbUtil.Db.LoadOrganizationById(id);
-            var s = DbUtil.Content(org != null ? org.Shell : null, 
-                        DbUtil.Content("ShellDiv-" + id, 
-                                DbUtil.Content("ShellDefault", 
-                                        "")));
+            var shell = "";
+            if ((settings == null || !settings.ContainsKey(id)) && org != null)
+            {
+                setting = OnlineRegModel.ParseSetting(org.RegSetting, id);
+                shell = DbUtil.Content(setting.Shell, null);
+            }
+            if (!shell.HasValue() && settings != null && settings.ContainsKey(id))
+            {
+                shell = DbUtil.Content(settings[id].Shell, null);
+            }
+            if (!shell.HasValue())
+                shell = DbUtil.Content("ShellDiv-" + id, DbUtil.Content("ShellDefault", ""));
+
+            var s = shell;
             if (s.HasValue())
             {
                 var re = new Regex(@"(.*<!--FORM START-->\s*).*(<!--FORM END-->.*)", RegexOptions.Singleline);

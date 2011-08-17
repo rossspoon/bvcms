@@ -33,27 +33,40 @@ namespace CmsWeb.Models
         {
             get { return married == 10 ? "Single" : "Married"; }
         }
+        public IEnumerable<Organization> GetOrgsInDiv()
+        {
+            return from o in DbUtil.Db.Organizations
+                   where o.DivOrgs.Any(di => di.DivId == divid)
+                   select o;
+        }
+        private bool RegistrationType(int typ)
+        {
+            if (divid == null)
+                return false;
+            var q = from o in GetOrgsInDiv()
+                    where o.RegistrationTypeId == typ
+                    select o;
+            return q.Count() > 0;
+        }
         public bool UserSelectsOrganization()
         {
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == RegistrationEnum.UserSelectsOrganization);
+            return RegistrationType(RegistrationEnum.UserSelectsOrganization);
         }
         public bool ComputesOrganizationByAge()
         {
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == RegistrationEnum.ComputeOrganizationByAge);
+            return RegistrationType(RegistrationEnum.ComputeOrganizationByAge);
         }
         public bool ManageSubscriptions()
         {
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == RegistrationEnum.ManageSubscriptions);
+            return RegistrationType(RegistrationEnum.ManageSubscriptions);
         }
         public bool MemberOnly()
         {
             if (org != null)
-                return org.MemberOnly == true;
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.MemberOnly == true);
+                return setting.MemberOnly == true;
+            if (divid == null)
+                return false;
+            return settings.Values.Any(o => o.MemberOnly);
         }
         [NonSerialized]
         private CmsData.Organization _org;
@@ -63,7 +76,7 @@ namespace CmsWeb.Models
             {
                 if (_org == null && orgid.HasValue)
                     if (orgid == Util.CreateAccountCode)
-                        _org = OnlineRegModel.CreateAccountOrg;
+                        _org = OnlineRegModel.CreateAccountOrg();
                     else
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 if (_org == null && classid.HasValue)
@@ -71,7 +84,26 @@ namespace CmsWeb.Models
                 if (_org == null && divid.HasValue && (Found == true || IsValidForNew))
                     if (ComputesOrganizationByAge())
                         _org = GetAppropriateOrg();
+                //if(_org != null && _settings == null)
+                //    ParseSettings();
                 return _org;
+            }
+        }
+        [NonSerialized]
+        private RegSettings _setting;
+        public RegSettings setting
+        {
+            get
+            {
+                if (_setting == null)
+                {
+                    if (org == null)
+                        throw new Exception("no valid org");
+                    if (settings == null)
+                        throw new Exception("settings are null");
+                    _setting = settings[org.OrganizationId];
+                }
+                return _setting;
             }
         }
         private CmsData.Organization GetAppropriateOrg()
@@ -111,44 +143,24 @@ namespace CmsWeb.Models
                     return false;
                 else if (org.RegistrationTypeId == RegistrationEnum.ChooseSlot)
                     return false;
-                else return (org.AskShirtSize == true ||
-                    org.AskRequest == true ||
-                    org.AskGrade == true ||
-                    org.AskEmContact == true ||
-                    org.AskInsurance == true ||
-                    org.AskDoctor == true ||
-                    org.AskAllergies == true ||
-                    org.AskTylenolEtc == true ||
-                    org.AskParents == true ||
-                    org.AskCoaching == true ||
-                    org.AskChurch == true ||
-                    org.AskTickets == true ||
-                    org.ExtraQuestions.HasValue() ||
-                    org.MenuItems.HasValue() ||
-                    org.AskOptions.HasValue() ||
-                    org.YesNoQuestions.HasValue() ||
-                    org.Deposit > 0);
-            var q = from o in DbUtil.Db.Organizations
-                    where o.DivOrgs.Any(di => di.DivId == divid)
-                    where o.AskShirtSize == true ||
-                        o.AskRequest == true ||
-                        o.AskGrade == true ||
-                        o.AskEmContact == true ||
-                        o.AskInsurance == true ||
-                        o.AskDoctor == true ||
-                        o.AskAllergies == true ||
-                        o.AskTylenolEtc == true ||
-                        o.AskParents == true ||
-                        o.AskCoaching == true ||
-                        o.AskChurch == true ||
-                        o.AskTickets == true ||
-                        o.AskOptions.Length > 0 ||
-                        o.ExtraQuestions.Length > 0 ||
-                        o.MenuItems.Length > 0 ||
-                        o.YesNoQuestions.Length > 0 ||
-                        o.Deposit > 0
-                    select o;
-            return q.Count() > 0;
+            return settings.Values.Any(setting => 
+                setting.AskShirtSize == true ||
+                setting.AskRequest == true ||
+                setting.AskGrade == true ||
+                setting.AskEmContact == true ||
+                setting.AskInsurance == true ||
+                setting.AskDoctor == true ||
+                setting.AskAllergies == true ||
+                setting.AskTylenolEtc == true ||
+                setting.AskParents == true ||
+                setting.AskCoaching == true ||
+                setting.AskChurch == true ||
+                setting.AskTickets == true ||
+                setting.ExtraQuestions != null ||
+                setting.MenuItems != null ||
+                setting.AskOptions != null ||
+                setting.YesNoQuestions != null ||
+                setting.Deposit > 0);
         }
         public static void CheckNotifyDiffEmails(Person person, string fromemail, string regemail, string orgname, string phone)
         {

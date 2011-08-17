@@ -65,6 +65,9 @@ namespace CmsWeb.Models
                         LeaderName = o.LeaderName,
                         LeaderId = o.LeaderId,
                         MemberCount = o.MemberCount,
+                        ClassFilled = o.ClassFilled ?? false,
+                        RegClosed = o.RegistrationClosed ?? false,
+                        RegType = o.RegistrationType.Description,
                         AttendanceTrackingLevel = o.AttendTrackLevel.Description,
                         ProgramName = o.Division.Program.Name,
                         DivisionId = o.DivisionId,
@@ -102,54 +105,21 @@ namespace CmsWeb.Models
                          Schedule = DbUtil.Db.GetScheduleDesc(sc.MeetingTime),
                          o.Location,
                          RollSheetVisitorWks = o.RollSheetVisitorWks ?? 0,
-                         o.AgeFee,
-                         o.AgeGroups,
                          Limit = o.Limit.ToString(),
                          CanSelfCheckin = o.CanSelfCheckin ?? false,
                          AllowKioskRegister = o.AllowKioskRegister ?? false,
-                         AllowLastYearShirt = o.AllowLastYearShirt ?? false,
-                         AllowOnlyOne = o.AllowOnlyOne ?? false,
-                         AskAllergies = o.AskAllergies ?? false,
-                         AskChurch = o.AskChurch ?? false,
-                         AskCoaching = o.AskCoaching ?? false,
-                         AskDoctor = o.AskDoctor ?? false,
-                         AskEmContact = o.AskEmContact ?? false,
-                         AskGrade = o.AskGrade ?? false,
-                         AskInsurance = o.AskInsurance ?? false,
-                         o.AskOptions,
-                         AskParents = o.AskParents ?? false,
-                         AskRequest = o.AskRequest ?? false,
-                         AskShirtSize = o.AskShirtSize ?? false,
-                         AskTickets = o.AskTickets ?? false,
-                         AskTylenolEtc = o.AskTylenolEtc ?? false,
                          BirthDayStart = o.BirthDayStart.FormatDate2(),
                          BirthDayEnd = o.BirthDayEnd.FormatDate2(),
-                         Deposit = o.Deposit ?? 0,
-                         Fee = o.Fee ?? 0,
-                         ExtraFee = o.ExtraFee ?? 0,
                          GenderId = o.GenderId ?? 0,
                          GradeAgeStart = o.GradeAgeStart ?? 0,
                          GradeAgeEnd = o.GradeAgeEnd ?? 0,
-                         o.EmailAddresses,
                          LastDayBeforeExtra = o.LastDayBeforeExtra.FormatDate2(),
-                         MaximumFee = o.MaximumFee ?? 0,
-                         MemberOnly = o.MemberOnly ?? false,
                          OnLineCatalogSort = o.OnLineCatalogSort ?? 0,
                          NoSecurityLabel = o.NoSecurityLabel ?? false,
                          NumCheckInLabels = o.NumCheckInLabels ?? 0,
-                         o.NumItemsLabel,
                          NumWorkerCheckInLabels = o.NumWorkerCheckInLabels ?? 0,
                          o.PhoneNumber,
-                         RegistrationTypeId = o.RegistrationTypeId ?? 0,
-                         ShirtFee = o.ShirtFee ?? 0,
-                         o.YesNoQuestions,
                          IsBibleFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
-                         NoReqAddr = o.NotReqAddr ?? false,
-                         NoReqDOB = o.NotReqDOB ?? false,
-                         NoReqGender = o.NotReqGender ?? false,
-                         NoReqMarital = o.NotReqMarital ?? false,
-                         NoReqPhone = o.NotReqPhone ?? false,
-                         NoReqZip = o.NotReqZip ?? false,
                      };
             return q2;
         }
@@ -249,8 +219,9 @@ namespace CmsWeb.Models
                                 select o;
                         break;
                     case "Division":
+                    case "Program/Division":
                         query = from o in query
-                                orderby o.Division.Name,
+                                orderby o.Division.Program.Name, o.Division.Name,
                                 o.OrganizationName
                                 select o;
                         break;
@@ -281,22 +252,34 @@ namespace CmsWeb.Models
                                 o.OrganizationName
                                 select o;
                         break;
-                    case "Members":
+                    case "Filled":
                         query = from o in query
-                                orderby o.MemberCount,
-                                o.OrganizationName
+                                orderby o.ClassFilled, o.OrganizationName
                                 select o;
                         break;
-                    case "FirstMeetingDate":
+                    case "Closed":
                         query = from o in query
-                                orderby o.FirstMeetingDate,
-                                o.LastMeetingDate
+                                orderby o.RegistrationClosed, o.OrganizationName
+                                select o;
+                        break;
+                    case "Type":
+                        query = from o in query
+                                orderby o.RegistrationType.Description, o.OrganizationName
+                                select o;
+                        break;
+                    case "Members":
+                        query = from o in query
+                                orderby o.MemberCount, o.OrganizationName
+                                select o;
+                        break;
+                    case "FirstDate":
+                        query = from o in query
+                                orderby o.FirstMeetingDate, o.LastMeetingDate
                                 select o;
                         break;
                     case "LastMeetingDate":
                         query = from o in query
-                                orderby o.LastMeetingDate,
-                                o.FirstMeetingDate
+                                orderby o.LastMeetingDate, o.FirstMeetingDate
                                 select o;
                         break;
                 }
@@ -308,9 +291,10 @@ namespace CmsWeb.Models
                                 orderby o.OrganizationId descending
                                 select o;
                         break;
+                    case "Program/Division":
                     case "Division":
                         query = from o in query
-                                orderby o.Division.Name descending,
+                                orderby o.Division.Program.Name descending, o.Division.Name descending,
                                 o.OrganizationName descending
                                 select o;
                         break;
@@ -341,13 +325,31 @@ namespace CmsWeb.Models
                                 o.OrganizationName descending
                                 select o;
                         break;
+                    case "Filled":
+                        query = from o in query
+                                orderby o.ClassFilled descending, 
+                                o.OrganizationName descending
+                                select o;
+                        break;
+                    case "Closed":
+                        query = from o in query
+                                orderby o.RegistrationClosed descending, 
+                                o.OrganizationName descending
+                                select o;
+                        break;
+                    case "Type":
+                        query = from o in query
+                                orderby o.RegistrationType.Description descending, 
+                                o.OrganizationName descending
+                                select o;
+                        break;
                     case "Members":
                         query = from o in query
                                 orderby o.MemberCount descending,
                                 o.OrganizationName descending
                                 select o;
                         break;
-                    case "FirstMeetingDate":
+                    case "FirstDate":
                         query = from o in query
                                 orderby o.FirstMeetingDate descending,
                                 o.LastMeetingDate descending
@@ -499,6 +501,9 @@ namespace CmsWeb.Models
             public string LeaderName { get; set; }
             public int? LeaderId { get; set; }
             public int? MemberCount { get; set; }
+            public bool ClassFilled { get; set; }
+            public bool RegClosed { get; set; }
+            public string RegType { get; set; }
             public string AttendanceTrackingLevel { get; set; }
             public string ProgramName { get; set; }
             public int? DivisionId { get; set; }

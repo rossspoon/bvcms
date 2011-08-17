@@ -97,11 +97,11 @@ namespace CmsWeb.Models
 </td></tr>", i + 1, p.PrepareSummaryText(ti));
 
                 om.RegisterEmail = p.email;
-                if (p.org.GiveOrgMembAccess == true)
+                if (p.setting.GiveOrgMembAccess == true)
                 {
                     CmsData.Group g = null;
-                    if (org.GroupToJoin.HasValue())
-                        g = CmsData.Group.LoadByName(org.GroupToJoin);
+                    if (p.setting.GroupToJoin.HasValue())
+                        g = CmsData.Group.LoadByName(p.setting.GroupToJoin);
 
                     if (p.person.Users.Count() == 0)
                     {
@@ -116,7 +116,7 @@ namespace CmsWeb.Models
                         if (!list.Contains("OrgMembersOnly"))
                             list.Add("OrgMembersOnly");
                         u.SetRoles(Db, list.ToArray(), false);
-                        if (org.GroupToJoin.HasValue())
+                        if (p.setting.GroupToJoin.HasValue())
                         {
                             g.SetMember(u, true);
                             u.DefaultGroup = g.Name;
@@ -129,7 +129,7 @@ namespace CmsWeb.Models
                     p.fromemail,
                     p.org.OrganizationName,
                     p.org.PhoneNumber);
-                if (p.CreatingAccount == true && (p.org.GiveOrgMembAccess ?? false) == false)
+                if (p.CreatingAccount == true && p.setting.GiveOrgMembAccess == false)
                     p.CreateAccount();
             }
             details.Append("\n</table>\n");
@@ -153,10 +153,11 @@ namespace CmsWeb.Models
             string EmailSubject = null;
             string EmailMessage = null;
 
-            if (org != null && org.EmailMessage.HasValue())
+            if (org != null && settings[orgid.Value].Body.ToString().HasValue())
             {
-                EmailSubject = org.EmailSubject;
-                EmailMessage = org.EmailMessage;
+                var os = settings[orgid.Value];
+                EmailSubject = Util.PickFirst(os.Subject, org.EmailSubject, "no subject");
+                EmailMessage = Util.PickFirst(os.Body.ToString(), org.EmailMessage, "no body");
             }
             else if (div != null)
             {
@@ -194,19 +195,19 @@ namespace CmsWeb.Models
             var re = new Regex(@"\{donation(?<text>.*)donation\}", RegexOptions.Singleline | RegexOptions.Multiline);
             if (ti.Donate > 0)
             {
-                ti.Fund = org.ContributionFund.FundName;
-                var p = List[donor.Value].person;
-                var desc = "{0}; {1}; {2}, {3} {4}".Fmt(p.Name, p.PrimaryAddress, p.PrimaryCity, p.PrimaryState, p.PrimaryZip);
-                //int? pid = UserPeopleId;
-                //if (!pid.HasValue)
-                //{
-                //    string first, last;
-                //    Person.NameSplit(ti.Name, out first, out last);
-                //    var pds = Db.FindPerson(first, last, null, ti.Emails, ti.Phone);
-                //    if (pds.Count() == 1)
-                //        pid = pds.Single().PeopleId;
-                //}
-                PostBundleModel.PostUnattendedContribution(ti.Donate.Value, p.PeopleId, org.DonationFundId, desc);
+                var p = List[donor.Value];
+                ti.Fund = p.setting.DonationFund();
+                var desc = "{0}; {1}; {2}, {3} {4}".Fmt(
+                    p.person.Name, 
+                    p.person.PrimaryAddress, 
+                    p.person.PrimaryCity, 
+                    p.person.PrimaryState, 
+                    p.person.PrimaryZip);
+                PostBundleModel.PostUnattendedContribution(
+                    ti.Donate.Value, 
+                    p.PeopleId, 
+                    p.setting.DonationFundId, 
+                    desc);
             	var ma = re.Match(message);
                 if (ma.Success)
                 {
@@ -215,7 +216,8 @@ namespace CmsWeb.Models
                 }
                 message = message.Replace("{donation}", ti.Donate.ToString2("N2"));
                 // send donation confirmations
-                Db.Email(notify.FromEmail, NotifyIds, subject + "-donation", "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
+                Db.Email(notify.FromEmail, NotifyIds, subject + "-donation", 
+                    "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
             }
             else
                 message = re.Replace(message, "");
@@ -226,7 +228,7 @@ namespace CmsWeb.Models
             // notify the staff
             foreach (var p in List)
             {
-                Db.Email(p.person.FromEmail, 
+                Db.Email(Util.PickFirst(p.person.FromEmail, notify.FromEmail), 
                     Db.StaffPeopleForOrg(p.org.OrganizationId), Header,
 @"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
 <pre>{4}</pre>".Fmt(p.person.Name, Header, amtpaid, p.AmountDue(), p.PrepareSummaryText(ti)));
@@ -277,8 +279,7 @@ namespace CmsWeb.Models
         }
         public int EntryPointForDiv()
         {
-            var q = from o in DbUtil.Db.Organizations
-                    where o.DivOrgs.Any(dd => dd.DivId == divid)
+            var q = from o in GetOrgsInDiv()
                     where o.RegistrationTypeId != RegistrationEnum.None
                     where o.EntryPointId > 0
                     select o.EntryPointId;

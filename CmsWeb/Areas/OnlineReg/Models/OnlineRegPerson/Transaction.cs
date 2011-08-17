@@ -11,8 +11,8 @@ namespace CmsWeb.Models
     {
         public decimal AmountToPay()
         {
-            if (paydeposit == true && org.Deposit.HasValue && org.Deposit > 0)
-                return org.Deposit.Value;
+            if (paydeposit == true && setting.Deposit.HasValue && setting.Deposit > 0)
+                return setting.Deposit.Value;
             return TotalAmount();
         }
         public decimal AmountDue()
@@ -27,39 +27,34 @@ namespace CmsWeb.Models
             var countorgs = 0;
 
             // compute special fees first, in order of precedence, lowest to highest
-            if (org.AskTickets == true)
+            if (setting.AskTickets == true)
                 // fee based on number of tickets
-                amt = (org.Fee ?? 0) * (ntickets ?? 0);
-            if (org.SuggestedFee == true)
+                amt = (setting.Fee ?? 0) * (ntickets ?? 0);
+            if (setting.SuggestedFee == true)
                 amt = suggestedfee ?? 0;
-            if (org.AgeFee.HasValue())
-                // fee based on age
+            if (setting.AgeGroups != null) // fee based on age
             {
-                var q = from o in org.AgeFee.Split(',')
-                        let b = o.Split('=')
-                        let a = b[0].Split('-')
-                        where b.Length > 1
-                        where age >= a[0].ToInt()
-                        where a.Length > 1 && age <= a[1].ToInt()
-                        select decimal.Parse(b[1]);
+                var q = from o in setting.AgeGroups
+                        where age >= o.StartAge
+                        where age <= o.EndAge || o.EndAge == 0
+                        select o.Fee ?? 0;
                 if (q.Count() > 0)
                     amt = q.First();
             }
-            if (org.OrgMemberFees.HasValue())
+            if (setting.OrgFees != null)
                 // fee based on being in an organization
             {
-                var q = from o in org.OrgMemberFees.Split(',')
-                        let b = o.Split('=')
-                        where b.Length > 1
-                        where person != null && person.OrganizationMembers.Any(om => om.OrganizationId.ToString() == b[0])
-                        select decimal.Parse(b[1]);
+                var q = from o in setting.OrgFees
+                        where person != null
+                        && person.OrganizationMembers.Any(om => om.OrganizationId == o.OrgId)
+                        select o.Fee ?? 0;
                 countorgs = q.Count();
                 if (countorgs > 0)
                     amt = q.First();
             }
             // just use the simple fee if nothing else has been used yet.
-            if (amt == 0 && countorgs == 0 && (org.SuggestedFee ?? false) == false)
-                amt = org.Fee ?? 0;
+            if (amt == 0 && countorgs == 0 && setting.SuggestedFee == false)
+                amt = setting.Fee ?? 0;
 
             amt += TotalOther();
             return amt;
@@ -67,24 +62,33 @@ namespace CmsWeb.Models
         public decimal TotalOther()
         {
             decimal amt = 0;
-            if (org.MenuItems.HasValue())
+            if (setting.MenuItems.Count > 0)
                 amt += MenuItemsChosen().Sum(m => m.number * m.amt);
-            if (shirtsize != "lastyear" && org.ShirtFee.HasValue)
-                amt += org.ShirtFee.Value;
-            if (org.LastDayBeforeExtra.HasValue && org.ExtraFee.HasValue)
+            if (shirtsize != "lastyear" && setting.ShirtFee.HasValue)
+                amt += setting.ShirtFee.Value;
+            if (org.LastDayBeforeExtra.HasValue && setting.ExtraFee.HasValue)
                 if (Util.Now > org.LastDayBeforeExtra.Value.AddHours(24))
-                    amt += org.ExtraFee.Value;
-            if (org.AskOptions.HasValue())
+                    amt += setting.ExtraFee.Value;
+            if (setting.AskOptions.Count > 0)
             {
-                var q = from o in org.AskOptions.Split(',')
-                        let a = o.Split('=')
-                        where option == a[0].Trim() && a.Length > 1
-                        select decimal.Parse(a[1]);
+                var q = from o in setting.AskOptions
+                        where option == o.SmallGroup
+                        select o.Fee ?? 0;
                 if (q.Count() > 0)
                     amt += q.First();
             }
-            if (Checkboxes().Values.Any(vv => vv.amt > 0))
-                amt += CheckboxItemsChosen().Sum(c => c.amt);
+            if (setting.ExtraOptions.Count > 0)
+            {
+                var q = from o in setting.AskOptions
+                        where option2 == o.SmallGroup
+                        select o.Fee ?? 0;
+                if (q.Count() > 0)
+                    amt += q.First();
+            }
+            if (setting.Checkboxes.Any(vv => vv.Fee > 0))
+                amt += CheckboxItemsChosen().Sum(c => c.Fee.Value);
+            if (setting.Checkboxes2.Any(vv => vv.Fee > 0))
+                amt += Checkbox2ItemsChosen().Sum(c => c.Fee.Value);
             return amt;
         }
     }

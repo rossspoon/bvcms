@@ -466,6 +466,10 @@ namespace CmsWeb
             private readonly TemplateInfo _templateInfo;
             private readonly string _previousPrefix;
             public string hiddenindex { get; set; }
+            public string SuitableId
+            {
+                get { return _templateInfo.HtmlFieldPrefix.ToSuitableId(); }
+            }
 
             public CollectionItemNamePrefixScope(TemplateInfo templateInfo, string collectionItemName, string hiddenindex)
             {

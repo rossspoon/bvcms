@@ -1,0 +1,22 @@
+﻿@using UtilityExtensions
+@{
+    ViewBag.Title = "EditRegSetting";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<h2>
+    Editing Registration Settings for <a href="/Organization/Index/@ViewData["OrganizationId"]">@ViewData["orgname"]</a></h2>
+<form action="/RegSetting/Update/@ViewData["OrganizationId"]" method="post">
+<input type="submit" class="bt" value="Save Changes" />
+<a href="/RegSetting/Index/@ViewData["OrganizationId"]" class="bt">Cancel</a>
+<p style="color: red">@TempData["error"]</p>
+@Html.TextArea("text", new { rows = "40", style = "width:90%", wrap="off" })
+</form>
+<script type="text/javascript" src="/Content/js/jquery.textarea.js"></script>
+<script src="/Content/js/jquery-linedtextarea.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("textarea").css("height", this.scrollHeight + "px");
+        $("textarea").tabby();
+        $(".bt").button();
+    });
+</script>

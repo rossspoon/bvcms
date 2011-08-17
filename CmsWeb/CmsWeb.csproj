@@ -223,6 +223,7 @@
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactSearchController.cs" />
+    <Compile Include="Areas\Main\Controllers\RegSettingController.cs" />
     <Compile Include="Areas\Main\Controllers\MeetingController.cs" />
     <Compile Include="Areas\Main\Controllers\FamilyController.cs" />
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
     <Compile Include="Areas\Main\Models\Other\ContributionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Person\FamilyModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\RegSettingsController.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Main\Models\iPhone\DetailResult.cs" />
@@ -420,7 +422,6 @@
     <Compile Include="Areas\Setup\Controllers\MinistryController.cs" />
     <Compile Include="Areas\Setup\Controllers\ProgramController.cs" />
     <Compile Include="Areas\Setup\Controllers\PromotionController.cs" />
-    <Compile Include="Areas\Setup\Controllers\RecreationController.cs" />
     <Compile Include="Areas\Setup\Controllers\SettingController.cs" />
     <Compile Include="Areas\Setup\Controllers\UsersCanEmailForController.cs" />
     <Compile Include="Areas\Setup\Models\PromotionModel.cs" />
@@ -959,6 +960,7 @@
     <Content Include="Content\images\ui-bg_glass_100_dadada_1x400.png" />
     <Content Include="Content\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\jquery-linedtextarea.css" />
     <Content Include="Content\jquery-ui-1.8.13.custom.css" />
     <Content Include="Content\jquery-ui-timepicker.css" />
     <Content Include="Content\jquery.sb.css" />
@@ -966,6 +968,7 @@
     <Content Include="Content\js\jquery.gmap.js" />
     <Content Include="Content\js\jquery.gmap.min.js" />
     <Content Include="Content\js\jquery.sb.js" />
+    <Content Include="Content\js\jquery.textarea.js" />
     <Content Include="Content\js\jquery.tie.js" />
     <Content Include="Content\js\jquery.ui.timepicker.js" />
     <Content Include="constants.py" />
@@ -1000,10 +1003,13 @@
     <Content Include="images\notreq.gif" />
     <Content Include="images\plus1.png" />
     <Content Include="images\plus2.png" />
+    <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\RegSetting.js" />
     <Content Include="Scripts\markers.js" />
     <Content Include="Scripts\meeting.js" />
+    <Content Include="Scripts\RegSettings.js" />
     <Content Include="Scripts\SearchUsers.js" />
     <Content Include="Scripts\Tags.js" />
     <Content Include="Scripts\QuickSearch.js" />
@@ -1256,15 +1262,6 @@
     <Content Include="Areas\Setup\Views\Promotion\Index.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Setup\Views\Recreation\AgeDivisions.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Setup\Views\Recreation\Errors.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Setup\Views\Recreation\Index.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Areas\Setup\Views\Setting\Batch.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -1440,6 +1437,21 @@
     <Content Include="Areas\Public\Views\SGMap\popup.cshtml" />
     <Content Include="Areas\Public\Views\SGMap\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\Test.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\Edit.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\RegSettings\Index.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\EditGui.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\MenuItemEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\AgeGroupEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\GradeOptionEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\YesNoQuestionEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\ExtraQuestionEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\AskOptionEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\ExtraOptionEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\CheckboxEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\Checkbox2Editor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\ShirtSizeEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\VoteTagEditor.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

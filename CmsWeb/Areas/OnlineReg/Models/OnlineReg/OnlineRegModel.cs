@@ -14,6 +14,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.Runtime.Serialization;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -28,9 +29,9 @@ namespace CmsWeb.Models
         }
         [NonSerialized]
         public OnlineRegPersonModel current;
-        [NonSerialized]        
+        [NonSerialized]
         public bool ShowFindInstructions;
-        [NonSerialized]        
+        [NonSerialized]
         public bool ShowLoginInstructions;
         [NonSerialized]
         public bool ShowOtherInstructions;
@@ -45,6 +46,30 @@ namespace CmsWeb.Models
                 return _div;
             }
         }
+        public void ParseSettings()
+        {
+            if (HttpContext.Current.Items.Contains("RegSettings"))
+                return;
+            var list = new Dictionary<int, RegSettings>();
+            if (divid.HasValue)
+            {
+                var q = from o in DbUtil.Db.Organizations
+                        where o.DivOrgs.Any(od => od.DivId == divid)
+                        where o.OrganizationStatusId == OrgStatusCode.Active
+                        where (o.RegistrationClosed ?? false) == false
+                        where o.RegistrationTypeId != RegistrationEnum.None
+                        select new { o.OrganizationId, o.RegSetting };
+                foreach (var i in q)
+                    list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
+            }
+            else
+                list[org.OrganizationId] = new RegSettings(org.RegSetting, DbUtil.Db, org.OrganizationId);
+            HttpContext.Current.Items.Add("RegSettings", list);
+        }
+        public static RegSettings ParseSetting(string RegSetting, int OrgId)
+        {
+            return new RegSettings(RegSetting, DbUtil.Db, OrgId);
+        }
         public string URL { get; set; }
 
         [NonSerialized]
@@ -55,15 +80,41 @@ namespace CmsWeb.Models
             {
                 if (_org == null && orgid.HasValue)
                     if (orgid == Util.CreateAccountCode)
-                        _org = CreateAccountOrg;
+                        _org = CreateAccountOrg();
                     else
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 return _org;
             }
         }
 
-        public int? divid { get; set; }
-        public int? orgid { get; set; }
+        private int? _Divid;
+        public int? divid
+        {
+            get
+            {
+                return _Divid;
+            }
+            set
+            {
+                _Divid = value;
+                if (value > 0)
+                    ParseSettings();
+            }
+        }
+        private int? _Orgid;
+        public int? orgid
+        {
+            get
+            {
+                return _Orgid;
+            }
+            set
+            {
+                _Orgid = value;
+                if (value > 0)
+                    ParseSettings();
+            }
+        }
         [OptionalField]
         private int? _Classid;
         public int? classid
@@ -162,7 +213,6 @@ namespace CmsWeb.Models
 
         public OnlineRegModel()
         {
-
         }
         protected OnlineRegModel(SerializationInfo si, StreamingContext context)
         {
@@ -188,8 +238,8 @@ namespace CmsWeb.Models
                 {
                     divid = divid,
                     orgid = orgid,
-                    first = "Delaine",
-                    last = "Carroll",
+                    first = "Melhem",
+                    last = "Abdallah",
                     dob = "9/29/46",
                     email = "david@bvcms.com",
                     phone = "",

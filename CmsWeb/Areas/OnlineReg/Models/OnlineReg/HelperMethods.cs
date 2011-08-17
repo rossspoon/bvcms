@@ -20,16 +20,29 @@ namespace CmsWeb.Models
 {
     public partial class OnlineRegModel
     {
-        public static Organization CreateAccountOrg
+        public static Organization CreateAccountOrg()
+        {
+            var settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
+            if (settings == null)
+            {
+                settings = new Dictionary<int, RegSettings>();
+                HttpContext.Current.Items.Add("RegSettings", settings);
+            }
+            var o = new Organization { OrganizationId = Util.CreateAccountCode, OrganizationName = "My Data" };
+            o.RegistrationTypeId = RegistrationEnum.CreateAccount;
+            if (!settings.ContainsKey(Util.CreateAccountCode))
+                settings.Add(Util.CreateAccountCode, ParseSetting("AllowOnlyOne: true", Util.CreateAccountCode));
+            return o;
+        }
+        [NonSerialized]
+        private Dictionary<int, RegSettings> _settings;
+        public Dictionary<int, RegSettings> settings
         {
             get
             {
-                return new Organization
-                {
-                    OrganizationName = "My Data",
-                    RegistrationTypeId = RegistrationEnum.CreateAccount,
-                    AllowOnlyOne = true,
-                };
+                if (_settings == null)
+                    _settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
+                return _settings;
             }
         }
         public bool DisplayLogin()
@@ -73,7 +86,7 @@ namespace CmsWeb.Models
         {
             if (div != null && UserSelectsOrganization())
                 return UserSelectClasses(div.Id).Count() == 0;
-            else if(org != null)
+            else if (org != null)
                 return org.ClassFilled == true;
             return false;
         }
@@ -101,22 +114,33 @@ namespace CmsWeb.Models
             return org.RegistrationClosed == true
                     || org.OrganizationStatusId == OrgStatusCode.Inactive;
         }
+        public IEnumerable<Organization> GetOrgsInDiv()
+        {
+            return from o in DbUtil.Db.Organizations
+                   where o.DivOrgs.Any(di => di.DivId == divid)
+                   select o;
+        }
         public bool UserSelectsOrganization()
         {
-            return divid != null && DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == RegistrationEnum.UserSelectsOrganization);
+            if (divid == null)
+                return false;
+            var q = from o in GetOrgsInDiv()
+                    where o.RegistrationTypeId == RegistrationEnum.UserSelectsOrganization
+                    select o;
+            return q.Count() > 0;
         }
         public bool OnlyOneAllowed()
         {
             if (org != null)
-                return org.AllowOnlyOne == true
-                    || org.AskTickets == true
-                    || org.RegistrationTypeId == RegistrationEnum.ChooseSlot
+            {
+                var setting = settings[org.OrganizationId];
+                return org.RegistrationTypeId == RegistrationEnum.ChooseSlot
                     || org.RegistrationTypeId == RegistrationEnum.CreateAccount
-                    || org.GiveOrgMembAccess == true;
+                    || setting.AllowOnlyOne == true || setting.AskTickets == true
+                    || setting.GiveOrgMembAccess == true;
+            }
 
-            var q = from o in DbUtil.Db.Organizations
-                    where o.DivOrgs.Any(di => di.DivId == divid)
+            var q = from o in settings.Values
                     where o.AllowOnlyOne == true || o.AskTickets == true
                     select o;
             return q.Count() > 0;
@@ -131,15 +155,17 @@ namespace CmsWeb.Models
         {
             if (org != null)
                 return org.RegistrationTypeId == RegistrationEnum.ManageSubscriptions;
-            return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.RegistrationTypeId == RegistrationEnum.ManageSubscriptions);
+
+            var q = from o in GetOrgsInDiv()
+                    where o.RegistrationTypeId == RegistrationEnum.ManageSubscriptions
+                    select o;
+            return q.Count() > 0;
         }
         public bool AskDonation()
         {
             if (org != null)
-                return org.AskDonation ?? false;
-            return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                    o.AskDonation == true);
+                return settings[org.OrganizationId].AskDonation;
+            return settings.Values.Any(o => o.AskDonation);
         }
         public string Header
         {
@@ -148,7 +174,7 @@ namespace CmsWeb.Models
                 if (div != null)
                     return div.Name;
                 else
-                    return org != null ? org.OrganizationName : "no organization";
+                    return org != null ? Util.PickFirst(settings[org.OrganizationId].Title, org.OrganizationName) : "no organization";
             }
         }
         public string Instructions
@@ -156,7 +182,35 @@ namespace CmsWeb.Models
             get
             {
                 if (org != null)
-                    return Util.PickFirst(org.Instructions, div != null ? div.Instructions : "");
+                {
+                    var setting = settings[org.OrganizationId];
+                    if (setting.InstructionAll != null)
+                        if (setting.InstructionAll.ToString().HasValue())
+                            return setting.InstructionAll.ToString();
+                    var v = "{0}{1}{2}{3}{4}{5}".Fmt(
+                                            setting.InstructionLogin,
+                                            setting.InstructionSelect,
+                                            setting.InstructionFind,
+                                            setting.InstructionOptions,
+                                            setting.InstructionSubmit,
+                                            setting.InstructionSorry);
+                    string ins = null;
+                    if (v.HasValue())
+                        ins = @"<div class=""instructions login"">{0}</div>
+<div class=""instructions select"">{1}</div>
+<div class=""instructions find"">{2}</div>
+<div class=""instructions options"">{3}</div>
+<div class=""instructions submit"">{4}</div>
+<div class=""instructions sorry"">{5}</div>".Fmt(
+                                            setting.InstructionLogin,
+                                            setting.InstructionSelect,
+                                            setting.InstructionFind,
+                                            setting.InstructionOptions,
+                                            setting.InstructionSubmit,
+                                            setting.InstructionSorry
+                                            );
+                    return Util.PickFirst(ins, div != null ? div.Instructions : "") + "\n";
+                }
                 if (div != null)
                     return div.Instructions;
                 return "";
@@ -167,7 +221,9 @@ namespace CmsWeb.Models
             get
             {
                 if (org != null)
-                    return Util.PickFirst(org.Terms, div != null ? div.Terms : "");
+                    return Util.PickFirst("{0}".Fmt(settings[org.OrganizationId].Terms),
+                        org.Terms,
+                        div != null ? div.Terms : "");
                 if (div != null)
                     return div.Terms;
                 return "";
@@ -175,11 +231,11 @@ namespace CmsWeb.Models
         }
         public OnlineRegPersonModel LoadExistingPerson(int id)
         {
-		    var person = DbUtil.Db.LoadPersonById(id);
-		    var p = new OnlineRegPersonModel
+            var person = DbUtil.Db.LoadPersonById(id);
+            var p = new OnlineRegPersonModel
             {
                 dob = person.DOB,
-                email = person.EmailAddress.HasValue() ? person.EmailAddress: user.EmailAddress,
+                email = person.EmailAddress.HasValue() ? person.EmailAddress : user.EmailAddress,
                 first = person.FirstName,
                 last = person.LastName,
                 PeopleId = id,

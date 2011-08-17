@@ -811,6 +811,13 @@ namespace CmsData
         {
             var rr = RecRegs.SingleOrDefault();
             if (rr == null)
+                return new RecReg();
+            return rr;
+        }
+        public RecReg SetRecReg()
+        {
+            var rr = RecRegs.SingleOrDefault();
+            if (rr == null)
             {
                 rr = new RecReg();
                 RecRegs.Add(rr);

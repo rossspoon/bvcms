@@ -220,6 +220,9 @@ namespace CmsWeb.Models
         }
         public IEnumerable<MySavedQueryInfo> MyQueries()
         {
+            var up = DbUtil.Db.CurrentUserPerson;
+            if (up == null)
+                return new List<MySavedQueryInfo>();
             var q = from c in DbUtil.Db.QueryBuilderClauses
                     where c.SavedBy == Util.UserName
                     where c.GroupId == null && c.Field == "Group" && c.Clauses.Count() > 0
@@ -241,6 +244,9 @@ namespace CmsWeb.Models
         }
         public IEnumerable<TaskInfo> Tasks()
         {
+            var up = DbUtil.Db.CurrentUserPerson;
+            if (up == null)
+                return new List<TaskInfo>();
             var completedcode = TaskStatusCode.Complete;
             var pid = DbUtil.Db.CurrentUser.PeopleId;
             var q = from t in DbUtil.Db.Tasks
@@ -260,6 +266,9 @@ namespace CmsWeb.Models
         }
         public IEnumerable<CMSPresenter.CodeValueItem> Tags()
         {
+            var up = DbUtil.Db.CurrentUserPerson;
+            if (up == null)
+                return new List<CMSPresenter.CodeValueItem>();
             var ctl = new CMSPresenter.CodeValueController();
             var pid = DbUtil.Db.CurrentUser.PeopleId;
             var list = ctl.UserTags(pid);

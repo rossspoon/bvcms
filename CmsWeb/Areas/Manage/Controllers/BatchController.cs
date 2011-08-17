@@ -157,80 +157,17 @@ namespace CmsWeb.Areas.Manage.Controllers
                 for (var c = 1; c < a.Length; c++)
                     switch (names[c].Trim())
                     {
-                        case "AgeFee":
-                            o.AgeFee = a[c];
-                            break;
-                        case "AgeGroups":
-                            o.AgeGroups = a[c];
-                            break;
                         case "CanSelfCheckin":
                             o.CanSelfCheckin = a[c].ToBool2();
                             break;
                         case "AllowKioskRegister":
                             o.AllowKioskRegister = a[c].ToBool2();
                             break;
-                        case "AllowLastYearShirt":
-                            o.AllowLastYearShirt = a[c].ToBool2();
-                            break;
-                        case "AllowOnlyOne":
-                            o.AllowOnlyOne = a[c].ToBool2();
-                            break;
-                        case "AskAllergies":
-                            o.AskAllergies = a[c].ToBool2();
-                            break;
-                        case "AskChurch":
-                            o.AskChurch = a[c].ToBool2();
-                            break;
-                        case "AskCoaching":
-                            o.AskCoaching = a[c].ToBool2();
-                            break;
-                        case "AskDoctor":
-                            o.AskDoctor = a[c].ToBool2();
-                            break;
-                        case "AskEmContact":
-                            o.AskEmContact = a[c].ToBool2();
-                            break;
-                        case "AskGrade":
-                            o.AskGrade = a[c].ToBool2();
-                            break;
-                        case "AskInsurance":
-                            o.AskInsurance = a[c].ToBool2();
-                            break;
-                        case "AskOptions":
-                            o.AskOptions = a[c];
-                            break;
-                        case "AskParents":
-                            o.AskParents = a[c].ToBool2();
-                            break;
-                        case "AskRequest":
-                            o.AskRequest = a[c].ToBool2();
-                            break;
-                        case "AskShirtSize":
-                            o.AskShirtSize = a[c].ToBool2();
-                            break;
-                        case "AskTickets":
-                            o.AskTickets = a[c].ToBool2();
-                            break;
-                        case "AskTylenolEtc":
-                            o.AskTylenolEtc = a[c].ToBool2();
-                            break;
                         case "BirthDayStart":
                             o.BirthDayStart = a[c].ToDate();
                             break;
                         case "BirthDayEnd":
                             o.BirthDayEnd = a[c].ToDate();
-                            break;
-                        case "Deposit":
-                            o.Deposit = a[c].ToDecimal();
-                            break;
-                        case "EmailAddresses":
-                            o.EmailAddresses = a[c];
-                            break;
-                        case "ExtraFee":
-                            o.ExtraFee = a[c].ToDecimal();
-                            break;
-                        case "Fee":
-                            o.Fee = a[c].ToDecimal();
                             break;
                         case "FirstMeeting":
                             o.FirstMeetingDate = a[c].ToDate();
@@ -259,12 +196,6 @@ namespace CmsWeb.Areas.Manage.Controllers
                         case "Location":
                             o.Location = a[c];
                             break;
-                        case "MaximumFee":
-                            o.MaximumFee = a[c].ToDecimal();
-                            break;
-                        case "MemberOnly":
-                            o.MemberOnly = a[c].ToBool2();
-                            break;
                         case "Name":
                             o.OrganizationName = a[c];
                             break;
@@ -277,41 +208,14 @@ namespace CmsWeb.Areas.Manage.Controllers
                         case "NumWorkerCheckInLabels":
                             o.NumWorkerCheckInLabels = a[c].ToInt2();
                             break;
-                        case "NotReqAddr":
-                            o.NotReqAddr = a[c].ToBool2();
-                            break;
-                        case "NotReqDOB":
-                            o.NotReqDOB = a[c].ToBool2();
-                            break;
-                        case "NotReqGender":
-                            o.NotReqGender = a[c].ToBool2();
-                            break;
-                        case "NotReqMarital":
-                            o.NotReqMarital = a[c].ToBool2();
-                            break;
-                        case "NotReqPhone":
-                            o.NotReqPhone = a[c].ToBool2();
-                            break;
-                        case "NotReqZip":
-                            o.NotReqZip = a[c].ToBool2();
-                            break;
                         case "OnLineCatalogSort":
                             o.OnLineCatalogSort = a[c] == "0" ? (int?)null : a[c].ToInt2();
                             break;
                         case "PhoneNumber":
                             o.PhoneNumber = a[c];
                             break;
-                        case "RegistrationTypeId":
-                            o.RegistrationTypeId = a[c].ToInt();
-                            break;
                         case "RollSheetVisitorWks":
                             o.RollSheetVisitorWks = a[c] == "0" ? (int?)null : a[c].ToInt2();
-                            break;
-                        case "ShirtFee":
-                            o.ShirtFee = a[c].ToDecimal();
-                            break;
-                        case "YesNoQuestions":
-                            o.YesNoQuestions = a[c];
                             break;
                     }
                 DbUtil.Db.SubmitChanges();
@@ -1064,5 +968,98 @@ namespace CmsWeb.Areas.Manage.Controllers
             var e = new LongRunningStatus();
             return Content(e.GetStatus(id).ToString());
         }
+                        //case "AgeFee":
+                        //    o.AgeFee = a[c];
+                        //    break;
+                        //case "AgeGroups":
+                        //    o.AgeGroups = a[c];
+                        //    break;
+                        //case "AllowLastYearShirt":
+                        //    o.AllowLastYearShirt = a[c].ToBool2();
+                        //    break;
+                        //case "AllowOnlyOne":
+                        //    o.AllowOnlyOne = a[c].ToBool2();
+                        //    break;
+                        //case "AskAllergies":
+                        //    o.AskAllergies = a[c].ToBool2();
+                        //    break;
+                        //case "AskChurch":
+                        //    o.AskChurch = a[c].ToBool2();
+                        //    break;
+                        //case "AskCoaching":
+                        //    o.AskCoaching = a[c].ToBool2();
+                        //    break;
+                        //case "AskDoctor":
+                        //    o.AskDoctor = a[c].ToBool2();
+                        //    break;
+                        //case "AskEmContact":
+                        //    o.AskEmContact = a[c].ToBool2();
+                        //    break;
+                        //case "AskGrade":
+                        //    o.AskGrade = a[c].ToBool2();
+                        //    break;
+                        //case "AskInsurance":
+                        //    o.AskInsurance = a[c].ToBool2();
+                        //    break;
+                        //case "AskOptions":
+                        //    o.AskOptions = a[c];
+                        //    break;
+                        //case "AskParents":
+                        //    o.AskParents = a[c].ToBool2();
+                        //    break;
+                        //case "AskRequest":
+                        //    o.AskRequest = a[c].ToBool2();
+                        //    break;
+                        //case "AskShirtSize":
+                        //    o.AskShirtSize = a[c].ToBool2();
+                        //    break;
+                        //case "AskTickets":
+                        //    o.AskTickets = a[c].ToBool2();
+                        //    break;
+                        //case "AskTylenolEtc":
+                        //    o.AskTylenolEtc = a[c].ToBool2();
+                        //    break;
+                        //case "Deposit":
+                        //    o.Deposit = a[c].ToDecimal();
+                        //    break;
+                        //case "ExtraFee":
+                        //    o.ExtraFee = a[c].ToDecimal();
+                        //    break;
+                        //case "Fee":
+                        //    o.Fee = a[c].ToDecimal();
+                        //    break;
+                        //case "MaximumFee":
+                        //    o.MaximumFee = a[c].ToDecimal();
+                        //    break;
+                        //case "MemberOnly":
+                        //    o.MemberOnly = a[c].ToBool2();
+                        //    break;
+                        //case "NotReqAddr":
+                        //    o.NotReqAddr = a[c].ToBool2();
+                        //    break;
+                        //case "NotReqDOB":
+                        //    o.NotReqDOB = a[c].ToBool2();
+                        //    break;
+                        //case "NotReqGender":
+                        //    o.NotReqGender = a[c].ToBool2();
+                        //    break;
+                        //case "NotReqMarital":
+                        //    o.NotReqMarital = a[c].ToBool2();
+                        //    break;
+                        //case "NotReqPhone":
+                        //    o.NotReqPhone = a[c].ToBool2();
+                        //    break;
+                        //case "NotReqZip":
+                        //    o.NotReqZip = a[c].ToBool2();
+                        //    break;
+                        //case "RegistrationTypeId":
+                        //    o.RegistrationTypeId = a[c].ToInt();
+                        //    break;
+                        //case "ShirtFee":
+                        //    o.ShirtFee = a[c].ToDecimal();
+                        //    break;
+                        //case "YesNoQuestions":
+                        //    o.YesNoQuestions = a[c];
+                        //    break;
     }
 }

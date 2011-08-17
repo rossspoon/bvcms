@@ -243,6 +243,8 @@ namespace CmsData
 		
 		private bool? _SuggestedFee;
 		
+		private string _RegSetting;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -634,6 +636,9 @@ namespace CmsData
 		
 		partial void OnSuggestedFeeChanging(bool? value);
 		partial void OnSuggestedFeeChanged();
+		
+		partial void OnRegSettingChanging(string value);
+		partial void OnRegSettingChanged();
 		
     #endregion
 		public Organization()
@@ -3196,6 +3201,28 @@ namespace CmsData
 					this._SuggestedFee = value;
 					this.SendPropertyChanged("SuggestedFee");
 					this.OnSuggestedFeeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RegSetting", UpdateCheck=UpdateCheck.Never, Storage="_RegSetting", DbType="varchar")]
+		public string RegSetting
+		{
+			get { return this._RegSetting; }
+
+			set
+			{
+				if (this._RegSetting != value)
+				{
+				
+                    this.OnRegSettingChanging(value);
+					this.SendPropertyChanging();
+					this._RegSetting = value;
+					this.SendPropertyChanged("RegSetting");
+					this.OnRegSettingChanged();
 				}
 
 			}

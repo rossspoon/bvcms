@@ -39,6 +39,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("ok");
         }
+        
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(int id, int pid)
         {

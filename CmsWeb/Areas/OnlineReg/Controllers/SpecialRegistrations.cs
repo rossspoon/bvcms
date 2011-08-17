@@ -21,6 +21,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (ed == null)
                 return Content("no pending confirmation found");
             var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            m.ParseSettings();
             return View(new SlotModel(m.List[0].PeopleId.Value, m.orgid.Value));
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -154,11 +155,13 @@ You have the following subscriptions:<br/>
             omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
             ot.Used = true;
             DbUtil.Db.SubmitChanges();
+            DbUtil.LogActivity("Votelink: {0}".Fmt(q.org.OrganizationName), true);
 
             if (confirm == true)
             {
-                var subject = Util.PickFirst(q.org.EmailSubject, "no subject");
-                var msg = Util.PickFirst(q.org.EmailMessage, "no message");
+                var setting = OnlineRegModel.ParseSetting(q.org.RegSetting, oid);
+                var subject = Util.PickFirst(setting.Subject, q.org.EmailSubject, "no subject");
+                var msg = Util.PickFirst(setting.Body.ToString(), q.org.EmailMessage, "no message");
                 msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 

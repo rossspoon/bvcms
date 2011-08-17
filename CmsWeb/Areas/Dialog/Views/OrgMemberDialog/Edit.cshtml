@@ -66,7 +66,7 @@
     <tr>
         <th align='right'>ShirtSize:</th>
         <td>@Html.DropDownList("ShirtSize", 
-                CmsWeb.Models.OnlineRegPersonModel.ShirtSizes(Model.Organization))</td>
+                CmsWeb.Models.OnlineRegPersonModel.ShirtSizes(CmsData.DbUtil.Db, Model.Organization))</td>
     </tr>
 }
     <tr>

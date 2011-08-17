@@ -1,0 +1,23 @@
+﻿@model CmsData.RegSettings.VoteTag
+@using UtilityExtensions
+@using CmsWeb
+    @using (var ci = Html.BeginCollectionItem("VoteTags"))
+    {
+      <li>@Html.Raw(ci.hiddenindex)
+      @{ var prefix = ci.SuitableId; }
+          @Html.HiddenFor(m => m.Id, new { @class = "renumberMe" }) 
+          <img align="top" src="/images/Up-down.png" alt="" />
+          @Html.TextBoxFor(m => m.Display.Text, new { @class = "long" })
+          <a href="#" class="editor" tb="@(prefix)_Display_Html"><span class="edithtml">edit html</span></a>
+          @Html.TextAreaFor(m => m.Display.Html, new { @class = "html" })
+          <a class="del" href="#"><img align="top" src="/images/delete.gif" title="remove this item" /></a>
+        <ul>
+          <li><div class="sgfee">Confirm:</div> @Html.CheckBoxFor(m => m.Confirm) </li>
+          <li><div class="sgfee">SmallGroup:</div> @Html.TextBoxFor(m => m.SmallGroup) </li>
+          <li><div class="sgfee">Message:</div> @Html.TextBoxFor(m => m.Message) </li>
+        </ul>
+      </li>
+  }
+
+@*    <span class="keyword2">Terms:</span> 
+        <textarea class="html" id="Terms" name="Terms.Html">@Html.Raw(Model.Terms.Html)</textarea>*@

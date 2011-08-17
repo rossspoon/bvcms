@@ -15,6 +15,7 @@ using System.IO;
 using System.Web.Configuration;
 using System.Text;
 using System.Configuration;
+using System.Data.SqlClient;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -99,8 +100,15 @@ CKEditorFuncNum, baseurl + fn, error));
 
         public ActionResult LogOn()
         {
-            if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
-                return Content("Site is down for maintenance, check back later");
+            try
+            {
+                if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
+                    return Content("Site is disabled, contact {0} for help".Fmt(Util.SendErrorsTo()[0].Address));
+            }
+            catch (SqlException)
+            {
+                return Redirect("http://www.bvcms.com");
+            }
             if (Request.Url.Scheme == "http" && DbUtil.Db.CmsHost.StartsWith("https://"))
                 if (Request.QueryString.Count > 0)
                     return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);
@@ -145,8 +153,8 @@ CKEditorFuncNum, baseurl + fn, error));
         }
         public static object AuthenticateLogon(string userName, string password, HttpSessionStateBase Session, HttpRequestBase Request)
         {
-            var q = DbUtil.Db.Users.Where(uu => 
-                uu.Username == userName || 
+            var q = DbUtil.Db.Users.Where(uu =>
+                uu.Username == userName ||
                 uu.Person.EmailAddress == userName ||
                 uu.Person.EmailAddress2 == userName
                 );
@@ -217,8 +225,8 @@ CKEditorFuncNum, baseurl + fn, error));
                             "{0} tried to login at {1}".Fmt(userName, Util.Now));
                     return problem;
                 }
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail, 
-                    CMSRoleProvider.provider.GetDevelopers(), 
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
+                    CMSRoleProvider.provider.GetDevelopers(),
                     "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host), Util.Now.ToString());
             }
 
@@ -229,7 +237,7 @@ CKEditorFuncNum, baseurl + fn, error));
             return user;
         }
         private static void NotifyAdmins(string subject, string message)
-        {   
+        {
             DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
                 CMSRoleProvider.provider.GetAdmins(), subject, message);
         }
@@ -303,7 +311,7 @@ CKEditorFuncNum, baseurl + fn, error));
         public ActionResult SendNewUserEmail(int userid, string newpassword)
         {
             var user = DbUtil.Db.Users.Single(u => u.UserId == userid);
-            var body = DbUtil.Content("NewUserEmail", 
+            var body = DbUtil.Content("NewUserEmail",
                     @"Hi {name},
 <p>You have a new account on our Church Management System which you can access at the following link:<br />
 <a href=""{cmshost}"">{cmshost}</a></p>
@@ -365,13 +373,13 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, user.Username));
                 DbUtil.Db.SubmitChanges();
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail, 
-                    CMSRoleProvider.provider.GetAdmins(), 
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
+                    CMSRoleProvider.provider.GetAdmins(),
                     "bvcms user: {0} forgot username".Fmt(user.Name), "no content");
             }
             if (q.Count() == 0)
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail, 
-                    CMSRoleProvider.provider.GetAdmins(), 
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
+                    CMSRoleProvider.provider.GetAdmins(),
                     "bvcms unknown email: {0} forgot username".Fmt(email), "no content");
 
             return RedirectToAction("RequestUsername");
@@ -402,13 +410,13 @@ The bvCMS Team</p>
 The bvCMS Team</p>
 ".Fmt(user.Name, link));
                 DbUtil.Db.SubmitChanges();
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail, 
-                    CMSRoleProvider.provider.GetAdmins(), 
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
+                    CMSRoleProvider.provider.GetAdmins(),
                     "{0} user: {1} forgot password".Fmt(DbUtil.Db.Host, user.Name), "no content");
             }
             else
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail, 
-                    CMSRoleProvider.provider.GetAdmins(), 
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
+                    CMSRoleProvider.provider.GetAdmins(),
                     "{0} unknown user: {1} forgot password".Fmt(DbUtil.Db.Host, username), "no content");
 
             return RedirectToAction("RequestPassword");

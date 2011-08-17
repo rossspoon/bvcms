@@ -98,7 +98,7 @@ function CloseAddDialog() {
                             <div id="welcome" class="dropdown left">
                                 <div>
                                     <a href="#">Welcome,
-                                        @DbUtil.Db.CurrentUserPerson.PreferredName!
+                                        @(DbUtil.Db.CurrentUserPerson != null ? DbUtil.Db.CurrentUserPerson.PreferredName : "who")!
                                         <img src="/Content/Welcome.png" width="11" height="16"></a></div>
                                 <div class="sublinks">
                                     <a href="/Account/LogOff/" title="@Util.UserName">Logout</a>

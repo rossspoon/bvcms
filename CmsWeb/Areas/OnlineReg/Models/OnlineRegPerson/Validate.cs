@@ -118,7 +118,7 @@ Please call the church to resolve this before we can complete your account.<br /
                             }
 #endif
                         }
-                        else if (om != null && org.RegistrationTypeId != RegistrationEnum.ChooseSlot)
+                        else if (om != null && om.Organization.RegistrationTypeId != RegistrationEnum.ChooseSlot)
                         {
 #if DEBUG
 #else
@@ -126,12 +126,9 @@ Please call the church to resolve this before we can complete your account.<br /
                             IsValidForContinue = false;
 #endif
                         }
-                        else if (org.ValidateOrgs.HasValue())
+                        else if (setting.ValidateOrgs.Count > 0)
                         {
-                            var q = from s in org.ValidateOrgs.Split(',')
-                                    select s.ToInt();
-                            var a = q.ToArray();
-                            if (!person.OrganizationMembers.Any(mm => a.Contains(mm.OrganizationId)))
+                            if (!person.OrganizationMembers.Any(mm => setting.ValidateOrgs.Contains(mm.OrganizationId)))
                             {
                                 ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
                                 IsValidForContinue = false;
@@ -206,14 +203,14 @@ Please search with a different email, phone, or birthday.";
 
             if (MemberOnly())
                 ModelState.AddModelError(ErrorTarget, "Sorry, must be a member of church");
-            else if (org != null && org.ValidateOrgs.HasValue())
+            else if (org != null && setting.ValidateOrgs.Count > 0)
                 ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
 
             IsValidForNew = ModelState.IsValid;
         }
         public void ValidateModelForOther(ModelStateDictionary modelState)
         {
-            if (org.AskEmContact == true)
+            if (setting.AskEmContact == true)
             {
                 if (!emcontact.HasValue())
                     modelState.AddModelError(inputname("emcontact"), "emergency contact required");
@@ -221,7 +218,7 @@ Please search with a different email, phone, or birthday.";
                     modelState.AddModelError(inputname("emphone"), "emergency phone # required");
             }
 
-            if (org.AskInsurance == true)
+            if (setting.AskInsurance == true)
             {
                 if (!insurance.HasValue())
                     modelState.AddModelError(inputname("insurance"), "insurance carrier required");
@@ -229,14 +226,14 @@ Please search with a different email, phone, or birthday.";
                     modelState.AddModelError(inputname("policy"), "insurnace policy # required");
             }
 
-            if (org.AskDoctor == true)
+            if (setting.AskDoctor == true)
             {
                 if (!doctor.HasValue())
                     modelState.AddModelError(inputname("doctor"), "Doctor's name required");
                 if (!docphone.HasValue())
                     modelState.AddModelError(inputname("docphone"), "Doctor's phone # required");
             }
-            if (org.AskTylenolEtc == true)
+            if (setting.AskTylenolEtc == true)
             {
                 if (!tylenol.HasValue)
                     modelState.AddModelError(inputname("tylenol"), "please indicate");
@@ -248,11 +245,11 @@ Please search with a different email, phone, or birthday.";
                     modelState.AddModelError(inputname("robitussin"), "please indicate");
             }
 
-            if (org.AskShirtSize == true)
+            if (setting.AskShirtSize == true)
                 if (shirtsize == "0")
                     modelState.AddModelError(inputname("shirtsize"), "please select a shirt size");
 
-            if (org.AskGrade == true)
+            if (setting.AskGrade == true)
             {
                 int g = 0;
                 if (!int.TryParse(grade, out g))
@@ -261,23 +258,23 @@ Please search with a different email, phone, or birthday.";
                     modelState.AddModelError(inputname("grade"), "only grades from {0} to {1}".Fmt(org.GradeAgeStart, org.GradeAgeEnd));
             }
 
-            if (org.AskCoaching == true)
+            if (setting.AskCoaching == true)
                 if (!coaching.HasValue)
                     modelState.AddModelError(inputname("coaching"), "please indicate");
 
-            if (org.AskOptions.HasValue())
+            if (setting.AskOptions.Count > 0)
                 if (option == "0")
                     modelState.AddModelError(inputname("option"), "please select an option");
 
-            if (org.ExtraOptions.HasValue())
+            if (setting.ExtraOptions.Count > 0)
                 if (option2 == "0")
                     modelState.AddModelError(inputname("option2"), "please select an option");
 
-            if (org.GradeOptions.HasValue())
+            if (setting.GradeOptions.Count > 0)
                 if (gradeoption == "00")
                     modelState.AddModelError(inputname("gradeoption"), "please select a grade option");
 
-            if (org.AskParents == true)
+            if (setting.AskParents == true)
             {
                 if (!mname.HasValue() && !fname.HasValue())
                     modelState.AddModelError(inputname("fname"), "please provide either mother or father name");
@@ -293,28 +290,34 @@ Please search with a different email, phone, or birthday.";
                         modelState.AddModelError(inputname("fname"), "provide first and last names");
                 }
             }
-            if (org.AskTickets == true)
+            if (setting.AskTickets == true)
                 if ((ntickets ?? 0) == 0)
                     modelState.AddModelError(inputname("ntickets"), "please enter a number of tickets");
 
-            if (org.Deposit > 0)
+            if (setting.Deposit > 0)
                 if (!paydeposit.HasValue)
                     modelState.AddModelError(inputname("paydeposit"), "please indicate");
 
-            foreach (var a in YesNoQuestions())
+            for(int n = 0; n<setting.YesNoQuestions.Count; n++)
             {
-                if (YesNoQuestion == null || !YesNoQuestion.ContainsKey(a.name))
-                    modelState.AddModelError(inputname("YesNoQuestion[" + a.n + "].Value"), "please select yes or no");
+                var a = setting.YesNoQuestions[n];
+                if (YesNoQuestion == null || !YesNoQuestion.ContainsKey(a.SmallGroup))
+                    modelState.AddModelError(inputname("YesNoQuestion[" + n + "].Value"), "please select yes or no");
             }
-            foreach (var q in ExtraQuestions())
+            for(int n = 0; n<setting.ExtraQuestions.Count; n++)
             {
-                if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(q.question) || !ExtraQuestion[q.question].HasValue())
-                    modelState.AddModelError(inputname("ExtraQuestion[" + q.n + "].Value"), "please give some answer");
+                var a = setting.ExtraQuestions[n];
+                if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(a.Question) || !ExtraQuestion[a.Question].HasValue())
+                    modelState.AddModelError(inputname("ExtraQuestion[" + n + "].Value"), "please give some answer");
             }
-            if (org.CheckboxesMax.HasValue && Checkbox != null && Checkbox.Length > org.CheckboxesMax)
-                modelState.AddModelError("checkboxes", "Max of {0} exceded".Fmt(org.CheckboxesMax));
-            if (org.CheckboxesMin.HasValue && (Checkbox == null || Checkbox.Length < org.CheckboxesMin))
-                modelState.AddModelError("checkboxes", "Min of {0} required".Fmt(org.CheckboxesMin));
+            if (setting.CheckboxMax > 0 && Checkbox != null && Checkbox.Length > setting.CheckboxMax)
+                modelState.AddModelError("checkboxes", "Max of {0} exceded".Fmt(setting.CheckboxMax));
+            if (setting.CheckboxMin > 0 && (Checkbox == null || Checkbox.Length < setting.CheckboxMin))
+                modelState.AddModelError("checkboxes", "Min of {0} required".Fmt(setting.CheckboxMin));
+            if (setting.Checkbox2Max > 0 && Checkbox2 != null && Checkbox2.Length > setting.Checkbox2Max)
+                modelState.AddModelError("checkboxes2", "Max of {0} exceded".Fmt(setting.Checkbox2Max));
+            if (setting.Checkbox2Min > 0 && (Checkbox2 == null || Checkbox2.Length < setting.Checkbox2Min))
+                modelState.AddModelError("checkboxes2", "Min of {0} required".Fmt(setting.Checkbox2Min));
             OtherOK = modelState.IsValid;
         }
     }

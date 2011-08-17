@@ -99,7 +99,7 @@ namespace CmsWeb.Models
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
-            if (org != null && org.AllowLastYearShirt == true)
+            if (org != null && settings[orgid.Value].AllowLastYearShirt == true)
                 list.Add(new SelectListItem { Value = "lastyear", Text = "Use shirt from last year" });
             return list;
         }

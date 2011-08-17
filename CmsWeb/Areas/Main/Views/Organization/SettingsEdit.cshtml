@@ -127,7 +127,7 @@
         <td>@Html.TextBox("org.Limit")</td>
     </tr>
     <tr>
-        <th title="old:@Model.org.EmailAddresses">Online Notify Persons:</th>
+        <th>Online Notify Persons:</th>
         <td><a id="notifylist" href="/Organization/NotifyIds">
             @Html.Partial("NotifyList", DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds))
             </a>
@@ -154,242 +154,18 @@
         <td>@Html.DropDownList("org.GenderId", Model.GenderList())</td>
     </tr>
     <tr>
-        <th>Registration Type:</th>
-        <td>@Html.DropDownList("org.RegistrationTypeId", Model.RegistrationTypes())</td>
-    </tr>
-    <tr>
-        <th>HTML Shell<br />(blank for default)</th>
-        <td>@Html.TextBox("org.Shell")</td>
-    </tr>
-    <tr>
-        <th>Fee:</th>
-        <td>@Html.TextBox("org.Fee", Model.org.Fee.ToString2("f2"))</td>
-    </tr>
-    <tr>
-        <th>Suggested:</th>
-        <td>@Html.CheckBox("org.SuggestedFee")</td>
-    </tr>
-    <tr>
-        <th>Deposit:</th>
-        <td>@Html.TextBox("org.Deposit", Model.org.Deposit.ToString2("f2"))</td>
-    </tr>
-    <tr>
-        <th>Shirt Fee:</th>
-        <td>@Html.TextBox("org.ShirtFee", Model.org.ShirtFee.ToString2("n2"))</td>
-    </tr>
-    <tr>
-        <th>Extra Fee:</th>
-        <td>@Html.TextBox("org.ExtraFee", Model.org.ExtraFee.ToString2("n2"))</td>
-    </tr>
-    <tr>
-        <th>Maximum Fee:</th>
-        <td>@Html.TextBox("org.MaximumFee", Model.org.MaximumFee.ToString2("f2"))</td>
-    </tr>
-    <tr>
-        <th>Org Member Fees:</th>
-        <td>@Html.TextBox("org.OrgMemberFees")</td>
-    </tr>
-    <tr>
-        <th>Ask How Many Items:</th>
-        <td>@Html.CheckBox("org.AskTickets")</td>
-    </tr>
-    <tr>
-        <th>Num Items Label:</th>
-        <td>@Html.TextBox("org.NumItemsLabel")</td>
-    </tr>
-    <tr>
-        <th>Allow Only One:</th>
-        <td>@Html.CheckBox("org.AllowOnlyOne")</td>
-    </tr>
-    <tr>
-        <th>Ask Options:</th>
-        <td>@Html.TextBox("org.AskOptions") 
-        @Html.ValidationMessage("askoptions")</td>
-    </tr>
-    <tr>
-        <th>Options Label:</th>
-        <td>@Html.TextBox("org.OptionsLabel")</td>
-    </tr>
-    <tr>
-        <th>Extra Options:</th>
-        <td>@Html.TextBox("org.ExtraOptions") 
-        @Html.ValidationMessage("extraoptions")</td>
-    </tr>
-    <tr>
-        <th>Extra Options Label:</th>
-        <td>@Html.TextBox("org.ExtraOptionsLabel")</td>
-    </tr>
-    <tr>
-        <th>Grade Options:</th>
-        <td>@Html.TextBox("org.GradeOptions") 
-        @Html.ValidationMessage("gradeoptions")</td>
-    </tr>
-    <tr>
-        <th>Age Fees:</th>
-        <td>@Html.TextBox("org.AgeFee") 
-        @Html.ValidationMessage("agefee")</td>
-    </tr>
-    <tr>
-        <th>Age Groups:</th>
-        <td>@Html.TextBox("org.AgeGroups") 
-        @Html.ValidationMessage("agegroups")</td>
-    </tr>
-    <tr>
         <th>Last Day Before Extra:</th>
         <td>@Html.DatePicker("org.LastDayBeforeExtra")</td>
     </tr>
     <tr>
-        <th>Shirt Sizes<br />(blank for default)</th>
-        <td>@Html.TextBox("org.ShirtSizes") 
-        @Html.ValidationMessage("shirtsizes")</td>
+        <th>Registration Type:</th>
+        <td>@Html.DropDownList("org.RegistrationTypeId", Model.RegistrationTypes())</td>
     </tr>
-    <tr>
-        <th>Yes No Questions:</th>
-        <td>@Html.TextBox("org.YesNoQuestions") 
-        @Html.ValidationMessage("yesnoquestions")</td>
-    </tr>
-    <tr>
-        <th>Checkboxes:</th>
-        <td>@Html.TextArea("org.Checkboxes", new { style = "height:200px;width:200px" }) 
-        @Html.ValidationMessage("checkboxes")</td>
-    </tr>
-    <tr>
-        <th>Checkboxes Label:</th>
-        <td>@Html.TextBox("org.CheckboxesLabel")</td>
-    </tr>
-    <tr>
-        <th>Min # Checkboxes:</th>
-        <td>@Html.TextBox("org.CheckboxesMin")</td>
-    </tr>
-    <tr>
-        <th>Max # Checkboxes:</th>
-        <td>@Html.TextBox("org.CheckboxesMax")</td>
-    </tr>
-    <tr>
-        <th>Extra Questions:</th>
-        <td>@Html.TextBox("org.ExtraQuestions")</td>
-    </tr>
-    <tr>
-        <th>Menu Items:</th>
-        <td>@Html.TextArea("org.MenuItems", new { style = "height:200px;width:200px" })</td>
-    </tr>
-    <tr>
-        <th>Validate Member in OrgIds:</th>
-        <td>@Html.TextBox("org.ValidateOrgs")</td>
-    </tr>
-    <tr>
-        <th>Link Groups from Orgs:</th>
-        <td>@Html.TextBox("org.LinkGroupsFromOrgs")</td>
-    </tr>
-    <tr>
-        <th>Ask About Allergies:</th>
-        <td>@Html.CheckBox("org.AskAllergies")</td>
-    </tr>
-    <tr>
-        <th>Ask About Tylenol, Etc:</th>
-        <td>@Html.CheckBox("org.AskTylenolEtc")</td>
-    </tr>
-    <tr>
-        <th>Ask For Grade:</th>
-        <td>@Html.CheckBox("org.AskGrade")</td>
-    </tr>
-    <tr>
-        <th>Grade Label:</th>
-        <td>@Html.TextBox("org.GradeLabel")</td>
-    </tr>
-    <tr>
-        <th>Ask About Shirt Size:</th>
-        <td>@Html.CheckBox("org.AskShirtSize")</td>
-    </tr>
-    <tr>
-        <th>Ask About Request:</th>
-        <td>@Html.CheckBox("org.AskRequest")</td>
-    </tr>
-    <tr>
-        <th>Request Label:</th>
-        <td>@Html.TextBox("org.RequestLabel")</td>
-    </tr>
-    <tr>
-        <th>Ask For Parents:</th>
-        <td>@Html.CheckBox("org.AskParents")</td>
-    </tr>
-    <tr>
-        <th>Ask For Emergency Contact:</th>
-        <td>@Html.CheckBox("org.AskEmContact")</td>
-    </tr>
-    <tr>
-        <th>Ask For Doctor:</th>
-        <td>@Html.CheckBox("org.AskDoctor")</td>
-    </tr>
-    <tr>
-        <th>Ask For Insurance:</th>
-        <td>@Html.CheckBox("org.AskInsurance")</td>
-    </tr>
-    <tr>
-        <th>Allow Last Year Shirt:</th>
-        <td>@Html.CheckBox("org.AllowLastYearShirt")</td>
-    </tr>
-    <tr>
-        <th>Ask About Coaching:</th>
-        <td>@Html.CheckBox("org.AskCoaching")</td>
-    </tr>
-    <tr>
-        <th>Ask About Church:</th>
-        <td>@Html.CheckBox("org.AskChurch")</td>
-    </tr>
-    <tr>
-        <th>Members Only:</th>
-        <td>@Html.CheckBox("org.MemberOnly")</td>
-    </tr>
-@if (User.IsInRole("Admin"))
-{ 
-    <tr>
-        <th>Give OrgMemberOnly Access:</th>
-        <td>@Html.CheckBox("org.GiveOrgMembAccess")</td>
-    </tr>
-    <tr>
-        <th>Ask Donation:</th>
-        <td>@Html.CheckBox("org.AskDonation")</td>
-    </tr>
-    <tr>
-        <th>Donation FundId:</th>
-        <td>@Html.TextBox("org.DonationFundId", Model.org.DonationFundId)
-            @Html.ValidationMessage("DonationFundId")</td>
-    </tr>
-    <tr>
-        <th>Group to Join:</th>
-        <td>@Html.TextBox("org.GroupToJoin")</td>
-    </tr>
-    <tr>
-        <th>Do Not Require Date of Birth:</th>
-        <td>@Html.CheckBox("org.NotReqDOB")</td>
-    </tr>
-    <tr>
-        <th>Do Not Require Address:</th>
-        <td>@Html.CheckBox("org.NotReqAddr")</td>
-    </tr>
-    <tr>
-        <th>Do Not Require Zip:</th>
-        <td>@Html.CheckBox("org.NotReqZip")</td>
-    </tr>
-    <tr>
-        <th>Do Not Require Phone:</th>
-        <td>@Html.CheckBox("org.NotReqPhone")</td>
-    </tr>
-    <tr>
-        <th>Do Not Require Gender:</th>
-        <td>@Html.CheckBox("org.NotReqGender")</td>
-    </tr>
-    <tr>
-        <th>Do Not Require Marital:</th>
-        <td>@Html.CheckBox("org.NotReqMarital")</td>
-    </tr>
-} 
     <tr>
         <td colspan="2" align="right">
             <a href="/Organization/SettingsUpdate/@Model.OrganizationId" class="submitbutton bt">Save Changes</a>
             <a class="displayedit bt" href="/Organization/Settings/@Model.OrganizationId">Cancel</a>
             <div>@Html.ValidationSummary()</div></td>
-        </tr>
+    </tr>
 </table>
 

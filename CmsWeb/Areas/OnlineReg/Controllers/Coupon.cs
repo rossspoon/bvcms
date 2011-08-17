@@ -17,6 +17,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         {
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
             var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            m.ParseSettings();
 
             if (!Coupon.HasValue())
                 return Json(new { error = "empty coupon" });
@@ -99,6 +100,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 return Json(new { error = "empty coupon" });
             var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
             var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            m.ParseSettings();
             string coupon = Coupon.ToUpper().Replace(" ", "");
             string admincoupon = DbUtil.Db.Setting("AdminCoupon", "ifj4ijweoij").ToUpper().Replace(" ", "");
             if (coupon == admincoupon)

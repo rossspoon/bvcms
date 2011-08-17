@@ -204,6 +204,7 @@
     <Compile Include="Generated\NewMemberClassStatus.cs" />
     <Compile Include="Generated\OrgSchedule.cs" />
     <Compile Include="Generated\PeopleQueryBit.cs" />
+    <Compile Include="RegSettings.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />

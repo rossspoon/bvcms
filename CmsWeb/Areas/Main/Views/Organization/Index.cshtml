@@ -23,6 +23,7 @@ a.ui-state-default { cursor: pointer; }
                 .Add("/Content/js/jquery.multiSelect.js")
                 .Add("/Content/js/jquery.validate.js")
                 .Add("/Content/js/jquery.ui.timepicker.js")
+                .Add("/Content/js/jquery.textarea.js")
                 .Add("/Scripts/Organization.js")
                 .Render("/Content/Organization_#.js")
 )
@@ -48,6 +49,9 @@ a.ui-state-default { cursor: pointer; }
     <a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank">Recent Attendance Report</a>
     <a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId">Attendance Percentages</a>
     <a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId">Volunteer Calendar</a>
+    <a id="RegSettings" href="/RegSetting/EditGui/@o.OrganizationId">Edit Registration Settings</a>
+    <a href="/RegSetting/Index/@o.OrganizationId">View Registration Document</a>
+    <a href="/RegSetting/VoteTag/@o.OrganizationId">View VoteTags</a>
 @if (User.IsInRole("Edit"))
 { 
     <a class="CreateAndGo" href="/Organization/Clone/@o.OrganizationId" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>

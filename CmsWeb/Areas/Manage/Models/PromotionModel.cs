@@ -235,8 +235,6 @@ namespace CmsWeb.Models
             var fromdiv = Promotion.FromDivId;
             var todiv = Promotion.ToDivId;
 
-            //var list = FetchStudents().ToDictionary(s => s.PeopleId + "," + s.CurrClassId);
-
             foreach (var i in selected)
             {
                 var a = i.Split(',');
@@ -247,19 +245,23 @@ namespace CmsWeb.Models
                         where om.Organization.DivOrgs.Any(dd => dd.DivId == todiv)
                         where sc.ScheduleId == ScheduleId || ScheduleId == 0
                         select om;
+                // get them out of the class they will be going to first
                 foreach (var pc in q)
                 {
                     pc.Drop(DbUtil.Db, true);
                     DbUtil.Db.SubmitChanges();
                 }
+                // this is their membership where they are currently a member
                 var fom = DbUtil.Db.OrganizationMembers.Single(m => m.OrganizationId == a[1].ToInt() && m.PeopleId == a[0].ToInt());
-                OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                // now put them in the to class as pending member
+                var tom = OrganizationMember.InsertOrgMembers(DbUtil.Db,
                     t.OrganizationId,
                     a[0].ToInt(),
-                    fom.MemberTypeId,
+                    fom.MemberTypeId, // keep their existing membertype
                     Util.Now,
-                    null,
-                    true);
+                    null, 
+                    pending: true);
+                // todo: store the from orgid in tom record and use that do do promotion with
             }
         }
         public IEnumerable Export()

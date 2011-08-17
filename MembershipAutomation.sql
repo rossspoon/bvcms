@@ -142,7 +142,7 @@ def DropMembership(p, Db):
         if p.Deceased:
             spouse.MaritalStatusId = MaritalStatusCode.Widowed
             if spouse.EnvelopeOptionsId != None: # not null
-                if spouse.EnvelopeOptionsId != EnvelopeOptionCode.None:
+                if spouse.EnvelopeOptionsId != EnvelopeOptionCode.NoEnvelope:
                     spouse.EnvelopeOptionsId = EnvelopeOptionCode.Individual
             spouse.ContributionOptionsId = EnvelopeOptionCode.Individual
 
@@ -193,7 +193,7 @@ class MembershipAutomation(object):
         # this does new member class completed
         if p.NewMemberClassStatusIdChanged \
         and p.NewMemberClassStatusId == NewMemberClassStatusCode.Attended:
-            om = Db.LoadOrgMember(p.PeopleId, "Step 1", True) # must exist
+            om = Db.LoadOrgMember(p.PeopleId, "Step 1", False)
             if om != None:
                 om.Drop(True) # drops and records drop in history
 '

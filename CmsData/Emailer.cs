@@ -53,6 +53,8 @@ namespace CmsData
         public void Email(string from, Person p, List<MailAddress> addmail, string subject, string body, bool redacted)
         {
             var From = Util.FirstAddress(from);
+            if (From == null)
+                From = Util.FirstAddress(Util.SysFromEmail);
             var emailqueue = new EmailQueue
             {
                 Queued = DateTime.Now,
@@ -294,6 +296,7 @@ namespace CmsData
 
             text = DoVoteLinkAnchorStyle(text, CmsHost, emailqueueto);
             text = DoVoteTag(text, CmsHost, emailqueueto);
+            text = DoVoteTag2(text, CmsHost, emailqueueto);
 
             if (emailqueueto.Guid.HasValue)
             {
@@ -367,6 +370,48 @@ namespace CmsData
                 var url = VoteLinkUrl(text, CmsHost, emailqueueto, list, votelink, id, msg, confirm, smallgroup, pre);
                 text = text.Replace(votelink, @"<a href=""{0}"">{1}</a>".Fmt(url, txt));
 
+                match = match.NextMatch();
+            }
+            return text;
+        }//&lt;votetag .*?&gt;(?<inside>.+?)&lt;/votetag&gt;
+        private string DoVoteTag2(string text, string CmsHost, EmailQueueTo emailqueueto)
+        {
+            var list = new Dictionary<string, OneTimeLink>();
+            const string VoteLinkRE = @"&lt;votetag .*?&gt;(?<inside>.+?)&lt;/votetag&gt;";
+            var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
+            var match = re.Match(text);
+            while (match.Success)
+            {
+                var tag = match.Value;
+                var inside = HttpUtility.HtmlDecode(match.Groups["inside"].Value);
+                var rd = new SgmlReader();
+                rd.DocType = "HTML";
+                rd.InputStream = new StringReader(HttpUtility.HtmlDecode(tag));
+                var e = XDocument.Load(rd).Descendants("votetag").First();
+                var d = e.Attributes().ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+
+                string msg = "Thank you for responding.";
+                if (d.ContainsKey("message"))
+                    msg = d["message"];
+
+                string confirm = "false";
+                if (d.ContainsKey("confirm"))
+                    confirm = d["confirm"];
+
+                if (!d.ContainsKey("smallgroup"))
+                    throw new Exception("Votelink: no smallgroup attribute");
+                var smallgroup = d["smallgroup"];
+                var pre = "";
+                var a = smallgroup.SplitStr(":");
+                if (a.Length > 1)
+                    pre = a[0];
+
+                if (!d.ContainsKey("id"))
+                    throw new Exception("Votelink: no id attribute");
+                var id = d["id"];
+
+                var url = VoteLinkUrl(text, CmsHost, emailqueueto, list, tag, id, msg, confirm, smallgroup, pre);
+                text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
                 match = match.NextMatch();
             }
             return text;

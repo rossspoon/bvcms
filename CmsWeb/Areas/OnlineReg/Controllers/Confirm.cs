@@ -37,6 +37,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (ed == null)
                 return Content("no pending confirmation found");
             var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            m.ParseSettings();
 
             var terms = Util.PickFirst(m.Terms, "");
             if (terms.HasValue())
@@ -128,6 +129,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 return Content("no pending confirmation found");
 
             var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            m.ParseSettings();
             string confirm = "Confirm";
             var t = m.Transaction;
             t.Approved = true;

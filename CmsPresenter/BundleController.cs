@@ -335,6 +335,7 @@ namespace CMSPresenter
                          Status = c.ContributionStatus.Description,
                          Name = c.Person.Name,
                          PeopleId = c.PeopleId,
+                         Description = c.ContributionDesc,
                      };
             return q2;
         }

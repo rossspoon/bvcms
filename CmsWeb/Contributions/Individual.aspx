@@ -5,7 +5,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <table class="modalPopup">
+<script type="text/javascript">
+    $(function () {
+        $("table.grid > tbody > tr:even").addClass("alt");
+    });
+</script>
+    <table >
         <tr>
             <th>
                 Name:
@@ -75,9 +80,9 @@
     </asp:DataPager>
     <asp:ListView ID="ListView1" runat="server" DataSourceID="ObjectDataSource1" 
         ondatabound="ListView1_DataBound" OnItemCommand="ListView1_ItemCommand" 
-        onitemcreated="ListView1_ItemCreated">
+        onitemcreated="ListView1_ItemCreated" >
         <LayoutTemplate>
-            <table id="itemPlaceholderContainer" runat="server" border="0" style="">
+            <table id="itemPlaceholderContainer" runat="server" border="0" class="grid"> 
                 <tr id="Tr1" runat="server" style="">
                     <th id="Th1" runat="server">
                         <asp:LinkButton ID="LinkButton1" CommandName="Sort" CommandArgument="Fund" runat="server">Fund</asp:LinkButton>
@@ -97,6 +102,7 @@
                     <th id="Th6" runat="server">
                         <asp:LinkButton ID="LinkButton6" CommandName="Sort" CommandArgument="Pledge" runat="server">Pledge</asp:LinkButton>
                     </th>
+                    <th></th>
                     <th></th>
                 </tr>
                 <tr id="itemPlaceholder" runat="server">
@@ -131,6 +137,9 @@
                         ID="Reverse" CommandName="Reverse" CommandArgument='<%# Eval("ContributionId") %>' Confirm="Are you sure you want to reverse this entry?" runat="server">Reverse</cc1:LinkButtonConfirm>
                     | <cc1:LinkButtonConfirm
                         ID="Return" CommandName="Return" CommandArgument='<%# Eval("ContributionId") %>' Confirm="Are you sure this is a returned check?" runat="server">Return</cc1:LinkButtonConfirm>
+                </td>
+                <td>
+                    <asp:Label ID="Notes" runat="server" Text='<%# Eval("Description") %>' />
                 </td>
             </tr>
         </ItemTemplate>

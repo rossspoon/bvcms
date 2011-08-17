@@ -50,7 +50,7 @@ namespace CmsWeb.Models
                     q = q.Where(c => c.Used == null && c.Canceled == null);
                     break;
                 case "Canceled":
-                    q = q.Where(c => c.Canceled != null );
+                    q = q.Where(c => c.Canceled != null);
                     break;
             }
             if (name.HasValue())
@@ -97,7 +97,7 @@ namespace CmsWeb.Models
                     q = q.Where(c => c.Used == null && c.Canceled == null);
                     break;
                 case "Canceled":
-                    q = q.Where(c => c.Canceled != null );
+                    q = q.Where(c => c.Canceled != null);
                     break;
             }
             if (name.HasValue())
@@ -133,29 +133,40 @@ namespace CmsWeb.Models
         {
             var orgregtypes = new int[] { 1, 2 };
             var divregtypes = new int[] { 3, 4 };
-            var q = from o in DbUtil.Db.Organizations
-                    where orgregtypes.Contains(o.RegistrationTypeId.Value)
-                    where o.ClassFilled != true
-                    where (o.RegistrationClosed ?? false) == false
-                    where o.Fee > 0
-                    select new SelectListItem
-                    {
-                        Text = o.Division.Name + ": " + o.OrganizationName,
-                        Value = "org." + o.OrganizationId
-                    };
-            var q2 = from o in DbUtil.Db.Organizations
-                     where divregtypes.Contains(o.RegistrationTypeId.Value)
+
+            var q = (from o in DbUtil.Db.Organizations
+                     where orgregtypes.Contains(o.RegistrationTypeId.Value)
                      where o.ClassFilled != true
                      where (o.RegistrationClosed ?? false) == false
-                     where o.Fee > 0
-                     group o.Division by o.DivisionId into g // can we group these by DivOrg?
-                     from d in g
+                     select new { DivisionName = o.Division.Name, o.OrganizationName, o.RegSetting, o.OrganizationId }).ToList();
+
+            var q2 = (from o in DbUtil.Db.Organizations
+                      where divregtypes.Contains(o.RegistrationTypeId.Value)
+                      where o.ClassFilled != true
+                      where (o.RegistrationClosed ?? false) == false
+                      select new { o.DivisionId, DivisionName = o.Division.Name, o.RegSetting, o.OrganizationId }).ToList();
+
+            var qq = from i in q
+                     let os = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId)
+                     where (os.Fee ?? 0) > 0
                      select new SelectListItem
-                     {
-                         Text = d.Name,
-                         Value = "div." + d.Id
+                     { 
+                         Text = i.DivisionName + ":" + i.OrganizationName,
+                         Value = "org." + i.OrganizationId
                      };
-            var list = q.Union(q2).OrderBy(n => n.Text).ToList();
+
+            var qq2 = from i in q2
+                      let os = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId)
+                      where (os.Fee ?? 0) > 0
+                      group i by new { i.DivisionId, i.DivisionName } into g
+                      select new SelectListItem
+                      { 
+                          Text = g.Key.DivisionName,
+                          Value = "div." + g.Key.DivisionId
+                      };
+
+            var list = qq.Union(qq2).OrderBy(n => n.Text).ToList(); 
+
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }

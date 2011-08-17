@@ -44,6 +44,13 @@ namespace CmsWeb.Models
             get { return _Checkbox; }
             set { _Checkbox = value; }
         }
+        [OptionalField]
+        private string[] _Checkbox2;
+        public string[] Checkbox2
+        {
+            get { return _Checkbox2; }
+            set { _Checkbox2 = value; }
+        }
 
         public bool CheckboxChecked(string key)
         {
@@ -51,277 +58,139 @@ namespace CmsWeb.Models
                 return false;
             return Checkbox.Contains(key);
         }
-        public List<SelectListItem> ShirtSizes()
+        public bool Checkbox2Checked(string key)
         {
-            return ShirtSizes(org);
+            if (Checkbox2 == null)
+                return false;
+            return Checkbox2.Contains(key);
         }
-        public class YesNoQuestionItem
+        
+        public IEnumerable<RegSettings.MenuItem> CheckboxItemsChosen()
         {
-            public string name { get; set; }
-            public string desc { get; set; }
-            public int n { get; set; }
-        }
-        public IEnumerable<YesNoQuestionItem> YesNoQuestions()
-        {
-            var i = 0;
-            var q = from s in (org.YesNoQuestions ?? string.Empty).Split(',')
-                    let a = s.Split('=')
-                    where s.HasValue()
-                    select new YesNoQuestionItem { name = a[0].Trim(), desc = a[1], n = i++ };
-            return q;
-        }
-        public class CheckBoxItem
-        {
-            public string sg { get; set; }
-            public string desc { get; set; }
-            public decimal amt { get; set; }
-            public int n { get; set; }
-        }
-        //public IEnumerable<CheckBoxItem> Checkboxes()
-        //{
-        //    var i = 0;
-        //    var q = from s in (org.Checkboxes ?? string.Empty).Split(',')
-        //            let a = s.Split('=')
-        //            where s.HasValue()
-        //            select new CheckBoxItem { name = a[0].Trim(), desc = a[1], n = i++ };
-        //    return q;
-        //}
-        [NonSerialized]
-        Dictionary<string, CheckBoxItem> checkboxitems;
-        public Dictionary<string, CheckBoxItem> Checkboxes()
-        {
-            if (checkboxitems == null)
-            {
-                var re = new Regex(@"(?:(?<sg>[^=]*)=)?(?<desc>[^,[]+)(?:\[(?<amt>\d+)\])?,?");
-                checkboxitems = new Dictionary<string, CheckBoxItem>();
-                if (org.Checkboxes.HasValue())
-                {
-                    var i = 0;
-                    var m = re.Match(org.Checkboxes);
-                    while (m.Success)
-                    {
-                        var ci = new CheckBoxItem();
-                        ci.n = i++;
-                        ci.desc = m.Groups["desc"].Value;
-                        ci.sg = m.Groups["sg"].Value;
-                        if (!ci.sg.HasValue())
-                            ci.sg = ci.desc;
-                        Decimal amt = 0;
-                        Decimal.TryParse(m.Groups["amt"].Value, out amt);
-                        ci.amt = amt;
-                        checkboxitems.Add(ci.sg, ci);
-                        m = m.NextMatch();
-                    }
-                }
-            }
-            return checkboxitems;
-        }
-        public IEnumerable<CheckBoxItem> CheckboxItemsChosen()
-        {
-            var items = Checkboxes();
+            var items = setting.Checkboxes;
             var q = from i in Checkbox
-                    join c in items on i equals c.Key
-                    select c.Value;
+                    join c in items on i equals c.SmallGroup
+                    select c;
             return q;
         }
-        public class ExtraQuestionItem
+        public IEnumerable<RegSettings.MenuItem> Checkbox2ItemsChosen()
         {
-            public string question { get; set; }
-            public int n { get; set; }
-        }
-        public IEnumerable<ExtraQuestionItem> ExtraQuestions()
-        {
-            var i = 0;
-            var q = from s in (org.ExtraQuestions ?? string.Empty).Split(',')
-                    where s.HasValue()
-                    select new ExtraQuestionItem { question = s, n = i++ };
+            var items = setting.Checkboxes2;
+            var q = from i in Checkbox2
+                    join c in items on i equals c.SmallGroup
+                    select c;
             return q;
         }
         public IEnumerable<SelectListItem> Options()
         {
-            var q = from s in (org.AskOptions ?? string.Empty).Split(',')
-                    let a = s.Split('=')
-                    where s.HasValue()
-                    let amt = a.Length > 1 ? " ({0:C})".Fmt(decimal.Parse(a[1])) : ""
-                    select new SelectListItem { Text = a[0].Trim() + amt, Value = a[0].Trim() };
+            var q = from s in setting.AskOptions
+                    let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
+                    select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }
         public IEnumerable<SelectListItem> ExtraOptions()
         {
-            var q = from s in (org.ExtraOptions ?? string.Empty).Split(',')
-                    where s.HasValue()
-                    let a = s.Split('=')
-                    where a.Length > 1
-                    select new SelectListItem { Text = a[1].Trim(), Value = a[0].Trim() };
+            var q = from s in setting.ExtraOptions
+                    let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
+                    select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
             return list;
-        }
-        public class MenuItemType
-        {
-            public int n { get; set; }
-            public string desc { get; set; }
-            public string sg { get; set; }
-            public decimal amt { get; set; }
-        }
-        [NonSerialized]
-        private List<MenuItemType> menuitems;
-        public List<MenuItemType> MenuItems()
-        {
-            if (menuitems == null)
-            {
-                menuitems = new List<MenuItemType>();
-                if (org.MenuItems.HasValue())
-                {
-                    var i = 0;
-                    var re = new Regex(@"(?<desc>.*?)(?:\[(?<sg>.*?)\])?=(?<amt>[\d.]+),?");
-                    var m = re.Match(org.MenuItems);
-                    while (m.Success)
-                    {
-                        var mi = new MenuItemType();
-                        mi.n = i++;
-                        mi.desc = m.Groups["desc"].Value;
-                        mi.sg = m.Groups["sg"].Value;
-                        if (!mi.sg.HasValue())
-                            mi.sg = mi.desc;
-                        mi.amt = decimal.Parse(m.Groups["amt"].Value);
-                        menuitems.Add(mi);
-                        m = m.NextMatch();
-                    }
-                }
-            }
-            return menuitems;
         }
         public class MenuItemChosen
         {
             public string sg { get; set; }
             public string desc { get; set; }
-            public int n { get; set; }
             public int number { get; set; }
             public decimal amt { get; set; }
         }
         public IEnumerable<MenuItemChosen> MenuItemsChosen()
         {
-            int nn = 0;
-            var items = MenuItems();
+            var items = setting.MenuItems;
             var q = from i in MenuItem
-                    join m in items on i.Key equals m.sg
+                    join m in items on i.Key equals m.SmallGroup
                     where i.Value.HasValue
-                    select new MenuItemChosen { sg = m.sg, n = nn++, number = i.Value ?? 0, desc = m.desc, amt = m.amt };
+                    select new MenuItemChosen { sg = m.SmallGroup, number = i.Value ?? 0, desc = m.Description, amt = m.Fee ?? 0 };
             return q;
         }
         public IEnumerable<SelectListItem> GradeOptions()
         {
-            var q = from s in (org.GradeOptions ?? string.Empty).Split(',')
-                    where s.HasValue()
-                    let a = s.Split('=')
-                    where a.Length > 1
-                    select new SelectListItem { Text = a[1].Trim(), Value = a[0].ToInt().ToString() };
+            var q = from s in setting.GradeOptions
+                    select new SelectListItem { Text = s.Description, Value = s.Code.ToString() };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
             return list;
         }
-        public class AgeGroupItem
+        public static List<SelectListItem> ShirtSizes(CMSDataContext Db, Organization org)
         {
-            public int StartAge { get; set; }
-            public int EndAge { get; set; }
-            public string Name { get; set; }
+            var setting = new RegSettings(org.RegSetting, Db, org.OrganizationId);
+            return ShirtSizes(setting);
         }
-        public IEnumerable<AgeGroupItem> AgeGroups()
+        private static List<SelectListItem> ShirtSizes(RegSettings setting)
         {
-            var q = from o in (org.AgeGroups ?? string.Empty).Split(',')
-                    where o.HasValue()
-                    let b = o.Split('=')
-                    let a = b[0].Split('-')
-                    select new AgeGroupItem
-                    {
-                        StartAge = a[0].ToInt(),
-                        EndAge = a[1].ToInt(),
-                        Name = b[1]
-                    };
-            return q;
-        }
-        public static List<SelectListItem> ShirtSizes(CmsData.Organization org)
-        {
-            const string sizes = "YT-S=Youth: Small (6-8),YT-M=Youth: Medium (10-12),YT-L=Youth: Large (14-16),AD-S=Adult: Small,AD-M=Adult: Medium,AD-L=Adult: Large,AD-XL=Adult: X-Large,AD-XXL=Adult: XX-Large,AD-XXXL=Adult: XXX-Large";
-            var shirtsizes = Util.PickFirst(org.ShirtSizes, sizes);
-            var q = from ss in shirtsizes.Split(',')
-                    let a = ss.Split('=')
+            var q = from ss in setting.ShirtSizes
                     select new SelectListItem
                     {
-                        Value = a[0],
-                        Text = a[1]
+                        Value = ss.SmallGroup,
+                        Text = ss.Description
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
-            if (org != null && org.AllowLastYearShirt == true)
+            if (setting.AllowLastYearShirt == true)
                 list.Add(new SelectListItem { Value = "lastyear", Text = "Use shirt from last year" });
             return list;
         }
+        public List<SelectListItem> ShirtSizes()
+        {
+            return ShirtSizes(setting);
+        }
         public void FillPriorInfo()
         {
-#if DEBUG
-            shirtsize = "YT-L";
-            request = "tommy";
-            emcontact = "test";
-            emphone = "test";
-            docphone = "test";
-            doctor = "test";
-            insurance = "test";
-            policy = "test";
-            mname = "";
-            fname = "test t";
-            tylenol = true;
-            advil = true;
-            robitussin = false;
-            maalox = false;
-            paydeposit = true;
-#endif
             if (!IsNew)
             {
                 var rr = DbUtil.Db.RecRegs.SingleOrDefault(r => r.PeopleId == PeopleId);
                 if (rr != null)
                 {
-                    if (org.AskRequest == true)
+                    if (setting.AskRequest == true)
                     {
                         var om = GetOrgMember();
                         if (om != null)
                             request = om.Request;
                     }
-                    if (org.AskShirtSize == true)
+                    if (setting.AskShirtSize == true)
                         shirtsize = rr.ShirtSize;
-                    if (org.AskEmContact == true)
+                    if (setting.AskEmContact == true)
                     {
                         emcontact = rr.Emcontact;
                         emphone = rr.Emphone;
                     }
-                    if (org.AskInsurance == true)
+                    if (setting.AskInsurance == true)
                     {
                         insurance = rr.Insurance;
                         policy = rr.Policy;
                     }
-                    if (org.AskDoctor == true)
+                    if (setting.AskDoctor == true)
                     {
                         docphone = rr.Docphone;
                         doctor = rr.Doctor;
                     }
-                    if (org.AskParents == true)
+                    if (setting.AskParents == true)
                     {
                         mname = rr.Mname;
                         fname = rr.Fname;
                     }
-                    if (org.AskAllergies == true)
+                    if (setting.AskAllergies == true)
                         medical = rr.MedicalDescription;
-                    if (org.AskCoaching == true)
+                    if (setting.AskCoaching == true)
                         coaching = rr.Coaching;
-                    if (org.AskChurch == true)
+                    if (setting.AskChurch == true)
                     {
                         otherchurch = rr.ActiveInAnotherChurch ?? false;
                         memberus = rr.Member ?? false;
                     }
-                    if (org.AskTylenolEtc == true)
+                    if (setting.AskTylenolEtc == true)
                     {
                         tylenol = rr.Tylenol;
                         advil = rr.Advil;
@@ -330,14 +199,44 @@ namespace CmsWeb.Models
                     }
                 }
             }
+#if DEBUG
+            request = "Toby";
+            ntickets = 1;
+            gradeoption = "12";
+            YesNoQuestion["Facebook"] = true;
+            YesNoQuestion["Twitter"] = true;
+            ExtraQuestion["Your Occupation"] = "programmer";
+            ExtraQuestion["Your Favorite Snack"] = "peanuts";
+            MenuItem["Fish"] = 1;
+            MenuItem["Turkey"] = 0;
+            option = "opt2";
+            option2 = "none";
+            paydeposit = false;
+            Checkbox = new string[] { "PuttPutt", "Horseshoes" };
+            shirtsize = "XL";
+            emcontact = "dc";
+            emphone = "br545";
+            insurance = "bcbs";
+            policy = "2424";
+            doctor = "costalot";
+            docphone = "35353365";
+            tylenol = true;
+            advil = true;
+            maalox = false;
+            robitussin = false;
+            fname = "david carroll";
+            coaching = false;
+            paydeposit = false;
+            grade = "4";
+#endif
         }
         public bool NeedsCopyFromPrevious()
         {
             if (org != null)
-                return (org.AskEmContact == true
-                    || org.AskInsurance == true
-                    || org.AskDoctor == true
-                    || org.AskParents == true);
+                return (setting.AskEmContact == true
+                    || setting.AskInsurance == true
+                    || setting.AskDoctor == true
+                    || setting.AskParents == true);
             return false;
         }
     }

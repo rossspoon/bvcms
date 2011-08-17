@@ -15,7 +15,9 @@ namespace CmsWeb.Models
         }
         public IEnumerable<FamilyMember> FamilyMembers()
         {
-            var family = user.Family.People.Select(p => new { p.PeopleId, p.Name2, p.Age, p.Name });
+            var family = from p in user.Family.People
+                         where p.DeceasedDate == null
+                         select new { p.PeopleId, p.Name2, p.Age, p.Name };
             var q = from m in family
                     join r in list on m.PeopleId equals r.PeopleId into j
                     from r in j.DefaultIfEmpty()

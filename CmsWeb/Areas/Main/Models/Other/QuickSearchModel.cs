@@ -310,6 +310,7 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> Campuses()
         {
             var q = from c in DbUtil.Db.Campus
+                    orderby c.Description
                     select new SelectListItem
                     {
                         Value = c.Id.ToString(),

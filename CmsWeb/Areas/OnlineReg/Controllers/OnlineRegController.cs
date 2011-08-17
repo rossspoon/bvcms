@@ -41,10 +41,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     return Content("no registration allowed on this org");
             }
             else if (m.div != null)
+            {
                 if (OnlineRegModel.UserSelectClasses(m.divid).Count() == 0)
                     return Content("no registration allowed on this div");
+            }
             m.URL = Request.Url.OriginalString;
 
+            DbUtil.LogActivity("Online Registration: {0}".Fmt(m.Header), true);
             SetHeaders(m);
 
 #if DEBUG
@@ -64,7 +67,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             if(login != true)
                 m.nologin = true;
-            m.CreateList();
+
+            if (m.nologin)
+                m.CreateList();
+            else
+                m.List = new List<OnlineRegPersonModel>();
             return View(m);
         }
         // authenticate user
@@ -438,6 +445,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (z == null)
                 return Json(null);
             return Json(new { city = z.City.Trim(), state = z.State });
+        }
+        private Dictionary<int, RegSettings> _settings;
+        public Dictionary<int, RegSettings> settings
+        {
+            get
+            {
+                if (_settings == null)
+                    _settings = HttpContext.Items["RegSettings"] as Dictionary<int, RegSettings>;
+                return _settings;
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
+using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -118,6 +119,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult UpdateOrgContent(int id, bool? div, string what, string title, string html)
         {
             var org = DbUtil.Db.LoadOrganizationById(id);
+
             switch (what)
             {
                 case "message":
