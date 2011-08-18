@@ -7,7 +7,8 @@
         <h2><a href="/Organization/Index/@Model.orgid">Manage Groups for @Model.OrgName</a></h2></td></tr>
     <tr>
         <th align="right">Change Target Group:</th>
-        <td colspan="2" class="wide100">@Html.DropDownList("groupid", Model.Groups())</td>
+        <td colspan="2" class="wide100">@Html.DropDownList("groupidDD", Model.Groups(), new { @onchange = "groupid.value = this.value" })
+         <input type="hidden" name="groupid" id="groupid" value="@Model.groupid" /></td>
     </tr>
     <tr>
         <th align="right">New Group Name:</th>

@@ -48,7 +48,7 @@ namespace CmsWeb.Models
                     };
             var list = q.ToList();
             list.Insert(0, new { value = 0, text = "(not specified)" });
-            return new SelectList(list, "value", "text", groupid);
+            return new SelectList(list, "value", "text", groupid.ToString());
         }
         private List<SelectListItem> mtypes;
         private List<SelectListItem> MemberTypes()

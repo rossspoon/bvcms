@@ -1,0 +1,50 @@
+﻿@model CmsWeb.Areas.Dialog.Models.TransactionHistoryModel
+@using UtilityExtensions
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>History</title>
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/style2.css" rel="stylesheet" type="text/css" />
+    <script src="/Content/js/jquery-1.5.2.min.js" type="text/javascript"></script>
+    <script src="/Scripts/TransactionHistory.js" type="text/javascript"></script>
+</head>
+<body>
+    <div>
+        <p>@Model.Name<br />
+            @Model.Org</p>
+        <table id="attends" class="grid" cellpadding="5">
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th> Flag </th>
+                    <th> Meeting Date </th>
+                    <th> Attend Type </th>
+                    <th> Member Type </th>
+                    <th> Other Attends </th>
+                    <th> Other OrgId </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model.FetchAttends())
+                {
+                    <tr>
+                        <td>@a.Indicator </td>
+                        <td>@a.AttendanceFlag </td>
+                        <td>@a.MeetingDate.ToString("M/d/yy h:mmt") </td>
+                        <td>@a.AttendType </td>
+                        <td>@a.MemberType </td>
+                        <td>@a.OtherAttends </td>
+                        <td>@a.OtherOrgId </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div>&nbsp;</div>
+        @{Html.RenderPartial("History", Model.FetchHistory()); }
+    </div>
+</body>
+</html>

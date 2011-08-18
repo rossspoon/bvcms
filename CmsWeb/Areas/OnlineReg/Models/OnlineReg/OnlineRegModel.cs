@@ -51,7 +51,7 @@ namespace CmsWeb.Models
             if (HttpContext.Current.Items.Contains("RegSettings"))
                 return;
             var list = new Dictionary<int, RegSettings>();
-            if (divid.HasValue)
+            if (_Divid.HasValue)
             {
                 var q = from o in DbUtil.Db.Organizations
                         where o.DivOrgs.Any(od => od.DivId == divid)
@@ -63,7 +63,9 @@ namespace CmsWeb.Models
                     list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
             }
             else
-                list[org.OrganizationId] = new RegSettings(org.RegSetting, DbUtil.Db, org.OrganizationId);
+                list[_Orgid.Value] = new RegSettings(org.RegSetting, DbUtil.Db, _Orgid.Value);
+            if (HttpContext.Current.Items.Contains("RegSettings"))
+                return;
             HttpContext.Current.Items.Add("RegSettings", list);
         }
         public static RegSettings ParseSetting(string RegSetting, int OrgId)

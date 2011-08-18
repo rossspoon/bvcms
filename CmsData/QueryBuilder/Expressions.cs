@@ -525,8 +525,8 @@ namespace CmsData
             int cnt)
         {
             Expression<Func<Person, int>> pred = p =>
-                p.OrganizationMembers.Count(m =>
-                    (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
+                p.OrganizationMembers.Count(m => ((m.Pending ?? false) == false)
+                    && (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
                     && (org == 0 || m.OrganizationId == org)
                     && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
                     && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))

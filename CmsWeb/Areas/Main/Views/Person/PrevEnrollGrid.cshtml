@@ -18,7 +18,7 @@
     <td><a href="/Organization/Index/@om.OrgId" title="@om.DivisionName">@om.Name</a></td>
     <td>@om.EnrollDate.FormatDate()</td>
     <td><a target="_blank" 
-        href="/AttendStrDetail.aspx?id=@om.PeopleId&oid=@om.OrgId">@om.MemberType</a></td>
+        href="/TransactionHistory/Index/@om.PeopleId?oid=@om.OrgId">@om.MemberType</a></td>
     <td>@(om.AttendPct.HasValue ? om.AttendPct.Value.ToString("N1") : "")</td>
     </tr>
      }

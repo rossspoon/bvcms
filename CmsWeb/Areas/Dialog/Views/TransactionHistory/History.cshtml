@@ -1,0 +1,37 @@
+﻿@model IEnumerable<CmsWeb.Areas.Dialog.Models.TransactionHistoryModel.TransactionInfo>
+@using UtilityExtensions
+        <table id="history" class="grid" cellpadding="5">
+        <thead>
+            <tr><th>Id</th>
+                <th>EnrollId</th>
+                <th>Tran Date</th>
+                <th>Tran Type</th>
+                <th>Member Type</th>
+                <th>Pending</th>
+                <th>Enroll Date</th>
+                <th>Next Tran Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.TransactionId</td>
+                <td>@a.EnrollmentTransactionId</td>
+                <td>@a.TransactionDate.ToString("M/d/yy h:mmt")</td>
+                <td>@a.TransactionType</td>
+                <td>@a.MemberType</td>
+                <td>@a.Pending</td>
+                <td>@a.EnrollmentDate.ToString2("M/d/yy h:mmt")</td>
+                <td>@a.NextTranChangeDate.ToString2("M/d/yy h:mmt")</td>
+                <td>
+            @if (User.IsInRole("Developer"))
+            {
+                <a class="deltran" href="/TransactionHistory/Delete/@a.TransactionId">X</a>
+            }
+                </td>
+            </tr>
+        }
+        </tbody>
+        </table>

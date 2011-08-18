@@ -217,7 +217,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Dialog\Controllers\TransactionHistoryController.cs" />
     <Compile Include="Areas\Dialog\DialogAreaRegistration.cs" />
+    <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
@@ -520,13 +522,6 @@
     </Compile>
     <Compile Include="AppReview\VolunteerApp.aspx.designer.cs">
       <DependentUpon>VolunteerApp.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AttendStrDetail.aspx.cs">
-      <DependentUpon>AttendStrDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AttendStrDetail.aspx.designer.cs">
-      <DependentUpon>AttendStrDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="BadEts.aspx.cs">
       <DependentUpon>BadEts.aspx</DependentUpon>
@@ -1042,7 +1037,6 @@
     <Content Include="Content\js\jquery.showpassword.js" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="App_Offline1.htm" />
-    <Content Include="AttendStrDetail.aspx" />
     <Content Include="BadEts.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Content\bodybg.png" />
@@ -1055,6 +1049,7 @@
     <Content Include="Scripts\Email.js" />
     <Content Include="Scripts\pickslots.js" />
     <Content Include="Scripts\pickslots2.js" />
+    <Content Include="Scripts\TransactionHistory.js" />
     <Content Include="Scripts\UserDialog.js" />
     <Content Include="SquishIt.Contrib.MvcReadMe.txt" />
     <Content Include="MembershipAutomationExample.py" />
@@ -1452,6 +1447,8 @@
     <Content Include="Areas\Main\Views\RegSetting\Checkbox2Editor.cshtml" />
     <Content Include="Areas\Main\Views\RegSetting\ShirtSizeEditor.cshtml" />
     <Content Include="Areas\Main\Views\RegSetting\VoteTagEditor.cshtml" />
+    <Content Include="Areas\Dialog\Views\TransactionHistory\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\TransactionHistory\History.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

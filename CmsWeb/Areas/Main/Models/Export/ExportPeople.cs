@@ -64,7 +64,7 @@ namespace CmsWeb.Models
                         Age = p.Age.ToString(),
                         Married = p.MaritalStatus.Description,
                         FamilyId = p.FamilyId,
-                        FamilyPosition = p.PositionInFamilyId,
+                        FamilyPosition = p.FamilyPosition.Description,
                         School = p.SchoolOther,
                         Grade = p.Grade.ToString(),
                         FellowshipLeader = p.BFClass.LeaderName,
@@ -89,6 +89,7 @@ namespace CmsWeb.Models
                          || (p.SpouseId == c.PeopleId 
                             && sp.ContributionOptionsId == 2 && p.ContributionOptionsId == 2))
                      let f = c.Person.Family
+                     where c.PledgeFlag != true
                      where c.ContributionStatusId == 0
                      where c.ContributionAmount > 0
                      where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
@@ -121,6 +122,7 @@ namespace CmsWeb.Models
                          || (p.SpouseId == c.PeopleId 
                             && sp.ContributionOptionsId == 2 && p.ContributionOptionsId == 2))
                      where c.ContributionStatusId == 0
+                     where c.PledgeFlag != true
                      where c.ContributionAmount > 0
                      where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
                      where c.ContributionDate >= startdt && c.ContributionDate <= enddt

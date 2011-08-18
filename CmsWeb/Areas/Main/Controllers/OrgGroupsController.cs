@@ -101,6 +101,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 DbUtil.Db.OrgMemMemTags.DeleteAllOnSubmit(group.OrgMemMemTags);
                 DbUtil.Db.MemberTags.DeleteOnSubmit(group);
                 DbUtil.Db.SubmitChanges();
+                m.groupid = (from v in m.Groups()
+                             where v.Value != "0"
+                             select v.Value).FirstOrDefault().ToInt();
+                ViewData["groupid"] = m.groupid.ToString();
             }
             return View("Form", m);
         }

@@ -17,6 +17,7 @@ namespace CmsWeb.Areas.Dialog
             AddRoute(context, "SearchAdd");
             AddRoute(context, "SearchUsers");
             AddRoute(context, "OrgMemberDialog");
+            AddRoute(context, "TransactionHistory");
             AddRoute(context, "OrgMembersDialog");
             context.MapRoute(
                 "Dialog_default",

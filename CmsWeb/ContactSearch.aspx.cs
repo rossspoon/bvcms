@@ -54,8 +54,8 @@ namespace CmsWeb
             var comp = CompareType.Equal;
             var clause = qb.AddNewClause(QueryType.MadeContactTypeAsOf, comp, "1,T");
             clause.Program = MinistryList.SelectedValue.ToInt();
-            clause.StartDate = startDate.Text.ToDate();
-            clause.EndDate = endDate.Text.ToDate();
+            clause.StartDate = startDate.Text.ToDate() ?? DateTime.Parse("1/1/2000");
+            clause.EndDate = endDate.Text.ToDate() ?? DateTime.Today;
             var cvc = new CodeValueController();
             var q = from v in cvc.ContactTypeCodes0()
                     where v.Id == TypeList.SelectedValue.ToInt()
