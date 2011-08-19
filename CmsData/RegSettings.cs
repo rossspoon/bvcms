@@ -1275,7 +1275,7 @@ namespace CmsData
             if (Dropdown3.Count == 0)
                 return;
             AddValueNoCk(0, sb, "Dropdown3", Dropdown3Label);
-            foreach (var s in Dropdown2)
+            foreach (var s in Dropdown3)
             {
                 AddValueCk(1, sb, s.Description);
                 AddValueCk(2, sb, "SmallGroup", s.SmallGroup);

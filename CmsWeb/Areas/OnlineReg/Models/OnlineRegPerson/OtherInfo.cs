@@ -87,7 +87,7 @@ namespace CmsWeb.Models
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
                     select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
             return list;
         }
         public IEnumerable<SelectListItem> ExtraOptions()

@@ -50,7 +50,8 @@ else
 <input id="save" type="submit" class="bt" value="Save Changes" disabled /> <i>You must have Edit role to save changes</i>
 }
 @Html.Hidden("Id", ViewData["OrganizationId"])
-<a href="/Organization/Index/@ViewData["OrganizationId"]" class="bt">Cancel</a>
+<a href="/Organization/Index/@ViewData["OrganizationId"]" class="bt">Cancel</a>&nbsp;&nbsp;
+<b><a href="/OnlineReg/Index/@ViewData["OrganizationId"]" target="tryit">try it</a></b> <i>please save changes first</i>
 <ul>
   <li><i>This is the confirmation email</i>
     <div class="text big">Confirmation: </div>
@@ -91,6 +92,17 @@ else
     @foreach(var i in Model.AgeGroups)
     {
         Html.RenderPartial("AgeGroupEditor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewAgeGroup"><img src="/images/plus1.png" /> Add Item</a></div><br />
+  </li>
+  <li>
+    <i>This will give a registrants who are members of a particular organization a special Fee</i>
+    <div class="text big">OrgFees:</div>
+    <ul id="OrgFees" class="sort">
+    @foreach(var i in Model.OrgFees)
+    {
+        Html.RenderPartial("OrgFeeEditor", i);
     }
     </ul>
     <div><a class="newitem" href="/RegSetting/NewAgeGroup"><img src="/images/plus1.png" /> Add Item</a></div><br />

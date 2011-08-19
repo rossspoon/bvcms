@@ -265,19 +265,19 @@ Please search with a different email, phone, or birthday.";
             string desc;
 
             if (setting.Dropdown1.Count > 0)
-                if (option == "0")
+                if (option == "00")
                     modelState.AddModelError(inputname("option"), "please select an option");
                 else if (IsSmallGroupFilled(setting.Dropdown1, option, out desc))
                     modelState.AddModelError(inputname("option"), "limit reached for " + desc);
 
             if (setting.Dropdown2.Count > 0)
-                if (option2 == "0")
+                if (option2 == "00")
                     modelState.AddModelError(inputname("option2"), "please select an option");
                 else if (IsSmallGroupFilled(setting.Dropdown2, option2, out desc))
                     modelState.AddModelError(inputname("option2"), "limit reached for " + desc);
 
             if (setting.Dropdown3.Count > 0)
-                if (option3 == "0")
+                if (option3 == "00")
                     modelState.AddModelError(inputname("option3"), "please select an option");
                 else if (IsSmallGroupFilled(setting.Dropdown3, option3, out desc))
                     modelState.AddModelError(inputname("option3"), "limit reached for " + desc);
@@ -341,7 +341,7 @@ Please search with a different email, phone, or birthday.";
         }
         public bool IsSmallGroupFilled(List<RegSettings.MenuItem> options, string sg, out string desc)
         {
-            var i = options.Single(dd => dd.SmallGroup == sg);
+            var i = options.SingleOrDefault(dd => dd.SmallGroup == sg);
             desc = i.Description;
             if (i.Limit > 0)
             {

@@ -88,7 +88,7 @@ namespace CmsWeb.Models
             if (setting.Dropdown3.Count > 0)
             {
                 var q = from o in setting.Dropdown3
-                        where option2 == o.SmallGroup
+                        where option3 == o.SmallGroup
                         select o.Fee ?? 0;
                 if (q.Count() > 0)
                     amt += q.First();
