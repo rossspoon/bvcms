@@ -33,17 +33,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 return Json(new { error = "coupon and division do not match" });
             else if (m.orgid != c.OrgId)
                 return Json(new { error = "coupon and org do not match" });
-            else if (c.Used.HasValue)
+            else if (c.Used.HasValue && c.Id.Length == 12)
                 return Json(new { error = "coupon already used" });
             else if (c.Canceled.HasValue)
                 return Json(new { error = "coupon canceled" });
 
             var ti = m.Transaction;
 
-
             if (c.Amount >= ti.Amt)
             {
-                ti.TransactionId = "Coupon({0:n2})".Fmt(coupon.Insert(8, " ").Insert(4, " "));
+                ti.TransactionId = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon));
                 m.UseCoupon(ti.TransactionId);
                 ti.TransactionDate = DateTime.Now;
                 ti.Amt -= c.Amount; // coupon amount applied
@@ -56,13 +55,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 return Json(new
                 {
                     confirm = "/onlinereg/confirm/{0}?TransactionID=Coupon({1})"
-                        .Fmt(id, coupon.Insert(8, " ").Insert(4, " "))
+                        .Fmt(id, Util.fmtcoupon(coupon))
                 });
             }
 
             var ti2 = new Transaction
             {
-                TransactionId = "Coupon({0:n2})".Fmt(coupon.Insert(8, " ").Insert(4, " ")),
+                TransactionId = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon)),
                 Amt = c.Amount,
                 Name = ti.Name,
                 Address = ti.Address,
@@ -71,6 +70,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 Zip = ti.Zip,
                 Description = ti.Description,
                 Url = ti.Url,
+                Testing = m.testing,
                 Emails = ti.Emails,
                 OrgId = ti.OrgId,
                 Participants = ti.Participants,
@@ -124,7 +124,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             return Json(new
             {
                 confirm = "/onlinereg/confirm/{0}?TransactionID=Coupon({1})"
-                    .Fmt(id, coupon.Insert(8, " ").Insert(4, " "))
+                    .Fmt(id, Util.fmtcoupon(coupon))
             });
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -151,7 +151,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             return Json(new
             {
                 confirm = "/onlinereg/ConfirmDuePaid/{0}?TransactionID=Coupon({1})&Amount={2}"
-                    .Fmt(id, coupon.Insert(8, " ").Insert(4, " "), Amount)
+                    .Fmt(id, Util.fmtcoupon(coupon), Amount)
             });
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -179,7 +179,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             return Json(new
             {
                 confirm = "/onlinereg/Confirm2/{0}?TransactionID=Coupon({1})&Amount={2}"
-                    .Fmt(id, coupon.Insert(8, " ").Insert(4, " "), Amount)
+                    .Fmt(id, Util.fmtcoupon(coupon), Amount)
             });
         }
     }

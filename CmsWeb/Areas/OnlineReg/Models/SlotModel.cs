@@ -16,7 +16,7 @@ namespace CmsWeb.Models
         {
             person = DbUtil.Db.People.SingleOrDefault(pp => pp.PeopleId == pid);
             org = DbUtil.Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == oid);
-            var x = XDocument.Parse(org.MenuItems);
+            var x = XDocument.Parse("");//org.MenuItems);
             var qr = from r in x.Descendants("row")
                      select new
                      {

@@ -108,6 +108,11 @@ namespace CmsWeb.Models.OrganizationPage
                 });
             DbUtil.Db.SubmitChanges();
         }
+        public SelectList Schedules()
+        {
+            var q = new SelectList(schedules.OrderBy(cc => cc.Id), "Value", "Display");
+            return q;
+        }
         public void ValidateSettings(ModelStateDictionary ModelState)
         {
             //const string STR_NotFormedCorrectly = "not formed correctly";

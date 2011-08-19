@@ -358,12 +358,5 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return View("NotifyList", DbUtil.Db.PeopleFromPidString(o.NotifyIds));
         }
-        [HttpPost]
-        public ActionResult ScheduleList(int id)
-        {
-            var m = new OrganizationModel(id, null);
-            var q = new SelectList(m.schedules.OrderBy(cc => cc.Id), "Value", "Display");
-            return View(q);
-        }
     }
 }

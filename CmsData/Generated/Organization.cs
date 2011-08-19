@@ -87,19 +87,7 @@ namespace CmsData
 		
 		private int? _Limit;
 		
-		private string _EmailAddresses;
-		
-		private string _RegType;
-		
-		private string _EmailMessage;
-		
-		private string _EmailSubject;
-		
-		private string _Instructions;
-		
 		private int? _GenderId;
-		
-		private decimal? _Fee;
 		
 		private string _Description;
 		
@@ -109,139 +97,33 @@ namespace CmsData
 		
 		private DateTime? _VisitorDate;
 		
-		private decimal? _Deposit;
-		
-		private decimal? _ShirtFee;
-		
-		private decimal? _ExtraFee;
-		
 		private DateTime? _LastDayBeforeExtra;
-		
-		private bool? _AskTylenolEtc;
-		
-		private bool? _AskAllergies;
-		
-		private bool? _AskShirtSize;
-		
-		private bool? _AskRequest;
-		
-		private bool? _AskParents;
-		
-		private bool? _AskEmContact;
-		
-		private bool? _AskMedical;
-		
-		private bool? _AskInsurance;
-		
-		private bool? _AllowLastYearShirt;
-		
-		private bool? _AskDoctor;
-		
-		private bool? _AskCoaching;
-		
-		private bool? _AskChurch;
-		
-		private bool? _AskGrade;
-		
-		private string _Terms;
-		
-		private bool? _AskTickets;
-		
-		private decimal? _MaximumFee;
-		
-		private string _AskOptions;
-		
-		private string _AgeFee;
-		
-		private bool? _AllowOnlyOne;
 		
 		private int? _RegistrationTypeId;
 		
-		private string _AgeGroups;
-		
 		private string _ValidateOrgs;
 		
-		private bool? _MemberOnly;
-		
-		private string _YesNoQuestions;
-		
-		private string _OrgMemberFees;
-		
-		private string _ExtraQuestions;
-		
 		private string _PhoneNumber;
-		
-		private string _GradeOptions;
-		
-		private string _LinkGroupsFromOrgs;
 		
 		private bool? _RegistrationClosed;
 		
 		private bool? _AllowKioskRegister;
 		
-		private string _RequestLabel;
-		
 		private string _WorshipGroupCodes;
 		
 		private bool? _IsBibleFellowshipOrg;
-		
-		private string _ExtraOptions;
-		
-		private string _Shell;
-		
-		private string _ShirtSizes;
 		
 		private bool? _NoSecurityLabel;
 		
 		private bool? _AlwaysSecurityLabel;
 		
-		private string _MenuItems;
-		
-		private string _OptionsLabel;
-		
-		private string _ExtraOptionsLabel;
-		
 		private int? _DaysToIgnoreHistory;
 		
-		private string _GroupToJoin;
-		
-		private bool? _GiveOrgMembAccess;
-		
-		private string _NumItemsLabel;
-		
-		private bool? _NotReqDOB;
-		
-		private bool? _NotReqAddr;
-		
-		private bool? _NotReqZip;
-		
-		private bool? _NotReqPhone;
-		
-		private bool? _NotReqGender;
-		
-		private bool? _NotReqMarital;
-		
-		private string _GradeLabel;
-		
-		private string _Checkboxes;
-		
-		private string _CheckboxesLabel;
-		
-		private bool? _AskDonation;
-		
 		private string _NotifyIds;
-		
-		private int? _DonationFundId;
-		
-		private int? _CheckboxesMin;
-		
-		private int? _CheckboxesMax;
 		
 		private double? _Lat;
 		
 		private double? _LongX;
-		
-		private bool? _SuggestedFee;
 		
 		private string _RegSetting;
 		
@@ -278,8 +160,6 @@ namespace CmsData
 		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
 		
 		private EntityRef< Campu> _Campu;
-		
-		private EntityRef< ContributionFund> _ContributionFund;
 		
 		private EntityRef< Division> _Division;
 		
@@ -403,26 +283,8 @@ namespace CmsData
 		partial void OnLimitChanging(int? value);
 		partial void OnLimitChanged();
 		
-		partial void OnEmailAddressesChanging(string value);
-		partial void OnEmailAddressesChanged();
-		
-		partial void OnRegTypeChanging(string value);
-		partial void OnRegTypeChanged();
-		
-		partial void OnEmailMessageChanging(string value);
-		partial void OnEmailMessageChanged();
-		
-		partial void OnEmailSubjectChanging(string value);
-		partial void OnEmailSubjectChanged();
-		
-		partial void OnInstructionsChanging(string value);
-		partial void OnInstructionsChanged();
-		
 		partial void OnGenderIdChanging(int? value);
 		partial void OnGenderIdChanged();
-		
-		partial void OnFeeChanging(decimal? value);
-		partial void OnFeeChanged();
 		
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
@@ -436,104 +298,17 @@ namespace CmsData
 		partial void OnVisitorDateChanging(DateTime? value);
 		partial void OnVisitorDateChanged();
 		
-		partial void OnDepositChanging(decimal? value);
-		partial void OnDepositChanged();
-		
-		partial void OnShirtFeeChanging(decimal? value);
-		partial void OnShirtFeeChanged();
-		
-		partial void OnExtraFeeChanging(decimal? value);
-		partial void OnExtraFeeChanged();
-		
 		partial void OnLastDayBeforeExtraChanging(DateTime? value);
 		partial void OnLastDayBeforeExtraChanged();
-		
-		partial void OnAskTylenolEtcChanging(bool? value);
-		partial void OnAskTylenolEtcChanged();
-		
-		partial void OnAskAllergiesChanging(bool? value);
-		partial void OnAskAllergiesChanged();
-		
-		partial void OnAskShirtSizeChanging(bool? value);
-		partial void OnAskShirtSizeChanged();
-		
-		partial void OnAskRequestChanging(bool? value);
-		partial void OnAskRequestChanged();
-		
-		partial void OnAskParentsChanging(bool? value);
-		partial void OnAskParentsChanged();
-		
-		partial void OnAskEmContactChanging(bool? value);
-		partial void OnAskEmContactChanged();
-		
-		partial void OnAskMedicalChanging(bool? value);
-		partial void OnAskMedicalChanged();
-		
-		partial void OnAskInsuranceChanging(bool? value);
-		partial void OnAskInsuranceChanged();
-		
-		partial void OnAllowLastYearShirtChanging(bool? value);
-		partial void OnAllowLastYearShirtChanged();
-		
-		partial void OnAskDoctorChanging(bool? value);
-		partial void OnAskDoctorChanged();
-		
-		partial void OnAskCoachingChanging(bool? value);
-		partial void OnAskCoachingChanged();
-		
-		partial void OnAskChurchChanging(bool? value);
-		partial void OnAskChurchChanged();
-		
-		partial void OnAskGradeChanging(bool? value);
-		partial void OnAskGradeChanged();
-		
-		partial void OnTermsChanging(string value);
-		partial void OnTermsChanged();
-		
-		partial void OnAskTicketsChanging(bool? value);
-		partial void OnAskTicketsChanged();
-		
-		partial void OnMaximumFeeChanging(decimal? value);
-		partial void OnMaximumFeeChanged();
-		
-		partial void OnAskOptionsChanging(string value);
-		partial void OnAskOptionsChanged();
-		
-		partial void OnAgeFeeChanging(string value);
-		partial void OnAgeFeeChanged();
-		
-		partial void OnAllowOnlyOneChanging(bool? value);
-		partial void OnAllowOnlyOneChanged();
 		
 		partial void OnRegistrationTypeIdChanging(int? value);
 		partial void OnRegistrationTypeIdChanged();
 		
-		partial void OnAgeGroupsChanging(string value);
-		partial void OnAgeGroupsChanged();
-		
 		partial void OnValidateOrgsChanging(string value);
 		partial void OnValidateOrgsChanged();
 		
-		partial void OnMemberOnlyChanging(bool? value);
-		partial void OnMemberOnlyChanged();
-		
-		partial void OnYesNoQuestionsChanging(string value);
-		partial void OnYesNoQuestionsChanged();
-		
-		partial void OnOrgMemberFeesChanging(string value);
-		partial void OnOrgMemberFeesChanged();
-		
-		partial void OnExtraQuestionsChanging(string value);
-		partial void OnExtraQuestionsChanged();
-		
 		partial void OnPhoneNumberChanging(string value);
 		partial void OnPhoneNumberChanged();
-		
-		partial void OnGradeOptionsChanging(string value);
-		partial void OnGradeOptionsChanged();
-		
-		partial void OnLinkGroupsFromOrgsChanging(string value);
-		partial void OnLinkGroupsFromOrgsChanged();
 		
 		partial void OnRegistrationClosedChanging(bool? value);
 		partial void OnRegistrationClosedChanged();
@@ -541,23 +316,11 @@ namespace CmsData
 		partial void OnAllowKioskRegisterChanging(bool? value);
 		partial void OnAllowKioskRegisterChanged();
 		
-		partial void OnRequestLabelChanging(string value);
-		partial void OnRequestLabelChanged();
-		
 		partial void OnWorshipGroupCodesChanging(string value);
 		partial void OnWorshipGroupCodesChanged();
 		
 		partial void OnIsBibleFellowshipOrgChanging(bool? value);
 		partial void OnIsBibleFellowshipOrgChanged();
-		
-		partial void OnExtraOptionsChanging(string value);
-		partial void OnExtraOptionsChanged();
-		
-		partial void OnShellChanging(string value);
-		partial void OnShellChanged();
-		
-		partial void OnShirtSizesChanging(string value);
-		partial void OnShirtSizesChanged();
 		
 		partial void OnNoSecurityLabelChanging(bool? value);
 		partial void OnNoSecurityLabelChanged();
@@ -565,77 +328,17 @@ namespace CmsData
 		partial void OnAlwaysSecurityLabelChanging(bool? value);
 		partial void OnAlwaysSecurityLabelChanged();
 		
-		partial void OnMenuItemsChanging(string value);
-		partial void OnMenuItemsChanged();
-		
-		partial void OnOptionsLabelChanging(string value);
-		partial void OnOptionsLabelChanged();
-		
-		partial void OnExtraOptionsLabelChanging(string value);
-		partial void OnExtraOptionsLabelChanged();
-		
 		partial void OnDaysToIgnoreHistoryChanging(int? value);
 		partial void OnDaysToIgnoreHistoryChanged();
 		
-		partial void OnGroupToJoinChanging(string value);
-		partial void OnGroupToJoinChanged();
-		
-		partial void OnGiveOrgMembAccessChanging(bool? value);
-		partial void OnGiveOrgMembAccessChanged();
-		
-		partial void OnNumItemsLabelChanging(string value);
-		partial void OnNumItemsLabelChanged();
-		
-		partial void OnNotReqDOBChanging(bool? value);
-		partial void OnNotReqDOBChanged();
-		
-		partial void OnNotReqAddrChanging(bool? value);
-		partial void OnNotReqAddrChanged();
-		
-		partial void OnNotReqZipChanging(bool? value);
-		partial void OnNotReqZipChanged();
-		
-		partial void OnNotReqPhoneChanging(bool? value);
-		partial void OnNotReqPhoneChanged();
-		
-		partial void OnNotReqGenderChanging(bool? value);
-		partial void OnNotReqGenderChanged();
-		
-		partial void OnNotReqMaritalChanging(bool? value);
-		partial void OnNotReqMaritalChanged();
-		
-		partial void OnGradeLabelChanging(string value);
-		partial void OnGradeLabelChanged();
-		
-		partial void OnCheckboxesChanging(string value);
-		partial void OnCheckboxesChanged();
-		
-		partial void OnCheckboxesLabelChanging(string value);
-		partial void OnCheckboxesLabelChanged();
-		
-		partial void OnAskDonationChanging(bool? value);
-		partial void OnAskDonationChanged();
-		
 		partial void OnNotifyIdsChanging(string value);
 		partial void OnNotifyIdsChanged();
-		
-		partial void OnDonationFundIdChanging(int? value);
-		partial void OnDonationFundIdChanged();
-		
-		partial void OnCheckboxesMinChanging(int? value);
-		partial void OnCheckboxesMinChanged();
-		
-		partial void OnCheckboxesMaxChanging(int? value);
-		partial void OnCheckboxesMaxChanged();
 		
 		partial void OnLatChanging(double? value);
 		partial void OnLatChanged();
 		
 		partial void OnLongXChanging(double? value);
 		partial void OnLongXChanged();
-		
-		partial void OnSuggestedFeeChanging(bool? value);
-		partial void OnSuggestedFeeChanged();
 		
 		partial void OnRegSettingChanging(string value);
 		partial void OnRegSettingChanged();
@@ -676,8 +379,6 @@ namespace CmsData
 			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
 			
 			this._Campu = default(EntityRef< Campu>); 
-			
-			this._ContributionFund = default(EntityRef< ContributionFund>); 
 			
 			this._Division = default(EntityRef< Division>); 
 			
@@ -1483,116 +1184,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EmailAddresses", UpdateCheck=UpdateCheck.Never, Storage="_EmailAddresses", DbType="varchar(200)")]
-		public string EmailAddresses
-		{
-			get { return this._EmailAddresses; }
-
-			set
-			{
-				if (this._EmailAddresses != value)
-				{
-				
-                    this.OnEmailAddressesChanging(value);
-					this.SendPropertyChanging();
-					this._EmailAddresses = value;
-					this.SendPropertyChanged("EmailAddresses");
-					this.OnEmailAddressesChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="RegType", UpdateCheck=UpdateCheck.Never, Storage="_RegType", DbType="varchar(50)")]
-		public string RegType
-		{
-			get { return this._RegType; }
-
-			set
-			{
-				if (this._RegType != value)
-				{
-				
-                    this.OnRegTypeChanging(value);
-					this.SendPropertyChanging();
-					this._RegType = value;
-					this.SendPropertyChanged("RegType");
-					this.OnRegTypeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="EmailMessage", UpdateCheck=UpdateCheck.Never, Storage="_EmailMessage", DbType="varchar")]
-		public string EmailMessage
-		{
-			get { return this._EmailMessage; }
-
-			set
-			{
-				if (this._EmailMessage != value)
-				{
-				
-                    this.OnEmailMessageChanging(value);
-					this.SendPropertyChanging();
-					this._EmailMessage = value;
-					this.SendPropertyChanged("EmailMessage");
-					this.OnEmailMessageChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="EmailSubject", UpdateCheck=UpdateCheck.Never, Storage="_EmailSubject", DbType="varchar(100)")]
-		public string EmailSubject
-		{
-			get { return this._EmailSubject; }
-
-			set
-			{
-				if (this._EmailSubject != value)
-				{
-				
-                    this.OnEmailSubjectChanging(value);
-					this.SendPropertyChanging();
-					this._EmailSubject = value;
-					this.SendPropertyChanged("EmailSubject");
-					this.OnEmailSubjectChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Instructions", UpdateCheck=UpdateCheck.Never, Storage="_Instructions", DbType="varchar")]
-		public string Instructions
-		{
-			get { return this._Instructions; }
-
-			set
-			{
-				if (this._Instructions != value)
-				{
-				
-                    this.OnInstructionsChanging(value);
-					this.SendPropertyChanging();
-					this._Instructions = value;
-					this.SendPropertyChanged("Instructions");
-					this.OnInstructionsChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="GenderId", UpdateCheck=UpdateCheck.Never, Storage="_GenderId", DbType="int")]
 		public int? GenderId
 		{
@@ -1611,28 +1202,6 @@ namespace CmsData
 					this._GenderId = value;
 					this.SendPropertyChanged("GenderId");
 					this.OnGenderIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Fee", UpdateCheck=UpdateCheck.Never, Storage="_Fee", DbType="money")]
-		public decimal? Fee
-		{
-			get { return this._Fee; }
-
-			set
-			{
-				if (this._Fee != value)
-				{
-				
-                    this.OnFeeChanging(value);
-					this.SendPropertyChanging();
-					this._Fee = value;
-					this.SendPropertyChanged("Fee");
-					this.OnFeeChanged();
 				}
 
 			}
@@ -1728,72 +1297,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Deposit", UpdateCheck=UpdateCheck.Never, Storage="_Deposit", DbType="money")]
-		public decimal? Deposit
-		{
-			get { return this._Deposit; }
-
-			set
-			{
-				if (this._Deposit != value)
-				{
-				
-                    this.OnDepositChanging(value);
-					this.SendPropertyChanging();
-					this._Deposit = value;
-					this.SendPropertyChanged("Deposit");
-					this.OnDepositChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ShirtFee", UpdateCheck=UpdateCheck.Never, Storage="_ShirtFee", DbType="money")]
-		public decimal? ShirtFee
-		{
-			get { return this._ShirtFee; }
-
-			set
-			{
-				if (this._ShirtFee != value)
-				{
-				
-                    this.OnShirtFeeChanging(value);
-					this.SendPropertyChanging();
-					this._ShirtFee = value;
-					this.SendPropertyChanged("ShirtFee");
-					this.OnShirtFeeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ExtraFee", UpdateCheck=UpdateCheck.Never, Storage="_ExtraFee", DbType="money")]
-		public decimal? ExtraFee
-		{
-			get { return this._ExtraFee; }
-
-			set
-			{
-				if (this._ExtraFee != value)
-				{
-				
-                    this.OnExtraFeeChanging(value);
-					this.SendPropertyChanging();
-					this._ExtraFee = value;
-					this.SendPropertyChanged("ExtraFee");
-					this.OnExtraFeeChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="LastDayBeforeExtra", UpdateCheck=UpdateCheck.Never, Storage="_LastDayBeforeExtra", DbType="datetime")]
 		public DateTime? LastDayBeforeExtra
 		{
@@ -1809,424 +1312,6 @@ namespace CmsData
 					this._LastDayBeforeExtra = value;
 					this.SendPropertyChanged("LastDayBeforeExtra");
 					this.OnLastDayBeforeExtraChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskTylenolEtc", UpdateCheck=UpdateCheck.Never, Storage="_AskTylenolEtc", DbType="bit")]
-		public bool? AskTylenolEtc
-		{
-			get { return this._AskTylenolEtc; }
-
-			set
-			{
-				if (this._AskTylenolEtc != value)
-				{
-				
-                    this.OnAskTylenolEtcChanging(value);
-					this.SendPropertyChanging();
-					this._AskTylenolEtc = value;
-					this.SendPropertyChanged("AskTylenolEtc");
-					this.OnAskTylenolEtcChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskAllergies", UpdateCheck=UpdateCheck.Never, Storage="_AskAllergies", DbType="bit")]
-		public bool? AskAllergies
-		{
-			get { return this._AskAllergies; }
-
-			set
-			{
-				if (this._AskAllergies != value)
-				{
-				
-                    this.OnAskAllergiesChanging(value);
-					this.SendPropertyChanging();
-					this._AskAllergies = value;
-					this.SendPropertyChanged("AskAllergies");
-					this.OnAskAllergiesChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskShirtSize", UpdateCheck=UpdateCheck.Never, Storage="_AskShirtSize", DbType="bit")]
-		public bool? AskShirtSize
-		{
-			get { return this._AskShirtSize; }
-
-			set
-			{
-				if (this._AskShirtSize != value)
-				{
-				
-                    this.OnAskShirtSizeChanging(value);
-					this.SendPropertyChanging();
-					this._AskShirtSize = value;
-					this.SendPropertyChanged("AskShirtSize");
-					this.OnAskShirtSizeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskRequest", UpdateCheck=UpdateCheck.Never, Storage="_AskRequest", DbType="bit")]
-		public bool? AskRequest
-		{
-			get { return this._AskRequest; }
-
-			set
-			{
-				if (this._AskRequest != value)
-				{
-				
-                    this.OnAskRequestChanging(value);
-					this.SendPropertyChanging();
-					this._AskRequest = value;
-					this.SendPropertyChanged("AskRequest");
-					this.OnAskRequestChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskParents", UpdateCheck=UpdateCheck.Never, Storage="_AskParents", DbType="bit")]
-		public bool? AskParents
-		{
-			get { return this._AskParents; }
-
-			set
-			{
-				if (this._AskParents != value)
-				{
-				
-                    this.OnAskParentsChanging(value);
-					this.SendPropertyChanging();
-					this._AskParents = value;
-					this.SendPropertyChanged("AskParents");
-					this.OnAskParentsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskEmContact", UpdateCheck=UpdateCheck.Never, Storage="_AskEmContact", DbType="bit")]
-		public bool? AskEmContact
-		{
-			get { return this._AskEmContact; }
-
-			set
-			{
-				if (this._AskEmContact != value)
-				{
-				
-                    this.OnAskEmContactChanging(value);
-					this.SendPropertyChanging();
-					this._AskEmContact = value;
-					this.SendPropertyChanged("AskEmContact");
-					this.OnAskEmContactChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskMedical", UpdateCheck=UpdateCheck.Never, Storage="_AskMedical", DbType="bit")]
-		public bool? AskMedical
-		{
-			get { return this._AskMedical; }
-
-			set
-			{
-				if (this._AskMedical != value)
-				{
-				
-                    this.OnAskMedicalChanging(value);
-					this.SendPropertyChanging();
-					this._AskMedical = value;
-					this.SendPropertyChanged("AskMedical");
-					this.OnAskMedicalChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskInsurance", UpdateCheck=UpdateCheck.Never, Storage="_AskInsurance", DbType="bit")]
-		public bool? AskInsurance
-		{
-			get { return this._AskInsurance; }
-
-			set
-			{
-				if (this._AskInsurance != value)
-				{
-				
-                    this.OnAskInsuranceChanging(value);
-					this.SendPropertyChanging();
-					this._AskInsurance = value;
-					this.SendPropertyChanged("AskInsurance");
-					this.OnAskInsuranceChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AllowLastYearShirt", UpdateCheck=UpdateCheck.Never, Storage="_AllowLastYearShirt", DbType="bit")]
-		public bool? AllowLastYearShirt
-		{
-			get { return this._AllowLastYearShirt; }
-
-			set
-			{
-				if (this._AllowLastYearShirt != value)
-				{
-				
-                    this.OnAllowLastYearShirtChanging(value);
-					this.SendPropertyChanging();
-					this._AllowLastYearShirt = value;
-					this.SendPropertyChanged("AllowLastYearShirt");
-					this.OnAllowLastYearShirtChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskDoctor", UpdateCheck=UpdateCheck.Never, Storage="_AskDoctor", DbType="bit")]
-		public bool? AskDoctor
-		{
-			get { return this._AskDoctor; }
-
-			set
-			{
-				if (this._AskDoctor != value)
-				{
-				
-                    this.OnAskDoctorChanging(value);
-					this.SendPropertyChanging();
-					this._AskDoctor = value;
-					this.SendPropertyChanged("AskDoctor");
-					this.OnAskDoctorChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskCoaching", UpdateCheck=UpdateCheck.Never, Storage="_AskCoaching", DbType="bit")]
-		public bool? AskCoaching
-		{
-			get { return this._AskCoaching; }
-
-			set
-			{
-				if (this._AskCoaching != value)
-				{
-				
-                    this.OnAskCoachingChanging(value);
-					this.SendPropertyChanging();
-					this._AskCoaching = value;
-					this.SendPropertyChanged("AskCoaching");
-					this.OnAskCoachingChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskChurch", UpdateCheck=UpdateCheck.Never, Storage="_AskChurch", DbType="bit")]
-		public bool? AskChurch
-		{
-			get { return this._AskChurch; }
-
-			set
-			{
-				if (this._AskChurch != value)
-				{
-				
-                    this.OnAskChurchChanging(value);
-					this.SendPropertyChanging();
-					this._AskChurch = value;
-					this.SendPropertyChanged("AskChurch");
-					this.OnAskChurchChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskGrade", UpdateCheck=UpdateCheck.Never, Storage="_AskGrade", DbType="bit")]
-		public bool? AskGrade
-		{
-			get { return this._AskGrade; }
-
-			set
-			{
-				if (this._AskGrade != value)
-				{
-				
-                    this.OnAskGradeChanging(value);
-					this.SendPropertyChanging();
-					this._AskGrade = value;
-					this.SendPropertyChanged("AskGrade");
-					this.OnAskGradeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Terms", UpdateCheck=UpdateCheck.Never, Storage="_Terms", DbType="varchar")]
-		public string Terms
-		{
-			get { return this._Terms; }
-
-			set
-			{
-				if (this._Terms != value)
-				{
-				
-                    this.OnTermsChanging(value);
-					this.SendPropertyChanging();
-					this._Terms = value;
-					this.SendPropertyChanged("Terms");
-					this.OnTermsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskTickets", UpdateCheck=UpdateCheck.Never, Storage="_AskTickets", DbType="bit")]
-		public bool? AskTickets
-		{
-			get { return this._AskTickets; }
-
-			set
-			{
-				if (this._AskTickets != value)
-				{
-				
-                    this.OnAskTicketsChanging(value);
-					this.SendPropertyChanging();
-					this._AskTickets = value;
-					this.SendPropertyChanged("AskTickets");
-					this.OnAskTicketsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="MaximumFee", UpdateCheck=UpdateCheck.Never, Storage="_MaximumFee", DbType="money")]
-		public decimal? MaximumFee
-		{
-			get { return this._MaximumFee; }
-
-			set
-			{
-				if (this._MaximumFee != value)
-				{
-				
-                    this.OnMaximumFeeChanging(value);
-					this.SendPropertyChanging();
-					this._MaximumFee = value;
-					this.SendPropertyChanged("MaximumFee");
-					this.OnMaximumFeeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskOptions", UpdateCheck=UpdateCheck.Never, Storage="_AskOptions", DbType="varchar(300)")]
-		public string AskOptions
-		{
-			get { return this._AskOptions; }
-
-			set
-			{
-				if (this._AskOptions != value)
-				{
-				
-                    this.OnAskOptionsChanging(value);
-					this.SendPropertyChanging();
-					this._AskOptions = value;
-					this.SendPropertyChanged("AskOptions");
-					this.OnAskOptionsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AgeFee", UpdateCheck=UpdateCheck.Never, Storage="_AgeFee", DbType="varchar(60)")]
-		public string AgeFee
-		{
-			get { return this._AgeFee; }
-
-			set
-			{
-				if (this._AgeFee != value)
-				{
-				
-                    this.OnAgeFeeChanging(value);
-					this.SendPropertyChanging();
-					this._AgeFee = value;
-					this.SendPropertyChanged("AgeFee");
-					this.OnAgeFeeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AllowOnlyOne", UpdateCheck=UpdateCheck.Never, Storage="_AllowOnlyOne", DbType="bit")]
-		public bool? AllowOnlyOne
-		{
-			get { return this._AllowOnlyOne; }
-
-			set
-			{
-				if (this._AllowOnlyOne != value)
-				{
-				
-                    this.OnAllowOnlyOneChanging(value);
-					this.SendPropertyChanging();
-					this._AllowOnlyOne = value;
-					this.SendPropertyChanged("AllowOnlyOne");
-					this.OnAllowOnlyOneChanged();
 				}
 
 			}
@@ -2259,28 +1344,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AgeGroups", UpdateCheck=UpdateCheck.Never, Storage="_AgeGroups", DbType="varchar(100)")]
-		public string AgeGroups
-		{
-			get { return this._AgeGroups; }
-
-			set
-			{
-				if (this._AgeGroups != value)
-				{
-				
-                    this.OnAgeGroupsChanging(value);
-					this.SendPropertyChanging();
-					this._AgeGroups = value;
-					this.SendPropertyChanged("AgeGroups");
-					this.OnAgeGroupsChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="ValidateOrgs", UpdateCheck=UpdateCheck.Never, Storage="_ValidateOrgs", DbType="varchar(60)")]
 		public string ValidateOrgs
 		{
@@ -2303,94 +1366,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MemberOnly", UpdateCheck=UpdateCheck.Never, Storage="_MemberOnly", DbType="bit")]
-		public bool? MemberOnly
-		{
-			get { return this._MemberOnly; }
-
-			set
-			{
-				if (this._MemberOnly != value)
-				{
-				
-                    this.OnMemberOnlyChanging(value);
-					this.SendPropertyChanging();
-					this._MemberOnly = value;
-					this.SendPropertyChanged("MemberOnly");
-					this.OnMemberOnlyChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="YesNoQuestions", UpdateCheck=UpdateCheck.Never, Storage="_YesNoQuestions", DbType="varchar(500)")]
-		public string YesNoQuestions
-		{
-			get { return this._YesNoQuestions; }
-
-			set
-			{
-				if (this._YesNoQuestions != value)
-				{
-				
-                    this.OnYesNoQuestionsChanging(value);
-					this.SendPropertyChanging();
-					this._YesNoQuestions = value;
-					this.SendPropertyChanged("YesNoQuestions");
-					this.OnYesNoQuestionsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OrgMemberFees", UpdateCheck=UpdateCheck.Never, Storage="_OrgMemberFees", DbType="varchar(30)")]
-		public string OrgMemberFees
-		{
-			get { return this._OrgMemberFees; }
-
-			set
-			{
-				if (this._OrgMemberFees != value)
-				{
-				
-                    this.OnOrgMemberFeesChanging(value);
-					this.SendPropertyChanging();
-					this._OrgMemberFees = value;
-					this.SendPropertyChanged("OrgMemberFees");
-					this.OnOrgMemberFeesChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ExtraQuestions", UpdateCheck=UpdateCheck.Never, Storage="_ExtraQuestions", DbType="varchar(500)")]
-		public string ExtraQuestions
-		{
-			get { return this._ExtraQuestions; }
-
-			set
-			{
-				if (this._ExtraQuestions != value)
-				{
-				
-                    this.OnExtraQuestionsChanging(value);
-					this.SendPropertyChanging();
-					this._ExtraQuestions = value;
-					this.SendPropertyChanged("ExtraQuestions");
-					this.OnExtraQuestionsChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="PhoneNumber", UpdateCheck=UpdateCheck.Never, Storage="_PhoneNumber", DbType="varchar(25)")]
 		public string PhoneNumber
 		{
@@ -2406,50 +1381,6 @@ namespace CmsData
 					this._PhoneNumber = value;
 					this.SendPropertyChanged("PhoneNumber");
 					this.OnPhoneNumberChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GradeOptions", UpdateCheck=UpdateCheck.Never, Storage="_GradeOptions", DbType="varchar(300)")]
-		public string GradeOptions
-		{
-			get { return this._GradeOptions; }
-
-			set
-			{
-				if (this._GradeOptions != value)
-				{
-				
-                    this.OnGradeOptionsChanging(value);
-					this.SendPropertyChanging();
-					this._GradeOptions = value;
-					this.SendPropertyChanged("GradeOptions");
-					this.OnGradeOptionsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="LinkGroupsFromOrgs", UpdateCheck=UpdateCheck.Never, Storage="_LinkGroupsFromOrgs", DbType="varchar(50)")]
-		public string LinkGroupsFromOrgs
-		{
-			get { return this._LinkGroupsFromOrgs; }
-
-			set
-			{
-				if (this._LinkGroupsFromOrgs != value)
-				{
-				
-                    this.OnLinkGroupsFromOrgsChanging(value);
-					this.SendPropertyChanging();
-					this._LinkGroupsFromOrgs = value;
-					this.SendPropertyChanged("LinkGroupsFromOrgs");
-					this.OnLinkGroupsFromOrgsChanged();
 				}
 
 			}
@@ -2501,28 +1432,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RequestLabel", UpdateCheck=UpdateCheck.Never, Storage="_RequestLabel", DbType="varchar(50)")]
-		public string RequestLabel
-		{
-			get { return this._RequestLabel; }
-
-			set
-			{
-				if (this._RequestLabel != value)
-				{
-				
-                    this.OnRequestLabelChanging(value);
-					this.SendPropertyChanging();
-					this._RequestLabel = value;
-					this.SendPropertyChanged("RequestLabel");
-					this.OnRequestLabelChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="WorshipGroupCodes", UpdateCheck=UpdateCheck.Never, Storage="_WorshipGroupCodes", DbType="varchar(100)")]
 		public string WorshipGroupCodes
 		{
@@ -2560,72 +1469,6 @@ namespace CmsData
 					this._IsBibleFellowshipOrg = value;
 					this.SendPropertyChanged("IsBibleFellowshipOrg");
 					this.OnIsBibleFellowshipOrgChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ExtraOptions", UpdateCheck=UpdateCheck.Never, Storage="_ExtraOptions", DbType="varchar(300)")]
-		public string ExtraOptions
-		{
-			get { return this._ExtraOptions; }
-
-			set
-			{
-				if (this._ExtraOptions != value)
-				{
-				
-                    this.OnExtraOptionsChanging(value);
-					this.SendPropertyChanging();
-					this._ExtraOptions = value;
-					this.SendPropertyChanged("ExtraOptions");
-					this.OnExtraOptionsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Shell", UpdateCheck=UpdateCheck.Never, Storage="_Shell", DbType="varchar(20)")]
-		public string Shell
-		{
-			get { return this._Shell; }
-
-			set
-			{
-				if (this._Shell != value)
-				{
-				
-                    this.OnShellChanging(value);
-					this.SendPropertyChanging();
-					this._Shell = value;
-					this.SendPropertyChanged("Shell");
-					this.OnShellChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ShirtSizes", UpdateCheck=UpdateCheck.Never, Storage="_ShirtSizes", DbType="varchar(300)")]
-		public string ShirtSizes
-		{
-			get { return this._ShirtSizes; }
-
-			set
-			{
-				if (this._ShirtSizes != value)
-				{
-				
-                    this.OnShirtSizesChanging(value);
-					this.SendPropertyChanging();
-					this._ShirtSizes = value;
-					this.SendPropertyChanged("ShirtSizes");
-					this.OnShirtSizesChanged();
 				}
 
 			}
@@ -2677,72 +1520,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MenuItems", UpdateCheck=UpdateCheck.Never, Storage="_MenuItems", DbType="varchar(2500)")]
-		public string MenuItems
-		{
-			get { return this._MenuItems; }
-
-			set
-			{
-				if (this._MenuItems != value)
-				{
-				
-                    this.OnMenuItemsChanging(value);
-					this.SendPropertyChanging();
-					this._MenuItems = value;
-					this.SendPropertyChanged("MenuItems");
-					this.OnMenuItemsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="OptionsLabel", UpdateCheck=UpdateCheck.Never, Storage="_OptionsLabel", DbType="varchar(50)")]
-		public string OptionsLabel
-		{
-			get { return this._OptionsLabel; }
-
-			set
-			{
-				if (this._OptionsLabel != value)
-				{
-				
-                    this.OnOptionsLabelChanging(value);
-					this.SendPropertyChanging();
-					this._OptionsLabel = value;
-					this.SendPropertyChanged("OptionsLabel");
-					this.OnOptionsLabelChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ExtraOptionsLabel", UpdateCheck=UpdateCheck.Never, Storage="_ExtraOptionsLabel", DbType="varchar(50)")]
-		public string ExtraOptionsLabel
-		{
-			get { return this._ExtraOptionsLabel; }
-
-			set
-			{
-				if (this._ExtraOptionsLabel != value)
-				{
-				
-                    this.OnExtraOptionsLabelChanging(value);
-					this.SendPropertyChanging();
-					this._ExtraOptionsLabel = value;
-					this.SendPropertyChanged("ExtraOptionsLabel");
-					this.OnExtraOptionsLabelChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="DaysToIgnoreHistory", UpdateCheck=UpdateCheck.Never, Storage="_DaysToIgnoreHistory", DbType="int")]
 		public int? DaysToIgnoreHistory
 		{
@@ -2765,292 +1542,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="GroupToJoin", UpdateCheck=UpdateCheck.Never, Storage="_GroupToJoin", DbType="varchar(50)")]
-		public string GroupToJoin
-		{
-			get { return this._GroupToJoin; }
-
-			set
-			{
-				if (this._GroupToJoin != value)
-				{
-				
-                    this.OnGroupToJoinChanging(value);
-					this.SendPropertyChanging();
-					this._GroupToJoin = value;
-					this.SendPropertyChanged("GroupToJoin");
-					this.OnGroupToJoinChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GiveOrgMembAccess", UpdateCheck=UpdateCheck.Never, Storage="_GiveOrgMembAccess", DbType="bit")]
-		public bool? GiveOrgMembAccess
-		{
-			get { return this._GiveOrgMembAccess; }
-
-			set
-			{
-				if (this._GiveOrgMembAccess != value)
-				{
-				
-                    this.OnGiveOrgMembAccessChanging(value);
-					this.SendPropertyChanging();
-					this._GiveOrgMembAccess = value;
-					this.SendPropertyChanged("GiveOrgMembAccess");
-					this.OnGiveOrgMembAccessChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NumItemsLabel", UpdateCheck=UpdateCheck.Never, Storage="_NumItemsLabel", DbType="varchar(50)")]
-		public string NumItemsLabel
-		{
-			get { return this._NumItemsLabel; }
-
-			set
-			{
-				if (this._NumItemsLabel != value)
-				{
-				
-                    this.OnNumItemsLabelChanging(value);
-					this.SendPropertyChanging();
-					this._NumItemsLabel = value;
-					this.SendPropertyChanged("NumItemsLabel");
-					this.OnNumItemsLabelChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NotReqDOB", UpdateCheck=UpdateCheck.Never, Storage="_NotReqDOB", DbType="bit")]
-		public bool? NotReqDOB
-		{
-			get { return this._NotReqDOB; }
-
-			set
-			{
-				if (this._NotReqDOB != value)
-				{
-				
-                    this.OnNotReqDOBChanging(value);
-					this.SendPropertyChanging();
-					this._NotReqDOB = value;
-					this.SendPropertyChanged("NotReqDOB");
-					this.OnNotReqDOBChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NotReqAddr", UpdateCheck=UpdateCheck.Never, Storage="_NotReqAddr", DbType="bit")]
-		public bool? NotReqAddr
-		{
-			get { return this._NotReqAddr; }
-
-			set
-			{
-				if (this._NotReqAddr != value)
-				{
-				
-                    this.OnNotReqAddrChanging(value);
-					this.SendPropertyChanging();
-					this._NotReqAddr = value;
-					this.SendPropertyChanged("NotReqAddr");
-					this.OnNotReqAddrChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NotReqZip", UpdateCheck=UpdateCheck.Never, Storage="_NotReqZip", DbType="bit")]
-		public bool? NotReqZip
-		{
-			get { return this._NotReqZip; }
-
-			set
-			{
-				if (this._NotReqZip != value)
-				{
-				
-                    this.OnNotReqZipChanging(value);
-					this.SendPropertyChanging();
-					this._NotReqZip = value;
-					this.SendPropertyChanged("NotReqZip");
-					this.OnNotReqZipChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NotReqPhone", UpdateCheck=UpdateCheck.Never, Storage="_NotReqPhone", DbType="bit")]
-		public bool? NotReqPhone
-		{
-			get { return this._NotReqPhone; }
-
-			set
-			{
-				if (this._NotReqPhone != value)
-				{
-				
-                    this.OnNotReqPhoneChanging(value);
-					this.SendPropertyChanging();
-					this._NotReqPhone = value;
-					this.SendPropertyChanged("NotReqPhone");
-					this.OnNotReqPhoneChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NotReqGender", UpdateCheck=UpdateCheck.Never, Storage="_NotReqGender", DbType="bit")]
-		public bool? NotReqGender
-		{
-			get { return this._NotReqGender; }
-
-			set
-			{
-				if (this._NotReqGender != value)
-				{
-				
-                    this.OnNotReqGenderChanging(value);
-					this.SendPropertyChanging();
-					this._NotReqGender = value;
-					this.SendPropertyChanged("NotReqGender");
-					this.OnNotReqGenderChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NotReqMarital", UpdateCheck=UpdateCheck.Never, Storage="_NotReqMarital", DbType="bit")]
-		public bool? NotReqMarital
-		{
-			get { return this._NotReqMarital; }
-
-			set
-			{
-				if (this._NotReqMarital != value)
-				{
-				
-                    this.OnNotReqMaritalChanging(value);
-					this.SendPropertyChanging();
-					this._NotReqMarital = value;
-					this.SendPropertyChanged("NotReqMarital");
-					this.OnNotReqMaritalChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="GradeLabel", UpdateCheck=UpdateCheck.Never, Storage="_GradeLabel", DbType="varchar(50)")]
-		public string GradeLabel
-		{
-			get { return this._GradeLabel; }
-
-			set
-			{
-				if (this._GradeLabel != value)
-				{
-				
-                    this.OnGradeLabelChanging(value);
-					this.SendPropertyChanging();
-					this._GradeLabel = value;
-					this.SendPropertyChanged("GradeLabel");
-					this.OnGradeLabelChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Checkboxes", UpdateCheck=UpdateCheck.Never, Storage="_Checkboxes", DbType="varchar(500)")]
-		public string Checkboxes
-		{
-			get { return this._Checkboxes; }
-
-			set
-			{
-				if (this._Checkboxes != value)
-				{
-				
-                    this.OnCheckboxesChanging(value);
-					this.SendPropertyChanging();
-					this._Checkboxes = value;
-					this.SendPropertyChanged("Checkboxes");
-					this.OnCheckboxesChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="CheckboxesLabel", UpdateCheck=UpdateCheck.Never, Storage="_CheckboxesLabel", DbType="varchar(50)")]
-		public string CheckboxesLabel
-		{
-			get { return this._CheckboxesLabel; }
-
-			set
-			{
-				if (this._CheckboxesLabel != value)
-				{
-				
-                    this.OnCheckboxesLabelChanging(value);
-					this.SendPropertyChanging();
-					this._CheckboxesLabel = value;
-					this.SendPropertyChanged("CheckboxesLabel");
-					this.OnCheckboxesLabelChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AskDonation", UpdateCheck=UpdateCheck.Never, Storage="_AskDonation", DbType="bit")]
-		public bool? AskDonation
-		{
-			get { return this._AskDonation; }
-
-			set
-			{
-				if (this._AskDonation != value)
-				{
-				
-                    this.OnAskDonationChanging(value);
-					this.SendPropertyChanging();
-					this._AskDonation = value;
-					this.SendPropertyChanged("AskDonation");
-					this.OnAskDonationChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="NotifyIds", UpdateCheck=UpdateCheck.Never, Storage="_NotifyIds", DbType="varchar(50)")]
 		public string NotifyIds
 		{
@@ -3066,75 +1557,6 @@ namespace CmsData
 					this._NotifyIds = value;
 					this.SendPropertyChanged("NotifyIds");
 					this.OnNotifyIdsChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="DonationFundId", UpdateCheck=UpdateCheck.Never, Storage="_DonationFundId", DbType="int")]
-		public int? DonationFundId
-		{
-			get { return this._DonationFundId; }
-
-			set
-			{
-				if (this._DonationFundId != value)
-				{
-				
-					if (this._ContributionFund.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnDonationFundIdChanging(value);
-					this.SendPropertyChanging();
-					this._DonationFundId = value;
-					this.SendPropertyChanged("DonationFundId");
-					this.OnDonationFundIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="CheckboxesMin", UpdateCheck=UpdateCheck.Never, Storage="_CheckboxesMin", DbType="int")]
-		public int? CheckboxesMin
-		{
-			get { return this._CheckboxesMin; }
-
-			set
-			{
-				if (this._CheckboxesMin != value)
-				{
-				
-                    this.OnCheckboxesMinChanging(value);
-					this.SendPropertyChanging();
-					this._CheckboxesMin = value;
-					this.SendPropertyChanged("CheckboxesMin");
-					this.OnCheckboxesMinChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="CheckboxesMax", UpdateCheck=UpdateCheck.Never, Storage="_CheckboxesMax", DbType="int")]
-		public int? CheckboxesMax
-		{
-			get { return this._CheckboxesMax; }
-
-			set
-			{
-				if (this._CheckboxesMax != value)
-				{
-				
-                    this.OnCheckboxesMaxChanging(value);
-					this.SendPropertyChanging();
-					this._CheckboxesMax = value;
-					this.SendPropertyChanged("CheckboxesMax");
-					this.OnCheckboxesMaxChanged();
 				}
 
 			}
@@ -3179,28 +1601,6 @@ namespace CmsData
 					this._LongX = value;
 					this.SendPropertyChanged("LongX");
 					this.OnLongXChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="SuggestedFee", UpdateCheck=UpdateCheck.Never, Storage="_SuggestedFee", DbType="bit")]
-		public bool? SuggestedFee
-		{
-			get { return this._SuggestedFee; }
-
-			set
-			{
-				if (this._SuggestedFee != value)
-				{
-				
-                    this.OnSuggestedFeeChanging(value);
-					this.SendPropertyChanging();
-					this._SuggestedFee = value;
-					this.SendPropertyChanged("SuggestedFee");
-					this.OnSuggestedFeeChanged();
 				}
 
 			}
@@ -3487,48 +1887,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Campu");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_Organizations_ContributionFund", Storage="_ContributionFund", ThisKey="DonationFundId", IsForeignKey=true)]
-		public ContributionFund ContributionFund
-		{
-			get { return this._ContributionFund.Entity; }
-
-			set
-			{
-				ContributionFund previousValue = this._ContributionFund.Entity;
-				if (((previousValue != value) 
-							|| (this._ContributionFund.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._ContributionFund.Entity = null;
-						previousValue.Organizations.Remove(this);
-					}
-
-					this._ContributionFund.Entity = value;
-					if (value != null)
-					{
-						value.Organizations.Add(this);
-						
-						this._DonationFundId = value.FundId;
-						
-					}
-
-					else
-					{
-						
-						this._DonationFundId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("ContributionFund");
 				}
 
 			}

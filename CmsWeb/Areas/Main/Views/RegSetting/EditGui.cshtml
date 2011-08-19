@@ -148,24 +148,35 @@ else
     <div><a class="newitem" href="/RegSetting/NewMenuItem"><img src="/images/plus1.png" alt="" /> Add Item</a></div> <br />
   </li>
   <li><div><i>This will be presented as a dropdown selection</i></div>
-    <span class="keyword big">AskOptions:</span> @Html.TextBox("AskOptionsLabel", Model.AskOptionsLabel, new { @class = "long" })
-    <ul id="AskOptions" class="sort">
-    @foreach(var i in Model.AskOptions.OrderBy(cc => cc.Id))
+    <span class="keyword big">Dropdown1:</span> @Html.TextBox("Dropdown1Label", Model.Dropdown1Label, new { @class = "long" })
+    <ul id="Dropdown1" class="sort">
+    @foreach(var i in Model.Dropdown1.OrderBy(cc => cc.Id))
     {
-        Html.RenderPartial("AskOptionEditor", i);
+        Html.RenderPartial("Dropdown1Editor", i);
     }
     </ul>
-    <div><a class="newitem" href="/RegSetting/NewAskOption"><img src="/images/plus1.png" alt="" /> Add Item</a></div> <br />
+    <div><a class="newitem" href="/RegSetting/NewDropdown1Item"><img src="/images/plus1.png" alt="" /> Add Item</a></div> <br />
   </li>
   <li><div><i>This is another dropdown</i></div>
-    <span class="keyword big">ExtraOptions:</span> @Html.TextBox("ExtraOptionsLabel", Model.ExtraOptionsLabel, new { @class = "long" })
-    <ul id="ExtraOptions" class="sort">
-    @foreach(var i in Model.ExtraOptions.OrderBy(cc => cc.Id))
+    <span class="keyword big">Dropdown2:</span> @Html.TextBox("Dropdown2Label", Model.Dropdown2Label, new { @class = "long" })
+    <ul id="Dropdown2 class="sort">
+    @foreach(var i in Model.Dropdown2.OrderBy(cc => cc.Id))
     {
-        Html.RenderPartial("ExtraOptionEditor", i);
+        Html.RenderPartial("Dropdown2Editor", i);
     }
     </ul>
-    <div><a class="newitem" href="/RegSetting/NewExtraOption"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
+    <div><a class="newitem" href="/RegSetting/NewDropdown2Item"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
+    <br />
+  </li>
+  <li><div><i>This is yet another dropdown</i></div>
+    <span class="keyword big">Dropdown3:</span> @Html.TextBox("Dropdown3Label", Model.Dropdown3Label, new { @class = "long" })
+    <ul id="Dropdown3" class="sort">
+    @foreach(var i in Model.Dropdown3.OrderBy(cc => cc.Id))
+    {
+        Html.RenderPartial("Dropdown3Editor", i);
+    }
+    </ul>
+    <div><a class="newitem" href="/RegSetting/NewDropdown3Item"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
     <br />
   </li>
   <li><div><i>This is a group of checkboxes where you can check more than one</i></div>
@@ -283,4 +294,5 @@ else
 </div>
 <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>
+<script src="/Content/js/jquery-ui-dialog-patch.js" type="text/javascript"></script>
 <script src="/Scripts/RegSetting.js?v=3" type="text/javascript"></script>

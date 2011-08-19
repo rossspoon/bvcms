@@ -22,6 +22,9 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create(CouponModel m)
         {
+            if (m.couponcode.HasValue())
+                if (CouponModel.IsExisting(m.couponcode))
+                    return Content("code already exists");
             m.CreateCoupon();
             return View(m);
         }

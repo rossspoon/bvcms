@@ -156,8 +156,8 @@ namespace CmsWeb.Models
             if (org != null && settings[orgid.Value].Body.ToString().HasValue())
             {
                 var os = settings[orgid.Value];
-                EmailSubject = Util.PickFirst(os.Subject, org.EmailSubject, "no subject");
-                EmailMessage = Util.PickFirst(os.Body.ToString(), org.EmailMessage, "no body");
+                EmailSubject = Util.PickFirst(os.Subject, "no subject");
+                EmailMessage = Util.PickFirst(os.Body.ToString(), "no body");
             }
             else if (div != null)
             {

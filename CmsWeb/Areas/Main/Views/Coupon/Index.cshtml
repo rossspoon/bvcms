@@ -7,7 +7,7 @@
     <form action="/Coupon/Create" method="post">
         <div>
             <fieldset>
-                <table style="empty-cells:show">
+                <table style="empty-cells:show" cellpadding="5">
                  <tr>
                     <td>Registration Type</td>
                     <td>@Html.DropDownList("regid", Model.OnlineRegs())</td>
@@ -20,6 +20,13 @@
                     <td>Amount</td>
                     <td>@Html.TextBox("amount")</td>
                 </tr>
+            @if (User.IsInRole("Admin"))
+            {
+                <tr>
+                    <td>Coupon Code</td>
+                    <td>@Html.TextBox("couponcode")</td>
+                </tr>
+            }
                 <tr>
                     <td></td><td><input type="submit" class="bt" value="Create Coupon" /></td>
                 </tr>
@@ -28,3 +35,8 @@
         </div>
         @Html.ActionLink("List", "List")
     </form>
+<script type="text/javascript">
+    $(function () {
+        $(".bt").button();
+    });
+</script>

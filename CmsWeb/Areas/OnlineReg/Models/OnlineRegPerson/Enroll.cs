@@ -94,12 +94,12 @@ namespace CmsWeb.Models
 
             foreach (var op in Options())
                 om.RemoveFromGroup(DbUtil.Db, op.Value);
-            if (setting.AskOptions.Count > 0)
+            if (setting.Dropdown1.Count > 0)
                 om.AddToGroup(DbUtil.Db, option);
 
             foreach (var op in ExtraOptions())
                 om.RemoveFromGroup(DbUtil.Db, op.Value);
-            if (setting.ExtraOptions.Count > 0)
+            if (setting.Dropdown2.Count > 0)
                 om.AddToGroup(DbUtil.Db, option2);
 
             if (setting.GradeOptions.Count > 0)
@@ -250,12 +250,15 @@ namespace CmsWeb.Models
             if (setting.AgeGroups.Count > 0)
                 sb.AppendFormat("<tr><td>AgeGroup:</td><td>{0}</td></tr>\n", AgeGroup());
 
-            if (setting.AskOptions.Count > 0)
+            if (setting.Dropdown1.Count > 0)
                 sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option, 
-                    Util.PickFirst(setting.AskOptionsLabel, "Options"));
-            if (setting.ExtraOptions.Count > 0)
+                    Util.PickFirst(setting.Dropdown1Label, "Options"));
+            if (setting.Dropdown2.Count > 0)
                 sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option2, 
-                    Util.PickFirst(setting.ExtraOptionsLabel, "Extra Options"));
+                    Util.PickFirst(setting.Dropdown2Label, "Extra Options"));
+            if (setting.Dropdown3.Count > 0)
+                sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option3, 
+                    Util.PickFirst(setting.Dropdown3Label, "Extra Options"));
             if (setting.MenuItems.Count > 0)
             {
                 var menulabel = "Menu Items";

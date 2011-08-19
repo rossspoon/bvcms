@@ -59,6 +59,10 @@ namespace CmsData
             NotReqMarital,
             AskOptions,
             ExtraOptions,
+            Dropdown1,
+            Dropdown2,
+            Dropdown3,
+            Limit,
             Confirmation,
             Terms,
             Label,
@@ -131,8 +135,9 @@ namespace CmsData
         public string GradeOptionsLabel { get; set; }
         public string SuggestedFeeLabel { get; set; }
         public string MenuItemsLabel { get; set; }
-        public string AskOptionsLabel { get; set; }
-        public string ExtraOptionsLabel { get; set; }
+        public string Dropdown1Label { get; set; }
+        public string Dropdown2Label { get; set; }
+        public string Dropdown3Label { get; set; }
         public string Subject { get; set; }
         public HtmlText Body { get; set; }
         public HtmlText Terms { get; set; }
@@ -219,15 +224,20 @@ namespace CmsData
         {
             get { return _MenuItems; }
         }
-        private List<MenuItem> _AskOptions;
-        public List<MenuItem> AskOptions
+        private List<MenuItem> _Dropdown1;
+        public List<MenuItem> Dropdown1
         {
-            get { return _AskOptions; }
+            get { return _Dropdown1; }
         }
-        private List<MenuItem> _ExtraOptions;
-        public List<MenuItem> ExtraOptions
+        private List<MenuItem> _Dropdown2;
+        public List<MenuItem> Dropdown2
         {
-            get { return _ExtraOptions; }
+            get { return _Dropdown2; }
+        }
+        private List<MenuItem> _Dropdown3;
+        public List<MenuItem> Dropdown3
+        {
+            get { return _Dropdown3; }
         }
         private List<int> _LinkGroupsFromOrgs;
         public List<int> LinkGroupsFromOrgs
@@ -300,6 +310,7 @@ namespace CmsData
             public string Description { get; set; }
             public string SmallGroup { get; set; }
             public decimal? Fee { get; set; }
+            public int? Limit { get; set; }
         }
         public class VoteTag
         {
@@ -332,8 +343,9 @@ namespace CmsData
             _Checkboxes2 = new List<MenuItem>();
             _ExtraQuestions = new List<ExtraQuestion>();
             _MenuItems = new List<MenuItem>();
-            _AskOptions = new List<MenuItem>();
-            _ExtraOptions = new List<MenuItem>();
+            _Dropdown1 = new List<MenuItem>();
+            _Dropdown2 = new List<MenuItem>();
+            _Dropdown3 = new List<MenuItem>();
             _LinkGroupsFromOrgs = new List<int>();
             _ValidateOrgs = new List<int>();
             InstructionLogin = new HtmlText();
@@ -532,13 +544,19 @@ namespace CmsData
                 case RegKeywords.Confirmation:
                     ParseConfirmation();
                     break;
-                case RegKeywords.ExtraOptions:
-                    ExtraOptionsLabel = GetString("Extra Options");
-                    _ExtraOptions = ParseMenuItems("ExtraOptions");
-                    break;
                 case RegKeywords.AskOptions:
-                    AskOptionsLabel = GetString("Options");
-                    _AskOptions = ParseMenuItems("AskOptions");
+                case RegKeywords.Dropdown1:
+                    Dropdown1Label = GetString("Options");
+                    _Dropdown1 = ParseMenuItems("Dropdown1");
+                    break;
+                case RegKeywords.ExtraOptions:
+                case RegKeywords.Dropdown2:
+                    Dropdown2Label = GetString("Options 2");
+                    _Dropdown2 = ParseMenuItems("Dropdown2");
+                    break;
+                case RegKeywords.Dropdown3:
+                    Dropdown3Label = GetString("Options 3");
+                    _Dropdown3 = ParseMenuItems("Dropdown3");
                     break;
                 case RegKeywords.MenuItems:
                     MenuItemsLabel = GetString("Menu");
@@ -876,6 +894,9 @@ namespace CmsData
                         case RegKeywords.Fee:
                             menuitem.Fee = GetDecimal();
                             break;
+                        case RegKeywords.Limit:
+                            menuitem.Limit = GetNullInt();
+                            break;
                         default:
                             throw GetException("unexpected line in " + section);
                     }
@@ -1060,8 +1081,9 @@ namespace CmsData
             AddYesNoQuestions(sb);
             AddExtraQuestions(sb);
             AddMenuItems(sb);
-            AddAskOptions(sb);
-            AddExtraOptions(sb);
+            AddDropdown1(sb);
+            AddDropdown2(sb);
+            AddDropdown3(sb);
             AddCheckBoxes(sb);
             AddCheckBoxes2(sb);
 
@@ -1220,29 +1242,45 @@ namespace CmsData
             }
             sb.AppendLine();
         }
-        private void AddAskOptions(StringBuilder sb)
+        private void AddDropdown1(StringBuilder sb)
         {
-            if (AskOptions.Count == 0)
+            if (Dropdown1.Count == 0)
                 return;
-            AddValueNoCk(0, sb, "AskOptions", AskOptionsLabel);
-            foreach (var s in AskOptions)
+            AddValueNoCk(0, sb, "Dropdown1", Dropdown1Label);
+            foreach (var s in Dropdown1)
             {
                 AddValueCk(1, sb, s.Description);
                 AddValueCk(2, sb, "SmallGroup", s.SmallGroup);
                 AddValueCk(2, sb, "Fee", s.Fee);
+                AddValueCk(2, sb, "Limit", s.Limit);
             }
             sb.AppendLine();
         }
-        private void AddExtraOptions(StringBuilder sb)
+        private void AddDropdown2(StringBuilder sb)
         {
-            if (ExtraOptions.Count == 0)
+            if (Dropdown2.Count == 0)
                 return;
-            AddValueNoCk(0, sb, "ExtraOptions", ExtraOptionsLabel);
-            foreach (var s in ExtraOptions)
+            AddValueNoCk(0, sb, "Dropdown2", Dropdown2Label);
+            foreach (var s in Dropdown2)
             {
                 AddValueCk(1, sb, s.Description);
                 AddValueCk(2, sb, "SmallGroup", s.SmallGroup);
                 AddValueCk(2, sb, "Fee", s.Fee);
+                AddValueCk(2, sb, "Limit", s.Limit);
+            }
+            sb.AppendLine();
+        }
+        private void AddDropdown3(StringBuilder sb)
+        {
+            if (Dropdown3.Count == 0)
+                return;
+            AddValueNoCk(0, sb, "Dropdown3", Dropdown3Label);
+            foreach (var s in Dropdown2)
+            {
+                AddValueCk(1, sb, s.Description);
+                AddValueCk(2, sb, "SmallGroup", s.SmallGroup);
+                AddValueCk(2, sb, "Fee", s.Fee);
+                AddValueCk(2, sb, "Limit", s.Limit);
             }
             sb.AppendLine();
         }
@@ -1258,6 +1296,7 @@ namespace CmsData
                 AddValueCk(1, sb, c.Description);
                 AddValueCk(2, sb, "SmallGroup", c.SmallGroup);
                 AddValueCk(2, sb, "Fee", c.Fee);
+                AddValueCk(2, sb, "Limit", c.Limit);
             }
             sb.AppendLine();
         }
@@ -1273,6 +1312,7 @@ namespace CmsData
                 AddValueCk(1, sb, c.Description);
                 AddValueCk(2, sb, "SmallGroup", c.SmallGroup);
                 AddValueCk(2, sb, "Fee", c.Fee);
+                AddValueCk(2, sb, "Limit", c.Limit);
             }
             sb.AppendLine();
         }

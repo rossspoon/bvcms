@@ -91,24 +91,15 @@ namespace CmsWeb.Areas.Manage.Controllers
                         ViewData["html"] = org.Division.EmailMessage;
                         ViewData["title"] = org.Division.EmailSubject;
                     }
-                    else
-                    {
-                        ViewData["html"] = org.EmailMessage;
-                        ViewData["title"] = org.EmailSubject;
-                    }
                     break;
                 case "instructions":
                     if (div == true)
                         ViewData["html"] = org.Division.Instructions;
-                    else
-                        ViewData["html"] = org.Instructions;
                     ViewData["title"] = "Instructions";
                     break;
                 case "terms":
                     if (div == true)
                         ViewData["html"] = org.Division.Terms;
-                    else
-                        ViewData["html"] = org.Terms;
                     ViewData["title"] = "Terms";
                     break;
             }
@@ -128,23 +119,14 @@ namespace CmsWeb.Areas.Manage.Controllers
                         org.Division.EmailMessage = html;
                         org.Division.EmailSubject = title;
                     }
-                    else
-                    {
-                        org.EmailMessage = html;
-                        org.EmailSubject = title;
-                    }
                     break;
                 case "instructions":
                     if (div == true)
                         org.Division.Instructions = html;
-                    else
-                        org.Instructions = html;
                     break;
                 case "terms":
                     if (div == true)
                         org.Division.Terms = html;
-                    else
-                        org.Terms = html;
                     break;
             }
             DbUtil.Db.SubmitChanges();

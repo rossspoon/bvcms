@@ -15,7 +15,7 @@ namespace CmsWeb.Models
         public bool IsValidForContinue { get; set; }
         private void ValidateBirthdayRange(ModelStateDictionary ModelState)
         {
-            if(org != null)
+            if (org != null)
                 if (!birthday.HasValue && (org.BirthDayStart.HasValue || org.BirthDayEnd.HasValue))
                     ModelState.AddModelError(inputname("dob"), "birthday required");
                 else if (birthday.HasValue)
@@ -152,7 +152,7 @@ Please call the church to resolve this before we can complete your registration.
                 else if (count == 0)
                 {
                     ModelState.AddModelError(ErrorTarget, "record not found");
-                    NotFoundText = 
+                    NotFoundText =
 @"The first and last name in addition to either birthday, email, or phone,
 must match a record in the system.
 Please search with a different email, phone, or birthday.";
@@ -262,13 +262,25 @@ Please search with a different email, phone, or birthday.";
                 if (!coaching.HasValue)
                     modelState.AddModelError(inputname("coaching"), "please indicate");
 
-            if (setting.AskOptions.Count > 0)
+            string desc;
+
+            if (setting.Dropdown1.Count > 0)
                 if (option == "0")
                     modelState.AddModelError(inputname("option"), "please select an option");
+                else if (IsSmallGroupFilled(setting.Dropdown1, option, out desc))
+                    modelState.AddModelError(inputname("option"), "limit reached for " + desc);
 
-            if (setting.ExtraOptions.Count > 0)
+            if (setting.Dropdown2.Count > 0)
                 if (option2 == "0")
                     modelState.AddModelError(inputname("option2"), "please select an option");
+                else if (IsSmallGroupFilled(setting.Dropdown2, option2, out desc))
+                    modelState.AddModelError(inputname("option2"), "limit reached for " + desc);
+
+            if (setting.Dropdown3.Count > 0)
+                if (option3 == "0")
+                    modelState.AddModelError(inputname("option3"), "please select an option");
+                else if (IsSmallGroupFilled(setting.Dropdown3, option3, out desc))
+                    modelState.AddModelError(inputname("option3"), "limit reached for " + desc);
 
             if (setting.GradeOptions.Count > 0)
                 if (gradeoption == "00")
@@ -298,13 +310,13 @@ Please search with a different email, phone, or birthday.";
                 if (!paydeposit.HasValue)
                     modelState.AddModelError(inputname("paydeposit"), "please indicate");
 
-            for(int n = 0; n<setting.YesNoQuestions.Count; n++)
+            for (int n = 0; n < setting.YesNoQuestions.Count; n++)
             {
                 var a = setting.YesNoQuestions[n];
                 if (YesNoQuestion == null || !YesNoQuestion.ContainsKey(a.SmallGroup))
                     modelState.AddModelError(inputname("YesNoQuestion[" + n + "].Value"), "please select yes or no");
             }
-            for(int n = 0; n<setting.ExtraQuestions.Count; n++)
+            for (int n = 0; n < setting.ExtraQuestions.Count; n++)
             {
                 var a = setting.ExtraQuestions[n];
                 if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(a.Question) || !ExtraQuestion[a.Question].HasValue())
@@ -312,13 +324,32 @@ Please search with a different email, phone, or birthday.";
             }
             if (setting.CheckboxMax > 0 && Checkbox != null && Checkbox.Length > setting.CheckboxMax)
                 modelState.AddModelError("checkboxes", "Max of {0} exceded".Fmt(setting.CheckboxMax));
-            if (setting.CheckboxMin > 0 && (Checkbox == null || Checkbox.Length < setting.CheckboxMin))
+            else if (setting.CheckboxMin > 0 && (Checkbox == null || Checkbox.Length < setting.CheckboxMin))
                 modelState.AddModelError("checkboxes", "Min of {0} required".Fmt(setting.CheckboxMin));
+            
             if (setting.Checkbox2Max > 0 && Checkbox2 != null && Checkbox2.Length > setting.Checkbox2Max)
                 modelState.AddModelError("checkboxes2", "Max of {0} exceded".Fmt(setting.Checkbox2Max));
-            if (setting.Checkbox2Min > 0 && (Checkbox2 == null || Checkbox2.Length < setting.Checkbox2Min))
+            else if (setting.Checkbox2Min > 0 && (Checkbox2 == null || Checkbox2.Length < setting.Checkbox2Min))
                 modelState.AddModelError("checkboxes2", "Min of {0} required".Fmt(setting.Checkbox2Min));
+
             OtherOK = modelState.IsValid;
+        }
+        public bool IsSmallGroupFilled(List<RegSettings.MenuItem> options, string sg)
+        {
+            string desc;
+            return IsSmallGroupFilled(options, sg, out desc);
+        }
+        public bool IsSmallGroupFilled(List<RegSettings.MenuItem> options, string sg, out string desc)
+        {
+            var i = options.Single(dd => dd.SmallGroup == sg);
+            desc = i.Description;
+            if (i.Limit > 0)
+            {
+                var cnt = org.OrganizationMembers.Count(mm => mm.OrgMemMemTags.Any(mt => mt.MemberTag.Name == sg));
+                if (cnt >= i.Limit)
+                    return true;
+            }
+            return false;
         }
     }
 }

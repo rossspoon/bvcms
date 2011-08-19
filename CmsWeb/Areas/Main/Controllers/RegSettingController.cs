@@ -97,14 +97,19 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("MenuItemEditor", new RegSettings.MenuItem());
         }
         [HttpPost]
-        public ActionResult NewAskOption()
+        public ActionResult NewDropdown1Item()
         {
-            return View("AskOptionEditor", new RegSettings.MenuItem());
+            return View("Dropdown1Editor", new RegSettings.MenuItem());
         }
         [HttpPost]
-        public ActionResult NewExtraOption()
+        public ActionResult NewDropdown2Item()
         {
-            return View("ExtraOptionEditor", new RegSettings.MenuItem());
+            return View("Dropdown2Editor", new RegSettings.MenuItem());
+        }
+        [HttpPost]
+        public ActionResult NewDropdown3Item()
+        {
+            return View("Dropdown3Editor", new RegSettings.MenuItem());
         }
         [HttpPost]
         public ActionResult NewCheckbox()

@@ -160,8 +160,8 @@ You have the following subscriptions:<br/>
             if (confirm == true)
             {
                 var setting = OnlineRegModel.ParseSetting(q.org.RegSetting, oid);
-                var subject = Util.PickFirst(setting.Subject, q.org.EmailSubject, "no subject");
-                var msg = Util.PickFirst(setting.Body.ToString(), q.org.EmailMessage, "no message");
+                var subject = Util.PickFirst(setting.Subject, "no subject");
+                var msg = Util.PickFirst(setting.Body.ToString(), "no message");
                 msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 

@@ -101,6 +101,13 @@ namespace CmsWeb.Models
             get { return _Option2; }
             set { _Option2 = value; }
         }
+        [OptionalField]
+        private string _Option3;
+        public string option3
+        {
+            get { return _Option3; }
+            set { _Option3 = value; }
+        }
         public string gradeoption { get; set; }
         [OptionalField]
         private bool _IsFamily;

@@ -83,7 +83,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Options()
         {
-            var q = from s in setting.AskOptions
+            var q = from s in setting.Dropdown1
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
                     select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
             var list = q.ToList();
@@ -92,7 +92,16 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> ExtraOptions()
         {
-            var q = from s in setting.ExtraOptions
+            var q = from s in setting.Dropdown2
+                    let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
+                    select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
+            return list;
+        }
+        public IEnumerable<SelectListItem> ExtraOptions3()
+        {
+            var q = from s in setting.Dropdown3
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
                     select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
             var list = q.ToList();

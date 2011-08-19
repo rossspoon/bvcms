@@ -61,13 +61,17 @@
 { 
     @Html.Hidden3(Model.inputname("suggestedfee"), Model.suggestedfee)
 }
-@if(Model.setting.AskOptions.Count > 0)
+@if(Model.setting.Dropdown1.Count > 0)
 { 
     @Html.Hidden3(Model.inputname("option"), Model.option)
 }
-@if(Model.setting.ExtraOptions.Count > 0)
+@if(Model.setting.Dropdown2.Count > 0)
 { 
     @Html.Hidden3(Model.inputname("option2"), Model.option2)
+}
+@if(Model.setting.Dropdown3.Count > 0)
+{ 
+    @Html.Hidden3(Model.inputname("option3"), Model.option3)
 }
 @if(Model.setting.GradeOptions.Count > 0)
 { 

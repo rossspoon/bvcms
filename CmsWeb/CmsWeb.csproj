@@ -314,6 +314,7 @@
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
+    <Content Include="Content\js\jquery-ui-dialog-patch.js" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailsModel.cs" />
@@ -1428,7 +1429,6 @@
     <Content Include="Areas\Main\Views\Person\FamilyGrid.cshtml" />
     <Content Include="Areas\Main\Views\Organization\ScheduleEditor.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\Index.cshtml" />
-    <Content Include="Areas\Main\Views\Organization\ScheduleList.cshtml" />
     <Content Include="Areas\Public\Views\SGMap\popup.cshtml" />
     <Content Include="Areas\Public\Views\SGMap\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\Test.cshtml" />
@@ -1441,14 +1441,15 @@
     <Content Include="Areas\Main\Views\RegSetting\GradeOptionEditor.cshtml" />
     <Content Include="Areas\Main\Views\RegSetting\YesNoQuestionEditor.cshtml" />
     <Content Include="Areas\Main\Views\RegSetting\ExtraQuestionEditor.cshtml" />
-    <Content Include="Areas\Main\Views\RegSetting\AskOptionEditor.cshtml" />
-    <Content Include="Areas\Main\Views\RegSetting\ExtraOptionEditor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\Dropdown1Editor.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\Dropdown2Editor.cshtml" />
     <Content Include="Areas\Main\Views\RegSetting\CheckboxEditor.cshtml" />
     <Content Include="Areas\Main\Views\RegSetting\Checkbox2Editor.cshtml" />
     <Content Include="Areas\Main\Views\RegSetting\ShirtSizeEditor.cshtml" />
     <Content Include="Areas\Main\Views\RegSetting\VoteTagEditor.cshtml" />
     <Content Include="Areas\Dialog\Views\TransactionHistory\Index.cshtml" />
     <Content Include="Areas\Dialog\Views\TransactionHistory\History.cshtml" />
+    <Content Include="Areas\Main\Views\RegSetting\Dropdown3Editor.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

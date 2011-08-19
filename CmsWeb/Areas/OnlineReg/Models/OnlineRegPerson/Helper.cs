@@ -158,7 +158,9 @@ namespace CmsWeb.Models
                 setting.AskTickets == true ||
                 setting.ExtraQuestions != null ||
                 setting.MenuItems != null ||
-                setting.AskOptions != null ||
+                setting.Dropdown1 != null ||
+                setting.Dropdown2 != null ||
+                setting.Dropdown3 != null ||
                 setting.YesNoQuestions != null ||
                 setting.Deposit > 0);
         }

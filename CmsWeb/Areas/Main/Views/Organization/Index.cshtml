@@ -116,7 +116,7 @@ a.ui-state-default { cursor: pointer; }
         </tr>
         <tr>
             <th>Schedule:</th>
-            <td><select id="ScheduleList"></select></td>
+            <td>@Html.DropDownList("ScheduleList", Model.Schedules())</td>
         </tr>
         <tr>
             <th colspan="2">

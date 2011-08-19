@@ -194,20 +194,27 @@ namespace CmsWeb.Models
                 new SelectListItem { Text = "Canceled" },
             };
         }
+        public static bool IsExisting(string code)
+        {
+            bool existing;
+            var q = from cp in DbUtil.Db.Coupons
+                    where cp.Id == code
+                    where cp.Used == null && cp.Canceled == null
+                    select cp;
+            existing = q.SingleOrDefault() != null;
+            return existing;
+        }
         public Coupon CreateCoupon()
         {
-            var existing = true;
-            string code;
-            do
+            string code = couponcode;
+            if (!couponcode.HasValue())
             {
-                code = Util.RandomPassword(12);
-                var q = from cp in DbUtil.Db.Coupons
-                        where cp.Id == code
-                        where cp.Used == null && cp.Canceled == null
-                        select cp;
-                existing = q.SingleOrDefault() != null;
+                do
+                {
+                    code = Util.RandomPassword(12);
+                }
+                while (IsExisting(code));
             }
-            while (existing);
 
             var c = new Coupon
             {
@@ -220,7 +227,7 @@ namespace CmsWeb.Models
             SetDivOrgIds(c);
             DbUtil.Db.Coupons.InsertOnSubmit(c);
             DbUtil.Db.SubmitChanges();
-            couponcode = c.Id.Insert(8, " ").Insert(4, " ");
+            couponcode = Util.fmtcoupon(c.Id);
 
             return c;
         }
@@ -245,7 +252,7 @@ namespace CmsWeb.Models
             public string Code { get; set; }
             public string Coupon
             {
-                get { return Code.Insert(8, " ").Insert(4, " "); }
+                get { return Util.fmtcoupon(Code); }
             }
             public string OrgDivName { get; set; }
             public DateTime Created { get; set; }

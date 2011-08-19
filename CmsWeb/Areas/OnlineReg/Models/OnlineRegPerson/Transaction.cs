@@ -69,17 +69,25 @@ namespace CmsWeb.Models
             if (org.LastDayBeforeExtra.HasValue && setting.ExtraFee.HasValue)
                 if (Util.Now > org.LastDayBeforeExtra.Value.AddHours(24))
                     amt += setting.ExtraFee.Value;
-            if (setting.AskOptions.Count > 0)
+            if (setting.Dropdown1.Count > 0)
             {
-                var q = from o in setting.AskOptions
+                var q = from o in setting.Dropdown1
                         where option == o.SmallGroup
                         select o.Fee ?? 0;
                 if (q.Count() > 0)
                     amt += q.First();
             }
-            if (setting.ExtraOptions.Count > 0)
+            if (setting.Dropdown2.Count > 0)
             {
-                var q = from o in setting.AskOptions
+                var q = from o in setting.Dropdown2
+                        where option2 == o.SmallGroup
+                        select o.Fee ?? 0;
+                if (q.Count() > 0)
+                    amt += q.First();
+            }
+            if (setting.Dropdown3.Count > 0)
+            {
+                var q = from o in setting.Dropdown3
                         where option2 == o.SmallGroup
                         select o.Fee ?? 0;
                 if (q.Count() > 0)

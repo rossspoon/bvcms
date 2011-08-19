@@ -70,8 +70,6 @@ namespace CmsData
 		
    		private EntitySet< Contribution> _Contributions;
 		
-   		private EntitySet< Organization> _Organizations;
-		
     	
 	#endregion
 	
@@ -159,8 +157,6 @@ namespace CmsData
 			this._BundleHeaders = new EntitySet< BundleHeader>(new Action< BundleHeader>(this.attach_BundleHeaders), new Action< BundleHeader>(this.detach_BundleHeaders)); 
 			
 			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
-			
-			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
 			
 			
 			OnCreated();
@@ -721,16 +717,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Organizations_ContributionFund", Storage="_Organizations", OtherKey="DonationFundId")]
-   		public EntitySet< Organization> Organizations
-   		{
-   		    get { return this._Organizations; }
-
-			set	{ this._Organizations.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -772,19 +758,6 @@ namespace CmsData
 		}
 
 		private void detach_Contributions(Contribution entity)
-		{
-			this.SendPropertyChanging();
-			entity.ContributionFund = null;
-		}
-
-		
-		private void attach_Organizations(Organization entity)
-		{
-			this.SendPropertyChanging();
-			entity.ContributionFund = this;
-		}
-
-		private void detach_Organizations(Organization entity)
 		{
 			this.SendPropertyChanging();
 			entity.ContributionFund = null;

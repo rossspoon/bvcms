@@ -1,5 +1,10 @@
 ﻿@using UtilityExtensions
+@using CmsData
 @model CmsData.OrganizationMember
+@{ 
+    string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId;
+    RegSettings setting = new RegSettings(Model.Organization.RegSetting, DbUtil.Db, Model.OrganizationId);
+}
 
 <table class="Design2" cellspacing="5">
     <tr>
@@ -29,19 +34,19 @@
         <th align='right'>RegisterEmail:</th>
         <td>@Html.TextBox("RegisterEmail")</td>
     </tr>
- }
-@if (Model.Organization.AskRequest == true)
+}
+@if (setting.AskRequest == true)
 { 
     <tr>
         <th align='right'>Request:</th>
         <td>@Html.TextBox("Request")</td>
     </tr>
- } 
+} 
     <tr>
         <th align='right'>Grade:</th>
         <td>@Html.TextBox("Grade", Model.Grade)</td>
     </tr>
-@if (Model.Organization.AskTickets == true)
+@if (setting.AskTickets == true)
 { 
     <tr>
         <th align='right'>No. Items:</th>
@@ -61,11 +66,11 @@
         <br /><span style="color:Red">@Html.ValidationMessage("AmountPaid")</span></td>
     </tr>
 }
-@if(Model.Organization.AskShirtSize == true) 
+@if (setting.AskShirtSize == true)
 { 
     <tr>
         <th align='right'>ShirtSize:</th>
-        <td>@Html.DropDownList("ShirtSize", 
+        <td>@Html.DropDownList("ShirtSize",
                 CmsWeb.Models.OnlineRegPersonModel.ShirtSizes(CmsData.DbUtil.Db, Model.Organization))</td>
     </tr>
 }

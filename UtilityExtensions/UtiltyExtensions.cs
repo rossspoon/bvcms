@@ -1270,6 +1270,12 @@ namespace UtilityExtensions
                 }
             return false;
         }
+        public static string fmtcoupon(string s)
+        {
+            if(s.Length == 12)
+                return s.Insert(8, " ").Insert(4, " ");
+            return s;
+        }
     }
     public class EventArg<T> : EventArgs
     {

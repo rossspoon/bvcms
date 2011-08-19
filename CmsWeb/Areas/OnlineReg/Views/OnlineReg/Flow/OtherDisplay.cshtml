@@ -114,18 +114,25 @@
         <td>@Model.suggestedfee.ToString2("f2") </td>
     </tr>
 }
-@if(Model.setting.AskOptions.Count > 0)
+@if(Model.setting.Dropdown1.Count > 0)
 { 
     <tr>
-        <td><div class="wraparound">@Util.PickFirst(Model.setting.AskOptionsLabel, "Options")</div></td>
+        <td><div class="wraparound">@Util.PickFirst(Model.setting.Dropdown1Label, "Options")</div></td>
         <td>@Model.option </td>
     </tr>
 }
-@if(Model.setting.ExtraOptions.Count > 0)
+@if(Model.setting.Dropdown2.Count > 0)
 { 
     <tr>
-        <td><div class="wraparound">@Util.PickFirst(Model.setting.ExtraOptionsLabel, "Extra Option")</div></td>
+        <td><div class="wraparound">@Util.PickFirst(Model.setting.Dropdown2Label, "Extra Option")</div></td>
         <td>@Model.option2 </td>
+    </tr>
+}
+@if(Model.setting.Dropdown3.Count > 0)
+{ 
+    <tr>
+        <td><div class="wraparound">@Util.PickFirst(Model.setting.Dropdown3Label, "Options 3")</div></td>
+        <td>@Model.option3 </td>
     </tr>
 }
 @if(Model.setting.GradeOptions.Count > 0)

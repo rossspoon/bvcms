@@ -1,7 +1,7 @@
-﻿onload=function() {
-var e=document.getElementById("refreshed");
+﻿onload = function () {
+    var e = document.getElementById("refreshed");
     if (e.value == "no")
-        e.value="yes";
+        e.value = "yes";
     else {
         e.value = "no";
         location.reload();
@@ -300,17 +300,14 @@ $(function () {
                 $(this).dialog("close");
             }
         });
-        $.post("/Organization/ScheduleList", { id: $("#OrganizationId").val() }, function (ret) {
-            $("#ScheduleList").html(ret);
-            $("#ScheduleList").change(function () {
-                var a = $(this).val().split(",");
-                $("#NewMeetingDate").val(a[0]);
-                $("#NewMeetingTime").val(a[1]);
-                $("#AttendCreditList").val(a[2]);
-            });
-        });
         d.dialog('open');
         return false;
+    });
+    $("#ScheduleList").change(function () {
+        var a = $(this).val().split(",");
+        $("#NewMeetingDate").val(a[0]);
+        $("#NewMeetingTime").val(a[1]);
+        $("#AttendCreditList").val(a[2]);
     });
     $.GetMeetingDateTime = function () {
         var reTime = /^ *(\d{1,2}):[0-5][0-9] *(a|p|A|P)(m|M) *$/;

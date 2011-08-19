@@ -222,7 +222,6 @@ namespace CmsWeb.Models
             {
                 if (org != null)
                     return Util.PickFirst("{0}".Fmt(settings[org.OrganizationId].Terms),
-                        org.Terms,
                         div != null ? div.Terms : "");
                 if (div != null)
                     return div.Terms;
