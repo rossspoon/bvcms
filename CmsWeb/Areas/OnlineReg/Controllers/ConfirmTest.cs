@@ -42,13 +42,23 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     orderby ed.Stamp descending
                     select ed;
             var list = q.Take(count ?? 20).ToList();
-            var q2 = from ed in list
-                     let s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models")
-                     select new ConfirmTestInfo
-                     {
-                         ed = ed,
-                         m = Util.DeSerialize<OnlineRegModel>(s) as OnlineRegModel
-                     };
+            var q2 = new List<ConfirmTestInfo>();
+            foreach (var ed in list)
+            {
+                var s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models");
+                try
+                {
+                    var i = new ConfirmTestInfo
+                    {
+                        ed = ed,
+                        m = Util.DeSerialize<OnlineRegModel>(s) as OnlineRegModel
+                    };
+                    q2.Add(i);
+                }
+                catch (Exception)
+                {
+                }
+            }
             return View(q2);
         }
         [Authorize(Roles = "Admin")]

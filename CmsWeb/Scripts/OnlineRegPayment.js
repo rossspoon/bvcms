@@ -16,6 +16,8 @@
                 $('#amt').text(ret.amt);
                 $('#pf_ti_Amt').val(ret.tiamt);
                 $('#Coupon').val('');
+                $('td.coupon').empty();
+                $('#tdcoup').html("<i>Applied</i>");
             }
             else {
                 window.location = ret.confirm;

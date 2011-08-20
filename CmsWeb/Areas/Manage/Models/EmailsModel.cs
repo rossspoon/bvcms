@@ -80,7 +80,6 @@ namespace CmsWeb.Models
             _emails
                = from t in DbUtil.Db.EmailQueues
                  where t.Sent >= startdt || startdt == null
-                 where t.FromName.Length > 0
                  where subject == null || t.Subject.Contains(subject)
                  where body == null || t.Body.Contains(body)
                  where @from == null || t.FromName.Contains(@from) || t.FromAddr.Contains(@from)

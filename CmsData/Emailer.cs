@@ -23,17 +23,6 @@ namespace CmsData
 {
     public partial class CMSDataContext
     {
-        public bool UseMassEmailer
-        {
-            get
-            {
-#if DEBUG
-                return false;
-#else
-                return Setting("UseMassEmailer", "false").ToBool();
-#endif
-            }
-        }
         public string CmsHost
         {
             get
@@ -78,10 +67,7 @@ namespace CmsData
                 Guid = Guid.NewGuid(),
             });
             SubmitChanges();
-            if (UseMassEmailer)
-                QueuePriorityEmail(emailqueue.Id, CmsHost, Host);
-            else
-                SendPersonEmail(CmsHost, emailqueue.Id, p.PeopleId);
+            SendPersonEmail(CmsHost, emailqueue.Id, p.PeopleId);
         }
         private List<MailAddress> PersonListToMailAddressList(IEnumerable<Person> list)
         {
@@ -258,15 +244,17 @@ namespace CmsData
                 if (Setting("sendemail", "true") != "false")
                 {
                     if (aa.Count > 0)
-                        Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, pid, Record: true);
+                        Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, pid);
                     else
                         Util.SendMsg(SysFromEmail, CmsHost, From, 
                             "(no email address) " + emailqueue.Subject, 
                             "<p>No email address for {0}({1})</p>\n{2}".Fmt(p.Name, p.PeopleId, text), 
                             Util.ToMailAddressList(From), 
-                            emailqueue.Id, pid, Record: true);
+                            emailqueue.Id, pid);
                     emailqueueto.Sent = DateTime.Now;
                     emailqueue.Sent = DateTime.Now;
+                    if (emailqueue.Redacted ?? false)
+                        emailqueue.Body = "redacted";
                     SubmitChanges();
                 }
             }
@@ -275,7 +263,7 @@ namespace CmsData
                 Util.SendMsg(SysFromEmail, CmsHost, From,
                     "sent emails - error", ex.ToString(),
                     Util.ToMailAddressList(From),
-                    emailqueue.Id, null, Record: true);
+                    emailqueue.Id, null);
                 throw ex;
             }
         }
@@ -524,7 +512,7 @@ namespace CmsData
                 Util.SendMsg(sysFromEmail, CmsHost, From,
                     "sent emails - error", "no subject or body, no emails sent",
                     Util.ToMailAddressList(From),
-                    emailqueue.Id, null, Record: true);
+                    emailqueue.Id, null);
                 return;
             }
 
@@ -561,7 +549,7 @@ namespace CmsData
                     if (Setting("sendemail", "true") != "false")
                     {
                         Util.SendMsg(sysFromEmail, CmsHost, From,
-                            emailqueue.Subject, text, aa, emailqueue.Id, To.PeopleId, Record: true);
+                            emailqueue.Subject, text, aa, emailqueue.Id, To.PeopleId);
                         To.Sent = DateTime.Now;
 
                         foreach (var ma in aa)
@@ -586,7 +574,7 @@ namespace CmsData
                 Util.SendMsg(sysFromEmail, CmsHost, From,
                     "sent emails - error", ex.Message,
                     Util.ToMailAddressList(From),
-                    emailqueue.Id, null, Record: true);
+                    emailqueue.Id, null);
                 throw ex;
             }
         }
@@ -604,11 +592,11 @@ namespace CmsData
                 SendErrorsTo = SendErrorsTo.Replace(';', ',');
 
                 Util.SendMsg(SysFromEmail, CmsHost, from,
-                    subj, body, Util.ToMailAddressList(from), id, null, Record: true);
+                    subj, body, Util.ToMailAddressList(from), id, null);
                 var host = uri.Host;
                 Util.SendMsg(SysFromEmail, CmsHost, from,
                     host + " " + subj, body,
-                    Util.SendErrorsTo(), id, null, Record: true);
+                    Util.SendErrorsTo(), id, null);
             }
         }
     }

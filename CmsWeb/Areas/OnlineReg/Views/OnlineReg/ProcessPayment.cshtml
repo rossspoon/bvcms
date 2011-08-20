@@ -76,10 +76,10 @@
             <div class="column">@Html.ValidationMessage("form")</div></td></tr>
     <tr><td colspan="2">&nbsp;</td></tr>
     <tr><td>Payment Code</td>
-        <td>@Html.Password("Coupon", ViewData["Coupon"], new { @class = "wide", autocomplete = "off" })<br />
+        <td class="coupon" id="tdcoup">@Html.Password("Coupon", ViewData["Coupon"], new { @class = "wide", autocomplete = "off" })<br />
             <input id="showpassword" type="checkbox" /> Show Code</td></tr>
     <tr><td></td>
-        <td>
+        <td class="coupon">
         <input type="button" href="/OnlineReg/ApplyCoupon/@Model.ti.DatumId" class="submitbutton ajax"
             value="Apply Code" />
         <div class="right red" id="validatecoupon"></div>

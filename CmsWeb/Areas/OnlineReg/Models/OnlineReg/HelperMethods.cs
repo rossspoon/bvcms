@@ -173,8 +173,12 @@ namespace CmsWeb.Models
             {
                 if (div != null)
                     return div.Name;
-                else
-                    return org != null ? Util.PickFirst(settings[org.OrganizationId].Title, org.OrganizationName) : "no organization";
+                else if (settings != null && org != null && settings[org.OrganizationId] != null)
+                    return Util.PickFirst(settings[org.OrganizationId].Title, org.OrganizationName);
+                else if (org != null)
+                    return org.OrganizationName;
+                return "no organization";
+                    
             }
         }
         public string Instructions

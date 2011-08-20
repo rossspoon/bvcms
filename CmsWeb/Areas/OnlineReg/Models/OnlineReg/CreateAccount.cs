@@ -75,7 +75,7 @@ Just login to {host} and you will be taken to your record where you can make cor
                     .Replace("{gobackurl}", gobackurl)
                     .Replace("{host}", DbUtil.Db.CmsHost);
 
-                Db.Email(DbUtil.AdminMail, person, "New account for " + Db.Host, message);
+                Db.EmailRedacted(DbUtil.AdminMail, person, "New account for " + Db.Host, message);
             }
         }
         public void SendOneTimeLink(string from, string url)

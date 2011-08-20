@@ -44,8 +44,6 @@ namespace CmsWeb.Areas.Manage.Controllers
         [Authorize(Roles="Admin")]
         public ActionResult Requeue(int id)
         {
-            if (DbUtil.Db.UseMassEmailer)
-                DbUtil.Db.QueueEmail(id, DbUtil.Db.CmsHost, Util.Host);
             return Redirect("/Manage/Emails/Details/" + id);
         }
         public ActionResult View(int id)
