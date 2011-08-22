@@ -143,6 +143,7 @@ namespace CmsData.Codes
         public const int CreateAccount = 5;
         public const int ChooseSlot = 6;
         public const int ManageSubscriptions = 7;
+        public const int OnlineGiving = 8;
     }
     public static class AttendTypeCode
     {

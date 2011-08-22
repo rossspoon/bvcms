@@ -111,6 +111,14 @@ int nn = 0;
     @Html.Hidden3(Model.inputname("MenuItem[" + nn++ + "].Value"), Model.MenuItemValue(i.sg))
     }
 }
+@{
+int fn = 0;    
+    foreach (var i in Model.FundItemsChosen())
+    { 
+    @Html.Hidden3(Model.inputname("FundItem[" + fn + "].Key"), i.fundid)
+    @Html.Hidden3(Model.inputname("FundItem[" + fn++ + "].Value"), i.amt)
+    }
+}
 @if (Model.setting.Deposit > 0)
 { 
     @Html.Hidden3(Model.inputname("paydeposit"), Model.paydeposit)

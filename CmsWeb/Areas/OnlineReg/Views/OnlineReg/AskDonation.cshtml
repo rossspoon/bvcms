@@ -38,7 +38,12 @@
     <form class="DisplayEdit" action="/OnlineReg/CompleteRegistration/@Model.qtesting" method="post">
         @Html.Partial("Flow/ModelHidden", Model)
     <table>
-    <tr><td>If you would like to make an extra donation, please indicate which person is the donor and enter an amount.</td>
+    <tr><td>@Html.Raw(Util.PickFirst(Model.DonationLabel(), @"Please consider making an extra donation"))
+            @if (Model.List.Count > 1)
+            {
+                <div>Indicate which person is the donor and enter an amount.</div>
+            }
+        </td>
         <td style="white-space: nowrap">
     @for (var i = 0; i < Model.List.Count; i++)
     { 

@@ -83,6 +83,8 @@ namespace CmsWeb.Models
                 if (_org == null && orgid.HasValue)
                     if (orgid == Util.CreateAccountCode)
                         _org = CreateAccountOrg();
+                    else if (orgid == Util.OnlineGivingCode)
+                        _org = CreateGivingOrg();
                     else
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 return _org;

@@ -27,6 +27,11 @@ namespace CmsWeb.Areas.OnlineReg
                 new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
             );
             context.MapRoute(
+                "Public_Giving",
+                "Giving",
+                new { controller = "OnlineReg", action = "Index", id = Util.OnlineGivingCode.ToString() }
+            );
+            context.MapRoute(
                 "OnlineReg_default",
                 "OnlineReg/{controller}/{action}/{id}",
                 new { action = "Index", id = "" }

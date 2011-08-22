@@ -77,7 +77,7 @@ namespace CmsWeb.Models
                     gender = person.GenderId;
                     married = person.MaritalStatusId == 2 ? 2 : 1;
 
-                    if ((ManageSubscriptions() || orgid == Util.CreateAccountCode) && !person.EmailAddress.HasValue())
+                    if ((ManageSubscriptions() || orgid == Util.CreateAccountCode || orgid == Util.OnlineGivingCode) && !person.EmailAddress.HasValue())
                     {
                         ModelState.AddModelError(ErrorTarget, "No Email Address on record");
                         NotFoundText = @"We have found your record but we have no email address for you.<br/>

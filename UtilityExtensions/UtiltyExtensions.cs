@@ -668,6 +668,7 @@ namespace UtilityExtensions
             }
         }
         public static int CreateAccountCode = -1952;
+        public static int OnlineGivingCode = -816;
         public static string SessionId
         {
             get
@@ -1069,6 +1070,11 @@ namespace UtilityExtensions
             var a = email.Split('@');
             var rest = new string('x', a[0].Length - 2);
             return a[0].Substring(0, 2) + rest + "@" + a[1];
+        }
+        public static string ObscureAccount(string acct)
+        {
+            var rest = new string('x', acct.Length - 4);
+            return rest + acct.Substring(acct.Length - 4);
         }
         public static SmtpClient Smtp()
         {

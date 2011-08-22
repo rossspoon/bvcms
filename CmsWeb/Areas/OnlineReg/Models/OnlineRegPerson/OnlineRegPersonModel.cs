@@ -134,6 +134,19 @@ namespace CmsWeb.Models
             return null;
         }
         [OptionalField]
+        private Dictionary<int, decimal?> _FundItem = new Dictionary<int, decimal?>();
+        public Dictionary<int, decimal?> FundItem
+        {
+            get { return _FundItem; }
+            set { _FundItem = value; }
+        }
+        public decimal? FundItemValue(int n)
+        {
+            if (FundItem.ContainsKey(n))
+                return FundItem[n];
+            return null;
+        }
+        [OptionalField]
         private int? _Whatfamily;
         public int? whatfamily
         {

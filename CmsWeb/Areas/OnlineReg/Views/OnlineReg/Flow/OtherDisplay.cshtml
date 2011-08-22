@@ -173,8 +173,15 @@
 @foreach (var i in Model.MenuItemsChosen())
 { 
     <tr>
-        <td></td>
-        <td> @i.number @i.desc </td>
+        <td>@i.desc</td>
+        <td> @i.number </td>
+    </tr>
+}
+@foreach (var i in Model.FundItemsChosen())
+{ 
+    <tr>
+        <td>@i.desc</td>
+        <td> @i.amt.ToString("N2")</td>
     </tr>
 }
 @if (Model.setting.Deposit > 0)

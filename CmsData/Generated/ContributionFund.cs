@@ -19,13 +19,9 @@ namespace CmsData
 		
 		private int _FundId;
 		
-		private int _ChurchId;
-		
 		private int _CreatedBy;
 		
 		private DateTime _CreatedDate;
-		
-		private bool _RecordStatus;
 		
 		private string _FundName;
 		
@@ -36,16 +32,6 @@ namespace CmsData
 		private int _FundTypeId;
 		
 		private bool _FundPledgeFlag;
-		
-		private decimal? _FundTarget;
-		
-		private DateTime _FundOpenDate;
-		
-		private DateTime? _FundCloseDate;
-		
-		private DateTime? _FundReopenDate;
-		
-		private DateTime? _FundDropDate;
 		
 		private int? _FundAccountCode;
 		
@@ -61,9 +47,7 @@ namespace CmsData
 		
 		private string _FundCashFund;
 		
-		private int? _ModifiedBy;
-		
-		private DateTime? _ModifiedDate;
+		private int? _OnlineSort;
 		
    		
    		private EntitySet< BundleHeader> _BundleHeaders;
@@ -81,17 +65,11 @@ namespace CmsData
 		partial void OnFundIdChanging(int value);
 		partial void OnFundIdChanged();
 		
-		partial void OnChurchIdChanging(int value);
-		partial void OnChurchIdChanged();
-		
 		partial void OnCreatedByChanging(int value);
 		partial void OnCreatedByChanged();
 		
 		partial void OnCreatedDateChanging(DateTime value);
 		partial void OnCreatedDateChanged();
-		
-		partial void OnRecordStatusChanging(bool value);
-		partial void OnRecordStatusChanged();
 		
 		partial void OnFundNameChanging(string value);
 		partial void OnFundNameChanged();
@@ -107,21 +85,6 @@ namespace CmsData
 		
 		partial void OnFundPledgeFlagChanging(bool value);
 		partial void OnFundPledgeFlagChanged();
-		
-		partial void OnFundTargetChanging(decimal? value);
-		partial void OnFundTargetChanged();
-		
-		partial void OnFundOpenDateChanging(DateTime value);
-		partial void OnFundOpenDateChanged();
-		
-		partial void OnFundCloseDateChanging(DateTime? value);
-		partial void OnFundCloseDateChanged();
-		
-		partial void OnFundReopenDateChanging(DateTime? value);
-		partial void OnFundReopenDateChanged();
-		
-		partial void OnFundDropDateChanging(DateTime? value);
-		partial void OnFundDropDateChanged();
 		
 		partial void OnFundAccountCodeChanging(int? value);
 		partial void OnFundAccountCodeChanged();
@@ -144,11 +107,8 @@ namespace CmsData
 		partial void OnFundCashFundChanging(string value);
 		partial void OnFundCashFundChanged();
 		
-		partial void OnModifiedByChanging(int? value);
-		partial void OnModifiedByChanged();
-		
-		partial void OnModifiedDateChanging(DateTime? value);
-		partial void OnModifiedDateChanged();
+		partial void OnOnlineSortChanging(int? value);
+		partial void OnOnlineSortChanged();
 		
     #endregion
 		public ContributionFund()
@@ -180,28 +140,6 @@ namespace CmsData
 					this._FundId = value;
 					this.SendPropertyChanged("FundId");
 					this.OnFundIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ChurchId", UpdateCheck=UpdateCheck.Never, Storage="_ChurchId", DbType="int NOT NULL")]
-		public int ChurchId
-		{
-			get { return this._ChurchId; }
-
-			set
-			{
-				if (this._ChurchId != value)
-				{
-				
-                    this.OnChurchIdChanging(value);
-					this.SendPropertyChanging();
-					this._ChurchId = value;
-					this.SendPropertyChanged("ChurchId");
-					this.OnChurchIdChanged();
 				}
 
 			}
@@ -246,28 +184,6 @@ namespace CmsData
 					this._CreatedDate = value;
 					this.SendPropertyChanged("CreatedDate");
 					this.OnCreatedDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="RecordStatus", UpdateCheck=UpdateCheck.Never, Storage="_RecordStatus", DbType="bit NOT NULL")]
-		public bool RecordStatus
-		{
-			get { return this._RecordStatus; }
-
-			set
-			{
-				if (this._RecordStatus != value)
-				{
-				
-                    this.OnRecordStatusChanging(value);
-					this.SendPropertyChanging();
-					this._RecordStatus = value;
-					this.SendPropertyChanged("RecordStatus");
-					this.OnRecordStatusChanged();
 				}
 
 			}
@@ -378,116 +294,6 @@ namespace CmsData
 					this._FundPledgeFlag = value;
 					this.SendPropertyChanged("FundPledgeFlag");
 					this.OnFundPledgeFlagChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="FundTarget", UpdateCheck=UpdateCheck.Never, Storage="_FundTarget", DbType="Decimal(11,2)")]
-		public decimal? FundTarget
-		{
-			get { return this._FundTarget; }
-
-			set
-			{
-				if (this._FundTarget != value)
-				{
-				
-                    this.OnFundTargetChanging(value);
-					this.SendPropertyChanging();
-					this._FundTarget = value;
-					this.SendPropertyChanged("FundTarget");
-					this.OnFundTargetChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="FundOpenDate", UpdateCheck=UpdateCheck.Never, Storage="_FundOpenDate", DbType="datetime NOT NULL")]
-		public DateTime FundOpenDate
-		{
-			get { return this._FundOpenDate; }
-
-			set
-			{
-				if (this._FundOpenDate != value)
-				{
-				
-                    this.OnFundOpenDateChanging(value);
-					this.SendPropertyChanging();
-					this._FundOpenDate = value;
-					this.SendPropertyChanged("FundOpenDate");
-					this.OnFundOpenDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="FundCloseDate", UpdateCheck=UpdateCheck.Never, Storage="_FundCloseDate", DbType="datetime")]
-		public DateTime? FundCloseDate
-		{
-			get { return this._FundCloseDate; }
-
-			set
-			{
-				if (this._FundCloseDate != value)
-				{
-				
-                    this.OnFundCloseDateChanging(value);
-					this.SendPropertyChanging();
-					this._FundCloseDate = value;
-					this.SendPropertyChanged("FundCloseDate");
-					this.OnFundCloseDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="FundReopenDate", UpdateCheck=UpdateCheck.Never, Storage="_FundReopenDate", DbType="datetime")]
-		public DateTime? FundReopenDate
-		{
-			get { return this._FundReopenDate; }
-
-			set
-			{
-				if (this._FundReopenDate != value)
-				{
-				
-                    this.OnFundReopenDateChanging(value);
-					this.SendPropertyChanging();
-					this._FundReopenDate = value;
-					this.SendPropertyChanged("FundReopenDate");
-					this.OnFundReopenDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="FundDropDate", UpdateCheck=UpdateCheck.Never, Storage="_FundDropDate", DbType="datetime")]
-		public DateTime? FundDropDate
-		{
-			get { return this._FundDropDate; }
-
-			set
-			{
-				if (this._FundDropDate != value)
-				{
-				
-                    this.OnFundDropDateChanging(value);
-					this.SendPropertyChanging();
-					this._FundDropDate = value;
-					this.SendPropertyChanged("FundDropDate");
-					this.OnFundDropDateChanged();
 				}
 
 			}
@@ -649,43 +455,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ModifiedBy", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedBy", DbType="int")]
-		public int? ModifiedBy
+		[Column(Name="OnlineSort", UpdateCheck=UpdateCheck.Never, Storage="_OnlineSort", DbType="int")]
+		public int? OnlineSort
 		{
-			get { return this._ModifiedBy; }
+			get { return this._OnlineSort; }
 
 			set
 			{
-				if (this._ModifiedBy != value)
+				if (this._OnlineSort != value)
 				{
 				
-                    this.OnModifiedByChanging(value);
+                    this.OnOnlineSortChanging(value);
 					this.SendPropertyChanging();
-					this._ModifiedBy = value;
-					this.SendPropertyChanged("ModifiedBy");
-					this.OnModifiedByChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="ModifiedDate", UpdateCheck=UpdateCheck.Never, Storage="_ModifiedDate", DbType="datetime")]
-		public DateTime? ModifiedDate
-		{
-			get { return this._ModifiedDate; }
-
-			set
-			{
-				if (this._ModifiedDate != value)
-				{
-				
-                    this.OnModifiedDateChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiedDate = value;
-					this.SendPropertyChanged("ModifiedDate");
-					this.OnModifiedDateChanged();
+					this._OnlineSort = value;
+					this.SendPropertyChanged("OnlineSort");
+					this.OnOnlineSortChanged();
 				}
 
 			}

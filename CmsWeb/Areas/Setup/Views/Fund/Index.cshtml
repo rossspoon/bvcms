@@ -3,16 +3,20 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Funds";
 }
-<h2>ViewPage1</h2>
-<table>
+<script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
+<script src="/Scripts/Funds.js" type="text/javascript"></script>
+
+<h2>Funds</h2>
+<table class="grid" cellpadding="5">
     <tr>
         <th></th>
-        <th> FundId </th>
-        <th> FundName </th>
-        <th> FundDescription </th>
-        <th> FundStatusId </th>
-        <th> FundTypeId </th>
-        <th> FundPledgeFlag </th>
+        <th> <a href="#" class="sortable">FundId</a> </th>
+        <th> <a href="#" class="sortable">Sort</a> </th>
+        <th> <a href="#" class="sortable">FundName</a> </th>
+        <th> <a href="#" class="sortable">FundDescription</a> </th>
+        <th> <a href="#" class="sortable">FundStatusId</a> </th>
+        <th> <a href="#" class="sortable">FundPledgeFlag</a> </th>
+        <th> <a href="#" class="sortable">Created</a> </th>
     </tr>
 @foreach (var item in Model)
 { 
@@ -21,11 +25,12 @@
             @Html.ActionLink("Edit", "Edit", new { id = item.FundId }) |
         </td>
         <td> @item.FundId </td>
+        <td> <span id="o@(item.FundId)" class="clickEdit">@item.OnlineSort</span> </td>
         <td> @item.FundName </td>
         <td> @item.FundDescription </td>
-        <td> @item.FundStatusId </td>
-        <td> @item.FundTypeId </td>
+        <td> <span id="s@(item.FundId)" class="clickSelect">@(item.FundStatusId == 1 ? "Open" : "Closed")</span> </td>
         <td> @item.FundPledgeFlag </td>
+        <td> @item.CreatedDate.ToString("M/d/yy")</td>
     </tr>
 }
 

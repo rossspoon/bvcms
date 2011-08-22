@@ -5,7 +5,6 @@ using CmsData;
 using CmsWeb.Models;
 using UtilityExtensions;
 using CmsWeb.Areas.Manage.Controllers;
-using CmsWeb.Areas.OnlineReg.Models.Payments;
 using System.Text;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers

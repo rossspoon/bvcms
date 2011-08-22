@@ -3,6 +3,13 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Fund";
 }
+<style type="text/css">
+    label
+    {
+        width: 150px;
+        display: inline-block;
+    }
+</style>
 <h2>Edit</h2>
 @using (Html.BeginForm("Update", "Fund"))
 {
@@ -25,24 +32,8 @@
             @Html.DropDownList("FundStatusId", CmsWeb.Areas.Setup.Controllers.FundController.GetFundStatusList())
         </p>
         <p>
-            <label for="FundTypeId">FundTypeId:</label>
-            @Html.DropDownList("FundTypeId", CmsWeb.Areas.Setup.Controllers.FundController.GetFundTypeList())
-        </p>
-        <p>
             <label for="FundPledgeFlag">FundPledgeFlag:</label>
             @Html.CheckBox("FundPledgeFlag")
-        </p>
-        <p>
-            <label for="FundTarget">FundTarget:</label>
-            @Html.TextBox("FundTarget")
-        </p>
-        <p>
-            <label for="FundOpenDate">FundOpenDate:</label>
-            @Html.TextBox("FundOpenDate")
-        </p>
-        <p>
-            <label for="FundCloseDate">FundCloseDate:</label>
-            @Html.TextBox("FundCloseDate")
         </p>
         <p>
             <label for="FundAccountCode">FundAccountCode:</label>

@@ -14,7 +14,6 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using CmsWeb.Areas.Manage.Controllers;
-using CmsWeb.Areas.OnlineReg.Models.Payments;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {

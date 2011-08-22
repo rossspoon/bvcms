@@ -137,6 +137,10 @@
     <Reference Include="AjaxMin, Version=4.13.4076.28499, Culture=neutral, PublicKeyToken=24297a69a7eae424, processorArchitecture=MSIL">
       <HintPath>..\packages\AjaxMin.4.13.4076.28499\lib\AjaxMin.dll</HintPath>
     </Reference>
+    <Reference Include="AuthorizeNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Binaries\AuthorizeNet.dll</HintPath>
+    </Reference>
     <Reference Include="CookComputing.XmlRpc, Version=0.9.2.1, Culture=neutral, PublicKeyToken=a7d6e17aa302004d" />
     <Reference Include="dotless.Core, Version=1.1.0.4, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -314,6 +318,7 @@
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
+    <Content Include="Binaries\AuthorizeNet.dll" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
@@ -326,11 +331,8 @@
     <Compile Include="Areas\OnlineReg\Controllers\PayDueOld.cs" />
     <Compile Include="Areas\OnlineReg\Controllers\PayDue.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\TransactionInfo.cs" />
-    <Compile Include="Areas\OnlineReg\Models\Payments\AuthorizeNet.cs" />
-    <Compile Include="Areas\OnlineReg\Models\Payments\PaymentForm.cs" />
-    <Compile Include="Areas\OnlineReg\Models\Payments\Sage.cs" />
-    <Compile Include="Areas\OnlineReg\Models\Payments\ITransactionPost.cs" />
-    <Compile Include="Areas\OnlineReg\Models\Payments\TransactionResponse.cs" />
+    <Compile Include="Areas\OnlineReg\Models\OnlineReg\PaymentForm.cs" />
+    <Compile Include="Areas\OnlineReg\Models\OnlineReg\TransactionResponse.cs" />
     <Compile Include="Areas\OnlineReg\OnlineRegAreaRegistration.cs" />
     <Compile Include="Areas\OnlineReg\Controllers\SetHeaders.cs" />
     <Compile Include="Areas\OnlineReg\Controllers\Confirm.cs" />
@@ -1002,6 +1004,7 @@
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\Funds.js" />
     <Content Include="Scripts\RegSetting.js" />
     <Content Include="Scripts\markers.js" />
     <Content Include="Scripts\meeting.js" />
@@ -1899,6 +1902,7 @@
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\Manage\Views\Reports\" />
+    <Folder Include="Areas\OnlineReg\Models\Payments\" />
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />

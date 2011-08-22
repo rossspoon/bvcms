@@ -136,6 +136,14 @@
         $(this).closest('div').nextAll('table').slideToggle();
         return false;
     });
-
+    $("input.sum").live("change", function () {
+        var sum = 0;
+        $("input.sum").each(function() {
+            if(!isNaN(this.value) && this.value.length!=0) {
+                sum += parseFloat(this.value);
+            }
+        });
+        $("#total").html(sum.toFixed(2));
+    });
 });
 

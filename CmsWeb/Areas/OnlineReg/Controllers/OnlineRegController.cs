@@ -4,11 +4,10 @@ using System.Web.Mvc;
 using CmsData;
 using CmsWeb.Models;
 using UtilityExtensions;
-using CmsWeb.Areas.Manage.Controllers;
-using CmsWeb.Areas.OnlineReg.Models.Payments;
 using System.Text;
 using System.Collections.Generic;
 using CmsData.Codes;
+using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {

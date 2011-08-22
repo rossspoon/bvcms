@@ -34,6 +34,34 @@ namespace CmsWeb.Models
                 settings.Add(Util.CreateAccountCode, ParseSetting("AllowOnlyOne: true", Util.CreateAccountCode));
             return o;
         }
+        public static Organization CreateGivingOrg()
+        {
+            var settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
+            if (settings == null)
+            {
+                settings = new Dictionary<int, RegSettings>();
+                HttpContext.Current.Items.Add("RegSettings", settings);
+            }
+            var o = new Organization { OrganizationId = Util.OnlineGivingCode, OrganizationName = "Online Giving" };
+            o.RegistrationTypeId = RegistrationEnum.OnlineGiving;
+            if (!settings.ContainsKey(Util.OnlineGivingCode))
+            {
+                string setting = @"AllowOnlyOne: true";
+                var fd = DbUtil.Content("FeaturedDonation");
+                if (fd != null)
+                    setting += @"
+AskDonation: true
+DonationFundId: {0}
+DonationLabel: <<
+----------
+{1}
+----------
+".Fmt(fd.Title, fd.Body);
+
+                settings.Add(Util.OnlineGivingCode, ParseSetting(setting, Util.OnlineGivingCode));
+            }
+            return o;
+        }
         [NonSerialized]
         private Dictionary<int, RegSettings> _settings;
         public Dictionary<int, RegSettings> settings
@@ -166,6 +194,12 @@ namespace CmsWeb.Models
             if (org != null)
                 return settings[org.OrganizationId].AskDonation;
             return settings.Values.Any(o => o.AskDonation);
+        }
+        public string DonationLabel()
+        {
+            if (org != null)
+                return settings[org.OrganizationId].DonationLabel.ToString();
+            return settings.Values.First(o => o.AskDonation).DonationLabel.ToString();
         }
         public string Header
         {

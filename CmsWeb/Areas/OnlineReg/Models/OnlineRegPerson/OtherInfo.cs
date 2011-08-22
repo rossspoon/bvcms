@@ -124,6 +124,21 @@ namespace CmsWeb.Models
                     select new MenuItemChosen { sg = m.SmallGroup, number = i.Value ?? 0, desc = m.Description, amt = m.Fee ?? 0 };
             return q;
         }
+        public class FundItemChosen
+        {
+            public string desc { get; set; }
+            public int fundid { get; set; }
+            public decimal amt { get; set; }
+        }
+        public IEnumerable<FundItemChosen> FundItemsChosen()
+        {
+            var items = Funds();
+            var q = from i in FundItem
+                    join m in items on i.Key equals m.Value.ToInt()
+                    where i.Value.HasValue
+                    select new FundItemChosen { fundid = m.Value.ToInt(), desc = m.Text, amt = i.Value.Value };
+            return q;
+        }
         public IEnumerable<SelectListItem> GradeOptions()
         {
             var q = from s in setting.GradeOptions

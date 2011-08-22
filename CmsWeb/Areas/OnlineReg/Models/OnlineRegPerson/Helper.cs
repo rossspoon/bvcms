@@ -77,6 +77,8 @@ namespace CmsWeb.Models
                 if (_org == null && orgid.HasValue)
                     if (orgid == Util.CreateAccountCode)
                         _org = OnlineRegModel.CreateAccountOrg();
+                    else if (orgid == Util.OnlineGivingCode)
+                        _org = OnlineRegModel.CreateGivingOrg();
                     else
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 if (_org == null && classid.HasValue)
@@ -285,6 +287,19 @@ Thank you</p>";
                     sb.AppendFormat("&nbsp;&nbsp;{0}; {1}<br />\n", this.address, city);
             }
             return sb.ToString();
+        }
+        public IEnumerable<SelectListItem> Funds()
+        {
+            var q = from f in DbUtil.Db.ContributionFunds
+                    where f.FundStatusId == 1
+                    where f.OnlineSort > 0
+                    orderby f.OnlineSort
+                    select new SelectListItem
+                    {
+                        Text = "{0}".Fmt(f.FundName),
+                        Value = f.FundId.ToString()
+                    };
+            return q;
         }
     }
 }

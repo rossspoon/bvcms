@@ -14,7 +14,6 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using CmsWeb.Areas.Manage.Controllers;
-using CmsWeb.Areas.OnlineReg.Models.Payments;
 using CmsData.Codes;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
@@ -45,13 +44,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             ViewData["timeout"] = INT_timeout;
 
             var t = m.Transaction;
-            ITransactionPost tctl = null;
-            if (t.TransactionGateway == "Sage")
-                tctl = new Sage();
-            else if (t.TransactionGateway == "AuthorizeNet")
-                tctl = new AuthorizeNet();
-            if (tctl == null)
-                return Content("no gateway");
 
             string first, last;
             Person.NameSplit(pf.ti.Name, out first, out last);
@@ -62,22 +54,23 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 if (pds.Count() == 1)
                     pid = pds.Single().PeopleId.Value;
             }
-            var tinfo = tctl.PostTransaction(
-                pf.CreditCard,
-                pf.CCV,
-                pf.Expires,
-                pf.ti.Amt ?? 0,
-                m.TranId.Value,
-                m.Header,
-                pid,
-                pf.ti.Emails,
-                first,
-                last,
-                pf.ti.Address,
-                pf.ti.City,
-                pf.ti.State,
-                pf.ti.Zip,
-                m.Transaction.Testing ?? false);
+            TransactionResponse tinfo = null;
+            if (t.TransactionGateway == "AuthorizeNet")
+                tinfo = OnlineRegModel.PostTransaction(
+                    pf.CreditCard, pf.CCV, pf.Expires,
+                    pf.ti.Amt ?? 0,
+                    m.TranId.Value, m.Header,
+                    pid, pf.ti.Emails, first, last,
+                    pf.ti.Address, pf.ti.City, pf.ti.State, pf.ti.Zip,
+                    m.Transaction.Testing ?? false);
+            else if (t.TransactionGateway == "Sage")
+                tinfo = OnlineRegModel.PostTransactionSage(
+                    pf.CreditCard, pf.CCV, pf.Expires,
+                    pf.ti.Amt ?? 0,
+                    m.TranId.Value, m.Header,
+                    pid, pf.ti.Emails, first, last,
+                    pf.ti.Address, pf.ti.City, pf.ti.State, pf.ti.Zip,
+                    m.Transaction.Testing ?? false);
 
             if (tinfo.Approved == false)
             {
@@ -139,6 +132,60 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 m.List[0].CreateAccount();
                 ViewData["CreatedAccount"] = true;
                 confirm = "ConfirmAccount";
+            }
+            else if (m.org != null && m.org.RegistrationTypeId == RegistrationEnum.OnlineGiving)
+            {
+                var p = m.List[0];
+                var c = DbUtil.Content("GivingReceipt");
+                var text = c.Body.Replace("{church}", DbUtil.Db.Setting("ChurchName", "church"));
+                text = text.Replace("{amt}", (t.Amt + t.Donate ?? 0).ToString("N2"));
+                text = text.Replace("{date}", DateTime.Today.ToShortDateString());
+                text = text.Replace("{tranid}", t.TransactionId);
+                text = text.Replace("{name}", p.person.Name);
+                text = text.Replace("{account}", "xxxx");
+                text = text.Replace("{email}", p.person.EmailAddress);
+                text = text.Replace("{phone}", p.person.HomePhone.FmtFone());
+                text = text.Replace("{contact}", "Betty Boo Clerk");
+                text = text.Replace("{contactphone}", "1234567890".FmtFone());
+            	var re = new Regex(@"(?<b>.*?)<!--ITEM\sROW\sSTART-->.(?<row>.*?)\s*<!--ITEM\sROW\sEND-->(?<e>.*)", RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
+                var match = re.Match(text);
+                var b = match.Groups["b"].Value;
+                var row = match.Groups["row"].Value.Replace("{funditem}", "{0}").Replace("{itemamt}", "{1:N2}");
+                var e = match.Groups["e"].Value;
+                var sb = new StringBuilder(b);
+
+                var desc = "{0}; {1}; {2}".Fmt(
+                        p.person.Name,
+                        p.person.PrimaryAddress,
+                        p.person.PrimaryZip);
+                foreach (var g in p.FundItemsChosen())
+                {
+                    sb.AppendFormat(row, g.desc, g.amt);
+                    PostBundleModel.PostUnattendedContribution(
+                        g.amt,
+                        p.PeopleId,
+                        g.fundid,
+                        desc);
+                }
+                if (t.Donate > 0)
+                {
+                    var fundname = DbUtil.Db.ContributionFunds.Single(ff => ff.FundId == p.setting.DonationFundId).FundName;
+                    sb.AppendFormat(row, fundname, t.Donate);
+                    t.Fund = p.setting.DonationFund();
+                    PostBundleModel.PostUnattendedContribution(
+                        t.Donate.Value,
+                        p.PeopleId,
+                        p.setting.DonationFundId,
+                        desc);
+                }
+                sb.Append(e);
+                if (!t.TransactionId.HasValue())
+                {
+                    t.TransactionId = TransactionID;
+                    if (m.testing == true)
+                        t.TransactionId += "(testing)";
+                }
+                DbUtil.Db.EmailRedacted("bbcms01@bellevue.org", p.person, c.Title, sb.ToString());
             }
             else if (m.ManagingSubscriptions())
             {

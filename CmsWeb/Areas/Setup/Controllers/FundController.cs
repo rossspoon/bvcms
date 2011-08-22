@@ -12,9 +12,47 @@ namespace CmsWeb.Areas.Setup.Controllers
     [Authorize(Roles = "Admin")]
     public class FundController : CmsStaffController
     {
-        public ActionResult Index()
+        public ActionResult Index(string sort)
         {
             var m = DbUtil.Db.ContributionFunds.AsEnumerable();
+            switch (sort)
+            {
+                case "FundId":
+                    m = from f in m
+                        orderby f.FundStatusId, f.FundId
+                        select f;
+                    break;
+                case "Created":
+                    m = from f in m
+                        orderby f.CreatedDate descending
+                        select f;
+                    break;
+                case "Sort":
+                    m = from f in m
+                        orderby f.OnlineSort != null ? 1 : 2, f.OnlineSort, f.FundId
+                        select f;
+                    break;
+                case "FundName":
+                    m = from f in m
+                        orderby f.FundName
+                        select f;
+                    break;
+                case "FundDescription":
+                    m = from f in m
+                        orderby f.FundDescription
+                        select f;
+                    break;
+                case "FundStatusId":
+                    m = from f in m
+                        orderby f.FundStatusId, f.OnlineSort != null ? 1 : 2, f.OnlineSort, f.FundId
+                        select f;
+                    break;
+                case "FundPledgeFlag":
+                    m = from f in m
+                        orderby f.FundPledgeFlag, f.FundStatusId, f.OnlineSort != null ? 1 : 2, f.OnlineSort, f.FundId
+                        select f;
+                    break;
+            }
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -33,14 +71,11 @@ namespace CmsWeb.Areas.Setup.Controllers
                 { 
                     FundName = "new fund", 
                     FundId=id,
-                    ChurchId = 1,
                     CreatedBy = Util.UserId1,
                     CreatedDate = Util.Now,
-                    RecordStatus = false,
                     FundStatusId = 1,
                     FundTypeId = 1,
                     FundPledgeFlag = false,
-                    FundOpenDate = DateTime.Today,
                     FundIncomeDept = "",
                     FundIncomeAccount = "",
                     FundIncomeFund = "",
@@ -102,6 +137,24 @@ namespace CmsWeb.Areas.Setup.Controllers
                 return RedirectToAction("Index");
             }
             return View("Edit", fund);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult EditOrder(string id, int value)
+        {
+            var iid = id.Substring(1).ToInt();
+            var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(m => m.FundId == iid);
+            fund.OnlineSort = value;
+            DbUtil.Db.SubmitChanges();
+            return Content(value.ToString());
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult EditStatus(string id, int value)
+        {
+            var iid = id.Substring(1).ToInt();
+            var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(m => m.FundId == iid);
+            fund.FundStatusId = value;
+            DbUtil.Db.SubmitChanges();
+            return Content(value == 1 ? "Open" : "Closed");
         }
         public static List<SelectListItem> GetFundStatusList()
         {

@@ -46,7 +46,7 @@
     <div>@Html.ValidationMessage("coupon")</div>
     </form>
     <p> 
-        When you click the 'Pay with Credit Card' button you will be redirected to ServiceU.com
+        When you click the 'Make Payment' button you will be redirected to ServiceU.com
         to process your payment of
         $@ti.Amt.Value.ToString("N"). After you are finished there, you will be redirected
         back here to get your confirmation. Your information will not be committed until
@@ -69,7 +69,7 @@
     @Html.Hidden("Misc3")
     @Html.Hidden("Misc4")
     <p>
-        <input id="Submit" type="submit" name="Submit" value="Pay with Credit Card" /></p>
+        <input id="Submit" type="submit" name="Submit" value="Make Payment" /></p>
     </form>
 
 

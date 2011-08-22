@@ -32,7 +32,7 @@ namespace CmsWeb.Models
                 amt = (setting.Fee ?? 0) * (ntickets ?? 0);
             if (setting.SuggestedFee == true)
                 amt = suggestedfee ?? 0;
-            if (setting.AgeGroups != null) // fee based on age
+            if (setting.AgeGroups.Count > 0) // fee based on age
             {
                 var q = from o in setting.AgeGroups
                         where age >= o.StartAge
@@ -41,7 +41,7 @@ namespace CmsWeb.Models
                 if (q.Count() > 0)
                     amt = q.First();
             }
-            if (setting.OrgFees != null)
+            if (setting.OrgFees.Count > 0)
                 // fee based on being in an organization
             {
                 var q = from o in setting.OrgFees
@@ -62,6 +62,8 @@ namespace CmsWeb.Models
         public decimal TotalOther()
         {
             decimal amt = 0;
+            if (FundItem.Count > 0)
+                amt += FundItemsChosen().Sum(f => f.amt);
             if (setting.MenuItems.Count > 0)
                 amt += MenuItemsChosen().Sum(m => m.number * m.amt);
             if (shirtsize != "lastyear" && setting.ShirtFee.HasValue)

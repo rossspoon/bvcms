@@ -48,6 +48,7 @@ namespace CmsData
             AskCoaching,
             AskGrade,
             AskDonation,
+            DonationLabel,
             DonationFundId,
             GroupToJoin,
             GiveOrgMembAccess,
@@ -154,6 +155,7 @@ namespace CmsData
         public bool AskCoaching { get; set; }
         public bool AskGrade { get; set; }
         public bool AskDonation { get; set; }
+        public HtmlText DonationLabel { get; set; }
         public bool NotReqDOB { get; set; }
         public bool NotReqAddr { get; set; }
         public bool NotReqPhone { get; set; }
@@ -168,7 +170,7 @@ namespace CmsData
         {
             return (from f in DbUtil.Db.ContributionFunds
                     where f.FundId == DonationFundId
-                    select f.FundName).SingleOrDefault();
+                    select f.FundDescription).SingleOrDefault();
         }
 
         public HtmlText InstructionSelect { get; set; }
@@ -354,6 +356,7 @@ namespace CmsData
             InstructionOptions = new HtmlText();
             InstructionSubmit = new HtmlText();
             InstructionSorry = new HtmlText();
+            DonationLabel = new HtmlText();
             Terms = new HtmlText();
             Body = new HtmlText();
             _VoteTags = new List<VoteTag>();
@@ -515,6 +518,9 @@ namespace CmsData
                     break;
                 case RegKeywords.DonationFundId:
                     DonationFundId = GetInt();
+                    break;
+                case RegKeywords.DonationLabel:
+                    DonationLabel = ParseMessage();
                     break;
                 case RegKeywords.GroupToJoin:
                     GroupToJoin = GetString();
@@ -1132,6 +1138,7 @@ namespace CmsData
         private void AddDonation(StringBuilder sb)
         {
             AddValueCk(0, sb, "AskDonation", AskDonation);
+            AddSingleOrMultiLine(0, sb, "DonationLabel", DonationLabel);
             AddValueCk(0, sb, "DonationFundId", DonationFundId);
             sb.AppendLine();
         }

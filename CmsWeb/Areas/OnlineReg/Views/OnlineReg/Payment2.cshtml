@@ -40,13 +40,13 @@
     @Html.Hidden("Misc3")
     @Html.Hidden("Misc4")
     <p>
-        When you click the 'Pay with Credit Card' button button will be redirected to ServiceU.com to process your credit card payment of @Model.Amount.ToString("C").
+        When you click the 'Make Payment' button button will be redirected to ServiceU.com to process your credit card payment of @Model.Amount.ToString("C").
         After you are finished there, you will be redirected back here to get your confirmation.
         Your information will not be committed until you complete the transaction on the next page.
     </p>
     <p>
     @Html.TextBox("Amount", Model.Amount.ToString("f2"))
-    <input type="submit" name="Submit" value="Pay with Credit Card" /></p>
+    <input type="submit" name="Submit" value="Make Payment" /></p>
     </form>
     <form>
     @Html.Hidden("Amount")
