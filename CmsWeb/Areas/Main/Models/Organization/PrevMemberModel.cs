@@ -9,7 +9,7 @@ namespace CmsWeb.Models.OrganizationPage
 {
     public class PrevMemberModel
     {
-        private int OrganizationId;
+        public int OrganizationId { get; set; }
         public PagerModel2 Pager { get; set; }
         public PrevMemberModel(int id, string name)
         {

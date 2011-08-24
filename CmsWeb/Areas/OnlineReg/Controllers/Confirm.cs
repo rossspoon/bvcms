@@ -137,15 +137,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 var p = m.List[0];
                 var c = DbUtil.Content("GivingReceipt");
-                var text = c.Body.Replace("{church}", DbUtil.Db.Setting("ChurchName", "church"));
-                text = text.Replace("{amt}", (t.Amt + t.Donate ?? 0).ToString("N2"));
+                var text = c.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
+                text = text.Replace("{amt}", (t.Amt ?? 0).ToString("N2"));
                 text = text.Replace("{date}", DateTime.Today.ToShortDateString());
-                text = text.Replace("{tranid}", t.TransactionId);
+                text = text.Replace("{tranid}", t.Id.ToString());
                 text = text.Replace("{name}", p.person.Name);
                 text = text.Replace("{account}", "xxxx");
                 text = text.Replace("{email}", p.person.EmailAddress);
                 text = text.Replace("{phone}", p.person.HomePhone.FmtFone());
                 text = text.Replace("{contact}", "Betty Boo Clerk");
+                text = text.Replace("{contactemail}", "betty@boo.com");
                 text = text.Replace("{contactphone}", "1234567890".FmtFone());
             	var re = new Regex(@"(?<b>.*?)<!--ITEM\sROW\sSTART-->.(?<row>.*?)\s*<!--ITEM\sROW\sEND-->(?<e>.*)", RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
                 var match = re.Match(text);

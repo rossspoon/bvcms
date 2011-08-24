@@ -6,6 +6,7 @@ using CmsWeb.Models;
 using UtilityExtensions;
 using CmsWeb.Areas.Manage.Controllers;
 using System.Text;
+using System.Collections.Generic;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -146,6 +147,10 @@ You have the following subscriptions:<br/>
             if (q.om == null && q.org.Limit <= q.org.MemberCount)
                 return Content("sorry, maximum limit has been reached");
 
+            var setting = new RegSettings(q.org.RegSetting, DbUtil.Db, oid);
+            if (IsSmallGroupFilled(setting, oid, smallgroup))
+                return Content("sorry, maximum limit has been reached for " + smallgroup);
+
             var omb = q.om;
             omb = OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 oid, pid, 220, DateTime.Now, null, false);
@@ -158,20 +163,39 @@ You have the following subscriptions:<br/>
 
             if (confirm == true)
             {
-                var setting = OnlineRegModel.ParseSetting(q.org.RegSetting, oid);
                 var subject = Util.PickFirst(setting.Subject, "no subject");
                 var msg = Util.PickFirst(setting.Body.ToString(), "no message");
                 msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
+                msg = msg.Replace("{details}", smallgroup);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 
                 DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
                 DbUtil.Db.Email(q.p.FromEmail,
                         DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId), // notify the staff
                         q.org.OrganizationName,
-                        "{0} has registered for {1}".Fmt(q.p.Name, q.org.OrganizationName));
+                        "{0} has registered for {1}<br>{2}".Fmt(q.p.Name, q.org.OrganizationName, smallgroup));
             }
 
             return Content(message);
+        }
+        private bool IsSmallGroupFilled(RegSettings setting, int orgid, string sg)
+        {
+            return IsSmallGroupFilled(setting.Dropdown1, orgid, sg)
+                || IsSmallGroupFilled(setting.Dropdown2, orgid, sg)
+                || IsSmallGroupFilled(setting.Dropdown3, orgid, sg)
+                || IsSmallGroupFilled(setting.Checkboxes, orgid, sg)
+                || IsSmallGroupFilled(setting.Checkboxes2, orgid, sg);
+        }
+        private bool IsSmallGroupFilled(List<CmsData.RegSettings.MenuItem> list, int orgid, string sg)
+        {
+            var i = list.SingleOrDefault(dd => dd.SmallGroup == sg);
+            if (i != null && i.Limit > 0)
+            {
+                var cnt = DbUtil.Db.OrganizationMembers.Count(mm => mm.OrganizationId == orgid && mm.OrgMemMemTags.Any(mt => mt.MemberTag.Name == sg));
+                if (cnt >= i.Limit)
+                    return true;
+            }
+            return false;
         }
     }
 }

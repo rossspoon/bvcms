@@ -1276,6 +1276,24 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression FamilyHasChildrenAged3(
+            ParameterExpression parm,
+            string range,
+            CompareType op,
+            int[] ids)
+        {
+            var a = range.Split('-');
+            Expression<Func<Person, bool>> pred = p =>
+                p.Family.People.Any(m => 
+                    m.Age >= a[0].ToInt() 
+                    && m.Age <= a[1].ToInt()
+                    && ids.Contains(m.GenderId)
+                );
+            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression HasRelatedFamily(
             ParameterExpression parm,
             CompareType op,

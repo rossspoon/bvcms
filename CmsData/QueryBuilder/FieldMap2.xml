@@ -48,6 +48,9 @@
     <Field Name="FirstName" Title="First Name" Type="String">
       Searchs all or part of First Name
     </Field>
+    <Field Name="LastName" Title="Last Name" Type="String">
+      Searchs all or part of Lastname
+    </Field>
     <Field Name="NickName" Title="Nick Name" Type="String">
       Searchs all or part of "goes by" Name
     </Field>
@@ -56,9 +59,6 @@
     </Field>
     <Field Name="MiddleName" Title="Middle Name" Type="String">
       Searchs all or part of Middle Name
-    </Field>
-    <Field Name="LastName" Title="Last Name" Type="String">
-      Searchs all or part of Lastname
     </Field>
     <Field Name="TitleCode" Title="Title" Type="CodeStr" DataSource="TitleCodes" DataValueField="Code">
       Codes for Mr. Dr. Mrs. Ms. etc.
@@ -76,7 +76,10 @@
       A member of the family is specified age or under
     </Field>
     <Field Name="FamilyHasChildrenAged2" Title="Family Has Children Aged Range" DisplayAs="ChildrenAged2={0}" Type="Bit" QuartersLabel="Age Range" Params="Quarters" DataValueField="IdCode">
-      A member of the family is specified age or under
+      A member of the family is specified age range inclusive (like 10-16 )
+    </Field>
+    <Field Name="FamilyHasChildrenAged3" Title="Family Has M/F Children Aged Range" DisplayAs="ChildrenAged3={0}" Type="Code" QuartersLabel="Age Range" Params="Quarters" DataSource="GenderCodes" DataValueField="IdCode">
+      A member of the family of specified age range inclusive (like 10-16 ) is Male or Female
     </Field>
     <Field Name="IsHeadOfHousehold" Title="Is Head of Household" Type="Bit" DataValueField="IdCode">
       This person is the head of the family household
@@ -374,7 +377,7 @@
       Selects people based on their kids attendance count for anything looking back a specified number of days.
     </Field>
     <Field Name="DaysBetween12Attendance" Title="Days Between First/Second Attend" Type="Integer" DisplayAs="DaysBetween12Attendance({0}, {1}, {2}, {3})" Params="Days,Program,Division,Organization">
-      Selects attendees based on # days between their first and second attendance. The first attendance can be specified to be within a Program, Program/Division or Program/Division/Organization for a specified date range.
+      Selects attendees based on # days between their first and second attendance. The second attendance can be specified to be within a Program, Program/Division or Program/Division/Organization for a specified date range.
     </Field>
       <!--<Field Name="WeeksSinceAttended" Title="Weeks Since Attended" Type="Integer">
       Sets a condition for the number of weeks since a person has attended an event. You must add an additional condition to specify the event or class.

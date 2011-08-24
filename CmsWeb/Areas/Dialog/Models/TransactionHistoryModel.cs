@@ -17,9 +17,11 @@ namespace CmsWeb.Areas.Dialog.Models
         {
             this.id = id;
             this.oid = oid;
-            var q = from m in DbUtil.Db.OrganizationMembers
-                    where m.PeopleId == id && m.OrganizationId == oid
-                    select new { m.Person.Name, m.Organization.FullName };
+            var q = from o in DbUtil.Db.Organizations
+                    from p in DbUtil.Db.People
+                    where o.OrganizationId == oid
+                    where p.PeopleId == id
+                    select new { p.Name, o.FullName };
             var j = q.Single();
             Name = j.Name;
             Org = j.FullName;

@@ -761,13 +761,6 @@ namespace CMSPresenter
 					new CodeValueItem { Id =  4, Value = "Baptism", Code = "BaptismDate" },
 					new CodeValueItem { Id =  5, Value = "Wedding", Code = "WeddingDate" },
 					new CodeValueItem { Id =  6, Value = "New Member Class", Code = "NewMemberClassDate" },
-					new CodeValueItem { Id =  7, Value = "Letter Req'd", Code = "LetterDateRequested" },
-					new CodeValueItem { Id =  8, Value = "Letter Rec'd", Code = "LetterDateReceived" },
-					new CodeValueItem { Id =  9, Value = "Addr From", Code = "AddressFromDate" },
-					new CodeValueItem { Id = 10, Value = "Add To", Code = "AddressToDate" },
-					new CodeValueItem { Id = 11, Value = "Alt Addr From", Code = "AltAddressFromDate" },
-					new CodeValueItem { Id = 12, Value = "Alt Addr To", Code = "AltAddressToDate" },
-					new CodeValueItem { Id = 13, Value = "Deceased", Code = "DeceasedDate" },
 				};
 				HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
 			}

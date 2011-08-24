@@ -258,10 +258,12 @@
        <td style="padding:3px">
             <table>
     @foreach (var a in Model.setting.Checkboxes2)
-    { 
+    {
+        var filled = Model.IsSmallGroupFilled(Model.setting.Checkboxes2, a.SmallGroup);
             <tr><td valign="top">
-                <input type="checkbox" value="@a.SmallGroup" name='@Model.inputname("Checkbox2")' @(Model.IsSmallGroupFilled(Model.setting.Checkboxes2, a.SmallGroup) ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") /></td>
-                <td>@a.Description
+                <input type="checkbox" value="@a.SmallGroup" name='@Model.inputname("Checkbox2")' @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") /></td>
+                <td>
+                <span@(filled? " class=strike" : "")>@a.Description</span>
         @if (a.Fee > 0) 
         { 
             @:&nbsp;($@a.Fee.ToString2("N2")) 

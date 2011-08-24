@@ -87,7 +87,7 @@ namespace CmsWeb.Models
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
                     select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
+            list.Insert(0, new SelectListItem { Text = "(please select)", Value = "00" });
             return list;
         }
         public IEnumerable<SelectListItem> ExtraOptions()
@@ -96,7 +96,7 @@ namespace CmsWeb.Models
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
                     select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
+            list.Insert(0, new SelectListItem { Text = "(please select)", Value = "00" });
             return list;
         }
         public IEnumerable<SelectListItem> ExtraOptions3()
@@ -105,7 +105,7 @@ namespace CmsWeb.Models
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
                     select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
+            list.Insert(0, new SelectListItem { Text = "(please select)", Value = "00" });
             return list;
         }
         public class MenuItemChosen
@@ -144,7 +144,7 @@ namespace CmsWeb.Models
             var q = from s in setting.GradeOptions
                     select new SelectListItem { Text = s.Description, Value = s.Code.ToString() };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "00" });
+            list.Insert(0, new SelectListItem { Text = "(please select)", Value = "00" });
             return list;
         }
         public static List<SelectListItem> ShirtSizes(CMSDataContext Db, Organization org)
@@ -161,7 +161,7 @@ namespace CmsWeb.Models
                         Text = ss.Description
                     };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            list.Insert(0, new SelectListItem { Value = "0", Text = "(please select)" });
             if (setting.AllowLastYearShirt == true)
                 list.Add(new SelectListItem { Value = "lastyear", Text = "Use shirt from last year" });
             return list;

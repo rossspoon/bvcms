@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using CmsWeb.Areas.Dialog.Models;
+using UtilityExtensions;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
@@ -22,6 +23,14 @@ namespace CmsWeb.Areas.Dialog.Controllers
             DbUtil.Db.EnrollmentTransactions.DeleteOnSubmit(t);
             DbUtil.Db.SubmitChanges();
             return View("History", m.FetchHistory());
+        }
+        public ActionResult Edit(string id, DateTime value)
+        {
+            var iid = id.Substring(2).ToInt();
+            var t = DbUtil.Db.EnrollmentTransactions.Single(tt => tt.TransactionId == iid);
+            t.TransactionDate = value;
+            DbUtil.Db.SubmitChanges();
+            return Content(value.ToString("M/d/yy h:mm t"));
         }
     }
 }

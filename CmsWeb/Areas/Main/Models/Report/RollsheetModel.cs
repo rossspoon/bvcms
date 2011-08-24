@@ -104,19 +104,18 @@ namespace CmsWeb.Areas.Main.Models.Report
         // This gets OrgMembers as of the date of the meeting and 7 days back.
         private static IEnumerable<PersonMemberInfo> FetchOrgMembers(int OrganizationId, DateTime MeetingDate)
         {
+
             var tagownerid = Util2.CurrentTagOwnerId;
-            var startdt = MeetingDate.AddDays(-7);
-            var enddt = MeetingDate.AddDays(1);
             var q = from p in DbUtil.Db.People
                     let etlist = p.EnrollmentTransactions.Where(ee =>
                         ee.TransactionTypeId <= 3 // things that start a change
                         && ee.TransactionStatus == false
-                        //&& ee.TransactionDate <= enddt // transaction starts <= looked for end
+                        && ee.TransactionDate <= MeetingDate // transaction starts <= looked for end
                         && (ee.Pending ?? false) == false
-                        && (ee.NextTranChangeDate ?? DateTime.Now) >= startdt // transaction ends >= looked for start
+                        && (ee.NextTranChangeDate >= MeetingDate || ee.NextTranChangeDate == null)// transaction ends >= looked for start
                         && ee.OrganizationId == OrganizationId)
                     let enrolled = etlist.OrderByDescending(laet => laet.TransactionDate).FirstOrDefault()
-                    where enrolled != null
+                    where enrolled != null && enrolled.MemberTypeId != MemberTypeCode.InActive
                     orderby p.LastName, p.FamilyId, p.PreferredName
                     select new PersonMemberInfo
                     {
