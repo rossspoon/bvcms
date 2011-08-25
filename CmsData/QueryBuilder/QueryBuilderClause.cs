@@ -63,13 +63,13 @@ namespace CmsData
                     sb.Append("ALL of these are TRUE");
                     break;
                 case CompareType.AnyTrue:
-                    sb.Append("ANY ONE of these is TRUE");
+                    sb.Append("ANY of these is TRUE");
                     break;
                 case CompareType.AllFalse:
                     sb.Append("ALL of these are FALSE");
                     break;
                 case CompareType.AnyFalse:
-                    sb.Append("ANY ONE of these is FALSE");
+                    sb.Append("ANY of these is FALSE");
                     break;
             }
             return sb.ToString();
