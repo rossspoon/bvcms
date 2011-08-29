@@ -1,0 +1,26 @@
+﻿@model CmsWeb.Models.OrgContentInfo
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Site2.cshtml";
+}
+@section edit {
+    @if (Model.CanEdit == true)
+    {
+    <a href="/OrgContent/Edit/@Model.OrgId">edit</a>
+    }
+}
+@if (!Model.IsMember)
+{
+    <h2>Sorry, members only</h2>
+}
+else if (Model.Inactive)
+{
+    <h2>Sorry, Organization is Inactive</h2>
+}
+else
+{
+    <div style="max-width: 600px;">
+    <h1>@Model.OrgName</h1>
+    @Html.Raw(Model.Html)
+    </div>
+}

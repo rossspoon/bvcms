@@ -48,6 +48,12 @@ namespace ImageData
             DbUtil.Db.SubmitChanges();
             return i;
         }
+        public void SetText(string s)
+        {
+            Mimetype = "text/plain";
+            Bits = System.Text.Encoding.ASCII.GetBytes(s);
+            Length = Bits.Length;
+        }
         public static Image NewTextFromBits(byte[] bits)
         {
             var i = new Image();
@@ -147,6 +153,12 @@ namespace ImageData
             if (img == null || img.Mimetype != "text/plain")
                 return null;
             return System.Text.ASCIIEncoding.ASCII.GetString(img.Bits);
+        }
+        public override string ToString()
+        {
+            if (this.Mimetype != "text/plain")
+                return null;
+            return System.Text.ASCIIEncoding.ASCII.GetString(Bits);
         }
     }
 }

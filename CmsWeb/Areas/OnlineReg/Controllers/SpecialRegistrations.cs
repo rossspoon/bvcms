@@ -7,6 +7,7 @@ using UtilityExtensions;
 using CmsWeb.Areas.Manage.Controllers;
 using System.Text;
 using System.Collections.Generic;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -139,13 +140,16 @@ You have the following subscriptions:<br/>
                      where pp.PeopleId == pid
                      let org = DbUtil.Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == oid)
                      let om = DbUtil.Db.OrganizationMembers.SingleOrDefault(oo => oo.OrganizationId == oid && oo.PeopleId == pid)
-                     select new { p=pp, org = org, om = om }).Single();
+                     select new { p = pp, org = org, om = om }).Single();
 
-            if(q.org == null)
+            if (q.org == null)
                 return Content("org missing, bad link");
 
             if (q.om == null && q.org.Limit <= q.org.MemberCount)
                 return Content("sorry, maximum limit has been reached");
+
+            if (q.om == null && (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive))
+                return Content("sorry, registration has been closed");
 
             var setting = new RegSettings(q.org.RegSetting, DbUtil.Db, oid);
             if (IsSmallGroupFilled(setting, oid, smallgroup))
@@ -154,7 +158,7 @@ You have the following subscriptions:<br/>
             var omb = q.om;
             omb = OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 oid, pid, 220, DateTime.Now, null, false);
-            
+
             omb.AddToGroup(DbUtil.Db, smallgroup);
             omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
             ot.Used = true;
@@ -188,7 +192,7 @@ You have the following subscriptions:<br/>
         }
         private bool IsSmallGroupFilled(List<CmsData.RegSettings.MenuItem> list, int orgid, string sg)
         {
-            var i = list.SingleOrDefault(dd => dd.SmallGroup == sg);
+            var i = list.SingleOrDefault(dd => string.Compare(dd.SmallGroup, sg, true) == 0);
             if (i != null && i.Limit > 0)
             {
                 var cnt = DbUtil.Db.OrganizationMembers.Count(mm => mm.OrganizationId == orgid && mm.OrgMemMemTags.Any(mt => mt.MemberTag.Name == sg));

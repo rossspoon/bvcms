@@ -617,6 +617,12 @@ namespace UtilityExtensions
         {
             get { return UserId == 0 ? 1 : UserId; }
         }
+        public static bool IsInRole(string role)
+        {
+            if (HttpContext.Current != null)
+                return HttpContext.Current.User.IsInRole(role);
+            return false;
+        }
         private const string STR_UserPeopleId = "UserPeopleId";
         public static int? UserPeopleId
         {

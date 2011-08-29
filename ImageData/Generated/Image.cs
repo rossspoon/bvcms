@@ -25,6 +25,8 @@ namespace ImageData
 		
 		private string _Mimetype;
 		
+		private bool? _Secure;
+		
    		
     	
 	#endregion
@@ -45,6 +47,9 @@ namespace ImageData
 		
 		partial void OnMimetypeChanging(string value);
 		partial void OnMimetypeChanged();
+		
+		partial void OnSecureChanging(bool? value);
+		partial void OnSecureChanged();
 		
     #endregion
 		public Image()
@@ -138,6 +143,28 @@ namespace ImageData
 					this._Mimetype = value;
 					this.SendPropertyChanged("Mimetype");
 					this.OnMimetypeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="secure", UpdateCheck=UpdateCheck.Never, Storage="_Secure", DbType="bit")]
+		public bool? Secure
+		{
+			get { return this._Secure; }
+
+			set
+			{
+				if (this._Secure != value)
+				{
+				
+                    this.OnSecureChanging(value);
+					this.SendPropertyChanging();
+					this._Secure = value;
+					this.SendPropertyChanged("Secure");
+					this.OnSecureChanged();
 				}
 
 			}

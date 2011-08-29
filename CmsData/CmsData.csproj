@@ -202,6 +202,7 @@
     <Compile Include="Generated\Functions\GetTodaysMeetingHour.cs" />
     <Compile Include="Generated\Functions\GetTodaysMeetingHours2.cs" />
     <Compile Include="Generated\NewMemberClassStatus.cs" />
+    <Compile Include="Generated\OrgContent.cs" />
     <Compile Include="Generated\OrgSchedule.cs" />
     <Compile Include="Generated\PeopleQueryBit.cs" />
     <Compile Include="RegSettings.cs" />

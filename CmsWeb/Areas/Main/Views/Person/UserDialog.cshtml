@@ -12,15 +12,26 @@
         .Add("/Content/jquery.tooltip.css")
     .Render("/Content/UserDialog_#.css")
 )
+<style type="text/css">
+.item
+{
+    float: left;
+    width: 13.3em;
+    margin: 0 2em 0 0;
+    border-right: 1px solid #eee;
+    padding: 0 0 5px 0;
+}
+</style>
 </head>
 <body>
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
         .Add("/Content/js/jquery-1.5.2.js")
         .Add("/Content/js/jquery-ui-1.8.13.custom.js")
         .Add("/Content/js/jquery.tooltip.js")
+        .Add("/Content/js/jquery.transpose.min.js")
         .Add("/Scripts/UserDialog.js")
         .Render("/Content/UserDialog_#.js")
-)        
+) 
 <a class="helplink" target="_blank" href='@Util.HelpLink("UserUpdate")'>help</a>
 <form class="DisplayEdit" action="">
 <table class="Design2">
@@ -28,27 +39,20 @@
     <tr><td>Password:</td><td>@Html.TextBox("Password2")</td></tr>
     <tr><td>LockedOut:</td><td>@Html.CheckBox("IsLockedOut")</td></tr>
     <tr><td>Created:</td><td>@Model.CreationDate.FormatDateTm()</td></tr>
-<tr><td></td></tr>
-    <tr>
-    <td>
+</table>
+<hr />
+<div class="wrapper">
 @foreach (var r in DbUtil.Db.Roles.Select(ro => ro.RoleName).OrderBy(ro=> ro))
 { 
+    <div class="item" >
        <input name="role" value="@r" class="ckbox" type="checkbox" @(Model.Roles.Any(ro => ro == r) ? "checked='checked'" : "") />
-       @r<br />
+       <span>@r</span></div>
 }
-    </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td><a id="saveuser" href="/Person/UserUpdate/@Model.UserId" class="submitbutton">Save Changes</a>
-            <a id="deluser" href="/Person/UserDelete/@Model.UserId" class="submitbutton">Delete User</a>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
+</div>
+<div style="clear:both"></div>
+<hr />
+<a id="saveuser" href="/Person/UserUpdate/@Model.UserId" class="submitbutton">Save Changes</a>
+<a id="deluser" href="/Person/UserDelete/@Model.UserId" class="submitbutton">Delete User</a>
 </form>
 </body>
 </html>

@@ -19,7 +19,7 @@ namespace CmsWeb
             context.Response.Clear();
             var id = context.Request.QueryString["id"].ToInt2();
             var image = ImageData.DbUtil.Db.Images.SingleOrDefault(i => i.Id == id);
-            if (image == null)
+            if (image == null || image.Secure == true)
                 NoPic(context);
             else
             {

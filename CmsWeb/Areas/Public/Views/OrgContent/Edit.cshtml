@@ -1,0 +1,35 @@
+﻿@model CmsWeb.Models.OrgContentInfo
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/Site2.cshtml";
+}
+@section head
+{
+    <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>
+    <script type="text/javascript" src="/scripts/edit2.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('textarea.editor').ckeditor(function () { }, {
+                height: 400,
+                filebrowserUploadUrl: '/OrgContent/CKEditorUpload/@(Model.OrgId)',
+                filebrowserImageUploadUrl: '/OrgContent/CKEditorUpload/@(Model.OrgId)',
+                toolbar_Full: toolbar_Full
+            });
+        });
+    </script>
+}
+<h2>
+    Edit</h2>
+@using (Html.BeginForm("Update", "OrgContent", FormMethod.Post))
+{ 
+    <div class="blogbody">
+        <h2 class="title">
+            <a href="/OrgContent/Index/@Model.OrgId">@Model.OrgName</a></h2>
+        <hr />
+        @Html.Hidden("OrgId")
+        <div>@Html.TextArea("Html", new { @class = "editor", rows = "26", style = "width:90%" })
+        </div>
+        <input type="submit" value="Post" />
+    </div>
+}

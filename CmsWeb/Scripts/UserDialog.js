@@ -20,5 +20,6 @@
         });
         return false;
     });
+    $(".wrapper .item").transpose();
 });
 
