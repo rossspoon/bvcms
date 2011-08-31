@@ -674,7 +674,7 @@ namespace UtilityExtensions
             }
         }
         public static int CreateAccountCode = -1952;
-        public static int OnlineGivingCode = -816;
+        //public static int OnlineGivingCode = -816;
         public static string SessionId
         {
             get

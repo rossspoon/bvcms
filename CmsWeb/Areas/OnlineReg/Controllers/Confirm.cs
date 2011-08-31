@@ -127,27 +127,27 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var t = m.Transaction;
             t.Approved = true;
 
-            if (m.org != null && m.org.RegistrationTypeId == RegistrationEnum.CreateAccount)
+            if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
             {
                 m.List[0].CreateAccount();
                 ViewData["CreatedAccount"] = true;
                 confirm = "ConfirmAccount";
             }
-            else if (m.org != null && m.org.RegistrationTypeId == RegistrationEnum.OnlineGiving)
+            else if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.OnlineGiving)
             {
                 var p = m.List[0];
-                var c = DbUtil.Content("GivingReceipt");
-                var text = c.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
+                var staff = DbUtil.Db.StaffPeopleForOrg(p.org.OrganizationId)[0]; 
+                var text = p.setting.Body.ToString().Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
                 text = text.Replace("{amt}", (t.Amt ?? 0).ToString("N2"));
                 text = text.Replace("{date}", DateTime.Today.ToShortDateString());
                 text = text.Replace("{tranid}", t.Id.ToString());
                 text = text.Replace("{name}", p.person.Name);
-                text = text.Replace("{account}", "xxxx");
+                text = text.Replace("{account}", "");
                 text = text.Replace("{email}", p.person.EmailAddress);
                 text = text.Replace("{phone}", p.person.HomePhone.FmtFone());
-                text = text.Replace("{contact}", "Betty Boo Clerk");
-                text = text.Replace("{contactemail}", "betty@boo.com");
-                text = text.Replace("{contactphone}", "1234567890".FmtFone());
+                text = text.Replace("{contact}", staff.Name);
+                text = text.Replace("{contactemail}", staff.EmailAddress);
+                text = text.Replace("{contactphone}", p.org.PhoneNumber.FmtFone());
             	var re = new Regex(@"(?<b>.*?)<!--ITEM\sROW\sSTART-->.(?<row>.*?)\s*<!--ITEM\sROW\sEND-->(?<e>.*)", RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
                 var match = re.Match(text);
                 var b = match.Groups["b"].Value;
@@ -186,7 +186,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     if (m.testing == true)
                         t.TransactionId += "(testing)";
                 }
-                DbUtil.Db.EmailRedacted("bbcms01@bellevue.org", p.person, c.Title, sb.ToString());
+                DbUtil.Db.EmailRedacted(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId), 
+                    p.person, p.setting.Subject, sb.ToString());
             }
             else if (m.ManagingSubscriptions())
             {

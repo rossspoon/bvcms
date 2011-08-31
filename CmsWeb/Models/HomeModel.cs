@@ -86,9 +86,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<NewsInfo> BVCMSNews()
         {
-            var feedurl = "http://feeds.feedburner.com/Bvcms-Blog";
-
-            //BlogLink.NavigateUrl = "http://blog.bvcms.com";
+            var feedurl = "http://feeds.feedburner.com/BvcmsBlog";
 
             var wr = new WebClient();
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);

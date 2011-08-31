@@ -67,7 +67,7 @@ namespace CmsWeb.Models
                         MemberCount = o.MemberCount,
                         ClassFilled = o.ClassFilled ?? false,
                         RegClosed = o.RegistrationClosed ?? false,
-                        RegType = o.RegistrationType.Description,
+                        RegTypeId = o.RegistrationTypeId,
                         AttendanceTrackingLevel = o.AttendTrackLevel.Description,
                         ProgramName = o.Division.Program.Name,
                         DivisionId = o.DivisionId,
@@ -264,7 +264,7 @@ namespace CmsWeb.Models
                         break;
                     case "Type":
                         query = from o in query
-                                orderby o.RegistrationType.Description, o.OrganizationName
+                                orderby o.RegistrationTypeId, o.OrganizationName
                                 select o;
                         break;
                     case "Members":
@@ -339,7 +339,7 @@ namespace CmsWeb.Models
                         break;
                     case "Type":
                         query = from o in query
-                                orderby o.RegistrationType.Description descending, 
+                                orderby o.RegistrationTypeId descending, 
                                 o.OrganizationName descending
                                 select o;
                         break;
@@ -460,12 +460,12 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> RegistrationTypeIds()
         {
-            var q = from o in DbUtil.Db.RegistrationTypes
-                    orderby o.Id
+            var q = from o in CmsData.Codes.RegistrationTypeCode.GetCodePairs()
+                    orderby o.Key
                     select new SelectListItem
                     {
-                        Value = o.Id.ToString(),
-                        Text = o.Description
+                        Value = o.Key.ToString(),
+                        Text = o.Value
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem
@@ -503,7 +503,11 @@ namespace CmsWeb.Models
             public int? MemberCount { get; set; }
             public bool ClassFilled { get; set; }
             public bool RegClosed { get; set; }
-            public string RegType { get; set; }
+            public int? RegTypeId { get; set; }
+            public string RegType
+            {
+                get { return RegistrationTypeCode.Lookup(RegTypeId ?? 0); }
+            }
             public string AttendanceTrackingLevel { get; set; }
             public string ProgramName { get; set; }
             public int? DivisionId { get; set; }

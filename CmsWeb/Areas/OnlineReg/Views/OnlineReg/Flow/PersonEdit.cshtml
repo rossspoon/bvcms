@@ -144,7 +144,7 @@ else
         <div>
             @Html.ValidationMessage("findn")</div>
         <div>
-            @Model.NotFoundText</div>
+            @Html.Raw(Model.NotFoundText)</div>
     </td>
 </tr>
         if (Model.Found == false)

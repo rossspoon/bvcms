@@ -36,7 +36,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             if (m.org != null)
             {
-                if ((m.org.RegistrationTypeId ?? 0) == RegistrationEnum.None)
+                if ((m.org.RegistrationTypeId ?? 0) == RegistrationTypeCode.None)
                     return Content("no registration allowed on this org");
             }
             else if (m.div != null)

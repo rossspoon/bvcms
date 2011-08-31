@@ -927,13 +927,13 @@ namespace CMSPresenter
 			var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
 			if (list == null)
 			{
-				var q = from c in DbUtil.Db.RegistrationTypes
-						select new CodeValueItem
-						{
-							Id = c.Id,
-							Code = c.Code,
-							Value = c.Description,
-						};
+                var q = from i in CmsData.Codes.RegistrationTypeCode.GetCodePairs()
+                        select new CodeValueItem
+                        {
+                            Id = i.Key,
+                            Code = i.Key.ToString(),
+                            Value = i.Value
+                        };
 				list = q.ToList();
 				HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
 			}

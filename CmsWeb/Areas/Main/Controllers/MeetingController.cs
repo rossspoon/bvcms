@@ -13,6 +13,8 @@ using System.Web.Routing;
 using System.Threading;
 using System.Data.Linq;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -161,6 +163,32 @@ namespace CmsWeb.Areas.Main.Controllers
 
             DbUtil.Db.SubmitChanges();
             return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+        }
+        class ttt
+        {
+            public string label { get; set; }
+            public string name { get; set; }
+        }
+        public DataGridResult AttendanceByGroups(int id)
+        {
+            var q = from a in DbUtil.Db.Attends
+                    where a.MeetingId == id
+                    where a.AttendanceFlag == true
+                    join om in DbUtil.Db.OrgMemMemTags on new { a.OrganizationId, a.PeopleId } equals new { OrganizationId = om.OrgId, om.PeopleId }
+                    select new { a.Person.Name, SmallGroup = om.MemberTag.Name };
+            var j = from i in q
+                    group i.Name by i.SmallGroup into g
+                    select new { g.Key, g };
+            var list = new List<ttt>();
+            foreach (var i in j)
+            {
+                list.Add(new ttt { label = "SmallGroup", name = "{0} ({1})".Fmt(i.Key, i.g.Count()) });
+                foreach (var name in i.g)
+                    list.Add(new ttt { label = "", name = name });
+            }
+            var dg = new DataGrid();
+            dg.DataSource = list;
+            return new DataGridResult(dg);
         }
     }
 }

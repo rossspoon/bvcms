@@ -29,39 +29,39 @@ namespace CmsWeb.Models
                 HttpContext.Current.Items.Add("RegSettings", settings);
             }
             var o = new Organization { OrganizationId = Util.CreateAccountCode, OrganizationName = "My Data" };
-            o.RegistrationTypeId = RegistrationEnum.CreateAccount;
+            o.RegistrationTypeId = RegistrationTypeCode.CreateAccount;
             if (!settings.ContainsKey(Util.CreateAccountCode))
                 settings.Add(Util.CreateAccountCode, ParseSetting("AllowOnlyOne: true", Util.CreateAccountCode));
             return o;
         }
-        public static Organization CreateGivingOrg()
-        {
-            var settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
-            if (settings == null)
-            {
-                settings = new Dictionary<int, RegSettings>();
-                HttpContext.Current.Items.Add("RegSettings", settings);
-            }
-            var o = new Organization { OrganizationId = Util.OnlineGivingCode, OrganizationName = "Online Giving" };
-            o.RegistrationTypeId = RegistrationEnum.OnlineGiving;
-            if (!settings.ContainsKey(Util.OnlineGivingCode))
-            {
-                string setting = @"AllowOnlyOne: true";
-                var fd = DbUtil.Content("FeaturedDonation");
-                if (fd != null)
-                    setting += @"
-AskDonation: true
-DonationFundId: {0}
-DonationLabel: <<
-----------
-{1}
-----------
-".Fmt(fd.Title, fd.Body);
+//        public static Organization CreateGivingOrg()
+//        {
+//            var settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
+//            if (settings == null)
+//            {
+//                settings = new Dictionary<int, RegSettings>();
+//                HttpContext.Current.Items.Add("RegSettings", settings);
+//            }
+//            var o = new Organization { OrganizationId = Util.OnlineGivingCode, OrganizationName = "Online Giving" };
+//            o.RegistrationTypeId = RegistrationEnum.OnlineGiving;
+//            if (!settings.ContainsKey(Util.OnlineGivingCode))
+//            {
+//                string setting = @"AllowOnlyOne: true";
+//                var fd = DbUtil.Content("FeaturedDonation");
+//                if (fd != null)
+//                    setting += @"
+//AskDonation: true
+//DonationFundId: {0}
+//DonationLabel: <<
+//----------
+//{1}
+//----------
+//".Fmt(fd.Title, fd.Body);
 
-                settings.Add(Util.OnlineGivingCode, ParseSetting(setting, Util.OnlineGivingCode));
-            }
-            return o;
-        }
+//                settings.Add(Util.OnlineGivingCode, ParseSetting(setting, Util.OnlineGivingCode));
+//            }
+//            return o;
+//        }
         [NonSerialized]
         private Dictionary<int, RegSettings> _settings;
         public Dictionary<int, RegSettings> settings
@@ -107,7 +107,7 @@ DonationLabel: <<
         public bool IsCreateAccount()
         {
             if (org != null)
-                return org.RegistrationTypeId == RegistrationEnum.CreateAccount;
+                return org.RegistrationTypeId == RegistrationTypeCode.CreateAccount;
             return false;
         }
         public bool IsEnded()
@@ -153,7 +153,7 @@ DonationLabel: <<
             if (divid == null)
                 return false;
             var q = from o in GetOrgsInDiv()
-                    where o.RegistrationTypeId == RegistrationEnum.UserSelectsOrganization
+                    where o.RegistrationTypeId == RegistrationTypeCode.UserSelectsOrganization
                     select o;
             return q.Count() > 0;
         }
@@ -162,8 +162,8 @@ DonationLabel: <<
             if (org != null)
             {
                 var setting = settings[org.OrganizationId];
-                return org.RegistrationTypeId == RegistrationEnum.ChooseSlot
-                    || org.RegistrationTypeId == RegistrationEnum.CreateAccount
+                return org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot
+                    || org.RegistrationTypeId == RegistrationTypeCode.CreateAccount
                     || setting.AllowOnlyOne == true || setting.AskTickets == true
                     || setting.GiveOrgMembAccess == true;
             }
@@ -176,16 +176,16 @@ DonationLabel: <<
         public bool ChoosingSlots()
         {
             if (org != null)
-                return org.RegistrationTypeId == RegistrationEnum.ChooseSlot;
+                return org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot;
             return false;
         }
         public bool ManagingSubscriptions()
         {
             if (org != null)
-                return org.RegistrationTypeId == RegistrationEnum.ManageSubscriptions;
+                return org.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions;
 
             var q = from o in GetOrgsInDiv()
-                    where o.RegistrationTypeId == RegistrationEnum.ManageSubscriptions
+                    where o.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions
                     select o;
             return q.Count() > 0;
         }

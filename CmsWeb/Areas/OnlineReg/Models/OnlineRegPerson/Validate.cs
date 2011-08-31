@@ -77,7 +77,7 @@ namespace CmsWeb.Models
                     gender = person.GenderId;
                     married = person.MaritalStatusId == 2 ? 2 : 1;
 
-                    if ((ManageSubscriptions() || orgid == Util.CreateAccountCode || orgid == Util.OnlineGivingCode) && !person.EmailAddress.HasValue())
+                    if ((ManageSubscriptions() || orgid == Util.CreateAccountCode || OnlineGiving()) && !person.EmailAddress.HasValue())
                     {
                         ModelState.AddModelError(ErrorTarget, "No Email Address on record");
                         NotFoundText = @"We have found your record but we have no email address for you.<br/>
@@ -98,7 +98,7 @@ Please call the church to resolve this before we can complete your information."
                     else if (org != null)
                     {
                         var om = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
-                        if (org.RegistrationTypeId == RegistrationEnum.CreateAccount)
+                        if (org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
                         {
 #if DEBUG2
 #else
@@ -118,7 +118,7 @@ Please call the church to resolve this before we can complete your account.<br /
                             }
 #endif
                         }
-                        else if (om != null && om.Organization.RegistrationTypeId != RegistrationEnum.ChooseSlot)
+                        else if (om != null && om.Organization.RegistrationTypeId != RegistrationTypeCode.ChooseSlot)
                         {
 #if DEBUG
 #else

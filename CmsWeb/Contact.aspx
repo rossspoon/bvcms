@@ -104,9 +104,9 @@
                     <tr>
                         <td>
                             <cc1:DisplayOrEditCheckbox ID="NotAtHome" runat="server" BindingSource="contact"
-                                Text="Not At Home" BindingMode="TwoWay" /><br />
+                                Text="Attempted/Not Available" BindingMode="TwoWay" /><br />
                             <cc1:DisplayOrEditCheckbox ID="LeftDoorHanger" runat="server" BindingSource="contact"
-                                Text="Left Door Hanger" BindingMode="TwoWay" /><br />
+                                Text="Left Note Card" BindingMode="TwoWay" /><br />
                             <cc1:DisplayOrEditCheckbox ID="LeftMessage" runat="server" BindingSource="contact"
                                 Text="Left Message" BindingMode="TwoWay" /><br />
                         </td>

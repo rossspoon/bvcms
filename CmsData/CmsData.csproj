@@ -227,7 +227,6 @@
     <Compile Include="Generated\PrayerItem.cs" />
     <Compile Include="Generated\ProgDiv.cs" />
     <Compile Include="Generated\RecLeague.cs" />
-    <Compile Include="Generated\RegistrationType.cs" />
     <Compile Include="Generated\SecurityCode.cs" />
     <Compile Include="Generated\StreetType.cs" />
     <Compile Include="Generated\Transaction.cs" />

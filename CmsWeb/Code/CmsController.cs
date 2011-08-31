@@ -6,6 +6,8 @@ using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
 using CmsWeb.Areas.Manage.Controllers;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace CmsWeb
 {
@@ -130,6 +132,20 @@ namespace CmsWeb
                         filterContext.Result = new RedirectResult("/Errors/SessionTimeout.htm");
                 }
             base.OnActionExecuting(filterContext);
+        }
+    }
+    public class DataGridResult : ActionResult
+    {
+        DataGrid dg;
+        public DataGridResult(DataGrid dg)
+        {
+            this.dg = dg;
+        }
+        public override void ExecuteResult(ControllerContext context)
+        {
+            var Response = context.HttpContext.Response;
+            dg.DataBind();
+            dg.RenderControl(new HtmlTextWriter(Response.Output));
         }
     }
 }

@@ -234,7 +234,7 @@ namespace CmsWeb.Models
         public bool IsCreateAccount()
         {
             if (org != null)
-                return org.RegistrationTypeId == RegistrationEnum.CreateAccount;
+                return org.RegistrationTypeId == RegistrationTypeCode.CreateAccount;
             return false;
         }
     }

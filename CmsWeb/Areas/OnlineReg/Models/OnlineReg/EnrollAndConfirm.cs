@@ -280,7 +280,7 @@ namespace CmsWeb.Models
         public int EntryPointForDiv()
         {
             var q = from o in GetOrgsInDiv()
-                    where o.RegistrationTypeId != RegistrationEnum.None
+                    where o.RegistrationTypeId != RegistrationTypeCode.None
                     where o.EntryPointId > 0
                     select o.EntryPointId;
             return q.FirstOrDefault() ?? 0;

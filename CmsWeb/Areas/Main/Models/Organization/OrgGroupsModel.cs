@@ -132,6 +132,7 @@ namespace CmsWeb.Models
                          JoinDate = p.JoinDate,
                          BirthDate = p.DOB,
                          Address = p.PrimaryAddress,
+                         Address2 = p.PrimaryAddress2,
                          CityStateZip = p.CityStateZip5,
                          HomePhone = p.HomePhone.FmtFone(),
                          CellPhone = p.CellPhone.FmtFone(),
@@ -175,6 +176,7 @@ namespace CmsWeb.Models
             public string Email { get; set; }
             public string BirthDate { get; set; }
             public string Address { get; set; }
+            public string Address2 { get; set; }
             public string CityStateZip { get; set; }
             public string HomePhone { get; set; }
             public string CellPhone { get; set; }

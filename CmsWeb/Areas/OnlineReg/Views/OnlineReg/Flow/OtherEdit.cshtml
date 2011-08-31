@@ -311,7 +311,7 @@
              Create Account (optional)</td>
    </tr>
 }
-@if (Model.org.RegistrationTypeId == CmsData.Codes.RegistrationEnum.OnlineGiving)
+@if (Model.OnlineGiving())
 {
     var funds = Model.Funds().ToList();
     <tr><td colspan="2" align="center"><table class="grid" cellpadding="2">

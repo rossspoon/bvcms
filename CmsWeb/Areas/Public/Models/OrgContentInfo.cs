@@ -82,7 +82,7 @@ namespace CmsWeb.Models
                         OrgId = oo.OrganizationId,
                         OrgName = oo.OrganizationName,
                         Inactive = oo.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Inactive,
-                        IsMember = om != null,
+                        IsMember = om != null && om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive,
                         IsLeader = (MemberLeaderType ?? 0) == CmsData.Codes.AttendTypeCode.Leader,
                         oc = oc,
                         NotAuthenticated = !Util.UserPeopleId.HasValue
@@ -102,7 +102,7 @@ namespace CmsWeb.Models
                         OrgId = oo.OrganizationId,
                         OrgName = oo.OrganizationName,
                         Inactive = oo.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Inactive,
-                        IsMember = om != null,
+                        IsMember = om != null && om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive,
                         IsLeader = (MemberLeaderType ?? 0) == CmsData.Codes.AttendTypeCode.Leader,
                         oc = oc,
                         NotAuthenticated = !Util.UserPeopleId.HasValue

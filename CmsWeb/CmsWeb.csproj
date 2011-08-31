@@ -260,6 +260,7 @@
     <Compile Include="Areas\Main\Models\Export\MucketyMapResult.cs" />
     <Compile Include="Areas\Dialog\Models\SearchUsersModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\ScheduleInfo.cs" />
+    <Compile Include="Areas\Main\Models\Other\ContactModel.cs" />
     <Compile Include="Areas\Main\Models\Other\ContactSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\MeetingModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
@@ -1066,10 +1067,6 @@
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\Row.cshtml" />
     <Content Include="Areas\Main\Views\Contact\Index.cshtml" />
-    <Content Include="Areas\Main\Views\Contact\Details.cshtml" />
-    <Content Include="Areas\Main\Views\Contact\Create.cshtml" />
-    <Content Include="Areas\Main\Views\Contact\Edit.cshtml" />
-    <Content Include="Areas\Main\Views\Contact\Delete.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\List.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\List.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\Details.cshtml" />

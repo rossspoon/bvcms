@@ -37,15 +37,12 @@
     <h2>@Model.Header</h2>
     <form class="DisplayEdit" action="/OnlineReg/CompleteRegistration/@Model.qtesting" method="post">
         @Html.Partial("Flow/ModelHidden", Model)
-    <table>
-    <tr><td>@Html.Raw(Util.PickFirst(Model.DonationLabel(), @"Please consider making an extra donation"))
-            @if (Model.List.Count > 1)
-            {
-                <div>Indicate which person is the donor and enter an amount.</div>
-            }
-        </td>
-        <td style="white-space: nowrap">
-    @for (var i = 0; i < Model.List.Count; i++)
+    @Html.Raw(Util.PickFirst(Model.DonationLabel(), @"<h2>Please consider making an extra donation</h2>"))
+@if (Model.List.Count > 1)
+{
+    <hr />
+    <div>Indicate which person is the donor and enter an amount.</div>
+    for (var i = 0; i < Model.List.Count; i++)
     { 
         var p = Model.List[i];
         Model.current = Model.List[i];
@@ -57,19 +54,17 @@
         {
             <input type="radio" name="m.donor" value="@i" /> @(p.first + " " + p.last + " " + p.suffix) @:(@p.age)<br />
         }
-     }
-     @if(Model.List.Count == 1)
-     {
+    }
+    <hr />
+}
+@if(Model.List.Count == 1)
+{
             <input type="hidden" name="m.donor" value="0" />
-     }
-        </td></tr>
-    <tr><td align="right">Donation Amount: </td>
-        <td><input type="text" name="m.donation" value="@Model.donation" />
-            <div>@Html.ValidationMessage("donation")</div>
-        </td></tr>
-    <tr><td></td>
-        <td><input id="submitit" type="submit" class="submitbutton" value='Complete Registration' /></td>
-    </tr>
-    </table>
-    </form>
+}
+<blockquote>
+Donation Amount: <input type="text" name="m.donation" value="@Model.donation" />
+<input id="submitit" type="submit" class="submitbutton" value='Complete Registration' />
+<div>@Html.ValidationMessage("donation")</div>
+</blockquote>
+</form>
 </div>

@@ -50,15 +50,19 @@ namespace CmsWeb.Models
         }
         public bool UserSelectsOrganization()
         {
-            return RegistrationType(RegistrationEnum.UserSelectsOrganization);
+            return RegistrationType(RegistrationTypeCode.UserSelectsOrganization);
         }
         public bool ComputesOrganizationByAge()
         {
-            return RegistrationType(RegistrationEnum.ComputeOrganizationByAge);
+            return RegistrationType(RegistrationTypeCode.ComputeOrganizationByAge);
         }
         public bool ManageSubscriptions()
         {
-            return RegistrationType(RegistrationEnum.ManageSubscriptions);
+            return RegistrationType(RegistrationTypeCode.ManageSubscriptions);
+        }
+        public bool OnlineGiving()
+        {
+            return org.RegistrationTypeId == RegistrationTypeCode.OnlineGiving;
         }
         public bool MemberOnly()
         {
@@ -77,8 +81,8 @@ namespace CmsWeb.Models
                 if (_org == null && orgid.HasValue)
                     if (orgid == Util.CreateAccountCode)
                         _org = OnlineRegModel.CreateAccountOrg();
-                    else if (orgid == Util.OnlineGivingCode)
-                        _org = OnlineRegModel.CreateGivingOrg();
+                    //else if (orgid == Util.OnlineGivingCode)
+                    //    _org = OnlineRegModel.CreateGivingOrg();
                     else
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 if (_org == null && classid.HasValue)
@@ -111,7 +115,7 @@ namespace CmsWeb.Models
         private CmsData.Organization GetAppropriateOrg()
         {
             var q = from o in DbUtil.Db.Organizations
-                    where o.RegistrationTypeId == RegistrationEnum.ComputeOrganizationByAge
+                    where o.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge
                     where o.DivOrgs.Any(di => di.DivId == divid)
                     where gender == null || o.GenderId == gender || o.GenderId == 0
                     select o;
@@ -141,9 +145,9 @@ namespace CmsWeb.Models
         public bool AnyOtherInfo()
         {
             if (org != null)
-                if (org.RegistrationTypeId == RegistrationEnum.CreateAccount)
+                if (org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
                     return false;
-                else if (org.RegistrationTypeId == RegistrationEnum.ChooseSlot)
+                else if (org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
                     return false;
             return settings.Values.Any(setting => 
                 setting.AskShirtSize == true ||

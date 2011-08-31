@@ -24,15 +24,15 @@ namespace CmsWeb.Models
         {
             var a = new int[] 
             { 
-                RegistrationEnum.UserSelectsOrganization,
-                RegistrationEnum.ComputeOrganizationByAge,
-                RegistrationEnum.ManageSubscriptions
+                RegistrationTypeCode.UserSelectsOrganization,
+                RegistrationTypeCode.ComputeOrganizationByAge,
+                RegistrationTypeCode.ManageSubscriptions
             };
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(od => od.DivId == divid)
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     where a.Contains(o.RegistrationTypeId.Value)
-                    where o.OnLineCatalogSort != null || o.RegistrationTypeId == RegistrationEnum.ComputeOrganizationByAge
+                    where o.OnLineCatalogSort != null || o.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge
                     select o;
             return q;
         }

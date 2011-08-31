@@ -57,7 +57,7 @@ namespace CmsWeb.Models
                         where o.DivOrgs.Any(od => od.DivId == divid)
                         where o.OrganizationStatusId == OrgStatusCode.Active
                         where (o.RegistrationClosed ?? false) == false
-                        where o.RegistrationTypeId != RegistrationEnum.None
+                        where o.RegistrationTypeId != RegistrationTypeCode.None
                         select new { o.OrganizationId, o.RegSetting };
                 foreach (var i in q)
                     list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
@@ -83,8 +83,8 @@ namespace CmsWeb.Models
                 if (_org == null && orgid.HasValue)
                     if (orgid == Util.CreateAccountCode)
                         _org = CreateAccountOrg();
-                    else if (orgid == Util.OnlineGivingCode)
-                        _org = CreateGivingOrg();
+                    //else if (orgid == Util.OnlineGivingCode)
+                    //    _org = CreateGivingOrg();
                     else
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 return _org;

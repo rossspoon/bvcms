@@ -165,8 +165,6 @@ namespace CmsData
 		
 		private EntityRef< Gender> _Gender;
 		
-		private EntityRef< RegistrationType> _RegistrationType;
-		
 		private EntityRef< EntryPoint> _EntryPoint;
 		
 		private EntityRef< OrganizationStatus> _OrganizationStatus;
@@ -383,8 +381,6 @@ namespace CmsData
 			this._Division = default(EntityRef< Division>); 
 			
 			this._Gender = default(EntityRef< Gender>); 
-			
-			this._RegistrationType = default(EntityRef< RegistrationType>); 
 			
 			this._EntryPoint = default(EntityRef< EntryPoint>); 
 			
@@ -1329,9 +1325,6 @@ namespace CmsData
 				if (this._RegistrationTypeId != value)
 				{
 				
-					if (this._RegistrationType.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnRegistrationTypeIdChanging(value);
 					this.SendPropertyChanging();
 					this._RegistrationTypeId = value;
@@ -1971,48 +1964,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Gender");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_Organizations_RegistrationType", Storage="_RegistrationType", ThisKey="RegistrationTypeId", IsForeignKey=true)]
-		public RegistrationType RegistrationType
-		{
-			get { return this._RegistrationType.Entity; }
-
-			set
-			{
-				RegistrationType previousValue = this._RegistrationType.Entity;
-				if (((previousValue != value) 
-							|| (this._RegistrationType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._RegistrationType.Entity = null;
-						previousValue.Organizations.Remove(this);
-					}
-
-					this._RegistrationType.Entity = value;
-					if (value != null)
-					{
-						value.Organizations.Add(this);
-						
-						this._RegistrationTypeId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._RegistrationTypeId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("RegistrationType");
 				}
 
 			}

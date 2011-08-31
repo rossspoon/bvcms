@@ -63,7 +63,7 @@ namespace CmsWeb.Models
         {
             var q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(dd => dd.DivId == divid)
-                    where o.RegistrationTypeId == RegistrationEnum.ManageSubscriptions
+                    where o.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions
                     select new OrgSub
                     {
                         OrgId = o.OrganizationId,
@@ -82,7 +82,7 @@ namespace CmsWeb.Models
                 {
                     var q = from om in DbUtil.Db.OrganizationMembers
                             where om.Organization.DivOrgs.Any(dd => dd.DivId == divid)
-                            where om.Organization.RegistrationTypeId == RegistrationEnum.ManageSubscriptions
+                            where om.Organization.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions
                             where om.PeopleId == pid
                             select new { om.Organization.OrganizationName, om.Organization.Description };
                     var sb = new StringBuilder();
@@ -98,7 +98,7 @@ namespace CmsWeb.Models
         {
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.Organization.DivOrgs.Any(dd => dd.DivId == divid)
-                    where om.Organization.RegistrationTypeId == RegistrationEnum.ManageSubscriptions
+                    where om.Organization.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions
                     where om.PeopleId == pid
                     select om;
             var current = q.ToList();

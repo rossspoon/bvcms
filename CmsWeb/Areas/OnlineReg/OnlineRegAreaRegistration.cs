@@ -1,5 +1,8 @@
 ﻿using System.Web.Mvc;
 using UtilityExtensions;
+using CmsData;
+using System.Linq;
+using System.Data.Linq;
 
 namespace CmsWeb.Areas.OnlineReg
 {
@@ -26,10 +29,13 @@ namespace CmsWeb.Areas.OnlineReg
                 "MyData",
                 new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
             );
+            var givingOrgId = (from o in DbUtil.Db.Organizations
+                               where o.OrganizationName == "Online Giving"
+                               select o.OrganizationId).SingleOrDefault();
             context.MapRoute(
                 "Public_Giving",
                 "Giving",
-                new { controller = "OnlineReg", action = "Index", id = Util.OnlineGivingCode.ToString() }
+                new { controller = "OnlineReg", action = "Index", id = givingOrgId.ToString() }
             );
             context.MapRoute(
                 "OnlineReg_default",
