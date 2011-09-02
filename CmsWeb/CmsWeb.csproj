@@ -232,6 +232,7 @@
     <Compile Include="Areas\Main\Controllers\RegSettingController.cs" />
     <Compile Include="Areas\Main\Controllers\MeetingController.cs" />
     <Compile Include="Areas\Main\Controllers\FamilyController.cs" />
+    <Compile Include="Areas\Main\Controllers\SavedQueryController.cs" />
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Areas\Main\Models\Other\ContactModel.cs" />
     <Compile Include="Areas\Main\Models\Other\ContactSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\MeetingModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\SavedQueryModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
@@ -1015,6 +1017,7 @@
     <Content Include="Scripts\markers.js" />
     <Content Include="Scripts\meeting.js" />
     <Content Include="Scripts\RegSettings.js" />
+    <Content Include="Scripts\SavedQuery.js" />
     <Content Include="Scripts\SearchUsers.js" />
     <Content Include="Scripts\Tags.js" />
     <Content Include="Scripts\QuickSearch.js" />
@@ -1457,6 +1460,9 @@
     <Content Include="Areas\Main\Views\RegSetting\Dropdown3Editor.cshtml" />
     <Content Include="Areas\Public\Views\OrgContent\Index.cshtml" />
     <Content Include="Areas\Public\Views\OrgContent\Edit.cshtml" />
+    <Content Include="Areas\Main\Views\SavedQuery\Index.cshtml" />
+    <Content Include="Areas\Main\Views\SavedQuery\Row.cshtml" />
+    <Content Include="Areas\Main\Views\SavedQuery\Rows.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

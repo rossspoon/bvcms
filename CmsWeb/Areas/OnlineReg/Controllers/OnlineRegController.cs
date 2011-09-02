@@ -53,7 +53,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             m.testing = true;
             m.username = "David";
-            m.password = "toby123";
 #else
             m.testing = testing;
 #endif

@@ -193,6 +193,8 @@ namespace CmsWeb.Models
         {
             if (org != null)
                 return settings[org.OrganizationId].AskDonation;
+            if (settings == null)
+                return false;
             return settings.Values.Any(o => o.AskDonation);
         }
         public string DonationLabel()

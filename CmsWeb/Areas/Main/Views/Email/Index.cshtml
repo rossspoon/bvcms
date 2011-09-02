@@ -29,7 +29,7 @@ You can include a file, image, mp3 or whatever you like in your email.
         <input type="button" name="Send" value="Send" onclick="$.Send()" style="width:62px;height: 42px" />
         @if (User.IsInRole("Admin"))
         { 
-        @:Scheduled Date and Time (mm/dd/yy h:mm AM|PM)@Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" }) (Optional)</p>
+        @:Scheduled Date and Time (mm/dd/yy h:mm AM|PM)@Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" }) (Optional, note: this is Central Time)</p>
         } 
    <p>From: @Html.DropDownList("FromAddress", Model.EmailFroms())
     <input type="button" name="TestSend" value="Test (Send To Yourself)" onclick="$.TestSend()" />

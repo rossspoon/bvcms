@@ -59,6 +59,12 @@ namespace UtilityExtensions
             int.TryParse(s, out i);
             return i;
         }
+        public static long ToLong(this string s)
+        {
+            long i = 0;
+            long.TryParse(s, out i);
+            return i;
+        }
         public static DateTime? ToDate(this string s)
         {
             if (s != null && s.AllDigits() && s.Length == 8)
@@ -319,7 +325,7 @@ namespace UtilityExtensions
         {
             phone = phone.FmtFone();
             if (phone.HasValue())
-                return prefix + phone;
+                return prefix + " " + phone;
             return "";
         }
         public static string FmtFone7(this string phone)
@@ -352,73 +358,23 @@ namespace UtilityExtensions
             var ph = phone.GetDigits();
             if (!ph.HasValue())
                 return "";
-            string ext = ph.Substring(ph.LastIndexOfAny("1234567890 -().".ToCharArray()) + 1);
-            List<string> tok = new List<string>();
-            StringBuilder fone = new StringBuilder(ph.Substring(0, ph.Length - ext.Length));
-            fone.Replace("-", " ");
-            fone.Replace("(", " ");
-            fone.Replace(")", " ");
-            fone.Replace(".", " ");
-
-            string[] a = null;
-            a = fone.ToString().Split(' ');
-            if (a.Length == 0)
-                return phone;
-
-            StringBuilder t = new StringBuilder(); // digits only string
-            foreach (string i in a)
-                if (i != "") // skip over empty parts
-                {
-                    if (!i.AllDigits())
-                        return phone;
-                    t.Append(i); // digits only string
-                    tok.Add(i);
-                }
-            if (tok.Count > 3)
-                return phone;
-
-            switch (tok.Count) // number of parts
+            var s = "";
+            if (ph.Length == 7)
+                return string.Format("{0:###-####}", ph.ToLong());
+            else if (ph.Length == 10)
+                return string.Format("{0:###-###-####}", ph.ToLong());
+            else if (ph.Length > 10)
             {
-                case 3:
-                    if (tok[0].Length != 3)
-                        return phone;
-                    if (tok[1].Length != 3)
-                        return phone;
-                    if (tok[2].Length != 4)
-                        return phone;
-                    break;
-                case 2:
-                    switch (t.Length)
-                    {
-                        case 7:
-                            if (tok[1].Length != 3)
-                                return phone;
-                            break;
-                        case 10:
-                            if (tok[1].Length != 3 && tok[2].Length != 4)
-                                return phone;
-                            break;
-                        default:
-                            return phone;
-                    }
-                    break;
+                var f = "###-###-#### #################".Substring(0, 13 + ph.Length - 10);
+                var i = ph.ToLong();
+                if (i == 0)
+                    s = phone;
+                else
+                    s = string.Format("{0:" + f + "}", i);
             }
-            switch (t.Length)
-            {
-                case 7:
-                    t.Insert(3, "-");
-                    break;
-                case 10:
-                    t.Insert(6, "-");
-                    t.Insert(3, ") ");
-                    t.Insert(0, "(");
-                    break;
-                default:
-                    return phone; // gotta be 7 or 10 digits
-            }
-            if (ext != "") // tack extension onto end
-                t.Append(" " + ext);
-            return t.ToString();
+            else
+                s = phone;
+            return s;
         }
         public static string GetDigits(this string zip)
         {

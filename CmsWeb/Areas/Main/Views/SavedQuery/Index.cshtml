@@ -1,0 +1,21 @@
+﻿@model CmsWeb.Models.SavedQueryModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<h2>Index</h2>
+@using (Html.BeginForm()) {
+    @:Only Mine: @Html.CheckBox("onlyMine")
+}
+<table cellpadding="4" class="grid">
+<thead>
+<tr>
+<td>Name</td>
+</tr>
+</thead>
+<tbody>
+@{Html.RenderPartial("Rows", Model.FetchQueries());}
+</tbody>
+</table>
+<script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
+<script src="/Scripts/SavedQuery.js" type="text/javascript"></script>

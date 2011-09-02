@@ -126,6 +126,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             string confirm = "Confirm";
             var t = m.Transaction;
             t.Approved = true;
+            t.TransactionDate = Util.Now;
 
             if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
             {
@@ -186,8 +187,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     if (m.testing == true)
                         t.TransactionId += "(testing)";
                 }
-                DbUtil.Db.EmailRedacted(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId), 
-                    p.person, p.setting.Subject, sb.ToString());
+                t.Amt = 0;
+                t.Donate = 0;
+                Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId)),
+                    p.setting.Subject, sb.ToString(),
+                    Util.EmailAddressListFromString(p.person.FromEmail), 0, p.PeopleId);
+                Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(p.person.FromEmail),
+                    "online giving contribution received", 
+                    "see contribution records for {0} ({1})".Fmt(p.person.Name, p.PeopleId),
+                    Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId)), 
+                    0, p.PeopleId);
             }
             else if (m.ManagingSubscriptions())
             {

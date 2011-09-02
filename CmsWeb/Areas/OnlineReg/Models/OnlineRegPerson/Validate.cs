@@ -38,15 +38,15 @@ namespace CmsWeb.Models
             if (Util.ValidEmail(email))
                 n++;
             var d = phone.GetDigits().Length;
-            if (phone.HasValue() && d == 10)
+            if (phone.HasValue() && d >= 10)
                 n++;
             if (n == 0)
                 ModelState.AddModelError(inputname("dob"), "we require one of valid birthdate, email or phone to find your record");
 
             if (!Util.ValidEmail(email))
                 ModelState.AddModelError(inputname("email"), "valid email required");
-            if (phone.HasValue() && d != 10)
-                ModelState.AddModelError(inputname("phone"), "10 digits required");
+            if (phone.HasValue() && d < 10)
+                ModelState.AddModelError(inputname("phone"), "10+ digits required");
         }
         public void ValidateModelForFind(ModelStateDictionary ModelState, OnlineRegModel m)
         {
@@ -176,9 +176,9 @@ Please search with a different email, phone, or birthday.";
 
             ValidateBirthdayRange(ModelState);
             int n = 0;
-            if (phone.HasValue() && phone.GetDigits().Length == 10)
+            if (phone.HasValue() && phone.GetDigits().Length >= 10)
                 n++;
-            if (ShowAddress && homephone.HasValue() && homephone.GetDigits().Length == 10)
+            if (ShowAddress && homephone.HasValue() && homephone.GetDigits().Length >= 10)
                 n++;
 
             if (RequiredPhone() && n == 0)

@@ -29,14 +29,14 @@ namespace CmsWeb.Areas.OnlineReg
                 "MyData",
                 new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
             );
-            var givingOrgId = (from o in DbUtil.Db.Organizations
-                               where o.OrganizationName == "Online Giving"
-                               select o.OrganizationId).SingleOrDefault();
-            context.MapRoute(
-                "Public_Giving",
-                "Giving",
-                new { controller = "OnlineReg", action = "Index", id = givingOrgId.ToString() }
-            );
+            //var givingOrgId = (from o in DbUtil.Db.Organizations
+            //                   where o.OrganizationName == "Online Giving"
+            //                   select o.OrganizationId).SingleOrDefault();
+            //context.MapRoute(
+            //    "Public_Giving",
+            //    "Giving",
+            //    new { controller = "OnlineReg", action = "Index", id = givingOrgId.ToString() }
+            //);
             context.MapRoute(
                 "OnlineReg_default",
                 "OnlineReg/{controller}/{action}/{id}",

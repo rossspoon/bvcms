@@ -179,7 +179,7 @@ else
   </li>
   <li><div><i>This is another dropdown</i></div>
     <span class="keyword big">Dropdown2:</span> @Html.TextBox("Dropdown2Label", Model.Dropdown2Label, new { @class = "long" })
-    <ul id="Dropdown2 class="sort">
+    <ul id="Dropdown2" class="sort">
     @foreach(var i in Model.Dropdown2.OrderBy(cc => cc.Id))
     {
         Html.RenderPartial("Dropdown2Editor", i);

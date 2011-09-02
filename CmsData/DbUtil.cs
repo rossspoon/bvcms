@@ -150,5 +150,6 @@ namespace CmsData
         public const int TagTypeId_OrgMembersOnly = 3;
         public const int TagTypeId_CouplesHelper = 4;
         public const int TagTypeId_AddSelected = 5;
+
     }
 }

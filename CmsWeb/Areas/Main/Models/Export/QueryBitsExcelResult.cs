@@ -33,19 +33,25 @@ namespace CmsWeb.Models
             var s = string.Join(",", q.Select(a => "{0} as {1}".Fmt(
             		a[0], a[1].Replace('.', '_').Replace('-','_').Replace(' ','_'))));
 
+            var dt = DateTime.Now.AddDays(-365);
 			var q2 = from p in DbUtil.Db.PeopleQuery(qid)
 				select new
 				{
                     p,
-					F1 = p.Tags.Any(tt => tt.Tag.Name == "F1" && tt.Tag.TypeId == 100) ? "X" : "",
-					F2 = p.Tags.Any(tt => tt.Tag.Name == "F2" && tt.Tag.TypeId == 100) ? "X" : "",
-					F3 = p.Tags.Any(tt => tt.Tag.Name == "F3" && tt.Tag.TypeId == 100) ? "X" : "",
-					F4 = p.Tags.Any(tt => tt.Tag.Name == "F4" && tt.Tag.TypeId == 100) ? "X" : "",
-					F5 = p.Tags.Any(tt => tt.Tag.Name == "F5" && tt.Tag.TypeId == 100) ? "X" : "",
-					F6 = p.Tags.Any(tt => tt.Tag.Name == "F6" && tt.Tag.TypeId == 100) ? "X" : "",
-					F7 = p.Tags.Any(tt => tt.Tag.Name == "F7" && tt.Tag.TypeId == 100) ? "X" : "",
-					F8 = p.Tags.Any(tt => tt.Tag.Name == "F8" && tt.Tag.TypeId == 100) ? "X" : "",
-					F9 = p.Tags.Any(tt => tt.Tag.Name == "F9" && tt.Tag.TypeId == 100) ? "X" : "",
+                    FirstAttend = (from a in p.Attends
+                                   where a.AttendanceFlag == true
+                                   where a.MeetingDate > dt
+                                   orderby a.MeetingDate
+                                   select a.MeetingDate).First(),
+					F01 = p.Tags.Any(tt => tt.Tag.Name == "F01" && tt.Tag.TypeId == 100) ? "X" : "",
+					F02 = p.Tags.Any(tt => tt.Tag.Name == "F02" && tt.Tag.TypeId == 100) ? "X" : "",
+					F03 = p.Tags.Any(tt => tt.Tag.Name == "F03" && tt.Tag.TypeId == 100) ? "X" : "",
+					F04 = p.Tags.Any(tt => tt.Tag.Name == "F04" && tt.Tag.TypeId == 100) ? "X" : "",
+					F05 = p.Tags.Any(tt => tt.Tag.Name == "F05" && tt.Tag.TypeId == 100) ? "X" : "",
+					F06 = p.Tags.Any(tt => tt.Tag.Name == "F06" && tt.Tag.TypeId == 100) ? "X" : "",
+					F07 = p.Tags.Any(tt => tt.Tag.Name == "F07" && tt.Tag.TypeId == 100) ? "X" : "",
+					F08 = p.Tags.Any(tt => tt.Tag.Name == "F08" && tt.Tag.TypeId == 100) ? "X" : "",
+					F09 = p.Tags.Any(tt => tt.Tag.Name == "F09" && tt.Tag.TypeId == 100) ? "X" : "",
 					F10 = p.Tags.Any(tt => tt.Tag.Name == "F10" && tt.Tag.TypeId == 100) ? "X" : "",
 					F11 = p.Tags.Any(tt => tt.Tag.Name == "F11" && tt.Tag.TypeId == 100) ? "X" : "",
 					F12 = p.Tags.Any(tt => tt.Tag.Name == "F12" && tt.Tag.TypeId == 100) ? "X" : "",
@@ -58,7 +64,7 @@ namespace CmsWeb.Models
 					F19 = p.Tags.Any(tt => tt.Tag.Name == "F19" && tt.Tag.TypeId == 100) ? "X" : "",
 					F20 = p.Tags.Any(tt => tt.Tag.Name == "F20" && tt.Tag.TypeId == 100) ? "X" : "",
 				};
-			var q3 = q2.Select("new(p.PeopleId,p.PreferredName,p.LastName,{0})".Fmt(s));
+            var q3 = q2.Select("new(p.PeopleId,p.PreferredName,p.LastName,FirstAttend,{0})".Fmt(s));
             var dg = new DataGrid();
             dg.DataSource = q3;
             dg.DataBind();

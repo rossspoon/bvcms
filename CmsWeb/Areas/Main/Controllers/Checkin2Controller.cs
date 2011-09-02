@@ -149,6 +149,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 var cred = System.Text.ASCIIEncoding.ASCII.GetString(
                     Convert.FromBase64String(auth.Substring(6))).Split(':');
                 var username = cred[0];
+
                 var password = cred[1];
                 return CMSMembershipProvider.provider.ValidateUser(username, password);
             }

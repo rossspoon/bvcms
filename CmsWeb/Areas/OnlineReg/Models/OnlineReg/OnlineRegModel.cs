@@ -62,6 +62,8 @@ namespace CmsWeb.Models
                 foreach (var i in q)
                     list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
             }
+            else if (org == null)
+                return;
             else
                 list[_Orgid.Value] = new RegSettings(org.RegSetting, DbUtil.Db, _Orgid.Value);
             if (HttpContext.Current.Items.Contains("RegSettings"))
