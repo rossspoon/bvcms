@@ -56,12 +56,12 @@ namespace CmsWeb.Areas.Main.Models.Report
 
                 var st = new StyleSheet();
                 st.LoadTagStyle("h1", "size", "18px");
-                st.LoadTagStyle("h2", "size", "10px");
+                st.LoadTagStyle("h2", "size", "8px");
                 st.LoadTagStyle("p", "size", "8px");
 
                 //----Church Name
                 var t1 = new PdfPTable(1);
-                t1.WidthPercentage = 100;
+                t1.TotalWidth = 72f * 5f;
                 t1.DefaultCell.Border = PdfPCell.NO_BORDER;
                 string html1 = @"<h1>Bellevue Baptist Church</h1>
 <h2>2000 Appling Rd. | Cordova | TN 38088-1210 | (901) 347-2000</h2>";
@@ -72,16 +72,20 @@ namespace CmsWeb.Areas.Main.Models.Report
                 var cell = new PdfPCell(t1.DefaultCell);
                 for (int k = 0; k < list.Count; k++)
                     cell.AddElement((IElement)list[k]);
-                cell.FixedHeight = 72f * 1.25f;
+                //cell.FixedHeight = 72f * 1.25f;
                 t1.AddCell(cell);
                 t1.AddCell("\n");
+
+                var t1a = new PdfPTable(1);
+                t1a.TotalWidth = 72f * 5f;
+                t1a.DefaultCell.Border = PdfPCell.NO_BORDER;
 
                 var ae = new PdfPTable(1);
                 ae.DefaultCell.Border = PdfPCell.NO_BORDER;
                 ae.WidthPercentage = 100;
 
                 var a = new PdfPTable(1);
-                a.DefaultCell.Indent = 36f;
+                a.DefaultCell.Indent = 25f;
                 a.DefaultCell.Border = PdfPCell.NO_BORDER;
                 a.AddCell(new Phrase(ci.Name, font));
                 a.AddCell(new Phrase(ci.Address1, font));
@@ -90,16 +94,17 @@ namespace CmsWeb.Areas.Main.Models.Report
                 a.AddCell(new Phrase(ci.CityStateZip, font));
                 cell = new PdfPCell(a);
                 cell.Border = PdfPCell.NO_BORDER;
-                cell.FixedHeight = 72f * 1.0625f;
+                //cell.FixedHeight = 72f * 1.0625f;
                 ae.AddCell(cell);
 
-                cell = new PdfPCell(t1.DefaultCell);
+                cell = new PdfPCell(t1a.DefaultCell);
                 cell.AddElement(ae);
-                t1.AddCell(ae);
+                t1a.AddCell(ae);
 
 
                 //-----Notice
                 var t2 = new PdfPTable(1);
+                t2.TotalWidth = 72f * 3f;
                 t2.DefaultCell.Border = PdfPCell.NO_BORDER;
                 t2.AddCell(new Phrase("\nPrint Date: {0:M/d/yy}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
                 t2.AddCell("");
@@ -122,28 +127,28 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
                     cell.AddElement((IElement)list[k]);
                 t2.AddCell(cell);
 
+
+                // POSITIONING OF ADDRESSES
                 //----Header
-                var header = new PdfPTable(2);
-                header.WidthPercentage = 100;
-                header.SetWidths(new float[] { 12f, 9f });
-                header.DefaultCell.Border = PdfPCell.NO_BORDER;
+                var yp = doc.BottomMargin + 
+                    DbUtil.Db.Setting("StatementRetAddrPos", "10.125").ToFloat() * 72f;
+                t1.WriteSelectedRows(0, -1, 
+                    doc.LeftMargin - 0.1875f *72f, yp, dc);
 
-                cell = new PdfPCell(header.DefaultCell);
-                cell.AddElement(t1);
-                header.AddCell(cell);
+                yp = doc.BottomMargin + 
+                    DbUtil.Db.Setting("StatementAddrPos", "8.3375").ToFloat() * 72f;
+                t1a.WriteSelectedRows(0, -1, doc.LeftMargin, yp, dc);
 
-                cell = new PdfPCell(t2.DefaultCell);
-                cell.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
-                cell.AddElement(t2);
-                header.AddCell(cell);
+                yp = doc.BottomMargin + 10.125f * 72f;
+                t2.WriteSelectedRows(0, -1, doc.LeftMargin + 72f * 4.4f, yp, dc);
 
 
-
-                doc.Add(header);
+                //----Contributions
+                doc.Add(new Paragraph(" "));
+                doc.Add(new Paragraph(" ") { SpacingBefore = 72f * 2.125f });
 
                 doc.Add(new Phrase("\n  Period: {0:M/d/yy} - {1:M/d/yy}".Fmt(FromDate, ToDate), boldfont));
 
-                //----Contributions
                 var mct = new MultiColumnText();
                 mct.AddRegularColumns(doc.Left, doc.Right, 20f, 2);
 

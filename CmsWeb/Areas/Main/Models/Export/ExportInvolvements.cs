@@ -42,8 +42,7 @@ namespace CmsWeb.Models
                          HomePhone = p.HomePhone,
                          WorkPhone = p.WorkPhone,
                          CellPhone = p.CellPhone,
-                         DivName = om.Organization.DivOrgs.FirstOrDefault(d =>
-                             d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
+                         DivName = om.Organization.Division.Name,
                          OrgName = om.Organization.OrganizationName,
                          Teacher = p.BFClass.LeaderName,
                          MemberType = om.MemberType.Description,

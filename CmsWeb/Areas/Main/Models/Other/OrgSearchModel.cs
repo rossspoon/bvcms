@@ -99,7 +99,7 @@ namespace CmsWeb.Models
                          Leader = o.LeaderName,
                          Members = o.MemberCount ?? 0,
                          Tracking = o.AttendTrackLevel.Description,
-                         Division = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name,
+                         Division = o.Division.Name,
                          FirstMeeting = o.FirstMeetingDate.FormatDate(),
                          LastMeeting = o.LastMeetingDate.FormatDate(),
                          Schedule = DbUtil.Db.GetScheduleDesc(sc.MeetingTime),

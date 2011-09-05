@@ -23,7 +23,7 @@ namespace CmsWeb.Areas.Main.Controllers
     [ValidateInput(false)]
     public class iPhoneController : CmsController
     {
-        private bool Authenticate()
+        private bool Authenticate(string role=null, bool checkorgmembersonly=false)
         {
             string username, password;
             var auth = Request.Headers["Authorization"];
@@ -39,11 +39,27 @@ namespace CmsWeb.Areas.Main.Controllers
                 username = Request.Headers["username"];
                 password = Request.Headers["password"];
             }
-            return CMSMembershipProvider.provider.ValidateUser(username, password);
+            var roles = CMSRoleProvider.provider;
+            var ret = CMSMembershipProvider.provider.ValidateUser(username, password);
+            if (ret && role.HasValue() && roles.RoleExists(role))
+            {
+                AccountController.SetUserInfo(username, Session);
+                if (!roles.IsUserInRole(username, role))
+                    ret = false;
+            }
+            if (ret)
+                if (checkorgmembersonly)
+                    if (!Util2.OrgMembersOnly)
+                        if (roles.IsUserInRole(username, "OrgMembersOnly"))
+                        {
+                            Util2.OrgMembersOnly = true;
+                            DbUtil.Db.SetOrgMembersOnly();
+                        }
+            return ret;
         }
         public ActionResult FetchImage(int id)
         {
-            if (!Authenticate())
+            if (!Authenticate("Access"))
                 return Content("not authorized");
             var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
             if (person.PictureId != null)

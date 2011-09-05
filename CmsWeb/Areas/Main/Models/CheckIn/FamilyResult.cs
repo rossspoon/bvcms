@@ -43,9 +43,10 @@ namespace CmsWeb.Models
             context.HttpContext.Response.ContentType = "text/xml";
             var settings = new XmlWriterSettings();
             settings.Encoding = new System.Text.UTF8Encoding(false);
+            settings.Indent = true;
 
             using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
-            {
+            { 
                 w.WriteStartElement("Attendees");
                 var m = new CheckInModel();
                 List<Attendee> q;

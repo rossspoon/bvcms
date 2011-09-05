@@ -44,19 +44,19 @@ namespace CmsWeb.Models.OrganizationPage
 
         private CodeValueController cv = new CodeValueController();
 
-        public void UpdateOrganization()
-        {
-            org.SetTagString(DbUtil.Db, DivisionsList);
-            if (org.DivisionId == 0)
-                org.DivisionId = null;
-            var divorg = org.DivOrgs.SingleOrDefault(d => d.DivId == org.DivisionId);
-            if (divorg == null && org.DivisionId.HasValue)
-                org.DivOrgs.Add(new DivOrg { DivId = org.DivisionId.Value });
-            if (org.CampusId == 0)
-                org.CampusId = null;
-            DbUtil.Db.SubmitChanges();
-            DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, org);
-        }
+        //public void UpdateOrganization()
+        //{
+        //    org.SetTagString(DbUtil.Db, DivisionsList);
+        //    if (org.DivisionId == 0)
+        //        org.DivisionId = null;
+        //    var divorg = org.DivOrgs.SingleOrDefault(d => d.DivId == org.DivisionId);
+        //    if (divorg == null && org.DivisionId.HasValue)
+        //        org.DivOrgs.Add(new DivOrg { DivId = org.DivisionId.Value });
+        //    if (org.CampusId == 0)
+        //        org.CampusId = null;
+        //    DbUtil.Db.SubmitChanges();
+        //    DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, org);
+        //}
         public IEnumerable<SelectListItem> Groups()
         {
             var q = from g in DbUtil.Db.MemberTags
@@ -76,22 +76,22 @@ namespace CmsWeb.Models.OrganizationPage
             tg.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
             return tg;
         }
-        public string DivisionsList { get; set; }
-        public List<SelectListItem> DivisionPickList()
-        {
-            var q1 = from d in DbUtil.Db.DivOrgs
-                     where d.OrgId == OrganizationId
-                     orderby d.Division.Name
-                     select d.Division.Name;
-            var q2 = from p in DbUtil.Db.Programs
-                     from d in p.Divisions
-                     where !q1.Contains(d.Name)
-                     orderby d.Name
-                     select d.Name;
-            var list = q1.Select(name => new SelectListItem { Text = name, Selected = true }).ToList();
-            list.AddRange(q2.Select(name => new SelectListItem { Text = name }).ToList());
-            return list;
-        }
+        //public string DivisionsList { get; set; }
+        //public List<SelectListItem> DivisionPickList()
+        //{
+        //    var q1 = from d in DbUtil.Db.DivOrgs
+        //             where d.OrgId == OrganizationId
+        //             orderby d.Division.Name
+        //             select d.Division.Name;
+        //    var q2 = from p in DbUtil.Db.Programs
+        //             from d in p.Divisions
+        //             where !q1.Contains(d.Name)
+        //             orderby d.Name
+        //             select d.Name;
+        //    var list = q1.Select(name => new SelectListItem { Text = name, Selected = true }).ToList();
+        //    list.AddRange(q2.Select(name => new SelectListItem { Text = name }).ToList());
+        //    return list;
+        //}
         public void UpdateSchedules()
         {
             DbUtil.Db.OrgSchedules.DeleteAllOnSubmit(org.OrgSchedules);
@@ -111,6 +111,13 @@ namespace CmsWeb.Models.OrganizationPage
         public SelectList Schedules()
         {
             var q = new SelectList(schedules.OrderBy(cc => cc.Id), "Value", "Display");
+            return q;
+        }
+        public IEnumerable<Division> Divisions()
+        {
+            var q = from d in org.DivOrgs
+                    orderby d.Id ?? 99
+                    select d.Division;
             return q;
         }
         public void ValidateSettings(ModelStateDictionary ModelState)
@@ -245,10 +252,6 @@ namespace CmsWeb.Models.OrganizationPage
             //        ModelState.AddModelError("DonationFundId", "fund not found");
             //}
 
-        }
-        public IEnumerable<SelectListItem> Divisions()
-        {
-            return QueryModel.ConvertToSelect(cv.AllOrgDivTags(), "Id");
         }
         public IEnumerable<SelectListItem> CampusList()
         {

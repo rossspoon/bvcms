@@ -1,0 +1,45 @@
+﻿@using CmsWeb.Models
+@model SearchDivisionsModel
+<html>
+<head>
+<title>Index</title>
+@Html.Raw(SquishIt.Framework.Bundle.Css()
+        .Add("/Content/jquery-ui-1.8.13.custom.css")
+        .Add("/Content/site.css")
+        .Add("/Content/style2.css")
+        .Add("/Content/jquery.tooltip.css")
+    .Render("/Content/SearchDiv_#.css")
+)
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.5.2.js")
+        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
+        .Add("/Content/js/jquery.blockUI.js")
+        .Add("/Content/js/jquery.tooltip.js")
+        .Add("/Scripts/SearchDivisions.js")
+        .Render("/Content/divsionsearch_#.js"))
+</head>
+<body>
+<form name="form1">
+@Html.Hidden("ordered", Model.ordered)
+@Html.Hidden("singlemode", Model.singlemode)
+@Html.Hidden("id", Model.singlemode)
+@Html.Hidden("topid")
+  <table id="searchvalues" class="roundbox" cellspacing="5">
+      <tr>
+        <th align="right"> Name/ID#: </th>
+        <td><input id="name" name="name" title="Partial Program / Division Name" type="text" value="" /></td>
+      </tr>
+      <tr>
+        <td>
+            <a id="close" href="#" class="bt">Close</a>
+        </td>
+        <td align="right">
+            <a href="/SearchDivisions/Results" id="search" class="bt default formlink">Search</a>
+            <a id="clear" href="#" class="bt">Clear</a>
+        </td>
+      </tr>
+  </table>
+@Html.Partial("Results", Model)
+</form>
+</body>
+</html>

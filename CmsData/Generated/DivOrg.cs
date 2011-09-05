@@ -21,6 +21,8 @@ namespace CmsData
 		
 		private int _OrgId;
 		
+		private int? _Id;
+		
    		
     	
 		private EntityRef< Division> _Division;
@@ -39,6 +41,9 @@ namespace CmsData
 		
 		partial void OnOrgIdChanging(int value);
 		partial void OnOrgIdChanged();
+		
+		partial void OnIdChanging(int? value);
+		partial void OnIdChanged();
 		
     #endregion
 		public DivOrg()
@@ -98,6 +103,28 @@ namespace CmsData
 					this._OrgId = value;
 					this.SendPropertyChanged("OrgId");
 					this.OnOrgIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="int")]
+		public int? Id
+		{
+			get { return this._Id; }
+
+			set
+			{
+				if (this._Id != value)
+				{
+				
+                    this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
 				}
 
 			}

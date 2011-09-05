@@ -128,11 +128,8 @@ namespace CmsCheckin
                 coll.Add("activeother", (activeother == CheckState.Checked).ToString());
                 coll.Add("AskChurch", Program.AskChurch.ToString());
             }
-
             var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/AddPerson/" + Program.FamilyId);
-
             var resp = wc.UploadValues(url, "POST", coll);
-
             var s = Encoding.ASCII.GetString(resp);
             var a = s.Split('.');
             Program.FamilyId = a[0].ToInt();
@@ -342,7 +339,7 @@ namespace CmsCheckin
 #endif
                 var s = Encoding.ASCII.GetString(resp);
             }
-            catch (Exception )
+            catch (Exception)
             {
             }
         }
@@ -359,7 +356,6 @@ namespace CmsCheckin
                 Uri url = null;
                 coll.Add("Member", joining.ToString());
                 url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/Membership/");
-
                 var resp = wc.UploadValues(url, "POST", coll);
 #if DEBUG
                 //System.Threading.Thread.Sleep(1500);

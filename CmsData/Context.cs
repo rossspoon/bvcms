@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Data;
 using CmsData.Codes;
+using System.Text.RegularExpressions;
 
 namespace CmsData
 {
@@ -463,7 +464,7 @@ namespace CmsData
                              && um.OrganizationId == m.OrganizationId && um.PeopleId == me))
                     select p;
             var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgMembersOnly);
-            PopulateSpecialTag(q, "OrgMemberOnlyInMyOrg");
+            //PopulateSpecialTag(q, "OrgMemberOnlyInMyOrg");
 
             // prev members of any of my orgs excluding unshared orgs
 
@@ -476,14 +477,14 @@ namespace CmsData
                             um.OrganizationId == et.OrganizationId && um.PeopleId == me))
                 select p;
             TagAll(q, tag);
-            PopulateSpecialTag(q, "OrgMemberOnlyPrevInMyOrg");
+            //PopulateSpecialTag(q, "OrgMemberOnlyPrevInMyOrg");
 
             // members of my family
             q = from p in People
                 where p.FamilyId == CurrentUser.Person.FamilyId
                 select p;
             TagAll(q, tag);
-            PopulateSpecialTag(q, "OrgMemberOnlyInMyFamily");
+            //PopulateSpecialTag(q, "OrgMemberOnlyInMyFamily");
 
             // visitors in the last year to one of my orgs excluding unshared
             var attype = new int[] { 40, 50, 60 };
@@ -495,21 +496,21 @@ namespace CmsData
                     && attype.Contains(a.AttendanceTypeId.Value) && a.MeetingDate > dt)
                 select p;
             TagAll(q, tag);
-            PopulateSpecialTag(q, "OrgMemberOnlyVisitMyOrg");
+            //PopulateSpecialTag(q, "OrgMemberOnlyVisitMyOrg");
 
             // people assigned to me in one of my tasks
             q = from p in People
                 where p.TasksAboutPerson.Any(at => at.OwnerId == me || at.CoOwnerId == me)
                 select p;
             TagAll(q, tag);
-            PopulateSpecialTag(q, "OrgMemberOnlyInMyTask");
+            //PopulateSpecialTag(q, "OrgMemberOnlyInMyTask");
 
             // people I have visited in a contact
             q = from p in People
                 where p.contactsHad.Any(c => c.contact.contactsMakers.Any(cm => cm.PeopleId == me))
                 select p;
             TagAll(q, tag);
-            PopulateSpecialTag(q, "OrgMemberOnlyIHaveContacted");
+            //PopulateSpecialTag(q, "OrgMemberOnlyIHaveContacted");
         }
         [Function(Name = "dbo.AddAbsents")]
         public int AddAbsents([Parameter(DbType = "Int")] int? meetid, [Parameter(DbType = "Int")] int? userid)
@@ -699,16 +700,10 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
             return ((int)(result.ReturnValue));
         }
-        [Function(Name = "dbo.QueueEmail")]
-        public int QueueEmail([Parameter(DbType = "Int")] int? id, [Parameter(DbType = "varchar(50)")] string CmsHost, [Parameter(DbType = "varchar(50)")] string Host)
+        [Function(Name = "dbo.SetMainDivision")]
+        public int SetMainDivision([Parameter(DbType = "Int")] int? orgid, [Parameter(DbType = "Int")] int? divid)
         {
-            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, CmsHost, Host);
-            return ((int)(result.ReturnValue));
-        }
-        [Function(Name = "dbo.QueuePriorityEmail")]
-        public int QueuePriorityEmail([Parameter(DbType = "Int")] int? id, [Parameter(DbType = "varchar(50)")] string CmsHost, [Parameter(DbType = "varchar(50)")] string Host)
-        {
-            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, CmsHost, Host);
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orgid, divid);
             return ((int)(result.ReturnValue));
         }
         [Function(Name = "dbo.DeleteQueryBitTags")]
@@ -726,6 +721,21 @@ namespace CmsData
                     throw new Exception("Org Named '" + OrgName + "' does not exist");
             }
             return OrganizationMember.Load(this, PeopleId, OrgName);
+        }
+        public IEnumerable<string[]> QueryBitsFlags()
+        {
+            var q = from c in QueryBuilderClauses
+                    where c.GroupId == null && c.Field == "Group"
+                    where c.Description.StartsWith("F") && c.Description.Contains(":")
+                    select c.Description;
+
+            const string FindPrefix = @"^F\d+:.*";
+            var re = new Regex(FindPrefix, RegexOptions.Singleline | RegexOptions.Multiline);
+            var q2 = from s in q.ToList()
+                     where re.Match(s).Success
+                     let a = s.SplitStr(":", 2)
+                     select new string[] { a[0], a[1] };
+            return q2;
         }
     }
 }

@@ -227,7 +227,7 @@ namespace CMSPresenter
                             .FormatOrgName(o.OrganizationName, o.LeaderName,
                                 o.Location),
                          AttendType = AttendCodes.ItemValue(a.AttendanceTypeId),
-                         MeetingName = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name + ": " + o.OrganizationName,
+                         MeetingName = o.Division.Name + ": " + o.OrganizationName,
                          MeetingDate = a.MeetingDate,
                          MemberType = MemberCodes.ItemValue(a.MemberTypeId),
                      };

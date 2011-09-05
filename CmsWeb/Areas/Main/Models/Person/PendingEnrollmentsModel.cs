@@ -24,7 +24,6 @@ namespace CmsWeb.Models.PersonPage
                     from om in o.OrganizationMembers
                     where om.PeopleId == PeopleId && om.Pending.Value == true
                     let leader = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == o.LeaderId)
-                    let div = om.Organization.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division
                     orderby o.OrganizationName
                     select new OrgMemberInfo
                     {
@@ -37,7 +36,7 @@ namespace CmsWeb.Models.PersonPage
                         LeaderId = o.LeaderId,
                         EnrollDate = om.EnrollmentDate,
                         MemberType = om.MemberType.Description,
-                        DivisionName = div.Program.Name + "/" + div.Name,
+                        DivisionName = om.Organization.Division.Program.Name + "/" + om.Organization.Division.Name,
                     };
             return q;
         }

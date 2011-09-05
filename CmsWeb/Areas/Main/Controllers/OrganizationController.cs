@@ -247,9 +247,10 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
-            m.DivisionsList = Request.Form["DivisionsList"];
-            m.UpdateOrganization();
-            m = new OrganizationModel(id, Util2.CurrentGroups);
+            //m.DivisionsList = Request.Form["DivisionsList"];
+            //m.UpdateOrganization();
+            DbUtil.Db.SubmitChanges();
+            //m = new OrganizationModel(id, Util2.CurrentGroups);
             return View("OrgInfo", m);
         }
 

@@ -19,7 +19,6 @@ namespace CmsWeb.Areas.Manage
             AddRoute(context, "OrgMembers");
             AddRoute(context, "Batch");
             AddRoute(context, "Promotion");
-            AddRoute(context, "Recreation");
             AddRoute(context, "Volunteers");
             context.MapRoute(
                 "Public_Logon",

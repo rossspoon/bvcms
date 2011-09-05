@@ -169,9 +169,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult MainDiv(int id, int tagdiv)
         {
             var Db = DbUtil.Db;
-            var o = Db.LoadOrganizationById(id);
-            o.DivisionId = tagdiv;
-            Db.SubmitChanges();
+            Db.SetMainDivision(id, tagdiv);
             return Content("ok");
         }
         [AcceptVerbs(HttpVerbs.Post)]

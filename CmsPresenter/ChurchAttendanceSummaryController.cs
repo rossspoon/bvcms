@@ -55,7 +55,7 @@ namespace CMSPresenter
                         Name = m.Organization.OrganizationName,
                         NumPresent = m.NumPresent,
                         NumVisitors = m.NumNewVisit + m.NumRepeatVst,
-                        ProgramId = m.Organization.Division.ProgId.Value
+                        ProgramId = m.Organization.Division.ProgId.Value,
                     };
             qlist = q.ToList();
         }

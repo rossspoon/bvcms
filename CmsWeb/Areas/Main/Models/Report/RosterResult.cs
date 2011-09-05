@@ -152,11 +152,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == OrgStatusCode.Active
-                    let divorg = DbUtil.Db.DivOrgs.First(t => t.OrgId == o.OrganizationId && t.Division.Program.Name != DbUtil.MiscTagsString)
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,
-                        Division = divorg.Division.Name,
+                        Division = o.Division.Name,
                         Name = o.OrganizationName,
                         Teacher = o.LeaderName,
                         Location = o.Location,

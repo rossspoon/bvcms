@@ -221,8 +221,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Dialog\Controllers\SearchDivisionsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\TransactionHistoryController.cs" />
     <Compile Include="Areas\Dialog\DialogAreaRegistration.cs" />
+    <Compile Include="Areas\Dialog\Models\SearchDivisionsModel.cs" />
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
@@ -638,7 +640,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
-    <Compile Include="Areas\Manage\Controllers\RecreationController.cs" />
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
     <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
     <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
@@ -703,7 +704,6 @@
     <Compile Include="Areas\Manage\Models\PromoteInfo.cs" />
     <Compile Include="Areas\Manage\Models\PromotionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QueryModel.cs" />
-    <Compile Include="Areas\Manage\Models\RecreationModel.cs" />
     <Compile Include="Areas\Public\Models\RegisterModel.cs" />
     <Compile Include="Areas\Main\Models\Report\AttendanceModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchContactModel.cs" />
@@ -1011,6 +1011,7 @@
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\SearchDivisions.js" />
     <Content Include="Scripts\Edit2.js" />
     <Content Include="Scripts\Funds.js" />
     <Content Include="Scripts\RegSetting.js" />
@@ -1284,18 +1285,6 @@
     <Content Include="Areas\Manage\Views\Promotion\List.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Manage\Views\Recreation\All.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Manage\Views\Recreation\Coaches.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Manage\Views\Recreation\Index.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Manage\Views\Recreation\List.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Areas\Manage\Views\Volunteers\Calendar.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -1463,6 +1452,9 @@
     <Content Include="Areas\Main\Views\SavedQuery\Index.cshtml" />
     <Content Include="Areas\Main\Views\SavedQuery\Row.cshtml" />
     <Content Include="Areas\Main\Views\SavedQuery\Rows.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\DivisionList.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchDivisions\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchDivisions\Results.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

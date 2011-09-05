@@ -59,7 +59,7 @@ namespace CmsWeb.Models.PersonPage
                          OrganizationName = CmsData.Organization
                             .FormatOrgName(o.OrganizationName, o.LeaderName, null),
                          AttendType = a.AttendType.Description ?? "(null)",
-                         MeetingName = o.DivOrgs.First(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division.Name + ": " + o.OrganizationName,
+                         MeetingName = o.Division.Name + ": " + o.OrganizationName,
                          MeetingDate = a.MeetingDate,
                          MemberType = a.MemberType.Description ?? "(null)",
                          AttendFlag = a.AttendanceFlag,

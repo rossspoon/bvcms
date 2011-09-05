@@ -737,10 +737,8 @@ namespace CmsWeb.Areas.Manage.Controllers
             ThreadPool.QueueUserWorkItem((e) =>
             {
                 var Db = new CMSDataContext(Util.GetConnectionString(host));
-                var u = Db.Users.SingleOrDefault(uu => uu.UserId == uid);
-                Db.CurrentUser = u;
                 Db.DeleteQueryBitTags();
-                foreach (var a in QueryBitsFlags(Db))
+                foreach (var a in Db.QueryBitsFlags())
                 {
                     var t = Db.FetchOrCreateSystemTag(a[0]);
                     Db.TagAll(Db.PeopleQuery(a[0] + ":" + a[1]), t);
@@ -748,21 +746,6 @@ namespace CmsWeb.Areas.Manage.Controllers
                 }
                 AsyncManager.OutstandingOperations.Decrement();
             });
-        }
-        public static IEnumerable<string[]> QueryBitsFlags(CMSDataContext Db)
-        {
-            var q = from c in Db.QueryBuilderClauses
-                    where c.GroupId == null && c.Field == "Group"
-                    where c.Description.StartsWith("F") && c.Description.Contains(":")
-                    select c.Description;
-
-            const string FindPrefix = @"^F\d+:.*";
-            var re = new Regex(FindPrefix, RegexOptions.Singleline | RegexOptions.Multiline);
-            var q2 = from s in q.ToList()
-                     where re.Match(s).Success
-                     let a = s.SplitStr(":", 2)
-                     select new string[] { a[0], a[1] };
-            return q2;
         }
         public ActionResult UpdateQueryBitsCompleted()
         {

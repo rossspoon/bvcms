@@ -46,7 +46,6 @@ namespace CmsWeb.Models.PersonPage
             var q = ApplySort();
             q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
             var q2 = from om in q
-                     let div = om.Organization.DivOrgs.FirstOrDefault(d => d.Division.Program.Name != DbUtil.MiscTagsString).Division
                      select new OrgMemberInfo
                      {
                          OrgId = om.OrganizationId,
@@ -55,7 +54,7 @@ namespace CmsWeb.Models.PersonPage
                          MemberType = om.MemberType.Description,
                          EnrollDate = om.FirstTransaction.TransactionDate,
                          AttendPct = om.AttendancePercentage,
-                         DivisionName = div.Program.Name + "/" + div.Name,
+                         DivisionName = om.Organization.Division.Program.Name + "/" + om.Organization.Division.Name,
                      };
             return q2;
         }

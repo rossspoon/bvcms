@@ -126,6 +126,14 @@ namespace UtilityExtensions
                 r = i;
             return r;
         }
+        public static float ToFloat(this string s)
+        {
+            var r = 0f;
+            float i;
+            if (float.TryParse(s, out i))
+                r = i;
+            return r;
+        }
         public static bool IsNull(this object o)
         {
             return o == null;

@@ -360,9 +360,35 @@ $(function () {
             $('iframe', this).attr("src", "");
         }
     });
+    $('#divisionsDialog').dialog({
+        title: 'Select Divisions Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 690,
+        height: 650,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+            var f = $("#orginfoform");
+            $.post("/Organization/OrgInfo/" + $("#OrganizationId").val(), null, function (ret) {
+                $(f).html(ret).ready(function () {
+                    $(".submitbutton,.bt").button();
+                });
+            });
+        }
+    });
     $('#notifylist').live("click", function (e) {
         e.preventDefault();
         var d = $('#usersDialog');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("open");
+    });
+    $('#divisionlist').live("click", function (e) {
+        e.preventDefault();
+        var d = $('#divisionsDialog');
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });

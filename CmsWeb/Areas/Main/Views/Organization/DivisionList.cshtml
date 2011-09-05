@@ -1,0 +1,11 @@
+﻿@using CmsData
+@model IEnumerable<Division>
+<div style="border: 1px dotted grey;padding:4px">
+@if (Model.Count() == 0)
+{
+    <div>choose divisions</div>
+}
+@foreach (var d in Model)
+{
+    <div>@d.Program.Name&mdash;@d.Name</div>
+}</div>

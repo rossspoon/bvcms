@@ -13,12 +13,9 @@
         <td>@Model.Schedule</td>
     </tr>
     <tr>
-        <th align="right">Main Division:</th>
-        <td>@Html.Raw(o.DivisionName)</td>
-    </tr>
-    <tr>
-        <th align="right">Other Divisions:</th>
-        <td>@string.Join(", ", o.DivOrgs.Where(d => d.DivId != o.DivisionId).Select(d => (d.Division.Program != null ? d.Division.Program.Name : "null") + ":" + d.Division.Name).ToArray())</td>
+        <th align="right">Divisions:</th>
+        <td><a id="divisionlist" href="/SearchDivisions/Index/@Model.OrganizationId?ordered=true">
+            @Html.Partial("DivisionList", Model.Divisions())</a></td>
     </tr>
     <tr>
         <th align="right">Location:</th>

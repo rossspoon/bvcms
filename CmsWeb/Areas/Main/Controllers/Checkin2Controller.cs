@@ -12,6 +12,9 @@ using System.Xml;
 using System.IO;
 using System.Net.Mail;
 using CmsData.Codes;
+using System.Text;
+using System.Net;
+using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -54,6 +57,21 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SetNoLock();
             return new ClassResult(id, thisday);
         }
+        public void Test()
+        {
+            var baseurl = "https://test.bvcms.com";
+            var url = baseurl + "/Checkin2/Match/7581862?campus=1&thisday=0";
+            var wc = new WebClient();
+            // add credentials to header here
+            var xml = wc.DownloadString(url);
+
+            //var credentials = Encoding.ASCII.GetBytes(username + ":" + password);
+            //wc.Headers.Add("Authorization", 
+            //    "Basic " + Convert.ToBase64String(credentials));
+
+            /*
+             */
+        }
         public ActionResult Classes(int id, int campus, int thisday, bool? noagecheck, bool? kioskmode)
         {
             if (!Authenticate())
@@ -62,14 +80,14 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SetNoLock();
             return new ClassesResult(id, thisday, campus, noagecheck ?? false, kioskmode ?? false);
         }
-        
-        public ActionResult NameSearch(string id, int? page)
+
+        public ActionResult NameSearch(string id, int page)
         {
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
-            return new NameSearchResult2(id, page.Value);
+            return new NameSearchResult2(id, page);
         }
         public class PersonInfo
         {
@@ -78,24 +96,24 @@ namespace CmsWeb.Areas.Main.Controllers
             public string first { get; set; }
             public string last { get; set; }
             public string goesby { get; set; }
-            public string dob { get; set; }
+            public string dob { get; set; } // Date of Birth m/d/yyyy
             public string email { get; set; }
             public string cell { get; set; }
-            public string home { get; set; }
-            public string allergies { get; set; }
-            public string grade { get; set; }
-            public string parent { get; set; }
-            public string emfriend { get; set; }
-            public string emphone { get; set; }
-            public string churchname { get; set; }
-            public int marital { get; set; }
-            public int gender { get; set; }
-            public int campusid { get; set; }
-            public string activeother { get; set; }
-            public bool AskChurch { get; set; }
-            public bool AskChurchName { get; set; }
-            public bool AskGrade { get; set; }
-            public bool AskEmFriend { get; set; }
+            public string home { get; set; } // home phone
+            public string allergies { get; set; } // single line of allergies
+            public string grade { get; set; } // grade -1 = preschool, 0 = kindergarten, 1 = first etc. 99 = special
+            public string parent { get; set; } // name of parent
+            public string emfriend { get; set; } // name of person bringing
+            public string emphone { get; set; } // cell phone number of person bringing
+            public string churchname { get; set; } // what church they go to
+            public int marital { get; set; } // marital status (see lookup table for codes)
+            public int gender { get; set; } // see lookup table for codes
+            public int campusid { get; set; } // see lookup table for codes
+            public string activeother { get; set; } // active in another church (true / false)
+            public bool AskChurch { get; set; } // whether they were asked this
+            public bool AskChurchName { get; set; } // or this
+            public bool AskGrade { get; set; } // or this
+            public bool AskEmFriend { get; set; } // or this
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddPerson(int id, PersonInfo m)
@@ -134,14 +152,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdatePerson(p, m);
             return Content(p.FamilyId.ToString());
         }
-        string Trim(string s)
-        {
-            if (s.HasValue())
-                return s.Trim();
-            else
-                return s;
-        }
-        private bool Authenticate()
+        private bool Authenticate(bool log = false)
         {
             var auth = Request.Headers["Authorization"];
             if (auth.HasValue())
@@ -149,22 +160,19 @@ namespace CmsWeb.Areas.Main.Controllers
                 var cred = System.Text.ASCIIEncoding.ASCII.GetString(
                     Convert.FromBase64String(auth.Substring(6))).Split(':');
                 var username = cred[0];
+                var password = cred[1];
 
-                var password = cred[1];
-                return CMSMembershipProvider.provider.ValidateUser(username, password);
-            }
-            return false;
-        }
-        private bool AuthenticateAndLog()
-        {
-            var auth = Request.Headers["Authorization"];
-            if (auth.HasValue())
-            {
-                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
-                    Convert.FromBase64String(auth.Substring(6))).Split(':');
-                var username = cred[0];
-                var password = cred[1];
                 var ret = CMSMembershipProvider.provider.ValidateUser(username, password);
+                if (ret)
+                {
+                    var roles = CMSRoleProvider.provider;
+                    var role = "Access";
+                    if(roles.RoleExists("Checkin"))
+                        role = "Checkin";
+                    AccountController.SetUserInfo(username, Session);
+                    if (!roles.IsUserInRole(username, role))
+                        ret = false;
+                }
                 if (ret)
                     DbUtil.LogActivity("checkin {0} authenticated".Fmt(username));
                 else
@@ -173,25 +181,35 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return false;
         }
+        string Trim(string s)
+        {
+            if (s.HasValue())
+                return s.Trim();
+            else
+                return s;
+        }
         private void UpdatePerson(Person p, PersonInfo m)
         {
+            var psb = new StringBuilder();
+            var fsb = new StringBuilder();
             var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == m.zip.Zip5());
             if (!m.home.HasValue() && m.cell.HasValue())
                 m.home = m.cell;
-            p.Family.HomePhone = m.home.GetDigits();
-            p.Family.AddressLineOne = m.addr;
-            p.Family.CityName = z != null ? z.City : null;
-            p.Family.StateCode = z != null ? z.State : null;
-            p.Family.ZipCode = m.zip;
 
-            p.NickName = Trim(m.goesby);
-            p.FirstName = Trim(m.first);
-            p.LastName = Trim(m.last);
-            p.DOB = m.dob;
-            p.EmailAddress = Trim(m.email);
-            p.CellPhone = m.cell.GetDigits();
-            p.MaritalStatusId = m.marital;
-            p.GenderId = m.gender;
+            UpdateField(fsb, p.Family, "HomePhone", m.home.GetDigits());
+            UpdateField(fsb, p.Family, "AddressLineOne", m.addr);
+            UpdateField(fsb, p.Family, "CityName", z != null ? z.City : null);
+            UpdateField(fsb, p.Family, "StateCode", z != null ? z.State : null);
+            UpdateField(fsb, p.Family, "ZipCode", m.zip);
+            UpdateField(psb, p, "NickName", Trim(m.goesby));
+            UpdateField(psb, p, "FirstName", Trim(m.first));
+            UpdateField(psb, p, "LastName", Trim(m.last));
+            UpdateField(psb, p, "DOB", m.dob);
+            UpdateField(psb, p, "EmailAddress", Trim(m.email));
+            UpdateField(psb, p, "CellPhone", m.cell.GetDigits());
+            UpdateField(psb, p, "MaritalStatusId", m.marital);
+            UpdateField(psb, p, "GenderId", m.gender);
+
             var rr = p.GetRecReg();
             if (m.allergies != rr.MedicalDescription)
                 p.SetRecReg().MedicalDescription = m.allergies;
@@ -216,6 +234,18 @@ namespace CmsWeb.Areas.Main.Controllers
                 p.OtherPreviousChurch = m.churchname;
             DbUtil.Db.SubmitChanges();
         }
+        private void UpdateField(StringBuilder fsb, Family f, string prop, string value)
+        {
+            f.UpdateValue(fsb, prop, value);
+        }
+        void UpdateField(StringBuilder psb, Person p, string prop, string value)
+        {
+            p.UpdateValue(psb, prop, value);
+        }
+        void UpdateField(StringBuilder psb, Person p, string prop, object value)
+        {
+            p.UpdateValue(psb, prop, value);
+        }
         public class CampusItem
         {
             public CmsData.Campu Campus { get; set; }
@@ -223,7 +253,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult Campuses()
         {
-            if (!AuthenticateAndLog())
+            if (!Authenticate(log: true))
                 return Content("not authorized");
             var q = from c in DbUtil.Db.Campus
                     where c.Organizations.Any(o => o.CanSelfCheckin == true)
@@ -233,7 +263,6 @@ namespace CmsWeb.Areas.Main.Controllers
                         Campus = c,
                         password = DbUtil.Db.Setting("kioskpassword" + c.Id, "kio.")
                     };
-            DbUtil.LogActivity("Logged in to Checkin");
             return View(q);
         }
         [AcceptVerbs(HttpVerbs.Post)]

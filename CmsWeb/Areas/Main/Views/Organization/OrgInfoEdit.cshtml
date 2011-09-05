@@ -5,20 +5,6 @@
         <td>@Html.TextBox("org.OrganizationName", Model.org.OrganizationName, new { style = "width:100%" })</td>
     </tr>
     <tr>
-        <th align="right">Main Division:</th>
-        <td>@Html.DropDownList("org.DivisionId", Model.Divisions())</td>
-    </tr>
-    <tr>
-        <th align="right">Multiple Divisions:</th>
-        <td><select id="DivisionsList" name="DivisionsList" multiple="multiple">
-@foreach(var s in Model.DivisionPickList())
-{ 
-            <option @(s.Selected ? "selected='selected'" : "") value="@s.Text">@s.Text</option>
-}
-            </select>
-        </td>
-    </tr>
-    <tr>
         <th align="right">Location:</th>
         <td>@Html.TextBox("org.Location")</td>
     </tr>

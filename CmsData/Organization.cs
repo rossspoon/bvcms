@@ -90,9 +90,9 @@ namespace CmsData
                 DivOrgs.Add(new DivOrg { DivId = divid });
                 return true;
             }
+            if (DivOrgs.Count == 1)
+                return true;
             DivOrgs.Remove(divorg);
-            if (DivisionId == divid)
-                DivisionId = null;
             Db.DivOrgs.DeleteOnSubmit(divorg);
             return false;
         }

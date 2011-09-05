@@ -34,7 +34,7 @@ a.ui-state-default { cursor: pointer; }
 <table class="roundbox floatleft">
 <tr><td><h2>@o.OrganizationName@(o.LeaderId.HasValue? ",":"") @o.LeaderName</h2></td></tr>
 <tr><td>
-<form action="/Organization/OrgInfoUpdate/@Model.OrganizationId" class="DisplayEdit" method="post">
+<form id="orginfoform" action="/Organization/OrgInfoUpdate/@Model.OrganizationId" class="DisplayEdit" method="post">
     @Html.Partial("OrgInfo", Model) 
 </form>
 </td></tr>
@@ -168,5 +168,8 @@ a.ui-state-default { cursor: pointer; }
         </form>
     </div>
 <div id="usersDialog">
+<iframe style="width:100%;height:99%;border-width:0;"></iframe>
+</div>
+<div id="divisionsDialog">
 <iframe style="width:100%;height:99%;border-width:0;"></iframe>
 </div>

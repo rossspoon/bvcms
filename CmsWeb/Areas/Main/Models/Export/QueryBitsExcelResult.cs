@@ -29,7 +29,7 @@ namespace CmsWeb.Models
             Response.AddHeader("Content-Disposition", "attachment;filename=CMSOrganizations.xls");
             Response.Charset = "";
 
-            var q = BatchController.QueryBitsFlags(DbUtil.Db);
+            var q = DbUtil.Db.QueryBitsFlags();
             var s = string.Join(",", q.Select(a => "{0} as {1}".Fmt(
             		a[0], a[1].Replace('.', '_').Replace('-','_').Replace(' ','_'))));
 
