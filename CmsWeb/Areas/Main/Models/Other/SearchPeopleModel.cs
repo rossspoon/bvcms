@@ -152,7 +152,9 @@ namespace CmsWeb.Models
                 Communication = Communication.Trim();
                 if (Communication.HasValue())
                     query = from p in query
-                            where p.CellPhone.Contains(Communication) || p.EmailAddress.Contains(Communication)
+                            where p.CellPhone.Contains(Communication) 
+                            || p.EmailAddress.Contains(Communication)
+                            || p.EmailAddress2.Contains(Communication)
                             || p.Family.HomePhone.Contains(Communication)
                             || p.WorkPhone.Contains(Communication)
                             select p;

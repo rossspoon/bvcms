@@ -1455,6 +1455,7 @@
     <Content Include="Areas\Main\Views\Organization\DivisionList.cshtml" />
     <Content Include="Areas\Dialog\Views\SearchDivisions\Index.cshtml" />
     <Content Include="Areas\Dialog\Views\SearchDivisions\Results.cshtml" />
+    <Content Include="Areas\Main\Views\OrgSearch\Row.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

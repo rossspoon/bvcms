@@ -247,6 +247,8 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
+            if (m.org.CampusId == 0)
+                m.org.CampusId = null;
             //m.DivisionsList = Request.Form["DivisionsList"];
             //m.UpdateOrganization();
             DbUtil.Db.SubmitChanges();

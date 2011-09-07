@@ -123,6 +123,7 @@ namespace CmsWeb.Models
                     people = from p in people
                             where p.CellPhone.Contains(m.communication)
                             || p.EmailAddress.Contains(m.communication)
+                            || p.EmailAddress2.Contains(m.communication)
                             || p.Family.HomePhone.Contains(m.communication)
                             || p.WorkPhone.Contains(m.communication)
                             select p;
@@ -395,6 +396,7 @@ namespace CmsWeb.Models
                     var g = qb.AddNewGroupClause(CompareType.AnyTrue);
                     g.AddNewClause(QueryType.CellPhone, CompareType.Contains, m.communication);
                     g.AddNewClause(QueryType.EmailAddress, CompareType.Contains, m.communication);
+                    g.AddNewClause(QueryType.EmailAddress2, CompareType.Contains, m.communication);
                     g.AddNewClause(QueryType.HomePhone, CompareType.Contains, m.communication);
                     g.AddNewClause(QueryType.WorkPhone, CompareType.Contains, m.communication);
                 }

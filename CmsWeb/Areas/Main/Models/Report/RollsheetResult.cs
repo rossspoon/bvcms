@@ -135,7 +135,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
                 if (bygroup == false && groups[0] == 0 && meeting == null)
                 {
-                    foreach (var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value))
+                    foreach (var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value, NoCurrentMembers: true))
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
                     var wks = 3; // default lookback
                     var org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == o.OrgId);

@@ -84,7 +84,7 @@ namespace CmsWeb.Areas.Main.Controllers
             d.ProgDivs.Add(new ProgDiv { ProgId = id });
             DbUtil.Db.Divisions.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
-            var m = new OrgSearchModel { ProgramId = id };
+            var m = new OrgSearchModel { ProgramId = id, TagDiv = d.Id };
             return View("DivisionIds", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -142,12 +142,6 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return c;
         }
-        [Serializable]
-        public class ToggleTagReturn
-        {
-            public string value;
-            public string ChangeMain;
-        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ToggleTag(int id, int tagdiv)
         {
@@ -156,21 +150,19 @@ namespace CmsWeb.Areas.Main.Controllers
             if (tagdiv == 0)
                 return Json(new { error = "bad tagdiv" });
             bool t = organization.ToggleTag(DbUtil.Db, tagdiv);
-            var r = new ToggleTagReturn
-            {
-                value = t ? "Remove" : "Add",
-            };
-            if (t)
-                r.ChangeMain = "Make Main";
             Db.SubmitChanges();
-            return Json(r);
+            var m = new OrgSearchModel { TagDiv = tagdiv, Name = id.ToString() };
+            var o = m.OrganizationList().Single();
+            return View("Row", o);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult MainDiv(int id, int tagdiv)
         {
             var Db = DbUtil.Db;
             Db.SetMainDivision(id, tagdiv);
-            return Content("ok");
+            var m = new OrgSearchModel { TagDiv = tagdiv, Name = id.ToString() };
+            var o = m.OrganizationList().Single();
+            return View("Row", o);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PasteSettings(OrgSearchModel m)

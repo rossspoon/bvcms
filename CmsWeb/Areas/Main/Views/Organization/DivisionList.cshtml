@@ -7,5 +7,12 @@
 }
 @foreach (var d in Model)
 {
+    if (d.Program != null)
+    {
     <div>@d.Program.Name&mdash;@d.Name</div>
+    }
+    else
+    {
+    <div>(no program)&mdash;@d.Name</div>
+    }
 }</div>

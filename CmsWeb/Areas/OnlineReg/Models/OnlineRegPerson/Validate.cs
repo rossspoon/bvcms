@@ -40,6 +40,9 @@ namespace CmsWeb.Models
             var d = phone.GetDigits().Length;
             if (phone.HasValue() && d >= 10)
                 n++;
+            if (d > 17)
+                ModelState.AddModelError(inputname("phone"), "too many digits in phone");
+
             if (n == 0)
                 ModelState.AddModelError(inputname("dob"), "we require one of valid birthdate, email or phone to find your record");
 

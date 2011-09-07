@@ -25,7 +25,7 @@
         return false;
     });
     $("#hideshow").click(function () {
-        $("#managedivisions").toggle();
+        $(".managedivisions").toggle();
     });
     $.gotoPage = function (e, pg) {
         $("#Page").val(pg);
@@ -88,7 +88,7 @@
         }
     });
     $.fmtTable = function () {
-        $("#results td.tip").tooltip({
+        $("#results td.tip[title]").tooltip({
             showBody: "|"
         });
         $('#results > tbody > tr:even').addClass('alt');
@@ -136,7 +136,7 @@
             $(this).css("z-index", zmax);
         });
     }
-    $("#searchvalues select,#managedivisions select").css("width", "100%");
+    $("#searchvalues select").css("width", "100%");
     $('#ProgramId').change(function () {
         $.post('/OrgSearch/DivisionIds/' + $(this).val(), null, function (ret) {
             $('#DivisionId').html(ret);
@@ -162,6 +162,7 @@
     $("#TagProgramId").change(function () {
         $.post('/OrgSearch/TagDivIds/' + $(this).val(), null, function (ret) {
             $('#TagDiv').html(ret);
+            $("#search").click();
         });
     });
     $("#TagDiv").change(function () {
@@ -291,7 +292,8 @@
         var td = $('#TagDiv').val()
         if (td > 0)
             $.post(a.attr('href'), { tagdiv: td }, function (ret) {
-                a.text(ret.value);
+                $(a).parent().parent().replaceWith(ret);
+                $.fmtTable();
             });
         return false;
     });
@@ -299,7 +301,8 @@
         ev.preventDefault();
         var a = $(this);
         $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function (ret) {
-            a.text("");
+            $(a).parent().parent().replaceWith(ret);
+            $.fmtTable();
         });
         return false;
     });

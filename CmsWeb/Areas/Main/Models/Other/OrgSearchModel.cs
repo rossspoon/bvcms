@@ -80,7 +80,7 @@ namespace CmsWeb.Models
                         AllowSelfCheckIn = o.CanSelfCheckin ?? false,
                         BDayStart = o.BirthDayStart.FormatDate("na"),
                         BDayEnd = o.BirthDayEnd.FormatDate("na"),
-                        Tag = TagDiv == null ? "" : o.DivOrgs.Any(ot => ot.DivId == TagDiv) ? "Remove" : "Add",
+                        Tag = (TagDiv ?? 0) == 0 ? "" : o.DivOrgs.Any(ot => ot.DivId == TagDiv) ? "Remove" : "Add",
                         ChangeMain = (o.DivisionId == null || o.DivisionId != TagDiv) && o.DivOrgs.Any(d => d.DivId == TagDiv),
                     };
             return q;

@@ -153,7 +153,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             AttendTypeCode.NewVisitor 
         };
 
-        public static IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate)
+        public static IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate, bool NoCurrentMembers)
         {
             var wks = 3; // default lookback
             var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
@@ -167,7 +167,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         && a.OrganizationId == orgid
                         && (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null)
                         && VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
-                    //where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
+                    where NoCurrentMembers == false || !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
                     orderby p.Name2, p.Name
                     orderby p.LastName, p.FamilyId, p.Name2
                     select new PersonVisitorInfo
@@ -228,7 +228,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                          Age = p.Age,
                          OtherAttend = pa != null ? (int?)pa.OtherAttends : null
                      };
-            var q2 = from p in FetchVisitors(OrgId, MeetingDate)
+            var q2 = from p in FetchVisitors(OrgId, MeetingDate, NoCurrentMembers: false)
                      join pa in q on p.PeopleId equals pa.PeopleId into j
                      from pa in j.DefaultIfEmpty()
                      select new AttendInfo

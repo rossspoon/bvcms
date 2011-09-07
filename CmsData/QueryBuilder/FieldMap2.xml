@@ -93,6 +93,9 @@
     <Field Name="EmailAddress"  Title="Email" Type="String">
       Email address
     </Field>
+    <Field Name="EmailAddress2"  Title="Email2" Type="String">
+      Email address 2
+    </Field>
     <Field Name="FamilyId" Title="Family" Type="Integer">
       Search for entire family
     </Field>

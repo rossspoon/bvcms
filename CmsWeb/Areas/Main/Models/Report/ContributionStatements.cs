@@ -131,12 +131,12 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
                 // POSITIONING OF ADDRESSES
                 //----Header
                 var yp = doc.BottomMargin + 
-                    DbUtil.Db.Setting("StatementRetAddrPos", "10.125").ToFloat() * 72f;
+                    Db.Setting("StatementRetAddrPos", "10.125").ToFloat() * 72f;
                 t1.WriteSelectedRows(0, -1, 
                     doc.LeftMargin - 0.1875f *72f, yp, dc);
 
                 yp = doc.BottomMargin + 
-                    DbUtil.Db.Setting("StatementAddrPos", "8.3375").ToFloat() * 72f;
+                    Db.Setting("StatementAddrPos", "8.3375").ToFloat() * 72f;
                 t1a.WriteSelectedRows(0, -1, doc.LeftMargin, yp, dc);
 
                 yp = doc.BottomMargin + 10.125f * 72f;

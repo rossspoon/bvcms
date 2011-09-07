@@ -235,8 +235,8 @@ namespace CmsWeb.Areas.Main.Controllers
             {
                 var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
 #if DEBUG
-                ViewData["FromDate"] = DateTime.Parse("1/1/10");
-                ViewData["ToDate"] = DateTime.Parse("10/30/10");
+                ViewData["FromDate"] = DateTime.Parse("7/1/11");
+                ViewData["ToDate"] = DateTime.Parse("9/8/11");
 #endif
                 return View(m);
             }

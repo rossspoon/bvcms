@@ -38,12 +38,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             this.fd = fd;
             this.td = td;
             this.PDF = PDF;
-            CurrentTask = "Starting Up...";
+            CurrentTask =  "Starting Up...";
+            Host = Util.Host;
             if (PDF)
                 OutputFile = HttpContext.Current.Server.MapPath("/contributions_{0}.pdf".Fmt(Util.Host));
             else
                 OutputFile = HttpContext.Current.Server.MapPath("/contributions_{0}.txt").Fmt(Util.Host);
-            Host = DbUtil.Db.Host;
         }
 
         private bool _LastSuccess;

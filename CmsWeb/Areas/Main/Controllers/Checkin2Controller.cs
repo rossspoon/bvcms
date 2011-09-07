@@ -167,16 +167,17 @@ namespace CmsWeb.Areas.Main.Controllers
                 {
                     var roles = CMSRoleProvider.provider;
                     var role = "Access";
-                    if(roles.RoleExists("Checkin"))
+                    if (roles.RoleExists("Checkin"))
                         role = "Checkin";
                     AccountController.SetUserInfo(username, Session);
                     if (!roles.IsUserInRole(username, role))
                         ret = false;
                 }
-                if (ret)
-                    DbUtil.LogActivity("checkin {0} authenticated".Fmt(username));
-                else
-                    DbUtil.LogActivity("checkin {0} not authenticated".Fmt(username));
+                if (log)
+                    if (ret)
+                        DbUtil.LogActivity("checkin {0} authenticated".Fmt(username));
+                    else
+                        DbUtil.LogActivity("checkin {0} not authenticated".Fmt(username));
                 return ret;
             }
             return false;

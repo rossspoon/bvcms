@@ -31,40 +31,39 @@
         <td>@Html.DropDownList("OnlineReg", Model.RegistrationTypeIds())</td>
       </tr>
       <tr>
-          <td valign="top" align="right">Status:</td>
-          <td valign="top">@Html.DropDownList("StatusId", Model.StatusIds())</td>
-          <td colspan="2" align="center">
-          <a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a>
-          <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a>
+          <td valign="top" align="right">Status:
 @if (User.IsInRole("OrgTagger"))
 { 
-          <a href="#" id="hideshow">Manager</a>
+          <div style="padding-top:7px"><a href="#" id="hideshow">Manager</a></div>
 }
           </td>
+          <td valign="top">@Html.DropDownList("StatusId", Model.StatusIds())
+          </td>
+          <td colspan="2" align="right">
+          <a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a>
+          <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a>
+          </td>
       </tr>
-    </table>
+
 @if (User.IsInRole("OrgTagger"))
 { 
-<div style="margin-left:1%;float:left;">&nbsp;</div>
-<table id="managedivisions" class="roundbox floatleft" style="display:none">
-<tr><td><h2>Manage Divisions</h2></td><td></td></tr>
-  <tr>
-    <td>Target Program:<br />
-        @Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
-  </tr>
-  <tr>
-    <td><br />Target Divsion:<br />
-        @Html.DropDownList("TagDiv", Model.DivisionIds())</td>
-  </tr>
-  <tr>
-    <td><br />New Divsion:<br />
-        @Html.TextBox("NewDiv") 
-        <a id="MakeNewDiv" href="/OrgSearch/MakeNewDiv" class="bt">New</a>
-        <a id="RenameDiv" href="/OrgSearch/RenameDiv" class="bt">Rename</a>
+      <tr class="managedivisions" style="display:none">
+        <td colspan="4"> <h2>Manage Divisions</h2> </td></tr>
+      <tr class="managedivisions" style="display:none">
+        <td align="right">Target Program:</td>
+        <td>@Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
+        <td align="right">Target Division:</td>
+        <td>@Html.DropDownList("TagDiv", Model.DivisionIds())</td>
+      </tr>
+      <tr class="managedivisions" style="display:none">
+        <td align="right" colspan="4">
+            New Divsion: @Html.TextBox("NewDiv")
+            <a id="MakeNewDiv" href="/OrgSearch/MakeNewDiv" class="bt">New</a>
+            <a id="RenameDiv" href="/OrgSearch/RenameDiv" class="bt">Rename</a>
         </td>
-  </tr>
-</table>
+      </tr>
 }
+    </table>
 <div class="floatclear"></div>
 <hr />
      @Html.Partial("Results", Model) 
