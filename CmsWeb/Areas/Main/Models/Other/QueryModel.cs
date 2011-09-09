@@ -531,7 +531,7 @@ namespace CmsWeb.Models
                     orderby g.Key.ScheduleId
                     select new SelectListItem
                     {
-                        Value = "{0},{0}".Fmt(g.Key.ScheduleId),
+                        Value = g.Key.ScheduleId.ToString(),
                         Text = DbUtil.Db.GetScheduleDesc(g.Key.MeetingTime)
                     };
             var list = q.ToList();

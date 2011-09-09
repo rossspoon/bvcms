@@ -31,42 +31,29 @@
 <table cellpadding="5">
   <tbody>
     <tr>
-      <td><table>
-        <tbody>
-          <tr>
-            <td><span title="NotAtHome">
-              <input type="checkbox" checked="checked" disabled="disabled" />
-              <label>Attempted/Not Available</label>
-              </span><br />
-              <span title="LeftDoorHanger">
-                <input type="checkbox" disabled="disabled" />
-                <label>Left Note Card</label>
-                </span><br />
-              <span title="LeftMessage">
-                <input type="checkbox" disabled="disabled" />
-                <label>Left Message</label>
-              </span><br /></td>
-            <td><span title="ContactMade">
-              <input type="checkbox" disabled="disabled" />
-              <label>Contact Made</label>
-              </span><br />
-              <span title="GospelShared">
-                <input type="checkbox" disabled="disabled" />
-                <label>Gospel Shared</label>
-                </span><br />
-              <br /></td>
-            <td><span title="PrayerRequest">
-              <input type="checkbox" disabled="disabled" />
-              <label>Prayer Request Received</label>
-              </span><br />
-              <span title="GiftBagGiven">
-                <input type="checkbox" disabled="disabled" />
-                <label>Gift Bag Given</label>
-                </span><br />
-              <br /></td>
-          </tr>
-        </tbody>
-      </table></td>
+      <td>
+<div class="item" >
+    @Html.CheckBox("NotAtHome", Model.contact.NotAtHome ?? false)
+   <span>Attempted/Not Available</span></div>
+<div class="item" >
+    @Html.CheckBox("LeftDoorHanger", Model.contact.LeftDoorHanger ?? false)
+   <span>Left Note Card</span></div>
+<div class="item" >
+    @Html.CheckBox("LeftMessage", Model.contact.LeftMessage ?? false)
+   <span>Left Message</span></div>
+<div class="item" >
+    @Html.CheckBox("ContactMade", Model.contact.ContactMade ?? false)
+   <span>Contact Made</span></div>
+<div class="item" >
+    @Html.CheckBox("GospelShared", Model.contact.GospelShared ?? false)
+   <span>GospelShared</span></div>
+<div class="item" >
+    @Html.CheckBox("PrayerRequest", Model.contact.PrayerRequest ?? false)
+   <span>Prayer Request Received</span></div>
+<div class="item" >
+    @Html.CheckBox("GiftBagGiven", Model.contact.GiftBagGiven ?? false)
+   <span>Gift Bag Given</span></div>
+      </td>
     </tr>
     <tr>
       <td><table>

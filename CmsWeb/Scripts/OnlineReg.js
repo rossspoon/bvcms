@@ -145,5 +145,12 @@
         });
         $("#total").html(sum.toFixed(2));
     });
+    $("#password").live("keypress", function (e) {
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+            $('#loginbt').click();
+            return false;
+        }
+        return true;
+    });
 });
 

@@ -99,10 +99,6 @@ namespace CmsWeb.Models
                 om.RegisterEmail = p.email;
                 if (p.setting.GiveOrgMembAccess == true)
                 {
-                    CmsData.Group g = null;
-                    if (p.setting.GroupToJoin.HasValue())
-                        g = CmsData.Group.LoadByName(p.setting.GroupToJoin);
-
                     if (p.person.Users.Count() == 0)
                     {
                         p.IsNew = false;
@@ -116,14 +112,13 @@ namespace CmsWeb.Models
                         if (!list.Contains("OrgMembersOnly"))
                             list.Add("OrgMembersOnly");
                         u.SetRoles(Db, list.ToArray(), false);
-                        if (p.setting.GroupToJoin.HasValue())
-                        {
-                            g.SetMember(u, true);
-                            u.DefaultGroup = g.Name;
-                        }
                     }
                     Db.SubmitChanges();
                 }
+                int grouptojoin = p.setting.GroupToJoin.ToInt();
+                if (grouptojoin > 0)
+                    OrganizationMember.InsertOrgMembers(Db, grouptojoin, p.PeopleId.Value, 220, DateTime.Now, null, false);
+
                 OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
                     Db.StaffEmailForOrg(p.org.OrganizationId),
                     p.fromemail,

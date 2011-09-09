@@ -57,21 +57,6 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SetNoLock();
             return new ClassResult(id, thisday);
         }
-        public void Test()
-        {
-            var baseurl = "https://test.bvcms.com";
-            var url = baseurl + "/Checkin2/Match/7581862?campus=1&thisday=0";
-            var wc = new WebClient();
-            // add credentials to header here
-            var xml = wc.DownloadString(url);
-
-            //var credentials = Encoding.ASCII.GetBytes(username + ":" + password);
-            //wc.Headers.Add("Authorization", 
-            //    "Basic " + Convert.ToBase64String(credentials));
-
-            /*
-             */
-        }
         public ActionResult Classes(int id, int campus, int thisday, bool? noagecheck, bool? kioskmode)
         {
             if (!Authenticate())

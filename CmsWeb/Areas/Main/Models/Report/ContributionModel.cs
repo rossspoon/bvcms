@@ -122,7 +122,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                           Joint = option == 2,
                           CampusId = p.CampusId,
                       };
-                      
+
             return q11;
         }
 
@@ -155,13 +155,40 @@ namespace CmsWeb.Areas.Main.Models.Report
                 (int)Contribution.TypeCode.Reversed 
             };
 
+            //var qp = from p in Db.Contributions
+            //         where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
+            //         where p.PledgeFlag && p.ContributionTypeId == (int)Contribution.TypeCode.Pledge
+            //         where p.ContributionStatusId.Value != (int)Contribution.StatusCode.Reversed
+            //         where p.ContributionFund.FundStatusId == 1 // active
+            //         where p.ContributionDate <= toDate
+            //         select p;
+            //var qc = from c in Db.Contributions
+            //         where !PledgeExcludes.Contains(c.ContributionTypeId)
+            //         where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
+            //         where !c.PledgeFlag
+            //         where c.ContributionStatusId != (int)Contribution.StatusCode.Reversed
+            //         where c.ContributionDate <= toDate
+            //         group c by c.FundId into g
+            //         select new { FundId = g.Key, Total = g.Sum(c => c.ContributionAmount) };
+            //var q = from p in qp
+            //        join c in qc on p.FundId equals c.FundId into items
+            //        from c in items.DefaultIfEmpty()
+            //        orderby p.ContributionFund.FundName descending
+            //        select new PledgeSummaryInfo
+            //        {
+            //            Fund = p.ContributionFund.FundName,
+            //            ContributionAmount = c.Total,
+            //            PledgeAmount = p.ContributionAmount,
+            //        };
+
             var qp = from p in Db.Contributions
                      where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
                      where p.PledgeFlag && p.ContributionTypeId == (int)Contribution.TypeCode.Pledge
                      where p.ContributionStatusId.Value != (int)Contribution.StatusCode.Reversed
                      where p.ContributionFund.FundStatusId == 1 // active
                      where p.ContributionDate <= toDate
-                     select p;
+                     group p by p.FundId into g
+                     select new { FundId = g.Key, Fund = g.First().ContributionFund.FundName, Total = g.Sum(p => p.ContributionAmount) };
             var qc = from c in Db.Contributions
                      where !PledgeExcludes.Contains(c.ContributionTypeId)
                      where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
@@ -173,12 +200,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             var q = from p in qp
                     join c in qc on p.FundId equals c.FundId into items
                     from c in items.DefaultIfEmpty()
-                    orderby p.ContributionFund.FundName descending
+                    orderby p.Fund descending
                     select new PledgeSummaryInfo
                     {
-                        Fund = p.ContributionFund.FundName,
+                        Fund = p.Fund,
                         ContributionAmount = c.Total,
-                        PledgeAmount = p.ContributionAmount,
+                        PledgeAmount = p.Total
                     };
             return q;
         }

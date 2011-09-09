@@ -137,10 +137,6 @@
     <Reference Include="AjaxMin, Version=4.13.4076.28499, Culture=neutral, PublicKeyToken=24297a69a7eae424, processorArchitecture=MSIL">
       <HintPath>..\packages\AjaxMin.4.13.4076.28499\lib\AjaxMin.dll</HintPath>
     </Reference>
-    <Reference Include="AuthorizeNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\AuthorizeNet.dll</HintPath>
-    </Reference>
     <Reference Include="CookComputing.XmlRpc, Version=0.9.2.1, Culture=neutral, PublicKeyToken=a7d6e17aa302004d" />
     <Reference Include="dotless.Core, Version=1.1.0.4, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

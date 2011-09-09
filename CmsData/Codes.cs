@@ -143,6 +143,7 @@ namespace CmsData.Codes
         public const int ChooseSlot = 6;
         public const int ManageSubscriptions = 7;
         public const int OnlineGiving = 8;
+        public const int OnlinePledge = 9;
         public static IEnumerable<KeyValuePair<int, string>> GetCodePairs()
         {
             yield return new KeyValuePair<int, string>(None, "Online Registration Not Allowed");
@@ -153,6 +154,7 @@ namespace CmsData.Codes
             yield return new KeyValuePair<int, string>(ChooseSlot, "Users Chooses Slot(day/time)");
             yield return new KeyValuePair<int, string>(ManageSubscriptions, "Manage Subscriptions");
             yield return new KeyValuePair<int, string>(OnlineGiving, "Online Giving");
+            yield return new KeyValuePair<int, string>(OnlinePledge, "Online Pledge");
         }
         public static string Lookup(int id)
         {
