@@ -72,8 +72,10 @@
         }
         else if ($("#otheredit").attr("id"))
             $("div.instructions.options").show();
-        else if ($("#username").attr("id"))
+        else if ($("#username").attr("id")) {
+            $("#username").focus();
             $("div.instructions.login").show();
+        }
         else if ($("#submitit").attr("id"))
             $("div.instructions.submit").show();
         else if ($("#sorry").attr("id"))
@@ -138,8 +140,8 @@
     });
     $("input.sum").live("change", function () {
         var sum = 0;
-        $("input.sum").each(function() {
-            if(!isNaN(this.value) && this.value.length!=0) {
+        $("input.sum").each(function () {
+            if (!isNaN(this.value) && this.value.length != 0) {
                 sum += parseFloat(this.value);
             }
         });

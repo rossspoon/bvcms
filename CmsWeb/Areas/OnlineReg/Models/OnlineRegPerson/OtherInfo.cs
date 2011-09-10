@@ -67,6 +67,8 @@ namespace CmsWeb.Models
         
         public IEnumerable<RegSettings.MenuItem> CheckboxItemsChosen()
         {
+            if (Checkbox == null)
+                return new List<RegSettings.MenuItem>();
             var items = setting.Checkboxes;
             var q = from i in Checkbox
                     join c in items on i equals c.SmallGroup
@@ -75,6 +77,8 @@ namespace CmsWeb.Models
         }
         public IEnumerable<RegSettings.MenuItem> Checkbox2ItemsChosen()
         {
+            if (Checkbox2 == null)
+                return new List<RegSettings.MenuItem>();
             var items = setting.Checkboxes2;
             var q = from i in Checkbox2
                     join c in items on i equals c.SmallGroup
@@ -117,6 +121,8 @@ namespace CmsWeb.Models
         }
         public IEnumerable<MenuItemChosen> MenuItemsChosen()
         {
+            if (MenuItem == null)
+                return new List<MenuItemChosen>();
             var items = setting.MenuItems;
             var q = from i in MenuItem
                     join m in items on i.Key equals m.SmallGroup
@@ -132,6 +138,8 @@ namespace CmsWeb.Models
         }
         public IEnumerable<FundItemChosen> FundItemsChosen()
         {
+            if (FundItem == null)
+                return new List<FundItemChosen>();
             var items = Funds();
             var q = from i in FundItem
                     join m in items on i.Key equals m.Value.ToInt()

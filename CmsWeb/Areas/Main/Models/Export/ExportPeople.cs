@@ -41,7 +41,7 @@ namespace CmsWeb.Models
             var query = Db.PeopleQuery(queryid);
             var q = from p in query
                     let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
-                    let oid = p.PeopleExtras.SingleOrDefault(pe => pe.Field == "OtherId").Data
+                    let oid = p.PeopleExtras.FirstOrDefault(pe => pe.Field == "OtherId").Data
                     select new
                     {
                         PeopleId = p.PeopleId,
@@ -116,23 +116,17 @@ namespace CmsWeb.Models
                 (int)Contribution.TypeCode.Reversed 
             };
             var q = DbUtil.Db.PeopleQuery(qid.Value);
-            var q2 = from c in DbUtil.Db.Contributions
-                     let sp = c.Person.Family.People.SingleOrDefault(ss => ss.PeopleId == c.Person.SpouseId)
-                     where q.Any(p => p.PeopleId == c.PeopleId 
-                         || (p.SpouseId == c.PeopleId 
-                            && sp.ContributionOptionsId == 2 && p.ContributionOptionsId == 2))
-                     where c.ContributionStatusId == 0
-                     where c.PledgeFlag != true
-                     where c.ContributionAmount > 0
-                     where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                     where c.ContributionDate >= startdt && c.ContributionDate <= enddt
-                     group c by c.Person.Family.HeadOfHousehold into g
+            var q2 = from p in q
+                     let sp = p.Family.People.SingleOrDefault(ss => ss.PeopleId == p.SpouseId && ss.ContributionOptionsId == 2 && p.ContributionOptionsId == 2)
+                     where p.PeopleId == p.Family.HeadOfHouseholdId || p.ContributionOptionsId != 2
+                     let t = DbUtil.Db.GetTotalContributions(p.PeopleId, sp.PeopleId, startdt, enddt).Single()
                      select new
                      {
-                         HeadOfHouseholdId = g.Key,
-                         Count = g.Count(),
-                         Amount = g.Sum(gg => gg.ContributionAmount ?? 0),
-                         Name = g.First().Person.Family.HeadOfHousehold.Name,
+                        PeopleId = p.PeopleId,
+                        Count = t.Cnt ?? 0,
+                        Amount = t.Amt ?? 0m,
+                        Name = p.Name,
+                        Name2 = sp.Name ?? ""
                      };
             return q2;
         }

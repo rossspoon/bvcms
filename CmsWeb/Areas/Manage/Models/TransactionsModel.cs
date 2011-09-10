@@ -59,9 +59,12 @@ namespace CmsWeb.Models
                  select t;
             var edt = enddt;
             if (!edt.HasValue && startdt.HasValue)
-                 edt = startdt.Value.AddHours(24);
+                 edt = startdt.Value;
             if (edt.HasValue)
-                _transactions = _transactions.Where(t => t.TransactionDate < edt);
+            {
+                edt = edt.Value.AddHours(24);
+                _transactions = _transactions.Where(t => t.TransactionDate <= edt);
+            }
             return _transactions;
         }
         public IQueryable<Transaction> ApplySort()

@@ -1905,6 +1905,23 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.GetTotalContributions", IsComposable = true)]
+		public IQueryable< View.GetTotalContribution > GetTotalContributions(
+            [Parameter(DbType="int")] int? pid,
+            [Parameter(DbType="int")] int? spid,
+            [Parameter(DbType="datetime")] DateTime? startdt,
+            [Parameter(DbType="datetime")] DateTime? enddt
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTotalContribution>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                spid,
+                startdt,
+                enddt
+                );
+		}
+
 		[Function(Name="dbo.MembersAsOf", IsComposable = true)]
 		public IQueryable< View.MembersAsOf > MembersAsOf(
             [Parameter(DbType="datetime")] DateTime? from,

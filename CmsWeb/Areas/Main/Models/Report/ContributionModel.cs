@@ -33,12 +33,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             }
         }
 
-        //public static int[] ReturnedReversedTypes = new int[] 
-        //{ 
-        //    (int)Contribution.TypeCode.ReturnedCheck, 
-        //    (int)Contribution.TypeCode.Reversed 
-        //};
-
         public IEnumerable<YearInfo> FetchYears()
         {
             var q = from c in DbUtil.Db.Contributions
@@ -64,22 +58,6 @@ namespace CmsWeb.Areas.Main.Models.Report
         };
 
         int[] Gifts = new int[] { 2, 3, 4 };
-
-        //public IEnumerable contributions(int pid, DateTime fromDate, DateTime toDate)
-        //{
-        //    var q = from c in DbUtil.Db.Contributions
-        //            where c.PeopleId == pid
-        //            where c.ContributionDate >= fromDate.Date && c.ContributionDate <= toDate.Date
-        //            where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-        //            where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
-        //            select new
-        //            {
-        //                amount = c.ContributionAmount,
-        //                date = c.ContributionDate,
-        //                fundname = c.ContributionFund.FundName
-        //            };
-        //    return q;
-        //}
 
         public static IEnumerable<ContributorInfo> contributors(CMSDataContext Db, DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId, bool noaddressok, bool useMinAmt)
         {
@@ -154,32 +132,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                 (int)Contribution.TypeCode.GraveSite, 
                 (int)Contribution.TypeCode.Reversed 
             };
-
-            //var qp = from p in Db.Contributions
-            //         where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
-            //         where p.PledgeFlag && p.ContributionTypeId == (int)Contribution.TypeCode.Pledge
-            //         where p.ContributionStatusId.Value != (int)Contribution.StatusCode.Reversed
-            //         where p.ContributionFund.FundStatusId == 1 // active
-            //         where p.ContributionDate <= toDate
-            //         select p;
-            //var qc = from c in Db.Contributions
-            //         where !PledgeExcludes.Contains(c.ContributionTypeId)
-            //         where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
-            //         where !c.PledgeFlag
-            //         where c.ContributionStatusId != (int)Contribution.StatusCode.Reversed
-            //         where c.ContributionDate <= toDate
-            //         group c by c.FundId into g
-            //         select new { FundId = g.Key, Total = g.Sum(c => c.ContributionAmount) };
-            //var q = from p in qp
-            //        join c in qc on p.FundId equals c.FundId into items
-            //        from c in items.DefaultIfEmpty()
-            //        orderby p.ContributionFund.FundName descending
-            //        select new PledgeSummaryInfo
-            //        {
-            //            Fund = p.ContributionFund.FundName,
-            //            ContributionAmount = c.Total,
-            //            PledgeAmount = p.ContributionAmount,
-            //        };
 
             var qp = from p in Db.Contributions
                      where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)

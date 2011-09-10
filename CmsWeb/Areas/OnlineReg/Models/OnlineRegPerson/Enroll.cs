@@ -102,6 +102,11 @@ namespace CmsWeb.Models
             if (setting.Dropdown2.Count > 0)
                 om.AddToGroup(DbUtil.Db, option2);
 
+            foreach (var op in ExtraOptions3())
+                om.RemoveFromGroup(DbUtil.Db, op.Value);
+            if (setting.Dropdown3.Count > 0)
+                om.AddToGroup(DbUtil.Db, option3);
+
             if (setting.GradeOptions.Count > 0)
                 om.Grade = gradeoption.ToInt();
 
@@ -187,17 +192,6 @@ namespace CmsWeb.Models
             sb.AppendFormat("<tr><td>Org:</td><td>{0}</td></tr>\n", org.OrganizationName);
             sb.AppendFormat("<tr><td>First:</td><td>{0}</td></tr>\n", person.PreferredName);
             sb.AppendFormat("<tr><td>Last:</td><td>{0}</td></tr>\n", person.LastName);
-
-            //sb.AppendFormat("<tr><td>DOB:</td><td>{0:d}</td></tr>\n", person.DOB);
-            //sb.AppendFormat("<tr><td>Gender:</td><td>{0}</td></tr>\n", 
-            //    person.GenderId == 1 ? "M" : 
-            //    person.GenderId == 2 ? "F" : "U");
-            //sb.AppendFormat("<tr><td>Addr:</td><td>{0}</td></tr>\n", person.PrimaryAddress);
-            //sb.AppendFormat("<tr><td>City:</td><td>{0}</td></tr>\n", person.PrimaryCity);
-            //sb.AppendFormat("<tr><td>State:</td><td>{0}</td></tr>\n", person.PrimaryState);
-            //sb.AppendFormat("<tr><td>Zip:</td><td>{0}</td></tr>\n", person.PrimaryZip.Zip5());
-            //sb.AppendFormat("<tr><td>Home Phone:</td><td>{0}</td></tr>\n", person.Family.HomePhone.FmtFone());
-            //sb.AppendFormat("<tr><td>Cell Phone:</td><td>{0}</td></tr>\n", person.CellPhone.FmtFone());
 
             var rr = person.RecRegs.Single();
 
@@ -312,11 +306,6 @@ namespace CmsWeb.Models
                     if (a.Value.HasValue())
                         sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
 
-            //if (donation > 0)
-            //    sb.AppendFormat("<tr><td>Donation:</td><td>{0:c}</td></tr>\n", donation);
-
-            if (ti.Amt > 0)
-                sb.AppendFormat("<tr><td>Amount Paid:</td><td>{0:c}</td></tr>\n", ti.Amt);
             sb.Append("</table>");
 
             return sb.ToString();

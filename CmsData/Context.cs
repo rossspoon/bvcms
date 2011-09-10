@@ -28,7 +28,7 @@ namespace CmsData
 
         partial void OnCreated()
         {
-            CommandTimeout = 600;
+            CommandTimeout = 1200;
             Host = Util.Host;
         }
         private string _LogFile;
