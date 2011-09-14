@@ -101,14 +101,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                     };
             return q;
         }
-        // This gets OrgMembers as of the date of the meeting and 7 days back.
+        // This gets OrgMembers as of the date of the meeting
         private static IEnumerable<PersonMemberInfo> FetchOrgMembers(int OrganizationId, DateTime MeetingDate)
         {
-
             var tagownerid = Util2.CurrentTagOwnerId;
             var q = from p in DbUtil.Db.People
                     let etlist = p.EnrollmentTransactions.Where(ee =>
-                        ee.TransactionTypeId <= 3 // things that start a change
+                        ee.TransactionTypeId <= 3 // enrollments or changes
                         && ee.TransactionStatus == false
                         && ee.TransactionDate <= MeetingDate // transaction starts <= looked for end
                         && (ee.Pending ?? false) == false
@@ -201,61 +200,77 @@ namespace CmsWeb.Areas.Main.Models.Report
                     };
             return q;
         }
-        public static IEnumerable<AttendInfo> RollList(int? MeetingId, int OrgId, DateTime MeetingDate)
+        public static IEnumerable<AttendInfo> RollList(int? MeetingId, int OrgId, DateTime MeetingDate, bool SortByName = false)
         {
-            var q = from a in DbUtil.Db.Attends
-                    where a.MeetingId == MeetingId
-                    where a.EffAttendFlag == null || a.EffAttendFlag == true
-                    select a;
+            // people who attended, members or visitors
+            var attends = (from a in DbUtil.Db.Attends
+                           where a.MeetingId == MeetingId
+                           where a.EffAttendFlag == null || a.EffAttendFlag == true
+                           select a).ToList();
 
-            var qm = FetchOrgMembers(OrgId, MeetingDate);
+            // Members at the time of the meeting
+            var members = FetchOrgMembers(OrgId, MeetingDate).ToList();
 
-            var q1 = from p in qm
-                     join pa in q on p.PeopleId equals pa.PeopleId into j
-                     from pa in j.DefaultIfEmpty()
-                     where MeetingDate > p.Joined // they were either a member at the time
-                            // or they attended as a member (workaround for bad transaction history)
-                            || (pa != null && !VisitAttendTypes.Contains(pa.AttendanceTypeId.Value))
-                     select new AttendInfo
-                     {
-                         PeopleId = p.PeopleId,
-                         Name = p.Name2,
-                         Attended = pa != null ? pa.AttendanceFlag : false,
-                         Member = true,
-                         CurrMemberType = p.MemberType,
-                         MemberType = pa != null ? (pa.MemberType != null ? pa.MemberType.Description : "") : "",
-                         AttendType = pa != null ? (pa.AttendType != null ? pa.AttendType.Description : "") : "",
-                         Age = p.Age,
-                         OtherAttend = pa != null ? (int?)pa.OtherAttends : null
-                     };
-            var q2 = from p in FetchVisitors(OrgId, MeetingDate, NoCurrentMembers: false)
-                     join pa in q on p.PeopleId equals pa.PeopleId into j
-                     from pa in j.DefaultIfEmpty()
-                     select new AttendInfo
-                     {
-                         PeopleId = p.PeopleId,
-                         Name = p.Name2,
-                         Attended = pa != null ? pa.AttendanceFlag : false,
-                         Member = false,
-                         CurrMemberType = "",
-                         MemberType = pa != null ? (pa.MemberType != null ? pa.MemberType.Description : "") : "",
-                         AttendType = pa != null ? (pa.AttendType != null ? pa.AttendType.Description : "") : "",
-                         Age = p.Age,
-                         OtherAttend = pa != null ? (int?)pa.OtherAttends : null
-                     };
-            var q3 = from p in q1.Union(q2)
-                     select new AttendInfo
-                     {
-                         PeopleId = p.PeopleId,
-                         Name = p.Name,
-                         Attended = p.Attended,
-                         Member = p.Member,
-                         CurrMemberType = p.CurrMemberType,
-                         MemberType = p.MemberType,
-                         AttendType = p.AttendType,
-                         OtherAttend = p.OtherAttend
-                     };
-            return q3;
+            // the list that will appear at the top, 
+            // members who should attend and members who did attend
+            var memberlist = from p in members
+                             join pa in attends on p.PeopleId equals pa.PeopleId into j
+                             from pa in j.DefaultIfEmpty()
+                             where MeetingDate > p.Joined // they were either a member at the time
+                                 // or they attended as a member (workaround for bad transaction history)
+                                    || (pa != null && !VisitAttendTypes.Contains(pa.AttendanceTypeId.Value))
+                             select new AttendInfo
+                             {
+                                 PeopleId = p.PeopleId,
+                                 Name = p.Name2,
+                                 Attended = pa != null ? pa.AttendanceFlag : false,
+                                 Member = true,
+                                 CurrMemberType = p.MemberType,
+                                 MemberType = pa != null ? (pa.MemberType != null ? pa.MemberType.Description : "") : "",
+                                 AttendType = pa != null ? (pa.AttendType != null ? pa.AttendType.Description : "") : "",
+                                 Age = p.Age,
+                                 OtherAttend = pa != null ? (int?)pa.OtherAttends : null
+                             };
+
+            // recent visitors and new visitors
+            var visitors = FetchVisitors(OrgId, MeetingDate, NoCurrentMembers: false).ToList();
+
+            // the list that appears at the bottom in bold, 
+            // visitors who attended, 
+            // recent visitors who did not attend excluding those who have since become members in the previous list
+            var visitorlist = from pvisitor in visitors
+                              where !members.Any(mm => mm.PeopleId == pvisitor.PeopleId)
+                              join pattender in attends on pvisitor.PeopleId equals pattender.PeopleId into j
+                              from pattender in j.DefaultIfEmpty()
+                              select new AttendInfo
+                              {
+                                  PeopleId = pvisitor.PeopleId,
+                                  Name = pvisitor.Name2,
+                                  Attended = pattender != null ? pattender.AttendanceFlag : false,
+                                  Member = false,
+                                  CurrMemberType = "",
+                                  MemberType = pattender != null ? (pattender.MemberType != null ? pattender.MemberType.Description : "") : "",
+                                  AttendType = pattender != null ? (pattender.AttendType != null ? pattender.AttendType.Description : "") : "",
+                                  Age = pvisitor.Age,
+                                  OtherAttend = pattender != null ? (int?)pattender.OtherAttends : null
+                              };
+
+            // the final rollsheet
+            var rollsheet = from p in memberlist.Union(visitorlist)
+                            select new AttendInfo
+                            {
+                                PeopleId = p.PeopleId,
+                                Name = p.Name,
+                                Attended = p.Attended,
+                                Member = p.Member,
+                                CurrMemberType = p.CurrMemberType,
+                                MemberType = p.MemberType,
+                                AttendType = p.AttendType,
+                                OtherAttend = p.OtherAttend
+                            };
+            if (SortByName)
+                rollsheet = rollsheet.OrderBy(pp => pp.Name);
+            return rollsheet;
         }
         public class AttendInfo
         {

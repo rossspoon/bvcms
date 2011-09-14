@@ -73,8 +73,7 @@ namespace CmsWeb
             SendNotices(DivOrg.SelectedValue.ToInt(),
                 SubDivOrg.SelectedValue.ToInt(),
                 Organization.SelectedValue.ToInt(),
-                EndDate.Text.ToDate().Value,
-                new WebEmailer());
+                EndDate.Text.ToDate().Value);
             Label1.Visible = true;
             Button1.Enabled = false;
         }
@@ -82,8 +81,7 @@ namespace CmsWeb
             int progid,
             int divid,
             int orgid,
-            DateTime date,
-            ITaskNotify notify)
+            DateTime date)
         {
             var q = from m in DbUtil.Db.OrganizationMembers
                     where m.OrganizationId == orgid || orgid == 0
@@ -122,12 +120,11 @@ namespace CmsWeb
                             person.Name, orgname, mt.MeetingDate);
                     }
                 }
-                notify.EmailNotification(DbUtil.Db.CurrentUser.Person, person,
-                    "Attendance reports ready for viewing on CMS", sb.ToString());
+                DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, person, null, 
+                    "Attendance reports ready for viewing on CMS", sb.ToString(), false);
             }
             sb2.Append("</table>\n");
-            notify.EmailNotification(DbUtil.Db.CurrentUser.Person, DbUtil.Db.CurrentUser.Person,
-                "Attendance emails sent", sb2.ToString());
+            DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, DbUtil.Db.CurrentUser.Person, null, "Attendance emails sent", sb2.ToString(), false);
         }
 
 

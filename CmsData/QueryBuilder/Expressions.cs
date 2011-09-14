@@ -423,6 +423,36 @@ namespace CmsData
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
         }
+        internal static Expression RecentPledgeCount(
+            ParameterExpression parm, CMSDataContext Db,
+            int days,
+            int? fund,
+            CompareType op,
+            int cnt)
+        {
+            Expression<Func<Person, int?>> pred = p =>
+                Db.PledgeCount(p.PeopleId, days, fund);
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(cnt), left.Type);
+            if (Db.CurrentUser.Roles.Any(rr => rr =="Finance"))
+                return Compare(left, op, right);
+            return Compare(right, CompareType.NotEqual, right);
+        }
+        internal static Expression RecentPledgeAmount(
+            ParameterExpression parm, CMSDataContext Db,
+            int days,
+            int? fund,
+            CompareType op,
+            decimal amt)
+        {
+            Expression<Func<Person, decimal?>> pred = p =>
+                Db.PledgeAmount(p.PeopleId, days, fund);
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(amt), left.Type);
+            if (Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+                return Compare(left, op, right);
+            return Compare(right, CompareType.NotEqual, right);
+        }
         internal static Expression RecentContributionCount(
             ParameterExpression parm, CMSDataContext Db,
             int days,
@@ -499,6 +529,27 @@ namespace CmsData
             var topgivers = r.Select(g => g.PeopleId).ToList();
             Expression<Func<Person, bool>> pred = p =>
                 topgivers.Contains(p.PeopleId);
+
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression IsTopPledger(
+            ParameterExpression parm, CMSDataContext Db,
+            int days,
+            string top,
+            CompareType op,
+            bool tf)
+        {
+            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+                return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
+
+            var mindt = Util.Now.AddDays(-days).Date;
+            var r = Db.TopPledgers(top.ToInt(), mindt, DateTime.Now).ToList();
+            var toppledgers = r.Select(g => g.PeopleId).ToList();
+            Expression<Func<Person, bool>> pred = p =>
+                toppledgers.Contains(p.PeopleId);
 
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))

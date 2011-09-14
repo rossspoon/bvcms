@@ -24,25 +24,27 @@ namespace CmsWeb.Models
         public override void ExecuteResult(ControllerContext context)
         {
             var Response = context.HttpContext.Response;
+
+            var q = DbUtil.Db.QueryBitsFlags();
+            var s = string.Join(",", q.Select(a => "{0} as {1}".Fmt(
+            		a[0], a[1].Replace('.', '_').Replace('-','_').Replace(' ','_'))));
+            if (!s.HasValue())
+            {
+                Response.Write("no querybit queries defined for this database");
+                return;
+            }
+
             Response.Buffer = true;
             Response.ContentType = "application/vnd.ms-excel";
             Response.AddHeader("Content-Disposition", "attachment;filename=CMSOrganizations.xls");
             Response.Charset = "";
 
-            var q = DbUtil.Db.QueryBitsFlags();
-            var s = string.Join(",", q.Select(a => "{0} as {1}".Fmt(
-            		a[0], a[1].Replace('.', '_').Replace('-','_').Replace(' ','_'))));
-
-            var dt = DateTime.Now.AddDays(-365);
 			var q2 = from p in DbUtil.Db.PeopleQuery(qid)
+                where p.Attends.Count(aa => aa.AttendanceFlag == true) > 0
 				select new
 				{
                     p,
-                    FirstAttend = (from a in p.Attends
-                                   where a.AttendanceFlag == true
-                                   where a.MeetingDate > dt
-                                   orderby a.MeetingDate
-                                   select a.MeetingDate).First(),
+                    FirstAttend = DbUtil.Db.FirstMeetingDateLastLear(p.PeopleId),
 					F01 = p.Tags.Any(tt => tt.Tag.Name == "F01" && tt.Tag.TypeId == 100) ? "X" : "",
 					F02 = p.Tags.Any(tt => tt.Tag.Name == "F02" && tt.Tag.TypeId == 100) ? "X" : "",
 					F03 = p.Tags.Any(tt => tt.Tag.Name == "F03" && tt.Tag.TypeId == 100) ? "X" : "",

@@ -64,24 +64,28 @@
       </tr>
 }
     </table>
+<div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
+<div><a href="#">Exports and Reports</a></div>
+<div class="sublinks">
+    <a id="ExportExcel" href="#">Export to Excel</a>
+    <a id="rollsheet1" href='#'>Create Roll Sheet(s)</a>
+    <a id="Meetings" href="#">Meetings</a>
+    <a id="Roster" href="#">Roster</a>
+    <a class="ViewReport" href="/Reports/OrgLeaders/">Leaders</a>
+    <a class="ViewReport" href="/Reports/ClassList/">Class List</a>
+    <a class="ViewReport" href="/Reports/ShirtSizes">Shirt Sizes</a>
+    <a id="attdetail1" href='#'>Meetings Attendance</a>
+@if (Session["OrgCopySettings"] != null)
+{ 
+    <a id="PasteSettings" href="/OrgSearch/PasteSettings">Paste Settings</a>
+ } 
+</div>
+<div style="border-bottom: 4px solid #ddd"></div>
+</div>
 <div class="floatclear"></div>
 <hr />
      @Html.Partial("Results", Model) 
     </form>
-    <div>
-        <a id="ExportExcel" href="#">Export to Excel</a> | 
-        <a id="rollsheet1" href='#'>Create Roll Sheet(s)</a> | 
-        <a id="Meetings" href="#">Meetings</a> | 
-        <a id="Roster" href="#">Roster</a> | 
-        <a class="ViewReport" href="/Reports/OrgLeaders/">Leaders</a> | 
-        <a class="ViewReport" href="/Reports/ClassList/">Class List</a> | 
-        <a class="ViewReport" href="/Reports/ShirtSizes">Shirt Sizes</a> |
-        <a id="attdetail1" href='#'>Meetings Attendance</a>
-@if (Session["OrgCopySettings"] != null)
-{ 
-        @:| <a id="PasteSettings" href="/OrgSearch/PasteSettings">Paste Settings</a>
- } 
-    </div>
     <div id="PanelRollsheet" class="modalDiv dialog" style="display: none">
         <table>
         <tr><th colspan="2">Select a meeting date and time</th></tr>

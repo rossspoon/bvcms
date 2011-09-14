@@ -40,9 +40,9 @@ We have created an account for you on our church database. You should receive yo
 We noticed you already have an account in our church database. We sent you some instructions on how to reset your password.
 You should receive your credentials shortly.</p>
     }
-    if (((string)Session["gobackurl"]).HasValue())
+    if (((string)ViewData["gobackurl"]).HasValue())
     { 
-<p style="color: Blue"><a href='@Session["gobackurl"]'>Go back to your registration</a></p>
+<p style="color: Blue"><a href='@ViewData["gobackurl"]'>Go back to your registration</a></p>
   } }
 
 

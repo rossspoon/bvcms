@@ -227,6 +227,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 m.UseCoupon(t.TransactionId);
             }
 
+
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
             if (m.IsCreateAccount() || m.ManagingSubscriptions())

@@ -34,34 +34,6 @@ namespace CmsWeb.Models
                 settings.Add(Util.CreateAccountCode, ParseSetting("AllowOnlyOne: true", Util.CreateAccountCode));
             return o;
         }
-//        public static Organization CreateGivingOrg()
-//        {
-//            var settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
-//            if (settings == null)
-//            {
-//                settings = new Dictionary<int, RegSettings>();
-//                HttpContext.Current.Items.Add("RegSettings", settings);
-//            }
-//            var o = new Organization { OrganizationId = Util.OnlineGivingCode, OrganizationName = "Online Giving" };
-//            o.RegistrationTypeId = RegistrationEnum.OnlineGiving;
-//            if (!settings.ContainsKey(Util.OnlineGivingCode))
-//            {
-//                string setting = @"AllowOnlyOne: true";
-//                var fd = DbUtil.Content("FeaturedDonation");
-//                if (fd != null)
-//                    setting += @"
-//AskDonation: true
-//DonationFundId: {0}
-//DonationLabel: <<
-//----------
-//{1}
-//----------
-//".Fmt(fd.Title, fd.Body);
-
-//                settings.Add(Util.OnlineGivingCode, ParseSetting(setting, Util.OnlineGivingCode));
-//            }
-//            return o;
-//        }
         [NonSerialized]
         private Dictionary<int, RegSettings> _settings;
         public Dictionary<int, RegSettings> settings
@@ -186,6 +158,16 @@ namespace CmsWeb.Models
 
             var q = from o in GetOrgsInDiv()
                     where o.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions
+                    select o;
+            return q.Count() > 0;
+        }
+        public bool OnlinePledge()
+        {
+            if (org != null)
+                return org.RegistrationTypeId == RegistrationTypeCode.OnlinePledge;
+
+            var q = from o in GetOrgsInDiv()
+                    where o.RegistrationTypeId == RegistrationTypeCode.OnlinePledge
                     select o;
             return q.Count() > 0;
         }

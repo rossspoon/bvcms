@@ -317,14 +317,14 @@ namespace CmsWeb.Models
             return q;
         }
 
-        public static void NotifyIfNeeded(ITaskNotify notify, StringBuilder sb, Task task)
+        public static void NotifyIfNeeded(StringBuilder sb, Task task)
         {
             if (sb.Length > 0 && task.CoOwnerId.HasValue)
             {
                 var from = Util.UserPeopleId.Value == task.OwnerId ? task.Owner : task.CoOwner;
                 var to = from.PeopleId == task.OwnerId ? task.CoOwner : task.Owner;
                 var req = HttpContext.Current.Request;
-                notify.EmailNotification(from, to,
+                DbUtil.Db.Email(from.EmailAddress, to, 
                             "Task Updated by " + from.Name,
                             "{0} ({3})<br />\n{1}<br />\n{2}".Fmt(
                             TaskLink(task.Description, task.Id), task.AboutName, sb.ToString(), task.Priority));
@@ -427,7 +427,7 @@ namespace CmsWeb.Models
             return sb.ToString();
         }
 
-        public void DeleteTask(int TaskId, ITaskNotify notify)
+        public void DeleteTask(int TaskId)
         {
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == TaskId);
             if (task == null)
@@ -440,7 +440,7 @@ namespace CmsWeb.Models
             else if (task.OwnerId == PeopleId)
             {
                 if (task.CoOwnerId != null)
-                    notify.EmailNotification(task.Owner, task.CoOwner,
+                    DbUtil.Db.Email(task.Owner.EmailAddress, task.CoOwner,
                         "Task Deleted by " + task.Owner.Name,
                         task.Description + "<br/>\n" + task.AboutName);
                 DbUtil.Db.Tasks.DeleteOnSubmit(task);
@@ -448,7 +448,7 @@ namespace CmsWeb.Models
             }
             else // I must be cowner, I can't delete
             {
-                notify.EmailNotification(task.CoOwner, task.Owner,
+                DbUtil.Db.Email(task.CoOwner.EmailAddress, task.Owner,
                     task.CoOwner.Name + " tried to delete task",
                     TaskLink(task.Description, task.Id) + "<br/>\n" + task.AboutName);
             }
@@ -524,7 +524,7 @@ namespace CmsWeb.Models
             return q.Distinct().ToList();
         }
 
-        public int AddCompletedContact(int id, ITaskNotify notify)
+        public int AddCompletedContact(int id)
         {
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == id);
             var c = new CmsData.Contact { ContactDate = Util.Now.Date };
@@ -540,11 +540,11 @@ namespace CmsWeb.Models
             task.CompletedContact = c;
             task.StatusId = TaskStatusCode.Complete;
             if (task.CoOwnerId == PeopleId)
-                notify.EmailNotification(task.CoOwner, task.Owner,
+                DbUtil.Db.Email(task.CoOwner.EmailAddress, task.Owner,
                         "Task Completed with a Contact by " + task.CoOwner.Name,
                         TaskLink(task.Description, task.Id) + "<br />" + task.AboutName);
             else if (task.CoOwnerId != null)
-                notify.EmailNotification(task.Owner, task.CoOwner,
+                DbUtil.Db.Email(task.Owner.EmailAddress, task.CoOwner,
                     "Task Completed with a Contact by " + task.Owner.Name,
                     TaskLink(task.Description, task.Id) + "<br />" + task.AboutName);
             task.CompletedOn = c.ContactDate;
@@ -552,12 +552,12 @@ namespace CmsWeb.Models
             return c.ContactId;
         }
 
-        public void AcceptTask(int id, ITaskNotify notify)
+        public void AcceptTask(int id)
         {
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == id);
             task.StatusId = TaskStatusCode.Active;
             DbUtil.Db.SubmitChanges();
-            notify.EmailNotification(task.CoOwner, task.Owner,
+            DbUtil.Db.Email(task.Owner.EmailAddress, task.CoOwner,
                 "Task Accepted from " + task.CoOwner.Name,
                 TaskLink(task.Description, task.Id) + "<br />" + task.AboutName);
         }
@@ -567,7 +567,7 @@ namespace CmsWeb.Models
             task.SourceContact = DbUtil.Db.Contacts.SingleOrDefault(nc => nc.ContactId == contactid);
             DbUtil.Db.SubmitChanges();
         }
-        public Task Delegate(int taskid, int toid, ITaskNotify notify)
+        public Task Delegate(int taskid, int toid)
         {
             if (toid == Util.UserPeopleId.Value)
                 return null; // cannot delegate to self
@@ -586,12 +586,12 @@ namespace CmsWeb.Models
                 task.CoListId = InBoxId(toid);
 
             DbUtil.Db.SubmitChanges();
-            notify.EmailNotification(task.Owner, DbUtil.Db.LoadPersonById(toid),
+            DbUtil.Db.Email(task.Owner.EmailAddress, DbUtil.Db.LoadPersonById(toid),
                 "TASK: " + task.Description,
                 TaskLink(task.Description, taskid) + "<br/>" + task.AboutName);
             return task;
         }
-        public void ChangeOwner(int taskid, int toid, ITaskNotify notify)
+        public void ChangeOwner(int taskid, int toid)
         {
             if (toid == Util.UserPeopleId.Value)
                 return; // nothing to do
@@ -611,7 +611,7 @@ namespace CmsWeb.Models
             task.Owner = toowner;
 
             DbUtil.Db.SubmitChanges();
-            notify.EmailNotification(owner, toowner,
+            DbUtil.Db.Email(owner.EmailAddress, toowner,
                 "Task transferred from " + owner.Name,
                 TaskLink(task.Description, taskid));
         }
@@ -623,12 +623,12 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
         }
 
-        public void SetDescription(int id, string value, ITaskNotify notify)
+        public void SetDescription(int id, string value)
         {
             var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var sb = new StringBuilder();
             ChangeTask(sb, task, "Description", value);
-            NotifyIfNeeded(notify, sb, task);
+            NotifyIfNeeded(sb, task);
             DbUtil.Db.SubmitChanges();
         }
 
@@ -639,7 +639,7 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
         }
 
-        public void SetStatus(int id, string value, ITaskNotify notify)
+        public void SetStatus(int id, string value)
         {
             var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var cvc = new CodeValueController();
@@ -647,7 +647,7 @@ namespace CmsWeb.Models
             var statusid = ts.Single(t => t.Value == value).Id;
             var sb = new StringBuilder();
             ChangeTask(sb, task, "StatusId", statusid);
-            NotifyIfNeeded(notify, sb, task);
+            NotifyIfNeeded(sb, task);
             DbUtil.Db.SubmitChanges();
         }
 
@@ -741,19 +741,19 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
         }
 
-        public void SetProject(int id, string value, ITaskNotify notify)
+        public void SetProject(int id, string value)
         {
             var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var sb = new StringBuilder();
             ChangeTask(sb, task, "Project", value);
-            NotifyIfNeeded(notify, sb, task);
+            NotifyIfNeeded(sb, task);
             DbUtil.Db.SubmitChanges();
         }
 
-        public void DeleteTasks(IEnumerable<int> list, ITaskNotify notify)
+        public void DeleteTasks(IEnumerable<int> list)
         {
             foreach (var id in list)
-                DeleteTask(id, notify);
+                DeleteTask(id);
         }
 
         public void Priortize(IEnumerable<int> list, string p)
@@ -769,18 +769,18 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
         }
 
-        public void CompleteTask(int id, ITaskNotify notify)
+        public void CompleteTask(int id)
         {
             var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
             var sb = new StringBuilder();
             var statusid = TaskStatusCode.Complete;
             ChangeTask(sb, task, "StatusId", statusid);
-            NotifyIfNeeded(notify, sb, task);
+            NotifyIfNeeded(sb, task);
             DbUtil.Db.SubmitChanges();
         }
 
 
-        public void ArchiveTask(int TaskId, ITaskNotify notify)
+        public void ArchiveTask(int TaskId)
         {
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == TaskId);
             if (task == null)
@@ -789,7 +789,7 @@ namespace CmsWeb.Models
             if (task.OwnerId == PeopleId)
             {
                 if (task.CoOwnerId != null)
-                    notify.EmailNotification(task.Owner, task.CoOwner,
+                    DbUtil.Db.Email(task.Owner.EmailAddress, task.CoOwner,
                         "Task Archived by " + task.Owner.Name,
                         task.Description + "<br/>\n" + task.AboutName);
                 task.Archive = true;
@@ -797,16 +797,16 @@ namespace CmsWeb.Models
             }
             else // I must be cowner, I can't archive
             {
-                notify.EmailNotification(task.CoOwner, task.Owner,
+                DbUtil.Db.Email(task.CoOwner.EmailAddress, task.Owner,
                     task.CoOwner.Name + " tried to archive task",
                     TaskLink(task.Description, task.Id) + "<br/>\n" + task.AboutName);
             }
         }
 
-        public void ArchiveTasks(IEnumerable<int> list, ITaskNotify notify)
+        public void ArchiveTasks(IEnumerable<int> list)
         {
             foreach (var id in list)
-                ArchiveTask(id, notify);
+                ArchiveTask(id);
         }
         public string MyListId()
         {

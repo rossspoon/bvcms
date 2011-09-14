@@ -10,21 +10,55 @@ namespace CmsWeb.Models
 {
     public class SavedQueryModel
     {
+        public PagerModel2 Pager { get; set; }
         public bool isdev { get; set; }
         public bool onlyMine { get; set; }
         public bool showscratchpads { get; set; }
-        public int savedQueryCount { get; set; }
         public string sort { get; set; }
 
+        public SavedQueryModel()
+        {
+            Pager = new PagerModel2(Count);
+            Pager.Direction = "asc";
+            Pager.Sort = "Name";
+        }
+        private int? _count;
+        public int Count()
+        {
+            if (!_count.HasValue)
+                _count = fetchqueries().Count();
+            return _count.Value;
+        }
+        private IQueryable<QueryBuilderClause> _queries;
+        private IQueryable<QueryBuilderClause> fetchqueries()
+        {
+            if (_queries != null)
+                return _queries;
+            isdev = Roles.IsUserInRole("Developer");
+            _queries = from c in DbUtil.Db.QueryBuilderClauses
+                       where c.SavedBy == Util.UserName || ((c.IsPublic || isdev) && !onlyMine)
+                       where c.SavedBy != null || (c.GroupId == null && c.Field == "Group" && isdev && c.Clauses.Count() > 0)
+                       where !c.Description.Contains("scratchpad") || showscratchpads
+                       select c;
+            return _queries;
+        }
         public IEnumerable<SavedQueryInfo> FetchQueries()
         {
-            isdev = Roles.IsUserInRole("Developer");
-            var q = from c in DbUtil.Db.QueryBuilderClauses
-                    where c.SavedBy == Util.UserName || ((c.IsPublic || isdev) && !onlyMine)
-                    where c.SavedBy != null || (c.GroupId == null && c.Field == "Group" && isdev && c.Clauses.Count() > 0)
-                    where !c.Description.Contains("scratchpad") || showscratchpads
-                    select c;
-            savedQueryCount = q.Count();
+            var q = fetchqueries();
+            var q2 = ApplySort(q).Skip(Pager.StartRow).Take(Pager.PageSize);
+            var q3 = from c in q2
+                     select new SavedQueryInfo
+                     {
+                         QueryId = c.QueryId,
+                         Description = c.Description,
+                         IsPublic = c.IsPublic,
+                         LastUpdated = c.CreatedOn,
+                         User = c.SavedBy
+                     };
+            return q3;
+        }
+        private IEnumerable<QueryBuilderClause> ApplySort(IQueryable<QueryBuilderClause> q)
+        {
             //switch (sort)
             //{
             //    case "IsPublic":
@@ -68,17 +102,7 @@ namespace CmsWeb.Models
             //            select c;
             //        break;
             //}
-            var q2 = from c in q
-                     select new SavedQueryInfo
-                     {
-                         QueryId = c.QueryId,
-                         Description = c.Description,
-                         IsPublic = c.IsPublic,
-                         LastUpdated = c.CreatedOn,
-                         User = c.SavedBy
-                     };
-            return q2;
-
+            return _queries;
         }
     }
     public class SavedQueryInfo

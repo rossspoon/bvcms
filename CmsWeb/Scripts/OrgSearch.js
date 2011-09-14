@@ -27,12 +27,14 @@
     $("#hideshow").click(function () {
         $(".managedivisions").toggle();
     });
-    $.gotoPage = function (e, pg) {
+    $.gotoPage = function (ev, pg) {
+        ev.preventDefault();
         $("#Page").val(pg);
         $.getTable();
         return false;
     }
-    $.setPageSize = function (e) {
+    $.setPageSize = function (ev) {
+        ev.preventDefault();
         $('#Page').val(1);
         $("#PageSize").val($(e).val());
         return $.getTable();
@@ -232,7 +234,7 @@
                "&campusid=" + $('#CampusId').val() +
                "&statusid=" + $('#StatusId').val() +
                "&name=" + $('#Name').val();
-        window.open("/Meetings.aspx" + args);
+        window.open("/Reports/Meetings" + args);
         return false;
     });
     $('#attdetail2').click(function (ev) {

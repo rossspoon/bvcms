@@ -39,12 +39,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             w.PageEvent = new HeadFoot();
 
             string divtext = "", subdivtext = "";
-            var divt = DbUtil.Db.Tags.SingleOrDefault(tag => tag.Id == div);
-            if (divt != null)
-                divtext = divt.Name;
-            var subdivt = DbUtil.Db.Tags.SingleOrDefault(tag => tag.Id == subdiv);
-            if (subdivt != null)
-                subdivtext = subdivt.Name;
+            divtext = DbUtil.Db.Programs.Single(p => p.Id == div).Name;
+            subdivtext = DbUtil.Db.Divisions.Single(p => p.Id == subdiv).Name;
 
             string scheduletext = String.Empty;
             var sdt = CmsData.Organization.GetDateFromScheduleId(schedule);

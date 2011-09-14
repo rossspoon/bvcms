@@ -98,7 +98,6 @@ namespace CmsWeb.Models
                          Description = o.Description,
                          Leader = o.LeaderName,
                          Members = o.MemberCount ?? 0,
-                         Tracking = o.AttendTrackLevel.Description,
                          Division = o.Division.Name,
                          FirstMeeting = o.FirstMeetingDate.FormatDate(),
                          LastMeeting = o.LastMeetingDate.FormatDate(),
@@ -119,7 +118,7 @@ namespace CmsWeb.Models
                          NumCheckInLabels = o.NumCheckInLabels ?? 0,
                          NumWorkerCheckInLabels = o.NumWorkerCheckInLabels ?? 0,
                          o.PhoneNumber,
-                         IsBibleFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
+                         MainFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
                      };
             return q2;
         }

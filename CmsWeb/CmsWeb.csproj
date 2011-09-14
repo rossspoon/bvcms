@@ -268,6 +268,7 @@
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
     <Compile Include="Areas\Main\Models\Other\ContributionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Person\FamilyModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\MeetingsModel.cs" />
     <Compile Include="Areas\Manage\Controllers\RegSettingsController.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
@@ -529,15 +530,6 @@
     <Compile Include="AppReview\VolunteerApp.aspx.designer.cs">
       <DependentUpon>VolunteerApp.aspx</DependentUpon>
     </Compile>
-    <Compile Include="BadEts.aspx.cs">
-      <DependentUpon>BadEts.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BadEts.aspx.designer.cs">
-      <DependentUpon>BadEts.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Code\WebEmailer.cs" />
-    <Compile Include="Code\Geocode.cs" />
     <Compile Include="Code\IMetaWebLog.cs" />
     <Compile Include="Code\ViewExtensions.cs" />
     <Compile Include="Contact.aspx.cs">
@@ -676,20 +668,6 @@
     </Compile>
     <Compile Include="Image.aspx.designer.cs">
       <DependentUpon>Image.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Meetings.aspx.cs">
-      <DependentUpon>Meetings.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Meetings.aspx.designer.cs">
-      <DependentUpon>Meetings.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="MemberMap.aspx.cs">
-      <DependentUpon>MemberMap.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MemberMap.aspx.designer.cs">
-      <DependentUpon>MemberMap.aspx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Main\Models\CheckIn\CheckInInfo.cs" />
     <Compile Include="Areas\Main\Models\CheckIn\CheckInModel.cs" />
@@ -967,6 +945,7 @@
     <Content Include="Content\js\jquery.gmap.js" />
     <Content Include="Content\js\jquery.gmap.min.js" />
     <Content Include="Content\js\jquery.sb.js" />
+    <Content Include="Content\js\jquery.sortElements.js" />
     <Content Include="Content\js\jquery.textarea.js" />
     <Content Include="Content\js\jquery.tie.js" />
     <Content Include="Content\js\jquery.transpose.js" />
@@ -1007,6 +986,7 @@
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\Meetings.js" />
     <Content Include="Scripts\SearchDivisions.js" />
     <Content Include="Scripts\Edit2.js" />
     <Content Include="Scripts\Funds.js" />
@@ -1047,7 +1027,6 @@
     <Content Include="Content\js\jquery.showpassword.js" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="App_Offline1.htm" />
-    <Content Include="BadEts.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Content\bodybg.png" />
     <Content Include="images\bvcms120.png" />
@@ -1452,6 +1431,8 @@
     <Content Include="Areas\Dialog\Views\SearchDivisions\Index.cshtml" />
     <Content Include="Areas\Dialog\Views\SearchDivisions\Results.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\Row.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\Meetings.cshtml" />
+    <Content Include="Areas\Main\Views\SavedQuery\Results.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
@@ -1503,8 +1484,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ForceError.aspx" />
-    <Content Include="Meetings.aspx" />
-    <Content Include="MemberMap.aspx" />
     <Content Include="NoRemoteAccess.htm" />
     <Content Include="PurgeProgress.aspx" />
     <Content Include="SavedQueries.aspx" />

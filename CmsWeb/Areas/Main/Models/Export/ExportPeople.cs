@@ -119,14 +119,17 @@ namespace CmsWeb.Models
             var q2 = from p in q
                      let sp = p.Family.People.SingleOrDefault(ss => ss.PeopleId == p.SpouseId && ss.ContributionOptionsId == 2 && p.ContributionOptionsId == 2)
                      where p.PeopleId == p.Family.HeadOfHouseholdId || p.ContributionOptionsId != 2
-                     let t = DbUtil.Db.GetTotalContributions(p.PeopleId, sp.PeopleId, startdt, enddt).Single()
+                     let t = DbUtil.Db.GetTotalContributions(p.PeopleId, sp.PeopleId, startdt, enddt)
+                     from r in t
                      select new
                      {
                         PeopleId = p.PeopleId,
-                        Count = t.Cnt ?? 0,
-                        Amount = t.Amt ?? 0m,
-                        Name = p.Name,
-                        Name2 = sp.Name ?? ""
+                        Count = r.Cnt ?? 0,
+                        Amount = r.Amt ?? 0m,
+                        Pledged = r.Plg ?? 0m,
+                        Name = p.Name2,
+                        Name2 = sp.Name2 ?? "",
+                        Fund = r.Fund
                      };
             return q2;
         }

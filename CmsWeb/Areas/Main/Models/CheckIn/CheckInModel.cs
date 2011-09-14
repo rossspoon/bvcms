@@ -406,7 +406,7 @@ namespace CmsWeb.Models
                     MeetingDate = info.MeetingTime,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = info.AttendTrkLevelId == AttendTrackLevelCode.Headcount,
+                    GroupMeetingFlag = false,
                     Location = info.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
@@ -445,7 +445,7 @@ namespace CmsWeb.Models
                     MeetingDate = dt,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = info.AttendTrkLevelId == AttendTrackLevelCode.Headcount,
+                    GroupMeetingFlag = false,
                     Location = info.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);

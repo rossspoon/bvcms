@@ -1,5 +1,5 @@
 ﻿@using CmsWeb
-@model CmsWeb.Areas.Main.Models.Report.ChurchAttendanceModel
+@model CmsWeb.Models.ChurchAttendanceModel
 @{
     Layout = "/Views/Shared/Reports.cshtml";
     ViewBag.Title = "Reports";
@@ -82,7 +82,7 @@
         { 
            <td align="right">@d.Meetings.Where(m => m.date.TimeOfDay == c.TimeOfDay).Sum(m => m.Present).ToString("n0")</td>
         } 
-           <td align="right"><a href='/Reports/AttendanceDetail?dt1=@d.Dt1.ToString("M/d/yy H:mm")&dt2=@d.Dt2.ToString("M/d/yy H:mm")&divid=@d.DivId'>@d.Meetings.Sum(m => m.Present).ToString("n0")</a></td>
+           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("M/d/yy H:mm")&dt2=@p.Dt2.ToString("M/d/yy H:mm")&divid=@d.DivId'>@d.Meetings.Sum(m => m.Present).ToString("n0")</a></td>
            <td align="right">@d.Meetings.Sum(m => m.Visitors).ToString("n0")</td>
            <td align="right">@d.Meetings.Sum(m => m.OutTowners).ToString("n0")</td>
            </tr>
@@ -93,9 +93,9 @@
     { 
            <td>@p.Divs.Sum(d => d.Meetings.Where(m => m.date.TimeOfDay == c.TimeOfDay).Sum(m => m.Present)).ToString("n0")</td>
     } 
-           <td>@p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")</td>
-           <td>@p.Divs.Sum(d => d.Meetings.Sum(m => m.Visitors)).ToString("n0")</td>
-           <td>@p.Divs.Sum(d => d.Meetings.Sum(m => m.OutTowners)).ToString("n0")</td>
+           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("M/d/yy H:mm")&dt2=@p.Dt2.ToString("M/d/yy H:mm")&progid=@p.progid'>@p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")</a></td>
+           <td align="right">@p.Divs.Sum(d => d.Meetings.Sum(m => m.Visitors)).ToString("n0")</td>
+           <td align="right">@p.Divs.Sum(d => d.Meetings.Sum(m => m.OutTowners)).ToString("n0")</td>
            </tr>
         </table>
         </div>

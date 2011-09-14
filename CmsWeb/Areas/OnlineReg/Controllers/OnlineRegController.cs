@@ -93,6 +93,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 TempData["ms"] = Util.UserPeopleId;
                 return Content("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.divid));
             }
+            if (m.OnlinePledge())
+            {
+                TempData["ms"] = Util.UserPeopleId;
+                return Content("/OnlineReg/Pledge/{0}".Fmt(m.divid));
+            }
             m.List[0].LoggedIn = true;
             return View("Flow/List", m);
         }

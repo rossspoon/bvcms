@@ -7,6 +7,7 @@ using CmsWeb.Areas.Main.Models.Report;
 using CmsData;
 using System.IO;
 using UtilityExtensions;
+using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -39,7 +40,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult Family(int? id)
         {
-            return new FamilyResult(id);
+            return new CmsWeb.Areas.Main.Models.Report.FamilyResult(id);
         }
         public ActionResult BarCodeLabels(int? id)
         {
@@ -290,6 +291,10 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!Dt2.HasValue)
                 Dt2 = Dt1.Value.AddDays(1);
             var m = new AttendanceDetailModel(Dt1.Value, Dt2, name, divid, schedid, campusid);
+            return View(m);
+        }
+        public ActionResult Meetings(MeetingsModel m)
+        {
             return View(m);
         }
         public ActionResult Test()

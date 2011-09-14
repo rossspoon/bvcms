@@ -314,7 +314,7 @@ namespace CmsWeb.Models
                     MeetingDate = dt,
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-                    GroupMeetingFlag = ret.AttendTrkLevelId == AttendTrackLevelCode.Headcount,
+                    GroupMeetingFlag = false,
                     Location = ret.Location,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);

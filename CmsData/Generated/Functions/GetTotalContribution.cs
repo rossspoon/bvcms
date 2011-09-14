@@ -20,6 +20,10 @@ namespace CmsData.View
 		
 		private decimal? _Amt;
 		
+		private decimal? _Plg;
+		
+		private string _Fund;
+		
 		
 		public GetTotalContribution()
 		{
@@ -56,6 +60,40 @@ namespace CmsData.View
 			{
 				if (this._Amt != value)
 					this._Amt = value;
+			}
+
+		}
+
+		
+		[Column(Name="Plg", Storage="_Plg", DbType="Decimal(38,2)")]
+		public decimal? Plg
+		{
+			get
+			{
+				return this._Plg;
+			}
+
+			set
+			{
+				if (this._Plg != value)
+					this._Plg = value;
+			}
+
+		}
+
+		
+		[Column(Name="Fund", Storage="_Fund", DbType="varchar(40) NOT NULL")]
+		public string Fund
+		{
+			get
+			{
+				return this._Fund;
+			}
+
+			set
+			{
+				if (this._Fund != value)
+					this._Fund = value;
 			}
 
 		}

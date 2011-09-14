@@ -181,7 +181,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                         case "GradeAgeStart":
                             o.GradeAgeStart = a[c].ToInt2();
                             break;
-                        case "IsBibleFellowshipOrg":
+                        case "MainFellowshipOrg":
                             o.IsBibleFellowshipOrg = a[c].ToBool2();
                             break;
                         case "LastDayBeforeExtra":

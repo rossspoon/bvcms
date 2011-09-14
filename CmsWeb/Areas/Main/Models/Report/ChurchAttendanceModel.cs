@@ -8,7 +8,7 @@ using System.Collections;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 
-namespace CmsWeb.Areas.Main.Models.Report
+namespace CmsWeb.Models
 {
     public class ChurchAttendanceModel
     {
@@ -21,6 +21,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
         public class ProgInfo
         {
+            public int progid { get; set; }
             public string Name { get; set; }
             public IEnumerable<DivInfo> Divs { get; set; }
             public string RptGroup { get; set; }
@@ -53,14 +54,14 @@ namespace CmsWeb.Areas.Main.Models.Report
                     return _line.Value;
                 }
             }
+            public DateTime Dt1 { get; set; }
+            public DateTime Dt2 { get; set; }
         }
         public class DivInfo
         {
             public int DivId { get; set; }
             public string Name { get; set; }
             public bool NoDisplayZero { get; set; }
-            public DateTime Dt1 { get; set; }
-            public DateTime Dt2 { get; set; }
             public IEnumerable<MeetInfo> Meetings { get; set; }
         }
         public class MeetInfo
@@ -80,21 +81,22 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where pd.Division.ReportLine > 0
                     group pd by p into g
                     orderby g.Key.RptGroup
+                    let dt1 = Sunday.AddHours((double)g.Key.StartHoursOffset)
+                    let dt2 = Sunday.AddHours((double)g.Key.EndHoursOffset)
                     select new ProgInfo
                     {
+                        progid = g.Key.Id,
                         Name = g.Key.Name,
                         RptGroup = g.Key.RptGroup,
+                        Dt1 = dt1,
+                        Dt2 = dt2,
                         Divs = from pd in g
-                               let dt1 = Sunday.AddHours((double)g.Key.StartHoursOffset)
-                               let dt2 = Sunday.AddHours((double)g.Key.EndHoursOffset)
                                orderby pd.Division.ReportLine
                                select new DivInfo
                                {
                                    DivId = pd.DivId,
                                    Name = pd.Division.Name,
                                    NoDisplayZero = pd.Division.NoDisplayZero ?? false,
-                                   Dt1 = dt1,
-                                   Dt2 = dt2,
                                    Meetings = from dg in pd.Division.DivOrgs
                                               from m in dg.Organization.Meetings
                                               where m.MeetingDate >= dt1

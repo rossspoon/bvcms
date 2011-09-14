@@ -1,0 +1,80 @@
+﻿@model CmsWeb.Models.MeetingsModel
+@using UtilityExtensions
+@{
+    ViewBag.Title = "Meetings";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<script src="/Scripts/Meetings.js" type="text/javascript"></script>
+<h2>Meetings</h2>
+<form>
+Meeting Dates:
+Start: @Html.TextBox("Dt1", Model.Dt1.ToString2("M/d/yy"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
+End: @Html.TextBox("Dt2", Model.Dt2.ToString2("M/d/yy"), new { style = "width: 100px; font-size: 110%", disabled = "disabled" })
+Include Inactive: @Html.CheckBox("Inactive")
+No Zero Meetings: @Html.CheckBox("NoZero")
+@Html.Hidden("Name")
+@Html.Hidden("StatusId")
+@Html.Hidden("ProgId")
+@Html.Hidden("DivId")
+@Html.Hidden("SchedId")
+@Html.Hidden("CampusId")
+@Html.Hidden("Sort")
+@Html.Hidden("Dir")
+</form>
+<hr />
+<table class="grid" cellspacing="3">
+    <thead>
+        <tr>
+            <th> <a href="#" class="sortable">Time</a> </th>
+            <th> <a href="#" class="sortable">Attended</a> </th>
+            <th> </th>
+            <th> <a href="#" class="sortable">Division</a> </th>
+            <th> <a href="#" class="sortable">Organization</a> </th>
+            <th> <a href="#" class="sortable">Leader</a> </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var m in Model.MeetingsForDate())
+{
+        <tr>
+        @if (!m.MeetingId.HasValue)
+        {
+            <td colspan="2">(no meeting)</td>
+        }
+        else
+        {
+            <td><a href="/Meeting/Index/@m.MeetingId">@m.Time.ToString2("h:mm tt")</a></td>
+            <td align="right">@m.Attended</td>
+        }
+            <td align="right">@(m.OtherAttends > 0 ? "*" : "")</td>
+            <td> <span title="@m.Program">@m.Division</span> </td>
+            <td> <a title="@m.Tracking" href="/Organization/Index/@m.OrganizationId">@m.Organization</a> </td>
+            <td>@m.Leader</td>
+        </tr>
+}
+    </tbody>
+    <tfoot>
+    <tr><td colspan="6"><hr /></td></tr>
+        <tr>
+            <td align="right">Total Meetings</td>
+            <td align="right">@Model.MeetingsCount.ToString("N0")</td>
+            <td colspan="4"> </td>
+        </tr>
+        <tr>
+            <td align="right"> Total Attends </td>
+            <td align="right">@Model.TotalAttends.ToString("N0")</td>
+            <td colspan="4"> </td>
+        </tr>
+        <tr>
+            <td align="right"> Other Attends </td>
+            <td align="right">@Model.OtherAttends.ToString("N0")</td>
+            <td>*</td>
+            <td colspan="3"> </td>
+        </tr>
+        <tr>
+            <td align="right"> Total People </td>
+            <td align="right">@Model.TotalPeople.ToString("N0")</td>
+            <td colspan="4"> </td>
+        </tr>
+    </tfoot>
+</table>

@@ -13,6 +13,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
     {
         private void SetHeaders(OnlineRegModel m2)
         {
+            ViewData["gobackurl"] = m2.URL;
             Session["gobackurl"] = m2.URL;
             ViewData["timeout"] = INT_timeout;
             SetHeaders(m2.orgid ?? m2.divid ?? 0);

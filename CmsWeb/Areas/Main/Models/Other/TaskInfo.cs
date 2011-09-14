@@ -224,7 +224,7 @@ namespace CmsWeb.Models
                        Value = s.Id.ToString()
                    };
         }
-        public void UpdateTask(ITaskNotify notify)
+        public void UpdateTask()
         {
             var sb = new StringBuilder();
             var task = DbUtil.Db.Tasks.Single(t => t.Id == Id);
@@ -242,7 +242,7 @@ namespace CmsWeb.Models
             else
                 task.Priority = Priority;
             DbUtil.Db.SubmitChanges();
-            TaskModel.NotifyIfNeeded(notify, sb, task);
+            TaskModel.NotifyIfNeeded(sb, task);
         }
     }
 }

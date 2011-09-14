@@ -2961,6 +2961,34 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.MemberTypeAsOf", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? MemberTypeAsOf(
+            [Parameter(Name = "oid", DbType="int")] int? oid,
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "dt", DbType="datetime")] DateTime? dt
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid,
+                pid,
+                dt
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.FirstMeetingDateLastLear", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string FirstMeetingDateLastLear(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.GetSecurityCode", IsComposable = true)]
 		[return: Parameter(DbType = "char")]
 		public string GetSecurityCode(
@@ -2968,6 +2996,22 @@ namespace CmsData
 		{
 			return ((string)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod()))
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.PledgeCount", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? PledgeCount(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "days", DbType="int")] int? days,
+            [Parameter(Name = "fundid", DbType="int")] int? fundid
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                days,
+                fundid
                 ).ReturnValue));
 		}
 
@@ -2980,6 +3024,22 @@ namespace CmsData
 			return ((int?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 DateX
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.PledgeAmount", IsComposable = true)]
+		[return: Parameter(DbType = "money")]
+		public decimal? PledgeAmount(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "days", DbType="int")] int? days,
+            [Parameter(Name = "fundid", DbType="int")] int? fundid
+            )
+		{
+			return ((decimal?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                days,
+                fundid
                 ).ReturnValue));
 		}
 
@@ -3089,6 +3149,21 @@ namespace CmsData
                 dt
 			);
 			return ((ISingleResult< SecurityCode>)(result.ReturnValue));
+		}
+
+		[Function(Name="dbo.TopPledgers")]
+		public ISingleResult< TopGiver> TopPledgers(
+            [Parameter(Name = "top", DbType="int")] int? top,
+            [Parameter(Name = "sdate", DbType="datetime")] DateTime? sdate,
+            [Parameter(Name = "edate", DbType="datetime")] DateTime? edate
+            )
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                top,
+                sdate,
+                edate
+			);
+			return ((ISingleResult< TopGiver>)(result.ReturnValue));
 		}
 
 		[Function(Name="dbo.TopGivers")]

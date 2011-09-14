@@ -15,6 +15,7 @@
 }
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
             .Add("/Content/js/jquery.jeditable.js")
+            .Add("/Content/js/jquery.sortElements.js")
             .Add("/Scripts/Meeting.js")
         .Render("/Content/Meeting_#.js")
 )
@@ -70,8 +71,9 @@ else
         </td></tr>
 @if (User.IsInRole("Attendance"))
 {
-    <tr><td align="left">@Html.CheckBox("editing", Model.showall) Enable Editing</td>
-        <td align="right"><a id="addvisitor" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=visitor" style="margin-top: 10px;" class="bt">Add Visitors</a></td></tr>
+    <tr><td colspan="2" align="right"><label for="editing" style="padding-right:2em;">@Html.CheckBox("editing", Model.showall) Enable Editing</label>
+            <label for="sortbyname" style="padding-right:2em;">@Html.CheckBox("sortbyname", Model.sortbyname) Sort by Name</label>
+            <a id="addvisitor" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=visitor" style="margin-top: 10px;" class="bt">Add Visitors</a></td></tr>
 }
 </table>
 </td>
@@ -115,9 +117,9 @@ Wand Target<br />
 <tbody>
 @foreach(var a in Model.Attends())
 {
-    <tr @(!a.Member ? "class=visitor" : "")>
+    <tr rowtype="@a.Member" @(!a.Member ? "class=visitor" : "")>
         <td align="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" disabled="disabled" /></td>
-        <td><a href="/Person/Index/@a.PeopleId" title="@a.Age">@a.Name</a></td>
+        <td class="name"><a href="/Person/Index/@a.PeopleId" title="@a.Age">@a.Name</a></td>
         <td>@a.CurrMemberType</td>
         <td>@a.MemberType</td>
         <td>@a.AttendType</td>

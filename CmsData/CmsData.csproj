@@ -366,7 +366,6 @@
     <Compile Include="Generated\TaskList.cs" />
     <Compile Include="Generated\TaskListOwner.cs" />
     <Compile Include="Generated\TaskStatus.cs" />
-    <Compile Include="ITaskNotify.cs" />
     <Compile Include="OrganizationMember.cs" />
     <Compile Include="Resource1.Designer.cs" />
     <Compile Include="Task.cs" />

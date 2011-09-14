@@ -256,6 +256,12 @@ namespace CmsData
                                 c.Quarters,
                                 CompType,
                                 c.CodeIds == "1");
+                case QueryType.IsTopPledger:
+                    return Expressions.IsTopPledger(parm, Db,
+                                c.Days,
+                                c.Quarters,
+                                CompType,
+                                c.CodeIds == "1");
                 case QueryType.InBFClass:
                     return Expressions.InBFClass(parm,
                                CompType,
@@ -421,6 +427,16 @@ namespace CmsData
                                c.TextValue.ToInt());
                 case QueryType.RecentContributionAmount:
                     return Expressions.RecentContributionAmount(parm, Db,
+                               c.Days, c.Quarters.ToInt2(),
+                               CompType,
+                               Decimal.Parse(c.TextValue));
+                case QueryType.RecentPledgeCount:
+                    return Expressions.RecentPledgeCount(parm, Db,
+                               c.Days, c.Quarters.ToInt2(),
+                               CompType,
+                               c.TextValue.ToInt());
+                case QueryType.RecentPledgeAmount:
+                    return Expressions.RecentPledgeAmount(parm, Db,
                                c.Days, c.Quarters.ToInt2(),
                                CompType,
                                Decimal.Parse(c.TextValue));

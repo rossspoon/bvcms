@@ -45,9 +45,9 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    if($("#showbuttons input[@name=show]:checked").val() == "attends")
+    if ($("#showbuttons input[@name=show]:checked").val() == "attends")
         $(".atck:not(:checked)").parent().parent().hide();
-    if($('#editing').is(':checked'))
+    if ($('#editing').is(':checked'))
         $(".atck").removeAttr("disabled");
 
     $("table.grid > tbody > tr:visible:even").addClass("alt");
@@ -74,6 +74,29 @@
         else
             $(".atck").attr("disabled", "disabled");
     });
+    $('#sortbyname').change(function () {
+        if ($(this).is(':checked')) {
+            //$.blockUI();
+            $('table.grid > tbody > tr').sortElements(function (a, b) {
+                return $(a).find("td.name a").text() > $(b).find("td.name a").text() ? 1 : -1;
+            });
+            //$.unblockUI();
+        }
+        else {
+            //$.blockUI();
+            $('table.grid > tbody > tr').sortElements(function (a, b) {
+                var art = $(a).attr("rowtype");
+                var brt = $(b).attr("rowtype");
+                if (art > brt)
+                    return -1;
+                else if (art < brt)
+                    return 1;
+                return $(a).find("td.name a").text() > $(b).find("td.name a").text() ? 1 : -1;
+            });
+            //$.unblockUI();
+        }
+    });
+
     $(".atck").change(function (ev) {
         var ck = $(this);
         var tr = ck.parent().parent();

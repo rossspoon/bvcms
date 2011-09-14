@@ -66,6 +66,12 @@ namespace CmsWeb.Models
                 return org.RegistrationTypeId == RegistrationTypeCode.OnlineGiving;
             return false;
         }
+        public bool OnlinePledge()
+        {
+            if (org != null)
+                return org.RegistrationTypeId == RegistrationTypeCode.OnlinePledge;
+            return false;
+        }
         public bool MemberOnly()
         {
             if (org != null)
@@ -151,7 +157,7 @@ namespace CmsWeb.Models
                     return false;
                 else if (org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
                     return false;
-            return settings.Values.Any(setting => 
+            return settings.Values.Any(setting =>
                 setting.AskShirtSize == true ||
                 setting.AskRequest == true ||
                 setting.AskGrade == true ||
@@ -175,16 +181,17 @@ namespace CmsWeb.Models
         public static void CheckNotifyDiffEmails(Person person, string fromemail, string regemail, string orgname, string phone)
         {
             MailAddress ma = null;
-            try { ma = new MailAddress(regemail); } catch (Exception) { }
+            try { ma = new MailAddress(regemail); }
+            catch (Exception) { }
             if (ma != null)
             {
                 /* If one of the email addresses we have on record
                  * is the same as the email address given in registration
                  * then no problem, (not different) */
-                if (person.EmailAddress.HasValue() && 
+                if (person.EmailAddress.HasValue() &&
                         string.Compare(ma.Address, person.EmailAddress, true) == 0)
                     return;
-                if (person.EmailAddress2.HasValue() && 
+                if (person.EmailAddress2.HasValue() &&
                         string.Compare(ma.Address, person.EmailAddress2, true) == 0)
                     return;
                 /* So now we check to see if anybody in the famiy
@@ -221,8 +228,8 @@ so that you will receive future important notices regarding this registration.</
                 msg = msg.Replace("{orgname}", orgname);
                 msg = msg.Replace("{phone}", phone.FmtFone());
                 var subj = c.Title.Replace("{orgname}", orgname);
-                DbUtil.Db.Email(fromemail, 
-                    person, Util.ToMailAddressList(regemail), 
+                DbUtil.Db.Email(fromemail,
+                    person, Util.ToMailAddressList(regemail),
                     subj, msg, false);
             }
             else
@@ -247,8 +254,8 @@ Thank you</p>";
                 msg = msg.Replace("{orgname}", orgname);
                 msg = msg.Replace("{phone}", phone.FmtFone());
                 var subj = c.Title.Replace("{orgname}", orgname);
-                DbUtil.Db.Email(fromemail, 
-                    person, Util.ToMailAddressList(regemail), 
+                DbUtil.Db.Email(fromemail,
+                    person, Util.ToMailAddressList(regemail),
                     subj, msg, false);
             }
         }
@@ -306,6 +313,26 @@ Thank you</p>";
                         Value = f.FundId.ToString()
                     };
             return q;
+        }
+        public class PledgeInfo
+        {
+            public decimal Pledged { get; set; }
+            public decimal Given { get; set; }
+        }
+        public PledgeInfo GetPledgeInfo()
+        {
+            var RRTypes = new int[] { 6, 7 };
+            var q = from c in DbUtil.Db.Contributions
+                    where c.FundId == setting.DonationFundId
+                    where c.PeopleId == PeopleId
+                    where !RRTypes.Contains(c.ContributionTypeId)
+                    group c by PeopleId into g
+                    select new PledgeInfo
+                    {
+                        Pledged = g.Where(c => c.PledgeFlag == true).Sum(c => c.ContributionAmount) ?? 0,
+                        Given = g.Where(c => c.PledgeFlag == false).Sum(c => c.ContributionAmount) ?? 0,
+                    };
+            return q.SingleOrDefault() ?? new PledgeInfo { Given = 0m, Pledged = 0m };
         }
     }
 }

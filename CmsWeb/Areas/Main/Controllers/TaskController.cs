@@ -45,14 +45,14 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult SetComplete(int id)
         {
             var tasks = new TaskModel { Id = id.ToString() };
-            tasks.CompleteTask(id, new WebEmailer());
+            tasks.CompleteTask(id);
             return PartialView("Columns", tasks.FetchTask(id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Accept(int id)
         {
             var tasks = new TaskModel { Id = id.ToString() };
-            tasks.AcceptTask(id, new WebEmailer());
+            tasks.AcceptTask(id);
             return PartialView("Detail", tasks.FetchTask(id));
         }
         public ActionResult Detail(int id, int? rowid)
@@ -120,7 +120,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public JsonResult CompleteWithContact(int id)
         {
             var tasks = new TaskModel();
-            var contactid = tasks.AddCompletedContact(id, new WebEmailer());
+            var contactid = tasks.AddCompletedContact(id);
             return Json(new { ContactId = contactid });
         }
         public ActionResult SearchPeople(int? id)
@@ -138,14 +138,14 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult ChangeOwner(int id, int peopleid)
         {
             var tasks = new TaskModel();
-            tasks.ChangeOwner(id, peopleid, new WebEmailer());
+            tasks.ChangeOwner(id, peopleid);
             return PartialView("Detail", tasks.FetchTask(id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Delegate(int id, int peopleid)
         {
             var tasks = new TaskModel();
-            tasks.Delegate(id, peopleid, new WebEmailer());
+            tasks.Delegate(id, peopleid);
             return PartialView("Detail", tasks.FetchTask(id));
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -155,7 +155,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var a = items.SplitStr(",").Select(i => i.ToInt());
             foreach (var tid in a)
             {
-                var t = tasks.Delegate(tid, id, new WebEmailer());
+                var t = tasks.Delegate(tid, id);
                 if (t != null)
                     t.ForceCompleteWContact = true;
             }
@@ -180,7 +180,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new TaskModel();
             var t = m.FetchTask(id);
             UpdateModel(t);
-            t.UpdateTask(new WebEmailer());
+            t.UpdateTask();
             t = m.FetchTask(id);
             return View("Detail", t);
         }
@@ -204,11 +204,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 return PartialView("TabsOptionsRows", tasks);
             }
             else if (option == "delete")
-                tasks.DeleteTasks(a, new WebEmailer());
+                tasks.DeleteTasks(a);
             else if (option.StartsWith("P"))
                 tasks.Priortize(a, option);
             else if (option == "archive")
-                tasks.ArchiveTasks(a, new WebEmailer());
+                tasks.ArchiveTasks(a);
 
             return PartialView("Rows", tasks);
         }

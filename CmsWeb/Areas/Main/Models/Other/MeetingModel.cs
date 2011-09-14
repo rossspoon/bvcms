@@ -14,6 +14,7 @@ namespace CmsWeb.Models
         public CmsData.Meeting meeting;
 
         public bool showall { get; set; }
+        public bool sortbyname { get; set; }
 
         public MeetingModel(int id)
         {
@@ -21,7 +22,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<RollsheetModel.AttendInfo> Attends()
         {
-            return RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value);
+            return RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sortbyname);
         }
         public string AttendCreditType()
         {

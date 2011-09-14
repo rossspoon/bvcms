@@ -32,9 +32,11 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content(value);
         }
         [HttpPost]
-        public ActionResult Rows(SavedQueryModel m)
+        public ActionResult Results(bool onlyMine)
         {
-            return View("Rows", m.FetchQueries());
+            var m = new SavedQueryModel { onlyMine = onlyMine };
+            UpdateModel(m.Pager);
+            return View(m);
         }
     }
 }
