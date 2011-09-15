@@ -59,7 +59,7 @@ namespace CmsWeb.Areas.Main.Models
         public int CreateQueue()
         {
             var From = new MailAddress(FromAddress, FromName);
-            return DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , false).Id; 
+            return DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , PublicViewable).Id; 
         }
 
         public IEnumerable<SelectListItem> EmailFroms()

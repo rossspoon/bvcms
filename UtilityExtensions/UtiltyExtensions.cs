@@ -1038,7 +1038,7 @@ namespace UtilityExtensions
         public static string ObscureEmail(string email)
         {
             var a = email.Split('@');
-            var rest = new string('x', a[0].Length - 2);
+            var rest = new string('.', 3);
             return a[0].Substring(0, 2) + rest + "@" + a[1];
         }
         public static string ObscureAccount(string acct)

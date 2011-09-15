@@ -1,0 +1,11 @@
+﻿@model CmsWeb.Models.ManagePledgesModel
+@{
+    Layout = "/Views/Shared/onlinereg.cshtml";
+    ViewBag.Title = "Online Registration";
+}
+
+   <h2>Confirmation</h2>
+    <p>
+        Thank you @Model.person.PreferredName, for making your pledge to @Model.Organization.OrganizationName<br />
+        You should receive a confirmation email shortly.</p>
+

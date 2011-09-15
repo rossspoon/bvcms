@@ -51,6 +51,9 @@
             } else if (ret.substr(0, 30) === '/OnlineReg/ManageSubscriptions') {
                 window.location = ret;
                 return;
+            } else if (ret.substr(0, 23) === '/OnlineReg/ManagePledge') {
+                window.location = ret;
+                return;
             }
             $(f).html(ret).ready(function () {
                 $.InstructionsShow();

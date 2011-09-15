@@ -73,19 +73,47 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             SetHeaders(m.divid);
             return View(m);
         }
+        public ActionResult ManagePledge(string id)
+        {
+            if (!id.HasValue())
+                return Content("bad link");
+            ManagePledgesModel m = null;
+            var td = TempData["mp"];
+            if (td != null)
+                m = new ManagePledgesModel(td.ToInt(), id.ToInt());
+            else
+            {
+                var guid = id.ToGuid();
+                if (guid == null)
+                    return Content("invalid link");
+                var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+                if (ot == null)
+                    return Content("invalid link");
+                if (ot.Used)
+                    return Content("link used");
+                if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+                    return Content("link expired");
+                var a = ot.Querystring.Split(',');
+                m = new ManagePledgesModel(a[1].ToInt(), a[0].ToInt());
+                ot.Used = true;
+                DbUtil.Db.SubmitChanges();
+            }
+            SetHeaders(m.orgid);
+            return View(m);
+        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ConfirmSlots(int id, int orgid)
         {
             var m = new SlotModel(id, orgid);
             var slots = string.Join("<br />\n", m.MySlots());
             var Db = DbUtil.Db;
-            Db.Email(Db.StaffEmailForOrg(m.org.OrganizationId), 
+            Db.Email(Db.StaffEmailForOrg(m.org.OrganizationId),
                 m.person, "Commitment confirmation",
 @"Thank you for committing to {0}. You have the following slots:<br/>
 {1}".Fmt(m.org.OrganizationName, slots));
-            Db.Email(m.person.FromEmail, 
-                Db.PeopleFromPidString(m.org.NotifyIds), 
-                "commitment received for " + m.org.OrganizationName, 
+            Db.Email(m.person.FromEmail,
+                Db.PeopleFromPidString(m.org.NotifyIds),
+                "commitment received for " + m.org.OrganizationName,
                 "{0} committed to:<br/>\n{1}".Fmt(m.org.OrganizationName, slots));
             return RedirectToAction("ConfirmSlots", new { id = m.org.OrganizationId });
         }
@@ -114,6 +142,36 @@ You have the following subscriptions:<br/>
 {2}".Fmt(m.person.Name, m.Division.Name, m.Summary));
 
             SetHeaders(m.divid);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ConfirmPledge(ManagePledgesModel m)
+        {
+            var Staff = DbUtil.Db.StaffPeopleForOrg(m.orgid);
+
+            //OrganizationMember.InsertOrgMembers(DbUtil.Db, m.orgid, m.pid, 220, DateTime.Now, null, false);
+
+            var desc = "{0}; {1}; {2}, {3} {4}".Fmt(
+                m.person.Name,
+                m.person.PrimaryAddress,
+                m.person.PrimaryCity,
+                m.person.PrimaryState,
+                m.person.PrimaryZip);
+            PostBundleModel.PostUnattendedContribution(
+                m.pledge ?? 0,
+                m.pid,
+                m.setting.DonationFundId,
+                desc, pledge: true);
+
+            var pi = m.GetPledgeInfo();
+            DbUtil.Db.Email(Staff.First().FromEmail, m.person,
+                "Pledge Confirmation",
+@"Thank you for your total pledge to {0} of ${1:N2}
+".Fmt(m.Organization.OrganizationName, pi.Pledged));
+
+            DbUtil.Db.Email(m.person.FromEmail, Staff, "Online Plege", @"{0} made a pledge to {1}".Fmt(m.person.Name, m.Organization.OrganizationName));
+
+            SetHeaders(m.orgid);
             return View(m);
         }
         public ActionResult VoteLink(string id, string smallgroup, string message, bool? confirm)

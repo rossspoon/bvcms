@@ -95,8 +95,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
             if (m.OnlinePledge())
             {
-                TempData["ms"] = Util.UserPeopleId;
-                return Content("/OnlineReg/Pledge/{0}".Fmt(m.divid));
+                TempData["mp"] = Util.UserPeopleId;
+                return Content("/OnlineReg/ManagePledge/{0}".Fmt(m.orgid));
             }
             m.List[0].LoggedIn = true;
             return View("Flow/List", m);
@@ -230,7 +230,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             p.classid = m.classid;
             p.PeopleId = null;
             p.ValidateModelForFind(ModelState, m);
-            if (p.ManageSubscriptions())
+            if (p.ManageSubscriptions() || p.OnlineGiving() || p.OnlinePledge())
             {
                 p.OtherOK = true;
                 //if (p.Found == true)
@@ -271,6 +271,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     ViewData["URL"] = m.URL;
                     ViewData["timeout"] = INT_timeout;
                     return View("ConfirmManageSub");
+                }
+                if (m.OnlinePledge())
+                {
+                    p.IsNew = true;
+                    m.ConfirmManagePledge();
+                    ViewData["ManagingPledge"] = true;
+                    ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
+                    DbUtil.Db.SubmitChanges();
+                    ViewData["email"] = m.List[0].person.EmailAddress;
+                    ViewData["orgname"] = m.div.Name;
+                    ViewData["URL"] = m.URL;
+                    ViewData["timeout"] = INT_timeout;
+                    SetHeaders(m);
+                    return View("ConfirmManagePledge");
                 }
                 if (p.org == null && p.ComputesOrganizationByAge())
                     ModelState.AddModelError(p.ErrorTarget, "Sorry, cannot find an appropriate age group");

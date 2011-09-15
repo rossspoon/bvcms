@@ -268,9 +268,32 @@ namespace CmsWeb.Models
                 p.AddPerson(null, EntryPointForDiv());
             if (p.CreatingAccount == true)
                 p.CreateAccount();
+
+            var c = DbUtil.Content("OneTimeConfirmation");
+            if (c == null)
+                c = new Content();
+
+            var message = Util.PickFirst(c.Body,
+                    @"Hi {name},
+<p>Here is your <a href=""{url}"">link</a> to manage your subscriptions. (note: it will only work once for security reasons)</p> ");
+
             p.SendOneTimeLink(
                 DbUtil.Db.StaffPeopleForDiv(divid.Value).First().FromEmail,
-                Util.ServerLink("/OnlineReg/ManageSubscriptions/"));
+                Util.ServerLink("/OnlineReg/ManageSubscriptions/"), "Manage Your Subscriptions", message);
+        }
+        public void ConfirmManagePledge()
+        {
+            var p = List[0];
+            if (p.IsNew)
+                p.AddPerson(null, p.org.EntryPointId ?? 0);
+            if (p.CreatingAccount == true)
+                p.CreateAccount();
+            var message = @"Hi {name},
+<p>Here is your <a href=""{url}"">link</a> to manage your pledge. (note: it will only work once for security reasons)</p> ";
+
+            p.SendOneTimeLink(
+                DbUtil.Db.StaffPeopleForOrg(orgid.Value).First().FromEmail,
+                Util.ServerLink("/OnlineReg/ManagePledge/"), "Manage your pledge", message);
         }
         public int EntryPointForDiv()
         {

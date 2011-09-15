@@ -18,6 +18,8 @@ namespace CmsData
             ChecksAndCash = 2,
             PreprintedEnvelope = 3,
             Online = 4,
+            OnlinePledge = 5,
+            Pledge = 6
         }
         public StatusCode StatusEnum
         {

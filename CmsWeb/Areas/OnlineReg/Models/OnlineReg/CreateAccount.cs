@@ -78,28 +78,22 @@ Just login to {host} and you will be taken to your record where you can make cor
                 Db.EmailRedacted(DbUtil.AdminMail, person, "New account for " + Db.Host, message);
             }
         }
-        public void SendOneTimeLink(string from, string url)
+        public void SendOneTimeLink(string from, string url, string subject, string body)
         {
             var ot = new OneTimeLink 
             { 
                 Id = Guid.NewGuid(),
-                Querystring = "{0},{1}".Fmt(divid, PeopleId) 
+                Querystring = "{0},{1}".Fmt(divid ?? orgid, PeopleId) 
             };
             var Db = DbUtil.Db;
             Db.OneTimeLinks.InsertOnSubmit(ot);
             Db.SubmitChanges();
-            var c = DbUtil.Content("OneTimeConfirmation");
-            if (c == null)
-                c = new Content();
 
-            var message = Util.PickFirst(c.Body,
-                    @"Hi {name},
-<p>Here is your <a href=""{url}"">link</a> to manage your subscriptions. (note: it will only work once for security reasons)</p> ");
-            message = message.Replace("{url}", url + ot.Id.ToCode());
+            var message = body.Replace("{url}", url + ot.Id.ToCode());
             message = message.Replace("{name}", person.Name);
             message = message.Replace("{first}", person.PreferredName);
 
-            Db.Email(from, person, "Manage Your Subscriptions", message);
+            Db.Email(from, person, subject, message);
         }
     }
 }

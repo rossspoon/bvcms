@@ -317,6 +317,7 @@
     <Compile Include="Areas\Main\Models\Report\TableUtil.cs" />
     <Compile Include="Areas\Manage\Controllers\EmailsController.cs" />
     <Compile Include="Areas\Manage\Controllers\TransactionsController.cs" />
+    <Compile Include="Areas\OnlineReg\Models\ManagePledgesModel.cs" />
     <Compile Include="Areas\Public\Controllers\OrgContentController.cs" />
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
@@ -341,7 +342,7 @@
     <Compile Include="Areas\OnlineReg\Controllers\SetHeaders.cs" />
     <Compile Include="Areas\OnlineReg\Controllers\Confirm.cs" />
     <Compile Include="Areas\OnlineReg\Controllers\OnlineRegController.cs" />
-    <Compile Include="Areas\Public\Models\ManageSubsModel.cs" />
+    <Compile Include="Areas\OnlineReg\Models\ManageSubsModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineRegPerson\Helper.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineRegPerson\Enroll.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineRegPerson\Transaction.cs" />
@@ -1433,6 +1434,9 @@
     <Content Include="Areas\Main\Views\OrgSearch\Row.cshtml" />
     <Content Include="Areas\Main\Views\Reports\Meetings.cshtml" />
     <Content Include="Areas\Main\Views\SavedQuery\Results.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ManagePledge.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManagePledge.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmPledge.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

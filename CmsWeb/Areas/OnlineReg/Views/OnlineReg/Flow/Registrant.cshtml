@@ -73,7 +73,7 @@
 @if (p.ShowDisplay())
 { // Already found
         @Html.Partial("Flow/PersonDisplay", p)
-    if (!p.ManageSubscriptions())
+    if (!p.ManageSubscriptions() && !p.OnlinePledge())
     {
         if (p.OtherOK)
         { // finished with other info

@@ -49,7 +49,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult View(int id)
         {
             var email = DbUtil.Db.EmailQueues.SingleOrDefault(ee => ee.Id == id);
-            if (email.PublicX ?? false == false)
+            if ((email.PublicX ?? false) == false)
                 return Content("no email available");
             var em = new EmailQueue
             {

@@ -28,15 +28,13 @@
         $(".managedivisions").toggle();
     });
     $.gotoPage = function (ev, pg) {
-        ev.preventDefault();
         $("#Page").val(pg);
         $.getTable();
         return false;
     }
     $.setPageSize = function (ev) {
-        ev.preventDefault();
         $('#Page').val(1);
-        $("#PageSize").val($(e).val());
+        $("#PageSize").val($(ev).val());
         return $.getTable();
     }
     $.getTable = function () {

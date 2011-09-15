@@ -205,6 +205,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
                 confirm = "ConfirmAccount";
             }
+            else if (m.OnlinePledge())
+            {
+                m.ConfirmManagePledge();
+                ViewData["ManagingPledge"] = true;
+                ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
+                confirm = "ConfirmAccount";
+            }
             else if (t.TransactionGateway == "ServiceU")
             {
                 t.TransactionId = TransactionID;

@@ -779,7 +779,6 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
         }
 
-
         public void ArchiveTask(int TaskId)
         {
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == TaskId);

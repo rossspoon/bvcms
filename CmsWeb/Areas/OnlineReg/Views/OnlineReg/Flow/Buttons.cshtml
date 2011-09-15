@@ -5,6 +5,12 @@
     <input id="submitit" type="submit" class="submitbutton" 
             value='Manage Subscriptions' />
 }
+@if (Model.OnlinePledge())
+{ 
+    <input id="submitit" type="submit" class="submitbutton" 
+            value='Email me a link to manage my pledge' />
+    <div>This link will be sent to @UtilityExtensions.Util.ObscureEmail(Model.last.person.EmailAddress)</div>
+}
 else if (Model.IsCreateAccount())
 { 
     <input id="submitit" type="submit" class="submitbutton" 

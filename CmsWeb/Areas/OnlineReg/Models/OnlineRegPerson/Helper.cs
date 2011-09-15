@@ -314,25 +314,5 @@ Thank you</p>";
                     };
             return q;
         }
-        public class PledgeInfo
-        {
-            public decimal Pledged { get; set; }
-            public decimal Given { get; set; }
-        }
-        public PledgeInfo GetPledgeInfo()
-        {
-            var RRTypes = new int[] { 6, 7 };
-            var q = from c in DbUtil.Db.Contributions
-                    where c.FundId == setting.DonationFundId
-                    where c.PeopleId == PeopleId
-                    where !RRTypes.Contains(c.ContributionTypeId)
-                    group c by PeopleId into g
-                    select new PledgeInfo
-                    {
-                        Pledged = g.Where(c => c.PledgeFlag == true).Sum(c => c.ContributionAmount) ?? 0,
-                        Given = g.Where(c => c.PledgeFlag == false).Sum(c => c.ContributionAmount) ?? 0,
-                    };
-            return q.SingleOrDefault() ?? new PledgeInfo { Given = 0m, Pledged = 0m };
-        }
     }
 }

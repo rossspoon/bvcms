@@ -212,12 +212,16 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
             return ContributionRowData(bd.ContributionId);
         }
-        public static Contribution PostUnattendedContribution(decimal Amt, int? PeopleId, int? Fund, string Description)
+        public static Contribution PostUnattendedContribution(decimal Amt, int? PeopleId, int? Fund, string Description, bool pledge = false)
         {
+            var typecode = (int)BundleHeader.TypeCode.Online;
+            if (pledge)
+                typecode = (int)BundleHeader.TypeCode.OnlinePledge;
+
             var d = Util.Now.Date;
             d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
             var q = from b in DbUtil.Db.BundleHeaders
-                    where b.BundleHeaderTypeId == (int)BundleHeader.TypeCode.Online
+                    where b.BundleHeaderTypeId == typecode
                     where b.ContributionDate >= d
                     where b.ContributionDate < Util.Now
                     orderby b.ContributionDate descending
@@ -227,7 +231,7 @@ namespace CmsWeb.Models
             {
                 bundle = new BundleHeader
                 {
-                    BundleHeaderTypeId = (int)BundleHeader.TypeCode.Online,
+                    BundleHeaderTypeId = typecode,
                     BundleStatusId = (int)BundleHeader.StatusCode.Open,
                     CreatedBy = Util.UserId1,
                     ContributionDate = d,
@@ -274,7 +278,7 @@ namespace CmsWeb.Models
                 ContributionDate = bd.CreatedDate,
                 ContributionAmount = Amt,
                 ContributionStatusId = 0,
-                PledgeFlag = false,
+                PledgeFlag = pledge,
                 ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
                 ContributionDesc = Description,
             };

@@ -95,13 +95,6 @@ namespace CmsWeb.Models
             set { _Suggestedfee = value; }
         }
         [OptionalField]
-        private decimal? _Pledge;
-        public decimal? pledge
-        {
-            get { return _Pledge; }
-            set { _Pledge = value; }
-        }
-        [OptionalField]
         private string _Option2;
         public string option2
         {

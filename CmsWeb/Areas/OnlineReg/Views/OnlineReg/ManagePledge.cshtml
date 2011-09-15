@@ -1,0 +1,62 @@
+﻿@model CmsWeb.Models.ManagePledgesModel 
+@using UtilityExtensions
+@{
+    Layout = "/Views/Shared/onlinereg.cshtml";
+    ViewBag.Title = "Online Registration";
+}
+
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.5.2.js")
+        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
+        .Add("/Content/js/jquery.blockUI.js")
+        .Add("/Content/js/jquery.tooltip.js")
+        .Render("/Content/ManageSubs#.js")
+)        
+    <h2>@Model.Organization.OrganizationName</h2>
+    <h4>Pledge Information for @Model.person.Name &lt;@Model.person.EmailAddress&gt;</h4>
+   <form method="post" action="/OnlineReg/ConfirmPledge">
+    @Html.Hidden("pid", Model.pid)
+    @Html.Hidden("orgid", Model.orgid)
+    <blockquote>
+    <table><tr><td>
+        @Html.Raw(Model.setting.InstructionOptions.Html)</td>
+    </td></tr></table>
+   <table cellpadding="5">
+@{
+    var pi = Model.GetPledgeInfo();
+    if (pi.Pledged > 0)
+    {
+    <tr><td>Pledged to date:</td>
+        <td align="right">$@pi.Pledged.ToString("N2")</td>
+    </tr>
+    }
+    if (pi.Given > 0)
+    {
+    <tr><td>Given to date:</td>
+        <td align="right">$@pi.Given.ToString("N2")</td>
+    </tr>
+    }
+    <tr>
+    <td>
+    @if (pi.Pledged > 0)
+    { 
+        @:My Additional Pledge Amount
+    }
+    else
+    {
+        @:My Pledge Amount
+    }
+    </td>
+        <td>@Html.TextBox("pledge", Model.pledge, new { @class = "short" })
+            <div>@Html.ValidationMessage("pledge")</div></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><input id="submitit" type="submit" class="submitbutton" value='Submit' />
+            </td></tr>
+}
+    </table>
+</blockquote>
+    </form>
+
+
