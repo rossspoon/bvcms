@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using CmsWeb.Areas.Manage.Controllers;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using System.Collections;
 
 namespace CmsWeb
 {
@@ -137,9 +138,10 @@ namespace CmsWeb
     public class DataGridResult : ActionResult
     {
         DataGrid dg;
-        public DataGridResult(DataGrid dg)
+        public DataGridResult(IEnumerable list)
         {
-            this.dg = dg;
+            dg = new DataGrid();
+            dg.DataSource = list;
         }
         public override void ExecuteResult(ControllerContext context)
         {

@@ -157,6 +157,7 @@ You have the following subscriptions:<br/>
                 m.person.PrimaryCity,
                 m.person.PrimaryState,
                 m.person.PrimaryZip);
+
             PostBundleModel.PostUnattendedContribution(
                 m.pledge ?? 0,
                 m.pid,
@@ -164,12 +165,14 @@ You have the following subscriptions:<br/>
                 desc, pledge: true);
 
             var pi = m.GetPledgeInfo();
-            DbUtil.Db.Email(Staff.First().FromEmail, m.person,
-                "Pledge Confirmation",
-@"Thank you for your total pledge to {0} of ${1:N2}
-".Fmt(m.Organization.OrganizationName, pi.Pledged));
+            var body = m.setting.Body.ToString();
+            body = body.Replace("{amt}", pi.Pledged.ToString("N2"));
+            body = body.Replace("{org}", m.Organization.OrganizationName);
+            body = body.Replace("{first}", m.person.PreferredName);
+            DbUtil.Db.EmailRedacted(Staff.First().FromEmail, m.person,
+                m.setting.Subject, body);
 
-            DbUtil.Db.Email(m.person.FromEmail, Staff, "Online Plege", @"{0} made a pledge to {1}".Fmt(m.person.Name, m.Organization.OrganizationName));
+            DbUtil.Db.Email(m.person.FromEmail, Staff, "Online Pledge", @"{0} made a pledge to {1}".Fmt(m.person.Name, m.Organization.OrganizationName));
 
             SetHeaders(m.orgid);
             return View(m);

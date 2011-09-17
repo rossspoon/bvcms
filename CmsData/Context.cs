@@ -737,5 +737,20 @@ namespace CmsData
                      select new string[] { a[0], a[1] };
             return q2;
         }
+        public IEnumerable<string[]> QueryStatClauses()
+        {
+            var q = from c in QueryBuilderClauses
+                    where c.GroupId == null && c.Field == "Group"
+                    where c.Description.StartsWith("S") && c.Description.Contains(":")
+                    select c.Description;
+
+            const string FindPrefix = @"^S\d+:.*";
+            var re = new Regex(FindPrefix, RegexOptions.Singleline | RegexOptions.Multiline);
+            var q2 = from s in q.ToList()
+                     where re.Match(s).Success
+                     let a = s.SplitStr(":", 2)
+                     select new string[] { a[0], a[1] };
+            return q2;
+        }
     }
 }

@@ -155,7 +155,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             var q = from a in DbUtil.Db.Attends
                     where a.Meeting.OrganizationId == orgid
-                    where a.MeetingDate >= a.Organization.FirstMeetingDate
+                    where a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null
                     where a.EffAttendFlag == true
                     group a by a.Person into g
                     let a = g.OrderByDescending(aa => aa.MeetingDate).First()

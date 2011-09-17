@@ -187,9 +187,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 foreach (var name in i.g)
                     list.Add(new ttt { label = "", name = name });
             }
-            var dg = new DataGrid();
-            dg.DataSource = list;
-            return new DataGridResult(dg);
+            return new DataGridResult(list);
         }
     }
 }

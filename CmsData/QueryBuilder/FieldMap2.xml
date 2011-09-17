@@ -214,6 +214,9 @@
     <Field Name="DecisionTypeId" Title="Decision Type" Type="Code" DataSource="DecisionCodes" DataValueField="IdCode">
       Type of decision during counseling: POF/Baptism, POF not for Membership, Letter, Statement, Statement Requiring Baptism
     </Field>
+    <Field Name="RecentDecisionType" Title="Recent Decision Type" Type="Code" DisplayAs="RecentDecisionType({0})" Params="Days" DataSource="DecisionCodes" DataValueField="IdCode">
+      A decision of type was made in last # days
+    </Field>
     <Field Name="JoinDate" Title="Join Date" Type="Date">
       Date membership steps were completed.
       Todo: explain how unknown dates work
@@ -372,6 +375,9 @@
     </Field>
     <Field Name="RecentAttendCount" Title="Recent Attendance Count" Type="Integer" DisplayAs="RecentAttendCount({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Days">
       Selects people based on an attendance count within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
+    </Field>
+    <Field Name="RecentNewVisitCount" Title="Recent New Attend Count" Type="Integer" DisplayAs="RecentNewAttendCount({0}, {1}, {2}, {3}, {4})" QuartersLabel="Number of days for no attendance" Params="Program,Division,Organization,Days,Quarters">
+      Selects people based on being a new attend within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
     <Field Name="VisitedCurrentOrg" Title="Has Visited Current Organization" Type="Bit" DataValueField="IdCode">
       Selects everyone who has visited the last organization you worked with within the days specified. (used internally, but you can too if it will help you)

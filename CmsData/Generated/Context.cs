@@ -462,6 +462,10 @@ namespace CmsData
         partial void UpdateQueryBuilderClause(QueryBuilderClause instance);
         partial void DeleteQueryBuilderClause(QueryBuilderClause instance);
         
+        partial void InsertQueryStat(QueryStat instance);
+        partial void UpdateQueryStat(QueryStat instance);
+        partial void DeleteQueryStat(QueryStat instance);
+        
         partial void InsertReadPlan(ReadPlan instance);
         partial void UpdateReadPlan(ReadPlan instance);
         partial void DeleteReadPlan(ReadPlan instance);
@@ -1333,12 +1337,17 @@ namespace CmsData
 		public Table< Promotion> Promotions
 		{
 			get	{ return this.GetTable< Promotion>(); }
-
 		}
 
 		public Table< QueryBuilderClause> QueryBuilderClauses
 		{
 			get	{ return this.GetTable< QueryBuilderClause>(); }
+
+		}
+
+		public Table< QueryStat> QueryStats
+		{
+			get	{ return this.GetTable< QueryStat>(); }
 
 		}
 

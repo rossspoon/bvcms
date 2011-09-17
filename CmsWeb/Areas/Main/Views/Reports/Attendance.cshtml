@@ -20,7 +20,7 @@
         });
         function RefreshList() {
             var q = $('form').serialize();
-            $.navigate("/Reports/Attendance/<%=Model.OrgId%>", q);
+            $.navigate("/Reports/Attendance/@Model.OrgId", q);
         }
     </script>
 

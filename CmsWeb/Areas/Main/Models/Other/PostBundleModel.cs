@@ -269,6 +269,9 @@ namespace CmsWeb.Models
                 CreatedBy = FinanceManagerId.Value,
                 CreatedDate = DateTime.Now,
             };
+            var typid = (int)Contribution.TypeCode.CheckCash;
+            if (pledge)
+                typid = (int)Contribution.TypeCode.Pledge;
             bd.Contribution = new Contribution
             {
                 CreatedBy = FinanceManagerId.Value,
@@ -279,7 +282,7 @@ namespace CmsWeb.Models
                 ContributionAmount = Amt,
                 ContributionStatusId = 0,
                 PledgeFlag = pledge,
-                ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+                ContributionTypeId = typid,
                 ContributionDesc = Description,
             };
             bundle.BundleDetails.Add(bd);

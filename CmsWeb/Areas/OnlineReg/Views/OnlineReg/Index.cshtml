@@ -46,7 +46,8 @@
 @{var msg = Model.Filled();}
 @if (Model.NotAvailable())
 { 
-    <h4>Sorry, Registration is not available at this time</h4>
+    <h4 id="sorry">Sorry, Registration is not available at this time</h4>
+        @Html.Raw(Util.PickFirst(Model.Instructions, ""))
 }
 else if (msg.HasValue())
 { 
@@ -69,7 +70,7 @@ else
 <div class=""instructions sorry"">
 </div>
 "))
-<form class="DisplayEdit" action="/OnlineReg/@(Model.AskDonation()? "AskDonation" : "CompleteRegistration")/@Model.qtesting" method="post">
+<form class="DisplayEdit" action="/OnlineReg/@(Model.AskDonation() ? "AskDonation" : "CompleteRegistration")/@Model.qtesting" method="post">
 @Html.Partial("Flow/List", Model) 
 </form>
 }

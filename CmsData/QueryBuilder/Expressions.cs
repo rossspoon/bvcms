@@ -66,24 +66,6 @@ namespace CmsData
             return expr;
         }
 
-        //internal static Expression WasMemberAsOf1(ParameterExpression parm,
-        //    CMSDataContext Db,
-        //    DateTime? from,
-        //    DateTime? to,
-        //    int? progid,
-        //    int? divid,
-        //    int? org,
-        //    CompareType op,
-        //    bool tf)
-        //{
-        //    to = to.HasValue ? to.Value.AddDays(1) : from.Value.AddDays(1);
-        //    Expression<Func<Person, bool>> pred = p =>
-        //        Db.MembersAsOf(from, to, progid, divid, org).Select(m => m.PeopleId).Contains(p.PeopleId);
-        //    Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-        //    if (!(op == CompareType.Equal && tf))
-        //        expr = Expression.Not(expr);
-        //    return expr;
-        //}
         internal static Expression WasMemberAsOf(
             ParameterExpression parm,
             DateTime? startdt,
@@ -384,6 +366,40 @@ namespace CmsData
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
         }
+        internal static Expression RecentNewVisitCount(
+            ParameterExpression parm,
+            int? progid,
+            int? divid,
+            int? org,
+            string days0,
+            int days,
+            CompareType op,
+            int cnt)
+        {
+            var dt1 = DateTime.Today.AddDays(-(days0.ToInt2() ?? 365));
+            var dt2 = DateTime.Today.AddDays(-days);
+            
+            Expression<Func<Person, int>> pred = p =>
+                p.Attends.Count(a => a.AttendanceFlag == true
+                    && a.MeetingDate >= dt2
+                    && (org == 0 || a.Meeting.OrganizationId == org)
+                    && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
+            Expression<Func<Person, bool>> pred2 = p =>
+                !p.Attends.Any(a => a.AttendanceFlag == true
+                    && a.MeetingDate < dt2
+                    && a.MeetingDate >= dt1
+                    && (org == 0 || a.Meeting.OrganizationId == org)
+                    && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
+            Expression left = Expression.Invoke(pred, parm);
+            Expression isnew = Expression.Invoke(pred2, parm);
+            var right = Expression.Convert(Expression.Constant(cnt), left.Type);
+            var expr = Compare(left, op, right);
+            return Expression.And(expr, isnew);
+        }
         internal static Expression KidsRecentAttendCount(
             ParameterExpression parm,
             int days,
@@ -397,6 +413,21 @@ namespace CmsData
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
+        }
+        internal static Expression RecentDecisionType(
+            ParameterExpression parm,
+            int days,
+            CompareType op,
+            int[] ids)
+        {
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, bool>> pred = p =>
+                p.DecisionDate > mindt
+                && ids.Contains(p.DecisionTypeId.Value);
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
         }
         internal static Expression EmailRecipient(
             ParameterExpression parm,
@@ -1694,6 +1725,21 @@ namespace CmsData
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(tf), left.Type);
             return Compare(left, op, right);
+        }
+        internal static Expression SavedQueryPlus(ParameterExpression parm,
+            CMSDataContext Db,
+            string QueryIdDesc,
+            CompareType op,
+            int[] ids)
+        {
+            var a = QueryIdDesc.Split(':');
+            var savedquery = Db.QueryBuilderClauses.SingleOrDefault(q =>
+                q.SavedBy == a[0] && q.Description == a[1]);
+            var pred = savedquery.Predicate(Db);
+            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
         }
         private static MethodInfo EnumerableContains = null;
         private static Expression CompareContains(ParameterExpression parm,

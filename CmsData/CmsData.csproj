@@ -206,6 +206,7 @@
     <Compile Include="Generated\OrgContent.cs" />
     <Compile Include="Generated\OrgSchedule.cs" />
     <Compile Include="Generated\PeopleQueryBit.cs" />
+    <Compile Include="Generated\QueryStat.cs" />
     <Compile Include="RegSettings.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />

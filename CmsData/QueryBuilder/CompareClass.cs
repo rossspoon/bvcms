@@ -415,6 +415,11 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.RecentDecisionType:
+                    return Expressions.RecentDecisionType(parm,
+                               c.Days,
+                               CompType,
+                               c.CodeIntIds);
                 case QueryType.RecentEmailCount:
                     return Expressions.RecentEmailCount(parm,
                                c.Days,
@@ -445,6 +450,15 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+                               c.Days,
+                               CompType,
+                               c.TextValue.ToInt());
+                case QueryType.RecentNewVisitCount:
+                    return Expressions.RecentNewVisitCount(parm,
+                               c.Program,
+                               c.Division,
+                               c.Organization,
+                               c.Quarters,
                                c.Days,
                                CompType,
                                c.TextValue.ToInt());

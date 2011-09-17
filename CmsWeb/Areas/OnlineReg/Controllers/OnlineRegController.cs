@@ -280,7 +280,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
                     DbUtil.Db.SubmitChanges();
                     ViewData["email"] = m.List[0].person.EmailAddress;
-                    ViewData["orgname"] = m.div.Name;
+                    ViewData["orgname"] = m.org.OrganizationName;
                     ViewData["URL"] = m.URL;
                     ViewData["timeout"] = INT_timeout;
                     SetHeaders(m);

@@ -248,7 +248,7 @@ namespace CmsData
                     else
                         Util.SendMsg(SysFromEmail, CmsHost, From, 
                             "(no email address) " + emailqueue.Subject, 
-                            "<p>No email address for {0}({1})</p>\n{2}".Fmt(p.Name, p.PeopleId, text), 
+                            "<p style='color:red'>You are receiving this because there is no email address for {0}({1}). You should probably contact them since they were probably expecting this information.</p>\n{2}".Fmt(p.Name, p.PeopleId, text), 
                             Util.ToMailAddressList(From), 
                             emailqueue.Id, pid);
                     emailqueueto.Sent = DateTime.Now;
