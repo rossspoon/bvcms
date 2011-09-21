@@ -96,9 +96,9 @@ namespace CmsWeb.Models
                     amt += q.First();
             }
             if (setting.Checkboxes.Any(vv => vv.Fee > 0))
-                amt += CheckboxItemsChosen().Sum(c => c.Fee.Value);
+                amt += CheckboxItemsChosen().Sum(c => c.Fee ?? 0);
             if (setting.Checkboxes2.Any(vv => vv.Fee > 0))
-                amt += Checkbox2ItemsChosen().Sum(c => c.Fee.Value);
+                amt += Checkbox2ItemsChosen().Sum(c => c.Fee ?? 0);
             return amt;
         }
     }

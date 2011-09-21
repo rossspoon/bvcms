@@ -462,6 +462,14 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.TextValue.ToInt());
+                case QueryType.RecentRegistrationType:
+                    return Expressions.RecentRegistrationType(parm,
+                               c.Program,
+                               c.Division,
+                               c.Organization,
+                               c.Days,
+                               CompType,
+                               c.CodeIntIds);
                 case QueryType.RecentAttendMemberType:
                     return Expressions.RecentAttendMemberType(parm,
                                c.Program,

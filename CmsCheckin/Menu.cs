@@ -15,10 +15,9 @@ namespace CmsCheckin
         public event EventHandler EditRecord;
         public event EventHandler AddFamily;
         public event EventHandler JoinClass;
+        public event EventHandler DropJoinClass;
         public event EventHandler PrintLabel;
         public event EventHandler CancelMenu;
-
-
         
         public Menu()
         {
@@ -60,5 +59,12 @@ namespace CmsCheckin
             if (CancelMenu != null)
                 CancelMenu(sender, e);
         }
+
+        private void DropJoin_Click(object sender, EventArgs e)
+        {
+            if (DropJoinClass != null)
+                DropJoinClass(sender, e);
+        }
+
     }
 }

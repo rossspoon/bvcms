@@ -33,6 +33,13 @@ namespace CmsData.Codes
         public const int Previous = 40;
         public const int JustAdded = 50;
     }
+    public static class ResidentCode
+    {
+        public const int Metro = 10;
+        public const int Marginal = 20;
+        public const int NonResident= 30;
+        public const int UnableToLocate = 40;
+    }
     public static class NewMemberClassStatusCode
     {
         public const int NotSpecified = 0;

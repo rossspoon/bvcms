@@ -1,2 +1,15 @@
 ﻿@model CmsWeb.Models.SavedQueryInfo
-<tr><td><span id="d.@Model.QueryId" class="clickEdit">@Model.Description</span></td></tr>
+@using UtilityExtensions
+<tr><td><span id="d.@Model.QueryId" class="clickEdit">@Model.Description</span></td>
+    <td><span id="o.@Model.QueryId" class="clickEdit">@Model.User</span></td>
+@if (User.IsInRole("Admin") || Util.UserName == Model.User)
+{
+    <td><span id='p.@Model.QueryId' class='yesno'>@(Model.IsPublic ? "yes" : "no")</span></td>
+    <td><a id='x.@Model.QueryId' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a></td>
+}
+else
+{
+    <td>@(Model.IsPublic ? "yes" : "no")</td>
+    <td></td>
+}
+</tr>

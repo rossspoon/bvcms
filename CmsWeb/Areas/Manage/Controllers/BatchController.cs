@@ -781,28 +781,6 @@ namespace CmsWeb.Areas.Manage.Controllers
             return Redirect("/");
         }
 
-        public ActionResult DoVisits()
-        {
-            var q = from p in DbUtil.Db.People
-                    where p.PeopleExtras.Any(pp => pp.FieldValue == "VisitEaster:1")
-                    select p.PeopleId;
-
-            foreach (var pid in q)
-                Attend.RecordAttendance(pid, 4272905, true);
-
-            DbUtil.Db.UpdateMeetingCounters(4272905);
-
-            var j = from p in DbUtil.Db.People
-                    where p.PeopleExtras.Any(pp => pp.FieldValue == "VisitEaster:2")
-                    select p.PeopleId;
-
-            foreach (var pid in j)
-                Attend.RecordAttendance(pid, 4272907, true);
-
-            DbUtil.Db.UpdateMeetingCounters(4272907);
-
-            return Content("done");
-        }
         public class FindInfo
         {
             public int? PeopleId { get; set; }

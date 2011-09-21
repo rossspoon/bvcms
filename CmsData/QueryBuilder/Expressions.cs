@@ -197,6 +197,28 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression RecentRegistrationType(
+            ParameterExpression parm,
+            int? progid,
+            int? divid,
+            int? org,
+            int days,
+            CompareType op,
+            int[] ids)
+        {
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, bool>> pred = p =>
+                p.OrganizationMembers.Any(a => a.EnrollmentDate >= mindt
+                    && ids.Contains(a.Organization.RegistrationTypeId.Value)
+                    && (org == 0 || a.OrganizationId == org)
+                    && (divid == 0 || a.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || a.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
 
         internal static Expression HasTaskWithName(
             ParameterExpression parm,

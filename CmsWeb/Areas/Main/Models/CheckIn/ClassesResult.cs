@@ -120,6 +120,15 @@ namespace CmsWeb.Models
 
                 foreach (var o in q2)
                 {
+                    double leadtime = 0;
+                    if (o.Hour.HasValue)
+                    {
+                        var midnight = o.Hour.Value.Date;
+                        var now = midnight.Add(Util.Now2.TimeOfDay);
+                        leadtime = o.Hour.Value.Subtract(now).TotalHours;
+                        leadtime -= DbUtil.Db.Setting("TZOffset", "0").ToInt(); // positive to the east, negative to the west
+                    }
+
                     w.WriteStartElement("class");
                     w.WriteAttributeString("orgid", o.OrganizationId.ToString());
                     var loc = o.Location;
@@ -141,6 +150,7 @@ namespace CmsWeb.Models
                                 .Fmt(o.Hour, o.OrganizationName, leader, loc, bdays));
                     w.WriteAttributeString("nlabels", o.NumCheckInLabels.ToString());
                     w.WriteAttributeString("hour", o.Hour.ToString2("M/d/yy h:mm tt"));
+                    w.WriteAttributeString("leadtime", leadtime.ToString());
                     w.WriteEndElement();
                 }
                 w.WriteEndElement();

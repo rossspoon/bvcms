@@ -27,6 +27,15 @@ namespace CmsWeb.Areas.Main.Controllers
                 case "d":
                     c.Description = value;
                     break;
+                case "o":
+                    c.SavedBy = value;
+                    break;
+                case "p":
+                    c.IsPublic = value == "yes";
+                    break;
+                case "x":
+                    DbUtil.Db.DeleteQueryBuilderClauseOnSubmit(c);
+                    break;
             }
             DbUtil.Db.SubmitChanges();
             return Content(value);

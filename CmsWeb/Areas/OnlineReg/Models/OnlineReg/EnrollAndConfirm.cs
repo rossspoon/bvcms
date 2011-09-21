@@ -60,12 +60,16 @@ namespace CmsWeb.Models
 
             var pids2 = new List<TransactionPerson>();
             foreach (var p in List)
+            {
+                if (p.PeopleId == null)
+                    return;
                 pids2.Add(new TransactionPerson
                 {
                     PeopleId = p.PeopleId.Value,
                     Amt = p.AmountToPay() + p.AmountDue(),
                     OrgId = orgid,
                 });
+            }
 
             ti.Emails = Util.EmailAddressListToString(elist);
             ti.Participants = participants.ToString();

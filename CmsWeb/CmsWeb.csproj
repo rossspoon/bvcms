@@ -324,6 +324,7 @@
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Content Include="Binaries\AuthorizeNet.dll" />
+    <Content Include="Content\js\jquery-1.5.2-vsdoc.js" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
@@ -1437,6 +1438,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManagePledge.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManagePledge.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmPledge.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\VitalStats.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

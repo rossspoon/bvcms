@@ -73,12 +73,42 @@ namespace CmsCheckin
             password.Focus();
         }
 
+        public XDocument campuses { get; set; }
         private void button1_Click(object sender, EventArgs e)
         {
             Settings1.Default.URL = URL.Text;
             Settings1.Default.username = username.Text;
             Settings1.Default.Save();
-            this.Hide();
+
+#if DEBUG
+            Program.URL = "http://" + URL.Text;
+#else
+            if (Settings1.Default.UseSSL)
+                Program.URL = "https://" + URL.Text;
+            else
+                Program.URL = "http://" + URL.Text;
+#endif
+            Program.Username = username.Text;
+            Program.Password = password.Text;
+            var wc = Util.CreateWebClient();
+            try
+            {
+                var url = new Uri(new Uri(Program.URL), "Checkin2/Campuses");
+                var str = wc.DownloadString(url);
+                if (str == "not authorized")
+                {
+                    MessageBox.Show(str);
+                    CancelClose = true;
+                    return;
+                }
+                campuses = XDocument.Parse(str);
+                this.Hide();
+            }
+            catch (WebException ex)
+            {
+                MessageBox.Show("cannot find " + Program.URL);
+                CancelClose = true;
+            }
         }
 
         TextBox current = null;
@@ -151,6 +181,13 @@ namespace CmsCheckin
         private void bcolon_Click(object sender, EventArgs e)
         {
             KeyStroke(':');
+        }
+
+        public bool CancelClose { get; set; }
+        private void Login_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = CancelClose;
+            CancelClose = false;
         }
     }
 }

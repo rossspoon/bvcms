@@ -14,7 +14,6 @@ namespace CmsWeb.Models
         public bool isdev { get; set; }
         public bool onlyMine { get; set; }
         public bool showscratchpads { get; set; }
-        public string sort { get; set; }
 
         public SavedQueryModel()
         {
@@ -59,50 +58,60 @@ namespace CmsWeb.Models
         }
         private IEnumerable<QueryBuilderClause> ApplySort(IQueryable<QueryBuilderClause> q)
         {
-            //switch (sort)
-            //{
-            //    case "IsPublic":
-            //        q = from c in q
-            //            orderby c.IsPublic, c.SavedBy, c.Description
-            //            select c;
-            //        break;
-            //    case "Description":
-            //        q = from c in q
-            //            orderby c.Description
-            //            select c;
-            //        break;
-            //    case "LastUpdated":
-            //        q = from c in q
-            //            orderby c.CreatedOn
-            //            select c;
-            //        break;
-            //    case "User":
-            //        q = from c in q
-            //            orderby c.SavedBy, c.Description
-            //            select c;
-            //        break;
-            //    case "IsPublic DESC":
-            //        q = from c in q
-            //            orderby c.IsPublic descending, c.SavedBy, c.Description
-            //            select c;
-            //        break;
-            //    case "Description DESC":
-            //        q = from c in q
-            //            orderby c.Description descending
-            //            select c;
-            //        break;
-            //    case "LastUpdated DESC":
-            //        q = from c in q
-            //            orderby c.CreatedOn descending
-            //            select c;
-            //        break;
-            //    case "User DESC":
-            //        q = from c in q
-            //            orderby c.SavedBy descending, c.Description
-            //            select c;
-            //        break;
-            //}
-            return _queries;
+            switch (Pager.Direction)
+            {
+                case "asc":
+                    switch (Pager.Sort)
+                    {
+                        case "Public":
+                            q = from c in q
+                                orderby c.IsPublic, c.SavedBy, c.Description
+                                select c;
+                            break;
+                        case "Description":
+                            q = from c in q
+                                orderby c.Description
+                                select c;
+                            break;
+                        case "LastUpdated":
+                            q = from c in q
+                                orderby c.CreatedOn
+                                select c;
+                            break;
+                        case "Owner":
+                            q = from c in q
+                                orderby c.SavedBy, c.Description
+                                select c;
+                            break;
+                    }
+                    break;
+                case "desc":
+                    switch (Pager.Sort)
+                    {
+                        case "Public":
+                            q = from c in q
+                                orderby c.IsPublic descending, c.SavedBy, c.Description
+                                select c;
+                            break;
+                        case "Description":
+                            q = from c in q
+                                orderby c.Description descending
+                                select c;
+                            break;
+                        case "LastUpdated":
+                            q = from c in q
+                                orderby c.CreatedOn descending
+                                select c;
+                            break;
+                        case "Owner":
+                            q = from c in q
+                                orderby c.SavedBy descending, c.Description
+                                select c;
+                            break;
+                    }
+                    break;
+            }
+            return q;
         }
     }
     public class SavedQueryInfo

@@ -41,12 +41,12 @@
     @Html.Hidden("Misc3")
     @Html.Hidden("Misc4")
     <p>
-        When you click the 'Make Payment' button you will be redirected to ServiceU.com to process your credit card payment of $@Model.Amt.Value.ToString("N").
+        When you click the 'Make Payment' button you will be redirected to ServiceU.com to process your credit card payment of $@((Model.Amt ?? 0).ToString("N")).
         After you are finished there, you will be redirected back here to get your confirmation.
         Your information will not be committed until you complete the transaction on the next page.
     </p>
     <p>
-    @Html.TextBox("Amount", Model.Amt.Value.ToString("f2"))
+    @Html.TextBox("Amount", (Model.Amt ?? 0).ToString("f2"))
     <input type="submit" name="Submit" value="Make Payment" /></p>
     <p>If you have a coupon, please enter that number here and click the button next to it:</p>
     @Html.TextBox("Coupon")

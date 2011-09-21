@@ -98,7 +98,7 @@ namespace CmsCheckin
                 else
                     ph = "";
             Program.ClearFields();
-            if (Program.editing || Program.KioskMode)
+            if (Program.editing)
             {
                 this.Swap(Program.family);
                 Program.family.ShowFamily(Program.FamilyId);

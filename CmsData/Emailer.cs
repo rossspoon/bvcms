@@ -281,6 +281,8 @@ namespace CmsData
             else
                 text = text.Replace("{first}", p.PreferredName);
             text = text.Replace("{occupation}", p.OccupationOther);
+            var eurl = Util.URLCombine(CmsHost, "Manage/Emails/View/" + emailqueueto.Id);
+            text = text.Replace("{emailhref}", eurl);
 
             text = DoVoteLinkAnchorStyle(text, CmsHost, emailqueueto);
             text = DoVoteTag(text, CmsHost, emailqueueto);

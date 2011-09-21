@@ -48,8 +48,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.KioskName = new System.Windows.Forms.TextBox();
             this.AskLabels = new System.Windows.Forms.CheckBox();
-            this.KioskMode = new System.Windows.Forms.CheckBox();
             this.TwoInchLabel = new System.Windows.Forms.CheckBox();
+            this.FullScreen = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbCampusId
@@ -106,9 +106,10 @@
             this.HideCursor.AutoSize = true;
             this.HideCursor.Checked = true;
             this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.HideCursor.Location = new System.Drawing.Point(532, 478);
+            this.HideCursor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HideCursor.Location = new System.Drawing.Point(271, 480);
             this.HideCursor.Name = "HideCursor";
-            this.HideCursor.Size = new System.Drawing.Size(81, 17);
+            this.HideCursor.Size = new System.Drawing.Size(112, 24);
             this.HideCursor.TabIndex = 21;
             this.HideCursor.Text = "Hide Cursor";
             this.HideCursor.UseVisualStyleBackColor = true;
@@ -283,17 +284,6 @@
             this.AskLabels.Text = "Ask whether labels printed";
             this.AskLabels.UseVisualStyleBackColor = true;
             // 
-            // KioskMode
-            // 
-            this.KioskMode.AutoSize = true;
-            this.KioskMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.KioskMode.Location = new System.Drawing.Point(271, 450);
-            this.KioskMode.Name = "KioskMode";
-            this.KioskMode.Size = new System.Drawing.Size(156, 24);
-            this.KioskMode.TabIndex = 26;
-            this.KioskMode.Text = "Kiosk Registration";
-            this.KioskMode.UseVisualStyleBackColor = true;
-            // 
             // TwoInchLabel
             // 
             this.TwoInchLabel.AutoSize = true;
@@ -305,13 +295,26 @@
             this.TwoInchLabel.Text = "Two Inch Label Style";
             this.TwoInchLabel.UseVisualStyleBackColor = true;
             // 
+            // FullScreen
+            // 
+            this.FullScreen.AutoSize = true;
+            this.FullScreen.Checked = true;
+            this.FullScreen.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.FullScreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FullScreen.Location = new System.Drawing.Point(271, 450);
+            this.FullScreen.Name = "FullScreen";
+            this.FullScreen.Size = new System.Drawing.Size(108, 24);
+            this.FullScreen.TabIndex = 28;
+            this.FullScreen.Text = "Full Screen";
+            this.FullScreen.UseVisualStyleBackColor = true;
+            // 
             // StartUp
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(796, 519);
+            this.Controls.Add(this.FullScreen);
             this.Controls.Add(this.TwoInchLabel);
-            this.Controls.Add(this.KioskMode);
             this.Controls.Add(this.AskLabels);
             this.Controls.Add(this.KioskName);
             this.Controls.Add(this.label6);
@@ -364,7 +367,7 @@
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.TextBox KioskName;
         public System.Windows.Forms.CheckBox AskLabels;
-        public System.Windows.Forms.CheckBox KioskMode;
         public System.Windows.Forms.CheckBox TwoInchLabel;
+        public System.Windows.Forms.CheckBox FullScreen;
     }
 }

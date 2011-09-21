@@ -104,6 +104,7 @@ namespace CmsWeb.Models
                          Amount = c.ContributionAmount ?? 0,
                          Date = c.ContributionDate,
                          c.FundId,
+                         c.BundleDetails.First().BundleHeader.BundleHeaderType.Description
                          //IsSpouse = f.HeadOfHouseholdId == sp.PeopleId ? true : false,
                      };
             return q2;

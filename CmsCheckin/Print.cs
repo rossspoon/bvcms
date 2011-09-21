@@ -16,7 +16,7 @@ namespace CmsCheckin
             Uri url;
             string str;
             XDocument x;
-            url = new Uri(new Uri(Util.ServiceUrl()),
+            url = new Uri(new Uri(Program.URL),
                 string.Format("Checkin2/Class/{0}", Util.GetDigits(orgid)));
             var wc = Util.CreateWebClient();
             str = wc.DownloadString(url + Program.QueryString);

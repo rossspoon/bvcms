@@ -34,6 +34,15 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             if (ti == null || ti.Amtdue == 0)
                 return Content("no outstanding transaction");
+
+            if (ti.TransactionGateway != "ServiceU")
+            {
+                var pf = new PaymentForm { ti = ti };
+                ViewData["Confirm"] = "ConfirmDuePaid";
+                ViewData["timeout"] = INT_timeout;
+                SetHeaders(ti.OrgId.Value);
+                return View("ProcessPayment", pf);
+            }
             try
             {
                 var ti2 = new Transaction

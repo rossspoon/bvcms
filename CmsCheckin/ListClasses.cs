@@ -97,14 +97,26 @@ namespace CmsCheckin
             {
                 var hr = DateTime.Today;
                 DateTime.TryParse(e.Attribute("hour").Value, out hr);
-                list.Add(new ClassInfo
+
+                var ci = new ClassInfo
                 {
                     display = e.Attribute("display").Value,
                     oid = e.Attribute("orgid").Value.ToInt(),
                     pid = PeopleId,
                     nlabels = e.Attribute("nlabels").Value.ToInt(),
                     hour = hr
-                });
+                };
+                var leadtime = double.Parse(e.Attribute("leadtime").Value);
+                double howlate = -(Program.EarlyCheckin / 60d);
+                if (ci.oid != 0 && leadtime <= Program.LeadTime && leadtime >= howlate)
+                    list.Add(new ClassInfo
+                    {
+                        display = e.Attribute("display").Value,
+                        oid = e.Attribute("orgid").Value.ToInt(),
+                        pid = PeopleId,
+                        nlabels = e.Attribute("nlabels").Value.ToInt(),
+                        hour = hr
+                    });
             }
             ShowPage(1);
         }

@@ -308,6 +308,12 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new QueryStatsResult();
         }
+        public ActionResult VitalStats()
+        {
+            var m = new CmsData.QueryFunctions(DbUtil.Db);
+            ViewData["table"] = m.VitalStats();
+            return View();
+        }
         public class QueryStatsResult : ActionResult
         {
             StringBuilder sb = new StringBuilder();

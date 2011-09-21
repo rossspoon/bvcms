@@ -299,11 +299,14 @@
     <Field Name="OrgJoinDate" Title="Org Enrollment Date" Type="Date" DisplayAs="OrgJoinDate({0}, {1}, {2})" Params="Program,Division,Organization" >
       Selects members of an organization by the date they joined the organization
     </Field>
-    <Field Name="OrgJoinDateDaysAgo" Title="Organization Join Date Days Ago" Type="Integer" DisplayAs="OrgJoinDateDaysAgo({0}, {1}, {2})" Params="Program,Division,Organization">
+    <Field Name="OrgJoinDateDaysAgo" Title="Recent Org Join Date" Type="Integer" DisplayAs="RecentOrgJoinDate({0}, {1}, {2})" Params="Program,Division,Organization">
       Selects members of an organization who joined it before or after so many days ago. Specify the Program or Program/Division or Program/Division/Organization. Enter the number of days to compare with on the right side.
     </Field>
     <Field Name="OrgInactiveDate" Title="Org Inactive Date" Type="Date" DisplayAs="OrgInactiveDate({0}, {1}, {2})" Params="Program,Division,Organization" >
       Selects members of an organization by date they become inactive.
+    </Field>
+    <Field Name="RecentRegistrationType" Title="Recent Registration Type" Type="Code" DisplayAs="RecentOrgJoinDate({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Days" DataSource="RegistrationTypes" DataValueField="IdCode">
+      Selects members of an organization with the RegistrationType who joined it before or after so many days ago. Specify the Program or Program/Division or Program/Division/Organization. 
     </Field>
     <Field Name="OrgJoinDateCompare" Title="Org Join Date Compared to Field" Type="DateField" DisplayAs="OrgJoinDateCompared({0}, {1}, {2})" Params="Program,Division,Organization" DataSource="DateFields" DataValueField="Code">
       Selects members of an organization where the date they joined the organization is compared with another system date such as Church Join Date (less than, greater than etc..)

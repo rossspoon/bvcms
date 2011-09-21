@@ -220,6 +220,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 t.Message = "Transaction Completed";
                 t.Approved = true;
                 m.EnrollAndConfirm();
+                if (m.List.Any(pp => pp.PeopleId == null))
+                    return Content("no person");
                 m.UseCoupon(t.TransactionId);
             }
             else
@@ -231,10 +233,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                         t.TransactionId += "(testing)";
                 }
                 m.EnrollAndConfirm();
+                if (m.List.Any(pp => pp.PeopleId == null))
+                    return Content("no person");
                 m.UseCoupon(t.TransactionId);
             }
 
-
+            
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
             if (m.IsCreateAccount() || m.ManagingSubscriptions())

@@ -16,6 +16,7 @@ namespace CmsCheckin
 {
     public partial class StartUp : Form
     {
+        public XDocument campuses { get; set; }
         public int CampusId
         {
             get
@@ -68,7 +69,6 @@ namespace CmsCheckin
             Settings1.Default.AskEmFriend = AskEmFriend.Checked;
             Settings1.Default.AskGrade = AskGrade.Checked;
             Settings1.Default.KioskName = KioskName.Text;
-            Settings1.Default.KioskMode = KioskMode.Checked;
             Settings1.Default.TwoInchLabel = TwoInchLabel.Checked;
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
             Settings1.Default.LeadHours = LeadHours.Text.ToInt();
@@ -91,11 +91,7 @@ namespace CmsCheckin
             if (Settings1.Default.Printer.HasValue())
                 Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
 
-            var wc = Util.CreateWebClient();
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/Campuses");
-            var str = wc.DownloadString(url);
-            var x = XDocument.Parse(str);
-            foreach (var i in x.Descendants("campus"))
+            foreach (var i in campuses.Descendants("campus"))
                 cbCampusId.Items.Add(new Campus
                 {
                     Id = int.Parse(i.Attribute("id").Value),
@@ -118,7 +114,6 @@ namespace CmsCheckin
             AskChurch.Checked = Settings1.Default.AskChurch;
             AskChurchName.Checked = Settings1.Default.AskChurchName;
             KioskName.Text = Settings1.Default.KioskName;
-            KioskMode.Checked = Settings1.Default.KioskMode;
             TwoInchLabel.Checked = Settings1.Default.TwoInchLabel;
         }
     }

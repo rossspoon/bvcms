@@ -16,11 +16,6 @@ namespace CmsCheckin
 {
     public static partial class Util
     {
-        public static string ServiceUrl()
-        {
-            //return "http://ipv4.fiddler:58724/";
-            return Program.URL;
-        }
         public static WebClient CreateWebClient()
         {
             var wc = new WebClient();
@@ -46,7 +41,7 @@ namespace CmsCheckin
         public static XDocument GetDocument(this Control f, string page)
         {
             var wc = Util.CreateWebClient();
-            var url = new Uri(new Uri(Util.ServiceUrl()), page);
+            var url = new Uri(new Uri(Program.URL), page);
 
             var str = wc.DownloadString(url);
 
@@ -128,7 +123,7 @@ namespace CmsCheckin
                 coll.Add("activeother", (activeother == CheckState.Checked).ToString());
                 coll.Add("AskChurch", Program.AskChurch.ToString());
             }
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/AddPerson/" + Program.FamilyId);
+            var url = new Uri(new Uri(Program.URL), "Checkin2/AddPerson/" + Program.FamilyId);
             var resp = wc.UploadValues(url, "POST", coll);
             var s = Encoding.ASCII.GetString(resp);
             var a = s.Split('.');
@@ -199,7 +194,7 @@ namespace CmsCheckin
                 coll.Add("AskChurch", Program.AskChurch.ToString());
             }
 
-            var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/EditPerson/" + id);
+            var url = new Uri(new Uri(Program.URL), "Checkin2/EditPerson/" + id);
 
             var resp = wc.UploadValues(url, "POST", coll);
 
@@ -331,7 +326,7 @@ namespace CmsCheckin
                 coll.Add("Present", info.ischecked.ToString());
                 coll.Add("hour", info.c.hour.Value.ToString("M/d/yy h:mm tt"));
                 coll.Add("kiosk", Program.KioskName);
-                url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/RecordAttend2/");
+                url = new Uri(new Uri(Program.URL), "Checkin2/RecordAttend2/");
 
                 var resp = wc.UploadValues(url, "POST", coll);
 #if DEBUG
@@ -355,7 +350,7 @@ namespace CmsCheckin
                 coll.Add("OrgId", c.oid.ToString());
                 Uri url = null;
                 coll.Add("Member", joining.ToString());
-                url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/Membership/");
+                url = new Uri(new Uri(Program.URL), "Checkin2/Membership/");
                 var resp = wc.UploadValues(url, "POST", coll);
 #if DEBUG
                 //System.Threading.Thread.Sleep(1500);
@@ -375,7 +370,7 @@ namespace CmsCheckin
                 var wc = CreateWebClient();
                 var coll = new NameValueCollection();
                 coll.Add("fid", Program.FamilyId.ToString());
-                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/UnLockFamily/");
+                var url = new Uri(new Uri(Program.URL), "Checkin2/UnLockFamily/");
                 var resp = wc.UploadValues(url, "POST", coll);
                 var s = Encoding.ASCII.GetString(resp);
             }
@@ -391,7 +386,7 @@ namespace CmsCheckin
                 var coll = new NameValueCollection();
                 coll.Add("kiosk", Program.KioskName);
                 coll.Add("campusid", Program.CampusId.ToString());
-                var url = new Uri(new Uri(Util.ServiceUrl()), "Checkin2/ReportPrinterProblem/");
+                var url = new Uri(new Uri(Program.URL), "Checkin2/ReportPrinterProblem/");
                 var resp = wc.UploadValues(url, "POST", coll);
                 var s = Encoding.ASCII.GetString(resp);
             }

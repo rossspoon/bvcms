@@ -440,7 +440,7 @@ namespace CmsCheckin
                     ms.LabelKiosk(li);
                 PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
             }
-                
+
             RemoveMenu();
         }
 
@@ -520,36 +520,29 @@ namespace CmsCheckin
             menu.EditRecord += EditRecord_Click;
             menu.PrintLabel += PrintLabel_Click;
             menu.AddFamily += AddToFamily_Click;
-            if (Program.KioskMode)
+            menu.JoinClass += Join_Click;
+            if (c.cinfo.oid != 0)
             {
-                if (c.cinfo.oid == 0)
-                {
-                    menu.JoinClass += new EventHandler(menu_JoinClass);
-                    menu.Join.Text = "Join Class";
-                }
-                else
-                {
-                    menu.JoinClass += new EventHandler(menu_UnJoinClass);
-                    menu.Join.Text = "Drop Class";
-                }
-            }
-            else if (c.cinfo.oid != 0)
+                menu.DropJoin.Visible = true;
                 if (c.cinfo.mv == "M")
                 {
-                    menu.JoinClass += new EventHandler(menu_UnJoinClass);
-                    menu.Join.Text = "Drop Class";
+                    menu.DropJoinClass += DropThis_Click;
+                    menu.DropJoin.Text = "Drop This Class";
                 }
                 else
                 {
-                    menu.JoinClass += new EventHandler(menu_JoinClass);
-                    menu.Join.Text = "Join Class";
+                    menu.DropJoinClass += JoinThis_Click;
+                    menu.DropJoin.Text = "Join This Class";
                 }
+            }
+            else
+                menu.DropJoin.Visible = false;
             menu.CancelMenu += new EventHandler(CancelMenu_Click);
             menu.Show();
             menu.BringToFront();
         }
 
-        void menu_JoinClass(object sender, EventArgs e)
+        void Join_Click(object sender, EventArgs e)
         {
             var c = list[(int)menu.Tag];
             SaveClasses();
@@ -558,13 +551,23 @@ namespace CmsCheckin
             Program.classes.JoiningNotAttending = true;
             Program.classes.ShowResults(c.cinfo.pid);
         }
-        void menu_UnJoinClass(object sender, EventArgs e)
+        void DropThis_Click(object sender, EventArgs e)
         {
             var c = list[(int)menu.Tag];
             var org = this.Controls[this.Controls.IndexOfKey("org" + menu.Tag.ToString())] as Label;
             SaveClasses();
 
             Util.JoinUnJoin(c.cinfo, false);
+            RemoveMenu();
+            Program.family.ShowFamily(Program.FamilyId);
+        }
+        void JoinThis_Click(object sender, EventArgs e)
+        {
+            var c = list[(int)menu.Tag];
+            var org = this.Controls[this.Controls.IndexOfKey("org" + menu.Tag.ToString())] as Label;
+            SaveClasses();
+
+            Util.JoinUnJoin(c.cinfo, true);
             RemoveMenu();
             Program.family.ShowFamily(Program.FamilyId);
         }
@@ -664,16 +667,15 @@ namespace CmsCheckin
                     PrintLabels2(ms);
                 else
                     PrintLabels(ms);
-                if (Program.KioskMode == false)
-                    if (LabelsPrinted > 0)
-                    {
-                        if (RequiresSecurityLabel)
-                            if (Program.TwoInchLabel)
-                                LabelsPrinted += ms.SecurityLabel2(time, Program.SecurityCode);
-                            else
-                                LabelsPrinted += ms.SecurityLabel(time, Program.SecurityCode);
-                        ms.BlankLabel(LabelsPrinted == 1); // force blank if only 1
-                    }
+                if (LabelsPrinted > 0)
+                {
+                    if (RequiresSecurityLabel)
+                        if (Program.TwoInchLabel)
+                            LabelsPrinted += ms.SecurityLabel2(time, Program.SecurityCode);
+                        else
+                            LabelsPrinted += ms.SecurityLabel(time, Program.SecurityCode);
+                    ms.BlankLabel(LabelsPrinted == 1); // force blank if only 1
+                }
                 PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
             }
         }

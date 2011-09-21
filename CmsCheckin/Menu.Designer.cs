@@ -34,6 +34,7 @@
             this.Add = new System.Windows.Forms.Button();
             this.Edit = new System.Windows.Forms.Button();
             this.Print = new System.Windows.Forms.Button();
+            this.DropJoin = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Cancel
@@ -43,7 +44,7 @@
             this.Cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Cancel.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Cancel.ForeColor = System.Drawing.Color.Black;
-            this.Cancel.Location = new System.Drawing.Point(378, 57);
+            this.Cancel.Location = new System.Drawing.Point(0, 114);
             this.Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(179, 45);
@@ -59,12 +60,12 @@
             this.Visit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Visit.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Visit.ForeColor = System.Drawing.Color.Black;
-            this.Visit.Location = new System.Drawing.Point(191, 4);
+            this.Visit.Location = new System.Drawing.Point(-7, 8);
             this.Visit.Margin = new System.Windows.Forms.Padding(4);
             this.Visit.Name = "Visit";
-            this.Visit.Size = new System.Drawing.Size(179, 45);
+            this.Visit.Size = new System.Drawing.Size(186, 45);
             this.Visit.TabIndex = 21;
-            this.Visit.Text = "Visit Class";
+            this.Visit.Text = "Visit a Class";
             this.Visit.UseVisualStyleBackColor = false;
             this.Visit.Click += new System.EventHandler(this.Visit_Click);
             // 
@@ -75,7 +76,7 @@
             this.Join.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Join.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Join.ForeColor = System.Drawing.Color.Black;
-            this.Join.Location = new System.Drawing.Point(378, 4);
+            this.Join.Location = new System.Drawing.Point(0, 61);
             this.Join.Margin = new System.Windows.Forms.Padding(4);
             this.Join.Name = "Join";
             this.Join.Size = new System.Drawing.Size(179, 45);
@@ -91,7 +92,7 @@
             this.Add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Add.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Add.ForeColor = System.Drawing.Color.Black;
-            this.Add.Location = new System.Drawing.Point(4, 57);
+            this.Add.Location = new System.Drawing.Point(277, 61);
             this.Add.Margin = new System.Windows.Forms.Padding(4);
             this.Add.Name = "Add";
             this.Add.Size = new System.Drawing.Size(179, 45);
@@ -107,7 +108,7 @@
             this.Edit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Edit.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Edit.ForeColor = System.Drawing.Color.Black;
-            this.Edit.Location = new System.Drawing.Point(4, 4);
+            this.Edit.Location = new System.Drawing.Point(277, 8);
             this.Edit.Margin = new System.Windows.Forms.Padding(4);
             this.Edit.Name = "Edit";
             this.Edit.Size = new System.Drawing.Size(179, 45);
@@ -123,7 +124,7 @@
             this.Print.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Print.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Print.ForeColor = System.Drawing.Color.Black;
-            this.Print.Location = new System.Drawing.Point(191, 57);
+            this.Print.Location = new System.Drawing.Point(277, 114);
             this.Print.Margin = new System.Windows.Forms.Padding(4);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(179, 45);
@@ -132,10 +133,27 @@
             this.Print.UseVisualStyleBackColor = false;
             this.Print.Click += new System.EventHandler(this.Print_Click);
             // 
+            // DropJoin
+            // 
+            this.DropJoin.BackColor = System.Drawing.Color.LightCyan;
+            this.DropJoin.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
+            this.DropJoin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DropJoin.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DropJoin.ForeColor = System.Drawing.Color.Black;
+            this.DropJoin.Location = new System.Drawing.Point(187, 8);
+            this.DropJoin.Margin = new System.Windows.Forms.Padding(4);
+            this.DropJoin.Name = "DropJoin";
+            this.DropJoin.Size = new System.Drawing.Size(82, 151);
+            this.DropJoin.TabIndex = 23;
+            this.DropJoin.Text = "Drop This Class";
+            this.DropJoin.UseVisualStyleBackColor = false;
+            this.DropJoin.Click += new System.EventHandler(this.DropJoin_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.DropJoin);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.Visit);
             this.Controls.Add(this.Join);
@@ -143,7 +161,7 @@
             this.Controls.Add(this.Edit);
             this.Controls.Add(this.Print);
             this.Name = "Menu";
-            this.Size = new System.Drawing.Size(568, 111);
+            this.Size = new System.Drawing.Size(468, 161);
             this.ResumeLayout(false);
 
         }
@@ -156,5 +174,6 @@
         public System.Windows.Forms.Button Add;
         public System.Windows.Forms.Button Edit;
         public System.Windows.Forms.Button Print;
+        public System.Windows.Forms.Button DropJoin;
     }
 }

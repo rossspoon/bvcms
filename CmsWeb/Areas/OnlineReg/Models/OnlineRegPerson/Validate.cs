@@ -174,8 +174,12 @@ Please search with a different email, phone, or birthday.";
         {
             var isnewfamily = whatfamily == 3;
             ValidBasic(ModelState);
-            if (!birthday.HasValue && RequiredDOB())
+            DateTime dt;
+            if (RequiredDOB() && dob.HasValue() && !Util.BirthDateValid(dob, out dt))
+                ModelState.AddModelError(inputname("dob"), "birthday invalid");
+            else if (!birthday.HasValue && RequiredDOB())
                 ModelState.AddModelError(inputname("dob"), "birthday required");
+
             if (orgid == Util.CreateAccountCode && age < 16)
                 ModelState.AddModelError(inputname("dob"), "must be 16 to create account");
 
