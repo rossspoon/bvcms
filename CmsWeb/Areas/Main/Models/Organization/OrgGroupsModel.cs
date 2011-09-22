@@ -21,6 +21,7 @@ namespace CmsWeb.Models
         public string notgroup { get; set; }
         public bool notgroupactive { get; set; }
         public string sort { get; set; }
+        public int tagfilter { get; set; }
 
         public string OrgName
         {
@@ -158,9 +159,17 @@ namespace CmsWeb.Models
         {
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.OrganizationId == orgid
+                    where tagfilter == 0 || DbUtil.Db.TagPeople.Any(tt => tt.PeopleId == om.PeopleId && tt.Id == tagfilter)
                     //where om.OrgMemMemTags.Any(g => g.MemberTagId == sg) || (sg ?? 0) == 0
                     select om;
             return q;
+        }
+        public IEnumerable<SelectListItem> Tags()
+        {
+            var cv = new CodeValueController();
+            var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
+            tg.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+            return tg;
         }
         public class GroupInfo
         {

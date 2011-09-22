@@ -1337,6 +1337,7 @@ namespace CmsData
 		public Table< Promotion> Promotions
 		{
 			get	{ return this.GetTable< Promotion>(); }
+
 		}
 
 		public Table< QueryBuilderClause> QueryBuilderClauses
@@ -2507,7 +2508,7 @@ namespace CmsData
 		public DateTime? NextTranChangeDate(
             [Parameter(Name = "pid", DbType="int")] int? pid,
             [Parameter(Name = "oid", DbType="int")] int? oid,
-            [Parameter(Name = "tid", DbType="int")] int? tid,
+            [Parameter(Name = "tdt", DbType="datetime")] DateTime? tdt,
             [Parameter(Name = "typeid", DbType="int")] int? typeid
             )
 		{
@@ -2515,7 +2516,7 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid,
                 oid,
-                tid,
+                tdt,
                 typeid
                 ).ReturnValue));
 		}
@@ -2627,7 +2628,7 @@ namespace CmsData
 		public int? EnrollmentTransactionId(
             [Parameter(Name = "pid", DbType="int")] int? pid,
             [Parameter(Name = "oid", DbType="int")] int? oid,
-            [Parameter(Name = "tid", DbType="int")] int? tid,
+            [Parameter(Name = "tdt", DbType="datetime")] DateTime? tdt,
             [Parameter(Name = "ttid", DbType="int")] int? ttid
             )
 		{
@@ -2635,7 +2636,7 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid,
                 oid,
-                tid,
+                tdt,
                 ttid
                 ).ReturnValue));
 		}
@@ -2970,6 +2971,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.FirstMeetingDateLastLear", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string FirstMeetingDateLastLear(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.MemberTypeAsOf", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? MemberTypeAsOf(
@@ -2983,18 +2996,6 @@ namespace CmsData
                 oid,
                 pid,
                 dt
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.FirstMeetingDateLastLear", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string FirstMeetingDateLastLear(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
                 ).ReturnValue));
 		}
 
@@ -3024,18 +3025,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="disc.DayOfYear", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? DayOfYear(
-            [Parameter(Name = "DateX", DbType="datetime")] DateTime? DateX
-            )
-		{
-			return ((int?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                DateX
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.PledgeAmount", IsComposable = true)]
 		[return: Parameter(DbType = "money")]
 		public decimal? PledgeAmount(
@@ -3049,6 +3038,18 @@ namespace CmsData
                 pid,
                 days,
                 fundid
+                ).ReturnValue));
+		}
+
+		[Function(Name="disc.DayOfYear", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? DayOfYear(
+            [Parameter(Name = "DateX", DbType="datetime")] DateTime? DateX
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                DateX
                 ).ReturnValue));
 		}
 

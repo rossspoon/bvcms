@@ -14,7 +14,7 @@
         var q = $('form').serialize();
         $.post('/Email/QueueEmails', q, function (ret) {
             if (ret == "timeout") {
-                window.location = window.location.protocol + "//" + window.location.host + "/Errors/SessionTimeout.htm";
+                window.location = "/Email/Timeout";
                 return;
             }
             var taskid = ret.id;
@@ -39,7 +39,7 @@
         var q = $('form').serialize();
         $.post('/Email/TestEmail', q, function (ret) {
             if (ret == "timeout") {
-                window.location = "/Errors/SessionTimeout.htm";
+                window.location = "/Email/Timeout";
                 return;
             }
             d.html(ret);

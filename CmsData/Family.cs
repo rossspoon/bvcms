@@ -76,7 +76,7 @@ namespace CmsData
                     FamilyId = FamilyId,
                     UserPeopleId = UserPeopleId,
                     PeopleId = PeopleId,
-                    Field = "HomePhone",
+                    Field = "Family",
                     Data = "<table>\n" + fsb.ToString() + "</table>",
                     Created = Util.Now
                 };

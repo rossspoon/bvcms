@@ -190,11 +190,16 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateField(psb, p, "NickName", Trim(m.goesby));
             UpdateField(psb, p, "FirstName", Trim(m.first));
             UpdateField(psb, p, "LastName", Trim(m.last));
-            UpdateField(psb, p, "DOB", m.dob);
+            DateTime dt;
+            DateTime.TryParse(m.dob, out dt);
+            if (p.BirthDate != dt)
+                UpdateField(psb, p, "DOB", m.dob);
             UpdateField(psb, p, "EmailAddress", Trim(m.email));
             UpdateField(psb, p, "CellPhone", m.cell.GetDigits());
             UpdateField(psb, p, "MaritalStatusId", m.marital);
             UpdateField(psb, p, "GenderId", m.gender);
+            p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId ?? 0);
+            p.Family.LogChanges(DbUtil.Db, fsb, p.PeopleId, Util.UserPeopleId ?? 0);
 
             var rr = p.GetRecReg();
             if (m.allergies != rr.MedicalDescription)

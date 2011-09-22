@@ -17,6 +17,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (Util.SessionTimedOut())
                 return Redirect("/Errors/SessionTimeout.htm");
+            DbUtil.LogActivity("Emailing people");
             var m = new MassEmailer(id, parents);
             m.CmsHost = DbUtil.Db.CmsHost;
             m.Host = Util.Host;
@@ -37,6 +38,12 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (!m.Subject.HasValue() || !m.Body.HasValue())
                 return Json(new { id = 0, content = "<h2>Both Subject and Body need some text</h2>" });
+
+            if (Util.SessionTimedOut())
+            {
+                Session["massemailer"] = m;
+                return Content("timeout");
+            }
 
             DbUtil.LogActivity("Emailing people");
 
@@ -86,7 +93,10 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult TestEmail(MassEmailer m)
         {
             if (Util.SessionTimedOut())
+            {
+                Session["massemailer"] = m;
                 return Content("timeout");
+            }
             if (m.EmailFroms().Count(ef => ef.Value == m.FromAddress) == 0)
                 return Content("No email address to send from");
             m.FromName = m.EmailFroms().First(ef => ef.Value == m.FromAddress).Text;
@@ -183,6 +193,13 @@ namespace CmsWeb.Areas.Main.Controllers
             foreach (var emailqueue in q)
                 DbUtil.Db.SendPeopleEmail(emailqueue.Id);
             return Content("done");
+        }
+        public ActionResult Timeout()
+        {
+            var m = Session["massemailer"] as MassEmailer;
+            if (m == null)
+                Response.Redirect("/");
+            return View(m);
         }
     }
 }

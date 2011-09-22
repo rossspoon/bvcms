@@ -32,6 +32,11 @@
         <td class="wide100">@Html.TextBox("notgroup", "", new { @class = "filter" })</td>
         <td>Active: @Html.CheckBox("notgroupactive", new { @class = "filter" })</td>
     </tr>
+    <tr>
+        <th align="right">Is in Tag:</th>
+        <td class="wide100">@Html.DropDownList("tagfilter", Model.Tags())</td>
+        <td></td>
+    </tr>
 	<tr>
 		<th>Member Type:</th>
 		<td class="wide100">@Html.DropDownList("memtype", Model.MemberTypeCodesWithNotSpecified(), new { @class = "filter" })</td>
