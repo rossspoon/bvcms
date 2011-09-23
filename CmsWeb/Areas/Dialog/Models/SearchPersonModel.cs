@@ -122,8 +122,8 @@ namespace CmsWeb.Models
                 ModelState.AddModelError("dob", "valid birthday (or \"na\")");
 
             var d = phone.GetDigits().Length;
-            if (d != 7 && d != 10 && phone != "na")
-                ModelState.AddModelError("phone", "7 or 10 digits (or \"na\")");
+            if (d != 7 && d < 10 && phone != "na")
+                ModelState.AddModelError("phone", "7 or 10+ digits (or \"na\")");
 
             int count = 0;
             SearchPeopleModel.FindPerson(first, last, birthday ?? DateTime.MinValue, string.Empty, phone.GetDigits(), out count);

@@ -7,11 +7,12 @@
             $('#progress').html("<h2>Working...</h2>");
         }
     });
-    $.Send = function () {
+    $(".bt").button();
+    $("#Send").click(function () {
         var d = $("#progress");
         d.dialog('open');
         $('#Body').text(CKEDITOR.instances["Body"].getData());
-        var q = $('form').serialize();
+        var q = $(this).closest('form').serialize();
         $.post('/Email/QueueEmails', q, function (ret) {
             if (ret == "timeout") {
                 window.location = "/Email/Timeout";
@@ -31,12 +32,12 @@
                 }, 3000);
             }
         });
-    };
-    $.TestSend = function () {
+    });
+    $("#TestSend").click(function () {
         var d = $("#progress");
         d.dialog('open');
         $('#Body').text(CKEDITOR.instances["Body"].getData());
-        var q = $('form').serialize();
+        var q = $(this).closest('form').serialize();
         $.post('/Email/TestEmail', q, function (ret) {
             if (ret == "timeout") {
                 window.location = "/Email/Timeout";
@@ -44,11 +45,49 @@
             }
             d.html(ret);
         });
+    });
+    var editor_large = {
+        height: 400,
+        filebrowserUploadUrl: '/Account/CKEditorUpload/',
+        filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
+        toolbar_Full: [
+    ['Source'],
+    ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'SpellChecker', 'Scayt'],
+    ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
+    '/',
+    ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript'],
+    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv'],
+    ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
+    ['Link', 'Unlink', 'Anchor'],
+    ['Image', 'Table', 'SpecialChar'],
+    '/',
+    ['Styles', 'Format', 'Font', 'FontSize'],
+    ['TextColor', 'BGColor'],
+    ['Maximize', 'ShowBlocks', '-', 'About']
+    ]
     };
+    var editor_small = {
+        height: 100,
+        filebrowserUploadUrl: '/Account/CKEditorUpload/',
+        filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
+        toolbar_Full: [
+    ['Source'],
+    ['Bold', 'Italic', 'Underline'],
+    ['Image'],
+    ['Font', 'FontSize'],
+    ['TextColor', 'BGColor'],
+    ]
+    };
+    $("#textarea.editor").ckeditor(editor_large);
+    $("#textarea.smalleditor").ckeditor(editor_small);
+    $("#CreateVoteTag").live("click", function (ev) {
+        ev.preventDefault();
+        CKEDITOR.instances["votetagcontent"].updateElement();
+        var q = $(this).closest('form').serialize();
+        $.post('/Email/CreateVoteTag', q, function (ret) {
+            CKEDITOR.instances["votetagcontent"].setData(ret, function () {
+                CKEDITOR.instances["votetagcontent"].setMode("source");
+            });
+        });
+    });
 });
-//function KeepSessionAlive() {
-//    $.post("/Account/KeepAlive", null, function (ret) {
-//        if (ret != "alive")
-//            window.clearInterval(aliveid);
-//    });
-//}  

@@ -201,5 +201,16 @@ namespace CmsWeb.Areas.Main.Controllers
                 Response.Redirect("/");
             return View(m);
         }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult CreateVoteTag(int orgid, bool confirm, string smallgroup, string message, string text, string votetagcontent)
+        {
+            if (votetagcontent.HasValue())
+                return Content("<votetag id={0} confirm={1} smallgroup=\"{2}\" message=\"{3}\">{4}</votetag>".Fmt(
+                    orgid, confirm, smallgroup, message, votetagcontent));
+
+            return Content("{{votelink id={0} confirm={1} smallgroup=\"{2}\" message=\"{3}\" text=\"{4}\"}}".Fmt(
+                orgid, confirm, smallgroup, message, text));
+        }
     }
 }

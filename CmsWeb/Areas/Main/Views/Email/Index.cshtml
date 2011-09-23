@@ -26,13 +26,13 @@ You can include a file, image, mp3 or whatever you like in your email.
    @Html.Hidden("wantParents", Model.wantParents)
    <p>Number of Emails: @Model.Count @ViewData["parentsof"]</p>
    <p>
-        <input type="button" name="Send" value="Send" onclick="$.Send()" style="width:62px;height: 42px" />
+        <input type="button" id="Send" value="Send" class="bt" style="width:62px;height: 42px" />
         @if (User.IsInRole("Admin") && System.Web.Configuration.WebConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
         { 
         @:Scheduled Date and Time (mm/dd/yy h:mm AM|PM)@Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" }) (Optional, note: this is Central Time)</p>
         } 
    <p>From: @Html.DropDownList("FromAddress", Model.EmailFroms())
-    <input type="button" name="TestSend" value="Test (Send To Yourself)" onclick="$.TestSend()" />
+    <input type="button" id="TestSend" class="bt" value="Test (Send To Yourself)" />
     &nbsp;&nbsp;Should this email be publicly viewable? 
     @Html.CheckBox("PublicViewable")
     </p>
@@ -45,16 +45,21 @@ You can include a file, image, mp3 or whatever you like in your email.
     </fieldset>
     </div>
 } 
-@*@using (Html.BeginForm("VoteTag", "Email"))
+@using (Html.BeginForm("VoteTag", "Email"))
 { 
-        @Html.TextArea("clickthis", new { @class = "html", rows = 4 })
-        <ul>
-          <li><div class="sgfee">OrgId:</div> @Html.TextBox("orgid") </li>
-          <li><div class="sgfee">Confirm:</div> @Html.CheckBox("confirm") </li>
-          <li><div class="sgfee">SmallGroup:</div> @Html.TextBox("smallgroup") </li>
-          <li><div class="sgfee">Message:</div> @Html.TextBox("message") </li>
-        </ul>
-}*@
+    <h4>VoteTag</h4>
+    <table>
+      <tr><td>OrgId:</td><td>@Html.TextBox("orgid")</td></tr>
+      <tr><td>Confirm:</td><td>@Html.CheckBox("confirm")</td></tr>
+      <tr><td>SmallGroup:</td><td>@Html.TextBox("smallgroup")</td></tr>
+      <tr><td>Message:</td><td>@Html.TextBox("message")</td></tr>
+      <tr><td>Text:</td><td>@Html.TextBox("text")</td></tr>
+    </table>
+    @Html.TextArea("votetagcontent", new { @class = "smalleditor", rows = 4 })
+    <input type="button" id="CreateVoteTag" class="bt" value="Create VoteTag" />
+    <pre id="VoteTag">
+    </pre>
+}
 </div>
 <script src="/Scripts/Email.js?v=2" type="text/javascript"></script>
 <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>

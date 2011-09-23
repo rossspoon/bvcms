@@ -19,4 +19,16 @@
     ['Maximize', 'ShowBlocks', '-', 'About']
     ]
     });
+    $('textarea.smalleditor').ckeditor(function () { }, {
+        height: 100,
+        filebrowserUploadUrl: '/Account/CKEditorUpload/',
+        filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
+        toolbar_Full: [
+    ['Source'],
+    ['Bold', 'Italic', 'Underline'],
+    ['Image'],
+    ['Font', 'FontSize'],
+    ['TextColor', 'BGColor'],
+    ]
+    });
 });
