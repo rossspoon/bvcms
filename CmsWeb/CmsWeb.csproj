@@ -223,7 +223,7 @@
     <Compile Include="Areas\Dialog\Models\SearchDivisionsModel.cs" />
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
-    <Compile Include="Areas\Main\Controllers\CheckinController.cs" />
+    <Compile Include="Areas\Public\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactSearchController.cs" />
@@ -234,7 +234,8 @@
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
-    <Compile Include="Areas\Main\Controllers\iPhoneController.cs" />
+    <Compile Include="Areas\Public\Controllers\APIController.cs" />
+    <Compile Include="Areas\Public\Controllers\iPhoneController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
     <Compile Include="Areas\Dialog\Controllers\OrgMembersDialogController.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Areas\Main\Models\Export\MucketyMapResult.cs" />
     <Compile Include="Areas\Dialog\Models\SearchUsersModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\ScheduleInfo.cs" />
+    <Compile Include="Areas\Main\Models\Other\QBExportResult.cs" />
     <Compile Include="Areas\Main\Models\Other\ContactModel.cs" />
     <Compile Include="Areas\Main\Models\Other\ContactSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\MeetingModel.cs" />
@@ -626,7 +628,7 @@
       <DependentUpon>TotalsByFundRange.aspx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Manage\Controllers\AccountController.cs" />
-    <Compile Include="Areas\Main\Controllers\Checkin2Controller.cs" />
+    <Compile Include="Areas\Public\Controllers\Checkin2Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
@@ -1124,18 +1126,15 @@
     <Content Include="Areas\Main\Views\Coupon\Create.cshtml" />
     <Content Include="Areas\Main\Views\Coupon\Index.cshtml" />
     <Content Include="Areas\Main\Views\Coupon\List.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn2\Campuses.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn2\CheckIn.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn2\CheckInList.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn2\Index.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn2\Keyboard.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn2\Startup.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn\Campuses.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn\CheckIn.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn\CheckInList.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn\Index.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn\Keyboard.cshtml" />
-    <Content Include="Areas\Main\Views\CheckIn\Startup.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn2\Campuses.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn2\CheckIn.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn2\CheckInList.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn\Campuses.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn\CheckIn.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn\CheckInList.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn\Index.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn\Keyboard.cshtml" />
+    <Content Include="Areas\Public\Views\CheckIn\Startup.cshtml" />
     <Content Include="Areas\Main\Views\PostBundle\Batch.cshtml" />
     <Content Include="Areas\Main\Views\PostBundle\FundTotals.cshtml" />
     <Content Include="Areas\Main\Views\PostBundle\Index.cshtml" />
@@ -1440,6 +1439,8 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmPledge.cshtml" />
     <Content Include="Areas\Main\Views\Reports\VitalStats.cshtml" />
     <Content Include="Areas\Main\Views\Email\Timeout.cshtml" />
+    <Content Include="Areas\Main\Views\QueryBuilder\Import.cshtml" />
+    <Content Include="Areas\Manage\Views\Display\File.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

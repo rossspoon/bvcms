@@ -41,10 +41,11 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content(value);
         }
         [HttpPost]
-        public ActionResult Results(bool onlyMine)
+        public ActionResult Results()
         {
-            var m = new SavedQueryModel { onlyMine = onlyMine };
+            var m = new SavedQueryModel();
             UpdateModel(m.Pager);
+            UpdateModel(m);
             return View(m);
         }
     }

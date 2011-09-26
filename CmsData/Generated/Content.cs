@@ -23,6 +23,8 @@ namespace CmsData
 		
 		private string _Body;
 		
+		private bool? _TextOnly;
+		
 		private DateTime? _DateCreated;
 		
 		private int _Id;
@@ -44,6 +46,9 @@ namespace CmsData
 		
 		partial void OnBodyChanging(string value);
 		partial void OnBodyChanged();
+		
+		partial void OnTextOnlyChanging(bool? value);
+		partial void OnTextOnlyChanged();
 		
 		partial void OnDateCreatedChanging(DateTime? value);
 		partial void OnDateCreatedChanged();
@@ -121,6 +126,28 @@ namespace CmsData
 					this._Body = value;
 					this.SendPropertyChanged("Body");
 					this.OnBodyChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="TextOnly", UpdateCheck=UpdateCheck.Never, Storage="_TextOnly", DbType="bit")]
+		public bool? TextOnly
+		{
+			get { return this._TextOnly; }
+
+			set
+			{
+				if (this._TextOnly != value)
+				{
+				
+                    this.OnTextOnlyChanging(value);
+					this.SendPropertyChanging();
+					this._TextOnly = value;
+					this.SendPropertyChanged("TextOnly");
+					this.OnTextOnlyChanged();
 				}
 
 			}

@@ -694,6 +694,12 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), cid);
             return ((int)(result.ReturnValue));
         }
+        [Function(Name = "dbo.PopulateComputedEnrollmentTransactions")]
+        public int PopulateComputedEnrollmentTransactions([Parameter(DbType = "Int")] int? orgid)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orgid);
+            return ((int)(result.ReturnValue));
+        }
         [Function(Name = "dbo.UpdateSchoolGrade")]
         public int UpdateSchoolGrade([Parameter(DbType = "Int")] int? pid)
         {

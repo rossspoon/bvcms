@@ -639,7 +639,7 @@ namespace CMSPresenter
 					 select new CodeValueItem
 					 {
 						 Id = qb.QueryId,
-						 Code = qb.QueryId.ToString(),
+                         Code = qb.QueryId.ToString() + ":" + qb.Description,
 						 Value = qb.SavedBy + ":" + qb.Description
 					 };
 			var q2 = from qb in DbUtil.Db.QueryBuilderClauses
@@ -648,7 +648,7 @@ namespace CMSPresenter
 					 select new CodeValueItem
 					 {
 						 Id = qb.QueryId,
-						 Code = qb.QueryId.ToString(),
+                         Code = qb.QueryId.ToString() + ":" + qb.Description,
 						 Value = qb.SavedBy + ":" + qb.Description
 					 };
 

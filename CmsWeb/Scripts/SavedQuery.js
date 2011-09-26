@@ -1,21 +1,5 @@
 ﻿/// <reference path="../Content/js/jquery-1.5.2-vsdoc.js" />
 $(function () {
-    $.onready = function () {
-        $(".clickEdit").editable("/SavedQuery/Edit/", {
-            indicator: "<img src='/images/loading.gif'>",
-            tooltip: "Click to edit...",
-            style: 'display: inline',
-            width: '200px',
-            height: 25,
-            submit: "OK"
-        });
-    }
-    $.onready();
-    $("#onlyMine").live("click", function () {
-        $.getTable($(this).closest("form"));
-    });
-    $(".bt").button();
-
     $.editable.addInputType("checkbox", {
         element: function (settings, original) {
             var input = $('<input type="checkbox">');
@@ -34,15 +18,46 @@ $(function () {
             $(input).val(value);
         }
     });
-    $('span.yesno').editable('/SavedQuery/Edit/', {
-        type: 'checkbox',
-        onblur: 'ignore',
-        submit: 'OK'
+    $.onready = function () {
+        $(".clickEdit").editable("/SavedQuery/Edit/", {
+            indicator: "<img src='/images/loading.gif'>",
+            tooltip: "Click to edit...",
+            style: 'display: inline',
+            width: '200px',
+            height: 25,
+            submit: "OK"
+        });
+        $('span.yesno').editable('/SavedQuery/Edit/', {
+            type: 'checkbox',
+            onblur: 'ignore',
+            submit: 'OK'
+        });
+    }
+    $.getTable = function (f, q) {
+        q = q || f.serialize();
+        $.post(f.attr('action'), q, function (ret) {
+            $(f).html(ret).ready(function () {
+                $('table.grid > tbody > tr:even', f).addClass('alt');
+                $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
+                $('.bt').button();
+                $(".datepicker").datepicker();
+                $.onready();
+            });
+        });
+        return false;
+    }
+    $("#filter").live("click", function (ev) {
+        ev.preventDefault();
+        $.getTable($(this).closest("form"));
+        $.onready();
     });
+    $(".bt").button();
+
     $("a.delete").live("click", function () {
         var a = $(this);
         $.post("/SavedQuery/Edit", { id: a.attr("id") }, function (ret) {
             a.closest("tr").fadeOut().remove();
         });
     });
+    $.onready();
 });

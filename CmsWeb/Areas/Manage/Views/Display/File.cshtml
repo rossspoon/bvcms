@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+}
+<script type="text/javascript" src="/Content/js/jquery.textarea.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".bt").button();
+        $("textarea").tabby();
+        $("#delete").click(function (ev) {
+            ev.preventDefault();
+            if (confirm("are you sure?"))
+                window.location = $(this).attr("href");
+        });
+    });
+</script>
+@using (Html.BeginForm("UpdateFile", "Display", FormMethod.Post))
+{ 
+    <div class="blogbody">
+    <h2 class="title">@ViewData["file"]</h2>
+    <a href="/Display/Index">Menu of Content</a>
+    <hr />
+    @Html.Hidden("file")
+    <div>
+    <textarea name="text" cols="80" rows="40" wrap='off' style="width:99%">@Html.Raw((string)ViewData["text"])</textarea>
+    </div>
+    <input type="submit" class="bt" value="Post" />
+    <a id="delete" class="bt" href="/Display/DeletePage/@ViewData["file"]">delete</a>
+    </div>
+} 
+
+

@@ -192,6 +192,7 @@
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
+    <Compile Include="APIFunctions.cs" />
     <Compile Include="QueryFunctions.cs" />
     <Compile Include="Generated\AttendCredit.cs" />
     <Compile Include="Generated\Contact.cs" />

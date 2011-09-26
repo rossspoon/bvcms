@@ -1,24 +1,32 @@
-﻿@model IEnumerable<CmsData.Content>
+﻿@model IQueryable<CmsData.Content>
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Special Content";
 }
-<h2>Content</h2>
-<table>
+<h2>Html Content</h2>
+<table class="grid" cellspacing="4">
     <tr>
-        <th></th>
         <th> Name </th>
         <th> Title </th>
-        <th></th>
     </tr>
-@foreach (var item in Model)
+@foreach (var item in Model.Where(cc => (cc.TextOnly ?? false) == false))
 { 
     <tr>
-        <td> @Html.ActionLink("Edit", "EditPage", new { id = item.Name }) </td>
-        <td> @item.Name </td>
+        <td> @Html.ActionLink(item.Name, "Page", new { id = item.Name }) </td>
         <td> @item.Title </td>
-        <td> @Html.ActionLink("Delete", "DeletePage", new { id = item.Name }) </td>
     </tr>
 }
 </table>
 
+<h2>Text Content</h2>
+<table class="grid" cellspacing="4">
+    <tr>
+        <th> Name </th>
+    </tr>
+@foreach (var item in Model.Where(cc => cc.TextOnly == true))
+{
+    <tr>
+        <td> @Html.ActionLink(item.Name, "File", new { id = item.Name }) </td>
+    </tr>
+}
+</table>

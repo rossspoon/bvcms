@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "QB Import";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<h2>QB Import</h2>
+<form action="/QueryBuilder/Import" method="post">
+    <label>Query name: </label> @Html.TextBox("name")
+<em>Paste Exported Query Here</em>
+    <input type="submit" class="bt" value="Submit" />
+    @Html.TextArea("text", "", new { rows = "20", cols = "100", wrap = "off", style = "width:90%" })<br />
+</form>

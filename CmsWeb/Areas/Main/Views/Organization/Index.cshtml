@@ -61,6 +61,10 @@ a.ui-state-default { cursor: pointer; }
     <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
     <a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">Delete Organization</a>
 } 
+@if (User.IsInRole("Developer"))
+{ 
+    <a href="/Organization/RepairTransactions/@o.OrganizationId">Repair Transactions</a>
+}
 </div>
 <div style="border-bottom: 4px solid #ddd"></div>
 </div>

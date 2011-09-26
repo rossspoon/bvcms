@@ -310,8 +310,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult VitalStats()
         {
-            var m = new CmsData.QueryFunctions(DbUtil.Db);
-            ViewData["table"] = m.VitalStats();
+            ViewData["table"] = CmsData.QueryFunctions.VitalStats(DbUtil.Db);
             return View();
         }
         public class QueryStatsResult : ActionResult

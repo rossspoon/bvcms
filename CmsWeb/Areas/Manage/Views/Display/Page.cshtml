@@ -3,6 +3,10 @@
 }
 <div class="blogbody">
 <h2 class="title">@ViewData["title"]</h2>
+@if (User.IsInRole("Admin"))
+{
+<a href="/Display/EditPage/@ViewData["page"]">edit content</a>
+}
 <hr />
-@Html.Raw((string)ViewData["html"])
+@Html.Raw((string)ViewData["html"] ?? "need content")
 </div>

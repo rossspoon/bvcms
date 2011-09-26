@@ -235,7 +235,7 @@ namespace CmsData
                     IntValue2 = e.IntValue2, 
                     TransactionTime = e.TransactionTime 
                 };
-                if (cp != null && cp.StrValue != e.StrValue)
+                if (cp != null)
                     e2.Field = e.Field + ".mv";
                 Db.PeopleExtras.InsertOnSubmit(e2);
                 Db.PeopleExtras.DeleteOnSubmit(e);

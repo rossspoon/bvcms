@@ -1,12 +1,17 @@
 ﻿@{
     Layout = "/Views/Shared/SiteLayout.cshtml";
 }
+<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+<script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>
+<script src="/scripts/edit.js", type="text/javascript"></script>
 <script type="text/javascript">
     $(function () {
-        $("#ishtml").click(function () {
-            window.location = "/Display/EditPage/" + $('#id').val() + "?ishtml=" + $('#ishtml').attr('checked');
-        });
         $(".bt").button();
+        $("#delete").click(function (ev) {
+            ev.preventDefault();
+            if (confirm("are you sure?"))
+                window.location = $(this).attr("href");
+        });
     });
 </script>
 @using (Html.BeginForm("UpdatePage", "Display", FormMethod.Post))
@@ -15,18 +20,13 @@
     <h2 class="title">@ViewData["title"]</h2>
     <a href="/Display/Index">Menu of Content</a>
     <hr />
-    @Html.Hidden("id")
-    <div>Title: @Html.TextBox("title") @Html.CheckBox("ishtml") Show HTML Only</div>
+    @Html.Hidden("page")
+    <div>Title: @Html.TextBox("title")</div>
     <div>@Html.TextArea("html", new { @class = "editor", rows = "26", style = "width:90%" })
     </div>
     <input type="submit" class="bt" value="Post" />
+    <a id="delete" class="bt" href="/Display/DeletePage/@ViewData["page"]">delete</a>
     </div>
-} 
-@if((bool)ViewData["ishtml"])
-{ 
-    <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>
-    <script src="/scripts/edit.js", type="text/javascript"></script>
 } 
 
 

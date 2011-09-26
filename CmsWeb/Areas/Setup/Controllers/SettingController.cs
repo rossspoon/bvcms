@@ -97,6 +97,11 @@ namespace CmsWeb.Areas.Setup.Controllers
 
             return RedirectToAction("Index");
         }
+        public ActionResult RemoveFakePeople()
+        {
+            DbUtil.Db.PurgeAllPeopleInCampus(99);
+            return Content(@"<a href=""/"">home</a><br/><h2>Done</h2>");
+        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult DeleteImage(string id)
         {

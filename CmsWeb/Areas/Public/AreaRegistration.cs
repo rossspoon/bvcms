@@ -15,6 +15,10 @@ namespace CmsWeb.Areas.Public
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+            AddRoute(context, "Checkin");
+            AddRoute(context, "Checkin2");
+            AddRoute(context, "iPhone");
+            AddRoute(context, "API");
             AddRoute(context, "DiscipleLife");
             AddRoute(context, "GODisciples");
             AddRoute(context, "MOBS");

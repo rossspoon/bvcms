@@ -26,8 +26,9 @@ namespace CmsData
         {
             this.Db = Db;
         }
-        public string VitalStats()
+        public static string VitalStats(CMSDataContext Db)
         {
+            var qf = new QueryFunctions(Db);
             var script = DbUtil.Content("VitalStats");
             if (script == null)
                 return "no VitalStats script";
@@ -52,7 +53,7 @@ namespace CmsData
 
                 dynamic VitalStats = scope.GetVariable("VitalStats");
                 dynamic m = VitalStats();
-                return m.Run(this);
+                return m.Run(qf);
             }
             catch (Exception ex)
             {
@@ -141,6 +142,8 @@ namespace CmsData
         public int QueryCount(string s)
         {
             var qB = Db.QueryBuilderClauses.FirstOrDefault(c => c.Description == s);
+            if (qB == null)
+                return 0;
             var q = Db.People.Where(qB.Predicate(Db));
             return q.Count();
         }

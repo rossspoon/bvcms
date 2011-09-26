@@ -71,6 +71,9 @@ $(function () {
         RefreshList();
         return false;
     });
+    $('#Export').click(function (ev) {
+        window.location = "QueryBuilder/Export/" + $("#QueryId").val();
+    });
     dialogOptions = {
         overlay: { background: "#000", opacity: 0.3 },
         bgiframe: true,
@@ -95,7 +98,8 @@ $(function () {
     });
     $('#OpenQuery').click(function (ev) {
         $('#OpenQueryDiv').dialog("close");
-        window.location = "/QueryBuilder/Main/" + $("#ExistingQueries").val();
+        var a = $("#ExistingQueries").val().split(':');
+        window.location = "/QueryBuilder/Main/" + a[0];
     });
     $('#SaveQuery').click(function (ev) {
         $('#SaveQueryDiv').dialog("close");

@@ -269,12 +269,13 @@ CKEditorFuncNum, baseurl + fn, error));
                 return;
             Session["ActivePerson"] = u.Name;
         }
-        public static void SetUserInfo(string username, HttpSessionStateBase Session)
+        public static User SetUserInfo(string username, HttpSessionStateBase Session)
         {
             var u = SetUserInfo(username);
             if (u == null)
-                return;
+                return null;
             Session["ActivePerson"] = u.Name;
+            return u;
         }
         private static User SetUserInfo(string username)
         {

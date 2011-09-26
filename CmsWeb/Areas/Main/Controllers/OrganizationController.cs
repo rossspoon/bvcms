@@ -361,5 +361,11 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return View("NotifyList", DbUtil.Db.PeopleFromPidString(o.NotifyIds));
         }
+        [Authorize(Roles="Admin")]
+        public ActionResult RepairTransactions(int id)
+        {
+            DbUtil.Db.PopulateComputedEnrollmentTransactions(id);
+            return Redirect("/Organization/Index/" + id);
+        }
     }
 }

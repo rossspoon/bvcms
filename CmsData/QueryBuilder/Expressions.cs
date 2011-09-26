@@ -1741,8 +1741,9 @@ namespace CmsData
             bool tf)
         {
             var a = QueryIdDesc.Split(':');
+            var qid = a[0].ToInt();
             var savedquery = Db.QueryBuilderClauses.SingleOrDefault(q =>
-                q.SavedBy == a[0] && q.Description == a[1]);
+                q.QueryId == qid);
             var pred = savedquery.Predicate(Db);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(tf), left.Type);

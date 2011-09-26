@@ -163,7 +163,7 @@
                 <div class="sublinks">
                     <a href="/QueryBuilder/Main">Last Query</a>
                         <asp:LinkButton ID="NewQueryLink" runat="server" OnClick="NewQuery_Click">New Query</asp:LinkButton>
-                    <a href="/SavedQueries.aspx">Saved Queries</a>
+                    <a href="/SavedQuery">Saved Queries</a>
                 </div>
             </td>
     <% if (Page.User.IsInRole("Finance"))

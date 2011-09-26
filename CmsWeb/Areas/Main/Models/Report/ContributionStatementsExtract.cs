@@ -112,7 +112,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                 Count = 0;
                 CurrentTask = "Fetching Contributors...";
 
-                var qc = ContributionModel.contributors(Db, fd, td, 0, 0, 0, noaddressok: true, useMinAmt: true);
+                var noaddressok = DbUtil.Db.Setting("RequireAddressOnStatement", "true") == "false";
+                var qc = ContributionModel.contributors(Db, fd, td, 0, 0, 0, noaddressok, useMinAmt: true);
                 Count = qc.Count();
                 if (PDF)
                 {

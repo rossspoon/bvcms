@@ -180,6 +180,7 @@ function CloseAddDialog() {
                             <div>
                                 <a href="/Reports/ChurchAttendance" target="_blank">Reports</a></div>
                             <div class="sublinks">
+                                <a href="/Reports/VitalStats" target="_blank">Vital Stats</a> 
                                 <a href="/Reports/ChurchAttendance" target="_blank">Week at a Glance</a> 
                                 <a href="/Reports/ChurchAttendance2" target="_blank">Average Week at a Glance</a> 
     @if (DbUtil.Db.Setting("Bellevue", "false") == "true")
@@ -196,7 +197,7 @@ function CloseAddDialog() {
                             <div class="sublinks">
                                 <a href="/QueryBuilder/Main">Last Query</a>
                                 @Html.ActionLink("New Query", "NewQuery", "QueryBuilder")
-                                <a href="/SavedQueries.aspx">Saved Queries</a>
+                                <a href="/SavedQuery">Saved Queries</a>
     @if ((string)ViewData["OnQueryBuilder"] == "true")
     {
                                     <a id="ShowOpenQuery" href="#">Open Saved Query</a>

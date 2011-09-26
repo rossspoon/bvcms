@@ -48,18 +48,19 @@ namespace CmsWeb.Areas.Main.Models.Report
                 typ = typ
             };
             IEnumerable<ContributorInfo> q = null;
+            var noaddressok = DbUtil.Db.Setting("RequireAddressOnStatement", "true") == "false";
             switch (typ)
             {
                 case 1:
                     SpouseId = DbUtil.Db.People.Where(p => p.PeopleId == PeopleId).Single().SpouseId.ToInt();
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok: false, useMinAmt: true);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok, useMinAmt: true);
                     break;
                 case 2:
                     FamilyId = DbUtil.Db.People.Where(p => p.PeopleId == PeopleId).Single().FamilyId;
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId, noaddressok: false, useMinAmt: true);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId, noaddressok, useMinAmt: true);
                     break;
                 case 3:
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0, noaddressok: false, useMinAmt: true);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0, noaddressok, useMinAmt: true);
                     break;
             }
             int current = 0;

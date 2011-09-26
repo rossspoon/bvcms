@@ -13,6 +13,7 @@ namespace CmsWeb.Models
         public PagerModel2 Pager { get; set; }
         public bool isdev { get; set; }
         public bool onlyMine { get; set; }
+        public string search { get; set; }
         public bool showscratchpads { get; set; }
 
         public SavedQueryModel()
@@ -38,6 +39,7 @@ namespace CmsWeb.Models
                        where c.SavedBy == Util.UserName || ((c.IsPublic || isdev) && !onlyMine)
                        where c.SavedBy != null || (c.GroupId == null && c.Field == "Group" && isdev && c.Clauses.Count() > 0)
                        where !c.Description.Contains("scratchpad") || showscratchpads
+                       where c.Description.Contains(search) || c.SavedBy == search || !search.HasValue()
                        select c;
             return _queries;
         }
