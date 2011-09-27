@@ -224,7 +224,7 @@ You have the following subscriptions:<br/>
             omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
             ot.Used = true;
             DbUtil.Db.SubmitChanges();
-            DbUtil.LogActivity("Votelink: {0}".Fmt(q.org.OrganizationName), true);
+            DbUtil.LogActivity("Votelink: {0}".Fmt(q.org.OrganizationName), false);
 
             if (confirm == true)
             {

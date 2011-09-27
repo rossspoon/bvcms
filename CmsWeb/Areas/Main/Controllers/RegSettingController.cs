@@ -122,6 +122,11 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("Checkbox2Editor", new RegSettings.MenuItem());
         }
         [HttpPost]
+        public ActionResult NewOrgFee()
+        {
+            return View("OrgFeeEditor", new RegSettings.OrgFee());
+        }
+        [HttpPost]
         public ActionResult NewAgeGroup()
         {
             return View("AgeGroupEditor", new RegSettings.AgeGroup());

@@ -28,6 +28,7 @@ namespace CmsData
             AskRequest,
             GradeOptions,
             AgeGroups,
+            OrgFees,
             AskShirtSize,
             AllowLastYearShirt,
             ShirtSizes,
@@ -597,6 +598,9 @@ namespace CmsData
                 case RegKeywords.AgeGroups:
                     ParseAgeGroups();
                     break;
+                case RegKeywords.OrgFees:
+                    ParseOrgMemberFees();
+                    break;
                 case RegKeywords.GradeOptions:
                     ParseGradeOptions();
                     break;
@@ -1081,6 +1085,7 @@ namespace CmsData
 
             sb.AppendLine();
             AddAgeGroups(sb);
+            AddOrgFees(sb);
             AddRequest(sb);
             AddTickets(sb);
             AddGradeOptions(sb);
@@ -1184,6 +1189,18 @@ namespace CmsData
             {
                 AddValueCk(1, sb, "{0}-{1}".Fmt(i.StartAge, i.EndAge));
                 AddValueCk(2, sb, "SmallGroup", i.SmallGroup);
+                AddValueCk(2, sb, "Fee", i.Fee);
+            }
+            sb.AppendLine();
+        }
+        private void AddOrgFees(StringBuilder sb)
+        {
+            if (OrgFees.Count == 0)
+                return;
+            AddValueNoCk(0, sb, "OrgFees", "");
+            foreach (var i in OrgFees)
+            {
+                AddValueCk(1, sb, "{0}".Fmt(i.OrgId));
                 AddValueCk(2, sb, "Fee", i.Fee);
             }
             sb.AppendLine();

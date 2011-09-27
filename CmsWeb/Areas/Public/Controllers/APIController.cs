@@ -25,7 +25,7 @@ namespace CmsWeb.Areas.Public.Controllers
     public class APIController : CmsController
     {
 #if DEBUG
-        [RequireBasicAuthentication]
+        //[RequireBasicAuthentication]
 #endif
         public ActionResult Login(string user, string password)
         {

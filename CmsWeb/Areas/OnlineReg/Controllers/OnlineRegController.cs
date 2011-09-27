@@ -230,7 +230,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             p.classid = m.classid;
             p.PeopleId = null;
             p.ValidateModelForFind(ModelState, m);
-            if (p.ManageSubscriptions() || p.OnlineGiving() || p.OnlinePledge())
+            if (p.ManageSubscriptions() || p.OnlinePledge())
             {
                 p.OtherOK = true;
                 //if (p.Found == true)
