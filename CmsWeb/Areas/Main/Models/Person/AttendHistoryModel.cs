@@ -27,7 +27,7 @@ namespace CmsWeb.Models.PersonPage
                 var midnight = Util.Now.Date.AddDays(1);
                 _attends = from a in DbUtil.Db.Attends
                            where a.PeopleId == PeopleId
-                           where !(a.Meeting.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
+                           where !(a.Meeting.Organization.SecurityTypeId == 3 && (Util2.OrgMembersOnly || Util2.OrgLeadersOnly))
                            select a;
                 if (!HttpContext.Current.User.IsInRole("Admin"))
                     _attends = _attends.Where(a => a.EffAttendFlag == null || a.EffAttendFlag == true);

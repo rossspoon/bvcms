@@ -35,6 +35,12 @@ namespace CmsWeb.Areas.Main.Controllers
 					om.OrganizationId == m.meeting.OrganizationId
 					&& om.PeopleId == Util.UserPeopleId))
 				return RedirectShowError("You must be a member of this organization to have access to this page");
+			else if (Util2.OrgLeadersOnly
+				&& !DbUtil.Db.OrganizationMembers.Any(om =>
+					om.OrganizationId == m.meeting.OrganizationId
+					&& om.PeopleId == Util.UserPeopleId
+                    && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
+				return RedirectShowError("You must be a leader of this organization to have access to this page");
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

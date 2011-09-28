@@ -28,10 +28,15 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("organization not found");
 
             if (Util2.OrgMembersOnly)
+            {
                 if (m.org.SecurityTypeId == 3)
                     return NotAllowed("You do not have access to this page", m.org.OrganizationName);
                 else if (!m.org.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId))
                     return NotAllowed("You must be a member of this organization", m.org.OrganizationName);
+            }
+            else if (Util2.OrgLeadersOnly)
+                if (!m.org.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
+                    return NotAllowed("You must be a leader of this organization", m.org.OrganizationName);
 
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 

@@ -42,6 +42,8 @@ namespace CmsWeb.Models
 
             if (Util2.OrgMembersOnly)
                 people = DbUtil.Db.OrgMembersOnlyTag2().People(DbUtil.Db);
+            else if (Util2.OrgLeadersOnly)
+                people = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
             else
                 people = DbUtil.Db.People.AsQueryable();
             people = people.Where(p => p.Users.Any(uu => uu.UserRoles.Any(ur => ur.Role.RoleName == "Access")));

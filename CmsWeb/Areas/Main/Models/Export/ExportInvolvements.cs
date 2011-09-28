@@ -52,7 +52,7 @@ namespace CmsWeb.Models
                          Spouse = spouse != null ? spouse.FirstName : "",
 
                          activities = from m in p.OrganizationMembers
-                                      where m.Organization.SecurityTypeId != 3 || !Util2.OrgMembersOnly
+                                      where m.Organization.SecurityTypeId != 3 || !(Util2.OrgMembersOnly && Util2.OrgLeadersOnly)
                                       select new ActivityInfo
                                       {
                                           Name = m.Organization.OrganizationName,

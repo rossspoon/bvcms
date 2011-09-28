@@ -20,25 +20,35 @@ namespace CmsWeb.Areas.Public.Controllers
 {
 #if DEBUG
 #else
-   [RequireHttps]
+    [RequireHttps]
 #endif
     public class APIController : CmsController
     {
-#if DEBUG
-        //[RequireBasicAuthentication]
-#endif
+        [HttpPost]
         public ActionResult Login(string user, string password)
+        {
+            Response.ContentType = "text/xml";
+            //var user = Request.Headers["user"];
+            //var password = Request.Headers["password"];
+            var ret = Authenticate(log: true);
+            if (ret.StartsWith("!"))
+                return Content("<Login error=\"{0}\" />".Fmt(ret.Substring(1)));
+            var valid = CMSMembershipProvider.provider.ValidateUser(user, password);
+            if (!valid)
+                return Content("<Login error=\"{0} not valid\" />".Fmt(user ?? "(null)"));
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == user);
+            return Content(APIFunctions.Login(DbUtil.Db, u));
+        }
+#if DEBUG
+    [RequireBasicAuthentication]
+#endif
+        public ActionResult Organizations(int id)
         {
             Response.ContentType = "text/xml";
             var ret = Authenticate(log: true);
             if (ret.StartsWith("!"))
-                return Content("<login error=\"{0}\" />".Fmt(ret.Substring(1)));
-            var valid = CMSMembershipProvider.provider.ValidateUser(user, password);
-            if (!valid)
-                return Content("<login error=\"{0} not valid\" />".Fmt(user ?? "(null)"));
-            var roles = CMSRoleProvider.provider;
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == user);
-            return Content(APIFunctions.Login(DbUtil.Db, u));
+                return Content("<Organizations error=\"{0}\" />".Fmt(ret.Substring(1)));
+            return new OrganizationsResult(id);
         }
         private string Authenticate(bool log = false)
         {

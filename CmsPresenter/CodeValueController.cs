@@ -950,8 +950,7 @@ namespace CMSPresenter
 				list = new List<CodeValueItem> 
 					{
 						new CodeValueItem { Id = 0, Value = "None", Code = "N" },
-						new CodeValueItem { Id = 1, Value = "Children", Code = "C" },
-						new CodeValueItem { Id = 2, Value = "Beeper", Code = "B" },
+						new CodeValueItem { Id = 2, Value = "LeadersOnly", Code = "U" },
 						new CodeValueItem { Id = 3, Value = "UnShared", Code = "U" },
 					};
 				HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;

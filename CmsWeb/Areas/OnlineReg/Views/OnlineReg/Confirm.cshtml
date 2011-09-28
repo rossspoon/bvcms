@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "/Views/Shared/onlinereg.cshtml";
-    ViewBag.Title = "Online Registration";
+    ViewBag.Title = "Online Transaction";
 }
 <script src="/Content/js/jquery-1.5.2.min.js" type="text/javascript"></script>
 <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
@@ -18,9 +18,9 @@
         $.idleTimer(tmout);
     });
 </script>
-<h2>Registration Received</h2>
+<h2>Transaction Completed</h2>
 <p style="color: Black">
-    Thank you for registering for @ViewData["orgname"].  
+    Thank you, your transaction is complete for @ViewData["orgname"].  
     You should receive a confirmation email at @ViewData["email"] shortly.
 </p>
-<p style="color: Blue"><a href='@ViewData["gobackurl"]'>Start a New Registration</a></p>
+<p style="color: Blue"><a href='@ViewData["gobackurl"]'>Start a New Transaction</a></p>

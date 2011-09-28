@@ -50,10 +50,18 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ret)
                 if (checkorgmembersonly)
                     if (!Util2.OrgMembersOnly)
+                    {
                         if (roles.IsUserInRole(username, "OrgMembersOnly"))
                         {
                             Util2.OrgMembersOnly = true;
                             DbUtil.Db.SetOrgMembersOnly();
+                        }
+                    }
+                    else if (!Util2.OrgLeadersOnly)
+                        if (roles.IsUserInRole(username, "OrgLeadersOnly"))
+                        {
+                            Util2.OrgLeadersOnly = true;
+                            DbUtil.Db.SetOrgLeadersOnly();
                         }
             return ret;
         }
@@ -82,6 +90,11 @@ namespace CmsWeb.Areas.Public.Controllers
                 Util2.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
             }
+            else if (!Util2.OrgLeadersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgLeadersOnly"))
+            {
+                Util2.OrgLeadersOnly = true;
+                DbUtil.Db.SetOrgLeadersOnly();
+            }
             var m = new SearchModel(name, comm, addr);
             return new SearchResult0(m.PeopleList(), m.Count);
         }
@@ -102,6 +115,11 @@ namespace CmsWeb.Areas.Public.Controllers
             {
                 Util2.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
+            }
+            else if (!Util2.OrgLeadersOnly && CMSRoleProvider.provider.IsUserInRole(uname, "OrgLeadersOnly"))
+            {
+                Util2.OrgLeadersOnly = true;
+                DbUtil.Db.SetOrgLeadersOnly();
             }
             var m = new SearchModel(name, comm, addr);
             return new SearchResult(m.PeopleList(), m.Count);

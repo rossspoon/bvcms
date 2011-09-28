@@ -137,7 +137,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             else if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.OnlineGiving)
             {
                 var p = m.List[0];
-                var staff = DbUtil.Db.StaffPeopleForOrg(p.org.OrganizationId)[0]; 
+                if (p.IsNew)
+                    p.AddPerson(null, p.org.EntryPointId ?? 0);
+
+                var staff = DbUtil.Db.StaffPeopleForOrg(p.org.OrganizationId)[0];
                 var text = p.setting.Body.ToString().Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
                 text = text.Replace("{amt}", (t.Amt ?? 0).ToString("N2"));
                 text = text.Replace("{date}", DateTime.Today.ToShortDateString());
@@ -149,7 +152,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 text = text.Replace("{contact}", staff.Name);
                 text = text.Replace("{contactemail}", staff.EmailAddress);
                 text = text.Replace("{contactphone}", p.org.PhoneNumber.FmtFone());
-            	var re = new Regex(@"(?<b>.*?)<!--ITEM\sROW\sSTART-->.(?<row>.*?)\s*<!--ITEM\sROW\sEND-->(?<e>.*)", RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
+                var re = new Regex(@"(?<b>.*?)<!--ITEM\sROW\sSTART-->.(?<row>.*?)\s*<!--ITEM\sROW\sEND-->(?<e>.*)", RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
                 var match = re.Match(text);
                 var b = match.Groups["b"].Value;
                 var row = match.Groups["row"].Value.Replace("{funditem}", "{0}").Replace("{itemamt}", "{1:N2}");
@@ -193,10 +196,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     p.setting.Subject, sb.ToString(),
                     Util.EmailAddressListFromString(p.person.FromEmail), 0, p.PeopleId);
                 Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(p.person.FromEmail),
-                    "online giving contribution received", 
+                    "online giving contribution received",
                     "see contribution records for {0} ({1})".Fmt(p.person.Name, p.PeopleId),
-                    Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId)), 
+                    Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId)),
                     0, p.PeopleId);
+                if (p.CreatingAccount == true)
+                    p.CreateAccount();
             }
             else if (m.ManagingSubscriptions())
             {
@@ -238,7 +243,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 m.UseCoupon(t.TransactionId);
             }
 
-            
+
             DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             DbUtil.Db.SubmitChanges();
             if (m.IsCreateAccount() || m.ManagingSubscriptions())

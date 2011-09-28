@@ -227,7 +227,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttendController.cs" />
     <Compile Include="BundleController.cs" />
     <Compile Include="ChurchAttendanceConstants.cs" />
     <Compile Include="ChurchAttendanceSummaryController.cs" />
@@ -264,7 +263,6 @@
     <Compile Include="InfoClasses\PastAttendeeInfo.cs" />
     <Compile Include="InfoClasses\PersonInfo.cs" />
     <Compile Include="CodeValueController.cs" />
-    <Compile Include="SavedQueryController.cs" />
     <Compile Include="RoleController.cs" />
     <Compile Include="UserController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -323,6 +323,7 @@
     <Compile Include="Areas\Public\Controllers\OrgContentController.cs" />
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
+    <Compile Include="Areas\Public\Models\API\OrganizationsResult.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Content Include="Binaries\AuthorizeNet.dll" />
@@ -694,13 +695,6 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="PurgeProgress.aspx.cs">
-      <DependentUpon>PurgeProgress.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PurgeProgress.aspx.designer.cs">
-      <DependentUpon>PurgeProgress.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\ChurchAttendanceRpt.aspx.cs">
       <DependentUpon>ChurchAttendanceRpt.aspx</DependentUpon>
@@ -1494,7 +1488,6 @@
   <ItemGroup>
     <Content Include="ForceError.aspx" />
     <Content Include="NoRemoteAccess.htm" />
-    <Content Include="PurgeProgress.aspx" />
     <Content Include="SavedQueries.aspx" />
   </ItemGroup>
   <ItemGroup>

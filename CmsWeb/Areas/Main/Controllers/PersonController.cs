@@ -43,13 +43,27 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 if (m.Person == null || !m.Person.CanUserSee)
                     return Content("no access");
-            var omotag = DbUtil.Db.OrgMembersOnlyTag2();
-            if (Util2.OrgMembersOnly && !DbUtil.Db.TagPeople.Any(pt => pt.PeopleId == id && pt.Id == omotag.Id))
+            if (Util2.OrgMembersOnly)
             {
-                DbUtil.LogActivity("Trying to view person: {0}".Fmt(m.displayperson.Name));
-                return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
-                    .Fmt("You must be a member one of this person's organizations to have access to this page",
-                    "javascript: history.go(-1)", "Go Back"));
+                var omotag = DbUtil.Db.OrgMembersOnlyTag2();
+                if (!DbUtil.Db.TagPeople.Any(pt => pt.PeopleId == id && pt.Id == omotag.Id))
+                {
+                    DbUtil.LogActivity("Trying to view person: {0}".Fmt(m.displayperson.Name));
+                    return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
+                        .Fmt("You must be a member one of this person's organizations to have access to this page",
+                        "javascript: history.go(-1)", "Go Back"));
+                }
+            }
+            else if (Util2.OrgLeadersOnly)
+            {
+                var olotag = DbUtil.Db.OrgLeadersOnlyTag2();
+                if (!DbUtil.Db.TagPeople.Any(pt => pt.PeopleId == id && pt.Id == olotag.Id))
+                {
+                    DbUtil.LogActivity("Trying to view person: {0}".Fmt(m.displayperson.Name));
+                    return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
+                        .Fmt("You must be a leader of one of this person's organizations to have access to this page",
+                        "javascript: history.go(-1)", "Go Back"));
+                }
             }
             ViewData["Comments"] = Util.SafeFormat(m.Person.Comments);
             ViewData["PeopleId"] = id.Value;
@@ -68,7 +82,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 p.MovePersonStuff(DbUtil.Db, to);
                 DbUtil.Db.SubmitChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Content(ex.Message);
             }
@@ -482,15 +496,15 @@ namespace CmsWeb.Areas.Main.Controllers
             var Db = DbUtil.Db;
             var u = Db.Users.Single(us => us.UserId == id);
             Db.UserCanEmailFors.DeleteAllOnSubmit(u.UsersWhoCanEmailForMe);
-			Db.UserCanEmailFors.DeleteAllOnSubmit(u.UsersICanEmailFor);
-			Db.Preferences.DeleteAllOnSubmit(u.Preferences);
+            Db.UserCanEmailFors.DeleteAllOnSubmit(u.UsersICanEmailFor);
+            Db.Preferences.DeleteAllOnSubmit(u.Preferences);
             Db.ActivityLogs.DeleteAllOnSubmit(u.ActivityLogs);
             Db.BlogNotifications.DeleteAllOnSubmit(u.BlogNotifications);
             Db.PageVisits.DeleteAllOnSubmit(u.PageVisits);
             Db.UserRoles.DeleteAllOnSubmit(u.UserRoles);
             Db.UserGroupRoles.DeleteAllOnSubmit(u.UserGroupRoles);
             foreach (var f in u.VolunteerFormsUploaded)
-				f.UploaderId = null;
+                f.UploaderId = null;
             Db.SubmitChanges();
             Membership.DeleteUser(u.Username, true);
             DbUtil.Db.UserRoles.DeleteAllOnSubmit(u.UserRoles);
@@ -535,7 +549,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult TagDuplicates(int id)
         {
-            if(HttpContext.Application["TagDuplicatesStatus"] != null)
+            if (HttpContext.Application["TagDuplicatesStatus"] != null)
                 return Content("already running elsewhere, sorry");
             int? pid = Util.UserPeopleId;
             string tagname = Util2.CurrentTagName;

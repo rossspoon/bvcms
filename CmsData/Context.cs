@@ -425,6 +425,10 @@ namespace CmsData
         {
             return FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_OrgMembersOnly);
         }
+        public Tag OrgLeadersOnlyTag2()
+        {
+            return FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_OrgLeadersOnly);
+        }
 
         public Tag FetchOrCreateTag(string tagname, int? OwnerId, int tagtypeid)
         {
@@ -511,6 +515,51 @@ namespace CmsData
                 select p;
             TagAll(q, tag);
             //PopulateSpecialTag(q, "OrgMemberOnlyIHaveContacted");
+        }
+        public void SetOrgLeadersOnly()
+        {
+            var me = Util.UserPeopleId;
+            var dt = Util.Now.AddYears(-1);
+
+            // members of any of my orgs excluding unshared orgs
+            var q = from p in People
+                    where p.OrganizationMembers.Any(m =>
+                        OrganizationMembers.Any(um =>
+                             um.MemberType.AttendanceTypeId == AttendTypeCode.Leader
+                             && um.OrganizationId == m.OrganizationId && um.PeopleId == me))
+                    select p;
+            var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgLeadersOnly);
+
+            // members of my family
+            q = from p in People
+                where p.FamilyId == CurrentUser.Person.FamilyId
+                select p;
+            TagAll(q, tag);
+
+            // visitors in the last year to one of my orgs excluding unshared
+            var attype = new int[] { 40, 50, 60 };
+            q = from p in People
+                where p.Attends.Any(a =>
+                    OrganizationMembers.Any(um =>
+                        um.MemberType.AttendanceTypeId == AttendTypeCode.Leader
+                        && um.Organization.SecurityTypeId != 3
+                        && um.OrganizationId == a.Meeting.OrganizationId 
+                        && um.PeopleId == me)
+                    && attype.Contains(a.AttendanceTypeId.Value) && a.MeetingDate > dt)
+                select p;
+            TagAll(q, tag);
+
+            // people assigned to me in one of my tasks
+            q = from p in People
+                where p.TasksAboutPerson.Any(at => at.OwnerId == me || at.CoOwnerId == me)
+                select p;
+            TagAll(q, tag);
+
+            // people I have visited in a contact
+            q = from p in People
+                where p.contactsHad.Any(c => c.contact.contactsMakers.Any(cm => cm.PeopleId == me))
+                select p;
+            TagAll(q, tag);
         }
         [Function(Name = "dbo.AddAbsents")]
         public int AddAbsents([Parameter(DbType = "Int")] int? meetid, [Parameter(DbType = "Int")] int? userid)

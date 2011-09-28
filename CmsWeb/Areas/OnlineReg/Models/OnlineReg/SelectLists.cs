@@ -44,7 +44,7 @@ namespace CmsWeb.Models
         public static IEnumerable<SelectListItem> Classes(int? divid, int id)
         {
             var q = from o in UserSelectClasses(divid)
-                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
+                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > (o.MemberCount ?? 0))
                     where hasroom
                     orderby o.OnLineCatalogSort, o.OrganizationName
                     select new SelectListItem

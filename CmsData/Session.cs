@@ -110,6 +110,19 @@ namespace CmsData
                     HttpContext.Current.Session[STR_OrgMembersOnly] = value;
             }
         }
+        public const string STR_OrgLeadersOnly = "OrgLeadersOnly";
+        public static bool OrgLeadersOnly
+        {
+            get
+            {
+                return (bool)GetSessionObj(STR_OrgLeadersOnly, false);
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_OrgLeadersOnly] = value;
+            }
+        }
         private const string STR_VisitLookbackDays = "VisitLookbackDays";
         public static int VisitLookbackDays
         {

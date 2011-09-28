@@ -102,11 +102,21 @@ namespace CmsData
                      "DeceasedDate", CompareType.Equal, new DateTime?()));
             if (Util2.OrgMembersOnly)
                 tree = Expression.And(OrgMembersOnly(db, parm), tree);
+            else if (Util2.OrgLeadersOnly)
+                tree = Expression.And(OrgLeadersOnly(db, parm), tree);
             return Expression.Lambda<Func<Person, bool>>(tree, parm);
         }
         private Expression OrgMembersOnly(CMSDataContext db, ParameterExpression parm)
         {
             var tag = db.OrgMembersOnlyTag2();
+            Expression<Func<Person, bool>> pred = p =>
+                p.Tags.Any(t => t.Id == tag.Id);
+            //db.TaggedPeople(tag.Id).Select(t => t.PeopleId).Contains(p.PeopleId);
+            return Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+        }
+        private Expression OrgLeadersOnly(CMSDataContext db, ParameterExpression parm)
+        {
+            var tag = db.OrgLeadersOnlyTag2();
             Expression<Func<Person, bool>> pred = p =>
                 p.Tags.Any(t => t.Id == tag.Id);
             //db.TaggedPeople(tag.Id).Select(t => t.PeopleId).Contains(p.PeopleId);

@@ -50,12 +50,19 @@ namespace CmsWeb
             {
                 if (Util2.OrgMembersOnly)
                     DbUtil.Db.SetOrgMembersOnly();
+                else if (Util2.OrgLeadersOnly)
+                    DbUtil.Db.SetOrgLeadersOnly();
                 Util.SessionStarting = false;
             }
             if (!Util2.OrgMembersOnly && Page.User.IsInRole("OrgMembersOnly"))
             {
                 Util2.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
+            }
+            else if (!Util2.OrgLeadersOnly && Page.User.IsInRole("OrgLeadersOnly"))
+            {
+                Util2.OrgLeadersOnly = true;
+                DbUtil.Db.SetOrgLeadersOnly();
             }
 
             var r = AccountController.CheckAccessRole(Util.UserName);

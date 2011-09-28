@@ -20,7 +20,7 @@ namespace CmsWeb.Models
                 SawExistingAccount = true;
                 var user = person.Users.OrderByDescending(uu => uu.LastActivityDate).First();
 
-                var message = 
+                var message = DbUtil.Content("ExistingAccountConfirmation", 
                         @"Hi {name},
 <p>We noticed you already have an account in our church database.</p>
 <p>You can login at <a href=""{host}"">{host}</a>. 
@@ -30,7 +30,7 @@ This will send you a link you can use to reset your password.</p>
 <p>You can use your account to help us maintain your correct address, email and phone numbers.
 Just login to <a href=""{host}"">{host}</a> and you will be taken to your record where you can make corrections if needed.</p>
 <p>Thank You</p>
-";
+");
                 message = message
                     .Replace("{name}", person.Name)
                     .Replace("{host}", DbUtil.Db.CmsHost);

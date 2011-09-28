@@ -18,6 +18,7 @@ namespace CmsData
         public string CurrentTagName { get; set; }
         public int VisitLookbackDays { get; set; }
         public bool OrgMembersOnly { get; set; }
+        public bool OrgLeadersOnly { get; set; }
         public string Host { get; set; }
 
         public void CopySession()
@@ -30,6 +31,7 @@ namespace CmsData
                 CurrentTagOwnerId = Util2.CurrentTagOwnerId;
                 CurrentTagName = Util2.CurrentTagName;
                 OrgMembersOnly = Util2.OrgMembersOnly;
+                OrgLeadersOnly = Util2.OrgLeadersOnly;
                 VisitLookbackDays = Util2.VisitLookbackDays;
                 Host = Util.Host;
             }
@@ -43,6 +45,7 @@ namespace CmsData
             s.CurrentTagOwnerId = CurrentTagOwnerId;
             s.CurrentTagName = CurrentTagName;
             s.OrgMembersOnly = OrgMembersOnly;
+            s.OrgLeadersOnly = OrgLeadersOnly;
             s.VisitLookbackDays = VisitLookbackDays;
             s.Host = Host;
             return s;
@@ -55,6 +58,7 @@ namespace CmsData
             CurrentTagOwnerId = s.CurrentTagOwnerId;
             CurrentTagName = s.CurrentTagName;
             OrgMembersOnly = s.OrgMembersOnly;
+            OrgLeadersOnly = s.OrgLeadersOnly;
             VisitLookbackDays = s.VisitLookbackDays;
             Host = s.Host;
         }
@@ -116,6 +120,7 @@ namespace CmsData
         public string CurrentTagName { get; set; }
         public int VisitLookbackDays { get; set; }
         public bool OrgMembersOnly { get; set; }
+        public bool OrgLeadersOnly { get; set; }
         public string Host { get; set; }
     }
 }

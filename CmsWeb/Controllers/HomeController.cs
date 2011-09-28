@@ -26,6 +26,11 @@ namespace CmsWeb.Controllers
                 Util2.OrgMembersOnly = true;
                 DbUtil.Db.SetOrgMembersOnly();
             }
+            else if (!Util2.OrgLeadersOnly && User.IsInRole("OrgLeadersOnly"))
+            {
+                Util2.OrgLeadersOnly = true;
+                DbUtil.Db.SetOrgLeadersOnly();
+            }
             var m = new HomeModel();
             return View(m);
         }

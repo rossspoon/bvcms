@@ -68,7 +68,7 @@ namespace CmsWeb.Models
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.PeopleId == pid
                     where (om.Pending ?? false) == false
-                    where !(om.Organization.SecurityTypeId == 3 && Util2.OrgMembersOnly)
+                    where !(om.Organization.SecurityTypeId == 3 && (Util2.OrgMembersOnly || Util2.OrgLeadersOnly))
                     orderby om.Organization.OrganizationName
                     select new MyInvolvementInfo
                     {

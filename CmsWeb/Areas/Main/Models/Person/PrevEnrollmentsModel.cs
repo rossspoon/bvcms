@@ -23,7 +23,7 @@ namespace CmsWeb.Models.PersonPage
         {
             if (_enrollments == null)
             {
-                var limitvisibility = Util2.OrgMembersOnly
+                var limitvisibility = Util2.OrgMembersOnly || Util2.OrgLeadersOnly
                     || !HttpContext.Current.User.IsInRole("Access");
                 _enrollments = from etd in DbUtil.Db.EnrollmentTransactions
                                where etd.TransactionStatus == false

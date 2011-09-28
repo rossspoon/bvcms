@@ -31,6 +31,7 @@ No Zero Meetings: @Html.CheckBox("NoZero")
             <th> <a href="#" class="sortable">Division</a> </th>
             <th> <a href="#" class="sortable">Organization</a> </th>
             <th> <a href="#" class="sortable">Leader</a> </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -50,11 +51,12 @@ No Zero Meetings: @Html.CheckBox("NoZero")
             <td> <span title="@m.Program">@m.Division</span> </td>
             <td> <a title="@m.Tracking" href="/Organization/Index/@m.OrganizationId">@m.Organization</a> </td>
             <td>@m.Leader</td>
+            <td>@m.Description</td>
         </tr>
 }
     </tbody>
     <tfoot>
-    <tr><td colspan="6"><hr /></td></tr>
+    <tr><td colspan="7"><hr /></td></tr>
         <tr>
             <td align="right">Total Meetings</td>
             <td align="right">@Model.MeetingsCount.ToString("N0")</td>

@@ -148,6 +148,7 @@ namespace CmsData
         public const string MiscTagsString = "Misc Tags";
         public const int TagTypeId_Personal = 1;
         public const int TagTypeId_OrgMembersOnly = 3;
+        public const int TagTypeId_OrgLeadersOnly = 6;
         public const int TagTypeId_CouplesHelper = 4;
         public const int TagTypeId_AddSelected = 5;
 

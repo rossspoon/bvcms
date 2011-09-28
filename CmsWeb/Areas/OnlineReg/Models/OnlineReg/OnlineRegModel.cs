@@ -244,9 +244,9 @@ namespace CmsWeb.Models
                 {
                     divid = divid,
                     orgid = orgid,
-                    first = "David",
-                    last = "Carroll",
-                    dob = "5/30/52",
+                    first = "Test",
+                    last = "Record",
+                    dob = "8/16/76",
                     email = "david@bvcms.com",
                     phone = "",
                     LoggedIn = false,
