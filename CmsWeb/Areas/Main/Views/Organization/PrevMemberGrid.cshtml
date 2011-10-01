@@ -17,7 +17,9 @@ Count: <strong>@Model.Count()</strong>
     <th><br /><a href="#" class="sortable">Primary Address</a></th>
     <th><br />Communication</th>
     <th><br /><a href="#" class="sortable">% Att.</a></th>
-    <th><br /><a href="#" class="sortable">Last Att.</a></th>
+    <th><a href="#" class="sortable">Dropped</a><br />
+        <a href="#" class="sortable">Last Att.</a>
+    </th>
     <th><br />Tag</th>
 </tr>
 </thead>
@@ -45,8 +47,9 @@ Count: <strong>@Model.Count()</strong>
     <td>
         <span>@om.AttendPct.ToString2("N1")%</span>
     </td>
-    <td>
-        <span>@om.LastAttended.FormatDate2()</span>
+    <td align="center">
+        <span>@om.Dropped.FormatDate2()</span><br />
+        <span>@om.LastAttended.FormatDate("-")</span>
     </td>
     <td>
         <a pid='@om.PeopleId' title="Add to/Remove from Active Tag" class="taguntag" href="#">@(om.HasTag? "Remove" : "Add")</a>

@@ -19,25 +19,50 @@ namespace CmsWeb.Models
             Sunday = sunday;
         }
 
+        public class ColInfo
+        {
+            public string Heading { get; set; }
+            public List<TimeSpan> Times { get; set; }
+            public ColInfo()
+            {
+                Times = new List<TimeSpan>();
+            }
+        }
+
         public class ProgInfo
         {
             public int progid { get; set; }
             public string Name { get; set; }
             public IEnumerable<DivInfo> Divs { get; set; }
             public string RptGroup { get; set; }
-            List<DateTime> _cols;
-            public List<DateTime> Cols
+            List<ColInfo> _cols;
+            public List<ColInfo> Cols
             {
                 get
                 {
                     if (_cols == null)
                     {
-                        _cols = new List<DateTime>();
-                        var re = new Regex(@"(\d+:\d+ [AP]M),?");
+                        _cols = new List<ColInfo>();
+                        Regex re = null;
+                        if (RptGroup.TrimEnd().EndsWith(")"))
+                            re = new Regex(@"(?<re>\d+:\d+ [AP]M)");
+                        else
+                            re = new Regex(@"\((?<re>[^)]*)\)=(?<na>[^,)]*)|(?<re>\d+:\d+ [AP]M)");
                         var m = re.Match(RptGroup);
                         while (m.Success)
                         {
-                            _cols.Add(DateTime.Parse(m.Groups[1].Value));
+                            var ci = new ColInfo();
+                            _cols.Add(ci);
+                            var a = m.Groups["re"].Value.Split('|');
+                            if (m.Groups["na"].Value.HasValue())
+                                ci.Heading = m.Groups["na"].Value;
+                            else
+                                ci.Heading = m.Groups[1].Value;
+                            foreach (var s in a)
+                            {
+                                var dt = DateTime.Parse(s);
+                                ci.Times.Add(dt.TimeOfDay);
+                            }
                             m = m.NextMatch();
                         }
                     }

@@ -193,6 +193,7 @@
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
     <Compile Include="APIFunctions.cs" />
+    <Compile Include="APIOrganizations.cs" />
     <Compile Include="QueryFunctions.cs" />
     <Compile Include="Generated\AttendCredit.cs" />
     <Compile Include="Generated\Contact.cs" />
@@ -467,6 +468,7 @@
     <Compile Include="VerseCategory.cs" />
     <Compile Include="VerseCategoryXref.cs" />
     <Compile Include="VerseSummaryController.cs" />
+    <Compile Include="APIWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

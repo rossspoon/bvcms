@@ -11,10 +11,12 @@ using IronPython.Hosting;
 using System.IO;
 using CmsData.Codes;
 using System.Web;
+using System.Xml;
+using System.Diagnostics;
 
-namespace CmsData
+namespace CmsData.API
 {
-    public class APIFunctions
+    public partial class APIFunctions
     {
         private CMSDataContext Db;
 
@@ -26,7 +28,7 @@ namespace CmsData
         {
             this.Db = Db;
         }
-        public static string Login(CMSDataContext Db, User u)
+        public string Login(User u)
         {
             var script = DbUtil.Content("API-LoginInfo");
             if (script == null)
@@ -42,7 +44,8 @@ namespace CmsData
                 dynamic LoginInfo = scope.GetVariable("LoginInfo");
                 dynamic m = LoginInfo();
                 var api = new APIFunctions(Db);
-                return m.Run(api, u.Person);
+                var w = new APIWriter();
+                return m.Run(api, w, u.Person);
             }
             catch (Exception ex)
             {
@@ -57,6 +60,20 @@ namespace CmsData
                     where a.AttendanceFlag == true
                     select a;
             return q.Count();
+        }
+        public List<string> QueryBits(int PeopleId)
+        {
+            var q1 = (from f in Db.QueryBitsFlags()
+                      select f).ToList();
+            var q2 = (from t in Db.TagPeople
+                      where t.PeopleId == 828612
+                      where t.Tag.TagType.Id == 100
+                      select t.Tag.Name).ToList();
+            var q = from t in q2
+                    join f in q1 on t equals f[0]
+                    select f[1];
+            var list = q.ToList();
+            return list;
         }
         public DateTime LastAttendDate(int orgid, int PeopleId)
         {
@@ -76,6 +93,55 @@ namespace CmsData
                     where a.MemberTypeId != Codes.MemberTypeCode.InActive
                     select a;
             return q.Count();
+        }
+        public string ExtraValues(int id, string fields)
+        {
+            var a = fields.Split(',');
+            try
+            {
+                var q = from v in DbUtil.Db.PeopleExtras
+                        where a.Contains(v.Field)
+                        where v.PeopleId == id
+                        select v;
+                var w = new APIWriter();
+                w.Start("ExtraValues");
+                foreach (var v in q)
+                    w.Add(v.Field, v.StrValue);
+                w.End();
+                return w.ToString();
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        public static string AddEditExtraValue(int id, string field, string value)
+        {
+            try
+            {
+                var q = from v in DbUtil.Db.PeopleExtras
+                        where v.Field == field
+                        where v.PeopleId == id
+                        select v;
+                var ev = q.SingleOrDefault();
+                if (ev == null)
+                {
+                    ev = new PeopleExtra
+                    {
+                        PeopleId = id,
+                        Field = field,
+                        TransactionTime = DateTime.Now
+                    };
+                    DbUtil.Db.PeopleExtras.InsertOnSubmit(ev);
+                }
+                ev.StrValue = value;
+                DbUtil.Db.SubmitChanges();
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

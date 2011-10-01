@@ -18,6 +18,7 @@ namespace CmsWeb.Models
         public string MemberType { get; set; }
         public int? LeaderId { get; set; }
         public DateTime? EnrollDate { get; set; }
+        public DateTime? DropDate { get; set; }
         public Decimal? AttendPct { get; set; }
         public string DivisionName { get; set; }
     }

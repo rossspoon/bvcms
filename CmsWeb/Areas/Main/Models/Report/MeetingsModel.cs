@@ -33,14 +33,12 @@ namespace CmsWeb.Models
         public int? CampusId { get; set; }
         public string Sort { get; set; }
         public string Dir { get; set; }
-        public bool Inactive { get; set; }
         public bool NoZero { get; set; }
 
         public MeetingsModel()
         {
             Dir = "asc";
             Sort = "Time";
-            Inactive = false;
         }
 
         public int MeetingsCount { get; set; }
@@ -99,9 +97,9 @@ namespace CmsWeb.Models
             if (!tdt2.HasValue)
                 tdt2 = Dt1.Value.AddHours(24);
             var q2 = from o in q
-                     where o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active || Inactive == true
                      join m in DbUtil.Db.Meetings on o.OrganizationId equals m.OrganizationId into mr
                      from m in mr.Where(m => m.MeetingDate >= Dt1 && m.MeetingDate < tdt2).DefaultIfEmpty()
+                     where !(o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Inactive && (m == null || m.NumPresent == 0))
                      where (m != null && m.NumPresent > 0) || NoZero == false
                      let div = o.Division
                      select new MeetingInfo
@@ -116,7 +114,8 @@ namespace CmsWeb.Models
                          Attended = m.NumPresent,
                          Leader = o.LeaderName,
                          Description = m.Description,
-                         OtherAttends = m.NumOtherAttends
+                         OtherAttends = m.NumOtherAttends,
+                         Inactive = o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Inactive
                      };
             switch (Dir)
             {
@@ -167,7 +166,6 @@ namespace CmsWeb.Models
             TotalAttends = list.Sum(m => m.Attended ?? 0);
             OtherAttends = list.Sum(m => m.OtherAttends ?? 0);
             var q3 = from o in q
-                     where o.AttendTrkLevelId != 0 && o.AttendTrkLevelId != null
                      join m in DbUtil.Db.Meetings on o.OrganizationId equals m.OrganizationId into mr
                      from m in mr.Where(m => m.MeetingDate >= Dt1 && m.MeetingDate < tdt2)
                      let div = o.Division
@@ -191,5 +189,6 @@ namespace CmsWeb.Models
         public int? OtherAttends { get; set; }
         public string Leader { get; set; }
         public string Description { get; set; }
+        public bool Inactive { get; set; }
     }
 }

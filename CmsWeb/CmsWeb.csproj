@@ -323,7 +323,6 @@
     <Compile Include="Areas\Public\Controllers\OrgContentController.cs" />
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
-    <Compile Include="Areas\Public\Models\API\OrganizationsResult.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Content Include="Binaries\AuthorizeNet.dll" />

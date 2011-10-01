@@ -103,6 +103,7 @@ namespace CmsWeb.Models.OrganizationPage
                          AttendPct = om.AttendancePercentage,
                          LastAttended = att,
                          Joined = om.EnrollmentDate,
+                         Dropped = om.TransactionDate
                      };
             return q2;
         }
@@ -170,6 +171,17 @@ namespace CmsWeb.Models.OrganizationPage
                             p.Name2
                             select om;
                         break;
+                    case "Dropped":
+                        q = from om in q
+                            orderby om.TransactionDate
+                            select om;
+                        break;
+                    case "Last Att.":
+                        q = from om in q
+                            let att2 = om.Person.Attends.Where(a => a.OrganizationId == om.OrganizationId).Max(a => a.MeetingDate)
+                            orderby att2
+                            select om;
+                        break;
                 }
             else
                 switch (Pager.Sort)
@@ -230,6 +242,17 @@ namespace CmsWeb.Models.OrganizationPage
                         q = from om in q
                             let p = om.Person
                             orderby p.BirthYear descending, p.BirthMonth descending, p.BirthDay descending
+                            select om;
+                        break;
+                    case "Dropped":
+                        q = from om in q
+                            orderby om.TransactionDate descending
+                            select om;
+                        break;
+                    case "Last Att.":
+                        q = from om in q
+                            let att2 = om.Person.Attends.Where(a => a.OrganizationId == om.OrganizationId).Max(a => a.MeetingDate)
+                            orderby att2 descending
                             select om;
                         break;
                 }

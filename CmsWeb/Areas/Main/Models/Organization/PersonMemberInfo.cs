@@ -74,6 +74,7 @@ namespace CmsWeb.Models.OrganizationPage
         public bool HasTag { get; set; }
         public MemberModel.GroupSelect FromTab { get; set; }
         public DateTime? Joined { get; set; }
+        public DateTime? Dropped { get; set; }
         private enum PhoneType
         {
             Home, Cell, Work

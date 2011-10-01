@@ -63,7 +63,7 @@
                <td></td>
     @foreach (var c in p.Cols)
     { 
-               <th>@c.ToString("h:mm tt")</th>
+               <th>@c.Heading</th>
     } 
                <th>Total</th>
                <th>Local</th>
@@ -80,7 +80,7 @@
            <td align="left">@d.Name</td>
         @foreach (var c in p.Cols)
         { 
-           <td align="right">@d.Meetings.Where(m => m.date.TimeOfDay == c.TimeOfDay).Sum(m => m.Present).ToString("n0")</td>
+           <td align="right">@d.Meetings.Where(m => c.Times.Contains(m.date.TimeOfDay)).Sum(m => m.Present).ToString("n0")</td>
         } 
            <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("M/d/yy H:mm")&dt2=@p.Dt2.ToString("M/d/yy H:mm")&divid=@d.DivId'>@d.Meetings.Sum(m => m.Present).ToString("n0")</a></td>
            <td align="right">@d.Meetings.Sum(m => m.Visitors).ToString("n0")</td>
@@ -91,7 +91,7 @@
            <td align="left">Total</td>
     @foreach (var c in p.Cols)
     { 
-           <td>@p.Divs.Sum(d => d.Meetings.Where(m => m.date.TimeOfDay == c.TimeOfDay).Sum(m => m.Present)).ToString("n0")</td>
+           <td>@p.Divs.Sum(d => d.Meetings.Where(m => c.Times.Contains(m.date.TimeOfDay)).Sum(m => m.Present)).ToString("n0")</td>
     } 
            <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("M/d/yy H:mm")&dt2=@p.Dt2.ToString("M/d/yy H:mm")&progid=@p.progid'>@p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")</a></td>
            <td align="right">@p.Divs.Sum(d => d.Meetings.Sum(m => m.Visitors)).ToString("n0")</td>

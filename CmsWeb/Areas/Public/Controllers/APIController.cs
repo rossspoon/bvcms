@@ -12,6 +12,7 @@ using System.Xml;
 using System.IO;
 using System.Net.Mail;
 using CmsData.Codes;
+using CmsData.API;
 using System.Text;
 using System.Net;
 using CmsWeb.Areas.Manage.Controllers;
@@ -28,8 +29,6 @@ namespace CmsWeb.Areas.Public.Controllers
         public ActionResult Login(string user, string password)
         {
             Response.ContentType = "text/xml";
-            //var user = Request.Headers["user"];
-            //var password = Request.Headers["password"];
             var ret = Authenticate(log: true);
             if (ret.StartsWith("!"))
                 return Content("<Login error=\"{0}\" />".Fmt(ret.Substring(1)));
@@ -37,18 +36,45 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!valid)
                 return Content("<Login error=\"{0} not valid\" />".Fmt(user ?? "(null)"));
             var u = DbUtil.Db.Users.Single(uu => uu.Username == user);
-            return Content(APIFunctions.Login(DbUtil.Db, u));
+            var api = new APIFunctions(DbUtil.Db);
+            return Content(api.Login(u));
         }
-#if DEBUG
-    [RequireBasicAuthentication]
-#endif
+        [RequireBasicAuthentication]
         public ActionResult Organizations(int id)
         {
             Response.ContentType = "text/xml";
-            var ret = Authenticate(log: true);
+            var ret = Authenticate();
             if (ret.StartsWith("!"))
                 return Content("<Organizations error=\"{0}\" />".Fmt(ret.Substring(1)));
-            return new OrganizationsResult(id);
+            var api = new APIFunctions(DbUtil.Db);
+            return Content(api.Organizations(id));
+        }
+        [RequireBasicAuthentication]
+        public ActionResult OrgMembers(int id)
+        {
+            Response.ContentType = "text/xml";
+            var ret = Authenticate();
+            if (ret.StartsWith("!"))
+                return Content("<OrgMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
+            var api = new APIFunctions(DbUtil.Db);
+            return Content(api.OrgMembers(id));
+        }
+        [RequireBasicAuthentication]
+        public ActionResult ExtraValues(int id, string field, string value)
+        {
+            Response.ContentType = "text/xml";
+            var ret = Authenticate();
+            if (ret.StartsWith("!"))
+                return Content("<ExtraValue error=\"{0}\" />".Fmt(ret.Substring(1)));
+            return Content(new APIFunctions().ExtraValues(id, "test,test2"));
+        }
+        [HttpPost]
+        public ActionResult AddEditExtraValue(int id, string field, string value)
+        {
+            var ret = Authenticate();
+            if (ret.StartsWith("!"))
+                return Content(ret.Substring(1));
+            return Content(APIFunctions.AddEditExtraValue(id, field, value));
         }
         private string Authenticate(bool log = false)
         {

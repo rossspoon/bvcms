@@ -232,6 +232,12 @@ namespace CmsWeb.Models.OrganizationPage
                             orderby om.LastAttended, p.LastName, p.FirstName
                             select om;
                         break;
+                    case "Joined":
+                        q = from om in q
+                            let p = om.Person
+                            orderby om.EnrollmentDate, p.LastName, p.FirstName
+                            select om;
+                        break;
                 }
             else
                 switch (Pager.Sort)
@@ -292,6 +298,12 @@ namespace CmsWeb.Models.OrganizationPage
                         q = from om in q
                             let p = om.Person
                             orderby om.LastAttended descending, p.LastName descending, p.FirstName descending
+                            select om;
+                        break;
+                    case "Joined":
+                        q = from om in q
+                            let p = om.Person
+                            orderby om.EnrollmentDate descending, p.LastName descending, p.FirstName descending
                             select om;
                         break;
                     case "Age":

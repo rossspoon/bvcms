@@ -10,7 +10,6 @@
 Meeting Dates:
 Start: @Html.TextBox("Dt1", Model.Dt1.ToString2("M/d/yy"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
 End: @Html.TextBox("Dt2", Model.Dt2.ToString2("M/d/yy"), new { style = "width: 100px; font-size: 110%", disabled = "disabled" })
-Include Inactive: @Html.CheckBox("Inactive")
 No Zero Meetings: @Html.CheckBox("NoZero")
 @Html.Hidden("Name")
 @Html.Hidden("StatusId")
@@ -37,7 +36,7 @@ No Zero Meetings: @Html.CheckBox("NoZero")
     <tbody>
 @foreach (var m in Model.MeetingsForDate())
 {
-        <tr>
+        <tr style="background-color: @(m.Inactive?"#eee":"#fff")">
         @if (!m.MeetingId.HasValue)
         {
             <td colspan="2">(no meeting)</td>

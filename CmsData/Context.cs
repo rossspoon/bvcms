@@ -807,5 +807,16 @@ namespace CmsData
                      select new string[] { a[0], a[1] };
             return q2;
         }
+        public Content Content(string name)
+        {
+            return Contents.SingleOrDefault(c => c.Name == name);
+        }
+        public string Content(string name, string def)
+        {
+            var content = Contents.SingleOrDefault(c => c.Name == name);
+            if (content != null)
+                return content.Body;
+            return def;
+        }
     }
 }

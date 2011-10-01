@@ -216,7 +216,7 @@ namespace UtilityExtensions
         public static string FormatDate(this DateTime? dt, string def)
         {
             if (dt.HasValue)
-                return dt.Value.ToString("d");
+                return dt.Value.ToString("M/d/yy");
             return def;
         }
         public static string FormatDateTm(this DateTime dt)
@@ -1018,7 +1018,7 @@ namespace UtilityExtensions
         }
         public static string ToSuitableId(this string s)
         {
-            return s.Replace('[', '_').Replace(']', '_');
+            return s.Replace('[', '_').Replace(']', '_').Replace(' ', '_').Replace(',', '_');
         }
         public static string PickFirst(params string[] args)
         {

@@ -53,6 +53,7 @@ namespace CmsWeb.Models.PersonPage
                          Name = om.OrganizationName,
                          MemberType = om.MemberType.Description,
                          EnrollDate = om.FirstTransaction.TransactionDate,
+                         DropDate = om.TransactionDate,
                          AttendPct = om.AttendancePercentage,
                          DivisionName = om.Organization.Division.Program.Name + "/" + om.Organization.Division.Name,
                      };
@@ -69,11 +70,17 @@ namespace CmsWeb.Models.PersonPage
                 case "Enroll Date":
                     q = q.OrderBy(om => om.FirstTransaction.TransactionDate);
                     break;
+                case "Drop Date":
+                    q = q.OrderBy(om => om.TransactionDate);
+                    break;
                 case "Organization desc":
                     q = q.OrderByDescending(om => om.Organization.OrganizationName);
                     break;
                 case "Enroll Date desc":
                     q = q.OrderByDescending(om => om.FirstTransaction.TransactionDate);
+                    break;
+                case "Drop Date desc":
+                    q = q.OrderByDescending(om => om.TransactionDate);
                     break;
             }
             return q;
