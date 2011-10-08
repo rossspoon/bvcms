@@ -117,6 +117,10 @@ namespace CmsWeb.Areas.Main.Controllers
             var newMtg = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == orgid && m.MeetingDate == dt);
 			if (newMtg == null)
 			{
+                var attsch = organization.OrgSchedules.SingleOrDefault(ss => ss.MeetingTime.Value.TimeOfDay == dt.TimeOfDay && ss.MeetingTime.Value.DayOfWeek == dt.DayOfWeek);
+                int? attcred = null;
+                if (attsch != null)
+                    attcred = attsch.AttendCreditId;
                 newMtg = new CmsData.Meeting
 				{
 					CreatedDate = Util.Now,
@@ -125,6 +129,7 @@ namespace CmsWeb.Areas.Main.Controllers
 					GroupMeetingFlag = false,
 					Location = organization.Location,
 					MeetingDate = dt,
+                    AttendCreditId = attcred,
 				};
 				DbUtil.Db.Meetings.InsertOnSubmit(newMtg);
 				DbUtil.Db.SubmitChanges();

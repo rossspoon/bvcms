@@ -18,12 +18,12 @@
             @Html.Partial("DivisionList", Model.Divisions())</a></td>
     </tr>
     <tr>
-        <th align="right">Location:</th>
-        <td>@o.Location</td>
-    </tr>
-    <tr>
         <th align="right">Campus:</th>
         <td>@Html.CodeDesc("org.CampusId", Model.CampusList())</td>
+    </tr>
+    <tr>
+        <th align="right">Security Type:</th>
+        <td>@Html.CodeDesc("org.SecurityTypeId", Model.SecurityTypeList())</td>
     </tr>
     <tr>
         <th align="right">Status:</th>
@@ -35,12 +35,11 @@
     </tr>
     <tr>
         <th align="right">Main Fellowship:</th>
-        <td>@Html.CheckBoxReadonly(o.IsBibleFellowshipOrg)</td>
-    </tr>
+        <td>@Html.CheckBoxReadonly(o.IsBibleFellowshipOrg)
 @if (User.IsInRole("Edit"))
 { 
-    <tr><td colspan="2" align="right">
-        <a class="displayedit2 bt" href="/Organization/OrgInfoEdit/@Model.OrganizationId">Edit</a></td></tr>
-}
+        <a class="displayedit2 bt edit2" href="/Organization/OrgInfoEdit/@Model.OrganizationId">Edit</a>
+}       </td>
+    </tr>
 </table>
 

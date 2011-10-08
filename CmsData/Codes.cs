@@ -8,9 +8,6 @@ namespace CmsData.Codes
     public class OriginCode
     {
         public const int Visit = 10;
-        public const int Request = 40;
-        public const int PhoneIn = 50;
-        public const int SurveyEE = 60;
         public const int Enrollment = 70;
         public const int Contribution = 90;
         public const int NewFamilyMember = 100;
@@ -32,13 +29,6 @@ namespace CmsData.Codes
         public const int Pending = 30;
         public const int Previous = 40;
         public const int JustAdded = 50;
-    }
-    public static class ResidentCode
-    {
-        public const int Metro = 10;
-        public const int Marginal = 20;
-        public const int NonResident= 30;
-        public const int UnableToLocate = 40;
     }
     public static class NewMemberClassStatusCode
     {
@@ -95,11 +85,8 @@ namespace CmsData.Codes
     }
     public static class MaritalStatusCode
     {
-        public const int Unknown = 0;
         public const int Single = 10;
         public const int Married = 20;
-        public const int Separated = 30;
-        public const int Divorced = 40;
         public const int Widowed = 50;
     }
     public static class PositionInFamily
@@ -110,12 +97,8 @@ namespace CmsData.Codes
     }
     public static class MemberTypeCode
     {
-        public const int Administrator = 100;
-        public const int President = 101;
         public const int Leader = 140;
-        public const int AssistantLeader = 142;
         public const int Teacher = 160;
-        public const int AssistantTeacher = 161;
         public const int Member = 220;
         public const int InActive = 230;
         public const int VisitingMember = 300;
@@ -131,10 +114,8 @@ namespace CmsData.Codes
     }
     public static class AttendTrackLevelCode
     {
-        public const int None = 0;
         public const int Headcount = 10;
         public const int Individual = 20;
-        public const int Registered = 30;
     }
     public static class AttendanceClassificationCode
     {
@@ -181,7 +162,6 @@ namespace CmsData.Codes
         public const int InService = 70;
         public const int Offsite = 80;
         public const int Group = 90;
-        public const int Homebound = 100;
         public const int OtherClass = 110;
     };
     public class TaskStatusCode
@@ -195,26 +175,10 @@ namespace CmsData.Codes
     }
     public class ContactTypeCode
     {
-        public const int PersonalVisit = 1;
-        public const int PhoneCall = 2;
-        public const int LetterSent = 3;
-        public const int CardSent = 4;
-        public const int EmailSent = 5;
-        public const int InfoPackSent = 6;
         public const int Other = 7;
-        public const int PhoneIn = 11;
-        public const int SurveyEE = 12;
     }
     public class ContactReasonCode
     {
-        public const int Unknown = 99;
-        public const int Bereavement = 100;
-        public const int Health = 110;
-        public const int Personal = 120;
-        public const int OutReach = 130;
-        public const int ComeAndSee = 131;
-        public const int InReach = 140;
-        public const int Information = 150;
         public const int Other = 160;
     }
 }

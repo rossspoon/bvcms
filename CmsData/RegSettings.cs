@@ -141,8 +141,8 @@ namespace CmsData
         public string Dropdown2Label { get; set; }
         public string Dropdown3Label { get; set; }
         public string Subject { get; set; }
-        public HtmlText Body { get; set; }
-        public HtmlText Terms { get; set; }
+        public string Body { get; set; }
+        public string Terms { get; set; }
 
         public bool MemberOnly { get; set; }
         public bool AskParents { get; set; }
@@ -154,16 +154,16 @@ namespace CmsData
         public bool AskChurch { get; set; }
         public bool AskTylenolEtc { get; set; }
         public bool AskCoaching { get; set; }
-        public bool AskGrade { get; set; }
+        //public bool AskGrade { get; set; }
         public bool AskDonation { get; set; }
-        public HtmlText DonationLabel { get; set; }
+        public string DonationLabel { get; set; }
         public bool NotReqDOB { get; set; }
         public bool NotReqAddr { get; set; }
         public bool NotReqPhone { get; set; }
         public bool NotReqGender { get; set; }
         public bool NotReqMarital { get; set; }
         public bool NotReqZip { get; set; }
-        public int DonationFundId { get; set; }
+        public int? DonationFundId { get; set; }
         public string GroupToJoin { get; set; }
         public bool GiveOrgMembAccess { get; set; }
 
@@ -174,13 +174,13 @@ namespace CmsData
                     select f.FundDescription).SingleOrDefault();
         }
 
-        public HtmlText InstructionSelect { get; set; }
-        public HtmlText InstructionFind { get; set; }
-        public HtmlText InstructionOptions { get; set; }
-        public HtmlText InstructionLogin { get; set; }
-        public HtmlText InstructionSubmit { get; set; }
-        public HtmlText InstructionSorry { get; set; }
-        public HtmlText InstructionAll { get; set; }
+        public string InstructionSelect { get; set; }
+        public string InstructionFind { get; set; }
+        public string InstructionOptions { get; set; }
+        public string InstructionLogin { get; set; }
+        public string InstructionSubmit { get; set; }
+        public string InstructionSorry { get; set; }
+        public string InstructionAll { get; set; }
 
         private List<OrgFee> _OrgFees;
         public List<OrgFee> OrgFees
@@ -248,9 +248,22 @@ namespace CmsData
             get { return _LinkGroupsFromOrgs; }
         }
         private List<int> _ValidateOrgs;
-        public List<int> ValidateOrgs
+        public List<int> ValidateOrgIds
         {
             get { return _ValidateOrgs; }
+        }
+        public string ValidateOrgs
+        {
+            get { return string.Join(",", _ValidateOrgs); }
+            set
+            {
+                if (value.HasValue())
+                    _ValidateOrgs = (from i in value.Split(',')
+                                     where i.ToInt() > 0
+                                     select i.ToInt()).ToList();
+                else
+                    _ValidateOrgs = new List<int>();
+            }
         }
         private List<VoteTag> _VoteTags;
         public List<VoteTag> VoteTags
@@ -277,7 +290,7 @@ namespace CmsData
             public string Description { get; set; }
             public int Code { get; set; }
         }
-        public class HtmlText
+        public class HtmlText2
         {
             public string Text { get; set; }
             public string Html { get; set; }
@@ -318,7 +331,7 @@ namespace CmsData
         public class VoteTag
         {
             public int Id { get; set; }
-            public HtmlText Display { get; set; }
+            public string Display { get; set; }
             public bool Confirm { get; set; }
             public string Message { get; set; }
             public string SmallGroup { get; set; }
@@ -351,15 +364,6 @@ namespace CmsData
             _Dropdown3 = new List<MenuItem>();
             _LinkGroupsFromOrgs = new List<int>();
             _ValidateOrgs = new List<int>();
-            InstructionLogin = new HtmlText();
-            InstructionSelect = new HtmlText();
-            InstructionFind = new HtmlText();
-            InstructionOptions = new HtmlText();
-            InstructionSubmit = new HtmlText();
-            InstructionSorry = new HtmlText();
-            DonationLabel = new HtmlText();
-            Terms = new HtmlText();
-            Body = new HtmlText();
             _VoteTags = new List<VoteTag>();
         }
         public static string[] SplitLines(string s)
@@ -370,6 +374,7 @@ namespace CmsData
             var lines = splitlines.Split(s);
             return lines;
         }
+        public Organization org { get; set; }
         public int OrgId { get; set; }
         public CMSDataContext Db { get; set; }
         public RegSettings(string s, CMSDataContext Db, int OrgId)
@@ -396,6 +401,8 @@ namespace CmsData
                 ParseSection();
             }
             data = null;
+            if ((AskShirtSize || ShirtFee > 0) && ShirtSizes.Count == 0)
+                throw GetException("Need Shirt Sizes");
         }
         LineData GetLineData()
         {
@@ -518,7 +525,7 @@ namespace CmsData
                     NotReqZip = GetBool();
                     break;
                 case RegKeywords.DonationFundId:
-                    DonationFundId = GetInt();
+                    DonationFundId = GetNullInt();
                     break;
                 case RegKeywords.DonationLabel:
                     DonationLabel = ParseMessage();
@@ -527,7 +534,7 @@ namespace CmsData
                     GroupToJoin = GetString();
                     break;
                 case RegKeywords.GiveOrgMembAccess:
-                    AskParents = GetBool();
+                    GiveOrgMembAccess = GetBool();
                     break;
                 case RegKeywords.LinkGroupsFromOrgs:
                     _LinkGroupsFromOrgs = (from i in curr.value.Split(',')
@@ -613,8 +620,8 @@ namespace CmsData
                     RequestLabel = GetLabel("Request");
                     break;
                 case RegKeywords.AskGrade:
-                    AskGrade = GetBool();
-                    GradeLabel = GetLabel("Grade");
+                    GetBool();
+                    GetLabel("Grade");
                     break;
                 case RegKeywords.Title:
                     Title = GetString();
@@ -744,7 +751,7 @@ namespace CmsData
         private void ParseTerms()
         {
             Terms = ParseMessage();
-            if (Terms.Text.HasValue() || Terms.Html.HasValue() || curr.indent == 0)
+            if (Terms.HasValue() || curr.indent == 0)
                 return;
             var startindent = curr.indent;
             while (curr.indent == startindent)
@@ -774,7 +781,7 @@ namespace CmsData
                         lineno++;
                         break;
                     case RegKeywords.Subject:
-                        Subject = GetString("need subject");
+                        Subject = GetString();
                         break;
                     case RegKeywords.Body:
                         Body = ParseMessage();
@@ -784,20 +791,15 @@ namespace CmsData
                 }
             }
         }
-        private HtmlText ParseMessage()
+        private string ParseMessage()
         {
-            var ht = new HtmlText();
-            var html = curr.html;
-            var s = GetString();
-            if (html)
-                ht.Html = s;
-            else
-                ht.Text = s;
-            return ht;
+            return GetString();
         }
         private void ParseInstructions()
         {
-            InstructionAll = ParseMessage();
+            lineno++;
+            if (curr.indent == 0)
+                return;
             var startindent = curr.indent;
             while (curr.indent == startindent)
             {
@@ -807,27 +809,21 @@ namespace CmsData
                         lineno++;
                         break;
                     case RegKeywords.Select:
-                        InstructionAll = new HtmlText();
                         InstructionSelect = ParseMessage();
                         break;
                     case RegKeywords.Find:
-                        InstructionAll = new HtmlText();
                         InstructionFind = ParseMessage();
                         break;
                     case RegKeywords.Options:
-                        InstructionAll = new HtmlText();
                         InstructionOptions = ParseMessage();
                         break;
                     case RegKeywords.Login:
-                        InstructionAll = new HtmlText();
                         InstructionLogin = ParseMessage();
                         break;
                     case RegKeywords.Submit:
-                        InstructionAll = new HtmlText();
                         InstructionSubmit = ParseMessage();
                         break;
                     case RegKeywords.Sorry:
-                        InstructionAll = new HtmlText();
                         InstructionSorry = ParseMessage();
                         break;
                     case RegKeywords.Body:
@@ -1081,7 +1077,7 @@ namespace CmsData
             AddVoteTags(sb);
             AddFees(sb);
             AddDonation(sb);
-            //AddValueCk(0, sb, "ValidateOrgs", ValidateOrgs);
+            AddValueCk(0, sb, "ValidateOrgs", ValidateOrgs);
 
             sb.AppendLine();
             AddAgeGroups(sb);
@@ -1114,7 +1110,7 @@ namespace CmsData
             AddValueCk(0, sb, "AskChurch", AskChurch);
             AddValueCk(0, sb, "AskTylenolEtc", AskTylenolEtc);
             AddValueCk(0, sb, "AskCoaching", AskCoaching);
-            AddValueCk(0, sb, "AskGrade", AskGrade);
+            //AddValueCk(0, sb, "AskGrade", AskGrade);
             AddValueCk(0, sb, "GroupToJoin", GroupToJoin);
             AddValueCk(0, sb, "GiveOrgMembAccess", GiveOrgMembAccess);
             sb.AppendLine();
@@ -1171,11 +1167,7 @@ namespace CmsData
             var sb2 = new StringBuilder();
             foreach (var i in VoteTags)
             {
-                if (i.Display.Html.HasValue())
-                    sb2.AppendFormat("<votetag id={0} confirm={1} smallgroup=\"{2}\" message=\"{3}\">{4}</votetag>\n",
-                        OrgId, i.Confirm, i.SmallGroup, i.Message, i.Display);
-                else
-                    sb2.AppendFormat("{{votelink id={0} confirm={1} smallgroup=\"{2}\" message=\"{3}\" text=\"{4}\"}}\n",
+                sb2.AppendFormat("<votetag id={0} confirm={1} smallgroup=\"{2}\" message=\"{3}\">{4}</votetag>\n",
                         OrgId, i.Confirm, i.SmallGroup, i.Message, i.Display);
             }
             return sb2.ToString();
@@ -1355,22 +1347,22 @@ namespace CmsData
         private void AddConfirmation(StringBuilder sb)
         {
             AddValueNoCk(0, sb, "Confirmation", "");
-            AddValueCk(1, sb, "Subject", Subject);
+            AddValueNoCk(1, sb, "Subject", Subject);
             AddSingleOrMultiLine(1, sb, "Body", Body);
         }
-        private void AddSingleOrMultiLine(int n, StringBuilder sb, string Section, HtmlText ht)
+        private void AddSingleOrMultiLine(int n, StringBuilder sb, string Section, string ht)
         {
             if (ht == null)
                 return;
-            if (ht.Html.HasValue())
+            if (ht.Contains("\n"))
             {
                 AddValueCk(n, sb, Section, "<<");
                 sb.AppendLine("----------");
-                sb.AppendLine(ht.Html.Trim());
+                sb.AppendLine(ht.Trim());
                 sb.AppendLine("----------");
             }
             else
-                AddValueNoCk(n, sb, Section, ht.Text);
+                AddValueNoCk(n, sb, Section, ht);
         }
         private void AddInstructions(StringBuilder sb)
         {

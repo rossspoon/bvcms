@@ -1,0 +1,206 @@
+﻿@model CmsData.RegSettings
+@using CmsWeb
+@using UtilityExtensions
+    <span class="keyword big tip" title="AskRequest
+    |Displays a text box for entering things like roomate/teacher/coach request
+    |You can put a label on this text box to clarify what you are asking.">
+    AskRequest:</span> @Html.CheckBox("AskRequest", Model.AskRequest)
+    <ul>
+      <li> <span class="keyword2">Label:</span> @Html.TextBox("RequestLabel", Model.RequestLabel, new { @class = "long" }) </li>
+    </ul>
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskTickets
+    |This will ask for a number of items to purchase.
+    |The total will be the fee multipled by the number of items.
+    |Good for things like number of lunches (so you can bring friends)">
+    AskTickets:</span> @Html.CheckBox("AskTickets", Model.AskTickets)
+    <ul>
+      <li> <span class="keyword2">Label:</span> @Html.TextBox("NumItemsLabel", Model.NumItemsLabel, new { @class = "long" }) </li>
+    </ul>
+  </li>
+  <li>
+    <div class="keyword big tip" title="YesNoQuestions
+    |These are questions that that will force a yes or no answer
+    |The results will be in small groups 
+    |with a -Yes or -No appended to the name">
+    YesNoQuestions:</div>
+    <ul id="YesNoQuestions" class="sort">
+    @foreach(var i in Model.YesNoQuestions.OrderBy(cc => cc.Id))
+    {
+        @Html.EditorFor(m => i)
+    }
+    </ul>
+    <div class="newitem"><a href="/Organization/NewYesNoQuestion"><img src="/images/plus1.png" /> Add Item</a></div>
+  </li>
+  <li>
+    <div class="text big tip" title="ExtraQuestions
+    |These questions can be answered with text">
+    ExtraQuestions:</div>
+    <ul id="ExtraQuestions" class="sort">
+    @foreach(var i in Model.ExtraQuestions.OrderBy(cc => cc.Id))
+    {
+        @Html.EditorFor(m => i)
+    }
+    </ul>
+    <div class="newitem"><a href="/Organization/NewExtraQuestion"><img src="/images/plus1.png" /> Add Item</a></div>
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskShirtsize
+    |Display a dropdown of shirtsizes.">
+    AskShirtsize:</span> @Html.CheckBox("AskShirtsize", Model.AskShirtSize)
+    <ul>
+      <li>
+        <span class="keyword4 tip" title="AllowLastYearShirt
+        |Adds an extra item to the shirt sizes to indicate they don't need a shirt.">AllowLastYearShirt:</span> @Html.CheckBox("AllowLastYearShirt", Model.AllowLastYearShirt)
+      </li>
+      <li>
+        <div class="text tip" title="ShirtSizes
+        |Allows you to customize the shirt sizes offered.">
+        ShirtSizes:</div>
+        <ul id="ShirtSizes" class="sort">
+        @foreach(var i in Model.ShirtSizes.OrderBy(cc => cc.Id))
+        {
+            @Html.EditorFor(m => i)
+        }
+        </ul>
+        <div class="newitem"><a href="/Organization/NewShirtSize"><img src="/images/plus1.png" alt="" />Add Item</a></div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskParents
+    |Displays two text boxes asking for mother and/or father's names.">
+    AskParents:</span> @Html.CheckBox("AskParents", Model.AskParents)
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskInsurance
+    |Displays two questions: Insurance name and policy #
+    |Good for camp or ball teams where you might a participant might get hurt.">
+    AskInsurance:</span> @Html.CheckBox("AskInsurance", Model.AskInsurance)
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskEmContact
+    |Asks for the name and phone number for an emergency contact">
+    AskEmContact:</span> @Html.CheckBox("AskEmContact", Model.AskEmContact)
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskAllergies
+    |Displays a multi-line text box to enter any medical information">
+    AskAllergies:</span> @Html.CheckBox("AskAllergies", Model.AskAllergies)
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskChurch
+    |Ask whether they are a member here, or active in another church.
+    |Good for indicating whether they are a prospect or not.">
+    AskChurch:</span> @Html.CheckBox("AskChurch", Model.AskChurch)
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskTylenolEtc
+    |Asks whether it is ok to give a child Tylenol, Advil, Robitussin, or Maalox.">
+    AskTylenolEtc:</span>
+    @Html.CheckBox("AskTylenolEtc", Model.AskTylenolEtc)
+  </li>
+  <li>
+    <span class="keyword big tip" title="AskCoaching
+    |Asks whether the parent is interested in coaching or not.">
+    AskCoaching:</span> @Html.CheckBox("AskCoaching", Model.AskCoaching)
+  </li>
+  <li>
+    <div class="text big tip" title="MenuItems
+    |These will present a series of textboxes next to a label 
+    |allowing you to enter the number of items to purchase or select.
+    |You can optionally associate a fee with one or more items.">
+    MenuItems:</div>
+    <ul id="MenuItems" class="sort">
+    @foreach(var i in Model.MenuItems.OrderBy(cc => cc.Id))
+    {
+        @Html.EditorFor(m => i)
+    }
+    </ul>
+    <div class="newitem"><a href="/Organization/NewMenuItem"><img src="/images/plus1.png" alt="" /> Add Item</a></div> 
+  </li>
+  <li>
+    <span class="keyword big tip" title="Dropdown1
+    |This will be presented as a dropdown selection
+    |Enters them in a smallgroup within the organization.
+    |Optional Fee.">
+    Dropdown1:</span>
+    <ul>
+      <li><span class="keyword2">Label:</span> 
+          @Html.TextBox("Dropdown1Label", Model.Dropdown1Label, new { @class = "long" })
+        <ul id="Dropdown1" class="sort">
+        @foreach(var i in Model.Dropdown1.OrderBy(cc => cc.Id))
+        {
+            @Html.EditorFor(m => i, "Dropdown1")
+        }
+        </ul>
+        <div class="newitem"><a href="/Organization/NewDropdown1Item"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="keyword big">Dropdown2:</span>
+    <ul>
+      <li> <span class="keyword2">Label:</span> @Html.TextBox("Dropdown2Label", Model.Dropdown2Label, new { @class = "long" })
+        <ul id="Dropdown2" class="sort">
+        @foreach(var i in Model.Dropdown2.OrderBy(cc => cc.Id))
+        {
+            @Html.EditorFor(m => i, "Dropdown2")
+        }
+        </ul>
+        <div class="newitem"><a href="/Organization/NewDropdown2Item"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="keyword big">Dropdown3:</span>
+    <ul>
+      <li> <span class="keyword2">Label:</span> @Html.TextBox("Dropdown3Label", Model.Dropdown3Label, new { @class = "long" })
+        <ul id="Dropdown3" class="sort">
+        @foreach(var i in Model.Dropdown3.OrderBy(cc => cc.Id))
+        {
+            @Html.EditorFor(m => i, "Dropdown3")
+        }
+        </ul>
+        <div class="newitem"><a href="/Organization/NewDropdown3Item"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="keyword big tip" title="Checkboxes
+    |This is a group of checkboxes where you can check more than one.
+    |You can specify a minumum number they must check.
+    |And you can specify a maximum number they can check.
+    |For each checkbox, you can specify the SmallGroup and an optional Fee.">
+    Checkboxes:</span>
+    <ul>
+      <li> <span class="keyword2">Label:</span> @Html.TextBox("CheckBoxLabel", Model.CheckBoxLabel, new { @class = "long" }) </li>
+      <li> <span class="keyword2">Minimum:</span> @Html.TextBox("CheckBoxMin", Model.CheckboxMin) </li>
+      <li> <span class="keyword2">Maximum:</span> @Html.TextBox("CheckBoxMax", Model.CheckboxMax) 
+        <ul id="Checkboxes" class="sort">
+    @foreach(var i in Model.Checkboxes.OrderBy(cc => cc.Id))
+    {
+        @Html.EditorFor(m => i, "Checkbox")
+    }
+        </ul>
+        <div class="newitem"><a href="/Organization/NewCheckbox"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="keyword big">Checkboxes2:</span>
+    <ul>
+      <li> <span class="keyword2">Label:</span> @Html.TextBox("CheckBox2Label", Model.CheckBox2Label, new { @class = "long" }) </li>
+      <li> <span class="keyword2">Minimum:</span> @Html.TextBox("CheckBox2Min", Model.Checkbox2Min) </li>
+      <li> <span class="keyword2">Maximum:</span> @Html.TextBox("CheckBox2Max", Model.Checkbox2Max) 
+        <ul id="Checkboxes2" class="sort">
+    @foreach(var i in Model.Checkboxes2.OrderBy(cc => cc.Id))
+    {
+        @Html.EditorFor(m => i, "Checkbox2")
+    }
+        </ul>
+        <div class="newitem"><a href="/Organization/NewCheckbox2"><img src="/images/plus1.png" alt="" /> Add Item</a></div>
+      </li>
+    </ul>
+  </li>

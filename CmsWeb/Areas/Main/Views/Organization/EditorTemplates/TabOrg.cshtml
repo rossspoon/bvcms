@@ -1,0 +1,64 @@
+﻿@model CmsWeb.Models.OrganizationPage.OrganizationModel
+@using CmsWeb
+@using UtilityExtensions
+    <li>
+        <span class="keyword big tip"
+        title="Location
+        |Typically something short like a room number, 
+        |not enough room for an address">
+        Location:</span>
+        @Html.TextBox("org.Location")
+    </li>
+    <li>
+        <span class="keyword big tip"
+        title="Pending Location
+        |Used for promotion, setup classes that will be moved
+        |see wiki re annual class promotion">
+        Pending Location:</span>
+        @Html.TextBox("org.PendingLoc")
+    </li>
+    <li>
+        <div class="keyword big block tip"
+        title="Description
+        |A longer text description of the organization,
+        |typically displayed in a flyer or on a website.">
+        Description</div>
+        @Html.TextArea("org.Description", new { rows = "6", cols = "40" })
+    </li>
+    <li>
+        <span class="keyword big tip"
+        title="Entry Point
+        |When a new person visits a meeting for this organization,
+        |they will be coded with this to indicate their first entrance to the church">
+        Entry Point:</span>
+        @Html.DropDownList("org.EntryPointId", Model.EntryPointList())
+    </li>
+    <li>
+        <span class="keyword big tip"
+        title="Grade
+        |Used during promotion to assign a grade to a student who joins this class
+        |Only effective for graded classes (not something like grades 7-10).
+        |This facility keeps you from having to maintain grades once a year">
+        Grade:</span>
+        @Html.TextBox("org.GradeAgeStart")
+    </li>
+    <li>
+        <span class="keyword big tip"
+        title="Gender
+        |For the 'Compute Org by Birthday/Gender' Registration Type.
+        |Commonly used for recreation sports leagues
+        |where each league is a Division (in BVCMS vernacular)
+        |and each division within the league is an Organization.">
+        Gender:</span>
+        @Html.DropDownList("org.GenderId", Model.GenderList())
+    </li>
+    <li>
+        <span class="keyword big tip"
+        title="Phone Number
+        |Used to display a number to call in a confirmation email with {phone}
+        |If you doing a registration with more than one org, 
+        |allows you to specify a different # for each org
+        |and have only one confirmation #">
+        Phone Number:</span>
+        @Html.TextBox("org.PhoneNumber")
+    </li>

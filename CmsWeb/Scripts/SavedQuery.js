@@ -33,6 +33,7 @@ $(function () {
             submit: 'OK'
         });
     }
+    $('table.grid > tbody > tr:even').addClass('alt');
     $.getTable = function (f, q) {
         q = q || f.serialize();
         $.post(f.attr('action'), q, function (ret) {

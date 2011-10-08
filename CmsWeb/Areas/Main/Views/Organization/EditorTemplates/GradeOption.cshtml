@@ -1,0 +1,13 @@
+﻿@model CmsData.RegSettings.GradeOption
+@using CmsWeb
+    @using (var ci = Html.BeginCollectionItem("GradeOptions"))
+    {
+      <li class="move">@Html.Raw(ci.hiddenindex)
+          @Html.HiddenFor(m => m.Id, new { @class = "renumberMe" }) 
+        <ul>
+          <li><div class="sgfee">Desc:</div>@Html.TextBoxFor(m => m.Description, new { @class = "long" })
+          <a class="del" href="#"><img align="top" src="/images/delete.gif" title="remove this item" /></a></li>
+          <li><div class="sgfee">Code:</div>@Html.TextBoxFor(m => m.Code, new { @class = "short" }) </li>
+        </ul>
+      </li>
+    }

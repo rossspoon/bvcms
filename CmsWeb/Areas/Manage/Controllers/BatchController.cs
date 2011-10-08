@@ -160,9 +160,6 @@ namespace CmsWeb.Areas.Manage.Controllers
                         case "CanSelfCheckin":
                             o.CanSelfCheckin = a[c].ToBool2();
                             break;
-                        case "AllowKioskRegister":
-                            o.AllowKioskRegister = a[c].ToBool2();
-                            break;
                         case "BirthDayStart":
                             o.BirthDayStart = a[c].ToDate();
                             break;
@@ -172,11 +169,8 @@ namespace CmsWeb.Areas.Manage.Controllers
                         case "FirstMeeting":
                             o.FirstMeetingDate = a[c].ToDate();
                             break;
-                        case "GradeAgeEnd":
-                            o.GradeAgeEnd = a[c].ToInt2();
-                            break;
-                        case "GenderId":
-                            o.GenderId = a[c].ToInt2();
+                        case "Gender":
+                            o.GenderId = a[c] == "Male" ? (int?)1 : a[c] == "Female" ? (int?)2 : null;
                             break;
                         case "GradeAgeStart":
                             o.GradeAgeStart = a[c].ToInt2();

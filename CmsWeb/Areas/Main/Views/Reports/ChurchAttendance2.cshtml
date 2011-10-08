@@ -62,7 +62,7 @@
                <td></td>
     @foreach (var c in p.Cols)
     { 
-               <th>@c.ToString("h:mm tt")</th>
+               <th>@c.Heading</th>
     } 
                <th>Average</th>
                <th>Count</th>
@@ -75,7 +75,7 @@
            <td align="left">@d.Name</td>
         @foreach (var c in p.Cols)
         {
-            var a = d.Column(c.TimeOfDay); 
+            var a = d.Column(c);
            <td align="right" title='@a.totalpeople / @a.totalmeetings'>@a.avg.ToString("n0")</td>
         }
         @{var ta = d.Total();}
@@ -88,7 +88,7 @@
            <td align="left">Total</td>
     @foreach (var c in p.Cols)
     {
-        var a = p.Column(c.TimeOfDay);
+        var a = p.Column(c);
            <td title='@a.totalpeople / @a.totalmeetings'>@a.avg.ToString("n0")</td>
     }
     @{ var tta = p.Total(); }

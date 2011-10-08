@@ -5,11 +5,9 @@
 }
 
 <h2>Registration Settings for <a href="/Organization/Index/@ViewData["OrganizationId"]">@ViewData["orgname"]</a></h2>
-<h4><a href="/OnlineReg/Index/@ViewData["OrganizationId"]" target="tryit">try it</a></h4>
-
+<h4 style="color:Red">The main editor for these is now located under the Settings tab on the Organization Page</h4>
 <form action="/RegSetting/Edit/@ViewData["OrganizationId"]" method="post">
 <input id="edit" type="submit" class="bt" value="Edit Text" />
-<input id="editgui" type="submit" class="bt" value="Edit with GUI" />
 @{ var lines = (string[])ViewData["lines"]; }
 <input type="hidden" name="regsetting" value="@ViewData["regsetting"]" />
 </form>
@@ -22,23 +20,6 @@
     }
 }
 </pre>
-<table cellspacing="5">
-    <tr>
-        <td colspan="2"><br /><i>Edit Online Reg Messages For Division type Registrations<br />
-        (specifics in registration settings when present, override these)</i></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td style="font-size:large">
-            <a href="/Display/OrgContent/@ViewData["OrganizationId"]?what=message&div=true">
-               Confirmation for division</a><br />
-            <a href="/Display/OrgContent/@ViewData["OrganizationId"]?what=instructions&div=true">
-               Instructions</a><br />
-            <a href="/Display/OrgContent/@ViewData["OrganizationId"]?what=terms&div=true">
-               Terms</a>
-        </td>
-    </tr>
-</table>
 <script type="text/javascript">
     $(function () {
         $(".bt").button();

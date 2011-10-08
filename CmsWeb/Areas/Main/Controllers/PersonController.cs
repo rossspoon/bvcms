@@ -494,23 +494,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult UserDelete(int id)
         {
             var Db = DbUtil.Db;
-            var u = Db.Users.Single(us => us.UserId == id);
-            Db.UserCanEmailFors.DeleteAllOnSubmit(u.UsersWhoCanEmailForMe);
-            Db.UserCanEmailFors.DeleteAllOnSubmit(u.UsersICanEmailFor);
-            Db.Preferences.DeleteAllOnSubmit(u.Preferences);
-            Db.ActivityLogs.DeleteAllOnSubmit(u.ActivityLogs);
-            Db.BlogNotifications.DeleteAllOnSubmit(u.BlogNotifications);
-            Db.PageVisits.DeleteAllOnSubmit(u.PageVisits);
-            Db.UserRoles.DeleteAllOnSubmit(u.UserRoles);
-            Db.UserGroupRoles.DeleteAllOnSubmit(u.UserGroupRoles);
-            foreach (var f in u.VolunteerFormsUploaded)
-                f.UploaderId = null;
-            Db.SubmitChanges();
-            Membership.DeleteUser(u.Username, true);
-            DbUtil.Db.UserRoles.DeleteAllOnSubmit(u.UserRoles);
-            DbUtil.Db.ActivityLogs.DeleteAllOnSubmit(u.ActivityLogs);
-            DbUtil.Db.Users.DeleteOnSubmit(u);
-            DbUtil.Db.SubmitChanges();
+            Db.PurgeUser(id);
             return Content("ok");
         }
         [AcceptVerbs(HttpVerbs.Post)]

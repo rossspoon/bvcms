@@ -9,11 +9,11 @@
 { 
     @Html.Hidden3(Model.inputname("request"), Model.request)
 }
-@if (Model.setting.AskGrade == true)
+@*@if (Model.setting.AskGrade == true)
 { 
     @Html.Hidden3(Model.inputname("grade"), Model.grade)
 }
-@if (Model.setting.AskEmContact == true)
+*@@if (Model.setting.AskEmContact == true)
 { 
     @Html.Hidden3(Model.inputname("emcontact"), Model.emcontact)
     @Html.Hidden3(Model.inputname("emphone"), Model.emphone)

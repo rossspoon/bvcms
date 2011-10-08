@@ -10,7 +10,7 @@ namespace CmsWeb.Models
 {
     public partial class OnlineRegPersonModel
     {
-        public void CreateAccount()
+        public User CreateAccount()
         {
             var Db = DbUtil.Db;
             if (!person.EmailAddress.HasValue())
@@ -76,7 +76,9 @@ Just login to {host} and you will be taken to your record where you can make cor
                     .Replace("{host}", DbUtil.Db.CmsHost);
 
                 Db.EmailRedacted(DbUtil.AdminMail, person, "New account for " + Db.Host, message);
+                return user;
             }
+            return null;
         }
         public void SendOneTimeLink(string from, string url, string subject, string body)
         {

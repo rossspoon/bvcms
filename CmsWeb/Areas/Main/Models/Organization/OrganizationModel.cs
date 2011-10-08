@@ -294,8 +294,9 @@ namespace CmsWeb.Models.OrganizationPage
         {
             return Regex.Replace(s, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
         }
-        public IEnumerable<SelectListItem> RegistrationTypes()
+        public static IEnumerable<SelectListItem> RegistrationTypes()
         {
+            var cv = new CodeValueController();
             return QueryModel.ConvertToSelect(cv.RegistrationTypes(), "Id");
         }
         public string NewMeetingTime
@@ -323,6 +324,19 @@ namespace CmsWeb.Models.OrganizationPage
                     return d;
                 }
                 return Util.Now.Date;
+            }
+        }
+        private RegSettings _RegSettings;
+        public RegSettings RegSettings
+        {
+            get
+            {
+                if (_RegSettings == null)
+                {
+                    _RegSettings = new RegSettings(org.RegSetting, DbUtil.Db, org.OrganizationId);
+                    _RegSettings.org = org;
+                }
+                return _RegSettings;
             }
         }
     }

@@ -1,0 +1,7 @@
+﻿@model IEnumerable<CmsWeb.Areas.Setup.Controllers.LookupController.Row>
+<Lookups name="@ViewData["name"]">
+@foreach (var i in Model)
+{
+    <Lookup Id="@i.Id">@i.Description</Lookup>
+}
+</Lookups>

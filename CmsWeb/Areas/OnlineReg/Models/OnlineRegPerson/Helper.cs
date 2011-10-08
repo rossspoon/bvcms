@@ -160,7 +160,7 @@ namespace CmsWeb.Models
             return settings.Values.Any(setting =>
                 setting.AskShirtSize == true ||
                 setting.AskRequest == true ||
-                setting.AskGrade == true ||
+                //setting.AskGrade == true ||
                 setting.AskEmContact == true ||
                 setting.AskInsurance == true ||
                 setting.AskDoctor == true ||

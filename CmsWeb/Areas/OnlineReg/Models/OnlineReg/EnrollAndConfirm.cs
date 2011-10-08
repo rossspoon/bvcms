@@ -106,16 +106,16 @@ namespace CmsWeb.Models
                     if (p.person.Users.Count() == 0)
                     {
                         p.IsNew = false;
-                        p.CreateAccount();
-                    }
-                    foreach (var u in p.person.Users)
-                    {
-                        var list = u.Roles.ToList();
-                        if (!list.Contains("Access"))
-                            list.Add("Access");
-                        if (!list.Contains("OrgMembersOnly"))
-                            list.Add("OrgMembersOnly");
-                        u.SetRoles(Db, list.ToArray(), false);
+                        var u = p.CreateAccount();
+                        if (u != null)
+                        {
+                            var list = u.Roles.ToList();
+                            if (!list.Contains("Access"))
+                                list.Add("Access");
+                            if (!list.Contains("OrgMembersOnly"))
+                                list.Add("OrgMembersOnly");
+                            u.SetRoles(Db, list.ToArray(), false);
+                        }
                     }
                     Db.SubmitChanges();
                 }
@@ -197,50 +197,58 @@ namespace CmsWeb.Models
                 var p = List[donor.Value];
                 ti.Fund = p.setting.DonationFund();
                 var desc = "{0}; {1}; {2}, {3} {4}".Fmt(
-                    p.person.Name, 
-                    p.person.PrimaryAddress, 
-                    p.person.PrimaryCity, 
-                    p.person.PrimaryState, 
+                    p.person.Name,
+                    p.person.PrimaryAddress,
+                    p.person.PrimaryCity,
+                    p.person.PrimaryState,
                     p.person.PrimaryZip);
                 PostBundleModel.PostUnattendedContribution(
-                    ti.Donate.Value, 
-                    p.PeopleId, 
-                    p.setting.DonationFundId, 
+                    ti.Donate.Value,
+                    p.PeopleId,
+                    p.setting.DonationFundId,
                     desc);
-            	var ma = re.Match(message);
+                var ma = re.Match(message);
                 if (ma.Success)
                 {
-		            var v = ma.Groups["text"].Value;
+                    var v = ma.Groups["text"].Value;
                     message = re.Replace(message, v);
                 }
                 message = message.Replace("{donation}", ti.Donate.ToString2("N2"));
                 // send donation confirmations
-                Db.Email(notify.FromEmail, NotifyIds, subject + "-donation", 
+                Db.Email(notify.FromEmail, NotifyIds, subject + "-donation",
                     "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
             }
             else
                 message = re.Replace(message, "");
 
             // send confirmations
-            Db.Email(notify.FromEmail, p0, elist, 
+            Db.Email(notify.FromEmail, p0, elist,
                 subject, message, false);
             // notify the staff
             foreach (var p in List)
             {
-                Db.Email(Util.PickFirst(p.person.FromEmail, notify.FromEmail), 
+                Db.Email(Util.PickFirst(p.person.FromEmail, notify.FromEmail),
                     Db.StaffPeopleForOrg(p.org.OrganizationId), Header,
-@"{0} has registered for {1}<br/>Feepaid: {2:C}<br/>AmountDue: {3:C}<br/>
-<pre>{4}</pre>".Fmt(p.person.Name, Header, amtpaid, p.AmountDue(), p.PrepareSummaryText(ti)));
+@"{0} has registered for {1}<br/>
+Feepaid for this registrant: {2:C}<br/>
+Total Feepaid for this registration: {3:C}<br/>
+AmountDue: {4:C}<br/>
+<pre>{5}</pre>".Fmt(p.person.Name,
+               Header,
+               amtpaid,
+               p.TotalAmount(),
+               p.AmountDue(),
+               p.PrepareSummaryText(ti)));
             }
         }
         public static string MessageReplacements(Person p, string DivisionName, string OrganizationName, string Location, string message)
         {
-             message = message.Replace("{first}", p.PreferredName);
-             message = message.Replace("{name}", p.Name);
-             message = message.Replace("{division}", DivisionName);
-             message = message.Replace("{org}", OrganizationName);
-             message = message.Replace("{location}", Location);
-             message = message.Replace("{cmshost}", DbUtil.Db.CmsHost);
+            message = message.Replace("{first}", p.PreferredName);
+            message = message.Replace("{name}", p.Name);
+            message = message.Replace("{division}", DivisionName);
+            message = message.Replace("{org}", OrganizationName);
+            message = message.Replace("{location}", Location);
+            message = message.Replace("{cmshost}", DbUtil.Db.CmsHost);
             return message;
         }
         public void UseCoupon(string TransactionID)

@@ -1,0 +1,10 @@
+﻿@model CmsData.RegSettings
+@using CmsWeb
+@using UtilityExtensions
+@if (User.IsInRole("Edit"))
+{ 
+<a class="displayedit bt edit regsettingedit" href="/Organization/OnlineRegQuestionsEdit/@Model.OrgId">Edit</a>
+}
+<ul class="noedit">
+@Html.EditorFor(m => m, "TabQuestions")
+</ul>

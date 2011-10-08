@@ -26,7 +26,7 @@
             <div>@Html.ValidationMessage(Model.inputname("request"))</div></td>
     </tr>
 } 
-@if (Model.setting.AskGrade == true)
+@*@if (Model.setting.AskGrade == true)
 { 
     <tr>
         <td><label for="grade">@Model.setting.GradeLabel</label></td>
@@ -34,7 +34,7 @@
             <div>@Html.ValidationMessage(Model.inputname("grade"))</div></td>
     </tr>
 } 
-@if (Model.setting.AskEmContact == true)
+*@@if (Model.setting.AskEmContact == true)
 { 
     <tr>
         <td><label for="emcontact">Emergency Friend</label></td>

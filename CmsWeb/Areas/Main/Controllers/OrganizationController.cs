@@ -195,21 +195,21 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m.Pager);
             return View(m);
         }
+        
         [AcceptVerbs(HttpVerbs.Post)]
-
-        public ActionResult Settings(int id)
+        public ActionResult SettingsOrg(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SettingsEdit(int id)
+        public ActionResult SettingsOrgEdit(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SettingsUpdate(int id)
+        public ActionResult SettingsOrgUpdate(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
@@ -218,10 +218,38 @@ namespace CmsWeb.Areas.Main.Controllers
             {
                 m.UpdateSchedules();
                 DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, m.org.OrgSchedules);
-                return View("Settings", m);
+                return View("SettingsOrg", m);
             }
-            return View("SettingsEdit", m);
+            return View("SettingsOrgEdit", m);
         }
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SettingsMeetings(int id)
+        {
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SettingsMeetingsEdit(int id)
+        {
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
+            return View(m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SettingsMeetingsUpdate(int id)
+        {
+            var m = new OrganizationModel(id, Util2.CurrentGroups);
+            UpdateModel(m);
+            m.ValidateSettings(ModelState);
+            if (ModelState.IsValid)
+            {
+                m.UpdateSchedules();
+                DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, m.org.OrgSchedules);
+                return View("SettingsMeetings", m);
+            }
+            return View("SettingsMeetingsEdit", m);
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NewSchedule()
         {
@@ -232,22 +260,22 @@ namespace CmsWeb.Areas.Main.Controllers
                     SchedTime = DateTime.Parse("8:00 AM"),
                     AttendCreditId = 1
                 });
-            return View("ScheduleEditor", s);
+            return View("EditorTemplates/ScheduleInfo", s);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult OrgInfo(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult OrgInfoEdit(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult OrgInfoUpdate(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
@@ -261,6 +289,253 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("OrgInfo", m);
         }
 
+        private static RegSettings GetRegSettings(int id)
+        {
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            var m = new RegSettings(org.RegSetting, DbUtil.Db, id);
+            m.org = org;
+            return m;
+        }
+        [HttpPost]
+        public ActionResult OnlineRegAdmin(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        [Authorize(Roles="Edit")]
+        public ActionResult OnlineRegAdminEdit(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        public ActionResult OnlineRegAdminUpdate(int id)
+        {
+            var m = GetRegSettings(id);
+            m.AgeGroups.Clear();
+            m.GradeOptions.Clear();
+            try
+            {
+                UpdateModel(m);
+                var os = new RegSettings(m.ToString(), DbUtil.Db, id);
+                m.org.RegSetting = os.ToString();
+                DbUtil.Db.SubmitChanges();
+                return View("OnlineRegAdmin", m);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Form", ex.Message);
+                return View("OnlineRegAdminEdit", m);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult OnlineRegOptions(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        [Authorize(Roles="Edit")]
+        public ActionResult OnlineRegOptionsEdit(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        public ActionResult OnlineRegOptionsUpdate(int id)
+        {
+            var m = GetRegSettings(id);
+            try
+            {
+                UpdateModel(m);
+                var os = new RegSettings(m.ToString(), DbUtil.Db, id);
+                m.org.RegSetting = os.ToString();
+                DbUtil.Db.SubmitChanges();
+                return View("OnlineRegOptions", m);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Form", ex.Message);
+                return View("OnlineRegOptionsEdit", m);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult OnlineRegQuestions(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        [Authorize(Roles = "Edit")]
+        public ActionResult OnlineRegQuestionsEdit(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        public ActionResult OnlineRegQuestionsUpdate(int id)
+        {
+            var m = GetRegSettings(id);
+            m.YesNoQuestions.Clear();
+            m.ExtraQuestions.Clear();
+            m.ShirtSizes.Clear();
+            m.MenuItems.Clear();
+            m.Dropdown1.Clear();
+            m.Dropdown2.Clear();
+            m.Dropdown3.Clear();
+            m.Checkboxes.Clear();
+            m.Checkboxes2.Clear();
+            try
+            {
+                UpdateModel(m);
+                var os = new RegSettings(m.ToString(), DbUtil.Db, id);
+                m.org.RegSetting = os.ToString();
+                DbUtil.Db.SubmitChanges();
+                return View("OnlineRegQuestions", m);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Form", ex.Message);
+                return View("OnlineRegQuestionsEdit", m);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult OnlineRegFees(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        [Authorize(Roles="Edit")]
+        public ActionResult OnlineRegFeesEdit(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        public ActionResult OnlineRegFeesUpdate(int id)
+        {
+            var m = GetRegSettings(id);
+            m.OrgFees.Clear();
+            try
+            {
+                UpdateModel(m);
+                var os = new RegSettings(m.ToString(), DbUtil.Db, id);
+                m.org.RegSetting = os.ToString();
+                DbUtil.Db.SubmitChanges();
+                return View("OnlineRegFees", m);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Form", ex.Message);
+                return View("OnlineRegFeesEdit", m);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult OnlineRegMessages(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        [Authorize(Roles="Edit")]
+        public ActionResult OnlineRegMessagesEdit(int id)
+        {
+            return View(GetRegSettings(id));
+        }
+        [HttpPost]
+        public ActionResult OnlineRegMessagesUpdate(int id)
+        {
+            var m = GetRegSettings(id);
+            m.VoteTags.Clear();
+            try
+            {
+                UpdateModel(m);
+                var os = new RegSettings(m.ToString(), DbUtil.Db, id);
+                m.org.RegSetting = os.ToString();
+                DbUtil.Db.SubmitChanges();
+                return View("OnlineRegMessages", m);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Form", ex.Message);
+                return View("OnlineRegMessagesEdit", m);
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult NewMenuItem()
+        {
+            return View("EditorTemplates/MenuItem", new RegSettings.MenuItem());
+        }
+        [HttpPost]
+        public ActionResult NewDropdown1Item()
+        {
+            return View("EditorTemplates/Dropdown1", new RegSettings.MenuItem());
+        }
+        [HttpPost]
+        public ActionResult NewDropdown2Item()
+        {
+            return View("EditorTemplates/Dropdown2", new RegSettings.MenuItem());
+        }
+        [HttpPost]
+        public ActionResult NewDropdown3Item()
+        {
+            return View("EditorTemplates/Dropdown3", new RegSettings.MenuItem());
+        }
+        [HttpPost]
+        public ActionResult NewCheckbox()
+        {
+            return View("EditorTemplates/Checkbox", new RegSettings.MenuItem());
+        }
+        [HttpPost]
+        public ActionResult NewCheckbox2()
+        {
+            return View("EditorTemplates/Checkbox2", new RegSettings.MenuItem());
+        }
+        [HttpPost]
+        public ActionResult NewOrgFee()
+        {
+            return View("EditorTemplates/OrgFee", new RegSettings.OrgFee());
+        }
+        [HttpPost]
+        public ActionResult NewAgeGroup()
+        {
+            return View("EditorTemplates/AgeGroup", new RegSettings.AgeGroup());
+        }
+        [HttpPost]
+        public ActionResult NewGradeOption()
+        {
+            return View("EditorTemplates/GradeOption", new RegSettings.GradeOption());
+        }
+        [HttpPost]
+        public ActionResult NewYesNoQuestion()
+        {
+            return View("EditorTemplates/YesNoQuestion", new RegSettings.YesNoQuestion());
+        }
+        [HttpPost]
+        public ActionResult NewShirtSize()
+        {
+            return View("EditorTemplates/ShirtSize", new RegSettings.ShirtSize());
+        }
+        [HttpPost]
+        public ActionResult NewExtraQuestion()
+        {
+            return View("EditorTemplates/ExtraQuestion", new RegSettings.ExtraQuestion());
+        }
+        [HttpPost]
+        public ActionResult NewVoteTag()
+        {
+            return View("EditorTemplates/VoteTag", new RegSettings.VoteTag());
+        }
+        public ActionResult VoteTag(int id)
+        {
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            RegSettings m = new RegSettings(org.RegSetting, DbUtil.Db, id);
+            Response.ContentType = "text/plain";
+            return Content(@"Copy and paste these directly into your email text, 
+no need to put these into the ""Source"" view of the editor anymore.
+
+" + m.VoteTagsLinks());
+        }
+        
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SmallGroups()
         {
@@ -364,7 +639,8 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(t.PersonTags);
             DbUtil.Db.Tags.DeleteOnSubmit(t);
             DbUtil.Db.SubmitChanges();
-            return View("NotifyList", DbUtil.Db.PeopleFromPidString(o.NotifyIds));
+            ViewData["notifyids"] = o.NotifyIds;
+            return View("NotifyList2");
         }
         [Authorize(Roles="Admin")]
         public ActionResult RepairTransactions(int id)

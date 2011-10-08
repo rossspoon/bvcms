@@ -1,17 +1,4 @@
 ﻿$(function () {
-    $(".bt").button();
-    $("ul.sort").sortable();
-    $("a.newitem").click(function (ev) {
-        ev.preventDefault();
-        var a = $(this);
-        $.post(a.attr("href"), null, function (ret) {
-            a.parent().prev().append(ret);
-        });
-    });
-    $("a.del").live("click", function (ev) {
-        ev.preventDefault();
-        $(this).parent().remove();
-    });
     var editor_config = {
         height: 200,
         filebrowserUploadUrl: '/Account/CKEditorUpload/',
@@ -32,13 +19,36 @@
     ['Maximize', 'ShowBlocks', '-', 'About']
     ]
     }
-    $("span.edithtml").each(function () {
-        var v = $(this).parent().next().val();
-        if (v.length > 0)
-            $(this).addClass("bold");
-    });
     $("#editor").ckeditor(editor_config);
+    $("ul.enablesort div.newitem > a").live("click", function (ev) {
+        if (!$(this).attr("href"))
+            return false;
+        ev.preventDefault();
+        var a = $(this);
+        $.post(a.attr("href"), null, function (ret) {
+            a.parent().prev().append(ret);
+        });
+    });
+    $("ul.enablesort a.del").live("click", function (ev) {
+        if (!$(this).attr("href"))
+            return false;
+        ev.preventDefault();
+        $(this).parent().parent().parent().remove();
+    });
+
+    $.regsettingeditclick = function (f) {
+        $(".tip", f).tooltip({ opacity: 0, showBody: "|" });
+        $("ul.enablesort ul.sort", f).sortable();
+        $("ul.noedit input", f).attr("disabled", "disabled");
+        $("ul.noedit select", f).attr("disabled", "disabled");
+        $("ul.noedit a", f).removeAttr("href");
+        $("ul.noedit a", f).css("color", "grey");
+        $("ul.noedit a", f).unbind("click");
+    };
+    $.regsettingeditclick();
     $("a.editor").live("click", function (ev) {
+        if (!$(this).attr("href"))
+            return false;
         var name = $(this).attr("tb");
         ev.preventDefault();
         $("#EditorDialog").dialog({
@@ -53,29 +63,20 @@
             buttons: {
                 'Save': function () {
                     var v = $("#editor").val();
-                    var n = $("#" + name);
-                    n.val(v);
-                    var s = n.prev().find("span.edithtml");
-                    s.removeClass("bold");
-                    if (v.length > 0)
-                        s.addClass("bold");
+                    $("#" + name).val(v);
+                    $("#" + name + "_ro").html(v);
                     $(this).dialog('close');
                 }
             }
         });
         return false;
     });
-    $('#save').click(function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest("form");
-        var q = f.serialize();
-        $.post("/RegSetting/UpdateGui/" + $("#Id").val(), q, function (ret) {
-            if (ret == "ok") {
-                window.location = "/Organization/Index/" + $("#Id").val();
-                return false;
-            }
-            alert(ret);
-        });
-        return false;
+    $('#notifylist').live("click", function (e) {
+        if (!$(this).attr("href"))
+            return false;
+        e.preventDefault();
+        var d = $('#usersDialog');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("open");
     });
 });

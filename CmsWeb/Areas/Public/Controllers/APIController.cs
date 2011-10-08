@@ -50,6 +50,19 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(api.Organizations(id));
         }
         [RequireBasicAuthentication]
+        public ActionResult Lookups(string id)
+        {
+            Response.ContentType = "text/xml";
+            var ret = Authenticate();
+            if (ret.StartsWith("!"))
+                return Content("<Lookups error=\"{0}\" />".Fmt(ret.Substring(1)));
+            if (!id.HasValue())
+                return Content("Lookups error=\"not found\">");
+            ViewData["name"] = id;
+            var q = DbUtil.Db.ExecuteQuery<CmsWeb.Areas.Setup.Controllers.LookupController.Row>("select * from lookup." + id);
+            return View(q);
+        }
+        [RequireBasicAuthentication]
         public ActionResult OrgMembers(int id)
         {
             Response.ContentType = "text/xml";

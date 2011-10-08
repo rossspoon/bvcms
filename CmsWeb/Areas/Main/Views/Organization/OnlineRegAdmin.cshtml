@@ -1,0 +1,11 @@
+﻿@model CmsData.RegSettings
+@using CmsWeb
+@using CmsWeb.Models.OrganizationPage
+@using UtilityExtensions
+@if (User.IsInRole("Edit"))
+{ 
+<a class="displayedit bt edit regsettingedit" href="/Organization/OnlineRegAdminEdit/@Model.OrgId">Edit</a>
+}
+<ul class="noedit">
+@Html.EditorFor(m => m, "TabAdmin")
+</ul>

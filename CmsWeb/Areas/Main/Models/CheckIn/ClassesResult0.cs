@@ -34,7 +34,7 @@ namespace CmsWeb.Models
                          p.BirthDate,
                          p.Grade
                      }).SingleOrDefault();
-            if (i==null)
+            if (i == null)
                 return;
 
             familyid = i.FamilyId;
@@ -59,33 +59,19 @@ namespace CmsWeb.Models
                 w.WriteAttributeString("pid", peopleid.ToString());
                 w.WriteAttributeString("fid", familyid.ToString());
                 var q = DbUtil.Db.Organizations.AsQueryable();
-                if (kioskmode == true)
-                    q = from o in q
-                        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
-                        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
-                        where grade <= o.GradeAgeEnd || o.GradeAgeEnd == null || noagecheck
-                        where grade >= o.GradeAgeStart || o.GradeAgeStart == null || noagecheck
-                        where o.AllowKioskRegister == true
-                        where (o.ClassFilled ?? false) == false
-                        where o.CampusId == campusid || campusid == 0
-                        where o.OrganizationStatusId == OrgStatusCode.Active
-                        orderby bdaystart, o.OrganizationName
-                        select o;
-                else
-                    q = from o in q
-                        let sc = o.OrgSchedules.FirstOrDefault() // SCHED
-                        let Hour1 = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday).First().Hour
-                        let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
-                        where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
-                        where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
-                        where o.CanSelfCheckin == true
-                        where (o.ClassFilled ?? false) == false
-                        where o.CampusId == campusid || campusid == 0
-                        where o.OrganizationStatusId == OrgStatusCode.Active
-                        where Hour1 != null
-                        orderby sc.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
-                        select o;
+                q = from o in q
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                    let Hour1 = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday).First().Hour
+                    let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
+                    where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
+                    where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
+                    where o.CanSelfCheckin == true
+                    where (o.ClassFilled ?? false) == false
+                    where o.CampusId == campusid || campusid == 0
+                    where o.OrganizationStatusId == OrgStatusCode.Active
+                    where Hour1 != null
+                    orderby sc.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
+                    select o;
 
                 var count = q.Count();
                 const int INT_PageSize = 10;

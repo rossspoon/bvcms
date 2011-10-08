@@ -63,8 +63,8 @@ namespace CmsWeb.Models
                 reg.Insurance = insurance;
                 reg.Policy = policy;
             }
-            if (setting.AskGrade == true)
-                om.Grade = grade.ToInt();
+            //if (setting.AskGrade == true)
+            //    om.Grade = grade.ToInt();
             if (setting.AskTickets == true)
                 om.Tickets = ntickets;
 
@@ -238,8 +238,8 @@ namespace CmsWeb.Models
             }
             if (setting.AskCoaching == true)
                 sb.AppendFormat("<tr><td>Coaching:</td><td>{0}</td></tr>\n", rr.Coaching);
-            if (setting.AskGrade == true)
-                sb.AppendFormat("<tr><td>Grade:</td><td>{0}</td></tr>\n", om.Grade);
+            //if (setting.AskGrade == true)
+            //    sb.AppendFormat("<tr><td>Grade:</td><td>{0}</td></tr>\n", om.Grade);
 
             if (setting.AgeGroups.Count > 0)
                 sb.AppendFormat("<tr><td>AgeGroup:</td><td>{0}</td></tr>\n", AgeGroup());

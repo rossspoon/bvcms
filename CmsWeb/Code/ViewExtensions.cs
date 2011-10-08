@@ -470,6 +470,10 @@ namespace CmsWeb
             {
                 get { return _templateInfo.HtmlFieldPrefix.ToSuitableId(); }
             }
+            public string CollectionName
+            {
+                get { return _templateInfo.HtmlFieldPrefix; }
+            }
 
             public CollectionItemNamePrefixScope(TemplateInfo templateInfo, string collectionItemName, string hiddenindex)
             {

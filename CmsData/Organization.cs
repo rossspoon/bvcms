@@ -210,7 +210,7 @@ namespace CmsData
                 AllowAttendOverlap = AllowAttendOverlap,
                 AttendClassificationId = AttendClassificationId,
                 GradeAgeStart = GradeAgeStart,
-                GradeAgeEnd = GradeAgeEnd,
+                //GradeAgeEnd = GradeAgeEnd,
                 CampusId = CampusId,
                 IsBibleFellowshipOrg = IsBibleFellowshipOrg,
                 RollSheetVisitorWks = RollSheetVisitorWks,

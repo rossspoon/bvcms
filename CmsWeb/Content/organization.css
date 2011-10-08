@@ -1,0 +1,134 @@
+﻿div.settings .left
+{
+    float: left;
+}
+#memberDialog
+{
+    padding: 0px;
+}
+#schedules
+{
+    padding-left: 0px;
+    margin-top: 0px;
+}
+#schedules input
+{
+    width: 60px;
+}
+#schedulehead
+{
+    font-weight: bold;
+    margin-top: 1em;
+}
+#schedulehead span
+{
+    display: inline-block;
+}
+#schedules span
+{
+    display: inline-block;
+}
+a.ui-state-default
+{
+    cursor: pointer;
+}
+input
+{
+    margin: 3px;
+}
+.text
+{
+    /*height: 20px;*/
+    margin-top: 5px;
+}
+.sgfee
+{
+    width: 80px;
+    display: inline-block;
+}
+.long
+{
+    width: 400px;
+}
+.short
+{
+    width: 50px;
+}
+.keyword
+{
+    width: 170px;
+    display: inline-block;
+}
+.keyword2
+{
+    width: 60px;
+    display: inline-block;
+}
+.keyword3
+{
+    width: 150px;
+    display: inline-block;
+}
+div.block
+{
+    display: inline-block;
+    vertical-align: top;
+}
+a.editor
+{
+    text-decoration: none;
+}
+div.border
+{
+    border: 1px dotted grey;
+    padding: 4px;
+}
+.bold
+{
+    font-weight: bold;
+}
+.big
+{
+    font-size: 16px;
+}
+div.settings i
+{
+    color: Blue;
+}
+div.settings ul
+{
+    list-style: none;
+    margin-left: -20px;
+}
+div.settings > form > ul > li
+{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+ul.sort > li
+{
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-left: 7px solid grey;
+}
+div.settings ul.padded
+{
+    margin-left: 0px;
+}
+ul.padded > li
+{
+    padding-left: 12px;
+}
+.newitem
+{
+    margin: 18px;
+}
+textarea.html
+{
+    display: none;
+}
+.edit2 
+{
+	float: right;
+	margin-right: 22px;
+}

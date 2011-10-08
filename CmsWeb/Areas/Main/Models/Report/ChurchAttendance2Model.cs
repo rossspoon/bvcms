@@ -31,6 +31,15 @@ namespace CmsWeb.Areas.Main.Models.Report
                 }
         }
 
+        public class ColInfo
+        {
+            public string Heading { get; set; }
+            public List<TimeSpan> Times { get; set; }
+            public ColInfo()
+            {
+                Times = new List<TimeSpan>();
+            }
+        }
 
         public class ProgInfo
         {
@@ -38,19 +47,34 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string RptGroup { get; set; }
             public decimal? StartHour { get; set; }
             public decimal? EndHour { get; set; }
-            List<DateTime> _cols;
-            public List<DateTime> Cols
+            List<ColInfo> _cols;
+            public List<ColInfo> Cols
             {
                 get
                 {
                     if (_cols == null)
                     {
-                        _cols = new List<DateTime>();
-                        var re = new Regex(@"(\d+:\d+ [AP]M),?");
+                        _cols = new List<ColInfo>();
+                        Regex re = null;
+                        if (RptGroup.TrimEnd().EndsWith(")"))
+                            re = new Regex(@"(?<re>\d+:\d+ [AP]M)");
+                        else
+                            re = new Regex(@"\((?<re>[^)]*)\)=(?<na>[^,)]*)|(?<re>\d+:\d+ [AP]M)");
                         var m = re.Match(RptGroup);
                         while (m.Success)
                         {
-                            _cols.Add(DateTime.Parse(m.Groups[1].Value));
+                            var ci = new ColInfo();
+                            _cols.Add(ci);
+                            var a = m.Groups["re"].Value.Split('|');
+                            if (m.Groups["na"].Value.HasValue())
+                                ci.Heading = m.Groups["na"].Value;
+                            else
+                                ci.Heading = m.Groups[1].Value;
+                            foreach (var s in a)
+                            {
+                                var dt = DateTime.Parse(s);
+                                ci.Times.Add(dt.TimeOfDay);
+                            }
                             m = m.NextMatch();
                         }
                     }
@@ -104,12 +128,12 @@ namespace CmsWeb.Areas.Main.Models.Report
                 a.totalmeetings = q.Count();
                 return a;
             }
-            public Average Column(TimeSpan c)
+            public Average Column(ColInfo c)
             {
                 var a = new Average();
                 var q = from w in Weeks
                         from m in w.Meetings
-                        where m.date.TimeOfDay == c
+                        where c.Times.Contains(m.date.TimeOfDay)
                         group m by w.Sunday into g
                         select g.Sum(mm => mm.Present);
                 if (q.Count() == 0)
@@ -165,12 +189,12 @@ namespace CmsWeb.Areas.Main.Models.Report
                 a.totalpeople = q.Sum();
                 return a;
             }
-            public Average Column(TimeSpan c)
+            public Average Column(ColInfo c)
             {
                 var a = new Average();
                 var q = from w in Weeks
                         from m in w.Meetings
-                        where m.date.TimeOfDay == c
+                        where c.Times.Contains(m.date.TimeOfDay)
                         group m by w.Sunday into g
                         select g.Sum(mm => mm.Present);
                 if (q.Count() == 0)

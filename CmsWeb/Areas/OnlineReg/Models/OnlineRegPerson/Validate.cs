@@ -134,9 +134,9 @@ Please call the church to resolve this before we can complete your account.<br /
                             IsValidForContinue = false;
 #endif
                         }
-                        else if (setting.ValidateOrgs.Count > 0)
+                        else if (setting.ValidateOrgIds.Count > 0)
                         {
-                            if (!person.OrganizationMembers.Any(mm => setting.ValidateOrgs.Contains(mm.OrganizationId)))
+                            if (!person.OrganizationMembers.Any(mm => setting.ValidateOrgIds.Contains(mm.OrganizationId)))
                             {
                                 ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
                                 IsValidForContinue = false;
@@ -215,7 +215,7 @@ Please search with a different email, phone, or birthday.";
 
             if (MemberOnly())
                 ModelState.AddModelError(ErrorTarget, "Sorry, must be a member of church");
-            else if (org != null && setting.ValidateOrgs.Count > 0)
+            else if (org != null && setting.ValidateOrgIds.Count > 0)
                 ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
 
             IsValidForNew = ModelState.IsValid;
@@ -261,14 +261,14 @@ Please search with a different email, phone, or birthday.";
                 if (shirtsize == "0")
                     modelState.AddModelError(inputname("shirtsize"), "please select a shirt size");
 
-            if (setting.AskGrade == true)
-            {
-                int g = 0;
-                if (!int.TryParse(grade, out g))
-                    modelState.AddModelError(inputname("grade"), "please enter a grade");
-                else if (g < org.GradeAgeStart || g > org.GradeAgeEnd)
-                    modelState.AddModelError(inputname("grade"), "only grades from {0} to {1}".Fmt(org.GradeAgeStart, org.GradeAgeEnd));
-            }
+            //if (setting.AskGrade == true)
+            //{
+            //    int g = 0;
+            //    if (!int.TryParse(grade, out g))
+            //        modelState.AddModelError(inputname("grade"), "please enter a grade");
+            //    else if (g < org.GradeAgeStart || g > org.GradeAgeEnd)
+            //        modelState.AddModelError(inputname("grade"), "only grades from {0} to {1}".Fmt(org.GradeAgeStart, org.GradeAgeEnd));
+            //}
 
             if (setting.AskCoaching == true)
                 if (!coaching.HasValue)

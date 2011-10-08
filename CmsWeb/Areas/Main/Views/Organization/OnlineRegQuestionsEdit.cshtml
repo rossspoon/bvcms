@@ -1,0 +1,16 @@
+﻿@model CmsData.RegSettings
+@using CmsWeb
+@using UtilityExtensions
+<div>
+<a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
+<a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+</div>
+<div>@Html.ValidationMessage("Form")</div>
+<ul class="enablesort">
+@Html.EditorFor(m => m, "TabQuestions")
+</ul>
+<div>
+<a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
+<a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+</div>
+<div>@Html.ValidationMessage("Form")</div>

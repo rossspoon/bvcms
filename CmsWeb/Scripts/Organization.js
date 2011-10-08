@@ -8,6 +8,7 @@
     }
 }
 $(function () {
+    $("#Settings-tab").tabs();
     var maintabs = $("#main-tab").tabs();
     $('#deleteorg').click(function (ev) {
         ev.preventDefault();
@@ -131,6 +132,8 @@ $(function () {
                 $("#DivisionsList").multiSelect();
                 $("#schedules").sortable({ stop: $.renumberListItems });
                 $("#schedules input").timepicker({ showPeriod: true });
+                $("#editor")
+                $.regsettingeditclick(f);
             });
         });
         return false;
@@ -142,8 +145,10 @@ $(function () {
             return false;
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
-            $(f).html(ret);
-            $(".submitbutton,.bt").button();
+            $(f).html(ret).ready(function () {
+                $(".submitbutton,.bt").button();
+                $.regsettingeditclick(f);
+            });
         });
         return false;
     });
@@ -379,12 +384,6 @@ $(function () {
                 });
             });
         }
-    });
-    $('#notifylist').live("click", function (e) {
-        e.preventDefault();
-        var d = $('#usersDialog');
-        $('iframe', d).attr("src", this.href);
-        d.dialog("open");
     });
     $('#divisionlist').live("click", function (e) {
         e.preventDefault();

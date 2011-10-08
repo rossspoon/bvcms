@@ -5,17 +5,12 @@
     ViewBag.Title = "Organization";
 }
 @section head {
-<link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
-<link href="/Content/jquery.ui.timepicker.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-#memberDialog { padding: 0px; }
-#schedules { padding-left: 0px; margin-top:0px; }
-#schedules input { width: 60px; }
-#schedulehead { font-weight: bold; margin-top:1em; }
-#schedulehead span { display: inline-block; }
-#schedules span { display: inline-block; }
-a.ui-state-default { cursor: pointer; }
-</style>
+@Html.Raw(SquishIt.Framework.Bundle.Css()
+            .Add("/Content/jquery.multiSelect.css")
+            .Add("/Content/jquery-ui-timepicker.css")
+            .Add("/Content/organization.css")
+    .Render("/Content/Organization_#.css")
+    )
 }
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
                 .Add("/Scripts/Pager.js")
@@ -23,10 +18,11 @@ a.ui-state-default { cursor: pointer; }
                 .Add("/Content/js/jquery.validate.js")
                 .Add("/Content/js/jquery.ui.timepicker.js")
                 .Add("/Content/js/jquery.textarea.js")
+                .Add("/Content/js/jquery-ui-dialog-patch.js")
                 .Add("/Scripts/Organization.js")
-                .Render("/Content/Organization_#.js")
-)
-
+                .Add("/Scripts/RegSetting.js")
+    .Render("/Content/Organization_#.js")
+    )
     @{ CmsData.Organization o = Model.org; }
     @Html.Hidden("refreshed", "no")
     @Html.Hidden("OrganizationId")
@@ -49,9 +45,9 @@ a.ui-state-default { cursor: pointer; }
     <a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId">Attendance Percentages</a>
     <a href="/OrgContent/Index/@o.OrganizationId" target="_blank">Members Only Page</a>
     <a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId">Volunteer Calendar</a>
-    <a id="RegSettings" href="/RegSetting/EditGui/@o.OrganizationId">Edit Registration Settings</a>
     <a href="/RegSetting/Index/@o.OrganizationId">View Registration Document</a>
-    <a href="/RegSetting/VoteTag/@o.OrganizationId">View VoteTags</a>
+    <a href="/OnlineReg/Index/@o.OrganizationId" target="_blank">Try Registration</a>
+    <a href="/Organization/VoteTag/@o.OrganizationId" target="_blank">View VoteTags</a>
 @if (User.IsInRole("Edit"))
 { 
     <a class="CreateAndGo" href="/Organization/Clone/@o.OrganizationId" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>
@@ -76,7 +72,7 @@ a.ui-state-default { cursor: pointer; }
             <li><a id="pending-link" href="#Pending-tab"><span>Pending</span></a></li>
             <li><a id="priors-link" href="#Priors-tab"><span>Previous</span></a></li>
             <li><a id="visitors-link" href="#Visitors-tab"><span>Visitors</span></a></li>
-            <li><a href="#Schedule-tab"><span>Settings</span></a></li>
+            <li><a href="#Settings-tab"><span>Settings</span></a></li>
             <li><a id="meetings-link" href="#Meetings-tab"><span>Meetings</span></a></li>
         </ul>
         <div id="Members-tab" class="ui-tabs-panel ui-tabs-hide">
@@ -100,10 +96,51 @@ a.ui-state-default { cursor: pointer; }
             <form action="/Organization/VisitorGrid/@Model.OrganizationId" method="post">
             </form>
         </div>
-        <div id="Schedule-tab" class="ui-tabs-panel ui-tabs-hide">
-            <form id="settingsForm" class="DisplayEdit" action="">
-             @Html.Partial("Settings", Model) 
-            </form>
+        <div id="Settings-tab" class="ui-tabs-hide ui-tabs-panel">
+            <ul class="ui-tabs-nav">
+                <li><a href="#SettingsOrg"><span>General</span></a></li>
+                <li><a href="#SettingsMeetings"><span>Attendance</span></a></li>
+                <li><a href="#OnlineRegAdmin"><span>Registration</span></a></li>
+                <li><a href="#OnlineRegFees"><span>Fees</span></a></li>
+                <li><a href="#OnlineRegQuestions"><span>Questions</span></a></li>
+                <li><a href="#OnlineRegMessages"><span>Messages</span></a></li>
+            </ul>
+            <div id="SettingsOrg" class="ui-tabs-hide ui-tabs-panel settings">
+                <p><i>Hover over the labels to get help</i></p>
+                <form class="DisplayEdit" action="">
+                 @Html.Partial("SettingsOrg", Model) 
+                </form>
+            </div>
+            <div id="SettingsMeetings" class="ui-tabs-hide ui-tabs-panel settings">
+                <p><i>Hover over the labels to get help</i></p>
+                <form class="DisplayEdit" action="">
+                 @Html.Partial("SettingsMeetings", Model) 
+                </form>
+            </div>
+            <div id="OnlineRegAdmin" class="ui-tabs-hide ui-tabs-panel settings">
+                <p><i>Hover over the labels to get help</i></p>
+                <form class="DisplayEdit" action="">
+                @Html.Partial("OnlineRegAdmin", Model.RegSettings)
+                </form>
+            </div>
+            <div id="OnlineRegFees" class="ui-tabs-hide ui-tabs-panel settings">
+                <p><i>Hover over the labels to get help</i></p>
+                <form class="DisplayEdit" action="">
+                @Html.Partial("OnlineRegFees", Model.RegSettings) 
+                </form>
+            </div>
+            <div id="OnlineRegQuestions" class="ui-tabs-hide ui-tabs-panel settings">
+                <p><i>Hover over the labels to get help</i></p>
+                <form class="DisplayEdit" action="">
+                 @Html.Partial("OnlineRegQuestions", Model.RegSettings) 
+                </form>
+            </div>
+            <div id="OnlineRegMessages" class="ui-tabs-hide ui-tabs-panel settings">
+                <p><i>Hover over the labels to get help</i></p>
+                <form class="DisplayEdit" action="">
+                 @Html.Partial("OnlineRegMessages", Model.RegSettings) 
+                </form>
+            </div>
         </div>
         <div id="Meetings-tab" class="ui-tabs-panel ui-tabs-hide">
             <form action="/Organization/MeetingGrid/@Model.OrganizationId" method="post">
@@ -176,3 +213,8 @@ a.ui-state-default { cursor: pointer; }
 <div id="divisionsDialog">
 <iframe style="width:100%;height:99%;border-width:0;"></iframe>
 </div>
+<div id="EditorDialog" style="display:none">
+    @Html.TextArea("editor", "", new { style="display:none", @class = "editor", rows="16", cols="20" })
+</div>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>

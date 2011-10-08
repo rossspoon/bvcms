@@ -755,6 +755,12 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
             return ((int)(result.ReturnValue));
         }
+        [Function(Name = "dbo.PurgeUser")]
+        public int PurgeUser([Parameter(DbType = "Int")] int? uid)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), uid);
+            return ((int)(result.ReturnValue));
+        }
         [Function(Name = "dbo.SetMainDivision")]
         public int SetMainDivision([Parameter(DbType = "Int")] int? orgid, [Parameter(DbType = "Int")] int? divid)
         {
