@@ -397,6 +397,12 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 // R ----------------
+                case QueryType.RecentJoinChurch:
+                    return Expressions.RecentJoinChurch(
+                        parm,
+                        c.Days,
+                        CompType,
+                        c.CodeIds == "1");
                 case QueryType.RecentAttendType:
                     return Expressions.RecentAttendType(parm,
                                c.Program,

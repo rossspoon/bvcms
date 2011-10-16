@@ -217,6 +217,9 @@
     <Field Name="RecentDecisionType" Title="Recent Decision Type" Type="Code" DisplayAs="RecentDecisionType({0})" Params="Days" DataSource="DecisionCodes" DataValueField="IdCode">
       A decision of type was made in last # days
     </Field>
+    <Field Name="RecentJoinChurch" Title="Recent Join Church" Type="Bit" DisplayAs="RecentJoinedChurch({0})" Params="Days" DataValueField="IdCode">
+      Recently Joined Church # days ago
+    </Field>
     <Field Name="JoinDate" Title="Join Date" Type="Date">
       Date membership steps were completed.
       Todo: explain how unknown dates work
@@ -383,7 +386,7 @@
       Selects people based on being a new attend within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
     <Field Name="VisitedCurrentOrg" Title="Has Visited Current Organization" Type="Bit" DataValueField="IdCode">
-      Selects everyone who has visited the last organization you worked with within the days specified. (used internally, but you can too if it will help you)
+      Selects everyone who has visited the last organization you worked with. (used internally, but you can too if it will help you)
     </Field>
     <Field Name="KidsRecentAttendCount" Title="Kids Recent Attendance Count" Type="Integer" DisplayAs="KidsRecentAttendCount({0})" Params="Days">
       Selects people based on their kids attendance count for anything looking back a specified number of days.

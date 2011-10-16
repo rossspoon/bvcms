@@ -217,12 +217,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\ToggleOrgLeadersOnly.ashx.cs">
+      <DependentUpon>ToggleOrgLeadersOnly.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Dialog\Controllers\SearchDivisionsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\TransactionHistoryController.cs" />
     <Compile Include="Areas\Dialog\DialogAreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Models\SearchDivisionsModel.cs" />
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
+    <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Public\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
@@ -984,6 +989,7 @@
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\OrgChildren.js" />
     <Content Include="Scripts\Meetings.js" />
     <Content Include="Scripts\SearchDivisions.js" />
     <Content Include="Scripts\Edit2.js" />
@@ -1454,6 +1460,10 @@
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabOrg.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabMeetings.cshtml" />
     <Content Include="Areas\Public\Views\API\Lookups.cshtml" />
+    <Content Include="Areas\Main\Views\OrgChildren\Form.cshtml" />
+    <Content Include="Areas\Main\Views\OrgChildren\Index.cshtml" />
+    <Content Include="Areas\Main\Views\OrgChildren\Rows.cshtml" />
+    <Content Include="Admin\ToggleOrgLeadersOnly.ashx" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

@@ -141,7 +141,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     p.AddPerson(null, p.org.EntryPointId ?? 0);
 
                 var staff = DbUtil.Db.StaffPeopleForOrg(p.org.OrganizationId)[0];
-                var text = p.setting.Body.ToString().Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
+                var text = p.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
                 text = text.Replace("{amt}", (t.Amt ?? 0).ToString("N2"));
                 text = text.Replace("{date}", DateTime.Today.ToShortDateString());
                 text = text.Replace("{tranid}", t.Id.ToString());

@@ -177,7 +177,7 @@
 { 
     <tr>
         <td><div class="wraparound">@Model.setting.Dropdown1Label</div></td>
-        <td>@Html.DropDownList3("", Model.inputname("option"), Model.Options(), Model.option)
+        <td>@Html.DropDownList4("", Model.inputname("option"), Model.Options(), Model.option)
             <div>@Html.ValidationMessage(Model.inputname("option"))</div></td>
     </tr>
 }
@@ -185,7 +185,7 @@
 { 
     <tr>
         <td><div class="wraparound">@Model.setting.Dropdown2Label</div></td>
-        <td>@Html.DropDownList3("", Model.inputname("option2"), Model.ExtraOptions(), Model.option2)
+        <td>@Html.DropDownList4("", Model.inputname("option2"), Model.ExtraOptions(), Model.option2)
             <div>@Html.ValidationMessage(Model.inputname("option2"))</div></td>
     </tr>
 }
@@ -193,7 +193,7 @@
 { 
     <tr>
         <td><div class="wraparound">@Model.setting.Dropdown3Label</div></td>
-        <td>@Html.DropDownList3("", Model.inputname("option3"), Model.ExtraOptions3(), Model.option3)
+        <td>@Html.DropDownList4("", Model.inputname("option3"), Model.ExtraOptions3(), Model.option3)
             <div>@Html.ValidationMessage(Model.inputname("option3"))</div></td>
     </tr>
 }

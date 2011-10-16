@@ -23,7 +23,7 @@ namespace CmsWeb.Models
                      where f.HomePhoneLU.StartsWith(p7)
                         || f.People.Any(p => p.CellPhoneLU.StartsWith(p7))
                      let flock = f.FamilyCheckinLocks
-                        .SingleOrDefault(l => SqlMethods.DateDiffSecond(l.Created, DateTime.Now) < 60)
+                        .FirstOrDefault(l => SqlMethods.DateDiffSecond(l.Created, DateTime.Now) < 60)
                      orderby f.FamilyId
                      select new FamilyInfo
                      {
@@ -58,7 +58,7 @@ namespace CmsWeb.Models
                 where om.Person.FamilyId == id
                 where om.Person.DeceasedDate == null
                 from meeting in meetingHours
-                let CheckedIn = DbUtil.Db.Attends.SingleOrDefault(aa => 
+                let CheckedIn = DbUtil.Db.Attends.FirstOrDefault(aa => 
                     aa.OrganizationId == om.OrganizationId 
                     && aa.PeopleId == om.PeopleId 
                     && aa.MeetingDate == meeting.Hour 
@@ -103,7 +103,7 @@ namespace CmsWeb.Models
                     HasPicture = om.Person.PictureId != null,
                     Custody = (om.Person.CustodyIssue ?? false) == true,
                     Transport = (om.Person.OkTransport ?? false) == true,
-                    RequiresSecurityLabel = (om.MemberTypeId == 220) && (om.Person.Age ?? 0) < 18 && (om.Organization.NoSecurityLabel ?? false) == false,
+                    RequiresSecurityLabel = normalLabelsMemTypes.Contains(om.MemberTypeId) && (om.Person.Age ?? 0) < 18 && (om.Organization.NoSecurityLabel ?? false) == false,
                     church = om.Person.OtherNewChurch,
                 };
 
@@ -123,7 +123,7 @@ namespace CmsWeb.Models
                 let meetingHours = DbUtil.Db.GetTodaysMeetingHours(a.OrganizationId, thisday)
                 let recreg = a.Person.RecRegs.FirstOrDefault()
                 from meeting in meetingHours
-                let CheckedIn = DbUtil.Db.Attends.SingleOrDefault(aa => 
+                let CheckedIn = DbUtil.Db.Attends.FirstOrDefault(aa => 
                     aa.OrganizationId == a.OrganizationId 
                     && aa.PeopleId == a.PeopleId 
                     && aa.MeetingDate == meeting.Hour 
@@ -272,7 +272,7 @@ namespace CmsWeb.Models
                 let meetingHours = DbUtil.Db.GetTodaysMeetingHours2(om.OrganizationId, thisday, true)
                 let recreg = om.Person.RecRegs.FirstOrDefault()
                 from meeting in meetingHours
-                let CheckedIn = DbUtil.Db.Attends.SingleOrDefault(aa =>
+                let CheckedIn = DbUtil.Db.Attends.FirstOrDefault(aa =>
                     aa.OrganizationId == om.OrganizationId
                     && aa.PeopleId == om.PeopleId
                     && aa.MeetingDate == meeting.Hour
@@ -430,7 +430,7 @@ namespace CmsWeb.Models
             var info = q.Single();
             var meeting = (from m in DbUtil.Db.Meetings
                            where m.OrganizationId == OrgId && m.MeetingDate == dt
-                           select m).SingleOrDefault();
+                           select m).FirstOrDefault();
             if (info.EntryPointId == null)
             {
                 var p = DbUtil.Db.LoadPersonById(PeopleId);

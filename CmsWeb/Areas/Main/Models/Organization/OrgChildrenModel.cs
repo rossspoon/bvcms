@@ -1,0 +1,97 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using CmsData;
+using System.Web.Mvc;
+using UtilityExtensions;
+using CMSPresenter;
+using System.Text.RegularExpressions;
+using System.Collections;
+using CmsData.Codes;
+
+namespace CmsWeb.Models
+{
+    public class OrgChildrenModel
+    {
+        public string namesearch { get; set; }
+        public string sort { get; set; }
+        public Organization org { get; set; }
+        public Organization parentorg { get; set; }
+
+        private IList<int> list = new List<int>();
+        public IList<int> List
+        {
+            get { return list; }
+            set { list = value; }
+        }
+
+        public int? orgid
+        {
+            get { return org == null ? null : (int?)org.OrganizationId; }
+            set
+            {
+                org = DbUtil.Db.LoadOrganizationById(value);
+                parentorg = DbUtil.Db.LoadOrganizationById(org.ParentOrgId);
+            }
+        }
+        
+        public class OrgInfo
+        {
+            public int Id { get; set; }
+            public int? ParentId { get; set; }
+            public string Name { get; set; }
+            public string Leader { get; set; }
+            public string Division { get; set; }
+            public string Program { get; set; }
+            public string Divisions { get; set; }
+            public string Location { get; set; }
+            public bool isChecked { get; set; }
+            public bool isOther { get; set; }
+            public bool isParent { get; set; }
+            public string ToolTip
+            {
+                get
+                {
+                    return "{0} ({1})|Program:{2}|Division: {3}|Leader: {4}|Location: {5}|Divisions: {6}".Fmt(
+                               Name,
+                               Id,
+                               Program,
+                               Division,
+                               Leader,
+                               Location,
+                               Divisions
+                               );
+                }
+            }
+        }
+        public IEnumerable<OrgInfo> FetchOrgList()
+        {
+            var q = from o in DbUtil.Db.Organizations
+                    let org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == org.OrganizationId)
+                    let ck = (o.ParentOrgId ?? 0) == org.OrganizationId
+                    let ot = o.ParentOrgId != null && o.ParentOrgId != org.OrganizationId
+                    let pa = o.ChildOrgs.Count() > 0
+                    where o.DivOrgs.Any(dd => org.DivOrgs.Select(oo => oo.DivId).Contains(dd.DivId))
+                    where namesearch == null || o.OrganizationName.Contains(namesearch) || ck
+                    where o.OrganizationId != org.OrganizationId
+                    where o.OrganizationStatusId == OrgStatusCode.Active
+                    orderby !ck, ot, pa, o.OrganizationName
+                    select new OrgInfo
+                    {
+                        Id = o.OrganizationId,
+                        ParentId = o.ParentOrgId,
+                        Name = o.OrganizationName,
+                        Leader = o.LeaderName,
+                        Program = o.Division.Program.Name,
+                        Division = o.Division.Name,
+                        Divisions = string.Join(",", o.DivOrgs.Select(d => d.Division.Name)),
+                        Location = o.Location,
+                        isChecked = ck == true,
+                        isOther = ot == true,
+                        isParent = pa == true,
+                    };
+            return q;
+        }
+    }
+}

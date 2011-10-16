@@ -140,6 +140,7 @@ namespace CmsData
         RecentContributionCount,
         RecentDecisionType,
         RecentEmailCount,
+        RecentJoinChurch,
         RecentNewVisitCount,
         RecentPledgeAmount,
         RecentPledgeCount,

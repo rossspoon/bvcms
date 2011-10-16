@@ -263,6 +263,27 @@ namespace CmsWeb
             tb.InnerHtml = sb.ToString();
             return new HtmlString(tb.ToString());
         }
+        public static HtmlString DropDownList4(this HtmlHelper helper, string id, string name, IEnumerable<CmsWeb.Models.OnlineRegPersonModel.SelectListItemFilled> list, string value)
+        {
+            var tb = new TagBuilder("select");
+            if (id.HasValue())
+                tb.MergeAttribute("id", id);
+            tb.MergeAttribute("name", name);
+            var sb = new StringBuilder();
+            foreach (var o in list)
+            {
+                var ot = new TagBuilder("option");
+                ot.MergeAttribute("value", o.Value);
+                if (value == o.Value)
+                    ot.MergeAttribute("selected", "selected");
+                if (o.Filled)
+                    ot.MergeAttribute("disabled", "disabled");
+                ot.SetInnerText(o.Text);
+                sb.Append(ot.ToString());
+            }
+            tb.InnerHtml = sb.ToString();
+            return new HtmlString(tb.ToString());
+        }
         public static HtmlString TextBox2(this HtmlHelper helper, string name, bool visible)
         {
             var tb = new TagBuilder("input");

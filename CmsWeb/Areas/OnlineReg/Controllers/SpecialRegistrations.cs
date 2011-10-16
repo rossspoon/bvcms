@@ -165,7 +165,7 @@ You have the following subscriptions:<br/>
                 desc, pledge: true);
 
             var pi = m.GetPledgeInfo();
-            var body = m.setting.Body.ToString();
+            var body = m.setting.Body;
             body = body.Replace("{amt}", pi.Pledged.ToString("N2"));
             body = body.Replace("{org}", m.Organization.OrganizationName);
             body = body.Replace("{first}", m.person.PreferredName);
@@ -229,7 +229,7 @@ You have the following subscriptions:<br/>
             if (confirm == true)
             {
                 var subject = Util.PickFirst(setting.Subject, "no subject");
-                var msg = Util.PickFirst(setting.Body.ToString(), "no message");
+                var msg = Util.PickFirst(setting.Body, "no message");
                 msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", smallgroup);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);

@@ -1,0 +1,20 @@
+﻿@model CmsWeb.Models.OrgChildrenModel
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "OrgChildren";
+}           
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Scripts/OrgChildren.js")
+        .Render("/Content/OrgChildren_#.js")
+)
+<style>
+    td.wide100 * 
+    {
+        width: 98%;
+    }
+</style>
+<form id="groupsform" action="/OrgChildren/Update" method="post">
+@Html.Partial("Form", Model)
+</form>
+
+

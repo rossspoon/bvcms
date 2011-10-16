@@ -357,7 +357,7 @@ Please search with a different email, phone, or birthday.";
             desc = i.Description;
             if (i.Limit > 0)
             {
-                var cnt = org.OrganizationMembers.Count(mm => mm.OrgMemMemTags.Any(mt => mt.MemberTag.Name == sg));
+                var cnt = GroupTags.Count(gg => gg == sg);
                 if (cnt >= i.Limit)
                     return true;
             }

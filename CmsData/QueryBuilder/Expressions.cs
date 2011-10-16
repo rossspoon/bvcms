@@ -174,6 +174,22 @@ namespace CmsData
             Expression cmp = Compare(left, op, right);
             return Expression.And(attended, cmp);
         }
+        internal static Expression RecentJoinChurch(
+            ParameterExpression parm,
+            int days,
+            CompareType op,
+            bool tf)
+        {
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, bool>> pred = p =>
+                p.JoinDate > mindt;
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual
+                || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+
+        }
         internal static Expression RecentAttendType(
             ParameterExpression parm,
             int? progid,
@@ -1096,7 +1112,7 @@ namespace CmsData
             Expression<Func<Person, bool>> hadcontact = p => p.contactsHad.Count() > 0;
             var dt = Util.Now.Date;
             Expression<Func<Person, int?>> pred = p =>
-                SqlMethods.DateDiffDay(p.LastContact, dt);
+                SqlMethods.DateDiffDay(p.contactsHad.Max(cc => cc.contact.ContactDate), dt);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Constant(days, typeof(int?));
             var expr1 = Expression.Invoke(hadcontact, parm);

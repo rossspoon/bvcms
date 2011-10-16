@@ -267,6 +267,8 @@ namespace CmsWeb.Areas.Main.Controllers
             {
                 var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
                 HttpContext.Cache.Remove(CSE);
+                if (m == null)
+                    return Content("no pending download");
                 return new ContributionStatementsResult(m.OutputFile);
             }
             return Content("no session");

@@ -140,10 +140,24 @@ namespace CmsWeb.Models
         }
         private IQueryable<CmsData.Organization> FetchOrgs()
         {
+            var me = Util.UserPeopleId;
+
             if (organizations != null)
                 return organizations;
 
             organizations = DbUtil.Db.Organizations.AsQueryable();
+
+            if (Util2.OrgMembersOnly)
+                organizations = from o in organizations
+                                where o.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId)
+                                select o;
+            else if (Util2.OrgLeadersOnly)
+            {
+                var oids = DbUtil.Db.GetLeaderOrgIds(Util.UserPeopleId);
+                organizations = DbUtil.Db.Organizations.Where(o => oids.Contains(o.OrganizationId));
+            }
+
+
             if (Name.HasValue())
             {
                 if (Name.AllDigits())
@@ -167,7 +181,7 @@ namespace CmsWeb.Models
                                 select o;
             else if (ProgramId > 0)
                 organizations = from o in organizations
-                                where o.DivOrgs.Any(d=> d.Division.ProgDivs.Any(p => p.ProgId == ProgramId))
+                                where o.DivOrgs.Any(d => d.Division.ProgDivs.Any(p => p.ProgId == ProgramId))
                                 || o.Division.ProgId == ProgramId
                                 select o;
 
@@ -324,19 +338,19 @@ namespace CmsWeb.Models
                         break;
                     case "Filled":
                         query = from o in query
-                                orderby o.ClassFilled descending, 
+                                orderby o.ClassFilled descending,
                                 o.OrganizationName descending
                                 select o;
                         break;
                     case "Closed":
                         query = from o in query
-                                orderby o.RegistrationClosed descending, 
+                                orderby o.RegistrationClosed descending,
                                 o.OrganizationName descending
                                 select o;
                         break;
                     case "Type":
                         query = from o in query
-                                orderby o.RegistrationTypeId descending, 
+                                orderby o.RegistrationTypeId descending,
                                 o.OrganizationName descending
                                 select o;
                         break;
@@ -436,10 +450,8 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> ScheduleIds()
         {
-            var q = from o in DbUtil.Db.Organizations
-                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
-                    where sc != null
-                    group o by new { sc.ScheduleId, sc.MeetingTime } into g
+            var q = from sc in DbUtil.Db.OrgSchedules
+                    group sc by new { sc.ScheduleId, sc.MeetingTime } into g
                     orderby g.Key.ScheduleId
                     where g.Key.ScheduleId != null
                     select new SelectListItem

@@ -516,17 +516,31 @@ namespace CmsData
             TagAll(q, tag);
             //PopulateSpecialTag(q, "OrgMemberOnlyIHaveContacted");
         }
+        public int[] GetLeaderOrgIds(int? me)
+        {
+            var o1 = from o in Organizations
+                     where o.OrganizationMembers.Any(om => om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader && om.PeopleId == me)
+                     select o.OrganizationId;
+            var o2 = from o in Organizations
+                     where o1.Contains(o.OrganizationId)
+                     from co in o.ChildOrgs
+                     select co.OrganizationId;
+            var o3 = from o in Organizations
+                     where o1.Contains(o.OrganizationId)
+                     from co in o.ChildOrgs
+                     from cco in co.ChildOrgs
+                     select cco.OrganizationId;
+            var oids = o1.Union(o2).Union(o3).ToArray();
+            return oids;
+        }
         public void SetOrgLeadersOnly()
         {
             var me = Util.UserPeopleId;
             var dt = Util.Now.AddYears(-1);
 
-            // members of any of my orgs excluding unshared orgs
+            var oids = GetLeaderOrgIds(Util.UserPeopleId);
             var q = from p in People
-                    where p.OrganizationMembers.Any(m =>
-                        OrganizationMembers.Any(um =>
-                             um.MemberType.AttendanceTypeId == AttendTypeCode.Leader
-                             && um.OrganizationId == m.OrganizationId && um.PeopleId == me))
+                    where p.OrganizationMembers.Any(m => oids.Contains(m.OrganizationId))
                     select p;
             var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgLeadersOnly);
 
@@ -543,7 +557,7 @@ namespace CmsData
                     OrganizationMembers.Any(um =>
                         um.MemberType.AttendanceTypeId == AttendTypeCode.Leader
                         && um.Organization.SecurityTypeId != 3
-                        && um.OrganizationId == a.Meeting.OrganizationId 
+                        && um.OrganizationId == a.Meeting.OrganizationId
                         && um.PeopleId == me)
                     && attype.Contains(a.AttendanceTypeId.Value) && a.MeetingDate > dt)
                 select p;

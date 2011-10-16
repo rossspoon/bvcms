@@ -85,8 +85,11 @@ namespace CmsData.Codes
     }
     public static class MaritalStatusCode
     {
+        public const int Unknown = 0;
         public const int Single = 10;
         public const int Married = 20;
+        public const int Separated = 30;
+        public const int Divorced = 40;
         public const int Widowed = 50;
     }
     public static class PositionInFamily

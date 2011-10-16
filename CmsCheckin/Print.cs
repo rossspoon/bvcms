@@ -310,6 +310,13 @@ namespace CmsCheckin
             if (nlabels <= 0 || !Program.Printer.HasValue())
                 return 0;
             var sw = new StreamWriter(ms);
+
+            string lorg = "";
+            if (li.location.HasValue())
+                if (!li.org.StartsWith(li.location))
+                    lorg = li.location + ", ";
+            lorg += li.org;
+            
             if (Program.Printer.Contains("ZDesigner"))
             {
                 sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
@@ -324,7 +331,7 @@ namespace CmsCheckin
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
                     li.custody ? " C |" : ""));
-                sw.WriteLine(@"^FT29,185^A0N,28,28^FH\^FD{0}^FS".Fmt(li.org));
+                sw.WriteLine(@"^FT29,185^A0N,28,28^FH\^FD{0}^FS".Fmt(lorg));
                 sw.WriteLine(@"^FT473,48^A0N,28,28^FH\^FD{0:M/d/yy}^FS".Fmt(li.hour));
                 sw.WriteLine(@"^FT474,77^A0N,28,28^FH\^FD{0:H:mm tt}^FS".Fmt(li.hour));
                 sw.WriteLine(@"^FT470,152^A0N,73,72^FH\^FD{0}^FS".Fmt(code));
@@ -352,7 +359,7 @@ namespace CmsCheckin
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
                     li.custody ? " C |" : ""));
-                sw.WriteLine("1911A1000020011" + li.org);
+                sw.WriteLine("1911A1000020011" + lorg);
                 sw.WriteLine("1911A1000610222{0:M/d/yy}".Fmt(li.hour));
                 sw.WriteLine("1911A1000470222{0:h:mm tt}".Fmt(li.hour));
                 sw.WriteLine("1911A2400140219" + code);

@@ -139,7 +139,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             return View("Edit", fund);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ContentResult EditOrder(string id, int value)
+        public ContentResult EditOrder(string id, int? value)
         {
             var iid = id.Substring(1).ToInt();
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(m => m.FundId == iid);

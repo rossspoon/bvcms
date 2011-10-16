@@ -207,7 +207,7 @@ namespace CmsData
                     where m.MeetingDate == meeting.MeetingDate
                     where m.OrganizationId == member.OrganizationId
                     select m;
-            var othMeeting = q.SingleOrDefault();
+            var othMeeting = q.FirstOrDefault();
 
             if (othMeeting == null)
             {

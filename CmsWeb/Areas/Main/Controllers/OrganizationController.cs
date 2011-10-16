@@ -35,8 +35,11 @@ namespace CmsWeb.Areas.Main.Controllers
                     return NotAllowed("You must be a member of this organization", m.org.OrganizationName);
             }
             else if (Util2.OrgLeadersOnly)
-                if (!m.org.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
+            {
+                var oids = DbUtil.Db.GetLeaderOrgIds(Util.UserPeopleId);
+                if (!oids.Contains(m.org.OrganizationId))
                     return NotAllowed("You must be a leader of this organization", m.org.OrganizationName);
+            }
 
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 

@@ -64,7 +64,7 @@ namespace CmsWeb.Models
                 return false;
             return Checkbox2.Contains(key);
         }
-        
+
         public IEnumerable<RegSettings.MenuItem> CheckboxItemsChosen()
         {
             if (Checkbox == null)
@@ -85,31 +85,73 @@ namespace CmsWeb.Models
                     select c;
             return q;
         }
-        public IEnumerable<SelectListItem> Options()
+        private List<string> _GroupTags;
+        public List<string> GroupTags
+        {
+            get
+            {
+                if (_GroupTags == null)
+                    _GroupTags = (from mt in DbUtil.Db.OrgMemMemTags
+                                  where mt.OrgId == org.OrganizationId
+                                  select mt.MemberTag.Name).ToList();
+                return _GroupTags;
+            }
+        }
+        
+        public bool IsGroupFilled(RegSettings.MenuItem i)
+        {
+            if (i.Limit > 0)
+            {
+                var cnt = GroupTags.Count(mm => mm == i.SmallGroup);
+                if (cnt >= i.Limit)
+                    return true;
+            }
+            return false;
+        }
+        public class SelectListItemFilled : SelectListItem
+        {
+            public bool Filled { get; set; }
+        }
+        public IEnumerable<SelectListItemFilled> Options()
         {
             var q = from s in setting.Dropdown1
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
-                    select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
+                    select new SelectListItemFilled 
+                    { 
+                        Text = s.Description + amt, 
+                        Value = s.SmallGroup,
+                        Filled = IsGroupFilled(s)
+                    };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(please select)", Value = "00" });
+            list.Insert(0, new SelectListItemFilled { Text = "(please select)", Value = "00" });
             return list;
         }
-        public IEnumerable<SelectListItem> ExtraOptions()
+        public IEnumerable<SelectListItemFilled> ExtraOptions()
         {
             var q = from s in setting.Dropdown2
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
-                    select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
+                    select new SelectListItemFilled 
+                    { 
+                        Text = s.Description + amt, 
+                        Value = s.SmallGroup,
+                        Filled = IsGroupFilled(s)
+                    };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(please select)", Value = "00" });
+            list.Insert(0, new SelectListItemFilled { Text = "(please select)", Value = "00" });
             return list;
         }
-        public IEnumerable<SelectListItem> ExtraOptions3()
+        public IEnumerable<SelectListItemFilled> ExtraOptions3()
         {
             var q = from s in setting.Dropdown3
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
-                    select new SelectListItem { Text = s.Description + amt, Value = s.SmallGroup };
+                    select new SelectListItemFilled 
+                    { 
+                        Text = s.Description + amt, 
+                        Value = s.SmallGroup,
+                        Filled = IsGroupFilled(s)
+                    };
             var list = q.ToList();
-            list.Insert(0, new SelectListItem { Text = "(please select)", Value = "00" });
+            list.Insert(0, new SelectListItemFilled { Text = "(please select)", Value = "00" });
             return list;
         }
         public class MenuItemChosen

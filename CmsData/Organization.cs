@@ -109,77 +109,9 @@ namespace CmsData
             }
             return true;
         }
-        //public OnlineRegSetting GetOnlineRegSetting()
-        //{
-        //    var rg = OnlineRegSettings.SingleOrDefault();
-        //    if (rg == null)
-        //        return new OnlineRegSetting();
-        //    return rg;
-        //}
-        //public OnlineRegSetting SetOnlineRegSetting()
-        //{
-        //    var rg = OnlineRegSettings.SingleOrDefault();
-        //    if (rg == null)
-        //    {
-        //        rg = new OnlineRegSetting();
-        //        OnlineRegSettings.Add(rg);
-        //    }
-        //    return rg;
-        //}
         public void CopySettings(CMSDataContext Db, int fromid)
         {
             var frorg = Db.LoadOrganizationById(fromid);
-            //AgeFee = frorg.AgeFee;
-            //AgeGroups = frorg.AgeGroups;
-            //AllowLastYearShirt = frorg.AllowLastYearShirt;
-            //AllowOnlyOne = frorg.AllowOnlyOne;
-            //AskAllergies = frorg.AskAllergies;
-            //AskChurch = frorg.AskChurch;
-            //AskCoaching = frorg.AskCoaching;
-            //AskDoctor = frorg.AskDoctor;
-            //AskEmContact = frorg.AskEmContact;
-            //AskGrade = frorg.AskGrade;
-            //AskInsurance = frorg.AskInsurance;
-            //AskOptions = frorg.AskOptions;
-            //AskParents = frorg.AskParents;
-            //AskRequest = frorg.AskRequest;
-            //AskShirtSize = frorg.AskShirtSize;
-            //AskTickets = frorg.AskTickets;
-            //AskTylenolEtc = frorg.AskTylenolEtc;
-            //Checkboxes = frorg.Checkboxes;
-            //CheckboxesMax = frorg.CheckboxesMax;
-            //CheckboxesMin = frorg.CheckboxesMin;
-            //CheckboxesLabel = frorg.CheckboxesLabel;
-            //Deposit = frorg.Deposit;
-            //EmailMessage = frorg.EmailMessage;
-            //EmailSubject = frorg.EmailSubject;
-            //ExtraFee = frorg.ExtraFee;
-            //ExtraOptions = frorg.ExtraOptions;
-            //ExtraOptionsLabel = frorg.ExtraOptionsLabel;
-            //ExtraQuestions = frorg.ExtraQuestions;
-            //Fee = frorg.Fee;
-            //GradeOptions = frorg.GradeOptions;
-            //Instructions = frorg.Instructions;
-            //LinkGroupsFromOrgs = frorg.LinkGroupsFromOrgs;
-            //MaximumFee = frorg.MaximumFee;
-            //MemberOnly = frorg.MemberOnly;
-            //NotReqAddr = frorg.NotReqAddr;
-            //NotReqDOB = frorg.NotReqDOB;
-            //NotReqGender = frorg.NotReqGender;
-            //NotReqMarital = frorg.NotReqMarital;
-            //NotReqPhone = frorg.NotReqPhone;
-            //NotReqZip = frorg.NotReqZip;
-            //NumItemsLabel = frorg.NumItemsLabel;
-            //OptionsLabel = frorg.OptionsLabel;
-            //OrgMemberFees = frorg.OrgMemberFees;
-            //RegistrationTypeId = frorg.RegistrationTypeId;
-            //RequestLabel = frorg.RequestLabel;
-            //ShirtFee = frorg.ShirtFee;
-            //ShirtSizes = frorg.ShirtSizes;
-            //Terms = frorg.Terms;
-            //ValidateOrgs = frorg.ValidateOrgs;
-            //YesNoQuestions = frorg.YesNoQuestions;
-
             AllowNonCampusCheckIn = frorg.AllowNonCampusCheckIn;
             CanSelfCheckin = frorg.CanSelfCheckin;
             NotifyIds = frorg.NotifyIds;

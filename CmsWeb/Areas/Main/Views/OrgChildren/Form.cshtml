@@ -1,0 +1,28 @@
+﻿@model CmsWeb.Models.OrgChildrenModel
+@Html.Hidden("orgid")
+<div class="roundbox floatleft">
+<h2><a href="/Organization/Index/@Model.org.OrganizationId">Manage Sub Organizations for @Model.org.OrganizationName</a></h2>
+@if(Model.parentorg != null)
+{
+@:Parent Org: <a href="/OrgChildren/Index/@Model.parentorg.ParentOrgId">@Model.parentorg.OrganizationName</a>
+}
+Name: @Html.TextBox("namesearch", Model.namesearch, new { title = "OrganizationId, Location or part of Name (organization, leader, division)" })
+<a id="filter" href="#" class="bt">Refresh</a>
+</div>
+<div class="floatclear"></div>
+<hr />
+<div>
+<table class="grid">
+    <thead>
+	<tr>
+		<th>Select</th>
+		<td>Name</td>
+        <td>Leader</td>
+        <td>Location</td>
+	</tr>
+	</thead>
+	<tbody>
+ @Html.Partial("Rows", Model) 
+    </tbody>
+</table>
+</div>
