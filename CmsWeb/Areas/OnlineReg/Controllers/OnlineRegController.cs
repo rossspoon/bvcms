@@ -402,7 +402,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             d.Data = Util.Serialize<OnlineRegModel>(m);
             DbUtil.Db.SubmitChanges();
 
-            if (m.Amount() == 0 && m.donation == 0 && !m.Terms.HasValue())
+            if (m.Amount() == 0 && (m.donation ?? 0) == 0 && !m.Terms.HasValue())
                 return RedirectToAction("Confirm",
                     new
                     {

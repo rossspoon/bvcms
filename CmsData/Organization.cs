@@ -125,6 +125,7 @@ namespace CmsData
             NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
             PhoneNumber = frorg.PhoneNumber;
             SecurityTypeId = frorg.SecurityTypeId;
+            RegSetting = frorg.RegSetting;
             Db.SubmitChanges();
         }
         public Organization CloneOrg(CMSDataContext Db, int? DivisionId)

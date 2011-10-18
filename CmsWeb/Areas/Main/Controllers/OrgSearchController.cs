@@ -12,6 +12,7 @@ namespace CmsWeb.Areas.Main.Controllers
 {
     public class OrgSearchController : CmsStaffController
     {
+        [Serializable]
         class OrgSearchInfo
         {
             public string Name { get; set; }
