@@ -12,6 +12,7 @@ using System.Net.Mail;
 
 namespace CmsWeb.Areas.Main.Models
 {
+    [Serializable]
     public class MassEmailer
     {
         public int Count { get; set; }

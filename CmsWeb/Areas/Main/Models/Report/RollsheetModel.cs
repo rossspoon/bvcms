@@ -164,7 +164,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where p.Attends.Any(a => a.AttendanceFlag == true
                         && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
                         && a.OrganizationId == orgid
-                        && (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null)
+                        && (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null || a.AttendanceFlag == true)
                         && VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
                     where NoCurrentMembers == false || !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
                     orderby p.Name2, p.Name

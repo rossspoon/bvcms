@@ -300,6 +300,10 @@ AmountDue: {4:C}<br/>
                 p.AddPerson(null, p.org.EntryPointId ?? 0);
             if (p.CreatingAccount == true)
                 p.CreateAccount();
+
+            var c = DbUtil.Content("OneTimeConfirmationPledge");
+            if (c == null)
+                c = new Content();
             var message = @"Hi {name},
 <p>Here is your <a href=""{url}"">link</a> to manage your pledge. (note: it will only work once for security reasons)</p> ";
 

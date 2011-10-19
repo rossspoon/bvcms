@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 
 namespace CmsWeb.Models
 {
+    [Serializable]
     public class QuickSearchInfo
     {
         public QuickSearchInfo()

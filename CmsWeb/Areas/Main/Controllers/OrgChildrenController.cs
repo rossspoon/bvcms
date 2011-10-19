@@ -12,7 +12,6 @@ namespace CmsWeb.Areas.Main.Controllers
 {
     public class OrgChildrenController : CmsStaffController
     {
-        [Authorize(Roles="Admin")]
         public ActionResult Index(int id)
         {
             var m = new OrgChildrenModel { orgid = id };

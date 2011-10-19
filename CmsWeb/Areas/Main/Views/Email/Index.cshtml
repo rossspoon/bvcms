@@ -27,7 +27,7 @@ You can include a file, image, mp3 or whatever you like in your email.
    <p>Number of Emails: @Model.Count @ViewData["parentsof"]</p>
    <p>
         <input type="button" id="Send" value="Send" class="bt" style="width:62px;height: 42px" />
-        @if (User.IsInRole("Admin") && System.Web.Configuration.WebConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
+        @if (User.IsInRole("Edit") && System.Web.Configuration.WebConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
         { 
         @:Scheduled Date and Time (mm/dd/yy h:mm AM|PM)@Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" }) (Optional, note: this is Central Time)</p>
         } 

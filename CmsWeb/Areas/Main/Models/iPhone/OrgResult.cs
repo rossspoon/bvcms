@@ -27,6 +27,7 @@ namespace CmsWeb.Models.iPhone
                         && (om.MemberTypeId != MemberTypeCode.InActive))
                     where sc.SchedDay != null
                     where sc.SchedTime != null
+                    where o.SecurityTypeId != 3
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,
