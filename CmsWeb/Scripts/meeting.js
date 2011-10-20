@@ -45,10 +45,13 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    if ($("#showbuttons input[@name=show]:checked").val() == "attends")
+    if ($("#showbuttons input[@name=show]:checked").val() == "attends") {
         $(".atck:not(:checked)").parent().parent().hide();
-    if ($('#editing').is(':checked'))
+    }
+    if ($('#editing').is(':checked')) {
         $(".atck").removeAttr("disabled");
+        $(".rgck").removeAttr("disabled");
+    }
 
     $("table.grid > tbody > tr:visible:even").addClass("alt");
 
@@ -69,10 +72,10 @@
     $('#editing').change(function () {
         if ($(this).is(':checked')) {
             $('#showbuttons input:radio[value=all]').click();
-            $(".atck").removeAttr("disabled");
+            $(".atck,.rgck").removeAttr("disabled");
         }
         else
-            $(".atck").attr("disabled", "disabled");
+            $(".atck,.rgck").attr("disabled", "disabled");
     });
     $('#sortbyname').change(function () {
         if ($(this).is(':checked')) {
@@ -101,6 +104,26 @@
         var ck = $(this);
         var tr = ck.parent().parent();
         $.post("/Meeting/MarkAttendance/", {
+            MeetingId: $("#meetingid").val(),
+            PeopleId: ck.attr("pid"),
+            Present: ck.is(':checked')
+        }, function (ret) {
+            if (ret.error) {
+                ck.attr("checked", !ck.is(':checked'));
+                alert(ret.error);
+            }
+            else {
+                tr.effect("highlight", {}, 3000);
+                for (var i in ret) {
+                    $("#" + i + " span").text(ret[i]);
+                }
+            }
+        });
+    });
+    $(".rgck").change(function (ev) {
+        var ck = $(this);
+        var tr = ck.parent().parent();
+        $.post("/Meeting/MarkRegistered/", {
             MeetingId: $("#meetingid").val(),
             PeopleId: ck.attr("pid"),
             Present: ck.is(':checked')

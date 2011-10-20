@@ -116,7 +116,6 @@ namespace CmsData
             CanSelfCheckin = frorg.CanSelfCheckin;
             NotifyIds = frorg.NotifyIds;
             FirstMeetingDate = frorg.FirstMeetingDate;
-            GenderId = frorg.GenderId;
             NoSecurityLabel = frorg.NoSecurityLabel;
             LastDayBeforeExtra = frorg.LastDayBeforeExtra;
             LastMeetingDate = frorg.LastMeetingDate;
@@ -126,6 +125,7 @@ namespace CmsData
             PhoneNumber = frorg.PhoneNumber;
             SecurityTypeId = frorg.SecurityTypeId;
             RegSetting = frorg.RegSetting;
+            RegistrationTypeId = frorg.RegistrationTypeId;
             Db.SubmitChanges();
         }
         public Organization CloneOrg(CMSDataContext Db, int? DivisionId)

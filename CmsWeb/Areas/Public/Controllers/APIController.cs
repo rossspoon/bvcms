@@ -73,13 +73,13 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(api.OrgMembers(id));
         }
         [RequireBasicAuthentication]
-        public ActionResult ExtraValues(int id, string field, string value)
+        public ActionResult ExtraValues(int id, string fields, string value)
         {
             Response.ContentType = "text/xml";
             var ret = Authenticate();
             if (ret.StartsWith("!"))
-                return Content("<ExtraValue error=\"{0}\" />".Fmt(ret.Substring(1)));
-            return Content(new APIFunctions().ExtraValues(id, "test,test2"));
+                return Content("<ExtraValues error=\"{0}\" />".Fmt(ret.Substring(1)));
+            return Content(new APIFunctions().ExtraValues(id, fields));
         }
         [HttpPost]
         public ActionResult AddEditExtraValue(int id, string field, string value)

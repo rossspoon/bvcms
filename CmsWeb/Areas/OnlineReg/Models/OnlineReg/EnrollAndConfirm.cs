@@ -182,6 +182,7 @@ namespace CmsWeb.Models
 
             message = MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
 
+            message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
             message = message.Replace("{tickets}", List[0].ntickets.ToString());
             message = message.Replace("{details}", details.ToString());
             message = message.Replace("{paid}", amtpaid.ToString("c"));

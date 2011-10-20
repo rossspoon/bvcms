@@ -205,7 +205,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             // people who attended, members or visitors
             var attends = (from a in DbUtil.Db.Attends
                            where a.MeetingId == MeetingId
-                           where a.EffAttendFlag == null || a.EffAttendFlag == true
+                           where a.EffAttendFlag == null || a.EffAttendFlag == true || a.Registered == true
                            select a).ToList();
 
             // Members at the time of the meeting
@@ -224,6 +224,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                  PeopleId = p.PeopleId,
                                  Name = p.Name2,
                                  Attended = pa != null ? pa.AttendanceFlag : false,
+                                 Registered = pa != null ? (pa.Registered ?? false) : false,
                                  Member = true,
                                  CurrMemberType = p.MemberType,
                                  MemberType = pa != null ? (pa.MemberType != null ? pa.MemberType.Description : "") : "",
@@ -247,6 +248,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                   PeopleId = pvisitor.PeopleId,
                                   Name = pvisitor.Name2,
                                   Attended = pattender != null ? pattender.AttendanceFlag : false,
+                                  Registered = pattender != null ? (pattender.Registered ?? false) : false,
                                   Member = false,
                                   CurrMemberType = "",
                                   MemberType = pattender != null ? (pattender.MemberType != null ? pattender.MemberType.Description : "") : "",
@@ -262,6 +264,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                 PeopleId = p.PeopleId,
                                 Name = p.Name,
                                 Attended = p.Attended,
+                                Registered = p.Registered,
                                 Member = p.Member,
                                 CurrMemberType = p.CurrMemberType,
                                 MemberType = p.MemberType,
@@ -278,6 +281,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string Name { get; set; }
             public string Age { get; set; }
             public bool Attended { get; set; }
+            public bool Registered { get; set; }
             public bool CanAttend { get; set; }
             public bool Member { get; set; }
             public string CurrMemberType { get; set; }

@@ -107,6 +107,7 @@ Wand Target<br />
 <thead>
     <tr>
         <th>Attended</th>
+        <th>Registered</th>
         <th>Name</th>
         <th>Current Member Type</th>
         <th>Attend Member Type</th>
@@ -119,6 +120,7 @@ Wand Target<br />
 {
     <tr rowtype="@a.Member" @(!a.Member ? "class=visitor" : "")>
         <td align="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" disabled="disabled" /></td>
+        <td align="center"><input type="checkbox" pid="@a.PeopleId" @(a.Registered ? "checked=checked" : "") class="rgck" disabled="disabled" /></td>
         <td class="name"><a href="/Person/Index/@a.PeopleId" title="@a.Age">@a.Name</a></td>
         <td>@a.CurrMemberType</td>
         <td>@a.MemberType</td>

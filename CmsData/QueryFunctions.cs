@@ -97,47 +97,17 @@ namespace CmsData
         }
         public decimal ContributionTotals(int days1, int days2, int fundid)
         {
-            var dt1 = DateTime.Now.AddDays(-days1);
-            var dt2 = DateTime.Now.AddDays(-days2);
-            var typs = new int[] { 6, 7 };
-            var q = from c in Db.Contributions
-                    where c.ContributionDate >= dt1
-                    where days2 == 0 || c.ContributionDate <= dt2
-                    where c.PledgeFlag == false
-                    where fundid == 0 || c.FundId == fundid
-                    where !typs.Contains(c.ContributionTypeId)
-                    select c;
-            return q.Sum(c => c.ContributionAmount) ?? 0;
+            return ContributionTotals(days1, days2, fundid.ToString());
         }
 
         public int ContributionCount(int days1, int days2, int fundid)
         {
-            var dt1 = DateTime.Now.AddDays(-days1);
-            var dt2 = DateTime.Now.AddDays(-days2);
-            var typs = new int[] { 6, 7 };
-            var q = from c in Db.Contributions
-                    where c.ContributionDate >= dt1
-                    where days2 == 0 || c.ContributionDate <= dt2
-                    where c.PledgeFlag == false
-                    where c.ContributionAmount > 0
-                    where fundid == 0 || c.FundId == fundid
-                    where !typs.Contains(c.ContributionTypeId)
-                    select c;
-            return q.Count();
+            return ContributionCount(days1, days2, fundid.ToString());
         }
 
         public int ContributionCount(int days, int fundid)
         {
-            var dt = DateTime.Now.AddDays(-days);
-            var typs = new int[] { 6, 7 };
-            var q = from c in Db.Contributions
-                    where c.ContributionDate >= dt
-                    where c.PledgeFlag == false
-                    where c.ContributionAmount > 0
-                    where fundid == 0 || c.FundId == fundid
-                    where !typs.Contains(c.ContributionTypeId)
-                    select c;
-            return q.Count();
+            return ContributionCount(days, fundid.ToString());
         }
         public int QueryCount(string s)
         {
@@ -145,6 +115,80 @@ namespace CmsData
             if (qB == null)
                 return 0;
             var q = Db.People.Where(qB.Predicate(Db));
+            return q.Count();
+        }
+        public decimal ContributionTotals(int days1, int days2, string funds)
+        {
+            var fundids = (from f in funds.Split(',')
+                           let i = f.ToInt()
+                           where i > 0
+                           select i).ToArray();
+            var exfundids = (from f in funds.Split(',')
+                             let i = f.ToInt()
+                             where i < 0
+                             select -i).ToArray();
+
+            var dt1 = DateTime.Now.AddDays(-days1);
+            var dt2 = DateTime.Now.AddDays(-days2);
+            var typs = new int[] { 6, 7 };
+            var q = from c in Db.Contributions
+                    where c.ContributionDate >= dt1
+                    where days2 == 0 || c.ContributionDate <= dt2
+                    where c.PledgeFlag == false
+                    where fundids.Length == 0 || fundids.Contains(c.FundId)
+                    where exfundids.Length == 0 || !exfundids.Contains(c.FundId)
+                    where !typs.Contains(c.ContributionTypeId)
+                    select c;
+            return q.Sum(c => c.ContributionAmount) ?? 0;
+        }
+
+        public int ContributionCount(int days1, int days2, string funds)
+        {
+            var fundids = (from f in funds.Split(',')
+                           let i = f.ToInt()
+                           where i > 0
+                           select i).ToArray();
+            var exfundids = (from f in funds.Split(',')
+                             let i = f.ToInt()
+                             where i < 0
+                             select -i).ToArray();
+
+            var dt1 = DateTime.Now.AddDays(-days1);
+            var dt2 = DateTime.Now.AddDays(-days2);
+            var typs = new int[] { 6, 7 };
+            var q = from c in Db.Contributions
+                    where c.ContributionDate >= dt1
+                    where days2 == 0 || c.ContributionDate <= dt2
+                    where c.PledgeFlag == false
+                    where c.ContributionAmount > 0
+                    where fundids.Length == 0 || fundids.Contains(c.FundId)
+                    where exfundids.Length == 0 || !exfundids.Contains(c.FundId)
+                    where !typs.Contains(c.ContributionTypeId)
+                    select c;
+            return q.Count();
+        }
+
+        public int ContributionCount(int days, string funds)
+        {
+            var fundids = (from f in funds.Split(',')
+                           let i = f.ToInt()
+                           where i > 0
+                           select i).ToArray();
+            var exfundids = (from f in funds.Split(',')
+                             let i = f.ToInt()
+                             where i < 0
+                             select -i).ToArray();
+
+            var dt = DateTime.Now.AddDays(-days);
+            var typs = new int[] { 6, 7 };
+            var q = from c in Db.Contributions
+                    where c.ContributionDate >= dt
+                    where c.PledgeFlag == false
+                    where c.ContributionAmount > 0
+                    where fundids.Length == 0 || fundids.Contains(c.FundId)
+                    where exfundids.Length == 0 || !exfundids.Contains(c.FundId)
+                    where !typs.Contains(c.ContributionTypeId)
+                    select c;
             return q.Count();
         }
     }

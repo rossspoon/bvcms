@@ -460,8 +460,10 @@ namespace CmsWeb.Areas.Manage.Controllers
                     switch (v)
                     {
                         case "Male":
+                        case "M":
                             return 1;
                         case "Female":
+                        case "F":
                             return 2;
                     }
                 }
@@ -476,12 +478,16 @@ namespace CmsWeb.Areas.Manage.Controllers
                     switch (v)
                     {
                         case "Married":
+                        case "M":
                             return 20;
                         case "Single":
+                        case "S":
                             return 10;
                         case "Widowed":
+                        case "W":
                             return 50;
                         case "Divorced":
+                        case "D":
                             return 40;
                         case "Separated":
                             return 30;
