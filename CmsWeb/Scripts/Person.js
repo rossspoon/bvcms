@@ -311,21 +311,17 @@
         });
         return false;
     });
-    $("#deleteextra").live("click", function (ev) {
+    $("a.deleteextra").live("click", function (ev) {
         ev.preventDefault();
-                    $.post("/Person/DeleteExtra/" + $("#PeopleId").val(), { field: $("#fieldname").val() }, function (ret) {
-                        if (ret.startsWith("error"))
-                            alert(ret);
-                        else {
-                            $.getTable($("#extras-tab form"));
-                            $.extraEditable();
-                        }
-                    });
-                    $(this).dialog("close");
-                    $(this).dialog("destroy");
+        if (confirm("are you sure?"))
+            $.post("/Person/DeleteExtra/" + $("#PeopleId").val(), { field: $(this).attr("field") }, function (ret) {
+                if (ret.startsWith("error"))
+                    alert(ret);
+                else {
+                    $.getTable($("#extras-tab form"));
+                    $.extraEditable();
                 }
-            }
-        });
+            });
         return false;
     });
 });

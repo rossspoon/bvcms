@@ -111,8 +111,9 @@ namespace CmsWeb.Models
             if (divid != null)
                 return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
                    o.RegistrationClosed == true);
-            return org.RegistrationClosed == true
-                    || org.OrganizationStatusId == OrgStatusCode.Inactive;
+            if (masterorg != null)
+                return masterorg.RegistrationClosed == true || masterorg.OrganizationStatusId == OrgStatusCode.Inactive;
+            return org.RegistrationClosed == true || org.OrganizationStatusId == OrgStatusCode.Inactive;
         }
         public IEnumerable<Organization> GetOrgsInDiv()
         {
@@ -122,6 +123,8 @@ namespace CmsWeb.Models
         }
         public bool UserSelectsOrganization()
         {
+            if (masterorg != null)
+                return true;
             if (divid == null)
                 return false;
             var q = from o in GetOrgsInDiv()
@@ -189,6 +192,8 @@ namespace CmsWeb.Models
         {
             get
             {
+                if (masterorg != null)
+                    return masterorg.OrganizationName;
                 if (div != null)
                     return div.Name;
                 else if (settings != null && org != null && settings[org.OrganizationId] != null)
@@ -196,7 +201,6 @@ namespace CmsWeb.Models
                 else if (org != null)
                     return org.OrganizationName;
                 return "no organization";
-                    
             }
         }
         public string Instructions

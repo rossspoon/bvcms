@@ -13,6 +13,7 @@
             window.location = window.location.pathname + "?filter=" + $(this).val();
         });
         $("table.grid > tbody > tr:even").addClass("alt");
+        $(".bt").button();
     });
 
 </script>
@@ -36,7 +37,7 @@
         @Html.DropDownList("filter", new SelectList( new string[] { "All", "Opened", "Not Opened" }))
     </td></tr>
 <tr><td>Unique Opens</td><td>@Model.queue.EmailResponses.Select(er => er.PeopleId).Distinct().Count()</td></tr>
-<tr><td>SendWhen</td><td>@Model.queue.SendWhen.FormatDate()</td></tr>
+<tr><td>SendWhen</td><td>@Model.queue.SendWhen.FormatDateTm()</td></tr>
 <tr><td>Sent</td><td>@Model.queue.Sent.FormatDateTm()</td></tr>
 <tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm() 
 @if (!Model.queue.Sent.HasValue && Model.queue.SendWhen.HasValue && User.IsInRole("Admin"))

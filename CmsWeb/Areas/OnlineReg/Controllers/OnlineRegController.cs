@@ -31,7 +31,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 divid = div,
                 orgid = id,
             };
-            if (m.org == null && m.div == null)
+            if (m.org == null && m.div == null && m.masterorg == null)
                 return Content("invalid registration");
 
             if (m.org != null)
@@ -43,6 +43,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 if (OnlineRegModel.UserSelectClasses(m.divid).Count() == 0)
                     return Content("no registration allowed on this div");
+            }
+            else if (m.masterorg != null)
+            {
+                if (m.UserSelectClasses().Count() == 0)
+                    return Content("no classes available on this org");
             }
             m.URL = Request.Url.OriginalString;
 

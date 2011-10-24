@@ -62,6 +62,13 @@ namespace CmsWeb.Models
                 foreach (var i in q)
                     list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
             }
+            else if (masterorg != null)
+            {
+                var q = from o in UserSelectClasses()
+                        select new { o.OrganizationId, o.RegSetting };
+                foreach (var i in q)
+                    list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
+            }
             else if (org == null)
                 return;
             else
@@ -74,6 +81,29 @@ namespace CmsWeb.Models
         {
             return new RegSettings(RegSetting, DbUtil.Db, OrgId);
         }
+        [NonSerialized]
+        private CmsData.Organization _masterorg;
+        public CmsData.Organization masterorg
+        {
+            get
+            {
+                if (_masterorg != null)
+                    return _masterorg;
+                if (masterorgid.HasValue)
+                    _masterorg = DbUtil.Db.LoadOrganizationById(masterorgid.Value);
+                else
+                {
+                    if (org.RegistrationTypeId == CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2)
+                    {
+                        _masterorg = org;
+                        masterorgid = orgid;
+                        _Orgid = null;
+                        _org = null;
+                    }
+                }
+                return _masterorg;
+            }
+        }
         public string URL { get; set; }
 
         [NonSerialized]
@@ -85,8 +115,6 @@ namespace CmsWeb.Models
                 if (_org == null && orgid.HasValue)
                     if (orgid == Util.CreateAccountCode)
                         _org = CreateAccountOrg();
-                    //else if (orgid == Util.OnlineGivingCode)
-                    //    _org = CreateGivingOrg();
                     else
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 return _org;
@@ -107,6 +135,13 @@ namespace CmsWeb.Models
                     ParseSettings();
             }
         }
+        [OptionalField]
+        private int? _masterorgid;
+        public int? masterorgid
+        {
+            get { return _masterorgid; }
+            set { _masterorgid = value; }
+        }
         private int? _Orgid;
         public int? orgid
         {
@@ -121,20 +156,8 @@ namespace CmsWeb.Models
                     ParseSettings();
             }
         }
-        [OptionalField]
-        private int? _Classid;
-        public int? classid
-        {
-            get { return _Classid; }
-            set { _Classid = value; }
-        }
-        [OptionalField]
-        private int? _TranId;
-        public int? TranId
-        {
-            get { return _TranId; }
-            set { _TranId = value; }
-        }
+        public int? classid { get; set; }
+        public int? TranId { get; set; }
         [NonSerialized]
         private Transaction _Transaction;
         public Transaction Transaction
@@ -146,50 +169,12 @@ namespace CmsWeb.Models
                 return _Transaction;
             }
         }
-
-        [OptionalField]
-        private string _Username;
-        public string username
-        {
-            get { return _Username; }
-            set { _Username = value; }
-        }
-        [OptionalField]
-        private string _Password;
-        public string password
-        {
-            get { return _Password; }
-            set { _Password = value; }
-        }
-        [OptionalField]
-        private bool _Nologin;
-        public bool nologin
-        {
-            get { return _Nologin; }
-            set { _Nologin = value; }
-        }
-        [OptionalField]
-        private decimal? _donation;
-        public decimal? donation
-        {
-            get { return _donation; }
-            set { _donation = value; }
-        }
-        [OptionalField]
-        private int? _donor;
-        public int? donor
-        {
-            get { return _donor; }
-            set { _donor = value; }
-        }
-
-        [OptionalField]
-        private int? _UserPeopleId;
-        public int? UserPeopleId
-        {
-            get { return _UserPeopleId; }
-            set { _UserPeopleId = value; }
-        }
+        public string username { get; set; }
+        public string password { get; set; }
+        public bool nologin { get; set; }
+        public decimal? donation { get; set; }
+        public int? donor { get; set; }
+        public int? UserPeopleId { get; set; }
         [NonSerialized]
         private Person _User;
         public Person user

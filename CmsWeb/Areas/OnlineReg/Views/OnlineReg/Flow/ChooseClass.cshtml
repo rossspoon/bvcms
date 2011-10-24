@@ -2,11 +2,7 @@
    <select name="m.classid">
 @foreach (var i in Model.Classes())
 { 
-   <option value="@i.Value" @(i.Selected ? "selected='selected'" : "")>@i.Text</option> 
-}
-@foreach (var i in Model.FilledClasses())
-{ 
-   <option value="0" disabled="disabled">@i (filled)</option> 
+   <option value="@i.Id" @(i.selected ? "selected=selected" : "") @(i.filled ? "disabled=disabled" : "")>@i.Text</option> 
 }
    </select>
    @Html.ValidationMessage("classid")

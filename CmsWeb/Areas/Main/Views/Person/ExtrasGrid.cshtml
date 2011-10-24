@@ -10,6 +10,7 @@
     <tr>
         <th>Field</th>
         <th>Value</th>
+        <th></th>
     </tr>
 </thead>
 <tbody>
@@ -20,6 +21,7 @@
     <tr>
         <td>@c.Field</td>
         <td><span id="s-@c.Field.@c.PeopleId" class="clickEdit">@c.StrValue</span></td>
+        <td><a href="#" class="deleteextra" field="@c.Field"><img src="/images/delete.gif" /></a></td>
     </tr>
     }
     foreach (var c in list.Where(pp => pp.Data.HasValue()).OrderBy(pp => pp.Field))  
@@ -27,6 +29,7 @@
     <tr>
         <td valign="top">@c.Field</td>
         <td><div id="t-@c.Field.@c.PeopleId" class="editArea">@c.Data</div></td>
+        <td><a href="#" class="deleteextra" field="@c.Field"><img src="/images/delete.gif" /></a></td>
     </tr>
     }
     foreach (var c in list.Where(pp => pp.DateValue.HasValue).OrderBy(pp => pp.Field))  
@@ -34,6 +37,7 @@
     <tr>
         <td>@c.Field</td>
         <td><span id="d-@c.Field.@c.PeopleId" class="clickEdit">@c.DateValue.FormatDate()</span></td>
+        <td><a href="#" class="deleteextra" field="@c.Field"><img src="/images/delete.gif" /></a></td>
     </tr>
     }
     foreach (var c in list.Where(pp => pp.IntValue.HasValue).OrderBy(pp => pp.Field))  
@@ -41,6 +45,7 @@
     <tr>
         <td>@c.Field</td>
         <td><span id="i-@c.Field.@c.PeopleId" class="clickEdit">@c.IntValue @c.IntValue2</span></td>
+        <td><a href="#" class="deleteextra" field="@c.Field"><img src="/images/delete.gif" /></a></td>
     </tr>
     }
 }

@@ -36,37 +36,77 @@ namespace CmsWeb.Models
                     select o;
             return q;
         }
-
-        public IEnumerable<SelectListItem> Classes()
+        public IQueryable<Organization> UserSelectClasses()
         {
+            var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
+
+            var q = from o in DbUtil.Db.Organizations
+                    where cklist.Contains(o.OrganizationId)
+                    select o;
+            return q;
+        }
+        public List<Organization> OrderedClasses(List<Organization> list)
+        {
+            var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
+            var d = new Dictionary<int, int>();
+            var n = 0;
+            foreach (var i in cklist)
+                d.Add(n++, i);
+            list = (from o in list
+                    join i in d on o.OrganizationId equals i.Value into j
+                    from i in j
+                    orderby i.Key
+                    select o).ToList();
+            return list;
+        }
+
+        public class ClassInfo
+        {
+            public int Id { get; set; }
+            public string Text { get; set; }
+            public bool selected { get; set; }
+            public bool filled { get; set; }
+        }
+        public IEnumerable<ClassInfo> Classes()
+        {
+            if (masterorg != null)
+                return Classes(classid ?? 0);
             return Classes(divid, classid ?? 0);
         }
-        public static IEnumerable<SelectListItem> Classes(int? divid, int id)
+        public static List<ClassInfo> Classes(int? divid, int id)
         {
             var q = from o in UserSelectClasses(divid)
                     let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > (o.MemberCount ?? 0))
-                    where hasroom
                     orderby o.OnLineCatalogSort, o.OrganizationName
-                    select new SelectListItem
+                    select new ClassInfo
                     {
-                        Value = o.OrganizationId.ToString(),
+                        Id = o.OrganizationId,
                         Text = ClassName(o),
-                        Selected = o.OrganizationId == id,
+                        selected = o.OrganizationId == id,
+                        filled = hasroom
                     };
             var list = q.ToList();
             if (list.Count == 1)
                 return list;
-            list.Insert(0, new SelectListItem { Text = "Registration Options", Value = "0" });
+            list.Insert(0, new ClassInfo { Text = "Registration Options", Id = 0});
             return list;
         }
-        public IEnumerable<String> FilledClasses()
+        public List<ClassInfo> Classes(int id)
         {
-            var q = from o in UserSelectClasses(divid)
-                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > o.MemberCount)
-                    where !hasroom
-                    orderby o.OnLineCatalogSort, o.OrganizationName
-                    select ClassName(o);
-            return q;
+            var q = from o in OrderedClasses(UserSelectClasses().ToList())
+                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > (o.MemberCount ?? 0))
+                    select new ClassInfo
+                    {
+                        Id = o.OrganizationId,
+                        Text = ClassName(o),
+                        selected = o.OrganizationId == id,
+                        filled = hasroom
+                    };
+            var list = q.ToList();
+            if (list.Count == 1)
+                return list;
+            list.Insert(0, new ClassInfo { Text = "Registration Options", Id = 0});
+            return list;
         }
         private static string ClassName(CmsData.Organization o)
         {
