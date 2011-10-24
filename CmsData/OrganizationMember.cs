@@ -34,56 +34,20 @@ namespace CmsData
                     var i = q.Single();
                     if (!EnrollmentDate.HasValue)
                         EnrollmentDate = CreatedDate;
-                    //EnrollmentTransaction droptrans = null;
-                    //if (Util.Now.Subtract(this.EnrollmentDate.Value).TotalDays
-                    //    < (i.DaysToIgnoreHistory ?? 60) 
-                    //    && i.count == 0)
-                    //{
-                    //    var qe = from et in Db.EnrollmentTransactions
-                    //             where et.PeopleId == PeopleId
-                    //                && et.OrganizationId == OrganizationId
-                    //                && et.EnrollmentDate == this.EnrollmentDate
-                    //                && et.TransactionTypeId == 1
-                    //             orderby et.TransactionId
-                    //             select et.TransactionId;
-                    //    var enrollid = qe.FirstOrDefault();
-
-                    //    var qt = from et in Db.EnrollmentTransactions
-                    //             where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
-                    //             where et.TransactionId >= enrollid
-                    //             select et;
-                    //    Db.EnrollmentTransactions.DeleteAllOnSubmit(qt);
-                    //    var qa = from et in Db.Attends
-                    //             where et.PeopleId == PeopleId && et.OrganizationId == OrganizationId
-                    //             select et;
-                    //    if (HttpContext.Current != null)
-                    //    {
-                    //        var smids = HttpContext.Current.Items[STR_MeetingsToUpdate] as List<int>;
-                    //        var mids = qa.Select(a => a.MeetingId).ToList();
-                    //        if (smids != null)
-                    //            smids.AddRange(mids);
-                    //        else
-                    //            HttpContext.Current.Items[STR_MeetingsToUpdate] = mids;
-                    //    }
-                    //    Db.Attends.DeleteAllOnSubmit(qa);
-                    //}
-                    //else
-                    //{
-                        var droptrans = new EnrollmentTransaction
-                        {
-                            OrganizationId = OrganizationId,
-                            PeopleId = PeopleId,
-                            MemberTypeId = MemberTypeId,
-                            OrganizationName = Organization.OrganizationName,
-                            TransactionDate = Util.Now,
-                            TransactionTypeId = 5, // drop
-                            CreatedBy = Util.UserId1,
-                            CreatedDate = Util.Now,
-                            Pending = Pending,
-                            AttendancePercentage = AttendPct,
-                        };
-                        Db.EnrollmentTransactions.InsertOnSubmit(droptrans);
-                    //}
+                    var droptrans = new EnrollmentTransaction
+                    {
+                        OrganizationId = OrganizationId,
+                        PeopleId = PeopleId,
+                        MemberTypeId = MemberTypeId,
+                        OrganizationName = Organization.OrganizationName,
+                        TransactionDate = Util.Now,
+                        TransactionTypeId = 5, // drop
+                        CreatedBy = Util.UserId1,
+                        CreatedDate = Util.Now,
+                        Pending = Pending,
+                        AttendancePercentage = AttendPct,
+                    };
+                    Db.EnrollmentTransactions.InsertOnSubmit(droptrans);
                     Db.OrgMemMemTags.DeleteAllOnSubmit(this.OrgMemMemTags);
                     Db.OrganizationMembers.DeleteOnSubmit(this);
                     return droptrans;
@@ -122,7 +86,7 @@ namespace CmsData
         }
         public bool ToggleGroup(CMSDataContext Db, int groupid)
         {
-            var group = OrgMemMemTags.SingleOrDefault(g => 
+            var group = OrgMemMemTags.SingleOrDefault(g =>
                 g.OrgId == OrganizationId && g.PeopleId == PeopleId && g.MemberTagId == groupid);
             if (group == null)
             {
@@ -193,7 +157,7 @@ namespace CmsData
         //    return OrganizationMember.InsertOrgMembers(DbUtil.Db, OrganizationId, PeopleId, MemberTypeId, EnrollmentDate, InactiveDate, pending);
         //}
         public static OrganizationMember InsertOrgMembers
-            (CMSDataContext Db, 
+            (CMSDataContext Db,
             int OrganizationId,
             int PeopleId,
             int MemberTypeId,

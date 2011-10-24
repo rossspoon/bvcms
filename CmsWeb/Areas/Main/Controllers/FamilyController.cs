@@ -24,42 +24,6 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new FamilyModel { familyid = id.Value };
             return View(m);
         }
-        //public ActionResult btnSplit_Click(object sender, EventArgs e)
-        //{
-        //    var l = sender as LinkButtonConfirm;
-        //    var d = family.People.Single(p => p.PeopleId == l.CommandArgument.ToInt());
-        //    var f = new Family
-        //    {
-        //        CreatedDate = Util.Now,
-        //        CreatedBy = Util.UserId1,
-        //        AddressLineOne = d.PrimaryAddress,
-        //        AddressLineTwo = d.PrimaryAddress2,
-        //        CityName = d.PrimaryCity,
-        //        StateCode = d.PrimaryState,
-        //        ZipCode = d.PrimaryZip,
-        //        HomePhone = d.Family.HomePhone
-        //    };
-        //    f.People.Add(d);
-        //    DbUtil.Db.Families.InsertOnSubmit(f);
-        //    DbUtil.Db.SubmitChanges();
-
-        //    DbUtil.LogActivity("Splitting Family for {0}".Fmt(person.Name));
-        //    Response.Redirect("~/Family.aspx?id=" + f.FamilyId);
-        //}
-
-        //public ActionResult btnRemoveRelation_Click(object sender, EventArgs e)
-        //{
-        //    var l = sender as LinkButtonConfirm;
-        //    var d = family.RelatedFamilies1.SingleOrDefault(p => p.RelatedFamilyId == l.CommandArgument.ToInt());
-        //    if (d == null)
-        //        d = family.RelatedFamilies2.SingleOrDefault(p => p.FamilyId == l.CommandArgument.ToInt());
-        //    DbUtil.Db.RelatedFamilies.DeleteOnSubmit(d);
-        //    DbUtil.Db.SubmitChanges();
-        //    if (person != null)
-        //        DbUtil.LogActivity("Removing Related Family for {0}".Fmt(person.Name));
-        //    Response.Redirect("~/Family.aspx?id=" + family.FamilyId);
-
-        //}
         public ActionResult QuerySearch(int? id)
         {
             if (!id.HasValue)

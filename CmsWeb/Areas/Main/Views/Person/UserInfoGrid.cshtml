@@ -3,7 +3,7 @@
 @model CmsData.Person
 @if (User.IsInRole("Admin"))
 { 
-<a href="/Account/AddUser/@Util2.CurrentPeopleId">Add New User</a>
+<a href="/Account/AddUser/@Util2.CurrentPeopleId" class="bt">Add New User</a>
 } 
 @if (Model.Users.Count > 0)
 { 

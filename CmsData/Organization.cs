@@ -112,27 +112,35 @@ namespace CmsData
         public void CopySettings(CMSDataContext Db, int fromid)
         {
             var frorg = Db.LoadOrganizationById(fromid);
-            AllowNonCampusCheckIn = frorg.AllowNonCampusCheckIn;
-            CanSelfCheckin = frorg.CanSelfCheckin;
+
+            //only Copy settings
             NotifyIds = frorg.NotifyIds;
             FirstMeetingDate = frorg.FirstMeetingDate;
-            NoSecurityLabel = frorg.NoSecurityLabel;
             LastDayBeforeExtra = frorg.LastDayBeforeExtra;
             LastMeetingDate = frorg.LastMeetingDate;
             Limit = frorg.Limit;
-            NumCheckInLabels = frorg.NumCheckInLabels;
-            NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
-            PhoneNumber = frorg.PhoneNumber;
-            SecurityTypeId = frorg.SecurityTypeId;
-            RegSetting = frorg.RegSetting;
             RegistrationTypeId = frorg.RegistrationTypeId;
+
+            RegSetting = frorg.RegSetting;
+
+            CopySettings2(frorg, this);
             Db.SubmitChanges();
+        }
+        private static void CopySettings2(Organization frorg, Organization toorg)
+        {
+            toorg.AllowNonCampusCheckIn = frorg.AllowNonCampusCheckIn;
+            toorg.CanSelfCheckin = frorg.CanSelfCheckin;
+            toorg.NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
+            toorg.NoSecurityLabel = frorg.NoSecurityLabel;
+            toorg.NumCheckInLabels = frorg.NumCheckInLabels;
+            toorg.PhoneNumber = frorg.PhoneNumber;
         }
         public Organization CloneOrg(CMSDataContext Db, int? DivisionId)
         {
             var neworg = new Organization
             {
                 AttendTrkLevelId = AttendTrkLevelId,
+                SecurityTypeId = SecurityTypeId,
                 CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
                 DivisionId = DivisionId,
@@ -143,7 +151,6 @@ namespace CmsData
                 AllowAttendOverlap = AllowAttendOverlap,
                 AttendClassificationId = AttendClassificationId,
                 GradeAgeStart = GradeAgeStart,
-                //GradeAgeEnd = GradeAgeEnd,
                 CampusId = CampusId,
                 IsBibleFellowshipOrg = IsBibleFellowshipOrg,
                 RollSheetVisitorWks = RollSheetVisitorWks,
@@ -160,8 +167,9 @@ namespace CmsData
                     SchedTime = sc.SchedTime,
                     Id = sc.Id
                 });
+
+            CopySettings2(this, neworg);
             Db.SubmitChanges();
-            neworg.CopySettings(Db, this.OrganizationId);
             return neworg;
         }
         public Organization CloneOrg(CMSDataContext Db)

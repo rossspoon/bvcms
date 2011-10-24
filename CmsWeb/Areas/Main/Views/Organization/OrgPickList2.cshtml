@@ -1,0 +1,8 @@
+﻿@model CmsData.RegSettings
+<div class="block border">
+<b>choose organizations</b>
+@foreach (var o in CmsData.RegSettings.OrganizationsFromIdString(Model.org))
+{
+    <div>@o.OrganizationName</div>
+}
+</div>

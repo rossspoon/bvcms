@@ -504,7 +504,75 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(p);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PeopleExtrasGrid(int id)
+        public ContentResult DeleteExtra(int id, string field)
+        {
+            var e = DbUtil.Db.PeopleExtras.Single(ee => ee.PeopleId == id && ee.Field == field);
+            DbUtil.Db.PeopleExtras.DeleteOnSubmit(e);
+            DbUtil.Db.SubmitChanges();
+            return Content("done");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult EditExtra(string id, string value)
+        {
+            var a = id.SplitStr("-", 2);
+            var b = a[1].SplitStr(".", 2);
+            var e = DbUtil.Db.PeopleExtras.Single(ee => ee.PeopleId == b[1].ToInt() && ee.Field == b[0]);
+            switch (a[0])
+            {
+                case "s":
+                    e.StrValue = value;
+                    break;
+                case "t":
+                    e.Data = value;
+                    break;
+                case "d":
+                    e.DateValue = DateTime.Parse(value);
+                    break;
+                case "i":
+                    e.IntValue = value.ToInt();
+                    break;
+            }
+            DbUtil.Db.SubmitChanges();
+            return Content(value);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult NewExtraValue(int id, string field, string type)
+        {
+            var v = new PeopleExtra { PeopleId = id, Field = field};
+            DbUtil.Db.PeopleExtras.InsertOnSubmit(v);
+            switch (type)
+            {
+                case "string":
+                    v.StrValue = "new value";
+                    break;
+                case "text":
+                    v.Data = "new value";
+                    break;
+                case "date":
+                    v.DateValue = (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue;
+                    break;
+                case "int":
+                    v.IntValue = 0;
+                    break;
+            }
+            try
+            {
+                DbUtil.Db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                return Content("error: " + ex.Message);
+            }
+            return Content("ok");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ExtrasGrid(int id)
+        {
+            var p = DbUtil.Db.LoadPersonById(id);
+            return View(p);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ChangesGrid(int id)
         {
             var p = DbUtil.Db.LoadPersonById(id);
             return View(p);

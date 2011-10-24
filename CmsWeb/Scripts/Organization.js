@@ -391,6 +391,26 @@ $(function () {
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
+    $('#orgsDialog').dialog({
+        title: 'Select Orgs Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 690,
+        height: 650,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+        }
+    });
+    $('#orgpicklist').live("click", function (e) {
+        e.preventDefault();
+        var d = $('#orgsDialog');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("open");
+    });
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#Members-tab form'));
@@ -404,5 +424,11 @@ function UpdateSelectedUsers(topid) {
     $.post("/Organization/UpdateNotifyIds", { topid: topid }, function (ret) {
         $("#notifylist").html(ret);
         $("#usersDialog").dialog("close");
+    });
+}
+function UpdateSelectedOrgs(list) {
+    $.post("/Organization/UpdateOrgIds", {list: list}, function (ret) {
+        $("#orgpicklist").html(ret);
+        $("#orgsDialog").dialog("close");
     });
 }

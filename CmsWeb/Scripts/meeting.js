@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $(".clickSelect").editable("/Meeting/EditGroup/", {
+    $(".clickSelectG").editable("/Meeting/EditGroup/", {
         indicator: '<img src="/images/loading.gif">',
         data: " {'true':'Group (headcount)','false':'Regular'}",
         loadtype: "POST",
@@ -13,6 +13,14 @@
             else
                 $(".numpresent").editable("disable");
         }
+    });
+    $(".clickSelectC").editable("/Meeting/EditAttendCredit/", {
+        indicator: '<img src="/images/loading.gif">',
+        loadurl: "/Meeting/AttendCredits/",
+        loadtype: "POST",
+        type: "select",
+        submit: "OK",
+        style: 'display: inline'
     });
     $(".numpresent").editable("enable");
     $(".clickEdit").editable("/Meeting/Edit/", {
@@ -56,37 +64,42 @@
     $("table.grid > tbody > tr:visible:even").addClass("alt");
 
     $('#showbuttons input:radio').change(function () {
-        $("table.grid > tbody > tr").show().removeClass("alt");
+        $("table.grid > tbody > tr").hide().removeClass("alt");
         switch ($(this).val()) {
             case "attends":
-                $(".atck:not(:checked)").parent().parent().hide();
+                $(".atck:checked").parent().parent().show();
                 break;
             case "absents":
-                $(".atck:checked").parent().parent().hide();
+                $(".atck:not(:checked)").parent().parent().show();
+                break;
+            case "reg":
+                $(".rgck:checked").parent().parent().show();
+                $(".atck:checked").parent().parent().show();
                 break;
             case "all":
+                $("table.grid > tbody > tr").show();
                 break;
         }
         $("table.grid > tbody > tr:visible:even").addClass("alt");
     });
     $('#editing').change(function () {
         if ($(this).is(':checked')) {
-            $('#showbuttons input:radio[value=all]').click();
+            if (!$("#showregistered").val())
+                $('#showbuttons input:radio[value=all]').click();
             $(".atck,.rgck").removeAttr("disabled");
         }
         else
             $(".atck,.rgck").attr("disabled", "disabled");
     });
-    $('#sortbyname').change(function () {
-        if ($(this).is(':checked')) {
-            //$.blockUI();
+    $('#sortbyname').click(function () {
+        if ($("#sort").val() == "false") {
+            $("#sort").val("true");
             $('table.grid > tbody > tr').sortElements(function (a, b) {
                 return $(a).find("td.name a").text() > $(b).find("td.name a").text() ? 1 : -1;
             });
-            //$.unblockUI();
         }
         else {
-            //$.blockUI();
+            $("#sort").val("false");
             $('table.grid > tbody > tr').sortElements(function (a, b) {
                 var art = $(a).attr("rowtype");
                 var brt = $(b).attr("rowtype");
@@ -96,9 +109,23 @@
                     return 1;
                 return $(a).find("td.name a").text() > $(b).find("td.name a").text() ? 1 : -1;
             });
-            //$.unblockUI();
         }
     });
+    $('#registering').change(function () {
+        if ($(this).is(':checked')) {
+            $(".showreg").show();
+            $("#addregistered").removeClass("hidden");
+        }
+        else {
+            $(".showreg").hide();
+            $("#addregistered").addClass("hidden");
+        }
+    });
+    $(".showreg").hide();
+    if ($("#showregistered").val()) {
+        $('#showbuttons input:radio[value=reg]').click();
+        $('#registering').click();
+    }
 
     $(".atck").change(function (ev) {
         var ck = $(this);
@@ -133,7 +160,6 @@
                 alert(ret.error);
             }
             else {
-                tr.effect("highlight", {}, 3000);
                 for (var i in ret) {
                     $("#" + i + " span").text(ret[i]);
                 }
@@ -158,7 +184,7 @@
             });
             return false;
         }
-        var cb = $('input[pid=' + text + ']');
+        var cb = $('input[pid=' + text + '].atck');
         if (cb[0]) {
             cb[0].scrollIntoView();
             cb.click();

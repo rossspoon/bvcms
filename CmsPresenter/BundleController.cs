@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CmsData;
+using CmsData.Codes;
 using System.Data.Linq;
 using System.ComponentModel;
 using UtilityExtensions;
@@ -476,8 +477,8 @@ namespace CMSPresenter
             dt = dt.AddDays(-dw);
             var b = new BundleHeader
             {
-                BundleHeaderTypeId = (int)BundleHeader.TypeCode.PreprintedEnvelope,
-                BundleStatusId = (int)BundleHeader.StatusCode.Open,
+                BundleHeaderTypeId = BundleTypeCode.PreprintedEnvelope,
+                BundleStatusId = BundleStatusCode.Open,
                 ChurchId = 1,
                 ContributionDate = dt,
                 CreatedBy = Util.UserId1,

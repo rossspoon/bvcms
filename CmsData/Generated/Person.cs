@@ -1800,7 +1800,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="MiddleName", UpdateCheck=UpdateCheck.Never, Storage="_MiddleName", DbType="varchar(15)")]
+		[Column(Name="MiddleName", UpdateCheck=UpdateCheck.Never, Storage="_MiddleName", DbType="varchar(25)")]
 		public string MiddleName
 		{
 			get { return this._MiddleName; }
@@ -1888,7 +1888,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="NickName", UpdateCheck=UpdateCheck.Never, Storage="_NickName", DbType="varchar(15)")]
+		[Column(Name="NickName", UpdateCheck=UpdateCheck.Never, Storage="_NickName", DbType="varchar(25)")]
 		public string NickName
 		{
 			get { return this._NickName; }

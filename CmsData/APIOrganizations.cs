@@ -27,30 +27,6 @@ namespace CmsData.API
             settings.Indent = true;
             var sb = new StringBuilder();
             var ms = new System.IO.StringWriter(sb);
-            //using (var w = XmlWriter.Create(ms, settings))
-            //{
-            //    w.Start("Organizations");
-            //    foreach (var i in q)
-            //    {
-            //        w.Start("Organization");
-            //        w.Attr("Id", i.o.OrganizationId);
-            //        w.Attr("Name", i.o.OrganizationName);
-            //        w.Attr("Leader", i.o.LeaderName);
-            //        w.Attr("NumMembers", i.o.MemberCount ?? 0);
-            //        if (i.o.Description.HasValue())
-            //            w.Add("Description", i.o.Description);
-
-            //        foreach (var m in i.meetings)
-            //        {
-            //            w.Start("Meeting");
-            //            w.Attr("DateTime", m.MeetingDate.Value);
-            //            w.Attr("NumAttendees", m.Attends.Where(aa => aa.AttendanceFlag == true).Count());
-            //            w.End();
-            //        }
-            //        w.End();
-            //    }
-            //    w.End();
-            //}
             return sb.ToString();
         }
         public class OrgMemberInfo
@@ -115,24 +91,6 @@ namespace CmsData.API
             {
                 return "<login error=\"API-OrgMembers script error: {0}\" />".Fmt(ex.Message);
             }
-/*
-            w.Start("OrgMembers");
-            foreach (var i in q)
-            {
-                w.Start("Member");
-                w.Attr("PeopleId", i.member.PeopleId);
-                w.Attr("Name", i.member.Person.Name);
-                w.Attr("Email", i.member.Person.EmailAddress);
-                w.Attr("Enrolled", i.member.EnrollmentDate);
-                w.Attr("MemberType", i.member.MemberType.Description);
-                foreach (var t in i.tags)
-                    w.Add("Group", t);
-                foreach (var a in i.meetings)
-                    w.Add("Meeting", a.MeetingDate);
-                w.End();
-            }
-            w.End();
-            return w.ToString();
- */       }
+       }
     }
 }

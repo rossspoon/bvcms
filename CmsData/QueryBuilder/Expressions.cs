@@ -311,7 +311,22 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.Attends.Any(a =>
-                    (a.AttendanceFlag == true || a.Registered == true)
+                    (a.AttendanceFlag == true)
+                    && a.MeetingId == id
+                    );
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual)
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression RegisteredForMeetingId(
+            ParameterExpression parm,
+            CompareType op,
+            int id)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                p.Attends.Any(a =>
+                    (a.Registered == true)
                     && a.MeetingId == id
                     );
             Expression expr = Expression.Invoke(pred, parm);

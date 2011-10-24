@@ -55,6 +55,26 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content("Regular");
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult EditAttendCredit(string id, string value)
+        {
+            var i = id.Substring(2).ToInt();
+            var m = new MeetingModel(i);
+            m.meeting.AttendCreditId = value.ToInt();
+            DbUtil.Db.SubmitChanges();
+            return Content(m.AttendCreditType());
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult AttendCredits()
+        {
+            var q = from c in DbUtil.Db.AttendCredits
+                    select new
+                    {
+                        Code = c.Id.ToString(),
+                        Value = c.Description,
+                    };
+            return Json(q.ToDictionary(k => k.Code, v => v.Value));
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult Edit(string id, string value)
         {
             var i = id.Substring(2).ToInt();
@@ -201,6 +221,32 @@ namespace CmsWeb.Areas.Main.Controllers
             c.Division = m.Organization.DivisionId.Value;
             c.Organization = m.OrganizationId;
 
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+        }
+        public ActionResult QueryRegistered(int Id, string type)
+        {
+            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == Id);
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            switch (type)
+            {
+                case "Registered":
+                    qb.AddNewClause(QueryType.RegisteredForMeetingId, CompareType.Equal, m.MeetingId);
+                    break;
+                case "Attends":
+                    qb.AddNewClause(QueryType.RegisteredForMeetingId, CompareType.Equal, m.MeetingId);
+                    qb.AddNewClause(QueryType.MeetingId, CompareType.Equal, m.MeetingId);
+                    break;
+                case "Absents":
+                    qb.AddNewClause(QueryType.RegisteredForMeetingId, CompareType.Equal, m.MeetingId);
+                    qb.AddNewClause(QueryType.MeetingId, CompareType.NotEqual, m.MeetingId);
+                    break;
+                case "UnregisteredAttends":
+                    qb.AddNewClause(QueryType.RegisteredForMeetingId, CompareType.NotEqual, m.MeetingId);
+                    qb.AddNewClause(QueryType.MeetingId, CompareType.Equal, m.MeetingId);
+                    break;
+            }
             DbUtil.Db.SubmitChanges();
             return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
         }

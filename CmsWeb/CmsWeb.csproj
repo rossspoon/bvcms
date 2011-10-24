@@ -220,9 +220,11 @@
     <Compile Include="Admin\ToggleOrgLeadersOnly.ashx.cs">
       <DependentUpon>ToggleOrgLeadersOnly.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Dialog\Controllers\SearchOrgsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchDivisionsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\TransactionHistoryController.cs" />
     <Compile Include="Areas\Dialog\DialogAreaRegistration.cs" />
+    <Compile Include="Areas\Dialog\Models\SearchOrgsModel.cs" />
     <Compile Include="Areas\Dialog\Models\SearchDivisionsModel.cs" />
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
@@ -253,11 +255,11 @@
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
     <Compile Include="Areas\Main\Controllers\ReportsController.cs" />
     <Compile Include="Areas\Main\Controllers\UserPrefController.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\AttendInfo.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\ClassResult.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\ClassesResult.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\ClassesResult0.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\FamilyResult0.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\ClassesResult.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\ClassesResult0.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\FamilyResult0.cs" />
     <Compile Include="Areas\Main\Models\Export\ExportPeople.cs" />
     <Compile Include="Areas\Main\Models\Export\ExportInvolvements.cs" />
     <Compile Include="Areas\Main\Models\Export\InvovementInfo.cs" />
@@ -279,18 +281,18 @@
     <Compile Include="Areas\Manage\Controllers\RegSettingsController.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
-    <Compile Include="Areas\Main\Models\iPhone\DetailResult.cs" />
-    <Compile Include="Areas\Main\Models\iPhone\SearchResult.cs" />
-    <Compile Include="Areas\Main\Models\iPhone\RollListResult.cs" />
-    <Compile Include="Areas\Main\Models\iPhone\OrgResult.cs" />
-    <Compile Include="Areas\Main\Models\iPhone\PeopleInfo.cs" />
-    <Compile Include="Areas\Main\Models\iPhone\SearchResult0.cs" />
-    <Compile Include="Areas\Main\Models\iPhone\SearchModel.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\ImageResult.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\FamilyResult.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\SearchInfo.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\NameSearchResult2.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\MultipleResult.cs" />
+    <Compile Include="Areas\Public\Models\iPhone\DetailResult.cs" />
+    <Compile Include="Areas\Public\Models\iPhone\SearchResult.cs" />
+    <Compile Include="Areas\Public\Models\iPhone\RollListResult.cs" />
+    <Compile Include="Areas\Public\Models\iPhone\OrgResult.cs" />
+    <Compile Include="Areas\Public\Models\iPhone\PeopleInfo.cs" />
+    <Compile Include="Areas\Public\Models\iPhone\SearchResult0.cs" />
+    <Compile Include="Areas\Public\Models\iPhone\SearchModel.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\ImageResult.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\FamilyResult.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\SearchInfo.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\NameSearchResult2.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\MultipleResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\AttendInfo.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgGroupsModel.cs" />
     <Compile Include="Areas\Dialog\Models\OrgMembersDialogModel.cs" />
@@ -679,9 +681,9 @@
     <Compile Include="Image.aspx.designer.cs">
       <DependentUpon>Image.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Main\Models\CheckIn\CheckInInfo.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\CheckInModel.cs" />
-    <Compile Include="Areas\Main\Models\CheckIn\CheckInRecModel.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\CheckInInfo.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\CheckInModel.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\CheckInRecModel.cs" />
     <Compile Include="Areas\Main\Models\Other\PagerModel.cs" />
     <Compile Include="Areas\Manage\Models\ParticipantInfo.cs" />
     <Compile Include="Areas\Main\Models\Person\PeopleInfo.cs" />
@@ -989,6 +991,8 @@
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Scripts\ContactSearch.js" />
+    <Content Include="Scripts\SearchOrgs.js" />
     <Content Include="Scripts\OrgChildren.js" />
     <Content Include="Scripts\Meetings.js" />
     <Content Include="Scripts\SearchDivisions.js" />
@@ -1088,7 +1092,7 @@
     <Content Include="Areas\Main\Views\Person\MemberNotesEdit.cshtml" />
     <Content Include="Areas\Main\Views\Person\PendingEnrollGrid.cshtml" />
     <Content Include="Areas\Main\Views\Person\PendingTasksGrid.cshtml" />
-    <Content Include="Areas\Main\Views\Person\PeopleExtrasGrid.cshtml" />
+    <Content Include="Areas\Main\Views\Person\ExtrasGrid.cshtml" />
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.cshtml" />
     <Content Include="Areas\Main\Views\Person\RecRegDisplay.cshtml" />
     <Content Include="Areas\Main\Views\Person\RecRegEdit.cshtml" />
@@ -1464,6 +1468,11 @@
     <Content Include="Areas\Main\Views\OrgChildren\Index.cshtml" />
     <Content Include="Areas\Main\Views\OrgChildren\Rows.cshtml" />
     <Content Include="Admin\ToggleOrgLeadersOnly.ashx" />
+    <Content Include="Areas\Main\Views\Person\ChangesGrid.cshtml" />
+    <Content Include="Areas\Main\Views\ContactSearch\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchOrgs\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\SearchOrgs\Results.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\OrgPickList2.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

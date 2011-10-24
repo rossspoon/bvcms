@@ -14,6 +14,8 @@ namespace CmsWeb.Models
         public CmsData.Meeting meeting;
 
         public bool showall { get; set; }
+        public bool showregister { get; set; }
+        public bool showregistered { get; set; }
         public bool sortbyname { get; set; }
 
         public MeetingModel(int id)
@@ -27,8 +29,12 @@ namespace CmsWeb.Models
         public string AttendCreditType()
         {
             if (meeting.AttendCredit == null)
-                return "| Every Meeting";
-            return "| " + meeting.AttendCredit.Description;
+                return "Every Meeting";
+            return meeting.AttendCredit.Description;
+        }
+        public bool HasRegistered()
+        {
+            return meeting.Attends.Any(aa => aa.Registered == true);
         }
     }
 }

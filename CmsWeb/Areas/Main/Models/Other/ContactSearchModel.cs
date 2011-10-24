@@ -16,6 +16,7 @@ using System.Threading;
 using System.Data.Linq;
 using CmsData;
 using System.Collections;
+using CMSPresenter;
 
 namespace CmsWeb.Models
 {
@@ -110,17 +111,17 @@ namespace CmsWeb.Models
                        where c.ContactDate >= startDateRange && c.ContactDate < endDateRange
                        select c;
 
-            if (ContactReason != 0)
+            if ((ContactReason ?? 0) != 0)
                 contacts = from c in contacts
                            where c.ContactReasonId == ContactReason
                            select c;
 
-            if (ContactType != 0)
+            if ((ContactType ?? 0) != 0)
                 contacts = from c in contacts
                            where c.ContactTypeId == ContactType
                            select c;
 
-            if (Ministry != 0)
+            if ((Ministry ?? 0) != 0)
                 contacts = from c in contacts
                         where c.MinistryId == Ministry
                         select c;
@@ -178,6 +179,21 @@ namespace CmsWeb.Models
                         break;
                 }
             return query;
+        }
+        public SelectList ContactTypes()
+        {
+            return new SelectList(new CodeValueController().ContactTypeCodes0(),
+                "Id", "Value", ContactType.ToString());
+        }
+        public SelectList ContactReasons()
+        {
+            return new SelectList(new CodeValueController().ContactReasonCodes0(),
+                "Id", "Value", ContactReason.ToString());
+        }
+        public SelectList Ministries()
+        {
+            return new SelectList(new CodeValueController().Ministries0(),
+                "Id", "Value", Ministry.ToString());
         }
 
         public class ContactInfo

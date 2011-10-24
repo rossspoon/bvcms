@@ -132,7 +132,7 @@ namespace CmsWeb.Models
         {
             var q = from o in DbUtil.Db.Organizations
                     let Hour = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday).First().Hour
-                    let loc = (o.Location == "" || o.Location == null)? "" : ", " + o.Location
+                    let loc = (o.Location == "" || o.Location == null) ? "" : ", " + o.Location
                     let leader = o.LeaderName == "" ? "" : ", " + o.LeaderName
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     where campusid == null || campusid == o.CampusId
@@ -178,11 +178,11 @@ namespace CmsWeb.Models
             if (count == 0)
             {
                 q = from f in DbUtil.Db.Families
-                        where f.HeadOfHousehold.LastName == last
-                        where f.HeadOfHousehold.BirthDay == birthday.Day 
-                            && f.HeadOfHousehold.BirthMonth == birthday.Month 
-                            && f.HeadOfHousehold.BirthYear == birthday.Year
-                        select f.HeadOfHousehold;
+                    where f.HeadOfHousehold.LastName == last
+                    where f.HeadOfHousehold.BirthDay == birthday.Day
+                        && f.HeadOfHousehold.BirthMonth == birthday.Month
+                        && f.HeadOfHousehold.BirthYear == birthday.Year
+                    select f.HeadOfHousehold;
             }
             if (count == 1)
                 _headofhousehold = q.First();
@@ -243,8 +243,8 @@ namespace CmsWeb.Models
             var organization = DbUtil.Db.Organizations.SingleOrDefault(o => o.OrganizationId == org);
             var p = Person.Add(f, PositionInFamily.PrimaryAdult,
                 null, first, nickname, last, dob, false, gender.Value,
-                DbUtil.Db.Setting("RegOrigin", "10").ToInt(), 
-                organization == null? null : organization.EntryPointId);
+                DbUtil.Db.Setting("RegOrigin", "10").ToInt(),
+                organization == null ? null : organization.EntryPointId);
             var age = p.GetAge();
             var pos = PositionInFamily.PrimaryAdult;
             if (age < 18 && p.MaritalStatusId == MaritalStatusCode.Single)
@@ -292,8 +292,8 @@ namespace CmsWeb.Models
             var ret = (from o in DbUtil.Db.Organizations
                        let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                        where o.OrganizationId == OrgId
-                       select new 
-                       { 
+                       select new
+                       {
                            sc.SchedTime.Value.TimeOfDay,
                            o.AttendTrkLevelId,
                            o.Location
@@ -308,6 +308,11 @@ namespace CmsWeb.Models
 
             if (meeting == null)
             {
+                var acr = (from s in DbUtil.Db.OrgSchedules
+                           where s.OrganizationId == OrgId
+                           where s.SchedTime.Value.TimeOfDay == meeting.MeetingDate.Value.TimeOfDay
+                           where s.SchedDay == (int)meeting.MeetingDate.Value.DayOfWeek
+                           select s.AttendCreditId).SingleOrDefault();
                 meeting = new CmsData.Meeting
                 {
                     OrganizationId = OrgId,
@@ -316,6 +321,7 @@ namespace CmsWeb.Models
                     CreatedBy = Util.UserId1,
                     GroupMeetingFlag = false,
                     Location = ret.Location,
+                    AttendCreditId = acr,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();

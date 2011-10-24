@@ -1412,5 +1412,31 @@ namespace CmsData
             else
                 sb.AppendFormat("{0}#description\n", new string('\t', n));
         }
+        public class OrgPickInfo
+        {
+            public int OrganizationId { get; set; }
+            public string OrganizationName { get; set; }
+        }
+        public static List<OrgPickInfo> OrganizationsFromIdString(Organization org)
+        {
+            var a = org.OrgPickList.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
+            var d = new Dictionary<int, int>();
+            var n = 0;
+            foreach (var i in a)
+                d.Add(n++, i);
+            var q = (from o in DbUtil.Db.Organizations
+                     where a.Contains(o.OrganizationId)
+                     select new OrgPickInfo
+                     {
+                         OrganizationId = o.OrganizationId,
+                         OrganizationName = o.OrganizationName
+                     }).ToList();
+            var list = (from op in q
+                        join i in d on op.OrganizationId equals i.Value into j
+                        from i in j
+                        orderby i.Key
+                        select op).ToList();
+            return list;
+        }
     }
 }

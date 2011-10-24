@@ -8,6 +8,7 @@ using UtilityExtensions;
 using CmsWeb.Models;
 using System.Web.Script.Serialization;
 using System.IO;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -20,7 +21,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new PostBundleModel(id);
             if (m.bundle == null)
                 return Content("no bundle");
-            if (m.bundle.BundleStatusId == (int)BundleHeader.StatusCode.Closed)
+            if (m.bundle.BundleStatusId == BundleStatusCode.Closed)
                 return Content("bundle closed");
             m.fund = m.bundle.FundId ?? 1;
             return View(m);

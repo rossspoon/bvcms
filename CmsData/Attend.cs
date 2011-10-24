@@ -82,7 +82,7 @@ namespace CmsData
                 attend.MemberTypeId = o.info.MemberTypeId.Value;
                 o.path = 2;
             }
-            else if (o.info.MemberTypeId.HasValue) 
+            else if (o.info.MemberTypeId.HasValue)
             {
                 attend.MemberTypeId = o.info.MemberTypeId.Value;
                 attend.AttendanceTypeId = GetAttendType(Db, attend.AttendanceFlag, attend.MemberTypeId, null);
@@ -211,6 +211,10 @@ namespace CmsData
 
             if (othMeeting == null)
             {
+                var acr = (from s in member.Organization.OrgSchedules
+                           where s.SchedTime.Value.TimeOfDay == meeting.MeetingDate.Value.TimeOfDay
+                           where s.SchedDay == (int)meeting.MeetingDate.Value.DayOfWeek
+                           select s.AttendCreditId).SingleOrDefault();
                 othMeeting = new Meeting
                 {
                     OrganizationId = member.OrganizationId,
@@ -218,6 +222,7 @@ namespace CmsData
                     CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
                     GroupMeetingFlag = false,
+                    AttendCreditId = acr,
                     Location = member.Organization.Location,
                 };
                 Db.Meetings.InsertOnSubmit(othMeeting);

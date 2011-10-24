@@ -23,6 +23,7 @@ div.pager
 
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
             .Add("/Content/js/jquery.pagination.js")
+            .Add("/Content/js/jquery.jeditable.js")
             .Add("/Scripts/SearchPeople.js")
             .Add("/Content/js/jquery.autocomplete.js")
             .Add("/Content/js/jquery.validate.js")
@@ -31,7 +32,7 @@ div.pager
         .Render("/Content/Person_#.js")
 )
 @{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
-
+@Html.Hidden("PeopleId", p.PeopleId)
     <table cellspacing="5" class="roundbox floatleft">
         <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
         <tr>
@@ -224,12 +225,17 @@ div.pager
 { 
         <div id="system-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
-                <li><a href="#changes-tab"><span>Changes</span></a></li>
-                <li><a href="#duplicates-tab"><span>Duplicates</span></a></li>
-                <li><a href="#user-tab"><span>User</span></a></li>
+                <li><a href="#extras-tab"><span>Extra Values</span></a></li>
+                <li><a id="changes-link" href="#changes-tab"><span>Changes</span></a></li>
+                <li><a id="duplicates-link" href="#duplicates-tab"><span>Duplicates</span></a></li>
+                <li><a id="user-link" href="#user-tab"><span>User</span></a></li>
             </ul>
+            <div id="extras-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form action="/Person/ExtrasGrid/@p.PeopleId">
+                </form>
+            </div>
             <div id="changes-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form action="/Person/PeopleExtrasGrid/@p.PeopleId">
+                <form action="/Person/ChangesGrid/@p.PeopleId">
                 </form>
             </div>
             <div id="duplicates-tab" class="ui-tabs-hide ui-tabs-panel">

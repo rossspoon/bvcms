@@ -147,6 +147,7 @@ namespace CmsData
         RecentRegistrationType,
         RecInterestedCoaching,
         RecActiveOtherChurch,
+        RegisteredForMeetingId,
         SavedQuery,
         SendEmailAddress1,
         SendEmailAddress2,

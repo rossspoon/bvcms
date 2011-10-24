@@ -1,0 +1,72 @@
+﻿@using UtilityExtensions
+@using CmsData
+@model CmsData.Person
+<a id="newextravalue" href="#" class="bt">Add New Field</a>
+<table class="grid">
+<thead>
+    <tr>
+        <th colspan="2">Extra Values</th>
+    </tr>
+    <tr>
+        <th>Field</th>
+        <th>Value</th>
+    </tr>
+</thead>
+<tbody>
+@{
+    var list = Model.PeopleExtras.ToList();
+    foreach (var c in list.Where(pp => pp.StrValue.HasValue()).OrderBy(pp => pp.Field))  
+    {
+    <tr>
+        <td>@c.Field</td>
+        <td><span id="s-@c.Field.@c.PeopleId" class="clickEdit">@c.StrValue</span></td>
+    </tr>
+    }
+    foreach (var c in list.Where(pp => pp.Data.HasValue()).OrderBy(pp => pp.Field))  
+    {
+    <tr>
+        <td valign="top">@c.Field</td>
+        <td><div id="t-@c.Field.@c.PeopleId" class="editArea">@c.Data</div></td>
+    </tr>
+    }
+    foreach (var c in list.Where(pp => pp.DateValue.HasValue).OrderBy(pp => pp.Field))  
+    {
+    <tr>
+        <td>@c.Field</td>
+        <td><span id="d-@c.Field.@c.PeopleId" class="clickEdit">@c.DateValue.FormatDate()</span></td>
+    </tr>
+    }
+    foreach (var c in list.Where(pp => pp.IntValue.HasValue).OrderBy(pp => pp.Field))  
+    {
+    <tr>
+        <td>@c.Field</td>
+        <td><span id="i-@c.Field.@c.PeopleId" class="clickEdit">@c.IntValue @c.IntValue2</span></td>
+    </tr>
+    }
+}
+</tbody>
+</table>
+<div id="newvalueform" style="display:none" class="roundbox">
+    <table>
+        <tr>
+            <th colspan="2">
+                <h2>New Extra Value</h2>
+            </th>
+        </tr>
+        <tr>
+            <th>Type:</th>
+            <td>
+                <table><tr>
+                    <td><input type="radio" id="typestring" name="typeval" value="string" /><label for="typestring">String</label></td>
+                    <td><input type="radio" id="typetext" name="typeval" value="text" checked="checked" /><label for="typetext">Text</label></td>
+                    <td><input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
+                    <td><input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
+                </tr></table>
+            </td>
+        </tr>
+        <tr>
+            <th>Field Name:</th>
+            <td>@Html.TextBox("fieldname")</td>
+        </tr>
+    </table>
+</div>

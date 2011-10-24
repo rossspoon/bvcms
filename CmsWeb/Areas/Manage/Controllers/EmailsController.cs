@@ -41,10 +41,21 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(m);
         }
 
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Requeue(int id)
         {
             return Redirect("/Manage/Emails/Details/" + id);
+        }
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteQueued(int id)
+        {
+            var email = (from e in DbUtil.Db.EmailQueues
+                         where e.Id == id
+                         select e).Single();
+            DbUtil.Db.EmailQueueTos.DeleteAllOnSubmit(email.EmailQueueTos);
+            DbUtil.Db.EmailQueues.DeleteOnSubmit(email);
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/Manage/Emails");
         }
         public ActionResult View(int id)
         {

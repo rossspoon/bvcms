@@ -14,6 +14,7 @@ using System.Web.Routing;
 using UtilityExtensions;
 using System.Text;
 using CmsData;
+using CmsData.Codes;
 using System.Data.Linq.SqlClient;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -214,9 +215,9 @@ namespace CmsWeb.Models
         }
         public static Contribution PostUnattendedContribution(decimal Amt, int? PeopleId, int? Fund, string Description, bool pledge = false)
         {
-            var typecode = (int)BundleHeader.TypeCode.Online;
+            var typecode = BundleTypeCode.Online;
             if (pledge)
-                typecode = (int)BundleHeader.TypeCode.OnlinePledge;
+                typecode = BundleTypeCode.OnlinePledge;
 
             var d = Util.Now.Date;
             d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
@@ -232,7 +233,7 @@ namespace CmsWeb.Models
                 bundle = new BundleHeader
                 {
                     BundleHeaderTypeId = typecode,
-                    BundleStatusId = (int)BundleHeader.StatusCode.Open,
+                    BundleStatusId = BundleStatusCode.Open,
                     CreatedBy = Util.UserId1,
                     ContributionDate = d,
                     CreatedDate = DateTime.Now,
@@ -374,8 +375,8 @@ namespace CmsWeb.Models
             var now = DateTime.Now;
             var bh = new BundleHeader
             {
-                BundleHeaderTypeId = (int)BundleHeader.TypeCode.ChecksAndCash,
-                BundleStatusId = (int)BundleHeader.StatusCode.Open,
+                BundleHeaderTypeId = BundleTypeCode.ChecksAndCash,
+                BundleStatusId = BundleStatusCode.Open,
                 ContributionDate = date,
                 CreatedBy = Util.UserId,
                 CreatedDate = now,
@@ -437,16 +438,16 @@ namespace CmsWeb.Models
         {
             var bh = new BundleHeader
                         {
-                            BundleHeaderTypeId = (int)BundleHeader.TypeCode.PreprintedEnvelope,
-                            BundleStatusId = (int)BundleHeader.StatusCode.Open,
+                            BundleHeaderTypeId = BundleTypeCode.PreprintedEnvelope,
+                            BundleStatusId = BundleStatusCode.Open,
                             ContributionDate = date,
                             CreatedBy = Util.UserId,
                             CreatedDate = now,
                             FundId = 1
                         };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
-            bh.BundleStatusId = (int)BundleHeader.StatusCode.Open;
-            bh.BundleHeaderTypeId = (int)BundleHeader.TypeCode.ChecksAndCash;
+            bh.BundleStatusId = BundleStatusCode.Open;
+            bh.BundleHeaderTypeId = BundleTypeCode.ChecksAndCash;
             return bh;
         }
         private static void FinishBundle(BundleHeader bh)

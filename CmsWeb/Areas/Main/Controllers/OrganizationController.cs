@@ -630,6 +630,15 @@ no need to put these into the ""Source"" view of the editor anymore.
             DbUtil.Db.SubmitChanges();
             return Redirect("/SearchUsers?ordered=true&topid=" + q.FirstOrDefault());
         }
+        public ActionResult OrgPickList()
+        {
+            if (Util.SessionTimedOut() || Util2.CurrentOrgId == 0)
+                return Content("<script type='text/javascript'>window.onload = function() { parent.location = '/'; }</script>");
+            Response.NoCache();
+            var o = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
+            Session["orgPickList"] = (o.OrgPickList ?? "").Split(',').Select(oo => oo.ToInt()).ToList();
+            return Redirect("/SearchOrgs/Index/" + Util2.CurrentOrgId);
+        }
         [HttpPost]
         public ActionResult UpdateNotifyIds(int topid)
         {
@@ -644,6 +653,16 @@ no need to put these into the ""Source"" view of the editor anymore.
             DbUtil.Db.SubmitChanges();
             ViewData["notifyids"] = o.NotifyIds;
             return View("NotifyList2");
+        }
+        [HttpPost]
+        public ActionResult UpdateOrgIds(string list)
+        {
+            var o = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
+            var m = new RegSettings(o.RegSetting, DbUtil.Db, o.OrganizationId);
+            m.org = o;
+            o.OrgPickList = list;
+            DbUtil.Db.SubmitChanges();
+            return View("OrgPickList2", m);
         }
         [Authorize(Roles="Admin")]
         public ActionResult RepairTransactions(int id)

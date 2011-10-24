@@ -23,11 +23,11 @@ namespace CmsData
 		
 		private string _Body;
 		
-		private bool? _TextOnly;
-		
 		private DateTime? _DateCreated;
 		
 		private int _Id;
+		
+		private bool? _TextOnly;
 		
    		
     	
@@ -47,14 +47,14 @@ namespace CmsData
 		partial void OnBodyChanging(string value);
 		partial void OnBodyChanged();
 		
-		partial void OnTextOnlyChanging(bool? value);
-		partial void OnTextOnlyChanged();
-		
 		partial void OnDateCreatedChanging(DateTime? value);
 		partial void OnDateCreatedChanged();
 		
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
+		
+		partial void OnTextOnlyChanging(bool? value);
+		partial void OnTextOnlyChanged();
 		
     #endregion
 		public Content()
@@ -133,28 +133,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="TextOnly", UpdateCheck=UpdateCheck.Never, Storage="_TextOnly", DbType="bit")]
-		public bool? TextOnly
-		{
-			get { return this._TextOnly; }
-
-			set
-			{
-				if (this._TextOnly != value)
-				{
-				
-                    this.OnTextOnlyChanging(value);
-					this.SendPropertyChanging();
-					this._TextOnly = value;
-					this.SendPropertyChanged("TextOnly");
-					this.OnTextOnlyChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="DateCreated", UpdateCheck=UpdateCheck.Never, Storage="_DateCreated", DbType="datetime")]
 		public DateTime? DateCreated
 		{
@@ -192,6 +170,28 @@ namespace CmsData
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="TextOnly", UpdateCheck=UpdateCheck.Never, Storage="_TextOnly", DbType="bit")]
+		public bool? TextOnly
+		{
+			get { return this._TextOnly; }
+
+			set
+			{
+				if (this._TextOnly != value)
+				{
+				
+                    this.OnTextOnlyChanging(value);
+					this.SendPropertyChanging();
+					this._TextOnly = value;
+					this.SendPropertyChanged("TextOnly");
+					this.OnTextOnlyChanged();
 				}
 
 			}

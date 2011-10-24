@@ -161,10 +161,10 @@ namespace CmsWeb.Areas.Main.Models.Report
             var dt = MeetingDate.AddDays(wks * -7);
 
             var q = from p in DbUtil.Db.People
-                    where p.Attends.Any(a => a.AttendanceFlag == true
+                    where p.Attends.Any(a => (a.AttendanceFlag == true || a.Registered == true)
                         && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
                         && a.OrganizationId == orgid
-                        && (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null || a.AttendanceFlag == true)
+                        && (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null || a.AttendanceFlag == true || a.Registered == true)
                         && VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
                     where NoCurrentMembers == false || !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
                     orderby p.Name2, p.Name

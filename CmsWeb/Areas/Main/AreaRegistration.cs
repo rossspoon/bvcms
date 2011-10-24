@@ -25,6 +25,7 @@ namespace CmsWeb.Areas.Main
             AddRoute(context, "Meeting");
             AddRoute(context, "Export");
             AddRoute(context, "OrgSearch");
+            AddRoute(context, "ContactSearch");
             AddRoute(context, "TaskList", "Task", "Task/{action}/{id}", "List");
             AddRoute(context, "Task");
             AddRoute(context, "Organization");

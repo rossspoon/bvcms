@@ -39,9 +39,9 @@
 <tr><td>SendWhen</td><td>@Model.queue.SendWhen.FormatDate()</td></tr>
 <tr><td>Sent</td><td>@Model.queue.Sent.FormatDateTm()</td></tr>
 <tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm() 
-@if (!Model.queue.Sent.HasValue && Model.queue.SendWhen.HasValue)
+@if (!Model.queue.Sent.HasValue && Model.queue.SendWhen.HasValue && User.IsInRole("Admin"))
 {
-                       <a href="/Manage/Emails/Requeue/@Model.queue.Id" class="bt">Requeue</a>
+                       <a href="/Manage/Emails/DeleteQueued/@Model.queue.Id" class="bt">Delete</a>
 }
                    </td></tr>
 <tr><td>Started</td><td>@Model.queue.Started.FormatDateTm()</td></tr>

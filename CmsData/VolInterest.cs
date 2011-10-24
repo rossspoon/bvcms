@@ -72,7 +72,7 @@ namespace CmsData
                 var memb = DbUtil.Db.OrganizationMembers.SingleOrDefault(om =>
                     om.OrganizationId == OrgId && om.PeopleId == pid);
                 if (memb != null)
-                    memb.Drop(DbUtil.Db, addToHistory:true);
+                    memb.Drop(DbUtil.Db, addToHistory: true);
                 DbUtil.Db.SubmitChanges();
             }
         }
@@ -133,6 +133,11 @@ namespace CmsData
                 var meeting = qme.SingleOrDefault();
                 if (meeting == null)
                 {
+                    var acr = (from s in DbUtil.Db.OrgSchedules
+                               where s.OrganizationId == oi.OrgId
+                               where s.SchedTime.Value.TimeOfDay == meeting.MeetingDate.Value.TimeOfDay
+                               where s.SchedDay == (int)meeting.MeetingDate.Value.DayOfWeek
+                               select s.AttendCreditId).SingleOrDefault();
                     meeting = new CmsData.Meeting
                     {
                         OrganizationId = oi.OrgId,
@@ -140,6 +145,7 @@ namespace CmsData
                         CreatedDate = Util.Now,
                         CreatedBy = Util.UserId1,
                         GroupMeetingFlag = false,
+                        AttendCreditId = acr
                     };
                     DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                     DbUtil.Db.SubmitChanges();
@@ -168,7 +174,7 @@ namespace CmsData
             public void AddMember(int pid)
             {
                 if (oi != null)
-                    OrganizationMember.InsertOrgMembers(DbUtil.Db, 
+                    OrganizationMember.InsertOrgMembers(DbUtil.Db,
                         oi.OrgId, pid,
                         MemberTypeCode.Member,
                         Util.Now,

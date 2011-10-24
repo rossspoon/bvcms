@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CmsData;
+using CmsData.Codes;
 using UtilityExtensions;
 using CMSPresenter;
 
@@ -29,7 +30,7 @@ namespace CmsWeb.Contributions
             bundleheader = DbUtil.Db.BundleHeaders.SingleOrDefault(b => b.BundleHeaderId == id);
             if (bundleheader == null)
                 Response.EndShowMessage("no bundle");
-            Delete.Enabled = bundleheader.BundleStatusId == (int)BundleHeader.StatusCode.Open;
+            Delete.Enabled = bundleheader.BundleStatusId == BundleStatusCode.Open;
 
             EditUpdateButton1.DataBind();
             BundleId.Text = bundleheader.BundleHeaderId.ToString();
@@ -50,7 +51,7 @@ namespace CmsWeb.Contributions
 
             BundleStatusIdDropDown.Enabled = true;
             var nopid = bundleheader.BundleDetails.Any(bd => bd.Contribution.PeopleId == null);
-            if (bundleheader.BundleStatusId == (int)BundleHeader.StatusCode.Open)
+            if (bundleheader.BundleStatusId == BundleStatusCode.Open)
                 BundleStatusIdDropDown.Enabled = nopid == false && TotalItems.Text == TotalHeader.Text;
                 
             FundsLink.NavigateUrl = "/PostBundle/FundTotals/" + bundleheader.BundleHeaderId;
@@ -60,7 +61,7 @@ namespace CmsWeb.Contributions
         {
             if (EditUpdateButton1.Updating)
             {
-                if (bundleheader.BundleStatusId == (int)BundleHeader.StatusCode.Closed)
+                if (bundleheader.BundleStatusId == BundleStatusCode.Closed)
                 {
                     foreach (var d in bundleheader.BundleDetails)
                         d.Contribution.PostingDate = postingdt;

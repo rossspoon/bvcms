@@ -33,6 +33,21 @@
         Online Catalog Sort:</span>
         <span>@Html.TextBox("org.OnLineCatalogSort")</span>
     </li>
+    <li>
+        <span class="text big tip" title="Organization Pick List
+        |This is used on the master organization 
+        |and will become the dropdown for 'User Chooses Organization'">
+        Organization Pick List:</span>
+        <a id="orgpicklist" href="/Organization/OrgPickList">
+        <div class="block border">
+        <b>choose organizations</b>
+        @foreach (var o in CmsData.RegSettings.OrganizationsFromIdString(Model.org))
+        {
+            <div>@o.OrganizationName</div>
+        }
+        </div>
+        </a>
+    </li>
     <li><span class="keyword big tip" title="Max Limit
         |This will cause the class to go into a 'class filled' state 
         |when the number of members reaches this point.">

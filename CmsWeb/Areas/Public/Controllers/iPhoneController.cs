@@ -23,7 +23,7 @@ namespace CmsWeb.Areas.Public.Controllers
     [ValidateInput(false)]
     public class iPhoneController : CmsController
     {
-        private bool Authenticate(string role=null, bool checkorgmembersonly=false)
+        private bool Authenticate(string role = null, bool checkorgmembersonly = false)
         {
             string username, password;
             var auth = Request.Headers["Authorization"];
@@ -108,7 +108,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var uname = Request.Headers["username"];
 #endif
             AccountController.SetUserInfo(uname, Session);
-            if(!CMSRoleProvider.provider.IsUserInRole(uname, "Access"))
+            if (!CMSRoleProvider.provider.IsUserInRole(uname, "Access"))
                 return Content("not authorized");
 
             if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(uname, "OrgMembersOnly"))
@@ -162,9 +162,14 @@ namespace CmsWeb.Areas.Public.Controllers
 #endif
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
             var dt = DateTime.Parse(datetime);
-            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId== id && m.MeetingDate == dt);
+            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
             if (meeting == null)
             {
+                var acr = (from s in DbUtil.Db.OrgSchedules
+                           where s.OrganizationId == id
+                           where s.SchedTime.Value.TimeOfDay == meeting.MeetingDate.Value.TimeOfDay
+                           where s.SchedDay == (int)meeting.MeetingDate.Value.DayOfWeek
+                           select s.AttendCreditId).SingleOrDefault();
                 meeting = new CmsData.Meeting
                 {
                     OrganizationId = id,
@@ -172,15 +177,16 @@ namespace CmsWeb.Areas.Public.Controllers
                     CreatedDate = Util.Now,
                     CreatedBy = u.UserId,
                     GroupMeetingFlag = false,
+                    AttendCreditId = acr
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
 
                 DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
                     CMSRoleProvider.provider.GetDevelopers(),
-                    "meeting created with iphone on " + Util.Host, 
+                    "meeting created with iphone on " + Util.Host,
                     "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
-                        .Fmt(meeting.Organization.OrganizationName, 
+                        .Fmt(meeting.Organization.OrganizationName,
                         Util.ResolveServerUrl("/Meeting/Index/" + meeting.MeetingId), u.Name));
             }
             return new RollListResult(meeting);
@@ -301,7 +307,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
                     OrgId, PeopleId, MemberTypeCode.Member, DateTime.Now, null, false);
             else if (om != null && !Member)
-                om.Drop(DbUtil.Db, addToHistory:true);
+                om.Drop(DbUtil.Db, addToHistory: true);
             DbUtil.Db.SubmitChanges();
             //if (om != null && om.Organization.EmailAddresses.HasValue())
             //{
@@ -380,6 +386,11 @@ namespace CmsWeb.Areas.Public.Controllers
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
             if (meeting == null)
             {
+                var acr = (from s in DbUtil.Db.OrgSchedules
+                               where s.OrganizationId == id
+                               where s.SchedTime.Value.TimeOfDay == meeting.MeetingDate.Value.TimeOfDay
+                               where s.SchedDay == (int)meeting.MeetingDate.Value.DayOfWeek
+                               select s.AttendCreditId).SingleOrDefault();
                 meeting = new CmsData.Meeting
                 {
                     OrganizationId = id,
@@ -387,14 +398,15 @@ namespace CmsWeb.Areas.Public.Controllers
                     CreatedDate = Util.Now,
                     CreatedBy = u.UserId,
                     GroupMeetingFlag = false,
+                    AttendCreditId = acr,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail, 
-                    CMSRoleProvider.provider.GetDevelopers(), 
-                    "meeting created with iphone on {0}".Fmt(Util.Host), 
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
+                    CMSRoleProvider.provider.GetDevelopers(),
+                    "meeting created with iphone on {0}".Fmt(Util.Host),
                     "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
-                        .Fmt(meeting.Organization.OrganizationName, 
+                        .Fmt(meeting.Organization.OrganizationName,
                         Util.ResolveServerUrl("/Meeting/Index/" + meeting.MeetingId)));
             }
             Attend.RecordAttendance(PeopleId, meeting.MeetingId, Present);

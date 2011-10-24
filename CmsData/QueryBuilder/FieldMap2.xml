@@ -394,10 +394,10 @@
     <Field Name="DaysBetween12Attendance" Title="Days Between First/Second Attend" Type="Integer" DisplayAs="DaysBetween12Attendance({0}, {1}, {2}, {3})" Params="Days,Program,Division,Organization">
       Selects attendees based on # days between their first and second attendance. The first attendance is assumed to be the entry point in the church, probably worship. The second attendance can be specified to be within a Program, Program/Division or Program/Division/Organization for a specified date range.
     </Field>
-      <!--<Field Name="WeeksSinceAttended" Title="Weeks Since Attended" Type="Integer">
-      Sets a condition for the number of weeks since a person has attended an event. You must add an additional condition to specify the event or class.
-    </Field>-->
     <Field Name="MeetingId" Type="Integer">
+      Advanced use
+    </Field>
+    <Field Name="RegisteredForMeetingId" Type="Integer">
       Advanced use
     </Field>
   </Category>

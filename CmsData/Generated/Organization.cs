@@ -127,6 +127,8 @@ namespace CmsData
 		
 		private string _RegSetting;
 		
+		private string _OrgPickList;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -340,6 +342,9 @@ namespace CmsData
 		
 		partial void OnRegSettingChanging(string value);
 		partial void OnRegSettingChanged();
+		
+		partial void OnOrgPickListChanging(string value);
+		partial void OnOrgPickListChanged();
 		
     #endregion
 		public Organization()
@@ -1616,6 +1621,28 @@ namespace CmsData
 					this._RegSetting = value;
 					this.SendPropertyChanged("RegSetting");
 					this.OnRegSettingChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OrgPickList", UpdateCheck=UpdateCheck.Never, Storage="_OrgPickList", DbType="varchar(300)")]
+		public string OrgPickList
+		{
+			get { return this._OrgPickList; }
+
+			set
+			{
+				if (this._OrgPickList != value)
+				{
+				
+                    this.OnOrgPickListChanging(value);
+					this.SendPropertyChanging();
+					this._OrgPickList = value;
+					this.SendPropertyChanged("OrgPickList");
+					this.OnOrgPickListChanged();
 				}
 
 			}

@@ -128,6 +128,7 @@ namespace CmsData.Codes
     {
         public const int None = 0;
         public const int JoinOrganization = 1;
+        //public const int AttendMeeting = 2;
         public const int UserSelectsOrganization = 3;
         public const int ComputeOrganizationByAge = 4;
         public const int CreateAccount = 5;
@@ -135,11 +136,14 @@ namespace CmsData.Codes
         public const int ManageSubscriptions = 7;
         public const int OnlineGiving = 8;
         public const int OnlinePledge = 9;
+        public const int UserSelectsOrganization2 = 10;
         public static IEnumerable<KeyValuePair<int, string>> GetCodePairs()
         {
             yield return new KeyValuePair<int, string>(None, "Online Registration Not Allowed");
             yield return new KeyValuePair<int, string>(JoinOrganization, "Join Organization");
-            yield return new KeyValuePair<int, string>(UserSelectsOrganization, "User Selects Organization");
+            //yield return new KeyValuePair<int, string>(AttendMeeting, "Attend Meeting");
+            yield return new KeyValuePair<int, string>(UserSelectsOrganization, "User Selects Organization (div style)");
+            yield return new KeyValuePair<int, string>(UserSelectsOrganization2, "User Selects Organization");
             yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "Compute Org By Birthday");
             yield return new KeyValuePair<int, string>(CreateAccount, "Create User");
             yield return new KeyValuePair<int, string>(ChooseSlot, "Users Chooses Slot(day/time)");
@@ -183,5 +187,19 @@ namespace CmsData.Codes
     public class ContactReasonCode
     {
         public const int Other = 160;
+    }
+    public class BundleStatusCode
+    {
+        public const int Closed = 0;
+        public const int Open = 1;
+    }
+    public class BundleTypeCode
+    {
+        public const int GenericEnvelope = 1;
+        public const int ChecksAndCash = 2;
+        public const int PreprintedEnvelope = 3;
+        public const int Online = 4;
+        public const int OnlinePledge = 5;
+        public const int Pledge = 6;
     }
 }

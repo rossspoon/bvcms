@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css"  href="Content/jquery-ui-1.8.13.custom.css" /><link rel="stylesheet" type="text/css"  href="Content/site.css" /><link rel="stylesheet" type="text/css"  href="Content/Style2.css" /><link rel="stylesheet" type="text/css"  href="Content/cmenu.css" /><link rel="stylesheet" type="text/css"  href="Content/pager.css" /><link rel="stylesheet" type="text/css"  href="Content/jquery.jscrollpane.css" /><link rel="stylesheet" type="text/css"  href="Content/jquery.tooltip.css" /><link rel="stylesheet" type="text/css"  href="Content/jquery.autocomplete.css" />
+    
+    <style type="text/css">
+        tr.visitor td
+        {
+            font-weight:bold;
+        }
+    </style>
+
+</head>
+<body>
+    <script type="text/javascript" src="Content/js/jquery-1.5.2.js"></script><script type="text/javascript" src="Content/js/jquery-ui-1.8.13.custom.js"></script><script type="text/javascript" src="Content/js/jquery.bgiframe-2.1.2.js"></script><script type="text/javascript" src="Content/js/hoverIntent.js"></script><script type="text/javascript" src="Content/js/jquery-cookie.js"></script><script type="text/javascript" src="Content/js/jquery.blockUI.js"></script><script type="text/javascript" src="Content/js/jquery.tooltip.js"></script><script type="text/javascript" src="Content/js/jquery.mousewheel.js"></script><script type="text/javascript" src="Content/js/jquery.jscrollpane.js"></script><script type="text/javascript" src="/Scripts/ExportToolBar.js"></script><script type="text/javascript" src="/Scripts/menu.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#SearchText').keypress(function (e) {
+                if ((e.keyCode || e.which) == 13) {
+                    e.preventDefault();
+                    var s = $('#SearchText').val();
+                    if (s != "") {
+                        s = s.replace(/^\s+/g, "");
+                        s = s.replace(/\s+$/g, " ");
+                        var u = '/QuickSearch?name=' + escape(s);
+                        window.location = u;
+                    }
+                }
+                return true;
+            });
+            $('#AddDialog').dialog({
+                title: 'Add People Dialog',
+                bgiframe: true,
+                autoOpen: false,
+                width: 712,
+                height: 650,
+                modal: true,
+                overlay: {
+                    opacity: 0.5,
+                    background: "black"
+                }, close: function () {
+                    $('iframe', this).attr("src", "");
+                }
+            });
+            $('#addpeople').click(function (e) {
+                e.preventDefault();
+                var d = $('#AddDialog');
+                $('iframe', d).attr("src", "/SearchAdd?type=addpeople");
+                d.dialog("open");
+            });
+        });
+function CloseAddDialog() {
+    $("#AddDialog").dialog("close");
+    window.location = "/Person/Current"
+}
+    </script>
+    <div id="container">
+        
+        <div id="main">
+            
+<script type="text/javascript" src="Content/js/jquery.jeditable.js"></script><script type="text/javascript" src="Content/js/jquery.sortElements.js"></script><script type="text/javascript" src="/Scripts/Meeting.js"></script>
+<input id="meetingid" name="meetingid" type="hidden" value="4284191" />
+    <script type="text/javascript">
+        $(function () { $(".numpresent").editable("disable"); });
+    </script>
+<table><tr><td>
+<table class="roundbox" cellspacing="5">
+    <tr><td colspan="3" nowrap>
+        <h2><a href="/Organization/Index/88216">David Carroll First Group</a> <span style="font-size:12px">9/26/11 5:00 PM</span></h2></td></tr>
+    <tr><td align="right">Description:</td>
+        <td colspan="2"><span id="d-4284191" class="clickEdit"></span></td>
+        </tr>
+    <tr><td align="right">Meeting Type:</td>
+        <td colspan="2"><span id='g-4284191' class='clickSelect'>Regular</span>
+          | Every Meeting
+        </td>
+        </tr>
+    <tr>
+    	<td align="right" valign="top">Attendance:</td>
+      <td colspan="2"><fieldset>
+      <table width="100%" cellpadding="4">
+        <tr>
+          <td align="right">Present:</td>
+          <td align="right" id="NumPresent"><span id="n=4284191" class="clickEdit numpresent">2</span></td>
+          <td align="right" id="NumPresent">New Visitors:</td>
+          <td align="right" id="NumPresent">2</td>
+        </tr>
+        <tr>
+          <td align="right">Members:</td>
+          <td align="right" id="NumMembers">0</td>
+          <td align="right" id="NumMembers">Repeat Visitors:</td>
+          <td align="right" id="NumMembers">0</td>
+        </tr>
+        <tr>
+          <td align="right">Other Attends:</td>
+          <td align="right" id="NumVstMembers">0</td>
+          <td align="right" id="NumVstMembers">Visiting Members:</td>
+          <td align="right" id="NumVstMembers">0</td>
+        </tr>
+      </table></fieldset></td>
+    </tr>
+    <tr>
+      <td align="right">Show:</td>
+      <td colspan="2" nowrap id="showbuttons"><input checked="checked" id="show" name="show" type="radio" value="attends" />
+                Attends Only&nbsp;
+                <input id="show" name="show" type="radio" value="absents" />
+                Absents Only&nbsp;
+                <input id="show" name="show" type="radio" value="all" />
+                All
+                </td>
+    </tr>
+    <tr>
+      <td align="left" nowrap><label for="editing">
+                  <input id="editing" name="editing" type="checkbox" value="true" />
+                  <input name="editing" type="hidden" value="false" />
+                  Editing</label>
+        <br>
+        <label for="registering" >
+          <input id="registering" name="registering" type="checkbox" value="true" />
+          <input name="registering" type="hidden" value="false" />
+          Register</label>
+        <br></td>
+      <td align="right" nowrap><label for="sortbyname2" >
+        <input id="sortbyname2" name="sortbyname" type="checkbox" value="true" />
+        <input name="sortbyname" type="hidden" value="false" />
+        Sort by Name</label>    
+      </td>
+      <td align="right" nowrap><a id="addregistered" href="/SearchAdd/Index/4284191?type=registered" class="bt" style="visibility:hidden">Add Registered</a>     <a id="addvisitor" href="/SearchAdd/Index/4284191?type=visitor" class="bt">Add Visitors</a></td>
+    </tr>
+</table>
+</td>
+<td width="2em">&nbsp;  </td>
+<td valign="top">
+
+<div style="margin-top:15em;margin-left: 3em;">
+Wand Target<br />
+<input type="text" id="wandtarget" />
+</div>
+</td>
+</tr>
+</table>
+<hr />
+<table class="grid">
+<thead>
+    <tr>
+        <th>Attended</th>
+        <th class="showreg" style="display:none" >Registered</th>
+        <th>Name</th>
+        <th>Current Member Type</th>
+        <th>Attend Member Type</th>
+        <th>Attend Type</th>
+        <th>Other Attend</th>
+    </tr>
+</thead>
+<tbody>
+    <tr rowtype="True" >
+        <td align="center"><input type="checkbox" pid="2" checked=checked class="atck" disabled="disabled" /></td>
+        <td align="center" class="showreg" style="display:none"><input type="checkbox" pid="2"  class="rgck" disabled="disabled" /></td>
+        <td class="name"><a href="/Person/Index/2" title="">Abuelouf, Abdalla</a></td>
+        <td>Member</td>
+        <td>Member</td>
+        <td>Member</td>
+        <td>0</td>
+    </tr>
+    <tr rowtype="True" >
+        <td align="center"><input type="checkbox" pid="827651"  class="atck" disabled="disabled" /></td>
+        <td align="center" class="showreg" style="display:none"><input type="checkbox" pid="827651" checked=checked class="rgck" disabled="disabled" /></td>
+        <td class="name"><a href="/Person/Index/827651" title="">Carroll, Bethany</a></td>
+        <td>Member</td>
+        <td>Member</td>
+        <td></td>
+        <td>0</td>
+    </tr>
+    <tr rowtype="True" >
+        <td align="center"><input type="checkbox" pid="828612" checked=checked class="atck" disabled="disabled" /></td>
+        <td align="center" class="showreg" style="display:none"><input type="checkbox" pid="828612" checked=checked class="rgck" disabled="disabled" /></td>
+        <td class="name"><a href="/Person/Index/828612" title="">Carroll, David</a></td>
+        <td>Member</td>
+        <td>Member</td>
+        <td>Member</td>
+        <td>0</td>
+    </tr>
+    <tr rowtype="True" >
+        <td align="center"><input type="checkbox" pid="819918"  class="atck" disabled="disabled" /></td>
+        <td align="center" class="showreg" style="display:none"><input type="checkbox" pid="819918"  class="rgck" disabled="disabled" /></td>
+        <td class="name"><a href="/Person/Index/819918" title="">Worrell, Karen</a></td>
+        <td>Member</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr rowtype="False" class=visitor>
+        <td align="center"><input type="checkbox" pid="5"  class="atck" disabled="disabled" /></td>
+        <td align="center" class="showreg" style="display:none"><input type="checkbox" pid="5" checked=checked class="rgck" disabled="disabled" /></td>
+        <td class="name"><a href="/Person/Index/5" title="">Acosta, John</a></td>
+        <td></td>
+        <td>Visitor</td>
+        <td>New Visitor</td>
+        <td>0</td>
+    </tr>
+</tbody>
+</table>
+<div id="visitorDialog" title="Add Visitors">
+<iframe style="width:100%;height:99%;border-width:0px;"></iframe>
+</div>
+
+        </div>
+    </div>
+    <div id="ChooseLabelType" class="modalPopup" style="display: none; width: 400px;
+        padding: 10px">
+        <table>
+            <tr>
+                <td style="margin: 3px; border: solid thin black" nowrap="nowrap">
+                    <input type="radio" id="addressedto1" name="addressedto" value="Individual" checked="checked"
+                        title="Addressed to individuals" />
+                    Individual<br />
+                    <input type="radio" id="addressedto2" name="addressedto" value="Family" title="Addressed as a family when there are children" />
+                    Family<br />
+                    <input type="radio" id="addressedto6" name="addressedto" value="FamilyMembers" title="Includes entire Family as individuals" />
+                    Family Members<br />
+                    <input type="radio" id="addressedto3" name="addressedto" value="CouplesBoth" title="Addressed to a couple, if both are in selection" />
+                    Couples (both)<br />
+                    <input type="radio" id="addressedto4" name="addressedto" value="CouplesEither" title="Addressed to a couple, if one or both are in selection" />
+                    Couples (either)<br />
+                    <input type="radio" id="addressedto5" name="addressedto" value="ParentsOf" title="Addressed to parents or parent" />
+                    Parents Of<br />
+                </td>
+                <td>
+                    <input type="checkbox" id="UseTitle" name="UseTitle" />
+                    Use Titles<br />
+                    <input type="checkbox" id="UsePhone" name="UsePhone" />
+                    Include Phone
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <input id="cmdOK" type="button" value="OK" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="ExportStartEnd" class="modalDiv dialog" style="display: none">
+        <table>
+        <tr><th colspan="2">Select a date range</th></tr>
+        <tr><th>Start Date</th><td><input id="startdt" type="text"  class='datepicker' /></td></tr>
+        <tr><th>End Date</th><td><input id="enddt" type="text" class='datepicker' /></td></tr>
+        <tr><td align="right" colspan="2">
+            <a class="bt" id="ExportStartEndRun" href="#"> run </a></td>
+        </tr>
+        </table>
+    </div>
+    <div id="AddDialog">
+    <iframe id="AddDialogiframe" style="width:100%;height:99%;border-width:0px"></iframe>
+    </div>
+    
+
+</body>
+</html>
+

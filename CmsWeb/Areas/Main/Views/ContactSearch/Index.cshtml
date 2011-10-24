@@ -1,0 +1,101 @@
+﻿@using UtilityExtensions
+@model CmsWeb.Models.ContactSearchModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        tr.visitor td
+        {
+            font-weight:bold;
+        }
+        .hidden
+        {
+            visibility:hidden;
+        }
+    </style>
+}
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+            .Add("/Scripts/ContactSearch.js")
+        .Render("/Content/ContactSearch_#.js")
+)
+<table><tr><td>
+<div class="roundbox floatleft">
+    <form>
+    <table cellspacing="5">
+        <tbody>
+        <tr><td colspan="2"><h2>Contacts</h2></td></tr>
+        <tr>
+            <th align="right">Contactee Name:</th>
+            <td>@Html.TextBoxFor(vv => vv.ContacteeName, new { title="Part of the Contactees Name" })</td>
+        </tr>
+        <tr>
+            <th align="right">Contactor Name:</th>
+            <td>@Html.TextBoxFor(vv => vv.ContactorName, new { title="Part of the Contactors Name" })</td>
+        </tr>
+        <tr>
+            <th align="right">Contact Start Date:</th>
+            <td>@Html.TextBoxFor(vv => vv.StartDate)</td>
+        </tr>
+        <tr>
+            <th align="right">Contact End Date:</th>
+            <td>@Html.TextBoxFor(vv => vv.EndDate)</td>
+        </tr>
+        <tr>
+            <th align="right">Contact Type:</th>
+            <td>@Html.DropDownListFor(vv => vv.ContactType, Model.ContactTypes())</td>
+        </tr>
+        <tr>
+            <th align="right">Contact Reason:</th>
+            <td>@Html.DropDownListFor(vv => vv.ContactReason, Model.ContactReasons())</td>
+        </tr>
+        <tr>
+            <th align="right">Ministry:</th>
+            <td>@Html.DropDownListFor(vv => vv.Ministry, Model.Ministries())</td>
+        </tr>
+        <tr>
+            <td>Count: @Model.Count().ToString("N") </td>
+            <td align="right">
+                <a id="NewSearch" class="bt">Clear</a>
+                <a id="Search" class="bt">Search</a>
+            </td>
+        </tr>
+    </tbody>
+</table></form>
+</div></td>
+<td width="2em"> &nbsp; </td>
+<td valign="top">
+<div id="buttondiv" class="dropdown" style="font-size:1.2em;margin-top:2em;margin-left: 2em;">
+<div><a href="#">Queries</a></div>
+<div class="sublinks">
+    <a href="/Reports/PastAttendee/" target="_blank">Recent Attendance Report</a>
+</div>
+<div style="border-bottom: 4px solid #ddd"></div>
+</div>
+</td>
+</tr>
+</table>
+<hr />
+<table class="grid">
+<thead>
+    <tr>
+        <th>Date</th>
+        <th>Reason</th>
+        <th>Type</th>
+        <th>Contactees</th>
+    </tr>
+</thead>
+<tbody>
+@foreach (var c in Model.ContactList())
+{
+    <tr>
+        <td>@c.ContactDate.ToString("d")</td>
+        <td>@c.ContactReason</td>
+        <td>@c.TypeOfContact</td>
+        <td>@c.ContacteeList</td>
+    </tr>
+}
+</tbody>
+</table>

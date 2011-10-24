@@ -492,6 +492,10 @@ namespace CmsData
                     return Expressions.RecInterestedCoaching(parm,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.RegisteredForMeetingId:
+                    return Expressions.RegisteredForMeetingId(parm,
+                               CompType,
+                               c.TextValue.ToInt());
                 // S -------------------------
                 case QueryType.SavedQuery:
                     return Expressions.SavedQuery(parm, Db,

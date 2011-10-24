@@ -185,7 +185,6 @@
     <Compile Include="BlogCategoryController.cs" />
     <Compile Include="BlogComment.cs" />
     <Compile Include="BlogPost.cs" />
-    <Compile Include="BundleHeader.cs" />
     <Compile Include="CMSMembershipProvider.cs" />
     <Compile Include="CMSRoleProvider.cs" />
     <Compile Include="Codes.cs" />

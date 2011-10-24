@@ -56,12 +56,37 @@
         });
         return false;
     });
-    //    if ($("#ui-widget-iframe").length == 0) {
-    //        $('<div id="ui-widget-iframe-outer"><iframe id="ui-widget-iframe" src="" frameborder="0" /></div>')
-    //		.appendTo(document.body)
-    //		.hide();
-    //    }
 
+    $.extraEditable = function () {
+        $('.editarea').editable('/Person/EditExtra/', {
+            type: 'textarea',
+            cancel: 'Cancel',
+            submit: 'OK',
+            indicator: '<img src="/images/loading.gif">',
+            tooltip: 'Click to edit...'
+        });
+        $(".clickEdit").editable("/Person/EditExtra/", {
+            indicator: "<img src='/images/loading.gif'>",
+            tooltip: "Click to edit...",
+            style: 'display: inline',
+            width: '300px',
+            height: 25,
+            submit: 'OK'
+        });
+    }
+    $.getTable = function (f, q) {
+        q = q || f.serialize();
+        $.post(f.attr('action'), q, function (ret) {
+            $(f).html(ret).ready(function () {
+                $('table.grid > tbody > tr:even', f).addClass('alt');
+                //$('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
+                $('.bt').button();
+                $(".datepicker").datepicker();
+                $.extraEditable();
+            });
+        });
+        return false;
+    }
     $('#memberDialog').dialog({
         title: 'Member Dialog',
         bgiframe: true,
@@ -115,9 +140,17 @@
         });
     });
     $("#system-link").click(function () {
-        $("#system-tab form").each(function () {
-            $.showTable($(this));
-        });
+        $.showTable($("#extras-tab form"));
+        $.extraEditable();
+    });
+    $("#changes-link").click(function () {
+        $.showTable($("#changes-tab form"));
+    });
+    $("#duplicates-link").click(function () {
+        $.showTable($("#duplicates-tab form"));
+    });
+    $("#user-link").click(function () {
+        $.showTable($("#user-tab form"));
     });
     $('#family table.grid > tbody > tr:even').addClass('alt');
     $("#recreg-link").click(function () {
@@ -256,6 +289,44 @@
                 });
             }
         });
+    });
+    $("#newextravalue").live("click", function (ev) {
+        ev.preventDefault();
+        $("#newvalueform").dialog({
+            buttons: {
+                "Ok": function () {
+                    var v = $("input[name='typeval']:checked").val();
+                    $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: $("#fieldname").val(), type: v }, function (ret) {
+                        if (ret.startsWith("error"))
+                            alert(ret);
+                        else {
+                            $.getTable($("#extras-tab form"));
+                            $.extraEditable();
+                        }
+                    });
+                    $(this).dialog("close");
+                    $(this).dialog("destroy");
+                }
+            }
+        });
+        return false;
+    });
+    $("#deleteextra").live("click", function (ev) {
+        ev.preventDefault();
+                    $.post("/Person/DeleteExtra/" + $("#PeopleId").val(), { field: $("#fieldname").val() }, function (ret) {
+                        if (ret.startsWith("error"))
+                            alert(ret);
+                        else {
+                            $.getTable($("#extras-tab form"));
+                            $.extraEditable();
+                        }
+                    });
+                    $(this).dialog("close");
+                    $(this).dialog("destroy");
+                }
+            }
+        });
+        return false;
     });
 });
 function RebindMemberGrids(from) {
