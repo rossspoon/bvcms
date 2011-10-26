@@ -4,7 +4,9 @@
 @using UtilityExtensions
     <li><span class="keyword big tip" title="Registration Type
         |JoinOrganization: for a single organization registration
+        |AttendMeeting: NOT WORKING YET
         |UserSelectsOrganization: good for a single registration for multiple orgs (classes)
+        |UserSelectsOrganization (div style): same as above but deprecated
         |ComputeOrganizationByAge: good for recreation leagues. Uses Birthday and Gender
         |ManageSubscriptions: allows to select multiple organizations
         |OnlineGiving: creates contribution records
@@ -38,15 +40,9 @@
         |This is used on the master organization 
         |and will become the dropdown for 'User Chooses Organization'">
         Organization Pick List:</span>
-        <a id="orgpicklist" href="/Organization/OrgPickList">
-        <div class="block border">
-        <b>choose organizations</b>
-        @foreach (var o in CmsData.RegSettings.OrganizationsFromIdString(Model.org))
-        {
-            <div>@o.OrganizationName</div>
-        }
+        <div id="orgpickdiv" class="block border">
+        @Html.Partial("OrgPickList2", Model)
         </div>
-        </a>
     </li>
     <li><span class="keyword big tip" title="Max Limit
         |This will cause the class to go into a 'class filled' state 

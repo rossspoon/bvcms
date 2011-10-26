@@ -50,6 +50,8 @@ namespace CmsWeb.Models
         }
         public bool UserSelectsOrganization()
         {
+            if (masterorgid.HasValue && masterorg.RegistrationTypeId == RegistrationTypeCode.UserSelectsOrganization2)
+                return true;
             return RegistrationType(RegistrationTypeCode.UserSelectsOrganization);
         }
         public bool ComputesOrganizationByAge()
@@ -101,6 +103,29 @@ namespace CmsWeb.Models
                 //if(_org != null && _settings == null)
                 //    ParseSettings();
                 return _org;
+            }
+        }
+        [NonSerialized]
+        private CmsData.Organization _masterorg;
+        public CmsData.Organization masterorg
+        {
+            get
+            {
+                if (_masterorg != null)
+                    return _masterorg;
+                if (masterorgid.HasValue)
+                    _masterorg = DbUtil.Db.LoadOrganizationById(masterorgid.Value);
+                else
+                {
+                    if (org.RegistrationTypeId == CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2)
+                    {
+                        _masterorg = org;
+                        masterorgid = orgid;
+                        orgid = null;
+                        _org = null;
+                    }
+                }
+                return _masterorg;
             }
         }
         [NonSerialized]
@@ -219,15 +244,16 @@ namespace CmsWeb.Models
                 {
                     c = new Content();
                     c.Body = @"Hi {name},
-<p>You registered for {orgname} using a different email address than the one we have on record.
+<p>You registered for {org} using a different email address than the one we have on record.
 It is important that you call the church <strong>{phone}</strong> to update our records
 so that you will receive future important notices regarding this registration.</p>";
-                    c.Title = "{orgname}, different email address than one on record";
+                    c.Title = "{org}, different email address than one on record";
                 }
                 var msg = c.Body.Replace("{name}", person.Name);
-                msg = msg.Replace("{orgname}", orgname);
+                msg = msg.Replace("{first}", person.PreferredName);
+                msg = msg.Replace("{org}", orgname);
                 msg = msg.Replace("{phone}", phone.FmtFone());
-                var subj = c.Title.Replace("{orgname}", orgname);
+                var subj = c.Title.Replace("{org}", orgname);
                 DbUtil.Db.Email(fromemail,
                     person, Util.ToMailAddressList(regemail),
                     subj, msg, false);
@@ -239,7 +265,7 @@ so that you will receive future important notices regarding this registration.</
                 {
                     c = new Content();
                     c.Body = @"Hi {name},
-<p>You registered for {orgname}, and we found your record, 
+<p>You registered for {org}, and we found your record, 
 but there was no email address on your existing record in our database.
 If you would like for us to update your record with this email address or another,
 Please contact the church at <strong>{phone}</strong> to let us know.
@@ -248,12 +274,13 @@ you will receive future important notices regarding this registration.
 But we won't add that to your record without your permission.
 
 Thank you</p>";
-                    c.Title = "{orgname}, no email on your record";
+                    c.Title = "{org}, no email on your record";
                 }
                 var msg = c.Body.Replace("{name}", person.Name);
-                msg = msg.Replace("{orgname}", orgname);
+                msg = msg.Replace("{first}", person.PreferredName);
+                msg = msg.Replace("{org}", orgname);
                 msg = msg.Replace("{phone}", phone.FmtFone());
-                var subj = c.Title.Replace("{orgname}", orgname);
+                var subj = c.Title.Replace("{org}", orgname);
                 DbUtil.Db.Email(fromemail,
                     person, Util.ToMailAddressList(regemail),
                     subj, msg, false);

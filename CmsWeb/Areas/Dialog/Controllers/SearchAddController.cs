@@ -192,6 +192,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     return AddOrgMembers(id.Value, m, true);
                 case "visitor":
                     return AddVisitors(id.Value, m);
+                case "registered":
+                    return AddRegistered(id.Value, m);
                 case "contactee":
                     return AddContactees(id.Value, m);
                 case "contactor":
@@ -382,6 +384,24 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
             }
             return Json(new { close = true, how = "addselected", error = sb.ToString() });
+        }
+        private JsonResult AddRegistered(int id, SearchModel m)
+        {
+            if (id > 0)
+            {
+                var meeting = DbUtil.Db.Meetings.SingleOrDefault(me => me.MeetingId == id);
+                foreach (var p in m.List)
+                {
+                    var isnew = p.IsNew;
+                    AddPerson(p, m.List, OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
+                    if (isnew)
+                        p.person.CampusId = meeting.Organization.CampusId;
+                    Attend.MarkRegistered(DbUtil.Db, p.PeopleId.Value, id, true);
+                }
+                DbUtil.Db.SubmitChanges();
+                DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
+            }
+            return Json(new { close = true, how = "addselected" });
         }
         private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int Origin, int? EntryPoint)
         {

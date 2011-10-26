@@ -56,20 +56,6 @@ else if (msg.HasValue())
 }
 else
 { 
-    @Html.Raw(Util.PickFirst(Model.Instructions, @"
-<div class=""instructions login"">
-</div>
-<div class=""instructions find"">
-</div>
-<div class=""instructions select"">
-</div>
-<div class=""instructions other"">
-</div>
-<div class=""instructions submit"">
-</div>
-<div class=""instructions sorry"">
-</div>
-"))
 <form class="DisplayEdit" action="/OnlineReg/@(Model.AskDonation() ? "AskDonation" : "CompleteRegistration")/@Model.qtesting" method="post">
 @Html.Partial("Flow/List", Model) 
 </form>

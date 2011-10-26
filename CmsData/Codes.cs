@@ -128,7 +128,7 @@ namespace CmsData.Codes
     {
         public const int None = 0;
         public const int JoinOrganization = 1;
-        //public const int AttendMeeting = 2;
+        public const int AttendMeeting = 2;
         public const int UserSelectsOrganization = 3;
         public const int ComputeOrganizationByAge = 4;
         public const int CreateAccount = 5;
@@ -137,16 +137,17 @@ namespace CmsData.Codes
         public const int OnlineGiving = 8;
         public const int OnlinePledge = 9;
         public const int UserSelectsOrganization2 = 10;
+        public const int JoinAttendMeeting = 12;
         public static IEnumerable<KeyValuePair<int, string>> GetCodePairs()
         {
             yield return new KeyValuePair<int, string>(None, "Online Registration Not Allowed");
             yield return new KeyValuePair<int, string>(JoinOrganization, "Join Organization");
-            //yield return new KeyValuePair<int, string>(AttendMeeting, "Attend Meeting");
-            yield return new KeyValuePair<int, string>(UserSelectsOrganization, "User Selects Organization (div style)");
+            yield return new KeyValuePair<int, string>(AttendMeeting, "Attend Meeting");
+            yield return new KeyValuePair<int, string>(JoinAttendMeeting, "Attend Meeting, Join Org");
             yield return new KeyValuePair<int, string>(UserSelectsOrganization2, "User Selects Organization");
+            yield return new KeyValuePair<int, string>(UserSelectsOrganization, "User Selects Organization (div style)");
             yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "Compute Org By Birthday");
             yield return new KeyValuePair<int, string>(CreateAccount, "Create User");
-            yield return new KeyValuePair<int, string>(ChooseSlot, "Users Chooses Slot(day/time)");
             yield return new KeyValuePair<int, string>(ManageSubscriptions, "Manage Subscriptions");
             yield return new KeyValuePair<int, string>(OnlineGiving, "Online Giving");
             yield return new KeyValuePair<int, string>(OnlinePledge, "Online Pledge");

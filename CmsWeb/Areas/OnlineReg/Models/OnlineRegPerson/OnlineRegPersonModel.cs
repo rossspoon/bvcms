@@ -23,6 +23,13 @@ namespace CmsWeb.Models
         public int? divid { get; set; }
         public int? orgid { get; set; }
         public int? classid { get; set; }
+        [OptionalField]
+        private int? _Masterorgid;
+        public int? masterorgid
+        {
+            get { return _Masterorgid; }
+            set { _Masterorgid = value; }
+        }
 
         public string first { get; set; }
         [OptionalField]

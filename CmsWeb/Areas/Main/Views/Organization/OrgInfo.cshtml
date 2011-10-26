@@ -27,7 +27,8 @@
     </tr>
     <tr>
         <th align="right">Status:</th>
-        <td>@Html.CodeDesc("org.OrganizationStatusId", Model.OrgStatusList())</td>
+        <td>@Html.CodeDesc("org.OrganizationStatusId", Model.OrgStatusList())
+        </td>
     </tr>
     <tr>
         <th align="right">Leader Type:</th>
@@ -36,6 +37,7 @@
     <tr>
         <th align="right">Main Fellowship:</th>
         <td>@Html.CheckBoxReadonly(o.IsBibleFellowshipOrg)
+            | Master OnlineReg: @Html.CheckBoxReadonly(o.OrgPickList.HasValue())
 @if (User.IsInRole("Edit"))
 { 
         <a class="displayedit2 bt edit2" href="/Organization/OrgInfoEdit/@Model.OrganizationId">Edit</a>

@@ -59,9 +59,9 @@ namespace CmsWeb.Models
             if (UserSelectsOrganization())
                 if ((classid ?? 0) == 0)
                     if (IsFamily)
-                        ModelState.AddModelError("classidfam", "please choose a group/event");
+                        ModelState.AddModelError("classid", "please choose a group/event");
                     else
-                        ModelState.AddModelError("classidguest", "please choose a group/event");
+                        ModelState.AddModelError("classid", "please choose a group/event");
             if (ComputesOrganizationByAge() && !birthday.HasValue)
                 ModelState.AddModelError(inputname("dob"), "birthday required");
             if (orgid == Util.CreateAccountCode && age < 16)
@@ -126,9 +126,13 @@ Please call the church to resolve this before we can complete your account.<br /
                             }
 #endif
                         }
-                        else if (om != null && om.Organization.RegistrationTypeId != RegistrationTypeCode.ChooseSlot)
+                        else if (om != null && !(
+                               om.Organization.RegistrationTypeId == RegistrationTypeCode.ChooseSlot
+                            || om.Organization.RegistrationTypeId == RegistrationTypeCode.AttendMeeting
+                            || om.Organization.RegistrationTypeId == RegistrationTypeCode.JoinAttendMeeting
+                            ))
                         {
-#if DEBUG
+#if DEBUG2
 #else
                             ModelState.AddModelError(ErrorTarget, "This person is already registered");
                             IsValidForContinue = false;

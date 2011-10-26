@@ -34,7 +34,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (m.org == null && m.div == null && m.masterorg == null)
                 return Content("invalid registration");
 
-            if (m.org != null)
+            if (m.masterorg != null)
+            {
+                if (OnlineRegModel.UserSelectClasses(m.masterorg).Count() == 0)
+                    return Content("no classes available on this org");
+            }
+            else if (m.org != null)
             {
                 if ((m.org.RegistrationTypeId ?? 0) == RegistrationTypeCode.None)
                     return Content("no registration allowed on this org");
@@ -43,11 +48,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 if (OnlineRegModel.UserSelectClasses(m.divid).Count() == 0)
                     return Content("no registration allowed on this div");
-            }
-            else if (m.masterorg != null)
-            {
-                if (m.UserSelectClasses().Count() == 0)
-                    return Content("no classes available on this org");
             }
             m.URL = Request.Url.OriginalString;
 
@@ -161,6 +161,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 {
                     divid = m.divid,
                     orgid = m.orgid,
+                    masterorgid = m.masterorgid,
                     LoggedIn = m.UserPeopleId.HasValue,
                 });
             return View("Flow/List", m);
@@ -328,6 +329,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 divid = m.divid,
                 orgid = m.orgid,
+                masterorgid = m.masterorgid,
                 first = "Bethany",
                 last = "Carroll",
                 //bmon = 1,
@@ -343,6 +345,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 divid = m.divid,
                 orgid = m.orgid,
+                masterorgid = m.masterorgid,
                 LoggedIn = m.UserPeopleId.HasValue,
             });
 #endif

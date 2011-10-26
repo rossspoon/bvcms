@@ -470,7 +470,6 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> RegistrationTypeIds()
         {
             var q = from o in CmsData.Codes.RegistrationTypeCode.GetCodePairs()
-                    orderby o.Key
                     select new SelectListItem
                     {
                         Value = o.Key.ToString(),

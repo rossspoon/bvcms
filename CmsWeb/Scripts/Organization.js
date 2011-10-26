@@ -428,7 +428,7 @@ function UpdateSelectedUsers(topid) {
 }
 function UpdateSelectedOrgs(list) {
     $.post("/Organization/UpdateOrgIds", {list: list}, function (ret) {
-        $("#orgpicklist").html(ret);
+        $("#orgpickdiv").html(ret);
         $("#orgsDialog").dialog("close");
     });
 }

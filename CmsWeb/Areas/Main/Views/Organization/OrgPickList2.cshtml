@@ -1,8 +1,6 @@
 ﻿@model CmsData.RegSettings
-<div class="block border">
-<b>choose organizations</b>
-@foreach (var o in CmsData.RegSettings.OrganizationsFromIdString(Model.org))
-{
-    <div>@o.OrganizationName</div>
-}
-</div>
+        <b><a id="orgpicklist" href="/Organization/OrgPickList">Choose Organizations</a></b>
+        @foreach (var o in CmsData.RegSettings.OrganizationsFromIdString(Model.org))
+        {
+            <div><a href="/Organization/Index/@o.OrganizationId" target="otherorg">@o.OrganizationName</a></div>
+        }

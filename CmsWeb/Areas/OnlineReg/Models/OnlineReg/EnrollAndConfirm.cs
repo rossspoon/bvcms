@@ -15,6 +15,11 @@ namespace CmsWeb.Models
     {
         public void EnrollAndConfirm()
         {
+            if (masterorgid.HasValue)
+            {
+                EnrollAndConfirm2();
+                return;
+            }
             var Db = DbUtil.Db;
             var ti = Transaction;
             // make a list of email addresses
@@ -135,7 +140,9 @@ namespace CmsWeb.Models
             Db.SubmitChanges();
 
             string DivisionName = null;
-            if (div != null)
+            if (masterorgid.HasValue)
+                DivisionName = masterorg.OrganizationName;
+            else if (div != null)
                 DivisionName = div.Name;
             else if (org != null)
                 DivisionName = org.DivisionName;
@@ -158,6 +165,12 @@ namespace CmsWeb.Models
                 EmailSubject = Util.PickFirst(os.Subject, "no subject");
                 EmailMessage = Util.PickFirst(os.Body, "no body");
             }
+            else if (masterorgid.HasValue && settings[masterorgid.Value].Body.HasValue())
+            {
+                var os = settings[masterorgid.Value];
+                EmailSubject = Util.PickFirst(os.Subject, "no subject");
+                EmailMessage = Util.PickFirst(os.Body, "no body");
+            }
             else if (div != null)
             {
                 EmailSubject = div.EmailSubject;
@@ -167,6 +180,8 @@ namespace CmsWeb.Models
             List<Person> NotifyIds = null;
             if (div != null)
                 NotifyIds = Db.StaffPeopleForDiv(div.Id);
+            else if (masterorgid.HasValue)
+                NotifyIds = Db.StaffPeopleForOrg(masterorg.OrganizationId);
             else if (org != null)
                 NotifyIds = Db.StaffPeopleForOrg(org.OrganizationId);
             var notify = NotifyIds[0];
@@ -182,7 +197,6 @@ namespace CmsWeb.Models
 
             message = MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
 
-            message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
             message = message.Replace("{tickets}", List[0].ntickets.ToString());
             message = message.Replace("{details}", details.ToString());
             message = message.Replace("{paid}", amtpaid.ToString("c"));
@@ -232,13 +246,138 @@ namespace CmsWeb.Models
                     Db.StaffPeopleForOrg(p.org.OrganizationId), Header,
 @"{0} has registered for {1}<br/>
 Feepaid for this registrant: {2:C}<br/>
-Total Feepaid for this registration: {3:C}<br/>
+Total Fee paid for this registration: {3:C}<br/>
 AmountDue: {4:C}<br/>
 <pre>{5}</pre>".Fmt(p.person.Name,
                Header,
                amtpaid,
                p.TotalAmount(),
                p.AmountDue(),
+               p.PrepareSummaryText(ti)));
+            }
+        }
+        private void EnrollAndConfirm2()
+        {
+            var Db = DbUtil.Db;
+            var ti = Transaction;
+            for (var i = 0; i < List.Count; i++)
+            {
+                var p = List[i];
+                if (p.IsNew)
+                {
+                    Person uperson = null;
+                    switch (p.whatfamily)
+                    {
+                        case 1:
+                            uperson = Db.LoadPersonById(UserPeopleId.Value);
+                            break;
+                        case 2:
+                            if (i > 0)
+                                uperson = List[i - 1].person;
+                            break;
+                    }
+                    p.AddPerson(uperson, p.org.EntryPointId ?? 0);
+                }
+            }
+
+            var amtpaid = ti.Amt ?? 0;
+
+            var pids2 = new List<TransactionPerson>();
+            foreach (var p in List)
+            {
+                if (p.PeopleId == null)
+                    return;
+                pids2.Add(new TransactionPerson
+                {
+                    PeopleId = p.PeopleId.Value,
+                    Amt = p.AmountToPay() + p.AmountDue(),
+                    OrgId = orgid,
+                });
+            }
+
+            ti.TransactionDate = DateTime.Now;
+
+            var pids = pids2.Select(pp => pp.PeopleId);
+
+            for (var i = 0; i < List.Count; i++)
+            {
+                var p = List[i]; 
+                
+                var q = from pp in Db.People
+                                         where pids.Contains(pp.PeopleId)
+                                         where pp.PeopleId != p.PeopleId
+                                         select pp.Name;
+                var others = string.Join(",", q.ToArray());
+
+                var om = p.Enroll(ti, null, testing, others);
+                om.RegisterEmail = p.email;
+
+                int grouptojoin = p.setting.GroupToJoin.ToInt();
+                if (grouptojoin > 0)
+                    OrganizationMember.InsertOrgMembers(Db, grouptojoin, p.PeopleId.Value, 220, DateTime.Now, null, false);
+
+                OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
+                    Db.StaffEmailForOrg(p.org.OrganizationId),
+                    p.fromemail,
+                    p.org.OrganizationName,
+                    p.org.PhoneNumber);
+                if (p.CreatingAccount == true)
+                    p.CreateAccount();
+
+                string DivisionName = masterorg.OrganizationName;
+                string OrganizationName = p.org.OrganizationName;
+
+                string EmailSubject = null;
+                string message = null;
+
+                if (settings[p.orgid.Value].Body.HasValue())
+                {
+                    var os = settings[p.orgid.Value];
+                    EmailSubject = Util.PickFirst(os.Subject, "no subject");
+                    message = os.Body;
+                }
+                else
+                {
+                    var os = settings[masterorgid.Value];
+                    EmailSubject = Util.PickFirst(os.Subject, "no subject");
+                    message = Util.PickFirst(os.Body, "no body");
+                }
+
+                List<Person> NotifyIds = null;
+                NotifyIds = Db.StaffPeopleForOrg(p.org.OrganizationId);
+                NotifyIds.AddRange(Db.StaffPeopleForOrg(masterorg.OrganizationId));
+                if (NotifyIds.Count() == 0)
+                    NotifyIds = Db.AdminPeople();
+                var notify = NotifyIds[0];
+
+                string Location = p.org.Location;
+                if (!Location.HasValue())
+                    Location = masterorg.Location;
+
+                message = MessageReplacements(p.person, DivisionName, OrganizationName, Location, message);
+
+                string details = p.PrepareSummaryText(ti);
+                message = message.Replace("{phone}", p.org.PhoneNumber.FmtFone7());
+                message = message.Replace("{tickets}", List[0].ntickets.ToString());
+                message = message.Replace("{details}", details);
+                message = message.Replace("{paid}", p.TotalAmount().ToString("c"));
+                message = message.Replace("{sessiontotal}", amtpaid.ToString("c"));
+                message = message.Replace("{participants}", details);
+
+                // send confirmations
+                Db.Email(notify.FromEmail, p.person, EmailSubject, message);
+                // notify the staff
+                Db.Email(Util.PickFirst(p.person.FromEmail, notify.FromEmail),
+                    NotifyIds, Header,
+@"{0} has registered for {1}<br/>
+Feepaid for this registrant: {2:C}<br/>
+Others in this registration session: {3:C}<br/>
+Total Fee paid for this registration session: {4:C}<br/>
+<pre>{5}</pre>".Fmt(p.person.Name,
+               Header,
+               p.TotalAmount(),
+               others,
+               amtpaid,
                p.PrepareSummaryText(ti)));
             }
         }
@@ -325,6 +464,7 @@ AmountDue: {4:C}<br/>
             var sb = new StringBuilder();
             sb.AppendFormat("orgid: {0}<br/>\n", this.orgid);
             sb.AppendFormat("divid: {0}<br/>\n", this.divid);
+            sb.AppendFormat("masterorgid: {0}<br/>\n", this.masterorgid);
             sb.AppendFormat("userid: {0}<br/>\n", this.UserPeopleId);
             foreach (var li in List)
             {

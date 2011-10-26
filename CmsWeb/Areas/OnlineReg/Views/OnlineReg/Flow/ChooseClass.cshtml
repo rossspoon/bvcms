@@ -5,4 +5,5 @@
    <option value="@i.Id" @(i.selected ? "selected=selected" : "") @(i.filled ? "disabled=disabled" : "")>@i.Text</option> 
 }
    </select>
-   @Html.ValidationMessage("classid")
+<div>@Html.ValidationMessage("classid")</div>
+

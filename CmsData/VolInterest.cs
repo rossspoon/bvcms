@@ -135,8 +135,8 @@ namespace CmsData
                 {
                     var acr = (from s in DbUtil.Db.OrgSchedules
                                where s.OrganizationId == oi.OrgId
-                               where s.SchedTime.Value.TimeOfDay == meeting.MeetingDate.Value.TimeOfDay
-                               where s.SchedDay == (int)meeting.MeetingDate.Value.DayOfWeek
+                               where s.SchedTime.Value.TimeOfDay == dt.TimeOfDay
+                               where s.SchedDay == (int)dt.DayOfWeek
                                select s.AttendCreditId).SingleOrDefault();
                     meeting = new CmsData.Meeting
                     {

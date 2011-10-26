@@ -27,7 +27,7 @@
     @Html.Hidden("refreshed", "no")
     @Html.Hidden("OrganizationId")
 <table class="roundbox floatleft">
-<tr><td><h2>@o.OrganizationName@(o.LeaderId.HasValue? ",":"") @o.LeaderName</h2></td></tr>
+<tr><td><h2>@o.OrganizationName@(o.LeaderId.HasValue? ",":"") <span style="font-size:12px">@o.LeaderName</span></h2></td></tr>
 <tr><td>
 <form id="orginfoform" action="/Organization/OrgInfoUpdate/@Model.OrganizationId" class="DisplayEdit" method="post">
     @Html.Partial("OrgInfo", Model) 

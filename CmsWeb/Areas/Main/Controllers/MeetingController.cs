@@ -115,30 +115,9 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         [Authorize(Roles = "Attendance")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult MarkRegistered(int PeopleId, int MeetingId, bool Present)
+        public ActionResult MarkRegistered(int PeopleId, int MeetingId, bool Registered)
         {
-            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == MeetingId);
-            var a = DbUtil.Db.Attends.SingleOrDefault(aa => aa.PeopleId == PeopleId && aa.MeetingId == MeetingId);
-            if (a == null)
-            {
-                a = new Attend
-                {
-                    OrganizationId = m.OrganizationId,
-                    PeopleId = PeopleId,
-                    MeetingDate = m.MeetingDate.Value,
-                    AttendanceFlag = false,
-                    CreatedDate = Util.Now,
-                    CreatedBy = Util.UserId1,
-                    AttendanceTypeId = 0,
-                    BFCAttendance = null,
-                    OtherAttends = 0,
-                    MemberTypeId = 0,
-                    OtherOrgId = 0,
-                };
-                DbUtil.Db.Attends.InsertOnSubmit(a);
-            }
-            a.Registered = Present;
-            DbUtil.Db.SubmitChanges();
+            Attend.MarkRegistered(DbUtil.Db, PeopleId, MeetingId, Registered);
             return Content("ok");
         }
         [Authorize(Roles = "Attendance")]

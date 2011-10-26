@@ -16,7 +16,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             ViewData["gobackurl"] = m2.URL;
             Session["gobackurl"] = m2.URL;
             ViewData["timeout"] = INT_timeout;
-            SetHeaders(m2.orgid ?? m2.divid ?? 0);
+            SetHeaders(m2.orgid ?? m2.masterorgid ?? m2.divid ?? 0);
         }
         private void SetHeaders(int id)
         {

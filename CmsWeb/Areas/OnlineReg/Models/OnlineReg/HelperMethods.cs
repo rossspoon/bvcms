@@ -111,7 +111,7 @@ namespace CmsWeb.Models
             if (divid != null)
                 return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
                    o.RegistrationClosed == true);
-            if (masterorg != null)
+            if (masterorgid.HasValue)
                 return masterorg.RegistrationClosed == true || masterorg.OrganizationStatusId == OrgStatusCode.Inactive;
             return org.RegistrationClosed == true || org.OrganizationStatusId == OrgStatusCode.Inactive;
         }
@@ -123,7 +123,7 @@ namespace CmsWeb.Models
         }
         public bool UserSelectsOrganization()
         {
-            if (masterorg != null)
+            if (masterorgid.HasValue)
                 return true;
             if (divid == null)
                 return false;
@@ -142,11 +142,14 @@ namespace CmsWeb.Models
                     || setting.AllowOnlyOne == true || setting.AskTickets == true
                     || setting.GiveOrgMembAccess == true;
             }
-
-            var q = from o in settings.Values
-                    where o.AllowOnlyOne == true || o.AskTickets == true
-                    select o;
-            return q.Count() > 0;
+            if (settings != null)
+            {
+                var q = from o in settings.Values
+                        where o.AllowOnlyOne == true || o.AskTickets == true
+                        select o;
+                return q.Count() > 0;
+            }
+            return false;
         }
         public bool ChoosingSlots()
         {
@@ -168,11 +171,7 @@ namespace CmsWeb.Models
         {
             if (org != null)
                 return org.RegistrationTypeId == RegistrationTypeCode.OnlinePledge;
-
-            var q = from o in GetOrgsInDiv()
-                    where o.RegistrationTypeId == RegistrationTypeCode.OnlinePledge
-                    select o;
-            return q.Count() > 0;
+            return false;
         }
         public bool AskDonation()
         {
@@ -192,7 +191,7 @@ namespace CmsWeb.Models
         {
             get
             {
-                if (masterorg != null)
+                if (masterorgid.HasValue)
                     return masterorg.OrganizationName;
                 if (div != null)
                     return div.Name;
@@ -207,6 +206,27 @@ namespace CmsWeb.Models
         {
             get
             {
+                if (masterorg != null)
+                {
+                    var setting1 = settings[masterorg.OrganizationId];
+                    var setting2 = setting1;
+                    if (last != null && last.org != null)
+                        setting1 = settings[last.org.OrganizationId];
+                    return @"
+<div class=""instructions login"">{0}</div>
+<div class=""instructions select"">{1}</div>
+<div class=""instructions find"">{2}</div>
+<div class=""instructions options"">{3}</div>
+<div class=""instructions submit"">{4}</div>
+<div class=""instructions sorry"">{5}</div>
+"                   .Fmt(Util.PickFirst(setting1.InstructionLogin, setting2.InstructionLogin),
+                         Util.PickFirst(setting1.InstructionSelect, setting2.InstructionSelect),
+                         Util.PickFirst(setting1.InstructionFind, setting2.InstructionFind),
+                         Util.PickFirst(setting1.InstructionOptions, setting2.InstructionOptions),
+                         Util.PickFirst(setting1.InstructionSubmit, setting2.InstructionSubmit),
+                         Util.PickFirst(setting1.InstructionSorry, setting2.InstructionSorry)
+                         );
+                }
                 if (org != null)
                 {
                     var setting = settings[org.OrganizationId];
@@ -266,6 +286,7 @@ namespace CmsWeb.Models
                 PeopleId = id,
                 phone = Util.PickFirst(person.CellPhone, person.HomePhone),
                 orgid = orgid,
+                masterorgid = masterorgid,
                 divid = divid,
                 classid = classid,
                 IsFamily = true,

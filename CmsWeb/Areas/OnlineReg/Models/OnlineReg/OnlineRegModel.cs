@@ -62,12 +62,13 @@ namespace CmsWeb.Models
                 foreach (var i in q)
                     list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
             }
-            else if (masterorg != null)
+            else if (masterorgid.HasValue)
             {
-                var q = from o in UserSelectClasses()
+                var q = from o in UserSelectClasses(masterorg)
                         select new { o.OrganizationId, o.RegSetting };
                 foreach (var i in q)
                     list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
+                list[masterorg.OrganizationId] = new RegSettings(masterorg.RegSetting, DbUtil.Db, masterorg.OrganizationId);
             }
             else if (org == null)
                 return;
@@ -90,10 +91,13 @@ namespace CmsWeb.Models
                 if (_masterorg != null)
                     return _masterorg;
                 if (masterorgid.HasValue)
+                {
                     _masterorg = DbUtil.Db.LoadOrganizationById(masterorgid.Value);
+                    ParseSettings();
+                }
                 else
                 {
-                    if (org.RegistrationTypeId == CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2)
+                    if (org != null && org.RegistrationTypeId == CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2)
                     {
                         _masterorg = org;
                         masterorgid = orgid;
@@ -202,24 +206,25 @@ namespace CmsWeb.Models
             return _meeting;
         }
 
-        public OnlineRegModel()
-        {
-        }
-        protected OnlineRegModel(SerializationInfo si, StreamingContext context)
-        {
-            UserPeopleId = (int?)si.GetValue("UserPeopleId", typeof(int?));
-            URL = si.GetString("URL");
-            classid = (int?)si.GetValue("classid", typeof(int?));
-            divid = (int?)si.GetValue("divid", typeof(int?));
-            nologin = si.GetBoolean("nologin");
-            orgid = (int?)si.GetValue("orgid", typeof(int?));
-            testing = si.GetBoolean("testing");
-            username = si.GetString("username");
-        }
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            throw new NotImplementedException();
-        }
+        //public OnlineRegModel()
+        //{
+        //}
+        //protected OnlineRegModel(SerializationInfo si, StreamingContext context)
+        //{
+        //    UserPeopleId = (int?)si.GetValue("UserPeopleId", typeof(int?));
+        //    URL = si.GetString("URL");
+        //    classid = (int?)si.GetValue("classid", typeof(int?));
+        //    divid = (int?)si.GetValue("divid", typeof(int?));
+        //    masterorgid = (int?)si.GetValue("masterorgid", typeof(int?));
+        //    nologin = si.GetBoolean("nologin");
+        //    orgid = (int?)si.GetValue("orgid", typeof(int?));
+        //    testing = si.GetBoolean("testing");
+        //    username = si.GetString("username");
+        //}
+        //public void GetObjectData(SerializationInfo info, StreamingContext context)
+        //{
+        //    throw new NotImplementedException();
+        //}
         public void CreateList()
         {
 #if DEBUG
@@ -229,6 +234,7 @@ namespace CmsWeb.Models
                 {
                     divid = divid,
                     orgid = orgid,
+                    masterorgid = masterorgid,
                     first = "David",
                     last = "Carroll",
                     dob = "5/30/52",
@@ -244,6 +250,7 @@ namespace CmsWeb.Models
                 {
                     divid = divid,
                     orgid = orgid,
+                    masterorgid = masterorgid,
                     LoggedIn = false,
                 }
             };

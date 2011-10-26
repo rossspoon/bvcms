@@ -261,5 +261,34 @@ namespace CmsData
                     select mt.AttendanceTypeId;
             return q.Single();
         }
+        public static void MarkRegistered(int PeopleId, int MeetingId, bool registered)
+        {
+            MarkRegistered(DbUtil.Db, PeopleId, MeetingId, registered);
+        }
+        public static void MarkRegistered(CMSDataContext Db, int PeopleId, int MeetingId, bool registered)
+        {
+            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == MeetingId);
+            var a = Db.Attends.SingleOrDefault(aa => aa.PeopleId == PeopleId && aa.MeetingId == MeetingId);
+            if (a == null)
+            {
+                a = new Attend
+                {
+                    OrganizationId = m.OrganizationId,
+                    PeopleId = PeopleId,
+                    MeetingDate = m.MeetingDate.Value,
+                    AttendanceFlag = false,
+                    CreatedDate = Util.Now,
+                    CreatedBy = Util.UserId1,
+                    AttendanceTypeId = 0,
+                    BFCAttendance = null,
+                    OtherAttends = 0,
+                    MemberTypeId = 0,
+                    OtherOrgId = 0,
+                };
+                Db.Attends.InsertOnSubmit(a);
+            }
+            a.Registered = registered;
+            Db.SubmitChanges();
+        }
     }
 }

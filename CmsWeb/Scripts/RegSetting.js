@@ -41,9 +41,9 @@
         $("ul.enablesort ul.sort", f).sortable();
         $("ul.noedit input", f).attr("disabled", "disabled");
         $("ul.noedit select", f).attr("disabled", "disabled");
-        $("ul.noedit a", f).removeAttr("href");
-        $("ul.noedit a", f).css("color", "grey");
-        $("ul.noedit a", f).unbind("click");
+        $("ul.noedit a", f).not('[target="otherorg"]').removeAttr("href");
+        $("ul.noedit a", f).not('[target="otherorg"]').css("color", "grey");
+        $("ul.noedit a", f).not('[target="otherorg"]').unbind("click");
     };
     $.regsettingeditclick();
     $("a.editor").live("click", function (ev) {

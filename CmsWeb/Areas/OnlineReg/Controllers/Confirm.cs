@@ -250,7 +250,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 ViewData["email"] = m.List[0].person.EmailAddress;
             else
                 ViewData["email"] = m.List[0].email;
-            ViewData["orgname"] = m.org == null ? m.div.Name : m.org.OrganizationName;
+            ViewData["orgname"] = m.org != null ? m.org.OrganizationName 
+                                : m.masterorgid.HasValue ? m.masterorg.OrganizationName
+                                : m.div.Name;
             ViewData["message"] = t.Message;
 
             SetHeaders(m);

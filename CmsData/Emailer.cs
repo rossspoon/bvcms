@@ -112,10 +112,14 @@ namespace CmsData
                      orderby p.PeopleId == a[0] descending
                      select p;
             if (q2.Count() == 0)
-                return (from p in CMSRoleProvider.provider.GetAdmins()
-                        orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
-                        select p).ToList();
+                return AdminPeople();
             return q2.ToList();
+        }
+        public List<Person> AdminPeople()
+        {
+            return (from p in CMSRoleProvider.provider.GetAdmins()
+                    orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
+                    select p).ToList();
         }
         public string StaffEmailForOrg(int orgid)
         {
@@ -136,20 +140,13 @@ namespace CmsData
         }
         public List<Person> StaffPeopleForOrg(int orgid)
         {
-            var q = from o in Organizations
-                    where o.OrganizationId == orgid
-                    where o.NotifyIds != null && o.NotifyIds != ""
-                    select o.NotifyIds;
-            var pids = string.Join(",", q);
-            var a = pids.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
+            var org = LoadOrganizationById(orgid);
+            var pids = org.NotifyIds ?? "";
+            var a = pids.Split(',').Select(ss => ss.ToInt()).ToArray();
             var q2 = from p in People
                      where a.Contains(p.PeopleId)
-                     orderby p.PeopleId == a[0] descending
+                     orderby p.PeopleId == a.FirstOrDefault() descending
                      select p;
-            if (q2.Count() == 0)
-                return (from p in CMSRoleProvider.provider.GetAdmins()
-                        orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
-                        select p).ToList();
             return q2.ToList();
         }
         public Person UserPersonFromEmail(string email)
@@ -246,10 +243,10 @@ namespace CmsData
                     if (aa.Count > 0)
                         Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, pid);
                     else
-                        Util.SendMsg(SysFromEmail, CmsHost, From, 
-                            "(no email address) " + emailqueue.Subject, 
-                            "<p style='color:red'>You are receiving this because there is no email address for {0}({1}). You should probably contact them since they were probably expecting this information.</p>\n{2}".Fmt(p.Name, p.PeopleId, text), 
-                            Util.ToMailAddressList(From), 
+                        Util.SendMsg(SysFromEmail, CmsHost, From,
+                            "(no email address) " + emailqueue.Subject,
+                            "<p style='color:red'>You are receiving this because there is no email address for {0}({1}). You should probably contact them since they were probably expecting this information.</p>\n{2}".Fmt(p.Name, p.PeopleId, text),
+                            Util.ToMailAddressList(From),
                             emailqueue.Id, pid);
                     emailqueueto.Sent = DateTime.Now;
                     emailqueue.Sent = DateTime.Now;

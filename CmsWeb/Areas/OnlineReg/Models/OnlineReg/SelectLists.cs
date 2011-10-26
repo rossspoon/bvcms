@@ -36,7 +36,7 @@ namespace CmsWeb.Models
                     select o;
             return q;
         }
-        public IQueryable<Organization> UserSelectClasses()
+        public static IQueryable<Organization> UserSelectClasses(Organization masterorg)
         {
             var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
 
@@ -45,9 +45,10 @@ namespace CmsWeb.Models
                     select o;
             return q;
         }
-        public List<Organization> OrderedClasses(List<Organization> list)
+        public static List<Organization> OrderedClasses(Organization masterorg)
         {
             var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
+            var list = UserSelectClasses(masterorg).ToList();
             var d = new Dictionary<int, int>();
             var n = 0;
             foreach (var i in cklist)
@@ -69,8 +70,8 @@ namespace CmsWeb.Models
         }
         public IEnumerable<ClassInfo> Classes()
         {
-            if (masterorg != null)
-                return Classes(classid ?? 0);
+            if (masterorgid.HasValue)
+                return Classes(masterorg, classid ?? 0);
             return Classes(divid, classid ?? 0);
         }
         public static List<ClassInfo> Classes(int? divid, int id)
@@ -83,7 +84,7 @@ namespace CmsWeb.Models
                         Id = o.OrganizationId,
                         Text = ClassName(o),
                         selected = o.OrganizationId == id,
-                        filled = hasroom
+                        filled = !hasroom
                     };
             var list = q.ToList();
             if (list.Count == 1)
@@ -91,16 +92,17 @@ namespace CmsWeb.Models
             list.Insert(0, new ClassInfo { Text = "Registration Options", Id = 0});
             return list;
         }
-        public List<ClassInfo> Classes(int id)
+        public static List<ClassInfo> Classes(Organization masterorg, int id)
         {
-            var q = from o in OrderedClasses(UserSelectClasses().ToList())
+            var q = from o in OrderedClasses(masterorg)
                     let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > (o.MemberCount ?? 0))
+                    where o.RegistrationTypeId > 0
                     select new ClassInfo
                     {
                         Id = o.OrganizationId,
                         Text = ClassName(o),
                         selected = o.OrganizationId == id,
-                        filled = hasroom
+                        filled = !hasroom
                     };
             var list = q.ToList();
             if (list.Count == 1)

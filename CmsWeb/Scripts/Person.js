@@ -296,14 +296,16 @@
             buttons: {
                 "Ok": function () {
                     var v = $("input[name='typeval']:checked").val();
-                    $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: $("#fieldname").val(), type: v }, function (ret) {
-                        if (ret.startsWith("error"))
-                            alert(ret);
-                        else {
-                            $.getTable($("#extras-tab form"));
-                            $.extraEditable();
-                        }
-                    });
+                    var fn = $("#fieldname").val();
+                    if (fn)
+                        $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: fn, type: v }, function (ret) {
+                            if (ret.startsWith("error"))
+                                alert(ret);
+                            else {
+                                $.getTable($("#extras-tab form"));
+                                $.extraEditable();
+                            }
+                        });
                     $(this).dialog("close");
                     $(this).dialog("destroy");
                 }

@@ -1,7 +1,9 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Models.OnlineRegModel
     <div style="background-color:Yellow">@Util.UrgentMessage</div>
-    @Html.Partial("Flow/ModelHidden", Model)
+@Html.Raw(Model.Instructions)
+@Html.Partial("Flow/ModelHidden", Model)
+
 @if (Model.DisplayLogin())
 { //nobody registered yet
         @Html.Partial("Flow/Login", Model)

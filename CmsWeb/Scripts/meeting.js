@@ -47,7 +47,7 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('#addvisitor').click(function (e) {
+    $('#addvisitor,#addregistered').click(function (e) {
         e.preventDefault();
         var d = $('#visitorDialog');
         $('iframe', d).attr("src", this.href);
@@ -153,7 +153,7 @@
         $.post("/Meeting/MarkRegistered/", {
             MeetingId: $("#meetingid").val(),
             PeopleId: ck.attr("pid"),
-            Present: ck.is(':checked')
+            Registered: ck.is(':checked')
         }, function (ret) {
             if (ret.error) {
                 ck.attr("checked", !ck.is(':checked'));
