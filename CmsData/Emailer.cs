@@ -284,6 +284,8 @@ namespace CmsData
             text = DoVoteLinkAnchorStyle(text, CmsHost, emailqueueto);
             text = DoVoteTag(text, CmsHost, emailqueueto);
             text = DoVoteTag2(text, CmsHost, emailqueueto);
+            text = DoRegisterTag(text, CmsHost, emailqueueto);
+            text = DoRegisterTag2(text, CmsHost, emailqueueto);
 
             if (emailqueueto.Guid.HasValue)
             {
@@ -445,6 +447,58 @@ namespace CmsData
             }
             return text;
         }
+        private string DoRegisterTag2(string text, string CmsHost, EmailQueueTo emailqueueto)
+        {
+            var list = new Dictionary<string, OneTimeLink>();
+            const string VoteLinkRE = @"&lt;registertag .*?&gt;(?<inside>.+?)&lt;/registertag&gt;";
+            var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
+            var match = re.Match(text);
+            while (match.Success)
+            {
+                var tag = match.Value;
+                var inside = HttpUtility.HtmlDecode(match.Groups["inside"].Value);
+                var rd = new SgmlReader();
+                rd.DocType = "HTML";
+                rd.InputStream = new StringReader(HttpUtility.HtmlDecode(tag));
+                var e = XDocument.Load(rd).Descendants("registertag").First();
+                var d = e.Attributes().ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+
+                if (!d.ContainsKey("id"))
+                    throw new Exception("RegisterTag: no id attribute");
+                var id = d["id"];
+
+                var url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id);
+                text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
+                match = match.NextMatch();
+            }
+            return text;
+        }
+        private string DoRegisterTag(string text, string CmsHost, EmailQueueTo emailqueueto)
+        {
+            var list = new Dictionary<string, OneTimeLink>();
+            const string VoteLinkRE = @"<registertag[^>]*>(?<inside>.+?)</registertag>";
+            var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
+            var match = re.Match(text);
+            while (match.Success)
+            {
+                var tag = match.Value;
+                var inside = match.Groups["inside"].Value;
+                var rd = new SgmlReader();
+                rd.DocType = "HTML";
+                rd.InputStream = new StringReader(tag);
+                var e = XDocument.Load(rd).Descendants("registertag").First();
+                var d = e.Attributes().ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+
+                if (!d.ContainsKey("id"))
+                    throw new Exception("RegisterTag: no id attribute");
+                var id = d["id"];
+
+                var url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id);
+                text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
+                match = match.NextMatch();
+            }
+            return text;
+        }
         private string VoteLinkUrl(string text,
             string CmsHost,
             EmailQueueTo emailqueueto,
@@ -473,6 +527,31 @@ namespace CmsData
             }
             var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}&confirm={2}&message={3}"
                 .Fmt(ot.Id.ToCode(), HttpUtility.UrlEncode(smallgroup), confirm, HttpUtility.UrlEncode(msg)));
+            return url;
+        }
+        private string RegisterTagUrl(string text,
+            string CmsHost,
+            EmailQueueTo emailqueueto,
+            Dictionary<string, OneTimeLink> list,
+            string votelink,
+            string id)
+        {
+            var qs = "{0},{1},{2}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id);
+            OneTimeLink ot;
+            if (list.ContainsKey(qs))
+                ot = list[qs];
+            else
+            {
+                ot = new OneTimeLink
+                {
+                    Id = Guid.NewGuid(),
+                    Querystring = qs
+                };
+                OneTimeLinks.InsertOnSubmit(ot);
+                SubmitChanges();
+                list.Add(qs, ot);
+            }
+            var url = Util.URLCombine(CmsHost, "/OnlineReg/RegisterLink/{0}".Fmt(ot.Id.ToCode()));
             return url;
         }
         public List<MailAddress> GetAddressList(Person p)

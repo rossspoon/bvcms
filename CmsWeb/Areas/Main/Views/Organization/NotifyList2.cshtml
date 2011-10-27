@@ -1,1 +1,14 @@
-﻿@Html.EditorFor(m => ViewData["notifyids"], "NotifyList")
+﻿@using CmsData
+@model CmsData.RegSettings
+<a id="notifylist" href="/Organization/NotifyIds/@Model.OrgId">
+<div class="block border">
+<b>choose users to notify (confirmation comes from first)</b>
+@{  var q = from p in DbUtil.Db.PeopleFromPidString(Model.org.NotifyIds)
+            select new { p.FromEmail, p.PeopleId };
+    foreach (var p in q)
+    {
+    <div>@p.FromEmail &mdash; (@p.PeopleId)</div>
+    }
+}
+</div>
+</a>

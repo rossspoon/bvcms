@@ -26,14 +26,11 @@
     @{ CmsData.Organization o = Model.org; }
     @Html.Hidden("refreshed", "no")
     @Html.Hidden("OrganizationId")
-<table class="roundbox floatleft">
-<tr><td><h2>@o.OrganizationName@(o.LeaderId.HasValue? ",":"") <span style="font-size:12px">@o.LeaderName</span></h2></td></tr>
-<tr><td>
+<div class="roundbox floatleft">
 <form id="orginfoform" action="/Organization/OrgInfoUpdate/@Model.OrganizationId" class="DisplayEdit" method="post">
     @Html.Partial("OrgInfo", Model) 
 </form>
-</td></tr>
-</table>
+</div>
 <div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
 <div><a href="#">Other Management</a></div>
 <div class="sublinks">
@@ -102,8 +99,8 @@
                 <li><a href="#SettingsOrg"><span>General</span></a></li>
                 <li><a href="#SettingsMeetings"><span>Attendance</span></a></li>
                 <li><a href="#OnlineRegAdmin"><span>Registration</span></a></li>
-                <li><a href="#OnlineRegFees"><span>Fees</span></a></li>
-                <li><a href="#OnlineRegQuestions"><span>Questions</span></a></li>
+                <li><a id="tabfees" href="#OnlineRegFees"><span>Fees</span></a></li>
+                <li><a id="tabquestions" href="#OnlineRegQuestions"><span>Questions</span></a></li>
                 <li><a href="#OnlineRegMessages"><span>Messages</span></a></li>
             </ul>
             <div id="SettingsOrg" class="ui-tabs-hide ui-tabs-panel settings">

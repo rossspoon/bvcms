@@ -411,6 +411,8 @@ $(function () {
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
+    if ($("#orgpickdiv a[target='otherorg']").length > 0)
+        $("#tabfees,#tabquestions").hide();
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#Members-tab form'));
@@ -421,14 +423,19 @@ function RebindMemberGrids(from) {
     $("#memberDialog").dialog("close");
 }
 function UpdateSelectedUsers(topid) {
-    $.post("/Organization/UpdateNotifyIds", { topid: topid }, function (ret) {
+    $.post("/Organization/UpdateNotifyIds", { id: $("#OrganizationId").val(), topid: topid }, function (ret) {
         $("#notifylist").html(ret);
         $("#usersDialog").dialog("close");
     });
 }
 function UpdateSelectedOrgs(list) {
-    $.post("/Organization/UpdateOrgIds", {list: list}, function (ret) {
-        $("#orgpickdiv").html(ret);
+    $.post("/Organization/UpdateOrgIds", { id: $("#OrganizationId").val(), list: list }, function (ret) {
+        $("#orgpickdiv").html(ret).ready(function () {
+            if ($("#orgpickdiv a[target='otherorg']").length > 0)
+                $("#tabfees,#tabquestions").hide();
+            else
+                $("#tabfees,#tabquestions").show();
+        });
         $("#orgsDialog").dialog("close");
     });
 }

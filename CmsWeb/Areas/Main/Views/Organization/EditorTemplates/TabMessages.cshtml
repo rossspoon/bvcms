@@ -20,7 +20,7 @@
     |These are the users that will be notified when a regstration occurs.
     |The top most user will be the 'sender' of the confirmation email.">
     Online Notify Persons:</span>
-    @Html.EditorFor(m => m.org.NotifyIds, "NotifyList")
+        @Html.Partial("NotifyList2", Model)
   </li>
   <li>
     <div class="text big tip" title="VoteTags

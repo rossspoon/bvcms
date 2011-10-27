@@ -31,6 +31,12 @@ namespace CmsWeb.Models
                 if (user.SendEmailAddress2 ?? false)
                     Util.AddGoodAddress(elist, user.FromEmail2);
             }
+            if (registertag.HasValue())
+            {
+                var guid = registertag.ToGuid();
+                var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+                ot.Used = true;
+            }
             var participants = new StringBuilder();
             for (var i = 0; i < List.Count; i++)
             {
@@ -184,6 +190,8 @@ namespace CmsWeb.Models
                 NotifyIds = Db.StaffPeopleForOrg(masterorg.OrganizationId);
             else if (org != null)
                 NotifyIds = Db.StaffPeopleForOrg(org.OrganizationId);
+            if (NotifyIds.Count() == 0)
+                NotifyIds = Db.AdminPeople();
             var notify = NotifyIds[0];
 
             string Location = null;

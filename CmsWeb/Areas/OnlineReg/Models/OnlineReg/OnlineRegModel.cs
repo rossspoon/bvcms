@@ -179,6 +179,13 @@ namespace CmsWeb.Models
         public decimal? donation { get; set; }
         public int? donor { get; set; }
         public int? UserPeopleId { get; set; }
+        [OptionalField]
+        private string _Registertag;
+        public string registertag
+        {
+            get { return _Registertag; }
+            set { _Registertag = value; }
+        }
         [NonSerialized]
         private Person _User;
         public Person user

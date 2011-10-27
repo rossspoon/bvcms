@@ -21,7 +21,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #endif
 
         // Main page
-        public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login)
+        public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login, string registertag)
         {
             Util.NoCache(Response);
             if (!id.HasValue && !div.HasValue)
@@ -75,6 +75,47 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 m.CreateList();
             else
                 m.List = new List<OnlineRegPersonModel>();
+
+            if (registertag.HasValue())
+            {
+                var guid = registertag.ToGuid();
+                if (guid == null)
+                    return Content("invalid link");
+                var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+                if (ot == null)
+                    return Content("invalid link");
+#if DEBUG
+#else
+                if (ot.Used)
+                    return Content("link used");
+#endif
+                if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+                    return Content("link expired");
+                var a = ot.Querystring.Split(',');
+                var oid = a[0].ToInt();
+                var pid = a[1].ToInt();
+                var emailid = a[2].ToInt();
+                //m.UserPeopleId = pid;
+                var p = m.LoadExistingPerson(pid);
+                p.index = m.List.Count - 1;
+                p.ValidateModelForFind(ModelState, m);
+                //m.List[0].LoggedIn = true;
+                if (!ModelState.IsValid)
+                    return View(m);
+                m.List[p.index] = p;
+                m.registertag = registertag;
+                if (p.org != null && p.Found == true)
+                {
+                    p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
+                    if (p.IsFilled)
+                        ModelState.AddModelError(p.ErrorTarget, "Sorry, but registration is closed.");
+                    if (p.Found == true)
+                        p.FillPriorInfo();
+                    return View(m);
+                }
+                return View(m);
+            }
+
             return View(m);
         }
         // authenticate user

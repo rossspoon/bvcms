@@ -28,7 +28,7 @@ namespace CmsData.API
         {
             this.Db = Db;
         }
-        public string Login(User u)
+        public string Login(Person p)
         {
             var script = DbUtil.Content("API-LoginInfo");
             if (script == null)
@@ -45,7 +45,7 @@ namespace CmsData.API
                 dynamic m = LoginInfo();
                 var api = new APIFunctions(Db);
                 var w = new APIWriter();
-                return m.Run(api, w, u.Person);
+                return m.Run(api, w, p);
             }
             catch (Exception ex)
             {

@@ -285,10 +285,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m);
             if (m.org.CampusId == 0)
                 m.org.CampusId = null;
-            //m.DivisionsList = Request.Form["DivisionsList"];
-            //m.UpdateOrganization();
             DbUtil.Db.SubmitChanges();
-            //m = new OrganizationModel(id, Util2.CurrentGroups);
             return View("OrgInfo", m);
         }
 
@@ -615,32 +612,34 @@ no need to put these into the ""Source"" view of the editor anymore.
             c.Content = Task.AddTasks(id).ToString();
             return c;
         }
-        public ActionResult NotifyIds()
+        public ActionResult NotifyIds(int id)
         {
-            if (Util.SessionTimedOut() || Util2.CurrentOrgId == 0)
+            if (Util.SessionTimedOut())
                 return Content("<script type='text/javascript'>window.onload = function() { parent.location = '/'; }</script>");
             Response.NoCache();
             var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(t.PersonTags);
+            Util2.CurrentOrgId = id;
             DbUtil.Db.SubmitChanges();
-            var o = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
+            var o = DbUtil.Db.LoadOrganizationById(id);
             var q = DbUtil.Db.PeopleFromPidString(o.NotifyIds).Select(p => p.PeopleId);
             foreach (var pid in q)
                 t.PersonTags.Add(new TagPerson { PeopleId = pid });
             DbUtil.Db.SubmitChanges();
             return Redirect("/SearchUsers?ordered=true&topid=" + q.FirstOrDefault());
         }
-        public ActionResult OrgPickList()
+        public ActionResult OrgPickList(int id)
         {
-            if (Util.SessionTimedOut() || Util2.CurrentOrgId == 0)
+            if (Util.SessionTimedOut())
                 return Content("<script type='text/javascript'>window.onload = function() { parent.location = '/'; }</script>");
             Response.NoCache();
-            var o = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
+            Util2.CurrentOrgId = id;
+            var o = DbUtil.Db.LoadOrganizationById(id);
             Session["orgPickList"] = (o.OrgPickList ?? "").Split(',').Select(oo => oo.ToInt()).ToList();
-            return Redirect("/SearchOrgs/Index/" + Util2.CurrentOrgId);
+            return Redirect("/SearchOrgs/Index/" + id);
         }
         [HttpPost]
-        public ActionResult UpdateNotifyIds(int topid)
+        public ActionResult UpdateNotifyIds(int id, int topid)
         {
             var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
             var selected_pids = (from p in t.People(DbUtil.Db)
@@ -651,14 +650,16 @@ no need to put these into the ""Source"" view of the editor anymore.
             DbUtil.Db.TagPeople.DeleteAllOnSubmit(t.PersonTags);
             DbUtil.Db.Tags.DeleteOnSubmit(t);
             DbUtil.Db.SubmitChanges();
-            ViewData["notifyids"] = o.NotifyIds;
-            return View("NotifyList2");
+            var rs = new RegSettings(o.RegSetting, DbUtil.Db, id);
+            rs.org = o;
+            return View("NotifyList2", rs);
         }
         [HttpPost]
-        public ActionResult UpdateOrgIds(string list)
+        public ActionResult UpdateOrgIds(int id, string list)
         {
-            var o = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
-            var m = new RegSettings(o.RegSetting, DbUtil.Db, o.OrganizationId);
+            var o = DbUtil.Db.LoadOrganizationById(id);
+            Util2.CurrentOrgId = id;
+            var m = new RegSettings(o.RegSetting, DbUtil.Db, id);
             m.org = o;
             o.OrgPickList = list;
             DbUtil.Db.SubmitChanges();

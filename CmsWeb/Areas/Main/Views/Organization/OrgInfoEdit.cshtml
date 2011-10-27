@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.OrganizationPage.OrganizationModel
+<h2>@Model.org.OrganizationName@(Model.org.LeaderId.HasValue ? "," : "") <span style="font-size:12px">@Model.org.LeaderName</span></h2>
 <table id="orginfoedit" style="margin-bottom: 10px" cellspacing="5" width="100%">
     <tr>
         <th align="right">Name:</th>

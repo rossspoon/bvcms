@@ -108,7 +108,7 @@ Please call the church to resolve this before we can complete your information."
                         var om = org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == PeopleId);
                         if (org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
                         {
-#if DEBUG2
+#if DEBUG
 #else
                             if (person.Users.Count() > 0)
                             {
@@ -132,7 +132,7 @@ Please call the church to resolve this before we can complete your account.<br /
                             || om.Organization.RegistrationTypeId == RegistrationTypeCode.JoinAttendMeeting
                             ))
                         {
-#if DEBUG2
+#if DEBUG
 #else
                             ModelState.AddModelError(ErrorTarget, "This person is already registered");
                             IsValidForContinue = false;

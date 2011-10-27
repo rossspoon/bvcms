@@ -26,6 +26,7 @@ namespace CmsWeb.Areas.Public.Controllers
     public class APIController : CmsController
     {
         [HttpPost]
+        [RequireBasicAuthentication]
         public ActionResult Login(string user, string password)
         {
             Response.ContentType = "text/xml";
@@ -37,7 +38,19 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("<Login error=\"{0} not valid\" />".Fmt(user ?? "(null)"));
             var u = DbUtil.Db.Users.Single(uu => uu.Username == user);
             var api = new APIFunctions(DbUtil.Db);
-            return Content(api.Login(u));
+            return Content(api.Login(u.Person));
+        }
+        [HttpGet]
+        [RequireBasicAuthentication]
+        public ActionResult LoginInfo(int id)
+        {
+            Response.ContentType = "text/xml";
+            var ret = Authenticate(log: true);
+            if (ret.StartsWith("!"))
+                return Content("<LoginInfo error=\"{0}\" />".Fmt(ret.Substring(1)));
+            var p = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
+            var api = new APIFunctions(DbUtil.Db);
+            return Content(api.Login(p));
         }
         [RequireBasicAuthentication]
         public ActionResult Organizations(int id)
@@ -72,6 +85,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var api = new APIFunctions(DbUtil.Db);
             return Content(api.OrgMembers(id));
         }
+        [HttpGet]
         [RequireBasicAuthentication]
         public ActionResult ExtraValues(int id, string fields, string value)
         {
@@ -117,6 +131,15 @@ namespace CmsWeb.Areas.Public.Controllers
                 return ret;
             }
             return "!API no Authorization Header";
+        }
+        [HttpPost]
+        public ActionResult MarkRegistered(int id, int PeopleId, bool Present)
+        {
+            var ret = Authenticate();
+            if (ret.StartsWith("!"))
+                return Content(ret.Substring(1));
+            Attend.MarkRegistered(PeopleId, id, Present);
+            return Content("ok");
         }
     }
 }

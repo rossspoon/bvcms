@@ -243,6 +243,43 @@ You have the following subscriptions:<br/>
 
             return Content(message);
         }
+        public ActionResult RegisterLink(string id)
+        {
+            if (!id.HasValue())
+                return Content("bad link");
+
+            var guid = id.ToGuid();
+            if (guid == null)
+                return Content("invalid link");
+            var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+            if (ot == null)
+                return Content("invalid link");
+            if (ot.Used)
+                return Content("link used");
+            if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+                return Content("link expired");
+            var a = ot.Querystring.Split(',');
+            var oid = a[0].ToInt();
+            var pid = a[1].ToInt();
+            var emailid = a[2].ToInt();
+            var q = (from pp in DbUtil.Db.People
+                     where pp.PeopleId == pid
+                     let org = DbUtil.Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == oid)
+                     let om = DbUtil.Db.OrganizationMembers.SingleOrDefault(oo => oo.OrganizationId == oid && oo.PeopleId == pid)
+                     select new { p = pp, org = org, om = om }).Single();
+
+            if (q.org == null)
+                return Content("org missing, bad link");
+
+            if (q.om == null && q.org.Limit <= q.org.MemberCount)
+                return Content("sorry, maximum limit has been reached");
+
+            if (q.om == null && (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive))
+                return Content("sorry, registration has been closed");
+
+            var omb = q.om;
+            return Redirect("/OnlineReg/Index/{0}?token={1}".Fmt(oid, id));
+        }
         private bool IsSmallGroupFilled(RegSettings setting, int orgid, string sg)
         {
             return IsSmallGroupFilled(setting.Dropdown1, orgid, sg)

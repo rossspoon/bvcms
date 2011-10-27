@@ -1454,7 +1454,6 @@
     <Content Include="Areas\Main\Views\Organization\OnlineRegMessages.cshtml" />
     <Content Include="Areas\Main\Views\Organization\OnlineRegMessagesEdit.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\Html.cshtml" />
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\NotifyList.cshtml" />
     <Content Include="Areas\Main\Views\Organization\NotifyList2.cshtml" />
     <Content Include="Areas\Main\Views\Organization\OnlineRegAdmin.cshtml" />
     <Content Include="Areas\Main\Views\Organization\OnlineRegAdminEdit.cshtml" />
