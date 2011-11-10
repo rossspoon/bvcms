@@ -177,6 +177,13 @@ namespace CmsWeb.Areas.Main.Controllers
             return new EmptyResult();
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RepairTransactions(OrgSearchModel m)
+        {
+            foreach (var o in m.OrganizationList())
+                DbUtil.Db.PopulateComputedEnrollmentTransactions(o.Id);
+            return new EmptyResult();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CreateMeeting(string id)
         {
             var n = id.ToCharArray().Count(c => c == 'M');

@@ -273,6 +273,17 @@
         });
         return false;
     });
+    $('#RepairTransactions').click(function (ev) {
+        ev.preventDefault();
+        if (!confirm("Are you sure you want to run repair transactions?"))
+            return false;
+        var f = $('form');
+        var q = f.serialize();
+        $.post(this.href, q, function (ret) {
+            $.growlUI("Completed", "Repair Completed");
+        });
+        return false;
+    });
     $('a.ViewReport').click(function (ev) {
         ev.preventDefault();
         var did = $('#DivisionId').val();

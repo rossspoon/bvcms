@@ -31,7 +31,13 @@ namespace CmsData
 		
 		private int _Id;
 		
+		private string _Before;
+		
+		private string _After;
+		
    		
+   		private EntitySet< ChangeDetail> _ChangeDetails;
+		
     	
 	#endregion
 	
@@ -61,9 +67,17 @@ namespace CmsData
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
 		
+		partial void OnBeforeChanging(string value);
+		partial void OnBeforeChanged();
+		
+		partial void OnAfterChanging(string value);
+		partial void OnAfterChanged();
+		
     #endregion
 		public ChangeLog()
 		{
+			
+			this._ChangeDetails = new EntitySet< ChangeDetail>(new Action< ChangeDetail>(this.attach_ChangeDetails), new Action< ChangeDetail>(this.detach_ChangeDetails)); 
 			
 			
 			OnCreated();
@@ -226,10 +240,64 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Before", UpdateCheck=UpdateCheck.Never, Storage="_Before", DbType="varchar")]
+		public string Before
+		{
+			get { return this._Before; }
+
+			set
+			{
+				if (this._Before != value)
+				{
+				
+                    this.OnBeforeChanging(value);
+					this.SendPropertyChanging();
+					this._Before = value;
+					this.SendPropertyChanged("Before");
+					this.OnBeforeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="After", UpdateCheck=UpdateCheck.Never, Storage="_After", DbType="varchar")]
+		public string After
+		{
+			get { return this._After; }
+
+			set
+			{
+				if (this._After != value)
+				{
+				
+                    this.OnAfterChanging(value);
+					this.SendPropertyChanging();
+					this._After = value;
+					this.SendPropertyChanged("After");
+					this.OnAfterChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_ChangeDetails_ChangeLog", Storage="_ChangeDetails", OtherKey="Id")]
+   		public EntitySet< ChangeDetail> ChangeDetails
+   		{
+   		    get { return this._ChangeDetails; }
+
+			set	{ this._ChangeDetails.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -251,6 +319,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_ChangeDetails(ChangeDetail entity)
+		{
+			this.SendPropertyChanging();
+			entity.ChangeLog = this;
+		}
+
+		private void detach_ChangeDetails(ChangeDetail entity)
+		{
+			this.SendPropertyChanging();
+			entity.ChangeLog = null;
+		}
+
+		
 	}
 
 }

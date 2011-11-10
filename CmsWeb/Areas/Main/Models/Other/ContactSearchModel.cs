@@ -130,7 +130,7 @@ namespace CmsWeb.Models
         }
         public IQueryable<CmsData.Contact> ApplySort(IQueryable<CmsData.Contact> query)
         {
-            if (Direction == "asc")
+            if ((Direction ?? "desc") == "asc")
                 switch (Sort)
                 {
                     case "ID":
@@ -155,7 +155,7 @@ namespace CmsWeb.Models
                         break;
                 }
             else
-                switch(Sort)
+                switch(Sort ?? "Date")
                 {
                     case "ID":
                         query = from c in query

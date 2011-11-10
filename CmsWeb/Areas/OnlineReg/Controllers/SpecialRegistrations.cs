@@ -278,7 +278,7 @@ You have the following subscriptions:<br/>
                 return Content("sorry, registration has been closed");
 
             var omb = q.om;
-            return Redirect("/OnlineReg/Index/{0}?token={1}".Fmt(oid, id));
+            return Redirect("/OnlineReg/Index/{0}?registertag={1}".Fmt(oid, id));
         }
         private bool IsSmallGroupFilled(RegSettings setting, int orgid, string sg)
         {

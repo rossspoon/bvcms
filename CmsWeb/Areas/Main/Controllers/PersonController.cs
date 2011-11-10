@@ -317,6 +317,13 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("BasicDisplay", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Reverse(int id, string field, string value, string pf)
+        {
+            var m = new PersonModel(id);
+            m.Reverse(field, value, pf);
+            return View("ChangesGrid", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddressDisplay(int id, string type)
         {
             var m = AddressInfo.GetAddressInfo(id, type);
@@ -574,8 +581,8 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ChangesGrid(int id)
         {
-            var p = DbUtil.Db.LoadPersonById(id);
-            return View(p);
+            var m = new PersonModel(id);
+            return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DuplicatesGrid(int id)

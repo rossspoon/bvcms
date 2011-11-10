@@ -34,6 +34,11 @@ namespace UtilityExtensions
         {
             return Object.GetType().GetProperty(Property, bindingFlags).GetValue(Object, null);
         }
+        public static bool HasProperty(object Object, string Property)
+        {
+            var p = Object.GetType().GetProperty(Property, bindingFlags);
+            return p != null;
+        }
 
         public static object GetField(object Object, string Property)
         {
@@ -168,7 +173,8 @@ namespace UtilityExtensions
 
         public static void SetProperty(object Object, string Property, object Value)
         {
-            Object.GetType().GetProperty(Property, bindingFlags).SetValue(Object, Value, null);
+            var p = Object.GetType().GetProperty(Property, bindingFlags);
+            p.SetValue(Object, Value, null);
         }
 
         public static void SetField(object Object, string Property, object Value)

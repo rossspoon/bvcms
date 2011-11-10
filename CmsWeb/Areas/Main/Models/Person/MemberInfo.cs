@@ -112,9 +112,9 @@ namespace CmsWeb.Models.PersonPage
                 DbUtil.Db.SubmitChanges();
                 DbUtil.LogActivity("Updated Person: {0}".Fmt(p.Name), false);
             }
-            else
-               Elmah.ErrorSignal.FromCurrentContext().Raise(
-                    new Exception(ret + " for PeopleId:" + p.PeopleId));
+            //else
+            //   Elmah.ErrorSignal.FromCurrentContext().Raise(
+            //        new Exception(ret + " for PeopleId:" + p.PeopleId));
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             return ret;
         }

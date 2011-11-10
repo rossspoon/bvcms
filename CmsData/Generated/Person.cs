@@ -227,15 +227,15 @@ namespace CmsData
 		
 		private bool? _SendEmailAddress2;
 		
+		private int? _HashNum;
+		
+		private DateTime? _NewMemberClassDate;
+		
 		private string _Name;
 		
 		private string _Name2;
 		
-		private int? _HashNum;
-		
 		private string _PreferredName;
-		
-		private DateTime? _NewMemberClassDate;
 		
    		
    		private EntitySet< Contactee> _contactsHad;
@@ -669,20 +669,20 @@ namespace CmsData
 		partial void OnSendEmailAddress2Changing(bool? value);
 		partial void OnSendEmailAddress2Changed();
 		
+		partial void OnHashNumChanging(int? value);
+		partial void OnHashNumChanged();
+		
+		partial void OnNewMemberClassDateChanging(DateTime? value);
+		partial void OnNewMemberClassDateChanged();
+		
 		partial void OnNameChanging(string value);
 		partial void OnNameChanged();
 		
 		partial void OnName2Changing(string value);
 		partial void OnName2Changed();
 		
-		partial void OnHashNumChanging(int? value);
-		partial void OnHashNumChanged();
-		
 		partial void OnPreferredNameChanging(string value);
 		partial void OnPreferredNameChanged();
-		
-		partial void OnNewMemberClassDateChanging(DateTime? value);
-		partial void OnNewMemberClassDateChanged();
 		
     #endregion
 		public Person()
@@ -3176,6 +3176,50 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="HashNum", UpdateCheck=UpdateCheck.Never, Storage="_HashNum", DbType="int", IsDbGenerated=true)]
+		public int? HashNum
+		{
+			get { return this._HashNum; }
+
+			set
+			{
+				if (this._HashNum != value)
+				{
+				
+                    this.OnHashNumChanging(value);
+					this.SendPropertyChanging();
+					this._HashNum = value;
+					this.SendPropertyChanged("HashNum");
+					this.OnHashNumChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NewMemberClassDate", UpdateCheck=UpdateCheck.Never, Storage="_NewMemberClassDate", DbType="datetime")]
+		public DateTime? NewMemberClassDate
+		{
+			get { return this._NewMemberClassDate; }
+
+			set
+			{
+				if (this._NewMemberClassDate != value)
+				{
+				
+                    this.OnNewMemberClassDateChanging(value);
+					this.SendPropertyChanging();
+					this._NewMemberClassDate = value;
+					this.SendPropertyChanged("NewMemberClassDate");
+					this.OnNewMemberClassDateChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(126)", IsDbGenerated=true)]
 		public string Name
 		{
@@ -3220,28 +3264,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="HashNum", UpdateCheck=UpdateCheck.Never, Storage="_HashNum", DbType="int", IsDbGenerated=true)]
-		public int? HashNum
-		{
-			get { return this._HashNum; }
-
-			set
-			{
-				if (this._HashNum != value)
-				{
-				
-                    this.OnHashNumChanging(value);
-					this.SendPropertyChanging();
-					this._HashNum = value;
-					this.SendPropertyChanged("HashNum");
-					this.OnHashNumChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(25)", IsDbGenerated=true)]
 		public string PreferredName
 		{
@@ -3257,28 +3279,6 @@ namespace CmsData
 					this._PreferredName = value;
 					this.SendPropertyChanged("PreferredName");
 					this.OnPreferredNameChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NewMemberClassDate", UpdateCheck=UpdateCheck.Never, Storage="_NewMemberClassDate", DbType="datetime")]
-		public DateTime? NewMemberClassDate
-		{
-			get { return this._NewMemberClassDate; }
-
-			set
-			{
-				if (this._NewMemberClassDate != value)
-				{
-				
-                    this.OnNewMemberClassDateChanging(value);
-					this.SendPropertyChanging();
-					this._NewMemberClassDate = value;
-					this.SendPropertyChanged("NewMemberClassDate");
-					this.OnNewMemberClassDateChanged();
 				}
 
 			}

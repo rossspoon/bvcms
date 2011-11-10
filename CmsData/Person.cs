@@ -224,16 +224,16 @@ namespace CmsData
             foreach (var e in this.PeopleExtras)
             {
                 var cp = Db.PeopleExtras.SingleOrDefault(c2 => c2.PeopleId == otherid && c2.Field == e.Field);
-                var e2 = new PeopleExtra 
-                { 
-                    PeopleId = otherid, 
-                    Field = e.Field, 
-                    Data = e.Data, 
-                    StrValue = e.StrValue, 
-                    DateValue = e.DateValue, 
-                    IntValue = e.IntValue, 
-                    IntValue2 = e.IntValue2, 
-                    TransactionTime = e.TransactionTime 
+                var e2 = new PeopleExtra
+                {
+                    PeopleId = otherid,
+                    Field = e.Field,
+                    Data = e.Data,
+                    StrValue = e.StrValue,
+                    DateValue = e.DateValue,
+                    IntValue = e.IntValue,
+                    IntValue2 = e.IntValue2,
+                    TransactionTime = e.TransactionTime
                 };
                 if (cp != null)
                     e2.Field = e.Field + ".mv";
@@ -282,17 +282,17 @@ namespace CmsData
                     torecreg.ActiveInAnotherChurch = frrecreg.ActiveInAnotherChurch;
             }
 
-                foreach (var sale in this.SaleTransactions)
-                    sale.PeopleId = otherid;
-                Db.SubmitChanges();
-            }
-            public bool PurgePerson(CMSDataContext Db)
+            foreach (var sale in this.SaleTransactions)
+                sale.PeopleId = otherid;
+            Db.SubmitChanges();
+        }
+        public bool PurgePerson(CMSDataContext Db)
+        {
+            try
             {
-                try
-                {
-                    Db.PurgePerson(PeopleId);
-                }
-                catch
+                Db.PurgePerson(PeopleId);
+            }
+            catch
             {
                 return false;
             }
@@ -824,7 +824,7 @@ namespace CmsData
             }
             return rr;
         }
-        public Contact AddContactReceived(DateTime dt, int type, int reason, string notes)
+        public Contact AddContactReceived(CMSDataContext Db, DateTime dt, int type, int reason, string notes)
         {
             var c = new Contact
             {
@@ -835,9 +835,9 @@ namespace CmsData
                 ContactReasonId = reason,
                 Comments = notes
             };
-            DbUtil.Db.Contacts.InsertOnSubmit(c);
+            Db.Contacts.InsertOnSubmit(c);
             c.contactees.Add(new Contactee { PeopleId = PeopleId });
-            DbUtil.Db.SubmitChanges();
+            Db.SubmitChanges();
             return c;
         }
 
@@ -858,6 +858,24 @@ namespace CmsData
                 return;
             psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetProperty(this, field, value);
+        }
+        public void UpdateValueFromText(StringBuilder psb, string field, string value)
+        {
+            if (value is string)
+                value = ((string)value).TrimEnd();
+            var o = Util.GetProperty(this, field);
+            if (o is string)
+                o = ((string)o).TrimEnd();
+            if (o == null && value == null)
+                return;
+            if (o != null && o.Equals(value))
+                return;
+            if (o == null && value is string && !((string)value).HasValue())
+                return;
+            if (value == null && o is string && !((string)o).HasValue())
+                return;
+            psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
+            Util.SetPropertyFromText(this, field, value);
         }
         public void LogChanges(CMSDataContext Db, StringBuilder psb, int UserPeopleId)
         {
@@ -895,5 +913,6 @@ namespace CmsData
                 return "";
             return e.Data;
         }
+
     }
 }

@@ -6,6 +6,8 @@ using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
 using CMSPresenter;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace CmsWeb.Models.PersonPage
 {
@@ -45,37 +47,139 @@ namespace CmsWeb.Models.PersonPage
                 return ckorg.HasValue;
             }
         }
-        //public class FamilyMember
-        //{
-        //    public int Id { get; set; }
-        //    public string Name { get; set; }
-        //    public int? Age { get; set; }
-        //    public string Color { get; set; }
-        //    public string PositionInFamily { get; set; }
-        //    public string SpouseIndicator { get; set; }
-        //    public string Email { get; set; }
-        //}
-        //public IEnumerable<FamilyMember> FamilyMembers()
-        //{
-        //    var q = from m in DbUtil.Db.People
-        //            where m.FamilyId == displayperson.FamilyId
-        //            orderby
-        //                m.PeopleId == m.Family.HeadOfHouseholdId ? 1 :
-        //                m.PeopleId == m.Family.HeadOfHouseholdSpouseId ? 2 :
-        //                3, m.Age descending, m.Name2
-        //            select new FamilyMember
-        //            {
-        //                Id = m.PeopleId,
-        //                Name = m.Name,
-        //                Age = m.Age,
-        //                Color = m.DeceasedDate != null ? "red" : "#336699",
-        //                PositionInFamily = m.FamilyPosition.Code,
-        //                SpouseIndicator = m.PeopleId == displayperson.SpouseId ? "*" : "&nbsp;",
-        //                Email = m.EmailAddress
-        //            };
-        //    return q;
-        //}
         public string addrtab { get { return displayperson.PrimaryAddr.Name; } }
 
+        public bool FieldEqual(Person p, string field, string value)
+        {
+            if (value is string)
+                value = ((string)value).TrimEnd();
+            if (!Util.HasProperty(p, field))
+                return false;
+            var o = Util.GetProperty(p, field);
+            if (o is string)
+                o = ((string)o).TrimEnd();
+            var p2 = new Person();
+            Util.SetPropertyFromText(p2, field, value);
+            var o2 = Util.GetProperty(p2, field);
+            if (o == o2)
+                return true;
+            if (o.IsNull() && o2.IsNotNull())
+                return false;
+            return o.Equals(o2);
+        }
+        public bool FieldEqual(Family f, string field, string value)
+        {
+            if (value is string)
+                value = ((string)value).TrimEnd();
+            if (!Util.HasProperty(f, field))
+                return false;
+            var o = Util.GetProperty(f, field);
+            if (o is string)
+                o = ((string)o).TrimEnd();
+            var f2 = new Family();
+            Util.SetPropertyFromText(f2, field, value);
+            var o2 = Util.GetProperty(f2, field);
+            if (o == o2)
+                return true;
+            if (o.IsNull() && o2.IsNotNull())
+                return false;
+            return o.Equals(o2);
+        }
+        public bool FieldEqual(string pf, string field, string value)
+        {
+            switch (pf)
+            {
+                case "p":
+                    return FieldEqual(this.Person, field, value);
+                case "f":
+                    return FieldEqual(this.Person.Family, field, value);
+            }
+            return false;
+        }
+        public string PersonOrFamily(string FieldSet)
+        {
+            switch (FieldSet)
+            {
+                case "HomePhone":
+                case "Basic Info":
+                case "PersonalAddr":
+                    return "p";
+                case "Family":
+                case "FamilyAddr":
+                    return "f";
+            }
+            return "n";
+        }
+
+        public class ChangeLogInfo
+        {
+            public string User { get; set; }
+            public string FieldSet { get; set; }
+            public DateTime? Time { get; set; }
+            public string Field { get; set; }
+            public string Before { get; set; }
+            public string After { get; set; }
+            public string pf { get; set; }
+            public bool Reversable { get; set; }
+        }
+        public List<ChangeLogInfo> details(ChangeLog log, string name)
+        {
+            var list = new List<ChangeLogInfo>();
+            var re = new Regex("<tr><td>(?<field>[^<]+)</td><td>(?<before>[^<]*)</td><td>(?<after>[^<]*)</td></tr>", RegexOptions.Singleline);
+            Match matchResult = re.Match(log.Data);
+            var FieldSet = log.Field;
+            var pf = PersonOrFamily(FieldSet);
+            DateTime? Time = log.Created;
+            while (matchResult.Success)
+            {
+                var After = matchResult.Groups["after"].Value;
+                var Field = matchResult.Groups["field"].Value;
+                var c = new ChangeLogInfo
+                {
+                    User = name,
+                    FieldSet = FieldSet,
+                    Time = Time,
+                    Field = Field,
+                    Before = matchResult.Groups["before"].Value,
+                    After = After,
+                    pf = pf,
+                    Reversable = FieldEqual(pf, Field, After)
+                };
+                list.Add(c);
+                FieldSet = "";
+                name = "";
+                Time = null;
+                matchResult = matchResult.NextMatch();
+            }
+            return list;
+        }
+        public IEnumerable<ChangeLogInfo> GetChangeLogs()
+        {
+            var list = (from c in DbUtil.Db.ChangeLogs
+                        let userp = DbUtil.Db.People.Single(u => u.PeopleId == c.UserPeopleId)
+                        where c.PeopleId == Person.PeopleId || c.FamilyId == Person.FamilyId
+                        select new { userp, c }).ToList();
+            var q = from i in list
+                    orderby i.c.Created descending
+                    from d in details(i.c, i.userp.Name)
+                    select d;
+            return q;
+        }
+        public void Reverse(string field, string value, string pf)
+        {
+            var sb = new StringBuilder();
+            switch(pf)
+            {
+                case "p":
+                    Person.UpdateValueFromText(sb, field, value);
+                    Person.LogChanges(DbUtil.Db, sb, Util.UserPeopleId.Value);
+                    break;
+                case "f":
+                    Person.Family.UpdateValueFromText(sb, field, value);
+                    Person.Family.LogChanges(DbUtil.Db, sb, Person.PeopleId, Util.UserPeopleId.Value);
+                    break;
+            }
+            DbUtil.Db.SubmitChanges();
+        }
     }
 }

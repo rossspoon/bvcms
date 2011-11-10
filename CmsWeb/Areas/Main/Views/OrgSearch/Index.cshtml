@@ -78,7 +78,11 @@
 @if (Session["OrgCopySettings"] != null)
 { 
     <a id="PasteSettings" href="/OrgSearch/PasteSettings">Paste Settings</a>
- } 
+} 
+@if (User.IsInRole("Admin"))
+{ 
+    <a id="RepairTransactions" href="/OrgSearch/RepairTransactions">Repair Transactions</a>
+} 
 </div>
 <div style="border-bottom: 4px solid #ddd"></div>
 </div>

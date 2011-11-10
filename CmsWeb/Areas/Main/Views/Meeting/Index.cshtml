@@ -38,7 +38,7 @@
 <table><tr><td>
 <table class="roundbox" cellspacing="5">
     <tr><td colspan="2" nowrap>
-        <h2><a href="/Organization/Index/@Model.meeting.OrganizationId">@Model.meeting.Organization.OrganizationName</a> <span style="font-size:12px">9/26/11 5:00 PM</span></h2></td></tr>
+        <h2><a href="/Organization/Index/@Model.meeting.OrganizationId">@Model.meeting.Organization.OrganizationName</a> <span style="font-size:12px">@Model.meeting.MeetingDate.FormatDateTm()</span></h2></td></tr>
 @if (User.IsInRole("Attendance"))
 {
     <tr><td align="right">Description:</td>
@@ -74,19 +74,19 @@ else
 }
             </td>
             <td align="right">New Visitors:</td>
-            <td align="right" id="NumNewVisit">@Model.meeting.NumNewVisit</td>
+            <td align="right" id="NumNewVisit"><span>@Model.meeting.NumNewVisit</span></td>
             </tr>
           <tr>
             <td align="right">Members:</td>
-            <td align="right" id="NumMembers">@Model.meeting.NumMembers</td>
+            <td align="right" id="NumMembers"><span>@Model.meeting.NumMembers</span></td>
             <td align="right">Repeat Visitors:</td>
-            <td align="right" id="NumRepeatVst">@Model.meeting.NumRepeatVst</td>
+            <td align="right" id="NumRepeatVst"><span>@Model.meeting.NumRepeatVst</span></td>
             </tr>
           <tr>
             <td align="right">Other Attends:</td>
-            <td align="right" id="NumOtherAttends">@Model.meeting.NumOtherAttends</td>
+            <td align="right" id="NumOtherAttends"><span>@Model.meeting.NumOtherAttends</span></td>
             <td align="right">Visiting Members:</td>
-            <td align="right" id="NumVstMembers">@Model.meeting.NumVstMembers</td>
+            <td align="right" id="NumVstMembers"><span>@Model.meeting.NumVstMembers</span></td>
             </tr>
         </table></fieldset></td>
     </tr>
@@ -126,6 +126,7 @@ else
     <a href="/Reports/Attendee/@Model.meeting.MeetingId" target="_blank">Attendee Report</a>
     <a href="/Reports/VisitsAbsents/@Model.meeting.MeetingId" target="_blank">Visits/Absents Report</a>
     <a href="/Meeting/AttendanceByGroups/@Model.meeting.MeetingId" target="_blank">AttendanceByGroups</a>
+    <a href="/Meeting/iPad/@Model.meeting.MeetingId">iPad Attendance</a>
     <a href="#" class="heading">&mdash; Convert to Query &mdash;</a>
     <a href="/Meeting/QueryAttendees/@Model.meeting.MeetingId">Attendees</a>
     <a href="/Meeting/QueryVisitors/@Model.meeting.MeetingId">Visitors</a>

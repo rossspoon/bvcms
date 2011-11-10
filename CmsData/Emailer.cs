@@ -604,9 +604,9 @@ namespace CmsData
                     where To.Sent == null
                     orderby To.PeopleId
                     select To;
-            try
+            foreach (var To in q)
             {
-                foreach (var To in q)
+                try
                 {
                     var p = LoadPersonById(To.PeopleId);
                     string text = emailqueue.Body;
@@ -635,26 +635,30 @@ namespace CmsData
                         SubmitChanges();
                     }
                 }
-                emailqueue.Sent = DateTime.Now;
-                if (emailqueue.Redacted ?? false)
-                    emailqueue.Body = "redacted";
-                else
+                catch (Exception ex)
                 {
-                    var nitems = emailqueue.EmailQueueTos.Count();
-                    if (nitems > 1)
-                        NotifySentEmails(CmsHost, From.Address, From.DisplayName,
-                            emailqueue.Subject, nitems, emailqueue.Id);
+                    Util.SendMsg(sysFromEmail, CmsHost, From,
+                        "sent emails - error", ex.Message,
+                        Util.ToMailAddressList(From),
+                        emailqueue.Id, null);
+                    Util.SendMsg(sysFromEmail, CmsHost, From,
+                        "sent emails - error", ex.Message,
+                        Util.SendErrorsTo(), 
+                        emailqueue.Id, null);
+                    throw ex;
                 }
-                SubmitChanges();
             }
-            catch (Exception ex)
+            emailqueue.Sent = DateTime.Now;
+            if (emailqueue.Redacted ?? false)
+                emailqueue.Body = "redacted";
+            else
             {
-                Util.SendMsg(sysFromEmail, CmsHost, From,
-                    "sent emails - error", ex.Message,
-                    Util.ToMailAddressList(From),
-                    emailqueue.Id, null);
-                throw ex;
+                var nitems = emailqueue.EmailQueueTos.Count();
+                if (nitems > 1)
+                    NotifySentEmails(CmsHost, From.Address, From.DisplayName,
+                        emailqueue.Subject, nitems, emailqueue.Id);
             }
+            SubmitChanges();
         }
 
         private void NotifySentEmails(string CmsHost, string From, string FromName, string subject, int count, int id)

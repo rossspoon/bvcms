@@ -193,6 +193,7 @@
     <Compile Include="ContentService.cs" />
     <Compile Include="APIFunctions.cs" />
     <Compile Include="APIOrganizations.cs" />
+    <Compile Include="Generated\ChangeDetail.cs" />
     <Compile Include="QueryFunctions.cs" />
     <Compile Include="Generated\AttendCredit.cs" />
     <Compile Include="Generated\Contact.cs" />
@@ -215,7 +216,6 @@
     <Compile Include="Coupon.cs" />
     <Compile Include="Dynamic.cs" />
     <Compile Include="Emailer.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Generated\ChangeLog.cs" />
     <Compile Include="Generated\Coupon.cs" />
     <Compile Include="Generated\EmailQueue.cs" />

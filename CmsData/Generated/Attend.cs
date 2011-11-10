@@ -43,9 +43,9 @@ namespace CmsData
 		
 		private bool? _BFCAttendance;
 		
-		private bool? _EffAttendFlag;
-		
 		private bool? _Registered;
+		
+		private bool? _EffAttendFlag;
 		
    		
     	
@@ -105,11 +105,11 @@ namespace CmsData
 		partial void OnBFCAttendanceChanging(bool? value);
 		partial void OnBFCAttendanceChanged();
 		
-		partial void OnEffAttendFlagChanging(bool? value);
-		partial void OnEffAttendFlagChanged();
-		
 		partial void OnRegisteredChanging(bool? value);
 		partial void OnRegisteredChanged();
+		
+		partial void OnEffAttendFlagChanging(bool? value);
+		partial void OnEffAttendFlagChanged();
 		
     #endregion
 		public Attend()
@@ -433,28 +433,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="EffAttendFlag", UpdateCheck=UpdateCheck.Never, Storage="_EffAttendFlag", DbType="bit", IsDbGenerated=true)]
-		public bool? EffAttendFlag
-		{
-			get { return this._EffAttendFlag; }
-
-			set
-			{
-				if (this._EffAttendFlag != value)
-				{
-				
-                    this.OnEffAttendFlagChanging(value);
-					this.SendPropertyChanging();
-					this._EffAttendFlag = value;
-					this.SendPropertyChanged("EffAttendFlag");
-					this.OnEffAttendFlagChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="Registered", UpdateCheck=UpdateCheck.Never, Storage="_Registered", DbType="bit")]
 		public bool? Registered
 		{
@@ -470,6 +448,28 @@ namespace CmsData
 					this._Registered = value;
 					this.SendPropertyChanged("Registered");
 					this.OnRegisteredChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="EffAttendFlag", UpdateCheck=UpdateCheck.Never, Storage="_EffAttendFlag", DbType="bit", IsDbGenerated=true)]
+		public bool? EffAttendFlag
+		{
+			get { return this._EffAttendFlag; }
+
+			set
+			{
+				if (this._EffAttendFlag != value)
+				{
+				
+                    this.OnEffAttendFlagChanging(value);
+					this.SendPropertyChanging();
+					this._EffAttendFlag = value;
+					this.SendPropertyChanged("EffAttendFlag");
+					this.OnEffAttendFlagChanged();
 				}
 
 			}

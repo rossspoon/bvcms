@@ -67,6 +67,16 @@ namespace CmsData
             fsb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetProperty(this, field, value);
         }
+        public void UpdateValueFromText(StringBuilder fsb, string field, string value)
+        {
+            var o = Util.GetProperty(this, field);
+            if (o == null && value == null)
+                return;
+            if (o != null && o.Equals(value))
+                return;
+            fsb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
+            Util.SetPropertyFromText(this, field, value);
+        }
         public void LogChanges(CMSDataContext Db, StringBuilder fsb, int PeopleId, int UserPeopleId)
         {
             if (fsb.Length > 0)

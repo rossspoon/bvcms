@@ -271,6 +271,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                 "AltName", 
                 "Gender", 
                 "Married", 
+                "Marital", 
                 "Address", 
                 "Address2", 
                 "City", 
@@ -336,6 +337,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                         UpdateField(p, a, "WorkPhone", "WorkPhone", GetDigits(a, "WorkPhone"));
                         UpdateField(p, a, "GenderId", "Gender", Gender(a));
                         UpdateField(p, a, "MaritalStatusId", "Married", Marital(a));
+                        UpdateField(p, a, "MaritalStatusId", "Marital", Marital(a));
                         UpdateField(p, a, "PositionInFamilyId", "Position", Position(a));
                         if (names.ContainsKey("Campus"))
                             UpdateField(p, a, "CampusId", "Campus", campuses[a[names["Campus"]]]);
@@ -406,6 +408,8 @@ namespace CmsWeb.Areas.Manage.Controllers
                         if (names.ContainsKey("Gender"))
                             p.GenderId = Gender(a);
                         if (names.ContainsKey("Married"))
+                            p.MaritalStatusId = Marital(a);
+                        if (names.ContainsKey("Marital"))
                             p.MaritalStatusId = Marital(a);
                         if (names.ContainsKey("Position"))
                             p.PositionInFamilyId = Position(a);
@@ -933,123 +937,43 @@ namespace CmsWeb.Areas.Manage.Controllers
                     Status.Remove(id);
             }
         }
-        [HttpPost]
+        [HttpGet]
         public ActionResult TestStart(string id)
         {
-            var i = 100;
             string host = Util.Host;
+            var i = 0;
             Alias.Task.Factory.StartNew(() =>
             {
                 var e = new LongRunningStatus();
-                for (; i > 0; i--)
+                var Db = new CMSDataContext(Util.GetConnectionString(host));
+                foreach(var c in Db.ChangeLogs)
                 {
-                    var Db = new CMSDataContext(Util.GetConnectionString(host));
+                    i++;
                     e.SetStatus(id, i);
-                    Thread.Sleep(150);
-                    Db.Dispose();
+                	var re = new Regex("<tr><td>(?<field>[^<]+)</td><td>(?<before>[^<]*)</td><td>(?<after>[^<]*)</td></tr>", RegexOptions.Singleline);
+                	Match matchResult = re.Match(c.Data);
+                	while (matchResult.Success) 
+                    {
+                        var cd = new CmsData.ChangeDetail
+                        {
+                            Field = matchResult.Groups["field"].Value,
+                            Before = matchResult.Groups["before"].Value,
+                            After = matchResult.Groups["after"].Value,
+                        };
+                        c.ChangeDetails.Add(cd);
+                		matchResult = matchResult.NextMatch();
+                	} 
+                    Db.SubmitChanges();
                 }
                 e.RemoveStatus(id);
             });
-            return Content(i.ToString());
+            return Redirect("/Batch/TestProgress/" + id);
         }
-        [HttpPost]
+        [HttpGet]
         public ActionResult TestProgress(string id)
         {
             var e = new LongRunningStatus();
             return Content(e.GetStatus(id).ToString());
         }
-                        //case "AgeFee":
-                        //    o.AgeFee = a[c];
-                        //    break;
-                        //case "AgeGroups":
-                        //    o.AgeGroups = a[c];
-                        //    break;
-                        //case "AllowLastYearShirt":
-                        //    o.AllowLastYearShirt = a[c].ToBool2();
-                        //    break;
-                        //case "AllowOnlyOne":
-                        //    o.AllowOnlyOne = a[c].ToBool2();
-                        //    break;
-                        //case "AskAllergies":
-                        //    o.AskAllergies = a[c].ToBool2();
-                        //    break;
-                        //case "AskChurch":
-                        //    o.AskChurch = a[c].ToBool2();
-                        //    break;
-                        //case "AskCoaching":
-                        //    o.AskCoaching = a[c].ToBool2();
-                        //    break;
-                        //case "AskDoctor":
-                        //    o.AskDoctor = a[c].ToBool2();
-                        //    break;
-                        //case "AskEmContact":
-                        //    o.AskEmContact = a[c].ToBool2();
-                        //    break;
-                        //case "AskGrade":
-                        //    o.AskGrade = a[c].ToBool2();
-                        //    break;
-                        //case "AskInsurance":
-                        //    o.AskInsurance = a[c].ToBool2();
-                        //    break;
-                        //case "AskOptions":
-                        //    o.AskOptions = a[c];
-                        //    break;
-                        //case "AskParents":
-                        //    o.AskParents = a[c].ToBool2();
-                        //    break;
-                        //case "AskRequest":
-                        //    o.AskRequest = a[c].ToBool2();
-                        //    break;
-                        //case "AskShirtSize":
-                        //    o.AskShirtSize = a[c].ToBool2();
-                        //    break;
-                        //case "AskTickets":
-                        //    o.AskTickets = a[c].ToBool2();
-                        //    break;
-                        //case "AskTylenolEtc":
-                        //    o.AskTylenolEtc = a[c].ToBool2();
-                        //    break;
-                        //case "Deposit":
-                        //    o.Deposit = a[c].ToDecimal();
-                        //    break;
-                        //case "ExtraFee":
-                        //    o.ExtraFee = a[c].ToDecimal();
-                        //    break;
-                        //case "Fee":
-                        //    o.Fee = a[c].ToDecimal();
-                        //    break;
-                        //case "MaximumFee":
-                        //    o.MaximumFee = a[c].ToDecimal();
-                        //    break;
-                        //case "MemberOnly":
-                        //    o.MemberOnly = a[c].ToBool2();
-                        //    break;
-                        //case "NotReqAddr":
-                        //    o.NotReqAddr = a[c].ToBool2();
-                        //    break;
-                        //case "NotReqDOB":
-                        //    o.NotReqDOB = a[c].ToBool2();
-                        //    break;
-                        //case "NotReqGender":
-                        //    o.NotReqGender = a[c].ToBool2();
-                        //    break;
-                        //case "NotReqMarital":
-                        //    o.NotReqMarital = a[c].ToBool2();
-                        //    break;
-                        //case "NotReqPhone":
-                        //    o.NotReqPhone = a[c].ToBool2();
-                        //    break;
-                        //case "NotReqZip":
-                        //    o.NotReqZip = a[c].ToBool2();
-                        //    break;
-                        //case "RegistrationTypeId":
-                        //    o.RegistrationTypeId = a[c].ToInt();
-                        //    break;
-                        //case "ShirtFee":
-                        //    o.ShirtFee = a[c].ToDecimal();
-                        //    break;
-                        //case "YesNoQuestions":
-                        //    o.YesNoQuestions = a[c];
-                        //    break;
     }
 }

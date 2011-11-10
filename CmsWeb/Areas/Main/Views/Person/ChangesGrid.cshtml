@@ -1,32 +1,34 @@
 ﻿@using UtilityExtensions
 @using CmsData
-@model CmsData.Person
+@model CmsWeb.Models.PersonPage.PersonModel
 <table class="grid">
 <thead>
     <tr>
-        <th colspan="4">Changes</th>
-    </tr>
-    <tr>
+        <th>Time</th>
         <th>User</th>
         <th>Field</th>
-        <th>Time</th>
-        <th>Value</th>
+        <th>Before</th>
+        <th>After</th>
+        <th></th>
     </tr>
 </thead>
 <tbody>
-@{ var q = from c in DbUtil.Db.ChangeLogs
-           let userp = DbUtil.Db.People.Single(u => u.PeopleId == c.UserPeopleId)
-           where c.PeopleId == Model.PeopleId || c.FamilyId == Model.FamilyId
-           orderby c.Created descending
-           select new { User = userp.Name, Field = c.Field, Data = c.Data, Time = c.Created };
-}
-@foreach (var c in q)
+@foreach (var c in Model.GetChangeLogs())
 { 
     <tr>
-        <td valign="top">@c.User</td>
-        <td valign="top">@c.Field</td>
-        <td valign="top">@c.Time.ToString("M/d/yy h:mm tt")</td>
-        <td>@Html.Raw(c.Data)</td>
+        <td title="@c.FieldSet">@c.Time.ToString2("M/d/yy h:mm tt")</td>
+        <td>@c.User</td>
+        <td>@c.Field</td>
+        <td>@c.Before</td>
+        <td>@c.After</td>
+    @if (c.Reversable)
+    {
+        <td><a class="reverse" href="/Person/Reverse/@Model.Person.PeopleId" field="@c.Field" value="@c.Before" pf="@c.pf">reverse</a></td>
+    }
+    else
+    {
+        <td></td>
+    }
     </tr>
 } 
 </tbody>

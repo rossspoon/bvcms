@@ -26,6 +26,7 @@ namespace CmsWeb.Areas.Main
             AddRoute(context, "Export");
             AddRoute(context, "OrgSearch");
             AddRoute(context, "ContactSearch");
+            AddRoute(context, "Contact");
             AddRoute(context, "TaskList", "Task", "Task/{action}/{id}", "List");
             AddRoute(context, "Task");
             AddRoute(context, "Organization");
@@ -35,7 +36,6 @@ namespace CmsWeb.Areas.Main
             AddRoute(context, "Reports");
             AddRoute(context, "Person");
             AddRoute(context, "Family");
-            AddRoute(context, "Contact");
             AddRoute(context, "TaskDetail", "Task", "Task/Detail/{id}/Row/{rowid}", "Detail");
             AddRoute(context, "QueryBuilderMain", "QueryBuilder", "QueryBuilder/{action}/{id}", "Main");
             AddRoute(context, "QueryBuilder");

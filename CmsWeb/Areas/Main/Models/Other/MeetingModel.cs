@@ -22,9 +22,9 @@ namespace CmsWeb.Models
         {
             meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == id);
         }
-        public IEnumerable<RollsheetModel.AttendInfo> Attends()
+        public IEnumerable<RollsheetModel.AttendInfo> Attends(bool sorted = false)
         {
-            return RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sortbyname);
+            return RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sorted);
         }
         public string AttendCreditType()
         {

@@ -30,8 +30,8 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
-            DbUtil.LogActivity("checkin " + id, false);
             DbUtil.Db.SetNoLock();
+            DbUtil.LogActivity("checkin " + id, false);
 
             var m = new CheckInModel();
             var matches = m.Match(id, campus, thisday);

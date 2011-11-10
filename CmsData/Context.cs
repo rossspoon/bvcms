@@ -663,6 +663,23 @@ namespace CmsData
             o.BFCMeeting = r.GetResult<Meeting>().FirstOrDefault();
             return o;
         }
+        public class RecordAttendInfo
+        {
+            public string ret { get; set; }
+        }
+		[Function(Name="dbo.RecordAttend")]
+        [ResultType(typeof(RecordAttendInfo))]
+        private IMultipleResults RecordAttend([Parameter(DbType = "Int")] int? meetingId, [Parameter(DbType = "Int")] int? peopleId, [Parameter(DbType = "Bit")] bool? present)
+		{
+			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), meetingId, peopleId, present);
+            return ((IMultipleResults)(result.ReturnValue));
+		}
+        public string RecordAttendance(int MeetingId, int PeopleId, bool present)
+        {
+            var r = RecordAttend(MeetingId, PeopleId, present);
+            var s = r.GetResult<RecordAttendInfo>().First();
+            return s.ret;
+        }
         public string UserPreference(string pref)
         {
             return UserPreference(pref, string.Empty);
@@ -787,6 +804,18 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
             return ((int)(result.ReturnValue));
         }
+        [Function(Name = "dbo.RecordAttend2")]
+        public int RecordAttend2([Parameter(DbType = "Int")] int orgid, [Parameter(DbType = "DateTime")] DateTime? mdt, [Parameter(DbType = "Int")] int? pid)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orgid, mdt, pid);
+            return ((int)(result.ReturnValue));
+        }
+        [Function(Name = "dbo.CreateMeeting")]
+        public int CreateMeeting([Parameter(DbType = "Int")] int oid, [Parameter(DbType = "DateTime")] DateTime? mdt)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), oid, mdt);
+            return ((int)(result.ReturnValue));
+        }
         public OrganizationMember LoadOrgMember(int PeopleId, string OrgName, bool orgmustexist)
         {
             if (orgmustexist)
@@ -837,6 +866,10 @@ namespace CmsData
             if (content != null)
                 return content.Body;
             return def;
+        }
+        public void SetNoLock() 
+        { 
+            //ExecuteCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED"); 
         }
     }
 }

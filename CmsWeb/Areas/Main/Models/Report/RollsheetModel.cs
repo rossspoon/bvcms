@@ -223,6 +223,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                              {
                                  PeopleId = p.PeopleId,
                                  Name = p.Name2,
+                                 Email = p.Email,
                                  Attended = pa != null ? pa.AttendanceFlag : false,
                                  Registered = pa != null ? (pa.Registered ?? false) : false,
                                  Member = true,
@@ -247,6 +248,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                               {
                                   PeopleId = pvisitor.PeopleId,
                                   Name = pvisitor.Name2,
+                                  Email = pvisitor.Email,
                                   Attended = pattender != null ? pattender.AttendanceFlag : false,
                                   Registered = pattender != null ? (pattender.Registered ?? false) : false,
                                   Member = false,
@@ -263,6 +265,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                             {
                                 PeopleId = p.PeopleId,
                                 Name = p.Name,
+                                Email = p.Email,
                                 Attended = p.Attended,
                                 Registered = p.Registered,
                                 Member = p.Member,
@@ -280,6 +283,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             public int PeopleId { get; set; }
             public string Name { get; set; }
             public string Age { get; set; }
+            public string Email { get; set; }
             public bool Attended { get; set; }
             public bool Registered { get; set; }
             public bool CanAttend { get; set; }

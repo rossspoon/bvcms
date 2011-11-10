@@ -255,6 +255,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                      };
             var list = new iTextSharp.text.List(false, 10);
             list.ListSymbol = new Chunk("\u2022", font);
+            var ep = p.EntryPoint != null ? p.EntryPoint.Description : "";
+            var ip = p.InterestPoint != null ? p.InterestPoint.Description : "";
+            if (ep.HasValue() || ip.HasValue())
+                list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, "Entry, Interest: {0}, {1}".Fmt(ep, ip), font));
             foreach (var pc in cq)
             {
                 var cname = "unknown";

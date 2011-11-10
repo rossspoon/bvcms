@@ -43,6 +43,28 @@ namespace CmsWeb.Areas.Main.Controllers
 				return RedirectShowError("You must be a leader of this organization to have access to this page");
             return View(m);
         }
+        public ActionResult iPad(int? id)
+        {
+            if (!id.HasValue)
+                return RedirectShowError("no id");
+            var m = new MeetingModel(id.Value);
+            m.showall = true;
+            if (m.meeting == null)
+                return RedirectShowError("no meeting");
+
+			if (Util2.OrgMembersOnly
+				&& !DbUtil.Db.OrganizationMembers.Any(om =>
+					om.OrganizationId == m.meeting.OrganizationId
+					&& om.PeopleId == Util.UserPeopleId))
+				return RedirectShowError("You must be a member of this organization to have access to this page");
+			else if (Util2.OrgLeadersOnly
+				&& !DbUtil.Db.OrganizationMembers.Any(om =>
+					om.OrganizationId == m.meeting.OrganizationId
+					&& om.PeopleId == Util.UserPeopleId
+                    && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
+				return RedirectShowError("You must be a leader of this organization to have access to this page");
+            return View(m);
+        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult EditGroup(string id, string value)
         {

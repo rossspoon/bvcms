@@ -4,7 +4,11 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+            .Add("/Content/js/jquery.transpose.min.js")
+            .Add("/Scripts/Contact.js")
+        .Render("/Content/Contact_#.js")
+)
 @Html.Hidden("Id")
 <div class="roundbox floatleft">
 <h2>Contact</h2>
@@ -31,7 +35,7 @@
 <table cellpadding="5">
   <tbody>
     <tr>
-      <td>
+      <td><div class="wrapper">
 <div class="item" >
     @Html.CheckBox("NotAtHome", Model.contact.NotAtHome ?? false)
    <span>Attempted/Not Available</span></div>
@@ -53,6 +57,7 @@
 <div class="item" >
     @Html.CheckBox("GiftBagGiven", Model.contact.GiftBagGiven ?? false)
    <span>Gift Bag Given</span></div>
+   </div>
       </td>
     </tr>
     <tr>

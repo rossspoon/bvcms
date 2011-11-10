@@ -216,7 +216,6 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
-            m.ValidateSettings(ModelState);
             if (ModelState.IsValid)
             {
                 m.UpdateSchedules();
@@ -242,15 +241,13 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult SettingsMeetingsUpdate(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
+            m.schedules.Clear();
+
             UpdateModel(m);
-            m.ValidateSettings(ModelState);
-            if (ModelState.IsValid)
-            {
-                m.UpdateSchedules();
-                DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, m.org.OrgSchedules);
-                return View("SettingsMeetings", m);
-            }
-            return View("SettingsMeetingsEdit", m);
+            m.UpdateSchedules();
+            DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, m.org.OrgSchedules);
+            return View("SettingsMeetings", m);
+            //return View("SettingsMeetingsEdit", m);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

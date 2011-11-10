@@ -326,6 +326,18 @@
             });
         return false;
     });
+    $("a.reverse").live('click', function (ev) {
+        ev.preventDefault();
+        var f = $(this).closest('form');
+        $.post("/Person/Reverse", {
+            id: $("#PeopleId").val(),
+            field: $(this).attr("field"),
+            value: $(this).attr("value"),
+            pf: $(this).attr("pf")
+        }, function (ret) {
+            $(f).html(ret);
+        });
+    });
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#current-tab form'));

@@ -265,7 +265,12 @@ $(function () {
         return false;
     });
 
-    $("#NewMeetingDialog").dialog({ autoOpen: false });
+    $("#NewMeetingDialog").dialog({
+        autoOpen: false,
+        width: 488,
+        height: 350,
+        modal: true
+    });
     $('#RollsheetLink').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("By Group");

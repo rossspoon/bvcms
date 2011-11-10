@@ -1,0 +1,32 @@
+﻿@using UtilityExtensions
+@model CmsWeb.Models.ContactSearchModel
+<table class="grid">
+<thead>
+    <tr><td colspan="4">
+<div>Count: @Model.Count().ToString("n0")</div>
+ @Html.Partial("Pager2", Model) 
+    </td></tr>
+    <tr>
+        <th>Date</th>
+        <th>Reason</th>
+        <th>Type</th>
+        <th>Contactees</th>
+    </tr>
+</thead>
+<tbody>
+@foreach (var c in Model.ContactList())
+{
+    <tr>
+        <td><a href="/Contact/Index/@c.ContactId">@c.ContactDate.ToString("d")</a></td>
+        <td>@c.ContactReason</td>
+        <td>@c.TypeOfContact</td>
+        <td>@c.ContacteeList</td>
+    </tr>
+}
+</tbody>
+<tfoot>
+    <tr><td colspan="4">
+ @Html.Partial("Pager2", Model) 
+    </td></tr>
+</tfoot>
+</table>

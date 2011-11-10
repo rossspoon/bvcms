@@ -118,6 +118,10 @@ namespace CmsData
         partial void UpdateCardIdentifier(CardIdentifier instance);
         partial void DeleteCardIdentifier(CardIdentifier instance);
         
+        partial void InsertChangeDetail(ChangeDetail instance);
+        partial void UpdateChangeDetail(ChangeDetail instance);
+        partial void DeleteChangeDetail(ChangeDetail instance);
+        
         partial void InsertChangeLog(ChangeLog instance);
         partial void UpdateChangeLog(ChangeLog instance);
         partial void DeleteChangeLog(ChangeLog instance);
@@ -827,6 +831,12 @@ namespace CmsData
 		public Table< CardIdentifier> CardIdentifiers
 		{
 			get	{ return this.GetTable< CardIdentifier>(); }
+
+		}
+
+		public Table< ChangeDetail> ChangeDetails
+		{
+			get	{ return this.GetTable< ChangeDetail>(); }
 
 		}
 
@@ -2080,7 +2090,6 @@ namespace CmsData
 		[Function(Name="dbo.GetTodaysMeetingHour", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? GetTodaysMeetingHour(
-            [Parameter(Name = "orgid", DbType="int")] int? orgid,
             [Parameter(Name = "thisday", DbType="int")] int? thisday,
             [Parameter(Name = "MeetingTime", DbType="datetime")] DateTime? MeetingTime,
             [Parameter(Name = "SchedDay", DbType="int")] int? SchedDay
@@ -2088,7 +2097,6 @@ namespace CmsData
 		{
 			return ((DateTime?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                orgid,
                 thisday,
                 MeetingTime,
                 SchedDay
@@ -3076,6 +3084,22 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 Username,
                 PropertyName
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.GetAttendType", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? GetAttendType(
+            [Parameter(Name = "attended", DbType="bit")] bool? attended,
+            [Parameter(Name = "membertypeid", DbType="int")] int? membertypeid,
+            [Parameter(Name = "group", DbType="bit")] bool? group
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                attended,
+                membertypeid,
+                group
                 ).ReturnValue));
 		}
 

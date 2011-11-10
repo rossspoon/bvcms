@@ -35,7 +35,7 @@ namespace CmsData
 
         public string MemberProfileAutomation(CMSDataContext Db)
         {
-            var script = DbUtil.Content("MemberProfileAutomation");
+            var script = Db.Content("MemberProfileAutomation");
             if (script == null)
                 return "ok";
             var path = HttpContext.Current.Server.MapPath("/");
@@ -63,11 +63,11 @@ namespace CmsData
 
                 dynamic MembershipAutomation = scope.GetVariable("MembershipAutomation");
                 dynamic m = MembershipAutomation();
-                var ret = m.Run(DbUtil.Db, this);
+                var ret = m.Run(Db, this);
 
                 //var m = scope.GetVariable("MembershipAutomation");
                 //dynamic instance = engine.Operations.CreateInstance(m);
-                //var value = instance.Run(DbUtil.Db, this);
+                //var value = instance.Run(Db, this);
                 return errorReturn;
             }
             catch (Exception ex)

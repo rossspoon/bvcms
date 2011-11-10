@@ -333,6 +333,8 @@
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Content Include="Binaries\AuthorizeNet.dll" />
+    <Content Include="Content\js\jquery.tmpl.js" />
+    <Content Include="Content\js\json2.js" />
     <Content Include="Content\organization.css" />
     <Content Include="Content\js\jquery-1.5.2-vsdoc.js" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
@@ -992,6 +994,7 @@
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
     <Content Include="Scripts\ContactSearch.js" />
+    <Content Include="Scripts\meeting-ipad.js" />
     <Content Include="Scripts\SearchOrgs.js" />
     <Content Include="Scripts\OrgChildren.js" />
     <Content Include="Scripts\Meetings.js" />
@@ -1472,6 +1475,8 @@
     <Content Include="Areas\Dialog\Views\SearchOrgs\Index.cshtml" />
     <Content Include="Areas\Dialog\Views\SearchOrgs\Results.cshtml" />
     <Content Include="Areas\Main\Views\Organization\OrgPickList2.cshtml" />
+    <Content Include="Areas\Main\Views\Meeting\iPad.cshtml" />
+    <Content Include="Areas\Main\Views\ContactSearch\Results.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

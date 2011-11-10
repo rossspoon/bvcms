@@ -27,7 +27,7 @@ namespace CmsWeb.Models.OrganizationPage
         }
         public int SchedDay
         {
-            get { return sc.SchedDay ?? 0; }
+            get { return sc.SchedDay ?? 11; }
             set { sc.SchedDay = value; }
         }
         public string Time
@@ -55,7 +55,8 @@ namespace CmsWeb.Models.OrganizationPage
                 new { Text = "Thu", Value = "4" },
                 new { Text = "Fri", Value = "5" },
                 new { Text = "Sat", Value = "6" },
-                new { Text = "Any", Value = "10" }
+                new { Text = "Any", Value = "10" },
+                new { Text = "None", Value = "11" }
                 }, "Value", "Text", SchedDay.ToString());
         }
         public SelectList AttendCredits()

@@ -527,7 +527,7 @@ namespace CmsWeb.Models
             var q = from o in DbUtil.Db.Organizations
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     where sc != null
-                    group o by new { sc.ScheduleId, sc.MeetingTime } into g
+                    group o by new { ScheduleId = sc.ScheduleId ?? 10800, sc.MeetingTime } into g
                     orderby g.Key.ScheduleId
                     select new SelectListItem
                     {
