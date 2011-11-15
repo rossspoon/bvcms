@@ -98,8 +98,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where a.OrganizationId == orgid
                     where a.PeopleId == pid
                     where a.MeetingDate > start && a.MeetingDate <= end
-                    where ((a.Organization.AttendTrkLevelId == 30 && a.Registered == true)
-			        || a.Organization.AttendTrkLevelId == 20)
                     orderby a.MeetingDate.Date descending
                     select new
                     {

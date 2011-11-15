@@ -139,7 +139,6 @@ namespace CmsData
         {
             var neworg = new Organization
             {
-                AttendTrkLevelId = AttendTrkLevelId,
                 SecurityTypeId = SecurityTypeId,
                 CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
@@ -149,7 +148,6 @@ namespace CmsData
                 EntryPointId = EntryPointId,
                 OrganizationStatusId = OrganizationStatusId,
                 AllowAttendOverlap = AllowAttendOverlap,
-                AttendClassificationId = AttendClassificationId,
                 GradeAgeStart = GradeAgeStart,
                 CampusId = CampusId,
                 IsBibleFellowshipOrg = IsBibleFellowshipOrg,

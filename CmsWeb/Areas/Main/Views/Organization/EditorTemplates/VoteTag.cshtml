@@ -7,7 +7,11 @@
       @{ var prefix = ci.SuitableId; }
           @Html.HiddenFor(m => m.Id, new { @class = "renumberMe" }) 
         <ul>
-    <li><div class="sgfee">Confirm:</div> <a href="#" class="editor" title="click to edit" tb="@(prefix)_Display">
+    <li><div class="sgfee tip" title="Content
+            |This is what the recipient sees in the email
+            |They will click on this.
+            |Can be just plain text, or an image.">
+            Content:</div> <a href="#" class="editor" title="click to edit" tb="@(prefix)_Display">
     <div id="@(prefix)_Display_ro" class="block border">
     @if (Model.Display.HasValue())
     {
@@ -19,9 +23,15 @@
     }
     </div></a><a class="del" href="#"><img align="top" src="/images/delete.gif" title="remove this item" /></a></li>
     @Html.TextAreaFor(m => m.Display, new { @class = "html" })
-          <li><div class="sgfee">Confirm:</div> @Html.CheckBoxFor(m => m.Confirm) </li>
-          <li><div class="sgfee">SmallGroup:</div> @Html.TextBoxFor(m => m.SmallGroup) </li>
-          <li><div class="sgfee">Message:</div> @Html.TextBoxFor(m => m.Message) </li>
+          <li><div class="sgfee tip" title="Confirm
+                |Indicates whether a confirmation email is sent or not.">
+                Confirm:</div> @Html.CheckBoxFor(m => m.Confirm) </li>
+          <li><div class="sgfee tip" title="SmallGroup
+                |Creates this small group.">
+                SmallGroup:</div> @Html.TextBoxFor(m => m.SmallGroup) </li>
+          <li><div class="sgfee tip" title="Message
+                |The on screen message displayed when they click the link.">
+                Message:</div> @Html.TextBoxFor(m => m.Message) </li>
         </ul>
       </li>
   }

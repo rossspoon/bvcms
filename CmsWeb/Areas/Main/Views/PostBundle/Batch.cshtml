@@ -4,6 +4,7 @@
 <form action="/PostBundle/BatchUpload" method="post" enctype="multipart/form-data">
     <label>Filename: <input type="file" name="file" /></label>
     <label>Contribution Date: </label> @Html.DatePicker("date")
+    <label> FundId:</label>@Html.TextBox("fundid")
     <input type="submit" class="bt" value="Submit" />
     @Html.TextArea("text", "", new { rows = "10", cols = "1000", wrap = "off", style = "width:90%" })<br />
 </form>

@@ -336,8 +336,8 @@ namespace CmsWeb.Areas.Manage.Controllers
                         UpdateField(p, a, "CellPhone", "CellPhone", GetDigits(a, "CellPhone"));
                         UpdateField(p, a, "WorkPhone", "WorkPhone", GetDigits(a, "WorkPhone"));
                         UpdateField(p, a, "GenderId", "Gender", Gender(a));
-                        UpdateField(p, a, "MaritalStatusId", "Married", Marital(a));
-                        UpdateField(p, a, "MaritalStatusId", "Marital", Marital(a));
+                        UpdateField(p, a, "MaritalStatusId", "Married", Marital("Married", a));
+                        UpdateField(p, a, "MaritalStatusId", "Marital", Marital("Marital", a));
                         UpdateField(p, a, "PositionInFamilyId", "Position", Position(a));
                         if (names.ContainsKey("Campus"))
                             UpdateField(p, a, "CampusId", "Campus", campuses[a[names["Campus"]]]);
@@ -408,9 +408,9 @@ namespace CmsWeb.Areas.Manage.Controllers
                         if (names.ContainsKey("Gender"))
                             p.GenderId = Gender(a);
                         if (names.ContainsKey("Married"))
-                            p.MaritalStatusId = Marital(a);
+                            p.MaritalStatusId = Marital("Married", a);
                         if (names.ContainsKey("Marital"))
-                            p.MaritalStatusId = Marital(a);
+                            p.MaritalStatusId = Marital("Marital", a);
                         if (names.ContainsKey("Position"))
                             p.PositionInFamilyId = Position(a);
                         if (names.ContainsKey("Title"))
@@ -473,12 +473,12 @@ namespace CmsWeb.Areas.Manage.Controllers
                 }
             return 0;
         }
-        int Marital(string[] a)
+        int Marital(string i, string[] a)
         {
-            if (names.ContainsKey("Married"))
-                if (a[names["Married"]].HasValue())
+            if (names.ContainsKey(i))
+                if (a[names[i]].HasValue())
                 {
-                    var v = a[names["Married"]].TrimEnd();
+                    var v = a[names[i]].TrimEnd();
                     switch (v)
                     {
                         case "Married":

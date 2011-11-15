@@ -149,7 +149,8 @@ namespace CmsWeb.Areas.Main.Models.Report
         { 
             AttendTypeCode.VisitingMember,
             AttendTypeCode.RecentVisitor, 
-            AttendTypeCode.NewVisitor 
+            AttendTypeCode.NewVisitor,
+            AttendTypeCode.OtherClass
         };
 
         public static IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate, bool NoCurrentMembers)

@@ -64,7 +64,7 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["date"] = dt;
             return View();
         }
-        public ActionResult BatchUpload(DateTime date, HttpPostedFileBase file, string text)
+        public ActionResult BatchUpload(DateTime date, HttpPostedFileBase file, int? fundid, string text)
         {
             string s;
             if (file != null)
@@ -85,7 +85,7 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             else
                 s = text;
-            var id = PostBundleModel.BatchProcess(s, date);
+            var id = PostBundleModel.BatchProcess(s, date, fundid);
             if (id.HasValue)
                 return Redirect("/PostBundle/Index/" + id);
             return RedirectToAction("Batch");

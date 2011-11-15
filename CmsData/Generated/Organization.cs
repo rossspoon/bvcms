@@ -35,11 +35,7 @@ namespace CmsData
 		
 		private int? _RollSheetVisitorWks;
 		
-		private int _AttendTrkLevelId;
-		
 		private int _SecurityTypeId;
-		
-		private int _AttendClassificationId;
 		
 		private DateTime? _FirstMeetingDate;
 		
@@ -129,6 +125,8 @@ namespace CmsData
 		
 		private string _OrgPickList;
 		
+		private bool? _Offsite;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -158,8 +156,6 @@ namespace CmsData
 		
     	
 		private EntityRef< Organization> _ParentOrg;
-		
-		private EntityRef< AttendTrackLevel> _AttendTrackLevel;
 		
 		private EntityRef< Campu> _Campu;
 		
@@ -205,14 +201,8 @@ namespace CmsData
 		partial void OnRollSheetVisitorWksChanging(int? value);
 		partial void OnRollSheetVisitorWksChanged();
 		
-		partial void OnAttendTrkLevelIdChanging(int value);
-		partial void OnAttendTrkLevelIdChanged();
-		
 		partial void OnSecurityTypeIdChanging(int value);
 		partial void OnSecurityTypeIdChanged();
-		
-		partial void OnAttendClassificationIdChanging(int value);
-		partial void OnAttendClassificationIdChanged();
 		
 		partial void OnFirstMeetingDateChanging(DateTime? value);
 		partial void OnFirstMeetingDateChanged();
@@ -346,6 +336,9 @@ namespace CmsData
 		partial void OnOrgPickListChanging(string value);
 		partial void OnOrgPickListChanged();
 		
+		partial void OnOffsiteChanging(bool? value);
+		partial void OnOffsiteChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -378,8 +371,6 @@ namespace CmsData
 			
 			
 			this._ParentOrg = default(EntityRef< Organization>); 
-			
-			this._AttendTrackLevel = default(EntityRef< AttendTrackLevel>); 
 			
 			this._Campu = default(EntityRef< Campu>); 
 			
@@ -601,31 +592,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AttendTrkLevelId", UpdateCheck=UpdateCheck.Never, Storage="_AttendTrkLevelId", DbType="int NOT NULL")]
-		public int AttendTrkLevelId
-		{
-			get { return this._AttendTrkLevelId; }
-
-			set
-			{
-				if (this._AttendTrkLevelId != value)
-				{
-				
-					if (this._AttendTrackLevel.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnAttendTrkLevelIdChanging(value);
-					this.SendPropertyChanging();
-					this._AttendTrkLevelId = value;
-					this.SendPropertyChanged("AttendTrkLevelId");
-					this.OnAttendTrkLevelIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="SecurityTypeId", UpdateCheck=UpdateCheck.Never, Storage="_SecurityTypeId", DbType="int NOT NULL")]
 		public int SecurityTypeId
 		{
@@ -641,28 +607,6 @@ namespace CmsData
 					this._SecurityTypeId = value;
 					this.SendPropertyChanged("SecurityTypeId");
 					this.OnSecurityTypeIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="AttendClassificationId", UpdateCheck=UpdateCheck.Never, Storage="_AttendClassificationId", DbType="int NOT NULL")]
-		public int AttendClassificationId
-		{
-			get { return this._AttendClassificationId; }
-
-			set
-			{
-				if (this._AttendClassificationId != value)
-				{
-				
-                    this.OnAttendClassificationIdChanging(value);
-					this.SendPropertyChanging();
-					this._AttendClassificationId = value;
-					this.SendPropertyChanged("AttendClassificationId");
-					this.OnAttendClassificationIdChanged();
 				}
 
 			}
@@ -1650,6 +1594,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Offsite", UpdateCheck=UpdateCheck.Never, Storage="_Offsite", DbType="bit")]
+		public bool? Offsite
+		{
+			get { return this._Offsite; }
+
+			set
+			{
+				if (this._Offsite != value)
+				{
+				
+                    this.OnOffsiteChanging(value);
+					this.SendPropertyChanging();
+					this._Offsite = value;
+					this.SendPropertyChanged("Offsite");
+					this.OnOffsiteChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -1823,48 +1789,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("ParentOrg");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_Organizations_AttendTrackLevel", Storage="_AttendTrackLevel", ThisKey="AttendTrkLevelId", IsForeignKey=true)]
-		public AttendTrackLevel AttendTrackLevel
-		{
-			get { return this._AttendTrackLevel.Entity; }
-
-			set
-			{
-				AttendTrackLevel previousValue = this._AttendTrackLevel.Entity;
-				if (((previousValue != value) 
-							|| (this._AttendTrackLevel.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._AttendTrackLevel.Entity = null;
-						previousValue.Organizations.Remove(this);
-					}
-
-					this._AttendTrackLevel.Entity = value;
-					if (value != null)
-					{
-						value.Organizations.Add(this);
-						
-						this._AttendTrkLevelId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._AttendTrkLevelId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("AttendTrackLevel");
 				}
 
 			}

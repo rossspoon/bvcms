@@ -535,6 +535,7 @@ namespace CmsWeb.Models
                         Text = DbUtil.Db.GetScheduleDesc(g.Key.MeetingTime)
                     };
             var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(None)", Value = "-1" });
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
         }

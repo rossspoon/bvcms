@@ -902,25 +902,6 @@ namespace CMSPresenter
 		}
 
 		[DataObjectMethod(DataObjectMethodType.Select, false)]
-		public List<CodeValueItem> AttendanceTrackLevelCodes()
-		{
-			const string NAME = "AttendanceTrackLevelCodes";
-			var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
-			if (list == null)
-			{
-				var q = from c in DbUtil.Db.AttendTrackLevels
-						select new CodeValueItem
-						{
-							Id = c.Id,
-							Code = c.Code,
-							Value = c.Description,
-						};
-				list = q.ToList();
-				HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
-			}
-			return list;
-		}
-		[DataObjectMethod(DataObjectMethodType.Select, false)]
 		public List<CodeValueItem> RegistrationTypes()
 		{
 			const string NAME = "RegistrationTypes";
@@ -967,27 +948,6 @@ namespace CMSPresenter
 					new CodeValueItem { Id = 15, Value = "Same Time", Code = "C" },
 					new CodeValueItem { Id = 10, Value = "Missing Drop", Code = "B" },
 				};
-			return list;
-		}
-
-		[DataObjectMethod(DataObjectMethodType.Select, false)]
-		public List<CodeValueItem> AttendanceClassifications()
-		{
-			const string NAME = "AttendanceClassifications";
-			var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
-			if (list == null)
-			{
-				var q = from i in DbUtil.Db.AttendanceClassifications
-						orderby i.Id
-						select new CodeValueItem
-						{
-							Id = i.Id,
-							Code = i.Code,
-							Value = i.Description
-						};
-				list = q.ToList();
-				HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
-			}
 			return list;
 		}
 

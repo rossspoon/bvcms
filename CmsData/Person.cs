@@ -284,6 +284,59 @@ namespace CmsData
 
             foreach (var sale in this.SaleTransactions)
                 sale.PeopleId = otherid;
+
+            var psb = new StringBuilder();
+            if (TitleCode.HasValue())
+                toperson.UpdateValue(psb, "TitleCode", TitleCode);
+            if (FirstName.HasValue()) 
+                toperson.UpdateValue(psb, "FirstName", FirstName);
+            if (LastName.HasValue()) 
+                toperson.UpdateValue(psb, "LastName", LastName);
+            if (NickName.HasValue()) 
+                toperson.UpdateValue(psb, "NickName", NickName);
+            if (AltName.HasValue()) 
+                toperson.UpdateValue(psb, "AltName", AltName);
+            toperson.UpdateValue(psb, "GenderId", GenderId);
+            toperson.UpdateValue(psb, "MaritalStatusId", MaritalStatusId);
+            if (BirthDate.HasValue) 
+                toperson.UpdateValue(psb, "DOB", DOB);
+            if (CellPhone.GetDigits().HasValue()) 
+                toperson.UpdateValue(psb, "CellPhone", CellPhone);
+            if (EmailAddress.HasValue()) 
+                toperson.UpdateValue(psb, "EmailAddress", EmailAddress);
+            if (EmailAddress2.HasValue()) 
+                toperson.UpdateValue(psb, "EmailAddress2", EmailAddress2);
+            if (SuffixCode.HasValue()) 
+                toperson.UpdateValue(psb, "SuffixCode", SuffixCode);
+            if (MiddleName.HasValue()) 
+                toperson.UpdateValue(psb, "MiddleName", MiddleName);
+
+            if (AddressLineOne.HasValue())
+                toperson.UpdateValue(psb, "AddressLineOne", AddressLineOne);
+            if (AddressLineTwo.HasValue())
+                toperson.UpdateValue(psb, "AddressLineTwo", AddressLineTwo);
+            if (CityName.HasValue())
+                toperson.UpdateValue(psb, "CityName", CityName);
+            if (StateCode.HasValue())
+                toperson.UpdateValue(psb, "StateCode", StateCode);
+            if (ZipCode.HasValue())
+                toperson.UpdateValue(psb, "ZipCode", ZipCode);
+
+            var fsb = new StringBuilder();
+            if (Family.AddressLineOne.HasValue())
+                toperson.Family.UpdateValue(fsb, "AddressLineOne", Family.AddressLineOne);
+            if (Family.AddressLineTwo.HasValue())
+                toperson.Family.UpdateValue(fsb, "AddressLineTwo", Family.AddressLineTwo);
+            if (Family.CityName.HasValue())
+                toperson.Family.UpdateValue(fsb, "CityName", Family.CityName);
+            if (Family.StateCode.HasValue())
+                toperson.Family.UpdateValue(fsb, "StateCode", Family.StateCode);
+            if (Family.ZipCode.HasValue())
+                toperson.Family.UpdateValue(fsb, "ZipCode", Family.ZipCode);
+
+            toperson.LogChanges(Db, psb, Util.UserPeopleId.Value);
+            toperson.Family.LogChanges(Db, fsb, toperson.PeopleId, Util.UserPeopleId.Value);
+
             Db.SubmitChanges();
         }
         public bool PurgePerson(CMSDataContext Db)
@@ -297,6 +350,7 @@ namespace CmsData
                 return false;
             }
             return true;
+
         }
         public bool Deceased
         {

@@ -68,7 +68,6 @@ namespace CmsWeb.Models
                         ClassFilled = o.ClassFilled ?? false,
                         RegClosed = o.RegistrationClosed ?? false,
                         RegTypeId = o.RegistrationTypeId,
-                        AttendanceTrackingLevel = o.AttendTrackLevel.Description,
                         ProgramName = o.Division.Program.Name,
                         DivisionId = o.DivisionId,
                         DivisionName = o.Division.Name,
@@ -188,6 +187,10 @@ namespace CmsWeb.Models
             if (ScheduleId > 0)
                 organizations = from o in organizations
                                 where o.OrgSchedules.Any(os => os.ScheduleId == ScheduleId)
+                                select o;
+            if (ScheduleId == -1)
+                organizations = from o in organizations
+                                where o.OrgSchedules.Count() == 0
                                 select o;
 
             if (StatusId > 0)
@@ -462,6 +465,11 @@ namespace CmsWeb.Models
             var list = q.ToList();
             list.Insert(0, new SelectListItem
             {
+                Value = "-1",
+                Text = "(None)",
+            });
+            list.Insert(0, new SelectListItem
+            {
                 Value = "0",
                 Text = "(not specified)",
             });
@@ -516,7 +524,6 @@ namespace CmsWeb.Models
             {
                 get { return RegistrationTypeCode.Lookup(RegTypeId ?? 0); }
             }
-            public string AttendanceTrackingLevel { get; set; }
             public string ProgramName { get; set; }
             public int? DivisionId { get; set; }
             public string DivisionName { get; set; }
@@ -536,14 +543,13 @@ namespace CmsWeb.Models
             {
                 get
                 {
-                    return "{0} ({1})|Program:{2}|Division: {3} ({4})|Leader: {5}|Tracking: {6}|First Meeting: {7}|Last Meeting: {8}|Schedule: {9}|Location: {10}|Divisions: {11}".Fmt(
+                    return "{0} ({1})|Program:{2}|Division: {3} ({4})|Leader: {5}|First Meeting: {6}|Last Meeting: {7}|Schedule: {8}|Location: {9}|Divisions: {10}".Fmt(
                                OrganizationName,
                                Id,
                                ProgramName,
                                DivisionName,
                                DivisionId,
                                LeaderName,
-                               AttendanceTrackingLevel,
                                FirstMeetingDate,
                                LastMeetingDate,
                                Schedule,
@@ -560,7 +566,6 @@ namespace CmsWeb.Models
             public string Name { get; set; }
             public string Leader { get; set; }
             public int Members { get; set; }
-            public string Tracking { get; set; }
             public string Division { get; set; }
             public string FirstMeeting { get; set; }
             public DateTime? MeetingTime { get; set; }

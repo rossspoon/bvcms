@@ -126,14 +126,6 @@ namespace CmsWeb.Models.OrganizationPage
         {
             return QueryModel.ConvertToSelect(cv.GenderCodes(), "Id");
         }
-        public IEnumerable<SelectListItem> AttendTrkLevelList()
-        {
-            return QueryModel.ConvertToSelect(cv.AttendanceTrackLevelCodes(), "Id");
-        }
-        public IEnumerable<SelectListItem> AttendClassificationList()
-        {
-            return QueryModel.ConvertToSelect(cv.AttendanceClassifications(), "Id");
-        }
         public IEnumerable<SelectListItem> AttendCreditList()
         {
             return QueryModel.ConvertToSelect(CodeValueController.AttendCredits(), "Id");

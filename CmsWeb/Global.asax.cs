@@ -17,6 +17,7 @@ using System.Globalization;
 using CmsWeb.Areas.Manage.Controllers;
 using System.Web.Caching;
 using Elmah;
+using System.Web.Security;
 
 namespace CmsWeb
 {

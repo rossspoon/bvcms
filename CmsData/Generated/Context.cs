@@ -34,17 +34,9 @@ namespace CmsData
         partial void UpdateAttend(Attend instance);
         partial void DeleteAttend(Attend instance);
         
-        partial void InsertAttendanceClassification(AttendanceClassification instance);
-        partial void UpdateAttendanceClassification(AttendanceClassification instance);
-        partial void DeleteAttendanceClassification(AttendanceClassification instance);
-        
         partial void InsertAttendCredit(AttendCredit instance);
         partial void UpdateAttendCredit(AttendCredit instance);
         partial void DeleteAttendCredit(AttendCredit instance);
-        
-        partial void InsertAttendTrackLevel(AttendTrackLevel instance);
-        partial void UpdateAttendTrackLevel(AttendTrackLevel instance);
-        partial void DeleteAttendTrackLevel(AttendTrackLevel instance);
         
         partial void InsertAttendType(AttendType instance);
         partial void UpdateAttendType(AttendType instance);
@@ -708,21 +700,9 @@ namespace CmsData
 
 		}
 
-		public Table< AttendanceClassification> AttendanceClassifications
-		{
-			get	{ return this.GetTable< AttendanceClassification>(); }
-
-		}
-
 		public Table< AttendCredit> AttendCredits
 		{
 			get	{ return this.GetTable< AttendCredit>(); }
-
-		}
-
-		public Table< AttendTrackLevel> AttendTrackLevels
-		{
-			get	{ return this.GetTable< AttendTrackLevel>(); }
 
 		}
 

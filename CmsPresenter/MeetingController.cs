@@ -25,7 +25,6 @@ namespace CMSPresenter
             public int OrganizationId { get; set; }
             public int? MeetingId { get; set; }
             public string Organization { get; set; }
-            public string Tracking { get; set; }
             public DateTime? Time { get; set; }
             public int? Attended { get; set; }
             public string Leader { get; set; }
@@ -118,7 +117,7 @@ namespace CMSPresenter
             var q = DbUtil.Db.Organizations.Select(o => o);
             q = ApplySearch(q, name, ProgId, DivId, SchedId, StatusId, CampusId);
             var q2 = from o in q
-                     where o.AttendTrkLevelId != 0 && o.AttendTrkLevelId != null
+                     //where o.AttendTrkLevelId != 0 && o.AttendTrkLevelId != null
                      join m in DbUtil.Db.Meetings on o.OrganizationId equals m.OrganizationId into mr
                      from m in mr.Where(m => m.MeetingDate.Value.Date == MeetingDate).DefaultIfEmpty()
                      let div = o.Division
@@ -130,7 +129,6 @@ namespace CMSPresenter
                          OrganizationId = o.OrganizationId,
                          Organization = o.OrganizationName,
                          MeetingId = m.MeetingId,
-                         Tracking = o.AttendTrackLevel.Description,
                          Time = m.MeetingDate,
                          Attended = m.NumPresent,
                          Leader = o.LeaderName,

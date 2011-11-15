@@ -295,7 +295,6 @@ namespace CmsWeb.Models
                        select new
                        {
                            sc.SchedTime.Value.TimeOfDay,
-                           o.AttendTrkLevelId,
                            o.Location
                        }).Single();
             var dt = Util.Now.Date;

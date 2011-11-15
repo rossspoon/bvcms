@@ -141,5 +141,39 @@ namespace CmsWeb.Areas.Public.Controllers
             Attend.MarkRegistered(PeopleId, id, Present);
             return Content("ok");
         }
+        [HttpPost]
+        [RequireBasicAuthentication]
+        public ActionResult GetOneTimeLoginLink(string url, string user)
+        {
+            var ret = Authenticate(log: true);
+            if (ret.StartsWith("!"))
+                return Content(url);
+            var ot = new OneTimeLink
+            {
+                Id = Guid.NewGuid(),
+                Querystring = user,
+                Expires = DateTime.Now.AddMinutes(10),
+            };
+            DbUtil.Db.OneTimeLinks.InsertOnSubmit(ot);
+            DbUtil.Db.SubmitChanges();
+            return Content("/Logon/?ReturnUrl={0}&otltoken={1}".Fmt(url, ot.Id.ToCode()));
+        }
+        [HttpPost]
+        [RequireBasicAuthentication]
+        public ActionResult GetOneTimeRegisterLink(int PeopleId, int OrgId)
+        {
+            var ret = Authenticate(log: true);
+            if (ret.StartsWith("!"))
+                return Content("/");
+            var ot = new OneTimeLink
+            {
+                Id = Guid.NewGuid(),
+                Querystring = "{0},{1},0".Fmt(OrgId, PeopleId),
+                Expires = DateTime.Now.AddMinutes(10),
+            };
+            DbUtil.Db.OneTimeLinks.InsertOnSubmit(ot);
+            DbUtil.Db.SubmitChanges();
+            return Content("/OnlineReg/RegisterLink/" + ot.Id.ToCode());
+        }
     }
 }

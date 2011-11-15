@@ -115,10 +115,38 @@ CKEditorFuncNum, baseurl + fn, error));
                 else
                     return Redirect(DbUtil.Db.CmsHost + "Logon");
 
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated || HasValidLoginToken())
+            {
+                var returnUrl = Request.QueryString["returnUrl"];
+                if (returnUrl.HasValue())
+                    return Redirect(returnUrl);
                 return Redirect("/");
+            }
 
             return View();
+        }
+        private bool HasValidLoginToken()
+        {
+            var otltoken = Request.QueryString["otltoken"];
+            if (!otltoken.HasValue())
+                return false;
+
+            var guid = otltoken.ToGuid();
+            if (guid == null)
+                return false;
+            var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+            if (ot == null)
+                return false;
+            if (ot.Used)
+                return false;
+            if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+                return false;
+
+            string user = ot.Querystring;
+            FormsAuthentication.SetAuthCookie(user, false);
+            SetUserInfo(user, Session);
+            Util.FormsBasedAuthentication = true;
+            return true;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

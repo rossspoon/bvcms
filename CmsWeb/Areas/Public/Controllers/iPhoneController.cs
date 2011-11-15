@@ -135,31 +135,23 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Organizations()
         {
-#if DEBUG
-            var uname = "david";
-#else
             if (!Authenticate())
                 return Content("not authorized");
             var uname = Request.Headers["username"];
-#endif
             AccountController.SetUserInfo(uname, Session);
             if (!CMSRoleProvider.provider.IsUserInRole(uname, "Attendance"))
                 return new OrgResult(null);
             return new OrgResult(Util.UserPeopleId);
         }
-#if DEBUG
-#else
-        [AcceptVerbs(HttpVerbs.Post)]
-#endif
-        public ActionResult RollList(int id, string datetime)
+        [HttpPost]
+        [RequireBasicAuthentication]
+        public ActionResult RollList( int id, string datetime )
+            // id = OrganizationId
+            // datetime = MeetingDate
         {
-#if DEBUG
-            var uname = "david";
-#else
             if (!Authenticate())
                 return Content("not authorized");
             var uname = Request.Headers["username"];
-#endif
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
             var dt = DateTime.Parse(datetime);
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
@@ -191,32 +183,24 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             return new RollListResult(meeting);
         }
-#if DEBUG
-#else
-        [AcceptVerbs(HttpVerbs.Post)]
-#endif
-        public ActionResult RecordAttend(int id, int PeopleId, bool Present)
+        [HttpPost]
+        [RequireBasicAuthentication]
+        public ActionResult RecordAttend( int id, int PeopleId, bool Present )
+            // id = MeetingId
         {
-#if DEBUG
-#else
             if (!Authenticate())
                 return Content("not authorized");
-#endif
             Attend.RecordAttendance(PeopleId, id, Present);
             DbUtil.Db.UpdateMeetingCounters(id);
             return new EmptyResult();
         }
-#if DEBUG
-#else
-        [AcceptVerbs(HttpVerbs.Post)]
-#endif
-        public ActionResult RecordVisit(int id, int PeopleId)
+        [HttpPost]
+        [RequireBasicAuthentication]
+        public ActionResult RecordVisit( int id, int PeopleId )
+            // id = MeetingId
         {
-#if DEBUG
-#else
             if (!Authenticate())
                 return Content("not authorized");
-#endif
             Attend.RecordAttendance(PeopleId, id, true);
             DbUtil.Db.UpdateMeetingCounters(id);
             var meeting = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == id);
@@ -237,17 +221,12 @@ namespace CmsWeb.Areas.Public.Controllers
             public int marital { get; set; }
             public int gender { get; set; }
         }
-#if DEBUG
-#else
-        [AcceptVerbs(HttpVerbs.Post)]
-#endif
+        [HttpPost]
+        [RequireBasicAuthentication]
         public ActionResult AddPerson(int id, PersonInfo m)
         {
-#if DEBUG
-#else
             if (!Authenticate())
                 return Content("not authorized");
-#endif
 
             CmsData.Family f;
             if (m.addtofamilyid > 0)
@@ -291,17 +270,12 @@ namespace CmsWeb.Areas.Public.Controllers
             DbUtil.Db.UpdateMeetingCounters(id);
             return new RollListResult(meeting);
         }
-#if DEBUG
-#else
-        [AcceptVerbs(HttpVerbs.Post)]
-#endif
+        [HttpPost]
+        [RequireBasicAuthentication]
         public ActionResult JoinUnJoinOrg(int PeopleId, int OrgId, bool Member)
         {
-#if DEBUG
-#else
             if (!Authenticate())
                 return Content("not authorized");
-#endif
             var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == PeopleId && m.OrganizationId == OrgId);
             if (om == null && Member)
                 om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
@@ -320,61 +294,46 @@ namespace CmsWeb.Areas.Public.Controllers
             //}
             return Content("OK");
         }
-        string Trim(string s)
+        private string Trim(string s)
         {
             if (s.HasValue())
                 return s.Trim();
             else
                 return s;
         }
-#if DEBUG
-#else
-        [AcceptVerbs(HttpVerbs.Post)]
-#endif
+        [HttpPost]
+        [RequireBasicAuthentication]
         public ActionResult RollList2(int id, string datetime)
+            // id = OrganizationId
         {
-#if DEBUG
-            var uname = "david";
-#else
             if (!Authenticate())
                 return Content("not authorized");
             var uname = Request.Headers["username"];
-#endif
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
             var dt = DateTime.Parse(datetime);
             return new RollListResult(id, dt);
         }
-#if DEBUG
-#else
-        [AcceptVerbs(HttpVerbs.Post)]
-#endif
+        [HttpPost]
+        [RequireBasicAuthentication]
         public ActionResult RecordAttend2(int id, string datetime, int PeopleId, bool Present)
+            // id = OrganizationId
         {
-#if DEBUG
-            var uname = "david";
-#else
             if (!Authenticate())
                 return Content("not authorized");
             var uname = Request.Headers["username"];
-#endif
             var dt = DateTime.Parse(datetime);
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
             RecordAttend2Extracted(id, PeopleId, Present, dt, u);
             return new EmptyResult();
         }
-#if DEBUG
-#else
-        [AcceptVerbs(HttpVerbs.Post)]
-#endif
+        [HttpPost]
+        [RequireBasicAuthentication]
         public ActionResult RecordVisit2(int id, string datetime, int PeopleId)
+            // id = OrganizationId
         {
-#if DEBUG
-            var uname = "david";
-#else
             if (!Authenticate())
                 return Content("not authorized");
             var uname = Request.Headers["username"];
-#endif
             var dt = DateTime.Parse(datetime);
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
 
@@ -417,7 +376,6 @@ namespace CmsWeb.Areas.Public.Controllers
                 DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
             }
-
         }
     }
 }

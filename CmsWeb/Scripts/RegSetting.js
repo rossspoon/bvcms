@@ -27,6 +27,7 @@
         var a = $(this);
         $.post(a.attr("href"), null, function (ret) {
             a.parent().prev().append(ret);
+            a.parent().prev().find(".tip").tooltip({ opacity: 0, showBody: "|" });
         });
     });
     $("ul.enablesort a.del").live("click", function (ev) {

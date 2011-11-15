@@ -318,8 +318,6 @@
     </Compile>
     <Compile Include="RecLeague.cs" />
     <Compile Include="Generated\ActivityLog.cs" />
-    <Compile Include="Generated\AttendanceClassification.cs" />
-    <Compile Include="Generated\AttendTrackLevel.cs" />
     <Compile Include="Generated\BadET.cs" />
     <Compile Include="Generated\ChurchAttReportId.cs" />
     <Compile Include="Generated\Content.cs" />

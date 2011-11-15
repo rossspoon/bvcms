@@ -46,7 +46,7 @@
                     $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
                 }
                 else {
-                    $.blockUI({ message: "Move succeeded" });
+                    $.blockUI({ message: "Move succeeded, be sure to check the targets Changes tab" });
                     $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
                         $.unblockUI();
                         window.location.reload();

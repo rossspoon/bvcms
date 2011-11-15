@@ -61,7 +61,12 @@ namespace CmsWeb
         protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
         {
             if (!User.Identity.IsAuthenticated)
-                filterContext.Result = Redirect("/Logon?ReturnUrl=" + filterContext.HttpContext.Request.Path);
+            {
+                var s = "/Logon?ReturnUrl=" + HttpUtility.UrlEncode(Request.RawUrl);
+                if (Request.QueryString.Count > 0)
+                    s += "&" + Request.QueryString.ToString();
+                filterContext.Result = Redirect(s);
+            }
             else if (!NoCheckRole)
             {
                 var r = AccountController.CheckAccessRole(Util.UserName);
@@ -92,7 +97,12 @@ namespace CmsWeb
         protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
         {
             if (!User.Identity.IsAuthenticated)
-                filterContext.Result = Redirect("/Logon?ReturnUrl=" + filterContext.HttpContext.Request.Path);
+            {
+                var s = "/Logon?ReturnUrl=" + HttpUtility.UrlEncode(Request.RawUrl);
+                if (Request.QueryString.Count > 0)
+                    s += "&" + Request.QueryString.ToString();
+                filterContext.Result = Redirect(s);
+            }
             else if (!NoCheckRole)
             {
                 var r = AccountController.CheckAccessRole(Util.UserName);

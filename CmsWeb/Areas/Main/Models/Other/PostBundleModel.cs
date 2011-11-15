@@ -356,19 +356,19 @@ namespace CmsWeb.Models
             }
             return null;
         }
-        public static int? BatchProcess(string text, DateTime date)
+        public static int? BatchProcess(string text, DateTime date, int? fundid)
         {
             if (text.StartsWith("From MICR :"))
                 return BatchProcessMagTek(text, date);
             if (text.StartsWith("Financial_Institution"))
                 using (var csv = new CsvReader(new StringReader(text), true))
-                    return BatchProcessSunTrust(csv, date);
+                    return BatchProcessSunTrust(csv, date, fundid);
             using (var csv = new CsvReader(new StringReader(text), true))
             {
                 var names = csv.GetFieldHeaders();
                 if (names.Contains("ProfileID"))
                     return BatchProcessServiceU(csv, date);
-                return BatchProcess(csv, date);
+                return BatchProcess(csv, date, fundid);
             }
         }
         private static int? BatchProcessMagTek(string lines, DateTime date)
@@ -458,7 +458,7 @@ namespace CmsWeb.Models
             bh.TotalEnvelopes = 0;
             DbUtil.Db.SubmitChanges();
         }
-        public static int? BatchProcess(CsvReader csv, DateTime date)
+        public static int? BatchProcess(CsvReader csv, DateTime date, int? fundid)
         {
             var prevbundle = -1;
             var curbundle = 0;
@@ -491,7 +491,7 @@ namespace CmsWeb.Models
                     CreatedBy = Util.UserId,
                     CreatedDate = DateTime.Now,
                     ContributionDate = date,
-                    FundId = qf.First(),
+                    FundId = fundid ?? qf.First(),
                     ContributionStatusId = 0,
                     ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
                 };
@@ -543,7 +543,7 @@ namespace CmsWeb.Models
             FinishBundle(bh);
             return bh.BundleHeaderId;
         }
-        public static int? BatchProcessSunTrust(CsvReader csv, DateTime date)
+        public static int? BatchProcessSunTrust(CsvReader csv, DateTime date, int? fundid)
         {
             var prevbundle = -1;
             var curbundle = 0;
@@ -570,7 +570,7 @@ namespace CmsWeb.Models
                     CreatedBy = Util.UserId,
                     CreatedDate = DateTime.Now,
                     ContributionDate = date,
-                    FundId = qf.First(),
+                    FundId = fundid ?? qf.First(),
                     ContributionStatusId = 0,
                     ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
                 };

@@ -253,13 +253,11 @@ namespace CmsWeb.Models
                     }
                     leaderorg = new CmsData.Organization
                     {
-                        AttendTrkLevelId = AttendTrackLevelCode.Individual,
                         OrganizationStatusId = OrgStatusCode.Active,
                         CreatedDate = Util.Now,
                         CreatedBy = Util.UserId1,
                         OrganizationName = STR_GODisciplesLeaders,
                         SecurityTypeId = 0,
-                        AttendClassificationId = AttendanceClassificationCode.Normal,
                         CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2(),
                         AllowAttendOverlap = false,
                     };

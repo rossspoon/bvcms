@@ -385,7 +385,6 @@ namespace CmsWeb.Models
                     {
                         MeetingId = DbUtil.Db.GetTodaysMeetingId(OrgId, thisday),
                         MeetingTime = DbUtil.Db.GetTodaysMeetingHours(OrgId, thisday).First().Hour,
-                        o.AttendTrkLevelId,
                         o.Location,
                         OrgEntryPoint = o.EntryPointId,
                         p.EntryPointId,
@@ -428,7 +427,6 @@ namespace CmsWeb.Models
                     let p = DbUtil.Db.People.Single(pp => pp.PeopleId == PeopleId)
                     select new
                     {
-                        o.AttendTrkLevelId,
                         o.Location,
                         OrgEntryPoint = o.EntryPointId,
                         p.EntryPointId,

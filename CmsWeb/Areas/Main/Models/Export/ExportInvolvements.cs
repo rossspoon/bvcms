@@ -125,6 +125,7 @@ namespace CmsWeb.Models
                          NewChurch = p.OtherNewChurch,
                          JoinType = p.JoinType.Description,
                          JoinDate = p.JoinDate.FormatDate(),
+                         BaptismDate = p.BaptismDate.FormatDate(),
                          PrevChurch = p.OtherPreviousChurch,
                          Resident = rescode,
                      };

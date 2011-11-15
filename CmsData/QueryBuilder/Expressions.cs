@@ -31,15 +31,31 @@ namespace CmsData
             CompareType op,
             params int[] ids)
         {
-            Expression<Func<Person, bool>> pred = p =>
-                p.OrganizationMembers.Any(m =>
-                    ids.Contains(m.MemberTypeId)
-                    && (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
-                    && (org == 0 || m.OrganizationId == org)
-                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
-                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
-                    );
-            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+            Expression expr = null;
+            if (sched == -1)
+            {
+                Expression<Func<Person, bool>> pred = p =>
+                    p.OrganizationMembers.Any(m =>
+                        ids.Contains(m.MemberTypeId)
+                        && m.Organization.OrgSchedules.Count() == 0
+                        && (org == 0 || m.OrganizationId == org)
+                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                        );
+                expr = Expression.Invoke(pred, parm); // substitute parm for p
+            }
+            else
+            {
+                Expression<Func<Person, bool>> pred = p =>
+                    p.OrganizationMembers.Any(m =>
+                        ids.Contains(m.MemberTypeId)
+                        && (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
+                        && (org == 0 || m.OrganizationId == org)
+                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                        );
+                expr = Expression.Invoke(pred, parm); // substitute parm for p
+            }
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);
             return expr;
@@ -163,7 +179,7 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred2 = p =>
                 p.Attends.Any(a =>
-            	a.MeetingDate >= mindt
+                a.MeetingDate >= mindt
                 && a.AttendanceFlag == true
                 && (org == 0 || a.Meeting.OrganizationId == org)
                 && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
@@ -431,7 +447,7 @@ namespace CmsData
         {
             var dt1 = DateTime.Today.AddDays(-(days0.ToInt2() ?? 365));
             var dt2 = DateTime.Today.AddDays(-days);
-            
+
             Expression<Func<Person, int>> pred = p =>
                 p.Attends.Count(a => a.AttendanceFlag == true
                     && a.MeetingDate >= dt2
@@ -518,7 +534,7 @@ namespace CmsData
                 Db.PledgeCount(p.PeopleId, days, fund);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
-            if (Db.CurrentUser.Roles.Any(rr => rr =="Finance"))
+            if (Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
@@ -548,7 +564,7 @@ namespace CmsData
                 Db.ContributionCount(p.PeopleId, days, fund);
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
-            if (Db.CurrentUser.Roles.Any(rr => rr =="Finance"))
+            if (Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
                 return Compare(left, op, right);
             return Compare(right, CompareType.NotEqual, right);
         }
@@ -659,14 +675,29 @@ namespace CmsData
             CompareType op,
             int cnt)
         {
-            Expression<Func<Person, int>> pred = p =>
-                p.OrganizationMembers.Count(m => ((m.Pending ?? false) == false)
-                    && (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
-                    && (org == 0 || m.OrganizationId == org)
-                    && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
-                    && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
-                    );
-            Expression left = Expression.Invoke(pred, parm);
+            Expression left = null;
+            if (sched == -1)
+            {
+                Expression<Func<Person, int>> pred = p =>
+                    p.OrganizationMembers.Count(m => ((m.Pending ?? false) == false)
+                        && m.Organization.OrgSchedules.Count() == 0
+                        && (org == 0 || m.OrganizationId == org)
+                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                        );
+                left = Expression.Invoke(pred, parm);
+            }
+            else
+            {
+                Expression<Func<Person, int>> pred = p =>
+                    p.OrganizationMembers.Count(m => ((m.Pending ?? false) == false)
+                        && (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
+                        && (org == 0 || m.OrganizationId == org)
+                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                        );
+                left = Expression.Invoke(pred, parm);
+            }
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
         }
@@ -1419,8 +1450,8 @@ namespace CmsData
         {
             var a = range.Split('-');
             Expression<Func<Person, bool>> pred = p =>
-                p.Family.People.Any(m => 
-                    m.Age >= a[0].ToInt() 
+                p.Family.People.Any(m =>
+                    m.Age >= a[0].ToInt()
                     && m.Age <= a[1].ToInt()
                     && ids.Contains(m.GenderId)
                 );
