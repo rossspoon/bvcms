@@ -22,7 +22,6 @@ namespace CmsWeb.Areas.Public.Controllers
 #else
    //[RequireHttps]
 #endif
-    //[RequireBasicAuthentication]
     public class Checkin2Controller : CmsController
     {
         public ActionResult Match(string id, int campus, int thisday, int? page, string kiosk, bool? kioskmode)

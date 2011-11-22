@@ -73,6 +73,7 @@ namespace CmsCheckin
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
             Settings1.Default.LeadHours = LeadHours.Text.ToInt();
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
+            Settings1.Default.DisableJoin = DisableJoin.Checked;
             Settings1.Default.Save();
             this.Hide();
         }
@@ -115,6 +116,7 @@ namespace CmsCheckin
             AskChurchName.Checked = Settings1.Default.AskChurchName;
             KioskName.Text = Settings1.Default.KioskName;
             TwoInchLabel.Checked = Settings1.Default.TwoInchLabel;
+            DisableJoin.Checked = Settings1.Default.DisableJoin;
         }
     }
     class DayOfWeek

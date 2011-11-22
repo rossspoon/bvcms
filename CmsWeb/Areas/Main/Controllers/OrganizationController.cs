@@ -78,7 +78,7 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content("/Organization/Index/" + neworg.OrganizationId);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult NewMeeting(string d, string t, int AttendCredit, bool group)
         {
             var organization = DbUtil.Db.LoadOrganizationById(Util2.CurrentOrgId);
@@ -108,7 +108,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.LogActivity("Creating new meeting for {0}".Fmt(dt));
             return Content("/Meeting/Index/" + mt.MeetingId);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult DeleteMeeting(string id, bool future)
         {
             var aa = id.Split('.');
@@ -132,8 +132,6 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("ok");
         }
-        [AcceptVerbs(HttpVerbs.Post)]
-
         private void InitExportToolbar(int oid, int qid)
         {
             Util2.CurrentOrgId = oid;
@@ -155,7 +153,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m.Pager);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PrevMemberGrid(int id, string namefilter)
         {
             var qb = DbUtil.Db.QueryBuilderPreviousCurrentOrg();
@@ -164,7 +162,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m.Pager);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult VisitorGrid(int id, string namefilter)
         {
             var qb = DbUtil.Db.QueryBuilderVisitedCurrentOrg();
@@ -173,7 +171,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m.Pager);
             return View("VisitorGrid", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PendingMemberGrid(int id, string namefilter)
         {
             var qb = DbUtil.Db.QueryBuilderPendingCurrentOrg();
@@ -182,7 +180,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m.Pager);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult InactiveMemberGrid(int id, string namefilter)
         {
             var qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
@@ -191,7 +189,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m.Pager);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult MeetingGrid(int id, bool future)
         {
             var m = new MeetingModel(id, future);
@@ -199,19 +197,19 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(m);
         }
         
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SettingsOrg(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SettingsOrgEdit(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SettingsOrgUpdate(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
@@ -225,19 +223,19 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("SettingsOrgEdit", m);
         }
         
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SettingsMeetings(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SettingsMeetingsEdit(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SettingsMeetingsUpdate(int id)
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
@@ -250,7 +248,7 @@ namespace CmsWeb.Areas.Main.Controllers
             //return View("SettingsMeetingsEdit", m);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult NewSchedule()
         {
             var s = new ScheduleInfo(
@@ -539,7 +537,7 @@ no need to put these into the ""Source"" view of the editor anymore.
             var m = new OrganizationModel(Util2.CurrentOrgId, Util2.CurrentGroups);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddFromTag(int id, int tagid, bool? pending)
         {
             var o = DbUtil.Db.LoadOrganizationById(id);
@@ -559,7 +557,7 @@ no need to put these into the ""Source"" view of the editor anymore.
             Session["OrgCopySettings"] = Util2.CurrentOrgId;
             return Redirect("/OrgSearch/");
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Join(string id)
         {
             var aa = id.Split('.');
@@ -567,20 +565,36 @@ no need to put these into the ""Source"" view of the editor anymore.
                 return Content("error: bad info");
             var pid = aa[1].ToInt();
             var oid = aa[2].ToInt();
+            var org = DbUtil.Db.LoadOrganizationById(oid);
+            if (org.AllowAttendOverlap != true)
+            {
+                var om = DbUtil.Db.OrganizationMembers.FirstOrDefault(mm => 
+                    mm.OrganizationId != oid
+                    && mm.MemberTypeId != 230 // inactive
+                    && mm.MemberTypeId != 500 // inservice
+                    && mm.Organization.AllowAttendOverlap != true
+                    && mm.PeopleId == pid
+                    && mm.Organization.OrgSchedules.Any(ss => 
+                        DbUtil.Db.OrgSchedules.Any(os => 
+                            os.OrganizationId == oid 
+                            && os.ScheduleId == ss.ScheduleId)));
+                if (om != null)
+                    return Content("Already a member of {0} at this hour".Fmt(om.OrganizationId));
+            }
             OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 oid, pid, MemberTypeCode.Member,
                 DateTime.Now, null, false);
             return Content("ok");
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult ToggleTag(int id)
         {
             var t = Person.ToggleTag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
             DbUtil.Db.SubmitChanges();
             return Content(t ? "Remove" : "Add");
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult TagAll(int id, string m)
         {
             DbUtil.Db.SetNoLock();
@@ -596,13 +610,13 @@ no need to put these into the ""Source"" view of the editor anymore.
             }
             return Content("?");
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddContact(int id)
         {
             var cid = CmsData.Contact.AddContact(id);
             return Content("/Contact.aspx?id=" + cid);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddTasks(int id)
         {
             var c = new ContentResult();
@@ -667,6 +681,44 @@ no need to put these into the ""Source"" view of the editor anymore.
         {
             DbUtil.Db.PopulateComputedEnrollmentTransactions(id);
             return Redirect("/Organization/Index/" + id);
+        }
+        [HttpPost]
+        [Authorize(Roles="Edit")]
+        public ActionResult NewExtraValue(int id, string field, string value, bool multiline)
+        {
+            var m = new OrganizationModel(id, null);
+            try
+            {
+                var oev = new OrganizationExtra { OrganizationId = id, Field = field, Data = value, DataType = multiline ? "text" : null };
+                DbUtil.Db.OrganizationExtras.InsertOnSubmit(oev);
+                DbUtil.Db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                return Content("error: " + ex.Message);
+            }
+            return View("ExtrasGrid", m.org);
+        }
+        [HttpPost]
+        [Authorize(Roles="Edit")]
+        public ViewResult DeleteExtra(int id, string field)
+        {
+            var e = DbUtil.Db.OrganizationExtras.Single(ee => ee.OrganizationId == id && ee.Field == field);
+            DbUtil.Db.OrganizationExtras.DeleteOnSubmit(e);
+            DbUtil.Db.SubmitChanges();
+            var m = new OrganizationModel(id, null);
+            return View("ExtrasGrid", m.org);
+        }
+        [HttpPost]
+        [Authorize(Roles="Edit")]
+        public ContentResult EditExtra(string id, string value)
+        {
+            var a = id.SplitStr("-", 2);
+            var b = a[1].SplitStr(".", 2);
+            var e = DbUtil.Db.OrganizationExtras.Single(ee => ee.OrganizationId == b[1].ToInt() && ee.Field == b[0]);
+            e.Data = value;
+            DbUtil.Db.SubmitChanges();
+            return Content(value);
         }
     }
 }

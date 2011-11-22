@@ -29,40 +29,43 @@ namespace CmsData.API
         {
             w.WriteEndElement();
         }
-        public void Attr(string attr, int i)
+        public void Attr(string attr, object i)
         {
-            Attr(attr, i.ToString());
-        }
-        //public void Attr(string attr, DateTime? d)
-        //{
-        //    Attr(attr, d.ToString2("M/d/yy h:mm tt"));
-        //}
-        public void Attr(string attr, DateTime d)
-        {
-            Attr(attr, d.ToString("M/d/yy h:mm tt"));
-        }
-        public void Attr(string attr, string s)
-        {
+            var s = tostr(i);
             if (s.HasValue())
                 w.WriteAttributeString(attr, s);
         }
-        public void Add(string element, string s)
+        private string tostr(object i)
         {
+            string s = null;
+            if (i is DateTime)
+                s = ((DateTime)i).ToString("M/d/yy h:mm tt");
+            else if (i is DateTime?)
+                s = ((DateTime?)i).ToString2("M/d/yy h:mm tt");
+            else if (i == null)
+                s = string.Empty;
+            else
+                s = i.ToString();
+            return s;
+        }
+        public void Add(string element, object i)
+        {
+            var s = tostr(i);
             if (s.HasValue())
                 w.WriteElementString(element, s);
         }
-        public void Add(string element, bool b)
+        public void AddText(string text)
         {
-            w.WriteElementString(element, b.ToString());
-        }
-        public void Add(string element, DateTime d)
-        {
-            w.WriteElementString(element, d.ToString("M/d/yy h:mm tt"));
+            w.WriteRaw(text);
         }
         public override string ToString()
         {
+            w.Flush();
+            return sb.ToString();
+        }
+        ~APIWriter()
+        {
             w.Close();
-            return sb.ToString(); 
         }
     }
 }

@@ -19,6 +19,7 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "Checkin2");
             AddRoute(context, "iPhone");
             AddRoute(context, "API");
+            AddRoute(context, "APITest");
             AddRoute(context, "DiscipleLife");
             AddRoute(context, "GODisciples");
             AddRoute(context, "MOBS");

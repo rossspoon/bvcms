@@ -310,6 +310,10 @@ namespace CmsData
         partial void UpdateMaritalStatus(MaritalStatus instance);
         partial void DeleteMaritalStatus(MaritalStatus instance);
         
+        partial void InsertMeetingExtra(MeetingExtra instance);
+        partial void UpdateMeetingExtra(MeetingExtra instance);
+        partial void DeleteMeetingExtra(MeetingExtra instance);
+        
         partial void InsertMeeting(Meeting instance);
         partial void UpdateMeeting(Meeting instance);
         partial void DeleteMeeting(Meeting instance);
@@ -357,6 +361,10 @@ namespace CmsData
         partial void InsertOneTimeLink(OneTimeLink instance);
         partial void UpdateOneTimeLink(OneTimeLink instance);
         partial void DeleteOneTimeLink(OneTimeLink instance);
+        
+        partial void InsertOrganizationExtra(OrganizationExtra instance);
+        partial void UpdateOrganizationExtra(OrganizationExtra instance);
+        partial void DeleteOrganizationExtra(OrganizationExtra instance);
         
         partial void InsertOrganizationMember(OrganizationMember instance);
         partial void UpdateOrganizationMember(OrganizationMember instance);
@@ -1114,6 +1122,12 @@ namespace CmsData
 
 		}
 
+		public Table< MeetingExtra> MeetingExtras
+		{
+			get	{ return this.GetTable< MeetingExtra>(); }
+
+		}
+
 		public Table< Meeting> Meetings
 		{
 			get	{ return this.GetTable< Meeting>(); }
@@ -1183,6 +1197,12 @@ namespace CmsData
 		public Table< OneTimeLink> OneTimeLinks
 		{
 			get	{ return this.GetTable< OneTimeLink>(); }
+
+		}
+
+		public Table< OrganizationExtra> OrganizationExtras
+		{
+			get	{ return this.GetTable< OrganizationExtra>(); }
 
 		}
 

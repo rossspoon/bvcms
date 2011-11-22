@@ -24,14 +24,16 @@
         <td><a href="#" class="deleteextra" field="@c.Field"><img src="/images/delete.gif" /></a></td>
     </tr>
     }
+    <tr><td colspan="3">------</td></tr>
     foreach (var c in list.Where(pp => pp.Data.HasValue()).OrderBy(pp => pp.Field))  
     {
     <tr>
         <td valign="top">@c.Field</td>
-        <td><div id="t-@c.Field.@c.PeopleId" class="editArea">@c.Data</div></td>
+        <td><div id="t-@c.Field.@c.PeopleId" class="editarea">@c.Data</div></td>
         <td><a href="#" class="deleteextra" field="@c.Field"><img src="/images/delete.gif" /></a></td>
     </tr>
     }
+    <tr><td colspan="3">------</td></tr>
     foreach (var c in list.Where(pp => pp.DateValue.HasValue).OrderBy(pp => pp.Field))  
     {
     <tr>
@@ -40,6 +42,7 @@
         <td><a href="#" class="deleteextra" field="@c.Field"><img src="/images/delete.gif" /></a></td>
     </tr>
     }
+    <tr><td colspan="3">------</td></tr>
     foreach (var c in list.Where(pp => pp.IntValue.HasValue).OrderBy(pp => pp.Field))  
     {
     <tr>
@@ -51,27 +54,3 @@
 }
 </tbody>
 </table>
-<div id="newvalueform" style="display:none" class="roundbox">
-    <table>
-        <tr>
-            <th colspan="2">
-                <h2>New Extra Value</h2>
-            </th>
-        </tr>
-        <tr>
-            <th>Type:</th>
-            <td>
-                <table><tr>
-                    <td><input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">String</label></td>
-                    <td><input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
-                    <td><input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
-                    <td><input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
-                </tr></table>
-            </td>
-        </tr>
-        <tr>
-            <th>Field Name:</th>
-            <td>@Html.TextBox("fieldname")</td>
-        </tr>
-    </table>
-</div>

@@ -323,9 +323,28 @@ namespace CmsWeb.Areas.Dialog.Controllers
         }
         private JsonResult AddOrgMembers(int id, SearchModel m, bool pending)
         {
+            string message = null;
             if (id > 0)
             {
                 var org = DbUtil.Db.LoadOrganizationById(id);
+                if (pending == false && m.List.Count == 1 && org.AllowAttendOverlap != true)
+                {
+                    var om = DbUtil.Db.OrganizationMembers.FirstOrDefault(mm => 
+                        mm.OrganizationId != id
+                        && mm.MemberTypeId != 230 // inactive
+                        && mm.MemberTypeId != 500 // inservice
+                        && mm.Organization.AllowAttendOverlap != true
+                        && mm.PeopleId == m.List[0].PeopleId
+                        && mm.Organization.OrgSchedules.Any(ss => 
+                            DbUtil.Db.OrgSchedules.Any(os => 
+                                os.OrganizationId == id 
+                                && os.ScheduleId == ss.ScheduleId)));
+                    if (om != null)
+                    {
+                        message = "Already a member of {0} (orgid) with same schedule".Fmt(om.OrganizationId);
+                        return Json(new { close = true, how = "CloseAddDialog", message = message });
+                    }
+                }
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, OriginCode.Enrollment, org.EntryPointId ?? 0);
@@ -334,7 +353,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Json(new { close = true, how = "rebindgrids" });
+            return Json(new { close = true, how = "rebindgrids", message = message });
         }
         private JsonResult AddContributor(int id, SearchModel m)
         {

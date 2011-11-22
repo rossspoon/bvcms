@@ -67,9 +67,16 @@ namespace CmsData
             var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
             if (list == null)
             {
-                list = Settings.ToDictionary(c => c.Id, c => c.SettingX,
-                    StringComparer.OrdinalIgnoreCase);
-                HttpRuntime.Cache[Host + "Setting"] = list;
+                try
+                {
+                    list = Settings.ToDictionary(c => c.Id, c => c.SettingX,
+                        StringComparer.OrdinalIgnoreCase);
+                    HttpRuntime.Cache[Host + "Setting"] = list;
+                }
+                catch (Exception ex)
+                {
+                    return string.Empty;
+                }
             }
             if (list.ContainsKey(name))
                 return list[name];

@@ -61,10 +61,10 @@
         $(".rgck").removeAttr("disabled");
     }
 
-    $("table.grid > tbody > tr:visible:even").addClass("alt");
+    $("#attends > tbody > tr:visible:even").addClass("alt");
 
     $('#showbuttons input:radio').change(function () {
-        $("table.grid > tbody > tr").hide().removeClass("alt");
+        $("#attends > tbody > tr").hide().removeClass("alt");
         switch ($(this).val()) {
             case "attends":
                 $(".atck:checked").parent().parent().show();
@@ -77,10 +77,10 @@
                 $(".atck:checked").parent().parent().show();
                 break;
             case "all":
-                $("table.grid > tbody > tr").show();
+                $("#attends > tbody > tr").show();
                 break;
         }
-        $("table.grid > tbody > tr:visible:even").addClass("alt");
+        $("#attends > tbody > tr:visible:even").addClass("alt");
     });
     $('#editing').change(function () {
         if ($(this).is(':checked')) {
@@ -94,13 +94,13 @@
     $('#sortbyname').click(function () {
         if ($("#sort").val() == "false") {
             $("#sort").val("true");
-            $('table.grid > tbody > tr').sortElements(function (a, b) {
+            $('#attends > tbody > tr').sortElements(function (a, b) {
                 return $(a).find("td.name a").text() > $(b).find("td.name a").text() ? 1 : -1;
             });
         }
         else {
             $("#sort").val("false");
-            $('table.grid > tbody > tr').sortElements(function (a, b) {
+            $('#attends > tbody > tr').sortElements(function (a, b) {
                 var art = $(a).attr("rowtype");
                 var brt = $(b).attr("rowtype");
                 if (art > brt)
@@ -192,6 +192,64 @@
         return false;
     });
     $("#wandtarget").focus();
+
+    $.extraEditable = function () {
+        $('.editarea').editable('/Meeting/EditExtra/', {
+            type: 'textarea',
+            submit: 'OK',
+            rows: 5,
+            width: 200,
+            indicator: '<img src="/images/loading.gif">',
+            tooltip: 'Click to edit...'
+        });
+        $(".editline").editable("/Meeting/EditExtra/", {
+            indicator: "<img src='/images/loading.gif'>",
+            tooltip: "Click to edit...",
+            style: 'display: inline',
+            width: 200,
+            height: 25,
+            submit: 'OK'
+        });
+    }
+    $("#newvalueform").dialog({
+        autoOpen: false,
+        buttons: {
+            "Ok": function () {
+                var ck = $("#multiline").is(':checked');
+                var fn = $("#fieldname").val();
+                var v = $("#fieldvalue").val();
+                if (fn)
+                    $.post("/Meeting/NewExtraValue/" + $("#meetingid").val(), { field: fn, value: v, multiline: ck }, function (ret) {
+                        if (ret.startsWith("error"))
+                            alert(ret);
+                        else {
+                            $("#extras > tbody").html(ret);
+                            $.extraEditable();
+                        }
+                        $("#fieldname").val("");
+                    });
+                $(this).dialog("close");
+            }
+        }
+    });
+    $("#newextravalue").live("click", function (ev) {
+        ev.preventDefault();
+        var d = $('#newvalueform');
+        d.dialog("open");
+    });
+    $("a.deleteextra").live("click", function (ev) {
+        ev.preventDefault();
+        if (confirm("are you sure?"))
+            $.post("/Meeting/DeleteExtra/" + $("#meetingid").val(), { field: $(this).attr("field") }, function (ret) {
+                if (ret.startsWith("error"))
+                    alert(ret);
+                else {
+                    $("#extras > tbody").html(ret);
+                    $.extraEditable();
+                }
+            });
+        return false;
+    });
 });
 function AddSelected(ret) {
     $('#visitorDialog').dialog("close");

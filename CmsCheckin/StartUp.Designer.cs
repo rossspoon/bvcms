@@ -50,6 +50,7 @@
             this.AskLabels = new System.Windows.Forms.CheckBox();
             this.TwoInchLabel = new System.Windows.Forms.CheckBox();
             this.FullScreen = new System.Windows.Forms.CheckBox();
+            this.DisableJoin = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbCampusId
@@ -107,7 +108,7 @@
             this.HideCursor.Checked = true;
             this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
             this.HideCursor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HideCursor.Location = new System.Drawing.Point(271, 480);
+            this.HideCursor.Location = new System.Drawing.Point(473, 390);
             this.HideCursor.Name = "HideCursor";
             this.HideCursor.Size = new System.Drawing.Size(112, 24);
             this.HideCursor.TabIndex = 21;
@@ -237,7 +238,7 @@
             this.EnableTimer.Checked = true;
             this.EnableTimer.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EnableTimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EnableTimer.Location = new System.Drawing.Point(271, 420);
+            this.EnableTimer.Location = new System.Drawing.Point(234, 420);
             this.EnableTimer.Name = "EnableTimer";
             this.EnableTimer.Size = new System.Drawing.Size(121, 24);
             this.EnableTimer.TabIndex = 16;
@@ -277,7 +278,7 @@
             // 
             this.AskLabels.AutoSize = true;
             this.AskLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AskLabels.Location = new System.Drawing.Point(271, 360);
+            this.AskLabels.Location = new System.Drawing.Point(234, 360);
             this.AskLabels.Name = "AskLabels";
             this.AskLabels.Size = new System.Drawing.Size(214, 24);
             this.AskLabels.TabIndex = 25;
@@ -288,7 +289,7 @@
             // 
             this.TwoInchLabel.AutoSize = true;
             this.TwoInchLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TwoInchLabel.Location = new System.Drawing.Point(271, 390);
+            this.TwoInchLabel.Location = new System.Drawing.Point(234, 390);
             this.TwoInchLabel.Name = "TwoInchLabel";
             this.TwoInchLabel.Size = new System.Drawing.Size(174, 24);
             this.TwoInchLabel.TabIndex = 27;
@@ -301,18 +302,30 @@
             this.FullScreen.Checked = true;
             this.FullScreen.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FullScreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FullScreen.Location = new System.Drawing.Point(271, 450);
+            this.FullScreen.Location = new System.Drawing.Point(473, 360);
             this.FullScreen.Name = "FullScreen";
             this.FullScreen.Size = new System.Drawing.Size(108, 24);
             this.FullScreen.TabIndex = 28;
             this.FullScreen.Text = "Full Screen";
             this.FullScreen.UseVisualStyleBackColor = true;
             // 
+            // DisableJoin
+            // 
+            this.DisableJoin.AutoSize = true;
+            this.DisableJoin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DisableJoin.Location = new System.Drawing.Point(234, 450);
+            this.DisableJoin.Name = "DisableJoin";
+            this.DisableJoin.Size = new System.Drawing.Size(114, 24);
+            this.DisableJoin.TabIndex = 29;
+            this.DisableJoin.Text = "Disable Join";
+            this.DisableJoin.UseVisualStyleBackColor = true;
+            // 
             // StartUp
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(796, 519);
+            this.Controls.Add(this.DisableJoin);
             this.Controls.Add(this.FullScreen);
             this.Controls.Add(this.TwoInchLabel);
             this.Controls.Add(this.AskLabels);
@@ -369,5 +382,6 @@
         public System.Windows.Forms.CheckBox AskLabels;
         public System.Windows.Forms.CheckBox TwoInchLabel;
         public System.Windows.Forms.CheckBox FullScreen;
+        public System.Windows.Forms.CheckBox DisableJoin;
     }
 }

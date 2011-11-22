@@ -67,7 +67,7 @@ div.pager
         </div>
         <div style="border-bottom: 4px solid #ddd"></div>
     </div>
-@if (User.IsInRole("Finance") || User.IsInRole("Admin"))
+@if (User.IsInRole("Finance") || User.IsInRole("Admin") || User.IsInRole("Manager"))
 {
     <div id="buttondiv" class="dropdown" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
         <div><a>Other Management</a></div>
@@ -80,11 +80,14 @@ div.pager
     { 
             <a href="/CheckIn/CheckIn/@Model.ckorg?pid=@p.PeopleId">CheckIn</a>
     }
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
     { 
+            <a id="moveperson" href="/Person/Move/@p.PeopleId">Merge Controller</a>
+        if (User.IsInRole("Admin"))
+        { 
             <a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a>
-            <a id="moveperson" href="/Person/Move/@p.PeopleId">Move Person</a>
-    } 
+        } 
+    }
         </div>
         <div style="border-bottom: 4px solid #ddd"></div>
     </div>
@@ -102,7 +105,7 @@ div.pager
 { 
             <li><a id="growth-link" href="#growth-tab"><span>Growth</span></a></li>
 }
-@if (User.IsInRole("Edit"))
+@if (User.IsInRole("Edit") || User.IsInRole("Admin"))
 { 
             <li><a id="system-link" href="#system-tab"><span>System</span></a></li>
 }
@@ -221,7 +224,7 @@ div.pager
             </div>
         </div>
 }
-@if (User.IsInRole("Edit"))
+@if (User.IsInRole("Edit") || User.IsInRole("Admin"))
 { 
         <div id="system-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
@@ -255,4 +258,28 @@ div.pager
     <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
     </div>
 
+<div id="newvalueform" style="display:none" class="roundbox">
+    <table>
+        <tr>
+            <th colspan="2">
+                <h2>New Extra Value</h2>
+            </th>
+        </tr>
+        <tr>
+            <th>Type:</th>
+            <td>
+                <table><tr>
+                    <td><input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">String</label></td>
+                    <td><input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
+                    <td><input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
+                    <td><input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
+                </tr></table>
+            </td>
+        </tr>
+        <tr>
+            <th>Field Name:</th>
+            <td>@Html.TextBox("fieldname")</td>
+        </tr>
+    </table>
+</div>
 

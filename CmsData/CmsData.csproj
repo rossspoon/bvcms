@@ -194,6 +194,8 @@
     <Compile Include="APIFunctions.cs" />
     <Compile Include="APIOrganizations.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
+    <Compile Include="Generated\MeetingExtra.cs" />
+    <Compile Include="Generated\OrganizationExtra.cs" />
     <Compile Include="QueryFunctions.cs" />
     <Compile Include="Generated\AttendCredit.cs" />
     <Compile Include="Generated\Contact.cs" />

@@ -37,22 +37,8 @@
         return false;
     });
     $('#moveperson').click(function (ev) {
-        var href = $(this).attr("href");
         $('#dialogbox').SearchPeople(ev, function (id, peopleid) {
-            $.post(href, { to: peopleid }, function (ret) {
-                $('#dialogbox').dialog("close");
-                if (ret != "ok") {
-                    $.blockUI({ message: "Move Failed: " + ret });
-                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
-                }
-                else {
-                    $.blockUI({ message: "Move succeeded, be sure to check the targets Changes tab" });
-                    $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
-                        $.unblockUI();
-                        window.location.reload();
-                    });
-                }
-            });
+            window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + peopleid;
         });
         return false;
     });
@@ -60,8 +46,9 @@
     $.extraEditable = function () {
         $('.editarea').editable('/Person/EditExtra/', {
             type: 'textarea',
-            cancel: 'Cancel',
             submit: 'OK',
+            rows: 5,
+            width: 300,
             indicator: '<img src="/images/loading.gif">',
             tooltip: 'Click to edit...'
         });
@@ -290,28 +277,30 @@
             }
         });
     });
+    $("#newvalueform").dialog({
+        autoOpen: false,
+        buttons: {
+            "Ok": function () {
+                var v = $("input[name='typeval']:checked").val();
+                var fn = $("#fieldname").val();
+                if (fn)
+                    $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: fn, type: v }, function (ret) {
+                        if (ret.startsWith("error"))
+                            alert(ret);
+                        else {
+                            $.getTable($("#extras-tab form"));
+                            $.extraEditable();
+                        }
+                        $("#fieldname").val("");
+                    });
+                $(this).dialog("close");
+            }
+        }
+    });
     $("#newextravalue").live("click", function (ev) {
         ev.preventDefault();
-        $("#newvalueform").dialog({
-            buttons: {
-                "Ok": function () {
-                    var v = $("input[name='typeval']:checked").val();
-                    var fn = $("#fieldname").val();
-                    if (fn)
-                        $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: fn, type: v }, function (ret) {
-                            if (ret.startsWith("error"))
-                                alert(ret);
-                            else {
-                                $.getTable($("#extras-tab form"));
-                                $.extraEditable();
-                            }
-                        });
-                    $(this).dialog("close");
-                    $(this).dialog("destroy");
-                }
-            }
-        });
-        return false;
+        var d = $('#newvalueform');
+        d.dialog("open");
     });
     $("a.deleteextra").live("click", function (ev) {
         ev.preventDefault();

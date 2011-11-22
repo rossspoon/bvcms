@@ -275,5 +275,39 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return new DataGridResult(list);
         }
+        public ActionResult NewExtraValue(int id, string field, string value, bool multiline)
+        {
+            var m = new MeetingModel(id);
+            try
+            {
+                var mev = new MeetingExtra { MeetingId = id, Field = field, Data = value, DataType = multiline ? "text" : null };
+                DbUtil.Db.MeetingExtras.InsertOnSubmit(mev);
+                DbUtil.Db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                return Content("error: " + ex.Message);
+            }
+            return View("ExtrasGrid", m.meeting);
+        }
+        [HttpPost]
+        public ViewResult DeleteExtra(int id, string field)
+        {
+            var e = DbUtil.Db.MeetingExtras.Single(ee => ee.MeetingId == id && ee.Field == field);
+            DbUtil.Db.MeetingExtras.DeleteOnSubmit(e);
+            DbUtil.Db.SubmitChanges();
+            var m = new MeetingModel(id);
+            return View("ExtrasGrid", m.meeting);
+        }
+        [HttpPost]
+        public ContentResult EditExtra(string id, string value)
+        {
+            var a = id.SplitStr("-", 2);
+            var b = a[1].SplitStr(".", 2);
+            var e = DbUtil.Db.MeetingExtras.Single(ee => ee.MeetingId == b[1].ToInt() && ee.Field == b[0]);
+            e.Data = value;
+            DbUtil.Db.SubmitChanges();
+            return Content(value);
+        }
     }
 }

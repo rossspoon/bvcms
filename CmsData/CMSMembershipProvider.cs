@@ -513,24 +513,31 @@ namespace CmsData
 
         public override bool ValidateUser(string username, string password)
         {
-            var Db = GetDb();
-            username = Util.GetUserName(username);
-            var user = Db.Users.FirstOrDefault(u => 
-                u.Username == username 
-                || u.EmailAddress == username
-                || u.Person.EmailAddress2 == username
-                );
-            if (user == null)
+            try
+            {
+                var Db = GetDb();
+                username = Util.GetUserName(username);
+                var user = Db.Users.FirstOrDefault(u => 
+                    u.Username == username 
+                    || u.EmailAddress == username
+                    || u.Person.EmailAddress2 == username
+                    );
+                if (user == null)
+                    return false;
+                if (CheckPassword(password, user.Password))
+                    if (user.IsApproved)
+                    {
+                        user.LastLoginDate = Util.Now;
+                        Db.SubmitChanges();
+                        return true;
+                    }
+                UpdateFailureCount(Db, user, "password");
                 return false;
-            if (CheckPassword(password, user.Password))
-                if (user.IsApproved)
-                {
-                    user.LastLoginDate = Util.Now;
-                    Db.SubmitChanges();
-                    return true;
-                }
-            UpdateFailureCount(Db, user, "password");
-            return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         private void UpdateFailureCount(CMSDataContext Db, User user, string failureType)

@@ -55,7 +55,7 @@ namespace CmsWeb.Models
                  where t.TransactionDate >= startdt || startdt == null
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
-                 where t.Testing == testtransactions
+                 where (t.Testing ?? false) == testtransactions
                  select t;
             var edt = enddt;
             if (!edt.HasValue && startdt.HasValue)

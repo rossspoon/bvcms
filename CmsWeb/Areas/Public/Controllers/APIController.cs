@@ -26,11 +26,9 @@ namespace CmsWeb.Areas.Public.Controllers
     public class APIController : CmsController
     {
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult Login(string user, string password)
         {
-            Response.ContentType = "text/xml";
-            var ret = Authenticate(log: true);
+            var ret = AuthenticateDeveloper(log: true);
             if (ret.StartsWith("!"))
                 return Content("<Login error=\"{0}\" />".Fmt(ret.Substring(1)));
             var valid = CMSMembershipProvider.provider.ValidateUser(user, password);
@@ -38,114 +36,105 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("<Login error=\"{0} not valid\" />".Fmt(user ?? "(null)"));
             var u = DbUtil.Db.Users.Single(uu => uu.Username == user);
             var api = new APIFunctions(DbUtil.Db);
-            return Content(api.Login(u.Person));
+            return Content(api.Login(u.Person),"text/xml");
         }
         [HttpGet]
-        [RequireBasicAuthentication]
         public ActionResult LoginInfo(int id)
         {
-            Response.ContentType = "text/xml";
-            var ret = Authenticate(log: true);
+            var ret = AuthenticateDeveloper(log: true);
             if (ret.StartsWith("!"))
                 return Content("<LoginInfo error=\"{0}\" />".Fmt(ret.Substring(1)));
             var p = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
             var api = new APIFunctions(DbUtil.Db);
-            return Content(api.Login(p));
+            return Content(api.Login(p), "text/xml");
         }
-        [RequireBasicAuthentication]
-        public ActionResult Organizations(int id)
+        [HttpGet]
+        public ActionResult OrganizationsForDiv(int id)
         {
-            Response.ContentType = "text/xml";
-            var ret = Authenticate();
+            var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<Organizations error=\"{0}\" />".Fmt(ret.Substring(1)));
             var api = new APIFunctions(DbUtil.Db);
-            return Content(api.Organizations(id));
+            return Content(api.OrganizationsForDiv(id), "text/xml");
         }
-        [RequireBasicAuthentication]
+        [HttpGet]
         public ActionResult Lookups(string id)
         {
-            Response.ContentType = "text/xml";
-            var ret = Authenticate();
+            var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<Lookups error=\"{0}\" />".Fmt(ret.Substring(1)));
             if (!id.HasValue())
                 return Content("Lookups error=\"not found\">");
-            ViewData["name"] = id;
             var q = DbUtil.Db.ExecuteQuery<CmsWeb.Areas.Setup.Controllers.LookupController.Row>("select * from lookup." + id);
-            return View(q);
+            var w = new CmsData.API.APIWriter();
+            w.Start("Lookups");
+            w.Attr("name", id);
+            foreach(var i in q)
+            {
+                w.Start("Lookup");
+                w.Attr("Id", i.Id);
+                w.AddText(i.Description);
+                w.End();
+            }
+            w.End();
+            return Content(w.ToString(), "text/xml");
         }
-        [RequireBasicAuthentication]
-        public ActionResult OrgMembers(int id)
+        [HttpGet]
+        public ActionResult OrgMembers2(int id)
         {
-            Response.ContentType = "text/xml";
-            var ret = Authenticate();
+            var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<OrgMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
             var api = new APIFunctions(DbUtil.Db);
-            return Content(api.OrgMembers(id));
+            return Content(api.OrgMembersPython(id), "text/xml");
         }
         [HttpGet]
-        [RequireBasicAuthentication]
-        public ActionResult ExtraValues(int id, string fields, string value)
+        public ActionResult OrgMembers(int id)
         {
-            Response.ContentType = "text/xml";
-            var ret = Authenticate();
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content("<OrgMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
+            var api = new APIFunctions(DbUtil.Db);
+            return Content(api.OrgMembers(id), "text/xml");
+        }
+        [HttpGet]
+        public ActionResult ExtraValues(int id, string fields)
+        {
+            var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<ExtraValues error=\"{0}\" />".Fmt(ret.Substring(1)));
-            return Content(new APIFunctions().ExtraValues(id, fields));
+            return Content(new APIFunctions().ExtraValues(id, fields), "text/xml");
         }
         [HttpPost]
-        public ActionResult AddEditExtraValue(int id, string field, string value)
+        public ActionResult AddEditExtraValue(int peopleid, string field, string value)
         {
-            var ret = Authenticate();
+            var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            return Content(APIFunctions.AddEditExtraValue(id, field, value));
-        }
-        private string Authenticate(bool log = false)
-        {
-            var auth = Request.Headers["Authorization"];
-            if (auth.HasValue())
-            {
-                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
-                    Convert.FromBase64String(auth.Substring(6))).Split(':');
-                var username = cred[0];
-                var password = cred[1];
-
-                string ret = null;
-                var valid = CMSMembershipProvider.provider.ValidateUser(username, password);
-                if (valid)
-                {
-                    var roles = CMSRoleProvider.provider;
-                    var u = AccountController.SetUserInfo(username, Session);
-                    if (!roles.IsUserInRole(username, "Developer"))
-                        valid = false;
-                }
-                if (valid)
-                    ret = " API {0} authenticated".Fmt(username);
-                else
-                    ret = "!API {0} not authenticated".Fmt(username);
-                if (log)
-                    DbUtil.LogActivity(ret.Substring(1));
-                return ret;
-            }
-            return "!API no Authorization Header";
+            return Content(new APIFunctions().AddEditExtraValue(peopleid, field, value));
         }
         [HttpPost]
-        public ActionResult MarkRegistered(int id, int PeopleId, bool Present)
+        public ActionResult DeleteExtraValue(int peopleid, string field)
         {
-            var ret = Authenticate();
+            var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            Attend.MarkRegistered(PeopleId, id, Present);
+            new APIFunctions().DeleteExtraValue(peopleid, field);
             return Content("ok");
         }
         [HttpPost]
-        [RequireBasicAuthentication]
+        public ActionResult MarkRegistered(int meetingid, int peopleid, bool present)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content(ret.Substring(1));
+            Attend.MarkRegistered(peopleid, meetingid, present);
+            return Content("ok");
+        }
+        [HttpPost]
         public ActionResult GetOneTimeLoginLink(string url, string user)
         {
-            var ret = Authenticate(log: true);
+            var ret = AuthenticateDeveloper(log: true);
             if (ret.StartsWith("!"))
                 return Content(url);
             var ot = new OneTimeLink
@@ -156,13 +145,15 @@ namespace CmsWeb.Areas.Public.Controllers
             };
             DbUtil.Db.OneTimeLinks.InsertOnSubmit(ot);
             DbUtil.Db.SubmitChanges();
-            return Content("/Logon/?ReturnUrl={0}&otltoken={1}".Fmt(url, ot.Id.ToCode()));
+            return Content("{0}Logon?ReturnUrl={1}&otltoken={2}".Fmt(
+                Util.CmsHost2, 
+                HttpUtility.UrlEncode(url), 
+                ot.Id.ToCode()));
         }
         [HttpPost]
-        [RequireBasicAuthentication]
-        public ActionResult GetOneTimeRegisterLink(int PeopleId, int OrgId)
+        public ActionResult GetOneTimeRegisterLink(int OrgId, int PeopleId)
         {
-            var ret = Authenticate(log: true);
+            var ret = AuthenticateDeveloper(log: true);
             if (ret.StartsWith("!"))
                 return Content("/");
             var ot = new OneTimeLink
@@ -173,7 +164,16 @@ namespace CmsWeb.Areas.Public.Controllers
             };
             DbUtil.Db.OneTimeLinks.InsertOnSubmit(ot);
             DbUtil.Db.SubmitChanges();
-            return Content("/OnlineReg/RegisterLink/" + ot.Id.ToCode());
+            return Content(Util.CmsHost2 + "OnlineReg/RegisterLink/" + ot.Id.ToCode());
+        }
+        [HttpPost]
+        public ActionResult UpdateOrgMember(int OrgId, int PeopleId, int? type, DateTime? enrolled, string inactive)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content(ret.Substring(1));
+            new APIFunctions().UpdateOrgMember(OrgId, PeopleId, type, enrolled, inactive);
+            return Content("ok");
         }
     }
 }

@@ -37,7 +37,7 @@ $(function () {
         return false;
     });
 
-    $('table.grid > tbody > tr:even').addClass('alt');
+    $('form table.grid > tbody > tr:even').addClass('alt');
 
     $(".CreateAndGo").click(function (ev) {
         ev.preventDefault();
@@ -353,6 +353,8 @@ $(function () {
             function (ret) {
                 if (ret == "ok")
                     RebindMemberGrids();
+                else
+                    alert(ret);
             });
         return false;
     });
@@ -418,6 +420,65 @@ $(function () {
     });
     if ($("#orgpickdiv a[target='otherorg']").length > 0)
         $("#tabfees,#tabquestions").hide();
+
+    $.extraEditable = function () {
+        $('.editarea').editable('/Organization/EditExtra/', {
+            type: 'textarea',
+            submit: 'OK',
+            rows: 5,
+            width: 200,
+            indicator: '<img src="/images/loading.gif">',
+            tooltip: 'Click to edit...'
+        });
+        $(".editline").editable("/Organization/EditExtra/", {
+            indicator: "<img src='/images/loading.gif'>",
+            tooltip: "Click to edit...",
+            style: 'display: inline',
+            width: 200,
+            height: 25,
+            submit: 'OK'
+        });
+    }
+    $.extraEditable();
+    $("#newvalueform").dialog({
+        autoOpen: false,
+        buttons: {
+            "Ok": function () {
+                var ck = $("#multiline").is(':checked');
+                var fn = $("#fieldname").val();
+                var v = $("#fieldvalue").val();
+                if (fn)
+                    $.post("/Organization/NewExtraValue/" + $("#OrganizationId").val(), { field: fn, value: v, multiline: ck }, function (ret) {
+                        if (ret.startsWith("error"))
+                            alert(ret);
+                        else {
+                            $("#extras > tbody").html(ret);
+                            $.extraEditable();
+                        }
+                        $("#fieldname").val("");
+                    });
+                $(this).dialog("close");
+            }
+        }
+    });
+    $("#newextravalue").live("click", function (ev) {
+        ev.preventDefault();
+        var d = $('#newvalueform');
+        d.dialog("open");
+    });
+    $("a.deleteextra").live("click", function (ev) {
+        ev.preventDefault();
+        if (confirm("are you sure?"))
+            $.post("/Organization/DeleteExtra/" + $("#OrganizationId").val(), { field: $(this).attr("field") }, function (ret) {
+                if (ret.startsWith("error"))
+                    alert(ret);
+                else {
+                    $("#extras > tbody").html(ret);
+                    $.extraEditable();
+                }
+            });
+        return false;
+    });
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#Members-tab form'));
@@ -425,6 +486,9 @@ function RebindMemberGrids(from) {
     $.updateTable($('#Pending-tab form'));
     $.updateTable($('#Priors-tab form'));
     $.updateTable($('#Visitors-tab form'));
+    $("#memberDialog").dialog("close");
+}
+function CloseAddDialog(from) {
     $("#memberDialog").dialog("close");
 }
 function UpdateSelectedUsers(topid) {

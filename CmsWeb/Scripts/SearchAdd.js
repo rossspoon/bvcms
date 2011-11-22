@@ -1,10 +1,13 @@
-﻿$(function() {
-    $("a.formlink").live('click', function(ev) {
+﻿$(function () {
+    $("a.formlink").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post($(this).attr('href'), q, function(ret) {
+        $.post($(this).attr('href'), q, function (ret) {
             if (ret.close) {
+                if (ret.message) {
+                    alert(ret.message);
+                }
                 switch (ret.how) {
                     case 'rebindgrids':
                         if (self.parent.RebindMemberGrids)
@@ -25,7 +28,7 @@
                 }
             }
             else
-                $(f).html(ret).ready(function() {
+                $(f).html(ret).ready(function () {
                     $("a.bt").button();
                     $(".addrcol").tooltip({
                         showURL: false,
@@ -37,7 +40,7 @@
         return false;
     });
     $("a.bt").button();
-    $('a.clear').live('click', function(ev) {
+    $('a.clear').live('click', function (ev) {
         ev.preventDefault();
         $("#name").val('');
         $("#phone").val('');
@@ -45,10 +48,10 @@
         $("#dob").val('');
         return false;
     });
-    $("#verifyaddress").live("click", function() {
+    $("#verifyaddress").live("click", function () {
         var f = $(this).closest('form');
         var q = f.serialize();
-        $.post($(this).attr('href'), q, function(ret) {
+        $.post($(this).attr('href'), q, function (ret) {
             if (confirm(ret.address + "\nUse this Address?")) {
                 $('#address', f).val(ret.Line1);
                 $('#address2', f).val(ret.Line2);
@@ -59,15 +62,15 @@
         });
         return false;
     });
-    $("#zip").live("blur", function() {
-        $.post('/OnlineReg/CityState/' + $(this).val(), null, function(ret) {
+    $("#zip").live("blur", function () {
+        $.post('/OnlineReg/CityState/' + $(this).val(), null, function (ret) {
             if (ret) {
                 $('#state').val(ret.state);
                 $('#city').val(ret.city);
             }
         }, 'json');
     });
-    $("form input").live("keypress", function(e) {
+    $("form input").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();
             return false;

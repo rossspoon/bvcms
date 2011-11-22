@@ -17,10 +17,10 @@ using Alias = System.Threading.Tasks;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [ValidateInput(false)]
     public class BatchController : AsyncController
     {
+        [Authorize(Roles = "Admin")]
         public ActionResult MoveAndDelete()
         {
             return View();
@@ -117,6 +117,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 
             return Content("done");
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult RegistrationMail(string text)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -139,6 +140,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 
             return Content("done");
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult UpdateOrg(string text)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -219,6 +221,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         Dictionary<string, int> names;
         StringBuilder psb;
         StringBuilder fsb;
+        [Authorize(Roles = "Admin")]
         public ActionResult UploadPeople(string text)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -517,6 +520,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                 }
             return 10;
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult UpdatePeople0(string text)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -654,6 +658,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             }
             return Redirect("/");
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult UpdateFields()
         {
             var m = new UpdateFieldsModel();
@@ -705,6 +710,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             TempData["success"] = m.Field + " Updated";
             return RedirectToAction("UpdateFields");
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult UpdatePeople()
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -727,12 +733,14 @@ namespace CmsWeb.Areas.Manage.Controllers
             }
             return Content("<div>done <a href='/'>go home</a><div>");
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult LookupDataPage()
         {
             return View(new UpdateFieldsModel().TitleItems());
         }
 
         [AsyncTimeout(600000)]
+        [Authorize(Roles = "Admin")]
         public void UpdateQueryBitsAsync()
         {
             AsyncManager.OutstandingOperations.Increment();
@@ -756,6 +764,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             return Redirect("/");
         }
         [AsyncTimeout(600000)]
+        [Authorize(Roles = "Admin")]
         public void UpdateQueryStatsAsync()
         {
             AsyncManager.OutstandingOperations.Increment();
@@ -797,6 +806,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             public DateTime? Birthday { get; set; }
         }
         [HttpGet]
+        [Authorize(Roles = "Edit")]
         public ActionResult FindTagPeople()
         {
             return View("FindTagPeople0");
@@ -824,6 +834,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                     return dt;
             return null;
         }
+        [Authorize(Roles = "Edit")]
         public ActionResult FindTagPeople(string text, string tagname)
         {
             if (!tagname.HasValue())
@@ -880,6 +891,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(list);
         }
         [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Edit")]
         public ActionResult TagPeopleIds()
         {
             return View();

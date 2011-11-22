@@ -76,13 +76,9 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Search(string name, string comm, string addr)
         {
-#if DEBUG
-            var uname = "david";
-#else
             if (!Authenticate())
                 return Content("not authorized");
             var uname = Request.Headers["username"];
-#endif
             AccountController.SetUserInfo(uname, Session);
 
             if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
@@ -100,13 +96,9 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult SearchResults(string name, string comm, string addr)
         {
-#if DEBUG
-            var uname = "david";
-#else
             if (!Authenticate() )
                 return Content("not authorized");
             var uname = Request.Headers["username"];
-#endif
             AccountController.SetUserInfo(uname, Session);
             if (!CMSRoleProvider.provider.IsUserInRole(uname, "Access"))
                 return Content("not authorized");
@@ -126,11 +118,8 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult DetailResults(int id)
         {
-#if DEBUG
-#else
             if (!Authenticate())
                 return Content("not authorized");
-#endif
             return new DetailResult(id);
         }
         public ActionResult Organizations()
@@ -144,7 +133,6 @@ namespace CmsWeb.Areas.Public.Controllers
             return new OrgResult(Util.UserPeopleId);
         }
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult RollList( int id, string datetime )
             // id = OrganizationId
             // datetime = MeetingDate
@@ -184,7 +172,6 @@ namespace CmsWeb.Areas.Public.Controllers
             return new RollListResult(meeting);
         }
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult RecordAttend( int id, int PeopleId, bool Present )
             // id = MeetingId
         {
@@ -195,7 +182,6 @@ namespace CmsWeb.Areas.Public.Controllers
             return new EmptyResult();
         }
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult RecordVisit( int id, int PeopleId )
             // id = MeetingId
         {
@@ -222,7 +208,6 @@ namespace CmsWeb.Areas.Public.Controllers
             public int gender { get; set; }
         }
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult AddPerson(int id, PersonInfo m)
         {
             if (!Authenticate())
@@ -271,7 +256,6 @@ namespace CmsWeb.Areas.Public.Controllers
             return new RollListResult(meeting);
         }
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult JoinUnJoinOrg(int PeopleId, int OrgId, bool Member)
         {
             if (!Authenticate())
@@ -302,7 +286,6 @@ namespace CmsWeb.Areas.Public.Controllers
                 return s;
         }
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult RollList2(int id, string datetime)
             // id = OrganizationId
         {
@@ -314,7 +297,6 @@ namespace CmsWeb.Areas.Public.Controllers
             return new RollListResult(id, dt);
         }
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult RecordAttend2(int id, string datetime, int PeopleId, bool Present)
             // id = OrganizationId
         {
@@ -327,7 +309,6 @@ namespace CmsWeb.Areas.Public.Controllers
             return new EmptyResult();
         }
         [HttpPost]
-        [RequireBasicAuthentication]
         public ActionResult RecordVisit2(int id, string datetime, int PeopleId)
             // id = OrganizationId
         {

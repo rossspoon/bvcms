@@ -22,6 +22,8 @@ namespace CmsCheckin
         public Menu()
         {
             InitializeComponent();
+            Join.Enabled = !Program.DisableJoin;
+            DropJoin.Enabled = !Program.DisableJoin;
         }
 
         private void Visit_Click(object sender, EventArgs e)

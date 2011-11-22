@@ -436,7 +436,7 @@
 			Selects everyone who is a user in the CMS.
 		</Field>
     <Field Name="CreatedBy" Title="Record Created By User" Type="String">
-      Record Created By User
+      Record Created By User, you do not use an id #, rather use "LastName, FirstName" or StartsWith Last Name, etc.
     </Field>
     <Field Name="CreatedDate" Title="Record Created On Date" Type="Date">
       Record Created On Date

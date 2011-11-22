@@ -230,6 +230,8 @@
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\MergeController.cs" />
+    <Compile Include="Areas\Manage\Models\MergeModel.cs" />
     <Compile Include="Areas\Public\Controllers\CheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
@@ -242,6 +244,7 @@
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
     <Compile Include="Areas\Public\Controllers\APIController.cs" />
+    <Compile Include="Areas\Public\Controllers\APITestController.cs" />
     <Compile Include="Areas\Public\Controllers\iPhoneController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
@@ -281,6 +284,7 @@
     <Compile Include="Areas\Manage\Controllers\RegSettingsController.cs" />
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
+    <Compile Include="Areas\Public\Models\APITestModel.cs" />
     <Compile Include="Areas\Public\Models\iPhone\DetailResult.cs" />
     <Compile Include="Areas\Public\Models\iPhone\SearchResult.cs" />
     <Compile Include="Areas\Public\Models\iPhone\RollListResult.cs" />
@@ -332,7 +336,10 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
+    <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml" />
+    <None Include="Areas\Public\Views\APITest\Index.cshtml" />
     <Content Include="Binaries\AuthorizeNet.dll" />
+    <Content Include="Content\faary.css" />
     <Content Include="Content\js\jquery.tmpl.js" />
     <Content Include="Content\js\json2.js" />
     <Content Include="Content\organization.css" />
@@ -994,6 +1001,7 @@
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
     <Content Include="Scripts\ContactSearch.js" />
+    <Content Include="Scripts\TestAPI.js" />
     <Content Include="Scripts\meeting-ipad.js" />
     <Content Include="Scripts\SearchOrgs.js" />
     <Content Include="Scripts\OrgChildren.js" />
@@ -1477,6 +1485,9 @@
     <Content Include="Areas\Main\Views\Organization\OrgPickList2.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\iPad.cshtml" />
     <Content Include="Areas\Main\Views\ContactSearch\Results.cshtml" />
+    <Content Include="Areas\Manage\Views\Merge\Index.cshtml" />
+    <Content Include="Areas\Main\Views\Meeting\ExtrasGrid.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\ExtrasGrid.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

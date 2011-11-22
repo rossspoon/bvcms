@@ -1,0 +1,47 @@
+﻿@model List<CmsWeb.Models.ApiTestInfo>
+@using UtilityExtensions
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>API Tester</title>
+<link rel="stylesheet" href="/Content/faary.css" type="text/css" />
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+            .Add("/Content/js/jquery-1.5.2.js")
+            .Add("/Scripts/TestAPI.js")
+        .Render("/Content/TestAPI_#.js")
+)
+<body>
+
+<form action="/APITest/Init" class="iform">
+<ul>
+    <li class="iheader">Initialize Authentication</li>
+    <li><label>uname</label>
+        <input id="uname" name="uname" class="itext" type="text" value="" />
+    </li>
+    <li><label>pword</label>
+        <input id="pword" name="pword" class="itext" type="password" value="" />
+    </li>
+    <li><label>script</label>
+<textarea class="itextarea" spellcheck="false" name="script" rows="7">
+
+webclient = WebClient()
+webclient.BaseAddress = '@UtilityExtensions.Util.CmsHost2'
+bytes = Encoding.ASCII.GetBytes(uname + ':' + pword);
+credentials = Convert.ToBase64String(bytes)
+webclient.Headers.Add('Authorization: Basic ' + credentials)
+</textarea>
+    </li>
+    <li><label><p><button id="init" class="ibutton">Init</button></p></label>
+        <div id="imessageOK">Authorization Initialized</div>
+    </li>
+</ul>
+</form>
+<div class="clear"></div>
+
+@foreach(var m in Model.Where(mm => mm.api.Length > 0))
+{
+    @Html.EditorFor(mm => m)
+}
+
+</body>
+</html>

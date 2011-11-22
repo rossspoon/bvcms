@@ -48,6 +48,35 @@ namespace CmsWeb
         {
             base.ExecuteCore();
         }
+        public string AuthenticateDeveloper(bool log = false)
+        {
+            var auth = Request.Headers["Authorization"];
+            if (auth.HasValue())
+            {
+                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
+                    Convert.FromBase64String(auth.Substring(6))).Split(':');
+                var username = cred[0];
+                var password = cred[1];
+
+                string ret = null;
+                var valid = CMSMembershipProvider.provider.ValidateUser(username, password);
+                if (valid)
+                {
+                    var roles = CMSRoleProvider.provider;
+                    var u = AccountController.SetUserInfo(username, Session);
+                    if (!roles.IsUserInRole(username, "Developer"))
+                        valid = false;
+                }
+                if (valid)
+                    ret = " API {0} authenticated".Fmt(username);
+                else
+                    ret = "!API {0} not authenticated".Fmt(username);
+                if (log)
+                    DbUtil.LogActivity(ret.Substring(1));
+                return ret;
+            }
+            return "!API no Authorization Header";
+        }
     }
     public class CmsStaffController : System.Web.Mvc.Controller
     {

@@ -60,7 +60,7 @@
 {
             <div class="drow">
             @if (DateTime.Now.Subtract(ni.Published).TotalDays < 8) { <span class="isnew">*</span> }
-            <a href="@ni.Url">@ni.Title</a></div>
+            <a href="@ni.Url" target="news">@ni.Title</a></div>
 }
         </div>
         <h2><a href="@DbUtil.Db.Setting("ChurchBlogUrl", "#")">Church News</a></h2>

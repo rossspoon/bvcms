@@ -45,7 +45,7 @@ namespace CmsCheckin
             AskChurchName = f.AskChurchName.Checked;
             EnableTimer = f.EnableTimer.Checked;
             TwoInchLabel = f.TwoInchLabel.Checked;
-
+            DisableJoin = f.DisableJoin.Checked;
 
             var b = new BaseForm();
             Program.baseform = b;
@@ -76,6 +76,7 @@ namespace CmsCheckin
         public static bool HideCursor { get; set; }
         public static bool editing { get; set; }
         public static bool EnableTimer { get; set; }
+        public static bool DisableJoin { get; set; }
         public static string KioskName { get; set; }
         public static bool AskEmFriend { get; set; }
         public static bool AskGrade { get; set; }

@@ -54,6 +54,8 @@ namespace CmsData
 		
    		private EntitySet< Attend> _Attends;
 		
+   		private EntitySet< MeetingExtra> _MeetingExtras;
+		
    		private EntitySet< MOBSReg> _MOBSRegs;
 		
    		private EntitySet< SoulMate> _SoulMates;
@@ -125,6 +127,8 @@ namespace CmsData
 			this._ChildSoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_ChildSoulMates), new Action< SoulMate>(this.detach_ChildSoulMates)); 
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
+			
+			this._MeetingExtras = new EntitySet< MeetingExtra>(new Action< MeetingExtra>(this.attach_MeetingExtras), new Action< MeetingExtra>(this.detach_MeetingExtras)); 
 			
 			this._MOBSRegs = new EntitySet< MOBSReg>(new Action< MOBSReg>(this.attach_MOBSRegs), new Action< MOBSReg>(this.detach_MOBSRegs)); 
 			
@@ -523,6 +527,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_MeetingExtra_Meetings", Storage="_MeetingExtras", OtherKey="MeetingId")]
+   		public EntitySet< MeetingExtra> MeetingExtras
+   		{
+   		    get { return this._MeetingExtras; }
+
+			set	{ this._MeetingExtras.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_MOBSReg_Meeting", Storage="_MOBSRegs", OtherKey="MeetingId")]
    		public EntitySet< MOBSReg> MOBSRegs
    		{
@@ -668,6 +682,19 @@ namespace CmsData
 		}
 
 		private void detach_Attends(Attend entity)
+		{
+			this.SendPropertyChanging();
+			entity.Meeting = null;
+		}
+
+		
+		private void attach_MeetingExtras(MeetingExtra entity)
+		{
+			this.SendPropertyChanging();
+			entity.Meeting = this;
+		}
+
+		private void detach_MeetingExtras(MeetingExtra entity)
 		{
 			this.SendPropertyChanging();
 			entity.Meeting = null;

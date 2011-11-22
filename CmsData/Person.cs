@@ -191,20 +191,21 @@ namespace CmsData
                 c.PeopleId = otherid;
             foreach (var u in this.Users)
                 u.PeopleId = otherid;
-            foreach (var v in this.Volunteers)
-            {
-                var vv = new Volunteer
+            if (this.Volunteers.Count() > 0 && toperson.Volunteers.Count() == 0)
+                foreach (var v in this.Volunteers)
                 {
-                    PeopleId = otherid,
-                    Children = v.Children,
-                    Comments = v.Comments,
-                    Leader = v.Leader,
-                    ProcessedDate = v.ProcessedDate,
-                    Standard = v.Standard,
-                    StatusId = v.StatusId,
-                };
-                Db.Volunteers.InsertOnSubmit(vv);
-            }
+                    var vv = new Volunteer
+                    {
+                        PeopleId = otherid,
+                        Children = v.Children,
+                        Comments = v.Comments,
+                        Leader = v.Leader,
+                        ProcessedDate = v.ProcessedDate,
+                        Standard = v.Standard,
+                        StatusId = v.StatusId,
+                    };
+                    Db.Volunteers.InsertOnSubmit(vv);
+                }
             foreach (var v in this.VolunteerForms)
                 v.PeopleId = otherid;
             foreach (var c in this.contactsMade)
@@ -285,57 +286,6 @@ namespace CmsData
             foreach (var sale in this.SaleTransactions)
                 sale.PeopleId = otherid;
 
-            var psb = new StringBuilder();
-            if (TitleCode.HasValue())
-                toperson.UpdateValue(psb, "TitleCode", TitleCode);
-            if (FirstName.HasValue()) 
-                toperson.UpdateValue(psb, "FirstName", FirstName);
-            if (LastName.HasValue()) 
-                toperson.UpdateValue(psb, "LastName", LastName);
-            if (NickName.HasValue()) 
-                toperson.UpdateValue(psb, "NickName", NickName);
-            if (AltName.HasValue()) 
-                toperson.UpdateValue(psb, "AltName", AltName);
-            toperson.UpdateValue(psb, "GenderId", GenderId);
-            toperson.UpdateValue(psb, "MaritalStatusId", MaritalStatusId);
-            if (BirthDate.HasValue) 
-                toperson.UpdateValue(psb, "DOB", DOB);
-            if (CellPhone.GetDigits().HasValue()) 
-                toperson.UpdateValue(psb, "CellPhone", CellPhone);
-            if (EmailAddress.HasValue()) 
-                toperson.UpdateValue(psb, "EmailAddress", EmailAddress);
-            if (EmailAddress2.HasValue()) 
-                toperson.UpdateValue(psb, "EmailAddress2", EmailAddress2);
-            if (SuffixCode.HasValue()) 
-                toperson.UpdateValue(psb, "SuffixCode", SuffixCode);
-            if (MiddleName.HasValue()) 
-                toperson.UpdateValue(psb, "MiddleName", MiddleName);
-
-            if (AddressLineOne.HasValue())
-                toperson.UpdateValue(psb, "AddressLineOne", AddressLineOne);
-            if (AddressLineTwo.HasValue())
-                toperson.UpdateValue(psb, "AddressLineTwo", AddressLineTwo);
-            if (CityName.HasValue())
-                toperson.UpdateValue(psb, "CityName", CityName);
-            if (StateCode.HasValue())
-                toperson.UpdateValue(psb, "StateCode", StateCode);
-            if (ZipCode.HasValue())
-                toperson.UpdateValue(psb, "ZipCode", ZipCode);
-
-            var fsb = new StringBuilder();
-            if (Family.AddressLineOne.HasValue())
-                toperson.Family.UpdateValue(fsb, "AddressLineOne", Family.AddressLineOne);
-            if (Family.AddressLineTwo.HasValue())
-                toperson.Family.UpdateValue(fsb, "AddressLineTwo", Family.AddressLineTwo);
-            if (Family.CityName.HasValue())
-                toperson.Family.UpdateValue(fsb, "CityName", Family.CityName);
-            if (Family.StateCode.HasValue())
-                toperson.Family.UpdateValue(fsb, "StateCode", Family.StateCode);
-            if (Family.ZipCode.HasValue())
-                toperson.Family.UpdateValue(fsb, "ZipCode", Family.ZipCode);
-
-            toperson.LogChanges(Db, psb, Util.UserPeopleId.Value);
-            toperson.Family.LogChanges(Db, fsb, toperson.PeopleId, Util.UserPeopleId.Value);
 
             Db.SubmitChanges();
         }
@@ -915,8 +865,7 @@ namespace CmsData
         }
         public void UpdateValueFromText(StringBuilder psb, string field, string value)
         {
-            if (value is string)
-                value = ((string)value).TrimEnd();
+            value = value.TrimEnd();
             var o = Util.GetProperty(this, field);
             if (o is string)
                 o = ((string)o).TrimEnd();
