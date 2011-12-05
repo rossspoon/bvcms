@@ -31,11 +31,13 @@ namespace CmsWeb.Models
         public int UseSuffixCode { get; set; }
         public int UseMiddleName { get; set; }
         public int UseHomePhone { get; set; }
+        public int UseWorkPhone { get; set; }
         public int UseAddressLineOne { get; set; }
         public int UseAddressLineTwo { get; set; }
         public int UseCityName { get; set; }
         public int UseStateCode { get; set; }
         public int UseZipCode { get; set; }
+        public int UseMaiden { get; set; }
 
         public class BasicInfo
         {
@@ -47,6 +49,7 @@ namespace CmsWeb.Models
             public string LastName { get; set; }
             public string NickName { get; set; }
             public string AltName { get; set; }
+            public string Maiden { get; set; }
             public int GenderId { get; set; }
             public string Gender
             {
@@ -66,6 +69,7 @@ namespace CmsWeb.Models
             public string SuffixCode { get; set; }
             public string MiddleName { get; set; }
             public string HomePhone { get; set; }
+            public string WorkPhone { get; set; }
             public string AddressLineOne { get; set; }
             public string AddressLineTwo { get; set; }
             public string CityName { get; set; }
@@ -88,11 +92,13 @@ namespace CmsWeb.Models
                         LastName = p.LastName,
                         NickName = p.NickName,
                         AltName = p.AltName,
+                        Maiden = p.MaidenName,
                         GenderId = p.GenderId,
                         MaritalStatusId = p.MaritalStatusId,
                         DOB = p.DOB,
                         CellPhone = p.CellPhone,
                         HomePhone = p.Family.HomePhone,
+                        WorkPhone = p.WorkPhone,
                         EmailAddress = p.EmailAddress,
                         EmailAddress2 = p.EmailAddress2,
                         SuffixCode = p.SuffixCode,
@@ -111,10 +117,12 @@ namespace CmsWeb.Models
             UseLastName = 1;
             UseNickName = 1;
             UseAltName = 1;
+            UseMaiden = 1;
             UseGenderId = 1;
             UseMaritalStatusId = 1;
             UseDOB = 1;
             UseCellPhone = 1;
+            UseWorkPhone = 1;
             UseEmailAddress = 1;
             UseEmailAddress2 = 1;
             UseSuffixCode = 1;
@@ -145,10 +153,12 @@ namespace CmsWeb.Models
             target.UpdateValue(psb, "LastName", pi[UseLastName].LastName ?? "?");
             target.UpdateValue(psb, "NickName", pi[UseNickName].NickName);
             target.UpdateValue(psb, "AltName", pi[UseAltName].AltName);
+            target.UpdateValue(psb, "MaidenName", pi[UseMaiden].Maiden);
             target.UpdateValue(psb, "GenderId", pi[UseGenderId].GenderId);
             target.UpdateValue(psb, "MaritalStatusId", pi[UseMaritalStatusId].MaritalStatusId);
             target.UpdateValue(psb, "DOB", pi[UseDOB].DOB);
             target.UpdateValue(psb, "CellPhone", pi[UseCellPhone].CellPhone.GetDigits());
+            target.UpdateValue(psb, "WorkPhone", pi[UseWorkPhone].WorkPhone.GetDigits());
             target.UpdateValue(psb, "EmailAddress", pi[UseEmailAddress].EmailAddress);
             target.UpdateValue(psb, "EmailAddress2", pi[UseEmailAddress2].EmailAddress2);
             target.UpdateValue(psb, "SuffixCode", pi[UseSuffixCode].SuffixCode);

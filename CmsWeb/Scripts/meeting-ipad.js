@@ -18,7 +18,7 @@
             $("." + v).show();
         $('html, body').animate({ scrollTop: 0 }, 'fast');
     });
-    $("input[type='radio']").bind( "change", function(event, ui) {
+    $("input[type='radio']").bind("change", function (event, ui) {
         var v = $(this).val();
         $("div.ckline").hide();
         if (v === "back")
@@ -39,6 +39,10 @@
         else
             $("." + v).show();
         $('html, body').animate({ scrollTop: 0 }, 'fast');
+    });
+    $("div.na").bind("click", function (ev) {
+        ev.preventDefault();
+        return false;
     });
     $("div.ckline input:checkbox").change(function (ev) {
         var ck = $(this);

@@ -19,8 +19,7 @@
 }
     <li><label>script</label>
 <textarea class="itextarea" spellcheck="false" name="script" rows="@Model.LineCount">
-@Model.script
-</textarea>
+@Model.script.TrimEnd()</textarea>
     </li>
     <li><label><p><button class="ibutton" name="test">Test</button></p>
                <p><button class="ibutton" name="clear">Clear</button></p></label>

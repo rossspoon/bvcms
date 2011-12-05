@@ -28,8 +28,12 @@
 )
     <script type="text/javascript">
         $(function () {
+            $.refreshenabled = false; // false until something happens
             $(document).bind("idle.idleTimer", function () {
-                window.location.href = '@Model.URL';
+                if ($.refreshenabled)
+                    window.location.href = '@Model.URL';
+                else
+                    $.idleTimer(tmout);
             });
             var tmout = parseInt('@ViewData["timeout"]');
 

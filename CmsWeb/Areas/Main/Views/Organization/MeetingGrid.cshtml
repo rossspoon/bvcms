@@ -28,7 +28,12 @@
     <td>@m.NumVisitors</td>
     <td>@m.Location</td>
     <td>@m.Description</td>
-    <td><a id="m.@m.MeetingId" href="#" class="delmeeting"><img border="0" src="/images/delete.gif" /></a></td>
+    <td>
+    @if (User.IsInRole("Attendance"))
+    {
+        <a id="m.@m.MeetingId" href="#" class="delmeeting"><img border="0" src="/images/delete.gif" /></a>
+    }
+    </td>
 </tr>
 }
 </tbody>

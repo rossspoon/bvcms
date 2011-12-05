@@ -24,6 +24,8 @@ namespace CmsCheckin
             var r = login.ShowDialog();
             if (r == DialogResult.Cancel)
                 return;
+            PrintMode = login.PrintMode.Text;
+            PrintKiosks = login.PrintKiosks.Text;
 
             var f = new StartUp { campuses = login.campuses };
             var ret = f.ShowDialog();
@@ -47,6 +49,16 @@ namespace CmsCheckin
             TwoInchLabel = f.TwoInchLabel.Checked;
             DisableJoin = f.DisableJoin.Checked;
 
+            f.Dispose();
+
+
+            if (PrintMode == "Print From Server")
+            {
+                var p = new PrintingServer();
+                Application.Run(p);
+                return;
+            }
+
             var b = new BaseForm();
             Program.baseform = b;
 
@@ -56,14 +68,13 @@ namespace CmsCheckin
                 b.FormBorderStyle = FormBorderStyle.None;
             }
 
-            f.Dispose();
-
             Application.Run(b);
         }
         public static string Username { get; set; }
         public static string Password { get; set; }
         public static string URL { get; set; }
         public static string Printer { get; set; }
+        public static string PrintKiosks { get; set; }
         public static string AdminPassword { get; set; }
         public static int FamilyId { get; set; }
         public static int PeopleId { get; set; }
@@ -84,6 +95,7 @@ namespace CmsCheckin
         public static bool AskChurchName { get; set; }
         public static bool AskLabels { get; set; }
         public static bool TwoInchLabel { get; set; }
+        public static string PrintMode { get; set; }
 
         public static string QueryString
         {

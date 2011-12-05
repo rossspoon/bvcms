@@ -916,6 +916,43 @@ namespace CmsData
                 return "";
             return e.Data;
         }
-
+        public PeopleExtra GetExtraValue(string field)
+        {
+            var q = from v in PeopleExtras
+                    where v.Field == field
+                    select v;
+            var ev = q.SingleOrDefault();
+            if (ev == null)
+            {
+                ev = new PeopleExtra
+                {
+                    PeopleId = PeopleId,
+                    Field = field,
+                    TransactionTime = DateTime.Now
+                };
+                PeopleExtras.Add(ev);
+            }
+            return ev;
+        }
+        public void AddEditExtraValue(string field, string value)
+        {
+            var ev = GetExtraValue(field);
+            ev.StrValue = value;
+        }
+        public void AddEditExtraDate(string field, DateTime value)
+        {
+            var ev = GetExtraValue(field);
+            ev.DateValue = value;
+        }
+        public void AddEditExtraData(string field, string value)
+        {
+            var ev = GetExtraValue(field);
+            ev.Data = value;
+        }
+        public void AddEditExtraInt(string field, int value)
+        {
+            var ev = GetExtraValue(field);
+            ev.IntValue = value;
+        }
     }
 }

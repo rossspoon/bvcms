@@ -44,8 +44,8 @@ class TestAPI(object):
             try
             {
                 var sb = new StringBuilder();
-                var ss = script.Replace("\r\n", "\n");
-                foreach (var s in script.Split('\n'))
+                var ss = (script ?? "return").Replace("\r\n", "\n");
+                foreach (var s in ss.Split('\n'))
                     sb.AppendFormat("\t\t{0}\n", s);
                 var engine = Python.CreateEngine();
                 script = shell.Fmt(init, sb.ToString());

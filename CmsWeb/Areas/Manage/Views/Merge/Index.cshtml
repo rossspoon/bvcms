@@ -16,7 +16,7 @@
 <table class="grid">
 <thead>
 <tr>
-    <td></td>
+    <td><a href="/Manage/Merge?PeopleId1=@Model.pi[1].PeopleId&PeopleId2=@Model.pi[0].PeopleId">swap</a></td>
     <td colspan="2">From Record</td>
     <td colspan="2">To Record</td>
     <td colspan="2">Alternate Value</td>
@@ -98,6 +98,15 @@
     <td>@Html.TextBoxFor(m => m.pi[2].SuffixCode) </td>
 </tr>
 <tr>
+    <td>FormerName</td>
+    <td>@Html.RadioButtonFor(m => m.UseMaiden, 0)</td>
+    <td>@Model.pi[0].Maiden @Html.HiddenFor(m => m.pi[0].Maiden)</td>
+    <td>@Html.RadioButtonFor(m => m.UseMaiden, 1)</td>
+    <td>@Model.pi[1].Maiden @Html.HiddenFor(m => m.pi[1].Maiden)</td>
+    <td>@Html.RadioButtonFor(m => m.UseMaiden, 2)</td>
+    <td>@Html.TextBoxFor(m => m.pi[2].Maiden) </td>
+</tr>
+<tr>
     <td>AltName</td>
     <td>@Html.RadioButtonFor(m => m.UseAltName, 0)</td>
     <td>@Model.pi[0].AltName @Html.HiddenFor(m => m.pi[0].AltName)</td>
@@ -169,6 +178,15 @@
     <td>@Model.pi[1].HomePhone.FmtFone() @Html.HiddenFor(m => m.pi[1].HomePhone)</td>
     <td>@Html.RadioButtonFor(m => m.UseHomePhone, 2)</td>
     <td>@Html.TextBoxFor(m => m.pi[2].HomePhone) </td>
+</tr>
+<tr>
+    <td>WorkPhone</td>
+    <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 0)</td>
+    <td>@Model.pi[0].WorkPhone.FmtFone() @Html.HiddenFor(m => m.pi[0].WorkPhone)</td>
+    <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 1)</td>
+    <td>@Model.pi[1].WorkPhone.FmtFone() @Html.HiddenFor(m => m.pi[1].WorkPhone)</td>
+    <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 2)</td>
+    <td>@Html.TextBoxFor(m => m.pi[2].WorkPhone) </td>
 </tr>
 <tr>
     <td>AddressLineOne</td>

@@ -44,6 +44,7 @@
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
+        $.refreshenabled = true;
         $.post($(this).attr('href'), q, function (ret) {
             if (ret.substr(0, 13) === '/Person/Index') {
                 window.location = ret;

@@ -1,10 +1,10 @@
-﻿@model List<CmsWeb.Models.ApiTestInfo>
+﻿@model List<CmsWeb.Models.ApiSectionInfo>
 @using UtilityExtensions
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>API Tester</title>
-<link rel="stylesheet" href="/Content/faary.css" type="text/css" />
+<link rel="stylesheet" href="/Content/faary.css?v=1" type="text/css" />
 @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
             .Add("/Content/js/jquery-1.5.2.js")
             .Add("/Scripts/TestAPI.js")
@@ -15,6 +15,13 @@
 <form action="/APITest/Init" class="iform">
 <ul>
     <li class="iheader">Initialize Authentication</li>
+    <li><ul>
+        <li>To use these APIs, you need to authenticate with you own username and password first.</li>
+        <li>Also you must be in the Developer role</li>
+        <li>The code below is the initialization script that is run before each call</li>
+        <li>You will need to establish the baseurl and Authorization header in your code too.</li>
+        </ul>
+    </li>
     <li><label>uname</label>
         <input id="uname" name="uname" class="itext" type="text" value="" />
     </li>
@@ -38,9 +45,13 @@ webclient.Headers.Add('Authorization: Basic ' + credentials)
 </form>
 <div class="clear"></div>
 
-@foreach(var m in Model.Where(mm => mm.api.Length > 0))
+@foreach(var m in Model)
 {
-    @Html.EditorFor(mm => m)
+    <div style="background-color:#777;color:#eee"><h2>&nbsp;<text>API</text>@m.section</h2></div>
+    foreach (var t in m.list)
+    {
+    @Html.EditorFor(mm => t)
+    }
 }
 
 </body>

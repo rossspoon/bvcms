@@ -74,7 +74,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(663, 434);
+            this.button1.Location = new System.Drawing.Point(663, 410);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 64);
             this.button1.TabIndex = 22;
@@ -324,7 +324,7 @@
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(796, 519);
+            this.ClientSize = new System.Drawing.Size(796, 488);
             this.Controls.Add(this.DisableJoin);
             this.Controls.Add(this.FullScreen);
             this.Controls.Add(this.TwoInchLabel);

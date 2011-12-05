@@ -71,6 +71,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 DbUtil.Db.SubmitChanges();
             }
             SetHeaders(m.divid);
+            DbUtil.LogActivity("Manage Subs: {0} ({1})".Fmt(m.Division.Name, m.person.Name), true);
             return View(m);
         }
         public ActionResult ManagePledge(string id)
@@ -99,6 +100,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 DbUtil.Db.SubmitChanges();
             }
             SetHeaders(m.orgid);
+            DbUtil.LogActivity("Manage Pledge: {0} ({1})".Fmt(m.Organization.OrganizationName, m.person.Name), true);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

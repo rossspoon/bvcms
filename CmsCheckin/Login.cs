@@ -22,6 +22,8 @@ namespace CmsCheckin
 
             URL.Text = Settings1.Default.URL;
             username.Text = Settings1.Default.username;
+            PrintKiosks.Text = Settings1.Default.Kiosks;
+            PrintMode.Text = Settings1.Default.PrintMode;
 
             b1.Click += new EventHandler(buttonclick);
             b2.Click += new EventHandler(buttonclick);
@@ -78,6 +80,8 @@ namespace CmsCheckin
         {
             Settings1.Default.URL = URL.Text;
             Settings1.Default.username = username.Text;
+            Settings1.Default.Kiosks = PrintKiosks.Text;
+            Settings1.Default.PrintMode = PrintMode.Text;
             Settings1.Default.Save();
 
 #if DEBUG

@@ -104,6 +104,8 @@
               </td>
             </tr>
             
+            @if (User.IsInRole("Attendance"))
+            {
             <tr><td align="right">Enable:</td><td>
                 <table width="100%"><tr>
                   <td align="left" nowrap>
@@ -116,6 +118,7 @@
                   </td>
                 </tr></table>
             </td></tr>
+            }
         </table>
     </td>
     <td rowspan="2" style="width:2em"></td>

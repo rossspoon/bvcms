@@ -194,6 +194,10 @@ namespace CmsData
         partial void UpdateDropType(DropType instance);
         partial void DeleteDropType(DropType instance);
         
+        partial void InsertDuplicate(Duplicate instance);
+        partial void UpdateDuplicate(Duplicate instance);
+        partial void DeleteDuplicate(Duplicate instance);
+        
         partial void InsertEmailLog(EmailLog instance);
         partial void UpdateEmailLog(EmailLog instance);
         partial void DeleteEmailLog(EmailLog instance);
@@ -449,6 +453,10 @@ namespace CmsData
         partial void InsertPreference(Preference instance);
         partial void UpdatePreference(Preference instance);
         partial void DeletePreference(Preference instance);
+        
+        partial void InsertPrintJob(PrintJob instance);
+        partial void UpdatePrintJob(PrintJob instance);
+        partial void DeletePrintJob(PrintJob instance);
         
         partial void InsertProgDiv(ProgDiv instance);
         partial void UpdateProgDiv(ProgDiv instance);
@@ -948,6 +956,12 @@ namespace CmsData
 
 		}
 
+		public Table< Duplicate> Duplicates
+		{
+			get	{ return this.GetTable< Duplicate>(); }
+
+		}
+
 		public Table< EmailLog> EmailLogs
 		{
 			get	{ return this.GetTable< EmailLog>(); }
@@ -1329,6 +1343,12 @@ namespace CmsData
 		public Table< Preference> Preferences
 		{
 			get	{ return this.GetTable< Preference>(); }
+
+		}
+
+		public Table< PrintJob> PrintJobs
+		{
+			get	{ return this.GetTable< PrintJob>(); }
 
 		}
 
@@ -1881,6 +1901,17 @@ namespace CmsData
                 phone1,
                 phone2,
                 phone3
+                );
+		}
+
+		[Function(Name="dbo.FindPerson4", IsComposable = true)]
+		public IQueryable< View.FindPerson4 > FindPerson4(
+            [Parameter(DbType="int")] int? PeopleId1
+            )
+		{
+			return this.CreateMethodCallQuery< View.FindPerson4>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                PeopleId1
                 );
 		}
 

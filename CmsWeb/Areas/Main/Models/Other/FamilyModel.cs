@@ -33,10 +33,12 @@ namespace CmsWeb.Models.PersonPage
         }
         public IEnumerable<FamilyMemberInfo> Members()
         {
+            var mindt = DateTime.Parse("1/1/1900");
             var q = from m in Family.People
-                    orderby m.PeopleId == Family.HeadOfHouseholdId ? 1 :
-                            m.PeopleId == Family.HeadOfHouseholdSpouseId ? 2 :
-                            3, m.Age descending, m.Name2
+                    orderby m.DeceasedDate ?? mindt,
+                            m.PositionInFamilyId,
+                            m.PositionInFamilyId == 10 ? m.GenderId : 0,
+                            m.Age descending, m.Name2
                     select new FamilyMemberInfo
                     {
                         PeopleId = m.PeopleId,

@@ -51,7 +51,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
             m.URL = Request.Url.OriginalString;
 
-            DbUtil.LogActivity("Online Registration: {0}".Fmt(m.Header), true);
             SetHeaders(m);
 
 #if DEBUG
@@ -420,6 +419,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var pp = p.person;
             if (m.user != null)
                 pp = m.user;
+            DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, m.NameOnAccount), true);
             var ti = new Transaction
             {
                 Name = m.NameOnAccount,
@@ -491,7 +491,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             ti.Zip = pp != null ? pp.PrimaryZip : p.zip;
             pf.CreditCard = "4111111111111111";
             pf.CCV = "123";
-            pf.Expires = "1011";
+            pf.Expires = "1013";
 #endif
             return View("ProcessPayment", pf);
         }

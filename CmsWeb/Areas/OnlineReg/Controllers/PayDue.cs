@@ -35,14 +35,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (ti == null || ti.Amtdue == 0)
                 return Content("no outstanding transaction");
 
-            if (ti.TransactionGateway != "ServiceU")
-            {
-                var pf = new PaymentForm { ti = ti };
-                ViewData["Confirm"] = "ConfirmDuePaid";
-                ViewData["timeout"] = INT_timeout;
-                SetHeaders(ti.OrgId.Value);
-                return View("ProcessPayment", pf);
-            }
             try
             {
                 var ti2 = new Transaction
@@ -58,6 +50,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     Description = ti.Description,
                     Url = ti.Url,
                     Emails = ti.Emails,
+                    TransactionGateway = ti.TransactionGateway,
                     OrgId = ti.OrgId,
                     Participants = ti.Participants,
                     OriginalId = ti.OriginalId ?? ti.Id // links all the transactions together
@@ -72,8 +65,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
                 SetHeaders(ti2.OrgId.Value);
 
-                // Dislay the DuePayment Page which calls either
-                // ConfirmDuePaid or PayWithCoupon2
+                if (ti.TransactionGateway != "ServiceU")
+                {
+                    ViewData["PayBalance"] = true;
+                    var pf = new PaymentForm { ti = ti2 };
+                    return View("ProcessPayment", pf);
+                }
                 return View(ti2);
             }
             catch (Exception ex)
@@ -142,8 +139,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 }
                 else
                     Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
-                        Db.PeopleFromPidString(org.NotifyIds), 
-                        "missing person on payment due", 
+                        Db.PeopleFromPidString(org.NotifyIds),
+                        "missing person on payment due",
                         "Cannot find {0} ({1}), payment due completed of {2:c} but no record".Fmt(pi.Person.Name, pi.PeopleId, pi.Amt));
             }
             Db.SubmitChanges();

@@ -1,4 +1,4 @@
-
+body { font-family: Arial, Verdana, Sans-Serif }
 .iform 
 {
     font: 12px/26px Verdana, Geneva, sans-serif; 
@@ -12,8 +12,14 @@
 .iform > ul { margin:0; padding:0; list-style:none;}
 .iform > ul { margin:0; padding:0; list-style:none;}
 .iform > ul > li { padding-bottom:5px;}
-.iform label { 
- width:6em; display:block; float:left; line-height:26px;
+.iform label  
+{
+    width:9em; 
+    display:block; 
+    float:left; 
+    text-align: right;
+    margin-right: 1em;
+    line-height:26px;
 }
 .iform label.ilabel { 
  width:auto; display:inline; float:none; line-height:26px; padding:0 5px
@@ -52,8 +58,9 @@ background:#fff;
 }
 div.xml{ 
 font-family: Monospace;
-margin-left: 6em;
+margin-left: 10;
 font: 12px Monospace;
+display: inline-block;
 }
 .iform .ibutton {
 
@@ -72,7 +79,7 @@ font: 12px Monospace;
 div.clear { clear: both }
 
 #imessageOK,#imessageERROR{ border:1px solid #F60; padding:10px; font-size:16px; font-weight:bold; text-align: center; display:none; margin-bottom:20px;
-    margin-left: 6em;
+    margin-left: 9em;
     width: 50%;
 	background: #F90;
 	background: -webkit-gradient(linear, left top, left 25, from(#F90), color-stop(4%, #FC0), to(#F90));

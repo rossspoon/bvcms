@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Configuration;
 using System.IO;
 using System.Collections.Specialized;
+using System.Xml.Serialization;
 
 namespace CmsCheckin
 {
@@ -45,11 +46,7 @@ namespace CmsCheckin
                         return true;
                     case Keys.Return:
                         Program.TimerStop();
-                        using (var ms = new MemoryStream())
-                        {
-                            PrintLabels(ms);
-                            PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
-                        }
+                        DoPrinting(null, null);
                         this.GoHome(string.Empty);
                         return true;
                     case Keys.S | Keys.Alt:
@@ -67,14 +64,12 @@ namespace CmsCheckin
         }
 
         private bool hasprinter;
-        int LabelsPrinted;
-        bool RequiresSecurityLabel;
-        DateTime time;
+        DoPrinting doprint = new DoPrinting();
+        List<AttendLabel> list;
         int page = 1;
         List<Control> controls = new List<Control>();
         List<Control> sucontrols = new List<Control>();
         XDocument xdoc;
-        List<AttendLabel> list;
         const string Verdana = "Verdana";
         Font pfont = new Font(Verdana, 14f, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
 
@@ -89,7 +84,6 @@ namespace CmsCheckin
             xdoc = x;
             hasprinter = PrintRawHelper.HasPrinter(Program.Printer);
             this.Focus();
-            time = DateTime.Now;
 
             Program.FamilyId = x.Root.Attribute("familyid").Value.ToInt();
 
@@ -660,23 +654,43 @@ namespace CmsCheckin
         PleaseWait PleaseWaitForm = null;
         private void DoPrinting(object sender, DoWorkEventArgs e)
         {
+            if (list == null)
+                return;
+
+            var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
+            if (!PrintAll.Text.HasValue())
+                qlist = qlist.Where(c => c.WasChecked);
+
+            var q = from c in qlist
+                    select new LabelInfo
+                    {
+                        allergies = c.allergies,
+                        pid = c.cinfo.pid,
+                        mv = c.cinfo.mv,
+                        n = c.NumLabels,
+                        first = c.first,
+                        last = c.last,
+                        location = c.location,
+                        hour = c.cinfo.hour,
+                        org = c.orgname,
+                        custody = c.custody,
+                        transport = c.transport,
+                        requiressecuritylabel = c.RequiresSecurityLabel,
+                    };
+
             using (var ms = new MemoryStream())
             {
                 Util.UnLockFamily();
-                if (Program.TwoInchLabel)
-                    PrintLabels2(ms);
-                else
-                    PrintLabels(ms);
-                if (LabelsPrinted > 0)
+                if (Program.PrintMode == "Print To Server")
                 {
-                    if (RequiresSecurityLabel)
-                        if (Program.TwoInchLabel)
-                            LabelsPrinted += ms.SecurityLabel2(time, Program.SecurityCode);
-                        else
-                            LabelsPrinted += ms.SecurityLabel(time, Program.SecurityCode);
-                    ms.BlankLabel(LabelsPrinted == 1); // force blank if only 1
+                    PrintServerLabels(q);
+                    return;
                 }
-                PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
+                if (Program.TwoInchLabel)
+                    doprint.PrintLabels2(ms, q);
+                else
+                    doprint.PrintLabels(ms, q);
+                doprint.FinishUp(ms);
             }
         }
         private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -702,72 +716,16 @@ namespace CmsCheckin
             }
             this.GoHome(string.Empty);
         }
-        private void PrintLabels(MemoryStream ms)
+        private void PrintServerLabels(IEnumerable<LabelInfo> q)
         {
             if (list == null)
                 return;
 
-            var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
-            if (!PrintAll.Text.HasValue())
-                qlist = qlist.Where(c => c.WasChecked);
-
-            var q = from c in qlist
-                    select new LabelInfo
-                    {
-                        allergies = c.allergies,
-                        pid = c.cinfo.pid,
-                        mv = c.cinfo.mv,
-                        n = c.NumLabels,
-                        first = c.first,
-                        last = c.last,
-                        location = c.location,
-                        hour = c.cinfo.hour,
-                        org = c.orgname,
-                        custody = c.custody,
-                        transport = c.transport,
-                        requiressecuritylabel = c.RequiresSecurityLabel,
-                    };
-            foreach (var li in q)
-            {
-                LabelsPrinted += ms.Label(li, li.n, Program.SecurityCode);
-                LabelsPrinted += ms.AllergyLabel(li);
-            }
-            foreach (var li in q)
-                LabelsPrinted += ms.LocationLabel(li);
-            RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
-        }
-        private void PrintLabels2(MemoryStream ms)
-        {
-            if (list == null)
-                return;
-
-            var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
-            if (!PrintAll.Text.HasValue())
-                qlist = qlist.Where(c => c.WasChecked);
-
-            var q = from c in qlist
-                    group c by c.cinfo.pid into g
-                    select from c in g
-                           select new LabelInfo
-                           {
-                               allergies = c.allergies,
-                               pid = c.cinfo.pid,
-                               mv = c.cinfo.mv,
-                               n = c.NumLabels,
-                               first = c.first,
-                               last = c.last,
-                               location = c.location,
-                               hour = c.cinfo.hour,
-                               org = c.orgname,
-                               custody = c.custody,
-                               transport = c.transport,
-                               requiressecuritylabel = c.RequiresSecurityLabel,
-                           };
-
-            foreach (var li in q)
-                LabelsPrinted += ms.Label2(li, li.Max(ll => ll.n), Program.SecurityCode);
-            LabelsPrinted += ms.LocationLabel2(q);
-            RequiresSecurityLabel = qlist.Any(li => li.RequiresSecurityLabel == true && li.NumLabels > 0);
+            var j = new PrintJob { securitycode = Program.SecurityCode, list = q.ToList() };
+            var xs = new XmlSerializer(typeof(PrintJob));
+            var sw = new StringWriter();
+            xs.Serialize(sw, j);
+            Util.UploadPrintJob(sw.ToString());
         }
         private void ClearControls()
         {
@@ -777,7 +735,7 @@ namespace CmsCheckin
                 c.Dispose();
             }
             controls.Clear();
-            LabelsPrinted = 0;
+            doprint.LabelsPrinted = 0;
             sucontrols.Clear();
         }
 
@@ -893,19 +851,36 @@ namespace CmsCheckin
         public bool RequiresSecurityLabel { get; set; }
         public double leadtime { get; set; }
     }
-    public class LabelInfo
+
+    // all of these come from the attribtues on the attendee element
+    // attributes have the same name unless noted otherwise
+    [Serializable]
+    public class LabelInfo 
     {
-        public int n { get; set; }
-        public string location { get; set; }
+        public int n { get; set; } // numlabels attribute
+        public string location { get; set; } // loc attribute
         public string allergies { get; set; }
-        public string org { get; set; }
+        public string org { get; set; } // orgname attribute
         public DateTime? hour { get; set; }
-        public int pid { get; set; }
+        public int pid { get; set; } // id attribute
         public string mv { get; set; }
         public string first { get; set; }
         public string last { get; set; }
         public bool transport { get; set; }
         public bool custody { get; set; }
         public bool requiressecuritylabel { get; set; }
+    }
+    [Serializable]
+    public class PrintJob
+    {
+        // securitycode comes from the attribute on the root element (Attendees)
+        public string securitycode { get; set; } 
+        // the following is a list of each person/class that was checked present
+        public List<LabelInfo> list { get; set; }
+    }
+    [Serializable]
+    public class PrintJobs
+    {
+        public List<PrintJob> jobs { get; set; }
     }
 }

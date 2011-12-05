@@ -44,5 +44,11 @@
     <Setting Name="DisableJoin" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Kiosks" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PrintMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Print To Printer</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

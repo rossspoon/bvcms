@@ -95,16 +95,15 @@
             <th>Position</th>
             <th>Age</th>
             <th>Member Status</th>
-            <th>Deceased</th>
+            <th></th>
         </tr>
 @foreach(var m in Model.Members())
 {
         <tr>
             <td><a href="/Person/Index/@m.PeopleId">@m.Name</a></td>
-            <td><span id="p.@m.PeopleId" class="clickSelect">@m.FamilyPosition</span></td>
+            <td><span id="p.@m.PeopleId" class="clickSelect @(m.Deceased?"red":"")">@m.FamilyPosition</span></td>
             <td>@m.Age</td>
             <td>@m.MemberStatus</td>
-            <td>@m.Deceased</td>
             <td><a class="split" href="/Family/Split/@m.PeopleId" confirm="Are you sure you want to remove member and create a new Family? Clicking Ok will take you to the new Family.">split</a></td>
         </tr>
 }

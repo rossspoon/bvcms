@@ -76,6 +76,9 @@
             this.bang = new System.Windows.Forms.Button();
             this.bslash = new System.Windows.Forms.Button();
             this.bcolon = new System.Windows.Forms.Button();
+            this.PrintKiosks = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.PrintMode = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button1
@@ -610,7 +613,7 @@
             this.username.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.username.Location = new System.Drawing.Point(116, 61);
             this.username.Name = "username";
-            this.username.Size = new System.Drawing.Size(289, 32);
+            this.username.Size = new System.Drawing.Size(193, 32);
             this.username.TabIndex = 3;
             // 
             // password
@@ -619,8 +622,9 @@
             this.password.Location = new System.Drawing.Point(116, 105);
             this.password.Name = "password";
             this.password.PasswordChar = '*';
-            this.password.Size = new System.Drawing.Size(289, 32);
+            this.password.Size = new System.Drawing.Size(193, 32);
             this.password.TabIndex = 5;
+            this.password.Text = "Tobyjkl.";
             // 
             // URL
             // 
@@ -682,11 +686,47 @@
             this.bcolon.UseVisualStyleBackColor = false;
             this.bcolon.Click += new System.EventHandler(this.bcolon_Click);
             // 
+            // PrintKiosks
+            // 
+            this.PrintKiosks.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PrintKiosks.Location = new System.Drawing.Point(357, 102);
+            this.PrintKiosks.Name = "PrintKiosks";
+            this.PrintKiosks.Size = new System.Drawing.Size(359, 32);
+            this.PrintKiosks.TabIndex = 117;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(353, 77);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 20);
+            this.label1.TabIndex = 118;
+            this.label1.Text = "Kiosks";
+            // 
+            // PrintMode
+            // 
+            this.PrintMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PrintMode.FormattingEnabled = true;
+            this.PrintMode.Items.AddRange(new object[] {
+            "Print To Printer",
+            "Print To Server",
+            "Print From Server",
+            "No Printer"});
+            this.PrintMode.Location = new System.Drawing.Point(550, 61);
+            this.PrintMode.Name = "PrintMode";
+            this.PrintMode.Size = new System.Drawing.Size(166, 28);
+            this.PrintMode.TabIndex = 119;
+            this.PrintMode.Text = "Print To Printer";
+            // 
             // Login
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(742, 392);
+            this.Controls.Add(this.PrintMode);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.PrintKiosks);
             this.Controls.Add(this.bcolon);
             this.Controls.Add(this.bslash);
             this.Controls.Add(this.bang);
@@ -796,5 +836,8 @@
         private System.Windows.Forms.Button bang;
         private System.Windows.Forms.Button bslash;
         private System.Windows.Forms.Button bcolon;
+        public System.Windows.Forms.TextBox PrintKiosks;
+        private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.ComboBox PrintMode;
     }
 }

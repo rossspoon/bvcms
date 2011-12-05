@@ -15,11 +15,20 @@ namespace CmsWeb.Areas.Public
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            AddRoute(context, "Checkin");
-            AddRoute(context, "Checkin2");
-            AddRoute(context, "iPhone");
-            AddRoute(context, "API");
+
+            AddRoute(context, "APIMeta");
+            
+            AddRoute(context, "logininfo", "APIPerson", "API/LoginInfo/{id}", "LoginInfo");
+            AddRoute(context, "apiorgmembers", "APIOrg", "API/OrgMembers/{id}", "OrgMembers");
+
             AddRoute(context, "APITest");
+            AddRoute(context, "APICheckin");
+            AddRoute(context, "APICheckin2");
+            AddRoute(context, "APIiPhone");
+            AddRoute(context, "Checkin2", "APICheckin2", "Checkin2");
+            AddRoute(context, "Checkin", "APICheckin", "Checkin");
+            AddRoute(context, "iPhone", "APIiPhone", "iPhone");
+
             AddRoute(context, "DiscipleLife");
             AddRoute(context, "GODisciples");
             AddRoute(context, "MOBS");
@@ -45,6 +54,11 @@ namespace CmsWeb.Areas.Public
         private void AddRoute(AreaRegistrationContext context, string controller)
         {
             context.MapRoute(controller, controller + "/{action}/{id}",
+                new { controller = controller, action = "Index", id = "" });
+        }
+        private static void AddRoute(AreaRegistrationContext context, string name, string controller, string path)
+        {
+            context.MapRoute(name, path + "/{action}/{id}",
                 new { controller = controller, action = "Index", id = "" });
         }
         private static void AddRoute(AreaRegistrationContext context, string name, string controller, string path, string action)

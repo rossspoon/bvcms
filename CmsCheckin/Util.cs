@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace CmsCheckin
 {
@@ -153,8 +155,6 @@ namespace CmsCheckin
         {
             var wc = CreateWebClient();
             var coll = new NameValueCollection();
-            coll.Add("username", Program.Username);
-            coll.Add("password", Program.Password);
             coll.Add("first", first);
             coll.Add("last", last);
             coll.Add("goesby", goesby);
@@ -393,6 +393,25 @@ namespace CmsCheckin
             catch (Exception)
             {
             }
+        }
+        public static void UploadPrintJob(string s)
+        {
+            var wc = CreateWebClient();
+            var coll = new NameValueCollection();
+            coll.Add("job", s);
+            coll.Add("kiosk", Program.KioskName);
+            var url = new Uri(new Uri(Program.URL), "Checkin2/UploadPrintJob");
+            wc.UploadValues(url, "POST", coll);
+        }
+        public static PrintJobs FetchPrintJob()
+        {
+            var wc = Util.CreateWebClient();
+            var url = new Uri(new Uri(Program.URL), "Checkin2/FetchPrintJobs/" + Program.PrintKiosks);
+            var xml = wc.DownloadString(url);
+            var xs = new XmlSerializer(typeof(PrintJobs));
+            var sr = new StringReader(xml);
+            var j = (PrintJobs)xs.Deserialize(sr);
+            return j;
         }
 
     }

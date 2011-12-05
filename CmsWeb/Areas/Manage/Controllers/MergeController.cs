@@ -16,6 +16,14 @@ namespace CmsWeb.Areas.Manage.Controllers
        public ActionResult Index(int PeopleId1, int PeopleId2)
         {
             var m = new MergeModel(PeopleId1, PeopleId2);
+            if (m.pi.Count != 2)
+                if (m.pi.Count == 1)
+                    if (m.pi[0].PeopleId != PeopleId1)
+                        return Content("peopleid {0} not found".Fmt(PeopleId1));
+                    else
+                        return Content("peopleid {0} not found".Fmt(PeopleId2));
+                else if (m.pi.Count == 0)
+                    return Content("neither peopleid found");
             return View(m);
         }
         [HttpPost]

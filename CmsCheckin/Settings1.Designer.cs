@@ -190,5 +190,29 @@ namespace CmsCheckin {
                 this["DisableJoin"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Kiosks {
+            get {
+                return ((string)(this["Kiosks"]));
+            }
+            set {
+                this["Kiosks"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Print To Printer")]
+        public string PrintMode {
+            get {
+                return ((string)(this["PrintMode"]));
+            }
+            set {
+                this["PrintMode"] = value;
+            }
+        }
     }
 }

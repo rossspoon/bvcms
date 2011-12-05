@@ -1,0 +1,10 @@
+﻿@model IEnumerable<CmsWeb.Areas.Manage.Controllers.DuplicatesController.DuplicateInfo>
+
+<h2>Duplicates</h2>
+
+<ol>
+@foreach (var i in Model)
+{
+    <li><a href="/Manage/Merge?PeopleId1=@i.d.Id1&PeopleId2=@i.d.Id2" target="merge">@i.name (@i.d.Id1, @i.d.Id2)</a></li>    
+}
+</ol>

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Xml;
 
 namespace CmsCheckin
 {
@@ -316,7 +317,7 @@ namespace CmsCheckin
                 if (!li.org.StartsWith(li.location))
                     lorg = li.location + ", ";
             lorg += li.org;
-            
+
             if (Program.Printer.Contains("ZDesigner"))
             {
                 sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
@@ -557,7 +558,6 @@ namespace CmsCheckin
                 sw.WriteLine("BA,57,241,3,7,100,0,2," + li.pid);
                 sw.WriteLine("E");
             }
-
             sw.Flush();
             return 1;
         }

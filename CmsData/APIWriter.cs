@@ -11,15 +11,13 @@ namespace CmsData.API
     {
         private XmlWriter w;
         private StringBuilder sb;
-        private StringWriter sw;
         public APIWriter()
         {
             var settings = new XmlWriterSettings();
             settings.Encoding = new System.Text.UTF8Encoding(false);
             settings.Indent = true;
             sb = new StringBuilder();
-            sw = new StringWriter(sb);
-            w = XmlWriter.Create(sw, settings);
+            w = XmlWriter.Create(sb, settings);
         }
         public void Start(string element)
         {

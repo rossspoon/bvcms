@@ -816,6 +816,12 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), oid, mdt);
             return ((int)(result.ReturnValue));
         }
+        [Function(Name = "dbo.InsertDuplicate")]
+        public int InsertDuplicate([Parameter(DbType = "Int")] int i1, [Parameter(DbType = "Int")] int i2)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), i1, i2);
+            return ((int)(result.ReturnValue));
+        }
         public OrganizationMember LoadOrgMember(int PeopleId, string OrgName, bool orgmustexist)
         {
             if (orgmustexist)

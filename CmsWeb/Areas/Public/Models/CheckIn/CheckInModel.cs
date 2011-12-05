@@ -8,11 +8,36 @@ using CmsData;
 using System.Web.Mvc;
 using System.Data.Linq.SqlClient;
 using CmsData.Codes;
+using System.Xml.Linq;
 
 namespace CmsWeb.Models
 {
     public class CheckInModel
     {
+        public string GetNextPrintJobs(string kiosks)
+        {
+            var a = kiosks.Split(',');
+            var q = from d in DbUtil.Db.PrintJobs
+                    where a.Contains(d.Id)
+                    orderby d.Stamp
+                    select d;
+            var x = XDocument.Parse("<PrintJobs><jobs /></PrintJobs>");
+            foreach (var j in q)
+            {
+                var d = XDocument.Parse(j.Data);
+                var jobs = (XElement)x.Root.FirstNode;
+                jobs.Add(d.Root);
+            }
+            DbUtil.Db.PrintJobs.DeleteAllOnSubmit(q);
+            DbUtil.Db.SubmitChanges();
+            return x.ToString();
+        }
+        public void SavePrintJob(string kiosk, string xml)
+        {
+            var d = new PrintJob { Id = kiosk, Data = xml, Stamp = DateTime.Now };
+            DbUtil.Db.PrintJobs.InsertOnSubmit(d);
+            DbUtil.Db.SubmitChanges();
+        }
         public List<FamilyInfo> Match(string id, int campus, int thisday)
         {
             var ph = Util.GetDigits(id).PadLeft(10, '0');

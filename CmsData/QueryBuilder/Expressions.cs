@@ -365,16 +365,16 @@ namespace CmsData
         }
         internal static Expression PeopleExtraData(
             ParameterExpression parm,
+            string field,
             CompareType op,
             string value)
         {
-            if (!value.HasValue() || !value.Contains(":"))
+            if (!value.HasValue())
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
-            var a = value.Split(new char[] { ':' }, 2);
 
             Expression<Func<Person, bool>> pred = p =>
                 p.PeopleExtras.Any(e =>
-                    e.Field == a[0] && e.Data.Contains(a[1]));
+                    e.Field == field && e.Data.Contains(value));
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual)
                 expr = Expression.Not(expr);
@@ -382,36 +382,34 @@ namespace CmsData
         }
         internal static Expression PeopleExtraInt(
             ParameterExpression parm,
+            string field,
             CompareType op,
-            string value)
+            int? value)
         {
-            if (!value.HasValue() || !value.Contains(":"))
+            if (!value.HasValue)
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
-            var a = value.Split(new char[] { ':' }, 2);
 
-            Expression<Func<Person, bool>> pred = p =>
-                p.PeopleExtras.Any(e =>
-                    e.Field == a[0] && e.IntValue == a[1].ToInt());
-            Expression expr = Expression.Invoke(pred, parm);
-            if (op == CompareType.NotEqual)
-                expr = Expression.Not(expr);
-            return expr;
+            Expression<Func<Person, int>> pred = p =>
+                p.PeopleExtras.Single(e =>
+                    e.Field == field).IntValue ?? 0; 
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(value), left.Type);
+            return Compare(left, op, right);
         }
         internal static Expression PeopleExtraDate(
             ParameterExpression parm,
+            string field,
             CompareType op,
-            string value)
+            DateTime? value)
         {
-            if (!value.HasValue() || !value.Contains(":"))
+            if (!value.HasValue)
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
-            var a = value.Split(new char[] { ':' }, 2);
 
-            var dt = DateTime.Parse(a[1]);
             Expression<Func<Person, DateTime>> pred = p =>
                 p.PeopleExtras.SingleOrDefault(e =>
-                    e.Field == a[0]).DateValue.Value;
+                    e.Field == field).DateValue.Value;
             Expression left = Expression.Invoke(pred, parm);
-            var right = Expression.Convert(Expression.Constant(dt), left.Type);
+            var right = Expression.Convert(Expression.Constant(value), left.Type);
             return Compare(left, op, right);
         }
         internal static Expression RecentAttendCount(

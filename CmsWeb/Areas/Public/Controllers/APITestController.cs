@@ -19,7 +19,7 @@ using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
-    public class APITestController : CmsController
+    public class APITestController : Controller
     {
         public ActionResult Index()
         {
@@ -37,12 +37,15 @@ namespace CmsWeb.Areas.Public.Controllers
                 if (!roles.IsUserInRole(uname, "Developer"))
                     valid = false;
             }
+            DbUtil.LogActivity("APITest");
             if (!valid)
                 return Content("Not a Valid Developer");
             return Content("Authentication Initialized");
         }
         public ActionResult Test(ApiTestInfo api)
         {
+            if (api.args == null)
+                api.args = new Dictionary<string, string>();
             api.args.Add("uname", (string)Session["APIuname"] );
             api.args.Add("pword", (string)Session["APIpword"] );
             var init = (string)Session["APIinit"];

@@ -22,13 +22,17 @@ namespace CmsWeb.Models.PersonPage
         private IQueryable<Person> FetchMembers()
         {
             if (_members == null)
+            {
+                var mindt = DateTime.Parse("1/1/1900");
                 _members = from m in DbUtil.Db.People
                            where m.FamilyId == person.FamilyId
                            orderby
-                               m.PeopleId == person.Family.HeadOfHouseholdId ? 1 :
-                               m.PeopleId == person.Family.HeadOfHouseholdSpouseId ? 2 :
-                               3, m.Age descending, m.Name2
+                                m.DeceasedDate ?? mindt,
+                                m.PositionInFamilyId,
+                                m.PositionInFamilyId == 10 ? m.GenderId : 0,
+                                m.Age descending, m.Name2
                            select m;
+            }
             return _members;
         }
         int? _count;

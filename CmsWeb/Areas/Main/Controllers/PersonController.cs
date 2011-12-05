@@ -543,23 +543,25 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content(value);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NewExtraValue(int id, string field, string type)
+        public ActionResult NewExtraValue(int id, string field, string type, string value)
         {
             var v = new PeopleExtra { PeopleId = id, Field = field};
             DbUtil.Db.PeopleExtras.InsertOnSubmit(v);
             switch (type)
             {
                 case "string":
-                    v.StrValue = "new value";
+                    v.StrValue = value;
                     break;
                 case "text":
-                    v.Data = "new value";
+                    v.Data = value;
                     break;
                 case "date":
-                    v.DateValue = (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue;
+                    var dt = DateTime.MinValue;
+                    DateTime.TryParse(value, out dt);
+                    v.DateValue = dt;
                     break;
                 case "int":
-                    v.IntValue = 0;
+                    v.IntValue = value.ToInt();
                     break;
             }
             try

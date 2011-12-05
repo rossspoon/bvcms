@@ -148,14 +148,22 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Core">
-      <HintPath>..\packages\Glimpse.0.84\lib\net40\Glimpse.Core.dll</HintPath>
+    <Reference Include="Glimpse.Core, Version=0.86.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Glimpse.0.86\lib\net40\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc3">
+      <HintPath>..\packages\Glimpse.Mvc3.0.86\lib\net40\Glimpse.Mvc3.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
     <Reference Include="LumenWorks.Framework.IO, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
@@ -229,10 +237,12 @@
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
+    <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
     <Compile Include="Areas\Manage\Controllers\MergeController.cs" />
     <Compile Include="Areas\Manage\Models\MergeModel.cs" />
-    <Compile Include="Areas\Public\Controllers\CheckinController.cs" />
+    <Compile Include="Areas\Public\Controllers\APICheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactSearchController.cs" />
@@ -243,9 +253,9 @@
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
-    <Compile Include="Areas\Public\Controllers\APIController.cs" />
+    <Compile Include="Areas\Public\Controllers\APIMetaController.cs" />
     <Compile Include="Areas\Public\Controllers\APITestController.cs" />
-    <Compile Include="Areas\Public\Controllers\iPhoneController.cs" />
+    <Compile Include="Areas\Public\Controllers\APIiPhoneController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgGroupsController.cs" />
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
     <Compile Include="Areas\Dialog\Controllers\OrgMembersDialogController.cs" />
@@ -258,10 +268,14 @@
     <Compile Include="Areas\Main\Controllers\PersonController.cs" />
     <Compile Include="Areas\Main\Controllers\ReportsController.cs" />
     <Compile Include="Areas\Main\Controllers\UserPrefController.cs" />
+    <Compile Include="Areas\Public\Controllers\APIPersonController.cs" />
+    <Compile Include="Areas\Public\Controllers\APIOrgController.cs" />
+    <Compile Include="Areas\Public\Controllers\APIMeetingController.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassesResult.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassesResult0.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\BinaryResult.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\FamilyResult0.cs" />
     <Compile Include="Areas\Main\Models\Export\ExportPeople.cs" />
     <Compile Include="Areas\Main\Models\Export\ExportInvolvements.cs" />
@@ -336,8 +350,10 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
+    <Content Include="App_Readme\glimpse.mvc3.readme.txt" />
+    <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml" />
-    <None Include="Areas\Public\Views\APITest\Index.cshtml" />
+    <Content Include="Areas\Public\Views\APITest\Index.cshtml" />
     <Content Include="Binaries\AuthorizeNet.dll" />
     <Content Include="Content\faary.css" />
     <Content Include="Content\js\jquery.tmpl.js" />
@@ -645,7 +661,7 @@
       <DependentUpon>TotalsByFundRange.aspx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Manage\Controllers\AccountController.cs" />
-    <Compile Include="Areas\Public\Controllers\Checkin2Controller.cs" />
+    <Compile Include="Areas\Public\Controllers\APICheckin2Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
@@ -784,7 +800,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml" />
     <Content Include="Binaries\AWSSDK.dll" />
     <Content Include="Binaries\NPOI\Ionic.Zip.dll" />
@@ -1001,6 +1016,11 @@
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
     <Content Include="Scripts\ContactSearch.js" />
+    <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\jquery.signalR.js" />
+    <Content Include="Scripts\jquery.signalR.min.js" />
     <Content Include="Scripts\TestAPI.js" />
     <Content Include="Scripts\meeting-ipad.js" />
     <Content Include="Scripts\SearchOrgs.js" />
@@ -1139,15 +1159,15 @@
     <Content Include="Areas\Main\Views\Coupon\Create.cshtml" />
     <Content Include="Areas\Main\Views\Coupon\Index.cshtml" />
     <Content Include="Areas\Main\Views\Coupon\List.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn2\Campuses.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn2\CheckIn.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn2\CheckInList.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn\Campuses.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn\CheckIn.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn\CheckInList.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn\Index.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn\Keyboard.cshtml" />
-    <Content Include="Areas\Public\Views\CheckIn\Startup.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn2\Campuses.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn2\CheckIn.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn2\CheckInList.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn\Campuses.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn\CheckIn.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn\CheckInList.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn\Index.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn\Keyboard.cshtml" />
+    <Content Include="Areas\Public\Views\APICheckIn\Startup.cshtml" />
     <Content Include="Areas\Main\Views\PostBundle\Batch.cshtml" />
     <Content Include="Areas\Main\Views\PostBundle\FundTotals.cshtml" />
     <Content Include="Areas\Main\Views\PostBundle\Index.cshtml" />
@@ -1473,7 +1493,7 @@
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabMessages.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabOrg.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabMeetings.cshtml" />
-    <Content Include="Areas\Public\Views\API\Lookups.cshtml" />
+    <Content Include="Areas\Public\Views\APIMeta\Lookups.cshtml" />
     <Content Include="Areas\Main\Views\OrgChildren\Form.cshtml" />
     <Content Include="Areas\Main\Views\OrgChildren\Index.cshtml" />
     <Content Include="Areas\Main\Views\OrgChildren\Rows.cshtml" />
@@ -1488,6 +1508,8 @@
     <Content Include="Areas\Manage\Views\Merge\Index.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\ExtrasGrid.cshtml" />
     <Content Include="Areas\Main\Views\Organization\ExtrasGrid.cshtml" />
+    <Content Include="Areas\Manage\Views\Duplicates\FindProgress.cshtml" />
+    <Content Include="Areas\Manage\Views\Duplicates\Index.cshtml" />
     <None Include="ckeditor\ckeditor.pack" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />

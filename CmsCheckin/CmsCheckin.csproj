@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CmsCheckin</RootNamespace>
     <AssemblyName>CmsCheckin</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ManifestCertificateThumbprint>230928AB4EFAF912F88FFBD34BD9D6245C8495EC</ManifestCertificateThumbprint>
@@ -174,6 +174,7 @@
     <Compile Include="DidItWork.Designer.cs">
       <DependentUpon>DidItWork.cs</DependentUpon>
     </Compile>
+    <Compile Include="DoPrinting.cs" />
     <Compile Include="ImageResizer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -191,6 +192,12 @@
     </Compile>
     <Compile Include="Picture.Designer.cs">
       <DependentUpon>Picture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrintingServer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrintingServer.Designer.cs">
+      <DependentUpon>PrintingServer.cs</DependentUpon>
     </Compile>
     <Compile Include="TakePicture.cs">
       <SubType>Form</SubType>
@@ -280,6 +287,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlWriter2.cs" />
     <EmbeddedResource Include="AdminLogin.resx">
       <DependentUpon>AdminLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -294,6 +302,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Picture.resx">
       <DependentUpon>Picture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintingServer.resx">
+      <DependentUpon>PrintingServer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TakePicture.resx">
       <DependentUpon>TakePicture.cs</DependentUpon>

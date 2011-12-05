@@ -171,7 +171,8 @@ namespace CmsWeb.Models
             {
                 om = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util2.CurrentOrgId && om.PeopleId == p.PeopleId),
                 rr = p.RecRegs.FirstOrDefault(),
-                p = p
+                p = p,
+                test = p.PeopleExtras.SingleOrDefault(vv => vv.Field == "test")
             });
             var q3 = q2.Select("new(p.PreferredName,p.LastName,om.AttendStr,om.AmountPaid)");
             return q3;

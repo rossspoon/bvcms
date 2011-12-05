@@ -210,7 +210,7 @@ namespace CmsWeb.Models
             message = message.Replace("{paid}", amtpaid.ToString("c"));
             message = message.Replace("{participants}", details.ToString());
             if (amtdue > 0)
-                message = message.Replace("{paylink}", "<a href='{0}'>Click this link to pay balance of {1:C}</a>.".Fmt(paylink, amtdue));
+                message = message.Replace("{paylink}", "<a href='{0}'>Click this link to make a payment on your balance of {1:C}</a>.".Fmt(paylink, amtdue));
             else
                 message = message.Replace("{paylink}", "You have a zero balance.");
 

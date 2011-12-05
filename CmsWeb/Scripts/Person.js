@@ -243,7 +243,6 @@
             "Employer": { maxlength: 60 },
             "Occupation": { maxlength: 60 },
             "WeddingDate": { date: true },
-            "Birthday": { date: true },
             "DeceasedDate": { date: true },
             "Grade": { number: true },
             "Address1": { maxlength: 40 },
@@ -283,8 +282,9 @@
             "Ok": function () {
                 var v = $("input[name='typeval']:checked").val();
                 var fn = $("#fieldname").val();
+                var va = $("#fieldvalue").val();
                 if (fn)
-                    $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: fn, type: v }, function (ret) {
+                    $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: fn, type: v, value: va }, function (ret) {
                         if (ret.startsWith("error"))
                             alert(ret);
                         else {
@@ -292,6 +292,7 @@
                             $.extraEditable();
                         }
                         $("#fieldname").val("");
+                        $("#fieldvalue").val("");
                     });
                 $(this).dialog("close");
             }

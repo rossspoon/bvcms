@@ -353,7 +353,7 @@ div.roundbox select {
 	margin-left: auto;
 	margin-right: auto;
 }
-.error {
+.error, .red {
 	color:red;
 }
 .disabled 

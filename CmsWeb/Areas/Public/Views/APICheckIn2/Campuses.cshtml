@@ -1,0 +1,9 @@
+﻿@model IEnumerable<CmsWeb.Areas.Public.Controllers.APICheckin2Controller.CampusItem>
+<?xml version="1.0" encoding="utf-8"?>
+<Campuses>
+@foreach (var i in Model)
+{ 
+    <campus id="@i.Campus.Id" name="@i.Campus.Description" password="@i.password" />
+}
+</Campuses>
+

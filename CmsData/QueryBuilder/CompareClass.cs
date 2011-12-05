@@ -382,16 +382,19 @@ namespace CmsData
                                 c.CodeStrIds);
                 case QueryType.PeopleExtraData:
                     return Expressions.PeopleExtraData(parm,
+                                c.Quarters,
                                 CompType,
                                 c.TextValue);
                 case QueryType.PeopleExtraDate:
                     return Expressions.PeopleExtraDate(parm,
+                                c.Quarters,
                                 CompType,
-                                c.TextValue);
+                                c.DateValue);
                 case QueryType.PeopleExtraInt:
                     return Expressions.PeopleExtraInt(parm,
+                                c.Quarters,
                                 CompType,
-                                c.TextValue);
+                                c.TextValue.ToInt2());
                 case QueryType.PreviousCurrentOrg:
                     return Expressions.PreviousCurrentOrg(Db, parm,
                                CompType,

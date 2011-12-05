@@ -32,7 +32,6 @@ namespace CmsWeb
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
             RouteTable.Routes.RouteExistingFiles = true;
-            //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
             string smtppasswordfile = Server.MapPath("smtppassword.txt");
             if (File.Exists(smtppasswordfile))
             {

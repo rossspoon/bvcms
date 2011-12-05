@@ -5,6 +5,7 @@ using System.Web;
 using System.Collections;
 using CmsData;
 using UtilityExtensions;
+using System.Data.SqlClient;
 
 namespace CmsWeb.Models
 {
@@ -87,8 +88,8 @@ namespace CmsWeb.Models
             var q = DbUtil.Db.PeopleQuery(qid.Value);
             var q2 = from c in DbUtil.Db.Contributions
                      let sp = c.Person.Family.People.SingleOrDefault(ss => ss.PeopleId == c.Person.SpouseId)
-                     where q.Any(p => p.PeopleId == c.PeopleId 
-                         || (p.SpouseId == c.PeopleId 
+                     where q.Any(p => p.PeopleId == c.PeopleId
+                         || (p.SpouseId == c.PeopleId
                             && sp.ContributionOptionsId == 2 && p.ContributionOptionsId == 2))
                      let f = c.Person.Family
                      where c.PledgeFlag != true
@@ -126,13 +127,13 @@ namespace CmsWeb.Models
                      from r in t
                      select new
                      {
-                        PeopleId = p.PeopleId,
-                        Count = r.Cnt ?? 0,
-                        Amount = r.Amt ?? 0m,
-                        Pledged = r.Plg ?? 0m,
-                        Name = p.Name2,
-                        Name2 = sp.Name2 ?? "",
-                        Fund = r.Fund
+                         PeopleId = p.PeopleId,
+                         Count = r.Cnt ?? 0,
+                         Amount = r.Amt ?? 0m,
+                         Pledged = r.Plg ?? 0m,
+                         Name = p.Name2,
+                         Name2 = sp.Name2 ?? "",
+                         Fund = r.Fund
                      };
             return q2;
         }
@@ -168,11 +169,11 @@ namespace CmsWeb.Models
                          Married = p.MaritalStatus.Description,
                          FamilyId = p.FamilyId,
                          FamilyPosition = p.PositionInFamilyId,
-                        Grade = p.Grade.ToString(),
-                        FellowshipLeader = p.BFClass.LeaderName,
-                        AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
-                        FellowshipClass = (om == null ? "" : om.Organization.OrganizationName),
-                        AltName = p.AltName,
+                         Grade = p.Grade.ToString(),
+                         FellowshipLeader = p.BFClass.LeaderName,
+                         AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
+                         FellowshipClass = (om == null ? "" : om.Organization.OrganizationName),
+                         AltName = p.AltName,
                      };
             return q2;
         }
@@ -284,6 +285,15 @@ namespace CmsWeb.Models
                     };
             return q.Take(maximumRows);
         }
+        public static IEnumerable ExportExtraValues(int qid)
+        {
+            var name = "ExtraExcelResult " + DateTime.Now;
+            var tag = DbUtil.Db.PopulateSpecialTag(qid, DbUtil.TagTypeId_ExtraValues);
 
+            var cmd = new SqlCommand("dbo.ExtraValues {0}".Fmt(tag.Id));
+            cmd.Connection = new SqlConnection(Util.ConnectionString);
+            cmd.Connection.Open();
+            return cmd.ExecuteReader();
+        }
     }
 }

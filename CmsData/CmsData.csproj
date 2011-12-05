@@ -192,10 +192,14 @@
     <Compile Include="ActivityLog.cs" />
     <Compile Include="ContentService.cs" />
     <Compile Include="APIFunctions.cs" />
-    <Compile Include="APIOrganizations.cs" />
+    <Compile Include="APIOrganization.cs" />
+    <Compile Include="APIMeeting.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
+    <Compile Include="Generated\Duplicate.cs" />
+    <Compile Include="Generated\Functions\FindPerson4.cs" />
     <Compile Include="Generated\MeetingExtra.cs" />
     <Compile Include="Generated\OrganizationExtra.cs" />
+    <Compile Include="Generated\PrintJob.cs" />
     <Compile Include="QueryFunctions.cs" />
     <Compile Include="Generated\AttendCredit.cs" />
     <Compile Include="Generated\Contact.cs" />
