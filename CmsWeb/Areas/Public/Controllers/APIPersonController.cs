@@ -89,7 +89,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<ExtraValues error=\"{0}\" />".Fmt(ret.Substring(1)));
-            return Content(new APIFunctions().ExtraValues(id, fields), "text/xml");
+            return Content(new APIFunctions(DbUtil.Db).ExtraValues(id, fields), "text/xml");
         }
         [HttpPost]
         public ActionResult AddEditExtraValue(int peopleid, string field, string value)
@@ -97,7 +97,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            return Content(new APIFunctions().AddEditExtraValue(peopleid, field, value));
+            return Content(new APIFunctions(DbUtil.Db).AddEditExtraValue(peopleid, field, value));
         }
         [HttpPost]
         public ActionResult DeleteExtraValue(int peopleid, string field)
@@ -105,7 +105,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            new APIFunctions().DeleteExtraValue(peopleid, field);
+            new APIFunctions(DbUtil.Db).DeleteExtraValue(peopleid, field);
             return Content("ok");
         }
     }

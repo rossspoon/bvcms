@@ -72,6 +72,17 @@ namespace CmsData
         {
             get { return PrimaryAddress2 + " " + CityStateZip; }
         }
+        public string FullAddress
+        {
+            get
+            {
+                var sb = new StringBuilder(PrimaryAddress + "\n");
+                if (PrimaryAddress2.HasValue())
+                    sb.AppendLine(PrimaryAddress2);
+                sb.Append(CityStateZip);
+                return sb.ToString();
+            }
+        }
         public string SpouseName(CMSDataContext Db)
         {
             if (SpouseId.HasValue)
@@ -237,7 +248,7 @@ namespace CmsData
                     TransactionTime = e.TransactionTime
                 };
                 if (cp != null)
-                    e2.Field = e.Field + ".mv";
+                    e2.Field = e.Field + "_mv";
                 Db.PeopleExtras.InsertOnSubmit(e2);
                 Db.PeopleExtras.DeleteOnSubmit(e);
             }
@@ -936,6 +947,8 @@ namespace CmsData
         }
         public void AddEditExtraValue(string field, string value)
         {
+            if (!value.HasValue())
+                return;
             var ev = GetExtraValue(field);
             ev.StrValue = value;
         }
@@ -946,6 +959,8 @@ namespace CmsData
         }
         public void AddEditExtraData(string field, string value)
         {
+            if (!value.HasValue())
+                return;
             var ev = GetExtraValue(field);
             ev.Data = value;
         }

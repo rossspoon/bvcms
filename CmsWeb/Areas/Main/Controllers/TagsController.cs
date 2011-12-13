@@ -143,5 +143,29 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(DbUtil.Db.TagShares.Count(tt => tt.TagId == tag.Id).ToString());
         }
+        [Authorize(Roles = "Admin")]
+        public ActionResult ConvertTagToExtraValue(string tag, string field, string value)
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                var success = (string)TempData["success"];
+                if (success.HasValue())
+                    ViewData["success"] = success;
+                ViewData["text"] = "";
+                return View();
+            }
+            var t = DbUtil.Db.Tags.FirstOrDefault(tt =>
+                tt.Name == tag && tt.PeopleId == Util.UserPeopleId && tt.TypeId == DbUtil.TagTypeId_Personal);
+            if (t == null)
+                TempData["fail"] = "tag not found";
+
+            var q = t.People(DbUtil.Db);
+            foreach (var p in q)
+            {
+                p.AddEditExtraValue(field, value);
+                DbUtil.Db.SubmitChanges();
+            }
+            return View();
+        }
     }
 }

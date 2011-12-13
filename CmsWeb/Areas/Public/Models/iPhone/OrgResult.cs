@@ -19,21 +19,19 @@ namespace CmsWeb.Models.iPhone
         }
         private IEnumerable<OrgInfo> OrgList()
         {
+            var dt = DateTime.Parse("8:00 AM");
             var q = from o in DbUtil.Db.Organizations
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
-                    where sc != null
                     where o.OrganizationMembers.Any(om => om.PeopleId == pid
                         && (om.Pending ?? false) == false
                         && (om.MemberTypeId != MemberTypeCode.InActive))
-                    where sc.SchedDay != null
-                    where sc.SchedTime != null
                     where o.SecurityTypeId != 3
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,
                         OrgName = o.OrganizationName,
-                        MeetingTime = sc.SchedTime.Value,
-                        MeetingDay = sc.SchedDay.Value
+                        MeetingTime = sc.SchedTime ?? dt,
+                        MeetingDay = sc.SchedDay ?? 0
                     };
             return q;
         }
@@ -49,6 +47,7 @@ namespace CmsWeb.Models.iPhone
             context.HttpContext.Response.ContentType = "text/xml";
             var settings = new XmlWriterSettings();
             settings.Encoding = new System.Text.UTF8Encoding(false);
+            settings.Indent = true;
 
             using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
             {

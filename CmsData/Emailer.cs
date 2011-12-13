@@ -286,6 +286,7 @@ namespace CmsData
             text = DoVoteTag2(text, CmsHost, emailqueueto);
             text = DoRegisterTag(text, CmsHost, emailqueueto);
             text = DoRegisterTag2(text, CmsHost, emailqueueto);
+            text = DoExtraValueData(text, emailqueueto);
 
             if (emailqueueto.Guid.HasValue)
             {
@@ -313,6 +314,38 @@ namespace CmsData
                 }
             }
             return aa.DistinctEmails();
+        }
+        private string DoExtraValueData(string text, EmailQueueTo emailqueueto)
+        {
+            const string RE = @"{extra(?<type>.*?):(?<field>.*?)}";
+            var re = new Regex(RE, RegexOptions.Singleline);
+            var match = re.Match(text);
+            while (match.Success)
+            {
+                var tag = match.Value;
+                var field = match.Groups["field"].Value;
+                var type = match.Groups["type"].Value;
+                var ev = PeopleExtras.SingleOrDefault(ee => ee.Field == field && emailqueueto.PeopleId == ee.PeopleId);
+                string value = "";
+                switch (type)
+                {
+                    case "value":
+                        value = ev.StrValue;
+                        break;
+                    case "data":
+                        value = ev.Data;
+                        break;
+                    case "date":
+                        value = ev.DateValue.FormatDate();
+                        break;
+                    case "int":
+                        value = ev.IntValue.ToString();
+                        break;
+                }
+                text = text.Replace(tag, value);
+                match = match.NextMatch();
+            }
+            return text;
         }
         private string DoVoteLinkAnchorStyle(string text, string CmsHost, EmailQueueTo emailqueueto)
         {

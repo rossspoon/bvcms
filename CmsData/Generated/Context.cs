@@ -3134,6 +3134,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.SpaceToNull", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string SpaceToNull(
+            [Parameter(Name = "s", DbType="varchar")] string s
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                s
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.ContributionCount", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? ContributionCount(

@@ -8,15 +8,12 @@
 <h2>Merge Controller</h2>
 
 <form method="post" action="/Manage/Merge/Run">
-@for (var i = 0; i < 2; i++)
-{
 @Html.HiddenFor(m => m.pi[0].PeopleId)
 @Html.HiddenFor(m => m.pi[1].PeopleId)
-}
 <table class="grid">
 <thead>
 <tr>
-    <td><a href="/Manage/Merge?PeopleId1=@Model.pi[1].PeopleId&PeopleId2=@Model.pi[0].PeopleId">swap</a></td>
+    <td></td>
     <td colspan="2">From Record</td>
     <td colspan="2">To Record</td>
     <td colspan="2">Alternate Value</td>
@@ -41,7 +38,7 @@
     <td><a href="/Person/Index/@Model.pi[1].PeopleId" target="look2">@Model.pi[1].PeopleId</a>
         @Html.HiddenFor(m => m.pi[1].PeopleId)</td>
     <td></td>
-    <td></td>
+    <td><a href="/Manage/Merge?PeopleId1=@Model.pi[1].PeopleId&PeopleId2=@Model.pi[0].PeopleId">swap</a></td>
 </tr>
 <tr>
     <td>TitleCode</td>
@@ -232,6 +229,55 @@
     <td>@Model.pi[1].ZipCode @Html.HiddenFor(m => m.pi[1].ZipCode)</td>
     <td>@Html.RadioButtonFor(m => m.UseZipCode, 2)</td>
     <td>@Html.TextBoxFor(m => m.pi[2].ZipCode) </td>
+</tr>
+<tr>
+    <td>Created</td>
+    <td></td>
+    <td>@Model.pi[0].Created.FormatDateTm()</td>
+    <td></td>
+    <td>@Model.pi[1].Created.FormatDateTm()</td>
+    <td></td>
+</tr>
+<tr>
+    <td>SameFam</td>
+    <td></td>
+    <td>@(Model.pi[0].FamilyId == Model.pi[1].FamilyId)</td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>Has Other Family</td>
+    <td></td>
+    <td>@Model.pi[0].hasotherfamily</td>
+    <td></td>
+    <td>@Model.pi[1].hasotherfamily</td>
+    <td></td>
+</tr>
+<tr>
+    <td>Has Other Relations</td>
+    <td></td>
+    <td>@Model.pi[0].hasrelations</td>
+    <td></td>
+    <td>@Model.pi[1].hasrelations</td>
+    <td></td>
+</tr>
+<tr>
+    <td>Has Involvements</td>
+    <td></td>
+    <td>@Model.pi[0].hasinvolvements</td>
+    <td></td>
+    <td>@Model.pi[1].hasinvolvements</td>
+    <td></td>
+</tr>
+<tr>
+    <td>NotDuplicate</td>
+    <td></td>
+    <td>@Model.pi[0].notdup @Html.HiddenFor(m => m.pi[0].notdup)</td>
+    <td></td>
+    <td>@Model.pi[1].notdup @Html.HiddenFor(m => m.pi[1].notdup)</td>
+    <td></td>
+    <td><input name="submit" type="submit" value="Toggle Not Duplicate" /></td>
 </tr>
 </tbody>
 <tfoot>

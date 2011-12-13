@@ -276,25 +276,25 @@ namespace CmsWeb.Areas.Dialog.Controllers
             {
                 var f = DbUtil.Db.Families.Single(fa => fa.FamilyId == id);
 
-                foreach (var p in m.List)
+                foreach (var i in m.List)
                 {
-                    var isnew = p.IsNew;
-                    AddPerson(p, m.List, OriginCode.NewFamilyMember, 0);
+                    var isnew = i.IsNew;
+                    AddPerson(i, m.List, OriginCode.NewFamilyMember, 0);
                     if (!isnew)
                     {
-                        var fm = f.People.SingleOrDefault(fa => fa.PeopleId == p.person.PeopleId);
+                        var fm = f.People.SingleOrDefault(fa => fa.PeopleId == i.person.PeopleId);
                         if (fm != null)
                             continue; // already a member of this family
 
-                        if (p.person.Age < 18)
-                            p.person.PositionInFamilyId = PositionInFamily.Child;
-                        else if (p.family.People.Count(per =>
+                        if (i.person.Age < 18)
+                            i.person.PositionInFamilyId = PositionInFamily.Child;
+                        else if (i.family.People.Count(per =>
                                     per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
                                     < 2)
-                            p.person.PositionInFamilyId = PositionInFamily.PrimaryAdult;
+                            i.person.PositionInFamilyId = PositionInFamily.PrimaryAdult;
                         else
-                            p.person.PositionInFamilyId = PositionInFamily.SecondaryAdult;
-                        p.family.People.Add(p.person);
+                            i.person.PositionInFamilyId = PositionInFamily.SecondaryAdult;
+                        i.family.People.Add(i.person); // add selected person to target family
                     }
                 }
                 DbUtil.Db.SubmitChanges();

@@ -16,7 +16,7 @@ namespace CmsWeb.Models
     public class MergeModel
     {
         public List<BasicInfo> pi { get; set; }
-
+        
         public int UseTitleCode { get; set; }
         public int UseFirstName { get; set; }
         public int UseLastName { get; set; }
@@ -44,6 +44,10 @@ namespace CmsWeb.Models
             private CMSPresenter.CodeValueController cvc = new CMSPresenter.CodeValueController();
 
             public int PeopleId { get; set; }
+            public Person person
+            {
+                get { return DbUtil.Db.LoadPersonById(PeopleId); }
+            }
             public string TitleCode { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
@@ -75,6 +79,12 @@ namespace CmsWeb.Models
             public string CityName { get; set; }
             public string StateCode { get; set; }
             public string ZipCode { get; set; }
+            public DateTime Created { get; set; }
+            public int FamilyId { get; set; }
+            public bool notdup { get; set; }
+            public bool hasotherfamily { get; set; }
+            public bool hasrelations { get; set; }
+            public bool hasinvolvements { get; set; }
         }
 
 
@@ -84,6 +94,10 @@ namespace CmsWeb.Models
             var q = from p in DbUtil.Db.People
                     where p.PeopleId == pid1 || p.PeopleId == pid2
                     orderby p.PeopleId == pid1 ? 1 : 2
+                    let notdup = p.PeopleExtras.Any(ee => ee.Field == "notdup" && (ee.IntValue == pid1 || ee.IntValue == pid2))
+                    let orelations = p.Family.RelatedFamilies1.Count() + p.Family.RelatedFamilies2.Count()
+                    let oinvolvements = p.OrganizationMembers.Count()
+                    let ofamily = p.Family.People.Count()
                     select new BasicInfo
                     {
                         PeopleId = p.PeopleId,
@@ -108,6 +122,12 @@ namespace CmsWeb.Models
                         CityName = p.Family.CityName,
                         StateCode = p.Family.StateCode,
                         ZipCode = p.Family.ZipCode,
+                        Created = p.CreatedDate.Value,
+                        FamilyId = p.FamilyId,
+                        notdup = notdup,
+                        hasinvolvements = oinvolvements > 0,
+                        hasotherfamily = ofamily > 1,
+                        hasrelations = orelations > 0
                     };
             pi = q.ToList();
             pi.Add(new BasicInfo());

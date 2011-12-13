@@ -14,7 +14,7 @@ namespace CmsData.API
         public APIWriter()
         {
             var settings = new XmlWriterSettings();
-            settings.Encoding = new System.Text.UTF8Encoding(false);
+            settings.Encoding = new System.Text.UTF8Encoding(true);
             settings.Indent = true;
             sb = new StringBuilder();
             w = XmlWriter.Create(sb, settings);

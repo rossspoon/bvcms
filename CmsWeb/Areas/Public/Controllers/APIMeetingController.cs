@@ -31,7 +31,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<ExtraValues error=\"{0}\" />".Fmt(ret.Substring(1)));
-            return Content(new APIMeeting()
+            return Content(new APIMeeting(DbUtil.Db)
                 .ExtraValues(id, fields), "text/xml");
         }
         [HttpPost]
@@ -40,7 +40,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            return Content(new APIMeeting()
+            return Content(new APIMeeting(DbUtil.Db)
                 .AddEditExtraValue(meetingid, field, value));
         }
         [HttpPost]
@@ -49,7 +49,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            return Content(new APIMeeting()
+            return Content(new APIMeeting(DbUtil.Db)
                 .DeleteExtraValue(meetingid, field));
         }
         [HttpPost]

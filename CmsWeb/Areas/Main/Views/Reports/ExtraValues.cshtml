@@ -1,0 +1,15 @@
+﻿@model IEnumerable<CmsWeb.Areas.Main.Controllers.ReportsController.ExtraInfo>
+@{
+    ViewBag.Title = "ExtraValues";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>ExtraValues</h2>
+
+
+<table class="grid">
+@foreach (var e in Model)
+{
+    <tr><td>@e.Field</td><td>@e.Value</td><td><a href='/Reports/ExtraValueQuery?field=@e.Field&val=@e.Value'>@e.Count</a></td></tr>
+}
+</table>

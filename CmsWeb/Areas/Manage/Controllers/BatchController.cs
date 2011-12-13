@@ -917,6 +917,40 @@ namespace CmsWeb.Areas.Manage.Controllers
             return Redirect("/Tags?tag=" + name);
         }
         [HttpGet]
+        public ActionResult AddToOrgFromTag(int id, string tag)
+        {
+            string host = Util.Host;
+            var i = 0;
+            Alias.Task.Factory.StartNew(() =>
+            {
+                var e = new LongRunningStatus();
+                var Db = new CMSDataContext(Util.GetConnectionString(host));
+                var q = from t in Db.TagPeople
+                        where t.Tag.Name == tag
+                        select t.PeopleId;
+                var list = q.ToList();
+                foreach (var pid in list)
+                {
+                    Db.Dispose();
+                    Db = new CMSDataContext(Util.GetConnectionString(host));
+                    e.SetStatus(id.ToString(), i);
+                    i++;
+                    OrganizationMember.InsertOrgMembers(Db,
+                        id, pid, CmsData.Codes.MemberTypeCode.Member, DateTime.Now, null, false);
+                }
+                e.RemoveStatus(id.ToString());
+            });
+            return Redirect("/Batch/AddToOrgFromTagProgress/" + id);
+        }
+        [HttpGet]
+        public ActionResult AddToOrgFromTagProgress(int id)
+        {
+            var e = new LongRunningStatus();
+            ViewData["count"] = e.GetStatus(id.ToString()).ToString();
+            return View();
+        }
+
+        [HttpGet]
         public ActionResult Test()
         {
             ViewData["guid"] = Guid.NewGuid().ToString();
@@ -958,13 +992,13 @@ namespace CmsWeb.Areas.Manage.Controllers
             {
                 var e = new LongRunningStatus();
                 var Db = new CMSDataContext(Util.GetConnectionString(host));
-                foreach(var c in Db.ChangeLogs)
+                foreach (var c in Db.ChangeLogs)
                 {
                     i++;
                     e.SetStatus(id, i);
-                	var re = new Regex("<tr><td>(?<field>[^<]+)</td><td>(?<before>[^<]*)</td><td>(?<after>[^<]*)</td></tr>", RegexOptions.Singleline);
-                	Match matchResult = re.Match(c.Data);
-                	while (matchResult.Success) 
+                    var re = new Regex("<tr><td>(?<field>[^<]+)</td><td>(?<before>[^<]*)</td><td>(?<after>[^<]*)</td></tr>", RegexOptions.Singleline);
+                    Match matchResult = re.Match(c.Data);
+                    while (matchResult.Success)
                     {
                         var cd = new CmsData.ChangeDetail
                         {
@@ -973,8 +1007,8 @@ namespace CmsWeb.Areas.Manage.Controllers
                             After = matchResult.Groups["after"].Value,
                         };
                         c.ChangeDetails.Add(cd);
-                		matchResult = matchResult.NextMatch();
-                	} 
+                        matchResult = matchResult.NextMatch();
+                    }
                     Db.SubmitChanges();
                 }
                 e.RemoveStatus(id);

@@ -237,6 +237,7 @@
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
+    <Compile Include="Areas\Main\Models\Export\FreshbooksResult.cs" />
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
@@ -355,6 +356,14 @@
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml" />
     <Content Include="Areas\Public\Views\APITest\Index.cshtml" />
     <Content Include="Binaries\AuthorizeNet.dll" />
+    <Content Include="ckeditor\plugins\ajax\plugin.js" />
+    <Content Include="ckeditor\plugins\bbcode\plugin.js" />
+    <Content Include="ckeditor\plugins\devtools\lang\en.js" />
+    <Content Include="ckeditor\plugins\devtools\plugin.js" />
+    <Content Include="ckeditor\plugins\docprops\dialogs\docprops.js" />
+    <Content Include="ckeditor\plugins\docprops\plugin.js" />
+    <Content Include="ckeditor\plugins\stylesheetparser\plugin.js" />
+    <Content Include="ckeditor\plugins\xml\plugin.js" />
     <Content Include="Content\faary.css" />
     <Content Include="Content\js\jquery.tmpl.js" />
     <Content Include="Content\js\json2.js" />
@@ -1127,7 +1136,6 @@
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.cshtml" />
     <Content Include="Areas\Main\Views\Person\RecRegDisplay.cshtml" />
     <Content Include="Areas\Main\Views\Person\RecRegEdit.cshtml" />
-    <Content Include="Areas\Main\Views\Person\TagDuplicatesProgress.cshtml" />
     <Content Include="Areas\Main\Views\Person\UserDialog.cshtml" />
     <Content Include="Areas\Main\Views\Person\UserInfoGrid.cshtml" />
     <Content Include="Areas\Main\Views\Organization\CurrMemberGrid.cshtml" />
@@ -1510,7 +1518,8 @@
     <Content Include="Areas\Main\Views\Organization\ExtrasGrid.cshtml" />
     <Content Include="Areas\Manage\Views\Duplicates\FindProgress.cshtml" />
     <Content Include="Areas\Manage\Views\Duplicates\Index.cshtml" />
-    <None Include="ckeditor\ckeditor.pack" />
+    <Content Include="Areas\Manage\Views\Batch\AddToOrgFromTagProgress.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\ExtraValues.cshtml" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
     <Content Include="Content\MucketyTemplate.xls" />

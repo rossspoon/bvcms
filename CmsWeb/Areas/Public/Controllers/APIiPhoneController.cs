@@ -23,6 +23,20 @@ namespace CmsWeb.Areas.Public.Controllers
     [ValidateInput(false)]
     public class APIiPhoneController : CmsController
     {
+        private string getUsername()
+        {
+            string username;
+            var auth = Request.Headers["Authorization"];
+            if (auth.HasValue())
+            {
+                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
+                    Convert.FromBase64String(auth.Substring(6))).Split(':');
+                username = cred[0];
+            }
+            else
+                username = Request.Headers["username"];
+            return username;
+        }
         private bool Authenticate(string role = null, bool checkorgmembersonly = false)
         {
             string username, password;
@@ -40,7 +54,11 @@ namespace CmsWeb.Areas.Public.Controllers
                 password = Request.Headers["password"];
             }
             var roles = CMSRoleProvider.provider;
-            var ret = CMSMembershipProvider.provider.ValidateUser(username, password);
+            var ret = false;
+            if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
+                ret = true;
+            else
+                ret = CMSMembershipProvider.provider.ValidateUser(username, password);
             if (ret && role.HasValue() && roles.RoleExists(role))
             {
                 AccountController.SetUserInfo(username, Session);
@@ -78,7 +96,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = Request.Headers["username"];
+            var uname = getUsername();
             AccountController.SetUserInfo(uname, Session);
 
             if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
@@ -98,7 +116,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate() )
                 return Content("not authorized");
-            var uname = Request.Headers["username"];
+            var uname = getUsername();
             AccountController.SetUserInfo(uname, Session);
             if (!CMSRoleProvider.provider.IsUserInRole(uname, "Access"))
                 return Content("not authorized");
@@ -126,7 +144,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = Request.Headers["username"];
+            var uname = getUsername();
             AccountController.SetUserInfo(uname, Session);
             if (!CMSRoleProvider.provider.IsUserInRole(uname, "Attendance"))
                 return new OrgResult(null);
@@ -139,7 +157,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = Request.Headers["username"];
+            var uname = getUsername();
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
             var dt = DateTime.Parse(datetime);
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
@@ -291,7 +309,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = Request.Headers["username"];
+            var uname = getUsername();
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
             var dt = DateTime.Parse(datetime);
             return new RollListResult(id, dt);
@@ -302,7 +320,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = Request.Headers["username"];
+            var uname = getUsername();
             var dt = DateTime.Parse(datetime);
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
             RecordAttend2Extracted(id, PeopleId, Present, dt, u);
@@ -314,7 +332,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = Request.Headers["username"];
+            var uname = getUsername();
             var dt = DateTime.Parse(datetime);
             var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
 

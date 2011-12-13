@@ -376,6 +376,7 @@ namespace CmsData
                 case FieldType.NullBit:
                 case FieldType.Bit:
                 case FieldType.Code:
+                case FieldType.CodeStr:
                     qb.CodeIdValue = value.ToString();
                     break;
                 case FieldType.Date:

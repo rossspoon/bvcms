@@ -23,6 +23,7 @@ namespace CmsWeb.Models.iPhone
             context.HttpContext.Response.ContentType = "text/xml";
             var settings = new XmlWriterSettings();
             settings.Encoding = new System.Text.UTF8Encoding(false);
+            settings.Indent = true;
 
             using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
             {

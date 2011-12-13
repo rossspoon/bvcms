@@ -147,7 +147,11 @@ namespace CmsWeb.Areas.Public.Controllers
                 var username = cred[0];
                 var password = cred[1];
 
-                var ret = CMSMembershipProvider.provider.ValidateUser(username, password);
+                var ret = false;
+                if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
+                    ret = true;
+                else
+                    ret = CMSMembershipProvider.provider.ValidateUser(username, password);
                 if (ret)
                 {
                     var roles = CMSRoleProvider.provider;
@@ -467,12 +471,16 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ContentResult UploadPrintJob(string kiosk, string job)
+        public ContentResult UploadPrintJob(string id)
         {
             if (!Authenticate())
                 return Content("not authorized");
+
+            var reader = new StreamReader(Request.InputStream);
+            string job = reader.ReadToEnd();
+
             var m = new CheckInModel();
-            m.SavePrintJob(kiosk, job);
+            m.SavePrintJob(id, job);
             return Content("done");
         }
         public ActionResult FetchPrintJobs(string id)

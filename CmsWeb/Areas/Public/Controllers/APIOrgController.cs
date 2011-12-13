@@ -58,7 +58,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<ExtraValues error=\"{0}\" />".Fmt(ret.Substring(1)));
-            return Content(new APIOrganization()
+            return Content(new APIOrganization(DbUtil.Db)
                 .ExtraValues(id, fields), "text/xml");
         }
         [HttpPost]
@@ -67,7 +67,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            return Content(new APIOrganization()
+            return Content(new APIOrganization(DbUtil.Db)
                 .AddEditExtraValue(peopleid, field, value));
         }
         [HttpPost]
@@ -76,7 +76,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            return Content(new APIOrganization()
+            return Content(new APIOrganization(DbUtil.Db)
                 .DeleteExtraValue(orgid, field));
         }
         [HttpPost]
@@ -85,7 +85,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            new APIOrganization()
+            new APIOrganization(DbUtil.Db)
                 .UpdateOrgMember(OrgId, PeopleId, type, enrolled, inactive);
             return Content("ok");
         }

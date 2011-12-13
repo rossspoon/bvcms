@@ -103,10 +103,11 @@ namespace CmsWeb.Models
                          GiverId = c.PeopleId ?? 0,
                          HeadOfHouseholdId = (f.HeadOfHouseholdId == sp.PeopleId ? sp.PeopleId : c.PeopleId) ?? 0,
                          Id = c.ContributionId,
-                         Name = c.Person.Name,
+                         Name = c.Person.Name2,
                          Amount = c.ContributionAmount ?? 0,
                          Date = c.ContributionDate,
                          c.FundId,
+                         c.ContributionFund.FundName,
                          c.BundleDetails.First().BundleHeader.BundleHeaderType.Description
                          //IsSpouse = f.HeadOfHouseholdId == sp.PeopleId ? true : false,
                      };

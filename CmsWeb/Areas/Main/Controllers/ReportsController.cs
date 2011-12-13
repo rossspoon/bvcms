@@ -315,6 +315,34 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["table"] = CmsData.QueryFunctions.VitalStats(DbUtil.Db);
             return View();
         }
+        public class ExtraInfo
+        {
+            public string Field { get; set; }
+            public string Value { get; set; }
+            public int Count { get; set; }
+        }
+        public ActionResult ExtraValues()
+        {
+            var q = from e in DbUtil.Db.PeopleExtras
+                    where e.StrValue != null
+                    group e by new { e.Field, e.StrValue } into g
+                    select new ExtraInfo
+                    {
+                        Field = g.Key.Field,
+                        Value = g.Key.StrValue,
+                        Count = g.Count(),
+                    };
+            return View(q);
+        }
+        public ActionResult ExtraValueQuery(string field, string val)
+        {
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            qb.AddNewClause(QueryType.PeopleExtra, CompareType.Equal, "{0}:{1}".Fmt(field, val));
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/QueryBuilder/Main/" + qb.QueryId);
+        }
+
         public class QueryStatsResult : ActionResult
         {
             StringBuilder sb = new StringBuilder();

@@ -359,7 +359,7 @@ namespace CmsData
                 p.PeopleExtras.Any(e =>
                     values.Contains(e.FieldValue));
             Expression expr = Expression.Invoke(pred, parm);
-            if (op == CompareType.NotEqual)
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);
             return expr;
         }

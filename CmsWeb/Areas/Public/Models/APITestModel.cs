@@ -675,6 +675,30 @@ Script:
 ------------
 Section: iPhone
 ------------
+Test: Organizations
+Description:
+    <ul>
+    <li>no arguments</li>
+    </ul>
+Script:
+	xml = webclient.DownloadString('APIiPhone/Organizations')
+	return xml
+------------
+Test: RollList
+Description:
+    <ul>
+    <li>orgid</li>
+    <li>datetime (should be urlencoded string as in '5/20/11%208:00AM')</li>
+    </ul>
+Arg: orgid
+Arg: datetime
+Script:
+    coll = NameValueCollection()
+    coll.Add('datetime', datetime)
+    resp = webclient.UploadValues('APIiPhone/RollList/' + orgid, 'POST', coll)
+	xml = Encoding.ASCII.GetString(resp)
+	return xml
+------------
 ";
     }
 }

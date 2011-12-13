@@ -397,11 +397,9 @@ namespace CmsCheckin
         public static void UploadPrintJob(string s)
         {
             var wc = CreateWebClient();
-            var coll = new NameValueCollection();
-            coll.Add("job", s);
-            coll.Add("kiosk", Program.KioskName);
-            var url = new Uri(new Uri(Program.URL), "Checkin2/UploadPrintJob");
-            wc.UploadValues(url, "POST", coll);
+            var bits = Encoding.UTF8.GetBytes(s);
+            var url = new Uri(new Uri(Program.URL), "Checkin2/UploadPrintJob/" + Program.KioskName);
+            wc.UploadData(url, "POST", bits);
         }
         public static PrintJobs FetchPrintJob()
         {

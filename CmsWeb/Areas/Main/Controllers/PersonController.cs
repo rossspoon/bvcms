@@ -545,7 +545,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NewExtraValue(int id, string field, string type, string value)
         {
-            var v = new PeopleExtra { PeopleId = id, Field = field};
+            var v = new PeopleExtra { PeopleId = id, Field = field };
             DbUtil.Db.PeopleExtras.InsertOnSubmit(v);
             switch (type)
             {
@@ -601,85 +601,86 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["AddContact"] = "/Person/AddContactReceived/" + id;
             ViewData["AddTasks"] = "/Person/AddAboutTask/" + id;
         }
-        private class TagData
-        {
-            public int id { get; set; }
-            public int? pid { get; set; }
-            public string tagname { get; set; }
-            public string cachename { get; set; }
-        }
-        public ActionResult TagDuplicates(int id)
-        {
-            if (HttpContext.Application["TagDuplicatesStatus"] != null)
-                return Content("already running elsewhere, sorry");
-            int? pid = Util.UserPeopleId;
-            string tagname = Util2.CurrentTagName;
-            var td = new TagData { id = id, pid = pid, tagname = tagname, cachename = "TagDuplicatesStatus_" + Util.Host };
-            HttpRuntime.Cache[td.cachename] = new TagDuplicatesStatus();
+        //    private class TagData
+        //    {
+        //        public int id { get; set; }
+        //        public int? pid { get; set; }
+        //        public string tagname { get; set; }
+        //        public string cachename { get; set; }
+        //    }
+        //    public ActionResult TagDuplicates(int id)
+        //    {
+        //        if (HttpContext.Application["TagDuplicatesStatus"] != null)
+        //            return Content("already running elsewhere, sorry");
+        //        int? pid = Util.UserPeopleId;
+        //        string tagname = Util2.CurrentTagName;
+        //        var td = new TagData { id = id, pid = pid, tagname = tagname, cachename = "TagDuplicatesStatus_" + Util.Host };
+        //        HttpRuntime.Cache[td.cachename] = new TagDuplicatesStatus();
 
-            var t = new Thread(new ParameterizedThreadStart(TagDupsWorker));
-            t.Start(td);
-            Thread.Sleep(1000);
-            return RedirectToAction("TagDuplicatesProgress");
-        }
-        private void TagDupsWorker(object tagdata)
-        {
-            var td = tagdata as TagData;
-            var st = DateTime.Now;
-            int nf = 0, np = 0;
+        //        var t = new Thread(new ParameterizedThreadStart(TagDupsWorker));
+        //        t.Start(td);
+        //        Thread.Sleep(1000);
+        //        return RedirectToAction("TagDuplicatesProgress");
+        //    }
+        //    private void TagDupsWorker(object tagdata)
+        //    {
+        //        var td = tagdata as TagData;
+        //        var st = DateTime.Now;
+        //        int nf = 0, np = 0;
 
-            var status = HttpRuntime.Cache[td.cachename] as TagDuplicatesStatus;
-            try
-            {
-                var db = DbUtil.Db;
-                var q = db.PeopleQuery(td.id);
-                var tag = db.FetchOrCreateTag(td.tagname, td.pid, DbUtil.TagTypeId_Personal);
-                foreach (var p in q)
-                {
-                    if (p.PossibleDuplicates().Count() > 0)
-                    {
-                        var tp = db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == p.PeopleId);
-                        if (tp == null)
-                            tag.PersonTags.Add(new TagPerson { PeopleId = p.PeopleId });
-                        ++nf;
-                        db.SubmitChanges();
-                    }
-                    ++np;
-                    var ts = DateTime.Now.Subtract(st);
-                    var dt = new DateTime(ts.Ticks);
-                    var tsp = "{0:s.ff}".Fmt(new DateTime(Convert.ToInt64(ts.Ticks / np)));
-                    var tt = "{0:mm:ss}".Fmt(dt);
-                    status.SetStatus(np, nf, tsp, tt);
-                }
-            }
-            finally
-            {
-                HttpRuntime.Cache.Remove(td.cachename);
-            }
-        }
-        public ActionResult TagDuplicatesProgress()
-        {
-            var status = HttpRuntime.Cache["TagDuplicatesStatus_" + Util.Host] as TagDuplicatesStatus;
-            if (status == null)
-                return Redirect("/Tags");
-            return View(status);
-        }
-    }
-    public class TagDuplicatesStatus
-    {
-        public int found { get; set; }
-        public int processed { get; set; }
-        public string speed { get; set; }
-        public string time { get; set; }
-        public bool finished { get; set; }
-        public bool isrunning { get; set; }
+        //        var status = HttpRuntime.Cache[td.cachename] as TagDuplicatesStatus;
+        //        try
+        //        {
+        //            var db = DbUtil.Db;
+        //            var q = db.PeopleQuery(td.id);
+        //            var tag = db.FetchOrCreateTag(td.tagname, td.pid, DbUtil.TagTypeId_Personal);
+        //            foreach (var p in q)
+        //            {
+        //                if (p.PossibleDuplicates().Count() > 0)
+        //                {
+        //                    var tp = db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == p.PeopleId);
+        //                    if (tp == null)
+        //                        tag.PersonTags.Add(new TagPerson { PeopleId = p.PeopleId });
+        //                    ++nf;
+        //                    db.SubmitChanges();
+        //                }
+        //                ++np;
+        //                var ts = DateTime.Now.Subtract(st);
+        //                var dt = new DateTime(ts.Ticks);
+        //                var tsp = "{0:s.ff}".Fmt(new DateTime(Convert.ToInt64(ts.Ticks / np)));
+        //                var tt = "{0:mm:ss}".Fmt(dt);
+        //                status.SetStatus(np, nf, tsp, tt);
+        //            }
+        //        }
+        //        finally
+        //        {
+        //            HttpRuntime.Cache.Remove(td.cachename);
+        //        }
+        //    }
+        //    public ActionResult TagDuplicatesProgress()
+        //    {
+        //        var status = HttpRuntime.Cache["TagDuplicatesStatus_" + Util.Host] as TagDuplicatesStatus;
+        //        if (status == null)
+        //            return Redirect("/Tags");
+        //        return View(status);
+        //    }
+        //}
+        //public class TagDuplicatesStatus
+        //{
+        //    public int found { get; set; }
+        //    public int processed { get; set; }
+        //    public string speed { get; set; }
+        //    public string time { get; set; }
+        //    public bool finished { get; set; }
+        //    public bool isrunning { get; set; }
 
-        public void SetStatus(int np, int nf, string ts, string tt)
-        {
-            found = nf;
-            processed = np;
-            speed = ts;
-            time = tt;
-        }
+        //    public void SetStatus(int np, int nf, string ts, string tt)
+        //    {
+        //        found = nf;
+        //        processed = np;
+        //        speed = ts;
+        //        time = tt;
+        //    }
+        //}
     }
 }

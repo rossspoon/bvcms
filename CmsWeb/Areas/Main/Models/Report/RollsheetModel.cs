@@ -194,7 +194,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         Age = p.Age.ToString(),
                         LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
                         HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == Util2.CurrentTagOwnerId),
-                        NameParent1 = p.Family.HohName,
+                        NameParent1 = p.Family.HohName(DbUtil.Db),
                         NameParent2 = p.Family.People.Where(x =>
                             x.FamilyPosition.Id == PositionInFamily.PrimaryAdult
                             && x.PeopleId != p.Family.HeadOfHouseholdId).FirstOrDefault().Name,

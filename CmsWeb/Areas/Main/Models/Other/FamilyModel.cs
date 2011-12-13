@@ -62,23 +62,25 @@ namespace CmsWeb.Models.PersonPage
          public IEnumerable<RelatedFamilyInfo> RelatedFamilies()
          {
              var rf1 = from rf in Family.RelatedFamilies1
+                       let hh = rf.RelatedFamily2.HeadOfHousehold
                        select new RelatedFamilyInfo
                        {
                            Id = familyid,
                            Id1 = rf.FamilyId,
                            Id2 = rf.RelatedFamilyId,
-                           PeopleId = rf.RelatedFamily2.HeadOfHousehold.PeopleId,
-                           Name = "The " + rf.RelatedFamily2.HeadOfHousehold.Name + " Family",
+                           PeopleId = hh != null ? hh.PeopleId : 0,
+                           Name = "The " + (hh != null ? hh.Name : "?") + " Family",
                            Description = rf.FamilyRelationshipDesc
                        };
              var rf2 = from rf in Family.RelatedFamilies2
+                       let hh = rf.RelatedFamily1.HeadOfHousehold
                        select new RelatedFamilyInfo
                        {
                            Id = familyid,
                            Id1 = rf.FamilyId,
                            Id2 = rf.RelatedFamilyId,
-                           PeopleId = rf.RelatedFamily1.HeadOfHousehold.PeopleId,
-                           Name = "The " + rf.RelatedFamily1.HeadOfHousehold.Name + " Family",
+                           PeopleId = hh != null ? hh.PeopleId : 0,
+                           Name = "The " + (hh != null ? hh.Name : "?") + " Family",
                            Description = rf.FamilyRelationshipDesc
                        };
              var q = rf1.Union(rf2);

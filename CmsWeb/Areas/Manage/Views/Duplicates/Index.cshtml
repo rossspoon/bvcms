@@ -5,6 +5,6 @@
 <ol>
 @foreach (var i in Model)
 {
-    <li><a href="/Manage/Merge?PeopleId1=@i.d.Id1&PeopleId2=@i.d.Id2" target="merge">@i.name (@i.d.Id1, @i.d.Id2)</a></li>    
+    <li><a href="/Manage/Merge?PeopleId1=@i.d.Id1&PeopleId2=@i.d.Id2" target="merge">@i.name (@i.d.Id1, @i.d.Id2)</a> @(i.notdup?"not a duplicate":"")</li>    
 }
 </ol>

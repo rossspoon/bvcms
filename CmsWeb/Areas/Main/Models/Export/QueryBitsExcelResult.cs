@@ -44,6 +44,8 @@ namespace CmsWeb.Models
 				select new
 				{
                     p,
+                    Age = p.Age.ToString(),
+                    MaritalStatus = p.MaritalStatus.Description,
                     FirstAttend = DbUtil.Db.FirstMeetingDateLastLear(p.PeopleId),
 					F01 = p.Tags.Any(tt => tt.Tag.Name == "F01" && tt.Tag.TypeId == 100) ? "X" : "",
 					F02 = p.Tags.Any(tt => tt.Tag.Name == "F02" && tt.Tag.TypeId == 100) ? "X" : "",
@@ -66,7 +68,7 @@ namespace CmsWeb.Models
 					F19 = p.Tags.Any(tt => tt.Tag.Name == "F19" && tt.Tag.TypeId == 100) ? "X" : "",
 					F20 = p.Tags.Any(tt => tt.Tag.Name == "F20" && tt.Tag.TypeId == 100) ? "X" : "",
 				};
-            var q3 = q2.Select("new(p.PeopleId,p.PreferredName,p.LastName,FirstAttend,{0})".Fmt(s));
+            var q3 = q2.Select("new(p.PeopleId,p.PreferredName,p.LastName,Age,MaritalStatus,FirstAttend,{0})".Fmt(s));
             var dg = new DataGrid();
             dg.DataSource = q3;
             dg.DataBind();

@@ -26,30 +26,35 @@ namespace CmsData
         {
             get { return AddressLineTwo + " " + CityStateZip; }
         }
-
-
-        public string HohName
+        public string FullAddress
         {
             get
             {
+                var sb = new StringBuilder(AddressLineOne + "\n");
+                if (AddressLineTwo.HasValue())
+                    sb.AppendLine(AddressLineTwo);
+                sb.Append(CityStateZip);
+                return sb.ToString();
+            }
+        }
+
+
+        public string HohName(CMSDataContext Db)
+        {
                 if (HeadOfHouseholdId.HasValue) 
-                    return DbUtil.Db.People.Single(p => p.PeopleId == HeadOfHouseholdId.Value).Name;
+                    return Db.People.Where(p => p.PeopleId == HeadOfHouseholdId.Value).Select(p => p.Name).SingleOrDefault();
                 return "";
-            }
         }
 
-        public string HohSpouseName
+        public string HohSpouseName(CMSDataContext Db)
         {
-            get
-            {
                 if (HeadOfHouseholdSpouseId.HasValue) 
-                    return DbUtil.Db.People.Single(p => p.PeopleId == HeadOfHouseholdSpouseId.Value).Name;
+                    return Db.People.Where(p => p.PeopleId == HeadOfHouseholdSpouseId.Value).Select(p => p.Name).SingleOrDefault();
                 return "";
-            }
         }
-        public string FamilyName
+        public string FamilyName(CMSDataContext Db)
         {
-            get { return "The " + HohName + " Family"; }
+            return "The " + HohName(Db) + " Family";
         }
 
         public int MemberCount
@@ -105,7 +110,7 @@ namespace CmsData
                     Data = "<table>\n" + fsb.ToString() + "</table>",
                     Created = Util.Now
                 };
-                DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
+                Db.ChangeLogs.InsertOnSubmit(c);
             }
         }
     }

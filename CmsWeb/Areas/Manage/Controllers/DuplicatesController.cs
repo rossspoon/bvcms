@@ -24,6 +24,8 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             public Duplicate d {get; set;}
             public string name {get; set;}
+            public bool samefamily { get; set; }
+            public bool notdup { get; set; }
         }
         public ActionResult Index()
         {
@@ -31,7 +33,12 @@ namespace CmsWeb.Areas.Manage.Controllers
                     where DbUtil.Db.People.Any(pp => pp.PeopleId == d.Id1)
                     where DbUtil.Db.People.Any(pp => pp.PeopleId == d.Id2)
                     let name = DbUtil.Db.People.SingleOrDefault(pp => pp.PeopleId == d.Id1).Name
-                    select new DuplicateInfo { d = d, name = name };
+                    let notdup = DbUtil.Db.PeopleExtras.Any(ee => ee.Field == "notdup" && ee.PeopleId == d.Id1 && ee.IntValue == d.Id2)
+                    let f1 = DbUtil.Db.People.Single(pp => pp.PeopleId == d.Id1)
+                    let f2 = DbUtil.Db.People.Single(pp => pp.PeopleId == d.Id2)
+                    let samefamily = f1.FamilyId == f2.FamilyId
+
+                    select new DuplicateInfo { d = d, name = name, samefamily = samefamily, notdup = notdup };
             return View(q);
         }
 

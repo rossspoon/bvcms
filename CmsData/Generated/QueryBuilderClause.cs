@@ -559,7 +559,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Quarters", UpdateCheck=UpdateCheck.Never, Storage="_Quarters", DbType="varchar(10)")]
+		[Column(Name="Quarters", UpdateCheck=UpdateCheck.Never, Storage="_Quarters", DbType="varchar(50)")]
 		public string Quarters
 		{
 			get { return this._Quarters; }
