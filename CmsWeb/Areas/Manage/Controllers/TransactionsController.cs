@@ -10,27 +10,26 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-    [Authorize(Roles="Edit")]
+    [Authorize(Roles="Edit, ManageTransactions")]
     public class TransactionsController : CmsStaffController
     {
-        [AcceptVerbs(HttpVerbs.Get)]
+        [HttpGet]
         public ActionResult Index()
         {
             var m = new TransactionsModel();
             return View(m);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult List(TransactionsModel m)
         {
             UpdateModel(m.Pager);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Export(TransactionsModel m)
         {
             return new TransactionsExcelResult(m);
         }
-
     }
 }

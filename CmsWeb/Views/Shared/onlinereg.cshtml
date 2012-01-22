@@ -1,6 +1,7 @@
 @if ((bool)ViewData["hasshell"])
 {
 @Html.Raw((string)ViewData["top"])
+@RenderSection("head", false)
 @RenderBody()
 @Html.Raw((string)ViewData["bottom"])
 }

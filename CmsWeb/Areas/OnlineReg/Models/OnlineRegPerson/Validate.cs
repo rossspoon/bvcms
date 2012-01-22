@@ -84,6 +84,7 @@ namespace CmsWeb.Models
                         ( ManageSubscriptions() 
                             || orgid == Util.CreateAccountCode 
                             || OnlineGiving() 
+                            || ManageGiving() 
                             || OnlinePledge()
                         ))
                     {

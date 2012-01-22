@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 
 namespace CmsWeb.Areas.Manage
 {
@@ -17,10 +17,12 @@ namespace CmsWeb.Areas.Manage
             AddRoute(context, "Account");
             AddRoute(context, "Display");
             AddRoute(context, "Merge");
+            AddRoute(context, "Duplicates");
             AddRoute(context, "OrgMembers");
             AddRoute(context, "Batch");
             AddRoute(context, "Promotion");
             AddRoute(context, "Volunteers");
+            AddRoute(context, "Error", "Account", "Error", "Error");
             context.MapRoute(
                 "Public_Logon",
                 "Logon",
@@ -36,6 +38,11 @@ namespace CmsWeb.Areas.Manage
         {
             context.MapRoute(controller, controller + "/{action}/{id}",
                 new { controller = controller, action = "Index", id = "" });
+        }
+        private static void AddRoute(AreaRegistrationContext context, string name, string controller, string path, string action)
+        {
+            context.MapRoute(name, path,
+                new { controller = controller, action = action, id = "" });
         }
     }
 }

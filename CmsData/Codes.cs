@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -137,7 +137,10 @@ namespace CmsData.Codes
         public const int OnlineGiving = 8;
         public const int OnlinePledge = 9;
         public const int UserSelectsOrganization2 = 10;
+        public const int ComputeOrganizationByAge2 = 11;
         public const int JoinAttendMeeting = 12;
+        public const int ManageGiving = 14;
+        public const int ManageSubscriptions2 = 15;
         public static IEnumerable<KeyValuePair<int, string>> GetCodePairs()
         {
             yield return new KeyValuePair<int, string>(None, "Online Registration Not Allowed");
@@ -146,11 +149,15 @@ namespace CmsData.Codes
             yield return new KeyValuePair<int, string>(JoinAttendMeeting, "Attend Meeting, Join Org");
             yield return new KeyValuePair<int, string>(UserSelectsOrganization2, "User Selects Organization");
             yield return new KeyValuePair<int, string>(UserSelectsOrganization, "User Selects Organization (div style)");
-            yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "Compute Org By Birthday");
+            yield return new KeyValuePair<int, string>(ComputeOrganizationByAge2, "Compute Org By Birthday");
+            yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "Compute Org By Birthday (div style)");
             yield return new KeyValuePair<int, string>(CreateAccount, "Create User");
-            yield return new KeyValuePair<int, string>(ManageSubscriptions, "Manage Subscriptions");
+            yield return new KeyValuePair<int, string>(ManageSubscriptions2, "Manage Subscriptions");
+            yield return new KeyValuePair<int, string>(ManageSubscriptions, "Manage Subscriptions (div)");
+            yield return new KeyValuePair<int, string>(ManageGiving, "Manage Recurring Giving");
             yield return new KeyValuePair<int, string>(OnlineGiving, "Online Giving");
             yield return new KeyValuePair<int, string>(OnlinePledge, "Online Pledge");
+            yield return new KeyValuePair<int, string>(ChooseSlot, "Choose Slot");
         }
         public static string Lookup(int id)
         {

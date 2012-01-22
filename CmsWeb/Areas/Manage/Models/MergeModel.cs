@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
@@ -122,7 +122,7 @@ namespace CmsWeb.Models
                         CityName = p.Family.CityName,
                         StateCode = p.Family.StateCode,
                         ZipCode = p.Family.ZipCode,
-                        Created = p.CreatedDate.Value,
+                        Created = p.CreatedDate ?? DateTime.Parse("1/1/1980"),
                         FamilyId = p.FamilyId,
                         notdup = notdup,
                         hasinvolvements = oinvolvements > 0,

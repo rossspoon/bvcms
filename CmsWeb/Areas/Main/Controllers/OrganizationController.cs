@@ -371,6 +371,7 @@ namespace CmsWeb.Areas.Main.Controllers
             m.YesNoQuestions.Clear();
             m.ExtraQuestions.Clear();
             m.ShirtSizes.Clear();
+            m.TimeSlots.Clear();
             m.MenuItems.Clear();
             m.Dropdown1.Clear();
             m.Dropdown2.Clear();
@@ -454,6 +455,11 @@ namespace CmsWeb.Areas.Main.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult NewTimeSlot()
+        {
+            return View("EditorTemplates/TimeSlot", new RegSettings.TimeSlot());
+        }
 
         [HttpPost]
         public ActionResult NewMenuItem()

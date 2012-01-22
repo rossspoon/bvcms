@@ -166,9 +166,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 foreach (var g in p.FundItemsChosen())
                 {
                     sb.AppendFormat(row, g.desc, g.amt);
-                    PostBundleModel.PostUnattendedContribution(
+                    p.person.PostUnattendedContribution(DbUtil.Db,
                         g.amt,
-                        p.PeopleId,
                         g.fundid,
                         desc);
                 }
@@ -177,9 +176,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     var fundname = DbUtil.Db.ContributionFunds.Single(ff => ff.FundId == p.setting.DonationFundId).FundName;
                     sb.AppendFormat(row, fundname, t.Donate);
                     t.Fund = p.setting.DonationFund();
-                    PostBundleModel.PostUnattendedContribution(
+                    p.person.PostUnattendedContribution(DbUtil.Db,
                         t.Donate.Value,
-                        p.PeopleId,
                         p.setting.DonationFundId,
                         desc);
                 }
@@ -214,6 +212,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 m.ConfirmManagePledge();
                 ViewData["ManagingPledge"] = true;
+                ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
+                confirm = "ConfirmAccount";
+            }
+            else if (m.ManageGiving())
+            {
+                m.ConfirmManageGiving();
+                ViewData["ManagingGiving"] = true;
                 ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
                 confirm = "ConfirmAccount";
             }

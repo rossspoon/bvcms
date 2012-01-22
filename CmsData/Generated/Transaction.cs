@@ -71,6 +71,8 @@ namespace CmsData
 		
 		private string _Fund;
 		
+		private bool? _Financeonly;
+		
    		
    		private EntitySet< TransactionPerson> _TransactionPeople;
 		
@@ -162,6 +164,9 @@ namespace CmsData
 		
 		partial void OnFundChanging(string value);
 		partial void OnFundChanged();
+		
+		partial void OnFinanceonlyChanging(bool? value);
+		partial void OnFinanceonlyChanged();
 		
     #endregion
 		public Transaction()
@@ -763,6 +768,28 @@ namespace CmsData
 					this._Fund = value;
 					this.SendPropertyChanged("Fund");
 					this.OnFundChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="financeonly", UpdateCheck=UpdateCheck.Never, Storage="_Financeonly", DbType="bit")]
+		public bool? Financeonly
+		{
+			get { return this._Financeonly; }
+
+			set
+			{
+				if (this._Financeonly != value)
+				{
+				
+                    this.OnFinanceonlyChanging(value);
+					this.SendPropertyChanging();
+					this._Financeonly = value;
+					this.SendPropertyChanged("Financeonly");
+					this.OnFinanceonlyChanged();
 				}
 
 			}

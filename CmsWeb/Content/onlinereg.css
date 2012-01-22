@@ -16,6 +16,11 @@ div.regform table
     font-family: Verdana;
     font-size: 15px;
 }
+div.regform fieldset
+{
+    font-family: Verdana;
+    font-size: 15px;
+}
 a:link
 {
     color: #333;
@@ -300,6 +305,11 @@ input.short
 {
     border: 1px solid #CCCCCC;
     width: 4em;
+}
+input.shorter 
+{
+    border: 1px solid #CCCCCC;
+    width: 2em;
 }
 input.wide70
 {

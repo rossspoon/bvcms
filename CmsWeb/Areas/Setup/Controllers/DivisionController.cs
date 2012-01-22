@@ -44,6 +44,8 @@ namespace CmsWeb.Areas.Setup.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(string id, string value)
         {
+            if (!id.HasValue())
+                return new EmptyResult();
             var iid = id.Substring(1).ToInt();
             var div = DbUtil.Db.Divisions.SingleOrDefault(p => p.Id == iid);
             if (div != null)

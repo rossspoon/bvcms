@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -68,6 +68,9 @@ namespace CmsData
             Confirmation,
             Terms,
             Label,
+            Time,
+            DayOfWeek,
+            TimeSlots,
             Options,
             Code,
             SmallGroup,
@@ -212,6 +215,11 @@ namespace CmsData
         {
             get { return _Checkboxes; }
         }
+        private List<TimeSlot> _TimeSlots;
+        public List<TimeSlot> TimeSlots
+        {
+            get { return _TimeSlots; }
+        }
         private List<MenuItem> _Checkboxes2;
         public List<MenuItem> Checkboxes2
         {
@@ -328,6 +336,13 @@ namespace CmsData
             public decimal? Fee { get; set; }
             public int? Limit { get; set; }
         }
+        public class TimeSlot
+        {
+            public int Id { get; set; }
+            public string Description { get; set; }
+            public int? DayOfWeek { get; set; }
+            public DateTime? Time { get; set; }
+        }
         public class VoteTag
         {
             public int Id { get; set; }
@@ -355,6 +370,7 @@ namespace CmsData
             _AgeGroups = new List<AgeGroup>();
             _ShirtSizes = new List<ShirtSize>();
             _YesNoQuestions = new List<YesNoQuestion>();
+            _TimeSlots = new List<TimeSlot>();
             _Checkboxes = new List<MenuItem>();
             _Checkboxes2 = new List<MenuItem>();
             _ExtraQuestions = new List<ExtraQuestion>();
@@ -579,6 +595,10 @@ namespace CmsData
                 case RegKeywords.ExtraQuestions:
                     ParseExtraQuestions();
                     break;
+                case RegKeywords.TimeSlots:
+                    var ts = GetString("TimeSlots");
+                    _TimeSlots = ParseTimeSlots();
+                    break;
                 case RegKeywords.Checkboxes:
                     CheckBoxLabel = GetString("CheckBoxes");
                     CheckboxMin = GetInt(RegKeywords.Minimum);
@@ -696,6 +716,16 @@ namespace CmsData
             int i;
             if (!int.TryParse(curr.value, out i))
                 throw GetException("expected integer value");
+            lineno++;
+            return i;
+        }
+        private DateTime GetTime()
+        {
+            if (!curr.value.HasValue())
+                throw GetException("expected time value");
+            DateTime i;
+            if (!DateTime.TryParse(curr.value, out i))
+                throw GetException("expected time value");
             lineno++;
             return i;
         }
@@ -910,6 +940,43 @@ namespace CmsData
             }
             return list;
         }
+        private List<TimeSlot> ParseTimeSlots()
+        {
+            var list = new List<TimeSlot>();
+            if (curr.indent == 0)
+                return list;
+            var startindent = curr.indent;
+            while (curr.indent == startindent)
+            {
+                var timeslot = new TimeSlot();
+                if (curr.kw != RegKeywords.None)
+                    throw GetException("unexpected line in TimeSlots");
+                list.Add(timeslot);
+                timeslot.Description = GetLine();
+                if (curr.indent <= startindent)
+                    continue;
+                var ind = curr.indent;
+                while (curr.indent == ind)
+                {
+                    switch (curr.kw)
+                    {
+                        case RegKeywords.Time:
+                            timeslot.Time = GetTime();
+                            break;
+                        case RegKeywords.DayOfWeek:
+                            timeslot.DayOfWeek = GetInt();
+                            break;
+                        default:
+                            throw GetException("unexpected line in TimeSlot");
+                    }
+                }
+                if (!timeslot.Time.HasValue)
+                    throw GetException("missing Time in TimeSlot");
+                if (!timeslot.DayOfWeek.HasValue)
+                    throw GetException("missing Day of Week in TimeSlot");
+            }
+            return list;
+        }
         private void ParseExtraQuestions()
         {
             lineno++;
@@ -1087,6 +1154,7 @@ namespace CmsData
             AddGradeOptions(sb);
             AddYesNoQuestions(sb);
             AddExtraQuestions(sb);
+            AddTimeSlots(sb);
             AddMenuItems(sb);
             AddDropdown1(sb);
             AddDropdown2(sb);
@@ -1329,6 +1397,19 @@ namespace CmsData
                 AddValueCk(2, sb, "SmallGroup", c.SmallGroup);
                 AddValueCk(2, sb, "Fee", c.Fee);
                 AddValueCk(2, sb, "Limit", c.Limit);
+            }
+            sb.AppendLine();
+        }
+        private void AddTimeSlots(StringBuilder sb)
+        {
+            if (TimeSlots.Count == 0)
+                return;
+            AddValueNoCk(0, sb, "TimeSlots", "");
+            foreach (var c in TimeSlots)
+            {
+                AddValueCk(1, sb, c.Description);
+                AddValueCk(2, sb, "Time", c.Time.ToString2("h:mm tt"));
+                AddValueCk(2, sb, "DayOfWeek", c.DayOfWeek);
             }
             sb.AppendLine();
         }

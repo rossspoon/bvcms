@@ -1,4 +1,4 @@
-﻿/* Author: David Carroll
+/* Author: David Carroll
  * Copyright (c) 2008, 2009 Bellevue Baptist Church 
  * Licensed under the GNU General Public License (GPL v2)
  * you may not use this code except in compliance with the License.
@@ -104,6 +104,7 @@ namespace CmsWeb.Models
                          o.Location,
                          RollSheetVisitorWks = o.RollSheetVisitorWks ?? 0,
                          Limit = o.Limit.ToString(),
+                         CampusId = o.CampusId ?? 0,
                          CanSelfCheckin = o.CanSelfCheckin ?? false,
                          BirthDayStart = o.BirthDayStart.FormatDate2(),
                          BirthDayEnd = o.BirthDayEnd.FormatDate2(),

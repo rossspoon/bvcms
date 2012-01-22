@@ -1,4 +1,4 @@
-﻿/* Author: David Carroll
+/* Author: David Carroll
  * Copyright (c) 2008, 2009 Bellevue Baptist Church 
  * Licensed under the GNU General Public License (GPL v2)
  * you may not use this code except in compliance with the License.
@@ -145,7 +145,11 @@ namespace CMSPresenter
                      select c.PeopleId;
             var a = q.Union(q2).ToArray();
 
-            var tag = DbUtil.Db.OrgMembersOnlyTag2();
+            Tag tag = null;
+            if (Util2.OrgMembersOnly)
+                tag = DbUtil.Db.OrgMembersOnlyTag2();
+            else
+                tag = DbUtil.Db.OrgLeadersOnlyTag2();
             var t = tag.People(DbUtil.Db).Any(p => a.Contains(p.PeopleId));
             return t;
         }

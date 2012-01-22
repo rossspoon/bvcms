@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,7 +18,7 @@ namespace CmsCheckin
     public partial class ListFamily : UserControl
     {
         private const int ExtraPixelsName = 15;
-        private const string STR_CheckMark = "ü";
+        private const string STR_CheckMark = "�";
         public ListFamily()
         {
             InitializeComponent();

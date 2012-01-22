@@ -70,6 +70,11 @@ function CloseAddDialog() {
     window.location = "/Person/Current"
 }
     </script>
+@{ 
+    var admin = User.IsInRole("Admin");
+    var manageemails = User.IsInRole("ManageEmails");
+    var managetrans = User.IsInRole("ManageTransactions");
+}
 @if (((string)AppState["getoff"]).HasValue())
 {
         <div id='urgentNotice'>@AppState["getoff"]</div>
@@ -103,7 +108,7 @@ function CloseAddDialog() {
                                 <div class="sublinks">
                                     <a href="/Account/LogOff/" title="@Util.UserName">Logout</a>
                                     <a href="/Account/ChangePassword">Change Password</a>
-@if (User.IsInRole("Admin"))
+@if (admin)
 {
                                         <a href="/Admin/Users.aspx">Manage Users</a>
                                         <a href="/Admin/Activity.aspx">Activity Log</a>
@@ -203,7 +208,7 @@ function CloseAddDialog() {
                                     <a id="ShowOpenQuery" href="#">Open Saved Query</a>
                                     <a id="ShowSaveQuery" href="#">Save Query As</a>
     }
-                                <a href="/Reports/ExtraValues" target="_blank">Extra Values</a>
+                                <a href="/Reports/ExtraValues">Extra Values</a>
                             </div>
                         </td>
     @if (User.IsInRole("Finance"))
@@ -227,16 +232,29 @@ function CloseAddDialog() {
                                 </div>
                             </td>
     }
-    @if (User.IsInRole("Admin"))
+    @if (admin || manageemails || managetrans)
     {
                             <td class="dropdown">
                                 <div>
                                     <a href="/Admin/Users.aspx">Admin</a></div>
                                 <div class="sublinks" class="last">
+                                @if (admin)
+                                {
                                     <a href="/Setup/Program/">Programs</a> <a href="/Setup/Division/">Divisions</a>
                                     <a href="/Setup/Setting">Settings</a> <a href="/Display/Index/">Special Content</a>
-                                    <a href="/Setup/MetroZip/">Metro Zips</a> <a href="/Manage/Transactions">Transactions</a>
-                                    <a href="/Manage/Emails">Emails</a> <a href="/Setup/Lookup/">Lookups</a>
+                                    <a href="/Setup/MetroZip/">Metro Zips</a> 
+                                }
+                                @if (admin || managetrans)
+                                {
+                                    <a href="/Manage/Transactions">Transactions</a>
+                                }
+                                @if (admin || manageemails)
+                                {
+                                    <a href="/Manage/Emails">Emails</a> 
+                                }
+                                @if (admin)
+                                {
+                                    <a href="/Setup/Lookup/">Lookups</a>
                                     <a href="/Batch/UpdateFields/"> Update for a Tag</a> 
                                     <a href="/Admin/ToggleOrgMembersOnly.ashx">@(Util2.OrgMembersOnly ? "OrgMembersOnly is on" : "OrgMembersOnly is off")</a>
                                     <a href="/Admin/ToggleOrgLeadersOnly.ashx">@(Util2.OrgLeadersOnly ? "OrgLeadersOnly is on" : "OrgLeadersOnly is off")</a>
@@ -244,6 +262,7 @@ function CloseAddDialog() {
                                     <a href="/Batch/FindTagPeople">Find Tag People</a>
                                     <a href="/Batch/TagPeopleIds">Tag PeopleIds</a>
                                     <a href="/Admin/ClearCache.aspx">Clear Cache</a>
+                                }
                                 </div>
                             </td>
     }
@@ -306,6 +325,15 @@ function CloseAddDialog() {
         <tr><th>End Date</th><td><input id="enddt" type="text" class='datepicker' /></td></tr>
         <tr><td align="right" colspan="2">
             <a class="bt" id="ExportStartEndRun" href="#"> run </a></td>
+        </tr>
+        </table>
+    </div>
+    <div id="SetExtraValues" class="modalDiv dialog" style="display: none">
+        <table>
+        <tr><th>Field</th><td><input id="field" type="text" /></td></tr>
+        <tr><th>Value</th><td><input id="value" type="text" /></td></tr>
+        <tr><td align="right" colspan="2">
+            <a class="bt" id="SetExtraValuesRun" href="#"> OK </a></td>
         </tr>
         </table>
     </div>

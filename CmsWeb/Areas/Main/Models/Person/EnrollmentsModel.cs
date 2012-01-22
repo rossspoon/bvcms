@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,10 +25,13 @@ namespace CmsWeb.Models.PersonPage
             {
                 var limitvisibility = Util2.OrgMembersOnly || Util2.OrgLeadersOnly
                     || !HttpContext.Current.User.IsInRole("Access");
+                var oids = new int[0];
+                if (Util2.OrgLeadersOnly)
+                    oids = DbUtil.Db.GetLeaderOrgIds(Util.UserPeopleId);
                 _enrollments = from om in DbUtil.Db.OrganizationMembers
                                where om.PeopleId == PeopleId
                                where (om.Pending ?? false) == false
-                               where !(limitvisibility && om.Organization.SecurityTypeId == 3)
+                               where oids.Contains(om.OrganizationId) || !(limitvisibility && om.Organization.SecurityTypeId == 3)
                                select om;
             }
             return _enrollments;

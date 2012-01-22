@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Web.Mvc;
@@ -91,7 +91,8 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("id", c.Id.ToString());
                     w.WriteAttributeString("mv", c.MemberVisitor);
                     w.WriteAttributeString("name", c.DisplayName);
-                    w.WriteAttributeString("first", c.First);
+                    w.WriteAttributeString("preferredname", c.PreferredName);
+                    w.WriteAttributeString("first", c.PreferredName);
                     w.WriteAttributeString("last", c.Last);
                     w.WriteAttributeString("org", c.DisplayClass);
                     w.WriteAttributeString("orgname", c.OrgName);

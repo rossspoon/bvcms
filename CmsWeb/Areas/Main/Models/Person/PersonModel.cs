@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -156,8 +156,9 @@ namespace CmsWeb.Models.PersonPage
         public IEnumerable<ChangeLogInfo> GetChangeLogs()
         {
             var list = (from c in DbUtil.Db.ChangeLogs
-                        let userp = DbUtil.Db.People.Single(u => u.PeopleId == c.UserPeopleId)
+                        let userp = DbUtil.Db.People.SingleOrDefault(u => u.PeopleId == c.UserPeopleId)
                         where c.PeopleId == Person.PeopleId || c.FamilyId == Person.FamilyId
+                        where userp != null
                         select new { userp, c }).ToList();
             var q = from i in list
                     orderby i.c.Created descending
@@ -180,6 +181,14 @@ namespace CmsWeb.Models.PersonPage
                     break;
             }
             DbUtil.Db.SubmitChanges();
+        }
+        public IEnumerable<string> VolOpportunities()
+        {
+            var list = CodeValueController.VolunteerOpportunities();
+            var q = (from c in Person.VolInterestInterestCodes
+                     group c by c.VolInterestCode.Org into g
+                     select g.Key);
+            return list;
         }
     }
 }

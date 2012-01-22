@@ -12,7 +12,7 @@ namespace CmsCheckin
 {
     public partial class PrintingServer : Form
     {
-        private const int INT_count = 30;
+        private const int INT_count = 10;
         public PrintingServer()
         {
             InitializeComponent();

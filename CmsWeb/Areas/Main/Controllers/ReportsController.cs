@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +10,7 @@ using UtilityExtensions;
 using CmsWeb.Models;
 using System.Text;
 using System.Web.UI;
+using System.Data.SqlClient;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -342,6 +343,17 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/QueryBuilder/Main/" + qb.QueryId);
         }
+        public ActionResult ExtraValuesGrid(int id)
+        {
+            var name = "ExtraExcelResult " + DateTime.Now;
+            var tag = DbUtil.Db.PopulateSpecialTag(id, DbUtil.TagTypeId_ExtraValues);
+            var cmd = new SqlCommand("dbo.ExtraValues {0}".Fmt(tag.Id));
+            cmd.Connection = new SqlConnection(Util.ConnectionString);
+            cmd.Connection.Open();
+            var rdr = cmd.ExecuteReader();
+            return View(rdr);
+        }
+
 
         public class QueryStatsResult : ActionResult
         {

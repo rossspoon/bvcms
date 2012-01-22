@@ -1,7 +1,7 @@
 ﻿@using UtilityExtensions;
 @model CmsData.Transaction
 <tr>
-    <td nowrap="nowrap" class="tip" title="@Model.TransactionId|@Model.ApprovalCode|@Model.AuthCode">@Model.Id</td>
+    <td nowrap="nowrap" class="tip" title="@Model.TransactionId|@Model.ApprovalCode|@Model.AuthCode|@Model.Message">@Model.Id</td>
     <td>@Model.TransactionId</td>
     <td>@if (Model.Approved == true){<img alt="Y" src="/Content/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
     <td>@Model.TransactionDate.FormatDateTm()</td>

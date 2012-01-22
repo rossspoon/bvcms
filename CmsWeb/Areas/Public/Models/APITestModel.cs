@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -202,6 +202,16 @@ Script:
 	xml = webclient.DownloadString('APIPerson/LoginInfo/' + peopleid)
 	return xml
 ------------
+Test: FamilyMembers
+Description:
+    <ul>
+    <li>returns the members of a family</li>
+    </ul>
+Arg: familyid
+Script:
+	xml = webclient.DownloadString('APIPerson/FamilyMembers/' + familyid)
+	return xml
+------------
 Test: ExtraValues
 Description:
     <ul>
@@ -218,15 +228,18 @@ Test: AddEditExtraValue
 Description:
     <ul>
     <li>this will add an extra value or update an existing one</li>
+    <li>type can be one of data (default), code, int, or date</li>
     </ul>
 Arg: peopleid
 Arg: field
 Arg: value
+Arg: type
 Script:
 	coll = NameValueCollection()
 	coll.Add('peopleid', peopleid)
 	coll.Add('field', field)
 	coll.Add('value', value)
+	coll.Add('type', type)
 	resp = webclient.UploadValues('APIPerson/AddEditExtraValue', 'POST', coll)
 	ret = Encoding.ASCII.GetString(resp)
 	return ret
@@ -281,6 +294,29 @@ Script:
 	ret = Encoding.ASCII.GetString(resp)
 	return ret
 ------------
+Test: AccessUsers
+Description:
+    <ul>
+    <li>Returns a list of users with Access role</li>
+    </ul>
+Script:
+	xml = webclient.DownloadString('APIPerson/AccessUsers/')
+	return xml
+------------
+Test: ChangePassword
+Description:
+Arg: username
+Arg: current
+Arg: password
+Script:
+	coll = NameValueCollection()
+	coll.Add('username', username)
+	coll.Add('current', current)
+	coll.Add('password', password)
+	resp = webclient.UploadValues('APIPerson/ChangePassword', 'POST', coll)
+	ret = Encoding.ASCII.GetString(resp)
+	return ret
+------------
 Section: Org
 ------------
 Test: OrganizationsForDiv
@@ -292,9 +328,16 @@ Script:
 ------------
 Test: OrgMembers
 Description:
+    <ul>
+    <li>Returns a list of OrgMembers</li>
+    <li>You can optionally pass a search parameter.<br />
+        It searches on the name formatted as 'last, first'.
+        You do not have to pass the entire name, just a few characters will suffice to narrow the list.</li>
+    </ul>
 Arg: orgid
+Arg: search
 Script:
-	xml = webclient.DownloadString('APIOrg/OrgMembers/' + orgid)
+	xml = webclient.DownloadString('APIOrg/OrgMembers/' + orgid + '?search=' + search)
 	return xml
 ------------
 Test: OrgMembers2
@@ -674,6 +717,27 @@ Description:
 Script:
 ------------
 Section: iPhone
+------------
+Test: Search
+Description:
+    <ul>
+    <li>name: space separates first from last name<br>
+        you can use partial names to avoid spelling mistakes, a few of the beginning letters of each<br>
+        you can use just the last name without a space</li>
+    <li>comm: searches cell, home, work, and email</li>
+    <li>addr: searches address, city and zip</li>
+    </ul>
+Arg: name
+Arg: comm
+Arg: addr
+Script:
+    coll = NameValueCollection()
+    coll.Add('name', name)
+    coll.Add('comm', comm)
+    coll.Add('addr', addr)
+    resp = webclient.UploadValues('APIiPhone/Search', 'POST', coll)
+	ret = Encoding.ASCII.GetString(resp)
+	return ret
 ------------
 Test: Organizations
 Description:

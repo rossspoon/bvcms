@@ -16,7 +16,7 @@ namespace CmsWeb.Models
     {
         public string GetNextPrintJobs(string kiosks)
         {
-            var a = kiosks.Split(',');
+            var a = kiosks.Replace(" ", "").Split(',');
             var q = from d in DbUtil.Db.PrintJobs
                     where a.Contains(d.Id)
                     orderby d.Stamp
@@ -34,7 +34,7 @@ namespace CmsWeb.Models
         }
         public void SavePrintJob(string kiosk, string xml)
         {
-            var d = new PrintJob { Id = kiosk, Data = xml, Stamp = DateTime.Now };
+            var d = new PrintJob { Id = kiosk.Replace(" ", ""), Data = xml, Stamp = DateTime.Now };
             DbUtil.Db.PrintJobs.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
         }
@@ -94,7 +94,8 @@ namespace CmsWeb.Models
                     Position = om.Person.PositionInFamilyId,
                     MemberVisitor = "M",
                     Name = om.Person.Name,
-                    First = om.Person.PreferredName,
+                    First = om.Person.FirstName,
+                    PreferredName = om.Person.PreferredName,
                     Last = om.Person.LastName,
                     BYear = om.Person.BirthYear,
                     BMon = om.Person.BirthMonth,
@@ -159,7 +160,8 @@ namespace CmsWeb.Models
                     Position = a.Person.PositionInFamilyId,
                     MemberVisitor = "V",
                     Name = a.Person.Name,
-                    First = a.Person.PreferredName,
+                    First = a.Person.FirstName,
+                    PreferredName = a.Person.PreferredName,
                     Last = a.Person.LastName,
                     BYear = a.Person.BirthYear,
                     BMon = a.Person.BirthMonth,
@@ -233,7 +235,8 @@ namespace CmsWeb.Models
                     Id = p.PeopleId,
                     Position = p.PositionInFamilyId,
                     Name = p.Name,
-                    First = p.PreferredName,
+                    First = p.FirstName,
+                    PreferredName = p.PreferredName,
                     Last = p.LastName,
                     BYear = p.BirthYear,
                     BMon = p.BirthMonth,
@@ -308,7 +311,8 @@ namespace CmsWeb.Models
                     Position = om.Person.PositionInFamilyId,
                     MemberVisitor = "M",
                     Name = om.Person.Name,
-                    First = om.Person.PreferredName,
+                    First = om.Person.FirstName,
+                    PreferredName = om.Person.PreferredName,
                     Last = om.Person.LastName,
                     BYear = om.Person.BirthYear,
                     BMon = om.Person.BirthMonth,
@@ -358,7 +362,8 @@ namespace CmsWeb.Models
                     Id = p.PeopleId,
                     Position = p.PositionInFamilyId,
                     Name = p.Name,
-                    First = p.PreferredName,
+                    First = p.FirstName,
+                    PreferredName = p.PreferredName,
                     Last = p.LastName,
                     BYear = p.BirthYear,
                     BMon = p.BirthMonth,

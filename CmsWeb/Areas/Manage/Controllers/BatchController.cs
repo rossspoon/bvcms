@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -159,6 +159,11 @@ namespace CmsWeb.Areas.Manage.Controllers
                 for (var c = 1; c < a.Length; c++)
                     switch (names[c].Trim())
                     {
+                        case "CampusId":
+                            o.CampusId = a[c].ToInt2();
+                            if (o.CampusId == 0)
+                                o.CampusId = null;
+                            break;
                         case "CanSelfCheckin":
                             o.CanSelfCheckin = a[c].ToBool2();
                             break;
@@ -416,7 +421,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                             p.MaritalStatusId = Marital("Marital", a);
                         if (names.ContainsKey("Position"))
                             p.PositionInFamilyId = Position(a);
-                        if (names.ContainsKey("Title"))
+                        if (names.ContainsKey("Title") && a[names["Title"]].HasValue())
                             p.TitleCode = a[names["Title"]];
                         if (names.ContainsKey("Campus"))
                             p.CampusId = campuses[a[names["Campus"]]];
@@ -671,14 +676,40 @@ namespace CmsWeb.Areas.Manage.Controllers
                 return View(m);
             }
             UpdateModel(m);
-            var tag = DbUtil.Db.TagById(m.Tag.ToInt());
-            var q = tag.People(DbUtil.Db);
+            var a = m.Tag.SplitStr(":", 2);
+            if(a.Length > 1)
+                a[1] = a[1].TrimStart();
+            IQueryable<Person> q = null;
+            if (a[0] == "last query")
+            {
+                q = DbUtil.Db.PeopleQuery(Util.QueryBuilderScratchPadId);
+            }
+            else if (a[0] == "tag")
+            {
+                var b = a[1].SplitStr(":", 2);
+                var tag = DbUtil.Db.TagById(b[0].ToInt());
+                q = tag.People(DbUtil.Db);
+            }
+            else if (a[0] == "exval")
+            {
+                var b = a[1].SplitStr(":", 2);
+                q = from e in DbUtil.Db.PeopleExtras
+                    where e.Field == b[0]
+                    where e.StrValue == b[1]
+                    select e.Person;
+            }
             foreach (var p in q)
             {
                 switch (m.Field)
                 {
                     case "Member Status":
                         p.MemberStatusId = m.NewValue.ToInt();
+                        break;
+                    case "Baptism Status":
+                        p.BaptismStatusId = m.NewValue.ToInt();
+                        break;
+                    case "Baptism Type":
+                        p.BaptismTypeId = m.NewValue.ToInt();
                         break;
                     case "Campus":
                         p.CampusId = m.NewValue.ToInt();
@@ -703,6 +734,12 @@ namespace CmsWeb.Areas.Manage.Controllers
                         break;
                     case "Grade":
                         p.Grade = m.NewValue.ToInt();
+                        break;
+                    case "Statement Options":
+                        p.ContributionOptionsId = m.NewValue.ToInt();
+                        break;
+                    case "Title":
+                        p.TitleCode = m.NewValue;
                         break;
                 }
                 DbUtil.Db.SubmitChanges();
@@ -917,6 +954,24 @@ namespace CmsWeb.Areas.Manage.Controllers
             return Redirect("/Tags?tag=" + name);
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ExtraValuesFromPeopleIds()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ExtraValuesFromPeopleIds(string text, string field)
+        {
+            var csv = new CsvReader(new StringReader(text), false, '\t').ToList();
+            foreach (var a in csv)
+            {
+                var p = DbUtil.Db.LoadPersonById(a[0].ToInt());
+                p.AddEditExtraValue(field, a[1]);
+                DbUtil.Db.SubmitChanges();
+            }
+            return Redirect("/Reports/ExtraValues");
+        }
+        [HttpGet]
         public ActionResult AddToOrgFromTag(int id, string tag)
         {
             string host = Util.Host;
@@ -1020,6 +1075,13 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             var e = new LongRunningStatus();
             return Content(e.GetStatus(id).ToString());
+        }
+        [HttpGet]
+        [Authorize(Roles = "Finance")]
+        public ActionResult DoGiving()
+        {
+            RecurringGiving.DoAllGiving(DbUtil.Db);
+            return Content("done");
         }
     }
 }

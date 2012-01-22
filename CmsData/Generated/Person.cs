@@ -252,6 +252,8 @@ namespace CmsData
 		
    		private EntitySet< Attend> _Attends;
 		
+   		private EntitySet< RecurringGiving> _RecurringGivings;
+		
    		private EntitySet< CardIdentifier> _CardIdentifiers;
 		
    		private EntitySet< CheckInTime> _CheckInTimes;
@@ -275,6 +277,8 @@ namespace CmsData
    		private EntitySet< PrayerSlot> _PrayerSlots;
 		
    		private EntitySet< RecReg> _RecRegs;
+		
+   		private EntitySet< RecurringAmount> _RecurringAmounts;
 		
    		private EntitySet< SaleTransaction> _SaleTransactions;
 		
@@ -702,6 +706,8 @@ namespace CmsData
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
+			this._RecurringGivings = new EntitySet< RecurringGiving>(new Action< RecurringGiving>(this.attach_RecurringGivings), new Action< RecurringGiving>(this.detach_RecurringGivings)); 
+			
 			this._CardIdentifiers = new EntitySet< CardIdentifier>(new Action< CardIdentifier>(this.attach_CardIdentifiers), new Action< CardIdentifier>(this.detach_CardIdentifiers)); 
 			
 			this._CheckInTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckInTimes), new Action< CheckInTime>(this.detach_CheckInTimes)); 
@@ -725,6 +731,8 @@ namespace CmsData
 			this._PrayerSlots = new EntitySet< PrayerSlot>(new Action< PrayerSlot>(this.attach_PrayerSlots), new Action< PrayerSlot>(this.detach_PrayerSlots)); 
 			
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
+			
+			this._RecurringAmounts = new EntitySet< RecurringAmount>(new Action< RecurringAmount>(this.attach_RecurringAmounts), new Action< RecurringAmount>(this.detach_RecurringAmounts)); 
 			
 			this._SaleTransactions = new EntitySet< SaleTransaction>(new Action< SaleTransaction>(this.attach_SaleTransactions), new Action< SaleTransaction>(this.detach_SaleTransactions)); 
 			
@@ -3360,6 +3368,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_AuthorizeNetIds_People", Storage="_RecurringGivings", OtherKey="PeopleId")]
+   		public EntitySet< RecurringGiving> RecurringGivings
+   		{
+   		    get { return this._RecurringGivings; }
+
+			set	{ this._RecurringGivings.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_CardIdentifiers_People", Storage="_CardIdentifiers", OtherKey="PeopleId")]
    		public EntitySet< CardIdentifier> CardIdentifiers
    		{
@@ -3476,6 +3494,16 @@ namespace CmsData
    		    get { return this._RecRegs; }
 
 			set	{ this._RecRegs.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_RecurringAmounts_People", Storage="_RecurringAmounts", OtherKey="PeopleId")]
+   		public EntitySet< RecurringAmount> RecurringAmounts
+   		{
+   		    get { return this._RecurringAmounts; }
+
+			set	{ this._RecurringAmounts.Assign(value); }
 
    		}
 
@@ -4614,6 +4642,19 @@ namespace CmsData
 		}
 
 		
+		private void attach_RecurringGivings(RecurringGiving entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_RecurringGivings(RecurringGiving entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
 		private void attach_CardIdentifiers(CardIdentifier entity)
 		{
 			this.SendPropertyChanging();
@@ -4764,6 +4805,19 @@ namespace CmsData
 		}
 
 		private void detach_RecRegs(RecReg entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_RecurringAmounts(RecurringAmount entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_RecurringAmounts(RecurringAmount entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

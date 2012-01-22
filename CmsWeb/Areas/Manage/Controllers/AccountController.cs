@@ -98,6 +98,10 @@ CKEditorFuncNum, baseurl + fn, error));
             private set;
         }
 
+        public ActionResult Error()
+        {
+            return View();
+        }
         public ActionResult LogOn()
         {
             try
@@ -105,9 +109,10 @@ CKEditorFuncNum, baseurl + fn, error));
                 if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
                     return Content("Site is disabled, contact {0} for help".Fmt(Util.SendErrorsTo()[0].Address));
             }
-            catch (SqlException)
+            catch (SqlException ex)
             {
-                return Redirect("http://www.bvcms.com");
+                TempData["message"] = ex.Message;
+                return Redirect("/Error");
             }
             if (Request.Url.Scheme == "http" && DbUtil.Db.CmsHost.StartsWith("https://"))
                 if (Request.QueryString.Count > 0)

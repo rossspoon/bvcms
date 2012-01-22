@@ -75,6 +75,7 @@ namespace CmsWeb.Models
             if (testing)
                 url = "https://test.authorize.net/gateway/transact.dll";
 
+            
             var p = new Dictionary<string, string>();
             p["x_delim_data"] = "TRUE";
             p["x_delim_char"] = "|";
@@ -225,8 +226,8 @@ namespace CmsWeb.Models
 
             if (testing)
             {
-                p["M_id"] = "434989517813";
-                p["M_key"] = "G5W9J2M4B5L7";
+                p["M_id"] = "287793447481"; // "434989517813";
+                p["M_key"] = "S4S3N4D2W1D9"; // "G5W9J2M4B5L7";
             }
             else
             {

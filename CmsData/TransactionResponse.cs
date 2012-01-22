@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CmsWeb.Models
+namespace CmsData
 {
     public class TransactionResponse
     {

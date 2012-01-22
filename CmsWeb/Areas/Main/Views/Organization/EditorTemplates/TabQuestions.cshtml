@@ -1,6 +1,7 @@
 ﻿@model CmsData.RegSettings
 @using CmsWeb
 @using UtilityExtensions
+  <li>
     <span class="keyword big tip" title="AskRequest
     |Displays a text box for entering things like roomate/teacher/coach request
     |You can put a label on this text box to clarify what you are asking.">
@@ -111,6 +112,21 @@
     |Asks whether the parent is interested in coaching or not.">
     AskCoaching:</span> @Html.CheckBox("AskCoaching", Model.AskCoaching)
   </li>
+  @if (User.IsInRole("Admin"))
+  {
+  <li>
+    <div class="text big tip" title="TimeSlots
+    |These allow you to specify a series of Day / Times for registration.">
+    TimeSlots:</div>
+    <ul id="TimeSlots" class="sort">
+    @foreach (var i in Model.TimeSlots.OrderBy(cc => cc.Id))
+    {
+        @Html.EditorFor(m => i)
+    }
+    </ul>
+    <div class="newitem"><a href="/Organization/NewTimeSlot"><img src="/images/plus1.png" alt="" /> Add Item</a></div> 
+  </li>
+  }
   <li>
     <div class="text big tip" title="MenuItems
     |These will present a series of textboxes next to a label 

@@ -1,0 +1,30 @@
+﻿@model System.Data.SqlClient.SqlDataReader
+@{
+    ViewBag.Title = "ExtraValuesGrid";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>ExtraValuesGrid</h2>
+<table class="grid">
+<tr>
+<thead>
+@for(var c = 0; c < Model.FieldCount; c++)
+{
+    
+    <td>@Model.GetName(c)</td>
+}
+</thead>
+</tr>
+<tbody>
+@while (Model.Read())
+{
+    <tr>
+        <td><a href="/Person/Index/@Model.GetValue(0)" target="person">@Model.GetValue(1)</a></td>
+    @for (var c = 2; c < Model.FieldCount; c++)
+    {
+        <td>@Model.GetValue(c)</td>
+    }
+    </tr>
+}
+</tbody>
+</table>

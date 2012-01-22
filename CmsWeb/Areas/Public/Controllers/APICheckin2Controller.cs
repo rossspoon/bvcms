@@ -283,7 +283,14 @@ namespace CmsWeb.Areas.Public.Controllers
                         Campus = c,
                         password = DbUtil.Db.Setting("kioskpassword" + c.Id, "kio.")
                     };
-            return View(q);
+            var list = q.ToList();
+            if (list.Count == 0)
+                list.Add(new CampusItem
+                {
+                    Campus = new Campu { Id = 0, Description = "none" },
+                    password = DbUtil.Db.Setting("kioskpassword" + 0, "kio.")
+                });
+            return View(list);
         }
         [HttpPost]
         public ContentResult RecordAttend(int PeopleId, int OrgId, bool Present, int thisday, string kiosk)

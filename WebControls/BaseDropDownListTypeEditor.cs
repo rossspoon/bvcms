@@ -1,4 +1,4 @@
-﻿/*--- USING THIS CODE ----------------------------------------------------------
+/*--- USING THIS CODE ----------------------------------------------------------
 1. Add this file to a web project that has a custom control which needs it.
 
 2. In the file with that custom control (as a suggestion), create a subclass of the desired base

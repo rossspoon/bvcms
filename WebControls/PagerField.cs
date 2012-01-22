@@ -1,4 +1,4 @@
-﻿// code modified from from Luis Ramirez 2008
+// code modified from from Luis Ramirez 2008
 
 using System;
 using System.Web;

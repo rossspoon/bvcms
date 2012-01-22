@@ -154,6 +154,14 @@ else
                 Add Contact</a>
             <a id="AddTasks" href='@ViewData["AddTasks"]'>
                 Add Tasks</a>
+@if (User.IsInRole("Admin"))
+{
+            <a href='/Manage/ExtraValues/Add/@ViewData["queryid"]' class="ChooseExtraValues">
+                Add Extra Values</a>
+            <a href='/Manage/ExtraValues/Delete/@ViewData["queryid"]' class="ChooseExtraValues">
+                Delete Extra Values</a>
+            <a href="/Reports/ExtraValuesGrid/@ViewData["queryid"]">Extra Values Grid</a>
+}
             <a href='/Task/NotesExcel/@ViewData["queryid"]'>
                 Export Task Notes</a>
         </div>

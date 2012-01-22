@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,7 +14,8 @@ namespace CmsWeb.Models
     public class ManageSubsModel
     {
         public int pid { get; set; }
-        public int divid { get; set; }
+        public int? divid { get; set; }
+        public int? masterorgid { get; set; }
         private Person _Person;
         public Person person
         {
@@ -35,14 +36,39 @@ namespace CmsWeb.Models
                 return _division;
             }
         }
+        public string Description()
+        {
+            if (masterorgid.HasValue)
+                return masterorg.OrganizationName;
+            return Division.Name;
+        }
+        private CmsData.Organization _masterorg;
+        public CmsData.Organization masterorg
+        {
+            get
+            {
+                if (_masterorg != null)
+                    return _masterorg;
+                if (masterorgid.HasValue)
+                    _masterorg = DbUtil.Db.LoadOrganizationById(masterorgid.Value);
+                return _masterorg;
+            }
+        }
         public ManageSubsModel()
         {
 
         }
-        public ManageSubsModel(int pid, int divid)
+        public ManageSubsModel(int pid, int id)
         {
             this.pid = pid;
-            this.divid = divid;
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            if (org != null && org.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
+            {
+                this.masterorgid = id;
+                _masterorg = org;
+            }
+            else
+                this.divid = id;
         }
         public int[] Subscribe { get; set; }
         public class OrgSub
@@ -61,7 +87,18 @@ namespace CmsWeb.Models
         }
         public IEnumerable<OrgSub> FetchSubs()
         {
-            var q = from o in DbUtil.Db.Organizations
+            IEnumerable<OrgSub> q = null;
+            if (masterorgid != null)
+                q = from o in OnlineRegModel.UserSelectClasses(masterorg)
+                    select new OrgSub
+                    {
+                        OrgId = o.OrganizationId,
+                        Name = o.OrganizationName,
+                        Description = o.Description,
+                        Checked = o.OrganizationMembers.Any(om => om.PeopleId == pid)
+                    };
+            else
+                q = from o in DbUtil.Db.Organizations
                     where o.DivOrgs.Any(dd => dd.DivId == divid)
                     where o.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions
                     select new OrgSub
@@ -73,6 +110,23 @@ namespace CmsWeb.Models
                     };
             return q;
         }
+        public IEnumerable<OrgSub> OrderSubs(IEnumerable<OrgSub> q)
+        {
+            if (!masterorgid.HasValue)
+                return q;
+            var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
+            var list = q.ToList();
+            var d = new Dictionary<int, int>();
+            var n = 0;
+            foreach (var i in cklist)
+                d.Add(n++, i);
+            var qq = from o in list
+                     join i in d on o.OrgId equals i.Value into j
+                     from i in j
+                     orderby i.Key
+                     select o;
+            return qq;
+        }
         private string _summary;
         public string Summary
         {
@@ -80,15 +134,14 @@ namespace CmsWeb.Models
             {
                 if (!_summary.HasValue())
                 {
-                    var q = from om in DbUtil.Db.OrganizationMembers
-                            where om.Organization.DivOrgs.Any(dd => dd.DivId == divid)
-                            where om.Organization.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions
-                            where om.PeopleId == pid
-                            select new { om.Organization.OrganizationName, om.Organization.Description };
+                    var q = from i in FetchSubs()
+                            where i.Checked == true
+                            select i;
+
                     var sb = new StringBuilder();
-                    foreach (var s in q)
+                    foreach (var s in OrderSubs(q))
                         sb.AppendFormat("<p><b>{0}</b><br/>{1}</p>\n",
-                            s.OrganizationName, s.Description);
+                            s.Name, s.Description);
                     _summary = Util.PickFirst(sb.ToString(), "<p>no subscriptions</p>");
                 }
                 return _summary;
@@ -96,7 +149,15 @@ namespace CmsWeb.Models
         }
         public void UpdateSubscriptions()
         {
-            var q = from om in DbUtil.Db.OrganizationMembers
+
+            IEnumerable<OrganizationMember> q = null;
+            if (masterorgid != null)
+                q = from o in OnlineRegModel.UserSelectClasses(masterorg)
+                    let om = o.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == pid)
+                    where om != null
+                    select om;
+            else
+                q = from om in DbUtil.Db.OrganizationMembers
                     where om.Organization.DivOrgs.Any(dd => dd.DivId == divid)
                     where om.Organization.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions
                     where om.PeopleId == pid
@@ -120,12 +181,12 @@ namespace CmsWeb.Models
 
             foreach (var om in drops)
             {
-                om.Drop(DbUtil.Db, addToHistory:true);
+                om.Drop(DbUtil.Db, addToHistory: true);
                 DbUtil.Db.SubmitChanges();
             }
             foreach (var id in joins)
             {
-                OrganizationMember.InsertOrgMembers(DbUtil.Db, 
+                OrganizationMember.InsertOrgMembers(DbUtil.Db,
                     id, pid, 220, DateTime.Now, null, false);
                 DbUtil.Db.SubmitChanges();
             }

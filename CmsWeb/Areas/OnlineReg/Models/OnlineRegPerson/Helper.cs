@@ -56,11 +56,19 @@ namespace CmsWeb.Models
         }
         public bool ComputesOrganizationByAge()
         {
+            if (masterorgid.HasValue && masterorg.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge2)
+                return true;
             return RegistrationType(RegistrationTypeCode.ComputeOrganizationByAge);
         }
         public bool ManageSubscriptions()
         {
+            if (masterorgid.HasValue && masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
+                return true;
             return RegistrationType(RegistrationTypeCode.ManageSubscriptions);
+        }
+        public bool ManageGiving()
+        {
+            return RegistrationType(RegistrationTypeCode.ManageGiving);
         }
         public bool OnlineGiving()
         {
@@ -97,7 +105,7 @@ namespace CmsWeb.Models
                         _org = DbUtil.Db.LoadOrganizationById(orgid.Value);
                 if (_org == null && classid.HasValue)
                     _org = DbUtil.Db.LoadOrganizationById(classid.Value);
-                if (_org == null && divid.HasValue && (Found == true || IsValidForNew))
+                if (_org == null && (divid.HasValue || masterorgid.HasValue) && (Found == true || IsValidForNew))
                     if (ComputesOrganizationByAge())
                         _org = GetAppropriateOrg();
                 //if(_org != null && _settings == null)
@@ -117,7 +125,9 @@ namespace CmsWeb.Models
                     _masterorg = DbUtil.Db.LoadOrganizationById(masterorgid.Value);
                 else
                 {
-                    if (org.RegistrationTypeId == CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2)
+                    if (org.RegistrationTypeId == RegistrationTypeCode.UserSelectsOrganization2
+                        || org.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge2
+                        || org.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
                     {
                         _masterorg = org;
                         masterorgid = orgid;
@@ -147,12 +157,25 @@ namespace CmsWeb.Models
         }
         private CmsData.Organization GetAppropriateOrg()
         {
-            var q = from o in DbUtil.Db.Organizations
-                    where o.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge
-                    where o.DivOrgs.Any(di => di.DivId == divid)
-                    where gender == null || o.GenderId == gender || o.GenderId == 0
-                    select o;
-            var list = q.ToList();
+            List<Organization> list = null;
+            if (masterorgid.HasValue)
+            {
+                var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
+                var q = from o in DbUtil.Db.Organizations
+                        where cklist.Contains(o.OrganizationId)
+                        where gender == null || o.GenderId == gender || o.GenderId == 0
+                        select o;
+                list = q.ToList();
+            }
+            else
+            {
+                var q = from o in DbUtil.Db.Organizations
+                        where o.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge
+                        where o.DivOrgs.Any(di => di.DivId == divid)
+                        where gender == null || o.GenderId == gender || o.GenderId == 0
+                        select o;
+                list = q.ToList();
+            }
             var q2 = from o in list
                      where birthday >= o.BirthDayStart || o.BirthDayStart == null
                      where birthday <= o.BirthDayEnd || o.BirthDayEnd == null
@@ -328,7 +351,7 @@ Thank you</p>";
             }
             return sb.ToString();
         }
-        public IEnumerable<SelectListItem> Funds()
+        public static SelectListItem[] Funds()
         {
             var q = from f in DbUtil.Db.ContributionFunds
                     where f.FundStatusId == 1
@@ -339,7 +362,7 @@ Thank you</p>";
                         Text = "{0}".Fmt(f.FundName),
                         Value = f.FundId.ToString()
                     };
-            return q;
+            return q.ToArray();
         }
     }
 }

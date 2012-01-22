@@ -44,13 +44,13 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(api.OrgMembersPython(id), "text/xml");
         }
         [HttpGet]
-        public ActionResult OrgMembers(int id)
+        public ActionResult OrgMembers(int id, string search)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<OrgMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
             var api = new APIOrganization(DbUtil.Db);
-            return Content(api.OrgMembers(id), "text/xml");
+            return Content(api.OrgMembers(id, search), "text/xml");
         }
         [HttpGet]
         public ActionResult ExtraValues(int id, string fields)

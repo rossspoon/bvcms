@@ -544,6 +544,17 @@ namespace CmsData
                     select p;
             var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgLeadersOnly);
 
+            q = from p in People
+                where p.EnrollmentTransactions.Any(et =>
+                        et.TransactionDate > dt
+                        && et.TransactionTypeId >= 4
+                        && oids.Contains(et.OrganizationId)
+                        && et.Organization.SecurityTypeId != 3
+                        && OrganizationMembers.Any(um =>
+                            um.OrganizationId == et.OrganizationId && um.PeopleId == me))
+                select p;
+            TagAll(q, tag);
+
             // members of my family
             q = from p in People
                 where p.FamilyId == CurrentUser.Person.FamilyId
@@ -557,6 +568,7 @@ namespace CmsData
                     OrganizationMembers.Any(um =>
                         um.MemberType.AttendanceTypeId == AttendTypeCode.Leader
                         && um.Organization.SecurityTypeId != 3
+                        && oids.Contains(um.OrganizationId)
                         && um.OrganizationId == a.Meeting.OrganizationId
                         && um.PeopleId == me)
                     && attype.Contains(a.AttendanceTypeId.Value) && a.MeetingDate > dt)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,7 +17,7 @@ using Alias = System.Threading.Tasks;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles="Admin, Manager2")]
     public class DuplicatesController : CmsStaffController
     {
         public class DuplicateInfo
@@ -37,7 +37,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                     let f1 = DbUtil.Db.People.Single(pp => pp.PeopleId == d.Id1)
                     let f2 = DbUtil.Db.People.Single(pp => pp.PeopleId == d.Id2)
                     let samefamily = f1.FamilyId == f2.FamilyId
-
+                    orderby d.Id1
                     select new DuplicateInfo { d = d, name = name, samefamily = samefamily, notdup = notdup };
             return View(q);
         }

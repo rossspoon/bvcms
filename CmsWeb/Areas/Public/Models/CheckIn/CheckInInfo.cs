@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +12,7 @@ namespace CmsWeb.Models
         public int Position { get; set; }
         public string Name { get; set; }
         public string First { get; set; }
+        public string PreferredName { get; set; }
         public string Last { get; set; }
         public string Birthday { get; set; }
         public int? BMon { get; set; }

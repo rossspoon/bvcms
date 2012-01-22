@@ -123,7 +123,7 @@ namespace CmsWeb.Models
         }
         public bool UserSelectsOrganization()
         {
-            if (masterorgid.HasValue)
+            if (masterorgid.HasValue && masterorg.RegistrationTypeId == RegistrationTypeCode.UserSelectsOrganization2)
                 return true;
             if (divid == null)
                 return false;
@@ -159,6 +159,9 @@ namespace CmsWeb.Models
         }
         public bool ManagingSubscriptions()
         {
+            if (masterorgid.HasValue && masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
+                return true;
+
             if (org != null)
                 return org.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions;
 
@@ -173,6 +176,12 @@ namespace CmsWeb.Models
                 return org.RegistrationTypeId == RegistrationTypeCode.OnlinePledge;
             return false;
         }
+        public bool ManageGiving()
+        {
+            if (org != null)
+                return org.RegistrationTypeId == RegistrationTypeCode.ManageGiving;
+            return false;
+        }
         public bool AskDonation()
         {
             if (org != null)
@@ -184,8 +193,8 @@ namespace CmsWeb.Models
         public string DonationLabel()
         {
             if (org != null)
-                return settings[org.OrganizationId].DonationLabel.ToString();
-            return settings.Values.First(o => o.AskDonation).DonationLabel.ToString();
+                return settings[org.OrganizationId].DonationLabel;
+            return settings.Values.First(o => o.AskDonation).DonationLabel;
         }
         public string Header
         {
@@ -266,6 +275,8 @@ namespace CmsWeb.Models
         {
             get
             {
+                if (masterorgid.HasValue)
+                    return Util.PickFirst("{0}".Fmt(settings[masterorgid.Value].Terms), "");
                 if (org != null)
                     return Util.PickFirst("{0}".Fmt(settings[org.OrganizationId].Terms),
                         div != null ? div.Terms : "");

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Web.UI;
@@ -11,7 +11,7 @@ using System.Web.UI;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bellevue Baptist Church")]
 [assembly: AssemblyProduct("CmsWeb")]
-[assembly: AssemblyCopyright("Copyright © Bellevue Baptist Church 2007")]
+[assembly: AssemblyCopyright("Copyright � Bellevue Baptist Church 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

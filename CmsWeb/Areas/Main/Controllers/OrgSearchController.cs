@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -153,7 +153,9 @@ namespace CmsWeb.Areas.Main.Controllers
             bool t = organization.ToggleTag(DbUtil.Db, tagdiv);
             Db.SubmitChanges();
             var m = new OrgSearchModel { TagDiv = tagdiv, Name = id.ToString() };
-            var o = m.OrganizationList().Single();
+            var o = m.OrganizationList().SingleOrDefault();
+            if (o == null)
+                return Content("error");
             return View("Row", o);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -162,7 +164,9 @@ namespace CmsWeb.Areas.Main.Controllers
             var Db = DbUtil.Db;
             Db.SetMainDivision(id, tagdiv);
             var m = new OrgSearchModel { TagDiv = tagdiv, Name = id.ToString() };
-            var o = m.OrganizationList().Single();
+            var o = m.OrganizationList().SingleOrDefault();
+            if (o == null)
+                return Content("error");
             return View("Row", o);
         }
         [AcceptVerbs(HttpVerbs.Post)]

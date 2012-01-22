@@ -1,0 +1,133 @@
+﻿@model CmsWeb.Models.ManageGivingModel 
+@using CmsWeb
+@using UtilityExtensions
+@{
+    Layout = "/Views/Shared/onlinereg.cshtml";
+    ViewBag.Title = "Online Registration";
+}
+
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+        .Add("/Content/js/jquery-1.5.2.js")
+        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
+        .Add("/Content/js/jquery.validate.js")
+        .Add("/Content/js/jquery.blockUI.js")
+        .Add("/Content/js/jquery.tooltip.js")
+        .Add("/Scripts/Onlinereg.js")
+        .Render("/Content/ManageGivings#.js")
+)        
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker();
+    });
+</script>
+<style>
+div.section label 
+{
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.8;
+    min-height: 30px;
+}
+div.paymentinfo p label
+{
+    width: 10em;
+    font-weight: normal;
+}
+div.section div, div.section table
+{
+    margin-left: 1em;
+}
+</style>
+<div class="regform">
+    <h2>@Model.Organization.OrganizationName</h2>
+    <h4>for @Model.person.Name &lt;@Model.person.EmailAddress&gt;</h4>
+   <form method="post" action="/OnlineReg/ManageGiving">
+    @Html.Hidden("pid", Model.pid)
+    @Html.Hidden("orgid", Model.orgid)
+        <fieldset>
+            <div class="section">
+                <label>Giving Opportunities</label>
+                <table class="grid" cellpadding="2">
+@{ var funds = CmsWeb.Models.OnlineRegPersonModel.Funds(); }
+@for (var n = 0; n < funds.Length; n++)
+{
+    var i = funds[n];
+                    <tr>
+                        <td>@i.Text</td>
+                        <td>@Html.TextBox("FundItem[" + n + "].Value", Model.FundItemValue(i.Value.ToInt()), new { @class = "short sum" })
+                            @Html.Hidden("FundItem[" + n + "].Key", i.Value)
+                            <div>@Html.ValidationMessage("FundItem[" + n + "].Value")</div>
+                        </td>
+                    </tr>
+}
+                    <tr class="alt">
+                        <td>Total</td>
+                        <td>@Html.Label("total", Model.total.ToString("n2"))</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="section">
+                <label>Payment Frequency</label>
+                <div>
+                    @Html.RadioButton("SemiEvery", "S")Twice monthly on day
+                    @Html.TextBox("Day1", null, new { @class = "shorter" }) 
+                    and @Html.TextBox("Day2", null, new { @class = "shorter" })
+                    <div>@Html.ValidationMessage("Semi")</div>
+                </div>
+                <div>
+                    @Html.RadioButton("SemiEvery", "E")Every
+                    @Html.TextBox("EveryN", null, new { @class = "shorter" })
+                    @Html.DropDownList("Period", new SelectList(new Dictionary<string, string>
+                { { "M", "Month(s)" },
+                  { "W", "Week(s)" },
+                }, "Key", "Value"))
+                    <div>@Html.ValidationMessage("Every")</div>
+                </div>
+            </div>
+            <div class="section">
+                <label>Make first payment on or after</label>
+                <div> On @Html.DatePicker("StartWhen")</div>
+                <div>@Html.ValidationMessage("StartWhen")</div>
+            </div>
+            <div class="section">
+                <label>Stop payments after</label>
+                <div>On @Html.DatePicker("StopWhen")</div>
+                <div>@Html.ValidationMessage("StopWhen")</div>
+            </div>
+            <div class="section">
+                <label>Payment Information</label>
+                <div>
+                    <div><br />
+                        @Html.RadioButton("Type", "C")Debit/Credit Card
+                        @Html.RadioButton("Type", "B")Bank Account
+                        <div>@Html.ValidationMessage("Type")</div><br>
+                    </div>
+                    <div class="Card paymentinfo">
+                        <p><label>Card Number</label>
+                        @Html.TextBox("Cardnumber", null, Model.Autocomplete)
+                        <div>@Html.ValidationMessage("Cardnumber")</div></p>
+                        <p><label>Expires</label>
+                        @Html.TextBox("Expires", null, new { @class = "short" }) mmyy
+                        <div>@Html.ValidationMessage("Expires")</div></p>
+                        <p><label>Card Code</label>
+                        @Html.TextBox("Cardcode", null, Model.Autocomplete)
+                        <div>@Html.ValidationMessage("Cardcode")</div></p>
+                    </div>
+                    <div class="Bank paymentinfo">
+                        <p><label>Routing Number</label>
+                        @Html.TextBox("Routing", null, Model.Autocomplete)
+                        <div>@Html.ValidationMessage("Routing")</div></p>
+                        <p><label>Account Number</label>
+                        @Html.TextBox("Account", null, Model.Autocomplete)
+                        <div>@Html.ValidationMessage("Account")</div></p>
+                    </div>
+                </div>
+                <div>
+                    <input id="submitit" type="submit" class="submitbutton" value='Submit' />
+                    <div>@Html.ValidationMessage("form")</div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+

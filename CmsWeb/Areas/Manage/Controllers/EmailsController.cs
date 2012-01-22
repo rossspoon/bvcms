@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -31,22 +31,21 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult Details(int id, string filter)
         {
             var m = new EmailModel { id = id, filter = filter ?? "All" };
-            if (!DbUtil.Db.CurrentUser.Roles.Contains("Admin"))
-            {
-                var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
-                if (m.queue.FromAddr != u.EmailAddress
-                        && !m.queue.EmailQueueTos.Any(et => et.PeopleId == u.PeopleId))
-                    return Content("not authorized");
-            }
+            if (User.IsInRole("Admin") || User.IsInRole("ManageEmails"))
+                return View(m);
+            var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
+            if (m.queue.FromAddr != u.EmailAddress
+                    && !m.queue.EmailQueueTos.Any(et => et.PeopleId == u.PeopleId))
+                return Content("not authorized");
             return View(m);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, ManageEmails")]
         public ActionResult Requeue(int id)
         {
             return Redirect("/Manage/Emails/Details/" + id);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, ManageEmails")]
         public ActionResult DeleteQueued(int id)
         {
             var email = (from e in DbUtil.Db.EmailQueues
@@ -69,14 +68,14 @@ namespace CmsWeb.Areas.Manage.Controllers
             };
             return View(em);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Recipients(int id, string filter)
         {
             var m = new EmailModel { id = id, filter = filter };
             UpdateModel(m.Pager);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult List(EmailsModel m)
         {
             UpdateModel(m.Pager);

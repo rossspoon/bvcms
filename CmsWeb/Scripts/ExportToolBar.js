@@ -84,13 +84,15 @@
         url += (url.match(/\?/) ? "&" : "?") + data;
         window.location = url;
     };
-    $("#ExportStartEnd").dialog({
+    var $di3 = {
         overlay: { background: "#000", opacity: 0.3 },
         bgiframe: true,
         modal: true,
         autoOpen: false,
         closeOnEscape: true
-    });
+    };
+    $("#ExportStartEnd").dialog($di3);
+    $("#SetExtraValues").dialog($di3);
     $(".ChooseStartEnd").live("click", function (ev) {
         ev.preventDefault();
         var d = $("#ExportStartEnd");
@@ -106,13 +108,31 @@
         });
         return false;
     });
+    $("a.ChooseExtraValues").live("click", function (ev) {
+        ev.preventDefault();
+        var d = $("#SetExtraValues");
+        d.dialog('option', 'title', $(this).text().trim());
+        d.dialog("open");
+        $("#SetExtraValuesRun").unbind("click").click(function (ev2) {
+            ev2.preventDefault();
+            var q = { field: $("#field", d).val(), value: $("#value", d).val() };
+            $.block();
+            $.post(ev.target.href, q, function (ret) {
+                $.unblock();
+                alert(ret);
+                $("#SetExtraValues").dialog("close");
+            });
+            return false;
+        });
+        return false;
+    });
 });
 String.prototype.startsWith = function(t, i) {
     return (t == this.substring(0, t.length));
 }
 String.prototype.appendQuery = function(q) {
     if (this && this.length > 0)
-        if (this.contains("?"))
+        if (this.contains("&") || this.contains("?"))
             return this + '&' + q;
         else
             return this + '?' + q;

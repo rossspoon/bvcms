@@ -164,6 +164,8 @@
     <Reference Include="System.Data.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -179,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attend.cs" />
+    <Compile Include="AuthorizeNet.cs" />
     <Compile Include="Batch\ExpressionVisitor.cs" />
     <Compile Include="Batch\LinqToSqlExtensions.cs" />
     <Compile Include="Blog.cs" />
@@ -194,12 +197,39 @@
     <Compile Include="APIFunctions.cs" />
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
+    <Compile Include="RecurringGiving.cs" />
+    <Compile Include="Dynamic.cs" />
+    <Compile Include="SagePayments.cs" />
+    <Compile Include="Service References\SagePaymentsAPI\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SageVaultAPI\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SageVaultBankCardAPI\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SageVaultCheckAPI\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionResponse.cs" />
+    <Compile Include="VolInterest.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
     <Compile Include="Generated\Duplicate.cs" />
     <Compile Include="Generated\Functions\FindPerson4.cs" />
     <Compile Include="Generated\MeetingExtra.cs" />
     <Compile Include="Generated\OrganizationExtra.cs" />
     <Compile Include="Generated\PrintJob.cs" />
+    <Compile Include="Generated\RecurringAmount.cs" />
+    <Compile Include="Generated\RecurringGiving.cs" />
     <Compile Include="QueryFunctions.cs" />
     <Compile Include="Generated\AttendCredit.cs" />
     <Compile Include="Generated\Contact.cs" />
@@ -220,7 +250,6 @@
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
-    <Compile Include="Dynamic.cs" />
     <Compile Include="Emailer.cs" />
     <Compile Include="Generated\ChangeLog.cs" />
     <Compile Include="Generated\Coupon.cs" />
@@ -260,7 +289,6 @@
     <Compile Include="RecReg.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Session2.cs" />
-    <Compile Include="VolInterest.cs" />
     <Compile Include="Forum.cs" />
     <Compile Include="ForumEntry.cs" />
     <Compile Include="Generated\Blog.cs" />
@@ -475,10 +503,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Service References\SagePaymentsAPI\transaction_processing.wsdl" />
+    <None Include="Service References\SageVaultAPI\CmsData.SageVaultAPI.BULK_RESULT.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SageVaultAPI\wsVault.wsdl" />
+    <None Include="Service References\SageVaultBankCardAPI\wsVaultBankcard.wsdl" />
+    <None Include="Service References\SageVaultCheckAPI\wsVaultVirtualCheck.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="books.xml" />
@@ -486,6 +522,34 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="QueryBuilder\CompareMap.xml" />
+    <None Include="Service References\SageVaultCheckAPI\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\SageVaultCheckAPI\configuration.svcinfo" />
+    <None Include="Service References\SageVaultCheckAPI\configuration91.svcinfo" />
+    <None Include="Service References\SageVaultCheckAPI\wsVaultVirtualCheck.disco" />
+    <None Include="Service References\SageVaultBankCardAPI\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\SageVaultBankCardAPI\configuration.svcinfo" />
+    <None Include="Service References\SageVaultBankCardAPI\configuration91.svcinfo" />
+    <None Include="Service References\SageVaultBankCardAPI\wsVaultBankcard.disco" />
+    <None Include="Service References\SageVaultAPI\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\SageVaultAPI\configuration.svcinfo" />
+    <None Include="Service References\SageVaultAPI\configuration91.svcinfo" />
+    <None Include="Service References\SageVaultAPI\wsVault.disco" />
+    <None Include="Service References\SagePaymentsAPI\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\SagePaymentsAPI\configuration.svcinfo" />
+    <None Include="Service References\SagePaymentsAPI\configuration91.svcinfo" />
+    <None Include="Service References\SagePaymentsAPI\transaction_processing.disco" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -519,6 +583,15 @@
       <Project>{C504E3D2-5498-451B-BF82-309623706F11}</Project>
       <Name>UtilityExtensions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\SagePaymentsAPI\" />
+    <WCFMetadataStorage Include="Service References\SageVaultAPI\" />
+    <WCFMetadataStorage Include="Service References\SageVaultBankCardAPI\" />
+    <WCFMetadataStorage Include="Service References\SageVaultCheckAPI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

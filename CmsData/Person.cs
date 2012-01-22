@@ -377,19 +377,24 @@ namespace CmsData
             p.AddressTypeId = 10;
 
             if (firstname.HasValue())
-                p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(firstname);
+            {
+                firstname = firstname.Trim();
+                p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(firstname)
+                    .Truncate(25);
+            }
             else
                 p.FirstName = "?";
             if (nickname.HasValue())
-                p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname);
+                p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname)
+                    .Truncate(15);
             if (lastname.HasValue())
-                p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname);
+            {
+                lastname = lastname.Trim();
+                p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname)
+                    .Truncate(30);
+            }
             else
                 p.LastName = "?";
-            p.FirstName = p.FirstName.Truncate(25);
-            p.MiddleName = p.MiddleName.Truncate(15);
-            p.NickName = p.NickName.Truncate(15);
-            p.LastName = p.LastName.Truncate(30);
 
             p.GenderId = gender;
             if (p.GenderId == 99)
@@ -925,7 +930,7 @@ namespace CmsData
             var e = PeopleExtras.SingleOrDefault(ee => ee.Field == field);
             if (e == null)
                 return "";
-            return e.Data;
+            return e.StrValue ?? e.Data ?? e.DateValue.ToString2("M/d/yy") ?? e.IntValue.ToString();
         }
         public PeopleExtra GetExtraValue(string field)
         {
@@ -968,6 +973,94 @@ namespace CmsData
         {
             var ev = GetExtraValue(field);
             ev.IntValue = value;
+        }
+        public RecurringGiving RecurringGiving()
+        {
+            var rg = RecurringGivings.SingleOrDefault();
+            if (rg == null)
+            {
+                rg = new RecurringGiving();
+                RecurringGivings.Add(rg);
+            }
+            return rg;
+        }
+        public Contribution PostUnattendedContribution(CMSDataContext Db, decimal Amt, int? Fund, string Description, bool pledge = false)
+        {
+            var typecode = BundleTypeCode.Online;
+            if (pledge)
+                typecode = BundleTypeCode.OnlinePledge;
+
+            var d = Util.Now.Date;
+            d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
+            var q = from b in Db.BundleHeaders
+                    where b.BundleHeaderTypeId == typecode
+                    where b.BundleStatusId == CmsData.Codes.BundleStatusCode.Open
+                    where b.ContributionDate >= d
+                    where b.ContributionDate < Util.Now
+                    orderby b.ContributionDate descending
+                    select b;
+            var bundle = q.FirstOrDefault();
+            if (bundle == null)
+            {
+                bundle = new BundleHeader
+                {
+                    BundleHeaderTypeId = typecode,
+                    BundleStatusId = BundleStatusCode.Open,
+                    CreatedBy = Util.UserId1,
+                    ContributionDate = d,
+                    CreatedDate = DateTime.Now,
+                    DepositDate = DateTime.Now,
+                    FundId = 1,
+                    RecordStatus = false,
+                    TotalCash = 0,
+                    TotalChecks = 0,
+                    TotalEnvelopes = 0,
+                    BundleTotal = 0
+                };
+                Db.BundleHeaders.InsertOnSubmit(bundle);
+            }
+            if (!Fund.HasValue)
+                Fund = (from f in Db.ContributionFunds
+                        where f.FundStatusId == 1
+                        orderby f.FundId
+                        select f.FundId).First();
+
+            var FinanceManagerId = Db.Setting("FinanceManagerId", "").ToInt2();
+            if (!FinanceManagerId.HasValue)
+            {
+                var qu = from u in DbUtil.Db.Users
+                         where u.UserRoles.Any(ur => ur.Role.RoleName == "Finance")
+                         orderby u.Person.LastName
+                         select u.UserId;
+                FinanceManagerId = qu.FirstOrDefault();
+                if (!FinanceManagerId.HasValue)
+                    FinanceManagerId = 1;
+            }
+            var bd = new CmsData.BundleDetail
+            {
+                BundleHeaderId = bundle.BundleHeaderId,
+                CreatedBy = FinanceManagerId.Value,
+                CreatedDate = DateTime.Now,
+            };
+            var typid = (int)Contribution.TypeCode.CheckCash;
+            if (pledge)
+                typid = (int)Contribution.TypeCode.Pledge;
+            bd.Contribution = new Contribution
+            {
+                CreatedBy = FinanceManagerId.Value,
+                CreatedDate = bd.CreatedDate,
+                FundId = Fund.Value,
+                PeopleId = PeopleId,
+                ContributionDate = bd.CreatedDate,
+                ContributionAmount = Amt,
+                ContributionStatusId = 0,
+                PledgeFlag = pledge,
+                ContributionTypeId = typid,
+                ContributionDesc = Description,
+            };
+            bundle.BundleDetails.Add(bd);
+            Db.SubmitChanges();
+            return bd.Contribution;
         }
     }
 }

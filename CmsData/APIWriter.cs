@@ -14,24 +14,27 @@ namespace CmsData.API
         public APIWriter()
         {
             var settings = new XmlWriterSettings();
-            settings.Encoding = new System.Text.UTF8Encoding(true);
             settings.Indent = true;
+            settings.Encoding = new System.Text.UTF8Encoding(false);
             sb = new StringBuilder();
-            w = XmlWriter.Create(sb, settings);
+            w = XmlWriter.Create(sb,settings);
         }
-        public void Start(string element)
+        public APIWriter Start(string element)
         {
             w.WriteStartElement(element);
+            return this;
         }
-        public void End()
+        public APIWriter End()
         {
             w.WriteEndElement();
+            return this;
         }
-        public void Attr(string attr, object i)
+        public APIWriter Attr(string attr, object i)
         {
             var s = tostr(i);
             if (s.HasValue())
                 w.WriteAttributeString(attr, s);
+            return this;
         }
         private string tostr(object i)
         {
@@ -46,15 +49,17 @@ namespace CmsData.API
                 s = i.ToString();
             return s;
         }
-        public void Add(string element, object i)
+        public APIWriter Add(string element, object i)
         {
             var s = tostr(i);
             if (s.HasValue())
                 w.WriteElementString(element, s);
+            return this;
         }
-        public void AddText(string text)
+        public APIWriter AddText(string text)
         {
             w.WriteRaw(text);
+            return this;
         }
         public override string ToString()
         {

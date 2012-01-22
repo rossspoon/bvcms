@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -29,6 +29,7 @@ namespace CmsWeb
     <!--table
     br {mso-data-placement:same-cell;}
     tr {vertical-align:top;}
+    td.Text {mso-number-format:\@}
     -->
     </style>
 </head>
@@ -56,64 +57,88 @@ namespace CmsWeb
             {
                 case "Individual":
                     dg.DataSource = ExportPeople.FetchExcelList(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "IndividualPicture":
                     GridView1.EnableViewState = false;
                     GridView1.AllowPaging = false;
                     GridView1.DataSource = ExportPeople.FetchExcelListPics(qid.Value, maxExcelRows);
+                    GridView1.DataBind();
+                    GridView1.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Library":
                     dg.DataSource = ExportPeople.FetchExcelLibraryList(qid.Value);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Family":
                     dg.DataSource = ctl.FetchExcelFamily(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "FamilyMembers":
-                    dg.DataSource = ExportPeople.FetchExcelListFamilyMembers(qid.Value);
+                    FamilyMembers.EnableViewState = false;
+                    FamilyMembers.AllowPaging = false;
+                    FamilyMembers.DataSource = ExportPeople.FetchExcelListFamilyMembers(qid.Value);
+                    FamilyMembers.DataBind();
+                    FamilyMembers.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "AllFamily":
                     dg.DataSource = ExportPeople.FetchExcelListFamily(qid.Value);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "ParentsOf":
                     dg.DataSource = ctl.FetchExcelParents(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "CouplesEither":
                     dg.DataSource = ctl.FetchExcelCouplesEither(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "CouplesBoth":
                     dg.DataSource = ctl.FetchExcelCouplesBoth(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Involvement":
                     dg.DataSource = ExportInvolvements.InvolvementList(qid.Value);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Children":
                     dg.DataSource = ExportInvolvements.ChildrenList(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Church":
                     dg.DataSource = ExportInvolvements.ChurchList(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Attend":
                     dg.DataSource = ExportInvolvements.AttendList(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Organization":
                     dg.DataSource = ExportInvolvements.OrgMemberList(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Groups":
                     dg.DataSource = ExportInvolvements.OrgMemberListGroups();
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Promotion":
                     dg.DataSource = ExportInvolvements.PromoList(qid.Value, maxExcelRows);
+                    dg.DataBind();
+                    dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
-            }
-            if (labelNameFormat == "IndividualPicture")
-            {
-                GridView1.DataBind();
-                GridView1.RenderControl(new HtmlTextWriter(r.Output));
-            }
-            else
-            {
-                dg.DataBind();
-                dg.RenderControl(new HtmlTextWriter(r.Output));
             }
             r.Write("</body></HTML>");
             r.Flush();

@@ -376,6 +376,10 @@ namespace CmsData
                     return Expressions.PendingCurrentOrg(Db, parm,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.HasPeopleExtraField:
+                    return Expressions.HasPeopleExtraField(parm,
+                                CompType,
+                                c.TextValue);
                 case QueryType.PeopleExtra:
                     return Expressions.PeopleExtra(parm,
                                 CompType,
@@ -518,6 +522,11 @@ namespace CmsData
                                CompType,
                                c.CodeIntIds);
                 // V -------------------
+                case QueryType.VisitNumber:
+                    return Expressions.VisitNumber(parm, Db,
+                               c.Quarters,
+                               CompType,
+                               c.DateValue);
                 case QueryType.VisitedCurrentOrg:
                     return Expressions.VisitedCurrentOrg(Db, parm,
                                CompType,

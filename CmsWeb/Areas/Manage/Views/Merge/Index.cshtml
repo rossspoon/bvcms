@@ -4,304 +4,541 @@
     ViewBag.Title = "Merge Controller";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-
-<h2>Merge Controller</h2>
-
+<script src="/Scripts/merge.js" type="text/javascript"></script>
+<h2>
+    Merge Controller</h2>
 <form method="post" action="/Manage/Merge/Run">
 @Html.HiddenFor(m => m.pi[0].PeopleId)
 @Html.HiddenFor(m => m.pi[1].PeopleId)
 <table class="grid">
-<thead>
-<tr>
-    <td></td>
-    <td colspan="2">From Record</td>
-    <td colspan="2">To Record</td>
-    <td colspan="2">Alternate Value</td>
-</tr>
-<tr>
-    <td>Field</td>
-    <td>Use</td>
-    <td>Value</td>
-    <td>Use</td>
-    <td>Value</td>
-    <td>Use</td>
-    <td>Value</td>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td>PeopleId</td>
-    <td></td>
-    <td><a href="/Person/Index/@Model.pi[0].PeopleId" target="look1">@Model.pi[0].PeopleId</a>
-        @Html.HiddenFor(m => m.pi[0].PeopleId)</td>
-    <td></td>
-    <td><a href="/Person/Index/@Model.pi[1].PeopleId" target="look2">@Model.pi[1].PeopleId</a>
-        @Html.HiddenFor(m => m.pi[1].PeopleId)</td>
-    <td></td>
-    <td><a href="/Manage/Merge?PeopleId1=@Model.pi[1].PeopleId&PeopleId2=@Model.pi[0].PeopleId">swap</a></td>
-</tr>
-<tr>
-    <td>TitleCode</td>
-    <td>@Html.RadioButtonFor(m => m.UseTitleCode, 0)</td>
-    <td>@Model.pi[0].TitleCode @Html.HiddenFor(m => m.pi[0].TitleCode)</td>
-    <td>@Html.RadioButtonFor(m => m.UseTitleCode, 1)</td>
-    <td>@Model.pi[1].TitleCode @Html.HiddenFor(m => m.pi[1].TitleCode)</td>
-    <td>@Html.RadioButtonFor(m => m.UseTitleCode, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].TitleCode) </td>
-</tr>
-<tr>
-    <td>FirstName</td>
-    <td>@Html.RadioButtonFor(m => m.UseFirstName, 0)</td>
-    <td>@Model.pi[0].FirstName @Html.HiddenFor(m => m.pi[0].FirstName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseFirstName, 1)</td>
-    <td>@Model.pi[1].FirstName @Html.HiddenFor(m => m.pi[1].FirstName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseFirstName, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].FirstName) </td>
-</tr>
-<tr>
-    <td>NickName</td>
-    <td>@Html.RadioButtonFor(m => m.UseNickName, 0)</td>
-    <td>@Model.pi[0].NickName @Html.HiddenFor(m => m.pi[0].NickName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseNickName, 1)</td>
-    <td>@Model.pi[1].NickName @Html.HiddenFor(m => m.pi[1].NickName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseNickName, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].NickName) </td>
-</tr>
-<tr>
-    <td>MiddleName</td>
-    <td>@Html.RadioButtonFor(m => m.UseMiddleName, 0)</td>
-    <td>@Model.pi[0].MiddleName @Html.HiddenFor(m => m.pi[0].MiddleName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseMiddleName, 1)</td>
-    <td>@Model.pi[1].MiddleName @Html.HiddenFor(m => m.pi[1].MiddleName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseMiddleName, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].MiddleName) </td>
-</tr>
-<tr>
-    <td>LastName</td>
-    <td>@Html.RadioButtonFor(m => m.UseLastName, 0)</td>
-    <td>@Model.pi[0].LastName @Html.HiddenFor(m => m.pi[0].LastName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseLastName, 1)</td>
-    <td>@Model.pi[1].LastName @Html.HiddenFor(m => m.pi[1].LastName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseLastName, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].LastName) </td>
-</tr>
-<tr>
-    <td>SuffixCode</td>
-    <td>@Html.RadioButtonFor(m => m.UseSuffixCode, 0)</td>
-    <td>@Model.pi[0].SuffixCode @Html.HiddenFor(m => m.pi[0].SuffixCode)</td>
-    <td>@Html.RadioButtonFor(m => m.UseSuffixCode, 1)</td>
-    <td>@Model.pi[1].SuffixCode @Html.HiddenFor(m => m.pi[1].SuffixCode)</td>
-    <td>@Html.RadioButtonFor(m => m.UseSuffixCode, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].SuffixCode) </td>
-</tr>
-<tr>
-    <td>FormerName</td>
-    <td>@Html.RadioButtonFor(m => m.UseMaiden, 0)</td>
-    <td>@Model.pi[0].Maiden @Html.HiddenFor(m => m.pi[0].Maiden)</td>
-    <td>@Html.RadioButtonFor(m => m.UseMaiden, 1)</td>
-    <td>@Model.pi[1].Maiden @Html.HiddenFor(m => m.pi[1].Maiden)</td>
-    <td>@Html.RadioButtonFor(m => m.UseMaiden, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].Maiden) </td>
-</tr>
-<tr>
-    <td>AltName</td>
-    <td>@Html.RadioButtonFor(m => m.UseAltName, 0)</td>
-    <td>@Model.pi[0].AltName @Html.HiddenFor(m => m.pi[0].AltName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseAltName, 1)</td>
-    <td>@Model.pi[1].AltName @Html.HiddenFor(m => m.pi[1].AltName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseAltName, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].AltName) </td>
-</tr>
-<tr>
-    <td>Gender</td>
-    <td>@Html.RadioButtonFor(m => m.UseGenderId, 0)</td>
-    <td>@Model.pi[0].Gender @Html.HiddenFor(m => m.pi[0].Gender)</td>
-    <td>@Html.RadioButtonFor(m => m.UseGenderId, 1)</td>
-    <td>@Model.pi[1].Gender @Html.HiddenFor(m => m.pi[1].Gender)</td>
-    <td>@Html.RadioButtonFor(m => m.UseGenderId, 2)</td>
-    <td>@Html.DropDownListFor(m => m.pi[2].GenderId, Model.GenderList()) </td>
-</tr>
-<tr>
-    <td>MaritalStatus</td>
-    <td>@Html.RadioButtonFor(m => m.UseMaritalStatusId, 0)</td>
-    <td>@Model.pi[0].MaritalStatus @Html.HiddenFor(m => m.pi[0].MaritalStatus)</td>
-    <td>@Html.RadioButtonFor(m => m.UseMaritalStatusId, 1)</td>
-    <td>@Model.pi[1].MaritalStatus @Html.HiddenFor(m => m.pi[1].MaritalStatus)</td>
-    <td>@Html.RadioButtonFor(m => m.UseMaritalStatusId, 2)</td>
-    <td>@Html.DropDownListFor(m => m.pi[2].MaritalStatusId, Model.MaritalStatusList()) </td>
-    
-</tr>
-<tr>
-    <td>DOB</td>
-    <td>@Html.RadioButtonFor(m => m.UseDOB, 0)</td>
-    <td>@Model.pi[0].DOB @Html.HiddenFor(m => m.pi[0].DOB)</td>
-    <td>@Html.RadioButtonFor(m => m.UseDOB, 1)</td>
-    <td>@Model.pi[1].DOB @Html.HiddenFor(m => m.pi[1].DOB)</td>
-    <td>@Html.RadioButtonFor(m => m.UseDOB, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].DOB) </td>
-</tr>
-<tr>
-    <td>EmailAddress</td>
-    <td>@Html.RadioButtonFor(m => m.UseEmailAddress, 0)</td>
-    <td>@Model.pi[0].EmailAddress @Html.HiddenFor(m => m.pi[0].EmailAddress)</td>
-    <td>@Html.RadioButtonFor(m => m.UseEmailAddress, 1)</td>
-    <td>@Model.pi[1].EmailAddress @Html.HiddenFor(m => m.pi[1].EmailAddress)</td>
-    <td>@Html.RadioButtonFor(m => m.UseEmailAddress, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].EmailAddress) </td>
-</tr>
-<tr>
-    <td>EmailAddress2</td>
-    <td>@Html.RadioButtonFor(m => m.UseEmailAddress2, 0)</td>
-    <td>@Model.pi[0].EmailAddress2 @Html.HiddenFor(m => m.pi[0].EmailAddress2)</td>
-    <td>@Html.RadioButtonFor(m => m.UseEmailAddress2, 1)</td>
-    <td>@Model.pi[1].EmailAddress2 @Html.HiddenFor(m => m.pi[1].EmailAddress2)</td>
-    <td>@Html.RadioButtonFor(m => m.UseEmailAddress2, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].EmailAddress2) </td>
-</tr>
-<tr>
-    <td>CellPhone</td>
-    <td>@Html.RadioButtonFor(m => m.UseCellPhone, 0)</td>
-    <td>@Model.pi[0].CellPhone.FmtFone() @Html.HiddenFor(m => m.pi[0].CellPhone)</td>
-    <td>@Html.RadioButtonFor(m => m.UseCellPhone, 1)</td>
-    <td>@Model.pi[1].CellPhone.FmtFone() @Html.HiddenFor(m => m.pi[1].CellPhone)</td>
-    <td>@Html.RadioButtonFor(m => m.UseCellPhone, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].CellPhone) </td>
-</tr>
-<tr>
-    <td>HomePhone</td>
-    <td>@Html.RadioButtonFor(m => m.UseHomePhone, 0)</td>
-    <td>@Model.pi[0].HomePhone.FmtFone() @Html.HiddenFor(m => m.pi[0].HomePhone)</td>
-    <td>@Html.RadioButtonFor(m => m.UseHomePhone, 1)</td>
-    <td>@Model.pi[1].HomePhone.FmtFone() @Html.HiddenFor(m => m.pi[1].HomePhone)</td>
-    <td>@Html.RadioButtonFor(m => m.UseHomePhone, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].HomePhone) </td>
-</tr>
-<tr>
-    <td>WorkPhone</td>
-    <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 0)</td>
-    <td>@Model.pi[0].WorkPhone.FmtFone() @Html.HiddenFor(m => m.pi[0].WorkPhone)</td>
-    <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 1)</td>
-    <td>@Model.pi[1].WorkPhone.FmtFone() @Html.HiddenFor(m => m.pi[1].WorkPhone)</td>
-    <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].WorkPhone) </td>
-</tr>
-<tr>
-    <td>AddressLineOne</td>
-    <td>@Html.RadioButtonFor(m => m.UseAddressLineOne, 0)</td>
-    <td>@Model.pi[0].AddressLineOne @Html.HiddenFor(m => m.pi[0].AddressLineOne)</td>
-    <td>@Html.RadioButtonFor(m => m.UseAddressLineOne, 1)</td>
-    <td>@Model.pi[1].AddressLineOne @Html.HiddenFor(m => m.pi[1].AddressLineOne)</td>
-    <td>@Html.RadioButtonFor(m => m.UseAddressLineOne, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].AddressLineOne) </td>
-</tr>
-<tr>
-    <td>AddressLineTwo</td>
-    <td>@Html.RadioButtonFor(m => m.UseAddressLineTwo, 0)</td>
-    <td>@Model.pi[0].AddressLineTwo @Html.HiddenFor(m => m.pi[0].AddressLineTwo)</td>
-    <td>@Html.RadioButtonFor(m => m.UseAddressLineTwo, 1)</td>
-    <td>@Model.pi[1].AddressLineTwo @Html.HiddenFor(m => m.pi[1].AddressLineTwo)</td>
-    <td>@Html.RadioButtonFor(m => m.UseAddressLineTwo, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].AddressLineTwo) </td>
-</tr>
-<tr>
-    <td>CityName</td>
-    <td>@Html.RadioButtonFor(m => m.UseCityName, 0)</td>
-    <td>@Model.pi[0].CityName @Html.HiddenFor(m => m.pi[0].CityName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseCityName, 1)</td>
-    <td>@Model.pi[1].CityName @Html.HiddenFor(m => m.pi[1].CityName)</td>
-    <td>@Html.RadioButtonFor(m => m.UseCityName, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].CityName) </td>
-</tr>
-<tr>
-    <td>StateCode</td>
-    <td>@Html.RadioButtonFor(m => m.UseStateCode, 0)</td>
-    <td>@Model.pi[0].StateCode @Html.HiddenFor(m => m.pi[0].StateCode)</td>
-    <td>@Html.RadioButtonFor(m => m.UseStateCode, 1)</td>
-    <td>@Model.pi[1].StateCode @Html.HiddenFor(m => m.pi[1].StateCode)</td>
-    <td>@Html.RadioButtonFor(m => m.UseStateCode, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].StateCode) </td>
-</tr>
-<tr>
-    <td>ZipCode</td>
-    <td>@Html.RadioButtonFor(m => m.UseZipCode, 0)</td>
-    <td>@Model.pi[0].ZipCode @Html.HiddenFor(m => m.pi[0].ZipCode)</td>
-    <td>@Html.RadioButtonFor(m => m.UseZipCode, 1)</td>
-    <td>@Model.pi[1].ZipCode @Html.HiddenFor(m => m.pi[1].ZipCode)</td>
-    <td>@Html.RadioButtonFor(m => m.UseZipCode, 2)</td>
-    <td>@Html.TextBoxFor(m => m.pi[2].ZipCode) </td>
-</tr>
-<tr>
-    <td>Created</td>
-    <td></td>
-    <td>@Model.pi[0].Created.FormatDateTm()</td>
-    <td></td>
-    <td>@Model.pi[1].Created.FormatDateTm()</td>
-    <td></td>
-</tr>
-<tr>
-    <td>SameFam</td>
-    <td></td>
-    <td>@(Model.pi[0].FamilyId == Model.pi[1].FamilyId)</td>
-    <td></td>
-    <td></td>
-    <td></td>
-</tr>
-<tr>
-    <td>Has Other Family</td>
-    <td></td>
-    <td>@Model.pi[0].hasotherfamily</td>
-    <td></td>
-    <td>@Model.pi[1].hasotherfamily</td>
-    <td></td>
-</tr>
-<tr>
-    <td>Has Other Relations</td>
-    <td></td>
-    <td>@Model.pi[0].hasrelations</td>
-    <td></td>
-    <td>@Model.pi[1].hasrelations</td>
-    <td></td>
-</tr>
-<tr>
-    <td>Has Involvements</td>
-    <td></td>
-    <td>@Model.pi[0].hasinvolvements</td>
-    <td></td>
-    <td>@Model.pi[1].hasinvolvements</td>
-    <td></td>
-</tr>
-<tr>
-    <td>NotDuplicate</td>
-    <td></td>
-    <td>@Model.pi[0].notdup @Html.HiddenFor(m => m.pi[0].notdup)</td>
-    <td></td>
-    <td>@Model.pi[1].notdup @Html.HiddenFor(m => m.pi[1].notdup)</td>
-    <td></td>
-    <td><input name="submit" type="submit" value="Toggle Not Duplicate" /></td>
-</tr>
-</tbody>
-<tfoot>
-<tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td colspan="3">
-    <input name="submit" type="submit" value="Merge Fields" />
-    @if (User.IsInRole("Admin"))
-    {
-    <br /><br />@Html.CheckBox("Delete") <b>Delete</b><br />
-    <input name="submit" type="submit" value="Merge Fields and Move Related Records" />
-    }
-    </td>
-</tr>
-</tfoot>
+    <thead>
+        <tr>
+            <td>
+            </td>
+            <td colspan="2">
+                From Record
+            </td>
+            <td colspan="2">
+                To Record
+            </td>
+            <td colspan="2">
+                Alternate Value
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Field
+            </td>
+            <td>
+                Use
+            </td>
+            <td>
+                Value
+            </td>
+            <td>
+                Use
+            </td>
+            <td>
+                Value
+            </td>
+            <td>
+                Use
+            </td>
+            <td>
+                Value
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                PeopleId
+            </td>
+            <td><input id="usefrom" name="useall" type="radio" value="0">
+            </td>
+            <td>
+                <a href="/Person/Index/@Model.pi[0].PeopleId" target="look1">@Model.pi[0].PeopleId</a>
+                @Html.HiddenFor(m => m.pi[0].PeopleId)
+            </td>
+            <td><input checked="checked" id="usetarget" name="useall" type="radio" value="1">
+            </td>
+            <td>
+                <a href="/Person/Index/@Model.pi[1].PeopleId" target="look2">@Model.pi[1].PeopleId</a>
+                @Html.HiddenFor(m => m.pi[1].PeopleId)
+            </td>
+            <td>
+            </td>
+            <td>
+                <a href="/Manage/Merge?PeopleId1=@Model.pi[1].PeopleId&PeopleId2=@Model.pi[0].PeopleId">
+                    swap</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[0].FamilyId == Model.pi[1].FamilyId ? "Same Family" : "")
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[0].hasotherfamily ? "Has Family" : "")
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[1].hasotherfamily ? "Has Family" : "")
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[0].hasrelations ? "Has Relations" : "")
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[1].hasrelations ? "Has Relations" : "")
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                TitleCode
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseTitleCode, 0)
+            </td>
+            <td>@Model.pi[0].TitleCode @Html.HiddenFor(m => m.pi[0].TitleCode)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseTitleCode, 1)
+            </td>
+            <td>@Model.pi[1].TitleCode @Html.HiddenFor(m => m.pi[1].TitleCode)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseTitleCode, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].TitleCode)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                FirstName
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseFirstName, 0)
+            </td>
+            <td>@Model.pi[0].FirstName @Html.HiddenFor(m => m.pi[0].FirstName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseFirstName, 1)
+            </td>
+            <td>@Model.pi[1].FirstName @Html.HiddenFor(m => m.pi[1].FirstName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseFirstName, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].FirstName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                NickName
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseNickName, 0)
+            </td>
+            <td>@Model.pi[0].NickName @Html.HiddenFor(m => m.pi[0].NickName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseNickName, 1)
+            </td>
+            <td>@Model.pi[1].NickName @Html.HiddenFor(m => m.pi[1].NickName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseNickName, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].NickName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                MiddleName
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMiddleName, 0)
+            </td>
+            <td>@Model.pi[0].MiddleName @Html.HiddenFor(m => m.pi[0].MiddleName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMiddleName, 1)
+            </td>
+            <td>@Model.pi[1].MiddleName @Html.HiddenFor(m => m.pi[1].MiddleName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMiddleName, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].MiddleName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                LastName
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseLastName, 0)
+            </td>
+            <td>@Model.pi[0].LastName @Html.HiddenFor(m => m.pi[0].LastName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseLastName, 1)
+            </td>
+            <td>@Model.pi[1].LastName @Html.HiddenFor(m => m.pi[1].LastName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseLastName, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].LastName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                SuffixCode
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseSuffixCode, 0)
+            </td>
+            <td>@Model.pi[0].SuffixCode @Html.HiddenFor(m => m.pi[0].SuffixCode)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseSuffixCode, 1)
+            </td>
+            <td>@Model.pi[1].SuffixCode @Html.HiddenFor(m => m.pi[1].SuffixCode)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseSuffixCode, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].SuffixCode)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                FormerName
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMaiden, 0)
+            </td>
+            <td>@Model.pi[0].Maiden @Html.HiddenFor(m => m.pi[0].Maiden)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMaiden, 1)
+            </td>
+            <td>@Model.pi[1].Maiden @Html.HiddenFor(m => m.pi[1].Maiden)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMaiden, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].Maiden)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                AltName
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAltName, 0)
+            </td>
+            <td>@Model.pi[0].AltName @Html.HiddenFor(m => m.pi[0].AltName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAltName, 1)
+            </td>
+            <td>@Model.pi[1].AltName @Html.HiddenFor(m => m.pi[1].AltName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAltName, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].AltName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Gender
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseGenderId, 0)
+            </td>
+            <td>@Model.pi[0].Gender @Html.HiddenFor(m => m.pi[0].Gender)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseGenderId, 1)
+            </td>
+            <td>@Model.pi[1].Gender @Html.HiddenFor(m => m.pi[1].Gender)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseGenderId, 2)
+            </td>
+            <td>@Html.DropDownListFor(m => m.pi[2].GenderId, Model.GenderList())
+            </td>
+        </tr>
+        <tr>
+            <td>
+                MaritalStatus
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMaritalStatusId, 0)
+            </td>
+            <td>@Model.pi[0].MaritalStatus @Html.HiddenFor(m => m.pi[0].MaritalStatus)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMaritalStatusId, 1)
+            </td>
+            <td>@Model.pi[1].MaritalStatus @Html.HiddenFor(m => m.pi[1].MaritalStatus)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseMaritalStatusId, 2)
+            </td>
+            <td>@Html.DropDownListFor(m => m.pi[2].MaritalStatusId, Model.MaritalStatusList())
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DOB
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseDOB, 0)
+            </td>
+            <td>@Model.pi[0].DOB @Html.HiddenFor(m => m.pi[0].DOB)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseDOB, 1)
+            </td>
+            <td>@Model.pi[1].DOB @Html.HiddenFor(m => m.pi[1].DOB)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseDOB, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].DOB)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                EmailAddress
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseEmailAddress, 0)
+            </td>
+            <td>@Model.pi[0].EmailAddress @Html.HiddenFor(m => m.pi[0].EmailAddress)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseEmailAddress, 1)
+            </td>
+            <td>@Model.pi[1].EmailAddress @Html.HiddenFor(m => m.pi[1].EmailAddress)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseEmailAddress, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].EmailAddress)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                EmailAddress2
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseEmailAddress2, 0)
+            </td>
+            <td>@Model.pi[0].EmailAddress2 @Html.HiddenFor(m => m.pi[0].EmailAddress2)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseEmailAddress2, 1)
+            </td>
+            <td>@Model.pi[1].EmailAddress2 @Html.HiddenFor(m => m.pi[1].EmailAddress2)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseEmailAddress2, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].EmailAddress2)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CellPhone
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCellPhone, 0)
+            </td>
+            <td>@Model.pi[0].CellPhone.FmtFone() @Html.HiddenFor(m => m.pi[0].CellPhone)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCellPhone, 1)
+            </td>
+            <td>@Model.pi[1].CellPhone.FmtFone() @Html.HiddenFor(m => m.pi[1].CellPhone)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCellPhone, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].CellPhone)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                HomePhone
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseHomePhone, 0)
+            </td>
+            <td>@Model.pi[0].HomePhone.FmtFone() @Html.HiddenFor(m => m.pi[0].HomePhone)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseHomePhone, 1)
+            </td>
+            <td>@Model.pi[1].HomePhone.FmtFone() @Html.HiddenFor(m => m.pi[1].HomePhone)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseHomePhone, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].HomePhone)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                WorkPhone
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 0)
+            </td>
+            <td>@Model.pi[0].WorkPhone.FmtFone() @Html.HiddenFor(m => m.pi[0].WorkPhone)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 1)
+            </td>
+            <td>@Model.pi[1].WorkPhone.FmtFone() @Html.HiddenFor(m => m.pi[1].WorkPhone)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].WorkPhone)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                AddressLineOne
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAddressLineOne, 0)
+            </td>
+            <td>@Model.pi[0].AddressLineOne @Html.HiddenFor(m => m.pi[0].AddressLineOne)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAddressLineOne, 1)
+            </td>
+            <td>@Model.pi[1].AddressLineOne @Html.HiddenFor(m => m.pi[1].AddressLineOne)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAddressLineOne, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].AddressLineOne)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                AddressLineTwo
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAddressLineTwo, 0)
+            </td>
+            <td>@Model.pi[0].AddressLineTwo @Html.HiddenFor(m => m.pi[0].AddressLineTwo)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAddressLineTwo, 1)
+            </td>
+            <td>@Model.pi[1].AddressLineTwo @Html.HiddenFor(m => m.pi[1].AddressLineTwo)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseAddressLineTwo, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].AddressLineTwo)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CityName
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCityName, 0)
+            </td>
+            <td>@Model.pi[0].CityName @Html.HiddenFor(m => m.pi[0].CityName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCityName, 1)
+            </td>
+            <td>@Model.pi[1].CityName @Html.HiddenFor(m => m.pi[1].CityName)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCityName, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].CityName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                StateCode
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseStateCode, 0)
+            </td>
+            <td>@Model.pi[0].StateCode @Html.HiddenFor(m => m.pi[0].StateCode)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseStateCode, 1)
+            </td>
+            <td>@Model.pi[1].StateCode @Html.HiddenFor(m => m.pi[1].StateCode)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseStateCode, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].StateCode)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                ZipCode
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseZipCode, 0)
+            </td>
+            <td>@Model.pi[0].ZipCode @Html.HiddenFor(m => m.pi[0].ZipCode)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseZipCode, 1)
+            </td>
+            <td>@Model.pi[1].ZipCode @Html.HiddenFor(m => m.pi[1].ZipCode)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseZipCode, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].ZipCode)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Created
+            </td>
+            <td>
+            </td>
+            <td>@Model.pi[0].Created.FormatDateTm()
+            </td>
+            <td>
+            </td>
+            <td>@Model.pi[1].Created.FormatDateTm()
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[0].hasinvolvements ? "Has Involvements" : "")
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[1].hasinvolvements ? "Has Involvements" : "")
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[0].notdup ? "Not Dup" : "") @Html.HiddenFor(m => m.pi[0].notdup)
+            </td>
+            <td>
+            </td>
+            <td style="color: Red">@(Model.pi[1].notdup ? "Not Dup" : "") @Html.HiddenFor(m => m.pi[1].notdup)
+            </td>
+            <td>
+            </td>
+            <td>
+                <input name="submit" type="submit" value="Toggle Not Duplicate" />
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td colspan="3">
+                <input name="submit" type="submit" value="Merge Fields" />
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager2"))
+                {
+                    <br />
+                    <br />@Html.CheckBox("Delete", true) <b>Delete</b><br />
+                    <input name="submit" type="submit" value="Merge Fields and Move Related Records" />
+                }
+            </td>
+        </tr>
+    </tfoot>
 </table>
 </form>
-<script type="text/javascript">
-
-    $(function () {
-        $('table.grid > tbody > tr:odd').addClass('alt');
-        $('table.grid > thead td').css('font-weight', 'bold');
-    });
-</script>

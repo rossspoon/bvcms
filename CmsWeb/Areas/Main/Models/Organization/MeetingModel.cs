@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,10 +23,8 @@ namespace CmsWeb.Models.OrganizationPage
         {
             if (_meetings == null)
             {
-                // 34.7/127.0,lastupdate=8/22/11 6:20 AM,TimeOffsetFromCentral=-9
-
-                var tzoffset =  DbUtil.Db.Setting("latlong", "0"); // positive to the east, negative to the west
-                var midnight = Util.Now.Date.AddDays(1);
+                var tzoffset = DbUtil.Db.Setting("TZOffset", "0").ToInt(); // positive to the east, negative to the west
+                var midnight = Util.Now.Date.AddDays(1).AddHours(tzoffset);
                 _meetings = from m in DbUtil.Db.Meetings
                             where m.OrganizationId == OrgId
                             select m;

@@ -46,13 +46,7 @@
         var q = f.serialize();
         $.refreshenabled = true;
         $.post($(this).attr('href'), q, function (ret) {
-            if (ret.substr(0, 13) === '/Person/Index') {
-                window.location = ret;
-                return;
-            } else if (ret.substr(0, 30) === '/OnlineReg/ManageSubscriptions') {
-                window.location = ret;
-                return;
-            } else if (ret.substr(0, 23) === '/OnlineReg/ManagePledge') {
+            if (ret.charAt(0) === '/') {
                 window.location = ret;
                 return;
             }
@@ -65,7 +59,16 @@
     });
     $.setButtons = function () {
         $(".submitbutton").button();
-    }
+    };
+    $.ShowPaymentInfo = function () {
+        var v = $("input[name=Type]:checked").val();
+        $("div.Card").hide();
+        $("div.Bank").hide();
+        if (v === 'C')
+            $("div.Card").show();
+        else if (v === 'B')
+            $("div.Bank").show();
+    };
     $.InstructionsShow = function () {
         $("div.instructions").hide();
         if ($("#selectfamily").attr("id"))
@@ -84,6 +87,7 @@
             $("div.instructions.submit").show();
         else if ($("#sorry").attr("id"))
             $("div.instructions.sorry").show();
+        $.ShowPaymentInfo();
     }
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
@@ -151,6 +155,8 @@
         });
         $("#total").html(sum.toFixed(2));
     });
+    $("input[name=Type]").live("change", $.ShowPaymentInfo);
+
     $("#password").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#loginbt').click();

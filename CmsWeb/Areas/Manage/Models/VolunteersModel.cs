@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UtilityExtensions;
@@ -51,19 +51,21 @@ namespace CmsWeb.Models
         {
             var orgkeys = Person.OrgKeys(View);
 
-            var q = DbUtil.Db.People.Where(p => p.VolInterestInterestCodes.Count() > 0);
+            var q = from p in DbUtil.Db.People
+                    where p.VolInterestInterestCodes.Count() > 0
+                    select p;
             var Qb = DbUtil.Db.LoadQueryById(QueryId);
             if (Qb != null)
                 q = DbUtil.Db.People.Where(Qb.Predicate(DbUtil.Db));
 
             if (Org == "na")
                 q = from p in q
-                    where p.VolInterestInterestCodes.Count(c => orgkeys.Contains(c.VolInterestCode.Org)) == 0
+                    where p.VolInterestInterestCodes.Count(c => orgkeys.Contains(c.VolInterestCode.Org)) == 0 
                     select p;
             else
                 q = from p in q
                     where Org == "ns" || Org == null || 
-                        p.VolInterestInterestCodes.Any(vi => vi.VolInterestCode.Org == Org)
+                        p.VolInterestInterestCodes.Any(vi => vi.VolInterestCode.Org == Org) 
                     select p;
 
             //if (SmallGroup != "ns")

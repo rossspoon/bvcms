@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -328,7 +328,7 @@ namespace CmsCheckin
                 sw.WriteLine("^LS0");
                 sw.WriteLine(@"^FT29,75^A0N,62,62^FH\^FD{0}^FS".Fmt(li.first));
                 sw.WriteLine(@"^FT29,118^A0N,28,28^FH\^FD{0}^FS".Fmt(li.last));
-                sw.WriteLine(@"^FT29,153^A0N,28,28^FH\^FD{0} |{1}{2}{3}^FS".Fmt(li.mv,
+                sw.WriteLine(@"^FT29,153^A0N,28,28^FH\^FD{0} |{1}{2}{3}^FS".Fmt(li.mv.Replace("V", "G"),
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
                     li.custody ? " C |" : ""));
@@ -356,7 +356,7 @@ namespace CmsCheckin
                 sw.WriteLine("A2");
                 sw.WriteLine("1911A1800500010" + li.first);
                 sw.WriteLine("1911A1000350011" + li.last);
-                sw.WriteLine("1911A1000190011{0} |{1}{2}{3}".Fmt(li.mv,
+                sw.WriteLine("1911A1000190011{0} |{1}{2}{3}".Fmt(li.mv.Replace("V", "G"),
                     li.allergies.HasValue() ? " A |" : "",
                     li.transport ? " T |" : "",
                     li.custody ? " C |" : ""));
@@ -408,7 +408,7 @@ namespace CmsCheckin
                     sw.WriteLine(@"^FT28,{0}^A0N,28,28^FH\^FD{1}^FS".Fmt(vertpos, loc));
                     sw.WriteLine(@"^FT112,{0}^A0N,28,28^FH\^FD{1}^FS".Fmt(vertpos,
                         "{0:h:mm t}".Fmt(i.hour).PadLeft(7, '~').Replace("~", "  ")));
-                    sw.WriteLine(@"^FT42,{0}^A0N,23,24^FH\^FD{1} ({2})^FS".Fmt(vertpos + 28, i.org, i.mv));
+                    sw.WriteLine(@"^FT42,{0}^A0N,23,24^FH\^FD{1} ({2})^FS".Fmt(vertpos + 28, i.org, i.mv.Replace("V", "G")));
 
                     vertpos -= 57;
                 }
@@ -438,7 +438,7 @@ namespace CmsCheckin
                     sw.WriteLine("AC,17,{0},1,1,0,0,{1}".Fmt(vertpos, loc));
                     sw.WriteLine("AC,120,{0},1,1,0,0,{1}".Fmt(vertpos,
                         "{0:h:mm t}".Fmt(i.hour).PadLeft(7, '~').Replace("~", "  ")));
-                    sw.WriteLine("AB,36,{0},1,1,0,0,{1} ({2})".Fmt(vertpos + 31, i.org, i.mv));
+                    sw.WriteLine("AB,36,{0},1,1,0,0,{1} ({2})".Fmt(vertpos + 31, i.org, i.mv.Replace("V", "G")));
                     vertpos -= 68;
                 }
                 sw.WriteLine("E");
@@ -463,7 +463,7 @@ namespace CmsCheckin
                     sw.WriteLine("AC,17,202,1,1,0,0," + loc);
                     sw.WriteLine("AC,120,202,1,1,0,0," +
                         "{0:h:mm t}".Fmt(i.hour).PadLeft(7, '~').Replace("~", "  "));
-                    sw.WriteLine("AB,36,233,1,1,0,0,{0} ({1})".Fmt(i.org, i.mv));
+                    sw.WriteLine("AB,36,233,1,1,0,0,{0} ({1})".Fmt(i.org, i.mv.Replace("V", "G")));
                     vertpos += 68;
                     sw.WriteLine("E");
                 }
@@ -475,7 +475,7 @@ namespace CmsCheckin
         {
             if (li.n == 0 || !Program.Printer.HasValue())
                 return 0;
-            if (!li.mv.Contains("G"))
+            if (li.mv != "G" && li.mv != "V")
                 return 0;
             var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("ZDesigner"))
@@ -520,7 +520,7 @@ namespace CmsCheckin
         {
             if (li.n == 0 || !Program.Printer.HasValue())
                 return 0;
-            if (!li.mv.Contains("G"))
+            if (li.mv != "G" && li.mv != "V")
                 return 0;
             var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("ZDesigner"))
@@ -529,7 +529,7 @@ namespace CmsCheckin
                 sw.WriteLine(@"^FT27,87^A0N,79,79^FH\^FD{0}^FS".Fmt(li.first));
                 sw.WriteLine(@"^FT26,138^A0N,39,38^FH\^FD{0}^FS".Fmt(li.last));
                 sw.WriteLine(@"^FT26,173^A0N,28,28^FH\^FDGuest {0}^FS".Fmt(li.allergies));
-                sw.WriteLine(@"^FT26,217^A0N,23,24^FH\^FD{0} ({1})^FS".Fmt(li.org, li.mv));
+                sw.WriteLine(@"^FT26,217^A0N,23,24^FH\^FD{0} ({1})^FS".Fmt(li.org, li.mv.Replace("V", "G")));
                 sw.WriteLine(@"^FT27,263^A0N,28,28^FH\^FD{0}^FS".Fmt(li.location));
                 sw.WriteLine(@"^FT143,263^A0N,28,28^FH\^FD{0:M/d/yy}^FS".Fmt(li.hour));
                 sw.WriteLine(@"^FT252,263^A0N,28,28^FH\^FD{0:h:mm t}^FS".Fmt(li.hour));
@@ -550,7 +550,7 @@ namespace CmsCheckin
                 sw.WriteLine("AG,16,0,1,1,0,0," + li.first);
                 sw.WriteLine("AE,18,66,1,1,0,0," + li.last);
                 sw.WriteLine("AD,18,108,1,1,0,0,Guest " + allergies);
-                sw.WriteLine("AB,18,152,1,1,0,0,{0} ({1})".Fmt(li.org, li.mv));
+                sw.WriteLine("AB,18,152,1,1,0,0,{0} ({1})".Fmt(li.org, li.mv.Replace("V", "G")));
                 sw.WriteLine("AD,18,195,1,1,0,0," + loc);
                 sw.WriteLine("AD,158,195,1,1,0,0,{0:M/d/yy}".Fmt(li.hour));
                 sw.WriteLine("AD,303,195,1,1,0,0,{0:h:mm t}".Fmt(li.hour));
@@ -565,7 +565,7 @@ namespace CmsCheckin
         {
             if (li.n == 0 || !Program.Printer.HasValue())
                 return 0;
-            if (!li.mv.Contains("G") || !li.location.HasValue())
+            if (!li.mv.Replace("V", "G").Contains("G") || !li.location.HasValue())
                 return 0;
             var sw = new StreamWriter(ms);
             if (Program.Printer.Contains("ZDesigner"))
@@ -610,7 +610,7 @@ namespace CmsCheckin
         {
             if (!Program.Printer.HasValue())
                 return 0;
-            if (!list.Any(li => li.Any(i => i.mv.Contains("G") && i.location.HasValue())))
+            if (!list.Any(li => li.Any(i => i.mv.Replace("V", "G").Contains("G") && i.location.HasValue())))
                 return 0;
             if (list.Sum(li => li.Sum(i => i.n)) == 0)
                 return 0;
@@ -637,7 +637,7 @@ namespace CmsCheckin
                         sw.WriteLine("AC,394,{0},1,1,0,0,{1}".Fmt(vertpos + 5, loc));
                         sw.WriteLine("AC,500,{0},1,1,0,0,{1}".Fmt(vertpos + 5, "{0:h:mm t}".Fmt(i.hour).PadLeft(7, '~').Replace("~", "  ")));
                         vertpos += 42;
-                        sw.WriteLine("AB,16,{0},1,1,0,0,{1} ({2})".Fmt(vertpos + 4, i.org, i.mv));
+                        sw.WriteLine("AB,16,{0},1,1,0,0,{1} ({2})".Fmt(vertpos + 4, i.org, i.mv.Replace("V", "G")));
                         vertpos += 42;
                     }
                     sw.WriteLine("Lo,13,{0},584,{1}".Fmt(vertpos + 3, vertpos + 4));

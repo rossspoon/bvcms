@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -225,9 +225,8 @@ namespace CmsWeb.Models
                     p.person.PrimaryCity,
                     p.person.PrimaryState,
                     p.person.PrimaryZip);
-                PostBundleModel.PostUnattendedContribution(
+                p.person.PostUnattendedContribution(DbUtil.Db,
                     ti.Donate.Value,
-                    p.PeopleId,
                     p.setting.DonationFundId,
                     desc);
                 var ma = re.Match(message);
@@ -338,11 +337,10 @@ AmountDue: {4:C}<br/>
                 string EmailSubject = null;
                 string message = null;
 
-                if (settings[p.orgid.Value].Body.HasValue())
+                if (p.setting.Body.HasValue())
                 {
-                    var os = settings[p.orgid.Value];
-                    EmailSubject = Util.PickFirst(os.Subject, "no subject");
-                    message = os.Body;
+                    EmailSubject = Util.PickFirst(p.setting.Subject, "no subject");
+                    message = p.setting.Body;
                 }
                 else
                 {
@@ -425,7 +423,7 @@ Total Fee paid for this registration session: {4:C}<br/>
         {
             var p = List[0];
             if (p.IsNew)
-                p.AddPerson(null, EntryPointForDiv());
+                p.AddPerson(null, GetEntryPoint());
             if (p.CreatingAccount == true)
                 p.CreateAccount();
 
@@ -437,8 +435,13 @@ Total Fee paid for this registration session: {4:C}<br/>
                     @"Hi {name},
 <p>Here is your <a href=""{url}"">link</a> to manage your subscriptions. (note: it will only work once for security reasons)</p> ");
 
+            List<Person> Staff = null;
+            if (masterorgid != null)
+                Staff = DbUtil.Db.StaffPeopleForOrg(masterorgid.Value);
+            else
+                Staff = DbUtil.Db.StaffPeopleForDiv(divid.Value);
             p.SendOneTimeLink(
-                DbUtil.Db.StaffPeopleForDiv(divid.Value).First().FromEmail,
+                Staff.First().FromEmail,
                 Util.ServerLink("/OnlineReg/ManageSubscriptions/"), "Manage Your Subscriptions", message);
         }
         public void ConfirmManagePledge()
@@ -459,8 +462,30 @@ Total Fee paid for this registration session: {4:C}<br/>
                 DbUtil.Db.StaffPeopleForOrg(orgid.Value).First().FromEmail,
                 Util.ServerLink("/OnlineReg/ManagePledge/"), "Manage your pledge", message);
         }
-        public int EntryPointForDiv()
+        public void ConfirmManageGiving()
         {
+            var p = List[0];
+            if (p.IsNew)
+                p.AddPerson(null, p.org.EntryPointId ?? 0);
+            if (p.CreatingAccount == true)
+                p.CreateAccount();
+
+            var c = DbUtil.Content("OneTimeManageGiving");
+            if (c == null)
+                c = new Content();
+            var message = @"Hi {name},
+<p>Here is your <a href=""{url}"">link</a> to manage your recurring giving. (note: it will only work once for security reasons)</p> ";
+
+            p.SendOneTimeLink(
+                DbUtil.Db.StaffPeopleForOrg(orgid.Value).First().FromEmail,
+                Util.ServerLink("/OnlineReg/ManageGiving/"), "Manage your recurring giving", message);
+        }
+        public int GetEntryPoint()
+        {
+            if (org != null)
+                return org.EntryPointId ?? 0;
+            if (masterorgid != null)
+                return masterorg.EntryPointId ?? 0;
             var q = from o in GetOrgsInDiv()
                     where o.RegistrationTypeId != RegistrationTypeCode.None
                     where o.EntryPointId > 0

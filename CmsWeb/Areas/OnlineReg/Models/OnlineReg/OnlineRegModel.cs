@@ -97,7 +97,9 @@ namespace CmsWeb.Models
                 }
                 else
                 {
-                    if (org != null && org.RegistrationTypeId == CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2)
+                    if (org != null && (org.RegistrationTypeId == RegistrationTypeCode.UserSelectsOrganization2
+                        || org.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge2
+                        || org.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2))
                     {
                         _masterorg = org;
                         masterorgid = orgid;
@@ -144,7 +146,12 @@ namespace CmsWeb.Models
         public int? masterorgid
         {
             get { return _masterorgid; }
-            set { _masterorgid = value; }
+            set
+            {
+                _masterorgid = value;
+                if (value > 0)
+                    ParseSettings();
+            }
         }
         private int? _Orgid;
         public int? orgid

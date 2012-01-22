@@ -92,12 +92,12 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(new APIFunctions(DbUtil.Db).ExtraValues(id, fields), "text/xml");
         }
         [HttpPost]
-        public ActionResult AddEditExtraValue(int peopleid, string field, string value)
+        public ActionResult AddEditExtraValue(int peopleid, string field, string value, string type = "data")
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            return Content(new APIFunctions(DbUtil.Db).AddEditExtraValue(peopleid, field, value));
+            return Content(new APIFunctions(DbUtil.Db).AddEditExtraValue(peopleid, field, value, type));
         }
         [HttpPost]
         public ActionResult DeleteExtraValue(int peopleid, string field)
@@ -107,6 +107,42 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content(ret.Substring(1));
             new APIFunctions(DbUtil.Db).DeleteExtraValue(peopleid, field);
             return Content("ok");
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(string username, string current, string password)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content(ret.Substring(1));
+            var m = new MembershipService();
+            try
+            {
+                var ok = m.ChangePassword(username, current, password);
+                if (ok)
+                    return Content("ok");
+                else
+                    return Content("<ChangePassword error=\"invalid password\" />");
+            }
+            catch (Exception ex)
+            {
+                return Content("<ChangePassword error=\"{0}\" />".Fmt(ex.Message));
+            }
+        }
+        [HttpGet]
+        public ActionResult FamilyMembers(int id)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content("<FamilyMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
+            return Content(new APIFunctions(DbUtil.Db).FamilyMembers(id), "text/xml");
+        }
+        [HttpGet]
+        public ActionResult AccessUsers()
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content("<AccessUsers error=\"{0}\" />".Fmt(ret.Substring(1)));
+            return Content(new APIFunctions(DbUtil.Db).AccessUsersXml(), "text/xml");
         }
     }
 }

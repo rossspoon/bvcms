@@ -1,4 +1,4 @@
-﻿/* Author: David Carroll
+/* Author: David Carroll
  * Copyright (c) 2008, 2009 Bellevue Baptist Church 
  * Licensed under the GNU General Public License (GPL v2)
  * you may not use this code except in compliance with the License.
@@ -255,7 +255,7 @@ namespace UtilityExtensions
         {
             return DateTime.TryParse(date, out dt);
         }
-        
+
         public static string Age(this string birthday)
         {
             DateTime bd;
@@ -317,8 +317,8 @@ namespace UtilityExtensions
             string csz = city ?? string.Empty;
             if (st.HasValue())
                 csz += ", " + st;
-            if (zip.HasValue() && zip.Length >= 5)
-                csz += " " + zip.Substring(0, 5);
+            if (zip.HasValue())
+                csz += " " + zip.FmtZip();
             return csz.Trim();
         }
         public static string FormatCSZ4(string city, string st, string zip)
@@ -1194,7 +1194,7 @@ namespace UtilityExtensions
                 byte[] buffer = Convert.FromBase64String(value + "==");
                 return new Guid(buffer);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }
@@ -1210,7 +1210,7 @@ namespace UtilityExtensions
                 value = HttpUtility.UrlDecode(value);
                 return new Guid(value);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }
@@ -1248,9 +1248,64 @@ namespace UtilityExtensions
         }
         public static string fmtcoupon(string s)
         {
-            if(s.Length == 12)
+            if (s.Length == 12)
                 return s.Insert(8, " ").Insert(4, " ");
             return s;
+        }
+        public static string GetIPAddress()
+        {
+            var context = HttpContext.Current;
+            string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (ipAddress.HasValue())
+            {
+                var addresses = ipAddress.Split(',');
+                if (addresses.Length != 0)
+                    return addresses[0];
+            }
+            return context.Request.ServerVariables["REMOTE_ADDR"];
+        }
+        public static string MaskCC(string s)
+        {
+            if (!s.HasValue())
+                return s;
+            var n = Int64.Parse(s.GetDigits());
+            StringBuilder sb = null;
+            switch (s[0])
+            {
+                case '3':
+                    sb = new StringBuilder("{0:0000 00000 00000}".Fmt(n));
+                    break;
+                case '4': // Visa
+                case '5': // Mastercard
+                case '6': // Discover
+                    sb = new StringBuilder("{0:0000 0000 0000 0000}".Fmt(n));
+                    break;
+                default:
+                    return s;
+            }
+            return Mask4(sb);
+        }
+        public static string MaskAccount(string s)
+        {
+            if (!s.HasValue())
+                return s;
+            return Mask4(new StringBuilder(s));
+        }
+        private static string Mask4(StringBuilder sb)
+        {
+            for (var i = 0; i < (sb.Length - 4); i++)
+                if (char.IsDigit(sb[i]))
+                    sb[i] = 'X';
+            return sb.ToString();
+        }
+        public static DateTime NextSemiMonthlyDate(int baseday, DateTime d)
+        {
+            var a = DateTime.DaysInMonth(d.Year, d.Month) / 2.0;
+            a = Math.Ceiling(a);
+            var d2 = d.AddDays(a);
+            if (d2.Month != d.Month)
+                d2 = new DateTime(d2.Year, d2.Month, baseday);
+            return d2;
         }
     }
     public class EventArg<T> : EventArgs

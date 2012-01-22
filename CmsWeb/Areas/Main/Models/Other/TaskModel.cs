@@ -602,18 +602,18 @@ namespace CmsWeb.Models
             // otherwise put it in the coowner's inbox
             var owner = task.Owner;
             var toowner = DbUtil.Db.LoadPersonById(toid);
-            if (task.TaskList.TaskListOwners.Any(tlo => tlo.PeopleId == toid) || task.TaskList.CreatedBy == toid)
-                task.CoListId = task.ListId;
-            else
-                task.ListId = InBoxId(toid);
+            //if (task.TaskList.TaskListOwners.Any(tlo => tlo.PeopleId == toid) || task.TaskList.CreatedBy == toid)
+            //    task.CoListId = task.ListId;
+            //else
+            //    task.ListId = InBoxId(toid);
 
-            task.CoOwnerId = task.OwnerId;
+            //task.CoOwnerId = task.OwnerId;
             task.Owner = toowner;
 
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Email(owner.EmailAddress, toowner,
                 "Task transferred from " + owner.Name,
-                TaskLink(task.Description, taskid));
+                TaskLink(task.Description, taskid) + "<br/>" + task.AboutName);
         }
 
         public static void SetWhoId(int id, int pid)
@@ -813,7 +813,7 @@ namespace CmsWeb.Models
             if (t == null)
                 return "t" + CurListId;
             if (t.CoOwnerId.HasValue && PeopleId == t.CoOwnerId.Value)
-                return "t" + t.CoListId.Value;
+                return "t" + (t.CoListId ?? 1);
             else if (PeopleId == t.OwnerId)
                 return "t" + t.ListId;
             else

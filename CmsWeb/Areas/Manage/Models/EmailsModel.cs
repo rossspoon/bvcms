@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
@@ -10,6 +10,7 @@ using System.Text;
 using System.Net.Mail;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using System.Web;
 
 namespace CmsWeb.Models
 {
@@ -92,7 +93,8 @@ namespace CmsWeb.Models
                  edt = startdt.Value.AddHours(24);
             if (edt.HasValue)
                 _emails = _emails.Where(t => t.Sent < edt);
-            if(!DbUtil.Db.CurrentUser.Roles.Contains("Admin"))
+            if (!HttpContext.Current.User.IsInRole("Admin")
+                && !HttpContext.Current.User.IsInRole("ManageEmails"))
             {
                 var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
                 _emails = from t in _emails

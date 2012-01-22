@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Web.Mvc;
@@ -32,7 +32,6 @@ namespace CmsWeb.Models
             Response.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
             Response.Charset = "";
 
-			var q2 = from p in DbUtil.Db.PeopleQuery(qid) select p;
             var name = "ExtraExcelResult " + DateTime.Now;
             var tag = DbUtil.Db.PopulateSpecialTag(qid, DbUtil.TagTypeId_ExtraValues);
 

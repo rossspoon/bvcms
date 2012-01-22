@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -31,7 +31,7 @@ namespace CmsWeb
             ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
-            RouteTable.Routes.RouteExistingFiles = true;
+            RouteTable.Routes.RouteExistingFiles = true; 
             string smtppasswordfile = Server.MapPath("smtppassword.txt");
             if (File.Exists(smtppasswordfile))
             {
@@ -95,7 +95,14 @@ namespace CmsWeb
         }
         //protected void Application_BeginRequest(object sender, EventArgs e)
         //{
-        //    System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        //    if (DbUtil.Db.Setting("disabled", "false") == "true")
+        //    {
+        //        if (Request.Url.LocalPath == "/Errors/ClearCache.htm")
+        //            HttpRuntime.Cache.Remove(DbUtil.Db.Host + "Setting");
+        //        const string sitedisabled = "/Errors/SiteDisabled.htm";
+        //        if (Request.Url.LocalPath != sitedisabled)
+        //            Response.Redirect(sitedisabled);
+        //    }
         //}
         protected void Application_EndRequest(object sender, EventArgs e)
         {

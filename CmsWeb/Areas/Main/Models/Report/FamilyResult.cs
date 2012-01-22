@@ -1,4 +1,4 @@
-﻿/* Author: David Carroll
+/* Author: David Carroll
  * Copyright (c) 2008, 2009 Bellevue Baptist Church 
  * Licensed under the GNU General Public License (GPL v2)
  * you may not use this code except in compliance with the License.
@@ -74,6 +74,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                 var q2 = from p in q
                          let person = p
                          group p by p.FamilyId into g
+                         let hhname = g.First().Family.HeadOfHousehold.Name2
+                         orderby hhname
                          select new
                          {
                              members = from m in g.First().Family.People

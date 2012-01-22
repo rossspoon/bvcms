@@ -8,6 +8,8 @@ using CmsWeb.Areas.Manage.Controllers;
 using System.Text;
 using System.Collections.Generic;
 using CmsData.Codes;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -25,7 +27,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             m.ParseSettings();
             return View(new SlotModel(m.List[0].PeopleId.Value, m.orgid.Value));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult ToggleSlot(int id, int oid, string slot, bool ck)
         {
             var m = new SlotModel(id, oid);
@@ -67,11 +69,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     return Content("link expired");
                 var a = ot.Querystring.Split(',');
                 m = new ManageSubsModel(a[1].ToInt(), a[0].ToInt());
+                id = a[0];
                 ot.Used = true;
                 DbUtil.Db.SubmitChanges();
             }
-            SetHeaders(m.divid);
-            DbUtil.LogActivity("Manage Subs: {0} ({1})".Fmt(m.Division.Name, m.person.Name), true);
+            SetHeaders(id.ToInt());
+            DbUtil.LogActivity("Manage Subs: {0} ({1})".Fmt(m.Description(), m.person.Name), true);
             return View(m);
         }
         public ActionResult ManagePledge(string id)
@@ -103,6 +106,153 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             DbUtil.LogActivity("Manage Pledge: {0} ({1})".Fmt(m.Organization.OrganizationName, m.person.Name), true);
             return View(m);
         }
+        [HttpGet]
+        public ActionResult ManageGiving(string id, bool? testing)
+        {
+            if (!id.HasValue())
+                return Content("bad link");
+            ManageGivingModel m = null;
+            var td = TempData["mg"];
+            if (td != null)
+                m = new ManageGivingModel(td.ToInt(), id.ToInt());
+            else
+            {
+                var guid = id.ToGuid();
+                if (guid == null)
+                    return Content("invalid link");
+                var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+                if (ot == null)
+                    return Content("invalid link");
+#if DEBUG
+#else
+                if (ot.Used)
+                    return Content("link used");
+#endif
+                if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+                    return Content("link expired");
+                var a = ot.Querystring.Split(',');
+                m = new ManageGivingModel(a[1].ToInt(), a[0].ToInt());
+                ot.Used = true;
+                DbUtil.Db.SubmitChanges();
+            }
+            if (!m.testing)
+                m.testing = testing ?? false;
+            SetHeaders(m.orgid);
+            DbUtil.LogActivity("Manage Giving: {0} ({1})".Fmt(m.Organization.OrganizationName, m.person.Name), true);
+            return View(m);
+        }
+        [HttpPost]
+        public ActionResult ManageGiving(ManageGivingModel m)
+        {
+            SetHeaders(m.orgid);
+            m.ValidateModel(ModelState);
+            if (!ModelState.IsValid)
+                return View(m);
+            try
+            {
+                var gateway = OnlineRegModel.GetTransactionGateway();
+                if (gateway == "AuthorizeNet")
+                {
+                    var au = new AuthorizeNet(DbUtil.Db, m.testing);
+                    au.AddUpdateCustomerProfile(m.pid,
+                        m.SemiEvery,
+                        m.Day1,
+                        m.Day2,
+                        m.EveryN,
+                        m.Period,
+                        m.StartWhen,
+                        m.StartWhen,
+                        m.Type,
+                        m.Cardnumber,
+                        m.Expires,
+                        m.Cardcode,
+                        m.Routing,
+                        m.Account,
+                        m.testing);
+                }
+                else if (gateway == "SagePayments")
+                {
+                    var sg = new CmsData.SagePayments(DbUtil.Db, m.testing);
+                    sg.storeVault(m.pid, 
+                        m.SemiEvery,
+                        m.Day1,
+                        m.Day2,
+                        m.EveryN,
+                        m.Period,
+                        m.StartWhen,
+                        m.StartWhen,
+                        m.Type,
+                        m.Cardnumber,
+                        m.Expires,
+                        m.Cardcode,
+                        m.Routing,
+                        m.Account,
+                        m.testing);
+                }
+                else
+                    throw new Exception("ServiceU not supported");
+
+                var q = from ra in DbUtil.Db.RecurringAmounts
+                        where ra.PeopleId == m.pid
+                        select ra;
+                DbUtil.Db.RecurringAmounts.DeleteAllOnSubmit(q);
+                DbUtil.Db.SubmitChanges();
+                foreach (var c in m.FundItemsChosen())
+                {
+                    var ra = new RecurringAmount
+                    {
+                        PeopleId = m.pid,
+                        FundId = c.fundid,
+                        Amt = c.amt
+                    };
+                    DbUtil.Db.RecurringAmounts.InsertOnSubmit(ra);
+                }
+                DbUtil.Db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("form", ex.Message);
+            }
+            if (!ModelState.IsValid)
+                return View(m);
+            TempData["managegiving"] = m;
+            return Redirect("ConfirmRecurringGiving");
+        }
+        public ActionResult ConfirmRecurringGiving()
+        {
+            var m = TempData["managegiving"] as ManageGivingModel;
+
+            var staff = DbUtil.Db.StaffPeopleForOrg(m.orgid)[0];
+            var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
+            text = text.Replace("{amt}", m.Total().ToString("N2"));
+            text = text.Replace("{name}", m.person.Name);
+            text = text.Replace("{account}", "");
+            text = text.Replace("{email}", m.person.EmailAddress);
+            text = text.Replace("{phone}", m.person.HomePhone.FmtFone());
+            text = text.Replace("{contact}", staff.Name);
+            text = text.Replace("{contactemail}", staff.EmailAddress);
+            text = text.Replace("{contactphone}", m.Organization.PhoneNumber.FmtFone());
+            var re = new Regex(@"(?<b>.*?)<!--ITEM\sROW\sSTART-->.(?<row>.*?)\s*<!--ITEM\sROW\sEND-->(?<e>.*)", RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
+            var match = re.Match(text);
+            var b = match.Groups["b"].Value;
+            var row = match.Groups["row"].Value.Replace("{funditem}", "{0}").Replace("{itemamt}", "{1:N2}");
+            var e = match.Groups["e"].Value;
+            var sb = new StringBuilder(b);
+            foreach (var g in m.FundItemsChosen())
+                sb.AppendFormat(row, g.desc, g.amt);
+
+            Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(DbUtil.Db.StaffEmailForOrg(m.orgid)),
+                m.setting.Subject, sb.ToString(),
+                Util.EmailAddressListFromString(m.person.FromEmail), 0, m.pid);
+            Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(m.person.FromEmail),
+                "Managed Giving",
+                "Managed giving for {0} ({1})".Fmt(m.person.Name, m.pid),
+                Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(m.orgid)),
+                0, m.pid);
+
+            SetHeaders(m.orgid);
+            return View(m);
+        }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ConfirmSlots(int id, int orgid)
         {
@@ -131,19 +281,23 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult ConfirmSubscriptions(ManageSubsModel m)
         {
             m.UpdateSubscriptions();
-            var Staff = DbUtil.Db.StaffPeopleForDiv(m.divid);
+            List<Person> Staff = null;
+            if (m.masterorgid != null)
+                Staff = DbUtil.Db.StaffPeopleForOrg(m.masterorgid.Value);
+            else
+                Staff = DbUtil.Db.StaffPeopleForDiv(m.divid.Value);
 
             DbUtil.Db.Email(Staff.First().FromEmail, m.person,
                 "Subscription Confirmation",
 @"Thank you for managing your subscriptions to {0}<br/>
 You have the following subscriptions:<br/>
-{1}".Fmt(m.Division.Name, m.Summary));
+{1}".Fmt(m.Description(), m.Summary));
 
             DbUtil.Db.Email(m.person.FromEmail, Staff, "Subscriptions managed", @"{0} managed subscriptions to {1}<br/>
 You have the following subscriptions:<br/>
-{2}".Fmt(m.person.Name, m.Division.Name, m.Summary));
+{2}".Fmt(m.person.Name, m.Description(), m.Summary));
 
-            SetHeaders(m.divid);
+            SetHeaders(m.divid ?? m.masterorgid.Value);
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -160,9 +314,8 @@ You have the following subscriptions:<br/>
                 m.person.PrimaryState,
                 m.person.PrimaryZip);
 
-            PostBundleModel.PostUnattendedContribution(
+            m.person.PostUnattendedContribution(DbUtil.Db,
                 m.pledge ?? 0,
-                m.pid,
                 m.setting.DonationFundId,
                 desc, pledge: true);
 

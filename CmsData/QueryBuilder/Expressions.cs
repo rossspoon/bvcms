@@ -363,6 +363,19 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression HasPeopleExtraField(
+            ParameterExpression parm,
+            CompareType op,
+            string field)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                p.PeopleExtras.Any(e =>
+                    e.Field == field);
+            Expression expr = Expression.Invoke(pred, parm);
+            if (op == CompareType.NotEqual)
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression PeopleExtraData(
             ParameterExpression parm,
             string field,
@@ -391,7 +404,7 @@ namespace CmsData
 
             Expression<Func<Person, int>> pred = p =>
                 p.PeopleExtras.Single(e =>
-                    e.Field == field).IntValue ?? 0; 
+                    e.Field == field).IntValue ?? 0;
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(value), left.Type);
             return Compare(left, op, right);
@@ -402,15 +415,31 @@ namespace CmsData
             CompareType op,
             DateTime? value)
         {
-            if (!value.HasValue)
-                return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
+            if (op == CompareType.IsNull)
+            {
+                Expression<Func<Person, bool>> pred = p =>
+                    !p.PeopleExtras.Any(e => e.Field == field)
+                    || p.PeopleExtras.SingleOrDefault(e => e.Field == field).DateValue == null;
+                return Expression.Invoke(pred, parm);
+            }
+            else if (op == CompareType.IsNotNull)
+            {
+                Expression<Func<Person, bool>> pred = p =>
+                    p.PeopleExtras.SingleOrDefault(e => e.Field == field).DateValue != null;
+                return Expression.Invoke(pred, parm);
+            }
+            else
+            {
+                if (!value.HasValue)
+                    return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
-            Expression<Func<Person, DateTime>> pred = p =>
-                p.PeopleExtras.SingleOrDefault(e =>
-                    e.Field == field).DateValue.Value;
-            Expression left = Expression.Invoke(pred, parm);
-            var right = Expression.Convert(Expression.Constant(value), left.Type);
-            return Compare(left, op, right);
+                Expression<Func<Person, DateTime>> pred = p =>
+                    p.PeopleExtras.SingleOrDefault(e =>
+                        e.Field == field).DateValue.Value;
+                Expression left = Expression.Invoke(pred, parm);
+                var right = Expression.Convert(Expression.Constant(value), left.Type);
+                return Compare(left, op, right);
+            }
         }
         internal static Expression RecentAttendCount(
             ParameterExpression parm,
@@ -432,6 +461,33 @@ namespace CmsData
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
+        }
+        internal static Expression VisitNumber(
+            ParameterExpression parm, CMSDataContext Db,
+            string number,
+            CompareType op,
+            DateTime? dt)
+        {
+            int n = number.ToInt2() ?? 1;
+            if (op == CompareType.IsNull)
+            {
+                Expression<Func<Person, bool>> pred = 
+                    p => Db.AttendItem(p.PeopleId, n) == null;
+                return Expression.Invoke(pred, parm);
+            }
+            else if (op == CompareType.IsNotNull)
+            {
+                Expression<Func<Person, bool>> pred =
+                    p => Db.AttendItem(p.PeopleId, n) != null;
+                return Expression.Invoke(pred, parm);
+            }
+            else
+            {
+                Expression<Func<Person, DateTime?>> pred = p => Db.AttendItem(p.PeopleId, n);
+                Expression left = Expression.Invoke(pred, parm);
+                var right = Expression.Convert(Expression.Constant(dt), left.Type);
+                return Compare(left, op, right);
+            }
         }
         internal static Expression RecentNewVisitCount(
             ParameterExpression parm,

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -43,6 +43,7 @@ namespace CmsWeb.Models
             var q = from a in DbUtil.Db.Attends
                     where a.MeetingDate > Util.Now.Date
                     where a.OrganizationId == id
+                    where a.Registered == true
                     orderby a.MeetingDate
                     select a;
             var list = q.ToList();

@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "TagPeopleIds";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+<h2>Tag PeopleIds</h2>
+<em>One row per PeopleId, Value (separated by a tab)</em>
+<form action="/Batch/ExtraValuesFromPeopleIds" method="post">
+    <label>Extra Value Field: </label> @Html.TextBox("field")
+    <input type="submit" class="bt" value="Submit" />
+    @Html.TextArea("text", "", new { rows = "20", cols = "100", wrap = "off", style = "width:90%" })<br />
+</form>

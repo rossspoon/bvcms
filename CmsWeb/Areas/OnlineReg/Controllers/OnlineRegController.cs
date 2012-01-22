@@ -103,6 +103,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     return View(m);
                 m.List[p.index] = p;
                 m.registertag = registertag;
+                if (m.masterorg != null && m.masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
+                {
+                    TempData["ms"] = Util.UserPeopleId;
+                    return Redirect("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.masterorgid));
+                }
                 if (p.org != null && p.Found == true)
                 {
                     p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
@@ -133,15 +138,23 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             m.CreateList();
             m.UserPeopleId = user.PeopleId;
+            
             if (m.ManagingSubscriptions())
             {
                 TempData["ms"] = Util.UserPeopleId;
+                if (m.masterorgid.HasValue && m.masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
+                    return Content("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.masterorgid));
                 return Content("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.divid));
             }
             if (m.OnlinePledge())
             {
                 TempData["mp"] = Util.UserPeopleId;
                 return Content("/OnlineReg/ManagePledge/{0}".Fmt(m.orgid));
+            }
+            if (m.ManageGiving())
+            {
+                TempData["mg"] = Util.UserPeopleId;
+                return Content("/OnlineReg/ManageGiving/{0}".Fmt(m.orgid));
             }
             m.List[0].LoggedIn = true;
             return View("Flow/List", m);
@@ -276,7 +289,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             p.classid = m.classid;
             p.PeopleId = null;
             p.ValidateModelForFind(ModelState, m);
-            if (p.ManageSubscriptions() || p.OnlinePledge())
+            if (p.ManageSubscriptions() || p.OnlinePledge() || p.ManageGiving())
             {
                 p.OtherOK = true;
                 //if (p.Found == true)
@@ -313,7 +326,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
                     DbUtil.Db.SubmitChanges();
                     ViewData["email"] = m.List[0].person.EmailAddress;
-                    ViewData["orgname"] = m.div.Name;
+                    if (m.masterorgid != null)
+                        ViewData["orgname"] = m.masterorg.OrganizationName;
+                    else
+                        ViewData["orgname"] = m.div.Name;
                     ViewData["URL"] = m.URL;
                     ViewData["timeout"] = INT_timeout;
                     return View("ConfirmManageSub");
@@ -322,7 +338,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 {
                     p.IsNew = true;
                     m.ConfirmManagePledge();
-                    ViewData["ManagingPledge"] = true;
                     ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
                     DbUtil.Db.SubmitChanges();
                     ViewData["email"] = m.List[0].person.EmailAddress;
@@ -331,6 +346,19 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     ViewData["timeout"] = INT_timeout;
                     SetHeaders(m);
                     return View("ConfirmManagePledge");
+                }
+                if (m.ManageGiving())
+                {
+                    p.IsNew = true;
+                    m.ConfirmManageGiving();
+                    ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
+                    DbUtil.Db.SubmitChanges();
+                    ViewData["email"] = m.List[0].person.EmailAddress;
+                    ViewData["orgname"] = m.org.OrganizationName;
+                    ViewData["URL"] = m.URL;
+                    ViewData["timeout"] = INT_timeout;
+                    SetHeaders(m);
+                    return View("ConfirmManageGiving");
                 }
                 if (p.org == null && p.ComputesOrganizationByAge())
                     ModelState.AddModelError(p.ErrorTarget, "Sorry, cannot find an appropriate age group");

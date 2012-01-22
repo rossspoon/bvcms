@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
@@ -57,6 +57,8 @@ namespace CmsWeb.Models
                  where name == null || t.Name.Contains(name)
                  where (t.Testing ?? false) == testtransactions
                  select t;
+            if (!HttpContext.Current.User.IsInRole("Finance"))
+                _transactions = _transactions.Where(tt => (tt.Financeonly ?? false) == false);
             var edt = enddt;
             if (!edt.HasValue && startdt.HasValue)
                  edt = startdt.Value;

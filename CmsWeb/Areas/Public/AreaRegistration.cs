@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using UtilityExtensions;
 
 namespace CmsWeb.Areas.Public
@@ -42,6 +42,7 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "StepClass");
             AddRoute(context, "Event");
             AddRoute(context, "VolunteerConfirm", "Volunteer", "Volunteer/Confirm", "confirm");
+            AddRoute(context, "VolunteerPicklist", "Volunteer", "Volunteer/Picklist2", "Picklist2");
             AddRoute(context, "VolunteerStart", "Volunteer", "Volunteer/{id}", "Start");
             AddRoute(context, "Volunteer");
 

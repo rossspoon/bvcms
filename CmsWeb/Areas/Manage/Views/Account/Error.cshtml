@@ -1,0 +1,48 @@
+﻿@using System.Security.Cryptography
+@using System.Threading
+@using UtilityExtensions
+
+@{
+    Layout = null;
+    byte[] delay = new byte[1];
+    RandomNumberGenerator prng = new RNGCryptoServiceProvider();
+
+    prng.GetBytes(delay);
+    Thread.Sleep((int)delay[0]);
+
+    var disposable = prng as IDisposable;
+    if (disposable != null) {
+        disposable.Dispose();
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Error</title>
+    <style type="text/css">
+        body
+        {
+            font-family: Arial;
+        }
+        H1
+        {
+            color: Red;
+        }
+    </style>
+</head>
+<body>
+    <div>
+    @{ 
+        string error = (string)TempData["message"];
+        string em = "";
+            em = "An email has been sent to the developer to report the problem.";
+    }
+    <h1>An error occurred while processing your request.</h1>
+    <div>@error</div>
+    <div>@em</div>
+    <a href="/">Home</a>
+    </div>
+</body>
+</html>

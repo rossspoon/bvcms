@@ -1,4 +1,4 @@
-﻿/* Author: David Carroll
+/* Author: David Carroll
  * Copyright (c) 2008, 2009 Bellevue Baptist Church 
  * Licensed under the GNU General Public License (GPL v2)
  * you may not use this code except in compliance with the License.
@@ -99,9 +99,7 @@ namespace CmsWeb.Models
             var Db = DbUtil.Db;
             query = Db.People.Select(p => p);
             if (UsersOnly)
-                query = from p in query
-                        where p.Users.Count() > 0
-                        select p;
+                query = query.Where(p => p.Users.Any(uu => uu.UserRoles.Any(ur => ur.Role.RoleName == "Access")));
 
             if (name.HasValue())
             {

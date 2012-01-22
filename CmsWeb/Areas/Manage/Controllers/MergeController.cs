@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +10,7 @@ using System.Net.Mail;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-    [Authorize(Roles = "Manager, Admin")]
+    [Authorize(Roles = "Manager, Admin, Manager2")]
     public class MergeController : Controller
     {
        public ActionResult Index(int? PeopleId1, int? PeopleId2)

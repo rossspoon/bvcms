@@ -1,4 +1,4 @@
-﻿/* Author: David Carroll
+/* Author: David Carroll
  * Copyright (c) 2008, 2009 Bellevue Baptist Church 
  * Licensed under the GNU General Public License (GPL v2)
  * you may not use this code except in compliance with the License.
@@ -212,84 +212,6 @@ namespace CmsWeb.Models
             bundle.BundleDetails.Add(bd);
             DbUtil.Db.SubmitChanges();
             return ContributionRowData(bd.ContributionId);
-        }
-        public static Contribution PostUnattendedContribution(decimal Amt, int? PeopleId, int? Fund, string Description, bool pledge = false)
-        {
-            var typecode = BundleTypeCode.Online;
-            if (pledge)
-                typecode = BundleTypeCode.OnlinePledge;
-
-            var d = Util.Now.Date;
-            d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
-            var q = from b in DbUtil.Db.BundleHeaders
-                    where b.BundleHeaderTypeId == typecode
-                    where b.BundleStatusId == CmsData.Codes.BundleStatusCode.Open
-                    where b.ContributionDate >= d
-                    where b.ContributionDate < Util.Now
-                    orderby b.ContributionDate descending
-                    select b;
-            var bundle = q.FirstOrDefault();
-            if (bundle == null)
-            {
-                bundle = new BundleHeader
-                {
-                    BundleHeaderTypeId = typecode,
-                    BundleStatusId = BundleStatusCode.Open,
-                    CreatedBy = Util.UserId1,
-                    ContributionDate = d,
-                    CreatedDate = DateTime.Now,
-                    DepositDate = DateTime.Now,
-                    FundId = 1,
-                    RecordStatus = false,
-                    TotalCash = 0,
-                    TotalChecks = 0,
-                    TotalEnvelopes = 0,
-                    BundleTotal = 0
-                };
-                DbUtil.Db.BundleHeaders.InsertOnSubmit(bundle);
-            }
-            if (!Fund.HasValue)
-                Fund = (from f in DbUtil.Db.ContributionFunds
-                        where f.FundStatusId == 1
-                        orderby f.FundId
-                        select f.FundId).First();
-
-            var FinanceManagerId = DbUtil.Db.Setting("FinanceManagerId", "").ToInt2();
-            if (!FinanceManagerId.HasValue)
-            {
-                var qu = from u in DbUtil.Db.Users
-                         where u.UserRoles.Any(ur => ur.Role.RoleName == "Finance")
-                         orderby u.Person.LastName
-                         select u.UserId;
-                FinanceManagerId = qu.FirstOrDefault();
-                if (!FinanceManagerId.HasValue)
-                    FinanceManagerId = 1;
-            }
-            var bd = new CmsData.BundleDetail
-            {
-                BundleHeaderId = bundle.BundleHeaderId,
-                CreatedBy = FinanceManagerId.Value,
-                CreatedDate = DateTime.Now,
-            };
-            var typid = (int)Contribution.TypeCode.CheckCash;
-            if (pledge)
-                typid = (int)Contribution.TypeCode.Pledge;
-            bd.Contribution = new Contribution
-            {
-                CreatedBy = FinanceManagerId.Value,
-                CreatedDate = bd.CreatedDate,
-                FundId = Fund.Value,
-                PeopleId = PeopleId,
-                ContributionDate = bd.CreatedDate,
-                ContributionAmount = Amt,
-                ContributionStatusId = 0,
-                PledgeFlag = pledge,
-                ContributionTypeId = typid,
-                ContributionDesc = Description,
-            };
-            bundle.BundleDetails.Add(bd);
-            DbUtil.Db.SubmitChanges();
-            return bd.Contribution;
         }
         public object UpdateContribution()
         {

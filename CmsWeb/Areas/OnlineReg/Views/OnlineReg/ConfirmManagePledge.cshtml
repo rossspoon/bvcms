@@ -2,13 +2,10 @@
     <p style="color: Black">
     Email sent to @Util.ObscureEmail((string)ViewData["email"]) (email obscured on purpose)
     </p>
-@if ((bool?)ViewData["ManagingPledge"] == true)
-{ 
     <p>
     <strong>One-Time Link</strong><br>
-    We have sent you a One-Time Link to manage your subscriptions which you should receive shortly.
+    We have sent you a One-Time Link to manage your pledges which you should receive shortly.
     </p>
-} 
 @if ((bool?)ViewData["CreatedAccount"] == true)
 { 
     <p>

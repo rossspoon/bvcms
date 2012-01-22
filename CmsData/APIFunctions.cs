@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +14,7 @@ using System.Web;
 using System.Xml;
 using System.Diagnostics;
 using Microsoft.Scripting.Hosting;
+using System.Xml.Serialization;
 
 namespace CmsData.API
 {
@@ -174,7 +175,7 @@ class LoginInfo(object):
                 w.Start("ExtraValues");
                 w.Attr("Id", peopleid);
                 foreach (var v in q)
-                    w.Add(v.Field, v.StrValue);
+                    w.Add(v.Field, v.StrValue ?? v.Data ?? v.DateValue.FormatDate() ?? v.IntValue.ToString());
                 w.End();
                 return w.ToString();
             }
@@ -183,7 +184,7 @@ class LoginInfo(object):
                 return ex.Message;
             }
         }
-        public string AddEditExtraValue(int peopleid, string field, string value)
+        public string AddEditExtraValue(int peopleid, string field, string value, string type = "data")
         {
             try
             {
@@ -202,7 +203,21 @@ class LoginInfo(object):
                     };
                     Db.PeopleExtras.InsertOnSubmit(ev);
                 }
-                ev.StrValue = value;
+                switch (type)
+                {
+                    case "code":
+                        ev.StrValue = value;
+                        break;
+                    case "data":
+                        ev.Data = value;
+                        break;
+                    case "date":
+                        ev.DateValue = value.ToDate();
+                        break;
+                    case "int":
+                        ev.IntValue = value.ToInt2();
+                        break;
+                }
                 Db.SubmitChanges();
                 return "ok";
             }
@@ -210,6 +225,132 @@ class LoginInfo(object):
             {
                 return ex.Message;
             }
+        }
+        public string FamilyMembers(int familyid)
+        {
+            try
+            {
+                var q = from p in DbUtil.Db.People
+                        where p.FamilyId == familyid
+                        select p;
+                var w = new APIWriter();
+                w.Start("Family");
+                w.Attr("Id", familyid);
+                foreach (var m in q)
+                {
+                    w.Start("Member");
+                    w.Add("peopleid", m.PeopleId);
+                    w.Add("first", m.FirstName);
+                    w.Add("last", m.LastName);
+                    w.Add("goesby", m.NickName);
+                    w.Add("birthday", m.BDate);
+                    w.Add("position", m.PositionInFamilyId);
+                    w.Add("marital", m.MaritalStatusId);
+                    w.Add("suffix", m.SuffixCode);
+                    w.Add("title", m.TitleCode);
+                    w.End();
+                }
+                w.End();
+                return w.ToString();
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        [Serializable()]
+        public class AccessUsers
+        {
+            [XmlElement("Person")]
+            public AccessUserInfo[] People { get; set; }
+        }
+        [Serializable()]
+        public class AccessUserInfo
+        {
+            [XmlAttribute("peopleid")]
+            public int peopleid { get; set; }
+            public string first { get; set; }
+            public string goesby { get; set; }
+            public string last { get; set; }
+            public string cphone { get; set; }
+            public string hphone { get; set; }
+            public string wphone { get; set; }
+            public string dob { get; set; }
+            public int? bmon { get; set; }
+            public int? bday { get; set; }
+            public int? byear { get; set; }
+            public int? married { get; set; }
+            public int? gender { get; set; }
+            public string company { get; set; }
+            public string email { get; set; }
+            public string email2 { get; set; }
+            public string username { get; set; }
+            public string lastactive { get; set; }
+            public string roles { get; set; }
+        }
+        public IEnumerable<AccessUserInfo> AccessUsersData()
+        {
+            var q = from u in Db.Users
+                    where u.UserRoles.Any(rr => rr.Role.RoleName == "Access")
+                    where u.EmailAddress.Length > 0
+                    select new
+                    {
+                        u.PeopleId,
+                        roles = u.UserRoles.Select(uu => uu.Role.RoleName),
+                        lastactive = Db.LastActive(u.UserId),
+                        first = u.Person.FirstName,
+                        goesby = u.Person.NickName,
+                        last = u.Person.LastName,
+                        married = u.Person.MaritalStatusId,
+                        gender = u.Person.GenderId,
+                        cphone = u.Person.CellPhone,
+                        hphone = u.Person.HomePhone,
+                        wphone = u.Person.WorkPhone,
+                        dob = u.Person.DOB,
+                        bday = u.Person.BirthDay,
+                        bmon = u.Person.BirthMonth,
+                        byear = u.Person.BirthYear,
+                        company = u.Person.EmployerOther,
+                        email = u.EmailAddress,
+                        email2 = u.Person.EmailAddress2,
+                        username = u.Username,
+                    };
+            var list = q.ToList();
+
+            var q2 = from i in list
+                     group i by i.PeopleId into g
+                     let i1 = g.OrderByDescending(i => i.lastactive).First()
+                     select new AccessUserInfo
+                     {
+                         peopleid = i1.PeopleId.Value,
+                         first = i1.first,
+                         goesby = i1.goesby,
+                         last = i1.last,
+                         married = i1.married,
+                         gender = i1.gender,
+                         cphone = i1.cphone.GetDigits(),
+                         hphone = i1.hphone.GetDigits(),
+                         wphone = i1.wphone,
+                         dob = i1.dob,
+                         bday = i1.bday,
+                         bmon = i1.bmon,
+                         byear = i1.byear,
+                         company = i1.company,
+                         email = i1.email,
+                         email2 = i1.email2,
+                         username = i1.username,
+                         lastactive = i1.lastactive.ToString2("s"),
+                         roles = string.Join(",", i1.roles),
+                     };
+            return q2;
+        }
+        public string AccessUsersXml()
+        {
+            var xs = new XmlSerializer(typeof(AccessUsers));
+            var sw = new StringWriter();
+            var a = new AccessUsers { People = AccessUsersData().ToArray() };
+            xs.Serialize(sw, a);
+            return sw.ToString();
         }
     }
 }

@@ -365,6 +365,9 @@
     <Field Name="AttendTypeAsOf" Title="Attendance Type As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,Program,Division,Organization" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type within a Program, Program/Division or Program/Division/Organization for a specified date range.
     </Field>
+    <Field Name="VisitNumber" Title="Visit date Nth time" Type="Date" DisplayAs="VisitNumber({0})" Params="Quarters" QuartersLabel="Visit number">
+      Selects attendees based on whether they have visted once, twice or three times
+    </Field>
     <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Days" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
@@ -441,6 +444,21 @@
     <Field Name="CreatedDate" Title="Record Created On Date" Type="Date">
       Record Created On Date
     </Field>
+    <Field Name="PeopleExtra" Title="ExtraValue" Type="CodeStr" DataSource="ExtraValues">
+      ExtraValue field = (field:value)
+    </Field>
+    <Field Name="PeopleExtraData" Title="ExtraValueData" Type="StringEqual" DisplayAs="ExtraValueData({0})" QuartersLabel="Field Name" Params="Quarters">
+      ExtraValue field = (field:value) where value is some value contained in the Data
+    </Field>
+    <Field Name="PeopleExtraDate" Title="ExtraValueDate" Type="Date" DisplayAs="ExtraValueDate({0})" QuartersLabel="Field Name" Params="Quarters">
+      ExtraValue field = (value)
+    </Field>
+    <Field Name="PeopleExtraInt" Title="ExtraValueInt" Type="Integer" DisplayAs="ExtraValueInt({0})" QuartersLabel="Field Name" Params="Quarters">
+      ExtraValue field = (field:value)
+    </Field>
+    <Field Name="HasPeopleExtraField" Title="HasExtraValueField" Type="StringEqual">
+      Has an extra value field with this name
+    </Field>
     <Field Name="IsCurrentPerson" Title="Is Current Person" Type="Bit" DataValueField="IdCode">
       Selects the last person that was displayed on the Person screen. (used internally, but you can too if you find a need for it)
     </Field>
@@ -473,18 +491,6 @@
     </Field>
     <Field Name="IsTopPledger" Title="Recent Top Pledger" Type="Bit" DisplayAs="RecentTopPledger({0},{1})" Params="Days,Quarters" QuartersLabel="Top number" DataValueField="IdCode">
       Must have Finance role for this to work.
-    </Field>
-    <Field Name="PeopleExtra" Title="ExtraValue" Type="CodeStr" DataSource="ExtraValues">
-      ExtraValue field = (field:value)
-    </Field>
-    <Field Name="PeopleExtraData" Title="ExtraValueData" Type="StringEqual" DisplayAs="ExtraValueData({0})" QuartersLabel="Field Name" Params="Quarters">
-      ExtraValue field = (field:value) where value is some value contained in the Data
-    </Field>
-    <Field Name="PeopleExtraDate" Title="ExtraValueDate" Type="Date" DisplayAs="ExtraValueDate({0})" QuartersLabel="Field Name" Params="Quarters">
-      ExtraValue field = (value)
-    </Field>
-    <Field Name="PeopleExtraInt" Title="ExtraValueInt" Type="Integer" DisplayAs="ExtraValueInt({0})" QuartersLabel="Field Name" Params="Quarters">
-      ExtraValue field = (field:value)
     </Field>
   </Category>
 </Fields>

@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "ConvertTagToExtraValue";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>ConvertTagToExtraValue</h2>
+
+<h3>@ViewData["message"]</h3>
+<form action="/Tags/ConvertTagToExtraValue" method="post">
+@Html.TextBox("tag")<br />
+@Html.TextBox("field")<br />
+@Html.TextBox("value")<br />
+<input type="submit" value="Submit" />
+</form>

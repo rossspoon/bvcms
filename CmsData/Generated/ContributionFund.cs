@@ -54,6 +54,8 @@ namespace CmsData
 		
    		private EntitySet< Contribution> _Contributions;
 		
+   		private EntitySet< RecurringAmount> _RecurringAmounts;
+		
     	
 	#endregion
 	
@@ -117,6 +119,8 @@ namespace CmsData
 			this._BundleHeaders = new EntitySet< BundleHeader>(new Action< BundleHeader>(this.attach_BundleHeaders), new Action< BundleHeader>(this.detach_BundleHeaders)); 
 			
 			this._Contributions = new EntitySet< Contribution>(new Action< Contribution>(this.attach_Contributions), new Action< Contribution>(this.detach_Contributions)); 
+			
+			this._RecurringAmounts = new EntitySet< RecurringAmount>(new Action< RecurringAmount>(this.attach_RecurringAmounts), new Action< RecurringAmount>(this.detach_RecurringAmounts)); 
 			
 			
 			OnCreated();
@@ -501,6 +505,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_RecurringAmounts_ContributionFund", Storage="_RecurringAmounts", OtherKey="FundId")]
+   		public EntitySet< RecurringAmount> RecurringAmounts
+   		{
+   		    get { return this._RecurringAmounts; }
+
+			set	{ this._RecurringAmounts.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -542,6 +556,19 @@ namespace CmsData
 		}
 
 		private void detach_Contributions(Contribution entity)
+		{
+			this.SendPropertyChanging();
+			entity.ContributionFund = null;
+		}
+
+		
+		private void attach_RecurringAmounts(RecurringAmount entity)
+		{
+			this.SendPropertyChanging();
+			entity.ContributionFund = this;
+		}
+
+		private void detach_RecurringAmounts(RecurringAmount entity)
 		{
 			this.SendPropertyChanging();
 			entity.ContributionFund = null;

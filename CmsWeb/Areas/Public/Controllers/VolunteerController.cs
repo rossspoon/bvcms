@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,12 +64,14 @@ namespace CmsWeb.Areas.Public.Controllers
             return RedirectToAction("PickList2", new { id = id, pid = m.person.PeopleId, regemail = m.email });
         }
 
-        public ActionResult PickList2(string id, int? pid, string regemail)
+        public ActionResult PickList2(string id, int? pid, string regemail, string view)
         {
             var Db = DbUtil.Db;
             var person = Db.People.SingleOrDefault(p => p.PeopleId == pid);
             if (person == null)
                 return Content("person not found");
+            if (!id.HasValue())
+                id = view;
             var m = new VolunteerModel { View = id, person = person };
             SetHeader(m.View);
             m.person.BuildVolInfoList(m.View); // gets existing

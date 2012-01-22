@@ -47,17 +47,17 @@
     <a href="/OnlineReg/Index/@o.OrganizationId" target="_blank">Try Registration</a>
     <a href="/Organization/VoteTag/@o.OrganizationId" target="_blank">View VoteTags</a>
 @if (User.IsInRole("Edit"))
-{ 
+{
     <a class="CreateAndGo" href="/Organization/Clone/@o.OrganizationId" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>
+    <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
 }
 @if (User.IsInRole("Admin"))
-{ 
+{
     <a href="/OrgChildren/Index/@Model.OrganizationId">Child Organization Management</a>
-    <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
     <a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">Delete Organization</a>
-} 
+}
 @if (User.IsInRole("Developer"))
-{ 
+{
     <a href="/Organization/RepairTransactions/@o.OrganizationId">Repair Transactions</a>
 }
 </div>

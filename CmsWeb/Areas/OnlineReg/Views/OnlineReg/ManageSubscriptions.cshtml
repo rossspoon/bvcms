@@ -11,14 +11,15 @@
         .Add("/Content/js/jquery.tooltip.js")
         .Render("/Content/ManageSubs#.js")
 )        
-    <h2>@Model.Division.Name</h2>
+    <h2>@Model.Description()</h2>
     <h4>Email Subscription Options for @Model.person.Name &lt;@Model.person.EmailAddress&gt;</h4>
    <form method="post" action="/OnlineReg/ConfirmSubscriptions">
     @Html.Hidden("pid", Model.pid)
     @Html.Hidden("divid", Model.divid)
+    @Html.Hidden("masterorgid", Model.masterorgid)
    <p style="text-align: center">
    <table id="subs">
-@foreach (var o in Model.FetchSubs())
+@foreach (var o in Model.OrderSubs(Model.FetchSubs()))
 { 
         <tr><td valign="top"><input type="checkbox" name="Subscribe" @o.CHECKED value="@o.OrgId"></td>
             <td><h3>@o.Name</h3>

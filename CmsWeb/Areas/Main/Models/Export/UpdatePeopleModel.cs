@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Web.Mvc;
@@ -70,6 +70,10 @@ namespace CmsWeb.Models
                 row.CreateCell(c++).SetCellValue(p.School);
                 row.CreateCell(c++).SetCellValue(p.Occupation);
                 row.CreateCell(c++).SetCellValue(p.Employer);
+                if (p.Deceased.HasValue)
+                    row.CreateCell(c++).SetCellValue(p.Deceased.Value);
+                else
+                    row.CreateCell(c++, NPOI.SS.UserModel.CellType.BLANK);
             }
             var Response = context.HttpContext.Response;
             Response.Buffer = true;
@@ -108,6 +112,7 @@ namespace CmsWeb.Models
                         School = p.SchoolOther,
                         Occupation = p.OccupationOther,
                         Employer = p.EmployerOther,
+                        Deceased = p.DeceasedDate
                     };
             return q;
         }
@@ -149,6 +154,7 @@ namespace CmsWeb.Models
             public string School { get; set; }
             public string Occupation { get; set; }
             public string Employer { get; set; }
+            public DateTime? Deceased { get; set; }
         };
         private static void UpdatePeople(DbConnection cn, CMSDataContext Db, int UserPeopleId)
         {
@@ -180,6 +186,7 @@ namespace CmsWeb.Models
                 p.UpdateValue(psb, "OccupationOther", i.Occupation);
                 p.UpdateValue(psb, "EmployerOther", i.Employer);
                 p.UpdateValue(psb, "Grade", i.Grade);
+                p.UpdateValue(psb, "Deceased", i.Deceased);
 
                 p.UpdateValue(psb, "MemberStatusId", CviOrNull(cv.MemberStatusCodes().SingleOrDefault(c => c.Value == i.Member)) ?? 20);
                 p.UpdateValue(psb, "GenderId", CviOrNull(cv.GenderCodes().SingleOrDefault(c => c.Value == i.Gender)) ?? 0);

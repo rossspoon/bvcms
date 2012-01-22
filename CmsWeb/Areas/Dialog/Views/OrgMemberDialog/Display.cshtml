@@ -77,11 +77,14 @@
         <th valign="top" align='right'>Extra Member Info:</th>
         <td>@Html.Raw(Util.SafeFormat(Model.UserData))</td>
     </tr>
+    @if (User.IsInRole("Edit"))
+    {
     <tr>
         <td colspan="2" align="right">
             <a class="bt display" href="/OrgMemberDialog/Edit/@Model.OrganizationId?pid=@Model.PeopleId">Edit</a>
             <a class="bt display" href="/OrgMemberDialog/Move/@Model.OrganizationId?pid=@Model.PeopleId">Move</a>
             <a class="bt delete" href="/OrgMemberDialog/Drop/d@(comboid)">Drop</a></td>
     </tr>
+    }
 </table>
 

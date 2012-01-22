@@ -624,7 +624,6 @@
             this.password.PasswordChar = '*';
             this.password.Size = new System.Drawing.Size(193, 32);
             this.password.TabIndex = 5;
-            this.password.Text = "Tobyjkl.";
             // 
             // URL
             // 

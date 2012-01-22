@@ -61,7 +61,7 @@ namespace CustomControls
             {
                 list[i].RenderControl(output);
                 if (i<list.Count-1)
-                    output.Write(" » ");
+                    output.Write(" ? ");
             }
             //window.ctl00_ctl00_bhcr_nr_CommunityPopup = new Telligent_PopupMenu('ctl00_ctl00_bhcr_nr_CommunityPopup','CSContextMenuGroup','CSContextMenuItem','CSContextMenuItemHover','CSContextMenuItemExpanded','',0,0,0,0,'updown',100,null,null,null,[['ctl00_ctl00_bhcr_nr_ctl01','Forums','/forums/',null,null,null,null],['ctl00_ctl00_bhcr_nr_ctl02','<div class="CSContextMenuSeparator"></div>',null,null,null,null,null],['ctl00_ctl00_bhcr_nr_ctl03','Blogs','/blogs/',null,null,null,null],['ctl00_ctl00_bhcr_nr_ctl04','<div class="CSContextMenuSeparator"></div>',null,null,null,null,null],['ctl00_ctl00_bhcr_nr_ctl05','Downloads','/files/',null,null,null,null],['ctl00_ctl00_bhcr_nr_ctl06','<div class="CSContextMenuSeparator"></div>',null,null,null,null,null],['ctl00_ctl00_bhcr_nr_ctl07','Photos','/photos/',null,null,null,null]],true);
         }

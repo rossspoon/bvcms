@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -151,13 +151,18 @@ namespace CmsWeb.Areas.Main.Controllers
                 var success = (string)TempData["success"];
                 if (success.HasValue())
                     ViewData["success"] = success;
-                ViewData["text"] = "";
+                ViewData["tag"] = tag;
+                ViewData["field"] = tag;
+                ViewData["value"] = "true";
                 return View();
             }
             var t = DbUtil.Db.Tags.FirstOrDefault(tt =>
                 tt.Name == tag && tt.PeopleId == Util.UserPeopleId && tt.TypeId == DbUtil.TagTypeId_Personal);
             if (t == null)
-                TempData["fail"] = "tag not found";
+            {
+                TempData["message"] = "tag not found";
+                return Redirect("/Tags/ConvertTagToExtraValue");
+            }
 
             var q = t.People(DbUtil.Db);
             foreach (var p in q)
@@ -165,7 +170,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 p.AddEditExtraValue(field, value);
                 DbUtil.Db.SubmitChanges();
             }
-            return View();
+            TempData["message"] = "success";
+            return Redirect("/Tags/ConvertTagToExtraValue");
         }
     }
 }

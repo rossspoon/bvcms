@@ -159,8 +159,8 @@ namespace CmsData
             s = Regex.Replace(s, "&nbsp;", " ");
             s = Regex.Replace(s, "\\n", e);
             s = s.Trim();
-            s = Regex.Replace(s, "^[\"“]", e);
-            s = Regex.Replace(s, "[\"”]$", e);
+            s = Regex.Replace(s, "^[\"?]", e);
+            s = Regex.Replace(s, "[\"?]$", e);
             s = Regex.Replace(s, "\\s+", " ");
             return s;
         }

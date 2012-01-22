@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
@@ -38,6 +38,8 @@ namespace CmsWeb.Models
         }
         public static IQueryable<Organization> UserSelectClasses(Organization masterorg)
         {
+            if (!masterorg.OrgPickList.HasValue())
+                return DbUtil.Db.Organizations.Where(oo => false);
             var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
 
             var q = from o in DbUtil.Db.Organizations

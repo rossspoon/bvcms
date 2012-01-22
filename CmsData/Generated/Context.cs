@@ -490,6 +490,14 @@ namespace CmsData
         partial void UpdateRecReg(RecReg instance);
         partial void DeleteRecReg(RecReg instance);
         
+        partial void InsertRecurringAmount(RecurringAmount instance);
+        partial void UpdateRecurringAmount(RecurringAmount instance);
+        partial void DeleteRecurringAmount(RecurringAmount instance);
+        
+        partial void InsertRecurringGiving(RecurringGiving instance);
+        partial void UpdateRecurringGiving(RecurringGiving instance);
+        partial void DeleteRecurringGiving(RecurringGiving instance);
+        
         partial void InsertRelatedFamily(RelatedFamily instance);
         partial void UpdateRelatedFamily(RelatedFamily instance);
         partial void DeleteRelatedFamily(RelatedFamily instance);
@@ -1400,6 +1408,18 @@ namespace CmsData
 
 		}
 
+		public Table< RecurringAmount> RecurringAmounts
+		{
+			get	{ return this.GetTable< RecurringAmount>(); }
+
+		}
+
+		public Table< RecurringGiving> RecurringGivings
+		{
+			get	{ return this.GetTable< RecurringGiving>(); }
+
+		}
+
 		public Table< RelatedFamily> RelatedFamilies
 		{
 			get	{ return this.GetTable< RelatedFamily>(); }
@@ -1861,23 +1881,31 @@ namespace CmsData
 		[Function(Name="dbo.FindPerson2", IsComposable = true)]
 		public IQueryable< View.FindPerson2 > FindPerson2(
             [Parameter(DbType="varchar")] string first,
+            [Parameter(DbType="varchar")] string goesby,
             [Parameter(DbType="varchar")] string last,
             [Parameter(DbType="int")] int? m,
             [Parameter(DbType="int")] int? d,
             [Parameter(DbType="int")] int? y,
             [Parameter(DbType="varchar")] string email,
-            [Parameter(DbType="varchar")] string phone
+            [Parameter(DbType="varchar")] string email2,
+            [Parameter(DbType="varchar")] string phone1,
+            [Parameter(DbType="varchar")] string phone2,
+            [Parameter(DbType="varchar")] string phone3
             )
 		{
 			return this.CreateMethodCallQuery< View.FindPerson2>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 first,
+                goesby,
                 last,
                 m,
                 d,
                 y,
                 email,
-                phone
+                email2,
+                phone1,
+                phone2,
+                phone3
                 );
 		}
 
@@ -2054,6 +2082,20 @@ namespace CmsData
     #endregion
 	#region Scalar Functions
 		
+		[Function(Name="dbo.AttendItem", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? AttendItem(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "n", DbType="int")] int? n
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                n
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.ContributionChange", IsComposable = true)]
 		[return: Parameter(DbType = "float")]
 		public double? ContributionChange(
@@ -2067,6 +2109,18 @@ namespace CmsData
                 pid,
                 dt1,
                 dt2
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.LastActive", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? LastActive(
+            [Parameter(Name = "uid", DbType="int")] int? uid
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                uid
                 ).ReturnValue));
 		}
 
@@ -2339,6 +2393,18 @@ namespace CmsData
 			return ((string)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.SpouseIdJoint", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? SpouseIdJoint(
+            [Parameter(Name = "peopleid", DbType="int")] int? peopleid
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                peopleid
                 ).ReturnValue));
 		}
 

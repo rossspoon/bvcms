@@ -139,10 +139,13 @@ class OrgMembers(object):
             }
         }
 
-        public string OrgMembers(int orgid)
+        public string OrgMembers(int orgid, string search)
         {
+            search = search ?? "";
+            var nosearch = !search.HasValue();
             var qm = from m in Db.OrganizationMembers
                      where m.OrganizationId == orgid
+                     where nosearch || m.Person.Name2.StartsWith(search)
                      select new
                      {
                          m.PeopleId,

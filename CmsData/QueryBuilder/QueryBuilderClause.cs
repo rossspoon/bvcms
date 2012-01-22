@@ -1,4 +1,4 @@
-﻿/* Author: David Carroll
+/* Author: David Carroll
  * Copyright (c) 2008, 2009 Bellevue Baptist Church 
  * Licensed under the GNU General Public License (GPL v2)
  * you may not use this code except in compliance with the License.
@@ -44,7 +44,7 @@ namespace CmsData
             get
             {
                 if (_Compare == null)
-                    _Compare = CompareClass.Comparisons.Single(cm =>
+                    _Compare = CompareClass.Comparisons.SingleOrDefault(cm =>
                         cm.FieldType == FieldInfo.Type && cm.CompType == ComparisonType);
                 return _Compare;
             }
@@ -52,7 +52,10 @@ namespace CmsData
         public override string ToString()
         {
             if (!IsGroup)
-                return Compare.ToString(this);
+                if (Compare != null)
+                    return Compare.ToString(this);
+                else
+                    return "null";
 
             var sb = new StringBuilder();
             if (IsFirst)

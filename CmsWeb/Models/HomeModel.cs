@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
@@ -65,10 +65,18 @@ namespace CmsWeb.Models
 
             var pid = u.PeopleId;
 
+            var organizations = DbUtil.Db.Organizations.AsQueryable();
+            var limitvisibility = Util2.OrgMembersOnly || Util2.OrgLeadersOnly;
+            organizations = from o in organizations
+                            where o.OrganizationMembers.Any(om => om.PeopleId == pid)
+                            select o;
+            var oids = new int[0];
+            if (Util2.OrgLeadersOnly)
+                oids = DbUtil.Db.GetLeaderOrgIds(pid);
             var q = from om in DbUtil.Db.OrganizationMembers
                     where om.PeopleId == pid
                     where (om.Pending ?? false) == false
-                    where !(om.Organization.SecurityTypeId == 3 && (Util2.OrgMembersOnly || Util2.OrgLeadersOnly))
+                    where oids.Contains(om.OrganizationId) || !(limitvisibility && om.Organization.SecurityTypeId == 3)
                     orderby om.Organization.OrganizationName
                     select new MyInvolvementInfo
                     {
@@ -76,13 +84,14 @@ namespace CmsWeb.Models
                         MemberType = om.MemberType.Description,
                         OrgId = om.OrganizationId
                     };
+
             return q;
         }
         public class NewsInfo
         {
-            public string Title {get; set;}
-            public DateTime Published {get; set;}
-            public string Url {get; set;}
+            public string Title { get; set; }
+            public DateTime Published { get; set; }
+            public string Url { get; set; }
         }
         public IEnumerable<NewsInfo> BVCMSNews()
         {

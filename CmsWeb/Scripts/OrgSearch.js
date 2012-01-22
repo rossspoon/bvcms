@@ -154,8 +154,12 @@
     $("#RenameDiv").click(function (ev) {
         ev.preventDefault();
         $.post('/OrgSearch/RenameDiv/', { id: $("#TagProgramId").val(), divid: $("#TagDiv").val(), name: $("#NewDiv").val() }, function (ret) {
-            $('#TagDiv').html(ret);
-            $("#NewDiv").val("");
+            if (ret == "error")
+                alert("expected error");
+            {
+                $('#TagDiv').html(ret);
+                $("#NewDiv").val("");
+            }
         });
         return false;
     });
@@ -303,8 +307,12 @@
         var td = $('#TagDiv').val()
         if (td > 0)
             $.post(a.attr('href'), { tagdiv: td }, function (ret) {
-                $(a).parent().parent().replaceWith(ret);
-                $.fmtTable();
+                if (ret == "error")
+                    alert("unexpected error, refresh page");
+                else {
+                    $(a).parent().parent().replaceWith(ret);
+                    $.fmtTable();
+                }
             });
         return false;
     });
@@ -312,8 +320,12 @@
         ev.preventDefault();
         var a = $(this);
         $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function (ret) {
-            $(a).parent().parent().replaceWith(ret);
-            $.fmtTable();
+            if (ret == "error")
+                alert("unexpected error, refresh page");
+            else {
+                $(a).parent().parent().replaceWith(ret);
+                $.fmtTable();
+            }
         });
         return false;
     });

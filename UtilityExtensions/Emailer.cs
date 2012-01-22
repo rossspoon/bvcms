@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Linq;
 using System.Net.Mail;
@@ -17,7 +17,26 @@ namespace UtilityExtensions
         {
             if (WebConfigurationManager.AppSettings["sendemail"] == "false")
                 return;
-
+            var error = "";
+            for(var n = 0;n < 4; n++)
+            {
+                try
+                {
+                    sendmsg(SysFromEmail, CmsHost, From, subject, Message, to, id, pid);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    System.Threading.Thread.Sleep(35);
+                    error = ex.Message;
+                }
+            }
+            System.Threading.Thread.Sleep(35);
+            sendmsg(SysFromEmail, CmsHost, From, "(smtp error) " + subject, "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(to[0].Address, error, Message), 
+                Util.SendErrorsTo(), id, pid);
+        }
+        private static void sendmsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, int? pid)
+        {
             var msg = new MailMessage();
             if (From == null)
                 From = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
@@ -75,18 +94,15 @@ namespace UtilityExtensions
                 var smtp = Util.Smtp();
                 smtp.Send(msg);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                if (!msg.Subject.StartsWith("(smtp error)"))
-                    SendMsg(SysFromEmail, CmsHost, From,
-                        "(smtp error) " + subject,
-                        "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(addrs, ex.Message, Message),
-                        Util.SendErrorsTo(), id, pid);
-                else
-                    throw;
+                throw;
             }
-            htmlView.Dispose();
-            htmlStream.Dispose();
+            finally
+            {
+                htmlView.Dispose();
+                htmlStream.Dispose();
+            }
         }
     }
 }

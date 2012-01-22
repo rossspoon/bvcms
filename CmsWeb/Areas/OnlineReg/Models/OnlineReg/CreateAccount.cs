@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -85,7 +85,7 @@ Just login to {host} and you will be taken to your record where you can make cor
             var ot = new OneTimeLink 
             { 
                 Id = Guid.NewGuid(),
-                Querystring = "{0},{1}".Fmt(divid ?? orgid, PeopleId) 
+                Querystring = "{0},{1}".Fmt(divid ?? orgid ?? masterorgid , PeopleId) 
             };
             var Db = DbUtil.Db;
             Db.OneTimeLinks.InsertOnSubmit(ot);

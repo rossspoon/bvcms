@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -87,10 +87,9 @@ namespace CmsWeb.Models
             };
             var q = DbUtil.Db.PeopleQuery(qid.Value);
             var q2 = from c in DbUtil.Db.Contributions
+                     where c.PeopleId != null
                      let sp = c.Person.Family.People.SingleOrDefault(ss => ss.PeopleId == c.Person.SpouseId)
-                     where q.Any(p => p.PeopleId == c.PeopleId
-                         || (p.SpouseId == c.PeopleId
-                            && sp.ContributionOptionsId == 2 && p.ContributionOptionsId == 2))
+                     where q.Any(p => p.PeopleId == c.PeopleId || c.PeopleId == DbUtil.Db.SpouseIdJoint(c.PeopleId))
                      let f = c.Person.Family
                      where c.PledgeFlag != true
                      where c.ContributionStatusId == 0
@@ -122,7 +121,7 @@ namespace CmsWeb.Models
             };
             var q = DbUtil.Db.PeopleQuery(qid.Value);
             var q2 = from p in q
-                     let sp = p.Family.People.SingleOrDefault(ss => ss.PeopleId == p.SpouseId && ss.ContributionOptionsId == 2 && p.ContributionOptionsId == 2)
+                     let sp = p.Family.People.SingleOrDefault(ss => ss.PeopleId == DbUtil.Db.SpouseIdJoint(p.PeopleId))
                      where p.PeopleId == p.Family.HeadOfHouseholdId || p.ContributionOptionsId != 2
                      let t = DbUtil.Db.GetTotalContributions(p.PeopleId, sp.PeopleId, startdt, enddt)
                      from r in t
@@ -144,6 +143,7 @@ namespace CmsWeb.Models
             var q2 = from pp in q
                      group pp by pp.FamilyId into g
                      from p in g.First().Family.People
+                     where p.DeceasedDate == null
                      let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
                      orderby p.FamilyId, p.PositionInFamilyId
                      select new
