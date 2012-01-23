@@ -32,11 +32,13 @@ namespace CmsWeb.Models
                 _count = FetchTransactions().Count();
             return _count.Value;
         }
+        public bool finance { get; set; }
         public TransactionsModel()
         {
             Pager = new PagerModel2(Count);
             Pager.Sort = "Id";
             Pager.Direction = "desc";
+            finance = HttpContext.Current.User.IsInRole("Finance");
         }
         public IEnumerable<Transaction> Transactions()
         {
@@ -50,12 +52,15 @@ namespace CmsWeb.Models
         {
             _transactions
                = from t in DbUtil.Db.Transactions
+                 let donate = t.Donate ?? 0
                  where t.Amt > gtamount || gtamount == null
                  where t.Amt <= ltamount || ltamount == null
                  where t.TransactionDate >= startdt || startdt == null
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
                  where (t.Testing ?? false) == testtransactions
+                 where (t.Financeonly ?? false) == false || finance
+                 
                  select t;
             if (!HttpContext.Current.User.IsInRole("Finance"))
                 _transactions = _transactions.Where(tt => (tt.Financeonly ?? false) == false);

@@ -171,6 +171,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                         g.fundid,
                         desc);
                 }
+                t.Financeonly = true;
                 if (t.Donate > 0)
                 {
                     var fundname = DbUtil.Db.ContributionFunds.Single(ff => ff.FundId == p.setting.DonationFundId).FundName;

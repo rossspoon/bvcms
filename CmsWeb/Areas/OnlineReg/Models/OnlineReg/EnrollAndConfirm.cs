@@ -454,13 +454,16 @@ Total Fee paid for this registration session: {4:C}<br/>
 
             var c = DbUtil.Content("OneTimeConfirmationPledge");
             if (c == null)
+            {
                 c = new Content();
-            var message = @"Hi {name},
+                c.Title = "Manage your pledge";
+                c.Body = @"Hi {name},
 <p>Here is your <a href=""{url}"">link</a> to manage your pledge. (note: it will only work once for security reasons)</p> ";
+            }
 
             p.SendOneTimeLink(
                 DbUtil.Db.StaffPeopleForOrg(orgid.Value).First().FromEmail,
-                Util.ServerLink("/OnlineReg/ManagePledge/"), "Manage your pledge", message);
+                Util.ServerLink("/OnlineReg/ManagePledge/"), c.Title, c.Body);
         }
         public void ConfirmManageGiving()
         {
@@ -472,13 +475,16 @@ Total Fee paid for this registration session: {4:C}<br/>
 
             var c = DbUtil.Content("OneTimeManageGiving");
             if (c == null)
+            {
                 c = new Content();
-            var message = @"Hi {name},
+                c.Title = "Manage your recurring giving";
+                c.Body = @"Hi {name},
 <p>Here is your <a href=""{url}"">link</a> to manage your recurring giving. (note: it will only work once for security reasons)</p> ";
+            }
 
             p.SendOneTimeLink(
                 DbUtil.Db.StaffPeopleForOrg(orgid.Value).First().FromEmail,
-                Util.ServerLink("/OnlineReg/ManageGiving/"), "Manage your recurring giving", message);
+                Util.ServerLink("/OnlineReg/ManageGiving/"), c.Title, c.Body);
         }
         public int GetEntryPoint()
         {

@@ -1095,7 +1095,6 @@
     <Content Include="MembershipAutomationExample.py" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\Transactions\Row.cshtml" />
     <Content Include="Areas\Main\Views\Contact\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\List.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\List.cshtml" />

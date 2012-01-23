@@ -72,6 +72,7 @@ namespace CmsData
                 Description = "Recurring Giving",
                 Testing = Testing,
                 TransactionGateway = gateway,
+                Financeonly = true
             };
             t.TransactionPeople.Add(new TransactionPerson { PeopleId = PeopleId, Amt = total });
             Db.Transactions.InsertOnSubmit(t);

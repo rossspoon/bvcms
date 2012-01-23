@@ -1,4 +1,5 @@
 ﻿@using CmsWeb;
+@using UtilityExtensions;
 @model CmsWeb.Models.TransactionsModel
 <div class="roundbox floatleft">
 <h2>Transactions</h2>
@@ -27,16 +28,31 @@
         <th><a href="#" class="sortable">Date</a></th>
         <th><a href="#" class="sortable">Description</a></th>
         <th><a href="#" class="sortable">Name</a></th>
-        <th><a href="#" class="sortable">RegAmt</a></th>
+        <th><a href="#" class="sortable">Amt</a></th>
+    @if(Model.finance)
+    {
         <th><a href="#" class="sortable">Donate</a></th>
-        <th><a href="#" class="sortable">Total</a></th>
+    }
         <th><a href="#" class="sortable">Due</a></th>
     </tr>
     </thead>
     <tbody>
     @foreach (var t in Model.Transactions())
     {
-        Html.RenderPartial("Row", t);
+    <tr>
+        <td nowrap="nowrap" class="tip" title="@t.TransactionId|@t.ApprovalCode|@t.AuthCode|@t.Message">@t.Id</td>
+        <td>@t.TransactionId</td>
+        <td>@if (t.Approved == true){<img alt="Y" src="/Content/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
+        <td>@t.TransactionDate.FormatDateTm()</td>
+        <td>@t.Description</td>
+        <td><a href='@Util.ResolveServerUrl("/OnlineReg/ConfirmTest/")@t.DatumId'>@t.Name</a></td>
+        <td align="right">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>
+        @if (Model.finance)
+        {
+        <td align="right">@t.Donate.ToString2("N")</td>
+        }
+        <td align="right">@t.Amtdue.ToString2("N")</td>
+    </tr>
     }
     </tbody>
 </table>

@@ -1,15 +1,8 @@
 ﻿@model string
 @using UtilityExtensions
 @using CmsWeb
-    <a href="#" class="editor" tb="@ViewData.TemplateInfo.HtmlFieldPrefix">
     <div id="@(ViewData.TemplateInfo.HtmlFieldPrefix)_ro" class="block border">
-    @if (Model.HasValue())
-    {
         @Html.Raw(Model)
-    }
-    else
-    {
-        <i>click to edit</i>
-    }
-    </div></a>
+    </div>
+    <a href="#" class="editor" tb="@ViewData.TemplateInfo.HtmlFieldPrefix">edit</a>
     @Html.TextAreaFor(m => m, new { @class = "html" })
