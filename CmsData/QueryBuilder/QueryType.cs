@@ -132,6 +132,7 @@ namespace CmsData
         PrimaryResCode,
         PrimaryState,
         PrimaryZip,
+        PrimaryCountry,
         RecentAttendCount,
         RecentAttendMemberType,
         RecentAttendType,

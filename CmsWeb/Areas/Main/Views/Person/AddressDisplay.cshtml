@@ -1,9 +1,9 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Models.PersonPage.AddressInfo
 @if (Model.CanUserEditAddress)
-   { 
+{ 
 <a class="displayedit bt edit" href="/Person/AddressEdit/@Model.PeopleId?type=@Model.Name">Edit</a>
- } 
+} 
 <table>
     <tr>
         <td>
@@ -25,8 +25,12 @@
                     <td>@Model.City</td>
                 </tr>
                 <tr>
-                    <th>State:</th>
+                    <th>State/Province/Region:</th>
                     <td>@Model.State</td>
+                </tr>
+                <tr>
+                    <th>Country:</th>
+                    <td>@Model.Country</td>
                 </tr>
                 <tr>
                     <th>Zip:</th>

@@ -37,6 +37,7 @@ namespace CmsWeb.Models
         public int UseCityName { get; set; }
         public int UseStateCode { get; set; }
         public int UseZipCode { get; set; }
+        public int UseCountry { get; set; }
         public int UseMaiden { get; set; }
 
         public class BasicInfo
@@ -79,6 +80,7 @@ namespace CmsWeb.Models
             public string CityName { get; set; }
             public string StateCode { get; set; }
             public string ZipCode { get; set; }
+            public string Country { get; set; }
             public DateTime Created { get; set; }
             public int FamilyId { get; set; }
             public bool notdup { get; set; }
@@ -122,6 +124,7 @@ namespace CmsWeb.Models
                         CityName = p.Family.CityName,
                         StateCode = p.Family.StateCode,
                         ZipCode = p.Family.ZipCode,
+                        Country = p.Family.CountryName,
                         Created = p.CreatedDate ?? DateTime.Parse("1/1/1980"),
                         FamilyId = p.FamilyId,
                         notdup = notdup,
@@ -153,6 +156,7 @@ namespace CmsWeb.Models
             UseCityName = 1;
             UseStateCode = 1;
             UseZipCode = 1;
+            UseCountry = 1;
         }
         public MergeModel()
         {
@@ -192,6 +196,7 @@ namespace CmsWeb.Models
             target.Family.UpdateValue(fsb, "CityName", pi[UseCityName].CityName);
             target.Family.UpdateValue(fsb, "StateCode", pi[UseStateCode].StateCode);
             target.Family.UpdateValue(fsb, "ZipCode", pi[UseZipCode].ZipCode);
+            target.Family.UpdateValue(fsb, "CountryName", pi[UseCountry].Country);
 
             target.LogChanges(DbUtil.Db, psb, Util.UserPeopleId.Value);
             target.Family.LogChanges(DbUtil.Db, fsb, target.PeopleId, Util.UserPeopleId.Value);

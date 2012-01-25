@@ -56,46 +56,19 @@ namespace CmsWeb
             coll.Add("line2", line2);
             coll.Add("csz", Util.FormatCSZ(city, st, zip));
             coll.Add("passcode", password);
-            var resp = wc.UploadValues(url, "POST", coll);
-            var s = Encoding.ASCII.GetString(resp);
-
-            var serializer = new XmlSerializer(typeof(AddressResult));
-
-            var reader = new StringReader(s);
-            var ret = (AddressResult)serializer.Deserialize(reader);
-            return ret;
-
-            //var ws = new QuickAddress(url);
-            //ws.Engine = QuickAddress.EngineTypes.Verification;
-            //var address = new string[] { line1, line2, city, st, zip };
-
-            //var result = ws.Search("USA", address, PromptSet.Types.Default);
-            //if (result.VerifyLevel == SearchResult.VerificationLevels.PremisesPartial)
-            //{
-            //    var a = result.Picklist.Items[0].PartialAddress;
-            //}
-            //else if (result.VerifyLevel == SearchResult.VerificationLevels.Verified
-            //    || result.VerifyLevel == SearchResult.VerificationLevels.InteractionRequired)
-            //{
-            //    var addr = new AddressResult();
-            //    var ads = result.Address.AddressLines;
-            //    if (ads[0].Line.HasValue())
-            //        addr.found = true;
-            //    addr.Line1 = ads[0].Line;
-            //    addr.Line2 = ads[1].Line;
-            //    addr.City = ads[2].Line;
-            //    addr.State = ads[3].Line;
-            //    addr.Zip = ads[4].Line;
-
-            //    string lab = addr.Line1;
-            //    if (addr.Line2.HasValue())
-            //        lab += "\n" + addr.Line2;
-            //    lab += "\n" + Util.FormatCSZ4(addr.City, addr.State, addr.Zip);
-            //    addr.address = lab;
-
-            //    return addr;
-            //}
-            //return new AddressResult { found = false };
+            try
+            {
+                var resp = wc.UploadValues(url, "POST", coll);
+                var s = Encoding.ASCII.GetString(resp);
+                var serializer = new XmlSerializer(typeof(AddressResult));
+                var reader = new StringReader(s);
+                var ret = (AddressResult)serializer.Deserialize(reader);
+                return ret;
+            }
+            catch (Exception)
+            {
+                return new AddressResult { Line1 = "error" };
+            }
         }
     }
 }

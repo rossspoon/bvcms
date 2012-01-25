@@ -12,8 +12,29 @@
     <tr>
         <td>@Html.IsRequired(Model.RequiredAddr())
             <label for="addr">Address</label> </td>
-        <td>@Html.TextBox(Model.inputname("address"), Model.address)
+        <td>@Html.TextBox3("address", Model.inputname("address"), Model.address)
             <div>@Html.ValidationMessage(Model.inputname("address"))</div></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td>@Html.NotRequired()
+            <label for="addr">Address2</label> </td>
+        <td>@Html.TextBox3("address2", Model.inputname("address2"), Model.address2)
+            <div>@Html.ValidationMessage(Model.inputname("address2"))</div></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td>@Html.IsRequired(Model.RequiredZip())
+            <label for="city">City</label></td>
+        <td>@Html.TextBox3("city", Model.inputname("city"), Model.city)
+            <div>@Html.ValidationMessage(Model.inputname("city"))</div></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td>@Html.IsRequired(Model.RequiredZip())
+            <label for="state">State</label></td>
+        <td>@Html.TextBox3("state", Model.inputname("state"), Model.state)
+            <div>@Html.ValidationMessage(Model.inputname("state"))</div></td>
         <td colspan="3"></td>
     </tr>
     <tr>
@@ -24,16 +45,9 @@
         <td colspan="3"></td>
     </tr>
     <tr>
-        <td>@Html.NotRequired()
-            <label for="city">City</label></td>
-        <td>@Html.TextBox3("city", Model.inputname("city"), Model.city)
-            <div>@Html.ValidationMessage(Model.inputname("city"))</div></td>
-        <td colspan="3"></td>
-    </tr>
-    <tr>
-        <td>@Html.NotRequired()
-            <label for="state">State</label></td>
-        <td>@Html.DropDownList3("state", Model.inputname("state"), Model.StateCodes(), Model.state)</td>
+        <td>@Html.IsRequired(Model.RequiredZip())
+            <label for="state">Country</label></td>
+        <td>@Html.DropDownList3("country", Model.inputname("country"), Model.Countries(), Model.country)</td>
         <td colspan="3"></td>
     </tr>
 } 

@@ -237,6 +237,8 @@ namespace CmsData
 		
 		private string _PreferredName;
 		
+		private string _PrimaryCountry;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -687,6 +689,9 @@ namespace CmsData
 		
 		partial void OnPreferredNameChanging(string value);
 		partial void OnPreferredNameChanged();
+		
+		partial void OnPrimaryCountryChanging(string value);
+		partial void OnPrimaryCountryChanged();
 		
     #endregion
 		public Person()
@@ -3287,6 +3292,28 @@ namespace CmsData
 					this._PreferredName = value;
 					this.SendPropertyChanged("PreferredName");
 					this.OnPreferredNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PrimaryCountry", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryCountry", DbType="varchar(30)")]
+		public string PrimaryCountry
+		{
+			get { return this._PrimaryCountry; }
+
+			set
+			{
+				if (this._PrimaryCountry != value)
+				{
+				
+                    this.OnPrimaryCountryChanging(value);
+					this.SendPropertyChanging();
+					this._PrimaryCountry = value;
+					this.SendPropertyChanged("PrimaryCountry");
+					this.OnPrimaryCountryChanged();
 				}
 
 			}

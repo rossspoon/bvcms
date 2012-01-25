@@ -35,6 +35,7 @@ namespace CmsWeb.Models
         public string city { get; set; }
         public string state { get; set; }
         public string zip { get; set; }
+        public string country { get; set; }
 
         private DateTime? _Birthday;
         public DateTime? birthday
@@ -80,6 +81,12 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> StateCodes()
         {
             return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
+        }
+        public IEnumerable<SelectListItem> Countries()
+        {
+            var list = QueryModel.ConvertToSelect(CodeValueController.GetCountryList(), null);
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
+            return list;
         }
 
         public bool IsNew
@@ -141,6 +148,7 @@ namespace CmsWeb.Models
 
             if (checkaddress)
             {
+
                 if (!address.HasValue())
                     ModelState.AddModelError("address", "address required (or \"na\")");
 
@@ -150,8 +158,45 @@ namespace CmsWeb.Models
                 if (!state.HasValue())
                     ModelState.AddModelError("state", "state required");
 
-                if (zip.GetDigits().Length < 5 && zip != "na")
-                    ModelState.AddModelError("zip", "valid zip (or \"na\")");
+                if (ModelState.IsValid
+                    && address != "na" && city != "na" && state != "na"
+                    && (country == "United States" || !country.HasValue()))
+                {
+                    var r = AddressVerify.LookupAddress(address, address2, city, state, zip);
+                    if (r.Line1 != "error")
+                    {
+                        if (!r.found)
+                        {
+                            ModelState.AddModelError("zip", r.address + ", if your address will not validate, change the country to 'USA, Not Validated'");
+                            return;
+                        }
+                        if (r.Line1 != address)
+                        {
+                            ModelState.AddModelError("address", "address changed from " + address);
+                            address = r.Line1;
+                        }
+                        if (r.Line2 != (address2 ?? ""))
+                        {
+                            ModelState.AddModelError("address2", "address2 changed from " + address2);
+                            address2 = r.Line2;
+                        }
+                        if (r.City != (city ?? ""))
+                        {
+                            ModelState.AddModelError("city", "city changed from " + city);
+                            city = r.City;
+                        }
+                        if (r.State != (state ?? ""))
+                        {
+                            ModelState.AddModelError("state", "state changed from " + state);
+                            state = r.State;
+                        }
+                        if (r.Zip != (zip ?? ""))
+                        {
+                            ModelState.AddModelError("zip", "zip changed from " + zip);
+                            zip = r.Zip;
+                        }
+                    }
+                }
             }
         }
         internal void AddPerson(int origin, int? entrypoint)

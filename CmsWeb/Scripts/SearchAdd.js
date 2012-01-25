@@ -62,14 +62,14 @@
         });
         return false;
     });
-    $("#zip").live("blur", function () {
-        $.post('/OnlineReg/CityState/' + $(this).val(), null, function (ret) {
-            if (ret) {
-                $('#state').val(ret.state);
-                $('#city').val(ret.city);
-            }
-        }, 'json');
-    });
+//    $("#zip").live("blur", function () {
+//        $.post('/OnlineReg/CityState/' + $(this).val(), null, function (ret) {
+//            if (ret) {
+//                $('#state').val(ret.state);
+//                $('#city').val(ret.city);
+//            }
+//        }, 'json');
+//    });
     $("form input").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();

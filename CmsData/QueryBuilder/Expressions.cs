@@ -382,16 +382,20 @@ namespace CmsData
             CompareType op,
             string value)
         {
-            if (!value.HasValue())
-                return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
+            //if (!value.HasValue())
+            //    return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
-            Expression<Func<Person, bool>> pred = p =>
-                p.PeopleExtras.Any(e =>
-                    e.Field == field && e.Data.Contains(value));
-            Expression expr = Expression.Invoke(pred, parm);
-            if (op == CompareType.NotEqual)
-                expr = Expression.Not(expr);
-            return expr;
+            //Expression<Func<Person, bool>> pred = p =>
+            //    p.PeopleExtras.Any(e =>
+            //        e.Field == field && e.Data.Contains(value));
+            //Expression expr = Expression.Invoke(pred, parm);
+            //return Compare(left, op, expr);
+
+            Expression<Func<Person, string>> pred = p =>
+                p.PeopleExtras.Where(ff => ff.Field == field).Select(ff => ff.Data).SingleOrDefault();
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Constant(value, typeof(string));
+            return Compare(left, op, right);
         }
         internal static Expression PeopleExtraInt(
             ParameterExpression parm,

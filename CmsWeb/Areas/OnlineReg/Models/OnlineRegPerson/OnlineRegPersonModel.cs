@@ -56,9 +56,11 @@ namespace CmsWeb.Models
             get { return first + " " + last + " <" + email + ">"; }
         }
         public string address { get; set; }
+        public string address2 { get; set; }
         public string city { get; set; }
         public string state { get; set; }
         public string zip { get; set; }
+        public string country { get; set; }
         public int? gender { get; set; }
         public int? married { get; set; }
 
@@ -215,9 +217,11 @@ namespace CmsWeb.Models
                 f = new Family
                 {
                     AddressLineOne = address,
+                    AddressLineTwo = address2,
                     CityName = city,
                     StateCode = state,
                     ZipCode = zip,
+                    CountryName = country,
                     HomePhone = homephone,
                 };
             else

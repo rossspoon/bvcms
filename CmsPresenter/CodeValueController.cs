@@ -19,13 +19,11 @@ using CmsData.Codes;
 
 namespace CMSPresenter
 {
-    [DataObject]
     public class CodeValueController
     {
         public CodeValueController()
         {
         }
-        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public static List<CodeValueItem> GetStateList()
         {
             const string NAME = "GetStateList";
@@ -41,6 +39,23 @@ namespace CMSPresenter
                         };
                 list = q.ToList();
                 list.Insert(0, new CodeValueItem { Code = "", Value = "(not specified)" });
+                HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
+            }
+            return list;
+        }
+        public static List<CodeValueItem> GetCountryList()
+        {
+            const string NAME = "GetCountryList";
+            var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;
+            if (list == null)
+            {
+                var q = from c in DbUtil.Db.Countries
+                        select new CodeValueItem
+                        {
+                            Code = c.Code,
+                            Value = c.Description
+                        };
+                list = q.ToList();
                 HttpRuntime.Cache[DbUtil.Db.Host + NAME] = list;
             }
             return list;

@@ -170,9 +170,9 @@ namespace CmsData
         partial void UpdateContributionType(ContributionType instance);
         partial void DeleteContributionType(ContributionType instance);
         
-        partial void InsertCountryLookup(CountryLookup instance);
-        partial void UpdateCountryLookup(CountryLookup instance);
-        partial void DeleteCountryLookup(CountryLookup instance);
+        partial void InsertCountry(Country instance);
+        partial void UpdateCountry(Country instance);
+        partial void DeleteCountry(Country instance);
         
         partial void InsertCoupon(Coupon instance);
         partial void UpdateCoupon(Coupon instance);
@@ -928,9 +928,9 @@ namespace CmsData
 
 		}
 
-		public Table< CountryLookup> CountryLookups
+		public Table< Country> Countries
 		{
-			get	{ return this.GetTable< CountryLookup>(); }
+			get	{ return this.GetTable< Country>(); }
 
 		}
 
@@ -2529,6 +2529,18 @@ namespace CmsData
             )
 		{
 			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.PrimaryCountry", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string PrimaryCountry(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
                 ).ReturnValue));

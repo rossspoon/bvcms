@@ -474,6 +474,23 @@
         </tr>
         <tr>
             <td>
+                Country
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCountry, 0)
+            </td>
+            <td>@Model.pi[0].Country @Html.HiddenFor(m => m.pi[0].Country)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCountry, 1)
+            </td>
+            <td>@Model.pi[1].Country @Html.HiddenFor(m => m.pi[1].Country)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCountry, 2)
+            </td>
+            <td>@Html.TextBoxFor(m => m.pi[2].Country)
+            </td>
+        </tr>
+        <tr>
+            <td>
                 Created
             </td>
             <td>

@@ -470,13 +470,6 @@ namespace CmsWeb.Areas.Main.Controllers
             c.Content = Task.AddTasks(id).ToString();
             return c;
         }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult VerifyAddress(string Address1, string Address2, string City, string State, string Zip)
-        {
-            var r = AddressVerify.LookupAddress(Address1, Address2, City, State, Zip);
-            var ret = Json(r);
-            return ret;
-        }
         [Authorize(Roles = "Admin")]
         public ActionResult UserDialog(int id)
         {

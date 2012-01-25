@@ -209,10 +209,50 @@ Please search with a different email, phone, or birthday.";
                 ModelState.AddModelError(inputname("address"), "address required.");
             if (isnewfamily && !city.HasValue() && RequiredZip())
                 ModelState.AddModelError(inputname("city"), "city required.");
-            if (isnewfamily && RequiredZip() && (!zip.HasValue() || zip.GetDigits().Length < 5))
-                ModelState.AddModelError(inputname("zip"), "zip needs at least 5 digits.");
+            if (isnewfamily && RequiredZip() && !zip.HasValue())
+                ModelState.AddModelError(inputname("zip"), "zip reqired");
             if (isnewfamily && !state.HasValue() && RequiredZip())
                 ModelState.AddModelError(inputname("state"), "state required");
+
+            if (isnewfamily && ModelState.IsValid && address.HasValue()
+                && (country == "United States" || !country.HasValue()))
+            {
+                var r = AddressVerify.LookupAddress(address, address2, city, state, zip);
+                if (r.Line1 != "error")
+                {
+                    if (!r.found)
+                    {
+                        ModelState.AddModelError(inputname("zip"), r.address + ", if your address will not validate, change the country to 'USA, Not Validated'");
+                        return;
+                    }
+                    if (r.Line1 != address)
+                    {
+                        ModelState.AddModelError(inputname("address"), "address changed from " + address);
+                        address = r.Line1;
+                    }
+                    if (r.Line2 != (address2 ?? ""))
+                    {
+                        ModelState.AddModelError(inputname("address2"), "address2 changed from " + address2);
+                        address2 = r.Line2;
+                    }
+                    if (r.City != (city ?? ""))
+                    {
+                        ModelState.AddModelError(inputname("city"), "city changed from " + city);
+                        city = r.City;
+                    }
+                    if (r.State != (state ?? ""))
+                    {
+                        ModelState.AddModelError(inputname("state"), "state changed from " + state);
+                        state = r.State;
+                    }
+                    if (r.Zip != (zip ?? ""))
+                    {
+                        ModelState.AddModelError(inputname("zip"), "zip changed from " + zip);
+                        zip = r.Zip;
+                    }
+                }
+            }
+
             if (!gender.HasValue && RequiredGender())
                 ModelState.AddModelError(inputname("gender"), "Please specify gender");
             if (!married.HasValue && RequiredMarital())

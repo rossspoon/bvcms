@@ -45,6 +45,7 @@ namespace CmsWeb.Models.PersonPage
         public string City { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
+        public string Country { get; set; }
         public string CityStateZip()
         {
             return Util.FormatCSZ(City, State, Zip);
@@ -79,7 +80,12 @@ namespace CmsWeb.Models.PersonPage
         {
             return QueryModel.ConvertToSelect(CodeValueController.GetStateList(), "Code");
         }
-
+        public static IEnumerable<SelectListItem> Countries()
+        {
+            var list = QueryModel.ConvertToSelect(CodeValueController.GetCountryList(), null);
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
+            return list;
+        }
         public static AddressInfo GetAddressInfo(int id, string typeid)
         {
             var p = DbUtil.Db.LoadPersonById(id);
@@ -97,6 +103,7 @@ namespace CmsWeb.Models.PersonPage
                     a.City = p.Family.CityName;
                     a.State = p.Family.StateCode;
                     a.Zip = p.Family.ZipCode;
+                    a.Country = p.Family.CountryName;
                     a.ResCodeId = p.Family.ResCodeId;
                     a.Preferred = p.AddressTypeId == 10;
                     break;
@@ -110,6 +117,7 @@ namespace CmsWeb.Models.PersonPage
                     a.City = p.CityName;
                     a.State = p.StateCode;
                     a.Zip = p.ZipCode;
+                    a.Country = p.CountryName;
                     a.ResCodeId = p.ResCodeId;
                     a.Preferred = p.AddressTypeId == 30;
                     break;
@@ -123,6 +131,49 @@ namespace CmsWeb.Models.PersonPage
                 ResCodeId = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             var f = p.Family;
+
+            if (Address1.HasValue()
+                && (Country == "United States" || !Country.HasValue()))
+            {
+                var r = AddressVerify.LookupAddress(Address1, Address2, City, State, Zip);
+                if (r.Line1 != "error")
+                {
+                    if (!r.found)
+                    {
+                        ModelState.AddModelError("zip", r.address + ", if your address will not validate, change the country to 'USA, Not Validated'");
+                        return;
+                    }
+                    if (r.Line1 != Address1)
+                    {
+                        ModelState.AddModelError("address1", "address changed from " + Address1);
+                        Address1 = r.Line1;
+                    }
+                    if (r.Line2 != (Address2 ?? ""))
+                    {
+                        ModelState.AddModelError("address2", "address2 changed from " + Address2);
+                        Address2 = r.Line2;
+                    }
+                    if (r.City != (City ?? ""))
+                    {
+                        ModelState.AddModelError("city", "city changed from " + City);
+                        City = r.City;
+                    }
+                    if (r.State != (State ?? ""))
+                    {
+                        ModelState.AddModelError("state", "state changed from " + State);
+                        State = r.State;
+                    }
+                    if (r.Zip != (Zip ?? ""))
+                    {
+                        ModelState.AddModelError("zip", "zip changed from " + Zip);
+                        Zip = r.Zip;
+                    }
+                    if (!ModelState.IsValid)
+                        return;
+                }
+            }
+            
+
             switch (Name)
             {
                 case "FamilyAddr":
@@ -133,6 +184,7 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(f, "StateCode", State);
                     UpdateValue(f, "ResCodeId", ResCodeId);
                     UpdateValue(f, "ZipCode", Zip);
+                    UpdateValue(f, "CountryName", Country);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 10);
                     if (fsb.Length > 0)
@@ -147,6 +199,7 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(p, "StateCode", State);
                     UpdateValue(p, "ResCodeId", ResCodeId);
                     UpdateValue(p, "ZipCode", Zip);
+                    UpdateValue(p, "CountryName", Country);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 30);
                     if (psb.Length > 0)

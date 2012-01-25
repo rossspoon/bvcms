@@ -1,37 +1,38 @@
 ﻿@using UtilityExtensions
 @using CmsData
 @model CmsWeb.Models.PersonPage.AddressInfo
-<table class="Design2">
+<table class="Design2" cellspacing="5">
     <tr>
         <th>Address:</th>
-        <td>@Html.TextBox("Address1")</td>
-@if (DbUtil.Db.Setting("VerifyAddressEnabled", "true") == "true")
-{
-        <td><a id="verifyaddress" href="/Person/VerifyAddress/" class="bt">Verify Address</a></td>
-}
-else
-{
-        <td><a id="verifyaddress" class="bt">Verify Address (out of service)</a></td>
-}
+        <td><input type="text" name="Address1" value="@Model.Address1" />
+            @Html.ValidationMessage("address1")</td>
     </tr>
     <tr>
         <th>Address2:</th>
-        <td>@Html.TextBox("Address2")</td>
+        <td><input type="text" name="Address2" value="@Model.Address2" />
+            @Html.ValidationMessage("address2")</td>
     </tr>
     <tr>
         <th>City:</th>
-        <td>@Html.TextBox("City")</td>
+        <td><input type="text" name="City" value="@Model.City" />
+            @Html.ValidationMessage("city")</td>
     </tr>
     <tr>
-        <th>State:</th>
-        <td>@Html.DropDownList("State", CmsWeb.Models.PersonPage.AddressInfo.States())</td>
+        <th>State/Province/Region:</th>
+        <td><input type="text" name=State" value="@Model.State" />
+            @Html.ValidationMessage("state")</td>
     </tr>
     <tr>
         <th>Zip:</th>
-        <td>@Html.TextBox("Zip", Model.Zip.FmtZip())</td>
+        <td><input type="text" name="Zip" value="@Model.Zip.FmtZip()" />
+            @Html.ValidationMessage("zip")</td>
     </tr>
-    @if (Model.person.CanUserEditAll)
-       { 
+    <tr>
+        <th>Country:</th>
+        <td>@Html.DropDownList("Country", CmsWeb.Models.PersonPage.AddressInfo.Countries())</td>
+    </tr>
+@if (Model.person.CanUserEditAll)
+{ 
     <tr>
         <th>Resident Code:</th>
         <td>@Html.DropDownList("ResCodeId", CmsWeb.Models.PersonPage.AddressInfo.ResCodes())</td>
@@ -55,7 +56,7 @@ else
             </table>
         </td>
     </tr>
-     } 
+} 
     <tr>
         <th>Preferred Address</th>
         <td>@Html.CheckBox("Preferred", Model.Preferred, Model.Preferred ? new { disabled = "disabled" } : null)</td>

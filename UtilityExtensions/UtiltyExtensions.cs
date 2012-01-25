@@ -410,7 +410,7 @@ namespace UtilityExtensions
             if (!zip.HasValue())
                 return "";
             var t = new StringBuilder(zip.GetDigits());
-            if (t.Length != 9)
+            if (t.Length != 9 || t.Length != 5)
                 return zip;
             t.Insert(5, "-");
             return t.ToString();
@@ -420,6 +420,8 @@ namespace UtilityExtensions
             if (!zip.HasValue())
                 return "";
             var t = zip.GetDigits();
+            if (t.Length != 9 && t.Length != 5)
+                return zip;
             if (t.Length > 5)
                 return t.Substring(0, 5);
             return t;
@@ -1030,7 +1032,7 @@ namespace UtilityExtensions
         public static string Disallow(this string value, string dissallow)
         {
             var v = value ?? "";
-            value = value.Trim();
+            value = v.Trim();
             if (value == dissallow)
                 return "";
             return value;

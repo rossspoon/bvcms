@@ -448,12 +448,5 @@ namespace CmsWeb.Areas.Dialog.Controllers
             Util2.CurrentPeopleId = p.person.PeopleId;
             Session["ActivePerson"] = p.person.Name;
         }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult VerifyAddress(SearchModel m)
-        {
-            var p = m.List[m.List.Count - 1];
-            var r = AddressVerify.LookupAddress(p.address, p.address2, p.city, p.state, p.zip);
-            return Json(r);
-        }
     }
 }

@@ -327,6 +327,12 @@ Thank you</p>";
             var cv = new CodeValueController();
             return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
         }
+        public IEnumerable<SelectListItem> Countries()
+        {
+            var list = QueryModel.ConvertToSelect(CodeValueController.GetCountryList(), null);
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
+            return list;
+        }
         public override string ToString()
         {
             var sb = new StringBuilder();
