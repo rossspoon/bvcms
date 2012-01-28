@@ -81,10 +81,10 @@ namespace CmsWeb.Models
                     married = person.MaritalStatusId == 2 ? 2 : 1;
 
                     if (!person.EmailAddress.HasValue() &&
-                        ( ManageSubscriptions() 
-                            || orgid == Util.CreateAccountCode 
-                            || OnlineGiving() 
-                            || ManageGiving() 
+                        (ManageSubscriptions()
+                            || orgid == Util.CreateAccountCode
+                            || OnlineGiving()
+                            || ManageGiving()
                             || OnlinePledge()
                         ))
                     {
@@ -205,50 +205,57 @@ Please search with a different email, phone, or birthday.";
                 email = email.Trim();
             if (!email.HasValue() || !Util.ValidEmail(email))
                 ModelState.AddModelError(inputname("email"), "Please specify a valid email address.");
-            if (isnewfamily && !address.HasValue() && RequiredAddr())
-                ModelState.AddModelError(inputname("address"), "address required.");
-            if (isnewfamily && !city.HasValue() && RequiredZip())
-                ModelState.AddModelError(inputname("city"), "city required.");
-            if (isnewfamily && RequiredZip() && !zip.HasValue())
-                ModelState.AddModelError(inputname("zip"), "zip reqired");
-            if (isnewfamily && !state.HasValue() && RequiredZip())
-                ModelState.AddModelError(inputname("state"), "state required");
-
-            if (isnewfamily && ModelState.IsValid && address.HasValue()
-                && (country == "United States" || !country.HasValue()))
+            if (isnewfamily)
             {
-                var r = AddressVerify.LookupAddress(address, address2, city, state, zip);
-                if (r.Line1 != "error")
+                if (!address.HasValue() && RequiredAddr())
+                    ModelState.AddModelError(inputname("address"), "address required.");
+                if (RequiredZip() && address.HasValue())
                 {
-                    if (!r.found)
+                    var addrok = false;
+                    if (city.HasValue() && state.HasValue())
+                        addrok = true;
+                    if (zip.HasValue())
+                        addrok = true;
+                    if (!addrok)
+                        ModelState.AddModelError("zip", "city/state required or zip required (or \"na\" in all)");
+
+                    if (ModelState.IsValid && address.HasValue()
+                        && (country == "United States" || !country.HasValue()))
                     {
-                        ModelState.AddModelError(inputname("zip"), r.address + ", if your address will not validate, change the country to 'USA, Not Validated'");
-                        return;
-                    }
-                    if (r.Line1 != address)
-                    {
-                        ModelState.AddModelError(inputname("address"), "address changed from " + address);
-                        address = r.Line1;
-                    }
-                    if (r.Line2 != (address2 ?? ""))
-                    {
-                        ModelState.AddModelError(inputname("address2"), "address2 changed from " + address2);
-                        address2 = r.Line2;
-                    }
-                    if (r.City != (city ?? ""))
-                    {
-                        ModelState.AddModelError(inputname("city"), "city changed from " + city);
-                        city = r.City;
-                    }
-                    if (r.State != (state ?? ""))
-                    {
-                        ModelState.AddModelError(inputname("state"), "state changed from " + state);
-                        state = r.State;
-                    }
-                    if (r.Zip != (zip ?? ""))
-                    {
-                        ModelState.AddModelError(inputname("zip"), "zip changed from " + zip);
-                        zip = r.Zip;
+                        var r = AddressVerify.LookupAddress(address, address2, city, state, zip);
+                        if (r.Line1 != "error")
+                        {
+                            if (!r.found)
+                            {
+                                ModelState.AddModelError(inputname("zip"), r.address + ", if your address will not validate, change the country to 'USA, Not Validated'");
+                                return;
+                            }
+                            if (r.Line1 != address)
+                            {
+                                ModelState.AddModelError(inputname("address"), "address changed from '{0}'".Fmt(address));
+                                address = r.Line1;
+                            }
+                            if (r.Line2 != (address2 ?? ""))
+                            {
+                                ModelState.AddModelError(inputname("address2"), "address2 changed from '{0}'".Fmt(address2));
+                                address2 = r.Line2;
+                            }
+                            if (r.City != (city ?? ""))
+                            {
+                                ModelState.AddModelError(inputname("city"), "city changed from '{0}'".Fmt(city));
+                                city = r.City;
+                            }
+                            if (r.State != (state ?? ""))
+                            {
+                                ModelState.AddModelError(inputname("state"), "state changed from '{0}'".Fmt(state));
+                                state = r.State;
+                            }
+                            if (r.Zip != (zip ?? ""))
+                            {
+                                ModelState.AddModelError(inputname("zip"), "zip changed from '{0}'".Fmt(zip));
+                                zip = r.Zip;
+                            }
+                        }
                     }
                 }
             }
@@ -383,7 +390,7 @@ Please search with a different email, phone, or birthday.";
                 modelState.AddModelError("checkboxes", "Max of {0} exceded".Fmt(setting.CheckboxMax));
             else if (setting.CheckboxMin > 0 && (Checkbox == null || Checkbox.Length < setting.CheckboxMin))
                 modelState.AddModelError("checkboxes", "Min of {0} required".Fmt(setting.CheckboxMin));
-            
+
             if (setting.Checkbox2Max > 0 && Checkbox2 != null && Checkbox2.Length > setting.Checkbox2Max)
                 modelState.AddModelError("checkboxes2", "Max of {0} exceded".Fmt(setting.Checkbox2Max));
             else if (setting.Checkbox2Min > 0 && (Checkbox2 == null || Checkbox2.Length < setting.Checkbox2Min))

@@ -16,6 +16,7 @@ using System.Web.Configuration;
 using System.Text;
 using System.Configuration;
 using System.Data.SqlClient;
+using CmsWeb.Areas.Public.Controllers;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -434,8 +435,9 @@ The bvCMS Team</p>
             if (user != null)
             {
                 user.ResetPasswordCode = Guid.NewGuid();
-                var link = "{0}://{1}/Account/ResetPassword/{2}".Fmt(
+                var link = "{0}://{1}/Account/SetPassword/{2}".Fmt(
                     Request.Url.Scheme, Request.Url.Authority, user.ResetPasswordCode.ToString());
+                TempData["email"] = Util.ObscureEmail(user.Person.EmailAddress);
                 DbUtil.Db.EmailRedacted(DbUtil.AdminMail, user.Person, "bvcms password reset link", @"Hi {0},
 <p>You recently requested a new password.  To reset your password, follow the link below:<br />
 <a href=""{1}"">{1}</a></p>
@@ -449,10 +451,12 @@ The bvCMS Team</p>
                     "{0} user: {1} forgot password".Fmt(DbUtil.Db.Host, user.Name), "no content");
             }
             else
+            {
+                TempData["email"] = Util.ObscureEmail("abcdef@gmail.com");
                 DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
                     CMSRoleProvider.provider.GetAdmins(),
                     "{0} unknown user: {1} forgot password".Fmt(DbUtil.Db.Host, username), "no content");
-
+            }
             return RedirectToAction("RequestPassword");
 
         }
@@ -496,10 +500,38 @@ The bvCMS Team</p>
         [Authorize]
         public ActionResult ChangePassword()
         {
-
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-
             return View();
+        }
+        [HttpGet]
+        public ActionResult SetPassword(Guid? id)
+        {
+            if (!id.HasValue)
+                return Content("invalid URL");
+            var user = DbUtil.Db.Users.SingleOrDefault(u => u.ResetPasswordCode == id);
+            if (user == null)
+                return Content("Expired link");
+            user.ResetPasswordCode = null;
+            DbUtil.Db.SubmitChanges();
+            FormsAuthentication.SetAuthCookie(user.Username, false);
+            SetUserInfo(user.Username, Session);
+            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+            Util.FormsBasedAuthentication = true;
+            return View();
+        }
+        [HttpPost]
+        [Authorize]
+        public ActionResult SetPassword(string newPassword, string confirmPassword)
+        {
+            if (!ValidateChangePassword("na", newPassword, confirmPassword))
+                return View();
+            var user = DbUtil.Db.CurrentUser;
+            CMSMembershipProvider.provider.AdminOverride = true;
+            var mu = CMSMembershipProvider.provider.GetUser(User.Identity.Name, false);
+            mu.UnlockUser();
+            mu.ChangePassword(mu.ResetPassword(), newPassword);
+            CMSMembershipProvider.provider.AdminOverride = false;
+            return RedirectToAction("ChangePasswordSuccess");
         }
 
         [Authorize]

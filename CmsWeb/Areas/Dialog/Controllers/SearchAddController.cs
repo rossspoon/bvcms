@@ -125,17 +125,16 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 index = m.List.Count,
                 gender = 99,
                 marital = 99,
-                state = "na"
             };
 #if DEBUG
-            p.title = "Mr.";
-            p.first = "David5";
-            p.last = "Carroll";
-            p.gender = 1;
-            p.marital = 20;
-            p.dob = "5/30/52";
-            p.email = "david@bvcms.com";
-            p.phone = "9014890611";
+            //p.title = "Mr.";
+            //p.first = "David5";
+            //p.last = "Carroll";
+            //p.gender = 1;
+            //p.marital = 20;
+            //p.dob = "5/30/52";
+            //p.email = "david@bvcms.com";
+            //p.phone = "9014890611";
 #endif
             m.List.Add(p);
             return p;
@@ -167,11 +166,11 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 id = -1;
             var p = NewPerson(id, m);
 #if DEBUG
-            p.address = "235 Riveredge Cv";
-            p.city = "Cordova";
-            p.state = "TN";
-            p.zip = "38018";
-            p.homephone = "9017581862";
+            //p.address = "235 Riveredge Cv";
+            //p.city = "Cordova";
+            //p.state = "TN";
+            //p.zip = "38018";
+            //p.homephone = "9017581862";
 #endif
             return View(m);
         }

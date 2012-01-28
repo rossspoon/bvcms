@@ -152,11 +152,15 @@ namespace CmsWeb.Models
                 if (!address.HasValue())
                     ModelState.AddModelError("address", "address required (or \"na\")");
 
-                if (!city.HasValue())
-                    ModelState.AddModelError("city", "city required (or \"na\")");
-
-                if (!state.HasValue())
-                    ModelState.AddModelError("state", "state required");
+                var addrok = false;
+                if (city.HasValue() && state.HasValue())
+                    addrok = true;
+                if (zip.HasValue())
+                    addrok = true;
+                if (city == "na" && state == "na" && zip == "na")
+                    addrok = true;
+                if (!addrok)
+                    ModelState.AddModelError("zip", "city/state required or zip required (or \"na\" in all)");
 
                 if (ModelState.IsValid
                     && address != "na" && city != "na" && state != "na"
@@ -172,27 +176,27 @@ namespace CmsWeb.Models
                         }
                         if (r.Line1 != address)
                         {
-                            ModelState.AddModelError("address", "address changed from " + address);
+                            ModelState.AddModelError("address", "address changed from '{0}'".Fmt(address));
                             address = r.Line1;
                         }
                         if (r.Line2 != (address2 ?? ""))
                         {
-                            ModelState.AddModelError("address2", "address2 changed from " + address2);
+                            ModelState.AddModelError("address2", "address2 changed from '{0}'".Fmt(address2));
                             address2 = r.Line2;
                         }
                         if (r.City != (city ?? ""))
                         {
-                            ModelState.AddModelError("city", "city changed from " + city);
+                            ModelState.AddModelError("city", "city changed from '{0}'".Fmt(city));
                             city = r.City;
                         }
                         if (r.State != (state ?? ""))
                         {
-                            ModelState.AddModelError("state", "state changed from " + state);
+                            ModelState.AddModelError("state", "state changed from '{0}'".Fmt(state));
                             state = r.State;
                         }
                         if (r.Zip != (zip ?? ""))
                         {
-                            ModelState.AddModelError("zip", "zip changed from " + zip);
+                            ModelState.AddModelError("zip", "zip changed from '{0}'".Fmt(zip));
                             zip = r.Zip;
                         }
                     }

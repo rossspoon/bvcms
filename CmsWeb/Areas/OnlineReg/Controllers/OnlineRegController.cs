@@ -390,8 +390,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddAnotherPerson(OnlineRegModel m)
         {
+            m.ParseSettings();
             if (!ModelState.IsValid)
-                return View("Flow/List", m.List);
+                return View("Flow/List", m);
 #if DEBUG2
             m.List.Add(new OnlineRegPersonModel
             {

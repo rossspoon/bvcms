@@ -343,7 +343,6 @@ namespace CmsWeb.Areas.Main.Controllers
             m.UpdateAddress(ModelState);
             if (!ModelState.IsValid)
                 return View("AddressEdit", m);
-            m = AddressInfo.GetAddressInfo(id, type);
             return View("AddressDisplay", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

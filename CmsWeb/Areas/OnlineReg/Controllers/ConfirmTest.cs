@@ -14,6 +14,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using CmsWeb.Areas.Manage.Controllers;
+using System.Xml.Linq;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -29,28 +30,69 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             public ExtraDatum ed;
             public TransactionInfo ti;
         }
+        private string EleVal(XElement r, string name)
+        {
+            var e = r.Element(name);
+            if (e != null)
+                return e.Value;
+            return null;
+        }
         [Authorize(Roles = "Admin")]
-        public ActionResult ConfirmTest(int? id, int? count)
+        public ActionResult ConfirmTest(int? start, int? count)
         {
             IEnumerable<ExtraDatum> q;
-            if (id.HasValue)
-                q = DbUtil.Db.ExtraDatas.Where(e => e.Id == id);
-            else
-                q = from ed in DbUtil.Db.ExtraDatas
-                    where ed.Data.StartsWith("<OnlineRegModel ")
-                    orderby ed.Stamp descending
-                    select ed;
-            var list = q.Take(count ?? 20).ToList();
+            q = from ed in DbUtil.Db.ExtraDatas
+                where ed.Data.StartsWith("<OnlineRegModel ")
+                orderby ed.Stamp descending
+                select ed;
+            var list = q.Skip(start ?? 0).Take(count ?? 200).ToList();
             var q2 = new List<ConfirmTestInfo>();
             foreach (var ed in list)
             {
-                var s = ed.Data.Replace("CMSWeb.Models", "CmsWeb.Models");
+                var xml = ed.Data.Replace(@"<OnlineRegModel xmlns=""http://schemas.datacontract.org/2004/07/CmsWeb.Models"" xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"">", @"<OnlineRegModel>")
+                    .Replace(" i:", " ")
+                    .Replace(@"xmlns:a=""http://schemas.datacontract.org/2004/07/CmsData""", "")
+                    .Replace(@"xmlns:a=""http://schemas.microsoft.com/2003/10/Serialization/Arrays""", "")
+                    .Replace(@"_x003E_k__BackingField", "")
+                    .Replace(@"_x003C_", "")
+                    .Replace(@"<_", "<")
+                    .Replace(@"</_", "</")
+                    .Replace(@" a:", " ")
+                    .Replace(@"<a:", "<")
+                    .Replace(@"</a:", "</")
+                	;
+                var x = XDocument.Parse(xml);
+                var m = new OnlineRegModel();
+                m.divid = EleVal(x.Root, "Divid").ToInt2();
+                m.orgid = EleVal(x.Root,"Orgid").ToInt2();
+                m.masterorgid = EleVal(x.Root,"Masterorgid").ToInt2();
+                m.username = (EleVal(x.Root, "Username") ?? EleVal(x.Root, "username"));
+                m.List = new List<OnlineRegPersonModel>();
+                foreach (var e in x.Descendants("OnlineRegPersonModel"))
+                {
+                    m.List.Add(new OnlineRegPersonModel
+                    {
+                        PeopleId = e.Element("PeopleId").Value.ToInt2(),
+                        first = e.Element("first").Value,
+                        last = e.Element("last").Value,
+                        orgid = e.Element("orgid").Value.ToInt2(),
+                        dob = e.Element("dob").Value,
+                        phone = e.Element("phone").Value,
+                        email = e.Element("email").Value,
+                        mname = e.Element("mname").Value,
+                        fname = e.Element("fname").Value,
+                        ShowAddress = e.Element("ShowAddress").Value.ToBool(),
+                        address = e.Element("address").Value,
+                        city = e.Element("city").Value,
+                    });
+                }
+
                 try
                 {
                     var i = new ConfirmTestInfo
                     {
                         ed = ed,
-                        m = Util.DeSerialize<OnlineRegModel>(s) as OnlineRegModel
+                        m = m
                     };
                     q2.Add(i);
                 }
@@ -78,6 +120,5 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                      };
             return View(q2);
         }
-
     }
 }

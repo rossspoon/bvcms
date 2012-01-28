@@ -1090,6 +1090,7 @@
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TimeSlot.cshtml" />
     <Content Include="Areas\Manage\Views\Account\Error.cshtml" />
     <Content Include="Areas\Main\Views\Reports\ExtraValuesGrid.cshtml" />
+    <Content Include="Areas\Manage\Views\Account\SetPassword.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="SquishIt.Contrib.MvcReadMe.txt" />
     <Content Include="MembershipAutomationExample.py" />

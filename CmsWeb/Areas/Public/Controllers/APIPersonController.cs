@@ -54,18 +54,22 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper(log: true);
             if (ret.StartsWith("!"))
                 return Content(url);
+            return Content(GetOTLoginLink(url, user));
+        }
+        public static string GetOTLoginLink(string url, string user)
+        {
             var ot = new OneTimeLink
             {
                 Id = Guid.NewGuid(),
                 Querystring = user,
-                Expires = DateTime.Now.AddMinutes(10),
+                Expires = DateTime.Now.AddHours(24)
             };
             DbUtil.Db.OneTimeLinks.InsertOnSubmit(ot);
             DbUtil.Db.SubmitChanges();
-            return Content("{0}Logon?ReturnUrl={1}&otltoken={2}".Fmt(
+            return "{0}Logon?ReturnUrl={1}&otltoken={2}".Fmt(
                 Util.CmsHost2, 
                 HttpUtility.UrlEncode(url), 
-                ot.Id.ToCode()));
+                ot.Id.ToCode());
         }
         [HttpPost]
         public ActionResult GetOneTimeRegisterLink(int OrgId, int PeopleId)

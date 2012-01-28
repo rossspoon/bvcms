@@ -132,7 +132,17 @@ namespace CmsWeb.Models.PersonPage
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             var f = p.Family;
 
-            if (Address1.HasValue()
+            var addrok = false;
+            if (City.HasValue() && State.HasValue())
+                addrok = true;
+            if (Zip.HasValue())
+                addrok = true;
+            if (!City.HasValue() && !State.HasValue() && !Zip.HasValue())
+                addrok = true;
+            if (!addrok)
+                ModelState.AddModelError("zip", "city/state required or zip required (or \"na\" in all)");
+
+            if (Address1.HasValue() && (City.HasValue() || State.HasValue() || Zip.HasValue())
                 && (Country == "United States" || !Country.HasValue()))
             {
                 var r = AddressVerify.LookupAddress(Address1, Address2, City, State, Zip);
@@ -145,27 +155,27 @@ namespace CmsWeb.Models.PersonPage
                     }
                     if (r.Line1 != Address1)
                     {
-                        ModelState.AddModelError("address1", "address changed from " + Address1);
+                        ModelState.AddModelError("address1", "address changed from '{0}'".Fmt(Address1));
                         Address1 = r.Line1;
                     }
                     if (r.Line2 != (Address2 ?? ""))
                     {
-                        ModelState.AddModelError("address2", "address2 changed from " + Address2);
+                        ModelState.AddModelError("address2", "address2 changed from '{0}'".Fmt(Address2));
                         Address2 = r.Line2;
                     }
                     if (r.City != (City ?? ""))
                     {
-                        ModelState.AddModelError("city", "city changed from " + City);
+                        ModelState.AddModelError("city", "city changed from '{0}'".Fmt(City));
                         City = r.City;
                     }
                     if (r.State != (State ?? ""))
                     {
-                        ModelState.AddModelError("state", "state changed from " + State);
+                        ModelState.AddModelError("state", "state changed from '{0}'".Fmt(State));
                         State = r.State;
                     }
                     if (r.Zip != (Zip ?? ""))
                     {
-                        ModelState.AddModelError("zip", "zip changed from " + Zip);
+                        ModelState.AddModelError("zip", "zip changed from '{0}'".Fmt(Zip));
                         Zip = r.Zip;
                     }
                     if (!ModelState.IsValid)

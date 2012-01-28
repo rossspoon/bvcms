@@ -2,8 +2,9 @@
 @using UtilityExtensions
 @model IEnumerable<CmsWeb.Areas.OnlineReg.Controllers.OnlineRegController.ConfirmTestInfo>
 <html>
-<head><title>Past Confirmations</title></head>
+<head><title>Incomplete Registrations</title></head>
 <body>
+<h2>Registrations that were started but never completed for one reason or another.</h2>
 @if (Model.Count() > 0)
 {
 <table border="1" cellpadding="2" cellspacing="0">
@@ -15,15 +16,19 @@
        <td>@i.ed.Stamp.Value</td>
     @if (i.m.divid.HasValue)
     {
-           <td><a href='/OrgSearch/Index/?div=@i.m.divid'>@i.m.Header</a></td>
+           <td><a href='/OrgSearch/Index/?div=@i.m.divid'>@i.m.div.Name</a></td>
     }
     else if (i.m.orgid > 0)
     {
-           <td><a href='/Organization/Index/@i.m.orgid'>@i.m.Header</a></td>
+           <td><a href='/Organization/Index/@i.m.orgid'>@i.m.org.OrganizationName</a></td>
+    }
+    else if (i.m.masterorgid > 0)
+    {
+           <td><a href='/Organization/Index/@i.m.masterorgid'>@i.m.masterorg.OrganizationName</a></td>
     }
     else
-    {
-           <td>@i.m.Header</td>
+    { 
+        <td>na</td>
     }
        <td>@i.m.LoginName</td>
    </tr>
@@ -34,7 +39,7 @@
         <td>Item @n</td>
         <td colspan="2">
             <a href="@(DbUtil.Db.CmsHost)Person/Index/@p.PeopleId">@p.first @p.last</a><br />
-            <a href="@(DbUtil.Db.CmsHost)Organization/Index/@p.orgid">@p.org.OrganizationName</a><br/>
+            <a href="@(DbUtil.Db.CmsHost)Organization/Index/@p.orgid">@(p.org != null ? p.org.OrganizationName : "na")</a><br/>
             @p.dob (@p.age)<br/>
             @p.phone.FmtFone()<br/>
             @p.email<br/>

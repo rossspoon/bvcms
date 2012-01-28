@@ -107,14 +107,6 @@
         });
         return false;
     });
-    $("#zip").live("blur", function () {
-        $.post('/OnlineReg/CityState/' + $(this).val(), null, function (ret) {
-            if (ret) {
-                $('#state').val(ret.state);
-                $('#city').val(ret.city);
-            }
-        }, 'json');
-    });
     $("#copy").live("click", function () {
         $("input:last[name$='.emcontact']").val($("input:hidden:last[name$='.emcontact']").val());
         $("input:last[name$='.emphone']").val($("input:hidden:last[name$='.emphone']").val());
