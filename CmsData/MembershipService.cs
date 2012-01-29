@@ -6,37 +6,22 @@ using System.Web.Security;
 
 namespace CmsData
 {
-    public class MembershipService
+    public static class MembershipService
     {
-        private MembershipProvider _provider;
-
-        public MembershipService()
-            : this(null)
+        public static int MinPasswordLength
         {
+            get { return CMSMembershipProvider.provider.MinRequiredPasswordLength; }
         }
 
-        public MembershipService(MembershipProvider provider)
+        public static bool ValidateUser(string userName, string password)
         {
-            _provider = provider ?? Membership.Provider;
+            return CMSMembershipProvider.provider.ValidateUser(userName, password);
         }
 
-        public int MinPasswordLength
-        {
-            get
-            {
-                return _provider.MinRequiredPasswordLength;
-            }
-        }
-
-        public bool ValidateUser(string userName, string password)
-        {
-            return _provider.ValidateUser(userName, password);
-        }
-
-        public MembershipCreateStatus CreateUser(string userName, string password, string email)
+        public static MembershipCreateStatus CreateUser(string userName, string password, string email)
         {
             MembershipCreateStatus status;
-            _provider.CreateUser(userName, password, email, null, null, true, null, out status);
+            CMSMembershipProvider.provider.CreateUser(userName, password, email, null, null, true, null, out status);
             return status;
         }
         public static User CreateUser(int PeopleId, string username, string password)
@@ -51,10 +36,26 @@ namespace CmsData
             CMSMembershipProvider.provider.AdminOverride = false;
             return user;
         }
-
-        public bool ChangePassword(string userName, string oldPassword, string newPassword)
+        public static User CreateUser(CMSDataContext Db, int PeopleId)
         {
-            MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
+            var p = Db.LoadPersonById(PeopleId);
+            var uname = FetchUsername(Db, p.PreferredName, p.LastName);
+            var pword = Guid.NewGuid().ToString();
+            CMSMembershipProvider.provider.AdminOverride = true;
+            var user = CMSMembershipProvider.provider.NewUser(
+                uname,
+                pword,
+                null,
+                true,
+                PeopleId);
+            CMSMembershipProvider.provider.AdminOverride = false;
+            return user;
+        }
+
+
+        public static bool ChangePassword(string userName, string oldPassword, string newPassword)
+        {
+            MembershipUser currentUser = CMSMembershipProvider.provider.GetUser(userName, true /* userIsOnline */);
             return currentUser.ChangePassword(oldPassword, newPassword);
         }
         public static bool ChangePassword(string userName, string newPassword)

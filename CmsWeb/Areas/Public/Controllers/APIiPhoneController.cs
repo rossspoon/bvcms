@@ -61,7 +61,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 ret = CMSMembershipProvider.provider.ValidateUser(username, password);
             if (ret && role.HasValue() && roles.RoleExists(role))
             {
-                AccountController.SetUserInfo(username, Session);
+                CmsWeb.Models.AccountModel.SetUserInfo(username, Session);
                 if (!roles.IsUserInRole(username, role))
                     ret = false;
             }
@@ -97,7 +97,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!Authenticate())
                 return Content("not authorized");
             var uname = getUsername();
-            AccountController.SetUserInfo(uname, Session);
+            CmsWeb.Models.AccountModel.SetUserInfo(uname, Session);
 
             if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
             {
@@ -117,7 +117,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!Authenticate() )
                 return Content("not authorized");
             var uname = getUsername();
-            AccountController.SetUserInfo(uname, Session);
+            CmsWeb.Models.AccountModel.SetUserInfo(uname, Session);
             if (!CMSRoleProvider.provider.IsUserInRole(uname, "Access"))
                 return Content("not authorized");
 
@@ -145,7 +145,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!Authenticate())
                 return Content("not authorized");
             var uname = getUsername();
-            AccountController.SetUserInfo(uname, Session);
+            CmsWeb.Models.AccountModel.SetUserInfo(uname, Session);
             if (!CMSRoleProvider.provider.IsUserInRole(uname, "Attendance"))
                 return new OrgResult(null);
             return new OrgResult(Util.UserPeopleId);

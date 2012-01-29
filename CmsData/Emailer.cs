@@ -287,6 +287,7 @@ namespace CmsData
             text = DoRegisterTag(text, CmsHost, emailqueueto);
             text = DoRegisterTag2(text, CmsHost, emailqueueto);
             text = DoExtraValueData(text, emailqueueto);
+            text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
 
             if (emailqueueto.Guid.HasValue)
             {
@@ -437,6 +438,18 @@ namespace CmsData
                 match = match.NextMatch();
             }
             return text;
+        }
+        private string DoCreateUserTag(string CmsHost, EmailQueueTo emailqueueto)
+        {
+            var ot = new OneTimeLink
+            {
+                Id = Guid.NewGuid(),
+                Querystring = emailqueueto.PeopleId.ToString()
+            };
+            OneTimeLinks.InsertOnSubmit(ot);
+            SubmitChanges();
+            var url = Util.URLCombine(CmsHost, "/Account/CreateAccount/{0}".Fmt(ot.Id.ToCode()));
+            return @"<a href=""{0}"">Create Account</a>".Fmt(url);
         }
         private string DoVoteTag(string text, string CmsHost, EmailQueueTo emailqueueto)
         {
@@ -676,7 +689,7 @@ namespace CmsData
                         emailqueue.Id, null);
                     Util.SendMsg(sysFromEmail, CmsHost, From,
                         "sent emails - error", ex.Message,
-                        Util.SendErrorsTo(), 
+                        Util.SendErrorsTo(),
                         emailqueue.Id, null);
                     throw ex;
                 }

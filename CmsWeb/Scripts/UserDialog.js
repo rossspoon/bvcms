@@ -1,6 +1,6 @@
 ﻿$(function () {
     $(".submitbutton").button();
-    $("#saveuser").live('click', function (ev) {
+    $(".save").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();

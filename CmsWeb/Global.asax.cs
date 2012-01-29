@@ -84,7 +84,7 @@ namespace CmsWeb
         protected void Session_Start(object sender, EventArgs e)
         {
             if (User.Identity.IsAuthenticated)
-                AccountController.SetUserInfo(Util.UserName, Session);
+                Models.AccountModel.SetUserInfo(Util.UserName, Session);
             Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
             Util.SessionStarting = true;
         }
@@ -111,7 +111,7 @@ namespace CmsWeb
             if (Response.Status.StartsWith("401")
                     && Request.Url.AbsolutePath.EndsWith(".aspx"))
             {
-                var r = AccountController.CheckAccessRole(User.Identity.Name);
+                var r = Models.AccountModel.CheckAccessRole(User.Identity.Name);
                 if (r.HasValue())
                     Response.Redirect(r);
             }

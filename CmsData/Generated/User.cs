@@ -73,6 +73,8 @@ namespace CmsData
 		
 		private string _DefaultGroup;
 		
+		private DateTime? _ResetPasswordExpires;
+		
    		
    		private EntitySet< PageContent> _CreatedPages;
 		
@@ -211,6 +213,9 @@ namespace CmsData
 		
 		partial void OnDefaultGroupChanging(string value);
 		partial void OnDefaultGroupChanged();
+		
+		partial void OnResetPasswordExpiresChanging(DateTime? value);
+		partial void OnResetPasswordExpiresChanged();
 		
     #endregion
 		public User()
@@ -881,6 +886,28 @@ namespace CmsData
 					this._DefaultGroup = value;
 					this.SendPropertyChanged("DefaultGroup");
 					this.OnDefaultGroupChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ResetPasswordExpires", UpdateCheck=UpdateCheck.Never, Storage="_ResetPasswordExpires", DbType="datetime")]
+		public DateTime? ResetPasswordExpires
+		{
+			get { return this._ResetPasswordExpires; }
+
+			set
+			{
+				if (this._ResetPasswordExpires != value)
+				{
+				
+                    this.OnResetPasswordExpiresChanging(value);
+					this.SendPropertyChanging();
+					this._ResetPasswordExpires = value;
+					this.SendPropertyChanged("ResetPasswordExpires");
+					this.OnResetPasswordExpiresChanged();
 				}
 
 			}

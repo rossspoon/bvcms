@@ -232,6 +232,7 @@
     <Compile Include="Areas\Main\Models\Export\FreshbooksResult.cs" />
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
+    <Compile Include="Areas\Manage\Models\AccountModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
     <Compile Include="Areas\Manage\Controllers\ExtraValuesController.cs" />
     <Compile Include="Areas\Manage\Controllers\MergeController.cs" />
@@ -1091,6 +1092,7 @@
     <Content Include="Areas\Manage\Views\Account\Error.cshtml" />
     <Content Include="Areas\Main\Views\Reports\ExtraValuesGrid.cshtml" />
     <Content Include="Areas\Manage\Views\Account\SetPassword.cshtml" />
+    <Content Include="Areas\Manage\Views\Account\LinkUsed.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="SquishIt.Contrib.MvcReadMe.txt" />
     <Content Include="MembershipAutomationExample.py" />

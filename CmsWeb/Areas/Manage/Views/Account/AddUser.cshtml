@@ -8,18 +8,15 @@
 <tr><td>Userid:</td><td>@Model.UserId</td></tr>
 <tr><td>Name:</td><td>@Model.Name</td></tr>
 <tr><td>Username:</td><td>@Model.Username</td></tr>
-<tr><td>Password:</td><td>@ViewData["newpassword"]</td></tr>
 </table>
 @using (Html.BeginForm("SendNewUserEmail", "Account"))
 { 
    @Html.Hidden("userid", Model.UserId)
-   @Html.Hidden("newpassword", ViewData["newpassword"])
    <input type="submit" class="bt" name="SendNewUserWelcome" value="Send Email" />
 } 
 @using (Html.BeginForm("UsersPage", "Account"))
 { 
-   @Html.Hidden("newpassword", ViewData["newpassword"])
    <input type="submit" class="bt" name="Submit" value="Go directly to Users" /> 
-} 
+}
 
 

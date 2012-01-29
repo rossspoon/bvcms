@@ -158,7 +158,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     var role = "Access";
                     if (roles.RoleExists("Checkin"))
                         role = "Checkin";
-                    AccountController.SetUserInfo(username, Session);
+                    AccountModel.SetUserInfo(username, Session);
                     if (!roles.IsUserInRole(username, role))
                         ret = false;
                 }

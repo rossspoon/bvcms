@@ -141,16 +141,23 @@ namespace CmsWeb.Models
                 }
                 if (feed.Data != null)
                 {
-                    var reader = XmlReader.Create(new StringReader(feed.Data));
-                    var f = SyndicationFeed.Load(reader);
-                    var posts = from item in f.Items
-                                select new NewsInfo
-                                {
-                                    Title = item.Title.Text,
-                                    Published = item.PublishDate.DateTime,
-                                    Url = item.Links.Single(i => i.RelationshipType == "alternate").GetAbsoluteUri().AbsoluteUri
-                                };
-                    return posts;
+                    try
+                    {
+                        var reader = XmlReader.Create(new StringReader(feed.Data));
+                        var f = SyndicationFeed.Load(reader);
+                        var posts = from item in f.Items
+                                    select new NewsInfo
+                                    {
+                                        Title = item.Title.Text,
+                                        Published = item.PublishDate.DateTime,
+                                        Url = item.Links.Single(i => i.RelationshipType == "alternate").GetAbsoluteUri().AbsoluteUri
+                                    };
+                        return posts;
+                    }
+                    catch
+                    {
+                        return new List<NewsInfo>();
+                    }
                 }
             }
             return null;
@@ -190,7 +197,6 @@ namespace CmsWeb.Models
             {
                 try
                 {
-
                     var resp = req.GetResponse() as HttpWebResponse;
                     feed.LastModified = resp.LastModified;
                     feed.ETag = resp.Headers["ETag"];
@@ -204,17 +210,24 @@ namespace CmsWeb.Models
                 }
                 if (feed.Data != null)
                 {
-                    var reader = XmlReader.Create(new StringReader(feed.Data));
-                    var f = SyndicationFeed.Load(reader);
-                    var posts = from item in f.Items
-                                let au = item.Authors.First().Name
-                                select new NewsInfo
-                                {
-                                    Title = item.Title.Text,
-                                    Published = item.PublishDate.DateTime,
-                                    Url = item.Links.Single(i => i.RelationshipType == "alternate").GetAbsoluteUri().AbsoluteUri
-                                };
-                    return posts;
+                    try
+                    {
+                        var reader = XmlReader.Create(new StringReader(feed.Data));
+                        var f = SyndicationFeed.Load(reader);
+                        var posts = from item in f.Items
+                                    let au = item.Authors.First().Name
+                                    select new NewsInfo
+                                    {
+                                        Title = item.Title.Text,
+                                        Published = item.PublishDate.DateTime,
+                                        Url = item.Links.Single(i => i.RelationshipType == "alternate").GetAbsoluteUri().AbsoluteUri
+                                    };
+                        return posts;
+                    }
+                    catch
+                    {
+                        return new NewsInfo[] { };
+                    }
                 }
             }
             return new NewsInfo[] { };

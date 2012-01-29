@@ -63,7 +63,7 @@ namespace CmsWeb
                 if (valid)
                 {
                     var roles = CMSRoleProvider.provider;
-                    var u = AccountController.SetUserInfo(username, Session);
+                    var u = CmsWeb.Models.AccountModel.SetUserInfo(username, Session);
                     if (!roles.IsUserInRole(username, "Developer"))
                         valid = false;
                 }
@@ -98,7 +98,7 @@ namespace CmsWeb
             }
             else if (!NoCheckRole)
             {
-                var r = AccountController.CheckAccessRole(Util.UserName);
+                var r = Models.AccountModel.CheckAccessRole(Util.UserName);
                 if (r.HasValue())
                     filterContext.Result = Redirect(r);
             }
@@ -134,7 +134,7 @@ namespace CmsWeb
             }
             else if (!NoCheckRole)
             {
-                var r = AccountController.CheckAccessRole(Util.UserName);
+                var r = Models.AccountModel.CheckAccessRole(Util.UserName);
                 if (r.HasValue())
                     filterContext.Result = Redirect(r);
             }

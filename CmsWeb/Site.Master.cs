@@ -65,7 +65,7 @@ namespace CmsWeb
                 DbUtil.Db.SetOrgLeadersOnly();
             }
 
-            var r = AccountController.CheckAccessRole(Util.UserName);
+            var r = Models.AccountModel.CheckAccessRole(Util.UserName);
             if (r.HasValue())
                 Response.Redirect(r);
 

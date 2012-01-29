@@ -126,7 +126,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Login(OnlineRegModel m)
         {
-            var ret = AccountController.AuthenticateLogon(m.username, m.password, Session, Request);
+            var ret = AccountModel.AuthenticateLogon(m.username, m.password, Session, Request);
             if (ret is string)
             {
                 ModelState.AddModelError("authentication", ret.ToString());

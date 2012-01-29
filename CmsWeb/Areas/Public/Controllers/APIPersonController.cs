@@ -118,10 +118,9 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-            var m = new MembershipService();
             try
             {
-                var ok = m.ChangePassword(username, current, password);
+                var ok = MembershipService.ChangePassword(username, current, password);
                 if (ok)
                     return Content("ok");
                 else
