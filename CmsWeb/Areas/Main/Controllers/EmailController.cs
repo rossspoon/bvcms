@@ -38,6 +38,8 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (!m.Subject.HasValue() || !m.Body.HasValue())
                 return Json(new { id = 0, content = "<h2>Both Subject and Body need some text</h2>" });
+            if(!User.IsInRole("Admin") && m.Body.Contains("{createaccount}"))
+                return Json(new { id = 0, content = "<h2>Only Admin can use {createaccount}</h2>" });
 
             if (Util.SessionTimedOut())
             {

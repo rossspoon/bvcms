@@ -445,7 +445,6 @@
     <Compile Include="Areas\Public\Controllers\OptOutController.cs" />
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
     <Compile Include="Areas\Setup\Controllers\DivisionController.cs" />
-    <Compile Include="Code\AddressVerify.cs" />
     <Compile Include="Code\CmsController.cs" />
     <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPeopleModel.cs" />

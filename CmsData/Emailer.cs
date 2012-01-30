@@ -441,6 +441,17 @@ namespace CmsData
         }
         private string DoCreateUserTag(string CmsHost, EmailQueueTo emailqueueto)
         {
+            var user = (from u in Users
+                        where u.PeopleId == emailqueueto.PeopleId
+                        select u).FirstOrDefault();
+            if (user != null)
+            {
+                user.ResetPasswordCode = Guid.NewGuid();
+                user.ResetPasswordExpires = DateTime.Now.AddDays(1);
+                var link = Util.URLCombine(CmsHost, "/Account/SetPassword/" + user.ResetPasswordCode.ToString());
+                SubmitChanges();
+                return @"<a href=""{0}"">Set password for {1}</a>".Fmt(link,user.Username);
+            }
             var ot = new OneTimeLink
             {
                 Id = Guid.NewGuid(),

@@ -8,7 +8,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
-using CmsData;
 using CmsData.View;
 using System.Collections;
 using UtilityExtensions;
@@ -22,7 +21,7 @@ using System.IO;
 using System.Web.Configuration;
 using System.Web;
 
-namespace CmsWeb
+namespace CmsData
 {
     public class AddressVerify
     {
@@ -38,8 +37,8 @@ namespace CmsWeb
         }
         public static AddressResult LookupAddress(string line1, string line2, string city, string st, string zip)
         {
-            string url = WebConfigurationManager.AppSettings["amiurl"];
-            string password = WebConfigurationManager.AppSettings["amipassword"];
+            string url = ConfigurationManager.AppSettings["amiurl"];
+            string password = ConfigurationManager.AppSettings["amipassword"];
 
             if (!password.HasValue())
             {
@@ -48,7 +47,7 @@ namespace CmsWeb
                     password = File.ReadAllText(f);
             }
             if (!url.HasValue() || !password.HasValue())
-                return new AddressResult { found = false };
+                return new AddressResult { Line1 = "error" };
 
             var wc = new WebClient();
             var coll = new NameValueCollection();

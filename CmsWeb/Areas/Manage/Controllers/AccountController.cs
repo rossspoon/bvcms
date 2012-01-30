@@ -204,6 +204,8 @@ The bvCMS Team</p>
             var p = DbUtil.Db.LoadPersonById(pid);
             if (p == null)
                 return View("LinkUsed");
+            if (p.PositionInFamilyId == 30 || (p.Age ?? 16) < 16)
+                return Content("must be Adult (16 or older)");
             var user = MembershipService.CreateUser(DbUtil.Db, pid);
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);
@@ -249,13 +251,20 @@ The bvCMS Team</p>
         {
             if (!ValidateChangePassword("na", newPassword, confirmPassword))
                 return View();
-            var user = DbUtil.Db.CurrentUser;
-            CMSMembershipProvider.provider.AdminOverride = true;
             var mu = CMSMembershipProvider.provider.GetUser(User.Identity.Name, false);
             mu.UnlockUser();
-            mu.ChangePassword(mu.ResetPassword(), newPassword);
-            CMSMembershipProvider.provider.AdminOverride = false;
-            return RedirectToAction("ChangePasswordSuccess");
+            try
+            {
+                if (mu.ChangePassword(mu.ResetPassword(), newPassword))
+                    return RedirectToAction("ChangePasswordSuccess");
+                else
+                    ModelState.AddModelError("form", "The current password is incorrect or the new password is invalid.");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("form", ex.Message);
+            }
+            return View();
         }
         [Authorize]
         [HttpPost]
