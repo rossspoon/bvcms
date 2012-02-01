@@ -287,7 +287,8 @@ namespace CmsData
             text = DoRegisterTag(text, CmsHost, emailqueueto);
             text = DoRegisterTag2(text, CmsHost, emailqueueto);
             text = DoExtraValueData(text, emailqueueto);
-            text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
+            if (text.Contains("{createaccount}"))
+                text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
 
             if (emailqueueto.Guid.HasValue)
             {

@@ -92,6 +92,7 @@
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
+        $("#submitit").attr("disabled", "true");
         return true;
     });
     $("form.DisplayEdit a.cancel").live('click', function (ev) {

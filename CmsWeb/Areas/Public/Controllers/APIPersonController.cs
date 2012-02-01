@@ -148,21 +148,29 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(new APIFunctions(DbUtil.Db).AccessUsersXml(), "text/xml");
         }
         [HttpGet]
-        public ActionResult People(int? id, int? famid, string first, string last)
+        public ActionResult GetPeople(int? peopleid, int? famid, string first, string last)
         {
-            //var ret = AuthenticateDeveloper();
-            //if (ret.StartsWith("!"))
-            //    return Content("<Person error=\"{0}\" />".Fmt(ret.Substring(1)));
-            return Content(new APIPerson(DbUtil.Db).GetPeopleXml(id, famid, first, last), "text/xml");
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content("<Person error=\"{0}\" />".Fmt(ret.Substring(1)));
+            return Content(new APIPerson(DbUtil.Db).GetPeopleXml(peopleid, famid, first, last), "text/xml");
+        }
+        [HttpGet]
+        public ActionResult GetPerson(int id)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content("<Person error=\"{0}\" />".Fmt(ret.Substring(1)));
+            return Content(new APIPerson(DbUtil.Db).GetPersonXml(id), "text/xml");
         }
         [HttpPost]
         public ActionResult UpdatePerson()
         {
             var reader = new StreamReader(Request.InputStream);
             string xml = reader.ReadToEnd();
-            //var ret = AuthenticateDeveloper();
-            //if (ret.StartsWith("!"))
-            //    return Content("<Person error=\"{0}\" />".Fmt(ret.Substring(1)));
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content("<Person error=\"{0}\" />".Fmt(ret.Substring(1)));
             return Content(new APIPerson(DbUtil.Db).UpdatePersonXml(xml), "text/xml");
         }
     }

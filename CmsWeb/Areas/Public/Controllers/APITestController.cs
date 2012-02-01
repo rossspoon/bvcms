@@ -25,6 +25,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             return View(ApiTestInfo.testplan());
         }
+        [ValidateInput(false)]
         public ActionResult Init(string script, string uname, string pword)
         {
             Session["APIuname"] = uname;
@@ -42,14 +43,15 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("Not a Valid Developer");
             return Content("Authentication Initialized");
         }
-        public ActionResult Test(ApiTestInfo api)
+        [ValidateInput(false)]
+        public ActionResult Test(string script, Dictionary<string,string> args)
         {
-            if (api.args == null)
-                api.args = new Dictionary<string, string>();
-            api.args.Add("uname", (string)Session["APIuname"] );
-            api.args.Add("pword", (string)Session["APIpword"] );
+            if (args == null)
+                args = new Dictionary<string, string>();
+            args.Add("uname", (string)Session["APIuname"] );
+            args.Add("pword", (string)Session["APIpword"] );
             var init = (string)Session["APIinit"];
-            return Content(APIFunctions.TestAPI(init, api.script, api.args));
+            return Content(APIFunctions.TestAPI(init, script, args));
         }
     }
 }

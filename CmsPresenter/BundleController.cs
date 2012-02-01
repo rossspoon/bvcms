@@ -662,6 +662,7 @@ namespace CMSPresenter
                     where Pledges || c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     where c.ContributionDate >= dt1 && c.ContributionDate.Value.Date <= dt2
                     where c.PledgeFlag == Pledges
+                    where c.BundleDetails.First().BundleHeader.BundleStatusId == 0
                     //where Pledges || c.PostingDate != null
                     where CampusId == 0 || c.Person.CampusId == CampusId
                     group c by c.FundId into g

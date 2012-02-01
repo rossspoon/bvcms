@@ -372,6 +372,7 @@ namespace CmsData
         {
             var p = new Person();
             p.CreatedDate = Util.Now;
+            p.CreatedBy = Util.UserId;
             Db.People.InsertOnSubmit(p);
             p.PositionInFamilyId = position;
             p.AddressTypeId = 10;

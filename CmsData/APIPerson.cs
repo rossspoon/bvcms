@@ -10,6 +10,7 @@ using System.Data.Linq;
 using System.Xml.Serialization;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Net;
 
 namespace CmsData.API
 {
@@ -30,11 +31,17 @@ namespace CmsData.API
         [Serializable]
         public class Address
         {
+            [XmlElementAttribute(IsNullable = true)]
             public string AddressLineOne { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string AddressLineTwo { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string CityName { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string StateCode { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string ZipCode { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string CountryName { get; set; }
             public DateTime? AddressFromDate { get; set; }
             public DateTime? AddressToDate { get; set; }
@@ -91,33 +98,51 @@ namespace CmsData.API
             [XmlAttribute]
             public int PeopleId { get; set; }
             public int FamilyId { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string NickName { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string TitleCode { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string FirstName { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string MiddleName { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string LastName { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string SuffixCode { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string AltName { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string MaidenName { get; set; }
             public int GenderId { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string HomePhone { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string CellPhone { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string WorkPhone { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string EmailAddress { get; set; }
             public bool? SendEmailAddress1 { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string EmailAddress2 { get; set; }
             public bool? SendEmailAddress2 { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string SchoolOther { get; set; }
             public int? Grade { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string EmployerOther { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string OccupationOther { get; set; }
             public int? MaritalStatusId { get; set; }
             public DateTime? WeddingDate { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string DOB { get; set; }
             public bool? DoNotCallFlag { get; set; }
             public bool? DoNotMailFlag { get; set; }
             public bool? DoNotVisitFlag { get; set; }
             public int PositionInFamilyId { get; set; }
+            [XmlElementAttribute(IsNullable = true)]
             public string SpouseName { get; set; }
             public int? CampusId { get; set; }
             public DateTime? DeceasedDate { get; set; }
@@ -127,7 +152,11 @@ namespace CmsData.API
             public Address PersonalAddress { get; set; }
             public int AddressTypeId { get; set; }
         }
-        public IEnumerable<Person> GetPeopleData(int? id, int? famid, string first, string last)
+        public Person GetPersonData(int id)
+        {
+            return GetPeopleData(id).Single();
+        }
+        public IEnumerable<Person> GetPeopleData(int? id, int? famid = null, string first = null, string last = null)
         {
             var q = from p in Db.People
                     where id == null || id == p.PeopleId
@@ -207,6 +236,14 @@ namespace CmsData.API
             xs.Serialize(sw, a);
             return sw.ToString();
         }
+        public string GetPersonXml(int id)
+        {
+            var xs = new XmlSerializer(typeof(Person));
+            var sw = new StringWriter();
+            var p = GetPersonData(id);
+            xs.Serialize(sw, p);
+            return sw.ToString();
+        }
         public string UpdatePersonXml(string xml)
         {
             var x = XDocument.Parse(xml);
@@ -218,8 +255,17 @@ namespace CmsData.API
                 switch (e.Name.ToString())
                 {
                     case "PersonalAddress":
-                    case "FamilyAddress":
+                        foreach (var pa in e.Elements())
+                            u.UpdatePerson(pa);
                         addr = Address2.New(e, p.PeopleId, p.CountryName);
+                        addr = ValidateAddress(addr);
+                        if (addr.Error.HasValue())
+                            return serialize(addr);
+						break;
+                    case "FamilyAddress":
+                        foreach (var fa in e.Elements())
+                            u.UpdateFamily(fa);
+                        addr = Address2.New(e, p.PeopleId, p.Family.CountryName);
                         addr = ValidateAddress(addr);
                         if (addr.Error.HasValue())
                             return serialize(addr);
@@ -231,13 +277,7 @@ namespace CmsData.API
                 switch (e.Name.ToString())
                 {
                     case "PersonalAddress":
-                        foreach (var pa in e.Elements())
-                            u.UpdatePerson(pa);
-                        break;
                     case "FamilyAddress":
-                        foreach (var fa in e.Elements())
-                            u.UpdateFamily(fa);
-                        break;
                     case "SpouseName":
                     case "FamilyId":
                         break;
@@ -305,7 +345,7 @@ namespace CmsData.API
                 }
                 if (r.Zip != (a.ZipCode.Text ?? ""))
                 {
-                    a.ZipCode.Text = "zip changed from '{0}'".Fmt(a.ZipCode.Text);
+                    a.ZipCode.Error = "zip changed from '{0}'".Fmt(a.ZipCode.Text);
                     a.Error = "changes";
                     a.ZipCode.Text = r.Zip;
                 }

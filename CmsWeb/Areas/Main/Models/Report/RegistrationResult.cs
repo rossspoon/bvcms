@@ -162,7 +162,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
                     if (i.o == null || setting.AskEmContact == true)
                     {
-                        t5.AddCell("Emergency Friend:");
+                        t5.AddCell("Emergency Contact:");
                         t5.AddCell(rr.Emcontact);
                         t5.AddCell("Emergency Phone:");
                         t5.AddCell(rr.Emphone.FmtFone());

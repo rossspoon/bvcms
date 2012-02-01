@@ -175,6 +175,86 @@ Script:
 ------------
 Section: Person
 ------------
+Test: GetPerson
+Description:
+    <ul>
+    <li>peopleid (required)</li>
+    </ul>
+Arg: peopleid
+Script:
+	xml = webclient.DownloadString('APIPerson/GetPerson/' + peopleid)
+	return xml
+------------
+Test: GetPeople
+Description:
+    <ul>
+    <li>peopleid (optional)</li>
+    <li>famid (optional)</li>
+    <li>first (optional, exact match)</li>
+    <li>last (optional, exact match)</li>
+    </ul>
+Arg: peopleid
+Arg: famid
+Arg: first
+Arg: last
+Script:
+    def AddArg(args, arg, value):
+    	if len(value) > 0:
+    		if len(args) > 0:
+    			args += '&'
+    		else:
+    			args = '?'
+    		args += arg + '=' + value
+    	return args
+    args = ''
+    args = AddArg(args, 'peopleid', peopleid)
+    args = AddArg(args, 'famid', famid)
+    args = AddArg(args, 'first', first)
+    args = AddArg(args, 'last', last)
+    xml = webclient.DownloadString('APIPerson/GetPeople' + args)
+    return xml
+------------
+Test: UpdatePerson
+Description:
+    <ul>
+    <li>You will upload an XML document which has the same elements and structure as the XML returned for the GetPerson above.</li>
+    <li>All elements are optional. It will only update those that are included.</li>
+    <li>Address verification is done as well. If the address does not verify, you get an XML doc showing you the proposed changes with notices about previous values.</li>
+    <li>If the address was found, you could resubmit with the new values and it would save then</li>
+    </ul>
+Arg: PeopleId
+Arg: MiddleName
+Arg: WorkPhone
+Arg: AddressLineOne
+Arg: CityName
+Arg: StateCode
+Arg: ZipCode
+Arg: CountryName
+Script:
+	d = dict()
+	d['PeopleId'] = PeopleId
+	d['MiddleName'] = MiddleName
+	d['WorkPhone'] = WorkPhone
+	d['AddressLineOne'] = AddressLineOne
+	d['CityName'] = CityName
+	d['StateCode'] = StateCode
+	d['ZipCode'] = ZipCode
+	d['CountryName'] = CountryName
+	xml = '''<?xml version=""1.0"" encoding=""utf-16""?>
+	<Person PeopleId=""%(PeopleId)s"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+	  <MiddleName>%(MiddleName)s</MiddleName>
+	  <WorkPhone>%(WorkPhone)s</WorkPhone>
+	  <PersonalAddress>
+	    <AddressLineOne>%(AddressLineOne)s</AddressLineOne>
+	    <CityName>%(CityName)s</CityName>
+	    <StateCode>%(StateCode)s</StateCode>
+	    <ZipCode>%(ZipCode)s</ZipCode>
+	    <CountryName>%(CountryName)s</CountryName>
+	  </PersonalAddress>
+	</Person>''' % d
+	retxml = webclient.UploadString('APIPerson/UpdatePerson/', xml)
+	return retxml
+------------
 Test: Login
 Description:
     <ul>

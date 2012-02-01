@@ -223,6 +223,8 @@ namespace CmsWeb.Models
             if (goesby != null)
                 goesby = goesby.Trim();
             var position = PositionInFamily.Child;
+            if (!birthday.HasValue)
+                position = PositionInFamily.PrimaryAdult;
             if (age >= 18)
                 if (f.People.Count(per =>
                      per.PositionInFamilyId == PositionInFamily.PrimaryAdult)

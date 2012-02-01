@@ -29,7 +29,7 @@
 @if (Model.setting.AskEmContact == true)
 { 
     <tr>
-        <td><label for="emcontact">Emergency Friend</label></td>
+        <td><label for="emcontact">Emergency Contact</label></td>
         <td>@Html.TextBox(Model.inputname("emcontact"), Model.emcontact, new { maxlength = "100", @class="wide" })
             <div>@Html.ValidationMessage(Model.inputname("emcontact"))</div></td>
     </tr>

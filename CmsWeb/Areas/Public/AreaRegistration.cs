@@ -25,6 +25,7 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "APICheckin");
             AddRoute(context, "APICheckin2");
             AddRoute(context, "APIiPhone");
+            AddRoute(context, "APIPerson");
             AddRoute(context, "Checkin2", "APICheckin2", "Checkin2");
             AddRoute(context, "Checkin", "APICheckin", "Checkin");
             AddRoute(context, "iPhone", "APIiPhone", "iPhone");
