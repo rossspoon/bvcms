@@ -51,10 +51,6 @@ namespace CmsData
         }
         public static void LogActivity(string activity)
         {
-            LogActivity(activity, true);
-        }
-        public static void LogActivity(string activity, bool recordPageUrl)
-        {
             var db = new CMSDataContext(Util.ConnectionString);
             int? uid = Util.UserId;
             if (uid == 0)
@@ -64,7 +60,6 @@ namespace CmsData
                 ActivityDate = Util.Now,
                 UserId = uid,
                 Activity = activity,
-                PageUrl = recordPageUrl ? HttpContext.Current.Request.RawUrl : null,
             };
             db.ActivityLogs.InsertOnSubmit(a);
             db.SubmitChanges();

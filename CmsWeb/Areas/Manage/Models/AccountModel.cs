@@ -163,14 +163,19 @@ namespace CmsWeb.Models
         }
         private static User SetUserInfo(string username)
         {
-            var u = DbUtil.Db.Users.SingleOrDefault(us => us.Username == username);
-            if (u != null)
+			var i = (from u in DbUtil.Db.Users
+					 where u.Username == username
+					 select new { u, u.Person.PreferredName }).Single();
+            //var u = DbUtil.Db.Users.SingleOrDefault(us => us.Username == username);
+            if (i.u != null)
             {
-                Util.UserId = u.UserId;
-                Util.UserPeopleId = u.PeopleId;
-                Util2.CurrentPeopleId = Util.UserPeopleId.Value;
+                Util.UserId = i.u.UserId;
+                Util.UserPeopleId = i.u.PeopleId;
+                Util2.CurrentPeopleId = i.u.PeopleId.Value;
+				Util.UserPreferredName = i.PreferredName;
+				Util.UserFullName = i.u.Name;
             }
-            return u;
+            return i.u;
         }
         public static string CheckAccessRole(string name)
         {

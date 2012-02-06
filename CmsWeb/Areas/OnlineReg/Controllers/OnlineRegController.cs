@@ -15,9 +15,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
     public partial class OnlineRegController : CmsController
     {
 #if DEBUG
-        private const int INT_timeout = 1600000;
+        private int INT_timeout = 1600000;
 #else
-        private const int INT_timeout = 60000;
+        private int INT_timeout = DbUtil.Db.Setting("RegTimeout", "60000").ToInt();
 #endif
 
         // Main page
@@ -94,7 +94,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var oid = a[0].ToInt();
                 var pid = a[1].ToInt();
                 var emailid = a[2].ToInt();
-                //m.UserPeopleId = pid;
+                m.UserPeopleId = pid;
                 var p = m.LoadExistingPerson(pid);
                 p.index = m.List.Count - 1;
                 p.ValidateModelForFind(ModelState, m);
@@ -105,7 +105,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 m.registertag = registertag;
                 if (m.masterorg != null && m.masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
                 {
-                    TempData["ms"] = Util.UserPeopleId;
+                    TempData["ms"] = m.UserPeopleId;
                     return Redirect("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.masterorgid));
                 }
                 if (p.org != null && p.Found == true)
@@ -448,7 +448,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var pp = p.person;
             if (m.user != null)
                 pp = m.user;
-            DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, m.NameOnAccount), true);
+            DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, m.NameOnAccount));
             var ti = new Transaction
             {
                 Name = m.NameOnAccount,

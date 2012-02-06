@@ -776,6 +776,7 @@ namespace CmsData
                     a.AttendanceFlag == true
                     && a.MeetingDate >= mindt
                     && (a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null)
+					&& a.MeetingDate > Db.LastDrop(a.OrganizationId, a.PeopleId)
                     && ids.Contains(a.AttendanceTypeId.Value)
                     && a.Meeting.OrganizationId == Db.CurrentOrgId
                     )

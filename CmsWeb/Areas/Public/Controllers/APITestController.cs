@@ -43,15 +43,15 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("Not a Valid Developer");
             return Content("Authentication Initialized");
         }
-        [ValidateInput(false)]
-        public ActionResult Test(string script, Dictionary<string,string> args)
-        {
-            if (args == null)
-                args = new Dictionary<string, string>();
-            args.Add("uname", (string)Session["APIuname"] );
-            args.Add("pword", (string)Session["APIpword"] );
-            var init = (string)Session["APIinit"];
-            return Content(APIFunctions.TestAPI(init, script, args));
-        }
+		[ValidateInput(false)]
+		public ActionResult Test(string script, Dictionary<string, string> args)
+		{
+			if (args == null)
+				args = new Dictionary<string, string>();
+			args.Add("uname", (string)Session["APIuname"]);
+			args.Add("pword", (string)Session["APIpword"]);
+			var init = (string)Session["APIinit"];
+			return Content(APIFunctions.TestAPI(init, script, args));
+		}
     }
 }

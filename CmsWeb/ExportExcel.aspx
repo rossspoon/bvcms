@@ -70,6 +70,7 @@
                 <asp:BoundField DataField = "Age" HeaderText = "Age" />
                 <asp:BoundField DataField = "School" HeaderText = "School" />
                 <asp:BoundField DataField = "Married" HeaderText = "Marital" />
+                <asp:BoundField DataField = "FamilyName" HeaderText = "FamilyName" />
                 <asp:BoundField DataField = "FamilyId" HeaderText = "FamilyId" />
                 <asp:BoundField DataField = "FamilyPosition" HeaderText = "FamilyPositionId" />
                 <asp:BoundField DataField = "Grade" HeaderText = "Grade" />

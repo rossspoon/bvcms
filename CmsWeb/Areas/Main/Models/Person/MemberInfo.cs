@@ -110,7 +110,7 @@ namespace CmsWeb.Models.PersonPage
             if (ret == "ok")
             {
                 DbUtil.Db.SubmitChanges();
-                DbUtil.LogActivity("Updated Person: {0}".Fmt(p.Name), false);
+                DbUtil.LogActivity("Updated Person: {0}".Fmt(p.Name));
             }
             //else
             //   Elmah.ErrorSignal.FromCurrentContext().Raise(

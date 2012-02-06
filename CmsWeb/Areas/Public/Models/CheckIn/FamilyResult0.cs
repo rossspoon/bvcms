@@ -82,7 +82,7 @@ namespace CmsWeb.Models
                     if (c.Hour.HasValue)
                     {
                         var midnight = c.Hour.Value.Date;
-                        var now = midnight.Add(Util.Now2.TimeOfDay);
+                        var now = midnight.Add(Util.Now.TimeOfDay);
                         leadtime = c.Hour.Value.Subtract(now).TotalHours;
                         leadtime -= DbUtil.Db.Setting("TZOffset", "0").ToInt(); // positive to the east, negative to the west
                     }

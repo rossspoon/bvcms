@@ -121,7 +121,7 @@
     $("#attendance-link").click(function () {
         $.showTable($('#attendance-tab form'));
     });
-    $("#growth-link").click(function () {
+    $("#contacts-link").click(function () {
         $("#contacts-tab form").each(function () {
             $.showTable($(this));
         });
@@ -132,6 +132,9 @@
     });
     $("#changes-link").click(function () {
         $.showTable($("#changes-tab form"));
+    });
+    $("#volunteer-link").click(function () {
+        $.showTable($("#volunteer-tab form"));
     });
     $("#duplicates-link").click(function () {
         $.showTable($("#duplicates-tab form"));

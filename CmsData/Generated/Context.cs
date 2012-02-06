@@ -2572,6 +2572,20 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.LastDrop", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? LastDrop(
+            [Parameter(Name = "orgid", DbType="int")] int? orgid,
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.Age", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? Age(

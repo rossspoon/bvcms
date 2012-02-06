@@ -1,78 +1,48 @@
-﻿/***
-@title:
-Show Password
+/* jQuery showPassword Plugin Version 1.0
+ * @author Byron Rode
+ * @website http://www.prothemer.com/blog/2009/07/02/new-jquery-plugin-targeting-usability-for-password-masking-on-forms
+ * @requires jQuery v1.3.x
+ * @license GPL/MIT
+ */
 
-@version:
-1.0
-
-@author:
-Andreas Lagerkvist
-
-@date:
-2009-03-11
-
-@url:
-http://andreaslagerkvist.com/jquery/show-password/
-
-@license:
-http://creativecommons.org/licenses/by/3.0/
-
-@copyright:
-2008 Andreas Lagerkvist (andreaslagerkvist.com)
-
-@requires:
-jquery
-
-@does:
-This little plug inserts a "View password"-checkbox next to inputs of type password that allows the user to toggle the password's visibility. When the checkbox is checked the password is displayed in plain text.
-
-@howto:
-jQuery('#my-form').showPassword(); would insert "password togglers" in every input[type=password] within #my-form.
-
-@exampleHTML:
-<input type="password" value="oioioi"/>
-
-@exampleJS:
-jQuery('#jquery-show-password-example').showPassword();
-***/
-jQuery.fn.showPassword = function (conf) {
-    var config = $.extend({
-        str: 'Show password',
-        className: 'password-toggler'
-    }, conf);
-
-    return this.each(function () {
-        jQuery('input[type=password]', this).each(function () {
-            var field = jQuery(this);
-            var fakeField = jQuery('<input type="text" class="' + config.className + '" value="' + field.val() + '" />').insertAfter(field).hide(); // only IE really needs this
-            var check = jQuery('<label class="' + config.className + '"><input type="checkbox" /> ' + config.str + '</label>');
-            var parentLabel = field.parents('label');
-
-            if (parentLabel.length) {
-                check.insertAfter(parentLabel);
-            }
-            else {
-                check.insertAfter(fakeField); // field
-            }
-
-            check.find('input').click(function () {
-                if (jQuery(this).is(':checked')) {
-                    //	field.attr('type', 'text'); // strange, this threw errors
-                    //	field[0].type = 'text'; // and this doesn't work in IE
-                    field.hide();
-                    fakeField.val(field.val()).show();
-                }
-                else {
-                    //	field.attr('type', 'password');
-                    //	field[0].type = 'password';
-                    field.show();
-                    fakeField.hide();
-                }
-            });
-
-            fakeField.change(function () {
-                field.val(fakeField.val());
-            });
-        });
-    });
-};
+;(function($){
+	$.fn.showPassword = function(ph, options){
+	
+		var spinput = $(this);
+		
+		$.fn.showPassword.checker = function(cbid, inid){
+			$('input[id="'+cbid+'"]').click(function(){
+				if($(this).attr('checked')){
+					$('input.'+inid).val(spinput.val()).attr('id', spinput.attr('id')).attr('name',spinput.attr('name'));
+					$('input.'+inid).css('display', 'inline');
+					spinput.css('display', 'none').removeAttr('id').removeAttr('name');
+				}else{
+					spinput.val($('input.'+inid).val()).attr('id', $('input.'+inid).attr('id')).attr('name', $('input.'+inid).attr('name'));
+					spinput.css('display', 'inline');
+					$('input.'+inid).css('display', 'none').removeAttr('id').removeAttr('name');
+				}
+			});
+		}
+		
+		return this.each(function(){
+			var def = { classname: 'class', name: 'password-input', text: 'Show Password' };
+			var spcbid = 'spcb_' + parseInt(Math.random() * 1000);
+			var spinid = spcbid.replace('spcb_', 'spin_');
+			if (spinput.attr('class') !== '') { var spclass = spinid+' '+spinput.attr('class'); }else{ var spclass = spinid; }
+			if(typeof ph == 'object'){ $.extend(def, ph); }
+			if(typeof options == 'object'){ $.extend(def, options); }
+			var spname = def.name;
+			// define the class name of the object
+			if(def.classname==''){ theclass=''; }else{ theclass=' class="'+def.clasname+'"'; }
+			// build the checkbox
+			$(this).before('<input type="text" value="" class="'+spclass+'" style="display: none;" />');
+			var thecheckbox = '<label><input'+theclass+' type="checkbox" id="'+spcbid+'" name="'+spname+'" value="sp" />'+def.text+'</label>';
+			// check if there is a request to place the checkbox in a specific placeholder. 
+			// if not, place directly after the input.
+			if(ph == 'object' || typeof ph == 'undefined'){ $(this).after(thecheckbox); }else{ $(ph).html(thecheckbox); }
+			$.fn.showPassword.checker(spcbid, spinid);
+			return this;
+		});
+	}
+})
+(jQuery);

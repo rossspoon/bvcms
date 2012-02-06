@@ -74,7 +74,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 DbUtil.Db.SubmitChanges();
             }
             SetHeaders(id.ToInt());
-            DbUtil.LogActivity("Manage Subs: {0} ({1})".Fmt(m.Description(), m.person.Name), true);
+            DbUtil.LogActivity("Manage Subs: {0} ({1})".Fmt(m.Description(), m.person.Name));
             return View(m);
         }
         public ActionResult ManagePledge(string id)
@@ -103,7 +103,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 DbUtil.Db.SubmitChanges();
             }
             SetHeaders(m.orgid);
-            DbUtil.LogActivity("Manage Pledge: {0} ({1})".Fmt(m.Organization.OrganizationName, m.person.Name), true);
+            DbUtil.LogActivity("Manage Pledge: {0} ({1})".Fmt(m.Organization.OrganizationName, m.person.Name));
             return View(m);
         }
         [HttpGet]
@@ -138,7 +138,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (!m.testing)
                 m.testing = testing ?? false;
             SetHeaders(m.orgid);
-            DbUtil.LogActivity("Manage Giving: {0} ({1})".Fmt(m.Organization.OrganizationName, m.person.Name), true);
+            DbUtil.LogActivity("Manage Giving: {0} ({1})".Fmt(m.Organization.OrganizationName, m.person.Name));
             return View(m);
         }
         [HttpPost]
@@ -379,7 +379,7 @@ You have the following subscriptions:<br/>
             omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
             ot.Used = true;
             DbUtil.Db.SubmitChanges();
-            DbUtil.LogActivity("Votelink: {0}".Fmt(q.org.OrganizationName), false);
+            DbUtil.LogActivity("Votelink: {0}".Fmt(q.org.OrganizationName));
 
             if (confirm == true)
             {
@@ -398,10 +398,13 @@ You have the following subscriptions:<br/>
 
             return Content(message);
         }
+		[ValidateInput(false)]
         public ActionResult RegisterLink(string id)
         {
             if (!id.HasValue())
                 return Content("bad link");
+			if (!Request.Browser.Cookies)
+				return Content(Request.UserAgent + "<br>Your browser must support cookies");
 
             var guid = id.ToGuid();
             if (guid == null)

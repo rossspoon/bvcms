@@ -15,7 +15,7 @@ namespace CmsWeb.Models.PersonPage
         public MemberInfo member { get; set; }
         public GrowthInfo growth { get; set; }
         public MemberNotesInfo membernotes { get; set; }
-        public IEnumerable<FamilyMemberInfo> familymembers { get; set; }
+        //public IEnumerable<FamilyMemberInfo> familymembers { get; set; }
 
         public int PeopleId { get; set; }
         public int FamilyId { get; set; }
@@ -43,10 +43,38 @@ namespace CmsWeb.Models.PersonPage
         public AddressInfo PersonalAddr { get; set; }
         public static PersonInfo GetPersonInfo(int? id)
         {
-            var p = DbUtil.Db.LoadPersonById(id.Value);
-            if (p == null)
+			var i = (from pp in DbUtil.Db.People
+					 //join rr in DbUtil.Db.RecRegs on pp.PeopleId equals rr.PeopleId
+					 let spouse = (from sp in pp.Family.People where sp.PeopleId == pp.SpouseId select sp.Name).SingleOrDefault()
+					 where pp.PeopleId == id
+					 select new
+					 {
+						 pp,
+						 //rr,
+						 f = pp.Family,
+						 spouse = spouse,
+						 pp.Picture.SmallId,
+						 //familymembers = from m in pp.Family.People
+							//			 orderby
+							//				 m.PeopleId == pp.Family.HeadOfHouseholdId ? 1 :
+							//				 m.PeopleId == pp.Family.HeadOfHouseholdSpouseId ? 2 :
+							//				 3, m.Age descending, m.Name2
+							//			 select new FamilyMemberInfo
+							//			 {
+							//				 Id = m.PeopleId,
+							//				 Name = m.Name,
+							//				 Age = m.Age,
+							//				 Color = m.DeceasedDate != null ? "red" : "auto",
+							//				 PositionInFamily = m.FamilyPosition.Code,
+							//				 SpouseIndicator = m.PeopleId == pp.SpouseId ? "*" : "&nbsp;",
+							//				 Email = m.EmailAddress
+							//			 }
+					 }).FirstOrDefault();
+            if (i == null)
                 return null;
-            var rr = p.RecRegs.SingleOrDefault();
+			var p = i.pp;
+			//var r = i.rr;
+			var fam = i.f;
 
             var pi = new PersonInfo
             {
@@ -55,7 +83,7 @@ namespace CmsWeb.Models.PersonPage
                 Deceased = p.Deceased,
                 FamilyId = p.FamilyId,
                 Name = p.Name,
-                SmallPicId = p.PictureId.HasValue ? p.Picture.SmallId : null,
+                SmallPicId = i.SmallId,
                 SpouseId = p.SpouseId,
 
                 member = new MemberInfo
@@ -111,7 +139,7 @@ namespace CmsWeb.Models.PersonPage
                     NickName = p.NickName,
                     Occupation = p.OccupationOther,
                     School = p.SchoolOther,
-                    Spouse = p.SpouseName(DbUtil.Db),
+                    Spouse = i.spouse,
                     Suffix = p.SuffixCode,
                     Title = p.TitleCode,
                     WeddingDate = p.WeddingDate,
@@ -143,16 +171,16 @@ namespace CmsWeb.Models.PersonPage
                     Name = "FamilyAddr",
                     PeopleId = p.PeopleId,
                     person = p,
-                    Address1 = p.Family.AddressLineOne,
-                    Address2 = p.Family.AddressLineTwo,
-                    City = p.Family.CityName,
-                    State = p.Family.StateCode,
-                    Zip = p.Family.ZipCode,
-                    Country = p.Family.CountryName,
-                    BadAddress = p.Family.BadAddressFlag,
-                    ResCodeId = p.Family.ResCodeId ?? 0,
-                    FromDt = p.Family.AddressFromDate,
-                    ToDt = p.Family.AddressToDate,
+                    Address1 = fam.AddressLineOne,
+                    Address2 = fam.AddressLineTwo,
+                    City = fam.CityName,
+                    State = fam.StateCode,
+                    Zip = fam.ZipCode,
+                    Country = fam.CountryName,
+                    BadAddress = fam.BadAddressFlag,
+                    ResCodeId = fam.ResCodeId ?? 0,
+                    FromDt = fam.AddressFromDate,
+                    ToDt = fam.AddressToDate,
                     Preferred = p.AddressTypeId == 10,
                 },
                 PersonalAddr = new AddressInfo
@@ -172,21 +200,7 @@ namespace CmsWeb.Models.PersonPage
                     ToDt = p.AddressToDate,
                     Preferred = p.AddressTypeId == 30,
                 },
-                familymembers = from m in p.Family.People
-                                orderby
-                                    m.PeopleId == p.Family.HeadOfHouseholdId ? 1 :
-                                    m.PeopleId == p.Family.HeadOfHouseholdSpouseId ? 2 :
-                                    3, m.Age descending, m.Name2
-                                select new FamilyMemberInfo
-                                {
-                                    Id = m.PeopleId,
-                                    Name = m.Name,
-                                    Age = m.Age,
-                                    Color = m.DeceasedDate != null ? "red" : "auto",
-                                    PositionInFamily = m.FamilyPosition.Code,
-                                    SpouseIndicator = m.PeopleId == p.SpouseId ? "*" : "&nbsp;",
-                                    Email = m.EmailAddress
-                                }
+                //familymembers = i.familymembers
             };
             return pi;
         }

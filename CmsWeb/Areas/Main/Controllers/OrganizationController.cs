@@ -105,7 +105,7 @@ namespace CmsWeb.Areas.Main.Controllers
             };
             DbUtil.Db.Meetings.InsertOnSubmit(mt);
             DbUtil.Db.SubmitChanges();
-            DbUtil.LogActivity("Creating new meeting for {0}".Fmt(dt));
+            DbUtil.LogActivity("Creating new meeting for {0}".Fmt(organization.OrganizationName));
             return Content("/Meeting/Index/" + mt.MeetingId);
         }
         [HttpPost]
@@ -130,6 +130,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
             DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
             DbUtil.Db.SubmitChanges();
+			DbUtil.LogActivity("Delete meeting for {0}".Fmt(Session["ActiveOrganization"]));
             return Content("ok");
         }
         private void InitExportToolbar(int oid, int qid)
@@ -160,6 +161,7 @@ namespace CmsWeb.Areas.Main.Controllers
             InitExportToolbar(id, qb.QueryId);
             var m = new PrevMemberModel(id, namefilter);
             UpdateModel(m.Pager);
+			DbUtil.LogActivity("Viewing Prev Members for {0}".Fmt(Session["ActiveOrganization"]));
             return View(m);
         }
         [HttpPost]
@@ -169,6 +171,7 @@ namespace CmsWeb.Areas.Main.Controllers
             InitExportToolbar(id, qb.QueryId);
             var m = new VisitorModel(id, qb.QueryId, namefilter);
             UpdateModel(m.Pager);
+			DbUtil.LogActivity("Viewing Visitors for {0}".Fmt(Session["ActiveOrganization"]));
             return View("VisitorGrid", m);
         }
         [HttpPost]
@@ -187,6 +190,7 @@ namespace CmsWeb.Areas.Main.Controllers
             InitExportToolbar(id, qb.QueryId);
             var m = new MemberModel(id, null, MemberModel.GroupSelect.Inactive, namefilter);
             UpdateModel(m.Pager);
+			DbUtil.LogActivity("Viewing Inactive for {0}".Fmt(Session["ActiveOrganization"]));
             return View(m);
         }
         [HttpPost]
@@ -194,6 +198,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new MeetingModel(id, future);
             UpdateModel(m.Pager);
+			DbUtil.LogActivity("Viewing Meetings for {0}".Fmt(Session["ActiveOrganization"]));
             return View(m);
         }
         
@@ -584,12 +589,16 @@ no need to put these into the ""Source"" view of the editor anymore.
                         DbUtil.Db.OrgSchedules.Any(os => 
                             os.OrganizationId == oid 
                             && os.ScheduleId == ss.ScheduleId)));
-                if (om != null)
-                    return Content("Already a member of {0} at this hour".Fmt(om.OrganizationId));
+				if (om != null)
+				{
+					DbUtil.LogActivity("Same Hour Joining Org {0}({1})".Fmt(org.OrganizationName, pid));
+					return Content("Already a member of {0} at this hour".Fmt(om.OrganizationId));
+				}
             }
             OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 oid, pid, MemberTypeCode.Member,
                 DateTime.Now, null, false);
+			DbUtil.LogActivity("Joining Org {0}({1})".Fmt(org.OrganizationName, pid));
             return Content("ok");
         }
 
@@ -686,6 +695,7 @@ no need to put these into the ""Source"" view of the editor anymore.
         public ActionResult RepairTransactions(int id)
         {
             DbUtil.Db.PopulateComputedEnrollmentTransactions(id);
+			DbUtil.LogActivity("RepairTransactions for {0}".Fmt(Session["ActiveOrganization"]));
             return Redirect("/Organization/Index/" + id);
         }
         [HttpPost]

@@ -74,6 +74,8 @@ CKEditorFuncNum, baseurl + fn, error));
                 TempData["message"] = ex.Message;
                 return Redirect("/Error");
             }
+			if (!Request.Browser.Cookies)
+				return Content("Your browser must support cookies to use this site<br>" + Request.UserAgent);
             if (Request.Url.Scheme == "http" && DbUtil.Db.CmsHost.StartsWith("https://"))
                 if (Request.QueryString.Count > 0)
                     return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);

@@ -37,9 +37,16 @@ div.pager
         <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
         <tr>
             <td valign="top">
+            @if (Model.Person.CanUserEditBasic)
+            {
                 <a id="Picture" href="/UploadPicture.aspx?id=@p.PeopleId" title="Click to see larger version or upload new">
                 <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
                 </a>
+            }
+            else
+            {
+                <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
+            }
             </td>
             <td>&nbsp;</td>
             <td valign="top">
@@ -103,7 +110,7 @@ div.pager
             <li><a href="#member-tab"><span>Member Profile</span></a></li>
 @if (User.IsInRole("Access"))
 { 
-            <li><a id="growth-link" href="#growth-tab"><span>Growth</span></a></li>
+            <li><a href="#growth-tab"><span>Growth</span></a></li>
 }
 @if (User.IsInRole("Edit") || User.IsInRole("Admin"))
 { 
@@ -182,9 +189,9 @@ div.pager
         <div id="growth-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
                 <li><a href="#entry-tab"><span>Entry</span></a></li>
-                <li><a href="#contacts-tab"><span>Contacts</span></a></li>
+                <li><a id="contacts-link" href="#contacts-tab"><span>Contacts</span></a></li>
                 <li><a href="#comments-tab"><span>Comments</span></a></li>
-                <li><a href="#volunteer-tab"><span>Volunteer</span></a></li>
+                <li><a id="volunteer-link" href="#volunteer-tab"><span>Volunteer</span></a></li>
             </ul>
             <div id="entry-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
@@ -200,35 +207,8 @@ div.pager
                 </form>
             </div>
             <div id="volunteer-tab" class="ui-tabs-hide ui-tabs-panel">
-                <table class="grid" style="border-style: groove; border-width: thin;" >
-                    <tr>
-                        <th>Approvals:</th>
-                        <td><input type="checkbox" @(Model.vol.Standard ? "checked='checked'" : "") disabled="disabled" />
-                            Standard (references only)<br />
-                            <input type="checkbox" @(Model.vol.Leader ? "checked='checked'" : "") disabled="disabled" />
-                            Leadership (background check)
-                        </td>
-                        <td>
-        @if (User.IsInRole("ApplicationReview"))
-        { 
-                        <a href="/AppReview/VolunteerApp.aspx?id=@p.PeopleId">
-                        Volunteer Application Review</a>
-        } 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Approval Date:</th>
-                        <td colspan="2">@Model.vol.ProcessedDate.FormatDate()</td>
-                    </tr>
-                    <tr>
-                        <td valign="top">Volunteer Opportunities</td>
-                        <td colspan="2">
-        @foreach (var vv in Model.VolOpportunities())
-        {
-                        <a href='/Volunteer/Picklist2?view=@vv&pid=@Model.Person.PeopleId' target="volunteerop">@vv</a><br />
-        }
-                    </td></tr>
-                </table>
+                <form action="/Person/VolunteerDisplay/@p.PeopleId">
+                </form>
             </div>
         </div>
 }

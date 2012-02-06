@@ -8,7 +8,7 @@
         .Add("/Content/js/jquery-1.5.2.js")
         .Add("/Content/js/jquery-ui-1.8.13.custom.js")
         .Add("/Content/js/jquery.idle-timer.js")
-        .Add("/Content/js/jquery.showpassword-1.0.js")
+        .Add("/Content/js/jquery.showpassword.js")
         .Add("/Content/js/jquery.validate.js")
         .Add("/Scripts/OnlineRegPayment.js")
         .Render("/Content/OnLineRegPayment_#.js")
@@ -22,7 +22,7 @@
         $.idleTimer(tmout);
     });
 </script>
-<div class="regform" style="width:400px">
+<div class="regform" style="width:500px">
     <h2>
         Payment Processing</h2>
 @if (ViewData.ContainsKey("Terms"))
@@ -45,7 +45,7 @@
 { 
     @Html.Hidden("pf.ti.Regfees", Model.ti.Regfees)
 } 
-    <table width="100%">
+    <table>
     <col align="right" style="white-space:nowrap;padding-right:10px" />
     <col align="left" />
     <tr><td>Name</td>
@@ -69,7 +69,7 @@
 }
 else
 {
-    <tr><td>Total Transaction Amount</td>
+    <tr><td>Total Amount</td>
         <td><span id="amt" class="right">@Model.ti.Amt.ToString2("N2")</span>
             @Html.Hidden("pf.ti.Amt", Model.ti.Amt)</td></tr>
 }
@@ -84,8 +84,9 @@ else
             <div class="column">@Html.ValidationMessage("form")</div></td></tr>
     <tr><td colspan="2">&nbsp;</td></tr>
     <tr><td>Payment Code</td>
-        <td class="coupon" id="tdcoup">@Html.Password("Coupon", ViewData["Coupon"], new { @class = "wide", autocomplete = "off" })<br />
-            <input id="showpassword" type="checkbox" /> Show Code</td></tr>
+        <td><input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /> 
+        </td>
+    </tr>
     <tr><td></td>
         <td class="coupon">
         <input type="button" href="/OnlineReg/ApplyCoupon/@Model.ti.DatumId" class="submitbutton ajax"

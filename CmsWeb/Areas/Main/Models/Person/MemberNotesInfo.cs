@@ -48,7 +48,7 @@ namespace CmsWeb.Models.PersonPage
             p.LetterStatusNotes = LetterNotes;
 
             DbUtil.Db.SubmitChanges();
-            DbUtil.LogActivity("Updated Growth: {0}".Fmt(p.Name), false);
+            DbUtil.LogActivity("Updated Growth: {0}".Fmt(p.Name));
         }
         public static IEnumerable<SelectListItem> LetterStatuses()
         {

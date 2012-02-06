@@ -102,8 +102,7 @@ function CloseAddDialog() {
                         <div id="userarea">
                             <div id="welcome" class="dropdown left">
                                 <div>
-                                    <a href="#">Welcome,
-                                        @(DbUtil.Db.CurrentUserPerson != null ? DbUtil.Db.CurrentUserPerson.PreferredName : "who")!
+                                    <a href="#" title="@Util.UserName">Welcome, @Util.UserPreferredName!
                                         <img src="/Content/Welcome.png" width="11" height="16"></a></div>
                                 <div class="sublinks">
                                     <a href="/Account/LogOff/" title="@Util.UserName">Logout</a>
@@ -112,7 +111,6 @@ function CloseAddDialog() {
 {
                                         <a href="/Admin/Users.aspx">Manage Users</a>
                                         <a href="/Admin/Activity.aspx">Activity Log</a>
-                                        <a href="/Admin/LastActivity.aspx">Last Activity</a>
                                         <a href="/Admin/UrgentMessage.aspx">Urgent Message</a>
 }
                                 </div>
@@ -271,7 +269,7 @@ function CloseAddDialog() {
                                 <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help</a></div>
                             <div class="sublinks">
                                 <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Wiki Documentation</a>
-                                <a href="mailto:support@bvcms.com?subject=Support request from @DbUtil.Db.CurrentUserPerson.Name at @Util.CmsHost2" target="_blank">Email Support</a>
+                                <a href="mailto:support@bvcms.com?subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">Email Support</a>
                                 <a href="/Home/About">About</a>
                             </div>
                         </td>

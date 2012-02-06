@@ -25,10 +25,8 @@
         });
         return false;
     });
-    $('form').showPassword();
-
-    $('#Coupon').showPassword('#showpassword');
-
+    $('#Coupon').showPassword();
+    
     $('#findidclick').click(function () {
         $("#findid").dialog({ width: 400 });
     });

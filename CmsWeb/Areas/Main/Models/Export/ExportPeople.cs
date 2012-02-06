@@ -146,7 +146,8 @@ namespace CmsWeb.Models
                      from p in g.First().Family.People
                      where p.DeceasedDate == null
                      let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
-                     orderby p.FamilyId, p.PositionInFamilyId
+					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).LastName
+                     orderby famname, p.FamilyId, p.PositionInFamilyId, p.GenderId
                      select new
                      {
                          PeopleId = p.PeopleId,
@@ -169,6 +170,7 @@ namespace CmsWeb.Models
                          Age = p.Age.ToString(),
                          School = p.SchoolOther,
                          Married = p.MaritalStatus.Description,
+						 FamilyName = famname,
                          FamilyId = p.FamilyId,
                          FamilyPosition = p.PositionInFamilyId,
                          Grade = p.Grade.ToString(),

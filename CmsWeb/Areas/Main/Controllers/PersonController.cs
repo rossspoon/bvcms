@@ -138,6 +138,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult EnrollGrid(int id)
         {
             var m = new PersonEnrollmentsModel(id);
+			DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -145,6 +146,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult PrevEnrollGrid(int id)
         {
             var m = new PersonPrevEnrollmentsModel(id);
+			DbUtil.LogActivity("Viewing Prev Enrollments for: {0}".Fmt(m.person.Name));
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -152,12 +154,14 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult PendingEnrollGrid(int id)
         {
             var m = new PersonPendingEnrollmentsModel(id);
+			DbUtil.LogActivity("Viewing Pending Enrollments for: {0}".Fmt(m.person.Name));
             return View(m);
         }
         [HttpPost]
         public ActionResult AttendanceGrid(int id, bool? future)
         {
             var m = new PersonAttendHistoryModel(id, future == true);
+			DbUtil.LogActivity("Viewing Attendance History for: {0}".Fmt(Session["ActivePerson"]));
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -165,6 +169,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult ContactsMadeGrid(int id)
         {
             var m = new PersonContactsMadeModel(id);
+			DbUtil.LogActivity("Viewing Contacts Tab for: {0}".Fmt(Session["ActivePerson"]));
             UpdateModel(m.Pager);
             return View(m);
         }
@@ -241,6 +246,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult AddAboutTask(int id)
         {
             var p = DbUtil.Db.LoadPersonById(id);
+			DbUtil.LogActivity("Adding Task for: {0}".Fmt(Session["ActivePerson"]));
 
             var pid = Util.UserPeopleId.Value;
             var active = TaskStatusCode.Active;
@@ -313,6 +319,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m);
             m.UpdatePerson();
             m = BasicPersonInfo.GetBasicPersonInfo(id);
+			DbUtil.LogActivity("Update Basic Info for: {0}".Fmt(m.person.Name));
             InitExportToolbar(id);
             return View("BasicDisplay", m);
         }
@@ -343,6 +350,7 @@ namespace CmsWeb.Areas.Main.Controllers
             m.UpdateAddress(ModelState);
             if (!ModelState.IsValid)
                 return View("AddressEdit", m);
+			DbUtil.LogActivity("Update Address for: {0}".Fmt(m.person.Name));
             return View("AddressDisplay", m);
         }
         [HttpPost]
@@ -369,6 +377,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return View("MemberEdit", m);
             }
             m = MemberInfo.GetMemberInfo(id);
+			DbUtil.LogActivity("Update Member Info for: {0}".Fmt(Session["ActivePerson"]));
             return View("MemberDisplay", m);
         }
         [HttpPost]
@@ -389,6 +398,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = GrowthInfo.GetGrowthInfo(id);
             UpdateModel(m);
             m.UpdateGrowth();
+			DbUtil.LogActivity("Update Growth Info for: {0}".Fmt(Session["ActivePerson"]));
             return View("GrowthDisplay", m);
         }
         [HttpPost]
@@ -413,6 +423,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             ViewData["Comments"] = Util.SafeFormat(Comments);
             ViewData["PeopleId"] = id;
+			DbUtil.LogActivity("Update Comments for: {0}".Fmt(Session["ActivePerson"]));
             return View("CommentsDisplay");
         }
         [HttpPost]
@@ -433,6 +444,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = MemberNotesInfo.GetMemberNotesInfo(id);
             UpdateModel(m);
             m.UpdateMemberNotes();
+			DbUtil.LogActivity("Update Member Notes for: {0}".Fmt(Session["ActivePerson"]));
             return View("MemberNotesDisplay", m);
         }
         [HttpPost]
@@ -453,6 +465,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = RecRegInfo.GetRecRegInfo(id);
             UpdateModel(m);
             m.UpdateRecReg();
+			DbUtil.LogActivity("Update Registration Tab for: {0}".Fmt(Session["ActivePerson"]));
             return View("RecRegDisplay", m);
         }
         [HttpPost]
@@ -473,10 +486,13 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult UserDialog(int? id)
         {
             User u = null;
-            if (id.HasValue)
-                u = DbUtil.Db.Users.Single(us => us.UserId == id);
-            else
-                u = AccountModel.AddUser(Util2.CurrentPeopleId);
+			if (id.HasValue)
+				u = DbUtil.Db.Users.Single(us => us.UserId == id);
+			else
+			{
+				u = AccountModel.AddUser(Util2.CurrentPeopleId);
+				DbUtil.LogActivity("New User for: {0}".Fmt(Session["ActivePerson"]));
+			}
             return View(u);
         }
         [Authorize(Roles = "Admin")]
@@ -490,6 +506,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (password2.HasValue())
                 u.ChangePassword(password2);
             DbUtil.Db.SubmitChanges();
+			DbUtil.LogActivity("Update User for: {0}".Fmt(Session["ActivePerson"]));
             return Content("ok");
         }
         [Authorize(Roles = "Admin")]
@@ -504,6 +521,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 u.ChangePassword(password2);
             DbUtil.Db.SubmitChanges();
             AccountModel.SendNewUserEmail(username);
+			DbUtil.LogActivity("Welcome Email for: {0}".Fmt(Session["ActivePerson"]));
             return Content("ok");
         }
         [Authorize(Roles = "Admin")]
@@ -519,6 +537,12 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var p = DbUtil.Db.LoadPersonById(id);
             return View(p);
+        }
+        [HttpPost]
+        public ActionResult VolunteerDisplay(int id)
+        {
+			var m = new CmsWeb.Models.PersonPage.VolunteerModel(id);
+            return View(m);
         }
         [HttpPost]
         public ContentResult DeleteExtra(int id, string field)

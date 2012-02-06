@@ -64,6 +64,7 @@ namespace CmsWeb.Areas.Main.Controllers
 					&& om.PeopleId == Util.UserPeopleId
                     && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
 				return RedirectShowError("You must be a leader of this organization to have access to this page");
+			DbUtil.LogActivity("iPad Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -183,7 +184,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				};
 				DbUtil.Db.Meetings.InsertOnSubmit(newMtg);
 				DbUtil.Db.SubmitChanges();
-				DbUtil.LogActivity("Created new meeting for {0}".Fmt(dt));
+				DbUtil.LogActivity("Created new meeting for {0}".Fmt(organization.OrganizationName));
 			}
 			return Content("/Meeting/Index/{0}?showall=true".Fmt(newMtg.MeetingId));
         }

@@ -227,6 +227,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [Authorize(Roles = "Finance")]
         public ActionResult ContributionStatement(int id, DateTime FromDate, DateTime ToDate, int typ)
         {
+            DbUtil.LogActivity("Contribution Statement for ({0})".Fmt(id));
             return new ContributionStatementResult { PeopleId = id, FromDate = FromDate, ToDate = ToDate, typ = typ };
         }
         private string CSE
@@ -239,10 +240,6 @@ namespace CmsWeb.Areas.Main.Controllers
             if (Request.HttpMethod.ToUpper() == "GET")
             {
                 var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
-#if DEBUG
-                ViewData["FromDate"] = DateTime.Parse("7/1/11");
-                ViewData["ToDate"] = DateTime.Parse("9/8/11");
-#endif
                 return View(m);
             }
             if (Submit == "Reset")

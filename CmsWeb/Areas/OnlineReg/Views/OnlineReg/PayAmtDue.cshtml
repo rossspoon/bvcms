@@ -48,8 +48,8 @@
     <p>
     @Html.TextBox("Amount", (Model.Amt ?? 0).ToString("f2"))
     <input type="submit" name="Submit" value="Make Payment" /></p>
-    <p>If you have a coupon, please enter that number here and click the button next to it:</p>
-    @Html.TextBox("Coupon")
+    <p>If you have a coupon, please enter that number here and click the button below it:</p>
+    <input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /> <br />
     <input type="button" href="/OnlineReg/PayWithCoupon2/@Model.Id" class="submitbutton ajax"
         value="Pay with coupon" />
     <span style="color:Red" id="validatecoupon"></span>

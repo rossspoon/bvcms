@@ -17,9 +17,6 @@ namespace CmsWeb.Models.PersonPage
         public PersonModel(int? id)
         {
             displayperson = PersonInfo.GetPersonInfo(id);
-            vol = DbUtil.Db.Volunteers.FirstOrDefault(v => v.PeopleId == id.Value);
-            if (vol == null)
-                vol = new Volunteer();
         }
         private Person _person;
         public Person Person
@@ -32,7 +29,6 @@ namespace CmsWeb.Models.PersonPage
             }
         }
 
-        public Volunteer vol;
         public string Name
         {
             get { return displayperson.Name; }
@@ -181,14 +177,6 @@ namespace CmsWeb.Models.PersonPage
                     break;
             }
             DbUtil.Db.SubmitChanges();
-        }
-        public IEnumerable<string> VolOpportunities()
-        {
-            var list = CodeValueController.VolunteerOpportunities();
-            var q = (from c in Person.VolInterestInterestCodes
-                     group c by c.VolInterestCode.Org into g
-                     select g.Key);
-            return list;
         }
     }
 }

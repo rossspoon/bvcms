@@ -298,16 +298,16 @@ namespace UtilityExtensions
                 age--;
             return age;
         }
-        public static DateTime Now2
-        {
-            get
-            {
-                var daysoffset = (double?)HttpContext.Current.Application["daysoffset"];
-                if (daysoffset.HasValue)
-                    return DateTime.Now.AddDays(daysoffset.Value);
-                return DateTime.Now;
-            }
-        }
+        //public static DateTime Now2
+        //{
+        //    get
+        //    {
+        //        var daysoffset = (double?)HttpContext.Current.Application["daysoffset"];
+        //        if (daysoffset.HasValue)
+        //            return DateTime.Now.AddDays(daysoffset.Value);
+        //        return DateTime.Now;
+        //    }
+        //}
         public static DateTime Now
         {
             get { return DateTime.Now; }
@@ -577,6 +577,44 @@ namespace UtilityExtensions
                 if (HttpContext.Current != null)
                     if (HttpContext.Current.Session != null)
                         HttpContext.Current.Session[STR_UserId] = value;
+            }
+        }
+        private const string STR_UserPreferredName = "UserPreferredName";
+        public static string UserPreferredName
+        {
+            get
+            {
+                string name = null;
+				if (HttpContext.Current != null)
+					if (HttpContext.Current.Session != null)
+						if (HttpContext.Current.Session[STR_UserPreferredName] != null)
+							name = HttpContext.Current.Session[STR_UserPreferredName] as String;
+                return name;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Session != null)
+						HttpContext.Current.Session[STR_UserPreferredName] = value;
+            }
+        }
+        private const string STR_UserFullName = "UserFullName";
+        public static string UserFullName
+        {
+            get
+            {
+                string name = null;
+				if (HttpContext.Current != null)
+					if (HttpContext.Current.Session != null)
+						if (HttpContext.Current.Session[STR_UserFullName] != null)
+							name = HttpContext.Current.Session[STR_UserFullName] as String;
+                return name;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Session != null)
+						HttpContext.Current.Session[STR_UserFullName] = value;
             }
         }
         public static int UserId1
@@ -1051,17 +1089,8 @@ namespace UtilityExtensions
         public static SmtpClient Smtp()
         {
             var smtp = new SmtpClient();
-#if DEBUG2
-            smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-            smtp.PickupDirectoryLocation = "c:/email";
-            smtp.Host = "localhost";
-#else
-            string[] a = (string[])HttpRuntime.Cache["smtpcreds"];
-            if (a != null)
-                smtp.Credentials = new NetworkCredential(a[0], a[1]);
             if (ConfigurationManager.AppSettings["requiresSSL"] == "true")
                 smtp.EnableSsl = true;
-#endif
             return smtp;
         }
         private const string STR_SysFromEmail = "UnNamed";
@@ -1145,13 +1174,13 @@ namespace UtilityExtensions
                 return null;
             }
         }
-        public static void InsertCacheNotRemovable(string key, object value)
-        {
-            HttpRuntime.Cache.Insert(key, value, null,
-                System.Web.Caching.Cache.NoAbsoluteExpiration,
-                System.Web.Caching.Cache.NoSlidingExpiration,
-                CacheItemPriority.NotRemovable, null);
-        }
+        //public static void InsertCacheNotRemovable(string key, object value)
+        //{
+        //    HttpRuntime.Cache.Insert(key, value, null,
+        //        System.Web.Caching.Cache.NoAbsoluteExpiration,
+        //        System.Web.Caching.Cache.NoSlidingExpiration,
+        //        CacheItemPriority.NotRemovable, null);
+        //}
 
         public static MailAddress FirstAddress2(string addrs, string name)
         {

@@ -47,5 +47,12 @@ namespace CmsWeb.Areas.Public.Controllers
             w.End();
             return Content(w.ToString(), "text/xml");
         }
+		public ActionResult Cookies()
+		{
+			var s = Request.UserAgent;
+			if (Request.Browser.Cookies == true)
+				return Content("supports cookies<br>" + s);
+			return Content("does not support cookies<br>" + s);
+		}
     }
 }

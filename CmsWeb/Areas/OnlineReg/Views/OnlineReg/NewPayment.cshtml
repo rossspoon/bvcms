@@ -40,7 +40,7 @@
     <form action="/OnlineReg/ApplyCoupon" method="post">
     <p>If you have received a Coupon Code, please enter that number here and click
        the blue link next to it:</p>
-    <input id="Coupon" type="password" name="Coupon" value='@ViewData["Coupon"]' />
+    <input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /><br />
     <input type="button" href="/OnlineReg/PayWithCoupon/@ti.DatumId" class="submitbutton ajax"
         value="Apply Coupon" />
     <div>@Html.ValidationMessage("coupon")</div>

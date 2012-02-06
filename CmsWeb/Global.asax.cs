@@ -32,12 +32,6 @@ namespace CmsWeb
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
             RouteTable.Routes.RouteExistingFiles = true; 
-            string smtppasswordfile = Server.MapPath("smtppassword.txt");
-            if (File.Exists(smtppasswordfile))
-            {
-                var a = File.ReadAllText(smtppasswordfile).Split(',');
-                Util.InsertCacheNotRemovable("smtpcreds", a);
-            }
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
 #endif
