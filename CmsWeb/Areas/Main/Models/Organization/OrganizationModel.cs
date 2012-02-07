@@ -73,6 +73,8 @@ namespace CmsWeb.Models.OrganizationPage
         {
             var cv = new CodeValueController();
             var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
+			if (HttpContext.Current.User.IsInRole("Admin"))
+	            tg.Insert(0, new SelectListItem { Value = "-1", Text = "(last query)" });
             tg.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
             return tg;
         }

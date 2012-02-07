@@ -397,6 +397,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                             a[names["Last"]],
                             dob.FormatDate(),
                             0, 0, 0, null);
+						p.FixTitle();
                         if (names.ContainsKey("AltName"))
                             p.AltName = a[names["AltName"]];
 

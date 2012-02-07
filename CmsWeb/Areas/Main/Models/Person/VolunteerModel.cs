@@ -18,7 +18,7 @@ namespace CmsWeb.Models.PersonPage
         {
             vol = DbUtil.Db.Volunteers.FirstOrDefault(v => v.PeopleId == id.Value);
             if (vol == null)
-                vol = new Volunteer();
+				vol = new Volunteer { PeopleId = id.Value };
         }
         public IEnumerable<string> VolOpportunities()
         {
