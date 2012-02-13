@@ -82,11 +82,6 @@ namespace CmsWeb
             Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
             Util.SessionStarting = true;
         }
-        protected void Session_End(object sender, EventArgs e)
-        {
-            if (Util.SessionId != null)
-                HttpRuntime.Cache.Remove(Util.SessionId);
-        }
         //protected void Application_BeginRequest(object sender, EventArgs e)
         //{
         //    if (DbUtil.Db.Setting("disabled", "false") == "true")

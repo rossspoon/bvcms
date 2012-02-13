@@ -34,7 +34,9 @@
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
+        $.blockUI();
         $.post($(this).attr('href'), q, function (ret) {
+            $.unblockUI();
             if (ret.substring(0, 5) != "error")
                 $.displayEdit(f, ret);
             self.parent.RebindMemberGrids($("#from").val());
@@ -52,7 +54,7 @@
                 changeMonth: true,
                 changeYear: true
             });
-            $(".bt").button(); 
+            $(".bt").button();
             $("a.move").tooltip({
                 showBody: "|",
                 showURL: false

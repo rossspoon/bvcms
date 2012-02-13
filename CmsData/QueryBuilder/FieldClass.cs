@@ -12,6 +12,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using System.Web.Caching;
 
 namespace CmsData
 {
@@ -116,7 +117,8 @@ namespace CmsData
                             from f in c.Fields
                             select f;
                     fields = q.ToDictionary(f => f.Name);
-                    HttpRuntime.Cache["fields"] = fields;
+					HttpRuntime.Cache.Insert("fields", fields, null,
+						DateTime.Now.AddMinutes(10), Cache.NoSlidingExpiration);
                 }
                 return fields;
             }

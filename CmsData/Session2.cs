@@ -6,6 +6,7 @@ using System.Web;
 using UtilityExtensions;
 using System.Collections;
 using System.Web.SessionState;
+using System.Web.Caching;
 
 namespace CmsData
 {
@@ -64,14 +65,15 @@ namespace CmsData
         }
         public string Setting(string name, string defaultvalue)
         {
-            var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
+			var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
             if (list == null)
             {
                 try
                 {
                     list = Settings.ToDictionary(c => c.Id, c => c.SettingX,
                         StringComparer.OrdinalIgnoreCase);
-                    HttpRuntime.Cache[Host + "Setting"] = list;
+					HttpRuntime.Cache.Insert(Host + "Setting", list, null,
+						DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
                 }
                 catch (Exception ex)
                 {
@@ -86,11 +88,12 @@ namespace CmsData
         }
         public void SetSetting(string name, string value)
         {
-            var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
+			var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
             if (list == null)
             {
                 list = Settings.ToDictionary(c => c.Id, c => c.SettingX);
-                HttpRuntime.Cache[Host + "Setting"] = list;
+				HttpRuntime.Cache.Insert(Host + "Setting", list, null,
+						DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
             }
             list[name] = value;
 
@@ -105,11 +108,12 @@ namespace CmsData
         }
         public void DeleteSetting(string name)
         {
-            var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
+			var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
             if (list == null)
             {
                 list = Settings.ToDictionary(c => c.Id, c => c.SettingX);
-                HttpRuntime.Cache[Host + "Setting"] = list;
+				HttpRuntime.Cache.Insert(Host + "Setting", list, null,
+						DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
             }
             list.Remove(name);
 

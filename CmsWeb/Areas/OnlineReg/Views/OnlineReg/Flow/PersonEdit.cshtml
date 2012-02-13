@@ -58,7 +58,7 @@
             Birthdate:</label>
     </td>
     <td>@Html.TextBox3("dob", Model.inputname("dob"), Model.dob, new { @class = "dob" })
-        (<span id="age">@Model.age</span>)
+        m/d/yyyy (<span id="age">@Model.age</span>)
         <div>
             @Html.ValidationMessage(Model.inputname("dob"))</div>
     </td>

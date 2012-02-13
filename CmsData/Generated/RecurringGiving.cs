@@ -23,9 +23,15 @@ namespace CmsData
 		
 		private int? _AuNetCustPayId;
 		
-		private Guid? _SageCardGuid;
-		
 		private Guid? _SageBankGuid;
+		
+		private string _Ccv;
+		
+		private DateTime? _StartWhen;
+		
+		private string _Type;
+		
+		private Guid? _SageCardGuid;
 		
 		private string _MaskedAccount;
 		
@@ -33,7 +39,9 @@ namespace CmsData
 		
 		private string _Expires;
 		
-		private string _Ccv;
+		private DateTime? _NextDate;
+		
+		private bool? _Testing;
 		
 		private string _SemiEvery;
 		
@@ -45,17 +53,9 @@ namespace CmsData
 		
 		private string _Period;
 		
-		private DateTime? _StartWhen;
-		
 		private DateTime? _StopWhen;
 		
 		private int? _StopAfter;
-		
-		private string _Type;
-		
-		private DateTime? _NextDate;
-		
-		private bool? _Testing;
 		
    		
    		private EntitySet< RecurringAmount> _RecurringAmounts;
@@ -79,11 +79,20 @@ namespace CmsData
 		partial void OnAuNetCustPayIdChanging(int? value);
 		partial void OnAuNetCustPayIdChanged();
 		
-		partial void OnSageCardGuidChanging(Guid? value);
-		partial void OnSageCardGuidChanged();
-		
 		partial void OnSageBankGuidChanging(Guid? value);
 		partial void OnSageBankGuidChanged();
+		
+		partial void OnCcvChanging(string value);
+		partial void OnCcvChanged();
+		
+		partial void OnStartWhenChanging(DateTime? value);
+		partial void OnStartWhenChanged();
+		
+		partial void OnTypeChanging(string value);
+		partial void OnTypeChanged();
+		
+		partial void OnSageCardGuidChanging(Guid? value);
+		partial void OnSageCardGuidChanged();
 		
 		partial void OnMaskedAccountChanging(string value);
 		partial void OnMaskedAccountChanged();
@@ -94,8 +103,11 @@ namespace CmsData
 		partial void OnExpiresChanging(string value);
 		partial void OnExpiresChanged();
 		
-		partial void OnCcvChanging(string value);
-		partial void OnCcvChanged();
+		partial void OnNextDateChanging(DateTime? value);
+		partial void OnNextDateChanged();
+		
+		partial void OnTestingChanging(bool? value);
+		partial void OnTestingChanged();
 		
 		partial void OnSemiEveryChanging(string value);
 		partial void OnSemiEveryChanged();
@@ -112,23 +124,11 @@ namespace CmsData
 		partial void OnPeriodChanging(string value);
 		partial void OnPeriodChanged();
 		
-		partial void OnStartWhenChanging(DateTime? value);
-		partial void OnStartWhenChanged();
-		
 		partial void OnStopWhenChanging(DateTime? value);
 		partial void OnStopWhenChanged();
 		
 		partial void OnStopAfterChanging(int? value);
 		partial void OnStopAfterChanged();
-		
-		partial void OnTypeChanging(string value);
-		partial void OnTypeChanged();
-		
-		partial void OnNextDateChanging(DateTime? value);
-		partial void OnNextDateChanged();
-		
-		partial void OnTestingChanging(bool? value);
-		partial void OnTestingChanged();
 		
     #endregion
 		public RecurringGiving()
@@ -214,28 +214,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SageCardGuid", UpdateCheck=UpdateCheck.Never, Storage="_SageCardGuid", DbType="uniqueidentifier")]
-		public Guid? SageCardGuid
-		{
-			get { return this._SageCardGuid; }
-
-			set
-			{
-				if (this._SageCardGuid != value)
-				{
-				
-                    this.OnSageCardGuidChanging(value);
-					this.SendPropertyChanging();
-					this._SageCardGuid = value;
-					this.SendPropertyChanged("SageCardGuid");
-					this.OnSageCardGuidChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="SageBankGuid", UpdateCheck=UpdateCheck.Never, Storage="_SageBankGuid", DbType="uniqueidentifier")]
 		public Guid? SageBankGuid
 		{
@@ -251,6 +229,94 @@ namespace CmsData
 					this._SageBankGuid = value;
 					this.SendPropertyChanged("SageBankGuid");
 					this.OnSageBankGuidChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ccv", UpdateCheck=UpdateCheck.Never, Storage="_Ccv", DbType="varchar(5)")]
+		public string Ccv
+		{
+			get { return this._Ccv; }
+
+			set
+			{
+				if (this._Ccv != value)
+				{
+				
+                    this.OnCcvChanging(value);
+					this.SendPropertyChanging();
+					this._Ccv = value;
+					this.SendPropertyChanged("Ccv");
+					this.OnCcvChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="StartWhen", UpdateCheck=UpdateCheck.Never, Storage="_StartWhen", DbType="datetime")]
+		public DateTime? StartWhen
+		{
+			get { return this._StartWhen; }
+
+			set
+			{
+				if (this._StartWhen != value)
+				{
+				
+                    this.OnStartWhenChanging(value);
+					this.SendPropertyChanging();
+					this._StartWhen = value;
+					this.SendPropertyChanged("StartWhen");
+					this.OnStartWhenChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Type", UpdateCheck=UpdateCheck.Never, Storage="_Type", DbType="varchar(2)")]
+		public string Type
+		{
+			get { return this._Type; }
+
+			set
+			{
+				if (this._Type != value)
+				{
+				
+                    this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="SageCardGuid", UpdateCheck=UpdateCheck.Never, Storage="_SageCardGuid", DbType="uniqueidentifier")]
+		public Guid? SageCardGuid
+		{
+			get { return this._SageCardGuid; }
+
+			set
+			{
+				if (this._SageCardGuid != value)
+				{
+				
+                    this.OnSageCardGuidChanging(value);
+					this.SendPropertyChanging();
+					this._SageCardGuid = value;
+					this.SendPropertyChanged("SageCardGuid");
+					this.OnSageCardGuidChanged();
 				}
 
 			}
@@ -324,21 +390,43 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ccv", UpdateCheck=UpdateCheck.Never, Storage="_Ccv", DbType="varchar(5)")]
-		public string Ccv
+		[Column(Name="NextDate", UpdateCheck=UpdateCheck.Never, Storage="_NextDate", DbType="datetime")]
+		public DateTime? NextDate
 		{
-			get { return this._Ccv; }
+			get { return this._NextDate; }
 
 			set
 			{
-				if (this._Ccv != value)
+				if (this._NextDate != value)
 				{
 				
-                    this.OnCcvChanging(value);
+                    this.OnNextDateChanging(value);
 					this.SendPropertyChanging();
-					this._Ccv = value;
-					this.SendPropertyChanged("Ccv");
-					this.OnCcvChanged();
+					this._NextDate = value;
+					this.SendPropertyChanged("NextDate");
+					this.OnNextDateChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="testing", UpdateCheck=UpdateCheck.Never, Storage="_Testing", DbType="bit")]
+		public bool? Testing
+		{
+			get { return this._Testing; }
+
+			set
+			{
+				if (this._Testing != value)
+				{
+				
+                    this.OnTestingChanging(value);
+					this.SendPropertyChanging();
+					this._Testing = value;
+					this.SendPropertyChanged("Testing");
+					this.OnTestingChanged();
 				}
 
 			}
@@ -456,28 +544,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="StartWhen", UpdateCheck=UpdateCheck.Never, Storage="_StartWhen", DbType="datetime")]
-		public DateTime? StartWhen
-		{
-			get { return this._StartWhen; }
-
-			set
-			{
-				if (this._StartWhen != value)
-				{
-				
-                    this.OnStartWhenChanging(value);
-					this.SendPropertyChanging();
-					this._StartWhen = value;
-					this.SendPropertyChanged("StartWhen");
-					this.OnStartWhenChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="StopWhen", UpdateCheck=UpdateCheck.Never, Storage="_StopWhen", DbType="datetime")]
 		public DateTime? StopWhen
 		{
@@ -515,72 +581,6 @@ namespace CmsData
 					this._StopAfter = value;
 					this.SendPropertyChanged("StopAfter");
 					this.OnStopAfterChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Type", UpdateCheck=UpdateCheck.Never, Storage="_Type", DbType="varchar(2)")]
-		public string Type
-		{
-			get { return this._Type; }
-
-			set
-			{
-				if (this._Type != value)
-				{
-				
-                    this.OnTypeChanging(value);
-					this.SendPropertyChanging();
-					this._Type = value;
-					this.SendPropertyChanged("Type");
-					this.OnTypeChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="NextDate", UpdateCheck=UpdateCheck.Never, Storage="_NextDate", DbType="datetime")]
-		public DateTime? NextDate
-		{
-			get { return this._NextDate; }
-
-			set
-			{
-				if (this._NextDate != value)
-				{
-				
-                    this.OnNextDateChanging(value);
-					this.SendPropertyChanging();
-					this._NextDate = value;
-					this.SendPropertyChanged("NextDate");
-					this.OnNextDateChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="testing", UpdateCheck=UpdateCheck.Never, Storage="_Testing", DbType="bit")]
-		public bool? Testing
-		{
-			get { return this._Testing; }
-
-			set
-			{
-				if (this._Testing != value)
-				{
-				
-                    this.OnTestingChanging(value);
-					this.SendPropertyChanging();
-					this._Testing = value;
-					this.SendPropertyChanged("Testing");
-					this.OnTestingChanged();
 				}
 
 			}

@@ -75,9 +75,9 @@ function CloseAddDialog() {
     var manageemails = User.IsInRole("ManageEmails");
     var managetrans = User.IsInRole("ManageTransactions");
 }
-@if (((string)AppState["getoff"]).HasValue())
+@if (Util.UrgentMessage.HasValue())
 {
-        <div id='urgentNotice'>@AppState["getoff"]</div>
+        <div id='urgentNotice'>@Util.UrgentMessage</div>
 }
 @if (DbUtil.TopNotice().HasValue())
 {
@@ -199,7 +199,7 @@ function CloseAddDialog() {
                                 <a href="/QueryBuilder/Main">QueryBuilder</a></div>
                             <div class="sublinks">
                                 <a href="/QueryBuilder/Main">Last Query</a>
-                                @Html.ActionLink("New Query", "NewQuery", "QueryBuilder")
+                                <a href="/QueryBuilder/NewQuery">New Query</a>
                                 <a href="/SavedQuery">Saved Queries</a>
     @if ((string)ViewData["OnQueryBuilder"] == "true")
     {

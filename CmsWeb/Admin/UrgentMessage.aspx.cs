@@ -23,7 +23,7 @@ namespace CmsWeb.Admin
 
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Application.Remove("getoff");
+			UtilityExtensions.Util.UrgentMessage = "";
             Response.Redirect("/");
         }
     }

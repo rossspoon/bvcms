@@ -1,0 +1,52 @@
+﻿@model CmsData.AddToOrgFromTagRun
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Index</title>
+@Html.Raw(SquishIt.Framework.Bundle.Css()
+        .Add("/Content/jquery-ui-1.8.13.custom.css")
+        .Add("/Content/site.css")
+        .Add("/Content/jquery.tooltip.css")
+    .Render("/Content/OrgMembers_#.css")
+)
+</head>
+<body>
+@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
+            .Add("/Content/js/jquery-1.5.2.js")
+            .Add("/Content/js/jquery-ui-1.8.13.custom.js")
+            .Add("/Content/js/jquery.tooltip.js")
+            .Add("/Content/js/jquery.blockUI.js")
+            .Add("/Scripts/OrgMembersDialog.js")
+        .Render("/Content/OrgMembersDialog_#.js")
+)        
+<div class="roundbox">
+    <h2>
+        Add to "@ViewBag.orgname" From Tag</h2>
+    <table>
+        <tr> <td> Started </td> <td> @Model.Started </td> </tr>
+        <tr> <td> Total Count</td> <td> <span id="count">@Model.Count</span> </td> </tr>
+        <tr> <td> Processed </td> <td> <span id="processed">@Model.Processed</span> </td> </tr>
+        <tr> <td> Completed </td> <td> <span id="completed">@Model.Completed</span> </td> </tr>
+        <tr> <td colspan="2"> <div id="error">@Model.Error</div></td> </tr>
+    </table>
+</div>
+@if (Model.Running == 1)
+{
+<script type="text/javascript">
+    $(function () {
+        var intervalId = window.setInterval(function () {
+            $.post('/AddToOrgFromTag/Progress2', { id: "@ViewBag.orgid" }, function (json) {
+                $("#count").text(json.Count);
+                $("#processed").text(json.Processed);
+                $("#completed").text(json.Completed);
+                $("#error").text(json.Error);
+                if (!json.Running) {
+                    window.clearInterval(intervalId);
+                }
+            }, "json");
+        }, 3000);
+    });
+</script>
+}
+</body>
+</html>

@@ -131,8 +131,11 @@ namespace CmsWeb.Models
                     Db.SubmitChanges();
                 }
                 int grouptojoin = p.setting.GroupToJoin.ToInt();
-                if (grouptojoin > 0)
-                    OrganizationMember.InsertOrgMembers(Db, grouptojoin, p.PeopleId.Value, 220, DateTime.Now, null, false);
+				if (grouptojoin > 0)
+				{
+					OrganizationMember.InsertOrgMembers(Db, grouptojoin, p.PeopleId.Value, 220, DateTime.Now, null, false);
+					DbUtil.Db.UpdateMainFellowship(grouptojoin);
+				}
 
                 OnlineRegPersonModel.CheckNotifyDiffEmails(p.person,
                     Db.StaffEmailForOrg(p.org.OrganizationId),
@@ -249,8 +252,10 @@ namespace CmsWeb.Models
             // notify the staff
             foreach (var p in List)
             {
+				var orgstaff = Db.StaffPeopleForOrg(p.org.OrganizationId);
+				orgstaff.AddRange(NotifyIds);
                 Db.Email(Util.PickFirst(p.person.FromEmail, notify.FromEmail),
-                    Db.StaffPeopleForOrg(p.org.OrganizationId), Header,
+                    orgstaff, Header,
 @"{0} has registered for {1}<br/>
 Feepaid for this registrant: {2:C}<br/>
 Total Fee paid for this registration: {3:C}<br/>

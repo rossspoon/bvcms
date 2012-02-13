@@ -159,6 +159,7 @@ namespace CmsData
             foreach (var om in this.OrganizationMembers)
             {
                 var om2 = OrganizationMember.InsertOrgMembers(Db, om.OrganizationId, otherid, om.MemberTypeId, om.EnrollmentDate.Value, om.InactiveDate, om.Pending ?? false);
+				Db.UpdateMainFellowship(om.OrganizationId);
                 om2.CreatedBy = om.CreatedBy;
                 om2.CreatedDate = om.CreatedDate;
                 om2.AttendPct = om.AttendPct;

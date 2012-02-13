@@ -67,8 +67,10 @@ namespace CmsWeb.Areas.Main.Controllers
             }
 
             string host = Util.Host;
+
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+				System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.BelowNormal;
                 try
                 {
                     var Db = new CMSDataContext(Util.GetConnectionString(host));

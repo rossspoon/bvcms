@@ -8,7 +8,7 @@
             $("#age", f).text($.dodate(dateText));
         }
     };
-    $("#dob").datepicker($.dpoptions);
+    //$("#dob").datepicker($.dpoptions);
     $.dodate = function (bd) {
         var re0 = /^(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2})$/i;
         var re = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;

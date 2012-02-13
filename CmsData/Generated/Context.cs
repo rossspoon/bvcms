@@ -30,6 +30,10 @@ namespace CmsData
         partial void UpdateAddressType(AddressType instance);
         partial void DeleteAddressType(AddressType instance);
         
+        partial void InsertAddToOrgFromTagRun(AddToOrgFromTagRun instance);
+        partial void UpdateAddToOrgFromTagRun(AddToOrgFromTagRun instance);
+        partial void DeleteAddToOrgFromTagRun(AddToOrgFromTagRun instance);
+        
         partial void InsertAttend(Attend instance);
         partial void UpdateAttend(Attend instance);
         partial void DeleteAttend(Attend instance);
@@ -162,6 +166,10 @@ namespace CmsData
         partial void UpdateContributionFund(ContributionFund instance);
         partial void DeleteContributionFund(ContributionFund instance);
         
+        partial void InsertContributionsRun(ContributionsRun instance);
+        partial void UpdateContributionsRun(ContributionsRun instance);
+        partial void DeleteContributionsRun(ContributionsRun instance);
+        
         partial void InsertContributionStatus(ContributionStatus instance);
         partial void UpdateContributionStatus(ContributionStatus instance);
         partial void DeleteContributionStatus(ContributionStatus instance);
@@ -197,6 +205,10 @@ namespace CmsData
         partial void InsertDuplicate(Duplicate instance);
         partial void UpdateDuplicate(Duplicate instance);
         partial void DeleteDuplicate(Duplicate instance);
+        
+        partial void InsertDuplicatesRun(DuplicatesRun instance);
+        partial void UpdateDuplicatesRun(DuplicatesRun instance);
+        partial void DeleteDuplicatesRun(DuplicatesRun instance);
         
         partial void InsertEmailLog(EmailLog instance);
         partial void UpdateEmailLog(EmailLog instance);
@@ -718,6 +730,12 @@ namespace CmsData
 
 		}
 
+		public Table< AddToOrgFromTagRun> AddToOrgFromTagRuns
+		{
+			get	{ return this.GetTable< AddToOrgFromTagRun>(); }
+
+		}
+
 		public Table< Attend> Attends
 		{
 			get	{ return this.GetTable< Attend>(); }
@@ -916,6 +934,12 @@ namespace CmsData
 
 		}
 
+		public Table< ContributionsRun> ContributionsRuns
+		{
+			get	{ return this.GetTable< ContributionsRun>(); }
+
+		}
+
 		public Table< ContributionStatus> ContributionStatuses
 		{
 			get	{ return this.GetTable< ContributionStatus>(); }
@@ -967,6 +991,12 @@ namespace CmsData
 		public Table< Duplicate> Duplicates
 		{
 			get	{ return this.GetTable< Duplicate>(); }
+
+		}
+
+		public Table< DuplicatesRun> DuplicatesRuns
+		{
+			get	{ return this.GetTable< DuplicatesRun>(); }
 
 		}
 
@@ -2202,6 +2232,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.SpouseIdJoint", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? SpouseIdJoint(
+            [Parameter(Name = "peopleid", DbType="int")] int? peopleid
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                peopleid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.AttendDesc", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string AttendDesc(
@@ -2236,6 +2278,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.PrimaryCountry", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string PrimaryCountry(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.WasDeaconActive2008", IsComposable = true)]
 		[return: Parameter(DbType = "bit")]
 		public bool? WasDeaconActive2008(
@@ -2253,6 +2307,20 @@ namespace CmsData
 		[Function(Name="dbo.LastAttend", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? LastAttend(
+            [Parameter(Name = "orgid", DbType="int")] int? orgid,
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.LastDrop", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? LastDrop(
             [Parameter(Name = "orgid", DbType="int")] int? orgid,
             [Parameter(Name = "pid", DbType="int")] int? pid
             )
@@ -2396,18 +2464,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.SpouseIdJoint", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? SpouseIdJoint(
-            [Parameter(Name = "peopleid", DbType="int")] int? peopleid
-            )
-		{
-			return ((int?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                peopleid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.GetEldestFamilyMember", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? GetEldestFamilyMember(
@@ -2534,18 +2590,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.PrimaryCountry", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string PrimaryCountry(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.SpouseId", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? SpouseId(
@@ -2569,20 +2613,6 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 vid,
                 catid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.LastDrop", IsComposable = true)]
-		[return: Parameter(DbType = "datetime")]
-		public DateTime? LastDrop(
-            [Parameter(Name = "orgid", DbType="int")] int? orgid,
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((DateTime?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                orgid,
-                pid
                 ).ReturnValue));
 		}
 

@@ -511,7 +511,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_Address", DbType="varchar(80)")]
+		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_Address", DbType="varchar(50)")]
 		public string Address
 		{
 			get { return this._Address; }

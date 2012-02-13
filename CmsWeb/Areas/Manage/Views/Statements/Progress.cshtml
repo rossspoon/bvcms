@@ -1,0 +1,45 @@
+﻿@model CmsData.ContributionsRun
+@using UtilityExtensions
+<html>
+<head>
+    <title>Contribution Statements</title>
+    <script src="/Content/js/jquery-1.5.2.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <h2>
+        Contribution Statements</h2>
+        <a href="/">Home</a>
+    <table>
+        <tr> <td> Started </td> <td> @Model.Started </td> </tr>
+        <tr> <td> Total Contributors </td> <td> <span id="count">@Model.Count</span> </td> </tr>
+        <tr> <td> Processed </td> <td> <span id="processed">@Model.Processed</span> </td> </tr>
+        <tr> <td> Completed </td> <td> <span id="completed">@Model.Completed</span> </td> </tr>
+        <tr> <td> Error </td> <td> <span id="error">@Model.Error</span> </td> </tr>
+    </table>
+    @if (Model.Running == 1)
+    {
+<script type="text/javascript">
+    $(function () {
+        var intervalId = window.setInterval(function () {
+            $.post('/Statements/Progress2', null, function (json) {
+                $("#count").text(json.Count);
+                $("#processed").text(json.Processed);
+                $("#completed").text(json.Completed);
+                $("#error").text(json.Error);
+                if (!json.Running) {
+                    $("#download").show();
+                    window.clearInterval(intervalId);
+                }
+            }, "json");
+        }, 5000);
+    });
+</script>
+    <div id="download" style="display:none"><a href="/Statements/Download">Download Statement</a></div>
+    }
+    else
+    {
+    <div id="download"><a href="/Statements/Download">Download Statement</a></div>
+    }
+
+</body>
+</html>

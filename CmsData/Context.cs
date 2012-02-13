@@ -756,6 +756,12 @@ namespace CmsData
             var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), oid);
             return ((int)(result.ReturnValue));
         }
+        [Function(Name = "dbo.UpdateMainFellowship")]
+        public int UpdateMainFellowship([Parameter(DbType = "Int")] int? orgid)
+        {
+            var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orgid);
+            return ((int)(result.ReturnValue));
+        }
         [Function(Name = "dbo.UpdateMeetingCounters")]
         public int UpdateMeetingCounters([Parameter(DbType = "Int")] int? mid)
         {

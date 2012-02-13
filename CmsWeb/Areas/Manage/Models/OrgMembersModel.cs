@@ -295,6 +295,7 @@ namespace CmsWeb.Models
                 om.Drop(DbUtil.Db, addToHistory:true);
                 DbUtil.Db.SubmitChanges();
             }
+			DbUtil.Db.UpdateMainFellowship(TargetId);
         }
         public int MovedCount()
         {

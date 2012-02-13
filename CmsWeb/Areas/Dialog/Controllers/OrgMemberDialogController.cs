@@ -114,6 +114,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             var om1 = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == a[2].ToInt() && m.OrganizationId == a[1].ToInt());
             var om2 = CmsData.OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 a[3].ToInt(), om1.PeopleId, om1.MemberTypeId, DateTime.Now, om1.InactiveDate, om1.Pending ?? false);
+			DbUtil.Db.UpdateMainFellowship(om2.OrganizationId);
             om2.Request = om1.Request;
             om2.Amount = om1.Amount;
             om2.UserData = om1.UserData;

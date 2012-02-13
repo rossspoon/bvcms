@@ -18,6 +18,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using CmsWeb.Areas.Public.Controllers;
 using CmsWeb.Models;
+using Rackspace.CloudFiles.Domain;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -32,28 +33,39 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult CKEditorUpload(string CKEditorFuncNum)
         {
             var m = new AccountModel();
-            string baseurl = WebConfigurationManager.AppSettings["UploadUrl"];
-            if (!baseurl.HasValue())
-                baseurl = "{0}://{1}/Upload/".Fmt(Request.Url.Scheme, Request.Url.Authority);
-            var error = string.Empty;
-            var fn = string.Empty;
-            try
-            {
-                var file = Request.Files[0];
-                fn = m.CleanFileName(Path.GetFileName(file.FileName));
-                string path = WebConfigurationManager.AppSettings["UploadPath"];
-                if (!path.HasValue())
-                    path = Server.MapPath("/Upload/");
-                path += fn;
+			string baseurl = null;
+			var file = Request.Files[0];
+			var fn = "{0}.{1:yyMMddHHmm}.{2}".Fmt(DbUtil.Db.Host, DateTime.Now, 
+				m.CleanFileName(Path.GetFileName(file.FileName)));
+			var error = string.Empty;
+			var rackspacecdn = WebConfigurationManager.AppSettings["RackspaceUrlCDN"];
 
-                path = m.GetNewFileName(path);
-                file.SaveAs(path);
-            }
-            catch (Exception ex)
-            {
-                error = ex.Message;
-                baseurl = string.Empty;
-            }
+			if (rackspacecdn.HasValue())
+			{
+				baseurl = rackspacecdn;
+				var username = WebConfigurationManager.AppSettings["RackspaceUser"];
+				var key = WebConfigurationManager.AppSettings["RackspaceKey"];
+				var userCreds = new UserCredentials(username, key);
+	            var connection = new Rackspace.CloudFiles.Connection(userCreds);
+                connection.PutStorageItem("AllFiles", file.InputStream, fn);
+			}
+			else // local server
+			{
+				baseurl = "{0}://{1}/Upload/".Fmt(Request.Url.Scheme, Request.Url.Authority);
+				try
+				{
+					string path = Server.MapPath("/Upload/");
+					path += fn;
+
+					path = m.GetNewFileName(path);
+					file.SaveAs(path);
+				}
+				catch (Exception ex)
+				{
+					error = ex.Message;
+					baseurl = string.Empty;
+				}
+			}
             return Content(string.Format(
 "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction( {0}, '{1}', '{2}' );</script>",
 CKEditorFuncNum, baseurl + fn, error));

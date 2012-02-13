@@ -63,8 +63,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0, noaddressok, useMinAmt: true);
                     break;
             }
-            int current = 0;
-            c.Run(Response.OutputStream, DbUtil.Db, q, ref current);
+            c.Run(Response.OutputStream, DbUtil.Db, q);
         }
     }
 }

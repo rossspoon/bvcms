@@ -548,22 +548,6 @@ no need to put these into the ""Source"" view of the editor anymore.
             var m = new OrganizationModel(Util2.CurrentOrgId, Util2.CurrentGroups);
             return View(m);
         }
-        [HttpPost]
-        public ActionResult AddFromTag(int id, int tagid, bool? pending)
-        {
-            var o = DbUtil.Db.LoadOrganizationById(id);
-			IEnumerable<int> q = null;
-			if (tagid == -1) // (last query)
-				q = DbUtil.Db.PeopleQuery(Util.QueryBuilderScratchPadId).Select(pp => pp.PeopleId);
-			else
-				q = from t in DbUtil.Db.TagPeople
-					where t.Id == tagid
-					select t.PeopleId;
-            foreach (var pid in q)
-                OrganizationMember.InsertOrgMembers(DbUtil.Db,
-                    id, pid, MemberTypeCode.Member, DateTime.Now, null, pending ?? false);
-            return Content("ok");
-        }
         [Authorize(Roles = "Admin")]
         public ActionResult CopySettings()
         {
@@ -602,6 +586,7 @@ no need to put these into the ""Source"" view of the editor anymore.
             OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 oid, pid, MemberTypeCode.Member,
                 DateTime.Now, null, false);
+			DbUtil.Db.UpdateMainFellowship(oid);
 			DbUtil.LogActivity("Joining Org {0}({1})".Fmt(org.OrganizationName, pid));
             return Content("ok");
         }

@@ -1,0 +1,19 @@
+﻿@using CmsWeb
+<html>
+<head>
+    <title>Contribution Statements</title>
+</head>
+<body>
+    <h2>
+        Contribution Statements</h2>
+        <a href="/">Home</a>
+    <form action="/Statements/ContributionStatements" method="post">
+    <table>
+        <tr> <th> PDF: </th> <td> @Html.CheckBox("PDF", true) (otherwise, text extract) </td> </tr>
+        <tr> <th> Start Date: </th> <td> @Html.TextBox("FromDate") m/d/yy</td> </tr>
+        <tr> <th> End Date: </th> <td> @Html.TextBox("ToDate") m/d/yy</td></tr>
+        <tr> <td colspan="2" align="center"> <input type="submit" class="bt" name="Submit" value="Run" /></td></tr>
+    </table>
+    </form>
+</body>
+</html>

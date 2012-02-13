@@ -173,12 +173,15 @@ namespace CmsData
             }
             public void AddMember(int pid)
             {
-                if (oi != null)
-                    OrganizationMember.InsertOrgMembers(DbUtil.Db,
-                        oi.OrgId, pid,
-                        MemberTypeCode.Member,
-                        Util.Now,
-                        null, false);
+				if (oi != null)
+				{
+					OrganizationMember.InsertOrgMembers(DbUtil.Db,
+						oi.OrgId, pid,
+						MemberTypeCode.Member,
+						Util.Now,
+						null, false);
+					DbUtil.Db.UpdateMainFellowship(oi.OrgId);
+				}
                 if (!smallgroup.HasValue())
                     return;
                 var mt = DbUtil.Db.MemberTags.SingleOrDefault(t => t.Name == smallgroup && t.OrgId == oi.OrgId);

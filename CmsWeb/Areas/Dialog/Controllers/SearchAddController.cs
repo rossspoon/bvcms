@@ -351,6 +351,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                         id, p.PeopleId.Value, 220, Util.Now, null, pending);
                 }
                 DbUtil.Db.SubmitChanges();
+				DbUtil.Db.UpdateMainFellowship(id);
             }
             return Json(new { close = true, how = "rebindgrids", message = message });
         }

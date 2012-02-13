@@ -11,6 +11,7 @@ using System.Text;
 using System.Web;
 using System.Xml.Linq;
 using UtilityExtensions;
+using System.Web.Caching;
 
 namespace CmsData
 {
@@ -54,7 +55,8 @@ namespace CmsData
                                           }
                              };
                      categories = q.ToList();
-                     HttpRuntime.Cache["FieldCategories"] = categories;
+					 HttpRuntime.Cache.Insert("FieldCategories", categories, null, 
+						 DateTime.Now.AddMinutes(10), Cache.NoSlidingExpiration);
                  }
                  return categories;
             }

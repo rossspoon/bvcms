@@ -263,6 +263,7 @@ namespace CmsWeb.Models
                     pending: true);
                 // todo: store the from orgid in tom record and use that do do promotion with
             }
+			DbUtil.Db.UpdateMainFellowship(t.OrganizationId);
         }
         public IEnumerable Export()
         {

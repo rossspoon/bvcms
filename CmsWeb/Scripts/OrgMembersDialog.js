@@ -45,7 +45,7 @@
     $("#ClearFilter").live("click", function (ev) {
         ev.preventDefault();
         $("#memtype,#tag").val("0");
-        $("#inactivedt").val(""); 
+        $("#inactivedt").val("");
         var q = $("form").serialize();
         $.post("/OrgMembersDialog/Filter", q, function (ret) {
             $("table.grid > tbody").html(ret).ready($.fmtTable);
@@ -70,6 +70,10 @@
             self.parent.RebindMemberGrids($("#from").val());
         });
         return false;
+    });
+    $('form').submit(function () {
+        $.blockUI();
+        return true;
     });
 });
 

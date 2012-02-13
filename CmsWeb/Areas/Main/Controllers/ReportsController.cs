@@ -230,47 +230,6 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.LogActivity("Contribution Statement for ({0})".Fmt(id));
             return new ContributionStatementResult { PeopleId = id, FromDate = FromDate, ToDate = ToDate, typ = typ };
         }
-        private string CSE
-        {
-            get { return "CSE_" + Util.Host; }
-        }
-        [Authorize(Roles = "Finance")]
-        public ActionResult ContributionStatements(string Submit, bool? PDF, DateTime? FromDate, DateTime? ToDate)
-        {
-            if (Request.HttpMethod.ToUpper() == "GET")
-            {
-                var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
-                return View(m);
-            }
-            if (Submit == "Reset")
-            {
-                HttpContext.Cache.Remove(CSE);
-                var m = null as ContributionStatementsExtract;
-                return View(m);
-            }
-            else
-            {
-                if (!FromDate.HasValue || !ToDate.HasValue)
-                    return Content("<h3>Must have a Startdate and Enddate</h3>");
-                var m = new ContributionStatementsExtract(FromDate.Value, ToDate.Value, PDF.Value);
-                HttpContext.Cache[CSE] = m;
-                m.Run();
-                return View(m);
-            }
-        }
-        [Authorize(Roles = "Finance")]
-        public ActionResult ContributionStatementsDownload()
-        {
-            if (HttpContext != null)
-            {
-                var m = HttpContext.Cache[CSE] as ContributionStatementsExtract;
-                HttpContext.Cache.Remove(CSE);
-                if (m == null)
-                    return Content("no pending download");
-                return new ContributionStatementsResult(m.OutputFile);
-            }
-            return Content("no session");
-        }
         public ActionResult ChurchAttendance(DateTime? id)
         {
             if (!id.HasValue)

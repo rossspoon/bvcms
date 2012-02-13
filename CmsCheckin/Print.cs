@@ -615,8 +615,21 @@ namespace CmsCheckin
             if (list.Sum(li => li.Sum(i => i.n)) == 0)
                 return 0;
 
-            var sw = new StreamWriter(ms);
-            if (Program.Printer.Contains("Godex"))
+			var sw = new StreamWriter(ms); 
+			if (Program.Printer.Contains("ZDesigner"))
+			{
+				//sw.WriteLine("^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR2,2~SD15^JUS^LRN^CI0^XZ");
+				//sw.WriteLine("^XA");
+				//sw.WriteLine("^MMT");
+				//sw.WriteLine("^PW609");
+				//sw.WriteLine("^LL0406");
+				//sw.WriteLine("^LS0");
+				//sw.WriteLine(@"^FT29,83^A0N,62,62^FH\^FD{0}^FS".Fmt(li.first));
+				//sw.WriteLine(@"^FT30,155^A0N,45,45^FH\^FDLocation/time: {0}, {1:h:mm tt}^FS"
+				//	.Fmt(li.location, li.hour));
+				//sw.WriteLine("^PQ1,0,1,Y^XZ");
+			}
+            else if (Program.Printer.Contains("Godex"))
             {
                 StartGodexLabel(sw, 1);
                 var vertpos = 6;

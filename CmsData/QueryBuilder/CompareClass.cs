@@ -12,6 +12,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using System.Web.Caching;
 
 namespace CmsData
 {
@@ -634,7 +635,8 @@ namespace CmsData
                                 Display = (string)c.Attribute("Display")
                             };
                     _Comparisons = q.ToList();
-                    HttpRuntime.Cache["comparisons"] = _Comparisons;
+					HttpRuntime.Cache.Insert("comparisons", _Comparisons, null,
+						DateTime.Now.AddMinutes(10), Cache.NoSlidingExpiration);
                 }
                 return _Comparisons;
             }

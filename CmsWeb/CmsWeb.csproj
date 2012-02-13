@@ -17,6 +17,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
+    <MvcBuildViews>true</MvcBuildViews>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -190,6 +191,10 @@
     <Reference Include="NPOI">
       <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
     </Reference>
+    <Reference Include="Rackspace.CloudFiles, Version=2.0.0.40, Culture=neutral, PublicKeyToken=eeb9efb45246165e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Binaries\Rackspace.CloudFiles.dll</HintPath>
+    </Reference>
     <Reference Include="SquishIt.Contrib.Mvc, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SquishIt.Contrib.Mvc.0.1.1\lib\net40\SquishIt.Contrib.Mvc.dll</HintPath>
     </Reference>
@@ -254,6 +259,8 @@
     <Compile Include="Areas\Dialog\Models\SearchDivisionsModel.cs" />
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
+    <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
+    <Compile Include="Areas\Manage\Controllers\StatementsController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
     <Compile Include="Areas\Main\Models\Export\FreshbooksResult.cs" />
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
@@ -384,6 +391,8 @@
     <Content Include="Areas\Public\Views\APITest\Index.cshtml" />
     <Content Include="Binaries\AuthorizeNet.dll" />
     <Content Include="Binaries\CookComputing.XmlRpcV2.dll" />
+    <Content Include="Binaries\log4net.dll" />
+    <Content Include="Binaries\Rackspace.CloudFiles.dll" />
     <Content Include="ckeditor\plugins\ajax\plugin.js" />
     <Content Include="ckeditor\plugins\bbcode\plugin.js" />
     <Content Include="ckeditor\plugins\devtools\lang\en.js" />
@@ -1127,13 +1136,18 @@
     <Content Include="Areas\Manage\Views\Account\LinkUsed.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageVolunteer.cshtml" />
     <Content Include="Areas\Main\Views\Person\VolunteerDisplay.cshtml" />
-    <Content Include="App_Data\51Degrees.mobi.config">
+    <None Include="App_Data\51Degrees.mobi.config0">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="App_Browsers\WebOs.browser">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Areas\Manage\Views\Statements\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Duplicates\Progress.cshtml" />
+    <Content Include="Areas\Manage\Views\Duplicates\Find.cshtml" />
+    <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Progress.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="SquishIt.Contrib.MvcReadMe.txt" />
     <Content Include="MembershipAutomationExample.py" />
@@ -1264,7 +1278,7 @@
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Main\Views\Reports\ContributionStatements.cshtml">
+    <Content Include="Areas\Manage\Views\Statements\Progress.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ContributionYears.cshtml" />
@@ -1562,7 +1576,6 @@
     <Content Include="Areas\Manage\Views\Merge\Index.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\ExtrasGrid.cshtml" />
     <Content Include="Areas\Main\Views\Organization\ExtrasGrid.cshtml" />
-    <Content Include="Areas\Manage\Views\Duplicates\FindProgress.cshtml" />
     <Content Include="Areas\Manage\Views\Duplicates\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\AddToOrgFromTagProgress.cshtml" />
     <Content Include="Areas\Main\Views\Reports\ExtraValues.cshtml" />
@@ -1601,10 +1614,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Shared\ExportToolBar.cshtml" />
-    <Content Include="Web.Rackspace.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Web.bvcms.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1995,14 +2004,6 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Cms2Production.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.CmsWebProduction.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

@@ -180,6 +180,8 @@ namespace CmsData
                     var org = Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == OrganizationId);
                     if (org == null)
                         return null;
+					var name = org.OrganizationName;
+
                     var om = new OrganizationMember
                     {
                         OrganizationId = OrganizationId,
@@ -190,9 +192,7 @@ namespace CmsData
                         CreatedDate = Util.Now,
                         Pending = pending,
                     };
-                    var name = (from o in Db.Organizations
-                                where o.OrganizationId == OrganizationId
-                                select o.OrganizationName).SingleOrDefault();
+
                     var et = new EnrollmentTransaction
                     {
                         OrganizationId = om.OrganizationId,

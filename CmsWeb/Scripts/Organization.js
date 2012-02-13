@@ -14,6 +14,7 @@ $(function () {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
+            $.blockUI({ message: "deleting org" });
             $.post(href, null, function (ret) {
                 if (ret != "ok") {
                     $.blockUI({ message: ret });
@@ -51,7 +52,7 @@ $(function () {
         title: 'Add Members Dialog',
         bgiframe: true,
         autoOpen: false,
-        width: 712,
+        width: 750,
         height: 650,
         modal: true,
         overlay: {
@@ -59,6 +60,21 @@ $(function () {
             background: "black"
         }, close: function () {
             $('iframe', this).attr("src", "");
+        }
+    });
+    $('#AddFromTag').dialog({
+        title: 'Add From Tag',
+        bgiframe: true,
+        autoOpen: false,
+        width: 750,
+        height: 650,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+            RebindMemberGrids();
         }
     });
     $('a.addmembers').live("click", function (e) {
@@ -245,24 +261,12 @@ $(function () {
             i++;
         });
     }
-    $("#addfromtaglink").live("click", function (ev) {
-        ev.preventDefault();
-        var link = this;
-        $("#AddFromTag").dialog({
-            title: this.title,
-            width: "auto",
-            buttons: {
-                Ok: function () {
-                    $.post(link.href, {
-                        tagid: $("#addfromtagid").val()
-                    }, function () {
-                        RebindMemberGrids();
-                        $("#AddFromTag").dialog("destroy");
-                    });
-                }
-            }
-        });
-        return false;
+    $('a.addfromtag').live("click", function (e) {
+        e.preventDefault();
+        var d = $('#AddFromTag');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Add Members From Tag");
+        d.dialog("open");
     });
 
     $("#NewMeetingDialog").dialog({

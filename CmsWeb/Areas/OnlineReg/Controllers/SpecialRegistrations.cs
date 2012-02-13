@@ -32,9 +32,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         {
             var m = new SlotModel(id, oid);
             var om = m.org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == id);
-            if (om == null)
-                om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
-                    oid, id, 220, Util.Now, null, false);
+			if (om == null)
+			{
+				om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
+					oid, id, 220, Util.Now, null, false);
+				DbUtil.Db.UpdateMainFellowship(oid);
+			}
             if (ck)
                 om.AddToGroup(DbUtil.Db, slot);
             else
@@ -286,9 +289,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 Staff = DbUtil.Db.StaffPeopleForOrg(m.masterorgid.Value);
             else
                 Staff = DbUtil.Db.StaffPeopleForDiv(m.divid.Value);
+            if (Staff.Count == 0)
+				Staff = DbUtil.Db.AdminPeople();
 
-            DbUtil.Db.Email(Staff.First().FromEmail, m.person,
-                "Subscription Confirmation",
+	        DbUtil.Db.Email(Staff.First().FromEmail, m.person,
+	                "Subscription Confirmation",
 @"Thank you for managing your subscriptions to {0}<br/>
 You have the following subscriptions:<br/>
 {1}".Fmt(m.Description(), m.Summary));
@@ -304,6 +309,8 @@ You have the following subscriptions:<br/>
         public ActionResult ConfirmPledge(ManagePledgesModel m)
         {
             var Staff = DbUtil.Db.StaffPeopleForOrg(m.orgid);
+            if (Staff.Count() == 0)
+				Staff = DbUtil.Db.AdminPeople();
 
             //OrganizationMember.InsertOrgMembers(DbUtil.Db, m.orgid, m.pid, 220, DateTime.Now, null, false);
 
@@ -374,6 +381,7 @@ You have the following subscriptions:<br/>
             var omb = q.om;
             omb = OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 oid, pid, 220, DateTime.Now, null, false);
+			DbUtil.Db.UpdateMainFellowship(oid);
 
             omb.AddToGroup(DbUtil.Db, smallgroup);
             omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
@@ -388,10 +396,11 @@ You have the following subscriptions:<br/>
                 msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", smallgroup);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
+	            if (NotifyIds.Count == 0)
+					NotifyIds = DbUtil.Db.AdminPeople();
 
                 DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
-                DbUtil.Db.Email(q.p.FromEmail,
-                        DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId), // notify the staff
+                DbUtil.Db.Email(q.p.FromEmail, NotifyIds,
                         q.org.OrganizationName,
                         "{0} has registered for {1}<br>{2}".Fmt(q.p.Name, q.org.OrganizationName, smallgroup));
             }

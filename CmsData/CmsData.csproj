@@ -169,6 +169,9 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\IronPython 2.7\IronPython.Modules.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\CmsWeb\Binaries\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -184,9 +187,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\IronPython 2.7\Microsoft.Scripting.Metadata.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="SgmlReaderDll">
-      <HintPath>..\CmsWeb\Binaries\SgmlReaderDll.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -231,7 +231,10 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="Generated\AddToOrgFromTagRun.cs" />
+    <Compile Include="Generated\ContributionsRun.cs" />
     <Compile Include="Generated\Country.cs" />
+    <Compile Include="Generated\DuplicatesRun.cs" />
     <Compile Include="RecurringGiving.cs" />
     <Compile Include="Dynamic.cs" />
     <Compile Include="SagePayments.cs" />

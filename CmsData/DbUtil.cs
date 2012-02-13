@@ -11,6 +11,7 @@ using System.Text;
 using System.Web;
 using UtilityExtensions;
 using System.Xml.Linq;
+using System.Web.Caching;
 
 namespace CmsData
 {
@@ -83,7 +84,8 @@ namespace CmsData
                     hc = h.Body;
                 else
                     hc = string.Empty;
-                HttpRuntime.Cache[Db.Host + "topnotice"] = hc;
+                HttpRuntime.Cache.Insert(Db.Host + "topnotice", hc, null,
+                    DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
             }
             return hc;
         }
@@ -97,7 +99,8 @@ namespace CmsData
                     hc = h.Body;
                 else
                     hc = def;
-                HttpRuntime.Cache[Db.Host + "headerimg"] = hc;
+                HttpRuntime.Cache.Insert(Db.Host + "headerimg", hc, null,
+                    DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
             }
             return hc;
         }
@@ -119,7 +122,8 @@ namespace CmsData
     <h2 id='CommonHeaderSubTitle'>Feed My Sheep</h2>
 </div>
 ";
-                HttpRuntime.Cache[Db.Host + "header"] = hc;
+                HttpRuntime.Cache.Insert(Db.Host + "header", hc, null,
+                    DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
             }
             return hc;
         }
