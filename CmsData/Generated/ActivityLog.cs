@@ -25,6 +25,8 @@ namespace CmsData
 		
 		private string _Activity;
 		
+		private string _Machine;
+		
 		private string _PageUrl;
 		
    		
@@ -49,6 +51,9 @@ namespace CmsData
 		
 		partial void OnActivityChanging(string value);
 		partial void OnActivityChanged();
+		
+		partial void OnMachineChanging(string value);
+		partial void OnMachineChanged();
 		
 		partial void OnPageUrlChanging(string value);
 		partial void OnPageUrlChanged();
@@ -157,7 +162,29 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(400)")]
+		[Column(Name="Machine", UpdateCheck=UpdateCheck.Never, Storage="_Machine", DbType="varchar(50)")]
+		public string Machine
+		{
+			get { return this._Machine; }
+
+			set
+			{
+				if (this._Machine != value)
+				{
+				
+                    this.OnMachineChanging(value);
+					this.SendPropertyChanging();
+					this._Machine = value;
+					this.SendPropertyChanged("Machine");
+					this.OnMachineChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(100)")]
 		public string PageUrl
 		{
 			get { return this._PageUrl; }

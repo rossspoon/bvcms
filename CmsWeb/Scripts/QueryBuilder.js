@@ -197,17 +197,20 @@ function FillConditionGrid(html) {
 
 function RefreshList() {
     $.block()
-    $.post('/QueryBuilder/Results/', qs, function(ret) {
+    $.post('/QueryBuilder/Results/', qs, function (ret) {
         $('#toolbar').show();
         $('#Results').html(ret);
         $('#people tbody tr:even').addClass('alt');
-        $('a.taguntag').click(function(ev) {
-            $.post('/QueryBuilder/ToggleTag/' + $(this).attr('value'), null, function(ret) {
-                $(ev.target).text(ret.HasTag ? "Remove" : "Add");
+        $('a.taguntag').click(function (ev) {
+            $.post('/QueryBuilder/ToggleTag/' + $(this).attr('value'), null, function (ret) {
+                if (ret.error)
+                    alert(ret.error);
+                else
+                    $(ev.target).text(ret.HasTag ? "Remove" : "Add");
             });
             return false;
         });
-        $('#people thead a.sortable').click(function(ev) {
+        $('#people thead a.sortable').click(function (ev) {
             var newsort = $(this).text();
             var oldsort = $("#Sort").val();
             $("#Sort").val(newsort);

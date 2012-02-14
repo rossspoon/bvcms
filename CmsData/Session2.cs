@@ -122,6 +122,7 @@ namespace CmsData
                 Settings.DeleteOnSubmit(setting);
         }
     }
+	[Serializable]
     public class Session2
     {
         public int? CurrentOrgId { get; set; }

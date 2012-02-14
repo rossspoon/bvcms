@@ -60,20 +60,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #else
             m.testing = testing;
 #endif
-            if (Util.ValidEmail(email))
-            {
-                m.nologin = true;
-                m.CreateList();
-                m.List[0].email = email;
-            }
-
-            if(login != true)
+            if (Util.ValidEmail(email) || login != true)
                 m.nologin = true;
 
             if (m.nologin)
                 m.CreateList();
             else
                 m.List = new List<OnlineRegPersonModel>();
+
+            if (Util.ValidEmail(email))
+                m.List[0].email = email;
 
             if (registertag.HasValue())
             {
@@ -119,7 +115,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 }
                 return View(m);
             }
-
             return View(m);
         }
         // authenticate user

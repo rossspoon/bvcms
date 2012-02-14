@@ -24,10 +24,10 @@
                         <asp:Label ID="Label1" runat="server" Text='<%# Eval("Name") %>' />
                     </td>
                     <td>
-                        <asp:HyperLink ID="ActivityLink" runat="server" NavigateUrl='<%# Eval("Url") %>' Text='<%# Eval("Activity") %>'></asp:HyperLink>
+                        <asp:Label ID="DateLabel" runat="server" Text='<%# Eval("Date") %>' />
                     </td>
                     <td>
-                        <asp:Label ID="DateLabel" runat="server" Text='<%# Eval("Date") %>' />
+                        <asp:Label ID="ActivityLink" runat="server" Text='<%# Eval("Activity") %>'></asp:Label>
                     </td>
                 </tr>
             </ItemTemplate>
@@ -52,9 +52,9 @@
                                     <th runat="server">
                                         Name</th>
                                     <th runat="server">
-                                        Activity</th>
-                                    <th runat="server">
                                         Date</th>
+                                    <th runat="server">
+                                        Activity</th>
                                 </tr>
                                 <tr ID="itemPlaceholder" runat="server">
                                 </tr>

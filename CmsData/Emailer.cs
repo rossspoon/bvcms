@@ -147,10 +147,10 @@ namespace CmsData
 					 where a.Contains(p.PeopleId)
 					 orderby p.PeopleId == a.FirstOrDefault() descending
 					 select p;
-			if (q2.Count() == 0)
-				return (from p in CMSRoleProvider.provider.GetAdmins()
-						orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
-						select p).ToList();
+			//if (q2.Count() == 0)
+			//    return (from p in CMSRoleProvider.provider.GetAdmins()
+			//            orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
+			//            select p).ToList();
 			return q2.ToList();
 		}
 		public Person UserPersonFromEmail(string email)

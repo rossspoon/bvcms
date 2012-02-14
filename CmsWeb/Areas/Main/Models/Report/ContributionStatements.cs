@@ -43,7 +43,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 			dc = w.DirectContent;
 
 			int prevfid = 0;
-			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
+			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).FirstOrDefault();
 			foreach (var ci in contributors)
 			{
 				if (prevfid != ci.FamilyId)

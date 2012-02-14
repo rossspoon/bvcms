@@ -689,6 +689,8 @@ namespace CmsData
         {
             var Db = DbUtil.Db;
             var tag = Db.FetchOrCreateTag(TagName, OwnerId, TagTypeId);
+			if (tag == null)
+				throw new Exception("ToggleTag, tag '{0}' not found");
             var tp = Db.TagPeople.SingleOrDefault(t => t.Id == tag.Id && t.PeopleId == PeopleId);
             if (tp == null)
             {

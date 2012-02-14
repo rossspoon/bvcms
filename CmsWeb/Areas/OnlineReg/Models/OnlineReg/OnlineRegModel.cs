@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
@@ -241,7 +241,7 @@ namespace CmsWeb.Models
         //}
         public void CreateList()
         {
-#if DEBUG
+#if DEBUG2
             List = new List<OnlineRegPersonModel>
             {
                 new OnlineRegPersonModel

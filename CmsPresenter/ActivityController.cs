@@ -23,7 +23,6 @@ namespace CMSPresenter
         public string Username { get; set; }
         public int? UserId { get; set; }
         public string Activity { get; set; }
-        public string Url { get; set; }
         public DateTime Date { get; set; }
     }
     [DataObject]
@@ -46,7 +45,6 @@ namespace CMSPresenter
                      select new ActivityInfo
                      {
                          Activity = a.Activity,
-                         Url = a.PageUrl,
                          Date = a.ActivityDate.Value,
                          Name = a.User.Name2,
                          UserId = a.UserId,

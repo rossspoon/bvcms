@@ -191,9 +191,16 @@ namespace CmsWeb.Areas.Main.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult ToggleTag(int id)
         {
-            var r = Person.ToggleTag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
-            DbUtil.Db.SubmitChanges();
-            return Json(new { HasTag = r });
+			try
+			{
+	            var r = Person.ToggleTag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+	            DbUtil.Db.SubmitChanges();
+	            return Json(new { HasTag = r });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { error = ex.Message + ". Please report this to support@bvcms.com" });
+			}
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ContentResult TagAll()

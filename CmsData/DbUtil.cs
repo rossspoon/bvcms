@@ -61,6 +61,7 @@ namespace CmsData
                 ActivityDate = Util.Now,
                 UserId = uid,
                 Activity = activity,
+				Machine = System.Environment.MachineName,
             };
             db.ActivityLogs.InsertOnSubmit(a);
             db.SubmitChanges();
