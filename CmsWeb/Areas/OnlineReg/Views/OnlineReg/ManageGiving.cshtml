@@ -5,21 +5,15 @@
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
 }
-
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.5.2.js")
-        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-        .Add("/Content/js/jquery.validate.js")
-        .Add("/Content/js/jquery.blockUI.js")
-        .Add("/Content/js/jquery.tooltip.js")
-        .Add("/Scripts/Onlinereg.js")
-        .Render("/Content/ManageGivings#.js")
-)        
+@section scripts
+{
+@Html.Script("/Scripts/OnlineReg.js")
 <script type="text/javascript">
     $(function () {
         $(".datepicker").datepicker();
     });
 </script>
+}
 <style>
 div.section label 
 {

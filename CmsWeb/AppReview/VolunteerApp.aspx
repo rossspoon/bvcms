@@ -83,3 +83,6 @@
         SelectMethod="VolApplicationStatusCodes" 
         TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
 </asp:Content>
+
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+</asp:Content>

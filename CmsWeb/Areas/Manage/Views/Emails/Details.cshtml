@@ -6,7 +6,8 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-<script type="text/javascript" src="/Scripts/Pager.js"></script>
+@section scripts
+{
 <script type="text/javascript">
     $(function () {
         $("#filter").change(function () {
@@ -17,6 +18,7 @@
     });
 
 </script>
+}
 
 @Html.ActionLink("Back to List", "Index")
 @{

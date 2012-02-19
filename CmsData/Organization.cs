@@ -126,14 +126,19 @@ namespace CmsData
             CopySettings2(frorg, this);
             Db.SubmitChanges();
         }
-        private static void CopySettings2(Organization frorg, Organization toorg)
+        public static void CopySettings2(Organization frorg, Organization toorg)
         {
             toorg.AllowNonCampusCheckIn = frorg.AllowNonCampusCheckIn;
+            toorg.AllowAttendOverlap = frorg.AllowAttendOverlap;
             toorg.CanSelfCheckin = frorg.CanSelfCheckin;
             toorg.NumWorkerCheckInLabels = frorg.NumWorkerCheckInLabels;
             toorg.NoSecurityLabel = frorg.NoSecurityLabel;
             toorg.NumCheckInLabels = frorg.NumCheckInLabels;
             toorg.PhoneNumber = frorg.PhoneNumber;
+			toorg.EntryPointId = frorg.EntryPointId;
+			toorg.RollSheetVisitorWks = frorg.RollSheetVisitorWks;
+			toorg.GradeAgeStart = frorg.GradeAgeStart;
+			toorg.DivisionId = frorg.DivisionId;
         }
         public Organization CloneOrg(CMSDataContext Db, int? DivisionId)
         {
@@ -142,16 +147,11 @@ namespace CmsData
                 SecurityTypeId = SecurityTypeId,
                 CreatedDate = Util.Now,
                 CreatedBy = Util.UserId1,
-                DivisionId = DivisionId,
                 LeaderMemberTypeId = LeaderMemberTypeId,
                 OrganizationName = OrganizationName + " (copy)",
-                EntryPointId = EntryPointId,
                 OrganizationStatusId = OrganizationStatusId,
-                AllowAttendOverlap = AllowAttendOverlap,
-                GradeAgeStart = GradeAgeStart,
                 CampusId = CampusId,
                 IsBibleFellowshipOrg = IsBibleFellowshipOrg,
-                RollSheetVisitorWks = RollSheetVisitorWks,
             };
             Db.Organizations.InsertOnSubmit(neworg);
             foreach (var div in DivOrgs)

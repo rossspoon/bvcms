@@ -1,11 +1,13 @@
 ﻿@using UtilityExtensions
+@using CmsWeb
 @model CmsWeb.Models.PersonPage.FamilyModel
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/SiteLayout.cshtml";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
 }
-    <script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
-    <script type="text/javascript">
+
+@section scripts
+{    <script type="text/javascript">
         $(function () {
             $(".clickSelect").editable("/Family/EditPosition/", {
                 indicator: '<img src="/images/loading.gif">',
@@ -66,8 +68,8 @@
            $('#memberDialog').dialog("close");
            window.location.reload(true);
         }
-
 </script>
+}
 <table class="roundbox" cellspacing="5">
     <tr><td><h2>The @Model.Family.HeadOfHousehold.Name Family</h2></td></tr>
     <tr><td>

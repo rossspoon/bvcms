@@ -20,17 +20,10 @@ div.pager
 }
 </style>
 }
-
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-            .Add("/Content/js/jquery.pagination.js")
-            .Add("/Content/js/jquery.jeditable.js")
-            .Add("/Scripts/SearchPeople.js")
-            .Add("/Content/js/jquery.autocomplete.js")
-            .Add("/Content/js/jquery.validate.js")
-            .Add("/Scripts/Pager.js")
-            .Add("/Scripts/Person.js")
-        .Render("/Content/Person_#.js")
-)
+@section scripts
+{
+@Html.Partial("CombinedPersonJs")
+}
 @{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
 @Html.Hidden("PeopleId", p.PeopleId)
     <table cellspacing="5" class="roundbox floatleft">

@@ -1,7 +1,10 @@
-﻿@{
+﻿@using CmsWeb
+@{
     Layout = "/Views/Shared/SiteLayout.cshtml";
 }
-<script type="text/javascript" src="/Content/js/jquery.textarea.js"></script>
+@section scripts
+{
+@Html.Script("/Content/js/jquery.textarea.js")
 <script type="text/javascript">
     $(function () {
         $(".bt").button();
@@ -13,6 +16,7 @@
         });
     });
 </script>
+}
 @using (Html.BeginForm("UpdateFile", "Display", FormMethod.Post))
 { 
     <div class="blogbody">

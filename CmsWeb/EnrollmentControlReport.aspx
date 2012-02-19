@@ -3,14 +3,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style type="text/css">
-        .style1
-        {
-            height: 29px;
-        }
-    </style>
-
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
     <script type="text/javascript">
         function Report() {
             var div = $get('<%= DivOrg.ClientID %>').value;
@@ -25,6 +18,15 @@
             window.open(url, "_blank");
         }
     </script>
+</asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style type="text/css">
+        .style1
+        {
+            height: 29px;
+        }
+    </style>
+
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

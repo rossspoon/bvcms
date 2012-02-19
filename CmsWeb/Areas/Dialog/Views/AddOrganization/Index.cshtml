@@ -1,0 +1,56 @@
+﻿@model CmsWeb.Models.NewOrganizationModel
+@using CmsWeb
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+@Html.Partial("CombinedCss")
+</head>
+<body>
+<form action="/AddOrganization/Submit/@Model.OrganizationId" method="post">
+<div class="RoundBox floatleft">
+<h2>Add New Organization</h2>
+<table id="orginfoedit" style="margin-bottom: 10px" cellspacing="5" width="100%">
+    <tr>
+        <th align="right">Name:</th>
+        <td>@Html.TextBox("org.OrganizationName", Model.org.OrganizationName, new { style = "width:100%" })</td>
+    </tr>
+    <tr>
+        <th align="right">Location:</th>
+        <td>@Html.TextBox("org.Location")</td>
+    </tr>
+    <tr>
+        <th align="right">Campus:</th>
+        <td>@Html.DropDownList("org.CampusId", Model.CampusList())</td>
+    </tr>
+    <tr>
+        <th align="right">Security Type:</th>
+        <td>@Html.DropDownList("org.SecurityTypeId", Model.SecurityTypeList())</td>
+    </tr>
+    <tr>
+        <th align="right">Leader Type:</th>
+        <td>@Html.DropDownList("org.LeaderMemberTypeId", Model.LeaderTypeList())</td>
+    </tr>
+    <tr>
+        <th align="right">Main Fellowship:</th>
+        <td>@Html.CheckBox("org.IsBibleFellowshipOrg")</td>
+    </tr>
+    <tr>
+        <th align="right">Copy Settings</th>
+        <td>@Html.CheckBox("copysettings")</td>
+    </tr>
+    <tr><td colspan="2" align="right">
+        <input type="submit" class="bt" name="Submit" value="Submit" /></td>
+    </tr>
+</table>
+</div>
+</form>
+@Html.Partial("CombinedJs")
+<script type="text/javascript">
+    $(function () {
+        $("form").submit(function() {
+            $.blockUI();
+        });
+    });
+</script>
+</body>
+</html>

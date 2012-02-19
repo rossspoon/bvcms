@@ -4,11 +4,14 @@
     ViewBag.Title = "FindTagPeople";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
+@section scripts
+{
 <script type="text/javascript">
     $(function () {
         $("table.grid > tbody > tr:even").addClass("alt");
     });
 </script>
+}
 <h2>FindTagPeople</h2>
 
 <table class="grid" cellpadding="4">

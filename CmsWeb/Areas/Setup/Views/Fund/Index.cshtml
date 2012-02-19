@@ -1,10 +1,13 @@
-﻿@model IEnumerable<CmsData.ContributionFund>
+﻿@using CmsWeb
+@model IEnumerable<CmsData.ContributionFund>
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Funds";
 }
-<script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
-<script src="/Scripts/Funds.js" type="text/javascript"></script>
+@section scripts
+{
+@Html.Script("/Scripts/Funds.js")
+}
 
 <h2>Funds</h2>
 <table class="grid" cellpadding="5">

@@ -190,6 +190,10 @@ namespace CmsData
         partial void UpdateDecisionType(DecisionType instance);
         partial void DeleteDecisionType(DecisionType instance);
         
+        partial void InsertDeleteMeetingRun(DeleteMeetingRun instance);
+        partial void UpdateDeleteMeetingRun(DeleteMeetingRun instance);
+        partial void DeleteDeleteMeetingRun(DeleteMeetingRun instance);
+        
         partial void InsertDivision(Division instance);
         partial void UpdateDivision(Division instance);
         partial void DeleteDivision(Division instance);
@@ -513,6 +517,10 @@ namespace CmsData
         partial void InsertRelatedFamily(RelatedFamily instance);
         partial void UpdateRelatedFamily(RelatedFamily instance);
         partial void DeleteRelatedFamily(RelatedFamily instance);
+        
+        partial void InsertRepairTransactionsRun(RepairTransactionsRun instance);
+        partial void UpdateRepairTransactionsRun(RepairTransactionsRun instance);
+        partial void DeleteRepairTransactionsRun(RepairTransactionsRun instance);
         
         partial void InsertResidentCode(ResidentCode instance);
         partial void UpdateResidentCode(ResidentCode instance);
@@ -967,6 +975,12 @@ namespace CmsData
 		public Table< DecisionType> DecisionTypes
 		{
 			get	{ return this.GetTable< DecisionType>(); }
+
+		}
+
+		public Table< DeleteMeetingRun> DeleteMeetingRuns
+		{
+			get	{ return this.GetTable< DeleteMeetingRun>(); }
 
 		}
 
@@ -1453,6 +1467,12 @@ namespace CmsData
 		public Table< RelatedFamily> RelatedFamilies
 		{
 			get	{ return this.GetTable< RelatedFamily>(); }
+
+		}
+
+		public Table< RepairTransactionsRun> RepairTransactionsRuns
+		{
+			get	{ return this.GetTable< RepairTransactionsRun>(); }
 
 		}
 

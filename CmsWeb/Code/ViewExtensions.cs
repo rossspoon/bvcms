@@ -26,17 +26,6 @@ namespace CmsWeb
     }
     public static class ViewExtensions2
     {
-        public static string StandardCss()
-        {
-            return SquishIt.Framework.Bundle.Css()
-                           .Add("/Content/jquery-ui-1.8.13.custom.css")
-                           .Add("/Content/pager.css")
-                           .Add("/Content/style2.css")
-                           .Add("/Content/superfish.css")
-                           .Add("/Content/supertabfish.css")
-                           .Add("/Content/thickbox.css")
-                           .Render("/Content/AllWebForm_#.css");
-        }
         public static string RegisterScript(this HtmlHelper helper, string scriptFileName)
         {
             string scriptRoot = VirtualPathUtility.ToAbsolute("~/Scripts");
@@ -100,50 +89,6 @@ namespace CmsWeb
             string sOut = Protocol + pg.ViewContext.HttpContext.Request.ServerVariables["SERVER_NAME"] + Port + appPath;
             return sOut;
         }
-        //public static HtmlString HyperLink(this HtmlHelper helper, string link, string text)
-        //{
-        //    var tb = new TagBuilder("a");
-        //    tb.InnerHtml = HttpUtility.HtmlEncode(text);
-        //    var b = tb;
-        //    b.MergeAttribute("href", link);
-        //    return new HtmlString(b.ToString(TagRenderMode.Normal));
-        //}
-        //public static HtmlString HyperLink(this HtmlHelper helper,
-        //    string link,
-        //    string text,
-        //    object htmlAttributes)
-        //{
-        //    var attr = new RouteValueDictionary(htmlAttributes);
-        //    var tb = new TagBuilder("a");
-        //    tb.InnerHtml = HttpUtility.HtmlEncode(text);
-        //    var b = tb;
-        //    b.MergeAttribute("href", link);
-        //    b.MergeAttributes<string, object>(attr);
-        //    return new HtmlString(b.ToString(TagRenderMode.Normal));
-        //}
-        //public static HtmlString HyperLink(this HtmlHelper helper,
-        //    string link,
-        //    string text,
-        //    string onclick)
-        //{
-        //    return helper.HyperLink(link, text, onclick, null);
-        //}
-        //public static HtmlString HyperLink(this HtmlHelper helper,
-        //    string link,
-        //    string text,
-        //    string onclick,
-        //    object htmlAttributes)
-        //{
-        //    var tb = new TagBuilder("a");
-        //    tb.InnerHtml = HttpUtility.HtmlEncode(text);
-        //    var b = tb;
-        //    b.MergeAttribute("href", link);
-        //    if (onclick.HasValue())
-        //        b.MergeAttribute("onclick", "return " + onclick);
-        //    var attr = new RouteValueDictionary(htmlAttributes);
-        //    b.MergeAttributes<string, object>(attr);
-        //    return new HtmlString(b.ToString(TagRenderMode.Normal));
-        //}
         public static HtmlString PageSizesDropDown(this HtmlHelper helper, string id, string onchange)
         {
             var tb = new TagBuilder("select");
@@ -171,18 +116,6 @@ namespace CmsWeb
                 list.Add(new SelectListItem { Text = size.ToString() });
             return list;
         }
-        //public static HtmlString HyperlinkIf(this HtmlHelper helper, bool condition, string link, string text, string onclick, object htmlAttributes)
-        //{
-        //    if (!condition)
-        //        return null;
-        //    return helper.HyperLink(link, text, onclick, htmlAttributes);
-        //}
-        //public static string ActionLinkIf(this System.Web.Mvc.HtmlHelper helper, bool condition, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
-        //{
-        //    if (!condition)
-        //        return null;
-        //    return helper.ActionLink(linkText, controllerName, routeValues, htmlAttributes);
-        //}
         public static HtmlString SpanIf(this HtmlHelper helper, bool condition, string text, object htmlAttributes)
         {
             if (!condition)
@@ -201,7 +134,7 @@ namespace CmsWeb
             tb.MergeAttributes<string, object>(attr);
             return new HtmlString(tb.ToString());
         }
-        public static bool IsDebug(this HtmlHelper helper)
+        public static bool IsDebug()
         {
             var d = false;
 #if DEBUG
@@ -209,6 +142,26 @@ namespace CmsWeb
 #endif
             return d;
         }
+        public static bool IsDebug(this HtmlHelper helper)
+        {
+			return IsDebug();
+        }
+		public static HtmlString Script(this HtmlHelper helper, string script)
+		{
+			if (Util.Version == "?")
+				Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			if (!helper.IsDebug())
+				return new HtmlString(@"<script src=""/Min{0}?v={1}"" type=""text/javascript""></script>".Fmt(script, Util.Version));
+			return new HtmlString(@"<script src=""{0}"" type=""text/javascript""></script>".Fmt(script));
+		}
+		public static HtmlString Css(this HtmlHelper helper, string css)
+		{
+			if (Util.Version == "?")
+				Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			if (!helper.IsDebug())
+				return new HtmlString(@"<link href='{0}?v={1}' rel='stylesheet' type='text/css'></script>".Fmt(css, Util.Version));
+			return new HtmlString(@"<link href='{0}' rel='stylesheet' type='text/css'></script>".Fmt(css));
+		}
         private static string TryGetModel(this HtmlHelper helper, string name)
         {
             ModelState val;

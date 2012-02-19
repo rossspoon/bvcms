@@ -184,7 +184,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(100)")]
+		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(410)")]
 		public string PageUrl
 		{
 			get { return this._PageUrl; }

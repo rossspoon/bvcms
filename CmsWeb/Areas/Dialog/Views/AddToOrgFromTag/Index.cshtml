@@ -4,12 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>AddToOrgFromTag</title>
-@Html.Raw(SquishIt.Framework.Bundle.Css()
-        .Add("/Content/jquery-ui-1.8.13.custom.css")
-        .Add("/Content/site.css")
-        .Add("/Content/jquery.tooltip.css")
-    .Render("/Content/OrgMembers_#.css")
-)
+    <link href="/Content/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
 </head>
 <div class="roundbox">
     <h2>Add To Org (@ViewBag.orgname) From Tag</h2>

@@ -1,10 +1,14 @@
-﻿@model IEnumerable<CmsWeb.Areas.Manage.Controllers.RegSettingsController.RegSettingInfo>
+﻿@using CmsWeb
+@model IEnumerable<CmsWeb.Areas.Manage.Controllers.RegSettingsController.RegSettingInfo>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-<script type="text/javascript" src = "/Scripts/RegSettings.js"></script>
+@section scripts
+{
+@Html.Script("/Scripts/RegSettings.js")
+}
 <h2>RegSettings</h2>
 
 @foreach (var i in Model)

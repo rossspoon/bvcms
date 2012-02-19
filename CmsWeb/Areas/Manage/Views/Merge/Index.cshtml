@@ -1,10 +1,14 @@
 ﻿@model CmsWeb.Models.MergeModel
 @using UtilityExtensions
+@using CmsWeb
 @{
     ViewBag.Title = "Merge Controller";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-<script src="/Scripts/merge.js" type="text/javascript"></script>
+@section scripts
+{
+@Html.Script("/Scripts/merge.js")
+}
 <h2>
     Merge Controller</h2>
 <form method="post" action="/Manage/Merge/Run">

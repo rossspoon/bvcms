@@ -67,7 +67,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.LogActivity("iPad Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult EditGroup(string id, string value)
         {
             var i = id.Substring(2).ToInt();
@@ -78,7 +78,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("Group (headcount)");
             return Content("Regular");
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult EditAttendCredit(string id, string value)
         {
             var i = id.Substring(2).ToInt();
@@ -87,7 +87,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(m.AttendCreditType());
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult AttendCredits()
         {
             var q = from c in DbUtil.Db.AttendCredits
@@ -98,7 +98,14 @@ namespace CmsWeb.Areas.Main.Controllers
                     };
             return Json(q.ToDictionary(k => k.Code, v => v.Value));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
+        public JsonResult MeetingTypes()
+        {
+			var d = new Dictionary<string, string>
+			{{"true","Group (headcount)"},{"false","Regular"}};
+            return Json(d);
+        }
+        [HttpPost]
         public ContentResult Edit(string id, string value)
         {
             var i = id.Substring(2).ToInt();
@@ -117,7 +124,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
 
         [Authorize(Roles = "Attendance")]
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult MarkAttendance(int PeopleId, int MeetingId, bool Present)
         {
             var ret = Attend.RecordAttendance(DbUtil.Db, PeopleId, MeetingId, Present);
@@ -138,14 +145,14 @@ namespace CmsWeb.Areas.Main.Controllers
             return v;
         }
         [Authorize(Roles = "Attendance")]
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult MarkRegistered(int PeopleId, int MeetingId, bool Registered)
         {
             Attend.MarkRegistered(DbUtil.Db, PeopleId, MeetingId, Registered);
             return Content("ok");
         }
         [Authorize(Roles = "Attendance")]
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult CreateMeeting(string id)
         {
             var a = id.SplitStr(".");

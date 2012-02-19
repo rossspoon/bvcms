@@ -63,19 +63,15 @@ namespace CmsWeb.Areas.Main.Controllers
             var org = DbUtil.Db.LoadOrganizationById(id);
             if (org == null)
                 return Content("error, bad orgid");
+            if (id == 1)
+                return Content("Cannot delete first org");
             if (!org.PurgeOrg(DbUtil.Db))
                 return Content("error, not deleted");
             Util2.CurrentOrgId = 0;
             Util2.CurrentGroups = null;
+			DbUtil.LogActivity("Delete Org {0}".Fmt(Session["ActiveOrganization"]));
             Session.Remove("ActiveOrganization");
             return Content("ok");
-        }
-        public ActionResult Clone(int id)
-        {
-            var org = DbUtil.Db.LoadOrganizationById(id);
-            var neworg = org.CloneOrg(DbUtil.Db);
-            DbUtil.LogActivity("Cloning new org from {0}".Fmt(org.FullName));
-            return Content("/Organization/Index/" + neworg.OrganizationId);
         }
 
         [HttpPost]
@@ -107,31 +103,6 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             DbUtil.LogActivity("Creating new meeting for {0}".Fmt(organization.OrganizationName));
             return Content("/Meeting/Index/" + mt.MeetingId);
-        }
-        [HttpPost]
-        public ActionResult DeleteMeeting(string id, bool future)
-        {
-            var aa = id.Split('.');
-            var mid = aa[1].ToInt2();
-            if (!mid.HasValue)
-                return Content("error: no meetingid");
-            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == mid);
-            if (meeting == null)
-                return Content("error: no meeting");
-            var orgid = meeting.OrganizationId;
-            var q = from a in DbUtil.Db.Attends
-                    where a.MeetingId == mid
-                    select a.PeopleId;
-            var list = q.ToList();
-            var attendees = DbUtil.Db.Attends.Where(a => a.MeetingId == mid);
-            foreach (var a in attendees)
-                if (a.AttendanceFlag == true)
-                    Attend.RecordAttendance(a.PeopleId, mid.Value, false);
-            DbUtil.Db.Attends.DeleteAllOnSubmit(attendees);
-            DbUtil.Db.Meetings.DeleteOnSubmit(meeting);
-            DbUtil.Db.SubmitChanges();
-			DbUtil.LogActivity("Delete meeting for {0}".Fmt(Session["ActiveOrganization"]));
-            return Content("ok");
         }
         private void InitExportToolbar(int oid, int qid)
         {
@@ -219,6 +190,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
+			DbUtil.LogActivity("Update SettingsOrg {0}".Fmt(m.org.OrganizationName));
             if (ModelState.IsValid)
             {
                 m.UpdateSchedules();
@@ -249,6 +221,7 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m);
             m.UpdateSchedules();
             DbUtil.Db.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, m.org.OrgSchedules);
+			DbUtil.LogActivity("Update SettingsMeetings {0}".Fmt(m.org.OrganizationName));
             return View("SettingsMeetings", m);
             //return View("SettingsMeetingsEdit", m);
         }
@@ -286,6 +259,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.org.CampusId == 0)
                 m.org.CampusId = null;
             DbUtil.Db.SubmitChanges();
+			DbUtil.LogActivity("Update OrgInfo {0}".Fmt(m.org.OrganizationName));
             return View("OrgInfo", m);
         }
 
@@ -313,6 +287,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = GetRegSettings(id);
             m.AgeGroups.Clear();
             m.GradeOptions.Clear();
+			DbUtil.LogActivity("Update OnlineRegAdmin {0}".Fmt(m.org.OrganizationName));
             try
             {
                 UpdateModel(m);
@@ -345,6 +320,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = GetRegSettings(id);
             try
             {
+				DbUtil.LogActivity("Update OnlineRegOptions {0}".Fmt(m.org.OrganizationName));
                 UpdateModel(m);
                 var os = new RegSettings(m.ToString(), DbUtil.Db, id);
                 m.org.RegSetting = os.ToString();
@@ -373,6 +349,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult OnlineRegQuestionsUpdate(int id)
         {
             var m = GetRegSettings(id);
+			DbUtil.LogActivity("Update OnlineRegQuestions {0}".Fmt(m.org.OrganizationName));
             m.YesNoQuestions.Clear();
             m.ExtraQuestions.Clear();
             m.ShirtSizes.Clear();
@@ -416,6 +393,7 @@ namespace CmsWeb.Areas.Main.Controllers
             m.OrgFees.Clear();
             try
             {
+				DbUtil.LogActivity("Update OnlineRegFees {0}".Fmt(m.org.OrganizationName));
                 UpdateModel(m);
                 var os = new RegSettings(m.ToString(), DbUtil.Db, id);
                 m.org.RegSetting = os.ToString();
@@ -444,6 +422,7 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult OnlineRegMessagesUpdate(int id)
         {
             var m = GetRegSettings(id);
+			DbUtil.LogActivity("Update OnlineRegMessages {0}".Fmt(m.org.OrganizationName));
             m.VoteTags.Clear();
             try
             {
@@ -548,7 +527,7 @@ no need to put these into the ""Source"" view of the editor anymore.
             var m = new OrganizationModel(Util2.CurrentOrgId, Util2.CurrentGroups);
             return View(m);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Edit")]
         public ActionResult CopySettings()
         {
             if (Util.SessionTimedOut() || Util2.CurrentOrgId == 0)
@@ -679,13 +658,6 @@ no need to put these into the ""Source"" view of the editor anymore.
             o.OrgPickList = list;
             DbUtil.Db.SubmitChanges();
             return View("OrgPickList2", m);
-        }
-        [Authorize(Roles="Admin")]
-        public ActionResult RepairTransactions(int id)
-        {
-            DbUtil.Db.PopulateComputedEnrollmentTransactions(id);
-			DbUtil.LogActivity("RepairTransactions for {0}".Fmt(Session["ActiveOrganization"]));
-            return Redirect("/Organization/Index/" + id);
         }
         [HttpPost]
         [Authorize(Roles="Edit")]

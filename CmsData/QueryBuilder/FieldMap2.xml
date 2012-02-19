@@ -388,6 +388,9 @@
     <Field Name="RecentAttendCount" Title="Recent Attendance Count" Type="Integer" DisplayAs="RecentAttendCount({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Days">
       Selects people based on an attendance count within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
+    <Field Name="RecentAttendCountAttCred" Title="Recent Attendance Count for AttendCredit" Type="Integer" DisplayAs="RecentAttendCountAttCred({0}, {1}, {2}, {3}, {4})" QuartersLabel="Attend Credit Id" Params="Program,Division,Organization,Days,Quarters">
+      Selects people based on an attendance count within a Program/Division/Organization/Schedule looking back a specified number of days.
+    </Field>
     <Field Name="RecentNewVisitCount" Title="Recent New Attend Count" Type="Integer" DisplayAs="RecentNewAttendCount({0}, {1}, {2}, {3}, {4})" QuartersLabel="Number of days for no attendance" Params="Program,Division,Organization,Days,Quarters">
       Selects people based on being a new attend within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>

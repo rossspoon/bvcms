@@ -1,24 +1,16 @@
 ﻿@model CmsWeb.Models.OrgMembersDialogModel
+@using CmsWeb
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-@Html.Raw(SquishIt.Framework.Bundle.Css()
-        .Add("/Content/jquery-ui-1.8.13.custom.css")
-        .Add("/Content/site.css")
-        .Add("/Content/jquery.tooltip.css")
-    .Render("/Content/OrgMembers_#.css")
-)
+    <link href="/Content/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-            .Add("/Content/js/jquery-1.5.2.js")
-            .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-            .Add("/Content/js/jquery.tooltip.js")
-            .Add("/Content/js/jquery.blockUI.js")
-            .Add("/Scripts/OrgMembersDialog.js")
-        .Render("/Content/OrgMembersDialog_#.js")
-)        
+@Html.Partial("CombinedJs")
+@Html.Script("/Scripts/OrgMembersDialog.js")
 <form action="/OrgMembersDialog/Update" method="post">
 @Html.Hidden("orgid")
 @Html.Hidden("pendings")

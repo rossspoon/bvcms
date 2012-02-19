@@ -3,7 +3,8 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Promotion";
 }
-<script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
+@section scripts
+{
 <script type="text/javascript">
     //id=elements_id&value=user_edited_content
     $(function() {
@@ -42,6 +43,7 @@
         $(".bt").button();
     });
 </script>
+}
 <h2>Promotion Setup</h2>
 @Html.DropDownList("Programs", Model.Programs())
 <table>

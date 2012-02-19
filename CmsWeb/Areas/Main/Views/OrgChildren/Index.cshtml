@@ -1,18 +1,22 @@
 ﻿@model CmsWeb.Models.OrgChildrenModel
+@using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "OrgChildren";
-}           
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Scripts/OrgChildren.js")
-        .Render("/Content/OrgChildren_#.js")
-)
+}
+@section scripts
+{
+@Html.Script("/Scripts/OrgChildren.js")
+}
+@section head
+{
 <style>
     td.wide100 * 
     {
         width: 98%;
     }
 </style>
+}
 @if (Model.canedit)
 {
 @Html.Hidden("canedit", "true")

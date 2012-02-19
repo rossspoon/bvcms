@@ -1,7 +1,7 @@
 ﻿$(function () {
     $(".clickSelectG").editable("/Meeting/EditGroup/", {
         indicator: '<img src="/images/loading.gif">',
-        data: " {'true':'Group (headcount)','false':'Regular'}",
+        loadurl: "/Meeting/MeetingTypes/",
         loadtype: "POST",
         type: "select",
         submit: "OK",
@@ -20,6 +20,7 @@
         loadtype: "POST",
         type: "select",
         submit: "OK",
+        tooltip: 'Click to edit...',
         style: 'display: inline'
     });
     $(".numpresent").editable("enable");

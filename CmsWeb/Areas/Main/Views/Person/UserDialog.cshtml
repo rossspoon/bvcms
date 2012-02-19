@@ -1,17 +1,15 @@
 ﻿@using UtilityExtensions
 @using CmsData
+@using CmsWeb
 @model CmsData.User
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-@Html.Raw(SquishIt.Framework.Bundle.Css()
-        .Add("/Content/jquery-ui-1.8.13.custom.css")
-        .Add("/Content/Dialog.css")
-        .Add("/Content/jquery.tooltip.css")
-    .Render("/Content/UserDialog_#.css")
-)
+@Html.Css("/Content/jquery-ui-1.8.13.custom.css")
+@Html.Css("/Content/Dialog.css")
+@Html.Css("/Content/jquery.tooltip.css")
 <style type="text/css">
 .item
 {
@@ -24,14 +22,6 @@
 </style>
 </head>
 <body>
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.5.2.js")
-        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-        .Add("/Content/js/jquery.tooltip.js")
-        .Add("/Content/js/jquery.transpose.min.js")
-        .Add("/Scripts/UserDialog.js")
-        .Render("/Content/UserDialog_#.js")
-) 
 <a class="helplink" target="_blank" href='@Util.HelpLink("UserUpdate")'>help</a>
 <form class="DisplayEdit" action="">
 <table class="Design2">
@@ -55,6 +45,9 @@
 <a href="/Person/UserWelcome/@Model.UserId" class="submitbutton save">Save Changes, Send Welcome Email</a>
 <a id="deluser" href="/Person/UserDelete/@Model.UserId" class="submitbutton">Delete User</a>
 </form>
+@Html.Partial("CombinedJs")
+@Html.Script("/Content/js/jquery.transpose.js")
+@Html.Script("/Scripts/UserDialog.js")
 </body>
 </html>
 

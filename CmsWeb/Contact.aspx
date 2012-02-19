@@ -8,38 +8,10 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <script type="text/javascript">
-        $(function () {
-            $('#contactDialog').dialog({
-                autoOpen: false,
-                width: 712,
-                height: 630,
-                modal: true,
-                overlay: {
-                    opacity: 0.5,
-                    background: "black"
-                }, close: function () {
-                    $('iframe', this).attr("src", "");
-                }
-            });
-            $('#AddContacteeLink,#AddContactorLink').live("click", function (e) {
-                e.preventDefault();
-                var d = $('#contactDialog');
-                $('iframe', d).attr("src", this.href);
-                d.dialog("option", "title", this.title);
-                d.dialog("open");
-            });
-        });
-       function AddSelected() {
-           var d = $('#contactDialog');
-           d.dialog("close");
-           $('#<%= RefreshGrids.ClientID %>').click();
-        }
-    </script>
 
     <asp:Button ID="RefreshGrids" runat="server" style="display:none" OnClick="RefreshGrids_Click" />      
     <h1>
-        Contacts</h1>
+        <a href="/ContactSearch">Contacts</a></h1>
     <table>
         <tr>
             <th align="right">
@@ -333,4 +305,35 @@
     <div id="contactDialog" style="display:none">
     <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
     </div>
+</asp:Content>
+
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+    <script type="text/javascript">
+        $(function () {
+            $('#contactDialog').dialog({
+                autoOpen: false,
+                width: 712,
+                height: 630,
+                modal: true,
+                overlay: {
+                    opacity: 0.5,
+                    background: "black"
+                }, close: function () {
+                    $('iframe', this).attr("src", "");
+                }
+            });
+            $('#AddContacteeLink,#AddContactorLink').live("click", function (e) {
+                e.preventDefault();
+                var d = $('#contactDialog');
+                $('iframe', d).attr("src", this.href);
+                d.dialog("option", "title", this.title);
+                d.dialog("open");
+            });
+        });
+       function AddSelected() {
+           var d = $('#contactDialog');
+           d.dialog("close");
+           $('#<%= RefreshGrids.ClientID %>').click();
+        }
+    </script>
 </asp:Content>

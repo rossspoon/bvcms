@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>User Management</title>
-    <%=CmsWeb.ViewExtensions2.StandardCss()%>
+<link href='/Content/site.css' rel='stylesheet' type='text/css' />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -74,7 +74,7 @@
                     </table>
                 </EmptyDataTemplate>
                 <LayoutTemplate>
-                    <table id="itemPlaceholderContainer" runat="server" border="0" style="">
+                    <table id="itemPlaceholderContainer" runat="server" border="0" class="grid">
                         <tr runat="server" style="">
                             <th runat="server">
                             </th>

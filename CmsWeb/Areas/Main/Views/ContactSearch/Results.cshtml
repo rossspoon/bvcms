@@ -1,6 +1,6 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Models.ContactSearchModel
-<table class="grid">
+<table id="results" class="grid">
 <thead>
     <tr><td colspan="4">
 <div>Count: @Model.Count().ToString("n0")</div>
@@ -17,8 +17,9 @@
 @foreach (var c in Model.ContactList())
 {
     <tr>
-        <td><a href="/Contact/Index/@c.ContactId">@c.ContactDate.ToString("d")</a></td>
-        <td>@c.ContactReason</td>
+        <td><a href="/Contact.aspx?id=@c.ContactId">@c.ContactDate.ToString("d")</a></td>
+@*        <td><a href="/Contact/Index/@c.ContactId">@c.ContactDate.ToString("d")</a></td>
+*@        <td>@c.ContactReason</td>
         <td>@c.TypeOfContact</td>
         <td>@c.ContacteeList</td>
     </tr>

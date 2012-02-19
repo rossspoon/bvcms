@@ -134,6 +134,7 @@ namespace CmsData
         PrimaryZip,
         PrimaryCountry,
         RecentAttendCount,
+        RecentAttendCountAttCred,
         RecentAttendMemberType,
         RecentAttendType,
         RecentContactMinistry,

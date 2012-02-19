@@ -1,22 +1,16 @@
 ﻿@using CmsWeb.Models
+@using CmsWeb
 @model SearchOrgsModel
 <html>
 <head>
 <title>Index</title>
-@Html.Raw(SquishIt.Framework.Bundle.Css()
-        .Add("/Content/jquery-ui-1.8.13.custom.css")
-        .Add("/Content/site.css")
-        .Add("/Content/style2.css")
-        .Add("/Content/jquery.tooltip.css")
-    .Render("/Content/SearchOrg_#.css")
-)
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.5.2.js")
-        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-        .Add("/Content/js/jquery.blockUI.js")
-        .Add("/Content/js/jquery.tooltip.js")
-        .Add("/Scripts/SearchOrgs.js")
-        .Render("/Content/SearchOrg_#.js"))
+    <link href="/Content/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/style2.css" rel="stylesheet" type="text/css" />
+
+@Html.Partial("CombinedJs")
+@Html.Script("/Scripts/SearchOrgs.js");
 </head>
 <body>
 <form name="form1">

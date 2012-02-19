@@ -38,13 +38,6 @@ namespace CmsWeb
                 return;
             if (NoCache)
                 Response.NoCache();
-            cssbundle.Text = SquishIt.Framework.Bundle.Css()
-                            .Add("/Content/jquery-ui-1.8.13.custom.css")
-                            .Add("/Content/site.css")
-                            .Add("/Content/Style2.css")
-                            .Add("/Content/cmenu.css")
-                            .Add("/Content/pager.css")
-                            .Render("/Content/AllMVC_#.css");
 
             if (Util.SessionStarting)
             {

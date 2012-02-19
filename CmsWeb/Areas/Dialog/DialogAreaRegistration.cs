@@ -15,11 +15,14 @@ namespace CmsWeb.Areas.Dialog
         public override void RegisterArea(AreaRegistrationContext context)
         {
             AddRoute(context, "SearchAdd");
+            AddRoute(context, "AddOrganization");
             AddRoute(context, "SearchUsers");
             AddRoute(context, "SearchOrgs");
             AddRoute(context, "SearchDivisions");
             AddRoute(context, "OrgMemberDialog");
             AddRoute(context, "AddToOrgFromTag");
+            AddRoute(context, "RepairTransactions");
+            AddRoute(context, "DeleteMeeting");
             AddRoute(context, "TransactionHistory");
             AddRoute(context, "OrgMembersDialog");
             context.MapRoute(

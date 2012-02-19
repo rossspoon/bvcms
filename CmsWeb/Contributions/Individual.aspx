@@ -4,12 +4,14 @@
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
 <script type="text/javascript">
     $(function () {
         $("table.grid > tbody > tr:even").addClass("alt");
     });
 </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <table >
         <tr>
             <th>

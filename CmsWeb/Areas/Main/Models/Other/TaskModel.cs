@@ -557,7 +557,7 @@ namespace CmsWeb.Models
             var task = DbUtil.Db.Tasks.SingleOrDefault(t => t.Id == id);
             task.StatusId = TaskStatusCode.Active;
             DbUtil.Db.SubmitChanges();
-            DbUtil.Db.Email(task.Owner.EmailAddress, task.CoOwner,
+            DbUtil.Db.Email(task.CoOwner.EmailAddress ,task.Owner, 
                 "Task Accepted from " + task.CoOwner.Name,
                 TaskLink(task.Description, task.Id) + "<br />" + task.AboutName);
         }

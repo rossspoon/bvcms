@@ -1,19 +1,17 @@
 ﻿@using CmsWeb.Models
+@using CmsWeb
 @model SearchUsersModel
 <html>
 <head>
 <title>Index</title>
-<link rel="stylesheet" type="text/css"  href="Content/jquery-ui-1.8.9.custom.css" />
-<link rel="stylesheet" type="text/css"  href="Content/site.css" />
-<link rel="stylesheet" type="text/css"  href="Content/Style2.css" />
-<link rel="stylesheet" type="text/css"  href="Content/pager.css" />
-<link rel="stylesheet" type="text/css"  href="Content/jquery.tooltip.css" />
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.5.2.js")
-        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-        .Add("/Content/js/jquery.blockUI.js")
-        .Add("/Scripts/SearchUsers.js")
-        .Render("/Content/usersearch_#.js"))
+<link rel="stylesheet" type="text/css"  href="/Content/jquery-ui-1.8.9.custom.css" />
+<link rel="stylesheet" type="text/css"  href="/Content/site.css" />
+<link rel="stylesheet" type="text/css"  href="/Content/Style2.css" />
+<link rel="stylesheet" type="text/css"  href="/Content/jquery.tooltip.css" />
+<link rel="stylesheet" type="text/css"  href="/Content/pager.css" />
+
+@Html.Partial("CombinedJs")
+@Html.Script("/Scripts/SearchUsers.js");
 </head>
 <body>
 <form name="form1">

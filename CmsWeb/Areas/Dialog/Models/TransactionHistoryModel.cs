@@ -30,22 +30,33 @@ namespace CmsWeb.Areas.Dialog.Models
         {
             public string Indicator { get; set; }
             public string AttendanceFlag { get; set; }
+            public int? ScheduleType { get; set; }
             public DateTime MeetingDate { get; set; }
             public int MeetingId { get; set; }
             public string AttendType { get; set; }
             public string MemberType { get; set; }
             public int OtherAttends { get; set; }
+            public int Week { get; set; }
             public int? OtherOrgId { get; set; }
         }
         public IEnumerable<AttendInfo> FetchAttends()
         {
+			var mt = from mm in DbUtil.Db.Meetings
+					 where mm.OrganizationId == oid 
+					 where mm.MeetingDate < DateTime.Now
+					 orderby mm.MeetingDate descending
+					 select mm.MeetingDate;
+			var dt = mt.FirstOrDefault();
+			var dtyrago = (dt ?? DateTime.Now).AddYears(-1);
             var q = from a in DbUtil.Db.Attends
                     where a.PeopleId == id && a.OrganizationId == oid
+					where a.MeetingDate >= dtyrago
                     orderby a.MeetingDate descending
                     select new AttendInfo
                     {
                         Indicator = Indicator(a.AttendanceTypeId, a.EffAttendFlag),
                         AttendanceFlag = a.EffAttendFlag.HasValue ? (a.EffAttendFlag.Value ? "1" : "0") : "_",
+						ScheduleType = a.Meeting.AttendCreditId,
                         MeetingDate = a.MeetingDate,
                         MeetingId = a.MeetingId,
                         AttendType = a.AttendType.Description,
@@ -53,7 +64,7 @@ namespace CmsWeb.Areas.Dialog.Models
                         OtherAttends = a.OtherAttends,
                         OtherOrgId = a.OtherOrgId,
                     };
-            return q.Take(60);
+            return q;
         }
 
         public class TransactionInfo

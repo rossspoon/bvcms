@@ -55,9 +55,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="AjaxMin, Version=4.13.4076.28499, Culture=neutral, PublicKeyToken=24297a69a7eae424, processorArchitecture=MSIL">
-      <HintPath>..\packages\AjaxMin.4.13.4076.28499\lib\AjaxMin.dll</HintPath>
-    </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=2.5.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\CookComputing.XmlRpcV2.dll</HintPath>
@@ -88,13 +85,6 @@
     <Reference Include="Rackspace.CloudFiles, Version=2.0.0.40, Culture=neutral, PublicKeyToken=eeb9efb45246165e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Rackspace.CloudFiles.dll</HintPath>
-    </Reference>
-    <Reference Include="SquishIt.Contrib.Mvc, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SquishIt.Contrib.Mvc.0.1.1\lib\net40\SquishIt.Contrib.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="SquishIt.Framework, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SquishIt.0.7.1\lib\SquishIt.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -145,10 +135,14 @@
     <Compile Include="Admin\ToggleOrgLeadersOnly.ashx.cs">
       <DependentUpon>ToggleOrgLeadersOnly.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
+    <Compile Include="Areas\Dialog\Controllers\DeleteMeetingController.cs" />
+    <Compile Include="Areas\Dialog\Controllers\RepairTransactionsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchOrgsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchDivisionsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\TransactionHistoryController.cs" />
     <Compile Include="Areas\Dialog\DialogAreaRegistration.cs" />
+    <Compile Include="Areas\Dialog\Models\OrganizationModel.cs" />
     <Compile Include="Areas\Dialog\Models\SearchOrgsModel.cs" />
     <Compile Include="Areas\Dialog\Models\SearchDivisionsModel.cs" />
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
@@ -295,6 +289,7 @@
     <Content Include="ckeditor\plugins\docprops\plugin.js" />
     <Content Include="ckeditor\plugins\stylesheetparser\plugin.js" />
     <Content Include="ckeditor\plugins\xml\plugin.js" />
+    <Content Include="Content\combined.css" />
     <Content Include="Content\faary.css" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
     <Content Include="Content\js\jquery.tmpl.js" />
@@ -470,13 +465,6 @@
     </Compile>
     <Compile Include="Admin\UploadFile.aspx.designer.cs">
       <DependentUpon>UploadFile.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\UrgentMessage.aspx.cs">
-      <DependentUpon>UrgentMessage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\UrgentMessage.aspx.designer.cs">
-      <DependentUpon>UrgentMessage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Users.aspx.cs">
       <DependentUpon>Users.aspx</DependentUpon>
@@ -730,13 +718,6 @@
     <Compile Include="UserControls\GridPager.ascx.designer.cs">
       <DependentUpon>GridPager.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PersonGrid.ascx.cs">
-      <DependentUpon>PersonGrid.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\PersonGrid.ascx.designer.cs">
-      <DependentUpon>PersonGrid.ascx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml" />
@@ -905,7 +886,6 @@
     <Content Include="Content\images\ui-bg_glass_100_dadada_1x400.png" />
     <Content Include="Content\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
-    <Content Include="Content\jquery-linedtextarea.css" />
     <Content Include="Content\jquery-ui-1.8.13.custom.css" />
     <Content Include="Content\jquery-ui-timepicker.css" />
     <Content Include="Content\jquery.sb.css" />
@@ -941,9 +921,6 @@
     <Content Include="Content\magnifier.png" />
     <Content Include="Content\Welcome.png" />
     <Content Include="Content\jquery-ui-1.8.9.custom.css" />
-    <Content Include="Content\js\jquery-1.4.4.js" />
-    <Content Include="Content\js\jquery-1.4.4.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.9.custom.js" />
     <Content Include="Content\js\jquery.ba-bbq.min.js" />
     <Content Include="Content\js\jquery.bgiframe-2.1.2.js" />
     <Content Include="images\amex.jpg" />
@@ -955,7 +932,62 @@
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
+    <Content Include="Min\Content\js\combined-onlinereg.js" />
+    <Content Include="Min\Content\js\combined-org.js" />
+    <Content Include="Min\Content\js\combined-person.js" />
+    <Content Include="Min\Content\js\combined.js" />
+    <Content Include="Min\Content\js\jquery-1.5.2.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.8.13.custom.js" />
+    <Content Include="Min\Content\js\jquery.checkboxtree.js" />
+    <Content Include="Min\Content\js\jquery.contextMenu.js" />
+    <Content Include="Min\Content\js\jquery.form.js" />
+    <Content Include="Min\Content\js\jquery.form2.js" />
+    <Content Include="Min\Content\js\jquery.idle-timer.js" />
+    <Content Include="Min\Content\js\jquery.multiSelect.js" />
+    <Content Include="Min\Content\js\jquery.pagination.js" />
+    <Content Include="Min\Content\js\jquery.showpassword.js" />
+    <Content Include="Min\Content\js\jquery.sortElements.js" />
+    <Content Include="Min\Content\js\jquery.textarea.js" />
+    <Content Include="Min\Content\js\jquery.transpose.js" />
+    <Content Include="Min\Content\js\jquery.ui.timepicker.js" />
+    <Content Include="Min\Scripts\CheckIn.js" />
+    <Content Include="Min\Scripts\ContactSearch.js" />
+    <Content Include="Min\Scripts\Divisions.js" />
+    <Content Include="Min\Scripts\edit.js" />
+    <Content Include="Min\Scripts\email.js" />
+    <Content Include="Min\Scripts\Funds.js" />
+    <Content Include="Min\Scripts\meeting-ipad.js" />
+    <Content Include="Min\Scripts\meeting.js" />
+    <Content Include="Min\Scripts\Meetings.js" />
+    <Content Include="Min\Scripts\merge.js" />
+    <Content Include="Min\Scripts\OnlineReg.js" />
+    <Content Include="Min\Scripts\OnlineRegPayment.js" />
+    <Content Include="Min\Scripts\Organization.js" />
+    <Content Include="Min\Scripts\OrgChildren.js" />
+    <Content Include="Min\Scripts\OrgGroups.js" />
+    <Content Include="Min\Scripts\OrgMemberDialog.js" />
+    <Content Include="Min\Scripts\OrgMembers.js" />
+    <Content Include="Min\Scripts\OrgMembersDialog.js" />
+    <Content Include="Min\Scripts\OrgSearch.js" />
+    <Content Include="Min\Scripts\Person.js" />
+    <Content Include="Min\Scripts\pickslots2.js" />
+    <Content Include="Min\Scripts\PostBundle.js" />
+    <Content Include="Min\Scripts\QueryBuilder.js" />
+    <Content Include="Min\Scripts\QuickSearch.js" />
+    <Content Include="Min\Scripts\RegSetting.js" />
+    <Content Include="Min\Scripts\SavedQuery.js" />
+    <Content Include="Min\Scripts\SearchAdd.js" />
+    <Content Include="Min\Scripts\SearchDivisions.js" />
+    <Content Include="Min\Scripts\SearchOrgs.js" />
+    <Content Include="Min\Scripts\SearchPeople.js" />
+    <Content Include="Min\Scripts\SearchUsers.js" />
+    <Content Include="Min\Scripts\Tags.js" />
+    <Content Include="Min\Scripts\Task.js" />
+    <Content Include="Min\Scripts\TestAPI.js" />
+    <Content Include="Min\Scripts\TransactionHistory.js" />
+    <Content Include="Min\Scripts\UserDialog.js" />
     <Content Include="Scripts\ContactSearch.js" />
+    <Content Include="Scripts\headermenu.js" />
     <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
@@ -1013,7 +1045,6 @@
     <Content Include="images\bvcms130.png" />
     <Content Include="images\bvcms150.png" />
     <Content Include="images\req.gif" />
-    <Content Include="OnlineRegSample.htm" />
     <Content Include="Scripts\Edit.js" />
     <Content Include="Scripts\Email.js" />
     <Content Include="Scripts\pickslots.js" />
@@ -1042,6 +1073,12 @@
     <Content Include="Areas\Manage\Views\Duplicates\Find.cshtml" />
     <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Index.cshtml" />
     <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Progress.cshtml" />
+    <Content Include="Views\Shared\CombinedJs.cshtml" />
+    <Content Include="Areas\Dialog\Views\RepairTransactions\Progress.cshtml" />
+    <Content Include="Areas\Dialog\Views\DeleteMeeting\Progress.cshtml" />
+    <Content Include="Areas\Dialog\Views\AddOrganization\Index.cshtml" />
+    <None Include="Content\LibraryTemplate.xls" />
+    <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="SquishIt.Contrib.MvcReadMe.txt" />
     <Content Include="MembershipAutomationExample.py" />
@@ -1471,7 +1508,6 @@
     <Content Include="Areas\Main\Views\Meeting\ExtrasGrid.cshtml" />
     <Content Include="Areas\Main\Views\Organization\ExtrasGrid.cshtml" />
     <Content Include="Areas\Manage\Views\Duplicates\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\Batch\AddToOrgFromTagProgress.cshtml" />
     <Content Include="Areas\Main\Views\Reports\ExtraValues.cshtml" />
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
@@ -1512,12 +1548,14 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.bellevue.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Web.test.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\Shared\CombinedOrgJs.cshtml" />
+    <Content Include="Views\Shared\CombinedPersonJs.cshtml" />
+    <Content Include="Views\Shared\CombinedOnlineRegJs.cshtml" />
+    <Content Include="Views\Shared\CombinedCss.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -1538,7 +1576,6 @@
     <Content Include="Admin\LastActivity.aspx" />
     <Content Include="Admin\OneTimeETStudy.aspx" />
     <Content Include="Admin\UploadFile.aspx" />
-    <Content Include="Admin\UrgentMessage.aspx" />
     <Content Include="Admin\Users.aspx" />
     <Content Include="Admin\VBSMed.aspx" />
     <Content Include="AppReview\FormImage.aspx" />
@@ -1723,7 +1760,6 @@
     <Content Include="Report\DecisionSummary.aspx" />
     <Content Include="Site.Master" />
     <Content Include="UserControls\GridPager.ascx" />
-    <Content Include="UserControls\PersonGrid.ascx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CmsData\CmsData.csproj">
@@ -1805,7 +1841,6 @@
     <Content Include="Content\js\center-plugin_1.0.1.js" />
     <Content Include="Content\js\jquery-idleTimeout.js" />
     <Content Include="Content\js\jquery.autocomplete.min.js" />
-    <Content Include="Content\js\jquery.bgiframe-2.1.1.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.dimensions.min.js" />
     <Content Include="Content\js\jquery.hoverIntent.js" />
@@ -1861,8 +1896,6 @@
     <Content Include="Scripts\SearchDialog.js" />
     <Content Include="Scripts\OrgMemberDialog.js" />
     <Content Include="Scripts\RecReg.js" />
-    <Content Include="demos\checkboxtree\checkboxtree.html" />
-    <Content Include="demos\checkboxtree\css\checkboxtree.css" />
     <Content Include="Content\images\checkboxtree\bg-checkbox-checked.gif" />
     <Content Include="Content\images\checkboxtree\bg-checkbox-checkedchildren.gif" />
     <Content Include="Content\images\checkboxtree\bg-checkbox-over.gif" />
@@ -1870,10 +1903,6 @@
     <Content Include="Content\images\checkboxtree\img-arrow-blank.gif" />
     <Content Include="Content\images\checkboxtree\img-arrow-collapsed.gif" />
     <Content Include="Content\images\checkboxtree\img-arrow-expanded.gif" />
-    <Content Include="demos\checkboxtree\HTMLPage1.htm" />
-    <Content Include="demos\checkboxtree\js\jquery-latest.js" />
-    <Content Include="demos\checkboxtree\js\jquery.checkboxtree.js" />
-    <Content Include="demos\checkboxtree\dv.htm" />
     <Content Include="Errors\PageNotFound.aspx" />
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
@@ -1909,7 +1938,6 @@
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
-    <Folder Include="demos\checkboxtree\images\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -1,10 +1,14 @@
 ﻿@model CmsWeb.Models.MeetingsModel
 @using UtilityExtensions
+@using CmsWeb
 @{
     ViewBag.Title = "Meetings";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-<script src="/Scripts/Meetings.js" type="text/javascript"></script>
+@section scripts
+{
+@Html.Script("/Scripts/Meetings.js")
+}
 <h2>Meetings</h2>
 <form>
 Meeting Dates:

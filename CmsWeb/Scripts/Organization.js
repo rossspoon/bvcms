@@ -77,6 +77,47 @@ $(function () {
             RebindMemberGrids();
         }
     });
+    $('a.addfromtag').live("click", function (e) {
+        e.preventDefault();
+        var d = $('#AddFromTag');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Add Members From Tag");
+        d.dialog("open");
+    });
+    $('#LongRunOp').dialog({
+        bgiframe: true,
+        autoOpen: false,
+        width: 600,
+        height:400,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+            RebindMemberGrids();
+            $.updateTable($('#Meetings-tab form'));
+        }
+    });
+    $('#RepairTransactions').live("click", function (e) {
+        e.preventDefault();
+        var d = $('#LongRunOp');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Repair Transactions");
+        d.dialog("open");
+    });
+    $('.delmeeting').live('click', function (ev) {
+        ev.preventDefault();
+        if (confirm("delete meeting for sure?")) {
+            var d = $('#LongRunOp');
+            $('iframe', d).attr("src", this.href);
+            d.dialog("option", "title", "Delete Meeting");
+            d.dialog("open");
+        }
+        return false;
+    });
+
+
     $('a.addmembers').live("click", function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
@@ -261,14 +302,6 @@ $(function () {
             i++;
         });
     }
-    $('a.addfromtag').live("click", function (e) {
-        e.preventDefault();
-        var d = $('#AddFromTag');
-        $('iframe', d).attr("src", this.href);
-        d.dialog("option", "title", "Add Members From Tag");
-        d.dialog("open");
-    });
-
     $("#NewMeetingDialog").dialog({
         autoOpen: false,
         width: 488,
@@ -339,18 +372,6 @@ $(function () {
         }
         return { date: d, time: t, valid: v };
     };
-    $('.delmeeting').live('click', function (ev) {
-        ev.preventDefault();
-        if (confirm("delete meeting for sure?")) {
-            $.post("/Organization/DeleteMeeting/",
-                { id: this.id, future: $('#future').is(":checked") },
-                function (ret) {
-                    if (ret == "ok")
-                        $.updateTable($('#Meetings-tab form'));
-                });
-        }
-        return false;
-    });
     $('a.joinlink').live('click', function (ev) {
         ev.preventDefault();
         $.post("/Organization/Join/", { id: this.id },

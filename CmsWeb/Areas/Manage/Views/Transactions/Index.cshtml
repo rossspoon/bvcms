@@ -4,6 +4,8 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Transactions";
 }
+@section scripts
+{
     <script type="text/javascript">
         $(document).ready(function () {
             $(".datepicker").datepicker();
@@ -36,7 +38,7 @@
             $(".bt").button();
         });
 </script>
-<script src="/Scripts/Pager.js" type="text/javascript"></script>
+}
 <form id="form" method="post" action="/Manage/Transactions/List">
 @{Html.RenderPartial("List", Model);}
 </form>

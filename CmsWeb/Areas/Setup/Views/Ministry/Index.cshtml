@@ -3,7 +3,8 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Ministry";
 }
-<script src="/Content/js/jquery.jeditable.js" type="text/javascript"></script>
+@section scripts
+{
 <script type="text/javascript">
     $(function() {
         $(".clickEdit").editable("/Setup/Ministry/Edit/", {
@@ -22,6 +23,7 @@
         $(".bt").button();
     });
 </script>
+}
 <h2>Ministries</h2>
 
 <table>

@@ -5,25 +5,16 @@
     ViewBag.Title = "Organization";
 }
 @section head {
-@Html.Raw(SquishIt.Framework.Bundle.Css()
-            .Add("/Content/jquery.multiSelect.css")
-            .Add("/Content/jquery-ui-timepicker.css")
-            .Add("/Content/organization.css")
-    .Render("/Content/Organization_#.css")
-    )
+<link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+<link href="/Content/jquery.timepickr.css" rel="stylesheet" type="text/css" />
+<link href="/Content/organization.css" rel="stylesheet" type="text/css" />
 }
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-                .Add("/Scripts/Pager.js")
-                .Add("/Content/js/jquery.multiSelect.js")
-                .Add("/Content/js/jquery.validate.js")
-                .Add("/Content/js/jquery.ui.timepicker.js")
-                .Add("/Content/js/jquery.textarea.js")
-                .Add("/Content/js/jquery-ui-dialog-patch.js")
-                .Add("/Content/js/jquery.jeditable.js")
-                .Add("/Scripts/Organization.js")
-                .Add("/Scripts/RegSetting.js")
-    .Render("/Content/Organization_#.js")
-    )
+@section scripts
+{
+<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+<script src="/ckeditor/adapters/jquery.js" type="text/javascript"></script>
+@Html.Partial("CombinedOrgJs")
+}
     @{ CmsData.Organization o = Model.org; }
     @Html.Hidden("refreshed", "no")
     @Html.Hidden("OrganizationId")
@@ -48,7 +39,7 @@
     <a href="/Organization/VoteTag/@o.OrganizationId" target="_blank">View VoteTags</a>
 @if (User.IsInRole("Edit"))
 {
-    <a class="CreateAndGo" href="/Organization/Clone/@o.OrganizationId" confirm="This will make a copy of the org. Are you sure?"> Copy this Organization</a>
+    <a href="#" class="heading">Copy Org has changed to Add Organization on the main Organization menu</a>
     <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
 }
 @if (User.IsInRole("Admin"))
@@ -58,7 +49,7 @@
 }
 @if (User.IsInRole("Developer"))
 {
-    <a href="/Organization/RepairTransactions/@o.OrganizationId">Repair Transactions</a>
+    <a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">Repair Transactions</a>
 }
 </div>
 <div style="border-bottom: 4px solid #ddd"></div>
@@ -227,6 +218,9 @@
 <div id="AddFromTag">
 <iframe style="width:100%;height:99%;border-width:0;"></iframe>
 </div>
+<div id="LongRunOp">
+<iframe style="width:100%;height:99%;border-width:0;"></iframe>
+</div>
 <div id="divisionsDialog">
 <iframe style="width:100%;height:99%;border-width:0;"></iframe>
 </div>
@@ -242,5 +236,3 @@
 <tr><td>Field:</td><td>@Html.TextBox("fieldname")</td></tr>
 <tr><td>Value:</td><td>@Html.TextBox("fieldvalue")</td></tr>
 </table>
-<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>

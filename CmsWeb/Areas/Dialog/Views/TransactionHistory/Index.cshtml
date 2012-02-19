@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Areas.Dialog.Models.TransactionHistoryModel
+@using CmsWeb
 @using UtilityExtensions
 @{
     Layout = null;
@@ -7,16 +8,12 @@
 <html>
 <head>
     <title>History</title>
-    @Html.Raw(SquishIt.Framework.Bundle.Css()
-                .Add("/Content/jquery-ui-1.8.13.custom.css")
-                .Add("/Content/site.css")
-                .Add("/Content/Style2.css")
-        .Render("/Content/TransactinoHistory_#.css"))
-    @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.5.2.js")
-        .Add("/Content/js/jquery.jeditable.js")
-        .Add("/Scripts/TransactionHistory.js")
-        .Render("/Content/TransactionHistory_#.js"))
+<link rel="stylesheet" type="text/css"  href="/Content/jquery-ui-1.8.9.custom.css" />
+<link rel="stylesheet" type="text/css"  href="/Content/site.css" />
+<link rel="stylesheet" type="text/css"  href="/Content/Style2.css" />
+
+@Html.Partial("CombinedJs")
+@Html.Script("/Scripts/TransactionHistory.js")
 </head>
 <body>
     <div>
@@ -27,6 +24,9 @@
                 <tr>
                     <th> </th>
                     <th> Flag </th>
+                    <th> Wk </th>
+                    <th> Sch </th>
+                    <th> Day </th>
                     <th> Meeting Date </th>
                     <th> Attend Type </th>
                     <th> Member Type </th>
@@ -40,6 +40,9 @@
                     <tr>
                         <td>@a.Indicator </td>
                         <td>@a.AttendanceFlag </td>
+                        <td>@a.MeetingDate.GetWeekNumber()</td>
+                        <td>@a.ScheduleType</td>
+                        <td>@a.MeetingDate.DayOfWeek.ToString().Substring(0,3)</td>
                         <td>@a.MeetingDate.ToString("M/d/yy h:mmt") </td>
                         <td>@a.AttendType </td>
                         <td>@a.MemberType </td>

@@ -1,0 +1,1 @@
+$(function(){$("form").submit(function(){return $.blockUI(),!0}),$("table.grid > tbody > tr:odd").addClass("alt"),$("table.grid > thead td").css("font-weight","bold"),$("#usefrom").change(function(n){n.preventDefault(),$("input:radio[value=0]").attr("checked","checked")}),$("#usetarget").change(function(n){n.preventDefault(),$("input:radio[value=1]").attr("checked","checked")})})

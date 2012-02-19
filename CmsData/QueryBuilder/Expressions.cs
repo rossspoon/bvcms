@@ -466,6 +466,29 @@ namespace CmsData
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
             return Compare(left, op, right);
         }
+        internal static Expression RecentAttendCountSchedule(
+            ParameterExpression parm,
+            int? progid,
+            int? divid,
+            int? org,
+            int? sched,
+            int days,
+            CompareType op,
+            int cnt)
+        {
+            var mindt = Util.Now.AddDays(-days).Date;
+            Expression<Func<Person, int>> pred = p =>
+                p.Attends.Count(a => a.AttendanceFlag == true
+                    && a.MeetingDate >= mindt
+                    && (sched == 0 || a.Meeting.AttendCreditId == sched)
+                    && (org == 0 || a.Meeting.OrganizationId == org)
+                    && (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
+                    && (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+                    );
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(cnt), left.Type);
+            return Compare(left, op, right);
+        }
         internal static Expression VisitNumber(
             ParameterExpression parm, CMSDataContext Db,
             string number,

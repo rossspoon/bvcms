@@ -234,7 +234,9 @@
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />
     <Compile Include="Generated\ContributionsRun.cs" />
     <Compile Include="Generated\Country.cs" />
+    <Compile Include="Generated\DeleteMeetingRun.cs" />
     <Compile Include="Generated\DuplicatesRun.cs" />
+    <Compile Include="Generated\RepairTransactionsRun.cs" />
     <Compile Include="RecurringGiving.cs" />
     <Compile Include="Dynamic.cs" />
     <Compile Include="SagePayments.cs" />

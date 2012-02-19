@@ -1,4 +1,5 @@
 ﻿@using UtilityExtensions
+@using CmsWeb
 @model CmsWeb.Models.OnlineRegModel
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
@@ -17,15 +18,9 @@
     This registration site requires javascript to be enabled on your browser.
     </div>
 </noscript>
-<div class="regform pagecontainer">
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.5.2.js")
-        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-        .Add("/Content/js/jquery.validate.js")
-        .Add("/Content/js/jquery.idle-timer.js")
-        .Add("/Scripts/OnlineReg.js")
-        .Render("/Content/OnLineReg_#.js")
-)
+@section scripts
+{
+@Html.Script("/Scripts/OnlineReg.js")
     <script type="text/javascript">
         $(function () {
             $.refreshenabled = false; // false until something happens
@@ -46,6 +41,8 @@
                 $.idleTimer(tmout);
         });
     </script>
+}
+<div class="regform pagecontainer">
     <h2>@Model.Header</h2>
 @{var msg = Model.Filled();}
 @if (Model.NotAvailable())

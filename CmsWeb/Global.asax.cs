@@ -80,6 +80,7 @@ namespace CmsWeb
             if (User.Identity.IsAuthenticated)
                 Models.AccountModel.SetUserInfo(Util.UserName, Session);
             Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
+			Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Util.SessionStarting = true;
         }
         //protected void Application_BeginRequest(object sender, EventArgs e)

@@ -1,15 +1,15 @@
 ﻿@using UtilityExtensions
+@using CmsWeb
 @model CmsWeb.Models.ContactSearchModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-            .Add("/Scripts/ContactSearch.js")
-        .Render("/Content/ContactSearch_#.js")
-)
-<form id="form">
-<table><tr><td>
+@section scripts
+{
+@Html.Script("/Scripts/ContactSearch.js")
+}
+<form action="" id="form">
 <div class="roundbox floatleft">
     <table cellspacing="5">
         <tbody>
@@ -43,26 +43,27 @@
             <td>@Html.DropDownListFor(vv => vv.Ministry, Model.Ministries())</td>
         </tr>
         <tr>
+            <th align="right">Results:</th>
+            <td>@Html.DropDownListFor(vv => vv.Result, Model.Results())</td>
+        </tr>
+        <tr>
             <td colspan="2" align="right">
                 <a id="NewSearch" class="bt">Clear</a>
-                <a id="Search" class="bt">Search</a>
+                <a id="search" class="bt">Search</a>
             </td>
         </tr>
     </tbody>
 </table>
-</div></td>
-<td width="2em"> &nbsp; </td>
-<td valign="top">
-<div id="buttondiv" class="dropdown" style="font-size:1.2em;margin-top:2em;margin-left: 2em;">
+</div>
+<div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
 <div><a href="#">Contacts Management</a></div>
 <div class="sublinks">
-
+    <a id="ConvertToQuery" href="/ContactSearch/ConvertToQuery/">Convert To Query (Contactors)</a>
+    <a id="ContactorSummary" href="/ContactSearch/ContactorSummary">Contactor Summary Report (requires start/end and optionally ministry)</a>
 </div>
 <div style="border-bottom: 4px solid #ddd"></div>
 </div>
-</td>
-</tr>
-</table>
+<div class="floatclear"></div>
 <hr />
 @Html.Partial("Results", Model)
 </form>

@@ -1,10 +1,14 @@
 ﻿@using CmsWeb.Models
+@using CmsWeb
 @model TagsModel
 @{
 	ViewBag.Title = "Tags";
 	Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-<script src="/Scripts/Tags.js" type="text/javascript"></script>
+@section scripts
+{
+@Html.Script("/Scripts/Tags.js")
+}
 <form id="managetags" method="post" action="/Tags/Index">
 @*<table class="center"><tr><td>*@
 <div class="roundbox floatleft">

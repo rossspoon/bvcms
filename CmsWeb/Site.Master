@@ -5,45 +5,16 @@
 <head runat="server">
     <title>CMS2</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <asp:Literal id="cssbundle" runat="server"></asp:Literal>
+    <link href="/Content/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/site.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/style2.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/cmenu.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/pager.css" rel="stylesheet" type="text/css" />
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <%= SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.5.2.js")
-        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-        .Add("/Content/js/jquery.bgiframe-2.1.2.js")
-        .Add("/Content/js/hoverIntent.js")
-        .Add("/Content/js/jquery-cookie.js")
-        .Add("/Content/js/jquery.blockUI.js")
-        .Add("/Scripts/menu.js")
-        .Render("/Content/combined1_#.js")          
-    %>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#SearchText').keypress(function (e) {
-                if ((e.keyCode || e.which) == 13) {
-                    e.preventDefault();
-                    var s = $('#SearchText').val();
-                    if (s != "") {
-                        s = s.replace(/^\s+/g, "");
-                        s = s.replace(/\s+$/g, " ");
-                        var u = '/QuickSearch?name=' + escape(s);
-                        window.location = u;
-                    }
-                }
-                return true;
-            });
-        });
-        function TBNewWindow(url) {
-            window.open(url, "_blank");
-        }
-        function TBNavWindow(url) {
-            window.open(url, "_self");
-        } 
-    </script>
    <% if (Util.UrgentMessage.HasValue())
        { %>
     <div id='urgentNotice'><%=Util.UrgentMessage%></div>
@@ -78,8 +49,6 @@
    { %>
                                 <a href="/Admin/Users.aspx">Manage Users</a>
                                 <a href="/Admin/Activity.aspx">Activity Log</a>
-                                <a href="/Admin/LastActivity.aspx">Last Activity</a>
-                                <a href="/Admin/UrgentMessage.aspx">Urgent Message</a>
 <% } %>
                             </div>
                         </div>
@@ -115,7 +84,7 @@
                     <a href="/QuickSearch">People Search</a>
                     <a href="/Tags">Manage Tags</a>
                     <a href="/Task/List/">Tasks</a>
-                    <a href="/ContactSearch.aspx">Contact Search</a>
+                    <a href="/ContactSearch">Contact Search</a>
     <% if(Util2.CurrentPeopleId != 0)
        { %>
                     <a href="/Person/Index/<%=Util2.CurrentPeopleId%>">
@@ -174,7 +143,7 @@
                     <a href="/Contributions/Bundles.aspx">Bundles</a>
                     <a href="/Contributions/All.aspx">All</a>
                     <a href="#" class="heading">&mdash; Reports &mdash;</a>
-                    <a href="/Reports/ContributionStatements" target="_blank">Statements (All)</a>
+                    <a href="/Statements" target="_blank">Statements (All)</a>
                     <a href="/Contributions/GLExtract.aspx">GL Extract</a>
                     <a href="/Contributions/Reports/TotalsByFund2.aspx" target="_blank">Totals by Fund</a>
                     <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">
@@ -233,5 +202,31 @@
     </div>
 </div>
 </form>
+    <script src="/Min/Content/js/combined.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#SearchText').keypress(function (e) {
+                if ((e.keyCode || e.which) == 13) {
+                    e.preventDefault();
+                    var s = $('#SearchText').val();
+                    if (s != "") {
+                        s = s.replace(/^\s+/g, "");
+                        s = s.replace(/\s+$/g, " ");
+                        var u = '/QuickSearch?name=' + escape(s);
+                        window.location = u;
+                    }
+                }
+                return true;
+            });
+        });
+        function TBNewWindow(url) {
+            window.open(url, "_blank");
+        }
+        function TBNavWindow(url) {
+            window.open(url, "_self");
+        } 
+    </script>
+    <asp:ContentPlaceHolder ID="scripts" runat="server">
+    </asp:ContentPlaceHolder>
 </body>
 </html>

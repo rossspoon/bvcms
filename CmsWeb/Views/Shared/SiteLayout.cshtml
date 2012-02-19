@@ -3,73 +3,10 @@
 <head>
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    @Html.Raw(SquishIt.Framework.Bundle.Css()
-                .Add("/Content/jquery-ui-1.8.13.custom.css")
-                .Add("/Content/site.css")
-                .Add("/Content/Style2.css")
-                .Add("/Content/cmenu.css")
-                .Add("/Content/pager.css")
-                .Add("/Content/jquery.jscrollpane.css")
-                .Add("/Content/jquery.tooltip.css")
-                .Add("/Content/jquery.autocomplete.css")
-        .Render("/Content/AllMVC3_#.css"))
+    @Html.Partial("CombinedCss")
     @RenderSection("head", required: false)
 </head>
 <body>
-    @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-    .Add("/Content/js/jquery-1.5.2.js")
-    .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-    .Add("/Content/js/jquery.bgiframe-2.1.2.js")
-    .Add("/Content/js/hoverIntent.js")
-    .Add("/Content/js/jquery-cookie.js")
-    .Add("/Content/js/jquery.blockUI.js")
-    .Add("/Content/js/jquery.tooltip.js")
-    .Add("/Content/js/jquery.mousewheel.js")
-    .Add("/Content/js/jquery.jscrollpane.js")
-    .Add("/Scripts/ExportToolBar.js")
-    .Add("/Scripts/menu.js")
-    .Render("/Content/combined3_#.js"))
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#SearchText').keypress(function (e) {
-                if ((e.keyCode || e.which) == 13) {
-                    e.preventDefault();
-                    var s = $('#SearchText').val();
-                    if (s != "") {
-                        s = s.replace(/^\s+/g, "");
-                        s = s.replace(/\s+$/g, " ");
-                        var u = '/QuickSearch?name=' + escape(s);
-                        window.location = u;
-                    }
-                }
-                return true;
-            });
-            $('#AddDialog').dialog({
-                title: 'Add People Dialog',
-                bgiframe: true,
-                autoOpen: false,
-                width: 712,
-                height: 650,
-                modal: true,
-                overlay: {
-                    opacity: 0.5,
-                    background: "black"
-                }, close: function () {
-                    $('iframe', this).attr("src", "");
-                }
-            });
-            $('#addpeople').click(function (e) {
-                e.preventDefault();
-                var d = $('#AddDialog');
-                $('iframe', d).attr("src", "/SearchAdd?type=addpeople");
-                d.dialog("open");
-            });
-        });
-function CloseAddDialog() {
-    $("#AddDialog").dialog("close");
-    window.location = "/Person/Current"
-}
-    </script>
 @{ 
     var admin = User.IsInRole("Admin");
     var manageemails = User.IsInRole("ManageEmails");
@@ -111,7 +48,6 @@ function CloseAddDialog() {
 {
                                         <a href="/Admin/Users.aspx">Manage Users</a>
                                         <a href="/Admin/Activity.aspx">Activity Log</a>
-                                        <a href="/Admin/UrgentMessage.aspx">Urgent Message</a>
 }
                                 </div>
                             </div>
@@ -150,7 +86,7 @@ function CloseAddDialog() {
                                 <a href="/QuickSearch">People Search</a>
                                 <a id="addpeople" href="#">Add People</a> 
                                 <a href="/Tags">Manage Tags</a>
-                                <a href="/Task/List/">Tasks</a> <a href="/ContactSearch.aspx">Contact Search</a>
+                                <a href="/Task/List/">Tasks</a> <a href="/ContactSearch">Contact Search</a>
     @if (Util2.CurrentPeopleId != 0)
     {
                                     <a href="/Person/Index/@Util2.CurrentPeopleId">
@@ -162,8 +98,9 @@ function CloseAddDialog() {
                             <div>
                                 <a href="/OrgSearch">Organization</a></div>
                             <div class="sublinks">
-                                <a href="/OrgSearch">Search</a> <a href="/EmailAttendanceNotices.aspx">Email Attendance
-                                    Notices</a> <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a>
+                                <a href="/OrgSearch">Search</a> <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a> 
+                                <a id="addorg" href="#">Add Organization</a> 
+                                <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a>
     @if (User.IsInRole("Edit"))
     {
                                 <a href="/OrgMembers">Org Members Management</a>
@@ -218,7 +155,7 @@ function CloseAddDialog() {
                                     <a href="/Contributions/Bundles.aspx">Bundles</a>
                                     <a href="/Contributions/All.aspx"> All</a>
                                     <a href="#" class="heading">&mdash; Reports &mdash;</a>
-                                    <a href="/Reports/ContributionStatements" target="_blank">Statements (All)</a>
+                                    <a href="/Statements" target="_blank">Statements (All)</a>
                                     <a href="/Contributions/GLExtract.aspx">GL Extract</a>
                                     <a href="/Contributions/Reports/TotalsByFund2.aspx" target="_blank">Totals by Fund</a>
                                     <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">Totals by Fund Age Range</a>
@@ -338,7 +275,8 @@ function CloseAddDialog() {
     <div id="AddDialog">
     <iframe id="AddDialogiframe" style="width:100%;height:99%;border-width:0px"></iframe>
     </div>
-    @RenderSection("PopupsPlaceholder", required: false)
+@RenderSection("PopupsPlaceholder", required: false)
+@Html.Partial("CombinedJs")
 @RenderSection("scripts", required: false)
 </body>
 </html>

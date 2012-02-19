@@ -1,12 +1,13 @@
-﻿@model CmsWeb.Models.OrgMembersModel
+﻿@using CmsWeb
+@model CmsWeb.Models.OrgMembersModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Org Members Management";
 }
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Scripts/OrgMembers.js")
-        .Render("/Content/OrgMembers_#.js")
-)
+@section scripts
+{
+@Html.Script("/Scripts/OrgMembers.js")
+}
     <form id="form" method="post" action="/OrgMembers/Move">
      @Html.Partial("List", Model) 
     </form>

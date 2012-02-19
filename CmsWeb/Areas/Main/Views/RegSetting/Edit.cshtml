@@ -1,4 +1,5 @@
 ﻿@using UtilityExtensions
+@using CmsWeb
 @{
     ViewBag.Title = "EditRegSetting";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
@@ -11,8 +12,9 @@
 <p style="color: red">@TempData["error"]</p>
 @Html.TextArea("text", new { rows = "40", style = "width:90%", wrap="off" })
 </form>
-<script type="text/javascript" src="/Content/js/jquery.textarea.js"></script>
-<script src="/Content/js/jquery-linedtextarea.js"></script>
+@section scripts
+{
+@Html.Script("/Content/js/jquery.textarea.js")
 <script type="text/javascript">
     $(function () {
         $("textarea").css("height", this.scrollHeight + "px");
@@ -20,3 +22,4 @@
         $(".bt").button();
     });
 </script>
+}

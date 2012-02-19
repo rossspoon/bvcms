@@ -12,6 +12,7 @@ using System.Text;
 using System.Web.UI;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -54,11 +55,11 @@ namespace CmsWeb.Areas.Manage.Controllers
 		}
 		private string Output(bool? PDF)
 		{
-			string output = null;
+			string output = WebConfigurationManager.AppSettings["SharedFolder"];
 			if (PDF == true)
-				output = Server.MapPath("/contributions_{0}.pdf".Fmt(Util.Host));
+				output = output + "/Statements/contributions_{0}.pdf".Fmt(Util.Host);
 			else
-				output = Server.MapPath("/contributions_{0}.txt").Fmt(Util.Host);
+				output = output + "/Statements/contributions_{0}.txt".Fmt(Util.Host);
 			return output;
 		}
 		[HttpPost]

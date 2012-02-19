@@ -7,12 +7,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<script type="text/javascript">
-    $(function () {
-        $(".bt").button();
-        $(".roundbox select").css("width", "100%");
-    });
-</script>
     <div class="roundbox floatleft">
         <h2>Contacts</h2>
         <table cellspacing="5">
@@ -157,4 +151,13 @@
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="MinistryListData" runat="server" SelectMethod="Ministries0" TypeName="CMSPresenter.CodeValueController">
     </asp:ObjectDataSource>
+</asp:Content>
+
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+<script type="text/javascript">
+    $(function () {
+        $(".bt").button();
+        $(".roundbox select").css("width", "100%");
+    });
+</script>
 </asp:Content>

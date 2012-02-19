@@ -1,18 +1,22 @@
 ﻿@model CmsWeb.Models.OrgGroupsModel
+@using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "OrgGroups";
 }           
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Scripts/OrgGroups.js")
-        .Render("/Content/OrgGroups_#.js")
-)
+@section scripts
+{
+@Html.Script("/Scripts/OrgGroups.js")
+}
+@section head
+{
 <style>
     td.wide100 * 
     {
         width: 98%;
     }
 </style>
+}
 <form id="groupsform" action="/OrgGroups/Update" method="post">
 @Html.Partial("Form", Model)
 </form>

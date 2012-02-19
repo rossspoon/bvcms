@@ -1,14 +1,13 @@
-﻿@model CmsWeb.Models.DivisionModel
+﻿@using CmsWeb
+@model CmsWeb.Models.DivisionModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Divisions";
 }
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-                .Add("/Content/js/jquery.jeditable.js")
-                .Add("/Content/js/jquery.tooltip.js")
-                .Add("/scripts/Divisions.js")
-        .Render("/Content/Divisions_#.js")
-)  
+@section scripts 
+{
+@Html.Script("/Scripts/Divisions.js")
+}
 <form id="progform">
 Filter for Program: @Html.DropDownList("ProgramId", Model.ProgramIds())
 <input id="refresh" type="submit" value="Refresh" />

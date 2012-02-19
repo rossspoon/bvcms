@@ -3,6 +3,8 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Fund";
 }
+@section head 
+{
 <style type="text/css">
     label
     {
@@ -10,6 +12,7 @@
         display: inline-block;
     }
 </style>
+}
 <h2>Edit</h2>
 @using (Html.BeginForm("Update", "Fund"))
 {

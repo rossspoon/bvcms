@@ -3,6 +3,8 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "OrphanedImage";
 }
+@section scripts
+{
 <script type="text/javascript">
     $(function() {
         $("a.delete").click(function(ev) {
@@ -13,6 +15,7 @@
         });
     });
 </script>
+}
 <h2>OrphanedImages</h2>
 <table>
     <tr>

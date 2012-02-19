@@ -467,6 +467,15 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.TextValue.ToInt());
+                case QueryType.RecentAttendCountAttCred:
+                    return Expressions.RecentAttendCountSchedule(parm,
+                               c.Program,
+                               c.Division,
+                               c.Organization,
+							   c.Quarters.ToInt(),
+                               c.Days,
+                               CompType,
+                               c.TextValue.ToInt());
                 case QueryType.RecentNewVisitCount:
                     return Expressions.RecentNewVisitCount(parm,
                                c.Program,

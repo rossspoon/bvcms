@@ -1,19 +1,15 @@
 ﻿@using UtilityExtensions
+@using CmsWeb
 @model CmsData.Transaction
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
 }
 @{  var ti = Model; }
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery-1.5.2.js")
-        .Add("/Content/js/jquery-ui-1.8.13.custom.js")
-        .Add("/Content/js/jquery.idle-timer.js")
-        .Add("/Content/js/jquery.showpassword.js")
-        .Add("/Content/js/jquery.validate.js")
-        .Add("/Scripts/OnlineRegPayment.js")
-        .Render("/Content/OnLineRegPayment_#.js")
-)
+
+@section scripts
+{
+@Html.Script("/Scripts/OnlineRegPayment.js")
     <script type="text/javascript">
         $(function () {
             $(document).bind("idle.idleTimer", function () {
@@ -23,6 +19,7 @@
             $.idleTimer(tmout);
         });
     </script>
+}
     <h2>
         Payment Processing</h2>
 @if (ViewData.ContainsKey("Terms"))

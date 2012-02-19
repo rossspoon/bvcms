@@ -1,13 +1,14 @@
-﻿@model CmsWeb.Models.OrgContentInfo
+﻿@using CmsWeb
+@model CmsWeb.Models.OrgContentInfo
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/Site2.cshtml";
 }
-@section head
+@section scripts
 {
-    <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/ckeditor/adapters/jquery.js"></script>
-    <script type="text/javascript" src="/scripts/edit2.js"></script>
+<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+<script src="/ckeditor/adapters/jquery.js" type="text/javascript"></script>
+@Html.Script("/Scripts/Edit2.js")
     <script type="text/javascript">
         $(function () {
             $('textarea.editor').ckeditor(function () { }, {

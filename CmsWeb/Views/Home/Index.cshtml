@@ -4,6 +4,8 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
+@section scripts
+{
     <script type="text/javascript">
         $(document).ready(function () {
             $('.jscroll').each(function () {
@@ -29,6 +31,7 @@
             $('div.jscroll div.drow:even').addClass('alt');
         });
     </script>
+}
     <div class="homebox roundbox">
         <h2><a href="Tags?tag=TrackBirthdays">Birthdays</a></h2>
         <div class="jscroll" style="height:10em">

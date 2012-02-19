@@ -1,12 +1,15 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Models.OrgSearchModel
-@if (User.IsInRole("edit"))
+@section scripts
 {
-<script type="text/javascript">
-    $(function () {
-        $("#results").addClass("edit2");
-    });
-</script>
+    @if (User.IsInRole("edit"))
+    {
+    <script type="text/javascript">
+        $(function () {
+            $("#results").addClass("edit2");
+        });
+    </script>
+    }
 }
 
 <table id="results" class="grid">

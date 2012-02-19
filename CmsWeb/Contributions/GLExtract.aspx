@@ -44,3 +44,6 @@
         </div>
     </div>
 </asp:Content>
+
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+</asp:Content>

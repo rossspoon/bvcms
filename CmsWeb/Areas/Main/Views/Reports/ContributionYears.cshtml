@@ -30,6 +30,8 @@
         }
     </style>
 }
+@section scripts
+{
     <script type="text/javascript">
         $(function() {
             $(".datepicker").datepicker({
@@ -58,6 +60,7 @@
             });
         });
     </script>
+}
     <h1>Yearly Contributions</h1>
     <a href="/Person/Index/@Model.person.PeopleId">@Model.person.Name</a>
     <a id="Statement" href="#">statement</a><br />

@@ -1,18 +1,18 @@
 ﻿@model CmsWeb.Models.TaskModel
+@using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Tasks";
 }
-    <div>
-    @Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery.pagination.js")
-        .Add("/Content/js/jquery.form.js")
-        .Add("/Content/js/jquery.form2.js")
-        .Add("/Scripts/Task.js")
-        .Add("/Scripts/SearchPeople.js")
-        .Render("/Content/Task_#.js")
-)
-    </div>
+@section scripts
+{
+@Html.Script("/Content/js/jquery.pagination.js")
+@Html.Script("/Content/js/jquery.form.js")
+@Html.Script("/Content/js/jquery.form2.js")
+@Html.Script("/Scripts/Task.js")
+@Html.Script("/Scripts/SearchPeople.js")
+}
+
     <form id="form" action="/Task/List" method="get">
     @Html.Hidden("SortTask")
     <div class="roundbox floatleft">

@@ -4,6 +4,8 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Emails";
 }
+@section scripts
+{
     <script type="text/javascript">
         $(document).ready(function () {
             $(".datepicker").datepicker();
@@ -39,7 +41,7 @@ function SetPageSize(sz) {
     $.navigate("/Manage/Emails", q);
 }
 </script>
-<script src="/Scripts/Pager.js" type="text/javascript"></script>
+}
 <form id="form" method="post" action="/Manage/Emails/List">
 @{Html.RenderPartial("List", Model);}
 </form>

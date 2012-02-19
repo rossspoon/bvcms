@@ -1,14 +1,13 @@
 ﻿@model CmsWeb.Models.OrgSearchModel
+@using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "OrgSearch";
 }
-
-@(Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-        .Add("/Content/js/jquery.jeditable.js")
-        .Add("/Scripts/OrgSearch.js")
-        .Render("/Content/OrgSearch_#.js")))
-
+@section scripts
+{
+@Html.Script("/Scripts/OrgSearch.js")
+}
 <form method="post">
   <table id="searchvalues" cellspacing="5" class="roundbox floatleft">
   <tr><td colspan="4"> <h2>Organization Search</h2> </td></tr>

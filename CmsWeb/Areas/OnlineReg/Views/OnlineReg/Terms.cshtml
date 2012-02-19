@@ -26,8 +26,8 @@ a.submitbutton,a.button {
   text-decoration:none;
 }
 </style>
-    <script src="/Content/js/jquery-1.5.2.min.js" type="text/javascript"></script>
-    <script src="/Content/js/jquery.idle-timer.js" type="text/javascript"></script>
+@section scripts
+{
     <script type="text/javascript">
         $(function() {
             $(document).bind("idle.idleTimer", function() {
@@ -50,7 +50,7 @@ a.submitbutton,a.button {
             });
         });
     </script>
-
+}
     <h2>Terms of Agreement</h2>
 @Html.Raw(Model.Terms)
 <form action="@Model.PostbackURL" method="post">

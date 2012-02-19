@@ -1,15 +1,14 @@
 ﻿@model List<CmsWeb.Models.ApiSectionInfo>
 @using UtilityExtensions
+@using CmsWeb
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>API Tester</title>
 <link rel="stylesheet" href="/Content/faary.css?v=1" type="text/css" />
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-            .Add("/Content/js/jquery-1.5.2.js")
-            .Add("/Scripts/TestAPI.js")
-        .Render("/Content/TestAPI_#.js")
-)
+@Html.Script("/Content/js/jquery-1.5.2.js")
+@Html.Script("/Scripts/TestAPI.js")
+</head>
 <body>
 
 <form action="/APITest/Init" class="iform">

@@ -410,7 +410,7 @@ namespace UtilityExtensions
 			if (!zip.HasValue())
 				return "";
 			var t = new StringBuilder(zip.GetDigits());
-			if (t.Length != 9 || t.Length != 5)
+			if (t.Length != 9 && t.Length != 5)
 				return zip;
 			t.Insert(5, "-");
 			return t.ToString();
@@ -986,18 +986,6 @@ namespace UtilityExtensions
 				return false;
 			}
 		}
-		public static void IncludeScript(Control head, string url)
-		{
-			url = head.ResolveUrl(url);
-			head.Controls.Add(new LiteralControl("<script type='text/javascript' src='"
-				+ url + "'></script>"));
-		}
-		public static void IncludeCss(Control head, string url)
-		{
-			url = head.ResolveUrl(url);
-			head.Controls.Add(new LiteralControl("<link type='text/css' href='"
-				+ url + "' rel=\"stylesheet\"></script>"));
-		}
 		public static void NoCache(this HttpResponse Response)
 		{
 			Response.Cache.SetExpires(DateTime.Now.AddDays(-1));
@@ -1109,6 +1097,24 @@ namespace UtilityExtensions
 			{
 				if (HttpContext.Current != null)
 					HttpContext.Current.Session[STR_SysFromEmail] = value;
+			}
+		}
+		private const string STR_Version = "Version";
+		public static string Version
+		{
+			get
+			{
+				var version = "?";
+				if (HttpContext.Current != null)
+					if (HttpContext.Current.Session != null)
+						if (HttpContext.Current.Session[STR_Version] != null)
+							version = HttpContext.Current.Session[STR_Version].ToString();
+				return version;
+			}
+			set
+			{
+				if (HttpContext.Current != null)
+					HttpContext.Current.Session[STR_Version] = value;
 			}
 		}
 
@@ -1281,8 +1287,12 @@ namespace UtilityExtensions
 		{
 			if (!dt.HasValue)
 				return null;
+			return GetWeekNumber(dt.Value);
+		}
+		public static int GetWeekNumber(this DateTime dt)
+		{
 			var cc = CultureInfo.CurrentCulture;
-			int wk = cc.Calendar.GetWeekOfYear(dt.Value, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+			int wk = cc.Calendar.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
 			return wk;
 		}
 		public static bool SessionTimedOut()

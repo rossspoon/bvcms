@@ -309,3 +309,6 @@
         </SelectParameters>
     </asp:ObjectDataSource>
 </asp:Content>
+
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+</asp:Content>

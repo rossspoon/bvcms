@@ -1,4 +1,5 @@
 ﻿@using UtilityExtensions
+@using CmsWeb
 @model CmsWeb.Models.PostBundleModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -10,13 +11,10 @@
 <style type="text/css"> .alt { background-color: #eee; } </style>
 }
     <h2>PostBundle</h2>
-@Html.Raw(SquishIt.Framework.Bundle.JavaScript()
-                .Add("/Content/js/jquery.jeditable.js")
-                .Add("/Content/js/jquery.autocomplete.js")
-                .Add("/Content/js/jquery.tooltip.js")
-                .Add("/Scripts/PostBundle.js")
-                .Render("/Content/PostBundle_#.js")
-)        
+@section scripts
+{
+@Html.Script("/Scripts/PostBundle.js")
+}
 @Html.Hidden("fundid", Model.bundle.FundId)
 @{ var b = Model.bundle; }
 <form id='pbform' action='/PostBundle/InsertRow' method="post">

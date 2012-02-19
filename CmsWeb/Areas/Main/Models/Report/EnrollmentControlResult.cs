@@ -40,7 +40,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             string divtext = "", subdivtext = "";
             divtext = DbUtil.Db.Programs.Single(p => p.Id == div).Name;
-            subdivtext = DbUtil.Db.Divisions.Single(p => p.Id == subdiv).Name;
+            subdivtext = DbUtil.Db.Divisions.Where(p => p.Id == subdiv).Select(p => p.Name).SingleOrDefault();
 
             string scheduletext = String.Empty;
             var sdt = CmsData.Organization.GetDateFromScheduleId(schedule);

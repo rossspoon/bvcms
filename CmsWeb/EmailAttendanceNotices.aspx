@@ -61,3 +61,6 @@
                 <asp:Label ID="Label1" runat="server" Text="Email has been sent" Font-Size="Large"
                     ForeColor="#58DF55" Height="30px" Visible="False"></asp:Label>
  </asp:Content>
+
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+</asp:Content>

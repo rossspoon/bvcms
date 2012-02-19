@@ -127,10 +127,13 @@ else
     { // we have not searched for the person yet, let them find their profile
 <tr>
     <td colspan="2" align="right">
+@section scripts
+{
         <script type="text/javascript">
             $("div.instructions").hide();
             $("div.instructions.find").show();
         </script>
+}
         <input type="button" href="/OnlineReg/PersonFind/@Model.index" class="submitbutton ajax"
             value="Find Profile" />
     </td>

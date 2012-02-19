@@ -236,3 +236,6 @@
     <asp:ObjectDataSource ID="FundsODS" runat="server" OldValuesParameterFormatString="original_{0}"
         SelectMethod="OpenFunds" TypeName="CMSPresenter.BundleController"></asp:ObjectDataSource>
 </asp:Content>
+
+<asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+</asp:Content>
