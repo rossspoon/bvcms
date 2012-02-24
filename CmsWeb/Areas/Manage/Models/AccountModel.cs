@@ -6,6 +6,7 @@ using System.Web.Security;
 using CmsData;
 using UtilityExtensions;
 using System.IO;
+using System.Data.Linq;
 
 namespace CmsWeb.Models
 {
@@ -67,7 +68,8 @@ namespace CmsWeb.Models
             var impersonating = false;
             User user = null;
             int n = q.Count();
-            foreach (var u in q)
+			int failedpasswordcount = 0;
+            foreach (var u in q.ToList())
                 if (u.TempPassword != null && password == u.TempPassword)
                 {
                     u.TempPassword = null;
@@ -81,43 +83,55 @@ namespace CmsWeb.Models
                     user = u;
                     break;
                 }
-                else if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
+                else if (password == DbUtil.Db.Setting("ImpersonatePassword", Guid.NewGuid().ToString()))
                 {
                     user = u;
                     impersonating = true;
                     break;
                 }
-                else if (Membership.Provider.ValidateUser(u.Username, password))
-                {
-                    user = u;
-                    break;
-                }
+				else if (Membership.Provider.ValidateUser(u.Username, password))
+				{
+					DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, u);	
+					user = u;
+					break;
+				}
+				else
+				{
+					failedpasswordcount = Math.Max(failedpasswordcount, u.FailedPasswordAttemptCount);
+				}
+			
 
+			var max = CMSMembershipProvider.provider.MaxInvalidPasswordAttempts;
             string problem = "There is a problem with your username and password combination. If you are using your email address, it must match the one we have on record. Try again or use one of the links below.";
             if (user == null && n > 0)
             {
-                NotifyAdmins("failed password by user on " + Request.Url.OriginalString,
+                NotifyAdmins("failed password #{2} by {0} on {1}"
+					.Fmt(userName, Request.Url.OriginalString, failedpasswordcount),
                         "{0} tried to login at {1} but got the password wrong"
                             .Fmt(userName, Util.Now));
+				if (failedpasswordcount == max)
+					return "Your account has been locked out for too many failed attempts, use the forgot password link, or notify an Admin";
                 return problem;
             }
             else if (user == null)
             {
-                NotifyAdmins("attempt to login by non-user on " + Request.Url.OriginalString,
+                NotifyAdmins("attempt to login by non-user {0} on {1}".Fmt(userName, Request.Url.OriginalString),
                         "{0} tried to login at {1} but is not a user"
                             .Fmt(userName, Util.Now));
                 return problem;
             }
             else if (user.IsLockedOut)
             {
-                NotifyAdmins("user locked out on " + Request.Url.OriginalString,
+                NotifyAdmins("{0} locked out #{2} on {1}"
+					.Fmt(userName, Request.Url.OriginalString, user.FailedPasswordAttemptCount),
                         "{0} tried to login at {1} but is locked out"
                             .Fmt(userName, Util.Now));
-                return problem;
+				return "Your account has been locked out for {0} failed attempts in a short window of time, please use the forgot password link or notify an Admin".Fmt(max);
             }
             else if (!user.IsApproved)
             {
-                NotifyAdmins("unapproved user logging in on " + Request.Url.OriginalString,
+                NotifyAdmins("unapproved user {0} logging in on {1}"
+					.Fmt(userName, Request.Url.OriginalString),
                         "{0} tried to login at {1} but is not approved"
                             .Fmt(userName, Util.Now));
                 return problem;
@@ -126,18 +140,21 @@ namespace CmsWeb.Models
             {
                 if (user.Roles.Contains("Finance"))
                 {
-                    NotifyAdmins("cannot impersonate Finance user on " + Request.Url.OriginalString,
+                    NotifyAdmins("cannot impersonate Finance user {0} on {1}"
+						.Fmt(userName, Request.Url.OriginalString),
                             "{0} tried to login at {1}".Fmt(userName, Util.Now));
                     return problem;
                 }
                 DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
                     CMSRoleProvider.provider.GetDevelopers(),
-                    "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host), Util.Now.ToString());
+                    "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host), 
+					Util.Now.ToString());
             }
 
             FormsAuthentication.SetAuthCookie(user.Username, false);
             SetUserInfo(user.Username, Session);
             Util.FormsBasedAuthentication = true;
+			DbUtil.LogActivity("User {0} logged in".Fmt(user.Username));
 
             return user;
         }

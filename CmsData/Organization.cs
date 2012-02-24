@@ -198,5 +198,47 @@ namespace CmsData
                        "<span style='color:red'>need a main division</span>";
             }
         }
+		public static Program FetchOrCreateProgram(CMSDataContext Db, string program)
+		{
+			var p = Db.Programs.SingleOrDefault(pp => pp.Name == program);
+			if (p == null)
+			{
+				p = new Program { Name = program };
+				Db.Programs.InsertOnSubmit(p);
+				Db.SubmitChanges();
+			}
+			return p;
+		}
+		public static Division FetchOrCreateDivision(CMSDataContext Db, Program program, string division)
+		{
+			var d = Db.Divisions.SingleOrDefault(pp => pp.Name == division);
+			if (d == null)
+			{
+				d = new Division { Name = division, Program = program };
+				var progdiv = new ProgDiv { Division = d, Program = program };
+				Db.ProgDivs.InsertOnSubmit(progdiv);
+				Db.SubmitChanges();
+			}
+			return d;
+		}
+		public static Organization FetchOrCreateOrganization(CMSDataContext Db, Division division, string organization)
+		{
+			var o = Db.LoadOrganizationByName(organization);
+			if (o == null)
+			{
+				o = new Organization
+				{
+					OrganizationName = organization,
+					SecurityTypeId = 0,
+	                CreatedDate = Util.Now,
+	                CreatedBy = Util.UserId1,
+	                OrganizationStatusId = 30,
+				};
+				division.Organizations.Add(o);
+				Db.DivOrgs.InsertOnSubmit(new DivOrg { Division = division, Organization = o });
+				Db.SubmitChanges();
+			}
+			return o;
+		}
     }
 }

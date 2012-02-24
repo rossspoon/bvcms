@@ -956,6 +956,8 @@ namespace CmsData
         }
         public void AddEditExtraValue(string field, string value)
         {
+			if (field.HasValue())
+				return;
             if (!value.HasValue())
                 return;
             var ev = GetExtraValue(field);
@@ -977,6 +979,12 @@ namespace CmsData
         {
             var ev = GetExtraValue(field);
             ev.IntValue = value;
+        }
+        public void AddEditExtraInts(string field, int value, int value2)
+        {
+            var ev = GetExtraValue(field);
+            ev.IntValue = value;
+            ev.IntValue2 = value2;
         }
         public RecurringGiving RecurringGiving()
         {

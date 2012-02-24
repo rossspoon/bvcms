@@ -99,16 +99,16 @@
                                 <a href="/OrgSearch">Organization</a></div>
                             <div class="sublinks">
                                 <a href="/OrgSearch">Search</a> <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a> 
-                                <a id="addorg" href="#">Add Organization</a> 
-                                <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a>
     @if (User.IsInRole("Edit"))
     {
+                                <a id="addorg" href="#">Add Organization</a> 
                                 <a href="/OrgMembers">Org Members Management</a>
     }
     @if (User.IsInRole("Coupon"))
     {
                                 <a href="/Coupon/">Coupons</a>
     }
+                                <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a>
     @if (((string)Session["ActiveOrganization"]).HasValue())
     {
                                 <a href="/Organization/Index/@Util2.CurrentOrgId">

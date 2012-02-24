@@ -39,6 +39,7 @@
     <tbody>
     @foreach (var t in Model.Transactions())
     {
+        if (t.Amt > 0 && t.Amt == t.Donate && !Model.finance) { continue; }
     <tr>
         <td nowrap="nowrap" class="tip" title="@t.TransactionId|@t.ApprovalCode|@t.AuthCode|@t.Message">@t.Id</td>
         <td>@t.TransactionId</td>

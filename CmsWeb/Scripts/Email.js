@@ -89,5 +89,33 @@
                 CKEDITOR.instances["votetagcontent"].setMode("source");
             });
         });
-    });
+    });	
+});
+//<a dir="ltr" href="http://votelink" id="798" rel="smallgroup" title="This is a message">test</a>
+CKEDITOR.on('dialogDefinition', function (ev) {
+    var dialogName = ev.data.name;
+    var dialogDefinition = ev.data.definition;
+    if (dialogName == 'link') {
+        var advancedTab = dialogDefinition.getContents('advanced');
+	advancedTab.label = "SpecialLinks";
+        advancedTab.remove('advCSSClasses');
+        advancedTab.remove('advCharset');
+        advancedTab.remove('advContentType');
+        advancedTab.remove('advStyles');
+        advancedTab.remove('advAccessKey');
+        advancedTab.remove('advName');
+        advancedTab.remove('advLangCode');
+        advancedTab.remove('advTabIndex');
+
+        var relField = advancedTab.get('advRel');
+        relField.label = "SmallGroup";
+        var titleField = advancedTab.get('advTitle');
+        titleField.label = "Message";
+        var idField = advancedTab.get('advId');
+        idField.label = "OrgId";
+        var langdirField = advancedTab.get('advLangDir');
+        langdirField.label = "Confirmation";
+	langdirField.items[1][0] = "Yes, send confirmation";
+	langdirField.items[2][0] = "No, do not send confirmation";
+    }
 });

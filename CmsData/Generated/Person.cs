@@ -272,6 +272,8 @@ namespace CmsData
 		
    		private EntitySet< EmailResponse> _EmailResponses;
 		
+   		private EntitySet< MemberDocForm> _MemberDocForms;
+		
    		private EntitySet< PendingNotification> _PendingNotifications;
 		
    		private EntitySet< PeopleExtra> _PeopleExtras;
@@ -728,6 +730,8 @@ namespace CmsData
 			this._EmailQueueTos = new EntitySet< EmailQueueTo>(new Action< EmailQueueTo>(this.attach_EmailQueueTos), new Action< EmailQueueTo>(this.detach_EmailQueueTos)); 
 			
 			this._EmailResponses = new EntitySet< EmailResponse>(new Action< EmailResponse>(this.attach_EmailResponses), new Action< EmailResponse>(this.detach_EmailResponses)); 
+			
+			this._MemberDocForms = new EntitySet< MemberDocForm>(new Action< MemberDocForm>(this.attach_MemberDocForms), new Action< MemberDocForm>(this.detach_MemberDocForms)); 
 			
 			this._PendingNotifications = new EntitySet< PendingNotification>(new Action< PendingNotification>(this.attach_PendingNotifications), new Action< PendingNotification>(this.detach_PendingNotifications)); 
 			
@@ -3485,6 +3489,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_MemberDocForm_PEOPLE_TBL", Storage="_MemberDocForms", OtherKey="PeopleId")]
+   		public EntitySet< MemberDocForm> MemberDocForms
+   		{
+   		    get { return this._MemberDocForms; }
+
+			set	{ this._MemberDocForms.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_PendingNotifications_People", Storage="_PendingNotifications", OtherKey="PeopleId")]
    		public EntitySet< PendingNotification> PendingNotifications
    		{
@@ -4780,6 +4794,19 @@ namespace CmsData
 		}
 
 		private void detach_EmailResponses(EmailResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_MemberDocForms(MemberDocForm entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_MemberDocForms(MemberDocForm entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

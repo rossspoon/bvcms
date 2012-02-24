@@ -35,7 +35,7 @@ namespace CmsData
                 return dt;
             }
         }
-        public void DoGiving(CMSDataContext Db)
+        public int DoGiving(CMSDataContext Db)
         {
             var gateway = Db.Setting("TransactionGateway", "");
             AuthorizeNet anet = null;
@@ -45,7 +45,7 @@ namespace CmsData
             else if (gateway == "SagePayments")
                 sage = new SagePayments(Db, Testing ?? true);
             else
-                return;
+                return 0;
 
             TransactionResponse ret = null;
             var total = (from a in RecurringAmounts
@@ -53,7 +53,7 @@ namespace CmsData
                          select a.Amt).Sum();
 
             if (!total.HasValue || total == 0)
-                return;
+                return 0;
 
             if (gateway == "AuthorizeNet")
                 ret = anet.createCustomerProfileTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", 0, Ccv);
@@ -90,10 +90,12 @@ namespace CmsData
                 NextDate = FindNextDate(DateTime.Today.AddDays(1));
             }
             Db.SubmitChanges();
+			return 1;
         }
-        public static void DoAllGiving(CMSDataContext Db)
+        public static int DoAllGiving(CMSDataContext Db)
         {
             var gateway = Db.Setting("TransactionGateway", "");
+			int count = 0;
             if (gateway.HasValue())
             {
                 var rgq = from rg in Db.RecurringGivings
@@ -105,8 +107,9 @@ namespace CmsData
                               rg.RecurringAmounts,
                           };
                 foreach (var i in rgq)
-                    i.rg.DoGiving(Db);
+                    count += i.rg.DoGiving(Db);
             }
+			return count;
         }
     }
 }

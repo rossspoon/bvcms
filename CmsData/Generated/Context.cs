@@ -342,6 +342,10 @@ namespace CmsData
         partial void UpdateMeetingType(MeetingType instance);
         partial void DeleteMeetingType(MeetingType instance);
         
+        partial void InsertMemberDocForm(MemberDocForm instance);
+        partial void UpdateMemberDocForm(MemberDocForm instance);
+        partial void DeleteMemberDocForm(MemberDocForm instance);
+        
         partial void InsertMemberLetterStatus(MemberLetterStatus instance);
         partial void UpdateMemberLetterStatus(MemberLetterStatus instance);
         partial void DeleteMemberLetterStatus(MemberLetterStatus instance);
@@ -1203,6 +1207,12 @@ namespace CmsData
 		public Table< MeetingType> MeetingTypes
 		{
 			get	{ return this.GetTable< MeetingType>(); }
+
+		}
+
+		public Table< MemberDocForm> MemberDocForms
+		{
+			get	{ return this.GetTable< MemberDocForm>(); }
 
 		}
 

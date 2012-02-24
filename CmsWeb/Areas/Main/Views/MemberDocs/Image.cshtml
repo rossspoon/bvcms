@@ -1,0 +1,16 @@
+﻿@model CmsData.MemberDocForm
+           
+@*<div>
+    <a href="/MemberDocs/Index/@Model.PeopleId" style="color: Red;">Return to MemberDocs for: @Model.Person.Name</a>
+</div>
+*@
+@{ 
+    string img = "/Image.aspx?id=" + Model.MediumId;
+    string nextsize = "/MemberDocs/Image/" + Model.Id + "?size=large";
+    if (Request.QueryString["size"] == "large") 
+    {
+        img = "/Image.aspx?id=" + Model.LargeId;
+        nextsize = "/MemberDocs/Image/" + Model.Id + "?size=medium";
+    }
+}
+<a href="@nextsize"><img src="@img" style="border: 0" alt="" title="Click to toggle image size" /></a><br />

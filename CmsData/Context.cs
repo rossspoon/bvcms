@@ -162,6 +162,8 @@ namespace CmsData
         public IQueryable<Person> PeopleQuery(string name)
         {
             var qB = this.QueryBuilderClauses.FirstOrDefault(c => c.Description == name);
+			if (qB == null)
+				return null;
             var q = People.Where(qB.Predicate(this));
             return q;
         }

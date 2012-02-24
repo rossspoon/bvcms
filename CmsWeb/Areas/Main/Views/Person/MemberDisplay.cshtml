@@ -141,4 +141,8 @@
             </td>
     </tr>
 </table>
+@if (User.IsInRole("Admin") || User.IsInRole("Membership"))
+{
+<br /><a href="/MemberDocs/Index/@Model.PeopleId">Membership Docs</a>
+}
 

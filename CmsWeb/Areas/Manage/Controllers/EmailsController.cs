@@ -59,6 +59,8 @@ namespace CmsWeb.Areas.Manage.Controllers
         public ActionResult View(int id)
         {
             var email = DbUtil.Db.EmailQueues.SingleOrDefault(ee => ee.Id == id);
+			if (email == null)
+				return Content("document not found, sorry");
             if ((email.PublicX ?? false) == false)
                 return Content("no email available");
             var em = new EmailQueue

@@ -12,6 +12,7 @@ using System.Configuration;
 
 namespace CmsWeb.Models
 {
+	[Serializable]
     public class ManageGivingModel
     {
         public int pid { get; set; }
@@ -44,7 +45,7 @@ namespace CmsWeb.Models
                 return FundItem[n];
             return null;
         }
-
+		[NonSerialized]
         private Person _Person;
         public Person person
         {
@@ -55,6 +56,7 @@ namespace CmsWeb.Models
                 return _Person;
             }
         }
+		[NonSerialized]
         private Organization _organization;
         public Organization Organization
         {

@@ -251,6 +251,8 @@ The bvCMS Team</p>
             if (user == null || (user.ResetPasswordExpires.HasValue && user.ResetPasswordExpires < DateTime.Now))
                 return View("LinkUsed");
             user.ResetPasswordCode = null;
+			user.IsLockedOut = false;
+			user.FailedPasswordAttemptCount = 0;
             DbUtil.Db.SubmitChanges();
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);

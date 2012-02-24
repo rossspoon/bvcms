@@ -39,16 +39,13 @@
     <a href="/Organization/VoteTag/@o.OrganizationId" target="_blank">View VoteTags</a>
 @if (User.IsInRole("Edit"))
 {
-    <a href="#" class="heading">Copy Org has changed to Add Organization on the main Organization menu</a>
     <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
+    <a href="#" class="heading">Copy Org has changed to Add Organization on the main Organization menu</a>
 }
 @if (User.IsInRole("Admin"))
 {
     <a href="/OrgChildren/Index/@Model.OrganizationId">Child Organization Management</a>
     <a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">Delete Organization</a>
-}
-@if (User.IsInRole("Developer"))
-{
     <a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">Repair Transactions</a>
 }
 </div>

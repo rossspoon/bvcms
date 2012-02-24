@@ -17,23 +17,8 @@ namespace UtilityExtensions
         {
             if (WebConfigurationManager.AppSettings["sendemail"] == "false")
                 return;
-            var error = "";
-            for(var n = 0;n < 4; n++)
-            {
-                try
-                {
-                    sendmsg(SysFromEmail, CmsHost, From, subject, Message, to, id, pid);
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    System.Threading.Thread.Sleep(35);
-                    error = ex.Message;
-                }
-            }
-            System.Threading.Thread.Sleep(35);
-            sendmsg(SysFromEmail, CmsHost, From, "(smtp error) " + subject, "<p>(to: {0})</p><pre>{1}</pre>{2}".Fmt(to[0].Address, error, Message), 
-                Util.SendErrorsTo(), id, pid);
+            sendmsg(SysFromEmail, CmsHost, From, subject, Message, to, id, pid);
+            return;
         }
         private static void sendmsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, int? pid)
         {

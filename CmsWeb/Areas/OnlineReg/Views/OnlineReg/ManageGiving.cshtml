@@ -11,6 +11,9 @@
 <script type="text/javascript">
     $(function () {
         $(".datepicker").datepicker();
+        $("form").submit(function () {
+            $("#submitit").attr("disabled", "disabled");
+        });
     });
 </script>
 }

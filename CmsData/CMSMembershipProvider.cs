@@ -528,6 +528,10 @@ namespace CmsData
                     if (user.IsApproved)
                     {
                         user.LastLoginDate = Util.Now;
+						user.FailedPasswordAttemptCount = 0;
+						if (user.IsLockedOut && user.FailedPasswordAttemptWindowStart.HasValue)
+							if ((DateTime.Now - user.FailedPasswordAttemptWindowStart.Value).TotalMinutes > 3)
+								user.IsLockedOut = false;
                         Db.SubmitChanges();
                         return true;
                     }

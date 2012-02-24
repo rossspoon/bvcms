@@ -31,5 +31,12 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             return new TransactionsExcelResult(m);
         }
+		[HttpGet]
+		[Authorize(Roles = "Finance")]
+		public ActionResult RunRecurringGiving()
+		{
+			var count = RecurringGiving.DoAllGiving(DbUtil.Db);
+			return Content(count.ToString());
+		}
     }
 }

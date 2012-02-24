@@ -18,6 +18,7 @@ using CmsData.Codes;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
+	[Authorize(Roles="Edit")]
     public class AddOrganizationController : CmsStaffController
     {
         public ActionResult Index()
@@ -27,21 +28,24 @@ namespace CmsWeb.Areas.Dialog.Controllers
 				id = 1;
 			var m = new NewOrganizationModel(id.Value);
 			m.org.OrganizationName = "";
+			m.org.Location = "";
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Submit(int id, NewOrganizationModel m)
         {
+			var org = DbUtil.Db.LoadOrganizationById(id);
             m.org.CreatedDate = Util.Now;
             m.org.CreatedBy = Util.UserId1;
-            m.org.EntryPointId = null;
+			m.org.EntryPointId = org.EntryPointId;
 			if (m.org.CampusId == 0)
 				m.org.CampusId = null;
+			if (!m.org.OrganizationName.HasValue())
+				m.org.OrganizationName = "New organization needs a name";
             m.org.OrganizationStatusId = 30;
 
             DbUtil.Db.Organizations.InsertOnSubmit(m.org);
             DbUtil.Db.SubmitChanges();
-			var org = DbUtil.Db.LoadOrganizationById(id);
 			foreach (var div in org.DivOrgs)
 				m.org.DivOrgs.Add(new DivOrg { Organization = m.org, DivId = div.DivId });
 			if (m.copysettings)

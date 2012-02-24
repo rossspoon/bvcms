@@ -1,0 +1,69 @@
+﻿@* Generator : Template *@
+@functions  
+{    
+    public CmsWeb.Models.ManageGivingModel Model { get; set; }
+}
+<table cellpadding="4" style="font-family: Sans-Serif">
+<tr>
+    <td align="right">Give to Funds:</td>
+    <td>
+        <table class="grid" cellpadding="2">
+@{ var funds = CmsWeb.Models.OnlineRegPersonModel.Funds(); }
+@for (var n = 0; n < funds.Length; n++)
+{
+    var i = funds[n];
+    var amt = Model.FundItemValue(UtilityExtensions.Util.ToInt(i.Value)) ?? 0;
+    Model.total += amt;
+    if (amt > 0)
+    {
+            <tr>
+                <td>@i.Text</td>
+                <td align="right">@amt.ToString("n2")</td>
+            </tr>
+    }
+}
+            <tr class="alt">
+                <td>Total</td>
+                <td align="right">$@Model.total.ToString("n2")</td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td align="right">Frequency:</td>
+    <td>
+            @if (Model.SemiEvery == "S")
+            {
+                @:Twice monthly on day @Model.Day1 and @Model.Day2
+            }
+            else
+            {
+                @:Every @Model.EveryN @(Model.Period == "M" ? "Months" : "Weeks")
+            }
+    </td>
+</tr>
+<tr>
+    <td align="right">First Payment:</td>
+    <td>
+        On or after @UtilityExtensions.Util.FormatDate(Model.StartWhen)
+    </td>
+</tr>
+<tr>
+    <td align="right">Stop Payments:</td>
+    <td> After @UtilityExtensions.Util.FormatDate(Model.StopWhen) </td>
+</tr>
+<tr>
+    <td align="right">Pay From:</td>
+    <td>
+    @if (Model.Type == "C")
+    {
+        @:Debit/Credit Card # @UtilityExtensions.Util.MaskCC(Model.Cardnumber)<br />
+        @:Expires @Model.Expires
+    }
+    else
+    {
+        @:Bank Account # @UtilityExtensions.Util.MaskAccount(Model.Account)
+    }
+    </td>
+</tr>
+</table>

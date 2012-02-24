@@ -1,0 +1,57 @@
+﻿@model CmsWeb.Models.MemberDocs
+@using UtilityExtensions
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+@section scripts
+{
+<script type="text/javascript">
+    $(function () {
+        $("a.delete").click(function (e) {
+            e.preventDefault();
+            $.post(this.href, {}, function (ret) {
+                window.location = ret;
+            });
+        });
+        $("a.bt,input.bt").button();
+    });
+</script>
+}
+<h2>
+    Membership Docs</h2>
+<div>
+    <a id="name" href="/Person/Index/@Model.PeopleId">@Model.person.Name</a> <br />
+    <span>
+    @foreach (var i in Model.DocForms())
+    {
+        string url = null;
+        string img = null;
+        if(i.IsDocument == true)
+        {
+            url = "/Image.aspx?id=" + i.Docid;
+            img = "/images/adobe.png";
+        }
+        else
+        {
+            url = "/MemberDocs/Image/" + i.Id;
+            img = "/Image.aspx?id=" + i.ThumbId;
+        }
+        <span style="display: inline-block; margin: 1em;">
+
+            <a href="@url" target="docpage" >
+                <img title="Uploaded: @i.DocDate.FormatDateTm()" src="@img" alt="" />
+            </a><br />
+            <a href="/MemberDocs/Delete/@i.Id" class="bt delete">Delete</a>
+        </span>
+    }
+    </span>
+    <br />
+    <form action="/MemberDocs/Upload/@Model.PeopleId" method="post" enctype="multipart/form-data">
+        Select Image File To Upload:
+        <input type="file" name="file" id="ImageFile" />
+        &nbsp;&nbsp;
+        <input type="submit" name="Upload" value="Submit" class="bt" />
+        <div style="color: Red;">@Html.ValidationMessage("ImageFile")</div>
+    </form>
+</div>
