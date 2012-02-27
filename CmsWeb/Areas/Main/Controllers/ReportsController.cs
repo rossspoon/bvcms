@@ -299,14 +299,17 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/QueryBuilder/Main/" + qb.QueryId);
         }
-        public ActionResult ExtraValuesGrid(int id)
+        public ActionResult ExtraValuesGrid(int id, string sort)
         {
             var name = "ExtraExcelResult " + DateTime.Now;
             var tag = DbUtil.Db.PopulateSpecialTag(id, DbUtil.TagTypeId_ExtraValues);
-            var cmd = new SqlCommand("dbo.ExtraValues {0}".Fmt(tag.Id));
+            var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2");
+			cmd.Parameters.AddWithValue("@p1", tag.Id);
+			cmd.Parameters.AddWithValue("@p2", sort ?? "");
             cmd.Connection = new SqlConnection(Util.ConnectionString);
             cmd.Connection.Open();
             var rdr = cmd.ExecuteReader();
+			ViewBag.queryid = id;
             return View(rdr);
         }
 

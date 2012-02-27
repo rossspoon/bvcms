@@ -39,9 +39,9 @@ namespace CmsWeb.Controllers
             ViewData["build"] = BuildDate();
             return View();
         }
-        public DateTime BuildDate()
+        public string BuildDate()
         {
-            return System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location);
+			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
         [ValidateInput(false)]
         public ActionResult ShowError(string error, string url)

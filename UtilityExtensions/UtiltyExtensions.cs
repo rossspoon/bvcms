@@ -412,7 +412,8 @@ namespace UtilityExtensions
 			var t = new StringBuilder(zip.GetDigits());
 			if (t.Length != 9 && t.Length != 5)
 				return zip;
-			t.Insert(5, "-");
+			if (t.Length > 5)
+				t.Insert(5, "-");
 			return t.ToString();
 		}
 		public static string Zip5(this string zip)

@@ -291,11 +291,11 @@ namespace CmsData
 			text = DoRegisterTag(text, CmsHost, emailqueueto);
 			text = DoRegisterTag2(text, CmsHost, emailqueueto);
 			text = DoExtraValueData(text, emailqueueto);
-			if (text.Contains("{createaccount}"))
+			if (text.Contains("{createaccount}", ignoreCase:true))
 				text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
-			if (text.Contains("http://votelink"))
+			if (text.Contains("http://votelink", ignoreCase:true))
 				text = DoVoteLink(text, CmsHost, emailqueueto);
-			if (text.Contains("http://registerlink"))
+			if (text.Contains("http://registerlink", ignoreCase:true))
 				text = DoRegisterLink(text, CmsHost, emailqueueto);
 
 			if (emailqueueto.Guid.HasValue)
@@ -476,7 +476,7 @@ namespace CmsData
 			//<a dir="ltr" href="http://votelink" id="798" rel="smallgroup" title="This is a message">test</a>
 			var list = new Dictionary<string, OneTimeLink>();
 			const string VoteLinkRE = "<a[^>]*?href=\"http://votelink\"[^>]*>.*?</a>";
-			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
+			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
 			{
@@ -518,7 +518,7 @@ namespace CmsData
 		{
 			var list = new Dictionary<string, OneTimeLink>();
 			const string VoteLinkRE = "<a[^>]*?href=\"http://registerlink\"[^>]*>.*?</a>";
-			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline);
+			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
 			{

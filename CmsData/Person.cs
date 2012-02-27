@@ -938,10 +938,7 @@ namespace CmsData
         }
         public PeopleExtra GetExtraValue(string field)
         {
-            var q = from v in PeopleExtras
-                    where v.Field == field
-                    select v;
-            var ev = q.SingleOrDefault();
+			var ev = PeopleExtras.AsEnumerable().FirstOrDefault(ee => string.Compare(ee.Field, field, ignoreCase:true) == 0);
             if (ev == null)
             {
                 ev = new PeopleExtra
@@ -956,7 +953,7 @@ namespace CmsData
         }
         public void AddEditExtraValue(string field, string value)
         {
-			if (field.HasValue())
+			if (!field.HasValue())
 				return;
             if (!value.HasValue())
                 return;

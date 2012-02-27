@@ -547,7 +547,7 @@ namespace CmsWeb.Areas.Main.Controllers
         [HttpPost]
         public ContentResult DeleteExtra(int id, string field)
         {
-            var e = DbUtil.Db.PeopleExtras.Single(ee => ee.PeopleId == id && ee.Field == field);
+            var e = DbUtil.Db.PeopleExtras.First(ee => ee.PeopleId == id && ee.Field == field);
             DbUtil.Db.PeopleExtras.DeleteOnSubmit(e);
             DbUtil.Db.SubmitChanges();
             return Content("done");
@@ -557,7 +557,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var a = id.SplitStr("-", 2);
             var b = a[1].SplitStr(".", 2);
-            var e = DbUtil.Db.PeopleExtras.Single(ee => ee.PeopleId == b[1].ToInt() && ee.Field == b[0]);
+            var e = DbUtil.Db.PeopleExtras.First(ee => ee.PeopleId == b[1].ToInt() && ee.Field == b[0]);
             switch (a[0])
             {
                 case "s":

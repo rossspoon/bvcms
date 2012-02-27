@@ -221,6 +221,20 @@ namespace CmsData
 			}
 			return d;
 		}
+		public static MemberType FetchOrCreateMemberType(CMSDataContext Db, string type)
+		{
+			var mt = Db.MemberTypes.SingleOrDefault(pp => pp.Description == type);
+			if (mt == null)
+			{
+				var max = Db.MemberTypes.Max(mm => mm.Id) + 10;
+				if (max < 1000)
+					max = 1010;
+				mt = new MemberType { Id = max, Description = type, Code = type};
+				Db.MemberTypes.InsertOnSubmit(mt);
+				Db.SubmitChanges();
+			}
+			return mt;
+		}
 		public static Organization FetchOrCreateOrganization(CMSDataContext Db, Division division, string organization)
 		{
 			var o = Db.LoadOrganizationByName(organization);

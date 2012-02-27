@@ -3,15 +3,29 @@
     ViewBag.Title = "ExtraValuesGrid";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
-
+@section scripts
+{
+<script type="text/javascript">
+    $(function () {
+        $('table.grid > tbody > tr:even').addClass('alt');
+        $("#targetpeople").click(function (ev) {
+            ev.preventDefault();
+            if ($('a.target[target="people"]').length == 0)
+                $("a.target").attr("target", "people");
+            else
+                $("a.target").removeAttr("target");
+            return false;
+        });
+    });
+</script>
+}
 <h2>ExtraValuesGrid</h2>
 <table class="grid">
 <tr>
 <thead>
-@for(var c = 0; c < Model.FieldCount; c++)
+@for(var c = 1; c < Model.FieldCount; c++)
 {
-    
-    <td>@Model.GetName(c)</td>
+    <td><a href="/Reports/ExtraValuesGrid/@(ViewBag.queryid + "?sort=" + Model.GetName(c))">@Model.GetName(c)</a></td>
 }
 </thead>
 </tr>
@@ -19,7 +33,7 @@
 @while (Model.Read())
 {
     <tr>
-        <td><a href="/Person/Index/@Model.GetValue(0)" target="person">@Model.GetValue(1)</a></td>
+        <td><a class="target" href="/Person/Index/@Model.GetValue(0)" target="person">@Model.GetValue(1)</a></td>
     @for (var c = 2; c < Model.FieldCount; c++)
     {
         <td>@Model.GetValue(c)</td>
@@ -28,3 +42,4 @@
 }
 </tbody>
 </table>
+<p> <a id="targetpeople" href="#">toggle link target</a> </p>

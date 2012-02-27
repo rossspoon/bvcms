@@ -35,7 +35,7 @@ namespace CmsWeb.Models
             var name = "ExtraExcelResult " + DateTime.Now;
             var tag = DbUtil.Db.PopulateSpecialTag(qid, DbUtil.TagTypeId_ExtraValues);
 
-            var cmd = new SqlCommand("dbo.ExtraValues {0}".Fmt(tag.Id));
+            var cmd = new SqlCommand("dbo.ExtraValues {0}, ''".Fmt(tag.Id));
             cmd.Connection = new SqlConnection(Util.ConnectionString);
             cmd.Connection.Open();
 

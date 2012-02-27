@@ -175,6 +175,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MemberDisplay.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Main\Views\Reports\ExtraValuesGrid.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExtraValuesGrid.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Manage\Controllers\StatementsController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
     <Compile Include="Areas\Main\Models\Export\FreshbooksResult.cs" />
@@ -310,6 +315,11 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
+    <Compile Include="Views\Home\About.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>About.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\SiteLayout.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1122,6 +1132,7 @@
     </Content>
     <Content Include="Areas\Main\Views\Reports\ExtraValuesGrid.cshtml">
       <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ExtraValuesGrid.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Manage\Views\Account\SetPassword.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -2221,6 +2232,7 @@
     <Content Include="Views\Home\About.cshtml">
       <SubType>Code</SubType>
       <Generator>RazorGenerator</Generator>
+      <LastGenOutput>About.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Views\Home\BatchTag.cshtml">
       <SubType>Code</SubType>
