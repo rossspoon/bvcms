@@ -191,6 +191,11 @@
     <Compile Include="Areas\Manage\Controllers\ExtraValuesController.cs" />
     <Compile Include="Areas\Manage\Controllers\MergeController.cs" />
     <Compile Include="Areas\Manage\Models\MergeModel.cs" />
+    <Compile Include="Areas\Manage\Views\Emails\Details.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Details.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Manage\Views\Transactions\List.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -315,6 +320,7 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
+    <Compile Include="Code\StandardExtraValues.cs" />
     <Compile Include="Views\Home\About.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -779,6 +785,7 @@
     <Compile Include="UserControls\GridPager.ascx.designer.cs">
       <DependentUpon>GridPager.ascx</DependentUpon>
     </Compile>
+    <Content Include="XMLFile1.xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">
@@ -1207,6 +1214,7 @@
     </Content>
     <Content Include="Areas\Manage\Views\Emails\Details.cshtml">
       <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Details.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Manage\Views\Emails\Index.cshtml">
       <Generator>RazorGenerator</Generator>

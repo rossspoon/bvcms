@@ -45,16 +45,30 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             return Redirect("/Manage/Emails/Details/" + id);
         }
-        [Authorize(Roles = "Admin, ManageEmails")]
         public ActionResult DeleteQueued(int id)
         {
             var email = (from e in DbUtil.Db.EmailQueues
                          where e.Id == id
                          select e).Single();
+			var m = new EmailModel { id = id };
+			if (!m.CanDelete())
+				return Redirect("/");
             DbUtil.Db.EmailQueueTos.DeleteAllOnSubmit(email.EmailQueueTos);
             DbUtil.Db.EmailQueues.DeleteOnSubmit(email);
             DbUtil.Db.SubmitChanges();
             return Redirect("/Manage/Emails");
+        }
+        public ActionResult MakePublic(int id)
+        {
+            var email = (from e in DbUtil.Db.EmailQueues
+                         where e.Id == id
+                         select e).Single();
+			var m = new EmailModel { id = id };
+			if (!m.CanDelete())
+				return Redirect("/");
+			email.PublicX = true;
+            DbUtil.Db.SubmitChanges();
+			return RedirectToAction("View", new { id = id });
         }
         public ActionResult View(int id)
         {

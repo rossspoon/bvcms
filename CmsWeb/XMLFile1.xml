@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StandardExtraValues>
+  <InterviewStatus location="MemberStatus" type="Code">
+    <Code>NotScheduled</Code>
+    <Code>Scheduled</Code>
+    <Code>Approved</Code>
+  </InterviewStatus>
+  <InterviewDate location="MemberStatus" type="Date" />
+  <InterviewComments location="MemberStatus" type="Data" />
+  <CorrespondenceMethod type="Code">
+    <Code>Email</Code>
+    <Code>Mail</Code>
+    <Code>Both</Code>
+    <Code>None</Code>
+  </CorrespondenceMethod>
+  <EELevel type="Int" />
+</StandardExtraValues>

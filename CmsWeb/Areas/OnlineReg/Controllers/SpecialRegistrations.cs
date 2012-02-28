@@ -38,7 +38,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			{
 				om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
 					oid, id, 220, Util.Now, null, false);
-				DbUtil.Db.UpdateMainFellowship(oid);
+				//DbUtil.Db.UpdateMainFellowship(oid);
 			}
             if (ck)
                 om.AddToGroup(DbUtil.Db, slot);
@@ -391,7 +391,7 @@ You have the following subscriptions:<br/>
             var omb = q.om;
             omb = OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 oid, pid, 220, DateTime.Now, null, false);
-			DbUtil.Db.UpdateMainFellowship(oid);
+			//DbUtil.Db.UpdateMainFellowship(oid);
 
             omb.AddToGroup(DbUtil.Db, smallgroup);
             omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);

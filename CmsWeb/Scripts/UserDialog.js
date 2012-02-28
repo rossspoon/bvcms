@@ -5,7 +5,10 @@
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
-            self.parent.RebindUserInfoGrid();
+            if (ret != "ok")
+                alert(ret);
+            else
+                self.parent.RebindUserInfoGrid();
         });
         return false;
     });

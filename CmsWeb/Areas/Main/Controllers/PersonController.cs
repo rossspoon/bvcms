@@ -500,6 +500,12 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult UserUpdate(int id, string username, string password2, bool islockedout, string[] role)
         {
             var u = DbUtil.Db.Users.Single(us => us.UserId == id);
+			if (u.Username != username)
+			{
+				var uu = DbUtil.Db.Users.SingleOrDefault(us => us.Username == username);
+				if (uu != null)
+					return Content("error: username already exists");
+			}
             u.Username = username;
             u.IsLockedOut = islockedout;
             u.SetRoles(DbUtil.Db, role, User.IsInRole("Finance"));

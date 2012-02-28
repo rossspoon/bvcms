@@ -42,17 +42,21 @@
 <tr><td>SendWhen</td><td>@Model.queue.SendWhen.FormatDateTm()</td></tr>
 <tr><td>Sent</td><td>@Model.queue.Sent.FormatDateTm()</td></tr>
 <tr><td>Queued</td><td>@Model.queue.Queued.FormatDateTm() 
-@if (!Model.queue.Sent.HasValue && Model.queue.SendWhen.HasValue && User.IsInRole("Admin"))
+@if (Model.CanDelete())
 {
-                       <a href="/Manage/Emails/DeleteQueued/@Model.queue.Id" class="bt">Delete</a>
+    <a href="/Manage/Emails/DeleteQueued/@Model.queue.Id" class="bt">Delete</a>
 }
-                   </td></tr>
+    </td></tr>
 <tr><td>Started</td><td>@Model.queue.Started.FormatDateTm()</td></tr>
 <tr><td>RunTime</td><td>@dt.ToString("H:mm:ss")</td></tr>
 </table>
 @if (Model.queue.PublicX ?? false)
 {
 @Html.ActionLink("View Email", "View", new { id = Model.id })
+}
+else if (Model.CanDelete())
+{
+    <a href="/Manage/Emails/MakePublic/@Model.queue.Id" class="bt">Make Public</a>
 }
 <h2>@Html.Raw(Model.queue.Subject)</h2>
 <div style="max-width: 600px">@Html.Raw(Model.queue.Body)</div>

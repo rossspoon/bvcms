@@ -189,7 +189,7 @@ namespace CmsWeb.Models
                 OrganizationMember.InsertOrgMembers(DbUtil.Db,
                     id, pid, 220, DateTime.Now, null, false);
                 DbUtil.Db.SubmitChanges();
-				DbUtil.Db.UpdateMainFellowship(id);
+				//DbUtil.Db.UpdateMainFellowship(id);
             }
         }
     }

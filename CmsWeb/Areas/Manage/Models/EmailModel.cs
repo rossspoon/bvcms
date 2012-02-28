@@ -41,6 +41,20 @@ namespace CmsWeb.Models
             Pager = new PagerModel2(Count);
             filter = "All";
         }
+		public bool CanDelete()
+		{
+			if (!queue.Sent.HasValue && queue.SendWhen.HasValue)
+			{
+				if (HttpContext.Current.User.IsInRole("Admin"))
+					return true;
+				if (queue.QueuedBy == Util.UserPeopleId)
+					return true;
+				var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
+				if (queue.FromAddr == u.EmailAddress)
+					return true;
+			}
+			return false;
+		}
         public IEnumerable<RecipientInfo> Recipients()
         {
             var q = GetEmailTos();

@@ -73,7 +73,8 @@ namespace CmsWeb.Models
                         where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
                         where o.AllowKioskRegister == true
                         where (o.ClassFilled ?? false) == false
-                        where o.CampusId == campusid || campusid == 0
+                        where (o.CampusId == null && o.AllowNonCampusCheckIn == true) 
+								|| o.CampusId == campusid || campusid == 0
                         where o.OrganizationStatusId == OrgStatusCode.Active
                         orderby bdaystart, o.OrganizationName
                         //from meeting in meetingHours
@@ -93,7 +94,8 @@ namespace CmsWeb.Models
                         where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
                         where o.CanSelfCheckin == true
                         where (o.ClassFilled ?? false) == false
-                        where o.CampusId == campusid || campusid == 0
+                        where (o.CampusId == null && o.AllowNonCampusCheckIn == true) 
+								|| o.CampusId == campusid || campusid == 0
                         where o.OrganizationStatusId == OrgStatusCode.Active
                         orderby sc.SchedTime.Value.TimeOfDay, bdaystart, o.OrganizationName
                         from meeting in meetingHours

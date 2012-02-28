@@ -99,6 +99,7 @@ namespace CmsWeb.Models
                 var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
                 _emails = from t in _emails
                           where t.FromAddr == u.EmailAddress
+						  || t.QueuedBy == u.PeopleId
                           || t.EmailQueueTos.Any(et => et.PeopleId == u.PeopleId)
                           select t;
             }

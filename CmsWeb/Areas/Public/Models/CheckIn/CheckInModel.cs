@@ -140,7 +140,8 @@ namespace CmsWeb.Models
                 where a.Person.FamilyId == id
                 where a.Person.DeceasedDate == null
                 where a.Organization.CanSelfCheckin.Value
-                where a.Organization.CampusId == campus || a.Organization.CampusId == null
+                where a.Organization.AllowNonCampusCheckIn == true 
+								|| a.Organization.CampusId == campus || campus == 0
                 where a.AttendanceFlag && a.MeetingDate >= a.Organization.VisitorDate.Value.Date
                 where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
@@ -206,16 +207,16 @@ namespace CmsWeb.Models
             const string PleaseVisit = "No self check-in meetings available";
             // find a org on campus that allows an older, new visitor to check in to
             var qv = from o in DbUtil.Db.Organizations
-                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                     let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday)
                      where o.CampusId == campus || o.CampusId == null
                      where o.CanSelfCheckin == true
                      where o.AllowNonCampusCheckIn == true
-                     where sc.SchedDay == thisday
+                     from meeting in meetingHours
                      select new
                      {
                          VisitorOrgName = o.OrganizationName,
                          VisitorOrgId = o.OrganizationId,
-                         VisitorOrgHour = sc.SchedTime
+                         VisitorOrgHour = meeting.Hour
                      };
             var vo = qv.FirstOrDefault() ?? new
                                             {
