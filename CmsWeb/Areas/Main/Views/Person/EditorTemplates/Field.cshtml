@@ -1,0 +1,20 @@
+﻿@model CmsWeb.Code.StandardExtraValues.Field
+<tr>
+    <td>@Model.name</td>
+@switch(Model.type)
+{
+    case "code":
+    <td><span id="s-@Model.name.@Model.peopleid" class="clickEdit">@Model.ToString()</span></td>
+        break;
+    case "data":
+    <td><pre id="t-@Model.name.@Model.peopleid" class="editarea">@Model.ToString()</pre></td>
+        break;
+    case "date":
+    <td><span id="d-@Model.name.@Model.peopleid" class="clickEdit">@Model.ToString()</span></td>
+        break;
+    case "int":
+    <td><span id="i-@Model.name.@Model.peopleid" class="clickEdit">@Model.ToString()</span></td>
+        break;
+}
+    <td><a href="#" class="deleteextra" field="@Model.name"><img src="/images/delete.gif" /></a></td>
+</tr>

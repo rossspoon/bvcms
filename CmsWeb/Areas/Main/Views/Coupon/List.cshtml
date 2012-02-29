@@ -57,7 +57,7 @@
     n++; 
         <tr @((n % 2) == 0? "class='alt'" : "")>
             <td>
-    @if (!item.Used.HasValue && !item.Canceled.HasValue)
+    @if ((!item.Used.HasValue || item.Code.Length != 12) && !item.Canceled.HasValue)
     {
                 @Html.ActionLink("X", "Cancel", new { id = item.Code }, new { @class = "confirm" })
     } 

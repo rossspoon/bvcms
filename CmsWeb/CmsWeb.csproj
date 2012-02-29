@@ -202,7 +202,7 @@
       <DependentUpon>List.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\OnlineReg\Models\ManageGivingModel.cs" />
-    <Compile Include="Areas\OnlineReg\Views\ManageGiving2.generated.cs">
+    <Compile Include="Areas\OnlineReg\Views\ManageGiving21.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ManageGiving2.cshtml</DependentUpon>
@@ -339,10 +339,8 @@
     </Content>
     <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APITest\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Binaries\AuthorizeNet.dll" />
     <Content Include="Binaries\CookComputing.XmlRpcV2.dll" />
@@ -789,7 +787,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Binaries\AWSSDK.dll" />
     <Content Include="Binaries\NPOI\Ionic.Zip.dll" />
@@ -1122,36 +1119,24 @@
     <Content Include="Scripts\TransactionHistory.js" />
     <Content Include="Scripts\UserDialog.js" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ManageGiving.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManageGiving.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmRecurringGiving.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TimeSlot.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\Error.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ExtraValuesGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ExtraValuesGrid.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Manage\Views\Account\SetPassword.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\LinkUsed.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageVolunteer.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\VolunteerDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <None Include="App_Data\51Degrees.mobi.config0">
       <SubType>Designer</SubType>
@@ -1161,37 +1146,29 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Manage\Views\Statements\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Duplicates\Progress.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Duplicates\Find.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Progress.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\CombinedJs.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\RepairTransactions\Progress.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\DeleteMeeting\Progress.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\AddOrganization\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\MemberDocs\Index.cshtml" />
     <Content Include="Areas\Main\Views\MemberDocs\Image.cshtml" />
+    <Content Include="Areas\Main\Views\Person\EditorTemplates\Field.cshtml" />
     <None Include="Areas\OnlineReg\Views\ManageGiving2.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ManageGiving2.generated.cs</LastGenOutput>
+      <LastGenOutput>ManageGiving21.generated.cs</LastGenOutput>
     </None>
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
@@ -1200,1027 +1177,701 @@
     <Content Include="MembershipAutomationExample.py" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Contact\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Transactions\List.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>List.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Manage\Views\Emails\List.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Emails\Details.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Details.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Manage\Views\Emails\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Emails\Recipients.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\UpdateFields.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\AttendanceDetail.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\LookupData.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\LookupTable.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\LookupDataPage.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Emails\View.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Home\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgSearch\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgSearch\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\AddressDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\AddressEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\AttendanceGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\BasicDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\BasicEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\TagPeopleIds.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\BusinessCard.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\CommentsDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\CommentsEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\ContactsDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\ContactsMadeGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\ContactsReceivedGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\DuplicateRow.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\DuplicatesGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\EnrollGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\GrowthDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\GrowthEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\MemberDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>MemberDisplay.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Main\Views\Person\MemberEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\MemberNotesDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\MemberNotesEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\PendingEnrollGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\PendingTasksGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
-    <Content Include="Areas\Main\Views\Person\ExtrasGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
-    </Content>
+    <Content Include="Areas\Main\Views\Person\ExtrasGrid.cshtml" />
     <Content Include="Areas\Main\Views\Person\PrevEnrollGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\RecRegDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\RecRegEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\UserDialog.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\UserInfoGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\CurrMemberGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\InactiveMemberGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\MeetingGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\MemberGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OrgInfo.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OrgInfoEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\PendingMemberGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\PrevMemberGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\SmallGroups.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\VisitorGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgGroups\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgGroups\Rows.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\OrgMemberDialog\Display.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\OrgMemberDialog\Edit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\OrgMemberDialog\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\OrgMemberDialog\Move.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\OrgMembersDialog\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\OrgMembersDialog\Rows.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\OrgMembersDialog\Update.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Email\EmailQueued.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Email\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Index.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Main\Views\Email\Progress.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Email\TaskProgress.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Coupon\Create.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Coupon\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Coupon\List.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn2\Campuses.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn2\CheckIn.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn2\CheckInList.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn\Campuses.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn\CheckIn.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn\CheckInList.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn\Keyboard.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn\Startup.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\PostBundle\Batch.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\PostBundle\FundTotals.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\PostBundle\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\Columns.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\Detail.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\Detail2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\Edit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\List.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\Row.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\Rows.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\SearchContact.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\SearchContactRows.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\Tabs.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\TabsOptions.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Task\TabsOptionsRows.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\Conditions.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\Main.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\TryConditions.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\EditAddress.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\EditPerson.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\FormAbbreviated.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\FormFull.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\HiddenPerson.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\List.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\PersonDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\ResultsFamily.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\SearchFamily.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchAdd\SearchPerson.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\Attendance.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Statements\Progress.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ContributionYears.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\AddUser.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\ChangePassword.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\ChangePasswordSuccess.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\ForgotPassword.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\ForgotUsername.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\LogOn.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\RequestPassword.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\RequestUsername.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Account\ResetPassword.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\Grade.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\MoveAndDelete.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\RegistrationMail.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\UpdateOrg.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\UploadPeople.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Display\EditPage.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Display\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Display\OrgContent.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Display\Page.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\OrgMembers\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\OrgMembers\List.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Division\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Division\Results.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Division\Row.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Fund\Edit.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Fund\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Lookup\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Lookup\List.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\MemberType\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\MetroZip\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Ministry\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Program\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Promotion\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Setting\Batch.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Setting\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\Setting\OrphanedImages.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Setup\Views\UsersCanEmailFor\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Promotion\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Promotion\List.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Volunteers\Calendar.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Volunteers\CustomReport.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Volunteers\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Sales\Confirm.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Sales\Download.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Sales\Item.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Sales\Items.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Sales\Login.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Sales\Payment.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Sales\Transactions.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Sales\Unknown.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\StepClass\Step1.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\StepClass\Step1Confirm.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\StepClass\Step2.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\StepClass\Step2Confirm.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\StepClass\Step3.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\StepClass\Step3Confirm.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Volunteer\Confirm.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Volunteer\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Volunteer\PickList2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Volunteer\Unknown.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmAccount.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmDuePaid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManageSub.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmSlots.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmSubscriptions.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmTest.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageSubscriptions.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\NewPayment.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\NewProcessPayment.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\NoLeague.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\PayAmtDue.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Payment.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Payment2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\PickSlots.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ProcessPayment.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Terms.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\TransactionTest.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Unknown.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\AddressEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Buttons.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\ChooseClass.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\FamilyList.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\List.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Login.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\ModelHidden.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\OtherHidden.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonDisplay.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonHidden.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PersonMetaHidden.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\PickSlot.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Registrant.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\GODisciples\Confirm.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\GODisciples\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\GODisciples\RenameGroup.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\GODisciples\Signup.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\OptOut\Cancel.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\OptOut\Confirm.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\OptOut\UnSubscribe.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Prayer\Index.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\Prayer\PickTimes.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ShirtSizes.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\AskDonation.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\FindTagPeople0.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\FindTagPeople.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\QuickSearch\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Tags\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Tags\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Tags\Tags.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchUsers\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchUsers\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\Web.config" />
     <Content Include="Areas\Main\Views\OrgGroups\Form.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgSearch\DivisionIds.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Family\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Person\FamilyGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\ScheduleInfo.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Meeting\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\SGMap\popup.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\SGMap\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\Test.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\RegSettings\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\TransactionHistory\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\TransactionHistory\History.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\OrgContent\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\OrgContent\Edit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\SavedQuery\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\SavedQuery\Row.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\SavedQuery\Rows.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\DivisionList.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchDivisions\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchDivisions\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgSearch\Row.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\Meetings.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\SavedQuery\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManagePledge.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManagePledge.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmPledge.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\VitalStats.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Email\Timeout.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\Import.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Display\File.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\SettingsOrg.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\SettingsMeetings.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\SettingsMeetingsEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\SettingsOrgEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\RegSetting\Edit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\RegSetting\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\AgeGroup.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\YesNoQuestion.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\Checkbox.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\Checkbox2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown1.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown3.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\ExtraQuestion.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\GradeOption.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\MenuItem.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\OrgFee.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\ShirtSize.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\VoteTag.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabAdmin.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OnlineRegFees.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OnlineRegFeesEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OnlineRegQuestions.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OnlineRegQuestionsEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OnlineRegMessages.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OnlineRegMessagesEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\Html.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\NotifyList2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OnlineRegAdmin.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OnlineRegAdminEdit.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabQuestions.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>TabQuestions.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabFees.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabMessages.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>TabMessages.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabOrg.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabMeetings.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Public\Views\APIMeta\Lookups.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgChildren\Form.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgChildren\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\OrgChildren\Rows.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Admin\ToggleOrgLeadersOnly.ashx" />
     <Content Include="Areas\Main\Views\Person\ChangesGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\ContactSearch\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchOrgs\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Dialog\Views\SearchOrgs\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\OrgPickList2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Meeting\iPad.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\ContactSearch\Results.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Merge\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Meeting\ExtrasGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Organization\ExtrasGrid.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Duplicates\Index.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ExtraValues.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Content\UpdatePeople.xls" />
     <Content Include="packages.config" />
     <Content Include="Content\MucketyTemplate.xls" />
     <Content Include="Areas\Main\Views\Tags\ConvertTagToExtraValue.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Areas\Manage\Views\Batch\ExtraValuesFromPeopleIds.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -2228,44 +1879,31 @@
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\SiteLayout.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>SiteLayout.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Views\Shared\Pager.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\Pager2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Home\About.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>About.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Views\Home\BatchTag.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Home\ShowError.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\Site3.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\Site2.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\onlinereg.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\Reports.cshtml">
       <SubType>Code</SubType>
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\ExportToolBar.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Web.bvcms.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2276,16 +1914,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Shared\CombinedOrgJs.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\CombinedPersonJs.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\CombinedOnlineRegJs.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
     <Content Include="Views\Shared\CombinedCss.cshtml">
-      <Generator>RazorGenerator</Generator>
     </Content>
   </ItemGroup>
   <ItemGroup>
