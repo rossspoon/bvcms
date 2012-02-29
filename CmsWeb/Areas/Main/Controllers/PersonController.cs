@@ -563,24 +563,42 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var a = id.SplitStr("-", 2);
             var b = a[1].SplitStr(".", 2);
-            var e = DbUtil.Db.PeopleExtras.First(ee => ee.PeopleId == b[1].ToInt() && ee.Field == b[0]);
+			var p = DbUtil.Db.LoadPersonById(b[1].ToInt());
             switch (a[0])
             {
                 case "s":
-                    e.StrValue = value;
+					p.AddEditExtraValue(b[0], value);
                     break;
                 case "t":
-                    e.Data = value;
+					p.AddEditExtraData(b[0], value);
                     break;
-                case "d":
-                    e.DateValue = DateTime.Parse(value);
-                    break;
+				case "d":
+					{
+						DateTime dt;
+						if (DateTime.TryParse(value, out dt))
+						{
+							p.AddEditExtraDate(b[0], dt);
+							value = dt.ToShortDateString();
+						}
+						else
+							value = "";
+					}
+					break;
                 case "i":
-                    e.IntValue = value.ToInt();
+					p.AddEditExtraInt(b[0], value.ToInt());
                     break;
             }
             DbUtil.Db.SubmitChanges();
             return Content(value);
+        }
+        [HttpPost]
+        public JsonResult ExtraValues(string id)
+        {
+            var a = id.SplitStr("-", 2);
+            var b = a[1].SplitStr(".", 2);
+			var f = CmsWeb.Code.StandardExtraValues.GetExtraValues().Single(ee => ee.name == b[0]);
+			var j = Json(f.Codes.ToDictionary(ee => ee, ee => ee));
+			return j;
         }
         [HttpPost]
         public ActionResult NewExtraValue(int id, string field, string type, string value)

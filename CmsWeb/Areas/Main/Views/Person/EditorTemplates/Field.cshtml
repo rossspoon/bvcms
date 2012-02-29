@@ -3,18 +3,30 @@
     <td>@Model.name</td>
 @switch(Model.type)
 {
-    case "code":
+    case "Code":
+        if (Model.nonstandard)
+        {
     <td><span id="s-@Model.name.@Model.peopleid" class="clickEdit">@Model.ToString()</span></td>
+        }
+        else
+        {
+    <td><span id="s-@Model.name.@Model.peopleid" field="@Model.name" class="clickSelect @Model.name">@Model.ToString()</span></td>
+        }
         break;
-    case "data":
-    <td><pre id="t-@Model.name.@Model.peopleid" class="editarea">@Model.ToString()</pre></td>
+    case "Data":
+    <td><pre id="t-@Model.name.@Model.peopleid" class="editarea" style="font-family:Verdana">@Model.ToString()</pre></td>
         break;
-    case "date":
+    case "Date":
     <td><span id="d-@Model.name.@Model.peopleid" class="clickEdit">@Model.ToString()</span></td>
         break;
-    case "int":
+    case "Int":
     <td><span id="i-@Model.name.@Model.peopleid" class="clickEdit">@Model.ToString()</span></td>
         break;
 }
-    <td><a href="#" class="deleteextra" field="@Model.name"><img src="/images/delete.gif" /></a></td>
+    <td>
+    @if(Model.nonstandard)
+    {
+        <a href="#" class="deleteextra" field="@Model.name"><img src="/images/delete.gif" /></a>
+    }
+    </td>
 </tr>

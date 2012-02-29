@@ -11,8 +11,14 @@ using UtilityExtensions;
 
 namespace CmsWeb.Code
 {
-	public static class StandardExtraValues
+	public class StandardExtraValues
 	{
+		[Serializable]
+		public class Fields
+		{
+			[XmlElement("Field")]
+			public Field[] fields { get; set; }
+		}
 		[Serializable]
 		public class Field
 		{
@@ -21,13 +27,14 @@ namespace CmsWeb.Code
 			[XmlAttribute]
 			public string type {get; set;}
 			[XmlAttribute]
+			[System.ComponentModel.DefaultValueAttribute ("default")]
 			public string location {get; set;}
-			public string[] codes {get; set;}
-            public int order;
+			public List<string> Codes { get; set; }
+            internal int order;
 			public int peopleid;
 			public bool nonstandard;
-			public PeopleExtra extravalue;
-			public static Field AddField(Field f, PeopleExtra v)
+			internal PeopleExtra extravalue;
+			internal static Field AddField(Field f, PeopleExtra v)
 			{
 				if (f == null)
 				{
@@ -38,11 +45,11 @@ namespace CmsWeb.Code
 						peopleid = v.PeopleId,
 						extravalue = v,
 					};
-					f.type = v.StrValue.HasValue() ? "code"
-						: v.Data.HasValue() ? "data"
-						: v.DateValue.HasValue ? "date"
-						: v.IntValue.HasValue ? "int"
-						: "code";
+					f.type = v.StrValue.HasValue() ? "Code"
+						: v.Data.HasValue() ? "Data"
+						: v.DateValue.HasValue ? "Date"
+						: v.IntValue.HasValue ? "Int"
+						: "Code";
 				}
 				f.extravalue = v;
 				return f;
@@ -50,16 +57,16 @@ namespace CmsWeb.Code
 			public override string  ToString()
         	{
 				if (extravalue == null)
-					return null;
+					return "Click to edit";
 				switch (type)
 				{
-					case "code":
+					case "Code":
 						return extravalue.StrValue;
-					case "data":
+					case "Data":
 						return extravalue.Data;
-					case "date":
+					case "Date":
 						return extravalue.DateValue.FormatDate();
-					case "int":
+					case "Int":
 						if (extravalue.IntValue2.HasValue)
 							return "{0} {1}".Fmt(extravalue.IntValue, extravalue.IntValue2);
 						else
@@ -68,30 +75,44 @@ namespace CmsWeb.Code
 				return null;
         	}
 		}
-		public static Field[] GetExtraValues(int PeopleId)
+		public static IEnumerable<Field> GetExtraValues()
 		{
-			var xml = DbUtil.Db.Content("StandardExtraValues.xml", "<StandardExtraValues />");
+			var xml = DbUtil.StandardExtraValues();
 			var sr = new StringReader(xml);
-			var fields = new XmlSerializer(typeof(Field[])).Deserialize(sr) as Field[];
+			var fields = (new XmlSerializer(typeof(Fields)).Deserialize(sr) as Fields).fields;
+			if (fields == null)
+				return new List<Field>();
+			return fields;
+		}
+		public static IEnumerable<Field> GetExtraValues(int PeopleId, string location = "default")
+		{
+			var fields = GetExtraValues();
 			var n = 1;
 			foreach (var f in fields)
 			{
 				f.order = n++;
 				f.peopleid = PeopleId;
+				if (f.location == null)
+					f.location = "default";
 			}
-			var exvalues = DbUtil.Db.PeopleExtras.Where(ee => ee.PeopleId == PeopleId);
+			var exvalues = DbUtil.Db.PeopleExtras.Where(ee => ee.PeopleId == PeopleId).ToList();
 			var qfields = from f in fields
 						  join v in exvalues on f.name equals v.Field into j
 						  from v in j.DefaultIfEmpty()
+						  where f.location == location
 						  orderby f.order
 						  select Field.AddField(f, v);
-			var qvalues = from v in exvalues
-						  join f in fields on v.Field equals f.name into j
-						  from f in j.DefaultIfEmpty()
-						  where f == null
-						  orderby v.Field
-						  select Field.AddField(f, v);
-			return qfields.Concat(qvalues).ToArray();
+			if (location == "default")
+			{
+				var qvalues = from v in exvalues
+							  join f in fields on v.Field equals f.name into j
+							  from f in j.DefaultIfEmpty()
+							  where f == null
+							  orderby v.Field
+							  select Field.AddField(f, v);
+				return qfields.Concat(qvalues);
+			}
+			return qfields;
 		}
 	}
 }

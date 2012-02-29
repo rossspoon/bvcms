@@ -141,8 +141,22 @@
             </td>
     </tr>
 </table>
-@if (User.IsInRole("Admin") || User.IsInRole("Membership"))
-{
-<br /><a href="/MemberDocs/Index/@Model.PeopleId">Membership Docs</a>
-}
-
+    <p id="memberdocs" style="display:none"><a href="/MemberDocs/Index/@Model.PeopleId">Membership Docs</a></p>
+    <table id="memberextras" class="grid">
+    <thead>
+        <tr>
+            <th colspan="2">Extra Values</th>
+        </tr>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var f in CmsWeb.Code.StandardExtraValues.GetExtraValues(Model.PeopleId, "MemberProfile"))
+    {
+        @Html.EditorFor(m => f)
+    }
+    </tbody>
+    </table>

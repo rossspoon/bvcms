@@ -75,6 +75,17 @@ namespace CmsData
                 InternalDb = null;
             }
         }
+        public static string StandardExtraValues()
+        {
+            var s = HttpRuntime.Cache[Db.Host + "StandardExtraValues"] as string;
+            if (s == null)
+            {
+				s = Content("StandardExtraValues.xml", "<Fields />");
+                HttpRuntime.Cache.Insert(Db.Host + "StandardExtraValues", s, null,
+                    DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+            }
+            return s;
+        }
         public static string TopNotice()
         {
             var hc = HttpRuntime.Cache[Db.Host + "topnotice"] as string;

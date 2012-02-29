@@ -23,6 +23,16 @@ div.pager
 @section scripts
 {
 @Html.Partial("CombinedPersonJs")
+@{ bool memberedit = User.IsInRole("Admin") || User.IsInRole("Membership");}
+@if(memberedit)
+{
+    <script type="text/javascript">
+        $(function () {
+            $.extraEditable('#memberextras');
+            $("#memberdocs").show();
+        });
+    </script>
+}
 }
 @{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
 @Html.Hidden("PeopleId", p.PeopleId)
@@ -261,4 +271,3 @@ div.pager
 <tr><th>Value:</th><td>@Html.TextBox("fieldvalue")</td></tr>
     </table>
 </div>
-

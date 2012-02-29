@@ -31,10 +31,8 @@ Scripts/RegSetting.js ^
 -o Min/Content/js/combined-org.js -clobber:true || pause
 
 ajaxmin ^
-Scripts/Pager.js ^
 Content/js/jquery.pagination.js ^
 Scripts/SearchPeople.js ^
-Scripts/Pager.js ^
 Scripts/Person.js ^
 -o Min/Content/js/combined-person.js -clobber:true || pause
 

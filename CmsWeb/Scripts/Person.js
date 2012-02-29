@@ -43,8 +43,8 @@
         return false;
     });
 
-    $.extraEditable = function () {
-        $('.editarea').editable('/Person/EditExtra/', {
+    $.extraEditable = function (table) {
+        $('.editarea', table).editable('/Person/EditExtra/', {
             type: 'textarea',
             submit: 'OK',
             rows: 5,
@@ -52,13 +52,21 @@
             indicator: '<img src="/images/loading.gif">',
             tooltip: 'Click to edit...'
         });
-        $(".clickEdit").editable("/Person/EditExtra/", {
+        $(".clickEdit", table).editable("/Person/EditExtra/", {
             indicator: "<img src='/images/loading.gif'>",
             tooltip: "Click to edit...",
             style: 'display: inline',
             width: '300px',
             height: 25,
             submit: 'OK'
+        });
+        $(".clickSelect", table).editable("/Person/EditExtra/", {
+            indicator: '<img src="/images/loading.gif">',
+            loadurl: "/Person/ExtraValues/",
+            loadtype: "POST",
+            type: "select",
+            submit: "OK",
+            style: 'display: inline'
         });
     }
     $.getTable = function (f, q) {
@@ -69,7 +77,7 @@
                 //$('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
                 $('.bt').button();
                 $(".datepicker").datepicker();
-                $.extraEditable();
+                $.extraEditable('#extravalues');
             });
         });
         return false;
@@ -128,7 +136,7 @@
     });
     $("#system-link").click(function () {
         $.showTable($("#extras-tab form"));
-        $.extraEditable();
+        $.extraEditable('#extravalues');
     });
     $("#changes-link").click(function () {
         $.showTable($("#changes-tab form"));
@@ -292,7 +300,7 @@
                             alert(ret);
                         else {
                             $.getTable($("#extras-tab form"));
-                            $.extraEditable();
+                            $.extraEditable('#extravalues');
                         }
                         $("#fieldname").val("");
                         $("#fieldvalue").val("");
@@ -314,7 +322,7 @@
                     alert(ret);
                 else {
                     $.getTable($("#extras-tab form"));
-                    $.extraEditable();
+                    $.extraEditable('#extravalues');
                 }
             });
         return false;
