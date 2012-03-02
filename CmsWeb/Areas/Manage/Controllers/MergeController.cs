@@ -11,7 +11,7 @@ using System.Net.Mail;
 namespace CmsWeb.Areas.Manage.Controllers
 {
     [Authorize(Roles = "Manager, Admin, Manager2")]
-    public class MergeController : Controller
+    public class MergeController : CmsStaffController
     {
        public ActionResult Index(int? PeopleId1, int? PeopleId2)
         {

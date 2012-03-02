@@ -10,7 +10,7 @@ using System.Linq.Dynamic;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    public class ExportController : Controller
+    public class ExportController : CmsStaffController
     {
         public ActionResult UpdatePeople(int id)
         {

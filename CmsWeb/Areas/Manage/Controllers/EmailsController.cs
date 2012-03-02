@@ -10,7 +10,7 @@ using System.Net.Mail;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-    public class EmailsController : Controller
+    public class EmailsController : CmsStaffController
     {
         public ActionResult Index()
         {

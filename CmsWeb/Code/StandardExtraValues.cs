@@ -27,8 +27,9 @@ namespace CmsWeb.Code
 			[XmlAttribute]
 			public string type {get; set;}
 			[XmlAttribute]
-			[System.ComponentModel.DefaultValueAttribute ("default")]
 			public string location {get; set;}
+			[XmlAttribute]
+			public string VisibilityRoles { get; set; }
 			public List<string> Codes { get; set; }
             internal int order;
 			public int peopleid;
@@ -54,6 +55,17 @@ namespace CmsWeb.Code
 				f.extravalue = v;
 				return f;
 			}
+			public bool UserCanView()
+			{
+				if(!VisibilityRoles.HasValue())
+					return true;
+				var a = VisibilityRoles.SplitStr(",");
+				var user = HttpContext.Current.User;
+				foreach (var role in a)
+					if (user.IsInRole(role.Trim()))
+						return true;
+				return false;
+			}
 			public override string  ToString()
         	{
 				if (extravalue == null)
@@ -77,6 +89,8 @@ namespace CmsWeb.Code
 		}
 		public static IEnumerable<Field> GetExtraValues()
 		{
+			if (DbUtil.Db.Setting("UseStandardExtraValues", "false") != "true")
+				return new List<Field>();
 			var xml = DbUtil.StandardExtraValues();
 			var sr = new StringReader(xml);
 			var fields = (new XmlSerializer(typeof(Fields)).Deserialize(sr) as Fields).fields;

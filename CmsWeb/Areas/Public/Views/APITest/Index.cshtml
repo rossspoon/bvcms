@@ -5,8 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>API Tester</title>
+@Html.Partial("CombinedCss")
 <link rel="stylesheet" href="/Content/faary.css?v=1" type="text/css" />
-@Html.Script("/Content/js/jquery-1.5.2.js")
+@Html.Partial("CombinedJs")
 @Html.Script("/Scripts/TestAPI.js")
 </head>
 <body>
@@ -46,11 +47,13 @@ webclient.Headers.Add('Authorization: Basic ' + credentials)
 
 @foreach(var m in Model)
 {
-    <div style="background-color:#777;color:#eee"><h2>&nbsp;<text>API</text>@m.section</h2></div>
-    foreach (var t in m.list)
+    <div class="section" style="background-color:#777;color:#eee"><h2>&nbsp;<text>API</text>@m.section</h2></div>
+    <div style="display:none">
+    @foreach (var t in m.list)
     {
     @Html.EditorFor(mm => t)
     }
+    </div>
 }
 
 </body>

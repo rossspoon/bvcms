@@ -9,7 +9,7 @@ using CmsData;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
-    public class SearchOrgsController : Controller
+    public class SearchOrgsController : CmsStaffController
     {
         [HttpGet]
         public ActionResult Index(int id, bool? singlemode)

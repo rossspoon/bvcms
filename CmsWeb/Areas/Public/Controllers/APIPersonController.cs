@@ -31,10 +31,10 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper(log: true);
             if (ret.StartsWith("!"))
                 return Content("<Login error=\"{0}\" />".Fmt(ret.Substring(1)));
-            var valid = CMSMembershipProvider.provider.ValidateUser(user, password);
-            if (!valid)
-                return Content("<Login error=\"{0} not valid\" />".Fmt(user ?? "(null)"));
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == user);
+			var o = AccountModel.AuthenticateLogon(user, password, Request.Url.OriginalString);
+			if (o is string)
+                return Content("<Login error=\"{0} not valid\">{1}</Login>".Fmt(user ?? "(null)", o));
+			var u = o as User;
             var api = new APIFunctions(DbUtil.Db);
             return Content(api.Login(u.Person),"text/xml");
         }
@@ -122,6 +122,26 @@ namespace CmsWeb.Areas.Public.Controllers
             {
                 var ok = MembershipService.ChangePassword(username, current, password);
                 if (ok)
+                    return Content("ok");
+                else
+                    return Content("<ChangePassword error=\"invalid password\" />");
+            }
+            catch (Exception ex)
+            {
+                return Content("<ChangePassword error=\"{0}\" />".Fmt(ex.Message));
+            }
+        }
+        [HttpPost]
+        public ActionResult SetPassword(string username, string password)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content(ret.Substring(1));
+            var mu = CMSMembershipProvider.provider.GetUser(username, false);
+            mu.UnlockUser();
+            try
+            {
+                if (mu.ChangePassword(mu.ResetPassword(), password))
                     return Content("ok");
                 else
                     return Content("<ChangePassword error=\"invalid password\" />");

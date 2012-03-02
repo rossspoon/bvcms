@@ -9,7 +9,7 @@ using CmsData;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    public class SavedQueryController : Controller
+    public class SavedQueryController : CmsStaffController
     {
         public ActionResult Index()
         {

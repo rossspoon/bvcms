@@ -7,7 +7,7 @@ using CmsData;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    public class ContactController : Controller
+    public class ContactController : CmsStaffController
     {
         public ActionResult Index(int id)
         {

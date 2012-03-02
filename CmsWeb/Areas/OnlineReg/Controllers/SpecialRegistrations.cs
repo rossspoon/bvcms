@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using CmsData.Codes;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using CmsWeb.Areas.OnlineReg.Views;
-using RazorGenerator.Templating;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -150,10 +148,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult ManageGiving2(int pid, int orgid)
 		{ //OnlineReg/ManageGiving2?pid=828612&orgid=89230
 			var	m = new ManageGivingModel(pid, orgid);
-			var t = new ManageGiving2();
-			t.Model = m;
 			m.testing = true;
-			var body = t.TransformText();
+			var body = CmsController.RenderPartialViewToString(this, "ManageGiving2", m);
 			return Content(body);
         }
         [HttpPost]
@@ -240,8 +236,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			m.testing = true;
 #else
 #endif
-			var t = new ManageGiving2 { Model = m };
-			var details = t.TransformText();
+			var details = CmsController.RenderPartialViewToString(this, "ManageGiving2", m);
 
             var staff = DbUtil.Db.StaffPeopleForOrg(m.orgid)[0];
             var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));

@@ -26,4 +26,7 @@
         $("div.xml pre", f).html("");
         return false;
     });
+    $("div.section").click(function (ev) {
+        $(this).next().toggle();
+    });
 });

@@ -35,6 +35,8 @@ namespace CmsData
 
         public string MemberProfileAutomation(CMSDataContext Db)
         {
+			if (Db.Setting("UseMemberProfileAutomation", "true") != "true")
+				return "ok";
             var script = Db.Content("MemberProfileAutomation");
             if (script == null)
                 return "ok";

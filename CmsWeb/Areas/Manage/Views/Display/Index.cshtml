@@ -3,7 +3,32 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Special Content";
 }
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#newhtmlfile").click(function (e) {
+                e.preventDefault();
+                $.blockUI({ message: $('#askHtmlName') });
+            });
+            $("#createnewhtml").click(function (e) {
+                e.preventDefault();
+                window.location = "/Display/Page/" + $("#newHtmlName").val();
+            });
+            $("#newtextfile").click(function (e) {
+                e.preventDefault();
+                $.blockUI({ message: $('#askFileName') });
+            });
+            $("#createnewfile").click(function (e) {
+                e.preventDefault();
+                window.location = "/Display/File/" + $("#newFileName").val();
+            });
+            $("a.bt").button();
+        });
+    </script>
+}
 <h2>Html Content</h2>
+<a href="#" id="newhtmlfile" class="bt">Create New Html File</a>
 <table class="grid" cellspacing="4">
     <tr>
         <th> Name </th>
@@ -19,6 +44,7 @@
 </table>
 
 <h2>Text Content</h2>
+<a href="#" id="newtextfile" class="bt">Create New Text File</a>
 <table class="grid" cellspacing="4">
     <tr>
         <th> Name </th>
@@ -30,3 +56,11 @@
     </tr>
 }
 </table>
+<div id="askFileName" style="display:none">
+    <p>FileName: <input type="text" id="newFileName" /></p>
+    <p><input type="button" id="createnewfile" class="bt" value="Submit" /></p>
+</div>
+<div id="askHtmlName" style="display:none">
+    <p>FileName: <input type="text" id="newHtmlName" /></p>
+    <p><input type="button" id="createnewhtml" class="bt" value="Submit" /></p>
+</div>

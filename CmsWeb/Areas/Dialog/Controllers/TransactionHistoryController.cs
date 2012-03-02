@@ -9,7 +9,7 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
-    public class TransactionHistoryController : Controller
+    public class TransactionHistoryController : CmsStaffController
     {
         public ActionResult Index(int id, int oid)
         {

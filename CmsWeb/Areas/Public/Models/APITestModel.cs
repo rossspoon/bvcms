@@ -259,10 +259,11 @@ Test: Login
 Description:
     <ul>
     <li>The user and password are for the person you want to authenticate</li>
+	<li>NOTE: for an invalid login, in the returned XML, the Login element will have an error attribute and the text of that element is the same text that would be displayed to a user on the standard BVCMS login screen.
     <li>The return xml doc comes from the APILoginInfo Python script in Special Content</li>
     <li>A list of QueryBits (tags that are updated nightly) are returned</li>
     </ul>
-Arg: username
+Arg: user
 Arg: password
 Script:
 	coll = NameValueCollection()
@@ -394,6 +395,18 @@ Script:
 	coll.Add('current', current)
 	coll.Add('password', password)
 	resp = webclient.UploadValues('APIPerson/ChangePassword', 'POST', coll)
+	ret = Encoding.ASCII.GetString(resp)
+	return ret
+------------
+Test: SetPassword
+Description:
+Arg: username
+Arg: password
+Script:
+	coll = NameValueCollection()
+	coll.Add('username', username)
+	coll.Add('password', password)
+	resp = webclient.UploadValues('APIPerson/SetPassword', 'POST', coll)
 	ret = Encoding.ASCII.GetString(resp)
 	return ret
 ------------

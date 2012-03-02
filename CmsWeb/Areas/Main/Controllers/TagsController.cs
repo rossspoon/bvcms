@@ -9,7 +9,7 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    public class TagsController : Controller
+    public class TagsController : CmsStaffController
     {
         [HttpGet]
         public ActionResult Index(string tag)

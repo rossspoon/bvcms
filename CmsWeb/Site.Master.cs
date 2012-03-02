@@ -68,6 +68,8 @@ namespace CmsWeb
 
             string pa = System.IO.Path.ChangeExtension(Request.Url.AbsolutePath, "");
             pa = pa.Substring(0, pa.Length - 1);
+			pa = pa.Replace("/", "_");
+			Util.Helpfile = pa;
         }
         protected void NewQuery_Click(object sender, EventArgs e)
         {

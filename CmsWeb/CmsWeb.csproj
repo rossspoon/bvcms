@@ -145,26 +145,6 @@
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
-    <Compile Include="Areas\Main\Views\Email\Index.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Index.cshtml</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Main\Views\Organization\EditorTemplates\TabMessages.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TabMessages.cshtml</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Main\Views\Organization\EditorTemplates\TabQuestions.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TabQuestions.cshtml</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Main\Views\Reports\ExtraValuesGrid.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExtraValuesGrid.cshtml</DependentUpon>
-    </Compile>
     <Compile Include="Areas\Manage\Controllers\StatementsController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
     <Compile Include="Areas\Main\Models\Export\FreshbooksResult.cs" />
@@ -176,27 +156,7 @@
     <Compile Include="Areas\Manage\Controllers\ExtraValuesController.cs" />
     <Compile Include="Areas\Manage\Controllers\MergeController.cs" />
     <Compile Include="Areas\Manage\Models\MergeModel.cs" />
-    <Compile Include="Areas\Manage\Views\Emails\Details.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Details.cshtml</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Manage\Views\Transactions\List.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>List.cshtml</DependentUpon>
-    </Compile>
     <Compile Include="Areas\OnlineReg\Models\ManageGivingModel.cs" />
-    <Compile Include="Areas\OnlineReg\Views\ManageGiving21.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ManageGiving2.cshtml</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ManageGiving.cshtml</DependentUpon>
-    </Compile>
     <Compile Include="Areas\Public\Controllers\APICheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
@@ -306,16 +266,6 @@
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
-    <Compile Include="Views\Home\About.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>About.cshtml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Shared\SiteLayout.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SiteLayout.cshtml</DependentUpon>
-    </Compile>
     <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1151,14 +1101,11 @@
     <Content Include="Areas\Main\Views\MemberDocs\Index.cshtml" />
     <Content Include="Areas\Main\Views\MemberDocs\Image.cshtml" />
     <Content Include="Areas\Main\Views\Person\EditorTemplates\Field.cshtml" />
-    <None Include="Areas\OnlineReg\Views\ManageGiving2.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ManageGiving21.generated.cs</LastGenOutput>
+    <None Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving2.cshtml">
     </None>
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
-    <Content Include="SquishIt.Contrib.MvcReadMe.txt" />
     <Content Include="MembershipAutomationExample.py" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml">

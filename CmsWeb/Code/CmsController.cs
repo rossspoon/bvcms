@@ -9,6 +9,7 @@ using CmsWeb.Areas.Manage.Controllers;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.Collections;
+using System.IO;
 
 namespace CmsWeb
 {
@@ -40,7 +41,7 @@ namespace CmsWeb
         protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            Util.Helpfile = "{0}_{1}".Fmt(
+            Util.Helpfile = "_{0}_{1}".Fmt(
                 filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
                 filterContext.ActionDescriptor.ActionName);
         }
@@ -77,6 +78,24 @@ namespace CmsWeb
             }
             return "!API no Authorization Header";
         }
+		public static string RenderPartialViewToString(Controller controller, string viewName, object model)
+		{
+			controller.ViewData.Model = model;
+			try
+			{
+				using (var sw = new StringWriter())
+				{
+					ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
+					ViewContext viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
+					viewResult.View.Render(viewContext, sw);
+					return sw.GetStringBuilder().ToString();
+				}
+			}
+			catch (Exception ex)
+			{
+				return ex.ToString();
+			}
+		}
     }
     public class CmsStaffController : System.Web.Mvc.Controller
     {

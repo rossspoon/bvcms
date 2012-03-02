@@ -43,6 +43,26 @@
         return false;
     });
 
+    $.editable.addInputType('datepicker', {
+        element: function (settings, original) {
+            var input = $('<input>');
+            if (settings.width != 'none') { input.width(settings.width); }
+            if (settings.height != 'none') { input.height(settings.height); }
+            input.attr('autocomplete', 'off');
+            $(this).append(input);
+            return (input);
+        },
+        plugin: function (settings, original) {
+            var form = this;
+            settings.onblur = 'ignore';
+            $(this).find('input').datepicker().bind('click', function () {
+                $(this).datepicker('show');
+                return false;
+            }).bind('dateSelected', function (e, selectedDate, $td) {
+                $(form).submit();
+            });
+        }
+    });
     $.extraEditable = function (table) {
         $('.editarea', table).editable('/Person/EditExtra/', {
             type: 'textarea',
@@ -59,6 +79,13 @@
             width: '300px',
             height: 25,
             submit: 'OK'
+        });
+        $(".clickDatepicker").editable('/Person/EditExtra/', {
+            type: 'datepicker',
+            tooltip: 'Click to edit...',
+            style: 'display: inline',
+            width: '300px',
+            submit: 'OK',
         });
         $(".clickSelect", table).editable("/Person/EditExtra/", {
             indicator: '<img src="/images/loading.gif">',
@@ -134,6 +161,17 @@
             $.showTable($(this));
         });
     });
+    $("#member-link").click(function () {
+        var f = $("#memberdisplay");
+        if ($("table", f).size() == 0)
+            $.post(f.attr('action'), null, function (ret) {
+                $(f).html(ret).ready(function () {
+                    $.UpdateForSection(f);
+                    if (ShowMemberExtras)
+                        ShowMemberExtras();
+                });
+            });
+    });
     $("#system-link").click(function () {
         $.showTable($("#extras-tab form"));
         $.extraEditable('#extravalues');
@@ -166,40 +204,44 @@
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function (ret) {
             $(f).html(ret).ready(function () {
-                var acopts = {
-                    minChars: 3,
-                    matchContains: 1
-                };
-                $('#Employer', f).autocomplete("/Person/Employers", acopts);
-                $('#School', f).autocomplete("/Person/Schools", acopts);
-                $('#Occupation', f).autocomplete("/Person/Occupations", acopts);
-                $('#NewChurch,#PrevChurch', f).autocomplete("/Person/Churches", acopts);
-                $(".datepicker").datepicker({
-                    dateFormat: 'm/d/yy',
-                    changeMonth: true,
-                    changeYear: true
-                });
-                $(".submitbutton,.bt").button();
-                $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
-                $("#verifyaddress").click(function () {
-                    var f = $(this).closest('form');
-                    var q = f.serialize();
-                    $.post($(this).attr('href'), q, function (ret) {
-                        if (confirm(ret.address + "\nUse this Address?")) {
-                            $('#Address1', f).val(ret.Line1);
-                            $('#Address2', f).val(ret.Line2);
-                            $('#City', f).val(ret.City);
-                            $('#State', f).val(ret.State);
-                            $('#Zip', f).val(ret.Zip);
-                        }
-                    });
-                    return false;
-                });
-                return false;
+                $.UpdateForSection(f);
             });
         });
         return false;
     });
+
+    $.UpdateForSection = function (f) {
+        var acopts = {
+            minChars: 3,
+            matchContains: 1
+        };
+        $('#Employer', f).autocomplete("/Person/Employers", acopts);
+        $('#School', f).autocomplete("/Person/Schools", acopts);
+        $('#Occupation', f).autocomplete("/Person/Occupations", acopts);
+        $('#NewChurch,#PrevChurch', f).autocomplete("/Person/Churches", acopts);
+        $(".datepicker").datepicker({
+            dateFormat: 'm/d/yy',
+            changeMonth: true,
+            changeYear: true
+        });
+        $(".submitbutton,.bt").button();
+        $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
+        $("#verifyaddress").click(function () {
+            var f = $(this).closest('form');
+            var q = f.serialize();
+            $.post($(this).attr('href'), q, function (ret) {
+                if (confirm(ret.address + "\nUse this Address?")) {
+                    $('#Address1', f).val(ret.Line1);
+                    $('#Address2', f).val(ret.Line2);
+                    $('#City', f).val(ret.City);
+                    $('#State', f).val(ret.State);
+                    $('#Zip', f).val(ret.Zip);
+                }
+            });
+            return false;
+        });
+        return false;
+    }
     $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');

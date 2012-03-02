@@ -19,7 +19,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
 	[Authorize(Roles = "Edit")]
 	public class DeleteMeetingController : CmsController
 	{
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles="Edit")]
         public ActionResult Index(int id)
         {
             var mm = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == id);

@@ -27,10 +27,10 @@ div.pager
 @if(memberedit)
 {
     <script type="text/javascript">
-        $(function () {
+        function ShowMemberExtras() {
             $.extraEditable('#memberextras');
             $("#memberdocs").show();
-        });
+        } 
     </script>
 }
 }
@@ -110,7 +110,7 @@ div.pager
             <li><a href="#basic-tab"><span>Basic</span></a></li>
             <li><a href="#address-tab"><span>Addresses</span></a></li>
             <li><a id="enrollment-link" href="#enrollment-tab"><span>Enrollment</span></a></li>
-            <li><a href="#member-tab"><span>Member Profile</span></a></li>
+            <li><a id="member-link" href="#member-tab"><span>Member Profile</span></a></li>
 @if (User.IsInRole("Access"))
 { 
             <li><a href="#growth-tab"><span>Growth</span></a></li>
@@ -177,8 +177,7 @@ div.pager
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
             </ul>
             <div id="membersum-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form class="DisplayEdit" action="">
-                 @Html.Partial("MemberDisplay", p.member) 
+                <form id="memberdisplay" class="DisplayEdit" action="/Person/MemberDisplay/@p.PeopleId">
                 </form>
             </div>
             <div id="membernotes-tab" class="ui-tabs-hide ui-tabs-panel">

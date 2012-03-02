@@ -57,7 +57,7 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
             return ot.Querystring;
         }
-        public static object AuthenticateLogon(string userName, string password, HttpSessionStateBase Session, HttpRequestBase Request)
+        public static object AuthenticateLogon(string userName, string password, string url)
         {
             var q = DbUtil.Db.Users.Where(uu =>
                 uu.Username == userName ||
@@ -106,7 +106,7 @@ namespace CmsWeb.Models
             if (user == null && n > 0)
             {
                 NotifyAdmins("failed password #{2} by {0} on {1}"
-					.Fmt(userName, Request.Url.OriginalString, failedpasswordcount),
+					.Fmt(userName, url, failedpasswordcount),
                         "{0} tried to login at {1} but got the password wrong"
                             .Fmt(userName, Util.Now));
 				if (failedpasswordcount == max)
@@ -115,7 +115,7 @@ namespace CmsWeb.Models
             }
             else if (user == null)
             {
-                NotifyAdmins("attempt to login by non-user {0} on {1}".Fmt(userName, Request.Url.OriginalString),
+                NotifyAdmins("attempt to login by non-user {0} on {1}".Fmt(userName, url),
                         "{0} tried to login at {1} but is not a user"
                             .Fmt(userName, Util.Now));
                 return problem;
@@ -123,7 +123,7 @@ namespace CmsWeb.Models
             else if (user.IsLockedOut)
             {
                 NotifyAdmins("{0} locked out #{2} on {1}"
-					.Fmt(userName, Request.Url.OriginalString, user.FailedPasswordAttemptCount),
+					.Fmt(userName, url, user.FailedPasswordAttemptCount),
                         "{0} tried to login at {1} but is locked out"
                             .Fmt(userName, Util.Now));
 				return "Your account has been locked out for {0} failed attempts in a short window of time, please use the forgot password link or notify an Admin".Fmt(max);
@@ -131,7 +131,7 @@ namespace CmsWeb.Models
             else if (!user.IsApproved)
             {
                 NotifyAdmins("unapproved user {0} logging in on {1}"
-					.Fmt(userName, Request.Url.OriginalString),
+					.Fmt(userName, url),
                         "{0} tried to login at {1} but is not approved"
                             .Fmt(userName, Util.Now));
                 return problem;
@@ -141,7 +141,7 @@ namespace CmsWeb.Models
                 if (user.Roles.Contains("Finance"))
                 {
                     NotifyAdmins("cannot impersonate Finance user {0} on {1}"
-						.Fmt(userName, Request.Url.OriginalString),
+						.Fmt(userName, url),
                             "{0} tried to login at {1}".Fmt(userName, Util.Now));
                     return problem;
                 }
@@ -150,15 +150,24 @@ namespace CmsWeb.Models
                     "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host), 
 					Util.Now.ToString());
             }
-
-            FormsAuthentication.SetAuthCookie(user.Username, false);
-            SetUserInfo(user.Username, Session);
-            Util.FormsBasedAuthentication = true;
 			DbUtil.LogActivity("User {0} logged in".Fmt(user.Username));
-
             return user;
         }
-        private static void NotifyAdmins(string subject, string message)
+		public static object AuthenticateLogon(string userName, string password, HttpSessionStateBase Session, HttpRequestBase Request)
+		{
+			var o = AuthenticateLogon(userName, password, Request.Url.OriginalString);
+			if (o is User)
+			{
+				var user = o as User;
+				FormsAuthentication.SetAuthCookie(user.Username, false);
+				SetUserInfo(user.Username, Session);
+				Util.FormsBasedAuthentication = true;
+				DbUtil.LogActivity("User {0} logged in".Fmt(user.Username));
+				return user;
+			}
+			return o;
+		}
+		private static void NotifyAdmins(string subject, string message)
         {
             DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
                 CMSRoleProvider.provider.GetAdmins(), subject, message);

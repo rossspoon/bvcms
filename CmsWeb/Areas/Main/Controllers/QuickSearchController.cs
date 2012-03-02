@@ -9,7 +9,7 @@ using CmsData;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    public class QuickSearchController : Controller
+    public class QuickSearchController : CmsController
     {
         [HttpGet]
         public ActionResult Index(string name)

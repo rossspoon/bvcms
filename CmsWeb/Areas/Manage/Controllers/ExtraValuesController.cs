@@ -8,7 +8,7 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-    public class ExtraValuesController : Controller
+    public class ExtraValuesController : CmsStaffController
     {
         public ActionResult Add(int id, string field, string value)
         {

@@ -14,7 +14,7 @@ namespace CmsWeb.Areas.Main.Controllers
 {
     [Authorize(Roles = "Finance")]
     [ValidateInput(false)]
-    public class PostBundleController : Controller
+    public class PostBundleController : CmsStaffController
     {
         public ActionResult Index(int id)
         {
