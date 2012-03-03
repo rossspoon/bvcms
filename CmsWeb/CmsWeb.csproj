@@ -264,7 +264,6 @@
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
-    <Compile Include="Areas\Public\Models\PrayerTimesReportResult.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
     <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -380,19 +379,8 @@
     <Compile Include="Code\CmsController.cs" />
     <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchPeopleModel.cs" />
-    <Compile Include="Areas\Public\Controllers\GODisciplesController.cs" />
-    <Compile Include="Areas\Public\Controllers\PrayerController.cs" />
-    <Compile Include="Areas\Public\Controllers\SalesController.cs" />
     <Compile Include="Areas\Public\Controllers\StepClassController.cs" />
-    <Compile Include="Areas\Public\Models\GODisciplesModel.cs" />
-    <Compile Include="Areas\Public\Models\PrayerModel.cs" />
-    <Compile Include="Areas\Public\Models\PsUtil.cs" />
-    <Compile Include="Areas\Public\Models\SalesModel.cs" />
     <Compile Include="Areas\Public\Models\StepClassModel.cs" />
-    <Compile Include="Areas\Public\Views\Prayer\Report.aspx.cs">
-      <DependentUpon>Report.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Areas\Setup\AreaRegistration.cs" />
     <Compile Include="Areas\Manage\Controllers\DisplayController.cs" />
     <Compile Include="Areas\Setup\Controllers\FundController.cs" />
@@ -642,7 +630,6 @@
     <Compile Include="Areas\Manage\Models\PromoteInfo.cs" />
     <Compile Include="Areas\Manage\Models\PromotionModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QueryModel.cs" />
-    <Compile Include="Areas\Public\Models\RegisterModel.cs" />
     <Compile Include="Areas\Main\Models\Report\AttendanceModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SearchContactModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskInfo.cs" />
@@ -718,7 +705,6 @@
     <Compile Include="UserControls\GridPager.ascx.designer.cs">
       <DependentUpon>GridPager.ascx</DependentUpon>
     </Compile>
-    <Content Include="XMLFile1.xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">
@@ -1455,30 +1441,6 @@
     <Content Include="Areas\Manage\Views\Volunteers\Index.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Public\Views\Sales\Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Sales\Download.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Sales\Item.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Sales\Items.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Sales\Login.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Sales\Payment.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Sales\Transactions.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Sales\Unknown.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Areas\Public\Views\StepClass\Step1.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -1582,18 +1544,6 @@
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Registrant.cshtml">
     </Content>
-    <Content Include="Areas\Public\Views\GODisciples\Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\GODisciples\Index.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\GODisciples\RenameGroup.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\GODisciples\Signup.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Areas\Public\Views\OptOut\Cancel.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -1601,12 +1551,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Areas\Public\Views\OptOut\UnSubscribe.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Prayer\Index.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Prayer\PickTimes.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Areas\Main\Views\Reports\ShirtSizes.cshtml">
@@ -2086,7 +2030,6 @@
     <Content Include="AppReview\Web.config" />
     <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
     <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
-    <Content Include="Areas\Public\Views\Prayer\Report.aspx" />
     <Content Include="Binaries\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.pdb" />

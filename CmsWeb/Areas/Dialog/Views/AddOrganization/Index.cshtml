@@ -1,15 +1,20 @@
 ﻿@model CmsWeb.Models.NewOrganizationModel
 @using CmsWeb
+@using UtilityExtensions
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <title>Add Organization</title>
 @Html.Partial("CombinedCss")
 </head>
 <body>
 <form action="/AddOrganization/Submit/@Model.OrganizationId" method="post">
-<div class="RoundBox floatleft">
-<h2>Add New Organization</h2>
-<table id="orginfoedit" style="margin-bottom: 10px" cellspacing="5" width="100%">
+<table id="orginfoedit" class="roundbox" style="margin-bottom: 10px" cellspacing="5" width="100%">
+    <tr><td colspan="2" align="right" valign="top">
+        <a class="helplink" target="_blank" href='@Util.HelpLink(Util.Helpfile)'>help</a></td>
+    </tr>
+    <tr>
+        <td colspan="2"><h2>Add New Organization</h2></td>
+    </tr>
     <tr>
         <th align="right">Name:</th>
         <td>@Html.TextBox("org.OrganizationName", Model.org.OrganizationName, new { style = "width:100%" })</td>
@@ -42,7 +47,6 @@
         <input type="submit" class="bt" name="Submit" value="Submit" /></td>
     </tr>
 </table>
-</div>
 </form>
 @Html.Partial("CombinedJs")
 <script type="text/javascript">

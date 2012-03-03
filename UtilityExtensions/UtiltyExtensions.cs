@@ -903,7 +903,8 @@ namespace UtilityExtensions
 		{
 			var ma = Util.TryGetMailAddress(a);
 			if (ma != null)
-				list.Add(ma);
+				if (!list.Any(mm => mm.Address == a))
+					list.Add(ma);
 		}
 		public static string EmailAddressListToString(this List<MailAddress> list)
 		{

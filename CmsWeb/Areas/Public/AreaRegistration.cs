@@ -30,12 +30,7 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "Checkin", "APICheckin", "Checkin");
             AddRoute(context, "iPhone", "APIiPhone", "iPhone");
 
-            AddRoute(context, "DiscipleLife");
-            AddRoute(context, "GODisciples");
             AddRoute(context, "MOBS");
-            AddRoute(context, "Prayer");
-            AddRoute(context, "Register");
-            AddRoute(context, "Sales");
             AddRoute(context, "SGMap");
             AddRoute(context, "OrgContent");
             AddRoute(context, "OptOut");

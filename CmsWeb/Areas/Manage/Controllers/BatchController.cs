@@ -18,7 +18,7 @@ using Alias = System.Threading.Tasks;
 namespace CmsWeb.Areas.Manage.Controllers
 {
 	[ValidateInput(false)]
-	public class BatchController : AsyncController
+	public class BatchController : CmsStaffAsyncController
 	{
 		[Authorize(Roles = "Admin")]
 		public ActionResult MoveAndDelete()

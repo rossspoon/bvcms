@@ -108,15 +108,15 @@ namespace CmsWeb.Models
                 var guid = (Guid?)(HttpContext.Current.Session["checkinguid"]);
                 if (!guid.HasValue)
                 {
-                    var tt = new TemporaryToken
-                    {
-                        Id = Guid.NewGuid(),
-                        CreatedBy = Util.UserId1,
-                        CreatedOn = Util.Now,
-                    };
-                    DbUtil.Db.TemporaryTokens.InsertOnSubmit(tt);
-                    DbUtil.Db.SubmitChanges();
-                    guid = tt.Id;
+                    //var tt = new TemporaryToken
+                    //{
+                    //    Id = Guid.NewGuid(),
+                    //    CreatedBy = Util.UserId1,
+                    //    CreatedOn = Util.Now,
+                    //};
+                    //DbUtil.Db.TemporaryTokens.InsertOnSubmit(tt);
+                    //DbUtil.Db.SubmitChanges();
+                    //guid = tt.Id;
                     HttpContext.Current.Session["checkinguid"] = guid;
                 }
                 this.guid = guid.ToString();

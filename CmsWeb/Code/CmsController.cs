@@ -122,7 +122,7 @@ namespace CmsWeb
                     filterContext.Result = Redirect(r);
             }
             base.OnActionExecuting(filterContext);
-            Util.Helpfile = "{0}_{1}".Fmt(
+            Util.Helpfile = "_{0}_{1}".Fmt(
                 filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
                 filterContext.ActionDescriptor.ActionName);
         }
@@ -158,7 +158,7 @@ namespace CmsWeb
                     filterContext.Result = Redirect(r);
             }
             base.OnActionExecuting(filterContext);
-            Util.Helpfile = "{0}_{1}".Fmt(
+            Util.Helpfile = "_{0}_{1}".Fmt(
                 filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
                 filterContext.ActionDescriptor.ActionName);
         }

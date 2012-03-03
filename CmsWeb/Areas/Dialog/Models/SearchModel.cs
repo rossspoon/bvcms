@@ -41,11 +41,11 @@ namespace CmsWeb.Models
 
         public string HelpLink(string page)
         {
-            return Util.HelpLink("SearchAdd_{0}".Fmt(page));
+            return Util.HelpLink("_SearchAdd_{0}".Fmt(page));
         }
         public string HelpLinkWithType(string page)
         {
-            return Util.HelpLink("SearchAdd_{0}_{1}".Fmt(page, type));
+            return Util.HelpLink("_SearchAdd_{0}_{1}".Fmt(page, type));
         }
         private IEnumerable<PeopleInfo> PeopleList(IQueryable<Person> query)
         {
@@ -181,7 +181,7 @@ namespace CmsWeb.Models
                 get
                 {
                     return "{0}|PeopleId: {1}|Mobile Phone: {2}|Work Phone: {3}|Home Phone: {4}|BirthDate: {5:d}|Join Date: {6:d}|Status: {7}|{8}"
-                        .Fmt(Name, PeopleId, CellPhone.FmtFone(), WorkPhone.FmtFone(), HomePhone.FmtFone(), BirthDate, JoinDate, MemberStatus, Email);
+                        .Fmt(Name, PeopleId, CellPhone.FmtFone(), WorkPhone.FmtFone(), HomePhone.FmtFone(), BirthDate, JoinDate, MemberStatus, CityStateZip);
                 }
             }
         }

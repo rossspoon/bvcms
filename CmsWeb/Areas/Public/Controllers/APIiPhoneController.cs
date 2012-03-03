@@ -23,20 +23,12 @@ namespace CmsWeb.Areas.Public.Controllers
     [ValidateInput(false)]
     public class APIiPhoneController : CmsController
     {
-        private string getUsername()
-        {
-            string username;
-            var auth = Request.Headers["Authorization"];
-            if (auth.HasValue())
-            {
-                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
-                    Convert.FromBase64String(auth.Substring(6))).Split(':');
-                username = cred[0];
-            }
-            else
-                username = Request.Headers["username"];
-            return username;
-        }
+		private const string STR_UserName2 = "UserName2";
+		private string UserName2
+		{
+			get { return HttpContext.Items[STR_UserName2] as String; }
+			set { HttpContext.Items[STR_UserName2] = value; }
+		}
         private bool Authenticate(string role = null, bool checkorgmembersonly = false)
         {
             string username, password;
@@ -53,35 +45,34 @@ namespace CmsWeb.Areas.Public.Controllers
                 username = Request.Headers["username"];
                 password = Request.Headers["password"];
             }
+			var u = CmsWeb.Models.AccountModel.AuthenticateLogon(username, password, Request.Url.OriginalString);
+			if (u is string)
+				return false;
+			var user = u as User;
             var roles = CMSRoleProvider.provider;
-            var ret = false;
-            if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
-                ret = true;
-            else
-                ret = CMSMembershipProvider.provider.ValidateUser(username, password);
-            if (ret && role.HasValue() && roles.RoleExists(role))
+            if (roles.RoleExists(role))
             {
-                CmsWeb.Models.AccountModel.SetUserInfo(username, Session);
-                if (!roles.IsUserInRole(username, role))
-                    ret = false;
+				if (!roles.IsUserInRole(user.Username, role))
+					return false;
             }
-            if (ret)
-                if (checkorgmembersonly)
-                    if (!Util2.OrgMembersOnly)
+			UserName2 = user.Username;
+			CmsWeb.Models.AccountModel.SetUserInfo(user.Username, Session);
+            if (checkorgmembersonly)
+                if (!Util2.OrgMembersOnly)
+                {
+                    if (roles.IsUserInRole(username, "OrgMembersOnly"))
                     {
-                        if (roles.IsUserInRole(username, "OrgMembersOnly"))
-                        {
-                            Util2.OrgMembersOnly = true;
-                            DbUtil.Db.SetOrgMembersOnly();
-                        }
+                        Util2.OrgMembersOnly = true;
+                        DbUtil.Db.SetOrgMembersOnly();
                     }
-                    else if (!Util2.OrgLeadersOnly)
-                        if (roles.IsUserInRole(username, "OrgLeadersOnly"))
-                        {
-                            Util2.OrgLeadersOnly = true;
-                            DbUtil.Db.SetOrgLeadersOnly();
-                        }
-            return ret;
+                }
+                else if (!Util2.OrgLeadersOnly)
+                    if (roles.IsUserInRole(username, "OrgLeadersOnly"))
+                    {
+                        Util2.OrgLeadersOnly = true;
+                        DbUtil.Db.SetOrgLeadersOnly();
+                    }
+            return true;
         }
         public ActionResult FetchImage(int id)
         {
@@ -94,21 +85,9 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Search(string name, string comm, string addr)
         {
-            if (!Authenticate())
+            if (!Authenticate(checkorgmembersonly: true))
                 return Content("not authorized");
-            var uname = getUsername();
-            CmsWeb.Models.AccountModel.SetUserInfo(uname, Session);
 
-            if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgMembersOnly"))
-            {
-                Util2.OrgMembersOnly = true;
-                DbUtil.Db.SetOrgMembersOnly();
-            }
-            else if (!Util2.OrgLeadersOnly && CMSRoleProvider.provider.IsUserInRole(name, "OrgLeadersOnly"))
-            {
-                Util2.OrgLeadersOnly = true;
-                DbUtil.Db.SetOrgLeadersOnly();
-            }
             var m = new SearchModel(name, comm, addr);
             return new SearchResult0(m.PeopleList(), m.Count);
         }
@@ -116,21 +95,9 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate() )
                 return Content("not authorized");
-            var uname = getUsername();
-            CmsWeb.Models.AccountModel.SetUserInfo(uname, Session);
-            if (!CMSRoleProvider.provider.IsUserInRole(uname, "Access"))
+            if (!CMSRoleProvider.provider.IsUserInRole(UserName2, "Access"))
                 return Content("not authorized");
 
-            if (!Util2.OrgMembersOnly && CMSRoleProvider.provider.IsUserInRole(uname, "OrgMembersOnly"))
-            {
-                Util2.OrgMembersOnly = true;
-                DbUtil.Db.SetOrgMembersOnly();
-            }
-            else if (!Util2.OrgLeadersOnly && CMSRoleProvider.provider.IsUserInRole(uname, "OrgLeadersOnly"))
-            {
-                Util2.OrgLeadersOnly = true;
-                DbUtil.Db.SetOrgLeadersOnly();
-            }
             var m = new SearchModel(name, comm, addr);
             return new SearchResult(m.PeopleList(), m.Count);
         }
@@ -144,9 +111,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = getUsername();
-            CmsWeb.Models.AccountModel.SetUserInfo(uname, Session);
-            if (!CMSRoleProvider.provider.IsUserInRole(uname, "Attendance"))
+            if (!CMSRoleProvider.provider.IsUserInRole(UserName2, "Attendance"))
                 return new OrgResult(null);
             return new OrgResult(Util.UserPeopleId);
         }
@@ -157,8 +122,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = getUsername();
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == UserName2);
             var dt = DateTime.Parse(datetime);
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
             if (meeting == null)
@@ -309,8 +273,6 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = getUsername();
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
             var dt = DateTime.Parse(datetime);
             return new RollListResult(id, dt);
         }
@@ -320,9 +282,8 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = getUsername();
             var dt = DateTime.Parse(datetime);
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == UserName2);
             RecordAttend2Extracted(id, PeopleId, Present, dt, u);
             return new EmptyResult();
         }
@@ -332,9 +293,8 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
-            var uname = getUsername();
             var dt = DateTime.Parse(datetime);
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == uname);
+            var u = DbUtil.Db.Users.Single(uu => uu.Username == UserName2);
 
             RecordAttend2Extracted(id, PeopleId, true, dt, u);
             return new RollListResult(id, dt);

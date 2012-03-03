@@ -296,12 +296,12 @@ namespace CmsWeb.Areas.Public.Controllers
             const string STR_NotGood = "not good";
             if (!PeopleId.HasValue)
                 return Content(STR_NotGood);
-            var guid = new Guid(Request.Headers["Guid"].ToString());
-            var tok = DbUtil.Db.TemporaryTokens.SingleOrDefault(tt => tt.Id == guid);
-            if (tok == null)
-                return Content(STR_NotGood);
-            if (Util.Now.Subtract(tok.CreatedOn).TotalHours > 20 || tok.Expired)
-                return Content(STR_NotGood);
+            //var guid = new Guid(Request.Headers["Guid"].ToString());
+            //var tok = DbUtil.Db.TemporaryTokens.SingleOrDefault(tt => tt.Id == guid);
+            //if (tok == null)
+            //    return Content(STR_NotGood);
+            //if (Util.Now.Subtract(tok.CreatedOn).TotalHours > 20 || tok.Expired)
+            //    return Content(STR_NotGood);
             var person = DbUtil.Db.People.Single(pp => pp.PeopleId == PeopleId);
             if (person.Picture == null)
                 person.Picture = new Picture();

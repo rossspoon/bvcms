@@ -165,6 +165,7 @@ namespace CmsData.API
 			public Address FamilyAddress { get; set; }
 			public Address PersonalAddress { get; set; }
 			public int AddressTypeId { get; set; }
+			public List<string> Usernames { get; set; }
 		}
 		public Person GetPersonData(int id)
 		{
@@ -250,7 +251,9 @@ namespace CmsData.API
 							BadAddressFlag = p.BadAddressFlag,
 							AddressFromDate = p.AddressFromDate,
 							AddressToDate = p.AddressToDate
-						}
+						},
+						Usernames = (from u in p.Users
+									 select u.Username).ToList()
 					};
 			return q.Take(100);
 		}

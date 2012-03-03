@@ -217,16 +217,11 @@
     <Compile Include="AuthorizeNet.cs" />
     <Compile Include="Batch\ExpressionVisitor.cs" />
     <Compile Include="Batch\LinqToSqlExtensions.cs" />
-    <Compile Include="Blog.cs" />
-    <Compile Include="BlogCategoryController.cs" />
-    <Compile Include="BlogComment.cs" />
-    <Compile Include="BlogPost.cs" />
     <Compile Include="CMSMembershipProvider.cs" />
     <Compile Include="CMSRoleProvider.cs" />
     <Compile Include="Codes.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="ActivityLog.cs" />
-    <Compile Include="ContentService.cs" />
     <Compile Include="APIFunctions.cs" />
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
@@ -330,45 +325,18 @@
     <Compile Include="RecReg.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Session2.cs" />
-    <Compile Include="Forum.cs" />
-    <Compile Include="ForumEntry.cs" />
-    <Compile Include="Generated\Blog.cs" />
-    <Compile Include="Generated\BlogCategory.cs" />
-    <Compile Include="Generated\BlogCategoryXref.cs" />
-    <Compile Include="Generated\BlogComment.cs" />
-    <Compile Include="Generated\BlogNotify.cs" />
-    <Compile Include="Generated\BlogPost.cs" />
     <Compile Include="Generated\Campu.cs" />
     <Compile Include="Generated\CardIdentifier.cs" />
     <Compile Include="Generated\CheckInTime.cs" />
     <Compile Include="Generated\DUser.cs" />
-    <Compile Include="Generated\Forum.cs" />
-    <Compile Include="Generated\ForumEntry.cs" />
-    <Compile Include="Generated\ForumNotify.cs" />
-    <Compile Include="Generated\ForumUserRead.cs" />
     <Compile Include="Generated\Functions\VerseSummaryForCategory2.cs" />
-    <Compile Include="Generated\Group.cs" />
-    <Compile Include="Generated\GroupRole.cs" />
-    <Compile Include="Generated\Invitation.cs" />
     <Compile Include="Generated\LoveRespect.cs" />
     <Compile Include="Generated\MOBSReg.cs" />
-    <Compile Include="Generated\OtherNotify.cs" />
-    <Compile Include="Generated\PageContent.cs" />
-    <Compile Include="Generated\PageVisit.cs" />
-    <Compile Include="Generated\ParaContent.cs" />
-    <Compile Include="Generated\PendingNotification.cs" />
-    <Compile Include="Generated\PodCast.cs" />
-    <Compile Include="Generated\PrayerSlot.cs" />
     <Compile Include="Generated\ReadPlan.cs" />
     <Compile Include="Generated\SaleItem.cs" />
     <Compile Include="Generated\SaleTransaction.cs" />
     <Compile Include="Generated\ShirtSize.cs" />
-    <Compile Include="Generated\TemporaryToken.cs" />
     <Compile Include="Generated\UploadAuthenticationXref.cs" />
-    <Compile Include="Generated\UserGroupRole.cs" />
-    <Compile Include="Generated\Verse.cs" />
-    <Compile Include="Generated\VerseCategory.cs" />
-    <Compile Include="Generated\VerseCategoryXref.cs" />
     <Compile Include="Generated\Views\BlogCategoriesView.cs" />
     <Compile Include="Generated\Views\OrphanedImage.cs" />
     <Compile Include="Generated\Views\PodcastSummary.cs" />
@@ -376,11 +344,7 @@
     <Compile Include="Generated\Views\VerseCategoriesView.cs" />
     <Compile Include="Generated\Views\VerseSummary.cs" />
     <Compile Include="Generated\Word.cs" />
-    <Compile Include="Group.cs" />
-    <Compile Include="Invitation.cs" />
     <Compile Include="MembershipService.cs" />
-    <Compile Include="PageContent.cs" />
-    <Compile Include="PodCast.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -443,7 +407,6 @@
     <Compile Include="Generated\TaskListOwner.cs" />
     <Compile Include="Generated\TaskStatus.cs" />
     <Compile Include="OrganizationMember.cs" />
-    <Compile Include="Resource1.Designer.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Generated\Task.cs" />
     <Compile Include="DbUtil.cs" />
@@ -535,10 +498,6 @@
     <Compile Include="QueryBuilder\FieldType.cs" />
     <Compile Include="QueryBuilder\QueryType.cs" />
     <Compile Include="Tag.cs" />
-    <Compile Include="Verse.cs" />
-    <Compile Include="VerseCategory.cs" />
-    <Compile Include="VerseCategoryXref.cs" />
-    <Compile Include="VerseSummaryController.cs" />
     <Compile Include="APIWriter.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -557,7 +516,6 @@
     <None Include="Service References\SageVaultCheckAPI\wsVaultVirtualCheck.wsdl" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="books.xml" />
     <Content Include="QueryBuilder\FieldMap2.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -599,7 +557,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource1.resx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

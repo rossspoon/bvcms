@@ -274,11 +274,7 @@ namespace CmsData
 		
    		private EntitySet< MemberDocForm> _MemberDocForms;
 		
-   		private EntitySet< PendingNotification> _PendingNotifications;
-		
    		private EntitySet< PeopleExtra> _PeopleExtras;
-		
-   		private EntitySet< PrayerSlot> _PrayerSlots;
 		
    		private EntitySet< RecReg> _RecRegs;
 		
@@ -733,11 +729,7 @@ namespace CmsData
 			
 			this._MemberDocForms = new EntitySet< MemberDocForm>(new Action< MemberDocForm>(this.attach_MemberDocForms), new Action< MemberDocForm>(this.detach_MemberDocForms)); 
 			
-			this._PendingNotifications = new EntitySet< PendingNotification>(new Action< PendingNotification>(this.attach_PendingNotifications), new Action< PendingNotification>(this.detach_PendingNotifications)); 
-			
 			this._PeopleExtras = new EntitySet< PeopleExtra>(new Action< PeopleExtra>(this.attach_PeopleExtras), new Action< PeopleExtra>(this.detach_PeopleExtras)); 
-			
-			this._PrayerSlots = new EntitySet< PrayerSlot>(new Action< PrayerSlot>(this.attach_PrayerSlots), new Action< PrayerSlot>(this.detach_PrayerSlots)); 
 			
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
@@ -3499,32 +3491,12 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_PendingNotifications_People", Storage="_PendingNotifications", OtherKey="PeopleId")]
-   		public EntitySet< PendingNotification> PendingNotifications
-   		{
-   		    get { return this._PendingNotifications; }
-
-			set	{ this._PendingNotifications.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_PeopleExtra_People", Storage="_PeopleExtras", OtherKey="PeopleId")]
    		public EntitySet< PeopleExtra> PeopleExtras
    		{
    		    get { return this._PeopleExtras; }
 
 			set	{ this._PeopleExtras.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_PrayerSlot_People", Storage="_PrayerSlots", OtherKey="PeopleId")]
-   		public EntitySet< PrayerSlot> PrayerSlots
-   		{
-   		    get { return this._PrayerSlots; }
-
-			set	{ this._PrayerSlots.Assign(value); }
 
    		}
 
@@ -4813,19 +4785,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_PendingNotifications(PendingNotification entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = this;
-		}
-
-		private void detach_PendingNotifications(PendingNotification entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = null;
-		}
-
-		
 		private void attach_PeopleExtras(PeopleExtra entity)
 		{
 			this.SendPropertyChanging();
@@ -4833,19 +4792,6 @@ namespace CmsData
 		}
 
 		private void detach_PeopleExtras(PeopleExtra entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = null;
-		}
-
-		
-		private void attach_PrayerSlots(PrayerSlot entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = this;
-		}
-
-		private void detach_PrayerSlots(PrayerSlot entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

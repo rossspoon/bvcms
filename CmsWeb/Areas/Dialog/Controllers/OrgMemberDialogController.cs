@@ -63,7 +63,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 om.ShirtSize = om.ShirtSize.MaxString(20);
                 DbUtil.Db.SubmitChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewData["MemberTypes"] = QueryModel.ConvertToSelect(CodeValueController.MemberTypeCodes(), "Id");
                 return View("Edit", om);
