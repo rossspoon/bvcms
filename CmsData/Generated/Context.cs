@@ -54,10 +54,6 @@ namespace CmsData
         partial void UpdateAuditValue(AuditValue instance);
         partial void DeleteAuditValue(AuditValue instance);
         
-        partial void InsertBadET(BadET instance);
-        partial void UpdateBadET(BadET instance);
-        partial void DeleteBadET(BadET instance);
-        
         partial void InsertBaptismStatus(BaptismStatus instance);
         partial void UpdateBaptismStatus(BaptismStatus instance);
         partial void DeleteBaptismStatus(BaptismStatus instance);
@@ -270,10 +266,6 @@ namespace CmsData
         partial void UpdateJoinType(JoinType instance);
         partial void DeleteJoinType(JoinType instance);
         
-        partial void InsertLoveRespect(LoveRespect instance);
-        partial void UpdateLoveRespect(LoveRespect instance);
-        partial void DeleteLoveRespect(LoveRespect instance);
-        
         partial void InsertMaritalStatus(MaritalStatus instance);
         partial void UpdateMaritalStatus(MaritalStatus instance);
         partial void DeleteMaritalStatus(MaritalStatus instance);
@@ -313,10 +305,6 @@ namespace CmsData
         partial void InsertMinistry(Ministry instance);
         partial void UpdateMinistry(Ministry instance);
         partial void DeleteMinistry(Ministry instance);
-        
-        partial void InsertMOBSReg(MOBSReg instance);
-        partial void UpdateMOBSReg(MOBSReg instance);
-        partial void DeleteMOBSReg(MOBSReg instance);
         
         partial void InsertNameSuffix(NameSuffix instance);
         partial void UpdateNameSuffix(NameSuffix instance);
@@ -386,10 +374,6 @@ namespace CmsData
         partial void UpdatePostalLookup(PostalLookup instance);
         partial void DeletePostalLookup(PostalLookup instance);
         
-        partial void InsertPrayerItem(PrayerItem instance);
-        partial void UpdatePrayerItem(PrayerItem instance);
-        partial void DeletePrayerItem(PrayerItem instance);
-        
         partial void InsertPreference(Preference instance);
         partial void UpdatePreference(Preference instance);
         partial void DeletePreference(Preference instance);
@@ -454,14 +438,6 @@ namespace CmsData
         partial void UpdateRssFeed(RssFeed instance);
         partial void DeleteRssFeed(RssFeed instance);
         
-        partial void InsertSaleItem(SaleItem instance);
-        partial void UpdateSaleItem(SaleItem instance);
-        partial void DeleteSaleItem(SaleItem instance);
-        
-        partial void InsertSaleTransaction(SaleTransaction instance);
-        partial void UpdateSaleTransaction(SaleTransaction instance);
-        partial void DeleteSaleTransaction(SaleTransaction instance);
-        
         partial void InsertSecurityCode(SecurityCode instance);
         partial void UpdateSecurityCode(SecurityCode instance);
         partial void DeleteSecurityCode(SecurityCode instance);
@@ -473,10 +449,6 @@ namespace CmsData
         partial void InsertShirtSize(ShirtSize instance);
         partial void UpdateShirtSize(ShirtSize instance);
         partial void DeleteShirtSize(ShirtSize instance);
-        
-        partial void InsertSoulMate(SoulMate instance);
-        partial void UpdateSoulMate(SoulMate instance);
-        partial void DeleteSoulMate(SoulMate instance);
         
         partial void InsertStateLookup(StateLookup instance);
         partial void UpdateStateLookup(StateLookup instance);
@@ -537,10 +509,6 @@ namespace CmsData
         partial void InsertUser(User instance);
         partial void UpdateUser(User instance);
         partial void DeleteUser(User instance);
-        
-        partial void InsertVBSApp(VBSApp instance);
-        partial void UpdateVBSApp(VBSApp instance);
-        partial void DeleteVBSApp(VBSApp instance);
         
         partial void InsertVolApplicationStatus(VolApplicationStatus instance);
         partial void UpdateVolApplicationStatus(VolApplicationStatus instance);
@@ -667,12 +635,6 @@ namespace CmsData
 		public Table< AuditValue> AuditValues
 		{
 			get	{ return this.GetTable< AuditValue>(); }
-
-		}
-
-		public Table< BadET> BadETs
-		{
-			get	{ return this.GetTable< BadET>(); }
 
 		}
 
@@ -994,12 +956,6 @@ namespace CmsData
 
 		}
 
-		public Table< LoveRespect> LoveRespects
-		{
-			get	{ return this.GetTable< LoveRespect>(); }
-
-		}
-
 		public Table< MaritalStatus> MaritalStatuses
 		{
 			get	{ return this.GetTable< MaritalStatus>(); }
@@ -1057,12 +1013,6 @@ namespace CmsData
 		public Table< Ministry> Ministries
 		{
 			get	{ return this.GetTable< Ministry>(); }
-
-		}
-
-		public Table< MOBSReg> MOBSRegs
-		{
-			get	{ return this.GetTable< MOBSReg>(); }
 
 		}
 
@@ -1168,12 +1118,6 @@ namespace CmsData
 
 		}
 
-		public Table< PrayerItem> PrayerItems
-		{
-			get	{ return this.GetTable< PrayerItem>(); }
-
-		}
-
 		public Table< Preference> Preferences
 		{
 			get	{ return this.GetTable< Preference>(); }
@@ -1270,18 +1214,6 @@ namespace CmsData
 
 		}
 
-		public Table< SaleItem> SaleItems
-		{
-			get	{ return this.GetTable< SaleItem>(); }
-
-		}
-
-		public Table< SaleTransaction> SaleTransactions
-		{
-			get	{ return this.GetTable< SaleTransaction>(); }
-
-		}
-
 		public Table< SecurityCode> SecurityCodes
 		{
 			get	{ return this.GetTable< SecurityCode>(); }
@@ -1297,12 +1229,6 @@ namespace CmsData
 		public Table< ShirtSize> ShirtSizes
 		{
 			get	{ return this.GetTable< ShirtSize>(); }
-
-		}
-
-		public Table< SoulMate> SoulMates
-		{
-			get	{ return this.GetTable< SoulMate>(); }
 
 		}
 
@@ -1393,12 +1319,6 @@ namespace CmsData
 		public Table< User> Users
 		{
 			get	{ return this.GetTable< User>(); }
-
-		}
-
-		public Table< VBSApp> VBSApps
-		{
-			get	{ return this.GetTable< VBSApp>(); }
 
 		}
 

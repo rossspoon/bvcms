@@ -30,9 +30,9 @@ namespace CmsWeb.Areas.Main.Controllers
 			Response.NoCache();
 			var m = new ContactSearchModel();
 
-			if (Session[STR_ContactSearch].IsNotNull())
+			var os = Session[STR_ContactSearch] as ContactSearchInfo;
+			if (os != null)
 			{
-				var os = Session[STR_ContactSearch] as ContactSearchInfo;
 				m.ContactReason = os.ContactReasonId;
 				m.ContacteeName = os.ContacteeName;
 				m.ContactorName = os.ContactorName;

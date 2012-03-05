@@ -136,15 +136,11 @@ namespace CmsData
 		
    		private EntitySet< Attend> _Attends;
 		
-   		private EntitySet< BadET> _BadETs;
-		
    		private EntitySet< CheckInTime> _CheckInTimes;
 		
    		private EntitySet< Coupon> _Coupons;
 		
    		private EntitySet< DivOrg> _DivOrgs;
-		
-   		private EntitySet< LoveRespect> _LoveRespects;
 		
    		private EntitySet< Meeting> _Meetings;
 		
@@ -353,15 +349,11 @@ namespace CmsData
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
-			this._BadETs = new EntitySet< BadET>(new Action< BadET>(this.attach_BadETs), new Action< BadET>(this.detach_BadETs)); 
-			
 			this._CheckInTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckInTimes), new Action< CheckInTime>(this.detach_CheckInTimes)); 
 			
 			this._Coupons = new EntitySet< Coupon>(new Action< Coupon>(this.attach_Coupons), new Action< Coupon>(this.detach_Coupons)); 
 			
 			this._DivOrgs = new EntitySet< DivOrg>(new Action< DivOrg>(this.attach_DivOrgs), new Action< DivOrg>(this.detach_DivOrgs)); 
-			
-			this._LoveRespects = new EntitySet< LoveRespect>(new Action< LoveRespect>(this.attach_LoveRespects), new Action< LoveRespect>(this.detach_LoveRespects)); 
 			
 			this._Meetings = new EntitySet< Meeting>(new Action< Meeting>(this.attach_Meetings), new Action< Meeting>(this.detach_Meetings)); 
 			
@@ -1664,16 +1656,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_BadET_Organizations", Storage="_BadETs", OtherKey="OrgId")]
-   		public EntitySet< BadET> BadETs
-   		{
-   		    get { return this._BadETs; }
-
-			set	{ this._BadETs.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_CheckInTimes_Organizations", Storage="_CheckInTimes", OtherKey="OrganizationId")]
    		public EntitySet< CheckInTime> CheckInTimes
    		{
@@ -1700,16 +1682,6 @@ namespace CmsData
    		    get { return this._DivOrgs; }
 
 			set	{ this._DivOrgs.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_LoveRespect_Organizations", Storage="_LoveRespects", OtherKey="OrgId")]
-   		public EntitySet< LoveRespect> LoveRespects
-   		{
-   		    get { return this._LoveRespects; }
-
-			set	{ this._LoveRespects.Assign(value); }
 
    		}
 
@@ -2089,19 +2061,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_BadETs(BadET entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-
-		private void detach_BadETs(BadET entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-
-		
 		private void attach_CheckInTimes(CheckInTime entity)
 		{
 			this.SendPropertyChanging();
@@ -2135,19 +2094,6 @@ namespace CmsData
 		}
 
 		private void detach_DivOrgs(DivOrg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-
-		
-		private void attach_LoveRespects(LoveRespect entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-
-		private void detach_LoveRespects(LoveRespect entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

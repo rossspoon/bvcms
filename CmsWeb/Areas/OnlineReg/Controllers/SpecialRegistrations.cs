@@ -4,57 +4,70 @@ using System.Web.Mvc;
 using CmsData;
 using CmsWeb.Models;
 using UtilityExtensions;
-using CmsWeb.Areas.Manage.Controllers;
-using System.Text;
 using System.Collections.Generic;
 using CmsData.Codes;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
-    public partial class OnlineRegController : CmsController
+    public partial class OnlineRegController
     {
-        public ActionResult PickSlots(int? id)
+        public ActionResult ManageVolunteer(string id)
         {
-            if (!id.HasValue)
-                return View("Unknown");
-
-            var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
-            if (ed == null)
-                return Content("no pending confirmation found");
-            var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
-            m.ParseSettings();
-            return View(new SlotModel(m.List[0].PeopleId.Value, m.orgid.Value));
-        }
-        [HttpPost]
-        public ActionResult ToggleSlot(int id, int oid, string slot, bool ck)
-        {
-            var m = new SlotModel(id, oid);
-            var om = m.org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == id);
-			if (om == null)
-			{
-				om = OrganizationMember.InsertOrgMembers(DbUtil.Db,
-					oid, id, 220, Util.Now, null, false);
-				//DbUtil.Db.UpdateMainFellowship(oid);
-			}
-            if (ck)
-                om.AddToGroup(DbUtil.Db, slot);
+            if (!id.HasValue())
+                return Content("bad link");
+            VolunteerModel m;
+            var td = TempData["ps"];
+            if (td != null)
+                m = new VolunteerModel(orgId: id.ToInt(), peopleId: td.ToInt());
             else
-                om.RemoveFromGroup(DbUtil.Db, slot);
-            DbUtil.DbDispose();
-            m = new SlotModel(id, oid);
-            var slotinfo = m.NewSlot(slot);
-            if (slotinfo.slot == null)
-                return new EmptyResult();
-            ViewData["returnval"] = slotinfo.status;
-            return View("PickSlot", slotinfo);
+            {
+                var guid = id.ToGuid();
+                if (guid == null)
+                    return Content("invalid link");
+                var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+                if (ot == null)
+                    return Content("invalid link");
+#if DEBUG
+#else
+                if (ot.Used)
+                    return Content("link used");
+#endif
+                if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+                    return Content("link expired");
+                var a = ot.Querystring.Split(',');
+                m = new VolunteerModel(orgId: a[0].ToInt(), peopleId: a[1].ToInt());
+                id = a[0];
+                ot.Used = true;
+                DbUtil.Db.SubmitChanges();
+            }
+            SetHeaders(id.ToInt());
+            DbUtil.LogActivity("Pick Slots: {0} ({1})".Fmt(m.Org.OrganizationName, m.Person.Name));
+            return View(m);
         }
+		//[HttpPost]
+		//public ActionResult ToggleSlot(int id, int oid, string slot, bool ck)
+		//{
+		//    var m = new VolunteerModel(id, oid);
+		//    var om = m.org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == id) ??
+		//             OrganizationMember.InsertOrgMembers(DbUtil.Db,
+		//                        oid, id, 220, Util.Now, null, false);
+		//    if (ck)
+		//        om.AddToGroup(DbUtil.Db, slot);
+		//    else
+		//        om.RemoveFromGroup(DbUtil.Db, slot);
+		//    DbUtil.DbDispose();
+		//    m = new VolunteerModel(id, oid);
+		//    var slotinfo = m.NewSlot(slot);
+		//    if (slotinfo.slot == null)
+		//        return new EmptyResult();
+		//    ViewData["returnval"] = slotinfo.status;
+		//    return View("PickSlot", slotinfo);
+		//}
         public ActionResult ManageSubscriptions(string id)
         {
             if (!id.HasValue())
                 return Content("bad link");
-            ManageSubsModel m = null;
+            ManageSubsModel m;
             var td = TempData["ms"];
             if (td != null)
                 m = new ManageSubsModel(td.ToInt(), id.ToInt());
@@ -236,7 +249,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			m.testing = true;
 #else
 #endif
-			var details = CmsController.RenderPartialViewToString(this, "ManageGiving2", m);
+			var details = RenderPartialViewToString(this, "ManageGiving2", m);
 
             var staff = DbUtil.Db.StaffPeopleForOrg(m.orgid)[0];
             var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
@@ -261,29 +274,44 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             SetHeaders(m.orgid);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ConfirmSlots(int id, int orgid)
+//        [AcceptVerbs(HttpVerbs.Post)]
+//        public ActionResult ConfirmSlots(int id, int orgid)
+//        {
+//            var m = new VolunteerModel(id, orgid);
+//            var slots = string.Join("<br />\n", m.MySlots());
+//            var Db = DbUtil.Db;
+//            Db.Email(Db.StaffEmailForOrg(m.org.OrganizationId),
+//                m.person, "Commitment confirmation",
+//@"Thank you for committing to {0}. You have the following slots:<br/>
+//{1}".Fmt(m.org.OrganizationName, slots));
+//            Db.Email(m.person.FromEmail,
+//                Db.PeopleFromPidString(m.org.NotifyIds),
+//                "commitment received for " + m.org.OrganizationName,
+//                "{0} committed to:<br/>\n{1}".Fmt(m.org.OrganizationName, slots));
+//            return RedirectToAction("ConfirmSlots", new { id = m.org.OrganizationId });
+//        }
+        [HttpPost]
+        public ActionResult ConfirmVolunteerSlots(VolunteerModel m)
         {
-            var m = new SlotModel(id, orgid);
-            var slots = string.Join("<br />\n", m.MySlots());
-            var Db = DbUtil.Db;
-            Db.Email(Db.StaffEmailForOrg(m.org.OrganizationId),
-                m.person, "Commitment confirmation",
-@"Thank you for committing to {0}. You have the following slots:<br/>
-{1}".Fmt(m.org.OrganizationName, slots));
-            Db.Email(m.person.FromEmail,
-                Db.PeopleFromPidString(m.org.NotifyIds),
-                "commitment received for " + m.org.OrganizationName,
-                "{0} committed to:<br/>\n{1}".Fmt(m.org.OrganizationName, slots));
-            return RedirectToAction("ConfirmSlots", new { id = m.org.OrganizationId });
-        }
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult ConfirmSlots(int id)
-        {
-            var org = DbUtil.Db.LoadOrganizationById(id);
-            ViewData["Organization"] = org.OrganizationName;
-            SetHeaders(org.OrganizationId);
-            return View();
+            m.UpdateCommitments();
+            List<Person> Staff = null;
+        	Staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId);
+            if (Staff.Count == 0)
+				Staff = DbUtil.Db.AdminPeople();
+
+        	var summary = m.Summary(this);
+	        DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
+	                "Volunteer Commitments Confirmation",
+@"Thank you for managing your Volunteer Commitments to {0}<br/>
+You have the following subscriptions:<br/>
+{1}".Fmt(m.Org.OrganizationName, summary));
+
+            DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed subscriptions to {1}<br/>
+The following Committments:<br/>
+{2}".Fmt(m.Person.Name, m.Org.OrganizationName, summary));
+
+            SetHeaders(m.OrgId);
+            return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ConfirmSubscriptions(ManageSubsModel m)

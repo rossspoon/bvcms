@@ -310,7 +310,7 @@ table.aspgrid tr td,
 table.aspgrid tr th {
 	padding : 4px; 
 }
-.edit {
+.displayedit.edit {
 	position: absolute;
 	right: 0px;
 	margin-right: 22px;

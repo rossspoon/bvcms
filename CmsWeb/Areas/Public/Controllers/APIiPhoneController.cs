@@ -35,7 +35,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var auth = Request.Headers["Authorization"];
             if (auth.HasValue())
             {
-                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
+                var cred = System.Text.Encoding.ASCII.GetString(
                     Convert.FromBase64String(auth.Substring(6))).Split(':');
                 username = cred[0];
                 password = cred[1];
@@ -45,12 +45,14 @@ namespace CmsWeb.Areas.Public.Controllers
                 username = Request.Headers["username"];
                 password = Request.Headers["password"];
             }
-			var u = CmsWeb.Models.AccountModel.AuthenticateLogon(username, password, Request.Url.OriginalString);
+			var u = Models.AccountModel.AuthenticateLogon(username, password, Request.Url.OriginalString);
 			if (u is string)
 				return false;
 			var user = u as User;
+			if (user == null)
+				return false;
             var roles = CMSRoleProvider.provider;
-            if (roles.RoleExists(role))
+            if (role != null && roles.RoleExists(role))
             {
 				if (!roles.IsUserInRole(user.Username, role))
 					return false;
@@ -117,8 +119,6 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         [HttpPost]
         public ActionResult RollList( int id, string datetime )
-            // id = OrganizationId
-            // datetime = MeetingDate
         {
             if (!Authenticate())
                 return Content("not authorized");
@@ -155,7 +155,6 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         [HttpPost]
         public ActionResult RecordAttend( int id, int PeopleId, bool Present )
-            // id = MeetingId
         {
             if (!Authenticate())
                 return Content("not authorized");
@@ -165,7 +164,6 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         [HttpPost]
         public ActionResult RecordVisit( int id, int PeopleId )
-            // id = MeetingId
         {
             if (!Authenticate())
                 return Content("not authorized");
@@ -204,7 +202,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (m.goesby == "(Null)")
                 m.goesby = null;
             var position = PositionInFamily.Child;
-            if (Util.Age0(m.dob) >= 18)
+            if (m.dob.Age0() >= 18)
                 if (f.People.Count(per =>
                      per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
                      < 2)
@@ -260,14 +258,12 @@ namespace CmsWeb.Areas.Public.Controllers
             //}
             return Content("OK");
         }
-        private string Trim(string s)
+        private static string Trim(string s)
         {
-            if (s.HasValue())
-                return s.Trim();
-            else
-                return s;
+        	return s.HasValue() ? s.Trim() : s;
         }
-        [HttpPost]
+
+		[HttpPost]
         public ActionResult RollList2(int id, string datetime)
             // id = OrganizationId
         {

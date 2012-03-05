@@ -18,7 +18,7 @@ using System.Xml.Linq;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
-    public partial class OnlineRegController : CmsController
+    public partial class OnlineRegController
     {
         public class ConfirmTestInfo
         {

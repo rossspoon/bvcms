@@ -250,8 +250,6 @@ namespace CmsData
 		
    		private EntitySet< Family> _FamiliesHeaded2;
 		
-   		private EntitySet< MOBSReg> _MOBSRegs;
-		
    		private EntitySet< Attend> _Attends;
 		
    		private EntitySet< RecurringGiving> _RecurringGivings;
@@ -279,8 +277,6 @@ namespace CmsData
    		private EntitySet< RecReg> _RecRegs;
 		
    		private EntitySet< RecurringAmount> _RecurringAmounts;
-		
-   		private EntitySet< SaleTransaction> _SaleTransactions;
 		
    		private EntitySet< TagShare> _TagShares;
 		
@@ -705,8 +701,6 @@ namespace CmsData
 			
 			this._FamiliesHeaded2 = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded2), new Action< Family>(this.detach_FamiliesHeaded2)); 
 			
-			this._MOBSRegs = new EntitySet< MOBSReg>(new Action< MOBSReg>(this.attach_MOBSRegs), new Action< MOBSReg>(this.detach_MOBSRegs)); 
-			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
 			this._RecurringGivings = new EntitySet< RecurringGiving>(new Action< RecurringGiving>(this.attach_RecurringGivings), new Action< RecurringGiving>(this.detach_RecurringGivings)); 
@@ -734,8 +728,6 @@ namespace CmsData
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
 			this._RecurringAmounts = new EntitySet< RecurringAmount>(new Action< RecurringAmount>(this.attach_RecurringAmounts), new Action< RecurringAmount>(this.detach_RecurringAmounts)); 
-			
-			this._SaleTransactions = new EntitySet< SaleTransaction>(new Action< SaleTransaction>(this.attach_SaleTransactions), new Action< SaleTransaction>(this.detach_SaleTransactions)); 
 			
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
@@ -3371,16 +3363,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_Attender_People", Storage="_MOBSRegs", OtherKey="PeopleId")]
-   		public EntitySet< MOBSReg> MOBSRegs
-   		{
-   		    get { return this._MOBSRegs; }
-
-			set	{ this._MOBSRegs.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_AttendWithAbsents_TBL_PEOPLE_TBL", Storage="_Attends", OtherKey="PeopleId")]
    		public EntitySet< Attend> Attends
    		{
@@ -3517,16 +3499,6 @@ namespace CmsData
    		    get { return this._RecurringAmounts; }
 
 			set	{ this._RecurringAmounts.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_SaleTransaction_People", Storage="_SaleTransactions", OtherKey="PeopleId")]
-   		public EntitySet< SaleTransaction> SaleTransactions
-   		{
-   		    get { return this._SaleTransactions; }
-
-			set	{ this._SaleTransactions.Assign(value); }
 
    		}
 
@@ -4629,19 +4601,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_MOBSRegs(MOBSReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = this;
-		}
-
-		private void detach_MOBSRegs(MOBSReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = null;
-		}
-
-		
 		private void attach_Attends(Attend entity)
 		{
 			this.SendPropertyChanging();
@@ -4818,19 +4777,6 @@ namespace CmsData
 		}
 
 		private void detach_RecurringAmounts(RecurringAmount entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = null;
-		}
-
-		
-		private void attach_SaleTransactions(SaleTransaction entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = this;
-		}
-
-		private void detach_SaleTransactions(SaleTransaction entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

@@ -18,7 +18,7 @@ using CmsData.Codes;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
-    public partial class OnlineRegController : CmsController
+    public partial class OnlineRegController
     {
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ProcessPayment(int? id, PaymentForm pf)
@@ -206,6 +206,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 m.ConfirmManageSubscriptions();
                 ViewData["ManagingSubscriptions"] = true;
+                ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
+                confirm = "ConfirmAccount";
+            }
+            else if (m.ChoosingSlots())
+            {
+                m.ConfirmPickSlots();
+                ViewData["ManagingVolunteer"] = true;
                 ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
                 confirm = "ConfirmAccount";
             }

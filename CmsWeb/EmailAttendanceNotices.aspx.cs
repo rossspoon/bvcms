@@ -20,7 +20,7 @@ namespace CmsWeb
 {
     public partial class EmailAttendanceNotices : System.Web.UI.Page
     {
-        private CodeValueController CVController = new CodeValueController();
+        private readonly CodeValueController CVController = new CodeValueController();
         protected void Page_Load(object sender, EventArgs e)
         {
             Button1.Enabled = User.IsInRole("Attendance");
@@ -87,8 +87,8 @@ namespace CmsWeb
                     where m.OrganizationId == orgid || orgid == 0
                     where m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0
                     where m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid) || progid == 0
-                    where m.Organization.Meetings.Any(meeting => meeting.MeetingDate.Value.Date == date.Date)
-                    where m.MemberTypeId != MemberTypeCode.InActive
+                    where m.Organization.Meetings.Any(meeting => meeting.MeetingDate != null && meeting.MeetingDate.Value.Date == date.Date)
+                    where m.MemberType.AttendanceTypeId == AttendTypeCode.Leader
                     let u = m.Person.Users.FirstOrDefault(uu => uu.UserRoles.Any(r => r.Role.RoleName == "Access"))
                     where u != null
                     group m by m.PeopleId into g

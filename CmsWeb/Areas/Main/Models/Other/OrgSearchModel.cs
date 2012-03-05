@@ -94,7 +94,7 @@ namespace CmsWeb.Models
                      {
                          OrgId = o.OrganizationId,
                          Name = o.OrganizationName,
-                         Description = o.Description,
+                         o.Description,
                          Leader = o.LeaderName,
                          Members = o.MemberCount ?? 0,
                          Division = o.Division.Name,
@@ -111,7 +111,6 @@ namespace CmsWeb.Models
                          Gender = o.Gender.Description,
                          GradeAgeStart = o.GradeAgeStart ?? 0,
                          LastDayBeforeExtra = o.LastDayBeforeExtra.FormatDate2(),
-                         OnLineCatalogSort = o.OnLineCatalogSort ?? 0,
                          NoSecurityLabel = o.NoSecurityLabel ?? false,
                          NumCheckInLabels = o.NumCheckInLabels ?? 0,
                          NumWorkerCheckInLabels = o.NumWorkerCheckInLabels ?? 0,

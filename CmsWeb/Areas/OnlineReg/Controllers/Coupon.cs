@@ -9,7 +9,7 @@ using System.Text;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
-    public partial class OnlineRegController : CmsController
+    public partial class OnlineRegController
     {
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ApplyCoupon(int id, string Coupon)

@@ -17,7 +17,7 @@ using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
-    public partial class OnlineRegController : CmsController
+    public partial class OnlineRegController
     {
         public ActionResult PayDue(string q)
         {

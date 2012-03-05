@@ -299,7 +299,6 @@
     <Compile Include="Generated\Functions\Split.cs" />
     <Compile Include="Generated\Functions\SundayDate.cs" />
     <Compile Include="Generated\OneTimeLink.cs" />
-    <Compile Include="Generated\PrayerItem.cs" />
     <Compile Include="Generated\ProgDiv.cs" />
     <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="Generated\SecurityCode.cs" />
@@ -330,11 +329,7 @@
     <Compile Include="Generated\CheckInTime.cs" />
     <Compile Include="Generated\DUser.cs" />
     <Compile Include="Generated\Functions\VerseSummaryForCategory2.cs" />
-    <Compile Include="Generated\LoveRespect.cs" />
-    <Compile Include="Generated\MOBSReg.cs" />
     <Compile Include="Generated\ReadPlan.cs" />
-    <Compile Include="Generated\SaleItem.cs" />
-    <Compile Include="Generated\SaleTransaction.cs" />
     <Compile Include="Generated\ShirtSize.cs" />
     <Compile Include="Generated\UploadAuthenticationXref.cs" />
     <Compile Include="Generated\Views\BlogCategoriesView.cs" />
@@ -357,7 +352,6 @@
     </Compile>
     <Compile Include="RecLeague.cs" />
     <Compile Include="Generated\ActivityLog.cs" />
-    <Compile Include="Generated\BadET.cs" />
     <Compile Include="Generated\ChurchAttReportId.cs" />
     <Compile Include="Generated\Content.cs" />
     <Compile Include="Generated\Contribution.cs" />
@@ -379,9 +373,7 @@
     <Compile Include="Generated\Program.cs" />
     <Compile Include="Generated\RecReg.cs" />
     <Compile Include="Generated\Setting.cs" />
-    <Compile Include="Generated\SoulMate.cs" />
     <Compile Include="Generated\TagShare.cs" />
-    <Compile Include="Generated\VBSApp.cs" />
     <Compile Include="Generated\Views\Addr.cs" />
     <Compile Include="Generated\Views\Addr2.cs" />
     <Compile Include="Generated\Views\BadETView.cs" />

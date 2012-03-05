@@ -449,6 +449,28 @@ Total Fee paid for this registration session: {4:C}<br/>
                 Staff.First().FromEmail,
                 Util.ServerLink("/OnlineReg/ManageSubscriptions/"), "Manage Your Subscriptions", message);
         }
+        public void ConfirmPickSlots()
+        {
+            var p = List[0];
+            if (p.IsNew)
+                p.AddPerson(null, GetEntryPoint());
+            if (p.CreatingAccount == true)
+                p.CreateAccount();
+
+            var c = DbUtil.Content("OneTimeConfirmationVolunteer");
+            if (c == null)
+                c = new Content();
+
+            var message = Util.PickFirst(c.Body,
+                    @"Hi {name},
+<p>Here is your <a href=""{url}"">link</a> to manage your volunteer commitments. (note: it will only work once for security reasons)</p> ");
+
+            List<Person> Staff = null;
+            Staff = DbUtil.Db.StaffPeopleForDiv(orgid.Value);
+            p.SendOneTimeLink(
+                Staff.First().FromEmail,
+                Util.ServerLink("/OnlineReg/ManageVolunteer/"), "Manage Your Volunteer Commitments", message);
+        }
         public void ConfirmManagePledge()
         {
             var p = List[0];

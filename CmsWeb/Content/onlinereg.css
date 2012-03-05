@@ -384,3 +384,31 @@ div.instructions.find, div.instructions.options
 {
     width: 20em;
 }
+table.grid
+{
+	border-collapse: collapse;
+	text-align: left;
+}
+table.grid thead
+{
+	border-bottom: 2px solid #555;
+	font-weight: bold;
+	color: #555;
+}
+table.grid thead th, table.grid thead td
+{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+table.grid td
+{
+	padding: 5px;
+}
+table.grid td.center
+{
+    text-align: center;
+	padding: 5px;
+}
+.alt {
+	background-color: #EEE;
+}

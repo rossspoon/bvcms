@@ -103,6 +103,7 @@ ajaxmin Scripts/TestAPI.js -o Min\Scripts/TestAPI.js -clobber:true || pause
 ajaxmin Scripts/TransactionHistory.js -o Min\Scripts/TransactionHistory.js -clobber:true || pause
 ajaxmin Scripts/UserDialog.js -o Min\Scripts/UserDialog.js -clobber:true || pause
 ajaxmin Scripts/meeting.js -o Min\Scripts/meeting.js -clobber:true || pause
+ajaxmin Scripts/ManageVolunteer.js -o Min\Scripts/ManageVolunteer.js -clobber:true || pause
 ajaxmin Scripts/merge.js -o Min\Scripts/merge.js -clobber:true || pause
 ajaxmin Scripts/pickslots2.js -o Min\Scripts/pickslots2.js -clobber:true || pause
 ajaxmin Content/js/jquery.checkboxtree.js -o Min/content/js/jquery.checkboxtree.js -clobber:true || pause

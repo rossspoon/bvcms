@@ -1,18 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data.Linq;
 using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using System.Text;
-using System.Configuration;
 using UtilityExtensions;
-using System.Text.RegularExpressions;
 
 namespace CmsWeb.Models
 {
-    public class VolunteerModel
+    public class VolunteerModel2
     {
         private string _view;
         public string View
@@ -85,7 +81,7 @@ namespace CmsWeb.Models
 
         public void ValidateModel(ModelStateDictionary modelState)
         {
-            CmsWeb.Models.SearchPeopleModel
+            SearchPeopleModel
                 .ValidateFindPerson(modelState, first, last, birthday, email, phone);
             if (!phone.HasValue())
                 modelState.AddModelError("phone", "phone required");

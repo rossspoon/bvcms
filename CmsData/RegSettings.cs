@@ -340,8 +340,18 @@ namespace CmsData
         {
             public int Id { get; set; }
             public string Description { get; set; }
-            public int? DayOfWeek { get; set; }
-            public DateTime? Time { get; set; }
+            public int DayOfWeek { get; set; }
+            public DateTime Time { get; set; }
+			public DateTime Datetime()
+			{
+				var dt = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+				return dt.AddDays(DayOfWeek).Add(Time.TimeOfDay);
+			}
+
+        	public DateTime Datetime(DateTime dt)
+        	{
+        		return dt.AddDays(DayOfWeek).Add(Time.TimeOfDay);
+        	}
         }
         public class VoteTag
         {
@@ -970,10 +980,6 @@ namespace CmsData
                             throw GetException("unexpected line in TimeSlot");
                     }
                 }
-                if (!timeslot.Time.HasValue)
-                    throw GetException("missing Time in TimeSlot");
-                if (!timeslot.DayOfWeek.HasValue)
-                    throw GetException("missing Day of Week in TimeSlot");
             }
             return list;
         }
@@ -1408,7 +1414,7 @@ namespace CmsData
             foreach (var c in TimeSlots)
             {
                 AddValueCk(1, sb, c.Description);
-                AddValueCk(2, sb, "Time", c.Time.ToString2("h:mm tt"));
+                AddValueCk(2, sb, "Time", c.Time.ToString("h:mm tt"));
                 AddValueCk(2, sb, "DayOfWeek", c.DayOfWeek);
             }
             sb.AppendLine();

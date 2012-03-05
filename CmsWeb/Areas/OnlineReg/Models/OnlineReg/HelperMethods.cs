@@ -147,7 +147,7 @@ namespace CmsWeb.Models
                 var q = from o in settings.Values
                         where o.AllowOnlyOne == true || o.AskTickets == true
                         select o;
-                return q.Count() > 0;
+                return q.Any();
             }
             return false;
         }

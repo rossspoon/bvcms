@@ -9,7 +9,7 @@ using CmsWeb.Models;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
-    public partial class OnlineRegController : CmsController
+    public partial class OnlineRegController
     {
         private void SetHeaders(OnlineRegModel m2)
         {

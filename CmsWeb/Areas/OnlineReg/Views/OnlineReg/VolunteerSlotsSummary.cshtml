@@ -1,0 +1,16 @@
+﻿@model IEnumerable<CmsWeb.Models.VolunteerModel.Slot>
+<blockquote>
+    <table>
+        <tr>
+            <td> Week </td>
+            <td> Day and Time </td>
+        </tr>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Sunday.ToString("MMM/d/yy")</td>
+                <td>@s.Time.ToString("ddd h:mm tt")</td>
+            </tr>	
+        }
+    </table>
+</blockquote>

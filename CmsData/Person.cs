@@ -295,10 +295,6 @@ namespace CmsData
                     torecreg.ActiveInAnotherChurch = frrecreg.ActiveInAnotherChurch;
             }
 
-            foreach (var sale in this.SaleTransactions)
-                sale.PeopleId = otherid;
-
-
             Db.SubmitChanges();
         }
         public bool PurgePerson(CMSDataContext Db)

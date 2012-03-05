@@ -1,66 +1,50 @@
-﻿@model CmsWeb.Models.SlotModel 
+﻿@model CmsWeb.Models.VolunteerModel 
+@using UtilityExtensions
 @using CmsWeb
 @{
-    Layout = "/Views/Shared/site2.cshtml";
+    Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
-}
-@section TitleContent 
-{
-    <title>Prayer Signup</title>
-    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-        .style1
-        {
-            width: 100%;
-        }
-    </style>
 }
 @section scripts
 {
-@Html.Script("/Scripts/pickslots2.js")
+@Html.Script("/Content/js/jquery.sortElements.js")
+@Html.Script("/Scripts/ManageVolunteer.js")
 }
-    <h2>
-        Committment Times for @Model.person.Name <span style="font-size:10pt">(@Model.Count() total commitments)</span></h2>
-        @Html.Hidden("pid", Model.person.PeopleId)
-        @Html.Hidden("oid", Model.org.OrganizationId)
-   <table align="center" border="0" cellspacing="0" cellpadding="0"><tr><td>
-   <table border="0" cellpadding="0" cellspacing="0" id="slots">
-        <thead>
-            <tr>
-                <th></th>
-@foreach (var c in Model.cols)
+<h2>@Model.Org.OrganizationName</h2>
+<h4>Volunteer Commitment Times for @Model.Person.Name &lt;@Model.Person.EmailAddress&gt;</h4>
+@using(Html.BeginForm("ConfirmVolunteerSlots", "OnlineReg"))
+{
+@Html.HiddenFor(m => m.PeopleId);
+@Html.HiddenFor(m => m.OrgId);
+<table class="grid">
+    <thead>
+        <tr>
+            <td><br /><a href="#" id="sortday">Sunday</a></td>
+			<td><br /><a href="#" id="sortweek">Week #</a></td>
+@foreach (var s in Model.Regsettings.TimeSlots)
 { 
-                <th>@c.Value</th>
+            <td class="center">@s.Description<br />@s.Datetime().ToString("ddd h:mm tt")</td>
 }
-            </tr>
-        </thead>
-        <tbody>
-@foreach (var ts in Model.FetchSlots())
-{ 
-            <tr>
-                <th>@ts.rowtitle</th>
-    @foreach (var si in ts.slots)
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var ts in Model.FetchSlotWeeks())
+{
+        <tr>
+            <td class="day" jday="@ts[0].Sunday.ToString("yyyyMMdd")">@ts[0].Sunday.ToString("MMM d")</td>
+            <td class="center week">@ts[0].Week</td>
+    @foreach (var si in ts)
     {
-        if (si.slot != null)
-        {
-               @Html.Partial("Special/PickSlot", si)
-        }
-        else
-        { 
-                <td></td>
-        }
+            <td class="center"><input type="checkbox" name="Commit" @si.CHECKED value="@si.Time" /></td>
     } 
-            </tr>
+        </tr>
 }
-        </tbody>
-    </table>
-   </td><td valign="top">
-   <form method="post" action="/OnlineReg/ConfirmSlots/@Model.person.PeopleId?orgid=@Model.org.OrganizationId">
-   <p style="text-align: center">
-   <input id="submitit" type="submit" class="submitbutton" 
-    value='Send Confirmation Email' /></p></form>
-   </td></tr></table>
-<div class="growlUI" style="display: none;">
-    <h1>Growl Notification</h1>
-    <h2>Have a nice day!</h2>
-</div>
+    </tbody>
+	<tfoot>
+		<tr><td align="right" colspan="@(Model.Regsettings.TimeSlots.Count + 2)">
+		    <input id="submitit" type="submit" class="submitbutton" value='Submit' /></td>
+        </tr>
+	</tfoot>
+</table>
+}
+

@@ -1297,6 +1297,30 @@ namespace UtilityExtensions
 			int wk = cc.Calendar.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
 			return wk;
 		}
+
+		public static IEnumerable<DateTime>  DaysOfMonth(DateTime dt)
+		{
+			var d = new DateTime(dt.Year, dt.Month, 1);
+			while(d.Month == dt.Month)
+			{
+				yield return d;
+				d = d.AddDays(1);
+			}
+		}
+		public static int WeekOfMonth(this DateTime sunday)
+		{
+			var sundays = DaysOfMonth(sunday).Where(dd => dd.DayOfWeek == 0).ToList();
+			var wk = 0;
+			while(sunday > sundays[wk])
+				wk++;
+			return wk + 1;
+		}
+		public static DateTime Sunday(int month, int year)
+        {
+            var first = new DateTime(year, month, 1);
+            return new DateTime(year, month,
+                1 + (7 - (int)first.DayOfWeek) % 7);
+        }
 		public static bool SessionTimedOut()
 		{
 			if (HttpContext.Current.Session != null)

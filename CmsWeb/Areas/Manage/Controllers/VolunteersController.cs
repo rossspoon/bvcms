@@ -113,7 +113,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             foreach (var person in q)
             {
                 var m = new CmsWeb.Models
-                    .VolunteerModel { View = id, person = person };
+                    .VolunteerModel2 { View = id, person = person };
                 m.person.BuildVolInfoList(id); // gets existing
                 m.person.BuildVolInfoList(id); // 2nd time updates existing
                 m.person.RefreshCommitments(id);

@@ -3,7 +3,7 @@
     $(".datepicker").datepicker();
     $.fmtTable = function () {
         $('table.grid > tbody > tr:even').addClass('alt');
-    }
+    };
     $.fmtTable();
     $("#search").click(function (ev) {
         ev.preventDefault();
@@ -14,19 +14,19 @@
         $("#Page").val(pg);
         $.getTable();
         return false;
-    }
+    };
     $.setPageSize = function (ev) {
         $('#Page').val(1);
         $("#PageSize").val($(ev).val());
         return $.getTable();
-    }
+    };
     $.getTable = function () {
         var f = $('#results').closest('form');
         var q = f.serialize();
         $.post('/ContactSearch/Results', q, function (ret) {
             $('#results').replaceWith(ret).ready($.fmtTable);
         });
-    }
+    };
     $("#ConvertToQuery").click(function (ev) {
         ev.preventDefault();
         var f = $('#results').closest('form');
@@ -39,9 +39,12 @@
     $("#ContactorSummary").click(function (ev) {
         ev.preventDefault();
         window.location = $(this).attr('href')
-            + "?start=" + $("#StartDate").val() 
+            + "?start=" + $("#StartDate").val()
             + "&end=" + $("#EndDate").val()
-            + "&ministry=" + $("#Ministry").val()
+            + "&ministry=" + $("#Ministry").val();
         return false;
+    });
+    $("#NewSearch").click(function () {
+        form.reset();
     });
 });

@@ -149,8 +149,7 @@ namespace CmsWeb.Models
         }
         public void UpdateSubscriptions()
         {
-
-            IEnumerable<OrganizationMember> q = null;
+        	IEnumerable<OrganizationMember> q;
             if (masterorgid != null)
                 q = from o in OnlineRegModel.UserSelectClasses(masterorg)
                     let om = o.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == pid)

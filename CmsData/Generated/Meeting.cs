@@ -50,15 +50,9 @@ namespace CmsData
 		private int? _AttendCreditId;
 		
    		
-   		private EntitySet< SoulMate> _ChildSoulMates;
-		
    		private EntitySet< Attend> _Attends;
 		
    		private EntitySet< MeetingExtra> _MeetingExtras;
-		
-   		private EntitySet< MOBSReg> _MOBSRegs;
-		
-   		private EntitySet< SoulMate> _SoulMates;
 		
     	
 		private EntityRef< AttendCredit> _AttendCredit;
@@ -124,15 +118,9 @@ namespace CmsData
 		public Meeting()
 		{
 			
-			this._ChildSoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_ChildSoulMates), new Action< SoulMate>(this.detach_ChildSoulMates)); 
-			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
 			this._MeetingExtras = new EntitySet< MeetingExtra>(new Action< MeetingExtra>(this.attach_MeetingExtras), new Action< MeetingExtra>(this.detach_MeetingExtras)); 
-			
-			this._MOBSRegs = new EntitySet< MOBSReg>(new Action< MOBSReg>(this.attach_MOBSRegs), new Action< MOBSReg>(this.detach_MOBSRegs)); 
-			
-			this._SoulMates = new EntitySet< SoulMate>(new Action< SoulMate>(this.attach_SoulMates), new Action< SoulMate>(this.detach_SoulMates)); 
 			
 			
 			this._AttendCredit = default(EntityRef< AttendCredit>); 
@@ -507,16 +495,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="ChildSoulMates__ChildCareMeeting", Storage="_ChildSoulMates", OtherKey="ChildcareId")]
-   		public EntitySet< SoulMate> ChildSoulMates
-   		{
-   		    get { return this._ChildSoulMates; }
-
-			set	{ this._ChildSoulMates.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_AttendWithAbsents_TBL_MEETINGS_TBL", Storage="_Attends", OtherKey="MeetingId")]
    		public EntitySet< Attend> Attends
    		{
@@ -533,26 +511,6 @@ namespace CmsData
    		    get { return this._MeetingExtras; }
 
 			set	{ this._MeetingExtras.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_MOBSReg_Meeting", Storage="_MOBSRegs", OtherKey="MeetingId")]
-   		public EntitySet< MOBSReg> MOBSRegs
-   		{
-   		    get { return this._MOBSRegs; }
-
-			set	{ this._MOBSRegs.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="FK_SoulMate_Meetings", Storage="_SoulMates", OtherKey="EventId")]
-   		public EntitySet< SoulMate> SoulMates
-   		{
-   		    get { return this._SoulMates; }
-
-			set	{ this._SoulMates.Assign(value); }
 
    		}
 
@@ -662,19 +620,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_ChildSoulMates(SoulMate entity)
-		{
-			this.SendPropertyChanging();
-			entity.ChildCareMeeting = this;
-		}
-
-		private void detach_ChildSoulMates(SoulMate entity)
-		{
-			this.SendPropertyChanging();
-			entity.ChildCareMeeting = null;
-		}
-
-		
 		private void attach_Attends(Attend entity)
 		{
 			this.SendPropertyChanging();
@@ -695,32 +640,6 @@ namespace CmsData
 		}
 
 		private void detach_MeetingExtras(MeetingExtra entity)
-		{
-			this.SendPropertyChanging();
-			entity.Meeting = null;
-		}
-
-		
-		private void attach_MOBSRegs(MOBSReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Meeting = this;
-		}
-
-		private void detach_MOBSRegs(MOBSReg entity)
-		{
-			this.SendPropertyChanging();
-			entity.Meeting = null;
-		}
-
-		
-		private void attach_SoulMates(SoulMate entity)
-		{
-			this.SendPropertyChanging();
-			entity.Meeting = this;
-		}
-
-		private void detach_SoulMates(SoulMate entity)
 		{
 			this.SendPropertyChanging();
 			entity.Meeting = null;

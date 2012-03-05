@@ -36,7 +36,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
             if (m.masterorg != null)
             {
-                if (OnlineRegModel.UserSelectClasses(m.masterorg).Count() == 0)
+                if (!OnlineRegModel.UserSelectClasses(m.masterorg).Any())
                     return Content("no classes available on this org");
             }
             else if (m.org != null)
@@ -46,7 +46,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
             else if (m.div != null)
             {
-                if (OnlineRegModel.UserSelectClasses(m.divid).Count() == 0)
+                if (!OnlineRegModel.UserSelectClasses(m.divid).Any())
                     return Content("no registration allowed on this div");
             }
             m.URL = Request.Url.OriginalString;
@@ -104,6 +104,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     TempData["ms"] = m.UserPeopleId;
                     return Redirect("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.masterorgid));
                 }
+                if (m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+                {
+                    TempData["ps"] = m.UserPeopleId;
+                    return Redirect("/OnlineReg/ManageVolunteerSlots/{0}".Fmt(m.orgid));
+                }
                 if (p.org != null && p.Found == true)
                 {
                     p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
@@ -140,6 +145,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 if (m.masterorgid.HasValue && m.masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
                     return Content("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.masterorgid));
                 return Content("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.divid));
+            }
+            if (m.ChoosingSlots())
+            {
+                TempData["ps"] = Util.UserPeopleId;
+                return Content("/OnlineReg/ManageVolunteer/{0}".Fmt(m.orgid));
             }
             if (m.OnlinePledge())
             {
@@ -284,7 +294,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             p.classid = m.classid;
             p.PeopleId = null;
             p.ValidateModelForFind(ModelState, m);
-            if (p.ManageSubscriptions() || p.OnlinePledge() || p.ManageGiving())
+            if (p.ManageSubscriptions() 
+				|| p.OnlinePledge() 
+				|| p.ManageGiving()
+				|| p.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
             {
                 p.OtherOK = true;
                 //if (p.Found == true)
@@ -482,8 +495,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                         id = d.Id,
                         TransactionID = "zero due",
                     });
-            if (m.ChoosingSlots())
-                return RedirectToAction("PickSlots", new { id = d.Id });
 
             var terms = Util.PickFirst(m.Terms, "");
             if (terms.HasValue())
