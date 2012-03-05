@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
@@ -340,17 +341,22 @@ namespace CmsData
         {
             public int Id { get; set; }
             public string Description { get; set; }
-            public int DayOfWeek { get; set; }
-            public DateTime Time { get; set; }
+        	public int DayOfWeek { get; set; }
+        	[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:h:mm tt}")]
+            public DateTime? Time { get; set; }
 			public DateTime Datetime()
 			{
 				var dt = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-				return dt.AddDays(DayOfWeek).Add(Time.TimeOfDay);
+				return Time != null ? 
+					dt.AddDays(DayOfWeek).Add(Time.Value.TimeOfDay) 
+					: new DateTime();
 			}
 
         	public DateTime Datetime(DateTime dt)
         	{
-        		return dt.AddDays(DayOfWeek).Add(Time.TimeOfDay);
+        		return Time != null ? 
+					dt.AddDays(DayOfWeek).Add(Time.Value.TimeOfDay) 
+					: new DateTime();
         	}
         }
         public class VoteTag
@@ -477,20 +483,18 @@ namespace CmsData
         {
             get
             {
-                if (lineno < lines.Length)
+            	if (lineno < lines.Length)
                     return lines[lineno];
-                else
-                    return null;
+            	return null;
             }
         }
         LineData curr
         {
             get
             {
-                if (lineno < data.Count)
+            	if (lineno < data.Count)
                     return data[lineno];
-                else
-                    return new LineData();
+            	return new LineData();
             }
         }
         LineData prev { get { return data[lineno - 1]; } }
@@ -1414,7 +1418,7 @@ namespace CmsData
             foreach (var c in TimeSlots)
             {
                 AddValueCk(1, sb, c.Description);
-                AddValueCk(2, sb, "Time", c.Time.ToString("h:mm tt"));
+                AddValueCk(2, sb, "Time", c.Time.ToString2("h:mm tt"));
                 AddValueCk(2, sb, "DayOfWeek", c.DayOfWeek);
             }
             sb.AppendLine();

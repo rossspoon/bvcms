@@ -71,26 +71,36 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (Util.ValidEmail(email))
                 m.List[0].email = email;
 
+        	var pid = 0;
             if (registertag.HasValue())
             {
-                var guid = registertag.ToGuid();
-                if (guid == null)
-                    return Content("invalid link");
-                var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
-                if (ot == null)
-                    return Content("invalid link");
+            	var guid = registertag.ToGuid();
+            	if (guid == null)
+            		return Content("invalid link");
+            	var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+            	if (ot == null)
+            		return Content("invalid link");
 #if DEBUG
 #else
                 if (ot.Used)
                     return Content("link used");
 #endif
-                if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
-                    return Content("link expired");
-                var a = ot.Querystring.Split(',');
-                var oid = a[0].ToInt();
-                var pid = a[1].ToInt();
-                var emailid = a[2].ToInt();
-                m.UserPeopleId = pid;
+            	if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+            		return Content("link expired");
+            	var a = ot.Querystring.Split(',');
+            	var oid = a[0].ToInt();
+            	var emailid = a[2].ToInt();
+            	pid = a[1].ToInt();
+                m.registertag = registertag;
+            }
+			else if (User.Identity.IsAuthenticated)
+			{
+				pid = Util.UserPeopleId ?? 0;
+			}
+
+			if(pid > 0)
+			{
+				m.UserPeopleId = pid;
                 var p = m.LoadExistingPerson(pid);
                 p.index = m.List.Count - 1;
                 p.ValidateModelForFind(ModelState, m);
@@ -98,7 +108,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 if (!ModelState.IsValid)
                     return View(m);
                 m.List[p.index] = p;
-                m.registertag = registertag;
                 if (m.masterorg != null && m.masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
                 {
                     TempData["ms"] = m.UserPeopleId;
@@ -107,7 +116,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 if (m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
                 {
                     TempData["ps"] = m.UserPeopleId;
-                    return Redirect("/OnlineReg/ManageVolunteerSlots/{0}".Fmt(m.orgid));
+                    return Redirect("/OnlineReg/ManageVolunteer/{0}".Fmt(m.orgid));
                 }
                 if (p.org != null && p.Found == true)
                 {
