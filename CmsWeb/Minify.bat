@@ -2,8 +2,8 @@
 path=%path%;c:\Program Files (x86)\Microsoft\Microsoft Ajax Minifier
 
 ajaxmin ^
-Content/js/jquery-1.5.2.js ^
-Content/js/jquery-ui-1.8.13.custom.js ^
+Content/js/jquery-1.7.1.js ^
+Content/js/jquery-ui-1.8.18.custom.js ^
 Content/js/jquery.bgiframe-2.1.2.js ^
 Content/js/jquery.hoverIntent.js ^
 Content/js/jquery.cookie.js ^
@@ -21,9 +21,8 @@ Scripts/headermenu.js ^
 -o Min/Content/js/combined.js -clobber:true || pause
 
 ajaxmin ^
-Scripts/Pager.js ^
 Content/js/jquery.multiSelect.js ^
-Content/js/jquery.ui.timepicker.js ^
+Content/js/jquery-ui-timepicker-addon.js ^
 Content/js/jquery.textarea.js ^
 Content/js/jquery-ui-dialog-patch.js ^
 Scripts/Organization.js ^
@@ -37,8 +36,8 @@ Scripts/Person.js ^
 -o Min/Content/js/combined-person.js -clobber:true || pause
 
 ajaxmin ^
-Content/js/jquery-1.5.2.js ^
-Content/js/jquery-ui-1.8.13.custom.js ^
+Content/js/jquery-1.7.1.js ^
+Content/js/jquery-ui-1.8.18.custom.js ^
 Content/js/jquery.validate.js ^
 Content/js/jquery.idle-timer.js ^
 Content/js/jquery.blockUI.js ^
@@ -47,7 +46,7 @@ Content/js/jquery.showpassword.js ^
 -o Min/Content/js/combined-onlinereg.js -clobber:true || pause
 
 ajaxmin ^
-Content/jquery-ui-1.8.13.custom.css ^
+Content/jquery-ui-1.8.18.custom.css ^
 Content/site.css ^
 Content/style2.css ^
 Content/cmenu.css ^
@@ -57,8 +56,8 @@ Content/jquery.tooltip.css ^
 Content/jquery.autocomplete.css ^
 -o Content/combined.css -clobber:true || pause
 
-ajaxmin Content/js/jquery-1.5.2.js -o Min\Content/js/jquery-1.5.2.js -clobber:true || pause
-ajaxmin Content/js/jquery-ui-1.8.13.custom.js -o Min\Content/js/jquery-ui-1.8.13.custom.js -clobber:true || pause
+ajaxmin Content/js/jquery-1.7.1.js -o Min\Content/js/jquery-1.7.1.js -clobber:true || pause
+ajaxmin Content/js/jquery-ui-1.8.18.custom.js -o Min\Content/js/jquery-ui-1.8.18.custom.js -clobber:true || pause
 ajaxmin Content/js/jquery.contextMenu.js -o Min\Content/js/jquery.contextMenu.js -clobber:true || pause
 ajaxmin Content/js/jquery.form.js -o Min\Content/js/jquery.form.js -clobber:true || pause
 ajaxmin Content/js/jquery.form2.js -o Min\Content/js/jquery.form2.js -clobber:true || pause
@@ -69,8 +68,7 @@ ajaxmin Content/js/jquery.showpassword.js -o Min\Content/js/jquery.showpassword.
 ajaxmin Content/js/jquery.sortElements.js -o Min\Content/js/jquery.sortElements.js -clobber:true || pause
 ajaxmin Content/js/jquery.textarea.js -o Min\Content/js/jquery.textarea.js -clobber:true || pause
 ajaxmin Content/js/jquery.transpose.js -o Min\Content/js/jquery.transpose.js -clobber:true || pause
-ajaxmin Content/js/jquery.ui.timepicker.js -o Min\Content/js/jquery.ui.timepicker.js -clobber:true || pause
-rem ajaxmin Content/js/jquery.jquery.treeview.js -o Min\Content/js/jquery.treeview.js -clobber:true || pause
+ajaxmin Content/js/jquery-ui-timepicker-addon.js -o Min\Content/js/jquery-ui-timepicker-addon.js -clobber:true || pause
 
 ajaxmin Scripts/CheckIn.js -o Min/Scripts/CheckIn.js -clobber:true || pause
 ajaxmin Scripts/ContactSearch.js -o Min\Scripts/ContactSearch.js -clobber:true || pause

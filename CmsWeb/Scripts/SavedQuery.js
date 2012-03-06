@@ -1,4 +1,4 @@
-﻿/// <reference path="../Content/js/jquery-1.5.2-vsdoc.js" />
+﻿// <reference path="../Content/js/jquery-1.5.2-vsdoc.js" />
 $(function () {
     $.editable.addInputType("checkbox", {
         element: function (settings, original) {

@@ -40,12 +40,6 @@ namespace CmsData
             string url = ConfigurationManager.AppSettings["amiurl"];
             string password = ConfigurationManager.AppSettings["amipassword"];
 
-            if (!password.HasValue())
-            {
-                string f = HttpContext.Current.Server.MapPath("/amipassword.txt");
-                if (File.Exists(f))
-                    password = File.ReadAllText(f);
-            }
             if (!url.HasValue() || !password.HasValue())
                 return new AddressResult { Line1 = "error" };
 

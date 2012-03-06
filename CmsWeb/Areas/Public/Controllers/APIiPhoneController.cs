@@ -1,18 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using CmsData;
+using CmsWeb.Models;
 using UtilityExtensions;
 using CmsWeb.Models.iPhone;
-using System.Xml;
-using System.IO;
-using System.Web.Security;
-using CmsWeb.Areas.Manage.Controllers;
 using CmsData.Codes;
+using SearchModel = CmsWeb.Models.iPhone.SearchModel;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -23,62 +17,9 @@ namespace CmsWeb.Areas.Public.Controllers
     [ValidateInput(false)]
     public class APIiPhoneController : CmsController
     {
-		private const string STR_UserName2 = "UserName2";
-		private string UserName2
-		{
-			get { return HttpContext.Items[STR_UserName2] as String; }
-			set { HttpContext.Items[STR_UserName2] = value; }
-		}
-        private bool Authenticate(string role = null, bool checkorgmembersonly = false)
-        {
-            string username, password;
-            var auth = Request.Headers["Authorization"];
-            if (auth.HasValue())
-            {
-                var cred = System.Text.Encoding.ASCII.GetString(
-                    Convert.FromBase64String(auth.Substring(6))).Split(':');
-                username = cred[0];
-                password = cred[1];
-            }
-            else
-            {
-                username = Request.Headers["username"];
-                password = Request.Headers["password"];
-            }
-			var u = Models.AccountModel.AuthenticateLogon(username, password, Request.Url.OriginalString);
-			if (u is string)
-				return false;
-			var user = u as User;
-			if (user == null)
-				return false;
-            var roles = CMSRoleProvider.provider;
-            if (role != null && roles.RoleExists(role))
-            {
-				if (!roles.IsUserInRole(user.Username, role))
-					return false;
-            }
-			UserName2 = user.Username;
-			CmsWeb.Models.AccountModel.SetUserInfo(user.Username, Session);
-            if (checkorgmembersonly)
-                if (!Util2.OrgMembersOnly)
-                {
-                    if (roles.IsUserInRole(username, "OrgMembersOnly"))
-                    {
-                        Util2.OrgMembersOnly = true;
-                        DbUtil.Db.SetOrgMembersOnly();
-                    }
-                }
-                else if (!Util2.OrgLeadersOnly)
-                    if (roles.IsUserInRole(username, "OrgLeadersOnly"))
-                    {
-                        Util2.OrgLeadersOnly = true;
-                        DbUtil.Db.SetOrgLeadersOnly();
-                    }
-            return true;
-        }
         public ActionResult FetchImage(int id)
         {
-            if (!Authenticate("Access"))
+            if (!AccountModel.Authenticate("Access"))
                 return Content("not authorized");
             var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
             if (person.PictureId != null)
@@ -87,7 +28,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Search(string name, string comm, string addr)
         {
-            if (!Authenticate(checkorgmembersonly: true))
+			if (!AccountModel.Authenticate(checkorgmembersonly: true))
                 return Content("not authorized");
 
             var m = new SearchModel(name, comm, addr);
@@ -95,9 +36,9 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult SearchResults(string name, string comm, string addr)
         {
-            if (!Authenticate() )
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
-            if (!CMSRoleProvider.provider.IsUserInRole(UserName2, "Access"))
+			if (!CMSRoleProvider.provider.IsUserInRole(AccountModel.UserName2, "Access"))
                 return Content("not authorized");
 
             var m = new SearchModel(name, comm, addr);
@@ -105,24 +46,24 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult DetailResults(int id)
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
             return new DetailResult(id);
         }
         public ActionResult Organizations()
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
-            if (!CMSRoleProvider.provider.IsUserInRole(UserName2, "Attendance"))
+			if (!CMSRoleProvider.provider.IsUserInRole(AccountModel.UserName2, "Attendance"))
                 return new OrgResult(null);
             return new OrgResult(Util.UserPeopleId);
         }
         [HttpPost]
         public ActionResult RollList( int id, string datetime )
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == UserName2);
+			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
             var dt = DateTime.Parse(datetime);
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
             if (meeting == null)
@@ -156,7 +97,7 @@ namespace CmsWeb.Areas.Public.Controllers
         [HttpPost]
         public ActionResult RecordAttend( int id, int PeopleId, bool Present )
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
             Attend.RecordAttendance(PeopleId, id, Present);
             DbUtil.Db.UpdateMeetingCounters(id);
@@ -165,7 +106,7 @@ namespace CmsWeb.Areas.Public.Controllers
         [HttpPost]
         public ActionResult RecordVisit( int id, int PeopleId )
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
             Attend.RecordAttendance(PeopleId, id, true);
             DbUtil.Db.UpdateMeetingCounters(id);
@@ -190,7 +131,7 @@ namespace CmsWeb.Areas.Public.Controllers
         [HttpPost]
         public ActionResult AddPerson(int id, PersonInfo m)
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
 
             CmsData.Family f;
@@ -238,7 +179,7 @@ namespace CmsWeb.Areas.Public.Controllers
         [HttpPost]
         public ActionResult JoinUnJoinOrg(int PeopleId, int OrgId, bool Member)
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
             var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(m => m.PeopleId == PeopleId && m.OrganizationId == OrgId);
             if (om == null && Member)
@@ -267,7 +208,7 @@ namespace CmsWeb.Areas.Public.Controllers
         public ActionResult RollList2(int id, string datetime)
             // id = OrganizationId
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
             var dt = DateTime.Parse(datetime);
             return new RollListResult(id, dt);
@@ -276,10 +217,10 @@ namespace CmsWeb.Areas.Public.Controllers
         public ActionResult RecordAttend2(int id, string datetime, int PeopleId, bool Present)
             // id = OrganizationId
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
             var dt = DateTime.Parse(datetime);
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == UserName2);
+			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
             RecordAttend2Extracted(id, PeopleId, Present, dt, u);
             return new EmptyResult();
         }
@@ -287,10 +228,10 @@ namespace CmsWeb.Areas.Public.Controllers
         public ActionResult RecordVisit2(int id, string datetime, int PeopleId)
             // id = OrganizationId
         {
-            if (!Authenticate())
+			if (!AccountModel.Authenticate())
                 return Content("not authorized");
             var dt = DateTime.Parse(datetime);
-            var u = DbUtil.Db.Users.Single(uu => uu.Username == UserName2);
+			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
 
             RecordAttend2Extracted(id, PeopleId, true, dt, u);
             return new RollListResult(id, dt);

@@ -60,6 +60,64 @@ namespace CmsWeb.Models
 			DbUtil.Db.SubmitChanges();
 			return ot.Querystring;
 		}
+		private const string STR_UserName2 = "UserName2";
+		public static string UserName2
+		{
+			get { return HttpContext.Current.Items[STR_UserName2] as String; }
+			set { HttpContext.Current.Items[STR_UserName2] = value; }
+		}
+		public static bool Authenticate(string role = null, bool checkorgmembersonly = false)
+		{
+			string username, password;
+			var auth = HttpContext.Current.Request.Headers["Authorization"];
+			if (auth.HasValue())
+			{
+				var cred = Encoding.ASCII.GetString(
+					Convert.FromBase64String(auth.Substring(6))).Split(':');
+				username = cred[0];
+				password = cred[1];
+			}
+			else
+			{
+				username = HttpContext.Current.Request.Headers["username"];
+				password = HttpContext.Current.Request.Headers["password"];
+			}
+			UserName2 = username;
+			var u = AuthenticateLogon(username, password,
+				HttpContext.Current.Request.Url.OriginalString);
+			if (u is string)
+				return false;
+			var user = u as User;
+			if (user == null)
+				return false;
+			var roleProvider = CMSRoleProvider.provider;
+			if (role == null)
+				role = "Access";
+			if (roleProvider.RoleExists(role))
+			{
+				if (!roleProvider.IsUserInRole(user.Username, role))
+					return false;
+			}
+			UserName2 = user.Username;
+			SetUserInfo(user.Username, HttpContext.Current.Session);
+			if (checkorgmembersonly)
+				if (!Util2.OrgMembersOnly)
+				{
+					if (roleProvider.IsUserInRole(username, "OrgMembersOnly"))
+					{
+						Util2.OrgMembersOnly = true;
+						DbUtil.Db.SetOrgMembersOnly();
+					}
+				}
+				else if (!Util2.OrgLeadersOnly)
+					if (roleProvider.IsUserInRole(username, "OrgLeadersOnly"))
+					{
+						Util2.OrgLeadersOnly = true;
+						DbUtil.Db.SetOrgLeadersOnly();
+					}
+			return true;
+		}
+
 		public static object AuthenticateLogon(string userName, string password, string url)
 		{
 			var q = DbUtil.Db.Users.Where(uu =>
@@ -239,7 +297,7 @@ namespace CmsWeb.Models
 		}
 		public static void SendNewUserEmail(string username)
 		{
-			var user = DbUtil.Db.Users.Single(u => u.Username == username);
+			var user = DbUtil.Db.Users.First(u => u.Username == username);
 			var body = DbUtil.Content("NewUserWelcome",
 					@"Hi {name},
 <p>You have a new account on our Church Management System. 
@@ -266,7 +324,35 @@ Click on your username below to set your password and login to the system.</p>
 				);
 			var list = q.ToList();
 			if (list.Count == 0)
+			{
+				var q2 = from uu in DbUtil.Db.People
+						 where uu.EmailAddress == username || uu.EmailAddress2 == username
+						 where uu.Age == null || uu.Age >= 16
+						 select uu;
+				if (q2.Count() == 1)
+				{
+					var p = q2.Single();
+
+					var ot = new OneTimeLink
+					{
+						Id = Guid.NewGuid(),
+						Querystring = p.PeopleId.ToString()
+					};
+					DbUtil.Db.OneTimeLinks.InsertOnSubmit(ot);
+					DbUtil.Db.SubmitChanges();
+					var url = Util.ServerLink("/Account/CreateAccount/{0}".Fmt(ot.Id.ToCode()));
+					Util.SendMsg(ConfigurationManager.AppSettings["sysfromemail"],
+						DbUtil.Db.CmsHost, Util.FirstAddress(DbUtil.AdminMail),
+						"bvcms new password link",
+						@"<p>You recently requested a new password.  To set your password, click the link below:</p>
+<blockquote><a href=""{0}"">New Password</a></blockquote>
+<p>If you did not request this, please disregard this message.</p>
+<p>Thanks,<br />
+The BVCMS Team</p>".Fmt(url), Util.ToMailAddressList(p.EmailAddress), 0, null);
+					return Util.ObscureEmail(p.EmailAddress);
+				}
 				return null;
+			}
 			var sb = new StringBuilder();
 			var addrlist = new List<MailAddress>();
 			foreach (var user in list)
@@ -279,8 +365,8 @@ Click on your username below to set your password and login to the system.</p>
 				DbUtil.Db.SubmitChanges();
 			}
 			Util.SendMsg(ConfigurationManager.AppSettings["sysfromemail"],
-				DbUtil.Db.CmsHost, Util.FirstAddress(DbUtil.AdminMail), 
-				"bvcms password reset link", 
+				DbUtil.Db.CmsHost, Util.FirstAddress(DbUtil.AdminMail),
+				"bvcms password reset link",
 				@"<p>You recently requested a new password.  To reset your password, click your username below:</p>
 <blockquote>{0}</blockquote>
 <p>If you did not request a new password, please disregard this message.</p>

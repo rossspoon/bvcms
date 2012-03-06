@@ -23,17 +23,22 @@
         <span>@Html.CheckBox("org.ClassFilled")</span>
     </li>
     <li><span class="keyword big tip" title="Registration Closed
-        |You should use this when your registration is over.
+        |You should use this when you need to manually end your registration.
         |This is the preferred way
         |instead of changing the Registration Type">
         Registration Closed:</span>
         <span>@Html.CheckBox("org.RegistrationClosed")</span>
+    
     </li>
-    <li><span class="keyword big tip" title="Online Catalog Sort
-        |This is required for a 'User Selects Org' style of registration.
-        |The number in here will determine the position of this Org in the list.">
-        Online Catalog Sort:</span>
-        <span>@Html.TextBox("org.OnLineCatalogSort")</span>
+    <li><span class="keyword big tip" title="Registration Start Date
+        |Your registration will become available on this date">
+		Registration Start Date:</span>
+		<span>@Html.TextBox("org.RegStart", Model.org.RegStart.ToString2("MM/dd/yyyy hh:mm tt"), new { @class = "datetimepicker" })</span>
+    </li>
+    <li><span class="keyword big tip" title="Registration End Date
+        |Your registration will become unavailable on this date">
+		Registration End Date:</span>
+		<span>@Html.TextBox("org.RegEnd", Model.org.RegEnd.ToString2("MM/dd/yyyy hh:mm tt"), new { @class = "datetimepicker" })</span>
     </li>
     <li>
         <span class="text big tip" title="Organization Pick List

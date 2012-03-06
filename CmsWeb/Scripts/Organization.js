@@ -1,4 +1,4 @@
-﻿onload = function () {
+﻿onload = function() {
     var e = document.getElementById("refreshed");
     if (e.value == "no")
         e.value = "yes";
@@ -6,7 +6,7 @@
         e.value = "no";
         location.reload();
     }
-}
+};
 $(function () {
     $("#Settings-tab").tabs();
     var maintabs = $("#main-tab").tabs();
@@ -88,7 +88,7 @@ $(function () {
         bgiframe: true,
         autoOpen: false,
         width: 600,
-        height:400,
+        height: 400,
         modal: true,
         overlay: {
             opacity: 0.5,
@@ -164,7 +164,7 @@ $(function () {
             zmax += def.inc;
             $(this).css("z-index", zmax);
         });
-    }
+    };
     $.initDatePicker = function () {
         $(".datepicker").datepicker({
             dateFormat: 'm/d/yy',
@@ -172,7 +172,12 @@ $(function () {
             changeYear: true,
             beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
         });
-    }
+        $(".datetimepicker").datetimepicker({
+            ampm: true,
+            stepHour: 1,
+            stepMinute: 5
+        });
+    };
     $.initDatePicker();
     $("a.displayedit,a.displayedit2").live('click', function (ev) {
         ev.preventDefault();
@@ -188,8 +193,13 @@ $(function () {
                 $(".roundbox select").css("width", "100%");
                 $("#DivisionsList").multiSelect();
                 $("#schedules").sortable({ stop: $.renumberListItems });
-                $("#schedules input").timepicker({ showPeriod: true });
-                $("#editor")
+                $("#schedules input").timepicker({
+                    showSecond: false,
+                    ampm: true,
+                    stepHour: 1,
+                    stepMinute: 5
+                });
+                $("#editor");
                 $.regsettingeditclick(f);
             });
         });
@@ -222,7 +232,7 @@ $(function () {
             return false;
     });
     $('a.taguntag').live("click", function (ev) {
-        ev.preventDefault;
+        ev.preventDefault();
         $.post('/Organization/ToggleTag/' + $(this).attr('pid'), null, function (ret) {
             $(ev.target).text(ret);
         });
@@ -301,7 +311,7 @@ $(function () {
             $(this).val(i);
             i++;
         });
-    }
+    };
     $("#NewMeetingDialog").dialog({
         autoOpen: false,
         width: 488,
@@ -463,7 +473,7 @@ $(function () {
             height: 25,
             submit: 'OK'
         });
-    }
+    };
     $.extraEditable();
     $("#newvalueform").dialog({
         autoOpen: false,

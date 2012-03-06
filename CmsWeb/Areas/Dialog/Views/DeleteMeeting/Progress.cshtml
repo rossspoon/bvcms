@@ -4,21 +4,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-    <link href="/Content/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css" />
     <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
 
 </head>
 <body>
 <div class="roundbox">
+@if(ViewBag.meetingdate != null)
+{
     <h2>
         Delete Meeting (@ViewBag.meetingdate.ToString("d")) for @ViewBag.orgname</h2>
+}
     <table>
         <tr> <td> Started </td> <td> @Model.Started </td> </tr>
         <tr> <td> Total Count</td> <td> <span id="count">@Model.Count</span> </td> </tr>
         <tr> <td> Processed </td> <td> <span id="processed">@Model.Processed</span> </td> </tr>
         <tr> <td> Completed </td> <td> <span id="completed">@Model.Completed</span> </td> </tr>
-        <tr> <td colspan="2"> <div id="error">@Model.Error</div></td> </tr>
+        <tr> <td colspan="2"> <div id="error" style="color:red">@Model.Error</div></td> </tr>
     </table>
 </div>
 @Html.Partial("CombinedJs")

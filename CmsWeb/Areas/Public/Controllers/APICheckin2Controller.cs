@@ -1,20 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
 using CmsWeb.Models;
-using System.Xml;
 using System.IO;
-using System.Net.Mail;
 using CmsData.Codes;
 using System.Text;
-using System.Net;
-using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -24,7 +16,12 @@ namespace CmsWeb.Areas.Public.Controllers
 #endif
     public class APICheckin2Controller : CmsController
     {
-        public ActionResult Match(string id, int campus, int thisday, int? page, string kiosk, bool? kioskmode)
+		private bool Authenticate()
+		{
+			return AccountModel.Authenticate("Checkin");
+		}
+
+    	public ActionResult Match(string id, int campus, int thisday, int? page, string kiosk, bool? kioskmode)
         {
             if (!Authenticate())
                 return Content("not authorized");
@@ -35,7 +32,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var m = new CheckInModel();
             var matches = m.Match(id, campus, thisday);
 
-            if (matches.Count() == 0)
+            if (!matches.Any())
                 return new FamilyResult(0, campus, thisday, 0, false, false); // not found
             if (matches.Count() == 1)
                 return new FamilyResult(matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked, kioskmode ?? false);
@@ -137,40 +134,40 @@ namespace CmsWeb.Areas.Public.Controllers
             UpdatePerson(p, m);
             return Content(p.FamilyId.ToString());
         }
-        private bool Authenticate(bool log = false)
-        {
-            var auth = Request.Headers["Authorization"];
-            if (auth.HasValue())
-            {
-                var cred = System.Text.ASCIIEncoding.ASCII.GetString(
-                    Convert.FromBase64String(auth.Substring(6))).Split(':');
-                var username = cred[0];
-                var password = cred[1];
-
-                var ret = false;
-                if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
-                    ret = true;
-                else
-                    ret = CMSMembershipProvider.provider.ValidateUser(username, password);
-                if (ret)
-                {
-                    var roles = CMSRoleProvider.provider;
-                    var role = "Access";
-                    if (roles.RoleExists("Checkin"))
-                        role = "Checkin";
-                    AccountModel.SetUserInfo(username, Session);
-                    if (!roles.IsUserInRole(username, role))
-                        ret = false;
-                }
-                if (log)
-                    if (ret)
-                        DbUtil.LogActivity("checkin {0} authenticated".Fmt(username));
-                    else
-                        DbUtil.LogActivity("checkin {0} not authenticated".Fmt(username));
-                return ret;
-            }
-            return false;
-        }
+//        private bool Authenticate(bool log = false)
+//        {
+//            var auth = Request.Headers["Authorization"];
+//            if (auth.HasValue())
+//            {
+//                var cred = Encoding.ASCII.GetString(
+//                    Convert.FromBase64String(auth.Substring(6))).Split(':');
+//                var username = cred[0];
+//                var password = cred[1];
+//
+//                bool ret;
+//                if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
+//                    ret = true;
+//                else
+//                    ret = CMSMembershipProvider.provider.ValidateUser(username, password);
+//                if (ret)
+//                {
+//                    var roles = CMSRoleProvider.provider;
+//                    var role = "Access";
+//                    if (roles.RoleExists("Checkin"))
+//                        role = "Checkin";
+//                    SetUserInfo(username, Session);
+//                    if (!roles.IsUserInRole(username, role))
+//                        ret = false;
+//                }
+////                if (log)
+////                    if (ret)
+////                        DbUtil.LogActivity("checkin {0} authenticated".Fmt(username));
+////                    else
+////                        DbUtil.LogActivity("checkin {0} not authenticated".Fmt(username));
+//                return ret;
+//            }
+//            return false;
+//        }
         string Trim(string s)
         {
             if (s.HasValue())
@@ -273,8 +270,12 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult Campuses()
         {
-            if (!Authenticate(log: true))
+            if (!Authenticate())
+			{
+				DbUtil.LogActivity("checkin {0} not authenticated".Fmt(AccountModel.UserName2));
                 return Content("not authorized");
+			}
+			DbUtil.LogActivity("checkin {0} authenticated".Fmt(AccountModel.UserName2));
             var q = from c in DbUtil.Db.Campus
                     where c.Organizations.Any(o => o.CanSelfCheckin == true)
                     orderby c.Id

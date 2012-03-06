@@ -290,11 +290,16 @@
     <Content Include="ckeditor\plugins\xml\plugin.js" />
     <Content Include="Content\combined.css" />
     <Content Include="Content\faary.css" />
+    <Content Include="Content\jquery-ui-1.8.18.custom.css" />
+    <Content Include="Content\js\jquery-1.7.1.js" />
+    <Content Include="Content\js\jquery-1.7.1.min.js" />
+    <Content Include="Content\js\jquery-ui-1.8.18.custom.js" />
+    <Content Include="Content\js\jquery-ui-1.8.18.custom.min.js" />
+    <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
     <Content Include="Content\js\jquery.tmpl.js" />
     <Content Include="Content\js\json2.js" />
     <Content Include="Content\organization.css" />
-    <Content Include="Content\js\jquery-1.5.2-vsdoc.js" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
@@ -846,10 +851,8 @@
     <Content Include="Content\images\ui-bg_glass_100_dadada_1x400.png" />
     <Content Include="Content\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
-    <Content Include="Content\jquery-ui-1.8.13.custom.css" />
     <Content Include="Content\jquery-ui-timepicker.css" />
     <Content Include="Content\jquery.sb.css" />
-    <Content Include="Content\js\jquery-ui-1.8.13.custom.js" />
     <Content Include="Content\js\jquery.gmap.js" />
     <Content Include="Content\js\jquery.gmap.min.js" />
     <Content Include="Content\js\jquery.sb.js" />
@@ -874,13 +877,10 @@
     <Content Include="Content\cmenu.css" />
     <Content Include="Content\cssreset.css" />
     <Content Include="Content\jquery.jscrollpane.css" />
-    <Content Include="Content\js\jquery-1.5.2.js" />
-    <Content Include="Content\js\jquery-1.5.2.min.js" />
     <Content Include="Content\js\jquery.jscrollpane.js" />
     <Content Include="Content\js\jquery.mousewheel.js" />
     <Content Include="Content\magnifier.png" />
     <Content Include="Content\Welcome.png" />
-    <Content Include="Content\jquery-ui-1.8.9.custom.css" />
     <Content Include="Content\js\jquery.ba-bbq.min.js" />
     <Content Include="Content\js\jquery.bgiframe-2.1.2.js" />
     <Content Include="images\amex.jpg" />
@@ -896,8 +896,9 @@
     <Content Include="Min\Content\js\combined-org.js" />
     <Content Include="Min\Content\js\combined-person.js" />
     <Content Include="Min\Content\js\combined.js" />
-    <Content Include="Min\Content\js\jquery-1.5.2.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.8.13.custom.js" />
+    <Content Include="Min\Content\js\jquery-1.7.1.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.8.18.custom.js" />
+    <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Min\Content\js\jquery.checkboxtree.js" />
     <Content Include="Min\Content\js\jquery.contextMenu.js" />
     <Content Include="Min\Content\js\jquery.form.js" />
@@ -909,7 +910,6 @@
     <Content Include="Min\Content\js\jquery.sortElements.js" />
     <Content Include="Min\Content\js\jquery.textarea.js" />
     <Content Include="Min\Content\js\jquery.transpose.js" />
-    <Content Include="Min\Content\js\jquery.ui.timepicker.js" />
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
     <Content Include="Min\Scripts\Divisions.js" />
@@ -1050,6 +1050,9 @@
     </Content>
     <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Progress.cshtml">
     </Content>
+    <Content Include="secrets.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Shared\CombinedJs.cshtml">
     </Content>
     <Content Include="Areas\Dialog\Views\RepairTransactions\Progress.cshtml">
@@ -1062,6 +1065,7 @@
     <Content Include="Areas\Main\Views\MemberDocs\Image.cshtml" />
     <Content Include="Areas\Main\Views\Person\EditorTemplates\Field.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlotsSummary.cshtml" />
+    <Content Include="Areas\Main\Views\Person\CurrentRegistrations.cshtml" />
     <None Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving2.cshtml">
     </None>
     <None Include="Content\LibraryTemplate.xls" />
@@ -1777,7 +1781,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ForceError.aspx" />
-    <Content Include="NoRemoteAccess.htm" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Activity.aspx" />
@@ -2042,7 +2045,6 @@
     <Content Include="Content\images\tr.png" />
     <Content Include="Content\images\ui-anim_basic_16x16.gif" />
     <Content Include="Content\images\wait.gif" />
-    <Content Include="Content\jquery-ui-1.8.2.custom.css" />
     <Content Include="Content\jquery.cluetip.css" />
     <Content Include="Content\js\additional-methods.js" />
     <Content Include="Content\js\center-plugin_1.0.1.js" />

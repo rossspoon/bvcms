@@ -1379,12 +1379,6 @@ namespace CmsData
 	#endregion
 	#region Views
 		
-	    public Table< View.BadETView> ViewBadETViews
-	    {
-		    get { return this.GetTable< View.BadETView>(); }
-
-	    }
-
 	    public Table< View.Church> ViewChurches
 	    {
 		    get { return this.GetTable< View.Church>(); }
@@ -1433,6 +1427,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.PickListOrg> ViewPickListOrgs
+	    {
+		    get { return this.GetTable< View.PickListOrg>(); }
+
+	    }
+
 	    public Table< View.RandNumber> ViewRandNumbers
 	    {
 		    get { return this.GetTable< View.RandNumber>(); }
@@ -1454,12 +1454,6 @@ namespace CmsData
 	    public Table< View.UserList> ViewUserLists
 	    {
 		    get { return this.GetTable< View.UserList>(); }
-
-	    }
-
-	    public Table< View.VBSInfo> ViewVBSInfos
-	    {
-		    get { return this.GetTable< View.VBSInfo>(); }
 
 	    }
 

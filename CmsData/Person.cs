@@ -203,7 +203,7 @@ namespace CmsData
                 c.PeopleId = otherid;
             foreach (var u in this.Users)
                 u.PeopleId = otherid;
-            if (this.Volunteers.Count() > 0 && toperson.Volunteers.Count() == 0)
+            if (this.Volunteers.Any() && !toperson.Volunteers.Any())
                 foreach (var v in this.Volunteers)
                 {
                     var vv = new Volunteer
@@ -236,7 +236,7 @@ namespace CmsData
             }
             foreach (var e in this.PeopleExtras)
             {
-                var cp = Db.PeopleExtras.SingleOrDefault(c2 => c2.PeopleId == otherid && c2.Field == e.Field);
+                var cp = Db.PeopleExtras.FirstOrDefault(c2 => c2.PeopleId == otherid && c2.Field == e.Field);
                 var e2 = new PeopleExtra
                 {
                     PeopleId = otherid,

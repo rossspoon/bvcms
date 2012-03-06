@@ -127,6 +127,10 @@ namespace CmsData
 		
 		private bool? _Offsite;
 		
+		private DateTime? _RegStart;
+		
+		private DateTime? _RegEnd;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -336,6 +340,12 @@ namespace CmsData
 		
 		partial void OnOffsiteChanging(bool? value);
 		partial void OnOffsiteChanged();
+		
+		partial void OnRegStartChanging(DateTime? value);
+		partial void OnRegStartChanged();
+		
+		partial void OnRegEndChanging(DateTime? value);
+		partial void OnRegEndChanged();
 		
     #endregion
 		public Organization()
@@ -1605,6 +1615,50 @@ namespace CmsData
 					this._Offsite = value;
 					this.SendPropertyChanged("Offsite");
 					this.OnOffsiteChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RegStart", UpdateCheck=UpdateCheck.Never, Storage="_RegStart", DbType="datetime")]
+		public DateTime? RegStart
+		{
+			get { return this._RegStart; }
+
+			set
+			{
+				if (this._RegStart != value)
+				{
+				
+                    this.OnRegStartChanging(value);
+					this.SendPropertyChanging();
+					this._RegStart = value;
+					this.SendPropertyChanged("RegStart");
+					this.OnRegStartChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RegEnd", UpdateCheck=UpdateCheck.Never, Storage="_RegEnd", DbType="datetime")]
+		public DateTime? RegEnd
+		{
+			get { return this._RegEnd; }
+
+			set
+			{
+				if (this._RegEnd != value)
+				{
+				
+                    this.OnRegEndChanging(value);
+					this.SendPropertyChanging();
+					this._RegEnd = value;
+					this.SendPropertyChanged("RegEnd");
+					this.OnRegEndChanged();
 				}
 
 			}

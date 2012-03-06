@@ -234,6 +234,7 @@
     <Compile Include="Generated\DuplicatesRun.cs" />
     <Compile Include="Generated\MemberDocForm.cs" />
     <Compile Include="Generated\RepairTransactionsRun.cs" />
+    <Compile Include="Generated\Views\PickListOrg.cs" />
     <Compile Include="RecurringGiving.cs" />
     <Compile Include="Dynamic.cs" />
     <Compile Include="SagePayments.cs" />
@@ -337,8 +338,6 @@
     <Compile Include="Generated\Views\OrphanedImage.cs" />
     <Compile Include="Generated\Views\PodcastSummary.cs" />
     <Compile Include="Generated\Views\UserList.cs" />
-    <Compile Include="Generated\Views\VerseCategoriesView.cs" />
-    <Compile Include="Generated\Views\VerseSummary.cs" />
     <Compile Include="Generated\Word.cs" />
     <Compile Include="MembershipService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -377,14 +376,12 @@
     <Compile Include="Generated\TagShare.cs" />
     <Compile Include="Generated\Views\Addr.cs" />
     <Compile Include="Generated\Views\Addr2.cs" />
-    <Compile Include="Generated\Views\BadETView.cs" />
     <Compile Include="Generated\Views\City.cs" />
     <Compile Include="Generated\Views\FirstName.cs" />
     <Compile Include="Generated\Views\FirstName2.cs" />
     <Compile Include="Generated\Views\FirstNick.cs" />
     <Compile Include="Generated\Views\LastName.cs" />
     <Compile Include="Generated\Views\Nick.cs" />
-    <Compile Include="Generated\Views\VBSInfo.cs" />
     <Compile Include="Generated\VolInterestCode.cs" />
     <Compile Include="Generated\VolInterestInterestCode.cs" />
     <Compile Include="Generated\Zip.cs" />

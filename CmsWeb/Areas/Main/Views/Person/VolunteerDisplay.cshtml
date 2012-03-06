@@ -21,7 +21,7 @@
         <th>Approval Date:</th>
         <td colspan="2">@Model.vol.ProcessedDate.FormatDate()</td>
     </tr>
-    <tr>
+@*    <tr>
         <td valign="top">Volunteer Opportunities</td>
         <td colspan="2">
 @foreach (var vv in Model.VolOpportunities())
@@ -29,4 +29,4 @@
         <a href='/Volunteer/Picklist2?view=@vv&pid=@Model.vol.PeopleId' target="volunteerop">@vv</a><br />
 }
      </td></tr>
-    </table>
+*@    </table>

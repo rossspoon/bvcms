@@ -98,9 +98,9 @@ namespace CmsData
         }
         int lineno;
         string[] lines;
-        Regex skipline = new Regex(@"^(?:\s*)$|^(?:\s*\#.*)$");
-        Regex linedata = new Regex(@"^(?<sp>\s*)(?:(?<keyword>[a-zA-Z]\w*):)?\s*(?<val>.*)$");
-        Regex agerange = new Regex(@"(?<start>\d+)-(?<end>\d+)");
+    	readonly Regex skipline = new Regex(@"^(?:\s*)$|^(?:\s*\#.*)$");
+    	readonly Regex linedata = new Regex(@"^(?<sp>\s*)(?:(?<keyword>[a-zA-Z]\w*):)?\s*(?<val>.*)$");
+    	readonly Regex agerange = new Regex(@"(?<start>\d+)-(?<end>\d+)");
         class LineData
         {
             public int indent { get; set; }
