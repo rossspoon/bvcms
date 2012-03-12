@@ -150,9 +150,9 @@ namespace CmsWeb.Models.OrganizationPage
             get
             {
                 var sc = org.OrgSchedules.FirstOrDefault(); // SCHED
-                if (sc != null && sc.SchedTime != null)
-                    return sc.SchedTime.Value.ToShortTimeString();
-                return "8:00 AM";
+				if (sc != null && sc.SchedTime != null)
+					return sc.SchedTime.ToString2("hh:mm tt");
+                return "08:00 AM";
             }
         }
         public DateTime NewMeetingDate

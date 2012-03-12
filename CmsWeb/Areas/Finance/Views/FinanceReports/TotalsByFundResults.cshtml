@@ -1,0 +1,22 @@
+﻿@model CmsWeb.Models.TotalsByFundModel
+@using UtilityExtensions
+<table class="grid">
+    <tr>
+        <th> FundName </th>
+        <th> Total </th>
+        <th> Count </th>
+    </tr>
+    @foreach (var t in Model.TotalsByFund())
+    {
+        <tr>
+		<td><a href="/Contributions/Reports/JournalDetails.aspx?FundId=@t.FundId&dt1=@Model.Dt1&dt2=@Model.Dt2">@t.FundName</a> </td>
+			<td align="right">@t.Total.ToString2("c")</td>
+            <td align="right">@t.Count.ToString2("n0")</td>
+        </tr>
+    }
+    <tr style="border-top: 2px solid black">
+        <th> Total </th>
+        <th align="right">@Model.FundTotal.Total.ToString2("c") </th>
+        <th align="right">@Model.FundTotal.Count.ToString2("n0") </th>
+    </tr>
+</table>

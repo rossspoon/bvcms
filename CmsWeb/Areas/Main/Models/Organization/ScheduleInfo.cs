@@ -35,8 +35,8 @@ namespace CmsWeb.Models.OrganizationPage
             get
             {
                 if (!sc.SchedTime.HasValue)
-                    return "8:00 AM";
-                return sc.SchedTime.ToString2("h:mm tt");
+                    return "08:00 AM";
+                return sc.SchedTime.ToString2("hh:mm tt");
             }
             set { sc.SchedTime = value.ToDate(); }
         }

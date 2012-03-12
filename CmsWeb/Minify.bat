@@ -72,6 +72,7 @@ ajaxmin Content/js/jquery-ui-timepicker-addon.js -o Min\Content/js/jquery-ui-tim
 
 ajaxmin Scripts/CheckIn.js -o Min/Scripts/CheckIn.js -clobber:true || pause
 ajaxmin Scripts/ContactSearch.js -o Min\Scripts/ContactSearch.js -clobber:true || pause
+ajaxmin Scripts/Contributions.js -o Min\Scripts/Contributions.js -clobber:true || pause
 ajaxmin Scripts/Divisions.js -o Min\Scripts/Divisions.js -clobber:true || pause
 ajaxmin Scripts/Funds.js -o Min\Scripts/Funds.js -clobber:true || pause
 ajaxmin Scripts/Meetings.js -o Min\Scripts/Meetings.js -clobber:true || pause
@@ -102,6 +103,7 @@ ajaxmin Scripts/TransactionHistory.js -o Min\Scripts/TransactionHistory.js -clob
 ajaxmin Scripts/UserDialog.js -o Min\Scripts/UserDialog.js -clobber:true || pause
 ajaxmin Scripts/meeting.js -o Min\Scripts/meeting.js -clobber:true || pause
 ajaxmin Scripts/ManageVolunteer.js -o Min\Scripts/ManageVolunteer.js -clobber:true || pause
+ajaxmin Scripts/TotalsByFund.js -o Min\Scripts/TotalsByFund.js -clobber:true || pause
 ajaxmin Scripts/merge.js -o Min\Scripts/merge.js -clobber:true || pause
 ajaxmin Scripts/pickslots2.js -o Min\Scripts/pickslots2.js -clobber:true || pause
 ajaxmin Content/js/jquery.checkboxtree.js -o Min/content/js/jquery.checkboxtree.js -clobber:true || pause

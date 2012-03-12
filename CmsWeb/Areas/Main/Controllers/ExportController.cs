@@ -34,10 +34,9 @@ namespace CmsWeb.Areas.Main.Controllers
             return new FreshBooksResult(id);
         }
         [Authorize(Roles="Finance")]
-        [Authorize(Roles="Admin")]
-        public ActionResult Contributions(int id, string start, string end, bool? totals)
+        public ActionResult Contributions(ContributionsExcelResult m)
         {
-            return new ContributionsExcelResult(id, start, end, totals ?? false);
+        	return m;
         }
     }
 }

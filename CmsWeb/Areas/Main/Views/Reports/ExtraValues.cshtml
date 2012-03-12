@@ -5,7 +5,14 @@
 }
 
 <h2>ExtraValues</h2>
-
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('table.grid tbody tr:even').addClass('alt');
+        });
+    </script>
+}
 
 <table class="grid">
 @foreach (var e in Model)

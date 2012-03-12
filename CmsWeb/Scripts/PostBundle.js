@@ -15,6 +15,7 @@
             }
         });
     });
+    $(".bt").button();
     $('td.name').tooltip({ showBody: "|" });
     $("#name").autocomplete("/PostBundle/Names", {
         minChars: 3,
@@ -43,7 +44,7 @@
     $.Stripe = function () {
         $('#bundle tbody tr').removeClass('alt');
         $('#bundle tbody tr:even').addClass('alt');
-    }
+    };
     $.Stripe();
     $('#notes').keydown(function (event) {
         if ((event.keyCode == 9 || event.keyCode == 13) && !event.shiftKey) {
@@ -74,6 +75,12 @@
     $('#fund').keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
+            $('#checkno').focus();
+        }
+    });
+    $('#checkno').keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
             $('#notes').focus();
         }
     });
@@ -91,14 +98,31 @@
         $('#pledge').attr('checked', $("td.fund", tr).attr('pledge') == 'true');
         var a = $('#amt');
         a.val($("td.amt", tr).attr("val"));
-        $('#fund').val($("td.fund", tr).attr("val"));
+        $('#checkno').val($("td.checkno", tr).text());
         $('#notes').val($("td.notes", tr).text());
-        tr.remove();
+        tr.hide();
         if (a.val() == '0.00')
             a.val('');
         a.focus();
         $('a.edit').hide();
+        $('a.split').hide();
+        $('a.delete').hide();
         $.Stripe();
+    });
+    $('a.split').live("click", function (ev) {
+        ev.preventDefault();
+        var tr = $(this).closest("tr");
+        var q = {
+            pid: $("a.pid", tr).text(),
+            name: $("td.name", tr).text(),
+            fund: $("td.fund", tr).attr('val'),
+            pledge: $("td.fund", tr).attr('pledge'),
+            amt: $("td.amt", tr).attr("val"),
+            checkno: $("td.checkno", tr).text(),
+            notes: $("td.notes", tr).text(),
+            id: $("#id").val()
+        };
+        $.PostRow(tr.attr("cid"), q);
     });
     $('a.delete').live("click", function (ev) {
         ev.preventDefault();
@@ -111,10 +135,7 @@
                 $('#totalitems').text(ret.totalitems);
                 $('#itemcount').text(ret.itemcount);
                 $('#editid').val('');
-                q = $('#pbform').serialize();
-                $.post("/PostBundle/FundTotals/", q, function (ret) {
-                    $("fundtotals").html(ret);
-                });
+                $.Stripe();
             });
         }
     });
@@ -124,33 +145,46 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    $.MakeEditable = function () {
-        $(".clickEdit").editable("/PostBundle/Edit/", {
-            indicator: "<img src='/images/loading.gif'>",
-            tooltip: "Click to edit...",
-            style: 'display: inline',
-            width: '200px',
-            height: 25
-        });
-        $(".clickSelect").editable("/PostBundle/Edit/", {
-            indicator: '<img src="/images/loading.gif">',
-            loadtype: 'post',
-            loadurl: "/PostBundle/Funds/",
-            type: "select",
-            submit: "OK",
-            style: 'display: inline'
-        });
-    }
-    $.MakeEditable();
-    $.PostRow = function () {
-        var n = parseFloat($('#amt').val());
-        if (!n > 0) {
-            $.growlUI("Contribution", "Cannot post, No Amount");
-            return;
+    $('#bundle').bind('mousedown', function (e) {
+        if ($(e.target).hasClass("clickEdit")) {
+            $(e.target).editable(function (value, settings) {
+                $.post("/PostBundle/Edit/", { id: e.target.id, value: value }, function (ret) {
+                    $('#totalitems').text(ret.totalitems);
+                    $('#itemcount').text(ret.itemcount);
+                    $('#a' + ret.cid).text(ret.amt);
+                });
+                return (value);
+            }, {
+                indicator: "<img src='/images/loading.gif'>",
+                tooltip: "Click to edit...",
+                style: 'display: inline',
+                width: '4em',
+                height: 25
+            });
         }
-        var q = $('#pbform').serialize();
+        else if ($(e.target).hasClass("clickSelect")) {
+            $(e.target).editable("/PostBundle/Edit/", {
+                indicator: '<img src="/images/loading.gif">',
+                loadtype: 'post',
+                loadurl: "/PostBundle/Funds/",
+                type: "select",
+                submit: "OK",
+                style: 'display: inline'
+            });
+        }
+    });
+    $.PostRow = function (split, q) {
+        if (!split) {
+            var n = parseFloat($('#amt').val());
+            if (!n > 0) {
+                $.growlUI("Contribution", "Cannot post, No Amount");
+                return;
+            }
+            q = $('#pbform').serialize();
+        }
         var action = "/PostBundle/PostRow/";
-        if ($('#editid').val())
+        var cid = $('#editid').val();
+        if (cid)
             action = "/PostBundle/UpdateRow/";
         $.post(action, q, function (ret) {
             if (!ret)
@@ -158,35 +192,38 @@
             $('#totalitems').text(ret.totalitems);
             $('#itemcount').text(ret.itemcount);
             var pid = $('#pid').val();
-            $('#bundle tbody').prepend(
-                    '<tr cid="' + ret.cid
-                    + '"><td><a href="/SearchAdd/Index/' + ret.cid
-                    + '?type=contributor" class="pid">' + (pid || 'select')
-                    + '</a></td><td class="name" title="' + ret.tip
-                    + '">' + $('#name').val()
-                    + '</td><td class="amt" val="' + $('#amt').val()
-                    + '" align="right">' + ret.amt
-                    + '</td><td val="' + $('#fund').val() + '"class="fund" pledge="' + ret.pledge
-                    + '"><span id="f' + ret.cid + '" class="clickSelect">' + ret.fund 
-                    + '</span></td><td class="notes">' + $('#notes').val()
-                    + '</td><td><a class="edit" href="#">edit</a>'
-                    + '</td><td><a class="delete" href="#">delete</a></td>'
-                    + '</tr>');
-            $('#bundle tbody tr:first td.name').tooltip({ showBody: "|" });
+            var tr;
+            if (cid) {
+                tr = $('tr[cid="' + cid + '"]');
+                tr.replaceWith(ret.row);
+                tr = $('tr[cid="' + cid + '"]');
+            }
+            else if (split) {
+                tr = $('tr[cid="' + split + '"]');
+                $(ret.row).insertAfter(tr);
+                tr = $('tr[cid="' + ret.cid + '"]');
+            }
+            else {
+                $('#bundle tbody').prepend(ret.row);
+                tr = $('#bundle tbody tr:first');
+            }
+            $('td.name', tr).tooltip({ showBody: "|" });
+            $('a.edit').show();
+            $('a.split').show();
+            $('a.delete').show();
+            $(".bt", tr).button();
             $('#editid').val('');
             $('#entry input').val('');
             $('#fund').val($('#fundid').val());
-            $.MakeEditable();
-            $('#pid').focus();
-            $('a.edit').show();
-            $('a.update').show();
             $.Stripe();
-            q = $('#pbform').serialize();
-            $.post("/PostBundle/FundTotals/", q, function (ret) {
-                $("fundtotals").html(ret);
-            });
+            var top = tr.offset().top;
+            if (!split) {
+                $('#pid').focus();
+                $('html,body').animate({ scrollTop: top }, 1000);
+            }
+            tr.effect("highlight", {}, 3000);
         });
-    }
+    };
     $('#searchDialog').dialog({
         title: 'Search/Add Contributor',
         bgiframe: true,
@@ -201,6 +238,8 @@
             $('iframe', this).attr("src", "");
         }
     });
+    $("#totalitems").text($("#titems").val());
+    $("#totalcount").text($("#tcount").val());
 });
 function AddSelected(ret) {
     $('#searchDialog').dialog("close");

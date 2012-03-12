@@ -5,6 +5,7 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 using System;
+using System.Data.Common;
 using System.IO;
 using System.Threading;
 using System.Linq;
@@ -340,9 +341,28 @@ namespace CmsData
         public Tag PopulateSpecialTag(IQueryable<Person> q, int TagTypeId)
         {
             var tag = FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId);
-            TagPeople.DeleteAllOnSubmit(tag.PersonTags);
-            SubmitChanges();
+        	ExecuteCommand("delete TagPerson where Id = {0}", tag.Id);
             TagAll(q, tag);
+            return tag;
+        }
+        public Tag PopulateSpecialTag(IQueryable<int?> q, int TagTypeId)
+        {
+            var tag = FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId);
+        	ExecuteCommand("delete TagPerson where Id = {0}", tag.Id);
+        	var cmd = GetCommand(q);
+        	var s = cmd.CommandText;
+        	var plist = new List<DbParameter>();
+        	var n = 0;
+			foreach(var p in cmd.Parameters)
+			{
+				s = s.Replace("@p" + n, "{{{0}}}".Fmt(n));
+				n++;
+				plist.Add(p as DbParameter);
+			}
+			s = Regex.Replace(s, "^SELECT( DISTINCT)?",
+				@"INSERT INTO TagPerson (Id, PeopleId) $0 " + tag.Id + ",");
+			ExecuteCommand(s, plist.Select(pp => pp.Value).ToArray());
+            //TagAll(q, tag);
             return tag;
         }
         public void PopulateSpecialTag(IQueryable<Person> q, string tagname)

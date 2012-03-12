@@ -232,8 +232,10 @@
     <Compile Include="Generated\Country.cs" />
     <Compile Include="Generated\DeleteMeetingRun.cs" />
     <Compile Include="Generated\DuplicatesRun.cs" />
+    <Compile Include="Generated\Functions\ContributionCountTable.cs" />
     <Compile Include="Generated\MemberDocForm.cs" />
     <Compile Include="Generated\RepairTransactionsRun.cs" />
+    <Compile Include="Generated\UploadPeopleRun.cs" />
     <Compile Include="Generated\Views\PickListOrg.cs" />
     <Compile Include="RecurringGiving.cs" />
     <Compile Include="Dynamic.cs" />
@@ -302,7 +304,6 @@
     <Compile Include="Generated\Functions\SundayDate.cs" />
     <Compile Include="Generated\OneTimeLink.cs" />
     <Compile Include="Generated\ProgDiv.cs" />
-    <Compile Include="Generated\RecLeague.cs" />
     <Compile Include="Generated\SecurityCode.cs" />
     <Compile Include="Generated\StreetType.cs" />
     <Compile Include="Generated\Transaction.cs" />
@@ -350,7 +351,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RecLeague.cs" />
     <Compile Include="Generated\ActivityLog.cs" />
     <Compile Include="Generated\ChurchAttReportId.cs" />
     <Compile Include="Generated\Content.cs" />

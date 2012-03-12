@@ -1,0 +1,37 @@
+﻿@model CmsWeb.Models.TotalsByFundModel
+@using UtilityExtensions
+@using CmsWeb
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Totals By Fund";
+}
+@section head
+{
+    <style type="text/css" media="print">
+        input.noPrint { display: none; }
+        span.noPrint { display: none; }
+    </style>
+}
+@section scripts
+{
+@Html.Script("/Scripts/TotalsByFund.js")
+}
+
+<h1>Totals By Fund</h1>
+<form id="totals">
+Campus: @Html.DropDownList("CampusId", Model.Campuses())
+Start Date: @Html.TextBox("Dt1", Model.Dt1.ToString2("M/d/yy"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
+End Date: @Html.TextBox("Dt2", Model.Dt2.ToString2("M/d/yy"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
+<div style="color: Red">@Html.ValidationMessage("dates")</div>
+Non Tax Deductible:@Html.CheckBox("NonTaxDeductible")
+Pledges:@Html.CheckBox("Pledges")
+	<p>
+		<input id="run" type="submit" value="Run Report" class="bt" />
+		<input id="export" type="submit" value="Export Contributions" class="bt" />
+		<input id="exporttotals" type="submit" value="Export Contribution Totals" class="bt" />
+	</p>
+    <hr />
+</form>
+<div id="results">
+	
+</div>

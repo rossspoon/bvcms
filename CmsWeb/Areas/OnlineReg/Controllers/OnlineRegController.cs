@@ -93,10 +93,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             	pid = a[1].ToInt();
                 m.registertag = registertag;
             }
-			else if (User.Identity.IsAuthenticated)
-			{
-				pid = Util.UserPeopleId ?? 0;
-			}
+			//else if (User.Identity.IsAuthenticated)
+			//{
+			//    pid = Util.UserPeopleId ?? 0;
+			//}
 
 			if(pid > 0)
 			{
@@ -306,7 +306,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (p.ManageSubscriptions() 
 				|| p.OnlinePledge() 
 				|| p.ManageGiving()
-				|| p.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+				|| m.ChoosingSlots())
             {
                 p.OtherOK = true;
                 //if (p.Found == true)

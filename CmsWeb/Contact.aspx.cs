@@ -81,7 +81,7 @@ namespace CmsWeb
         protected void DeleteButton_Click(object sender, EventArgs e)
         {
             ctrl.DeleteContact(contact.ContactId);
-            Response.EndShowMessage("Contact Deleted", "/ContactSearch.aspx", "click here");
+            Response.EndShowMessage("Contact Deleted", "/ContactSearch", "click here");
         }
 
         protected void AddTeamContact_Click(object sender, EventArgs e)

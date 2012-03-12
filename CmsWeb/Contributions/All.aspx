@@ -103,7 +103,7 @@
         <ItemTemplate>
             <tr style="">
                 <td>
-                    <asp:HyperLink ID="HyperLink2" NavigateUrl='<%# Eval("PeopleId", "/Reports/ContributionYears/{0}") %>'
+                    <asp:HyperLink ID="HyperLink2" NavigateUrl='<%# Eval("PeopleId", "/FinanceReports/ContributionYears/{0}") %>'
                         Text='<%# Eval("Name") %>' runat="server"></asp:HyperLink>
                 </td>
                 <td>

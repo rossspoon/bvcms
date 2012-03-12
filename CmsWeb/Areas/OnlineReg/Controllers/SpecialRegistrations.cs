@@ -440,6 +440,55 @@ You have the following subscriptions:<br/>
 
             return Content(message);
         }
+		public ActionResult TestVoteLink(string id, string smallgroup, string message, bool? confirm)
+		{
+			if (!id.HasValue())
+				return Content("bad link");
+
+			var guid = id.ToGuid();
+			if (guid == null)
+				return Content("not a guid");
+			var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+			if (ot == null)
+				return Content("cannot find link");
+			if (ot.Used)
+				return Content("link used");
+			if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+				return Content("link expired");
+			var a = ot.Querystring.Split(',');
+			var oid = a[0].ToInt();
+			var pid = a[1].ToInt();
+			var emailid = a[2].ToInt();
+			var pre = a[3];
+			var q = (from pp in DbUtil.Db.People
+					 where pp.PeopleId == pid
+					 let org = DbUtil.Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == oid)
+					 let om = DbUtil.Db.OrganizationMembers.SingleOrDefault(oo => oo.OrganizationId == oid && oo.PeopleId == pid)
+					 select new { p = pp, org, om }).SingleOrDefault();
+			if (q == null)
+				return Content("peopleid {0} not found".Fmt(pid));
+
+			if (q.org == null)
+				return Content("no org " + oid);
+
+			if (q.om == null && q.org.Limit <= q.org.MemberCount)
+				return Content("sorry, maximum limit has been reached");
+
+			if (q.om == null && (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive))
+				return Content("sorry, registration has been closed");
+
+			var setting = new RegSettings(q.org.RegSetting, DbUtil.Db, oid);
+			if (IsSmallGroupFilled(setting, oid, smallgroup))
+				return Content("sorry, maximum limit has been reached for " + smallgroup);
+
+			return Content(@"<pre>
+looks ok
+oid={0}
+pid={1}
+emailid={2}
+</pre>".Fmt(oid, pid, emailid));
+		}
+
 		[ValidateInput(false)]
         public ActionResult RegisterLink(string id)
         {

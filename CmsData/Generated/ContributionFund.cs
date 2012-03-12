@@ -49,6 +49,8 @@ namespace CmsData
 		
 		private int? _OnlineSort;
 		
+		private bool? _NonTaxDeductible;
+		
    		
    		private EntitySet< BundleHeader> _BundleHeaders;
 		
@@ -111,6 +113,9 @@ namespace CmsData
 		
 		partial void OnOnlineSortChanging(int? value);
 		partial void OnOnlineSortChanged();
+		
+		partial void OnNonTaxDeductibleChanging(bool? value);
+		partial void OnNonTaxDeductibleChanged();
 		
     #endregion
 		public ContributionFund()
@@ -195,7 +200,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundName", UpdateCheck=UpdateCheck.Never, Storage="_FundName", DbType="varchar(40) NOT NULL")]
+		[Column(Name="FundName", UpdateCheck=UpdateCheck.Never, Storage="_FundName", DbType="varchar(256) NOT NULL")]
 		public string FundName
 		{
 			get { return this._FundName; }
@@ -327,7 +332,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundIncomeDept", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeDept", DbType="varchar(25) NOT NULL")]
+		[Column(Name="FundIncomeDept", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeDept", DbType="varchar(25)")]
 		public string FundIncomeDept
 		{
 			get { return this._FundIncomeDept; }
@@ -349,7 +354,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundIncomeAccount", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeAccount", DbType="varchar(25) NOT NULL")]
+		[Column(Name="FundIncomeAccount", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeAccount", DbType="varchar(25)")]
 		public string FundIncomeAccount
 		{
 			get { return this._FundIncomeAccount; }
@@ -371,7 +376,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundIncomeFund", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeFund", DbType="varchar(25) NOT NULL")]
+		[Column(Name="FundIncomeFund", UpdateCheck=UpdateCheck.Never, Storage="_FundIncomeFund", DbType="varchar(25)")]
 		public string FundIncomeFund
 		{
 			get { return this._FundIncomeFund; }
@@ -393,7 +398,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundCashDept", UpdateCheck=UpdateCheck.Never, Storage="_FundCashDept", DbType="varchar(25) NOT NULL")]
+		[Column(Name="FundCashDept", UpdateCheck=UpdateCheck.Never, Storage="_FundCashDept", DbType="varchar(25)")]
 		public string FundCashDept
 		{
 			get { return this._FundCashDept; }
@@ -415,7 +420,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundCashAccount", UpdateCheck=UpdateCheck.Never, Storage="_FundCashAccount", DbType="varchar(25) NOT NULL")]
+		[Column(Name="FundCashAccount", UpdateCheck=UpdateCheck.Never, Storage="_FundCashAccount", DbType="varchar(25)")]
 		public string FundCashAccount
 		{
 			get { return this._FundCashAccount; }
@@ -437,7 +442,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FundCashFund", UpdateCheck=UpdateCheck.Never, Storage="_FundCashFund", DbType="varchar(25) NOT NULL")]
+		[Column(Name="FundCashFund", UpdateCheck=UpdateCheck.Never, Storage="_FundCashFund", DbType="varchar(25)")]
 		public string FundCashFund
 		{
 			get { return this._FundCashFund; }
@@ -474,6 +479,28 @@ namespace CmsData
 					this._OnlineSort = value;
 					this.SendPropertyChanged("OnlineSort");
 					this.OnOnlineSortChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NonTaxDeductible", UpdateCheck=UpdateCheck.Never, Storage="_NonTaxDeductible", DbType="bit")]
+		public bool? NonTaxDeductible
+		{
+			get { return this._NonTaxDeductible; }
+
+			set
+			{
+				if (this._NonTaxDeductible != value)
+				{
+				
+                    this.OnNonTaxDeductibleChanging(value);
+					this.SendPropertyChanging();
+					this._NonTaxDeductible = value;
+					this.SendPropertyChanged("NonTaxDeductible");
+					this.OnNonTaxDeductibleChanged();
 				}
 
 			}

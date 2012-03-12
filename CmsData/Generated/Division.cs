@@ -46,8 +46,6 @@ namespace CmsData
 		
    		private EntitySet< ProgDiv> _ProgDivs;
 		
-   		private EntitySet< RecLeague> _RecLeagues;
-		
    		private EntitySet< Promotion> _FromPromotions;
 		
    		private EntitySet< Promotion> _ToPromotions;
@@ -103,8 +101,6 @@ namespace CmsData
 			this._Organizations = new EntitySet< Organization>(new Action< Organization>(this.attach_Organizations), new Action< Organization>(this.detach_Organizations)); 
 			
 			this._ProgDivs = new EntitySet< ProgDiv>(new Action< ProgDiv>(this.attach_ProgDivs), new Action< ProgDiv>(this.detach_ProgDivs)); 
-			
-			this._RecLeagues = new EntitySet< RecLeague>(new Action< RecLeague>(this.attach_RecLeagues), new Action< RecLeague>(this.detach_RecLeagues)); 
 			
 			this._FromPromotions = new EntitySet< Promotion>(new Action< Promotion>(this.attach_FromPromotions), new Action< Promotion>(this.detach_FromPromotions)); 
 			
@@ -386,16 +382,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_RecLeague_Division", Storage="_RecLeagues", OtherKey="DivId")]
-   		public EntitySet< RecLeague> RecLeagues
-   		{
-   		    get { return this._RecLeagues; }
-
-			set	{ this._RecLeagues.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FromPromotions__FromDivision", Storage="_FromPromotions", OtherKey="FromDivId")]
    		public EntitySet< Promotion> FromPromotions
    		{
@@ -525,19 +511,6 @@ namespace CmsData
 		}
 
 		private void detach_ProgDivs(ProgDiv entity)
-		{
-			this.SendPropertyChanging();
-			entity.Division = null;
-		}
-
-		
-		private void attach_RecLeagues(RecLeague entity)
-		{
-			this.SendPropertyChanging();
-			entity.Division = this;
-		}
-
-		private void detach_RecLeagues(RecLeague entity)
 		{
 			this.SendPropertyChanging();
 			entity.Division = null;

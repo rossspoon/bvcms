@@ -141,16 +141,23 @@
     <Compile Include="Areas\Dialog\Models\SearchOrgsModel.cs" />
     <Compile Include="Areas\Dialog\Models\SearchDivisionsModel.cs" />
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
+    <Compile Include="Areas\Finance\Controllers\ContributionsController.cs" />
+    <Compile Include="Areas\Finance\Controllers\FinanceReportsController.cs" />
+    <Compile Include="Areas\Finance\FinanceAreaRegistration.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionSearchModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
-    <Compile Include="Areas\Manage\Controllers\StatementsController.cs" />
+    <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />
+    <Compile Include="Areas\Finance\Controllers\StatementsController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
     <Compile Include="Areas\Main\Models\Export\FreshbooksResult.cs" />
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Main\Models\Person\VolunteerModel.cs" />
+    <Compile Include="Areas\Manage\Models\UploadPeopleModel.cs" />
     <Compile Include="Areas\Manage\Models\AccountModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
     <Compile Include="Areas\Manage\Controllers\ExtraValuesController.cs" />
@@ -175,7 +182,7 @@
     <Compile Include="Areas\Main\Controllers\CouponController.cs" />
     <Compile Include="Areas\Dialog\Controllers\OrgMembersDialogController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgSearchController.cs" />
-    <Compile Include="Areas\Main\Controllers\PostBundleController.cs" />
+    <Compile Include="Areas\Finance\Controllers\PostBundleController.cs" />
     <Compile Include="Areas\Main\Controllers\QuickSearchController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchAddController.cs" />
     <Compile Include="Areas\Dialog\Controllers\OrgMemberDialogController.cs" />
@@ -207,7 +214,7 @@
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
-    <Compile Include="Areas\Main\Models\Other\ContributionsExcelResult.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Person\FamilyModel.cs" />
     <Compile Include="Areas\Main\Models\Report\MeetingsModel.cs" />
     <Compile Include="Areas\Manage\Controllers\RegSettingsController.cs" />
@@ -233,7 +240,7 @@
     <Compile Include="Areas\Main\Models\Organization\PersonMemberInfo.cs" />
     <Compile Include="Areas\Main\Models\Other\MassEmailer.cs" />
     <Compile Include="Areas\Main\Models\Other\OrgSearchModel.cs" />
-    <Compile Include="Areas\Main\Models\Other\PostBundleModel.cs" />
+    <Compile Include="Areas\Finance\Models\PostBundleModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskNotesExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Other\CouponModel.cs" />
     <Compile Include="Areas\Main\Models\Export\OrgExcelResult.cs" />
@@ -243,16 +250,16 @@
     <Compile Include="Areas\Main\Models\Person\DuplicatesModel.cs" />
     <Compile Include="Areas\Main\Models\Report\AttendanceDetailModel.cs" />
     <Compile Include="Areas\Main\Models\Report\ChurchAttendance2Model.cs" />
-    <Compile Include="Areas\Main\Models\Report\ContributionStatementsExtract.cs" />
-    <Compile Include="Areas\Main\Models\Report\ContributionStatements.cs" />
-    <Compile Include="Areas\Main\Models\Report\ContributionStatementsResult.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionStatementsExtract.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionStatements.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionStatementsResult.cs" />
     <Compile Include="Areas\Main\Models\Report\TestResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RollsheetModel.cs" />
     <Compile Include="Areas\Main\Models\Report\PastAttendeeResult.cs" />
     <Compile Include="Areas\Main\Models\Report\VisitsAbsentsResult.cs" />
     <Compile Include="Areas\Main\Models\Report\HeadFoot.cs" />
-    <Compile Include="Areas\Main\Models\Report\ContributionModel.cs" />
-    <Compile Include="Areas\Main\Models\Report\ContributionStatementResult.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionModel.cs" />
+    <Compile Include="Areas\Finance\Models\ContributionStatementResult.cs" />
     <Compile Include="Areas\Main\Models\Report\AttendeeResult.cs" />
     <Compile Include="Areas\Main\Models\Report\ProspectResult.cs" />
     <Compile Include="Areas\Main\Models\Report\RollLabelsResult.cs" />
@@ -288,6 +295,14 @@
     <Content Include="ckeditor\plugins\docprops\plugin.js" />
     <Content Include="ckeditor\plugins\stylesheetparser\plugin.js" />
     <Content Include="ckeditor\plugins\xml\plugin.js" />
+    <Content Include="Content\bootstrap\css\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="Content\bootstrap\js\bootstrap.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\combined.css" />
     <Content Include="Content\faary.css" />
     <Content Include="Content\jquery-ui-1.8.18.custom.css" />
@@ -388,7 +403,7 @@
     <Compile Include="Areas\Public\Models\StepClassModel.cs" />
     <Compile Include="Areas\Setup\AreaRegistration.cs" />
     <Compile Include="Areas\Manage\Controllers\DisplayController.cs" />
-    <Compile Include="Areas\Setup\Controllers\FundController.cs" />
+    <Compile Include="Areas\Finance\Controllers\FundController.cs" />
     <Compile Include="Areas\Setup\Controllers\LookupController.cs" />
     <Compile Include="Areas\Setup\Controllers\MemberTypeController.cs" />
     <Compile Include="Areas\Setup\Controllers\MetroZipController.cs" />
@@ -544,13 +559,6 @@
     </Compile>
     <Compile Include="Contributions\Reports\Reports.Master.designer.cs">
       <DependentUpon>Reports.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Reports\TotalsByFund2.aspx.cs">
-      <DependentUpon>TotalsByFund2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Reports\TotalsByFund2.aspx.designer.cs">
-      <DependentUpon>TotalsByFund2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contributions\Reports\TotalsByFundRange.aspx.cs">
       <DependentUpon>TotalsByFundRange.aspx</DependentUpon>
@@ -912,6 +920,8 @@
     <Content Include="Min\Content\js\jquery.transpose.js" />
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
+    <Content Include="Min\Scripts\Contibutions.js" />
+    <Content Include="Min\Scripts\ContibutionSearch.js" />
     <Content Include="Min\Scripts\Divisions.js" />
     <Content Include="Min\Scripts\edit.js" />
     <Content Include="Min\Scripts\email.js" />
@@ -945,9 +955,12 @@
     <Content Include="Min\Scripts\Tags.js" />
     <Content Include="Min\Scripts\Task.js" />
     <Content Include="Min\Scripts\TestAPI.js" />
+    <Content Include="Min\Scripts\TotalsByFund.js" />
     <Content Include="Min\Scripts\TransactionHistory.js" />
     <Content Include="Min\Scripts\UserDialog.js" />
     <Content Include="Scripts\ContactSearch.js" />
+    <Content Include="Scripts\Contributions.js" />
+    <Content Include="Scripts\TotalsByFund.js" />
     <Content Include="Scripts\ManageVolunteer.js" />
     <Content Include="Scripts\headermenu.js" />
     <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
@@ -1040,7 +1053,7 @@
     <Content Include="App_Browsers\WebOs.browser">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Areas\Manage\Views\Statements\Index.cshtml">
+    <Content Include="Areas\Finance\Views\Statements\Index.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\Duplicates\Progress.cshtml">
     </Content>
@@ -1066,6 +1079,16 @@
     <Content Include="Areas\Main\Views\Person\EditorTemplates\Field.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlotsSummary.cshtml" />
     <Content Include="Areas\Main\Views\Person\CurrentRegistrations.cshtml" />
+    <Content Include="Areas\Manage\Views\UploadPeople\Progress.cshtml" />
+    <Content Include="Areas\Manage\Views\UploadPeople\Index.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\TotalsByFund.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\ViewPage2.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\TotalsByFundResults.cshtml" />
+    <Content Include="Areas\Finance\Views\Web.config" />
+    <Content Include="Areas\Finance\Views\PostBundle\Totals.cshtml" />
+    <Content Include="Areas\Finance\Views\PostBundle\Row.cshtml" />
+    <Content Include="Areas\Finance\Views\Contributions\Index.cshtml" />
+    <Content Include="Areas\Finance\Views\Contributions\Results.cshtml" />
     <None Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving2.cshtml">
     </None>
     <None Include="Content\LibraryTemplate.xls" />
@@ -1237,11 +1260,11 @@
     </Content>
     <Content Include="Areas\Public\Views\APICheckIn\Startup.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\PostBundle\Batch.cshtml">
+    <Content Include="Areas\Finance\Views\PostBundle\Batch.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\PostBundle\FundTotals.cshtml">
+    <Content Include="Areas\Finance\Views\PostBundle\FundTotals.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\PostBundle\Index.cshtml">
+    <Content Include="Areas\Finance\Views\PostBundle\Index.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Task\Columns.cshtml">
     </Content>
@@ -1309,10 +1332,10 @@
     <Content Include="Areas\Main\Views\Reports\ChurchAttendance2.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Manage\Views\Statements\Progress.cshtml">
+    <Content Include="Areas\Finance\Views\Statements\Progress.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Main\Views\Reports\ContributionYears.cshtml">
+    <Content Include="Areas\Finance\Views\FinanceReports\ContributionYears.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\Account\AddUser.cshtml">
       <SubType>Code</SubType>
@@ -1366,10 +1389,10 @@
     <Content Include="Areas\Setup\Views\Division\Row.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Setup\Views\Fund\Edit.cshtml">
+    <Content Include="Areas\Finance\Views\Fund\Edit.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Setup\Views\Fund\Index.cshtml">
+    <Content Include="Areas\Finance\Views\Fund\Index.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Areas\Setup\Views\Lookup\Index.cshtml">
@@ -1939,7 +1962,6 @@
     <Content Include="Contributions\Individual.aspx" />
     <Content Include="Contributions\Reports\JournalDetails.aspx" />
     <Content Include="Contributions\Reports\PledgeReport.aspx" />
-    <Content Include="Contributions\Reports\TotalsByFund2.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
     <Content Include="images\1pix.gif" />
     <Content Include="images\adobe.png" />
@@ -2140,9 +2162,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Dialog\Views\Shared\" />
+    <Folder Include="Areas\Finance\Views\Shared\" />
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
-    <Folder Include="Areas\Manage\Views\Reports\" />
     <Folder Include="Areas\OnlineReg\Models\Payments\" />
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />

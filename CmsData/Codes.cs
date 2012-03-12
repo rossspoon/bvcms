@@ -143,19 +143,19 @@ namespace CmsData.Codes
         public const int ManageSubscriptions2 = 15;
         public static IEnumerable<KeyValuePair<int, string>> GetCodePairs()
         {
-            yield return new KeyValuePair<int, string>(None, "Online Registration Not Allowed");
+            yield return new KeyValuePair<int, string>(None, "No Online Registration");
             yield return new KeyValuePair<int, string>(JoinOrganization, "Join Organization");
-            yield return new KeyValuePair<int, string>(AttendMeeting, "Attend Meeting (not available yet)");
-            yield return new KeyValuePair<int, string>(JoinAttendMeeting, "Attend Meeting, Join Org (not available yet)");
+//            yield return new KeyValuePair<int, string>(AttendMeeting, "Attend Meeting (not available yet)");
+//            yield return new KeyValuePair<int, string>(JoinAttendMeeting, "Attend Meeting, Join Org (not available yet)");
             yield return new KeyValuePair<int, string>(UserSelectsOrganization2, "User Selects Organization");
-            yield return new KeyValuePair<int, string>(UserSelectsOrganization, "User Selects Organization (div style, do not use anymore)");
             yield return new KeyValuePair<int, string>(ComputeOrganizationByAge2, "Compute Org By Birthday");
-            yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "Compute Org By Birthday (div style, do not use any more)");
             yield return new KeyValuePair<int, string>(ManageSubscriptions2, "Manage Subscriptions");
             yield return new KeyValuePair<int, string>(ManageGiving, "Manage Recurring Giving");
             yield return new KeyValuePair<int, string>(OnlineGiving, "Online Giving");
             yield return new KeyValuePair<int, string>(OnlinePledge, "Online Pledge");
-            yield return new KeyValuePair<int, string>(ChooseSlot, "Choose Slot (not available yet)");
+            yield return new KeyValuePair<int, string>(ChooseSlot, "Choose Volunteer Times");
+            yield return new KeyValuePair<int, string>(UserSelectsOrganization, "--old user selects org");
+            yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "--old compute org by bday");
         }
         public static string Lookup(int id)
         {

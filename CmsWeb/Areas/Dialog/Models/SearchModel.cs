@@ -43,10 +43,6 @@ namespace CmsWeb.Models
         {
             return Util.HelpLink("_SearchAdd_{0}".Fmt(page));
         }
-        public string HelpLinkWithType(string page)
-        {
-            return Util.HelpLink("_SearchAdd_{0}_{1}".Fmt(page, type));
-        }
         private IEnumerable<PeopleInfo> PeopleList(IQueryable<Person> query)
         {
             var q = from p in query

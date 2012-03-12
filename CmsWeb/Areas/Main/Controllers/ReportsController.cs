@@ -16,13 +16,6 @@ namespace CmsWeb.Areas.Main.Controllers
 {
     public class ReportsController : CmsStaffController
     {
-        //
-        // GET: /Main/Report/
-
-        public ActionResult Index()
-        {
-            return View();
-        }
         public ActionResult Attendance(int id)
         {
 
@@ -218,18 +211,6 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new RegistrationResult(id, oid);
         }
-        [Authorize(Roles = "Finance")]
-        public ActionResult ContributionYears(int id)
-        {
-            var m = new ContributionModel(id);
-            return View(m);
-        }
-        [Authorize(Roles = "Finance")]
-        public ActionResult ContributionStatement(int id, DateTime FromDate, DateTime ToDate, int typ)
-        {
-            DbUtil.LogActivity("Contribution Statement for ({0})".Fmt(id));
-            return new ContributionStatementResult { PeopleId = id, FromDate = FromDate, ToDate = ToDate, typ = typ };
-        }
         public ActionResult ChurchAttendance(DateTime? id)
         {
             if (!id.HasValue)
@@ -313,7 +294,6 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(rdr);
         }
 
-
         public class QueryStatsResult : ActionResult
         {
             StringBuilder sb = new StringBuilder();
@@ -344,7 +324,6 @@ namespace CmsWeb.Areas.Main.Controllers
                 var head = q3.ToDictionary(ss => ss.Key, ss => ss.Description);
 
                 var Response = context.HttpContext.Response;
-                var n = 1;
                 foreach (var r in q)
                 {
                     var row = new Dictionary<string, string>();
@@ -352,7 +331,6 @@ namespace CmsWeb.Areas.Main.Controllers
                     foreach (var s in r.list)
                         row[s.StatId] = s.Count.ToString2("N0");
                     d.Add(row);
-                    n++;
                 }
                 Response.Write("<table cellpadding=4>\n<tr><td>Date</td>");
                 foreach (var c in head)

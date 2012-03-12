@@ -365,7 +365,7 @@ namespace CmsData
         {
             return Person.Add(DbUtil.Db, true, fam, position, tag, firstname, nickname, lastname, dob, MarriedCode, gender, originId, EntryPointId);
         }
-        public static Person Add(CMSDataContext Db, bool SendNotices, Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, int MarriedCode, int gender, int originId, int? EntryPointId)
+        public static Person Add(CMSDataContext Db, bool SendNotices, Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, int MarriedCode, int gender, int originId, int? EntryPointId, bool testing = false)
         {
             var p = new Person();
             p.CreatedDate = Util.Now;
@@ -438,15 +438,16 @@ namespace CmsData
 
             if (tag != null)
                 tag.PersonTags.Add(new TagPerson { Person = p });
-            if (Util.UserPeopleId.HasValue)
-            {
-                var tag2 = Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-                tag2.PersonTags.Add(new TagPerson { Person = p });
-            }
+//            if (Util.UserPeopleId.HasValue)
+//            {
+//                var tag2 = Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+//                tag2.PersonTags.Add(new TagPerson { Person = p });
+//            }
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
             p.FixTitle();
-            Db.SubmitChanges();
+			if (!testing)
+				Db.SubmitChanges();
             if (SendNotices)
             {
                 if (Util.UserPeopleId.HasValue

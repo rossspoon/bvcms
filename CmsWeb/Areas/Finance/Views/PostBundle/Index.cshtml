@@ -1,0 +1,66 @@
+﻿@using UtilityExtensions
+@using CmsWeb
+@model CmsWeb.Models.PostBundleModel
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "PostBundle";
+}
+@section head 
+{
+<link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
+<style type="text/css"> .alt { background-color: #eee; } </style>
+}
+    <h2>PostBundle</h2>
+@section scripts
+{
+@Html.Script("/Scripts/PostBundle.js")
+}
+@Html.Hidden("fundid", Model.bundle.FundId)
+@{ var b = Model.bundle; }
+<form id='pbform' action='/PostBundle/InsertRow' method="post">
+<table>
+    <tr><th>BundleId</th><td><a href="/Contributions/Bundle.aspx?id=@Model.id">@Model.id@Html.Hidden("id")</a></td></tr>
+    <tr><th>Date</th><td>@Model.bundle.ContributionDate.ToShortDateString()</td></tr>
+    <tr><th>Fund</th><td><a target="_blank" href='/PostBundle/FundTotals/@Model.id'>@Model.FundName (@Model.bundle.FundId)</a></td></tr>
+    <tr><th>Pledge</th><td>@Html.CheckBox("pledge")</td></tr>
+    <tr><th>Total</th><td>@((b.TotalCash + b.TotalChecks + b.TotalEnvelopes).ToString2("N2"))</td></tr>
+    <tr><th>Total Items</th><td><span id="totalitems">@b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount).ToString2("N2")</span></td></tr>
+    <tr><th>Item Count</th><td><span id="itemcount">@b.BundleDetails.Count()</span></td></tr>
+</table>
+@Html.Hidden("id")
+@Html.Hidden("editid")
+<table id='bundle'>
+    <thead>
+        <tr>
+            <th>PeopleId</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Fund(s)</th>
+            <th>CheckNo</th>
+            <th>Notes</th>
+            <th colspan="3"></th>
+        </tr>
+        <tr id="entry">
+            <td><input id="pid" name="pid" type="text" style="width:5em" /></td>
+            <td><input id="name" name="name" type="text" /></td>
+            <td><input id="amt" name="amt" type="text" style="width:5em" /></td>
+            <td>@Html.DropDownList("fund", Model.Funds())</td>
+            <td><input id="checkno" name="checkno" type="text" style="width:4em" /></td>
+            <td><input id="notes" name="notes" type="text" /></td>
+            <td colspan="3"><a class="update bt" href='#'>update</a></td>
+        </tr>
+    </thead>
+    <tbody>
+@foreach(var c in Model.FetchContributions())
+{ 
+    @Html.Partial("Row", c)
+}
+    </tbody>
+</table>
+</form>
+    <div id="searchDialog">
+    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
+    </div>
+
+
+

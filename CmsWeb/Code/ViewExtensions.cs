@@ -146,13 +146,13 @@ namespace CmsWeb
         {
 			return IsDebug();
         }
-		public static HtmlString Script(this HtmlHelper helper, string script)
+		public static HtmlString Script(this HtmlHelper helper, string script, bool? debug = false)
 		{
 			if (Util.Version == "?")
 				Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-			if (!helper.IsDebug())
-				return new HtmlString(@"<script src=""/Min{0}?v={1}"" type=""text/javascript""></script>".Fmt(script, Util.Version));
-			return new HtmlString(@"<script src=""{0}"" type=""text/javascript""></script>".Fmt(script));
+			if (helper.IsDebug() || debug == true)
+				return new HtmlString(@"<script src=""{0}"" type=""text/javascript""></script>".Fmt(script));
+			return new HtmlString(@"<script src=""/Min{0}?v={1}"" type=""text/javascript""></script>".Fmt(script, Util.Version));
 		}
 		public static HtmlString Css(this HtmlHelper helper, string css)
 		{

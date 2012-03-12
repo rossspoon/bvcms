@@ -18,7 +18,7 @@ namespace CmsWeb.Areas.Manage
             AddRoute(context, "Display");
             AddRoute(context, "Merge");
             AddRoute(context, "Duplicates");
-            AddRoute(context, "Statements");
+            AddRoute(context, "UploadPeople");
             AddRoute(context, "OrgMembers");
             AddRoute(context, "Batch");
             AddRoute(context, "Promotion");

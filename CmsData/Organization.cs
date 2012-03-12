@@ -229,7 +229,7 @@ namespace CmsData
 				var max = Db.MemberTypes.Max(mm => mm.Id) + 10;
 				if (max < 1000)
 					max = 1010;
-				mt = new MemberType { Id = max, Description = type, Code = type};
+				mt = new MemberType { Id = max, Description = type, Code = type.Truncate(20)};
 				Db.MemberTypes.InsertOnSubmit(mt);
 				Db.SubmitChanges();
 			}

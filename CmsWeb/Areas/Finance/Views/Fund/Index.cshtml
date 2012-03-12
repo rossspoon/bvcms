@@ -1,0 +1,62 @@
+﻿@using CmsWeb
+@model IEnumerable<CmsData.ContributionFund>
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Funds";
+}
+@section scripts
+{
+@Html.Script("/Scripts/Funds.js")
+}
+
+<h2>Funds</h2>
+<p>
+@if(ViewBag.status == 1)
+{
+<a href="/Finance/Fund?status=2">view closed funds</a>
+}
+else
+{
+<a href="/Finance/Fund">view open funds</a>
+}
+</p>
+@Html.Hidden("status")
+<table class="grid" cellpadding="5">
+<thead>
+	<tr>
+		<th></th>
+		<th> <a href="#" class="sortable">FundId</a> </th>
+		<th> <a href="#" class="sortable">Sort</a> </th>
+		<th> <a href="#" class="sortable">Name</a> </th>
+		<th> <a href="#" class="sortable">StatusId</a> </th>
+		<th> <a href="#" class="sortable">PledgeFlag</a> </th>
+		<th> <a href="#" class="sortable">NonTaxDed</a> </th>
+		<th> <a href="#" class="sortable">Created</a> </th>
+	</tr>
+</thead>
+<tbody>
+@foreach (var item in Model)
+{ 
+    <tr>
+        <td> <a href="/Finance/Fund/Edit/@item.FundId">Edit</a> </td>
+        <td> @item.FundId </td>
+        <td> <span id="o@(item.FundId)" class="clickEdit">@(item.OnlineSort.HasValue ? item.OnlineSort.ToString() : "edit")</span> </td>
+        <td> @item.FundName </td>
+        <td> <span id="s@(item.FundId)" class="clickSelect">@(item.FundStatusId == 1 ? "Open" : "Closed")</span> </td>
+        <td> @item.FundPledgeFlag </td>
+        <td> @(item.NonTaxDeductible ?? false)</td>
+        <td> @item.CreatedDate.ToString("M/d/yy")</td>
+    </tr>
+}
+</tbody>
+</table>
+
+@using (Html.BeginForm("Create", "Fund"))
+{ 
+    <p>
+        Your first fund should have a fundid of 1<br />
+        <div id="errormessage" class="error"></div>
+        New Fund Id: @Html.TextBox("fundid")
+        <input type="submit" class="bt" value="Create" />
+    </p>
+} 

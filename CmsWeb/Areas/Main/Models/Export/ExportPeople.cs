@@ -79,62 +79,57 @@ namespace CmsWeb.Models
                     };
             return q.Take(maximumRows);
         }
-        public static IEnumerable ExcelContributions(int? qid, DateTime startdt, DateTime enddt)
+        public static IEnumerable ExcelContributions(DateTime startdt, DateTime enddt, 
+			int fundid, int campusid, bool pledges, bool nontaxdeductible)
         {
-            int[] ReturnedReversedTypes = new int[] 
+            var ReturnedReversedTypes = new int[] 
             { 
                 (int)Contribution.TypeCode.ReturnedCheck, 
                 (int)Contribution.TypeCode.Reversed 
             };
-            var q = DbUtil.Db.PeopleQuery(qid.Value);
             var q2 = from c in DbUtil.Db.Contributions
                      where c.PeopleId != null
                      let sp = c.Person.Family.People.SingleOrDefault(ss => ss.PeopleId == c.Person.SpouseId)
-                     where q.Any(p => p.PeopleId == c.PeopleId || c.PeopleId == DbUtil.Db.SpouseIdJoint(c.PeopleId))
                      let f = c.Person.Family
-                     where c.PledgeFlag != true
+					 let bh = c.BundleDetails.First().BundleHeader
+					 where (c.ContributionFund.NonTaxDeductible ?? false) == nontaxdeductible
+					 where c.Person.CampusId == campusid || campusid == 0
+                     where c.PledgeFlag == pledges
                      where c.ContributionStatusId == 0
                      where c.ContributionAmount > 0
                      where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
                      where c.ContributionDate >= startdt && c.ContributionDate <= enddt
+					 where c.FundId == fundid || fundid == 0
                      select new
                      {
                          f.FamilyId,
                          GiverId = c.PeopleId ?? 0,
                          HeadOfHouseholdId = (f.HeadOfHouseholdId == sp.PeopleId ? sp.PeopleId : c.PeopleId) ?? 0,
-                         Id = c.ContributionId,
+                         bh.BundleHeaderId,
                          Name = c.Person.Name2,
                          Amount = c.ContributionAmount ?? 0,
-                         Date = c.ContributionDate,
+                         Date = c.ContributionDate.Value,
+						 c.ContributionDesc,
                          c.FundId,
                          c.ContributionFund.FundName,
-                         c.BundleDetails.First().BundleHeader.BundleHeaderType.Description
-                         //IsSpouse = f.HeadOfHouseholdId == sp.PeopleId ? true : false,
+                         BundleType = bh.BundleHeaderType.Description,
+                         BundleStatus = bh.BundleStatusType.Description,
                      };
             return q2;
         }
-        public static IEnumerable ExcelContributionTotals(int? qid, DateTime startdt, DateTime enddt)
+        public static IEnumerable ExcelContributionTotals(DateTime startdt, DateTime enddt)
         {
-            int[] ReturnedReversedTypes = new int[] 
-            { 
-                (int)Contribution.TypeCode.ReturnedCheck, 
-                (int)Contribution.TypeCode.Reversed 
-            };
-            var q = DbUtil.Db.PeopleQuery(qid.Value);
-            var q2 = from p in q
-                     let sp = p.Family.People.SingleOrDefault(ss => ss.PeopleId == DbUtil.Db.SpouseIdJoint(p.PeopleId))
-                     where p.PeopleId == p.Family.HeadOfHouseholdId || p.ContributionOptionsId != 2
-                     let t = DbUtil.Db.GetTotalContributions(p.PeopleId, sp.PeopleId, startdt, enddt)
-                     from r in t
+        	var q2 = from r in DbUtil.Db.GetTotalContributions(startdt, enddt)
                      select new
                      {
-                         PeopleId = p.PeopleId,
+                         r.PeopleId,
                          Count = r.Cnt ?? 0,
                          Amount = r.Amt ?? 0m,
                          Pledged = r.Plg ?? 0m,
-                         Name = p.Name2,
-                         Name2 = sp.Name2 ?? "",
-                         Fund = r.Fund
+                         r.Name,
+                         SpouseName = r.SpouseName ?? "",
+                         r.FundDescription,
+						 r.FundId
                      };
             return q2;
         }

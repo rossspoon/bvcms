@@ -39,15 +39,6 @@
             <a href='/Export/ExtraValues/@ViewData["queryid"]' 
                 title="ExtraValues in Columns"><img src="/images/Excel.png" /> 
                 Extra Values Export</a>
-@if (User.IsInRole("Finance"))
-{
-            <a href='/Export/Contributions/@ViewData["queryid"]' class="ChooseStartEnd" 
-                title="Contributions Export"><img src="/images/Excel.png" /> 
-                Contributions</a>
-            <a href='/Export/Contributions/@ViewData["queryid"]?totals=true' class="ChooseStartEnd" 
-                title="Contributions Export"><img src="/images/Excel.png" /> 
-                Contribution Totals</a>
-}
 @if ((bool?)ViewData["OrganizationContext"] ?? false)
 { 
                 <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Organization' title="Includes Org Member info"><img src="/images/Excel.png" /> 

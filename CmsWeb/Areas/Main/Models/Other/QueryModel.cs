@@ -646,6 +646,18 @@ namespace CmsWeb.Models
             query = query.Skip(StartRow).Take(PageSize.Value);
             return FetchPeopleList(query);
         }
+		public class MyClass
+		{
+			public int Id { get; set; }
+			public int PeopleId { get; set; }
+		}
+        public Tag TagAllIds()
+        {
+            query = PersonQuery();
+			var tag = Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_Query);
+			Db.TagAll(query, tag);
+        	return tag;
+        }
         private IQueryable<Person> PersonQuery()
         {
             if (Qb == null)

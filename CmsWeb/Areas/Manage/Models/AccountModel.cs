@@ -166,10 +166,11 @@ namespace CmsWeb.Models
 			string problem = "There is a problem with your username and password combination. If you are using your email address, it must match the one we have on record. Try again or use one of the links below.";
 			if (user == null && n > 0)
 			{
-				NotifyAdmins("failed password #{2} by {0} on {1}"
-					.Fmt(userName, url, failedpasswordcount),
-						"{0} tried to login at {1} but got the password wrong"
-							.Fmt(userName, Util.Now));
+				if (n > 3)
+					NotifyAdmins("failed password #{2} by {0} on {1}"
+						.Fmt(userName, url, failedpasswordcount),
+							"{0} tried to login at {1} but got the password wrong"
+								.Fmt(userName, Util.Now));
 				if (failedpasswordcount == max)
 					return "Your account has been locked out for too many failed attempts, use the forgot password link, or notify an Admin";
 				return problem;

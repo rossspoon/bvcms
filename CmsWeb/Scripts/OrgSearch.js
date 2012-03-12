@@ -31,12 +31,12 @@
         $("#Page").val(pg);
         $.getTable();
         return false;
-    }
+    };
     $.setPageSize = function (ev) {
         $('#Page').val(1);
         $("#PageSize").val($(ev).val());
         return $.getTable();
-    }
+    };
     $.getTable = function () {
         var f = $('#results').closest('form');
         var q = f.serialize();
@@ -48,7 +48,7 @@
             });
         });
         return false;
-    }
+    };
     $.editable.addInputType('datepicker', {
         element: function (settings, original) {
             var input = $('<input>');
@@ -92,21 +92,27 @@
             showBody: "|"
         });
         $('#results > tbody > tr:even').addClass('alt');
-        $("span.bday").editable('/OrgSearch/Edit/', {
-            type: 'datepicker',
-            tooltip: 'click to edit...',
-            event: 'click',
-            submit: 'OK',
-            cancel: 'Cancel',
-            width: '100px',
-            height: 25
+
+        $('#results').bind('mousedown', function(e) {
+            if ($(e.target).hasClass("bday")) {
+                $(e.target).editable('/OrgSearch/Edit/', {
+                    type: 'datepicker',
+                    tooltip: 'click to edit...',
+                    event: 'click',
+                    submit: 'OK',
+                    cancel: 'Cancel',
+                    width: '100px',
+                    height: 25
+                });
+            } else if ($(e.target).hasClass("yesno")) {
+                $(e.target).editable('/OrgSearch/Edit', {
+                    type: 'checkbox',
+                    onblur: 'ignore',
+                    submit: 'OK'
+                });
+            }
         });
-        $('span.yesno').editable('/OrgSearch/Edit', {
-            type: 'checkbox',
-            onblur: 'ignore',
-            submit: 'OK'
-        });
-    }
+    };
     $.fmtTable();
     $('#results > thead a.sortable').live('click', function (ev) {
         ev.preventDefault();
@@ -121,21 +127,21 @@
         $.getTable();
         return false;
     });
-    $.maxZIndex = $.fn.maxZIndex = function (opt) {
+    $.maxZIndex = $.fn.maxZIndex = function(opt) {
         var def = { inc: 10, group: "*" };
         $.extend(def, opt);
         var zmax = 0;
-        $(def.group).each(function () {
+        $(def.group).each(function() {
             var cur = parseInt($(this).css('z-index'));
             zmax = cur > zmax ? cur : zmax;
         });
         if (!this.jquery)
             return zmax;
-        return this.each(function () {
+        return this.each(function() {
             zmax += def.inc;
             $(this).css("z-index", zmax);
         });
-    }
+    };
     $("#searchvalues select").css("width", "100%");
     $('#ProgramId').change(function () {
         $.post('/OrgSearch/DivisionIds/' + $(this).val(), null, function (ret) {

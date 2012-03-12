@@ -302,6 +302,9 @@ The bvCMS Team</p>
         }
         public ActionResult ChangePasswordSuccess()
         {
+        	var rd = DbUtil.Db.Setting("RedirectAfterPasswordChange", "");
+			if (rd.HasValue())
+				return Redirect(rd);
             return View();
         }
         private bool ValidateChangePassword(string currentPassword, string newPassword, string confirmPassword)

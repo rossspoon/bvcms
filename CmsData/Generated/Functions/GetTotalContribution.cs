@@ -16,13 +16,21 @@ namespace CmsData.View
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		
+		private int _PeopleId;
+		
+		private string _Name;
+		
+		private string _SpouseName;
+		
+		private int _FundId;
+		
+		private string _FundDescription;
+		
 		private int? _Cnt;
 		
 		private decimal? _Amt;
 		
 		private decimal? _Plg;
-		
-		private string _Fund;
 		
 		
 		public GetTotalContribution()
@@ -30,6 +38,91 @@ namespace CmsData.View
 		}
 
 		
+		
+		[Column(Name="PeopleId", Storage="_PeopleId", DbType="int NOT NULL")]
+		public int PeopleId
+		{
+			get
+			{
+				return this._PeopleId;
+			}
+
+			set
+			{
+				if (this._PeopleId != value)
+					this._PeopleId = value;
+			}
+
+		}
+
+		
+		[Column(Name="Name", Storage="_Name", DbType="varchar(126)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+
+			set
+			{
+				if (this._Name != value)
+					this._Name = value;
+			}
+
+		}
+
+		
+		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(126)")]
+		public string SpouseName
+		{
+			get
+			{
+				return this._SpouseName;
+			}
+
+			set
+			{
+				if (this._SpouseName != value)
+					this._SpouseName = value;
+			}
+
+		}
+
+		
+		[Column(Name="FundId", Storage="_FundId", DbType="int NOT NULL")]
+		public int FundId
+		{
+			get
+			{
+				return this._FundId;
+			}
+
+			set
+			{
+				if (this._FundId != value)
+					this._FundId = value;
+			}
+
+		}
+
+		
+		[Column(Name="FundDescription", Storage="_FundDescription", DbType="varchar(256)")]
+		public string FundDescription
+		{
+			get
+			{
+				return this._FundDescription;
+			}
+
+			set
+			{
+				if (this._FundDescription != value)
+					this._FundDescription = value;
+			}
+
+		}
+
 		
 		[Column(Name="Cnt", Storage="_Cnt", DbType="int")]
 		public int? Cnt
@@ -77,23 +170,6 @@ namespace CmsData.View
 			{
 				if (this._Plg != value)
 					this._Plg = value;
-			}
-
-		}
-
-		
-		[Column(Name="Fund", Storage="_Fund", DbType="varchar(40) NOT NULL")]
-		public string Fund
-		{
-			get
-			{
-				return this._Fund;
-			}
-
-			set
-			{
-				if (this._Fund != value)
-					this._Fund = value;
 			}
 
 		}

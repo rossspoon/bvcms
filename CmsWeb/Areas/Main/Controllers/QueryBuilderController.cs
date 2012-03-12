@@ -5,22 +5,19 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 using System;
-using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using UtilityExtensions;
-using System.Web.Routing;
-using CmsWeb;
 using CmsWeb.Models;
 using CmsData;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    public class QueryBuilderController : CmsStaffController
+    public class QueryBuilderController : CmsStaffAsyncController
     {
         public ActionResult NewQuery()
         {
@@ -44,7 +41,7 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["queryid"] = m.QueryId;
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult SelectCondition(int id, string ConditionName)
         {
             var m = new QueryModel { ConditionName = ConditionName, SelectedId = id };
@@ -66,7 +63,7 @@ namespace CmsWeb.Areas.Main.Controllers
 
             return Json(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult GetCodes(string Comparison, string ConditionName)
         {
             var m = new QueryModel { Comparison = Comparison, ConditionName = ConditionName };
@@ -79,7 +76,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 SelectMultiple = m.SelectMultiple
             });
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult EditCondition(int id)
         {
             var m = new QueryModel { SelectedId = id };
@@ -88,7 +85,7 @@ namespace CmsWeb.Areas.Main.Controllers
             return Json(m);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddToGroup()
         {
             var m = new QueryModel();
@@ -98,7 +95,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.AddConditionToGroup();
             return PartialView("TryConditions", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Add()
         {
             var m = new QueryModel();
@@ -108,7 +105,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.AddConditionAfterCurrent();
             return PartialView("TryConditions", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Update()
         {
             var m = new QueryModel();
@@ -118,7 +115,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.UpdateCondition();
             return PartialView("TryConditions", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult Remove()
         {
             var m = new QueryModel();
@@ -127,7 +124,7 @@ namespace CmsWeb.Areas.Main.Controllers
             m.DeleteCondition();
             return Json(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult InsGroupAbove(int id)
         {
             var m = new QueryModel { SelectedId = id };
@@ -137,7 +134,7 @@ namespace CmsWeb.Areas.Main.Controllers
             c.Content = m.QueryId.ToString();
             return c;
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult CopyAsNew(int id)
         {
             var m = new QueryModel { SelectedId = id };
@@ -152,25 +149,25 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new QueryModel();
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult GetDivisions(int id)
         {
             var m = new QueryModel();
             return Json(new { Divisions = m.Divisions(id), Organizations = m.Organizations(0) });
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult GetOrganizations(int id)
         {
             var m = new QueryModel();
             return Json(m.Organizations(id));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult SavedQueries()
         {
             var m = new QueryModel();
             return Json(m.SavedQueries()); ;
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SaveQuery()
         {
             var m = new QueryModel();
@@ -181,14 +178,41 @@ namespace CmsWeb.Areas.Main.Controllers
             c.Content = m.Description;
             return c;
         }
+		public void Results2Async()
+		{
+			AsyncManager.OutstandingOperations.Increment();
+			string host = Util.Host;
+			ThreadPool.QueueUserWorkItem((e) =>
+			{
+				var Db = new CMSDataContext(Util.GetConnectionString(host));
+				Db.DeleteQueryBitTags();
+				foreach (var a in Db.QueryBitsFlags())
+				{
+					var t = Db.FetchOrCreateSystemTag(a[0]);
+					Db.TagAll(Db.PeopleQuery(a[0] + ":" + a[1]), t);
+					Db.SubmitChanges();
+				}
+				AsyncManager.OutstandingOperations.Decrement();
+			});
+		}
+		public ActionResult Results2Completed()
+		{
+			return null;
+		}
+
+    	[HttpPost]
         public ActionResult Results()
         {
+			var cb = new SqlConnectionStringBuilder(Util.ConnectionString);
+        	cb.ApplicationName = "qb";
+			DbUtil.Db = new CMSDataContext(cb.ConnectionString);
             var m = new QueryModel();
             UpdateModel<IQBUpdateable>(m);
             m.LoadScratchPad();
-            return PartialView(m);
+        	//var t = m.TagAllIds();
+            return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult ToggleTag(int id)
         {
 			try
@@ -202,7 +226,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				return Json(new { error = ex.Message + ". Please report this to support@bvcms.com" });
 			}
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult TagAll()
         {
             var m = new QueryModel();
@@ -212,7 +236,7 @@ namespace CmsWeb.Areas.Main.Controllers
             c.Content = "Remove";
             return c;
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult UnTagAll()
         {
             var m = new QueryModel();
@@ -222,7 +246,7 @@ namespace CmsWeb.Areas.Main.Controllers
             c.Content = "Add";
             return c;
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult AddContact()
         {
             var m = new QueryModel();
@@ -230,7 +254,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var cid = CmsData.Contact.AddContact(m.QueryId.Value);
             return Content("/Contact.aspx?id=" + cid);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddTasks()
         {
             var m = new QueryModel();

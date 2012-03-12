@@ -402,10 +402,6 @@ namespace CmsData
         partial void UpdateQueryStat(QueryStat instance);
         partial void DeleteQueryStat(QueryStat instance);
         
-        partial void InsertRecLeague(RecLeague instance);
-        partial void UpdateRecLeague(RecLeague instance);
-        partial void DeleteRecLeague(RecLeague instance);
-        
         partial void InsertRecReg(RecReg instance);
         partial void UpdateRecReg(RecReg instance);
         partial void DeleteRecReg(RecReg instance);
@@ -497,6 +493,10 @@ namespace CmsData
         partial void InsertTransactionPerson(TransactionPerson instance);
         partial void UpdateTransactionPerson(TransactionPerson instance);
         partial void DeleteTransactionPerson(TransactionPerson instance);
+        
+        partial void InsertUploadPeopleRun(UploadPeopleRun instance);
+        partial void UpdateUploadPeopleRun(UploadPeopleRun instance);
+        partial void DeleteUploadPeopleRun(UploadPeopleRun instance);
         
         partial void InsertUserCanEmailFor(UserCanEmailFor instance);
         partial void UpdateUserCanEmailFor(UserCanEmailFor instance);
@@ -1160,12 +1160,6 @@ namespace CmsData
 
 		}
 
-		public Table< RecLeague> RecLeagues
-		{
-			get	{ return this.GetTable< RecLeague>(); }
-
-		}
-
 		public Table< RecReg> RecRegs
 		{
 			get	{ return this.GetTable< RecReg>(); }
@@ -1301,6 +1295,12 @@ namespace CmsData
 		public Table< TransactionPerson> TransactionPeople
 		{
 			get	{ return this.GetTable< TransactionPerson>(); }
+
+		}
+
+		public Table< UploadPeopleRun> UploadPeopleRuns
+		{
+			get	{ return this.GetTable< UploadPeopleRun>(); }
 
 		}
 
@@ -1496,14 +1496,20 @@ namespace CmsData
                 );
 		}
 
-		[Function(Name="dbo.BadEtsList", IsComposable = true)]
-		public IQueryable< View.BadEtsList > BadEtsList(
-            [Parameter(DbType="int")] int? flag
+		[Function(Name="dbo.ContributionCountTable", IsComposable = true)]
+		public IQueryable< View.ContributionCountTable > ContributionCountTable(
+            [Parameter(DbType="int")] int? days,
+            [Parameter(DbType="int")] int? cnt,
+            [Parameter(DbType="int")] int? fundid,
+            [Parameter(DbType="varchar")] string op
             )
 		{
-			return this.CreateMethodCallQuery< View.BadEtsList>(this, 
+			return this.CreateMethodCallQuery< View.ContributionCountTable>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                flag
+                days,
+                cnt,
+                fundid,
+                op
                 );
 		}
 
@@ -1666,16 +1672,12 @@ namespace CmsData
 
 		[Function(Name="dbo.GetTotalContributions", IsComposable = true)]
 		public IQueryable< View.GetTotalContribution > GetTotalContributions(
-            [Parameter(DbType="int")] int? pid,
-            [Parameter(DbType="int")] int? spid,
             [Parameter(DbType="datetime")] DateTime? startdt,
             [Parameter(DbType="datetime")] DateTime? enddt
             )
 		{
 			return this.CreateMethodCallQuery< View.GetTotalContribution>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid,
-                spid,
                 startdt,
                 enddt
                 );
@@ -2552,18 +2554,6 @@ namespace CmsData
                 divid,
                 orgid,
                 lookback
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.VBSOrg", IsComposable = true)]
-		[return: Parameter(DbType = "int")]
-		public int? VBSOrg(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((int?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
                 ).ReturnValue));
 		}
 

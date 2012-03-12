@@ -1,0 +1,57 @@
+﻿@model CmsWeb.Models.ContributionSearchModel
+@using UtilityExtensions
+<table id="results" class="grid">
+<thead>
+	<tr><td>Total:</td>
+        <td align="right">@Model.Total().ToString("n2")</td>
+        <td colspan="7"><em>excludes reversals/returns/pledges</em></td></tr>
+	<tr><td>Count:</td>
+        <td align="right">@Model.Count().ToString("n0")</td>
+        <td colspan="7"></td></tr>
+	<tr><td colspan="9">
+        @Html.Partial("Pager2", Model)</td>
+	</tr>
+    <tr>
+		<th> <a class="sortable" href="#">Name</a> </th>
+		<th> <a class="sortable" href="#">Fund</a> </th>
+		<th> <a class="sortable" href="#">Type</a> </th>
+		<th> <a class="sortable" href="#">Date</a> </th>
+		<th> <a class="sortable" href="#">Amount</a> </th>
+		<th> <a class="sortable" href="#">Status</a> </th>
+        <th>CheckNo</th>
+        <th>Notes</th>
+		<th> <a class="sortable" href="#">Pledge</a> </th>
+	</tr>
+</thead>
+<tbody>
+@foreach(var c in Model.ContributionsList())
+{
+    <tr>
+        <td><a href="/FinanceReports/ContributionYears/@c.PeopleId">@c.Name</a></td>
+        <td>@c.Fund</td>
+        <td>@c.ContributionType</td>
+        <td>@c.ContributionDate.FormatDate()</td>
+        <td align="right"><a href="/Contributions/Bundle.aspx?id=@c.BundleId">@c.ContributionAmount.ToString2("N2")</a></td>
+        <td>@c.Status</td>
+        <td>@c.CheckNo</td>
+        <td>@c.Description</td>
+        <td>
+        @if(c.Pledge)
+        {
+            <input type="checkbox" disabled="disabled" checked="checked" />
+        }
+        else
+        {
+            <input type="checkbox" disabled="disabled" />
+        }
+        </td>
+    </tr>
+}        
+</tbody>	
+<tfoot>
+    <tr><td colspan="9">
+            <div>Count: @Model.Count().ToString("n0")</div>
+            @Html.Partial("Pager2", Model)</td>
+    </tr>
+</tfoot>
+</table>

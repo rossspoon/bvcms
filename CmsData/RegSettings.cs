@@ -175,7 +175,7 @@ namespace CmsData
         {
             return (from f in DbUtil.Db.ContributionFunds
                     where f.FundId == DonationFundId
-                    select f.FundDescription).SingleOrDefault();
+                    select f.FundName).SingleOrDefault();
         }
 
         public string InstructionSelect { get; set; }

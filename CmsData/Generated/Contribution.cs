@@ -49,6 +49,8 @@ namespace CmsData
 		
 		private int? _ExtraDataId;
 		
+		private string _CheckNo;
+		
    		
    		private EntitySet< BundleDetail> _BundleDetails;
 		
@@ -117,6 +119,9 @@ namespace CmsData
 		
 		partial void OnExtraDataIdChanging(int? value);
 		partial void OnExtraDataIdChanged();
+		
+		partial void OnCheckNoChanging(string value);
+		partial void OnCheckNoChanged();
 		
     #endregion
 		public Contribution()
@@ -501,6 +506,28 @@ namespace CmsData
 					this._ExtraDataId = value;
 					this.SendPropertyChanged("ExtraDataId");
 					this.OnExtraDataIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CheckNo", UpdateCheck=UpdateCheck.Never, Storage="_CheckNo", DbType="varchar(10)")]
+		public string CheckNo
+		{
+			get { return this._CheckNo; }
+
+			set
+			{
+				if (this._CheckNo != value)
+				{
+				
+                    this.OnCheckNoChanging(value);
+					this.SendPropertyChanging();
+					this._CheckNo = value;
+					this.SendPropertyChanged("CheckNo");
+					this.OnCheckNoChanged();
 				}
 
 			}

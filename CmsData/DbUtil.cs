@@ -12,6 +12,7 @@ using System.Web;
 using UtilityExtensions;
 using System.Xml.Linq;
 using System.Web.Caching;
+using System.Data.SqlClient;
 
 namespace CmsData
 {
@@ -163,6 +164,7 @@ namespace CmsData
         public const int TagTypeId_CouplesHelper = 4;
         public const int TagTypeId_AddSelected = 5;
         public const int TagTypeId_ExtraValues = 6;
+        public const int TagTypeId_Query = 7;
 
     }
 }

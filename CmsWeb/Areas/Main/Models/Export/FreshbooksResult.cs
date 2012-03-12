@@ -41,7 +41,7 @@ namespace CmsWeb.Models
                     {
                         Organization = name != "name" ? name : p.LastName,
                         FirstName = p2.PreferredName,
-                        LastName = p2.LastName,
+                        p2.LastName,
                         Email = p2.EmailAddress,
                         Street = p.PrimaryAddress,
                         Street2 = p.PrimaryAddress2,

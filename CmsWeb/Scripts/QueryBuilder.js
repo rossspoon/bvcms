@@ -196,34 +196,44 @@ function FillConditionGrid(html) {
 })(jQuery);
 
 function RefreshList() {
-    $.block()
-    $.post('/QueryBuilder/Results/', qs, function (ret) {
-        $('#toolbar').show();
-        $('#Results').html(ret);
-        $('#people tbody tr:even').addClass('alt');
-        $('a.taguntag').click(function (ev) {
-            $.post('/QueryBuilder/ToggleTag/' + $(this).attr('value'), null, function (ret) {
-                if (ret.error)
-                    alert(ret.error);
-                else
-                    $(ev.target).text(ret.HasTag ? "Remove" : "Add");
+    $.block();
+    $.ajax({
+        type: "POST",
+        url: "/QueryBuilder/Results/",
+        data: qs,
+        timeout: 1200000, // in milliseconds
+        success: function (ret) {
+            $('#toolbar').show();
+            $('#Results').html(ret);
+            $('#people tbody tr:even').addClass('alt');
+            $('a.taguntag').click(function (ev) {
+                $.post('/QueryBuilder/ToggleTag/' + $(this).attr('value'), null, function (ret) {
+                    if (ret.error)
+                        alert(ret.error);
+                    else
+                        $(ev.target).text(ret.HasTag ? "Remove" : "Add");
+                });
+                return false;
             });
-            return false;
-        });
-        $('#people thead a.sortable').click(function (ev) {
-            var newsort = $(this).text();
-            var oldsort = $("#Sort").val();
-            $("#Sort").val(newsort);
-            var dir = $("#Direction").val();
-            if (oldsort == newsort && dir == 'asc')
-                $("#Direction").val('desc');
-            else
-                $("#Direction").val('asc');
-            qs = $('#conditionForm').serialize();
-            RefreshList();
-            return false;
-        });
-        $.unblock();
+            $('#people thead a.sortable').click(function (ev) {
+                var newsort = $(this).text();
+                var oldsort = $("#Sort").val();
+                $("#Sort").val(newsort);
+                var dir = $("#Direction").val();
+                if (oldsort == newsort && dir == 'asc')
+                    $("#Direction").val('desc');
+                else
+                    $("#Direction").val('asc');
+                qs = $('#conditionForm').serialize();
+                RefreshList();
+                return false;
+            });
+            $.unblock();
+        },
+        error: function (request, status, err) {
+            $.unblock();
+            alert(err);
+        }
     });
 }
 function GotoPage(pg) {

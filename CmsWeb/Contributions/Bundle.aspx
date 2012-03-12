@@ -190,7 +190,7 @@
                     <asp:Label ID="ContributionTypeLabel" runat="server" Text='<%# Eval("ContributionType") %>' />
                 </td>
                 <td>
-                    <asp:HyperLink ID="NameLink" NavigateUrl='<%# Eval("PeopleId", "/Reports/ContributionYears/{0}") %>'
+                    <asp:HyperLink ID="NameLink" NavigateUrl='<%# Eval("PeopleId", "/FinanceReports/ContributionYears/{0}") %>'
                         Text='<%# Eval("Name") %>' runat="server"></asp:HyperLink>
                 </td>
                 <td>

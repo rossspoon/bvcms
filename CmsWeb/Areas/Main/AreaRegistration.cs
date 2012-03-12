@@ -17,7 +17,6 @@ namespace CmsWeb.Areas.Main
             AddRoute(context, "Coupon");
             AddRoute(context, "Tags");
             AddRoute(context, "QuickSearch");
-            AddRoute(context, "PostBundle");
             AddRoute(context, "SearchPeople");
             AddRoute(context, "MemberDocs");
             AddRoute(context, "UserPref");

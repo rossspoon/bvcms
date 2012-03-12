@@ -165,17 +165,24 @@ $(function () {
             $(this).css("z-index", zmax);
         });
     };
-    $.initDatePicker = function () {
-        $(".datepicker").datepicker({
+    $.initDatePicker = function (f) {
+        $(".datepicker", f).datepicker({
             dateFormat: 'm/d/yy',
             changeMonth: true,
             changeYear: true,
             beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
         });
-        $(".datetimepicker").datetimepicker({
+        $(".timepicker", f).timepicker({
             ampm: true,
             stepHour: 1,
-            stepMinute: 5
+            stepMinute: 5,
+            timeOnly: true
+        });
+        $(".datetimepicker", f).datetimepicker({
+            ampm: true,
+            stepHour: 1,
+            stepMinute: 15,
+            timeOnly: false
         });
     };
     $.initDatePicker();
@@ -188,18 +195,12 @@ $(function () {
                     minChars: 3,
                     matchContains: 1
                 };
-                $.initDatePicker();
-                $(".submitbutton,.bt").button();
-                $(".roundbox select").css("width", "100%");
-                $("#DivisionsList").multiSelect();
-                $("#schedules").sortable({ stop: $.renumberListItems });
-                $("#schedules input").timepicker({
-                    showSecond: false,
-                    ampm: true,
-                    stepHour: 1,
-                    stepMinute: 5
-                });
-                $("#editor");
+                $.initDatePicker(f);
+                $(".submitbutton,.bt", f).button();
+                $(".roundbox select", f).css("width", "100%");
+                $("#DivisionsList", f).multiSelect();
+                $("#schedules", f).sortable({ stop: $.renumberListItems });
+                $("#editor", f);
                 $.regsettingeditclick(f);
             });
         });
@@ -230,6 +231,7 @@ $(function () {
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
+        return true;
     });
     $('a.taguntag').live("click", function (ev) {
         ev.preventDefault();
@@ -293,10 +295,11 @@ $(function () {
     });
     $("#addsch").live("click", function (ev) {
         ev.preventDefault();
+        var f = $(this).closest('form');
         $.post("/Organization/NewSchedule", null, function (ret) {
-            $("#schedules").append(ret).ready(function () {
+            $("#schedules", f).append(ret).ready(function () {
                 $.renumberListItems();
-                $("#schedules input").timepicker({ showPeriod: true });
+                $.initDatePicker(f);
             });
         });
     });
@@ -338,7 +341,6 @@ $(function () {
         });
         d.dialog('open');
     });
-    $("#NewMeetingTime").timepicker({ showPeriod: true });
     $('#NewMeeting').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("Group Meeting");

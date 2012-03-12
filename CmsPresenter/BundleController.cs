@@ -539,7 +539,7 @@ namespace CMSPresenter
                     select new CodeValueItem
                     {
                         Id = c.FundId,
-                        Value = c.FundDescription,
+                        Value = c.FundName,
                     };
             return q;
         }

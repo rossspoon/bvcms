@@ -179,6 +179,10 @@ namespace CMSPresenter
 					   Value = ms.Description
 				   };
 		}
+		public IEnumerable<CodeValueItem> ContributionStatuses99()
+		{
+			return ContributionStatuses().AddNotSpecified(99);
+		}
 		public IEnumerable<CodeValueItem> ContributionTypes()
 		{
 			return from ms in DbUtil.Db.ContributionTypes
@@ -188,6 +192,11 @@ namespace CMSPresenter
 					   Code = ms.Code,
 					   Value = ms.Description
 				   };
+		}
+		public IEnumerable<CodeValueItem> ContributionTypes0()
+		{
+			return ContributionTypes().AddNotSpecified();
+
 		}
 		public IEnumerable<CodeValueItem> Funds()
 		{
