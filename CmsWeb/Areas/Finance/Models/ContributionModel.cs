@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using CmsData;
-using System.Text;
-using System.Collections;
 using UtilityExtensions;
-using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Finance.Models.Report
 {
@@ -172,6 +168,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
                     where c.ContributionDate <= toDate
                     where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
                     where c.PledgeFlag == false
+					where (c.ContributionFund.NonTaxDeductible ?? false) == false
                     group c by c.ContributionFund.FundName into g
                     orderby g.Key
                     select new ContributionInfo

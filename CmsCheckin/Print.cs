@@ -225,7 +225,7 @@ namespace CmsCheckin
 			}
 			sw.Flush();
 		}
-		public static int SecurityLabel(this MemoryStream ms, DateTime time, string code)
+		public static int SecurityLabel(this MemoryStream ms, DateTime time, string code, int n)
 		{
 			if (!Program.Printer.HasValue())
 				return 0;
@@ -277,7 +277,7 @@ namespace CmsCheckin
 			sw.Flush();
 			return 1;
 		}
-		public static int SecurityLabel2(this MemoryStream ms, DateTime time, string code)
+		public static int SecurityLabel2(this MemoryStream ms, DateTime time, string code, int n)
 		{
 			if (!Program.Printer.HasValue())
 				return 0;
@@ -291,11 +291,11 @@ namespace CmsCheckin
 				sw.WriteLine(string.Format(@"^FT410,227^A0N,34,33^FH\^FD{0:M/d/yy}^FS", time));
 				sw.WriteLine(string.Format(@"^FT386,152^A0N,102,100^FH\^FD{0}^FS", code));
 				sw.WriteLine(@"^FO310,29^GB0,350,2^FS");
-				sw.WriteLine("^PQ1,0,1,Y^XZ");
+				sw.WriteLine("^PQ{0},0,1,Y^XZ".Fmt(n));
 			}
 			else if (Program.Printer.Contains("Godex"))
 			{
-				StartGodexLabel(sw, 1);
+				StartGodexLabel(sw, n);
 				sw.WriteLine("AH,68,78,1,1,0,0," + code);
 				sw.WriteLine("AH,376,78,1,1,0,0," + code);
 				sw.WriteLine("Lo,296,36,303,379");

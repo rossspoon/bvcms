@@ -131,6 +131,8 @@ namespace CmsData
 		
 		private DateTime? _RegEnd;
 		
+		private string _LimitToRole;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -346,6 +348,9 @@ namespace CmsData
 		
 		partial void OnRegEndChanging(DateTime? value);
 		partial void OnRegEndChanged();
+		
+		partial void OnLimitToRoleChanging(string value);
+		partial void OnLimitToRoleChanged();
 		
     #endregion
 		public Organization()
@@ -1659,6 +1664,28 @@ namespace CmsData
 					this._RegEnd = value;
 					this.SendPropertyChanged("RegEnd");
 					this.OnRegEndChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="LimitToRole", UpdateCheck=UpdateCheck.Never, Storage="_LimitToRole", DbType="varchar(20)")]
+		public string LimitToRole
+		{
+			get { return this._LimitToRole; }
+
+			set
+			{
+				if (this._LimitToRole != value)
+				{
+				
+                    this.OnLimitToRoleChanging(value);
+					this.SendPropertyChanging();
+					this._LimitToRole = value;
+					this.SendPropertyChanged("LimitToRole");
+					this.OnLimitToRoleChanged();
 				}
 
 			}

@@ -920,8 +920,7 @@
     <Content Include="Min\Content\js\jquery.transpose.js" />
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
-    <Content Include="Min\Scripts\Contibutions.js" />
-    <Content Include="Min\Scripts\ContibutionSearch.js" />
+    <Content Include="Min\Scripts\Contributions.js" />
     <Content Include="Min\Scripts\Divisions.js" />
     <Content Include="Min\Scripts\edit.js" />
     <Content Include="Min\Scripts\email.js" />
@@ -1091,7 +1090,9 @@
     <Content Include="Areas\Finance\Views\Contributions\Results.cshtml" />
     <None Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving2.cshtml">
     </None>
+    <Content Include="ConnectionStrings.config" />
     <None Include="Content\LibraryTemplate.xls" />
+    <Content Include="TestConnectionStrings.config" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="MembershipAutomationExample.py" />

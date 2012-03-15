@@ -24,7 +24,7 @@
     <form id="form1" runat="server">
     <div style="font-size: 110%; text-align: center">
         <div style="font-weight: bold; padding-bottom: 1em">
-            BBC Contributions Bank Deposit Report<br />
+            Contributions Bank Deposit Report<br />
             <asp:Label ID="dtlabel" runat="server">1/1/1001</asp:Label></div>
         <asp:ListView ID="ListView1" runat="server" DataSourceID="ObjectDataSource1">
             <LayoutTemplate>

@@ -45,7 +45,9 @@ namespace CmsWeb
         {
             var divid = SubDivOrg.SelectedValue.ToInt();
             var progid = DivOrg.SelectedValue.ToInt();
+        	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
+        	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0
                     where o.DivOrgs.Any(t => t.Division.ProgId == progid)

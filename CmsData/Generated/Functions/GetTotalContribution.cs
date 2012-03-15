@@ -107,7 +107,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="FundDescription", Storage="_FundDescription", DbType="varchar(256)")]
+		[Column(Name="FundDescription", Storage="_FundDescription", DbType="varchar(256) NOT NULL")]
 		public string FundDescription
 		{
 			get

@@ -40,6 +40,9 @@ namespace CmsWeb.Areas.Main.Controllers
                 if (!oids.Contains(m.org.OrganizationId))
                     return NotAllowed("You must be a leader of this organization", m.org.OrganizationName);
             }
+			if (m.org.LimitToRole.HasValue())
+				if (!User.IsInRole(m.org.LimitToRole))
+                    return NotAllowed("no privledge to view ", m.org.OrganizationName);
 
             DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 
@@ -190,6 +193,8 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new OrganizationModel(id, Util2.CurrentGroups);
             UpdateModel(m);
+			if (!m.org.LimitToRole.HasValue())
+				m.org.LimitToRole = null;
 			DbUtil.LogActivity("Update SettingsOrg {0}".Fmt(m.org.OrganizationName));
             if (ModelState.IsValid)
             {

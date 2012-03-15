@@ -19,10 +19,12 @@ namespace CmsWeb.Models.PersonPage
         public IEnumerable<OrgMemberInfo> PendingEnrollments()
         {
             var dt = Util.Now;
+            var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     from om in o.OrganizationMembers
                     where om.PeopleId == PeopleId && om.Pending.Value == true
+				    where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     let leader = DbUtil.Db.People.SingleOrDefault(p => p.PeopleId == o.LeaderId)
                     orderby o.OrganizationName
                     select new OrgMemberInfo

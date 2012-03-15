@@ -42,7 +42,7 @@ namespace CmsData
             SagePayments sage = null;
             if (gateway == "AuthorizeNet")
                 anet = new AuthorizeNet(Db, Testing ?? true);
-            else if (gateway == "SagePayments")
+            else if (gateway == "Sage")
                 sage = new SagePayments(Db, Testing ?? true);
             else
                 return 0;

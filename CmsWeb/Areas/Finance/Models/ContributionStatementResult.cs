@@ -52,11 +52,11 @@ namespace CmsWeb.Areas.Finance.Models.Report
             switch (typ)
             {
                 case 1:
-                    SpouseId = DbUtil.Db.People.Where(p => p.PeopleId == PeopleId).Single().SpouseId.ToInt();
+                    SpouseId = DbUtil.Db.People.Single(p => p.PeopleId == PeopleId).SpouseId.ToInt();
                     q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok, useMinAmt: true);
                     break;
                 case 2:
-                    FamilyId = DbUtil.Db.People.Where(p => p.PeopleId == PeopleId).Single().FamilyId;
+                    FamilyId = DbUtil.Db.People.Single(p => p.PeopleId == PeopleId).FamilyId;
                     q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId, noaddressok, useMinAmt: true);
                     break;
                 case 3:

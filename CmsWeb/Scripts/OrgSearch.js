@@ -4,12 +4,10 @@
     $("#clear").click(function (ev) {
         ev.preventDefault();
         $("input:text").val("");
-        //$("#ProgramId,#CampusId,#ScheduleId").linkselect("val", 0);
-        $("#ProgramId,#CampusId,#ScheduleId").val(0); //.sb("refresh");
-        //$("#OnlineReg").linkselect("val", -1);
-        $("#OnlineReg").val(-1); //.sb("refresh");
+        $("#ProgramId,#CampusId,#ScheduleId").val(0);
+        $("#OnlineReg").val(-1);
         $.post('/OrgSearch/DivisionIds/0', null, function (ret) {
-            $('#DivisionId').html(ret); //.sb("refresh");
+            $('#DivisionId').html(ret);
         });
         return false;
     });
@@ -27,16 +25,6 @@
     $("#hideshow").click(function () {
         $(".managedivisions").toggle();
     });
-    $.gotoPage = function (ev, pg) {
-        $("#Page").val(pg);
-        $.getTable();
-        return false;
-    };
-    $.setPageSize = function (ev) {
-        $('#Page').val(1);
-        $("#PageSize").val($(ev).val());
-        return $.getTable();
-    };
     $.getTable = function () {
         var f = $('#results').closest('form');
         var q = f.serialize();
@@ -114,19 +102,6 @@
         });
     };
     $.fmtTable();
-    $('#results > thead a.sortable').live('click', function (ev) {
-        ev.preventDefault();
-        var newsort = $(this).text();
-        var sort = $("#Sort");
-        var dir = $("#Direction");
-        if ($(sort).val() == newsort && $(dir).val() == 'asc')
-            $(dir).val('desc');
-        else
-            $(dir).val('asc');
-        $(sort).val(newsort);
-        $.getTable();
-        return false;
-    });
     $.maxZIndex = $.fn.maxZIndex = function(opt) {
         var def = { inc: 10, group: "*" };
         $.extend(def, opt);

@@ -15,7 +15,8 @@ namespace CmsCheckin
     {
         public Home()
         {
-            InitializeComponent();
+			InitializeComponent(); 
+			this.version.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {

@@ -194,7 +194,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                         m.Account,
                         m.testing);
                 }
-                else if (gateway == "SagePayments")
+                else if (gateway == "Sage")
                 {
                     var sg = new CmsData.SagePayments(DbUtil.Db, m.testing);
                     sg.storeVault(m.pid, 

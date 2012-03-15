@@ -147,7 +147,9 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         private IEnumerable<OrgInfo> list(int? orgid, int? divid, int? schedule)
         {
+        	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
+        	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null

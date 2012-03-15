@@ -48,6 +48,7 @@ namespace CmsCheckin
             EnableTimer = f.EnableTimer.Checked;
             TwoInchLabel = f.TwoInchLabel.Checked;
             DisableJoin = f.DisableJoin.Checked;
+        	SecurityLabelPerChild = f.SecurityLabelPerChild.Checked;
 
             f.Dispose();
 
@@ -95,6 +96,7 @@ namespace CmsCheckin
         public static bool AskChurchName { get; set; }
         public static bool AskLabels { get; set; }
         public static bool TwoInchLabel { get; set; }
+        public static bool SecurityLabelPerChild { get; set; }
         public static string PrintMode { get; set; }
 
         public static string QueryString

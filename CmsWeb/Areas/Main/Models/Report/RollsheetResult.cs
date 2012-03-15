@@ -261,7 +261,9 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         private IEnumerable<OrgInfo> ReportList(int? orgid, int[] groups, int? progid, int? divid, int? schedule, string name)
         {
+        	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
+        	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null
                     where o.DivOrgs.Any(t => t.Division.ProgDivs.Any(p => p.ProgId == progid)) || progid == 0 || progid == null
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
@@ -282,7 +284,9 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         private IEnumerable<OrgInfo> ReportList2(int? orgid, int? progid, int? divid, int? schedule, string name, string sgprefix)
         {
+        	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
+        	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     from sg in o.MemberTags
                     where sgprefix == null || sgprefix == "" || sg.Name.StartsWith(sgprefix)
                     where o.OrganizationId == orgid || orgid == 0 || orgid == null

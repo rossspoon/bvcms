@@ -572,7 +572,9 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Organizations(int? divid)
         {
+        	var roles = Db.CurrentRoles();
             var q = from ot in Db.DivOrgs
+        	        where ot.Organization.LimitToRole == null || roles.Contains(ot.Organization.LimitToRole)
                     where ot.DivId == divid
                     && (SqlMethods.DateDiffMonth(ot.Organization.OrganizationClosedDate, Util.Now) < 14
                         || ot.Organization.OrganizationStatusId == 30)

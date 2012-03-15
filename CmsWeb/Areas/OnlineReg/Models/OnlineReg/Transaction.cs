@@ -240,7 +240,6 @@ namespace CmsWeb.Models
             p["C_exp"] = expdate;
             p["T_amt"] = amt.ToString();
             p["T_code"] = "01"; // sale
-            p["T_code"] = "05"; // credit
             p["T_customer_number"] = PeopleId.ToString();
             p["T_ordernum"] = tranid.ToString();
             p["C_name"] = first + " " + last;

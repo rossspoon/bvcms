@@ -117,7 +117,9 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Organizations()
         {
+        	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
+        	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     where o.DivOrgs.Any(di => di.DivId == DivId)
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName
@@ -133,7 +135,9 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> Organizations2()
         {
             var member = MemberTypeCode.Member;
+        	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
+        	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     where o.DivOrgs.Any(di => di.DivId == DivId)
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName

@@ -63,7 +63,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				//----Church Name
 				var t1 = new PdfPTable(1);
 				t1.TotalWidth = 72f * 5f;
-				t1.DefaultCell.Border = PdfPCell.NO_BORDER;
+				t1.DefaultCell.Border = Rectangle.NO_BORDER;
 				string html1 = @"<h1>Bellevue Baptist Church</h1>
 <h2>2000 Appling Rd. | Cordova | TN 38088-1210 | (901) 347-2000</h2>";
 				var content = Db.Contents.SingleOrDefault(c => c.Name == "StatementHeader");
@@ -79,22 +79,21 @@ namespace CmsWeb.Areas.Finance.Models.Report
 
 				var t1a = new PdfPTable(1);
 				t1a.TotalWidth = 72f * 5f;
-				t1a.DefaultCell.Border = PdfPCell.NO_BORDER;
+				t1a.DefaultCell.Border = Rectangle.NO_BORDER;
 
 				var ae = new PdfPTable(1);
-				ae.DefaultCell.Border = PdfPCell.NO_BORDER;
+				ae.DefaultCell.Border = Rectangle.NO_BORDER;
 				ae.WidthPercentage = 100;
 
 				var a = new PdfPTable(1);
 				a.DefaultCell.Indent = 25f;
-				a.DefaultCell.Border = PdfPCell.NO_BORDER;
+				a.DefaultCell.Border = Rectangle.NO_BORDER;
 				a.AddCell(new Phrase(ci.Name, font));
 				a.AddCell(new Phrase(ci.Address1, font));
 				if (ci.Address2.HasValue())
 					a.AddCell(new Phrase(ci.Address2, font));
 				a.AddCell(new Phrase(ci.CityStateZip, font));
-				cell = new PdfPCell(a);
-				cell.Border = PdfPCell.NO_BORDER;
+				cell = new PdfPCell(a) {Border = Rectangle.NO_BORDER};
 				//cell.FixedHeight = 72f * 1.0625f;
 				ae.AddCell(cell);
 
@@ -106,7 +105,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				//-----Notice
 				var t2 = new PdfPTable(1);
 				t2.TotalWidth = 72f * 3f;
-				t2.DefaultCell.Border = PdfPCell.NO_BORDER;
+				t2.DefaultCell.Border = Rectangle.NO_BORDER;
 				t2.AddCell(new Phrase("\nPrint Date: {0:M/d/yy}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
 				t2.AddCell("");
 				string html2 = @"<p><i>
@@ -155,7 +154,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 
 				var t = new PdfPTable(new float[] { 10f, 24f, 10f });
 				t.WidthPercentage = 100;
-				t.DefaultCell.Border = PdfPCell.NO_BORDER;
+				t.DefaultCell.Border = Rectangle.NO_BORDER;
 				t.HeaderRows = 2;
 
 				cell = new PdfPCell(t.DefaultCell);
@@ -163,7 +162,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				cell.Phrase = new Phrase("Contributions\n", boldfont);
 				t.AddCell(cell);
 
-				t.DefaultCell.Border = PdfPCell.BOTTOM_BORDER;
+				t.DefaultCell.Border = Rectangle.BOTTOM_BORDER;
 				t.AddCell(new Phrase("Date", boldfont));
 				t.AddCell(new Phrase("Description", boldfont));
 				cell = new PdfPCell(t.DefaultCell);
@@ -171,7 +170,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				cell.Phrase = new Phrase("Amount", boldfont);
 				t.AddCell(cell);
 
-				t.DefaultCell.Border = PdfPCell.NO_BORDER;
+				t.DefaultCell.Border = Rectangle.NO_BORDER;
 
 				var total = 0m;
 				foreach (var c in ContributionModel.contributions(Db, ci, FromDate, ToDate))
@@ -179,18 +178,18 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 					t.AddCell(new Phrase(c.ContributionDate.ToString2("M/d/yy"), font));
 					t.AddCell(new Phrase(c.Fund, font));
 					cell = new PdfPCell(t.DefaultCell);
-					cell.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+					cell.HorizontalAlignment = Element.ALIGN_RIGHT;
 					cell.Phrase = new Phrase(c.ContributionAmount.ToString2("N2"), font);
 					t.AddCell(cell);
 					total += (c.ContributionAmount ?? 0);
 				}
-				t.DefaultCell.Border = PdfPCell.TOP_BORDER;
+				t.DefaultCell.Border = Rectangle.TOP_BORDER;
 				cell = new PdfPCell(t.DefaultCell);
 				cell.Colspan = 2;
 				cell.Phrase = new Phrase("Total Contributions for period", boldfont);
 				t.AddCell(cell);
 				cell = new PdfPCell(t.DefaultCell);
-				cell.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+				cell.HorizontalAlignment = Element.ALIGN_RIGHT;
 				cell.Phrase = new Phrase(total.ToString("N2"), font);
 				t.AddCell(cell);
 
@@ -203,7 +202,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				{
 					t = new PdfPTable(new float[] { 16f, 12f, 12f });
 					t.WidthPercentage = 100;
-					t.DefaultCell.Border = PdfPCell.NO_BORDER;
+					t.DefaultCell.Border = Rectangle.NO_BORDER;
 					t.HeaderRows = 2;
 
 					cell = new PdfPCell(t.DefaultCell);
@@ -211,7 +210,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 					cell.Phrase = new Phrase("\n\nPledges\n", boldfont);
 					t.AddCell(cell);
 
-					t.DefaultCell.Border = PdfPCell.BOTTOM_BORDER;
+					t.DefaultCell.Border = Rectangle.BOTTOM_BORDER;
 					t.AddCell(new Phrase("Fund", boldfont));
 					cell = new PdfPCell(t.DefaultCell);
 					cell.HorizontalAlignment = Element.ALIGN_RIGHT;
@@ -222,17 +221,17 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 					cell.Phrase = new Phrase("Given", boldfont);
 					t.AddCell(cell);
 
-					t.DefaultCell.Border = PdfPCell.NO_BORDER;
+					t.DefaultCell.Border = Rectangle.NO_BORDER;
 
 					foreach (var c in pledges)
 					{
 						t.AddCell(new Phrase(c.Fund, font));
 						cell = new PdfPCell(t.DefaultCell);
-						cell.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+						cell.HorizontalAlignment = Element.ALIGN_RIGHT;
 						cell.Phrase = new Phrase(c.PledgeAmount.ToString2("N2"), font);
 						t.AddCell(cell);
 						cell = new PdfPCell(t.DefaultCell);
-						cell.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+						cell.HorizontalAlignment = Element.ALIGN_RIGHT;
 						cell.Phrase = new Phrase(c.ContributionAmount.ToString2("N2"), font);
 						t.AddCell(cell);
 					}
@@ -242,7 +241,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				//-----Summary
 				t = new PdfPTable(new float[] { 29f, 9f });
 				t.WidthPercentage = 100;
-				t.DefaultCell.Border = PdfPCell.NO_BORDER;
+				t.DefaultCell.Border = Rectangle.NO_BORDER;
 				t.HeaderRows = 2;
 
 				cell = new PdfPCell(t.DefaultCell);
@@ -250,26 +249,26 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				cell.Phrase = new Phrase("\n\nPeriod Summary\n", boldfont);
 				t.AddCell(cell);
 
-				t.DefaultCell.Border = PdfPCell.BOTTOM_BORDER;
+				t.DefaultCell.Border = Rectangle.BOTTOM_BORDER;
 				t.AddCell(new Phrase("Fund", boldfont));
 				cell = new PdfPCell(t.DefaultCell);
 				cell.HorizontalAlignment = Element.ALIGN_RIGHT;
 				cell.Phrase = new Phrase("Amount", boldfont);
 				t.AddCell(cell);
 
-				t.DefaultCell.Border = PdfPCell.NO_BORDER;
+				t.DefaultCell.Border = Rectangle.NO_BORDER;
 				foreach (var c in ContributionModel.quarterlySummary(Db, ci, FromDate, ToDate))
 				{
 					t.AddCell(new Phrase(c.Fund, font));
 					cell = new PdfPCell(t.DefaultCell);
-					cell.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+					cell.HorizontalAlignment = Element.ALIGN_RIGHT;
 					cell.Phrase = new Phrase(c.ContributionAmount.ToString2("N2"), font);
 					t.AddCell(cell);
 				}
-				t.DefaultCell.Border = PdfPCell.TOP_BORDER;
+				t.DefaultCell.Border = Rectangle.TOP_BORDER;
 				t.AddCell(new Phrase("Total contributions for period", boldfont));
 				cell = new PdfPCell(t.DefaultCell);
-				cell.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+				cell.HorizontalAlignment = Element.ALIGN_RIGHT;
 				cell.Phrase = new Phrase(total.ToString("N2"), font);
 				t.AddCell(cell);
 				mct.AddElement(t);

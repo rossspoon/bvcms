@@ -10,7 +10,7 @@ namespace CmsCheckin
     {
         public DateTime time { get; set; }
         public int LabelsPrinted { get; set; }
-        public bool RequiresSecurityLabel { get; set; }
+        public int RequiresSecurityLabels { get; set; }
         public DoPrinting()
         {
             time = DateTime.Now;
@@ -24,7 +24,7 @@ namespace CmsCheckin
             }
             foreach (var li in q)
                 LabelsPrinted += ms.LocationLabel(li);
-            RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
+            RequiresSecurityLabels = q.Count(li => li.requiressecuritylabel == true && li.n > 0);
         }
         public void PrintLabels2(MemoryStream ms, IEnumerable<LabelInfo> q)
         {
@@ -36,17 +36,20 @@ namespace CmsCheckin
             foreach (var li in q2)
                 LabelsPrinted += ms.Label2(li, li.Max(ll => ll.n), Program.SecurityCode);
             LabelsPrinted += ms.LocationLabel2(q2);
-            RequiresSecurityLabel = q.Any(li => li.requiressecuritylabel == true && li.n > 0);
+            RequiresSecurityLabels = q.Count(li => li.requiressecuritylabel == true && li.n > 0);
         }
         public void FinishUp(MemoryStream ms)
         {
             if (LabelsPrinted > 0)
             {
-                if (RequiresSecurityLabel)
+                if (RequiresSecurityLabels > 0)
+                {
+                	var n = RequiresSecurityLabels;
                     if (Program.TwoInchLabel)
-                        LabelsPrinted += ms.SecurityLabel2(time, Program.SecurityCode);
+                        LabelsPrinted += ms.SecurityLabel2(time, Program.SecurityCode, n);
                     else
-                        LabelsPrinted += ms.SecurityLabel(time, Program.SecurityCode);
+                        LabelsPrinted += ms.SecurityLabel(time, Program.SecurityCode, n);
+                }
                 ms.BlankLabel(LabelsPrinted == 1); // force blank if only 1
             }
             PrintRawHelper.SendDocToPrinter(Program.Printer, ms);

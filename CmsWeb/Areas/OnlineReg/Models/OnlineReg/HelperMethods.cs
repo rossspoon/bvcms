@@ -108,12 +108,25 @@ namespace CmsWeb.Models
         }
         public bool NotAvailable()
         {
-            if (divid != null)
-                return DbUtil.Db.Organizations.Any(o => o.DivOrgs.Any(di => di.DivId == divid) &&
-                   o.RegistrationClosed == true);
-            if (masterorgid.HasValue)
-                return masterorg.RegistrationClosed == true || masterorg.OrganizationStatusId == OrgStatusCode.Inactive;
-            return org.RegistrationClosed == true || org.OrganizationStatusId == OrgStatusCode.Inactive;
+        	var dt = DateTime.Now;
+        	var dt1 = DateTime.Parse("1/1/1900");
+        	var dt2 = DateTime.Parse("1/1/2200");
+			if (divid != null)
+				return DbUtil.Db.Organizations.Any(o =>
+					   o.DivOrgs.Any(di => di.DivId == divid) &&
+					   (o.RegistrationClosed == true
+						|| dt < (o.RegStart ?? dt1)
+						|| dt > (o.RegEnd ?? dt2)
+					   ));
+			if (masterorgid.HasValue)
+				return masterorg.RegistrationClosed == true
+				       || masterorg.OrganizationStatusId == OrgStatusCode.Inactive
+				       || dt < (masterorg.RegStart ?? dt1)
+				       || dt > (masterorg.RegEnd ?? dt2);
+        	return org.RegistrationClosed == true
+        	       || org.OrganizationStatusId == OrgStatusCode.Inactive
+        	       || dt < (org.RegStart ?? dt1)
+        	       || dt > (org.RegEnd ?? dt2);
         }
         public IEnumerable<Organization> GetOrgsInDiv()
         {

@@ -28,10 +28,13 @@ namespace CmsWeb.Models.PersonPage
                 var oids = new int[0];
                 if (Util2.OrgLeadersOnly)
                     oids = DbUtil.Db.GetLeaderOrgIds(Util.UserPeopleId);
+            	var roles = DbUtil.Db.CurrentRoles();
                 _enrollments = from om in DbUtil.Db.OrganizationMembers
+							   let org = om.Organization
                                where om.PeopleId == PeopleId
                                where (om.Pending ?? false) == false
-                               where oids.Contains(om.OrganizationId) || !(limitvisibility && om.Organization.SecurityTypeId == 3)
+                               where oids.Contains(om.OrganizationId) || !(limitvisibility && om.Organization.SecurityTypeId == 3) 
+							   where org.LimitToRole == null || roles.Contains(org.LimitToRole)
                                select om;
             }
             return _enrollments;

@@ -25,11 +25,14 @@ namespace CmsWeb.Models.PersonPage
             {
                 var limitvisibility = Util2.OrgMembersOnly || Util2.OrgLeadersOnly
                     || !HttpContext.Current.User.IsInRole("Access");
+            	var roles = DbUtil.Db.CurrentRoles();
                 _enrollments = from etd in DbUtil.Db.EnrollmentTransactions
+							   let org = etd.Organization
                                where etd.TransactionStatus == false
                                where etd.PeopleId == PeopleId
                                where etd.TransactionTypeId >= 4
                                where !(limitvisibility && etd.Organization.SecurityTypeId == 3)
+							   where org.LimitToRole == null || roles.Contains(org.LimitToRole)
                                select etd;
             }
             return _enrollments;

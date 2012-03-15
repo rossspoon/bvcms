@@ -211,7 +211,8 @@ namespace CmsWeb.Models
                 ContributionStatusId = 0,
                 PledgeFlag = pledge,
                 ContributionTypeId = type,
-                ContributionDesc = notes
+                ContributionDesc = notes,
+				CheckNo = checkno
             };
             bundle.BundleDetails.Add(bd);
             DbUtil.Db.SubmitChanges();
@@ -285,6 +286,8 @@ namespace CmsWeb.Models
         }
         public static int? BatchProcess(string text, DateTime date, int? fundid)
         {
+            if (DbUtil.Db.Setting("BankDepositFormat", "none") == "FBCStark")
+				return BatchProcessFbcStark(text, date, fundid);
             if (text.StartsWith("From MICR :"))
                 return BatchProcessMagTek(text, date);
             if (text.StartsWith("Financial_Institution"))
@@ -562,7 +565,72 @@ namespace CmsWeb.Models
             FinishBundle(bh);
             return bh.BundleHeaderId;
         }
-        private static int? FindFund(string s)
+		public static int? BatchProcessFbcStark(string text, DateTime date, int? fundid)
+		{
+			var prevdt = DateTime.MinValue;
+			BundleHeader bh = null;
+			var sr = new StringReader(text);
+			for (; ; )
+			{
+				var line = sr.ReadLine();
+				if (line == null)
+					break;
+				var csv = line.Split(',');
+				var bd = new BundleDetail
+				{
+					CreatedBy = Util.UserId,
+					CreatedDate = DateTime.Now,
+				};
+				var qf = from f in DbUtil.Db.ContributionFunds
+						 where f.FundStatusId == 1
+						 orderby f.FundId
+						 select f.FundId;
+
+				bd.Contribution = new Contribution
+				{
+					CreatedBy = Util.UserId,
+					CreatedDate = DateTime.Now,
+					ContributionDate = date,
+					FundId = fundid ?? qf.First(),
+					ContributionStatusId = 0,
+					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+				};
+
+				var dtint = csv[3].ToLong();
+				var y = (int)(dtint % 10000);
+				var m = (int)(dtint / 1000000);
+				var d = (int)(dtint / 10000) % 100;
+				var dt = new DateTime(y, m, d);
+
+				if (dt != prevdt)
+				{
+					if (bh != null)
+						FinishBundle(bh);
+					bh = GetBundleHeader(dt, DateTime.Now);
+					prevdt = dt;
+				}
+				bd.Contribution.ContributionAmount = csv[5].GetAmount() / 100;
+
+				string ck, rt, ac;
+				ck = csv[4];
+				rt = csv[6];
+				ac = csv[7];
+
+				bd.Contribution.CheckNo = ck;
+				var eac = Util.Encrypt(rt + "|" + ac);
+				var q = from kc in DbUtil.Db.CardIdentifiers
+						where kc.Id == eac
+						select kc.PeopleId;
+				var pid = q.SingleOrDefault();
+				if (pid != null)
+					bd.Contribution.PeopleId = pid;
+				bd.Contribution.BankAccount = eac;
+				bh.BundleDetails.Add(bd);
+			}
+			FinishBundle(bh);
+			return bh.BundleHeaderId;
+		}
+		private static int? FindFund(string s)
         {
             var qf = from f in DbUtil.Db.ContributionFunds
                      where f.FundName == s

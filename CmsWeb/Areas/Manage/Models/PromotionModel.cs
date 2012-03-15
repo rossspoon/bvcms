@@ -342,7 +342,9 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> TargetClasses()
         {
             var todiv = Promotion.ToDivId;
+        	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
+        	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     where o.DivOrgs.Any(dd => dd.DivId == todiv)
                     where sc.ScheduleId == ScheduleId || ScheduleId == 0

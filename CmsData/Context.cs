@@ -436,7 +436,14 @@ namespace CmsData
             }
             set { _currentuser = value; }
         }
-        public Person CurrentUserPerson
+    	private string[] _roles;
+		public string[] CurrentRoles()
+		{
+			return _roles ?? 
+				(_roles = CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray());
+		}
+
+    	public Person CurrentUserPerson
         {
             get
             {

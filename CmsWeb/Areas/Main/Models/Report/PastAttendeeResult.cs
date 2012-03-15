@@ -62,7 +62,9 @@ namespace CmsWeb.Areas.Main.Models.Report
             doc = new Document(PageSize.LETTER.Rotate(), 36, 36, 64, 64);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
 
-            var i = (from o in DbUtil.Db.Organizations
+        	var roles = DbUtil.Db.CurrentRoles();
+            var i = (from o in DbUtil.Db.Organizations 
+					 where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                      where o.OrganizationId == orgid
                      select new
                      {

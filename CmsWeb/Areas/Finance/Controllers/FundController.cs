@@ -64,7 +64,7 @@ namespace CmsWeb.Areas.Finance.Controllers
                 return Json(new { error = "expected an integer (account number)" });
         	var f = DbUtil.Db.ContributionFunds.SingleOrDefault(ff => ff.FundId == id);
 			if (f != null)
-                return Json(new { error = "fund already exists: {0} ({1})".Fmt(f.FundDescription, fundid) });
+                return Json(new { error = "fund already exists: {0} ({1})".Fmt(f.FundName, fundid) });
             try
             {
                 f = new ContributionFund 

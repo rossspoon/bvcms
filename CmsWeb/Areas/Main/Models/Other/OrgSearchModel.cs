@@ -86,8 +86,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable OrganizationExcelList()
         {
-            var q = from o in DbUtil.Db.Organizations select o;
-            q = FetchOrgs();
+            var q = FetchOrgs();
             var q2 = from o in q
                      let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                      select new
@@ -144,7 +143,10 @@ namespace CmsWeb.Models
             if (organizations != null)
                 return organizations;
 
-            organizations = DbUtil.Db.Organizations.AsQueryable();
+        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+        	organizations = from o in DbUtil.Db.Organizations
+        	                where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+        	                select o;
 
             if (Util2.OrgMembersOnly)
                 organizations = from o in organizations

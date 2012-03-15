@@ -844,6 +844,7 @@ namespace CMSPresenter
                     where !contributionTypes.Contains(c.ContributionTypeId)
                     where c.PledgeFlag == false
                     where c.FundId == FundId
+                    where c.BundleDetails.First().BundleHeader.BundleStatusId == 0
                     group c by new { c.BundleDetails.FirstOrDefault().BundleHeader.BundleHeaderId, c.ContributionDate } into g
                     select new JournalInfo
                     {

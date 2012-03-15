@@ -25,9 +25,12 @@ namespace CmsWeb.Models.PersonPage
             if (_attends == null)
             {
                 var midnight = Util.Now.Date.AddDays(1);
+            	var roles = DbUtil.Db.CurrentRoles();
                 _attends = from a in DbUtil.Db.Attends
+						   let org = a.Meeting.Organization
                            where a.PeopleId == PeopleId
-                           where !(a.Meeting.Organization.SecurityTypeId == 3 && (Util2.OrgMembersOnly || Util2.OrgLeadersOnly))
+                           where !(org.SecurityTypeId == 3 && (Util2.OrgMembersOnly || Util2.OrgLeadersOnly))
+						   where org.LimitToRole == null || roles.Contains(org.LimitToRole)
                            select a;
                 if (!HttpContext.Current.User.IsInRole("Admin"))
                     _attends = _attends.Where(a => a.EffAttendFlag == null || a.EffAttendFlag == true);
