@@ -297,6 +297,11 @@ namespace CmsData
 				text = DoVoteLink(text, CmsHost, emailqueueto);
 			if (text.Contains("http://registerlink", ignoreCase:true))
 				text = DoRegisterLink(text, CmsHost, emailqueueto);
+			if (text.Contains("{barcode}", ignoreCase:true))
+			{
+				var link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
+				text = text.Replace("{barcode}", "<img src='" + link + "' />");
+			}
 
 			if (emailqueueto.Guid.HasValue)
 			{

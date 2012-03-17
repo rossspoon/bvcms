@@ -1,21 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
-using CmsWeb.Models;
-using System.Xml;
-using System.IO;
-using System.Net.Mail;
-using CmsData.Codes;
 using CmsData.API;
-using System.Text;
-using System.Net;
-using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -32,6 +19,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ret.StartsWith("!"))
                 return Content("<Organizations error=\"{0}\" />".Fmt(ret.Substring(1)));
             var api = new APIOrganization(DbUtil.Db);
+			DbUtil.LogActivity("APIOrg Organizations for Div " + id);
             return Content(api.OrganizationsForDiv(id), "text/xml");
         }
         [HttpGet]
@@ -41,6 +29,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ret.StartsWith("!"))
                 return Content("<OrgMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
             var api = new APIOrganization(DbUtil.Db);
+			DbUtil.LogActivity("APIOrg OrgMembers2 " + id);
             return Content(api.OrgMembersPython(id), "text/xml");
         }
         [HttpGet]
@@ -50,6 +39,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ret.StartsWith("!"))
                 return Content("<OrgMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
             var api = new APIOrganization(DbUtil.Db);
+			DbUtil.LogActivity("APIOrg OrgMembers " + id);
             return Content(api.OrgMembers(id, search), "text/xml");
         }
         [HttpGet]
@@ -58,6 +48,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<ExtraValues error=\"{0}\" />".Fmt(ret.Substring(1)));
+			DbUtil.LogActivity("APIOrg ExtraValues {0}, {1}".Fmt(id, fields));
             return Content(new APIOrganization(DbUtil.Db)
                 .ExtraValues(id, fields), "text/xml");
         }
@@ -67,6 +58,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
+			DbUtil.LogActivity("APIOrg AddEditExtraValue {0}, {1}, {2}".Fmt(peopleid, field, value));
             return Content(new APIOrganization(DbUtil.Db)
                 .AddEditExtraValue(peopleid, field, value));
         }
@@ -76,6 +68,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
+			DbUtil.LogActivity("APIOrg DeleteExtraValue {0}, {1}".Fmt(orgid, field));
             return Content(new APIOrganization(DbUtil.Db)
                 .DeleteExtraValue(orgid, field));
         }
@@ -87,6 +80,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content(ret.Substring(1));
             new APIOrganization(DbUtil.Db)
                 .UpdateOrgMember(OrgId, PeopleId, type, enrolled, inactive);
+			DbUtil.LogActivity("APIOrg UpdateOrgMember {0}, {1}".Fmt(OrgId, PeopleId));
             return Content("ok");
         }
     }

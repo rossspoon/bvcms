@@ -1,21 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
 using CmsData;
 using UtilityExtensions;
-using CmsWeb.Models;
-using System.Xml;
-using System.IO;
-using System.Net.Mail;
-using CmsData.Codes;
 using CmsData.API;
-using System.Text;
-using System.Net;
-using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -31,6 +17,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<ExtraValues error=\"{0}\" />".Fmt(ret.Substring(1)));
+			DbUtil.LogActivity("APIMeeting ExtraValues {0}, {1}".Fmt(id, fields));
             return Content(new APIMeeting(DbUtil.Db)
                 .ExtraValues(id, fields), "text/xml");
         }
@@ -40,6 +27,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
+			DbUtil.LogActivity("APIMeeting AddEditExtraValue {0}, {1}".Fmt(meetingid, field));
             return Content(new APIMeeting(DbUtil.Db)
                 .AddEditExtraValue(meetingid, field, value));
         }
@@ -49,6 +37,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
+			DbUtil.LogActivity("APIMeeting DeleteExtraValue {0}, {1}".Fmt(meetingid, field));
             return Content(new APIMeeting(DbUtil.Db)
                 .DeleteExtraValue(meetingid, field));
         }
@@ -58,6 +47,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
+			DbUtil.LogActivity("APIMeeting MarkRegistered {0}, {1}".Fmt(meetingid, peopleid));
             Attend.MarkRegistered(peopleid, meetingid, registered);
             return Content("ok");
         }

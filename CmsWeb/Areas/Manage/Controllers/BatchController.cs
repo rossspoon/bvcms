@@ -167,6 +167,12 @@ namespace CmsWeb.Areas.Manage.Controllers
 						case "CanSelfCheckin":
 							o.CanSelfCheckin = a[c].ToBool2();
 							break;
+						case "RegStart":
+							o.RegStart = a[c].ToDate();
+							break;
+						case "RegEnd":
+							o.RegEnd = a[c].ToDate();
+							break;
 						case "BirthDayStart":
 							o.BirthDayStart = a[c].ToDate();
 							break;

@@ -101,6 +101,8 @@ namespace CmsWeb.Models
                          LastMeeting = o.LastMeetingDate.FormatDate(),
                          Schedule = DbUtil.Db.GetScheduleDesc(sc.MeetingTime),
                          o.Location,
+						 RegStart = o.RegStart.FormatDate2(),
+						 RegEnd = o.RegEnd.FormatDate2(),
                          RollSheetVisitorWks = o.RollSheetVisitorWks ?? 0,
                          Limit = o.Limit.ToString(),
                          CampusId = o.CampusId ?? 0,
@@ -115,6 +117,7 @@ namespace CmsWeb.Models
                          NumWorkerCheckInLabels = o.NumWorkerCheckInLabels ?? 0,
                          o.PhoneNumber,
                          MainFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
+						 EntryPoint = o.EntryPoint.Description,
                      };
             return q2;
         }

@@ -221,6 +221,7 @@
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Public\Models\APITestModel.cs" />
+    <Compile Include="Areas\Public\Models\Code39.cs" />
     <Compile Include="Areas\Public\Models\iPhone\DetailResult.cs" />
     <Compile Include="Areas\Public\Models\iPhone\SearchResult.cs" />
     <Compile Include="Areas\Public\Models\iPhone\RollListResult.cs" />

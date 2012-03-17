@@ -48,6 +48,7 @@
     });
     var editor_large = {
         height: 400,
+        fullPage: true,
         filebrowserUploadUrl: '/Account/CKEditorUpload/',
         filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
         toolbar_Full: [
@@ -66,20 +67,7 @@
     ['Maximize', 'ShowBlocks', '-', 'About']
     ]
     };
-    var editor_small = {
-        height: 100,
-        filebrowserUploadUrl: '/Account/CKEditorUpload/',
-        filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
-        toolbar_Full: [
-    ['Source'],
-    ['Bold', 'Italic', 'Underline'],
-    ['Image'],
-    ['Font', 'FontSize'],
-    ['TextColor', 'BGColor'],
-    ]
-    };
     $("#textarea.editor").ckeditor(editor_large);
-    $("#textarea.smalleditor").ckeditor(editor_small);
     $("#CreateVoteTag").live("click", function (ev) {
         ev.preventDefault();
         CKEDITOR.instances["votetagcontent"].updateElement();

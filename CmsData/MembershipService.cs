@@ -12,6 +12,18 @@ namespace CmsData
         {
             get { return CMSMembershipProvider.provider.MinRequiredPasswordLength; }
         }
+        public static bool RequireSpecialCharacter
+        {
+            get { return CMSMembershipProvider.provider.pRequireOneNonAlphaNum; }
+        }
+        public static bool RequireOneNumber
+        {
+            get { return CMSMembershipProvider.provider.pRequireOneNumber; }
+        }
+        public static bool RequireOneUpper
+        {
+            get { return CMSMembershipProvider.provider.pRequireOneUpper; }
+        }
 
         public static bool ValidateUser(string userName, string password)
         {

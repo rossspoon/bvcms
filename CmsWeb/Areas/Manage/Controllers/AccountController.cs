@@ -248,8 +248,7 @@ The bvCMS Team</p>
             DbUtil.Db.SubmitChanges();
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-            ViewData["user"] = user.Username;
+            ViewBag.user = user.Username;
             Util.FormsBasedAuthentication = true;
             return View();
         }

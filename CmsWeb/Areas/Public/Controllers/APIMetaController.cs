@@ -45,6 +45,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 w.End();
             }
             w.End();
+			DbUtil.LogActivity("APIMeta Lookups");
             return Content(w.ToString(), "text/xml");
         }
 		public ActionResult Cookies()
