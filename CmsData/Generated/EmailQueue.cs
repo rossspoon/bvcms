@@ -48,6 +48,8 @@ namespace CmsData
    		
    		private EntitySet< EmailQueueTo> _EmailQueueTos;
 		
+   		private EntitySet< EmailQueueToFail> _EmailQueueToFails;
+		
    		private EntitySet< EmailResponse> _EmailResponses;
 		
     	
@@ -107,6 +109,8 @@ namespace CmsData
 		{
 			
 			this._EmailQueueTos = new EntitySet< EmailQueueTo>(new Action< EmailQueueTo>(this.attach_EmailQueueTos), new Action< EmailQueueTo>(this.detach_EmailQueueTos)); 
+			
+			this._EmailQueueToFails = new EntitySet< EmailQueueToFail>(new Action< EmailQueueToFail>(this.attach_EmailQueueToFails), new Action< EmailQueueToFail>(this.detach_EmailQueueToFails)); 
 			
 			this._EmailResponses = new EntitySet< EmailResponse>(new Action< EmailResponse>(this.attach_EmailResponses), new Action< EmailResponse>(this.detach_EmailResponses)); 
 			
@@ -444,6 +448,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_EmailQueueToFail_EmailQueue", Storage="_EmailQueueToFails", OtherKey="Id")]
+   		public EntitySet< EmailQueueToFail> EmailQueueToFails
+   		{
+   		    get { return this._EmailQueueToFails; }
+
+			set	{ this._EmailQueueToFails.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_EmailResponses_EmailQueue", Storage="_EmailResponses", OtherKey="EmailQueueId")]
    		public EntitySet< EmailResponse> EmailResponses
    		{
@@ -524,6 +538,19 @@ namespace CmsData
 		}
 
 		private void detach_EmailQueueTos(EmailQueueTo entity)
+		{
+			this.SendPropertyChanging();
+			entity.EmailQueue = null;
+		}
+
+		
+		private void attach_EmailQueueToFails(EmailQueueToFail entity)
+		{
+			this.SendPropertyChanging();
+			entity.EmailQueue = this;
+		}
+
+		private void detach_EmailQueueToFails(EmailQueueToFail entity)
 		{
 			this.SendPropertyChanging();
 			entity.EmailQueue = null;

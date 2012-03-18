@@ -93,10 +93,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             	pid = a[1].ToInt();
                 m.registertag = registertag;
             }
-			//else if (User.Identity.IsAuthenticated)
-			//{
-			//    pid = Util.UserPeopleId ?? 0;
-			//}
+			else if (User.Identity.IsAuthenticated)
+			{
+			    pid = Util.UserPeopleId ?? 0;
+			}
 
 			if(pid > 0)
 			{
@@ -104,7 +104,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var p = m.LoadExistingPerson(pid);
                 p.index = m.List.Count - 1;
                 p.ValidateModelForFind(ModelState, m);
-                //m.List[0].LoggedIn = true;
+                p.LoggedIn = true;
                 if (!ModelState.IsValid)
                     return View(m);
                 m.List[p.index] = p;
@@ -566,5 +566,31 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 return _settings;
             }
         }
+		public class CurrentRegistration
+		{
+			public string OrgName { get; set; }
+			public int OrgId { get; set; }
+			public string RegType { get; set; }
+		}
+		public ActionResult Current()
+		{
+			var q = from o in DbUtil.Db.Organizations
+					where o.LastMeetingDate == null || o.LastMeetingDate < DateTime.Today
+					where o.RegistrationTypeId > 0
+					where o.OrganizationStatusId == 30
+					where !(o.RegistrationClosed ?? false)
+					select new { o.FullName2, o.OrganizationId, o.RegistrationTypeId, o.LastMeetingDate, o.OrgPickList };
+			var list = q.ToList();
+			var q2 = from i in list
+					 where !list.Any(ii => (ii.OrgPickList ?? "0").Split(',').Contains(i.OrganizationId.ToString()))
+					 orderby i.OrganizationId
+					 select new CurrentRegistration
+					        {
+					        	OrgName = i.FullName2,
+								OrgId = i.OrganizationId,
+								RegType = RegistrationTypeCode.Lookup(i.RegistrationTypeId)
+					        };
+			return View(q2);
+		}
     }
 }

@@ -202,6 +202,10 @@ namespace CmsData
         partial void UpdateEmailQueueTo(EmailQueueTo instance);
         partial void DeleteEmailQueueTo(EmailQueueTo instance);
         
+        partial void InsertEmailQueueToFail(EmailQueueToFail instance);
+        partial void UpdateEmailQueueToFail(EmailQueueToFail instance);
+        partial void DeleteEmailQueueToFail(EmailQueueToFail instance);
+        
         partial void InsertEmailResponse(EmailResponse instance);
         partial void UpdateEmailResponse(EmailResponse instance);
         partial void DeleteEmailResponse(EmailResponse instance);
@@ -857,6 +861,12 @@ namespace CmsData
 		public Table< EmailQueueTo> EmailQueueTos
 		{
 			get	{ return this.GetTable< EmailQueueTo>(); }
+
+		}
+
+		public Table< EmailQueueToFail> EmailQueueToFails
+		{
+			get	{ return this.GetTable< EmailQueueToFail>(); }
 
 		}
 

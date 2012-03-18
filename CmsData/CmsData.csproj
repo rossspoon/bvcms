@@ -232,6 +232,7 @@
     <Compile Include="Generated\Country.cs" />
     <Compile Include="Generated\DeleteMeetingRun.cs" />
     <Compile Include="Generated\DuplicatesRun.cs" />
+    <Compile Include="Generated\EmailQueueToFail.cs" />
     <Compile Include="Generated\Functions\ContributionCountTable.cs" />
     <Compile Include="Generated\MemberDocForm.cs" />
     <Compile Include="Generated\RepairTransactionsRun.cs" />

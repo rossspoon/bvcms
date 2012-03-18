@@ -1,0 +1,22 @@
+﻿@model System.Collections.Generic.IEnumerable<CmsWeb.Areas.OnlineReg.Controllers.OnlineRegController.CurrentRegistration>
+
+@{
+	Layout = null;
+}
+<html>
+	<head>
+    @Html.Partial("CombinedCss")
+		
+	</head>
+	<body>
+<h2>Current Registrations</h2>
+			<table class="grid" cellpadding="5">
+            @foreach(var r in Model)
+			{
+				<tr><td><a href="/OnlineReg/Index/@r.OrgId">@r.OrgName</a></td>
+                    <td>@r.RegType</td></tr>
+			}
+			</table>
+	</body>
+</html>
+

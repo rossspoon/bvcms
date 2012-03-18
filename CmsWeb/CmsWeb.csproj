@@ -1089,6 +1089,8 @@
     <Content Include="Areas\Finance\Views\PostBundle\Row.cshtml" />
     <Content Include="Areas\Finance\Views\Contributions\Index.cshtml" />
     <Content Include="Areas\Finance\Views\Contributions\Results.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Current.cshtml" />
+    <Content Include="Areas\Manage\Views\Emails\Failed.cshtml" />
     <None Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving2.cshtml">
     </None>
     <Content Include="ConnectionStrings.config" />

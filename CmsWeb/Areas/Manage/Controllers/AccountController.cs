@@ -231,7 +231,10 @@ The bvCMS Team</p>
         [Authorize]
         public ActionResult ChangePassword()
         {
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+            ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
+        	ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+        	ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+        	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
             return View();
         }
         [HttpGet]
@@ -249,6 +252,10 @@ The bvCMS Team</p>
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);
             ViewBag.user = user.Username;
+            ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
+        	ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+        	ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+        	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
             Util.FormsBasedAuthentication = true;
             return View();
         }
@@ -256,6 +263,12 @@ The bvCMS Team</p>
         [Authorize]
         public ActionResult SetPassword(string newPassword, string confirmPassword)
         {
+            ViewBag.user = User.Identity.Name;
+            ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
+        	ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+        	ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+        	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
+
             if (!ValidateChangePassword("na", newPassword, confirmPassword))
                 return View();
             var mu = CMSMembershipProvider.provider.GetUser(User.Identity.Name, false);
@@ -277,8 +290,11 @@ The bvCMS Team</p>
         [HttpPost]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
         {
-
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+            ViewBag.user = User.Identity.Name;
+            ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
+        	ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+        	ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+        	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
 
             if (!ValidateChangePassword(currentPassword, newPassword, confirmPassword))
                 return View();

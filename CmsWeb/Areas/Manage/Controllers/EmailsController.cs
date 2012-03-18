@@ -97,5 +97,35 @@ namespace CmsWeb.Areas.Manage.Controllers
             UpdateModel(m.Pager);
             return View(m);
         }
+		public ActionResult Failed(int? id)
+		{
+			var q = from e in DbUtil.Db.EmailQueueToFails
+					where id == null || id == e.PeopleId
+			        orderby e.Time descending 
+			        select new MailFail
+			               {
+			               	time = e.Time,
+			               	eventx = e.EventX,
+			               	type = e.Bouncetype,
+			               	reason = e.Reason,
+			               	name = e.Person.Name,
+			               	peopleid = e.PeopleId,
+			               	emailid = e.Id,
+							subject = e.EmailQueue.Subject,
+			               };
+			return View(q.Take(300));
+		}
+
+    	public class MailFail
+    	{
+    		public DateTime? time { get; set; }
+    		public string eventx { get; set; }
+    		public string type { get; set; }
+    		public string reason { get; set; }
+    		public string name { get; set; }
+    		public int peopleid { get; set; }
+    		public int emailid { get; set; }
+    		public string subject { get; set; }
+    	}
     }
 }

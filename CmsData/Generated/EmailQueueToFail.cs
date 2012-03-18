@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace CmsData
 {
-	[Table(Name="dbo.EmailQueueTo")]
-	public partial class EmailQueueTo : INotifyPropertyChanging, INotifyPropertyChanged
+	[Table(Name="dbo.EmailQueueToFail")]
+	public partial class EmailQueueToFail : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -21,21 +21,19 @@ namespace CmsData
 		
 		private int _PeopleId;
 		
-		private int? _OrgId;
+		private DateTime? _Time;
 		
-		private DateTime? _Sent;
+		private string _EventX;
 		
-		private string _AddEmail;
+		private string _Reason;
 		
-		private Guid? _Guid;
-		
-		private string _Messageid;
+		private string _Bouncetype;
 		
    		
-   		private EntitySet< EmailQueueToFail> _EmailQueueToFails;
-		
     	
 		private EntityRef< EmailQueue> _EmailQueue;
+		
+		private EntityRef< EmailQueueTo> _EmailQueueTo;
 		
 		private EntityRef< Person> _Person;
 		
@@ -52,29 +50,26 @@ namespace CmsData
 		partial void OnPeopleIdChanging(int value);
 		partial void OnPeopleIdChanged();
 		
-		partial void OnOrgIdChanging(int? value);
-		partial void OnOrgIdChanged();
+		partial void OnTimeChanging(DateTime? value);
+		partial void OnTimeChanged();
 		
-		partial void OnSentChanging(DateTime? value);
-		partial void OnSentChanged();
+		partial void OnEventXChanging(string value);
+		partial void OnEventXChanged();
 		
-		partial void OnAddEmailChanging(string value);
-		partial void OnAddEmailChanged();
+		partial void OnReasonChanging(string value);
+		partial void OnReasonChanged();
 		
-		partial void OnGuidChanging(Guid? value);
-		partial void OnGuidChanged();
-		
-		partial void OnMessageidChanging(string value);
-		partial void OnMessageidChanged();
+		partial void OnBouncetypeChanging(string value);
+		partial void OnBouncetypeChanged();
 		
     #endregion
-		public EmailQueueTo()
+		public EmailQueueToFail()
 		{
-			
-			this._EmailQueueToFails = new EntitySet< EmailQueueToFail>(new Action< EmailQueueToFail>(this.attach_EmailQueueToFails), new Action< EmailQueueToFail>(this.detach_EmailQueueToFails)); 
 			
 			
 			this._EmailQueue = default(EntityRef< EmailQueue>); 
+			
+			this._EmailQueueTo = default(EntityRef< EmailQueueTo>); 
 			
 			this._Person = default(EntityRef< Person>); 
 			
@@ -94,7 +89,7 @@ namespace CmsData
 				if (this._Id != value)
 				{
 				
-					if (this._EmailQueue.HasLoadedOrAssignedValue)
+					if (this._EmailQueueTo.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnIdChanging(value);
@@ -134,21 +129,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OrgId", UpdateCheck=UpdateCheck.Never, Storage="_OrgId", DbType="int")]
-		public int? OrgId
+		[Column(Name="time", UpdateCheck=UpdateCheck.Never, Storage="_Time", DbType="datetime")]
+		public DateTime? Time
 		{
-			get { return this._OrgId; }
+			get { return this._Time; }
 
 			set
 			{
-				if (this._OrgId != value)
+				if (this._Time != value)
 				{
 				
-                    this.OnOrgIdChanging(value);
+                    this.OnTimeChanging(value);
 					this.SendPropertyChanging();
-					this._OrgId = value;
-					this.SendPropertyChanged("OrgId");
-					this.OnOrgIdChanged();
+					this._Time = value;
+					this.SendPropertyChanged("Time");
+					this.OnTimeChanged();
 				}
 
 			}
@@ -156,21 +151,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Sent", UpdateCheck=UpdateCheck.Never, Storage="_Sent", DbType="datetime")]
-		public DateTime? Sent
+		[Column(Name="event", UpdateCheck=UpdateCheck.Never, Storage="_EventX", DbType="varchar(20)")]
+		public string EventX
 		{
-			get { return this._Sent; }
+			get { return this._EventX; }
 
 			set
 			{
-				if (this._Sent != value)
+				if (this._EventX != value)
 				{
 				
-                    this.OnSentChanging(value);
+                    this.OnEventXChanging(value);
 					this.SendPropertyChanging();
-					this._Sent = value;
-					this.SendPropertyChanged("Sent");
-					this.OnSentChanged();
+					this._EventX = value;
+					this.SendPropertyChanged("EventX");
+					this.OnEventXChanged();
 				}
 
 			}
@@ -178,21 +173,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AddEmail", UpdateCheck=UpdateCheck.Never, Storage="_AddEmail", DbType="varchar")]
-		public string AddEmail
+		[Column(Name="reason", UpdateCheck=UpdateCheck.Never, Storage="_Reason", DbType="varchar(200)")]
+		public string Reason
 		{
-			get { return this._AddEmail; }
+			get { return this._Reason; }
 
 			set
 			{
-				if (this._AddEmail != value)
+				if (this._Reason != value)
 				{
 				
-                    this.OnAddEmailChanging(value);
+                    this.OnReasonChanging(value);
 					this.SendPropertyChanging();
-					this._AddEmail = value;
-					this.SendPropertyChanged("AddEmail");
-					this.OnAddEmailChanged();
+					this._Reason = value;
+					this.SendPropertyChanged("Reason");
+					this.OnReasonChanged();
 				}
 
 			}
@@ -200,43 +195,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="guid", UpdateCheck=UpdateCheck.Never, Storage="_Guid", DbType="uniqueidentifier")]
-		public Guid? Guid
+		[Column(Name="bouncetype", UpdateCheck=UpdateCheck.Never, Storage="_Bouncetype", DbType="varchar(20)")]
+		public string Bouncetype
 		{
-			get { return this._Guid; }
+			get { return this._Bouncetype; }
 
 			set
 			{
-				if (this._Guid != value)
+				if (this._Bouncetype != value)
 				{
 				
-                    this.OnGuidChanging(value);
+                    this.OnBouncetypeChanging(value);
 					this.SendPropertyChanging();
-					this._Guid = value;
-					this.SendPropertyChanged("Guid");
-					this.OnGuidChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="messageid", UpdateCheck=UpdateCheck.Never, Storage="_Messageid", DbType="varchar(100)")]
-		public string Messageid
-		{
-			get { return this._Messageid; }
-
-			set
-			{
-				if (this._Messageid != value)
-				{
-				
-                    this.OnMessageidChanging(value);
-					this.SendPropertyChanging();
-					this._Messageid = value;
-					this.SendPropertyChanged("Messageid");
-					this.OnMessageidChanged();
+					this._Bouncetype = value;
+					this.SendPropertyChanged("Bouncetype");
+					this.OnBouncetypeChanged();
 				}
 
 			}
@@ -248,21 +221,11 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_EmailQueueToFail_EmailQueueTo", Storage="_EmailQueueToFails", OtherKey="Id,PeopleId")]
-   		public EntitySet< EmailQueueToFail> EmailQueueToFails
-   		{
-   		    get { return this._EmailQueueToFails; }
-
-			set	{ this._EmailQueueToFails.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_EmailQueueTo_EmailQueue", Storage="_EmailQueue", ThisKey="Id", IsForeignKey=true)]
+		[Association(Name="FK_EmailQueueToFail_EmailQueue", Storage="_EmailQueue", ThisKey="Id", IsForeignKey=true)]
 		public EmailQueue EmailQueue
 		{
 			get { return this._EmailQueue.Entity; }
@@ -277,13 +240,13 @@ namespace CmsData
 					if (previousValue != null)
 					{
 						this._EmailQueue.Entity = null;
-						previousValue.EmailQueueTos.Remove(this);
+						previousValue.EmailQueueToFails.Remove(this);
 					}
 
 					this._EmailQueue.Entity = value;
 					if (value != null)
 					{
-						value.EmailQueueTos.Add(this);
+						value.EmailQueueToFails.Add(this);
 						
 						this._Id = value.Id;
 						
@@ -304,7 +267,53 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="FK_EmailQueueTo_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
+		[Association(Name="FK_EmailQueueToFail_EmailQueueTo", Storage="_EmailQueueTo", ThisKey="Id,PeopleId", IsForeignKey=true)]
+		public EmailQueueTo EmailQueueTo
+		{
+			get { return this._EmailQueueTo.Entity; }
+
+			set
+			{
+				EmailQueueTo previousValue = this._EmailQueueTo.Entity;
+				if (((previousValue != value) 
+							|| (this._EmailQueueTo.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._EmailQueueTo.Entity = null;
+						previousValue.EmailQueueToFails.Remove(this);
+					}
+
+					this._EmailQueueTo.Entity = value;
+					if (value != null)
+					{
+						value.EmailQueueToFails.Add(this);
+						
+						this._Id = value.Id;
+						
+						this._PeopleId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._Id = default(int);
+						
+						this._PeopleId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("EmailQueueTo");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_EmailQueueToFail_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person Person
 		{
 			get { return this._Person.Entity; }
@@ -319,13 +328,13 @@ namespace CmsData
 					if (previousValue != null)
 					{
 						this._Person.Entity = null;
-						previousValue.EmailQueueTos.Remove(this);
+						previousValue.EmailQueueToFails.Remove(this);
 					}
 
 					this._Person.Entity = value;
 					if (value != null)
 					{
-						value.EmailQueueTos.Add(this);
+						value.EmailQueueToFails.Add(this);
 						
 						this._PeopleId = value.PeopleId;
 						
@@ -363,19 +372,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_EmailQueueToFails(EmailQueueToFail entity)
-		{
-			this.SendPropertyChanging();
-			entity.EmailQueueTo = this;
-		}
-
-		private void detach_EmailQueueToFails(EmailQueueToFail entity)
-		{
-			this.SendPropertyChanging();
-			entity.EmailQueueTo = null;
-		}
-
-		
 	}
 
 }
