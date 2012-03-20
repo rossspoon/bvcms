@@ -35,6 +35,13 @@ namespace CmsWeb.Areas.Manage.Controllers
             }
             return Content("done");
         }
+		[HttpPost]
+		[Authorize(Roles="Admin")]
+        public ActionResult DeleteAll(string field, string val)
+        {
+        	DbUtil.Db.ExecuteCommand("delete PeopleExtra where field = {0} and StrValue = {1}", field, val);
+            return Content("done");
+        }
         public PeopleExtra GetExtraValue(int id, string field)
         {
             var q = from v in DbUtil.Db.PeopleExtras

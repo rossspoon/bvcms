@@ -4,16 +4,48 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
+@section scripts
+{
+	<script type="text/javascript">
+	    $(function () {
+	        $('table.grid tr:even').addClass('alt');
+	        $("a.unblock").click(function (ev) {
+	            if (confirm("are you sure?"))
+	                $.post("/Manage/Emails/Unblock", { email: $(this).attr("email") }, function(ret) {
+                        $.growlUI("email unblocked", ret);
+	                });
+	        });
+	        $("a.unspam").click(function (ev) {
+	            if (confirm("are you sure?"))
+	                $.post("/Manage/Emails/Unspam", { email: $(this).attr("email") }, function(ret) {
+                        $.growlUI("email unspamed", ret);
+	                });
+	        });
+	    });
+
+	</script>
+}
 <h2>Failed Emails</h2>
     <table class="grid" cellpadding="5">
     @foreach(var e in Model)
     {
         <tr><td>@e.time.FormatDateTm()</td>
             <td><a href="/Person/Index/@e.peopleid">@e.name</a></td>
+            <td>@e.email</td>
             <td><a href="/Manage/Emails/Details/@e.emailid">@e.subject</a></td>
             <td>@e.eventx</td>
             <td>@e.type</td>
             <td>@e.reason</td>
+			<td>
+            @if(e.canunblock)
+			{
+			    <a href="#" class="unblock" email="@e.email">unblock</a>
+			}
+            @if(e.canunspam)
+			{
+			    <a href="#" class="unspam" email="@e.email">unspam</a>
+			}
+			</td>
         </tr>
     }
     </table>

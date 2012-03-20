@@ -8,8 +8,8 @@
 {
 @Html.Script("/Scripts/OnlineReg.js")
 }
-@Html.Raw(Model.Instructions)
 <h2>@Model.Description()</h2>
+<div>@Html.Raw(Model.Instructions)</div>
 <h4>Email Subscription Options for @Model.person.Name &lt;@Model.person.EmailAddress&gt;</h4>
 @using(Html.BeginForm("ConfirmSubscriptions", "OnlineReg"))
 {

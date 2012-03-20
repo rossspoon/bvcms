@@ -325,7 +325,9 @@
     </tr>
 }
     <tr><td align="right" colspan="2">
-        <input type="button" id="otheredit" href="/OnlineReg/SubmitOtherInfo/@Model.index" class="submitbutton ajax" 
-            value="Submit" /></td>
+			<input type="button" id="otheredit" href="/OnlineReg/SubmitOtherInfo/@Model.index" class="submitbutton ajax" 
+				   value="Submit" />
+            <div>@Html.ValidationMessage("form")</div>
+        </td>
     </tr>
 

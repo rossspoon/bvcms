@@ -205,7 +205,8 @@ The bvCMS Team</p>
         public ActionResult CreateAccount(string id)
         {
             if (!id.HasValue())
-                return Content("invalid URL");
+				return Content("invalid URL"); 
+
             var pid = AccountModel.GetValidToken(id).ToInt();
             var p = DbUtil.Db.LoadPersonById(pid);
             if (p == null)
@@ -215,8 +216,13 @@ The bvCMS Team</p>
             var user = MembershipService.CreateUser(DbUtil.Db, pid);
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-            ViewData["user"] = user.Username;
+
+        	ViewBag.user = user.Username;
+			ViewBag.MinPasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.RequireSpecialCharacter = MembershipService.RequireSpecialCharacter;
+			ViewBag.RequireOneNumber = MembershipService.RequireOneNumber;
+			ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
+
             Util.FormsBasedAuthentication = true;
             return View("SetPassword");
         }

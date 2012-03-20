@@ -60,14 +60,14 @@ namespace CmsWeb.Models
             var q = GetEmailTos();
             var q2 = from e in q.OrderBy(ee => ee.Person.Name2)
                          .Skip(Pager.StartRow).Take(Pager.PageSize)
-					 let fail = e.EmailQueueToFails.FirstOrDefault()
+					 //let fail = e.EmailQueueToFails.FirstOrDefault()
                      select new RecipientInfo
                      {
                          peopleid = e.PeopleId,
                          name = e.Person.Name,
                          address = e.Person.EmailAddress,
                          nopens = e.Person.EmailResponses.Count(er => er.EmailQueueId == e.Id),
-						 failtype = fail.EventX + " " + fail.Bouncetype,
+						 //failtype = fail.EventX + " " + fail.Bouncetype,
                      };
             return q2;
         }
@@ -75,12 +75,12 @@ namespace CmsWeb.Models
         {
             var q = from t in DbUtil.Db.EmailQueueTos
                     let opened = t.Person.EmailResponses.Any(er => er.EmailQueueId == t.Id)
-					let fail = t.EmailQueueToFails.FirstOrDefault()
+					//let fail = t.EmailQueueToFails.FirstOrDefault()
                     where t.Id == id
                     where filter == "All" 
 					|| (opened == true && filter == "Opened") 
 					|| (opened == false && filter == "Not Opened")
-					|| (fail != null && filter == "Failed")
+					//|| (fail != null && filter == "Failed")
                     select t;
             if (!DbUtil.Db.CurrentUser.Roles.Contains("Admin")
                     && queue.QueuedBy != Util.UserPeopleId)

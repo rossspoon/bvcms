@@ -32,8 +32,6 @@ namespace CmsData
 		private string _Messageid;
 		
    		
-   		private EntitySet< EmailQueueToFail> _EmailQueueToFails;
-		
     	
 		private EntityRef< EmailQueue> _EmailQueue;
 		
@@ -70,8 +68,6 @@ namespace CmsData
     #endregion
 		public EmailQueueTo()
 		{
-			
-			this._EmailQueueToFails = new EntitySet< EmailQueueToFail>(new Action< EmailQueueToFail>(this.attach_EmailQueueToFails), new Action< EmailQueueToFail>(this.detach_EmailQueueToFails)); 
 			
 			
 			this._EmailQueue = default(EntityRef< EmailQueue>); 
@@ -248,16 +244,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_EmailQueueToFail_EmailQueueTo", Storage="_EmailQueueToFails", OtherKey="Id,PeopleId")]
-   		public EntitySet< EmailQueueToFail> EmailQueueToFails
-   		{
-   		    get { return this._EmailQueueToFails; }
-
-			set	{ this._EmailQueueToFails.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -363,19 +349,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_EmailQueueToFails(EmailQueueToFail entity)
-		{
-			this.SendPropertyChanging();
-			entity.EmailQueueTo = this;
-		}
-
-		private void detach_EmailQueueToFails(EmailQueueToFail entity)
-		{
-			this.SendPropertyChanging();
-			entity.EmailQueueTo = null;
-		}
-
-		
 	}
 
 }

@@ -368,7 +368,7 @@ namespace CmsWeb.Areas.Main.Controllers
             try
             {
                 UpdateModel(m);
-                var os = new RegSettings(m.ToString(), DbUtil.Db, id);
+                var os = new RegSettings(m.ToString(), DbUtil.Db, id, check: true);
                 m.org.RegSetting = os.ToString();
                 DbUtil.Db.SubmitChanges();
                 return View("OnlineRegQuestions", m);

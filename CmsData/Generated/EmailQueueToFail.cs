@@ -17,9 +17,11 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _Id;
+		private int _Pkey;
 		
-		private int _PeopleId;
+		private int? _Id;
+		
+		private int? _PeopleId;
 		
 		private DateTime? _Time;
 		
@@ -29,14 +31,10 @@ namespace CmsData
 		
 		private string _Bouncetype;
 		
+		private string _Email;
+		
    		
     	
-		private EntityRef< EmailQueue> _EmailQueue;
-		
-		private EntityRef< EmailQueueTo> _EmailQueueTo;
-		
-		private EntityRef< Person> _Person;
-		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -44,10 +42,13 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnIdChanging(int value);
+		partial void OnPkeyChanging(int value);
+		partial void OnPkeyChanged();
+		
+		partial void OnIdChanging(int? value);
 		partial void OnIdChanged();
 		
-		partial void OnPeopleIdChanging(int value);
+		partial void OnPeopleIdChanging(int? value);
 		partial void OnPeopleIdChanged();
 		
 		partial void OnTimeChanging(DateTime? value);
@@ -62,16 +63,13 @@ namespace CmsData
 		partial void OnBouncetypeChanging(string value);
 		partial void OnBouncetypeChanged();
 		
+		partial void OnEmailChanging(string value);
+		partial void OnEmailChanged();
+		
     #endregion
 		public EmailQueueToFail()
 		{
 			
-			
-			this._EmailQueue = default(EntityRef< EmailQueue>); 
-			
-			this._EmailQueueTo = default(EntityRef< EmailQueueTo>); 
-			
-			this._Person = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -79,8 +77,30 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int Id
+		[Column(Name="pkey", UpdateCheck=UpdateCheck.Never, Storage="_Pkey", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Pkey
+		{
+			get { return this._Pkey; }
+
+			set
+			{
+				if (this._Pkey != value)
+				{
+				
+                    this.OnPkeyChanging(value);
+					this.SendPropertyChanging();
+					this._Pkey = value;
+					this.SendPropertyChanged("Pkey");
+					this.OnPkeyChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="int")]
+		public int? Id
 		{
 			get { return this._Id; }
 
@@ -88,9 +108,6 @@ namespace CmsData
 			{
 				if (this._Id != value)
 				{
-				
-					if (this._EmailQueueTo.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnIdChanging(value);
 					this.SendPropertyChanging();
@@ -104,8 +121,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int PeopleId
+		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int")]
+		public int? PeopleId
 		{
 			get { return this._PeopleId; }
 
@@ -113,9 +130,6 @@ namespace CmsData
 			{
 				if (this._PeopleId != value)
 				{
-				
-					if (this._Person.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnPeopleIdChanging(value);
 					this.SendPropertyChanging();
@@ -217,6 +231,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="email", UpdateCheck=UpdateCheck.Never, Storage="_Email", DbType="varchar(100)")]
+		public string Email
+		{
+			get { return this._Email; }
+
+			set
+			{
+				if (this._Email != value)
+				{
+				
+                    this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -225,136 +261,6 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_EmailQueueToFail_EmailQueue", Storage="_EmailQueue", ThisKey="Id", IsForeignKey=true)]
-		public EmailQueue EmailQueue
-		{
-			get { return this._EmailQueue.Entity; }
-
-			set
-			{
-				EmailQueue previousValue = this._EmailQueue.Entity;
-				if (((previousValue != value) 
-							|| (this._EmailQueue.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._EmailQueue.Entity = null;
-						previousValue.EmailQueueToFails.Remove(this);
-					}
-
-					this._EmailQueue.Entity = value;
-					if (value != null)
-					{
-						value.EmailQueueToFails.Add(this);
-						
-						this._Id = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._Id = default(int);
-						
-					}
-
-					this.SendPropertyChanged("EmailQueue");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_EmailQueueToFail_EmailQueueTo", Storage="_EmailQueueTo", ThisKey="Id,PeopleId", IsForeignKey=true)]
-		public EmailQueueTo EmailQueueTo
-		{
-			get { return this._EmailQueueTo.Entity; }
-
-			set
-			{
-				EmailQueueTo previousValue = this._EmailQueueTo.Entity;
-				if (((previousValue != value) 
-							|| (this._EmailQueueTo.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._EmailQueueTo.Entity = null;
-						previousValue.EmailQueueToFails.Remove(this);
-					}
-
-					this._EmailQueueTo.Entity = value;
-					if (value != null)
-					{
-						value.EmailQueueToFails.Add(this);
-						
-						this._Id = value.Id;
-						
-						this._PeopleId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._Id = default(int);
-						
-						this._PeopleId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("EmailQueueTo");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_EmailQueueToFail_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
-		public Person Person
-		{
-			get { return this._Person.Entity; }
-
-			set
-			{
-				Person previousValue = this._Person.Entity;
-				if (((previousValue != value) 
-							|| (this._Person.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Person.Entity = null;
-						previousValue.EmailQueueToFails.Remove(this);
-					}
-
-					this._Person.Entity = value;
-					if (value != null)
-					{
-						value.EmailQueueToFails.Add(this);
-						
-						this._PeopleId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._PeopleId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("Person");
-				}
-
-			}
-
-		}
-
-		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
