@@ -113,6 +113,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 							   eventx = e.EventX,
 							   type = e.Bouncetype,
 							   reason = e.Reason,
+							   emailid = e.Id,
 							   name = et != null ? et.Person.Name : "unknown",
 							   subject = et != null ? et.EmailQueue.Subject : "unknown",
 							   peopleid = e.PeopleId,

@@ -222,7 +222,7 @@ namespace CmsWeb.Models
         }
         public void FillPriorInfo()
         {
-            if (!IsNew)
+            if (!IsNew && LoggedIn == true)
             {
                 var rr = DbUtil.Db.RecRegs.SingleOrDefault(r => r.PeopleId == PeopleId);
                 if (rr != null)
@@ -273,7 +273,7 @@ namespace CmsWeb.Models
                     }
                 }
             }
-#if DEBUG
+#if DEBUG2
             request = "Toby";
             ntickets = 1;
             gradeoption = "12";
