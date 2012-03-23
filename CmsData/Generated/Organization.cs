@@ -133,6 +133,8 @@ namespace CmsData
 		
 		private string _LimitToRole;
 		
+		private int? _OrganizationTypeId;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -166,6 +168,8 @@ namespace CmsData
 		private EntityRef< Division> _Division;
 		
 		private EntityRef< Gender> _Gender;
+		
+		private EntityRef< OrganizationType> _OrganizationType;
 		
 		private EntityRef< EntryPoint> _EntryPoint;
 		
@@ -352,6 +356,9 @@ namespace CmsData
 		partial void OnLimitToRoleChanging(string value);
 		partial void OnLimitToRoleChanged();
 		
+		partial void OnOrganizationTypeIdChanging(int? value);
+		partial void OnOrganizationTypeIdChanged();
+		
     #endregion
 		public Organization()
 		{
@@ -388,6 +395,8 @@ namespace CmsData
 			this._Division = default(EntityRef< Division>); 
 			
 			this._Gender = default(EntityRef< Gender>); 
+			
+			this._OrganizationType = default(EntityRef< OrganizationType>); 
 			
 			this._EntryPoint = default(EntityRef< EntryPoint>); 
 			
@@ -1693,6 +1702,31 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="OrganizationTypeId", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationTypeId", DbType="int")]
+		public int? OrganizationTypeId
+		{
+			get { return this._OrganizationTypeId; }
+
+			set
+			{
+				if (this._OrganizationTypeId != value)
+				{
+				
+					if (this._OrganizationType.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnOrganizationTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationTypeId = value;
+					this.SendPropertyChanged("OrganizationTypeId");
+					this.OnOrganizationTypeIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -1982,6 +2016,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Gender");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_Organizations_OrganizationType", Storage="_OrganizationType", ThisKey="OrganizationTypeId", IsForeignKey=true)]
+		public OrganizationType OrganizationType
+		{
+			get { return this._OrganizationType.Entity; }
+
+			set
+			{
+				OrganizationType previousValue = this._OrganizationType.Entity;
+				if (((previousValue != value) 
+							|| (this._OrganizationType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._OrganizationType.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+
+					this._OrganizationType.Entity = value;
+					if (value != null)
+					{
+						value.Organizations.Add(this);
+						
+						this._OrganizationTypeId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._OrganizationTypeId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("OrganizationType");
 				}
 
 			}

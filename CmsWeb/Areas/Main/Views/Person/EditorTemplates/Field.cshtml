@@ -3,28 +3,42 @@
 {
 <tr>
     <td>@Model.name</td>
-    @switch (Model.type)
-    {
-        case "Code":
-            if (Model.nonstandard)
-            {
+    @if (Model.UserCanEdit())
+	{
+		switch (Model.type)
+		{
+			case "Code":
+				if (Model.nonstandard)
+				{
     <td><span id="s-@Model.name.@Model.peopleid" class="clickEdit">@Model.ToString()</span></td>
-            }
-            else
-            {
+				}
+				else
+				{
     <td><span id="s-@Model.name.@Model.peopleid" field="@Model.name" class="clickSelect @Model.name">@Model.ToString()</span></td>
-            }
-            break;
-        case "Data":
-    <td><pre id="t-@Model.name.@Model.peopleid" class="editarea" style="font-family:Verdana">@Model.ToString()</pre></td>
-            break;
-        case "Date":
+				}
+				break;
+			case "Data":
+    <td><pre id="t-@Model.name.@Model.peopleid" class="editarea" style="font-family: Verdana">@Model.ToString()</pre></td>
+				break;
+			case "Date":
     <td><span id="d-@Model.name.@Model.peopleid" class="clickDatepicker">@Model.ToString()</span></td>
-            break;
-        case "Int":
+				break;
+			case "Int":
     <td><span id="i-@Model.name.@Model.peopleid" class="clickEdit">@Model.ToString()</span></td>
-            break;
-    }
+				break;
+		}
+	}
+    else
+	{
+		if (Model.type == "Data")
+		{
+    <td><pre style="font-family: Verdana">@Model.ToString()</pre></td>
+		}
+		else
+		{
+    <td><span>@Model.ToString()</span></td>
+		}
+	}
     <td>
     @if (Model.nonstandard)
     {

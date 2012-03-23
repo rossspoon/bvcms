@@ -33,6 +33,8 @@ namespace CmsData
 		
 		private string _Email;
 		
+		private long? _Timestamp;
+		
    		
     	
 	#endregion
@@ -65,6 +67,9 @@ namespace CmsData
 		
 		partial void OnEmailChanging(string value);
 		partial void OnEmailChanged();
+		
+		partial void OnTimestampChanging(long? value);
+		partial void OnTimestampChanged();
 		
     #endregion
 		public EmailQueueToFail()
@@ -246,6 +251,28 @@ namespace CmsData
 					this._Email = value;
 					this.SendPropertyChanged("Email");
 					this.OnEmailChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="timestamp", UpdateCheck=UpdateCheck.Never, Storage="_Timestamp", DbType="bigint")]
+		public long? Timestamp
+		{
+			get { return this._Timestamp; }
+
+			set
+			{
+				if (this._Timestamp != value)
+				{
+				
+                    this.OnTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._Timestamp = value;
+					this.SendPropertyChanged("Timestamp");
+					this.OnTimestampChanged();
 				}
 
 			}

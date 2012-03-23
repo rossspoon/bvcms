@@ -7,22 +7,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using CmsWeb.Areas.Finance.Controllers;
 using UtilityExtensions;
-using System.Text;
 using CmsData;
 using CmsData.Codes;
-using System.Data.Linq.SqlClient;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.IO;
-using System.Globalization;
-using System.Threading;
 using LumenWorks.Framework.IO.Csv;
 
 namespace CmsWeb.Models
@@ -38,6 +31,7 @@ namespace CmsWeb.Models
         public int? editid { get; set; }
         public int? pid { get; set; }
         public decimal? amt { get; set; }
+        public int? splitfrom { get; set; }
         public int fund { get; set; }
         public bool pledge { get; set; }
         public string notes { get; set; }
@@ -71,7 +65,8 @@ namespace CmsWeb.Models
             var q = from d in DbUtil.Db.BundleDetails
                     where d.BundleHeaderId == id || cid != null
 					where cid == null || d.ContributionId == cid
-                    orderby d.BundleDetailId descending
+					let sort = d.BundleSort1 > 0 ? d.BundleSort1 : d.BundleDetailId
+                    orderby sort descending, d.ContributionId ascending 
                     select new ContributionInfo
                     {
                         ContributionId = d.ContributionId,
@@ -169,7 +164,7 @@ namespace CmsWeb.Models
             return ret;
         }
 
-    	public object ContributionRowData(PostBundleController ctl, int cid)
+    	public object ContributionRowData(PostBundleController ctl, int cid, decimal? othersplitamt = null)
         {
         	var cinfo = FetchContributions(cid).Single();
 			var body = CmsController.RenderPartialViewToString(ctl, "Row", cinfo);
@@ -184,6 +179,7 @@ namespace CmsWeb.Models
                         totalitems = bh.BundleDetails.Sum(d =>
                             d.Contribution.ContributionAmount).ToString2("N2"),
                         itemcount = bh.BundleDetails.Count(),
+						othersplitamt = othersplitamt.ToString2("N2")
                     };
             return q.First();
         }
@@ -200,8 +196,26 @@ namespace CmsWeb.Models
                 type = (int)Contribution.TypeCode.Pledge;
             else
                 type = (int)Contribution.TypeCode.CheckCash;
+
+			decimal? othersplitamt = null;
+			if (splitfrom > 0)
+			{
+				var q = from c in DbUtil.Db.Contributions
+				        where c.ContributionId == splitfrom
+				        select new
+				               {
+								   c,
+								   bd = c.BundleDetails.First(),
+				               };
+				var i = q.Single();
+				othersplitamt = i.c.ContributionAmount - amt;
+				i.c.ContributionAmount = othersplitamt;
+				DbUtil.Db.SubmitChanges();
+				bd.BundleSort1 = i.bd.BundleDetailId;
+			}
+
             bd.Contribution = new Contribution
-            {
+            { 
                 CreatedBy = Util.UserId,
                 CreatedDate = bd.CreatedDate,
                 FundId = fund,
@@ -216,7 +230,7 @@ namespace CmsWeb.Models
             };
             bundle.BundleDetails.Add(bd);
             DbUtil.Db.SubmitChanges();
-            return ContributionRowData(ctl, bd.ContributionId);
+            return ContributionRowData(ctl, bd.ContributionId, othersplitamt);
         }
 		public object UpdateContribution(PostBundleController ctl)
         {

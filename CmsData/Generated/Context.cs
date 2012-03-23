@@ -342,6 +342,10 @@ namespace CmsData
         partial void UpdateOrganizationStatus(OrganizationStatus instance);
         partial void DeleteOrganizationStatus(OrganizationStatus instance);
         
+        partial void InsertOrganizationType(OrganizationType instance);
+        partial void UpdateOrganizationType(OrganizationType instance);
+        partial void DeleteOrganizationType(OrganizationType instance);
+        
         partial void InsertOrgContent(OrgContent instance);
         partial void UpdateOrgContent(OrgContent instance);
         partial void DeleteOrgContent(OrgContent instance);
@@ -1071,6 +1075,12 @@ namespace CmsData
 		public Table< OrganizationStatus> OrganizationStatuses
 		{
 			get	{ return this.GetTable< OrganizationStatus>(); }
+
+		}
+
+		public Table< OrganizationType> OrganizationTypes
+		{
+			get	{ return this.GetTable< OrganizationType>(); }
 
 		}
 

@@ -1098,7 +1098,6 @@
     <Content Include="TestConnectionStrings.config" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
-    <Content Include="MembershipAutomationExample.py" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml">
     </Content>

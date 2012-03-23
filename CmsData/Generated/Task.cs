@@ -59,6 +59,8 @@ namespace CmsData
 		
 		private bool? _ForceCompleteWContact;
 		
+		private int? _OrginatorId;
+		
    		
     	
 		private EntityRef< TaskList> _CoTaskList;
@@ -146,6 +148,9 @@ namespace CmsData
 		
 		partial void OnForceCompleteWContactChanging(bool? value);
 		partial void OnForceCompleteWContactChanged();
+		
+		partial void OnOrginatorIdChanging(int? value);
+		partial void OnOrginatorIdChanged();
 		
     #endregion
 		public Task()
@@ -653,6 +658,28 @@ namespace CmsData
 					this._ForceCompleteWContact = value;
 					this.SendPropertyChanged("ForceCompleteWContact");
 					this.OnForceCompleteWContactChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OrginatorId", UpdateCheck=UpdateCheck.Never, Storage="_OrginatorId", DbType="int")]
+		public int? OrginatorId
+		{
+			get { return this._OrginatorId; }
+
+			set
+			{
+				if (this._OrginatorId != value)
+				{
+				
+                    this.OnOrginatorIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrginatorId = value;
+					this.SendPropertyChanged("OrginatorId");
+					this.OnOrginatorIdChanged();
 				}
 
 			}

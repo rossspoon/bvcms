@@ -73,7 +73,7 @@ namespace CmsWeb.Models
 			if (auth.HasValue())
 			{
 				var cred = Encoding.ASCII.GetString(
-					Convert.FromBase64String(auth.Substring(6))).Split(':');
+					Convert.FromBase64String(auth.Substring(6))).SplitStr(":", 2);
 				username = cred[0];
 				password = cred[1];
 			}
@@ -310,7 +310,7 @@ Click on your username below to set your password and login to the system.</p>
 			body = body.Replace("{cmshost}", DbUtil.Db.Setting("DefaultHost", DbUtil.Db.Host));
 			body = body.Replace("{username}", user.Username);
 			user.ResetPasswordCode = Guid.NewGuid();
-			user.ResetPasswordExpires = DateTime.Now.AddDays(1);
+			user.ResetPasswordExpires = DateTime.Now.AddHours(DbUtil.Db.Setting("ResetPasswordExpiresHours", "24").ToInt());
 			var link = Util.ServerLink("/Account/SetPassword/" + user.ResetPasswordCode.ToString());
 			body = body.Replace("{link}", link);
 			DbUtil.Db.SubmitChanges();
@@ -360,7 +360,7 @@ The BVCMS Team</p>".Fmt(url), Util.ToMailAddressList(p.EmailAddress), 0, null);
 			{
 				Util.AddGoodAddress(addrlist, user.EmailAddress);
 				user.ResetPasswordCode = Guid.NewGuid();
-				user.ResetPasswordExpires = DateTime.Now.AddDays(1);
+				user.ResetPasswordExpires = DateTime.Now.AddHours(DbUtil.Db.Setting("ResetPasswordExpiresHours", "24").ToInt()); 
 				var link = Util.ServerLink("/Account/SetPassword/" + user.ResetPasswordCode.ToString());
 				sb.AppendFormat(@"{0}, <a href=""{1}"">{2}</a><br>", user.Name, link, user.Username);
 				DbUtil.Db.SubmitChanges();

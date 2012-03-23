@@ -10,7 +10,10 @@
         <th>Date</th>
         <th>Reason</th>
         <th>Type</th>
+        <th>Contactors</th>
         <th>Contactees</th>
+        <th>Ministry</th>
+        <th>Results</th>
     </tr>
 </thead>
 <tbody>
@@ -18,10 +21,12 @@
 {
     <tr>
         <td><a href="/Contact.aspx?id=@c.ContactId">@c.ContactDate.ToString("d")</a></td>
-@*        <td><a href="/Contact/Index/@c.ContactId">@c.ContactDate.ToString("d")</a></td>
-*@        <td>@c.ContactReason</td>
+        <td>@c.ContactReason</td>
         <td>@c.TypeOfContact</td>
+        <td>@c.ContactorList</td>
         <td>@c.ContacteeList</td>
+        <td>@c.Ministry</td>
+        <td><pre>@c.Results</pre></td>
     </tr>
 }
 </tbody>

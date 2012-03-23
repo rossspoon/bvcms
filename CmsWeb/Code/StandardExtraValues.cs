@@ -66,6 +66,11 @@ namespace CmsWeb.Code
 						return true;
 				return false;
 			}
+			public bool UserCanEdit()
+			{
+				var user = HttpContext.Current.User;
+				return user.IsInRole("Edit");
+			}
 			public override string  ToString()
         	{
 				if (extravalue == null)

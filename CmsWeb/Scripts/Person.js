@@ -85,7 +85,7 @@
             tooltip: 'Click to edit...',
             style: 'display: inline',
             width: '300px',
-            submit: 'OK',
+            submit: 'OK'
         });
         $(".clickSelect", table).editable("/Person/EditExtra/", {
             indicator: '<img src="/images/loading.gif">',
@@ -95,7 +95,7 @@
             submit: "OK",
             style: 'display: inline'
         });
-    }
+    };
     $.getTable = function (f, q) {
         q = q || f.serialize();
         $.post(f.attr('action'), q, function (ret) {
@@ -108,7 +108,7 @@
             });
         });
         return false;
-    }
+    };
     $('#memberDialog').dialog({
         title: 'Member Dialog',
         bgiframe: true,
@@ -167,8 +167,7 @@
             $.post(f.attr('action'), null, function (ret) {
                 $(f).html(ret).ready(function () {
                     $.UpdateForSection(f);
-                    if (ShowMemberExtras)
-                        ShowMemberExtras();
+                    ShowMemberExtras();
                 });
             });
     });
@@ -189,7 +188,8 @@
         $.showTable($("#user-tab form"));
     });
     $('#family table.grid > tbody > tr:even').addClass('alt');
-    $("#recreg-link").click(function () {
+    $("#recreg-link").click(function (ev) {
+        ev.preventDefault();
         var f = $('#recreg-tab form')
         if ($('table', f).size() > 0)
             return false;
@@ -197,6 +197,7 @@
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret);
         });
+        return false;
     });
 
     $("a.displayedit").live('click', function (ev) {
@@ -241,7 +242,7 @@
             return false;
         });
         return false;
-    }
+    };
     $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
@@ -271,6 +272,7 @@
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())
             return false;
+        return true;
     });
     $.validator.setDefaults({
         highlight: function (input) {

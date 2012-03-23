@@ -310,6 +310,9 @@ namespace CmsData.API
 					case "SpouseName":
 					case "FamilyId":
 						break;
+					case "HomePhone":
+						u.UpdateFamily(e);
+						break;
 					default:
 						u.UpdatePerson(e);
 						break;

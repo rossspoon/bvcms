@@ -56,9 +56,21 @@ namespace CmsWeb.Models
 						ContactDate = o.ContactDate,
 						ContactReason = o.ContactReason.Description,
 						TypeOfContact = o.ContactType.Description,
+						Ministry = o.Ministry.MinistryName,
+						Results = (o.GospelShared == true ? "GS " : "")
+								+ (o.NotAtHome == true ? "NA " : "")
+								+ (o.LeftDoorHanger == true ? "LN " : "")
+								+ (o.LeftMessage == true ? "LM " : "")
+								+ (o.ContactMade == true ? "CM " : "")
+								+ (o.PrayerRequest == true ? "PR " : "")
+								+ (o.GiftBagGiven == true ? "GB " : ""),
 						ContacteeList = string.Join(", ", (from c in DbUtil.Db.Contactees
 														   where c.ContactId == o.ContactId
+														   select c.person.Name).Take(3)),
+						ContactorList = string.Join(", ", (from c in DbUtil.Db.Contactors
+														   where c.ContactId == o.ContactId
 														   select c.person.Name).Take(3))
+
 					};
 			return q;
 		}
@@ -257,7 +269,10 @@ namespace CmsWeb.Models
 			public DateTime ContactDate { get; set; }
 			public string TypeOfContact { get; set; }
 			public string ContactReason { get; set; }
+			public string ContactorList { get; set; }
 			public string ContacteeList { get; set; }
+			public string Ministry { get; set; }
+			public string Results { get; set; }
 		}
 	}
 }

@@ -1,7 +1,17 @@
 ﻿$(function () {
     $('#pid').blur(function () {
         if ($(this).val() == '')
-            return;
+            return false;
+        if ($(this).val() == 'd') {
+            var tr = $('#bundle > tbody > tr:first');
+            var pid = $("a.pid", tr).text();
+            $('#name').val($("td.name", tr).text());
+            $('#checkno').val($("td.checkno", tr).text());
+            $('#notes').val($("td.notes", tr).text());
+            $('#amt').focus();
+            $(this).val($.trim(pid));
+            return true;
+        }
         var q = $('#pbform').serialize();
         $.post("/PostBundle/GetName/", q, function (ret) {
             if (ret == 'not found') {
@@ -115,18 +125,24 @@
     });
     $('a.split').live("click", function (ev) {
         ev.preventDefault();
+        var newamt = prompt("Amount to split out", "");
+        newamt = parseFloat(newamt);
+        if (isNaN(newamt))
+            return false;
         var tr = $(this).closest("tr");
+
         var q = {
             pid: $("a.pid", tr).text(),
             name: $("td.name", tr).text(),
             fund: $("td.fund", tr).attr('val'),
             pledge: $("td.fund", tr).attr('pledge'),
-            amt: $("td.amt", tr).attr("val"),
+            amt: newamt,
+            splitfrom: tr.attr("cid"),
             checkno: $("td.checkno", tr).text(),
             notes: $("td.notes", tr).text(),
             id: $("#id").val()
         };
-        $.PostRow({ scroll: true, split: tr.attr("cid"), q: q });
+        $.PostRow({ scroll: true, q: q });
     });
     $('a.delete').live("click", function (ev) {
         ev.preventDefault();
@@ -178,7 +194,7 @@
         }
     });
     $.PostRow = function (options) {
-        if (!options.split) {
+        if (!options.q) {
             var n = parseFloat($('#amt').val());
             if (!n > 0) {
                 $.growlUI("Contribution", "Cannot post, No Amount");
@@ -202,8 +218,9 @@
                 tr.replaceWith(ret.row);
                 tr = $('tr[cid="' + cid + '"]');
             }
-            else if (options.split) {
-                tr = $('tr[cid="' + options.split + '"]');
+            else if (options.q.splitfrom) {
+                tr = $('tr[cid="' + options.q.splitfrom + '"]');
+                $('#a' + options.q.splitfrom).text(ret.othersplitamt);
                 $(ret.row).insertAfter(tr);
                 tr = $('tr[cid="' + ret.cid + '"]');
             }

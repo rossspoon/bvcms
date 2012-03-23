@@ -461,7 +461,7 @@ namespace CmsData
 			if (user != null)
 			{
 				user.ResetPasswordCode = Guid.NewGuid();
-				user.ResetPasswordExpires = DateTime.Now.AddDays(1);
+				user.ResetPasswordExpires = DateTime.Now.AddHours(Setting("ResetPasswordExpiresHours", "24").ToInt());
 				var link = Util.URLCombine(CmsHost, "/Account/SetPassword/" + user.ResetPasswordCode.ToString());
 				SubmitChanges();
 				return @"<a href=""{0}"">Set password for {1}</a>".Fmt(link, user.Username);

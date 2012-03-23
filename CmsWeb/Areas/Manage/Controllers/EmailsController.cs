@@ -12,7 +12,7 @@ using System.Net.Mail;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-	public class EmailsController : CmsStaffController
+	public class EmailsController : CmsController
 	{
 		public ActionResult Index()
 		{
@@ -99,12 +99,13 @@ namespace CmsWeb.Areas.Manage.Controllers
 			UpdateModel(m.Pager);
 			return View(m);
 		}
-		public ActionResult Failed(int? id)
+		public ActionResult Failed(int? id, string email)
 		{
 			var isadmin = User.IsInRole("Admin");
 			var isdevel = User.IsInRole("Developer");
 			var q = from e in DbUtil.Db.EmailQueueToFails
 					where id == null || id == e.PeopleId
+					where email == null || email == e.Email
 					let et = DbUtil.Db.EmailQueueTos.SingleOrDefault(ef => ef.Id == e.Id && ef.PeopleId == e.PeopleId)
 					orderby e.Time descending
 					select new MailFail

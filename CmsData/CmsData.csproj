@@ -235,6 +235,7 @@
     <Compile Include="Generated\EmailQueueToFail.cs" />
     <Compile Include="Generated\Functions\ContributionCountTable.cs" />
     <Compile Include="Generated\MemberDocForm.cs" />
+    <Compile Include="Generated\OrganizationType.cs" />
     <Compile Include="Generated\RepairTransactionsRun.cs" />
     <Compile Include="Generated\UploadPeopleRun.cs" />
     <Compile Include="Generated\Views\PickListOrg.cs" />

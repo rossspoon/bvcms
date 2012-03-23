@@ -26,13 +26,15 @@ div.pager
 @{ bool memberedit = User.IsInRole("Admin") || User.IsInRole("Membership");}
 @if(memberedit)
 {
+    <script type="text/javascript"> function ShowMemberDocs() { $("#memberdocs").show(); } </script>
+}
     <script type="text/javascript">
         function ShowMemberExtras() {
+            if (window.ShowMemberDocs)
+                ShowMemberDocs();
             $.extraEditable('#memberextras');
-            $("#memberdocs").show();
-        } 
+        }
     </script>
-}
 }
 @{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
 @Html.Hidden("PeopleId", p.PeopleId)

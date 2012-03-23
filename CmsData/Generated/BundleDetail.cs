@@ -27,6 +27,8 @@ namespace CmsData
 		
 		private DateTime _CreatedDate;
 		
+		private int? _BundleSort1;
+		
    		
     	
 		private EntityRef< BundleHeader> _BundleHeader;
@@ -54,6 +56,9 @@ namespace CmsData
 		
 		partial void OnCreatedDateChanging(DateTime value);
 		partial void OnCreatedDateChanged();
+		
+		partial void OnBundleSort1Changing(int? value);
+		partial void OnBundleSort1Changed();
 		
     #endregion
 		public BundleDetail()
@@ -179,6 +184,28 @@ namespace CmsData
 					this._CreatedDate = value;
 					this.SendPropertyChanged("CreatedDate");
 					this.OnCreatedDateChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BundleSort1", UpdateCheck=UpdateCheck.Never, Storage="_BundleSort1", DbType="int")]
+		public int? BundleSort1
+		{
+			get { return this._BundleSort1; }
+
+			set
+			{
+				if (this._BundleSort1 != value)
+				{
+				
+                    this.OnBundleSort1Changing(value);
+					this.SendPropertyChanging();
+					this._BundleSort1 = value;
+					this.SendPropertyChanged("BundleSort1");
+					this.OnBundleSort1Changed();
 				}
 
 			}

@@ -457,10 +457,10 @@ namespace CmsWeb.Models
         {
             int listid = CurListId;
             var q = DbUtil.Db.Tasks.Where(t => t.Archive == false && (t.CoOwnerId == PeopleId ? t.CoListId.Value : t.ListId) == listid);
-            if (OwnerOnly.Value) // I see only my own tasks or tasks I have been delegated
-                q = q.Where(t => t.OwnerId == PeopleId || t.CoOwnerId == PeopleId);
+            if (OwnerOnly == true) // I see only my own tasks or tasks I have been delegated
+				q = q.Where(t => t.OwnerId == PeopleId || t.CoOwnerId == PeopleId || t.OrginatorId == PeopleId);
             else // I see my own tasks where I am owner or cowner plus other people's tasks where I share the list the task is in
-                q = q.Where(t => t.OwnerId == PeopleId || t.CoOwnerId == PeopleId
+                q = q.Where(t => t.OwnerId == PeopleId || t.CoOwnerId == PeopleId || t.OrginatorId == PeopleId
                     || t.TaskList.TaskListOwners.Any(tlo => tlo.PeopleId == PeopleId)
                     || t.CoTaskList.TaskListOwners.Any(tlo => tlo.PeopleId == PeopleId)
                     || t.CoTaskList.CreatedBy == PeopleId || t.TaskList.CreatedBy == PeopleId);
@@ -608,6 +608,7 @@ namespace CmsWeb.Models
             //    task.ListId = InBoxId(toid);
 
             //task.CoOwnerId = task.OwnerId;
+        	task.OrginatorId = task.OwnerId;
             task.Owner = toowner;
 
             DbUtil.Db.SubmitChanges();
