@@ -442,6 +442,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 					case "Statement Options":
 						p.ContributionOptionsId = m.NewValue.ToInt();
 						break;
+					case "Envelope Options":
+						p.EnvelopeOptionsId = m.NewValue.ToInt();
+						break;
 					case "Title":
 						p.TitleCode = m.NewValue;
 						break;

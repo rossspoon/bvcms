@@ -21,7 +21,7 @@ namespace CmsData
 
         public SagePayments(CMSDataContext Db, bool testing)
         {
-#if DEBUG
+#if DEBUG2
             testing = true;
 #endif
             this.Db = Db;
@@ -184,7 +184,7 @@ namespace CmsData
                     p.EmailAddress,
                     rg.SageCardGuid.ToString().Replace("-", ""),
                     PeopleId.ToString(),
-                    amt.ToString(), "", "",
+                    amt.ToString("n2"), "", "",
                     tranid.ToString(),
                     p.HomePhone,
                     "", "", "", "", "", "", "",

@@ -37,7 +37,10 @@ namespace CmsWeb.Models
 
         public IEnumerable<CouponInfo> Coupons()
         {
+        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
             var q = from c in DbUtil.Db.Coupons
+					let o = c.Organization
+					where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     where c.DivOrg == regidfilter || regidfilter == "0" || regidfilter == null
                     where c.UserId == useridfilter || useridfilter == 0
                     select c;
@@ -62,7 +65,6 @@ namespace CmsWeb.Models
                     q = q.Where(c => c.Created.Date == bd);
             }
 
-
             var q2 = from c in q
                      orderby c.Created descending
                      select new CouponInfo
@@ -84,7 +86,10 @@ namespace CmsWeb.Models
         }
         public IEnumerable<CouponInfo2> Coupons2()
         {
+        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
             var q = from c in DbUtil.Db.Coupons
+					let o = c.Organization
+					where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     where c.DivOrg == regidfilter || regidfilter == "0" || regidfilter == null
                     where c.UserId == useridfilter || useridfilter == 0
                     select c;
@@ -134,13 +139,18 @@ namespace CmsWeb.Models
             var orgregtypes = new int[] { 1, 2 };
             var divregtypes = new int[] { 3, 4 };
 
-            var q = (from o in DbUtil.Db.Organizations
+        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+        	var organizations = from o in DbUtil.Db.Organizations
+        	                where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+        	                select o;
+
+            var q = (from o in organizations
                      where orgregtypes.Contains(o.RegistrationTypeId.Value)
                      where o.ClassFilled != true
                      where (o.RegistrationClosed ?? false) == false
                      select new { DivisionName = o.Division.Name, o.OrganizationName, o.RegSetting, o.OrganizationId }).ToList();
 
-            var q2 = (from o in DbUtil.Db.Organizations
+            var q2 = (from o in organizations
                       where divregtypes.Contains(o.RegistrationTypeId.Value)
                       where o.ClassFilled != true
                       where (o.RegistrationClosed ?? false) == false

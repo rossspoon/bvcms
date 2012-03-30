@@ -80,7 +80,9 @@ namespace CmsData
                     where divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid)
                     where progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))
                     select m;
-            return q.Sum(mm => mm.NumPresent);
+			if (!q.Any())
+				return 0;
+			return q.Sum(mm => mm.NumPresent);
         }
 
         public int RegistrationCount(int days, int progid, int divid, int orgid)

@@ -27,10 +27,10 @@ namespace CmsWeb.Areas.Finance.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GetName(PostBundleModel m)
+        public ActionResult GetNamePid(PostBundleModel m)
         {
-            var s = m.GetNameFromPid();
-            return Content(s);
+            var o = m.GetNamePidFromId();
+            return Json(o);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PostRow(PostBundleModel m)

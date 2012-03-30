@@ -444,7 +444,7 @@ namespace CmsCheckin
 					var loc = i.location;
 					if (!loc.HasValue())
 						loc = "n/a";
-					if (i.org.StartsWith(loc))
+					if (i.org.StartsWith(loc) && i.org.Length > loc.Length + 2)
 						i.org = i.org.Substring(loc.Length + 2);
 					if (loc.Length > 5)
 						loc = loc.Substring(0, 5);

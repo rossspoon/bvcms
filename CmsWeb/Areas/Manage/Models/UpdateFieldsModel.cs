@@ -40,6 +40,7 @@ namespace CmsWeb.Models
                 "Baptism Status",
                 "Baptism Type",
                 "Statement Options",
+                "Envelope Options",
                 "Title",
                 "Occupation",
                 "School",
@@ -74,6 +75,7 @@ namespace CmsWeb.Models
                 new TitleItems { title = "Gender Codes", items = Model.GenderCodes() },
                 new TitleItems { title = "Family Position Codes", items = Model.FamilyPositionCodes() },
                 new TitleItems { title = "Contribution Statement Options", items = Model.EnvelopeOptions() },
+                new TitleItems { title = "Envelope Options", items = Model.EnvelopeOptions() },
             };
         }
     }

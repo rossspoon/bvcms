@@ -11,6 +11,7 @@ using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsWeb.Code;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using System.Web.UI.WebControls;
@@ -221,7 +222,10 @@ namespace CmsWeb.Models
                 case FieldType.Code:
                 case FieldType.CodeStr:
                     CodeVisible = true;
-                    CodeData = ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
+					if (fieldMap.DataSource == "ExtraValues")
+						CodeData = StandardExtraValues.ExtraValueCodes();
+					else
+						CodeData = ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
                     break;
                 case FieldType.Date:
                     DateVisible = true;

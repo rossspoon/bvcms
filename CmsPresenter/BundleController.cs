@@ -66,7 +66,8 @@ namespace CMSPresenter
         public string Status { get; set; }
         public int? StatusId { get; set; }
         public bool Pledge { get; set; }
-        public string Description { get; set; }
+    	public string Checkno { get; set; }
+    	public string Description { get; set; }
         public bool NotIncluded
         {
             get
@@ -284,7 +285,8 @@ namespace CMSPresenter
                         StatusId = d.Contribution.ContributionStatusId.Value,
                         Status = d.Contribution.ContributionStatus.Description,
                         Name = d.Contribution.Person.Name2,
-                        Description = d.Contribution.ContributionDesc
+                        Description = d.Contribution.ContributionDesc,
+						Checkno = d.Contribution.CheckNo,
                     };
             return q;
         }

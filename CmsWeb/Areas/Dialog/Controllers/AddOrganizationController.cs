@@ -23,13 +23,10 @@ namespace CmsWeb.Areas.Dialog.Controllers
     {
         public ActionResult Index()
         {
-			var id = Util2.CurrentOrgId;
-			if (!id.HasValue)
-				id = 1;
-			var m = new NewOrganizationModel(id.Value);
+			var m = new NewOrganizationModel(Util2.CurrentOrgId);
 			m.org.OrganizationName = "";
 			m.org.Location = "";
-            return View(m);
+        	return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Submit(int id, NewOrganizationModel m)

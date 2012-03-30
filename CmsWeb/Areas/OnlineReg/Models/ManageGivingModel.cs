@@ -77,7 +77,7 @@ namespace CmsWeb.Models
         public ManageGivingModel()
         {
             testing = ConfigurationManager.AppSettings["testing"].ToBool();
-#if DEBUG
+#if DEBUG2
             testing = true;
 #endif
         }
@@ -92,9 +92,10 @@ namespace CmsWeb.Models
                 SemiEvery = rg.SemiEvery;
                 Type = rg.Type;
                 StartWhen = rg.StartWhen;
-                StopWhen = rg.StopWhen;
+				StopWhen = null;//rg.StopWhen;
                 Day1 = rg.Day1;
                 Day2 = rg.Day2;
+				EveryN = rg.EveryN;
                 Period = rg.Period;
                 foreach (var ra in person.RecurringAmounts.AsEnumerable())
                     FundItem.Add(ra.FundId, ra.Amt);
@@ -150,10 +151,8 @@ namespace CmsWeb.Models
                 ModelState.AddModelError("StartWhen", "StartDate must have a value");
             else if (StartWhen < DateTime.Today)
                 ModelState.AddModelError("StartWhen", "StartDate must occur after today");
-            else if (!StopWhen.HasValue)
-                ModelState.AddModelError("StopWhen", "StopDate must have a value");
-            else if (StopWhen <= StartWhen)
-                ModelState.AddModelError("StopWhen", "StopDate must occur after StartDate");
+            else if (StopWhen.HasValue && StopWhen <= StartWhen)
+					ModelState.AddModelError("StopWhen", "StopDate must occur after StartDate");
         }
         private bool checkABA(string s)
         {

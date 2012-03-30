@@ -39,24 +39,25 @@
                         <div id="userarea">
                             <div id="welcome" class="dropdown left">
                                 <div>
-                                    <a href="#" title="@Util.UserName">Welcome, @Util.UserPreferredName!
+                                    <a href="#">Welcome, @Util.UserPreferredName!
                                         <img src="/Content/Welcome.png" width="11" height="16"></a></div>
                                 <div class="sublinks">
-                                    <a href="/Account/LogOff/" title="@Util.UserName">Logout</a>
+                                    <a href="/Account/LogOff/">Logout as @Util.UserName</a>
                                     <a href="/Account/ChangePassword">Change Password</a>
+                                    <a id="cleartag" href="#">Clear Active Tag</a>
+                                    <a href="/Tags">Manage Active Tag</a>
 @if (admin)
 {
                                         <a href="/Admin/Users.aspx">Manage Users</a>
                                         <a href="/Admin/Activity.aspx">Activity Log</a>
 }
                                 </div>
+                                <strong>Active Tag:</strong> <span id="activetag">@Util2.CurrentTagName</span><br />
                             </div>
 @if (User.IsInRole("Access"))
 {
-                                <strong>Active Tag:</strong> <a id="activetag" href="/Tags">
-                                    @Util2.CurrentTagName</a><br />
                                 <form method="post">
-                                <input id="SearchText" type="text" title='Partial names: "last" or "first last" or "first<sp>"' />
+                                    <input id="SearchText" type="text" title='Partial names: "last" or "first last" or "first<sp>"' />
                                 </form>
 }
                         </div>
@@ -161,7 +162,6 @@
                                     <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">Totals by Fund Age Range</a>
                                     <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">Totals by Fund Age Range (pledges included)</a>
                                     <a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">Totals by Fund Range</a>
-                                    <a href="/Contributions/Reports/TotalsByFund2.aspx?pledged=true" target="_blank">Pledge Totals by Fund</a>
                                     <a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">Pledge Totals by Fund Range</a>
                                     <a href="/Contributions/Reports/PledgeReport.aspx" target="_blank">Pledge Report</a>
                                 </div>

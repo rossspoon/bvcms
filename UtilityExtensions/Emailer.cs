@@ -36,6 +36,7 @@ namespace UtilityExtensions
 			msg.Headers.Add("X-SMTPAPI", 
 				"{{\"unique_args\":{{\"host\":\"{0}\",\"mailid\":\"{1}\",\"pid\":\"{2}\"}}}}"
 				.Fmt(CmsHost, id, pid));
+			msg.Headers.Add("X-BVCMS", "host:{0}, mailid:{1}, pid:{2}".Fmt(CmsHost, id, pid));
 
             foreach (var ma in to)
             {

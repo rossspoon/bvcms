@@ -1,10 +1,11 @@
 ﻿$(function () {
     $('#pid').blur(function () {
+        var tr, pid;
         if ($(this).val() == '')
             return false;
         if ($(this).val() == 'd') {
-            var tr = $('#bundle > tbody > tr:first');
-            var pid = $("a.pid", tr).text();
+            tr = $('#bundle > tbody > tr:first');
+            pid = $("a.pid", tr).text();
             $('#name').val($("td.name", tr).text());
             $('#checkno').val($("td.checkno", tr).text());
             $('#notes').val($("td.notes", tr).text());
@@ -12,15 +13,17 @@
             $(this).val($.trim(pid));
             return true;
         }
+
         var q = $('#pbform').serialize();
-        $.post("/PostBundle/GetName/", q, function (ret) {
-            if (ret == 'not found') {
+        $.post("/PostBundle/GetNamePid/", q, function (ret) {
+            if (ret.error == 'not found') {
                 $.growlUI("PeopleId", "Not Found");
                 $('#name').focus();
                 $('#pid').val('');
             }
             else {
-                $('#name').val(ret);
+                $('#name').val(ret.name);
+                $('#pid').val(ret.PeopleId);
                 $('#amt').focus();
             }
         });
@@ -250,8 +253,8 @@
         title: 'Search/Add Contributor',
         bgiframe: true,
         autoOpen: false,
-        width: 712,
-        height: 630,
+        width: 750,
+        height: 700,
         modal: true,
         overlay: {
             opacity: 0.5,

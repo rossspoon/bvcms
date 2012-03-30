@@ -192,6 +192,10 @@ namespace CmsData
                     return Expressions.HasRelatedFamily(parm,
                                CompType,
                                c.CodeIds == "1");
+                case QueryType.HasParents:
+                    return Expressions.HasParents(parm,
+                               CompType,
+                               c.CodeIds == "1");
                 case QueryType.HasVolunteered:
                     return Expressions.HasVolunteered(parm,
                                c.Quarters,

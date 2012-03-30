@@ -312,8 +312,8 @@
         $(function () {
             $('#contactDialog').dialog({
                 autoOpen: false,
-                width: 712,
-                height: 630,
+                width: 750,
+                height: 700,
                 modal: true,
                 overlay: {
                     opacity: 0.5,

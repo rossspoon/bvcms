@@ -23,15 +23,15 @@ namespace CmsWeb.Code
 		public class Field
 		{
 			[XmlAttribute]
-			public string name {get; set;}
+			public string name { get; set; }
 			[XmlAttribute]
-			public string type {get; set;}
+			public string type { get; set; }
 			[XmlAttribute]
-			public string location {get; set;}
+			public string location { get; set; }
 			[XmlAttribute]
 			public string VisibilityRoles { get; set; }
 			public List<string> Codes { get; set; }
-            internal int order;
+			internal int order;
 			public int peopleid;
 			public bool nonstandard;
 			internal PeopleExtra extravalue;
@@ -39,9 +39,9 @@ namespace CmsWeb.Code
 			{
 				if (f == null)
 				{
-					f = new Field 
-					{ 
-						name = v.Field, 
+					f = new Field
+					{
+						name = v.Field,
 						nonstandard = true,
 						peopleid = v.PeopleId,
 						extravalue = v,
@@ -57,7 +57,7 @@ namespace CmsWeb.Code
 			}
 			public bool UserCanView()
 			{
-				if(!VisibilityRoles.HasValue())
+				if (!VisibilityRoles.HasValue())
 					return true;
 				var a = VisibilityRoles.SplitStr(",");
 				var user = HttpContext.Current.User;
@@ -71,8 +71,8 @@ namespace CmsWeb.Code
 				var user = HttpContext.Current.User;
 				return user.IsInRole("Edit");
 			}
-			public override string  ToString()
-        	{
+			public override string ToString()
+			{
 				if (extravalue == null)
 					return "Click to edit";
 				switch (type)
@@ -90,7 +90,7 @@ namespace CmsWeb.Code
 							return extravalue.IntValue.ToString();
 				}
 				return null;
-        	}
+			}
 		}
 		public static IEnumerable<Field> GetExtraValues()
 		{
@@ -118,7 +118,7 @@ namespace CmsWeb.Code
 			var qfields = from f in fields
 						  join v in exvalues on f.name equals v.Field into j
 						  from v in j.DefaultIfEmpty()
-						  where f.location == location
+						  where f.location == location || location == null
 						  orderby f.order
 						  select Field.AddField(f, v);
 			if (location == "default")
@@ -132,6 +132,26 @@ namespace CmsWeb.Code
 				return qfields.Concat(qvalues);
 			}
 			return qfields;
+		}
+		public static List<SelectListItem> ExtraValueCodes()
+		{
+			var q = from e in DbUtil.Db.PeopleExtras
+					where e.StrValue != null
+			        group e by new {e.Field, e.StrValue}
+			        into g
+			        select g.Key;
+			var list = q.ToList();
+
+			var ev = GetExtraValues();
+			var q2 = from e in list
+					 let f = ev.SingleOrDefault(ff => ff.name == e.Field)
+					 where f == null || f.UserCanView()
+					 orderby e.Field, e.StrValue
+					 select new SelectListItem()
+							{
+								Text = e.Field + ":" + e.StrValue
+							};
+			return q2.ToList();
 		}
 	}
 }

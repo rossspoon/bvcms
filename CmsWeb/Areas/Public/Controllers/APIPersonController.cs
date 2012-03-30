@@ -168,6 +168,15 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(new APIFunctions(DbUtil.Db).AccessUsersXml(), "text/xml");
         }
         [HttpGet]
+        public ActionResult AllUsers()
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content("<AccessUsers error=\"{0}\" />".Fmt(ret.Substring(1)));
+			DbUtil.LogActivity("APIPerson AccessUsers");
+            return Content(new APIFunctions(DbUtil.Db).AccessUsersXml(includeNoAccess:true), "text/xml");
+        }
+        [HttpGet]
         public ActionResult GetPeople(int? peopleid, int? famid, string first, string last)
         {
             var ret = AuthenticateDeveloper();

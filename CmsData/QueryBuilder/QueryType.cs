@@ -67,6 +67,7 @@ namespace CmsData
         HasPeopleExtraField,
 		HasContacts,
         HasRelatedFamily,
+        HasParents,
         HasTaskWithName,
         HasVolunteered,
         HaveVolunteerApplications,

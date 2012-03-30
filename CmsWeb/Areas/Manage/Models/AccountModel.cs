@@ -231,8 +231,12 @@ namespace CmsWeb.Models
 		}
 		private static void NotifyAdmins(string subject, string message)
 		{
-			DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
-				CMSRoleProvider.provider.GetAdmins(), subject, message);
+			IEnumerable<Person> notify = null;
+			if(Roles.GetAllRoles().Contains("NotifyLogin")) 
+				notify = CMSRoleProvider.provider.GetRoleUsers("NotifyLogin").Select(u => u.Person).Distinct();
+			else
+				notify = CMSRoleProvider.provider.GetRoleUsers("Admin").Select(u => u.Person).Distinct();
+			DbUtil.Db.EmailRedacted(DbUtil.AdminMail, notify, subject, message);
 		}
 		public static void SetUserInfo(string username, System.Web.SessionState.HttpSessionState Session)
 		{

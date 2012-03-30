@@ -53,7 +53,7 @@ $(function () {
         bgiframe: true,
         autoOpen: false,
         width: 750,
-        height: 650,
+        height: 700,
         modal: true,
         overlay: {
             opacity: 0.5,
@@ -399,8 +399,8 @@ $(function () {
         title: 'Select Users Dialog',
         bgiframe: true,
         autoOpen: false,
-        width: 690,
-        height: 650,
+        width: 750,
+        height: 700,
         modal: true,
         overlay: {
             opacity: 0.5,

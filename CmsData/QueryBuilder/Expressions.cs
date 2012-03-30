@@ -1509,6 +1509,18 @@ namespace CmsData
 				expr2 = Expression.Not(expr2);
 			return Expression.And(expr1, expr2);
 		}
+		internal static Expression HasParents(
+			ParameterExpression parm,
+			CompareType op,
+			bool tf)
+		{
+			Expression<Func<Person, bool>> pred = p =>
+				p.Family.People.Any(m => m.PositionInFamilyId == 10 && p.PositionInFamilyId == 30);
+			Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+			if (!(op == CompareType.Equal && tf))
+				expr = Expression.Not(expr);
+			return expr;
+		}
 		internal static Expression FamilyHasChildren(
 			ParameterExpression parm,
 			CompareType op,
@@ -1908,7 +1920,7 @@ namespace CmsData
 			CompareType op,
 			bool tf)
 		{
-			var a = QueryIdDesc.Split(':');
+			var a = QueryIdDesc.SplitStr(":", 2);
 			var qid = a[0].ToInt();
 			var savedquery = Db.QueryBuilderClauses.SingleOrDefault(q =>
 				q.QueryId == qid);
@@ -1923,7 +1935,7 @@ namespace CmsData
 			CompareType op,
 			int[] ids)
 		{
-			var a = QueryIdDesc.Split(':');
+			var a = QueryIdDesc.SplitStr(":", 2);
 			var savedquery = Db.QueryBuilderClauses.SingleOrDefault(q =>
 				q.SavedBy == a[0] && q.Description == a[1]);
 			var pred = savedquery.Predicate(Db);

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CmsWeb.Areas.Main.Models.Report;
 using CmsData;
 using System.IO;
+using CmsWeb.Code;
 using UtilityExtensions;
 using CmsWeb.Models;
 using System.Text;
@@ -261,6 +262,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult ExtraValues()
         {
+        	var ev = StandardExtraValues.GetExtraValues();
             var q = from e in DbUtil.Db.PeopleExtras
                     where e.StrValue != null
                     group e by new { e.Field, e.StrValue } into g
@@ -270,7 +272,12 @@ namespace CmsWeb.Areas.Main.Controllers
                         Value = g.Key.StrValue,
                         Count = g.Count(),
                     };
-            return View(q);
+
+        	var list = from e in q.ToList()
+        	           let f = ev.SingleOrDefault(ff => ff.name == e.Field)
+					   where f == null || f.UserCanView()
+        	           select e;
+            return View(list);
         }
         public ActionResult ExtraValueQuery(string field, string val)
         {

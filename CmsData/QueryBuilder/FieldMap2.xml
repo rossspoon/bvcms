@@ -69,6 +69,9 @@
     <Field Name="NumberOfFamilyMembers" Title="Number of Family Members" Type="Integer">
       Number of Family Members
     </Field>
+    <Field Name="HasParents" Title="Has Parents" Type="Bit" DataValueField="IdCode">
+      A member of the family is a Primary Adult and this person is a Child
+    </Field>
     <Field Name="FamilyHasChildren" Title="Family Has Children" Type="Bit" DataValueField="IdCode">
       A member of the family is 12 or under
     </Field>

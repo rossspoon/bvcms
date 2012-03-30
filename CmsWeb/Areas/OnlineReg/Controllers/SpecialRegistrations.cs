@@ -27,7 +27,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
                 if (ot == null)
                     return Content("invalid link");
-#if DEBUG
+#if DEBUG2
 #else
                 if (ot.Used)
                     return Content("link used");
@@ -139,7 +139,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
                 if (ot == null)
                     return Content("invalid link");
-#if DEBUG
+#if DEBUG2
 #else
                 if (ot.Used)
                     return Content("link used");
@@ -245,7 +245,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult ConfirmRecurringGiving()
         {
             var m = TempData["managegiving"] as ManageGivingModel;
-#if DEBUG
+#if DEBUG2
 			m.testing = true;
 #else
 #endif

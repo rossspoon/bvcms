@@ -83,14 +83,14 @@ div.section div, div.section table
             </div>
             <div class="section">
                 <label>Make first payment on or after</label>
-                <div> On @Html.DatePicker("StartWhen")</div>
+                <div>@Html.DatePicker("StartWhen")</div>
                 <div>@Html.ValidationMessage("StartWhen")</div>
             </div>
-            <div class="section">
-                <label>Stop payments after</label>
-                <div>On @Html.DatePicker("StopWhen")</div>
-                <div>@Html.ValidationMessage("StopWhen")</div>
-            </div>
+@*            <div class="section">*@
+@*                <label>Stop payments after</label>*@
+@*                <div>On @Html.DatePicker("StopWhen")</div>*@
+@*                <div>@Html.ValidationMessage("StopWhen")</div>*@
+@*            </div>*@
             <div class="section">
                 <label>Payment Information</label>
                 <div>

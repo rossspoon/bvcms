@@ -141,9 +141,9 @@
             <table runat="server">
                 <tr runat="server">
                     <td runat="server">
-                        <table id="itemPlaceholderContainer" runat="server" border="0" class="grid">
+                        <table id="itemPlaceholderContainer" runat="server" border="0" class="grid" cellspacing="4">
                         <thead>
-                            <tr runat="server" style="">
+                            <tr runat="server">
                                 <th runat="server">
                                     Fund
                                 </th>
@@ -164,6 +164,9 @@
                                 </th>
                                 <th runat="server">
                                     Pledge
+                                </th>
+                                <th runat="server">
+                                    Ck #
                                 </th>
                                 <th runat="server">
                                     Notes
@@ -205,6 +208,9 @@
                 <td>
                     <asp:CheckBox ID="PledgeCheckBox" runat="server" Checked='<%# Eval("Pledge") %>'
                         Enabled="false" />
+                </td>
+                <td>
+                    <asp:Label ID="CheckNoLabel" runat="server" Text='<%# Eval("Checkno") %>' />
                 </td>
                 <td>
                     <asp:Label ID="NotesLabel" runat="server" Text='<%# Eval("Description") %>' />

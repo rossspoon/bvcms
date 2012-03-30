@@ -17,10 +17,12 @@ namespace CmsWeb.Models
         public int? OrganizationId { get; set; }
 		public bool copysettings { get; set; }
 		public bool copyregistration { get; set; }
-        public NewOrganizationModel(int id)
+        public NewOrganizationModel(int? id)
         {
-            OrganizationId = id;
 			org = DbUtil.Db.LoadOrganizationById(id);
+			if (org == null)
+				org = DbUtil.Db.Organizations.First();
+			OrganizationId = org.OrganizationId;
         }
         public NewOrganizationModel()
         {

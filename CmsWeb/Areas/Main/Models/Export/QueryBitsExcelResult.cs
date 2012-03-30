@@ -67,6 +67,15 @@ namespace CmsWeb.Models
 					F18 = p.Tags.Any(tt => tt.Tag.Name == "F18" && tt.Tag.TypeId == 100) ? "X" : "",
 					F19 = p.Tags.Any(tt => tt.Tag.Name == "F19" && tt.Tag.TypeId == 100) ? "X" : "",
 					F20 = p.Tags.Any(tt => tt.Tag.Name == "F20" && tt.Tag.TypeId == 100) ? "X" : "",
+					F21 = p.Tags.Any(tt => tt.Tag.Name == "F21" && tt.Tag.TypeId == 100) ? "X" : "",
+					F22 = p.Tags.Any(tt => tt.Tag.Name == "F22" && tt.Tag.TypeId == 100) ? "X" : "",
+					F23 = p.Tags.Any(tt => tt.Tag.Name == "F23" && tt.Tag.TypeId == 100) ? "X" : "",
+					F24 = p.Tags.Any(tt => tt.Tag.Name == "F24" && tt.Tag.TypeId == 100) ? "X" : "",
+					F25 = p.Tags.Any(tt => tt.Tag.Name == "F25" && tt.Tag.TypeId == 100) ? "X" : "",
+					F26 = p.Tags.Any(tt => tt.Tag.Name == "F26" && tt.Tag.TypeId == 100) ? "X" : "",
+					F27 = p.Tags.Any(tt => tt.Tag.Name == "F27" && tt.Tag.TypeId == 100) ? "X" : "",
+					F28 = p.Tags.Any(tt => tt.Tag.Name == "F28" && tt.Tag.TypeId == 100) ? "X" : "",
+					F29 = p.Tags.Any(tt => tt.Tag.Name == "F29" && tt.Tag.TypeId == 100) ? "X" : "",
 				};
             var q3 = q2.Select("new(p.PeopleId,p.PreferredName,p.LastName,Age,MaritalStatus,FirstAttend,{0})".Fmt(s));
             var dg = new DataGrid();

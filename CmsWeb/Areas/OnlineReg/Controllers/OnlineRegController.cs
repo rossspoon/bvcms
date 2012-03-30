@@ -53,7 +53,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			SetHeaders(m);
 
-#if DEBUG
+#if DEBUG2
 
 			m.testing = true;
 			m.username = "David";
@@ -112,6 +112,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				{
 					TempData["ms"] = m.UserPeopleId;
 					return Redirect("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.masterorgid));
+				}
+				if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.ManageGiving)
+				{
+					TempData["mg"] = m.UserPeopleId;
+					return Redirect("/OnlineReg/ManageGiving/{0}".Fmt(m.orgid));
 				}
 				if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
 				{

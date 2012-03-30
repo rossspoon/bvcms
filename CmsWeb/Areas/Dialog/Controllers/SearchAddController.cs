@@ -57,7 +57,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
         {
             if (m.List.Count > 0)
                 return View("List", m);
-            return Complete(0, m);
+            return Complete("0", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SearchFamilyCancel(SearchModel m)
@@ -175,30 +175,33 @@ namespace CmsWeb.Areas.Dialog.Controllers
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Complete(int? id, SearchModel m)
+        public ActionResult Complete(string id, SearchModel m)
         {
+			var iid = id.ToInt();
             switch (m.type)
             {
                 case "addpeople":
                     return AddPeople(m);
+                case "addtotag":
+                    return AddPeopleToTag(id, m);
                 case "family":
-                    return AddFamilyMembers(id.Value, m, false);
+                    return AddFamilyMembers(iid, m, false);
                 case "relatedfamily":
-                    return AddRelatedFamilys(id.Value, m, false);
+                    return AddRelatedFamilys(iid, m, false);
                 case "org":
-                    return AddOrgMembers(id.Value, m, false);
+                    return AddOrgMembers(iid, m, false);
                 case "pending":
-                    return AddOrgMembers(id.Value, m, true);
+                    return AddOrgMembers(iid, m, true);
                 case "visitor":
-                    return AddVisitors(id.Value, m);
+                    return AddVisitors(iid, m);
                 case "registered":
-                    return AddRegistered(id.Value, m);
+                    return AddRegistered(iid, m);
                 case "contactee":
-                    return AddContactees(id.Value, m);
+                    return AddContactees(iid, m);
                 case "contactor":
-                    return AddContactors(id.Value, m);
+                    return AddContactors(iid, m);
                 case "contributor":
-                    return AddContributor(id.Value, m);
+                    return AddContributor(iid, m);
                 case "taskdelegate":
                     if (m.List.Count > 0)
                         return Json(new { close = true, how = "addselected", url="/Task/Delegate/", pid = m.List[0].PeopleId });
@@ -382,7 +385,20 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 return Json(new { close = true, how = "addselected", cid = id, pid = p.PeopleId, name = p.person.Name2 });
             }
             return Json(new { close = true, how = "addselected" });
+        }        private JsonResult AddPeopleToTag(string id, SearchModel m)
+        {
+            if (id.HasValue())
+            {
+                foreach (var p in m.List)
+                {
+					AddPerson(p, m.List, 0, null);
+					Person.Tag(DbUtil.Db, p.person.PeopleId, id, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+                }
+                DbUtil.Db.SubmitChanges();
+            }
+			return Json(new { close = true, how = "addselected" });
         }
+
         private JsonResult AddVisitors(int id, SearchModel m)
         {
             var sb = new StringBuilder();

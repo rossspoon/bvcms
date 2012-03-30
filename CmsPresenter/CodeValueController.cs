@@ -781,17 +781,6 @@ namespace CMSPresenter
 					   Value = g.Key,
 				   };
 		}
-		public IEnumerable<CodeValueItem> ExtraValues()
-		{
-			return from e in DbUtil.Db.PeopleExtras
-				   let v = e.Field + ":" + e.StrValue
-				   group e by v into g
-				   orderby g.Key
-				   select new CodeValueItem
-				   {
-					   Value = g.Key,
-				   };
-		}
 
 		public IEnumerable<CodeValueItem> VolunteerCodes()
 		{

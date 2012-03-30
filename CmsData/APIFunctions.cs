@@ -124,7 +124,7 @@ class LoginInfo(object):
             var q1 = (from f in Db.QueryBitsFlags()
                       select f).ToList();
             var q2 = (from t in Db.TagPeople
-                      where t.PeopleId == 828612
+                      where t.PeopleId == PeopleId
                       where t.Tag.TagType.Id == 100
                       select t.Tag.Name).ToList();
             var q = from t in q2
@@ -287,11 +287,12 @@ class LoginInfo(object):
             public string username { get; set; }
             public string lastactive { get; set; }
             public string roles { get; set; }
+			public List<string> QueryBits { get; set; }
         }
-        public IEnumerable<AccessUserInfo> AccessUsersData()
+        public IEnumerable<AccessUserInfo> AccessUsersData(bool includeNoAccess = false)
         {
             var q = from u in Db.Users
-                    where u.UserRoles.Any(rr => rr.Role.RoleName == "Access")
+                    where includeNoAccess || u.UserRoles.Any(rr => rr.Role.RoleName == "Access")
                     where u.EmailAddress.Length > 0
                     select new
                     {
@@ -341,14 +342,15 @@ class LoginInfo(object):
                          username = i1.username,
                          lastactive = i1.lastactive.ToString2("s"),
                          roles = string.Join(",", i1.roles),
+						 QueryBits = (from qb in QueryBits(i1.PeopleId.Value) select qb).ToList()
                      };
             return q2;
         }
-        public string AccessUsersXml()
+        public string AccessUsersXml(bool includeNoAccess = false)
         {
             var xs = new XmlSerializer(typeof(AccessUsers));
             var sw = new StringWriter();
-            var a = new AccessUsers { People = AccessUsersData().ToArray() };
+            var a = new AccessUsers { People = AccessUsersData(includeNoAccess).ToArray() };
             xs.Serialize(sw, a);
             return sw.ToString();
         }

@@ -97,6 +97,13 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content("?");
         }
         [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult ClearTag()
+        {
+			var tag = DbUtil.Db.TagCurrent();
+			DbUtil.Db.ExecuteCommand("delete dbo.TagPerson where Id = {0}", tag.Id);
+			return Content("ok");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddContact(int id)
         {
             var cid = CmsData.Contact.AddContact(id);

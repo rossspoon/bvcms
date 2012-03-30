@@ -38,8 +38,8 @@
         title: 'Add Visitors Dialog',
         bgiframe: true,
         autoOpen: false,
-        width: 700,
-        height: 600,
+        width: 750,
+        height: 700,
         modal: true,
         overlay: {
             opacity: 0.5,

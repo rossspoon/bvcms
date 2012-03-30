@@ -967,7 +967,17 @@ namespace CmsData
             if (!value.HasValue())
                 return;
             var ev = GetExtraValue(field);
-            ev.Data = value;
+			ev.Data = value;
+        }
+        public void AddToExtraData(string field, string value)
+        {
+            if (!value.HasValue())
+                return;
+            var ev = GetExtraValue(field);
+			if (ev.Data.HasValue())
+				ev.Data = value + "\n" + ev.Data;
+			else
+				ev.Data = value;
         }
         public void AddEditExtraInt(string field, int value)
         {

@@ -384,6 +384,15 @@ Script:
 	xml = webclient.DownloadString('APIPerson/AccessUsers/')
 	return xml
 ------------
+Test: AllUsers
+Description:
+    <ul>
+    <li>Returns a list of all users</li>
+    </ul>
+Script:
+	xml = webclient.DownloadString('APIPerson/AllUsers/')
+	return xml
+------------
 Test: ChangePassword
 Description:
 Arg: username
