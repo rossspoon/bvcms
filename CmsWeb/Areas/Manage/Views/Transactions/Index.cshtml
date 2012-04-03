@@ -34,6 +34,24 @@
                 f.attr("action", "/Manage/Transactions/List");
                 return false;
             });
+            $("a.voidcredit").live("click", function (ev) {
+                ev.preventDefault();
+                var a = $(this);
+                if (a.hasClass("noadmin")) {
+                    alert("must be admin");
+                    return false;
+                }
+                var f = $(this).closest('form');
+                var q = f.serialize();
+                if (confirm("are you sure?")) {
+                    $.post(a.attr("href"), q, function (ret) {
+                        $(f).html(ret);
+                        $('table.grid > tbody > tr:even').addClass('alt');
+                        $(".bt").button();
+                        $(".datepicker").datepicker();
+                    });
+                }
+            });
             $('table.grid > tbody > tr:even').addClass('alt');
             $(".bt").button();
         });

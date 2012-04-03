@@ -24,6 +24,7 @@ namespace CmsData
 			ExtraFee,
 			MaximumFee,
 			AllowOnlyOne,
+			AllowReRegister,
 			OrgMemberFees,
 			AskTickets,
 			AskRequest,
@@ -125,6 +126,7 @@ namespace CmsData
 		public decimal? ExtraFee { get; set; }
 		public decimal? MaximumFee { get; set; }
 		public bool AllowOnlyOne { get; set; }
+		public bool AllowReRegister { get; set; }
 		public bool AskTickets { get; set; }
 		public string NumItemsLabel { get; set; }
 		public bool AskRequest { get; set; }
@@ -336,6 +338,8 @@ namespace CmsData
 			public string SmallGroup { get; set; }
 			public decimal? Fee { get; set; }
 			public int? Limit { get; set; }
+			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:M/d/yy h:mm tt}")]
+			public DateTime? MeetingTime { get; set; }
 		}
 		public class TimeSlot
 		{
@@ -708,6 +712,9 @@ namespace CmsData
 				case RegKeywords.AllowOnlyOne:
 					AllowOnlyOne = GetBool();
 					break;
+				case RegKeywords.AllowReRegister:
+					AllowReRegister = GetBool();
+					break;
 				case RegKeywords.OrgMemberFees:
 					ParseOrgMemberFees();
 					break;
@@ -760,6 +767,16 @@ namespace CmsData
 			DateTime i;
 			if (!DateTime.TryParse(curr.value, out i))
 				throw GetException("expected time value");
+			lineno++;
+			return i;
+		}
+		private DateTime GetDateTime()
+		{
+			if (!curr.value.HasValue())
+				throw GetException("expected datetime value");
+			DateTime i;
+			if (!DateTime.TryParse(curr.value, out i))
+				throw GetException("expected datetime value");
 			lineno++;
 			return i;
 		}
@@ -966,6 +983,9 @@ namespace CmsData
 							break;
 						case RegKeywords.Limit:
 							menuitem.Limit = GetNullInt();
+							break;
+						case RegKeywords.Time:
+							menuitem.MeetingTime = GetDateTime();
 							break;
 						default:
 							throw GetException("unexpected line in " + section);
@@ -1198,6 +1218,7 @@ namespace CmsData
 			AddShirtSizes(sb);
 			AddValueCk(0, sb, "Shell", Shell);
 			AddValueCk(0, sb, "AllowOnlyOne", AllowOnlyOne);
+			AddValueCk(0, sb, "AllowReRegister", AllowReRegister);
 			AddValueCk(0, sb, "MemberOnly", MemberOnly);
 			AddValueCk(0, sb, "AskParents", AskParents);
 			AddValueCk(0, sb, "AskDoctor", AskDoctor);
@@ -1356,18 +1377,23 @@ namespace CmsData
 			}
 			sb.AppendLine();
 		}
-		private void AddDropdown1(StringBuilder sb)
+		private void AddMenuItemsList(StringBuilder sb, IEnumerable<MenuItem> list)
 		{
-			if (Dropdown1.Count == 0)
-				return;
-			AddValueNoCk(0, sb, "Dropdown1", Dropdown1Label);
-			foreach (var s in Dropdown1)
+			foreach (var s in list)
 			{
 				AddValueCk(1, sb, s.Description);
 				AddValueCk(2, sb, "SmallGroup", s.SmallGroup);
 				AddValueCk(2, sb, "Fee", s.Fee);
 				AddValueCk(2, sb, "Limit", s.Limit);
+				AddValueCk(2, sb, "Time", s.MeetingTime.ToString2("M/d/yy h:mm tt"));
 			}
+		}
+		private void AddDropdown1(StringBuilder sb)
+		{
+			if (Dropdown1.Count == 0)
+				return;
+			AddValueNoCk(0, sb, "Dropdown1", Dropdown1Label);
+			AddMenuItemsList(sb, Dropdown1);
 			sb.AppendLine();
 		}
 		private void AddDropdown2(StringBuilder sb)
@@ -1375,13 +1401,7 @@ namespace CmsData
 			if (Dropdown2.Count == 0)
 				return;
 			AddValueNoCk(0, sb, "Dropdown2", Dropdown2Label);
-			foreach (var s in Dropdown2)
-			{
-				AddValueCk(1, sb, s.Description);
-				AddValueCk(2, sb, "SmallGroup", s.SmallGroup);
-				AddValueCk(2, sb, "Fee", s.Fee);
-				AddValueCk(2, sb, "Limit", s.Limit);
-			}
+			AddMenuItemsList(sb, Dropdown2);
 			sb.AppendLine();
 		}
 		private void AddDropdown3(StringBuilder sb)
@@ -1389,13 +1409,7 @@ namespace CmsData
 			if (Dropdown3.Count == 0)
 				return;
 			AddValueNoCk(0, sb, "Dropdown3", Dropdown3Label);
-			foreach (var s in Dropdown3)
-			{
-				AddValueCk(1, sb, s.Description);
-				AddValueCk(2, sb, "SmallGroup", s.SmallGroup);
-				AddValueCk(2, sb, "Fee", s.Fee);
-				AddValueCk(2, sb, "Limit", s.Limit);
-			}
+			AddMenuItemsList(sb, Dropdown3);
 			sb.AppendLine();
 		}
 		private void AddCheckBoxes(StringBuilder sb)
@@ -1405,13 +1419,7 @@ namespace CmsData
 			AddValueNoCk(0, sb, "Checkboxes", CheckBoxLabel);
 			AddValueCk(1, sb, "Minimum", CheckboxMin);
 			AddValueCk(1, sb, "Maximum", CheckboxMax);
-			foreach (var c in Checkboxes)
-			{
-				AddValueCk(1, sb, c.Description);
-				AddValueCk(2, sb, "SmallGroup", c.SmallGroup);
-				AddValueCk(2, sb, "Fee", c.Fee);
-				AddValueCk(2, sb, "Limit", c.Limit);
-			}
+			AddMenuItemsList(sb, Checkboxes);
 			sb.AppendLine();
 		}
 		private void AddCheckBoxes2(StringBuilder sb)
@@ -1421,13 +1429,7 @@ namespace CmsData
 			AddValueNoCk(0, sb, "Checkboxes2", CheckBox2Label);
 			AddValueCk(1, sb, "Minimum", Checkbox2Min);
 			AddValueCk(1, sb, "Maximum", Checkbox2Max);
-			foreach (var c in Checkboxes2)
-			{
-				AddValueCk(1, sb, c.Description);
-				AddValueCk(2, sb, "SmallGroup", c.SmallGroup);
-				AddValueCk(2, sb, "Fee", c.Fee);
-				AddValueCk(2, sb, "Limit", c.Limit);
-			}
+			AddMenuItemsList(sb, Checkboxes2);
 			sb.AppendLine();
 		}
 		private void AddTimeSlots(StringBuilder sb)

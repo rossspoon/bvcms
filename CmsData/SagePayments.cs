@@ -144,20 +144,51 @@ namespace CmsData
             Db.SubmitChanges();
         }
 
-        public TransactionResponse createTransactionRequest(int PeopleId, decimal amt, string cardnumber, string expires, string description, int tranid, string cardcode)
-        {
-            var p = Db.LoadPersonById(PeopleId);
+		public TransactionResponse voidTransactionRequest(string reference)
+		{
+            var w = new SagePaymentsAPI.TRANSACTION_PROCESSINGSoapClient("TRANSACTION_PROCESSINGSoap");
+			var ret = w.BANKCARD_VOID(login, key, reference);
+            var resp = getResponse(ret);
+            var tr = new TransactionResponse
+            {
+                Approved = resp.Element("APPROVAL_INDICATOR").Value == "A",
+                AuthCode = resp.Element("CODE").Value,
+                Message = resp.Element("MESSAGE").Value,
+                TransactionId = resp.Element("REFERENCE").Value
+            };
+            return tr;
+		}
 
+		public TransactionResponse creditTransactionRequest(string reference, Decimal amt)
+		{
+            var w = new SagePaymentsAPI.TRANSACTION_PROCESSINGSoapClient("TRANSACTION_PROCESSINGSoap");
+			var ret = w.BANKCARD_CREDIT(login, key, amt.ToString("n2"), reference);
+            var resp = getResponse(ret);
+            var tr = new TransactionResponse
+            {
+                Approved = resp.Element("APPROVAL_INDICATOR").Value == "A",
+                AuthCode = resp.Element("CODE").Value,
+                Message = resp.Element("MESSAGE").Value,
+                TransactionId = resp.Element("REFERENCE").Value
+            };
+            return tr;
+		}
+
+    	public TransactionResponse createTransactionRequest(int PeopleId, decimal amt, 
+			string cardnumber, string expires, string description, int tranid, string cardcode,
+			string email, string first, string last,
+            string addr, string city, string state, string zip, string phone)
+        {
             var w = new SagePaymentsAPI.TRANSACTION_PROCESSINGSoapClient("TRANSACTION_PROCESSINGSoap");
             var ret = w.BANKCARD_SALE(login, key,
-                p.Name,
-                p.PrimaryAddress, p.PrimaryCity, p.PrimaryState, p.PrimaryZip, "",
-                p.EmailAddress,
+                first + " " + last,
+                addr, city, state, zip, "",
+                email,
                 cardnumber, expires, cardcode,
                 PeopleId.ToString(),
                 amt.ToString(), "", "",
                 tranid.ToString(),
-                p.HomePhone,
+                phone,
                 "", "", "", "", "", "", "");
             var resp = getResponse(ret);
             var tr = new TransactionResponse

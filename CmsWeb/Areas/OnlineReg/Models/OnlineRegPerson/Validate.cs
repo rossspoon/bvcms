@@ -127,17 +127,11 @@ Please call the church to resolve this before we can complete your account.<br /
                             }
 #endif
                         }
-                        else if (om != null && !(
-                               om.Organization.RegistrationTypeId == RegistrationTypeCode.ChooseSlot
-                            || om.Organization.RegistrationTypeId == RegistrationTypeCode.AttendMeeting
-                            || om.Organization.RegistrationTypeId == RegistrationTypeCode.JoinAttendMeeting
-                            ))
+                        else if (om != null && setting.AllowReRegister == false 
+							&& om.Organization.RegistrationTypeId != RegistrationTypeCode.ChooseSlot)
                         {
-#if DEBUG
-#else
                             ModelState.AddModelError(ErrorTarget, "This person is already registered");
                             IsValidForContinue = false;
-#endif
                         }
                         else if (setting.ValidateOrgIds.Count > 0)
                         {

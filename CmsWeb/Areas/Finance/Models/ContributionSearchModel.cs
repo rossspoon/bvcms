@@ -19,6 +19,7 @@ namespace CmsWeb.Models
 	{
 		public string Name { get; set; }
 		public string Comments { get; set; }
+		public int? BundleType { get; set; }
 		public int? Type { get; set; }
 		public int? Status { get; set; }
 		private int? _peopleId;
@@ -107,6 +108,11 @@ namespace CmsWeb.Models
 			if ((Type ?? 0) != 0)
 				contributions = from c in contributions
 								where c.ContributionTypeId == Type
+								select c;
+
+			if ((BundleType ?? 0) != 0)
+				contributions = from c in contributions
+								where c.BundleDetails.First().BundleHeader.BundleHeaderTypeId == BundleType
 								select c;
 
 			if ((Status ?? 99) != 99)
@@ -204,6 +210,11 @@ namespace CmsWeb.Models
 			return new SelectList(new CodeValueController().ContributionTypes0(),
 				"Id", "Value", Type.ToString());
 		}
+		public SelectList BundleTypes()
+		{
+			return new SelectList(new CodeValueController().BundleHeaderTypes0(),
+				"Id", "Value", Type.ToString());
+		}
 		public IEnumerable<SelectListItem> Years()
 		{
 			var q = from c in DbUtil.Db.Contributions
@@ -244,7 +255,8 @@ namespace CmsWeb.Models
 								   }).ToList();
 			list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
 			return list;
-		}        public static int[] ReturnedReversedTypes = new int[] 
+		}
+        public static int[] ReturnedReversedTypes = new int[] 
         { 
             (int)Contribution.TypeCode.ReturnedCheck, 
             (int)Contribution.TypeCode.Reversed 

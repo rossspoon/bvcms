@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
@@ -26,8 +27,8 @@ namespace CmsWeb.Areas.Manage.Controllers
             UpdateModel(m.Pager);
             return View(m);
         }
-        [HttpPost]
-        public ActionResult Export(TransactionsModel m)
+		[HttpPost]
+		public ActionResult Export(TransactionsModel m)
         {
             return new TransactionsExcelResult(m);
         }
@@ -37,6 +38,20 @@ namespace CmsWeb.Areas.Manage.Controllers
 		{
 			var count = RecurringGiving.DoAllGiving(DbUtil.Db);
 			return Content(count.ToString());
+		}
+		[HttpPost]
+		[Authorize(Roles = "Finance")]
+		public ActionResult CreditVoid(int tranid, string type)
+		{
+			var t = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == tranid);
+			if (t == null)
+				return Content("notran");
+			var sage = new CmsData.SagePayments(DbUtil.Db, false);
+			if (type == "void")
+				sage.voidTransactionRequest(t.TransactionId);
+			else
+				sage.creditTransactionRequest(t.TransactionId, t.Amt ?? 0);
+			return Content("ok");
 		}
     }
 }

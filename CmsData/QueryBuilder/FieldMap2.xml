@@ -374,6 +374,9 @@
     <Field Name="VisitNumber" Title="Visit date Nth time" Type="Date" DisplayAs="VisitNumber({0})" Params="Quarters" QuartersLabel="Visit number">
       Selects attendees based on whether they have visted once, twice or three times
     </Field>
+    <Field Name="RecentVisitNumber" Title="Recent Visit date Nth time" Type="Bit" DataValueField="IdCode" DisplayAs="RecentVisitNumber({0},{1})" Params="Quarters,Days" QuartersLabel="Visit number">
+      Selects attendees based on whether they have visted once, twice or three times in the past # days
+    </Field>
     <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Days" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
@@ -452,6 +455,9 @@
     </Field>
     <Field Name="CreatedDate" Title="Record Created On Date" Type="Date">
       Record Created On Date
+    </Field>
+    <Field Name="RecentCreated" Title="Recent Created Record" Type="Bit" DataValueField="IdCode" DisplayAs="RecentCreated({0})" Params="Days">
+      Selects people based on how many days ago their record was created
     </Field>
     <Field Name="PeopleExtra" Title="ExtraValue Code" Type="CodeStr" DataSource="ExtraValues">
       ExtraValue field = dropdown list of values

@@ -97,7 +97,8 @@ namespace CmsWeb.Models
 		}
 		public void CheckMasterOrg()
 		{
-			if (org != null && (org.RegistrationTypeId == RegistrationTypeCode.UserSelectsOrganization2
+			if (org != null && masterorgid == null && 
+				(org.RegistrationTypeId == RegistrationTypeCode.UserSelectsOrganization2
 				|| org.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge2
 				|| org.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2))
 			{

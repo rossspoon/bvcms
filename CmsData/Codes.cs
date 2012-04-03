@@ -128,7 +128,6 @@ namespace CmsData.Codes
     {
         public const int None = 0;
         public const int JoinOrganization = 1;
-        public const int AttendMeeting = 2;
         public const int UserSelectsOrganization = 3;
         public const int ComputeOrganizationByAge = 4;
         public const int CreateAccount = 5;
@@ -138,7 +137,6 @@ namespace CmsData.Codes
         public const int OnlinePledge = 9;
         public const int UserSelectsOrganization2 = 10;
         public const int ComputeOrganizationByAge2 = 11;
-        public const int JoinAttendMeeting = 12;
         public const int ManageGiving = 14;
         public const int ManageSubscriptions2 = 15;
         public static IEnumerable<KeyValuePair<int, string>> GetCodePairs()
@@ -154,9 +152,6 @@ namespace CmsData.Codes
             yield return new KeyValuePair<int, string>(ChooseSlot, "Choose Volunteer Times");
             yield return new KeyValuePair<int, string>(UserSelectsOrganization, "--old user selects org");
             yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "--old compute org by bday");
-
-//            yield return new KeyValuePair<int, string>(AttendMeeting, "Attend Meeting (not available yet)");
-//            yield return new KeyValuePair<int, string>(JoinAttendMeeting, "Attend Meeting, Join Org (not available yet)");
         }
         public static string Lookup(int? id)
         {

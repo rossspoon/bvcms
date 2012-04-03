@@ -48,7 +48,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
 			DbUtil.LogActivity("APIMeeting MarkRegistered {0}, {1}".Fmt(meetingid, peopleid));
-            Attend.MarkRegistered(peopleid, meetingid, registered);
+            Attend.MarkRegistered(DbUtil.Db, peopleid, meetingid, registered);
             return Content("ok");
         }
     }

@@ -513,7 +513,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CheckNo", UpdateCheck=UpdateCheck.Never, Storage="_CheckNo", DbType="varchar(10)")]
+		[Column(Name="CheckNo", UpdateCheck=UpdateCheck.Never, Storage="_CheckNo", DbType="varchar(20)")]
 		public string CheckNo
 		{
 			get { return this._CheckNo; }

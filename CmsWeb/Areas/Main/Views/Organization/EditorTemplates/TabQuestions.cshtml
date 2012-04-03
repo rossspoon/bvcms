@@ -142,10 +142,12 @@
     <div class="newitem"><a href="/Organization/NewMenuItem"><img src="/images/plus1.png" alt="" /> Add Item</a></div> 
   </li>
   <li>
-    <span class="keyword big tip" title="Dropdown1
+  	<span class="keyword big tip" title="Dropdown1
     |This will be presented as a dropdown selection
     |Enters them in a smallgroup within the organization.
-    |Optional Fee.">
+    |Optional Fee for the selection
+    |Optional Limit which limits the number of people allowed for a selection
+    |Optional DateTime which registers them in a meeting">
     Dropdown1:</span>
     <ul>
       <li><span class="keyword2">Label:</span> 
@@ -193,7 +195,10 @@
     |This is a group of checkboxes where you can check more than one.
     |You can specify a minumum number they must check.
     |And you can specify a maximum number they can check.
-    |For each checkbox, you can specify the SmallGroup and an optional Fee.">
+    |For each checkbox, you can specify the SmallGroup (required) and the following.
+    |Optional Fee for the selection
+    |Optional Limit which limits the number of people allowed for a selection
+    |Optional DateTime which registers them in a meeting">
     Checkboxes:</span>
     <ul>
       <li> <span class="keyword2">Label:</span> @Html.TextBox("CheckBoxLabel", Model.CheckBoxLabel, new { @class = "long" }) </li>

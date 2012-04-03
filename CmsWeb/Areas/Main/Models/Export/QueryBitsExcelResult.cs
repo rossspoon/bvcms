@@ -40,7 +40,7 @@ namespace CmsWeb.Models
             Response.Charset = "";
 
 			var q2 = from p in DbUtil.Db.PeopleQuery(qid)
-                where p.Attends.Count(aa => aa.AttendanceFlag == true) > 0
+                //where p.Attends.Count(aa => aa.AttendanceFlag == true) > 0
 				select new
 				{
                     p,

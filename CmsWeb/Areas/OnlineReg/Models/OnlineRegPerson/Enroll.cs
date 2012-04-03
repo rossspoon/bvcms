@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using CmsData;
 using UtilityExtensions;
 using System.Text;
@@ -26,46 +24,46 @@ namespace CmsWeb.Models
                 reg = new RecReg();
                 person.RecRegs.Add(reg);
             }
-            if (setting.AskShirtSize == true)
+            if (setting.AskShirtSize)
             {
                 om.ShirtSize = shirtsize;
                 reg.ShirtSize = shirtsize;
             }
-            if (setting.AskChurch == true)
+            if (setting.AskChurch)
             {
                 reg.ActiveInAnotherChurch = otherchurch;
                 reg.Member = memberus;
             }
-            if (setting.AskAllergies == true)
+            if (setting.AskAllergies)
             {
                 reg.MedAllergy = medical.HasValue();
                 reg.MedicalDescription = medical;
             }
-            if (setting.AskParents == true)
+            if (setting.AskParents)
             {
                 reg.Mname = mname;
                 reg.Fname = fname;
             }
-            if (setting.AskEmContact == true)
+            if (setting.AskEmContact)
             {
                 reg.Emcontact = emcontact;
                 reg.Emphone = emphone;
             }
-            if (setting.AskDoctor == true)
+            if (setting.AskDoctor)
             {
                 reg.Docphone = docphone;
                 reg.Doctor = doctor;
             }
-            if (setting.AskCoaching == true)
+            if (setting.AskCoaching)
                 reg.Coaching = coaching;
-            if (setting.AskInsurance == true)
+            if (setting.AskInsurance)
             {
                 reg.Insurance = insurance;
                 reg.Policy = policy;
             }
             //if (setting.AskGrade == true)
             //    om.Grade = grade.ToInt();
-            if (setting.AskTickets == true)
+            if (setting.AskTickets)
                 om.Tickets = ntickets;
 
             foreach (var yn in setting.YesNoQuestions)
@@ -76,14 +74,19 @@ namespace CmsWeb.Models
             if (setting.YesNoQuestions.Count > 0)
                 foreach (var g in YesNoQuestion)
                     om.AddToGroup(DbUtil.Db, (g.Value == true ? "Yes:" : "No:") + g.Key);
-            foreach (var ck in setting.Checkboxes)
-                om.RemoveFromGroup(DbUtil.Db, ck.SmallGroup);
+
+			foreach (var ck in setting.Checkboxes)
+				RemoveFromSmallGroup(ck, om);
+			foreach (var ck in setting.Checkboxes2)
+				RemoveFromSmallGroup(ck, om);
+
             if (setting.Checkboxes.Count > 0 && Checkbox != null)
-                foreach (var g in Checkbox)
-                    om.AddToGroup(DbUtil.Db, g);
+                foreach (var g in CheckboxItemsChosen())
+                    AddToSmallGroup(g, om);
             if (setting.Checkboxes2.Count > 0 && Checkbox2 != null)
-                foreach (var g in Checkbox2)
-                    om.AddToGroup(DbUtil.Db, g);
+                foreach (var g in Checkbox2ItemsChosen())
+                    AddToSmallGroup(g, om);
+
             if (setting.ExtraQuestions.Count > 0)
                 foreach (var g in ExtraQuestion)
                     if (g.Value.HasValue())
@@ -92,17 +95,17 @@ namespace CmsWeb.Models
                 foreach (var i in MenuItem)
                     om.AddToGroup(DbUtil.Db, i.Key, i.Value);
 
-            foreach (var op in Options())
-                om.RemoveFromGroup(DbUtil.Db, op.Value);
+			foreach (var op in setting.Dropdown1)
+				RemoveFromSmallGroup(op, om);
             if (setting.Dropdown1.Count > 0)
-                om.AddToGroup(DbUtil.Db, option);
+                AddToSmallGroup(Dropdown1ItemChosen(), om);
 
-            foreach (var op in ExtraOptions())
-                om.RemoveFromGroup(DbUtil.Db, op.Value);
+            foreach (var op in setting.Dropdown2)
+                om.RemoveFromGroup(DbUtil.Db, op.SmallGroup);
             if (setting.Dropdown2.Count > 0)
                 om.AddToGroup(DbUtil.Db, option2);
 
-            foreach (var op in ExtraOptions3())
+            foreach (var op in DropdownList3())
                 om.RemoveFromGroup(DbUtil.Db, op.Value);
             if (setting.Dropdown3.Count > 0)
                 om.AddToGroup(DbUtil.Db, option3);
@@ -151,7 +154,7 @@ namespace CmsWeb.Models
                 }
             }
 
-            if (setting.AskTylenolEtc == true)
+            if (setting.AskTylenolEtc)
             {
                 reg.Tylenol = tylenol;
                 reg.Advil = advil;
@@ -184,7 +187,21 @@ namespace CmsWeb.Models
             DbUtil.Db.SubmitChanges();
             return om;
         }
-        public string PrepareSummaryText(Transaction ti)
+
+    	private void AddToSmallGroup(RegSettings.MenuItem g, OrganizationMember om)
+    	{
+    		om.AddToGroup(DbUtil.Db, g.SmallGroup);
+    		if (g.MeetingTime.HasValue)
+				Attend.MarkRegistered(DbUtil.Db, om.OrganizationId, om.PeopleId, g.MeetingTime.Value, true);
+    	}
+    	private void RemoveFromSmallGroup(RegSettings.MenuItem g, OrganizationMember om)
+    	{
+    		om.RemoveFromGroup(DbUtil.Db, g.SmallGroup);
+//    		if (g.MeetingTime.HasValue)
+//				Attend.MarkRegistered(DbUtil.Db, om.OrganizationId, om.PeopleId, g.MeetingTime.Value, false);
+    	}
+
+    	public string PrepareSummaryText(Transaction ti)
         {
             var om = GetOrgMember();
             var sb = new StringBuilder();

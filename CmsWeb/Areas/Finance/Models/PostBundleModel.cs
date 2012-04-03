@@ -241,7 +241,7 @@ namespace CmsWeb.Models
 				CreatedBy = Util.UserId,
 				CreatedDate = bd.CreatedDate,
 				FundId = fund,
-				PeopleId = pid.ToInt(),
+				PeopleId = pid.ToInt2(),
 				ContributionDate = bundle.ContributionDate,
 				ContributionAmount = amt,
 				ContributionStatusId = 0,
@@ -265,7 +265,7 @@ namespace CmsWeb.Models
 			if (c == null)
 				return null;
 			c.FundId = fund;
-			c.PeopleId = pid.ToInt();
+			c.PeopleId = pid.ToInt2();
 			c.ContributionAmount = amt;
 			c.PledgeFlag = pledge;
 			c.ContributionTypeId = type;

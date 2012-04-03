@@ -49,6 +49,8 @@ namespace CmsData
 		
 		private int? _GuestOfId;
 		
+		private int? _SeqNo;
+		
    		
    		private EntitySet< Attend> _GuestOf;
 		
@@ -119,6 +121,9 @@ namespace CmsData
 		
 		partial void OnGuestOfIdChanging(int? value);
 		partial void OnGuestOfIdChanged();
+		
+		partial void OnSeqNoChanging(int? value);
+		partial void OnSeqNoChanged();
 		
     #endregion
 		public Attend()
@@ -508,6 +513,28 @@ namespace CmsData
 					this._GuestOfId = value;
 					this.SendPropertyChanged("GuestOfId");
 					this.OnGuestOfIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="SeqNo", UpdateCheck=UpdateCheck.Never, Storage="_SeqNo", DbType="int")]
+		public int? SeqNo
+		{
+			get { return this._SeqNo; }
+
+			set
+			{
+				if (this._SeqNo != value)
+				{
+				
+                    this.OnSeqNoChanging(value);
+					this.SendPropertyChanging();
+					this._SeqNo = value;
+					this.SendPropertyChanged("SeqNo");
+					this.OnSeqNoChanged();
 				}
 
 			}

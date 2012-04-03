@@ -16,11 +16,11 @@ namespace CmsWeb.Areas.Finance.Controllers
     [ValidateInput(false)]
     public class PostBundleController : CmsStaffController
     {
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {
-            var m = new PostBundleModel(id);
+            var m = new PostBundleModel(id ?? 0);
             if (m.bundle == null)
-                return Content("no bundle");
+                return Content("no bundle " + m.id);
             if (m.bundle.BundleStatusId == BundleStatusCode.Closed)
                 return Content("bundle closed");
             m.fund = m.bundle.FundId ?? 1;

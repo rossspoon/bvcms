@@ -73,6 +73,14 @@ namespace CmsData
 		
 		private bool? _Financeonly;
 		
+		private int? _Voided;
+		
+		private int? _Credited;
+		
+		private bool? _Coupon;
+		
+		private bool? _Moneytran;
+		
    		
    		private EntitySet< TransactionPerson> _TransactionPeople;
 		
@@ -167,6 +175,18 @@ namespace CmsData
 		
 		partial void OnFinanceonlyChanging(bool? value);
 		partial void OnFinanceonlyChanged();
+		
+		partial void OnVoidedChanging(int? value);
+		partial void OnVoidedChanged();
+		
+		partial void OnCreditedChanging(int? value);
+		partial void OnCreditedChanged();
+		
+		partial void OnCouponChanging(bool? value);
+		partial void OnCouponChanged();
+		
+		partial void OnMoneytranChanging(bool? value);
+		partial void OnMoneytranChanged();
 		
     #endregion
 		public Transaction()
@@ -790,6 +810,94 @@ namespace CmsData
 					this._Financeonly = value;
 					this.SendPropertyChanged("Financeonly");
 					this.OnFinanceonlyChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="voided", UpdateCheck=UpdateCheck.Never, Storage="_Voided", DbType="int")]
+		public int? Voided
+		{
+			get { return this._Voided; }
+
+			set
+			{
+				if (this._Voided != value)
+				{
+				
+                    this.OnVoidedChanging(value);
+					this.SendPropertyChanging();
+					this._Voided = value;
+					this.SendPropertyChanged("Voided");
+					this.OnVoidedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="credited", UpdateCheck=UpdateCheck.Never, Storage="_Credited", DbType="int")]
+		public int? Credited
+		{
+			get { return this._Credited; }
+
+			set
+			{
+				if (this._Credited != value)
+				{
+				
+                    this.OnCreditedChanging(value);
+					this.SendPropertyChanging();
+					this._Credited = value;
+					this.SendPropertyChanged("Credited");
+					this.OnCreditedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="coupon", UpdateCheck=UpdateCheck.Never, Storage="_Coupon", DbType="bit")]
+		public bool? Coupon
+		{
+			get { return this._Coupon; }
+
+			set
+			{
+				if (this._Coupon != value)
+				{
+				
+                    this.OnCouponChanging(value);
+					this.SendPropertyChanging();
+					this._Coupon = value;
+					this.SendPropertyChanged("Coupon");
+					this.OnCouponChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="moneytran", UpdateCheck=UpdateCheck.Never, Storage="_Moneytran", DbType="bit", IsDbGenerated=true)]
+		public bool? Moneytran
+		{
+			get { return this._Moneytran; }
+
+			set
+			{
+				if (this._Moneytran != value)
+				{
+				
+                    this.OnMoneytranChanging(value);
+					this.SendPropertyChanging();
+					this._Moneytran = value;
+					this.SendPropertyChanged("Moneytran");
+					this.OnMoneytranChanged();
 				}
 
 			}

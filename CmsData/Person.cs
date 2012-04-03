@@ -957,8 +957,10 @@ namespace CmsData
             var ev = GetExtraValue(field);
             ev.StrValue = value;
         }
-        public void AddEditExtraDate(string field, DateTime value)
+        public void AddEditExtraDate(string field, DateTime? value)
         {
+			if (!value.HasValue)
+				return;
             var ev = GetExtraValue(field);
             ev.DateValue = value;
         }

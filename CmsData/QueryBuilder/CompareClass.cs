@@ -409,6 +409,11 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 // R ----------------
+                case QueryType.RecentCreated:
+                    return Expressions.RecentCreated(parm,
+								c.Days,
+                               CompType,
+                               c.CodeIds == "1");
                 case QueryType.RecentJoinChurch:
                     return Expressions.RecentJoinChurch(
                         parm,
@@ -505,6 +510,12 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
+				case QueryType.RecentVisitNumber:
+                    return Expressions.RecentVisitNumber(parm, Db,
+								c.Quarters,
+                               c.Days,
+                               CompType,
+                               c.CodeIds == "1");
                 case QueryType.RecActiveOtherChurch:
                     return Expressions.RecActiveOtherChurch(parm,
                                CompType,

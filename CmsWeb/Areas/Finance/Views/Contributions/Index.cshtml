@@ -35,6 +35,10 @@
             <td>@Html.TextBoxFor(vv => vv.Comments) <em>Check # or phrase</em></td>
         </tr>
         <tr>
+            <th align="right">Bundle Type:</th>
+            <td>@Html.DropDownListFor(vv => vv.BundleType, Model.BundleTypes())</td>
+        </tr>
+        <tr>
             <th align="right">Contribution Type:</th>
             <td>@Html.DropDownListFor(vv => vv.Type, Model.ContributionTypes())</td>
         </tr>

@@ -1,10 +1,15 @@
 ﻿@using UtilityExtensions
 @using CmsWeb
-@model CmsData.Transaction
+@using CmsData
+@model Transaction
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
+
+    var ServiceUOrgID = (Model.Testing ?? false) ? DbUtil.Db.Setting("ServiceUOrgIDTest", "0") : DbUtil.Db.Setting("ServiceUOrgID", "0");
+    var ServiceUOrgAccountID = (Model.Testing ?? false) ? DbUtil.Db.Setting("ServiceUOrgAccountIDTest", "0") : DbUtil.Db.Setting("ServiceUOrgAccountID", "0");
 }
+
 @section scripts
 {
 @Html.Script("/Scripts/OnlineRegPayment.js")
@@ -22,8 +27,8 @@
     <h2>Payment Processing</h2>
     
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
-    @Html.Hidden("OrgID", Model.ServiceUOrgID)
-    @Html.Hidden("OrgAccountID", Model.ServiceUOrgAccountID)
+    @Html.Hidden("OrgID", ServiceUOrgID)
+    @Html.Hidden("OrgAccountID", ServiceUOrgAccountID)
     @Html.Hidden("PostbackURL", Util.ServerLink("/OnlineReg/ConfirmDuePaid/" + Model.Id))
     @Html.Hidden("NameOnAccount", Model.Name) 
     @Html.Hidden("Address", Model.Address)

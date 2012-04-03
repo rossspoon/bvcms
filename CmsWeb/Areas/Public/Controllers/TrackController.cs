@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Areas.Public.Models;
+using CmsWeb.Models;
 using UtilityExtensions;
 using CmsData;
 
@@ -53,16 +54,10 @@ namespace CmsWeb.Areas.Public.Controllers
 			var b = Convert.FromBase64String("R0lGODlhAQABAIAAANvf7wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
 			return new FileContentResult(b, "image/gif");
 		}
-		public ActionResult Barcode(string id)
+		public FileContentResult Barcode(string id)
 		{
-            var code = new Code39(id);
-			var b = code.Paint();
-            var ostream = new MemoryStream();
-            b.Save(ostream, ImageFormat.Png);
-            var bits = ostream.GetBuffer();
-            b.Dispose();
-            ostream.Close();
-            return new FileContentResult(bits, "image/png");
+			var code = new Code39BarCode(id);
+			return new FileContentResult(code.Generate(), "image/png");
 		}
 	}
 }

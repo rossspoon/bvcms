@@ -85,6 +85,18 @@ namespace CmsWeb.Models
                     select c;
             return q;
         }
+        public RegSettings.MenuItem Dropdown1ItemChosen()
+        {
+            return setting.Dropdown1.SingleOrDefault(i => i.SmallGroup == option);
+        }
+        public RegSettings.MenuItem Dropdown2ItemChosen()
+        {
+            return setting.Dropdown2.SingleOrDefault(i => i.SmallGroup == option);
+        }
+        public RegSettings.MenuItem Dropdown3ItemChosen()
+        {
+            return setting.Dropdown3.SingleOrDefault(i => i.SmallGroup == option);
+        }
         private List<string> _GroupTags;
         public List<string> GroupTags
         {
@@ -112,7 +124,7 @@ namespace CmsWeb.Models
         {
             public bool Filled { get; set; }
         }
-        public IEnumerable<SelectListItemFilled> Options()
+        public IEnumerable<SelectListItemFilled> DropdownList1()
         {
             var q = from s in setting.Dropdown1
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
@@ -126,7 +138,7 @@ namespace CmsWeb.Models
             list.Insert(0, new SelectListItemFilled { Text = "(please select)", Value = "00" });
             return list;
         }
-        public IEnumerable<SelectListItemFilled> ExtraOptions()
+        public IEnumerable<SelectListItemFilled> DropdownList2()
         {
             var q = from s in setting.Dropdown2
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
@@ -140,7 +152,7 @@ namespace CmsWeb.Models
             list.Insert(0, new SelectListItemFilled { Text = "(please select)", Value = "00" });
             return list;
         }
-        public IEnumerable<SelectListItemFilled> ExtraOptions3()
+        public IEnumerable<SelectListItemFilled> DropdownList3()
         {
             var q = from s in setting.Dropdown3
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""

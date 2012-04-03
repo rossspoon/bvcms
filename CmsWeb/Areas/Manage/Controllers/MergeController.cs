@@ -31,13 +31,20 @@ namespace CmsWeb.Areas.Manage.Controllers
         [HttpPost]
         public ActionResult Run(string submit, bool? Delete, MergeModel m)
         {
-            if (submit.StartsWith("Merge Fields"))
-                m.Update();
-            if (submit == "Merge Fields and Move Related Records")
+			if (submit.StartsWith("Merge Fields"))
+			{
+				DbUtil.LogActivity("Merging Fields from {0} to {1}".Fmt(m.pi[0].PeopleId, m.pi[1].PeopleId));
+				m.Update();
+			}
+        	if (submit == "Merge Fields and Move Related Records")
             {
+				DbUtil.LogActivity("Moving records from {0} to {1}".Fmt(m.pi[0].PeopleId, m.pi[1].PeopleId));
                 m.Move();
-                if (Delete == true)
-                    m.Delete();
+				if (Delete == true)
+				{
+					DbUtil.LogActivity("Deleting Record during Merge {0}".Fmt(m.pi[0].PeopleId));
+					m.Delete();
+				}
             }
             if (submit == "Toggle Not Duplicate")
             {

@@ -354,10 +354,9 @@ AmountDue: {4:C}<br/>
                     message = Util.PickFirst(os.Body, "no body");
                 }
 
-                List<Person> NotifyIds = null;
-                NotifyIds = Db.StaffPeopleForOrg(p.org.OrganizationId);
+                var NotifyIds = Db.StaffPeopleForOrg(p.org.OrganizationId);
                 NotifyIds.AddRange(Db.StaffPeopleForOrg(masterorg.OrganizationId));
-                if (NotifyIds.Count() == 0)
+                if (NotifyIds.Count == 0)
                     NotifyIds = Db.AdminPeople();
                 var notify = NotifyIds[0];
 

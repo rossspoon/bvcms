@@ -169,6 +169,11 @@ namespace CMSPresenter
 					   Value = ms.Description
 				   };
 		}
+		public IEnumerable<CodeValueItem> BundleHeaderTypes0()
+		{
+			return BundleHeaderTypes().AddNotSpecified();
+
+		}
 		public IEnumerable<CodeValueItem> ContributionStatuses()
 		{
 			return from ms in DbUtil.Db.ContributionStatuses

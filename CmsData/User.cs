@@ -54,6 +54,8 @@ namespace CmsData
         {
             CMSMembershipProvider.provider.AdminOverride = true;
             var mu = CMSMembershipProvider.provider.GetUser(Username, false);
+			if (mu == null)
+				return;
             mu.UnlockUser();
             mu.ChangePassword(mu.ResetPassword(), newpassword);
             TempPassword = newpassword;

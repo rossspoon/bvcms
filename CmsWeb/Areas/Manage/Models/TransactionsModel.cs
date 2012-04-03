@@ -1,16 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
-using System.Data.Linq;
 using System.Web;
 using CmsData;
 using UtilityExtensions;
-using System.Web.Mvc;
-using System.Text;
-using System.Net.Mail;
-using System.Web.UI.WebControls;
-using System.Web.UI;
 
 namespace CmsWeb.Models
 {
@@ -24,6 +17,7 @@ namespace CmsWeb.Models
         public DateTime? startdt { get; set; }
         public DateTime? enddt { get; set; }
         public bool testtransactions { get; set; }
+        public bool apprtransactions { get; set; }
         public PagerModel2 Pager { get; set; }
         int? _count;
         public int Count()
@@ -33,18 +27,41 @@ namespace CmsWeb.Models
             return _count.Value;
         }
         public bool finance { get; set; }
+        public bool admin { get; set; }
         public TransactionsModel()
         {
             Pager = new PagerModel2(Count);
             Pager.Sort = "Id";
             Pager.Direction = "desc";
             finance = HttpContext.Current.User.IsInRole("Finance");
+            finance = HttpContext.Current.User.IsInRole("Admin");
         }
         public IEnumerable<Transaction> Transactions()
         {
             var q0 = ApplySort();
             q0 = q0.Skip(Pager.StartRow).Take(Pager.PageSize);
             return q0;
+        }
+
+    	public class TotalTransaction
+    	{
+    		public decimal Amt { get; set; }
+    		public decimal Amtdue { get; set; }
+    		public decimal Donate { get; set; }
+    	}
+
+    	public TotalTransaction TotalTransactions()
+        {
+            var q0 = ApplySort();
+			var q = from t in q0
+					group t by 1 into g
+					select new TotalTransaction()
+					{
+						Amt = g.Sum(tt => tt.Amt ?? 0),
+						Amtdue = g.Sum(tt => tt.Amtdue ?? 0),
+						Donate = g.Sum(tt => tt.Donate ?? 0),
+					};
+			return q.FirstOrDefault();
         }
 
         private IQueryable<Transaction> _transactions;
@@ -59,8 +76,8 @@ namespace CmsWeb.Models
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
                  where (t.Testing ?? false) == testtransactions
+				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
                  where (t.Financeonly ?? false) == false || finance
-                 
                  select t;
             if (!HttpContext.Current.User.IsInRole("Finance"))
                 _transactions = _transactions.Where(tt => (tt.Financeonly ?? false) == false);

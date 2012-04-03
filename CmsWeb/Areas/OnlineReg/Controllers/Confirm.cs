@@ -69,7 +69,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     pf.ti.Amt ?? 0,
                     m.TranId.Value, m.Header,
                     pid, pf.ti.Emails, first, last,
-                    pf.ti.Address, pf.ti.City, pf.ti.State, pf.ti.Zip,
+                    pf.ti.Address, pf.ti.City, pf.ti.State, pf.ti.Zip, pf.ti.Phone,
                     m.Transaction.Testing ?? false);
 
             if (tinfo.Approved == false)

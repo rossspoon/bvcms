@@ -516,6 +516,24 @@ namespace CmsData
 				return Compare(left, op, right);
 			}
 		}
+		internal static Expression RecentVisitNumber(
+			ParameterExpression parm, CMSDataContext Db,
+			string number,
+			int days,
+			CompareType op,
+			bool tf)
+		{
+			int n = number.ToInt2() ?? 1;
+			var dt = DateTime.Today.AddDays(-days);
+			Expression<Func<Person, bool>> pred = p =>
+				p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate > dt);
+			Expression expr = Expression.Invoke(pred, parm);
+
+			if (!(op == CompareType.Equal && tf))
+				expr = Expression.Not(expr);
+			return expr;
+		}
+
 		internal static Expression RecentNewVisitCount(
 			ParameterExpression parm,
 			int? progid,
@@ -1111,6 +1129,19 @@ namespace CmsData
 			Expression left = Expression.Invoke(pred, parm);
 			var right = Expression.Constant(days, typeof(int?));
 			return Compare(left, op, right);
+		}
+		internal static Expression RecentCreated(
+			ParameterExpression parm,
+			int days,
+			CompareType op,
+			bool tf)
+		{
+			var dt = DateTime.Today.AddDays(-days);
+			Expression<Func<Person, bool>> pred = p => p.CreatedDate >= dt;
+			Expression expr = Expression.Invoke(pred, parm);
+			if (!(op == CompareType.Equal && tf))
+				expr = Expression.Not(expr);
+			return expr;
 		}
 		internal static Expression Birthday(
 			ParameterExpression parm,

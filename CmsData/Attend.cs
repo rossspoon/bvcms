@@ -46,13 +46,15 @@ namespace CmsData
                 }
             }
         }
-        public static void MarkRegistered(int PeopleId, int MeetingId, bool registered)
-        {
-            MarkRegistered(DbUtil.Db, PeopleId, MeetingId, registered);
-        }
         public static void MarkRegistered(CMSDataContext Db, int OrgId, int PeopleId, DateTime MeetingDate, bool registered)
         {
-            var mid = Db.CreateMeeting(OrgId, MeetingDate);
+			if (registered == false)
+			{
+				var m = Db.Meetings.SingleOrDefault(mm => mm.OrganizationId == OrgId && mm.MeetingDate == MeetingDate);
+				if (m == null)
+					return;
+			}
+        	var mid = Db.CreateMeeting(OrgId, MeetingDate);
             MarkRegistered(Db, PeopleId, mid, registered);
         }
         public static void MarkRegistered(CMSDataContext Db, int PeopleId, int MeetingId, bool registered)
