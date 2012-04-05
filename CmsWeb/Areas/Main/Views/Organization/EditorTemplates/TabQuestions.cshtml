@@ -112,8 +112,6 @@
     |Asks whether the parent is interested in coaching or not.">
     AskCoaching:</span> @Html.CheckBox("AskCoaching", Model.AskCoaching)
   </li>
-  @if (User.IsInRole("Admin"))
-  {
   <li>
     <div class="text big tip" title="TimeSlots
     |These allow you to specify a series of Day / Times for registration.">
@@ -126,7 +124,6 @@
     </ul>
     <div class="newitem"><a href="/Organization/NewTimeSlot"><img src="/images/plus1.png" alt="" /> Add Item</a></div> 
   </li>
-  }
   <li>
     <div class="text big tip" title="MenuItems
     |These will present a series of textboxes next to a label 

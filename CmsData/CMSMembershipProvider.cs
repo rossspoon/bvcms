@@ -56,12 +56,9 @@ namespace CmsData
             pPasswordAttemptWindow = Convert.ToInt32(GetConfigValue(config["passwordAttemptWindow"], "10"));
 
 			var Db = GetDb();
-        	pRequireOneNonAlphaNum = Db.Setting("PasswordRequireSpecialCharacter", "true").ToBool();
         	pMinRequiredPasswordLength = Db.Setting("PasswordMinLength", "7").ToInt();
-        	pRequireOneNumber = Db.Setting("PasswordRequireOneNumber", "false").ToBool();
-        	pRequireOneUpper = Db.Setting("PasswordRequireOneUpper", "false").ToBool();
 
-        	pMinRequiredNonAlphanumericCharacters = pRequireOneNonAlphaNum ? 1 : 0;
+        	pMinRequiredNonAlphanumericCharacters = DbUtil.Db.Setting("PasswordRequireSpecialCharacter", "true").ToBool() ? 1 : 0;
             pPasswordStrengthRegularExpression = Convert.ToString(GetConfigValue(config["passwordStrengthRegularExpression"], ""));
             pEnablePasswordReset = Convert.ToBoolean(GetConfigValue(config["enablePasswordReset"], "true"));
             pEnablePasswordRetrieval = Convert.ToBoolean(GetConfigValue(config["enablePasswordRetrieval"], "true"));
@@ -98,9 +95,9 @@ namespace CmsData
                                                 "are not supported with auto-generated keys.");
         }
 
-		public bool pRequireOneNonAlphaNum { get; set; }
-		public bool pRequireOneNumber { get; set; }
-		public bool pRequireOneUpper { get; set; }
+//		public bool pRequireOneNonAlphaNum { get; set; }
+//		public bool pRequireOneNumber { get; set; }
+//		public bool pRequireOneUpper { get; set; }
 
     	private string GetConfigValue(string configValue, string defaultValue)
         {
@@ -180,13 +177,13 @@ namespace CmsData
             {
                 if (newPwd.Length < MinRequiredPasswordLength)
                     throw new ArgumentException("Password must contain at least {0} chars".Fmt(MinRequiredPasswordLength));
-				if (pRequireOneNonAlphaNum)
+				if (MembershipService.RequireSpecialCharacter)
 					if (newPwd.All(char.IsLetterOrDigit))
 						throw new ArgumentException("Password needs at least 1 non-alphanumeric chars");
-				if (pRequireOneNumber)
+				if (MembershipService.RequireOneNumber)
 					if (!newPwd.Any(char.IsDigit))
 						throw new ArgumentException("Password needs at least 1 number");
-				if (pRequireOneUpper)
+				if (MembershipService.RequireOneUpper)
 					if (!newPwd.Any(char.IsUpper))
 						throw new ArgumentException("Password needs at least 1 uppercase letter");
             }

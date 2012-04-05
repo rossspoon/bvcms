@@ -370,7 +370,7 @@ namespace CmsWeb.Models
             p.FixTitle();
             if (PrimaryCount == 2)
                 p.PositionInFamilyId = PositionInFamily.SecondaryAdult;
-            if (age < 18 && p.MaritalStatusId == MaritalStatusCode.Single)
+            if (age < 18 && age >= 0 && p.MaritalStatusId == MaritalStatusCode.Single)
                 p.PositionInFamilyId = PositionInFamily.Child;
             if (AddToExisting)
                 p.CellPhone = Communication.GetDigits();

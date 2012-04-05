@@ -28,6 +28,7 @@ namespace CmsData
 			int? divid,
 			int org,
 			int sched,
+			int campus,
 			CompareType op,
 			params int[] ids)
 		{
@@ -37,7 +38,11 @@ namespace CmsData
 				Expression<Func<Person, bool>> pred = p =>
 					p.OrganizationMembers.Any(m =>
 						ids.Contains(m.MemberTypeId)
-						&& m.Organization.OrgSchedules.Count() == 0
+						&& !m.Organization.OrgSchedules.Any()
+						&& (campus == 0  
+							|| m.Organization.CampusId == campus
+							|| (campus == -1 && m.Organization.CampusId == null)
+							)
 						&& (org == 0 || m.OrganizationId == org)
 						&& (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
 						&& (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -50,6 +55,10 @@ namespace CmsData
 					p.OrganizationMembers.Any(m =>
 						ids.Contains(m.MemberTypeId)
 						&& (sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched))
+						&& (campus == 0  
+							|| m.Organization.CampusId == campus
+							|| (campus == -1 && m.Organization.CampusId == null)
+							)
 						&& (org == 0 || m.OrganizationId == org)
 						&& (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
 						&& (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -72,6 +81,26 @@ namespace CmsData
 			Expression<Func<Person, bool>> pred = p =>
 				p.OrganizationMembers.Any(m =>
 					m.Organization.OrgSchedules.Any(os => ids.Contains(os.ScheduleId.Value))
+					&& (org == 0 || m.OrganizationId == org)
+					&& (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+					&& (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+					);
+			Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+			if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+				expr = Expression.Not(expr);
+			return expr;
+		}
+		internal static Expression MembOfOrgWithCampus(
+			ParameterExpression parm,
+			int? progid,
+			int? divid,
+			int org,
+			CompareType op,
+			params int[] ids)
+		{
+			Expression<Func<Person, bool>> pred = p =>
+				p.OrganizationMembers.Any(m =>
+					(ids.Contains(m.Organization.CampusId ?? 0) || (ids[0] == -1 && m.Organization.CampusId == null))
 					&& (org == 0 || m.OrganizationId == org)
 					&& (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))

@@ -25,6 +25,7 @@ End Date: @Html.TextBox("Dt2", Model.Dt2.ToString2("M/d/yy"), new { style = "wid
 <div style="color: Red">@Html.ValidationMessage("dates")</div>
 Non Tax Deductible:@Html.CheckBox("NonTaxDeductible")
 Pledges:@Html.CheckBox("Pledges")
+Include Unclosed Bundles:@Html.CheckBox("IncUnclosedBundles")
 	<p>
 		<input id="run" type="submit" value="Run Report" class="bt" />
 		<input id="export" type="submit" value="Export Contributions" class="bt" />

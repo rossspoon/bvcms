@@ -83,7 +83,7 @@ namespace CmsData
             {
 				s = Content("StandardExtraValues.xml", "<Fields />");
                 HttpRuntime.Cache.Insert(Db.Host + "StandardExtraValues", s, null,
-                    DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                    DateTime.Now.AddMinutes(3), Cache.NoSlidingExpiration);
             }
             return s;
         }
@@ -98,7 +98,7 @@ namespace CmsData
                 else
                     hc = string.Empty;
                 HttpRuntime.Cache.Insert(Db.Host + "topnotice", hc, null,
-                    DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                    DateTime.Now.AddMinutes(3), Cache.NoSlidingExpiration);
             }
             return hc;
         }
@@ -113,7 +113,7 @@ namespace CmsData
                 else
                     hc = def;
                 HttpRuntime.Cache.Insert(Db.Host + "headerimg", hc, null,
-                    DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                    DateTime.Now.AddMinutes(3), Cache.NoSlidingExpiration);
             }
             return hc;
         }
@@ -136,7 +136,7 @@ namespace CmsData
 </div>
 ";
                 HttpRuntime.Cache.Insert(Db.Host + "header", hc, null,
-                    DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                    DateTime.Now.AddMinutes(3), Cache.NoSlidingExpiration);
             }
             return hc;
         }

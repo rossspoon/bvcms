@@ -294,6 +294,13 @@ namespace CmsData
                                c.Program,
                                CompType,
                                c.CodeIntIds);
+				case QueryType.MembOfOrgWithCampus:
+                    return Expressions.MembOfOrgWithCampus(parm,
+                               c.Program,
+                               c.Division,
+                               c.Organization,
+                               CompType,
+                               c.CodeIntIds);
                 case QueryType.MembOfOrgWithSched:
                     return Expressions.MembOfOrgWithSched(parm,
                                c.Program,
@@ -307,6 +314,7 @@ namespace CmsData
                                c.Division,
                                c.Organization,
                                c.Schedule,
+							   c.Campus ?? 0,
                                CompType,
                                c.CodeIntIds);
                 case QueryType.MemberTypeAsOf:

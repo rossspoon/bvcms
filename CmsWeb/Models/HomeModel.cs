@@ -245,7 +245,7 @@ namespace CmsWeb.Models
                 return new List<MySavedQueryInfo>();
             var q = from c in DbUtil.Db.QueryBuilderClauses
                     where c.SavedBy == Util.UserName
-                    where c.GroupId == null && c.Field == "Group" && c.Clauses.Count() > 0
+                    where c.GroupId == null && c.Field == "Group" && c.Clauses.Any()
                     where !c.Description.Contains("scratchpad")
                     orderby c.Description
                     select new MySavedQueryInfo

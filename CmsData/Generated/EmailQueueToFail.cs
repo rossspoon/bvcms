@@ -17,8 +17,6 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _Pkey;
-		
 		private int? _Id;
 		
 		private int? _PeopleId;
@@ -33,6 +31,8 @@ namespace CmsData
 		
 		private string _Email;
 		
+		private int _Pkey;
+		
 		private long? _Timestamp;
 		
    		
@@ -43,9 +43,6 @@ namespace CmsData
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-		
-		partial void OnPkeyChanging(int value);
-		partial void OnPkeyChanged();
 		
 		partial void OnIdChanging(int? value);
 		partial void OnIdChanged();
@@ -68,6 +65,9 @@ namespace CmsData
 		partial void OnEmailChanging(string value);
 		partial void OnEmailChanged();
 		
+		partial void OnPkeyChanging(int value);
+		partial void OnPkeyChanged();
+		
 		partial void OnTimestampChanging(long? value);
 		partial void OnTimestampChanged();
 		
@@ -81,28 +81,6 @@ namespace CmsData
 
 		
     #region Columns
-		
-		[Column(Name="pkey", UpdateCheck=UpdateCheck.Never, Storage="_Pkey", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Pkey
-		{
-			get { return this._Pkey; }
-
-			set
-			{
-				if (this._Pkey != value)
-				{
-				
-                    this.OnPkeyChanging(value);
-					this.SendPropertyChanging();
-					this._Pkey = value;
-					this.SendPropertyChanged("Pkey");
-					this.OnPkeyChanged();
-				}
-
-			}
-
-		}
-
 		
 		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="int")]
 		public int? Id
@@ -251,6 +229,28 @@ namespace CmsData
 					this._Email = value;
 					this.SendPropertyChanged("Email");
 					this.OnEmailChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="pkey", UpdateCheck=UpdateCheck.Never, Storage="_Pkey", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Pkey
+		{
+			get { return this._Pkey; }
+
+			set
+			{
+				if (this._Pkey != value)
+				{
+				
+                    this.OnPkeyChanging(value);
+					this.SendPropertyChanging();
+					this._Pkey = value;
+					this.SendPropertyChanged("Pkey");
+					this.OnPkeyChanged();
 				}
 
 			}

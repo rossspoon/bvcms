@@ -18,6 +18,7 @@ namespace CmsWeb.Models
 		public string Dir { get; set; }
 		public bool NonTaxDeductible { get; set; }
 		public bool Pledges { get; set; }
+		public bool IncUnclosedBundles { get; set; }
 
 		public TotalsByFundModel()
 		{
@@ -43,7 +44,8 @@ namespace CmsWeb.Models
                     where Pledges || c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
                     where c.ContributionDate >= Dt1 && c.ContributionDate.Value.Date <= Dt2
                     where c.PledgeFlag == Pledges
-                    where c.BundleDetails.First().BundleHeader.BundleStatusId == 0
+					let status = c.BundleDetails.First().BundleHeader.BundleStatusId
+					where status == 0 || IncUnclosedBundles
                     where CampusId == 0 || c.Person.CampusId == CampusId
                     group c by c.FundId into g
                     orderby g.Key

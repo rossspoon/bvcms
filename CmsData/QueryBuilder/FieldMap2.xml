@@ -287,11 +287,14 @@
     <Field Name="IsMemberOf" Type="Bit" DisplayAs="IsMember({0}, {1}, {2})" Params="Program,Division,Organization" DataValueField="IdCode">
       Selects members of organization(s). Specify the Program or Program/Division or Program/Division/Organization
     </Field>
-    <Field Name="MemberTypeCodes" Title="Member Type Codes" Type="Code" DisplayAs="MemberTypeCodes({0}, {1}, {2}, {3})" Params="Program,Division,Organization,Schedule" DataSource="MemberTypeCodes" DataValueField="IdCode">
+    <Field Name="MemberTypeCodes" Title="Member Type Codes" Type="Code" DisplayAs="MemberTypeCodes({0}, {1}, {2}, {3}, {4})" Params="Program,Division,Organization,Schedule,Campus" DataSource="MemberTypeCodes" DataValueField="IdCode">
       Select members of an organization by their member type within a specified Program, Program/Division, or Program/Division/Organization. 
     </Field>
     <Field Name="MemberTypeAsOf" Title="Member Type As Of" Type="Code" DisplayAs="MemberTypeAsOf({0:d}, {1:d}, {2}, {3}, {4})" Params="StartDate,EndDate,Program,Division,Organization" DataSource="MemberTypeCodes" DataValueField="IdCode">
       Selects specified member types of organization(s) as of a date range. Specify a date range, or just a starting date (through current). Then specify the Program or Program/Division or Program/Division/Organization, then specify one or more member types.
+    </Field>
+    <Field Name="MembOfOrgWithCampus" Title="Member Of Org With Campus" Type="Code" DisplayAs="MembOfOrgWithCampus({0}, {1}, {2})" Params="Program,Division,Organization" DataSource="Campuses" DataValueField="IdCode">
+      Selects members of organizations with specified campus.
     </Field>
     <Field Name="MembOfOrgWithSched" Title="Member Of Org With Schedule" Type="Code" DisplayAs="MembOfOrgWithSched({0}, {1}, {2})" Params="Program,Division,Organization" DataSource="Schedules" DataValueField="IdCode">
       Selects members of organizations which meet according to one or more specified schedules.

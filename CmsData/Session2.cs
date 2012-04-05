@@ -73,7 +73,7 @@ namespace CmsData
                     list = Settings.ToDictionary(c => c.Id, c => c.SettingX,
                         StringComparer.OrdinalIgnoreCase);
 					HttpRuntime.Cache.Insert(Host + "Setting", list, null,
-						DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+						DateTime.Now.AddMinutes(3), Cache.NoSlidingExpiration);
                 }
                 catch (Exception ex)
                 {
@@ -93,7 +93,7 @@ namespace CmsData
             {
                 list = Settings.ToDictionary(c => c.Id, c => c.SettingX);
 				HttpRuntime.Cache.Insert(Host + "Setting", list, null,
-						DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+						DateTime.Now.AddMinutes(3), Cache.NoSlidingExpiration);
             }
             list[name] = value;
 
@@ -113,7 +113,7 @@ namespace CmsData
             {
                 list = Settings.ToDictionary(c => c.Id, c => c.SettingX);
 				HttpRuntime.Cache.Insert(Host + "Setting", list, null,
-						DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+						DateTime.Now.AddMinutes(3), Cache.NoSlidingExpiration);
             }
             list.Remove(name);
 

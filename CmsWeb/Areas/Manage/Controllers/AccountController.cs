@@ -195,11 +195,6 @@ The bvCMS Team</p>
             var email = AccountModel.ForgotPassword(username);
             TempData["email"] = email;
 
-            DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
-                CMSRoleProvider.provider.GetAdmins(),
-                "{0} {2}user: {1} forgot password"
-                .Fmt(DbUtil.Db.Host, username, email == null ? "unknown " : ""),
-                "no content");
             return RedirectToAction("RequestPassword");
         }
         public ActionResult CreateAccount(string id)

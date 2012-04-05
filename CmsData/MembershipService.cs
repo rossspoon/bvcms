@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Security;
+using UtilityExtensions;
 
 namespace CmsData
 {
@@ -10,19 +11,19 @@ namespace CmsData
     {
         public static int MinPasswordLength
         {
-            get { return CMSMembershipProvider.provider.MinRequiredPasswordLength; }
+            get { return DbUtil.Db.Setting("PasswordMinLength", "7").ToInt(); }
         }
         public static bool RequireSpecialCharacter
         {
-            get { return CMSMembershipProvider.provider.pRequireOneNonAlphaNum; }
+            get { return DbUtil.Db.Setting("PasswordRequireSpecialCharacter", "true").ToBool(); }
         }
         public static bool RequireOneNumber
         {
-            get { return CMSMembershipProvider.provider.pRequireOneNumber; }
+            get { return DbUtil.Db.Setting("PasswordRequireOneNumber", "false").ToBool(); }
         }
         public static bool RequireOneUpper
         {
-            get { return CMSMembershipProvider.provider.pRequireOneUpper; }
+			get { return DbUtil.Db.Setting("PasswordRequireOneUpper", "false").ToBool(); }
         }
 
         public static bool ValidateUser(string userName, string password)

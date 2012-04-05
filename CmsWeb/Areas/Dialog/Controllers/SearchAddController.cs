@@ -385,7 +385,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 return Json(new { close = true, how = "addselected", cid = id, pid = p.PeopleId, name = p.person.Name2 });
             }
             return Json(new { close = true, how = "addselected" });
-        }        private JsonResult AddPeopleToTag(string id, SearchModel m)
+        }
+        private JsonResult AddPeopleToTag(string id, SearchModel m)
         {
             if (id.HasValue())
             {

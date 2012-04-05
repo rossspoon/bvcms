@@ -27,6 +27,7 @@ namespace CmsWeb.Models
         int? Division { get; set; }
         int? Organization { get; set; }
         int? Schedule { get; set; }
+        int? Campus { get; set; }
         string Days { get; set; }
         string Age { get; set; }
         string Quarters { get; set; }
@@ -107,6 +108,7 @@ namespace CmsWeb.Models
         public bool OrganizationVisible { get; set; }
         public bool ViewVisible { get; set; }
         public bool ScheduleVisible { get; set; }
+        public bool CampusVisible { get; set; }
         public bool DaysVisible { get; set; }
         public bool AgeVisible { get; set; }
         public bool SavedQueryVisible { get; set; }
@@ -115,7 +117,7 @@ namespace CmsWeb.Models
         public bool TagsVisible { get; set; }
 
         public List<SelectListItem> TagData { get; set; }
-        public List<SelectListItem> CodeData { get; set; }
+        public IEnumerable<SelectListItem> CodeData { get; set; }
         public List<SelectListItem> CompareData { get; set; }
         public List<SelectListItem> ProgramData { get; set; }
         public List<SelectListItem> DivisionData { get; set; }
@@ -125,6 +127,7 @@ namespace CmsWeb.Models
         public int? Division { get; set; }
         public int? Organization { get; set; }
         public int? Schedule { get; set; }
+        public int? Campus { get; set; }
         public string Days { get; set; }
         public string Age { get; set; }
         public string Quarters { get; set; }
@@ -181,6 +184,7 @@ namespace CmsWeb.Models
             ProgramVisible = fieldMap.HasParam("Program");
             OrganizationVisible = fieldMap.HasParam("Organization");
             ScheduleVisible = fieldMap.HasParam("Schedule");
+            CampusVisible = fieldMap.HasParam("Campus");
             DaysVisible = fieldMap.HasParam("Days");
             AgeVisible = fieldMap.HasParam("Age");
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
@@ -224,6 +228,8 @@ namespace CmsWeb.Models
                     CodeVisible = true;
 					if (fieldMap.DataSource == "ExtraValues")
 						CodeData = StandardExtraValues.ExtraValueCodes();
+					else if (fieldMap.DataSource == "Campuses")
+						CodeData = Campuses();
 					else
 						CodeData = ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
                     break;
@@ -335,6 +341,7 @@ namespace CmsWeb.Models
             if (MinistryVisible)
                 c.Program = Ministry ?? 0;
             c.Schedule = Schedule ?? 0;
+			c.Campus = Campus ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
             c.Days = Days.ToInt();
@@ -393,6 +400,7 @@ namespace CmsWeb.Models
             if (ViewVisible)
                 View = c.Quarters;
             Schedule = c.Schedule;
+			Campus = c.Campus;
             StartDate = DateString(c.StartDate);
             EndDate = DateString(c.EndDate);
             SelectMultiple = c.HasMultipleCodes;
@@ -537,6 +545,22 @@ namespace CmsWeb.Models
                     {
                         Value = g.Key.ScheduleId.ToString(),
                         Text = DbUtil.Db.GetScheduleDesc(g.Key.MeetingTime)
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(None)", Value = "-1" });
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
+        }
+        public IEnumerable<SelectListItem> Campuses()
+        {
+            var q = from o in DbUtil.Db.Organizations
+					where o.CampusId != null
+                    group o by o.CampusId into g
+                    orderby g.Key
+                    select new SelectListItem
+                    {
+                        Value = g.Key.ToString(),
+                        Text = g.First().Campu.Description
                     };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(None)", Value = "-1" });

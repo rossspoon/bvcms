@@ -55,7 +55,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     pid = pds.Single().PeopleId.Value;
             }
             TransactionResponse tinfo = null;
-            if (t.TransactionGateway == "AuthorizeNet")
+            if (t.TransactionGateway.ToLower() == "authorizenet")
                 tinfo = OnlineRegModel.PostTransaction(
                     pf.CreditCard, pf.CCV, pf.Expires,
                     pf.ti.Amt ?? 0,
@@ -63,7 +63,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     pid, pf.ti.Emails, first, last,
                     pf.ti.Address, pf.ti.City, pf.ti.State, pf.ti.Zip,
                     m.Transaction.Testing ?? false);
-            else if (t.TransactionGateway == "Sage")
+            else if (t.TransactionGateway.ToLower() == "sage")
                 tinfo = OnlineRegModel.PostTransactionSage(
                     pf.CreditCard, pf.CCV, pf.Expires,
                     pf.ti.Amt ?? 0,
@@ -71,6 +71,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     pid, pf.ti.Emails, first, last,
                     pf.ti.Address, pf.ti.City, pf.ti.State, pf.ti.Zip, pf.ti.Phone,
                     m.Transaction.Testing ?? false);
+            else
+				return Redirect("/Home/ShowError/?error=unknown gateway " + t.TransactionGateway);
 
             if (tinfo.Approved == false)
             {

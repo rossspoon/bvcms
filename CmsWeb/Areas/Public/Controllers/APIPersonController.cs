@@ -81,13 +81,16 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(Util.CmsHost2 + "OnlineReg/RegisterLink/" + ot.Id.ToCode());
         }
         [HttpGet]
-        public ActionResult ExtraValues(int id, string fields)
+        public ActionResult ExtraValues(int? id, string fields)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<ExtraValues error=\"{0}\" />".Fmt(ret.Substring(1)));
+			if (!id.HasValue)
+				return Content("<ExtraValues error=\"Missing id\" />");
+
 			DbUtil.LogActivity("APIPerson ExtraValues {0}, {1}".Fmt(id, fields));
-            return Content(new APIFunctions(DbUtil.Db).ExtraValues(id, fields), "text/xml");
+            return Content(new APIFunctions(DbUtil.Db).ExtraValues(id.Value, fields), "text/xml");
         }
         [HttpPost]
         public ActionResult AddEditExtraValue(int peopleid, string field, string value, string type = "data")

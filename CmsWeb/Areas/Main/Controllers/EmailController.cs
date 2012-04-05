@@ -13,12 +13,14 @@ namespace CmsWeb.Areas.Main.Controllers
     public class EmailController : CmsStaffController
     {
         [ValidateInput(false)]
-        public ActionResult Index(int id, string body, string subj, bool? ishtml, bool? parents)
+        public ActionResult Index(int? id, string body, string subj, bool? ishtml, bool? parents)
         {
+			if (!id.HasValue)
+				return Content("no id");
             if (Util.SessionTimedOut())
                 return Redirect("/Errors/SessionTimeout.htm");
             DbUtil.LogActivity("Emailing people");
-            var m = new MassEmailer(id, parents);
+            var m = new MassEmailer(id.Value, parents);
             m.CmsHost = DbUtil.Db.CmsHost;
             m.Host = Util.Host;
             if (body.HasValue())

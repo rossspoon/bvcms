@@ -63,6 +63,8 @@ namespace CmsData
 		
 		private int? _Age;
 		
+		private int? _Campus;
+		
    		
    		private EntitySet< QueryBuilderClause> _Clauses;
 		
@@ -144,6 +146,9 @@ namespace CmsData
 		
 		partial void OnAgeChanging(int? value);
 		partial void OnAgeChanged();
+		
+		partial void OnCampusChanging(int? value);
+		partial void OnCampusChanged();
 		
     #endregion
 		public QueryBuilderClause()
@@ -493,7 +498,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(80)")]
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(150)")]
 		public string Description
 		{
 			get { return this._Description; }
@@ -662,6 +667,28 @@ namespace CmsData
 					this._Age = value;
 					this.SendPropertyChanged("Age");
 					this.OnAgeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Campus", UpdateCheck=UpdateCheck.Never, Storage="_Campus", DbType="int")]
+		public int? Campus
+		{
+			get { return this._Campus; }
+
+			set
+			{
+				if (this._Campus != value)
+				{
+				
+                    this.OnCampusChanging(value);
+					this.SendPropertyChanging();
+					this._Campus = value;
+					this.SendPropertyChanged("Campus");
+					this.OnCampusChanged();
 				}
 
 			}

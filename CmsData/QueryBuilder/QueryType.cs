@@ -100,6 +100,7 @@ namespace CmsData
         MaritalStatusId,
         MemberAnyChurch,
         MemberStatusId,
+        MembOfOrgWithCampus,
         MembOfOrgWithSched,
         MemberTypeAsOf,
         MemberTypeCodes,

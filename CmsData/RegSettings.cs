@@ -346,6 +346,7 @@ namespace CmsData
 			public int Id { get; set; }
 			public string Description { get; set; }
 			public int DayOfWeek { get; set; }
+			public int? Limit { get; set; }
 			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:h:mm tt}")]
 			public DateTime? Time { get; set; }
 			public DateTime Datetime()
@@ -1020,6 +1021,9 @@ namespace CmsData
 						case RegKeywords.DayOfWeek:
 							timeslot.DayOfWeek = GetInt();
 							break;
+						case RegKeywords.Limit:
+							timeslot.Limit = GetInt();
+							break;
 						default:
 							throw GetException("unexpected line in TimeSlot");
 					}
@@ -1442,6 +1446,7 @@ namespace CmsData
 				AddValueCk(1, sb, c.Description);
 				AddValueCk(2, sb, "Time", c.Time.ToString2("h:mm tt"));
 				AddValueCk(2, sb, "DayOfWeek", c.DayOfWeek);
+				AddValueCk(2, sb, "Limit", c.Limit);
 			}
 			sb.AppendLine();
 		}

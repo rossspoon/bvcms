@@ -108,6 +108,12 @@
                         @Html.DropDownList("Schedule", Model.Schedules())
                     </td>
                 </tr>
+                <tr id="CampusDiv" style="display:none">
+                    <td align="right">Campus:</td>
+                    <td>
+                        @Html.DropDownList("Campus", Model.Campuses())
+                    </td>
+                </tr>
             </table>
         </td>
         <td valign="top">

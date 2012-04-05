@@ -375,6 +375,7 @@ function UpdateView(vs) {
     $('#SavedQueryDesc').val(vs.SavedQueryDesc);
     $('#Ministry').val(vs.Ministry);
     $('#Schedule').val(vs.Schedule);
+    $('#Campus').val(vs.Campus);
     $('#Days').val(vs.Days);
     $('#Age').val(vs.Age);
     $('#Quarters').val(vs.Quarters);
@@ -386,6 +387,7 @@ function UpdateView(vs) {
         $('#Comparison')[0].selected = true;
 
     $('#SchedDiv').showhide(vs.ScheduleVisible);
+    $('#CampusDiv').showhide(vs.CampusVisible);
     $('#ProgDiv').showhide(vs.ProgramVisible);
     $('#DivDiv').showhide(vs.DivisionVisible);
     $('#EndDiv').showhide(vs.EndDateVisible);
