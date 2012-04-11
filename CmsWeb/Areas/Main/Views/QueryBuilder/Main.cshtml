@@ -102,6 +102,12 @@
                         <select id="Organization" ></select>
                     </td>
                 </tr>
+                <tr id="OrgTypeDiv" style="display:none">
+                    <td align="right">Org Type:</td>
+                    <td>
+                        @Html.DropDownList("OrgType", Model.OrgTypes())
+                    </td>
+                </tr>
                 <tr id="SchedDiv" style="display:none">
                     <td align="right">Schedule:</td>
                     <td>

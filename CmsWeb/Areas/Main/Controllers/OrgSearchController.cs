@@ -18,6 +18,8 @@ namespace CmsWeb.Areas.Main.Controllers
             public string Name { get; set; }
             public int? Program { get; set; }
             public int? Division { get; set; }
+            public int? Type { get; set; }
+            public int? Campus { get; set; }
             public int? Sched { get; set; }
             public int? Status { get; set; }
             public int? OnlineReg { get; set; }
@@ -47,6 +49,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.ScheduleId = os.Sched;
                 m.StatusId = os.Status;
                 m.OnlineReg = os.OnlineReg;
+				m.TypeId = os.Type;
+				m.CampusId = os.Campus;
             }
             return View(m);
         }
@@ -68,6 +72,14 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var m = new OrgSearchModel { ProgramId = id };
             return View("DivisionIds", m);
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult ApplyType(int id, OrgSearchModel m)
+        {
+			foreach (var o in m.FetchOrgs())
+				o.OrganizationTypeId = id == -1 ? (int?)null : id;
+			DbUtil.Db.SubmitChanges();
+            return View("Results", m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RenameDiv(int id, int divid, string name)
@@ -117,6 +129,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 Sched = m.ScheduleId,
                 Status = m.StatusId,
                 OnlineReg = m.OnlineReg,
+				Type = m.TypeId,
+				Campus = m.CampusId,
             };
         }
         [AcceptVerbs(HttpVerbs.Post)]

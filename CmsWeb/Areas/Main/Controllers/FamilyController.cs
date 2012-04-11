@@ -22,6 +22,8 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!id.HasValue)
                 return Content("no id");
             var m = new FamilyModel { familyid = id.Value };
+			if (m.Family == null)
+				return Content("no family");
             return View(m);
         }
         public ActionResult QuerySearch(int? id)

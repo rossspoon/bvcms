@@ -65,6 +65,7 @@ namespace CmsWeb.Models.PersonPage
                          EnrollDate = om.EnrollmentDate,
                          AttendPct = om.AttendPct,
                          DivisionName = om.Organization.Division.Program.Name + "/" + om.Organization.Division.Name,
+						 OrgType = om.Organization.OrganizationType.Description ?? "Other"
                      };
             return q2;
         }
@@ -73,17 +74,16 @@ namespace CmsWeb.Models.PersonPage
             var q = FetchEnrollments();
             switch (Pager.SortExpression)
             {
-                case "Organization":
-                    q = q.OrderBy(om => om.Organization.OrganizationName);
-                    break;
                 case "Enroll Date":
-                    q = q.OrderBy(om => om.EnrollmentDate);
-                    break;
-                case "Organization desc":
-                    q = q.OrderByDescending(om => om.Organization.OrganizationName);
-                    break;
                 case "Enroll Date desc":
-                    q = q.OrderByDescending(om => om.EnrollmentDate);
+					q = from om in q
+						orderby om.Organization.OrganizationType.Code ?? "z", om.EnrollmentDate
+						select om;
+                    break;
+				default:
+					q = from om in q
+						orderby om.Organization.OrganizationType.Code ?? "z", om.Organization.OrganizationName
+						select om;
                     break;
             }
             return q;

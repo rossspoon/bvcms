@@ -10,9 +10,11 @@
 <table class="grid">
 <thead>
     <tr>
-        <th>Locked</th>
+        @if (User.IsInRole("Admin"))
+		{
+        <th></th>
+		}
         <th>Username</th>
-        <th>Last Activity</th>
         <th>Roles</th>
     </tr>
 </thead>
@@ -20,16 +22,16 @@
     @foreach (var u in Model.Users)
     { 
     <tr>
-        <td valign="top">@u.IsLockedOut</td>
         @if (User.IsInRole("Admin"))
         { 
-        <td valign="top"><a href="/Person/UserDialog/@u.UserId" class="membertype">@u.Username</a></td>
+		<td valign="top"> <a href="/Person/Impersonate/@u.Username" class="bt">impersonate</a> </td>
+		<td valign="top"><a href="/Person/UserDialog/@u.UserId" class="membertype bt">@u.Username</a></td>
         }
+	
         else
         { 
         <td valign="top">@u.Username</td>
         } 
-        <td valign="top">@u.LastActivityDate.ToString2("M/d/yy h:mm tt")</td>
         <td>
         <table>
         @foreach (var r in u.Roles)

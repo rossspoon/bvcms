@@ -89,6 +89,22 @@ namespace CmsWeb.Areas.Main.Controllers
 			return Content("ok");
 		}
 		[Authorize(Roles = "Admin")]
+		public ActionResult Impersonate(string id)
+		{
+			var user = DbUtil.Db.Users.SingleOrDefault(uu => uu.Username == id);
+			if (user == null)
+				return Content("no user");
+			if (user.Roles.Contains("Finance") && !User.IsInRole("Finance"))
+				return Content("cannot impersonate finance");
+			FormsAuthentication.SetAuthCookie(id, false);
+			AccountModel.SetUserInfo(id, Session);
+			Util.FormsBasedAuthentication = true;
+			Util.UserPeopleId = user.PeopleId;
+			Util.UserPreferredName = user.Username;
+			return Redirect("/");
+		}
+
+		[Authorize(Roles = "Admin")]
 		public ActionResult Delete(int id)
 		{
 			Util.Auditing = false;

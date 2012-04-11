@@ -246,6 +246,20 @@ namespace CMSPresenter
 					   Value = ms.Description
 				   };
 		}
+		public IEnumerable<CodeValueItem> OrganizationTypes()
+		{
+			return from ms in DbUtil.Db.OrganizationTypes
+				   select new CodeValueItem
+				   {
+					   Id = ms.Id,
+					   Code = ms.Code,
+					   Value = ms.Description
+				   };
+		}
+		public IEnumerable<CodeValueItem> OrganizationTypes0()
+		{
+			return OrganizationTypes().AddNotSpecified();
+		}
 
 		public IEnumerable<CodeValueItem> Origins()
 		{
@@ -578,11 +592,6 @@ namespace CMSPresenter
 					   Code = c.Code,
 					   Value = c.Description,
 				   };
-		}
-
-		public IEnumerable<CodeValueItem> OrganizationTypes()
-		{
-			return MeetingTypes();
 		}
 
 		public IEnumerable<CodeValueItem> MeetingTypes()

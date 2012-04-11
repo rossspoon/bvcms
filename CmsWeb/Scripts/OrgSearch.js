@@ -4,7 +4,7 @@
     $("#clear").click(function (ev) {
         ev.preventDefault();
         $("input:text").val("");
-        $("#ProgramId,#CampusId,#ScheduleId").val(0);
+        $("#ProgramId,#CampusId,#ScheduleId,#OrgType").val(0);
         $("#OnlineReg").val(-1);
         $.post('/OrgSearch/DivisionIds/0', null, function (ret) {
             $('#DivisionId').html(ret);
@@ -81,7 +81,7 @@
         });
         $('#results > tbody > tr:even').addClass('alt');
 
-        $('#results').bind('mousedown', function(e) {
+        $('#results').bind('mousedown', function (e) {
             if ($(e.target).hasClass("bday")) {
                 $(e.target).editable('/OrgSearch/Edit/', {
                     type: 'datepicker',
@@ -102,17 +102,17 @@
         });
     };
     $.fmtTable();
-    $.maxZIndex = $.fn.maxZIndex = function(opt) {
+    $.maxZIndex = $.fn.maxZIndex = function (opt) {
         var def = { inc: 10, group: "*" };
         $.extend(def, opt);
         var zmax = 0;
-        $(def.group).each(function() {
+        $(def.group).each(function () {
             var cur = parseInt($(this).css('z-index'));
             zmax = cur > zmax ? cur : zmax;
         });
         if (!this.jquery)
             return zmax;
-        return this.each(function() {
+        return this.each(function () {
             zmax += def.inc;
             $(this).css("z-index", zmax);
         });
@@ -124,6 +124,16 @@
         });
     });
 
+    $("#ApplyType").click(function (ev) {
+        ev.preventDefault();
+        var f = $('#results').closest('form');
+        var q = f.serialize();
+        $.blockUI();
+        $.post('/OrgSearch/ApplyType/' + $("#TargetType").val(), q, function (ret) {
+            $.getTable();
+        });
+        return false;
+    });
     $("#MakeNewDiv").click(function (ev) {
         ev.preventDefault();
         $.post('/OrgSearch/MakeNewDiv/', { id: $("#TagProgramId").val(), name: $("#NewDiv").val() }, function (ret) {

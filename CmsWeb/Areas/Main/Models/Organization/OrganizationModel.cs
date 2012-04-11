@@ -124,6 +124,10 @@ namespace CmsWeb.Models.OrganizationPage
         {
             return QueryModel.ConvertToSelect(cv.EntryPoints(), "Id");
         }
+        public IEnumerable<SelectListItem> OrganizationTypes()
+        {
+            return QueryModel.ConvertToSelect(cv.OrganizationTypes0(), "Id");
+        }
         public IEnumerable<SelectListItem> GenderList()
         {
             return QueryModel.ConvertToSelect(cv.GenderCodes(), "Id");

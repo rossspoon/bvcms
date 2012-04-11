@@ -21,5 +21,6 @@ namespace CmsWeb.Models
         public DateTime? DropDate { get; set; }
         public Decimal? AttendPct { get; set; }
         public string DivisionName { get; set; }
+    	public string OrgType { get; set; }
     }
 }

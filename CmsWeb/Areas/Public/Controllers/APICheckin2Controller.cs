@@ -44,6 +44,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
+            DbUtil.LogActivity("checkin fam " + id);
             return new FamilyResult(id, campus, thisday, 0, false, kioskmode ?? false);
         }
         public ActionResult Class(int id, int thisday)
@@ -52,6 +53,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
+            DbUtil.LogActivity("checkin class " + id);
             return new ClassResult(id, thisday);
         }
         public ActionResult Classes(int id, int campus, int thisday, bool? noagecheck, bool? kioskmode)
@@ -60,6 +62,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
+            DbUtil.LogActivity("checkin classes " + id);
             return new ClassesResult(id, thisday, campus, noagecheck ?? false, kioskmode ?? false);
         }
 
@@ -69,6 +72,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
+            DbUtil.LogActivity("checkin namesearch " + id);
             return new NameSearchResult2(id, page ?? 1);
         }
         public class PersonInfo
@@ -102,6 +106,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
+            DbUtil.LogActivity("checkin AddPerson {0} {1} ({2})".Fmt(m.first, m.last, m.dob));
 
             CmsData.Family f;
             if (id > 0)
@@ -130,44 +135,11 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
+            DbUtil.LogActivity("checkin EditPerson {0} {1} ({2})".Fmt(m.first, m.last, m.dob));
             var p = DbUtil.Db.LoadPersonById(id);
             UpdatePerson(p, m);
             return Content(p.FamilyId.ToString());
         }
-//        private bool Authenticate(bool log = false)
-//        {
-//            var auth = Request.Headers["Authorization"];
-//            if (auth.HasValue())
-//            {
-//                var cred = Encoding.ASCII.GetString(
-//                    Convert.FromBase64String(auth.Substring(6))).Split(':');
-//                var username = cred[0];
-//                var password = cred[1];
-//
-//                bool ret;
-//                if (password == DbUtil.Db.Setting("ImpersonatePassword", null))
-//                    ret = true;
-//                else
-//                    ret = CMSMembershipProvider.provider.ValidateUser(username, password);
-//                if (ret)
-//                {
-//                    var roles = CMSRoleProvider.provider;
-//                    var role = "Access";
-//                    if (roles.RoleExists("Checkin"))
-//                        role = "Checkin";
-//                    SetUserInfo(username, Session);
-//                    if (!roles.IsUserInRole(username, role))
-//                        ret = false;
-//                }
-////                if (log)
-////                    if (ret)
-////                        DbUtil.LogActivity("checkin {0} authenticated".Fmt(username));
-////                    else
-////                        DbUtil.LogActivity("checkin {0} not authenticated".Fmt(username));
-//                return ret;
-//            }
-//            return false;
-//        }
         string Trim(string s)
         {
             if (s.HasValue())
@@ -298,6 +270,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
+            DbUtil.LogActivity("checkin {0}, {1}, {2}".Fmt(PeopleId, OrgId, Present ? "attend0" : "unattend0"));
             var m = new CheckInModel();
             m.RecordAttend(PeopleId, OrgId, Present, thisday);
             var r = new ContentResult();
@@ -309,6 +282,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
+            DbUtil.LogActivity("checkin {0}, {1}, {2}".Fmt(PeopleId, OrgId, Present ? "attend" : "unattend"));
             var m = new CheckInModel();
             m.RecordAttend2(PeopleId, OrgId, Present, hour);
             var r = new ContentResult();
@@ -320,6 +294,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
+            DbUtil.LogActivity("checkin {0}, {1}, {2}".Fmt(PeopleId, OrgId, Member ? "join" : "unjoin"));
             var m = new CheckInModel();
             m.JoinUnJoinOrg(PeopleId, OrgId, Member);
             var r = new ContentResult();
@@ -409,6 +384,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
             if (!Authenticate())
                 return Content("not authorized");
+			DbUtil.LogActivity("checkin uploadpic " + id);
             var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
             if (person.Picture == null)
                 person.Picture = new Picture();
@@ -429,9 +405,12 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!Authenticate())
                 return Content("not authorized");
             var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
-            if (person.PictureId != null)
-                return new ImageResult(person.Picture.LargeId ?? 0);
-            return new ImageResult(0);
+			if (person.PictureId != null)
+			{
+				DbUtil.LogActivity("checkin picture " + id);
+				return new ImageResult(person.Picture.LargeId ?? 0);
+			}
+        	return new ImageResult(0);
         }
         public ActionResult CheckInList()
         {

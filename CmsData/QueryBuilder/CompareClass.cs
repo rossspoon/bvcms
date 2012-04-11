@@ -87,6 +87,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                CompType,
                                c.CodeIntIds);
                 case QueryType.AttendMemberTypeAsOf:
@@ -299,6 +300,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                CompType,
                                c.CodeIntIds);
                 case QueryType.MembOfOrgWithSched:
@@ -313,6 +315,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                c.Schedule,
 							   c.Campus ?? 0,
                                CompType,
@@ -324,6 +327,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                CompType,
                                c.CodeIntIds);
                 case QueryType.MeetingId:
@@ -433,6 +437,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                c.Days,
                                CompType,
                                c.CodeIntIds);
@@ -481,6 +486,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                c.Days,
                                CompType,
                                c.TextValue.ToInt());
@@ -498,6 +504,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                c.Quarters,
                                c.Days,
                                CompType,
@@ -507,6 +514,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                c.Days,
                                CompType,
                                c.CodeIntIds);
@@ -584,6 +592,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+							   c.OrgType ?? 0,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.WeddingDate:
@@ -593,7 +602,35 @@ namespace CmsData
                                Db,
                                CompType,
                                c.DateValue);
-                default:
+				case QueryType.MemberStatusId:
+				case QueryType.MaritalStatusId:
+				case QueryType.GenderId:
+				case QueryType.DropCodeId:
+				case QueryType.JoinCodeId:
+                    if (CompType == CompareType.IsNull || CompType == CompareType.IsNotNull)
+						return Expressions.CompareConstant(parm, c.Field, CompType, -1);
+            		return Expressions.CompareConstant(parm, c.Field, CompType,
+            			IsMultiple ? (object)c.CodeIntIds : (object)c.CodeIds.ToInt());
+				case QueryType.PrimaryAddress:
+				case QueryType.PrimaryAddress2:
+				case QueryType.PrimaryZip:
+				case QueryType.PrimaryState:
+				case QueryType.PrimaryCountry:
+				case QueryType.PrimaryCity:
+				case QueryType.TitleCode:
+				case QueryType.FirstName:
+				case QueryType.MiddleName:
+				case QueryType.MaidenName:
+				case QueryType.NickName:
+				case QueryType.CellPhone:
+				case QueryType.WorkPhone:
+				case QueryType.HomePhone:
+				case QueryType.EmailAddress:
+				case QueryType.EmailAddress2:
+                    if (CompType == CompareType.IsNull || CompType == CompareType.IsNotNull)
+						return Expressions.CompareConstant(parm, c.Field, CompType, null);
+					return Expressions.CompareConstant(parm, c.Field, CompType, c.TextValue ?? "");
+            	default:
                     if (CompType == CompareType.IsNull || CompType == CompareType.IsNotNull)
                         return Expressions.CompareConstant(parm,
                                    c.Field,

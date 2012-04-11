@@ -263,6 +263,8 @@ namespace CmsWeb.Areas.Main.Controllers
             UpdateModel(m);
             if (m.org.CampusId == 0)
                 m.org.CampusId = null;
+            if (m.org.OrganizationTypeId == 0)
+                m.org.OrganizationTypeId = null;
             DbUtil.Db.SubmitChanges();
 			DbUtil.LogActivity("Update OrgInfo {0}".Fmt(m.org.OrganizationName));
             return View("OrgInfo", m);

@@ -17,8 +17,10 @@ namespace CmsWeb.Areas.Setup.Controllers
             return View(DbUtil.Db.UserCanEmailFors.Select(u => u));
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create(int UserId, int CanEmailFor)
+        public ActionResult Create(int? UserId, int? CanEmailFor)
         {
+			if (!UserId.HasValue || !CanEmailFor.HasValue)
+				return RedirectShowError("missing id");
             var user1 = DbUtil.Db.Users.SingleOrDefault(uu => uu.UserId == UserId);
             if (user1 == null)
                 return RedirectShowError("no such user " + UserId);
@@ -29,7 +31,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             if (u != null)
                 return RedirectShowError("already exists");
 
-            u = new UserCanEmailFor { UserId = UserId, CanEmailFor = CanEmailFor };
+            u = new UserCanEmailFor { UserId = UserId.Value, CanEmailFor = CanEmailFor.Value };
             DbUtil.Db.UserCanEmailFors.InsertOnSubmit(u);
             DbUtil.Db.SubmitChanges();
             return RedirectToAction("Index");

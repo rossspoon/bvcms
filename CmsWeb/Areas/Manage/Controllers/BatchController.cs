@@ -656,8 +656,10 @@ namespace CmsWeb.Areas.Manage.Controllers
 			var q = from line in s.Split('\n')
 					select line.ToInt();
 			foreach (var pid in q)
-				Person.Tag(DbUtil.Db, pid, name, DbUtil.Db.CurrentUser.PeopleId, (int)DbUtil.TagTypeId_Personal);
-			DbUtil.Db.SubmitChanges();
+			{
+				Person.Tag(DbUtil.Db, pid, name, DbUtil.Db.CurrentUser.PeopleId, (int) DbUtil.TagTypeId_Personal);
+				DbUtil.Db.SubmitChanges();
+			}
 			return Redirect("/Tags?tag=" + name);
 		}
 		[HttpGet]

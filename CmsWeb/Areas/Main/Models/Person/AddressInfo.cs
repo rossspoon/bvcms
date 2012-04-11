@@ -193,7 +193,7 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(f, "CityName", City);
                     UpdateValue(f, "StateCode", State);
                     UpdateValue(f, "ResCodeId", ResCodeId);
-                    UpdateValue(f, "ZipCode", Zip);
+                    UpdateValue(f, "ZipCode", Zip ?? "");
                     UpdateValue(f, "CountryName", Country);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 10);
@@ -208,7 +208,7 @@ namespace CmsWeb.Models.PersonPage
                     UpdateValue(p, "CityName", City);
                     UpdateValue(p, "StateCode", State);
                     UpdateValue(p, "ResCodeId", ResCodeId);
-                    UpdateValue(p, "ZipCode", Zip);
+                    UpdateValue(p, "ZipCode", Zip ?? "");
                     UpdateValue(p, "CountryName", Country);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 30);

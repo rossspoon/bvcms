@@ -167,19 +167,14 @@ namespace CmsWeb.Models
 			if (user == null && n > 0)
 			{
 				if (n > 3)
-					NotifyAdmins("failed password #{2} by {0} on {1}"
-						.Fmt(userName, url, failedpasswordcount),
-							"{0} tried to login at {1} but got the password wrong"
-								.Fmt(userName, Util.Now));
+					DbUtil.LogActivity("failed password #{1} by {0}".Fmt(userName, failedpasswordcount));
 				if (failedpasswordcount == max)
 					return "Your account has been locked out for too many failed attempts, use the forgot password link, or notify an Admin";
 				return problem;
 			}
 			else if (user == null)
 			{
-				NotifyAdmins("attempt to login by non-user {0} on {1}".Fmt(userName, url),
-						"{0} tried to login at {1} but is not a user"
-							.Fmt(userName, Util.Now));
+				DbUtil.LogActivity("attempt to login by non-user " + userName);
 				return problem;
 			}
 			else if (user.IsLockedOut)
@@ -277,9 +272,7 @@ namespace CmsWeb.Models
 					return "/Person/Index/" + Util.UserPeopleId;
 
 				if (name.HasValue())
-					NotifyAdmins("user loggedin without a role on " + DbUtil.Db.Host,
-						string.Format("{0} visited site at {1} but does not have Access role",
-							name, Util.Now));
+					DbUtil.LogActivity("user {0} loggedin without a role ".Fmt(name));
 				FormsAuthentication.SignOut();
 				return "/Errors/AccessDenied.htm";
 			}

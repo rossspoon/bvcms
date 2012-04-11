@@ -28,6 +28,7 @@ namespace CmsWeb.Models
         int? Organization { get; set; }
         int? Schedule { get; set; }
         int? Campus { get; set; }
+        int? OrgType { get; set; }
         string Days { get; set; }
         string Age { get; set; }
         string Quarters { get; set; }
@@ -109,6 +110,7 @@ namespace CmsWeb.Models
         public bool ViewVisible { get; set; }
         public bool ScheduleVisible { get; set; }
         public bool CampusVisible { get; set; }
+        public bool OrgTypeVisible { get; set; }
         public bool DaysVisible { get; set; }
         public bool AgeVisible { get; set; }
         public bool SavedQueryVisible { get; set; }
@@ -128,6 +130,7 @@ namespace CmsWeb.Models
         public int? Organization { get; set; }
         public int? Schedule { get; set; }
         public int? Campus { get; set; }
+        public int? OrgType { get; set; }
         public string Days { get; set; }
         public string Age { get; set; }
         public string Quarters { get; set; }
@@ -185,6 +188,7 @@ namespace CmsWeb.Models
             OrganizationVisible = fieldMap.HasParam("Organization");
             ScheduleVisible = fieldMap.HasParam("Schedule");
             CampusVisible = fieldMap.HasParam("Campus");
+            OrgTypeVisible = fieldMap.HasParam("OrgType");
             DaysVisible = fieldMap.HasParam("Days");
             AgeVisible = fieldMap.HasParam("Age");
             SavedQueryVisible = fieldMap.HasParam("SavedQueryIdDesc");
@@ -342,6 +346,7 @@ namespace CmsWeb.Models
                 c.Program = Ministry ?? 0;
             c.Schedule = Schedule ?? 0;
 			c.Campus = Campus ?? 0;
+			c.OrgType = OrgType ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
             c.Days = Days.ToInt();
@@ -401,6 +406,7 @@ namespace CmsWeb.Models
                 View = c.Quarters;
             Schedule = c.Schedule;
 			Campus = c.Campus;
+			OrgType = c.OrgType;
             StartDate = DateString(c.StartDate);
             EndDate = DateString(c.EndDate);
             SelectMultiple = c.HasMultipleCodes;
@@ -570,6 +576,19 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> Views()
         {
             return CmsWeb.Models.VolunteersModel.Views().ToList();
+        }
+        public IEnumerable<SelectListItem> OrgTypes()
+        {
+            var q = from t in Db.OrganizationTypes
+                    orderby t.Code
+                    select new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Description
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
         }
         public IEnumerable<SelectListItem> Programs()
         {

@@ -13,29 +13,32 @@
 </tr>
 </thead>
 <tbody>
-@if (User.IsInRole("Access"))
+@{ var pOrgType = "Other"; }
+@foreach (var om in Model.Enrollments())
 {
-    foreach (var om in Model.Enrollments())
+    if(om.OrgType != pOrgType)
+    {
+        pOrgType = om.OrgType;
+    <tr class="section"><td colspan="7">@om.OrgType</td></tr>
+    }
+    if (User.IsInRole("Access"))
     {
     <tr>
-    <td><a href="/Organization/Index/@om.OrgId" title="@om.DivisionName">@om.Name</a></td>
-    <td>@om.Location</td>
-    <td><a href="/Person/Index/@om.LeaderId">@om.LeaderName</a></td>
-    <td>@om.Schedule</td>
-    <td><a href="/OrgContent/Index/@om.OrgId">@om.EnrollDate.FormatDate()</a></td>
-    <td><a class="membertype" pid="@om.PeopleId" oid="@om.OrgId" 
-        href="/OrgMemberDialog/Index/@om.OrgId?pid=@om.PeopleId&from=na">
-        @om.MemberType</a></td>
-    <td>@(om.AttendPct > 0 ? om.AttendPct.Value.ToString("N1") : "")</td>
+        <td class="indent"><a href="/Organization/Index/@om.OrgId" title="@om.DivisionName|@om.OrgType" class="tooltip">@om.Name</a></td>
+        <td>@om.Location</td>
+        <td><a href="/Person/Index/@om.LeaderId">@om.LeaderName</a></td>
+        <td>@om.Schedule</td>
+        <td><a href="/OrgContent/Index/@om.OrgId">@om.EnrollDate.FormatDate()</a></td>
+        <td><a class="membertype" pid="@om.PeopleId" oid="@om.OrgId" 
+            href="/OrgMemberDialog/Index/@om.OrgId?pid=@om.PeopleId&from=na">
+            @om.MemberType</a></td>
+        <td>@(om.AttendPct > 0 ? om.AttendPct.Value.ToString("N1") : "")</td>
     </tr>
     }
-}
-else
-{
-    foreach (var om in Model.Enrollments())
-    { 
+    else
+    {
     <tr>
-    <td><a title="@om.DivisionName" href="/OrgContent/Index/@om.OrgId">@om.Name</a></td>
+    <td class="indent"><a title="@om.DivisionName" href="/OrgContent/Index/@om.OrgId">@om.Name</a></td>
     <td>@om.Location</td>
     <td>@om.LeaderName</td>
     <td>@om.Schedule</td>

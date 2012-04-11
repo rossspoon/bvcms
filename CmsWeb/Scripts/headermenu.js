@@ -42,10 +42,16 @@ $(document).ready(function () {
     });
     $('#cleartag').click(function (e) {
         e.preventDefault();
+        //if (alert("are you sure?"))
         $.post("/Tags/ClearTag", {}, function () {
             window.location.reload();
         });
-    });
+    }); 
+    $('.warntip').tooltip({
+        delay: 150,
+        showBody: "|",
+        showURL: false
+    }); 
 });
 function CloseAddDialog() {
     $("#AddDialog").dialog("close");

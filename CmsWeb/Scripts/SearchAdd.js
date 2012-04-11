@@ -1,9 +1,14 @@
 ﻿$(function () {
     $("a.formlink").live('click', function (ev) {
         ev.preventDefault();
-        var f = $(this).closest('form');
+        var a = $(this);
+        var f = a.closest('form');
         var q = f.serialize();
-        $.post($(this).attr('href'), q, function (ret) {
+        var h = a.attr('href');
+        if (a.text() === 'Commit and Add') {
+            $.blockUI();
+        }
+        $.post(h, q, function (ret) {
             if (ret.close) {
                 if (ret.message) {
                     alert(ret.message);
@@ -27,8 +32,8 @@
                         break;
                 }
             }
-            else
-                $(f).html(ret).ready(function () {
+            else {
+                $(f).html(ret).ready(function() {
                     $("a.bt").button();
                     $(".addrcol").tooltip({
                         showURL: false,
@@ -36,6 +41,8 @@
                     });
                     $('#people > tbody > tr:even').addClass('alt');
                 });
+            }
+            $.unblockUI();
         });
         return false;
     });
@@ -48,28 +55,6 @@
         $("#dob").val('');
         return false;
     });
-    $("#verifyaddress").live("click", function () {
-        var f = $(this).closest('form');
-        var q = f.serialize();
-        $.post($(this).attr('href'), q, function (ret) {
-            if (confirm(ret.address + "\nUse this Address?")) {
-                $('#address', f).val(ret.Line1);
-                $('#address2', f).val(ret.Line2);
-                $('#city', f).val(ret.City);
-                $('#state', f).val(ret.State);
-                $('#zip', f).val(ret.Zip);
-            }
-        });
-        return false;
-    });
-//    $("#zip").live("blur", function () {
-//        $.post('/OnlineReg/CityState/' + $(this).val(), null, function (ret) {
-//            if (ret) {
-//                $('#state').val(ret.state);
-//                $('#city').val(ret.city);
-//            }
-//        }, 'json');
-//    });
     $("form input").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();

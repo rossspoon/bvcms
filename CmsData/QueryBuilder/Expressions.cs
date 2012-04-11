@@ -27,6 +27,7 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int org,
+			int orgtype,
 			int sched,
 			int campus,
 			CompareType op,
@@ -43,6 +44,7 @@ namespace CmsData
 							|| m.Organization.CampusId == campus
 							|| (campus == -1 && m.Organization.CampusId == null)
 							)
+						&& (orgtype == 0 || m.Organization.OrganizationTypeId == orgtype)
 						&& (org == 0 || m.OrganizationId == org)
 						&& (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
 						&& (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -59,6 +61,7 @@ namespace CmsData
 							|| m.Organization.CampusId == campus
 							|| (campus == -1 && m.Organization.CampusId == null)
 							)
+						&& (orgtype == 0 || m.Organization.OrganizationTypeId == orgtype)
 						&& (org == 0 || m.OrganizationId == org)
 						&& (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
 						&& (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -95,12 +98,14 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int org,
+			int orgtype,
 			CompareType op,
 			params int[] ids)
 		{
 			Expression<Func<Person, bool>> pred = p =>
 				p.OrganizationMembers.Any(m =>
 					(ids.Contains(m.Organization.CampusId ?? 0) || (ids[0] == -1 && m.Organization.CampusId == null))
+					&& (orgtype == 0 || m.Organization.OrganizationTypeId == orgtype)
 					&& (org == 0 || m.OrganizationId == org)
 					&& (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -118,6 +123,7 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int? orgid,
+			int orgtype,
 			CompareType op,
 			bool tf)
 		{
@@ -129,6 +135,7 @@ namespace CmsData
 					&& et.TransactionDate <= enddt // transaction starts <= looked for end
 					&& (et.Pending ?? false) == false
 					&& (et.NextTranChangeDate ?? DateTime.Now) >= startdt // transaction ends >= looked for start
+					&& (orgtype == 0 || et.Organization.OrganizationTypeId == orgtype)
 					&& (orgid == 0 || et.OrganizationId == orgid)
 					&& (divid == 0 || et.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || et.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -146,6 +153,7 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int? org,
+			int orgtype,
 			CompareType op,
 			params int[] ids)
 		{
@@ -159,6 +167,7 @@ namespace CmsData
 					&& et.TransactionDate <= to // where it begins
 					&& (et.Pending ?? false) == false
 					&& ids.Contains(et.MemberTypeId)  // what it's type was during that time
+					&& (orgtype == 0 || et.Organization.OrganizationTypeId == orgtype)
 					&& (org == 0 || et.OrganizationId == org)
 					&& (divid == 0 || et.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || et.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -176,6 +185,7 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int? org,
+			int orgtype,
 			CompareType op,
 			params int[] ids)
 		{
@@ -185,7 +195,8 @@ namespace CmsData
 					&& a.MeetingDate < to
 					&& (a.AttendanceFlag == true || (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite))
 					&& ids.Contains(a.AttendanceTypeId.Value)
-					&& (org == 0 || a.Meeting.OrganizationId == org)
+					&& (orgtype == 0 || a.Organization.OrganizationTypeId == orgtype)
+					&& (org == 0 || a.OrganizationId == org)
 					&& (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
 					);
@@ -240,6 +251,7 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int? org,
+			int orgtype,
 			int days,
 			CompareType op,
 			int[] ids)
@@ -249,6 +261,7 @@ namespace CmsData
 				p.Attends.Any(a => a.MeetingDate >= mindt
 					&& (a.AttendanceFlag == true || (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite))
 					&& ids.Contains(a.AttendanceTypeId.Value)
+					&& (orgtype == 0 || a.Organization.OrganizationTypeId == orgtype)
 					&& (org == 0 || a.Meeting.OrganizationId == org)
 					&& (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -263,6 +276,7 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int? org,
+			int orgtype,
 			int days,
 			CompareType op,
 			int[] ids)
@@ -271,6 +285,7 @@ namespace CmsData
 			Expression<Func<Person, bool>> pred = p =>
 				p.OrganizationMembers.Any(a => a.EnrollmentDate >= mindt
 					&& ids.Contains(a.Organization.RegistrationTypeId.Value)
+					&& (orgtype == 0 || a.Organization.OrganizationTypeId == orgtype)
 					&& (org == 0 || a.OrganizationId == org)
 					&& (divid == 0 || a.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || a.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -479,6 +494,7 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int? org,
+			int orgtype,
 			int days,
 			CompareType op,
 			int cnt)
@@ -487,6 +503,7 @@ namespace CmsData
 			Expression<Func<Person, int>> pred = p =>
 				p.Attends.Count(a => a.AttendanceFlag == true
 					&& a.MeetingDate >= mindt
+					&& (orgtype == 0 || a.Organization.OrganizationTypeId == orgtype)
 					&& (org == 0 || a.Meeting.OrganizationId == org)
 					&& (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -568,6 +585,7 @@ namespace CmsData
 			int? progid,
 			int? divid,
 			int? org,
+			int orgtype,
 			string days0,
 			int days,
 			CompareType op,
@@ -579,6 +597,7 @@ namespace CmsData
 			Expression<Func<Person, int>> pred = p =>
 				p.Attends.Count(a => a.AttendanceFlag == true
 					&& a.MeetingDate >= dt2
+					&& (orgtype == 0 || a.Organization.OrganizationTypeId == orgtype)
 					&& (org == 0 || a.Meeting.OrganizationId == org)
 					&& (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -587,6 +606,7 @@ namespace CmsData
 				!p.Attends.Any(a => a.AttendanceFlag == true
 					&& a.MeetingDate < dt2
 					&& a.MeetingDate >= dt1
+					&& (orgtype == 0 || a.Organization.OrganizationTypeId == orgtype)
 					&& (org == 0 || a.Meeting.OrganizationId == org)
 					&& (divid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.DivId == divid))
 					&& (progid == 0 || a.Meeting.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
@@ -1399,7 +1419,7 @@ namespace CmsData
 		   decimal pct)
 		{
 			// note: this only works for members because visitors do not have att%
-			var memb = WasMemberAsOf(parm, start, end, progid, divid, org, CompareType.Equal, true);
+			var memb = WasMemberAsOf(parm, start, end, progid, divid, org, 0, CompareType.Equal, true);
 
 			Expression<Func<Person, double>> pred = p =>
 

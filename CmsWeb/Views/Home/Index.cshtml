@@ -42,9 +42,15 @@
         </div>
         <h2><a href="/Person/Index/@Util.UserPeopleId">My Involvement</a></h2>
         <div class="jscroll" style="height:10em">
+@{ var pOrgType = "Other"; }
 @foreach (var my in Model.MyInvolvements())
 {
-            <div class="drow"><a href="/Organization/Index/@my.OrgId">@my.Name</a></div>
+    if(my.OrgType != pOrgType)
+    {
+        pOrgType = my.OrgType;
+            <div class="drow section">@my.OrgType</div>
+    }
+            <div class="drow indent"><a href="/Organization/Index/@my.OrgId">@my.Name</a></div>
 }
         </div>
         <h2><a href="/QueryBuilder/Main">My Queries</a></h2>

@@ -6,6 +6,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using CMSPresenter;
@@ -59,6 +60,11 @@ namespace CmsWeb.Areas.Main.Models.Report
                     Response.Write("unknown format");
                     return;
             }
+            if (!q.Any())
+            {
+                Response.Write("no data found");
+                return;
+            }
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "filename=foo.pdf");
 
@@ -104,7 +110,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.CompleteRow();
             document.Add(t);
 
-            document.Close();
+			document.Close();
         }
     }
 }

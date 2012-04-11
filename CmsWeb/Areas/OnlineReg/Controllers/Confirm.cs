@@ -154,7 +154,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 text = text.Replace("{contact}", staff.Name);
                 text = text.Replace("{contactemail}", staff.EmailAddress);
                 text = text.Replace("{contactphone}", p.org.PhoneNumber.FmtFone());
-                var re = new Regex(@"(?<b>.*?)<!--ITEM\sROW\sSTART-->.(?<row>.*?)\s*<!--ITEM\sROW\sEND-->(?<e>.*)", RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
+                var re = new Regex(@"(?<b>.*?)<!--ITEM\sROW\sSTART-->(?<row>.*?)\s*<!--ITEM\sROW\sEND-->(?<e>.*)", RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
                 var match = re.Match(text);
                 var b = match.Groups["b"].Value;
                 var row = match.Groups["row"].Value.Replace("{funditem}", "{0}").Replace("{itemamt}", "{1:N2}");

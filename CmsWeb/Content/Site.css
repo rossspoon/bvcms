@@ -258,12 +258,10 @@ div.drow span.isnew {
 	font-weight: 700;
 	font-size:130%;
 	color: #86BE00;
-} 
-.alt {
+}
+.alt:not(.section) {
 	background-color: #EEE;
 }
-
-
 #QueryConditionSelect 
 {
 	display:none;
@@ -396,4 +394,13 @@ table.grid td
 a.sz1.bt
 {
     font-size: .85em;
+}
+.section {
+font-size: 110%;
+color: #888;
+font-style: italic;
+border-bottom: #888 1px solid
+}
+.indent {
+padding-left: 10px !important;
 }

@@ -30,6 +30,7 @@ namespace CmsWeb.Models
         public int? ScheduleId { get; set; }
         public int? CampusId { get; set; }
         public int? StatusId { get; set; }
+		public int? TypeId { get; set; }
         public string tagstr { get; set; }
         public int? OnlineReg { get; set; }
 
@@ -139,7 +140,7 @@ namespace CmsWeb.Models
                 _count = FetchOrgs().Count();
             return _count.Value;
         }
-        private IQueryable<CmsData.Organization> FetchOrgs()
+        public IQueryable<CmsData.Organization> FetchOrgs()
         {
             var me = Util.UserPeopleId;
 
@@ -201,6 +202,15 @@ namespace CmsWeb.Models
             if (StatusId > 0)
                 organizations = from o in organizations
                                 where o.OrganizationStatusId == StatusId
+                                select o;
+			
+            if (TypeId > 0)
+                organizations = from o in organizations
+                                where o.OrganizationTypeId == TypeId
+                                select o;
+            else if (TypeId == -1)
+                organizations = from o in organizations
+                                where o.OrganizationTypeId == null
                                 select o;
 
             if (CampusId > 0)
@@ -480,6 +490,21 @@ namespace CmsWeb.Models
             });
             return list;
         }
+		public IEnumerable<SelectListItem> OrgTypes()
+        {
+            var q = from t in DbUtil.Db.OrganizationTypes
+                    orderby t.Code
+                    select new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Description
+                    };
+            var list = q.ToList();
+            list.Insert(0, new SelectListItem { Text = "(None)", Value = "-1", });
+            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+            return list;
+        }
+
         public IEnumerable<SelectListItem> RegistrationTypeIds()
         {
             var q = from o in CmsData.Codes.RegistrationTypeCode.GetCodePairs()

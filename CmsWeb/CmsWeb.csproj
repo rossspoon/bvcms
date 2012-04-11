@@ -1091,8 +1091,7 @@
     <Content Include="Areas\Finance\Views\Contributions\Results.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Current.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\Failed.cshtml" />
-    <None Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving2.cshtml">
-    </None>
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving2.cshtml" />
     <Content Include="ConnectionStrings.config" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="TestConnectionStrings.config" />
@@ -1976,13 +1975,11 @@
     <Content Include="images\DownRight.gif" />
     <Content Include="images\EmptyMap.png" />
     <Content Include="images\Excel.png" />
-    <Content Include="images\headerimage.jpg" />
     <Content Include="images\help_out.gif" />
     <Content Include="images\individual.gif" />
     <Content Include="images\loading.gif" />
     <Content Include="images\Mail.png" />
     <Content Include="images\minus.png" />
-    <Content Include="images\NewBellevue.jpg" />
     <Content Include="images\pdficon_small.gif" />
     <Content Include="images\plus.png" />
     <Content Include="images\Report.png" />

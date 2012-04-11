@@ -152,14 +152,21 @@ namespace CmsWeb
 				Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			if (helper.IsDebug() || debug == true)
 				return new HtmlString(@"<script src=""{0}"" type=""text/javascript""></script>".Fmt(script));
-			return new HtmlString(@"<script src=""/Min{0}?v={1}"" type=""text/javascript""></script>".Fmt(script, Util.Version));
+			var v = Util.Version;
+			var v2 = v.Substring(v.Length-3);	
+			return new HtmlString(@"<script src=""/Min{0}?v={1}"" type=""text/javascript""></script>".Fmt(script, v2));
 		}
 		public static HtmlString Css(this HtmlHelper helper, string css)
 		{
 			if (Util.Version == "?")
-				Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+				Util.Version =
+					System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString().GetHashCode().ToString();
 			if (!helper.IsDebug())
-				return new HtmlString(@"<link href='{0}?v={1}' rel='stylesheet' type='text/css'></script>".Fmt(css, Util.Version));
+			{
+				var v = Util.Version;
+				var v2 = v.Substring(v.Length-3);	
+				return new HtmlString(@"<link href='{0}?v={1}' rel='stylesheet' type='text/css'></script>".Fmt(css, v2));
+			}
 			return new HtmlString(@"<link href='{0}' rel='stylesheet' type='text/css'></script>".Fmt(css));
 		}
         private static string TryGetModel(this HtmlHelper helper, string name)

@@ -14,6 +14,12 @@
       <tr>
         <td align="right">Name:</td>
         <td>@Html.TextBox("Name", Model.Name, new { title = "OrganizationId, Location or part of Name (organization, leader, division)" })</td>
+          <td valign="top" align="right">Status: </td>
+          <td valign="top">@Html.DropDownList("StatusId", Model.StatusIds()) </td>
+      </tr>
+      <tr>
+        <td align="right">Org Type:</td>
+        <td>@Html.DropDownList("TypeId", Model.OrgTypes())</td>
         <td align="right">Campus:</td>
         <td style="min-width:10em">@Html.DropDownList("CampusId", Model.CampusIds())</td>
       </tr>
@@ -26,54 +32,56 @@
       <tr>
         <td align="right">Division:</td>
         <td>@Html.DropDownList("DivisionId", Model.DivisionIds())</td>
-        <td align="right">Online Reg:</td>
-        <td>@Html.DropDownList("OnlineReg", Model.RegistrationTypeIds())</td>
+	  	<td align="right"><span style="padding-left: 1em;">Online Reg:</span></td>
+          <td>@Html.DropDownList("OnlineReg", Model.RegistrationTypeIds())</td>
       </tr>
-      <tr>
-          <td valign="top" align="right">Status:
+  	<tr>
+		<td colspan="2">
 @if (User.IsInRole("OrgTagger"))
 { 
           <div style="padding-top:7px"><a href="#" id="hideshow">Manager</a></div>
 }
-          </td>
-          <td valign="top">@Html.DropDownList("StatusId", Model.StatusIds())
-          </td>
-          <td colspan="2" align="right">
+		</td>
+		<td colspan="2" align="right">
           <a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a>
           <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a>
-          </td>
-      </tr>
+		</td>
+	</tr>
 
 @if (User.IsInRole("OrgTagger"))
 { 
       <tr class="managedivisions" style="display:none">
-        <td colspan="4"> <h2>Manage Divisions</h2> </td></tr>
+        <td colspan="4"> <h2>Manage Organization Structure</h2> </td></tr>
       <tr class="managedivisions" style="display:none">
-        <td align="right">Target Program:</td>
+	  	<td align="right">Target<br />Program</td>
         <td>@Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
-        <td align="right">Target Division:</td>
+	  	<td align="right">Target<br />Division</td>
         <td>@Html.DropDownList("TagDiv", Model.DivisionIds())</td>
       </tr>
       <tr class="managedivisions" style="display:none">
-        <td align="right" colspan="4">
-            New Divsion: @Html.TextBox("NewDiv")
-            <a id="MakeNewDiv" href="/OrgSearch/MakeNewDiv" class="bt">New</a>
-            <a id="RenameDiv" href="/OrgSearch/RenameDiv" class="bt">Rename</a>
-        </td>
+          <td align="right">New<br />Divsion</td>
+          <td>@Html.TextBox("NewDiv", "", new { style = "width:95%" }) </td>
+          <td colspan="2"><a id="MakeNewDiv" href="/OrgSearch/MakeNewDiv" class="bt">New</a>
+            <a id="RenameDiv" href="/OrgSearch/RenameDiv" class="bt">Rename</a></td>
+      </tr>
+      <tr class="managedivisions" style="display:none">
+          <td align="right">Target<br />Type</td>
+          <td>@Html.DropDownList("TargetType", Model.OrgTypes())</td>
+          <td colspan="2"><a id="ApplyType" href="#" class="bt">Apply to Filtered List</a></td>
       </tr>
 }
     </table>
-<div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
-<div><a href="#">Exports and Reports</a></div>
+<div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 1em;float:left;font-size:1.2em;">
+<div><a href="#">Exports/Reports</a></div>
 <div class="sublinks">
     <a id="ExportExcel" href="#">Export to Excel</a>
-    <a id="rollsheet1" href='#'>Create Roll Sheet(s)</a>
+    <a id="rollsheet1" href='#'>Roll Sheet(s)</a>
     <a id="Meetings" href="#">Meetings</a>
     <a id="Roster" href="#">Roster</a>
     <a class="ViewReport" href="/Reports/OrgLeaders/">Leaders</a>
     <a class="ViewReport" href="/Reports/ClassList/">Class List</a>
     <a class="ViewReport" href="/Reports/ShirtSizes">Shirt Sizes</a>
-    <a id="attdetail1" href='#'>Meetings Attendance</a>
+    <a id="attdetail1" href='#'>Meetings/Attendance</a>
 @if (Session["OrgCopySettings"] != null)
 { 
     <a id="PasteSettings" href="/OrgSearch/PasteSettings">Paste Settings</a>

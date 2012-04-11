@@ -402,6 +402,8 @@ namespace CmsData
             DateTime dt;
             if (Util.DateValid(dob, out dt))
             {
+				while (dt.Year < 1900)
+					dt = dt.AddYears(100);
                 if (dt > Util.Now)
                     dt = dt.AddYears(-100);
                 p.BirthDay = dt.Day;
@@ -417,6 +419,8 @@ namespace CmsData
                 if (Regex.IsMatch(dob, @"\d+[-/]\d+[-/]\d+"))
                 {
                     p.BirthYear = dt.Year;
+					while (p.BirthYear < 1900)
+						p.BirthYear += 100;
                     if (p.GetAge() < 18 && MarriedCode == 0)
                         p.MaritalStatusId = MaritalStatusCode.Single;
                 }
@@ -1080,5 +1084,17 @@ namespace CmsData
             Db.SubmitChanges();
             return bd.Contribution;
         }
+		public static int FetchOrCreateMemberType(CMSDataContext Db, string type)
+		{
+			var ms = Db.MemberStatuses.SingleOrDefault(m => m.Description == type);
+			if (ms == null)
+			{
+				var max = Db.MemberStatuses.Max(mm => mm.Id) + 1;
+				ms = new MemberStatus() { Id = max, Code="M" + max, Description = type };
+				Db.MemberStatuses.InsertOnSubmit(ms);
+				Db.SubmitChanges();
+			}
+			return ms.Id;
+		}
     }
 }

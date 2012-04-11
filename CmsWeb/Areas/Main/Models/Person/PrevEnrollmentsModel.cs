@@ -59,6 +59,7 @@ namespace CmsWeb.Models.PersonPage
                          DropDate = om.TransactionDate,
                          AttendPct = om.AttendancePercentage,
                          DivisionName = om.Organization.Division.Program.Name + "/" + om.Organization.Division.Name,
+						 OrgType = om.Organization.OrganizationType.Description ?? "Other"
                      };
             return q2;
         }
@@ -67,23 +68,22 @@ namespace CmsWeb.Models.PersonPage
             var q = FetchPrevEnrollments();
             switch (Pager.SortExpression)
             {
-                case "Organization":
-                    q = q.OrderBy(om => om.Organization.OrganizationName);
-                    break;
                 case "Enroll Date":
-                    q = q.OrderBy(om => om.FirstTransaction.TransactionDate);
+                case "Enroll Date desc":
+					q = from om in q
+						orderby om.Organization.OrganizationType.Code ?? "z", om.FirstTransaction.TransactionDate
+						select om;
                     break;
                 case "Drop Date":
-                    q = q.OrderBy(om => om.TransactionDate);
-                    break;
-                case "Organization desc":
-                    q = q.OrderByDescending(om => om.Organization.OrganizationName);
-                    break;
-                case "Enroll Date desc":
-                    q = q.OrderByDescending(om => om.FirstTransaction.TransactionDate);
-                    break;
                 case "Drop Date desc":
-                    q = q.OrderByDescending(om => om.TransactionDate);
+					q = from om in q
+						orderby om.Organization.OrganizationType.Code ?? "z", om.TransactionDate
+						select om;
+                    break;
+				default:
+					q = from om in q
+						orderby om.Organization.OrganizationType.Code ?? "z", om.Organization.OrganizationName
+						select om;
                     break;
             }
             return q;

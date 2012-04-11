@@ -30,11 +30,13 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(api.Login(u.Person),"text/xml");
         }
         [HttpGet]
-        public ActionResult LoginInfo(int id)
+        public ActionResult LoginInfo(int? id)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<LoginInfo error=\"{0}\" />".Fmt(ret.Substring(1)));
+			if (!id.HasValue)
+				return Content("<LoginInfo error=\"Missing id\" />");
             var p = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
             var api = new APIFunctions(DbUtil.Db);
             return Content(api.Login(p), "text/xml");
@@ -189,13 +191,15 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content(new APIPerson(DbUtil.Db).GetPeopleXml(peopleid, famid, first, last), "text/xml");
         }
         [HttpGet]
-        public ActionResult GetPerson(int id)
+        public ActionResult GetPerson(int? id)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<Person error=\"{0}\" />".Fmt(ret.Substring(1)));
+			if (!id.HasValue)
+				return Content("<Person error=\"Missing id\" />");
 			DbUtil.LogActivity("APIPerson GetPerson " + id);
-            return Content(new APIPerson(DbUtil.Db).GetPersonXml(id), "text/xml");
+            return Content(new APIPerson(DbUtil.Db).GetPersonXml(id.Value), "text/xml");
         }
         [HttpPost]
         public ActionResult UpdatePerson()

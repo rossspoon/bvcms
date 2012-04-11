@@ -105,6 +105,7 @@
                 $('.bt').button();
                 $(".datepicker").datepicker();
                 $.extraEditable('#extravalues');
+                $('.tooltip', f).tooltip({ showURL: false, showBody: '|' });
             });
         });
         return false;

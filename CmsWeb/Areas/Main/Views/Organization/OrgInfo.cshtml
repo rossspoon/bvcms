@@ -2,7 +2,7 @@
 @using CmsWeb
 @using CmsData
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
-@{ CmsData.Organization o = Model.org; }
+@{ var o = Model.org; }
 <h2>@Model.org.OrganizationName@(Model.org.LeaderId.HasValue ? "," : "") <span style="font-size:12px">@Model.org.LeaderName</span></h2>
 <table cellspacing="5" width="100%">
     <tr>
@@ -13,7 +13,7 @@
         <th align="right">Schedule:</th>
         <td colspan="2">@Model.Schedule</td>
     </tr>
-    <tr>
+    <tr class="helptip" title="Divisions|use this link to manage the divisions this organization belongs to|a dialog box will pop up">
         <th align="right">Divisions:</th>
         <td colspan="2"><a id="divisionlist" href="/SearchDivisions/Index/@Model.OrganizationId?ordered=true">
             @Html.Partial("DivisionList", Model.Divisions())</a></td>
@@ -24,15 +24,15 @@
     </tr>
     <tr>
         <th align="right">Security Type:</th>
-        <td colspan="2">@Html.CodeDesc("org.SecurityTypeId", Model.SecurityTypeList())</td>
+        <td>@Html.CodeDesc("org.SecurityTypeId", Model.SecurityTypeList())</td>
+        <th align="right" style="padding-left:1em">Status:</th>
+        <td>@Html.CodeDesc("org.OrganizationStatusId", Model.OrgStatusList())</td>
     </tr>
-    <tr>
-        <th align="right">Status:</th>
-        <td colspan="2">@Html.CodeDesc("org.OrganizationStatusId", Model.OrgStatusList())</td>
-    </tr>
-    <tr>
-        <th align="right">Leader Type:</th>
-        <td colspan="2">@Html.CodeDesc("org.LeaderMemberTypeId", Model.LeaderTypeList())</td>
+    <tr class="helptip" title="What is Organization Type?|an upcoming new feature for classifying your organizations|in progress, stay tuned">
+		<th align="right">Organization Type:</th>
+		<td>@Html.CodeDesc("org.OrganizationTypeId", Model.OrganizationTypes())</td>
+		<th align="right"><span style="padding-left:1em">Leader Type:</span></th>
+        <td>@Html.CodeDesc("org.LeaderMemberTypeId", Model.LeaderTypeList())</td>
     </tr>
     <tr>
         <th align="right">Main Fellowship:</th>

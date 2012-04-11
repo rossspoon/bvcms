@@ -202,10 +202,12 @@ $(function () {
                 $("#schedules", f).sortable({ stop: $.renumberListItems });
                 $("#editor", f);
                 $.regsettingeditclick(f);
+                $(".helptip").tooltip({ showBody: "|" });
             });
         });
         return false;
     });
+    $(".helptip").tooltip({ showBody: "|" });
     $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');

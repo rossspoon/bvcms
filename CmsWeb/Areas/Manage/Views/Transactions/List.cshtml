@@ -39,17 +39,20 @@
 @{
     var tt = Model.TotalTransactions();
 }
-        <tr>
-			<td align="right" colspan="6"><strong>Total: </strong></td>
-			<td align="right">@((tt.Amt - tt.Donate).ToString("N"))</td>
-    @if (Model.finance)
-    {
-            <td align="right">@tt.Donate.ToString("N")</td>
-    }
-            <td align="right">@tt.Amtdue.ToString("N")</td>
-            <td colspan="2"></td>
-        </tr>
-        <tr><td colspan="10"><hr/></td></tr>
+@if(tt != null)
+{
+	<tr>
+		<td align="right" colspan="6"><strong>Total: </strong></td>
+		<td align="right">@((tt.Amt - tt.Donate).ToString("N"))</td>
+		@if (Model.finance)
+		{
+			<td align="right">@tt.Donate.ToString("N")</td>
+		}
+		<td align="right">@tt.Amtdue.ToString("N")</td>
+		<td colspan="2"></td>
+	</tr>
+	<tr><td colspan="10"><hr/></td></tr>
+}
         <tr>
             <th><a href="#" class="sortable">Id</a></th>
             <th><a href="#" class="sortable">Tran Id</a></th>

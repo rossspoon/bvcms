@@ -65,6 +65,8 @@ namespace CmsData
 		
 		private int? _Campus;
 		
+		private int? _OrgType;
+		
    		
    		private EntitySet< QueryBuilderClause> _Clauses;
 		
@@ -149,6 +151,9 @@ namespace CmsData
 		
 		partial void OnCampusChanging(int? value);
 		partial void OnCampusChanged();
+		
+		partial void OnOrgTypeChanging(int? value);
+		partial void OnOrgTypeChanged();
 		
     #endregion
 		public QueryBuilderClause()
@@ -689,6 +694,28 @@ namespace CmsData
 					this._Campus = value;
 					this.SendPropertyChanged("Campus");
 					this.OnCampusChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OrgType", UpdateCheck=UpdateCheck.Never, Storage="_OrgType", DbType="int")]
+		public int? OrgType
+		{
+			get { return this._OrgType; }
+
+			set
+			{
+				if (this._OrgType != value)
+				{
+				
+                    this.OnOrgTypeChanging(value);
+					this.SendPropertyChanging();
+					this._OrgType = value;
+					this.SendPropertyChanged("OrgType");
+					this.OnOrgTypeChanged();
 				}
 
 			}

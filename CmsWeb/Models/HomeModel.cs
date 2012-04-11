@@ -56,6 +56,7 @@ namespace CmsWeb.Models
             public string Name { get; set; }
             public string MemberType { get; set; }
             public int OrgId { get; set; }
+        	public string OrgType { get; set; }
         }
         public IEnumerable<MyInvolvementInfo> MyInvolvements()
         {
@@ -65,11 +66,7 @@ namespace CmsWeb.Models
 
             var pid = u.PeopleId;
 
-            var organizations = DbUtil.Db.Organizations.AsQueryable();
             var limitvisibility = Util2.OrgMembersOnly || Util2.OrgLeadersOnly;
-            organizations = from o in organizations
-                            where o.OrganizationMembers.Any(om => om.PeopleId == pid)
-                            select o;
             var oids = new int[0];
             if (Util2.OrgLeadersOnly)
                 oids = DbUtil.Db.GetLeaderOrgIds(pid);
@@ -77,12 +74,13 @@ namespace CmsWeb.Models
                     where om.PeopleId == pid
                     where (om.Pending ?? false) == false
                     where oids.Contains(om.OrganizationId) || !(limitvisibility && om.Organization.SecurityTypeId == 3)
-                    orderby om.Organization.OrganizationName
+                    orderby om.Organization.OrganizationType.Code ?? "z", om.Organization.OrganizationName
                     select new MyInvolvementInfo
                     {
                         Name = om.Organization.OrganizationName,
                         MemberType = om.MemberType.Description,
-                        OrgId = om.OrganizationId
+                        OrgId = om.OrganizationId,
+						OrgType = om.Organization.OrganizationType.Description ?? "Other",
                     };
 
             return q;

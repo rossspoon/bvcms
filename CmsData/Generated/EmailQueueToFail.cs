@@ -170,7 +170,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="reason", UpdateCheck=UpdateCheck.Never, Storage="_Reason", DbType="varchar(200)")]
+		[Column(Name="reason", UpdateCheck=UpdateCheck.Never, Storage="_Reason", DbType="varchar(300)")]
 		public string Reason
 		{
 			get { return this._Reason; }

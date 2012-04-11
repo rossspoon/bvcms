@@ -37,8 +37,10 @@ div.section div, div.section table
 </style>
 <div class="regform">
     <h2>@Model.Organization.OrganizationName</h2>
+    <div>@Html.Raw(Model.Instructions)</div>
     <h4>for @Model.person.Name &lt;@Model.person.EmailAddress&gt;</h4>
    <form method="post" action="/OnlineReg/ManageGiving">
+    @Html.Hidden("otheredit", 0)
     @Html.Hidden("pid", Model.pid)
     @Html.Hidden("orgid", Model.orgid)
         <fieldset>

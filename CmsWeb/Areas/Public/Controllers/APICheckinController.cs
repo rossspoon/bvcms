@@ -19,6 +19,8 @@ namespace CmsWeb.Areas.Public.Controllers
         public ActionResult Match(string id, int campus, int thisday, int? page, bool? kioskmode)
         {
             Response.NoCache();
+			DbUtil.Db.SetNoLock();
+			DbUtil.LogActivity("chkin " + id);
 
             var m = new CheckInModel();
             DbUtil.Db.SetNoLock();
