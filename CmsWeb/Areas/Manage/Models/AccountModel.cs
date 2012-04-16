@@ -346,8 +346,8 @@ Click on your username below to set your password and login to the system.</p>
 <blockquote><a href=""{0}"">New Password</a></blockquote>
 <p>If you did not request this, please disregard this message.</p>
 <p>Thanks,<br />
-The BVCMS Team</p>".Fmt(url), Util.ToMailAddressList(p.EmailAddress), 0, null);
-					return Util.ObscureEmail(p.EmailAddress);
+The BVCMS Team</p>".Fmt(url), Util.ToMailAddressList(p.EmailAddress ?? p.EmailAddress2), 0, null);
+					return Util.ObscureEmail(p.EmailAddress ?? p.EmailAddress2);
 				}
 				return null;
 			}

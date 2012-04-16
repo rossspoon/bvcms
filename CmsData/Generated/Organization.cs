@@ -135,6 +135,12 @@ namespace CmsData
 		
 		private int? _OrganizationTypeId;
 		
+		private string _MemberJoinScript;
+		
+		private string _AddToSmallGroupScript;
+		
+		private string _RemoveFromSmallGroupScript;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -358,6 +364,15 @@ namespace CmsData
 		
 		partial void OnOrganizationTypeIdChanging(int? value);
 		partial void OnOrganizationTypeIdChanged();
+		
+		partial void OnMemberJoinScriptChanging(string value);
+		partial void OnMemberJoinScriptChanged();
+		
+		partial void OnAddToSmallGroupScriptChanging(string value);
+		partial void OnAddToSmallGroupScriptChanged();
+		
+		partial void OnRemoveFromSmallGroupScriptChanging(string value);
+		partial void OnRemoveFromSmallGroupScriptChanged();
 		
     #endregion
 		public Organization()
@@ -1720,6 +1735,72 @@ namespace CmsData
 					this._OrganizationTypeId = value;
 					this.SendPropertyChanged("OrganizationTypeId");
 					this.OnOrganizationTypeIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MemberJoinScript", UpdateCheck=UpdateCheck.Never, Storage="_MemberJoinScript", DbType="varchar(50)")]
+		public string MemberJoinScript
+		{
+			get { return this._MemberJoinScript; }
+
+			set
+			{
+				if (this._MemberJoinScript != value)
+				{
+				
+                    this.OnMemberJoinScriptChanging(value);
+					this.SendPropertyChanging();
+					this._MemberJoinScript = value;
+					this.SendPropertyChanged("MemberJoinScript");
+					this.OnMemberJoinScriptChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AddToSmallGroupScript", UpdateCheck=UpdateCheck.Never, Storage="_AddToSmallGroupScript", DbType="varchar(50)")]
+		public string AddToSmallGroupScript
+		{
+			get { return this._AddToSmallGroupScript; }
+
+			set
+			{
+				if (this._AddToSmallGroupScript != value)
+				{
+				
+                    this.OnAddToSmallGroupScriptChanging(value);
+					this.SendPropertyChanging();
+					this._AddToSmallGroupScript = value;
+					this.SendPropertyChanged("AddToSmallGroupScript");
+					this.OnAddToSmallGroupScriptChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RemoveFromSmallGroupScript", UpdateCheck=UpdateCheck.Never, Storage="_RemoveFromSmallGroupScript", DbType="varchar(50)")]
+		public string RemoveFromSmallGroupScript
+		{
+			get { return this._RemoveFromSmallGroupScript; }
+
+			set
+			{
+				if (this._RemoveFromSmallGroupScript != value)
+				{
+				
+                    this.OnRemoveFromSmallGroupScriptChanging(value);
+					this.SendPropertyChanging();
+					this._RemoveFromSmallGroupScript = value;
+					this.SendPropertyChanged("RemoveFromSmallGroupScript");
+					this.OnRemoveFromSmallGroupScriptChanged();
 				}
 
 			}

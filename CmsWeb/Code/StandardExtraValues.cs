@@ -149,7 +149,8 @@ namespace CmsWeb.Code
 					 orderby e.Field, e.StrValue
 					 select new SelectListItem()
 							{
-								Text = e.Field + ":" + e.StrValue
+								Text = e.Field + ":" + e.StrValue,
+								Value = e.Field + ":" + e.StrValue,
 							};
 			return q2.ToList();
 		}

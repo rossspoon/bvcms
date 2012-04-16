@@ -303,7 +303,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 	        DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
 	                "Volunteer Commitments Confirmation",
 @"Thank you for managing your Volunteer Commitments to {0}<br/>
-You have the following subscriptions:<br/>
+You have the following committments:<br/>
 {1}".Fmt(m.Org.OrganizationName, summary));
 
             DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed subscriptions to {1}<br/>

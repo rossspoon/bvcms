@@ -617,7 +617,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RegisterEmail", UpdateCheck=UpdateCheck.Never, Storage="_RegisterEmail", DbType="varchar(50)")]
+		[Column(Name="RegisterEmail", UpdateCheck=UpdateCheck.Never, Storage="_RegisterEmail", DbType="varchar(80)")]
 		public string RegisterEmail
 		{
 			get { return this._RegisterEmail; }

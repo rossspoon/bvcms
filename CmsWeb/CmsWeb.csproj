@@ -1092,7 +1092,9 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Current.cshtml" />
     <Content Include="Areas\Manage\Views\Emails\Failed.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving2.cshtml" />
-    <Content Include="ConnectionStrings.config" />
+    <Content Include="ConnectionStrings.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="TestConnectionStrings.config" />
     <None Include="Minify.bat" />

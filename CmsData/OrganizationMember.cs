@@ -106,7 +106,11 @@ namespace CmsData
         {
             if (!name.HasValue())
                 return;
-            var mt = Db.MemberTags.SingleOrDefault(t => t.Name == name.Trim() && t.OrgId == OrganizationId);
+//			var script = Db.Content(this.Organization.AddToSmallGroupScript, "");
+//			if (script.HasValue())
+//			{
+//			}
+        	var mt = Db.MemberTags.SingleOrDefault(t => t.Name == name.Trim() && t.OrgId == OrganizationId);
             if (mt == null)
             {
                 mt = new MemberTag { Name = name.Trim(), OrgId = OrganizationId };

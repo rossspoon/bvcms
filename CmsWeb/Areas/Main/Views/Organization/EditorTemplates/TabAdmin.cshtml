@@ -40,15 +40,18 @@
 		Registration End Date:</span>
 		<span>@Html.TextBox("org.RegEnd", Model.org.RegEnd.ToString2("MM/dd/yyyy hh:mm tt"), new { @class = "datetimepicker" })</span>
     </li>
-    <li>
-        <span class="text big tip" title="Organization Pick List
+@if (Model.org.RegistrationTypeId != CmsData.Codes.RegistrationTypeCode.JoinOrganization)
+{
+	<li>
+		<span class="text big tip" title="Organization Pick List
         |This is used on the master organization 
         |and will become the dropdown for 'User Chooses Organization'">
-        Organization Pick List:</span>
-        <div id="orgpickdiv" class="block border">
-        @Html.Partial("OrgPickList2", Model)
-        </div>
-    </li>
+			Organization Pick List:</span>
+		<div id="orgpickdiv" class="block border">
+			@Html.Partial("OrgPickList2", Model)
+		</div>
+	</li>
+}
     <li><span class="keyword big tip" title="Max Limit
         |This will cause the class to go into a 'class filled' state 
         |when the number of members reaches this point.">

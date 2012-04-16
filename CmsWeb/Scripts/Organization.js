@@ -320,7 +320,7 @@ $(function () {
     $("#NewMeetingDialog").dialog({
         autoOpen: false,
         width: 488,
-        height: 350,
+        height: 450,
         modal: true
     });
     $('#RollsheetLink').live("click", function (ev) {
