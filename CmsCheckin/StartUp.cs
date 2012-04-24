@@ -63,13 +63,11 @@ namespace CmsCheckin
         {
             if (cbCampusId.Items.Count > 0)
                 Settings1.Default.Campus = ((Campus)(cbCampusId.SelectedItem)).Name;
-            Settings1.Default.Printer = Printer.Text;
             Settings1.Default.AskChurch = AskChurch.Checked;
             Settings1.Default.AskChurchName = AskChurchName.Checked;
             Settings1.Default.AskEmFriend = AskEmFriend.Checked;
             Settings1.Default.AskGrade = AskGrade.Checked;
             Settings1.Default.KioskName = KioskName.Text;
-            Settings1.Default.TwoInchLabel = TwoInchLabel.Checked;
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
             Settings1.Default.LeadHours = LeadHours.Text.ToInt();
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
@@ -84,13 +82,6 @@ namespace CmsCheckin
             cbDayOfWeek.SelectedIndex = 0;
             HideCursor.Checked = false;
 #endif
-            var prtdoc = new PrintDocument();
-            var defp = prtdoc.PrinterSettings.PrinterName;
-            foreach (var s in PrinterSettings.InstalledPrinters)
-                Printer.Items.Add(s);
-            Printer.SelectedIndex = Printer.FindStringExact(defp);
-            if (Settings1.Default.Printer.HasValue())
-                Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
 
             foreach (var i in campuses.Descendants("campus"))
                 cbCampusId.Items.Add(new Campus
@@ -115,7 +106,6 @@ namespace CmsCheckin
             AskChurch.Checked = Settings1.Default.AskChurch;
             AskChurchName.Checked = Settings1.Default.AskChurchName;
             KioskName.Text = Settings1.Default.KioskName;
-            TwoInchLabel.Checked = Settings1.Default.TwoInchLabel;
             DisableJoin.Checked = Settings1.Default.DisableJoin;
         }
     }

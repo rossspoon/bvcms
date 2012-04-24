@@ -226,5 +226,17 @@ namespace CmsCheckin {
                 this["SecurityLabelPerChild"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BuildingMode {
+            get {
+                return ((bool)(this["BuildingMode"]));
+            }
+            set {
+                this["BuildingMode"] = value;
+            }
+        }
     }
 }

@@ -172,7 +172,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 g.Groups[4].Value.ToInt(),
                 g.Groups[5].Value.ToInt(),
                 0);
-            var newMtg = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == orgid && m.MeetingDate == dt);
+            var newMtg = DbUtil.Db.Meetings.FirstOrDefault(m => m.OrganizationId == orgid && m.MeetingDate == dt);
 			if (newMtg == null)
 			{
                 var attsch = organization.OrgSchedules.SingleOrDefault(ss => ss.MeetingTime.Value.TimeOfDay == dt.TimeOfDay && ss.MeetingTime.Value.DayOfWeek == dt.DayOfWeek);

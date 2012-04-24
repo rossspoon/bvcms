@@ -287,12 +287,13 @@ namespace CmsCheckin
         }
         public static void GoHome(this UserControl c, string s)
         {
-            c.Swap(Program.home);
+			var tb = Program.baseform.textbox;
+            c.Swap(tb.Parent as UserControl);
             Program.ClearFields();
             Program.CursorHide();
-            Program.home.textBox1.Text = s.FmtFone();
-            Program.home.textBox1.Focus();
-            Program.home.textBox1.Select(Program.home.textBox1.Text.Length, 0);
+            tb.Text = s.FmtFone();
+            tb.Focus();
+            tb.Select(tb.Text.Length, 0);
         }
         public static string Age(this string birthday)
         {

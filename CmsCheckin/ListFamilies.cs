@@ -12,9 +12,11 @@ namespace CmsCheckin
 {
     public partial class ListFamilies : UserControl
     {
-        public ListFamilies()
+		UserControl nextcontrol;
+        public ListFamilies(UserControl next)
         {
             InitializeComponent();
+			this.nextcontrol = next;
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -105,8 +107,11 @@ namespace CmsCheckin
         void ab_Click(object sender, EventArgs e)
         {
             var ab = sender as Button;
-            this.Swap(Program.family);
-            Program.family.ShowFamily((int)ab.Tag);
+            this.Swap(nextcontrol);
+			if (nextcontrol is ListFamily)
+				((ListFamily)nextcontrol).ShowFamily((int)ab.Tag);
+			else if (nextcontrol is ListFamily2)
+				((ListFamily2)nextcontrol).ShowFamily((int)ab.Tag);
         }
 
         private void GoBack_Click(object sender, EventArgs e)

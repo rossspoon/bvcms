@@ -26,6 +26,19 @@ namespace CmsCheckin
                 return;
             PrintMode = login.PrintMode.Text;
             PrintKiosks = login.PrintKiosks.Text;
+            Printer = login.Printer.Text;
+            TwoInchLabel = login.TwoInchLabel.Checked;
+			BuildingMode = login.BuildingAccessMode.Checked;
+
+			BaseForm b;
+            if (BuildingMode)
+            {
+				home2 = new Home2();
+				b = new BaseForm(home2);
+				baseform = b;
+                Application.Run(b);
+                return;
+            }
 
             var f = new StartUp { campuses = login.campuses };
             var ret = f.ShowDialog();
@@ -36,7 +49,6 @@ namespace CmsCheckin
             CampusId = f.CampusId;
             ThisDay = f.DayOfWeek;
             HideCursor = f.HideCursor.Checked;
-            Printer = f.Printer.Text;
             AskGrade = f.AskGrade.Checked;
             AskLabels = f.AskLabels.Checked;
             LeadTime = int.Parse(f.LeadHours.Text);
@@ -46,7 +58,6 @@ namespace CmsCheckin
             AskChurch = f.AskChurch.Checked;
             AskChurchName = f.AskChurchName.Checked;
             EnableTimer = f.EnableTimer.Checked;
-            TwoInchLabel = f.TwoInchLabel.Checked;
             DisableJoin = f.DisableJoin.Checked;
         	SecurityLabelPerChild = f.SecurityLabelPerChild.Checked;
 
@@ -60,15 +71,15 @@ namespace CmsCheckin
                 return;
             }
 
-            var b = new BaseForm();
-            Program.baseform = b;
+			home = new Home();
+			b = new BaseForm(home);
+            baseform = b;
 
             if (f.FullScreen.Checked)
             {
                 b.WindowState = FormWindowState.Maximized;
                 b.FormBorderStyle = FormBorderStyle.None;
             }
-
             Application.Run(b);
         }
         public static string Username { get; set; }
@@ -98,89 +109,24 @@ namespace CmsCheckin
         public static bool TwoInchLabel { get; set; }
         public static bool SecurityLabelPerChild { get; set; }
         public static string PrintMode { get; set; }
+        public static bool BuildingMode { get; set; }
 
         public static string QueryString
         {
             get { return string.Format("?campus={0}&thisday={1}&kioskmode={2}&kiosk={3}", CampusId, ThisDay, false, KioskName); }
-        }
-        public static int MaxLabels { get; set; }
-        public static Timer timer1;
-        public static Timer timer2;
-        public static Home home;
-        public static ListFamilies families;
-        public static ListFamily family;
-        public static ListClasses classes;
-        public static EnterText namesearch;
-        public static ListNames names;
-
-        public static EnterText allergy;
-        public static EnterText church;
-        public static EnterText emfriend;
-        public static EnterNumber grade;
-        public static EnterPhone emphone;
-        public static EnterText parent;
-
-        public static EnterText first;
-        public static EnterText goesby;
-        public static EnterText last;
-        public static EnterText email;
-        public static EnterText addr;
-        public static EnterText zip;
-        public static EnterDate dob;
-        public static EnterPhone cellphone;
-        public static EnterPhone homephone;
-        public static EnterGenderMarital gendermarital;
-        public static BaseForm baseform;
-        public static void ClearFields()
-        {
-            SecurityCode = null;
-            first.textBox1.Text = null;
-            goesby.textBox1.Text = null;
-            last.textBox1.Text = null;
-            email.textBox1.Text = null;
-            addr.textBox1.Text = null;
-            zip.textBox1.Text = null;
-            dob.textBox1.Text = null;
-            if (AskGrade)
-                grade.textBox1.Text = null;
-            allergy.textBox1.Text = null;
-            if (AskEmFriend)
-            {
-                emfriend.textBox1.Text = null;
-                emphone.textBox1.Text = null;
-                parent.textBox1.Text = null;
-            }
-            cellphone.textBox1.Text = null;
-            homephone.textBox1.Text = null;
-            if (AskChurchName)
-                church.textBox1.Text = null;
-            gendermarital.Gender = 0;
-            gendermarital.Marital = 0;
-            if (AskChurch)
-                gendermarital.ActiveOther.CheckState = CheckState.Indeterminate;
         }
         public static CheckState ActiveOther(string s)
         {
             return s == bool.TrueString || s == "Checked" ? CheckState.Checked :
             s == bool.FalseString || s == "Unchecked" ? CheckState.Unchecked : CheckState.Indeterminate;
         }
-        public static void SetFields(string Last, string Email, string Addr, string Zip, string Home, string Parent, string EmFriend, string EmPhone, string AnotherChurch, string ChurchName)
-        {
-            last.textBox1.Text = Last;
-            email.textBox1.Text = Email;
-            addr.textBox1.Text = Addr;
-            zip.textBox1.Text = Zip;
-            homephone.textBox1.Text = Home;
-            if (AskEmFriend)
-            {
-                emfriend.textBox1.Text = EmFriend;
-                parent.textBox1.Text = Parent;
-                emphone.textBox1.Text = EmPhone;
-            }
-            if (AskChurchName)
-                church.textBox1.Text = ChurchName;
-            gendermarital.ActiveOther.CheckState = ActiveOther(AnotherChurch);
-        }
+        public static BaseForm baseform;
+        public static Home home;
+        public static Home2 home2;
+        public static int MaxLabels { get; set; }
+        public static Timer timer1;
+        public static Timer timer2;
+
         public static void Timer2Reset()
         {
             if (!EnableTimer)
@@ -256,17 +202,12 @@ namespace CmsCheckin
             Cursor.Hide();
             showing = false;
         }
-
-        //public static NameValueCollection GetQueryStringParameters()
-        //{
-        //    NameValueCollection col = new NameValueCollection();
-
-        //    if (ApplicationDeployment.IsNetworkDeployed)
-        //    {
-        //        string queryString = ApplicationDeployment.CurrentDeployment.ActivationUri.Query;
-        //        col = HttpUtility.ParseQueryString(queryString);
-        //    }
-        //    return col;
-        //}
+		public static void ClearFields()
+		{
+			if (baseform.textbox.Parent is Home)
+				home.ClearFields();
+			else if (baseform.textbox.Parent is Home2)
+				home2.ClearFields();
+		}
     }
 }

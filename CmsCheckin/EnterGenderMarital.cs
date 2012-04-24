@@ -18,26 +18,27 @@ namespace CmsCheckin
         }
         public void ShowScreen()
         {
-            first.Text = Program.first.textBox1.Text;
-            goesby.Text = Program.goesby.textBox1.Text;
-            last.Text = Program.last.textBox1.Text;
-            email.Text = Program.email.textBox1.Text;
-            dob.Text = Program.dob.textBox1.Text;
-            cellphone.Text = Program.cellphone.textBox1.Text;
-            homephone.Text = Program.homephone.textBox1.Text;
-            addr.Text = Program.addr.textBox1.Text;
-            zip.Text = Program.zip.textBox1.Text;
-            allergies.Text = Program.allergy.textBox1.Text;
+			var home = Program.home;
+            first.Text = home.first.textBox1.Text;
+            goesby.Text = home.goesby.textBox1.Text;
+            last.Text = home.last.textBox1.Text;
+            email.Text = home.email.textBox1.Text;
+            dob.Text = home.dob.textBox1.Text;
+            cellphone.Text = home.cellphone.textBox1.Text;
+            homephone.Text = home.homephone.textBox1.Text;
+            addr.Text = home.addr.textBox1.Text;
+            zip.Text = home.zip.textBox1.Text;
+            allergies.Text = home.allergy.textBox1.Text;
             if (Program.AskGrade)
-                grade.Text = Program.grade.textBox1.Text;
+                grade.Text = home.grade.textBox1.Text;
             if (Program.AskEmFriend)
             {
-                ParentName.Text = Program.parent.textBox1.Text;
-                EmFriend.Text = Program.emfriend.textBox1.Text;
-                EmPhone.Text = Program.emphone.textBox1.Text;
+                ParentName.Text = home.parent.textBox1.Text;
+                EmFriend.Text = home.emfriend.textBox1.Text;
+                EmPhone.Text = home.emphone.textBox1.Text;
             }
             if (Program.AskChurchName)
-                churchname.Text = Program.church.textBox1.Text;
+                churchname.Text = home.church.textBox1.Text;
 
             ActiveOther.Visible = Program.AskChurch;
             churchname.Visible = Program.AskChurchName;
@@ -78,7 +79,7 @@ namespace CmsCheckin
             var gender = Gender;
             var marital = Marital;
             if (cellphone.Text.HasValue() && !homephone.Text.HasValue())
-                Program.homephone.textBox1.Text = cellphone.Text;
+                Program.home.homephone.textBox1.Text = cellphone.Text;
             if (Program.editing)
                 this.EditPerson(Program.PeopleId, first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, churchname.Text, ActiveOther.CheckState, marital, gender);
             else
@@ -97,16 +98,16 @@ namespace CmsCheckin
                     ph = cellphone.Text;
                 else
                     ph = "";
-            Program.ClearFields();
+			Program.ClearFields();
             if (Program.editing)
             {
-                this.Swap(Program.family);
-                Program.family.ShowFamily(Program.FamilyId);
+                this.Swap(Program.home.family);
+                Program.home.family.ShowFamily(Program.FamilyId);
             }
             else
             {
-                this.Swap(Program.classes);
-                Program.classes.ShowResults(Program.PeopleId);
+                this.Swap(Program.home.classes);
+                Program.home.classes.ShowResults(Program.PeopleId);
             }
         }
 
@@ -180,7 +181,7 @@ namespace CmsCheckin
         }
         private void GoBack_Click(object sender, EventArgs e)
         {
-            this.Swap(Program.allergy);
+            this.Swap(Program.home.allergy);
         }
 
         private bool ValidateFields()
@@ -206,7 +207,7 @@ namespace CmsCheckin
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Program.ClearFields();
+			Program.ClearFields();
             this.GoHome(string.Empty);
         }
 

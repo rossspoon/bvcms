@@ -36,8 +36,6 @@
 			this.HideCursor = new System.Windows.Forms.CheckBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.LeadHours = new System.Windows.Forms.ComboBox();
-			this.Printer = new System.Windows.Forms.ComboBox();
-			this.label4 = new System.Windows.Forms.Label();
 			this.LateMinutes = new System.Windows.Forms.ComboBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.AskEmFriend = new System.Windows.Forms.CheckBox();
@@ -48,7 +46,6 @@
 			this.label6 = new System.Windows.Forms.Label();
 			this.KioskName = new System.Windows.Forms.TextBox();
 			this.AskLabels = new System.Windows.Forms.CheckBox();
-			this.TwoInchLabel = new System.Windows.Forms.CheckBox();
 			this.FullScreen = new System.Windows.Forms.CheckBox();
 			this.DisableJoin = new System.Windows.Forms.CheckBox();
 			this.SecurityLabelPerChild = new System.Windows.Forms.CheckBox();
@@ -150,25 +147,6 @@
 			this.LeadHours.Size = new System.Drawing.Size(538, 34);
 			this.LeadHours.TabIndex = 5;
 			this.LeadHours.Text = "5";
-			// 
-			// Printer
-			// 
-			this.Printer.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.Printer.FormattingEnabled = true;
-			this.Printer.Location = new System.Drawing.Point(229, 239);
-			this.Printer.Name = "Printer";
-			this.Printer.Size = new System.Drawing.Size(538, 34);
-			this.Printer.TabIndex = 9;
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label4.Location = new System.Drawing.Point(146, 247);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(55, 20);
-			this.label4.TabIndex = 8;
-			this.label4.Text = "Printer";
 			// 
 			// LateMinutes
 			// 
@@ -286,17 +264,6 @@
 			this.AskLabels.Text = "Ask whether labels printed";
 			this.AskLabels.UseVisualStyleBackColor = true;
 			// 
-			// TwoInchLabel
-			// 
-			this.TwoInchLabel.AutoSize = true;
-			this.TwoInchLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.TwoInchLabel.Location = new System.Drawing.Point(234, 390);
-			this.TwoInchLabel.Name = "TwoInchLabel";
-			this.TwoInchLabel.Size = new System.Drawing.Size(174, 24);
-			this.TwoInchLabel.TabIndex = 27;
-			this.TwoInchLabel.Text = "Two Inch Label Style";
-			this.TwoInchLabel.UseVisualStyleBackColor = true;
-			// 
 			// FullScreen
 			// 
 			this.FullScreen.AutoSize = true;
@@ -340,7 +307,6 @@
 			this.Controls.Add(this.SecurityLabelPerChild);
 			this.Controls.Add(this.DisableJoin);
 			this.Controls.Add(this.FullScreen);
-			this.Controls.Add(this.TwoInchLabel);
 			this.Controls.Add(this.AskLabels);
 			this.Controls.Add(this.KioskName);
 			this.Controls.Add(this.label6);
@@ -351,8 +317,6 @@
 			this.Controls.Add(this.AskEmFriend);
 			this.Controls.Add(this.LateMinutes);
 			this.Controls.Add(this.label5);
-			this.Controls.Add(this.Printer);
-			this.Controls.Add(this.label4);
 			this.Controls.Add(this.LeadHours);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.HideCursor);
@@ -380,9 +344,7 @@
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.CheckBox HideCursor;
         private System.Windows.Forms.Label label3;
-        public System.Windows.Forms.ComboBox LeadHours;
-        public System.Windows.Forms.ComboBox Printer;
-        private System.Windows.Forms.Label label4;
+		public System.Windows.Forms.ComboBox LeadHours;
         public System.Windows.Forms.ComboBox LateMinutes;
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.CheckBox AskEmFriend;
@@ -392,8 +354,7 @@
         public System.Windows.Forms.CheckBox AskChurchName;
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.TextBox KioskName;
-        public System.Windows.Forms.CheckBox AskLabels;
-        public System.Windows.Forms.CheckBox TwoInchLabel;
+		public System.Windows.Forms.CheckBox AskLabels;
         public System.Windows.Forms.CheckBox FullScreen;
         public System.Windows.Forms.CheckBox DisableJoin;
 		public System.Windows.Forms.CheckBox SecurityLabelPerChild;

@@ -16,9 +16,11 @@ namespace CmsCheckin
 {
     public partial class ListNames : UserControl
     {
-        public ListNames()
+		UserControl nextcontrol;
+		public ListNames(UserControl next)
         {
             InitializeComponent();
+			this.nextcontrol = next;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -153,21 +155,35 @@ namespace CmsCheckin
         {
             Program.TimerStop();
             var ab = sender as Button;
-            this.Swap(Program.family);
-            Program.family.ShowFamily((int)ab.Tag);
+            this.Swap(nextcontrol);
+			if (nextcontrol is ListFamily)
+				((ListFamily)nextcontrol).ShowFamily((int)ab.Tag);
+			else if (nextcontrol is ListFamily2)
+				((ListFamily2)nextcontrol).ShowFamily((int)ab.Tag);
         }
 
         private void GoBack_Click(object sender, EventArgs e)
         {
-            Program.namesearch.textBox1.Text = name;
-            this.Swap(Program.namesearch);
+			if (Program.baseform.textbox.Parent is Home)
+			{
+				Program.home.textBox1.Text = name;
+				this.Swap(Program.home.namesearch);
+			}
+			else if (Program.baseform.textbox.Parent is Home2)
+			{
+				Program.home2.namesearch.textBox1.Text = name;
+				this.Swap(Program.home2.namesearch);
+			}
         }
 
         private void AddNewFamily_Click(object sender, EventArgs e)
         {
             Program.FamilyId = 0;
             Program.editing = false;
-            this.Swap(Program.first);
+			if (Program.baseform.textbox.Parent is Home)
+				this.Swap(Program.home.first);
+			else if (Program.baseform.textbox.Parent is Home2)
+				this.Swap(Program.home2.first);
         }
 
         private void ClearControls()

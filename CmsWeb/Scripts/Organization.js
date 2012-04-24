@@ -504,7 +504,16 @@ $(function () {
         ev.preventDefault();
         var d = $('#newvalueform');
         d.dialog("open");
+    }); 
+    $("#TryRegDialog").dialog({
+        autoOpen: false,
+        width:500
     });
+    $("#tryreg").live("click", function (ev) {
+        ev.preventDefault();
+        var d = $('#TryRegDialog');
+        d.dialog("open");
+    }); 
     $("a.deleteextra").live("click", function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))

@@ -39,8 +39,8 @@ namespace CmsCheckin
                             ShowPage(page + 1);
                         return true;
                     case Keys.Escape:
-                        this.Swap(Program.family);
-                        Program.family.ShowFamily(FamilyId);
+                        this.Swap(Program.home.family);
+                        Program.home.family.ShowFamily(FamilyId);
                         return true;
                     case Keys.S | Keys.Alt:
                         Program.TimerReset();
@@ -191,16 +191,33 @@ namespace CmsCheckin
                 Util.AttendUnAttend(new Util.ClassCheckedInfo { c = c, ischecked = true });
             ShowAllClasses = false;
             JoiningNotAttending = false;
-            this.Swap(Program.family);
-            Program.family.classlist.Add(c);
-            Program.family.ShowFamily(FamilyId);
+			if (Program.baseform.textbox.Parent is Home)
+			{
+				this.Swap(Program.home.family);
+				Program.home.family.classlist.Add(c);
+				Program.home.family.ShowFamily(FamilyId);
+			}
+			else if (Program.baseform.textbox.Parent is Home2)
+			{
+				this.Swap(Program.home2.family);
+				Program.home2.family.classlist.Add(c);
+				Program.home2.family.ShowFamily(FamilyId);
+			}
         }
 
         private void GoBack_Click(object sender, EventArgs e)
         {
-            this.Swap(Program.family);
+			if (Program.baseform.textbox.Parent is Home)
+			{
+				this.Swap(Program.home.family);
+				Program.home.family.ShowFamily(FamilyId);
+			}
+			else if (Program.baseform.textbox.Parent is Home2)
+			{
+				this.Swap(Program.home2.family);
+				Program.home2.family.ShowFamily(FamilyId);
+			}
             ShowAllClasses = false;
-            Program.family.ShowFamily(FamilyId);
         }
         private void ClearControls()
         {

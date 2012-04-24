@@ -71,7 +71,7 @@
 </script>
 }
 <table class="roundbox" cellspacing="5">
-    <tr><td><h2>The @Model.Family.HeadOfHousehold.Name Family</h2></td></tr>
+    <tr><td><h2>The @((Model.Family.HeadOfHousehold ?? Model.Family.People.First()).Name) Family</h2></td></tr>
     <tr><td>
         <table cellspacing="5">
         <tr><td>

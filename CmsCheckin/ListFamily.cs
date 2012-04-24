@@ -541,9 +541,9 @@ namespace CmsCheckin
             var c = list[(int)menu.Tag];
             SaveClasses();
             RemoveMenu();
-            this.Swap(Program.classes);
-            Program.classes.JoiningNotAttending = true;
-            Program.classes.ShowResults(c.cinfo.pid);
+            this.Swap(Program.home.classes);
+            Program.home.classes.JoiningNotAttending = true;
+            Program.home.classes.ShowResults(c.cinfo.pid);
         }
         void DropThis_Click(object sender, EventArgs e)
         {
@@ -553,7 +553,11 @@ namespace CmsCheckin
 
             Util.JoinUnJoin(c.cinfo, false);
             RemoveMenu();
-            Program.family.ShowFamily(Program.FamilyId);
+
+			if (Program.baseform.textbox.Parent is Home)
+				Program.home.family.ShowFamily(Program.FamilyId);
+			else if (Program.baseform.textbox.Parent is Home2)
+				Program.home2.family.ShowFamily(Program.FamilyId);
         }
         void JoinThis_Click(object sender, EventArgs e)
         {
@@ -563,7 +567,10 @@ namespace CmsCheckin
 
             Util.JoinUnJoin(c.cinfo, true);
             RemoveMenu();
-            Program.family.ShowFamily(Program.FamilyId);
+			if (Program.baseform.textbox.Parent is Home)
+				Program.home.family.ShowFamily(Program.FamilyId);
+			else if (Program.baseform.textbox.Parent is Home2)
+				Program.home2.family.ShowFamily(Program.FamilyId);
         }
 
         void CancelMenu_Click(object sender, EventArgs e)
@@ -575,8 +582,8 @@ namespace CmsCheckin
             var c = list[(int)menu.Tag];
             SaveClasses();
             RemoveMenu();
-            this.Swap(Program.classes);
-            Program.classes.ShowResults(c.cinfo.pid);
+            this.Swap(Program.home.classes);
+            Program.home.classes.ShowResults(c.cinfo.pid);
         }
         private void SaveClasses()
         {
@@ -613,33 +620,34 @@ namespace CmsCheckin
         {
             var c = list[(int)menu.Tag];
 
+			var home = Program.home;
             Program.PeopleId = c.cinfo.pid;
-            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
-            Program.first.textBox1.Text = c.first;
-            Program.goesby.textBox1.Text = c.goesby;
-            Program.dob.textBox1.Text = c.dob;
-            Program.cellphone.textBox1.Text = c.cell.FmtFone();
-            Program.gendermarital.Marital = c.marital;
-            Program.gendermarital.Gender = c.gender;
+            home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
+            home.first.textBox1.Text = c.first;
+            home.goesby.textBox1.Text = c.goesby;
+            home.dob.textBox1.Text = c.dob;
+            home.cellphone.textBox1.Text = c.cell.FmtFone();
+            home.gendermarital.Marital = c.marital;
+            home.gendermarital.Gender = c.gender;
             if (Program.AskChurch)
-                Program.gendermarital.ActiveOther.CheckState =
+                home.gendermarital.ActiveOther.CheckState =
                     c.activeother == bool.TrueString ? CheckState.Checked :
                     c.activeother == bool.FalseString ? CheckState.Unchecked : CheckState.Indeterminate;
             if (Program.AskGrade)
-                Program.grade.textBox1.Text = c.grade;
-            Program.allergy.textBox1.Text = c.allergies;
+                home.grade.textBox1.Text = c.grade;
+            home.allergy.textBox1.Text = c.allergies;
             if (Program.AskEmFriend)
             {
-                Program.parent.textBox1.Text = c.parent;
-                Program.emfriend.textBox1.Text = c.emfriend;
-                Program.emphone.textBox1.Text = c.emphone.FmtFone();
+                home.parent.textBox1.Text = c.parent;
+                home.emfriend.textBox1.Text = c.emfriend;
+                home.emphone.textBox1.Text = c.emphone.FmtFone();
             }
             Util.UnLockFamily();
             SaveClasses();
 
             Program.editing = true;
             RemoveMenu();
-            this.Swap(Program.first);
+            this.Swap(home.first);
         }
         private void RemoveMenu()
         {
@@ -744,7 +752,10 @@ namespace CmsCheckin
             Program.TimerStop();
             if (list.Count == 0)
             {
-                this.Swap(Program.namesearch);
+				if (Program.baseform.textbox.Parent is Home)
+					this.Swap(Program.home.namesearch);
+				else if (Program.baseform.textbox.Parent is Home2)
+					this.Swap(Program.home2.namesearch);
                 return;
             }
             foreach (var c in sucontrols)
@@ -768,12 +779,20 @@ namespace CmsCheckin
         private void AddToFamily_Click(object sender, EventArgs e)
         {
             var c = list[(int)menu.Tag];
-            Program.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
             Program.editing = false;
             SaveClasses();
             Util.UnLockFamily();
             RemoveMenu();
-            this.Swap(Program.first);
+			if (Program.baseform.textbox.Parent is Home)
+			{
+				Program.home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
+				this.Swap(Program.home.first);
+			}
+			else if (Program.baseform.textbox.Parent is Home2)
+			{
+				Program.home2.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
+				this.Swap(Program.home2.first);
+			}
         }
 
         private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)

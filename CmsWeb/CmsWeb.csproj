@@ -164,7 +164,6 @@
     <Compile Include="Areas\Manage\Controllers\MergeController.cs" />
     <Compile Include="Areas\Manage\Models\MergeModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\ManageGivingModel.cs" />
-    <Compile Include="Areas\Public\Controllers\APICheckinController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchUsersController.cs" />
     <Compile Include="Areas\Main\Controllers\ContactSearchController.cs" />
@@ -196,9 +195,7 @@
     <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassesResult.cs" />
-    <Compile Include="Areas\Public\Models\CheckIn\ClassesResult0.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\BinaryResult.cs" />
-    <Compile Include="Areas\Public\Models\CheckIn\FamilyResult0.cs" />
     <Compile Include="Areas\Main\Models\Export\ExportPeople.cs" />
     <Compile Include="Areas\Main\Models\Export\ExportInvolvements.cs" />
     <Compile Include="Areas\Main\Models\Export\InvovementInfo.cs" />
@@ -221,6 +218,7 @@
     <Compile Include="Areas\Manage\Models\TransactionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Public\Models\APITestModel.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\FindResult.cs" />
     <Compile Include="Areas\Public\Models\Code39BarCode.cs" />
     <Compile Include="Areas\Public\Models\iPhone\DetailResult.cs" />
     <Compile Include="Areas\Public\Models\iPhone\SearchResult.cs" />

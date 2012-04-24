@@ -1,6 +1,6 @@
 ﻿namespace CmsCheckin
 {
-    partial class Home
+    partial class Home2
     {
         /// <summary> 
         /// Required designer variable.
@@ -272,12 +272,12 @@
 			// label2
 			// 
 			this.label2.Font = new System.Drawing.Font("Verdana", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label2.Location = new System.Drawing.Point(355, 0);
+			this.label2.Location = new System.Drawing.Point(136, 0);
 			this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(312, 73);
+			this.label2.Size = new System.Drawing.Size(786, 73);
 			this.label2.TabIndex = 34;
-			this.label2.Text = "Check-in";
+			this.label2.Text = "Scan Barcode or Enter Phone #";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// MagicButton
@@ -304,7 +304,7 @@
 			this.version.TabIndex = 36;
 			this.version.Text = "label3";
 			// 
-			// Home
+			// Home2
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.Controls.Add(this.version);
@@ -328,9 +328,9 @@
 			this.Controls.Add(this.button9);
 			this.Controls.Add(this.button8);
 			this.Margin = new System.Windows.Forms.Padding(4);
-			this.Name = "Home";
+			this.Name = "Home2";
 			this.Size = new System.Drawing.Size(1024, 768);
-			this.Load += new System.EventHandler(this.Home_Load);
+			this.Load += new System.EventHandler(this.Home2_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

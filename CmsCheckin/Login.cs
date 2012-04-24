@@ -20,50 +20,54 @@ namespace CmsCheckin
         {
             InitializeComponent();
 
-            URL.Text = Settings1.Default.URL;
-            username.Text = Settings1.Default.username;
-            PrintKiosks.Text = Settings1.Default.Kiosks;
-            PrintMode.Text = Settings1.Default.PrintMode;
 
-            b1.Click += new EventHandler(buttonclick);
-            b2.Click += new EventHandler(buttonclick);
-            b3.Click += new EventHandler(buttonclick);
-            b4.Click += new EventHandler(buttonclick);
-            b5.Click += new EventHandler(buttonclick);
-            b6.Click += new EventHandler(buttonclick);
-            b7.Click += new EventHandler(buttonclick);
-            b8.Click += new EventHandler(buttonclick);
-            b9.Click += new EventHandler(buttonclick);
-            b0.Click += new EventHandler(buttonclick);
+            b1.Click += buttonclick;
+            b2.Click += buttonclick;
+            b3.Click += buttonclick;
+            b4.Click += buttonclick;
+            b5.Click += buttonclick;
+            b6.Click += buttonclick;
+            b7.Click += buttonclick;
+            b8.Click += buttonclick;
+            b9.Click += buttonclick;
+            b0.Click += buttonclick;
+			bdash.Click += buttonclick;
+			bequal.Click += buttonclick;
 
-            bq.Click += new EventHandler(buttonclick);
-            bw.Click += new EventHandler(buttonclick);
-            be.Click += new EventHandler(buttonclick);
-            br.Click += new EventHandler(buttonclick);
-            bt.Click += new EventHandler(buttonclick);
-            by.Click += new EventHandler(buttonclick);
-            bu.Click += new EventHandler(buttonclick);
-            bi.Click += new EventHandler(buttonclick);
-            bo.Click += new EventHandler(buttonclick);
-            bp.Click += new EventHandler(buttonclick);
+            bq.Click += buttonclick;
+            bw.Click += buttonclick;
+            be.Click += buttonclick;
+            br.Click += buttonclick;
+            bt.Click += buttonclick;
+            by.Click += buttonclick;
+            bu.Click += buttonclick;
+            bi.Click += buttonclick;
+            bo.Click += buttonclick;
+            bp.Click += buttonclick;
+			blbrace.Click += buttonclick;
+			brbrace.Click += buttonclick;
 
-            ba.Click += new EventHandler(buttonclick);
-            bs.Click += new EventHandler(buttonclick);
-            bd.Click += new EventHandler(buttonclick);
-            bf.Click += new EventHandler(buttonclick);
-            bg.Click += new EventHandler(buttonclick);
-            bh.Click += new EventHandler(buttonclick);
-            bj.Click += new EventHandler(buttonclick);
-            bk.Click += new EventHandler(buttonclick);
-            bl.Click += new EventHandler(buttonclick);
+            ba.Click += buttonclick;
+            bs.Click += buttonclick;
+            bd.Click += buttonclick;
+            bf.Click += buttonclick;
+            bg.Click += buttonclick;
+            bh.Click += buttonclick;
+            bj.Click += buttonclick;
+            bk.Click += buttonclick;
+            bl.Click += buttonclick;
 
-            bz.Click += new EventHandler(buttonclick);
-            bx.Click += new EventHandler(buttonclick);
-            bc.Click += new EventHandler(buttonclick);
-            bv.Click += new EventHandler(buttonclick);
-            bb.Click += new EventHandler(buttonclick);
-            bn.Click += new EventHandler(buttonclick);
-            bm.Click += new EventHandler(buttonclick);
+            bz.Click += buttonclick;
+            bx.Click += buttonclick;
+            bc.Click += buttonclick;
+            bv.Click += buttonclick;
+            bb.Click += buttonclick;
+            bn.Click += buttonclick;
+            bm.Click += buttonclick;
+
+			bcomma.Click += buttonclick;
+			bdot.Click += buttonclick;
+			bslash.Click += buttonclick;
 
             username.KeyPress += textBox_KeyPress;
             password.KeyPress += textBox_KeyPress;
@@ -82,6 +86,9 @@ namespace CmsCheckin
             Settings1.Default.username = username.Text;
             Settings1.Default.Kiosks = PrintKiosks.Text;
             Settings1.Default.PrintMode = PrintMode.Text;
+			Settings1.Default.Printer = Printer.Text;
+            Settings1.Default.TwoInchLabel = TwoInchLabel.Checked;
+            Settings1.Default.BuildingMode = BuildingAccessMode.Checked;
             Settings1.Default.Save();
 
 #if DEBUG
@@ -119,11 +126,25 @@ namespace CmsCheckin
         private void Login_Load(object sender, EventArgs e)
         {
             password.Focus();
+            var prtdoc = new PrintDocument();
+            var defp = prtdoc.PrinterSettings.PrinterName;
+            foreach (var s in PrinterSettings.InstalledPrinters)
+                Printer.Items.Add(s);
+            Printer.SelectedIndex = Printer.FindStringExact(defp);
+            if (Settings1.Default.Printer.HasValue())
+                Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
+            TwoInchLabel.Checked = Settings1.Default.TwoInchLabel;
+            BuildingAccessMode.Checked = Settings1.Default.BuildingMode;
+
+            URL.Text = Settings1.Default.URL;
+            username.Text = Settings1.Default.username;
+            PrintKiosks.Text = Settings1.Default.Kiosks;
+            PrintMode.Text = Settings1.Default.PrintMode;
         }
         void buttonclick(object sender, EventArgs e)
         {
             var b = sender as Button;
-            var d = b.Name[1];
+            var d = b.Text[0];
             KeyStroke(d);
         }
         private void textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -157,10 +178,6 @@ namespace CmsCheckin
             current.Select(current.Text.Length, 0);
         }
 
-        private void bdot_Click(object sender, EventArgs e)
-        {
-            KeyStroke('.');
-        }
 
         private void textbox_Enter(object sender, EventArgs e)
         {
@@ -172,20 +189,6 @@ namespace CmsCheckin
             BackSpace();
         }
 
-        private void bang_Click(object sender, EventArgs e)
-        {
-            KeyStroke('!');
-        }
-
-        private void bslash_Click(object sender, EventArgs e)
-        {
-            KeyStroke('/');
-        }
-
-        private void bcolon_Click(object sender, EventArgs e)
-        {
-            KeyStroke(':');
-        }
 
         public bool CancelClose { get; set; }
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
@@ -193,5 +196,106 @@ namespace CmsCheckin
             e.Cancel = CancelClose;
             CancelClose = false;
         }
+
+		private void bshift_Click(object sender, EventArgs e)
+		{
+			if (ba.Text == "A")
+			{
+				ba.Text = "a";
+				bb.Text = "b";
+				bc.Text = "c";
+				bd.Text = "d";
+				be.Text = "e";
+				bf.Text = "f";
+				bg.Text = "g";
+				bh.Text = "h";
+				bi.Text = "i";
+				bj.Text = "j";
+				bk.Text = "k";
+				bl.Text = "l";
+				bm.Text = "m";
+				bn.Text = "n";
+				bo.Text = "o";
+				bp.Text = "p";
+				bq.Text = "q";
+				br.Text = "r";
+				bs.Text = "s";
+				bt.Text = "t";
+				bu.Text = "u";
+				bv.Text = "v";
+				bw.Text = "w";
+				bx.Text = "x";
+				by.Text = "y";
+				bz.Text = "z";
+
+				b1.Text = "1";
+				b2.Text = "2";
+				b3.Text = "3";
+				b4.Text = "4";
+				b5.Text = "5";
+				b6.Text = "6";
+				b7.Text = "7";
+				b8.Text = "8";
+				b9.Text = "9";
+				b0.Text = "0";
+				bdash.Text = "-";
+				bequal.Text = "=";
+				blbrace.Text = "[";
+				brbrace.Text = "]";
+				bcolon.Text = ":";
+				bcomma.Text = ",";
+				bdot.Text = ".";
+				bslash.Text = "/";
+
+			}
+			else
+			{
+				ba.Text = "A";
+				bb.Text = "B";
+				bc.Text = "C";
+				bd.Text = "D";
+				be.Text = "E";
+				bf.Text = "F";
+				bg.Text = "G";
+				bh.Text = "H";
+				bi.Text = "I";
+				bj.Text = "J";
+				bk.Text = "K";
+				bl.Text = "L";
+				bm.Text = "M";
+				bn.Text = "N";
+				bo.Text = "O";
+				bp.Text = "P";
+				bq.Text = "Q";
+				br.Text = "R";
+				bs.Text = "S";
+				bt.Text = "T";
+				bu.Text = "U";
+				bv.Text = "V";
+				bw.Text = "W";
+				bx.Text = "X";
+				by.Text = "Y";
+				bz.Text = "Z";
+
+				b1.Text = "!";
+				b2.Text = "@";
+				b3.Text = "#";
+				b4.Text = "$";
+				b5.Text = "%";
+				b6.Text = "^";
+				b7.Text = "&&";
+				b8.Text = "*";
+				b9.Text = "(";
+				b0.Text = ")";
+				bdash.Text = "_";
+				bequal.Text = "+";
+				blbrace.Text = "{";
+				brbrace.Text = "}";
+				bcolon.Text = ";";
+				bcomma.Text = "<";
+				bdot.Text = ">";
+				bslash.Text = "?";
+			}
+		}
     }
 }

@@ -38,6 +38,15 @@ namespace CmsWeb.Areas.Public.Controllers
                 return new FamilyResult(matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked, kioskmode ?? false);
             return new MultipleResult(matches, page);
         }
+    	public ActionResult Find(string id, string name, int? page)
+        {
+            if (!Authenticate())
+                return Content("not authorized");
+            Response.NoCache();
+            DbUtil.Db.SetNoLock();
+            DbUtil.LogActivity("CheckinFind " + id);
+			return new FindResult(id, null, page);
+        }
         public ActionResult Family(int id, int campus, int thisday, string kiosk, bool? kioskmode)
         {
             if (!Authenticate())

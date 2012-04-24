@@ -183,6 +183,18 @@
     <Compile Include="AdminLogin.Designer.cs">
       <DependentUpon>AdminLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Home2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Home2.Designer.cs">
+      <DependentUpon>Home2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListFamily2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ListFamily2.Designer.cs">
+      <DependentUpon>ListFamily2.cs</DependentUpon>
+    </Compile>
     <Compile Include="DidItWork.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -305,6 +317,12 @@
     <Compile Include="XmlWriter2.cs" />
     <EmbeddedResource Include="AdminLogin.resx">
       <DependentUpon>AdminLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Home2.resx">
+      <DependentUpon>Home2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListFamily2.resx">
+      <DependentUpon>ListFamily2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DidItWork.resx">
       <DependentUpon>DidItWork.cs</DependentUpon>
