@@ -41,17 +41,50 @@ namespace CmsWeb.Areas.Manage.Controllers
 		}
 		[HttpPost]
 		[Authorize(Roles = "Finance")]
-		public ActionResult CreditVoid(int tranid, string type)
+		public ActionResult CreditVoid(int id, string type)
 		{
-			var t = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == tranid);
+			var t = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
 			if (t == null)
 				return Content("notran");
 			var sage = new CmsData.SagePayments(DbUtil.Db, false);
-			if (type == "void")
-				sage.voidTransactionRequest(t.TransactionId);
+			TransactionResponse resp;
+			if (type == "Void")
+			{
+				resp = sage.voidTransactionRequest(t.TransactionId);
+				if (resp.Approved)
+					t.Voided = true;
+			}
 			else
-				sage.creditTransactionRequest(t.TransactionId, t.Amt ?? 0);
-			return Content("ok");
+			{
+				resp = sage.creditTransactionRequest(t.TransactionId, t.Amt ?? 0);
+				if (resp.Approved)
+					t.Credited = true;
+			}
+			if (resp.Approved)
+			{
+				var tt = new Transaction
+				{
+					TransactionId = resp.TransactionId,
+					Name = t.Name,
+					Amt = -t.Amt,
+					Approved = true,
+					AuthCode = t.AuthCode,
+					Message = t.Message,
+					Donate = -t.Donate,
+					Regfees = -t.Regfees,
+					TransactionDate = DateTime.Now,
+					TransactionGateway = t.TransactionGateway,
+					Testing = t.Testing,
+					Description = t.Description,
+					OrgId = t.OrgId,
+					OriginalId = t.Id,
+					Participants = t.Participants,
+					Financeonly = t.Financeonly,
+				};
+				DbUtil.Db.Transactions.InsertOnSubmit(tt);
+				DbUtil.Db.SubmitChanges();
+			}
+			return Redirect("Index");
 		}
     }
 }

@@ -13,6 +13,7 @@ using CmsData.Codes;
 namespace CmsWeb.Areas.Main.Controllers
 {
     [ValidateInput(false)]
+	[SessionExpire]
     public class OrganizationController : CmsStaffController
     {
         public ActionResult Index(int? id)

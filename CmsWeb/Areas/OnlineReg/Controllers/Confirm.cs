@@ -43,8 +43,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 ViewData["Terms"] = terms;
             ViewData["timeout"] = INT_timeout;
 
-            var t = m.Transaction;
-
             string first, last;
             Person.NameSplit(pf.ti.Name, out first, out last);
             var pid = m.UserPeopleId ?? 0;
@@ -54,8 +52,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 if (pds.Count() == 1)
                     pid = pds.Single().PeopleId.Value;
             }
+			var tt = DbUtil.Db.Transactions.Single(tr => tr.Id == m.Transaction.Id);
             TransactionResponse tinfo = null;
-            if (t.TransactionGateway.ToLower() == "authorizenet")
+            if (tt.TransactionGateway.ToLower() == "authorizenet")
                 tinfo = OnlineRegModel.PostTransaction(
                     pf.CreditCard, pf.CCV, pf.Expires,
                     pf.ti.Amt ?? 0,
@@ -63,7 +62,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     pid, pf.ti.Emails, first, last,
                     pf.ti.Address, pf.ti.City, pf.ti.State, pf.ti.Zip,
                     m.Transaction.Testing ?? false);
-            else if (t.TransactionGateway.ToLower() == "sage")
+            else if (tt.TransactionGateway.ToLower() == "sage")
                 tinfo = OnlineRegModel.PostTransactionSage(
                     pf.CreditCard, pf.CCV, pf.Expires,
                     pf.ti.Amt ?? 0,
@@ -72,43 +71,47 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     pf.ti.Address, pf.ti.City, pf.ti.State, pf.ti.Zip, pf.ti.Phone,
                     m.Transaction.Testing ?? false);
             else
-				return Redirect("/Home/ShowError/?error=unknown gateway " + t.TransactionGateway);
+				return Redirect("/Home/ShowError/?error=unknown gateway " + tt.TransactionGateway);
 
             if (tinfo.Approved == false)
             {
                 ModelState.AddModelError("form", tinfo.Message);
                 // fill in things for new transaction that did not come with POST
                 pf.ti.TransactionId = tinfo.TransactionId;
+				pf.ti.TransactionGateway = tt.TransactionGateway;
+				pf.ti.Testing = tt.Testing;
                 pf.ti.Approved = tinfo.Approved;
                 pf.ti.Message = tinfo.Message;
                 pf.ti.AuthCode = tinfo.AuthCode;
                 pf.ti.TransactionDate = DateTime.Now;
-                pf.ti.Description = t.Description;
-                pf.ti.OrgId = t.OrgId;
-                pf.ti.OriginalId = t.OriginalId;
-                pf.ti.Participants = t.Participants;
+                pf.ti.Description = tt.Description;
+                pf.ti.OrgId = tt.OrgId;
+                pf.ti.OriginalId = tt.OriginalId;
+                pf.ti.Participants = tt.Participants;
+				pf.ti.Financeonly = tt.Financeonly;
                 DbUtil.Db.Transactions.InsertOnSubmit(pf.ti);
                 DbUtil.Db.SubmitChanges();
                 SetHeaders(m);
                 return View(pf);
             }
             // update information for sucessful transaction from POST
-            t.TransactionId = tinfo.TransactionId;
-            t.Approved = tinfo.Approved;
-            t.Message = tinfo.Message;
-            t.AuthCode = tinfo.AuthCode;
-            t.TransactionDate = DateTime.Now;
-            t.Emails = pf.ti.Emails;
-            t.Address = pf.ti.Address;
-            t.City = pf.ti.City;
-            t.State = pf.ti.State;
-            t.Zip = pf.ti.Zip;
-            t.Emails = pf.ti.Emails;
-            t.Name = pf.ti.Name;
-            t.Phone = pf.ti.Phone;
-            t.Amt = pf.ti.Amt;  // total, includes donation
+
+            tt.TransactionId = tinfo.TransactionId;
+            tt.Approved = tinfo.Approved;
+            tt.Message = tinfo.Message;
+            tt.AuthCode = tinfo.AuthCode;
+            tt.TransactionDate = DateTime.Now;
+            tt.Emails = pf.ti.Emails;
+            tt.Address = pf.ti.Address;
+            tt.City = pf.ti.City;
+            tt.State = pf.ti.State;
+            tt.Zip = pf.ti.Zip;
+            tt.Emails = pf.ti.Emails;
+            tt.Name = pf.ti.Name;
+            tt.Phone = pf.ti.Phone;
+            tt.Amt = pf.ti.Amt;  // total, includes donation
             if (pf.ti.Donate > 0)
-                t.Donate = pf.ti.Donate;
+                tt.Donate = pf.ti.Donate;
             DbUtil.Db.SubmitChanges();
             return RedirectToAction("Confirm", new { id = id, TransactionID = tinfo.TransactionId, Amount = pf.ti.Amt });
         }
@@ -167,11 +170,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                         p.person.PrimaryZip);
                 foreach (var g in p.FundItemsChosen())
                 {
-                    sb.AppendFormat(row, g.desc, g.amt);
-                    p.person.PostUnattendedContribution(DbUtil.Db,
-                        g.amt,
-                        g.fundid,
-                        desc);
+					if (g.amt > 0)
+					{
+						sb.AppendFormat(row, g.desc, g.amt);
+						p.person.PostUnattendedContribution(DbUtil.Db,
+						                                    g.amt,
+						                                    g.fundid,
+						                                    desc);
+					}
                 }
                 t.Financeonly = true;
                 if (t.Donate > 0)
@@ -191,8 +197,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     if (m.testing == true)
                         t.TransactionId += "(testing)";
                 }
-                t.Amt = 0;
-                t.Donate = 0;
                 Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId)),
                     p.setting.Subject, sb.ToString(),
                     Util.EmailAddressListFromString(p.person.FromEmail), 0, p.PeopleId);

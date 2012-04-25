@@ -34,7 +34,7 @@ namespace CmsWeb.Models
             Pager.Sort = "Id";
             Pager.Direction = "desc";
             finance = HttpContext.Current.User.IsInRole("Finance");
-            finance = HttpContext.Current.User.IsInRole("Admin");
+            admin = HttpContext.Current.User.IsInRole("Admin");
         }
         public IEnumerable<Transaction> Transactions()
         {
@@ -99,7 +99,7 @@ namespace CmsWeb.Models
                 {
                     case "Id":
                         q = from t in q
-                            orderby t.Id
+                            orderby (t.OriginalId ?? t.Id), t.TransactionDate 
                             select t;
                         break;
                     case "Tran Id":
@@ -143,7 +143,7 @@ namespace CmsWeb.Models
                 {
                     case "Id":
                         q = from t in q
-                            orderby t.Id descending
+                            orderby (t.OriginalId ?? t.Id) descending, t.TransactionDate descending 
                             select t;
                         break;
                     case "Tran Id":

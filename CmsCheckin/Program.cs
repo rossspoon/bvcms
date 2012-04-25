@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
+using System.Linq.Expressions;
 using System.Reflection;
-using System.ComponentModel;
-using System.Drawing.Printing;
-using System.Deployment.Application;
-using System.Web;
-using System.Collections.Specialized;
+using System.Windows.Forms;
 
 namespace CmsCheckin
 {
@@ -33,10 +27,11 @@ namespace CmsCheckin
 			BaseForm b;
             if (BuildingMode)
             {
+				attendant = new Attendant();
 				home2 = new Home2();
 				b = new BaseForm(home2);
 				baseform = b;
-                Application.Run(b);
+                Application.Run(attendant);
                 return;
             }
 
@@ -63,7 +58,6 @@ namespace CmsCheckin
 
             f.Dispose();
 
-
             if (PrintMode == "Print From Server")
             {
                 var p = new PrintingServer();
@@ -75,7 +69,7 @@ namespace CmsCheckin
 			b = new BaseForm(home);
             baseform = b;
 
-            if (f.FullScreen.Checked)
+            if (f.FullScreen.Checked && !Util.IsDebug())
             {
                 b.WindowState = FormWindowState.Maximized;
                 b.FormBorderStyle = FormBorderStyle.None;
@@ -120,6 +114,7 @@ namespace CmsCheckin
             return s == bool.TrueString || s == "Checked" ? CheckState.Checked :
             s == bool.FalseString || s == "Unchecked" ? CheckState.Unchecked : CheckState.Indeterminate;
         }
+        public static Attendant attendant;
         public static BaseForm baseform;
         public static Home home;
         public static Home2 home2;
@@ -208,6 +203,28 @@ namespace CmsCheckin
 				home.ClearFields();
 			else if (baseform.textbox.Parent is Home2)
 				home2.ClearFields();
+		}
+		private delegate void SetPropertyThreadSafeDelegate<TResult>(Control @this, Expression<Func<TResult>> property, TResult value);
+
+		public static void SetPropertyThreadSafe<TResult>(this Control @this, Expression<Func<TResult>> property, TResult value)
+		{
+			var propertyInfo = (property.Body as MemberExpression).Member as PropertyInfo;
+
+			if (propertyInfo == null ||
+				!@this.GetType().IsSubclassOf(propertyInfo.ReflectedType) ||
+				@this.GetType().GetProperty(propertyInfo.Name, propertyInfo.PropertyType) == null)
+			{
+				throw new ArgumentException("The lambda expression 'property' must reference a valid property on this Control.");
+			}
+
+			if (@this.InvokeRequired)
+			{
+				@this.Invoke(new SetPropertyThreadSafeDelegate<TResult>(SetPropertyThreadSafe), new object[] { @this, property, value });
+			}
+			else
+			{
+				@this.GetType().InvokeMember(propertyInfo.Name, BindingFlags.SetProperty, null, @this, new object[] { value });
+			}
 		}
     }
 }

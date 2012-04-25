@@ -80,16 +80,19 @@ else
         <td height="40"><input id="Submit" type="submit" name="Submit" class="submitbutton" value="Make Payment" />
             <div class="column">@Html.ValidationMessage("form")</div></td></tr>
     <tr><td colspan="2">&nbsp;</td></tr>
+@if (Model.AllowCoupon)
+{
     <tr><td>Payment Code</td>
-        <td><input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /> 
-        </td>
+        <td><input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /></td>
     </tr>
     <tr><td></td>
-        <td class="coupon">
-        <input type="button" href="/OnlineReg/ApplyCoupon/@Model.ti.DatumId" class="submitbutton ajax"
-            value="Apply Code" />
-        <div class="right red" id="validatecoupon"></div>
-        </td></tr>
+		<td class="coupon">
+			<input type="button" href="/OnlineReg/ApplyCoupon/@Model.ti.DatumId" class="submitbutton ajax"
+				   value="Apply Code" />
+			<div class="right red" id="validatecoupon"></div>
+        </td>
+    </tr>
+}
     </table>
     </form>
 </div>

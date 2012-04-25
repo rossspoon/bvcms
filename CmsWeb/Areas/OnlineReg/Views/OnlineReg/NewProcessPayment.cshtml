@@ -32,15 +32,18 @@
     <p>
         You must agree to the terms above for you or your minor child before you can continue.</p>
 } 
-    <form action="/OnlineReg/PayWithCoupon/@Model.ti.DatumId" method="post">
-    <p>
-        If you have received a Cash Payment Code, please enter that number here and click
-        the button below it:</p>
-        <input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /><br /> 
-        <input type="button" href="/OnlineReg/PayWithCoupon/@Model.ti.DatumId" class="submitbutton ajax" 
-        value="Apply Coupon" />
-    <div>@Html.ValidationMessage("coupon")</div>
-    </form>
+@if (Model.AllowCoupon)
+{
+	<form action="/OnlineReg/PayWithCoupon/@Model.ti.DatumId" method="post">
+		<p>
+			If you have received a Cash Payment Code, please enter that number here and click
+			the button below it:</p>
+		<input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /><br /> 
+		<input type="button" href="/OnlineReg/PayWithCoupon/@Model.ti.DatumId" class="submitbutton ajax" 
+			   value="Apply Coupon" />
+		<div>@Html.ValidationMessage("coupon")</div>
+	</form>
+}
     <form action="/onlinereg/ProcessPayment/@Model.ti.DatumId" method="post">
     @Html.Hidden("pf.ti.DatumId", Model.ti.DatumId)
     @Html.Hidden("pf.ti.Amt", Model.ti.Amt)

@@ -1393,6 +1393,14 @@ namespace UtilityExtensions
 				d2 = new DateTime(d2.Year, d2.Month, baseday);
 			return d2;
 		}
+        public static bool IsDebug()
+        {
+            var d = false;
+#if DEBUG
+            d = true;
+#endif
+            return d;
+        }
 	}
 	public class EventArg<T> : EventArgs
 	{

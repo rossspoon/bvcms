@@ -17,6 +17,7 @@ using System.Xml.Linq;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
+	[SessionExpire]
     public class QueryBuilderController : CmsStaffAsyncController
     {
         public ActionResult NewQuery()

@@ -134,17 +134,9 @@ namespace CmsWeb
             tb.MergeAttributes<string, object>(attr);
             return new HtmlString(tb.ToString());
         }
-        public static bool IsDebug()
-        {
-            var d = false;
-#if DEBUG
-            d = true;
-#endif
-            return d;
-        }
         public static bool IsDebug(this HtmlHelper helper)
         {
-			return IsDebug();
+			return Util.IsDebug();
         }
 		public static HtmlString Script(this HtmlHelper helper, string script, bool? debug = false)
 		{

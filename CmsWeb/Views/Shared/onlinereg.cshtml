@@ -1,4 +1,4 @@
-@if ((bool)ViewData["hasshell"])
+@if ((bool?)ViewData["hasshell"] == true)
 {
 @Html.Raw((string)ViewData["top"])
 @RenderSection("head", false)

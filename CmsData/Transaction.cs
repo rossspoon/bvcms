@@ -10,10 +10,11 @@ namespace CmsData
     		{
     			return Approved == true 
     			       && TransactionGateway == "Sage"
-    			       && Voided == null
-    			       && Credited == null
+    			       && Voided != true
+    			       && Credited != true
     			       && (Coupon ?? false) == false
-    			       && TransactionId.HasValue();
+    			       && TransactionId.HasValue()
+					   && Amt > 0;
     		}
     	}
     }

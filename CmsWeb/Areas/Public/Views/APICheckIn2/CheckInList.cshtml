@@ -17,7 +17,7 @@
             <td> @item.PeopleId </td>
             <td> @item.Person.Name </td>
             <td> @item.OrganizationId </td>
-            <td> @item.CheckInDay.Value.ToString("ddd M/d/yy") </td>
+            <td> @item.CheckInTimeX.Value.Date.ToString("ddd M/d/yy") </td>
             <td> @item.CheckInTimeX.Value.ToShortTimeString() </td>
         </tr>
 }

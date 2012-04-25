@@ -23,11 +23,15 @@ namespace CmsData
 		
 		private int? _OrganizationId;
 		
-		private DateTime? _CheckInDay;
-		
 		private DateTime? _CheckInTimeX;
 		
+		private DateTime? _CheckOutTime;
+		
+		private int? _GuestOfId;
+		
    		
+   		private EntitySet< CheckInActivity> _CheckInActivities;
+		
     	
 		private EntityRef< Organization> _Organization;
 		
@@ -49,15 +53,20 @@ namespace CmsData
 		partial void OnOrganizationIdChanging(int? value);
 		partial void OnOrganizationIdChanged();
 		
-		partial void OnCheckInDayChanging(DateTime? value);
-		partial void OnCheckInDayChanged();
-		
 		partial void OnCheckInTimeXChanging(DateTime? value);
 		partial void OnCheckInTimeXChanged();
+		
+		partial void OnCheckOutTimeChanging(DateTime? value);
+		partial void OnCheckOutTimeChanged();
+		
+		partial void OnGuestOfIdChanging(int? value);
+		partial void OnGuestOfIdChanged();
 		
     #endregion
 		public CheckInTime()
 		{
+			
+			this._CheckInActivities = new EntitySet< CheckInActivity>(new Action< CheckInActivity>(this.attach_CheckInActivities), new Action< CheckInActivity>(this.detach_CheckInActivities)); 
 			
 			
 			this._Organization = default(EntityRef< Organization>); 
@@ -142,28 +151,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="CheckInDay", UpdateCheck=UpdateCheck.Never, Storage="_CheckInDay", DbType="datetime")]
-		public DateTime? CheckInDay
-		{
-			get { return this._CheckInDay; }
-
-			set
-			{
-				if (this._CheckInDay != value)
-				{
-				
-                    this.OnCheckInDayChanging(value);
-					this.SendPropertyChanging();
-					this._CheckInDay = value;
-					this.SendPropertyChanged("CheckInDay");
-					this.OnCheckInDayChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="CheckInTime", UpdateCheck=UpdateCheck.Never, Storage="_CheckInTimeX", DbType="datetime")]
 		public DateTime? CheckInTimeX
 		{
@@ -186,10 +173,64 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="CheckOutTime", UpdateCheck=UpdateCheck.Never, Storage="_CheckOutTime", DbType="datetime")]
+		public DateTime? CheckOutTime
+		{
+			get { return this._CheckOutTime; }
+
+			set
+			{
+				if (this._CheckOutTime != value)
+				{
+				
+                    this.OnCheckOutTimeChanging(value);
+					this.SendPropertyChanging();
+					this._CheckOutTime = value;
+					this.SendPropertyChanged("CheckOutTime");
+					this.OnCheckOutTimeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GuestOfId", UpdateCheck=UpdateCheck.Never, Storage="_GuestOfId", DbType="int")]
+		public int? GuestOfId
+		{
+			get { return this._GuestOfId; }
+
+			set
+			{
+				if (this._GuestOfId != value)
+				{
+				
+                    this.OnGuestOfIdChanging(value);
+					this.SendPropertyChanging();
+					this._GuestOfId = value;
+					this.SendPropertyChanged("GuestOfId");
+					this.OnGuestOfIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_CheckInActivity_CheckInTimes", Storage="_CheckInActivities", OtherKey="CheckinId")]
+   		public EntitySet< CheckInActivity> CheckInActivities
+   		{
+   		    get { return this._CheckInActivities; }
+
+			set	{ this._CheckInActivities.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -295,6 +336,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_CheckInActivities(CheckInActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.CheckInTime = this;
+		}
+
+		private void detach_CheckInActivities(CheckInActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.CheckInTime = null;
+		}
+
+		
 	}
 
 }

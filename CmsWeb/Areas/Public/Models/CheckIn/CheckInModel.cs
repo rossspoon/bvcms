@@ -63,6 +63,41 @@ namespace CmsWeb.Models
                 matches = matches.Where(m => m.AreaCode == ac || ac == "000").ToList();
             return matches;
         }
+        public List<FamilyInfo> Find(string id)
+        {
+			var q2 = from kc in DbUtil.Db.CardIdentifiers
+					 where kc.Id == id
+                     select new FamilyInfo
+                     {
+                         FamilyId = kc.Person.FamilyId,
+                         AreaCode = kc.Person.Family.HomePhoneAC,
+                         Name = kc.Person.Family.HeadOfHousehold.Name,
+                         Phone = id
+                     };
+            var matches = q2.ToList();
+
+			if (matches.Count == 0)
+			{
+				var ph = Util.GetDigits(id).PadLeft(10, '0');
+				var p7 = ph.Substring(3);
+				var ac = ph.Substring(0, 3);
+				var q1 = from f in DbUtil.Db.Families
+				         where f.HeadOfHousehold.DeceasedDate == null
+				         where f.HomePhoneLU.StartsWith(p7) && (f.HomePhoneAC == ac || ac == "000")
+				               || f.People.Any(p => p.CellPhoneLU.StartsWith(p7)
+						 				&& (p.CellPhoneAC == ac || ac == "000"))
+				         orderby f.FamilyId
+				         select new FamilyInfo
+				                {
+				                	FamilyId = f.FamilyId,
+				                	AreaCode = f.HomePhoneAC,
+				                	Name = f.HeadOfHousehold.Name,
+				                	Phone = id,
+				                };
+				matches = q1.ToList();
+			}
+            return matches;
+        }
         public List<Attendee> FamilyMembers(int id, int campus, int thisday)
         {
             var normalLabelsMemTypes = new int[] 

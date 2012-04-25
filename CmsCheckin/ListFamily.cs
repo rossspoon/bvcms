@@ -783,16 +783,8 @@ namespace CmsCheckin
             SaveClasses();
             Util.UnLockFamily();
             RemoveMenu();
-			if (Program.baseform.textbox.Parent is Home)
-			{
-				Program.home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
-				this.Swap(Program.home.first);
-			}
-			else if (Program.baseform.textbox.Parent is Home2)
-			{
-				Program.home2.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
-				this.Swap(Program.home2.first);
-			}
+			Program.home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
+			this.Swap(Program.home.first);
         }
 
         private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)
@@ -820,8 +812,8 @@ namespace CmsCheckin
             PleaseWaitForm.Show();
 
             var bw = new BackgroundWorker();
-            bw.DoWork += new DoWorkEventHandler(DoPrinting);
-            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(PrintingCompleted);
+            bw.DoWork += DoPrinting;
+            bw.RunWorkerCompleted += PrintingCompleted;
             bw.RunWorkerAsync();
         }
         private void PrintAll_Click(object sender, EventArgs e)

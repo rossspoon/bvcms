@@ -17,6 +17,7 @@ using CmsData.Codes;
 namespace CmsWeb.Areas.Main.Controllers
 {
 	[ValidateInput(false)]
+	[SessionExpire]
 	public class PersonController : CmsStaffController
 	{
 		protected override void Initialize(RequestContext requestContext)

@@ -141,6 +141,8 @@ namespace CmsCheckin
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             var ph = e.Argument as string;
+			var lb = Program.attendant.label1;
+			lb.SetPropertyThreadSafe(() => lb.Text, "finding " + ph);
             var x = this.GetDocument("Checkin2/Find/" + ph.GetDigits() 
                 + Program.QueryString + "&page=1");
             e.Result = x;
@@ -160,14 +162,8 @@ namespace CmsCheckin
             }
             else
             {
-                var locked = bool.Parse(x.Document.Root.Attribute("waslocked").Value);
-                if (locked)
-                    MessageBox.Show("Family is already being viewed");
-                else
-                {
-                    this.Swap(family);
-                    family.ShowFamily(x);
-                }
+				this.Swap(family);
+				family.ShowFamily(x);
             }
         }
 
@@ -315,14 +311,13 @@ namespace CmsCheckin
 			if (Program.AskChurch)
 				gendermarital.ActiveOther.CheckState = CheckState.Indeterminate;
 		}
-		public void SetFields(string Last, string Email, string Addr, string Zip, string Home, string Parent, string EmFriend, string EmPhone, string AnotherChurch, string ChurchName)
+		public void SetFields(string Last, string Email, string Addr, string Zip, string Home)
 		{
 			last.textBox1.Text = Last;
 			email.textBox1.Text = Email;
 			addr.textBox1.Text = Addr;
 			zip.textBox1.Text = Zip;
 			homephone.textBox1.Text = Home;
-			gendermarital.ActiveOther.CheckState = Program.ActiveOther(AnotherChurch);
 		}
     }
 }

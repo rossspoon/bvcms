@@ -200,6 +200,44 @@ namespace CmsCheckin
 
             var s = Encoding.ASCII.GetString(resp);
         }
+        public static void EditPerson(this Control f,
+            int id,
+            string first,
+            string last,
+            string goesby,
+            string dob,
+            string email,
+            string addr,
+            string zip,
+            string cell,
+            string home,
+            int marital,
+            int gender)
+        {
+            var wc = CreateWebClient();
+            var coll = new NameValueCollection();
+            coll.Add("first", first);
+            coll.Add("last", last);
+            coll.Add("goesby", goesby);
+            coll.Add("dob", dob);
+            coll.Add("email", email);
+            coll.Add("addr", addr);
+            coll.Add("zip", zip);
+            coll.Add("cell", cell);
+            if (home.HasValue())
+                coll.Add("home", home);
+            else
+                coll.Add("home", cell);
+            coll.Add("marital", marital.ToString());
+            coll.Add("gender", gender.ToString());
+            coll.Add("campusid", Program.CampusId.ToString());
+
+            var url = new Uri(new Uri(Program.URL), "Checkin2/EditPerson/" + id);
+
+            var resp = wc.UploadValues(url, "POST", coll);
+
+            var s = Encoding.ASCII.GetString(resp);
+        }
 
         public static bool AllDigits(string str)
         {
@@ -294,6 +332,14 @@ namespace CmsCheckin
             tb.Text = s.FmtFone();
             tb.Focus();
             tb.Select(tb.Text.Length, 0);
+        }
+        public static bool IsDebug()
+        {
+            var d = false;
+#if DEBUG
+            d = true;
+#endif
+            return d;
         }
         public static string Age(this string birthday)
         {

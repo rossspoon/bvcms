@@ -14,188 +14,207 @@ using System.IO;
 
 namespace CmsCheckin
 {
-    public partial class Login : Form
-    {
-        public Login()
-        {
-            InitializeComponent();
+	public partial class Login : Form
+	{
+		public Login()
+		{
+			InitializeComponent();
 
-
-            b1.Click += buttonclick;
-            b2.Click += buttonclick;
-            b3.Click += buttonclick;
-            b4.Click += buttonclick;
-            b5.Click += buttonclick;
-            b6.Click += buttonclick;
-            b7.Click += buttonclick;
-            b8.Click += buttonclick;
-            b9.Click += buttonclick;
-            b0.Click += buttonclick;
+			b1.Click += buttonclick;
+			b2.Click += buttonclick;
+			b3.Click += buttonclick;
+			b4.Click += buttonclick;
+			b5.Click += buttonclick;
+			b6.Click += buttonclick;
+			b7.Click += buttonclick;
+			b8.Click += buttonclick;
+			b9.Click += buttonclick;
+			b0.Click += buttonclick;
 			bdash.Click += buttonclick;
 			bequal.Click += buttonclick;
 
-            bq.Click += buttonclick;
-            bw.Click += buttonclick;
-            be.Click += buttonclick;
-            br.Click += buttonclick;
-            bt.Click += buttonclick;
-            by.Click += buttonclick;
-            bu.Click += buttonclick;
-            bi.Click += buttonclick;
-            bo.Click += buttonclick;
-            bp.Click += buttonclick;
+			bq.Click += buttonclick;
+			bw.Click += buttonclick;
+			be.Click += buttonclick;
+			br.Click += buttonclick;
+			bt.Click += buttonclick;
+			by.Click += buttonclick;
+			bu.Click += buttonclick;
+			bi.Click += buttonclick;
+			bo.Click += buttonclick;
+			bp.Click += buttonclick;
 			blbrace.Click += buttonclick;
 			brbrace.Click += buttonclick;
 
-            ba.Click += buttonclick;
-            bs.Click += buttonclick;
-            bd.Click += buttonclick;
-            bf.Click += buttonclick;
-            bg.Click += buttonclick;
-            bh.Click += buttonclick;
-            bj.Click += buttonclick;
-            bk.Click += buttonclick;
-            bl.Click += buttonclick;
+			ba.Click += buttonclick;
+			bs.Click += buttonclick;
+			bd.Click += buttonclick;
+			bf.Click += buttonclick;
+			bg.Click += buttonclick;
+			bh.Click += buttonclick;
+			bj.Click += buttonclick;
+			bk.Click += buttonclick;
+			bl.Click += buttonclick;
 
-            bz.Click += buttonclick;
-            bx.Click += buttonclick;
-            bc.Click += buttonclick;
-            bv.Click += buttonclick;
-            bb.Click += buttonclick;
-            bn.Click += buttonclick;
-            bm.Click += buttonclick;
+			bz.Click += buttonclick;
+			bx.Click += buttonclick;
+			bc.Click += buttonclick;
+			bv.Click += buttonclick;
+			bb.Click += buttonclick;
+			bn.Click += buttonclick;
+			bm.Click += buttonclick;
 
 			bcomma.Click += buttonclick;
 			bdot.Click += buttonclick;
 			bslash.Click += buttonclick;
 
-            username.KeyPress += textBox_KeyPress;
-            password.KeyPress += textBox_KeyPress;
-            URL.KeyPress += textBox_KeyPress;
+			username.KeyPress += textBox_KeyPress;
+			password.KeyPress += textBox_KeyPress;
+			URL.KeyPress += textBox_KeyPress;
 
-            username.Enter += textbox_Enter;
-            password.Enter += textbox_Enter;
-            URL.Enter += textbox_Enter;
-            password.Focus();
-        }
+			username.Enter += textbox_Enter;
+			password.Enter += textbox_Enter;
+			URL.Enter += textbox_Enter;
+			password.Focus();
+		}
 
-        public XDocument campuses { get; set; }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Settings1.Default.URL = URL.Text;
-            Settings1.Default.username = username.Text;
-            Settings1.Default.Kiosks = PrintKiosks.Text;
-            Settings1.Default.PrintMode = PrintMode.Text;
+		public XDocument campuses { get; set; }
+		private void button1_Click(object sender, EventArgs e)
+		{
+			Settings1.Default.URL = URL.Text;
+			Settings1.Default.username = username.Text;
+			Settings1.Default.Kiosks = PrintKiosks.Text;
+			Settings1.Default.PrintMode = PrintMode.Text;
 			Settings1.Default.Printer = Printer.Text;
-            Settings1.Default.TwoInchLabel = TwoInchLabel.Checked;
-            Settings1.Default.BuildingMode = BuildingAccessMode.Checked;
-            Settings1.Default.Save();
+			Settings1.Default.TwoInchLabel = TwoInchLabel.Checked;
+			Settings1.Default.BuildingMode = BuildingAccessMode.Checked;
+			Settings1.Default.Save();
 
 #if DEBUG
-            Program.URL = "http://" + URL.Text;
+			Program.URL = "http://" + URL.Text;
 #else
             if (Settings1.Default.UseSSL)
                 Program.URL = "https://" + URL.Text;
             else
                 Program.URL = "http://" + URL.Text;
 #endif
-            Program.Username = username.Text;
-            Program.Password = password.Text;
-            var wc = Util.CreateWebClient();
-            try
-            {
-                var url = new Uri(new Uri(Program.URL), "Checkin2/Campuses");
-                var str = wc.DownloadString(url);
-                if (str == "not authorized")
-                {
-                    MessageBox.Show(str);
-                    CancelClose = true;
-                    return;
-                }
-                campuses = XDocument.Parse(str);
-                this.Hide();
-            }
-            catch (WebException ex)
-            {
-                MessageBox.Show("cannot find " + Program.URL);
-                CancelClose = true;
-            }
-        }
+			Program.Username = username.Text;
+			Program.Password = password.Text;
+			var wc = Util.CreateWebClient();
+			try
+			{
+				var url = new Uri(new Uri(Program.URL), "Checkin2/Campuses");
+				var str = wc.DownloadString(url);
+				if (str == "not authorized")
+				{
+					MessageBox.Show(str);
+					CancelClose = true;
+					return;
+				}
+				campuses = XDocument.Parse(str);
+				this.Hide();
+			}
+			catch (WebException ex)
+			{
+				MessageBox.Show("cannot find " + Program.URL);
+				CancelClose = true;
+			}
+		}
 
-        TextBox current = null;
-        private void Login_Load(object sender, EventArgs e)
-        {
-            password.Focus();
-            var prtdoc = new PrintDocument();
-            var defp = prtdoc.PrinterSettings.PrinterName;
-            foreach (var s in PrinterSettings.InstalledPrinters)
-                Printer.Items.Add(s);
-            Printer.SelectedIndex = Printer.FindStringExact(defp);
-            if (Settings1.Default.Printer.HasValue())
-                Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
-            TwoInchLabel.Checked = Settings1.Default.TwoInchLabel;
-            BuildingAccessMode.Checked = Settings1.Default.BuildingMode;
+		TextBox current = null;
+		private void Login_Load(object sender, EventArgs e)
+		{
+			password.Focus();
+			var prtdoc = new PrintDocument();
+			var defp = prtdoc.PrinterSettings.PrinterName;
+			foreach (var s in PrinterSettings.InstalledPrinters)
+				Printer.Items.Add(s);
 
-            URL.Text = Settings1.Default.URL;
-            username.Text = Settings1.Default.username;
-            PrintKiosks.Text = Settings1.Default.Kiosks;
-            PrintMode.Text = Settings1.Default.PrintMode;
-        }
-        void buttonclick(object sender, EventArgs e)
-        {
-            var b = sender as Button;
-            var d = b.Text[0];
-            KeyStroke(d);
-        }
-        private void textBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (current == null)
-                return;
-            if (e.KeyChar == '\b')
-                BackSpace();
-            else
-                KeyStroke(e.KeyChar);
-            e.Handled = true;
-        }
-        private void KeyStroke(char d)
-        {
-            if (current == null)
-                return;
-            current.Text += d;
-            current.Focus();
-            current.Select(current.Text.Length, 0);
-        }
-        private void BackSpace()
-        {
-            if (current == null)
-                return;
-            var t = current.Text;
-            var len = t.Length - 1;
-            if (len < 0)
-                len = 0;
-            current.Text = t.Substring(0, len);
-            current.Focus();
-            current.Select(current.Text.Length, 0);
-        }
+			if (Util.IsDebug())
+			{
+				URL.Text = "localhost:888";
+				username.Text = "David";
+				var name = @"..\..\secrets.xml";
+				if (File.Exists(name))
+				{
+					var xd = XDocument.Load(name);
+					var pa = xd.Descendants("password").FirstOrDefault();
+					if (pa != null)
+						password.Text = pa.Value;
+				}
+				PrintKiosks.Text = "";
+				PrintMode.Text = "Print to Printer";
+				Printer.SelectedIndex = Printer.FindStringExact("Godex EZ-DT-4");
+				BuildingAccessMode.Checked = true;
+			}
+			else
+			{
+				Printer.SelectedIndex = Printer.FindStringExact(defp);
+				if (Settings1.Default.Printer.HasValue())
+					Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
+				TwoInchLabel.Checked = Settings1.Default.TwoInchLabel;
+				BuildingAccessMode.Checked = Settings1.Default.BuildingMode;
+				URL.Text = Settings1.Default.URL;
+				username.Text = Settings1.Default.username;
+				PrintKiosks.Text = Settings1.Default.Kiosks;
+				PrintMode.Text = Settings1.Default.PrintMode;
+			}
+		}
+		void buttonclick(object sender, EventArgs e)
+		{
+			var b = sender as Button;
+			var d = b.Text[0];
+			KeyStroke(d);
+		}
+		private void textBox_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (current == null)
+				return;
+			if (e.KeyChar == '\b')
+				BackSpace();
+			else
+				KeyStroke(e.KeyChar);
+			e.Handled = true;
+		}
+		private void KeyStroke(char d)
+		{
+			if (current == null)
+				return;
+			current.Text += d;
+			current.Focus();
+			current.Select(current.Text.Length, 0);
+		}
+		private void BackSpace()
+		{
+			if (current == null)
+				return;
+			var t = current.Text;
+			var len = t.Length - 1;
+			if (len < 0)
+				len = 0;
+			current.Text = t.Substring(0, len);
+			current.Focus();
+			current.Select(current.Text.Length, 0);
+		}
 
 
-        private void textbox_Enter(object sender, EventArgs e)
-        {
-            current = (TextBox)sender;
-        }
+		private void textbox_Enter(object sender, EventArgs e)
+		{
+			current = (TextBox)sender;
+		}
 
-        private void bbs_Click(object sender, EventArgs e)
-        {
-            BackSpace();
-        }
+		private void bbs_Click(object sender, EventArgs e)
+		{
+			BackSpace();
+		}
 
 
-        public bool CancelClose { get; set; }
-        private void Login_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = CancelClose;
-            CancelClose = false;
-        }
+		public bool CancelClose { get; set; }
+		private void Login_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			e.Cancel = CancelClose;
+			CancelClose = false;
+		}
 
 		private void bshift_Click(object sender, EventArgs e)
 		{
@@ -297,5 +316,5 @@ namespace CmsCheckin
 				bslash.Text = "?";
 			}
 		}
-    }
+	}
 }

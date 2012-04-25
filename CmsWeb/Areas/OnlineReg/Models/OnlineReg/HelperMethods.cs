@@ -195,6 +195,12 @@ namespace CmsWeb.Models
                 return org.RegistrationTypeId == RegistrationTypeCode.ManageGiving;
             return false;
         }
+        public bool OnlineGiving()
+        {
+            if (org != null)
+                return org.RegistrationTypeId == RegistrationTypeCode.OnlineGiving;
+            return false;
+        }
         public bool AskDonation()
         {
             if (org != null)

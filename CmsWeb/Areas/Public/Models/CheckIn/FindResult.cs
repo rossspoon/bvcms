@@ -11,14 +11,11 @@ namespace CmsWeb.Models
 {
 	public class FindResult : ActionResult
 	{
-		private readonly string name;
-		private readonly string id;
-		private readonly int? page;
-		public FindResult(string id, string name, int? page)
+		int fid;
+
+		public FindResult(int fid)
 		{
-			this.name = name;
-			this.page = page;
-			this.id = id;
+			this.fid = fid;
 		}
 		public override void ExecuteResult(ControllerContext context)
 		{
@@ -26,95 +23,58 @@ namespace CmsWeb.Models
 			var settings = new XmlWriterSettings();
 			settings.Encoding = new System.Text.UTF8Encoding(false);
 			settings.Indent = true;
+
 			using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
 			{
-				w.WriteStartElement("Results");
+				w.WriteStartElement("Family");
+				var q =
+					from p in DbUtil.Db.People
+					where p.FamilyId == fid
+					where p.DeceasedDate == null
+					orderby p.PositionInFamilyId, p.PositionInFamilyId == 10 ? p.Gender.Code : "U", p.Age
+					select new 
+					{
+						Id = p.PeopleId,
+						Position = p.PositionInFamilyId,
+						First = p.FirstName,
+						Last = p.LastName,
+						dob = p.DOB,
+						Age = p.Age ?? 0,
+						Gender = p.Gender.Code,
 
-				var q = DbUtil.Db.People.Select(p => p);
+						goesby = p.NickName,
+						email = p.EmailAddress,
+						addr = p.Family.AddressLineOne,
+						zip = p.Family.ZipCode,
+						home = p.Family.HomePhone,
+						cell = p.CellPhone,
+						marital = p.MaritalStatusId,
+						gender = p.GenderId,
+						grade = p.Grade,
+						HasPicture = p.PictureId != null,
+					};
+ 
+				w.WriteAttributeString("familyid", fid.ToString());
 
-				if (name.HasValue())
+				foreach (var c in q)
 				{
-					w.WriteAttributeString("name", name);
-					string first;
-					string last;
-					Person.NameSplit(name, out first, out last);
-					if (first.HasValue())
-						q = from p in q
-						    where (p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last))
-						          && (p.FirstName.StartsWith(first) || p.NickName.StartsWith(first) || p.MiddleName.StartsWith(first))
-						    select p;
-					else
-						q = from p in q
-						    where p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last)
-						    select p;
-				}
-				else
-				{
-					var ph = id.GetDigits().PadLeft(10, '0');
-					var p7 = ph.Substring(3);
-					var ac = ph.Substring(0, 3);
-					var qa = from p in DbUtil.Db.People
-							 where p.DeceasedDate == null
-							 where p.Family.HomePhoneLU.StartsWith(p7)
-								|| p.CellPhoneLU.StartsWith(p7)
-							 where p.CellPhoneAC == ac || p.Family.HomePhoneAC == ac
+					w.WriteStartElement("member");
+					w.WriteAttributeString("id", c.Id.ToString());
+					w.WriteAttributeString("first", c.First);
+					w.WriteAttributeString("last", c.Last);
+					w.WriteAttributeString("gender", c.gender.ToString());
+					w.WriteAttributeString("age", c.Age.ToString());
 
-							 select p;
-					var qb = from kc in DbUtil.Db.CardIdentifiers
-							 where kc.Id == id
-							 select kc.Person;
-					q = qa.Union(qb);
-				}
-
-				var q2 = from p in DbUtil.Db.People
-						 where q.Any(pp => pp.FamilyId == p.FamilyId)
-						 orderby p.Family.HeadOfHousehold.Name2, p.FamilyId, p.Name2
-						 select new SearchInfo2
-						 {
-							 cell = p.CellPhone,
-							 home = p.HomePhone,
-							 addr = p.Family.AddressLineOne,
-							 age = p.Age,
-							 first = p.FirstName,
-							 email = p.EmailAddress,
-							 last = p.LastName,
-							 goesby = p.NickName,
-							 gender = p.GenderId,
-							 marital = p.MaritalStatusId,
-							 dob = p.BirthDate.FormatDate2(),
-							 fid = p.FamilyId,
-							 pid = p.PeopleId,
-							 zip = p.Family.ZipCode,
-						 };
-
-				var count = q.Count();
-				const int INT_PageSize = 10;
-				var startrow = (page ?? 1 - 1) * INT_PageSize;
-				if (count > startrow + INT_PageSize)
-					w.WriteAttributeString("next", (page + 1).ToString());
-				else
-					w.WriteAttributeString("next", "");
-				if (page > 1)
-					w.WriteAttributeString("prev", (page - 1).ToString());
-				else
-					w.WriteAttributeString("prev", "");
-
-				foreach (var p in q2.Skip(startrow).Take(INT_PageSize))
-				{
-					w.WriteStartElement("person");
-					w.WriteAttributeString("first", p.first);
-					w.WriteAttributeString("last", p.last);
-					w.WriteAttributeString("goesby", p.goesby);
-					w.WriteAttributeString("gender", p.gender.ToString());
-					w.WriteAttributeString("marital", p.marital.ToString());
-					w.WriteAttributeString("dob", p.dob);
-					w.WriteAttributeString("addr", p.addr);
-					w.WriteAttributeString("zip", p.zip);
-					w.WriteAttributeString("email", p.email);
-					w.WriteAttributeString("cell", p.cell.FmtFone());
-					w.WriteAttributeString("home", p.home.FmtFone());
-					w.WriteAttributeString("age", p.age.ToString());
-					w.WriteAttributeString("pid", p.pid.ToString());
+					w.WriteAttributeString("email", c.email);
+					w.WriteAttributeString("dob", c.dob);
+					w.WriteAttributeString("goesby", c.goesby);
+					w.WriteAttributeString("addr", c.addr);
+					w.WriteAttributeString("zip", c.zip);
+					w.WriteAttributeString("home", c.home);
+					w.WriteAttributeString("cell", c.cell);
+					w.WriteAttributeString("marital", c.marital.ToString());
+					w.WriteAttributeString("grade", c.grade.ToString());
+					w.WriteAttributeString("haspicture", c.HasPicture.ToString());
 
 					w.WriteEndElement();
 				}

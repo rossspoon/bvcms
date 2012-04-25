@@ -18,6 +18,10 @@ namespace CmsData
 #region Extensibility Method Definitions
         partial void OnCreated();
 		
+        partial void InsertActivity(Activity instance);
+        partial void UpdateActivity(Activity instance);
+        partial void DeleteActivity(Activity instance);
+        
         partial void InsertActivityLog(ActivityLog instance);
         partial void UpdateActivityLog(ActivityLog instance);
         partial void DeleteActivityLog(ActivityLog instance);
@@ -93,6 +97,10 @@ namespace CmsData
         partial void InsertChangeLog(ChangeLog instance);
         partial void UpdateChangeLog(ChangeLog instance);
         partial void DeleteChangeLog(ChangeLog instance);
+        
+        partial void InsertCheckInActivity(CheckInActivity instance);
+        partial void UpdateCheckInActivity(CheckInActivity instance);
+        partial void DeleteCheckInActivity(CheckInActivity instance);
         
         partial void InsertCheckInTime(CheckInTime instance);
         partial void UpdateCheckInTime(CheckInTime instance);
@@ -592,6 +600,12 @@ namespace CmsData
 
     #region Tables
 		
+		public Table< Activity> Activities
+		{
+			get	{ return this.GetTable< Activity>(); }
+
+		}
+
 		public Table< ActivityLog> ActivityLogs
 		{
 			get	{ return this.GetTable< ActivityLog>(); }
@@ -703,6 +717,12 @@ namespace CmsData
 		public Table< ChangeLog> ChangeLogs
 		{
 			get	{ return this.GetTable< ChangeLog>(); }
+
+		}
+
+		public Table< CheckInActivity> CheckInActivities
+		{
+			get	{ return this.GetTable< CheckInActivity>(); }
 
 		}
 

@@ -38,14 +38,22 @@ namespace CmsWeb.Areas.Public.Controllers
                 return new FamilyResult(matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked, kioskmode ?? false);
             return new MultipleResult(matches, page);
         }
-    	public ActionResult Find(string id, string name, int? page)
+    	public ActionResult Find(string id, int? page)
         {
             if (!Authenticate())
                 return Content("not authorized");
             Response.NoCache();
             DbUtil.Db.SetNoLock();
-            DbUtil.LogActivity("CheckinFind " + id);
-			return new FindResult(id, null, page);
+			DbUtil.LogActivity("CheckinFind " + id); 
+
+            var m = new CheckInModel();
+            var matches = m.Find(id);
+
+			if (!matches.Any())
+				return new FindResult(0);
+			if (matches.Count() == 1)
+				return new FindResult(matches.Single().FamilyId);
+			return new MultipleResult(matches, page);
         }
         public ActionResult Family(int id, int campus, int thisday, string kiosk, bool? kioskmode)
         {
@@ -55,6 +63,15 @@ namespace CmsWeb.Areas.Public.Controllers
             DbUtil.Db.SetNoLock();
             DbUtil.LogActivity("checkin fam " + id);
             return new FamilyResult(id, campus, thisday, 0, false, kioskmode ?? false);
+        }
+        public ActionResult SingleFamily(int id)
+        {
+            if (!Authenticate())
+                return Content("not authorized");
+            Response.NoCache();
+            DbUtil.Db.SetNoLock();
+            DbUtil.LogActivity("checkin fam " + id);
+			return new FindResult(id);
         }
         public ActionResult Class(int id, int thisday)
         {
@@ -331,7 +348,6 @@ namespace CmsWeb.Areas.Public.Controllers
                 var dt = Util.Now;
                 var ck = new CheckInTime
                 {
-                    CheckInDay = dt.Date,
                     CheckInTimeX = dt,
                     OrganizationId = id,
                     PeopleId = pid,

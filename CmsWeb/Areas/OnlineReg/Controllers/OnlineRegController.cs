@@ -486,6 +486,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				OrgId = m.orgid,
 				Url = m.URL,
 				DatumId = d.Id,
+				TransactionId = "started"
 			};
 			if (m.UserPeopleId.HasValue || p.IsNew)
 			{
@@ -533,8 +534,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				else
 					return View("Payment", ti);
 
-			var pf = new PaymentForm { ti = ti, AskDonation = m.AskDonation() };
-#if DEBUG
+			var pf = new PaymentForm { ti = ti, AskDonation = m.AskDonation(), AllowCoupon = !m.OnlineGiving()};
+#if DEBUG2
 			ti.Address = pp != null ? pp.PrimaryAddress : p.address;
 			ti.City = pp != null ? pp.PrimaryCity : p.city;
 			ti.Phone = (pp != null ? Util.PickFirst(pp.HomePhone, pp.CellPhone) : p.phone).FmtFone();
@@ -546,15 +547,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #endif
 			return View("ProcessPayment", pf);
 		}
-		//[AcceptVerbs(HttpVerbs.Post)]
-		//public ContentResult Schools(string q, int limit)
-		//{
-		//    var qu = from p in DbUtil.Db.People
-		//            where p.SchoolOther.Contains(q)
-		//            group p by p.SchoolOther into g
-		//            select g.Key;
-		//    return Content(string.Join("\n", qu.Take(limit).ToArray()));
-		//}
 		[AcceptVerbs(HttpVerbs.Post)]
 		public JsonResult CityState(string id)
 		{

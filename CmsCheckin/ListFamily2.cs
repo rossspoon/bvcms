@@ -41,7 +41,7 @@ namespace CmsCheckin
 						return true;
 					case Keys.Return:
 						Program.TimerStop();
-						DoPrinting(null, null);
+						//DoPrinting(null, null);
 						this.GoHome(string.Empty);
 						return true;
 					case Keys.S | Keys.Alt:
@@ -60,7 +60,7 @@ namespace CmsCheckin
 
 		private bool hasprinter;
 		DoPrinting doprint = new DoPrinting();
-		List<AttendLabel> list;
+		List<PersonInfo> list;
 		int page = 1;
 		List<Control> controls = new List<Control>();
 		List<Control> sucontrols = new List<Control>();
@@ -71,7 +71,7 @@ namespace CmsCheckin
 		public void ShowFamily(int fid)
 		{
 			page = 1;
-			xdoc = this.GetDocument("Checkin2/Family/" + fid + Program.QueryString);
+			xdoc = this.GetDocument("Checkin2/Family/" + fid);
 			ShowFamily(xdoc);
 		}
 		public void ShowFamily(XDocument x)
@@ -80,8 +80,8 @@ namespace CmsCheckin
 			hasprinter = PrintRawHelper.HasPrinter(Program.Printer);
 			this.Focus();
 
-			list = new List<AttendLabel>();
-			if (x.Descendants("attendee").Count() == 0)
+			list = new List<PersonInfo>();
+			if (x.Descendants("member").Count() == 0)
 			{
 				ClearControls();
 				var lab = new Label();
@@ -90,28 +90,21 @@ namespace CmsCheckin
 				lab.AutoSize = true;
 				pgup.Visible = false;
 				pgdn.Visible = false;
-				lab.Text = "Not Found, try another phone number?";
+				lab.Text = "Not Found, try another phone number, or 411?";
 				this.Controls.Add(lab);
-				Return.Text = "Try again";
+				Return.Text = "Try Again";
 				controls.Add(lab);
 				return;
 			}
 
-			foreach (var e in x.Descendants("attendee"))
+			foreach (var e in x.Descendants("member"))
 			{
-				var a = new AttendLabel
+				var a = new PersonInfo
 				{
-					cinfo = new ClassInfo
-					{
-						oid = e.Attribute("orgid").Value.ToInt(),
-						pid = e.Attribute("id").Value.ToInt(),
-						mv = e.Attribute("mv").Value,
-					},
-					name = e.Attribute("name").Value,
+					pid = e.Attribute("id").Value.ToInt(),
 					first = e.Attribute("first").Value,
 					last = e.Attribute("last").Value,
 					dob = e.Attribute("dob").Value,
-					church = e.Attribute("church").Value,
 
 					goesby = e.Attribute("goesby").Value,
 					email = e.Attribute("email").Value,
@@ -121,29 +114,9 @@ namespace CmsCheckin
 					cell = e.Attribute("cell").Value.FmtFone(),
 					gender = e.Attribute("gender").Value.ToInt(),
 					marital = e.Attribute("marital").Value.ToInt(),
-					emphone = e.Attribute("emphone").Value.FmtFone(),
-					emfriend = e.Attribute("emfriend").Value,
-					allergies = e.Attribute("allergies").Value,
-					grade = e.Attribute("grade").Value,
-					activeother = e.Attribute("activeother").Value,
-					parent = e.Attribute("parent").Value,
-
-					org = e.Attribute("org").Value,
-					orgname = e.Attribute("orgname").Value,
-					custody = bool.Parse(e.Attribute("custody").Value),
-					transport = bool.Parse(e.Attribute("transport").Value),
-					location = e.Attribute("loc").Value,
-					leader = e.Attribute("leader").Value,
-					NumLabels = int.Parse(e.Attribute("numlabels").Value),
 					Row = list.Count,
-					CheckedIn = bool.Parse(e.Attribute("checkedin").Value),
 					HasPicture = bool.Parse(e.Attribute("haspicture").Value),
-					RequiresSecurityLabel = bool.Parse(e.Attribute("requiressecuritylabel").Value),
-					leadtime = double.Parse(e.Attribute("leadtime").Value),
 				};
-				DateTime dt;
-				if (DateTime.TryParse(e.Attribute("hour").Value, out dt))
-					a.cinfo.hour = dt;
 				list.Add(a);
 			}
 			ShowPage(1);
@@ -206,7 +179,7 @@ namespace CmsCheckin
 					twidlb = Math.Max(twidlb, (int)Math.Ceiling(size.Width));
 					twidlb = Math.Max(twidlb, mwid);
 
-					size = g.MeasureString("{0:h:mm tt} {1}".Fmt(c.cinfo.hour, c.org), font);
+					size = g.MeasureString("Choose activities to show here, this needs to be really long", font);
 					widorg = Math.Max(widorg, (int)Math.Ceiling(size.Width));
 
 					size = g.MeasureString("|", labfont);
@@ -248,23 +221,13 @@ namespace CmsCheckin
 			head.Location = new Point(LeftEdge, labtop);
 			head.Size = new Size(widorg + 5, maxheight);
 			head.Font = labfont;
-			head.Text = "Meeting";
+			head.Text = "Activity";
 			this.Controls.Add(head);
 			controls.Add(head);
 
 			for (var r = srow; r < erow; r++)
 			{
 				var c = list[r];
-				if (c.cinfo.mv == "V")
-					c.cinfo.mv = "G";
-				if (classlist.Count > 0)
-				{
-					var q = from cl in classlist
-							where cl.oid == c.cinfo.oid && cl.pid == c.cinfo.pid
-							select cl;
-					if (q.Count() > 0 && c.CheckedIn)
-						c.WasChecked = true;
-				}
 
 				LeftEdge = (1024 - totalwid) / 2;
 				top += rowheight;
@@ -280,15 +243,6 @@ namespace CmsCheckin
 				ab.BackColor = Color.CornflowerBlue;
 				ab.FlatAppearance.BorderColor = Color.Black;
 
-				double howlate = -(Program.EarlyCheckin / 60d);
-				if (c.cinfo.oid == 0
-					|| c.leadtime > Program.LeadTime
-					|| c.leadtime < howlate)
-				{
-					ab.Enabled = false;
-					ab.BackColor = SystemColors.Control;
-					ab.FlatAppearance.BorderColor = SystemColors.ButtonShadow;
-				}
 
 				ab.ForeColor = Color.White;
 				ab.Font = new Font("Wingdings", 24, FontStyle.Bold,
@@ -297,9 +251,8 @@ namespace CmsCheckin
 				ab.TextAlign = ContentAlignment.TopCenter;
 				ab.UseVisualStyleBackColor = false;
 				this.Controls.Add(ab);
-				ab.KeyDown += new KeyEventHandler(AttendButton_KeyDown);
-				ab.Click += new EventHandler(Attend_Click);
-				ab.Text = c.CheckedIn ? STR_CheckMark : String.Empty;
+				ab.KeyDown += AttendButton_KeyDown;
+				ab.Click += Attend_Click;
 				ab.Tag = c.Row;
 				controls.Add(ab);
 
@@ -322,11 +275,7 @@ namespace CmsCheckin
 				nam.Text = c.name;
 				nam.Name = "name" + c.Row;
 				nam.TextAlign = ContentAlignment.MiddleLeft;
-				if (c.cinfo.oid != 0)
-					if (c.cinfo.mv == "M")
-						nam.ForeColor = Color.Blue;
-					else
-						nam.ForeColor = Color.DarkGreen;
+
 				nam.Click += new EventHandler(ShowPic_Click);
 				nam.Enabled = false;
 				nam.Tag = c.Row;
@@ -357,14 +306,9 @@ namespace CmsCheckin
 				org.Size = new Size(widorg + 5, maxheight);
 				org.Font = font;
 				org.UseMnemonic = false;
-				org.Text = "{0:h:mm tt} {1}".Fmt(c.cinfo.hour, c.org);
+				org.Text = "Choose Activities";
 				org.TextAlign = ContentAlignment.MiddleLeft;
 				org.Name = "org" + c.Row;
-				if (c.cinfo.oid != 0)
-					if (c.cinfo.mv == "M")
-						org.ForeColor = Color.Blue;
-					else
-						org.ForeColor = Color.DarkGreen;
 				this.Controls.Add(org);
 				controls.Add(org);
 			}
@@ -391,37 +335,6 @@ namespace CmsCheckin
 			}
 		}
 
-		void PrintLabel_Click(object sender, EventArgs e)
-		{
-			Program.TimerReset();
-			var c = list[(int)menu.Tag];
-			var li = new LabelInfo
-			{
-				allergies = c.allergies,
-				pid = c.cinfo.pid,
-				mv = c.cinfo.mv,
-				n = c.NumLabels,
-				first = c.first,
-				last = c.last,
-				location = c.location,
-				hour = c.cinfo.hour,
-				org = c.org,
-				custody = c.custody,
-				transport = c.transport,
-				requiressecuritylabel = c.RequiresSecurityLabel,
-			};
-			using (var ms = new MemoryStream())
-			{
-				if (Program.TwoInchLabel)
-					ms.LabelKiosk2(li);
-				else
-					ms.LabelKiosk(li);
-				PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
-			}
-
-			RemoveMenu();
-		}
-
 		void Attend_Click(object sender, EventArgs e)
 		{
 			Attend_Click((Button)sender);
@@ -432,29 +345,18 @@ namespace CmsCheckin
 			var c = list[(int)ab.Tag];
 			if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 1)
 				return;
-			if (c.cinfo.oid == 0)
-				return;
 			Cursor.Current = Cursors.WaitCursor;
 			Program.CursorShow();
 			if (ab.Text == String.Empty)
-			{
 				ab.Text = STR_CheckMark;
-				c.CheckedIn = true;
-				c.WasChecked = true;
-			}
 			else
-			{
 				ab.Text = String.Empty;
-				c.CheckedIn = false;
-				c.WasChecked = false;
-			}
-			var info = new Util.ClassCheckedInfo { c = c.cinfo, ischecked = c.CheckedIn };
 			c.lastpress = DateTime.Now;
 			ComputeLabels();
 			var bw = new BackgroundWorker();
 			bw.DoWork += CheckUnCheckDoWork;
 			bw.RunWorkerCompleted += CheckUncheckCompleted;
-			bw.RunWorkerAsync(info);
+			bw.RunWorkerAsync();
 		}
 
 		void ShowPic_Click(object sender, EventArgs e)
@@ -463,7 +365,7 @@ namespace CmsCheckin
 			var eb = sender as Button;
 			var ab = this.Controls[this.Controls.IndexOfKey("attend" + eb.Tag.ToString())] as Button;
 			var c = list[(int)ab.Tag];
-			Program.PeopleId = c.cinfo.pid;
+			Program.PeopleId = c.pid;
 			var f = new Picture();
 			f.ShowDialog();
 		}
@@ -495,13 +397,9 @@ namespace CmsCheckin
 			var c = list[(int)menu.Tag];
 			nam.Enabled = false;
 			menu.EditRecord += EditRecord_Click;
-			menu.PrintLabel += PrintLabel_Click;
 			menu.AddFamily += AddToFamily_Click;
-			if (c.cinfo.oid != 0)
-				menu.DropJoin.Visible = true;
-			else
-				menu.DropJoin.Visible = false;
-			menu.CancelMenu += new EventHandler(CancelMenu_Click);
+			menu.DropJoin.Visible = false;
+			menu.CancelMenu += CancelMenu_Click;
 			menu.Show();
 			menu.BringToFront();
 		}
@@ -512,17 +410,7 @@ namespace CmsCheckin
 		}
 		private void ComputeLabels()
 		{
-			int canprint;
-			int willprint;
-			var can = list.Where(c => c.CheckedIn && c.NumLabels > 0);
-			var will = can.Where(c => c.WasChecked);
-			canprint = can.Count();
-			willprint = will.Count();
-			var show = canprint > willprint;
-			if (willprint > 0)
-				Return.Text = "Print Labels, Return";
-			else
-				Return.Text = "Return";
+			Return.Text = "Print Labels, Return";
 		}
 
 		void EditRecord_Click(object sender, EventArgs e)
@@ -530,18 +418,14 @@ namespace CmsCheckin
 			var c = list[(int)menu.Tag];
 
 			var home = Program.home2;
-			Program.PeopleId = c.cinfo.pid;
-			home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
+			Program.PeopleId = c.pid;
+			home.SetFields(c.last, c.email, c.addr, c.zip, c.home);
 			home.first.textBox1.Text = c.first;
 			home.goesby.textBox1.Text = c.goesby;
 			home.dob.textBox1.Text = c.dob;
 			home.cellphone.textBox1.Text = c.cell.FmtFone();
 			home.gendermarital.Marital = c.marital;
 			home.gendermarital.Gender = c.gender;
-			if (Program.AskChurch)
-				home.gendermarital.ActiveOther.CheckState =
-					c.activeother == bool.TrueString ? CheckState.Checked :
-					c.activeother == bool.FalseString ? CheckState.Unchecked : CheckState.Indeterminate;
 			Util.UnLockFamily();
 
 			Program.editing = true;
@@ -559,78 +443,6 @@ namespace CmsCheckin
 		}
 
 		PleaseWait PleaseWaitForm = null;
-		private void DoPrinting(object sender, DoWorkEventArgs e)
-		{
-			if (list == null)
-				return;
-
-			var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
-
-			var q = from c in qlist
-					select new LabelInfo
-					{
-						allergies = c.allergies,
-						pid = c.cinfo.pid,
-						mv = c.cinfo.mv,
-						n = c.NumLabels,
-						first = c.first,
-						last = c.last,
-						location = c.location,
-						hour = c.cinfo.hour,
-						org = c.orgname,
-						custody = c.custody,
-						transport = c.transport,
-						requiressecuritylabel = c.RequiresSecurityLabel,
-					};
-
-			using (var ms = new MemoryStream())
-			{
-				Util.UnLockFamily();
-				if (Program.PrintMode == "Print To Server")
-				{
-					PrintServerLabels(q);
-					return;
-				}
-				if (Program.TwoInchLabel)
-					doprint.PrintLabels2(ms, q);
-				else
-					doprint.PrintLabels(ms, q);
-				doprint.FinishUp(ms);
-			}
-		}
-		private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			PleaseWaitForm.Hide();
-			PleaseWaitForm.Dispose();
-			PleaseWaitForm = null;
-			Program.FamilyId = 0;
-			classlist = new List<ClassInfo>();
-			if (Program.AskLabels)
-			{
-				var f = new DidItWork();
-				var ret = f.ShowDialog();
-				f.Hide();
-				f.Dispose();
-				if (ret == DialogResult.No)
-				{
-					Util.ReportPrinterProblem();
-					var fa = new AdminLogin();
-					fa.ShowDialog();
-				}
-			}
-			this.GoHome(string.Empty);
-		}
-		private void PrintServerLabels(IEnumerable<LabelInfo> q)
-		{
-			if (list == null)
-				return;
-
-			var j = new PrintJob { securitycode = Program.SecurityCode, list = q.ToList() };
-			var xs = new XmlSerializer(typeof(PrintJob));
-			var sw = new StringWriter();
-			xs.Serialize(sw, j);
-			Util.UploadPrintJob(sw.ToString());
-		}
 		private void ClearControls()
 		{
 			foreach (var c in controls)
@@ -679,22 +491,13 @@ namespace CmsCheckin
 			Util.UnLockFamily();
 			RemoveMenu();
 
-			if (Program.baseform.textbox.Parent is Home)
-			{
-				Program.home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
-				this.Swap(Program.home.first);
-			}
-			else if (Program.baseform.textbox.Parent is Home2)
-			{
-				Program.home2.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
-				this.Swap(Program.home2.first);
-			}
+			Program.home2.SetFields(c.last, c.email, c.addr, c.zip, c.home);
+			this.Swap(Program.home2.first);
 		}
 
 		private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)
 		{
 			var info = e.Argument as Util.ClassCheckedInfo;
-			Util.AttendUnAttend(info);
 
 		}
 		private void CheckUncheckCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -716,9 +519,82 @@ namespace CmsCheckin
 			PleaseWaitForm.Show();
 
 			var bw = new BackgroundWorker();
-			bw.DoWork += new DoWorkEventHandler(DoPrinting);
-			bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(PrintingCompleted);
+			bw.DoWork += DoPrinting;
+			bw.RunWorkerCompleted += PrintingCompleted;
 			bw.RunWorkerAsync();
 		}
+        private void DoPrinting(object sender, DoWorkEventArgs e)
+        {
+
+        }
+        private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            PleaseWaitForm.Hide();
+            PleaseWaitForm.Dispose();
+            PleaseWaitForm = null;
+            Program.FamilyId = 0;
+            classlist = new List<ClassInfo>();
+            this.GoHome(string.Empty);
+        }
+		public class PersonInfo
+		{
+			public DateTime? lastpress { get; set; }
+			public int pid { get; set; }
+			public string first { get; set; }
+			public string last { get; set; }
+			public string dob { get; set; }
+
+			public string goesby { get; set; }
+			public string email { get; set; }
+			public string addr { get; set; }
+			public string zip { get; set; }
+			public string home { get; set; }
+			public string cell { get; set; }
+
+			public int gender { get; set; }
+			public int marital { get; set; }
+
+			public string activities { get; set; }
+			public int Row { get; set; }
+			public bool HasPicture { get; set; }
+
+			public string name
+			{
+				get { return first + " " + last; }
+			}
+		}
+
+		// all of these come from the attribtues on the attendee element
+		// attributes have the same name unless noted otherwise
+		[Serializable]
+		public class LabelInfo
+		{
+			public int n { get; set; } // numlabels attribute
+			public string location { get; set; } // loc attribute
+			public string allergies { get; set; }
+			public string org { get; set; } // orgname attribute
+			public DateTime? hour { get; set; }
+			public int pid { get; set; } // id attribute
+			public string mv { get; set; }
+			public string first { get; set; }
+			public string last { get; set; }
+			public bool transport { get; set; }
+			public bool custody { get; set; }
+			public bool requiressecuritylabel { get; set; }
+		}
+		[Serializable]
+		public class PrintJob
+		{
+			// securitycode comes from the attribute on the root element (Attendees)
+			public string securitycode { get; set; }
+			// the following is a list of each person/class that was checked present
+			public List<LabelInfo> list { get; set; }
+		}
+		[Serializable]
+		public class PrintJobs
+		{
+			public List<PrintJob> jobs { get; set; }
+		}
+
 	}
 }

@@ -73,9 +73,9 @@ namespace CmsData
 		
 		private bool? _Financeonly;
 		
-		private int? _Voided;
+		private bool? _Voided;
 		
-		private int? _Credited;
+		private bool? _Credited;
 		
 		private bool? _Coupon;
 		
@@ -176,10 +176,10 @@ namespace CmsData
 		partial void OnFinanceonlyChanging(bool? value);
 		partial void OnFinanceonlyChanged();
 		
-		partial void OnVoidedChanging(int? value);
+		partial void OnVoidedChanging(bool? value);
 		partial void OnVoidedChanged();
 		
-		partial void OnCreditedChanging(int? value);
+		partial void OnCreditedChanging(bool? value);
 		partial void OnCreditedChanged();
 		
 		partial void OnCouponChanging(bool? value);
@@ -817,8 +817,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="voided", UpdateCheck=UpdateCheck.Never, Storage="_Voided", DbType="int")]
-		public int? Voided
+		[Column(Name="voided", UpdateCheck=UpdateCheck.Never, Storage="_Voided", DbType="bit")]
+		public bool? Voided
 		{
 			get { return this._Voided; }
 
@@ -839,8 +839,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="credited", UpdateCheck=UpdateCheck.Never, Storage="_Credited", DbType="int")]
-		public int? Credited
+		[Column(Name="credited", UpdateCheck=UpdateCheck.Never, Storage="_Credited", DbType="bit")]
+		public bool? Credited
 		{
 			get { return this._Credited; }
 

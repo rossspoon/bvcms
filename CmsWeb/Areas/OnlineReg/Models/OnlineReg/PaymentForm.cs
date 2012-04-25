@@ -12,5 +12,6 @@ namespace CmsWeb.Models
         public string Expires { get; set; }
         public string CCV { get; set; }
         public bool AskDonation { get; set; }
+        public bool AllowCoupon { get; set; }
     }
 }
