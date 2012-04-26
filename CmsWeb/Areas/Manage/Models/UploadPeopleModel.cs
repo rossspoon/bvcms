@@ -190,6 +190,8 @@ namespace CmsWeb.Models
 			                    		"BaptismDate",
 			                    		"WeddingDate",
 			                    		"MemberStatus",
+										"Employer",
+										"Occupation",
 			                    	};
 
 			foreach (var fam in q)
@@ -306,6 +308,11 @@ namespace CmsWeb.Models
 							p.SuffixCode = a[names["Suffix"]];
 						if (names.ContainsKey("Middle"))
 							p.MiddleName = a[names["Middle"]];
+
+						if (names.ContainsKey("Employer"))
+							p.EmployerOther = a[names["Employer"]];
+						if (names.ContainsKey("Occupation"))
+							p.OccupationOther = a[names["Occupation"]];
 
 						if (names.ContainsKey("CellPhone"))
 							p.CellPhone = a[names["CellPhone"]].GetDigits();

@@ -89,6 +89,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 pf.ti.OriginalId = tt.OriginalId;
                 pf.ti.Participants = tt.Participants;
 				pf.ti.Financeonly = tt.Financeonly;
+				pf.ti.Address = (pf.ti.Address ?? "").Truncate(50);
                 DbUtil.Db.Transactions.InsertOnSubmit(pf.ti);
                 DbUtil.Db.SubmitChanges();
                 SetHeaders(m);
@@ -102,7 +103,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             tt.AuthCode = tinfo.AuthCode;
             tt.TransactionDate = DateTime.Now;
             tt.Emails = pf.ti.Emails;
-            tt.Address = pf.ti.Address;
+            tt.Address = (pf.ti.Address ?? "").Truncate(50);
             tt.City = pf.ti.City;
             tt.State = pf.ti.State;
             tt.Zip = pf.ti.Zip;

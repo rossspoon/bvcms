@@ -440,7 +440,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="AddressLineTwo", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineTwo", DbType="varchar(40)")]
+		[Column(Name="AddressLineTwo", UpdateCheck=UpdateCheck.Never, Storage="_AddressLineTwo", DbType="varchar(100)")]
 		public string AddressLineTwo
 		{
 			get { return this._AddressLineTwo; }

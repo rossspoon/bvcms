@@ -26,6 +26,8 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             var m = new AccountModel();
 			string baseurl = null;
+			if (Request.Files.Count == 0)
+				return Content("");
 			var file = Request.Files[0];
 			var fn = "{0}.{1:yyMMddHHmm}.{2}".Fmt(DbUtil.Db.Host, DateTime.Now, 
 				m.CleanFileName(Path.GetFileName(file.FileName)));

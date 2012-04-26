@@ -41,12 +41,12 @@ namespace CmsWeb.Areas.Manage.Controllers
 		}
 		[HttpPost]
 		[Authorize(Roles = "Finance")]
-		public ActionResult CreditVoid(int id, string type)
+		public ActionResult CreditVoid(int id, string type, TransactionsModel m)
 		{
 			var t = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
 			if (t == null)
 				return Content("notran");
-			var sage = new CmsData.SagePayments(DbUtil.Db, false);
+			var sage = new SagePayments(DbUtil.Db, false);
 			TransactionResponse resp;
 			if (type == "Void")
 			{
@@ -60,7 +60,11 @@ namespace CmsWeb.Areas.Manage.Controllers
 				if (resp.Approved)
 					t.Credited = true;
 			}
-			if (resp.Approved)
+			if(!resp.Approved)
+			{
+				return Content("error: " + resp.Message);
+			}
+			else // approved
 			{
 				var tt = new Transaction
 				{
@@ -82,9 +86,29 @@ namespace CmsWeb.Areas.Manage.Controllers
 					Financeonly = t.Financeonly,
 				};
 				DbUtil.Db.Transactions.InsertOnSubmit(tt);
-				DbUtil.Db.SubmitChanges();
+				DbUtil.Db.SubmitChanges(); 
+				Util.SendMsg(Util.SysFromEmail, Util.Host, 
+					Util.TryGetMailAddress(DbUtil.Db.StaffEmailForOrg(tt.OrgId ?? 0)),
+					"Void/Credit Transaction Type: " + type,
+@"<table>
+<tr><td>Name</td><td>{0}</td></tr>
+<tr><td>Email</td><td>{1}</td></tr>
+<tr><td>Address</td><td>{2}</td></tr>
+<tr><td>Phone</td><td>{3}</td></tr>
+<tr><th colspan=""2"">Transaction Info</th></tr>
+<tr><td>Description</td><td>{4}</td></tr>
+<tr><td>Amount</td><td>{5:N2}</td></tr>
+<tr><td>Date</td><td>{6}</td></tr>
+<tr><td>TranIds</td><td>Org: {7} {8}, Curr: {9} {10}</td></tr>
+</table>".Fmt(t.Name, t.Emails, t.Address, t.Phone,
+		 t.Description, 
+		 t.Amt,
+		 t.TransactionDate.Value.FormatDateTm(),
+		 t.Id, t.TransactionId, tt.Id, tt.TransactionId
+		 ), Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(tt.OrgId ?? 0)),
+					0, 0);
 			}
-			return Redirect("Index");
+			return View("List", m);
 		}
     }
 }

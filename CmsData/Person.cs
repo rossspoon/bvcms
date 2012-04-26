@@ -381,7 +381,8 @@ namespace CmsData
                     .Truncate(25);
             }
             else
-                p.FirstName = "?";
+                p.FirstName = "";
+
             if (nickname.HasValue())
                 p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname)
                     .Truncate(15);

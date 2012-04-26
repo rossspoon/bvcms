@@ -77,8 +77,10 @@ namespace CmsData
 							}
 						}
 					}
+				base.SubmitChanges(failureMode);
 			}
-			base.SubmitChanges(failureMode);
+			else
+				base.SubmitChanges(failureMode);
 		}
 
 		private int GetMaxLength(string dbType)

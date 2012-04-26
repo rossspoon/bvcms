@@ -490,7 +490,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			};
 			if (m.UserPeopleId.HasValue || p.IsNew)
 			{
-				ti.Address = pp != null ? pp.PrimaryAddress : p.address;
+				ti.Address = (pp != null ? pp.PrimaryAddress : p.address).Truncate(50);
 				ti.City = pp != null ? pp.PrimaryCity : p.city;
 				ti.Phone = (pp != null ? Util.PickFirst(pp.HomePhone, pp.CellPhone) : p.phone).FmtFone();
 				ti.State = pp != null ? pp.PrimaryState : p.state;

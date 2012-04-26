@@ -20,6 +20,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 		}
 
 		[HttpPost]
+		[ValidateInput(false)]
 		public ActionResult Upload(string text)
 		{
 			string host = Util.Host;
@@ -49,7 +50,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 				catch (Exception ex)
 				{
 					var rt = Db.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
-					rt.Error = ex.Message;
+					rt.Error = ex.Message.Truncate(200);
 					Db.SubmitChanges();
 				}
 			});

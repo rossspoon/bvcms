@@ -18,6 +18,7 @@ namespace CmsWeb.Models
         public DateTime? enddt { get; set; }
         public bool testtransactions { get; set; }
         public bool apprtransactions { get; set; }
+        public bool nocoupons { get; set; }
         public PagerModel2 Pager { get; set; }
         int? _count;
         public int Count()
@@ -77,6 +78,7 @@ namespace CmsWeb.Models
                  where name == null || t.Name.Contains(name)
                  where (t.Testing ?? false) == testtransactions
 				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
+				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
                  where (t.Financeonly ?? false) == false || finance
                  select t;
             if (!HttpContext.Current.User.IsInRole("Finance"))
