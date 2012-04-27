@@ -83,5 +83,50 @@ namespace CmsData
             a.Registered = registered;
             Db.SubmitChanges();
         }
+		public static void RecordAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)
+		{
+			var q = from o in Db.Organizations
+					where o.OrganizationId == OrgId
+					let p = Db.People.Single(pp => pp.PeopleId == PeopleId)
+					select new
+					{
+						o.Location,
+						OrgEntryPoint = o.EntryPointId,
+						p.EntryPointId,
+					};
+			var info = q.Single();
+			var meeting = (from m in Db.Meetings
+						   where m.OrganizationId == OrgId && m.MeetingDate == dt
+						   select m).FirstOrDefault();
+			if (info.EntryPointId == null)
+			{
+				var p = Db.LoadPersonById(PeopleId);
+				if (info.OrgEntryPoint > 0)
+					p.EntryPointId = info.OrgEntryPoint;
+			}
+			if (meeting == null)
+			{
+				var acr = (from s in Db.OrgSchedules
+						   where s.OrganizationId == OrgId
+						   where s.SchedTime.Value.TimeOfDay == dt.TimeOfDay
+						   where s.SchedDay == (int)dt.DayOfWeek
+						   select s.AttendCreditId).SingleOrDefault();
+				meeting = new Meeting
+				{
+					OrganizationId = OrgId,
+					MeetingDate = dt,
+					CreatedDate = Util.Now,
+					CreatedBy = Util.UserId1,
+					GroupMeetingFlag = false,
+					Location = info.Location,
+					AttendCreditId = acr
+				};
+				Db.Meetings.InsertOnSubmit(meeting);
+				Db.SubmitChanges();
+			}
+			RecordAttendance(Db, PeopleId, meeting.MeetingId, Present);
+			Db.UpdateMeetingCounters(meeting.MeetingId);
+		}
+
     }
 }

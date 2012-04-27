@@ -309,8 +309,7 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!Authenticate())
                 return Content("not authorized");
             DbUtil.LogActivity("checkin {0}, {1}, {2}".Fmt(PeopleId, OrgId, Present ? "attend" : "unattend"));
-            var m = new CheckInModel();
-            m.RecordAttend2(PeopleId, OrgId, Present, hour);
+            Attend.RecordAttend(DbUtil.Db, PeopleId, OrgId, Present, hour);
             var r = new ContentResult();
             r.Content = "success";
             return r;

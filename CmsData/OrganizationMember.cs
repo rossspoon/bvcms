@@ -178,7 +178,7 @@ namespace CmsData
                     var m = Db.OrganizationMembers.SingleOrDefault(m2 => m2.PeopleId == PeopleId && m2.OrganizationId == OrganizationId);
                     if (m != null)
                     {
-                        m.AddToMemberData("insert: {0}".Fmt(EnrollmentDate.ToString()));
+                        //m.AddToMemberData("insert: {0}".Fmt(EnrollmentDate.ToString()));
                         return m;
                     }
                     var org = Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == OrganizationId);

@@ -55,17 +55,10 @@ namespace CmsData
             if (!total.HasValue || total == 0)
                 return 0;
 
-            if (gateway == "AuthorizeNet")
-                ret = anet.createCustomerProfileTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", 0, Ccv);
-            else
-                ret = sage.createVaultTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", 0);
             var t = new Transaction
             {
                 TransactionDate = DateTime.Now,
-                TransactionId = ret.TransactionId,
-                Approved = ret.Approved,
-                Message = ret.Message,
-                AuthCode = ret.AuthCode,
+                TransactionId = "started",
                 Name = this.Person.Name,
                 Amt = total,
                 Donate = total,
@@ -74,11 +67,22 @@ namespace CmsData
                 TransactionGateway = gateway,
                 Financeonly = true
             };
-            t.TransactionPeople.Add(new TransactionPerson { PeopleId = PeopleId, Amt = total });
             Db.Transactions.InsertOnSubmit(t);
+			Db.SubmitChanges();
+
+            if (gateway == "AuthorizeNet")
+                ret = anet.createCustomerProfileTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id, Ccv);
+            else
+                ret = sage.createVaultTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id );
+            t.TransactionPeople.Add(new TransactionPerson { PeopleId = PeopleId, Amt = total });
+
+			t.Message = ret.Message;
+			t.AuthCode = ret.AuthCode;
+			t.Approved = ret.Approved;
 
             if (ret.Approved)
             {
+				t.TransactionId = ret.TransactionId;
                 foreach (var a in RecurringAmounts)
                 {
                     if (a.ContributionFund.FundStatusId == 1)

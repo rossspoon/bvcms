@@ -227,8 +227,8 @@ namespace CmsData
             {
                 var w = new SageVaultCheckAPI.wsVaultVirtualCheckSoapClient("wsVaultVirtualCheckSoap");
                 var mi = (p.MiddleName ?? " ").FirstOrDefault().ToString().Trim();
-                var ret = w.VIRTUAL_CHECK_WEB_SALE(login, key,
-                    "originator_id",
+                var ret = w.VIRTUAL_CHECK_PPD_SALE(login, key,
+                    "", // c_originator_id, use default
                     p.FirstName,
                     mi,
                     p.LastName,
@@ -241,11 +241,10 @@ namespace CmsData
                     p.EmailAddress,
                     rg.SageBankGuid.ToString().Replace("-", ""),
                     amt.ToString("n2"),
-                    "", "",
+                    "", "", //Shipping and Tax not needed
                     tranid.ToString(),
                     p.HomePhone,
-                    "", "", "", "", "", "", "", "", "", "",
-                    p.DOB);
+                    "", "", "", "", "", "", ""); // Shipping not needed
                 resp = getResponse(ret);
             }
             var tr = new TransactionResponse
