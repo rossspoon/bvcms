@@ -145,7 +145,7 @@
 @{
     var extravalues = CmsWeb.Code.StandardExtraValues.GetExtraValues(Model.PeopleId, "MemberProfile");
 }
-@if (extravalues.Count() > 0)
+@if (extravalues.Any())
 {
 <table id="memberextras" class="grid">
 <thead>

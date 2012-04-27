@@ -66,7 +66,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 						 where e.Id == id
 						 select e).Single();
 			var m = new EmailModel { id = id };
-			if (!m.CanDelete())
+			if (!User.IsInRole("Admin") && m.queue.QueuedBy != Util.UserPeopleId)
 				return Redirect("/");
 			email.PublicX = true;
 			DbUtil.Db.SubmitChanges();

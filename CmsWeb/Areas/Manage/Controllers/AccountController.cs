@@ -78,6 +78,8 @@ CKEditorFuncNum, baseurl + fn, error));
             catch (SqlException ex)
             {
                 TempData["message"] = ex.Message;
+				if (ex.Message.StartsWith("Cannot open database"))
+					return Content("no such database " + Util.Host);
                 return Redirect("/Error");
             }
 			if (!Request.Browser.Cookies)

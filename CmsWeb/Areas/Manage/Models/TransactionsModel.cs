@@ -191,12 +191,15 @@ namespace CmsWeb.Models
         {
             var q
                = from t in DbUtil.Db.Transactions
-                 where t.Amt >= gtamount || gtamount == null
+                 where t.Amt > gtamount || gtamount == null
                  where t.Amt <= ltamount || ltamount == null
                  where t.TransactionDate >= startdt || startdt == null
                  where description == null || t.Description.Contains(description)
                  where name == null || t.Name.Contains(name)
-                 where t.Testing == testtransactions
+                 where (t.Testing ?? false) == testtransactions
+				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
+				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
+                 where (t.Financeonly ?? false) == false || finance
                  select t;
 
             var edt = enddt;

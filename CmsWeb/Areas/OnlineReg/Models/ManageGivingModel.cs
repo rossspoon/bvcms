@@ -48,7 +48,8 @@ namespace CmsWeb.Models
 			return null;
 		}
 
-		[NonSerialized] private Person _Person;
+		[NonSerialized]
+		private Person _Person;
 
 		public Person person
 		{
@@ -60,7 +61,8 @@ namespace CmsWeb.Models
 			}
 		}
 
-		[NonSerialized] private Organization _organization;
+		[NonSerialized]
+		private Organization _organization;
 
 		public Organization Organization
 		{
@@ -165,14 +167,16 @@ namespace CmsWeb.Models
 			var t = s.GetDigits();
 			if (t.Length != 9)
 				return false;
-
 			var n = 0;
 			for (var i = 0; i < t.Length; i += 3)
-				n += t[i]*3 + t[i + 1]*7 + t[i + 2];
-			if (n != 0 && n%10 == 0)
+			{
+				n += int.Parse(t.Substring(i, 1)) * 3
+					+ int.Parse(t.Substring(i + 1, 1)) * 7
+					+ int.Parse(t.Substring(i + 2, 1));
+			}
+			if (n != 0 && n % 10 == 0)
 				return true;
-			else
-				return false;
+			return false;
 		}
 
 		public static bool ValidateCard(string s)
@@ -221,14 +225,14 @@ namespace CmsWeb.Models
 			}
 			int sum = 0;
 			for (int i = len - 1; i >= 0; i--)
-				if (i%2 == len%2)
+				if (i % 2 == len % 2)
 				{
-					int n = number[i]*2;
-					sum += (n/10) + (n%10);
+					int n = number[i] * 2;
+					sum += (n / 10) + (n % 10);
 				}
 				else
 					sum += number[i];
-			return sum%10 == 0;
+			return sum % 10 == 0;
 		}
 
 		public class FundItemChosen
@@ -244,9 +248,9 @@ namespace CmsWeb.Models
 				return new List<FundItemChosen>();
 			var items = OnlineRegPersonModel.Funds();
 			var q = from i in FundItem
-			        join m in items on i.Key equals m.Value.ToInt()
-			        where i.Value.HasValue
-			        select new FundItemChosen {fundid = m.Value.ToInt(), desc = m.Text, amt = i.Value.Value};
+					join m in items on i.Key equals m.Value.ToInt()
+					where i.Value.HasValue
+					select new FundItemChosen { fundid = m.Value.ToInt(), desc = m.Text, amt = i.Value.Value };
 			return q;
 		}
 
@@ -260,7 +264,7 @@ namespace CmsWeb.Models
 			get
 			{
 #if DEBUG
-				return new {AUTOCOMPLETE = "on"};
+				return new { AUTOCOMPLETE = "on" };
 #else
                 return new { AUTOCOMPLETE = "off" };
 #endif
@@ -281,11 +285,11 @@ namespace CmsWeb.Models
 <div class=""instructions sorry"">{5}</div>
 "
 						.Fmt(setting.InstructionLogin,
-						     setting.InstructionSelect,
-						     setting.InstructionFind,
-						     setting.InstructionOptions,
-						     setting.InstructionSubmit,
-						     setting.InstructionSorry
+							 setting.InstructionSelect,
+							 setting.InstructionFind,
+							 setting.InstructionOptions,
+							 setting.InstructionSubmit,
+							 setting.InstructionSorry
 						);
 			}
 		}

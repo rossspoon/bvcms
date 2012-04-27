@@ -20,10 +20,18 @@ div.pager
 }
 </style>
 }
+@{ 
+    CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson;
+    var isaccess = User.IsInRole("Access");
+    var isadmin = User.IsInRole("Admin");
+    var isedit = User.IsInRole("Edit");
+    var isfinance = User.IsInRole("Finance");
+    var ismanager = User.IsInRole("Manager");
+    var memberedit = isadmin || User.IsInRole("Membership");
+}
 @section scripts
 {
 @Html.Partial("CombinedPersonJs")
-@{ bool memberedit = User.IsInRole("Admin") || User.IsInRole("Membership");}
 @if(memberedit)
 {
     <script type="text/javascript"> function ShowMemberDocs() { $("#memberdocs").show(); } </script>
@@ -36,7 +44,6 @@ div.pager
         }
     </script>
 }
-@{ CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson; }
 @Html.Hidden("PeopleId", p.PeopleId)
     <table cellspacing="5" class="roundbox floatleft">
         <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
@@ -79,12 +86,12 @@ div.pager
         </div>
         <div style="border-bottom: 4px solid #ddd"></div>
     </div>
-@if (User.IsInRole("Finance") || User.IsInRole("Admin") || User.IsInRole("Manager"))
+@if (isfinance || isadmin || ismanager)
 {
     <div id="buttondiv" class="dropdown" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
         <div><a>Other Management</a></div>
         <div class="sublinks">
-    @if (User.IsInRole("Finance"))
+    @if (isfinance)
     {
             <a href="/FinanceReports/ContributionYears/@p.PeopleId">Contributions</a> 
     }
@@ -92,10 +99,10 @@ div.pager
     { 
             <a href="/CheckIn/CheckIn/@Model.ckorg?pid=@p.PeopleId">CheckIn</a>
     }
-    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    @if (isadmin || ismanager)
     { 
             <a id="moveperson" href="/Person/Move/@p.PeopleId">Merge Controller</a>
-        if (User.IsInRole("Admin"))
+        if (isadmin)
         { 
             <a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a>
         } 
@@ -113,11 +120,11 @@ div.pager
             <li><a href="#address-tab"><span>Addresses</span></a></li>
             <li><a id="enrollment-link" href="#enrollment-tab"><span>Enrollment</span></a></li>
             <li><a id="member-link" href="#member-tab"><span>Member Profile</span></a></li>
-@if (User.IsInRole("Access"))
+@if (isaccess)
 { 
             <li><a href="#growth-tab"><span>Growth</span></a></li>
 }
-@if (User.IsInRole("Edit") || User.IsInRole("Admin"))
+@if (isedit || isadmin)
 { 
             <li><a id="system-link" href="#system-tab"><span>System</span></a></li>
 }
@@ -177,6 +184,10 @@ div.pager
             <ul class="ui-tabs-nav">
                 <li><a href="#membersum-tab"><span>Summary</span></a></li>
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
+            @if (isaccess)
+            {
+                <li><a href="#querybits-tab"><span>QueryBits</span></a></li>
+            }
             </ul>
             <div id="membersum-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form id="memberdisplay" class="DisplayEdit" action="/Person/MemberDisplay/@p.PeopleId">
@@ -187,8 +198,17 @@ div.pager
                  @Html.Partial("MemberNotesDisplay", p.membernotes) 
                 </form>
             </div>
+        @if (isaccess)
+        {
+            <div id="querybits-tab" class="ui-tabs-hide ui-tabs-panel">
+                @foreach (var b in p.member.QueryBits())
+                {
+                    @b[0] @:- @b[1]<br/>
+                }
+            </div>
+        }
         </div>
-@if (User.IsInRole("Access"))
+@if (isaccess)
 { 
         <div id="growth-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
@@ -216,7 +236,7 @@ div.pager
             </div>
         </div>
 }
-@if (User.IsInRole("Edit") || User.IsInRole("Admin"))
+@if (isedit || isadmin)
 { 
         <div id="system-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">

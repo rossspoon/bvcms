@@ -9,6 +9,7 @@ using UtilityExtensions;
 using System.IO;
 using System.Web.Mvc;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Main.Models
 {
@@ -59,8 +60,7 @@ namespace CmsWeb.Areas.Main.Models
 
         public int CreateQueue()
         {
-            var From = new MailAddress(FromAddress, FromName);
-            return DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , PublicViewable).Id; 
+            var From = new MailAddress(FromAddress, FromName);            return DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , PublicViewable).Id; 
         }
 
         public IEnumerable<SelectListItem> EmailFroms()

@@ -179,6 +179,14 @@ namespace CmsData
 			};
 			EmailQueues.InsertOnSubmit(emailqueue);
 
+			SubmitChanges();
+			if (body.Contains("http://publiclink", ignoreCase:true))
+			{
+				var link = Util.URLCombine(CmsHost, "/Manage/Emails/View/" + emailqueue.Id);
+				var re = new Regex("http://publiclink", RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+				emailqueue.Body = re.Replace(body, link);
+			}
+
 			var Qb = LoadQueryById(QBId);
 			var q = People.Where(Qb.Predicate(this));
 
@@ -291,7 +299,7 @@ namespace CmsData
 			text = DoRegisterTag(text, CmsHost, emailqueueto);
 			text = DoRegisterTag2(text, CmsHost, emailqueueto);
 			text = DoExtraValueData(text, emailqueueto);
-			if (text.Contains("{createaccount}", ignoreCase:true))
+			if (text.Contains("{createaccount}"))
 				text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
 			if (text.Contains("http://votelink", ignoreCase:true))
 				text = DoVoteLink(text, CmsHost, emailqueueto);
