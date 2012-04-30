@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace CmsCheckin
 {
@@ -12,6 +16,27 @@ namespace CmsCheckin
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+			var activities = new List<Activity>()
+			{
+					new Activity() { name = "visit", display = "Visit George", org = 555 },
+					new Activity() { name = "visit", display = "Visit Susan", org = 554 }
+			};
+            var xs = new XmlSerializer(typeof(List<Activity>), new XmlRootAttribute("Activities"));
+            var sw = new StringWriter();
+            xs.Serialize(sw, activities);
+			var s = sw.ToString();
+			Debug.WriteLine(s);
+			s = @"
+<Activities>
+  <Activity name='visit' org='555'>Visit George</Activity>
+  <Activity name='visit' org='554'>Visit Susan</Activity>
+  <Activity name='tour'>Building Tour</Activity>
+  <Activity>Games</Activity>
+</Activities>
+";
+
+			var a = xs.Deserialize(new StringReader(s)) as List<Activity>;
 
             var login = new Login();
             login.password.Focus();
@@ -104,8 +129,10 @@ namespace CmsCheckin
         public static bool SecurityLabelPerChild { get; set; }
         public static string PrintMode { get; set; }
         public static bool BuildingMode { get; set; }
+        public static string Building { get; set; }
+    	public static List<Activity> Activities { get; set; }
 
-        public static string QueryString
+    	public static string QueryString
         {
             get { return string.Format("?campus={0}&thisday={1}&kioskmode={2}&kiosk={3}", CampusId, ThisDay, false, KioskName); }
         }
@@ -211,7 +238,7 @@ namespace CmsCheckin
 			var propertyInfo = (property.Body as MemberExpression).Member as PropertyInfo;
 
 			if (propertyInfo == null ||
-				!@this.GetType().IsSubclassOf(propertyInfo.ReflectedType) ||
+				//!@this.GetType().IsSubclassOf(propertyInfo.ReflectedType) ||
 				@this.GetType().GetProperty(propertyInfo.Name, propertyInfo.PropertyType) == null)
 			{
 				throw new ArgumentException("The lambda expression 'property' must reference a valid property on this Control.");

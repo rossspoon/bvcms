@@ -305,6 +305,8 @@ namespace CmsData
 				text = DoVoteLink(text, CmsHost, emailqueueto);
 			if (text.Contains("http://registerlink", ignoreCase:true))
 				text = DoRegisterLink(text, CmsHost, emailqueueto);
+			if (text.Contains("http://rsvplink", ignoreCase:true))
+				text = DoRsvpLink(text, CmsHost, emailqueueto);
 			if (text.Contains("{barcode}", ignoreCase:true))
 			{
 				var link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
@@ -527,6 +529,41 @@ namespace CmsData
 			}
 			return text;
 		}
+		private string DoRsvpLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+		{
+			//<a dir="ltr" href="http://rsvplink" id="798" rel="meetingid" title="This is a message">test</a>
+			var list = new Dictionary<string, OneTimeLink>();
+			const string RsvpLinkRE = "<a[^>]*?href=\"http://rsvplink\"[^>]*>.*?</a>";
+			var re = new Regex(RsvpLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+			var match = re.Match(text);
+			while (match.Success)
+			{
+				var tag = match.Value;
+
+				var doc = new HtmlDocument();
+				doc.LoadHtml(tag);
+				var ele = doc.DocumentNode.Element("a");
+				var inside = ele.InnerHtml;
+				var d = ele.Attributes.ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+
+				string msg = "Thank you for responding.";
+				if (d.ContainsKey("title"))
+					msg = d["title"];
+
+				string confirm = "false";
+				if (d.ContainsKey("dir") && d["dir"] == "ltr")
+					confirm = "true";
+
+				if (!d.ContainsKey("id"))
+					throw new Exception("Rsvplink: no id attribute");
+				var id = d["id"];
+
+				var url = RsvpLinkUrl(text, CmsHost, emailqueueto, list, tag, id, msg, confirm);
+				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
+				match = match.NextMatch();
+			}
+			return text;
+		}
 		private string DoRegisterLink(string text, string CmsHost, EmailQueueTo emailqueueto)
 		{
 			var list = new Dictionary<string, OneTimeLink>();
@@ -647,6 +684,34 @@ namespace CmsData
 				match = match.NextMatch();
 			}
 			return text;
+		}
+		private string RsvpLinkUrl(string text,
+			string CmsHost,
+			EmailQueueTo emailqueueto,
+			Dictionary<string, OneTimeLink> list,
+			string votelink,
+			string id,
+			string msg,
+			string confirm)
+		{
+			var qs = "{0},{1},{2}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id);
+			OneTimeLink ot;
+			if (list.ContainsKey(qs))
+				ot = list[qs];
+			else
+			{
+				ot = new OneTimeLink
+				{
+					Id = Guid.NewGuid(),
+					Querystring = qs
+				};
+				OneTimeLinks.InsertOnSubmit(ot);
+				SubmitChanges();
+				list.Add(qs, ot);
+			}
+			var url = Util.URLCombine(CmsHost, "/OnlineReg/RsvpLink/{0}?confirm={1}&message={2}"
+				.Fmt(ot.Id.ToCode(), confirm, HttpUtility.UrlEncode(msg)));
+			return url;
 		}
 		private string VoteLinkUrl(string text,
 			string CmsHost,

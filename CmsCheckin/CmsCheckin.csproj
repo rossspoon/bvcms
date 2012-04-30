@@ -189,6 +189,12 @@
     <Compile Include="AdminLogin.Designer.cs">
       <DependentUpon>AdminLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChooseActivities.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChooseActivities.Designer.cs">
+      <DependentUpon>ChooseActivities.cs</DependentUpon>
+    </Compile>
     <Compile Include="EnterGenderMarital2.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -332,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Attendant.resx">
       <DependentUpon>Attendant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChooseActivities.resx">
+      <DependentUpon>ChooseActivities.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EnterGenderMarital2.resx">
       <DependentUpon>EnterGenderMarital2.cs</DependentUpon>

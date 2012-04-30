@@ -89,6 +89,7 @@
 			this.bequal = new System.Windows.Forms.Button();
 			this.brbrace = new System.Windows.Forms.Button();
 			this.blbrace = new System.Windows.Forms.Button();
+			this.building = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// button1
@@ -842,11 +843,20 @@
 			this.blbrace.Text = "[";
 			this.blbrace.UseVisualStyleBackColor = false;
 			// 
+			// building
+			// 
+			this.building.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.building.Location = new System.Drawing.Point(300, 201);
+			this.building.Name = "building";
+			this.building.Size = new System.Drawing.Size(193, 32);
+			this.building.TabIndex = 131;
+			// 
 			// Login
 			// 
 			this.AcceptButton = this.brbrace;
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.ClientSize = new System.Drawing.Size(767, 496);
+			this.Controls.Add(this.building);
 			this.Controls.Add(this.brbrace);
 			this.Controls.Add(this.blbrace);
 			this.Controls.Add(this.bequal);
@@ -982,5 +992,6 @@
 		private System.Windows.Forms.Button bequal;
 		private System.Windows.Forms.Button brbrace;
 		private System.Windows.Forms.Button blbrace;
+		public System.Windows.Forms.TextBox building;
     }
 }

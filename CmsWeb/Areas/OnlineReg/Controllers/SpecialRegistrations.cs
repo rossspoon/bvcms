@@ -488,6 +488,59 @@ pid={1}
 emailid={2}
 </pre>".Fmt(oid, pid, emailid));
 		}
+        public ActionResult RsvpLink(string id, string message, bool? confirm)
+        {
+            if (!id.HasValue())
+                return Content("bad link");
+
+            var guid = id.ToGuid();
+            if (guid == null)
+                return Content("invalid link");
+            var ot = DbUtil.Db.OneTimeLinks.SingleOrDefault(oo => oo.Id == guid.Value);
+            if (ot == null)
+                return Content("invalid link");
+            if (ot.Used)
+                return Content("link used");
+            if (ot.Expires.HasValue && ot.Expires < DateTime.Now)
+                return Content("link expired");
+            var a = ot.Querystring.Split(',');
+            var meetingid = a[0].ToInt();
+            var pid = a[1].ToInt();
+            var q = (from pp in DbUtil.Db.People
+                     where pp.PeopleId == pid
+                     let meeting = DbUtil.Db.Meetings.SingleOrDefault(mm => mm.MeetingId == meetingid)
+					 let org = meeting.Organization
+                     select new { p = pp, org, meeting }).Single();
+
+            if (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive)
+                return Content("sorry, registration has been closed");
+
+            if (q.org.Limit <= q.meeting.Attends.Count(aa => aa.Registered == true))
+                return Content("sorry, maximum limit has been reached");
+
+            ot.Used = true;
+            DbUtil.Db.SubmitChanges();
+			Attend.MarkRegistered(DbUtil.Db, pid, meetingid, true);
+            DbUtil.LogActivity("Rsvplink: {0}".Fmt(q.org.OrganizationName));
+			var setting = new RegSettings(q.org.RegSetting, DbUtil.Db, q.meeting.OrganizationId);
+
+            if (confirm == true)
+            {
+                var subject = Util.PickFirst(setting.Subject, "no subject");
+                var msg = Util.PickFirst(setting.Body, "no message");
+                msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
+                msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("MMM dd, yyyy at h:mm tt"));
+                var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
+	            if (NotifyIds.Count == 0)
+					NotifyIds = DbUtil.Db.AdminPeople();
+
+                DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
+                DbUtil.Db.Email(q.p.FromEmail, NotifyIds,
+                        q.org.OrganizationName,
+						"{0} has registered for {1}<br>{2}".Fmt(q.p.Name, q.org.OrganizationName, q.meeting.MeetingDate.ToString2("MMM dd, yyyy at h:mm tt")));
+            }
+            return Content(message);
+        }
 
 		[ValidateInput(false)]
         public ActionResult RegisterLink(string id)

@@ -7,6 +7,8 @@ using CmsWeb.Models;
 using System.IO;
 using CmsData.Codes;
 using System.Text;
+using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -348,7 +350,6 @@ namespace CmsWeb.Areas.Public.Controllers
                 var ck = new CheckInTime
                 {
                     CheckInTimeX = dt,
-                    OrganizationId = id,
                     PeopleId = pid,
                     //KeyCode = KeyCode
                 };
@@ -502,5 +503,75 @@ namespace CmsWeb.Areas.Public.Controllers
             var b = m.GetNextPrintJobs(id);
             return Content(b, "text/xml");
         }
+        public ActionResult FetchBuildingActivities(string id)
+        {
+            if (!Authenticate())
+                return Content("not authorized");
+            var m = new CheckInModel();
+            return Content(DbUtil.Db.Content("BuildingCheckin-{0}.xml".Fmt(id), 
+				"<BuildingActivity/>"), "text/xml");
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ContentResult BuildingCheckin(int id)
+        {
+            if (!Authenticate())
+                return Content("not authorized");
+
+            var reader = new StreamReader(Request.InputStream);
+            string s = reader.ReadToEnd();
+			if (!s.HasValue())
+				s = "<Activities />";
+			var xs = new XmlSerializer(typeof(List<Activity>), new XmlRootAttribute("Activities"));
+			var activities = xs.Deserialize(new StringReader(s)) as List<Activity>;
+			var ac = new CheckInTime() { PeopleId = id, CheckInTimeX = DateTime.Now };
+			foreach (var a in activities)
+				ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name});
+        	DbUtil.Db.CheckInTimes.InsertOnSubmit(ac);
+			DbUtil.Db.SubmitChanges();
+			foreach (var a in activities)
+			{
+				if (a.org > 0)
+					Attend.RecordAttend(DbUtil.Db, id, a.org, true, DateTime.Today);
+			}
+        	return Content(ac.Id.ToString());
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ContentResult BuildingUnCheckin(int id)
+        {
+            if (!Authenticate())
+                return Content("not authorized");
+
+			var ct = DbUtil.Db.CheckInTimes.SingleOrDefault(cc => cc.Id == id);
+			DbUtil.Db.CheckInActivities.DeleteAllOnSubmit(ct.CheckInActivities);
+			DbUtil.Db.CheckInTimes.DeleteOnSubmit(ct);
+			DbUtil.Db.SubmitChanges();
+
+        	return Content("done");
+        }
+
+    	[Serializable]
+    	public class Activity
+    	{
+    		[XmlAttribute]
+    		public string name { get; set; }
+
+    		[XmlAttribute]
+    		public int org { get; set; }
+
+    		[XmlText]
+    		public string display { get; set; }
+
+    		public override string ToString()
+    		{
+    			return display;
+    		}
+
+    		public string Name
+    		{
+    			get { return name ?? display; }
+    		}
+    	}
     }
 }

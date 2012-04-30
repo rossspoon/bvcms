@@ -345,19 +345,94 @@ namespace CmsCheckin
 			var c = list[(int)ab.Tag];
 			if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 1)
 				return;
+
+			var pb = Program.attendant.pictureBox1;
+			pb.SetPropertyThreadSafe(() => pb.Image, Util.GetImage(c.pid));
+			var na = Program.attendant.NameDisplay;
+			na.SetPropertyThreadSafe(() => na.Text, c.name);
+
+			activities = new ChooseActivities();
+			activities.Tag = ab.Tag;
+
+			activities.list.Items.Clear();
+			foreach (var i in Program.Activities)
+				activities.list.Items.Add(i);
+			activities.ok.Tag = ab;
+			activities.cancel.Tag = ab;
+			activities.Location = new Point(ab.Location.X - 100, ab.Location.Y + ab.Height);
+			activities.AcceptButton = activities.ok;
+			activities.CancelButton = activities.cancel;
+			activities.ok.Click += ok_Click;
+			activities.cancel.Click += cancel_Click;
+
+			mask = new Label();
+			mask.BackColor = BackColor;
+			mask.Size = Size;
+			//mask.Location = this.Location;
+			mask.Parent = this;
+			mask.BringToFront();
+			var nam = this.Controls[this.Controls.IndexOfKey("name" + ab.Tag.ToString())] as Button;
+			var org = this.Controls[this.Controls.IndexOfKey("org" + ab.Tag.ToString())] as Label;
+			nam.BringToFront();
+			org.BringToFront();
+
+			mask.Show();
+			nam.Enabled = false;
+			activities.Show();
+			activities.BringToFront();
+		}
+
+		void ok_Click(object sender, EventArgs e)
+		{
+			var ok = (Button)sender;
+			var ab = ok.Tag as Button;
 			Cursor.Current = Cursors.WaitCursor;
 			Program.CursorShow();
-			if (ab.Text == String.Empty)
-				ab.Text = STR_CheckMark;
-			else
-				ab.Text = String.Empty;
+			var c = list[(int)ab.Tag];
+			ab.Text = STR_CheckMark;
 			c.lastpress = DateTime.Now;
-			ComputeLabels();
 			var bw = new BackgroundWorker();
 			bw.DoWork += CheckUnCheckDoWork;
 			bw.RunWorkerCompleted += CheckUncheckCompleted;
-			bw.RunWorkerAsync();
+			bw.RunWorkerAsync(ok);
 		}
+		void cancel_Click(object sender, EventArgs e)
+		{
+			var cancel = (Button)sender;
+			var ab = cancel.Tag as Button;
+			Cursor.Current = Cursors.WaitCursor;
+			Program.CursorShow();
+			var c = list[(int)ab.Tag];
+			ab.Text = "";
+			c.lastpress = DateTime.Now;
+			if (c.CheckinId.HasValue)
+				Util.BuildingUnCheckin(c.CheckinId.Value);
+			RemoveActivities();
+			c.CheckinId = null;
+		}
+		private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)
+		{
+			var ok = e.Argument as Button;
+			var ab = ok.Tag as Button;
+			var c = list[(int)ab.Tag];
+			var f = ok.Parent as ChooseActivities;
+			var items = f.list.CheckedItems.OfType<Activity>().ToList();
+			c.CheckinId = Util.BuildingCheckin(c.pid, items);
+			c.Items = items;
+		}
+		private void CheckUncheckCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			Cursor.Current = Cursors.Default;
+			var org = this.Controls[this.Controls.IndexOfKey("org" + activities.Tag.ToString())] as Label;
+			var ab = this.Controls[this.Controls.IndexOfKey("attend" + activities.Tag.ToString())] as Button;
+			var c = list[(int)ab.Tag];
+			var s = string.Join(", ", activities.list.CheckedItems.OfType<Activity>().Select(aa => aa.display));
+			org.Text = c.ItemsDisplay();
+			Program.attendant.AddHistory(c);
+			RemoveActivities();
+			Program.CursorHide();
+		}
+
 
 		void ShowPic_Click(object sender, EventArgs e)
 		{
@@ -373,6 +448,7 @@ namespace CmsCheckin
 		public List<ClassInfo> classlist = new List<ClassInfo>();
 		private Label mask;
 		private Menu menu;
+		private ChooseActivities activities;
 
 		void Menu_Click(object sender, EventArgs e)
 		{
@@ -441,6 +517,15 @@ namespace CmsCheckin
 			menu.Dispose();
 			mask.Dispose();
 		}
+		private void RemoveActivities()
+		{
+			var nam = this.Controls[this.Controls.IndexOfKey("name" + activities.Tag.ToString())] as Button;
+			nam.Enabled = true;
+			this.Controls.Remove(activities);
+			this.Controls.Remove(mask);
+			activities.Dispose();
+			activities.Dispose();
+		}
 
 		PleaseWait PleaseWaitForm = null;
 		private void ClearControls()
@@ -495,17 +580,6 @@ namespace CmsCheckin
 			this.Swap(Program.home2.first);
 		}
 
-		private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)
-		{
-			var info = e.Argument as Util.ClassCheckedInfo;
-
-		}
-		private void CheckUncheckCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			Cursor.Current = Cursors.Default;
-			Program.CursorHide();
-		}
-
 		private void Return_Click(object sender, EventArgs e)
 		{
 			Program.TimerStop();
@@ -523,45 +597,18 @@ namespace CmsCheckin
 			bw.RunWorkerCompleted += PrintingCompleted;
 			bw.RunWorkerAsync();
 		}
-        private void DoPrinting(object sender, DoWorkEventArgs e)
-        {
-
-        }
-        private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            PleaseWaitForm.Hide();
-            PleaseWaitForm.Dispose();
-            PleaseWaitForm = null;
-            Program.FamilyId = 0;
-            classlist = new List<ClassInfo>();
-            this.GoHome(string.Empty);
-        }
-		public class PersonInfo
+		private void DoPrinting(object sender, DoWorkEventArgs e)
 		{
-			public DateTime? lastpress { get; set; }
-			public int pid { get; set; }
-			public string first { get; set; }
-			public string last { get; set; }
-			public string dob { get; set; }
 
-			public string goesby { get; set; }
-			public string email { get; set; }
-			public string addr { get; set; }
-			public string zip { get; set; }
-			public string home { get; set; }
-			public string cell { get; set; }
-
-			public int gender { get; set; }
-			public int marital { get; set; }
-
-			public string activities { get; set; }
-			public int Row { get; set; }
-			public bool HasPicture { get; set; }
-
-			public string name
-			{
-				get { return first + " " + last; }
-			}
+		}
+		private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			PleaseWaitForm.Hide();
+			PleaseWaitForm.Dispose();
+			PleaseWaitForm = null;
+			Program.FamilyId = 0;
+			classlist = new List<ClassInfo>();
+			this.GoHome(string.Empty);
 		}
 
 		// all of these come from the attribtues on the attendee element
@@ -582,19 +629,59 @@ namespace CmsCheckin
 			public bool custody { get; set; }
 			public bool requiressecuritylabel { get; set; }
 		}
-		[Serializable]
-		public class PrintJob
+	}
+	[Serializable]
+	public class Activity
+	{
+		[XmlAttribute]
+		public string name { get; set; }
+		[XmlAttribute]
+		public int org { get; set; }
+		[XmlText]
+		public string display { get; set; }
+		public override string ToString()
 		{
-			// securitycode comes from the attribute on the root element (Attendees)
-			public string securitycode { get; set; }
-			// the following is a list of each person/class that was checked present
-			public List<LabelInfo> list { get; set; }
+			return display;
 		}
-		[Serializable]
-		public class PrintJobs
+	}
+	public class PersonInfo
+	{
+		public DateTime? lastpress { get; set; }
+		public bool ischecked { get; set; }
+		public int? CheckinId { get; set; }
+		public List<Activity> Items { get; set; }
+		public int pid { get; set; }
+		public string first { get; set; }
+		public string last { get; set; }
+		public string dob { get; set; }
+
+		public string goesby { get; set; }
+		public string email { get; set; }
+		public string addr { get; set; }
+		public string zip { get; set; }
+		public string home { get; set; }
+		public string cell { get; set; }
+
+		public int gender { get; set; }
+		public int marital { get; set; }
+
+		public string activities { get; set; }
+		public int Row { get; set; }
+		public bool HasPicture { get; set; }
+
+		public string name
 		{
-			public List<PrintJob> jobs { get; set; }
+			get { return first + " " + last; }
+		}
+		public string ItemsDisplay()
+		{
+			return string.Join(",", Items.Select(ii => ii.display));
 		}
 
+		public override string ToString()
+		{
+			return "{0:hh:mm tt} {1} ({2})".Fmt(lastpress, name, ItemsDisplay());
+		}
 	}
+
 }

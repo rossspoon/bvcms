@@ -141,7 +141,7 @@ namespace CmsCheckin
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             var ph = e.Argument as string;
-			var lb = Program.attendant.label1;
+			var lb = Program.attendant.NameDisplay;
 			lb.SetPropertyThreadSafe(() => lb.Text, "finding " + ph);
             var x = this.GetDocument("Checkin2/Find/" + ph.GetDigits() 
                 + Program.QueryString + "&page=1");

@@ -21,20 +21,16 @@ namespace CmsData
 		
 		private int? _PeopleId;
 		
-		private int? _OrganizationId;
-		
 		private DateTime? _CheckInTimeX;
 		
-		private DateTime? _CheckOutTime;
-		
 		private int? _GuestOfId;
+		
+		private string _Location;
 		
    		
    		private EntitySet< CheckInActivity> _CheckInActivities;
 		
     	
-		private EntityRef< Organization> _Organization;
-		
 		private EntityRef< Person> _Person;
 		
 	#endregion
@@ -50,17 +46,14 @@ namespace CmsData
 		partial void OnPeopleIdChanging(int? value);
 		partial void OnPeopleIdChanged();
 		
-		partial void OnOrganizationIdChanging(int? value);
-		partial void OnOrganizationIdChanged();
-		
 		partial void OnCheckInTimeXChanging(DateTime? value);
 		partial void OnCheckInTimeXChanged();
 		
-		partial void OnCheckOutTimeChanging(DateTime? value);
-		partial void OnCheckOutTimeChanged();
-		
 		partial void OnGuestOfIdChanging(int? value);
 		partial void OnGuestOfIdChanged();
+		
+		partial void OnLocationChanging(string value);
+		partial void OnLocationChanged();
 		
     #endregion
 		public CheckInTime()
@@ -68,8 +61,6 @@ namespace CmsData
 			
 			this._CheckInActivities = new EntitySet< CheckInActivity>(new Action< CheckInActivity>(this.attach_CheckInActivities), new Action< CheckInActivity>(this.detach_CheckInActivities)); 
 			
-			
-			this._Organization = default(EntityRef< Organization>); 
 			
 			this._Person = default(EntityRef< Person>); 
 			
@@ -126,31 +117,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="OrganizationId", UpdateCheck=UpdateCheck.Never, Storage="_OrganizationId", DbType="int")]
-		public int? OrganizationId
-		{
-			get { return this._OrganizationId; }
-
-			set
-			{
-				if (this._OrganizationId != value)
-				{
-				
-					if (this._Organization.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnOrganizationIdChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationId = value;
-					this.SendPropertyChanged("OrganizationId");
-					this.OnOrganizationIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="CheckInTime", UpdateCheck=UpdateCheck.Never, Storage="_CheckInTimeX", DbType="datetime")]
 		public DateTime? CheckInTimeX
 		{
@@ -166,28 +132,6 @@ namespace CmsData
 					this._CheckInTimeX = value;
 					this.SendPropertyChanged("CheckInTimeX");
 					this.OnCheckInTimeXChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="CheckOutTime", UpdateCheck=UpdateCheck.Never, Storage="_CheckOutTime", DbType="datetime")]
-		public DateTime? CheckOutTime
-		{
-			get { return this._CheckOutTime; }
-
-			set
-			{
-				if (this._CheckOutTime != value)
-				{
-				
-                    this.OnCheckOutTimeChanging(value);
-					this.SendPropertyChanging();
-					this._CheckOutTime = value;
-					this.SendPropertyChanged("CheckOutTime");
-					this.OnCheckOutTimeChanged();
 				}
 
 			}
@@ -217,11 +161,33 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(50)")]
+		public string Location
+		{
+			get { return this._Location; }
+
+			set
+			{
+				if (this._Location != value)
+				{
+				
+                    this.OnLocationChanging(value);
+					this.SendPropertyChanging();
+					this._Location = value;
+					this.SendPropertyChanged("Location");
+					this.OnLocationChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_CheckInActivity_CheckInTimes", Storage="_CheckInActivities", OtherKey="CheckinId")]
+   		[Association(Name="FK_CheckInActivity_CheckInTimes", Storage="_CheckInActivities", OtherKey="Id")]
    		public EntitySet< CheckInActivity> CheckInActivities
    		{
    		    get { return this._CheckInActivities; }
@@ -235,48 +201,6 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_CheckInTimes_Organizations", Storage="_Organization", ThisKey="OrganizationId", IsForeignKey=true)]
-		public Organization Organization
-		{
-			get { return this._Organization.Entity; }
-
-			set
-			{
-				Organization previousValue = this._Organization.Entity;
-				if (((previousValue != value) 
-							|| (this._Organization.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Organization.Entity = null;
-						previousValue.CheckInTimes.Remove(this);
-					}
-
-					this._Organization.Entity = value;
-					if (value != null)
-					{
-						value.CheckInTimes.Add(this);
-						
-						this._OrganizationId = value.OrganizationId;
-						
-					}
-
-					else
-					{
-						
-						this._OrganizationId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Organization");
-				}
-
-			}
-
-		}
-
-		
 		[Association(Name="FK_CheckInTimes_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person Person
 		{

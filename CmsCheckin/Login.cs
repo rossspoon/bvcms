@@ -88,6 +88,7 @@ namespace CmsCheckin
 			Settings1.Default.Printer = Printer.Text;
 			Settings1.Default.TwoInchLabel = TwoInchLabel.Checked;
 			Settings1.Default.BuildingMode = BuildingAccessMode.Checked;
+			Settings1.Default.Building = building.Text;
 			Settings1.Default.Save();
 
 #if DEBUG
@@ -100,6 +101,25 @@ namespace CmsCheckin
 #endif
 			Program.Username = username.Text;
 			Program.Password = password.Text;
+			if (BuildingAccessMode.Checked == true)
+			{
+				try
+				{
+					Program.Building = building.Text;
+					Program.Activities = Util.FetchBuildingActivities();
+					if (Program.Activities.Count == 0)
+					{
+						CancelClose = true;
+						return;
+					}
+				}
+				catch (Exception)
+				{
+					MessageBox.Show("cannot find " + Program.URL);
+					CancelClose = true;
+					throw;
+				}
+			}
 			var wc = Util.CreateWebClient();
 			try
 			{
@@ -146,6 +166,7 @@ namespace CmsCheckin
 				PrintMode.Text = "Print to Printer";
 				Printer.SelectedIndex = Printer.FindStringExact("Godex EZ-DT-4");
 				BuildingAccessMode.Checked = true;
+				building.Text = "recreation";
 			}
 			else
 			{
@@ -158,6 +179,7 @@ namespace CmsCheckin
 				username.Text = Settings1.Default.username;
 				PrintKiosks.Text = Settings1.Default.Kiosks;
 				PrintMode.Text = Settings1.Default.PrintMode;
+				building.Text = Settings1.Default.Building;
 			}
 		}
 		void buttonclick(object sender, EventArgs e)

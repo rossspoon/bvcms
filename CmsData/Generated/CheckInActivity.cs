@@ -17,14 +17,12 @@ namespace CmsData
 		
 	#region Private Fields
 		
-		private int _CheckinId;
+		private int _Id;
 		
-		private int _ActivityId;
+		private string _Activity;
 		
    		
     	
-		private EntityRef< Activity> _Activity;
-		
 		private EntityRef< CheckInTime> _CheckInTime;
 		
 	#endregion
@@ -34,18 +32,16 @@ namespace CmsData
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
 		
-		partial void OnCheckinIdChanging(int value);
-		partial void OnCheckinIdChanged();
+		partial void OnIdChanging(int value);
+		partial void OnIdChanged();
 		
-		partial void OnActivityIdChanging(int value);
-		partial void OnActivityIdChanged();
+		partial void OnActivityChanging(string value);
+		partial void OnActivityChanged();
 		
     #endregion
 		public CheckInActivity()
 		{
 			
-			
-			this._Activity = default(EntityRef< Activity>); 
 			
 			this._CheckInTime = default(EntityRef< CheckInTime>); 
 			
@@ -55,24 +51,24 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="CheckinId", UpdateCheck=UpdateCheck.Never, Storage="_CheckinId", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int CheckinId
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="int NOT NULL", IsPrimaryKey=true)]
+		public int Id
 		{
-			get { return this._CheckinId; }
+			get { return this._Id; }
 
 			set
 			{
-				if (this._CheckinId != value)
+				if (this._Id != value)
 				{
 				
 					if (this._CheckInTime.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
-                    this.OnCheckinIdChanging(value);
+                    this.OnIdChanging(value);
 					this.SendPropertyChanging();
-					this._CheckinId = value;
-					this.SendPropertyChanged("CheckinId");
-					this.OnCheckinIdChanged();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
 				}
 
 			}
@@ -80,24 +76,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ActivityId", UpdateCheck=UpdateCheck.Never, Storage="_ActivityId", DbType="int NOT NULL", IsPrimaryKey=true)]
-		public int ActivityId
+		[Column(Name="Activity", UpdateCheck=UpdateCheck.Never, Storage="_Activity", DbType="varchar(50) NOT NULL", IsPrimaryKey=true)]
+		public string Activity
 		{
-			get { return this._ActivityId; }
+			get { return this._Activity; }
 
 			set
 			{
-				if (this._ActivityId != value)
+				if (this._Activity != value)
 				{
 				
-					if (this._Activity.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
-                    this.OnActivityIdChanging(value);
+                    this.OnActivityChanging(value);
 					this.SendPropertyChanging();
-					this._ActivityId = value;
-					this.SendPropertyChanged("ActivityId");
-					this.OnActivityIdChanged();
+					this._Activity = value;
+					this.SendPropertyChanged("Activity");
+					this.OnActivityChanged();
 				}
 
 			}
@@ -113,49 +106,7 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="FK_CheckInActivity_Activity", Storage="_Activity", ThisKey="ActivityId", IsForeignKey=true)]
-		public Activity Activity
-		{
-			get { return this._Activity.Entity; }
-
-			set
-			{
-				Activity previousValue = this._Activity.Entity;
-				if (((previousValue != value) 
-							|| (this._Activity.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Activity.Entity = null;
-						previousValue.CheckInActivities.Remove(this);
-					}
-
-					this._Activity.Entity = value;
-					if (value != null)
-					{
-						value.CheckInActivities.Add(this);
-						
-						this._ActivityId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._ActivityId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("Activity");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_CheckInActivity_CheckInTimes", Storage="_CheckInTime", ThisKey="CheckinId", IsForeignKey=true)]
+		[Association(Name="FK_CheckInActivity_CheckInTimes", Storage="_CheckInTime", ThisKey="Id", IsForeignKey=true)]
 		public CheckInTime CheckInTime
 		{
 			get { return this._CheckInTime.Entity; }
@@ -178,14 +129,14 @@ namespace CmsData
 					{
 						value.CheckInActivities.Add(this);
 						
-						this._CheckinId = value.Id;
+						this._Id = value.Id;
 						
 					}
 
 					else
 					{
 						
-						this._CheckinId = default(int);
+						this._Id = default(int);
 						
 					}
 

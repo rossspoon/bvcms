@@ -729,11 +729,7 @@ namespace CmsCheckin
             if (list == null)
                 return;
 
-            var j = new PrintJob { securitycode = Program.SecurityCode, list = q.ToList() };
-            var xs = new XmlSerializer(typeof(PrintJob));
-            var sw = new StringWriter();
-            xs.Serialize(sw, j);
-            Util.UploadPrintJob(sw.ToString());
+            Util.UploadPrintJob(q);
         }
         private void ClearControls()
         {

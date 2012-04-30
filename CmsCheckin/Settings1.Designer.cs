@@ -238,5 +238,17 @@ namespace CmsCheckin {
                 this["BuildingMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Building {
+            get {
+                return ((string)(this["Building"]));
+            }
+            set {
+                this["Building"] = value;
+            }
+        }
     }
 }

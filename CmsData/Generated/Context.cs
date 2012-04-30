@@ -18,10 +18,6 @@ namespace CmsData
 #region Extensibility Method Definitions
         partial void OnCreated();
 		
-        partial void InsertActivity(Activity instance);
-        partial void UpdateActivity(Activity instance);
-        partial void DeleteActivity(Activity instance);
-        
         partial void InsertActivityLog(ActivityLog instance);
         partial void UpdateActivityLog(ActivityLog instance);
         partial void DeleteActivityLog(ActivityLog instance);
@@ -600,12 +596,6 @@ namespace CmsData
 
     #region Tables
 		
-		public Table< Activity> Activities
-		{
-			get	{ return this.GetTable< Activity>(); }
-
-		}
-
 		public Table< ActivityLog> ActivityLogs
 		{
 			get	{ return this.GetTable< ActivityLog>(); }

@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace CmsCheckin
@@ -31,6 +25,23 @@ namespace CmsCheckin
 				ShowCheckin.Text = "Hide Checkin";
 			}
 		}
+		public void AddHistory(PersonInfo p)
+		{
+			if (InvokeRequired) 
+			{ 
+				Invoke(new Action<PersonInfo>(AddHistory), new[] { p }); 
+				return; 
+			}
+			history.Items.Add(p);
+		}
 
+		private void history_DoubleClick(object sender, EventArgs e)
+		{
+			var p = history.SelectedItem as PersonInfo;
+			var pb = Program.attendant.pictureBox1;
+			pb.Image = Util.GetImage(p.pid);
+			var na = Program.attendant.NameDisplay;
+			na.Text = p.name;
+		}
 	}
 }

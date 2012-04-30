@@ -100,7 +100,7 @@ CKEDITOR.on('dialogDefinition', function (ev) {
         var titleField = advancedTab.get('advTitle');
         titleField.label = "Message";
         var idField = advancedTab.get('advId');
-        idField.label = "OrgId";
+        idField.label = "OrgId/MeetingId";
         var langdirField = advancedTab.get('advLangDir');
         langdirField.label = "Confirmation";
 	langdirField.items[1][0] = "Yes, send confirmation";

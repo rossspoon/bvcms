@@ -150,8 +150,6 @@ namespace CmsData
 		
    		private EntitySet< Attend> _Attends;
 		
-   		private EntitySet< CheckInTime> _CheckInTimes;
-		
    		private EntitySet< Coupon> _Coupons;
 		
    		private EntitySet< DivOrg> _DivOrgs;
@@ -385,8 +383,6 @@ namespace CmsData
 			this._EnrollmentTransactions = new EntitySet< EnrollmentTransaction>(new Action< EnrollmentTransaction>(this.attach_EnrollmentTransactions), new Action< EnrollmentTransaction>(this.detach_EnrollmentTransactions)); 
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
-			
-			this._CheckInTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckInTimes), new Action< CheckInTime>(this.detach_CheckInTimes)); 
 			
 			this._Coupons = new EntitySet< Coupon>(new Action< Coupon>(this.attach_Coupons), new Action< Coupon>(this.detach_Coupons)); 
 			
@@ -1852,16 +1848,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_CheckInTimes_Organizations", Storage="_CheckInTimes", OtherKey="OrganizationId")]
-   		public EntitySet< CheckInTime> CheckInTimes
-   		{
-   		    get { return this._CheckInTimes; }
-
-			set	{ this._CheckInTimes.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_Coupons_Organizations", Storage="_Coupons", OtherKey="OrgId")]
    		public EntitySet< Coupon> Coupons
    		{
@@ -2293,19 +2279,6 @@ namespace CmsData
 		}
 
 		private void detach_Attends(Attend entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-
-		
-		private void attach_CheckInTimes(CheckInTime entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-
-		private void detach_CheckInTimes(CheckInTime entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;

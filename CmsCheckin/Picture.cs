@@ -43,12 +43,7 @@ namespace CmsCheckin
 
         private void Picture_Load(object sender, EventArgs e)
         {
-            var wc = Util.CreateWebClient();
-            var url = new Uri(new Uri(Program.URL), "Checkin2/FetchImage/" + Program.PeopleId);
-            var bits = wc.DownloadData(url);
-            var istream = new MemoryStream(bits);
-            pictureBox1.Image = Image.FromStream(istream);
-            istream.Close();
+			pictureBox1.Image = Util.GetImage(Program.PeopleId);
         }
     }
 }

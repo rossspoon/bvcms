@@ -2709,7 +2709,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PrimaryAddress2", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress2", DbType="varchar(40)")]
+		[Column(Name="PrimaryAddress2", UpdateCheck=UpdateCheck.Never, Storage="_PrimaryAddress2", DbType="varchar(100)")]
 		public string PrimaryAddress2
 		{
 			get { return this._PrimaryAddress2; }
