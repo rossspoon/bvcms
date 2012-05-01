@@ -567,12 +567,13 @@ namespace CmsData
 		private string DoRegisterLink(string text, string CmsHost, EmailQueueTo emailqueueto)
 		{
 			var list = new Dictionary<string, OneTimeLink>();
-			const string VoteLinkRE = "<a[^>]*?href=\"http://registerlink\"[^>]*>.*?</a>";
+			const string VoteLinkRE = "<a[^>]*?href=\"http://(?<rlink>registerlink2{0,1})\"[^>]*>.*?</a>";
 			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
 			{
 				var tag = match.Value;
+				var rlink = match.Groups["rlink"].Value;
 
 				var doc = new HtmlDocument();
 				doc.LoadHtml(tag);
@@ -584,7 +585,8 @@ namespace CmsData
 					throw new Exception("RegisterTag: no id attribute");
 				var id = d["id"];
 
-				var url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id);
+				var url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id, 
+					showfamily: rlink == "registerlink2");
 				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
 				match = match.NextMatch();
 			}
@@ -748,7 +750,8 @@ namespace CmsData
 			EmailQueueTo emailqueueto,
 			Dictionary<string, OneTimeLink> list,
 			string votelink,
-			string id)
+			string id,
+			bool showfamily=false)
 		{
 			var qs = "{0},{1},{2}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id);
 			OneTimeLink ot;
@@ -766,6 +769,8 @@ namespace CmsData
 				list.Add(qs, ot);
 			}
 			var url = Util.URLCombine(CmsHost, "/OnlineReg/RegisterLink/{0}".Fmt(ot.Id.ToCode()));
+			if (showfamily)
+				url += "?showfamily=true";
 			return url;
 		}
 		public List<MailAddress> GetAddressList(Person p)

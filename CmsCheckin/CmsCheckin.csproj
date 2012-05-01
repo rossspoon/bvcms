@@ -195,6 +195,12 @@
     <Compile Include="ChooseActivities.Designer.cs">
       <DependentUpon>ChooseActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Menu2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Menu2.Designer.cs">
+      <DependentUpon>Menu2.cs</DependentUpon>
+    </Compile>
     <Compile Include="EnterGenderMarital2.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -341,6 +347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChooseActivities.resx">
       <DependentUpon>ChooseActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu2.resx">
+      <DependentUpon>Menu2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EnterGenderMarital2.resx">
       <DependentUpon>EnterGenderMarital2.cs</DependentUpon>

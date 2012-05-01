@@ -21,7 +21,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #endif
 
 		// Main page
-		public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login, string registertag)
+		public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login, string registertag, bool? showfamily)
 		{
 			Util.NoCache(Response);
 			if (!id.HasValue && !div.HasValue)
@@ -101,13 +101,17 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (pid > 0)
 			{
 				m.UserPeopleId = pid;
-				var p = m.LoadExistingPerson(pid);
-				p.index = m.List.Count - 1;
-				p.ValidateModelForFind(ModelState, m);
-				p.LoggedIn = true;
+				OnlineRegPersonModel p = null;
+				if (showfamily != true)
+				{
+					p = m.LoadExistingPerson(pid);
+					p.index = m.List.Count - 1;
+					p.ValidateModelForFind(ModelState, m);
+					p.LoggedIn = true;
+					m.List[p.index] = p;
+				}
 				if (!ModelState.IsValid)
 					return View(m);
-				m.List[p.index] = p;
 				if (m.masterorg != null && m.masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
 				{
 					TempData["ms"] = m.UserPeopleId;
@@ -123,7 +127,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					TempData["ps"] = m.UserPeopleId;
 					return Redirect("/OnlineReg/ManageVolunteer/{0}".Fmt(m.orgid));
 				}
-				if (p.org != null && p.Found == true)
+				if (showfamily != true && p.org != null && p.Found == true)
 				{
 					p.IsFilled = p.org.OrganizationMembers.Count() >= p.org.Limit;
 					if (p.IsFilled)

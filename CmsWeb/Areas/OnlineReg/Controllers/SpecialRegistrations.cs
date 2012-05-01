@@ -543,7 +543,7 @@ emailid={2}
         }
 
 		[ValidateInput(false)]
-        public ActionResult RegisterLink(string id)
+        public ActionResult RegisterLink(string id, bool? showfamily)
         {
             if (!id.HasValue())
                 return Content("bad link");
@@ -580,7 +580,10 @@ emailid={2}
                 return Content("sorry, registration has been closed");
 
             var omb = q.om;
-            return Redirect("/OnlineReg/Index/{0}?registertag={1}".Fmt(oid, id));
+            var url = "/OnlineReg/Index/{0}?registertag={1}".Fmt(oid, id);
+			if (showfamily == true)
+				url += "&showfamily=true";
+			return Redirect(url);
         }
         private bool IsSmallGroupFilled(RegSettings setting, int orgid, string sg)
         {

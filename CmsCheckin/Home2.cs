@@ -259,13 +259,13 @@ namespace CmsCheckin
 			homephone = new EnterPhone("Home Phone");
 			form.ControlsAdd(homephone);
 
-			gendermarital = new EnterGenderMarital();
+			gendermarital = new EnterGenderMarital2();
 			form.ControlsAdd(gendermarital);
 
-			namesearch.GoBack += new EventHandler(namesearch_GoBack);
-			namesearch.GoNext += new EventHandler(namesearch_GoNext);
+			namesearch.GoBack += namesearch_GoBack;
+			namesearch.GoNext += namesearch_GoNext;
 
-			first.GoBack += new EventHandler(first_GoBack);
+			first.GoBack += first_GoBack;
 			first.SetBackNext(null, goesby);
 			goesby.SetBackNext(first, last);
 			last.SetBackNext(goesby, email);
@@ -277,6 +277,14 @@ namespace CmsCheckin
 			cellphone.SetBackNext(dob, homephone);
 
 			homephone.SetBackNext(cellphone, null);
+			homephone.GoNext += homephone_GoNext;
+
+		}
+
+		void homephone_GoNext(object sender, EventArgs e)
+		{
+            homephone.Swap(gendermarital);
+            gendermarital.ShowScreen();
 		}
 		public ListFamilies families;
 		public ListFamily2 family;
@@ -292,7 +300,7 @@ namespace CmsCheckin
 		public EnterDate dob;
 		public EnterPhone cellphone;
 		public EnterPhone homephone;
-		public EnterGenderMarital gendermarital;
+		public EnterGenderMarital2 gendermarital;
 
 		public void ClearFields()
 		{
@@ -308,8 +316,6 @@ namespace CmsCheckin
 			homephone.textBox1.Text = null;
 			gendermarital.Gender = 0;
 			gendermarital.Marital = 0;
-			if (Program.AskChurch)
-				gendermarital.ActiveOther.CheckState = CheckState.Indeterminate;
 		}
 		public void SetFields(string Last, string Email, string Addr, string Zip, string Home)
 		{

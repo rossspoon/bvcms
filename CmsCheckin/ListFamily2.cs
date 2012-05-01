@@ -71,7 +71,8 @@ namespace CmsCheckin
 		public void ShowFamily(int fid)
 		{
 			page = 1;
-			xdoc = this.GetDocument("Checkin2/Family/" + fid);
+			xdoc = this.GetDocument("Checkin2/SingleFamily/" + fid);
+			Program.FamilyId = fid;
 			ShowFamily(xdoc);
 		}
 		public void ShowFamily(XDocument x)
@@ -79,6 +80,7 @@ namespace CmsCheckin
 			xdoc = x;
 			hasprinter = PrintRawHelper.HasPrinter(Program.Printer);
 			this.Focus();
+            Program.FamilyId = x.Root.Attribute("familyid").Value.ToInt();
 
 			list = new List<PersonInfo>();
 			if (x.Descendants("member").Count() == 0)
@@ -447,14 +449,14 @@ namespace CmsCheckin
 
 		public List<ClassInfo> classlist = new List<ClassInfo>();
 		private Label mask;
-		private Menu menu;
+		private Menu2 menu;
 		private ChooseActivities activities;
 
 		void Menu_Click(object sender, EventArgs e)
 		{
 			Program.TimerReset();
 			var MenuButton = sender as Button;
-			menu = new Menu();
+			menu = new Menu2();
 			menu.Tag = MenuButton.Tag;
 			menu.Parent = this;
 			menu.Location = new Point(MenuButton.Location.X - 100, MenuButton.Location.Y + MenuButton.Height);
@@ -474,7 +476,6 @@ namespace CmsCheckin
 			nam.Enabled = false;
 			menu.EditRecord += EditRecord_Click;
 			menu.AddFamily += AddToFamily_Click;
-			menu.DropJoin.Visible = false;
 			menu.CancelMenu += CancelMenu_Click;
 			menu.Show();
 			menu.BringToFront();
