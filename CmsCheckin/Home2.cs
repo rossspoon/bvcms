@@ -9,8 +9,9 @@ namespace CmsCheckin
     {
         public Home2()
         {
-			InitializeComponent(); 
-			this.version.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			InitializeComponent();
+			GuestOf.Visible = false;
+			removeguestof.Visible = false;
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -324,6 +325,29 @@ namespace CmsCheckin
 			addr.textBox1.Text = Addr;
 			zip.textBox1.Text = Zip;
 			homephone.textBox1.Text = Home;
+		}
+
+		private void removeguestof_Click(object sender, EventArgs e)
+		{
+			GuestOf.Visible = false;
+			removeguestof.Visible = false;
+			Program.addguests.Dispose();
+			Program.addguests = null;
+		}
+
+		private void textBox1_Enter(object sender, EventArgs e)
+		{
+			if (Program.addguests != null)
+			{
+				GuestOf.Text = "Guest Of:\n" + Program.GuestOf().name;
+				GuestOf.Visible = true;
+				removeguestof.Visible = true;
+			}
+			else
+			{
+				GuestOf.Visible = false;
+				removeguestof.Visible = false;
+			}
 		}
     }
 }

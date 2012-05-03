@@ -47,7 +47,8 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.MagicButton = new System.Windows.Forms.Button();
-			this.version = new System.Windows.Forms.Label();
+			this.GuestOf = new System.Windows.Forms.Label();
+			this.removeguestof = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -59,6 +60,7 @@
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(411, 52);
 			this.textBox1.TabIndex = 0;
+			this.textBox1.Enter += new System.EventHandler(this.textBox1_Enter);
 			this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
 			// 
 			// button1
@@ -261,13 +263,13 @@
 			// 
 			this.label1.Font = new System.Drawing.Font("Verdana", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label1.ForeColor = System.Drawing.Color.Blue;
-			this.label1.Location = new System.Drawing.Point(305, 642);
+			this.label1.Location = new System.Drawing.Point(4, 84);
 			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(410, 125);
+			this.label1.Size = new System.Drawing.Size(295, 102);
 			this.label1.TabIndex = 33;
 			this.label1.Text = "Enter your phone number (no area code needed) and press GO";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// label2
 			// 
@@ -295,23 +297,41 @@
 			this.MagicButton.UseVisualStyleBackColor = false;
 			this.MagicButton.Click += new System.EventHandler(this.MagicButton_Click);
 			// 
-			// version
+			// GuestOf
 			// 
-			this.version.AutoSize = true;
-			this.version.Location = new System.Drawing.Point(974, 743);
-			this.version.Name = "version";
-			this.version.Size = new System.Drawing.Size(35, 13);
-			this.version.TabIndex = 36;
-			this.version.Text = "label3";
+			this.GuestOf.AutoSize = true;
+			this.GuestOf.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.GuestOf.ForeColor = System.Drawing.Color.Green;
+			this.GuestOf.Location = new System.Drawing.Point(761, 156);
+			this.GuestOf.Name = "GuestOf";
+			this.GuestOf.Size = new System.Drawing.Size(93, 24);
+			this.GuestOf.TabIndex = 37;
+			this.GuestOf.Text = "Guest Of: ";
+			// 
+			// removeguestof
+			// 
+			this.removeguestof.BackColor = System.Drawing.Color.Transparent;
+			this.removeguestof.FlatAppearance.BorderSize = 0;
+			this.removeguestof.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.removeguestof.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.removeguestof.Location = new System.Drawing.Point(977, 150);
+			this.removeguestof.Margin = new System.Windows.Forms.Padding(4);
+			this.removeguestof.Name = "removeguestof";
+			this.removeguestof.Size = new System.Drawing.Size(43, 38);
+			this.removeguestof.TabIndex = 14;
+			this.removeguestof.Text = "X";
+			this.removeguestof.UseVisualStyleBackColor = false;
+			this.removeguestof.Click += new System.EventHandler(this.removeguestof_Click);
 			// 
 			// Home2
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-			this.Controls.Add(this.version);
+			this.Controls.Add(this.GuestOf);
 			this.Controls.Add(this.MagicButton);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.button12);
+			this.Controls.Add(this.removeguestof);
 			this.Controls.Add(this.button11);
 			this.Controls.Add(this.button10);
 			this.Controls.Add(this.textBox1);
@@ -356,7 +376,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button MagicButton;
-		private System.Windows.Forms.Label version;
+		private System.Windows.Forms.Button MagicButton;
+		public System.Windows.Forms.Label GuestOf;
+		private System.Windows.Forms.Button removeguestof;
     }
 }

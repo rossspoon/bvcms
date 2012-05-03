@@ -354,6 +354,7 @@ namespace CmsCheckin
 			na.SetPropertyThreadSafe(() => na.Text, c.name);
 
 			activities = new ChooseActivities();
+			activities.ControlBox = false;
 			activities.Tag = ab.Tag;
 
 			activities.list.Items.Clear();
@@ -420,6 +421,7 @@ namespace CmsCheckin
 			var f = ok.Parent as ChooseActivities;
 			var items = f.list.CheckedItems.OfType<Activity>().ToList();
 			c.CheckinId = Util.BuildingCheckin(c.pid, items);
+			c.ischecked = true;
 			c.Items = items;
 		}
 		private void CheckUncheckCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -590,6 +592,26 @@ namespace CmsCheckin
 				this.GoHome(string.Empty);
 				return;
 			}
+			if (Program.addguests == null)
+			{
+				Program.addguests = new AddGuests();
+				var i = 1;
+				foreach (var p in list.Where(pp => pp.ischecked))
+				{
+					var rb = Program.addguests.Controls.Find("rb" + i, true)[0] as RadioButton;
+					rb.Text = p.name;
+					rb.Visible = true;
+					rb.Tag = p;
+					i++;
+				}
+			}
+			var ret = Program.addguests.ShowDialog();
+			if (ret == DialogResult.No)
+			{
+				Program.addguests.Dispose();
+				Program.addguests = null;
+			}
+
 			PleaseWaitForm = new PleaseWait();
 			PleaseWaitForm.Show();
 

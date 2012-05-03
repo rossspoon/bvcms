@@ -56,8 +56,11 @@ namespace CmsWeb.Areas.Main.Models.Report
                         dob = p.DOB
                     };
             Debug.WriteLine(q2.Count());
-            foreach (var m in q2)
-                AddRow(t, m.First, m.Last, m.Phone, m.dob, m.PeopleId);
+            if (!q2.Any())
+                document.Add(new Phrase("no data"));
+			else
+				foreach (var m in q2)
+					AddRow(t, m.First, m.Last, m.Phone, m.dob, m.PeopleId);
             document.Add(t);
 
             document.Close();

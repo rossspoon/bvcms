@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows.Forms;
@@ -16,27 +17,6 @@ namespace CmsCheckin
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-			var activities = new List<Activity>()
-			{
-					new Activity() { name = "visit", display = "Visit George", org = 555 },
-					new Activity() { name = "visit", display = "Visit Susan", org = 554 }
-			};
-            var xs = new XmlSerializer(typeof(List<Activity>), new XmlRootAttribute("Activities"));
-            var sw = new StringWriter();
-            xs.Serialize(sw, activities);
-			var s = sw.ToString();
-			Debug.WriteLine(s);
-			s = @"
-<Activities>
-  <Activity name='visit' org='555'>Visit George</Activity>
-  <Activity name='visit' org='554'>Visit Susan</Activity>
-  <Activity name='tour'>Building Tour</Activity>
-  <Activity>Games</Activity>
-</Activities>
-";
-
-			var a = xs.Deserialize(new StringReader(s)) as List<Activity>;
 
             var login = new Login();
             login.password.Focus();
@@ -55,7 +35,13 @@ namespace CmsCheckin
 				attendant = new Attendant();
 				home2 = new Home2();
 				b = new BaseForm(home2);
+				b.ControlBox = false;
 				baseform = b;
+				if (!Util.IsDebug())
+				{
+					b.WindowState = FormWindowState.Maximized;
+					b.FormBorderStyle = FormBorderStyle.None;
+				}
                 Application.Run(attendant);
                 return;
             }
@@ -131,6 +117,19 @@ namespace CmsCheckin
         public static bool BuildingMode { get; set; }
         public static string Building { get; set; }
     	public static List<Activity> Activities { get; set; }
+		public static AddGuests addguests;
+
+		public static PersonInfo GuestOf()
+		{
+			if (addguests != null)
+			{
+				var rb = addguests.groupBox1.Controls.OfType<RadioButton>()
+					.FirstOrDefault(r => r.Checked);
+				if (rb != null)
+					return rb.Tag as PersonInfo;
+			}
+			return null;
+		}
 
     	public static string QueryString
         {

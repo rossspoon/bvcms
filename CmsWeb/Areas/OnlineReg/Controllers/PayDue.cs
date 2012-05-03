@@ -68,7 +68,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 if (ti.TransactionGateway != "ServiceU")
                 {
                     ViewData["PayBalance"] = true;
-                    var pf = new PaymentForm { ti = ti2 };
+                    var pf = new PaymentForm { ti = ti2, AllowCoupon = true};
                     return View("ProcessPayment", pf);
                 }
                 return View(ti2);

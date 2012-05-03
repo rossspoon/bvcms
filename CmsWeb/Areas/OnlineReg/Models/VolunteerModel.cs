@@ -181,5 +181,30 @@ namespace CmsWeb.Models
 			return !q.Any() ? "no commitments"
 				: CmsController.RenderPartialViewToString(controller, "VolunteerSlotsSummary", q);
 		}
+		public string Instructions
+		{
+			get
+			{
+				var setting = OnlineRegModel.ParseSetting(Org.RegSetting, Org.OrganizationId);
+				return @"
+<div class=""instructions login"">{0}</div>
+<div class=""instructions select"">{1}</div>
+<div class=""instructions find"">{2}</div>
+<div class=""instructions options"">{3}</div>
+<div class=""instructions submit"">{4}</div>
+<div class=""instructions sorry"">{5}</div>
+".Fmt(setting.InstructionLogin,
+					 setting.InstructionSelect,
+					 setting.InstructionFind,
+					 setting.InstructionOptions,
+					 setting.InstructionSubmit,
+					 setting.InstructionSorry
+					 );
+			}
+		}
+		public RegSettings setting
+		{
+			get { return new RegSettings(Org.RegSetting, DbUtil.Db, OrgId); }
+		}
 	}
 }

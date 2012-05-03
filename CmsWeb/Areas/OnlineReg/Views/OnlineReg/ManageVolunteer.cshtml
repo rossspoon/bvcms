@@ -12,7 +12,8 @@
 }
 <h2>@Model.Org.OrganizationName</h2>
 <h4>Volunteer Commitment Times for @Model.Person.Name &lt;@Model.Person.EmailAddress&gt;</h4>
-@using(Html.BeginForm("ConfirmVolunteerSlots", "OnlineReg"))
+<div>@Html.Raw(Model.Instructions)</div>
+@using (Html.BeginForm("ConfirmVolunteerSlots", "OnlineReg"))
 {
 @Html.HiddenFor(m => m.PeopleId);
 @Html.HiddenFor(m => m.OrgId);
@@ -36,7 +37,7 @@
     @foreach (var si in ts)
     {
 			<td class="center"><input type="checkbox" name="Commit" @si.CHECKED value="@si.Time" /></td>
-	} 
+    } 
         </tr>
 }
     </tbody>

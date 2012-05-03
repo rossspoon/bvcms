@@ -274,37 +274,28 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             SetHeaders(m.orgid);
             return View(m);
         }
-//        [AcceptVerbs(HttpVerbs.Post)]
-//        public ActionResult ConfirmSlots(int id, int orgid)
-//        {
-//            var m = new VolunteerModel(id, orgid);
-//            var slots = string.Join("<br />\n", m.MySlots());
-//            var Db = DbUtil.Db;
-//            Db.Email(Db.StaffEmailForOrg(m.org.OrganizationId),
-//                m.person, "Commitment confirmation",
-//@"Thank you for committing to {0}. You have the following slots:<br/>
-//{1}".Fmt(m.org.OrganizationName, slots));
-//            Db.Email(m.person.FromEmail,
-//                Db.PeopleFromPidString(m.org.NotifyIds),
-//                "commitment received for " + m.org.OrganizationName,
-//                "{0} committed to:<br/>\n{1}".Fmt(m.org.OrganizationName, slots));
-//            return RedirectToAction("ConfirmSlots", new { id = m.org.OrganizationId });
-//        }
         [HttpPost]
         public ActionResult ConfirmVolunteerSlots(VolunteerModel m)
         {
             m.UpdateCommitments();
+            var staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId)[0];
             List<Person> Staff = null;
         	Staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId);
             if (Staff.Count == 0)
 				Staff = DbUtil.Db.AdminPeople();
 
         	var summary = m.Summary(this);
+            var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
+            text = text.Replace("{name}", m.Person.Name);
+			text = text.Replace("{date}", DateTime.Now.ToString("d"));
+            text = text.Replace("{email}", m.Person.EmailAddress);
+            text = text.Replace("{phone}", m.Person.HomePhone.FmtFone());
+            text = text.Replace("{contact}", staff.Name);
+            text = text.Replace("{contactemail}", staff.EmailAddress);
+            text = text.Replace("{contactphone}", m.Org.PhoneNumber.FmtFone());
+			text = text.Replace("{details}", summary);
 	        DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
-	                "Volunteer Commitments Confirmation",
-@"Thank you for managing your Volunteer Commitments to {0}<br/>
-You have the following committments:<br/>
-{1}".Fmt(m.Org.OrganizationName, summary));
+	                m.setting.Subject, text);
 
             DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed subscriptions to {1}<br/>
 The following Committments:<br/>
@@ -488,7 +479,7 @@ pid={1}
 emailid={2}
 </pre>".Fmt(oid, pid, emailid));
 		}
-        public ActionResult RsvpLink(string id, string message, bool? confirm)
+        public ActionResult RsvpLink(string id, string smallgroup, string message, bool? confirm)
         {
             if (!id.HasValue())
                 return Content("bad link");
@@ -517,8 +508,15 @@ emailid={2}
 
             if (q.org.Limit <= q.meeting.Attends.Count(aa => aa.Registered == true))
                 return Content("sorry, maximum limit has been reached");
+			if (smallgroup.HasValue())
+			{
+				var omb = OrganizationMember.InsertOrgMembers(DbUtil.Db,
+										  q.meeting.OrganizationId, pid, 220, DateTime.Now, null, false);
+				omb.AddToGroup(DbUtil.Db, smallgroup);
+			}
 
-            ot.Used = true;
+
+        	ot.Used = true;
             DbUtil.Db.SubmitChanges();
 			Attend.MarkRegistered(DbUtil.Db, pid, meetingid, true);
             DbUtil.LogActivity("Rsvplink: {0}".Fmt(q.org.OrganizationName));

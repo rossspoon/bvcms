@@ -21,9 +21,16 @@ namespace CmsData
         {
             get
             {
-                if (_FieldInfo == null || _FieldInfo.Name != Field)
-                    _FieldInfo = FieldClass.Fields[Field];
-                return _FieldInfo;
+            	try
+            	{
+					if ((_FieldInfo == null || _FieldInfo.Name != Field))
+						_FieldInfo = FieldClass.Fields[Field];
+					return _FieldInfo;
+            	}
+            	catch (Exception)
+            	{
+            		throw new Exception("QB Field not found: " + Field);
+            	}
             }
         }
         public void SetComparisonType(CompareType value)

@@ -195,6 +195,12 @@
     <Compile Include="ChooseActivities.Designer.cs">
       <DependentUpon>ChooseActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddGuests.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddGuests.Designer.cs">
+      <DependentUpon>AddGuests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Menu2.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -347,6 +353,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChooseActivities.resx">
       <DependentUpon>ChooseActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddGuests.resx">
+      <DependentUpon>AddGuests.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu2.resx">
       <DependentUpon>Menu2.cs</DependentUpon>

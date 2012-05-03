@@ -135,140 +135,143 @@ namespace CmsWeb.Areas.Main.Models.Report
             {
                 pageEvents.StartPageSet("Outreach/Inreach Report: {0:d}".Fmt(dt));
                 IQueryable<ProspectInfo> q = GetProspectInfo();
-                foreach (var p in q)
-                {
-                    doc.NewPage();
-                    var t = new PdfPTable(new float[] { 62f, 61f, 67f });
-                    t.SetNoPadding();
-                    var t1 = new PdfPTable(1);
-                    t1.SetNoBorder();
-                    var t2 = new PdfPTable(new float[] { 30f, 31f });
-                    t2.SetNoBorder();
-                    var t3 = new PdfPTable(new float[] { 27f, 40f });
-                    t3.SetNoBorder();
+				if (!q.Any())
+					doc.Add(new Phrase("no data"));
+				else
+					foreach (var p in q)
+					{
+						doc.NewPage();
+						var t = new PdfPTable(new float[] { 62f, 61f, 67f });
+						t.SetNoPadding();
+						var t1 = new PdfPTable(1);
+						t1.SetNoBorder();
+						var t2 = new PdfPTable(new float[] { 30f, 31f });
+						t2.SetNoBorder();
+						var t3 = new PdfPTable(new float[] { 27f, 40f });
+						t3.SetNoBorder();
 
 
-                    var ph = new Paragraph();
-                    ph.Add(new Chunk(p.Name, bfont));
-                    ph.Add(new Chunk(" ({0})".Fmt(p.PeopleId), smallfont));
-                    t1.AddCell(ph);
-                    ph = new Paragraph();
-                    ph.AddLine(p.Address, font);
-                    ph.AddLine(p.Address2, font);
-                    ph.AddLine(p.CityStateZip, font);
-                    ph.Add("\n");
-                    ph.AddLine(p.HomePhone.FmtFone("H"), font);
-                    ph.AddLine(p.CellPhone.FmtFone("C"), font);
-                    ph.AddLine(p.WorkPhone.FmtFone("W"), font);
-                    t1.AddCell(ph);
-                    t.AddCell(t1);
+						var ph = new Paragraph();
+						ph.Add(new Chunk(p.Name, bfont));
+						ph.Add(new Chunk(" ({0})".Fmt(p.PeopleId), smallfont));
+						t1.AddCell(ph);
+						ph = new Paragraph();
+						ph.AddLine(p.Address, font);
+						ph.AddLine(p.Address2, font);
+						ph.AddLine(p.CityStateZip, font);
+						ph.Add("\n");
+						ph.AddLine(p.HomePhone.FmtFone("H"), font);
+						ph.AddLine(p.CellPhone.FmtFone("C"), font);
+						ph.AddLine(p.WorkPhone.FmtFone("W"), font);
+						t1.AddCell(ph);
+						t.AddCell(t1);
 
-                    t2.Add("Position in Family:", font);
-                    t2.Add(p.PositionInFamily, font);
-                    t2.Add("Gender:", font);
-                    t2.Add(p.Gender, font);
-                    t2.Add("Marital Status:", font);
-                    t2.Add(p.MaritalStatus, font);
-                    t2.Add("", font);
-                    t2.CompleteRow();
+						t2.Add("Position in Family:", font);
+						t2.Add(p.PositionInFamily, font);
+						t2.Add("Gender:", font);
+						t2.Add(p.Gender, font);
+						t2.Add("Marital Status:", font);
+						t2.Add(p.MaritalStatus, font);
+						t2.Add("", font);
+						t2.CompleteRow();
 
-                    if (p.ChristAsSavior.HasValue())
-                        t2.Add(p.ChristAsSavior, 2, font);
-                    if (p.InfoBecomeAChristian.HasValue())
-                        t2.Add(p.InfoBecomeAChristian, 2, font);
-                    if (p.InterestedInJoining.HasValue())
-                        t2.Add(p.InterestedInJoining, 2, font);
-                    if (p.PleaseVisit.HasValue())
-                        t2.Add(p.PleaseVisit, 2, font);
+						if (p.ChristAsSavior.HasValue())
+							t2.Add(p.ChristAsSavior, 2, font);
+						if (p.InfoBecomeAChristian.HasValue())
+							t2.Add(p.InfoBecomeAChristian, 2, font);
+						if (p.InterestedInJoining.HasValue())
+							t2.Add(p.InterestedInJoining, 2, font);
+						if (p.PleaseVisit.HasValue())
+							t2.Add(p.PleaseVisit, 2, font);
 
-                    t.AddCell(t2);
+						t.AddCell(t2);
 
-                    t3.Add("Member Status:", font);
-                    t3.Add(p.MemberStatus, font);
-                    t3.Add("Origin:", font);
-                    t3.Add(p.Origin, font);
-                    t3.Add("Age:", font);
-                    t3.Add(p.Age, font);
-                    t3.Add("Comments:", 2, font);
-                    t3.Add(p.Comment, 2, font);
+						t3.Add("Member Status:", font);
+						t3.Add(p.MemberStatus, font);
+						t3.Add("Origin:", font);
+						t3.Add(p.Origin, font);
+						t3.Add("Age:", font);
+						t3.Add(p.Age, font);
+						t3.Add("Comments:", 2, font);
+						t3.Add(p.Comment, 2, font);
 
-                    t.AddCell(t3);
-                    doc.Add(t);
+						t.AddCell(t3);
+						doc.Add(t);
 
-                    if (p.Family.Count() > 0)
-                    {
-                        t = new PdfPTable(4);
-                        t.SetNoBorder();
-                        t.AddRow("Family Summary", bfont);
-                        t.AddHeader("Name", bfont);
-                        t.AddHeader("Age", bfont);
-                        t.AddHeader("Position in Family", bfont);
-                        t.AddHeader("Member Status", bfont);
-                        foreach (var fm in p.Family)
-                        {
-                            t.Add(fm.Name, font);
-                            t.Add(fm.Age.ToString(), font);
-                            t.Add(fm.PositionInFamily, font);
-                            t.Add(fm.MemberStatus, font);
-                        }
-                        doc.Add(t);
-                    }
+						if (p.Family.Count() > 0)
+						{
+							t = new PdfPTable(4);
+							t.SetNoBorder();
+							t.AddRow("Family Summary", bfont);
+							t.AddHeader("Name", bfont);
+							t.AddHeader("Age", bfont);
+							t.AddHeader("Position in Family", bfont);
+							t.AddHeader("Member Status", bfont);
+							foreach (var fm in p.Family)
+							{
+								t.Add(fm.Name, font);
+								t.Add(fm.Age.ToString(), font);
+								t.Add(fm.PositionInFamily, font);
+								t.Add(fm.MemberStatus, font);
+							}
+							doc.Add(t);
+						}
 
-                    if (p.Attends.Count() > 0)
-                    {
-                        t = new PdfPTable(new float[] { 24f, 73f, 56f, 34f });
-                        t.SetNoBorder();
-                        t.AddRow("Attendance Summary", bfont);
-                        t.AddHeader("Date", bfont);
-                        t.AddHeader("Event", bfont);
-                        t.AddHeader("Teacher", bfont);
-                        t.AddHeader("Schedule", bfont);
-                        foreach (var a in p.Attends)
-                        {
-                            t.Add(a.MeetingDate.FormatDate(), font);
-                            t.Add(a.MeetingName, font);
-                            t.Add(a.Teacher, font);
-                            t.Add(a.MeetingDate.ToString2("h:mm tt"), font);
-                        }
-                        doc.Add(t);
-                    }
+						if (p.Attends.Count() > 0)
+						{
+							t = new PdfPTable(new float[] { 24f, 73f, 56f, 34f });
+							t.SetNoBorder();
+							t.AddRow("Attendance Summary", bfont);
+							t.AddHeader("Date", bfont);
+							t.AddHeader("Event", bfont);
+							t.AddHeader("Teacher", bfont);
+							t.AddHeader("Schedule", bfont);
+							foreach (var a in p.Attends)
+							{
+								t.Add(a.MeetingDate.FormatDate(), font);
+								t.Add(a.MeetingName, font);
+								t.Add(a.Teacher, font);
+								t.Add(a.MeetingDate.ToString2("h:mm tt"), font);
+							}
+							doc.Add(t);
+						}
 
-                    if (p.Contacts.Count() > 0)
-                    {
-                        t = new PdfPTable(new float[] { 31f, 134f });
-                        t.SetNoBorder();
-                        t.AddRow("Contacts", font);
-                        t.AddHeader("Date/Type/Team", font);
-                        t.AddHeader("Comments", font);
-                        foreach (var a in p.Contacts)
-                        {
-                            t.AddHeader("{0:d}\n{1}\n{2}".Fmt(a.ContactDate, a.TypeOfContact, a.Team), font);
-                            t.AddHeader(a.Comments, font);
-                        }
-                        doc.Add(t);
-                    }
+						if (p.Contacts.Count() > 0)
+						{
+							t = new PdfPTable(new float[] { 31f, 134f });
+							t.SetNoBorder();
+							t.AddRow("Contacts", font);
+							t.AddHeader("Date/Type/Team", font);
+							t.AddHeader("Comments", font);
+							foreach (var a in p.Contacts)
+							{
+								t.AddHeader("{0:d}\n{1}\n{2}".Fmt(a.ContactDate, a.TypeOfContact, a.Team), font);
+								t.AddHeader(a.Comments, font);
+							}
+							doc.Add(t);
+						}
 
-                    if (p.Memberships.Count() > 0)
-                    {
-                        t = new PdfPTable(4);
-                        t.SetNoBorder();
-                        t.AddRow("Current Enrollment", bfont);
-                        t.AddHeader("Division", bfont);
-                        t.AddHeader("Organization", bfont);
-                        t.AddHeader("Member Type", bfont);
-                        t.AddHeader("Enroll Date", bfont);
-                        foreach (var m in p.Memberships)
-                        {
-                            t.Add(m.DivisionName, font);
-                            t.Add(m.Name, font);
-                            t.Add(m.MemberType, font);
-                            t.Add(m.EnrollDate.FormatDate(), font);
-                        }
-                        doc.Add(t);
-                    }
-                    if (ShowForm)
-                        ContactForm();
-                }
+						if (p.Memberships.Count() > 0)
+						{
+							t = new PdfPTable(4);
+							t.SetNoBorder();
+							t.AddRow("Current Enrollment", bfont);
+							t.AddHeader("Division", bfont);
+							t.AddHeader("Organization", bfont);
+							t.AddHeader("Member Type", bfont);
+							t.AddHeader("Enroll Date", bfont);
+							foreach (var m in p.Memberships)
+							{
+								t.Add(m.DivisionName, font);
+								t.Add(m.Name, font);
+								t.Add(m.MemberType, font);
+								t.Add(m.EnrollDate.FormatDate(), font);
+							}
+							doc.Add(t);
+						}
+						if (ShowForm)
+							ContactForm();
+					}
             }
             pageEvents.EndPageSet();
             doc.Close();

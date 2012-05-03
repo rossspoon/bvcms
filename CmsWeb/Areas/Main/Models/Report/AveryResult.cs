@@ -54,8 +54,11 @@ namespace CmsWeb.Areas.Main.Models.Report
                         dob = p.DOB,
                         Phone = p.CellPhone ?? p.HomePhone
                     };
-            foreach (var m in q2)
-                AddCell(t, m.First, m.Last, m.Phone, m.PeopleId);
+            if (!q2.Any())
+                document.Add(new Phrase("no data"));
+			else
+				foreach (var m in q2)
+					AddCell(t, m.First, m.Last, m.Phone, m.PeopleId);
             t.CompleteRow();
             document.Add(t);
 

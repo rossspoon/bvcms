@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
-  <contractRef ref="https://gateway.sagepayments.net/web_services/vterm_extensions/transaction_processing.asmx?wsdl" docRef="https://gateway.sagepayments.net/web_services/vterm_extensions/transaction_processing.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
-  <soap address="https://gateway.sagepayments.net/web_services/vterm_extensions/transaction_processing.asmx" xmlns:q1="https://www.sagepayments.net/web_services/vterm_extensions/TRANSACTION_PROCESSING" binding="q1:TRANSACTION_PROCESSINGSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
-  <soap address="https://gateway.sagepayments.net/web_services/vterm_extensions/transaction_processing.asmx" xmlns:q2="https://www.sagepayments.net/web_services/vterm_extensions/TRANSACTION_PROCESSING" binding="q2:TRANSACTION_PROCESSINGSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
-</discovery>

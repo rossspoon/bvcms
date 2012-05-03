@@ -554,11 +554,15 @@ namespace CmsData
 				if (d.ContainsKey("dir") && d["dir"] == "ltr")
 					confirm = "true";
 
+				string smallgroup = null;
+				if (d.ContainsKey("rel"))
+					smallgroup = d["rel"];
+
 				if (!d.ContainsKey("id"))
 					throw new Exception("Rsvplink: no id attribute");
 				var id = d["id"];
 
-				var url = RsvpLinkUrl(text, CmsHost, emailqueueto, list, tag, id, msg, confirm);
+				var url = RsvpLinkUrl(CmsHost, emailqueueto, list, id, smallgroup, msg, confirm);
 				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
 				match = match.NextMatch();
 			}
@@ -687,12 +691,12 @@ namespace CmsData
 			}
 			return text;
 		}
-		private string RsvpLinkUrl(string text,
+		private string RsvpLinkUrl(
 			string CmsHost,
 			EmailQueueTo emailqueueto,
 			Dictionary<string, OneTimeLink> list,
-			string votelink,
 			string id,
+			string smallgroup,
 			string msg,
 			string confirm)
 		{
@@ -711,8 +715,8 @@ namespace CmsData
 				SubmitChanges();
 				list.Add(qs, ot);
 			}
-			var url = Util.URLCombine(CmsHost, "/OnlineReg/RsvpLink/{0}?confirm={1}&message={2}"
-				.Fmt(ot.Id.ToCode(), confirm, HttpUtility.UrlEncode(msg)));
+			var url = Util.URLCombine(CmsHost, "/OnlineReg/RsvpLink/{0}?confirm={1}&smallgroup={2}&message={3}"
+				.Fmt(ot.Id.ToCode(), confirm, smallgroup, HttpUtility.UrlEncode(msg)));
 			return url;
 		}
 		private string VoteLinkUrl(string text,

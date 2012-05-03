@@ -19,14 +19,17 @@ namespace CmsWeb.Models.iPhone
         }
         private IEnumerable<OrgInfo> OrgList()
         {
-            var dt = DateTime.Parse("8:00 AM");
+			var oids = DbUtil.Db.GetLeaderOrgIds(pid);
+			var dt = DateTime.Parse("8:00 AM");
+
         	var roles = DbUtil.Db.CurrentRoles();
             var q = from o in DbUtil.Db.Organizations
         	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     where o.OrganizationMembers.Any(om => om.PeopleId == pid
-                        && (om.Pending ?? false) == false
-                        && (om.MemberTypeId != MemberTypeCode.InActive))
+							&& (om.Pending ?? false) == false
+							&& (om.MemberTypeId != MemberTypeCode.InActive))
+						|| oids.Contains(o.OrganizationId)
                     where o.SecurityTypeId != 3
                     select new OrgInfo
                     {

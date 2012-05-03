@@ -396,7 +396,11 @@ namespace CmsCheckin
 
 				var bits = Encoding.UTF8.GetBytes(sw.ToString());
 				var wc = CreateWebClient();
-				var url = new Uri(new Uri(Program.URL), "Checkin2/BuildingCheckin/" + pid);
+				var s = "Checkin2/BuildingCheckin/" + pid;
+				var g = Program.GuestOf();
+				if (g != null)
+					s += "?guestof=" + g.pid;
+				var url = new Uri(new Uri(Program.URL), s);
 				var ret = wc.UploadData(url, "POST", bits);
 				return Encoding.ASCII.GetString(ret).ToInt();
 			}
