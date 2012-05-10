@@ -11,88 +11,64 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 {
     public partial class OnlineRegController
     {
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ApplyCoupon(int id, string Coupon)
+        [HttpPost]
+        public ActionResult ApplyCoupon(PaymentForm pf)
         {
-            var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
-            var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
-            m.ParseSettings();
+			OnlineRegModel m = null;
+			if (pf.PayBalance == false)
+			{
+				var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pf.DatumId);
+				m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+				m.ParseSettings();
+			}
 
-            if (!Coupon.HasValue())
+        	if (!pf.Coupon.HasValue())
                 return Json(new { error = "empty coupon" });
-            string coupon = Coupon.ToUpper().Replace(" ", "");
+            string coupon = pf.Coupon.ToUpper().Replace(" ", "");
             string admincoupon = DbUtil.Db.Setting("AdminCoupon", "ifj4ijweoij").ToUpper().Replace(" ", "");
             if (coupon == admincoupon)
-                return Json(new { confirm = "/onlinereg/Confirm/{0}?TransactionID=Coupon(Admin)".Fmt(id) });
+                return Json(new { confirm = "/onlinereg/Confirm/{0}?TransactionID=Coupon(Admin)".Fmt(pf.DatumId) });
 
             var c = DbUtil.Db.Coupons.SingleOrDefault(cp => cp.Id == coupon);
             if (c == null)
                 return Json(new { error = "coupon not found" });
-            else if (m.divid.HasValue && c.DivId != m.divid)
-                return Json(new { error = "coupon and division do not match" });
-            else if (m.orgid != c.OrgId)
-                return Json(new { error = "coupon and org do not match" });
-            else if (c.Used.HasValue && c.Id.Length == 12)
+
+			if (pf.OrgId != c.OrgId)
+				return Json(new {error = "coupon and org do not match"});
+        	if (c.Used.HasValue && c.Id.Length == 12)
                 return Json(new { error = "coupon already used" });
-            else if (c.Canceled.HasValue)
+            if (c.Canceled.HasValue)
                 return Json(new { error = "coupon canceled" });
 
-            var ti = m.Transaction;
+			var ti = pf.CreateTransaction(DbUtil.Db);
 
-            if (c.Amount >= ti.Amt)
-            {
-                ti.TransactionId = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon));
-                m.UseCoupon(ti.TransactionId);
-                ti.TransactionDate = DateTime.Now;
-                ti.Amt -= c.Amount; // coupon amount applied
-                if (ti.Amt < 0)
-                {
-                    ti.Amtdue += ti.Amt;
-                    ti.Amt = 0;
-                }
-                DbUtil.Db.SubmitChanges();
-                return Json(new
-                {
-                    confirm = "/onlinereg/confirm/{0}?TransactionID=Coupon({1})"
-                        .Fmt(id, Util.fmtcoupon(coupon))
-                });
-            }
+//            if (c.Amount >= pf.Amtdue)
+//            {
+//                ti.TransactionId = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon));
+//                c.UseCoupon(ti.FirstTransactionPeopleId(), ti.Amtdue ?? 0);
+//				ti.Amtdue = 0;
+//                DbUtil.Db.SubmitChanges();
+//
+//                return Json(new
+//                {
+//                    confirm = "/onlinereg/confirm/{0}?TransactionID=Coupon({1})"
+//                        .Fmt(pf.DatumId, Util.fmtcoupon(coupon))
+//                });
+//            }
+			// at this point we are applying a partial coupon
+			var tid = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon));
 
-            var ti2 = new Transaction
-            {
-                TransactionId = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon)),
-                Amt = c.Amount,
-                Name = ti.Name,
-                Address = ti.Address,
-                City = ti.City,
-                State = ti.State,
-                Zip = ti.Zip,
-                Description = ti.Description,
-                Url = ti.Url,
-                Testing = m.testing,
-                Emails = ti.Emails,
-                OrgId = ti.OrgId,
-                Participants = ti.Participants,
-                TransactionDate = DateTime.Now,
-                OriginalId = ti.OriginalId ?? ti.Id // links all the transactions together
-            };
-
-            ti.Amt -= c.Amount; // coupon amount applied
-            if (ti.Amt < 0)
-            {
-                ti.Amtdue += ti.Amt;
-                ti.Amt = 0;
-            }
-            m.UseCoupon(ti2.TransactionId);
+			ConfirmDuePaidTransaction(ti, tid, c.Amount ?? 0);
+			var msg = "<i class='red'>Your coupon for {0:n2} has been applied, your balance is now {1:n2}</i>. You can stop now, or proceed with an additional payment on the balance.".Fmt(c.Amount, ti.Amtdue );
+			if (m != null)
+				m.UseCoupon(ti.TransactionId);
+			else
+				c.UseCoupon(ti.FirstTransactionPeopleId(), ti.Amtdue ?? 0);
             DbUtil.Db.SubmitChanges();
 
-            foreach (var tp in ti.TransactionPeople)
-                ti2.TransactionPeople.Add(new TransactionPerson { Amt = tp.Amt, OrgId = tp.OrgId, PeopleId = tp.PeopleId });
-            DbUtil.Db.Transactions.InsertOnSubmit(ti2);
-            DbUtil.Db.SubmitChanges();
-            return Json(new { tiamt = ti.Amt, amt=ti.Amt.ToString2("N2") });
+            return Json(new { tiamt = ti.Amtdue, amtdue=ti.Amtdue, amt=ti.Amtdue.ToString2("N2"), msg });
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PayWithCoupon(int id, string Coupon)
         {
             if (!Coupon.HasValue())
@@ -126,7 +102,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     .Fmt(id, Util.fmtcoupon(coupon))
             });
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PayWithCoupon2(int id, string Coupon, decimal Amount)
         {
             if (!Coupon.HasValue())
@@ -153,7 +129,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     .Fmt(id, Util.fmtcoupon(coupon), Amount)
             });
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PayWithCouponOld(int id, string Coupon, decimal Amount)
         {
             if (!Coupon.HasValue())

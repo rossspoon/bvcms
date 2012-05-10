@@ -207,52 +207,59 @@ namespace CmsWeb.Models
 		}
 		public object PostContribution(PostBundleController ctl)
 		{
-			var bd = new CmsData.BundleDetail
+			try
 			{
-				BundleHeaderId = id,
-				CreatedBy = Util.UserId,
-				CreatedDate = DateTime.Now,
-			};
-			int type;
-			if (pledge == true)
-				type = (int)Contribution.TypeCode.Pledge;
-			else
-				type = (int)Contribution.TypeCode.CheckCash;
+				var bd = new CmsData.BundleDetail
+				{
+					BundleHeaderId = id,
+					CreatedBy = Util.UserId,
+					CreatedDate = DateTime.Now,
+				};
+				int type;
+				if (pledge == true)
+					type = (int)Contribution.TypeCode.Pledge;
+				else
+					type = (int)Contribution.TypeCode.CheckCash;
 
-			decimal? othersplitamt = null;
-			if (splitfrom > 0)
-			{
-				var q = from c in DbUtil.Db.Contributions
-						where c.ContributionId == splitfrom
-						select new
-							   {
-								   c,
-								   bd = c.BundleDetails.First(),
-							   };
-				var i = q.Single();
-				othersplitamt = i.c.ContributionAmount - amt;
-				i.c.ContributionAmount = othersplitamt;
+				decimal? othersplitamt = null;
+				if (splitfrom > 0)
+				{
+					var q = from c in DbUtil.Db.Contributions
+							where c.ContributionId == splitfrom
+							select new
+								   {
+									   c,
+									   bd = c.BundleDetails.First(),
+								   };
+					var i = q.Single();
+					othersplitamt = i.c.ContributionAmount - amt;
+					i.c.ContributionAmount = othersplitamt;
+					DbUtil.Db.SubmitChanges();
+					bd.BundleSort1 = i.bd.BundleDetailId;
+				}
+
+				bd.Contribution = new Contribution
+				{
+					CreatedBy = Util.UserId,
+					CreatedDate = bd.CreatedDate,
+					FundId = fund,
+					PeopleId = pid.ToInt2(),
+					ContributionDate = bundle.ContributionDate,
+					ContributionAmount = amt,
+					ContributionStatusId = 0,
+					PledgeFlag = pledge,
+					ContributionTypeId = type,
+					ContributionDesc = notes,
+					CheckNo = checkno
+				};
+				bundle.BundleDetails.Add(bd);
 				DbUtil.Db.SubmitChanges();
-				bd.BundleSort1 = i.bd.BundleDetailId;
+				return ContributionRowData(ctl, bd.ContributionId, othersplitamt);
 			}
-
-			bd.Contribution = new Contribution
+			catch (Exception ex)
 			{
-				CreatedBy = Util.UserId,
-				CreatedDate = bd.CreatedDate,
-				FundId = fund,
-				PeopleId = pid.ToInt2(),
-				ContributionDate = bundle.ContributionDate,
-				ContributionAmount = amt,
-				ContributionStatusId = 0,
-				PledgeFlag = pledge,
-				ContributionTypeId = type,
-				ContributionDesc = notes,
-				CheckNo = checkno
-			};
-			bundle.BundleDetails.Add(bd);
-			DbUtil.Db.SubmitChanges();
-			return ContributionRowData(ctl, bd.ContributionId, othersplitamt);
+				return new { error = ex.Message };
+			}
 		}
 		public object UpdateContribution(PostBundleController ctl)
 		{

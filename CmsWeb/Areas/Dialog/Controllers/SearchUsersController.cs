@@ -40,7 +40,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
             if (ischecked)
             {
                 var tp = DbUtil.Db.TagPeople.SingleOrDefault(tt => tt.PeopleId == id && tt.Id == t.Id);
-                DbUtil.Db.TagPeople.DeleteOnSubmit(tp);
+				if (tp != null)
+					DbUtil.Db.TagPeople.DeleteOnSubmit(tp);
             }
             else
                 t.PersonTags.Add(new TagPerson { PeopleId = id });

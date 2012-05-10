@@ -13,5 +13,11 @@ namespace CmsData
 {
     public partial class Coupon
     {
+		public void UseCoupon(int pid, Decimal amt)
+		{
+			PeopleId = pid;
+			Used = DateTime.Now;
+			RegAmount = amt;
+		}
     }
 }

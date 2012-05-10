@@ -171,6 +171,7 @@ namespace CmsWeb.Models
 			                    		"Gender",
 			                    		"Married",
 			                    		"Marital",
+			                    		"MaidenName",
 			                    		"Address",
 			                    		"Address2",
 			                    		"City",
@@ -308,6 +309,8 @@ namespace CmsWeb.Models
 							p.SuffixCode = a[names["Suffix"]];
 						if (names.ContainsKey("Middle"))
 							p.MiddleName = a[names["Middle"]];
+						if (names.ContainsKey("MaidenName"))
+							p.MaidenName = a[names["MaidenName"]];
 
 						if (names.ContainsKey("Employer"))
 							p.EmployerOther = a[names["Employer"]];

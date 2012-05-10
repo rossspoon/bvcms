@@ -329,7 +329,7 @@ You have the following subscriptions:<br/>
             SetHeaders(m.divid ?? m.masterorgid.Value);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult ConfirmPledge(ManagePledgesModel m)
         {
             var Staff = DbUtil.Db.StaffPeopleForOrg(m.orgid);

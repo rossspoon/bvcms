@@ -356,13 +356,15 @@ namespace CmsCheckin
 			activities = new ChooseActivities();
 			activities.ControlBox = false;
 			activities.Tag = ab.Tag;
+			activities.StartPosition = FormStartPosition.Manual;
+			activities.Location = new Point(Program.baseform.Location.X + 100, Program.baseform.Location.Y + 100);
+			activities.Text = "Choose Activities for " + c.name;
 
 			activities.list.Items.Clear();
 			foreach (var i in Program.Activities)
 				activities.list.Items.Add(i);
 			activities.ok.Tag = ab;
 			activities.cancel.Tag = ab;
-			activities.Location = new Point(ab.Location.X - 100, ab.Location.Y + ab.Height);
 			activities.AcceptButton = activities.ok;
 			activities.CancelButton = activities.cancel;
 			activities.ok.Click += ok_Click;
@@ -595,6 +597,8 @@ namespace CmsCheckin
 			if (Program.addguests == null)
 			{
 				Program.addguests = new AddGuests();
+				Program.addguests.StartPosition = FormStartPosition.Manual;
+				Program.addguests.Location = new Point(Program.baseform.Location.X + 100, Program.baseform.Location.Y + 100);
 				var i = 1;
 				foreach (var p in list.Where(pp => pp.ischecked))
 				{

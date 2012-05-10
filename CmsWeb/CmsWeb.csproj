@@ -1492,10 +1492,6 @@
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageSubscriptions.cshtml">
     </Content>
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\NewPayment.cshtml">
-    </Content>
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\NewProcessPayment.cshtml">
-    </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\NoLeague.cshtml">
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\PayAmtDue.cshtml">

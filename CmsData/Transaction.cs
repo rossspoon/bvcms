@@ -1,4 +1,8 @@
+using System;
 using UtilityExtensions;
+using System.Data.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CmsData
 {
@@ -17,5 +21,9 @@ namespace CmsData
 					   && Amt > 0;
     		}
     	}
+		public int FirstTransactionPeopleId()
+		{
+			return OriginalTransaction.TransactionPeople.Select(pp => pp.PeopleId).First();
+		}
     }
 }

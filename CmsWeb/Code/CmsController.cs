@@ -5,7 +5,6 @@ using System.Web;
 using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
-using CmsWeb.Areas.Manage.Controllers;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.Collections;
@@ -13,12 +12,8 @@ using System.IO;
 
 namespace CmsWeb
 {
-    public class CmsController : System.Web.Mvc.Controller
+    public class CmsController : Controller
     {
-        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-        {
-            base.Initialize(requestContext);
-        }
         protected override void HandleUnknownAction(string actionName)
         {
             //base.HandleUnknownAction(actionName);
@@ -38,16 +33,12 @@ namespace CmsWeb
 		   </div>
 		</div>".Fmt(logoimg, headertext);
         }
-        protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
             Util.Helpfile = "_{0}_{1}".Fmt(
                 filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
                 filterContext.ActionDescriptor.ActionName);
-        }
-        protected override void ExecuteCore()
-        {
-            base.ExecuteCore();
         }
         public string AuthenticateDeveloper(bool log = false)
         {
@@ -97,7 +88,7 @@ namespace CmsWeb
 			}
 		}
     }
-    public class CmsStaffController : System.Web.Mvc.Controller
+    public class CmsStaffController : Controller
     {
         public bool NoCheckRole { get; set; }
 

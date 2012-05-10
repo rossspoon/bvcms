@@ -1051,7 +1051,7 @@ namespace CmsData
             var FinanceManagerId = Db.Setting("FinanceManagerId", "").ToInt2();
             if (!FinanceManagerId.HasValue)
             {
-                var qu = from u in DbUtil.Db.Users
+                var qu = from u in Db.Users
                          where u.UserRoles.Any(ur => ur.Role.RoleName == "Finance")
                          orderby u.Person.LastName
                          select u.UserId;
@@ -1085,7 +1085,7 @@ namespace CmsData
             Db.SubmitChanges();
             return bd.Contribution;
         }
-		public static int FetchOrCreateMemberType(CMSDataContext Db, string type)
+		public static int FetchOrCreateMemberStatus(CMSDataContext Db, string type)
 		{
 			var ms = Db.MemberStatuses.SingleOrDefault(m => m.Description == type);
 			if (ms == null)

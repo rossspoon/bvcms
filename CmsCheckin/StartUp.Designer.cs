@@ -45,8 +45,6 @@
 			this.AskChurchName = new System.Windows.Forms.CheckBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.KioskName = new System.Windows.Forms.TextBox();
-			this.AskLabels = new System.Windows.Forms.CheckBox();
-			this.FullScreen = new System.Windows.Forms.CheckBox();
 			this.DisableJoin = new System.Windows.Forms.CheckBox();
 			this.SecurityLabelPerChild = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
@@ -72,7 +70,7 @@
 			// button1
 			// 
 			this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.button1.Location = new System.Drawing.Point(663, 410);
+			this.button1.Location = new System.Drawing.Point(663, 350);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(104, 64);
 			this.button1.TabIndex = 22;
@@ -106,7 +104,7 @@
 			this.HideCursor.Checked = true;
 			this.HideCursor.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.HideCursor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.HideCursor.Location = new System.Drawing.Point(473, 390);
+			this.HideCursor.Location = new System.Drawing.Point(234, 360);
 			this.HideCursor.Name = "HideCursor";
 			this.HideCursor.Size = new System.Drawing.Size(112, 24);
 			this.HideCursor.TabIndex = 21;
@@ -182,7 +180,7 @@
 			this.AskEmFriend.Checked = true;
 			this.AskEmFriend.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.AskEmFriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.AskEmFriend.Location = new System.Drawing.Point(23, 360);
+			this.AskEmFriend.Location = new System.Drawing.Point(23, 300);
 			this.AskEmFriend.Name = "AskEmFriend";
 			this.AskEmFriend.Size = new System.Drawing.Size(188, 24);
 			this.AskEmFriend.TabIndex = 18;
@@ -193,7 +191,7 @@
 			// 
 			this.AskGrade.AutoSize = true;
 			this.AskGrade.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.AskGrade.Location = new System.Drawing.Point(23, 450);
+			this.AskGrade.Location = new System.Drawing.Point(23, 390);
 			this.AskGrade.Name = "AskGrade";
 			this.AskGrade.Size = new System.Drawing.Size(104, 24);
 			this.AskGrade.TabIndex = 19;
@@ -204,7 +202,7 @@
 			// 
 			this.AskChurch.AutoSize = true;
 			this.AskChurch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.AskChurch.Location = new System.Drawing.Point(23, 390);
+			this.AskChurch.Location = new System.Drawing.Point(23, 330);
 			this.AskChurch.Name = "AskChurch";
 			this.AskChurch.Size = new System.Drawing.Size(110, 24);
 			this.AskChurch.TabIndex = 20;
@@ -217,7 +215,7 @@
 			this.EnableTimer.Checked = true;
 			this.EnableTimer.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.EnableTimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.EnableTimer.Location = new System.Drawing.Point(473, 420);
+			this.EnableTimer.Location = new System.Drawing.Point(234, 390);
 			this.EnableTimer.Name = "EnableTimer";
 			this.EnableTimer.Size = new System.Drawing.Size(121, 24);
 			this.EnableTimer.TabIndex = 16;
@@ -228,7 +226,7 @@
 			// 
 			this.AskChurchName.AutoSize = true;
 			this.AskChurchName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.AskChurchName.Location = new System.Drawing.Point(23, 420);
+			this.AskChurchName.Location = new System.Drawing.Point(23, 360);
 			this.AskChurchName.Name = "AskChurchName";
 			this.AskChurchName.Size = new System.Drawing.Size(156, 24);
 			this.AskChurchName.TabIndex = 20;
@@ -239,7 +237,7 @@
 			// 
 			this.label6.AutoSize = true;
 			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label6.Location = new System.Drawing.Point(108, 306);
+			this.label6.Location = new System.Drawing.Point(108, 246);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(93, 20);
 			this.label6.TabIndex = 23;
@@ -248,40 +246,16 @@
 			// KioskName
 			// 
 			this.KioskName.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.KioskName.Location = new System.Drawing.Point(229, 299);
+			this.KioskName.Location = new System.Drawing.Point(229, 239);
 			this.KioskName.Name = "KioskName";
 			this.KioskName.Size = new System.Drawing.Size(538, 31);
 			this.KioskName.TabIndex = 24;
-			// 
-			// AskLabels
-			// 
-			this.AskLabels.AutoSize = true;
-			this.AskLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.AskLabels.Location = new System.Drawing.Point(234, 360);
-			this.AskLabels.Name = "AskLabels";
-			this.AskLabels.Size = new System.Drawing.Size(214, 24);
-			this.AskLabels.TabIndex = 25;
-			this.AskLabels.Text = "Ask whether labels printed";
-			this.AskLabels.UseVisualStyleBackColor = true;
-			// 
-			// FullScreen
-			// 
-			this.FullScreen.AutoSize = true;
-			this.FullScreen.Checked = true;
-			this.FullScreen.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.FullScreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FullScreen.Location = new System.Drawing.Point(473, 360);
-			this.FullScreen.Name = "FullScreen";
-			this.FullScreen.Size = new System.Drawing.Size(108, 24);
-			this.FullScreen.TabIndex = 28;
-			this.FullScreen.Text = "Full Screen";
-			this.FullScreen.UseVisualStyleBackColor = true;
 			// 
 			// DisableJoin
 			// 
 			this.DisableJoin.AutoSize = true;
 			this.DisableJoin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.DisableJoin.Location = new System.Drawing.Point(234, 450);
+			this.DisableJoin.Location = new System.Drawing.Point(234, 330);
 			this.DisableJoin.Name = "DisableJoin";
 			this.DisableJoin.Size = new System.Drawing.Size(114, 24);
 			this.DisableJoin.TabIndex = 29;
@@ -292,7 +266,7 @@
 			// 
 			this.SecurityLabelPerChild.AutoSize = true;
 			this.SecurityLabelPerChild.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SecurityLabelPerChild.Location = new System.Drawing.Point(234, 420);
+			this.SecurityLabelPerChild.Location = new System.Drawing.Point(234, 300);
 			this.SecurityLabelPerChild.Name = "SecurityLabelPerChild";
 			this.SecurityLabelPerChild.Size = new System.Drawing.Size(195, 24);
 			this.SecurityLabelPerChild.TabIndex = 30;
@@ -303,11 +277,9 @@
 			// 
 			this.AcceptButton = this.button1;
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-			this.ClientSize = new System.Drawing.Size(796, 488);
+			this.ClientSize = new System.Drawing.Size(796, 428);
 			this.Controls.Add(this.SecurityLabelPerChild);
 			this.Controls.Add(this.DisableJoin);
-			this.Controls.Add(this.FullScreen);
-			this.Controls.Add(this.AskLabels);
 			this.Controls.Add(this.KioskName);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.EnableTimer);
@@ -353,9 +325,7 @@
         public System.Windows.Forms.CheckBox EnableTimer;
         public System.Windows.Forms.CheckBox AskChurchName;
         private System.Windows.Forms.Label label6;
-        public System.Windows.Forms.TextBox KioskName;
-		public System.Windows.Forms.CheckBox AskLabels;
-        public System.Windows.Forms.CheckBox FullScreen;
+		public System.Windows.Forms.TextBox KioskName;
         public System.Windows.Forms.CheckBox DisableJoin;
 		public System.Windows.Forms.CheckBox SecurityLabelPerChild;
     }

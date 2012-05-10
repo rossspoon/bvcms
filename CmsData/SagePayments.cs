@@ -262,7 +262,7 @@ namespace CmsData
 
 				coll["M_ID"] = login;
 				coll["M_KEY"] = key;
-				var guid = rg.SageBankGuid.ToString().Replace("-", "");
+				var guid = rg.SageCardGuid.ToString().Replace("-", "");
 				coll["GUID"] = guid;
 				coll["C_NAME"] = p.FirstName + " " + p.LastName;
 				coll["C_ADDRESS"] = p.PrimaryAddress;

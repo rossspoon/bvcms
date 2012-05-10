@@ -19,6 +19,8 @@ namespace CmsCheckin
             Application.SetCompatibleTextRenderingDefault(false);
 
             var login = new Login();
+			if (!Util.IsDebug())
+				login.FullScreen.Checked = true;
             login.password.Focus();
             var r = login.ShowDialog();
             if (r == DialogResult.Cancel)
@@ -28,6 +30,7 @@ namespace CmsCheckin
             Printer = login.Printer.Text;
             TwoInchLabel = login.TwoInchLabel.Checked;
 			BuildingMode = login.BuildingAccessMode.Checked;
+			FullScreen = login.FullScreen.Checked;
 
 			BaseForm b;
             if (BuildingMode)
@@ -35,9 +38,8 @@ namespace CmsCheckin
 				attendant = new Attendant();
 				home2 = new Home2();
 				b = new BaseForm(home2);
-				b.ControlBox = false;
 				baseform = b;
-				if (!Util.IsDebug())
+				if (FullScreen)
 				{
 					b.WindowState = FormWindowState.Maximized;
 					b.FormBorderStyle = FormBorderStyle.None;
@@ -56,7 +58,7 @@ namespace CmsCheckin
             ThisDay = f.DayOfWeek;
             HideCursor = f.HideCursor.Checked;
             AskGrade = f.AskGrade.Checked;
-            AskLabels = f.AskLabels.Checked;
+			AskLabels = false;
             LeadTime = int.Parse(f.LeadHours.Text);
             EarlyCheckin = int.Parse(f.LateMinutes.Text);
             AskEmFriend = f.AskEmFriend.Checked;
@@ -80,7 +82,7 @@ namespace CmsCheckin
 			b = new BaseForm(home);
             baseform = b;
 
-            if (f.FullScreen.Checked && !Util.IsDebug())
+            if (FullScreen)
             {
                 b.WindowState = FormWindowState.Maximized;
                 b.FormBorderStyle = FormBorderStyle.None;
@@ -105,6 +107,7 @@ namespace CmsCheckin
         public static bool editing { get; set; }
         public static bool EnableTimer { get; set; }
         public static bool DisableJoin { get; set; }
+        public static bool FullScreen { get; set; }
         public static string KioskName { get; set; }
         public static bool AskEmFriend { get; set; }
         public static bool AskGrade { get; set; }

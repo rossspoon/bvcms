@@ -141,7 +141,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			return View(m);
 		}
 		// authenticate user
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Login(OnlineRegModel m)
 		{
 			var ret = AccountModel.AuthenticateLogon(m.username, m.password, Session, Request);
@@ -183,21 +183,21 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			return View("Flow/List", m);
 		}
 		// Register without logging in
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult NoLogin(OnlineRegModel m)
 		{
 			m.nologin = true;
 			m.CreateList();
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult YesLogin(OnlineRegModel m)
 		{
 			m.nologin = false;
 			m.List = new List<OnlineRegPersonModel>();
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Register(int id, OnlineRegModel m)
 		{
 			if (m.classid.HasValue)
@@ -228,7 +228,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				p.classid = p.org.OrganizationId;
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Cancel(int id, OnlineRegModel m)
 		{
 			m.List.RemoveAt(id);
@@ -242,7 +242,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				});
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult ShowMoreInfo(int id, OnlineRegModel m)
 		{
 			DbUtil.Db.SetNoLock();
@@ -295,7 +295,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			p.ShowAddress = true;
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult PersonFind(int id, OnlineRegModel m)
 		{
 			if (id >= m.List.Count)
@@ -335,7 +335,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				p.classid = p.org.OrganizationId;
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult SubmitNew(int id, OnlineRegModel m)
 		{
 			var p = m.List[id];
@@ -405,7 +405,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			//    p.OtherOK = ModelState.IsValid;
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult SubmitOtherInfo(int id, OnlineRegModel m)
 		{
 			if (m.List.Count <= id)
@@ -415,7 +415,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			p.ValidateModelForOther(ModelState);
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult AddAnotherPerson(OnlineRegModel m)
 		{
 			m.ParseSettings();
@@ -448,7 +448,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #endif
 			return View("Flow/List", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult AskDonation(OnlineRegModel m)
 		{
 			if (m.List.Count == 0)
@@ -456,7 +456,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			SetHeaders(m);
 			return View(m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult CompleteRegistration(OnlineRegModel m)
 		{
 			if (m.AskDonation() && !m.donor.HasValue && m.donation > 0)
@@ -466,47 +466,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					"Please indicate a donor or clear the donation amount");
 				return View("AskDonation", m);
 			}
-			var d = new ExtraDatum { Stamp = Util.Now };
-			DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
-			DbUtil.Db.SubmitChanges();
 
 			if (m.List.Count == 0)
 				return Content("Can't find any registrants");
-			var p = m.List[0];
-			var pp = p.person;
-			if (m.user != null)
-				pp = m.user;
 			DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, m.NameOnAccount));
-			var ti = new Transaction
-			{
-				Name = m.NameOnAccount,
-				Amt = m.Amount() + (m.donation ?? 0),
-				Donate = m.donation,
-				Regfees = m.Amount(),
-				Amtdue = m.TotalAmountDue(),
-				Emails = pp != null ? pp.EmailAddress : p.email,
-				Testing = m.testing ?? false,
-				Description = m.Header,
-				OrgId = m.orgid,
-				Url = m.URL,
-				DatumId = d.Id,
-				TransactionId = "started"
-			};
-			if (m.UserPeopleId.HasValue || p.IsNew)
-			{
-				ti.Address = (pp != null ? pp.PrimaryAddress : p.address).Truncate(50);
-				ti.City = pp != null ? pp.PrimaryCity : p.city;
-				ti.Phone = (pp != null ? Util.PickFirst(pp.HomePhone, pp.CellPhone) : p.phone).FmtFone();
-				ti.State = pp != null ? pp.PrimaryState : p.state;
-				ti.Zip = pp != null ? pp.PrimaryZip : p.zip;
-			}
 
-			ti.TransactionGateway = OnlineRegModel.GetTransactionGateway();
-			DbUtil.Db.Transactions.InsertOnSubmit(ti);
-			DbUtil.Db.SubmitChanges();
-			m.TranId = ti.Id;
-
+			var d = new ExtraDatum { Stamp = Util.Now };
 			d.Data = Util.Serialize<OnlineRegModel>(m);
+			DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
 			DbUtil.Db.SubmitChanges();
 
 			if (m.Amount() == 0 && (m.donation ?? 0) == 0 && !m.Terms.HasValue())
@@ -532,26 +499,17 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 						PostbackURL = Util.ServerLink("/OnlineReg/Confirm/" + d.Id),
 					});
 			}
-			if (ti.TransactionGateway == "ServiceU")
-				if (DbUtil.Db.Setting("newcoupon", "false") == "true")
-					return View("NewPayment", m);
-				else
-					return View("Payment", ti);
 
-			var pf = new PaymentForm { ti = ti, AskDonation = m.AskDonation(), AllowCoupon = !m.OnlineGiving()};
-#if DEBUG2
-			ti.Address = pp != null ? pp.PrimaryAddress : p.address;
-			ti.City = pp != null ? pp.PrimaryCity : p.city;
-			ti.Phone = (pp != null ? Util.PickFirst(pp.HomePhone, pp.CellPhone) : p.phone).FmtFone();
-			ti.State = pp != null ? pp.PrimaryState : p.state;
-			ti.Zip = pp != null ? pp.PrimaryZip : p.zip;
-			pf.CreditCard = "4111111111111111";
-			pf.CCV = "123";
-			pf.Expires = "1013";
-#endif
+			ViewBag.timeout = INT_timeout;
+			ViewBag.Url = m.URL;
+
+			var pf = PaymentForm.CreatePaymentForm(m);
+			pf.DatumId = d.Id;
+			if (OnlineRegModel.GetTransactionGateway() == "ServiceU")
+					return View("Payment", pf);
 			return View("ProcessPayment", pf);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public JsonResult CityState(string id)
 		{
 			var z = DbUtil.Db.ZipCodes.SingleOrDefault(zc => zc.Zip == id);

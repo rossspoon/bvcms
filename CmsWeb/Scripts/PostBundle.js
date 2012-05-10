@@ -212,6 +212,10 @@
         $.post(action, options.q, function (ret) {
             if (!ret)
                 return;
+            if (ret.error) {
+                alert(ret.error);
+                return;
+            }
             $('#totalitems').text(ret.totalitems);
             $('#itemcount').text(ret.itemcount);
             var pid = $('#pid').val();

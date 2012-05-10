@@ -12,9 +12,9 @@
 <script type="text/javascript">
     $(function () {
         $(document).bind("idle.idleTimer", function () {
-            window.location.href = '@Model.ti.Url';
+            window.location.href = '@ViewBag.Url';
         });
-        var tmout = parseInt('@ViewData["timeout"]');
+        var tmout = parseInt('@ViewBag.timeout');
         $.idleTimer(tmout);
     });
 </script>
@@ -27,48 +27,53 @@
     <a id="displayterms" title="click to display terms" href="#">Display Terms</a>
     <div id="Terms" title="Terms of Agreement" class="modalPopup" style="display: none;
         width: 400px; padding: 10px">
-        @Html.Raw((string)ViewData["Terms"])</div>
+        @Html.Raw(Model.Terms)</div>
     <p>
         @Html.CheckBox("IAgree")
         I agree to the above terms and conditions.</p>
     <p>
         You must agree to the terms above for you or your minor child before you can continue.</p>
 } 
-    <form action="/onlinereg/ProcessPayment/@Model.ti.DatumId" method="post">
-    @Html.Hidden("pf.ti.DatumId", Model.ti.DatumId)
-    @Html.Hidden("pf.ti.Url", Model.ti.Url)
+    <form action="/onlinereg/ProcessPayment" method="post">
+    @Html.Hidden("pf.DatumId", Model.DatumId)
+    @Html.Hidden("pf.Url", Model.Url)
+    @Html.Hidden("pf.Description", Model.Description)
+    @Html.Hidden("pf.Email", Model.Email)
+    @Html.Hidden("pf.Amtdue", Model.Amtdue)
+    @Html.Hidden("pf.testing", Model.testing)
+    @Html.Hidden("pf.OrgId", Model.OrgId)
+    @Html.Hidden("pf.OriginalId", Model.OriginalId)
+    @Html.Hidden("pf.PayBalance", Model.PayBalance)
+    @Html.Hidden("pf.AllowCoupon", Model.AllowCoupon)
+    @Html.Hidden("pf.FinanceOnly", Model.FinanceOnly)
     @Html.Hidden("pf.AskDonation", Model.AskDonation)
-@if (Model.AskDonation)
-{ 
-    @Html.Hidden("pf.ti.Regfees", Model.ti.Regfees)
-} 
     <table>
     <col align="right" style="white-space:nowrap;padding-right:10px" />
     <col align="left" />
     <tr><td>Name</td>
-        <td>@Html.TextBox("pf.ti.Name", Model.ti.Name, new { @class = "wide" })</td></tr>
+        <td>@Html.TextBox("pf.Name", Model.Name, new { @class = "wide" })</td></tr>
     <tr><td>Address</td>
-        <td>@Html.TextBox("pf.ti.Address", Model.ti.Address, new { @class = "wide" })</td></tr>
+        <td>@Html.TextBox("pf.Address", Model.Address, new { @class = "wide" })</td></tr>
     <tr><td>City</td>
-        <td>@Html.TextBox("pf.ti.City", Model.ti.City, new { @class = "wide" })</td></tr>
+        <td>@Html.TextBox("pf.City", Model.City, new { @class = "wide" })</td></tr>
     <tr><td>State</td>
-        <td> @Html.TextBox("pf.ti.State", Model.ti.State, new { @class = "short" })</td></tr>
+        <td> @Html.TextBox("pf.State", Model.State, new { @class = "short" })</td></tr>
     <tr><td>Zip</td>
-        <td> @Html.TextBox("pf.ti.Zip", Model.ti.Zip, new { @class = "wide" })</td></tr>
+        <td> @Html.TextBox("pf.Zip", Model.Zip, new { @class = "wide" })</td></tr>
     <tr><td>Phone</td>
-        <td>@Html.TextBox("pf.ti.Phone", Model.ti.Phone, new { @class = "wide" })</td></tr>
+        <td>@Html.TextBox("pf.Phone", Model.Phone, new { @class = "wide" })</td></tr>
     <tr><td>Email</td>
-        <td>@Html.TextBox("pf.ti.Emails", Util.FirstAddress(Model.ti.Emails).Address, new { @class = "wide" })</td></tr>
-@if (ViewData.ContainsKey("PayBalance") && (bool)ViewData["PayBalance"] == true)
+        <td>@Html.TextBox("pf.Emails", Model.Email, new { @class = "wide" })</td></tr>
+@if (Model.PayBalance)
 {
     <tr><td>Enter amount to pay</td>
-        <td>@Html.TextBox("pf.ti.Amt", Model.ti.Amt.ToString2("N2"), new { @class = "short" })</td></tr>
+        <td>@Html.TextBox("pf.AmtToPay", Model.AmtToPay.ToString2("N2"), new { @class = "short" })</td></tr>
 }
 else
 {
     <tr><td>Total Amount</td>
-        <td><span id="amt" class="right">@Model.ti.Amt.ToString2("N2")</span>
-            @Html.Hidden("pf.ti.Amt", Model.ti.Amt)</td></tr>
+        <td><span id="amt" class="right">@Model.AmtToPay.ToString2("N2")</span>
+            @Html.Hidden("pf.AmtToPay", Model.AmtToPay)</td></tr>
 }
     <tr><td>Credit Card</td>
         <td>@Html.TextBox("pf.CreditCard", Model.CreditCard, new { @class = "wide", autocomplete = "off" })</td></tr>
@@ -83,12 +88,11 @@ else
 @if (Model.AllowCoupon)
 {
     <tr><td>Payment Code</td>
-        <td><input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /></td>
+        <td>@Html.Password("pf.Coupon", Model.Coupon, new { autocomplete = "off" })</td>
     </tr>
     <tr><td></td>
 		<td class="coupon">
-			<input type="button" href="/OnlineReg/ApplyCoupon/@Model.ti.DatumId" class="submitbutton ajax"
-				   value="Apply Code" />
+			<input type="button" href="/OnlineReg/ApplyCoupon" class="submitbutton ajax" value="Apply Code" />
 			<div class="right red" id="validatecoupon"></div>
         </td>
     </tr>

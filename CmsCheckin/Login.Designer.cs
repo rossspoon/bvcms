@@ -90,6 +90,7 @@
 			this.brbrace = new System.Windows.Forms.Button();
 			this.blbrace = new System.Windows.Forms.Button();
 			this.building = new System.Windows.Forms.TextBox();
+			this.FullScreen = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// button1
@@ -851,11 +852,23 @@
 			this.building.Size = new System.Drawing.Size(193, 32);
 			this.building.TabIndex = 131;
 			// 
+			// FullScreen
+			// 
+			this.FullScreen.AutoSize = true;
+			this.FullScreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.FullScreen.Location = new System.Drawing.Point(550, 201);
+			this.FullScreen.Name = "FullScreen";
+			this.FullScreen.Size = new System.Drawing.Size(152, 24);
+			this.FullScreen.TabIndex = 132;
+			this.FullScreen.Text = "Full Screen Mode";
+			this.FullScreen.UseVisualStyleBackColor = true;
+			// 
 			// Login
 			// 
 			this.AcceptButton = this.brbrace;
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.ClientSize = new System.Drawing.Size(767, 496);
+			this.Controls.Add(this.FullScreen);
 			this.Controls.Add(this.building);
 			this.Controls.Add(this.brbrace);
 			this.Controls.Add(this.blbrace);
@@ -993,5 +1006,6 @@
 		private System.Windows.Forms.Button brbrace;
 		private System.Windows.Forms.Button blbrace;
 		public System.Windows.Forms.TextBox building;
+		public System.Windows.Forms.CheckBox FullScreen;
     }
 }

@@ -56,6 +56,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     if (m.EnrollmentDate.HasValue)
                         om.EnrollmentDate = m.EnrollmentDate;
                     om.Pending = m.Pending;
+					if (m.addpmt.HasValue)
+						om.AddTransaction(DbUtil.Db, m.addpmt ?? 0, m.addpmtreason);
                 }
             }
             DbUtil.Db.SubmitChanges();

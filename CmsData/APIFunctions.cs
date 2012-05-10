@@ -203,6 +203,14 @@ class LoginInfo(object):
                     };
                     Db.PeopleExtras.InsertOnSubmit(ev);
                 }
+                else
+                {
+					// prepare for new data type
+					ev.Data = null;
+					ev.IntValue = null;
+					ev.DateValue = null;
+					ev.StrValue = null;
+                }
                 switch (type)
                 {
                     case "code":

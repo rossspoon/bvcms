@@ -71,6 +71,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 					TransactionId = resp.TransactionId,
 					Name = t.Name,
 					Amt = -t.Amt,
+					Amtdue = t.Amtdue + t.Amt,
 					Approved = true,
 					AuthCode = t.AuthCode,
 					Message = t.Message,

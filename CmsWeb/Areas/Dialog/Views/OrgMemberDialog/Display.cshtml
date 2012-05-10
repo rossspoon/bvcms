@@ -51,22 +51,23 @@
     </tr>
  }    
  @if (Model.Amount.HasValue)
- {     
+ {
+     var amtdue = @Model.AmountDue(DbUtil.Db);
     <tr>
         <th align='right'>Amount:</th>
         <td>@(Model.Amount.HasValue ? Model.Amount.Value.ToString("N") : "")</td>
     </tr>
     <tr>
-        <th>AmountPaid:</th>
-        <td>@(Model.AmountPaid.HasValue ? Model.AmountPaid.Value.ToString("N") : "")
-    @if (Model.PayLink.HasValue())
-    { 
-        <a href="@Model.PayLink" target="_blank">paylink</a>
-    } 
+        <th align="right" valign="top">AmountDue:</th>
+        <td>@amtdue.ToString2("N")
+        @if (amtdue > 0)
+        { 
+            <div><a href="@Model.PayLink" target="_blank">PayLink</a></div>
+        } 
         </td>
     </tr>
  }
- @if(setting.AskShirtSize == true) 
+ @if(setting.AskShirtSize) 
  {     
     <tr>
         <th align='right'>ShirtSize:</th>

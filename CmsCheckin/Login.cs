@@ -152,7 +152,7 @@ namespace CmsCheckin
 
 			if (Util.IsDebug())
 			{
-				URL.Text = "localhost:888";
+				URL.Text = "test.bvcms.com";
 				username.Text = "David";
 				var name = @"..\..\secrets.xml";
 				if (File.Exists(name))

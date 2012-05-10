@@ -187,6 +187,7 @@ namespace CmsWeb.Models
                     let spouse = Db.People.SingleOrDefault(sp => sp.PeopleId == f.HeadOfHouseholdSpouseId)
                     let children = from pp in f.People
                                    where pp.PeopleId != f.HeadOfHouseholdId
+								   where pp.DeceasedDate == null
                                    where pp.PeopleId != (f.HeadOfHouseholdSpouseId ?? 0)
                                    where pp.PositionInFamilyId == 30
                                    orderby pp.LastName == p.LastName ? 1 : 2, pp.Age descending

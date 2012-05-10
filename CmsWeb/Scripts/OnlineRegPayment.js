@@ -14,10 +14,10 @@
             else if (ret.amt) {
                 $('#validatecoupon').text('');
                 $('#amt').text(ret.amt);
-                $('#pf_ti_Amt').val(ret.tiamt);
-                $('#Coupon').val('');
-                $('td.coupon').empty();
-                $('#tdcoup').html("<i>Applied</i>");
+                $('#pf_AmtToPay').val(ret.tiamt);
+                $('#pf_Amtdue').val(ret.amtdue);
+                $('#pf_Coupon').val('');
+                $('td.coupon').html(ret.msg);
             }
             else {
                 window.location = ret.confirm;
@@ -25,10 +25,16 @@
         });
         return false;
     });
-    $('#Coupon').showPassword();
-    
+    $('#pf_Coupon').showPassword();
+
     $('#findidclick').click(function () {
         $("#findid").dialog({ width: 400 });
+    });
+    $("form").submit(function () {
+        if (!$("#Submit").val())
+            return false;
+        $("#Submit").attr("disabled", "true");
+        return true;
     });
 
     $("#Terms").dialog({ autoOpen: false });
@@ -62,13 +68,13 @@
     // validate signup form on keyup and submit
     $("form").validate({
         rules: {
-            "pf.ti.Name": { required: true, maxlength: 50 },
-            "pf.ti.Address": { required: true, maxlength: 50 },
-            "pf.ti.City": { required: true, maxlength: 50 },
-            "pf.ti.State": { required: true, maxlength: 4 },
-            "pf.ti.Zip": { required: true, maxlength: 15 },
-            "pf.ti.Email": { required: true, maxlength: 80 },
-            "pf.ti.Phone": { maxlength: 50 },
+            "pf.Name": { required: true, maxlength: 50 },
+            "pf.Address": { required: true, maxlength: 50 },
+            "pf.City": { required: true, maxlength: 50 },
+            "pf.State": { required: true, maxlength: 4 },
+            "pf.Zip": { required: true, maxlength: 15 },
+            "pf.Email": { required: true, maxlength: 80 },
+            "pf.Phone": { maxlength: 50 },
             "pf.CreditCard": { digits: true },
             "pf.CCV": { digits: true, maxlength: 4 },
             "pf.Expires": { digits: true, maxlength: 4 }

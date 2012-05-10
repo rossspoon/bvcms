@@ -1,15 +1,14 @@
 ﻿@using UtilityExtensions
 @using CmsWeb
 @using CmsData
-@model Transaction
+@model CmsWeb.Models.PaymentForm
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
 }
 @{
-    var ti = Model;
-    var ServiceUOrgID = (ti.Testing ?? false) ? DbUtil.Db.Setting("ServiceUOrgIDTest", "0") : DbUtil.Db.Setting("ServiceUOrgID", "0");
-    var ServiceUOrgAccountID = (ti.Testing ?? false) ? DbUtil.Db.Setting("ServiceUOrgAccountIDTest", "0") : DbUtil.Db.Setting("ServiceUOrgAccountID", "0");
+    var ServiceUOrgID = (Model.testing) ? DbUtil.Db.Setting("ServiceUOrgIDTest", "0") : DbUtil.Db.Setting("ServiceUOrgID", "0");
+    var ServiceUOrgAccountID = (Model.testing) ? DbUtil.Db.Setting("ServiceUOrgAccountIDTest", "0") : DbUtil.Db.Setting("ServiceUOrgAccountID", "0");
 }
 
 @section scripts
@@ -19,21 +18,21 @@
     <script type="text/javascript">
         $(function () {
             $(document).bind("idle.idleTimer", function () {
-                window.location.href = '@ti.Url';
+                window.location.href = '@ViewBag.Url';
             });
-            var tmout = parseInt('@ViewData["timeout"]');
+            var tmout = parseInt('@ViewBag.timeout');
             $.idleTimer(tmout);
         });
     </script>
 }
     <h2>
         Payment Processing</h2>
-@if (ViewData.ContainsKey("Terms"))
+@if (Model.Terms.HasValue())
 { 
     <a id="displayterms" title="click to display terms" href="#">Display Terms</a>
     <div id="Terms" title="Terms of Agreement" class="modalPopup" style="display: none;
         width: 400px; padding: 10px">
-        @Html.Raw((string)ViewData["Terms"])</div>
+        @Html.Raw(Model.Terms)</div>
     <p>
         @Html.CheckBox("IAgree")
         I agree to the above terms and conditions.</p>
@@ -48,20 +47,20 @@
         you complete the transaction on the next page.
     </p>
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
-    Amount: @ti.Amt.ToString2("N2")
-    @Html.Hidden("Amount", ti.Amt)
+    Amount: @Model.AmtToPay.ToString2("N2")
+    @Html.Hidden("Amount", Model.AmtToPay) 
     @Html.Hidden("OrgID", ServiceUOrgID)
     @Html.Hidden("OrgAccountID", ServiceUOrgAccountID)
-    @Html.Hidden("PostbackURL", Util.ServerLink("/OnlineReg/Confirm/" + ti.DatumId))
-    @Html.Hidden("NameOnAccount", ti.Name)
-    @Html.Hidden("Address", ti.Address)
-    @Html.Hidden("City", ti.City)
-    @Html.Hidden("State", ti.State)
-    @Html.Hidden("PostalCode", ti.Zip)
-    @Html.Hidden("Phone", ti.Phone)
-    @Html.Hidden("Email", Util.FirstAddress(ti.Emails))
-    @Html.Hidden("Misc1", ti.Name)
-    @Html.Hidden("Misc2", ti.Description)
+    @Html.Hidden("PostbackURL", Util.ServerLink("/OnlineReg/Confirm/" + Model.DatumId))
+    @Html.Hidden("NameOnAccount", Model.Name)
+    @Html.Hidden("Address", Model.Address)
+    @Html.Hidden("City", Model.City)
+    @Html.Hidden("State", Model.State)
+    @Html.Hidden("PostalCode", Model.Zip)
+    @Html.Hidden("Phone", Model.Phone)
+    @Html.Hidden("Email", Model.Email)
+    @Html.Hidden("Misc1", Model.Name)
+    @Html.Hidden("Misc2", Model.Description)
     @Html.Hidden("Misc3")
     @Html.Hidden("Misc4")
 
@@ -72,8 +71,8 @@
     <p>
         If you have received a Cash Payment Code, please enter that number here and click
         the button below it:</p>
-    <input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off"  /> <br />
-    <input type="button" href="/OnlineReg/PayWithCoupon/@ti.DatumId" class="submitbutton ajax" 
+    <input id="Coupon" name="Coupon" type="password" value="@Model.Coupon" autocomplete="off"  /> <br />
+    <input type="button" href="/OnlineReg/PayWithCoupon/@Model.DatumId" class="submitbutton ajax" 
         value="Pay with coupon" />
     <span style="color: Red" id="validatecoupon"></span>
     </form>

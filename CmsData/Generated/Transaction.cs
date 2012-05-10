@@ -82,9 +82,15 @@ namespace CmsData
 		private bool? _Moneytran;
 		
    		
+   		private EntitySet< OrganizationMember> _OrganizationMembers;
+		
    		private EntitySet< TransactionPerson> _TransactionPeople;
 		
+   		private EntitySet< Transaction> _Transactions;
+		
     	
+		private EntityRef< Transaction> _OriginalTransaction;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -192,8 +198,14 @@ namespace CmsData
 		public Transaction()
 		{
 			
+			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
+			
 			this._TransactionPeople = new EntitySet< TransactionPerson>(new Action< TransactionPerson>(this.attach_TransactionPeople), new Action< TransactionPerson>(this.detach_TransactionPeople)); 
 			
+			this._Transactions = new EntitySet< Transaction>(new Action< Transaction>(this.attach_Transactions), new Action< Transaction>(this.detach_Transactions)); 
+			
+			
+			this._OriginalTransaction = default(EntityRef< Transaction>); 
 			
 			OnCreated();
 		}
@@ -717,6 +729,9 @@ namespace CmsData
 				if (this._OriginalId != value)
 				{
 				
+					if (this._OriginalTransaction.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnOriginalIdChanging(value);
 					this.SendPropertyChanging();
 					this._OriginalId = value;
@@ -909,6 +924,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_OrganizationMembers_Transaction", Storage="_OrganizationMembers", OtherKey="TranId")]
+   		public EntitySet< OrganizationMember> OrganizationMembers
+   		{
+   		    get { return this._OrganizationMembers; }
+
+			set	{ this._OrganizationMembers.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_TransactionPeople_Transaction", Storage="_TransactionPeople", OtherKey="Id")]
    		public EntitySet< TransactionPerson> TransactionPeople
    		{
@@ -919,10 +944,62 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="Transactions__OriginalTransaction", Storage="_Transactions", OtherKey="OriginalId")]
+   		public EntitySet< Transaction> Transactions
+   		{
+   		    get { return this._Transactions; }
+
+			set	{ this._Transactions.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
     	
+		[Association(Name="Transactions__OriginalTransaction", Storage="_OriginalTransaction", ThisKey="OriginalId", IsForeignKey=true)]
+		public Transaction OriginalTransaction
+		{
+			get { return this._OriginalTransaction.Entity; }
+
+			set
+			{
+				Transaction previousValue = this._OriginalTransaction.Entity;
+				if (((previousValue != value) 
+							|| (this._OriginalTransaction.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._OriginalTransaction.Entity = null;
+						previousValue.Transactions.Remove(this);
+					}
+
+					this._OriginalTransaction.Entity = value;
+					if (value != null)
+					{
+						value.Transactions.Add(this);
+						
+						this._OriginalId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._OriginalId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("OriginalTransaction");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
@@ -940,6 +1017,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_OrganizationMembers(OrganizationMember entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = this;
+		}
+
+		private void detach_OrganizationMembers(OrganizationMember entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = null;
+		}
+
+		
 		private void attach_TransactionPeople(TransactionPerson entity)
 		{
 			this.SendPropertyChanging();
@@ -950,6 +1040,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Transaction = null;
+		}
+
+		
+		private void attach_Transactions(Transaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.OriginalTransaction = this;
+		}
+
+		private void detach_Transactions(Transaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.OriginalTransaction = null;
 		}
 
 		

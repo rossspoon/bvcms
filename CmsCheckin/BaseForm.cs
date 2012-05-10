@@ -44,5 +44,10 @@ namespace CmsCheckin
             ctl.Visible = false;
             Controls.Add(ctl);
         }
+
+		private void BaseForm_Resize(object sender, EventArgs e)
+		{
+            home.Location = new Point { X = (this.Width / 2) - (home.Width / 2), Y = 0 };
+		}
     }
 }

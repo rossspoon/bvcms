@@ -35,11 +35,26 @@
 	</tr>
 	<tr> <td colspan="2"> <h2>New Values</h2></td></tr>
     <tr><td colspan="2">
-    Membertype:@Html.DropDownList("MemberType", Model.MemberTypeCodesWithDrop())
-    Enrollment:@Html.TextBox("EnrollmentDate", "", new { @class = "datepicker", style = "width:100px" })
-    InActive:@Html.TextBox("InactiveDate", "", new { @class = "datepicker", style = "width:100px" })
-    Pending:@Html.CheckBox("Pending")
-    </td></tr>
+			<table>
+				<tr>
+					<td align="right">Membertype:</td>
+					<td>@Html.DropDownList("MemberType", Model.MemberTypeCodesWithDrop())</td>
+					<td>Enrollment</td>
+                    <td>@Html.TextBox("EnrollmentDate", "", new { @class = "datepicker", style = "width:100px" })</td>
+					<td>Add Pmt</td>
+                    <td>@Html.TextBox("addpmt")</td>
+				</tr>
+				<tr>
+					<td align="right">Pending:</td>
+					<td>@Html.CheckBox("Pending")</td>
+					<td>InActive</td>
+                    <td>@Html.TextBox("InactiveDate", "", new { @class = "datepicker", style = "width:100px" })</td>
+					<td>Reason:</td>
+                    <td>@Html.TextBox("addpmtreason")</td>
+				</tr>
+			</table>
+        </td>
+    </tr>
 </table>
 <input id="SelectAll" type="checkbox" /> Select All
 <input id="submit" type="submit" class="bt" name="Update" class="bt" value="Update Selected" />

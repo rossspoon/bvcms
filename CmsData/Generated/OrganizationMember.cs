@@ -63,11 +63,15 @@ namespace CmsData
 		
 		private string _PayLink;
 		
+		private int? _TranId;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
     	
 		private EntityRef< MemberType> _MemberType;
+		
+		private EntityRef< Transaction> _Transaction;
 		
 		private EntityRef< Organization> _Organization;
 		
@@ -149,6 +153,9 @@ namespace CmsData
 		partial void OnPayLinkChanging(string value);
 		partial void OnPayLinkChanged();
 		
+		partial void OnTranIdChanging(int? value);
+		partial void OnTranIdChanged();
+		
     #endregion
 		public OrganizationMember()
 		{
@@ -157,6 +164,8 @@ namespace CmsData
 			
 			
 			this._MemberType = default(EntityRef< MemberType>); 
+			
+			this._Transaction = default(EntityRef< Transaction>); 
 			
 			this._Organization = default(EntityRef< Organization>); 
 			
@@ -683,6 +692,31 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="TranId", UpdateCheck=UpdateCheck.Never, Storage="_TranId", DbType="int")]
+		public int? TranId
+		{
+			get { return this._TranId; }
+
+			set
+			{
+				if (this._TranId != value)
+				{
+				
+					if (this._Transaction.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnTranIdChanging(value);
+					this.SendPropertyChanging();
+					this._TranId = value;
+					this.SendPropertyChanged("TranId");
+					this.OnTranIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -736,6 +770,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("MemberType");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_OrganizationMembers_Transaction", Storage="_Transaction", ThisKey="TranId", IsForeignKey=true)]
+		public Transaction Transaction
+		{
+			get { return this._Transaction.Entity; }
+
+			set
+			{
+				Transaction previousValue = this._Transaction.Entity;
+				if (((previousValue != value) 
+							|| (this._Transaction.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Transaction.Entity = null;
+						previousValue.OrganizationMembers.Remove(this);
+					}
+
+					this._Transaction.Entity = value;
+					if (value != null)
+					{
+						value.OrganizationMembers.Add(this);
+						
+						this._TranId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._TranId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Transaction");
 				}
 
 			}

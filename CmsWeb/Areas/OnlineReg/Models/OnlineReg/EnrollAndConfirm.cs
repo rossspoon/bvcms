@@ -112,6 +112,7 @@ namespace CmsWeb.Models
 </td></tr>", i + 1, p.PrepareSummaryText(ti));
 
                 om.RegisterEmail = p.email;
+				om.TranId = ti.Id;
                 if (p.setting.GiveOrgMembAccess == true)
                 {
                     if (p.person.Users.Count() == 0)
