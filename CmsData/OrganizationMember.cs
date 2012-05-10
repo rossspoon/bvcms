@@ -281,8 +281,10 @@ namespace CmsData
 					 where t.OriginalTransaction.OrgId == OrganizationId
 					 orderby t.Id descending
 					 select t;
-			return qq.First().Amtdue;
-			//return qq.FirstOrDefault();
+			var tt = qq.FirstOrDefault();
+			if (tt == null)
+				return null;
+			return tt.Amtdue;
 		}
 	}
 }
