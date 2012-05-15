@@ -182,6 +182,9 @@
     <Compile Include="Attendant.Designer.cs">
       <DependentUpon>Attendant.cs</DependentUpon>
     </Compile>
+    <Compile Include="BigCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Capture.cs" />
     <Compile Include="AdminLogin.cs">
       <SubType>Form</SubType>

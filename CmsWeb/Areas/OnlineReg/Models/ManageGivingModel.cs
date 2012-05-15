@@ -79,12 +79,16 @@ namespace CmsWeb.Models
 			get { return new RegSettings(Organization.RegSetting, DbUtil.Db, orgid); }
 		}
 
+		public bool NoCreditCardsAllowed { get; set; }
+		public bool NoEChecksAllowed { get; set; }
 		public ManageGivingModel()
 		{
 			testing = ConfigurationManager.AppSettings["testing"].ToBool();
 #if DEBUG2
             testing = true;
 #endif
+			NoCreditCardsAllowed = DbUtil.Db.Setting("NoCreditCardGiving", "false").ToBool();
+			NoEChecksAllowed = OnlineRegModel.GetTransactionGateway().ToLower() != "sage";
 		}
 
 		public ManageGivingModel(int pid, int orgid)

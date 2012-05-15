@@ -96,13 +96,19 @@ div.section div, div.section table
             <div class="section">
                 <label>Payment Information</label>
                 <div>
+@if (!Model.NoCreditCardsAllowed && !Model.NoEChecksAllowed)
+{
                     <div><br />
                         @Html.RadioButton("Type", "C")Debit/Credit Card
                         @Html.RadioButton("Type", "B")Bank Account
+                        @Html.Hidden("allowcc", "true")
                         <div>@Html.ValidationMessage("Type")</div><br>
                     </div>
+}
+@if (Model.NoCreditCardsAllowed == false)
+{
                     <div class="Card paymentinfo">
-                        <p><label>Card Number</label>
+                        <p><label>Credit Card Number</label>
                         @Html.TextBox("Cardnumber", null, Model.Autocomplete)
                         <div>@Html.ValidationMessage("Cardnumber")</div></p>
                         <p><label>Expires</label>
@@ -112,14 +118,18 @@ div.section div, div.section table
                         @Html.TextBox("Cardcode", null, Model.Autocomplete)
                         <div>@Html.ValidationMessage("Cardcode")</div></p>
                     </div>
+}
+@if (Model.NoEChecksAllowed == false)
+{
                     <div class="Bank paymentinfo">
-                        <p><label>Routing Number</label>
+                        <p><label>Bank Routing Number</label>
                         @Html.TextBox("Routing", null, Model.Autocomplete)
                         <div>@Html.ValidationMessage("Routing")</div></p>
-                        <p><label>Account Number</label>
+                        <p><label>Checking Account Number</label>
                         @Html.TextBox("Account", null, Model.Autocomplete)
                         <div>@Html.ValidationMessage("Account")</div></p>
                     </div>
+}
                 </div>
                 <div>
                     <input id="submitit" type="submit" class="submitbutton" value='Submit' />

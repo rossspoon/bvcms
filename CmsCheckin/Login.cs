@@ -91,14 +91,11 @@ namespace CmsCheckin
 			Settings1.Default.Building = building.Text;
 			Settings1.Default.Save();
 
-#if DEBUG
-			Program.URL = "http://" + URL.Text;
-#else
             if (Settings1.Default.UseSSL)
                 Program.URL = "https://" + URL.Text;
             else
                 Program.URL = "http://" + URL.Text;
-#endif
+
 			Program.Username = username.Text;
 			Program.Password = password.Text;
 			if (BuildingAccessMode.Checked == true)

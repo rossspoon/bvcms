@@ -616,7 +616,6 @@ namespace CmsData
 				case QueryType.PrimaryZip:
 				case QueryType.PrimaryCountry:
 				case QueryType.PrimaryCity:
-				case QueryType.TitleCode:
 				case QueryType.FirstName:
 				case QueryType.MiddleName:
 				case QueryType.MaidenName:

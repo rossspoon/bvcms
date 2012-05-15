@@ -41,6 +41,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.BaseForm_Load);
+			this.LocationChanged += new System.EventHandler(this.BaseForm_LocationChanged);
 			this.Resize += new System.EventHandler(this.BaseForm_Resize);
 			this.ResumeLayout(false);
 

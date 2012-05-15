@@ -19,6 +19,12 @@ namespace ImageData
             DbUtil.Db.SubmitChanges();
             return i;
         }
+        public static Image NewImageFromImage(Image i, int w, int h)
+        {
+			var i2 = new Image();
+            i2.LoadResizeFromBits(i.Bits, w, h);
+            return i2;
+        }
         private void LoadResizeFromBits(byte[] bits, int w, int h)
         {
             var istream = new MemoryStream(bits);

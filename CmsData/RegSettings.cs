@@ -24,6 +24,7 @@ namespace CmsData
 			ExtraFee,
 			MaximumFee,
 			AllowOnlyOne,
+			TargetExtraValues,
 			AllowReRegister,
 			OrgMemberFees,
 			AskTickets,
@@ -126,6 +127,7 @@ namespace CmsData
 		public decimal? ExtraFee { get; set; }
 		public decimal? MaximumFee { get; set; }
 		public bool AllowOnlyOne { get; set; }
+		public bool TargetExtraValues { get; set; }
 		public bool AllowReRegister { get; set; }
 		public bool AskTickets { get; set; }
 		public string NumItemsLabel { get; set; }
@@ -716,6 +718,9 @@ namespace CmsData
 				case RegKeywords.AllowReRegister:
 					AllowReRegister = GetBool();
 					break;
+				case RegKeywords.TargetExtraValues:
+					TargetExtraValues = GetBool();
+					break;
 				case RegKeywords.OrgMemberFees:
 					ParseOrgMemberFees();
 					break;
@@ -1222,6 +1227,7 @@ namespace CmsData
 			AddShirtSizes(sb);
 			AddValueCk(0, sb, "Shell", Shell);
 			AddValueCk(0, sb, "AllowOnlyOne", AllowOnlyOne);
+			AddValueCk(0, sb, "TargetExtraValues", TargetExtraValues);
 			AddValueCk(0, sb, "AllowReRegister", AllowReRegister);
 			AddValueCk(0, sb, "MemberOnly", MemberOnly);
 			AddValueCk(0, sb, "AskParents", AskParents);

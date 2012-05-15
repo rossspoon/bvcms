@@ -21,10 +21,8 @@ namespace CmsWeb
         }
         public static string HeaderHtml(string altcontent, string headertext, string logoimg)
         {
-            var c = DbUtil.Content("Site2Header" + altcontent);
-            if (c == null)
-                c = DbUtil.Content("Site2Header");
-            if (c != null)
+            var c = DbUtil.Content("Site2Header" + altcontent) ?? DbUtil.Content("Site2Header");
+        	if (c != null)
                 return c.Body;
             return @"
 		<div id=""header"">

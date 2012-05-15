@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CmsWeb.Areas.Main.Models.Directories;
 using CmsWeb.Areas.Main.Models.Report;
 using CmsData;
 using System.IO;
@@ -300,8 +301,16 @@ namespace CmsWeb.Areas.Main.Controllers
 			ViewBag.queryid = id;
             return View(rdr);
         }
+		public ActionResult FamilyDirectory(int id)
+		{
+			return new FamilyDir(id);
+		}
+		public ActionResult PictureDirectory(int id)
+		{
+			return new PictureDir(id);
+		}
 
-        public class QueryStatsResult : ActionResult
+    	public class QueryStatsResult : ActionResult
         {
             StringBuilder sb = new StringBuilder();
             public override void ExecuteResult(ControllerContext context)

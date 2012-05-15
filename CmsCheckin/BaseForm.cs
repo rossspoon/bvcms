@@ -49,5 +49,12 @@ namespace CmsCheckin
 		{
             home.Location = new Point { X = (this.Width / 2) - (home.Width / 2), Y = 0 };
 		}
+
+		private void BaseForm_LocationChanged(object sender, EventArgs e)
+		{
+			Settings1.Default.BaseFormLocX = this.Location.X;
+			Settings1.Default.BaseFormLocY = this.Location.Y;
+			Settings1.Default.Save();
+		}
     }
 }

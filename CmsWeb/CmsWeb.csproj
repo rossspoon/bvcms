@@ -59,6 +59,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="dotless.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Squishit\dotless.Core.dll</HintPath>
@@ -125,6 +126,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\ToggleOrgLeadersOnly.ashx.cs">
@@ -148,6 +150,10 @@
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
+    <Compile Include="Areas\Main\Models\Directories\PictureDir.cs" />
+    <Compile Include="Areas\Main\Models\Directories\PictureRow.cs" />
+    <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
+    <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
     <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />
@@ -270,6 +276,7 @@
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
+    <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
     <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -315,6 +322,7 @@
     <Content Include="Content\js\json2.js" />
     <Content Include="Content\organization.css" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
+    <Compile Include="Code\Word2Pdf.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailsModel.cs" />

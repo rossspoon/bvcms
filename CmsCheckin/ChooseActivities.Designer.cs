@@ -72,11 +72,15 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(578, 353);
+			this.ClientSize = new System.Drawing.Size(578, 376);
+			this.ControlBox = false;
 			this.Controls.Add(this.cancel);
 			this.Controls.Add(this.ok);
 			this.Controls.Add(this.list);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "ChooseActivities";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "ChooseActivities";
 			this.ResumeLayout(false);
 

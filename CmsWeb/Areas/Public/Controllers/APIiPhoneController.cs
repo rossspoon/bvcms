@@ -159,13 +159,15 @@ namespace CmsWeb.Areas.Public.Controllers
             if (!m.home.HasValue() && m.cell.HasValue())
                 m.home = m.cell;
 
-            p.Family.HomePhone = m.home.GetDigits();
-            p.Family.AddressLineOne = m.addr;
-            p.Family.CityName = z != null ? z.City : null;
-            p.Family.StateCode = z != null ? z.State : null;
-            p.Family.ZipCode = m.zip;
-
-            p.EmailAddress = Trim(m.email);
+			if (m.addtofamilyid == 0)
+			{
+				p.Family.HomePhone = m.home.GetDigits();
+				p.Family.AddressLineOne = m.addr;
+				p.Family.CityName = z != null ? z.City : null;
+				p.Family.StateCode = z != null ? z.State : null;
+				p.Family.ZipCode = m.zip;
+			}
+        	p.EmailAddress = Trim(m.email);
             if (m.cell.HasValue())
                 p.CellPhone = m.cell.GetDigits();
             p.MaritalStatusId = m.marital;

@@ -96,6 +96,7 @@
 			this.save.TabIndex = 10;
 			this.save.Text = "Save";
 			this.save.UseVisualStyleBackColor = true;
+			this.save.Click += new System.EventHandler(this.save_Click);
 			// 
 			// history
 			// 
@@ -104,7 +105,7 @@
 			this.history.Name = "history";
 			this.history.Size = new System.Drawing.Size(512, 537);
 			this.history.TabIndex = 11;
-			this.history.DoubleClick += new System.EventHandler(this.history_DoubleClick);
+			this.history.SelectedIndexChanged += new System.EventHandler(this.history_SelectedIndexChanged);
 			// 
 			// label1
 			// 
@@ -130,6 +131,7 @@
 			this.Controls.Add(this.ShowCheckin);
 			this.Name = "Attendant";
 			this.Text = "Attendant";
+			this.LocationChanged += new System.EventHandler(this.Attendant_LocationChanged);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

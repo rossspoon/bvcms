@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -36,14 +37,23 @@ namespace CmsCheckin
             if (BuildingMode)
             {
 				attendant = new Attendant();
+				attendant.Location = new Point(Settings1.Default.AttendantLocX, Settings1.Default.AttendantLocY);
 				home2 = new Home2();
 				b = new BaseForm(home2);
+				b.StartPosition = FormStartPosition.Manual;
+				b.Location = new Point(Settings1.Default.BaseFormLocX, Settings1.Default.BaseFormLocY);
 				baseform = b;
 				if (FullScreen)
 				{
 					b.WindowState = FormWindowState.Maximized;
 					b.FormBorderStyle = FormBorderStyle.None;
 				}
+				else
+				{
+					b.FormBorderStyle = FormBorderStyle.FixedSingle;
+					b.ControlBox = false;
+				}
+            	attendant.StartPosition = FormStartPosition.Manual;
                 Application.Run(attendant);
                 return;
             }
@@ -81,6 +91,8 @@ namespace CmsCheckin
 			home = new Home();
 			b = new BaseForm(home);
             baseform = b;
+			b.StartPosition = FormStartPosition.Manual;
+			b.Location = new Point(Settings1.Default.BaseFormLocX, Settings1.Default.BaseFormLocY);
 
             if (FullScreen)
             {

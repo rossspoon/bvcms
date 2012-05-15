@@ -48,8 +48,10 @@
     @Html.Hidden("pf.FinanceOnly", Model.FinanceOnly)
     @Html.Hidden("pf.AskDonation", Model.AskDonation)
     <table>
-    <col align="right" style="white-space:nowrap;padding-right:10px" />
-    <col align="left" />
+    <colgroup>
+        <col style="text-align: right;white-space:nowrap;padding-right:10px" />
+		<col />
+    </colgroup>
     <tr><td>Name</td>
         <td>@Html.TextBox("pf.Name", Model.Name, new { @class = "wide" })</td></tr>
     <tr><td>Address</td>
@@ -67,20 +69,54 @@
 @if (Model.PayBalance)
 {
     <tr><td>Enter amount to pay</td>
-        <td>@Html.TextBox("pf.AmtToPay", Model.AmtToPay.ToString2("N2"), new { @class = "short" })</td></tr>
+		<td>@Html.TextBox("pf.AmtToPay", Model.AmtToPay.ToString2("N2"), Model.Autocomplete(small: true))</td>
+    </tr>
 }
 else
 {
     <tr><td>Total Amount</td>
-        <td><span id="amt" class="right">@Model.AmtToPay.ToString2("N2")</span>
-            @Html.Hidden("pf.AmtToPay", Model.AmtToPay)</td></tr>
+		<td><span id="amt" class="right">@Model.AmtToPay.ToString2("N2")</span>
+			@Html.Hidden("pf.AmtToPay", Model.AmtToPay)</td>
+    </tr>
 }
-    <tr><td>Credit Card</td>
-        <td>@Html.TextBox("pf.CreditCard", Model.CreditCard, new { @class = "wide", autocomplete = "off" })</td></tr>
-    <tr><td>Card ID number<br /><a id="findidclick" href="#"><span style="font-size:65%">How to find your ID#</span></a></td>
-        <td>@Html.TextBox("pf.CCV", Model.CCV, new { @class = "short", autocomplete = "off" })</td></tr>
-    <tr><td>Expires (MMYY)</td>
-        <td>@Html.TextBox("pf.Expires", Model.Expires, new { @class = "short", autocomplete = "off" })</td></tr>
+
+@if (!Model.NoCreditCardsAllowed && !Model.NoEChecksAllowed)
+{
+	<tr><td>Payment Type</td>
+		<td>@Html.RadioButton("Type", "C")Debit/Credit Card
+			@Html.RadioButton("Type", "B")Bank Account
+			@Html.Hidden("allowcc", "true")</td>
+	</tr>
+}
+@if(Model.NoCreditCardsAllowed == false)
+{
+	<tr class="Card">
+		<td>Card Number</td>
+		<td>@Html.TextBox("pf.CreditCard", Model.CreditCard, Model.Autocomplete())</td>
+	</tr>
+	<tr class="Card">
+		<td>Expires</td>
+		<td>@Html.TextBox("pf.Expires", Model.Expires, Model.Autocomplete(small: true)) MMYY</td>
+	</tr>
+	<tr class="Card">
+		<td>Card Code<br />
+			<a id="findidclick" href="#"><span style="font-size: 65%">How to find your card code</span></a></td>
+		<td>@Html.TextBox("pf.Cardcode", Model.CCV, Model.Autocomplete())</td>
+	</tr>
+}
+@if (Model.NoEChecksAllowed == false)
+{
+	<tr class="Bank">
+		<td>Checking Account<br/>
+			Bank Routing Number</td>
+		<td>@Html.TextBox("pf.Routing", Model.Routing, Model.Autocomplete())</td>
+	</tr>
+	<tr class="Bank">
+		<td>Account Number</td>
+		<td>@Html.TextBox("pf.Account", Model.Account, Model.Autocomplete())</td>
+	</tr>
+}
+
     <tr><td></td>
         <td height="40"><input id="Submit" type="submit" name="Submit" class="submitbutton" value="Make Payment" />
             <div class="column">@Html.ValidationMessage("form")</div></td></tr>

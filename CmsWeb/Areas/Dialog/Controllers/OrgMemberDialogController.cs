@@ -33,7 +33,9 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 om.OrgMemMemTags.Add(new OrgMemMemTag { MemberTagId = a[3].ToInt() });
             else
             {
-                var mt = om.OrgMemMemTags.Single(t => t.MemberTagId == a[3].ToInt());
+                var mt = om.OrgMemMemTags.SingleOrDefault(t => t.MemberTagId == a[3].ToInt());
+				if (mt == null)
+					return Content("not found");
                 DbUtil.Db.OrgMemMemTags.DeleteOnSubmit(mt);
             }
             DbUtil.Db.SubmitChanges();

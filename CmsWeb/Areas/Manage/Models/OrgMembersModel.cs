@@ -355,9 +355,13 @@ namespace CmsWeb.Models
 
 You have been assigned to {1} in room {2}. The leader's name is {3}.
 Please call {4} if you have any questions.
+Please print this and bring it with you as a reminder of your room number.
 
-Thanks for registering!
-".Fmt(i.Name, i.OrganizationName, i.Location, i.LeaderName, i.PhoneNumber.FmtFone(), onlineorg.OrganizationName);
+Thank you!
+{5}
+".Fmt(i.Name, i.OrganizationName, i.Location, i.LeaderName, 
+	Util.PickFirst(i.PhoneNumber.FmtFone(), DbUtil.Db.Setting("ChurchPhone", "ChurchPhone")),
+	DbUtil.Db.Setting("NameOfChurch", "NameOfChurch"));
 
                 if (i.om.Moved == true || EmailAllNotices)
                 {

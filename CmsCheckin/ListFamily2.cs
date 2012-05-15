@@ -71,7 +71,7 @@ namespace CmsCheckin
 		public void ShowFamily(int fid)
 		{
 			page = 1;
-			xdoc = this.GetDocument("Checkin2/SingleFamily/" + fid);
+			xdoc = this.GetDocument("Checkin2/SingleFamily/" + fid + "?Building=" + Program.Building);
 			Program.FamilyId = fid;
 			ShowFamily(xdoc);
 		}
@@ -118,6 +118,7 @@ namespace CmsCheckin
 					marital = e.Attribute("marital").Value.ToInt(),
 					Row = list.Count,
 					HasPicture = bool.Parse(e.Attribute("haspicture").Value),
+					notes = e.Value,
 				};
 				list.Add(a);
 			}
@@ -352,6 +353,8 @@ namespace CmsCheckin
 			pb.SetPropertyThreadSafe(() => pb.Image, Util.GetImage(c.pid));
 			var na = Program.attendant.NameDisplay;
 			na.SetPropertyThreadSafe(() => na.Text, c.name);
+			var notes = Program.attendant.notes;
+			notes.SetPropertyThreadSafe(() => notes.Text, c.notes);
 
 			activities = new ChooseActivities();
 			activities.ControlBox = false;
@@ -383,7 +386,7 @@ namespace CmsCheckin
 
 			mask.Show();
 			nam.Enabled = false;
-			activities.Show();
+			activities.ShowDialog();
 			activities.BringToFront();
 		}
 
@@ -409,6 +412,8 @@ namespace CmsCheckin
 			Program.CursorShow();
 			var c = list[(int)ab.Tag];
 			ab.Text = "";
+			var org = this.Controls[this.Controls.IndexOfKey("org" + activities.Tag.ToString())] as Label;
+			org.Text = "Choose Activities";
 			c.lastpress = DateTime.Now;
 			if (c.CheckinId.HasValue)
 				Util.BuildingUnCheckin(c.CheckinId.Value);
@@ -422,6 +427,8 @@ namespace CmsCheckin
 			var c = list[(int)ab.Tag];
 			var f = ok.Parent as ChooseActivities;
 			var items = f.list.CheckedItems.OfType<Activity>().ToList();
+			if (items.Count == 0)
+				items.Add(new Activity { name = "Other" });
 			c.CheckinId = Util.BuildingCheckin(c.pid, items);
 			c.ischecked = true;
 			c.Items = items;
@@ -432,13 +439,11 @@ namespace CmsCheckin
 			var org = this.Controls[this.Controls.IndexOfKey("org" + activities.Tag.ToString())] as Label;
 			var ab = this.Controls[this.Controls.IndexOfKey("attend" + activities.Tag.ToString())] as Button;
 			var c = list[(int)ab.Tag];
-			var s = string.Join(", ", activities.list.CheckedItems.OfType<Activity>().Select(aa => aa.display));
 			org.Text = c.ItemsDisplay();
 			Program.attendant.AddHistory(c);
 			RemoveActivities();
 			Program.CursorHide();
 		}
-
 
 		void ShowPic_Click(object sender, EventArgs e)
 		{
@@ -606,6 +611,8 @@ namespace CmsCheckin
 					rb.Text = p.name;
 					rb.Visible = true;
 					rb.Tag = p;
+					if (i == 1)
+						rb.Checked = true;
 					i++;
 				}
 			}
@@ -695,6 +702,7 @@ namespace CmsCheckin
 		public string activities { get; set; }
 		public int Row { get; set; }
 		public bool HasPicture { get; set; }
+		public string notes { get; set; }
 
 		public string name
 		{
@@ -702,7 +710,10 @@ namespace CmsCheckin
 		}
 		public string ItemsDisplay()
 		{
-			return string.Join(",", Items.Select(ii => ii.display));
+			var s = string.Join(",", Items.Select(ii => ii.display));
+			if (!s.HasValue())
+				s = "Other";
+			return s;
 		}
 
 		public override string ToString()

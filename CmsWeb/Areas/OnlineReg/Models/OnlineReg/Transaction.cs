@@ -226,9 +226,17 @@ namespace CmsWeb.Models
 				email, first, last, addr, city, state, zip, phone);
         	return resp;
         }
-		/*
+        public static TransactionResponse PostVirtualCheckTransactionSage(
+            string routing, string acct,
+            decimal amt, int tranid, string description,
+            int PeopleId, string email, string first, string last,
+            string addr, string city, string state, string zip, string phone,
+            bool testing)
         {
+        	var t = new SagePayments(DbUtil.Db, testing);
+			var resp = t.createCheckTransactionRequest(PeopleId, amt, routing, acct, description, tranid,
+				email, first, last, addr, city, state, zip, phone);
+        	return resp;
         }
-		*/
     }
 }

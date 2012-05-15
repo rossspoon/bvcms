@@ -162,16 +162,6 @@ namespace CmsData
 			UserData += s;
 		}
 
-		//public static OrganizationMember InsertOrgMembers
-		//    (int OrganizationId,
-		//    int PeopleId,
-		//    int MemberTypeId,
-		//    DateTime EnrollmentDate,
-		//    DateTime? InactiveDate, bool pending
-		//    )
-		//{
-		//    return OrganizationMember.InsertOrgMembers(DbUtil.Db, OrganizationId, PeopleId, MemberTypeId, EnrollmentDate, InactiveDate, pending);
-		//}
 		public static OrganizationMember InsertOrgMembers
 			(CMSDataContext Db,
 			 int OrganizationId,
@@ -189,10 +179,7 @@ namespace CmsData
 				{
 					var m = Db.OrganizationMembers.SingleOrDefault(m2 => m2.PeopleId == PeopleId && m2.OrganizationId == OrganizationId);
 					if (m != null)
-					{
-						//m.AddToMemberData("insert: {0}".Fmt(EnrollmentDate.ToString()));
 						return m;
-					}
 					var org = Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == OrganizationId);
 					if (org == null)
 						return null;

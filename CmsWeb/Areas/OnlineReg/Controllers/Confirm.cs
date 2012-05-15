@@ -84,21 +84,40 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			TransactionResponse tinfo;
 			var gateway = OnlineRegModel.GetTransactionGateway();
 			if (gateway.ToLower() == "authorizenet")
-				tinfo = OnlineRegModel.PostTransaction(
-					pf.CreditCard, pf.CCV, pf.Expires,
-					pf.AmtToPay ?? 0,
-					ti.Id, pf.Description,
-					pid ?? 0, pf.Email, first, last,
-					pf.Address, pf.City, pf.State, pf.Zip,
-					pf.testing);
+				if (pf.Type == "B")
+					tinfo = OnlineRegModel.PostECheck(
+						pf.Routing, pf.Account,
+						pf.AmtToPay ?? 0,
+						ti.Id, pf.Description,
+						pid ?? 0, first, last,
+						pf.Address, pf.City, pf.State, pf.Zip,
+						pf.testing);
+				else
+					tinfo = OnlineRegModel.PostTransaction(
+						pf.CreditCard, pf.CCV, pf.Expires,
+						pf.AmtToPay ?? 0,
+						ti.Id, pf.Description,
+						pid ?? 0, pf.Email, first, last,
+						pf.Address, pf.City, pf.State, pf.Zip,
+						pf.testing);
 			else if (gateway.ToLower() == "sage")
-				tinfo = OnlineRegModel.PostTransactionSage(
-					pf.CreditCard, pf.CCV, pf.Expires,
-					pf.AmtToPay ?? 0,
-					ti.Id, pf.Description,
-					pid ?? 0, pf.Email, first, last,
-					pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
-					pf.testing);
+				if (pf.Type == "B")
+					tinfo = OnlineRegModel.PostVirtualCheckTransactionSage(
+						pf.Routing, pf.Account,
+						pf.AmtToPay ?? 0,
+						ti.Id, pf.Description,
+						pid ?? 0, pf.Email, first, last,
+						pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
+						pf.testing);
+				else
+					tinfo = OnlineRegModel.PostTransactionSage(
+						pf.CreditCard, pf.CCV, pf.Expires,
+						pf.AmtToPay ?? 0,
+						ti.Id, pf.Description,
+						pid ?? 0, pf.Email, first, last,
+						pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
+						pf.testing);
+
 			else
 				throw new Exception("unknown gateway " + gateway);
 
@@ -136,7 +155,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				ViewData["CreatedAccount"] = true;
 				confirm = "ConfirmAccount";
 			}
-			else if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.OnlineGiving)
+			else if (m.OnlineGiving())
 			{
 				var p = m.List[0];
 				if (p.IsNew)

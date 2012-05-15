@@ -12,10 +12,12 @@ namespace CmsWeb.Models
 	public class FindResult : ActionResult
 	{
 		int fid;
+		string building;
 
-		public FindResult(int fid)
+		public FindResult(int fid, string building)
 		{
 			this.fid = fid;
+			this.building = building;
 		}
 		public override void ExecuteResult(ControllerContext context)
 		{
@@ -29,6 +31,7 @@ namespace CmsWeb.Models
 				w.WriteStartElement("Family");
 				var q =
 					from p in DbUtil.Db.People
+					let notes = p.PeopleExtras.SingleOrDefault(ee => ee.Field == building + "-notes").Data
 					where p.FamilyId == fid
 					where p.DeceasedDate == null
 					orderby p.PositionInFamilyId, p.PositionInFamilyId == 10 ? p.Gender.Code : "U", p.Age
@@ -52,6 +55,7 @@ namespace CmsWeb.Models
 						gender = p.GenderId,
 						grade = p.Grade,
 						HasPicture = p.PictureId != null,
+						notes
 					};
  
 				w.WriteAttributeString("familyid", fid.ToString());
@@ -75,6 +79,8 @@ namespace CmsWeb.Models
 					w.WriteAttributeString("marital", c.marital.ToString());
 					w.WriteAttributeString("grade", c.grade.ToString());
 					w.WriteAttributeString("haspicture", c.HasPicture.ToString());
+					if (c.notes.HasValue())
+						w.WriteString(c.notes);
 
 					w.WriteEndElement();
 				}

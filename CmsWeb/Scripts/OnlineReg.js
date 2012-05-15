@@ -87,7 +87,8 @@
             $("div.instructions.submit").show();
         else if ($("#sorry").attr("id"))
             $("div.instructions.sorry").show();
-        $.ShowPaymentInfo();
+        if ($("#allowcc").val())
+            $.ShowPaymentInfo();
     };
     $("form.DisplayEdit").submit(function () {
         if (!$("#submitit").val())

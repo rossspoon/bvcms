@@ -209,6 +209,28 @@ namespace CmsData
 			};
 			return tr;
 		}
+		public TransactionResponse creditCheckTransactionRequest(string reference, Decimal amt)
+		{
+			var wc = new WebClient();
+			wc.BaseAddress = "https://www.sagepayments.net/web_services/vterm_extensions/transaction_processing.asmx/";
+			var coll = new NameValueCollection();
+			coll["M_ID"] = login;
+			coll["M_KEY"] = key;
+			coll["T_REFERENCE"] = reference;
+			coll["T_AMT"] = amt.ToString("n2");
+
+			var b = wc.UploadValues("VIRTUAL_CHECK_CREDIT_BY_REFERENCE", "POST", coll);
+			var ret = Encoding.ASCII.GetString(b);
+			var resp = getResponse(ret);
+			var tr = new TransactionResponse
+			{
+				Approved = resp.Element("APPROVAL_INDICATOR").Value == "A",
+				AuthCode = resp.Element("CODE").Value,
+				Message = resp.Element("MESSAGE").Value,
+				TransactionId = resp.Element("REFERENCE").Value
+			};
+			return tr;
+		}
 
 		public TransactionResponse createTransactionRequest(int PeopleId, decimal amt,
 			string cardnumber, string expires, string description, int tranid, string cardcode,
@@ -237,6 +259,45 @@ namespace CmsData
 			AddShipping(coll);
 			
 			var b = wc.UploadValues("BANKCARD_SALE", "POST", coll);
+			var ret = Encoding.ASCII.GetString(b);
+			var resp = getResponse(ret);
+			var tr = new TransactionResponse
+			{
+				Approved = resp.Element("APPROVAL_INDICATOR").Value == "A",
+				AuthCode = resp.Element("CODE").Value,
+				Message = resp.Element("MESSAGE").Value,
+				TransactionId = resp.Element("REFERENCE").Value
+			};
+			return tr;
+		}
+		public TransactionResponse createCheckTransactionRequest(int PeopleId, decimal amt,
+			string routing, string acct, string description, int tranid,
+			string email, string first, string last,
+			string addr, string city, string state, string zip, string phone)
+		{
+			var wc = new WebClient();
+			wc.BaseAddress = "https://www.sagepayments.net/web_services/vterm_extensions/transaction_processing.asmx/";
+			var coll = new NameValueCollection();
+			coll["M_ID"] = login;
+			coll["M_KEY"] = key;
+			coll["C_ORIGINATOR_ID"] = ""; // use default
+			coll["C_RTE"] = routing;
+			coll["C_ACCT"] = acct;
+			coll["C_ACCT_TYPE"] = "DDA";
+			coll["T_AMT"] = amt.ToString("n2");
+			coll["C_NAME"] = first + " " + last;
+			coll["C_ADDRESS"] = addr;
+			coll["C_CITY"] = city;
+			coll["C_STATE"] = state;
+			coll["C_ZIP"] = zip;
+			coll["C_COUNTRY"] = "";
+			coll["C_EMAIL"] = email;
+			coll["T_CUSTOMER_NUMBER"] = PeopleId.ToString();
+			coll["T_ORDERNUM"] = tranid.ToString();
+			coll["C_TELEPHONE"] = phone;
+			AddShipping(coll);
+			
+			var b = wc.UploadValues("VIRTUAL_CHECK_PPD_SALE", "POST", coll);
 			var ret = Encoding.ASCII.GetString(b);
 			var resp = getResponse(ret);
 			var tr = new TransactionResponse

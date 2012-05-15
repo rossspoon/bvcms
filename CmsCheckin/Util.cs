@@ -444,6 +444,23 @@ namespace CmsCheckin
 			{
 			}
 		}
+		public static void AddUpdateNotes(int peopleid, string notes)
+		{
+			try
+			{
+				var wc = CreateWebClient();
+				var coll = new NameValueCollection();
+				coll.Add("peopleid", peopleid.ToString());
+				coll.Add("field", Program.Building + "-notes");
+				coll.Add("value", notes);
+				var url = new Uri(new Uri(Program.URL), "APIPerson/AddEditExtraValue/");
+				var resp = wc.UploadValues(url, "POST", coll);
+				var s = Encoding.ASCII.GetString(resp);
+			}
+			catch (Exception)
+			{
+			}
+		}
 		public static void UnLockFamily()
 		{
 			if (Program.FamilyId == 0)
@@ -519,6 +536,17 @@ namespace CmsCheckin
 			return img;
 		}
 
+		public static string GetNotes(int pid)
+		{
+			var wc = CreateWebClient();
+			var url = new Uri(new Uri(Program.URL), "APIPerson/ExtraValues/" + pid + "?fields=" + Program.Building + "-notes");
+			var str = wc.DownloadString(url);
+			var x = XDocument.Parse(str);
+			var n = x.Root.Element(Program.Building + "-notes");
+			if (n != null)
+				return n.Value;
+			return "";
+		}
 
 	}
 	public class EventArgs<T> : EventArgs

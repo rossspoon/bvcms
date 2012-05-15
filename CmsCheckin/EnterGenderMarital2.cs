@@ -58,7 +58,7 @@ namespace CmsCheckin
             {
                 if (Program.FamilyId == 0 && !homephone.Text.HasValue() && cellphone.Text.HasValue())
                     homephone.Text = cellphone.Text;
-                //this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, allergies.Text, grade.Text, ParentName.Text, EmFriend.Text, EmPhone.Text, churchname.Text, ActiveOther.CheckState, marital, gender);
+                this.AddPerson(first.Text, last.Text, goesby.Text, dob.Text, email.Text, addr.Text, zip.Text, cellphone.Text, homephone.Text, null, null, null, null, null, null, CheckState.Indeterminate, marital, gender);
             }
             Util.UnLockFamily();
 

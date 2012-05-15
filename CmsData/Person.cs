@@ -953,6 +953,12 @@ namespace CmsData
             }
             return ev;
         }
+        public void RemoveExtraValue(CMSDataContext Db, string field)
+        {
+			var ev = PeopleExtras.AsEnumerable().FirstOrDefault(ee => string.Compare(ee.Field, field, ignoreCase:true) == 0);
+			if (ev != null)
+				Db.PeopleExtras.DeleteOnSubmit(ev);
+        }
         public void AddEditExtraValue(string field, string value)
         {
 			if (!field.HasValue())

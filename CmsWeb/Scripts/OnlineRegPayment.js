@@ -57,6 +57,21 @@
             $("a.submitbutton").attr("disabled", "disabled");
         }
     });
+    $.ShowPaymentInfo = function () {
+        var v = $("input[name=Type]:checked").val();
+        $(".Card").hide();
+        $(".Bank").hide();
+        $("#Submit").removeAttr("disabled");
+        if (v === 'C')
+            $(".Card").show();
+        else if (v === 'B')
+            $(".Bank").show();
+    };
+    $("input[name=Type]").live("change", $.ShowPaymentInfo);
+    if ($("#allowcc").val()) {
+        $.ShowPaymentInfo(); // hide both
+        $("#Submit").attr("disabled", "true"); // no submit yet
+    }
     $.validator.setDefaults({
         highlight: function (input) {
             $(input).addClass("ui-state-highlight");
