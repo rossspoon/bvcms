@@ -195,10 +195,10 @@ namespace CmsWeb.Models
             if (FundItem == null)
                 return new List<FundItemChosen>();
             var items = Funds();
-            var q = from i in FundItem
-                    join m in items on i.Key equals m.Value.ToInt()
-                    where i.Value.HasValue
-                    select new FundItemChosen { fundid = m.Value.ToInt(), desc = m.Text, amt = i.Value.Value };
+			var q = from i in FundItem
+					join m in items on i.Key equals m.Value.ToInt()
+					where i.Value.HasValue
+					select new FundItemChosen { fundid = m.Value.ToInt(), desc = m.Text, amt = i.Value.Value };
             return q;
         }
         public IEnumerable<SelectListItem> GradeOptions()

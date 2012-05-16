@@ -55,7 +55,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			}
 			catch (Exception ex)
 			{
-				return Redirect("/Home/ShowError/?" + ex.Message);
+				ModelState.AddModelError("form", ex.Message);
+				return View("ProcessPayment", pf);
 			}
 		}
 		public Transaction ProcessPaymentTransaction(OnlineRegModel m, PaymentForm pf)
@@ -106,7 +107,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 						pf.Routing, pf.Account,
 						pf.AmtToPay ?? 0,
 						ti.Id, pf.Description,
-						pid ?? 0, pf.Email, first, last,
+						pid ?? 0, pf.Email, first, last, "",
 						pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
 						pf.testing);
 				else
@@ -144,6 +145,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				m.TranId = t.Id;
 			}
 			t.Amt = Amount;
+			t.Amtdue -= t.Amt;
 			ViewData["message"] = t.Message;
 			t.Approved = true;
 			t.TransactionDate = Util.Now;
@@ -277,6 +279,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					return "error: no person";
 				m.UseCoupon(t.TransactionId);
 			}
+			if (m.IsCreateAccount() || m.ManagingSubscriptions())
+				ViewData["email"] = m.List[0].person.EmailAddress;
+			else
+				ViewData["email"] = m.List[0].email;
+			ViewData["orgname"] = m.org != null ? m.org.OrganizationName
+								: m.masterorgid.HasValue ? m.masterorg.OrganizationName
+								: m.div.Name;
 			return confirm;
 		}
 		public ActionResult Confirm(int? id, string TransactionID, decimal? Amount)
@@ -298,13 +307,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
 			DbUtil.Db.SubmitChanges();
-			if (m.IsCreateAccount() || m.ManagingSubscriptions())
-				ViewData["email"] = m.List[0].person.EmailAddress;
-			else
-				ViewData["email"] = m.List[0].email;
-			ViewData["orgname"] = m.org != null ? m.org.OrganizationName
-								: m.masterorgid.HasValue ? m.masterorg.OrganizationName
-								: m.div.Name;
 
 			SetHeaders(m);
 			return View(confirm, m);

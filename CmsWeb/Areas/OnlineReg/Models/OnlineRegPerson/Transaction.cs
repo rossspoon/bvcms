@@ -15,10 +15,6 @@ namespace CmsWeb.Models
                 return setting.Deposit.Value;
             return TotalAmount();
         }
-        public decimal AmountDue()
-        {
-            return TotalAmount() - AmountToPay();
-        }
         public decimal TotalAmount()
         {
             if (org == null)

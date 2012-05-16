@@ -66,8 +66,8 @@ namespace CmsWeb.Models
 
             //var emails = string.Join(",", elist.ToArray());
             string paylink = string.Empty;
-            var amtdue = TotalAmountDue();
             var amtpaid = ti.Amt ?? 0;
+			var amtdue = ti.Amtdue;
 
             var pids2 = new List<TransactionPerson>();
             foreach (var p in List)
@@ -77,7 +77,7 @@ namespace CmsWeb.Models
                 pids2.Add(new TransactionPerson
                 {
                     PeopleId = p.PeopleId.Value,
-                    Amt = p.AmountToPay() + p.AmountDue(),
+                    Amt = p.TotalAmount(),
                     OrgId = orgid,
                 });
             }
@@ -265,8 +265,8 @@ AmountDue: {4:C}<br/>
 <pre>{5}</pre>".Fmt(p.person.Name,
                Header,
                amtpaid,
-               p.TotalAmount(),
-               p.AmountDue(),
+               TotalAmount(),
+               TotalAmount() - Amount(),
                p.PrepareSummaryText(ti)));
             }
         }
@@ -304,7 +304,7 @@ AmountDue: {4:C}<br/>
                 pids2.Add(new TransactionPerson
                 {
                     PeopleId = p.PeopleId.Value,
-                    Amt = p.AmountToPay() + p.AmountDue(),
+                    Amt = p.TotalAmount(),
                     OrgId = orgid,
                 });
             }
@@ -387,7 +387,7 @@ Others in this registration session: {3:C}<br/>
 Total Fee paid for this registration session: {4:C}<br/>
 <pre>{5}</pre>".Fmt(p.person.Name,
                Header,
-               p.TotalAmount(),
+               p.AmountToPay(),
                others,
                amtpaid,
                p.PrepareSummaryText(ti)));

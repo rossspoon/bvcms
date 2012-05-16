@@ -81,9 +81,9 @@ namespace CmsWeb.Models
 			{
 				if (!_endDt.HasValue)
 				{
-					var dt = DateTime.Today.AddMonths(7);
-					dt = dt.AddDays(-dt.Day);
-					dt = dt.AddDays(6 - (int)dt.DayOfWeek);
+					var dt = Org.LastMeetingDate ?? DateTime.MinValue;
+					if (dt == DateTime.MinValue)
+						dt = DateTime.Today.AddMonths(7);
 					_endDt = dt;
 				}
 				return _endDt.Value;
@@ -110,7 +110,7 @@ namespace CmsWeb.Models
 			var list = new List<Slot>();
 			var sunday = Sunday;
 			var commitments = Commitments();
-			for (; sunday < EndDt; sunday = sunday.AddDays(7))
+			for (; sunday <= EndDt; sunday = sunday.AddDays(7))
 			{
 				var dt = sunday;
 				{
@@ -125,6 +125,7 @@ namespace CmsWeb.Models
 										Month = dt.Month,
 										Week = dt.WeekOfMonth(),
 										Year = dt.Year,
+										Disabled = time < DateTime.Now
 									};
 					list.AddRange(q);
 				}
@@ -140,9 +141,14 @@ namespace CmsWeb.Models
 			public int Month { get; set; }
 			public int Week { get; set; }
 			public bool Checked { get; set; }
+			public bool Disabled { get; set; }
 			public string CHECKED
 			{
 				get { return Checked ? "checked=\"checked\"" : ""; }
+			}
+			public string DISABLED
+			{
+				get { return Disabled ? "disabled=\"true\"" : ""; }
 			}
 
 		}

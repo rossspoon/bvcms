@@ -578,6 +578,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 					return dt;
 			return null;
 		}
+		[HttpPost]
 		[Authorize(Roles = "Edit")]
 		public ActionResult FindTagPeople(string text, string tagname)
 		{
@@ -585,6 +586,8 @@ namespace CmsWeb.Areas.Manage.Controllers
 				return Content("no tag");
 			var csv = new CsvReader(new StringReader(text), false, '\t').ToList();
 
+			if (!csv.Any())
+				return Content("no data");
 			var line0 = csv.First().ToList();
 			var names = line0.ToDictionary(i => i.TrimEnd(),
 				i => line0.FindIndex(s => s == i));

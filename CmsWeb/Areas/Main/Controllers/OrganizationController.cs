@@ -16,6 +16,7 @@ namespace CmsWeb.Areas.Main.Controllers
 	[SessionExpire]
     public class OrganizationController : CmsStaffController
     {
+		const string needNotify = "WARNING: please add the notify persons on messages tab.";
         public ActionResult Index(int? id)
         {
             if (!id.HasValue)
@@ -302,6 +303,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 var os = new RegSettings(m.ToString(), DbUtil.Db, id);
                 m.org.RegSetting = os.ToString();
                 DbUtil.Db.SubmitChanges();
+				if (!m.org.NotifyIds.HasValue())
+					ModelState.AddModelError("Form", needNotify);
                 return View("OnlineRegAdmin", m);
             }
             catch (Exception ex)
@@ -333,6 +336,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 var os = new RegSettings(m.ToString(), DbUtil.Db, id);
                 m.org.RegSetting = os.ToString();
                 DbUtil.Db.SubmitChanges();
+				if (!m.org.NotifyIds.HasValue())
+					ModelState.AddModelError("Form", needNotify);
                 return View("OnlineRegOptions", m);
             }
             catch (Exception ex)
@@ -374,6 +379,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 var os = new RegSettings(m.ToString(), DbUtil.Db, id, check: true);
                 m.org.RegSetting = os.ToString();
                 DbUtil.Db.SubmitChanges();
+				if (!m.org.NotifyIds.HasValue())
+					ModelState.AddModelError("Form", needNotify);
                 return View("OnlineRegQuestions", m);
             }
             catch (Exception ex)
@@ -406,6 +413,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 var os = new RegSettings(m.ToString(), DbUtil.Db, id);
                 m.org.RegSetting = os.ToString();
                 DbUtil.Db.SubmitChanges();
+				if (!m.org.NotifyIds.HasValue())
+					ModelState.AddModelError("Form", needNotify);
                 return View("OnlineRegFees", m);
             }
             catch (Exception ex)
@@ -438,6 +447,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 var os = new RegSettings(m.ToString(), DbUtil.Db, id);
                 m.org.RegSetting = os.ToString();
                 DbUtil.Db.SubmitChanges();
+				if (!m.org.NotifyIds.HasValue())
+					ModelState.AddModelError("Form", needNotify);
                 return View("OnlineRegMessages", m);
             }
             catch (Exception ex)

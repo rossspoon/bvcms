@@ -41,32 +41,29 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 return Json(new { error = "coupon canceled" });
 
 			var ti = pf.CreateTransaction(DbUtil.Db);
+			if (m != null)
+				m.TranId = ti.OriginalId;
 
-//            if (c.Amount >= pf.Amtdue)
-//            {
-//                ti.TransactionId = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon));
-//                c.UseCoupon(ti.FirstTransactionPeopleId(), ti.Amtdue ?? 0);
-//				ti.Amtdue = 0;
-//                DbUtil.Db.SubmitChanges();
-//
-//                return Json(new
-//                {
-//                    confirm = "/onlinereg/confirm/{0}?TransactionID=Coupon({1})"
-//                        .Fmt(pf.DatumId, Util.fmtcoupon(coupon))
-//                });
-//            }
-			// at this point we are applying a partial coupon
 			var tid = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon));
 
 			ConfirmDuePaidTransaction(ti, tid, c.Amount ?? 0);
-			var msg = "<i class='red'>Your coupon for {0:n2} has been applied, your balance is now {1:n2}</i>. You can stop now, or proceed with an additional payment on the balance.".Fmt(c.Amount, ti.Amtdue );
+			var msg = "<i class='red'>Your coupon for {0:n2} has been applied, your balance is now {1:n2}</i>."
+				.Fmt(c.Amount, ti.Amtdue );
+			if (pf.PayBalance)
+				msg += "You can stop now, or proceed with an additional payment on the balance.";
+			else if(ti.Amt < pf.AmtToPay)
+				msg += "You still must complete this transaction with a payment";
+				
 			if (m != null)
 				m.UseCoupon(ti.TransactionId);
 			else
 				c.UseCoupon(ti.FirstTransactionPeopleId(), ti.Amtdue ?? 0);
             DbUtil.Db.SubmitChanges();
 
-            return Json(new { tiamt = ti.Amtdue, amtdue=ti.Amtdue, amt=ti.Amtdue.ToString2("N2"), msg });
+			pf.AmtToPay -= ti.Amt;
+			if (pf.AmtToPay == 0 && pf.PayBalance == false)
+				return Json( new { confirm = "/OnlineReg/Confirm/{0}?TransactionId={1}".Fmt(pf.DatumId, "zero paid") });
+            return Json(new { tiamt = pf.AmtToPay, amtdue=ti.Amtdue, amt=pf.AmtToPay.ToString2("N2"), msg });
         }
         [HttpPost]
         public ActionResult PayWithCoupon(int id, string Coupon)

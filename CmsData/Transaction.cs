@@ -23,7 +23,7 @@ namespace CmsData
     	}
 		public int FirstTransactionPeopleId()
 		{
-			return OriginalTransaction.TransactionPeople.Select(pp => pp.PeopleId).First();
+			return OriginalTransaction.TransactionPeople.Select(pp => pp.PeopleId).FirstOrDefault();
 		}
     }
 }

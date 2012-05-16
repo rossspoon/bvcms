@@ -268,9 +268,9 @@
 			this.SecurityLabelPerChild.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.SecurityLabelPerChild.Location = new System.Drawing.Point(234, 300);
 			this.SecurityLabelPerChild.Name = "SecurityLabelPerChild";
-			this.SecurityLabelPerChild.Size = new System.Drawing.Size(195, 24);
+			this.SecurityLabelPerChild.Size = new System.Drawing.Size(411, 24);
 			this.SecurityLabelPerChild.TabIndex = 30;
-			this.SecurityLabelPerChild.Text = "Security Label Per Child";
+			this.SecurityLabelPerChild.Text = "Security Label Per Child/Meeting (instead of per family)";
 			this.SecurityLabelPerChild.UseVisualStyleBackColor = true;
 			// 
 			// StartUp

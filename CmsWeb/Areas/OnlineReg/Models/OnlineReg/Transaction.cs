@@ -36,11 +36,9 @@ namespace CmsWeb.Models
                 amt = max + totalother;
             return amt;
         }
-        public decimal TotalAmountDue()
+        public decimal TotalAmount()
         {
-            // there is a bug here I need to figure out
-            // max will not work correctly when there is a deposit.
-            return List.Sum(p => p.AmountDue());
+            return List.Sum(p => p.TotalAmount());
         }
         public string NameOnAccount
         {
@@ -229,13 +227,13 @@ namespace CmsWeb.Models
         public static TransactionResponse PostVirtualCheckTransactionSage(
             string routing, string acct,
             decimal amt, int tranid, string description,
-            int PeopleId, string email, string first, string last,
+            int PeopleId, string email, string first, string last, string middle,
             string addr, string city, string state, string zip, string phone,
             bool testing)
         {
         	var t = new SagePayments(DbUtil.Db, testing);
 			var resp = t.createCheckTransactionRequest(PeopleId, amt, routing, acct, description, tranid,
-				email, first, last, addr, city, state, zip, phone);
+				email, first, last, middle, addr, city, state, zip, phone);
         	return resp;
         }
     }

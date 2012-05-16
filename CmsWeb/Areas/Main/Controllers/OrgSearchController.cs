@@ -54,26 +54,26 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Results(OrgSearchModel m)
         {
             SaveToSession(m);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult DivisionIds(int id)
         {
             var m = new OrgSearchModel { ProgramId = id };
             return View(m);
             //return Json(OrgSearchModel.DivisionIds(id));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult TagDivIds(int id)
         {
             var m = new OrgSearchModel { ProgramId = id };
             return View("DivisionIds", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
 		public ActionResult ApplyType(int id, OrgSearchModel m)
         {
 			foreach (var o in m.FetchOrgs())
@@ -81,7 +81,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.Db.SubmitChanges();
             return View("Results", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult RenameDiv(int id, int divid, string name)
         {
             var d = DbUtil.Db.Divisions.Single(dd => dd.Id == divid);
@@ -90,7 +90,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new OrgSearchModel { ProgramId = id };
             return View("DivisionIds", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult MakeNewDiv(int id, string name)
         {
             var d = new Division { Name = name, ProgId = id };
@@ -100,7 +100,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new OrgSearchModel { ProgramId = id, TagDiv = d.Id };
             return View("DivisionIds", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult DefaultMeetingDate(int id)
         {
             var dt = OrgSearchModel.DefaultMeetingDate(id);
@@ -133,7 +133,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				Campus = m.CampusId,
             };
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult Edit(string id, string value)
         {
             var a = id.Split('-');
@@ -157,7 +157,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return c;
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult ToggleTag(int id, int tagdiv)
         {
             var Db = DbUtil.Db;
@@ -172,7 +172,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("error");
             return View("Row", o);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult MainDiv(int id, int tagdiv)
         {
             var Db = DbUtil.Db;
@@ -183,7 +183,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("error");
             return View("Row", o);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PasteSettings(OrgSearchModel m)
         {
             var frorg = (int)Session["OrgCopySettings"];
@@ -194,14 +194,14 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return new EmptyResult();
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult RepairTransactions(OrgSearchModel m)
         {
             foreach (var o in m.OrganizationList())
                 DbUtil.Db.PopulateComputedEnrollmentTransactions(o.Id);
             return new EmptyResult();
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult CreateMeeting(string id)
         {
             var n = id.ToCharArray().Count(c => c == 'M');

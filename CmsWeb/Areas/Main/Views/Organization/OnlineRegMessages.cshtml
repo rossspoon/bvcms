@@ -6,6 +6,7 @@
 { 
 <a class="displayedit bt edit regsettingedit" href="/Organization/OnlineRegMessagesEdit/@Model.OrgId">Edit</a>
 }
+<div>@Html.ValidationMessage("form")</div>
 <ul class="noedit">
 @Html.EditorFor(m => m, "TabMessages")
 </ul>

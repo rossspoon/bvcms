@@ -47,6 +47,8 @@
     @Html.Hidden("pf.AllowCoupon", Model.AllowCoupon)
     @Html.Hidden("pf.FinanceOnly", Model.FinanceOnly)
     @Html.Hidden("pf.AskDonation", Model.AskDonation)
+    @Html.Hidden("pf.NoCreditCardsAllowed", Model.NoCreditCardsAllowed)
+    @Html.Hidden("pf.Type", Model.Type)
     <table>
     <colgroup>
         <col style="text-align: right;white-space:nowrap;padding-right:10px" />
@@ -76,7 +78,8 @@ else
 {
     <tr><td>Total Amount</td>
 		<td><span id="amt" class="right">@Model.AmtToPay.ToString2("N2")</span>
-			@Html.Hidden("pf.AmtToPay", Model.AmtToPay)</td>
+			@Html.Hidden("pf.AmtToPay", Model.AmtToPay)
+        </td>
     </tr>
 }
 

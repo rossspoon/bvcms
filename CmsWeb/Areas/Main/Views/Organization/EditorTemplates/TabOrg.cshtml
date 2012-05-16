@@ -54,18 +54,22 @@
     </li>
     <li>
         <span class="keyword big tip"
-        title="Phone Number
-        |Used to display a number to call in a confirmation email with {phone}
-        |If you doing a registration with more than one org, 
-        |allows you to specify a different # for each org
-        |and have only one confirmation #">
-        Phone Number:</span>
+              title="Phone Number
+            |Used to display a number to call in a confirmation email with {phone}
+            |If you doing a registration with more than one org, 
+            |allows you to specify a different # for each org
+            |and have only one confirmation #">
+            Phone Number:</span>
         @Html.TextBox("org.PhoneNumber")
     </li>
+@if(User.IsInRole("Admin"))
+{
     <li>
         <span class="keyword big tip"
-        title="Limit to Role
-        |This organization will be visible to only users in this role.">
-        Limit to Role:</span>
+			  title="Security Role
+        |This organization will be visible to only users in this role.
+        |WARNING, if no one has this role, you will never be able to get back here.">
+        Security Role:</span>
         @Html.TextBox("org.LimitToRole")
     </li>
+}

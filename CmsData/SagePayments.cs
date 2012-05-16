@@ -19,6 +19,7 @@ namespace CmsData
 		string login;
 		string key;
 		CMSDataContext Db;
+		bool testing;
 
 		public SagePayments(CMSDataContext Db, bool testing)
 		{
@@ -36,6 +37,7 @@ namespace CmsData
 				login = Db.Setting("M_id", "");
 				key = Db.Setting("M_key", "");
 			}
+			this.testing = testing;
 		}
 		private XElement getResponse(string xml)
 		{
@@ -257,7 +259,7 @@ namespace CmsData
 			coll["T_ORDERNUM"] = tranid.ToString();
 			coll["C_TELEPHONE"] = phone;
 			AddShipping(coll);
-			
+
 			var b = wc.UploadValues("BANKCARD_SALE", "POST", coll);
 			var ret = Encoding.ASCII.GetString(b);
 			var resp = getResponse(ret);
@@ -272,42 +274,53 @@ namespace CmsData
 		}
 		public TransactionResponse createCheckTransactionRequest(int PeopleId, decimal amt,
 			string routing, string acct, string description, int tranid,
-			string email, string first, string last,
+			string email, string first, string last, string middle,
 			string addr, string city, string state, string zip, string phone)
 		{
-			var wc = new WebClient();
-			wc.BaseAddress = "https://www.sagepayments.net/web_services/vterm_extensions/transaction_processing.asmx/";
-			var coll = new NameValueCollection();
-			coll["M_ID"] = login;
-			coll["M_KEY"] = key;
-			coll["C_ORIGINATOR_ID"] = ""; // use default
-			coll["C_RTE"] = routing;
-			coll["C_ACCT"] = acct;
-			coll["C_ACCT_TYPE"] = "DDA";
-			coll["T_AMT"] = amt.ToString("n2");
-			coll["C_NAME"] = first + " " + last;
-			coll["C_ADDRESS"] = addr;
-			coll["C_CITY"] = city;
-			coll["C_STATE"] = state;
-			coll["C_ZIP"] = zip;
-			coll["C_COUNTRY"] = "";
-			coll["C_EMAIL"] = email;
-			coll["T_CUSTOMER_NUMBER"] = PeopleId.ToString();
-			coll["T_ORDERNUM"] = tranid.ToString();
-			coll["C_TELEPHONE"] = phone;
-			AddShipping(coll);
-			
-			var b = wc.UploadValues("VIRTUAL_CHECK_PPD_SALE", "POST", coll);
-			var ret = Encoding.ASCII.GetString(b);
-			var resp = getResponse(ret);
-			var tr = new TransactionResponse
+			try
 			{
-				Approved = resp.Element("APPROVAL_INDICATOR").Value == "A",
-				AuthCode = resp.Element("CODE").Value,
-				Message = resp.Element("MESSAGE").Value,
-				TransactionId = resp.Element("REFERENCE").Value
-			};
-			return tr;
+
+				var wc = new WebClient();
+				wc.BaseAddress = "https://www.sagepayments.net/web_services/vterm_extensions/transaction_processing.asmx/";
+				var coll = new NameValueCollection();
+				coll["M_ID"] = login;
+				coll["M_KEY"] = key;
+				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", ""); // 1031360711, 1031412710
+				coll["C_FIRST_NAME"] = first;
+				var mi = (middle ?? " ").PadRight(1, ' ').Substring(0, 1).Trim();
+				coll["C_MIDDLE_INITIAL"] = mi;
+				coll["C_LAST_NAME"] = last;
+				coll["C_SUFFIX"] = last;
+				coll["C_ADDRESS"] = addr;
+				coll["C_CITY"] = city;
+				coll["C_STATE"] = state;
+				coll["C_ZIP"] = zip;
+				coll["C_COUNTRY"] = "";
+				coll["C_EMAIL"] = email;
+				coll["C_RTE"] = routing;
+				coll["C_ACCT"] = acct;
+				coll["C_ACCT_TYPE"] = "DDA";
+				coll["T_AMT"] = amt.ToString("n2");
+				coll["T_ORDERNUM"] = tranid.ToString();
+				coll["C_TELEPHONE"] = phone;
+				AddShipping(coll);
+
+				var b = wc.UploadValues("VIRTUAL_CHECK_PPD_SALE", "POST", coll);
+				var ret = Encoding.ASCII.GetString(b);
+				var resp = getResponse(ret);
+				var tr = new TransactionResponse
+				{
+					Approved = resp.Element("APPROVAL_INDICATOR").Value == "A",
+					AuthCode = resp.Element("CODE").Value,
+					Message = resp.Element("MESSAGE").Value,
+					TransactionId = resp.Element("REFERENCE").Value
+				};
+				return tr;
+			}
+			catch (Exception ex)
+			{
+				return new TransactionResponse { Approved = false, Message = ex.Message, };
+			}
 		}
 		public TransactionResponse createVaultTransactionRequest(int PeopleId, decimal amt, string description, int tranid)
 		{
@@ -352,7 +365,7 @@ namespace CmsData
 				coll["M_ID"] = login;
 				coll["M_KEY"] = key;
 				var guid = rg.SageBankGuid.ToString().Replace("-", "");
-				coll["GUID"] = guid; 
+				coll["GUID"] = guid;
 				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", ""); // 1031360711, 1031412710
 				coll["C_FIRST_NAME"] = p.FirstName;
 				var mi = (p.MiddleName ?? " ").FirstOrDefault().ToString().Trim();

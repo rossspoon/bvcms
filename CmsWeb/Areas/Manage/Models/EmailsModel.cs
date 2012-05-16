@@ -44,6 +44,7 @@ namespace CmsWeb.Models
         public DateTime? startdt { get; set; }
         public DateTime? enddt { get; set; }
         public bool transactional { get; set; }
+        public bool scheduled { get; set; }
         public PagerModel2 Pager { get; set; }
         int? _count;
         public int Count()
@@ -87,6 +88,7 @@ namespace CmsWeb.Models
                  where peopleid == null || t.EmailQueueTos.Any(et => et.PeopleId == peopleid)
                  where senderid == null || t.QueuedBy == senderid
                  where (t.Transactional ?? false) == transactional
+                 where scheduled == (t.SendWhen != null && t.Sent == null) 
                  select t;
             var edt = enddt;
             if (!edt.HasValue && startdt.HasValue)

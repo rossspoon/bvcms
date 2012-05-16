@@ -57,8 +57,7 @@
             $("a.submitbutton").attr("disabled", "disabled");
         }
     });
-    $.ShowPaymentInfo = function () {
-        var v = $("input[name=Type]:checked").val();
+    $.ShowPaymentInfo = function (v) {
         $(".Card").hide();
         $(".Bank").hide();
         $("#Submit").removeAttr("disabled");
@@ -66,11 +65,18 @@
             $(".Card").show();
         else if (v === 'B')
             $(".Bank").show();
+        if (v)
+            $("#Submit").removeAttr("disabled");
+        else
+            $("#Submit").attr("disabled", "true");
     };
-    $("input[name=Type]").live("change", $.ShowPaymentInfo);
+    $("input[name=Type]").live("change", function () {
+        var v = $("input[name=Type]:checked").val();
+        $("#pf_Type").val(v);
+        $.ShowPaymentInfo(v);
+    });
     if ($("#allowcc").val()) {
-        $.ShowPaymentInfo(); // hide both
-        $("#Submit").attr("disabled", "true"); // no submit yet
+        $.ShowPaymentInfo($("#pf_Type").val()); // initial setting
     }
     $.validator.setDefaults({
         highlight: function (input) {

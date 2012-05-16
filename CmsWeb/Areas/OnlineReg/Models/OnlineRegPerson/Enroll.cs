@@ -221,8 +221,9 @@ namespace CmsWeb.Models
 
 			if (om.AmountPaid > 0)
 			{
-				if (AmountDue() > 0)
-					reg.AddToComments("{0:C} due".Fmt(AmountDue().ToString("C")));
+				var totamtdue = TotalAmount() - om.AmountPaid;
+				if (totamtdue > 0)
+					reg.AddToComments("{0:C} due".Fmt(totamtdue.ToString2("C")));
 				reg.AddToComments(tran);
 			}
 			if (paylink.HasValue())

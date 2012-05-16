@@ -16,7 +16,9 @@
 </tr>
 <tr><td align="right">RecipientId:</td><td>@Html.TextBox("peopleid") 
         @if(Model.peopleid.HasValue) { <a href="/Person/Index/@Model.peopleid">@Model.name</a>}</td>
-    <td align="right">Transactional</td><td>@Html.CheckBox("transactional")</td></tr>
+	<td align="right">Transactional</td>
+	<td>@Html.CheckBox("transactional") | Scheduled @Html.CheckBox("scheduled")</td>
+</tr>
 <tr><td align="right" colspan="4">
     <a href="#" class="submitbutton bt">Filter</a>
     <a href="/Manage/Emails" class="bt">Clear</a></td></tr>
