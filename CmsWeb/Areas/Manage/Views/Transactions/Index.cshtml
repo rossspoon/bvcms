@@ -47,6 +47,13 @@
                 var f = $(this).closest('form');
                 var q = f.serialize();
                 if (confirm("are you sure?")) {
+                    if (a.text() === "Credit") {
+                        var amt = prompt("Amount to split out", "");
+                        amt = parseFloat(amt);
+                        if (isNaN(amt))
+                            return false;
+                        q += "&amt=" + amt;
+                    }
                     $.post(a.attr("href"), q, function (ret) {
                         if (ret.substring(5, 0) == "error")
                             alert(ret);

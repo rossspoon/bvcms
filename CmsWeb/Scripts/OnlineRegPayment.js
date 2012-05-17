@@ -5,6 +5,10 @@
     });
     $("a.submitbutton, a.submitlink, input.submitbutton.ajax").click(function (ev) {
         ev.preventDefault();
+        if (!agreeterms) {
+            alert("must agree to terms");
+            return false;
+        }
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
@@ -30,7 +34,12 @@
     $('#findidclick').click(function () {
         $("#findid").dialog({ width: 400 });
     });
+    var agreeterms = true;
     $("form").submit(function () {
+        if (!agreeterms) {
+            alert("must agree to terms");
+            return false;
+        }
         if (!$("#Submit").val())
             return false;
         $("#Submit").attr("disabled", "true");
@@ -45,16 +54,22 @@
     if ($('#IAgree').attr("id")) {
         $("#Submit").attr("disabled", "disabled");
         $("a.submitbutton").attr("disabled", "disabled");
+        $("#ApplyCoupon").attr("disabled", "disabled");
+        agreeterms = false;
     }
     $("#IAgree").click(function () {
         var checked_status = this.checked;
         if (checked_status == true) {
+            agreeterms = true;
             $("#Submit").removeAttr("disabled");
             $("a.submitbutton").removeAttr("disabled");
+            $("#ApplyCoupon").removeAttr("disabled");
         }
         else {
+            agreeterms = false;
             $("#Submit").attr("disabled", "disabled");
             $("a.submitbutton").attr("disabled", "disabled");
+            $("#ApplyCoupon").attr("disabled", "disabled");
         }
     });
     $.ShowPaymentInfo = function (v) {

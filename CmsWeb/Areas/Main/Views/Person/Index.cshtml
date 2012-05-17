@@ -184,6 +184,7 @@ div.pager
             <ul class="ui-tabs-nav">
                 <li><a href="#membersum-tab"><span>Summary</span></a></li>
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
+                <li><a href="#extras-tab"><span>Extra Values</span></a></li>
             @if (isaccess)
             {
                 <li><a href="#querybits-tab"><span>QueryBits</span></a></li>
@@ -196,6 +197,10 @@ div.pager
             <div id="membernotes-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form class="DisplayEdit" action="">
                  @Html.Partial("MemberNotesDisplay", p.membernotes) 
+                </form>
+            </div>
+            <div id="extras-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form action="/Person/ExtrasGrid/@p.PeopleId">
                 </form>
             </div>
         @if (isaccess)
@@ -240,14 +245,13 @@ div.pager
 { 
         <div id="system-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
-                <li><a href="#extras-tab"><span>Extra Values</span></a></li>
+                <li><a href="#extras2-tab"><span>Extra Values</span></a></li>
                 <li><a id="changes-link" href="#changes-tab"><span>Changes</span></a></li>
                 <li><a id="duplicates-link" href="#duplicates-tab"><span>Duplicates</span></a></li>
                 <li><a id="user-link" href="#user-tab"><span>User</span></a></li>
             </ul>
-            <div id="extras-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form action="/Person/ExtrasGrid/@p.PeopleId">
-                </form>
+            <div id="extras2-tab" class="ui-tabs-hide ui-tabs-panel">
+                moved under Member Profile tab
             </div>
             <div id="changes-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form action="/Person/ChangesGrid/@p.PeopleId">

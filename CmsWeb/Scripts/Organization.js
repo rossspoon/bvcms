@@ -33,10 +33,10 @@ $(function () {
     });
     $(".bt").button();
     $("#buttondiv bt").css("width", "100%");
-    $("#DivisionsList").delegate("#DivisionsList", "change", function () {
-        $.getTable($('#Members-tab form'));
-        return false;
-    });
+//    $("#DivisionsList").delegate("#DivisionsList", "change", function () {
+//        $.getTable($('#Members-tab form'));
+//        return false;
+//    });
 
     $('form table.grid > tbody > tr:even').addClass('alt');
 
@@ -198,7 +198,7 @@ $(function () {
                 $.initDatePicker(f);
                 $(".submitbutton,.bt", f).button();
                 $(".roundbox select", f).css("width", "100%");
-                $("#DivisionsList", f).multiSelect();
+                //$("#DivisionsList", f).multiselect();
                 $("#schedules", f).sortable({ stop: $.renumberListItems });
                 $("#editor", f);
                 $.regsettingeditclick(f);

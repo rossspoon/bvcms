@@ -278,11 +278,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult ConfirmVolunteerSlots(VolunteerModel m)
         {
             m.UpdateCommitments();
-            var staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId)[0];
             List<Person> Staff = null;
         	Staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId);
             if (Staff.Count == 0)
 				Staff = DbUtil.Db.AdminPeople();
+			var staff = Staff[0];
 
         	var summary = m.Summary(this);
             var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
@@ -300,7 +300,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed subscriptions to {1}<br/>
 The following Committments:<br/>
 {2}".Fmt(m.Person.Name, m.Org.OrganizationName, summary));
-
+			ViewData["Organization"] = m.Org.OrganizationName;
             SetHeaders(m.OrgId);
             return View(m);
         }

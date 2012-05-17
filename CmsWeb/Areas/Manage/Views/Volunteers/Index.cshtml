@@ -47,13 +47,6 @@
                 $(this).replaceWith(s);
             });
         };
-        $.fn.multiSelectRemove = function() {
-            $(this).each(function() {
-                $(this).next('.multiSelect').remove();
-                $(this).next('.multiSelectOptions').remove();
-            });
-            return $(this);
-        };
     })(jQuery);
     function RefreshList() {
         var q = $('#form').serialize();

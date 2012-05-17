@@ -98,8 +98,10 @@ namespace CmsWeb.Models
 			{
 				if (!_sunday.HasValue)
 				{
-					var today = DateTime.Today;
-					_sunday = today.AddDays(-(int)today.DayOfWeek);
+					var dt = Org.FirstMeetingDate ?? DateTime.MinValue;
+					if (dt == DateTime.MinValue || dt < DateTime.Today)
+						dt = DateTime.Today;
+					_sunday = dt.AddDays(-(int) dt.DayOfWeek);
 				}
 				return _sunday.Value;
 			}

@@ -54,6 +54,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				if (p != null)
 				{
 					var om = Db.OrganizationMembers.SingleOrDefault(m => m.OrganizationId == ti.OrgId && m.PeopleId == pi.PeopleId);
+					if (om == null)
+						continue;
 
 					var due = (om.Amount - om.AmountPaid) ?? 0;
 					var pay = amt;

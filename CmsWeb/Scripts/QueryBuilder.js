@@ -188,7 +188,7 @@ function FillConditionGrid(html) {
     };
     $.fn.multiSelectRemove = function() {
         $(this).each(function() {
-            $(this).next('.multiSelect').remove();
+            $(this).next('.multiselect').remove();
             $(this).next('.multiSelectOptions').remove();
         });
         return $(this);
@@ -313,13 +313,14 @@ function EditCondition(ev) {
 })(jQuery);
 
 function UpdateCodes(ret) {
-    $('#values').multiSelectRemove();
+    $('#CodeValues').multiselect("destroy");
+    $('#CodeValues').remove();
     $('#CodeValue').remove();
     if (ret.CodeVisible || ret.CodesVisible) {
         if (ret.SelectMultiple) {
             $('#values').after('<select id="CodeValues"></select>');
             $('#CodeValues').fillOptions(ret.CodeData, true);
-            $('#CodeValues').multiSelect({ oneOrMoreSelected: '*' });
+            $('#CodeValues').multiselect();
         }
         else {
             $('#values').after('<select id="CodeValue"></select>');
@@ -356,7 +357,7 @@ function UpdateView(vs) {
         $('#Tags').remove();
         $('#tagvalues').after('<select id="Tags"></select>');
         $('#Tags').fillOptions(vs.TagData, true);
-        $('#Tags').multiSelect({ oneOrMoreSelected: '*' });
+        $('#Tags').multiselect();
     } 
 
     $('#ConditionName').val(vs.ConditionName);
