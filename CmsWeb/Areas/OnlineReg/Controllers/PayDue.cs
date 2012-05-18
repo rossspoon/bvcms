@@ -65,8 +65,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 					string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
 					om.AddToMemberData(tstamp);
-					var tran = "{0:C} ({1} {2})".Fmt(
-						pay, TransactionID, ti.Testing == true ? " test" : "");
+					var tran = "{0:C} ({1})".Fmt(
+						pay, ti.Id, ti.Testing == true ? " test" : "");
 					om.AddToMemberData(tran);
 					om.AddToMemberData("(Total due {0:c})".Fmt(ti.Amtdue));
 

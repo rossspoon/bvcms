@@ -44,6 +44,7 @@ namespace CmsWeb.Models
             orgs = from o in DbUtil.Db.Organizations
                    let org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == id)
                    where o.DivOrgs.Any(dd => org.DivOrgs.Any(oo => oo.DivId == dd.DivId))
+				   where o.OrganizationId != id
                    where o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
                    select o;
             if (name.HasValue())

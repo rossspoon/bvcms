@@ -50,6 +50,7 @@ namespace CmsWeb.Code
 						: v.Data.HasValue() ? "Data"
 						: v.DateValue.HasValue ? "Date"
 						: v.IntValue.HasValue ? "Int"
+						: v.BitValue.HasValue ? "Bit"
 						: "Code";
 				}
 				f.extravalue = v;
@@ -83,6 +84,8 @@ namespace CmsWeb.Code
 						return extravalue.Data;
 					case "Date":
 						return extravalue.DateValue.FormatDate();
+					case "Bit":
+						return extravalue.BitValue.ToString();
 					case "Int":
 						if (extravalue.IntValue2.HasValue)
 							return "{0} {1}".Fmt(extravalue.IntValue, extravalue.IntValue2);

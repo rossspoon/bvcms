@@ -936,7 +936,15 @@ namespace CmsData
             var e = PeopleExtras.SingleOrDefault(ee => ee.Field == field);
             if (e == null)
                 return "";
-            return e.StrValue ?? e.Data ?? e.DateValue.ToString2("M/d/yy") ?? e.IntValue.ToString();
+			if (e.StrValue.HasValue())
+				return e.StrValue;
+			if (e.Data.HasValue())
+				return e.Data;
+			if (e.DateValue.HasValue)
+				return e.DateValue.ToString2("M/d/yy");
+			if (e.IntValue.HasValue)
+				return e.IntValue.ToString();
+			return e.BitValue.ToString();
         }
         public PeopleExtra GetExtraValue(string field)
         {
@@ -996,6 +1004,11 @@ namespace CmsData
         {
             var ev = GetExtraValue(field);
             ev.IntValue = value;
+        }
+        public void AddEditExtraBool(string field, bool tf)
+        {
+            var ev = GetExtraValue(field);
+            ev.BitValue = tf;
         }
         public void AddEditExtraInts(string field, int value, int value2)
         {

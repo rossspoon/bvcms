@@ -35,6 +35,8 @@ namespace CmsData
 		
 		private string _FieldValue;
 		
+		private bool? _BitValue;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -72,6 +74,9 @@ namespace CmsData
 		
 		partial void OnFieldValueChanging(string value);
 		partial void OnFieldValueChanged();
+		
+		partial void OnBitValueChanging(bool? value);
+		partial void OnBitValueChanged();
 		
     #endregion
 		public PeopleExtra()
@@ -280,6 +285,28 @@ namespace CmsData
 					this._FieldValue = value;
 					this.SendPropertyChanged("FieldValue");
 					this.OnFieldValueChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="BitValue", UpdateCheck=UpdateCheck.Never, Storage="_BitValue", DbType="bit")]
+		public bool? BitValue
+		{
+			get { return this._BitValue; }
+
+			set
+			{
+				if (this._BitValue != value)
+				{
+				
+                    this.OnBitValueChanging(value);
+					this.SendPropertyChanging();
+					this._BitValue = value;
+					this.SendPropertyChanged("BitValue");
+					this.OnBitValueChanged();
 				}
 
 			}

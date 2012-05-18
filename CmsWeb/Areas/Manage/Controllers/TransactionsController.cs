@@ -41,22 +41,25 @@ namespace CmsWeb.Areas.Manage.Controllers
 		}
 		[HttpPost]
 		[Authorize(Roles = "Finance")]
-		public ActionResult CreditVoid(int id, string type, decimal? amt, bool? testing, TransactionsModel m)
+		public ActionResult CreditVoid(int id, string type, decimal? amt, TransactionsModel m)
 		{
 			var t = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
 			if (t == null)
 				return Content("notran");
-			var sage = new SagePayments(DbUtil.Db, testing ?? false);
+			var sage = new SagePayments(DbUtil.Db, t.Testing ?? false);
 			TransactionResponse resp;
+			var re = t.TransactionId;
+			if (re.Contains("(testing"))
+				re = re.Substring(0, re.IndexOf("(testing)"));
 			if (type == "Void")
 			{
-				resp = sage.voidTransactionRequest(t.TransactionId);
+				resp = sage.voidTransactionRequest(re);
 				if (resp.Approved)
 					t.Voided = true;
 			}
 			else
 			{
-				resp = sage.creditTransactionRequest(t.TransactionId, amt ?? 0);
+				resp = sage.creditTransactionRequest(re, amt ?? 0);
 				if (resp.Approved)
 					t.Credited = true;
 			}
@@ -68,7 +71,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 			{
 				var tt = new Transaction
 				{
-					TransactionId = resp.TransactionId,
+					TransactionId = resp.TransactionId + (t.Testing == true ? "(testing)" : ""),
 					Name = t.Name,
 					Amt = -amt,
 					Amtdue = t.Amtdue + amt,
@@ -82,7 +85,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 					Testing = t.Testing,
 					Description = t.Description,
 					OrgId = t.OrgId,
-					OriginalId = t.Id,
+					OriginalId = t.OriginalId,
 					Participants = t.Participants,
 					Financeonly = t.Financeonly,
 				};
@@ -103,7 +106,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 <tr><td>TranIds</td><td>Org: {7} {8}, Curr: {9} {10}</td></tr>
 </table>".Fmt(t.Name, t.Emails, t.Address, t.Phone,
 		 t.Description, 
-		 t.Amt,
+		 -amt,
 		 t.TransactionDate.Value.FormatDateTm(),
 		 t.Id, t.TransactionId, tt.Id, tt.TransactionId
 		 ), Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(tt.OrgId ?? 0)),
@@ -113,7 +116,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 		}
 		[HttpPost]
 		[Authorize(Roles = "Finance")]
-		public ActionResult Adjust(int id, decimal amt, string desc, bool? testing, TransactionsModel m)
+		public ActionResult Adjust(int id, decimal amt, string desc, TransactionsModel m)
 		{
 			var t = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
 			if (t == null)
@@ -123,19 +126,19 @@ namespace CmsWeb.Areas.Manage.Controllers
 				{
 					TransactionId = "Adjustment",
 					Name = t.Name,
-					Amt = -amt,
-					Amtdue = t.Amtdue + amt,
+					Amt = amt,
+					Amtdue = t.Amtdue - amt,
 					Approved = true,
-					AuthCode = t.AuthCode,
-					Message = t.Message,
+					AuthCode = "",
+					Message = desc,
 					Donate = -t.Donate,
 					Regfees = -t.Regfees,
 					TransactionDate = DateTime.Now,
 					TransactionGateway = t.TransactionGateway,
 					Testing = t.Testing,
-					Description = desc,
+					Description = t.Description,
 					OrgId = t.OrgId,
-					OriginalId = t.Id,
+					OriginalId = t.OriginalId,
 					Participants = t.Participants,
 					Financeonly = t.Financeonly,
 				};

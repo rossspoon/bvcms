@@ -300,7 +300,10 @@ namespace CmsWeb.Areas.Main.Controllers
             try
             {
                 UpdateModel(m);
-                var os = new RegSettings(m.ToString(), DbUtil.Db, id);
+				if (m.org.OrgPickList.HasValue() && m.org.RegistrationTypeId == RegistrationTypeCode.JoinOrganization)
+					m.org.OrgPickList = null;
+
+                var os = new RegSettings(m.ToString(), DbUtil.Db, id, check: true);
                 m.org.RegSetting = os.ToString();
                 DbUtil.Db.SubmitChanges();
 				if (!m.org.NotifyIds.HasValue())

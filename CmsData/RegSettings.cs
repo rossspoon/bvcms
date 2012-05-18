@@ -448,6 +448,9 @@ namespace CmsData
 				var q = ShirtSizes.GroupBy(mi => mi.SmallGroup).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
 				if (q.Any())
 					throw GetException("Duplicate SmallGroup in ShirtSizes: " + string.Join(",", q));
+				var q2 = GradeOptions.GroupBy(mi => mi.Code).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+				if (q2.Any())
+					throw GetException("Duplicate Code in GradeOptions: " + string.Join(",", q));
 
 				CheckDupSmallGroup(Checkboxes, "Checkboxes");
 				CheckDupSmallGroup(Checkboxes2, "Checkboxes2");

@@ -1031,6 +1031,7 @@
     <Content Include="Scripts\pickslots.js" />
     <Content Include="Scripts\pickslots2.js" />
     <Content Include="Scripts\TransactionHistory.js" />
+    <Content Include="Scripts\Transactions.js" />
     <Content Include="Scripts\UserDialog.js" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving.cshtml">
     </Content>

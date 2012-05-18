@@ -611,6 +611,12 @@ namespace CmsWeb.Areas.Main.Controllers
 				case "i":
 					p.AddEditExtraInt(b[0], value.ToInt());
 					break;
+				case "b":
+					if (value == "True")
+						p.AddEditExtraBool(b[0], true);
+					else
+						p.RemoveExtraValue(DbUtil.Db, b[0]);
+					break;
 			}
 			DbUtil.Db.SubmitChanges();
 			return Content(value);

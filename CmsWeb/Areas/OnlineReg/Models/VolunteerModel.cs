@@ -58,6 +58,7 @@ namespace CmsWeb.Models
 		{
 			return from slot in FetchSlots()
 				   group slot by slot.Sunday into g
+				   where g.Any(gg => gg.Time > DateTime.Today)
 				   orderby g.Key
 				   select g.ToList();
 		}

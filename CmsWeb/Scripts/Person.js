@@ -95,6 +95,11 @@
             submit: "OK",
             style: 'display: inline'
         });
+        $(".clickCheckbox", table).editable('/Person/EditExtra', {
+            type: 'checkbox',
+            onblur: 'ignore',
+            submit: 'OK'
+        });
     };
     $.getTable = function (f, q) {
         q = q || f.serialize();
@@ -164,17 +169,16 @@
     });
     $("#member-link").click(function () {
         var f = $("#memberdisplay");
-        if ($("table", f).size() == 0)
-            $.post(f.attr('action'), null, function (ret) {
-                $(f).html(ret).ready(function () {
+        if ($("table", f).size() == 0) {
+            $.post(f.attr('action'), null, function(ret) {
+                $(f).html(ret).ready(function() {
                     $.UpdateForSection(f);
                     ShowMemberExtras();
                 });
             });
-    });
-    $("#system-link").click(function () {
-        $.showTable($("#extras-tab form"));
-        $.extraEditable('#extravalues');
+            $.showTable($("#extras-tab form"));
+            $.extraEditable('#extravalues');
+        }
     });
     $("#changes-link").click(function () {
         $.showTable($("#changes-tab form"));
@@ -383,6 +387,24 @@
         }, function (ret) {
             $(f).html(ret);
         });
+    });
+    $.editable.addInputType("checkbox", {
+        element: function (settings, original) {
+            var input = $('<input type="checkbox">');
+            $(this).append(input);
+            $(input).click(function () {
+                var value = $(input).attr("checked") ? 'True' : 'False';
+                $(input).val(value);
+            });
+            return (input);
+        },
+        content: function (string, settings, original) {
+            var checked = string == "True" ? true : false;
+            var input = $(':input:first', this);
+            $(input).attr("checked", checked);
+            var value = $(input).attr("checked") ? 'True' : 'False';
+            $(input).val(value);
+        }
     });
 });
 function RebindMemberGrids(from) {

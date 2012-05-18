@@ -36,7 +36,12 @@
             <td class="center week">@ts[0].Week</td>
     @foreach (var si in ts)
     {
-			<td class="center"><input type="checkbox" name="Commit" value="@si.Time" @si.CHECKED @si.DISABLED /></td>
+		<td class="center">
+            @if (si.Time >= DateTime.Today)
+			{
+				<input type="checkbox" name="Commit" value="@si.Time" @si.CHECKED @si.DISABLED />
+			}
+		</td>
     } 
         </tr>
 }

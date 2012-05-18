@@ -83,7 +83,7 @@ namespace CmsData
             {
 				s = Content("StandardExtraValues.xml", "<Fields />");
                 HttpRuntime.Cache.Insert(Db.Host + "StandardExtraValues", s, null,
-                    DateTime.Now.AddMinutes(3), Cache.NoSlidingExpiration);
+                    DateTime.Now.AddMinutes(Util.IsDebug() ? 0 : 2), Cache.NoSlidingExpiration);
             }
             return s;
         }

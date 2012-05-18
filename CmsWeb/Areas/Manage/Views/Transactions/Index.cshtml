@@ -6,70 +6,15 @@
 }
 @section scripts
 {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $.preptable = function () {
-                $('table.grid > tbody > tr:even').addClass('alt');
-                $(".bt").button();
-                $(".datepicker").datepicker();
-                $('td.tip').tooltip({
-                    delay: 0,
-                    showURL: false,
-                    showBody: "|"
-                });
-            };
-            $.preptable();
-            $('#filter').live('click', function (ev) {
-                ev.preventDefault();
-                var f = $(this).closest('form');
-                var q = f.serialize();
-                $.post("/Manage/Transactions/List", q, function (ret) {
-                    $(f).html(ret);
-                    $.preptable();
-                });
-                return false;
-            });
-            $('#export').live('click', function (ev) {
-                ev.preventDefault();
-                var f = $(this).closest('form');
-                f.attr("action", "/Manage/Transactions/Export");
-                f.submit();
-                f.attr("action", "/Manage/Transactions/List");
-                return false;
-            });
-            $("a.voidcredit").live("click", function (ev) {
-                ev.preventDefault();
-                var a = $(this);
-                if (a.hasClass("noadmin")) {
-                    alert("must be admin");
-                    return false;
-                }
-                var f = $(this).closest('form');
-                var q = f.serialize();
-                if (confirm("are you sure?")) {
-                    if (a.text() === "Credit") {
-                        var amt = prompt("Amount to split out", "");
-                        amt = parseFloat(amt);
-                        if (isNaN(amt))
-                            return false;
-                        q += "&amt=" + amt;
-                    }
-                    $.post(a.attr("href"), q, function (ret) {
-                        if (ret.substring(5, 0) == "error")
-                            alert(ret);
-                        else {
-                            $(f).html(ret);
-                            $.preptable();
-                        }
-                    });
-                }
-                return false;
-            });
-            $('table.grid > tbody > tr:even').addClass('alt');
-            $(".bt").button();
-        });
-</script>
+@Html.Script("/Scripts/Transactions.js")
 }
 <form id="form" method="post" action="/Manage/Transactions/List">
 @{Html.RenderPartial("List", Model);}
 </form>
+<div id="AdjustForm" style="display:none">
+    <p><label>Amount:</label><input id="amt" type="text" /></p>
+    <p><label>Description:</label><input id="desc" type="text" /></p>
+    <input type="button" id="post" value="Post Transaction" /> 
+    <input type="button" id="cancel" value="Cancel" /> 
+    <input type="hidden" id="voidurl" />
+</div>

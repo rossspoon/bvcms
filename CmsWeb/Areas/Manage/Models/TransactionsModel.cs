@@ -35,7 +35,7 @@ namespace CmsWeb.Models
             Pager.Sort = "Id";
             Pager.Direction = "desc";
             finance = HttpContext.Current.User.IsInRole("Finance");
-            admin = HttpContext.Current.User.IsInRole("Admin");
+            admin = HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.User.IsInRole("ManageTransactions");
         }
         public IEnumerable<Transaction> Transactions()
         {

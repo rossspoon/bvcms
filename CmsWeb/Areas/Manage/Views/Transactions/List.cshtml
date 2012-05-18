@@ -76,8 +76,9 @@
 @foreach (var t in Model.Transactions())
 {
     var noadmin = Model.admin ? "" : "noadmin";
+    var bold = t.Id == t.OriginalId;
     if (t.Amt > 0 && t.Amt == t.Donate && !Model.finance) { continue; }
-        <tr>
+        <tr style="@(bold ? "font-weight: bold" : "")">
             <td nowrap="nowrap" class="tip" 
             title="TranId:@t.TransactionId|ApprovalCode:@(t.ApprovalCode ?? "na")|AuthCode:@(t.AuthCode ?? "na")|Message:@(t.Message ?? "na")|Id:@t.Id">@(t.OriginalId ?? t.Id)</td>
             <td>@t.TransactionId</td>
@@ -108,6 +109,8 @@
             <td></td>
             <td>@(t.Amt < 0 ? "credit" : "")</td>
 	}
+            <td><a class="adjust bt @noadmin" 
+                href='/Manage/Transactions/Adjust/@t.Id'>Adjust</a></td>
         </tr>
 }
     </tbody>

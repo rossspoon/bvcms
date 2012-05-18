@@ -93,8 +93,9 @@ namespace CmsWeb.Areas.Dialog.Controllers
             ViewData["pid"] = pid;
             if (om.Organization.DivisionId == null)
                 return View((IEnumerable<OrgMove>)null);
+			var divorgs = om.Organization.DivOrgs.Select(mm => mm.DivId).ToList();
             var q = from o in DbUtil.Db.Organizations
-                    where o.DivOrgs.Any(dd => dd.DivId == o.DivisionId)
+                    where o.DivOrgs.Any(dd => divorgs.Contains(dd.DivId))
                     where o.OrganizationId != id
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     orderby o.OrganizationName
