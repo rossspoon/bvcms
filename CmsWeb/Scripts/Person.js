@@ -63,6 +63,34 @@
             });
         }
     });
+    $.editable.addInputType("multiselect", {
+        element: function (settings, original) {
+            var select = $('<select multiple="multiple" />');
+
+            if (settings.width != 'none') { select.width(settings.width); }
+            if (settings.size) { select.attr('size', settings.size); }
+
+            $(this).append(select);
+            return (select);
+        },
+        content: function (json, settings, original) {
+            for (var key in json) {
+                var option = $('<option />').val(key).text(key);
+                if (json[key] == true)
+                    option.attr("selected", true);
+                $('select', this).append(option);
+            }
+            $("select", this).multiselect({
+                close: function(event, ui) {
+                    var values = $("select").val();
+                },
+                position: {
+                    my: 'left bottom',
+                    at: 'left top'
+                }
+            });
+        }
+    });
     $.extraEditable = function (table) {
         $('.editarea', table).editable('/Person/EditExtra/', {
             type: 'textarea',
@@ -99,6 +127,15 @@
             type: 'checkbox',
             onblur: 'ignore',
             submit: 'OK'
+        });
+        $('.clickMultiselect', table).editable('/Person/EditExtra', {
+            indicator: '<img src="/images/loading.gif">',
+            loadurl: "/Person/ExtraValues2/",
+            loadtype: "POST",
+            type: "multiselect",
+            submit: "OK",
+            onblur: 'ignore',
+            style: 'display: inline'
         });
     };
     $.getTable = function (f, q) {
@@ -170,8 +207,8 @@
     $("#member-link").click(function () {
         var f = $("#memberdisplay");
         if ($("table", f).size() == 0) {
-            $.post(f.attr('action'), null, function(ret) {
-                $(f).html(ret).ready(function() {
+            $.post(f.attr('action'), null, function (ret) {
+                $(f).html(ret).ready(function () {
                     $.UpdateForSection(f);
                     ShowMemberExtras();
                 });
@@ -406,6 +443,31 @@
             $(input).val(value);
         }
     });
+    //    $.editable.addInputType("multiselect", {
+    //        element: function (settings, original) {
+    //            var textarea = $('<select />');
+    //            if (settings.rows) {
+    //                textarea.attr('rows', settings.rows);
+    //            } else {
+    //                textarea.height(settings.height);
+    //            }
+    //            if (settings.cols) {
+    //                textarea.attr('cols', settings.cols);
+    //            } else {
+    //                textarea.width(settings.width);
+    //            }
+    //            $(this).append(textarea);
+    //            return (textarea);
+    //        },
+    //        plugin: function (settings, original) {
+    //            $('textarea', this).multiselect();
+    //        },
+    //        submit: function (settings, original) {
+    //            var value = $('#hour_').val() + ':' + $('#min_').val();
+    //            $('input', this).val(value);
+    //        }
+    //    }); 
+
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#current-tab form'));

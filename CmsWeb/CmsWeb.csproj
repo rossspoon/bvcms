@@ -150,6 +150,10 @@
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
+    <Compile Include="Areas\Main\Models\Avery\AverySpacerCell173.cs" />
+    <Compile Include="Areas\Main\Models\Avery\EmployerAddress.cs" />
+    <Compile Include="Areas\Main\Models\Avery\EmployerAddressCell.cs" />
+    <Compile Include="Areas\Main\Models\Avery\EmployerAddressRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\PictureDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\PictureRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
@@ -963,6 +967,7 @@
     <Content Include="Min\Scripts\TestAPI.js" />
     <Content Include="Min\Scripts\TotalsByFund.js" />
     <Content Include="Min\Scripts\TransactionHistory.js" />
+    <Content Include="Min\Scripts\Transactions.js" />
     <Content Include="Min\Scripts\UserDialog.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />

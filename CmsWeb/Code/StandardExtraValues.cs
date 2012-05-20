@@ -74,7 +74,7 @@ namespace CmsWeb.Code
 			}
 			public override string ToString()
 			{
-				if (extravalue == null)
+				if (extravalue == null && type != "Bits")
 					return "Click to edit";
 				switch (type)
 				{
@@ -86,11 +86,19 @@ namespace CmsWeb.Code
 						return extravalue.DateValue.FormatDate();
 					case "Bit":
 						return extravalue.BitValue.ToString();
+					case "Bits":
+					{
+						var q = from e in DbUtil.Db.PeopleExtras
+								where e.BitValue == true
+								where e.PeopleId == peopleid
+								where Codes.Contains(e.Field)
+								select e.Field;
+						return string.Join(",", q);
+					}
 					case "Int":
 						if (extravalue.IntValue2.HasValue)
 							return "{0} {1}".Fmt(extravalue.IntValue, extravalue.IntValue2);
-						else
-							return extravalue.IntValue.ToString();
+						return extravalue.IntValue.ToString();
 				}
 				return null;
 			}
@@ -156,6 +164,22 @@ namespace CmsWeb.Code
 								Value = e.Field + ":" + e.StrValue,
 							};
 			return q2.ToList();
+		}
+		public static Dictionary<string, string> Codes(string name)
+		{
+			var f = GetExtraValues().Single(ee => ee.name == name);
+			return f.Codes.ToDictionary(ee => ee, ee => ee);
+		}
+
+		public static Dictionary<string, bool> ExtraValueBits(string name, int PeopleId)
+		{
+			var f = GetExtraValues().Single(ee => ee.name == name);
+			var list = DbUtil.Db.PeopleExtras.Where(pp => pp.PeopleId == PeopleId && f.Codes.Contains(pp.Field)).ToList();
+			var q = from c in f.Codes
+					join e in list on c equals e.Field into j
+					from e in j.DefaultIfEmpty()
+					select new { value=c, selected=(e != null && (e.BitValue ?? false)) };
+			return q.ToDictionary(ee => ee.value, ee => ee.selected);
 		}
 	}
 }

@@ -84,6 +84,15 @@ namespace CmsWeb.Models
                         select p;
             if (m.name.HasValue())
             {
+				if (m.name.StartsWith("e:"))
+				{
+					var name = m.name.Substring(2);
+					people = from p in people
+							 where p.EmployerOther.Contains(name)
+							 select p;
+				}
+				else
+				{
                 string First, Last;
                 NameSplit(m.name, out First, out Last);
                 if (First.HasValue())
@@ -102,6 +111,7 @@ namespace CmsWeb.Models
                                 where p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
                                     || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name)
                                 select p;
+				}
             }
             if (m.address.IsNotNull())
             {

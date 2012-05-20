@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CmsWeb.Areas.Main.Models.Avery;
 using CmsWeb.Areas.Main.Models.Directories;
 using CmsWeb.Areas.Main.Models.Report;
 using CmsData;
@@ -308,6 +309,10 @@ namespace CmsWeb.Areas.Main.Controllers
 		public ActionResult PictureDirectory(int id)
 		{
 			return new PictureDir(id);
+		}
+		public ActionResult EmployerAddress(int id)
+		{
+			return new EmployerAddress(id);
 		}
 
     	public class QueryStatsResult : ActionResult

@@ -617,8 +617,28 @@ namespace CmsWeb.Areas.Main.Controllers
 					else
 						p.RemoveExtraValue(DbUtil.Db, b[0]);
 					break;
+				case "m":
+				{
+					if (value == null)
+						value = Request.Form["value[]"];
+					var cc = Code.StandardExtraValues.ExtraValueBits(b[0], b[1].ToInt());
+					var aa = value.Split(',');
+					foreach (var c in cc)
+					{
+						if (aa.Contains(c.Key)) // checked now
+							if (!c.Value) // was not checked before
+								p.AddEditExtraBool(c.Key, true);
+						if (!aa.Contains(c.Key)) // not checked now
+							if (c.Value) // was checked before
+								p.RemoveExtraValue(DbUtil.Db, c.Key);
+					}
+					DbUtil.Db.SubmitChanges();
+					break;
+				}
 			}
 			DbUtil.Db.SubmitChanges();
+			if (value == "null")
+				return Content(null);
 			return Content(value);
 		}
 		[HttpPost]
@@ -626,8 +646,30 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			var a = id.SplitStr("-", 2);
 			var b = a[1].SplitStr(".", 2);
-			var f = CmsWeb.Code.StandardExtraValues.GetExtraValues().Single(ee => ee.name == b[0]);
-			var j = Json(f.Codes.ToDictionary(ee => ee, ee => ee));
+			var c = Code.StandardExtraValues.Codes(b[0]);
+			var j = Json(c);
+			return j;
+		}
+//		[HttpPost]
+//		public ContentResult EditExtra2()
+//		{
+//			var a = Request.Form["id"].SplitStr("-", 2);
+//			var b = a[1].SplitStr(".", 2);
+//			var values = Request.Form["value[]"];
+//			if (a[0] == "m")
+//			{
+//				var p = DbUtil.Db.LoadPersonById(b[1].ToInt());
+//				DbUtil.Db.SubmitChanges();
+//			}
+//			return Content(values);
+//		}
+		[HttpPost]
+		public JsonResult ExtraValues2(string id)
+		{
+			var a = id.SplitStr("-", 2);
+			var b = a[1].SplitStr(".", 2);
+			var c = Code.StandardExtraValues.ExtraValueBits(b[0], b[1].ToInt());
+			var j = Json(c);
 			return j;
 		}
 		[HttpPost]

@@ -254,11 +254,14 @@ div.drow {
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
-div.drow span.isnew {
-	font-weight: 700;
-	font-size:130%;
-	color: #86BE00;
-}
+div.drow.isnew0 a { color: #BE3D00; font-weight: bold }
+div.drow.isnew1 a { color: #b74700; font-weight: bold }
+div.drow.isnew2 a { color: #b05200; font-weight: bold }
+div.drow.isnew3 a { color: #a85c00; font-weight: bold }
+div.drow.isnew4 a { color: #a16700; font-weight: bold }
+div.drow.isnew5 a { color: #997100; font-weight: bold }
+div.drow.isnew6 a { color: #927c00; font-weight: bold }
+div.drow.isnew7 a { color: #8a8700; font-weight: bold }
 .alt:not(.section) {
 	background-color: #EEE;
 }

@@ -46,6 +46,11 @@ namespace CmsWeb.Areas.Manage.Controllers
 			var t = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
 			if (t == null)
 				return Content("notran");
+			var qq = from tt in DbUtil.Db.Transactions
+					 where tt.OriginalId == id || tt.Id == id
+					 orderby tt.Id descending
+					 select tt;
+			var t0 = qq.First();
 			var sage = new SagePayments(DbUtil.Db, t.Testing ?? false);
 			TransactionResponse resp;
 			var re = t.TransactionId;
@@ -56,6 +61,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 				resp = sage.voidTransactionRequest(re);
 				if (resp.Approved)
 					t.Voided = true;
+				amt = t.Amt;
 			}
 			else
 			{
@@ -74,7 +80,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 					TransactionId = resp.TransactionId + (t.Testing == true ? "(testing)" : ""),
 					Name = t.Name,
 					Amt = -amt,
-					Amtdue = t.Amtdue + amt,
+					Amtdue = t0.Amtdue + amt,
 					Approved = true,
 					AuthCode = t.AuthCode,
 					Message = t.Message,
@@ -118,7 +124,12 @@ namespace CmsWeb.Areas.Manage.Controllers
 		[Authorize(Roles = "Finance")]
 		public ActionResult Adjust(int id, decimal amt, string desc, TransactionsModel m)
 		{
-			var t = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
+			var qq = from tt in DbUtil.Db.Transactions
+					 where tt.OriginalId == id || tt.Id == id
+					 orderby tt.Id descending
+					 select tt;
+			var t = qq.FirstOrDefault();
+
 			if (t == null)
 				return Content("notran");
 
