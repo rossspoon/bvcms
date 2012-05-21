@@ -30,7 +30,7 @@ namespace CmsWeb.Areas.Main.Models.Avery
 		{
 			var Response = context.HttpContext.Response;
             Response.ContentType = "application/vnd.ms-word";
-            Response.AddHeader("Content-Disposition", "attachment;filename=CMSFamilyDir.docx");
+            Response.AddHeader("Content-Disposition", "attachment;filename=AveryAddress.docx");
 			var ms = new MemoryStream();
             using(var package = WordprocessingDocument.Create(ms, WordprocessingDocumentType.Document))
             {

@@ -147,8 +147,8 @@ namespace CmsWeb.Code
 		public static List<SelectListItem> ExtraValueCodes()
 		{
 			var q = from e in DbUtil.Db.PeopleExtras
-					where e.StrValue != null
-			        group e by new {e.Field, e.StrValue}
+					where e.StrValue != null || e.BitValue != null
+			        group e by new {e.Field, val = e.StrValue ?? (e.BitValue == true ? "1" : "0")}
 			        into g
 			        select g.Key;
 			var list = q.ToList();
@@ -157,11 +157,11 @@ namespace CmsWeb.Code
 			var q2 = from e in list
 					 let f = ev.SingleOrDefault(ff => ff.name == e.Field)
 					 where f == null || f.UserCanView()
-					 orderby e.Field, e.StrValue
+					 orderby e.Field, e.val
 					 select new SelectListItem()
 							{
-								Text = e.Field + ":" + e.StrValue,
-								Value = e.Field + ":" + e.StrValue,
+								Text = e.Field + ":" + e.val,
+								Value = e.Field + ":" + e.val,
 							};
 			return q2.ToList();
 		}
