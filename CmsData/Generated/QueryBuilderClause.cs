@@ -37,6 +37,10 @@ namespace CmsData
 		
 		private DateTime? _EndDate;
 		
+		private int _Program;
+		
+		private int _Division;
+		
 		private int _Organization;
 		
 		private int _Days;
@@ -56,10 +60,6 @@ namespace CmsData
 		private string _Tags;
 		
 		private int _Schedule;
-		
-		private int _Program;
-		
-		private int _Division;
 		
 		private int? _Age;
 		
@@ -110,6 +110,12 @@ namespace CmsData
 		partial void OnEndDateChanging(DateTime? value);
 		partial void OnEndDateChanged();
 		
+		partial void OnProgramChanging(int value);
+		partial void OnProgramChanged();
+		
+		partial void OnDivisionChanging(int value);
+		partial void OnDivisionChanged();
+		
 		partial void OnOrganizationChanging(int value);
 		partial void OnOrganizationChanged();
 		
@@ -139,12 +145,6 @@ namespace CmsData
 		
 		partial void OnScheduleChanging(int value);
 		partial void OnScheduleChanged();
-		
-		partial void OnProgramChanging(int value);
-		partial void OnProgramChanged();
-		
-		partial void OnDivisionChanging(int value);
-		partial void OnDivisionChanged();
 		
 		partial void OnAgeChanging(int? value);
 		partial void OnAgeChanged();
@@ -393,6 +393,50 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Program", UpdateCheck=UpdateCheck.Never, Storage="_Program", DbType="int NOT NULL")]
+		public int Program
+		{
+			get { return this._Program; }
+
+			set
+			{
+				if (this._Program != value)
+				{
+				
+                    this.OnProgramChanging(value);
+					this.SendPropertyChanging();
+					this._Program = value;
+					this.SendPropertyChanged("Program");
+					this.OnProgramChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Division", UpdateCheck=UpdateCheck.Never, Storage="_Division", DbType="int NOT NULL")]
+		public int Division
+		{
+			get { return this._Division; }
+
+			set
+			{
+				if (this._Division != value)
+				{
+				
+                    this.OnDivisionChanging(value);
+					this.SendPropertyChanging();
+					this._Division = value;
+					this.SendPropertyChanged("Division");
+					this.OnDivisionChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="Organization", UpdateCheck=UpdateCheck.Never, Storage="_Organization", DbType="int NOT NULL")]
 		public int Organization
 		{
@@ -606,50 +650,6 @@ namespace CmsData
 					this._Schedule = value;
 					this.SendPropertyChanged("Schedule");
 					this.OnScheduleChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Program", UpdateCheck=UpdateCheck.Never, Storage="_Program", DbType="int NOT NULL")]
-		public int Program
-		{
-			get { return this._Program; }
-
-			set
-			{
-				if (this._Program != value)
-				{
-				
-                    this.OnProgramChanging(value);
-					this.SendPropertyChanging();
-					this._Program = value;
-					this.SendPropertyChanged("Program");
-					this.OnProgramChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Division", UpdateCheck=UpdateCheck.Never, Storage="_Division", DbType="int NOT NULL")]
-		public int Division
-		{
-			get { return this._Division; }
-
-			set
-			{
-				if (this._Division != value)
-				{
-				
-                    this.OnDivisionChanging(value);
-					this.SendPropertyChanging();
-					this._Division = value;
-					this.SendPropertyChanged("Division");
-					this.OnDivisionChanged();
 				}
 
 			}
