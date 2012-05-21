@@ -25,9 +25,9 @@ namespace CmsData
 		
 		private string _Activity;
 		
-		private string _PageUrl;
-		
 		private string _Machine;
+		
+		private string _PageUrl;
 		
    		
     	
@@ -52,11 +52,11 @@ namespace CmsData
 		partial void OnActivityChanging(string value);
 		partial void OnActivityChanged();
 		
-		partial void OnPageUrlChanging(string value);
-		partial void OnPageUrlChanged();
-		
 		partial void OnMachineChanging(string value);
 		partial void OnMachineChanged();
+		
+		partial void OnPageUrlChanging(string value);
+		partial void OnPageUrlChanged();
 		
     #endregion
 		public ActivityLog()
@@ -162,28 +162,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(410)")]
-		public string PageUrl
-		{
-			get { return this._PageUrl; }
-
-			set
-			{
-				if (this._PageUrl != value)
-				{
-				
-                    this.OnPageUrlChanging(value);
-					this.SendPropertyChanging();
-					this._PageUrl = value;
-					this.SendPropertyChanged("PageUrl");
-					this.OnPageUrlChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="Machine", UpdateCheck=UpdateCheck.Never, Storage="_Machine", DbType="varchar(50)")]
 		public string Machine
 		{
@@ -199,6 +177,28 @@ namespace CmsData
 					this._Machine = value;
 					this.SendPropertyChanged("Machine");
 					this.OnMachineChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PageUrl", UpdateCheck=UpdateCheck.Never, Storage="_PageUrl", DbType="varchar(410)")]
+		public string PageUrl
+		{
+			get { return this._PageUrl; }
+
+			set
+			{
+				if (this._PageUrl != value)
+				{
+				
+                    this.OnPageUrlChanging(value);
+					this.SendPropertyChanging();
+					this._PageUrl = value;
+					this.SendPropertyChanged("PageUrl");
+					this.OnPageUrlChanged();
 				}
 
 			}

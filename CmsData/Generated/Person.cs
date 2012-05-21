@@ -294,6 +294,8 @@ namespace CmsData
 		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
+   		private EntitySet< CheckInTime> _PeopleID;
+		
    		private EntitySet< TagPerson> _Tags;
 		
    		private EntitySet< Tag> _TagsOwned;
@@ -744,6 +746,8 @@ namespace CmsData
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
+			
+			this._PeopleID = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_PeopleID), new Action< CheckInTime>(this.detach_PeopleID)); 
 			
 			this._Tags = new EntitySet< TagPerson>(new Action< TagPerson>(this.attach_Tags), new Action< TagPerson>(this.detach_Tags)); 
 			
@@ -3583,6 +3587,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="PeopleID__GuestOf", Storage="_PeopleID", OtherKey="GuestOfId")]
+   		public EntitySet< CheckInTime> PeopleID
+   		{
+   		    get { return this._PeopleID; }
+
+			set	{ this._PeopleID.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="Tags__Person", Storage="_Tags", OtherKey="PeopleId")]
    		public EntitySet< TagPerson> Tags
    		{
@@ -4884,6 +4898,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
+		}
+
+		
+		private void attach_PeopleID(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.GuestOf = this;
+		}
+
+		private void detach_PeopleID(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.GuestOf = null;
 		}
 
 		

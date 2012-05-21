@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -14,8 +15,9 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkProfile />
     <MvcBuildViews>false</MvcBuildViews>
   </PropertyGroup>
@@ -160,6 +162,7 @@
     <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
     <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />
     <Compile Include="Areas\Finance\Controllers\StatementsController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
@@ -167,6 +170,7 @@
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Main\Models\Person\VolunteerModel.cs" />
+    <Compile Include="Areas\Manage\Models\CheckinTimeModel.cs" />
     <Compile Include="Areas\Manage\Models\UploadPeopleModel.cs" />
     <Compile Include="Areas\Manage\Models\AccountModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
@@ -1107,6 +1111,8 @@
     <Content Include="ConnectionStrings.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Areas\Manage\Views\CheckinTime\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\CheckinTime\List.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="TestConnectionStrings.config" />
     <None Include="Minify.bat" />
