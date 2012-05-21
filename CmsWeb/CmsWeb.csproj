@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -14,8 +15,9 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkProfile />
     <MvcBuildViews>false</MvcBuildViews>
   </PropertyGroup>
@@ -150,6 +152,7 @@
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
     <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />
     <Compile Include="Areas\Finance\Controllers\StatementsController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
@@ -157,6 +160,7 @@
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Main\Models\Person\VolunteerModel.cs" />
+    <Compile Include="Areas\Manage\Models\CheckinTimeModel.cs" />
     <Compile Include="Areas\Manage\Models\UploadPeopleModel.cs" />
     <Compile Include="Areas\Manage\Models\AccountModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
@@ -633,6 +637,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Report\ChurchAttendanceRpt.aspx.cs">
       <DependentUpon>ChurchAttendanceRpt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1093,6 +1102,8 @@
     <Content Include="ConnectionStrings.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Areas\Manage\Views\CheckinTime\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\CheckinTime\List.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="TestConnectionStrings.config" />
     <None Include="Minify.bat" />
@@ -1744,6 +1755,7 @@
     </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -2167,8 +2179,13 @@
     <Folder Include="Areas\Setup\Views\Shared\" />
     <Folder Include="Upload\" />
   </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

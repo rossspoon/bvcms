@@ -1,0 +1,33 @@
+﻿@using CmsWeb;
+@model CmsWeb.Models.CheckinTimeModel
+<table id="Checkins" class="grid" cellpadding="4">
+	<thead>
+		<tr><td colspan="10"><hr /></td></tr>
+		<tr>
+			<th><a href="#" class="sortable" id="0">ID</a></th>
+			<th><a href="#" class="sortable" id="1">Person</a></th>
+			<th><a href="#" class="sortable" id="2">Date/Time</a></th>
+			<th><a href="#" class="sortable" id="3">Location</a></th>
+			<th><a href="#" class="sortable" id="4">Activity</a></th>
+			<th><a href="#" class="sortable" id="5">Guest Of</a></th>
+		</tr>
+	</thead>
+	<tbody>
+@foreach (var t in Model.Times()) {
+<tr>
+	<td valign="top">@t.Id</td>
+	<td valign="top"><a href="#" class="person" id="@t.PeopleId">@t.Person.Name</a></td>
+	<td valign="top">@t.CheckInTimeX</td>
+	<td valign="top">@t.Location</td>
+	<td valign="top">
+		@foreach (var y in t.CheckInActivities)
+  {
+	  @y.Activity<br />
+  }
+	</td>
+	<td valign="top">@( t.GuestOfId != null ? t.GuestOf.Name : "" )</td>
+	</tr>
+}
+	</tbody>
+</table>
+@{Html.RenderPartial("Pager2", Model.Pager);}

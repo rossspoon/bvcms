@@ -182,13 +182,14 @@
                                 @if (admin || managetrans)
                                 {
                                     <a href="/Manage/Transactions">Transactions</a>
-                                }
+												<a href="/Manage/CheckinTime">Check-in Activity</a>
+										  }
                                 @if (admin || manageemails)
-                                {
+										  {
                                     <a href="/Manage/Emails">Emails</a> 
-                                }
+										  }
                                 @if (admin)
-                                {
+										  {
                                     <a href="/Setup/Lookup/">Lookups</a>
                                     <a href="/Batch/UpdateFields/"> Update for a Tag</a> 
                                     <a href="/Admin/ToggleOrgMembersOnly.ashx">@(Util2.OrgMembersOnly ? "OrgMembersOnly is on" : "OrgMembersOnly is off")</a>
@@ -196,10 +197,10 @@
                                     <a href="/Batch/UpdateQueryBits">Update QueryBits</a>
                                     <a href="/Batch/FindTagPeople">Find Tag People</a>
                                     <a href="/Batch/TagPeopleIds">Tag PeopleIds</a>
-                                }
+										  }
                                 </div>
                             </td>
-    }
+	 }
                         <td class="dropdown left">
                             <div>
                                 <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help</a></div>

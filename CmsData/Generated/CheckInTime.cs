@@ -33,6 +33,8 @@ namespace CmsData
     	
 		private EntityRef< Person> _Person;
 		
+		private EntityRef< Person> _GuestOf;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -63,6 +65,8 @@ namespace CmsData
 			
 			
 			this._Person = default(EntityRef< Person>); 
+			
+			this._GuestOf = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -148,6 +152,9 @@ namespace CmsData
 			{
 				if (this._GuestOfId != value)
 				{
+				
+					if (this._GuestOf.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnGuestOfIdChanging(value);
 					this.SendPropertyChanging();
@@ -236,6 +243,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="PeopleID__GuestOf", Storage="_GuestOf", ThisKey="GuestOfId", IsForeignKey=true)]
+		public Person GuestOf
+		{
+			get { return this._GuestOf.Entity; }
+
+			set
+			{
+				Person previousValue = this._GuestOf.Entity;
+				if (((previousValue != value) 
+							|| (this._GuestOf.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._GuestOf.Entity = null;
+						previousValue.PeopleID.Remove(this);
+					}
+
+					this._GuestOf.Entity = value;
+					if (value != null)
+					{
+						value.PeopleID.Add(this);
+						
+						this._GuestOfId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._GuestOfId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("GuestOf");
 				}
 
 			}
