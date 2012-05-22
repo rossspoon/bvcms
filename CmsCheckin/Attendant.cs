@@ -52,11 +52,21 @@ namespace CmsCheckin
 		private void history_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			var p = history.SelectedItem as PersonInfo;
+			if (p == null)
+				return;
 			var pb = Program.attendant.pictureBox1;
 			pb.Image = Util.GetImage(p.pid);
 			var na = Program.attendant.NameDisplay;
 			na.Text = p.name;
 			notes.Text = Util.GetNotes(p.pid);
+		}
+
+		private void pictureBox1_Click(object sender, EventArgs e)
+		{
+			var p = history.SelectedItem as PersonInfo;
+			if (p == null)
+				return;
+			System.Diagnostics.Process.Start(Program.URL + "/Person/Index/" + p.pid);
 		}
 	}
 }

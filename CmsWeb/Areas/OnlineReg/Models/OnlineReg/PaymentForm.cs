@@ -163,7 +163,7 @@ namespace CmsWeb.Models
 						 AskDonation = m.AskDonation(),
 						 AllowCoupon = !m.OnlineGiving(),
 						 PayBalance = false,
-						 Amtdue = m.TotalAmount(),
+						 Amtdue = m.TotalAmount() + (m.donation ?? 0),
 						 Donate = m.donation,
 						 Description = m.Header,
 						 Email = pp != null ? pp.EmailAddress : p.email,

@@ -190,6 +190,8 @@ namespace CmsWeb.Areas.Main.Models.Directories
 			runProperties4.Append(noProof4);
 			Text text5 = new Text();
 			text5.Text = ii.CityStateZip;
+			run6.Append(runProperties4);
+			run6.Append(text5);
 
 			paragraph3.Append(run6);
 

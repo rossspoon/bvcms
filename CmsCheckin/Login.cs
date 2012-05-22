@@ -91,7 +91,9 @@ namespace CmsCheckin
 			Settings1.Default.Building = building.Text;
 			Settings1.Default.Save();
 
-            if (Settings1.Default.UseSSL)
+			if(URL.Text.StartsWith("localhost"))
+                Program.URL = "http://" + URL.Text;
+            else if (Settings1.Default.UseSSL)
                 Program.URL = "https://" + URL.Text;
             else
                 Program.URL = "http://" + URL.Text;
@@ -110,7 +112,7 @@ namespace CmsCheckin
 						return;
 					}
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
 					MessageBox.Show("cannot find " + Program.URL);
 					CancelClose = true;
@@ -149,7 +151,7 @@ namespace CmsCheckin
 
 			if (Util.IsDebug())
 			{
-				URL.Text = "test.bvcms.com";
+				URL.Text = "localhost:888/";
 				username.Text = "David";
 				var name = @"..\..\secrets.xml";
 				if (File.Exists(name))

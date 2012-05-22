@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
+	[SessionExpire]
     public class OrgSearchController : CmsStaffController
     {
         [Serializable]
