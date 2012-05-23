@@ -31,9 +31,9 @@ namespace CmsData
    		private EntitySet< CheckInActivity> _CheckInActivities;
 		
     	
-		private EntityRef< Person> _Person;
-		
 		private EntityRef< Person> _GuestOf;
+		
+		private EntityRef< Person> _Person;
 		
 	#endregion
 	
@@ -64,9 +64,9 @@ namespace CmsData
 			this._CheckInActivities = new EntitySet< CheckInActivity>(new Action< CheckInActivity>(this.attach_CheckInActivities), new Action< CheckInActivity>(this.detach_CheckInActivities)); 
 			
 			
-			this._Person = default(EntityRef< Person>); 
-			
 			this._GuestOf = default(EntityRef< Person>); 
+			
+			this._Person = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -208,6 +208,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="CheckinTimes__GuestOf", Storage="_GuestOf", ThisKey="GuestOfId", IsForeignKey=true)]
+		public Person GuestOf
+		{
+			get { return this._GuestOf.Entity; }
+
+			set
+			{
+				Person previousValue = this._GuestOf.Entity;
+				if (((previousValue != value) 
+							|| (this._GuestOf.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._GuestOf.Entity = null;
+						previousValue.CheckinTimes.Remove(this);
+					}
+
+					this._GuestOf.Entity = value;
+					if (value != null)
+					{
+						value.CheckinTimes.Add(this);
+						
+						this._GuestOfId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._GuestOfId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("GuestOf");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_CheckInTimes_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person Person
 		{
@@ -243,48 +285,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Person");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="PeopleID__GuestOf", Storage="_GuestOf", ThisKey="GuestOfId", IsForeignKey=true)]
-		public Person GuestOf
-		{
-			get { return this._GuestOf.Entity; }
-
-			set
-			{
-				Person previousValue = this._GuestOf.Entity;
-				if (((previousValue != value) 
-							|| (this._GuestOf.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._GuestOf.Entity = null;
-						previousValue.PeopleID.Remove(this);
-					}
-
-					this._GuestOf.Entity = value;
-					if (value != null)
-					{
-						value.PeopleID.Add(this);
-						
-						this._GuestOfId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._GuestOfId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("GuestOf");
 				}
 
 			}

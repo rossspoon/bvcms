@@ -240,6 +240,8 @@ namespace CmsData
 		private string _PrimaryCountry;
 		
    		
+   		private EntitySet< CheckInTime> _CheckinTimes;
+		
    		private EntitySet< Contactee> _contactsHad;
 		
    		private EntitySet< Contactor> _contactsMade;
@@ -293,8 +295,6 @@ namespace CmsData
    		private EntitySet< VolunteerForm> _VolunteerForms;
 		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
-		
-   		private EntitySet< CheckInTime> _PeopleID;
 		
    		private EntitySet< TagPerson> _Tags;
 		
@@ -693,6 +693,8 @@ namespace CmsData
 		public Person()
 		{
 			
+			this._CheckinTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckinTimes), new Action< CheckInTime>(this.detach_CheckinTimes)); 
+			
 			this._contactsHad = new EntitySet< Contactee>(new Action< Contactee>(this.attach_contactsHad), new Action< Contactee>(this.detach_contactsHad)); 
 			
 			this._contactsMade = new EntitySet< Contactor>(new Action< Contactor>(this.attach_contactsMade), new Action< Contactor>(this.detach_contactsMade)); 
@@ -746,8 +748,6 @@ namespace CmsData
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
-			
-			this._PeopleID = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_PeopleID), new Action< CheckInTime>(this.detach_PeopleID)); 
 			
 			this._Tags = new EntitySet< TagPerson>(new Action< TagPerson>(this.attach_Tags), new Action< TagPerson>(this.detach_Tags)); 
 			
@@ -3317,6 +3317,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="CheckinTimes__GuestOf", Storage="_CheckinTimes", OtherKey="GuestOfId")]
+   		public EntitySet< CheckInTime> CheckinTimes
+   		{
+   		    get { return this._CheckinTimes; }
+
+			set	{ this._CheckinTimes.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="contactsHad__person", Storage="_contactsHad", OtherKey="PeopleId")]
    		public EntitySet< Contactee> contactsHad
    		{
@@ -3583,16 +3593,6 @@ namespace CmsData
    		    get { return this._OrganizationMembers; }
 
 			set	{ this._OrganizationMembers.Assign(value); }
-
-   		}
-
-		
-   		[Association(Name="PeopleID__GuestOf", Storage="_PeopleID", OtherKey="GuestOfId")]
-   		public EntitySet< CheckInTime> PeopleID
-   		{
-   		    get { return this._PeopleID; }
-
-			set	{ this._PeopleID.Assign(value); }
 
    		}
 
@@ -4550,6 +4550,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_CheckinTimes(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.GuestOf = this;
+		}
+
+		private void detach_CheckinTimes(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.GuestOf = null;
+		}
+
+		
 		private void attach_contactsHad(Contactee entity)
 		{
 			this.SendPropertyChanging();
@@ -4898,19 +4911,6 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
-		}
-
-		
-		private void attach_PeopleID(CheckInTime entity)
-		{
-			this.SendPropertyChanging();
-			entity.GuestOf = this;
-		}
-
-		private void detach_PeopleID(CheckInTime entity)
-		{
-			this.SendPropertyChanging();
-			entity.GuestOf = null;
 		}
 
 		

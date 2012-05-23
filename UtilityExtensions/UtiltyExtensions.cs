@@ -1182,13 +1182,13 @@ namespace UtilityExtensions
 				return null;
 			}
 		}
-		//public static void InsertCacheNotRemovable(string key, object value)
-		//{
-		//    HttpRuntime.Cache.Insert(key, value, null,
-		//        System.Web.Caching.Cache.NoAbsoluteExpiration,
-		//        System.Web.Caching.Cache.NoSlidingExpiration,
-		//        CacheItemPriority.NotRemovable, null);
-		//}
+		public static void InsertCacheNotRemovable(string key, object value)
+		{
+		    HttpRuntime.Cache.Insert(key, value, null,
+		        System.Web.Caching.Cache.NoAbsoluteExpiration,
+		        System.Web.Caching.Cache.NoSlidingExpiration,
+		        CacheItemPriority.NotRemovable, null);
+		}
 
 		public static MailAddress FirstAddress2(string addrs, string name)
 		{
