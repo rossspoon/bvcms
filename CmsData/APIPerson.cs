@@ -407,18 +407,24 @@ namespace CmsData.API
 			public void UpdatePerson(XElement e)
 			{
 				var nil = e.Attribute(xsi + "nil");
+				var name = e.Name.ToString();
 				if (nil != null && nil.Value == "true")
-					person.UpdateValue(sb, e.Name.ToString(), null);
+					person.UpdateValue(sb, name, null);
+				else if (name == "CellPhone" || name == "WorkPhone")
+					person.UpdateValueFromText(fsb, name, e.Value.GetDigits());
 				else
-					person.UpdateValueFromText(sb, e.Name.ToString(), e.Value);
+					person.UpdateValueFromText(sb, name, e.Value);
 			}
 			public void UpdateFamily(XElement e)
 			{
 				var nil = e.Attribute(xsi + "nil");
+				var name = e.Name.ToString();
 				if (nil != null && nil.Value == "true")
-					family.UpdateValue(fsb, e.Name.ToString(), null);
+					family.UpdateValue(fsb, name, null);
+				else if (name == "HomePhone")
+					family.UpdateValueFromText(fsb, name, e.Value.GetDigits());
 				else
-					family.UpdateValueFromText(fsb, e.Name.ToString(), e.Value);
+					family.UpdateValueFromText(fsb, name, e.Value);
 			}
 		}
 	}

@@ -163,7 +163,7 @@ namespace CmsWeb.Models
                 var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
                 var q = from o in DbUtil.Db.Organizations
                         where cklist.Contains(o.OrganizationId)
-                        where gender == null || o.GenderId == gender || o.GenderId == 0
+                        where gender == null || o.GenderId == gender || (o.GenderId ?? 0) == 0
                         select o;
                 list = q.ToList();
             }
@@ -172,7 +172,7 @@ namespace CmsWeb.Models
                 var q = from o in DbUtil.Db.Organizations
                         where o.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge
                         where o.DivOrgs.Any(di => di.DivId == divid)
-                        where gender == null || o.GenderId == gender || o.GenderId == 0
+                        where gender == null || o.GenderId == gender || (o.GenderId ?? 0) == 0
                         select o;
                 list = q.ToList();
             }

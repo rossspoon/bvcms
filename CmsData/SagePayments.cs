@@ -80,7 +80,7 @@ namespace CmsData
 				}
 				else
 				{
-					coll["GUID"] = rg.SageBankGuid.ToString().Replace("-", "");
+					coll["GUID"] = rg.SageCardGuid.ToString().Replace("-", "");
 					if (!cardnumber.StartsWith("X"))
 					{
 						var b = wc.UploadValues("UPDATE_CREDIT_CARD_DATA", "POST", coll);
