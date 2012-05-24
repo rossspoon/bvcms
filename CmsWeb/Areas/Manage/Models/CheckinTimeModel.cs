@@ -10,11 +10,15 @@ namespace CmsWeb.Models
 	public class CheckinTimeModel
 	{
 		public static string ALL_ACTIVITIES = "- All Activities -";
+		public static string ALL_LOCATIONS = "- All Locations -";
 
 		public DateTime? dateStart { get; set; }
 		public DateTime? dateEnd { get; set; }
 		public int Person { get; set; }
-		public string Activity { get; set; }
+		public string location { get; set; }
+		public string activity { get; set; }
+		public bool withGuest { get; set; }
+		public bool isGuestOf { get; set; }
 
 		public PagerModel2 Pager { get; set; }
 
@@ -35,8 +39,23 @@ namespace CmsWeb.Models
 			return ieResults;
 		}
 
+		public IEnumerable<CheckInTime> Locations()
+		{
+			var acResults = from y in DbUtil.Db.CheckInTimes
+								 where y.Location != null
+							  group y by y.Location into z
+							  select z.FirstOrDefault();
+
+			CheckInTime[] ciaAll = { new CheckInTime { Id = 0, Location = ALL_LOCATIONS } }; 
+			IEnumerable<CheckInTime> ieResults = ciaAll.AsEnumerable().Concat( acResults.AsEnumerable() );
+
+			return ieResults;
+		}
+
 		public IQueryable<CheckInTime> Times()
 		{
+			Debug.WriteLine( "withGuest: " + withGuest + " - isGuestOf: " + isGuestOf );
+			
 			if( dateEnd != null ) { dateEnd = dateEnd.Value.AddHours( 23 ); dateEnd = dateEnd.Value.AddMinutes( 59 ); dateEnd = dateEnd.Value.AddSeconds( 59 ); }
 
 			var results = from y in DbUtil.Db.CheckInTimes 
@@ -44,6 +63,8 @@ namespace CmsWeb.Models
 							  where y.CheckInTimeX <= dateEnd || dateEnd == null
 							  where y.PeopleId == Person || Person == 0
 							  select y;
+
+			if( isGuestOf ) results = from z in results where z.GuestOfId != null select z;
 
 			if( Pager.Direction == null ) Pager.Direction = "0";
 			if( Pager.Sort == null ) Pager.Sort = "0";
@@ -79,7 +100,8 @@ namespace CmsWeb.Models
 				}
 			}
 
-			if( Activity != null && !Activity.Equals( ALL_ACTIVITIES ) ) results = from x in results where x.CheckInActivities.Any( z => z.Activity == Activity ) select x;
+			if( activity != null && !activity.Equals( ALL_ACTIVITIES ) ) results = from x in results where x.CheckInActivities.Any( z => z.Activity == activity ) select x;
+			if( location != null && !location.Equals( ALL_LOCATIONS ) ) results = from x in results where x.Location == location select x;
 
 			Pager.setCountDelegate( results.Count );
 			return results.Skip( Pager.StartRow ).Take( Pager.PageSize );

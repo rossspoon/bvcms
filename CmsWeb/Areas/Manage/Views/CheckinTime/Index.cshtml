@@ -69,7 +69,10 @@
 				$('#clear').bind('click', function (ev) {
 					ev.preventDefault();
 					$("#Person").val(0);
-					$("#Activity").val(0);
+					$("#activity").val(0);
+					$("#location").val(0);
+					$("#withGuest").val( false );
+					$("#isGuestOf").val( false );
 					$("#dateStart").val("");
 					$("#dateEnd").val("");
 

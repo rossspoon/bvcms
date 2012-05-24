@@ -12,19 +12,24 @@ IQueryable<CheckInTime> iqResults = Model.Times();
 		<tr>
 			<td align="right">Start Date: </td>
 			<td>@Html.DatePicker("dateStart")</td>
-			<td align="right">@Html.CheckBox("withGuest")</td>
-			<td>Show Only With Guest</td>
+			<td align="right">@Html.CheckBox("withGuest", Model.withGuest )</td>
+			<td>Show With Guest</td>
 		</tr>
 		<tr>
 			<td align="right">End Date: </td>
 			<td>@Html.DatePicker("dateEnd")</td>
-			<td align="right">&nbsp;</td>
-			<td>Filter Total: @Model.Pager.GetCount()</td>
+			<td align="right">@Html.CheckBox("isGuestOf", Model.isGuestOf )</td>
+			<td>Show Is Guest Of</td>
+		</tr>
+		<tr>
+			<td align="right">Locations: </td>
+			<td>@Html.DropDownList( "location", new SelectList( Model.Locations(), "Location", "Location", Model.location ) )</td>
+			<td colspan="2">&nbsp;</td>
 		</tr>
 		<tr>
 			<td align="right">Activity: </td>
-			<td>@Html.DropDownList( "Activity", new SelectList( Model.Activities(), "Activity", "Activity", Model.Activity ) )</td>
-			<td colspan="2">&nbsp;</td>
+			<td>@Html.DropDownList( "activity", new SelectList( Model.Activities(), "Activity", "Activity", Model.activity ) )</td>
+			<td colspan="2" align="center">Filter Total: @Model.Pager.GetCount()</td>
 		</tr>
 		<tr>
 			<td align="right" colspan="4"><a id="filter" href="#" class="submitbutton bt">Filter</a> <a id="clear" href="#" class="submitbutton bt">Clear</a></td>
