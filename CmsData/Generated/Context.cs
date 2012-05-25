@@ -2713,6 +2713,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.NextAnniversary", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? NextAnniversary(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.GetPeopleIdFromACS", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? GetPeopleIdFromACS(

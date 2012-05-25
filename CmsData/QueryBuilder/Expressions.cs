@@ -1336,6 +1336,17 @@ namespace CmsData
 			var right = Expression.Constant(days, typeof(int?));
 			return Compare(left, op, right);
 		}
+		internal static Expression DaysTillAnniversary(
+			ParameterExpression parm, CMSDataContext Db,
+			CompareType op,
+			int days)
+		{
+			Expression<Func<Person, int?>> pred = p =>
+				SqlMethods.DateDiffDay(Util.Now.Date, Db.NextAnniversary(p.PeopleId));
+			Expression left = Expression.Invoke(pred, parm);
+			var right = Expression.Constant(days, typeof(int?));
+			return Compare(left, op, right);
+		}
 		internal static Expression DaysSinceContact(
 			ParameterExpression parm,
 			CompareType op,

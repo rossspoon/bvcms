@@ -136,6 +136,10 @@ namespace CmsData
                     return Expressions.DaysTillBirthday(parm, Db,
                                CompType,
                                c.TextValue.ToInt());
+                case QueryType.DaysTillAnniversary:
+                    return Expressions.DaysTillAnniversary(parm, Db,
+                               CompType,
+                               c.TextValue.ToInt());
                 case QueryType.DaysSinceContact:
                     return Expressions.DaysSinceContact(parm,
                                CompType,

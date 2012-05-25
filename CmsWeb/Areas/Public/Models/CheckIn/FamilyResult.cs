@@ -92,7 +92,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("mv", c.MemberVisitor);
                     w.WriteAttributeString("name", c.DisplayName);
                     w.WriteAttributeString("preferredname", c.PreferredName);
-                    w.WriteAttributeString("first", c.PreferredName);
+                    w.WriteAttributeString("first", c.First);
                     w.WriteAttributeString("last", c.Last);
                     w.WriteAttributeString("org", c.DisplayClass);
                     w.WriteAttributeString("orgname", c.OrgName);

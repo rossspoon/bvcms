@@ -207,6 +207,7 @@ namespace CmsCheckin
 
         private void GoBack_Click(object sender, EventArgs e)
         {
+			JoiningNotAttending = false;
 			if (Program.baseform.textbox.Parent is Home)
 			{
 				this.Swap(Program.home.family);
@@ -221,6 +222,7 @@ namespace CmsCheckin
         }
         private void ClearControls()
         {
+			JoiningNotAttending = false;
             foreach (var c in controls)
             {
                 this.Controls.Remove(c);

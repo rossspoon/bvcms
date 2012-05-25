@@ -30,6 +30,7 @@ namespace CmsData
         CreatedDate,
         DaysBetween12Attendance,
         DaysSinceContact,
+        DaysTillAnniversary,
         DaysTillBirthday,
         DeceasedDate,
         DecisionDate,

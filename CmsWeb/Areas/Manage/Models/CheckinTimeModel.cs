@@ -62,7 +62,7 @@ namespace CmsWeb.Models
 						case 2: results = from z in results orderby z.CheckInTimeX descending select z; break;
 						case 3: results = from z in results orderby z.Location descending select z; break;
 						case 4: results = from z in results orderby z.CheckInActivities.FirstOrDefault().Activity descending select z; break;
-						case 5: results = from z in results orderby z.GuestOf.Name descending select z; break;
+						case 5: results = from z in results orderby z.GuestOf.Person.Name descending select z; break;
 					}
 					break;
 				}

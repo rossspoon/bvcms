@@ -24,6 +24,9 @@
     <Field Name="DaysTillBirthday" Title="Days Till Birthday" Type="Integer">
       Number of days until next birthday (if known.) Always less than 365.
     </Field>
+    <Field Name="DaysTillAnniversary" Title="Days Till Anniversary" Type="Integer">
+      Number of days until next annivesary (if known.) Always less than 365.
+    </Field>
     <Field Name="Grade" Type="Integer">
       Grade in school 
     </Field>

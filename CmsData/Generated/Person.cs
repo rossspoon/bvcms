@@ -240,8 +240,6 @@ namespace CmsData
 		private string _PrimaryCountry;
 		
    		
-   		private EntitySet< CheckInTime> _CheckinTimes;
-		
    		private EntitySet< Contactee> _contactsHad;
 		
    		private EntitySet< Contactor> _contactsMade;
@@ -692,8 +690,6 @@ namespace CmsData
     #endregion
 		public Person()
 		{
-			
-			this._CheckinTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckinTimes), new Action< CheckInTime>(this.detach_CheckinTimes)); 
 			
 			this._contactsHad = new EntitySet< Contactee>(new Action< Contactee>(this.attach_contactsHad), new Action< Contactee>(this.detach_contactsHad)); 
 			
@@ -3317,16 +3313,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="CheckinTimes__GuestOf", Storage="_CheckinTimes", OtherKey="GuestOfId")]
-   		public EntitySet< CheckInTime> CheckinTimes
-   		{
-   		    get { return this._CheckinTimes; }
-
-			set	{ this._CheckinTimes.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="contactsHad__person", Storage="_contactsHad", OtherKey="PeopleId")]
    		public EntitySet< Contactee> contactsHad
    		{
@@ -4550,19 +4536,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_CheckinTimes(CheckInTime entity)
-		{
-			this.SendPropertyChanging();
-			entity.GuestOf = this;
-		}
-
-		private void detach_CheckinTimes(CheckInTime entity)
-		{
-			this.SendPropertyChanging();
-			entity.GuestOf = null;
-		}
-
-		
 		private void attach_contactsHad(Contactee entity)
 		{
 			this.SendPropertyChanging();

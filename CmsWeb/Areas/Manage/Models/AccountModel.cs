@@ -128,7 +128,15 @@ namespace CmsWeb.Models
 
 			var impersonating = false;
 			User user = null;
-			int n = q.Count();
+			int n = 0;
+			try
+			{
+				n = q.Count();
+			}
+			catch (Exception)
+			{
+				return "bad database";
+			}
 			int failedpasswordcount = 0;
 			foreach (var u in q.ToList())
 				if (u.TempPassword != null && password == u.TempPassword)

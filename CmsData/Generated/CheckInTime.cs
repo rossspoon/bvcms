@@ -23,17 +23,19 @@ namespace CmsData
 		
 		private DateTime? _CheckInTimeX;
 		
-		private int? _GuestOfId;
-		
 		private string _Location;
+		
+		private int? _GuestOfId;
 		
    		
    		private EntitySet< CheckInActivity> _CheckInActivities;
 		
-    	
-		private EntityRef< Person> _GuestOf;
+   		private EntitySet< CheckInTime> _Guests;
 		
+    	
 		private EntityRef< Person> _Person;
+		
+		private EntityRef< CheckInTime> _GuestOf;
 		
 	#endregion
 	
@@ -51,11 +53,11 @@ namespace CmsData
 		partial void OnCheckInTimeXChanging(DateTime? value);
 		partial void OnCheckInTimeXChanged();
 		
-		partial void OnGuestOfIdChanging(int? value);
-		partial void OnGuestOfIdChanged();
-		
 		partial void OnLocationChanging(string value);
 		partial void OnLocationChanged();
+		
+		partial void OnGuestOfIdChanging(int? value);
+		partial void OnGuestOfIdChanged();
 		
     #endregion
 		public CheckInTime()
@@ -63,10 +65,12 @@ namespace CmsData
 			
 			this._CheckInActivities = new EntitySet< CheckInActivity>(new Action< CheckInActivity>(this.attach_CheckInActivities), new Action< CheckInActivity>(this.detach_CheckInActivities)); 
 			
+			this._Guests = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_Guests), new Action< CheckInTime>(this.detach_Guests)); 
 			
-			this._GuestOf = default(EntityRef< Person>); 
 			
 			this._Person = default(EntityRef< Person>); 
+			
+			this._GuestOf = default(EntityRef< CheckInTime>); 
 			
 			OnCreated();
 		}
@@ -143,6 +147,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(50)")]
+		public string Location
+		{
+			get { return this._Location; }
+
+			set
+			{
+				if (this._Location != value)
+				{
+				
+                    this.OnLocationChanging(value);
+					this.SendPropertyChanging();
+					this._Location = value;
+					this.SendPropertyChanged("Location");
+					this.OnLocationChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="GuestOfId", UpdateCheck=UpdateCheck.Never, Storage="_GuestOfId", DbType="int")]
 		public int? GuestOfId
 		{
@@ -168,28 +194,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(50)")]
-		public string Location
-		{
-			get { return this._Location; }
-
-			set
-			{
-				if (this._Location != value)
-				{
-				
-                    this.OnLocationChanging(value);
-					this.SendPropertyChanging();
-					this._Location = value;
-					this.SendPropertyChanged("Location");
-					this.OnLocationChanged();
-				}
-
-			}
-
-		}
-
-		
     #endregion
         
     #region Foreign Key Tables
@@ -204,52 +208,20 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="Guests__GuestOf", Storage="_Guests", OtherKey="GuestOfId")]
+   		public EntitySet< CheckInTime> Guests
+   		{
+   		    get { return this._Guests; }
+
+			set	{ this._Guests.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
     	
-		[Association(Name="CheckinTimes__GuestOf", Storage="_GuestOf", ThisKey="GuestOfId", IsForeignKey=true)]
-		public Person GuestOf
-		{
-			get { return this._GuestOf.Entity; }
-
-			set
-			{
-				Person previousValue = this._GuestOf.Entity;
-				if (((previousValue != value) 
-							|| (this._GuestOf.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._GuestOf.Entity = null;
-						previousValue.CheckinTimes.Remove(this);
-					}
-
-					this._GuestOf.Entity = value;
-					if (value != null)
-					{
-						value.CheckinTimes.Add(this);
-						
-						this._GuestOfId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._GuestOfId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("GuestOf");
-				}
-
-			}
-
-		}
-
-		
 		[Association(Name="FK_CheckInTimes_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person Person
 		{
@@ -292,6 +264,48 @@ namespace CmsData
 		}
 
 		
+		[Association(Name="Guests__GuestOf", Storage="_GuestOf", ThisKey="GuestOfId", IsForeignKey=true)]
+		public CheckInTime GuestOf
+		{
+			get { return this._GuestOf.Entity; }
+
+			set
+			{
+				CheckInTime previousValue = this._GuestOf.Entity;
+				if (((previousValue != value) 
+							|| (this._GuestOf.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._GuestOf.Entity = null;
+						previousValue.Guests.Remove(this);
+					}
+
+					this._GuestOf.Entity = value;
+					if (value != null)
+					{
+						value.Guests.Add(this);
+						
+						this._GuestOfId = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._GuestOfId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("GuestOf");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
@@ -319,6 +333,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.CheckInTime = null;
+		}
+
+		
+		private void attach_Guests(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.GuestOf = this;
+		}
+
+		private void detach_Guests(CheckInTime entity)
+		{
+			this.SendPropertyChanging();
+			entity.GuestOf = null;
 		}
 
 		
