@@ -129,6 +129,7 @@ namespace CmsCheckin
                     dob = e.Attribute("dob").Value,
                     church = e.Attribute("church").Value,
 
+                    preferredname = e.Attribute("prefferedname").Value,
                     goesby = e.Attribute("goesby").Value,
                     email = e.Attribute("email").Value,
                     addr = e.Attribute("addr").Value,
@@ -676,7 +677,7 @@ namespace CmsCheckin
                         pid = c.cinfo.pid,
                         mv = c.cinfo.mv,
                         n = c.NumLabels,
-                        first = c.first,
+                        first = c.preferredname,
                         last = c.last,
                         location = c.location,
                         hour = c.cinfo.hour,
@@ -828,6 +829,7 @@ namespace CmsCheckin
         public string dob { get; set; }
         public string church { get; set; }
 
+        public string preferredname { get; set; }
         public string goesby { get; set; }
         public string email { get; set; }
         public string addr { get; set; }

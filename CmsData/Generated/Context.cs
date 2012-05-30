@@ -94,6 +94,10 @@ namespace CmsData
         partial void UpdateChangeLog(ChangeLog instance);
         partial void DeleteChangeLog(ChangeLog instance);
         
+        partial void InsertCheckedBatch(CheckedBatch instance);
+        partial void UpdateCheckedBatch(CheckedBatch instance);
+        partial void DeleteCheckedBatch(CheckedBatch instance);
+        
         partial void InsertCheckInActivity(CheckInActivity instance);
         partial void UpdateCheckInActivity(CheckInActivity instance);
         partial void DeleteCheckInActivity(CheckInActivity instance);
@@ -707,6 +711,12 @@ namespace CmsData
 		public Table< ChangeLog> ChangeLogs
 		{
 			get	{ return this.GetTable< ChangeLog>(); }
+
+		}
+
+		public Table< CheckedBatch> CheckedBatches
+		{
+			get	{ return this.GetTable< CheckedBatch>(); }
 
 		}
 
@@ -2677,6 +2687,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.NextAnniversary", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? NextAnniversary(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.FindResCode", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? FindResCode(
@@ -2710,18 +2732,6 @@ namespace CmsData
 			return ((DateTime?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 peopleid
-                ).ReturnValue));
-		}
-
-		[Function(Name="dbo.NextAnniversary", IsComposable = true)]
-		[return: Parameter(DbType = "datetime")]
-		public DateTime? NextAnniversary(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((DateTime?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
                 ).ReturnValue));
 		}
 

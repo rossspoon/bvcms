@@ -23,7 +23,7 @@ namespace CmsWeb.Models
     {
         public static string GetTransactionGateway()
         {
-            return DbUtil.Db.Setting("TransactionGateway", "ServiceU");
+            return DbUtil.Db.Setting("TransactionGateway", "serviceu").ToLower();
         }
         public decimal Amount()
         {

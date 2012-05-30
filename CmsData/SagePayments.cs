@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
 using System.Linq;
 using System.Web;
 using CmsData;
@@ -408,6 +409,49 @@ namespace CmsData
 			coll["C_SHIP_ZIP"] = "";
 			coll["C_SHIP_STATE"] = "";
 			coll["C_SHIP_COUNTRY"] = "";
+		}
+		public DataSet SettledBatchSummary(DateTime start, DateTime end, bool IncludeCreditCard, bool IncludeVirtualCheck)
+		{
+			var wc = new WebClient();
+			wc.BaseAddress = "https://www.sagepayments.net/web_services/vterm_extensions/reporting.asmx/";
+			var coll = new NameValueCollection();
+			coll["M_ID"] = login;
+			coll["M_KEY"] = key;
+			coll["START_DATE"] = start.ToShortDateString();
+			coll["END_DATE"] = end.ToShortDateString();
+			coll["INCLUDE_BANKCARD"] = IncludeCreditCard.ToString();
+			coll["INCLUDE_VIRTUAL_CHECK"] = IncludeVirtualCheck.ToString();
+
+			var b = wc.UploadValues("VIEW_SETTLED_BATCH_SUMMARY", "POST", coll);
+			var ret = Encoding.ASCII.GetString(b);
+			var ds = new DataSet();
+			ds.ReadXml(new StringReader(ret));
+			return ds;
+		}
+		public DataSet SettledBatchListing(string batchref, string type)
+		{
+			var wc = new WebClient();
+			wc.BaseAddress = "https://www.sagepayments.net/web_services/vterm_extensions/reporting.asmx/";
+			var coll = new NameValueCollection();
+			coll["M_ID"] = login;
+			coll["M_KEY"] = key;
+			coll["BATCH_REFERENCE"] = batchref;
+
+			string method = null;
+			switch (type)
+			{
+				case "eft":
+					method = "VIEW_VIRTUAL_CHECK_SETTLED_BATCH_LISTING";
+					break;
+				case "bankcard":
+					method = "VIEW_BANKCARD_SETTLED_BATCH_LISTING";
+					break;
+			}
+			var b = wc.UploadValues(method, "POST", coll);
+			var ret = Encoding.ASCII.GetString(b);
+			var ds = new DataSet();
+			ds.ReadXml(new StringReader(ret));
+			return ds;
 		}
 	}
 }

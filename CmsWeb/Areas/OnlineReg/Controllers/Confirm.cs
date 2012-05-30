@@ -33,7 +33,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if ((pf.AmtToPay ?? 0) <= 0 && (pf.Donate ?? 0) <= 0)
 			{
 				DbUtil.Db.SubmitChanges();
-				return RedirectToAction("Confirm", new { pf.DatumId, TransactionID = "zero paid", });
+				ModelState.AddModelError("form", "amount zero");
+				return View("ProcessPayment", pf);
 			}
 
 			try
@@ -84,7 +85,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			}
 			TransactionResponse tinfo;
 			var gateway = OnlineRegModel.GetTransactionGateway();
-			if (gateway.ToLower() == "authorizenet")
+			if (gateway == "authorizenet")
 				if (pf.Type == "B")
 					tinfo = OnlineRegModel.PostECheck(
 						pf.Routing, pf.Account,
@@ -101,7 +102,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 						pid ?? 0, pf.Email, first, last,
 						pf.Address, pf.City, pf.State, pf.Zip,
 						pf.testing);
-			else if (gateway.ToLower() == "sage")
+			else if (gateway == "sage")
 				if (pf.Type == "B")
 					tinfo = OnlineRegModel.PostVirtualCheckTransactionSage(
 						pf.Routing, pf.Account,

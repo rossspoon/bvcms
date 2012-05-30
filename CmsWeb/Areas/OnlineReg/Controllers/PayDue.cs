@@ -30,7 +30,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			ViewBag.Url = pf.Url;
 			ViewBag.timeout = INT_timeout;
-			if (OnlineRegModel.GetTransactionGateway().ToLower() != "serviceu")
+			if (OnlineRegModel.GetTransactionGateway() != "serviceu")
 				return View("ProcessPayment", pf);
 			ViewBag.TranId = ti.Id;
 			return View(pf);

@@ -36,7 +36,7 @@ namespace CmsWeb.Models
 			get 
 			{
 				if (!_noEChecksAllowed.HasValue)
-					_noEChecksAllowed = OnlineRegModel.GetTransactionGateway().ToLower() != "sage";
+					_noEChecksAllowed = OnlineRegModel.GetTransactionGateway() != "sage";
 				return _noEChecksAllowed.Value;
 			}
 		}

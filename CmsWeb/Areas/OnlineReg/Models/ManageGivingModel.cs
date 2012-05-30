@@ -88,7 +88,7 @@ namespace CmsWeb.Models
             testing = true;
 #endif
 			NoCreditCardsAllowed = DbUtil.Db.Setting("NoCreditCardGiving", "false").ToBool();
-			NoEChecksAllowed = OnlineRegModel.GetTransactionGateway().ToLower() != "sage";
+			NoEChecksAllowed = OnlineRegModel.GetTransactionGateway() != "sage";
 		}
 
 		public ManageGivingModel(int pid, int orgid)

@@ -12,8 +12,10 @@ namespace CmsData
     	{
     		get
     		{
+				if (!Util.IsSage.HasValue)
+					Util.IsSage = DbUtil.Db.Setting("TransactionGateway", "").ToLower() == "sage";
     			return Approved == true 
-    			       && TransactionGateway == "Sage"
+    			       && Util.IsSage.Value
     			       && Voided != true
     			       && Credited != true
     			       && (Coupon ?? false) == false

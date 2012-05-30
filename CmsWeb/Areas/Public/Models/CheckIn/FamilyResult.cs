@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Xml;
 using System.Web.Mvc;
 using System.Xml.Linq;
@@ -77,6 +78,8 @@ namespace CmsWeb.Models
                 var code = DbUtil.Db.NextSecurityCode(DateTime.Today).Select(c => c.Code).Single();
                 w.WriteAttributeString("securitycode", code);
 
+				var accommodateCheckInBug = DbUtil.Db.Setting("AccommodateCheckinBug", "false").ToBool();
+
                 foreach (var c in q)
                 {
                     double leadtime = 0;
@@ -92,7 +95,10 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("mv", c.MemberVisitor);
                     w.WriteAttributeString("name", c.DisplayName);
                     w.WriteAttributeString("preferredname", c.PreferredName);
-                    w.WriteAttributeString("first", c.First);
+					if (accommodateCheckInBug) // bug in checkin requires this
+						w.WriteAttributeString("first", c.PreferredName); 
+					else
+	                    w.WriteAttributeString("first", c.First);
                     w.WriteAttributeString("last", c.Last);
                     w.WriteAttributeString("org", c.DisplayClass);
                     w.WriteAttributeString("orgname", c.OrgName);

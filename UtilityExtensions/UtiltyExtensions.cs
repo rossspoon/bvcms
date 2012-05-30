@@ -510,6 +510,21 @@ namespace UtilityExtensions
 					HttpContext.Current.Session[STR_ConnectionString] = value;
 			}
 		}
+		private const string STR_IsSage = "IsSage";
+		public static bool? IsSage
+		{
+			get
+			{
+				if (HttpContext.Current != null)
+					if (HttpContext.Current.Items[STR_IsSage] != null)
+						return (bool)HttpContext.Current.Items[STR_IsSage];
+				return null;
+			}
+			set 
+			{ 
+				HttpContext.Current.Items[STR_IsSage] = value;
+			}
+		}
 		public static string GetConnectionString(string Host)
 		{
 			var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];

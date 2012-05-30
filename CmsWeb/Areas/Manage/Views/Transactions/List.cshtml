@@ -1,4 +1,5 @@
 ﻿@using CmsWeb;
+@using CmsWeb.Models
 @using UtilityExtensions;
 @model CmsWeb.Models.TransactionsModel
 <div class="roundbox floatleft">
@@ -16,7 +17,9 @@
         <td>@Html.CheckBox("nocoupons")</td>
     </tr>
 	<tr><td align="right">Name:</td>
-		<td colspan="3">@Html.TextBox("name")</td>
+		<td>@Html.TextBox("name")</td>
+		<td></td>
+        <td>Use Batch Dates: @Html.CheckBox("usebatchdates")</td>
     </tr>
 	<tr><td align="right">&gt; Amount:</td>
 		<td>@Html.TextBox("gtamount")</td>
@@ -41,6 +44,7 @@
     <thead>
 @{
     var tt = Model.TotalTransactions();
+    var isSage = OnlineRegModel.GetTransactionGateway() == "sage";
 }
 @if(tt != null)
 {
@@ -60,14 +64,20 @@
             <th><a href="#" class="sortable">Id</a></th>
             <th><a href="#" class="sortable">Tran Id</a></th>
             <th><a href="#" class="sortable">Appr</a></th>
-            <th><a href="#" class="sortable">Date</a></th>
+			<th><a href="#" class="sortable">Tran Date</a>
+        @if(isSage)
+        {
+    			<br /><a href="#" class="sortable">Batch Date</a>
+        }
+            </th>
+            <th><a href="#" class="sortable">Type</a></th>
             <th><a href="#" class="sortable">Description</a></th>
             <th><a href="#" class="sortable">Name</a></th>
             <th align="right"><a href="#" class="sortable">Amt</a></th>
-@if(Model.finance)
-{
+        @if(Model.finance)
+        {
             <th align="right"><a href="#" class="sortable">Donate</a></th>
-}
+        }
             <th align="right"><a href="#" class="sortable">Due</a></th>
             <th colspan="2"></th>
         </tr>
@@ -83,7 +93,13 @@
             title="TranId:@t.TransactionId|ApprovalCode:@(t.ApprovalCode ?? "na")|AuthCode:@(t.AuthCode ?? "na")|Message:@(t.Message ?? "na")|OriginalId:@t.OriginalId">@t.Id</td>
             <td>@t.TransactionId</td>
             <td>@if (t.Approved == true){<img alt="Y" src="/Content/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
-            <td>@t.TransactionDate.FormatDateTm()</td>
+            <td nowrap="nowrap">@t.TransactionDate.FormatDateTm()
+        @if(isSage)
+		{
+    			<div>@t.Batch.FormatDate()</div>
+		}
+            </td>
+            <td>@t.Batchtyp</td>
             <td>@t.Description</td>
             <td><a href='@Util.ResolveServerUrl("/OnlineReg/ConfirmTest/")@t.DatumId'>@t.Name</a></td>
             <td align="right">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>

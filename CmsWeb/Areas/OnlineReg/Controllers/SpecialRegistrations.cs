@@ -175,7 +175,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             try
             {
                 var gateway = OnlineRegModel.GetTransactionGateway();
-                if (gateway == "AuthorizeNet")
+                if (gateway == "authorizenet")
                 {
                     var au = new AuthorizeNet(DbUtil.Db, m.testing);
                     au.AddUpdateCustomerProfile(m.pid,
@@ -194,7 +194,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                         m.Account,
                         m.testing);
                 }
-                else if (gateway == "Sage")
+                else if (gateway == "sage")
                 {
                     var sg = new CmsData.SagePayments(DbUtil.Db, m.testing);
                     sg.storeVault(m.pid, 
