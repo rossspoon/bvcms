@@ -81,6 +81,14 @@ namespace CmsData
 		
 		private bool? _Moneytran;
 		
+		private DateTime? _Settled;
+		
+		private DateTime? _Batch;
+		
+		private string _Batchref;
+		
+		private string _Batchtyp;
+		
    		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
@@ -193,6 +201,18 @@ namespace CmsData
 		
 		partial void OnMoneytranChanging(bool? value);
 		partial void OnMoneytranChanged();
+		
+		partial void OnSettledChanging(DateTime? value);
+		partial void OnSettledChanged();
+		
+		partial void OnBatchChanging(DateTime? value);
+		partial void OnBatchChanged();
+		
+		partial void OnBatchrefChanging(string value);
+		partial void OnBatchrefChanged();
+		
+		partial void OnBatchtypChanging(string value);
+		partial void OnBatchtypChanged();
 		
     #endregion
 		public Transaction()
@@ -913,6 +933,94 @@ namespace CmsData
 					this._Moneytran = value;
 					this.SendPropertyChanged("Moneytran");
 					this.OnMoneytranChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="settled", UpdateCheck=UpdateCheck.Never, Storage="_Settled", DbType="datetime")]
+		public DateTime? Settled
+		{
+			get { return this._Settled; }
+
+			set
+			{
+				if (this._Settled != value)
+				{
+				
+                    this.OnSettledChanging(value);
+					this.SendPropertyChanging();
+					this._Settled = value;
+					this.SendPropertyChanged("Settled");
+					this.OnSettledChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="batch", UpdateCheck=UpdateCheck.Never, Storage="_Batch", DbType="datetime")]
+		public DateTime? Batch
+		{
+			get { return this._Batch; }
+
+			set
+			{
+				if (this._Batch != value)
+				{
+				
+                    this.OnBatchChanging(value);
+					this.SendPropertyChanging();
+					this._Batch = value;
+					this.SendPropertyChanged("Batch");
+					this.OnBatchChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="batchref", UpdateCheck=UpdateCheck.Never, Storage="_Batchref", DbType="varchar(50)")]
+		public string Batchref
+		{
+			get { return this._Batchref; }
+
+			set
+			{
+				if (this._Batchref != value)
+				{
+				
+                    this.OnBatchrefChanging(value);
+					this.SendPropertyChanging();
+					this._Batchref = value;
+					this.SendPropertyChanged("Batchref");
+					this.OnBatchrefChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="batchtyp", UpdateCheck=UpdateCheck.Never, Storage="_Batchtyp", DbType="varchar(50)")]
+		public string Batchtyp
+		{
+			get { return this._Batchtyp; }
+
+			set
+			{
+				if (this._Batchtyp != value)
+				{
+				
+                    this.OnBatchtypChanging(value);
+					this.SendPropertyChanging();
+					this._Batchtyp = value;
+					this.SendPropertyChanged("Batchtyp");
+					this.OnBatchtypChanged();
 				}
 
 			}
