@@ -185,14 +185,24 @@ namespace CmsWeb
     public class DataGridResult : ActionResult
     {
         DataGrid dg;
-        public DataGridResult(IEnumerable list)
+		bool excel;
+        public DataGridResult(IEnumerable list, bool excel = false)
         {
             dg = new DataGrid();
             dg.DataSource = list;
+			this.excel = excel;
         }
         public override void ExecuteResult(ControllerContext context)
         {
             var Response = context.HttpContext.Response;
+
+			if (excel)
+			{
+				Response.Buffer = true;
+				Response.ContentType = "application/vnd.ms-excel";
+				Response.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
+			}
+        	Response.Charset = "";
             dg.DataBind();
             dg.RenderControl(new HtmlTextWriter(Response.Output));
         }

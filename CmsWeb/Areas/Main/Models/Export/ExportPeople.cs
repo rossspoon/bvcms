@@ -75,6 +75,7 @@ namespace CmsWeb.Models
                         AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
                         FellowshipClass = (om == null ? "" : om.Organization.OrganizationName),
                         AltName = p.AltName,
+						Employer = p.EmployerOther,
                         OtherId = oid ?? ""
                     };
             return q.Take(maximumRows);

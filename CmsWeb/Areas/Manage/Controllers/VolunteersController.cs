@@ -82,7 +82,7 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
             qb.CleanSlate(DbUtil.Db);
-            var clause = qb.AddNewClause(QueryType.MeetingId, CompareType.Equal, id.ToString());
+            var clause = qb.AddNewClause(QueryType.RegisteredForMeetingId, CompareType.Equal, id.ToString());
             DbUtil.Db.SubmitChanges();
 
             var meeting = DbUtil.Db.Meetings.Single(m => m.MeetingId == id);

@@ -38,5 +38,18 @@ namespace CmsWeb.Areas.Main.Controllers
         {
         	return m;
         }
+        public ActionResult RedeemerCampus()
+        {
+            var Db = DbUtil.Db;
+            var query = Db.PeopleQuery(Util.QueryBuilderScratchPadId);
+            var q = from p in query
+                    select new
+                    {
+                        PeopleId = p.PeopleId,
+						Campus = p.Campu.Description,
+						ContactId = p.GetExtra("ContactId"),
+                    };
+			return new DataGridResult(q, excel: true);
+        }
     }
 }
