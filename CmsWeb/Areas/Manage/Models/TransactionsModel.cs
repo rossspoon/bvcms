@@ -254,24 +254,25 @@ namespace CmsWeb.Models
 		}
 		public IQueryable ExportTransactions()
 		{
-			var q
-			   = from t in DbUtil.Db.Transactions
-				 where t.Amt > gtamount || gtamount == null
-				 where t.Amt <= ltamount || ltamount == null
-				 where t.TransactionDate >= startdt || startdt == null
-				 where description == null || t.Description.Contains(description)
-				 where name == null || t.Name.Contains(name)
-				 where (t.Testing ?? false) == testtransactions
-				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
-				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
-				 where (t.Financeonly ?? false) == false || finance
-				 select t;
+			var q = FetchTransactions();
+//			var q
+//			   = from t in DbUtil.Db.Transactions
+//				 where t.Amt > gtamount || gtamount == null
+//				 where t.Amt <= ltamount || ltamount == null
+//				 where t.TransactionDate >= startdt || startdt == null
+//				 where description == null || t.Description.Contains(description)
+//				 where name == null || t.Name.Contains(name)
+//				 where (t.Testing ?? false) == testtransactions
+//				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
+//				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
+//				 where (t.Financeonly ?? false) == false || finance
+//				 select t;
 
-			var edt = enddt;
-			if (!edt.HasValue && startdt.HasValue)
-				edt = startdt.Value.AddHours(24);
-			if (edt.HasValue)
-				q = q.Where(t => t.TransactionDate < edt);
+//			var edt = enddt;
+//			if (!edt.HasValue && startdt.HasValue)
+//				edt = startdt.Value.AddHours(24);
+//			if (edt.HasValue)
+//				q = q.Where(t => t.TransactionDate < edt);
 
 			var q2 = from t in q
 					 select new
@@ -280,6 +281,9 @@ namespace CmsWeb.Models
 					 t.TransactionId,
 					 t.Approved,
 					 TranDate = t.TransactionDate.FormatDate(),
+					 BatchDate = t.Batch.FormatDate(),
+					 t.Batchtyp,
+					 t.Batchref,
 					 RegAmt = (t.Amt ?? 0) - (t.Donate ?? 0),
 					 Donate = t.Donate ?? 0,
 					 TotalAmt = t.Amt ?? 0,

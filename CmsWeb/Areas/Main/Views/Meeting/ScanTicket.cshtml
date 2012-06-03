@@ -1,0 +1,34 @@
+﻿@model CmsWeb.Areas.Main.Controllers.MeetingController.ScanTicketInfo
+@using CmsWeb.Areas.Main.Controllers
+@using UtilityExtensions
+<div class="@Model.CssClass()">
+@{
+	switch (Model.error)
+	{
+	    case MeetingController.ScanTicketInfo.Error.none:
+			<h1>Successfully Marked Present</h1>
+        break;
+	    case MeetingController.ScanTicketInfo.Error.noperson:
+			<h1>Person not found</h1>
+        break;
+		case MeetingController.ScanTicketInfo.Error.notmember:
+			<h1>Not a member of this organization</h1>
+        break;
+		case MeetingController.ScanTicketInfo.Error.notregistered:
+			<h1>Not registered</h1>
+        break;
+		case MeetingController.ScanTicketInfo.Error.alreadymarked:
+			<h1>Already marked present</h1>
+        break;
+	}
+}
+@if (Model.person != null)
+{
+	<table cellpadding="5">
+		<tr> <td>Name</td><td>@Model.person.Name</td> </tr>
+		<tr> <td>Address</td><td>@Model.person.FullAddress</td> </tr>
+		<tr> <td>Birthday</td><td>@Model.person.BirthDate.ToString2("M/d")</td> </tr>
+		<tr> <td>Email</td><td>@Model.person.EmailAddress</td> </tr>
+	</table>
+}
+</div>

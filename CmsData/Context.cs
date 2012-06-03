@@ -927,11 +927,11 @@ namespace CmsData
 			//ExecuteCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED"); 
 		}
 
-		public ContributionFund AddOrFetchContributionFund(string Description)
+		public ContributionFund FetchOrCreateFund(string Description)
 		{
-			return AddOrFetchContributionFund(0, Description);
+			return FetchOrCreateFund(0, Description);
 		}
-		public ContributionFund AddOrFetchContributionFund(int FundId, string Description)
+		public ContributionFund FetchOrCreateFund(int FundId, string Description)
 		{
 			ContributionFund fund;
 			if(FundId > 0)

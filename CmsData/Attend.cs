@@ -27,7 +27,7 @@ namespace CmsData
         }
         public static string RecordAttendance(CMSDataContext Db, int PeopleId, int MeetingId, bool attended)
         {
-            int ntries = 3;
+            int ntries = 6;
             while (true)
             {
                 try
@@ -39,7 +39,7 @@ namespace CmsData
                     if (ex.Number == 1205)
                         if (--ntries > 0)
                         {
-                            System.Threading.Thread.Sleep(300);
+                            System.Threading.Thread.Sleep(500);
                             continue;
                         }
                     throw;
@@ -83,7 +83,7 @@ namespace CmsData
             a.Registered = registered;
             Db.SubmitChanges();
         }
-		public static void RecordAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)
+		public static int RecordAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)
 		{
 			var q = from o in Db.Organizations
 					where o.OrganizationId == OrgId
@@ -126,7 +126,7 @@ namespace CmsData
 			}
 			RecordAttendance(Db, PeopleId, meeting.MeetingId, Present);
 			Db.UpdateMeetingCounters(meeting.MeetingId);
+			return meeting.MeetingId;
 		}
-
     }
 }

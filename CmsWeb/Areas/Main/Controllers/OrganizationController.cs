@@ -688,9 +688,7 @@ no need to put these into the ""Source"" view of the editor anymore.
             var m = new OrganizationModel(id, null);
             try
             {
-                var oev = new OrganizationExtra { OrganizationId = id, Field = field, Data = value, DataType = multiline ? "text" : null };
-                DbUtil.Db.OrganizationExtras.InsertOnSubmit(oev);
-                DbUtil.Db.SubmitChanges();
+				m.org.AddEditExtra(DbUtil.Db, field, value, multiline);
             }
             catch (Exception ex)
             {

@@ -365,7 +365,12 @@ namespace CmsData
         {
             return Person.Add(DbUtil.Db, true, fam, position, tag, firstname, nickname, lastname, dob, MarriedCode, gender, originId, EntryPointId);
         }
-        public static Person Add(CMSDataContext Db, bool SendNotices, Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, int MarriedCode, int gender, int originId, int? EntryPointId, bool testing = false)
+		public static Person Add(CMSDataContext Db, Family fam, string firstname, string nickname, string lastname, DateTime? dob)
+		{
+			return Person.Add(Db, false, fam, 20, null, firstname, nickname, lastname, dob.FormatDate(), 0, 0, 0, 0);
+		}
+
+    	public static Person Add(CMSDataContext Db, bool SendNotices, Family fam, int position, Tag tag, string firstname, string nickname, string lastname, string dob, int MarriedCode, int gender, int originId, int? EntryPointId, bool testing = false)
         {
             var p = new Person();
             p.CreatedDate = Util.Now;
@@ -1115,6 +1120,20 @@ namespace CmsData
 				Db.SubmitChanges();
 			}
 			return ms.Id;
+		}
+		public static Campu FetchOrCreateCampus(CMSDataContext Db, string campus)
+		{
+			var cam = Db.Campus.SingleOrDefault(pp => pp.Description == campus);
+			if (cam == null)
+			{
+				int max = 10;
+				if (Db.Campus.Any())
+					max = Db.Campus.Max(mm => mm.Id) + 10;
+				cam = new Campu() { Id = max, Description = campus, Code = campus.Truncate(20)};
+				Db.Campus.InsertOnSubmit(cam);
+				Db.SubmitChanges();
+			}
+			return cam;
 		}
     }
 }

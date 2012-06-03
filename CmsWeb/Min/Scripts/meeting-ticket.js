@@ -1,0 +1,1 @@
+$(function(){$(".bt").button(),$("#wandtarget").keypress(function(n){if(n.which!=13)return!0;var r=$("#wandtarget"),i=$(this).closest("form"),t=i.serialize();return $.post("/Meeting/ScanTicket/",t,function(n){$("#mark").html(n),r.val("")}),!1}),$(".atck").change(function(){var t=$(this),i=t.parent().parent()}),$("#wandtarget").focus()})

@@ -215,7 +215,7 @@ Please search with a different email, phone, or birthday.";
 
                     if (ModelState.IsValid && address.HasValue()
                         && (country == "United States" || !country.HasValue()))
-                    {
+					{
                         var r = AddressVerify.LookupAddress(address, address2, city, state, zip);
                         if (r.Line1 != "error")
                         {

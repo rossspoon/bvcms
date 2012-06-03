@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -67,6 +68,29 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.LogActivity("iPad Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
             return View(m);
         }
+        public ActionResult Tickets(int? id)
+        {
+            if (!id.HasValue)
+                return RedirectShowError("no id");
+            var m = new MeetingModel(id.Value);
+            m.showall = true;
+            if (m.meeting == null)
+                return RedirectShowError("no meeting");
+
+			if (Util2.OrgMembersOnly
+				&& !DbUtil.Db.OrganizationMembers.Any(om =>
+					om.OrganizationId == m.meeting.OrganizationId
+					&& om.PeopleId == Util.UserPeopleId))
+				return RedirectShowError("You must be a member of this organization to have access to this page");
+			else if (Util2.OrgLeadersOnly
+				&& !DbUtil.Db.OrganizationMembers.Any(om =>
+					om.OrganizationId == m.meeting.OrganizationId
+					&& om.PeopleId == Util.UserPeopleId
+                    && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
+				return RedirectShowError("You must be a leader of this organization to have access to this page");
+			DbUtil.LogActivity("Tickets Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
+            return View(m);
+        }
         [HttpPost]
         public ContentResult EditGroup(string id, string value)
         {
@@ -123,6 +147,67 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content(value);
         }
 
+    	public class ScanTicketInfo
+    	{
+			public enum Error
+			{
+				none,
+				alreadymarked,
+				notmember,
+				notregistered,
+				noperson
+			}
+    		public Error error { get; set; }
+    		public Person person { get; set; }
+    		public Meeting meeting { get; set; }
+    		public Attend attended { get; set; }
+    		public OrganizationMember orgmember { get; set; }
+			public string CssClass()
+			{
+				if (error == Error.none)
+					return "bgyellow";
+				return "bgred";
+			}
+    	}
+
+    	[Authorize(Roles = "Attendance")]
+        [HttpPost]
+        public ActionResult ScanTicket(int wandtarget, int MeetingId, bool? requireMember, bool? requireRegistered)
+        {
+			var q = from person in DbUtil.Db.People
+					where person.PeopleId == wandtarget
+					let meeting = DbUtil.Db.Meetings.SingleOrDefault(mm => mm.MeetingId == MeetingId)
+					let attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == wandtarget)
+					let orgmember = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId && om.PeopleId == wandtarget)
+					select new ScanTicketInfo
+					{
+						person = person,
+						meeting = meeting,
+						attended = attended,
+						orgmember = orgmember
+					};
+			var d = q.SingleOrDefault();
+
+			if (d == null)
+				return View(new ScanTicketInfo 
+				{ 
+					error = ScanTicketInfo.Error.noperson,
+					person = new Person()
+				});
+
+			d.error = ScanTicketInfo.Error.none;
+    		if (d.attended != null && d.attended.AttendanceFlag == true)
+				d.error = ScanTicketInfo.Error.alreadymarked;
+			else if (requireMember == true && d.orgmember == null)
+				d.error = ScanTicketInfo.Error.notmember;
+			else if (requireRegistered == true && (d.attended == null || d.attended.Registered != true))
+				d.error = ScanTicketInfo.Error.notregistered;
+
+			if (d.error == ScanTicketInfo.Error.none)
+	    		Attend.RecordAttendance(DbUtil.Db, wandtarget, MeetingId, true);
+
+			return View(d);
+        }
         [Authorize(Roles = "Attendance")]
         [HttpPost]
         public ActionResult MarkAttendance(int PeopleId, int MeetingId, bool Present)

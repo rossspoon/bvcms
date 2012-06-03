@@ -66,8 +66,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Squishit\dotless.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah">
-      <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="FiftyOne.Foundation">
       <HintPath>..\packages\51Degrees.mobi.2.0.6.2\lib\NET40\FiftyOne.Foundation.dll</HintPath>
@@ -292,6 +293,7 @@
     <Content Include="App_Data\51Degrees.mobi-Patch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
@@ -942,6 +944,7 @@
     <Content Include="Min\Scripts\Funds.js" />
     <Content Include="Min\Scripts\ManageVolunteer.js" />
     <Content Include="Min\Scripts\meeting-ipad.js" />
+    <Content Include="Min\Scripts\meeting-ticket.js" />
     <Content Include="Min\Scripts\meeting.js" />
     <Content Include="Min\Scripts\Meetings.js" />
     <Content Include="Min\Scripts\merge.js" />
@@ -975,6 +978,7 @@
     <Content Include="Min\Scripts\UserDialog.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
+    <Content Include="Scripts\meeting-ticket.js" />
     <Content Include="Scripts\TotalsByFund.js" />
     <Content Include="Scripts\ManageVolunteer.js" />
     <Content Include="Scripts\headermenu.js" />
@@ -1113,6 +1117,8 @@
     </Content>
     <Content Include="Areas\Manage\Views\CheckinTime\Index.cshtml" />
     <Content Include="Areas\Manage\Views\CheckinTime\List.cshtml" />
+    <Content Include="Areas\Main\Views\Meeting\tickets.cshtml" />
+    <Content Include="Areas\Main\Views\Meeting\ScanTicket.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="TestConnectionStrings.config" />
     <None Include="Minify.bat" />

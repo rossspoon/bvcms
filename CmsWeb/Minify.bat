@@ -110,5 +110,6 @@ ajaxmin Scripts/merge.js -o Min\Scripts/merge.js -clobber:true || pause
 ajaxmin Scripts/pickslots2.js -o Min\Scripts/pickslots2.js -clobber:true || pause
 ajaxmin Content/js/jquery.checkboxtree.js -o Min/content/js/jquery.checkboxtree.js -clobber:true || pause
 ajaxmin Scripts/meeting-ipad.js -o Min/scripts/meeting-ipad.js -clobber:true || pause
+ajaxmin Scripts/meeting-ticket.js -o Min/scripts/meeting-ticket.js -clobber:true || pause
 ajaxmin Scripts/email.js -o Min/scripts/email.js -clobber:true || pause
 ajaxmin Scripts/edit.js -o Min/scripts/edit.js -clobber:true || pause
