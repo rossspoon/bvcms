@@ -129,7 +129,7 @@ namespace CmsCheckin
                     dob = e.Attribute("dob").Value,
                     church = e.Attribute("church").Value,
 
-                    preferredname = e.Attribute("prefferedname").Value,
+                    preferredname = e.Attribute("preferredname").Value,
                     goesby = e.Attribute("goesby").Value,
                     email = e.Attribute("email").Value,
                     addr = e.Attribute("addr").Value,

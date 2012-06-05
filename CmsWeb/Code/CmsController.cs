@@ -12,7 +12,15 @@ using System.IO;
 
 namespace CmsWeb
 {
-    public class CmsController : Controller
+#if DEBUG
+#else
+	[RequireHttps]
+#endif
+	public class CmsController : CmsControllerNoHttps
+	{
+	}
+
+	public class CmsControllerNoHttps : Controller
     {
         protected override void HandleUnknownAction(string actionName)
         {
@@ -86,6 +94,10 @@ namespace CmsWeb
 			}
 		}
     }
+#if DEBUG
+#else
+   [RequireHttps]
+#endif
     public class CmsStaffController : Controller
     {
         public bool NoCheckRole { get; set; }
@@ -122,6 +134,10 @@ namespace CmsWeb
                 Request.Url.OriginalString));
         }
     }
+#if DEBUG
+#else
+   [RequireHttps]
+#endif
     public class CmsStaffAsyncController : System.Web.Mvc.AsyncController
     {
         public bool NoCheckRole { get; set; }

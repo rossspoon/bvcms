@@ -50,9 +50,21 @@
     });
     $('#addvisitor,#addregistered').click(function (e) {
         e.preventDefault();
-        var d = $('#visitorDialog');
-        $('iframe', d).attr("src", this.href);
-        d.dialog("open");
+        if (e.shiftKey) {
+            if (confirm("Are you sure you want to join all visitors to org?")) {
+                $.post("/Meeting/JoinAllVisitors/" + $("#meetingid").val(), {}, function (ret) {
+                    alert(ret);
+                });
+            }
+        }
+        else {
+            var d = $('#visitorDialog');
+            $('iframe', d).attr("src", this.href);
+            d.dialog("open");
+        }
+    });
+    $('#JoinAllVisitors').click(function (e) {
+        e.preventDefault();
     });
     if ($("#showbuttons input[@name=show]:checked").val() == "attends") {
         $(".atck:not(:checked)").parent().parent().hide();

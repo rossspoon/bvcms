@@ -26,7 +26,7 @@
             $.refreshenabled = false; // false until something happens
             $(document).bind("idle.idleTimer", function () {
                 if ($.refreshenabled)
-                    window.location.href = '@Model.URL';
+                    window.location.href = '/OnlineReg/Timeout?ret=' + encodeURI('@Model.URL');
                 else
                     $.idleTimer(tmout);
             });

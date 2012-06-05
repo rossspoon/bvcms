@@ -16,6 +16,7 @@ using System.Data.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -146,6 +147,26 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(value);
         }
+        [HttpPost]
+        public ContentResult JoinAllVisitors(int id)
+        {
+            var m = new MeetingModel(id);
+			int n = 0;
+			foreach (var a in m.VisitAttends())
+			{
+	            OrganizationMember.InsertOrgMembers(DbUtil.Db,
+	                m.meeting.OrganizationId, a.PeopleId, MemberTypeCode.Member,
+	                DateTime.Today, null, false);
+				n++;
+			}
+			if (n > 0)
+			{
+				DbUtil.Db.UpdateMainFellowship(m.meeting.OrganizationId);
+				return Content("Joined {0} visitors".Fmt(n));
+			}
+			return Content("no visitors");
+        }
+
 
     	public class ScanTicketInfo
     	{

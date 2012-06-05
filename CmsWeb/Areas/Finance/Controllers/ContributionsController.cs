@@ -7,7 +7,8 @@ using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Finance.Controllers
 {
-    public class ContributionsController : Controller
+    [Authorize(Roles = "Finance")]
+    public class ContributionsController : CmsStaffController
     {
         public ActionResult Index(int? id, int? year)
         {

@@ -14,7 +14,7 @@ namespace CmsWeb.Areas.Public.Controllers
 {
 #if DEBUG
 #else
-   //[RequireHttps]
+    [RequireHttps]
 #endif
     public class APICheckin2Controller : CmsController
     {

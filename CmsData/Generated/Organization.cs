@@ -141,6 +141,8 @@ namespace CmsData
 		
 		private string _RemoveFromSmallGroupScript;
 		
+		private bool? _SuspendCheckin;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -371,6 +373,9 @@ namespace CmsData
 		
 		partial void OnRemoveFromSmallGroupScriptChanging(string value);
 		partial void OnRemoveFromSmallGroupScriptChanged();
+		
+		partial void OnSuspendCheckinChanging(bool? value);
+		partial void OnSuspendCheckinChanged();
 		
     #endregion
 		public Organization()
@@ -1797,6 +1802,28 @@ namespace CmsData
 					this._RemoveFromSmallGroupScript = value;
 					this.SendPropertyChanged("RemoveFromSmallGroupScript");
 					this.OnRemoveFromSmallGroupScriptChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="SuspendCheckin", UpdateCheck=UpdateCheck.Never, Storage="_SuspendCheckin", DbType="bit")]
+		public bool? SuspendCheckin
+		{
+			get { return this._SuspendCheckin; }
+
+			set
+			{
+				if (this._SuspendCheckin != value)
+				{
+				
+                    this.OnSuspendCheckinChanging(value);
+					this.SendPropertyChanging();
+					this._SuspendCheckin = value;
+					this.SendPropertyChanged("SuspendCheckin");
+					this.OnSuspendCheckinChanged();
 				}
 
 			}

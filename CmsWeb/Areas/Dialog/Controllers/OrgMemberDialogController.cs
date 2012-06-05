@@ -118,6 +118,9 @@ namespace CmsWeb.Areas.Dialog.Controllers
             var om2 = CmsData.OrganizationMember.InsertOrgMembers(DbUtil.Db,
                 a[3].ToInt(), om1.PeopleId, om1.MemberTypeId, DateTime.Now, om1.InactiveDate, om1.Pending ?? false);
 			DbUtil.Db.UpdateMainFellowship(om2.OrganizationId);
+			om2.EnrollmentDate = om1.EnrollmentDate;
+			if (om2.EnrollmentDate.Value.Date == DateTime.Today)
+				om2.EnrollmentDate = DateTime.Today; // force it to be midnight, so you can check them in.
             om2.Request = om1.Request;
             om2.Amount = om1.Amount;
             om2.UserData = om1.UserData;

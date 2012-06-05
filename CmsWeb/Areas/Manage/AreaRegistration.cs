@@ -30,6 +30,11 @@ namespace CmsWeb.Areas.Manage
                 new { controller = "Account", action = "Logon", id="" }
             );
             context.MapRoute(
+                "EmailsView",
+                "Manage/Emails/View/{id}",
+                new { controller = "EmailsView", action = "View", id = "" }
+            );
+            context.MapRoute(
                 "Manage_default",
                 "Manage/{controller}/{action}/{id}",
                 new { action = "Index", id = "" }

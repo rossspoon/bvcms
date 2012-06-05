@@ -17,7 +17,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #if DEBUG
 		private int INT_timeout = 1600000;
 #else
-        private int INT_timeout = DbUtil.Db.Setting("RegTimeout", "60000").ToInt();
+        private int INT_timeout = DbUtil.Db.Setting("RegTimeout", "180000").ToInt();
 #endif
 
 		// Main page
@@ -552,6 +552,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 								RegType = RegistrationTypeCode.Lookup(i.RegistrationTypeId)
 							};
 			return View(q2);
+		}
+		public ActionResult Timeout(string ret)
+		{
+			ViewBag.Url = ret;
+			return View();
 		}
 	}
 }

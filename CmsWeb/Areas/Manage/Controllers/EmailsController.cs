@@ -72,20 +72,6 @@ namespace CmsWeb.Areas.Manage.Controllers
 			DbUtil.Db.SubmitChanges();
 			return RedirectToAction("View", new { id = id });
 		}
-		public ActionResult View(int id)
-		{
-			var email = DbUtil.Db.EmailQueues.SingleOrDefault(ee => ee.Id == id);
-			if (email == null)
-				return Content("document not found, sorry");
-			if ((email.PublicX ?? false) == false)
-				return Content("no email available");
-			var em = new EmailQueue
-			{
-				Subject = email.Subject,
-				Body = email.Body.Replace("{track}", "").Replace("{first}", "")
-			};
-			return View(em);
-		}
 		[HttpPost]
 		public ActionResult Recipients(int id, string filter)
 		{
@@ -188,6 +174,24 @@ namespace CmsWeb.Areas.Manage.Controllers
 					return true;
 				}
 			}
+		}
+	}
+
+	public class EmailsViewController : CmsControllerNoHttps
+	{
+		public ActionResult View(int id)
+		{
+			var email = DbUtil.Db.EmailQueues.SingleOrDefault(ee => ee.Id == id);
+			if (email == null)
+				return Content("document not found, sorry");
+			if ((email.PublicX ?? false) == false)
+				return Content("no email available");
+			var em = new EmailQueue
+			{
+				Subject = email.Subject,
+				Body = email.Body.Replace("{track}", "").Replace("{first}", "")
+			};
+			return View(em);
 		}
 	}
 }

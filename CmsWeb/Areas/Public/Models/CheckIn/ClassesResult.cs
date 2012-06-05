@@ -90,6 +90,7 @@ namespace CmsWeb.Models
                         let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                         let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday)
                         let bdaystart = o.BirthDayStart ?? DateTime.MaxValue
+						where (o.SuspendCheckin ?? false) == false || noagecheck
                         where bd == null || bd <= o.BirthDayEnd || o.BirthDayEnd == null || noagecheck
                         where bd == null || bd >= o.BirthDayStart || o.BirthDayStart == null || noagecheck
                         where o.CanSelfCheckin == true

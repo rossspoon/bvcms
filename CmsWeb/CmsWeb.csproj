@@ -1119,6 +1119,7 @@
     <Content Include="Areas\Manage\Views\CheckinTime\List.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\tickets.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\ScanTicket.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\Timeout.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="TestConnectionStrings.config" />
     <None Include="Minify.bat" />
@@ -1148,7 +1149,7 @@
     </Content>
     <Content Include="Areas\Manage\Views\Batch\LookupDataPage.cshtml">
     </Content>
-    <Content Include="Areas\Manage\Views\Emails\View.cshtml">
+    <Content Include="Areas\Manage\Views\EmailsView\View.cshtml">
     </Content>
     <Content Include="Views\Home\Index.cshtml">
     </Content>
