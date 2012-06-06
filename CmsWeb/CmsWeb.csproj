@@ -1120,6 +1120,8 @@
     <Content Include="Areas\Main\Views\Meeting\tickets.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\ScanTicket.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Timeout.cshtml" />
+    <Content Include="Areas\Manage\Views\Transactions\Report.cshtml" />
+    <Content Include="Areas\Manage\Views\Transactions\ReportByDescription.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="TestConnectionStrings.config" />
     <None Include="Minify.bat" />

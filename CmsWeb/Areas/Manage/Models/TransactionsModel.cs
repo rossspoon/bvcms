@@ -21,6 +21,7 @@ namespace CmsWeb.Models
 		public bool testtransactions { get; set; }
 		public bool apprtransactions { get; set; }
 		public bool nocoupons { get; set; }
+		public string batchref { get; set; }
 		public bool usebatchdates { get; set; }
 		public PagerModel2 Pager { get; set; }
 		int? _count;
@@ -30,14 +31,16 @@ namespace CmsWeb.Models
 				_count = FetchTransactions().Count();
 			return _count.Value;
 		}
+		public bool isSage { get; set; }
 		public bool finance { get; set; }
 		public bool admin { get; set; }
 		public TransactionsModel()
 		{
 			Pager = new PagerModel2(Count);
-			Pager.Sort = "Id";
+			Pager.Sort = "Date";
 			Pager.Direction = "desc";
 			finance = HttpContext.Current.User.IsInRole("Finance");
+			isSage = OnlineRegModel.GetTransactionGateway() == "sage";
 			admin = HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.User.IsInRole("ManageTransactions");
 		}
 		public IEnumerable<Transaction> Transactions()
@@ -79,7 +82,7 @@ namespace CmsWeb.Models
 				 where t.Amt > gtamount || gtamount == null
 				 where t.Amt <= ltamount || ltamount == null
 				 where description == null || t.Description.Contains(description)
-				 where name == null || t.Name.Contains(name)
+				 where name == null || t.Name.Contains(name) || t.Batchref == name
 				 where (t.Testing ?? false) == testtransactions
 				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
 				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
@@ -110,16 +113,63 @@ namespace CmsWeb.Models
 			return _transactions;
 		}
 
+		public class BatchTranGroup
+		{
+			public int count { get; set; }
+			public DateTime? batchdate { get; set; }
+			public string BatchRef { get; set; }
+			public string BatchType { get; set; }
+			public decimal Total { get; set; }
+		}
+
+		public IQueryable<BatchTranGroup> FetchBatchTransactions()
+		{
+			var q = from t in FetchTransactions()
+					group t by t.Batchref into g
+					orderby g.First().Batch descending
+					select new BatchTranGroup()
+					{
+						count = g.Count(),
+						batchdate = g.Max(gg => gg.Batch),
+						BatchRef = g.Key,
+						BatchType = g.First().Batchtyp,
+						Total = g.Sum(gg => gg.Amt ?? 0)
+					};
+			return q;
+		}
+		public class DescriptionGroup
+		{
+			public int count { get; set; }
+			public string Description { get; set; }
+			public decimal Total { get; set; }
+		}
+		public IQueryable<DescriptionGroup> FetchTransactionsByDescription()
+		{
+			var q = from t in FetchTransactions()
+					group t by t.Description into g
+					orderby g.First().Batch descending
+					select new DescriptionGroup()
+					{
+						count = g.Count(),
+						Description = g.Key,
+						Total = g.Sum(gg => gg.Amt ?? 0)
+					};
+			return q;
+		}
+
+
 		private void CheckBatchDates(DateTime start, DateTime end)
 		{
 			if (OnlineRegModel.GetTransactionGateway() != "sage")
 				return;
+//			if (Util.IsDebug())
+//				DbUtil.Db.ExecuteCommand("delete CheckedBatches");
 			var sage = new SagePayments(DbUtil.Db, false);
 			var bds = sage.SettledBatchSummary(start, end, true, true);
-			var	batches = from batch in bds.Tables[0].AsEnumerable()
+			var batches = from batch in bds.Tables[0].AsEnumerable()
 						  select new
 						  {
-							  date = batch["date"].ToDate().Value,
+							  date = batch["date"].ToDate().Value.AddHours(4),
 							  reference = batch["reference"].ToString(),
 							  type = batch["type"].ToString()
 						  };
@@ -132,28 +182,57 @@ namespace CmsWeb.Models
 				var items = from r in ds.Tables[0].AsEnumerable()
 							select new
 							{
-								settled = r["settle_date"].ToDate().Value,
+								settled = r["settle_date"].ToDate().Value.AddHours(4),
 								tranid = r["order_number"].ToInt(),
-								reference = r["reference"].ToString()
+								reference = r["reference"].ToString(),
+								name = r["name"].ToString(),
+								message = r["message"].ToString(),
+								amount = r["total_amount"].ToString(),
+								date = r["date"].ToDate(),
+								type = r["transaction_code"].ToInt()
 							};
-				var settlelist = items.ToDictionary(ii => ii.reference, ii => ii.settled);
+				var settlelist = items.ToDictionary(ii => ii.reference, ii => ii);
+
 				var q = from t in DbUtil.Db.Transactions
 						where settlelist.Keys.Contains(t.TransactionId)
 						where t.Approved == true
 						select t;
+				var tlist = q.ToDictionary(ii => ii.TransactionId, ii => ii); // transactions that are found in setteled list;
+				var q2 = from st in settlelist
+						 where !tlist.Keys.Contains(st.Key)
+						 select st.Value;
+				foreach (var st in q2)
+				{
+					var tt = new Transaction
+					{
+						TransactionId = st.reference + " (from sage)",
+
+						Name = st.name,
+						Amt = st.amount.ToDecimal() * (st.type == 6 ? -1 : 1),
+						Approved = st.message.StartsWith("APPROVED"),
+						Message = st.message,
+						TransactionDate = st.date,
+						TransactionGateway = "sage",
+						Settled = st.settled,
+						Batch = batch.date,
+						Batchref = batch.reference,
+						Batchtyp = batch.type
+					};
+					DbUtil.Db.Transactions.InsertOnSubmit(tt);
+				}
 
 				foreach (var t in q)
 				{
 					t.Batch = batch.date;
 					t.Batchref = batch.reference;
 					t.Batchtyp = batch.type;
-					t.Settled = settlelist[t.TransactionId];
+					t.Settled = settlelist[t.TransactionId].settled;
 				}
 				DbUtil.Db.CheckedBatches.InsertOnSubmit(
-					new CheckedBatch() 
-					{ 
-						BatchRef = batch.reference, 
-						CheckedX = DateTime.Now 
+					new CheckedBatch()
+					{
+						BatchRef = batch.reference,
+						CheckedX = DateTime.Now
 					});
 				DbUtil.Db.SubmitChanges();
 			}
@@ -255,24 +334,24 @@ namespace CmsWeb.Models
 		public IQueryable ExportTransactions()
 		{
 			var q = FetchTransactions();
-//			var q
-//			   = from t in DbUtil.Db.Transactions
-//				 where t.Amt > gtamount || gtamount == null
-//				 where t.Amt <= ltamount || ltamount == null
-//				 where t.TransactionDate >= startdt || startdt == null
-//				 where description == null || t.Description.Contains(description)
-//				 where name == null || t.Name.Contains(name)
-//				 where (t.Testing ?? false) == testtransactions
-//				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
-//				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
-//				 where (t.Financeonly ?? false) == false || finance
-//				 select t;
+			//			var q
+			//			   = from t in DbUtil.Db.Transactions
+			//				 where t.Amt > gtamount || gtamount == null
+			//				 where t.Amt <= ltamount || ltamount == null
+			//				 where t.TransactionDate >= startdt || startdt == null
+			//				 where description == null || t.Description.Contains(description)
+			//				 where name == null || t.Name.Contains(name)
+			//				 where (t.Testing ?? false) == testtransactions
+			//				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
+			//				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
+			//				 where (t.Financeonly ?? false) == false || finance
+			//				 select t;
 
-//			var edt = enddt;
-//			if (!edt.HasValue && startdt.HasValue)
-//				edt = startdt.Value.AddHours(24);
-//			if (edt.HasValue)
-//				q = q.Where(t => t.TransactionDate < edt);
+			//			var edt = enddt;
+			//			if (!edt.HasValue && startdt.HasValue)
+			//				edt = startdt.Value.AddHours(24);
+			//			if (edt.HasValue)
+			//				q = q.Where(t => t.TransactionDate < edt);
 
 			var q2 = from t in q
 					 select new

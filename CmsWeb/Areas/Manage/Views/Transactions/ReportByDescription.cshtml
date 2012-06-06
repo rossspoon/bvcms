@@ -1,0 +1,19 @@
+﻿@model CmsWeb.Models.TransactionsModel
+@using CmsWeb
+@using UtilityExtensions
+	<thead>
+		<tr><td align="right">Count</td>
+			<td>Description</td>
+			<td align="right">Total</td>
+        </tr>
+	</thead>
+   <tbody>
+		@foreach (var r in Model.FetchTransactionsByDescription())
+		{
+			<tr>
+				<td align="right">@r.count</td>
+				<td>@r.Description</td>
+				<td align="right">@r.Total.ToString("N2")</td>
+			</tr>
+		}
+	</tbody>

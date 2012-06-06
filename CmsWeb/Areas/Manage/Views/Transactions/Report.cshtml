@@ -1,0 +1,23 @@
+﻿@model CmsWeb.Models.TransactionsModel
+@using CmsWeb
+@using UtilityExtensions
+	<thead>
+		<tr><td align="right">Count</td>
+			<td>BatchRef</td>
+			<td>Settled</td>
+			<td>Type</td>
+			<td align="right">Total</td>
+        </tr>
+	</thead>
+   <tbody>
+		@foreach (var r in Model.FetchBatchTransactions())
+		{
+			<tr>
+				<td align="right">@r.count</td>
+				<td><a href="#" class="filterbatch">@r.BatchRef</a></td>
+				<td>@r.batchdate.FormatDate2()</td>
+				<td>@r.BatchType</td>
+				<td align="right">@r.Total.ToString("N2")</td>
+			</tr>
+		}
+	</tbody>

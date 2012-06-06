@@ -3,20 +3,49 @@
         $('table.grid > tbody > tr:even').addClass('alt');
         $(".bt").button();
         $(".datepicker").datepicker();
-        $('td.tip').tooltip({
+        $('.tip').tooltip({
             delay: 0,
             showURL: false,
             showBody: "|"
         });
     };
     $.preptable();
+    $(".filterbatch").live("click", function (e) {
+        e.preventDefault();
+        $("#name").val($(this).attr('title'));
+        $('#filter').click();
+    });
+    $.getTable = function (f, q) {
+        q = q || f.serialize();
+        $.blockUI();
+        $.post("/Manage/Transactions/List", q, function (ret) {
+            $('#Transactions').html(ret);
+            $.preptable();
+            $.unblockUI();
+        });
+        return false;
+    };
     $('#filter').live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
-        var q = f.serialize();
-        $.post("/Manage/Transactions/List", q, function (ret) {
-            $(f).html(ret);
+        $('#Page', f).val(1);
+        $.getTable(f);
+        return false;
+    });
+    $('.report').live('click', function (ev) {
+        ev.preventDefault();
+        var sdt = $('#startdt').val();
+        var edt = $('#enddt').val();
+        if (!sdt || !edt) {
+            $.growlUI("error", 'must set date range');
+            return false;
+        }
+        $.blockUI();
+        var args = "sdt=" + sdt + "&edt=" + edt;
+        $.post($(this).attr("href"), args, function (ret) {
+            $('#Transactions').html(ret);
             $.preptable();
+            $.unblockUI();
         });
         return false;
     });

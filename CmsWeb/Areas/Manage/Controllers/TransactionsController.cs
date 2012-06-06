@@ -5,6 +5,7 @@ using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using System.Web.UI.WebControls;
 using CmsData;
 using CmsWeb.Models;
 using UtilityExtensions;
@@ -21,6 +22,26 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(m);
         }
 
+        public ActionResult Report(DateTime sdt, DateTime edt)
+        {
+			var m = new TransactionsModel() 
+			{ 
+				startdt = sdt,
+				enddt = edt,
+				usebatchdates = true,
+			};
+            return View(m);
+        }
+        public ActionResult ReportByDescription(DateTime sdt, DateTime edt)
+        {
+			var m = new TransactionsModel() 
+			{ 
+				startdt = sdt,
+				enddt = edt,
+				usebatchdates = true,
+			};
+            return View(m);
+        }
         [HttpPost]
         public ActionResult List(TransactionsModel m)
         {

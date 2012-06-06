@@ -2,50 +2,10 @@
 @using CmsWeb.Models
 @using UtilityExtensions;
 @model CmsWeb.Models.TransactionsModel
-<div class="roundbox floatleft">
-<h2>Transactions</h2>
-<table cellspacing="5">
-	<tr><td align="right">Description:</td>
-        <td>@Html.TextBox("description")</td>
-		<td align="right">Test Transactions:</td>
-        <td>@Html.CheckBox("testtransactions")</td>
-    </tr>
-	<tr><td align="right" colspan="3">Only Approved Transactions:</td>
-        <td>@Html.CheckBox("apprtransactions")</td>
-    </tr>
-	<tr><td align="right" colspan="3">No Coupons:</td>
-        <td>@Html.CheckBox("nocoupons")</td>
-    </tr>
-	<tr><td align="right">Name:</td>
-		<td>@Html.TextBox("name")</td>
-		<td></td>
-        <td>Use Batch Dates: @Html.CheckBox("usebatchdates")</td>
-    </tr>
-	<tr><td align="right">&gt; Amount:</td>
-		<td>@Html.TextBox("gtamount")</td>
-		<td align="right">Start Date:</td>
-		<td>@Html.DatePicker("startdt")</td>
-	</tr>
-	<tr>
-		<td align="right">&lt;= Amount:</td>
-		<td>@Html.TextBox("ltamount")</td>
-		<td align="right">End Date:</td>
-		<td>@Html.DatePicker("enddt")</td>
-	</tr>
-<tr><td align="right" colspan="4">
-    <a id="filter" href="#" class="submitbutton bt">Filter</a>
-    <a id="export" href="#" class="submitbutton bt">Export</a>
-    <a href="/Manage/Transactions" class="bt">Clear</a>
-    </td></tr>
-</table>
-</div>
-<div class="floatclear"></div>
-<table id="Transactions" class="grid" cellpadding="4">
-    <thead>
 @{
-    var tt = Model.TotalTransactions();
-    var isSage = OnlineRegModel.GetTransactionGateway() == "sage";
+	var tt = Model.TotalTransactions();
 }
+    <thead>
 @if(tt != null)
 {
 	<tr>
@@ -65,12 +25,11 @@
             <th><a href="#" class="sortable">Tran Id</a></th>
             <th><a href="#" class="sortable">Appr</a></th>
 			<th><a href="#" class="sortable">Tran Date</a>
-        @if(isSage)
+        @if(Model.isSage)
         {
     			<br /><a href="#" class="sortable">Batch Date</a>
         }
             </th>
-            <th><a href="#" class="sortable">Type</a></th>
             <th><a href="#" class="sortable">Description</a></th>
             <th><a href="#" class="sortable">Name</a></th>
             <th align="right"><a href="#" class="sortable">Amt</a></th>
@@ -94,15 +53,14 @@
             <td>@t.TransactionId</td>
             <td>@if (t.Approved == true){<img alt="Y" src="/Content/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
             <td nowrap="nowrap">@t.TransactionDate.FormatDateTm()
-        @if(isSage)
+        @if(Model.isSage)
 		{
-    			<div>@t.Batch.FormatDate()</div>
+    			<div class="tip filterbatch" title="Click to filter|@t.Batchtyp|@t.Batchref">@t.Batch.FormatDate2()</div>
 		}
             </td>
-            <td>@t.Batchtyp</td>
             <td>@t.Description</td>
             <td><a href='@Util.ResolveServerUrl("/OnlineReg/ConfirmTest/")@t.DatumId'>@t.Name</a></td>
-            <td align="right">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>
+            <td align="right" nowrap="nowrap">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>
     @if (Model.finance)
     {
             <td align="right">@t.Donate.ToString2("N")</td>
@@ -126,10 +84,14 @@
             <td>@(t.Amt < 0 ? "credit" : "")</td>
 	}
             <td><a class="adjust bt @noadmin" 
-                href='/Manage/Transactions/Adjust/@t.Id'>Adjust</a></td>
-        </tr>
+				   href='/Manage/Transactions/Adjust/@t.Id'>Adjust</a></td>
+		</tr>
 }
-    </tbody>
-</table>
-@{Html.RenderPartial("Pager2", Model.Pager);}
-
+	</tbody>
+<tfoot>
+	<tr>
+		<td colspan="11">
+        	@{Html.RenderPartial("Pager2", Model.Pager);}
+		</td>	
+	</tr>
+</tfoot>
