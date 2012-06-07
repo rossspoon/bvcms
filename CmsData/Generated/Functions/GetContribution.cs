@@ -94,7 +94,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="LAST", Storage="_Last", DbType="varchar(30) NOT NULL")]
+		[Column(Name="LAST", Storage="_Last", DbType="varchar(100) NOT NULL")]
 		public string Last
 		{
 			get
@@ -111,7 +111,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Addr", Storage="_Addr", DbType="varchar(60)")]
+		[Column(Name="Addr", Storage="_Addr", DbType="varchar(100)")]
 		public string Addr
 		{
 			get

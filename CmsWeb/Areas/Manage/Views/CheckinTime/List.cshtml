@@ -1,32 +1,88 @@
 ﻿@using CmsWeb;
+@using CmsData;
+@using UtilityExtensions;
 @model CmsWeb.Models.CheckinTimeModel
-<table id="Checkins" class="grid" cellpadding="4">
+@{
+	IQueryable<CheckInTime> iqResults = Model.Times();
+	var gc = from x in iqResults
+			  group x by 1 into g
+			  select new { GuestCount = g.Sum( z => z.Guests.Count ) };
+}
+<input type="hidden" id="Person" name="Person" value="0" />
+<div class="roundbox floatleft">
+	<h2>
+		Check-in Activity</h2>
+	<table cellspacing="7">
+		<tr>
+			<td align="right">Start Date: </td>
+			<td>@Html.DatePicker("dateStart")</td>
+			<td align="right">@Html.CheckBox("withGuest", Model.withGuest )</td>
+			<td>Show With Guest</td>
+		</tr>
+		<tr>
+			<td align="right">End Date: </td>
+			<td>@Html.DatePicker("dateEnd")</td>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="right">Locations: </td>
+			<td>@Html.DropDownList( "location", new SelectList( Model.Locations(), "Location", "Location", Model.location ) )</td>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="right">Activity: </td>
+			<td>@Html.DropDownList( "activity", new SelectList( Model.Activities(), "Activity", "Activity", Model.activity ) )</td>
+			<td colspan="2" align="center">Members: @Model.Pager.GetCount() - Guests: @gc.FirstOrDefault().GuestCount</td>
+		</tr>
+		<tr>
+			<td align="right" colspan="4"><a id="filter" href="#" class="submitbutton bt">Filter</a> <a id="clear" href="#" class="submitbutton bt">Clear</a></td>
+		</tr>
+	</table>
+</div>
+<div class="floatclear">
+</div>
+<table id="Checkins" class="grid" cellpadding="5">
 	<thead>
 		<tr><td colspan="10"><hr /></td></tr>
 		<tr>
-			<th><a href="#" class="sortable" id="0">ID</a></th>
 			<th><a href="#" class="sortable" id="1">Person</a></th>
 			<th><a href="#" class="sortable" id="2">Date/Time</a></th>
 			<th><a href="#" class="sortable" id="3">Location</a></th>
 			<th><a href="#" class="sortable" id="4">Activity</a></th>
-			<th><a href="#" class="sortable" id="5">Guest Of</a></th>
 		</tr>
 	</thead>
 	<tbody>
-@foreach (var t in Model.Times()) {
+
+@foreach (var t in iqResults ) {
 <tr>
-	<td valign="top">@t.Id</td>
-	<td valign="top"><a href="#" class="person" id="@t.PeopleId">@t.Person.Name</a></td>
-	<td valign="top">@t.CheckInTimeX</td>
-	<td valign="top">@t.Location</td>
-	<td valign="top">
-		@foreach (var y in t.CheckInActivities)
-  {
-	  @y.Activity<br />
-  }
+	<td valign="top" style="font-weight:bold"><a href="#" class="person" id="@t.PeopleId">@t.Person.Name</a></td>
+	<td valign="top" style="font-weight:bold">@t.CheckInTimeX.FormatDateTm()</td>
+	<td valign="top" style="font-weight:bold">@t.Location</td>
+	<td valign="top" style="font-weight:bold">
+		@{
+			string sOut = "";
+			foreach (var y in t.CheckInActivities) { sOut += y.Activity + ", "; }
+			if( sOut.Length > 0 ) { sOut = sOut.Remove( sOut.Length-2 ); }
+			@sOut;
+		}
 	</td>
-	<td valign="top">@( t.GuestOfId != null ? t.GuestOf.Person.Name : "" )</td>
 	</tr>
+		foreach( var g in t.Guests )
+		{
+		<tr>
+			<td valign="top" class="indent"> -- <a href="#" class="person" id="@g.PeopleId">@g.Person.Name</a></td>
+			<td valign="top">@g.CheckInTimeX.FormatDateTm()</td>
+			<td valign="top">@g.Location</td>
+			<td valign="top">
+			@{
+				string sOutGuest = "";
+				foreach (var y in t.CheckInActivities) { sOutGuest += y.Activity + ", "; }
+				if( sOutGuest.Length > 0 ) { sOutGuest = sOutGuest.Remove( sOutGuest.Length-2 ); }
+				@sOutGuest;
+			}
+			</td>
+		</tr>
+		}
 }
 	</tbody>
 </table>
