@@ -1,11 +1,18 @@
 ﻿@model CmsWeb.Models.TransactionsModel
 @using CmsWeb
 @using UtilityExtensions
+@{
+    var tt = Model.TotalTransactions();
+}
 	<thead>
-		<tr><td align="right">Count</td>
-			<td>BatchRef</td>
+		<tr><td align="right" colspan="4">Total:</td>
+			<td align="right">@tt.Amt.ToString("N2")</td>
+		</tr>
+        <tr><td colspan="5"><hr/></td></tr>
+		<tr><td>BatchRef</td>
 			<td>Settled</td>
 			<td>Type</td>
+            <td align="right">Count</td>
 			<td align="right">Total</td>
         </tr>
 	</thead>
@@ -13,10 +20,10 @@
 		@foreach (var r in Model.FetchBatchTransactions())
 		{
 			<tr>
-				<td align="right">@r.count</td>
 				<td><a href="#" class="filterbatch">@r.BatchRef</a></td>
 				<td>@r.batchdate.FormatDate2()</td>
 				<td>@r.BatchType</td>
+				<td align="right">@r.count</td>
 				<td align="right">@r.Total.ToString("N2")</td>
 			</tr>
 		}

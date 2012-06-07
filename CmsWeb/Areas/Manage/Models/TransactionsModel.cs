@@ -59,7 +59,7 @@ namespace CmsWeb.Models
 
 		public TotalTransaction TotalTransactions()
 		{
-			var q0 = ApplySort();
+			var q0 = FetchTransactions();
 			var q = from t in q0
 					group t by 1 into g
 					select new TotalTransaction()
@@ -157,13 +157,10 @@ namespace CmsWeb.Models
 			return q;
 		}
 
-
 		private void CheckBatchDates(DateTime start, DateTime end)
 		{
 			if (OnlineRegModel.GetTransactionGateway() != "sage")
 				return;
-//			if (Util.IsDebug())
-//				DbUtil.Db.ExecuteCommand("delete CheckedBatches");
 			var sage = new SagePayments(DbUtil.Db, false);
 			var bds = sage.SettledBatchSummary(start, end, true, true);
 			var batches = from batch in bds.Tables[0].AsEnumerable()
@@ -185,6 +182,7 @@ namespace CmsWeb.Models
 								settled = r["settle_date"].ToDate().Value.AddHours(4),
 								tranid = r["order_number"].ToInt(),
 								reference = r["reference"].ToString(),
+								approved = r["approved"].ToString().ToBool(),
 								name = r["name"].ToString(),
 								message = r["message"].ToString(),
 								amount = r["total_amount"].ToString(),
@@ -203,21 +201,26 @@ namespace CmsWeb.Models
 						 select st.Value;
 				foreach (var st in q2)
 				{
+					var t = DbUtil.Db.Transactions.SingleOrDefault(j => j.Id == st.tranid);
 					var tt = new Transaction
 					{
-						TransactionId = st.reference + " (from sage)",
-
 						Name = st.name,
-						Amt = st.amount.ToDecimal() * (st.type == 6 ? -1 : 1),
-						Approved = st.message.StartsWith("APPROVED"),
+						TransactionId = st.reference,
+						Amt = st.amount.ToDecimal(),
+						Approved = st.approved,
 						Message = st.message,
 						TransactionDate = st.date,
 						TransactionGateway = "sage",
 						Settled = st.settled,
 						Batch = batch.date,
 						Batchref = batch.reference,
-						Batchtyp = batch.type
+						Batchtyp = batch.type,
+						OriginalId = t != null ? (t.OriginalId ?? t.Id) : (int?)null,
+						Fromsage = true,
+						Description = t != null ? t.Description : "no description from sage, id=" + st.tranid,
 					};
+					if (st.type == 6) // credit transaction
+						tt.Amt = -tt.Amt;
 					DbUtil.Db.Transactions.InsertOnSubmit(tt);
 				}
 
@@ -334,24 +337,6 @@ namespace CmsWeb.Models
 		public IQueryable ExportTransactions()
 		{
 			var q = FetchTransactions();
-			//			var q
-			//			   = from t in DbUtil.Db.Transactions
-			//				 where t.Amt > gtamount || gtamount == null
-			//				 where t.Amt <= ltamount || ltamount == null
-			//				 where t.TransactionDate >= startdt || startdt == null
-			//				 where description == null || t.Description.Contains(description)
-			//				 where name == null || t.Name.Contains(name)
-			//				 where (t.Testing ?? false) == testtransactions
-			//				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
-			//				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
-			//				 where (t.Financeonly ?? false) == false || finance
-			//				 select t;
-
-			//			var edt = enddt;
-			//			if (!edt.HasValue && startdt.HasValue)
-			//				edt = startdt.Value.AddHours(24);
-			//			if (edt.HasValue)
-			//				q = q.Where(t => t.TransactionDate < edt);
 
 			var q2 = from t in q
 					 select new

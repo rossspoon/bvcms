@@ -25,6 +25,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (ti == null || ti.Amtdue == 0)
 				return Content("no outstanding transaction");
 
+#if DEBUG
+			ti.Testing = true;
+			if (!ti.Address.HasValue())
+			{
+				ti.Address = "235 Riveredge";
+				ti.City = "Cordova";
+				ti.Zip = "38018";
+				ti.State = "TN";
+			}
+#endif
 			var pf = PaymentForm.CreatePaymentForm(ti);
 			SetHeaders(pf.OrgId ?? 0);
 
@@ -112,6 +122,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			var ti = DbUtil.Db.Transactions.SingleOrDefault(tt => tt.Id == id);
 			if (ti == null)
 				return Content("no pending transaction");
+#if DEBUG
+			ti.Testing = true;
+#endif
 			ti = PaymentForm.CreateTransaction(DbUtil.Db, ti);
 			ConfirmDuePaidTransaction(ti, TransactionID, Amount);
 			SetHeaders(ti.OrgId ?? 0);

@@ -89,6 +89,8 @@ namespace CmsData
 		
 		private string _Batchtyp;
 		
+		private bool? _Fromsage;
+		
    		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
@@ -213,6 +215,9 @@ namespace CmsData
 		
 		partial void OnBatchtypChanging(string value);
 		partial void OnBatchtypChanged();
+		
+		partial void OnFromsageChanging(bool? value);
+		partial void OnFromsageChanged();
 		
     #endregion
 		public Transaction()
@@ -1021,6 +1026,28 @@ namespace CmsData
 					this._Batchtyp = value;
 					this.SendPropertyChanged("Batchtyp");
 					this.OnBatchtypChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="fromsage", UpdateCheck=UpdateCheck.Never, Storage="_Fromsage", DbType="bit")]
+		public bool? Fromsage
+		{
+			get { return this._Fromsage; }
+
+			set
+			{
+				if (this._Fromsage != value)
+				{
+				
+                    this.OnFromsageChanging(value);
+					this.SendPropertyChanging();
+					this._Fromsage = value;
+					this.SendPropertyChanged("Fromsage");
+					this.OnFromsageChanged();
 				}
 
 			}

@@ -33,9 +33,9 @@ namespace CmsData
 		
 		private int? _IntValue2;
 		
-		private string _FieldValue;
-		
 		private bool? _BitValue;
+		
+		private string _FieldValue;
 		
    		
     	
@@ -72,11 +72,11 @@ namespace CmsData
 		partial void OnIntValue2Changing(int? value);
 		partial void OnIntValue2Changed();
 		
-		partial void OnFieldValueChanging(string value);
-		partial void OnFieldValueChanged();
-		
 		partial void OnBitValueChanging(bool? value);
 		partial void OnBitValueChanged();
+		
+		partial void OnFieldValueChanging(string value);
+		partial void OnFieldValueChanged();
 		
     #endregion
 		public PeopleExtra()
@@ -270,28 +270,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="FieldValue", UpdateCheck=UpdateCheck.Never, Storage="_FieldValue", DbType="varchar(251)", IsDbGenerated=true)]
-		public string FieldValue
-		{
-			get { return this._FieldValue; }
-
-			set
-			{
-				if (this._FieldValue != value)
-				{
-				
-                    this.OnFieldValueChanging(value);
-					this.SendPropertyChanging();
-					this._FieldValue = value;
-					this.SendPropertyChanged("FieldValue");
-					this.OnFieldValueChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="BitValue", UpdateCheck=UpdateCheck.Never, Storage="_BitValue", DbType="bit")]
 		public bool? BitValue
 		{
@@ -307,6 +285,28 @@ namespace CmsData
 					this._BitValue = value;
 					this.SendPropertyChanged("BitValue");
 					this.OnBitValueChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FieldValue", UpdateCheck=UpdateCheck.Never, Storage="_FieldValue", DbType="varchar(251)", IsDbGenerated=true)]
+		public string FieldValue
+		{
+			get { return this._FieldValue; }
+
+			set
+			{
+				if (this._FieldValue != value)
+				{
+				
+                    this.OnFieldValueChanging(value);
+					this.SendPropertyChanging();
+					this._FieldValue = value;
+					this.SendPropertyChanged("FieldValue");
+					this.OnFieldValueChanged();
 				}
 
 			}

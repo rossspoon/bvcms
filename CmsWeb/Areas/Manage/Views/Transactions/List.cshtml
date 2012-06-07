@@ -52,13 +52,20 @@
             title="TranId:@t.TransactionId|ApprovalCode:@(t.ApprovalCode ?? "na")|AuthCode:@(t.AuthCode ?? "na")|Message:@(t.Message ?? "na")|OriginalId:@t.OriginalId">@t.Id</td>
             <td>@t.TransactionId</td>
             <td>@if (t.Approved == true){<img alt="Y" src="/Content/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
-            <td nowrap="nowrap">@t.TransactionDate.FormatDateTm()
-        @if(Model.isSage)
-		{
-    			<div class="tip filterbatch" title="Click to filter|@t.Batchtyp|@t.Batchref">@t.Batch.FormatDate2()</div>
-		}
-            </td>
-            <td>@t.Description</td>
+			<td nowrap="nowrap">@t.TransactionDate.FormatDateTm()
+				@if(Model.isSage)
+				{
+					<div class="tip filterbatch" title="Click to filter|@t.Batchtyp|@t.Batchref">@t.Batch.FormatDate2()</div>
+				}
+			</td>
+    @if (t.Fromsage == true)
+    {
+			<td><i title="from sage">@t.Description</i></td>
+    }
+    else
+	{
+			<td>@t.Description</td>
+	}
             <td><a href='@Util.ResolveServerUrl("/OnlineReg/ConfirmTest/")@t.DatumId'>@t.Name</a></td>
             <td align="right" nowrap="nowrap">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>
     @if (Model.finance)

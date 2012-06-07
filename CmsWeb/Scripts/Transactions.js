@@ -12,7 +12,7 @@
     $.preptable();
     $(".filterbatch").live("click", function (e) {
         e.preventDefault();
-        $("#name").val($(this).attr('title'));
+        $("#name").val($(this).text());
         $('#filter').click();
     });
     $.getTable = function (f, q) {

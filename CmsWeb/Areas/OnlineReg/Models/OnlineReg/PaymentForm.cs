@@ -228,7 +228,7 @@ namespace CmsWeb.Models
 						 Zip = t.Zip,
 						 DatumId = t.DatumId,
 						 Phone = t.Phone,
-						 OriginalId = t.OriginalId,
+						 OriginalId = t.OriginalId ?? t.Id,
 						 Financeonly = t.Financeonly,
 						 TransactionDate = DateTime.Now,
 					 };
