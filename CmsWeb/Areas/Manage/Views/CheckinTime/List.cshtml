@@ -4,6 +4,9 @@
 @model CmsWeb.Models.CheckinTimeModel
 @{
 	IQueryable<CheckInTime> iqResults = Model.Times();
+	var gc = from x in iqResults
+			  group x by 1 into g
+			  select new { GuestCount = g.Sum( z => z.Guests.Count ) };
 }
 <input type="hidden" id="Person" name="Person" value="0" />
 <div class="roundbox floatleft">
@@ -29,7 +32,7 @@
 		<tr>
 			<td align="right">Activity: </td>
 			<td>@Html.DropDownList( "activity", new SelectList( Model.Activities(), "Activity", "Activity", Model.activity ) )</td>
-			<td colspan="2" align="center">Member Total: @Model.Pager.GetCount()</td>
+			<td colspan="2" align="center">Members: @Model.Pager.GetCount() - Guests: @gc.FirstOrDefault().GuestCount</td>
 		</tr>
 		<tr>
 			<td align="right" colspan="4"><a id="filter" href="#" class="submitbutton bt">Filter</a> <a id="clear" href="#" class="submitbutton bt">Clear</a></td>
