@@ -199,9 +199,10 @@ namespace CmsWeb.Models
 				var q2 = from st in settlelist
 						 where !tlist.Keys.Contains(st.Key)
 						 select st.Value;
+				var notbefore = DateTime.Parse("6/1/12");
 				foreach (var st in q2)
 				{
-					var t = DbUtil.Db.Transactions.SingleOrDefault(j => j.Id == st.tranid);
+					var t = DbUtil.Db.Transactions.SingleOrDefault(j => j.Id == st.tranid && st.date >= notbefore);
 					var tt = new Transaction
 					{
 						Name = st.name,
