@@ -53,9 +53,6 @@
 				$('a.person').bind('click', function (ev) {
 					ev.preventDefault();
 					$("#Person").val($(this).attr('id'));
-
-					alert("ID: " + $(this).attr('id'));
-
 					doUpdate($(this).closest('form').serialize());
 					return false;
 				});

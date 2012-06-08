@@ -58,7 +58,7 @@ namespace CmsWeb.Models
 			var results = from y in DbUtil.Db.CheckInTimes 
 							  where y.CheckInTimeX >= dateStart || dateStart == null
 							  where y.CheckInTimeX <= dateEnd || dateEnd == null
-							  where y.PeopleId == Person || Person == 0
+							  where y.PeopleId == Person || Person == 0 || y.Guests.Any( w => w.PeopleId == Person ) == true
 							  where y.GuestOfId == null
 							  select y;
 
