@@ -176,7 +176,7 @@ namespace CmsWeb.Areas.Public.Controllers
             var meeting = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == id);
             Attend.RecordAttendance(p.PeopleId, id, true);
             DbUtil.Db.UpdateMeetingCounters(id);
-            return new RollListResult(meeting);
+            return new RollListResult(meeting, p.PeopleId);
         }
         [HttpPost]
         public ActionResult JoinUnJoinOrg(int PeopleId, int OrgId, bool Member)

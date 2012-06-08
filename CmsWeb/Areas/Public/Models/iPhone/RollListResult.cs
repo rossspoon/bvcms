@@ -15,11 +15,13 @@ namespace CmsWeb.Models.iPhone
         int? MeetingId;
         int OrgId;
         DateTime MeetingDate;
-        public RollListResult(CmsData.Meeting meeting)
+		int? NewPeopleId;
+        public RollListResult(CmsData.Meeting meeting, int? PeopleId = null)
         {
             MeetingId = meeting.MeetingId;
             OrgId = meeting.OrganizationId;
             MeetingDate = meeting.MeetingDate.Value;
+			NewPeopleId = PeopleId;
         }
         public RollListResult(int orgid, DateTime dt)
         {
@@ -40,6 +42,8 @@ namespace CmsWeb.Models.iPhone
             {
                 w.WriteStartElement("RollList");
                 w.WriteAttributeString("MeetingId", MeetingId.ToString());
+				if(NewPeopleId.HasValue)
+					w.WriteAttributeString("NewPeopleId", NewPeopleId.ToString());
 
                 foreach (var p in RollsheetModel.RollList(MeetingId, OrgId, MeetingDate))
                 {

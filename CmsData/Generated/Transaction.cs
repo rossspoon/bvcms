@@ -89,12 +89,8 @@ namespace CmsData
 		
 		private string _Batchtyp;
 		
-<<<<<<< local
 		private bool? _Fromsage;
 		
-=======
->>>>>>> other
-   		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
    		private EntitySet< TransactionPerson> _TransactionPeople;
@@ -219,12 +215,9 @@ namespace CmsData
 		partial void OnBatchtypChanging(string value);
 		partial void OnBatchtypChanged();
 		
-<<<<<<< local
 		partial void OnFromsageChanging(bool? value);
 		partial void OnFromsageChanged();
 		
-=======
->>>>>>> other
     #endregion
 		public Transaction()
 		{
@@ -1039,7 +1032,6 @@ namespace CmsData
 		}
 
 		
-<<<<<<< local
 		[Column(Name="fromsage", UpdateCheck=UpdateCheck.Never, Storage="_Fromsage", DbType="bit")]
 		public bool? Fromsage
 		{
@@ -1062,8 +1054,6 @@ namespace CmsData
 		}
 
 		
-=======
->>>>>>> other
     #endregion
         
     #region Foreign Key Tables
