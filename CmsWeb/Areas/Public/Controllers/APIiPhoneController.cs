@@ -10,10 +10,6 @@ using SearchModel = CmsWeb.Models.iPhone.SearchModel;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
-#if DEBUG
-#else
-   [RequireHttps]
-#endif
     [ValidateInput(false)]
     public class APIiPhoneController : CmsController
     {

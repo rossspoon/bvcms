@@ -154,6 +154,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|AnyCPU'">
     <OutputPath>bin\test\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms2|AnyCPU'">
+    <OutputPath>bin\bvcms2\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DirectShowLib-2005">
       <HintPath>..\CmsWeb\Binaries\DirectShowLib-2005.dll</HintPath>

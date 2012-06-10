@@ -12,82 +12,64 @@
 		.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
 		.ui-timepicker-div td { font-size: 90%; }
 		.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+		tr.host { font-weight: bold; }
 	</style>
 }
 @section scripts
 {
-	<script type="text/javascript">
-		$(document).ready(function () {
-			function doUpdate(q) { $.post("/Manage/CheckinTime/List", q, function (ret) { $("#form").html(ret); $.preformat(); }); }
-
-			$.setPageSize = function (ev) {
-				$('#Page').val(1);
-				$("#PageSize").val($(ev).val());
-				doUpdate($(ev).closest('form').serialize());
-			};
-
-			$.gotoPage = function (ev, pg) {
-				$('#Page').val(pg);
-				doUpdate($(ev).closest('form').serialize());
-			};
-
-			$.preformat = function () {
-				$('table.grid > tbody > tr:even').addClass('alt');
-
-				$('.sortable').bind('click', function (ev) {
-					ev.preventDefault();
-
-					var n = $(this).attr('id');
-					var o = $("#Sort").val();
-
-					$("#Sort").val(n);
-
-					var dir = $("#Direction").val();
-					if (o == n && dir == '0') $("#Direction").val('1');
-					else $("#Direction").val('0');
-
-					doUpdate($(this).closest('form').serialize());
-					return false;
-				});
-
-				$('a.person').bind('click', function (ev) {
-					ev.preventDefault();
-					$("#Person").val($(this).attr('id'));
-
-					alert("ID: " + $(this).attr('id'));
-
-					doUpdate($(this).closest('form').serialize());
-					return false;
-				});
-
-				$('#filter').bind('click', function (ev) {
-					ev.preventDefault();
-					doUpdate($(this).closest('form').serialize());
-					return false;
-				});
-
-				$('#clear').bind('click', function (ev) {
-					ev.preventDefault();
-					$("#Person").val(0);
-					$("#activity").val(0);
-					$("#location").val(0);
-					$("#withGuest").val( false );
-					$("#isGuestOf").val( false );
-					$("#dateStart").val("");
-					$("#dateEnd").val("");
-
-					doUpdate($(this).closest('form').serialize());
-					return false;
-				});
-
-				$(".bt").button();
-				$(".datepicker").datepicker();
-			}
-
-			$.preformat();
-		});
-	</script>
+    <script src="/Scripts/CheckinActivity.js" type="text/javascript"></script>
 }
 <form id="form" method="post" action="/Manage/CheckinTime/List">
-@{ Html.RenderPartial("List", Model); }
+<input type="hidden" id="Person" name="Person" value="0" />
+<div class="roundbox floatleft">
+	<h2>
+		Check-in Activity</h2>
+	<table cellspacing="7">
+		<tr>
+			<td align="right">Start Date: </td>
+			<td>@Html.DatePicker("dateStart")</td>
+			<td align="right">@Html.CheckBox("withGuest", Model.withGuest )</td>
+			<td>Show With Guest</td>
+		</tr>
+		<tr>
+			<td align="right">End Date: </td>
+			<td>@Html.DatePicker("dateEnd")</td>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="right">Locations: </td>
+			<td>@Html.DropDownList( "location", new SelectList(Model.Locations()) )</td>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="right">Activity: </td>
+			<td>@Html.DropDownList( "activity", new SelectList( Model.Activities()))</td>
+			<td colspan="2" align="center">
+				Members: <span class="membercount">@Model.counts.members</span> - 
+                Guests: <span class="guestcount">@Model.counts.guests</span>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" colspan="4"><a id="filter" href="#" class="submitbutton bt">Filter</a> <a id="clear" href="#" class="submitbutton bt">Clear</a></td>
+		</tr>
+	</table>
+</div>
+<div class="floatclear">
+</div>
+<table id="Checkins" class="grid" cellpadding="5">
+	<thead>
+		<tr><td colspan="4"><hr /></td></tr>
+		<tr>
+			<th align="left"><a href="#" class="sortable">Host</a> /<br/>&nbsp;
+				<a href="#" class="sortable">Person</a>
+            </th>
+			<th><a href="#" class="sortable">Date/Time</a></th>
+			<th><a href="#" class="sortable">Location</a></th>
+			<th><a href="#" class="sortable">Activity</a></th>
+		</tr>
+	</thead>
+    <tbody>
+    	@{ Html.RenderPartial("List", Model); }
+    </tbody>
+</table>
 </form>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
@@ -12,10 +13,7 @@ using System.IO;
 
 namespace CmsWeb
 {
-#if DEBUG
-#else
-	[RequireHttps]
-#endif
+	[MyRequireHttps]
 	public class CmsController : CmsControllerNoHttps
 	{
 	}
@@ -94,10 +92,7 @@ namespace CmsWeb
 			}
 		}
     }
-#if DEBUG
-#else
-   [RequireHttps]
-#endif
+   [MyRequireHttps]
     public class CmsStaffController : Controller
     {
         public bool NoCheckRole { get; set; }
@@ -134,10 +129,7 @@ namespace CmsWeb
                 Request.Url.OriginalString));
         }
     }
-#if DEBUG
-#else
-   [RequireHttps]
-#endif
+   [MyRequireHttps]
     public class CmsStaffAsyncController : System.Web.Mvc.AsyncController
     {
         public bool NoCheckRole { get; set; }
@@ -221,6 +213,25 @@ namespace CmsWeb
         	Response.Charset = "";
             dg.DataBind();
             dg.RenderControl(new HtmlTextWriter(Response.Output));
+        }
+    }
+    public class MyRequireHttpsAttribute : RequireHttpsAttribute
+    {
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            if (filterContext == null)
+            {
+                throw new ArgumentNullException("filterContext");
+            }
+
+            if (filterContext.HttpContext != null)
+			{
+	            if(filterContext.HttpContext.Request.IsLocal)
+	                return;
+				if (!WebConfigurationManager.AppSettings["cmshost"].StartsWith("https:"))
+					return;
+            }
+            base.OnAuthorization(filterContext);
         }
     }
 }

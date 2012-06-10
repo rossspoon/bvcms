@@ -6,10 +6,6 @@ using CmsData.API;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
-#if DEBUG
-#else
-    [RequireHttps]
-#endif
     public class APIOrgController : CmsController
     {
         [HttpGet]

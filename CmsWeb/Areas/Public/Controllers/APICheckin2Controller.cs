@@ -12,10 +12,6 @@ using System.Collections.Generic;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
-#if DEBUG
-#else
-    [RequireHttps]
-#endif
     public class APICheckin2Controller : CmsController
     {
 		private bool Authenticate()

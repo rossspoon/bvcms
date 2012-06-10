@@ -19,10 +19,6 @@ using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
-#if DEBUG
-#else
-    [RequireHttps]
-#endif
     public class APIMetaController : CmsController
     {
         [HttpGet]

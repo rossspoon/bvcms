@@ -129,6 +129,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|AnyCPU'">
     <OutputPath>bin\test\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms2|AnyCPU'">
+    <OutputPath>bin\bvcms2\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

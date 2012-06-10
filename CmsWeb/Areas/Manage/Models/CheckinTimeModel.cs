@@ -14,7 +14,7 @@ namespace CmsWeb.Models
 
 		public DateTime? dateStart { get; set; }
 		public DateTime? dateEnd { get; set; }
-		public int Person { get; set; }
+		public int peopleid { get; set; }
 		public string location { get; set; }
 		public string activity { get; set; }
 		public bool withGuest { get; set; }
@@ -24,92 +24,186 @@ namespace CmsWeb.Models
 		public CheckinTimeModel()
 		{
 			Pager = new PagerModel2();
+			Pager.setCountDelegate(Count);
+			Pager.Direction = "desc";
+			Pager.Sort = "Host";
 		}
 
-		public IEnumerable<CheckInActivity> Activities()
+		public List<string> Activities()
 		{
-			var acResults = from y in DbUtil.Db.CheckInActivities
-							  group y by y.Activity into z
-							  select z.FirstOrDefault();
-
-			CheckInActivity[] ciaAll = { new CheckInActivity { Id = 0, Activity = ALL_ACTIVITIES } }; 
-			IEnumerable<CheckInActivity> ieResults = ciaAll.AsEnumerable().Concat( acResults.AsEnumerable() );
-
-			return ieResults;
+			var q = from a in DbUtil.Db.CheckInActivities
+					group a.Activity by a.Activity into g
+					select g.Key;
+			var list = q.ToList();
+			list.Insert(0, ALL_ACTIVITIES );
+			return list;
 		}
 
-		public IEnumerable<CheckInTime> Locations()
+		public List<string> Locations()
 		{
-			var acResults = from y in DbUtil.Db.CheckInTimes
-								 where y.Location != null
-							  group y by y.Location into z
-							  select z.FirstOrDefault();
-
-			CheckInTime[] ciaAll = { new CheckInTime { Id = 0, Location = ALL_LOCATIONS } }; 
-			IEnumerable<CheckInTime> ieResults = ciaAll.AsEnumerable().Concat( acResults.AsEnumerable() );
-
-			return ieResults;
+			var q = from t in DbUtil.Db.CheckInTimes
+					where t.Location != null
+					group t.Location by t.Location into g
+					select g.Key;
+			var list = q.ToList();
+			list.Insert(0, ALL_LOCATIONS);
+			return list;
 		}
 
-		public IQueryable<CheckInTime> Times()
+		public class CheckinTimeEx
 		{
-			if( dateEnd != null ) { dateEnd = dateEnd.Value.AddHours( 23 ); dateEnd = dateEnd.Value.AddMinutes( 59 ); dateEnd = dateEnd.Value.AddSeconds( 59 ); }
-
-			var results = from y in DbUtil.Db.CheckInTimes 
-							  where y.CheckInTimeX >= dateStart || dateStart == null
-							  where y.CheckInTimeX <= dateEnd || dateEnd == null
-							  where y.PeopleId == Person || Person == 0
-							  where y.GuestOfId == null
-							  select y;
-
-			if( withGuest ) results = from z in results where z.Guests.Count() > 0 select z;
-
-			if( Pager.Direction == null ) Pager.Direction = "0";
-			if( Pager.Sort == null ) Pager.Sort = "0";
-
-			switch( Int32.Parse( Pager.Direction ) )
+			public CheckInTime ctime { get; set; }
+			public string name { get; set; }
+			public string activities { get; set; }
+			public int guests { get; set; }
+			internal PagerModel2 pager;
+			public string rowclass()
 			{
-				case 0:
-				{
-					switch( Int32.Parse( Pager.Sort ) )
-					{
-						case 0: results = from z in results orderby z.Id ascending select z; break;
-						case 1: results = from z in results orderby z.Person.Name ascending select z; break;
-						case 2: results = from z in results orderby z.CheckInTimeX ascending select z; break;
-						case 3: results = from z in results orderby z.Location ascending select z; break;
-						case 4: results = from z in results orderby z.CheckInActivities.FirstOrDefault().Activity ascending select z; break;
-						case 5: results = from z in results orderby z.GuestOfId ascending select z; break;
-					}
-					break;
-				}
+				if (pager.Sort != "Host")
+					return null;
+				if (ctime.GuestOfId == null)
+					return "host";
+				return "guest";
+			}
+			public string indent()
+			{
+				if (pager.Sort != "Host")
+					return null;
+				if (ctime.GuestOfId != null)
+					return "indent";
+				return null;
+			}
+		}
 
-				case 1:
-				{
-					switch( Int32.Parse( Pager.Sort ) )
+		public class CountInfo
+		{
+			public int members { get; set; }
+			public int guests { get; set; }
+		}
+
+		private CountInfo _counts;
+		public CountInfo counts
+		{
+			get
+			{
+				if (_counts == null)
+					FetchTimes();
+				return _counts;
+			}
+		}
+
+		public int Count()
+		{
+			return counts.guests = counts.members;
+		}
+
+		private IEnumerable<CheckinTimeEx> _times;
+		public IEnumerable<CheckinTimeEx> FetchTimes()
+		{
+			if (_times != null)
+				return _times;
+
+			// filter
+			if (dateEnd != null)
+				dateEnd = dateEnd.Value.AddHours(24);
+			var q = from t in DbUtil.Db.CheckInTimes
+					where t.CheckInTimeX >= dateStart || dateStart == null
+					where t.CheckInTimeX < dateEnd || dateEnd == null
+					where peopleid == 0 || t.PeopleId == peopleid || t.Guests.Any(g => g.PeopleId == peopleid)
+					where withGuest == false || (t.Guests.Any() || t.GuestOfId != null)
+					select t;
+			if (activity != null && !activity.Equals(ALL_ACTIVITIES))
+				q = from t in q
+					where t.CheckInActivities.Any(z => z.Activity == activity)
+					select t;
+			if (location != null && !location.Equals(ALL_LOCATIONS))
+				q = from t in q
+					where t.Location == location
+					select t;
+
+			// count
+			var q2 = from t in q
+					 group t by 1 into g
+					 select new CountInfo()
+					 {
+						 members = g.Count(tt => tt.GuestOfId == null),
+						 guests = g.Count(tt => tt.GuestOfId != null)
+					 };
+			_counts = q2.Single();
+
+			// sort
+			q = SortItems(q);
+
+			// transform to view model
+			_times = from t in q.Skip(Pager.StartRow).Take(Pager.PageSize)
+					 select new CheckinTimeEx
+					 {
+						 ctime = t,
+						 activities = string.Join(",",
+							 t.CheckInActivities.Select(a => a.Activity)),
+						 name = t.Person.Name,
+						 guests = t.Guests.Count(),
+						 pager = Pager,
+					 };
+			return _times;
+		}
+		public IQueryable<CheckInTime> SortItems(IQueryable<CheckInTime> results)
+		{
+			if (Pager.Sort == "Host")
+				return from z in results
+					   orderby z.CheckInTimeX
+					   select z;
+			switch (Pager.Direction)
+			{
+				case "asc":
+					switch (Pager.Sort)
 					{
-						case 0: results = from z in results orderby z.Id descending select z; break;
-						case 1: results = from z in results orderby z.Person.Name descending select z; break;
-						case 2: results = from z in results orderby z.CheckInTimeX descending select z; break;
-						case 3: results = from z in results orderby z.Location descending select z; break;
-						case 4: results = from z in results orderby z.CheckInActivities.FirstOrDefault().Activity descending select z; break;
-						case 5: results = from z in results orderby z.GuestOf.Person.Name descending select z; break;
+						case "Person":
+							results = results.OrderBy(z => z.Person.Name2);
+							break;
+						case "Date/Time":
+							results = results.OrderBy(z => z.CheckInTimeX);
+							break;
+						case "Location":
+							results = from z in results 
+									  orderby z.Location, 
+										z.CheckInTimeX 
+									  select z;
+							break;
+						case "Activity":
+							results = from z in results 
+									  orderby z.CheckInActivities.FirstOrDefault().Activity,
+										z.CheckInTimeX
+									  select z;
+							break;
 					}
 					break;
-				}
+				case "desc":
+					switch (Pager.Sort)
+					{
+						case "Person":
+							results = results.OrderByDescending(z => z.Person.Name2);
+							break;
+						case "Date/Time":
+							results = results.OrderByDescending(z => z.CheckInTimeX);
+							break;
+						case "Location":
+							results = from z in results 
+									  orderby z.Location descending, 
+										z.CheckInTimeX 
+									  select z;
+							break;
+						case "Activity":
+							results = from z in results 
+									  orderby z.CheckInActivities.FirstOrDefault().Activity descending,
+										z.CheckInTimeX
+									  select z;
+							break;
+					}
+					break;
 			}
 
-			if( activity != null && !activity.Equals( ALL_ACTIVITIES ) )
-				results = from x in results
-							 where x.CheckInActivities.Any( z => z.Activity == activity ) || x.Guests.Any( y => y.CheckInActivities.Any( w => w.Activity == activity ) == true )
-							 select x;
-
-			if( location != null && !location.Equals( ALL_LOCATIONS ) )
-				results = from x in results
-							 where x.Location == location
-							 select x;
-
-			Pager.setCountDelegate( results.Count );
-			return results.Skip( Pager.StartRow ).Take( Pager.PageSize );
+			return results;
 		}
 	}
 }

@@ -49,6 +49,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms|AnyCPU'">
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms2|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|AnyCPU'">
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
@@ -976,6 +979,7 @@
     <Content Include="Min\Scripts\TransactionHistory.js" />
     <Content Include="Min\Scripts\Transactions.js" />
     <Content Include="Min\Scripts\UserDialog.js" />
+    <Content Include="Scripts\CheckinActivity.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
     <Content Include="Scripts\meeting-ticket.js" />
@@ -1123,7 +1127,7 @@
     <Content Include="Areas\Manage\Views\Transactions\Report.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\ReportByDescription.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
-    <Content Include="TestConnectionStrings.config" />
+    <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="UploadPicture.aspx" />
@@ -1821,6 +1825,10 @@
     <Content Include="Views\Shared\CombinedOnlineRegJs.cshtml">
     </Content>
     <Content Include="Views\Shared\CombinedCss.cshtml">
+    </Content>
+    <Content Include="Web.bvcms2.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

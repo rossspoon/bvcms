@@ -244,6 +244,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|x86'">
     <OutputPath>bin\x86\test\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms2|AnyCPU'">
+    <OutputPath>bin\bvcms2\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms2|x86'">
+    <OutputPath>bin\x86\bvcms2\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit, Version=3.0.20820.16598, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -1094,7 +1094,7 @@ namespace UtilityExtensions
 		public static SmtpClient Smtp()
 		{
 			var smtp = new SmtpClient();
-			if (ConfigurationManager.AppSettings["requiresSSL"] == "true")
+			if (ConfigurationManager.AppSettings["SmtpRequiresSSL"] == "true")
 				smtp.EnableSsl = true;
 			return smtp;
 		}

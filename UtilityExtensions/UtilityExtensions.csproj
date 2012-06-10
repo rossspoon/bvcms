@@ -227,6 +227,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|x86'">
     <OutputPath>bin\x86\test\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms2|AnyCPU'">
+    <OutputPath>bin\bvcms2\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms2|x86'">
+    <OutputPath>bin\x86\bvcms2\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
