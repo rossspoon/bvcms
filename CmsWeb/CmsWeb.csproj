@@ -941,6 +941,7 @@
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
     <Content Include="Min\Scripts\Contributions.js" />
+    <Content Include="Min\Scripts\CheckInActivity.js" />
     <Content Include="Min\Scripts\Divisions.js" />
     <Content Include="Min\Scripts\edit.js" />
     <Content Include="Min\Scripts\email.js" />
@@ -1126,6 +1127,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Timeout.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\Report.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\ReportByDescription.cshtml" />
+    <Content Include="Areas\Main\Views\Person\OptoutsGrid.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />

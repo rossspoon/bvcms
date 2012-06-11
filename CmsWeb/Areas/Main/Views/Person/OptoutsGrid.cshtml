@@ -1,0 +1,22 @@
+﻿@model CmsData.Person
+@if (Model.EmailOptOuts.Count > 0)
+{ 
+<table class="grid" cellspacing="5">
+<thead>
+    <tr>
+		<td><b>From Email</b></td>
+        <td></td>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var oo in Model.EmailOptOuts)
+    { 
+    <tr>
+        <td>@oo.FromEmail</td>
+        <td><a class="deloptout" href="/Person/DeleteOptout/@oo.ToPeopleId?email=@oo.FromEmail"><img src="/images/delete.gif" /></a></td>
+    </tr>
+    } 
+</tbody>
+</table>
+} 
+

@@ -72,6 +72,7 @@ ajaxmin Content/js/jquery.transpose.js -o Min\Content/js/jquery.transpose.js -cl
 ajaxmin Content/js/jquery-ui-timepicker-addon.js -o Min\Content/js/jquery-ui-timepicker-addon.js -clobber:true || pause
 
 ajaxmin Scripts/CheckIn.js -o Min/Scripts/CheckIn.js -clobber:true || pause
+ajaxmin Scripts/CheckInActivity.js -o Min/Scripts/CheckInActivity.js -clobber:true || pause
 ajaxmin Scripts/ContactSearch.js -o Min\Scripts/ContactSearch.js -clobber:true || pause
 ajaxmin Scripts/Contributions.js -o Min\Scripts/Contributions.js -clobber:true || pause
 ajaxmin Scripts/Divisions.js -o Min\Scripts/Divisions.js -clobber:true || pause

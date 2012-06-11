@@ -569,6 +569,22 @@ namespace CmsWeb.Areas.Main.Controllers
 			return View(p);
 		}
 		[HttpPost]
+		public ActionResult OptoutsGrid(int id)
+		{
+			var p = DbUtil.Db.LoadPersonById(id);
+			return View(p);
+		}
+		[HttpPost]
+		public ActionResult DeleteOptout(int id, string email)
+		{
+			var oo = DbUtil.Db.EmailOptOuts.SingleOrDefault(o => o.FromEmail == email && o.ToPeopleId == id);
+			if (oo == null)
+				return Content("not found");
+			DbUtil.Db.EmailOptOuts.DeleteOnSubmit(oo);
+			DbUtil.Db.SubmitChanges();
+			return Content("ok");
+		}
+		[HttpPost]
 		public ActionResult VolunteerDisplay(int id)
 		{
 			var m = new CmsWeb.Models.PersonPage.VolunteerModel(id);
