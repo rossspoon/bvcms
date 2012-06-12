@@ -7,60 +7,81 @@
 {
     <script type="text/javascript">
         $(function () {
-            $("#newhtmlfile").click(function (e) {
+        	$("a[newtype]").click(function (e) {
                 e.preventDefault();
-                $.blockUI({ message: $('#askHtmlName') });
-            });
-            $("#createnewhtml").click(function (e) {
-                e.preventDefault();
-                window.location = "/Display/Page/" + $("#newHtmlName").val();
-            });
-            $("#newtextfile").click(function (e) {
-                e.preventDefault();
-                $.blockUI({ message: $('#askFileName') });
-            });
-            $("#createnewfile").click(function (e) {
-                e.preventDefault();
-                window.location = "/Display/File/" + $("#newFileName").val();
+                $("#newType").val($(this).attr("newtype"));
+                $("#newMessage").html($(this).attr("newmessage"));
+                $.blockUI({ message: $('#askName') });
             });
             $("a.bt").button();
         });
     </script>
 }
-<h2>Html Content</h2>
-<a href="#" id="newhtmlfile" class="bt">Create New Html File</a>
-<table class="grid" cellspacing="4">
-    <tr>
-        <th> Name </th>
-        <th> Title </th>
-    </tr>
-@foreach (var item in Model.Where(cc => (cc.TextOnly ?? false) == false))
-{ 
-    <tr>
-        <td> @Html.ActionLink(item.Name, "Page", new { id = item.Name }) </td>
-        <td> @item.Title </td>
-    </tr>
-}
+<table cellspacing="5" width="100%">
+<tr>
+	<td width="33%" valign="top">
+		<div class="roundbox">
+			<h2>Html Content</h2>
+			<center><a href="#" newtype="0" newmessage="Create New HTML File" class="bt">New HTML File</a></center>
+			<table class="grid" cellspacing="4">
+				 <tr>
+					  <th><b>Name/Title</b></th>
+				 </tr>
+			@foreach (var item in Model.Where(cc => cc.TypeID == 0))
+			{ 
+				 <tr>
+					  <td>
+					  @Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id })<br />
+					  &nbsp;-- @item.Title
+					  </td>
+				 </tr>
+			}
+			</table>
+		</div>
+	</td>
+	<td width="33%" valign="top">
+		<div class="roundbox">
+			<h2>Text Content</h2>
+			<center><a href="#" newtype="1" newmessage="Create New Text File" class="bt">New Text File</a></center>
+			<table class="grid" cellpadding="4">
+				 <tr>
+					  <th><b>Name</b></th>
+				 </tr>
+			@foreach (var item in Model.Where(cc => cc.TypeID == 1))
+			{
+				 <tr>
+					  <td> @Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id }) </td>
+				 </tr>
+			}
+			</table>
+		</div>
+	</td>
+	<td width="33%" valign="top">
+		<div class="roundbox">
+			<h2>e-Mail Templates</h2>
+			<center><a href="#" newtype="2" newmessage="Create New e-Mail Template" class="bt">New e-Mail Template</a></center>
+			<table class="grid" cellspacing="4">
+				 <tr>
+					  <th><b>Name</b></th>
+				 </tr>
+			@foreach (var item in Model.Where(cc => cc.TypeID == 2))
+			{
+				 <tr>
+					  <td> @Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id }) </td>
+				 </tr>
+			}
+			</table>
+		</div>
+	</td>
+</tr>
 </table>
-
-<h2>Text Content</h2>
-<a href="#" id="newtextfile" class="bt">Create New Text File</a>
-<table class="grid" cellspacing="4">
-    <tr>
-        <th> Name </th>
-    </tr>
-@foreach (var item in Model.Where(cc => cc.TextOnly == true))
-{
-    <tr>
-        <td> @Html.ActionLink(item.Name, "File", new { id = item.Name }) </td>
-    </tr>
-}
-</table>
-<div id="askFileName" style="display:none">
-    <p>FileName: <input type="text" id="newFileName" /></p>
-    <p><input type="button" id="createnewfile" class="bt" value="Submit" /></p>
-</div>
-<div id="askHtmlName" style="display:none">
-    <p>FileName: <input type="text" id="newHtmlName" /></p>
-    <p><input type="button" id="createnewhtml" class="bt" value="Submit" /></p>
+<div id="askName" style="display:none">
+	<br />
+	<span id="newMessage" style="font-weight:bold"></span>
+	<form action="/Display/ContentCreate/" method="post">
+    <p>FileName: <input name="newName" /></p>
+    <input type="hidden" id="newType" name="newType" value="0" />
+    <input type="submit" class="bt" value="Submit" /> &nbsp;&nbsp; <input type="button" class="bt" onclick="$.unblockUI()" value="Cancel" />
+	 </form>
+	 <br />
 </div>
