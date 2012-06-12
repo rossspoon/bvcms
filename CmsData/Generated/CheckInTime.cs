@@ -23,9 +23,9 @@ namespace CmsData
 		
 		private DateTime? _CheckInTimeX;
 		
-		private string _Location;
-		
 		private int? _GuestOfId;
+		
+		private string _Location;
 		
    		
    		private EntitySet< CheckInActivity> _CheckInActivities;
@@ -53,11 +53,11 @@ namespace CmsData
 		partial void OnCheckInTimeXChanging(DateTime? value);
 		partial void OnCheckInTimeXChanged();
 		
-		partial void OnLocationChanging(string value);
-		partial void OnLocationChanged();
-		
 		partial void OnGuestOfIdChanging(int? value);
 		partial void OnGuestOfIdChanged();
+		
+		partial void OnLocationChanging(string value);
+		partial void OnLocationChanged();
 		
     #endregion
 		public CheckInTime()
@@ -147,28 +147,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(50)")]
-		public string Location
-		{
-			get { return this._Location; }
-
-			set
-			{
-				if (this._Location != value)
-				{
-				
-                    this.OnLocationChanging(value);
-					this.SendPropertyChanging();
-					this._Location = value;
-					this.SendPropertyChanged("Location");
-					this.OnLocationChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="GuestOfId", UpdateCheck=UpdateCheck.Never, Storage="_GuestOfId", DbType="int")]
 		public int? GuestOfId
 		{
@@ -187,6 +165,28 @@ namespace CmsData
 					this._GuestOfId = value;
 					this.SendPropertyChanged("GuestOfId");
 					this.OnGuestOfIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="location", UpdateCheck=UpdateCheck.Never, Storage="_Location", DbType="varchar(50)")]
+		public string Location
+		{
+			get { return this._Location; }
+
+			set
+			{
+				if (this._Location != value)
+				{
+				
+                    this.OnLocationChanging(value);
+					this.SendPropertyChanging();
+					this._Location = value;
+					this.SendPropertyChanged("Location");
+					this.OnLocationChanged();
 				}
 
 			}

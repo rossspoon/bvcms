@@ -70,6 +70,7 @@ CKEditorFuncNum, baseurl + fn, error));
         {
             return View();
         }
+		[MyRequireHttps]
         public ActionResult LogOn()
         {
             try
@@ -86,11 +87,11 @@ CKEditorFuncNum, baseurl + fn, error));
             }
 			if (!Request.Browser.Cookies)
 				return Content("Your browser must support cookies to use this site<br>" + Request.UserAgent);
-            if (Request.Url.Scheme == "http" && DbUtil.Db.CmsHost.StartsWith("https://"))
-                if (Request.QueryString.Count > 0)
-                    return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);
-                else
-                    return Redirect(DbUtil.Db.CmsHost + "Logon");
+//            if (DbUtil.Db.CmsHost.StartsWith("https://") && MyRequireHttpsAttribute.NeedRedirect(Request))
+//                if (Request.QueryString.Count > 0)
+//                    return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);
+//                else
+//                    return Redirect(DbUtil.Db.CmsHost + "Logon");
 
             if (!User.Identity.IsAuthenticated)
             {
