@@ -4,13 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Diagnostics;
 using CmsData;
+using UtilityExtensions;
 
 namespace CmsWeb.Models
 {
 	public class CheckinTimeModel
 	{
 		public static string ALL_ACTIVITIES = "- All Activities -";
-		public static string ALL_LOCATIONS = "- All Locations -";
 
 		public DateTime? dateStart { get; set; }
 		public DateTime? dateEnd { get; set; }
@@ -27,6 +27,8 @@ namespace CmsWeb.Models
 			Pager.setCountDelegate(Count);
 			Pager.Direction = "desc";
 			Pager.Sort = "Host";
+			var locs = Locations();
+			location = DbUtil.Db.UserPreference("checkintimes-location", locs.FirstOrDefault());
 		}
 
 		public List<string> Activities()
@@ -35,19 +37,23 @@ namespace CmsWeb.Models
 					group a.Activity by a.Activity into g
 					select g.Key;
 			var list = q.ToList();
-			list.Insert(0, ALL_ACTIVITIES );
+			list.Insert(0, ALL_ACTIVITIES);
 			return list;
 		}
 
+		private List<string> locations;
 		public List<string> Locations()
 		{
-			var q = from t in DbUtil.Db.CheckInTimes
-					where t.Location != null
-					group t.Location by t.Location into g
-					select g.Key;
-			var list = q.ToList();
-			list.Insert(0, ALL_LOCATIONS);
-			return list;
+			if (locations == null)
+			{
+				var q = from t in DbUtil.Db.CheckInTimes
+						where t.Location != null
+						group t.Location by t.Location
+							into g
+							select g.Key;
+				locations = q.ToList();
+			}
+			return locations;
 		}
 
 		public class CheckinTimeEx
@@ -79,6 +85,12 @@ namespace CmsWeb.Models
 		{
 			public int members { get; set; }
 			public int guests { get; set; }
+			private string _name;
+			public string name
+			{
+				get { return _name.HasValue() ? _name : "Not Specified"; }
+				set { _name = value; }
+			}
 		}
 
 		private CountInfo _counts;
@@ -107,6 +119,7 @@ namespace CmsWeb.Models
 			if (dateEnd != null)
 				dateEnd = dateEnd.Value.AddHours(24);
 			var q = from t in DbUtil.Db.CheckInTimes
+					where t.Location == location
 					where t.CheckInTimeX >= dateStart || dateStart == null
 					where t.CheckInTimeX < dateEnd || dateEnd == null
 					where peopleid == 0 || t.PeopleId == peopleid || t.Guests.Any(g => g.PeopleId == peopleid)
@@ -116,10 +129,6 @@ namespace CmsWeb.Models
 				q = from t in q
 					where t.CheckInActivities.Any(z => z.Activity == activity)
 					select t;
-			if (location != null && !location.Equals(ALL_LOCATIONS))
-				q = from t in q
-					where t.Location == location
-					select t;
 
 			// count
 			var q2 = from t in q
@@ -127,7 +136,10 @@ namespace CmsWeb.Models
 					 select new CountInfo()
 					 {
 						 members = g.Count(tt => tt.GuestOfId == null),
-						 guests = g.Count(tt => tt.GuestOfId != null)
+						 guests = g.Count(tt => tt.GuestOfId != null),
+						 name = (from p in DbUtil.Db.People
+								 where p.PeopleId == peopleid
+								 select p.Name).SingleOrDefault()
 					 };
 			_counts = q2.Single();
 
@@ -164,14 +176,8 @@ namespace CmsWeb.Models
 						case "Date/Time":
 							results = results.OrderBy(z => z.CheckInTimeX);
 							break;
-						case "Location":
-							results = from z in results 
-									  orderby z.Location, 
-										z.CheckInTimeX 
-									  select z;
-							break;
 						case "Activity":
-							results = from z in results 
+							results = from z in results
 									  orderby z.CheckInActivities.FirstOrDefault().Activity,
 										z.CheckInTimeX
 									  select z;
@@ -187,14 +193,8 @@ namespace CmsWeb.Models
 						case "Date/Time":
 							results = results.OrderByDescending(z => z.CheckInTimeX);
 							break;
-						case "Location":
-							results = from z in results 
-									  orderby z.Location descending, 
-										z.CheckInTimeX 
-									  select z;
-							break;
 						case "Activity":
-							results = from z in results 
+							results = from z in results
 									  orderby z.CheckInActivities.FirstOrDefault().Activity descending,
 										z.CheckInTimeX
 									  select z;

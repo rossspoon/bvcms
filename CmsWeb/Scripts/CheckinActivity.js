@@ -9,6 +9,7 @@
                             $.formatTable();
                             $("span.membercount").text($("#membercount").val());
                             $("span.guestcount").text($("#guestcount").val());
+                            $("span.name").text($("#name").val());
                         });
         });
         return false;
@@ -17,11 +18,22 @@
         ev.preventDefault();
         $.getTable();
     });
+    $("a[person]").live("click", function (ev) {
+        $("#peopleid").val($(this).attr("id"));
+        ev.preventDefault();
+        $.getTable();
+    });
+    $("#clearname").click(function (ev) {
+        ev.preventDefault();
+        $("#peopleid").val(0);
+        $.getTable();
+    });
     $("#clear").click(function (ev) {
         ev.preventDefault();
         $("input:text").val("");
         $('input:checkbox').removeAttr('checked');
-        $("select").val(0);
+        $('#peopleid').val(0);
+        $("#activity").val(0);
         $.getTable();
     });
     $.formatTable = function () {

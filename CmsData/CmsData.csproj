@@ -242,6 +242,8 @@
     <Compile Include="Generated\DuplicatesRun.cs" />
     <Compile Include="Generated\EmailQueueToFail.cs" />
     <Compile Include="Generated\Functions\ContributionCountTable.cs" />
+    <Compile Include="Generated\Functions\Contributions2.cs" />
+    <Compile Include="Generated\Functions\GetTotalContributions2.cs" />
     <Compile Include="Generated\MemberDocForm.cs" />
     <Compile Include="Generated\OrganizationType.cs" />
     <Compile Include="Generated\RepairTransactionsRun.cs" />
