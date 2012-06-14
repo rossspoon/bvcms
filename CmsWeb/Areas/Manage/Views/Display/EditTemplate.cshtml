@@ -25,10 +25,12 @@
     <h2 class="title">@Model.Name</h2>
     <a href="/Display/Index">Menu of Content</a>
     <hr />
-	 @Html.Hidden("id", Model.Id )
-    <div>Title: @Html.TextBox("title", @Model.Title)</div>
-    <div>@Html.TextArea("body", @Model.Body, new { @class = "editor", rows = "26", style = "width:90%" })
-    </div>
+	 @Html.Hidden("id")
+	 <div>Name: @Html.TextBox("name")</div>
+	 <br />
+    <div>Title: @Html.TextBox("title")</div>
+	 <br />
+    <div>@Html.TextArea("body", new { @class = "editor", rows = "26", style = "width:90%" })</div>
 	 <br />
     <input type="submit" class="bt" value="Save" /> &nbsp;&nbsp; <input type="button" id="delete" class="bt" value="Delete" />
     </div>

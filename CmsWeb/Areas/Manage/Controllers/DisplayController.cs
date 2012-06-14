@@ -34,24 +34,6 @@ namespace CmsWeb.Areas.Manage.Controllers
 
 		public ActionResult ContentView(string id)
 		{
-			if (!id.HasValue()) id = "Home";
-			Content content = null;
-
-			if (id == "Recent")
-				content = DbUtil.Db.Contents.OrderByDescending(c => c.DateCreated).First();
-			else
-				content = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == id);
-
-			ViewData["title"] = id;
-
-			if (content != null)
-			{
-				ViewData["html"] = content.Body;
-				ViewData["title"] = content.Title;
-			}
-
-			ViewData["page"] = id;
-
 			return View();
 		}
 
@@ -78,9 +60,10 @@ namespace CmsWeb.Areas.Manage.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult ContentUpdate(int id, string title, string body)
+		public ActionResult ContentUpdate(int id, string name, string title, string body)
 		{
 			var content = DbUtil.ContentFromID(id);
+			content.Name = name;
 			content.Title = title;
 			content.Body = body;
 			DbUtil.Db.SubmitChanges();

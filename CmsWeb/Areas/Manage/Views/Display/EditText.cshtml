@@ -24,7 +24,8 @@
     <h2 class="title">@Model.Name</h2>
     <a href="/Display/Index">Menu of Content</a>
     <hr />
-    @Html.Hidden("id", Model.Id)
+    @Html.Hidden("id")
+	 @Html.Hidden("name")
 	 @Html.Hidden("title")
     <div>
     <textarea name="body" cols="80" rows="40" wrap='off' style="width:99%">@Html.Raw(@Model.Body)</textarea>
