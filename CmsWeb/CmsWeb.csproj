@@ -164,6 +164,7 @@
     <Compile Include="Areas\Main\Models\Directories\PictureRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
+    <Compile Include="Areas\Main\Models\Email\EmailTemplates.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
@@ -297,6 +298,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
+    <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
+    <None Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
     <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
@@ -1401,13 +1405,11 @@
     </Content>
     <Content Include="Areas\Manage\Views\Batch\UploadPeople.cshtml">
     </Content>
-    <Content Include="Areas\Manage\Views\Display\EditPage.cshtml">
+    <Content Include="Areas\Manage\Views\Display\EditHTML.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\Display\Index.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\Display\OrgContent.cshtml">
-    </Content>
-    <Content Include="Areas\Manage\Views\Display\Page.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\OrgMembers\Index.cshtml">
       <SubType>Code</SubType>
@@ -1663,7 +1665,7 @@
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\Import.cshtml">
     </Content>
-    <Content Include="Areas\Manage\Views\Display\File.cshtml">
+    <Content Include="Areas\Manage\Views\Display\EditText.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Organization\SettingsOrg.cshtml">
     </Content>
