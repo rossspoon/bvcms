@@ -252,6 +252,7 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />
     <Compile Include="Generated\CheckedBatch.cs" />
     <Compile Include="Generated\CheckInActivity.cs" />

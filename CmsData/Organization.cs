@@ -257,6 +257,22 @@ namespace CmsData
 			Db.SubmitChanges();
 			return o;
 		}
+		public OrganizationExtra GetExtraValue(string field)
+		{
+			var ev = OrganizationExtras.AsEnumerable().FirstOrDefault(ee => string.Compare(ee.Field, field, ignoreCase: true) == 0);
+			if (ev == null)
+			{
+				ev = new OrganizationExtra()
+				{
+					OrganizationId = OrganizationId,
+					Field = field,
+					
+				};
+				OrganizationExtras.Add(ev);
+			}
+			return ev;
+		}
+
 		public void AddEditExtra(CMSDataContext Db, string field, string value, bool multiline = false)
 		{
 			var oev = Db.OrganizationExtras.SingleOrDefault(oe => oe.OrganizationId == OrganizationId && oe.Field == field);
@@ -272,6 +288,18 @@ namespace CmsData
 			oev.Data = value;
 			oev.DataType = multiline ? "text" : null;
 		}
+		public void AddToExtraData(string field, string value)
+		{
+			if (!value.HasValue())
+				return;
+			var ev = GetExtraValue(field);
+			ev.DataType = "text";
+			if (ev.Data.HasValue())
+				ev.Data = value + "\n" + ev.Data;
+			else
+				ev.Data = value;
+		}
+
 		public string GetExtra(string field)
 		{
 			var oev = OrganizationExtras.SingleOrDefault(oe => oe.OrganizationId == OrganizationId && oe.Field == field);
