@@ -29,31 +29,17 @@ namespace CmsWeb.Models
 			Dt1 = first;
 			Dt2 = first.AddMonths(1).AddDays(-1);
 		}
-        public FundTotalInfo FundTotal;
-        public IEnumerable<FundTotalInfo> TotalsByFund()
+		public FundTotalInfo FundTotal;
+		public IEnumerable<FundTotalInfo> TotalsByFund()
         {
-            var contributionTypes = new int[] 
-            { 
-                (int)Contribution.TypeCode.ReturnedCheck, 
-                (int)Contribution.TypeCode.Reversed, 
-            };
-            var q = from c in DbUtil.Db.Contributions
-                    where !contributionTypes.Contains(c.ContributionTypeId)
-					where (c.ContributionFund.NonTaxDeductible ?? false) == NonTaxDeductible
-                    where c.ContributionTypeId != (int)Contribution.TypeCode.BrokeredProperty
-                    where Pledges || c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
-                    where c.ContributionDate >= Dt1 && c.ContributionDate.Value.Date <= Dt2
-                    where c.PledgeFlag == Pledges
-					let status = c.BundleDetails.First().BundleHeader.BundleStatusId
-					where status == 0 || IncUnclosedBundles
-                    where CampusId == 0 || c.Person.CampusId == CampusId
+			var q = from c in DbUtil.Db.GetTotalContributions2(Dt1, Dt2, CampusId, NonTaxDeductible, IncUnclosedBundles)
                     group c by c.FundId into g
                     orderby g.Key
                     select new FundTotalInfo
                     {
                         FundId = g.Key,
-                        FundName = g.First().ContributionFund.FundName,
-                        Total = g.Sum(t => t.ContributionAmount).Value,
+                        FundName = g.First().FundName,
+                        Total = g.Sum(t => t.Amount).Value,
                         Count = g.Count()
                     };
             FundTotal = new FundTotalInfo
@@ -66,13 +52,13 @@ namespace CmsWeb.Models
 		public IEnumerable<SelectListItem> Campuses()
 		{
 			var list = (from c in DbUtil.Db.Campus
-				   orderby c.Description
-				   select new SelectListItem()
-				   {
-					   Value = c.Id.ToString(),
-					   Text = c.Description,
-				   }).ToList();
-			list.Insert(0, new SelectListItem {Text = "(not specified)", Value = "0"});
+						orderby c.Description
+						select new SelectListItem()
+						{
+							Value = c.Id.ToString(),
+							Text = c.Description,
+						}).ToList();
+			list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
 			return list;
 		}
 

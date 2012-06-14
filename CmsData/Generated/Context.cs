@@ -1553,6 +1553,27 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.Contributions2", IsComposable = true)]
+		public IQueryable< View.Contributions2 > Contributions2(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? campusid,
+            [Parameter(DbType="bit")] bool? pledges,
+            [Parameter(DbType="bit")] bool? nontaxded,
+            [Parameter(DbType="bit")] bool? includeUnclosed
+            )
+		{
+			return this.CreateMethodCallQuery< View.Contributions2>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                campusid,
+                pledges,
+                nontaxded,
+                includeUnclosed
+                );
+		}
+
 		[Function(Name="dbo.Contributors", IsComposable = true)]
 		public IQueryable< View.Contributor > Contributors(
             [Parameter(DbType="datetime")] DateTime? fd,
@@ -1723,6 +1744,25 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.GetTotalContributions2", IsComposable = true)]
+		public IQueryable< View.GetTotalContributions2 > GetTotalContributions2(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? campusid,
+            [Parameter(DbType="bit")] bool? nontaxded,
+            [Parameter(DbType="bit")] bool? includeUnclosed
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTotalContributions2>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                campusid,
+                nontaxded,
+                includeUnclosed
+                );
+		}
+
 		[Function(Name="dbo.MembersAsOf", IsComposable = true)]
 		public IQueryable< View.MembersAsOf > MembersAsOf(
             [Parameter(DbType="datetime")] DateTime? from,
@@ -1739,6 +1779,21 @@ namespace CmsData
                 progid,
                 divid,
                 orgid
+                );
+		}
+
+		[Function(Name="dbo.PledgeReport", IsComposable = true)]
+		public IQueryable< View.PledgeReport > PledgeReport(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? campusid
+            )
+		{
+			return this.CreateMethodCallQuery< View.PledgeReport>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                campusid
                 );
 		}
 

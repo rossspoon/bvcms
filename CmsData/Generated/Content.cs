@@ -29,6 +29,8 @@ namespace CmsData
 		
 		private bool? _TextOnly;
 		
+		private int _TypeID;
+		
    		
     	
 	#endregion
@@ -55,6 +57,9 @@ namespace CmsData
 		
 		partial void OnTextOnlyChanging(bool? value);
 		partial void OnTextOnlyChanged();
+		
+		partial void OnTypeIDChanging(int value);
+		partial void OnTypeIDChanged();
 		
     #endregion
 		public Content()
@@ -192,6 +197,28 @@ namespace CmsData
 					this._TextOnly = value;
 					this.SendPropertyChanged("TextOnly");
 					this.OnTextOnlyChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="TypeID", UpdateCheck=UpdateCheck.Never, Storage="_TypeID", DbType="int NOT NULL")]
+		public int TypeID
+		{
+			get { return this._TypeID; }
+
+			set
+			{
+				if (this._TypeID != value)
+				{
+				
+                    this.OnTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._TypeID = value;
+					this.SendPropertyChanged("TypeID");
+					this.OnTypeIDChanged();
 				}
 
 			}

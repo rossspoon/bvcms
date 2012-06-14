@@ -164,6 +164,7 @@
     <Compile Include="Areas\Main\Models\Directories\PictureRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
+    <Compile Include="Areas\Main\Models\Email\EmailTemplates.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
@@ -297,6 +298,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
+    <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
+    <None Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
     <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
@@ -324,11 +328,11 @@
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\combined.css" />
     <Content Include="Content\faary.css" />
-    <Content Include="Content\jquery-ui-1.8.18.custom.css" />
-    <Content Include="Content\js\jquery-1.7.1.js" />
-    <Content Include="Content\js\jquery-1.7.1.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.18.custom.js" />
-    <Content Include="Content\js\jquery-ui-1.8.18.custom.min.js" />
+    <Content Include="Content\jquery-ui-1.8.21.custom.css" />
+    <Content Include="Content\js\jquery-1.7.2.js" />
+    <Content Include="Content\js\jquery-1.7.2.min.js" />
+    <Content Include="Content\js\jquery-ui-1.8.21.custom.js" />
+    <Content Include="Content\js\jquery-ui-1.8.21.custom.min.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
     <Content Include="Content\js\jquery.tmpl.js" />
@@ -565,13 +569,6 @@
     </Compile>
     <Compile Include="Contributions\Reports\JournalDetails.aspx.designer.cs">
       <DependentUpon>JournalDetails.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Reports\PledgeReport.aspx.cs">
-      <DependentUpon>PledgeReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Reports\PledgeReport.aspx.designer.cs">
-      <DependentUpon>PledgeReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contributions\Reports\Reports.Master.cs">
       <DependentUpon>Reports.Master</DependentUpon>
@@ -924,8 +921,8 @@
     <Content Include="Min\Content\js\combined-org.js" />
     <Content Include="Min\Content\js\combined-person.js" />
     <Content Include="Min\Content\js\combined.js" />
-    <Content Include="Min\Content\js\jquery-1.7.1.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.8.18.custom.js" />
+    <Content Include="Min\Content\js\jquery-1.7.2.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.8.21.custom.js" />
     <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Min\Content\js\jquery.checkboxtree.js" />
     <Content Include="Min\Content\js\jquery.contextMenu.js" />
@@ -941,6 +938,7 @@
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
     <Content Include="Min\Scripts\Contributions.js" />
+    <Content Include="Min\Scripts\CheckInActivity.js" />
     <Content Include="Min\Scripts\Divisions.js" />
     <Content Include="Min\Scripts\edit.js" />
     <Content Include="Min\Scripts\email.js" />
@@ -1126,6 +1124,8 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Timeout.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\Report.cshtml" />
     <Content Include="Areas\Manage\Views\Transactions\ReportByDescription.cshtml" />
+    <Content Include="Areas\Main\Views\Person\OptoutsGrid.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\PledgeReport.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />
@@ -1401,13 +1401,11 @@
     </Content>
     <Content Include="Areas\Manage\Views\Batch\UploadPeople.cshtml">
     </Content>
-    <Content Include="Areas\Manage\Views\Display\EditPage.cshtml">
+    <Content Include="Areas\Manage\Views\Display\EditHTML.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\Display\Index.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\Display\OrgContent.cshtml">
-    </Content>
-    <Content Include="Areas\Manage\Views\Display\Page.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\OrgMembers\Index.cshtml">
       <SubType>Code</SubType>
@@ -1663,7 +1661,7 @@
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\Import.cshtml">
     </Content>
-    <Content Include="Areas\Manage\Views\Display\File.cshtml">
+    <Content Include="Areas\Manage\Views\Display\EditText.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Organization\SettingsOrg.cshtml">
     </Content>
@@ -1996,7 +1994,6 @@
     <Content Include="Contributions\GLExtract.aspx" />
     <Content Include="Contributions\Individual.aspx" />
     <Content Include="Contributions\Reports\JournalDetails.aspx" />
-    <Content Include="Contributions\Reports\PledgeReport.aspx" />
     <Content Include="Contributions\Reports\TotalsByFundRange.aspx" />
     <Content Include="images\1pix.gif" />
     <Content Include="images\adobe.png" />

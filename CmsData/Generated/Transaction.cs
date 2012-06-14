@@ -91,6 +91,7 @@ namespace CmsData
 		
 		private bool? _Fromsage;
 		
+   		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
    		private EntitySet< TransactionPerson> _TransactionPeople;

@@ -154,6 +154,7 @@ namespace CmsData
 					from m in p.Family.People
 					where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
 					|| (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+					where m.DeceasedDate == null
 					select m;
 			return q.Distinct();
 		}
@@ -162,11 +163,13 @@ namespace CmsData
 			var qB = this.QueryBuilderClauses.FirstOrDefault(c => c.Description == name);
 			if (qB == null)
 				return null;
-			var q = People.Where(qB.Predicate(this)); if (qB.ParentsOf)
+			var q = People.Where(qB.Predicate(this)); 
+			if (qB.ParentsOf)
 				q = from p in q
 					from m in p.Family.People
 					where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
 					|| (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+					where m.DeceasedDate == null
 					select m;
 			return q.Distinct();
 		}

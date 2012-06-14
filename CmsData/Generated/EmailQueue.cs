@@ -163,7 +163,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Subject", UpdateCheck=UpdateCheck.Never, Storage="_Subject", DbType="varchar(200)")]
+		[Column(Name="Subject", UpdateCheck=UpdateCheck.Never, Storage="_Subject", DbType="nvarchar(200)")]
 		public string Subject
 		{
 			get { return this._Subject; }
@@ -185,7 +185,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Body", UpdateCheck=UpdateCheck.Never, Storage="_Body", DbType="varchar")]
+		[Column(Name="Body", UpdateCheck=UpdateCheck.Never, Storage="_Body", DbType="nvarchar")]
 		public string Body
 		{
 			get { return this._Body; }

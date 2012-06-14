@@ -246,13 +246,14 @@ div.pager
 { 
         <div id="system-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
-                <li><a href="#extras2-tab"><span>Extra Values</span></a></li>
+                <li><a id="user-link" href="#user-tab"><span>User</span></a></li>
                 <li><a id="changes-link" href="#changes-tab"><span>Changes</span></a></li>
                 <li><a id="duplicates-link" href="#duplicates-tab"><span>Duplicates</span></a></li>
-                <li><a id="user-link" href="#user-tab"><span>User</span></a></li>
+                <li><a id="optouts-link" href="#optouts-tab"><span>Email Optouts</span></a></li>
             </ul>
-            <div id="extras2-tab" class="ui-tabs-hide ui-tabs-panel">
-                moved under Member Profile tab
+            <div id="user-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form action="/Person/UserInfoGrid/@p.PeopleId">
+                </form>
             </div>
             <div id="changes-tab" class="ui-tabs-hide ui-tabs-panel">
                 <form action="/Person/ChangesGrid/@p.PeopleId">
@@ -262,8 +263,8 @@ div.pager
                 <form action="/Person/DuplicatesGrid/@p.PeopleId">
                 </form>
             </div>
-            <div id="user-tab" class="ui-tabs-hide ui-tabs-panel">
-                <form action="/Person/UserInfoGrid/@p.PeopleId">
+            <div id="optouts-tab" class="ui-tabs-hide ui-tabs-panel">
+                <form action="/Person/OptoutsGrid/@p.PeopleId">
                 </form>
             </div>
         </div>

@@ -14,13 +14,15 @@ using Rackspace.CloudFiles.Domain;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-    public class AccountController : CmsController
+    public class AccountController : CmsControllerNoHttps
     {
+		[MyRequireHttps]
         [HttpPost]
         public ActionResult KeepAlive()
         {
             return Content("alive");
         }
+		[MyRequireHttps]
         [HttpPost]
         public ActionResult CKEditorUpload(string CKEditorFuncNum)
         {
@@ -68,6 +70,7 @@ CKEditorFuncNum, baseurl + fn, error));
         {
             return View();
         }
+		[MyRequireHttps]
         public ActionResult LogOn()
         {
             try
@@ -84,11 +87,11 @@ CKEditorFuncNum, baseurl + fn, error));
             }
 			if (!Request.Browser.Cookies)
 				return Content("Your browser must support cookies to use this site<br>" + Request.UserAgent);
-            if (Request.Url.Scheme == "http" && DbUtil.Db.CmsHost.StartsWith("https://"))
-                if (Request.QueryString.Count > 0)
-                    return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);
-                else
-                    return Redirect(DbUtil.Db.CmsHost + "Logon");
+//            if (DbUtil.Db.CmsHost.StartsWith("https://") && MyRequireHttpsAttribute.NeedRedirect(Request))
+//                if (Request.QueryString.Count > 0)
+//                    return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);
+//                else
+//                    return Redirect(DbUtil.Db.CmsHost + "Logon");
 
             if (!User.Identity.IsAuthenticated)
             {
@@ -106,6 +109,7 @@ CKEditorFuncNum, baseurl + fn, error));
             }
             return View();
         }
+		[MyRequireHttps]
         [HttpPost]
         public ActionResult LogOn(string userName, string password, string returnUrl)
         {
@@ -136,6 +140,7 @@ CKEditorFuncNum, baseurl + fn, error));
                 return Redirect(returnUrl);
             return Redirect("/");
         }
+		[MyRequireHttps]
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult UsersPage(string newpassword)
@@ -146,11 +151,13 @@ CKEditorFuncNum, baseurl + fn, error));
             Session[UserController.STR_ShowPassword] = newpassword;
             return Redirect("/Admin/Users.aspx?create=1");
         }
+		[MyRequireHttps]
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
             return Redirect("/");
         }
+		[MyRequireHttps]
         public ActionResult ForgotUsername(string email)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -188,6 +195,7 @@ The bvCMS Team</p>
             return RedirectToAction("RequestUsername");
 
         }
+		[MyRequireHttps]
         public ActionResult ForgotPassword(string username)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -201,6 +209,7 @@ The bvCMS Team</p>
 
             return RedirectToAction("RequestPassword");
         }
+		[MyRequireHttps]
         public ActionResult CreateAccount(string id)
         {
             if (!id.HasValue())
@@ -225,14 +234,17 @@ The bvCMS Team</p>
             Util.FormsBasedAuthentication = true;
             return View("SetPassword");
         }
+		[MyRequireHttps]
         public ActionResult RequestPassword()
         {
             return View();
         }
+		[MyRequireHttps]
         public ActionResult RequestUsername()
         {
             return View();
         }
+		[MyRequireHttps]
         [Authorize]
         public ActionResult ChangePassword()
         {
@@ -242,6 +254,7 @@ The bvCMS Team</p>
         	ViewBag.RequireOneUpper = MembershipService.RequireOneUpper;
             return View();
         }
+		[MyRequireHttps]
         [HttpGet]
         public ActionResult SetPassword(Guid? id)
         {
@@ -264,6 +277,7 @@ The bvCMS Team</p>
             Util.FormsBasedAuthentication = true;
             return View();
         }
+		[MyRequireHttps]
         [HttpPost]
         [Authorize]
         public ActionResult SetPassword(string newPassword, string confirmPassword)
@@ -291,6 +305,7 @@ The bvCMS Team</p>
             }
             return View();
         }
+		[MyRequireHttps]
         [Authorize]
         [HttpPost]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
@@ -320,6 +335,7 @@ The bvCMS Team</p>
                 return View();
             }
         }
+		[MyRequireHttps]
         public ActionResult ChangePasswordSuccess()
         {
         	var rd = DbUtil.Db.Setting("RedirectAfterPasswordChange", "");

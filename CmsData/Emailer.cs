@@ -312,8 +312,11 @@ namespace CmsData
 				var link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
 				text = text.Replace("{barcode}", "<img src='" + link + "' />");
 			}
-			if (text.Contains("{campus}", ignoreCase:true))
-				text = text.Replace("{campus}", p.Campu.Description);
+			if (text.Contains("{campus}", ignoreCase: true))
+				if (p.CampusId != null)
+					text = text.Replace("{campus}", p.Campu.Description);
+				else
+					text = text.Replace("{campus}", "No Campus Specified");
 
 			if (emailqueueto.Guid.HasValue)
 			{

@@ -36,6 +36,20 @@
         }
         return false;
     });
+    $('a.deloptout').live("click", function (ev) {
+        ev.preventDefault();
+        var href = $(this).attr("href");
+        if (confirm('Are you sure you want to delete?')) {
+            $.post(href, {}, function (ret) {
+                if (ret != "ok")
+                    $.growlUI("failed", ret);
+                else {
+                    $.updateTable($('#user-tab form'));
+                    $.growlUI("Success", "OptOut deleted");
+                }
+            });
+        }
+    });
     $('#moveperson').click(function (ev) {
         $('#dialogbox').SearchPeople(ev, function (id, peopleid) {
             window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + peopleid;
@@ -81,7 +95,7 @@
                 $('select', this).append(option);
             }
             $("select", this).multiselect({
-                close: function(event, ui) {
+                close: function (event, ui) {
                     var values = $("select").val();
                 },
                 position: {
@@ -217,6 +231,9 @@
             $.extraEditable('#extravalues');
         }
     });
+    $("#system-link").click(function () {
+        $.showTable($("#user-tab form"));
+    });
     $("#changes-link").click(function () {
         $.showTable($("#changes-tab form"));
     });
@@ -226,8 +243,8 @@
     $("#duplicates-link").click(function () {
         $.showTable($("#duplicates-tab form"));
     });
-    $("#user-link").click(function () {
-        $.showTable($("#user-tab form"));
+    $("#optouts-link").click(function () {
+        $.showTable($("#optouts-tab form"));
     });
     $('#family table.grid > tbody > tr:even').addClass('alt');
     $("#recreg-link").click(function (ev) {

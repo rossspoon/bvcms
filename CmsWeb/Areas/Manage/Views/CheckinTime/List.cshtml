@@ -5,15 +5,15 @@
 @foreach (var t in Model.FetchTimes()) 
 {
 	<tr class="@t.rowclass()">
-		<td class="@t.indent()"><a href="#" class="person" id="@t.ctime.PeopleId">@t.name</a></td>
+		<td class="@t.indent()"><a href="#" person id="@t.ctime.PeopleId">@t.name</a></td>
 		<td>@t.ctime.CheckInTimeX.FormatDateTm()</td>
-		<td>@t.ctime.Location</td>
 		<td>@t.activities</td>
 	</tr>
 }
-<tr><td colspan="4">
-        @Html.Hidden("membercount", Model.counts.members)
-        @Html.Hidden("guestcount", Model.counts.guests)
-		@{Html.RenderPartial("Pager2", Model.Pager);}
-	</td>
-</tr>
+	<tr><td colspan="3">
+			@Html.Hidden("membercount", Model.counts.members)
+			@Html.Hidden("guestcount", Model.counts.guests)
+			@Html.Hidden("name", Model.counts.name)
+			@{Html.RenderPartial("Pager2", Model.Pager);}
+		</td>
+	</tr>

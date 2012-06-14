@@ -104,6 +104,14 @@ namespace CmsData
 			Db.OrgMemMemTags.DeleteOnSubmit(group);
 			return false;
 		}
+		public bool IsInGroup(string name)
+		{
+			var mt = Organization.MemberTags.SingleOrDefault(t => t.Name == name);
+			if (mt == null)
+				return false;
+			var omt = OrgMemMemTags.SingleOrDefault(t => t.MemberTagId == mt.Id);
+			return omt != null;
+		}
 
 		public void AddToGroup(CMSDataContext Db, string name)
 		{
@@ -115,6 +123,15 @@ namespace CmsData
 		{
 			if (!name.HasValue())
 				return;
+//			var scriptname = Organization.GetExtra("OnSmallGroupJoin");
+//			var script = Db.Content(scriptname);
+//			if (script != null && script.Body.HasValue())
+//			{
+//				var ret = PythonEvents.RunEventScript(DbUtil.Db, script.Body, om);
+//				if (ret.StartsWith("Error"))
+//					Organizatino.AddToExtraData("OnRegistration.errors", ret);
+//			}
+
 			//			var script = Db.Content(this.Organization.AddToSmallGroupScript, "");
 			//			if (script.HasValue())
 			//			{
