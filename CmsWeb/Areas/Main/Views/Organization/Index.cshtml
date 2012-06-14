@@ -116,6 +116,11 @@
         <form action="/Organization/VisitorGrid/@Model.OrganizationId" method="post">
         </form>
     </div>
+    <div id="Meetings-tab" class="ui-tabs-panel ui-tabs-hide">
+        <form action="/Organization/MeetingGrid/@Model.OrganizationId" method="post">
+        @Html.Hidden("future", false)
+        </form>
+    </div>
     <div id="Settings-tab" class="ui-tabs-hide ui-tabs-panel">
         <ul class="ui-tabs-nav">
             <li><a href="#SettingsOrg"><span>General</span></a></li>
@@ -192,11 +197,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div id="Meetings-tab" class="ui-tabs-panel ui-tabs-hide">
-        <form action="/Organization/MeetingGrid/@Model.OrganizationId" method="post">
-        @Html.Hidden("future", false)
-        </form>
     </div>
 </div>
 <div id="NewMeetingDialog" class="roundbox" style="display: none">

@@ -1,0 +1,31 @@
+﻿@using UtilityExtensions
+@model IEnumerable<CmsData.View.PledgeReport>
+@{
+    ViewBag.Title = "PledgeReport";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>PledgeReport</h2>
+<table class="grid" cellpadding="5">
+	<thead>
+	    <td>FundId</td>
+	    <td>FundName</td>
+		<td align="right">Pledged</td>
+		<td align="right">To Pledge</td>
+	    <td align="right">Not To a Pledge</td>
+	    <td align="right">Total To Fund</td>
+	</thead>	
+	<tbody>
+		@foreach (var r in Model)
+		{
+			<tr>
+				<td>@r.FundId</td>
+				<td>@r.FundName</td>
+        		<td align="right">@r.Plg.ToString2("N2")</td>
+        		<td align="right">@r.ToPledge.ToString2("N2")</td>
+        		<td align="right">@r.NotToPledge.ToString2("N2")</td>
+        		<td align="right">@r.ToFund.ToString2("N2")</td>
+			</tr>
+		}
+	</tbody>
+</table>

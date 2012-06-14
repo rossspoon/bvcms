@@ -2,8 +2,8 @@
 path=%path%;c:\Program Files (x86)\Microsoft\Microsoft Ajax Minifier
 
 ajaxmin ^
-Content/js/jquery-1.7.1.js ^
-Content/js/jquery-ui-1.8.18.custom.js ^
+Content/js/jquery-1.7.2.js ^
+Content/js/jquery-ui-1.8.21.custom.js ^
 Content/js/jquery.bgiframe-2.1.2.js ^
 Content/js/jquery.hoverIntent.js ^
 Content/js/jquery.cookie.js ^
@@ -37,8 +37,8 @@ Scripts/Person.js ^
 -o Min/Content/js/combined-person.js -clobber:true || pause
 
 ajaxmin ^
-Content/js/jquery-1.7.1.js ^
-Content/js/jquery-ui-1.8.18.custom.js ^
+Content/js/jquery-1.7.2.js ^
+Content/js/jquery-ui-1.8.21.custom.js ^
 Content/js/jquery.validate.js ^
 Content/js/jquery.idle-timer.js ^
 Content/js/jquery.blockUI.js ^
@@ -47,7 +47,7 @@ Content/js/jquery.showpassword.js ^
 -o Min/Content/js/combined-onlinereg.js -clobber:true || pause
 
 ajaxmin ^
-Content/jquery-ui-1.8.18.custom.css ^
+Content/jquery-ui-1.8.21.custom.css ^
 Content/site.css ^
 Content/style2.css ^
 Content/cmenu.css ^
@@ -57,8 +57,8 @@ Content/jquery.tooltip.css ^
 Content/jquery.autocomplete.css ^
 -o Content/combined.css -clobber:true || pause
 
-ajaxmin Content/js/jquery-1.7.1.js -o Min\Content/js/jquery-1.7.1.js -clobber:true || pause
-ajaxmin Content/js/jquery-ui-1.8.18.custom.js -o Min\Content/js/jquery-ui-1.8.18.custom.js -clobber:true || pause
+ajaxmin Content/js/jquery-1.7.2.js -o Min\Content/js/jquery-1.7.2.js -clobber:true || pause
+ajaxmin Content/js/jquery-ui-1.8.21.custom.js -o Min\Content/js/jquery-ui-1.8.21.custom.js -clobber:true || pause
 ajaxmin Content/js/jquery.contextMenu.js -o Min\Content/js/jquery.contextMenu.js -clobber:true || pause
 ajaxmin Content/js/jquery.form.js -o Min\Content/js/jquery.form.js -clobber:true || pause
 ajaxmin Content/js/jquery.form2.js -o Min\Content/js/jquery.form2.js -clobber:true || pause

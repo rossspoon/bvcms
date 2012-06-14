@@ -40,6 +40,8 @@ namespace CmsData.View
 		
 		private string _FundName;
 		
+		private int _OpenPledgeFund;
+		
 		private string _BundleType;
 		
 		private string _BundleStatus;
@@ -250,6 +252,23 @@ namespace CmsData.View
 			{
 				if (this._FundName != value)
 					this._FundName = value;
+			}
+
+		}
+
+		
+		[Column(Name="OpenPledgeFund", Storage="_OpenPledgeFund", DbType="int NOT NULL")]
+		public int OpenPledgeFund
+		{
+			get
+			{
+				return this._OpenPledgeFund;
+			}
+
+			set
+			{
+				if (this._OpenPledgeFund != value)
+					this._OpenPledgeFund = value;
 			}
 
 		}

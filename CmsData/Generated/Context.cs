@@ -1782,6 +1782,21 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.PledgeReport", IsComposable = true)]
+		public IQueryable< View.PledgeReport > PledgeReport(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? campusid
+            )
+		{
+			return this.CreateMethodCallQuery< View.PledgeReport>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                campusid
+                );
+		}
+
 		[Function(Name="dbo.QBClauses", IsComposable = true)]
 		public IQueryable< View.QBClause > QBClauses(
             [Parameter(DbType="int")] int? qid
