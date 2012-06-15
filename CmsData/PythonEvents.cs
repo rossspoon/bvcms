@@ -14,48 +14,33 @@ using System.Web;
 
 namespace CmsData
 {
-    public class PythonEvents
-    {
-        private CMSDataContext Db;
+	public class PythonEvents
+	{
+		private CMSDataContext Db;
+		public dynamic instance { get; set; }
 
-        public PythonEvents()
-        {
-            Db = new CMSDataContext("Data Source=.;Initial Catalog=CMS_bellevue;Integrated Security=True");
-        }
-        public PythonEvents(CMSDataContext Db)
-        {
-            this.Db = Db;
-        }
-        public static string RunEventScript(CMSDataContext Db, string script, dynamic o)
-        {
-            var evclass = new PythonEvents(Db);
-#if DEBUG2
-            var options = new Dictionary<string, object>();
-            options["Debug"] = true;
-            var engine = Python.CreateEngine(options);
-            var paths = engine.GetSearchPaths();
-            paths.Add(path);
-            engine.SetSearchPaths(paths);
-            var sc = engine.CreateScriptSourceFromFile(HttpContext.Current.Server.MapPath("/MembershipAutomation2.py"));
-#else
-            var engine = Python.CreateEngine();
-            var sc = engine.CreateScriptSourceFromString(script);
-#endif
+		public PythonEvents(CMSDataContext Db, string classname, string script)
+		{
+			this.Db = Db;
+			var engine = Python.CreateEngine();
+			var sc = engine.CreateScriptSourceFromString(script);
 
-            try
-            {
-                var code = sc.Compile();
-                var scope = engine.CreateScope();
-                code.Execute(scope);
+			var code = sc.Compile();
+			var scope = engine.CreateScope();
+            scope.SetVariable("model", this);
+			code.Execute(scope);
 
-                dynamic Event = scope.GetVariable("Event");
-                dynamic m = Event();
-                return m.Run(o, evclass);
-            }
-            catch (Exception ex)
-            {
-                return "Error in event script: " + ex.Message;
-            }
-        }
-    }
+			dynamic Event = scope.GetVariable(classname);
+			instance = Event();
+		}
+		public void CreateTask(int forPeopleId, Person p, string description)
+		{
+			DbUtil.LogActivity("Adding Task about: {0}".Fmt(p.Name));
+			var t = p.AddTaskAbout(Db, forPeopleId, description);
+			Db.SubmitChanges();
+            Db.Email(DbUtil.SystemEmailAddress, DbUtil.Db.LoadPersonById(forPeopleId),
+                "TASK: " + description,
+                Task.TaskLink(Db, description, t.Id) + "<br/>" + p.Name);
+		}
+	}
 }

@@ -77,6 +77,24 @@ namespace CmsWeb.Models
 			if (HttpContext.Current.Items.Contains("RegSettings"))
 				return;
 			HttpContext.Current.Items.Add("RegSettings", list);
+
+			if (org.AddToSmallGroupScript.HasValue())
+			{
+				var script = DbUtil.Db.Content(org.AddToSmallGroupScript);
+				if (script != null && script.Body.HasValue())
+				{
+					try
+					{
+						var pe = new PythonEvents(DbUtil.Db, "RegisterEvent", script.Body);
+						HttpContext.Current.Items.Add("PythonEvents", pe);
+					}
+					catch (Exception ex)
+					{
+						org.AddToExtraData("Python.errors", ex.Message);
+						throw;
+					}
+				}
+			}
 		}
 		public static RegSettings ParseSetting(string RegSetting, int OrgId)
 		{
@@ -97,7 +115,7 @@ namespace CmsWeb.Models
 		}
 		public void CheckMasterOrg()
 		{
-			if (org != null && masterorgid == null && 
+			if (org != null && masterorgid == null &&
 				(org.RegistrationTypeId == RegistrationTypeCode.UserSelectsOrganization2
 				|| org.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge2
 				|| org.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2))

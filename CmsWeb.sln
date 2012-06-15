@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmsPresenter", "CmsPresente
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CmsCheckinSetup", "CmsCheckinSetup\CmsCheckinSetup.vdproj", "{44D4B51D-427B-468E-B7AE-522E45CC53CC}"
 EndProject
-Project("{596CF2E3-0E3C-47CC-A161-0A910B38ED71}") = "RedGateDatabaseProject", "..\BVCMS.Db\RedGateDatabaseProject.rgproj", "{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		bvcms|Any CPU = bvcms|Any CPU
@@ -365,42 +363,6 @@ Global
 		{44D4B51D-427B-468E-B7AE-522E45CC53CC}.test|Mixed Platforms.Build.0 = test
 		{44D4B51D-427B-468E-B7AE-522E45CC53CC}.test|x86.ActiveCfg = test
 		{44D4B51D-427B-468E-B7AE-522E45CC53CC}.test|x86.Build.0 = test
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms|Any CPU.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms|Itanium.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms|Mixed Platforms.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms|Mixed Platforms.Build.0 = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms|x86.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms|x86.Build.0 = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms2|Any CPU.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms2|Itanium.ActiveCfg = bvcms2|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms2|Mixed Platforms.ActiveCfg = bvcms2|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms2|Mixed Platforms.Build.0 = bvcms2|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms2|x86.ActiveCfg = bvcms2|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.bvcms2|x86.Build.0 = bvcms2|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Debug|Itanium.ActiveCfg = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Debug|x86.ActiveCfg = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Debug|x86.Build.0 = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Default|Any CPU.ActiveCfg = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Default|Itanium.ActiveCfg = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Default|Mixed Platforms.ActiveCfg = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Default|Mixed Platforms.Build.0 = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Default|x86.ActiveCfg = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Default|x86.Build.0 = Debug|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Release|Any CPU.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Release|Itanium.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Release|Mixed Platforms.Build.0 = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Release|x86.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.Release|x86.Build.0 = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.test|Any CPU.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.test|Itanium.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.test|Mixed Platforms.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.test|Mixed Platforms.Build.0 = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.test|x86.ActiveCfg = Release|x86
-		{91F33AEC-D0CA-49E1-AA72-27B9383EDAC9}.test|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

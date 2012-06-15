@@ -264,19 +264,8 @@ namespace CmsWeb.Areas.Main.Controllers
 		public ActionResult AddAboutTask(int id)
 		{
 			var p = DbUtil.Db.LoadPersonById(id);
-			DbUtil.LogActivity("Adding Task for: {0}".Fmt(Session["ActivePerson"]));
 
-			var pid = Util.UserPeopleId.Value;
-			var active = TaskStatusCode.Active;
-			var t = new Task
-			{
-				OwnerId = pid,
-				Description = "Please Contact",
-				ForceCompleteWContact = true,
-				ListId = TaskModel.InBoxId(pid),
-				StatusId = active,
-			};
-			p.TasksAboutPerson.Add(t);
+			var t = p.AddTaskAbout(DbUtil.Db, Util.UserPeopleId.Value, "Please Contact");
 			DbUtil.Db.SubmitChanges();
 			return Content("/Task/List/{0}".Fmt(t.Id));
 		}

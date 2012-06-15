@@ -1135,5 +1135,18 @@ namespace CmsData
 			}
 			return cam;
 		}
+		public Task AddTaskAbout(CMSDataContext Db, int AssignTo, string description)
+		{
+			var t = new Task
+			{
+				OwnerId = AssignTo,
+				Description = description,
+				ForceCompleteWContact = true,
+				ListId = Task.GetRequiredTaskList("InBox", AssignTo).Id,
+				StatusId = TaskStatusCode.Active,
+			};
+			TasksAboutPerson.Add(t);
+			return t;
+		}
     }
 }
