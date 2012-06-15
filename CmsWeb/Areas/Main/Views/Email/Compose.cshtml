@@ -1,0 +1,229 @@
+﻿@using CmsData;
+@model CmsWeb.Areas.Main.Models.MassEmailer
+
+@{
+	ViewBag.Title = "Compose";
+	Layout = "~/Views/Shared/SiteLayout.cshtml";
+	int tID = ViewBag.templateID;
+
+	var t = from e in DbUtil.Db.Contents
+			  where e.Id == tID
+			  select e;
+}
+
+<div id="dialogTint" style="position:absolute; top:0px; left:0px; height:100%; width:100%; opacity:0.6;
+	background-color:#000000; z-index:1001; visibility:hidden;"></div>
+
+<div id="dialogBG" style="position:absolute; top:0px; left:0px; height:100%; width:100%; z-index:1002; visibility:hidden;">
+	<div style="width: 1%; height: 100%; display: table; margin-left:auto; margin-right:auto;">
+		<div id="dialogHolder" style="display: table-cell; vertical-align: middle;">
+			<div style="border:solid 1px #AAAAAA; background-color:#FFFFFF;">
+				<div style="position:relative; margin:0px; padding:8px 10px 8px 10px; text-align:center; background-color:#BBBBBB; font-weight:bold; border-bottom:solid 1px #AAAAAA; white-space:nowrap;">
+					Edit Template Area
+				</div>
+				<div style="min-width:600px;">
+					<form action="javascript:updateDiv();">
+						<textarea id="htmleditor"></textarea>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<h2 style="margin-bottom:5px;">Compose e-Mail for @Model.Count @( Model.Count > 1 ? "People" : "Person") @( ViewBag.parents ? " including Parents" : "")</h2>
+<font color="red"><b>NOTE:</b></font> Your recipient list will change if use another tab in your browser to visit another organization or person or run another query.<br />
+<br />
+<form id="SendEmail">
+	@Html.Hidden("QBId")
+   @Html.Hidden("Host")
+   @Html.Hidden("CmsHost")
+   @Html.Hidden("Count", Model.Count)
+   @Html.Hidden("wantParents", Model.wantParents)
+	<input type="hidden" id="body" name="body" />
+
+	<table cellspacing="10">
+	<tr>
+		<td colspan="2">
+			From: @Html.DropDownList("FromAddress", Model.EmailFroms())
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<label>Subject:</label> @Html.TextBox("Subject", Model.Subject, new { size = "75" }) &nbsp;&nbsp @Html.CheckBox("PublicViewable") Publicly viewable?
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<div id="tempateBody">
+				@Html.Raw(t.FirstOrDefault().Body)
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td width="50%" valign="top">
+			<input type="button" id="TestSend" class="bt" value="Test (Send To Yourself)" />
+		</td>
+		<td align="right">
+			<input type="button" id="Send" value="Send" class="bt" /><br />
+			<br />
+			@if ((User.IsInRole("ScheduleEmails") || User.IsInRole("Edit")) && System.Web.Configuration.WebConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
+			{ 
+				@:Scheduled Date and Time (mm/dd/yy h:mm AM|PM) @Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" })<br />
+				@:(Optional, Note: Time is Central Time)
+			}
+		</td>
+	</tr>
+	</table>
+</form>
+<div id="progress">
+<h2>Working...</h2>
+</div>
+@section head
+{
+	<style>
+		div.ti { border: #0000ff dashed 1px; min-height:20px }
+		div.ti:hover { background:#eeeeff; }
+	</style>
+}
+
+@section scripts
+{
+	<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+	<script>
+		CKEDITOR.config.jqueryOverrideVal = true;
+		CKEDITOR.config.fullPage = false;
+		CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+		CKEDITOR.config.height = 400;
+		CKEDITOR.config.width = 600;
+	</script>
+	<script src="/ckeditor/adapters/jquery.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var currentDiv = null;
+		var editor_large = { autoParagraph: false, filebrowserUploadUrl: '/Account/CKEditorUpload/', filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
+			toolbar_Full: [
+					['Save'],['Source'],
+					['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'SpellChecker', 'Scayt'],
+					['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
+					'/',
+					['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript'],
+					['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv'],
+					['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
+					['Link', 'Unlink', 'Anchor'],
+					['Image', 'Table', 'SpecialChar'],
+					'/',
+					['Styles', 'Format', 'Font', 'FontSize'],
+					['TextColor', 'BGColor'],
+					['Maximize', 'ShowBlocks', '-', 'About']
+					]
+		};
+
+		$(document).ready(
+			function () {
+				$('div[bvedit]').bind('click', hClick).addClass( "ti" );
+				$('#htmleditor').ckeditor(editor_large);
+			}
+		);
+
+		$("#progress").dialog(
+			{ autoOpen: false, modal: true, close: function () {
+				$('#progress').html("<h2>Working...</h2>");
+			}
+		});
+
+		$("#Send").click(function () {
+			var d = $("#progress");
+			d.dialog('open');
+
+			$('#body').val($("#tempateBody").html());
+			var q = $("#SendEmail").serialize();
+
+			$.post('/Email/QueueEmails', q, function (ret) {
+				if (ret == "timeout") {
+					window.location = "/Email/Timeout";
+					return;
+				}
+				var taskid = ret.id;
+				if (taskid == 0) {
+					d.html(ret.content);
+				}
+				else {
+					var intervalid = window.setInterval(function () {
+						$.post('/Email/TaskProgress/' + taskid, null, function (ret) {
+							if (ret.substr(0, 20).indexOf('<!--completed-->') >= 0)
+								window.clearInterval(intervalid);
+							d.html(ret);
+						});
+					}, 3000);
+				}
+			});
+		});
+
+		$("#TestSend").click(function () {
+			var d = $("#progress");
+			d.dialog('open');
+
+			$("div[bvedit]").removeClass();
+			$('#body').val($("#tempateBody").html());
+			$("div[bvedit]").addClass("ti");
+			var q = $("#SendEmail").serialize();
+
+			$.post('/Email/TestEmail', q, function (ret) {
+				if (ret == "timeout") {
+					window.location = "/Email/Timeout";
+					return;
+				}
+				d.html(ret);
+			});
+		});
+
+		function hClick(e) {
+			currentDiv = this;
+			$('#htmleditor').ckeditorGet().setData($(this).html());
+			showDialog();
+		}
+
+		function updateDiv() {
+			$(currentDiv).html($('#htmleditor').ckeditorGet().getData());
+			hideDialog();
+		}
+
+		function showDialog() {
+			$("#dialogTint").css("visibility", "visible");
+			$("#dialogBG").css("visibility", "visible");
+		}
+
+		function hideDialog() {
+			$("#dialogTint").css("visibility", "hidden");
+			$("#dialogBG").css("visibility", "hidden");
+		}
+
+		CKEDITOR.on('dialogDefinition', function (ev) {
+			var dialogName = ev.data.name;
+			var dialogDefinition = ev.data.definition;
+			if (dialogName == 'link') {
+				var advancedTab = dialogDefinition.getContents('advanced');
+				advancedTab.label = "SpecialLinks";
+				advancedTab.remove('advCSSClasses');
+				advancedTab.remove('advCharset');
+				advancedTab.remove('advContentType');
+				advancedTab.remove('advStyles');
+				advancedTab.remove('advAccessKey');
+				advancedTab.remove('advName');
+				advancedTab.remove('advLangCode');
+				advancedTab.remove('advTabIndex');
+
+				var relField = advancedTab.get('advRel');
+				relField.label = "SmallGroup";
+				var titleField = advancedTab.get('advTitle');
+				titleField.label = "Message";
+				var idField = advancedTab.get('advId');
+				idField.label = "OrgId/MeetingId";
+				var langdirField = advancedTab.get('advLangDir');
+				langdirField.label = "Confirmation";
+				langdirField.items[1][0] = "Yes, send confirmation";
+				langdirField.items[2][0] = "No, do not send confirmation";
+			}
+		});
+		</script>
+}

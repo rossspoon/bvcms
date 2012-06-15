@@ -1,4 +1,5 @@
 ﻿@using CmsWeb
+@model CmsData.Content
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
 }
@@ -12,25 +13,24 @@
         $(".bt").button();
         $("#delete").click(function (ev) {
             ev.preventDefault();
-            if (confirm("are you sure?"))
-                window.location = $(this).attr("href");
+            if (confirm("Are you sure you want to delete this entry?"))
+            	window.location = "/Display/ContentDelete/@Model.Id"; ;
         });
     });
 </script>
 }
-@using (Html.BeginForm("UpdatePage", "Display", FormMethod.Post))
+@using (Html.BeginForm("ContentUpdate", "Display", FormMethod.Post))
 { 
     <div class="blogbody">
-    <h2 class="title">@ViewData["title"]</h2>
+    <h2 class="title">@Model.Title</h2>
     <a href="/Display/Index">Menu of Content</a>
     <hr />
-    @Html.Hidden("page")
+	 @Html.Hidden("name")
+    @Html.Hidden("id")
     <div>Title: @Html.TextBox("title")</div>
-    <div>@Html.TextArea("html", new { @class = "editor", rows = "26", style = "width:90%" })
+    <div>@Html.TextArea("body", new { @class = "editor", rows = "26", style = "width:90%" })
     </div>
-    <input type="submit" class="bt" value="Post" />
-    <a id="delete" class="bt" href="/Display/DeletePage/@ViewData["page"]">delete</a>
+	 <br />
+    <input type="submit" class="bt" value="Save" /> &nbsp;&nbsp; <input type="button" id="delete" class="bt" value="Delete" />
     </div>
-} 
-
-
+}

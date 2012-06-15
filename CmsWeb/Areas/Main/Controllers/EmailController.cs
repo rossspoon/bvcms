@@ -12,6 +12,7 @@ namespace CmsWeb.Areas.Main.Controllers
 {
 	public class EmailController : CmsStaffController
 	{
+		/*
 		[ValidateInput(false)]
 		public ActionResult Index(int? id, string body, string subj, bool? ishtml, bool? parents)
 		{
@@ -39,8 +40,8 @@ namespace CmsWeb.Areas.Main.Controllers
 
 			return View(m);
 		}
+		*/
 
-		/*
 		public ActionResult Index(int? id, int? templateID, bool? parents)
 		{
 			if (!id.HasValue) return Content("no id");
@@ -65,7 +66,6 @@ namespace CmsWeb.Areas.Main.Controllers
 				return View("Compose", m);
 			}
 		}
-		 */
 
 		[HttpPost]
 		[ValidateInput(false)]

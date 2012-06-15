@@ -1,0 +1,51 @@
+﻿@model CmsWeb.Areas.Main.Models.EmailTemplates
+@{
+    ViewBag.Title = "SelectTemplate";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+	 const int WRAP_COUNT = 4;
+	 var wrapAt = WRAP_COUNT;
+}
+@section head {
+	<style type="text/css">
+		div.templateItem { max-width:100px; min-height:150px; border:1px solid black; margin-top:5px; }
+		div.templateItem:hover { border-color:#0000ff; }
+	</style>
+}
+@section scripts
+{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("div[bvtemplate]").on("click", function (e) {
+				$("#templateID").val($(this).attr("template"));
+				$("#selectTemplate").submit();
+			});
+		});
+	</script>
+}
+
+<h2>Select e-Mail Template</h2>
+<form id="selectTemplate" action="/Email/Index/@ViewBag.queryID" method="post">
+	<input type="hidden" id="templateID" name="templateID" value="0" />
+	<input type="hidden" name="parents" value="@ViewBag.parents" />
+</form>
+<table width="100%" cellspacing="20">
+<tr>
+@foreach (var t in Model.fetchTemplates())
+{
+	<td width="@( 100/WRAP_COUNT )%" align="center">
+	@t.Name
+	<div bvtemplate class="templateItem" template="@t.Id">
+	</div>
+	</td>
+	wrapAt--;
+	if( wrapAt == 0 ) {
+		wrapAt = WRAP_COUNT;
+		@:</tr><tr>
+	}
+}
+@for (var i = 0; i < wrapAt; i++)
+{
+	<td>&nbsp;</td>
+}
+</tr>
+</table>
