@@ -7,7 +7,7 @@
 }
 @section head {
 	<style type="text/css">
-		div.templateItem { max-width:100px; min-height:150px; border:1px solid black; margin-top:5px; }
+		div.templateItem { width:100px; height:150px; border:1px solid black; overflow:hidden; }
 		div.templateItem:hover { border-color:#0000ff; }
 	</style>
 }
@@ -35,6 +35,10 @@
 	<td width="@( 100/WRAP_COUNT )%" align="center">
 	@t.Name
 	<div bvtemplate class="templateItem" template="@t.Id">
+	@if (t.ThumbID != 0)
+ {
+		<img alt="portrait" border="0" src="/Image.aspx?id=@t.ThumbID" />
+ }
 	</div>
 	</td>
 	wrapAt--;
