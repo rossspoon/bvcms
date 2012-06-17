@@ -220,10 +220,12 @@ namespace CmsWeb.Models
                     break;
                 case FieldType.NullNumber:
                 case FieldType.Number:
+                case FieldType.NumberSimple:
                     NumberVisible = true;
                     break;
                 case FieldType.NullInteger:
                 case FieldType.Integer:
+                case FieldType.IntegerSimple:
                 case FieldType.IntegerEqual:
                     IntegerVisible = true;
                     break;
@@ -238,6 +240,7 @@ namespace CmsWeb.Models
 						CodeData = ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
                     break;
                 case FieldType.Date:
+                case FieldType.DateSimple:
                     DateVisible = true;
                     break;
                 case FieldType.DateField:
@@ -315,15 +318,18 @@ namespace CmsWeb.Models
                     c.TextValue = TextValue;
                     break;
                 case FieldType.Integer:
+                case FieldType.IntegerSimple:
                 case FieldType.IntegerEqual:
                 case FieldType.NullInteger:
                     c.TextValue = IntegerValue;
                     break;
                 case FieldType.Number:
+                case FieldType.NumberSimple:
                 case FieldType.NullNumber:
                     c.TextValue = NumberValue;
                     break;
                 case FieldType.Date:
+                case FieldType.DateSimple:
                     c.DateValue = DateParse(DateValue);
                     break;
                 case FieldType.Code:
@@ -372,15 +378,18 @@ namespace CmsWeb.Models
                     TextValue = c.TextValue;
                     break;
                 case FieldType.Integer:
+                case FieldType.IntegerSimple:
                 case FieldType.IntegerEqual:
                 case FieldType.NullInteger:
                     IntegerValue = c.TextValue;
                     break;
                 case FieldType.Number:
+                case FieldType.NumberSimple:
                 case FieldType.NullNumber:
                     NumberValue = c.TextValue;
                     break;
                 case FieldType.Date:
+                case FieldType.DateSimple:
                     DateValue = DateString(c.DateValue);
                     break;
                 case FieldType.Code:

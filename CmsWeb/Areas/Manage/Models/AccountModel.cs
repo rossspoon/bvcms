@@ -247,6 +247,7 @@ namespace CmsWeb.Models
 			if (u == null)
 				return;
 			Session["ActivePerson"] = u.Name;
+			DbUtil.Db.DeleteSpecialTags(u.PeopleId);
 		}
 		public static User SetUserInfo(string username, HttpSessionStateBase Session)
 		{

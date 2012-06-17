@@ -22,8 +22,6 @@ namespace CmsData
 		private string _Name;
 		
    		
-   		private EntitySet< Tag> _Tags;
-		
     	
 	#endregion
 	
@@ -41,8 +39,6 @@ namespace CmsData
     #endregion
 		public TagType()
 		{
-			
-			this._Tags = new EntitySet< Tag>(new Action< Tag>(this.attach_Tags), new Action< Tag>(this.detach_Tags)); 
 			
 			
 			OnCreated();
@@ -99,16 +95,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="Tags__TagType", Storage="_Tags", OtherKey="TypeId")]
-   		public EntitySet< Tag> Tags
-   		{
-   		    get { return this._Tags; }
-
-			set	{ this._Tags.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -130,19 +116,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_Tags(Tag entity)
-		{
-			this.SendPropertyChanging();
-			entity.TagType = this;
-		}
-
-		private void detach_Tags(Tag entity)
-		{
-			this.SendPropertyChanging();
-			entity.TagType = null;
-		}
-
-		
 	}
 
 }

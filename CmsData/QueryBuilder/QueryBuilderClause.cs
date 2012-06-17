@@ -176,10 +176,6 @@ namespace CmsData
                 return expr;
             }
         }
-        public IQueryable<int> PeopleIds(CMSDataContext Db)
-        {
-            return Db.People.Where(Predicate(Db)).Select(p => p.PeopleId);
-        }
         public int MaxClauseOrder()
         {
             int max = 0;
@@ -390,14 +386,17 @@ namespace CmsData
                     qb.CodeIdValue = value.ToString();
                     break;
                 case FieldType.Date:
+                case FieldType.DateSimple:
                     qb.DateValue = (DateTime?)value;
                     break;
                 case FieldType.Number:
+                case FieldType.NumberSimple:
                 case FieldType.NullNumber:
                 case FieldType.NullInteger:
                 case FieldType.String:
                 case FieldType.StringEqual:
                 case FieldType.Integer:
+                case FieldType.IntegerSimple:
                 case FieldType.IntegerEqual:
                     qb.TextValue = value.ToString();
                     break;
