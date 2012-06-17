@@ -31,6 +31,8 @@ namespace CmsData
 		
 		private int _TypeID;
 		
+		private int _ThumbID;
+		
    		
     	
 	#endregion
@@ -60,6 +62,9 @@ namespace CmsData
 		
 		partial void OnTypeIDChanging(int value);
 		partial void OnTypeIDChanged();
+		
+		partial void OnThumbIDChanging(int value);
+		partial void OnThumbIDChanged();
 		
     #endregion
 		public Content()
@@ -219,6 +224,28 @@ namespace CmsData
 					this._TypeID = value;
 					this.SendPropertyChanged("TypeID");
 					this.OnTypeIDChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ThumbID", UpdateCheck=UpdateCheck.Never, Storage="_ThumbID", DbType="int NOT NULL")]
+		public int ThumbID
+		{
+			get { return this._ThumbID; }
+
+			set
+			{
+				if (this._ThumbID != value)
+				{
+				
+                    this.OnThumbIDChanging(value);
+					this.SendPropertyChanging();
+					this._ThumbID = value;
+					this.SendPropertyChanged("ThumbID");
+					this.OnThumbIDChanged();
 				}
 
 			}
