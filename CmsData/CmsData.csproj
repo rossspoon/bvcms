@@ -519,7 +519,9 @@
     <Content Include="QueryBuilder\FieldMap2.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="QueryBuilder\CompareMap.xml" />
+    <Content Include="QueryBuilder\CompareMap.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

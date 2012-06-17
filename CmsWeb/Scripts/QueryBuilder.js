@@ -1,6 +1,28 @@
 ﻿var qs = "";
 $(function () {
     $("#SelectCondition").SelectCondition();
+
+    $('#QueryConditionHelp').dialog({
+        title: 'Help on Condition',
+        bgiframe: true,
+        autoOpen: false,
+        width: 750,
+        height: 700,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+        }
+    });
+    $('a.help').live("click", function (event) {
+        event.preventDefault();
+        var d = $('#QueryConditionHelp');
+        $('iframe', d).attr("src", this.href + $("#ConditionName").val());
+        d.dialog("open");
+    });
+    $("a.help,.helptip").tooltip({ showBody: "|", showURL: false });
     $('#Tags').click(function (ev) {
         $('#TagsPopup').show();
     });
@@ -132,9 +154,10 @@ function HighlightCondition() {
 	});
 }
 function FillConditionGrid(html) {
-    $('#ConditionGrid').html(html);
-    HighlightCondition();
-    $('#ConditionGrid li a').click(EditCondition);
+    $('#ConditionGrid').html(html).ready(function () {
+        HighlightCondition();
+        $('#ConditionGrid li a').click(EditCondition);
+    });
 }
 (function($) {
     $.QueryString = function(q, item) {
@@ -311,6 +334,7 @@ function EditCondition(ev) {
         return this;
     };
 })(jQuery);
+
 
 function UpdateCodes(ret) {
     $('#CodeValues').multiselect("destroy");

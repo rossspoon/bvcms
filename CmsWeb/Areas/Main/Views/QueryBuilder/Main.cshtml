@@ -18,16 +18,20 @@
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
 <div id="Description"><b>@Model.Description</b></div>
 <div class="roundbox floatleft">
-<h2 title="Then update or add it to the Conditions below">Configure a query condition</h2>
+<h2 class="helptip" title="Next Step|After selecting a condition and configuring it|then update or add it to the Conditions below">Configure a query condition</h2>
 <table id="selectconditions" cellspacing="5">
     <tr>
         <td>
             <table style="border: 1px dashed #999" cellspacing="5">
                 <tr id="CategoryDiv2">
                     <td colspan="2">
-                      <a id="SelectCondition" href=#" class="bt">Select Condition</a>
-                      <span id='ConditionText'>Group</span>
-                      @Html.Hidden("ConditionName")
+						<a id="SelectCondition" href="#" class="bt helptip"
+                            title="Select a Condition|To build a query, you should select a condition.">Select Condition</a>
+						<a class="help" href="http://www.bvcms.com/DocDialog/QB-"
+						   title="Get QueryBuilder Help|Click this link to get help on this condition.">
+							<span id='ConditionText'>Group</span>
+						</a>
+                      @Html.Hidden("ConditionName", "Group")
                     </td>
                 </tr>
                 <tr id="DaysDiv" style="display:none">
@@ -123,11 +127,16 @@
             </table>
         </td>
         <td valign="top">
-            <b style="color:#999">Comparison</b><hr />
+			<b style="color:#999" class="helptip"
+			   title="Comparison|Choose how the Condition on the left 
+               |should compare with the value(s)">Comparison</b><hr />
             @Html.DropDownList("Comparison", Model.Comparisons())
         </td>
         <td valign="top" id="RightPanel" style="display:none">
-            <b style="color:#999">To Value</b><hr />
+			<b style="color:#999" class="helptip"
+			   title="To Value|This is what you are comparing 
+               |to the result of the Condition on the left
+               |using the comparison operator">To Value</b><hr />
                 <span id="values" style="display:none"></span>
                 @Html.TextBoxClass("TextValue", "validate")
                 @Html.TextBoxClass("NumberValue", "validate")
@@ -137,14 +146,14 @@
     </tr>
     <tr>
         <td align="right">
-            <a id="Update" class="conditionButton bt disabled"
-                title="Copies the above condition into the selected condition below">Update</a>
-            <a id="Add" class="conditionButton bt disabled"
-                title="Adds the above condition after the selected condition below">Add</a>
-            <a id="AddToGroup" href="#" class="conditionButton bt" 
-                title="Adds the above condition to the group">Add To Group</a>
-            <a id="Remove" class="conditionButton bt disabled"
-                title="Removes the selected condition below">Remove</a>
+            <a id="Update" class="conditionButton bt disabled helptip"
+                title="Update Button|Copies the above condition into the selected condition below">Update</a>
+            <a id="Add" class="conditionButton bt disabled helptip"
+                title="Add Button|Adds the above condition after the selected condition below">Add</a>
+            <a id="AddToGroup" href="#" class="conditionButton bt helptip" 
+                title="Add To Group Button|Adds the above condition to the group">Add To Group</a>
+            <a id="Remove" class="conditionButton bt disabled helptip"
+                title="Remove Button|Removes the selected condition below">Remove</a>
         </td>
     </tr>
 </table>
@@ -152,14 +161,17 @@
 <h2>Conditions</h2>
 <table cellspacing="5">
     <tr>
-        <td title="Select a condition to edit it">
-            <ul id="ConditionGrid">
+        <td>
+			<ul id="ConditionGrid" class="helptip" 
+                title="Condition|Click this condition to edit it in the area above
+                |Right click to insert a group or copy a condition">
              @Html.Partial("Conditions", Model) 
             </ul>
         </td>
-        <td align="center" valign="bottom">
+		<td align="center" valign="bottom" class="helptip"
+            title="Run Button|This will run the Query, giving you results for the Conditions">
             <div>
-                <input id="Run" type="image" src="/images/Run.png" alt="Run Query" title="Run Query" />
+                <input id="Run" type="image" src="/images/Run.png" alt="Run Query" />
             </div>
             <div>Run</div>
         </td>
@@ -198,11 +210,15 @@
         @foreach (var p in c.Fields)
         { 
             <div class="FieldLink"><a id='@p.Name' href="#">@p.Title</a></div>
-            <div class="moreinfo">@p.Description</div>
+			<div class="moreinfo"><a class="help" href="http://www.bvcms.com/DocDialog/QB-"
+                title="Get QueryBuilder Help|Click this link to get help on this condition.">@p.Description</a></div>
         } 
         </div>
     }
     </div>
+</div>
+<div id="QueryConditionHelp" class="modalPopup" title="Condition Help" style="display:none">
+    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
 </div>
 <div id="OpenQueryDiv" title="Open Query" class="modalDiv">
     <select id="ExistingQueries"></select>

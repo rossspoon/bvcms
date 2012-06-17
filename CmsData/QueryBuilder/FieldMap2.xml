@@ -507,7 +507,7 @@
     <Field Name="ContributionChange" Title="Contribution Change Pct" Type="NumberSimple" DisplayAs="ContributionChange({0},{1})" Params="StartDate,EndDate">
       startdt = 2 years ago, enddt = 1 year ago, pct = current period as % of previous period, divided on the enddt (Must have Finance role for this to work.
     </Field>
-    <Field Name="RecentGivingAsPctOfPrevious" Title="Recent Giving % of Previous" Type="NumberSimple" DisplayAs="ContributionChange({0})" QuartersLabel="Midway Lookback Days Ago" Params="Quarters">
+    <Field Name="RecentGivingAsPctOfPrevious" Title="Recent Giving % of Previous" Type="NumberSimple" DisplayAs="RecentGivingAsPctOfPrevious({0})" QuartersLabel="Midway Lookback Days Ago" Params="Quarters">
       Days ago divides previous and recent, pct = recent period as % of previous period (Must have Finance role for this to work.
     </Field>
     <Field Name="IsTopGiver" Title="Recent Top Giver" Type="Bit" DisplayAs="RecentTopGiver({0},{1})" Params="Days,Quarters" QuartersLabel="Top number" DataValueField="IdCode">

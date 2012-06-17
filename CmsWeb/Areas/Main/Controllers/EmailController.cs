@@ -12,24 +12,47 @@ namespace CmsWeb.Areas.Main.Controllers
 {
 	public class EmailController : CmsStaffController
 	{
-		/*
 		[ValidateInput(false)]
-		public ActionResult Index(int? id, string body, string subj, bool? ishtml, bool? parents)
+		public ActionResult Index(int? id, int? templateID, bool? parents, string body, string subj, bool? ishtml)
 		{
-			if( !id.HasValue ) return Content("no id");
-			if( Util.SessionTimedOut() ) return Redirect("/Errors/SessionTimeout.htm");
+			if (!id.HasValue) return Content("no id");
+			if (Util.SessionTimedOut()) return Redirect("/Errors/SessionTimeout.htm");
+
+			if (DbUtil.Db.Setting("UseEmailTemplates", "false") == "true")
+			{
+				if (templateID == null)
+				{
+					ViewBag.queryID = id;
+					ViewBag.parents = parents ?? false;
+					return View("SelectTemplate", new EmailTemplates());
+				}
+				else
+				{
+					DbUtil.LogActivity("Emailing people");
+
+					var m = new MassEmailer(id.Value, parents);
+					m.CmsHost = DbUtil.Db.CmsHost;
+					m.Host = Util.Host;
+
+					ViewBag.parents = parents ?? false;
+					ViewBag.templateID = templateID;
+					return View("Compose", m);
+				}
+			}
+
+			// using no templates
 
 			DbUtil.LogActivity("Emailing people");
 
-			var m = new MassEmailer(id.Value, parents);
-			m.CmsHost = DbUtil.Db.CmsHost;
-			m.Host = Util.Host;
+			var me = new MassEmailer(id.Value, parents);
+			me.CmsHost = DbUtil.Db.CmsHost;
+			me.Host = Util.Host;
 
 			if (body.HasValue())
-				m.Body = Server.UrlDecode(body);
+				me.Body = Server.UrlDecode(body);
 
 			if (subj.HasValue())
-				m.Subject = Server.UrlDecode(subj);
+				me.Subject = Server.UrlDecode(subj);
 
 			ViewData["oldemailer"] = "/EmailPeople.aspx?id=" + id
 				 + "&subj=" + subj + "&body=" + body + "&ishtml=" + ishtml
@@ -38,33 +61,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			if (parents == true)
 				ViewData["parentsof"] = "with ParentsOf option";
 
-			return View(m);
-		}
-		*/
-
-		public ActionResult Index(int? id, int? templateID, bool? parents)
-		{
-			if (!id.HasValue) return Content("no id");
-			if (Util.SessionTimedOut()) return Redirect("/Errors/SessionTimeout.htm");
-
-			if (templateID == null)
-			{
-				ViewBag.queryID = id;
-				ViewBag.parents = parents ?? false;
-				return View("SelectTemplate", new EmailTemplates());
-			}
-			else
-			{
-				DbUtil.LogActivity("Emailing people");
-
-				var m = new MassEmailer(id.Value, parents);
-				m.CmsHost = DbUtil.Db.CmsHost;
-				m.Host = Util.Host;
-
-				ViewBag.parents = parents ?? false;
-				ViewBag.templateID = templateID;
-				return View("Compose", m);
-			}
+			return View(me);
 		}
 
 		[HttpPost]
