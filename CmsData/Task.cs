@@ -67,6 +67,13 @@ namespace CmsData
             DbUtil.Db.SubmitChanges();
             return qCount;
         }
-
+        private static string TaskLink0(int id)
+        {
+            return "/Task/List/{0}#detail".Fmt(id);
+        }
+        public static string TaskLink(CMSDataContext Db, string text, int id)
+        {
+            return "<a href='{0}{1}'>{2}</a>".Fmt(Db.CmsHost, TaskLink0(id), text);
+        }
     }
 }

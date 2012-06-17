@@ -13,6 +13,12 @@ using CmsData;
 using UtilityExtensions;
 using CmsWeb.Models;
 using System.Data.SqlClient;
+// Used for HTML Image Capture
+using System.Threading;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -66,7 +72,14 @@ namespace CmsWeb.Areas.Manage.Controllers
 			content.Name = name;
 			content.Title = title;
 			content.Body = body;
+
+			if (content.ThumbID != 0 ) ImageData.Image.UpdateImageFromBits( content.ThumbID, CaptureWebPageBytes(body, 100, 150) );
+			else content.ThumbID = ImageData.Image.NewImageFromBits(CaptureWebPageBytes(body, 100, 150)).Id;
+
 			DbUtil.Db.SubmitChanges();
+
+			//ByteArrayToFile( "C:\\Test.jpg", CaptureWebPageBytes(body, null, null) );
+
 			return RedirectToAction("Index");
 		}
 
@@ -150,6 +163,161 @@ namespace CmsWeb.Areas.Manage.Controllers
 			}
 			DbUtil.Db.SubmitChanges();
 			return Redirect("/Organization/Index/" + id);
+		}
+
+		static byte[] CaptureWebPageBytesP( string body, int width, int height )
+		{
+			byte[] data;
+			// create a hidden web browser, which will navigate to the page
+			using (WebBrowser web = new WebBrowser())
+			{
+				web.ScrollBarsEnabled = false; // we don't want scrollbars on our image
+				web.ScriptErrorsSuppressed = true; // don't let any errors shine through
+
+				//web.Navigate("about:blank");
+				// wait until the page is fully loaded
+				//while (web.ReadyState != System.Windows.Forms.WebBrowserReadyState.Complete)
+				//System.Windows.Forms.Application.DoEvents();
+
+				web.DocumentText = body;
+				while (web.ReadyState != System.Windows.Forms.WebBrowserReadyState.Complete)
+					System.Windows.Forms.Application.DoEvents();
+
+				// set the size of our web browser to be the same size as the page
+				/*
+				if (width == null)
+					width = web.Document.Body.ScrollRectangle.Width;
+				if (height == null)
+					height = web.Document.Body.ScrollRectangle.Height;
+				web.Width = width.Value;
+				web.Height = height.Value;
+				*/
+				web.Width = web.Document.Body.ScrollRectangle.Width;
+				web.Height = web.Document.Body.ScrollRectangle.Height;
+				
+				// a bitmap that we will draw to
+				using (System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(web.Width, web.Height))
+				{
+					// draw the web browser to the bitmap
+					web.DrawToBitmap(bmp, new Rectangle(web.Location.X, web.Location.Y, web.Width, web.Height));
+					// draw the web browser to the bitmap
+
+					GraphicsUnit units = GraphicsUnit.Pixel;
+					RectangleF destRect = new RectangleF(0F, 0F, width, height);
+					RectangleF srcRect = new RectangleF(0, 0, web.Width, web.Width * 1.5F );
+
+					Bitmap b = new Bitmap( width, height );
+					Graphics g = Graphics.FromImage((Image)b);
+					g.Clear(Color.White);
+					g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+					g.DrawImage(bmp, destRect, srcRect, units);
+					g.Dispose();
+
+					using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
+					{
+						EncoderParameter qualityParam = null;
+						EncoderParameters encoderParams = null;
+						try
+						{
+							ImageCodecInfo imageCodec = null;
+							imageCodec = GetEncoderInfo("image/jpeg");
+							//imageCodec = GetEncoderInfo("image/bmp");
+
+							// Encoder parameter for image quality
+							qualityParam = new EncoderParameter(Encoder.Quality, 100L);
+
+							encoderParams = new EncoderParameters(1);
+							encoderParams.Param[0] = qualityParam;
+							b.Save(stream, imageCodec, encoderParams);
+						}
+						catch (Exception)
+						{
+							throw new Exception();
+						}
+						finally
+						{
+							if (encoderParams != null)
+								encoderParams.Dispose();
+							if (qualityParam != null)
+								qualityParam.Dispose();
+						}
+						b.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+						stream.Position = 0;
+						data = new byte[stream.Length];
+						stream.Read(data, 0, (int)stream.Length);
+					}
+				}
+			}
+			return data;
+		}
+
+		public static byte[] CaptureWebPageBytes(string body, int width, int height)
+		{
+			bool bDone = false;
+			byte[] data = null;
+			DateTime startDate = DateTime.Now;
+			DateTime endDate = DateTime.Now;
+
+			//sta thread to allow intiate WebBrowser
+			var staThread = new Thread(delegate()
+			{
+				data = CaptureWebPageBytesP(body, width, height);
+				bDone = true;
+			});
+			staThread.SetApartmentState(ApartmentState.STA);
+			staThread.Start();
+			while (!bDone)
+			{
+				endDate = DateTime.Now;
+				TimeSpan tsp = endDate.Subtract(startDate);
+
+				System.Windows.Forms.Application.DoEvents();
+				if (tsp.Seconds > 50)
+				{
+					break;
+				}
+			}
+			staThread.Abort();
+			return data;
+		}
+
+		private static ImageCodecInfo GetEncoderInfo(String mimeType)
+		{
+			int j;
+			ImageCodecInfo[] encoders;
+			encoders = ImageCodecInfo.GetImageEncoders();
+			for (j = 0; j < encoders.Length; ++j)
+			{
+				if (encoders[j].MimeType == mimeType)
+					return encoders[j];
+			}
+			return null;
+		}
+
+		public bool ByteArrayToFile(string _FileName, byte[] _ByteArray)
+		{
+			try
+			{
+				// Open file for reading
+				System.IO.FileStream _FileStream = new System.IO.FileStream(_FileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+
+				// Writes a block of bytes to this stream using data from a byte array.
+				_FileStream.Write(_ByteArray, 0, _ByteArray.Length);
+
+				// close file stream
+				_FileStream.Close();
+
+				return true;
+			}
+			catch (Exception _Exception)
+			{
+				// Error
+				Console.WriteLine("Exception caught in process: {0}", _Exception.ToString());
+			}
+
+			// error occured, return false
+			return false;
 		}
 	}
 }

@@ -78,6 +78,17 @@ namespace ImageData
             DbUtil.Db.SubmitChanges();
             return i;
         }
+
+		  public static void UpdateImageFromBits( int imageID, byte[] bits )
+		  {
+			  var i = from t in DbUtil.Db.Images
+						 where t.Id == imageID
+						 select t;
+
+			  i.FirstOrDefault().LoadImageFromBits(bits);
+			  DbUtil.Db.SubmitChanges();
+		  }
+
         private void LoadImageFromBits(byte[] bits)
         {
             var istream = new MemoryStream(bits);

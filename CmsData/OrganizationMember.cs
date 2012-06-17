@@ -123,19 +123,6 @@ namespace CmsData
 		{
 			if (!name.HasValue())
 				return;
-//			var scriptname = Organization.GetExtra("OnSmallGroupJoin");
-//			var script = Db.Content(scriptname);
-//			if (script != null && script.Body.HasValue())
-//			{
-//				var ret = PythonEvents.RunEventScript(DbUtil.Db, script.Body, om);
-//				if (ret.StartsWith("Error"))
-//					Organizatino.AddToExtraData("OnRegistration.errors", ret);
-//			}
-
-			//			var script = Db.Content(this.Organization.AddToSmallGroupScript, "");
-			//			if (script.HasValue())
-			//			{
-			//			}
 			var mt = Db.MemberTags.SingleOrDefault(t => t.Name == name.Trim() && t.OrgId == OrganizationId);
 			if (mt == null)
 			{

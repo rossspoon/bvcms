@@ -13,8 +13,10 @@ namespace CmsData
         Empty,
         String,
         Number,
+        NumberSimple,
         Integer,
         Date,
+        DateSimple,
         Bit,
         NullBit,
         Code,
@@ -25,5 +27,6 @@ namespace CmsData
         Group,
         StringEqual,
         IntegerEqual,
+        IntegerSimple,
     }
 }

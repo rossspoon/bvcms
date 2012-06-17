@@ -123,3 +123,14 @@
     <li> <span class="keyword big">NotReqPhone:</span> @Html.CheckBox("NotReqPhone", Model.NotReqPhone) </li>
     <li> <span class="keyword big">NotReqGender:</span> @Html.CheckBox("NotReqGender", Model.NotReqGender) </li>
     <li> <span class="keyword big">NotReqMarital:</span> @Html.CheckBox("NotReqMarital", Model.NotReqMarital) </li>
+@if (User.IsInRole("Admin"))
+{
+	<li>
+		<span class="keyword big tip"
+			  title="OnRegister Script Name
+        |This is the name of a script in Special Content
+        |that will be run when someone registers.">
+			OnRegister Script Name:</span>
+		@Html.TextBox("org.AddToSmallGroupScript")
+	</li>
+}

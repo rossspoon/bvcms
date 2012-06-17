@@ -370,5 +370,22 @@ Thank you</p>";
                     };
             return q.ToArray();
         }
+        [NonSerialized]
+        private Dictionary<int, RegSettings> _settings;
+        public Dictionary<int, RegSettings> settings
+        {
+            get
+            {
+                if (_settings == null)
+                    _settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
+                return _settings;
+            }
+        }
+        [NonSerialized]
+		private PythonEvents _pythonEvents;
+		public PythonEvents PythonEvents 
+		{ 
+			get { return _pythonEvents ?? (_pythonEvents = HttpContext.Current.Items["PythonEvents"] as PythonEvents); }
+		}
     }
 }

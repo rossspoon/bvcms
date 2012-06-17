@@ -9,18 +9,7 @@ namespace CmsWeb.Models
 {
     public partial class OnlineRegPersonModel
     {
-        [NonSerialized]
-        private Dictionary<int, RegSettings> _settings;
-        public Dictionary<int, RegSettings> settings
-        {
-            get
-            {
-                if (_settings == null)
-                    _settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
-                return _settings;
-            }
-        }
-        public bool RequiredAddr()
+    	public bool RequiredAddr()
         {
             if (org != null)
                 return setting.NotReqAddr == false;
