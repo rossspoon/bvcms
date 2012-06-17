@@ -37,8 +37,6 @@ namespace CmsData
    		private EntitySet< TagPerson> _PersonTags;
 		
     	
-		private EntityRef< TagType> _TagType;
-		
 		private EntityRef< Person> _PersonOwner;
 		
 	#endregion
@@ -77,8 +75,6 @@ namespace CmsData
 			
 			this._PersonTags = new EntitySet< TagPerson>(new Action< TagPerson>(this.attach_PersonTags), new Action< TagPerson>(this.detach_PersonTags)); 
 			
-			
-			this._TagType = default(EntityRef< TagType>); 
 			
 			this._PersonOwner = default(EntityRef< Person>); 
 			
@@ -141,9 +137,6 @@ namespace CmsData
 			{
 				if (this._TypeId != value)
 				{
-				
-					if (this._TagType.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnTypeIdChanging(value);
 					this.SendPropertyChanging();
@@ -276,48 +269,6 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
-		[Association(Name="Tags__TagType", Storage="_TagType", ThisKey="TypeId", IsForeignKey=true)]
-		public TagType TagType
-		{
-			get { return this._TagType.Entity; }
-
-			set
-			{
-				TagType previousValue = this._TagType.Entity;
-				if (((previousValue != value) 
-							|| (this._TagType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._TagType.Entity = null;
-						previousValue.Tags.Remove(this);
-					}
-
-					this._TagType.Entity = value;
-					if (value != null)
-					{
-						value.Tags.Add(this);
-						
-						this._TypeId = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._TypeId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("TagType");
-				}
-
-			}
-
-		}
-
-		
 		[Association(Name="TagsOwned__PersonOwner", Storage="_PersonOwner", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person PersonOwner
 		{

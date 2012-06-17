@@ -38,12 +38,15 @@ namespace CmsData
                 case FieldType.String:
                 case FieldType.StringEqual:
                 case FieldType.Number:
+                case FieldType.NumberSimple:
                 case FieldType.NullNumber:
                 case FieldType.Integer:
+                case FieldType.IntegerSimple:
                 case FieldType.IntegerEqual:
                 case FieldType.NullInteger:
                     return Display.Fmt(fld, c.TextValue);
                 case FieldType.Date:
+                case FieldType.DateSimple:
                     return Display.Fmt(fld, c.DateValue);
                 case FieldType.DateField:
                     return Display.Fmt(fld, c.CodeIdValue);
@@ -70,7 +73,7 @@ namespace CmsData
                                c.StartDate,
                                c.EndDate,
                                CompType,
-                               decimal.Parse(c.TextValue));
+                               double.Parse(c.TextValue));
                 case QueryType.AttendCntHistory:
                     return Expressions.AttendCntHistory(parm, Db,
                                c.Program,
@@ -467,7 +470,7 @@ namespace CmsData
                                c.TextValue.ToInt());
                 case QueryType.RecentContributionCount:
                     return Expressions.RecentContributionCount(parm, Db,
-                               c.Days, c.Quarters.ToInt2(),
+                               c.Days, c.Quarters.ToInt(),
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.RecentContributionAmount:
@@ -475,6 +478,11 @@ namespace CmsData
                                c.Days, c.Quarters.ToInt2(),
                                CompType,
                                Decimal.Parse(c.TextValue));
+                case QueryType.RecentGivingAsPctOfPrevious:
+                    return Expressions.RecentGivingAsPctOfPrevious(parm, Db,
+                               c.Quarters.ToInt2() ?? 365,
+                               CompType,
+                               Double.Parse(c.TextValue));
                 case QueryType.RecentPledgeCount:
                     return Expressions.RecentPledgeCount(parm, Db,
                                c.Days, c.Quarters.ToInt2(),
@@ -495,7 +503,7 @@ namespace CmsData
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.RecentAttendCountAttCred:
-                    return Expressions.RecentAttendCountSchedule(parm,
+                    return Expressions.RecentAttendCountAttCred(parm,
                                c.Program,
                                c.Division,
                                c.Organization,
@@ -504,7 +512,7 @@ namespace CmsData
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.RecentNewVisitCount:
-                    return Expressions.RecentNewVisitCount(parm,
+                    return Expressions.RecentNewVisitCount(parm, Db,
                                c.Program,
                                c.Division,
                                c.Organization,
@@ -662,18 +670,21 @@ namespace CmsData
                                        CompType,
                                        c.TextValue);
                         case FieldType.Number:
+                        case FieldType.NumberSimple:
                         case FieldType.NullNumber:
                             return Expressions.CompareConstant(parm,
                                        c.Field,
                                        CompType,
                                        decimal.Parse(c.TextValue));
                         case FieldType.Integer:
+                        case FieldType.IntegerSimple:
                         case FieldType.NullInteger:
                             return Expressions.CompareConstant(parm,
                                        c.Field,
                                        CompType,
                                        int.Parse(c.TextValue));
                         case FieldType.Date:
+                        case FieldType.DateSimple:
                             if (c.Field == "DeceasedDate")
                                 c.SetIncludeDeceased();
                             return Expressions.CompareDateConstant(parm,

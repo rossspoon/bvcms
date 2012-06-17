@@ -252,6 +252,8 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
+    <Compile Include="Generated\Functions\VisitNumberSinceDate.cs" />
     <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />
     <Compile Include="Generated\CheckedBatch.cs" />

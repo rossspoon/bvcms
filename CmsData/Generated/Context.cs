@@ -1763,6 +1763,23 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.GivingCurrentPercentOfFormer", IsComposable = true)]
+		public IQueryable< View.GivingCurrentPercentOfFormer > GivingCurrentPercentOfFormer(
+            [Parameter(DbType="datetime")] DateTime? dt1,
+            [Parameter(DbType="datetime")] DateTime? dt2,
+            [Parameter(DbType="varchar")] string comp,
+            [Parameter(DbType="float")] double? pct
+            )
+		{
+			return this.CreateMethodCallQuery< View.GivingCurrentPercentOfFormer>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt1,
+                dt2,
+                comp,
+                pct
+                );
+		}
+
 		[Function(Name="dbo.MembersAsOf", IsComposable = true)]
 		public IQueryable< View.MembersAsOf > MembersAsOf(
             [Parameter(DbType="datetime")] DateTime? from,
@@ -1842,6 +1859,19 @@ namespace CmsData
 			return this.CreateMethodCallQuery< View.TaggedPerson>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 tagid
+                );
+		}
+
+		[Function(Name="dbo.VisitNumberSinceDate", IsComposable = true)]
+		public IQueryable< View.VisitNumberSinceDate > VisitNumberSinceDate(
+            [Parameter(DbType="datetime")] DateTime? dt,
+            [Parameter(DbType="int")] int? n
+            )
+		{
+			return this.CreateMethodCallQuery< View.VisitNumberSinceDate>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt,
+                n
                 );
 		}
 

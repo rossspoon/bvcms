@@ -22,6 +22,13 @@ namespace CmsData
 	{
 		const string STR_System = "System";
 
+		private int nextTagId = 10;
+
+		public int NextTagId
+		{
+			get { return nextTagId++; }
+		}
+
 		partial void OnCreated()
 		{
 			CommandTimeout = 1200;
@@ -325,6 +332,12 @@ namespace CmsData
 				tag.PersonTags.Add(new TagPerson { PeopleId = id });
 			SubmitChanges();
 		}
+		public void TagAll(IQueryable<int?> list, Tag tag)
+		{
+			foreach (var id in list)
+				tag.PersonTags.Add(new TagPerson { PeopleId = id.Value });
+			SubmitChanges();
+		}
 		public void UnTagAll(IQueryable<Person> list)
 		{
 			var person = list.FirstOrDefault();
@@ -350,9 +363,9 @@ namespace CmsData
 			TagAll(q, tag);
 			return tag;
 		}
-		public Tag PopulateSpecialTag(IQueryable<int?> q, int TagTypeId)
+		public Tag PopulateTemporaryTag(IQueryable<int> q)
 		{
-			var tag = FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, TagTypeId);
+			var tag = FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, NextTagId);
 			ExecuteCommand("delete TagPerson where Id = {0}", tag.Id);
 			var cmd = GetCommand(q);
 			var s = cmd.CommandText;
@@ -367,7 +380,6 @@ namespace CmsData
 			s = Regex.Replace(s, "^SELECT( DISTINCT)?",
 				@"INSERT INTO TagPerson (Id, PeopleId) $0 " + tag.Id + ",");
 			ExecuteCommand(s, plist.Select(pp => pp.Value).ToArray());
-			//TagAll(q, tag);
 			return tag;
 		}
 		public void PopulateSpecialTag(IQueryable<Person> q, string tagname)
