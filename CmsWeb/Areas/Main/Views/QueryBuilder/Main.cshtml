@@ -27,7 +27,7 @@
                     <td colspan="2">
 						<a id="SelectCondition" href="#" class="bt helptip"
                             title="Select a Condition|To build a query, you should select a condition.">Select Condition</a>
-						<a class="help" href="http://www.bvcms.com/DocDialog/QB-"
+						<a class="help" href="https://www.bvcms.com/DocDialog/QB-"
 						   title="Get QueryBuilder Help|Click this link to get help on this condition.">
 							<span id='ConditionText'>Group</span>
 						</a>
@@ -210,7 +210,7 @@
         @foreach (var p in c.Fields)
         { 
             <div class="FieldLink"><a id='@p.Name' href="#">@p.Title</a></div>
-			<div class="moreinfo"><a class="help" href="http://www.bvcms.com/DocDialog/QB-"
+			<div class="moreinfo"><a class="help" href="http://www.bvcms.com/DocDialog/QB-@p.Name"
                 title="Get QueryBuilder Help|Click this link to get help on this condition.">@p.Description</a></div>
         } 
         </div>

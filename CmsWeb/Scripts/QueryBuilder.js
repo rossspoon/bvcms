@@ -19,7 +19,10 @@ $(function () {
     $('a.help').live("click", function (event) {
         event.preventDefault();
         var d = $('#QueryConditionHelp');
-        $('iframe', d).attr("src", this.href + $("#ConditionName").val());
+        if(this.href.endsWith('-'))
+            $('iframe', d).attr("src", this.href + $("#ConditionName").val());
+        else
+            $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
     $("a.help,.helptip").tooltip({ showBody: "|", showURL: false });
