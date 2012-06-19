@@ -24,33 +24,38 @@
 
 	<table cellspacing="10">
 	<tr>
-		<td colspan="2">
+		<td colspan="3">
 			From: @Html.DropDownList("FromAddress", Model.EmailFroms())
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2">
+		<td colspan="3">
 			<label>Subject:</label> @Html.TextBox("Subject", Model.Subject, new { size = "75" }) &nbsp;&nbsp @Html.CheckBox("PublicViewable") Publicly viewable?
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2">
+		<td colspan="3">
 			<div id="tempateBody">
 				@Html.Raw(t.FirstOrDefault().Body)
 			</div>
 		</td>
 	</tr>
 	<tr>
-		<td width="50%" valign="top">
+		<td width="33%" valign="top">
 			<input type="button" id="TestSend" class="bt" value="Test (Send To Yourself)" />
 		</td>
-		<td align="right">
+		<td width="33%" valign="top" align="center">
+			<input type="button" id="SaveDraft" class="bt" value="Save As Draft" />
+		</td>
+		<td width="33%" align="right">
 			<input type="button" id="Send" value="Send" class="bt" /><br />
 			<br />
 			@if ((User.IsInRole("ScheduleEmails") || User.IsInRole("Edit")) && System.Web.Configuration.WebConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
 			{ 
-				@:Scheduled Date and Time (mm/dd/yy h:mm AM|PM) @Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" })<br />
-				@:(Optional, Note: Time is Central Time)
+				@:Scheduled Date and Time (Optional)<br />
+				@:(mm/dd/yy h:mm AM|PM)<br />
+				@Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" })<br />
+				@:<font color="red">Note</font>: Time is Central Time
 			}
 		</td>
 	</tr>
@@ -63,6 +68,16 @@
 	<form action="javascript:updateDiv();">
 		<textarea id="htmleditor"></textarea>
 	</form>
+</div>
+<div id="saveasdraft">
+	<br />
+	<span id="newMessage" style="font-weight:bold"></span>
+	<form action="/Display/ContentCreate/" method="post">
+    <p>FileName: <input name="newName" /></p>
+    <input type="hidden" id="newType" name="newType" value="0" />
+    <input type="submit" class="bt" value="Submit" /> &nbsp;&nbsp; <input type="button" class="bt" onclick="$.unblockUI()" value="Cancel" />
+	 </form>
+	 <br />
 </div>
 @section head
 {
@@ -85,7 +100,7 @@
 		var currentDiv = null;
 		var editor_large = { autoParagraph: false, filebrowserUploadUrl: '/Account/CKEditorUpload/', filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
 			toolbar_Full: [
-					['Save'],['Source'],
+					['Save'], ['Source'],
 					['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'SpellChecker', 'Scayt'],
 					['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
 					'/',
@@ -103,7 +118,7 @@
 
 		$(document).ready(
 			function () {
-				$('div[bvedit]').bind('click', hClick).addClass( "ti" );
+				$('div[bvedit]').bind('click', hClick).addClass("ti");
 				$('#htmleditor').ckeditor(editor_large);
 			}
 		);
@@ -112,9 +127,10 @@
 			{ autoOpen: false, modal: true, close: function () {
 				$('#progress').html("<h2>Working...</h2>");
 			}
-		});
+			});
 
-		$("#popupeditor").dialog( { autoOpen: false, modal: true, closeOnEscape: true, title: "Edit Template Section", minWidth: 600, minHeight: 400 } );
+		$("#popupeditor").dialog({ autoOpen: false, modal: true, closeOnEscape: true, title: "Edit Template Section", minWidth: 600, minHeight: 400 });
+		$("#saveasdraft").dialog({ autoOpen: false, modal: true, closeOnEscape: true, title: "Save As Draft Name" });
 
 		$("#Send").click(function () {
 			var d = $("#progress");
@@ -144,6 +160,24 @@
 			});
 		});
 
+		$("#SaveDraft").click(function () {
+			var d = $("#saveasdraft");
+			d.dialog('open');
+
+			$("div[bvedit]").removeClass();
+			$('#body').val($("#tempateBody").html());
+			$("div[bvedit]").addClass("ti");
+			var q = $("#SendEmail").serialize();
+
+			$.post('/Email/SaveDraft', q, function (ret) {
+				if (ret == "timeout") {
+					window.location = "/Email/Timeout";
+					return;
+				}
+				d.html(ret);
+			});
+		});
+
 		$("#TestSend").click(function () {
 			var d = $("#progress");
 			d.dialog('open');
@@ -165,12 +199,12 @@
 		function hClick(e) {
 			currentDiv = this;
 			$('#htmleditor').ckeditorGet().setData($(this).html());
-			$('#popupeditor').dialog( "open" );
+			$('#popupeditor').dialog("open");
 		}
 
 		function updateDiv() {
 			$(currentDiv).html($('#htmleditor').ckeditorGet().getData());
-			$('#popupeditor').dialog( "close" );
+			$('#popupeditor').dialog("close");
 		}
 
 		CKEDITOR.on('dialogDefinition', function (ev) {

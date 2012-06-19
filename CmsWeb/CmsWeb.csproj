@@ -177,6 +177,7 @@
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Main\Models\Person\VolunteerModel.cs" />
     <Compile Include="Areas\Manage\Models\CheckinTimeModel.cs" />
+    <Compile Include="Areas\Manage\Models\ContentModel.cs" />
     <Compile Include="Areas\Manage\Models\UploadPeopleModel.cs" />
     <Compile Include="Areas\Manage\Models\AccountModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
