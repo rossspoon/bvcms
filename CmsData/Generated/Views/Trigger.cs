@@ -22,7 +22,7 @@ namespace CmsData.View
 		
 		private DateTime _TriggerCreatedDate;
 		
-		private string _TriggerText;
+		private string _Code;
 		
 		
 		public Trigger()
@@ -82,18 +82,18 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="TriggerText", Storage="_TriggerText", DbType="nvarchar(4000)")]
-		public string TriggerText
+		[Column(Name="Code", Storage="_Code", DbType="nvarchar(4000)")]
+		public string Code
 		{
 			get
 			{
-				return this._TriggerText;
+				return this._Code;
 			}
 
 			set
 			{
-				if (this._TriggerText != value)
-					this._TriggerText = value;
+				if (this._Code != value)
+					this._Code = value;
 			}
 
 		}

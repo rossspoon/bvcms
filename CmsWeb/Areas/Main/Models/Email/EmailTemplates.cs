@@ -11,8 +11,11 @@ namespace CmsWeb.Areas.Main.Models
 	{
 		public IQueryable<Content> fetchTemplates()
 		{
+			var currentRoleIds = DbUtil.Db.CurrentRoleIds();
+			var isadmin = HttpContext.Current.User.IsInRole("Admin");
 			return from i in DbUtil.Db.Contents
 					 where i.TypeID == DisplayController.TYPE_EMAIL_TEMPLATE
+					 where isadmin || i.RoleID == 0 || currentRoleIds.Contains(i.RoleID)
 					 orderby i.Name
 					 select i;
 		}

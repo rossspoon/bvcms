@@ -155,6 +155,7 @@ CKEditorFuncNum, baseurl + fn, error));
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
+			Session.Abandon();
             return Redirect("/");
         }
 		[MyRequireHttps]

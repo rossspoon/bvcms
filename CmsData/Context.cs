@@ -442,22 +442,46 @@ namespace CmsData
 			}
 			return CMSRoleProvider.provider.GetAdmins();
 		}
-		User _currentuser;
+		private User _currentuser;
 		public User CurrentUser
 		{
 			get
 			{
 				if (_currentuser != null)
 					return _currentuser;
-				return Users.SingleOrDefault(u => u.UserId == Util.UserId);
+				GetCurrentUser();
+				return _currentuser;
 			}
-			set { _currentuser = value; }
 		}
+		private void GetCurrentUser()
+		{
+			var q = from u in Users
+			        where u.UserId == Util.UserId
+			        select new
+			               {
+			               	u,
+			               	roleids = u.UserRoles.Select(uu => uu.RoleId).ToArray(),
+			               	roles = u.UserRoles.Select(uu => uu.Role.RoleName).ToArray(),
+			               };
+			var i = q.Single();
+			_roles = i.roles;
+			_roleids = i.roleids;
+			_currentuser = i.u;
+		}
+
 		private string[] _roles;
 		public string[] CurrentRoles()
 		{
-			return _roles ??
-				(_roles = CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray());
+			if (_roles == null)
+				GetCurrentUser();
+			return _roles;
+		}
+		private int[] _roleids;
+		public int[] CurrentRoleIds()
+		{
+			if (_roleids == null)
+				GetCurrentUser();
+			return _roleids;
 		}
 
 		public Person CurrentUserPerson
