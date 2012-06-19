@@ -377,7 +377,7 @@
     <Field Name="AttendTypeAsOf" Title="Attendance Type As Of" Type="Code" DisplayAs="AttendanceTypeAsOf({0:d}, {1:d}, {2}, {3}, {4}, {5})" Params="StartDate,EndDate,Program,Division,Organization,OrgType" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type within a Program, Program/Division or Program/Division/Organization for a specified date range.
     </Field>
-    <Field Name="VisitNumber" Title="Visit date Nth time" Type="DateSimple" DisplayAs="VisitNumber({0})" Params="Quarters" QuartersLabel="Visit number">
+    <Field Name="VisitNumber" Title="Visit date Nth time" Type="Date" DisplayAs="VisitNumber({0})" Params="Quarters" QuartersLabel="Visit number">
       Selects attendees based on whether they have visted once, twice or three times
     </Field>
     <Field Name="RecentVisitNumber" Title="Recent Visit date Nth time" Type="Bit" DataValueField="IdCode" DisplayAs="RecentVisitNumber({0},{1})" Params="Quarters,Days" QuartersLabel="Visit number">
@@ -403,7 +403,7 @@
     <Field Name="RecentAttendCountAttCred" Title="Recent Attendance Count for AttendCredit" Type="Integer" DisplayAs="RecentAttendCountAttCred({0}, {1}, {2}, {3}, {4})" QuartersLabel="Attend Credit Id" Params="Program,Division,Organization,Days,Quarters">
       Selects people based on an Attendance Credit Schedule within a Program/Division/Organization/Schedule looking back a specified number of days.
     </Field>
-    <Field Name="RecentNewVisitCount" Title="Recent New Visit Count" Type="NumberSimple" DisplayAs="RecentNewVisitCount({0}, {1}, {2}, {3}, {4}, {5})" QuartersLabel="Number of days for no attendance" Params="Days,Quarters,Program,Division,Organization,OrgType">
+    <Field Name="RecentNewVisitCount" Title="Recent New Visit Count" Type="Integer" DisplayAs="RecentNewVisitCount({0}, {1}, {2}, {3}, {4}, {5})" QuartersLabel="Number of days for no attendance" Params="Days,Quarters,Program,Division,Organization,OrgType">
       Find all who have had n # attends in the past # [Days] where they had no attends prior to that looking back so many days
     </Field>
     <Field Name="VisitedCurrentOrg" Title="Has Visited Current Organization" Type="Bit" DataValueField="IdCode">
@@ -489,22 +489,22 @@
     <Field Name="DuplicateNames" Title="Duplicate Names" Type="Bit" DataValueField="IdCode">
       Record Has Duplicate Names on other records
     </Field>
-    <Field Name="RecentContributionCount" Title="Recent Contribution Count" Type="IntegerSimple" QuartersLabel="Fund Id (or null for all)" DisplayAs="RecentContributionCount({0},{1})" Params="Days,Quarters">
+    <Field Name="RecentContributionCount" Title="Recent Contribution Count" Type="Integer" QuartersLabel="Fund Id (or null for all)" DisplayAs="RecentContributionCount({0},{1})" Params="Days,Quarters">
       Must have Finance role for this to work.
     </Field>
     <Field Name="RecentContributionAmount" Title="Recent Contribution Amount" Type="NumberSimple" DisplayAs="RecentContributionAmount({0},{1})" QuartersLabel="Fund Id (or null for all)" Params="Days,Quarters">
       Must have Finance role for this to work.
     </Field>
-    <Field Name="RecentPledgeCount" Title="Recent Pledge Count" Type="IntegerSimple" QuartersLabel="Fund Id (or null for all)" DisplayAs="RecentPledgeCount({0},{1})" Params="Days,Quarters">
+    <Field Name="RecentPledgeCount" Title="Recent Pledge Count" Type="Integer" QuartersLabel="Fund Id (or null for all)" DisplayAs="RecentPledgeCount({0},{1})" Params="Days,Quarters">
       Must have Finance role for this to work.
     </Field>
-    <Field Name="RecentPledgeAmount" Title="Recent Pledge Amount" Type="NumberSimple" DisplayAs="RecentPledgeAmount({0},{1})" QuartersLabel="Fund Id (or null for all)" Params="Days,Quarters">
+    <Field Name="RecentPledgeAmount" Title="Recent Pledge Amount" Type="Number" DisplayAs="RecentPledgeAmount({0},{1})" QuartersLabel="Fund Id (or null for all)" Params="Days,Quarters">
       Must have Finance role for this to work.
     </Field>
     <Field Name="ContributionAmount2" Title="Contribution Amount History" Type="Number" DisplayAs="ContributionAmount2({0},{1},{2})" QuartersLabel="Fund Id (or null for all)" Params="StartDate,EndDate,Quarters">
       Must have Finance role for this to work.
     </Field>
-    <Field Name="ContributionChange" Title="Contribution Change Pct" Type="NumberSimple" DisplayAs="ContributionChange({0},{1})" Params="StartDate,EndDate">
+    <Field Name="ContributionChange" Title="Contribution Change Pct" Type="Number" DisplayAs="ContributionChange({0},{1})" Params="StartDate,EndDate">
       startdt = 2 years ago, enddt = 1 year ago, pct = current period as % of previous period, divided on the enddt (Must have Finance role for this to work.
     </Field>
     <Field Name="RecentGivingAsPctOfPrevious" Title="Recent Giving % of Previous" Type="NumberSimple" DisplayAs="RecentGivingAsPctOfPrevious({0})" QuartersLabel="Midway Lookback Days Ago" Params="Quarters">

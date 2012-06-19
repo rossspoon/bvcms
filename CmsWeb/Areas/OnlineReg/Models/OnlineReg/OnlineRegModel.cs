@@ -78,7 +78,7 @@ namespace CmsWeb.Models
 				return;
 			HttpContext.Current.Items.Add("RegSettings", list);
 
-			if (org.AddToSmallGroupScript.HasValue())
+			if (org != null && org.AddToSmallGroupScript.HasValue())
 			{
 				var script = DbUtil.Db.Content(org.AddToSmallGroupScript);
 				if (script != null && script.Body.HasValue())

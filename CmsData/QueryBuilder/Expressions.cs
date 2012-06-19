@@ -588,13 +588,34 @@ namespace CmsData
 			Expression<Func<Person, bool>> pred = null;
 			switch (op)
 			{
-				case CompareType.GreaterEqual:
+				case CompareType.Greater:
 					pred = p =>
-					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate >= dt);
+					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate > dt);
 					break;
 				case CompareType.Less:
 					pred = p =>
 					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate < dt);
+					break;
+				case CompareType.GreaterEqual:
+					pred = p =>
+					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate >= dt);
+					break;
+				case CompareType.LessEqual:
+					pred = p =>
+					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate <= dt);
+					break;
+				case CompareType.Equal:
+					pred = p =>
+					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate.Date == dt);
+					break;
+				case CompareType.NotEqual:
+				case CompareType.IsNull:
+					pred = p =>
+					       !p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate.Date == dt);
+					break;
+				case CompareType.IsNotNull:
+					pred = p =>
+					       p.Attends.Any(aa => aa.SeqNo == n);
 					break;
 			}
 			Expression expr = Expression.Invoke(pred, parm);
@@ -651,6 +672,36 @@ namespace CmsData
 						where g.Count(aa => aa.MeetingDate > dt2) > cnt
 						select p.PeopleId;
 					break;
+				case CompareType.GreaterEqual:
+					q = from p in Db.People
+						let g = from a in p.Attends
+								from dg in a.Organization.DivOrgs
+								from pg in dg.Division.ProgDivs
+								where org == 0 || a.OrganizationId == org
+								where divid == 0 || dg.DivId == divid
+								where progid == 0 || pg.ProgId == progid
+								where a.AttendanceFlag
+								where a.MeetingDate >= dt1
+								select a
+						where !g.Any(aa => aa.MeetingDate < dt2)
+						where g.Count(aa => aa.MeetingDate > dt2) >= cnt
+						select p.PeopleId;
+					break;
+				case CompareType.Less:
+					q = from p in Db.People
+						let g = from a in p.Attends
+								from dg in a.Organization.DivOrgs
+								from pg in dg.Division.ProgDivs
+								where org == 0 || a.OrganizationId == org
+								where divid == 0 || dg.DivId == divid
+								where progid == 0 || pg.ProgId == progid
+								where a.AttendanceFlag
+								where a.MeetingDate >= dt1
+								select a
+						where !g.Any(aa => aa.MeetingDate < dt2)
+						where g.Count(aa => aa.MeetingDate > dt2) < cnt
+						select p.PeopleId;
+					break;
 				case CompareType.LessEqual:
 					q = from p in Db.People
 						let g = from a in p.Attends
@@ -664,6 +715,36 @@ namespace CmsData
 								select a
 						where !g.Any(aa => aa.MeetingDate < dt2)
 						where g.Count(aa => aa.MeetingDate > dt2) <= cnt
+						select p.PeopleId;
+					break;
+				case CompareType.Equal:
+					q = from p in Db.People
+						let g = from a in p.Attends
+								from dg in a.Organization.DivOrgs
+								from pg in dg.Division.ProgDivs
+								where org == 0 || a.OrganizationId == org
+								where divid == 0 || dg.DivId == divid
+								where progid == 0 || pg.ProgId == progid
+								where a.AttendanceFlag
+								where a.MeetingDate >= dt1
+								select a
+						where !g.Any(aa => aa.MeetingDate < dt2)
+						where g.Count(aa => aa.MeetingDate > dt2) == cnt
+						select p.PeopleId;
+					break;
+				case CompareType.NotEqual:
+					q = from p in Db.People
+						let g = from a in p.Attends
+								from dg in a.Organization.DivOrgs
+								from pg in dg.Division.ProgDivs
+								where org == 0 || a.OrganizationId == org
+								where divid == 0 || dg.DivId == divid
+								where progid == 0 || pg.ProgId == progid
+								where a.AttendanceFlag
+								where a.MeetingDate >= dt1
+								select a
+						where !g.Any(aa => aa.MeetingDate < dt2)
+						where g.Count(aa => aa.MeetingDate > dt2) != cnt
 						select p.PeopleId;
 					break;
 			}
@@ -756,12 +837,44 @@ namespace CmsData
 						where g.Count() > cnt
 						select g.Key ?? 0;
 					break;
+				case CompareType.GreaterEqual:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.PledgeAmount > 0
+						group c by c.CreditGiverId into g
+						where g.Count() >= cnt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Less:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.PledgeAmount > 0
+						group c by c.CreditGiverId into g
+						where g.Count() < cnt
+						select g.Key ?? 0;
+					break;
 				case CompareType.LessEqual:
 					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
 						where fund == 0 || c.FundId == fund
 						where c.PledgeAmount > 0
 						group c by c.CreditGiverId into g
 						where g.Count() <= cnt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Equal:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.PledgeAmount > 0
+						group c by c.CreditGiverId into g
+						where g.Count() == cnt
+						select g.Key ?? 0;
+					break;
+				case CompareType.NotEqual:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.PledgeAmount > 0
+						group c by c.CreditGiverId into g
+						where g.Count() != cnt
 						select g.Key ?? 0;
 					break;
 			}
@@ -791,12 +904,43 @@ namespace CmsData
 						where g.Sum(cc => cc.PledgeAmount) > amt
 						select g.Key ?? 0;
 					break;
+				case CompareType.GreaterEqual:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.PledgeAmount) >= amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Less:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.PledgeAmount) < amt
+						select g.Key ?? 0;
+					break;
 				case CompareType.LessEqual:
 					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
 						where fund == 0 || c.FundId == fund
 						where c.Amount > 0
 						group c by c.CreditGiverId into g
 						where g.Sum(cc => cc.PledgeAmount) <= amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Equal:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.PledgeAmount) == amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.NotEqual:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.PledgeAmount) != amt
 						select g.Key ?? 0;
 					break;
 			}
@@ -827,12 +971,44 @@ namespace CmsData
 						where g.Count() > cnt
 						select g.Key ?? 0;
 					break;
+				case CompareType.GreaterEqual:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Count() >= cnt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Less:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Count() < cnt
+						select g.Key ?? 0;
+					break;
 				case CompareType.LessEqual:
 					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
 						where fund == 0 || c.FundId == fund
 						where c.Amount > 0
 						group c by c.CreditGiverId into g
 						where g.Count() <= cnt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Equal:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Count() == cnt
+						select g.Key ?? 0;
+					break;
+				case CompareType.NotEqual:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Count() != cnt
 						select g.Key ?? 0;
 					break;
 			}
@@ -862,12 +1038,43 @@ namespace CmsData
 						where g.Sum(cc => cc.Amount) > amt
 						select g.Key ?? 0;
 					break;
+				case CompareType.GreaterEqual:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) >= amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Less:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) <= amt
+						select g.Key ?? 0;
+					break;
 				case CompareType.LessEqual:
 					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
 						where fund == 0 || c.FundId == fund
 						where c.Amount > 0
 						group c by c.CreditGiverId into g
 						where g.Sum(cc => cc.Amount) <= amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Equal:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) == amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.NotEqual:
+					q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) != amt
 						select g.Key ?? 0;
 					break;
 			}
@@ -917,7 +1124,14 @@ namespace CmsData
 			CompareType op,
 			double pct)
 		{
-			var q = Db.GivingCurrentPercentOfFormer(dt1, dt2, op == CompareType.Greater ? ">" : "<=", pct);
+			if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+				return AlwaysFalse(parm);
+			var q = Db.GivingCurrentPercentOfFormer(dt1, dt2, 
+				op == CompareType.Greater ? ">" : 
+				op == CompareType.GreaterEqual ? ">=" :
+				op == CompareType.Less ? "<" :
+				op == CompareType.LessEqual ? "<=" :
+				op == CompareType.Equal ? "=" : "<>", pct);
 			var tag = Db.PopulateTemporaryTag(q.Select(pp => pp.Pid));
 			Expression<Func<Person, bool>> pred = p => p.Tags.Any(t => t.Id == tag.Id);
 			Expression expr = Expression.Invoke(pred, parm);
@@ -1608,13 +1822,15 @@ namespace CmsData
 			CompareType op,
 			int cnt)
 		{
+			if (!end.HasValue)
+				end = start.Value.AddDays(1);
 			Expression<Func<Person, int>> pred = p => (
 				from a in p.Attends
 				from dg in a.Organization.DivOrgs
 				from pg in dg.Division.ProgDivs
 				where a.AttendanceFlag
 				where a.MeetingDate >= start
-				where a.MeetingDate <= end
+				where a.MeetingDate < end
 				where org == 0 || a.Meeting.OrganizationId == org
 				where divid == 0 || dg.DivId == divid
 				where progid == 0 || pg.ProgId == progid
@@ -1634,6 +1850,8 @@ namespace CmsData
 		   CompareType op,
 		   double pct)
 		{
+			if (!end.HasValue)
+				end = start.Value.AddDays(1);
 			// note: this only works for members because visitors do not have att%
 			var now = DateTime.Now;
 
@@ -1643,7 +1861,7 @@ namespace CmsData
 							from pg in dg.Division.ProgDivs
 							where et.TransactionTypeId <= 3 // things that start a change
 							where et.TransactionStatus == false
-							where et.TransactionDate <= end // transaction starts <= looked for end
+							where et.TransactionDate < end // transaction starts <= looked for end
 							where (et.Pending ?? false) == false
 							where (et.NextTranChangeDate ?? now) >= start // transaction ends >= looked for start
 							where org == 0 || et.OrganizationId == org
@@ -1669,7 +1887,39 @@ namespace CmsData
 								select a
 						let n = g.Count(aa => aa.EffAttendFlag == true)
 						let d = g.Count(aa => aa.EffAttendFlag != null)
+						where (d == 0 ? 0d : n * 100.0 / d) > pct
+						select p.PeopleId;
+					break;
+				case CompareType.GreaterEqual:
+					q2 = from p in q
+						let g = from a in p.Attends
+								from dg in a.Organization.DivOrgs
+								from pg in dg.Division.ProgDivs
+								where a.MeetingDate >= start
+								where a.MeetingDate <= end
+								where org == 0 || a.OrganizationId == org
+								where divid == 0 || dg.DivId == divid
+								where progid == 0 || pg.ProgId == progid
+								select a
+						let n = g.Count(aa => aa.EffAttendFlag == true)
+						let d = g.Count(aa => aa.EffAttendFlag != null)
 						where (d == 0 ? 0d : n * 100.0 / d) >= pct
+						select p.PeopleId;
+					break;
+				case CompareType.Less:
+					q2 = from p in q
+						let g = from a in p.Attends
+								from dg in a.Organization.DivOrgs
+								from pg in dg.Division.ProgDivs
+								where a.MeetingDate >= start
+								where a.MeetingDate <= end
+								where org == 0 || a.OrganizationId == org
+								where divid == 0 || dg.DivId == divid
+								where progid == 0 || pg.ProgId == progid
+								select a
+						let n = g.Count(aa => aa.EffAttendFlag == true)
+						let d = g.Count(aa => aa.EffAttendFlag != null)
+						where (d == 0 ? 0d : n * 100.0 / d) < pct
 						select p.PeopleId;
 					break;
 				case CompareType.LessEqual:
@@ -1688,6 +1938,9 @@ namespace CmsData
 						where (d == 0 ? 0d : n * 100.0 / d) <= pct
 						select p.PeopleId;
 					break;
+				case CompareType.NotEqual:
+				case CompareType.Equal:
+					return AlwaysFalse(parm);
 			}
 
 			var tag = Db.PopulateTemporaryTag(q2);
