@@ -1,4 +1,5 @@
 ﻿@using CmsWeb
+@using CmsWeb.Models
 @model CmsData.Content
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -26,9 +27,11 @@
     <a href="/Display/Index">Menu of Content</a>
     <hr />
 	 @Html.Hidden("id")
-	 <div>Name: @Html.TextBox("name")</div>
+	 <div>Name: @Html.TextBox("name", Model.Name, new { size = "25" } )</div>
 	 <br />
-    <div>Title: @Html.TextBox("title")</div>
+    <div>Title: @Html.TextBox("title", Model.Title, new { size = "35" } )</div>
+	 <br />
+	 <div>Role: @Html.DropDownList("roleid", new SelectList( ContentModel.fetchRoles(), "RoleId", "RoleName"))</div>
 	 <br />
     <div>@Html.TextArea("body", new { @class = "editor", rows = "26", style = "width:90%" })</div>
 	 <br />

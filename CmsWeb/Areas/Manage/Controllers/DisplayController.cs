@@ -29,13 +29,11 @@ namespace CmsWeb.Areas.Manage.Controllers
 		public const int TYPE_HTML = 0;
 		public const int TYPE_TEXT = 1;
 		public const int TYPE_EMAIL_TEMPLATE = 2;
+		public const int TYPE_SAVED_DRAFT = 3;
 
 		public ActionResult Index()
 		{
-			var q = from c in DbUtil.Db.Contents
-					  orderby c.Name
-					  select c;
-			return View(q);
+			return View( new ContentModel() );
 		}
 
 		public ActionResult ContentView(string id)
@@ -50,28 +48,28 @@ namespace CmsWeb.Areas.Manage.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult ContentCreate(int newType, string newName)
+		public ActionResult ContentCreate(int newType, string newName, int? newRole)
 		{
 			var content = new Content();
 			content.Name = newName;
 			content.TypeID = newType;
+			content.RoleID = newRole ?? 0;
 			content.Title = content.Body = "";
 
 			DbUtil.Db.Contents.InsertOnSubmit(content);
 			DbUtil.Db.SubmitChanges();
 
-			System.Diagnostics.Debug.Print( "Content ID: " + content.Id );
-
 			return RedirectEdit(content);
 		}
 
 		[HttpPost]
-		public ActionResult ContentUpdate(int id, string name, string title, string body)
+		public ActionResult ContentUpdate(int id, string name, string title, string body, int? roleid)
 		{
 			var content = DbUtil.ContentFromID(id);
 			content.Name = name;
 			content.Title = title;
 			content.Body = body;
+			content.RoleID = roleid ?? 0;
 
 			if (content.ThumbID != 0 ) ImageData.Image.UpdateImageFromBits( content.ThumbID, CaptureWebPageBytes(body, 100, 150) );
 			else content.ThumbID = ImageData.Image.NewImageFromBits(CaptureWebPageBytes(body, 100, 150)).Id;
@@ -102,6 +100,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 					return View("EditText", cContent);
 
 				case TYPE_EMAIL_TEMPLATE:
+				case TYPE_SAVED_DRAFT:
 					return View("EditTemplate", cContent);
 			}
 
@@ -168,30 +167,16 @@ namespace CmsWeb.Areas.Manage.Controllers
 		static byte[] CaptureWebPageBytesP( string body, int width, int height )
 		{
 			byte[] data;
-			// create a hidden web browser, which will navigate to the page
+
 			using (WebBrowser web = new WebBrowser())
 			{
-				web.ScrollBarsEnabled = false; // we don't want scrollbars on our image
-				web.ScriptErrorsSuppressed = true; // don't let any errors shine through
-
-				//web.Navigate("about:blank");
-				// wait until the page is fully loaded
-				//while (web.ReadyState != System.Windows.Forms.WebBrowserReadyState.Complete)
-				//System.Windows.Forms.Application.DoEvents();
+				web.ScrollBarsEnabled = false; // no scrollbars
+				web.ScriptErrorsSuppressed = true; // no errors
 
 				web.DocumentText = body;
 				while (web.ReadyState != System.Windows.Forms.WebBrowserReadyState.Complete)
 					System.Windows.Forms.Application.DoEvents();
 
-				// set the size of our web browser to be the same size as the page
-				/*
-				if (width == null)
-					width = web.Document.Body.ScrollRectangle.Width;
-				if (height == null)
-					height = web.Document.Body.ScrollRectangle.Height;
-				web.Width = width.Value;
-				web.Height = height.Value;
-				*/
 				web.Width = web.Document.Body.ScrollRectangle.Width;
 				web.Height = web.Document.Body.ScrollRectangle.Height;
 				
@@ -222,9 +207,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 						{
 							ImageCodecInfo imageCodec = null;
 							imageCodec = GetEncoderInfo("image/jpeg");
-							//imageCodec = GetEncoderInfo("image/bmp");
 
-							// Encoder parameter for image quality
 							qualityParam = new EncoderParameter(Encoder.Quality, 100L);
 
 							encoderParams = new EncoderParameters(1);
@@ -237,10 +220,8 @@ namespace CmsWeb.Areas.Manage.Controllers
 						}
 						finally
 						{
-							if (encoderParams != null)
-								encoderParams.Dispose();
-							if (qualityParam != null)
-								qualityParam.Dispose();
+							if (encoderParams != null) encoderParams.Dispose();
+							if (qualityParam != null) qualityParam.Dispose();
 						}
 						b.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
 						stream.Position = 0;
@@ -265,8 +246,10 @@ namespace CmsWeb.Areas.Manage.Controllers
 				data = CaptureWebPageBytesP(body, width, height);
 				bDone = true;
 			});
+
 			staThread.SetApartmentState(ApartmentState.STA);
 			staThread.Start();
+
 			while (!bDone)
 			{
 				endDate = DateTime.Now;
@@ -299,24 +282,16 @@ namespace CmsWeb.Areas.Manage.Controllers
 		{
 			try
 			{
-				// Open file for reading
 				System.IO.FileStream _FileStream = new System.IO.FileStream(_FileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-
-				// Writes a block of bytes to this stream using data from a byte array.
 				_FileStream.Write(_ByteArray, 0, _ByteArray.Length);
-
-				// close file stream
 				_FileStream.Close();
-
 				return true;
 			}
 			catch (Exception _Exception)
 			{
-				// Error
 				Console.WriteLine("Exception caught in process: {0}", _Exception.ToString());
 			}
 
-			// error occured, return false
 			return false;
 		}
 	}

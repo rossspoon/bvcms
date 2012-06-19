@@ -16,5 +16,13 @@ namespace CmsWeb.Areas.Main.Models
 					 orderby i.Name
 					 select i;
 		}
+
+		public IQueryable<Content> fetchDrafts()
+		{
+			return from i in DbUtil.Db.Contents
+					 where i.TypeID == DisplayController.TYPE_SAVED_DRAFT
+					 orderby i.Name
+					 select i;
+		}
 	}
 }

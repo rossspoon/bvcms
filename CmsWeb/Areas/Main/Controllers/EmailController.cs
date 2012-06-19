@@ -18,7 +18,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			if (!id.HasValue) return Content("no id");
 			if (Util.SessionTimedOut()) return Redirect("/Errors/SessionTimeout.htm");
 
-			if (DbUtil.Db.Setting("UseEmailTemplates", "false") == "true")
+			if( DbUtil.Db.Setting("UseEmailTemplates", "false") == "true" && templateID != 0 )
 			{
 				if (templateID == null)
 				{
