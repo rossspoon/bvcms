@@ -165,7 +165,7 @@
     <Compile Include="Areas\Main\Models\Directories\PictureRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
-    <Compile Include="Areas\Main\Models\Email\EmailTemplates.cs" />
+    <Compile Include="Areas\Main\Models\Email\EmailTemplatesModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
