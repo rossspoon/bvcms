@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Areas.Main.Models;
+using CmsWeb.Areas.Manage.Controllers;
 using UtilityExtensions;
 using CmsData;
 using Elmah;
@@ -24,7 +25,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				{
 					ViewBag.queryID = id;
 					ViewBag.parents = parents ?? false;
-					return View("SelectTemplate", new EmailTemplates());
+					return View("SelectTemplate", new EmailTemplatesModel());
 				}
 				else
 				{
@@ -62,6 +63,39 @@ namespace CmsWeb.Areas.Main.Controllers
 				ViewData["parentsof"] = "with ParentsOf option";
 
 			return View(me);
+		}
+
+		[HttpPost]
+		[ValidateInput(false)]
+		public ActionResult SaveDraft(int QBId, bool wantParents, int saveid, string name, string subject, string body, int roleid)
+		{
+			Content content;
+
+			if (saveid > 0) content = DbUtil.ContentFromID(saveid);
+			else
+			{
+				content = new Content();
+				content.Name = name;
+				content.TypeID = DisplayController.TYPE_SAVED_DRAFT;
+				content.RoleID = roleid;
+			}
+						
+			content.Title = subject;
+			content.Body = body;
+
+			if( saveid == 0 ) DbUtil.Db.Contents.InsertOnSubmit(content);
+			DbUtil.Db.SubmitChanges();
+
+			var m = new MassEmailer(QBId, wantParents);
+			m.CmsHost = DbUtil.Db.CmsHost;
+			m.Host = Util.Host;
+			m.Subject = subject;
+
+			System.Diagnostics.Debug.Print("Template ID: " + content.Id);
+
+			ViewBag.parents = wantParents;
+			ViewBag.templateID = content.Id;
+			return View("Compose", m);
 		}
 
 		[HttpPost]
