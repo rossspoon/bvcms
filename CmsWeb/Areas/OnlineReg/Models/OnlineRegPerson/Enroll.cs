@@ -103,12 +103,12 @@ namespace CmsWeb.Models
 				foreach (var op in setting.Dropdown2)
 					om.RemoveFromGroup(DbUtil.Db, op.SmallGroup);
 				if (setting.Dropdown2.Count > 0)
-					om.AddToGroup(DbUtil.Db, option2);
+					AddToSmallGroup(Dropdown2ItemChosen(), om);
 
 				foreach (var op in setting.Dropdown3)
 					om.RemoveFromGroup(DbUtil.Db, op.SmallGroup);
 				if (setting.Dropdown3.Count > 0)
-					om.AddToGroup(DbUtil.Db, option3);
+					AddToSmallGroup(Dropdown3ItemChosen(), om);
 
 				foreach (var ag in setting.AgeGroups)
 					om.RemoveFromGroup(DbUtil.Db, ag.SmallGroup);

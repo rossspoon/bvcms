@@ -61,12 +61,12 @@
         { 
             <a href="/OrgGroups/Index/@Model.OrganizationId">Group Member Management</a>
         }
-        <a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank">
-            Recent Attendance Report</a> <a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId">
-                Attendance Percentages</a> <a href="/OrgContent/Index/@o.OrganizationId" target="_blank">
-                    Members Only Page</a> <a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId">
-                        Volunteer Calendar</a> <a href="/RegSetting/Index/@o.OrganizationId">View Registration
-                            Document</a> <a id="tryreg" href="#">Try Registration</a>
+		<a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank"> Recent Attendance Report</a> 
+		<a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId"> Attendance Percentages</a> 
+		<a href="/OrgContent/Index/@o.OrganizationId" target="_blank"> Members Only Page</a> 
+		<a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId"> Volunteer Calendar</a> 
+		<a href="/RegSetting/Index/@o.OrganizationId">View Registration Document</a> 
+		<a id="tryreg" href="#">Try Registration</a> 
         <a href="/Organization/VoteTag/@o.OrganizationId" target="_blank">View VoteTags</a>
         @if (User.IsInRole("Edit"))
         {

@@ -1048,7 +1048,7 @@ namespace UtilityExtensions
 				return serverUrl;
 			var newUrl = ResolveUrl(serverUrl);
 			var originalUri = HttpContext.Current.Request.Url;
-			newUrl = (forceHttps ? "https" : originalUri.Scheme) +
+			newUrl = (forceHttps ? "https" : Scheme()) +
 					 "://" + originalUri.Authority + newUrl;
 			return newUrl;
 		}
@@ -1059,7 +1059,15 @@ namespace UtilityExtensions
 		public static string ServerLink(string path)
 		{
 			var Request = HttpContext.Current.Request;
-			return Request.Url.Scheme + "://" + Request.Url.Authority + path;
+			return Scheme() + "://" + Request.Url.Authority + path;
+		}
+		public static string Scheme()
+		{
+			var Request = HttpContext.Current.Request;
+			var scheme = Request.Url.Scheme;
+			if (Request.Headers["X-Forwarded-Proto"] == "https")
+				scheme = "https";
+			return scheme;
 		}
 		public static string ToSuitableId(this string s)
 		{

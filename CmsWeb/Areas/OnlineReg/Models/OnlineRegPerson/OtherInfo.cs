@@ -91,11 +91,11 @@ namespace CmsWeb.Models
         }
         public RegSettings.MenuItem Dropdown2ItemChosen()
         {
-            return setting.Dropdown2.SingleOrDefault(i => i.SmallGroup == option);
+            return setting.Dropdown2.SingleOrDefault(i => i.SmallGroup == option2);
         }
         public RegSettings.MenuItem Dropdown3ItemChosen()
         {
-            return setting.Dropdown3.SingleOrDefault(i => i.SmallGroup == option);
+            return setting.Dropdown3.SingleOrDefault(i => i.SmallGroup == option3);
         }
         private List<string> _GroupTags;
         public List<string> GroupTags
