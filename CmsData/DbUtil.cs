@@ -151,6 +151,15 @@ namespace CmsData
 			return DbUtil.Db.Contents.SingleOrDefault(c => c.Id == id);
 		}
 
+		public static void ContentDeleteFromID(int id)
+		{
+			if (id == 0) return;
+
+			Content cDelete = ContentFromID(id);
+			DbUtil.Db.Contents.DeleteOnSubmit(cDelete);
+			DbUtil.Db.SubmitChanges();
+		}
+
 		public static string Content(string name, string def)
 		{
 			var content = DbUtil.Db.Contents.SingleOrDefault(c => c.Name == name);

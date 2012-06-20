@@ -156,6 +156,11 @@ namespace CmsWeb.Areas.Main.Controllers
 					Db.SubmitChanges();
 				}
 			});
+			string keepdraft = Request["keepdraft"];
+			int saveid = int.Parse( Request["saveid"] );
+
+			System.Diagnostics.Debug.Print("Keep: " + keepdraft + " - Save ID: " + saveid);
+			if (keepdraft != "on" && saveid > 0) DbUtil.ContentDeleteFromID(saveid);
 			return Json(new { id = id });
 		}
 		[HttpPost]
