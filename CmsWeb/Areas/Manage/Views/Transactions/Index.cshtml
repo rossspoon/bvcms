@@ -27,7 +27,12 @@
 	<tr><td align="right">Name:</td>
 		<td>@Html.TextBox("name")</td>
 		<td></td>
-        <td>Use Batch Dates: @Html.CheckBox("usebatchdates")</td>
+		<td>
+@if (Model.isSage)
+{
+        	@:Use Batch Dates: @Html.CheckBox("usebatchdates")
+}
+		</td>
     </tr>
 	<tr><td align="right">&gt; Amount:</td>
 		<td>@Html.TextBox("gtamount")</td>
