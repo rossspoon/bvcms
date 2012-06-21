@@ -21,7 +21,7 @@ namespace CmsWeb.Models
 
 		public VolunteerModel()
 		{
-			
+
 		}
 
 		private Organization _org;
@@ -63,15 +63,38 @@ namespace CmsWeb.Models
 				   select g.ToList();
 		}
 
-		public List<DateTime> Commitments()
+		//		public List<DateTime> Commitments()
+		//		{
+		//			return (from a in DbUtil.Db.Attends
+		//					where a.OrganizationId == OrgId
+		//					where a.MeetingDate >= Sunday
+		//					where a.MeetingDate <= EndDt
+		//					where a.PeopleId == PeopleId
+		//					where a.Registered == true
+		//					select a.MeetingDate).ToList();
+		//		}
+
+		public class DateInfo
+		{
+			public DateTime MeetingDate { get; set; }
+			public int count { get; set; }
+			public bool iscommitted { get; set; }
+		}
+
+		public List<DateInfo> Meetings()
 		{
 			return (from a in DbUtil.Db.Attends
 					where a.OrganizationId == OrgId
 					where a.MeetingDate >= Sunday
 					where a.MeetingDate <= EndDt
-					where a.PeopleId == PeopleId
 					where a.Registered == true
-					select a.MeetingDate).ToList();
+					group a by a.MeetingDate into g
+					select new DateInfo()
+					{
+						MeetingDate = g.Key,
+						count = g.Count(),
+						iscommitted = g.Select(aa => aa.PeopleId).Contains(PeopleId)
+					}).ToList();
 		}
 
 		private DateTime? _endDt;
@@ -102,7 +125,7 @@ namespace CmsWeb.Models
 					var dt = Org.FirstMeetingDate ?? DateTime.MinValue;
 					if (dt == DateTime.MinValue || dt < DateTime.Today)
 						dt = DateTime.Today;
-					_sunday = dt.AddDays(-(int) dt.DayOfWeek);
+					_sunday = dt.AddDays(-(int)dt.DayOfWeek);
 				}
 				return _sunday.Value;
 			}
@@ -112,7 +135,7 @@ namespace CmsWeb.Models
 		{
 			var list = new List<Slot>();
 			var sunday = Sunday;
-			var commitments = Commitments();
+			var meetings = Meetings();
 			for (; sunday <= EndDt; sunday = sunday.AddDays(7))
 			{
 				var dt = sunday;
@@ -120,14 +143,16 @@ namespace CmsWeb.Models
 					var q = from ts in Regsettings.TimeSlots
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
+							let meeting = meetings.SingleOrDefault(cc => cc.MeetingDate == time)
 							select new Slot()
 									{
-										Checked = commitments.Contains(time),
+										Checked = meeting != null && meeting.iscommitted,
 										Time = time,
 										Sunday = dt,
 										Month = dt.Month,
 										Week = dt.WeekOfMonth(),
 										Year = dt.Year,
+										Full = meeting != null && meeting.count >= ts.Limit,
 										Disabled = time < DateTime.Now
 									};
 					list.AddRange(q);
@@ -143,6 +168,7 @@ namespace CmsWeb.Models
 			public int Year { get; set; }
 			public int Month { get; set; }
 			public int Week { get; set; }
+			public bool Full { get; set; }
 			public bool Checked { get; set; }
 			public bool Disabled { get; set; }
 			public string CHECKED
@@ -158,7 +184,9 @@ namespace CmsWeb.Models
 
 		public void UpdateCommitments()
 		{
-			var commitments = Commitments();
+			var commitments = (from m in Meetings()
+							   where m.iscommitted
+							   select m.MeetingDate).ToList();
 
 			if (Commit == null)
 				Commit = new DateTime[] { };

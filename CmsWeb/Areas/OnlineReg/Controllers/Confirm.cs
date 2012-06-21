@@ -219,11 +219,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId)),
 					p.setting.Subject, sb.ToString(),
 					Util.EmailAddressListFromString(p.person.FromEmail), 0, p.PeopleId);
-				Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(p.person.FromEmail),
+				DbUtil.Db.Email(p.person.FromEmail, DbUtil.Db.StaffPeopleForOrg(p.org.OrganizationId),
 					"online giving contribution received",
-					"see contribution records for {0} ({1})".Fmt(p.person.Name, p.PeopleId),
-					Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId)),
-					0, p.PeopleId);
+					"see contribution records for {0} ({1})".Fmt(p.person.Name, p.PeopleId));
 				if (p.CreatingAccount == true)
 					p.CreateAccount();
 			}
