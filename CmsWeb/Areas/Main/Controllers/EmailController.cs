@@ -157,7 +157,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				}
 			});
 			string keepdraft = Request["keepdraft"];
-			int saveid = int.Parse( Request["saveid"] );
+			int saveid = Request["saveid"].ToInt();
 
 			System.Diagnostics.Debug.Print("Keep: " + keepdraft + " - Save ID: " + saveid);
 			if (keepdraft != "on" && saveid > 0) DbUtil.ContentDeleteFromID(saveid);
