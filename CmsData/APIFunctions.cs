@@ -350,7 +350,10 @@ class LoginInfo(object):
                          username = i1.username,
                          lastactive = i1.lastactive.ToString2("s"),
                          roles = string.Join(",", i1.roles),
+#if DEBUG
+#else
 						 QueryBits = (from qb in QueryBits(i1.PeopleId.Value) select qb).ToList()
+#endif
                      };
             return q2;
         }

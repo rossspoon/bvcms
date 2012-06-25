@@ -480,6 +480,9 @@
     <Field Name="HasPeopleExtraField" Title="HasExtraValueField" Type="StringEqual">
       Has an extra value field with this name
     </Field>
+    <Field Name="HasOptoutsForEmail" Title="Has Email Optouts for address" Type="StringEqual">
+      Leave value blank for any optout
+    </Field>
     <Field Name="IsCurrentPerson" Title="Is Current Person" Type="Bit" DataValueField="IdCode">
       Selects the last person that was displayed on the Person screen. (used internally, but you can too if you find a need for it)
     </Field>

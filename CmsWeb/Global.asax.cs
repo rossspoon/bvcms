@@ -82,18 +82,13 @@ namespace CmsWeb
             Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
 			Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Util.SessionStarting = true;
+			
         }
-        //protected void Application_BeginRequest(object sender, EventArgs e)
-        //{
-        //    if (DbUtil.Db.Setting("disabled", "false") == "true")
-        //    {
-        //        if (Request.Url.LocalPath == "/Errors/ClearCache.htm")
-        //            HttpRuntime.Cache.Remove(DbUtil.Db.Host + "Setting");
-        //        const string sitedisabled = "/Errors/SiteDisabled.htm";
-        //        if (Request.Url.LocalPath != sitedisabled)
-        //            Response.Redirect(sitedisabled);
-        //    }
-        //}
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+//			Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
+//			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB"); 
+        }
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)

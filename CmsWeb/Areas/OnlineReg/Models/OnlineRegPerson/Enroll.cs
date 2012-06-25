@@ -242,6 +242,7 @@ namespace CmsWeb.Models
 		{
 			if (PythonEvents != null)
 				PythonEvents.instance.AddToSmallGroup(g.SmallGroup, om);
+			om.AddToGroup(DbUtil.Db, g.SmallGroup);
 			if (g.MeetingTime.HasValue)
 				Attend.MarkRegistered(DbUtil.Db, om.OrganizationId, om.PeopleId, g.MeetingTime.Value, true);
 		}

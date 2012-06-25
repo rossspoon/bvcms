@@ -30,34 +30,15 @@
             </td>
         </tr>
         <tr>
-            <td>
-                Field
-            </td>
-            <td>
-                Use
-            </td>
-            <td>
-                Value
-            </td>
-            <td>
-                Use
-            </td>
-            <td>
-                Value
-            </td>
-            <td>
-                Use
-            </td>
-            <td>
-                Value
-            </td>
+			<td> Field </td> 
+            <td> Use </td> <td> Value </td>
+            <td> Use </td> <td> Value </td>
+            <td> Use </td> <td> Value </td>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>
-                PeopleId
-            </td>
+            <td> PeopleId </td>
             <td><input id="usefrom" name="useall" type="radio" value="0">
             </td>
             <td>
@@ -78,46 +59,44 @@
             </td>
         </tr>
         <tr>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td style="color: Red">@(Model.pi[0].FamilyId == Model.pi[1].FamilyId ? "Same Family" : "")
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
+            <td> </td>
+            <td> </td>
+            <td style="color: Red">@(Model.pi[0].hasotherfamily ? "Is Member" : "") </td>
+            <td> </td>
+            <td style="color: Red">@(Model.pi[1].hasotherfamily ? "Is Member" : "") </td>
+            <td> </td>
         </tr>
         <tr>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td style="color: Red">@(Model.pi[0].hasotherfamily ? "Has Family" : "")
-            </td>
-            <td>
-            </td>
-            <td style="color: Red">@(Model.pi[1].hasotherfamily ? "Has Family" : "")
-            </td>
-            <td>
-            </td>
+            <td> </td>
+            <td> </td>
+            <td style="color: Red">@(Model.pi[0].FamilyId == Model.pi[1].FamilyId ? "Same Family" : "") </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
         </tr>
         <tr>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td style="color: Red">@(Model.pi[0].hasrelations ? "Has Relations" : "")
-            </td>
-            <td>
-            </td>
-            <td style="color: Red">@(Model.pi[1].hasrelations ? "Has Relations" : "")
-            </td>
-            <td>
-            </td>
+            <td> </td>
+            <td> </td>
+            <td style="color: Red">@(Model.pi[0].FamilyId == Model.pi[1].FamilyId ? "Same Family" : "") </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td style="color: Red">@(Model.pi[0].hasotherfamily ? "Has Family" : "") </td>
+            <td> </td>
+            <td style="color: Red">@(Model.pi[1].hasotherfamily ? "Has Family" : "") </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td style="color: Red">@(Model.pi[0].hasrelations ? "Has Relations" : "") </td>
+            <td> </td>
+            <td style="color: Red">@(Model.pi[1].hasrelations ? "Has Relations" : "") </td>
+            <td> </td>
         </tr>
         <tr>
             <td>
@@ -389,6 +368,23 @@
             <td>@Html.RadioButtonFor(m => m.UseWorkPhone, 2)
             </td>
             <td>@Html.TextBoxFor(m => m.pi[2].WorkPhone)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Campus
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCampusId, 0)
+            </td>
+            <td>@Model.pi[0].Campus @Html.HiddenFor(m => m.pi[0].Campus)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCampusId, 1)
+            </td>
+            <td>@Model.pi[1].Campus @Html.HiddenFor(m => m.pi[1].Campus)
+            </td>
+            <td>@Html.RadioButtonFor(m => m.UseCampusId, 2)
+            </td>
+            <td>@Html.DropDownListFor(m => m.pi[2].CampusId, Model.CampusList())
             </td>
         </tr>
         <tr>

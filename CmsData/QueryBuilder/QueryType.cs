@@ -62,6 +62,7 @@ namespace CmsData
         Group,
         HasBalanceInCurrentOrg,
         HasCurrentTag,
+		HasOptoutsForEmail,
         HasLowerName,
         HasMyTag,
         HasPicture,

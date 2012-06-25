@@ -221,6 +221,10 @@ namespace CmsData
                     return Expressions.HasTaskWithName(parm,
                                 CompType,
                                 c.TextValue);
+                case QueryType.HasOptoutsForEmail:
+                    return Expressions.HasEmailOptout(parm,
+                                CompType,
+                                c.TextValue);
                 // I -----------------
                 case QueryType.IsCurrentPerson:
                     return Expressions.IsCurrentPerson(Db, parm,

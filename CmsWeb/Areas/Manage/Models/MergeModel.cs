@@ -22,6 +22,7 @@ namespace CmsWeb.Models
         public int UseLastName { get; set; }
         public int UseNickName { get; set; }
         public int UseAltName { get; set; }
+        public int UseCampusId { get; set; }
         public int UseGenderId { get; set; }
         public int UseMaritalStatusId { get; set; }
         public int UseDOB { get; set; }
@@ -55,6 +56,12 @@ namespace CmsWeb.Models
             public string NickName { get; set; }
             public string AltName { get; set; }
             public string Maiden { get; set; }
+            public int? CampusId { get; set; }
+            public string Campus
+            {
+                get { return cvc.AllCampuses0().Single(gg => gg.Id == (CampusId ?? 0)).Value; }
+                set { GenderId = cvc.AllCampuses0().Single(gg => gg.Value == value).Id; }
+            }
             public int GenderId { get; set; }
             public string Gender
             {
@@ -84,6 +91,7 @@ namespace CmsWeb.Models
             public DateTime Created { get; set; }
             public int FamilyId { get; set; }
             public bool notdup { get; set; }
+            public bool ismember { get; set; }
             public bool hasotherfamily { get; set; }
             public bool hasrelations { get; set; }
             public bool hasinvolvements { get; set; }
@@ -110,6 +118,7 @@ namespace CmsWeb.Models
                         AltName = p.AltName,
                         Maiden = p.MaidenName,
                         GenderId = p.GenderId,
+                        CampusId = p.CampusId,
                         MaritalStatusId = p.MaritalStatusId,
                         DOB = p.DOB,
                         CellPhone = p.CellPhone,
@@ -130,7 +139,8 @@ namespace CmsWeb.Models
                         notdup = notdup,
                         hasinvolvements = oinvolvements > 0,
                         hasotherfamily = ofamily > 1,
-                        hasrelations = orelations > 0
+                        hasrelations = orelations > 0,
+						ismember = p.MemberStatusId == 10
                     };
             pi = q.ToList();
             pi.Add(new BasicInfo());
@@ -142,6 +152,7 @@ namespace CmsWeb.Models
             UseAltName = 1;
             UseMaiden = 1;
             UseGenderId = 1;
+            UseCampusId = 1;
             UseMaritalStatusId = 1;
             UseDOB = 1;
             UseCellPhone = 1;
@@ -179,6 +190,7 @@ namespace CmsWeb.Models
             target.UpdateValue(psb, "AltName", pi[UseAltName].AltName);
             target.UpdateValue(psb, "MaidenName", pi[UseMaiden].Maiden);
             target.UpdateValue(psb, "GenderId", pi[UseGenderId].GenderId);
+            target.UpdateValue(psb, "CampusId", pi[UseCampusId].CampusId);
             target.UpdateValue(psb, "MaritalStatusId", pi[UseMaritalStatusId].MaritalStatusId);
             target.UpdateValue(psb, "DOB", pi[UseDOB].DOB);
             target.UpdateValue(psb, "CellPhone", pi[UseCellPhone].CellPhone.GetDigits());
@@ -216,6 +228,11 @@ namespace CmsWeb.Models
         {
             var cv = new CMSPresenter.CodeValueController();
             return new SelectList(cv.MaritalStatusCodes(), "Id", "Value");
+        }
+        public SelectList CampusList()
+        {
+            var cv = new CMSPresenter.CodeValueController();
+            return new SelectList(cv.AllCampuses0(), "Id", "Value");
         }
     }
 }

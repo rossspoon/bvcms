@@ -55,7 +55,7 @@
      var amtdue = @Model.AmountDue(DbUtil.Db);
     <tr>
         <th align='right'>Amount:</th>
-        <td>@(Model.Amount.HasValue ? Model.Amount.Value.ToString("N") : "")</td>
+        <td>@Model.Amount.ToString2("N")</td>
     </tr>
     <tr>
         <th align="right" valign="top">AmountDue:</th>

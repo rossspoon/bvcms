@@ -69,7 +69,8 @@ namespace CmsData
 			SubmitChanges();
 			SendPersonEmail(CmsHost, emailqueue.Id, p.PeopleId);
 		}
-		private List<MailAddress> PersonListToMailAddressList(IEnumerable<Person> list)
+
+		public List<MailAddress> PersonListToMailAddressList(IEnumerable<Person> list)
 		{
 			var aa = new List<MailAddress>();
 			foreach (var p in list)

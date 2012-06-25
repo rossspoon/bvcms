@@ -459,15 +459,6 @@ namespace CmsData
 			CompareType op,
 			string value)
 		{
-			//if (!value.HasValue())
-			//    return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
-
-			//Expression<Func<Person, bool>> pred = p =>
-			//    p.PeopleExtras.Any(e =>
-			//        e.Field == field && e.Data.Contains(value));
-			//Expression expr = Expression.Invoke(pred, parm);
-			//return Compare(left, op, expr);
-
 			Expression<Func<Person, string>> pred = p =>
 				p.PeopleExtras.Where(ff => ff.Field == field).Select(ff => ff.Data).SingleOrDefault();
 			Expression left = Expression.Invoke(pred, parm);
@@ -521,6 +512,18 @@ namespace CmsData
 				var right = Expression.Convert(Expression.Constant(value), left.Type);
 				return Compare(left, op, right);
 			}
+		}
+		internal static Expression HasEmailOptout(
+			ParameterExpression parm,
+			CompareType op,
+			string email)
+		{
+			Expression<Func<Person, bool>> pred = p =>
+				(from oo in p.EmailOptOuts
+				 where email == null || email == "" || oo.FromEmail == email
+				 select oo).Any();
+			Expression expr = Expression.Invoke(pred, parm);
+			return expr;
 		}
 		internal static Expression RecentAttendCount(
 			ParameterExpression parm,
