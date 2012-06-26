@@ -366,29 +366,38 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
         }
-        class ttt
+        public class ttt
         {
-            public string label { get; set; }
-            public string name { get; set; }
+        	public bool Attended { get; set; }
+        	public string SmallGroup { get; set; }
+        	public string Name { get; set; }
         }
-        public DataGridResult AttendanceByGroups(int id)
+        public ActionResult AttendanceByGroups(int id)
         {
             var q = from a in DbUtil.Db.Attends
                     where a.MeetingId == id
-                    where a.AttendanceFlag == true
-                    join om in DbUtil.Db.OrgMemMemTags on new { a.OrganizationId, a.PeopleId } equals new { OrganizationId = om.OrgId, om.PeopleId }
-                    select new { a.Person.Name, SmallGroup = om.MemberTag.Name };
-            var j = from i in q
-                    group i.Name by i.SmallGroup into g
-                    select new { g.Key, g };
-            var list = new List<ttt>();
-            foreach (var i in j)
-            {
-                list.Add(new ttt { label = "SmallGroup", name = "{0} ({1})".Fmt(i.Key, i.g.Count()) });
-                foreach (var name in i.g)
-                    list.Add(new ttt { label = "", name = name });
-            }
-            return new DataGridResult(list);
+                    join om in DbUtil.Db.OrgMemMemTags 
+						on new { a.OrganizationId, a.PeopleId } 
+						equals new { OrganizationId = om.OrgId, om.PeopleId }
+                    select new { a.Person.Name, SmallGroup = om.MemberTag.Name, Attended = a.AttendanceFlag };
+			var j = from i in q
+					group i by new { i.Attended, i.SmallGroup } into g
+					from i in g
+					orderby i.Attended descending, i.SmallGroup, i.Name
+					select new ttt()
+					{ 
+						Attended = i.Attended, 
+						SmallGroup = i.SmallGroup, 
+						Name = i.Name 
+					};
+//            var list = new List<ttt>();
+//            foreach (var i in j)
+//            {
+//                list.Add(new ttt { label = "SmallGroup", name = "{0} ({1})".Fmt(i.Key, i.g.Count()) });
+//                foreach (var name in i.g)
+//                    list.Add(new ttt { label = "", name = name });
+//            }
+			return View(j);
         }
         public ActionResult NewExtraValue(int id, string field, string value, bool multiline)
         {

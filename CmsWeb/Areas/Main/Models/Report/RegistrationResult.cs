@@ -25,62 +25,63 @@ using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
-    public class RegistrationResult : ActionResult
-    {
-        private const float FLOAT_t1SpacingAfter = 20f;
-        private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
-        private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
-        private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
-        private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8, new GrayColor(50));
-        private Font xsmallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7, new GrayColor(50));
-        private PageEvent pageEvents = new PageEvent();
-        private Document doc;
-        private DateTime dt;
-        private PdfContentByte dc;
+	public class RegistrationResult : ActionResult
+	{
+		private const float FLOAT_t1SpacingAfter = 20f;
+		private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
+		private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
+		private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
+		private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8, new GrayColor(50));
+		private Font xsmallfont = FontFactory.GetFont(FontFactory.HELVETICA, 7, new GrayColor(50));
+		private PageEvent pageEvents = new PageEvent();
+		private Document doc;
+		private DateTime dt;
+		private PdfContentByte dc;
 
-        private int? qid;
-        private int? oid;
-        public RegistrationResult(int? id, int? oid)
-        {
-            qid = id;
-            this.oid = oid;
-        }
+		private int? qid;
+		private int? oid;
+		public RegistrationResult(int? id, int? oid)
+		{
+			qid = id;
+			this.oid = oid;
+		}
 
-        private static void SetDefaults(PdfPTable t)
-        {
-            t.DefaultCell.SetLeading(2.0f, 1f);
-            t.DefaultCell.Border = PdfPCell.NO_BORDER;
-            t.LockedWidth = false;
-        }
-        public override void ExecuteResult(ControllerContext context)
-        {
-            var Response = context.HttpContext.Response;
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "filename=foo.pdf");
+		private static void SetDefaults(PdfPTable t)
+		{
+			t.DefaultCell.SetLeading(2.0f, 1f);
+			t.DefaultCell.Border = PdfPCell.NO_BORDER;
+			t.LockedWidth = false;
+		}
+		public override void ExecuteResult(ControllerContext context)
+		{
+			var Response = context.HttpContext.Response;
+			Response.ContentType = "application/pdf";
+			Response.AddHeader("content-disposition", "filename=foo.pdf");
 
-            dt = Util.Now;
+			dt = Util.Now;
 
-            doc = new Document(PageSize.LETTER, 72, 72, 72, 72);
-            var w = PdfWriter.GetInstance(doc, Response.OutputStream);
-            w.PageEvent = pageEvents;
-            doc.Open();
-            dc = w.DirectContent;
-            
-            if (qid.HasValue) // print using a query
-            {
-                pageEvents.StartPageSet("Registration Report: {0:d}".Fmt(dt));
-                var q2 = DbUtil.Db.PeopleQuery(qid.Value);
-                var q = from p in q2
-                        orderby p.Name2
-                        select new
-                        {
-                            p,
-                            h = p.Family.HeadOfHousehold,
-                            s = p.Family.HeadOfHouseholdSpouse,
-                            m = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == oid),
-                            o = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == oid).Organization
-                        };
-				if(!q.Any())
+			doc = new Document(PageSize.LETTER, 72, 72, 72, 72);
+			var w = PdfWriter.GetInstance(doc, Response.OutputStream);
+			w.PageEvent = pageEvents;
+			doc.Open();
+			dc = w.DirectContent;
+
+			if (qid.HasValue) // print using a query
+			{
+				var re = new Regex("((?<label>.*?:) (?<value>.*$))|(?<value0>.*$)", RegexOptions.Multiline);
+				pageEvents.StartPageSet("Registration Report: {0:d}".Fmt(dt));
+				var q2 = DbUtil.Db.PeopleQuery(qid.Value);
+				var q = from p in q2
+						orderby p.Name2
+						select new
+						{
+							p,
+							h = p.Family.HeadOfHousehold,
+							s = p.Family.HeadOfHouseholdSpouse,
+							m = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == oid),
+							o = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == oid).Organization
+						};
+				if (!q.Any())
 					doc.Add(new Phrase("no data"));
 				else
 					foreach (var i in q)
@@ -105,8 +106,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 
 						var t2 = new PdfPTable(new float[] { 35, 65 });
 						SetDefaults(t2);
-						if (i.h != null 
-							&& i.h.PeopleId != i.p.PeopleId 
+						if (i.h != null
+							&& i.h.PeopleId != i.p.PeopleId
 							&& i.h.PositionInFamilyId == PositionInFamily.PrimaryAdult)
 						{
 							t2.AddCell(i.h.Name);
@@ -129,7 +130,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 						}
 						t2.AddCell(" ");
 						t2.AddCell(" ");
-						
+
 						var rr = GetRecRegOrTemp(i.p);
 
 						t2.AddCell("Date of Birth");
@@ -191,6 +192,27 @@ namespace CmsWeb.Areas.Main.Models.Report
 							t5.AddCell("Father's Name:");
 							t5.AddCell(rr.Fname);
 						}
+						if (i.m != null && i.m.UserData != null)
+						{
+							var m = re.Match(i.m.UserData);
+							while (m.Success)
+							{
+								var value0 = m.Groups["value0"];
+								var value = m.Groups["value"];
+								var label = m.Groups["label"];
+								if (value0.Success)
+								{
+									t5.AddCell("");
+									t5.AddCell(value0.Value);
+								}
+								else
+								{
+									t5.AddCell(label.Value);
+									t5.AddCell(value.Value);
+								}
+								m = m.NextMatch();
+							}
+						}
 						doc.Add(t5);
 						if (i.m != null)
 						{
@@ -199,101 +221,101 @@ namespace CmsWeb.Areas.Main.Models.Report
 						}
 						doc.Add(Chunk.NEXTPAGE);
 					}
-            }
+			}
 			else
 				doc.Add(new Phrase("no data"));
-            pageEvents.EndPageSet();
-            doc.Close();
-        }
+			pageEvents.EndPageSet();
+			doc.Close();
+		}
 
-        private RecReg GetRecRegOrTemp(Person p)
-        {
-            var rr = p.RecRegs.SingleOrDefault();
-            if (rr == null)
-                rr = new RecReg();
-            return rr;
-        }
+		private RecReg GetRecRegOrTemp(Person p)
+		{
+			var rr = p.RecRegs.SingleOrDefault();
+			if (rr == null)
+				rr = new RecReg();
+			return rr;
+		}
 
-        class PageEvent : PdfPageEventHelper
-        {
-            private PdfTemplate npages;
-            private PdfWriter writer;
-            private Document document;
-            private PdfContentByte dc;
-            private BaseFont font;
-            private string HeadText;
+		class PageEvent : PdfPageEventHelper
+		{
+			private PdfTemplate npages;
+			private PdfWriter writer;
+			private Document document;
+			private PdfContentByte dc;
+			private BaseFont font;
+			private string HeadText;
 
-            public override void OnOpenDocument(PdfWriter writer, Document document)
-            {
-                this.writer = writer;
-                this.document = document;
-                base.OnOpenDocument(writer, document);
-                font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-                dc = writer.DirectContent;
-            }
-            public void EndPageSet()
-            {
-                if (npages == null)
-                    return;
-                npages.BeginText();
-                npages.SetFontAndSize(font, 8);
-                npages.ShowText((writer.PageNumber + 1).ToString());
-                npages.EndText();
-            }
-            public void StartPageSet(string header1)
-            {
-                EndPageSet();
-                document.NewPage();
-                document.ResetPageCount();
-                this.HeadText = header1;
-                npages = dc.CreateTemplate(50, 50);
-            }
-            public override void OnEndPage(PdfWriter writer, Document document)
-            {
-                base.OnEndPage(writer, document);
+			public override void OnOpenDocument(PdfWriter writer, Document document)
+			{
+				this.writer = writer;
+				this.document = document;
+				base.OnOpenDocument(writer, document);
+				font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+				dc = writer.DirectContent;
+			}
+			public void EndPageSet()
+			{
+				if (npages == null)
+					return;
+				npages.BeginText();
+				npages.SetFontAndSize(font, 8);
+				npages.ShowText((writer.PageNumber + 1).ToString());
+				npages.EndText();
+			}
+			public void StartPageSet(string header1)
+			{
+				EndPageSet();
+				document.NewPage();
+				document.ResetPageCount();
+				this.HeadText = header1;
+				npages = dc.CreateTemplate(50, 50);
+			}
+			public override void OnEndPage(PdfWriter writer, Document document)
+			{
+				base.OnEndPage(writer, document);
 
-                string text;
-                float len;
+				string text;
+				float len;
 
-                //---Header left
-                text = HeadText;
-                const float HeadFontSize = 11f;
-                len = font.GetWidthPoint(text, HeadFontSize);
-                dc.BeginText();
-                dc.SetFontAndSize(font, HeadFontSize);
-                dc.SetTextMatrix(30, document.PageSize.Height - 30);
-                dc.ShowText(text);
-                dc.EndText();
+				//---Header left
+				text = HeadText;
+				const float HeadFontSize = 11f;
+				len = font.GetWidthPoint(text, HeadFontSize);
+				dc.BeginText();
+				dc.SetFontAndSize(font, HeadFontSize);
+				dc.SetTextMatrix(30, document.PageSize.Height - 30);
+				dc.ShowText(text);
+				dc.EndText();
 
-                //---Column 1
-                text = "Page " + (writer.PageNumber + 1) + " of ";
-                len = font.GetWidthPoint(text, 8);
-                dc.BeginText();
-                dc.SetFontAndSize(font, 8);
-                dc.SetTextMatrix(30, 30);
-                dc.ShowText(text);
-                dc.EndText();
-                dc.AddTemplate(npages, 30 + len, 30);
+				//---Column 1
+				text = "Page " + (writer.PageNumber + 1) + " of ";
+				len = font.GetWidthPoint(text, 8);
+				dc.BeginText();
+				dc.SetFontAndSize(font, 8);
+				dc.SetTextMatrix(30, 30);
+				dc.ShowText(text);
+				dc.EndText();
+				dc.AddTemplate(npages, 30 + len, 30);
 
-                //---Column 2
-                text = HeadText;
-                len = font.GetWidthPoint(text, 8);
-                dc.BeginText();
-                dc.SetFontAndSize(font, 8);
-                dc.SetTextMatrix(document.PageSize.Width / 2 - len / 2, 30);
-                dc.ShowText(text);
-                dc.EndText();
+				//---Column 2
+				text = HeadText;
+				len = font.GetWidthPoint(text, 8);
+				dc.BeginText();
+				dc.SetFontAndSize(font, 8);
+				dc.SetTextMatrix(document.PageSize.Width / 2 - len / 2, 30);
+				dc.ShowText(text);
+				dc.EndText();
 
-                //---Column 3
-                text = Util.Now.ToShortDateString();
-                len = font.GetWidthPoint(text, 8);
-                dc.BeginText();
-                dc.SetFontAndSize(font, 8);
-                dc.SetTextMatrix(document.PageSize.Width - 30 - len, 30);
-                dc.ShowText(text);
-                dc.EndText();
-            }
-        }
-    }
+				//---Column 3
+				text = Util.Now.ToShortDateString();
+				len = font.GetWidthPoint(text, 8);
+				dc.BeginText();
+				dc.SetFontAndSize(font, 8);
+				dc.SetTextMatrix(document.PageSize.Width - 30 - len, 30);
+				dc.ShowText(text);
+				dc.EndText();
+			}
+		}
+	}
 }
 

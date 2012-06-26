@@ -91,7 +91,7 @@ namespace CmsWeb.Models
             public DateTime Created { get; set; }
             public int FamilyId { get; set; }
             public bool notdup { get; set; }
-            public bool ismember { get; set; }
+            public string MemberStatus { get; set; }
             public bool hasotherfamily { get; set; }
             public bool hasrelations { get; set; }
             public bool hasinvolvements { get; set; }
@@ -140,7 +140,7 @@ namespace CmsWeb.Models
                         hasinvolvements = oinvolvements > 0,
                         hasotherfamily = ofamily > 1,
                         hasrelations = orelations > 0,
-						ismember = p.MemberStatusId == 10
+						MemberStatus = p.MemberStatus.Description
                     };
             pi = q.ToList();
             pi.Add(new BasicInfo());

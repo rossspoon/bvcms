@@ -30,6 +30,8 @@ namespace CmsWeb.Models
                     sb.AppendFormat("W {0}<br/>", _WorkPhone.FmtFone());
                 if (_CellPhone.HasValue())
                     sb.AppendFormat("C {0}<br/>", _CellPhone.FmtFone());
+                if (_Email.HasValue())
+                    sb.AppendFormat("{0}<br/>", _Email);
                 sb.Append("ID# " + _PeopleId);
                 return sb.ToString();
             }
@@ -79,6 +81,11 @@ namespace CmsWeb.Models
         public string CellPhone
         {
             set { _CellPhone = value; }
+        }
+        private string _Email;
+        public string Email
+        {
+            set { _Email = value; }
         }
         private int _PeopleId;
         public int PeopleId
@@ -143,9 +150,10 @@ namespace CmsWeb.Models
                 foreach (var o in _Activities)
                 {
 
-                    sb.Append(o.Name);
+                    sb.AppendFormat("{0} - {1}", o.Name, o.Leader);
                     if (o.Pct.HasValue)
                         sb.AppendFormat(", {0:n1}%", o.Pct.Value);
+					sb.Append("<br/>");
                 }
                 return sb.ToString();
             }

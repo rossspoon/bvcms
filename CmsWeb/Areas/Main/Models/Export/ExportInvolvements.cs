@@ -21,6 +21,7 @@ namespace CmsWeb.Models
         {
             public string Name { get; set; }
             public decimal? Pct { get; set; }
+        	public string Leader { get; set; }
         }
         public static IEnumerable<InvovementInfo> InvolvementList(int queryid)
         {
@@ -42,6 +43,7 @@ namespace CmsWeb.Models
                          HomePhone = p.HomePhone,
                          WorkPhone = p.WorkPhone,
                          CellPhone = p.CellPhone,
+						 Email = p.EmailAddress,
                          DivName = om.Organization.Division.Name,
                          OrgName = om.Organization.OrganizationName,
                          Teacher = p.BFClass.LeaderName,
@@ -57,6 +59,7 @@ namespace CmsWeb.Models
                                       {
                                           Name = m.Organization.OrganizationName,
                                           Pct = m.AttendPct,
+										  Leader = m.Organization.LeaderName
                                       },
 
                          JoinInfo = p.JoinType.Description + " , " + p.JoinDate.ToString().Substring(0, 11),
@@ -187,14 +190,75 @@ namespace CmsWeb.Models
             cmd.Connection.Open();
             return cmd.ExecuteReader();
         }
-        public static IEnumerable OrgMemberList(int queryid, int maximumRows)
+
+    	public class MemberInfoClass
+    	{
+    		public string FirstName { get; set; }
+    		public string LastName { get; set; }
+    		public string Gender { get; set; }
+    		public string Grade { get; set; }
+    		public string ShirtSize { get; set; }
+    		public string Request { get; set; }
+    		public decimal Amount { get; set; }
+    		public decimal AmountPaid { get; set; }
+    		public string Email { get; set; }
+    		public string HomePhone { get; set; }
+    		public string CellPhone { get; set; }
+    		public string WorkPhone { get; set; }
+    		public string Age { get; set; }
+    		public string BirthDate { get; set; }
+    		public string JoinDate { get; set; }
+    		public string MemberStatus { get; set; }
+    		public string School { get; set; }
+    		public string LastAttend { get; set; }
+    		public string AttendPct { get; set; }
+    		public string AttendStr { get; set; }
+    		public string MemberType { get; set; }
+    		public string MemberInfo
+    		{
+    			get 
+				{
+					var sb = new StringBuilder();
+					if (_memberInfoRaw.HasValue())
+						sb.Append(_memberInfoRaw.Replace("\n", "<br/>"));
+					if (_fname.HasValue())
+						sb.AppendFormat("Father: {0}<br/>", _fname);
+					if (_mname.HasValue())
+						sb.AppendFormat("Mother: {0}<br/>", _mname);
+					return sb.ToString();
+				}
+    		}
+
+    		private string _memberInfoRaw;
+    		public string MemberInfoRaw
+    		{
+    			set { _memberInfoRaw = value; }
+    		}
+
+    		public string InactiveDate { get; set; }
+    		public string Medical { get; set; }
+    		public int PeopleId { get; set; }
+    		public string EnrollDate { get; set; }
+    		private string _fname;
+    		public string Fname
+    		{
+    			set { _fname = value; }
+    		}
+
+    		private string _mname;
+    		public string Mname
+    		{
+    			set { _mname = value; }
+    		}
+    	}
+        public static IEnumerable<MemberInfoClass> OrgMemberList(int queryid, int maximumRows)
         {
             var Db = DbUtil.Db;
             var q = Db.PeopleQuery(queryid);
             var q2 = from p in q
                      let om = Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == Util2.CurrentOrgId && om.PeopleId == p.PeopleId)
                      let recreg = p.RecRegs.FirstOrDefault()
-                     select new
+                     select new MemberInfoClass
                      {
                          FirstName = p.PreferredName,
                          LastName = p.LastName,
@@ -218,7 +282,7 @@ namespace CmsWeb.Models
                          AttendPct = om.AttendPct.ToString(),
                          AttendStr = om.AttendStr,
                          MemberType = om.MemberType.Description,
-                         MemberInfo = om.UserData,
+                         MemberInfoRaw = om.UserData,
                          InactiveDate = om.InactiveDate.ToString2("M/d/yy"),
                          Medical = recreg.MedicalDescription,
                          PeopleId = p.PeopleId,

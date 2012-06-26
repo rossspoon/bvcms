@@ -890,9 +890,12 @@
     <Content Include="Content\js\jquery.transpose.min.js" />
     <Content Include="Content\js\jquery.ui.timepicker.js" />
     <Content Include="constants.py" />
+    <Content Include="EmailTemplates\BasicNewsletter.htm" />
+    <Content Include="EmailTemplates\BasicWithFooter.htm" />
     <Content Include="Errors\DatabaseNotFound.aspx" />
     <Content Include="Errors\SiteDisabled.htm" />
     <Content Include="images\arrowdnup.png" />
+    <Content Include="images\deliveredbybvcms.gif" />
     <Content Include="images\draggable-icon.png" />
     <Content Include="images\dropdown.gif" />
     <Content Include="images\linkselect_bkgrd.png" />
@@ -1128,6 +1131,7 @@
     <Content Include="Areas\Manage\Views\Transactions\ReportByDescription.cshtml" />
     <Content Include="Areas\Main\Views\Person\OptoutsGrid.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\PledgeReport.cshtml" />
+    <Content Include="Areas\Main\Views\Meeting\AttendanceByGroups.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />
