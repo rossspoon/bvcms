@@ -33,7 +33,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 
 		public ActionResult Index()
 		{
-			return View( new ContentModel() );
+			return View(new ContentModel());
 		}
 
 		public ActionResult ContentView(string id)
@@ -71,8 +71,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 			content.Body = body;
 			content.RoleID = roleid ?? 0;
 
-			if (content.ThumbID != 0 ) ImageData.Image.UpdateImageFromBits( content.ThumbID, CaptureWebPageBytes(body, 100, 150) );
-			else content.ThumbID = ImageData.Image.NewImageFromBits(CaptureWebPageBytes(body, 100, 150)).Id;
+			if (DbUtil.Db.Setting("RenderEmailTemplate", "false") == "true")
+				if (content.ThumbID != 0) ImageData.Image.UpdateImageFromBits(content.ThumbID, CaptureWebPageBytes(body, 100, 150));
+				else content.ThumbID = ImageData.Image.NewImageFromBits(CaptureWebPageBytes(body, 100, 150)).Id;
 
 			DbUtil.Db.SubmitChanges();
 
@@ -164,7 +165,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 			return Redirect("/Organization/Index/" + id);
 		}
 
-		static byte[] CaptureWebPageBytesP( string body, int width, int height )
+		static byte[] CaptureWebPageBytesP(string body, int width, int height)
 		{
 			byte[] data;
 
@@ -179,7 +180,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 
 				web.Width = web.Document.Body.ScrollRectangle.Width;
 				web.Height = web.Document.Body.ScrollRectangle.Height;
-				
+
 				// a bitmap that we will draw to
 				using (System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(web.Width, web.Height))
 				{
@@ -189,9 +190,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 
 					GraphicsUnit units = GraphicsUnit.Pixel;
 					RectangleF destRect = new RectangleF(0F, 0F, width, height);
-					RectangleF srcRect = new RectangleF(0, 0, web.Width, web.Width * 1.5F );
+					RectangleF srcRect = new RectangleF(0, 0, web.Width, web.Width * 1.5F);
 
-					Bitmap b = new Bitmap( width, height );
+					Bitmap b = new Bitmap(width, height);
 					Graphics g = Graphics.FromImage((Image)b);
 					g.Clear(Color.White);
 					g.InterpolationMode = InterpolationMode.HighQualityBicubic;

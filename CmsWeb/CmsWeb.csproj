@@ -891,7 +891,8 @@
     <Content Include="Content\js\jquery.ui.timepicker.js" />
     <Content Include="constants.py" />
     <Content Include="EmailTemplates\BasicNewsletter.htm" />
-    <Content Include="EmailTemplates\BasicWithFooter.htm" />
+    <Content Include="EmailTemplates\BasicWithHeader.htm" />
+    <Content Include="EmailTemplates\Plain.htm" />
     <Content Include="Errors\DatabaseNotFound.aspx" />
     <Content Include="Errors\SiteDisabled.htm" />
     <Content Include="images\arrowdnup.png" />
@@ -919,6 +920,7 @@
     <Content Include="images\notreq.gif" />
     <Content Include="images\plus1.png" />
     <Content Include="images\plus2.png" />
+    <Content Include="images\sfs_icon_facebook.png" />
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />

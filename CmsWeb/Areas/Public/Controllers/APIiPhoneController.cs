@@ -239,11 +239,6 @@ namespace CmsWeb.Areas.Public.Controllers
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
             if (meeting == null)
             {
-                var acr = (from s in DbUtil.Db.OrgSchedules
-                               where s.OrganizationId == id
-                               where s.SchedTime.Value.TimeOfDay == dt.TimeOfDay
-                               where s.SchedDay == (int)dt.DayOfWeek
-                               select s.AttendCreditId).SingleOrDefault();
                 meeting = new CmsData.Meeting
                 {
                     OrganizationId = id,
@@ -251,10 +246,15 @@ namespace CmsWeb.Areas.Public.Controllers
                     CreatedDate = Util.Now,
                     CreatedBy = u.UserId,
                     GroupMeetingFlag = false,
-                    AttendCreditId = acr,
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
+                var acr = (from s in DbUtil.Db.OrgSchedules
+                               where s.OrganizationId == id
+                               where s.SchedTime.Value.TimeOfDay == dt.TimeOfDay
+                               where s.SchedDay == (int)dt.DayOfWeek
+                               select s.AttendCreditId).SingleOrDefault();
+				meeting.AttendCreditId = acr;
                 DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
                     CMSRoleProvider.provider.GetDevelopers(),
                     "meeting created with iphone on {0}".Fmt(Util.Host),
