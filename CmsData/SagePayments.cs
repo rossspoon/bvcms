@@ -136,6 +136,79 @@ namespace CmsData
 			rg.NextDate = rg.FindNextDate(startwhen.Value);
 			Db.SubmitChanges();
 		}
+		public void storeVault(int PeopleId,
+			string type, string cardnumber, string expires, string cardcode,
+			string routing, string account)
+		{
+			var p = Db.LoadPersonById(PeopleId);
+			var pi = p.PaymentInfo();
+			var wc = new WebClient();
+			wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVault.asmx/";
+			var coll = new NameValueCollection();
+			coll["M_ID"] = login;
+			coll["M_KEY"] = key;
+
+			XElement resp = null;
+			if (type == "C")
+			{
+				coll["CARDNUMBER"] = cardnumber;
+				coll["EXPIRATION_DATE"] = expires;
+
+				if (pi.SageCardGuid == null)
+				{
+					var b = wc.UploadValues("INSERT_CREDIT_CARD_DATA", "POST", coll);
+					var ret = Encoding.ASCII.GetString(b);
+					resp = getResponse(ret);
+					pi.SageCardGuid = Guid.Parse(resp.Element("GUID").Value);
+				}
+				else
+				{
+					coll["GUID"] = pi.SageCardGuid.ToString().Replace("-", "");
+					if (!cardnumber.StartsWith("X"))
+					{
+						var b = wc.UploadValues("UPDATE_CREDIT_CARD_DATA", "POST", coll);
+						var ret = Encoding.ASCII.GetString(b);
+						resp = getResponse(ret);
+					}
+					else
+					{
+						var b = wc.UploadValues("UPDATE_CREDIT_CARD_EXPIRATION_DATE", "POST", coll);
+						var ret = Encoding.ASCII.GetString(b);
+						resp = getResponse(ret);
+					}
+				}
+			}
+			else
+			{
+				coll["ROUTING_NUMBER"] = routing; // 064000020
+				coll["ACCOUNT_NUMBER"] = account; // my account number
+				coll["C_ACCT_TYPE"] = "DDA";
+
+				if (pi.SageBankGuid == null)
+				{
+					var b = wc.UploadValues("INSERT_VIRTUAL_CHECK_DATA", "POST", coll);
+					var ret = Encoding.ASCII.GetString(b);
+					resp = getResponse(ret);
+					pi.SageBankGuid = Guid.Parse(resp.Element("GUID").Value);
+				}
+				else
+				{
+					if (!account.StartsWith("X"))
+					{
+						coll["GUID"] = pi.SageBankGuid.ToString().Replace("-", "");
+						var b = wc.UploadValues("UPDATE_VIRTUAL_CHECK_DATA", "POST", coll);
+						var ret = Encoding.ASCII.GetString(b);
+						resp = getResponse(ret);
+					}
+				}
+			}
+			pi.MaskedAccount = Util.MaskAccount(account);
+			pi.MaskedCard = Util.MaskCC(cardnumber);
+			pi.Ccv = cardcode;
+			pi.Expires = expires;
+			pi.Testing = testing;
+			Db.SubmitChanges();
+		}
 		public void deleteVaultData(int PeopleId)
 		{
 			var p = Db.LoadPersonById(PeopleId);

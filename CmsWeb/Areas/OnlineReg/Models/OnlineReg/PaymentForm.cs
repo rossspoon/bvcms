@@ -29,6 +29,8 @@ namespace CmsWeb.Models
 		public int? OriginalId { get; set; }
 		public bool testing { get; set; }
 		public bool? FinanceOnly { get; set; }
+		public bool? IsLoggedIn { get; set; }
+		public bool? SavePayInfo { get; set; }
 		public bool NoCreditCardsAllowed { get; set; }
 		private bool? _noEChecksAllowed;
 		public bool NoEChecksAllowed
@@ -50,41 +52,6 @@ namespace CmsWeb.Models
 		public string Phone { get; set; }
 		public int? TranId { get; set; }
 
-//		public Transaction CreateTransaction(CMSDataContext Db, OnlineRegModel m = null)
-//		{ 
-//			var ti = new Transaction
-//					 {
-//						 Name = Name,
-//						 Donate = Donate,
-//						 Regfees = AmtToPay,
-//						 Amtdue = Amtdue,
-//						 Emails = Email,
-//						 Testing = testing,
-//						 Description = Description,
-//						 OrgId = OrgId,
-//						 Url = Url,
-//						 Address = Address.Truncate(50),
-//						 City = City,
-//						 State = State,
-//						 Zip = Zip,
-//						 DatumId = DatumId,
-//						 Phone = Phone,
-//						 OriginalId = OriginalId,
-//						 Financeonly = FinanceOnly,
-//						 TransactionDate = DateTime.Now
-//					 };
-//			Db.Transactions.InsertOnSubmit(ti);
-//			Db.SubmitChanges();
-//			if (OriginalId == null) // first transaction
-//			{
-//				ti.OriginalId = ti.Id;
-//				if (m != null && !m.TranId.HasValue)
-//					m.TranId = ti.OriginalId;
-//			}
-//			Db.SubmitChanges();
-//			return ti;
-//
-//		}
 		public Transaction CreateTransaction(CMSDataContext Db)
 		{
 			var ti = new Transaction
@@ -168,6 +135,9 @@ namespace CmsWeb.Models
 						 Description = m.Header,
 						 Email = pp != null ? pp.EmailAddress : p.email,
 						 Name = m.NameOnAccount,
+#if DEBUG
+						 IsLoggedIn = m.UserPeopleId.HasValue,
+#endif
 						 OrgId = p.orgid,
 						 Url = m.URL,
 						 testing = m.testing ?? false,

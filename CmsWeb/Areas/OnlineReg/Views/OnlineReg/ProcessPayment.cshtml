@@ -45,6 +45,7 @@
     @Html.Hidden("pf.OriginalId", Model.OriginalId)
     @Html.Hidden("pf.PayBalance", Model.PayBalance)
     @Html.Hidden("pf.AllowCoupon", Model.AllowCoupon)
+    @Html.Hidden("pf.IsLoggedIn", Model.IsLoggedIn)
     @Html.Hidden("pf.FinanceOnly", Model.FinanceOnly)
     @Html.Hidden("pf.AskDonation", Model.AskDonation)
     @Html.Hidden("pf.Donate", Model.Donate)
@@ -118,6 +119,13 @@ else
 	<tr class="Bank">
 		<td>Account Number</td>
 		<td>@Html.TextBox("pf.Account", Model.Account, Model.Autocomplete())</td>
+	</tr>
+}
+@if (Model.IsLoggedIn == true)
+{
+	<tr>
+		<td></td>
+		<td>@Html.CheckBox("pf.SavePayInfo", Model.SavePayInfo)Save your Payment Information?</td>	
 	</tr>
 }
 

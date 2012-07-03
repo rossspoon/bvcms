@@ -278,6 +278,10 @@ namespace CmsData
         partial void UpdateJoinType(JoinType instance);
         partial void DeleteJoinType(JoinType instance);
         
+        partial void InsertManagedGiving(ManagedGiving instance);
+        partial void UpdateManagedGiving(ManagedGiving instance);
+        partial void DeleteManagedGiving(ManagedGiving instance);
+        
         partial void InsertMaritalStatus(MaritalStatus instance);
         partial void UpdateMaritalStatus(MaritalStatus instance);
         partial void DeleteMaritalStatus(MaritalStatus instance);
@@ -369,6 +373,10 @@ namespace CmsData
         partial void InsertOrigin(Origin instance);
         partial void UpdateOrigin(Origin instance);
         partial void DeleteOrigin(Origin instance);
+        
+        partial void InsertPaymentInfo(PaymentInfo instance);
+        partial void UpdatePaymentInfo(PaymentInfo instance);
+        partial void DeletePaymentInfo(PaymentInfo instance);
         
         partial void InsertPerson(Person instance);
         partial void UpdatePerson(Person instance);
@@ -990,6 +998,12 @@ namespace CmsData
 
 		}
 
+		public Table< ManagedGiving> ManagedGivings
+		{
+			get	{ return this.GetTable< ManagedGiving>(); }
+
+		}
+
 		public Table< MaritalStatus> MaritalStatuses
 		{
 			get	{ return this.GetTable< MaritalStatus>(); }
@@ -1125,6 +1139,12 @@ namespace CmsData
 		public Table< Origin> Origins
 		{
 			get	{ return this.GetTable< Origin>(); }
+
+		}
+
+		public Table< PaymentInfo> PaymentInfos
+		{
+			get	{ return this.GetTable< PaymentInfo>(); }
 
 		}
 

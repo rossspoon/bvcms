@@ -380,23 +380,15 @@ namespace CmsData
             p.AddressTypeId = 10;
 
             if (firstname.HasValue())
-            {
-                firstname = firstname.Trim();
-                p.FirstName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(firstname)
-                    .Truncate(25);
-            }
+                p.FirstName = firstname.Trim().ToProper().Truncate(25);
             else
                 p.FirstName = "";
 
             if (nickname.HasValue())
-                p.NickName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(nickname)
-                    .Truncate(15);
+                p.NickName = nickname.Trim().ToProper().Truncate(15);
+
             if (lastname.HasValue())
-            {
-                lastname = lastname.Trim();
-                p.LastName = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(lastname)
-                    .Truncate(30);
-            }
+                p.LastName = lastname.Trim().ToProper().Truncate(30);
             else
                 p.LastName = "?";
 
@@ -448,11 +440,7 @@ namespace CmsData
 
             if (tag != null)
                 tag.PersonTags.Add(new TagPerson { Person = p });
-//            if (Util.UserPeopleId.HasValue)
-//            {
-//                var tag2 = Db.FetchOrCreateTag("JustAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-//                tag2.PersonTags.Add(new TagPerson { Person = p });
-//            }
+
             p.OriginId = originId;
             p.EntryPointId = EntryPointId;
             p.FixTitle();
@@ -953,6 +941,9 @@ namespace CmsData
         }
         public PeopleExtra GetExtraValue(string field)
         {
+			if (!field.HasValue())
+				field = "blank";
+			field = field.Replace(",", "_");
 			var ev = PeopleExtras.AsEnumerable().FirstOrDefault(ee => string.Compare(ee.Field, field, ignoreCase:true) == 0);
             if (ev == null)
             {
@@ -1030,6 +1021,26 @@ namespace CmsData
                 RecurringGivings.Add(rg);
             }
             return rg;
+        }
+        public ManagedGiving ManagedGiving()
+        {
+            var mg = ManagedGivings.SingleOrDefault();
+            if (mg == null)
+            {
+                mg = new ManagedGiving();
+                ManagedGivings.Add(mg);
+            }
+            return mg;
+        }
+        public PaymentInfo PaymentInfo()
+        {
+            var pi = PaymentInfos.SingleOrDefault();
+            if (pi == null)
+            {
+                pi = new PaymentInfo();
+                PaymentInfos.Add(pi);
+            }
+            return pi;
         }
         public Contribution PostUnattendedContribution(CMSDataContext Db, decimal Amt, int? Fund, string Description, bool pledge = false)
         {
@@ -1123,6 +1134,8 @@ namespace CmsData
 		}
 		public static Campu FetchOrCreateCampus(CMSDataContext Db, string campus)
 		{
+			if (!campus.HasValue())
+				return null;
 			var cam = Db.Campus.SingleOrDefault(pp => pp.Description == campus);
 			if (cam == null)
 			{

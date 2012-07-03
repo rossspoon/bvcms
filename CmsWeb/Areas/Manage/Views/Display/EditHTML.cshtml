@@ -13,8 +13,11 @@
         $(".bt").button();
         $("#delete").click(function (ev) {
             ev.preventDefault();
-            if (confirm("Are you sure you want to delete this entry?"))
-            	window.location = "/Display/ContentDelete/@Model.Id"; ;
+            if (confirm("Are you sure you want to delete this entry?")) {
+                $.post("/Display/ContentDelete", { id: "@Model.Id" }, function () {
+                    window.location = "/Manage/Display/";
+                });
+            }
         });
     });
 </script>
@@ -31,6 +34,8 @@
     <div>@Html.TextArea("body", new { @class = "editor", rows = "26", style = "width:90%" })
     </div>
 	 <br />
-    <input type="submit" class="bt" value="Save" /> &nbsp;&nbsp; <input type="button" id="delete" class="bt" value="Delete" />
+		<input type="submit" class="bt" value="Save" /> &nbsp;&nbsp; 
+        <a id="cancel" href='/Manage/Display' class="bt">Cancel</a>
+        <a id="delete" href='#'><img src="/images/delete.gif"/></a>
     </div>
 }

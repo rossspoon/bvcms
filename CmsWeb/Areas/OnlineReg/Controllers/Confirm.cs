@@ -39,6 +39,35 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			try
 			{
+				if (pf.IsLoggedIn == true && pf.SavePayInfo == true)
+				{
+					var gateway = OnlineRegModel.GetTransactionGateway();
+					if (gateway == "authorizenet")
+					{
+						var au = new AuthorizeNet(DbUtil.Db, m.testing ?? false);
+						au.AddUpdateCustomerProfile(m.UserPeopleId.Value,
+							"C",
+							pf.CreditCard,
+							pf.Expires,
+							pf.CCV,
+							pf.Routing,
+							pf.Account);
+					}
+					else if (gateway == "sage")
+					{
+						var sg = new CmsData.SagePayments(DbUtil.Db, m.testing ?? false);
+						sg.storeVault(m.UserPeopleId.Value,
+							"C",
+							pf.CreditCard,
+							pf.Expires,
+							pf.CCV,
+							pf.Routing,
+							pf.Account);
+					}
+					else
+						throw new Exception("ServiceU not supported");
+
+				}
 				var ti = ProcessPaymentTransaction(m, pf);
 
 				SetHeaders(pf.OrgId ?? 0);

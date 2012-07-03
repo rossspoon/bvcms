@@ -91,9 +91,10 @@ namespace UtilityExtensions
 //        }
     	public static void sendmsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, int? pid, List<LinkedResource> attachments = null)
         {
+			var senderrorsto = WebConfigurationManager.AppSettings["senderrorsto"];
             var msg = new MailMessage();
             if (From == null)
-                From = Util.FirstAddress(WebConfigurationManager.AppSettings["senderrorsto"]);
+                From = Util.FirstAddress(senderrorsto);
 
             msg.From = From;
             if (SysFromEmail.HasValue())
@@ -117,7 +118,8 @@ namespace UtilityExtensions
             if (msg.To.Count == 0)
             {
                 msg.To.Add(msg.From);
-                msg.Subject += "-- bad addr for " + pid;
+                msg.To.Add(Util.FirstAddress(senderrorsto));
+                msg.Subject += "-- bad addr for {0}Person/Index/{1}".Fmt(CmsHost, pid);
             }
 
             var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);

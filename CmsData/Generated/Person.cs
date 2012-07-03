@@ -270,7 +270,11 @@ namespace CmsData
 		
    		private EntitySet< EmailResponse> _EmailResponses;
 		
+   		private EntitySet< ManagedGiving> _ManagedGivings;
+		
    		private EntitySet< MemberDocForm> _MemberDocForms;
+		
+   		private EntitySet< PaymentInfo> _PaymentInfos;
 		
    		private EntitySet< PeopleExtra> _PeopleExtras;
 		
@@ -721,7 +725,11 @@ namespace CmsData
 			
 			this._EmailResponses = new EntitySet< EmailResponse>(new Action< EmailResponse>(this.attach_EmailResponses), new Action< EmailResponse>(this.detach_EmailResponses)); 
 			
+			this._ManagedGivings = new EntitySet< ManagedGiving>(new Action< ManagedGiving>(this.attach_ManagedGivings), new Action< ManagedGiving>(this.detach_ManagedGivings)); 
+			
 			this._MemberDocForms = new EntitySet< MemberDocForm>(new Action< MemberDocForm>(this.attach_MemberDocForms), new Action< MemberDocForm>(this.detach_MemberDocForms)); 
+			
+			this._PaymentInfos = new EntitySet< PaymentInfo>(new Action< PaymentInfo>(this.attach_PaymentInfos), new Action< PaymentInfo>(this.detach_PaymentInfos)); 
 			
 			this._PeopleExtras = new EntitySet< PeopleExtra>(new Action< PeopleExtra>(this.attach_PeopleExtras), new Action< PeopleExtra>(this.detach_PeopleExtras)); 
 			
@@ -3463,12 +3471,32 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_ManagedGiving_People", Storage="_ManagedGivings", OtherKey="PeopleId")]
+   		public EntitySet< ManagedGiving> ManagedGivings
+   		{
+   		    get { return this._ManagedGivings; }
+
+			set	{ this._ManagedGivings.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_MemberDocForm_PEOPLE_TBL", Storage="_MemberDocForms", OtherKey="PeopleId")]
    		public EntitySet< MemberDocForm> MemberDocForms
    		{
    		    get { return this._MemberDocForms; }
 
 			set	{ this._MemberDocForms.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_PaymentInfo_People", Storage="_PaymentInfos", OtherKey="PeopleId")]
+   		public EntitySet< PaymentInfo> PaymentInfos
+   		{
+   		    get { return this._PaymentInfos; }
+
+			set	{ this._PaymentInfos.Assign(value); }
 
    		}
 
@@ -4731,6 +4759,19 @@ namespace CmsData
 		}
 
 		
+		private void attach_ManagedGivings(ManagedGiving entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_ManagedGivings(ManagedGiving entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
 		private void attach_MemberDocForms(MemberDocForm entity)
 		{
 			this.SendPropertyChanging();
@@ -4738,6 +4779,19 @@ namespace CmsData
 		}
 
 		private void detach_MemberDocForms(MemberDocForm entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_PaymentInfos(PaymentInfo entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_PaymentInfos(PaymentInfo entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

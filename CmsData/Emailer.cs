@@ -863,14 +863,13 @@ namespace CmsData
 				catch (Exception ex)
 				{
 					Util.SendMsg(sysFromEmail, CmsHost, From,
-						"sent emails - error", ex.Message,
+						"sent emails - error: {0}".Fmt(CmsHost), ex.Message,
 						Util.ToMailAddressList(From),
 						emailqueue.Id, null);
 					Util.SendMsg(sysFromEmail, CmsHost, From,
-						"sent emails - error", ex.Message,
+						"sent emails - error: {0}".Fmt(CmsHost), ex.Message,
 						Util.SendErrorsTo(),
 						emailqueue.Id, null);
-					throw ex;
 				}
 			}
 			emailqueue.Sent = DateTime.Now;

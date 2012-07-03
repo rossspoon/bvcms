@@ -324,5 +324,51 @@ namespace CmsWeb.Models
             };
             return p;
         }
+//		public void SavePaymentInfo()
+//		{
+//            try
+//            {
+//                var gateway = OnlineRegModel.GetTransactionGateway();
+//                if (gateway == "authorizenet")
+//                {
+//                    var au = new AuthorizeNet(DbUtil.Db, m.testing);
+//                    au.AddUpdateCustomerProfile(m.pid,
+//                        m.SemiEvery,
+//                        m.Day1,
+//                        m.Day2,
+//                        m.EveryN,
+//                        m.Period,
+//                        m.StartWhen,
+//                        m.StopWhen,
+//                        m.Type,
+//                        m.Cardnumber,
+//                        m.Expires,
+//                        m.Cardcode,
+//                        m.Routing,
+//                        m.Account,
+//                        m.testing);
+//                }
+//                else if (gateway == "sage")
+//                {
+//                    var sg = new CmsData.SagePayments(DbUtil.Db, m.testing);
+//                    sg.storeVault(m.pid, 
+//                        m.SemiEvery,
+//                        m.Day1,
+//                        m.Day2,
+//                        m.EveryN,
+//                        m.Period,
+//                        m.StartWhen,
+//                        m.StopWhen,
+//                        m.Type,
+//                        m.Cardnumber,
+//                        m.Expires,
+//                        m.Cardcode,
+//                        m.Routing,
+//                        m.Account,
+//                        m.testing);
+//                }
+//                else
+//                    throw new Exception("ServiceU not supported");
+//		}
     }
 }
