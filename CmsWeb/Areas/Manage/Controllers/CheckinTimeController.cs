@@ -12,6 +12,8 @@ namespace CmsWeb.Areas.Manage.Controllers
 		public ActionResult Index()
 		{
 			var m = new CheckinTimeModel();
+			if (m.Locations().Count == 0)
+				return Content("Building Checkin mode not setup, no checkin times available");
 			return View(m);
 		}
 

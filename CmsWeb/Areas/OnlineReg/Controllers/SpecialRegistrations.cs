@@ -245,6 +245,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult ConfirmRecurringGiving()
         {
             var m = TempData["managegiving"] as ManageGivingModel;
+			if (m == null)
+				return Content("No active registration");
 #if DEBUG2
 			m.testing = true;
 #else

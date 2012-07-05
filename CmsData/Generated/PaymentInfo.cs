@@ -37,6 +37,10 @@ namespace CmsData
 		
 		private bool? _Testing;
 		
+		private string _PreferredGivingType;
+		
+		private string _PreferredPaymentType;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -77,6 +81,12 @@ namespace CmsData
 		
 		partial void OnTestingChanging(bool? value);
 		partial void OnTestingChanged();
+		
+		partial void OnPreferredGivingTypeChanging(string value);
+		partial void OnPreferredGivingTypeChanged();
+		
+		partial void OnPreferredPaymentTypeChanging(string value);
+		partial void OnPreferredPaymentTypeChanged();
 		
     #endregion
 		public PaymentInfo()
@@ -307,6 +317,50 @@ namespace CmsData
 					this._Testing = value;
 					this.SendPropertyChanged("Testing");
 					this.OnTestingChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PreferredGivingType", UpdateCheck=UpdateCheck.Never, Storage="_PreferredGivingType", DbType="varchar(2)")]
+		public string PreferredGivingType
+		{
+			get { return this._PreferredGivingType; }
+
+			set
+			{
+				if (this._PreferredGivingType != value)
+				{
+				
+                    this.OnPreferredGivingTypeChanging(value);
+					this.SendPropertyChanging();
+					this._PreferredGivingType = value;
+					this.SendPropertyChanged("PreferredGivingType");
+					this.OnPreferredGivingTypeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PreferredPaymentType", UpdateCheck=UpdateCheck.Never, Storage="_PreferredPaymentType", DbType="varchar(2)")]
+		public string PreferredPaymentType
+		{
+			get { return this._PreferredPaymentType; }
+
+			set
+			{
+				if (this._PreferredPaymentType != value)
+				{
+				
+                    this.OnPreferredPaymentTypeChanging(value);
+					this.SendPropertyChanging();
+					this._PreferredPaymentType = value;
+					this.SendPropertyChanged("PreferredPaymentType");
+					this.OnPreferredPaymentTypeChanged();
 				}
 
 			}
