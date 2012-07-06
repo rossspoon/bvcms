@@ -76,13 +76,14 @@ namespace CmsWeb.Models
 		{
 			if (_transactions != null)
 				return _transactions;
+			var nameid = name.ToInt();
 			_transactions
 			   = from t in DbUtil.Db.Transactions
 				 let donate = t.Donate ?? 0
 				 where t.Amt > gtamount || gtamount == null
 				 where t.Amt <= ltamount || ltamount == null
 				 where description == null || t.Description.Contains(description)
-				 where name == null || t.Name.Contains(name) || t.Batchref == name
+				 where name == null || t.Name.Contains(name) || t.Batchref == name || t.Id == nameid
 				 where (t.Testing ?? false) == testtransactions
 				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
 				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons

@@ -181,7 +181,7 @@ namespace CmsWeb.Models
                          Age = om.Person.Age,
                          DOB = om.Person.BirthDate.ToString2("MM/dd/yy"),
                          Gender = om.Person.Gender.Code,
-                         Grade = om.Grade,
+                         Grade = om.Person.Grade,
                          OrgId = om.OrganizationId,
                          Request = om.Request,
                          Name = om.Person.Name,
