@@ -15,6 +15,11 @@
         $("#name").val($(this).text());
         $('#filter').click();
     });
+    $(".filtertransaction").live("click", function (e) {
+        e.preventDefault();
+        $("#name").val($(this).attr("originalid"));
+        $('#filter').click();
+    });
     $.getTable = function (f, q) {
         q = q || f.serialize();
         $.blockUI();

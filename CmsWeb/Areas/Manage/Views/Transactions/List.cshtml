@@ -48,8 +48,10 @@
     var bold = t.Id == t.OriginalId;
     if (t.Amt > 0 && t.Amt == t.Donate && !Model.finance) { continue; }
         <tr style="@(bold ? "font-weight: bold" : "")">
-            <td nowrap="nowrap" class="tip" 
-            title="TranId:@t.TransactionId|ApprovalCode:@(t.ApprovalCode ?? "na")|AuthCode:@(t.AuthCode ?? "na")|Message:@(t.Message ?? "na")|OriginalId:@t.OriginalId">@t.Id</td>
+			<td nowrap="nowrap" class="tip" 
+				title="TranId:@t.TransactionId|ApprovalCode:@(t.ApprovalCode ?? "na")|AuthCode:@(t.AuthCode ?? "na")|Message:@(t.Message ?? "na")|OriginalId:@t.OriginalId|Click to Filter">
+				<div class="filtertransaction" originalid="@t.OriginalId">@t.Id</div>
+			</td>
             <td>@t.TransactionId</td>
             <td>@if (t.Approved == true){<img alt="Y" src="/Content/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
 			<td nowrap="nowrap">@t.TransactionDate.FormatDateTm()
