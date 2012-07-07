@@ -78,6 +78,10 @@ namespace CmsData
         partial void UpdateBundleStatusType(BundleStatusType instance);
         partial void DeleteBundleStatusType(BundleStatusType instance);
         
+        partial void InsertBVCMSPricing(BVCMSPricing instance);
+        partial void UpdateBVCMSPricing(BVCMSPricing instance);
+        partial void DeleteBVCMSPricing(BVCMSPricing instance);
+        
         partial void InsertCampu(Campu instance);
         partial void UpdateCampu(Campu instance);
         partial void DeleteCampu(Campu instance);
@@ -278,6 +282,10 @@ namespace CmsData
         partial void UpdateJoinType(JoinType instance);
         partial void DeleteJoinType(JoinType instance);
         
+        partial void InsertManagedGiving(ManagedGiving instance);
+        partial void UpdateManagedGiving(ManagedGiving instance);
+        partial void DeleteManagedGiving(ManagedGiving instance);
+        
         partial void InsertMaritalStatus(MaritalStatus instance);
         partial void UpdateMaritalStatus(MaritalStatus instance);
         partial void DeleteMaritalStatus(MaritalStatus instance);
@@ -370,6 +378,10 @@ namespace CmsData
         partial void UpdateOrigin(Origin instance);
         partial void DeleteOrigin(Origin instance);
         
+        partial void InsertPaymentInfo(PaymentInfo instance);
+        partial void UpdatePaymentInfo(PaymentInfo instance);
+        partial void DeletePaymentInfo(PaymentInfo instance);
+        
         partial void InsertPerson(Person instance);
         partial void UpdatePerson(Person instance);
         partial void DeletePerson(Person instance);
@@ -409,6 +421,10 @@ namespace CmsData
         partial void InsertPromotion(Promotion instance);
         partial void UpdatePromotion(Promotion instance);
         partial void DeletePromotion(Promotion instance);
+        
+        partial void InsertQBConnection(QBConnection instance);
+        partial void UpdateQBConnection(QBConnection instance);
+        partial void DeleteQBConnection(QBConnection instance);
         
         partial void InsertQueryBuilderClause(QueryBuilderClause instance);
         partial void UpdateQueryBuilderClause(QueryBuilderClause instance);
@@ -687,6 +703,12 @@ namespace CmsData
 		public Table< BundleStatusType> BundleStatusTypes
 		{
 			get	{ return this.GetTable< BundleStatusType>(); }
+
+		}
+
+		public Table< BVCMSPricing> BVCMSPricings
+		{
+			get	{ return this.GetTable< BVCMSPricing>(); }
 
 		}
 
@@ -990,6 +1012,12 @@ namespace CmsData
 
 		}
 
+		public Table< ManagedGiving> ManagedGivings
+		{
+			get	{ return this.GetTable< ManagedGiving>(); }
+
+		}
+
 		public Table< MaritalStatus> MaritalStatuses
 		{
 			get	{ return this.GetTable< MaritalStatus>(); }
@@ -1128,6 +1156,12 @@ namespace CmsData
 
 		}
 
+		public Table< PaymentInfo> PaymentInfos
+		{
+			get	{ return this.GetTable< PaymentInfo>(); }
+
+		}
+
 		public Table< Person> People
 		{
 			get	{ return this.GetTable< Person>(); }
@@ -1185,6 +1219,12 @@ namespace CmsData
 		public Table< Promotion> Promotions
 		{
 			get	{ return this.GetTable< Promotion>(); }
+
+		}
+
+		public Table< QBConnection> QBConnections
+		{
+			get	{ return this.GetTable< QBConnection>(); }
 
 		}
 

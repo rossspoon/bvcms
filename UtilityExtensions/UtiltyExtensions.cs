@@ -384,7 +384,7 @@ namespace UtilityExtensions
 				s = phone;
 			return s;
 		}
-		public static string GetDigits(this string zip)
+		public static string GetDigits(this string zip, int maxdigits = 99)
 		{
 			if (!zip.HasValue())
 				return "";
@@ -392,7 +392,7 @@ namespace UtilityExtensions
 			foreach (var c in zip.ToCharArray())
 				if (Char.IsDigit(c))
 					digits.Append(c);
-			return digits.ToString();
+			return digits.ToString().Truncate(maxdigits);
 		}
 		public static decimal? GetAmount(this string s)
 		{

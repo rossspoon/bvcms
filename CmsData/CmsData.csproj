@@ -255,6 +255,8 @@
     <Compile Include="Generated\BVCMSPricing.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
     <Compile Include="Generated\Functions\VisitNumberSinceDate.cs" />
+    <Compile Include="Generated\ManagedGiving.cs" />
+    <Compile Include="Generated\PaymentInfo.cs" />
     <Compile Include="Generated\QBConnection.cs" />
     <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />

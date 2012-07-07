@@ -88,7 +88,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PrimaryAddress2", Storage="_PrimaryAddress2", DbType="varchar(40)")]
+		[Column(Name="PrimaryAddress2", Storage="_PrimaryAddress2", DbType="varchar(100)")]
 		public string PrimaryAddress2
 		{
 			get

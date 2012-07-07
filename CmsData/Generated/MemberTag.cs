@@ -23,6 +23,14 @@ namespace CmsData
 		
 		private int? _OrgId;
 		
+		private string _VolFrequency;
+		
+		private DateTime? _VolStartDate;
+		
+		private DateTime? _VolEndDate;
+		
+		private int? _NoCancelWeeks;
+		
    		
    		private EntitySet< OrgMemMemTag> _OrgMemMemTags;
 		
@@ -44,6 +52,18 @@ namespace CmsData
 		
 		partial void OnOrgIdChanging(int? value);
 		partial void OnOrgIdChanged();
+		
+		partial void OnVolFrequencyChanging(string value);
+		partial void OnVolFrequencyChanged();
+		
+		partial void OnVolStartDateChanging(DateTime? value);
+		partial void OnVolStartDateChanged();
+		
+		partial void OnVolEndDateChanging(DateTime? value);
+		partial void OnVolEndDateChanged();
+		
+		partial void OnNoCancelWeeksChanging(int? value);
+		partial void OnNoCancelWeeksChanged();
 		
     #endregion
 		public MemberTag()
@@ -122,6 +142,94 @@ namespace CmsData
 					this._OrgId = value;
 					this.SendPropertyChanged("OrgId");
 					this.OnOrgIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="VolFrequency", UpdateCheck=UpdateCheck.Never, Storage="_VolFrequency", DbType="varchar(2)")]
+		public string VolFrequency
+		{
+			get { return this._VolFrequency; }
+
+			set
+			{
+				if (this._VolFrequency != value)
+				{
+				
+                    this.OnVolFrequencyChanging(value);
+					this.SendPropertyChanging();
+					this._VolFrequency = value;
+					this.SendPropertyChanged("VolFrequency");
+					this.OnVolFrequencyChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="VolStartDate", UpdateCheck=UpdateCheck.Never, Storage="_VolStartDate", DbType="datetime")]
+		public DateTime? VolStartDate
+		{
+			get { return this._VolStartDate; }
+
+			set
+			{
+				if (this._VolStartDate != value)
+				{
+				
+                    this.OnVolStartDateChanging(value);
+					this.SendPropertyChanging();
+					this._VolStartDate = value;
+					this.SendPropertyChanged("VolStartDate");
+					this.OnVolStartDateChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="VolEndDate", UpdateCheck=UpdateCheck.Never, Storage="_VolEndDate", DbType="datetime")]
+		public DateTime? VolEndDate
+		{
+			get { return this._VolEndDate; }
+
+			set
+			{
+				if (this._VolEndDate != value)
+				{
+				
+                    this.OnVolEndDateChanging(value);
+					this.SendPropertyChanging();
+					this._VolEndDate = value;
+					this.SendPropertyChanged("VolEndDate");
+					this.OnVolEndDateChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NoCancelWeeks", UpdateCheck=UpdateCheck.Never, Storage="_NoCancelWeeks", DbType="int")]
+		public int? NoCancelWeeks
+		{
+			get { return this._NoCancelWeeks; }
+
+			set
+			{
+				if (this._NoCancelWeeks != value)
+				{
+				
+                    this.OnNoCancelWeeksChanging(value);
+					this.SendPropertyChanging();
+					this._NoCancelWeeks = value;
+					this.SendPropertyChanged("NoCancelWeeks");
+					this.OnNoCancelWeeksChanged();
 				}
 
 			}

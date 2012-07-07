@@ -21,6 +21,8 @@ namespace CmsData
 		
 		private string _FromEmail;
 		
+		private DateTime _DateX;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -37,6 +39,9 @@ namespace CmsData
 		
 		partial void OnFromEmailChanging(string value);
 		partial void OnFromEmailChanged();
+		
+		partial void OnDateXChanging(DateTime value);
+		partial void OnDateXChanged();
 		
     #endregion
 		public EmailOptOut()
@@ -91,6 +96,28 @@ namespace CmsData
 					this._FromEmail = value;
 					this.SendPropertyChanged("FromEmail");
 					this.OnFromEmailChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Date", UpdateCheck=UpdateCheck.Never, Storage="_DateX", DbType="datetime NOT NULL", IsDbGenerated=true)]
+		public DateTime DateX
+		{
+			get { return this._DateX; }
+
+			set
+			{
+				if (this._DateX != value)
+				{
+				
+                    this.OnDateXChanging(value);
+					this.SendPropertyChanging();
+					this._DateX = value;
+					this.SendPropertyChanged("DateX");
+					this.OnDateXChanged();
 				}
 
 			}
