@@ -1,4 +1,5 @@
 ﻿@using CmsWeb
+@using CmsWeb.Models
 @using CmsData
 @using UtilityExtensions
 @model CmsWeb.Models.PersonPage.PersonModel
@@ -129,6 +130,11 @@ div.pager
 { 
             <li><a id="system-link" href="#system-tab"><span>System</span></a></li>
 }
+@if (DbUtil.Db.Setting("QuickbooksInvoices", "false") == "true")
+{
+				<li><a href="#quickbooks-tab"><span>Quickbooks</span></a></li>
+}	
+
         </ul>
         <div id="basic-tab" class="ui-tabs-panel ui-tabs-hide">
             <form id="basic" class="DisplayEdit" action="">
@@ -268,6 +274,29 @@ div.pager
                 </form>
             </div>
         </div>
+}
+@if (DbUtil.Db.Setting("QuickbooksInvoices", "false") == "true")
+{
+	<div id="quickbooks-tab" class="ui-tabs-hide ui-tabs-panel">
+		@if( QuickbooksModel.GetQBID( p.PeopleId ) == "0" ) {
+		<form action="/Person/QBAdd" method="post">
+			<input type="hidden" name="PeopleID" value="@p.PeopleId" />
+			<input type="submit" value="Add To Quickbooks" />
+		</form>
+		}else{
+		<form action="/Person/QBInvoice" method="post">
+			<input type="hidden" name="PeopleID" value="@p.PeopleId" />
+			<input type="submit" value="Create Invoice" />
+		</form>
+			@:Pricing: @QuickbooksModel.CalcCurrentPrice(p.PeopleId)<br />
+			<br />
+			var invoices = QuickbooksModel.ListAllInvoicesByID(QuickbooksModel.GetQBID(p.PeopleId));
+			foreach (var i in invoices)
+			{
+				@:Invoice: @(int.Parse( i.Id.Value ) + 1000) - @i.Header.TxnDate.ToString("d") - Amount: @i.Header.TotalAmt<br />
+			}
+		}
+	</div>
 }
     </div>
     <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
