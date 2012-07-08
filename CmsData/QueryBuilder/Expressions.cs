@@ -2417,6 +2417,19 @@ namespace CmsData
 				expr = Expression.Not(expr);
 			return expr;
 		}
+		internal static Expression HasInvalidEmailAddress(CMSDataContext Db, ParameterExpression parm,
+			CompareType op,
+			bool tf)
+		{
+			Expression<Func<Person, bool>> pred = p =>
+				(Db.IsValidEmail(p.EmailAddress ?? "") == false
+				|| Db.IsValidEmail(p.EmailAddress2 ?? "") == false);
+					
+			Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+			if (!(op == CompareType.Equal && tf))
+				expr = Expression.Not(expr);
+			return expr;
+		}
 		internal static Expression IncludeDeceased(
 			ParameterExpression parm,
 			CompareType op,

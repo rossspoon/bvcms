@@ -204,6 +204,9 @@
     <Field Name="PrimaryBadAddrFlag" Title="Bad Address Flag" Type="Bit" DataValueField="IdCode">
       Address is flagged as invalid
     </Field>
+    <Field Name="HasInvalidEmailAddress" Title="Has InvalidEmailAddress" Type="Bit" DisplayAs="HasInvalidEmailAddress" DataValueField="IdCode">
+      Indicates has a valid email address
+    </Field>
     <Field Name="SendEmailAddress1" Title="Send EmailAddress1" Type="NullBit" DataValueField="IdCode">
     </Field>
     <Field Name="SendEmailAddress2" Title="Send EmailAddress2" Type="NullBit" DataValueField="IdCode">

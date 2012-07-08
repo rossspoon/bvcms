@@ -203,6 +203,10 @@ namespace CmsData
                 case QueryType.HasParents:
                     return Expressions.HasParents(parm,
                                CompType,
+                               c.CodeIds == "1");//HasValidEmailAddress
+                case QueryType.HasInvalidEmailAddress:
+                    return Expressions.HasInvalidEmailAddress(Db, parm,
+                               CompType,
                                c.CodeIds == "1");
                 case QueryType.HasVolunteered:
                     return Expressions.HasVolunteered(parm,

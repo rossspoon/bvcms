@@ -256,6 +256,7 @@
     <Compile Include="Generated\Functions\VisitNumberSinceDate.cs" />
     <Compile Include="Generated\ManagedGiving.cs" />
     <Compile Include="Generated\PaymentInfo.cs" />
+    <Compile Include="Generated\QBConnection.cs" />
     <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />
     <Compile Include="Generated\CheckedBatch.cs" />

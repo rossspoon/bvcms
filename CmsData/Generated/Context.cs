@@ -418,6 +418,10 @@ namespace CmsData
         partial void UpdatePromotion(Promotion instance);
         partial void DeletePromotion(Promotion instance);
         
+        partial void InsertQBConnection(QBConnection instance);
+        partial void UpdateQBConnection(QBConnection instance);
+        partial void DeleteQBConnection(QBConnection instance);
+        
         partial void InsertQueryBuilderClause(QueryBuilderClause instance);
         partial void UpdateQueryBuilderClause(QueryBuilderClause instance);
         partial void DeleteQueryBuilderClause(QueryBuilderClause instance);
@@ -1205,6 +1209,12 @@ namespace CmsData
 		public Table< Promotion> Promotions
 		{
 			get	{ return this.GetTable< Promotion>(); }
+
+		}
+
+		public Table< QBConnection> QBConnections
+		{
+			get	{ return this.GetTable< QBConnection>(); }
 
 		}
 
@@ -2987,6 +2997,18 @@ namespace CmsData
                 attended,
                 membertypeid,
                 group
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.IsValidEmail", IsComposable = true)]
+		[return: Parameter(DbType = "bit")]
+		public bool? IsValidEmail(
+            [Parameter(Name = "addr", DbType="nvarchar")] string addr
+            )
+		{
+			return ((bool?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                addr
                 ).ReturnValue));
 		}
 
