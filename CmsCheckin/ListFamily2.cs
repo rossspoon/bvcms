@@ -118,6 +118,7 @@ namespace CmsCheckin
 					marital = e.Attribute("marital").Value.ToInt(),
 					Row = list.Count,
 					HasPicture = bool.Parse(e.Attribute("haspicture").Value),
+					MemberStatus = e.Attribute("memberstatus").Value,
 					notes = e.Value,
 				};
 				list.Add(a);
@@ -349,6 +350,23 @@ namespace CmsCheckin
 			if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 1)
 				return;
 
+			if( Program.BuildingInfo.membersonly && c.MemberStatus != "Yes" && Program.addguests == null )
+			{
+				MessageBox.Show( "Only members may check-in. You will need to be a guest of a member to check-in.", "Members Only Error" );
+				return;
+			}
+
+			if( Program.BuildingInfo.maxguests > -1 )
+			{
+				var p = Program.GuestOf();
+
+				if (c.MemberStatus != "Yes" && p != null && Util.GetGuestCount(p.pid) >= Program.BuildingInfo.maxguests)
+				{
+					MessageBox.Show("No additional guests are permitted for today.", "Guest Limit Error");
+					return;
+				}
+			}
+
 			var pb = Program.attendant.pictureBox1;
 			pb.SetPropertyThreadSafe(() => pb.Image, Util.GetImage(c.pid));
 			var na = Program.attendant.NameDisplay;
@@ -364,7 +382,7 @@ namespace CmsCheckin
 			activities.Text = "Choose Activities for " + c.name;
 
 			activities.list.Items.Clear();
-			foreach (var i in Program.Activities)
+			foreach (var i in Program.BuildingInfo.Activities)
 				activities.list.Items.Add(i);
 			activities.ok.Tag = ab;
 			activities.cancel.Tag = ab;
@@ -664,6 +682,8 @@ namespace CmsCheckin
 			public bool requiressecuritylabel { get; set; }
 		}
 	}
+
+	/*
 	[Serializable]
 	public class Activity
 	{
@@ -678,6 +698,8 @@ namespace CmsCheckin
 			return display;
 		}
 	}
+	*/
+
 	public class PersonInfo
 	{
 		public DateTime? lastpress { get; set; }
@@ -702,6 +724,7 @@ namespace CmsCheckin
 		public string activities { get; set; }
 		public int Row { get; set; }
 		public bool HasPicture { get; set; }
+		public string MemberStatus { get; set; }
 		public string notes { get; set; }
 
 		public string name

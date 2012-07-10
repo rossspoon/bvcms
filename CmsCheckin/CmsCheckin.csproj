@@ -207,6 +207,7 @@
     <Compile Include="AddGuests.Designer.cs">
       <DependentUpon>AddGuests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\BaseBuildingInfo.cs" />
     <Compile Include="Menu2.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -317,10 +318,10 @@
     <Compile Include="EnterText.Designer.cs">
       <DependentUpon>EnterText.cs</DependentUpon>
     </Compile>
-    <Compile Include="PleaseWait.cs">
+    <Compile Include="Dialogs\PleaseWait.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PleaseWait.Designer.cs">
+    <Compile Include="Dialogs\PleaseWait.Designer.cs">
       <DependentUpon>PleaseWait.cs</DependentUpon>
     </Compile>
     <Compile Include="Print.cs" />
@@ -429,7 +430,7 @@
     <EmbeddedResource Include="Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PleaseWait.resx">
+    <EmbeddedResource Include="Dialogs\PleaseWait.resx">
       <DependentUpon>PleaseWait.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -444,9 +445,6 @@
     <None Include="CmsCheckin_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Match.datasource" />
-    <Content Include="secrets.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="Settings1.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
