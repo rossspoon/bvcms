@@ -55,6 +55,7 @@ namespace CmsWeb.Models
 						gender = p.GenderId,
 						grade = p.Grade,
 						HasPicture = p.PictureId != null,
+						MemberStatus = p.MemberStatus.Code,
 						notes
 					};
  
@@ -79,6 +80,8 @@ namespace CmsWeb.Models
 					w.WriteAttributeString("marital", c.marital.ToString());
 					w.WriteAttributeString("grade", c.grade.ToString());
 					w.WriteAttributeString("haspicture", c.HasPicture.ToString());
+					w.WriteAttributeString("memberstatus", c.MemberStatus);
+
 					if (c.notes.HasValue())
 						w.WriteString(c.notes);
 
