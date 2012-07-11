@@ -46,7 +46,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					{
 						var au = new AuthorizeNet(DbUtil.Db, m.testing ?? false);
 						au.AddUpdateCustomerProfile(m.UserPeopleId.Value,
-							"C",
+							pf.Type,
 							pf.CreditCard,
 							pf.Expires,
 							pf.CCV,
@@ -57,7 +57,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					{
 						var sg = new CmsData.SagePayments(DbUtil.Db, m.testing ?? false);
 						sg.storeVault(m.UserPeopleId.Value,
-							"C",
+							pf.Type, 
 							pf.CreditCard,
 							pf.Expires,
 							pf.CCV,
@@ -115,6 +115,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			TransactionResponse tinfo;
 			var gateway = OnlineRegModel.GetTransactionGateway();
 			if (gateway == "authorizenet")
+				if (pf.SavePayInfo == true)
+				{
+					var anet = new AuthorizeNet(DbUtil.Db, pf.testing);
+					tinfo = anet.createCustomerProfileTransactionRequest(
+						pid ?? 0,
+						pf.AmtToPay ?? 0,
+						pf.Description,
+						pf.TranId ?? 0);
+				}
+				else
 				if (pf.Type == "B")
 					tinfo = OnlineRegModel.PostECheck(
 						pf.Routing, pf.Account,
@@ -132,22 +142,33 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 						pf.Address, pf.City, pf.State, pf.Zip,
 						pf.testing);
 			else if (gateway == "sage")
-				if (pf.Type == "B")
-					tinfo = OnlineRegModel.PostVirtualCheckTransactionSage(
-						pf.Routing, pf.Account,
+				if (pf.SavePayInfo == true)
+				{
+					var sage = new SagePayments(DbUtil.Db, pf.testing);
+					tinfo = sage.createVaultTransactionRequest(
+						pid ?? 0,
 						pf.AmtToPay ?? 0,
-						ti.Id, pf.Description,
-						pid ?? 0, pf.Email, first, last, "",
-						pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
-						pf.testing);
+						pf.Description,
+						ti.Id,
+						pf.Type);
+				}
 				else
-					tinfo = OnlineRegModel.PostTransactionSage(
-						pf.CreditCard, pf.CCV, pf.Expires,
-						pf.AmtToPay ?? 0,
-						ti.Id, pf.Description,
-						pid ?? 0, pf.Email, first, last,
-						pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
-						pf.testing);
+					if (pf.Type == "B")
+						tinfo = OnlineRegModel.PostVirtualCheckTransactionSage(
+							pf.Routing, pf.Account,
+							pf.AmtToPay ?? 0,
+							ti.Id, pf.Description,
+							pid ?? 0, pf.Email, first, last, "",
+							pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
+							pf.testing);
+					else
+						tinfo = OnlineRegModel.PostTransactionSage(
+							pf.CreditCard, pf.CCV, pf.Expires,
+							pf.AmtToPay ?? 0,
+							ti.Id, pf.Description,
+							pid ?? 0, pf.Email, first, last,
+							pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
+							pf.testing);
 
 			else
 				throw new Exception("unknown gateway " + gateway);

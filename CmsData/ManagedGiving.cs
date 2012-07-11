@@ -7,7 +7,7 @@ using UtilityExtensions;
 
 namespace CmsData
 {
-    public partial class RecurringGiving
+    public partial class ManagedGiving
     {
         public DateTime FindNextDate(DateTime ndt)
         {
@@ -41,9 +41,9 @@ namespace CmsData
             AuthorizeNet anet = null;
             SagePayments sage = null;
             if (gateway == "AuthorizeNet")
-                anet = new AuthorizeNet(Db, Testing ?? true);
+                anet = new AuthorizeNet(Db, testing: false);
             else if (gateway == "Sage")
-                sage = new SagePayments(Db, Testing ?? true);
+                sage = new SagePayments(Db, testing: false);
             else
                 return 0;
 
@@ -63,7 +63,7 @@ namespace CmsData
                 Amt = total,
                 Donate = total,
                 Description = "Recurring Giving",
-                Testing = Testing,
+                Testing = false,
                 TransactionGateway = gateway,
                 Financeonly = true
             };
@@ -71,9 +71,9 @@ namespace CmsData
 			Db.SubmitChanges();
 
             if (gateway == "AuthorizeNet")
-                ret = anet.createCustomerProfileTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id, Ccv);
+                ret = anet.createCustomerProfileTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id);
             else
-                ret = sage.createVaultTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id );
+                ret = sage.createVaultTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id, Type );
             t.TransactionPeople.Add(new TransactionPerson { PeopleId = PeopleId, Amt = total });
 
 			t.Message = ret.Message;
@@ -102,13 +102,13 @@ namespace CmsData
 			int count = 0;
             if (gateway.HasValue())
             {
-                var rgq = from rg in Db.RecurringGivings
+                var rgq = from rg in Db.ManagedGivings
                           where rg.NextDate == DateTime.Today
                           select new
                           {
                               rg,
                               rg.Person,
-                              rg.RecurringAmounts,
+                              rg.Person.RecurringAmounts,
                           };
                 foreach (var i in rgq)
                     count += i.rg.DoGiving(Db);

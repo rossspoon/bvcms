@@ -88,8 +88,8 @@ else
 @if (!Model.NoCreditCardsAllowed && !Model.NoEChecksAllowed)
 {
 	<tr><td>Payment Type</td>
-		<td>@Html.RadioButton("Type", "C")Debit/Credit Card
-			@Html.RadioButton("Type", "B")Bank Account
+		<td>@Html.RadioButton("Type", "C", Model.Type == "C")Debit/Credit Card
+			@Html.RadioButton("Type", "B", Model.Type == "B")Bank Account
 			@Html.Hidden("allowcc", "true")</td>
 	</tr>
 }
@@ -106,7 +106,7 @@ else
 	<tr class="Card">
 		<td>Card Code<br />
 			<a id="findidclick" href="#"><span style="font-size: 65%">How to find your card code</span></a></td>
-		<td>@Html.TextBox("pf.Cardcode", Model.CCV, Model.Autocomplete())</td>
+		<td>@Html.TextBox("pf.CCV", Model.CCV, Model.Autocomplete())</td>
 	</tr>
 }
 @if (Model.NoEChecksAllowed == false)
@@ -125,7 +125,7 @@ else
 {
 	<tr>
 		<td></td>
-		<td>@Html.CheckBox("pf.SavePayInfo", Model.SavePayInfo)Save your Payment Information?</td>	
+		<td>@Html.CheckBox("pf.SavePayInfo", Model.SavePayInfo == true)Save Payment Information?</td>	
 	</tr>
 }
 

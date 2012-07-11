@@ -64,204 +64,6 @@ namespace CmsData
 		}
 
 		public void AddUpdateCustomerProfile(int PeopleId,
-			string semievery,
-			int? day1,
-			int? day2,
-			int? everyn,
-			string period,
-			DateTime? startwhen,
-			DateTime? stopwhen,
-			string type,
-			string cardnumber,
-			string expires,
-			string cardcode,
-			string routing,
-			string account,
-			bool testing)
-		{
-			var exp = expires;
-			if (exp.HasValue())
-				exp = "20" + expires.Substring(2, 2) + "-" + expires.Substring(0, 2);
-			var p = Db.LoadPersonById(PeopleId);
-			var rg = p.RecurringGiving();
-			if (rg.AuNetCustId == null) // create a new profilein Authorize.NET CIM
-			{
-				XDocument request = null;
-				if (type == "B")
-				{
-					request = new XDocument(new XDeclaration("1.0", "utf-8", null),
-						Element("createCustomerProfileRequest",
-							Element("merchantAuthentication",
-								Element("name", login),
-								Element("transactionKey", key)
-								),
-							Element("profile",
-								Element("merchantCustomerId", PeopleId),
-								Element("email", p.EmailAddress),
-								Element("paymentProfiles",
-									Element("billTo",
-										Element("firstName", p.FirstName),
-										Element("lastName", p.LastName),
-										Element("address", p.PrimaryAddress),
-										Element("city", p.PrimaryCity),
-										Element("state", p.PrimaryState),
-										Element("zip", p.PrimaryZip),
-										Element("phoneNumber", p.HomePhone)
-										),
-									Element("payment",
-										Element("bankAccount",
-											Element("routingNumber", routing),
-											Element("accountNumber", account),
-											Element("nameOnAccount", p.Name)
-											)
-										)
-									)
-								)
-							)
-						);
-				}
-				else
-				{
-					request = new XDocument(new XDeclaration("1.0", "utf-8", null),
-					Element("createCustomerProfileRequest",
-						Element("merchantAuthentication",
-							Element("name", login),
-							Element("transactionKey", key)
-							),
-						Element("profile",
-							Element("merchantCustomerId", PeopleId),
-							Element("email", p.EmailAddress),
-							Element("paymentProfiles",
-								Element("billTo",
-									Element("firstName", p.FirstName),
-									Element("lastName", p.LastName),
-									Element("address", p.PrimaryAddress),
-									Element("city", p.PrimaryCity),
-									Element("state", p.PrimaryState),
-									Element("zip", p.PrimaryZip),
-									Element("phoneNumber", p.HomePhone)
-									),
-								Element("payment",
-									Element("creditCard",
-										Element("cardNumber", cardnumber),
-										Element("expirationDate", exp),
-										Element("cardCode", cardcode)
-										)
-									)
-								)
-							)
-						)
-					);
-				}
-				var s = request.ToString();
-				var x = getResponse(s);
-				var id = x.Descendants(ns + "customerProfileId").First().Value.ToInt();
-				var pid = x.Descendants(ns + "customerPaymentProfileIdList")
-							.Descendants(ns + "numericString").First().Value.ToInt();
-				rg.AuNetCustId = id;
-				rg.AuNetCustPayId = pid;
-			}
-			else
-			{
-				if (account.HasValue() && account.StartsWith("X"))
-				{
-					var xe = getCustomerPaymentProfile(PeopleId);
-					var xba = xe.Descendants(ns + "bankAccount").Single();
-					routing = xba.Element(ns + "routingNumber").Value;
-					account = xba.Element(ns + "accountNumber").Value;
-				}
-
-				var request = new XDocument(new XDeclaration("1.0", "utf-8", null),
-					Element("updateCustomerProfileRequest",
-						Element("merchantAuthentication",
-							Element("name", login),
-							Element("transactionKey", key)
-							),
-						Element("profile",
-							Element("merchantCustomerId", PeopleId),
-							Element("email", p.EmailAddress),
-							Element("customerProfileId", rg.AuNetCustId)
-							)
-					)
-				);
-				var x = getResponse(request.ToString());
-				if (type == "B")
-					request = new XDocument(new XDeclaration("1.0", "utf-8", null),
-						Element("updateCustomerPaymentProfileRequest",
-							Element("merchantAuthentication",
-								Element("name", login),
-								Element("transactionKey", key)
-								),
-							Element("customerProfileId", rg.AuNetCustId),
-							Element("paymentProfile",
-								Element("billTo",
-									Element("firstName", p.FirstName),
-									Element("lastName", p.LastName),
-									Element("address", p.PrimaryAddress),
-									Element("city", p.PrimaryCity),
-									Element("state", p.PrimaryState),
-									Element("zip", p.PrimaryZip),
-									Element("phoneNumber", p.HomePhone)
-									),
-								Element("payment",
-									Element("bankAccount",
-										Element("routingNumber", routing),
-										Element("accountNumber", account),
-										Element("nameOnAccount", p.Name)
-										)
-									),
-								Element("customerPaymentProfileId", rg.AuNetCustPayId)
-							)
-						)
-					);
-				else
-					request = new XDocument(new XDeclaration("1.0", "utf-8", null),
-						Element("updateCustomerPaymentProfileRequest",
-							Element("merchantAuthentication",
-								Element("name", login),
-								Element("transactionKey", key)
-								),
-							Element("customerProfileId", rg.AuNetCustId),
-							Element("paymentProfile",
-								Element("billTo",
-									Element("firstName", p.FirstName),
-									Element("lastName", p.LastName),
-									Element("address", p.PrimaryAddress),
-									Element("city", p.PrimaryCity),
-									Element("state", p.PrimaryState),
-									Element("zip", p.PrimaryZip),
-									Element("phoneNumber", p.HomePhone)
-									),
-								Element("payment",
-									Element("creditCard",
-										Element("cardNumber", cardnumber),
-										Element("expirationDate", exp),
-										Element("cardCode", cardcode)
-										)
-									),
-								Element("customerPaymentProfileId", rg.AuNetCustPayId)
-							)
-						)
-					);
-				x = getResponse(request.ToString());
-			}
-			rg.SemiEvery = semievery;
-			rg.Day1 = day1;
-			rg.Day2 = day2;
-			rg.EveryN = everyn;
-			rg.Period = period;
-			rg.StartWhen = startwhen;
-			rg.StopWhen = stopwhen;
-			rg.Type = type;
-			rg.MaskedAccount = Util.MaskAccount(account);
-			rg.MaskedCard = Util.MaskCC(cardnumber);
-			rg.Ccv = cardcode;
-			rg.Expires = expires;
-			rg.Testing = testing;
-			rg.NextDate = rg.FindNextDate(startwhen.Value);
-			Db.SubmitChanges();
-		}
-		public void AddUpdateCustomerProfile(int PeopleId,
 			string type,
 			string cardnumber,
 			string expires,
@@ -470,7 +272,7 @@ namespace CmsData
 		}
 		public XDocument getCustomerPaymentProfile(int PeopleId)
 		{
-			var rg = Db.RecurringGivings.Single(pp => pp.PeopleId == PeopleId);
+			var rg = Db.PaymentInfos.Single(pp => pp.PeopleId == PeopleId);
 			var request = new XDocument(new XDeclaration("1.0", "utf-8", null),
 				Element("getCustomerPaymentProfileRequest",
 					Element("merchantAuthentication",
@@ -487,7 +289,7 @@ namespace CmsData
 
 		public string getCustomerProfile(int PeopleId)
 		{
-			var au = Db.RecurringGivings.Single(pp => pp.PeopleId == PeopleId);
+			var au = Db.PaymentInfos.Single(pp => pp.PeopleId == PeopleId);
 			var request = new XDocument(new XDeclaration("1.0", "utf-8", null),
 				Element("getCustomerProfileRequest",
 					Element("merchantAuthentication",
@@ -500,9 +302,9 @@ namespace CmsData
 			var x = getResponse(request.ToString());
 			return x.ToString();
 		}
-		public TransactionResponse createCustomerProfileTransactionRequest(int PeopleId, decimal amt, string description, int tranid, string cardcode)
+		public TransactionResponse createCustomerProfileTransactionRequest(int PeopleId, decimal amt, string description, int tranid)
 		{
-			var au = Db.RecurringGivings.Single(pp => pp.PeopleId == PeopleId);
+			var pi = Db.PaymentInfos.Single(pp => pp.PeopleId == PeopleId);
 			var request = new XDocument(new XDeclaration("1.0", "utf-8", null),
 			Element("createCustomerProfileTransactionRequest",
 				Element("merchantAuthentication",
@@ -513,13 +315,13 @@ namespace CmsData
 				Element("transaction",
 					Element("profileTransAuthCapture",
 						Element("amount", amt),
-						Element("customerProfileId", au.AuNetCustId),
-						Element("customerPaymentProfileId", au.AuNetCustPayId),
+						Element("customerProfileId", pi.AuNetCustId),
+						Element("customerPaymentProfileId", pi.AuNetCustPayId),
 						Element("order",
 							Element("invoiceNumber", tranid),
 							Element("description", description)
 							),
-						Element("cardCode", cardcode)
+						Element("cardCode", pi.Ccv)
 						)
 					)
 				)
@@ -544,7 +346,7 @@ namespace CmsData
 		public TransactionResponse createTransactionRequest(int PeopleId, decimal amt, string cardnumber, string expires, string description, int tranid, string cardcode)
 		{
 			var p = Db.LoadPersonById(PeopleId);
-			var au = p.RecurringGivings.First();
+			var au = p.ManagedGiving();
 			var request = new XDocument(new XDeclaration("1.0", "utf-8", null),
 			Element("createTransactionRequest",
 				Element("merchantAuthentication",

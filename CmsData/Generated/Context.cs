@@ -438,10 +438,6 @@ namespace CmsData
         partial void UpdateRecurringAmount(RecurringAmount instance);
         partial void DeleteRecurringAmount(RecurringAmount instance);
         
-        partial void InsertRecurringGiving(RecurringGiving instance);
-        partial void UpdateRecurringGiving(RecurringGiving instance);
-        partial void DeleteRecurringGiving(RecurringGiving instance);
-        
         partial void InsertRelatedFamily(RelatedFamily instance);
         partial void UpdateRelatedFamily(RelatedFamily instance);
         partial void DeleteRelatedFamily(RelatedFamily instance);
@@ -1239,12 +1235,6 @@ namespace CmsData
 		public Table< RecurringAmount> RecurringAmounts
 		{
 			get	{ return this.GetTable< RecurringAmount>(); }
-
-		}
-
-		public Table< RecurringGiving> RecurringGivings
-		{
-			get	{ return this.GetTable< RecurringGiving>(); }
 
 		}
 

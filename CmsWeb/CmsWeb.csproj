@@ -196,12 +196,12 @@
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
     <Compile Include="Areas\Finance\Controllers\ContributionsController.cs" />
     <Compile Include="Areas\Finance\Controllers\FinanceReportsController.cs" />
+    <Compile Include="Areas\Finance\Controllers\VaultController.cs" />
     <Compile Include="Areas\Finance\FinanceAreaRegistration.cs" />
     <Compile Include="Areas\Finance\Models\ContributionSearchModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
-    <Compile Include="Areas\Main\Controllers\QuickbooksController.cs" />
     <Compile Include="Areas\Main\Models\Avery\AverySpacerCell173.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddress.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddressCell.cs" />
@@ -213,7 +213,6 @@
     <Compile Include="Areas\Main\Models\Email\EmailTemplatesModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
-    <Compile Include="Areas\Main\Models\Quickbooks\QuickbooksModel.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
     <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />
     <Compile Include="Areas\Finance\Controllers\StatementsController.cs" />
@@ -388,6 +387,7 @@
     <Content Include="Content\organization.css" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
     <Compile Include="Code\Word2Pdf.cs" />
+    <Compile Include="Controllers\QuickbooksController.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailsModel.cs" />
@@ -693,6 +693,7 @@
     <Compile Include="Areas\Main\Models\Other\TaskModel.cs" />
     <Compile Include="Areas\Public\Models\VolunteerModel.cs" />
     <Compile Include="Areas\Manage\Models\VolunteersModel.cs" />
+    <Compile Include="Models\QuickbooksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1177,9 +1178,6 @@
     <Content Include="Areas\Main\Views\Person\OptoutsGrid.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\PledgeReport.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\AttendanceByGroups.cshtml" />
-    <Content Include="Areas\Main\Views\Quickbooks\Index.cshtml" />
-    <Content Include="Areas\Main\Views\Quickbooks\RequestOAuthToken.cshtml" />
-    <Content Include="Areas\Main\Views\Quickbooks\BlueDotMenu.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -1882,6 +1880,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="secrets.config" />
+    <Content Include="Views\Quickbooks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />

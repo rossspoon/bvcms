@@ -763,21 +763,5 @@ namespace CmsWeb.Areas.Main.Controllers
 					  };
 			return View(q);
 		}
-
-		[HttpPost]
-		public ActionResult QBAdd()
-		{
-			int PeopleID = int.Parse( Request["PeopleID"] );
-			QuickbooksModel.AddBusiness(PeopleID);
-			return Redirect("Index/" + PeopleID);
-		}
-
-		[HttpPost]
-		public ActionResult QBInvoice()
-		{
-			int PeopleID = int.Parse(Request["PeopleID"]);
-			QuickbooksModel.CreateInvoice(PeopleID);
-			return Redirect("Index/" + PeopleID);
-		}
 	}
 }

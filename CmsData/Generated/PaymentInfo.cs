@@ -41,6 +41,8 @@ namespace CmsData
 		
 		private string _PreferredPaymentType;
 		
+		private string _Routing;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -87,6 +89,9 @@ namespace CmsData
 		
 		partial void OnPreferredPaymentTypeChanging(string value);
 		partial void OnPreferredPaymentTypeChanged();
+		
+		partial void OnRoutingChanging(string value);
+		partial void OnRoutingChanged();
 		
     #endregion
 		public PaymentInfo()
@@ -361,6 +366,28 @@ namespace CmsData
 					this._PreferredPaymentType = value;
 					this.SendPropertyChanged("PreferredPaymentType");
 					this.OnPreferredPaymentTypeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Routing", UpdateCheck=UpdateCheck.Never, Storage="_Routing", DbType="varchar(10)")]
+		public string Routing
+		{
+			get { return this._Routing; }
+
+			set
+			{
+				if (this._Routing != value)
+				{
+				
+                    this.OnRoutingChanging(value);
+					this.SendPropertyChanging();
+					this._Routing = value;
+					this.SendPropertyChanged("Routing");
+					this.OnRoutingChanged();
 				}
 
 			}

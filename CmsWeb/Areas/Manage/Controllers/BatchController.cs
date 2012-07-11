@@ -693,7 +693,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 		[Authorize(Roles = "Finance")]
 		public ActionResult DoGiving()
 		{
-			RecurringGiving.DoAllGiving(DbUtil.Db);
+			ManagedGiving.DoAllGiving(DbUtil.Db);
 			return Content("done");
 		}
 	}

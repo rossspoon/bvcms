@@ -131,7 +131,6 @@ namespace CmsData
                         else
                             BirthYear = n;
                 }
-                var d = new Division();
             }
         }
         public DateTime? GetBirthdate()
@@ -860,6 +859,13 @@ namespace CmsData
             return c;
         }
 
+		private StringBuilder psbDefault;
+        public void UpdateValue(string field, object value)
+        {
+			if (psbDefault == null)
+				psbDefault = new StringBuilder();
+			UpdateValue(psbDefault, field, value);
+        }
         public void UpdateValue(StringBuilder psb, string field, object value)
         {
             if (value is string)
@@ -894,6 +900,11 @@ namespace CmsData
                 return;
             psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetPropertyFromText(this, field, value);
+        }
+        public void LogChanges(CMSDataContext Db, int UserPeopleId)
+        {
+			if (psbDefault != null)
+				LogChanges(Db, psbDefault, UserPeopleId);
         }
         public void LogChanges(CMSDataContext Db, StringBuilder psb, int UserPeopleId)
         {
@@ -1012,16 +1023,16 @@ namespace CmsData
             ev.IntValue = value;
             ev.IntValue2 = value2;
         }
-        public RecurringGiving RecurringGiving()
-        {
-            var rg = RecurringGivings.SingleOrDefault();
-            if (rg == null)
-            {
-                rg = new RecurringGiving();
-                RecurringGivings.Add(rg);
-            }
-            return rg;
-        }
+//        public RecurringGiving RecurringGiving()
+//        {
+//            var rg = RecurringGivings.SingleOrDefault();
+//            if (rg == null)
+//            {
+//                rg = new RecurringGiving();
+//                RecurringGivings.Add(rg);
+//            }
+//            return rg;
+//        }
         public ManagedGiving ManagedGiving()
         {
             var mg = ManagedGivings.SingleOrDefault();

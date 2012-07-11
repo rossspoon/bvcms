@@ -252,8 +252,6 @@ namespace CmsData
 		
    		private EntitySet< Attend> _Attends;
 		
-   		private EntitySet< RecurringGiving> _RecurringGivings;
-		
    		private EntitySet< CardIdentifier> _CardIdentifiers;
 		
    		private EntitySet< CheckInTime> _CheckInTimes;
@@ -285,6 +283,8 @@ namespace CmsData
    		private EntitySet< TagShare> _TagShares;
 		
    		private EntitySet< TaskListOwner> _TaskListOwners;
+		
+   		private EntitySet< Transaction> _Transactions;
 		
    		private EntitySet< TransactionPerson> _TransactionPeople;
 		
@@ -707,8 +707,6 @@ namespace CmsData
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
-			this._RecurringGivings = new EntitySet< RecurringGiving>(new Action< RecurringGiving>(this.attach_RecurringGivings), new Action< RecurringGiving>(this.detach_RecurringGivings)); 
-			
 			this._CardIdentifiers = new EntitySet< CardIdentifier>(new Action< CardIdentifier>(this.attach_CardIdentifiers), new Action< CardIdentifier>(this.detach_CardIdentifiers)); 
 			
 			this._CheckInTimes = new EntitySet< CheckInTime>(new Action< CheckInTime>(this.attach_CheckInTimes), new Action< CheckInTime>(this.detach_CheckInTimes)); 
@@ -740,6 +738,8 @@ namespace CmsData
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
 			this._TaskListOwners = new EntitySet< TaskListOwner>(new Action< TaskListOwner>(this.attach_TaskListOwners), new Action< TaskListOwner>(this.detach_TaskListOwners)); 
+			
+			this._Transactions = new EntitySet< Transaction>(new Action< Transaction>(this.attach_Transactions), new Action< Transaction>(this.detach_Transactions)); 
 			
 			this._TransactionPeople = new EntitySet< TransactionPerson>(new Action< TransactionPerson>(this.attach_TransactionPeople), new Action< TransactionPerson>(this.detach_TransactionPeople)); 
 			
@@ -3381,16 +3381,6 @@ namespace CmsData
    		}
 
 		
-   		[Association(Name="FK_AuthorizeNetIds_People", Storage="_RecurringGivings", OtherKey="PeopleId")]
-   		public EntitySet< RecurringGiving> RecurringGivings
-   		{
-   		    get { return this._RecurringGivings; }
-
-			set	{ this._RecurringGivings.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="FK_CardIdentifiers_People", Storage="_CardIdentifiers", OtherKey="PeopleId")]
    		public EntitySet< CardIdentifier> CardIdentifiers
    		{
@@ -3547,6 +3537,16 @@ namespace CmsData
    		    get { return this._TaskListOwners; }
 
 			set	{ this._TaskListOwners.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_Transaction_People", Storage="_Transactions", OtherKey="LoginPeopleId")]
+   		public EntitySet< Transaction> Transactions
+   		{
+   		    get { return this._Transactions; }
+
+			set	{ this._Transactions.Assign(value); }
 
    		}
 
@@ -4642,19 +4642,6 @@ namespace CmsData
 		}
 
 		
-		private void attach_RecurringGivings(RecurringGiving entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = this;
-		}
-
-		private void detach_RecurringGivings(RecurringGiving entity)
-		{
-			this.SendPropertyChanging();
-			entity.Person = null;
-		}
-
-		
 		private void attach_CardIdentifiers(CardIdentifier entity)
 		{
 			this.SendPropertyChanging();
@@ -4857,6 +4844,19 @@ namespace CmsData
 		}
 
 		private void detach_TaskListOwners(TaskListOwner entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_Transactions(Transaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_Transactions(Transaction entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

@@ -91,6 +91,8 @@ namespace CmsData
 		
 		private bool? _Fromsage;
 		
+		private int? _LoginPeopleId;
+		
    		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
@@ -99,6 +101,8 @@ namespace CmsData
    		private EntitySet< Transaction> _Transactions;
 		
     	
+		private EntityRef< Person> _Person;
+		
 		private EntityRef< Transaction> _OriginalTransaction;
 		
 	#endregion
@@ -219,6 +223,9 @@ namespace CmsData
 		partial void OnFromsageChanging(bool? value);
 		partial void OnFromsageChanged();
 		
+		partial void OnLoginPeopleIdChanging(int? value);
+		partial void OnLoginPeopleIdChanged();
+		
     #endregion
 		public Transaction()
 		{
@@ -229,6 +236,8 @@ namespace CmsData
 			
 			this._Transactions = new EntitySet< Transaction>(new Action< Transaction>(this.attach_Transactions), new Action< Transaction>(this.detach_Transactions)); 
 			
+			
+			this._Person = default(EntityRef< Person>); 
 			
 			this._OriginalTransaction = default(EntityRef< Transaction>); 
 			
@@ -1055,6 +1064,31 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="LoginPeopleId", UpdateCheck=UpdateCheck.Never, Storage="_LoginPeopleId", DbType="int")]
+		public int? LoginPeopleId
+		{
+			get { return this._LoginPeopleId; }
+
+			set
+			{
+				if (this._LoginPeopleId != value)
+				{
+				
+					if (this._Person.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnLoginPeopleIdChanging(value);
+					this.SendPropertyChanging();
+					this._LoginPeopleId = value;
+					this.SendPropertyChanged("LoginPeopleId");
+					this.OnLoginPeopleIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -1093,6 +1127,48 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_Transaction_People", Storage="_Person", ThisKey="LoginPeopleId", IsForeignKey=true)]
+		public Person Person
+		{
+			get { return this._Person.Entity; }
+
+			set
+			{
+				Person previousValue = this._Person.Entity;
+				if (((previousValue != value) 
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Person.Entity = null;
+						previousValue.Transactions.Remove(this);
+					}
+
+					this._Person.Entity = value;
+					if (value != null)
+					{
+						value.Transactions.Add(this);
+						
+						this._LoginPeopleId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._LoginPeopleId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="Transactions__OriginalTransaction", Storage="_OriginalTransaction", ThisKey="OriginalId", IsForeignKey=true)]
 		public Transaction OriginalTransaction
 		{

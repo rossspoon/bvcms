@@ -14,16 +14,14 @@
         $.post($(this).attr('href'), q, function (ret) {
             if (ret.error) {
                 $('#validatecoupon').text(ret.error);
-            }
-            else if (ret.amt) {
+            } else if (ret.amt) {
                 $('#validatecoupon').text('');
                 $('#amt').text(ret.amt);
                 $('#pf_AmtToPay').val(ret.tiamt);
                 $('#pf_Amtdue').val(ret.amtdue);
                 $('#pf_Coupon').val('');
                 $('td.coupon').html(ret.msg);
-            }
-            else {
+            } else {
                 window.location = ret.confirm;
             }
         });
@@ -61,11 +59,9 @@
         var checked_status = this.checked;
         if (checked_status == true) {
             agreeterms = true;
-            $("#Submit").removeAttr("disabled");
-            $("a.submitbutton").removeAttr("disabled");
+            $.EnableSubmit();
             $("#ApplyCoupon").removeAttr("disabled");
-        }
-        else {
+        } else {
             agreeterms = false;
             $("#Submit").attr("disabled", "disabled");
             $("a.submitbutton").attr("disabled", "disabled");
@@ -75,15 +71,18 @@
     $.ShowPaymentInfo = function (v) {
         $(".Card").hide();
         $(".Bank").hide();
-        $("#Submit").removeAttr("disabled");
         if (v === 'C')
             $(".Card").show();
         else if (v === 'B')
             $(".Bank").show();
-        if (v)
+        $("#Submit").attr("disabled", "true");
+        $.EnableSubmit();
+    };
+    $.EnableSubmit = function () {
+        if ($("#pf_Type").val() && agreeterms) {
             $("#Submit").removeAttr("disabled");
-        else
-            $("#Submit").attr("disabled", "true");
+            $("a.submitbutton").removeAttr("disabled");
+        }
     };
     $("input[name=Type]").live("change", function () {
         var v = $("input[name=Type]:checked").val();
@@ -111,7 +110,6 @@
             "pf.Zip": { required: true, maxlength: 15 },
             "pf.Email": { required: true, maxlength: 80 },
             "pf.Phone": { maxlength: 50 },
-            "pf.CreditCard": { digits: true },
             "pf.CCV": { digits: true, maxlength: 4 },
             "pf.Expires": { digits: true, maxlength: 4 }
         }

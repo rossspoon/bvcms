@@ -52,93 +52,9 @@ namespace CmsData
 			}
 			return t;
 		}
-		public void storeVault(int PeopleId,
-			string semievery, int? day1, int? day2, int? everyn, string period,
-			DateTime? startwhen, DateTime? stopwhen,
+		public void storeVault(int PeopleId, 
 			string type, string cardnumber, string expires, string cardcode,
-			string routing, string account, bool testing)
-		{
-			var p = Db.LoadPersonById(PeopleId);
-			var rg = p.RecurringGiving();
-			var wc = new WebClient();
-			wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVault.asmx/";
-			var coll = new NameValueCollection();
-			coll["M_ID"] = login;
-			coll["M_KEY"] = key;
-
-			XElement resp = null;
-			if (type == "C")
-			{
-				coll["CARDNUMBER"] = cardnumber;
-				coll["EXPIRATION_DATE"] = expires;
-
-				if (rg.SageCardGuid == null)
-				{
-					var b = wc.UploadValues("INSERT_CREDIT_CARD_DATA", "POST", coll);
-					var ret = Encoding.ASCII.GetString(b);
-					resp = getResponse(ret);
-					rg.SageCardGuid = Guid.Parse(resp.Element("GUID").Value);
-				}
-				else
-				{
-					coll["GUID"] = rg.SageCardGuid.ToString().Replace("-", "");
-					if (!cardnumber.StartsWith("X"))
-					{
-						var b = wc.UploadValues("UPDATE_CREDIT_CARD_DATA", "POST", coll);
-						var ret = Encoding.ASCII.GetString(b);
-						resp = getResponse(ret);
-					}
-					else
-					{
-						var b = wc.UploadValues("UPDATE_CREDIT_CARD_EXPIRATION_DATE", "POST", coll);
-						var ret = Encoding.ASCII.GetString(b);
-						resp = getResponse(ret);
-					}
-				}
-			}
-			else
-			{
-				coll["ROUTING_NUMBER"] = routing; // 064000020
-				coll["ACCOUNT_NUMBER"] = account; // my account number
-				coll["C_ACCT_TYPE"] = "DDA";
-
-				if (rg.SageBankGuid == null)
-				{
-					var b = wc.UploadValues("INSERT_VIRTUAL_CHECK_DATA", "POST", coll);
-					var ret = Encoding.ASCII.GetString(b);
-					resp = getResponse(ret);
-					rg.SageBankGuid = Guid.Parse(resp.Element("GUID").Value);
-				}
-				else
-				{
-					if (!account.StartsWith("X"))
-					{
-						coll["GUID"] = rg.SageBankGuid.ToString().Replace("-", "");
-						var b = wc.UploadValues("UPDATE_VIRTUAL_CHECK_DATA", "POST", coll);
-						var ret = Encoding.ASCII.GetString(b);
-						resp = getResponse(ret);
-					}
-				}
-			}
-			rg.SemiEvery = semievery;
-			rg.Day1 = day1;
-			rg.Day2 = day2;
-			rg.EveryN = everyn;
-			rg.Period = period;
-			rg.StartWhen = startwhen;
-			rg.StopWhen = stopwhen;
-			rg.Type = type;
-			rg.MaskedAccount = Util.MaskAccount(account);
-			rg.MaskedCard = Util.MaskCC(cardnumber);
-			rg.Ccv = cardcode;
-			rg.Expires = expires;
-			rg.Testing = testing;
-			rg.NextDate = rg.FindNextDate(startwhen.Value);
-			Db.SubmitChanges();
-		}
-		public void storeVault(int PeopleId,
-			string type, string cardnumber, string expires, string cardcode,
-			string routing, string account)
+			string routing, string account, bool giving = false)
 		{
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
@@ -207,12 +123,17 @@ namespace CmsData
 			pi.Ccv = cardcode;
 			pi.Expires = expires;
 			pi.Testing = testing;
+			if (giving)
+				pi.PreferredGivingType = type;
+			else
+				pi.PreferredPaymentType = type;
 			Db.SubmitChanges();
 		}
 		public void deleteVaultData(int PeopleId)
 		{
 			var p = Db.LoadPersonById(PeopleId);
-			var rg = p.RecurringGiving();
+			var rg = p.ManagedGiving();
+			var pi = p.PaymentInfo();
 			var wc = new WebClient();
 			wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVault.asmx/";
 			var coll = new NameValueCollection();
@@ -221,24 +142,24 @@ namespace CmsData
 
 			XElement resp = null;
 
-			if (rg.SageCardGuid.HasValue)
+			if (pi.SageCardGuid.HasValue)
 			{
-				coll["GUID"] = rg.SageCardGuid.ToString().Replace("-", "");
+				coll["GUID"] = pi.SageCardGuid.ToString().Replace("-", "");
 				var b = wc.UploadValues("DELETE_DATA", "POST", coll);
 				var ret = Encoding.ASCII.GetString(b);
 			}
-			if (rg.SageBankGuid.HasValue)
+			if (pi.SageBankGuid.HasValue)
 			{
-				coll["GUID"] = rg.SageBankGuid.ToString().Replace("-", "");
+				coll["GUID"] = pi.SageBankGuid.ToString().Replace("-", "");
 				var b = wc.UploadValues("DELETE_DATA", "POST", coll);
 				var ret = Encoding.ASCII.GetString(b);
 			}
 
-			rg.SageCardGuid = null;
-			rg.SageBankGuid = null;
-			rg.MaskedCard = null;
-			rg.MaskedAccount = null;
-			rg.Ccv = null;
+			pi.SageCardGuid = null;
+			pi.SageBankGuid = null;
+			pi.MaskedCard = null;
+			pi.MaskedAccount = null;
+			pi.Ccv = null;
 			Db.SubmitChanges();
 		}
 
@@ -396,13 +317,13 @@ namespace CmsData
 				return new TransactionResponse { Approved = false, Message = ex.Message, };
 			}
 		}
-		public TransactionResponse createVaultTransactionRequest(int PeopleId, decimal amt, string description, int tranid)
+		public TransactionResponse createVaultTransactionRequest(int PeopleId, decimal amt, string description, int tranid, string type)
 		{
 			var p = Db.LoadPersonById(PeopleId);
-			var rg = p.RecurringGivings.First();
+			var pi = p.PaymentInfo();
 
 			XElement resp = null;
-			if (rg.Type == "C")
+			if (type == "C")
 			{
 				var wc = new WebClient();
 				wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVaultBankcard.asmx/";
@@ -410,7 +331,7 @@ namespace CmsData
 
 				coll["M_ID"] = login;
 				coll["M_KEY"] = key;
-				var guid = rg.SageCardGuid.ToString().Replace("-", "");
+				var guid = pi.SageCardGuid.ToString().Replace("-", "");
 				coll["GUID"] = guid;
 				coll["C_NAME"] = p.FirstName + " " + p.LastName;
 				coll["C_ADDRESS"] = p.PrimaryAddress;
@@ -423,7 +344,7 @@ namespace CmsData
 				coll["T_ORDERNUM"] = tranid.ToString();
 				coll["C_TELEPHONE"] = p.HomePhone;
 				coll["T_CUSTOMER_NUMBER"] = p.HomePhone;
-				coll["C_CVV"] = rg.Ccv;
+				coll["C_CVV"] = pi.Ccv;
 				AddShipping(coll);
 
 				var b = wc.UploadValues("VAULT_BANKCARD_SALE_CVV", "POST", coll);
@@ -438,7 +359,7 @@ namespace CmsData
 
 				coll["M_ID"] = login;
 				coll["M_KEY"] = key;
-				var guid = rg.SageBankGuid.ToString().Replace("-", "");
+				var guid = pi.SageBankGuid.ToString().Replace("-", "");
 				coll["GUID"] = guid;
 				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", ""); // 1031360711, 1031412710
 				coll["C_FIRST_NAME"] = p.FirstName;

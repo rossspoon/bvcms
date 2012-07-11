@@ -237,7 +237,7 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             if (keys.Contains("campusid"))
                 if (m.campusid > 0)
-                    p.CampusId = m.campusid;
+	                UpdateField(psb, p, "CampusId", m.campusid);
             if (m.AskChurch)
                 if (keys.Contains("activeother"))
                     if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
