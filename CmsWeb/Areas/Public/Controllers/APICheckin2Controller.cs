@@ -510,13 +510,14 @@ namespace CmsWeb.Areas.Public.Controllers
 
 		public ContentResult FetchGuestCount(string id)
 		{
+			Util.NoCache(Response);
 			DateTime dt = DateTime.Now;
-			DateTime dtStart = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0);
-			DateTime dtEnd = new DateTime(dt.Year, dt.Month, dt.Day, 11, 59, 59);
+			var dtStart = dt.Date;
+			var dtEnd = dt.Date.AddHours(24);
 
 			var count = (from e in DbUtil.Db.CheckInTimes
 						 where e.CheckInTimeX >= dtStart
-						 where e.CheckInTimeX <= dtEnd
+						 where e.CheckInTimeX < dtEnd
 						 where e.GuestOfPersonID == id.ToInt()
 						 select e).Count();
 
@@ -525,7 +526,7 @@ namespace CmsWeb.Areas.Public.Controllers
 
 		[HttpPost]
 		[ValidateInput(false)]
-		public ContentResult BuildingCheckin(int id, int? guestof)
+		public ContentResult BuildingCheckin(int id, string location, int? guestof)
 		{
 			if (!Authenticate())
 				return Content("not authorized");
@@ -546,7 +547,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			var xs = new XmlSerializer(typeof(List<Activity>), new XmlRootAttribute("Activities"));
 			var activities = xs.Deserialize(new StringReader(s)) as List<Activity>;
 
-			var ac = new CheckInTime() { PeopleId = id, CheckInTimeX = DateTime.Now, GuestOfId = guestof, GuestOfPersonID = (g != null ? g.PeopleId ?? 0 : 0) };
+			var ac = new CheckInTime() { PeopleId = id, Location = location, CheckInTimeX = DateTime.Now, GuestOfId = guestof, GuestOfPersonID = (g != null ? g.PeopleId ?? 0 : 0)};
 
 			foreach (var a in activities)
 				ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name });

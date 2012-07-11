@@ -303,6 +303,9 @@ namespace CmsWeb.Models
                         Leader = pt != null ? pt.Person.Name : pc.Organization.LeaderName,
                         OrgName = pc.Organization.OrganizationName,
                         Schedule = tm.Hour + ":" + tm.Minute.ToString().PadLeft(2, '0'),
+						HomePhone = om.Person.HomePhone,
+						CellPhone1 = om.Person.Family.HeadOfHousehold.CellPhone,
+						CellPhone2 = om.Person.Family.HeadOfHouseholdSpouse.CellPhone,
                     };
             return q;
         }

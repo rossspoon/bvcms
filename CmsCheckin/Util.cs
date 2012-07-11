@@ -392,10 +392,15 @@ namespace CmsCheckin
 			try
 			{
 				var wc = CreateWebClient();
-				var s = "Checkin2/FetchGuestCount/" + PersonID;
+				var coll = new NameValueCollection();
+				coll.Add("id", PersonID.ToString());
+				var s = "Checkin2/FetchGuestCount/";
 				var url = new Uri(new Uri(Program.URL), s);
-				var ret = wc.DownloadString(url);
-				return ret.ToInt();
+				var resp = wc.UploadValues(url, "POST", coll);
+#if DEBUG
+				//System.Threading.Thread.Sleep(1500);
+#endif
+				return Encoding.ASCII.GetString(resp).ToInt();
 			}
 			catch (Exception ex) {}
 
@@ -412,7 +417,7 @@ namespace CmsCheckin
 
 				var bits = Encoding.UTF8.GetBytes(sw.ToString());
 				var wc = CreateWebClient();
-				var s = "Checkin2/BuildingCheckin/" + pid;
+				var s = "Checkin2/BuildingCheckin/{0}?location={1}".Fmt(pid,Program.Building) ;
 				var g = Program.GuestOf();
 				if (g != null)
 					s += "?guestof=" + g.CheckinId;
