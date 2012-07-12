@@ -105,8 +105,8 @@ namespace CmsCheckin
 				try
 				{
 					Program.Building = building.Text;
-					Program.Activities = Util.FetchBuildingActivities();
-					if (Program.Activities.Count == 0)
+					Program.BuildingInfo = Util.FetchBuildingInfo();
+					if (Program.BuildingInfo.Activities.Count == 0)
 					{
 						CancelClose = true;
 						return;

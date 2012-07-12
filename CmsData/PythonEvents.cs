@@ -31,5 +31,9 @@ namespace CmsData
                 "TASK: " + description,
                 Task.TaskLink(Db, description, t.Id) + "<br/>" + p.Name);
 		}
+		public void UpdateField(Person p, string field, object value)
+		{
+			p.UpdateValue(field, value);
+		}
 	}
 }

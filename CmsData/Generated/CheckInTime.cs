@@ -27,6 +27,8 @@ namespace CmsData
 		
 		private string _Location;
 		
+		private int _GuestOfPersonID;
+		
    		
    		private EntitySet< CheckInActivity> _CheckInActivities;
 		
@@ -58,6 +60,9 @@ namespace CmsData
 		
 		partial void OnLocationChanging(string value);
 		partial void OnLocationChanged();
+		
+		partial void OnGuestOfPersonIDChanging(int value);
+		partial void OnGuestOfPersonIDChanged();
 		
     #endregion
 		public CheckInTime()
@@ -187,6 +192,28 @@ namespace CmsData
 					this._Location = value;
 					this.SendPropertyChanged("Location");
 					this.OnLocationChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="GuestOfPersonID", UpdateCheck=UpdateCheck.Never, Storage="_GuestOfPersonID", DbType="int NOT NULL")]
+		public int GuestOfPersonID
+		{
+			get { return this._GuestOfPersonID; }
+
+			set
+			{
+				if (this._GuestOfPersonID != value)
+				{
+				
+                    this.OnGuestOfPersonIDChanging(value);
+					this.SendPropertyChanging();
+					this._GuestOfPersonID = value;
+					this.SendPropertyChanged("GuestOfPersonID");
+					this.OnGuestOfPersonIDChanged();
 				}
 
 			}

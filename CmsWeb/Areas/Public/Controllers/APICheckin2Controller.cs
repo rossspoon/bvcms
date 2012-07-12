@@ -215,58 +215,58 @@ namespace CmsWeb.Areas.Public.Controllers
             p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId ?? 0);
             p.Family.LogChanges(DbUtil.Db, fsb, p.PeopleId, Util.UserPeopleId ?? 0);
 
-            var rr = p.GetRecReg();
-            if (keys.Contains("allergies"))
-                if (m.allergies != rr.MedicalDescription)
-                    p.SetRecReg().MedicalDescription = m.allergies;
-            if (keys.Contains("grade"))
-                if (m.AskGrade)
-                    if (m.grade.ToInt2() != p.Grade)
-                        p.Grade = m.grade.ToInt2();
-            if (m.AskEmFriend)
-            {
-                if (keys.Contains("parent"))
-                    if (m.parent != rr.Mname)
-                        p.SetRecReg().Mname = m.parent;
-                if (keys.Contains("emfriend"))
-                    if (m.emfriend != rr.Emcontact)
-                        p.SetRecReg().Emcontact = m.emfriend;
-                if (keys.Contains("emphone"))
-                    if (m.emphone != rr.Emphone)
-                        p.SetRecReg().Emphone = m.emphone;
-            }
-            if (keys.Contains("campusid"))
-                if (m.campusid > 0)
-                    p.CampusId = m.campusid;
-            if (m.AskChurch)
-                if (keys.Contains("activeother"))
-                    if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
-                        p.SetRecReg().ActiveInAnotherChurch = m.activeother.ToBool();
-            if (m.AskChurchName)
-                if (keys.Contains("churchname"))
-                    p.OtherPreviousChurch = m.churchname;
-            DbUtil.Db.SubmitChanges();
-        }
-        private void UpdateField(StringBuilder fsb, Family f, string prop, string value)
-        {
-            f.UpdateValue(fsb, prop, value);
-        }
-        void UpdateField(StringBuilder psb, Person p, string prop, string value)
-        {
-            p.UpdateValue(psb, prop, value);
-        }
-        void UpdateField(StringBuilder psb, Person p, string prop, object value)
-        {
-            p.UpdateValue(psb, prop, value);
-        }
-        public class CampusItem
-        {
-            public CmsData.Campu Campus { get; set; }
-            public string password { get; set; }
-        }
-        public ActionResult Campuses()
-        {
-            if (!Authenticate())
+			var rr = p.GetRecReg();
+			if (keys.Contains("allergies"))
+				if (m.allergies != rr.MedicalDescription)
+					p.SetRecReg().MedicalDescription = m.allergies;
+			if (keys.Contains("grade"))
+				if (m.AskGrade)
+					if (m.grade.ToInt2() != p.Grade)
+						p.Grade = m.grade.ToInt2();
+			if (m.AskEmFriend)
+			{
+				if (keys.Contains("parent"))
+					if (m.parent != rr.Mname)
+						p.SetRecReg().Mname = m.parent;
+				if (keys.Contains("emfriend"))
+					if (m.emfriend != rr.Emcontact)
+						p.SetRecReg().Emcontact = m.emfriend;
+				if (keys.Contains("emphone"))
+					if (m.emphone != rr.Emphone)
+						p.SetRecReg().Emphone = m.emphone;
+			}
+			if (keys.Contains("campusid"))
+				if (m.campusid > 0)
+					UpdateField(psb, p, "CampusId", m.campusid);
+			if (m.AskChurch)
+				if (keys.Contains("activeother"))
+					if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
+						p.SetRecReg().ActiveInAnotherChurch = m.activeother.ToBool();
+			if (m.AskChurchName)
+				if (keys.Contains("churchname"))
+					p.OtherPreviousChurch = m.churchname;
+			DbUtil.Db.SubmitChanges();
+		}
+		private void UpdateField(StringBuilder fsb, Family f, string prop, string value)
+		{
+			f.UpdateValue(fsb, prop, value);
+		}
+		void UpdateField(StringBuilder psb, Person p, string prop, string value)
+		{
+			p.UpdateValue(psb, prop, value);
+		}
+		void UpdateField(StringBuilder psb, Person p, string prop, object value)
+		{
+			p.UpdateValue(psb, prop, value);
+		}
+		public class CampusItem
+		{
+			public CmsData.Campu Campus { get; set; }
+			public string password { get; set; }
+		}
+		public ActionResult Campuses()
+		{
+			if (!Authenticate())
 			{
 				DbUtil.LogActivity("checkin {0} not authenticated".Fmt(AccountModel.UserName2));
                 return Content("not authorized");
@@ -506,38 +506,66 @@ namespace CmsWeb.Areas.Public.Controllers
             var m = new CheckInModel();
             return Content(DbUtil.Db.Content("BuildingCheckin-{0}.xml".Fmt(id), 
 				"<BuildingActivity/>"), "text/xml");
-        }
-        [HttpPost]
-        [ValidateInput(false)]
-        public ContentResult BuildingCheckin(int id, int? guestof)
-        {
-            if (!Authenticate())
-                return Content("not authorized");
+		}
 
-            var reader = new StreamReader(Request.InputStream);
-            string s = reader.ReadToEnd();
+		public ContentResult FetchGuestCount(string id)
+		{
+			Util.NoCache(Response);
+			DateTime dt = DateTime.Now;
+			var dtStart = dt.Date;
+			var dtEnd = dt.Date.AddHours(24);
+
+			var count = (from e in DbUtil.Db.CheckInTimes
+						 where e.CheckInTimeX >= dtStart
+						 where e.CheckInTimeX < dtEnd
+						 where e.GuestOfPersonID == id.ToInt()
+						 select e).Count();
+
+			return Content(count.ToString());
+		}
+
+		[HttpPost]
+		[ValidateInput(false)]
+		public ContentResult BuildingCheckin(int id, string location, int? guestof)
+		{
+			if (!Authenticate())
+				return Content("not authorized");
+
+			CheckInTime g = null;
+
+			if (guestof != null)
+			{
+				g = (from e in DbUtil.Db.CheckInTimes
+					 where e.Id == guestof
+					 select e).FirstOrDefault();
+			}
+
+			var reader = new StreamReader(Request.InputStream);
+			string s = reader.ReadToEnd();
 			if (!s.HasValue())
 				s = "<Activities />";
 			var xs = new XmlSerializer(typeof(List<Activity>), new XmlRootAttribute("Activities"));
 			var activities = xs.Deserialize(new StringReader(s)) as List<Activity>;
-			var ac = new CheckInTime() { PeopleId = id, CheckInTimeX = DateTime.Now, GuestOfId = guestof};
+
+			var ac = new CheckInTime() { PeopleId = id, Location = location, CheckInTimeX = DateTime.Now, GuestOfId = guestof, GuestOfPersonID = (g != null ? g.PeopleId ?? 0 : 0)};
+
 			foreach (var a in activities)
-				ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name});
-        	DbUtil.Db.CheckInTimes.InsertOnSubmit(ac);
+				ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name });
+			DbUtil.Db.CheckInTimes.InsertOnSubmit(ac);
 			DbUtil.Db.SubmitChanges();
 			foreach (var a in activities)
 			{
 				if (a.org > 0)
 					Attend.RecordAttend(DbUtil.Db, id, a.org, true, DateTime.Today);
 			}
-        	return Content(ac.Id.ToString());
-        }
-        [HttpPost]
-        [ValidateInput(false)]
-        public ContentResult BuildingUnCheckin(int id)
-        {
-            if (!Authenticate())
-                return Content("not authorized");
+			return Content(ac.Id.ToString());
+		}
+		[HttpPost]
+		[ValidateInput(false)]
+		public ContentResult BuildingUnCheckin(int id)
+		{
+			if (!Authenticate())
+				return Content("not authorized");
 
 			var ct = DbUtil.Db.CheckInTimes.SingleOrDefault(cc => cc.Id == id);
 			DbUtil.Db.CheckInActivities.DeleteAllOnSubmit(ct.CheckInActivities);

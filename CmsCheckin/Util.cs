@@ -386,6 +386,27 @@ namespace CmsCheckin
 			{
 			}
 		}
+
+		public static int GetGuestCount( int PersonID )
+		{
+			try
+			{
+				var wc = CreateWebClient();
+				var coll = new NameValueCollection();
+				coll.Add("id", PersonID.ToString());
+				var s = "Checkin2/FetchGuestCount/";
+				var url = new Uri(new Uri(Program.URL), s);
+				var resp = wc.UploadValues(url, "POST", coll);
+#if DEBUG
+				//System.Threading.Thread.Sleep(1500);
+#endif
+				return Encoding.ASCII.GetString(resp).ToInt();
+			}
+			catch (Exception ex) {}
+
+			return 0;
+		}
+
 		public static int BuildingCheckin(int pid, List<Activity> activities)
 		{
 			try
@@ -396,10 +417,10 @@ namespace CmsCheckin
 
 				var bits = Encoding.UTF8.GetBytes(sw.ToString());
 				var wc = CreateWebClient();
-				var s = "Checkin2/BuildingCheckin/" + pid;
+				var s = "Checkin2/BuildingCheckin/{0}?location={1}".Fmt(pid,Program.Building) ;
 				var g = Program.GuestOf();
 				if (g != null)
-					s += "?guestof=" + g.pid;
+					s += "?guestof=" + g.CheckinId;
 				var url = new Uri(new Uri(Program.URL), s);
 				var ret = wc.UploadData(url, "POST", bits);
 				return Encoding.ASCII.GetString(ret).ToInt();
@@ -515,16 +536,18 @@ namespace CmsCheckin
 			var j = (PrintJobs)xs.Deserialize(sr);
 			return j;
 		}
-		public static List<Activity> FetchBuildingActivities()
+
+		public static BaseBuildingInfo FetchBuildingInfo()
 		{
 			var wc = Util.CreateWebClient();
 			var url = new Uri(new Uri(Program.URL), "Checkin2/FetchBuildingActivities/" + Program.Building);
 			var xml = wc.DownloadString(url);
-			var xs = new XmlSerializer(typeof(List<Activity>), new XmlRootAttribute("BuildingCheckin"));
+			var xs = new XmlSerializer(typeof(BaseBuildingInfo), new XmlRootAttribute("BuildingCheckin"));
 			var sr = new StringReader(xml);
-			var a = (List<Activity>)xs.Deserialize(sr);
+			var a = (BaseBuildingInfo)xs.Deserialize(sr);
 			return a;
 		}
+
 		public static Image GetImage(int peopleid)
 		{
 			var wc = Util.CreateWebClient();

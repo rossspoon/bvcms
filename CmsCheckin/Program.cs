@@ -131,7 +131,7 @@ namespace CmsCheckin
         public static string PrintMode { get; set; }
         public static bool BuildingMode { get; set; }
         public static string Building { get; set; }
-    	public static List<Activity> Activities { get; set; }
+    	public static BaseBuildingInfo BuildingInfo { get; set; }
 		public static AddGuests addguests;
 
 		public static PersonInfo GuestOf()
