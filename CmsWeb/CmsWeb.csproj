@@ -1134,6 +1134,7 @@
     <Content Include="Areas\Main\Views\Person\OptoutsGrid.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\PledgeReport.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\AttendanceByGroups.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\ManagedGiving.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />
@@ -2201,6 +2202,7 @@
   <ItemGroup>
     <Folder Include="Areas\Dialog\Views\Shared\" />
     <Folder Include="Areas\Finance\Views\Shared\" />
+    <Folder Include="Areas\Main\Views\Export\" />
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\OnlineReg\Models\Payments\" />

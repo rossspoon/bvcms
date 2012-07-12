@@ -160,7 +160,7 @@ namespace CmsWeb.Models
 				ModelState.AddModelError("Every", "Must Choose Payment Frequency");
 			if (!StartWhen.HasValue)
 				ModelState.AddModelError("StartWhen", "StartDate must have a value");
-			else if (StartWhen < DateTime.Today)
+			else if (StartWhen <= DateTime.Today)
 				ModelState.AddModelError("StartWhen", "StartDate must occur after today");
 			else if (StopWhen.HasValue && StopWhen <= StartWhen)
 				ModelState.AddModelError("StopWhen", "StopDate must occur after StartDate");

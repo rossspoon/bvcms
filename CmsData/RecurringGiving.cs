@@ -11,6 +11,8 @@ namespace CmsData
     {
         public DateTime FindNextDate(DateTime ndt)
         {
+			if (ndt.Date == DateTime.Today)
+				ndt = ndt.AddDays(1).Date;
             if (SemiEvery == "S")
             {
                 var dt1 = new DateTime(ndt.Year, ndt.Month, Day1.Value);
