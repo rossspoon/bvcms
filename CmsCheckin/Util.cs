@@ -397,14 +397,34 @@ namespace CmsCheckin
 				var s = "Checkin2/FetchGuestCount/";
 				var url = new Uri(new Uri(Program.URL), s);
 				var resp = wc.UploadValues(url, "POST", coll);
-#if DEBUG
-				//System.Threading.Thread.Sleep(1500);
-#endif
 				return Encoding.ASCII.GetString(resp).ToInt();
 			}
 			catch (Exception ex) {}
 
 			return 0;
+		}
+
+		public static bool AddIDCard(string cardID, int personID)
+		{
+			try
+			{
+				var c = new NameValueCollection();
+				c.Add("cardid", cardID);
+				c.Add("personid", personID.ToString());
+				c.Add("overwrite", "true");
+
+				var path = "Checkin2/AddIDCard/";
+				var url = new Uri(new Uri(Program.URL), path);
+
+				var wc = CreateWebClient();
+				var resp = wc.UploadValues(url, "POST", c);
+
+				int ret = Encoding.ASCII.GetString(resp).ToInt();
+				return (ret == 0);
+			}
+			catch (Exception ex) { }
+
+			return false;
 		}
 
 		public static int BuildingCheckin(int pid, List<Activity> activities)
@@ -420,7 +440,7 @@ namespace CmsCheckin
 				var s = "Checkin2/BuildingCheckin/{0}?location={1}".Fmt(pid,Program.Building) ;
 				var g = Program.GuestOf();
 				if (g != null)
-					s += "?guestof=" + g.CheckinId;
+					s += "&guestof=" + g.CheckinId;
 				var url = new Uri(new Uri(Program.URL), s);
 				var ret = wc.UploadData(url, "POST", bits);
 				return Encoding.ASCII.GetString(ret).ToInt();

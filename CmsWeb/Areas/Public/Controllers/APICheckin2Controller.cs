@@ -524,6 +524,43 @@ namespace CmsWeb.Areas.Public.Controllers
 			return Content(count.ToString());
 		}
 
+		public const int ADD_ERROR_NONE = 0;
+		public const int ADD_ERROR_EXISTS = 1;
+		public const int ADD_ERROR_OTHER = 2;
+
+		[HttpPost]
+		[ValidateInput(false)]
+		public ContentResult AddIDCard(string cardid, int personid, bool overwrite = false )
+		{
+			int error = ADD_ERROR_NONE;
+
+			var card = (from e in DbUtil.Db.CardIdentifiers
+						where e.Id == cardid
+					   select e).FirstOrDefault();
+
+			if (card == null)
+			{
+				CardIdentifier ci = new CardIdentifier();
+				ci.Id = cardid;
+				ci.PeopleId = personid;
+
+				DbUtil.Db.CardIdentifiers.InsertOnSubmit(ci);
+				DbUtil.Db.SubmitChanges();
+			}
+			else if (overwrite == true)
+			{
+				card.PeopleId = personid;
+				DbUtil.Db.SubmitChanges();
+			}
+			else
+			{
+				error = ADD_ERROR_EXISTS;
+			}
+
+			return Content(error.ToString());
+			// Error return: 0 = None, 1 = Exists, 2 = Other
+		}
+
 		[HttpPost]
 		[ValidateInput(false)]
 		public ContentResult BuildingCheckin(int id, string location, int? guestof)

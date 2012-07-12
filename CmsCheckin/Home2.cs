@@ -86,6 +86,7 @@ namespace CmsCheckin
             BackSpace();
         }
 
+		/*
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\b')
@@ -99,6 +100,18 @@ namespace CmsCheckin
             }
             e.Handled = true;
         }
+		*/
+
+		private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == '\r')
+			{
+				e.Handled = true;
+				lastnumber = textBox1.Text;
+				Go();
+			}
+		}
+
         private void KeyStroke(char d)
         {
             lastbutton = null;
@@ -144,7 +157,7 @@ namespace CmsCheckin
             var ph = e.Argument as string;
 			var lb = Program.attendant.NameDisplay;
 			lb.SetPropertyThreadSafe(() => lb.Text, "finding " + ph);
-            var x = this.GetDocument("Checkin2/Find/" + ph.GetDigits() 
+            var x = this.GetDocument("Checkin2/Find/" + ph
                 + Program.QueryString + "&page=1&building=" + Program.Building);
             e.Result = x;
         }

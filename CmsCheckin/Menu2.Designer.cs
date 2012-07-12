@@ -32,6 +32,7 @@
 			this.Add = new System.Windows.Forms.Button();
 			this.Edit = new System.Windows.Forms.Button();
 			this.Print = new System.Windows.Forms.Button();
+			this.addidcard = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// Cancel
@@ -41,7 +42,7 @@
 			this.Cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.Cancel.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Cancel.ForeColor = System.Drawing.Color.Black;
-			this.Cancel.Location = new System.Drawing.Point(4, 57);
+			this.Cancel.Location = new System.Drawing.Point(98, 111);
 			this.Cancel.Margin = new System.Windows.Forms.Padding(4);
 			this.Cancel.Name = "Cancel";
 			this.Cancel.Size = new System.Drawing.Size(179, 45);
@@ -98,16 +99,33 @@
 			this.Print.UseVisualStyleBackColor = false;
 			this.Print.Click += new System.EventHandler(this.Print_Click);
 			// 
+			// addidcard
+			// 
+			this.addidcard.BackColor = System.Drawing.Color.Cyan;
+			this.addidcard.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateBlue;
+			this.addidcard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.addidcard.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.addidcard.ForeColor = System.Drawing.Color.Black;
+			this.addidcard.Location = new System.Drawing.Point(4, 57);
+			this.addidcard.Margin = new System.Windows.Forms.Padding(4);
+			this.addidcard.Name = "addidcard";
+			this.addidcard.Size = new System.Drawing.Size(179, 45);
+			this.addidcard.TabIndex = 23;
+			this.addidcard.Text = "Add ID Card";
+			this.addidcard.UseVisualStyleBackColor = false;
+			this.addidcard.Click += new System.EventHandler(this.addidcard_Click);
+			// 
 			// Menu2
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.addidcard);
 			this.Controls.Add(this.Cancel);
 			this.Controls.Add(this.Add);
 			this.Controls.Add(this.Edit);
 			this.Controls.Add(this.Print);
 			this.Name = "Menu2";
-			this.Size = new System.Drawing.Size(376, 108);
+			this.Size = new System.Drawing.Size(376, 164);
 			this.ResumeLayout(false);
 
         }
@@ -118,5 +136,6 @@
         public System.Windows.Forms.Button Add;
         public System.Windows.Forms.Button Edit;
 		public System.Windows.Forms.Button Print;
+		public System.Windows.Forms.Button addidcard;
     }
 }

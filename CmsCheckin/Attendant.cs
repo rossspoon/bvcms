@@ -35,6 +35,11 @@ namespace CmsCheckin
 			history.Items.Add(p);
 		}
 
+		public void AddHistoryString( string item )
+		{
+			history.Items.Add(item);
+		}
+
 		private void Attendant_LocationChanged(object sender, EventArgs e)
 		{
 			Settings1.Default.AttendantLocX = this.Location.X;

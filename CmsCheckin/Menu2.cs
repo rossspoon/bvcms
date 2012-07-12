@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using CmsCheckin.Dialogs;
 
 namespace CmsCheckin
 {
@@ -66,5 +67,12 @@ namespace CmsCheckin
                 DropJoinClass(sender, e);
         }
 
+		private void addidcard_Click(object sender, EventArgs e)
+		{
+			PersonInfo pi = ListFamily2.list[(int)this.Tag];
+
+			Form AddID = new AddIDCard( pi.pid, pi.name );
+			AddID.ShowDialog();
+		}
     }
 }

@@ -60,7 +60,7 @@ namespace CmsCheckin
 
 		private bool hasprinter;
 		DoPrinting doprint = new DoPrinting();
-		List<PersonInfo> list;
+		public static List<PersonInfo> list;
 		int page = 1;
 		List<Control> controls = new List<Control>();
 		List<Control> sucontrols = new List<Control>();
@@ -352,6 +352,7 @@ namespace CmsCheckin
 
 			if( Program.BuildingInfo.membersonly && c.MemberStatus != "Yes" && Program.addguests == null )
 			{
+				Program.attendant.AddHistoryString( "-- " + DateTime.Now.ToString("hh:mm tt") + " Check-in rejected for " + c.name + " because they are not a member." );
 				MessageBox.Show( "Only members may check-in. You will need to be a guest of a member to check-in.", "Members Only Error" );
 				return;
 			}
@@ -362,6 +363,7 @@ namespace CmsCheckin
 
 				if (c.MemberStatus != "Yes" && p != null && Util.GetGuestCount(p.pid) >= Program.BuildingInfo.maxguests)
 				{
+					Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("hh:mm tt") + " Check-in rejected for " + c.name + " because " + p.name + " reached the guest limit.");
 					MessageBox.Show("No additional guests are permitted for today.", "Guest Limit Error");
 					return;
 				}

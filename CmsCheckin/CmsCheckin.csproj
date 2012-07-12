@@ -208,6 +208,15 @@
       <DependentUpon>AddGuests.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\BaseBuildingInfo.cs" />
+    <Compile Include="Controls\EnterTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Dialogs\AddIDCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\AddIDCard.Designer.cs">
+      <DependentUpon>AddIDCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Menu2.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -363,6 +372,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddGuests.resx">
       <DependentUpon>AddGuests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\AddIDCard.resx">
+      <DependentUpon>AddIDCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu2.resx">
       <DependentUpon>Menu2.cs</DependentUpon>
