@@ -316,7 +316,10 @@ namespace CmsWeb.Models
                          Leader = bfm.Organization.LeaderName,
                          OrgName = bfm.Organization.OrganizationName,
                          Schedule = tm.Hour + ":" + tm.Minute.ToString().PadLeft(2, '0'),
-                     };
+						 HomePhone = p.HomePhone.FmtFone(),
+						 CellPhone1 = p.Family.HeadOfHousehold.CellPhone.FmtFone(),
+						 CellPhone2 = p.Family.HeadOfHouseholdSpouse.CellPhone.FmtFone(),
+					 };
             return q2.Take(maximumRows);
         }
     }
