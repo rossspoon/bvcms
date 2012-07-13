@@ -38,7 +38,6 @@ namespace CmsData
                 case FieldType.String:
                 case FieldType.StringEqual:
                 case FieldType.Number:
-                case FieldType.NumberSimple:
                 case FieldType.NullNumber:
                 case FieldType.Integer:
                 case FieldType.IntegerSimple:
@@ -678,7 +677,6 @@ namespace CmsData
                                        CompType,
                                        c.TextValue);
                         case FieldType.Number:
-                        case FieldType.NumberSimple:
                         case FieldType.NullNumber:
                             return Expressions.CompareConstant(parm,
                                        c.Field,

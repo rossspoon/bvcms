@@ -123,10 +123,10 @@ div.section div, div.section table
 {
                     <div class="Bank paymentinfo">
                         <p><label>Bank Routing Number</label>
-                        @Html.TextBox("Routing", null, Model.Autocomplete)
+                        @Html.TextBox("Routing", Model.Routing, Model.Autocomplete)
                         <div>@Html.ValidationMessage("Routing")</div></p>
                         <p><label>Checking Account Number</label>
-                        @Html.TextBox("Account", null, Model.Autocomplete)
+                        @Html.TextBox("Account", Model.Account, Model.Autocomplete)
                         <div>@Html.ValidationMessage("Account")</div></p>
                     </div>
 }

@@ -57,7 +57,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 		[Authorize(Roles = "Finance")]
 		public ActionResult RunRecurringGiving()
 		{
-			var count = RecurringGiving.DoAllGiving(DbUtil.Db);
+			var count = ManagedGiving.DoAllGiving(DbUtil.Db);
 			return Content(count.ToString());
 		}
 		[HttpPost]

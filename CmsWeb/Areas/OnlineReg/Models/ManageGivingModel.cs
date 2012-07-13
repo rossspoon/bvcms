@@ -96,7 +96,8 @@ namespace CmsWeb.Models
 		{
 			this.pid = pid;
 			this.orgid = orgid;
-			var rg = person.RecurringGivings.FirstOrDefault();
+			var rg = person.ManagedGiving();
+			var pi = person.PaymentInfo();
 			if (rg != null)
 			{
 				SemiEvery = rg.SemiEvery;
@@ -109,10 +110,11 @@ namespace CmsWeb.Models
 				Period = rg.Period;
 				foreach (var ra in person.RecurringAmounts.AsEnumerable())
 					FundItem.Add(ra.FundId, ra.Amt);
-				Cardnumber = rg.MaskedCard;
-				Account = rg.MaskedAccount;
-				Expires = rg.Expires;
-				Cardcode = rg.Ccv;
+				Cardnumber = pi.MaskedCard;
+				Account = pi.MaskedAccount;
+				Expires = pi.Expires;
+				Cardcode = Util.Mask(new StringBuilder(pi.Ccv), 0);
+				Routing = Util.Mask(new StringBuilder(pi.Routing), 2);
 			}
 			total = FundItem.Sum(ff => ff.Value) ?? 0;
 		}

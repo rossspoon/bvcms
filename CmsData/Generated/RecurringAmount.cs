@@ -27,9 +27,9 @@ namespace CmsData
     	
 		private EntityRef< ContributionFund> _ContributionFund;
 		
-		private EntityRef< Person> _Person;
+		private EntityRef< ManagedGiving> _ManagedGiving;
 		
-		private EntityRef< RecurringGiving> _RecurringGiving;
+		private EntityRef< Person> _Person;
 		
 	#endregion
 	
@@ -54,9 +54,9 @@ namespace CmsData
 			
 			this._ContributionFund = default(EntityRef< ContributionFund>); 
 			
-			this._Person = default(EntityRef< Person>); 
+			this._ManagedGiving = default(EntityRef< ManagedGiving>); 
 			
-			this._RecurringGiving = default(EntityRef< RecurringGiving>); 
+			this._Person = default(EntityRef< Person>); 
 			
 			OnCreated();
 		}
@@ -74,7 +74,7 @@ namespace CmsData
 				if (this._PeopleId != value)
 				{
 				
-					if (this._RecurringGiving.HasLoadedOrAssignedValue)
+					if (this._Person.HasLoadedOrAssignedValue)
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnPeopleIdChanging(value);
@@ -186,6 +186,48 @@ namespace CmsData
 		}
 
 		
+		[Association(Name="FK_RecurringAmounts_ManagedGiving", Storage="_ManagedGiving", ThisKey="PeopleId", IsForeignKey=true)]
+		public ManagedGiving ManagedGiving
+		{
+			get { return this._ManagedGiving.Entity; }
+
+			set
+			{
+				ManagedGiving previousValue = this._ManagedGiving.Entity;
+				if (((previousValue != value) 
+							|| (this._ManagedGiving.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._ManagedGiving.Entity = null;
+						previousValue.RecurringAmounts.Remove(this);
+					}
+
+					this._ManagedGiving.Entity = value;
+					if (value != null)
+					{
+						value.RecurringAmounts.Add(this);
+						
+						this._PeopleId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._PeopleId = default(int);
+						
+					}
+
+					this.SendPropertyChanged("ManagedGiving");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_RecurringAmounts_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
 		public Person Person
 		{
@@ -221,48 +263,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("Person");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_RecurringAmounts_RecurringGiving", Storage="_RecurringGiving", ThisKey="PeopleId", IsForeignKey=true)]
-		public RecurringGiving RecurringGiving
-		{
-			get { return this._RecurringGiving.Entity; }
-
-			set
-			{
-				RecurringGiving previousValue = this._RecurringGiving.Entity;
-				if (((previousValue != value) 
-							|| (this._RecurringGiving.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._RecurringGiving.Entity = null;
-						previousValue.RecurringAmounts.Remove(this);
-					}
-
-					this._RecurringGiving.Entity = value;
-					if (value != null)
-					{
-						value.RecurringAmounts.Add(this);
-						
-						this._PeopleId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._PeopleId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("RecurringGiving");
 				}
 
 			}

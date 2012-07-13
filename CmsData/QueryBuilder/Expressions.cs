@@ -1099,6 +1099,13 @@ namespace CmsData
 			IQueryable<int> q = null;
 			switch (op)
 			{
+				case CompareType.GreaterEqual:
+					q = from c in Db.Contributions2(start, end, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) >= amt
+						select g.Key ?? 0;
+					break;
 				case CompareType.Greater:
 					q = from c in Db.Contributions2(start, end, 0, false, false, true)
 						where fund == 0 || c.FundId == fund
@@ -1112,6 +1119,30 @@ namespace CmsData
 						where c.Amount > 0
 						group c by c.CreditGiverId into g
 						where g.Sum(cc => cc.Amount) <= amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Less:
+					q = from c in Db.Contributions2(start, end, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) < amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Equal:
+					q = from c in Db.Contributions2(start, end, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) == amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.NotEqual:
+					q = from c in Db.Contributions2(start, end, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) != amt
 						select g.Key ?? 0;
 					break;
 			}

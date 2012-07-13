@@ -1393,17 +1393,17 @@ namespace UtilityExtensions
 				default:
 					return s;
 			}
-			return Mask4(sb);
+			return Mask(sb, 4);
 		}
 		public static string MaskAccount(string s)
 		{
 			if (!s.HasValue())
 				return s;
-			return Mask4(new StringBuilder(s));
+			return Mask(new StringBuilder(s), 4);
 		}
-		private static string Mask4(StringBuilder sb)
+		public static string Mask(StringBuilder sb, int leave)
 		{
-			for (var i = 0; i < (sb.Length - 4); i++)
+			for (var i = 0; i < sb.Length-leave; i++)
 				if (char.IsDigit(sb[i]))
 					sb[i] = 'X';
 			return sb.ToString();

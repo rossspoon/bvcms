@@ -390,7 +390,6 @@ namespace CmsData
                     qb.DateValue = (DateTime?)value;
                     break;
                 case FieldType.Number:
-                case FieldType.NumberSimple:
                 case FieldType.NullNumber:
                 case FieldType.NullInteger:
                 case FieldType.String:

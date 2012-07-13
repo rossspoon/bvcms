@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Text;
 using CmsData;
 using UtilityExtensions;
 
@@ -12,10 +14,11 @@ namespace CmsWeb.Models
 		public string Coupon { get; set; }
 		public string CreditCard { get; set; }
 		public string Expires { get; set; }
+		public string MaskedCCV { get; set; }
 		public string CCV { get; set; }
 		public string Routing { get; set; }
 		public string Account { get; set; }
-		public string Type  { get; set; }
+		public string Type { get; set; }
 		public bool AskDonation { get; set; }
 		public bool AllowCoupon { get; set; }
 		public string Url { get; set; }
@@ -30,12 +33,13 @@ namespace CmsWeb.Models
 		public bool testing { get; set; }
 		public bool? FinanceOnly { get; set; }
 		public bool? IsLoggedIn { get; set; }
+		public bool? CanSave { get; set; }
 		public bool? SavePayInfo { get; set; }
 		public bool NoCreditCardsAllowed { get; set; }
 		private bool? _noEChecksAllowed;
 		public bool NoEChecksAllowed
 		{
-			get 
+			get
 			{
 				if (!_noEChecksAllowed.HasValue)
 					_noEChecksAllowed = OnlineRegModel.GetTransactionGateway() != "sage";
@@ -84,6 +88,11 @@ namespace CmsWeb.Models
 		}
 		public static PaymentForm CreatePaymentForm(Transaction ti)
 		{
+			PaymentInfo pi = null;
+			if (ti.Person != null && OnlineRegModel.GetTransactionGateway() == "Sage")
+				pi = ti.Person.PaymentInfos.FirstOrDefault();
+			if (pi == null)
+				pi = new PaymentInfo();
 			var pf = new PaymentForm
 					 {
 						 PayBalance = true,
@@ -104,27 +113,41 @@ namespace CmsWeb.Models
 						 timeout = 6000000,
 						 testing = ti.Testing ?? false,
 						 TranId = ti.Id,
-#if DEBUG
+#if DEBUG2
 						 CreditCard = "4111111111111111",
 						 CCV = "123",
 						 Expires = "1015",
 						 Routing = "056008849",
 						 Account = "12345678901234"
+#else
+						 CreditCard = pi.MaskedCard,
+						 MaskedCCV = Util.Mask(new StringBuilder(pi.Ccv), 0),
+						 CCV = pi.Ccv,
+						 Expires = pi.Expires,
+						 Account = pi.MaskedAccount,
+						 Routing = pi.Routing,
+						 SavePayInfo =
+							(pi.MaskedAccount != null && pi.MaskedAccount.StartsWith("X"))
+							|| (pi.MaskedCard != null && pi.MaskedCard.StartsWith("X")),
 #endif
 					 };
-			if (pf.NoEChecksAllowed)
-				pf.Type = "C"; // credit card only
-			else
-				pf.Type = ""; // either
+			pf.Type = pf.NoEChecksAllowed ? "C" : "";
 			return pf;
 		}
 		public static PaymentForm CreatePaymentForm(OnlineRegModel m)
 		{
 			var p = m.List[0];
 			var pp = p.person;
-			if (m.user != null)
+			PaymentInfo pi = null;
+			if (m.user != null && OnlineRegModel.GetTransactionGateway() == "Sage")
+			{
 				pp = m.user;
-			var pf = new PaymentForm
+				pi = pp.PaymentInfos.FirstOrDefault();
+			}
+			if (pi == null)
+				pi = new PaymentInfo { MaskedAccount = "", MaskedCard = "" };
+
+		var pf = new PaymentForm
 					 {
 						 AmtToPay = m.Amount() + (m.donation ?? 0),
 						 AskDonation = m.AskDonation(),
@@ -142,12 +165,23 @@ namespace CmsWeb.Models
 						 Url = m.URL,
 						 testing = m.testing ?? false,
 						 Terms = m.Terms,
-#if DEBUG
+#if DEBUG2
 						 CreditCard = "4111111111111111",
 						 CCV = "123",
 						 Expires = "1015",
 						 Routing = "056008849",
 						 Account = "12345678901234"
+#else
+						 CreditCard = pi.MaskedCard,
+						 Account = pi.MaskedAccount,
+						 Routing = pi.Routing,
+						 Expires = pi.Expires,
+						 MaskedCCV = Util.Mask(new StringBuilder(pi.Ccv), 0),
+						 CCV = pi.Ccv,
+						 SavePayInfo =
+							(pi.MaskedAccount != null && pi.MaskedAccount.StartsWith("X"))
+							|| (pi.MaskedCard != null && pi.MaskedCard.StartsWith("X")),
+						 Type = pi.PreferredPaymentType,
 #endif
 					 };
 			if (m.UserPeopleId.HasValue || p.IsNew)
@@ -170,13 +204,15 @@ namespace CmsWeb.Models
 				}
 			}
 			if (m.OnlineGiving())
+			{
 				pf.NoCreditCardsAllowed = DbUtil.Db.Setting("NoCreditCardGiving", "false").ToBool();
-			if (pf.NoCreditCardsAllowed)
-				pf.Type = "B"; // bank account only
-			else if (pf.NoEChecksAllowed)
-				pf.Type = "C"; // credit card only
-			else
-				pf.Type = ""; // either
+				pf.Type = pi.PreferredGivingType;
+				if (pf.NoCreditCardsAllowed)
+					pf.Type = "B"; // bank account only
+				else if (pf.NoEChecksAllowed)
+					pf.Type = "C"; // credit card only
+			}
+			pf.Type = pf.NoEChecksAllowed ? "C" : pf.Type;
 			return pf;
 		}
 		public static Transaction CreateTransaction(CMSDataContext Db, Transaction t)
@@ -220,11 +256,10 @@ namespace CmsWeb.Models
 					AUTOCOMPLETE = auto,
 					@class = "short"
 				};
-			else
-				return new
-				{
-					AUTOCOMPLETE = auto,
-				};
+			return new
+			{
+				AUTOCOMPLETE = auto,
+			};
 		}
 	}
 }

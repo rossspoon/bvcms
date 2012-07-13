@@ -1023,16 +1023,16 @@ namespace CmsData
             ev.IntValue = value;
             ev.IntValue2 = value2;
         }
-        public RecurringGiving RecurringGiving()
-        {
-            var rg = RecurringGivings.SingleOrDefault();
-            if (rg == null)
-            {
-                rg = new RecurringGiving();
-                RecurringGivings.Add(rg);
-            }
-            return rg;
-        }
+//        public RecurringGiving RecurringGiving()
+//        {
+//            var rg = RecurringGivings.SingleOrDefault();
+//            if (rg == null)
+//            {
+//                rg = new RecurringGiving();
+//                RecurringGivings.Add(rg);
+//            }
+//            return rg;
+//        }
         public ManagedGiving ManagedGiving()
         {
             var mg = ManagedGivings.SingleOrDefault();
