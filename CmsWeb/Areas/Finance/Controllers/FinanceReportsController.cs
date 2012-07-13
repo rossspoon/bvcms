@@ -46,5 +46,12 @@ namespace CmsWeb.Areas.Finance.Controllers
         	        select r;
 		    return View(q);
         }
+        public ActionResult ManagedGiving()
+        {
+			var q = from rg in DbUtil.Db.RecurringGivings.ToList()
+					orderby rg.NextDate
+					select rg;
+			return View(q);
+        }
     }
 }

@@ -113,8 +113,12 @@ namespace CmsWeb.Models
 				Cardnumber = pi.MaskedCard;
 				Account = pi.MaskedAccount;
 				Expires = pi.Expires;
+<<<<<<< local
 				Cardcode = Util.Mask(new StringBuilder(pi.Ccv), 0);
 				Routing = Util.Mask(new StringBuilder(pi.Routing), 2);
+=======
+				Cardcode = pi.Ccv;
+>>>>>>> other
 			}
 			total = FundItem.Sum(ff => ff.Value) ?? 0;
 		}

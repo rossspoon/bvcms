@@ -49,7 +49,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.Type,
 							pf.CreditCard,
 							pf.Expires,
-							pf.CCV,
+							pf.MaskedCCV.StartsWith("X") ? pf.CCV : pf.MaskedCCV,
 							pf.Routing,
 							pf.Account);
 					}
@@ -60,7 +60,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.Type, 
 							pf.CreditCard,
 							pf.Expires,
-							pf.CCV,
+							pf.MaskedCCV.StartsWith("X") ? pf.CCV : pf.MaskedCCV,
 							pf.Routing,
 							pf.Account);
 					}

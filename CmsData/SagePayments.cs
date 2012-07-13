@@ -119,6 +119,7 @@ namespace CmsData
 				}
 			}
 			pi.MaskedAccount = Util.MaskAccount(account);
+			pi.Routing = Util.Mask(new StringBuilder(routing), 1);
 			pi.MaskedCard = Util.MaskCC(cardnumber);
 			pi.Ccv = cardcode;
 			pi.Expires = expires;

@@ -13,7 +13,6 @@ using System.Web.Routing;
 using System.Threading;
 using System.Web.Security;
 using CmsData.Codes;
-using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -279,32 +278,32 @@ namespace CmsWeb.Areas.Main.Controllers
 		public ContentResult Schools(string q, int limit)
 		{
 			var qu = from p in DbUtil.Db.People
-						where p.SchoolOther.Contains(q)
-						group p by p.SchoolOther into g
-						select g.Key;
+					 where p.SchoolOther.Contains(q)
+					 group p by p.SchoolOther into g
+					 select g.Key;
 			return Content(string.Join("\n", qu.Take(limit).ToArray()));
 		}
 		public ContentResult Employers(string q, int limit)
 		{
 			var qu = from p in DbUtil.Db.People
-						where p.EmployerOther.Contains(q)
-						group p by p.EmployerOther into g
-						select g.Key;
+					 where p.EmployerOther.Contains(q)
+					 group p by p.EmployerOther into g
+					 select g.Key;
 			return Content(string.Join("\n", qu.Take(limit).ToArray()));
 		}
 		public ContentResult Occupations(string q, int limit)
 		{
 			var qu = from p in DbUtil.Db.People
-						where p.OccupationOther.Contains(q)
-						group p by p.OccupationOther into g
-						select g.Key;
+					 where p.OccupationOther.Contains(q)
+					 group p by p.OccupationOther into g
+					 select g.Key;
 			return Content(string.Join("\n", qu.Take(limit).ToArray()));
 		}
 		public ContentResult Churches(string q, int limit)
 		{
 			var qu = from r in DbUtil.Db.ViewChurches
-						where r.C.Contains(q)
-						select r.C;
+					 where r.C.Contains(q)
+					 select r.C;
 			return Content(string.Join("\n", qu.Take(limit).ToArray()));
 		}
 		[HttpPost]
@@ -624,23 +623,23 @@ namespace CmsWeb.Areas.Main.Controllers
 						p.RemoveExtraValue(DbUtil.Db, b[0]);
 					break;
 				case "m":
+				{
+					if (value == null)
+						value = Request.Form["value[]"];
+					var cc = Code.StandardExtraValues.ExtraValueBits(b[0], b[1].ToInt());
+					var aa = value.Split(',');
+					foreach (var c in cc)
 					{
-						if (value == null)
-							value = Request.Form["value[]"];
-						var cc = Code.StandardExtraValues.ExtraValueBits(b[0], b[1].ToInt());
-						var aa = value.Split(',');
-						foreach (var c in cc)
-						{
-							if (aa.Contains(c.Key)) // checked now
-								if (!c.Value) // was not checked before
-									p.AddEditExtraBool(c.Key, true);
-							if (!aa.Contains(c.Key)) // not checked now
-								if (c.Value) // was checked before
-									p.RemoveExtraValue(DbUtil.Db, c.Key);
-						}
-						DbUtil.Db.SubmitChanges();
-						break;
+						if (aa.Contains(c.Key)) // checked now
+							if (!c.Value) // was not checked before
+								p.AddEditExtraBool(c.Key, true);
+						if (!aa.Contains(c.Key)) // not checked now
+							if (c.Value) // was checked before
+								p.RemoveExtraValue(DbUtil.Db, c.Key);
 					}
+					DbUtil.Db.SubmitChanges();
+					break;
+				}
 			}
 			DbUtil.Db.SubmitChanges();
 			if (value == "null")
@@ -656,19 +655,19 @@ namespace CmsWeb.Areas.Main.Controllers
 			var j = Json(c);
 			return j;
 		}
-		//		[HttpPost]
-		//		public ContentResult EditExtra2()
-		//		{
-		//			var a = Request.Form["id"].SplitStr("-", 2);
-		//			var b = a[1].SplitStr(".", 2);
-		//			var values = Request.Form["value[]"];
-		//			if (a[0] == "m")
-		//			{
-		//				var p = DbUtil.Db.LoadPersonById(b[1].ToInt());
-		//				DbUtil.Db.SubmitChanges();
-		//			}
-		//			return Content(values);
-		//		}
+//		[HttpPost]
+//		public ContentResult EditExtra2()
+//		{
+//			var a = Request.Form["id"].SplitStr("-", 2);
+//			var b = a[1].SplitStr(".", 2);
+//			var values = Request.Form["value[]"];
+//			if (a[0] == "m")
+//			{
+//				var p = DbUtil.Db.LoadPersonById(b[1].ToInt());
+//				DbUtil.Db.SubmitChanges();
+//			}
+//			return Content(values);
+//		}
 		[HttpPost]
 		public JsonResult ExtraValues2(string id)
 		{
@@ -745,22 +744,22 @@ namespace CmsWeb.Areas.Main.Controllers
 		}
 		public ActionResult CurrentRegistrations()
 		{
-			var types = new[] { 1, 2, 10, 11, 5, 6, 9, 14, 15 };
+			var types = new[] {1, 2, 10, 11, 5, 6, 9, 14, 15};
 			var picklistorgs = DbUtil.Db.ViewPickListOrgs.Select(pp => pp.OrgId).ToArray();
 			var dt = DateTime.Today;
 			var q = from o in DbUtil.Db.Organizations
-					  where !picklistorgs.Contains(o.OrganizationId)
-					  where types.Contains(o.RegistrationTypeId ?? 0)
-					  where o.RegEnd > dt || o.RegEnd == null
-					  where (o.RegistrationClosed ?? false) == true
-					  where o.OrganizationStatusId == OrgStatusCode.Active
-					  orderby o.OrganizationName
-					  select new CurrentRegistration()
-					  {
-						  OrgId = o.OrganizationId,
-						  Name = o.OrganizationName,
-						  Description = o.Description
-					  };
+					where !picklistorgs.Contains(o.OrganizationId)
+					where types.Contains(o.RegistrationTypeId ?? 0)
+					where o.RegEnd > dt || o.RegEnd == null
+					where (o.RegistrationClosed ?? false) == true
+					where o.OrganizationStatusId == OrgStatusCode.Active
+					orderby o.OrganizationName
+					select new CurrentRegistration()
+					{
+						OrgId = o.OrganizationId,
+						Name = o.OrganizationName,
+						Description = o.Description
+					};
 			return View(q);
 		}
 	}
