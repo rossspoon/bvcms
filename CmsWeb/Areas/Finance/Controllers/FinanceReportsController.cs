@@ -46,5 +46,20 @@ namespace CmsWeb.Areas.Finance.Controllers
         	        select r;
 		    return View(q);
         }
+        public ActionResult ManagedGiving()
+        {
+			var q = from rg in DbUtil.Db.ManagedGivings.ToList()
+					orderby rg.NextDate
+					select rg;
+			return View(q);
+        }
+		[HttpGet]
+		public ActionResult ManageGiving2(int id)
+		{ 
+			var m = new ManageGivingModel(id);
+			m.testing = true;
+			var body = CmsController.RenderPartialViewToString(this, "ManageGiving2", m);
+			return Content(body);
+		}
     }
 }

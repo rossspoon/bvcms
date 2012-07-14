@@ -13,7 +13,6 @@ namespace CmsData
         Empty,
         String,
         Number,
-        NumberSimple,
         Integer,
         Date,
         DateSimple,

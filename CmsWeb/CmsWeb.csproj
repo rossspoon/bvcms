@@ -1178,7 +1178,10 @@
     <Content Include="Areas\Main\Views\Person\OptoutsGrid.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\PledgeReport.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\AttendanceByGroups.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\ManagedGiving.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\ManageGiving2.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
+    <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="UploadPicture.aspx" />
@@ -2246,6 +2249,7 @@
   <ItemGroup>
     <Folder Include="Areas\Dialog\Views\Shared\" />
     <Folder Include="Areas\Finance\Views\Shared\" />
+    <Folder Include="Areas\Main\Views\Export\" />
     <Folder Include="Areas\Main\Views\Shared\" />
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\OnlineReg\Models\Payments\" />
@@ -2253,9 +2257,6 @@
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
     <Folder Include="Upload\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

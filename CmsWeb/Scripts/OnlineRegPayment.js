@@ -110,7 +110,7 @@
             "pf.Zip": { required: true, maxlength: 15 },
             "pf.Email": { required: true, maxlength: 80 },
             "pf.Phone": { maxlength: 50 },
-            "pf.CCV": { digits: true, maxlength: 4 },
+            "pf.CCV": { maxlength: 4 },
             "pf.Expires": { digits: true, maxlength: 4 }
         }
     });

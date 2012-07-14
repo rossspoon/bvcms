@@ -38,7 +38,6 @@ namespace CmsData
                 case FieldType.String:
                 case FieldType.StringEqual:
                 case FieldType.Number:
-                case FieldType.NumberSimple:
                 case FieldType.NullNumber:
                 case FieldType.Integer:
                 case FieldType.IntegerSimple:
@@ -223,6 +222,10 @@ namespace CmsData
                                c.CodeIds == "1");
                 case QueryType.HasTaskWithName:
                     return Expressions.HasTaskWithName(parm,
+                                CompType,
+                                c.TextValue);
+				case QueryType.HasIncompleteTask:
+					return Expressions.HasIncompleteTask(parm,
                                 CompType,
                                 c.TextValue);
                 case QueryType.HasOptoutsForEmail:
@@ -678,7 +681,6 @@ namespace CmsData
                                        CompType,
                                        c.TextValue);
                         case FieldType.Number:
-                        case FieldType.NumberSimple:
                         case FieldType.NullNumber:
                             return Expressions.CompareConstant(parm,
                                        c.Field,

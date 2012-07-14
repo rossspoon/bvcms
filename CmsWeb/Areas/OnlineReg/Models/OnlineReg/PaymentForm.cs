@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 using CmsData;
 using UtilityExtensions;
 
@@ -13,6 +14,7 @@ namespace CmsWeb.Models
 		public string Coupon { get; set; }
 		public string CreditCard { get; set; }
 		public string Expires { get; set; }
+		public string MaskedCCV { get; set; }
 		public string CCV { get; set; }
 		public string Routing { get; set; }
 		public string Account { get; set; }
@@ -31,6 +33,7 @@ namespace CmsWeb.Models
 		public bool testing { get; set; }
 		public bool? FinanceOnly { get; set; }
 		public bool? IsLoggedIn { get; set; }
+		public bool? CanSave { get; set; }
 		public bool? SavePayInfo { get; set; }
 		public bool NoCreditCardsAllowed { get; set; }
 		private bool? _noEChecksAllowed;
@@ -86,7 +89,8 @@ namespace CmsWeb.Models
 		public static PaymentForm CreatePaymentForm(Transaction ti)
 		{
 			PaymentInfo pi = null;
-			if (ti.Person != null)
+			if (ti.Person != null && string.Equals(OnlineRegModel.GetTransactionGateway(),
+						"Sage", StringComparison.InvariantCultureIgnoreCase))
 				pi = ti.Person.PaymentInfos.FirstOrDefault();
 			if (pi == null)
 				pi = new PaymentInfo();
@@ -118,11 +122,14 @@ namespace CmsWeb.Models
 						 Account = "12345678901234"
 #else
 						 CreditCard = pi.MaskedCard,
+						 MaskedCCV = Util.Mask(new StringBuilder(pi.Ccv), 0),
 						 CCV = pi.Ccv,
 						 Expires = pi.Expires,
 						 Account = pi.MaskedAccount,
 						 Routing = pi.Routing,
-						 SavePayInfo = pi.MaskedAccount.StartsWith("X") || pi.MaskedCard.StartsWith("X"),
+						 SavePayInfo =
+							(pi.MaskedAccount != null && pi.MaskedAccount.StartsWith("X"))
+							|| (pi.MaskedCard != null && pi.MaskedCard.StartsWith("X")),
 #endif
 					 };
 			pf.Type = pf.NoEChecksAllowed ? "C" : "";
@@ -133,7 +140,8 @@ namespace CmsWeb.Models
 			var p = m.List[0];
 			var pp = p.person;
 			PaymentInfo pi = null;
-			if (m.user != null)
+			if (m.user != null && string.Equals(OnlineRegModel.GetTransactionGateway(), 
+								"Sage", StringComparison.InvariantCultureIgnoreCase))
 			{
 				pp = m.user;
 				pi = pp.PaymentInfos.FirstOrDefault();
@@ -170,6 +178,7 @@ namespace CmsWeb.Models
 						 Account = pi.MaskedAccount,
 						 Routing = pi.Routing,
 						 Expires = pi.Expires,
+						 MaskedCCV = Util.Mask(new StringBuilder(pi.Ccv), 0),
 						 CCV = pi.Ccv,
 						 SavePayInfo =
 							(pi.MaskedAccount != null && pi.MaskedAccount.StartsWith("X"))
@@ -205,6 +214,7 @@ namespace CmsWeb.Models
 				else if (pf.NoEChecksAllowed)
 					pf.Type = "C"; // credit card only
 			}
+			pf.Type = pf.NoEChecksAllowed ? "C" : pf.Type;
 			return pf;
 		}
 		public static Transaction CreateTransaction(CMSDataContext Db, Transaction t)

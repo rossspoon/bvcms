@@ -45,24 +45,26 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					if (gateway == "authorizenet")
 					{
 						var au = new AuthorizeNet(DbUtil.Db, m.testing ?? false);
-						au.AddUpdateCustomerProfile(m.UserPeopleId.Value,
-							pf.Type,
-							pf.CreditCard,
-							pf.Expires,
-							pf.CCV,
-							pf.Routing,
-							pf.Account);
+						if (!pf.Routing.StartsWith("X") && !pf.Account.StartsWith("X"))
+							au.AddUpdateCustomerProfile(m.UserPeopleId.Value,
+								pf.Type,
+								pf.CreditCard,
+								pf.Expires,
+								pf.MaskedCCV != null && pf.MaskedCCV.StartsWith("X") ? pf.CCV : pf.MaskedCCV,
+								pf.Routing,
+								pf.Account);
 					}
 					else if (gateway == "sage")
 					{
 						var sg = new CmsData.SagePayments(DbUtil.Db, m.testing ?? false);
-						sg.storeVault(m.UserPeopleId.Value,
-							pf.Type, 
-							pf.CreditCard,
-							pf.Expires,
-							pf.CCV,
-							pf.Routing,
-							pf.Account);
+						if (!pf.Routing.StartsWith("X") && !pf.Account.StartsWith("X"))
+							sg.storeVault(m.UserPeopleId.Value,
+										  pf.Type,
+										  pf.CreditCard,
+										  pf.Expires,
+										  pf.MaskedCCV != null && pf.MaskedCCV.StartsWith("X") ? pf.CCV : pf.MaskedCCV,
+										  pf.Routing,
+										  pf.Account);
 					}
 					else
 						throw new Exception("ServiceU not supported");
@@ -125,22 +127,22 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 						pf.TranId ?? 0);
 				}
 				else
-				if (pf.Type == "B")
-					tinfo = OnlineRegModel.PostECheck(
-						pf.Routing, pf.Account,
-						pf.AmtToPay ?? 0,
-						ti.Id, pf.Description,
-						pid ?? 0, first, last,
-						pf.Address, pf.City, pf.State, pf.Zip,
-						pf.testing);
-				else
-					tinfo = OnlineRegModel.PostTransaction(
-						pf.CreditCard, pf.CCV, pf.Expires,
-						pf.AmtToPay ?? 0,
-						ti.Id, pf.Description,
-						pid ?? 0, pf.Email, first, last,
-						pf.Address, pf.City, pf.State, pf.Zip,
-						pf.testing);
+					if (pf.Type == "B")
+						tinfo = OnlineRegModel.PostECheck(
+							pf.Routing, pf.Account,
+							pf.AmtToPay ?? 0,
+							ti.Id, pf.Description,
+							pid ?? 0, first, last,
+							pf.Address, pf.City, pf.State, pf.Zip,
+							pf.testing);
+					else
+						tinfo = OnlineRegModel.PostTransaction(
+							pf.CreditCard, pf.CCV, pf.Expires,
+							pf.AmtToPay ?? 0,
+							ti.Id, pf.Description,
+							pid ?? 0, pf.Email, first, last,
+							pf.Address, pf.City, pf.State, pf.Zip,
+							pf.testing);
 			else if (gateway == "sage")
 				if (pf.SavePayInfo == true)
 				{
@@ -177,6 +179,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (ti.Testing == true)
 				ti.TransactionId += "(testing)";
 			ti.Approved = tinfo.Approved;
+			if (ti.Approved == false)
+			{
+				ti.Amt = ti.Amtdue;
+				if (m != null && m.OnlineGiving())
+					ti.Amtdue = 0;
+			}
 			ti.Message = tinfo.Message;
 			ti.AuthCode = tinfo.AuthCode;
 			ti.TransactionDate = DateTime.Now;

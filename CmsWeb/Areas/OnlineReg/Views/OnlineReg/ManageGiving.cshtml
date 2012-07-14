@@ -42,6 +42,7 @@ div.section div, div.section table
    <form method="post" action="/OnlineReg/ManageGiving">
     @Html.Hidden("otheredit", 0)
     @Html.Hidden("pid", Model.pid)
+    @Html.Hidden("Type", Model.Type)
     @Html.Hidden("orgid", Model.orgid)
         <fieldset>
             <div class="section">
@@ -123,10 +124,10 @@ div.section div, div.section table
 {
                     <div class="Bank paymentinfo">
                         <p><label>Bank Routing Number</label>
-                        @Html.TextBox("Routing", null, Model.Autocomplete)
+                        @Html.TextBox("Routing", Model.Routing, Model.Autocomplete)
                         <div>@Html.ValidationMessage("Routing")</div></p>
                         <p><label>Checking Account Number</label>
-                        @Html.TextBox("Account", null, Model.Autocomplete)
+                        @Html.TextBox("Account", Model.Account, Model.Autocomplete)
                         <div>@Html.ValidationMessage("Account")</div></p>
                     </div>
 }

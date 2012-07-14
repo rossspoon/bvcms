@@ -126,6 +126,9 @@
     <Field Name="HasTaskWithName" Title="Has Task about person" Type="StringEqual">
       Selects people who have an incomplete task about them where the task description contains the string.
     </Field>
+    <Field Name="HasIncompleteTask" Title="Has Incomplete Task" Type="StringEqual">
+      Selects people who have not completed a delegated task where the description contains the string.
+    </Field>
     <Field Name="DaysSinceContact" Title="Days Since Last Contact" Type="Integer">
 			Selects people based on number of days since last contacted.
 			Only selects those with any contact
@@ -392,7 +395,7 @@
     <Field Name="AttendPct" Title="Attendance %" Type="Number" DisplayAs="AttendPct({0}, {1}, {2})" Params="Program,Division,Organization">
      Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization.
     </Field>
-    <Field Name="AttendPctHistory" Title="Attendance % History" Type="NumberSimple" DisplayAs="AttendPctHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="Program,Division,Organization,StartDate,EndDate">
+    <Field Name="AttendPctHistory" Title="Attendance % History" Type="Number" DisplayAs="AttendPctHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="Program,Division,Organization,StartDate,EndDate">
       Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization for a specified date range. This does not have to be a current enrollment.
       This query runs very slow.
     </Field>
@@ -498,7 +501,7 @@
     <Field Name="RecentContributionCount" Title="Recent Contribution Count" Type="Integer" QuartersLabel="Fund Id (or null for all)" DisplayAs="RecentContributionCount({0},{1})" Params="Days,Quarters">
       Must have Finance role for this to work.
     </Field>
-    <Field Name="RecentContributionAmount" Title="Recent Contribution Amount" Type="NumberSimple" DisplayAs="RecentContributionAmount({0},{1})" QuartersLabel="Fund Id (or null for all)" Params="Days,Quarters">
+    <Field Name="RecentContributionAmount" Title="Recent Contribution Amount" Type="Number" DisplayAs="RecentContributionAmount({0},{1})" QuartersLabel="Fund Id (or null for all)" Params="Days,Quarters">
       Must have Finance role for this to work.
     </Field>
     <Field Name="RecentPledgeCount" Title="Recent Pledge Count" Type="Integer" QuartersLabel="Fund Id (or null for all)" DisplayAs="RecentPledgeCount({0},{1})" Params="Days,Quarters">
@@ -513,7 +516,7 @@
     <Field Name="ContributionChange" Title="Contribution Change Pct" Type="Number" DisplayAs="ContributionChange({0},{1})" Params="StartDate,EndDate">
       startdt = 2 years ago, enddt = 1 year ago, pct = current period as % of previous period, divided on the enddt (Must have Finance role for this to work.
     </Field>
-    <Field Name="RecentGivingAsPctOfPrevious" Title="Recent Giving % of Previous" Type="NumberSimple" DisplayAs="RecentGivingAsPctOfPrevious({0})" QuartersLabel="Midway Lookback Days Ago" Params="Quarters">
+    <Field Name="RecentGivingAsPctOfPrevious" Title="Recent Giving % of Previous" Type="Number" DisplayAs="RecentGivingAsPctOfPrevious({0})" QuartersLabel="Midway Lookback Days Ago" Params="Quarters">
       Days ago divides previous and recent, pct = recent period as % of previous period (Must have Finance role for this to work.
     </Field>
     <Field Name="IsTopGiver" Title="Recent Top Giver" Type="Bit" DisplayAs="RecentTopGiver({0},{1})" Params="Days,Quarters" QuartersLabel="Top number" DataValueField="IdCode">

@@ -71,6 +71,7 @@ namespace CmsData
         HasRelatedFamily,
         HasParents,
         HasTaskWithName,
+		HasIncompleteTask,
 		HasInvalidEmailAddress,
         HasVolunteered,
         HaveVolunteerApplications,

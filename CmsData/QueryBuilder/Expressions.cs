@@ -341,6 +341,20 @@ namespace CmsData
 				expr = Expression.Not(expr);
 			return expr;
 		}
+		internal static Expression HasIncompleteTask(
+			ParameterExpression parm,
+			CompareType op,
+			string task)
+		{
+			var empty = !task.HasValue();
+			Expression<Func<Person, bool>> pred = p =>
+				p.TasksCoOwned.Any(t => empty || t.Description.Contains(task)
+					&& t.StatusId != TaskStatusCode.Complete);
+			Expression expr = Expression.Invoke(pred, parm);
+			if (op == CompareType.NotEqual)
+				expr = Expression.Not(expr);
+			return expr;
+		}
 
 		internal static Expression MadeContactTypeAsOf(
 			ParameterExpression parm,
@@ -1099,6 +1113,13 @@ namespace CmsData
 			IQueryable<int> q = null;
 			switch (op)
 			{
+				case CompareType.GreaterEqual:
+					q = from c in Db.Contributions2(start, end, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) >= amt
+						select g.Key ?? 0;
+					break;
 				case CompareType.Greater:
 					q = from c in Db.Contributions2(start, end, 0, false, false, true)
 						where fund == 0 || c.FundId == fund
@@ -1112,6 +1133,30 @@ namespace CmsData
 						where c.Amount > 0
 						group c by c.CreditGiverId into g
 						where g.Sum(cc => cc.Amount) <= amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Less:
+					q = from c in Db.Contributions2(start, end, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) < amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.Equal:
+					q = from c in Db.Contributions2(start, end, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) == amt
+						select g.Key ?? 0;
+					break;
+				case CompareType.NotEqual:
+					q = from c in Db.Contributions2(start, end, 0, false, false, true)
+						where fund == 0 || c.FundId == fund
+						where c.Amount > 0
+						group c by c.CreditGiverId into g
+						where g.Sum(cc => cc.Amount) != amt
 						select g.Key ?? 0;
 					break;
 			}
@@ -2230,14 +2275,19 @@ namespace CmsData
 			bool tf)
 		{
 			var cg = Db.CurrentGroups.ToArray();
-			Expression<Func<Person, bool>> pred = p =>
-					p.OrganizationMembers.Any(m =>
-						m.OrganizationId == Db.CurrentOrgId
-						&& (m.OrgMemMemTags.Any(mt => cg.Contains(mt.MemberTagId)) || cg[0] <= 0)
-						&& (m.OrgMemMemTags.Count() == 0 || cg[0] != -1)
-						&& m.MemberTypeId != MemberTypeCode.InActive
-						&& (m.Pending ?? false) == false
-						&& (m.AmountPaid > 0 && m.AmountPaid < m.Amount));
+			Expression<Func<Person, bool>> pred = p => (
+				from m in p.OrganizationMembers
+				where m.OrganizationId == Db.CurrentOrgId
+				where m.OrgMemMemTags.Any(mt => cg.Contains(mt.MemberTagId)) || cg[0] <= 0
+				where !m.OrgMemMemTags.Any() || cg[0] != -1
+				where m.MemberTypeId != MemberTypeCode.InActive
+				where (m.Pending ?? false) == false
+				where (from t in Db.Transactions
+					   where t.OriginalTransaction.TransactionPeople.Any(pp => pp.PeopleId == p.PeopleId)
+					   where t.OriginalTransaction.OrgId == Db.CurrentOrgId
+					   orderby t.Id descending
+					   select t.Amtdue).FirstOrDefault() > 0
+				select m).Any();
 			Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
 			if (!(op == CompareType.Equal && tf))
 				expr = Expression.Not(expr);
