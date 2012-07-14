@@ -40,8 +40,6 @@ namespace CmsData
 		private string _Type;
 		
    		
-   		private EntitySet< RecurringAmount> _RecurringAmounts;
-		
     	
 		private EntityRef< Person> _Person;
 		
@@ -88,8 +86,6 @@ namespace CmsData
     #endregion
 		public ManagedGiving()
 		{
-			
-			this._RecurringAmounts = new EntitySet< RecurringAmount>(new Action< RecurringAmount>(this.attach_RecurringAmounts), new Action< RecurringAmount>(this.detach_RecurringAmounts)); 
 			
 			
 			this._Person = default(EntityRef< Person>); 
@@ -349,16 +345,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_RecurringAmounts_ManagedGiving", Storage="_RecurringAmounts", OtherKey="PeopleId")]
-   		public EntitySet< RecurringAmount> RecurringAmounts
-   		{
-   		    get { return this._RecurringAmounts; }
-
-			set	{ this._RecurringAmounts.Assign(value); }
-
-   		}
-
-		
 	#endregion
 	
 	#region Foreign Keys
@@ -422,19 +408,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_RecurringAmounts(RecurringAmount entity)
-		{
-			this.SendPropertyChanging();
-			entity.ManagedGiving = this;
-		}
-
-		private void detach_RecurringAmounts(RecurringAmount entity)
-		{
-			this.SendPropertyChanging();
-			entity.ManagedGiving = null;
-		}
-
-		
 	}
 
 }

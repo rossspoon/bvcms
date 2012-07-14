@@ -119,7 +119,13 @@ namespace CmsData
 		public List<Person> AdminPeople()
 		{
 			return (from p in CMSRoleProvider.provider.GetAdmins()
-					orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
+					orderby p.Users.Any(u => u.Roles.Contains("Developer")) ascending 
+					select p).ToList();
+		}
+		public List<Person> FinancePeople()
+		{
+			return (from p in CMSRoleProvider.provider.GetFinance()
+					orderby p.Users.Any(u => u.Roles.Contains("Developer")) ascending 
 					select p).ToList();
 		}
 		public string StaffEmailForOrg(int orgid)

@@ -26,6 +26,7 @@ namespace CmsWeb.Models
 		public string Period { get; set; }
 		public string Type { get; set; }
 		public string Cardnumber { get; set; }
+		public DateTime? NextDate { get; set; }
 		public string Expires { get; set; }
 		public string Cardcode { get; set; }
 		public string Routing { get; set; }
@@ -91,7 +92,7 @@ namespace CmsWeb.Models
 			NoEChecksAllowed = OnlineRegModel.GetTransactionGateway() != "sage";
 		}
 
-		public ManageGivingModel(int pid, int orgid)
+		public ManageGivingModel(int pid, int orgid = 0)
 			: this()
 		{
 			this.pid = pid;
@@ -115,6 +116,14 @@ namespace CmsWeb.Models
 				Expires = pi.Expires;
 				Cardcode = Util.Mask(new StringBuilder(pi.Ccv), 0);
 				Routing = Util.Mask(new StringBuilder(pi.Routing), 2);
+				NextDate = rg.NextDate;
+				NoCreditCardsAllowed = DbUtil.Db.Setting("NoCreditCardGiving", "false").ToBool();
+				Type = pi.PreferredGivingType;
+				if (NoCreditCardsAllowed)
+					Type = "B"; // bank account only
+				else if (NoEChecksAllowed)
+					Type = "C"; // credit card only
+				Type = NoEChecksAllowed ? "C" : Type;
 			}
 			total = FundItem.Sum(ff => ff.Value) ?? 0;
 		}
@@ -170,6 +179,8 @@ namespace CmsWeb.Models
 
 		private bool checkABA(string s)
 		{
+			if (s.StartsWith("X"))
+				return true;
 			var t = s.GetDigits();
 			if (t.Length != 9)
 				return false;

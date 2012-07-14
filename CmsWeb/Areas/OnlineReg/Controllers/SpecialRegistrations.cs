@@ -44,25 +44,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			DbUtil.LogActivity("Pick Slots: {0} ({1})".Fmt(m.Org.OrganizationName, m.Person.Name));
 			return View(m);
 		}
-		//[HttpPost]
-		//public ActionResult ToggleSlot(int id, int oid, string slot, bool ck)
-		//{
-		//    var m = new VolunteerModel(id, oid);
-		//    var om = m.org.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == id) ??
-		//             OrganizationMember.InsertOrgMembers(DbUtil.Db,
-		//                        oid, id, 220, Util.Now, null, false);
-		//    if (ck)
-		//        om.AddToGroup(DbUtil.Db, slot);
-		//    else
-		//        om.RemoveFromGroup(DbUtil.Db, slot);
-		//    DbUtil.DbDispose();
-		//    m = new VolunteerModel(id, oid);
-		//    var slotinfo = m.NewSlot(slot);
-		//    if (slotinfo.slot == null)
-		//        return new EmptyResult();
-		//    ViewData["returnval"] = slotinfo.status;
-		//    return View("PickSlot", slotinfo);
-		//}
 		public ActionResult ManageSubscriptions(string id)
 		{
 			if (!id.HasValue())
@@ -157,14 +138,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			DbUtil.LogActivity("Manage Giving: {0} ({1})".Fmt(m.Organization.OrganizationName, m.person.Name));
 			return View(m);
 		}
-		[HttpGet]
-		public ActionResult ManageGiving2(int pid, int orgid)
-		{ //OnlineReg/ManageGiving2?pid=828612&orgid=89230
-			var m = new ManageGivingModel(pid, orgid);
-			m.testing = true;
-			var body = CmsController.RenderPartialViewToString(this, "ManageGiving2", m);
-			return Content(body);
-		}
 		[HttpPost]
 		public ActionResult ManageGiving(ManageGivingModel m)
 		{
@@ -210,6 +183,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				mg.Period = m.Period;
 				mg.StartWhen = m.StartWhen;
 				mg.StopWhen = m.StopWhen;
+				mg.NextDate = mg.FindNextDate(DateTime.Today);
 
 				var q = from ra in DbUtil.Db.RecurringAmounts
 						where ra.PeopleId == m.pid

@@ -89,7 +89,8 @@ namespace CmsWeb.Models
 		public static PaymentForm CreatePaymentForm(Transaction ti)
 		{
 			PaymentInfo pi = null;
-			if (ti.Person != null && OnlineRegModel.GetTransactionGateway() == "Sage")
+			if (ti.Person != null && string.Equals(OnlineRegModel.GetTransactionGateway(),
+						"Sage", StringComparison.InvariantCultureIgnoreCase))
 				pi = ti.Person.PaymentInfos.FirstOrDefault();
 			if (pi == null)
 				pi = new PaymentInfo();
@@ -139,7 +140,8 @@ namespace CmsWeb.Models
 			var p = m.List[0];
 			var pp = p.person;
 			PaymentInfo pi = null;
-			if (m.user != null && OnlineRegModel.GetTransactionGateway() == "Sage")
+			if (m.user != null && string.Equals(OnlineRegModel.GetTransactionGateway(), 
+								"Sage", StringComparison.InvariantCultureIgnoreCase))
 			{
 				pp = m.user;
 				pi = pp.PaymentInfos.FirstOrDefault();

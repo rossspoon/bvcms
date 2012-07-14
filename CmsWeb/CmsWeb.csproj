@@ -1179,6 +1179,7 @@
     <Content Include="Areas\Finance\Views\FinanceReports\PledgeReport.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\AttendanceByGroups.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\ManagedGiving.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\ManageGiving2.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />

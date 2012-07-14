@@ -224,6 +224,10 @@ namespace CmsData
                     return Expressions.HasTaskWithName(parm,
                                 CompType,
                                 c.TextValue);
+				case QueryType.HasIncompleteTask:
+					return Expressions.HasIncompleteTask(parm,
+                                CompType,
+                                c.TextValue);
                 case QueryType.HasOptoutsForEmail:
                     return Expressions.HasEmailOptout(parm,
                                 CompType,

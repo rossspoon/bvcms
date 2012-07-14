@@ -119,7 +119,7 @@ namespace CmsData
 				}
 			}
 			pi.MaskedAccount = Util.MaskAccount(account);
-			pi.Routing = Util.Mask(new StringBuilder(routing), 1);
+			pi.Routing = Util.Mask(new StringBuilder(routing), 2);
 			pi.MaskedCard = Util.MaskCC(cardnumber);
 			pi.Ccv = cardcode;
 			pi.Expires = expires;
@@ -129,6 +129,13 @@ namespace CmsData
 			else
 				pi.PreferredPaymentType = type;
 			Db.SubmitChanges();
+			var sw =new StringWriter();
+			ObjectDumper.Write(pi, 0, sw);
+
+			Util.SendMsg(DbUtil.AdminMail, Db.CmsHost, Util.TryGetMailAddress("david@bvcms.com"), "Sage Vault",
+				"<a href='{0}{1}'>{2}</a><br>{3},{4}<br><pre>{5}</pre>".Fmt(
+				Db.CmsHost, p.PeopleId, p.Name, type, giving ? "giving" : "regular", sw.ToString()),
+				Util.ToMailAddressList("david@bvcms.com"), 0, null);
 		}
 		public void deleteVaultData(int PeopleId)
 		{

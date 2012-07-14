@@ -96,6 +96,10 @@ namespace CmsData
 		{
 			return GetRoleUsers("Admin").Select(u => u.Person).Distinct();
 		}
+		public IEnumerable<Person> GetFinance()
+		{
+			return GetRoleUsers("Finance").Select(u => u.Person).Distinct();
+		}
 		public IEnumerable<Person> GetDevelopers()
 		{
 			return GetRoleUsers("Developer").Select(u => u.Person);

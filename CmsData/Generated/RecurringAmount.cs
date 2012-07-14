@@ -27,8 +27,6 @@ namespace CmsData
     	
 		private EntityRef< ContributionFund> _ContributionFund;
 		
-		private EntityRef< ManagedGiving> _ManagedGiving;
-		
 		private EntityRef< Person> _Person;
 		
 	#endregion
@@ -53,8 +51,6 @@ namespace CmsData
 			
 			
 			this._ContributionFund = default(EntityRef< ContributionFund>); 
-			
-			this._ManagedGiving = default(EntityRef< ManagedGiving>); 
 			
 			this._Person = default(EntityRef< Person>); 
 			
@@ -179,48 +175,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("ContributionFund");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_RecurringAmounts_ManagedGiving", Storage="_ManagedGiving", ThisKey="PeopleId", IsForeignKey=true)]
-		public ManagedGiving ManagedGiving
-		{
-			get { return this._ManagedGiving.Entity; }
-
-			set
-			{
-				ManagedGiving previousValue = this._ManagedGiving.Entity;
-				if (((previousValue != value) 
-							|| (this._ManagedGiving.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._ManagedGiving.Entity = null;
-						previousValue.RecurringAmounts.Remove(this);
-					}
-
-					this._ManagedGiving.Entity = value;
-					if (value != null)
-					{
-						value.RecurringAmounts.Add(this);
-						
-						this._PeopleId = value.PeopleId;
-						
-					}
-
-					else
-					{
-						
-						this._PeopleId = default(int);
-						
-					}
-
-					this.SendPropertyChanged("ManagedGiving");
 				}
 
 			}

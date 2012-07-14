@@ -126,6 +126,9 @@
     <Field Name="HasTaskWithName" Title="Has Task about person" Type="StringEqual">
       Selects people who have an incomplete task about them where the task description contains the string.
     </Field>
+    <Field Name="HasIncompleteTask" Title="Has Incomplete Task" Type="StringEqual">
+      Selects people who have not completed a delegated task where the description contains the string.
+    </Field>
     <Field Name="DaysSinceContact" Title="Days Since Last Contact" Type="Integer">
 			Selects people based on number of days since last contacted.
 			Only selects those with any contact

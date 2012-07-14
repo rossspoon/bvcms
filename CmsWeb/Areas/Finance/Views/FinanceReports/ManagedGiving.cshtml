@@ -1,4 +1,5 @@
-﻿@model System.Linq.IOrderedEnumerable<CmsData.RecurringGiving>
+﻿@using UtilityExtensions
+@model System.Linq.IOrderedEnumerable<CmsData.ManagedGiving>
 
 @{
 	ViewBag.Title = "ManagedGiving";
@@ -30,9 +31,9 @@
 	@foreach (var rg in Model)
 	{
 		<tr>
-			<td><a href="/Person/Index/@rg.PeopleId">@rg.Person.Name</a></td>
-			<td>@rg.StartWhen.Value.ToShortDateString()</td>
-			<td>@rg.NextDate.Value.ToShortDateString()</td>
+			<td><a href="/FinanceReports/ManageGiving2/@rg.PeopleId">@rg.Person.Name</a></td>
+			<td>@rg.StartWhen.FormatDate()</td>
+			<td>@rg.NextDate.FormatDate()</td>
 			<td>@rg.SemiEvery</td>
 			<td>@rg.EveryN</td>
 			<td>@rg.Period</td>
