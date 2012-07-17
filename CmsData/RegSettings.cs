@@ -69,6 +69,7 @@ namespace CmsData
 			Dropdown3,
 			Limit,
 			Confirmation,
+			Reminder,
 			Terms,
 			Label,
 			Time,
@@ -84,6 +85,8 @@ namespace CmsData
 			Items,
 			Subject,
 			Body,
+			ReminderSubject,
+			ReminderBody,
 			VoteTags,
 			Confirm,
 			Message,
@@ -150,6 +153,8 @@ namespace CmsData
 		public string Dropdown3Label { get; set; }
 		public string Subject { get; set; }
 		public string Body { get; set; }
+		public string ReminderSubject { get; set; }
+		public string ReminderBody { get; set; }
 		public string Terms { get; set; }
 
 		public bool MemberOnly { get; set; }
@@ -618,6 +623,9 @@ namespace CmsData
 				case RegKeywords.Confirmation:
 					ParseConfirmation();
 					break;
+				case RegKeywords.Reminder:
+					ParseConfirmation();
+					break;
 				case RegKeywords.AskOptions:
 				case RegKeywords.Dropdown1:
 					Dropdown1Label = GetString("Options");
@@ -878,6 +886,28 @@ namespace CmsData
 						break;
 					default:
 						throw GetException("unexpected line in Confirmation");
+				}
+			}
+		}
+		private void ParseReminder()
+		{
+			lineno++;
+			var startindent = curr.indent;
+			while (curr.indent == startindent)
+			{
+				switch (curr.kw)
+				{
+					case RegKeywords.Html:
+						lineno++;
+						break;
+					case RegKeywords.ReminderSubject:
+						Subject = GetString();
+						break;
+					case RegKeywords.ReminderBody:
+						Body = ParseMessage();
+						break;
+					default:
+						throw GetException("unexpected line in Reminder");
 				}
 			}
 		}
@@ -1203,6 +1233,7 @@ namespace CmsData
 			var sb = new StringBuilder();
 
 			AddConfirmation(sb);
+			AddReminder(sb);
 			AddVoteTags(sb);
 			AddFees(sb);
 			AddDonation(sb);
@@ -1476,6 +1507,12 @@ namespace CmsData
 			AddValueNoCk(0, sb, "Confirmation", "");
 			AddValueNoCk(1, sb, "Subject", Subject);
 			AddSingleOrMultiLine(1, sb, "Body", Body);
+		}
+		private void AddReminder(StringBuilder sb)
+		{
+			AddValueNoCk(0, sb, "Reminder", "");
+			AddValueNoCk(1, sb, "ReminderSubject", Subject);
+			AddSingleOrMultiLine(1, sb, "ReminderBody", Body);
 		}
 		private void AddSingleOrMultiLine(int n, StringBuilder sb, string Section, string ht)
 		{

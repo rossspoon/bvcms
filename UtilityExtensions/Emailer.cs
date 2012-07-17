@@ -57,25 +57,31 @@ namespace UtilityExtensions
 
             var regex = new Regex("</?([^>]*)>", RegexOptions.IgnoreCase | RegexOptions.Multiline);
             var text = regex.Replace(Message, string.Empty);
-            var bytes1 = Encoding.UTF8.GetBytes(text);
-            var htmlStream1 = new MemoryStream(bytes1);
-            var htmlView1 = new AlternateView(htmlStream1, MediaTypeNames.Text.Plain);
-            var lines = Regex.Split(text, @"\r?\n|\r");
-            if (lines.Any(li => li.Length > 990))
-                htmlView1.TransferEncoding = TransferEncoding.QuotedPrintable;
-            else
-                htmlView1.TransferEncoding = TransferEncoding.SevenBit;
+//            var bytes1 = Encoding.UTF8.GetBytes(text);
+//			msg.BodyEncoding = System.Text.Encoding.UTF8;
+//            var htmlStream1 = new MemoryStream(bytes1);
+            var htmlView1 = AlternateView.CreateAlternateViewFromString(text, Encoding.UTF8, MediaTypeNames.Text.Plain);
+//            var lines = Regex.Split(text, @"\r?\n|\r");
+//            if (lines.Any(li => li.Length > 990))
+//                htmlView1.TransferEncoding = TransferEncoding.QuotedPrintable;
+//            else
+//                htmlView1.TransferEncoding = TransferEncoding.SevenBit;
+			//htmlView1.TransferEncoding = TransferEncoding.QuotedPrintable;
+			htmlView1.TransferEncoding = TransferEncoding.Base64;
             msg.AlternateViews.Add(htmlView1);
 
             var html = BadEmailLink + Message;
-            var bytes = Encoding.UTF8.GetBytes(html);
-            var htmlStream = new MemoryStream(bytes);
-            var htmlView = new AlternateView(htmlStream, MediaTypeNames.Text.Html);
-            lines = Regex.Split(html, @"\r?\n|\r");
-            if (lines.Any(li => li.Length > 990))
-                htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
-            else
-                htmlView.TransferEncoding = TransferEncoding.SevenBit;
+            //var bytes = Encoding.UTF8.GetBytes(html);
+            //var htmlStream = new MemoryStream(bytes);
+			//var htmlView = new AlternateView(htmlStream, MediaTypeNames.Text.Html);
+			var htmlView = AlternateView.CreateAlternateViewFromString(html, Encoding.UTF8, MediaTypeNames.Text.Html);
+//            lines = Regex.Split(html, @"\r?\n|\r");
+//            if (lines.Any(li => li.Length > 990))
+//                htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
+//            else
+//                htmlView.TransferEncoding = TransferEncoding.SevenBit;
+			//htmlView.TransferEncoding = TransferEncoding.QuotedPrintable;
+			htmlView.TransferEncoding = TransferEncoding.Base64;
 			if (attachments != null)
 				foreach(var a in attachments)
 					htmlView.LinkedResources.Add(a);
@@ -93,7 +99,6 @@ namespace UtilityExtensions
             finally
             {
                 htmlView.Dispose();
-                htmlStream.Dispose();
             }
         }
     }

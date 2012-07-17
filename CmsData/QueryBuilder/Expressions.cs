@@ -347,9 +347,11 @@ namespace CmsData
 			string task)
 		{
 			var empty = !task.HasValue();
-			Expression<Func<Person, bool>> pred = p =>
-				p.TasksCoOwned.Any(t => empty || t.Description.Contains(task)
-					&& t.StatusId != TaskStatusCode.Complete);
+			Expression<Func<Person, bool>> pred = p => (
+				from t in p.TasksCoOwned
+				where empty || t.Description.Contains(task) || t.Owner.Name.Contains(task)
+				where t.StatusId != TaskStatusCode.Complete
+				select t).Any();
 			Expression expr = Expression.Invoke(pred, parm);
 			if (op == CompareType.NotEqual)
 				expr = Expression.Not(expr);

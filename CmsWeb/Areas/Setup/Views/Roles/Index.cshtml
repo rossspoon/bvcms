@@ -1,0 +1,55 @@
+﻿@model IEnumerable<CmsData.Role>
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Roles";
+}
+@section scripts
+{
+<script type="text/javascript">
+    $(function () {
+        $(".clickEdit").editable("/Setup/Roles/Edit/", {
+            indicator: "<img src='/images/loading.gif'>",
+            tooltip: "Click to edit...",
+            style: 'display: inline',
+            width: '200px',
+            height: 25
+        });
+        $("a.delete").click(function (ev) {
+            if (confirm("are you sure?"))
+                $.post("/Setup/Roles/Delete/" + $(this).attr("id"), null, function (ret) {
+                    if (ret)
+                        alert(ret);
+                    else
+                        window.location = "/Setup/Roles/";
+                });
+        });
+        $(".bt").button();
+    });
+</script>
+}
+<h2>Roles</h2>
+
+<table>
+    <tr>
+        <th> RoleId </th>
+        <th> RoleName </th>
+        <th></th>
+    </tr>
+@foreach (var item in Model) 
+{ 
+    <tr>
+        <td>@item.RoleId</td>
+        <td>
+            <span id='RoleName.@item.RoleName' 
+                class='clickEdit'>@item.RoleName</span>
+        </td>
+        <td>
+            <a id='d@(item.RoleId)' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
+        </td>
+    </tr>
+}
+</table>
+@using (Html.BeginForm("Create", "Roles"))
+{ 
+<p><input type="submit" class="bt" value="Create" /></p>
+} 

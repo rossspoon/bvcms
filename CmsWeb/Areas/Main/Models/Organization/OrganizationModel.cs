@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using CmsData;
 using System.Web.Mvc;
@@ -189,5 +190,86 @@ namespace CmsWeb.Models.OrganizationPage
                 return _RegSettings;
             }
         }
+    	public void SendReminders()
+		{
+			var Db = DbUtil.Db;
+			var setting = RegSettings;
+			var currmembers = from om in org.OrganizationMembers
+			                  where (om.Pending ?? false) == false
+			                  where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
+			                  select om;
+			foreach (var om in currmembers)
+			{
+				var details = PrepareSummaryText2(Db, om, setting);
+				var OrganizationName = org.OrganizationName;
+				var subject = Util.PickFirst(setting.ReminderSubject, "no subject");
+				var message = Util.PickFirst(setting.ReminderBody, "no body");
+
+				var notify = Db.StaffPeopleForOrg(org.OrganizationId)[0];
+
+				string Location = org.Location;
+				message = OnlineRegModel.MessageReplacements(om.Person, null, OrganizationName, Location, message);
+
+				message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
+				message = message.Replace("{details}", details.ToString());
+
+				Db.Email(notify.FromEmail, om.Person, subject, message);
+			}
+		}
+		private List<RegSettings.MenuItem> GetMenuItemSmallGroup(RegSettings setting, List<RegSettings.MenuItem> m, OrganizationMember om)
+		{
+			var menu = setting.Dropdown1.Where(mm => om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == mm.SmallGroup)).ToList();
+			if (!menu.Any())
+				return null;
+			return menu;
+		}
+    	private string PrepareSummaryText2(CMSDataContext Db, OrganizationMember om, RegSettings setting)
+		{
+			var org = om.Organization;
+			var person = om.Person;
+			var sb = new StringBuilder();
+			sb.Append("<table>");
+			sb.AppendFormat("<tr><td>Org:</td><td>{0}</td></tr>\n", org.OrganizationName);
+			sb.AppendFormat("<tr><td>First:</td><td>{0}</td></tr>\n", person.PreferredName);
+			sb.AppendFormat("<tr><td>Last:</td><td>{0}</td></tr>\n", person.LastName);
+
+
+			var option = GetMenuItemSmallGroup(setting, setting.Dropdown1, om);
+			if (option.Any())
+				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option.First().Description,
+					Util.PickFirst(setting.Dropdown1Label, "Options"));
+			option = GetMenuItemSmallGroup(setting, setting.Dropdown2, om);
+			if (option.Any())
+				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option.First().Description,
+					Util.PickFirst(setting.Dropdown2Label, "Extra Options"));
+			option = GetMenuItemSmallGroup(setting, setting.Dropdown3, om);
+			if (option.Any())
+				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option.First().Description,
+					Util.PickFirst(setting.Dropdown3Label, "Extra Options"));
+			option = GetMenuItemSmallGroup(setting, setting.Checkboxes, om);
+			if (option.Any())
+			{
+				var menulabel = setting.CheckBoxLabel;
+				foreach (var m in option)
+				{
+					var row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, m.Description);
+					sb.AppendFormat(row);
+					menulabel = string.Empty;
+				}
+			}
+			option = GetMenuItemSmallGroup(setting, setting.Checkboxes2, om);
+			if (option.Any())
+			{
+				var menulabel = setting.CheckBox2Label;
+				foreach (var m in option)
+				{
+					var row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, m.Description);
+					sb.AppendFormat(row);
+					menulabel = string.Empty;
+				}
+			}
+			sb.Append("</table>");
+			return sb.ToString();
+		}
     }
 }

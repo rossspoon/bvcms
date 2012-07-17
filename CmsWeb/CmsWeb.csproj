@@ -336,6 +336,7 @@
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
+    <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
     <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
@@ -1180,6 +1181,7 @@
     <Content Include="Areas\Main\Views\Meeting\AttendanceByGroups.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\ManagedGiving.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\ManageGiving2.cshtml" />
+    <Content Include="Areas\Setup\Views\Roles\Index.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />

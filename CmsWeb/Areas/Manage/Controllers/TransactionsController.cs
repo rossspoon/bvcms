@@ -131,14 +131,16 @@ namespace CmsWeb.Areas.Manage.Controllers
 <tr><td>Amount</td><td>{5:N2}</td></tr>
 <tr><td>Date</td><td>{6}</td></tr>
 <tr><td>TranIds</td><td>Org: {7} {8}, Curr: {9} {10}</td></tr>
+<tr><td>User</td><td>{11}</td></tr>
 </table>".Fmt(t.Name, t.Emails, t.Address, t.Phone,
 		 t.Description, 
 		 -amt,
 		 t.TransactionDate.Value.FormatDateTm(),
-		 t.Id, t.TransactionId, tt.Id, tt.TransactionId
+		 t.Id, t.TransactionId, tt.Id, tt.TransactionId, Util.UserFullName
 		 ), Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(tt.OrgId ?? 0)),
 					0, 0);
 			}
+			DbUtil.LogActivity("CreditVoid for " + t.TransactionId);
 			return View("List", m);
 		}
 		[HttpPost]
@@ -196,6 +198,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 		 t.Id, t.TransactionId, t2.Id, t2.TransactionId
 		 ), Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(t2.OrgId ?? 0)),
 					0, 0);
+			DbUtil.LogActivity("Adjust for " + t.TransactionId);
 			return View("List", m);
 		}
     }

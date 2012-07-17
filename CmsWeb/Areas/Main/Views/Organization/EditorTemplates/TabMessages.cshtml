@@ -92,6 +92,19 @@
     Terms:</span>
     @Html.EditorFor(m => m.Terms, "Html")
   </li>
+  <li>
+    <div class="text big tip" title="Reminder
+    |This is the email that is sent as a reminder for members of an event.">
+    Reminder: </div>
+    <ul>
+      <li> <span class="keyword2">Subject:</span> @Html.TextBox("ReminderSubject", Model.ReminderSubject, new { @class = "long" }) </li>
+      <li>
+        <div class="text"><span class="keyword2"> Body:</span>
+        @Html.EditorFor(m => m.ReminderBody, "Html")
+        </div>
+      </li>
+    </ul>
+  </li>
   <li><span class="keyword big tip" title="Messages for Divsion
     |Edit Online Reg Messages For Division type Registrations">
     Messages for Division:</span>

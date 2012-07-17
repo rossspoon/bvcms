@@ -5,7 +5,12 @@
     && p.index > 0 // it is not the first one
     )
 { 
-    <tr><td><div class="instruct">New Registrations</div></td></tr>
+	<tr><td><div style="margin-top: 10px; text-align:right">
+            <input id="submitit" type="submit" class="submitbutton" 
+                    value='Complete Registration' /></div>
+			<div class="instruct">New Registrations</div>
+		</td>
+    </tr>
 }
 @if (!p.ShowDisplay())
 { // This is a header that will show above the last unfinished item

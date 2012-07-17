@@ -18,13 +18,13 @@ else if (Model.IsCreateAccount())
 }
 else if (Model.ChoosingSlots())
 { 
-    <input id="submitit" type="submit" class="submitbutton" 
+    <input id="submitit" onlyoneallowed="true" type="submit" class="submitbutton" 
             value='Choose Times' />
 }
 else if (Model.OnlineGiving())
 { 
-    <input id="submitit" type="submit" class="submitbutton" 
-            value='Continue To Payment Page' />
+	<input id="submitit" onlyoneallowed="true" type="submit" class="submitbutton" 
+		   value='Continue To Payment Page' />
 }
 else
 { 

@@ -160,9 +160,7 @@ namespace CmsWeb.Models
 						 Description = m.Header,
 						 Email = pp != null ? pp.EmailAddress : p.email,
 						 Name = m.NameOnAccount,
-#if DEBUG
 						 IsLoggedIn = m.UserPeopleId.HasValue,
-#endif
 						 OrgId = p.orgid,
 						 Url = m.URL,
 						 testing = m.testing ?? false,

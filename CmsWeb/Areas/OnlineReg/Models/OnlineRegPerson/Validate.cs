@@ -390,6 +390,9 @@ Please search with a different email, phone, or birthday.";
             else if (setting.Checkbox2Min > 0 && (Checkbox2 == null || Checkbox2.Length < setting.Checkbox2Min))
                 modelState.AddModelError("checkboxes2", "Min of {0} required".Fmt(setting.Checkbox2Min));
 
+			if (OnlineGiving() && TotalAmount() <= 0)
+				modelState.AddModelError("form", "Gift amount required");
+
             OtherOK = modelState.IsValid;
         }
         public bool IsSmallGroupFilled(List<RegSettings.MenuItem> options, string sg)

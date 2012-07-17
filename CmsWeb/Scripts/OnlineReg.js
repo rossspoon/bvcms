@@ -51,8 +51,12 @@
                 return;
             }
             $(f).html(ret).ready(function () {
-                $.InstructionsShow();
-                $("#dob").datepicker($.dpoptions);
+                if ($("#submitit").attr("onlyoneallowed") == "true")
+                    $("#submitit").click();
+                else {
+                    $.InstructionsShow();
+                    $("#dob").datepicker($.dpoptions);
+                }
             });
         });
         return false;
