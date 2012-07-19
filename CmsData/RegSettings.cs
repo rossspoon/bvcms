@@ -624,7 +624,7 @@ namespace CmsData
 					ParseConfirmation();
 					break;
 				case RegKeywords.Reminder:
-					ParseConfirmation();
+					ParseReminder();
 					break;
 				case RegKeywords.AskOptions:
 				case RegKeywords.Dropdown1:
@@ -901,10 +901,10 @@ namespace CmsData
 						lineno++;
 						break;
 					case RegKeywords.ReminderSubject:
-						Subject = GetString();
+						ReminderSubject = GetString();
 						break;
 					case RegKeywords.ReminderBody:
-						Body = ParseMessage();
+						ReminderBody = ParseMessage();
 						break;
 					default:
 						throw GetException("unexpected line in Reminder");
@@ -1511,8 +1511,8 @@ namespace CmsData
 		private void AddReminder(StringBuilder sb)
 		{
 			AddValueNoCk(0, sb, "Reminder", "");
-			AddValueNoCk(1, sb, "ReminderSubject", Subject);
-			AddSingleOrMultiLine(1, sb, "ReminderBody", Body);
+			AddValueNoCk(1, sb, "ReminderSubject", ReminderSubject);
+			AddSingleOrMultiLine(1, sb, "ReminderBody", ReminderBody);
 		}
 		private void AddSingleOrMultiLine(int n, StringBuilder sb, string Section, string ht)
 		{

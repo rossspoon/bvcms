@@ -28,12 +28,14 @@ namespace CmsWeb.Areas.Main.Models.Report
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private Font smallfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
         private bool ShowForm;
+        private bool AlphaSort;
 
         private int? qid;
-        public ProspectResult(int? id, bool ShowForm)
+        public ProspectResult(int? id, bool ShowForm, bool Alpha)
         {
             qid = id;
             this.ShowForm = ShowForm;
+            this.AlphaSort = Alpha;
         }
 
         public class ProspectInfo
@@ -134,7 +136,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             else
             {
                 pageEvents.StartPageSet("Outreach/Inreach Report: {0:d}".Fmt(dt));
-                IQueryable<ProspectInfo> q = GetProspectInfo();
+                IQueryable<ProspectInfo> q = GetProspectInfo(AlphaSort);
 				if (!q.Any())
 					doc.Add(new Phrase("no data"));
 				else
@@ -277,12 +279,16 @@ namespace CmsWeb.Areas.Main.Models.Report
             doc.Close();
         }
 
-        private IQueryable<ProspectInfo> GetProspectInfo()
+        private IQueryable<ProspectInfo> GetProspectInfo(bool Alpha = false)
         {
             var Db = DbUtil.Db;
             var q = Db.PeopleQuery(qid.Value);
+			if (Alpha)
+				q = q.OrderBy(pp => pp.Name2);
+			else
+				q = q.OrderBy(pp => pp.PrimaryZip).ThenBy(pp => pp.Name2);
+
             var q2 = from p in q
-                     orderby p.PrimaryZip, p.LastName, p.Name
                      select new ProspectInfo
                      {
                          PeopleId = p.PeopleId,

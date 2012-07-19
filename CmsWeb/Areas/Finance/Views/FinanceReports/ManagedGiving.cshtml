@@ -10,6 +10,14 @@
 <script type="text/javascript">
     $(function () {
         $('table.grid tbody tr:even').addClass('alt');
+        $("a.delete").click(function (ev) {
+            ev.preventDefault();
+            if (confirm("are you sure?")) {
+                $.post($(this).attr("href"), {}, function (ret) {
+                    window.location = "/FinanceReports/ManagedGiving";
+                });
+            }
+        });
     });
 </script>
 }
@@ -25,6 +33,7 @@
 			<td>Period</td>
 			<td>Day1</td>
 			<td>Day2</td>
+            <td></td>
 		</tr>
 	</thead>	
 	<tbody>
@@ -39,6 +48,8 @@
 			<td>@rg.Period</td>
 			<td>@rg.Day1</td>
 			<td>@rg.Day2</td>
+			<td>
+                <a class="delete" href="/Finance/Vault/DeleteVaultData/@rg.PeopleId"><img src="/images/delete.gif" /></a></td>
 		</tr>
 	}
 	</tbody>

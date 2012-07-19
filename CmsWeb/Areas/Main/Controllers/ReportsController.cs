@@ -184,11 +184,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 usephone = usephone ?? false,
             };
         }
-        public ActionResult Prospect(int? id, bool? Form)
+        public ActionResult Prospect(int? id, bool? Form, bool? Alpha)
         {
             if (!id.HasValue)
                 return Content("no query");
-            return new ProspectResult(id, Form ?? false);
+            return new ProspectResult(id, Form ?? false, Alpha ?? false);
         }
         public ActionResult Attendee(int? id)
         {

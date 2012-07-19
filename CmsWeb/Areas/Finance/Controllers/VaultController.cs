@@ -17,6 +17,7 @@ namespace CmsWeb.Areas.Finance.Controllers
         {
             return View();
         }
+		[HttpPost]
 		public ActionResult DeleteVaultData(int id)
 		{
 			var sage = new SagePayments(DbUtil.Db, testing: true);

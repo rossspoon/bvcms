@@ -235,19 +235,19 @@ namespace CmsWeb.Models.OrganizationPage
 
 
 			var option = GetMenuItemSmallGroup(setting, setting.Dropdown1, om);
-			if (option.Any())
+			if (option != null && option.Any())
 				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option.First().Description,
 					Util.PickFirst(setting.Dropdown1Label, "Options"));
 			option = GetMenuItemSmallGroup(setting, setting.Dropdown2, om);
-			if (option.Any())
+			if (option != null && option.Any())
 				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option.First().Description,
 					Util.PickFirst(setting.Dropdown2Label, "Extra Options"));
 			option = GetMenuItemSmallGroup(setting, setting.Dropdown3, om);
-			if (option.Any())
+			if (option != null && option.Any())
 				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option.First().Description,
 					Util.PickFirst(setting.Dropdown3Label, "Extra Options"));
 			option = GetMenuItemSmallGroup(setting, setting.Checkboxes, om);
-			if (option.Any())
+			if (option != null && option.Any())
 			{
 				var menulabel = setting.CheckBoxLabel;
 				foreach (var m in option)
@@ -258,7 +258,7 @@ namespace CmsWeb.Models.OrganizationPage
 				}
 			}
 			option = GetMenuItemSmallGroup(setting, setting.Checkboxes2, om);
-			if (option.Any())
+			if (option != null && option.Any())
 			{
 				var menulabel = setting.CheckBox2Label;
 				foreach (var m in option)

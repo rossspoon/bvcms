@@ -248,6 +248,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             p.Add("\n");
             p.Add(new Chunk(" ", medfont));
             p.Add(new Chunk("({0}) {1:MMM d}".Fmt(Code, bd), smallfont));
+//			if (name.Contains("Jane"))
+//	            p.Add("\nTest1");
             t.AddCell(p);
         }
         private class OrgInfo

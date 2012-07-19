@@ -486,7 +486,7 @@ namespace CmsData
                                c.TextValue.ToInt());
                 case QueryType.RecentContributionAmount:
                     return Expressions.RecentContributionAmount(parm, Db,
-                               c.Days, c.Quarters.ToInt2(),
+                               c.Days, c.Quarters.ToInt(),
                                CompType,
                                Decimal.Parse(c.TextValue));
                 case QueryType.RecentGivingAsPctOfPrevious:

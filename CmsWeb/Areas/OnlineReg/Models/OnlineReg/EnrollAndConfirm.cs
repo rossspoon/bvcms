@@ -345,20 +345,21 @@ AmountDue: {4:C}<br/>
                 string EmailSubject = null;
                 string message = null;
 
+				List<Person> NotifyIds = null;
                 if (p.setting.Body.HasValue())
                 {
                     EmailSubject = Util.PickFirst(p.setting.Subject, "no subject");
                     message = p.setting.Body;
+	                NotifyIds = Db.StaffPeopleForOrg(p.org.OrganizationId);
                 }
                 else
                 {
                     var os = settings[masterorgid.Value];
                     EmailSubject = Util.PickFirst(os.Subject, "no subject");
                     message = Util.PickFirst(os.Body, "no body");
+	                NotifyIds = Db.StaffPeopleForOrg(masterorgid.Value);
                 }
 
-                var NotifyIds = Db.StaffPeopleForOrg(p.org.OrganizationId);
-                NotifyIds.AddRange(Db.StaffPeopleForOrg(masterorg.OrganizationId));
                 if (NotifyIds.Count == 0)
                     NotifyIds = Db.AdminPeople();
                 var notify = NotifyIds[0];

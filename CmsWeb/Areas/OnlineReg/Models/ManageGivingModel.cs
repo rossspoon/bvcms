@@ -179,6 +179,8 @@ namespace CmsWeb.Models
 
 		private bool checkABA(string s)
 		{
+			if (!s.HasValue())
+				return false;
 			if (s.StartsWith("X"))
 				return true;
 			var t = s.GetDigits();

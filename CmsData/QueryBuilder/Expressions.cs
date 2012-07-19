@@ -1039,7 +1039,7 @@ namespace CmsData
 		internal static Expression RecentContributionAmount(
 			ParameterExpression parm, CMSDataContext Db,
 			int days,
-			int? fund,
+			int fund,
 			CompareType op,
 			decimal amt)
 		{
