@@ -21,12 +21,16 @@ namespace CmsWeb.Models
 		public const string QB_EV_SYNC_TOKEN = "QBSyncToken";
 		public const string QB_EV_AMOUNT = "Amount";
 
-		// TODO: Util.Host for callback to assign the church
-		public const string QB_CALLBACK = "http://www.bvcms.com/Quickbooks/RequestAccessToken";
 		public const string QB_REQUEST_TOKEN = "https://oauth.intuit.com/oauth/v1/get_request_token";
 		public const string QB_AUTHORIZE = "https://appcenter.intuit.com/Connect/Begin";
 		public const string QB_ACCESS_TOKEN = "https://oauth.intuit.com/oauth/v1/get_access_token";
 
+		public static string QB_CALLBACK = DbUtil.Db.CmsHost + "/Quickbooks/RequestAccessToken";
+
+		// Account Creation Codes
+		public const int QB_ACCOUNT_NONPROFITINCOME = 1;
+
+		// QuickBooks Objects
 		private static DataServices qbds;
 		private static ServiceContext qbsc;
 		private static OAuthConsumerContext qboacc;
@@ -105,6 +109,79 @@ namespace CmsWeb.Models
 			}
 
 			return qbds;
+		}
+
+		public static bool hasActiveConnection()
+		{
+			return (from i in DbUtil.Db.QBConnections
+					where i.Active == 1
+					select i).Count() > 0;
+		}
+
+		public static List<Account> ListAllAccounts() // Max per page is 100
+		{
+			return getDataService().FindAll(new Account(), 1, 100).ToList<Account>();
+		}
+
+		public static bool CreateAccount( int type, string name, string number ) // Name and Subtype are required
+		{
+			Account aNew = new Account();
+			aNew.Name = name;
+			aNew.AcctNum = number;
+
+			switch( type )
+			{
+				case QB_ACCOUNT_NONPROFITINCOME:
+					aNew.Subtype = QboAccountDetailTypeEnum.NonProfitIncome.ToString();
+					break;
+
+				default: break;
+			}
+
+			Account aMade = getDataService().Add(aNew) as Account;
+
+			if (aMade.Id.Value.ToInt() > 0 && aMade.SyncToken.ToInt() > 0) return true;
+			else return false;
+		}
+
+		public static Account FetchAccount(string name)
+		{
+			AccountQuery aq = new AccountQuery();
+			aq.Name = name;
+
+			return aq.ExecuteQuery<Account>( getServiceContext() ).FirstOrDefault();
+		}
+
+		public static bool CreateJournalEntry( string desc, decimal amount, int from, int to )
+		{
+			JournalEntry jeNew = new JournalEntry();
+
+			JournalEntryHeader jeh = new JournalEntryHeader();
+			jeh.Note = desc;
+
+			JournalEntryLine jelFrom = new JournalEntryLine();
+			jelFrom.Desc = desc;
+			jelFrom.Amount = amount;
+			jelFrom.AmountSpecified = true;
+			jelFrom.AccountId = new IdType() { Value = from.ToString() };
+			jelFrom.PostingType = PostingTypeEnum.Debit;
+			jelFrom.PostingTypeSpecified = true;
+
+			JournalEntryLine jelTo = new JournalEntryLine();
+			jelTo.Desc = desc;
+			jelTo.Amount = amount;
+			jelTo.AmountSpecified = true;
+			jelTo.AccountId = new IdType() { Value = to.ToString() };
+			jelTo.PostingType = PostingTypeEnum.Credit;
+			jelTo.PostingTypeSpecified = true;
+
+			jeNew.Header = jeh;
+			jeNew.Line = new JournalEntryLine[] { jelFrom, jelTo };
+
+			JournalEntry jeMade = getDataService().Add(jeNew) as JournalEntry;
+
+			if (jeMade.Id.Value.ToInt() > 0 && jeMade.SyncToken.ToInt() > 0) return true;
+			else return false;
 		}
 	}
 }
