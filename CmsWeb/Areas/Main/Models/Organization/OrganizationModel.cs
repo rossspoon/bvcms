@@ -218,7 +218,7 @@ namespace CmsWeb.Models.OrganizationPage
 		}
 		private List<RegSettings.MenuItem> GetMenuItemSmallGroup(RegSettings setting, List<RegSettings.MenuItem> m, OrganizationMember om)
 		{
-			var menu = setting.Dropdown1.Where(mm => om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == mm.SmallGroup)).ToList();
+			var menu = m.Where(mm => om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == mm.SmallGroup)).ToList();
 			if (!menu.Any())
 				return null;
 			return menu;

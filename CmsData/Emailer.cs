@@ -124,9 +124,10 @@ namespace CmsData
 		}
 		public List<Person> FinancePeople()
 		{
-			return (from p in CMSRoleProvider.provider.GetFinance()
-					orderby p.Users.Any(u => u.Roles.Contains("Developer")) ascending 
-					select p).ToList();
+			var q = from u in Users
+					where u.UserRoles.Any(ur => ur.Role.RoleName == "Finance")
+					select u.Person;
+			return q.ToList();
 		}
 		public string StaffEmailForOrg(int orgid)
 		{

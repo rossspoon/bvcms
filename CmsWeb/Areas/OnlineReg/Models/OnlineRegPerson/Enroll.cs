@@ -240,6 +240,8 @@ namespace CmsWeb.Models
 
 		private void AddToSmallGroup(RegSettings.MenuItem g, OrganizationMember om)
 		{
+			if (om == null || g == null)
+				return;
 			if (PythonEvents != null)
 			{
 				PythonEvents.instance.AddToSmallGroup(g.SmallGroup, om);
