@@ -99,7 +99,8 @@ namespace CmsWeb.Models
                     people = from p in people
                             where (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
                                 || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name))
-                            && (p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) || p.MiddleName.StartsWith(First))
+                            && (p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) || p.MiddleName.StartsWith(First)
+                                || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name))
                             select p;
                 else
                     if (Last.AllDigits())

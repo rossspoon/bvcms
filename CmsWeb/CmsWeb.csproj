@@ -376,7 +376,9 @@
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\combined.css" />
     <Content Include="Content\faary.css" />
+    <Content Include="Content\joyride-1.0.3.css" />
     <Content Include="Content\jquery-ui-1.8.21.custom.css" />
+    <Content Include="Content\js\jquery.joyride-1.0.3.js" />
     <Content Include="Content\js\jquery-1.7.2.js" />
     <Content Include="Content\js\jquery-1.7.2.min.js" />
     <Content Include="Content\js\jquery-ui-1.8.21.custom.js" />

@@ -97,7 +97,7 @@
                         </td>
                         <td class="dropdown">
                             <div>
-                                <a href="/OrgSearch">Organization</a></div>
+                                <a id="OrgSearchLink" href="/OrgSearch">Organization</a></div>
                             <div class="sublinks">
                                 <a href="/OrgSearch">Search</a> <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a> 
     @if (User.IsInRole("Edit"))
@@ -203,11 +203,13 @@
 	 }
                         <td class="dropdown left">
                             <div>
-                                <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help</a></div>
+                                <a id="helplink" href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help</a></div>
                             <div class="sublinks">
                                 <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help Documentation</a>
                                 <a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">Email Support</a>
                                 <a href="/Home/About">About</a>
+                                <a href="#" class="heading">&mdash; Tutorials &mdash;</a>
+                                @RenderSection("tutorials", required: false)
                             </div>
                         </td>
                     </tr>

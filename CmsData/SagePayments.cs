@@ -54,7 +54,7 @@ namespace CmsData
 		}
 		public void storeVault(int PeopleId, 
 			string type, string cardnumber, string expires, string cardcode,
-			string routing, string account, bool giving = false)
+			string routing, string account, bool giving)
 		{
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
@@ -331,7 +331,38 @@ namespace CmsData
 			var pi = p.PaymentInfo();
 
 			XElement resp = null;
-			if (type == "C")
+			if ((type ?? "B") == "B" && pi.SageBankGuid.HasValue) // Bank Account (check)
+			{
+				var wc = new WebClient();
+				wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVaultVirtualCheck.asmx/";
+				var coll = new NameValueCollection();
+
+				coll["M_ID"] = login;
+				coll["M_KEY"] = key;
+				var guid = pi.SageBankGuid.ToString().Replace("-", "");
+				coll["GUID"] = guid;
+				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", "");
+				coll["C_FIRST_NAME"] = p.FirstName;
+				var mi = (p.MiddleName ?? " ").FirstOrDefault().ToString().Trim();
+				coll["C_MIDDLE_INITIAL"] = mi;
+				coll["C_LAST_NAME"] = p.LastName;
+				coll["C_SUFFIX"] = p.SuffixCode;
+				coll["C_ADDRESS"] = p.PrimaryAddress;
+				coll["C_CITY"] = p.PrimaryCity;
+				coll["C_STATE"] = p.PrimaryState;
+				coll["C_ZIP"] = p.PrimaryZip;
+				coll["C_COUNTRY"] = p.PrimaryCountry;
+				coll["C_EMAIL"] = p.EmailAddress;
+				coll["T_AMT"] = amt.ToString("n2");
+				coll["T_ORDERNUM"] = tranid.ToString();
+				coll["C_TELEPHONE"] = p.HomePhone;
+				AddShipping(coll);
+
+				var b = wc.UploadValues("VIRTUAL_CHECK_PPD_SALE", "POST", coll);
+				var ret = Encoding.ASCII.GetString(b);
+				resp = getResponse(ret);
+			}
+			else
 			{
 				var wc = new WebClient();
 				wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVaultBankcard.asmx/";
@@ -356,37 +387,6 @@ namespace CmsData
 				AddShipping(coll);
 
 				var b = wc.UploadValues("VAULT_BANKCARD_SALE_CVV", "POST", coll);
-				var ret = Encoding.ASCII.GetString(b);
-				resp = getResponse(ret);
-			}
-			else
-			{
-				var wc = new WebClient();
-				wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVaultVirtualCheck.asmx/";
-				var coll = new NameValueCollection();
-
-				coll["M_ID"] = login;
-				coll["M_KEY"] = key;
-				var guid = pi.SageBankGuid.ToString().Replace("-", "");
-				coll["GUID"] = guid;
-				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", ""); // 1031360711, 1031412710
-				coll["C_FIRST_NAME"] = p.FirstName;
-				var mi = (p.MiddleName ?? " ").FirstOrDefault().ToString().Trim();
-				coll["C_MIDDLE_INITIAL"] = mi;
-				coll["C_LAST_NAME"] = p.LastName;
-				coll["C_SUFFIX"] = p.SuffixCode;
-				coll["C_ADDRESS"] = p.PrimaryAddress;
-				coll["C_CITY"] = p.PrimaryCity;
-				coll["C_STATE"] = p.PrimaryState;
-				coll["C_ZIP"] = p.PrimaryZip;
-				coll["C_COUNTRY"] = p.PrimaryCountry;
-				coll["C_EMAIL"] = p.EmailAddress;
-				coll["T_AMT"] = amt.ToString("n2");
-				coll["T_ORDERNUM"] = tranid.ToString();
-				coll["C_TELEPHONE"] = p.HomePhone;
-				AddShipping(coll);
-
-				var b = wc.UploadValues("VIRTUAL_CHECK_PPD_SALE", "POST", coll);
 				var ret = Encoding.ASCII.GetString(b);
 				resp = getResponse(ret);
 			}

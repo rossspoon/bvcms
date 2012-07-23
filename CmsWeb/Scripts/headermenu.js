@@ -13,6 +13,12 @@ $(document).ready(function () {
         }
         return true;
     });
+    $("a.tutorial").click(function (ev) {
+        ev.preventDefault();
+        var a = $(this);
+        $(".joyride-tip-guide").remove();
+        $(this).joyride({ tipContent: a.attr("href") });
+    });
     $('#AddDialog').dialog({
         bgiframe: true,
         autoOpen: false,
@@ -46,12 +52,12 @@ $(document).ready(function () {
         $.post("/Tags/ClearTag", {}, function () {
             window.location.reload();
         });
-    }); 
+    });
     $('.warntip').tooltip({
         delay: 150,
         showBody: "|",
         showURL: false
-    }); 
+    });
 });
 function CloseAddDialog() {
     $("#AddDialog").dialog("close");

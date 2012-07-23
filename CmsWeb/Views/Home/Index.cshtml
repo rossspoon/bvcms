@@ -33,8 +33,13 @@
         });
     </script>
 }
+@section tutorials
+{
+    <a href="#homeTut" class="tutorial">Home Page Layout</a>
+    <a href="#attendanceTut" class="tutorial">Attendance</a>
+}
     <div class="homebox roundbox">
-        <h2><a href="Tags?tag=TrackBirthdays">Birthdays</a></h2>
+        <h2 id="bdays"><a href="Tags?tag=TrackBirthdays">Birthdays</a></h2>
         <div class="jscroll" style="height:10em">
 @foreach (var bi in Model.Birthdays())
 {
@@ -85,14 +90,14 @@
     </div>
     <div style="margin-left:1%;float:left;">&nbsp;</div>
     <div class="homebox roundbox">
-        <h2><a href="/Tags">My Tags</a></h2>
+        <h2 id="tags"><a href="/Tags">My Tags</a></h2>
         <div class="jscroll" style="height:10em">
 @foreach (var t in Model.Tags())
 {
             <div class="drow"><a href="/Tags?tag=@t.Value">@t.Value</a></div>
 }
         </div>
-        <h2><a href="/Task/List">My Tasks</a></h2>
+        <h2 id="tasks"><a href="/Task/List">My Tasks</a></h2>
         <div class="jscroll" style="height:25em">
 @foreach (var t in Model.Tasks())
 {
@@ -101,3 +106,17 @@
         </div>
     </div>
     <div style="clear:both"></div>
+<ol id="homeTut" style="display:none">
+  <li data-id="bdays">This is experimental feature coming soon.</li>
+  <li data-id="bdays">Upcoming birthdays here</li>
+  <li data-id="tags" data-options="tipAnimation:fade">This is where your tags are.</li>
+  <li data-id="tasks" data-options="tipAnimation:fade">This is where your tasks are.</li>
+  <li data-id="helplink" data-options="tipLocation:left">This is how you get help</li>
+</ol>
+<ol id="attendanceTut" style="display:none">
+  <li data-id="OrgSearchLink">
+  <p>This is experimental feature coming soon.<br />
+  Hover over Organization,<br />
+  Then click the Search item.</p>
+  </li>
+</ol>

@@ -68,10 +68,10 @@ namespace CmsWeb.Areas.Finance.Models.Report
                                  : (p.SpouseId == null ?
                                      (p.Title != null ? p.Title + " " + p.Name : p.Name)
                                      : (p.HohFlag == 1 ?
-                                         (p.Title != null ?
+                                         ((p.Title != null && p.Title != "") ?
                                              p.Title + " and Mrs. " + p.Name
                                              : "Mr. and Mrs. " + p.Name)
-                                         : (p.SpouseTitle != null ?
+                                         : ((p.SpouseTitle != null && p.SpouseTitle != "") ?
                                              p.SpouseTitle + " and Mrs. " + p.SpouseName
                                              : "Mr. and Mrs. " + p.SpouseName))))
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)

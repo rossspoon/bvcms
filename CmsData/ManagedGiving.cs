@@ -105,8 +105,10 @@ namespace CmsData
 			else
 			{
 				Db.SubmitChanges();
+				var systemEmail = Db.Setting("SystemEmailAddress", "mailer@bvcms.com");
+				var adminEmail = Db.Setting("AdminMail", systemEmail);
 				foreach (var p in Db.FinancePeople())
-					Util.SendMsg(DbUtil.SystemEmailAddress, Db.CmsHost, Util.TryGetMailAddress(DbUtil.AdminMail),
+					Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(adminEmail),
 						"Recurring Giving Failed on " + Db.CmsHost, 
 						"<a href='{0}FinanceReports/ManagedGiving'>message: {1}, tranid:{2}</a>".Fmt(Db.CmsHost, ret.Message, t.Id), 
 						Util.ToMailAddressList(p.EmailAddress), 0, null);

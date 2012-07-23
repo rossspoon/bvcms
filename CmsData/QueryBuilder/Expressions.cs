@@ -836,7 +836,7 @@ namespace CmsData
 		internal static Expression RecentPledgeCount(
 			ParameterExpression parm, CMSDataContext Db,
 			int days,
-			int? fund,
+			int fund,
 			CompareType op,
 			int cnt)
 		{
@@ -905,7 +905,7 @@ namespace CmsData
 		internal static Expression RecentPledgeAmount(
 			ParameterExpression parm, CMSDataContext Db,
 			int days,
-			int? fund,
+			int fund,
 			CompareType op,
 			decimal amt)
 		{
@@ -1106,7 +1106,7 @@ namespace CmsData
 			ParameterExpression parm, CMSDataContext Db,
 			DateTime? start,
 			DateTime? end,
-			int? fund,
+			int fund,
 			CompareType op,
 			decimal amt)
 		{

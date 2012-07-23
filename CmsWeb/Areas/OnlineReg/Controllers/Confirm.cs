@@ -45,7 +45,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					if (gateway == "authorizenet")
 					{
 						var au = new AuthorizeNet(DbUtil.Db, m.testing ?? false);
-						if (!pf.Routing.StartsWith("X") && !pf.Account.StartsWith("X"))
+						if ((pf.Type == "B" && !pf.Routing.StartsWith("X") && !pf.Account.StartsWith("X"))
+							|| (pf.Type == "C" && !pf.CreditCard.StartsWith("X")))
 							au.AddUpdateCustomerProfile(m.UserPeopleId.Value,
 								pf.Type,
 								pf.CreditCard,
@@ -57,14 +58,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					else if (gateway == "sage")
 					{
 						var sg = new CmsData.SagePayments(DbUtil.Db, m.testing ?? false);
-						if (!pf.Routing.StartsWith("X") && !pf.Account.StartsWith("X"))
+						if ((pf.Type == "B" && !pf.Routing.StartsWith("X") && !pf.Account.StartsWith("X"))
+							|| (pf.Type == "C" && !pf.CreditCard.StartsWith("X")))
 							sg.storeVault(m.UserPeopleId.Value,
 										  pf.Type,
 										  pf.CreditCard,
 										  pf.Expires,
 										  pf.MaskedCCV != null && pf.MaskedCCV.StartsWith("X") ? pf.CCV : pf.MaskedCCV,
 										  pf.Routing,
-										  pf.Account);
+										  pf.Account,
+										  pf.IsGiving == true);
 					}
 					else
 						throw new Exception("ServiceU not supported");

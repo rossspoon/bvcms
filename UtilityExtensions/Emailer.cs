@@ -92,7 +92,7 @@ namespace UtilityExtensions
                 var smtp = Util.Smtp();
                 smtp.Send(msg);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }

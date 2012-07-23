@@ -1103,8 +1103,13 @@ namespace UtilityExtensions
 		public static SmtpClient Smtp()
 		{
 			var smtp = new SmtpClient();
-			if (ConfigurationManager.AppSettings["SmtpRequiresSSL"] == "true")
+			if (ConfigurationManager.AppSettings["requiresSsl"] == "true")
 				smtp.EnableSsl = true;
+#if DEBUG
+			smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+			smtp.PickupDirectoryLocation = @"c:\email";
+			smtp.Host = "localhost";
+#endif
 			return smtp;
 		}
 		private const string STR_SysFromEmail = "UnNamed";

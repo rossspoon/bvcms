@@ -116,7 +116,7 @@ namespace CmsData
                 case QueryType.ContributionAmount2:
                     return Expressions.ContributionAmount2(parm, Db,
                                c.StartDate,
-                               c.EndDate, c.Quarters.ToInt2(),
+                               c.EndDate, c.Quarters.ToInt(),
                                CompType,
                                Decimal.Parse(c.TextValue));
                 case QueryType.ContributionChange:
@@ -496,12 +496,12 @@ namespace CmsData
                                Double.Parse(c.TextValue));
                 case QueryType.RecentPledgeCount:
                     return Expressions.RecentPledgeCount(parm, Db,
-                               c.Days, c.Quarters.ToInt2(),
+                               c.Days, c.Quarters.ToInt(),
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.RecentPledgeAmount:
                     return Expressions.RecentPledgeAmount(parm, Db,
-                               c.Days, c.Quarters.ToInt2(),
+                               c.Days, c.Quarters.ToInt(),
                                CompType,
                                Decimal.Parse(c.TextValue));
                 case QueryType.RecentAttendCount:

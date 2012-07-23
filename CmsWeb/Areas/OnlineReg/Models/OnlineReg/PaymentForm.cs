@@ -35,6 +35,7 @@ namespace CmsWeb.Models
 		public bool? IsLoggedIn { get; set; }
 		public bool? CanSave { get; set; }
 		public bool? SavePayInfo { get; set; }
+		public bool? IsGiving { get; set; }
 		public bool NoCreditCardsAllowed { get; set; }
 		private bool? _noEChecksAllowed;
 		public bool NoEChecksAllowed
@@ -42,7 +43,8 @@ namespace CmsWeb.Models
 			get
 			{
 				if (!_noEChecksAllowed.HasValue)
-					_noEChecksAllowed = OnlineRegModel.GetTransactionGateway() != "sage";
+					_noEChecksAllowed = DbUtil.Db.Setting("NoEChecksAllowed", "false") == "true"
+							|| OnlineRegModel.GetTransactionGateway() != "sage";
 				return _noEChecksAllowed.Value;
 			}
 		}
@@ -206,6 +208,7 @@ namespace CmsWeb.Models
 			if (m.OnlineGiving())
 			{
 				pf.NoCreditCardsAllowed = DbUtil.Db.Setting("NoCreditCardGiving", "false").ToBool();
+				pf.IsGiving = true;
 				pf.Type = pi.PreferredGivingType;
 				if (pf.NoCreditCardsAllowed)
 					pf.Type = "B"; // bank account only
