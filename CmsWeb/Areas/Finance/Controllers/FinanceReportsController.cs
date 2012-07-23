@@ -61,5 +61,22 @@ namespace CmsWeb.Areas.Finance.Controllers
 			var body = CmsController.RenderPartialViewToString(this, "ManageGiving2", m);
 			return Content(body);
 		}
+
+		[HttpPost]
+		public ActionResult ToQuickBooks(TotalsByFundModel m)
+		{
+			var entries = m.TotalsByFund();
+
+			foreach (var item in entries)
+			{
+				var accts = (from e in DbUtil.Db.ContributionFunds
+							where e.FundId == item.FundId
+							select e).Single();
+
+				QuickbooksModel.CreateJournalEntry(item.FundName, item.Total ?? 0, accts.FundCashAccount.ToInt(), accts.FundAccountCode.ToInt());
+			}
+
+			return Content("");
+		}
     }
 }

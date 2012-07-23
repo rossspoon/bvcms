@@ -1,7 +1,9 @@
-﻿@model CmsData.ContributionFund
+﻿@using CmsWeb.Models
+@model CmsData.ContributionFund
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Fund";
+	 var QBActive = QuickbooksModel.hasActiveConnection(); 
 }
 @section head 
 {
@@ -44,7 +46,14 @@
         </p>
         <p>
             <label for="FundAccountCode">FundAccountCode:</label>
-            @Html.TextBox("FundAccountCode")
+				@if (QBActive)
+				{
+					@Html.DropDownList("FundAccountCode", new SelectList(QuickbooksModel.ListAllAccounts(), "Id.Value", "Name", Model.FundAccountCode)) 
+				}
+				else
+				{  
+					@Html.TextBox("FundAccountCode")
+				}
         </p>
         <p>
             <label for="FundIncomeDept">FundIncomeDept:</label>
@@ -64,7 +73,14 @@
         </p>
         <p>
             <label for="FundCashAccount">FundCashAccount:</label>
-            @Html.TextBox("FundCashAccount")
+				@if (QBActive)
+				{
+					@Html.DropDownList("FundCashAccount", new SelectList(QuickbooksModel.ListAllAccounts(), "Id.Value", "Name", Model.FundCashAccount)) 
+				}
+				else
+				{  
+					@Html.TextBox("FundCashAccount")
+				}
         </p>
         <p>
             <label for="FundCashFund">FundCashFund:</label>
