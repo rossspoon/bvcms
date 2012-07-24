@@ -277,10 +277,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					if (m.testing == true)
 						t.TransactionId += "(testing)";
 				}
+				var contributionemail = (from ex in p.person.PeopleExtras
+										 where ex.Field == "ContributionEmail"
+										 select ex.Data).SingleOrDefault();
+				if (!Util.ValidEmail(contributionemail))
+					contributionemail = p.person.FromEmail;
+
 				Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(DbUtil.Db.StaffEmailForOrg(p.org.OrganizationId)),
 					p.setting.Subject, sb.ToString(),
-					Util.EmailAddressListFromString(p.person.FromEmail), 0, p.PeopleId);
-				DbUtil.Db.Email(p.person.FromEmail, DbUtil.Db.StaffPeopleForOrg(p.org.OrganizationId),
+					Util.EmailAddressListFromString(contributionemail), 0, p.PeopleId);
+				DbUtil.Db.Email(contributionemail, DbUtil.Db.StaffPeopleForOrg(p.org.OrganizationId),
 					"online giving contribution received",
 					"see contribution records for {0} ({1})".Fmt(p.person.Name, p.PeopleId));
 				if (p.CreatingAccount == true)

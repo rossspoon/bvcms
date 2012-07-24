@@ -45,9 +45,9 @@
 			<td>@rg.NextDate.FormatDate()</td>
 			<td>@rg.SemiEvery</td>
 			<td>@rg.EveryN</td>
-			<td>@rg.Period</td>
-			<td>@rg.Day1</td>
-			<td>@rg.Day2</td>
+			<td>@(rg.SemiEvery == "S" ? "M" : rg.Period)</td>
+			<td>@(rg.SemiEvery == "S" ? rg.Day1.ToString() : "")</td>
+			<td>@(rg.SemiEvery == "S" ? rg.Day2.ToString() : "")</td>
 			<td>
                 <a class="delete" href="/Finance/Vault/DeleteVaultData/@rg.PeopleId"><img src="/images/delete.gif" /></a></td>
 		</tr>

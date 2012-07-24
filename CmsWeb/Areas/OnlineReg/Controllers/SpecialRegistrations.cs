@@ -233,10 +233,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			text = text.Replace("{contactphone}", m.Organization.PhoneNumber.FmtFone());
 			text = text.Replace("{details}", details);
 
+			var contributionemail = (from ex in DbUtil.Db.PeopleExtras
+									 where ex.Field == "ContributionEmail"
+									 where ex.PeopleId == m.person.PeopleId
+									 select ex.Data).SingleOrDefault();
+			if (!Util.ValidEmail(contributionemail))
+				contributionemail = m.person.FromEmail;
 			Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(DbUtil.Db.StaffEmailForOrg(m.orgid)),
 				m.setting.Subject, text,
-				Util.EmailAddressListFromString(m.person.FromEmail), 0, m.pid);
-			Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(m.person.FromEmail),
+				Util.EmailAddressListFromString(contributionemail), 0, m.pid);
+			Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(contributionemail),
 				"Managed Giving",
 				"Managed giving for {0} ({1})".Fmt(m.person.Name, m.pid),
 				Util.EmailAddressListFromString(DbUtil.Db.StaffEmailForOrg(m.orgid)),
