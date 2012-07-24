@@ -73,7 +73,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 							where e.FundId == item.FundId
 							select e).Single();
 
-				QuickbooksModel.CreateJournalEntry(item.FundName, item.Total ?? 0, accts.FundCashAccount.ToInt(), accts.FundAccountCode.ToInt());
+				QuickBooksModel.CreateJournalEntry(item.FundName, item.Total ?? 0, accts.FundCashAccount.ToInt(), accts.FundAccountCode.ToInt());
 			}
 
 			return Content("");
