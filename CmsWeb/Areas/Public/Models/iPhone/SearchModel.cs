@@ -62,7 +62,7 @@ namespace CmsWeb.Models.iPhone
         }
 
         private IQueryable<Person> query = null;
-        private IQueryable<Person> ApplySearch()
+        public IQueryable<Person> ApplySearch()
         {
             if (query.IsNotNull())
                 return query;

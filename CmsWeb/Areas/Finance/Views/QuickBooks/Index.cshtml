@@ -1,0 +1,27 @@
+@using CmsData;
+@using CmsWeb.Models;
+@using UtilityExtensions;
+@{
+	Layout = "/Views/Shared/SiteLayout.cshtml";
+	ViewBag.Title = "PostBundle";
+}
+@section scripts
+{
+<script type="text/javascript" src="https://appcenter.intuit.com/Content/IA/intuit.ipp.anywhere.js"></script>
+<script>	intuit.ipp.anywhere.setup({ menuProxy: '@(QuickBooksModel.getBaseURL())/QuickBooks/BlueDotMenu', grantUrl: '@(QuickBooksModel.getBaseURL())/QuickBooks/RequestOAuthToken' });</script>
+}
+<center>
+<br />
+@if (QuickBooksModel.hasActiveConnection())
+{
+	<b>You are currrently connected to QuickBooks.</b>
+	<br />
+	<br />
+	<a href="/QuickBooks/Disconnect">Disconnect From QuickBooks</a>
+}
+else
+{
+	<ipp:connectToIntuit></ipp:connectToIntuit>
+}
+
+</center>

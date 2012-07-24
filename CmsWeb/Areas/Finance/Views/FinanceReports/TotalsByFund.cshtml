@@ -30,7 +30,7 @@ Include Unclosed Bundles:@Html.CheckBox("IncUnclosedBundles")
 		<input id="run" type="submit" value="Run Report" class="bt" />
 		<input id="export" type="submit" value="Export Contributions" class="bt" />
 		<input id="exporttotals" type="submit" value="Export Contribution Totals" class="bt" />
-		@if( CmsWeb.Models.QuickbooksModel.hasActiveConnection() ) {
+		@if( CmsWeb.Models.QuickBooksModel.hasActiveConnection() ) {
 	 	<input id="toquickbooks" type="submit" value="Push to QuickBooks" class="bt" />
 		}
 	</p>

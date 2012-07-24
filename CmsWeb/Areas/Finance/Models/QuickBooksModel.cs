@@ -15,7 +15,7 @@ using DevDefined.OAuth.Framework;
 
 namespace CmsWeb.Models
 {
-	public static class QuickbooksModel
+	public static class QuickBooksModel
 	{
 		public const string QB_EV_ID = "QBID";
 		public const string QB_EV_SYNC_TOKEN = "QBSyncToken";
@@ -24,8 +24,9 @@ namespace CmsWeb.Models
 		public const string QB_REQUEST_TOKEN = "https://oauth.intuit.com/oauth/v1/get_request_token";
 		public const string QB_AUTHORIZE = "https://appcenter.intuit.com/Connect/Begin";
 		public const string QB_ACCESS_TOKEN = "https://oauth.intuit.com/oauth/v1/get_access_token";
+		public const string QB_DISCONNECT = "https://appcenter.intuit.com/api/v1/Connection/Disconnect";
 
-		public static string QB_CALLBACK = DbUtil.Db.CmsHost + "/Quickbooks/RequestAccessToken";
+		public static string QB_CALLBACK = "/Quickbooks/RequestAccessToken";
 
 		// Account Creation Codes
 		public const int QB_ACCOUNT_NONPROFITINCOME = 1;
@@ -53,11 +54,7 @@ namespace CmsWeb.Models
 
 		public static string getCallback()
 		{
-			// Development
-			return QB_CALLBACK;
-
-			// Production
-			//return QB_CALLBACK_PREFIX + Util.Host + QB_CALLBACK_SUFFIX;
+			return getBaseURL() + QB_CALLBACK;
 		}
 
 		public static OAuthConsumerContext getOAuthConsumerContext()
@@ -66,9 +63,9 @@ namespace CmsWeb.Models
 			{
 				qboacc = new OAuthConsumerContext
 				{
-					ConsumerKey = QuickbooksModel.getKey(),
+					ConsumerKey = getKey(),
 					SignatureMethod = SignatureMethod.HmacSha1,
-					ConsumerSecret = QuickbooksModel.getSecret()
+					ConsumerSecret = getSecret()
 				};
 			}
 
@@ -79,7 +76,7 @@ namespace CmsWeb.Models
 		{
 			if (qboas == null)
 			{
-				qboas = new OAuthSession(QuickbooksModel.getOAuthConsumerContext(), QB_REQUEST_TOKEN, QB_AUTHORIZE, QB_ACCESS_TOKEN, getCallback());
+				qboas = new OAuthSession(getOAuthConsumerContext(), QB_REQUEST_TOKEN, QB_AUTHORIZE, QB_ACCESS_TOKEN, getCallback());
 			}
 
 			return qboas;
@@ -111,6 +108,32 @@ namespace CmsWeb.Models
 			return qbds;
 		}
 
+		public static TokenBase getAccessToken()
+		{
+			var qbc = (from i in DbUtil.Db.QBConnections
+					   where i.Active == 1
+					   select i).SingleOrDefault();
+
+			return new TokenBase { Token = qbc.Token, ConsumerKey = getKey(), TokenSecret = qbc.Secret };
+		}
+
+		public static bool doDisconnect()
+		{
+			OAuthSession oas = getOAuthSession();
+			oas.ConsumerContext.UseHeaderForOAuthParameters = true;
+			oas.AccessToken = getAccessToken();
+
+			IConsumerRequest icr = oas.Request();
+
+			icr = icr.Get();
+			icr = icr.ForUrl( QB_DISCONNECT );
+			icr = icr.SignWithToken();
+			var ret = icr.ToWebResponse();
+
+			if (ret.StatusCode.ToInt() == 200) return true;
+			else return false;
+		}
+
 		public static bool hasActiveConnection()
 		{
 			return (from i in DbUtil.Db.QBConnections
@@ -118,8 +141,15 @@ namespace CmsWeb.Models
 					select i).Count() > 0;
 		}
 
+		public static string getBaseURL()
+		{
+			return HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority;
+		}
+
 		public static List<Account> ListAllAccounts() // Max per page is 100
 		{
+			//AccountQuery aq = new AccountQuery();
+			//return aq.ExecuteQuery<Account>( getServiceContext() ).ToList<Account>();
 			return getDataService().FindAll(new Account(), 1, 100).ToList<Account>();
 		}
 

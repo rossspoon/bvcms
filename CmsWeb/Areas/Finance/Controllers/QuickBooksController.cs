@@ -12,9 +12,10 @@ using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
 using CmsData;
 
-namespace BvcmsWww.Controllers
+namespace CmsWeb.Areas.Finance.Controllers
 {
-	public class QuickbooksController : Controller
+	[Authorize(Roles = "Finance")]
+	public class QuickBooksController : Controller
 	{
 		public static IToken requestToken;
 
@@ -25,7 +26,7 @@ namespace BvcmsWww.Controllers
 
 		public ActionResult RequestOAuthToken()
 		{
-			requestToken = QuickbooksModel.getOAuthSession().GetRequestToken();
+			requestToken = QuickBooksModel.getOAuthSession().GetRequestToken();
 
 			DbUtil.Db.ExecuteCommand( "UPDATE dbo.QBConnections SET Active = 0" );
 
@@ -42,14 +43,14 @@ namespace BvcmsWww.Controllers
 			DbUtil.Db.SubmitChanges();
 
 			// generate a user authorize url for this token (which you can use in a redirect from the current site)
-			string authorizationLink = QuickbooksModel.getOAuthSession().GetUserAuthorizationUrlForToken(requestToken, QuickbooksModel.getCallback());
+			string authorizationLink = QuickBooksModel.getOAuthSession().GetUserAuthorizationUrlForToken(requestToken, QuickBooksModel.getCallback());
 
 			return Redirect( authorizationLink );
 		}
 
 		public ActionResult RequestAccessToken()
 		{
-			IToken accessToken = QuickbooksModel.getOAuthSession().ExchangeRequestTokenForAccessToken(requestToken, Request["oauth_verifier"]);
+			IToken accessToken = QuickBooksModel.getOAuthSession().ExchangeRequestTokenForAccessToken(requestToken, Request["oauth_verifier"]);
 
 			QBConnection qbc = (from i in DbUtil.Db.QBConnections
 									  where i.Active == 1
@@ -59,6 +60,15 @@ namespace BvcmsWww.Controllers
 			qbc.Secret = accessToken.TokenSecret;
 			qbc.RealmID = Request["realmId"];
 			DbUtil.Db.SubmitChanges();
+
+			return View("Index");
+		}
+
+		public ActionResult Disconnect()
+		{
+			bool complete = QuickBooksModel.doDisconnect();
+
+			if (complete) DbUtil.Db.ExecuteCommand("UPDATE dbo.QBConnections SET Active = 0");
 
 			return View("Index");
 		}

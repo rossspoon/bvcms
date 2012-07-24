@@ -14,6 +14,7 @@ namespace CmsWeb.Areas.Finance
 
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
+			AddRoute(context, "QuickBooks");
             AddRoute(context, "PostBundle");
             AddRoute(context, "FinanceReports");
             AddRoute(context, "Statements");
