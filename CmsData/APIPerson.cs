@@ -169,7 +169,7 @@ namespace CmsData.API
 		}
 		public Person GetPersonData(int id)
 		{
-			return GetPeopleData(id).Single();
+			return GetPeopleData(id).SingleOrDefault();
 		}
 		public IEnumerable<Person> GetPeopleData(int? id, int? famid = null, string first = null, string last = null)
 		{
@@ -270,6 +270,8 @@ namespace CmsData.API
 			var xs = new XmlSerializer(typeof(Person));
 			var sw = new StringWriter();
 			var p = GetPersonData(id);
+			if (p == null)
+				return "<Person error=\"Not found\" />";
 			xs.Serialize(sw, p);
 			return sw.ToString();
 		}

@@ -75,6 +75,7 @@ namespace CmsData
 			Time,
 			DayOfWeek,
 			TimeSlots,
+			TimeSlotLockDays,
 			Options,
 			Code,
 			SmallGroup,
@@ -179,6 +180,7 @@ namespace CmsData
 		public int? DonationFundId { get; set; }
 		public string GroupToJoin { get; set; }
 		public bool GiveOrgMembAccess { get; set; }
+		public int? TimeSlotLockDays { get; set; }
 
 		public string DonationFund()
 		{
@@ -591,6 +593,9 @@ namespace CmsData
 					break;
 				case RegKeywords.DonationFundId:
 					DonationFundId = GetNullInt();
+					break;
+				case RegKeywords.TimeSlotLockDays:
+					TimeSlotLockDays = GetNullInt();
 					break;
 				case RegKeywords.DonationLabel:
 					DonationLabel = ParseMessage();
@@ -1480,6 +1485,7 @@ namespace CmsData
 		{
 			if (TimeSlots.Count == 0)
 				return;
+			AddValueCk(0, sb, "TimeSlotLockDays", TimeSlotLockDays);
 			AddValueNoCk(0, sb, "TimeSlots", "");
 			foreach (var c in TimeSlots)
 			{

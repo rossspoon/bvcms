@@ -31,6 +31,27 @@ $(function () {
         }
         return false;
     });
+    $('#reminderemails').click(function (ev) {
+        ev.preventDefault();
+        var href = $(this).attr("href");
+        if (confirm('Are you sure you want to send reminders?')) {
+            $.blockUI({ message: "sending reminders" });
+            $.post(href, null, function (ret) {
+                if (ret != "ok") {
+                    $.blockUI({ message: ret });
+                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
+                }
+                else {
+                    $.blockUI({ message: "org deleted" });
+                    $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
+                        $.unblockUI();
+                        window.location = "/";
+                    });
+                }
+            });
+        }
+        return false;
+    });
     $(".bt").button();
     $("#buttondiv bt").css("width", "100%");
 //    $("#DivisionsList").delegate("#DivisionsList", "change", function () {

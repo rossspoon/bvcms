@@ -18,8 +18,10 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			if (!id.HasValue) return Content("no id");
 			if (Util.SessionTimedOut()) return Redirect("/Errors/SessionTimeout.htm");
+			if (!body.HasValue())
+				body = TempData["body"] as string;
 
-			if( templateID != 0 && DbUtil.Db.Setting("UseEmailTemplates", "false") == "true" )
+			if(!subj.HasValue() && templateID != 0 && DbUtil.Db.Setting("UseEmailTemplates", "false") == "true" )
 			{
 				if (templateID == null)
 				{

@@ -477,6 +477,8 @@ namespace CmsWeb.Models
         public void DeleteCondition()
         {
             var c = Db.LoadQueryById(SelectedId);
+			if (c == null)
+				return;
             SelectedId = c.Parent.QueryId;
             Db.DeleteQueryBuilderClauseOnSubmit(c);
             Db.SubmitChanges();

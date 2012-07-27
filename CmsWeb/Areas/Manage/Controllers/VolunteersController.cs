@@ -98,8 +98,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 
             //return Redirect("/EmailPeople.aspx?id={0}&subj={1}&body={2}&ishtml=true"
             //    .Fmt(qb.QueryId, Server.UrlEncode(subject), Server.UrlEncode(body)));
-            return Redirect("/Email/Index/{0}?subj={1}&body={2}&ishtml=true"
-                .Fmt(qb.QueryId, Server.UrlEncode(subject), Server.UrlEncode(body)));
+			TempData["body"] = body;
+            return Redirect("/Email/Index/{0}?subj={1}&ishtml=true"
+                .Fmt(qb.QueryId, Server.UrlEncode(subject)));
         }
         public ActionResult UpdateAll(string id, int? qid)
         {

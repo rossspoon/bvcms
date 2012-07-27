@@ -12,11 +12,13 @@ namespace CmsWeb.Models
 		public int OrgId { get; set; }
 		public int PeopleId { get; set; }
 		public DateTime[] Commit { get; set; }
+		public DateTime dtlock { get; set; }
 
 		public VolunteerModel(int orgId, int peopleId)
 		{
 			OrgId = orgId;
 			PeopleId = peopleId;
+			dtlock = DateTime.Now.AddDays(Regsettings.TimeSlotLockDays ?? 0);
 		}
 
 		public VolunteerModel()

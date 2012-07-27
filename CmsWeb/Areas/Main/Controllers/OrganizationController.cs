@@ -717,7 +717,7 @@ no need to put these into the ""Source"" view of the editor anymore.
             DbUtil.Db.SubmitChanges();
             return Content(value);
         }
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = "Edit")]
 		public ActionResult Reminders(int id)
 		{
             var m = new OrganizationModel(id, null);

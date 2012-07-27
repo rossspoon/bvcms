@@ -3,6 +3,7 @@ using UtilityExtensions;
 using CmsData;
 using System.Linq;
 using System.Data.Linq;
+using System;
 
 namespace CmsWeb.Areas.OnlineReg
 {
@@ -23,6 +24,14 @@ namespace CmsWeb.Areas.OnlineReg
                 "Public_CreateAccount",
                 "CreateAccount",
                 new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
+            );
+           context.MapRoute( "GetVolSub",
+                "OnlineReg/GetVolSub/{pid}/{oid}/{ticks}",
+                new { controller = "OnlineReg", action = "GetVolSub", pid=0, oid=0, ticks=0 }
+            );
+           context.MapRoute( "ClaimVolSub",
+                "OnlineReg/ClaimVolSub/{pid}/{oid}/{ticks}/{sid}",
+                new { controller = "OnlineReg", action = "ClaimVolSub", pid=0, oid=0, ticks=0, sid=0 }
             );
             context.MapRoute(
                 "Public_MyData",

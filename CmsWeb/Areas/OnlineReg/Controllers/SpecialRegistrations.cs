@@ -11,6 +11,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 {
 	public partial class OnlineRegController
 	{
+		public ActionResult GetVolSub(int pid, int oid, long ticks)
+		{
+			var timeslot = new DateTime(ticks);
+			var dibslink = @"<a href=""http://volsublink"" pid=""{0}"" oid=""{1}"" ticks=""{2}"" ans=""yes"">Yes, I can sub for you.</a>"
+				.Fmt(pid, oid, ticks);
+			var sorry = @"<a href=""http://volsublink"" pid=""{0}"" oid=""{1}"" ticks=""{2}"" ans=""yes"">Sorry, I cannot sub for you.</a>"
+				.Fmt(pid, oid, ticks);
+			return Content(dibslink);
+		}
+		public ActionResult ClaimVolSub(int pid, int oid, long ticks, int sid)
+		{
+			var timeslot = new DateTime(ticks);
+			return Content("{0}: {1}".Fmt(pid, timeslot));
+		}
 		public ActionResult ManageVolunteer(string id)
 		{
 			if (!id.HasValue())

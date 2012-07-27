@@ -1157,6 +1157,11 @@ namespace CmsData
 				Db.Campus.InsertOnSubmit(cam);
 				Db.SubmitChanges();
 			}
+			else if (!cam.Code.HasValue())
+			{
+				cam.Code = campus.Truncate(20);
+				Db.SubmitChanges();
+			}
 			return cam;
 		}
 		public Task AddTaskAbout(CMSDataContext Db, int AssignTo, string description)
