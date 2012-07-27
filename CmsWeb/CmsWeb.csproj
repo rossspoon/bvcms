@@ -258,6 +258,7 @@
     <Compile Include="Areas\Public\Controllers\APIPersonController.cs" />
     <Compile Include="Areas\Public\Controllers\APIOrgController.cs" />
     <Compile Include="Areas\Public\Controllers\APIMeetingController.cs" />
+    <Compile Include="Areas\Public\Controllers\MobileAPIController.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassesResult.cs" />
@@ -334,6 +335,9 @@
     <Compile Include="Areas\OnlineReg\Models\ManagePledgesModel.cs" />
     <Compile Include="Areas\Public\Controllers\OrgContentController.cs" />
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\Helpers\JSONHelper.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\MobilePerson.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\Helpers\SystemHelper.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
@@ -394,7 +398,7 @@
     <Content Include="Content\organization.css" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
     <Compile Include="Code\Word2Pdf.cs" />
-    <Compile Include="Controllers\QuickbooksController.cs" />
+    <Compile Include="Areas\Finance\Controllers\QuickBooksController.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailModel.cs" />
     <Compile Include="Areas\Manage\Models\EmailsModel.cs" />
@@ -700,7 +704,7 @@
     <Compile Include="Areas\Main\Models\Other\TaskModel.cs" />
     <Compile Include="Areas\Public\Models\VolunteerModel.cs" />
     <Compile Include="Areas\Manage\Models\VolunteersModel.cs" />
-    <Compile Include="Models\QuickbooksModel.cs" />
+    <Compile Include="Areas\Finance\Models\QuickBooksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1189,7 +1193,6 @@
     <Content Include="Areas\Finance\Views\FinanceReports\ManageGiving2.cshtml" />
     <Content Include="Areas\Setup\Views\Roles\Index.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
-    <Content Include="ProdConnectionStrings.config" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="UploadPicture.aspx" />
@@ -1891,7 +1894,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="secrets.config" />
-    <Content Include="Views\Quickbooks\Index.cshtml" />
+    <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
