@@ -165,7 +165,10 @@
                                     <a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">Pledge Totals by Fund Range</a>
                                     <a href="/FinanceReports/PledgeReport" target="_blank">Pledge Report</a>
                                     <a href="/FinanceReports/ManagedGiving" target="_blank">Managed Giving</a>
+												@if (DbUtil.Db.Setting("ShowQuickBooksMenu", "false") == "true")
+												{
 												<a href="/QuickBooks">QuickBooks</a>
+												}	
                                 </div>
                             </td>
     }
@@ -210,7 +213,12 @@
                                 <a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">Email Support</a>
                                 <a href="/Home/About">About</a>
                                 <a href="#" class="heading">&mdash; Tutorials &mdash;</a>
-                                @RenderSection("tutorials", required: false)
+											@{
+												var tutorialMenu = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml";
+													if (File.Exists(tutorialMenu)) {
+													Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml");
+												}
+											}			  
                             </div>
                         </td>
                     </tr>
@@ -221,6 +229,18 @@
         </div>
         <div id="main">
             @RenderBody()
+				@if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
+				{ 
+				<br />
+				<b>Menus:</b> @(Util.Helpfile)@:_Menu.html<br />
+				<b>Tutorials:</b> @(Util.Helpfile)@:.html
+				}		  
+				@{
+					var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
+					if (File.Exists(tutorialFile)) {
+						Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
+					}
+				}	
         </div>
     </div>
     <div id="ChooseLabelType" class="modalPopup" style="display: none; width: 400px;
