@@ -11,19 +11,38 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 {
 	public partial class OnlineRegController
 	{
+		[HttpGet]
 		public ActionResult GetVolSub(int pid, int oid, long ticks)
 		{
-			var timeslot = new DateTime(ticks);
-			var dibslink = @"<a href=""http://volsublink"" pid=""{0}"" oid=""{1}"" ticks=""{2}"" ans=""yes"">Yes, I can sub for you.</a>"
-				.Fmt(pid, oid, ticks);
-			var sorry = @"<a href=""http://volsublink"" pid=""{0}"" oid=""{1}"" ticks=""{2}"" ans=""yes"">Sorry, I cannot sub for you.</a>"
-				.Fmt(pid, oid, ticks);
-			return Content(dibslink);
+			var vs = new VolSubModel(pid, oid, ticks);
+			SetHeaders(oid);
+			vs.ComposeMessage();
+			return View(vs);
 		}
-		public ActionResult ClaimVolSub(int pid, int oid, long ticks, int sid)
+		[HttpPost]
+		public ActionResult GetVolSub(VolSubModel m)
 		{
-			var timeslot = new DateTime(ticks);
-			return Content("{0}: {1}".Fmt(pid, timeslot));
+			m.SendEmails();
+			return Content("Emails are being sent, thank you.");
+		}
+		public ActionResult VolSubReport(int pid, int oid, long ticks)
+		{
+			var vs = new VolSubModel(pid, oid, ticks);
+			SetHeaders(oid);
+			return View(vs);
+		}
+		public ActionResult ClaimVolSub(string ans, string guid)
+		{
+			try
+			{
+				var vs = new VolSubModel(guid);
+				vs.ProcessReply(ans);
+				return Content(vs.DisplayMessage);
+			}
+			catch (Exception ex)
+			{
+				return Content(ex.Message);
+			}
 		}
 		public ActionResult ManageVolunteer(string id)
 		{
@@ -190,6 +209,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					throw new Exception("ServiceU not supported");
 
 				var mg = m.person.ManagedGiving();
+				if (mg == null)
+				{
+					mg = new ManagedGiving();
+					m.person.ManagedGivings.Add(mg);
+				}
 				mg.SemiEvery = m.SemiEvery;
 				mg.Day1 = m.Day1;
 				mg.Day2 = m.Day2;

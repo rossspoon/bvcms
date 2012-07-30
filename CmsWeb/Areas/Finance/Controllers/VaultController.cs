@@ -23,10 +23,13 @@ namespace CmsWeb.Areas.Finance.Controllers
 			var sage = new SagePayments(DbUtil.Db, testing: true);
 			sage.deleteVaultData(id);
 			var p = DbUtil.Db.LoadPersonById(id);
-			p.ManagedGiving();
 			DbUtil.Db.RecurringAmounts.DeleteAllOnSubmit(p.RecurringAmounts);
-			DbUtil.Db.ManagedGivings.DeleteOnSubmit(p.ManagedGiving());
-			DbUtil.Db.PaymentInfos.DeleteOnSubmit(p.PaymentInfo());
+			var mg = p.ManagedGiving();
+			if (mg != null)
+				DbUtil.Db.ManagedGivings.DeleteOnSubmit(mg);
+			var pi = p.PaymentInfo();
+			if (pi != null)
+				DbUtil.Db.PaymentInfos.DeleteOnSubmit(pi);
 			DbUtil.Db.SubmitChanges();
 			return Content("ok");
 		}

@@ -478,6 +478,10 @@ namespace CmsData
         partial void UpdateStreetType(StreetType instance);
         partial void DeleteStreetType(StreetType instance);
         
+        partial void InsertSubRequest(SubRequest instance);
+        partial void UpdateSubRequest(SubRequest instance);
+        partial void DeleteSubRequest(SubRequest instance);
+        
         partial void InsertTag(Tag instance);
         partial void UpdateTag(Tag instance);
         partial void DeleteTag(Tag instance);
@@ -1295,6 +1299,12 @@ namespace CmsData
 		public Table< StreetType> StreetTypes
 		{
 			get	{ return this.GetTable< StreetType>(); }
+
+		}
+
+		public Table< SubRequest> SubRequests
+		{
+			get	{ return this.GetTable< SubRequest>(); }
 
 		}
 

@@ -217,7 +217,10 @@ namespace CmsWeb.Areas.Main.Controllers
 				return Content("Something went wrong<br><p>" + ex.Message + "</p>");
 			}
             m.LoadScratchPad();
-        	//var t = m.TagAllIds();
+
+			var starttime = DateTime.Now;
+			m.PopulateResults();
+			DbUtil.LogActivity("QB Results ({0:N1}, {1})".Fmt(DateTime.Now.Subtract(starttime).TotalSeconds, m.QueryId));
             return View(m);
         }
         [HttpPost]

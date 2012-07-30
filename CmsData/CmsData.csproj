@@ -257,6 +257,7 @@
     <Compile Include="Generated\ManagedGiving.cs" />
     <Compile Include="Generated\PaymentInfo.cs" />
     <Compile Include="Generated\QBConnection.cs" />
+    <Compile Include="Generated\SubRequest.cs" />
     <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />
     <Compile Include="Generated\CheckedBatch.cs" />

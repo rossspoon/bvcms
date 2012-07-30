@@ -138,6 +138,7 @@ namespace CmsWeb.Code
 							  join f in fields on v.Field equals f.name into j
 							  from f in j.DefaultIfEmpty()
 							  where f == null
+							  where !fields.Any(ff => ff.Codes.Any(cc => cc == v.Field))
 							  orderby v.Field
 							  select Field.AddField(f, v);
 				return qfields.Concat(qvalues);

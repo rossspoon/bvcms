@@ -332,10 +332,10 @@ namespace CmsData
 				tag.PersonTags.Add(new TagPerson { PeopleId = id });
 			SubmitChanges();
 		}
-		public void TagAll(IQueryable<int?> list, Tag tag)
+		public void TagAll(IEnumerable<int> list, Tag tag)
 		{
 			foreach (var id in list)
-				tag.PersonTags.Add(new TagPerson { PeopleId = id.Value });
+				tag.PersonTags.Add(new TagPerson { PeopleId = id });
 			SubmitChanges();
 		}
 		public void UnTagAll(IQueryable<Person> list)

@@ -46,9 +46,9 @@
         </p>
         <p>
             <label for="FundAccountCode">FundAccountCode:</label>
-				@if (false && QBActive)
+				@if (QBActive)
 				{
-					@Html.DropDownList("FundAccountCode", new SelectList(QuickbooksModel.ListAllAccounts(), "Id.Value", "Name", Model.FundAccountCode)) 
+					@Html.DropDownList("FundAccountCode", new SelectList(QuickBooksModel.ListAllAccounts(), "Id.Value", "Name", Model.FundAccountCode)) 
 				}
 				else
 				{  
@@ -73,7 +73,7 @@
         </p>
         <p>
             <label for="FundCashAccount">FundCashAccount:</label>
-				@if (false && QBActive)
+				@if (QBActive)
 				{
 					@Html.DropDownList("FundCashAccount", new SelectList(QuickBooksModel.ListAllAccounts(), "Id.Value", "Name", Model.FundCashAccount)) 
 				}

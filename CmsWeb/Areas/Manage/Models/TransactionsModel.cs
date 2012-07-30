@@ -34,6 +34,10 @@ namespace CmsWeb.Models
 		public bool isSage { get; set; }
 		public bool finance { get; set; }
 		public bool admin { get; set; }
+		public TransactionsModel(int? tranid) :this()
+		{
+			this.name = tranid.ToString();
+		}
 		public TransactionsModel()
 		{
 			Pager = new PagerModel2(Count);
@@ -85,7 +89,7 @@ namespace CmsWeb.Models
 				 where t.Amt > gtamount || gtamount == null
 				 where t.Amt <= ltamount || ltamount == null
 				 where description == null || t.Description.Contains(description)
-				 where name == null || t.Name.Contains(name) || t.Batchref == name || t.TransactionId == name || t.OriginalId == nameid
+				 where name == null || t.Name.Contains(name) || t.Batchref == name || t.TransactionId == name || t.OriginalId == nameid || t.Id == nameid
 				 where (t.Testing ?? false) == testtransactions
 				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
 				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons

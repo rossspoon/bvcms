@@ -434,6 +434,10 @@ namespace CmsData
                                 c.Quarters,
                                 CompType,
                                 c.TextValue.ToInt2());
+                case QueryType.PeopleIds:
+                    return Expressions.PeopleIds(parm,
+                                CompType,
+								c.TextValue.Split(',').Select(aa => aa.ToInt()).ToArray());
                 case QueryType.PreviousCurrentOrg:
                     return Expressions.PreviousCurrentOrg(Db, parm,
                                CompType,

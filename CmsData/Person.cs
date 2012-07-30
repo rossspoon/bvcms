@@ -1023,34 +1023,14 @@ namespace CmsData
             ev.IntValue = value;
             ev.IntValue2 = value2;
         }
-//        public RecurringGiving RecurringGiving()
-//        {
-//            var rg = RecurringGivings.SingleOrDefault();
-//            if (rg == null)
-//            {
-//                rg = new RecurringGiving();
-//                RecurringGivings.Add(rg);
-//            }
-//            return rg;
-//        }
         public ManagedGiving ManagedGiving()
         {
             var mg = ManagedGivings.SingleOrDefault();
-            if (mg == null)
-            {
-                mg = new ManagedGiving();
-                ManagedGivings.Add(mg);
-            }
             return mg;
         }
         public PaymentInfo PaymentInfo()
         {
             var pi = PaymentInfos.SingleOrDefault();
-            if (pi == null)
-            {
-                pi = new PaymentInfo();
-                PaymentInfos.Add(pi);
-            }
             return pi;
         }
         public Contribution PostUnattendedContribution(CMSDataContext Db, decimal Amt, int? Fund, string Description, bool pledge = false)

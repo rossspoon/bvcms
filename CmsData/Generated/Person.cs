@@ -298,6 +298,10 @@ namespace CmsData
 		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
+   		private EntitySet< SubRequest> _SubRequests;
+		
+   		private EntitySet< SubRequest> _SubResponses;
+		
    		private EntitySet< TagPerson> _Tags;
 		
    		private EntitySet< Tag> _TagsOwned;
@@ -752,6 +756,10 @@ namespace CmsData
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
+			
+			this._SubRequests = new EntitySet< SubRequest>(new Action< SubRequest>(this.attach_SubRequests), new Action< SubRequest>(this.detach_SubRequests)); 
+			
+			this._SubResponses = new EntitySet< SubRequest>(new Action< SubRequest>(this.attach_SubResponses), new Action< SubRequest>(this.detach_SubResponses)); 
 			
 			this._Tags = new EntitySet< TagPerson>(new Action< TagPerson>(this.attach_Tags), new Action< TagPerson>(this.detach_Tags)); 
 			
@@ -3611,6 +3619,26 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="SubRequests__Requestor", Storage="_SubRequests", OtherKey="RequestorId")]
+   		public EntitySet< SubRequest> SubRequests
+   		{
+   		    get { return this._SubRequests; }
+
+			set	{ this._SubRequests.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="SubResponses__Substitute", Storage="_SubResponses", OtherKey="SubstituteId")]
+   		public EntitySet< SubRequest> SubResponses
+   		{
+   		    get { return this._SubResponses; }
+
+			set	{ this._SubResponses.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="Tags__Person", Storage="_Tags", OtherKey="PeopleId")]
    		public EntitySet< TagPerson> Tags
    		{
@@ -4938,6 +4966,32 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
+		}
+
+		
+		private void attach_SubRequests(SubRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Requestor = this;
+		}
+
+		private void detach_SubRequests(SubRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Requestor = null;
+		}
+
+		
+		private void attach_SubResponses(SubRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Substitute = this;
+		}
+
+		private void detach_SubResponses(SubRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Substitute = null;
 		}
 
 		

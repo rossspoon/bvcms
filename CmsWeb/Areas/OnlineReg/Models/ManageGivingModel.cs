@@ -99,7 +99,7 @@ namespace CmsWeb.Models
 			this.orgid = orgid;
 			var rg = person.ManagedGiving();
 			var pi = person.PaymentInfo();
-			if (rg != null)
+			if (rg != null && pi != null)
 			{
 				SemiEvery = rg.SemiEvery;
 				Type = rg.Type;

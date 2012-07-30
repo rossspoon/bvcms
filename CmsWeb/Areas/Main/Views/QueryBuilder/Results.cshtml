@@ -1,5 +1,6 @@
 ﻿@model CmsWeb.Models.QueryModel
-<h4>Total Count: @Model.FetchCount().ToString("N0")</h4>
+@using CmsData
+<h4>Total Count: @Model.Count.ToString("N0")</h4>
 @Html.Partial("Pager", Model.pagerModel()) 
 <table id="people" class="grid">
 <thead>
@@ -17,7 +18,7 @@
 { 
     <tr><td colspan="5">No matching records.</td></tr>
 } 
-@foreach (var p in Model.FetchPeopleList())
+@foreach (var p in Model.Results)
 { 
     <tr>
         <td><img src="/images/individual.gif" width="10px" height="12px" />

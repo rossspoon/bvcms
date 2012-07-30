@@ -240,6 +240,7 @@
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
+    <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
     <Compile Include="Areas\Public\Controllers\APIMetaController.cs" />
     <Compile Include="Areas\Public\Controllers\APITestController.cs" />
     <Compile Include="Areas\Public\Controllers\APIiPhoneController.cs" />
@@ -335,7 +336,6 @@
     <Compile Include="Areas\OnlineReg\Models\ManagePledgesModel.cs" />
     <Compile Include="Areas\Public\Controllers\OrgContentController.cs" />
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
-    <Compile Include="Areas\Public\Models\MobileAPI\Helpers\JSONHelper.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\MobilePerson.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\Helpers\SystemHelper.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
@@ -1192,6 +1192,9 @@
     <Content Include="Areas\Finance\Views\FinanceReports\ManagedGiving.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\ManageGiving2.cshtml" />
     <Content Include="Areas\Setup\Views\Roles\Index.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\GetVolSub.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\EmailVolunteerSubs.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\VolSubReport.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

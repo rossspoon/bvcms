@@ -119,7 +119,7 @@ namespace CmsData
 		public List<Person> AdminPeople()
 		{
 			return (from p in CMSRoleProvider.provider.GetAdmins()
-					orderby p.Users.Any(u => u.Roles.Contains("Developer")) ascending 
+					orderby p.Users.Any(u => u.Roles.Contains("Developer")) ascending
 					select p).ToList();
 		}
 		public List<Person> FinancePeople()
@@ -188,7 +188,7 @@ namespace CmsData
 			EmailQueues.InsertOnSubmit(emailqueue);
 
 			SubmitChanges();
-			if (body.Contains("http://publiclink", ignoreCase:true))
+			if (body.Contains("http://publiclink", ignoreCase: true))
 			{
 				var link = Util.URLCombine(CmsHost, "/Manage/Emails/View/" + emailqueue.Id);
 				var re = new Regex("http://publiclink", RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
@@ -309,13 +309,15 @@ namespace CmsData
 			text = DoExtraValueData(text, emailqueueto);
 			if (text.Contains("{createaccount}"))
 				text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
-			if (text.Contains("http://votelink", ignoreCase:true))
+			if (text.Contains("http://votelink", ignoreCase: true))
 				text = DoVoteLink(text, CmsHost, emailqueueto);
-			if (text.Contains("http://registerlink", ignoreCase:true))
+			if (text.Contains("http://registerlink", ignoreCase: true))
 				text = DoRegisterLink(text, CmsHost, emailqueueto);
-			if (text.Contains("http://rsvplink", ignoreCase:true))
+			if (text.Contains("http://rsvplink", ignoreCase: true))
 				text = DoRsvpLink(text, CmsHost, emailqueueto);
-			if (text.Contains("{barcode}", ignoreCase:true))
+			if (text.Contains("http://volsublink", ignoreCase: true))
+				text = DoVolSubLink(text, CmsHost, emailqueueto);
+			if (text.Contains("{barcode}", ignoreCase: true))
 			{
 				var link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
 				text = text.Replace("{barcode}", "<img src='" + link + "' />");
@@ -602,8 +604,47 @@ namespace CmsData
 					throw new Exception("RegisterTag: no id attribute");
 				var id = d["id"];
 
-				var url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id, 
+				var url = RegisterTagUrl(text, CmsHost, emailqueueto, list, tag, id,
 					showfamily: rlink == "registerlink2");
+				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
+				match = match.NextMatch();
+			}
+			return text;
+		}
+		public string DoVolSubLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+		{
+			var list = new Dictionary<string, OneTimeLink>();
+			const string VolSubLinkRE = "<a[^>]*?href=\"http://volsublink\"[^>]*>.*?</a>";
+			var re = new Regex(VolSubLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+			var match = re.Match(text);
+			while (match.Success)
+			{
+				var tag = match.Value;
+
+				var doc = new HtmlDocument();
+				doc.LoadHtml(tag);
+				var ele = doc.DocumentNode.Element("a");
+				var inside = ele.InnerHtml;
+				var d = ele.Attributes.ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+
+				var qs = @"{{""pid"":{0},""oid"":{1},""ticks"":{2},""sid"":{3}}}"
+					.Fmt(d["pid"], d["oid"], d["ticks"], emailqueueto.PeopleId);
+				OneTimeLink ot = null;
+				if (list.ContainsKey(qs))
+					ot = list[qs];
+				else
+				{
+					ot = new OneTimeLink
+					{
+						Id = Guid.NewGuid(),
+						Querystring = qs
+					};
+					OneTimeLinks.InsertOnSubmit(ot);
+					SubmitChanges();
+					list.Add(qs, ot);
+				}
+
+				var url = Util.URLCombine(CmsHost, "/OnlineReg/ClaimVolSub/{0}/{1}".Fmt(d["ans"], ot.Id.ToCode()));
 				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
 				match = match.NextMatch();
 			}
@@ -768,7 +809,7 @@ namespace CmsData
 			Dictionary<string, OneTimeLink> list,
 			string votelink,
 			string id,
-			bool showfamily=false)
+			bool showfamily = false)
 		{
 			var qs = "{0},{1},{2}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id);
 			OneTimeLink ot;
@@ -882,7 +923,7 @@ namespace CmsData
 			emailqueue.Sent = DateTime.Now;
 			if (emailqueue.Redacted ?? false)
 				emailqueue.Body = "redacted";
-			else
+			else if (emailqueue.Transactional == false)
 			{
 				var nitems = emailqueue.EmailQueueTos.Count();
 				if (nitems > 1)

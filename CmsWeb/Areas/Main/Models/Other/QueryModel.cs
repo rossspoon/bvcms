@@ -697,6 +697,15 @@ namespace CmsWeb.Models
             count = query.Count();
             return count ?? 0;
         }
+		public List<PeopleInfo> Results;
+		public void PopulateResults()
+		{
+			query = PersonQuery();
+			count = query.Count();
+			query = ApplySort(query);
+            query = query.Skip(StartRow).Take(PageSize.Value);
+            Results = FetchPeopleList(query).ToList();
+		}
         public IEnumerable<PeopleInfo> FetchPeopleList()
         {
             query = ApplySort(query);
@@ -771,6 +780,12 @@ namespace CmsWeb.Models
         }
         private IEnumerable<PeopleInfo> FetchPeopleList(IQueryable<Person> query)
         {
+			if (query == null)
+			{
+				Db.SetNoLock();
+				query = PersonQuery();
+				count = query.Count();
+			}
             var q = from p in query
                     select new PeopleInfo
                     {

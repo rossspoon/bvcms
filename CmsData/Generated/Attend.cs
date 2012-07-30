@@ -54,6 +54,8 @@ namespace CmsData
    		
    		private EntitySet< Attend> _GuestOf;
 		
+   		private EntitySet< SubRequest> _SubRequests;
+		
     	
 		private EntityRef< MemberType> _MemberType;
 		
@@ -130,6 +132,8 @@ namespace CmsData
 		{
 			
 			this._GuestOf = new EntitySet< Attend>(new Action< Attend>(this.attach_GuestOf), new Action< Attend>(this.detach_GuestOf)); 
+			
+			this._SubRequests = new EntitySet< SubRequest>(new Action< SubRequest>(this.attach_SubRequests), new Action< SubRequest>(this.detach_SubRequests)); 
 			
 			
 			this._MemberType = default(EntityRef< MemberType>); 
@@ -556,6 +560,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="SubRequests__Attend", Storage="_SubRequests", OtherKey="AttendId")]
+   		public EntitySet< SubRequest> SubRequests
+   		{
+   		    get { return this._SubRequests; }
+
+			set	{ this._SubRequests.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -839,6 +853,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Guests = null;
+		}
+
+		
+		private void attach_SubRequests(SubRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Attend = this;
+		}
+
+		private void detach_SubRequests(SubRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Attend = null;
 		}
 
 		

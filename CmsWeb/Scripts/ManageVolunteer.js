@@ -18,4 +18,13 @@
         });
         $.tigerstripe();
     });
+    if (jQuery().transpose) {
+        $(".wrapper .item").transpose();
+    }
+    $("#SelectAll").click(function () {
+        if ($(this).attr("checked"))
+            $("input[name='pids']").attr('checked', true);
+        else
+            $("input[name='pids']").removeAttr('checked');
+    });
 });

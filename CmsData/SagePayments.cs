@@ -58,6 +58,11 @@ namespace CmsData
 		{
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
+			if (pi == null)
+			{
+				pi = new PaymentInfo();
+				p.PaymentInfos.Add(pi);
+			}
 			var wc = new WebClient();
 			wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVault.asmx/";
 			var coll = new NameValueCollection();
@@ -140,8 +145,9 @@ namespace CmsData
 		public void deleteVaultData(int PeopleId)
 		{
 			var p = Db.LoadPersonById(PeopleId);
-			var rg = p.ManagedGiving();
 			var pi = p.PaymentInfo();
+			if (pi == null)
+				return;
 			var wc = new WebClient();
 			wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVault.asmx/";
 			var coll = new NameValueCollection();
@@ -329,6 +335,12 @@ namespace CmsData
 		{
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
+			if (pi == null)
+				return new TransactionResponse 
+				{ 
+					Approved = false,
+					Message = "missing payment info",
+				};
 
 			XElement resp = null;
 			if ((type ?? "B") == "B" && pi.SageBankGuid.HasValue) // Bank Account (check)

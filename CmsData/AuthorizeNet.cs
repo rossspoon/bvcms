@@ -76,6 +76,11 @@ namespace CmsData
 				exp = "20" + expires.Substring(2, 2) + "-" + expires.Substring(0, 2);
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
+			if (pi == null)
+			{
+				pi = new PaymentInfo();
+				p.PaymentInfos.Add(pi);
+			}
 			if (pi.AuNetCustId == null) // create a new profilein Authorize.NET CIM
 			{
 				XDocument request = null;
@@ -305,6 +310,12 @@ namespace CmsData
 		public TransactionResponse createCustomerProfileTransactionRequest(int PeopleId, decimal amt, string description, int tranid)
 		{
 			var pi = Db.PaymentInfos.Single(pp => pp.PeopleId == PeopleId);
+			if (pi == null)
+				return new TransactionResponse 
+				{ 
+					Approved = false,
+					Message = "missing payment info",
+				};
 			var request = new XDocument(new XDeclaration("1.0", "utf-8", null),
 			Element("createCustomerProfileTransactionRequest",
 				Element("merchantAuthentication",
@@ -346,7 +357,6 @@ namespace CmsData
 		public TransactionResponse createTransactionRequest(int PeopleId, decimal amt, string cardnumber, string expires, string description, int tranid, string cardcode)
 		{
 			var p = Db.LoadPersonById(PeopleId);
-			var au = p.ManagedGiving();
 			var request = new XDocument(new XDeclaration("1.0", "utf-8", null),
 			Element("createTransactionRequest",
 				Element("merchantAuthentication",

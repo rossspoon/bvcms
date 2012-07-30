@@ -328,6 +328,17 @@ namespace CmsData
 			return expr;
 		}
 
+		internal static Expression PeopleIds(
+			ParameterExpression parm,
+			CompareType op,
+			int[] ids)
+		{
+			Expression<Func<Person, bool>> pred = p => ids.Contains(p.PeopleId);
+			Expression expr = Expression.Invoke(pred, parm);
+			if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+				expr = Expression.Not(expr);
+			return expr;
+		}
 		internal static Expression HasTaskWithName(
 			ParameterExpression parm,
 			CompareType op,
