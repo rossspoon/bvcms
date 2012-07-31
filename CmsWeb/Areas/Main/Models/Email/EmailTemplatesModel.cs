@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CmsData;
 using CmsWeb.Areas.Manage.Controllers;
+using UtilityExtensions;
 
 namespace CmsWeb.Areas.Main.Models
 {
@@ -28,7 +29,7 @@ namespace CmsWeb.Areas.Main.Models
 
 			return from i in DbUtil.Db.Contents
 					 where i.TypeID == DisplayController.TYPE_SAVED_DRAFT
-					 where isadmin || i.RoleID == 0 || currentRoleIds.Contains(i.RoleID)
+					 where isadmin || (i.RoleID == 0 && i.OwnerID == Util.UserId) || currentRoleIds.Contains(i.RoleID)
 					 orderby i.Name
 					 select i;
 		}
