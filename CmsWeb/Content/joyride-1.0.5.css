@@ -1,4 +1,8 @@
 /* Artfully masterminded by ZURB */
+/* body {
+  position: relative;
+}
+*/
 
 #joyRideTipContent { display: none; }
 
@@ -7,7 +11,7 @@
   position: absolute;
   background: #000;
   background: rgba(0,0,0,0.8);
-  padding: 10px 10px 10px 15px;
+
   color: #fff;
   width: 300px;
   z-index: 10;
@@ -17,6 +21,28 @@
   -webkit-border-radius: 4px;
           border-radius: 4px;
 }
+.joyride-content-wrapper
+{
+  padding: 10px 10px 15px 15px;
+}
+
+/* Mobile */
+@media only screen and (max-width: 769px)
+{
+    .joyride-tip-guide
+    {
+        width: 100%;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    }
+  .joyride-tip-guide-wrapper
+  {
+width: 100%;
+  }
+}
+
+
 /* Add a little css triangle pip, older browser just miss out on the fanciness of it */
 .joyride-tip-guide span.joyride-nub {
   display: block;
@@ -27,33 +53,41 @@
   border: solid 14px;
   border: solid 14px;
 }
+.joyride-tip-guide span.joyride-nub.right {
+   left: auto;
+   right: 22px;
+}
 .joyride-tip-guide span.joyride-nub.top {
+  /*
+  IE7/IE8 Don't support rgba so we set the fallback
+  border color here. However, IE7/IE8 are also buggy
+  in that the fallback color doesn't work for
+  border-bottom-color so here we set the border-color
+  and override the top,left,right colors below.
+  */
+  border-color: #000;
+  border-color: rgba(0,0,0,0.8);
   border-top-color: transparent !important;
   border-left-color: transparent !important;
   border-right-color: transparent !important;
-  border-bottom-color: #000;
-  border-bottom-color: rgba(0,0,0,0.8);
   top: -28px;
   bottom: none;
 }
 .joyride-tip-guide span.joyride-nub.bottom {
+  /*
+  IE7/IE8 Don't support rgba so we set the fallback
+  border color here. However, IE7/IE8 are also buggy
+  in that the fallback color doesn't work for
+  border-top-color so here we set the border-color
+  and override the bottom,left,right colors below.
+  */
+  border-color: #000;
+  border-color: rgba(0,0,0,0.8) !important;
   border-bottom-color: transparent !important;
   border-left-color: transparent !important;
   border-right-color: transparent !important;
-  border-top-color: #000;
-  border-top-color: rgba(0,0,0,0.8) !important;
   bottom: -28px;
   bottom: none;
-}
-.joyride-tip-guide span.joyride-nub.left {
-  border-top-color: transparent !important;
-  border-left-color: transparent !important;
-  border-right-color: transparent !important;
-  border-bottom-color: #000;
-  border-bottom-color: rgba(0,0,0,0.8);
-  top: -28px;
-  bottom: none;
-  left: 222px;
 }
 
 
@@ -86,17 +120,12 @@
 }
 
 /* Button Style */
-.joyride-tip-guide .joyride-next-tip:after {
-  clear: both;
-}
 .joyride-tip-guide .joyride-next-tip {
   width: auto;
   padding: 6px 18px 4px;
   font-size: 13px;
   text-decoration: none;
   color: rgb(255,255,255);
-  float: left;
-  margin: 0 6px 8px 0px;
   border: solid 1px rgb(0,60,180);
   background: rgb(0,99,255);
   background: -moz-linear-gradient(top, rgb(0,99,255) 0%, rgb(0,85,214) 100%);

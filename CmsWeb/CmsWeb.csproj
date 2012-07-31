@@ -353,10 +353,6 @@
     <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
     <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
     <Content Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
-    <Content Include="Areas\Manage\Views\Volunteers\Copy of Calendar.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Copy of Calendar.html" />
     <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
@@ -387,14 +383,15 @@
     <Content Include="Content\healthcheck.txt" />
     <Content Include="Content\joyride-1.0.3.css" />
     <Content Include="Content\jquery-ui-1.8.22.custom.css" />
-    <Content Include="Content\js\jquery.joyride-1.0.3.js" />
     <Content Include="Content\js\jquery-1.7.2.js" />
     <Content Include="Content\js\jquery-1.7.2.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.22.custom.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
+    <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
     <Content Include="Content\js\jquery.tmpl.js" />
     <Content Include="Content\js\json2.js" />
+    <Content Include="Content\js\modernizr.mq.js" />
+    <Content Include="Content\js\tutorial.js" />
     <Content Include="Content\organization.css" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
     <Compile Include="Code\Word2Pdf.cs" />
@@ -948,6 +945,8 @@
     <Content Include="Content\js\jquery.transpose.min.js" />
     <Content Include="Content\js\jquery.ui.timepicker.js" />
     <Content Include="constants.py" />
+    <Content Include="Content\Tutorials\_Home_Index_Menu.cshtml" />
+    <Content Include="Content\Tutorials\_Home_Index.cshtml" />
     <Content Include="EmailTemplates\BasicNewsletter.htm" />
     <Content Include="EmailTemplates\BasicWithHeader.htm" />
     <Content Include="EmailTemplates\Plain.htm" />
