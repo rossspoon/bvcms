@@ -15,7 +15,6 @@ $(document).ready(function () {
 	});
 	$("a.tutorial").click(function (ev) {
 		ev.preventDefault();
-		alert($(this).attr("href"));
 		startTutorial($(this).attr("href"));
 	});
 	$('#AddDialog').dialog({
@@ -37,6 +36,7 @@ $(document).ready(function () {
 		$('iframe', d).attr("src", "/SearchAdd?type=addpeople");
 		d.dialog("option", "title", "Add People");
 		d.dialog("open");
+		d.resize();
 	});
 	$('#addorg').click(function (e) {
 		e.preventDefault();
