@@ -47,6 +47,7 @@
         $.refreshenabled = true;
         $.post($(this).attr('href'), q, function (ret) {
             if (ret.charAt(0) === '/') {
+                $("body").html("<p>Please wait...</p>");
                 window.location = ret;
                 return;
             }

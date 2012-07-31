@@ -199,19 +199,24 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		{
 			m.ParseSettings();
 			string confirm = "Confirm";
+			var managingsubs = m.ManagingSubscriptions();
+			var choosingslots = m.ChoosingSlots();
 			var t = m.Transaction;
-			if (t == null) // serviceu
+			if (t == null && !managingsubs && !choosingslots)
 			{
 				var pf = PaymentForm.CreatePaymentForm(m);
 				t = pf.CreateTransaction(DbUtil.Db);
 				m.TranId = t.Id;
 			}
-			t.Amt = Amount;
-			t.Amtdue -= t.Amt;
-			ViewData["message"] = t.Message;
-			t.Approved = true;
-			t.TransactionDate = Util.Now;
-			DbUtil.Db.SubmitChanges();
+			if (t != null)
+			{
+				t.Amt = Amount;
+				t.Amtdue -= t.Amt;
+				ViewData["message"] = t.Message;
+				t.Approved = true;
+				t.TransactionDate = Util.Now;
+				DbUtil.Db.SubmitChanges();
+			}
 
 			if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
 			{
@@ -292,16 +297,18 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				if (p.CreatingAccount == true)
 					p.CreateAccount();
 			}
-			else if (m.ManagingSubscriptions())
+			else if (managingsubs)
 			{
 				m.ConfirmManageSubscriptions();
+				m.URL = null;
 				ViewData["ManagingSubscriptions"] = true;
 				ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
 				confirm = "ConfirmAccount";
 			}
-			else if (m.ChoosingSlots())
+			else if (choosingslots)
 			{
 				m.ConfirmPickSlots();
+				m.URL = null;
 				ViewData["ManagingVolunteer"] = true;
 				ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
 				confirm = "ConfirmAccount";

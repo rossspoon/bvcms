@@ -7,7 +7,7 @@
     $('#sortweek').click(function (ev) {
         ev.preventDefault();
         $('table.grid > tbody > tr').sortElements(function (a, b) {
-            return $(a).find("td.week").text() > $(b).find("td.week").text() ? 1 : -1;
+            return $(a).find("td.week").attr("jweek") > $(b).find("td.week").attr("jweek") ? 1 : -1;
         });
         $.tigerstripe();
     });
@@ -26,5 +26,8 @@
             $("input[name='pids']").attr('checked', true);
         else
             $("input[name='pids']").removeAttr('checked');
+    });
+    $("form").submit(function () {
+        $("input[name='Commit']").removeAttr("disabled");
     });
 });

@@ -163,6 +163,8 @@ namespace CmsWeb.Models
         public string OfficeUseOnly { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
+		public string Campus { get; set; }
+		public string CampusDate { get; set; }
 
     }
 }

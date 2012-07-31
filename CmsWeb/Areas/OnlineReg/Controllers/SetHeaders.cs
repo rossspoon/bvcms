@@ -42,7 +42,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var t = re.Match(s).Groups[1].Value.Replace("<!--FORM CSS-->", 
 @"
 <link href=""/Content/jquery-ui-1.8.22.custom.css"" rel=""stylesheet"" type=""text/css"" />
-<link href=""/Content/onlinereg.css?v=7"" rel=""stylesheet"" type=""text/css"" />
+<link href=""/Content/onlinereg.css?v=8"" rel=""stylesheet"" type=""text/css"" />
 "); 
                 ViewData["hasshell"] = true;
                 ViewData["top"] = t;

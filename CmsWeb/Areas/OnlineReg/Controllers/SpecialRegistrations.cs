@@ -312,7 +312,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
 					m.setting.Subject, text);
 
-			DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed subscriptions to {1}<br/>
+			DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed volunteer commitments to {1}<br/>
 The following Committments:<br/>
 {2}".Fmt(m.Person.Name, m.Org.OrganizationName, summary));
 			ViewData["Organization"] = m.Org.OrganizationName;

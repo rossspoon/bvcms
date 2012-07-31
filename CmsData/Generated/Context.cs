@@ -3012,6 +3012,20 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.LastChanged", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? LastChanged(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "field", DbType="varchar")] string field
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                field
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.SpaceToNull", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string SpaceToNull(

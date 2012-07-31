@@ -146,6 +146,7 @@ namespace CmsWeb.Models
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
 							let meeting = meetings.SingleOrDefault(cc => cc.MeetingDate == time)
+							let count = meeting != null ? meeting.count : 0
 							select new Slot()
 									{
 										Checked = meeting != null && meeting.iscommitted,
@@ -155,6 +156,7 @@ namespace CmsWeb.Models
 										Week = dt.WeekOfMonth(),
 										Year = dt.Year,
 										Full = meeting != null && meeting.count >= ts.Limit,
+										Need = (ts.Limit ?? 0) - count,
 										Disabled = time < DateTime.Now
 									};
 					list.AddRange(q);
@@ -171,6 +173,7 @@ namespace CmsWeb.Models
 			public int Month { get; set; }
 			public int Week { get; set; }
 			public bool Full { get; set; }
+			public int? Need { get; set; }
 			public bool Checked { get; set; }
 			public bool Disabled { get; set; }
 			public string CHECKED

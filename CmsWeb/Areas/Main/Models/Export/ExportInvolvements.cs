@@ -66,7 +66,9 @@ namespace CmsWeb.Models
                          Notes = "",
                          OfficeUseOnly = "",
                          LastName = p.LastName,
-                         FirstName = p.PreferredName
+                         FirstName = p.PreferredName,
+						 Campus = p.Campu.Description,
+						 CampusDate = Db.LastChanged(p.PeopleId, "CampusId").FormatDate(),
                      };
             return q2;
         }

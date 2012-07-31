@@ -334,6 +334,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			}
 			if (p.org != null && p.ShowDisplay() && p.ComputesOrganizationByAge())
 				p.classid = p.org.OrganizationId;
+
+			//if (m.last != null && m.last.OtherOK && m.last.ShowDisplay())
+			//	if (Model.ChoosingSlots() || Model.OnlineGiving())
+			//		return Content("clicksubmit");
+
 			return View("Flow/List", m);
 		}
 		[HttpPost]

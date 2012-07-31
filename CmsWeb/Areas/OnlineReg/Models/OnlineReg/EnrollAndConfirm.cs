@@ -469,7 +469,7 @@ Total Fee paid for this registration session: {4:C}<br/>
 <p>Here is your <a href=""{url}"">link</a> to manage your volunteer commitments. (note: it will only work once for security reasons)</p> ");
 
             List<Person> Staff = null;
-            Staff = DbUtil.Db.StaffPeopleForDiv(orgid.Value);
+            Staff = DbUtil.Db.StaffPeopleForOrg(orgid.Value);
             p.SendOneTimeLink(
                 Staff.First().FromEmail,
                 Util.ServerLink("/OnlineReg/ManageVolunteer/"), "Manage Your Volunteer Commitments", message);
