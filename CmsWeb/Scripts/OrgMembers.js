@@ -35,6 +35,12 @@
             });
         });
     });
+    $("#SelectAll").click(function () {
+        if ($(this).attr("checked"))
+            $("table.grid input[name='List']").attr('checked', true);
+        else
+            $("table.grid input[name='List']").removeAttr('checked');
+    });
     $.blockUI.defaults.growlCSS = {
         width: '350px',
         top: '40%',
