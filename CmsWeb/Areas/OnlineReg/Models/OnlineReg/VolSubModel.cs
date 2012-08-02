@@ -13,26 +13,48 @@ namespace CmsWeb.Models
 {
 	public class VolSubModel
 	{
-		public int pid { get; set; }
-		public int oid { get; set; }
 		public long ticks { get; set; }
 		public int sid { get; set; }
+
 		public ICollection<int> pids { get; set; }
 		public string subject { get; set; }
 		public string message { get; set; }
+
 		private CMSDataContext Db;
+
+		public Attend attend { get; set; }
+		public Person person { get; set; } 
+		public Organization org { get; set; }
+
+		private void FetchEntities(int aid, int pid)
+		{
+			var q = from attend in Db.Attends
+					where attend.AttendId == aid
+					let p = Db.People.Single(pp => pp.PeopleId == pid)
+					select new
+					{
+						attend,
+						org = attend.Organization,
+						person = p,
+					};
+			var i = q.SingleOrDefault();
+			org = i.org;
+			this.attend = i.attend;
+			person = i.person;
+		}
 		public VolSubModel()
 		{
 			Db = DbUtil.Db;
 		}
-		public VolSubModel(int pid, int oid, long ticks)
+		public VolSubModel(int aid, int pid, long ticks)
+			: this(aid, pid)
+		{
+			this.ticks = ticks;
+		}
+		public VolSubModel(int aid, int pid)
 			: this()
 		{
-			this.pid = pid;
-			this.oid = oid;
-			this.ticks = ticks;
-
-
+			FetchEntities(aid, pid);
 		}
 		public VolSubModel(string guid)
 			: this()
@@ -54,40 +76,20 @@ namespace CmsWeb.Models
 				throw new Exception(error);
 			ot.Used = true;
 			Db.SubmitChanges();
-			var vs = JSONHelper.JsonDeserialize<VolSubModel>(ot.Querystring);
-			pid = vs.pid;
-			oid = vs.oid;
-			ticks = vs.ticks;
-			sid = vs.sid;
+			var a = ot.Querystring.Split(',');
+			FetchEntities(a[0].ToInt(), a[1].ToInt());
+			ticks = a[2].ToLong();
+			sid = a[3].ToInt();
 		}
-		public DateTime timeslot { get { return new DateTime(ticks); } }
-		private Person _Person;
-		private Organization _Organization;
-		private Meeting _meeting;
-		public Meeting GetMeeting()
-		{
-			if (_meeting == null)
-				_meeting = Db.Meetings.SingleOrDefault(mm => mm.OrganizationId == oid && mm.MeetingDate == timeslot);
-			return _meeting;
-		}
-		private Attend _attendance;
-		public Attend GetAttendance()
-		{
-			if (_attendance == null)
-				_attendance = Db.Attends.SingleOrDefault(aa =>
-					aa.OrganizationId == oid
-					&& aa.PeopleId == pid
-					&& aa.Registered == true
-					&& aa.AttendanceFlag == false
-					&& aa.MeetingDate == timeslot);
-			return _attendance;
-		}
+
 		public void ComposeMessage()
 		{
-			var yeslink = @"<a href=""http://volsublink"" pid=""{0}"" oid=""{1}"" ticks=""{2}"" ans=""yes"">
-Yes, I can sub for you.</a>".Fmt(pid, oid, ticks);
-			var nolink = @"<a href=""http://volsublink"" pid=""{0}"" oid=""{1}"" ticks=""{2}"" ans=""no"">
-Sorry, I cannot sub for you.</a>".Fmt(pid, oid, ticks);
+			var dt = DateTime.Now;
+			ticks = dt.Ticks;
+			var yeslink = @"<a href=""http://volsublink"" aid=""{0}"" pid=""{1}"" ticks=""{2}"" ans=""yes"">
+Yes, I can sub for you.</a>".Fmt(attend.AttendId, person.PeopleId, ticks);
+			var nolink = @"<a href=""http://volsublink"" aid=""{0}"" pid=""{1}"" ticks=""{2}"" ans=""no"">
+Sorry, I cannot sub for you.</a>".Fmt(attend.AttendId, person.PeopleId, ticks);
 
 			subject = "Volunteer substitute request for {0}".Fmt(org.OrganizationName);
 			message = @"
@@ -101,70 +103,47 @@ on {1:dddd, MMM d} at {1:h:mm tt}</p>
 <p>
 Thank you for your consideration,<br />
 {4}
-</p>".Fmt(org.OrganizationName, timeslot, yeslink, nolink, person.Name);
+</p>".Fmt(org.OrganizationName, attend.MeetingDate, yeslink, nolink, person.Name);
 		}
 		public string DisplayMessage { get; set; }
 		public string Error { get; set; }
 		public Dictionary<int, string> FetchPotentialSubs()
 		{
 			var q = from om in Db.OrganizationMembers
-					where om.OrganizationId == oid
+					where om.OrganizationId == org.OrganizationId
 					where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
 					where om.Pending == false
-					where om.PeopleId != pid
-					let a = from a in Db.Attends
-							where a.OrganizationId == oid
-							where a.MeetingDate == timeslot
-							select a.PeopleId
+					where om.PeopleId != person.PeopleId
+					let a = from aa in Db.Attends
+							where aa.MeetingId == attend.MeetingId
+							select aa.PeopleId
 					where !a.Contains(om.PeopleId)
 					orderby om.Person.Name2
 					select om.Person;
 			return q.ToDictionary(kk => kk.PeopleId, nn => nn.Name);
 		}
-		public Person person
-		{
-			get
-			{
-				if (_Person == null)
-					_Person = Db.LoadPersonById(pid);
-				return _Person;
-			}
-		}
-		public Organization org
-		{
-			get
-			{
-				if (_Organization == null)
-					_Organization = Db.LoadOrganizationById(oid);
-				return _Organization;
-			}
-		}
 		public void SendEmails()
 		{
-			var a = GetAttendance();
 			var tag = Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, Db.NextTagId);
+			Db.ExecuteCommand("delete TagPerson where Id = {0}", tag.Id);
 			Db.TagAll(pids, tag);
-			var dt = DateTime.Now;
+			var dt = new DateTime(ticks);
 
-			var vrlist = (from vr in Db.SubRequests 
-						  where vr.AttendId == a.AttendId 
-						  where vr.RequestorId == pid 
+			var vrlist = (from vr in Db.SubRequests
+						  where vr.AttendId == attend.AttendId
+						  where vr.RequestorId == person.PeopleId
 						  select vr).ToDictionary(vv => vv.SubstituteId, vv => vv);
 
 			foreach (var id in pids)
 			{
-				SubRequest vr;
-				if (!vrlist.TryGetValue(id, out vr))
+				var vr = new SubRequest
 				{
-					vr = new SubRequest
-					{
-						AttendId = a.AttendId,
-						RequestorId = pid,
-						SubstituteId = id,
-					};
-					a.SubRequests.Add(vr);
-				}
-				vr.Requested = dt;
+					AttendId = attend.AttendId,
+					RequestorId = person.PeopleId,
+					Requested = dt,
+					SubstituteId = id,
+				};
+				attend.SubRequests.Add(vr);
 			}
 
 			var qb = Db.QueryBuilderScratchPad();
@@ -172,16 +151,17 @@ Thank you for your consideration,<br />
 			qb.AddNewClause(QueryType.HasMyTag, CompareType.Equal, "{0},temp".Fmt(tag.Id));
 			Db.SubmitChanges();
 
-			var reportlink = @"<a href=""{0}OnlineReg/VolSubReport/{1}/{2}/{3}"">Substitute Status Report</a>".Fmt(Db.CmsHost, pid, oid, ticks);
+			var reportlink = @"<a href=""{0}OnlineReg/VolSubReport/{1}/{2}/{3}"">Substitute Status Report</a>"
+				.Fmt(Db.CmsHost, attend.AttendId, person.PeopleId, dt.Ticks);
 			var list = Db.PeopleFromPidString(org.NotifyIds).ToList();
 			list.Insert(0, person);
 			Db.Email(person.FromEmail, list,
-				"Volunteer Substitute Commitment for " + org.OrganizationName, 
+				"Volunteer Substitute Commitment for " + org.OrganizationName,
 				@"
 <p>{0} has requested a substitute on {1:MMM d} at {1:h:mm tt}.</p>
 <blockquote>
 {2}
-</blockquote>".Fmt(person.Name, timeslot, reportlink));
+</blockquote>".Fmt(person.Name, attend.MeetingDate, reportlink));
 
 			// Email subs
 			var m = new MassEmailer(qb.QueryId, null);
@@ -220,17 +200,18 @@ Thank you for your consideration,<br />
 		}
 		public void ProcessReply(string ans)
 		{
-			var a = GetAttendance();
-			if (a == null)
+			if (attend.PeopleId != person.PeopleId)
 			{
 				DisplayMessage = "This substitute request has already been covered. Thank you so much for responding.";
 				return;
 			}
+			var dt = new DateTime(ticks);
 			var r = (from rr in Db.SubRequests
-					 where rr.RequestorId == a.PeopleId
-					 where rr.AttendId == a.AttendId
+					 where rr.AttendId == attend.AttendId
+					 where rr.RequestorId == person.PeopleId
+					 where rr.Requested == dt
 					 where rr.SubstituteId == sid
-					 select rr).FirstOrDefault();
+					 select rr).Single();
 			r.Responded = DateTime.Now;
 			if (ans != "yes")
 			{
@@ -240,7 +221,7 @@ Thank you for your consideration,<br />
 				return;
 			}
 			r.CanSub = true;
-			a.PeopleId = r.SubstituteId;
+			attend.PeopleId = r.SubstituteId;
 			Db.SubmitChanges();
 			var body = @"
 <p>{0},</p>
@@ -249,7 +230,7 @@ Thank you for your consideration,<br />
 in the {2}<br />
 on {3:MMM d, yyyy} at {3:H:mm tt}.
 See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
-				org.OrganizationName, a.MeetingDate);
+				org.OrganizationName, attend.MeetingDate);
 
 			// on screen message
 			DisplayMessage = "<p>You have been sent the following email at {0}.</p>\n"
@@ -263,7 +244,7 @@ See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
 			var list = Db.PeopleFromPidString(org.NotifyIds).ToList();
 			list.Insert(0, r.Requestor);
 			Db.Email(r.Substitute.FromEmail, list,
-				"Volunteer Substitute Committment for " + org.OrganizationName, 
+				"Volunteer Substitute Committment for " + org.OrganizationName,
 				@"
 <p>The following email was sent to {0}.</p>
 <blockquote>
@@ -285,16 +266,17 @@ See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
 						case true: return new HtmlString("<span class=\"red\">Can Substitute</span>"); break;
 						case false: return new HtmlString("Cannot Substitute"); break;
 					}
-					return new HtmlString(""); 
+					return new HtmlString("");
 				}
 			}
 		}
 		public IEnumerable<SubStatusInfo> SubRequests()
 		{
+			var dt = new DateTime(ticks);
 			var q = from r in Db.SubRequests
-					where r.RequestorId == pid
-					where r.Attend.MeetingDate == timeslot
-					where r.Attend.OrganizationId == oid
+					where r.AttendId == attend.AttendId
+					where r.RequestorId == person.PeopleId
+					where r.Requested == dt
 					select new SubStatusInfo
 					{
 						SubName = r.Substitute.Name,

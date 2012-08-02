@@ -26,12 +26,12 @@ namespace CmsWeb.Areas.OnlineReg
                 new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
             );
            context.MapRoute( "GetVolSub",
-                "OnlineReg/GetVolSub/{pid}/{oid}/{ticks}",
-                new { controller = "OnlineReg", action = "GetVolSub", pid=0, oid=0, ticks=0 }
+                "OnlineReg/GetVolSub/{aid}/{pid}",
+                new { controller = "OnlineReg", action = "GetVolSub", aid=0, pid=0 }
             );
            context.MapRoute( "VolSubReport",
-                "OnlineReg/VolSubReport/{pid}/{oid}/{ticks}",
-                new { controller = "OnlineReg", action = "VolSubReport", pid=0, oid=0, ticks=0 }
+                "OnlineReg/VolSubReport/{aid}/{pid}/{ticks}",
+                new { controller = "OnlineReg", action = "VolSubReport", aid=0, pid=0, ticks=0 }
             );
            context.MapRoute( "ClaimVolSub",
                 "OnlineReg/ClaimVolSub/{ans}/{guid}",

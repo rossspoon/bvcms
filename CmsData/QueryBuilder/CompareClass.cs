@@ -230,6 +230,7 @@ namespace CmsData
                                 c.TextValue);
                 case QueryType.HasOptoutsForEmail:
                     return Expressions.HasEmailOptout(parm,
+								c.EndDate,
                                 CompType,
                                 c.TextValue);
                 // I -----------------

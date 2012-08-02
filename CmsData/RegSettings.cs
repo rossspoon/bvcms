@@ -53,6 +53,7 @@ namespace CmsData
 			AskGrade,
 			AskDonation,
 			DonationLabel,
+			ExtraValueFeeName,
 			DonationFundId,
 			GroupToJoin,
 			GiveOrgMembAccess,
@@ -171,6 +172,7 @@ namespace CmsData
 		//public bool AskGrade { get; set; }
 		public bool AskDonation { get; set; }
 		public string DonationLabel { get; set; }
+		public string ExtraValueFeeName{get; set;}
 		public bool NotReqDOB { get; set; }
 		public bool NotReqAddr { get; set; }
 		public bool NotReqPhone { get; set; }
@@ -599,6 +601,9 @@ namespace CmsData
 					break;
 				case RegKeywords.DonationLabel:
 					DonationLabel = ParseMessage();
+					break;
+				case RegKeywords.ExtraValueFeeName:
+					ExtraValueFeeName = GetString();
 					break;
 				case RegKeywords.GroupToJoin:
 					GroupToJoin = GetString();
@@ -1302,6 +1307,7 @@ namespace CmsData
 			AddValueCk(0, sb, "AskSuggestedFee", SuggestedFee);
 			AddValueCk(0, sb, "ExtraFee", ExtraFee);
 			AddValueCk(0, sb, "MaximumFee", MaximumFee);
+			AddValueCk(0, sb, "ExtraValueFeeName", ExtraValueFeeName);
 			sb.AppendLine();
 		}
 		private void AddDonation(StringBuilder sb)

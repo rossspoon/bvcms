@@ -12,23 +12,28 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 	public partial class OnlineRegController
 	{
 		[HttpGet]
-		public ActionResult GetVolSub(int pid, int oid, long ticks)
+		public ActionResult GetVolSub(int aid, int pid)
 		{
-			var vs = new VolSubModel(pid, oid, ticks);
-			SetHeaders(oid);
+			var vs = new VolSubModel(aid, pid);
+			SetHeaders(vs.org.OrganizationId);
 			vs.ComposeMessage();
 			return View(vs);
 		}
 		[HttpPost]
-		public ActionResult GetVolSub(VolSubModel m)
+		[ValidateInput(false)]
+		public ActionResult GetVolSub(int aid, int pid, long ticks, int[] pids, string subject, string message)
 		{
+			var m = new VolSubModel(aid, pid, ticks);
+			m.subject = subject;
+			m.message = message;
+			m.pids = pids;
 			m.SendEmails();
 			return Content("Emails are being sent, thank you.");
 		}
-		public ActionResult VolSubReport(int pid, int oid, long ticks)
+		public ActionResult VolSubReport(int aid, int pid, long ticks)
 		{
-			var vs = new VolSubModel(pid, oid, ticks);
-			SetHeaders(oid);
+			var vs = new VolSubModel(aid, pid, ticks);
+			SetHeaders(vs.org.OrganizationId);
 			return View(vs);
 		}
 		public ActionResult ClaimVolSub(string ans, string guid)

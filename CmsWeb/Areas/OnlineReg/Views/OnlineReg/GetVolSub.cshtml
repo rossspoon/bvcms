@@ -32,8 +32,8 @@
 </div>
 @using (Html.BeginForm("EmailVolunteerSubs"))
 {
-    @Html.Hidden("oid", Model.oid);
-    @Html.Hidden("pid", Model.pid);
+    @Html.Hidden("aid", Model.attend.AttendId);
+    @Html.Hidden("pid", Model.attend.PeopleId);
     @Html.Hidden("ticks", Model.ticks);
     <p><label>Subject:</label>
     @Html.TextBox("subject", Model.subject, new { style = "width:90%" })

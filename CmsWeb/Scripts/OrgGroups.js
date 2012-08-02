@@ -21,6 +21,13 @@
     });
     $("#groupsform").delegate("#memtype", "change", $.loadTable);
 
+    $("#SelectAll").click(function () {
+        if ($(this).attr("checked"))
+            $("table.grid input[name='list']").attr('checked', true);
+        else
+            $("table.grid input[name='list']").removeAttr('checked');
+    });
+
     $("#ingroup, #notgroup").keypress(function (ev) {
         if (ev.keyCode == '13') {
             ev.preventDefault();

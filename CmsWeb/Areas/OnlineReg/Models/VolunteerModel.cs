@@ -65,19 +65,9 @@ namespace CmsWeb.Models
 				   select g.ToList();
 		}
 
-		//		public List<DateTime> Commitments()
-		//		{
-		//			return (from a in DbUtil.Db.Attends
-		//					where a.OrganizationId == OrgId
-		//					where a.MeetingDate >= Sunday
-		//					where a.MeetingDate <= EndDt
-		//					where a.PeopleId == PeopleId
-		//					where a.Registered == true
-		//					select a.MeetingDate).ToList();
-		//		}
-
 		public class DateInfo
 		{
+			public Attend attend { get; set; }
 			public DateTime MeetingDate { get; set; }
 			public int count { get; set; }
 			public bool iscommitted { get; set; }
@@ -91,11 +81,15 @@ namespace CmsWeb.Models
 					where a.MeetingDate <= EndDt
 					where a.Registered == true
 					group a by a.MeetingDate into g
+					let attend = (from aa in g
+								  where aa.PeopleId == PeopleId
+								  select aa).SingleOrDefault()
 					select new DateInfo()
 					{
+						attend = attend,
 						MeetingDate = g.Key,
 						count = g.Count(),
-						iscommitted = g.Select(aa => aa.PeopleId).Contains(PeopleId)
+						iscommitted = attend != null
 					}).ToList();
 		}
 
@@ -149,6 +143,7 @@ namespace CmsWeb.Models
 							let count = meeting != null ? meeting.count : 0
 							select new Slot()
 									{
+										AttendId = meeting != null ? (meeting.attend != null ? meeting.attend.AttendId : 0) : 0,
 										Checked = meeting != null && meeting.iscommitted,
 										Time = time,
 										Sunday = dt,
@@ -167,6 +162,7 @@ namespace CmsWeb.Models
 
 		public class Slot
 		{
+			public int AttendId { get; set; }
 			public DateTime Time { get; set; }
 			public DateTime Sunday { get; set; }
 			public int Year { get; set; }

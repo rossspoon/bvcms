@@ -627,8 +627,8 @@ namespace CmsData
 				var inside = ele.InnerHtml;
 				var d = ele.Attributes.ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
 
-				var qs = @"{{""pid"":{0},""oid"":{1},""ticks"":{2},""sid"":{3}}}"
-					.Fmt(d["pid"], d["oid"], d["ticks"], emailqueueto.PeopleId);
+				var qs = "{0},{1},{2},{3}"
+					.Fmt(d["aid"], d["pid"], d["ticks"], emailqueueto.PeopleId);
 				OneTimeLink ot = null;
 				if (list.ContainsKey(qs))
 					ot = list[qs];

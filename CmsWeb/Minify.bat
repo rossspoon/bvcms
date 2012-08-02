@@ -14,7 +14,7 @@ Content/js/jquery.jscrollpane.js ^
 Content/js/jQuery.autocomplete.js ^
 Content/js/jquery.jeditable.js ^
 Content/js/jquery.validate.js ^
-Content/js/jquery.joyride-1.0.3.js ^
+Content/js/jquery.joyride-1.0.5.js ^
 Scripts/ExportToolBar.js ^
 Scripts/menu.js ^
 Scripts/Pager.js ^
@@ -56,7 +56,7 @@ Content/pager.css ^
 Content/jquery.jscrollpane.css ^
 Content/jquery.tooltip.css ^
 Content/jquery.autocomplete.css ^
-Content/joyride-1.0.3.css ^
+Content/joyride-1.0.5.css ^
 -o Content/combined.css -clobber:true || pause
 
 ajaxmin Content/js/jquery-1.7.2.js -o Min\Content/js/jquery-1.7.2.js -clobber:true || pause

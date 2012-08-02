@@ -10,9 +10,11 @@
     $(function () {
         $("a.delete").click(function (e) {
             e.preventDefault();
-            $.post(this.href, {}, function (ret) {
-                window.location = ret;
-            });
+            if (confirm("are you sure?")) {
+                $.post(this.href, {}, function (ret) {
+                    window.location = ret;
+                });
+            }
         });
         $("a.bt,input.bt").button();
     });

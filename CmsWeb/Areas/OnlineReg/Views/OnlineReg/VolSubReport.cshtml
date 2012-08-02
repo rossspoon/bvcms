@@ -28,7 +28,7 @@
 @Html.Script("/Scripts/Edit.js")
 }
 <h2>@Model.org.OrganizationName</h2>
-<h3>@Model.person.Name on @Model.timeslot.ToString("MMM d, yyyy") at @Model.timeslot.ToString("h:mm tt")</h3>
+<h3>@Model.person.Name on @Model.attend.MeetingDate.ToString("MMM d, yyyy") at @Model.attend.MeetingDate.ToString("h:mm tt")</h3>
 <div>
 <table class="grid">
 <thead>

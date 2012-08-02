@@ -51,6 +51,12 @@ namespace CmsWeb.Models
             // just use the simple fee if nothing else has been used yet.
             if (amt == 0 && countorgs == 0 && setting.SuggestedFee == false)
                 amt = setting.Fee ?? 0;
+			if (setting.ExtraValueFeeName.HasValue())
+			{
+				var evamt = person.GetExtra(setting.ExtraValueFeeName).ToDecimal();
+				if (evamt.HasValue)
+					amt = evamt.Value;
+			}
 
             amt += TotalOther();
             return amt;
