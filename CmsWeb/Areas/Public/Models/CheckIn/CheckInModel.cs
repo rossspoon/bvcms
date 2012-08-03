@@ -177,7 +177,7 @@ namespace CmsWeb.Models
                 where a.Organization.CanSelfCheckin.Value
                 where a.Organization.AllowNonCampusCheckIn == true 
 								|| a.Organization.CampusId == campus || campus == 0
-                where a.AttendanceFlag && a.MeetingDate >= a.Organization.VisitorDate.Value.Date
+                where a.AttendanceFlag && a.MeetingDate >= a.Organization.FirstMeetingDate.Value.Date
                 where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
                 group a by new { a.PeopleId, a.OrganizationId } into g

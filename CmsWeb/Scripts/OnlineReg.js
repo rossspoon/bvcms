@@ -52,8 +52,10 @@
                 return;
             }
             $(f).html(ret).ready(function () {
-                if ($("#submitit").attr("onlyoneallowed") == "true")
+                if ($("#submitit").attr("onlyoneallowed") == "true") {
+                    $.InstructionsShow();
                     $("#submitit").click();
+                }
                 else {
                     $.InstructionsShow();
                     $("#dob").datepicker($.dpoptions);

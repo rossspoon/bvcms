@@ -43,7 +43,6 @@
     @Html.Hidden("pf.testing", Model.testing)
     @Html.Hidden("pf.OrgId", Model.OrgId)
     @Html.Hidden("pf.OriginalId", Model.OriginalId)
-    @Html.Hidden("pf.CCV", Model.CCV)
     @Html.Hidden("pf.PayBalance", Model.PayBalance)
     @Html.Hidden("pf.AllowCoupon", Model.AllowCoupon)
     @Html.Hidden("pf.IsLoggedIn", Model.IsLoggedIn)
@@ -98,16 +97,22 @@ else
 {
 	<tr class="Card">
 		<td>Card Number</td>
-		<td>@Html.TextBox("pf.CreditCard", Model.CreditCard, Model.Autocomplete())</td>
+		<td>@Html.TextBox("pf.CreditCard", Model.CreditCard, Model.Autocomplete())
+            <div>@Html.ValidationMessage("Cardnumber")</div>
+        </td>
 	</tr>
 	<tr class="Card">
 		<td>Expires</td>
-		<td>@Html.TextBox("pf.Expires", Model.Expires, Model.Autocomplete(small: true)) MMYY</td>
+		<td>@Html.TextBox("pf.Expires", Model.Expires, Model.Autocomplete(small: true)) MMYY
+            <div>@Html.ValidationMessage("Expires")</div>
+        </td>
 	</tr>
 	<tr class="Card">
 		<td>Card Code<br />
 			<a id="findidclick" href="#"><span style="font-size: 65%">How to find your card code</span></a></td>
-		<td>@Html.TextBox("pf.MaskedCCV", Model.MaskedCCV, Model.Autocomplete())</td>
+		<td>@Html.TextBox("pf.CCV", Model.MaskedCCV, Model.Autocomplete())
+            <div>@Html.ValidationMessage("Cardcode")</div>
+        </td>
 	</tr>
 }
 @if (Model.NoEChecksAllowed == false)
@@ -115,11 +120,15 @@ else
 	<tr class="Bank">
 		<td>Checking Account<br/>
 			Bank Routing Number</td>
-		<td>@Html.TextBox("pf.Routing", Model.Routing, Model.Autocomplete())</td>
+		<td>@Html.TextBox("pf.Routing", Model.Routing, Model.Autocomplete())
+            <div>@Html.ValidationMessage("Routing")</div>
+        </td>
 	</tr>
 	<tr class="Bank">
 		<td>Account Number</td>
-		<td>@Html.TextBox("pf.Account", Model.Account, Model.Autocomplete())</td>
+		<td>@Html.TextBox("pf.Account", Model.Account, Model.Autocomplete())
+            <div>@Html.ValidationMessage("Account")</div>
+        </td>
 	</tr>
 }
 @if (Model.IsLoggedIn == true)

@@ -35,7 +35,7 @@
             });
         });
     });
-    $("#SelectAll").click(function () {
+    $("#SelectAll").live("click", function () {
         if ($(this).attr("checked"))
             $("table.grid input[name='List']").attr('checked', true);
         else

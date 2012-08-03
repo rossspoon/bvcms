@@ -37,6 +37,7 @@ namespace CmsWeb.Models
                 if (q.Count() > 0)
                     amt = q.First();
             }
+			var orgfee = 0M;
             if (setting.OrgFees.Count > 0)
                 // fee based on being in an organization
             {
@@ -46,7 +47,7 @@ namespace CmsWeb.Models
                         select o.Fee ?? 0;
                 countorgs = q.Count();
                 if (countorgs > 0)
-                    amt = q.First();
+                    orgfee = q.First();
             }
             // just use the simple fee if nothing else has been used yet.
             if (amt == 0 && countorgs == 0 && setting.SuggestedFee == false)
@@ -57,8 +58,10 @@ namespace CmsWeb.Models
 				if (evamt.HasValue)
 					amt = evamt.Value;
 			}
-
-            amt += TotalOther();
+			if (orgfee > 0)
+				amt = orgfee; // special price for org member
+			else
+	            amt += TotalOther();
             return amt;
         }
         public decimal TotalOther()

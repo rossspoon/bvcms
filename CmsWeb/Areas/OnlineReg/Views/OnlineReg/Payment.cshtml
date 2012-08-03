@@ -46,6 +46,7 @@
         back here to get your confirmation. Your information will not be committed until
         you complete the transaction on the next page.
     </p>
+    @Html.Hidden("pf_Type", "ServiceU")
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     Amount: @Model.AmtToPay.ToString2("N2")
     @Html.Hidden("Amount", Model.AmtToPay) 

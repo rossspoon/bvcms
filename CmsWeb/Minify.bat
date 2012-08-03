@@ -19,6 +19,8 @@ Scripts/ExportToolBar.js ^
 Scripts/menu.js ^
 Scripts/Pager.js ^
 Scripts/headermenu.js ^
+Content/js/modernizr.mq.js ^
+Content/js/tutorial.js ^
 -o Min/Content/js/combined.js -clobber:true || pause
 
 ajaxmin ^

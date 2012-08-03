@@ -281,7 +281,7 @@ namespace CmsData
 			{
 				if (value.HasValue())
 					_ValidateOrgs = (from i in value.Split(',')
-									 where i.ToInt() > 0
+									 where i.ToInt() > 0 || i.ToInt() < 0
 									 select i.ToInt()).ToList();
 				else
 					_ValidateOrgs = new List<int>();
@@ -619,7 +619,7 @@ namespace CmsData
 					break;
 				case RegKeywords.ValidateOrgs:
 					_ValidateOrgs = (from i in curr.value.Split(',')
-									 where i.ToInt() > 0
+									 where i.ToInt() > 0 || i.ToInt() < 0
 									 select i.ToInt()).ToList();
 					lineno++;
 					break;

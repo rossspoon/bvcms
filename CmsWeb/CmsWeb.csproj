@@ -341,6 +341,7 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
     <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">

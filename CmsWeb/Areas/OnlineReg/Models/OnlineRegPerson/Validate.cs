@@ -135,11 +135,20 @@ Please call the church to resolve this before we can complete your account.<br /
                         }
                         else if (setting.ValidateOrgIds.Count > 0)
                         {
-                            if (!person.OrganizationMembers.Any(mm => setting.ValidateOrgIds.Contains(mm.OrganizationId)))
-                            {
-                                ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
-                                IsValidForContinue = false;
-                            }
+							var reqmemberids = setting.ValidateOrgIds.Where(ii => ii > 0).ToList();
+							if(reqmemberids.Count > 0)
+	                            if (!person.OrganizationMembers.Any(mm => reqmemberids.Contains(mm.OrganizationId)))
+	                            {
+	                                ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
+	                                IsValidForContinue = false;
+	                            }
+							var reqnomemberids = setting.ValidateOrgIds.Where(ii => ii < 0).ToList();
+							if (reqnomemberids.Count > 0)
+	                            if (person.OrganizationMembers.Any(mm => reqnomemberids.Contains(-mm.OrganizationId)))
+	                            {
+	                                ModelState.AddModelError(ErrorTarget, "Must be not be member of specified organization");
+	                                IsValidForContinue = false;
+	                            }
                         }
                     }
                     if (m.List.Count(ii => ii.PeopleId == this.PeopleId) > 1)
