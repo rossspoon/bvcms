@@ -14,6 +14,7 @@ using CmsData;
 using UtilityExtensions;
 using iTextSharp.text.html.simpleparser;
 using CmsWeb.Areas.Main.Models.Report;
+using System.Diagnostics;
 
 namespace CmsWeb.Areas.Finance.Models.Report
 {
@@ -25,6 +26,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		public int typ { get; set; }
 		public DateTime FromDate { get; set; }
 		public DateTime ToDate { get; set; }
+		private PageEvent pageEvents = new PageEvent();
 
 		public void Run(Stream stream, CMSDataContext Db, IEnumerable<ContributorInfo> q)
 		{
@@ -35,7 +37,6 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 11);
 
 			var doc = new Document(PageSize.LETTER);
-			var pageEvents = new PageEvent();
 			doc.SetMargins(36f, 30f, 24f, 36f);
 			var w = PdfWriter.GetInstance(doc, stream);
 			w.PageEvent = pageEvents;
@@ -48,7 +49,6 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			{
 				if (prevfid != ci.FamilyId)
 				{
-					//Debug.WriteLine(ci.FamilyId);
 					pageEvents.StartPageSet();
 					prevfid = ci.FamilyId;
 				}
@@ -93,7 +93,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				if (ci.Address2.HasValue())
 					a.AddCell(new Phrase(ci.Address2, font));
 				a.AddCell(new Phrase(ci.CityStateZip, font));
-				cell = new PdfPCell(a) {Border = Rectangle.NO_BORDER};
+				cell = new PdfPCell(a) { Border = Rectangle.NO_BORDER };
 				//cell.FixedHeight = 72f * 1.0625f;
 				ae.AddCell(cell);
 
@@ -278,6 +278,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				runningtotals.Processed += 1;
 				Db.SubmitChanges();
 			}
+
 			if (!pageEvents.EndPageSet())
 			{
 				pageEvents.StartPageSet();
@@ -285,6 +286,9 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				pageEvents.EndPageSet();
 			}
 			doc.Close();
+
+			Debug.WriteLine(pageEvents.multipages.Count(pp => pp == true));
+			Debug.WriteLine(pageEvents.multipages.Count(pp => pp == false));
 			runningtotals.Completed = DateTime.Now;
 			Db.SubmitChanges();
 		}
@@ -296,6 +300,8 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 			private PdfContentByte dc;
 			private BaseFont font;
 
+			public List<bool> multipages { get; set; }
+
 			public override void OnOpenDocument(PdfWriter writer, Document document)
 			{
 				this.writer = writer;
@@ -303,6 +309,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				base.OnOpenDocument(writer, document);
 				font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 				dc = writer.DirectContent;
+				multipages = new List<bool>();
 			}
 			public bool EndPageSet()
 			{
@@ -311,6 +318,8 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				npages.BeginText();
 				npages.SetFontAndSize(font, 8);
 				npages.ShowText((writer.PageNumber + 1).ToString());
+				for (var i = 0; i <= writer.PageNumber; i++)
+					multipages.Add(writer.PageNumber > 0);
 				npages.EndText();
 				return true;
 			}
@@ -336,6 +345,47 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				dc.ShowText(text);
 				dc.EndText();
 				dc.AddTemplate(npages, document.PageSize.Width - 30, 30);
+			}
+		}
+		public void splitPDF(Stream inputStream, Stream outputStream, bool multi)
+		{
+			var document = new Document();
+			try
+			{
+				var inputPDF = new PdfReader(inputStream);
+				var totalPages = inputPDF.NumberOfPages;
+				var writer = PdfWriter.GetInstance(document, outputStream);
+
+				document.Open();
+				var cb = writer.DirectContent; // Holds the PDF data
+				PdfImportedPage page;
+
+				for(var i = 0; i < this.pageEvents.multipages.Count; i++)
+					if(pageEvents.multipages[i] == multi)
+					{
+						document.NewPage();
+						page = writer.GetImportedPage(inputPDF, i+1);
+						cb.AddTemplate(page, 0, 0);
+					}
+				outputStream.Flush();
+				document.Close();
+				outputStream.Close();
+			}
+			catch (Exception e)
+			{
+			}
+			finally
+			{
+				if (document.IsOpen())
+					document.Close();
+				try
+				{
+					if (outputStream != null)
+						outputStream.Close();
+				}
+				catch (IOException ioe)
+				{
+				}
 			}
 		}
 	}

@@ -162,7 +162,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<NewsInfo> ChurchNews()
         {
-			var feedurl = DbUtil.Db.Setting("ChurchFeedUrl", "http://camarillocommunitychurch.wordpress.com/feed/rss");
+			var feedurl = DbUtil.Db.Setting("ChurchFeedUrl", "");
 
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);
 

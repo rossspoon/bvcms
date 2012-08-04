@@ -23,45 +23,59 @@ using System.Web;
 
 namespace CmsData
 {
-    public class AddressVerify
-    {
-        public class AddressResult
-        {
-            public bool found { get; set; }
-            public string address { get; set; }
-            public string Line1 { get; set; }
-            public string Line2 { get; set; }
-            public string City { get; set; }
-            public string State { get; set; }
-            public string Zip { get; set; }
-        }
-        public static AddressResult LookupAddress(string line1, string line2, string city, string st, string zip)
-        {
-            string url = ConfigurationManager.AppSettings["amiurl"];
-            string password = ConfigurationManager.AppSettings["amipassword"];
+	public class AddressVerify
+	{
+		public class AddressResult
+		{
+			public bool found { get; set; }
+			public string address { get; set; }
+			public string Line1 { get; set; }
+			public string Line2 { get; set; }
+			public string City { get; set; }
+			public string State { get; set; }
+			public string Zip { get; set; }
+		}
+		public static AddressResult LookupAddress(string line1, string line2, string city, string st, string zip)
+		{
+			string url = ConfigurationManager.AppSettings["amiurl"];
+			string password = ConfigurationManager.AppSettings["amipassword"];
 
-            if (!url.HasValue() || !password.HasValue())
-                return new AddressResult { Line1 = "error" };
+			if (!url.HasValue() || !password.HasValue())
+				return new AddressResult { Line1 = "error" };
 
-            var wc = new WebClient();
-            var coll = new NameValueCollection();
-            coll.Add("line1", line1);
-            coll.Add("line2", line2);
-            coll.Add("csz", Util.FormatCSZ(city, st, zip));
-            coll.Add("passcode", password);
-            try
-            {
-                var resp = wc.UploadValues(url, "POST", coll);
-                var s = Encoding.ASCII.GetString(resp);
-                var serializer = new XmlSerializer(typeof(AddressResult));
-                var reader = new StringReader(s);
-                var ret = (AddressResult)serializer.Deserialize(reader);
-                return ret;
-            }
-            catch (Exception)
-            {
-                return new AddressResult { Line1 = "error" };
-            }
-        }
-    }
+			var wc = new MyWebClient();
+			var coll = new NameValueCollection();
+			coll.Add("line1", line1);
+			coll.Add("line2", line2);
+			coll.Add("csz", Util.FormatCSZ(city, st, zip));
+			coll.Add("passcode", password);
+			try
+			{
+				var resp = wc.UploadValues(url, "POST", coll);
+				var s = Encoding.ASCII.GetString(resp);
+				var serializer = new XmlSerializer(typeof(AddressResult));
+				var reader = new StringReader(s);
+				var ret = (AddressResult)serializer.Deserialize(reader);
+				return ret;
+			}
+			catch (Exception)
+			{
+				return new AddressResult { Line1 = "error" };
+			}
+		}
+	}
+	class MyWebClient : WebClient
+	{
+		public MyWebClient()
+		{
+
+		}
+
+		protected override WebRequest GetWebRequest(Uri uri)
+		{
+			WebRequest w = base.GetWebRequest(uri);
+			w.Timeout = 1000;
+			return w;
+		}
+	}
 }

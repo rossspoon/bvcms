@@ -521,8 +521,8 @@ namespace UtilityExtensions
 						return (bool)HttpContext.Current.Items[STR_IsSage];
 				return null;
 			}
-			set 
-			{ 
+			set
+			{
 				HttpContext.Current.Items[STR_IsSage] = value;
 			}
 		}
@@ -1213,10 +1213,10 @@ namespace UtilityExtensions
 		}
 		public static void InsertCacheNotRemovable(string key, object value)
 		{
-		    HttpRuntime.Cache.Insert(key, value, null,
-		        System.Web.Caching.Cache.NoAbsoluteExpiration,
-		        System.Web.Caching.Cache.NoSlidingExpiration,
-		        CacheItemPriority.NotRemovable, null);
+			HttpRuntime.Cache.Insert(key, value, null,
+				System.Web.Caching.Cache.NoAbsoluteExpiration,
+				System.Web.Caching.Cache.NoSlidingExpiration,
+				CacheItemPriority.NotRemovable, null);
 		}
 
 		public static MailAddress FirstAddress2(string addrs, string name)
@@ -1327,10 +1327,10 @@ namespace UtilityExtensions
 			return wk;
 		}
 
-		public static IEnumerable<DateTime>  DaysOfMonth(DateTime dt)
+		public static IEnumerable<DateTime> DaysOfMonth(DateTime dt)
 		{
 			var d = new DateTime(dt.Year, dt.Month, 1);
-			while(d.Month == dt.Month)
+			while (d.Month == dt.Month)
 			{
 				yield return d;
 				d = d.AddDays(1);
@@ -1340,16 +1340,16 @@ namespace UtilityExtensions
 		{
 			var sundays = DaysOfMonth(sunday).Where(dd => dd.DayOfWeek == 0).ToList();
 			var wk = 0;
-			while(sunday > sundays[wk])
+			while (sunday > sundays[wk])
 				wk++;
 			return wk + 1;
 		}
 		public static DateTime Sunday(int month, int year)
-        {
-            var first = new DateTime(year, month, 1);
-            return new DateTime(year, month,
-                1 + (7 - (int)first.DayOfWeek) % 7);
-        }
+		{
+			var first = new DateTime(year, month, 1);
+			return new DateTime(year, month,
+				1 + (7 - (int)first.DayOfWeek) % 7);
+		}
 		public static bool SessionTimedOut()
 		{
 			if (HttpContext.Current.Session != null)
@@ -1408,7 +1408,7 @@ namespace UtilityExtensions
 		}
 		public static string Mask(StringBuilder sb, int leave)
 		{
-			for (var i = 0; i < sb.Length-leave; i++)
+			for (var i = 0; i < sb.Length - leave; i++)
 				if (char.IsDigit(sb[i]))
 					sb[i] = 'X';
 			return sb.ToString();
@@ -1422,18 +1422,32 @@ namespace UtilityExtensions
 				d2 = new DateTime(d2.Year, d2.Month, baseday);
 			return d2;
 		}
-        public static bool IsDebug()
-        {
-            var d = false;
+		public static bool IsDebug()
+		{
+			var d = false;
 #if DEBUG
-            d = true;
+			d = true;
 #endif
-            return d;
-        }
+			return d;
+		}
 		public static string ToProper(this string s)
 		{
 			var textinfo = Thread.CurrentThread.CurrentCulture.TextInfo;
 			return textinfo.ToTitleCase(s.ToLower());
+		}
+		public static DateTime? ParseMMddyy(string s)
+		{
+			DateTime dt;
+			if (DateTime.TryParseExact(s, "MMddyyyy",
+					CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal,
+					out dt))
+				return dt;
+			if (DateTime.TryParseExact(s, "MMddyy",
+					CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal,
+					out dt))
+				return dt;
+
+			return null;
 		}
 	}
 	public class EventArg<T> : EventArgs

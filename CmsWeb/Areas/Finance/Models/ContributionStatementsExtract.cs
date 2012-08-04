@@ -27,6 +27,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			this.OutputFile = OutputFile;
 		}
 
+
 		public CMSDataContext Db { get; set; }
 		public void DoWork()
 		{
@@ -41,14 +42,25 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			Db.SubmitChanges();
 			if (PDF)
 			{
-				var stream = new FileStream(OutputFile, FileMode.Create);
 				var c = new ContributionStatements
 				{
 					FromDate = fd,
 					ToDate = td,
 					typ = 3
 				};
-				c.Run(stream, Db, qc);
+				using (var stream = new FileStream(OutputFile, FileMode.Create))
+					c.Run(stream, Db, qc);
+
+				var OutputFile1 = OutputFile.Replace(".pdf", "-1.pdf");
+				var OutputFile2 = OutputFile.Replace(".pdf", "-2.pdf");
+
+				using(var istream = new FileStream(OutputFile, FileMode.Open))
+					using(var ostream1 = new FileStream(OutputFile1, FileMode.Create))
+						c.splitPDF(istream, ostream1, false);
+
+				using(var istream = new FileStream(OutputFile, FileMode.Open))
+					using(var ostream2 = new FileStream(OutputFile2, FileMode.Create))
+						c.splitPDF(istream, ostream2, true);
 			}
 			else
 			{

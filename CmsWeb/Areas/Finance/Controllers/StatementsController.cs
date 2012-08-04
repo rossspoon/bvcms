@@ -73,5 +73,19 @@ namespace CmsWeb.Areas.Finance.Controllers
 				return Content("no pending download");
 			return new ContributionStatementsResult(output);
 		}
+		public ActionResult Download1(bool? PDF = true)
+		{
+			string output = Output(PDF).Replace(".pdf", "-1.pdf");
+			if (!System.IO.File.Exists(output))
+				return Content("no pending download");
+			return new ContributionStatementsResult(output);
+		}
+		public ActionResult Download2(bool? PDF = true)
+		{
+			string output = Output(PDF).Replace(".pdf", "-2.pdf");
+			if (!System.IO.File.Exists(output))
+				return Content("no pending download");
+			return new ContributionStatementsResult(output);
+		}
 	}
 }
