@@ -106,7 +106,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				var t2 = new PdfPTable(1);
 				t2.TotalWidth = 72f * 3f;
 				t2.DefaultCell.Border = Rectangle.NO_BORDER;
-				t2.AddCell(new Phrase("\nPrint Date: {0:M/d/yy}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
+				t2.AddCell(new Phrase("\nPrint Date: {0:d}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
 				t2.AddCell("");
 				string html2 = @"<p><i>
 NOTE: No goods or services were provided to you by the church in connection with any contibution;
@@ -147,7 +147,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				doc.Add(new Paragraph(" "));
 				doc.Add(new Paragraph(" ") { SpacingBefore = 72f * 2.125f });
 
-				doc.Add(new Phrase("\n  Period: {0:M/d/yy} - {1:M/d/yy}".Fmt(FromDate, ToDate), boldfont));
+				doc.Add(new Phrase("\n  Period: {0:d} - {1:d}".Fmt(FromDate, ToDate), boldfont));
 
 				var mct = new MultiColumnText();
 				mct.AddRegularColumns(doc.Left, doc.Right, 20f, 2);
@@ -175,7 +175,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				var total = 0m;
 				foreach (var c in ContributionModel.contributions(Db, ci, FromDate, ToDate))
 				{
-					t.AddCell(new Phrase(c.ContributionDate.ToString2("M/d/yy"), font));
+					t.AddCell(new Phrase(c.ContributionDate.FormatDate(), font));
 					t.AddCell(new Phrase(c.Fund, font));
 					cell = new PdfPCell(t.DefaultCell);
 					cell.HorizontalAlignment = Element.ALIGN_RIGHT;

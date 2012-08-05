@@ -160,13 +160,13 @@ namespace CmsWeb.Models
                         CurrOrgName = om.Organization.OrganizationName,
                         CurrLeader = om.Organization.LeaderName,
                         CurrLoc = om.Organization.Location,
-                        CurrSchedule = sc.MeetingTime.ToString2("H:mm t"),
+                        CurrSchedule = sc.MeetingTime.ToString2("t"),
                         Gender = om.Person.GenderId == 1 ? "M" : "F",
                         PendingClassId = pc == null ? (int?)null : pc.OrganizationId,
                         PendingOrgName = pc == null ? "" : pc.Organization.OrganizationName,
                         PendingLeader = pc == null ? "" : (pt != null ? pt.Person.Name : pc.Organization.LeaderName),
                         PendingLoc = pc == null ? "" : pc.Organization.Location,
-                        PendingSchedule = psc.MeetingTime.ToString2("H:mm t"),
+                        PendingSchedule = psc.MeetingTime.ToString2("t"),
                         Hash = om.Person.HashNum.Value,
                     };
             if (Dir == "asc")
@@ -366,7 +366,7 @@ namespace CmsWeb.Models
             var qq = from i in list
                      select new SelectListItem
                      {
-                         Text = i.Text + i.Time.ToString2(", {H:mm t}"),
+                         Text = i.Text + ", {0:t}".Fmt(i.Time.Value),
                          Value = i.Value
                      };
             return qq;

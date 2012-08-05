@@ -164,7 +164,11 @@ namespace CmsWeb.Models
                     HasPicture = om.Person.PictureId != null,
                     Custody = (om.Person.CustodyIssue ?? false) == true,
                     Transport = (om.Person.OkTransport ?? false) == true,
-                    RequiresSecurityLabel = normalLabelsMemTypes.Contains(om.MemberTypeId) && (om.Person.Age ?? 0) < 18 && (om.Organization.NoSecurityLabel ?? false) == false,
+                    RequiresSecurityLabel = 
+						normalLabelsMemTypes.Contains(om.MemberTypeId) // regular member
+						&& (om.Person.Age ?? 0) < 18 // less than 18
+						&& (om.Organization.NoSecurityLabel ?? false) == false, // org uses security
+
                     church = om.Person.OtherNewChurch,
                 };
 

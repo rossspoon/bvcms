@@ -156,7 +156,7 @@ namespace CmsWeb.Models.OrganizationPage
             {
                 var sc = org.OrgSchedules.FirstOrDefault(); // SCHED
 				if (sc != null && sc.SchedTime != null)
-					return sc.SchedTime.ToString2("hh:mm tt");
+					return sc.SchedTime.ToString2("t");
                 return "08:00 AM";
             }
         }

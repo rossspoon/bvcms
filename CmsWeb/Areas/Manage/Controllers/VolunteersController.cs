@@ -89,7 +89,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             var subject = "{0} Reminder".Fmt(meeting.Organization.OrganizationName);
             var body = 
 @"<blockquote><table>
-<tr><td>Time:</td><td>{0:dddd, M/d/yy h:mm tt}</td></tr>
+<tr><td>Time:</td><td>{0:f}</td></tr>
 <tr><td>Location:</td><td>{1}</td></tr>
 </table></blockquote><p>{2}</p>".Fmt(
                                 meeting.MeetingDate,

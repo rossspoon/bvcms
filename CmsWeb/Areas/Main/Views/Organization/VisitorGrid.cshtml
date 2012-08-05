@@ -40,7 +40,7 @@ Count: <strong>@Model.Count()</strong>
     }         
         <a href="mailto:@om.Name <@om.EmailAddress>">@om.EmailAddress</a>
     </td>
-    <td>@om.LastAttended.FormatDate2()</td>
+    <td>@om.LastAttended.FormatDate()</td>
     <td>
         <a pid='@om.PeopleId' title="Add to/Remove from Active Tag" class="taguntag" href="#">@(om.HasTag? "Remove" : "Add")</a>
     </td>

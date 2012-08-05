@@ -49,12 +49,6 @@
 </table>
 </form>
 @Html.Partial("CombinedJs")
-<script type="text/javascript">
-    $(function () {
-        $("form").submit(function() {
-            $.blockUI();
-        });
-    });
-</script>
+@Html.Partial("DatePickerDefaults")
 </body>
 </html>

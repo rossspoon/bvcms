@@ -228,7 +228,7 @@ Thank you for your consideration,<br />
 <p>Thank you so much.</p>
 <p>You are now assigned to cover for {1}<br />
 in the {2}<br />
-on {3:MMM d, yyyy} at {3:H:mm tt}.
+on {3:MMM d, yyyy} at {3:t}.
 See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
 				org.OrganizationName, attend.MeetingDate);
 

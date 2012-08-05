@@ -13,6 +13,7 @@
 <link rel="stylesheet" type="text/css"  href="/Content/Style2.css" />
 
 @Html.Partial("CombinedJs")
+@Html.Partial("DatePickerDefaults")
 @Html.Script("/Scripts/TransactionHistory.js")
 </head>
 <body>
@@ -43,7 +44,7 @@
                         <td>@a.MeetingDate.GetWeekNumber()</td>
                         <td>@a.ScheduleType</td>
                         <td>@a.MeetingDate.DayOfWeek.ToString().Substring(0,3)</td>
-                        <td>@a.MeetingDate.ToString("M/d/yy h:mmt") </td>
+                        <td>@a.MeetingDate.ToString("g") </td>
                         <td>@a.AttendType </td>
                         <td>@a.MemberType </td>
                         <td>@a.OtherAttends </td>

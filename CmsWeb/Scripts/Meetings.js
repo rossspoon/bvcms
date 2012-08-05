@@ -1,10 +1,5 @@
 ﻿$(function () {
-    $(".datepicker").datepicker({
-        dateFormat: 'm/d/yy',
-        changeMonth: true,
-        changeYear: true,
-        onSelect: $.reload
-    });
+    $(".datepicker").datepicker();
     $("#Dt1").change(function () {
         $("#Dt2").val("");
         $.reload();

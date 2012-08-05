@@ -60,7 +60,7 @@
                                 Text='<%# Eval("EmailAddress") %>' />
                         </td>
                         <td>
-                            <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastActivityDate", "{0:MM/dd/yy h:mm t}") %>' />
+                            <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastActivityDate", "{0:g}") %>' />
                         </td>
                     </tr>
                 </ItemTemplate>
@@ -140,7 +140,7 @@
                                 Text='<%# Eval("EmailAddress") %>' />
                         </td>
                         <td>
-                            <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastActivityDate", "{0:MM/dd/yy h:mm t}") %>' />
+                            <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastActivityDate", "{0:g}") %>' />
                         </td>
                     </tr>
                     <tr>
@@ -186,7 +186,7 @@
                                 Text='<%# Eval("EmailAddress") %>' />
                         </td>
                         <td>
-                            <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastActivityDate", "{0:MM/dd/yy h:mm t}") %>' />
+                            <asp:Label ID="LastActivityLabel" runat="server" Text='<%# Eval("LastActivityDate", "{0:g}") %>' />
                         </td>
                     </tr>
                     <tr>
@@ -197,11 +197,6 @@
                                 DataSourceID="RoleData" OnDataBound="RolesCheckBoxList_DataBound" AutoPostBack="true"
                                 OnSelectedIndexChanged="RolesCheckBoxList_SelectedIndexChanged">
                             </asp:CheckBoxList>
-                            <%--                        Created: 
-                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("CreationDate", "{0:M/d/yy") %>'></asp:Label>
-                        LastPasswordChangedDate: 
-                        <asp:Label ID="Label5" runat="server" Text='<%# Eval("LastPasswordChangedDate", "{0:M/d/yy") %>'></asp:Label>
---%>
                         </td>
                     </tr>
                 </SelectedItemTemplate>

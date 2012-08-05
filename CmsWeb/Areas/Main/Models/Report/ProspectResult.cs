@@ -233,7 +233,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 								t.Add(a.MeetingDate.FormatDate(), font);
 								t.Add(a.MeetingName, font);
 								t.Add(a.Teacher, font);
-								t.Add(a.MeetingDate.ToString2("h:mm tt"), font);
+								t.Add(a.MeetingDate.ToString2("t"), font);
 							}
 							doc.Add(t);
 						}

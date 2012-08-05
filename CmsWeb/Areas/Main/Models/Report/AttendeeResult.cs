@@ -70,7 +70,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             w.PageEvent = new HeadFoot
             {
-                HeaderText = "Attendee Report: {0} - {1} {2:M/d/yy h:mm tt}".Fmt(
+                HeaderText = "Attendee Report: {0} - {1} {2:g}".Fmt(
                     i.OrganizationName, i.LeaderName, i.MeetingDate),
                 FooterText = "Attendee Report"
             };
@@ -172,7 +172,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         PeopleId = p.PeopleId,
                         Name = p.Name,
                         Address = p.PrimaryAddress,
-                        Birthday = p.DOB.ToDate().ToString2("M/d"),
+                        Birthday = p.DOB.ToDate().ToString2("m"),
                         Email = p.EmailAddress,
                         HomePhone = p.HomePhone,
                         CellPhone = p.CellPhone,

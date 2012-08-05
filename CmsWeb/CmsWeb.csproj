@@ -954,6 +954,7 @@
     <Content Include="Errors\DatabaseNotFound.aspx" />
     <Content Include="Errors\SiteDisabled.htm" />
     <Content Include="images\arrowdnup.png" />
+    <Content Include="images\calendar.gif" />
     <Content Include="images\deliveredbybvcms.gif" />
     <Content Include="images\draggable-icon.png" />
     <Content Include="images\dropdown.gif" />
@@ -1898,6 +1899,7 @@
     </Content>
     <Content Include="secrets.config" />
     <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
+    <Content Include="Views\Shared\DatePickerDefaults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />

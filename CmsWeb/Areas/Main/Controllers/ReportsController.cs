@@ -348,7 +348,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 foreach (var r in q)
                 {
                     var row = new Dictionary<string, string>();
-                    row["S00"] = dt.AddDays(r.Key).ToString("M/d/yy");
+                    row["S00"] = dt.AddDays(r.Key).ToString("d");
                     foreach (var s in r.list)
                         row[s.StatId] = s.Count.ToString2("N0");
                     d.Add(row);

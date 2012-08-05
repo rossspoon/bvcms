@@ -19,12 +19,12 @@
             <tr>
                 <td>@a.TransactionId</td>
                 <td>@a.EnrollmentTransactionId</td>
-                <td><span id="d.@a.TransactionId" class="date">@a.TransactionDate.ToString("M/d/yy h:mm tt")</span></td>
+                <td><span id="d.@a.TransactionId" class="date">@a.TransactionDate.ToString("g")</span></td>
                 <td>@a.TransactionType</td>
                 <td>@a.MemberType</td>
                 <td>@a.Pending</td>
-                <td>@a.EnrollmentDate.ToString2("M/d/yy h:mmt")</td>
-                <td>@a.NextTranChangeDate.ToString2("M/d/yy h:mmt")</td>
+                <td>@a.EnrollmentDate.ToString2("g")</td>
+                <td>@a.NextTranChangeDate.ToString2("g")</td>
                 <td>
             @if (User.IsInRole("Developer"))
             {

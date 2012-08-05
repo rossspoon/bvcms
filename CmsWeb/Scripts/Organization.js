@@ -191,6 +191,8 @@ $(function () {
             dateFormat: 'm/d/yy',
             changeMonth: true,
             changeYear: true,
+            buttonImage: "/images/calendar.gif",
+            buttonImageOnly: true,
             beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
         });
         $(".timepicker", f).timepicker({

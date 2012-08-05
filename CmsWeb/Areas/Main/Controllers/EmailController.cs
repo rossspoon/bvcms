@@ -206,7 +206,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				var q = from et in DbUtil.Db.EmailQueueTos
 						  where et.Id == id
 						  select et;
-				ViewData["queued"] = emailqueue.Queued.ToString("M/d/yy h:mm tt");
+				ViewData["queued"] = emailqueue.Queued.ToString("g");
 				ViewData["total"] = q.Count();
 				ViewData["sent"] = q.Count(e => e.Sent != null);
 				ViewData["finished"] = false;
@@ -218,7 +218,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				}
 				else
 				{
-					ViewData["started"] = emailqueue.Started.Value.ToString("M/d/yy h:mm tt");
+					ViewData["started"] = emailqueue.Started.Value.ToString("g");
 					var max = q.Max(et => et.Sent);
 					max = max ?? DateTime.Now;
 
@@ -227,7 +227,6 @@ namespace CmsWeb.Areas.Main.Controllers
 					else
 					{
 						ViewData["completed"] = max;
-						//emailqueue.Sent.Value.ToString("M/d/yy h:mm tt");
 						if (emailqueue.Error.HasValue())
 							ViewData["Error"] = emailqueue.Error;
 						else
