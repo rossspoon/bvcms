@@ -344,9 +344,7 @@
     <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
-    <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="App_Data\51Degrees.mobi-Lite-2012.07.31.xml" />
     <Content Include="App_Data\51Degrees.mobi-Patch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

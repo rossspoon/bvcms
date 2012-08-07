@@ -43,7 +43,6 @@ div.section div, div.section table
    <form method="post" action="/OnlineReg/ManageGiving">
     @Html.Hidden("otheredit", 0)
     @Html.Hidden("pid", Model.pid)
-    @Html.Hidden("Type", Model.Type)
     @Html.Hidden("orgid", Model.orgid)
         <fieldset>
             <div class="section">
@@ -106,6 +105,14 @@ div.section div, div.section table
                         @Html.Hidden("allowcc", "true")
                         <div>@Html.ValidationMessage("Type")</div><br>
                     </div>
+}
+else if (Model.NoCreditCardsAllowed)
+{
+                    @Html.Hidden("Type", "B");
+}
+else
+{
+                    @Html.Hidden("Type", "C");
 }
 @if (Model.NoCreditCardsAllowed == false)
 {

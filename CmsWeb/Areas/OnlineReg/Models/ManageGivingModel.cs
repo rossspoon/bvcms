@@ -133,8 +133,10 @@ namespace CmsWeb.Models
 		{
 			if (Type == "C")
 				Payments.ValidateCreditCardInfo(ModelState, Cardnumber, Expires, Cardcode);
-			if (Type == "B")
+			else if (Type == "B")
 				Payments.ValidateBankAccountInfo(ModelState, Routing, Account);
+			else
+				ModelState.AddModelError("Type", "Must select Bank Account or Credit Card");
 			if (SemiEvery == "S")
 			{
 				if (!Day1.HasValue || !Day2.HasValue)

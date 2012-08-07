@@ -130,6 +130,8 @@ namespace CmsWeb.Areas.Finance.Models.Report
                 (int)Contribution.TypeCode.Reversed 
             };
 
+			var showPledgeIfMet = DbUtil.Db.Setting("ShowPledgeIfMet", "true").ToBool();
+
             var qp = from p in Db.Contributions
                      where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
                      where p.PledgeFlag && p.ContributionTypeId == (int)Contribution.TypeCode.Pledge
@@ -149,6 +151,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
             var q = from p in qp
                     join c in qc on p.FundId equals c.FundId into items
                     from c in items.DefaultIfEmpty()
+					where p.Total > c.Total || showPledgeIfMet
                     orderby p.Fund descending
                     select new PledgeSummaryInfo
                     {
