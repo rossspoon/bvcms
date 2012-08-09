@@ -131,14 +131,13 @@ else
         </td>
 	</tr>
 }
-@if (Model.IsLoggedIn == true)
+@if (Model.IsLoggedIn == true && CmsWeb.Models.OnlineRegModel.GetTransactionGateway() == "sage")
 {
 	<tr>
 		<td></td>
 		<td>@Html.CheckBox("pf.SavePayInfo", Model.SavePayInfo == true)Save Payment Information?</td>	
 	</tr>
 }
-
     <tr><td></td>
         <td height="40"><input id="Submit" type="submit" name="Submit" class="submitbutton" value="Make Payment" />
             <div class="column">@Html.ValidationMessage("form")</div></td></tr>

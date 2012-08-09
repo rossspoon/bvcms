@@ -31,6 +31,10 @@ namespace CmsData
 		
 		private int _Running;
 		
+		private int? _LastSet;
+		
+		private int? _CurrSet;
+		
    		
     	
 	#endregion
@@ -60,6 +64,12 @@ namespace CmsData
 		
 		partial void OnRunningChanging(int value);
 		partial void OnRunningChanged();
+		
+		partial void OnLastSetChanging(int? value);
+		partial void OnLastSetChanged();
+		
+		partial void OnCurrSetChanging(int? value);
+		partial void OnCurrSetChanged();
 		
     #endregion
 		public ContributionsRun()
@@ -219,6 +229,50 @@ namespace CmsData
 					this._Running = value;
 					this.SendPropertyChanged("Running");
 					this.OnRunningChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="LastSet", UpdateCheck=UpdateCheck.Never, Storage="_LastSet", DbType="int")]
+		public int? LastSet
+		{
+			get { return this._LastSet; }
+
+			set
+			{
+				if (this._LastSet != value)
+				{
+				
+                    this.OnLastSetChanging(value);
+					this.SendPropertyChanging();
+					this._LastSet = value;
+					this.SendPropertyChanged("LastSet");
+					this.OnLastSetChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CurrSet", UpdateCheck=UpdateCheck.Never, Storage="_CurrSet", DbType="int")]
+		public int? CurrSet
+		{
+			get { return this._CurrSet; }
+
+			set
+			{
+				if (this._CurrSet != value)
+				{
+				
+                    this.OnCurrSetChanging(value);
+					this.SendPropertyChanging();
+					this._CurrSet = value;
+					this.SendPropertyChanged("CurrSet");
+					this.OnCurrSetChanged();
 				}
 
 			}

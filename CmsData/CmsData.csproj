@@ -255,6 +255,7 @@
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
+    <Compile Include="Generated\Functions\PledgeFulfillment.cs" />
     <Compile Include="Generated\Functions\VisitNumberSinceDate.cs" />
     <Compile Include="Generated\ManagedGiving.cs" />
     <Compile Include="Generated\PaymentInfo.cs" />

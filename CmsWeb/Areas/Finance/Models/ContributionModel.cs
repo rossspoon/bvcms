@@ -76,6 +76,9 @@ namespace CmsWeb.Areas.Finance.Models.Report
                                              : "Mr. and Mrs. " + p.SpouseName))))
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
                       where option != 9 || noaddressok
+#if DEBUG2
+					  where p.PeopleId < 1000
+#endif
                       where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
                       select new ContributorInfo

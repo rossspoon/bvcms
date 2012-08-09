@@ -32,8 +32,11 @@ namespace CmsWeb.Models
             if (!last.HasValue())
                 ModelState.AddModelError(inputname("last"), "last name required");
 
+			var mindate = DateTime.Parse("1/1/1753");
             int n = 0;
-            if (birthday.HasValue && birthday > DateTime.MinValue)
+			if (birthday.HasValue && birthday < mindate)
+				ModelState.AddModelError(inputname("dob"), "invalid date");
+            if (birthday.HasValue && birthday > mindate)
                 n++;
             if (Util.ValidEmail(email))
                 n++;

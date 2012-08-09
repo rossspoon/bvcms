@@ -1829,6 +1829,17 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.PledgeFulfillment", IsComposable = true)]
+		public IQueryable< View.PledgeFulfillment > PledgeFulfillment(
+            [Parameter(DbType="int")] int? fundid
+            )
+		{
+			return this.CreateMethodCallQuery< View.PledgeFulfillment>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fundid
+                );
+		}
+
 		[Function(Name="dbo.PledgeReport", IsComposable = true)]
 		public IQueryable< View.PledgeReport > PledgeReport(
             [Parameter(DbType="datetime")] DateTime? fd,

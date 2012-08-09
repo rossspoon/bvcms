@@ -17,6 +17,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		public bool PDF { get; set; }
 		public string OutputFile { get; set; }
 		public string Host { get; set; }
+		public int LastSet { get; set; }
 
 		public ContributionStatementsExtract(string Host, DateTime fd, DateTime td, bool PDF, string OutputFile)
 		{
@@ -50,17 +51,14 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				};
 				using (var stream = new FileStream(OutputFile, FileMode.Create))
 					c.Run(stream, Db, qc);
-
-				var OutputFile1 = OutputFile.Replace(".pdf", "-1.pdf");
-				var OutputFile2 = OutputFile.Replace(".pdf", "-2.pdf");
-
-				using(var istream = new FileStream(OutputFile, FileMode.Open))
-					using(var ostream1 = new FileStream(OutputFile1, FileMode.Create))
-						c.splitPDF(istream, ostream1, false);
-
-				using(var istream = new FileStream(OutputFile, FileMode.Open))
-					using(var ostream2 = new FileStream(OutputFile2, FileMode.Create))
-						c.splitPDF(istream, ostream2, true);
+				LastSet = c.LastSet();
+				for (int i = 1; i <= LastSet; i++)
+					using(var stream = new FileStream(Output(OutputFile, i), FileMode.Create))
+						c.Run(stream, Db, qc, i);
+				runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
+				runningtotals.LastSet = LastSet;
+				runningtotals.Completed = DateTime.Now;
+				Db.SubmitChanges();
 			}
 			else
 			{
@@ -81,6 +79,11 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				runningtotals.Completed = DateTime.Now;
 				Db.SubmitChanges();
 			}
+		}
+		public static string Output(string fn, int set)
+		{
+			var outf = fn.Replace(".pdf", "-{0}.pdf".Fmt(set));
+			return outf;
 		}
 
 		private StreamWriter stream;

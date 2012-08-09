@@ -5,6 +5,7 @@ using CmsWeb.Areas.Finance.Models.Report;
 using CmsData;
 using UtilityExtensions;
 using System.Web.Configuration;
+using System.Text;
 
 namespace CmsWeb.Areas.Finance.Controllers
 {
@@ -16,9 +17,9 @@ namespace CmsWeb.Areas.Finance.Controllers
 			return View();
 		}
 		[HttpPost]
-		public ActionResult ContributionStatements(bool? PDF, DateTime? FromDate, DateTime? ToDate)
+		public ActionResult ContributionStatements(bool? PDF, DateTime? FromDate, DateTime? EndDate)
 		{
-			if (!FromDate.HasValue || !ToDate.HasValue)
+			if (!FromDate.HasValue || !EndDate.HasValue)
 				return Content("<h3>Must have a Startdate and Enddate</h3>");
 			else
 			{
@@ -35,7 +36,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 				System.Threading.Tasks.Task.Factory.StartNew(() =>
 				{
 					System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Lowest;
-					var m = new ContributionStatementsExtract(host, FromDate.Value, ToDate.Value, PDF.Value, output);
+					var m = new ContributionStatementsExtract(host, FromDate.Value, EndDate.Value, PDF.Value, output);
 					m.DoWork();
 				});
 			}
@@ -58,7 +59,20 @@ namespace CmsWeb.Areas.Finance.Controllers
 		public JsonResult Progress2()
 		{
 			var r = DbUtil.Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
-			return Json(new { r.Count, r.Error, r.Processed, Completed = r.Completed.ToString(), r.Running } );
+			var html = new StringBuilder("<a href=\"/Statements/Download\">All Pages</a>");
+			if (r.Completed.HasValue)
+				for (var i = 1; i <= r.LastSet; i++)
+					html.AppendFormat(" | <a href=\"/Statements/Download/{0}\">Set {0}</a>", i);
+			return Json(new 
+			{ 
+				r.Count, 
+				Error = r.Error ?? "", 
+				r.Processed, 
+				r.CurrSet, 
+				Completed = r.Completed.ToString(), 
+				r.Running,
+				html = html.ToString()
+			});
 		}
 		[HttpGet]
 		public ActionResult Progress()
@@ -66,26 +80,15 @@ namespace CmsWeb.Areas.Finance.Controllers
 			var r = DbUtil.Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
 			return View(r);
 		}
-		public ActionResult Download(bool? PDF = true)
+		public ActionResult Download(int? id, bool? PDF = true)
 		{
 			string output = Output(PDF);
-			if (!System.IO.File.Exists(output))
+			string fn = output;
+			if (id.HasValue)
+				fn = ContributionStatementsExtract.Output(output, id.Value);
+			if (!System.IO.File.Exists(fn))
 				return Content("no pending download");
-			return new ContributionStatementsResult(output);
-		}
-		public ActionResult Download1(bool? PDF = true)
-		{
-			string output = Output(PDF).Replace(".pdf", "-1.pdf");
-			if (!System.IO.File.Exists(output))
-				return Content("no pending download");
-			return new ContributionStatementsResult(output);
-		}
-		public ActionResult Download2(bool? PDF = true)
-		{
-			string output = Output(PDF).Replace(".pdf", "-2.pdf");
-			if (!System.IO.File.Exists(output))
-				return Content("no pending download");
-			return new ContributionStatementsResult(output);
+			return new ContributionStatementsResult(fn);
 		}
 	}
 }

@@ -27,9 +27,17 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		public DateTime FromDate { get; set; }
 		public DateTime ToDate { get; set; }
 		private PageEvent pageEvents = new PageEvent();
-
-		public void Run(Stream stream, CMSDataContext Db, IEnumerable<ContributorInfo> q)
+		public int LastSet()
 		{
+			if (pageEvents.FamilySet.Count == 0)
+				return 0;
+			var m = pageEvents.FamilySet.Max(kp => kp.Value);
+			return m;
+		}
+
+		public void Run(Stream stream, CMSDataContext Db, IEnumerable<ContributorInfo> q, int set = 0)
+		{
+			pageEvents.set = set;
 			IEnumerable<ContributorInfo> contributors = q;
 
 			PdfContentByte dc;
@@ -45,15 +53,21 @@ namespace CmsWeb.Areas.Finance.Models.Report
 
 			int prevfid = 0;
 			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).FirstOrDefault();
+			runningtotals.Processed = 0;
+			Db.SubmitChanges();
 			foreach (var ci in contributors)
 			{
+				if (set > 0 && pageEvents.FamilySet[ci.PeopleId] != set)
+					continue;
 				if (prevfid != ci.FamilyId)
 				{
-					pageEvents.StartPageSet();
 					prevfid = ci.FamilyId;
+					pageEvents.StartPageSet();
 				}
 				else
 					doc.NewPage();
+				if (set == 0)
+					pageEvents.FamilySet[ci.PeopleId] = 0;
 
 				var st = new StyleSheet();
 				st.LoadTagStyle("h1", "size", "18px");
@@ -276,20 +290,19 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				doc.Add(mct);
 
 				runningtotals.Processed += 1;
+				runningtotals.CurrSet = set;
 				Db.SubmitChanges();
 			}
 
 			if (!pageEvents.EndPageSet())
 			{
-				pageEvents.StartPageSet();
+				doc.NewPage();
 				doc.Add(new Phrase("no data"));
-				pageEvents.EndPageSet();
 			}
 			doc.Close();
 
-			Debug.WriteLine(pageEvents.multipages.Count(pp => pp == true));
-			Debug.WriteLine(pageEvents.multipages.Count(pp => pp == false));
-			runningtotals.Completed = DateTime.Now;
+			if(set == LastSet())
+				runningtotals.Completed = DateTime.Now;
 			Db.SubmitChanges();
 		}
 		class PageEvent : PdfPageEventHelper
@@ -299,8 +312,10 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 			private Document document;
 			private PdfContentByte dc;
 			private BaseFont font;
+			public int PeopleId { get; set; }
+			public int set { get; set; }
 
-			public List<bool> multipages { get; set; }
+			public Dictionary<int, int> FamilySet { get; set; }
 
 			public override void OnOpenDocument(PdfWriter writer, Document document)
 			{
@@ -309,7 +324,8 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				base.OnOpenDocument(writer, document);
 				font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 				dc = writer.DirectContent;
-				multipages = new List<bool>();
+				if (set == 0)
+					FamilySet = new Dictionary<int, int>();
 			}
 			public bool EndPageSet()
 			{
@@ -318,17 +334,23 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				npages.BeginText();
 				npages.SetFontAndSize(font, 8);
 				npages.ShowText((writer.PageNumber + 1).ToString());
-				for (var i = 0; i <= writer.PageNumber; i++)
-					multipages.Add(writer.PageNumber > 0);
+				if (set == 0)
+				{
+					var list = FamilySet.Where(kp => kp.Value == 0).ToList();
+					foreach (var kp in list)
+						if (kp.Value == 0)
+							FamilySet[kp.Key] = writer.PageNumber + 1;
+				}
 				npages.EndText();
 				return true;
 			}
-			public void StartPageSet()
+			public bool StartPageSet()
 			{
 				EndPageSet();
 				document.NewPage();
 				document.ResetPageCount();
 				npages = dc.CreateTemplate(50, 50);
+				return true;
 			}
 			public override void OnEndPage(PdfWriter writer, Document document)
 			{
@@ -344,50 +366,52 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				dc.SetTextMatrix(document.PageSize.Width - 30 - len, 30);
 				dc.ShowText(text);
 				dc.EndText();
+				if (npages == null)
+					return;
 				dc.AddTemplate(npages, document.PageSize.Width - 30, 30);
 			}
 		}
-		public void splitPDF(Stream inputStream, Stream outputStream, bool multi)
-		{
-			var document = new Document();
-			try
-			{
-				var inputPDF = new PdfReader(inputStream);
-				var totalPages = inputPDF.NumberOfPages;
-				var writer = PdfWriter.GetInstance(document, outputStream);
+		//public void splitPDF(Stream inputStream, Stream outputStream, bool multi)
+		//{
+		//	var document = new Document();
+		//	try
+		//	{
+		//		var inputPDF = new PdfReader(inputStream);
+		//		var totalPages = inputPDF.NumberOfPages;
+		//		var writer = PdfWriter.GetInstance(document, outputStream);
 
-				document.Open();
-				var cb = writer.DirectContent; // Holds the PDF data
-				PdfImportedPage page;
+		//		document.Open();
+		//		var cb = writer.DirectContent; // Holds the PDF data
+		//		PdfImportedPage page;
 
-				for(var i = 0; i < this.pageEvents.multipages.Count; i++)
-					if(pageEvents.multipages[i] == multi)
-					{
-						document.NewPage();
-						page = writer.GetImportedPage(inputPDF, i+1);
-						cb.AddTemplate(page, 0, 0);
-					}
-				outputStream.Flush();
-				document.Close();
-				outputStream.Close();
-			}
-			catch (Exception e)
-			{
-			}
-			finally
-			{
-				if (document.IsOpen())
-					document.Close();
-				try
-				{
-					if (outputStream != null)
-						outputStream.Close();
-				}
-				catch (IOException ioe)
-				{
-				}
-			}
-		}
+		//		for(var i = 0; i < this.pageEvents.multipages.Count; i++)
+		//			if(pageEvents.multipages[i] == multi)
+		//			{
+		//				document.NewPage();
+		//				page = writer.GetImportedPage(inputPDF, i+1);
+		//				cb.AddTemplate(page, 0, 0);
+		//			}
+		//		outputStream.Flush();
+		//		document.Close();
+		//		outputStream.Close();
+		//	}
+		//	catch (Exception e)
+		//	{
+		//	}
+		//	finally
+		//	{
+		//		if (document.IsOpen())
+		//			document.Close();
+		//		try
+		//		{
+		//			if (outputStream != null)
+		//				outputStream.Close();
+		//		}
+		//		catch (IOException ioe)
+		//		{
+		//		}
+		//	}
+		//}
 	}
 }
 

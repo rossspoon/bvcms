@@ -31,6 +31,21 @@ $(function () {
         }
         return false;
     });
+    $('#sendreminders').click(function (ev) {
+        ev.preventDefault();
+        var href = $(this).attr("href");
+        if (confirm('Are you sure you want to send reminders?')) {
+            $.blockUI({ message: "sending reminders" });
+            $.post(href, null, function (ret) {
+                if (ret != "ok") {
+                    $.unblockUI();
+                    $.growlUI("error", ret);
+                }
+                else
+                    $.unblockUI();
+            });
+        }
+    });
     $('#reminderemails').click(function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
@@ -54,10 +69,10 @@ $(function () {
     });
     $(".bt").button();
     $("#buttondiv bt").css("width", "100%");
-//    $("#DivisionsList").delegate("#DivisionsList", "change", function () {
-//        $.getTable($('#Members-tab form'));
-//        return false;
-//    });
+    //    $("#DivisionsList").delegate("#DivisionsList", "change", function () {
+    //        $.getTable($('#Members-tab form'));
+    //        return false;
+    //    });
 
     $('form table.grid > tbody > tr:even').addClass('alt');
 
@@ -527,16 +542,16 @@ $(function () {
         ev.preventDefault();
         var d = $('#newvalueform');
         d.dialog("open");
-    }); 
+    });
     $("#TryRegDialog").dialog({
         autoOpen: false,
-        width:500
+        width: 500
     });
     $("#tryreg").live("click", function (ev) {
         ev.preventDefault();
         var d = $('#TryRegDialog');
         d.dialog("open");
-    }); 
+    });
     $("a.deleteextra").live("click", function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))
