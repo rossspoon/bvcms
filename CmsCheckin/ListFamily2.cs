@@ -352,7 +352,7 @@ namespace CmsCheckin
 
 			if( Program.BuildingInfo.membersonly && c.MemberStatus != "Yes" && Program.addguests == null )
 			{
-				Program.attendant.AddHistoryString( "-- " + DateTime.Now.ToString("hh:mm tt") + " Check-in rejected for " + c.name + " because they are not a member." );
+				Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because they are not a member.");
 				MessageBox.Show( "Only members may check-in. You will need to be a guest of a member to check-in.", "Members Only Error" );
 				return;
 			}
@@ -363,7 +363,7 @@ namespace CmsCheckin
 
 				if (c.MemberStatus != "Yes" && p != null && Util.GetGuestCount(p.pid) >= Program.BuildingInfo.maxguests)
 				{
-					Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("hh:mm tt") + " Check-in rejected for " + c.name + " because " + p.name + " reached the guest limit.");
+					Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because " + p.name + " reached the guest limit.");
 					MessageBox.Show("No additional guests are permitted for today.", "Guest Limit Error");
 					return;
 				}
@@ -743,7 +743,7 @@ namespace CmsCheckin
 
 		public override string ToString()
 		{
-			return "{0:hh:mm tt} {1} ({2})".Fmt(lastpress, name, ItemsDisplay());
+			return "{0:MM-dd-yy hh:mm tt} {1} ({2})".Fmt(lastpress, name, ItemsDisplay());
 		}
 	}
 
