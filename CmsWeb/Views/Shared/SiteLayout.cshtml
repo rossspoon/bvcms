@@ -11,6 +11,7 @@
     var admin = User.IsInRole("Admin");
     var manageemails = User.IsInRole("ManageEmails");
     var managetrans = User.IsInRole("ManageTransactions");
+	 var edit = User.IsInRole("Edit"); 
 }
 @if (Util.UrgentMessage.HasValue())
 {
@@ -172,7 +173,7 @@
                                 </div>
                             </td>
     }
-    @if (admin || manageemails || managetrans)
+    @if (admin || manageemails || managetrans || edit)
     {
                             <td class="dropdown">
                                 <div>
@@ -187,8 +188,11 @@
                                 @if (admin || managetrans)
                                 {
                                     <a href="/Manage/Transactions">Transactions</a>
-												<a href="/Manage/CheckinTime">Check-in Activity</a>
 										  }
+										  @if (admin || edit)
+                                {
+												<a href="/Manage/CheckinTime">Check-in Activity</a>
+										  }			
                                 @if (admin || manageemails)
 										  {
                                     <a href="/Manage/Emails">Emails</a> 
