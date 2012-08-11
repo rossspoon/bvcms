@@ -51,9 +51,9 @@ namespace CmsCheckin.Dialogs
 			if (ActivePersonID > 0)
 			{
 				if (Util.AddIDCard(ScanID.Text, ActivePersonID))
-					Program.attendant.AddHistoryString( DateTime.Now.ToString("hh:mm tt") + " ID Card added for " + ActivePersonName);
+					Program.attendant.AddHistoryString(DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " ID Card added for " + ActivePersonName);
 				else
-					Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("hh:mm tt") + " ID Card NOT added for " + ActivePersonName);
+					Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " ID Card NOT added for " + ActivePersonName);
 			}
 
 			this.Close();

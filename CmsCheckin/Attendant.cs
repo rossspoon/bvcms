@@ -32,12 +32,12 @@ namespace CmsCheckin
 				Invoke(new Action<PersonInfo>(AddHistory), new[] { p }); 
 				return; 
 			}
-			history.Items.Add(p);
+			history.Items.Insert( 0, p );
 		}
 
 		public void AddHistoryString( string item )
 		{
-			history.Items.Add(item);
+			history.Items.Insert( 0, item );
 		}
 
 		private void Attendant_LocationChanged(object sender, EventArgs e)

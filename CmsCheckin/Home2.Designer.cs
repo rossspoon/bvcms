@@ -270,6 +270,7 @@
 			this.label1.TabIndex = 33;
 			this.label1.Text = "Enter your phone number (no area code needed) and press GO";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.label1.Visible = false;
 			// 
 			// label2
 			// 
@@ -279,7 +280,7 @@
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(786, 73);
 			this.label2.TabIndex = 34;
-			this.label2.Text = "Scan Barcode or Enter Phone #";
+			this.label2.Text = "Enter Phone #";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// MagicButton
