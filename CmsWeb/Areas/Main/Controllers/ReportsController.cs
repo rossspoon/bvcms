@@ -266,18 +266,19 @@ namespace CmsWeb.Areas.Main.Controllers
         {
         	var ev = StandardExtraValues.GetExtraValues();
             var q = from e in DbUtil.Db.PeopleExtras
-                    where e.StrValue != null
-                    group e by new { e.Field, e.StrValue } into g
+                    where e.StrValue != null || e.BitValue != null
+                    group e by new { e.Field, val = e.StrValue ?? (e.BitValue == true ? "true" : "false") } into g
                     select new ExtraInfo
                     {
                         Field = g.Key.Field,
-                        Value = g.Key.StrValue,
+                        Value = g.Key.val,
                         Count = g.Count(),
                     };
 
         	var list = from e in q.ToList()
         	           let f = ev.SingleOrDefault(ff => ff.name == e.Field)
 					   where f == null || f.UserCanView()
+					   orderby e.Field
         	           select e;
             return View(list);
         }
