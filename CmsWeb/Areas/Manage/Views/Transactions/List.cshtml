@@ -57,7 +57,7 @@
 			<td nowrap="nowrap">@t.TransactionDate.FormatDateTm()
 				@if(Model.isSage)
 				{
-					<div class="tip filterbatch" title="Click to filter|@t.Batchtyp|@t.Batchref">@t.Batch.FormatDate2()</div>
+					<div class="tip filterbatch" title="Click to filter|@t.Batchtyp|@t.Batchref">@t.Batch.FormatDate()</div>
 				}
 			</td>
     @if (t.Fromsage == true)

@@ -160,14 +160,14 @@
 { 
     <tr>
         <td><div class="wraparound">@a.Description</div></td>
-        <td> @(Model.CheckboxChecked(a.Description) == true ? "Checked" : "") </td>
+        <td> @(Model.CheckboxChecked(a.SmallGroup) == true ? "Checked" : "") </td>
     </tr>
 }
 @foreach (var a in Model.setting.Checkboxes2)
 { 
     <tr>
         <td><div class="wraparound">@a.Description</div></td>
-        <td> @(Model.Checkbox2Checked(a.Description) == true ? "Checked" : "") </td>
+        <td> @(Model.Checkbox2Checked(a.SmallGroup) == true ? "Checked" : "") </td>
     </tr>
 }
 @foreach (var i in Model.MenuItemsChosen())

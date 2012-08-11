@@ -85,8 +85,8 @@ CKEditorFuncNum, baseurl + fn, error));
 					return Content("no such database " + Util.Host);
                 return Redirect("/Error");
             }
-			if (!Request.Browser.Cookies)
-				return Content("Your browser must support cookies to use this site<br>" + Request.UserAgent);
+			//if (!Request.Browser.Cookies)
+			//    return Content("Your browser must support cookies to use this site<br>" + Request.UserAgent);
 //            if (DbUtil.Db.CmsHost.StartsWith("https://") && MyRequireHttpsAttribute.NeedRedirect(Request))
 //                if (Request.QueryString.Count > 0)
 //                    return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);

@@ -29,6 +29,11 @@ Email sent to @Util.ObscureEmail((string)ViewData["email"]) (email obscured on p
 <p><strong>One-Time Link</strong><br/>
 We have sent you a One-Time Link for you to manage your subscriptions. You should receive that shortly.</p>
     }
+    else if (Model.ChoosingSlots())
+    { 
+<p><strong>One-Time Link</strong><br/>
+We have sent you a One-Time Link for you to manage your volunteer commitments. You should receive that shortly.</p>
+    }
     if (Model.List[0].CreatedAccount)
     { 
 <p><strong>Account Created</strong><br />

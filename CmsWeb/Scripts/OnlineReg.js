@@ -1,7 +1,5 @@
 ﻿$(function () {
     $.dpoptions = {
-        changeMonth: true,
-        changeYear: true,
         yearRange: 'c-99:c+0',
         onSelect: function (dateText, inst) {
             var f = $(this).closest('form');
@@ -47,12 +45,15 @@
         $.refreshenabled = true;
         $.post($(this).attr('href'), q, function (ret) {
             if (ret.charAt(0) === '/') {
+                $("body").html("<p>Please wait...</p>");
                 window.location = ret;
                 return;
             }
             $(f).html(ret).ready(function () {
-                if ($("#submitit").attr("onlyoneallowed") == "true")
+                if ($("#submitit").attr("onlyoneallowed") == "true") {
+                    $.InstructionsShow();
                     $("#submitit").click();
+                }
                 else {
                     $.InstructionsShow();
                     $("#dob").datepicker($.dpoptions);

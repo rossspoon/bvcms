@@ -221,7 +221,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.DefaultCell.Border = PdfPCell.NO_BORDER;
             pageEvents.StartPageSet(
                                     "{0}: {1}, {2} ({3})".Fmt(o.Division, o.Name, o.Location, o.Teacher),
-                                    "{0:dddd M/d/yy h:mm tt} ({1})".Fmt(dt, o.OrgId),
+                                    "{0:f} ({1})".Fmt(dt, o.OrgId),
                                     "M.{0}.{1:MMddyyHHmm}".Fmt(o.OrgId, dt));
             return mct;
         }

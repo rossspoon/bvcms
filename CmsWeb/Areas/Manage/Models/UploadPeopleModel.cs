@@ -379,6 +379,12 @@ namespace CmsWeb.Models
 						}
 						else if (name.EndsWith(".int"))
 							p.AddEditExtraInt(b[0], a[names[name]].Trim().ToInt());
+						else if (name.EndsWith(".bit"))
+						{
+							var v = a[names[name]];
+							if (v.HasValue())
+								p.AddEditExtraBool(b[0], v.ToInt() == 1);
+						}
 						else
 							p.AddEditExtraValue(name, a[names[name]].Trim());
 					}

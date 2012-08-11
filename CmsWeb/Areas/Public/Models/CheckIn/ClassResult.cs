@@ -44,7 +44,7 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("Name", meeting.Organization.OrganizationName);
                     w.WriteAttributeString("Teacher", meeting.Organization.LeaderName);
                     w.WriteAttributeString("Date", meeting.MeetingDate.FormatDate());
-                    w.WriteAttributeString("Time", meeting.MeetingDate.Value.ToString("H:mm tt"));
+                    w.WriteAttributeString("Time", meeting.MeetingDate.Value.ToString("t"));
                     w.WriteAttributeString("Count", meeting.NumPresent.ToString());
                     foreach (var f in items)
                         w.WriteElementString("Name", f);

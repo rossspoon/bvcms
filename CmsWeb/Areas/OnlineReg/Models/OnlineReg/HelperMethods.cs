@@ -60,7 +60,7 @@ namespace CmsWeb.Models
         }
         public string MeetingTime
         {
-            get { return meeting().MeetingDate.ToString2("ddd, MMM d h:mm tt"); }
+            get { return meeting().MeetingDate.ToString2("f"); }
         }
         public OnlineRegPersonModel last
         {

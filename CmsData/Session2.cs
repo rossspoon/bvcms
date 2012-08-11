@@ -80,7 +80,7 @@ namespace CmsData
                     return string.Empty;
                 }
             }
-            if (list.ContainsKey(name))
+            if (list.ContainsKey(name) && list[name].HasValue())
                 return list[name];
             if (defaultvalue.HasValue())
                 return defaultvalue;

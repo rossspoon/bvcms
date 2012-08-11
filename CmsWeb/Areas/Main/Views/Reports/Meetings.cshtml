@@ -12,8 +12,8 @@
 <h2>Meetings</h2>
 <form>
 Meeting Dates:
-Start: @Html.TextBox("Dt1", Model.Dt1.ToString2("M/d/yy"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
-End: @Html.TextBox("Dt2", Model.Dt2.ToString2("M/d/yy"), new { style = "width: 100px; font-size: 110%", disabled = "disabled" })
+Start: @Html.TextBox("Dt1", Model.Dt1.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
+End: @Html.TextBox("Dt2", Model.Dt2.ToString2("d"), new { style = "width: 100px; font-size: 110%", disabled = "disabled" })
 No Zero Meetings: @Html.CheckBox("NoZero")
 @Html.Hidden("Name")
 @Html.Hidden("StatusId")

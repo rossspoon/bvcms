@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CmsWeb.Areas.Manage.Controllers;
 using CmsData.Codes;
+using CmsWeb.Code;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -30,6 +31,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (pf.AmtToPay < 0) pf.AmtToPay = 0;
 			if (pf.Donate < 0) pf.Donate = 0;
 
+			SetHeaders(pf.OrgId ?? 0);
+			ViewBag.Url = pf.Url;
+			ViewBag.timeout = INT_timeout;
+
 			if ((pf.AmtToPay ?? 0) <= 0 && (pf.Donate ?? 0) <= 0)
 			{
 				DbUtil.Db.SubmitChanges();
@@ -39,6 +44,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			try
 			{
+				if (pf.Type == "B")
+					Payments.ValidateBankAccountInfo(ModelState, pf.Routing, pf.Account);
+				if (pf.Type == "C")
+					Payments.ValidateCreditCardInfo(ModelState, pf.CreditCard, pf.Expires, pf.CCV);
+				if (!ModelState.IsValid)
+					return View("ProcessPayment", pf);
+
 				if (pf.IsLoggedIn == true && pf.SavePayInfo == true)
 				{
 					var gateway = OnlineRegModel.GetTransactionGateway();
@@ -75,9 +87,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				}
 				var ti = ProcessPaymentTransaction(m, pf);
 
-				SetHeaders(pf.OrgId ?? 0);
-				ViewBag.Url = pf.Url;
-				ViewBag.timeout = INT_timeout;
 				if (ti.Approved == false)
 				{
 					ModelState.AddModelError("form", ti.Message);
@@ -199,19 +208,24 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		{
 			m.ParseSettings();
 			string confirm = "Confirm";
+			var managingsubs = m.ManagingSubscriptions();
+			var choosingslots = m.ChoosingSlots();
 			var t = m.Transaction;
-			if (t == null) // serviceu
+			if (t == null && !managingsubs && !choosingslots)
 			{
 				var pf = PaymentForm.CreatePaymentForm(m);
 				t = pf.CreateTransaction(DbUtil.Db);
 				m.TranId = t.Id;
 			}
-			t.Amt = Amount;
-			t.Amtdue -= t.Amt;
-			ViewData["message"] = t.Message;
-			t.Approved = true;
-			t.TransactionDate = Util.Now;
-			DbUtil.Db.SubmitChanges();
+			if (t != null)
+			{
+				t.Amt = Amount;
+				t.Amtdue -= t.Amt;
+				ViewData["message"] = t.Message;
+				t.Approved = true;
+				t.TransactionDate = Util.Now;
+				DbUtil.Db.SubmitChanges();
+			}
 
 			if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
 			{
@@ -292,16 +306,18 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				if (p.CreatingAccount == true)
 					p.CreateAccount();
 			}
-			else if (m.ManagingSubscriptions())
+			else if (managingsubs)
 			{
 				m.ConfirmManageSubscriptions();
+				m.URL = null;
 				ViewData["ManagingSubscriptions"] = true;
 				ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
 				confirm = "ConfirmAccount";
 			}
-			else if (m.ChoosingSlots())
+			else if (choosingslots)
 			{
 				m.ConfirmPickSlots();
+				m.URL = null;
 				ViewData["ManagingVolunteer"] = true;
 				ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
 				confirm = "ConfirmAccount";

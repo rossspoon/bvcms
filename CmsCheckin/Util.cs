@@ -372,7 +372,7 @@ namespace CmsCheckin
 				coll.Add("OrgId", info.c.oid.ToString());
 				Uri url = null;
 				coll.Add("Present", info.ischecked.ToString());
-				coll.Add("hour", info.c.hour.Value.ToString("M/d/yy h:mm tt"));
+				coll.Add("hour", info.c.hour.Value.ToString("g"));
 				coll.Add("kiosk", Program.KioskName);
 				url = new Uri(new Uri(Program.URL), "Checkin2/RecordAttend2/");
 

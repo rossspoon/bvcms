@@ -151,13 +151,15 @@ namespace CmsWeb.Areas.Public.Controllers
             }
         }
         [HttpGet]
-        public ActionResult FamilyMembers(int id)
+        public ActionResult FamilyMembers(int? id)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content("<FamilyMembers error=\"{0}\" />".Fmt(ret.Substring(1)));
+			if (!id.HasValue)
+				return Content("<FamilyMembers error=\"Missing id\" />");
 			DbUtil.LogActivity("APIPerson FamilyMembers " + id);
-            return Content(new APIFunctions(DbUtil.Db).FamilyMembers(id), "text/xml");
+            return Content(new APIFunctions(DbUtil.Db).FamilyMembers(id.Value), "text/xml");
         }
         [HttpGet]
         public ActionResult AccessUsers()

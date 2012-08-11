@@ -234,13 +234,13 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             attstr = new StringBuilder();
             foreach (var d in list.Take(8))
-                attstr.Insert(0, "{0:M/d/yy}  ".Fmt(d));
+                attstr.Insert(0, "{0:d}  ".Fmt(d));
             if (list.Count > 8)
             {
                 attstr.Insert(0, "...  ");
                 var q2 = q.OrderBy(d => d).Take(Math.Min(list.Count - 8, 3));
                 foreach (var d in q2.OrderByDescending(d => d))
-                    attstr.Insert(0, "{0:M/d/yy}  ".Fmt(d));
+                    attstr.Insert(0, "{0:d}  ".Fmt(d));
             }
             ph.Add(new Chunk(attstr.ToString(), smallfont));
             return ph;

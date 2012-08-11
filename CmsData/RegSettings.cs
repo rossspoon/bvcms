@@ -53,6 +53,7 @@ namespace CmsData
 			AskGrade,
 			AskDonation,
 			DonationLabel,
+			ExtraValueFeeName,
 			DonationFundId,
 			GroupToJoin,
 			GiveOrgMembAccess,
@@ -75,6 +76,7 @@ namespace CmsData
 			Time,
 			DayOfWeek,
 			TimeSlots,
+			TimeSlotLockDays,
 			Options,
 			Code,
 			SmallGroup,
@@ -170,6 +172,7 @@ namespace CmsData
 		//public bool AskGrade { get; set; }
 		public bool AskDonation { get; set; }
 		public string DonationLabel { get; set; }
+		public string ExtraValueFeeName{get; set;}
 		public bool NotReqDOB { get; set; }
 		public bool NotReqAddr { get; set; }
 		public bool NotReqPhone { get; set; }
@@ -179,6 +182,7 @@ namespace CmsData
 		public int? DonationFundId { get; set; }
 		public string GroupToJoin { get; set; }
 		public bool GiveOrgMembAccess { get; set; }
+		public int? TimeSlotLockDays { get; set; }
 
 		public string DonationFund()
 		{
@@ -277,7 +281,7 @@ namespace CmsData
 			{
 				if (value.HasValue())
 					_ValidateOrgs = (from i in value.Split(',')
-									 where i.ToInt() > 0
+									 where i.ToInt() > 0 || i.ToInt() < 0
 									 select i.ToInt()).ToList();
 				else
 					_ValidateOrgs = new List<int>();
@@ -345,7 +349,7 @@ namespace CmsData
 			public string SmallGroup { get; set; }
 			public decimal? Fee { get; set; }
 			public int? Limit { get; set; }
-			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:M/d/yy h:mm tt}")]
+			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:g}")]
 			public DateTime? MeetingTime { get; set; }
 		}
 		public class TimeSlot
@@ -354,7 +358,7 @@ namespace CmsData
 			public string Description { get; set; }
 			public int DayOfWeek { get; set; }
 			public int? Limit { get; set; }
-			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:h:mm tt}")]
+			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:t}")]
 			public DateTime? Time { get; set; }
 			public DateTime Datetime()
 			{
@@ -592,8 +596,14 @@ namespace CmsData
 				case RegKeywords.DonationFundId:
 					DonationFundId = GetNullInt();
 					break;
+				case RegKeywords.TimeSlotLockDays:
+					TimeSlotLockDays = GetNullInt();
+					break;
 				case RegKeywords.DonationLabel:
 					DonationLabel = ParseMessage();
+					break;
+				case RegKeywords.ExtraValueFeeName:
+					ExtraValueFeeName = GetString();
 					break;
 				case RegKeywords.GroupToJoin:
 					GroupToJoin = GetString();
@@ -609,7 +619,7 @@ namespace CmsData
 					break;
 				case RegKeywords.ValidateOrgs:
 					_ValidateOrgs = (from i in curr.value.Split(',')
-									 where i.ToInt() > 0
+									 where i.ToInt() > 0 || i.ToInt() < 0
 									 select i.ToInt()).ToList();
 					lineno++;
 					break;
@@ -1297,6 +1307,7 @@ namespace CmsData
 			AddValueCk(0, sb, "AskSuggestedFee", SuggestedFee);
 			AddValueCk(0, sb, "ExtraFee", ExtraFee);
 			AddValueCk(0, sb, "MaximumFee", MaximumFee);
+			AddValueCk(0, sb, "ExtraValueFeeName", ExtraValueFeeName);
 			sb.AppendLine();
 		}
 		private void AddDonation(StringBuilder sb)
@@ -1429,7 +1440,7 @@ namespace CmsData
 				AddValueCk(2, sb, "SmallGroup", s.SmallGroup);
 				AddValueCk(2, sb, "Fee", s.Fee);
 				AddValueCk(2, sb, "Limit", s.Limit);
-				AddValueCk(2, sb, "Time", s.MeetingTime.ToString2("M/d/yy h:mm tt"));
+				AddValueCk(2, sb, "Time", s.MeetingTime.FormatDateTm());
 			}
 		}
 		private void AddDropdown1(StringBuilder sb)
@@ -1480,11 +1491,12 @@ namespace CmsData
 		{
 			if (TimeSlots.Count == 0)
 				return;
+			AddValueCk(0, sb, "TimeSlotLockDays", TimeSlotLockDays);
 			AddValueNoCk(0, sb, "TimeSlots", "");
 			foreach (var c in TimeSlots)
 			{
 				AddValueCk(1, sb, c.Description);
-				AddValueCk(2, sb, "Time", c.Time.ToString2("h:mm tt"));
+				AddValueCk(2, sb, "Time", c.Time.ToString2("t"));
 				AddValueCk(2, sb, "DayOfWeek", c.DayOfWeek);
 				AddValueCk(2, sb, "Limit", c.Limit);
 			}

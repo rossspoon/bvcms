@@ -377,6 +377,12 @@ namespace CmsData
             qb.SetQueryType(type);
             this.Clauses.Add(qb);
             qb.SetComparisonType(op);
+			if (type == QueryType.HasMyTag)
+			{
+				qb.Tags = value.ToString();
+				qb.CodeIdValue = "1,true";
+				return qb;
+			}
             switch (qb.FieldInfo.Type)
             {
                 case FieldType.NullBit:

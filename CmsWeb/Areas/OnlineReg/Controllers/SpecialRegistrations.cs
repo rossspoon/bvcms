@@ -11,6 +11,44 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 {
 	public partial class OnlineRegController
 	{
+		[HttpGet]
+		public ActionResult GetVolSub(int aid, int pid)
+		{
+			var vs = new VolSubModel(aid, pid);
+			SetHeaders(vs.org.OrganizationId);
+			vs.ComposeMessage();
+			return View(vs);
+		}
+		[HttpPost]
+		[ValidateInput(false)]
+		public ActionResult GetVolSub(int aid, int pid, long ticks, int[] pids, string subject, string message)
+		{
+			var m = new VolSubModel(aid, pid, ticks);
+			m.subject = subject;
+			m.message = message;
+			m.pids = pids;
+			m.SendEmails();
+			return Content("Emails are being sent, thank you.");
+		}
+		public ActionResult VolSubReport(int aid, int pid, long ticks)
+		{
+			var vs = new VolSubModel(aid, pid, ticks);
+			SetHeaders(vs.org.OrganizationId);
+			return View(vs);
+		}
+		public ActionResult ClaimVolSub(string ans, string guid)
+		{
+			try
+			{
+				var vs = new VolSubModel(guid);
+				vs.ProcessReply(ans);
+				return Content(vs.DisplayMessage);
+			}
+			catch (Exception ex)
+			{
+				return Content(ex.Message);
+			}
+		}
 		public ActionResult ManageVolunteer(string id)
 		{
 			if (!id.HasValue())
@@ -176,6 +214,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					throw new Exception("ServiceU not supported");
 
 				var mg = m.person.ManagedGiving();
+				if (mg == null)
+				{
+					mg = new ManagedGiving();
+					m.person.ManagedGivings.Add(mg);
+				}
 				mg.SemiEvery = m.SemiEvery;
 				mg.Day1 = m.Day1;
 				mg.Day2 = m.Day2;
@@ -274,7 +317,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
 					m.setting.Subject, text);
 
-			DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed subscriptions to {1}<br/>
+			DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed volunteer commitments to {1}<br/>
 The following Committments:<br/>
 {2}".Fmt(m.Person.Name, m.Org.OrganizationName, summary));
 			ViewData["Organization"] = m.Org.OrganizationName;
@@ -504,7 +547,7 @@ emailid={2}
 				var subject = Util.PickFirst(setting.Subject, "no subject");
 				var msg = Util.PickFirst(setting.Body, "no message");
 				msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
-				msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("MMM dd, yyyy at h:mm tt"));
+				msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("f"));
 				var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 				if (NotifyIds.Count == 0)
 					NotifyIds = DbUtil.Db.AdminPeople();
@@ -512,7 +555,7 @@ emailid={2}
 				DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
 				DbUtil.Db.Email(q.p.FromEmail, NotifyIds,
 						q.org.OrganizationName,
-						"{0} has registered for {1}<br>{2}".Fmt(q.p.Name, q.org.OrganizationName, q.meeting.MeetingDate.ToString2("MMM dd, yyyy at h:mm tt")));
+						"{0} has registered for {1}<br>{2}".Fmt(q.p.Name, q.org.OrganizationName, q.meeting.MeetingDate.ToString2("f")));
 			}
 			return Content(message);
 		}

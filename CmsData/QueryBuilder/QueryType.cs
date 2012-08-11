@@ -129,6 +129,7 @@ namespace CmsData
         PeopleExtraDate,
         PeopleExtraInt,
         PeopleId,
+        PeopleIds,
         PleaseVisit,
         PositionInFamilyId,
         PrimaryAddress,

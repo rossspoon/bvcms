@@ -16,9 +16,9 @@ namespace CmsWeb.Areas.Manage.Controllers
     public class TransactionsController : CmsStaffController
     {
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var m = new TransactionsModel();
+            var m = new TransactionsModel(id);
             return View(m);
         }
 

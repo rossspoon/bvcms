@@ -35,6 +35,8 @@ namespace CmsData
 		
 		private int _RoleID;
 		
+		private int _OwnerID;
+		
    		
     	
 	#endregion
@@ -70,6 +72,9 @@ namespace CmsData
 		
 		partial void OnRoleIDChanging(int value);
 		partial void OnRoleIDChanged();
+		
+		partial void OnOwnerIDChanging(int value);
+		partial void OnOwnerIDChanged();
 		
     #endregion
 		public Content()
@@ -273,6 +278,28 @@ namespace CmsData
 					this._RoleID = value;
 					this.SendPropertyChanged("RoleID");
 					this.OnRoleIDChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="OwnerID", UpdateCheck=UpdateCheck.Never, Storage="_OwnerID", DbType="int NOT NULL")]
+		public int OwnerID
+		{
+			get { return this._OwnerID; }
+
+			set
+			{
+				if (this._OwnerID != value)
+				{
+				
+                    this.OnOwnerIDChanging(value);
+					this.SendPropertyChanging();
+					this._OwnerID = value;
+					this.SendPropertyChanged("OwnerID");
+					this.OnOwnerIDChanged();
 				}
 
 			}

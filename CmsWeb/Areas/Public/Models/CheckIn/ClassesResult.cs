@@ -140,7 +140,7 @@ namespace CmsWeb.Models
                     var leader = o.LeaderName;
                     if (leader.HasValue())
                         leader = ":" + leader;
-                    var bdays = " [{0:M/d/yy}-{1:M/d/yy}]".Fmt(o.BirthDayStart, o.BirthDayEnd);
+                    var bdays = " [{0:d}-{1:d}]".Fmt(o.BirthDayStart, o.BirthDayEnd);
                     if (bdays == " [-]")
                         bdays = null;
                     if (kioskmode)
@@ -149,10 +149,10 @@ namespace CmsWeb.Models
                                 (o.Limit ?? 0) == 0 ? "" : o.Limit + "max, ", 
                                 o.MemberCount));
                     else
-                        w.WriteAttributeString("display", "{0:hh:mm tt} {1}{2}{3}{4}"
+                        w.WriteAttributeString("display", "{0:t} {1}{2}{3}{4}"
                                 .Fmt(o.Hour, o.OrganizationName, leader, loc, bdays));
                     w.WriteAttributeString("nlabels", o.NumCheckInLabels.ToString());
-                    w.WriteAttributeString("hour", o.Hour.ToString2("M/d/yy h:mm tt"));
+                    w.WriteAttributeString("hour", o.Hour.ToString2("g"));
                     w.WriteAttributeString("leadtime", leadtime.ToString());
                     w.WriteEndElement();
                 }

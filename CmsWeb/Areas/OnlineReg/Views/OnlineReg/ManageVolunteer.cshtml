@@ -13,6 +13,8 @@
 <h2>@Model.Org.OrganizationName</h2>
 <h4>Volunteer Commitment Times for @Model.Person.Name &lt;@Model.Person.EmailAddress&gt;</h4>
 <div>@Html.Raw(Model.Instructions)</div>
+<div>You can sort by Week of Month, or by Date (default). Just click the column headings.</div>
+<div>Note: (# needed shown in parentheses)</div>
 @using (Html.BeginForm("ConfirmVolunteerSlots", "OnlineReg"))
 {
 @Html.HiddenFor(m => m.PeopleId);
@@ -20,11 +22,11 @@
 <table class="grid">
     <thead>
         <tr>
-            <td><br /><a href="#" id="sortday">Sunday</a></td>
-			<td><br /><a href="#" id="sortweek">Week #</a></td>
+            <td><br /><a href="#" id="sortday" title="Sort Chronologically">Sunday</a></td>
+			<td><br /><a href="#" id="sortweek" title="Sort by Week of Month">Week #</a></td>
 @foreach (var s in Model.Regsettings.TimeSlots)
 { 
-            <td class="center">@s.Description<br />@s.Datetime().ToString("ddd h:mm tt")</td>
+            <td class="center">@s.Description<br />@s.Datetime().ToString("ddd h:mm tt")<br /> </td>
 }
         </tr>
     </thead>
@@ -33,7 +35,7 @@
 {
         <tr>
             <td class="day" jday="@ts[0].Sunday.ToString("yyyyMMdd")">@ts[0].Sunday.ToString("MMM d")</td>
-            <td class="center week">@ts[0].Week</td>
+            <td class="center week" jweek="@ts[0].Week@ts[0].Sunday.ToString("yyyyMMdd")">@ts[0].Week</td>
     @foreach (var si in ts)
     {
 		<td class="center">
@@ -43,7 +45,16 @@
 			}
 			else if (si.Time >= DateTime.Today)
 			{
+                if (si.Time <= Model.dtlock && si.Checked)
+                {
+				<input type="checkbox" name="Commit" value="@si.Time" @si.CHECKED disabled="true" />
+				<a class="getsub" href="/OnlineReg/GetVolSub/@si.AttendId/@Model.PeopleId">get sub</a>
+                }
+                else
+                {
 				<input type="checkbox" name="Commit" value="@si.Time" @si.CHECKED @si.DISABLED />
+                <span>(@si.Need)</span>
+                }
 			}
 		</td>
     } 

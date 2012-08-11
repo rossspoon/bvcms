@@ -478,6 +478,10 @@ namespace CmsData
         partial void UpdateStreetType(StreetType instance);
         partial void DeleteStreetType(StreetType instance);
         
+        partial void InsertSubRequest(SubRequest instance);
+        partial void UpdateSubRequest(SubRequest instance);
+        partial void DeleteSubRequest(SubRequest instance);
+        
         partial void InsertTag(Tag instance);
         partial void UpdateTag(Tag instance);
         partial void DeleteTag(Tag instance);
@@ -1298,6 +1302,12 @@ namespace CmsData
 
 		}
 
+		public Table< SubRequest> SubRequests
+		{
+			get	{ return this.GetTable< SubRequest>(); }
+
+		}
+
 		public Table< Tag> Tags
 		{
 			get	{ return this.GetTable< Tag>(); }
@@ -1816,6 +1826,17 @@ namespace CmsData
                 progid,
                 divid,
                 orgid
+                );
+		}
+
+		[Function(Name="dbo.PledgeFulfillment", IsComposable = true)]
+		public IQueryable< View.PledgeFulfillment > PledgeFulfillment(
+            [Parameter(DbType="int")] int? fundid
+            )
+		{
+			return this.CreateMethodCallQuery< View.PledgeFulfillment>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fundid
                 );
 		}
 
@@ -2999,6 +3020,20 @@ namespace CmsData
                 attended,
                 membertypeid,
                 group
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.LastChanged", IsComposable = true)]
+		[return: Parameter(DbType = "datetime")]
+		public DateTime? LastChanged(
+            [Parameter(Name = "pid", DbType="int")] int? pid,
+            [Parameter(Name = "field", DbType="varchar")] string field
+            )
+		{
+			return ((DateTime?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid,
+                field
                 ).ReturnValue));
 		}
 

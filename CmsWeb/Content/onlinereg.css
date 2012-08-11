@@ -1,6 +1,12 @@
-﻿body
+﻿body, html {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-image: none;
+	font-size: 12px;
+	color: #222;
+}
+table, tbody, tfoot, thead, tr, th, td
 {
-    background-color: #FFFFFF;
+	font: inherit;
 }
 div.regform
 {    

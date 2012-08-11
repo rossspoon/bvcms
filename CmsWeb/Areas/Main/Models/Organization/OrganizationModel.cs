@@ -156,7 +156,7 @@ namespace CmsWeb.Models.OrganizationPage
             {
                 var sc = org.OrgSchedules.FirstOrDefault(); // SCHED
 				if (sc != null && sc.SchedTime != null)
-					return sc.SchedTime.ToString2("hh:mm tt");
+					return sc.SchedTime.ToString2("t");
                 return "08:00 AM";
             }
         }
@@ -198,14 +198,22 @@ namespace CmsWeb.Models.OrganizationPage
 			                  where (om.Pending ?? false) == false
 			                  where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
 			                  select om;
+
+			var subject = Util.PickFirst(setting.ReminderSubject, "no subject");
+			var message = Util.PickFirst(setting.ReminderBody, "no body");
+			if (subject == "no subject" || message == "no body")
+				throw new Exception("no subject or body");
+			var notify = Db.StaffPeopleForOrg(org.OrganizationId).FirstOrDefault();
+			if (notify == null)
+				throw new Exception("no notify person");
+
 			foreach (var om in currmembers)
 			{
 				var details = PrepareSummaryText2(Db, om, setting);
 				var OrganizationName = org.OrganizationName;
-				var subject = Util.PickFirst(setting.ReminderSubject, "no subject");
-				var message = Util.PickFirst(setting.ReminderBody, "no body");
 
-				var notify = Db.StaffPeopleForOrg(org.OrganizationId)[0];
+				subject = Util.PickFirst(setting.ReminderSubject, "no subject");
+				message = Util.PickFirst(setting.ReminderBody, "no body");
 
 				string Location = org.Location;
 				message = OnlineRegModel.MessageReplacements(om.Person, null, OrganizationName, Location, message);

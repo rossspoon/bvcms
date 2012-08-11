@@ -717,12 +717,20 @@ no need to put these into the ""Source"" view of the editor anymore.
             DbUtil.Db.SubmitChanges();
             return Content(value);
         }
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = "Edit")]
+		[HttpPost]
 		public ActionResult Reminders(int id)
 		{
             var m = new OrganizationModel(id, null);
-			m.SendReminders();
-			return Redirect("/Organization/Index/" + id);
+			try
+			{
+				m.SendReminders();
+			}
+			catch (Exception ex)
+			{
+				return Content(ex.Message);
+			}
+			return Content("ok");
 		}
     }
 }

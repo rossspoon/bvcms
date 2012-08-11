@@ -32,11 +32,7 @@
 {
     <script type="text/javascript">
         $(function() {
-            $(".datepicker").datepicker({
-                dateFormat: 'm/d/yy',
-                changeMonth: true,
-                changeYear: true
-            });
+            $(".datepicker").datepicker();
             $(".datepicker").change(function() {
                 window.location = "/Reports/ChurchAttendance/" + this.value.replace(/\//ig, "-");
             });
@@ -85,7 +81,7 @@
         { 
            <td align="right">@d.Meetings.Where(m => c.Times.Contains(m.date.TimeOfDay)).Sum(m => m.Present).ToString("n0")</td>
         } 
-           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("M/d/yy H:mm")&dt2=@p.Dt2.ToString("M/d/yy H:mm")&divid=@d.DivId'>@d.Meetings.Sum(m => m.Present).ToString("n0")</a></td>
+           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("g")&dt2=@p.Dt2.ToString("g")&divid=@d.DivId'>@d.Meetings.Sum(m => m.Present).ToString("n0")</a></td>
            <td align="right">@d.Meetings.Sum(m => m.Visitors).ToString("n0")</td>
            <td align="right">@d.Meetings.Sum(m => m.OutTowners).ToString("n0")</td>
            </tr>
@@ -96,7 +92,7 @@
     { 
            <td>@p.Divs.Sum(d => d.Meetings.Where(m => c.Times.Contains(m.date.TimeOfDay)).Sum(m => m.Present)).ToString("n0")</td>
     } 
-           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("M/d/yy H:mm")&dt2=@p.Dt2.ToString("M/d/yy H:mm")&progid=@p.progid'>@p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")</a></td>
+           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("g")&dt2=@p.Dt2.ToString("g")&progid=@p.progid'>@p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")</a></td>
            <td align="right">@p.Divs.Sum(d => d.Meetings.Sum(m => m.Visitors)).ToString("n0")</td>
            <td align="right">@p.Divs.Sum(d => d.Meetings.Sum(m => m.OutTowners)).ToString("n0")</td>
            </tr>

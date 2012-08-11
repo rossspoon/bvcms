@@ -208,9 +208,19 @@ namespace CmsWeb.Areas.Main.Controllers
         	cb.ApplicationName = "qb";
 			DbUtil.Db = new CMSDataContext(cb.ConnectionString);
             var m = new QueryModel();
-            UpdateModel<IQBUpdateable>(m);
+			try
+			{
+	            UpdateModel<IQBUpdateable>(m);
+			}
+			catch (Exception ex)
+			{
+				return Content("Something went wrong<br><p>" + ex.Message + "</p>");
+			}
             m.LoadScratchPad();
-        	//var t = m.TagAllIds();
+
+			var starttime = DateTime.Now;
+			m.PopulateResults();
+			DbUtil.LogActivity("QB Results ({0:N1}, {1})".Fmt(DateTime.Now.Subtract(starttime).TotalSeconds, m.QueryId));
             return View(m);
         }
         [HttpPost]

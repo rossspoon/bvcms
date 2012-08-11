@@ -15,6 +15,7 @@ using UtilityExtensions;
 using System.Text;
 using CmsData;
 using System.Data.Linq.SqlClient;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -134,52 +135,45 @@ namespace CmsWeb.Models
                      };
             return q2.Take(200);
         }
-        public List<SelectListItem> OnlineRegs()
-        {
-            var orgregtypes = new int[] { 1, 2 };
-            var divregtypes = new int[] { 3, 4 };
+		public List<SelectListItem> OnlineRegs()
+		{
+			var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+			var organizations = from o in DbUtil.Db.Organizations
+								where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+								select o;
+			var orgregtypes = new int[]
+			{
+				RegistrationTypeCode.JoinOrganization,
+        		RegistrationTypeCode.UserSelectsOrganization,
+        		RegistrationTypeCode.ComputeOrganizationByAge,
+        		RegistrationTypeCode.UserSelectsOrganization2,
+        		RegistrationTypeCode.ComputeOrganizationByAge2,
+			};
 
-        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
-        	var organizations = from o in DbUtil.Db.Organizations
-        	                where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-        	                select o;
+			var q = (from o in organizations
+					 where orgregtypes.Contains(o.RegistrationTypeId.Value)
+					 where (o.ClassFilled ?? false) != true
+					 where (o.RegistrationClosed ?? false) == false
+					 select new { DivisionName = o.Division.Name, o.OrganizationName, o.RegSetting, o.OrganizationId }).ToList();
 
-            var q = (from o in organizations
-                     where orgregtypes.Contains(o.RegistrationTypeId.Value)
-                     where o.ClassFilled != true
-                     where (o.RegistrationClosed ?? false) == false
-                     select new { DivisionName = o.Division.Name, o.OrganizationName, o.RegSetting, o.OrganizationId }).ToList();
+			var qq = from i in q
+					 let os = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId)
+					 where os.Fee > 0 || os.Dropdown1.Any(mm => mm.Fee > 0)
+								   || os.Dropdown2.Any(mm => mm.Fee > 0)
+								   || os.Dropdown3.Any(mm => mm.Fee > 0)
+								   || os.Checkboxes.Any(mm => mm.Fee > 0)
+								   || os.Checkboxes2.Any(mm => mm.Fee > 0)
+					 select new SelectListItem
+					 {
+						 Text = i.DivisionName + ":" + i.OrganizationName,
+						 Value = "org." + i.OrganizationId
+					 };
 
-            var q2 = (from o in organizations
-                      where divregtypes.Contains(o.RegistrationTypeId.Value)
-                      where o.ClassFilled != true
-                      where (o.RegistrationClosed ?? false) == false
-                      select new { o.DivisionId, DivisionName = o.Division.Name, o.RegSetting, o.OrganizationId }).ToList();
+			var list = qq.OrderBy(n => n.Text).ToList();
 
-            var qq = from i in q
-                     let os = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId)
-                     where (os.Fee ?? 0) > 0
-                     select new SelectListItem
-                     { 
-                         Text = i.DivisionName + ":" + i.OrganizationName,
-                         Value = "org." + i.OrganizationId
-                     };
-
-            var qq2 = from i in q2
-                      let os = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId)
-                      where (os.Fee ?? 0) > 0
-                      group i by new { i.DivisionId, i.DivisionName } into g
-                      select new SelectListItem
-                      { 
-                          Text = g.Key.DivisionName,
-                          Value = "div." + g.Key.DivisionId
-                      };
-
-            var list = qq.Union(qq2).OrderBy(n => n.Text).ToList(); 
-
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
-            return list;
-        }
+			list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
+			return list;
+		}
         public List<SelectListItem> Users()
         {
             var q = from c in DbUtil.Db.Coupons

@@ -84,6 +84,7 @@ namespace CmsData
 			t.AuthCode = ret.AuthCode;
 			t.Approved = ret.Approved;
 			t.TransactionId = ret.TransactionId;
+			var systemEmail = Db.Setting("SystemEmailAddress", "mailer@bvcms.com");
 
 			if (ret.Approved)
 			{
@@ -99,18 +100,27 @@ namespace CmsData
 							a.FundId,
 							"Recurring Giving", pledge: false);
 				}
+				var tot = q.Where(aa => aa.ContributionFund.FundStatusId == 1).Sum(aa => aa.Amt);
 				NextDate = FindNextDate(DateTime.Today.AddDays(1));
 				Db.SubmitChanges();
+				var contributionemail = (from ex in Person.PeopleExtras
+										 where ex.Field == "ContributionEmail"
+										 select ex.Data).SingleOrDefault();
+				if (!Util.ValidEmail(contributionemail))
+					contributionemail = Person.FromEmail;
+				Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(contributionemail),
+						"Recurring Giving for " + Db.Setting("NameOfChurch", Db.CmsHost),
+						"Your gift of ${0:N2} was processed this morning.".Fmt(tot),
+						Util.ToMailAddressList(contributionemail), 0, null);
 			}
 			else
 			{
 				Db.SubmitChanges();
-				var systemEmail = Db.Setting("SystemEmailAddress", "mailer@bvcms.com");
 				var adminEmail = Db.Setting("AdminMail", systemEmail);
 				foreach (var p in Db.FinancePeople())
 					Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(adminEmail),
-						"Recurring Giving Failed on " + Db.CmsHost, 
-						"<a href='{0}FinanceReports/ManagedGiving'>message: {1}, tranid:{2}</a>".Fmt(Db.CmsHost, ret.Message, t.Id), 
+						"Recurring Giving Failed on " + Db.CmsHost,
+						"<a href='{0}Manage/Transactions/Index/{2}'>message: {1}, tranid:{2}</a>".Fmt(Db.CmsHost, ret.Message, t.Id), 
 						Util.ToMailAddressList(p.EmailAddress), 0, null);
 			}
 			return 1;

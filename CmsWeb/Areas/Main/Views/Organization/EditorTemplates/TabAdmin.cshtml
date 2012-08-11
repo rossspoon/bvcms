@@ -33,12 +33,12 @@
     <li><span class="keyword big tip" title="Registration Start Date
         |Your registration will become available on this date">
 		Registration Start Date:</span>
-		<span>@Html.TextBox("org.RegStart", Model.org.RegStart.ToString2("MM/dd/yyyy hh:mm tt"), new { @class = "datetimepicker" })</span>
+		<span>@Html.TextBox("org.RegStart", Model.org.RegStart.ToString2("g"), new { @class = "datetimepicker" })</span>
     </li>
     <li><span class="keyword big tip" title="Registration End Date
         |Your registration will become unavailable on this date">
 		Registration End Date:</span>
-		<span>@Html.TextBox("org.RegEnd", Model.org.RegEnd.ToString2("MM/dd/yyyy hh:mm tt"), new { @class = "datetimepicker" })</span>
+		<span>@Html.TextBox("org.RegEnd", Model.org.RegEnd.ToString2("g"), new { @class = "datetimepicker" })</span>
     </li>
 @if (Model.org.RegistrationTypeId != CmsData.Codes.RegistrationTypeCode.JoinOrganization)
 {

@@ -328,6 +328,17 @@ namespace CmsData
 			return expr;
 		}
 
+		internal static Expression PeopleIds(
+			ParameterExpression parm,
+			CompareType op,
+			int[] ids)
+		{
+			Expression<Func<Person, bool>> pred = p => ids.Contains(p.PeopleId);
+			Expression expr = Expression.Invoke(pred, parm);
+			if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+				expr = Expression.Not(expr);
+			return expr;
+		}
 		internal static Expression HasTaskWithName(
 			ParameterExpression parm,
 			CompareType op,
@@ -531,12 +542,14 @@ namespace CmsData
 		}
 		internal static Expression HasEmailOptout(
 			ParameterExpression parm,
+			DateTime? to,
 			CompareType op,
 			string email)
 		{
 			Expression<Func<Person, bool>> pred = p =>
 				(from oo in p.EmailOptOuts
 				 where email == null || email == "" || oo.FromEmail == email
+				 where @to == null || (oo.DateX != null && oo.DateX >= @to)
 				 select oo).Any();
 			Expression expr = Expression.Invoke(pred, parm);
 			return expr;

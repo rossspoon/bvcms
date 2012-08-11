@@ -45,7 +45,7 @@ else
         <td> <span id="s@(item.FundId)" class="clickSelect">@(item.FundStatusId == 1 ? "Open" : "Closed")</span> </td>
         <td> @item.FundPledgeFlag </td>
         <td> @(item.NonTaxDeductible ?? false)</td>
-        <td> @item.CreatedDate.ToString("M/d/yy")</td>
+        <td> @item.CreatedDate.ToString("d")</td>
     </tr>
 }
 </tbody>

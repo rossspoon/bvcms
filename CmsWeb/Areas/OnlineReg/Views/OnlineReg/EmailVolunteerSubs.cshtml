@@ -1,0 +1,20 @@
+﻿@model CmsWeb.Models.VolSubModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>EmailVolunteerSubs</title>
+</head>
+<body>
+    <div>
+        @foreach (var i in Model.pids)
+        {
+            @i<br />
+        }
+    </div>
+</body>
+</html>

@@ -164,7 +164,11 @@ namespace CmsWeb.Models
                     HasPicture = om.Person.PictureId != null,
                     Custody = (om.Person.CustodyIssue ?? false) == true,
                     Transport = (om.Person.OkTransport ?? false) == true,
-                    RequiresSecurityLabel = normalLabelsMemTypes.Contains(om.MemberTypeId) && (om.Person.Age ?? 0) < 18 && (om.Organization.NoSecurityLabel ?? false) == false,
+                    RequiresSecurityLabel = 
+						normalLabelsMemTypes.Contains(om.MemberTypeId) // regular member
+						&& (om.Person.Age ?? 0) < 18 // less than 18
+						&& (om.Organization.NoSecurityLabel ?? false) == false, // org uses security
+
                     church = om.Person.OtherNewChurch,
                 };
 
@@ -177,7 +181,8 @@ namespace CmsWeb.Models
                 where a.Organization.CanSelfCheckin.Value
                 where a.Organization.AllowNonCampusCheckIn == true 
 								|| a.Organization.CampusId == campus || campus == 0
-                where a.AttendanceFlag && a.MeetingDate >= a.Organization.VisitorDate.Value.Date
+                where a.AttendanceFlag && 
+					(a.MeetingDate >= a.Organization.FirstMeetingDate.Value.Date || a.Organization.FirstMeetingDate == null)
                 where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
                 group a by new { a.PeopleId, a.OrganizationId } into g

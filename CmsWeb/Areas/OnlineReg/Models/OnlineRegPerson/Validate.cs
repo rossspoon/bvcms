@@ -32,8 +32,11 @@ namespace CmsWeb.Models
             if (!last.HasValue())
                 ModelState.AddModelError(inputname("last"), "last name required");
 
+			var mindate = DateTime.Parse("1/1/1753");
             int n = 0;
-            if (birthday.HasValue && birthday > DateTime.MinValue)
+			if (birthday.HasValue && birthday < mindate)
+				ModelState.AddModelError(inputname("dob"), "invalid date");
+            if (birthday.HasValue && birthday > mindate)
                 n++;
             if (Util.ValidEmail(email))
                 n++;
@@ -135,11 +138,20 @@ Please call the church to resolve this before we can complete your account.<br /
                         }
                         else if (setting.ValidateOrgIds.Count > 0)
                         {
-                            if (!person.OrganizationMembers.Any(mm => setting.ValidateOrgIds.Contains(mm.OrganizationId)))
-                            {
-                                ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
-                                IsValidForContinue = false;
-                            }
+							var reqmemberids = setting.ValidateOrgIds.Where(ii => ii > 0).ToList();
+							if(reqmemberids.Count > 0)
+	                            if (!person.OrganizationMembers.Any(mm => reqmemberids.Contains(mm.OrganizationId)))
+	                            {
+	                                ModelState.AddModelError(ErrorTarget, "Must be member of specified organization");
+	                                IsValidForContinue = false;
+	                            }
+							var reqnomemberids = setting.ValidateOrgIds.Where(ii => ii < 0).ToList();
+							if (reqnomemberids.Count > 0)
+	                            if (person.OrganizationMembers.Any(mm => reqnomemberids.Contains(-mm.OrganizationId)))
+	                            {
+	                                ModelState.AddModelError(ErrorTarget, "Must be not be member of specified organization");
+	                                IsValidForContinue = false;
+	                            }
                         }
                     }
                     if (m.List.Count(ii => ii.PeopleId == this.PeopleId) > 1)

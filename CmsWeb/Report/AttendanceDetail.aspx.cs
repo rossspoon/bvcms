@@ -51,7 +51,7 @@ namespace CmsWeb.Report
                      {
                          OrgName = m.OrgName,
                          Leader = m.Leader,
-                         date = m.date.ToString("M/d/yy h:mm tt"),
+                         date = m.date.ToString("g"),
                          OrgId = m.OrgId.ToString(),
                          Present = m.Present,
                          Visitors = m.Visitors,

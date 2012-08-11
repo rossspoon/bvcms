@@ -58,10 +58,12 @@ namespace CmsWeb.Areas.Main.Models
             Count = q.Count();
         }
 
-        public int CreateQueue()
+        public int CreateQueue(bool transactional = false)
         {
             var From = new MailAddress(FromAddress, FromName);
-            return DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , PublicViewable).Id; 
+			var emailqueue = DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , PublicViewable);
+			emailqueue.Transactional = transactional;
+			return emailqueue.Id;
         }
 
         public IEnumerable<SelectListItem> EmailFroms()

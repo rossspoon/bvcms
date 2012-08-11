@@ -74,7 +74,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     q = ctl.FetchCouplesBothList(STR_Name, qid.Value);
                     break;
             }
-            AddLabel(document, "=========", Util.UserName, "{0} labels printed".Fmt(q.Count()), "{0:M/d/yy h:mm tt}".Fmt(DateTime.Now), String.Empty);
+            AddLabel(document, "=========", Util.UserName, "{0} labels printed".Fmt(q.Count()), "{0:g}".Fmt(DateTime.Now), String.Empty);
             foreach (var m in q)
                 AddLabel(document, m.LabelName, m.Address, m.Address2, m.CityStateZip, Util.PickFirst(m.CellPhone.FmtFone("C "), m.HomePhone.FmtFone("H ")));
 

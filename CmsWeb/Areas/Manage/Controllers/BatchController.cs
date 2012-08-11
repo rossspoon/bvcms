@@ -351,7 +351,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 							}
 							break;
 						case "Birthday":
-							p.DOB = dob.ToString2("d");
+							p.DOB = dob.FormatDate();
 							break;
 						case "CellPhone":
 							p.CellPhone = cell;

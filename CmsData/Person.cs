@@ -945,7 +945,7 @@ namespace CmsData
 			if (e.Data.HasValue())
 				return e.Data;
 			if (e.DateValue.HasValue)
-				return e.DateValue.ToString2("M/d/yy");
+				return e.DateValue.FormatDate();
 			if (e.IntValue.HasValue)
 				return e.IntValue.ToString();
 			return e.BitValue.ToString();
@@ -1023,34 +1023,14 @@ namespace CmsData
             ev.IntValue = value;
             ev.IntValue2 = value2;
         }
-//        public RecurringGiving RecurringGiving()
-//        {
-//            var rg = RecurringGivings.SingleOrDefault();
-//            if (rg == null)
-//            {
-//                rg = new RecurringGiving();
-//                RecurringGivings.Add(rg);
-//            }
-//            return rg;
-//        }
         public ManagedGiving ManagedGiving()
         {
             var mg = ManagedGivings.SingleOrDefault();
-            if (mg == null)
-            {
-                mg = new ManagedGiving();
-                ManagedGivings.Add(mg);
-            }
             return mg;
         }
         public PaymentInfo PaymentInfo()
         {
             var pi = PaymentInfos.SingleOrDefault();
-            if (pi == null)
-            {
-                pi = new PaymentInfo();
-                PaymentInfos.Add(pi);
-            }
             return pi;
         }
         public Contribution PostUnattendedContribution(CMSDataContext Db, decimal Amt, int? Fund, string Description, bool pledge = false)
@@ -1155,6 +1135,11 @@ namespace CmsData
 					max = Db.Campus.Max(mm => mm.Id) + 10;
 				cam = new Campu() { Id = max, Description = campus, Code = campus.Truncate(20)};
 				Db.Campus.InsertOnSubmit(cam);
+				Db.SubmitChanges();
+			}
+			else if (!cam.Code.HasValue())
+			{
+				cam.Code = campus.Truncate(20);
 				Db.SubmitChanges();
 			}
 			return cam;

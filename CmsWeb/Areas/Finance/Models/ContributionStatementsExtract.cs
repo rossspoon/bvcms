@@ -17,6 +17,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		public bool PDF { get; set; }
 		public string OutputFile { get; set; }
 		public string Host { get; set; }
+		public int LastSet { get; set; }
 
 		public ContributionStatementsExtract(string Host, DateTime fd, DateTime td, bool PDF, string OutputFile)
 		{
@@ -26,6 +27,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			this.Host = Host;
 			this.OutputFile = OutputFile;
 		}
+
 
 		public CMSDataContext Db { get; set; }
 		public void DoWork()
@@ -41,14 +43,22 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			Db.SubmitChanges();
 			if (PDF)
 			{
-				var stream = new FileStream(OutputFile, FileMode.Create);
 				var c = new ContributionStatements
 				{
 					FromDate = fd,
 					ToDate = td,
 					typ = 3
 				};
-				c.Run(stream, Db, qc);
+				using (var stream = new FileStream(OutputFile, FileMode.Create))
+					c.Run(stream, Db, qc);
+				LastSet = c.LastSet();
+				for (int i = 1; i <= LastSet; i++)
+					using(var stream = new FileStream(Output(OutputFile, i), FileMode.Create))
+						c.Run(stream, Db, qc, i);
+				runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
+				runningtotals.LastSet = LastSet;
+				runningtotals.Completed = DateTime.Now;
+				Db.SubmitChanges();
 			}
 			else
 			{
@@ -58,7 +68,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 					pageStatement = 1;
 					writeHeader(c);
 					writeContributions(c);
-					string hdrGift = "   Date        Fund Name          Description of Gift-in-Kind Given as of {0:MM/dd/yyyy}\n\n".Fmt(td);
+					string hdrGift = "   Date        Fund Name          Description of Gift-in-Kind Given as of {0:d}\n\n".Fmt(td);
 					rWrite(hdrGift);
 					writeSummary(c);
 					runningtotals.Processed += 1;
@@ -69,6 +79,11 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				runningtotals.Completed = DateTime.Now;
 				Db.SubmitChanges();
 			}
+		}
+		public static string Output(string fn, int set)
+		{
+			var outf = fn.Replace(".pdf", "-{0}.pdf".Fmt(set));
+			return outf;
 		}
 
 		private StreamWriter stream;

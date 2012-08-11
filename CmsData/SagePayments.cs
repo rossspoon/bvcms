@@ -58,6 +58,11 @@ namespace CmsData
 		{
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
+			if (pi == null)
+			{
+				pi = new PaymentInfo();
+				p.PaymentInfos.Add(pi);
+			}
 			var wc = new WebClient();
 			wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVault.asmx/";
 			var coll = new NameValueCollection();
@@ -129,19 +134,20 @@ namespace CmsData
 			else
 				pi.PreferredPaymentType = type;
 			Db.SubmitChanges();
-			var sw =new StringWriter();
-			ObjectDumper.Write(pi, 0, sw);
+			//var sw =new StringWriter();
+			//ObjectDumper.Write(pi, 0, sw);
 
-			Util.SendMsg(DbUtil.AdminMail, Db.CmsHost, Util.TryGetMailAddress("david@bvcms.com"), "Sage Vault",
-				"<a href='{0}{1}'>{2}</a><br>{3},{4}<br><pre>{5}</pre>".Fmt(
-				Db.CmsHost, p.PeopleId, p.Name, type, giving ? "giving" : "regular", sw.ToString()),
-				Util.ToMailAddressList("david@bvcms.com"), 0, null);
+			//Util.SendMsg(DbUtil.AdminMail, Db.CmsHost, Util.TryGetMailAddress("david@bvcms.com"), "Sage Vault",
+			//	"<a href='{0}{1}'>{2}</a><br>{3},{4}<br><pre>{5}</pre>".Fmt(
+			//	Db.CmsHost, p.PeopleId, p.Name, type, giving ? "giving" : "regular", sw.ToString()),
+			//	Util.ToMailAddressList("david@bvcms.com"), 0, null);
 		}
 		public void deleteVaultData(int PeopleId)
 		{
 			var p = Db.LoadPersonById(PeopleId);
-			var rg = p.ManagedGiving();
 			var pi = p.PaymentInfo();
+			if (pi == null)
+				return;
 			var wc = new WebClient();
 			wc.BaseAddress = "https://www.sagepayments.net/web_services/wsVault/wsVault.asmx/";
 			var coll = new NameValueCollection();
@@ -329,6 +335,12 @@ namespace CmsData
 		{
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
+			if (pi == null)
+				return new TransactionResponse 
+				{ 
+					Approved = false,
+					Message = "missing payment info",
+				};
 
 			XElement resp = null;
 			if ((type ?? "B") == "B" && pi.SageBankGuid.HasValue) // Bank Account (check)

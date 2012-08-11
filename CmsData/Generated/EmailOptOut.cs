@@ -21,7 +21,7 @@ namespace CmsData
 		
 		private string _FromEmail;
 		
-		private DateTime _DateX;
+		private DateTime? _DateX;
 		
    		
     	
@@ -40,7 +40,7 @@ namespace CmsData
 		partial void OnFromEmailChanging(string value);
 		partial void OnFromEmailChanged();
 		
-		partial void OnDateXChanging(DateTime value);
+		partial void OnDateXChanging(DateTime? value);
 		partial void OnDateXChanged();
 		
     #endregion
@@ -103,8 +103,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Date", UpdateCheck=UpdateCheck.Never, Storage="_DateX", DbType="datetime NOT NULL", IsDbGenerated=true)]
-		public DateTime DateX
+		[Column(Name="Date", UpdateCheck=UpdateCheck.Never, Storage="_DateX", DbType="datetime")]
+		public DateTime? DateX
 		{
 			get { return this._DateX; }
 

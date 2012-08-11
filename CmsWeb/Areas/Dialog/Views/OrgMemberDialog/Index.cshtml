@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-    <link href="/Content/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery-ui-1.8.22.custom.css" rel="stylesheet" type="text/css" />
     <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
@@ -17,6 +17,7 @@ body { margin: 1px; }
 
 <body>
 @Html.Partial("CombinedJs")
+@Html.Partial("DatePickerDefaults")
 @Html.Script("/Scripts/OrgMemberDialog.js")
 
 @{ string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; }

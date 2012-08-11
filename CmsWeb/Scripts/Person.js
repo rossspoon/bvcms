@@ -279,11 +279,7 @@
         $('#School', f).autocomplete("/Person/Schools", acopts);
         $('#Occupation', f).autocomplete("/Person/Occupations", acopts);
         $('#NewChurch,#PrevChurch', f).autocomplete("/Person/Churches", acopts);
-        $(".datepicker").datepicker({
-            dateFormat: 'm/d/yy',
-            changeMonth: true,
-            changeYear: true
-        });
+        $(".datepicker").datepicker();
         $(".submitbutton,.bt").button();
         $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
         $("#verifyaddress").click(function () {

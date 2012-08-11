@@ -229,6 +229,7 @@
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
+    <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
     <Compile Include="Areas\Public\Controllers\APIMetaController.cs" />
     <Compile Include="Areas\Public\Controllers\APITestController.cs" />
     <Compile Include="Areas\Public\Controllers\APIiPhoneController.cs" />
@@ -324,17 +325,15 @@
     <Compile Include="Areas\OnlineReg\Models\ManagePledgesModel.cs" />
     <Compile Include="Areas\Public\Controllers\OrgContentController.cs" />
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
-    <Compile Include="Areas\Public\Models\MobileAPI\Helpers\JSONHelper.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\MobilePerson.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\Helpers\SystemHelper.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
-    <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="App_Data\51Degrees.mobi-Lite-2012.07.31.xml" />
     <Content Include="App_Data\51Degrees.mobi-Patch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -369,12 +368,11 @@
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\combined.css" />
     <Content Include="Content\faary.css" />
+    <Content Include="Content\healthcheck.txt" />
     <Content Include="Content\joyride-1.0.5.css" />
-    <Content Include="Content\jquery-ui-1.8.21.custom.css" />
+    <Content Include="Content\jquery-ui-1.8.22.custom.css" />
     <Content Include="Content\js\jquery-1.7.2.js" />
     <Content Include="Content\js\jquery-1.7.2.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.21.custom.js" />
-    <Content Include="Content\js\jquery-ui-1.8.21.custom.min.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
@@ -943,6 +941,7 @@
     <Content Include="Errors\DatabaseNotFound.aspx" />
     <Content Include="Errors\SiteDisabled.htm" />
     <Content Include="images\arrowdnup.png" />
+    <Content Include="images\calendar.gif" />
     <Content Include="images\deliveredbybvcms.gif" />
     <Content Include="images\draggable-icon.png" />
     <Content Include="images\dropdown.gif" />
@@ -976,7 +975,7 @@
     <Content Include="Min\Content\js\combined-person.js" />
     <Content Include="Min\Content\js\combined.js" />
     <Content Include="Min\Content\js\jquery-1.7.2.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.8.21.custom.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.8.22.custom.js" />
     <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Min\Content\js\jquery.checkboxtree.js" />
     <Content Include="Min\Content\js\jquery.contextMenu.js" />
@@ -1181,6 +1180,9 @@
     <Content Include="Areas\Finance\Views\FinanceReports\ManagedGiving.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\ManageGiving2.cshtml" />
     <Content Include="Areas\Setup\Views\Roles\Index.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\GetVolSub.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\EmailVolunteerSubs.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\VolSubReport.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -1884,6 +1886,7 @@
     </Content>
     <Content Include="secrets.config" />
     <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
+    <Content Include="Views\Shared\DatePickerDefaults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />

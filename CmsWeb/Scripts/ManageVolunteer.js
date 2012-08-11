@@ -7,7 +7,7 @@
     $('#sortweek').click(function (ev) {
         ev.preventDefault();
         $('table.grid > tbody > tr').sortElements(function (a, b) {
-            return $(a).find("td.week").text() > $(b).find("td.week").text() ? 1 : -1;
+            return $(a).find("td.week").attr("jweek") > $(b).find("td.week").attr("jweek") ? 1 : -1;
         });
         $.tigerstripe();
     });
@@ -17,5 +17,17 @@
             return $(a).find("td.day").attr("jday") > $(b).find("td.day").attr("jday") ? 1 : -1;
         });
         $.tigerstripe();
+    });
+    if (jQuery().transpose) {
+        $(".wrapper .item").transpose();
+    }
+    $("#SelectAll").click(function () {
+        if ($(this).attr("checked"))
+            $("input[name='pids']").attr('checked', true);
+        else
+            $("input[name='pids']").removeAttr('checked');
+    });
+    $("form").submit(function () {
+        $("input[name='Commit']").removeAttr("disabled");
     });
 });

@@ -13,8 +13,9 @@
         <tr> <td> Started </td> <td> @Model.Started </td> </tr>
         <tr> <td> Total Contributors </td> <td> <span id="count">@Model.Count</span> </td> </tr>
         <tr> <td> Processed </td> <td> <span id="processed">@Model.Processed</span> </td> </tr>
+        <tr> <td> Page Set </td> <td> <span id="set">@Model.CurrSet</span> </td> </tr>
         <tr> <td> Completed </td> <td> <span id="completed">@Model.Completed</span> </td> </tr>
-        <tr> <td> Error </td> <td> <span id="error">@Model.Error</span> </td> </tr>
+        <tr> <td></td> <td> <span id="error">@(Model.Error ?? "")</span> </td> </tr>
     </table>
     @if (Model.Running == 1)
     {
@@ -25,20 +26,19 @@
                 $("#count").text(json.Count);
                 $("#processed").text(json.Processed);
                 $("#completed").text(json.Completed);
+                $("#set").text(json.CurrSet);
                 $("#error").text(json.Error);
-                if (!json.Running) {
+                if (json.Completed) {
                     $("#download").show();
+                    $("#download").html(json.html);
                     window.clearInterval(intervalId);
                 }
             }, "json");
         }, 5000);
     });
 </script>
-    <div id="download" style="display:none"><a href="/Statements/Download">Download Statement</a></div>
-    }
-    else
-    {
-    <div id="download"><a href="/Statements/Download">Download Statement</a></div>
+        <div id="download" style="display:none">Download Statements
+        </div>
     }
 
 </body>

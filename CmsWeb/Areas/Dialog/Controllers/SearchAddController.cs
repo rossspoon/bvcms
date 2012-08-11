@@ -410,8 +410,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 {
                     var isnew = p.IsNew;
                     AddPerson(p, m.List, OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
-                    if (isnew)
-                        p.person.CampusId = meeting.Organization.CampusId;
+					if (isnew)
+						p.person.UpdateValue("CampusId", meeting.Organization.CampusId);
                     var err = Attend.RecordAttendance(p.PeopleId.Value, id, true);
                     if (err != "ok")
                         sb.AppendLine(err);

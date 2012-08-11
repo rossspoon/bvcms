@@ -274,6 +274,7 @@
     <Compile Include="Emailer.cs" />
     <Compile Include="EnDeCrypt.cs" />
     <Compile Include="GenericConfigCollection.cs" />
+    <Compile Include="JSONHelper.cs" />
     <Compile Include="ObjectDumper.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Utils.cs" />

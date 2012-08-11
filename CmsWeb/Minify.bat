@@ -3,7 +3,7 @@ path=%path%;c:\Program Files (x86)\Microsoft\Microsoft Ajax Minifier
 
 ajaxmin ^
 Content/js/jquery-1.7.2.js ^
-Content/js/jquery-ui-1.8.21.custom.js ^
+Content/js/jquery-ui-1.8.22.custom.js ^
 Content/js/jquery.bgiframe-2.1.2.js ^
 Content/js/jquery.hoverIntent.js ^
 Content/js/jquery.cookie.js ^
@@ -14,11 +14,13 @@ Content/js/jquery.jscrollpane.js ^
 Content/js/jQuery.autocomplete.js ^
 Content/js/jquery.jeditable.js ^
 Content/js/jquery.validate.js ^
-Content/js/jquery.joyride-1.0.3.js ^
+Content/js/jquery.joyride-1.0.5.js ^
 Scripts/ExportToolBar.js ^
 Scripts/menu.js ^
 Scripts/Pager.js ^
 Scripts/headermenu.js ^
+Content/js/modernizr.mq.js ^
+Content/js/tutorial.js ^
 -o Min/Content/js/combined.js -clobber:true || pause
 
 ajaxmin ^
@@ -39,7 +41,7 @@ Scripts/Person.js ^
 
 ajaxmin ^
 Content/js/jquery-1.7.2.js ^
-Content/js/jquery-ui-1.8.21.custom.js ^
+Content/js/jquery-ui-1.8.22.custom.js ^
 Content/js/jquery.validate.js ^
 Content/js/jquery.idle-timer.js ^
 Content/js/jquery.blockUI.js ^
@@ -48,7 +50,7 @@ Content/js/jquery.showpassword.js ^
 -o Min/Content/js/combined-onlinereg.js -clobber:true || pause
 
 ajaxmin ^
-Content/jquery-ui-1.8.21.custom.css ^
+Content/jquery-ui-1.8.22.custom.css ^
 Content/site.css ^
 Content/style2.css ^
 Content/cmenu.css ^
@@ -56,11 +58,11 @@ Content/pager.css ^
 Content/jquery.jscrollpane.css ^
 Content/jquery.tooltip.css ^
 Content/jquery.autocomplete.css ^
-Content/joyride-1.0.3.css ^
+Content/joyride-1.0.5.css ^
 -o Content/combined.css -clobber:true || pause
 
 ajaxmin Content/js/jquery-1.7.2.js -o Min\Content/js/jquery-1.7.2.js -clobber:true || pause
-ajaxmin Content/js/jquery-ui-1.8.21.custom.js -o Min\Content/js/jquery-ui-1.8.21.custom.js -clobber:true || pause
+ajaxmin Content/js/jquery-ui-1.8.22.custom.js -o Min\Content/js/jquery-ui-1.8.22.custom.js -clobber:true || pause
 ajaxmin Content/js/jquery.contextMenu.js -o Min\Content/js/jquery.contextMenu.js -clobber:true || pause
 ajaxmin Content/js/jquery.form.js -o Min\Content/js/jquery.form.js -clobber:true || pause
 ajaxmin Content/js/jquery.form2.js -o Min\Content/js/jquery.form2.js -clobber:true || pause
