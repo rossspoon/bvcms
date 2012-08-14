@@ -519,6 +519,9 @@
     <Field Name="RecentGivingAsPctOfPrevious" Title="Recent Giving % of Previous" Type="Number" DisplayAs="RecentGivingAsPctOfPrevious({0})" QuartersLabel="Midway Lookback Days Ago" Params="Quarters">
       Days ago divides previous and recent, pct = recent period as % of previous period (Must have Finance role for this to work.
     </Field>
+    <Field Name="RecentHasIndContributions" Title="Recent Has Individual Contributions" Type="Bit" DataValueField="IdCode" DisplayAs="RecentHasIndContributions({0})" Params="Days">
+      Must have Finance role for this to work.
+    </Field>
     <Field Name="IsTopGiver" Title="Recent Top Giver" Type="Bit" DisplayAs="RecentTopGiver({0},{1})" Params="Days,Quarters" QuartersLabel="Top number" DataValueField="IdCode">
       Must have Finance role for this to work.
     </Field>

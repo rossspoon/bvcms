@@ -114,7 +114,7 @@ namespace CmsData
 				where org == 0 || m.OrganizationId == org
 				where divid == 0 || dg.DivId == divid
 				where progid == 0 || pg.ProgId == progid
-				where ids.Contains(m.Organization.CampusId ?? 0) 
+				where ids.Contains(m.Organization.CampusId ?? 0)
 					|| (ids[0] == -1 && m.Organization.CampusId == null)
 				select m
 				).Any();
@@ -211,7 +211,7 @@ namespace CmsData
 				from pg in dg.Division.ProgDivs
 				where a.MeetingDate >= @from
 				where a.MeetingDate < to
-				where (a.AttendanceFlag 
+				where (a.AttendanceFlag
 						|| (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite))
 				where ids.Contains(a.AttendanceTypeId.Value)
 				where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
@@ -622,32 +622,32 @@ namespace CmsData
 			{
 				case CompareType.Greater:
 					pred = p =>
-					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate > dt);
+						   p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate > dt);
 					break;
 				case CompareType.Less:
 					pred = p =>
-					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate < dt);
+						   p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate < dt);
 					break;
 				case CompareType.GreaterEqual:
 					pred = p =>
-					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate >= dt);
+						   p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate >= dt);
 					break;
 				case CompareType.LessEqual:
 					pred = p =>
-					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate <= dt);
+						   p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate <= dt);
 					break;
 				case CompareType.Equal:
 					pred = p =>
-					       p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate.Date == dt);
+						   p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate.Date == dt);
 					break;
 				case CompareType.NotEqual:
 				case CompareType.IsNull:
 					pred = p =>
-					       !p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate.Date == dt);
+						   !p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate.Date == dt);
 					break;
 				case CompareType.IsNotNull:
 					pred = p =>
-					       p.Attends.Any(aa => aa.SeqNo == n);
+						   p.Attends.Any(aa => aa.SeqNo == n);
 					break;
 			}
 			Expression expr = Expression.Invoke(pred, parm);
@@ -841,9 +841,9 @@ namespace CmsData
 		}
 		internal static Expression AlwaysFalse(ParameterExpression parm)
 		{
-				Expression<Func<Person, bool>> pred = p => false;
-				Expression expr = Expression.Invoke(pred, parm);
-				return expr;
+			Expression<Func<Person, bool>> pred = p => false;
+			Expression expr = Expression.Invoke(pred, parm);
+			return expr;
 		}
 
 		internal static Expression RecentPledgeCount(
@@ -855,7 +855,7 @@ namespace CmsData
 		{
 			if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
 				return AlwaysFalse(parm);
-			
+
 			var now = DateTime.Now;
 			var dt = now.AddDays(-days);
 			IQueryable<int> q = null;
@@ -979,6 +979,28 @@ namespace CmsData
 			var tag = Db.PopulateTemporaryTag(q);
 			Expression<Func<Person, bool>> pred = p => p.Tags.Any(t => t.Id == tag.Id);
 			Expression expr = Expression.Invoke(pred, parm);
+			return expr;
+		}
+		internal static Expression RecentHasIndContributions(
+			ParameterExpression parm, CMSDataContext Db,
+			int days,
+			CompareType op,
+			bool tf)
+		{
+			if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+				return AlwaysFalse(parm);
+			var now = DateTime.Now;
+			var dt = now.AddDays(-days);
+			var noTypes = new int[]
+			{
+				(int)Contribution.TypeCode.ReturnedCheck,
+				(int)Contribution.TypeCode.Reversed
+			};
+			Expression<Func<Person, bool>> pred = p =>
+					       p.Contributions.Any(cc => cc.ContributionDate > dt && cc.ContributionAmount > 0 && !noTypes.Contains(cc.ContributionTypeId));
+			Expression expr = Expression.Invoke(pred, parm);
+			if (!(op == CompareType.Equal && tf))
+				expr = Expression.Not(expr);
 			return expr;
 		}
 		internal static Expression RecentContributionCount(
@@ -1189,8 +1211,8 @@ namespace CmsData
 		{
 			if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
 				return AlwaysFalse(parm);
-			var q = Db.GivingCurrentPercentOfFormer(dt1, dt2, 
-				op == CompareType.Greater ? ">" : 
+			var q = Db.GivingCurrentPercentOfFormer(dt1, dt2,
+				op == CompareType.Greater ? ">" :
 				op == CompareType.GreaterEqual ? ">=" :
 				op == CompareType.Less ? "<" :
 				op == CompareType.LessEqual ? "<=" :
@@ -1939,67 +1961,67 @@ namespace CmsData
 			{
 				case CompareType.Greater:
 					q2 = from p in q
-						let g = from a in p.Attends
-								from dg in a.Organization.DivOrgs
-								from pg in dg.Division.ProgDivs
-								where a.MeetingDate >= start
-								where a.MeetingDate <= end
-								where org == 0 || a.OrganizationId == org
-								where divid == 0 || dg.DivId == divid
-								where progid == 0 || pg.ProgId == progid
-								select a
-						let n = g.Count(aa => aa.EffAttendFlag == true)
-						let d = g.Count(aa => aa.EffAttendFlag != null)
-						where (d == 0 ? 0d : n * 100.0 / d) > pct
-						select p.PeopleId;
+						 let g = from a in p.Attends
+								 from dg in a.Organization.DivOrgs
+								 from pg in dg.Division.ProgDivs
+								 where a.MeetingDate >= start
+								 where a.MeetingDate <= end
+								 where org == 0 || a.OrganizationId == org
+								 where divid == 0 || dg.DivId == divid
+								 where progid == 0 || pg.ProgId == progid
+								 select a
+						 let n = g.Count(aa => aa.EffAttendFlag == true)
+						 let d = g.Count(aa => aa.EffAttendFlag != null)
+						 where (d == 0 ? 0d : n * 100.0 / d) > pct
+						 select p.PeopleId;
 					break;
 				case CompareType.GreaterEqual:
 					q2 = from p in q
-						let g = from a in p.Attends
-								from dg in a.Organization.DivOrgs
-								from pg in dg.Division.ProgDivs
-								where a.MeetingDate >= start
-								where a.MeetingDate <= end
-								where org == 0 || a.OrganizationId == org
-								where divid == 0 || dg.DivId == divid
-								where progid == 0 || pg.ProgId == progid
-								select a
-						let n = g.Count(aa => aa.EffAttendFlag == true)
-						let d = g.Count(aa => aa.EffAttendFlag != null)
-						where (d == 0 ? 0d : n * 100.0 / d) >= pct
-						select p.PeopleId;
+						 let g = from a in p.Attends
+								 from dg in a.Organization.DivOrgs
+								 from pg in dg.Division.ProgDivs
+								 where a.MeetingDate >= start
+								 where a.MeetingDate <= end
+								 where org == 0 || a.OrganizationId == org
+								 where divid == 0 || dg.DivId == divid
+								 where progid == 0 || pg.ProgId == progid
+								 select a
+						 let n = g.Count(aa => aa.EffAttendFlag == true)
+						 let d = g.Count(aa => aa.EffAttendFlag != null)
+						 where (d == 0 ? 0d : n * 100.0 / d) >= pct
+						 select p.PeopleId;
 					break;
 				case CompareType.Less:
 					q2 = from p in q
-						let g = from a in p.Attends
-								from dg in a.Organization.DivOrgs
-								from pg in dg.Division.ProgDivs
-								where a.MeetingDate >= start
-								where a.MeetingDate <= end
-								where org == 0 || a.OrganizationId == org
-								where divid == 0 || dg.DivId == divid
-								where progid == 0 || pg.ProgId == progid
-								select a
-						let n = g.Count(aa => aa.EffAttendFlag == true)
-						let d = g.Count(aa => aa.EffAttendFlag != null)
-						where (d == 0 ? 0d : n * 100.0 / d) < pct
-						select p.PeopleId;
+						 let g = from a in p.Attends
+								 from dg in a.Organization.DivOrgs
+								 from pg in dg.Division.ProgDivs
+								 where a.MeetingDate >= start
+								 where a.MeetingDate <= end
+								 where org == 0 || a.OrganizationId == org
+								 where divid == 0 || dg.DivId == divid
+								 where progid == 0 || pg.ProgId == progid
+								 select a
+						 let n = g.Count(aa => aa.EffAttendFlag == true)
+						 let d = g.Count(aa => aa.EffAttendFlag != null)
+						 where (d == 0 ? 0d : n * 100.0 / d) < pct
+						 select p.PeopleId;
 					break;
 				case CompareType.LessEqual:
 					q2 = from p in q
-						let g = from a in p.Attends
-								from dg in a.Organization.DivOrgs
-								from pg in dg.Division.ProgDivs
-								where a.MeetingDate >= start
-								where a.MeetingDate <= end
-								where org == 0 || a.OrganizationId == org
-								where divid == 0 || dg.DivId == divid
-								where progid == 0 || pg.ProgId == progid
-								select a
-						let n = g.Count(aa => aa.EffAttendFlag == true)
-						let d = g.Count(aa => aa.EffAttendFlag != null)
-						where (d == 0 ? 0d : n * 100.0 / d) <= pct
-						select p.PeopleId;
+						 let g = from a in p.Attends
+								 from dg in a.Organization.DivOrgs
+								 from pg in dg.Division.ProgDivs
+								 where a.MeetingDate >= start
+								 where a.MeetingDate <= end
+								 where org == 0 || a.OrganizationId == org
+								 where divid == 0 || dg.DivId == divid
+								 where progid == 0 || pg.ProgId == progid
+								 select a
+						 let n = g.Count(aa => aa.EffAttendFlag == true)
+						 let d = g.Count(aa => aa.EffAttendFlag != null)
+						 where (d == 0 ? 0d : n * 100.0 / d) <= pct
+						 select p.PeopleId;
 					break;
 				case CompareType.NotEqual:
 				case CompareType.Equal:
@@ -2489,7 +2511,7 @@ namespace CmsData
 			Expression<Func<Person, bool>> pred = p =>
 				(Db.IsValidEmail(p.EmailAddress ?? "") == false
 				|| Db.IsValidEmail(p.EmailAddress2 ?? "") == false);
-					
+
 			Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
 			if (!(op == CompareType.Equal && tf))
 				expr = Expression.Not(expr);

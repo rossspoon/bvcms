@@ -173,6 +173,7 @@ namespace CmsWeb.Models
                 };
 
             // now get recent visitors
+			var today = DateTime.Today;
 
             var visitors =
                 from a in DbUtil.Db.Attends
@@ -181,9 +182,11 @@ namespace CmsWeb.Models
                 where a.Organization.CanSelfCheckin.Value
                 where a.Organization.AllowNonCampusCheckIn == true 
 								|| a.Organization.CampusId == campus || campus == 0
+				where a.Organization.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
                 where a.AttendanceFlag && 
 					(a.MeetingDate >= a.Organization.FirstMeetingDate.Value.Date || a.Organization.FirstMeetingDate == null)
-                where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
+				where a.AttendanceFlag && (a.MeetingDate >= a.Organization.VisitorDate.Value.Date)
+				where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
                 where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
                 group a by new { a.PeopleId, a.OrganizationId } into g
                 let a = g.OrderByDescending(att => att.MeetingDate).First()
@@ -248,6 +251,7 @@ namespace CmsWeb.Models
             // find a org on campus that allows an older, new visitor to check in to
             var qv = from o in DbUtil.Db.Organizations
                      let meetingHours = DbUtil.Db.GetTodaysMeetingHours(o.OrganizationId, thisday)
+					 where o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
                      where o.CampusId == campus || o.CampusId == null
                      where o.CanSelfCheckin == true
                      where o.AllowNonCampusCheckIn == true
