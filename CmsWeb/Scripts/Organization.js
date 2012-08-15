@@ -69,10 +69,6 @@ $(function () {
     });
     $(".bt").button();
     $("#buttondiv bt").css("width", "100%");
-    //    $("#DivisionsList").delegate("#DivisionsList", "change", function () {
-    //        $.getTable($('#Members-tab form'));
-    //        return false;
-    //    });
 
     $('form table.grid > tbody > tr:even').addClass('alt');
 
@@ -201,29 +197,24 @@ $(function () {
             $(this).css("z-index", zmax);
         });
     };
+
     $.initDatePicker = function (f) {
-        $(".datepicker", f).datepicker({
-            dateFormat: 'm/d/yy',
-            changeMonth: true,
-            changeYear: true,
-            buttonImage: "/images/calendar.gif",
-            buttonImageOnly: true,
-            beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
+        $("ul.edit .datepicker", f).datepicker({
+            //beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
         });
-        $(".timepicker", f).timepicker({
+        $("ul.edit .timepicker", f).timepicker({
             ampm: true,
             stepHour: 1,
             stepMinute: 5,
             timeOnly: true
         });
-        $(".datetimepicker", f).datetimepicker({
+        $("ul.edit .datetimepicker", f).datetimepicker({
             ampm: true,
             stepHour: 1,
             stepMinute: 15,
             timeOnly: false
         });
     };
-    $.initDatePicker();
     $("a.displayedit,a.displayedit2").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
@@ -236,7 +227,6 @@ $(function () {
                 $.initDatePicker(f);
                 $(".submitbutton,.bt", f).button();
                 $(".roundbox select", f).css("width", "100%");
-                //$("#DivisionsList", f).multiselect();
                 $("#schedules", f).sortable({ stop: $.renumberListItems });
                 $("#editor", f);
                 $.regsettingeditclick(f);
@@ -339,7 +329,7 @@ $(function () {
         $.post("/Organization/NewSchedule", null, function (ret) {
             $("#schedules", f).append(ret).ready(function () {
                 $.renumberListItems();
-                $.initDatePicker(f);
+                //$.initDatePicker(f);
             });
         });
     });

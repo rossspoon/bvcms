@@ -288,7 +288,7 @@ namespace CmsWeb
         {
             var tb = new TagBuilder("input");
             tb.MergeAttribute("type", "text");
-            tb.MergeAttribute("id", name);
+            tb.MergeAttribute("id", name.Replace('.', '_'));
             tb.MergeAttribute("name", name);
             tb.MergeAttribute("class", "datepicker");
             var s = helper.TryGetModel(name);

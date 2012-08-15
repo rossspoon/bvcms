@@ -15,7 +15,6 @@ namespace CmsWeb.Models.PersonPage
         public MemberInfo member { get; set; }
         public GrowthInfo growth { get; set; }
         public MemberNotesInfo membernotes { get; set; }
-        //public IEnumerable<FamilyMemberInfo> familymembers { get; set; }
 
         public int PeopleId { get; set; }
         public int FamilyId { get; set; }
@@ -44,36 +43,18 @@ namespace CmsWeb.Models.PersonPage
         public static PersonInfo GetPersonInfo(int? id)
         {
 			var i = (from pp in DbUtil.Db.People
-					 //join rr in DbUtil.Db.RecRegs on pp.PeopleId equals rr.PeopleId
 					 let spouse = (from sp in pp.Family.People where sp.PeopleId == pp.SpouseId select sp.Name).SingleOrDefault()
 					 where pp.PeopleId == id
 					 select new
 					 {
 						 pp,
-						 //rr,
 						 f = pp.Family,
 						 spouse = spouse,
 						 pp.Picture.SmallId,
-						 //familymembers = from m in pp.Family.People
-							//			 orderby
-							//				 m.PeopleId == pp.Family.HeadOfHouseholdId ? 1 :
-							//				 m.PeopleId == pp.Family.HeadOfHouseholdSpouseId ? 2 :
-							//				 3, m.Age descending, m.Name2
-							//			 select new FamilyMemberInfo
-							//			 {
-							//				 Id = m.PeopleId,
-							//				 Name = m.Name,
-							//				 Age = m.Age,
-							//				 Color = m.DeceasedDate != null ? "red" : "auto",
-							//				 PositionInFamily = m.FamilyPosition.Code,
-							//				 SpouseIndicator = m.PeopleId == pp.SpouseId ? "*" : "&nbsp;",
-							//				 Email = m.EmailAddress
-							//			 }
 					 }).FirstOrDefault();
             if (i == null)
                 return null;
 			var p = i.pp;
-			//var r = i.rr;
 			var fam = i.f;
 
             var pi = new PersonInfo
