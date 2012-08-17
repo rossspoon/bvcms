@@ -646,7 +646,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 		{
 			return View();
 		}
-		public ActionResult TagUploadPeopleIds(string name, HttpPostedFileBase file, string text)
+		public ActionResult TagUploadPeopleIds(string name, HttpPostedFileBase file, string text, bool newtag)
 		{
 			string s;
 			if (file != null)
@@ -661,9 +661,15 @@ namespace CmsWeb.Areas.Manage.Controllers
 
 			var q = from line in s.Split('\n')
 					select line.ToInt();
+			if (newtag)
+			{
+				var tag = DbUtil.Db.FetchTag(name, Util.UserPeopleId, (int)DbUtil.TagTypeId_Personal);
+				if (tag != null)
+					DbUtil.Db.ExecuteCommand("delete TagPerson where Id = {0}", tag.Id);
+			}
 			foreach (var pid in q)
 			{
-				Person.Tag(DbUtil.Db, pid, name, DbUtil.Db.CurrentUser.PeopleId, (int) DbUtil.TagTypeId_Personal);
+				Person.Tag(DbUtil.Db, pid, name, DbUtil.Db.CurrentUser.PeopleId, (int)DbUtil.TagTypeId_Personal);
 				DbUtil.Db.SubmitChanges();
 			}
 			return Redirect("/Tags?tag=" + name);

@@ -173,6 +173,7 @@
       <DependentUpon>ToggleOrgLeadersOnly.ashx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
+    <Compile Include="Areas\Dialog\Controllers\AddAttendeesFromTagController.cs" />
     <Compile Include="Areas\Dialog\Controllers\DeleteMeetingController.cs" />
     <Compile Include="Areas\Dialog\Controllers\RepairTransactionsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchOrgsController.cs" />
@@ -1201,6 +1202,8 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\GetVolSub.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\EmailVolunteerSubs.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolSubReport.cshtml" />
+    <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Index.cshtml" />
+    <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Progress.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

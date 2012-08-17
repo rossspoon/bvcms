@@ -37,6 +37,14 @@
 {
 @Html.Hidden("showregistered", "true")
 }
+@if (Model.currmembers == true)
+{
+<h3>Showing Current Members...</h3>
+    <p>Note that if you mark attendance for someone whose enrollment date is after @Model.meeting.MeetingDate.FormatDateTm(), they will be shown as a visitor to the meeting.
+You can change their enrollment date prior to this meeting date by going back to the organization and using the Update Members button to change their enrollment date in one step.
+This will allow you to mark them as members.
+</p>
+}
 <table>
 <tr>
     <td rowspan="2">
@@ -112,7 +120,8 @@
                 <table width="100%"><tr>
                   <td align="left" nowrap>
                     <label for="editing" style="padding-right:2em;">@Html.CheckBox("editing", Model.showall) Editing</label><br>
-                    <label for="registering" style="padding-right:2em;">@Html.CheckBox("registering", Model.showregister) Register</label>
+                    <label for="registering" style="padding-right:2em;">@Html.CheckBox("registering", Model.showregister) Register</label><br />
+                    <label for="currmembers">@Html.CheckBox("currmembers", Model.currmembers)</label> Current Mbrs
                   </td>
                   <td align="right" nowrap>
                     <a id="addregistered" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=registered" class="bt hidden">Add Registered</a>
@@ -134,6 +143,7 @@
                 <a href="/Meeting/AttendanceByGroups/@Model.meeting.MeetingId" target="_blank">AttendanceByGroups</a>
                 <a href="/Meeting/iPad/@Model.meeting.MeetingId">iPad Attendance</a>
                 <a href="/Meeting/tickets/@Model.meeting.MeetingId">Ticketing Attendance</a>
+                <a href="/AddAttendeesFromTag/Index/@Model.meeting.MeetingId" class="addfromtag">Add Attendees From Tag</a>
                 <a href="#" class="heading">&mdash; Convert to Query &mdash;</a>
                 <a href="/Meeting/QueryAttendees/@Model.meeting.MeetingId">Attendees</a>
                 <a href="/Meeting/QueryVisitors/@Model.meeting.MeetingId">Visitors</a>
@@ -206,6 +216,9 @@
 </table>
 <div id="visitorDialog" title="Add Visitors">
 <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
+</div>
+<div id="AddFromTag">
+    <iframe style="width: 100%; height: 99%; border-width: 0;"></iframe>
 </div>
 
 <table id="newvalueform" class="grid roundbox" style="display:none">

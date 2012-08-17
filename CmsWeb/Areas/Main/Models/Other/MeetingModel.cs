@@ -14,6 +14,7 @@ namespace CmsWeb.Models
         public CmsData.Meeting meeting;
 
         public bool showall { get; set; }
+        public bool currmembers { get; set; }
         public bool showregister { get; set; }
         public bool showregistered { get; set; }
         public bool sortbyname { get; set; }
@@ -24,7 +25,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<RollsheetModel.AttendInfo> Attends(bool sorted = false)
         {
-            return RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sorted);
+            return RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sorted, currmembers);
         }
         public IEnumerable<RollsheetModel.AttendInfo> VisitAttends(bool sorted = false)
         {

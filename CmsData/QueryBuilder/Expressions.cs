@@ -2598,6 +2598,8 @@ namespace CmsData
 			var qid = a[0].ToInt();
 			var savedquery = Db.QueryBuilderClauses.SingleOrDefault(q =>
 				q.QueryId == qid);
+			if (savedquery == null)
+				return AlwaysFalse(parm);
 			var pred = savedquery.Predicate(Db);
 			Expression left = Expression.Invoke(pred, parm);
 			var right = Expression.Convert(Expression.Constant(tf), left.Type);

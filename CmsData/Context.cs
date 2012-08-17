@@ -502,14 +502,19 @@ namespace CmsData
 
 		public Tag FetchOrCreateTag(string tagname, int? OwnerId, int tagtypeid)
 		{
-			var tag = Tags.FirstOrDefault(t =>
-				t.Name == tagname && t.PeopleId == OwnerId && t.TypeId == tagtypeid);
+			var tag = FetchTag(tagname, OwnerId, tagtypeid);
 			if (tag == null)
 			{
 				tag = new Tag { Name = tagname, PeopleId = OwnerId, TypeId = tagtypeid };
 				Tags.InsertOnSubmit(tag);
 				SubmitChanges();
 			}
+			return tag;
+		}
+		public Tag FetchTag(string tagname, int? OwnerId, int tagtypeid)
+		{
+			var tag = Tags.FirstOrDefault(t =>
+				t.Name == tagname && t.PeopleId == OwnerId && t.TypeId == tagtypeid);
 			return tag;
 		}
 		public Tag FetchOrCreateSystemTag(string tagname)
