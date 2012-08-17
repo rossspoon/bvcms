@@ -306,20 +306,26 @@
 @if (Model.OnlineGiving())
 {
     var funds = CmsWeb.Models.OnlineRegPersonModel.Funds();
+    decimal? tot = null;
     <tr><td colspan="2" align="center"><table class="grid" cellpadding="2">
     @for (var n = 0; n < funds.Length; n++)
     {
         var i = funds[n];
+        var amt = Model.FundItemValue(i.Value.ToInt());
+        if (amt.HasValue)
+        {
+            tot = (tot ?? 0) + amt;
+        }
         <tr>
             <td>@i.Text</td>
-            <td>@Html.TextBox(Model.inputname("FundItem[" + n + "].Value"), Model.FundItemValue(i.Value.ToInt()), new { @class = "short sum" })
+            <td>@Html.TextBox(Model.inputname("FundItem[" + n + "].Value"), amt, new { @class = "short sum" })
                 @Html.Hidden(Model.inputname("FundItem[" + n + "].Key"), i.Value)
                 <div>@Html.ValidationMessage(Model.inputname("FundItem[" + n + "].Value"))</div></td>
         </tr>
     }
         <tr class="alt">
             <td>Total</td>
-            <td><span id="total"></span></td>
+            <td><span id="total">@tot.ToString2("N2")</span></td>
         </tr>
     </table></td>
     </tr>

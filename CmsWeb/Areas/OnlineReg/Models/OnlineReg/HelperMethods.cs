@@ -283,6 +283,8 @@ namespace CmsWeb.Models
                                             setting.InstructionSubmit,
                                             setting.InstructionSorry
                                             );
+					if (ins.Contains("{ev:", ignoreCase: true))
+						ins = DoReplaceForExtraValueCode(ins);
                     return Util.PickFirst(ins, div != null ? div.Instructions : "") + "\n";
                 }
                 if (div != null)
@@ -290,6 +292,24 @@ namespace CmsWeb.Models
                 return "";
             }
         }
+		private string DoReplaceForExtraValueCode(string text)
+		{
+			const string RE = @"{ev:(?<name>.+?)}";
+			var p = last.person;
+			
+			var re = new Regex(RE, RegexOptions.Singleline | RegexOptions.Multiline);
+			var match = re.Match(text);
+			while (match.Success)
+			{
+				var tag = match.Value;
+				var name = match.Groups["name"].Value;
+
+				text = text.Replace(tag, p.GetExtra(name));
+				match = match.NextMatch();
+			}
+			return text;
+		}
+
         public string Terms
         {
             get
