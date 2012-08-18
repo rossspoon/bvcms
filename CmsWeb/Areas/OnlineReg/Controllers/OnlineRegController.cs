@@ -109,7 +109,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					p.index = m.List.Count - 1;
 					p.ValidateModelForFind(ModelState, m);
 					p.LoggedIn = true; 
-					if (m.masterorg == null)
+					if (m.masterorg == null && !m.divid.HasValue)
 						m.List[p.index] = p;
 				}
 				if (!ModelState.IsValid)

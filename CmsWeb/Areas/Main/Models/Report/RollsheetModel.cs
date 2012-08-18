@@ -140,17 +140,17 @@ namespace CmsWeb.Areas.Main.Models.Report
 						Joined = m.EnrollmentDate
 					};
 			else
-
-				q = from p in DbUtil.Db.People
-					let etlist = p.EnrollmentTransactions.Where(ee =>
-						ee.TransactionTypeId <= 3 // enrollments or changes
-						&& ee.TransactionStatus == false
-						&& ee.TransactionDate <= MeetingDate // transaction starts <= looked for end
-						&& (ee.Pending ?? false) == false
-						&& (ee.NextTranChangeDate >= MeetingDate || ee.NextTranChangeDate == null)// transaction ends >= looked for start
-						&& ee.OrganizationId == OrganizationId)
-					let enrolled = etlist.OrderByDescending(laet => laet.TransactionDate).FirstOrDefault()
+				q = from ee in DbUtil.Db.EnrollmentTransactions
+					where ee.TransactionTypeId <= 3 // enrollments or changes
+					where ee.TransactionStatus == false
+					where ee.TransactionDate <= MeetingDate // transaction starts <= looked for end
+					where (ee.Pending ?? false) == false
+					where (ee.NextTranChangeDate >= MeetingDate || ee.NextTranChangeDate == null)// transaction ends >= looked for start
+					where ee.OrganizationId == OrganizationId
+					group ee by ee.PeopleId into g
+					let enrolled = g.OrderByDescending(laet => laet.TransactionDate).FirstOrDefault()
 					where enrolled != null && enrolled.MemberTypeId != MemberTypeCode.InActive
+					let p = enrolled.Person
 					orderby p.LastName, p.FamilyId, p.PreferredName
 					select new PersonMemberInfo
 					{
@@ -178,6 +178,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 						MemberTypeId = enrolled.MemberTypeId,
 						Joined = enrolled.EnrollmentDate ?? enrolled.TransactionDate,
 					};
+
 			return q;
 		}
 
