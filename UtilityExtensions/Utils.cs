@@ -232,6 +232,14 @@ namespace UtilityExtensions
                 else
                     value = v;
             }
+            else if (typBindingSource == typeof(long?))
+            {
+                long v;
+                if (!long.TryParse(textvalue, out v))
+                    value = null;
+                else
+                    value = v;
+            }
             else if (typBindingSource == typeof(decimal))
                 value = decimal.Parse(textvalue);
             else if (typBindingSource == typeof(decimal?))

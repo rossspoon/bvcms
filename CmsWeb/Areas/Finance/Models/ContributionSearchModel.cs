@@ -22,6 +22,8 @@ namespace CmsWeb.Models
 		public int? BundleType { get; set; }
 		public int? Type { get; set; }
 		public int? Status { get; set; }
+		public decimal? MinAmt { get; set; }
+		public decimal? MaxAmt { get; set; }
 		private int? _peopleId;
 		public int? PeopleId
 		{
@@ -93,6 +95,15 @@ namespace CmsWeb.Models
 			contributions = from c in DbUtil.Db.Contributions
 							where c.PeopleId == PeopleId || PeopleId == null
 							select c;
+
+			if (MinAmt.HasValue)
+				contributions = from c in contributions
+								where c.ContributionAmount >= MinAmt
+								select c;
+			if (MaxAmt.HasValue)
+				contributions = from c in contributions
+								where c.ContributionAmount <= MaxAmt
+								select c;
 
 			if (Name.HasValue())
 				contributions = from c in contributions
