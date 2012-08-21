@@ -331,7 +331,7 @@ namespace CmsWeb.Models
             {
                 dob = person.DOB,
                 email = person.EmailAddress.HasValue() ? person.EmailAddress : user.EmailAddress,
-                first = person.FirstName,
+                first = person.PreferredName,
                 last = person.LastName,
                 PeopleId = id,
                 phone = Util.PickFirst(person.CellPhone, person.HomePhone),

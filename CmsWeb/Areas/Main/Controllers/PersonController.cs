@@ -783,7 +783,9 @@ namespace CmsWeb.Areas.Main.Controllers
 				PeopleId = id, 
 				FromDate = frdt.Value, 
 				ToDate = todt.Value, 
-				typ = 2 
+				typ = 2,
+				noaddressok = true,
+				useMinAmt = false,
 			};
 		}
 	}

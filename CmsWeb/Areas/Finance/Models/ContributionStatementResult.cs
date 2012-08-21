@@ -30,9 +30,16 @@ namespace CmsWeb.Areas.Finance.Models.Report
         public int PeopleId { get; set; }
         public int? SpouseId { get; set; }
         public int typ { get; set; }
+		public bool useMinAmt { get; set; }
+		public bool noaddressok { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
 
+		public ContributionStatementResult()
+		{
+			useMinAmt = true;
+            noaddressok = DbUtil.Db.Setting("RequireAddressOnStatement", "true") == "false";
+		}
         public override void ExecuteResult(ControllerContext context)
         {
             var Response = context.HttpContext.Response;
@@ -48,19 +55,18 @@ namespace CmsWeb.Areas.Finance.Models.Report
                 typ = typ
             };
             IEnumerable<ContributorInfo> q = null;
-            var noaddressok = DbUtil.Db.Setting("RequireAddressOnStatement", "true") == "false";
             switch (typ)
             {
                 case 1:
                     SpouseId = DbUtil.Db.People.Single(p => p.PeopleId == PeopleId).SpouseId.ToInt();
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok, useMinAmt: true);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok, useMinAmt);
                     break;
                 case 2:
                     FamilyId = DbUtil.Db.People.Single(p => p.PeopleId == PeopleId).FamilyId;
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId, noaddressok, useMinAmt: true);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId, noaddressok, useMinAmt);
                     break;
                 case 3:
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0, noaddressok, useMinAmt: true);
+                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0, noaddressok, useMinAmt);
                     break;
             }
             c.Run(Response.OutputStream, DbUtil.Db, q);

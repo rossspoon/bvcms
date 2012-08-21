@@ -308,6 +308,7 @@ namespace CmsCheckin
 		}
 		public static int Label(this MemoryStream ms, LabelInfo li, int nlabels, string code)
 		{
+			//MainLabel
 			if (nlabels <= 0 || !Program.Printer.HasValue())
 				return 0;
 			var sw = new StreamWriter(ms);
@@ -491,6 +492,7 @@ namespace CmsCheckin
 		}
 		public static int AllergyLabel(this MemoryStream ms, LabelInfo li)
 		{
+			//GuestLabel
 			if (li.n == 0 || !Program.Printer.HasValue())
 				return 0;
 			if (li.mv != "G" && li.mv != "V")
