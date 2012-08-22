@@ -34,6 +34,7 @@ namespace CmsWeb.Models
 		public string Account { get; set; }
 		public bool testing { get; set; }
 		public decimal total { get; set; }
+		public string HeadingLabel { get; set; }
 
 		private Dictionary<int, decimal?> _FundItem = new Dictionary<int, decimal?>();
 
@@ -85,6 +86,7 @@ namespace CmsWeb.Models
 		public bool NoEChecksAllowed { get; set; }
 		public ManageGivingModel()
 		{
+			HeadingLabel = DbUtil.Db.Setting("ManageGivingHeaderLabel", "Giving Opportunities");
 			testing = ConfigurationManager.AppSettings["testing"].ToBool();
 #if DEBUG2
             testing = true;
@@ -125,6 +127,17 @@ namespace CmsWeb.Models
 				else if (NoEChecksAllowed)
 					Type = "C"; // credit card only
 				Type = NoEChecksAllowed ? "C" : Type;
+			}
+			else if (setting.ExtraValueFeeName.HasValue())
+			{
+				var f = CmsWeb.Models.OnlineRegPersonModel.Funds().SingleOrDefault(ff => ff.Text == setting.ExtraValueFeeName);
+				// reasonable defaults
+				Period = "M";
+				SemiEvery = "E";
+				EveryN = 1;
+				var evamt = person.GetExtra(setting.ExtraValueFeeName).ToDecimal();
+				if (f != null && evamt > 0)
+					FundItem.Add(f.Value.ToInt(), evamt);
 			}
 			total = FundItem.Sum(ff => ff.Value) ?? 0;
 		}

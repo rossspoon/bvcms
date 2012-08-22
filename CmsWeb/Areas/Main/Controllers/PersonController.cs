@@ -728,6 +728,14 @@ namespace CmsWeb.Areas.Main.Controllers
 			var m = new DuplicatesModel(id);
 			return View(m);
 		}
+		public ActionResult ShowMeetings(int id, bool all)
+		{
+			if (all == true)
+				Session["showallmeetings"] = true;
+			else
+				Session.Remove("showallmeetings");
+			return Redirect("/Person/Index/" + id);
+		}
 		private void InitExportToolbar(int? id)
 		{
 			var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();

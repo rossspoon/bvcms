@@ -103,6 +103,14 @@ div.pager
         if (isadmin)
         { 
             <a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a>
+            if (Session["showallmeetings"] == null)
+            {
+            <a href="/Person/ShowMeetings/@p.PeopleId?all=true">Show All Meetings</a>
+            }
+            else
+            {
+            <a href="/Person/ShowMeetings/@p.PeopleId?all=false">Show Only Attends</a>
+            }
         } 
     }
         </div>
