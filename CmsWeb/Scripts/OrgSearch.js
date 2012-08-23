@@ -203,7 +203,10 @@
                "&dt=" + $('#MeetingDate').val() + " " + $('#MeetingTime').val();
         if ($('#altnames').is(":checked"))
             args += "&altnames=true";
-        window.open("/Reports/Rollsheet/" + args);
+        if ($('#rallymode').is(":checked"))
+            window.open("/Reports/RallyRollsheet/" + args);
+        else
+            window.open("/Reports/Rollsheet/" + args);
         return false;
     });
     $('#ExportExcel').click(function (ev) {

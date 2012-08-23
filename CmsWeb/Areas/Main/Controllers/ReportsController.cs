@@ -71,6 +71,24 @@ namespace CmsWeb.Areas.Main.Controllers
                 altnames = altnames,
             };
         }
+        public ActionResult RallyRollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)
+        {
+            return new RallyRollsheetResult
+            {
+                qid = id,
+                orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null,
+                groups = org == "curr" ? Util2.CurrentGroups : new int[] { 0 },
+                pid = pid,
+                div = div,
+                name = name,
+                schedule = schedule,
+                meetingid = meetingid,
+                bygroup = bygroup.HasValue,
+                sgprefix = sgprefix,
+                dt = dt,
+                altnames = altnames,
+            };
+        }
         public ActionResult OrgLeaders(string org, int? div, int? schedule, string name)
         {
             return new OrgLeadersResult

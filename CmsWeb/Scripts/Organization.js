@@ -371,6 +371,26 @@ $(function () {
         });
         d.dialog('open');
     });
+    $('#RallyRollsheetLink').live("click", function (ev) {
+        ev.preventDefault();
+        $('#grouplabel').text("By Group");
+        var d = $("#NewMeetingDialog");
+        d.dialog("option", "buttons", {
+            "Ok": function () {
+                var dt = $.GetMeetingDateTime();
+                if (!dt.valid)
+                    return false;
+                var args = "?org=curr&dt=" + dt.date + " " + dt.time;
+                if ($('#altnames').is(":checked"))
+                    args += "&altnames=true";
+                if ($('#group').is(":checked"))
+                    args += "&bygroup=1&sgprefix=";
+                window.open("/Reports/RallyRollsheet/" + args);
+                $(this).dialog("close");
+            }
+        });
+        d.dialog('open');
+    });
     $('#NewMeeting').live("click", function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("Group Meeting");

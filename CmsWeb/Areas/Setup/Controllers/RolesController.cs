@@ -33,7 +33,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             var a = id.Split('.');
             var c = new ContentResult();
             c.Content = value;
-            var role = DbUtil.Db.Roles.SingleOrDefault(m => m.RoleId == a[1].ToInt());
+            var role = DbUtil.Db.Roles.SingleOrDefault(m => m.RoleName == a[1]);
             if (role == null)
                 return c;
             switch (a[0])

@@ -194,13 +194,25 @@ namespace CmsWeb.Areas.Main.Controllers
 
     	[Authorize(Roles = "Attendance")]
         [HttpPost]
-        public ActionResult ScanTicket(int wandtarget, int MeetingId, bool? requireMember, bool? requireRegistered)
-        {
+		public ActionResult ScanTicket(string wandtarget, int MeetingId, bool? requireMember, bool? requireRegistered)
+		{
+			if (wandtarget.StartsWith("M."))
+			{
+				var a = wandtarget.Split('.');
+				var tm = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == MeetingId);
+				var mq = from m in DbUtil.Db.Meetings
+						 where m.OrganizationId == a[1].ToInt()
+						 where m.MeetingDate.Value.Date == tm.MeetingDate.Value.Date
+						 select m;
+				var mo = mq.FirstOrDefault();
+				return Content(Util.ServerLink("/Meeting/Tickets/" + mo.MeetingId));
+			}
+			int wandtargetToInt = wandtarget.ToInt();
 			var q = from person in DbUtil.Db.People
-					where person.PeopleId == wandtarget
+					where person.PeopleId == wandtargetToInt
 					let meeting = DbUtil.Db.Meetings.SingleOrDefault(mm => mm.MeetingId == MeetingId)
-					let attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == wandtarget)
-					let orgmember = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId && om.PeopleId == wandtarget)
+					let attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == wandtargetToInt)
+					let orgmember = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId && om.PeopleId == wandtargetToInt)
 					select new ScanTicketInfo
 					{
 						person = person,
@@ -211,14 +223,14 @@ namespace CmsWeb.Areas.Main.Controllers
 			var d = q.SingleOrDefault();
 
 			if (d == null)
-				return View(new ScanTicketInfo 
-				{ 
+				return View(new ScanTicketInfo
+				{
 					error = ScanTicketInfo.Error.noperson,
 					person = new Person()
 				});
 
 			d.error = ScanTicketInfo.Error.none;
-    		if (d.attended != null && d.attended.AttendanceFlag == true)
+			if (d.attended != null && d.attended.AttendanceFlag == true)
 				d.error = ScanTicketInfo.Error.alreadymarked;
 			else if (requireMember == true && d.orgmember == null)
 				d.error = ScanTicketInfo.Error.notmember;
@@ -226,10 +238,10 @@ namespace CmsWeb.Areas.Main.Controllers
 				d.error = ScanTicketInfo.Error.notregistered;
 
 			if (d.error == ScanTicketInfo.Error.none)
-	    		Attend.RecordAttendance(DbUtil.Db, wandtarget, MeetingId, true);
+				Attend.RecordAttendance(DbUtil.Db, wandtargetToInt, MeetingId, true);
 
 			return View(d);
-        }
+		}
         [Authorize(Roles = "Attendance")]
         [HttpPost]
         public ActionResult MarkAttendance(int PeopleId, int MeetingId, bool Present)

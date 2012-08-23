@@ -8,7 +8,10 @@
         var tb = $("#wandtarget");
         var f = $(this).closest("form");
         var q = f.serialize();
-        $.post("/Meeting/ScanTicket/", q , function (ret) {
+        $.post("/Meeting/ScanTicket/", q, function (ret) {
+            if (ret.startsWith("http")) {
+                window.location = ret;
+            }
             $("#mark").html(ret);
             tb.val("");
         });
