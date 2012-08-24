@@ -285,7 +285,7 @@ namespace CmsWeb.Areas.Main.Controllers
         	var ev = StandardExtraValues.GetExtraValues();
             var q = from e in DbUtil.Db.PeopleExtras
                     where e.StrValue != null || e.BitValue != null
-                    group e by new { e.Field, val = e.StrValue ?? (e.BitValue == true ? "true" : "false") } into g
+                    group e by new { e.Field, val = e.StrValue ?? (e.BitValue == true ? "1" : "0") } into g
                     select new ExtraInfo
                     {
                         Field = g.Key.Field,

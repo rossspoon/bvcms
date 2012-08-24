@@ -46,7 +46,8 @@ namespace CmsWeb.Models
             var q1 = from f in DbUtil.Db.Families
                      where f.HeadOfHousehold.DeceasedDate == null
                      where f.HomePhoneLU.StartsWith(p7)
-                        || f.People.Any(p => p.CellPhoneLU.StartsWith(p7))
+                        || f.People.Any(p => p.CellPhoneLU.StartsWith(p7)
+						|| p.PeopleExtras.Any(ee => ee.Data == id && ee.Field == "PIN"))
                      let flock = f.FamilyCheckinLocks
                         .FirstOrDefault(l => SqlMethods.DateDiffSecond(l.Created, DateTime.Now) < 60)
                      orderby f.FamilyId

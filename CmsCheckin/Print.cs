@@ -247,6 +247,32 @@ namespace CmsCheckin
 			}
 			else if (Program.Printer.Contains("Datamax"))
 			{
+				//sw.WriteLine("\x02n");
+				//sw.WriteLine("\x02M0500");
+				//sw.WriteLine("\x02O0220");
+				//sw.WriteLine("\x02V0");
+				//sw.WriteLine("\x02SG");
+				//sw.WriteLine("\x02d");
+				//sw.WriteLine("\x01D");
+				//sw.WriteLine("\x02ICAFgfx0");
+				//sw.WriteLine("0000FF98");
+				//sw.WriteLine("8001E0");
+				//sw.WriteLine("FFFF");
+				//sw.WriteLine("\x02L");
+				//sw.WriteLine("D11");
+				//sw.WriteLine("PG");
+				//sw.WriteLine("pC");
+				//sw.WriteLine("SG");
+				//sw.WriteLine("ySPM");
+				//sw.WriteLine("A2");
+				//sw.WriteLine("1911A2400360035" + code);
+				//sw.WriteLine("1911A1200050036" + time.ToString("d"));
+				//sw.WriteLine("1911A1200050190" + time.ToString("d"));
+				//sw.WriteLine("1911A2400360191" + code);
+				//sw.WriteLine("1Y1100000020148gfx0");
+				//sw.WriteLine("Q0001");
+				//sw.WriteLine("E");
+
 				sw.WriteLine("\x02n");
 				sw.WriteLine("\x02M0500");
 				sw.WriteLine("\x02O0220");
@@ -254,10 +280,6 @@ namespace CmsCheckin
 				sw.WriteLine("\x02SG");
 				sw.WriteLine("\x02d");
 				sw.WriteLine("\x01D");
-				sw.WriteLine("\x02ICAFgfx0");
-				sw.WriteLine("0000FF98");
-				sw.WriteLine("8001E0");
-				sw.WriteLine("FFFF");
 				sw.WriteLine("\x02L");
 				sw.WriteLine("D11");
 				sw.WriteLine("PG");
@@ -265,13 +287,10 @@ namespace CmsCheckin
 				sw.WriteLine("SG");
 				sw.WriteLine("ySPM");
 				sw.WriteLine("A2");
-				sw.WriteLine("1911A2400360035" + code);
-				sw.WriteLine("1911A1200050036" + time.ToString("d"));
-				sw.WriteLine("1911A1200050190" + time.ToString("d"));
-				sw.WriteLine("1911A2400360191" + code);
-				sw.WriteLine("1Y1100000020148gfx0");
+				sw.WriteLine("1911A1800450014" + code);
 				sw.WriteLine("Q0001");
 				sw.WriteLine("E");
+
 			}
 
 			sw.Flush();
