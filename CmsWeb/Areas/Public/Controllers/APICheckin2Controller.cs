@@ -563,6 +563,79 @@ namespace CmsWeb.Areas.Public.Controllers
 
 		[HttpPost]
 		[ValidateInput(false)]
+		public ContentResult FetchLabelFormat( string sName, int iSize )
+		{
+			if (!Authenticate()) return Content("");
+
+			// Size -30 and +30 is because some labels are a few tenths of inches different in the driver
+			var label = (from e in DbUtil.Db.LabelFormats
+						 where e.Name == sName
+						 where e.Size > (iSize-30) && e.Size < (iSize+30)
+						 select e).FirstOrDefault();
+
+			if (label == null)
+			{
+				return Content("");
+			}
+			else
+			{
+				return Content(label.Format);
+			}
+		}
+
+		[HttpPost]
+		[ValidateInput(false)]
+		public ContentResult SaveLabelFormat(string sName, int iSize, string sFormat)
+		{
+			if (!Authenticate()) return Content("2");
+
+			var label = (from e in DbUtil.Db.LabelFormats
+						 where e.Name == sName
+						 where e.Size == iSize
+						 select e).FirstOrDefault();
+
+			if (label == null)
+			{
+				LabelFormat lfNew = new LabelFormat();
+				lfNew.Name = sName;
+				lfNew.Size = iSize;
+				lfNew.Format = sFormat;
+				DbUtil.Db.LabelFormats.InsertOnSubmit(lfNew);
+				DbUtil.Db.SubmitChanges();
+			}
+			else
+			{
+				label.Format = sFormat;
+				DbUtil.Db.SubmitChanges();
+			}
+
+			return Content("0");
+		}
+
+		[HttpPost]
+		[ValidateInput(false)]
+		public ContentResult FetchLabelList()
+		{
+			if (!Authenticate()) return Content("");
+
+			// Size -30 and +30 is because some labels are a few tenths of inches different in the driver
+			var list = from e in DbUtil.Db.LabelFormats
+					   orderby e.Size, e.Name
+					   select String.Concat( e.Name, "~", e.Size );
+
+			if (list == null)
+			{
+				return Content("");
+			}
+			else
+			{
+				var types = list.ToArray<String>();
+				return Content( String.Join(",", types) );
+			}
+		}
+
+		[HttpPost]
+		[ValidateInput(false)]
 		public ContentResult BuildingCheckin(int id, string location, int? guestof)
 		{
 			if (!Authenticate())
