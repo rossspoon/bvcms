@@ -8,6 +8,7 @@ using System.Text;
 using System.Collections.Generic;
 using CmsData.Codes;
 using CmsWeb.Areas.Manage.Controllers;
+using System.Diagnostics;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -108,7 +109,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					p.index = m.List.Count - 1;
 					p.ValidateModelForFind(ModelState, m);
 					p.LoggedIn = true; 
-					if (m.masterorg == null)
+					if (m.masterorg == null && !m.divid.HasValue)
 						m.List[p.index] = p;
 				}
 				if (!ModelState.IsValid)
@@ -135,6 +136,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 						ModelState.AddModelError(p.ErrorTarget, "Sorry, but registration is closed.");
 					if (p.Found == true)
 						p.FillPriorInfo();
+					CheckSetFee(m, p);
 					return View(m);
 				}
 				return View(m);
@@ -257,8 +259,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					ModelState.AddModelError(p.inputname("dob"), "Sorry, but registration is closed.");
 				if (p.Found == true)
 					p.FillPriorInfo();
-				//if (!p.AnyOtherInfo())
-				//    p.OtherOK = true;
 				return View("Flow/List", m);
 			}
 			if (!p.whatfamily.HasValue && (id > 0 || p.LoggedIn == true))
@@ -319,8 +319,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				|| m.ChoosingSlots())
 			{
 				p.OtherOK = true;
-				//if (p.Found == true)
-				//    return Content("/OnlineReg//{0}".Fmt(m.divid));
 			}
 			else if (p.org != null)
 			{
@@ -329,17 +327,24 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					ModelState.AddModelError(p.inputname("dob"), "Sorry, but registration is closed.");
 				if (p.Found == true)
 					p.FillPriorInfo();
-				//if (!p.AnyOtherInfo())
-				//    p.OtherOK = true;
 			}
 			if (p.org != null && p.ShowDisplay() && p.ComputesOrganizationByAge())
 				p.classid = p.org.OrganizationId;
 
-			//if (m.last != null && m.last.OtherOK && m.last.ShowDisplay())
-			//	if (Model.ChoosingSlots() || Model.OnlineGiving())
-			//		return Content("clicksubmit");
+			CheckSetFee(m, p);
 
 			return View("Flow/List", m);
+		}
+		// Set suggested giving fee for an indidividual person
+		private static void CheckSetFee(OnlineRegModel m, OnlineRegPersonModel p)
+		{
+			if (m.OnlineGiving() && p.setting.ExtraValueFeeName.HasValue())
+			{
+				var f = CmsWeb.Models.OnlineRegPersonModel.Funds().SingleOrDefault(ff => ff.Text == p.setting.ExtraValueFeeName);
+				var evamt = p.person.GetExtra(p.setting.ExtraValueFeeName).ToDecimal();
+				if (f != null && evamt > 0)
+					p.FundItem[f.Value.ToInt()] = evamt;
+			}
 		}
 		[HttpPost]
 		public ActionResult SubmitNew(int id, OnlineRegModel m)

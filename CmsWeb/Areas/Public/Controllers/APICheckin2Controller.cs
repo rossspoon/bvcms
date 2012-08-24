@@ -417,7 +417,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			p.CreatedBy = Util.UserName;
 			p.SmallId = ImageData.Image.NewImageFromBits(bits, 120, 120).Id;
 			p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
-			p.LargeId = ImageData.Image.NewImageFromBits(bits).Id;
+            p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;
 			DbUtil.Db.SubmitChanges();
 			return Content("done");
 		}
@@ -429,7 +429,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			if (person.PictureId != null)
 			{
 				DbUtil.LogActivity("checkin picture " + id);
-				return new ImageResult(person.Picture.LargeId ?? 0);
+				return new ImageResult(person.Picture.MediumId ?? 0);
 			}
 			return new ImageResult(0);
 		}

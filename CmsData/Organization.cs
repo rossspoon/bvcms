@@ -198,6 +198,20 @@ namespace CmsData
 					   "<span style='color:red'>need a main division</span>";
 			}
 		}
+		public static OrganizationType FetchOrCreateType(CMSDataContext Db, string type)
+		{
+			var t = Db.OrganizationTypes.SingleOrDefault(pp => pp.Description == type);
+			if (t == null)
+			{
+				var max = 10;
+				if(Db.OrganizationTypes.Any())
+					max = Db.OrganizationTypes.Max(mm => mm.Id) + 10;
+				t = new OrganizationType { Description = type, Code = type.Substring(0, 3), Id = max };
+				Db.OrganizationTypes.InsertOnSubmit(t);
+				Db.SubmitChanges();
+			}
+			return t;
+		}
 		public static Program FetchOrCreateProgram(CMSDataContext Db, string program)
 		{
 			var p = Db.Programs.SingleOrDefault(pp => pp.Name == program);

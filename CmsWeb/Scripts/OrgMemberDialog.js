@@ -47,11 +47,7 @@
                 minChars: 3,
                 matchContains: 1
             };
-            $(".datepicker").datepicker({
-                dateFormat: 'm/d/yy',
-                changeMonth: true,
-                changeYear: true
-            });
+            $(".datepicker").datepicker();
             $(".bt").button();
             $("a.move").tooltip({
                 showBody: "|",

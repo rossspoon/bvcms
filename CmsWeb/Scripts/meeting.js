@@ -1,4 +1,25 @@
 ﻿$(function () {
+    $('#AddFromTag').dialog({
+        title: 'Add From Tag',
+        bgiframe: true,
+        autoOpen: false,
+        width: 750,
+        height: 650,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            window.location.reload();
+        }
+    });
+    $('a.addfromtag').live("click", function (e) {
+        e.preventDefault();
+        var d = $('#AddFromTag');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Add Attendees From Tag");
+        d.dialog("open");
+    });
     $(".clickSelectG").editable("/Meeting/EditGroup/", {
         indicator: '<img src="/images/loading.gif">',
         loadurl: "/Meeting/MeetingTypes/",
@@ -94,6 +115,12 @@
                 break;
         }
         $("#attends > tbody > tr:visible:even").addClass("alt");
+    });
+    $('#currmembers').change(function () {
+        if ($(this).is(':checked'))
+            window.location = "/Meeting/Index/" + $("#meetingid").val() + "?CurrentMembers=true";
+        else
+            window.location = "/Meeting/Index/" + $("#meetingid").val();
     });
     $('#editing').change(function () {
         if ($(this).is(':checked')) {

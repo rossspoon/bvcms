@@ -1,9 +1,5 @@
 ﻿$(function () {
-	$(".datepicker").datepicker({
-		dateFormat: 'm/d/yy',
-		changeMonth: true,
-		changeYear: true
-	});
+	$(".datepicker").datepicker();
 	$("#run").click(function (ev) {
 		ev.preventDefault();
 		var f = $(this).closest('form');

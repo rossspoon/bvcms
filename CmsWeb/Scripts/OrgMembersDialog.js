@@ -12,11 +12,7 @@
         });
     });
 
-    $(".datepicker").datepicker({
-        dateFormat: 'm/d/yy',
-        changeMonth: true,
-        changeYear: true
-    });
+    $(".datepicker").datepicker();
 
     $("#SelectAll").click(function () {
         $("input[name='list']").attr('checked', $(this).attr('checked'));

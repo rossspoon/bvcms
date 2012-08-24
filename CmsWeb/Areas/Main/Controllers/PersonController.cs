@@ -13,6 +13,7 @@ using System.Web.Routing;
 using System.Threading;
 using System.Web.Security;
 using CmsData.Codes;
+using System.Globalization;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -727,6 +728,14 @@ namespace CmsWeb.Areas.Main.Controllers
 			var m = new DuplicatesModel(id);
 			return View(m);
 		}
+		public ActionResult ShowMeetings(int id, bool all)
+		{
+			if (all == true)
+				Session["showallmeetings"] = true;
+			else
+				Session.Remove("showallmeetings");
+			return Redirect("/Person/Index/" + id);
+		}
 		private void InitExportToolbar(int? id)
 		{
 			var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
@@ -761,6 +770,31 @@ namespace CmsWeb.Areas.Main.Controllers
 						Description = o.Description
 					};
 			return View(q);
+		}
+		public ActionResult ContributionStatement(int id, string fr, string to)
+		{
+			if (Util.UserPeopleId != id && !User.IsInRole("Finance"))
+				return Content("No permission to view statement");
+			var p = DbUtil.Db.LoadPersonById(id);
+			if (p == null)
+				return Content("Invalid Id");
+
+			var frdt = Util.ParseMMddyy(fr);
+			var todt = Util.ParseMMddyy(to);
+			if (!(frdt.HasValue && todt.HasValue))
+				return Content("date formats invalid");
+
+			DbUtil.LogActivity("Contribution Statement for ({0})".Fmt(id));
+
+			return new CmsWeb.Areas.Finance.Models.Report.ContributionStatementResult 
+			{ 
+				PeopleId = id, 
+				FromDate = frdt.Value, 
+				ToDate = todt.Value, 
+				typ = 2,
+				noaddressok = true,
+				useMinAmt = false,
+			};
 		}
 	}
 }

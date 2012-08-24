@@ -1,7 +1,5 @@
 ﻿$(function () {
     $.dpoptions = {
-        changeMonth: true,
-        changeYear: true,
         yearRange: 'c-99:c+0',
         onSelect: function (dateText, inst) {
             var f = $(this).closest('form');
@@ -52,8 +50,10 @@
                 return;
             }
             $(f).html(ret).ready(function () {
-                if ($("#submitit").attr("onlyoneallowed") == "true")
+                if ($("#submitit").attr("onlyoneallowed") == "true") {
+                    $.InstructionsShow();
                     $("#submitit").click();
+                }
                 else {
                     $.InstructionsShow();
                     $("#dob").datepicker($.dpoptions);

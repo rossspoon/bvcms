@@ -103,10 +103,15 @@ namespace CmsData
 				var tot = q.Where(aa => aa.ContributionFund.FundStatusId == 1).Sum(aa => aa.Amt);
 				NextDate = FindNextDate(DateTime.Today.AddDays(1));
 				Db.SubmitChanges();
-				Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(this.Person.FromEmail),
+				var contributionemail = (from ex in Person.PeopleExtras
+										 where ex.Field == "ContributionEmail"
+										 select ex.Data).SingleOrDefault();
+				if (!Util.ValidEmail(contributionemail))
+					contributionemail = Person.FromEmail;
+				Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(contributionemail),
 						"Recurring Giving for " + Db.Setting("NameOfChurch", Db.CmsHost),
 						"Your gift of ${0:N2} was processed this morning.".Fmt(tot),
-						Util.ToMailAddressList(this.Person.FromEmail), 0, null);
+						Util.ToMailAddressList(contributionemail), 0, null);
 			}
 			else
 			{

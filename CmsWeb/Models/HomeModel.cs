@@ -162,7 +162,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<NewsInfo> ChurchNews()
         {
-            var feedurl = DbUtil.Db.Setting("ChurchFeedUrl", "");
+			var feedurl = DbUtil.Db.Setting("ChurchFeedUrl", "");
 
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);
 
@@ -213,7 +213,8 @@ namespace CmsWeb.Models
                         var reader = XmlReader.Create(new StringReader(feed.Data));
                         var f = SyndicationFeed.Load(reader);
                         var posts = from item in f.Items
-                                    let au = item.Authors.First().Name
+									let a = item.Authors.FirstOrDefault()
+									let au = a == null ? "" : a.Name
                                     select new NewsInfo
                                     {
                                         Title = item.Title.Text,

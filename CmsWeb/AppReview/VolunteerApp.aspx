@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <th>
-                Approval Date:
+                Background Check:
             </th>
             <td>
                 <cc1:DisplayOrEditDate ID="ProcessedDate" runat="server" BindingSource="vol"></cc1:DisplayOrEditDate>

@@ -19,6 +19,8 @@ Scripts/ExportToolBar.js ^
 Scripts/menu.js ^
 Scripts/Pager.js ^
 Scripts/headermenu.js ^
+Content/js/modernizr.mq.js ^
+Content/js/tutorial.js ^
 -o Min/Content/js/combined.js -clobber:true || pause
 
 ajaxmin ^
@@ -72,6 +74,8 @@ ajaxmin Content/js/jquery.sortElements.js -o Min\Content/js/jquery.sortElements.
 ajaxmin Content/js/jquery.textarea.js -o Min\Content/js/jquery.textarea.js -clobber:true || pause
 ajaxmin Content/js/jquery.transpose.js -o Min\Content/js/jquery.transpose.js -clobber:true || pause
 ajaxmin Content/js/jquery-ui-timepicker-addon.js -o Min\Content/js/jquery-ui-timepicker-addon.js -clobber:true || pause
+ajaxmin Content/js/jquery.dataTables.js -o Min\Content/js/jquery.dataTables.js -clobber:true || pause
+ajaxmin Content/js/FixedHeader.js -o Min\Content/js/FixedHeader.js -clobber:true || pause
 
 ajaxmin Scripts/CheckIn.js -o Min/Scripts/CheckIn.js -clobber:true || pause
 ajaxmin Scripts/CheckInActivity.js -o Min/Scripts/CheckInActivity.js -clobber:true || pause

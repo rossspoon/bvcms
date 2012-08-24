@@ -30,7 +30,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             var t = DbUtil.Db.EnrollmentTransactions.Single(tt => tt.TransactionId == iid);
             t.TransactionDate = value;
             DbUtil.Db.SubmitChanges();
-            return Content(value.ToString("M/d/yy h:mm t"));
+            return Content(value.ToString("g"));
         }
     }
 }

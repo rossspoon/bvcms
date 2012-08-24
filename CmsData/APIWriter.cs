@@ -40,9 +40,9 @@ namespace CmsData.API
         {
             string s = null;
             if (i is DateTime)
-                s = ((DateTime)i).ToString("M/d/yy h:mm tt");
+                s = ((DateTime)i).FormatDateTm();
             else if (i is DateTime?)
-                s = ((DateTime?)i).ToString2("M/d/yy h:mm tt");
+                s = ((DateTime?)i).FormatDateTm();
             else if (i == null)
                 s = string.Empty;
             else

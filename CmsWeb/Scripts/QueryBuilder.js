@@ -29,11 +29,7 @@ $(function () {
     $('#Tags').click(function (ev) {
         $('#TagsPopup').show();
     });
-    $(".datepicker").datepicker({
-        dateFormat: 'm/d/yy',
-        changeMonth: true,
-        changeYear: true
-    });
+    $(".datepicker").datepicker();
     $(".bt").button();
     $("#selectconditions select").css("width", "100%");
     $("#targetpeople").click(function (ev) {
@@ -437,6 +433,10 @@ function UpdateView(vs) {
     $('#CodeValue').showhide(vs.CodeVisible);
     $('#CodesValue').showhide(vs.CodesVisible);
     $('#DateValue').showhide(vs.DateVisible);
+    if (vs.DateVisible)
+        $('#DateValue').datepicker();
+    else
+        $('#DateValue').datepicker("destroy");
     $('#NumberValue').showhide(vs.NumberVisible);
     $('#IntegerValue').showhide(vs.IntegerVisible);
 

@@ -7,6 +7,7 @@
 }
 @section scripts
 {
+@Html.Partial("DatePickerDefaults")
 @Html.Script("/Scripts/OnlineReg.js")
 <script type="text/javascript">
     $(function () {
@@ -42,11 +43,10 @@ div.section div, div.section table
    <form method="post" action="/OnlineReg/ManageGiving">
     @Html.Hidden("otheredit", 0)
     @Html.Hidden("pid", Model.pid)
-    @Html.Hidden("Type", Model.Type)
     @Html.Hidden("orgid", Model.orgid)
         <fieldset>
             <div class="section">
-                <label>Giving Opportunities</label>
+                <label>@Model.HeadingLabel</label>
                 <table class="grid" cellpadding="2">
 @{ var funds = CmsWeb.Models.OnlineRegPersonModel.Funds(); }
 @for (var n = 0; n < funds.Length; n++)
@@ -105,6 +105,14 @@ div.section div, div.section table
                         @Html.Hidden("allowcc", "true")
                         <div>@Html.ValidationMessage("Type")</div><br>
                     </div>
+}
+else if (Model.NoCreditCardsAllowed)
+{
+                    @Html.Hidden("Type", "B");
+}
+else
+{
+                    @Html.Hidden("Type", "C");
 }
 @if (Model.NoCreditCardsAllowed == false)
 {

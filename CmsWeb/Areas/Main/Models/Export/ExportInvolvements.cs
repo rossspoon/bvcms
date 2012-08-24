@@ -285,7 +285,7 @@ namespace CmsWeb.Models
                          AttendStr = om.AttendStr,
                          MemberType = om.MemberType.Description,
                          MemberInfoRaw = om.UserData,
-                         InactiveDate = om.InactiveDate.ToString2("M/d/yy"),
+                         InactiveDate = om.InactiveDate.FormatDate(),
                          Medical = recreg.MedicalDescription,
                          PeopleId = p.PeopleId,
                          EnrollDate = om.EnrollmentDate.FormatDate(),

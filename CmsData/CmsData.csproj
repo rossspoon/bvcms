@@ -238,7 +238,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressVerify.cs" />
+    <Compile Include="AddressVerify.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Attend.cs" />
     <Compile Include="AuthorizeNet.cs" />
     <Compile Include="Batch\ExpressionVisitor.cs" />
@@ -252,7 +254,9 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="Meeting.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
+    <Compile Include="Generated\Functions\PledgeFulfillment.cs" />
     <Compile Include="Generated\Functions\VisitNumberSinceDate.cs" />
     <Compile Include="Generated\ManagedGiving.cs" />
     <Compile Include="Generated\PaymentInfo.cs" />

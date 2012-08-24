@@ -379,7 +379,7 @@ AmountDue: {4:C}<br/>
                 message = message.Replace("{participants}", details);
 
                 // send confirmations
-                Db.Email(notify.FromEmail, p.person, EmailSubject, message);
+                Db.Email(notify.FromEmail, p.person, Util.EmailAddressListFromString(p.fromemail), EmailSubject, message, redacted:false);
                 // notify the staff
                 Db.Email(Util.PickFirst(p.person.FromEmail, notify.FromEmail),
                     NotifyIds, Header,

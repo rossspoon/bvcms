@@ -78,7 +78,7 @@ div.pager
        </tr>
     </table>
 <div class="floatleft">
-    <div id="buttondiv" class="dropdown" style="margin-top:1em;margin-left: 1em;font-size:1.2em;">
+    <div id="buttondiv" class="dropdown" style="margin-top:1em;margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
         <div><a>Maps and Directions</a></div>
         <div class="sublinks">
             <a href="http://www.google.com/maps?q=@p.PrimaryAddr.AddrCityStateZip()" target="_blank">Google Map</a>
@@ -88,15 +88,11 @@ div.pager
         </div>
         <div style="border-bottom: 4px solid #ddd"></div>
     </div>
-@if (isfinance || isadmin || ismanager)
+@if (isadmin || ismanager)
 {
     <div id="buttondiv" class="dropdown" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
         <div><a>Other Management</a></div>
         <div class="sublinks">
-    @if (isfinance)
-    {
-            <a href="/FinanceReports/ContributionYears/@p.PeopleId">Contributions</a> 
-    }
     @if (Model.CanCheckIn)
     { 
             <a href="/CheckIn/CheckIn/@Model.ckorg?pid=@p.PeopleId">CheckIn</a>
@@ -107,8 +103,32 @@ div.pager
         if (isadmin)
         { 
             <a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a>
+            if (Session["showallmeetings"] == null)
+            {
+            <a href="/Person/ShowMeetings/@p.PeopleId?all=true">Show All Meetings</a>
+            }
+            else
+            {
+            <a href="/Person/ShowMeetings/@p.PeopleId?all=false">Show Only Attends</a>
+            }
         } 
     }
+        </div>
+        <div style="border-bottom: 4px solid #ddd"></div>
+    </div>
+}
+@if (isfinance || Util.UserPeopleId == Model.Person.PeopleId)
+{
+    var yr = DateTime.Now.Year;
+    <div id="buttondiv" class="dropdown" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
+        <div><a>Contributions</a></div>
+        <div class="sublinks">
+        @if (isfinance)
+        {
+            <a href="/FinanceReports/ContributionYears/@p.PeopleId">History</a> 
+        }
+            <a href="/Person/ContributionStatement/@p.PeopleId/0101@(yr)/@(DateTime.Now.ToString("MMddyyyy"))">Statement Year to date</a> 
+            <a href="/Person/ContributionStatement/@p.PeopleId/0101@(yr-1)/1231@(yr-1)">Last Year's Statement</a> 
         </div>
         <div style="border-bottom: 4px solid #ddd"></div>
     </div>

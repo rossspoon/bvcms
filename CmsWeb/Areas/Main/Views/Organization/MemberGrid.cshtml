@@ -45,8 +45,8 @@
         <span>@om.AttendPct.ToString2("N1")%</span>
     </td>
     <td>
-        <span>@om.Joined.FormatDate2()</span><br />
-        <span>@om.LastAttended.FormatDate2()</span>
+        <span>@om.Joined.FormatDate()</span><br />
+        <span>@om.LastAttended.FormatDate()</span>
     </td>
     <td>
         <a pid='@om.PeopleId' title="Add to/Remove from Active Tag" class="taguntag" href="#">@(om.HasTag? "Remove" : "Add")</a>

@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CmsWeb.Areas.Manage.Controllers;
 using CmsData.Codes;
+using CmsWeb.Code;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -30,6 +31,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (pf.AmtToPay < 0) pf.AmtToPay = 0;
 			if (pf.Donate < 0) pf.Donate = 0;
 
+			pf.AllowCoupon = false;
+
+			SetHeaders(pf.OrgId ?? 0);
+			ViewBag.Url = pf.Url;
+			ViewBag.timeout = INT_timeout;
+
 			if ((pf.AmtToPay ?? 0) <= 0 && (pf.Donate ?? 0) <= 0)
 			{
 				DbUtil.Db.SubmitChanges();
@@ -39,6 +46,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			try
 			{
+				if (pf.Type == "B")
+					Payments.ValidateBankAccountInfo(ModelState, pf.Routing, pf.Account);
+				if (pf.Type == "C")
+					Payments.ValidateCreditCardInfo(ModelState, pf.CreditCard, pf.Expires, pf.CCV);
+				if (!ModelState.IsValid)
+					return View("ProcessPayment", pf);
+
 				if (pf.IsLoggedIn == true && pf.SavePayInfo == true)
 				{
 					var gateway = OnlineRegModel.GetTransactionGateway();
@@ -75,9 +89,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				}
 				var ti = ProcessPaymentTransaction(m, pf);
 
-				SetHeaders(pf.OrgId ?? 0);
-				ViewBag.Url = pf.Url;
-				ViewBag.timeout = INT_timeout;
 				if (ti.Approved == false)
 				{
 					ModelState.AddModelError("form", ti.Message);
@@ -85,7 +96,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				}
 				if (pf.DatumId > 0)
 					return View(ConfirmTransaction(m, ti.TransactionId, pf.AmtToPay));
-				ConfirmDuePaidTransaction(ti, ti.TransactionId, pf.AmtToPay ?? 0);
+				ConfirmDuePaidTransaction(ti, ti.TransactionId, pf.AmtToPay ?? 0, sendmail: true);
 				return View("ConfirmDuePaid", ti);
 			}
 			catch (Exception ex)

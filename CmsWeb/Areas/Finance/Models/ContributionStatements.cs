@@ -14,6 +14,7 @@ using CmsData;
 using UtilityExtensions;
 using iTextSharp.text.html.simpleparser;
 using CmsWeb.Areas.Main.Models.Report;
+using System.Diagnostics;
 
 namespace CmsWeb.Areas.Finance.Models.Report
 {
@@ -25,9 +26,18 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		public int typ { get; set; }
 		public DateTime FromDate { get; set; }
 		public DateTime ToDate { get; set; }
-
-		public void Run(Stream stream, CMSDataContext Db, IEnumerable<ContributorInfo> q)
+		private PageEvent pageEvents = new PageEvent();
+		public int LastSet()
 		{
+			if (pageEvents.FamilySet.Count == 0)
+				return 0;
+			var m = pageEvents.FamilySet.Max(kp => kp.Value);
+			return m;
+		}
+
+		public void Run(Stream stream, CMSDataContext Db, IEnumerable<ContributorInfo> q, int set = 0)
+		{
+			pageEvents.set = set;
 			IEnumerable<ContributorInfo> contributors = q;
 
 			PdfContentByte dc;
@@ -35,7 +45,6 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 11);
 
 			var doc = new Document(PageSize.LETTER);
-			var pageEvents = new PageEvent();
 			doc.SetMargins(36f, 30f, 24f, 36f);
 			var w = PdfWriter.GetInstance(doc, stream);
 			w.PageEvent = pageEvents;
@@ -44,16 +53,21 @@ namespace CmsWeb.Areas.Finance.Models.Report
 
 			int prevfid = 0;
 			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).FirstOrDefault();
+			runningtotals.Processed = 0;
+			Db.SubmitChanges();
 			foreach (var ci in contributors)
 			{
+				if (set > 0 && pageEvents.FamilySet[ci.PeopleId] != set)
+					continue;
 				if (prevfid != ci.FamilyId)
 				{
-					//Debug.WriteLine(ci.FamilyId);
-					pageEvents.StartPageSet();
 					prevfid = ci.FamilyId;
+					pageEvents.StartPageSet();
 				}
 				else
 					doc.NewPage();
+				if (set == 0)
+					pageEvents.FamilySet[ci.PeopleId] = 0;
 
 				var st = new StyleSheet();
 				st.LoadTagStyle("h1", "size", "18px");
@@ -93,7 +107,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				if (ci.Address2.HasValue())
 					a.AddCell(new Phrase(ci.Address2, font));
 				a.AddCell(new Phrase(ci.CityStateZip, font));
-				cell = new PdfPCell(a) {Border = Rectangle.NO_BORDER};
+				cell = new PdfPCell(a) { Border = Rectangle.NO_BORDER };
 				//cell.FixedHeight = 72f * 1.0625f;
 				ae.AddCell(cell);
 
@@ -106,7 +120,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				var t2 = new PdfPTable(1);
 				t2.TotalWidth = 72f * 3f;
 				t2.DefaultCell.Border = Rectangle.NO_BORDER;
-				t2.AddCell(new Phrase("\nPrint Date: {0:M/d/yy}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
+				t2.AddCell(new Phrase("\nPrint Date: {0:d}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
 				t2.AddCell("");
 				string html2 = @"<p><i>
 NOTE: No goods or services were provided to you by the church in connection with any contibution;
@@ -147,7 +161,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				doc.Add(new Paragraph(" "));
 				doc.Add(new Paragraph(" ") { SpacingBefore = 72f * 2.125f });
 
-				doc.Add(new Phrase("\n  Period: {0:M/d/yy} - {1:M/d/yy}".Fmt(FromDate, ToDate), boldfont));
+				doc.Add(new Phrase("\n  Period: {0:d} - {1:d}".Fmt(FromDate, ToDate), boldfont));
 
 				var mct = new MultiColumnText();
 				mct.AddRegularColumns(doc.Left, doc.Right, 20f, 2);
@@ -175,7 +189,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				var total = 0m;
 				foreach (var c in ContributionModel.contributions(Db, ci, FromDate, ToDate))
 				{
-					t.AddCell(new Phrase(c.ContributionDate.ToString2("M/d/yy"), font));
+					t.AddCell(new Phrase(c.ContributionDate.FormatDate(), font));
 					t.AddCell(new Phrase(c.Fund, font));
 					cell = new PdfPCell(t.DefaultCell);
 					cell.HorizontalAlignment = Element.ALIGN_RIGHT;
@@ -276,16 +290,19 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				doc.Add(mct);
 
 				runningtotals.Processed += 1;
+				runningtotals.CurrSet = set;
 				Db.SubmitChanges();
 			}
+
 			if (!pageEvents.EndPageSet())
 			{
-				pageEvents.StartPageSet();
+				doc.NewPage();
 				doc.Add(new Phrase("no data"));
-				pageEvents.EndPageSet();
 			}
 			doc.Close();
-			runningtotals.Completed = DateTime.Now;
+
+			if(set == LastSet())
+				runningtotals.Completed = DateTime.Now;
 			Db.SubmitChanges();
 		}
 		class PageEvent : PdfPageEventHelper
@@ -295,6 +312,10 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 			private Document document;
 			private PdfContentByte dc;
 			private BaseFont font;
+			public int PeopleId { get; set; }
+			public int set { get; set; }
+
+			public Dictionary<int, int> FamilySet { get; set; }
 
 			public override void OnOpenDocument(PdfWriter writer, Document document)
 			{
@@ -303,6 +324,8 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				base.OnOpenDocument(writer, document);
 				font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 				dc = writer.DirectContent;
+				if (set == 0)
+					FamilySet = new Dictionary<int, int>();
 			}
 			public bool EndPageSet()
 			{
@@ -311,15 +334,23 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				npages.BeginText();
 				npages.SetFontAndSize(font, 8);
 				npages.ShowText((writer.PageNumber + 1).ToString());
+				if (set == 0)
+				{
+					var list = FamilySet.Where(kp => kp.Value == 0).ToList();
+					foreach (var kp in list)
+						if (kp.Value == 0)
+							FamilySet[kp.Key] = writer.PageNumber + 1;
+				}
 				npages.EndText();
 				return true;
 			}
-			public void StartPageSet()
+			public bool StartPageSet()
 			{
 				EndPageSet();
 				document.NewPage();
 				document.ResetPageCount();
 				npages = dc.CreateTemplate(50, 50);
+				return true;
 			}
 			public override void OnEndPage(PdfWriter writer, Document document)
 			{
@@ -335,9 +366,52 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				dc.SetTextMatrix(document.PageSize.Width - 30 - len, 30);
 				dc.ShowText(text);
 				dc.EndText();
+				if (npages == null)
+					return;
 				dc.AddTemplate(npages, document.PageSize.Width - 30, 30);
 			}
 		}
+		//public void splitPDF(Stream inputStream, Stream outputStream, bool multi)
+		//{
+		//	var document = new Document();
+		//	try
+		//	{
+		//		var inputPDF = new PdfReader(inputStream);
+		//		var totalPages = inputPDF.NumberOfPages;
+		//		var writer = PdfWriter.GetInstance(document, outputStream);
+
+		//		document.Open();
+		//		var cb = writer.DirectContent; // Holds the PDF data
+		//		PdfImportedPage page;
+
+		//		for(var i = 0; i < this.pageEvents.multipages.Count; i++)
+		//			if(pageEvents.multipages[i] == multi)
+		//			{
+		//				document.NewPage();
+		//				page = writer.GetImportedPage(inputPDF, i+1);
+		//				cb.AddTemplate(page, 0, 0);
+		//			}
+		//		outputStream.Flush();
+		//		document.Close();
+		//		outputStream.Close();
+		//	}
+		//	catch (Exception e)
+		//	{
+		//	}
+		//	finally
+		//	{
+		//		if (document.IsOpen())
+		//			document.Close();
+		//		try
+		//		{
+		//			if (outputStream != null)
+		//				outputStream.Close();
+		//		}
+		//		catch (IOException ioe)
+		//		{
+		//		}
+		//	}
+		//}
 	}
 }
 

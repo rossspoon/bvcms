@@ -22,7 +22,7 @@ using System.Drawing.Drawing2D;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin,Design")]
 	[ValidateInput(false)]
 	public class DisplayController : CmsStaffController
 	{

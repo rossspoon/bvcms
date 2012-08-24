@@ -76,6 +76,9 @@ namespace CmsWeb.Areas.Finance.Models.Report
                                              : "Mr. and Mrs. " + p.SpouseName))))
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
                       where option != 9 || noaddressok
+#if DEBUG2
+					  where p.PeopleId < 1000
+#endif
                       where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
                       select new ContributorInfo
@@ -130,6 +133,8 @@ namespace CmsWeb.Areas.Finance.Models.Report
                 (int)Contribution.TypeCode.Reversed 
             };
 
+			var showPledgeIfMet = DbUtil.Db.Setting("ShowPledgeIfMet", "true").ToBool();
+
             var qp = from p in Db.Contributions
                      where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
                      where p.PledgeFlag && p.ContributionTypeId == (int)Contribution.TypeCode.Pledge
@@ -149,6 +154,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
             var q = from p in qp
                     join c in qc on p.FundId equals c.FundId into items
                     from c in items.DefaultIfEmpty()
+					where p.Total > c.Total || showPledgeIfMet
                     orderby p.Fund descending
                     select new PledgeSummaryInfo
                     {

@@ -16,7 +16,7 @@
 @foreach (var c in Model.GetChangeLogs())
 { 
     <tr>
-        <td title="@c.FieldSet">@c.Time.ToString2("M/d/yy h:mm tt")</td>
+        <td title="@c.FieldSet">@c.Time.ToString2("g")</td>
         <td>@c.User</td>
         <td>@c.Field</td>
         <td>@c.Before</td>

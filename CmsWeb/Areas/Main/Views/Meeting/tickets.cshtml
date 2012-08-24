@@ -17,33 +17,22 @@
 {
 @Html.Script("/Scripts/meeting-ticket.js")
 }
+<embed src="/Content/zylo.wav" autostart="false" width="0" height="0" id="zylo" enablejavascript="true">
+<embed src="/Content/ding.wav" autostart="false" width="0" height="0" id="ding" enablejavascript="true">
 
 <form method="Post">
-@Html.Hidden("meetingid", Model.meeting.MeetingId)
-	<table>
-		<tr>
-			<td rowspan="2">
-				<table class="roundbox" cellspacing="5">
-					<tr><td colspan="2" nowrap>
-							<h2>@Model.meeting.Organization.OrganizationName <a href="/Meeting/Index/@Model.meeting.MeetingId"><span style="font-size:12px">@Model.meeting.MeetingDate.FormatDateTm()</span></a></h2></td></tr>
-					<tr><td align="right">Description:</td>
-						<td>@Model.meeting.Description</td></tr>
-					<tr><td colspan="2">
-							@Html.CheckBox("requireMember")Require Org Member |
-							@Html.CheckBox("requireRegistered")Require Registered
-						</td></tr>
-				</table>
-			</td>
-			<td rowspan="2" style="width:2em"></td>
-			<td valign="bottom" style="min-height:12em">
-				<div>
-					Wand Target<br />
-					@Html.TextBox("wandtarget") 
-				</div>
-			</td>
-		</tr>
-	</table>
-    </form>
+    <table>
+        <tr>
+        	<td id="meeting">
+                @Html.Partial("TicketMeeting", Model)
+            </td>
+        	<td valign="bottom" style="margin-left:1em">
+        		Wand Target<br />
+        		@Html.TextBox("wandtarget") 
+            </td>
+        </tr>
+    </table>
+</form>
 <hr />
 <div id="mark">
 	

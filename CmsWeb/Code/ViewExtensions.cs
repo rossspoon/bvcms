@@ -288,12 +288,12 @@ namespace CmsWeb
         {
             var tb = new TagBuilder("input");
             tb.MergeAttribute("type", "text");
-            tb.MergeAttribute("id", name);
+            tb.MergeAttribute("id", name.Replace('.', '_'));
             tb.MergeAttribute("name", name);
             tb.MergeAttribute("class", "datepicker");
             var s = helper.TryGetModel(name);
             var viewDataValue = (DateTime?)helper.ViewData.Eval(name);
-            tb.MergeAttribute("value", viewDataValue.FormatDate2());
+            tb.MergeAttribute("value", viewDataValue.FormatDate());
             return new HtmlString(tb.ToString());
         }
         public static HtmlString CheckBoxReadonly(this HtmlHelper helper, bool? ck)

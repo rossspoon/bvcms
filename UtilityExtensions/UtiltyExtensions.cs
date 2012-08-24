@@ -70,8 +70,9 @@ namespace UtilityExtensions
 		{
 			if (s != null && s.AllDigits() && s.Length == 8)
 			{
-				s = s.Insert(4, "/");
-				s = s.Insert(2, "/");
+				var d = ParseMMddyy(s);
+				if (d.HasValue)
+					return d;
 			}
 			DateTime dt;
 			if (DateTime.TryParse(s, out dt))
@@ -192,15 +193,17 @@ namespace UtilityExtensions
 		}
 		public static string FormatBirthday(int? y, int? m, int? d)
 		{
-			string dt = "";
 			if (m.HasValue && d.HasValue)
-				dt = "{0}/{1}".Fmt(m, d);
-			if (y.HasValue)
-				if (dt != "")
-					dt = dt + "/" + y.ToString();
+				if(!y.HasValue)
+					return new DateTime(2000, m.Value, d.Value).ToString("m");
 				else
-					dt = y.ToString();
-			return dt;
+					return new DateTime(y.Value, m.Value, d.Value).ToString("d");
+			if (y.HasValue)
+				if (m.HasValue && !d.HasValue)
+					return new DateTime(y.Value, m.Value, 1).ToString("y");
+				else
+					return y.ToString();
+			return "";
 		}
 		public static string FormatDate(this DateTime? dt)
 		{
@@ -208,21 +211,15 @@ namespace UtilityExtensions
 				return dt.Value.ToString("d");
 			return "";
 		}
-		public static string FormatDate2(this DateTime? dt)
+		public static string FormatDate(this DateTime? dt, string def = "")
 		{
 			if (dt.HasValue)
-				return dt.Value.ToString("M/d/yy");
-			return "";
-		}
-		public static string FormatDate(this DateTime? dt, string def)
-		{
-			if (dt.HasValue)
-				return dt.Value.ToString("M/d/yy");
+				return dt.Value.ToString("d");
 			return def;
 		}
 		public static string FormatDateTm(this DateTime dt)
 		{
-			return dt.ToString("M/d/yy h:mm tt");
+			return dt.ToString("g");
 		}
 		public static string FormatDateTm(this DateTime? dt)
 		{
@@ -231,7 +228,7 @@ namespace UtilityExtensions
 		public static string FormatDateTm(this DateTime? dt, string def)
 		{
 			if (dt.HasValue)
-				return dt.ToString2("M/d/yy h:mm tt");
+				return dt.ToString2("g");
 			return def;
 		}
 		public static string ToString2(this int? i, string fmt)
@@ -299,16 +296,6 @@ namespace UtilityExtensions
 				age--;
 			return age;
 		}
-		//public static DateTime Now2
-		//{
-		//    get
-		//    {
-		//        var daysoffset = (double?)HttpContext.Current.Application["daysoffset"];
-		//        if (daysoffset.HasValue)
-		//            return DateTime.Now.AddDays(daysoffset.Value);
-		//        return DateTime.Now;
-		//    }
-		//}
 		public static DateTime Now
 		{
 			get { return DateTime.Now; }
@@ -433,31 +420,26 @@ namespace UtilityExtensions
 			dt2 = DateTime.MinValue;
 			if (!dt.HasValue())
 				return false;
-			if (Regex.IsMatch(dt, @"\A(?:\A(0?[1-9]|1[012])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19|20)?[0-9]{2}\s*\z)\Z"))
-				if (DateTime.TryParse(dt, out dt2))
-					return true;
+
+			if (DateTime.TryParse(dt, out dt2))
+				return true;
 			if (!Regex.IsMatch(dt, @"\A(?:\A(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2}))\Z"))
 				return false;
+			var culture = CultureInfo.CreateSpecificCulture("en-US");
+			var styles = DateTimeStyles.None;
 			var s = dt.Substring(0, 2) + "/" + dt.Substring(2, 2) + "/" + dt.Substring(4);
-			if (DateTime.TryParse(s, out dt2))
+			if (DateTime.TryParse(s, culture, styles, out dt2))
 				return true;
 			return false;
 		}
 		public static bool BirthDateValid(string dt, out DateTime dt2)
 		{
 			dt2 = DateTime.MinValue;
-			if (!dt.HasValue())
+			if (!DateValid(dt, out dt2))
 				return false;
-			if (!Regex.IsMatch(dt, @"\A(?:\A(0?[1-9]|1[012])[-/](0?[1-9]|[12][0-9]|3[01])[-/](19|20)?[0-9]{2}\s*\z)\Z")
-					&& !Regex.IsMatch(dt, @"\A(?:\A(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2}))\Z"))
-				return false;
-			if (DateTime.TryParse(dt, out dt2))
-			{
-				if (dt2 > DateTime.Now)
-					dt2 = dt2.AddYears(-100);
-				return true;
-			}
-			return false;
+			if (dt2 > DateTime.Now)
+				dt2 = dt2.AddYears(-100);
+			return true;
 		}
 
 		public static string FmtAttendStr(this string attendstr)
@@ -521,9 +503,24 @@ namespace UtilityExtensions
 						return (bool)HttpContext.Current.Items[STR_IsSage];
 				return null;
 			}
-			set 
-			{ 
+			set
+			{
 				HttpContext.Current.Items[STR_IsSage] = value;
+			}
+		}
+		private const string STR_jQueryDateFormat = "jQueryDateFormat";
+		public static string jQueryDateFormat
+		{
+			get
+			{
+				if (HttpContext.Current != null)
+					if (HttpContext.Current.Items[STR_jQueryDateFormat] != null)
+						return HttpContext.Current.Items[STR_jQueryDateFormat] as string;
+				return null;
+			}
+			set
+			{
+				HttpContext.Current.Items[STR_jQueryDateFormat] = value;
 			}
 		}
 		public static string GetConnectionString(string Host)
@@ -553,19 +550,6 @@ namespace UtilityExtensions
 #endif
 			}
 		}
-		//public static string ConnectionStringDisc
-		//{
-		//    get
-		//    {
-		//        var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
-		//        if (cs == null)
-		//            return ConfigurationManager.ConnectionStrings["Disc"].ConnectionString;
-
-		//        var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
-		//        cb.InitialCatalog = "CMS_{0}_disc".Fmt(Host1);
-		//        return cb.ConnectionString;
-		//    }
-		//}
 		public static string UserName
 		{
 			get
@@ -695,7 +679,6 @@ namespace UtilityExtensions
 			}
 		}
 		public static int CreateAccountCode = -1952;
-		//public static int OnlineGivingCode = -816;
 		public static string SessionId
 		{
 			get
@@ -1213,10 +1196,10 @@ namespace UtilityExtensions
 		}
 		public static void InsertCacheNotRemovable(string key, object value)
 		{
-		    HttpRuntime.Cache.Insert(key, value, null,
-		        System.Web.Caching.Cache.NoAbsoluteExpiration,
-		        System.Web.Caching.Cache.NoSlidingExpiration,
-		        CacheItemPriority.NotRemovable, null);
+			HttpRuntime.Cache.Insert(key, value, null,
+				System.Web.Caching.Cache.NoAbsoluteExpiration,
+				System.Web.Caching.Cache.NoSlidingExpiration,
+				CacheItemPriority.NotRemovable, null);
 		}
 
 		public static MailAddress FirstAddress2(string addrs, string name)
@@ -1327,10 +1310,10 @@ namespace UtilityExtensions
 			return wk;
 		}
 
-		public static IEnumerable<DateTime>  DaysOfMonth(DateTime dt)
+		public static IEnumerable<DateTime> DaysOfMonth(DateTime dt)
 		{
 			var d = new DateTime(dt.Year, dt.Month, 1);
-			while(d.Month == dt.Month)
+			while (d.Month == dt.Month)
 			{
 				yield return d;
 				d = d.AddDays(1);
@@ -1340,16 +1323,16 @@ namespace UtilityExtensions
 		{
 			var sundays = DaysOfMonth(sunday).Where(dd => dd.DayOfWeek == 0).ToList();
 			var wk = 0;
-			while(sunday > sundays[wk])
+			while (sunday > sundays[wk])
 				wk++;
 			return wk + 1;
 		}
 		public static DateTime Sunday(int month, int year)
-        {
-            var first = new DateTime(year, month, 1);
-            return new DateTime(year, month,
-                1 + (7 - (int)first.DayOfWeek) % 7);
-        }
+		{
+			var first = new DateTime(year, month, 1);
+			return new DateTime(year, month,
+				1 + (7 - (int)first.DayOfWeek) % 7);
+		}
 		public static bool SessionTimedOut()
 		{
 			if (HttpContext.Current.Session != null)
@@ -1408,7 +1391,7 @@ namespace UtilityExtensions
 		}
 		public static string Mask(StringBuilder sb, int leave)
 		{
-			for (var i = 0; i < sb.Length-leave; i++)
+			for (var i = 0; i < sb.Length - leave; i++)
 				if (char.IsDigit(sb[i]))
 					sb[i] = 'X';
 			return sb.ToString();
@@ -1422,18 +1405,32 @@ namespace UtilityExtensions
 				d2 = new DateTime(d2.Year, d2.Month, baseday);
 			return d2;
 		}
-        public static bool IsDebug()
-        {
-            var d = false;
+		public static bool IsDebug()
+		{
+			var d = false;
 #if DEBUG
-            d = true;
+			d = true;
 #endif
-            return d;
-        }
+			return d;
+		}
 		public static string ToProper(this string s)
 		{
 			var textinfo = Thread.CurrentThread.CurrentCulture.TextInfo;
 			return textinfo.ToTitleCase(s.ToLower());
+		}
+		public static DateTime? ParseMMddyy(string s)
+		{
+			DateTime dt;
+			if (DateTime.TryParseExact(s, "MMddyyyy",
+					CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal,
+					out dt))
+				return dt;
+			if (DateTime.TryParseExact(s, "MMddyy",
+					CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal,
+					out dt))
+				return dt;
+
+			return null;
 		}
 	}
 	public class EventArg<T> : EventArgs

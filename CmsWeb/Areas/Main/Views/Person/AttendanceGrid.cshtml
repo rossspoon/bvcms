@@ -19,7 +19,7 @@ Show Future Meetings: @Html.CheckBox("future")
     { 
     <tr>
     <td><input type="checkbox" mid="@a.MeetingId" pid="@a.PeopleId" @(a.AttendFlag? "checked=checked" : "") class="atck" @(User.IsInRole("Admin")? "" : "disabled=disabled") /></td>
-    <td nowrap="nowrap"><a href="/Meeting/Index/@a.MeetingId">@a.MeetingDate.GetWeekNumber() @a.MeetingDate.Value.ToString("M/d/yy h:mmtt (ddd)")</a></td>
+    <td nowrap="nowrap"><a href="/Meeting/Index/@a.MeetingId">@a.MeetingDate.GetWeekNumber() @a.MeetingDate.Value.ToString("g") (@a.MeetingDate.Value.ToString("ddd"))</a></td>
     <td><a href="/Organization/Index/@a.OrganizationId">@a.OrganizationName</a></td>
     <td>@a.MemberType</td>
     <td>@a.AttendType</td>
@@ -33,7 +33,7 @@ else
     { 
     <tr>
     <td><input type="checkbox" @(a.AttendFlag? "checked=checked" : "") disabled=disabled /></td>
-    <td>@a.MeetingDate.Value.ToString("MM/dd/yy h:mmtt")</td>
+    <td>@a.MeetingDate.Value.ToString("g")</td>
     <td>@a.OrganizationName</td>
     <td>@a.MemberType</td>
     <td>@a.AttendType</td>

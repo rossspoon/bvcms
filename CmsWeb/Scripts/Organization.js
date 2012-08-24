@@ -31,6 +31,21 @@ $(function () {
         }
         return false;
     });
+    $('#sendreminders').click(function (ev) {
+        ev.preventDefault();
+        var href = $(this).attr("href");
+        if (confirm('Are you sure you want to send reminders?')) {
+            $.blockUI({ message: "sending reminders" });
+            $.post(href, null, function (ret) {
+                if (ret != "ok") {
+                    $.unblockUI();
+                    $.growlUI("error", ret);
+                }
+                else
+                    $.unblockUI();
+            });
+        }
+    });
     $('#reminderemails').click(function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
@@ -54,10 +69,6 @@ $(function () {
     });
     $(".bt").button();
     $("#buttondiv bt").css("width", "100%");
-//    $("#DivisionsList").delegate("#DivisionsList", "change", function () {
-//        $.getTable($('#Members-tab form'));
-//        return false;
-//    });
 
     $('form table.grid > tbody > tr:even').addClass('alt');
 
@@ -186,27 +197,24 @@ $(function () {
             $(this).css("z-index", zmax);
         });
     };
+
     $.initDatePicker = function (f) {
-        $(".datepicker", f).datepicker({
-            dateFormat: 'm/d/yy',
-            changeMonth: true,
-            changeYear: true,
-            beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
+        $("ul.edit .datepicker", f).datepicker({
+            //beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
         });
-        $(".timepicker", f).timepicker({
+        $("ul.edit .timepicker", f).timepicker({
             ampm: true,
             stepHour: 1,
             stepMinute: 5,
             timeOnly: true
         });
-        $(".datetimepicker", f).datetimepicker({
+        $("ul.edit .datetimepicker", f).datetimepicker({
             ampm: true,
             stepHour: 1,
             stepMinute: 15,
             timeOnly: false
         });
     };
-    $.initDatePicker();
     $("a.displayedit,a.displayedit2").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
@@ -219,7 +227,6 @@ $(function () {
                 $.initDatePicker(f);
                 $(".submitbutton,.bt", f).button();
                 $(".roundbox select", f).css("width", "100%");
-                //$("#DivisionsList", f).multiselect();
                 $("#schedules", f).sortable({ stop: $.renumberListItems });
                 $("#editor", f);
                 $.regsettingeditclick(f);
@@ -322,7 +329,7 @@ $(function () {
         $.post("/Organization/NewSchedule", null, function (ret) {
             $("#schedules", f).append(ret).ready(function () {
                 $.renumberListItems();
-                $.initDatePicker(f);
+                //$.initDatePicker(f);
             });
         });
     });
@@ -359,6 +366,26 @@ $(function () {
                 if ($('#group').is(":checked"))
                     args += "&bygroup=1&sgprefix=";
                 window.open("/Reports/Rollsheet/" + args);
+                $(this).dialog("close");
+            }
+        });
+        d.dialog('open');
+    });
+    $('#RallyRollsheetLink').live("click", function (ev) {
+        ev.preventDefault();
+        $('#grouplabel').text("By Group");
+        var d = $("#NewMeetingDialog");
+        d.dialog("option", "buttons", {
+            "Ok": function () {
+                var dt = $.GetMeetingDateTime();
+                if (!dt.valid)
+                    return false;
+                var args = "?org=curr&dt=" + dt.date + " " + dt.time;
+                if ($('#altnames').is(":checked"))
+                    args += "&altnames=true";
+                if ($('#group').is(":checked"))
+                    args += "&bygroup=1&sgprefix=";
+                window.open("/Reports/RallyRollsheet/" + args);
                 $(this).dialog("close");
             }
         });
@@ -525,16 +552,16 @@ $(function () {
         ev.preventDefault();
         var d = $('#newvalueform');
         d.dialog("open");
-    }); 
+    });
     $("#TryRegDialog").dialog({
         autoOpen: false,
-        width:500
+        width: 500
     });
     $("#tryreg").live("click", function (ev) {
         ev.preventDefault();
         var d = $('#TryRegDialog');
         d.dialog("open");
-    }); 
+    });
     $("a.deleteextra").live("click", function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))

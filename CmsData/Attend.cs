@@ -95,35 +95,15 @@ namespace CmsData
 						p.EntryPointId,
 					};
 			var info = q.Single();
-			var meeting = (from m in Db.Meetings
-						   where m.OrganizationId == OrgId && m.MeetingDate == dt
-						   select m).FirstOrDefault();
 			if (info.EntryPointId == null)
 			{
 				var p = Db.LoadPersonById(PeopleId);
 				if (info.OrgEntryPoint > 0)
 					p.EntryPointId = info.OrgEntryPoint;
 			}
-			if (meeting == null)
-			{
-				var acr = (from s in Db.OrgSchedules
-						   where s.OrganizationId == OrgId
-						   where s.SchedTime.Value.TimeOfDay == dt.TimeOfDay
-						   where s.SchedDay == (int)dt.DayOfWeek
-						   select s.AttendCreditId).SingleOrDefault();
-				meeting = new Meeting
-				{
-					OrganizationId = OrgId,
-					MeetingDate = dt,
-					CreatedDate = Util.Now,
-					CreatedBy = Util.UserId1,
-					GroupMeetingFlag = false,
-					Location = info.Location,
-					AttendCreditId = acr
-				};
-				Db.Meetings.InsertOnSubmit(meeting);
-				Db.SubmitChanges();
-			}
+			var meeting = Meeting.FetchOrCreateMeeting(Db, OrgId, dt);
+			if (!meeting.Location.HasValue())
+				meeting.Location = info.Location;
 			RecordAttendance(Db, PeopleId, meeting.MeetingId, Present);
 			Db.UpdateMeetingCounters(meeting.MeetingId);
 			return meeting.MeetingId;

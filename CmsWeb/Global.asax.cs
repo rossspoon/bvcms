@@ -86,9 +86,11 @@ namespace CmsWeb
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-//			Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
-//			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-GB"); 
-        }
+			var cul = DbUtil.Db.Setting("Culture", "en-US");
+			Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
+			Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
+			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
+		}
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)

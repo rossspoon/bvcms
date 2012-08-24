@@ -147,6 +147,7 @@ namespace CmsData
         RecentContactMinistry,
         RecentContactType,
         RecentContributionAmount,
+        RecentHasIndContributions,
         RecentContributionCount,
 		RecentGivingAsPctOfPrevious,
         RecentCreated,

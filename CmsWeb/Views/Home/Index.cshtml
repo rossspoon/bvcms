@@ -38,7 +38,7 @@
         <div class="jscroll" style="height:10em">
 @foreach (var bi in Model.Birthdays())
 {
-            <div class="drow"><a href="/Person/Index/@bi.PeopleId">@bi.Name (@bi.Birthday.ToString("M/d"))</a></div>
+            <div class="drow"><a href="/Person/Index/@bi.PeopleId">@bi.Name (@bi.Birthday.ToString("m"))</a></div>
 }
         </div>
         <h2><a href="/Person/Index/@Util.UserPeopleId">My Involvement</a></h2>

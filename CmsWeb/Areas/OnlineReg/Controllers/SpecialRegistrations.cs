@@ -547,7 +547,7 @@ emailid={2}
 				var subject = Util.PickFirst(setting.Subject, "no subject");
 				var msg = Util.PickFirst(setting.Body, "no message");
 				msg = OnlineRegModel.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
-				msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("MMM dd, yyyy at h:mm tt"));
+				msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("f"));
 				var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
 				if (NotifyIds.Count == 0)
 					NotifyIds = DbUtil.Db.AdminPeople();
@@ -555,7 +555,7 @@ emailid={2}
 				DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
 				DbUtil.Db.Email(q.p.FromEmail, NotifyIds,
 						q.org.OrganizationName,
-						"{0} has registered for {1}<br>{2}".Fmt(q.p.Name, q.org.OrganizationName, q.meeting.MeetingDate.ToString2("MMM dd, yyyy at h:mm tt")));
+						"{0} has registered for {1}<br>{2}".Fmt(q.p.Name, q.org.OrganizationName, q.meeting.MeetingDate.ToString2("f")));
 			}
 			return Content(message);
 		}

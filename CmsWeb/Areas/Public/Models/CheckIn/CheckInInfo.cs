@@ -78,7 +78,7 @@ namespace CmsWeb.Models
                 DateTime? bd = null;
                 if (DateTime.TryParse(BirthDay, out dt))
                     bd = dt;
-                return bd.FormatDate2();
+                return bd.FormatDate();
             }
         }
         public string goesby { get; set; }

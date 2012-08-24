@@ -281,7 +281,7 @@ namespace CmsData
 			{
 				if (value.HasValue())
 					_ValidateOrgs = (from i in value.Split(',')
-									 where i.ToInt() > 0
+									 where i.ToInt() > 0 || i.ToInt() < 0
 									 select i.ToInt()).ToList();
 				else
 					_ValidateOrgs = new List<int>();
@@ -349,7 +349,7 @@ namespace CmsData
 			public string SmallGroup { get; set; }
 			public decimal? Fee { get; set; }
 			public int? Limit { get; set; }
-			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:M/d/yy h:mm tt}")]
+			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:g}")]
 			public DateTime? MeetingTime { get; set; }
 		}
 		public class TimeSlot
@@ -358,7 +358,7 @@ namespace CmsData
 			public string Description { get; set; }
 			public int DayOfWeek { get; set; }
 			public int? Limit { get; set; }
-			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:h:mm tt}")]
+			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:t}")]
 			public DateTime? Time { get; set; }
 			public DateTime Datetime()
 			{
@@ -619,7 +619,7 @@ namespace CmsData
 					break;
 				case RegKeywords.ValidateOrgs:
 					_ValidateOrgs = (from i in curr.value.Split(',')
-									 where i.ToInt() > 0
+									 where i.ToInt() > 0 || i.ToInt() < 0
 									 select i.ToInt()).ToList();
 					lineno++;
 					break;
@@ -1440,7 +1440,7 @@ namespace CmsData
 				AddValueCk(2, sb, "SmallGroup", s.SmallGroup);
 				AddValueCk(2, sb, "Fee", s.Fee);
 				AddValueCk(2, sb, "Limit", s.Limit);
-				AddValueCk(2, sb, "Time", s.MeetingTime.ToString2("M/d/yy h:mm tt"));
+				AddValueCk(2, sb, "Time", s.MeetingTime.FormatDateTm());
 			}
 		}
 		private void AddDropdown1(StringBuilder sb)
@@ -1496,7 +1496,7 @@ namespace CmsData
 			foreach (var c in TimeSlots)
 			{
 				AddValueCk(1, sb, c.Description);
-				AddValueCk(2, sb, "Time", c.Time.ToString2("h:mm tt"));
+				AddValueCk(2, sb, "Time", c.Time.ToString2("t"));
 				AddValueCk(2, sb, "DayOfWeek", c.DayOfWeek);
 				AddValueCk(2, sb, "Limit", c.Limit);
 			}

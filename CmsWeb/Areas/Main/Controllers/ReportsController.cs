@@ -71,6 +71,24 @@ namespace CmsWeb.Areas.Main.Controllers
                 altnames = altnames,
             };
         }
+        public ActionResult RallyRollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)
+        {
+            return new RallyRollsheetResult
+            {
+                qid = id,
+                orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null,
+                groups = org == "curr" ? Util2.CurrentGroups : new int[] { 0 },
+                pid = pid,
+                div = div,
+                name = name,
+                schedule = schedule,
+                meetingid = meetingid,
+                bygroup = bygroup.HasValue,
+                sgprefix = sgprefix,
+                dt = dt,
+                altnames = altnames,
+            };
+        }
         public ActionResult OrgLeaders(string org, int? div, int? schedule, string name)
         {
             return new OrgLeadersResult
@@ -266,18 +284,19 @@ namespace CmsWeb.Areas.Main.Controllers
         {
         	var ev = StandardExtraValues.GetExtraValues();
             var q = from e in DbUtil.Db.PeopleExtras
-                    where e.StrValue != null
-                    group e by new { e.Field, e.StrValue } into g
+                    where e.StrValue != null || e.BitValue != null
+                    group e by new { e.Field, val = e.StrValue ?? (e.BitValue == true ? "1" : "0") } into g
                     select new ExtraInfo
                     {
                         Field = g.Key.Field,
-                        Value = g.Key.StrValue,
+                        Value = g.Key.val,
                         Count = g.Count(),
                     };
 
         	var list = from e in q.ToList()
         	           let f = ev.SingleOrDefault(ff => ff.name == e.Field)
 					   where f == null || f.UserCanView()
+					   orderby e.Field
         	           select e;
             return View(list);
         }
@@ -348,7 +367,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 foreach (var r in q)
                 {
                     var row = new Dictionary<string, string>();
-                    row["S00"] = dt.AddDays(r.Key).ToString("M/d/yy");
+                    row["S00"] = dt.AddDays(r.Key).ToString("d");
                     foreach (var s in r.list)
                         row[s.StatId] = s.Count.ToString2("N0");
                     d.Add(row);

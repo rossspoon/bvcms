@@ -36,7 +36,7 @@ namespace CmsWeb.Models.OrganizationPage
             {
                 if (!sc.SchedTime.HasValue)
                     return "08:00 AM";
-                return sc.SchedTime.ToString2("hh:mm tt");
+                return sc.SchedTime.ToString2("t");
             }
             set { sc.SchedTime = value.ToDate(); }
         }
@@ -94,7 +94,7 @@ namespace CmsWeb.Models.OrganizationPage
         {
             get
             {
-                return NewMeetingTime.ToString("M/d/yy,h:mm tt,") + AttendCreditId;
+                return NewMeetingTime.ToString("g") + "," + AttendCreditId;
             }
         }
         public DateTime NewMeetingTime

@@ -78,5 +78,10 @@ namespace CmsWeb.Areas.Finance.Controllers
 
 			return Content("");
 		}
+		public ActionResult PledgeFulfillments(int id)
+		{
+			var list = DbUtil.Db.PledgeFulfillment(id).OrderBy(vv => vv.HeadName);
+			return new DataGridResult(list);
+		}
     }
 }

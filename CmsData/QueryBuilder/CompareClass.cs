@@ -484,6 +484,11 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.TextValue.ToInt());
+				case QueryType.RecentHasIndContributions:
+					return Expressions.RecentHasIndContributions(parm, Db,
+							   c.Days,
+							   CompType,
+							   c.CodeIds == "1");
                 case QueryType.RecentContributionCount:
                     return Expressions.RecentContributionCount(parm, Db,
                                c.Days, c.Quarters.ToInt(),

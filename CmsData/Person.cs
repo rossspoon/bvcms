@@ -945,7 +945,7 @@ namespace CmsData
 			if (e.Data.HasValue())
 				return e.Data;
 			if (e.DateValue.HasValue)
-				return e.DateValue.ToString2("M/d/yy");
+				return e.DateValue.FormatDate();
 			if (e.IntValue.HasValue)
 				return e.IntValue.ToString();
 			return e.BitValue.ToString();

@@ -32,7 +32,7 @@ namespace CmsWeb.Models.PersonPage
                            where !(org.SecurityTypeId == 3 && (Util2.OrgMembersOnly || Util2.OrgLeadersOnly))
 						   where org.LimitToRole == null || roles.Contains(org.LimitToRole)
                            select a;
-                if (!HttpContext.Current.User.IsInRole("Admin"))
+                if (!HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.Session["showallmeetings"] == null)
                     _attends = _attends.Where(a => a.EffAttendFlag == null || a.EffAttendFlag == true);
                 if (future)
                     _attends = _attends.Where(aa => aa.MeetingDate >= midnight);
