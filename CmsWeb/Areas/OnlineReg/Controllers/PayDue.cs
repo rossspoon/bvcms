@@ -45,7 +45,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			ViewBag.TranId = ti.Id;
 			return View(pf);
 		}
-		public void ConfirmDuePaidTransaction(Transaction ti, string TransactionID, decimal Amount)
+		public void ConfirmDuePaidTransaction(Transaction ti, string TransactionID, decimal Amount, bool sendmail)
 		{
 			var Db = DbUtil.Db;
 			var org = Db.LoadOrganizationById(ti.OrgId);
@@ -99,17 +99,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			var pid = ti.FirstTransactionPeopleId();
 			var p0 = Db.LoadPersonById(pid);
-			if (p0 == null)
-				Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(Db.StaffEmailForOrg(org.OrganizationId)),
-					"Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), Util.ToMailAddressList(Util.FirstAddress(ti.Emails)), 0, pid);
-			else
+			if (sendmail)
 			{
-				Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
-					p0, Util.ToMailAddressList(ti.Emails), "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), false);
-				Db.Email(p0.FromEmail,
-					Db.PeopleFromPidString(org.NotifyIds),
-					"payment received for " + ti.Description,
-					"{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Description, ti.Amtdue, names));
+				if (p0 == null)
+					Util.SendMsg(Util.SysFromEmail, Util.Host, Util.TryGetMailAddress(Db.StaffEmailForOrg(org.OrganizationId)),
+						"Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), Util.ToMailAddressList(Util.FirstAddress(ti.Emails)), 0, pid);
+				else
+				{
+					Db.Email(Db.StaffEmailForOrg(org.OrganizationId),
+						p0, Util.ToMailAddressList(ti.Emails), "Payment confirmation", "Thank you for paying {0:c} for {1}.<br/>Your balance is {2:c}<br/>{3}".Fmt(Amount, ti.Description, ti.Amtdue, names), false);
+					Db.Email(p0.FromEmail,
+						Db.PeopleFromPidString(org.NotifyIds),
+						"payment received for " + ti.Description,
+						"{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Description, ti.Amtdue, names));
+				}
 			}
 		}
 		public ActionResult ConfirmDuePaid(int? id, string TransactionID, decimal Amount)
@@ -126,7 +129,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			ti.Testing = true;
 #endif
 			ti = PaymentForm.CreateTransaction(DbUtil.Db, ti);
-			ConfirmDuePaidTransaction(ti, TransactionID, Amount);
+			ConfirmDuePaidTransaction(ti, TransactionID, Amount, sendmail: false);
 			SetHeaders(ti.OrgId ?? 0);
 			ViewData["timeout"] = INT_timeout;
 			ViewData["Url"] = ti.Url;

@@ -9,10 +9,19 @@
         var f = $(this).closest("form");
         var q = f.serialize();
         $.post("/Meeting/ScanTicket/", q, function (ret) {
-            if (ret.startsWith("http")) {
-                window.location = ret;
-            }
-            $("#mark").html(ret);
+            $("#mark").html(ret).ready(function () {
+                if ($("#haserror").val())
+                    PlaySound("zylo");
+                else
+                    PlaySound("ding");
+                if ($("#SwitchMeeting").val() > 0) {
+                    $.post("/Meeting/TicketMeeting/" + $("#SwitchMeeting").val(), null, function (ret) {
+                        $("#meeting").html(ret).ready(function () {
+                            $("#wandtarget").focus();
+                        });
+                    });
+                }
+            });
             tb.val("");
         });
         return false;
@@ -23,3 +32,7 @@
     });
     $("#wandtarget").focus();
 });
+function PlaySound(soundObj) {
+  var sound = document.getElementById(soundObj);
+  sound.Play();
+}

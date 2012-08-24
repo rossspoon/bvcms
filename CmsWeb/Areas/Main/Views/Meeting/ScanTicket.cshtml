@@ -20,7 +20,25 @@
 		case MeetingController.ScanTicketInfo.Error.alreadymarked:
 			<h1>Already marked present</h1>
         break;
+		case MeetingController.ScanTicketInfo.Error.alreadymarkedelsewhere:
+			<h1>Already marked present elsewhere</h1>
+        break;
+		case MeetingController.ScanTicketInfo.Error.noorg:
+			<h1>No Organization</h1>
+        break;
+		case MeetingController.ScanTicketInfo.Error.nomeeting:
+			<h1>No Meeting</h1>
+        break;
 	}
+}
+@if (Model.SwitchOrg)
+{
+    @Html.Hidden("SwitchMeeting", Model.meeting.MeetingId)
+    @Html.Hidden("PeopleId", Model.person.PeopleId)
+}
+@if (Model.error != MeetingController.ScanTicketInfo.Error.none)
+{
+    @Html.Hidden("haserror", "true")
 }
 @if (Model.person != null)
 {
@@ -29,6 +47,7 @@
 		<tr> <td>Address</td><td>@Model.person.FullAddress</td> </tr>
 		<tr> <td>Birthday</td><td>@Model.person.BirthDate.ToString2("m")</td> </tr>
 		<tr> <td>Email</td><td>@Model.person.EmailAddress</td> </tr>
+		<tr> <td colspan="2"><b>@Model.message</b></td></tr>
 	</table>
 }
 </div>

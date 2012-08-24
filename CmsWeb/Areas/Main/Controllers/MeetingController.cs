@@ -70,29 +70,6 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.LogActivity("iPad Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
             return View(m);
         }
-        public ActionResult Tickets(int? id)
-        {
-            if (!id.HasValue)
-                return RedirectShowError("no id");
-            var m = new MeetingModel(id.Value);
-            m.showall = true;
-            if (m.meeting == null)
-                return RedirectShowError("no meeting");
-
-			if (Util2.OrgMembersOnly
-				&& !DbUtil.Db.OrganizationMembers.Any(om =>
-					om.OrganizationId == m.meeting.OrganizationId
-					&& om.PeopleId == Util.UserPeopleId))
-				return RedirectShowError("You must be a member of this organization to have access to this page");
-			else if (Util2.OrgLeadersOnly
-				&& !DbUtil.Db.OrganizationMembers.Any(om =>
-					om.OrganizationId == m.meeting.OrganizationId
-					&& om.PeopleId == Util.UserPeopleId
-                    && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
-				return RedirectShowError("You must be a leader of this organization to have access to this page");
-			DbUtil.LogActivity("Tickets Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
-            return View(m);
-        }
         [HttpPost]
         public ContentResult EditGroup(string id, string value)
         {
@@ -175,13 +152,25 @@ namespace CmsWeb.Areas.Main.Controllers
 			{
 				none,
 				alreadymarked,
+				alreadymarkedelsewhere,
 				notmember,
 				notregistered,
-				noperson
+				noperson,
+				noorg,
+				nomeeting,
 			}
     		public Error error { get; set; }
     		public Person person { get; set; }
     		public Meeting meeting { get; set; }
+			public string message { get; set; }
+			public bool SwitchOrg { get; set; }
+    		public MeetingModel model
+			{
+				get
+				{
+					return new MeetingModel(meeting.MeetingId);
+				}
+			}
     		public Attend attended { get; set; }
     		public OrganizationMember orgmember { get; set; }
 			public string CssClass()
@@ -190,44 +179,94 @@ namespace CmsWeb.Areas.Main.Controllers
 					return "bgyellow";
 				return "bgred";
 			}
+			public ScanTicketInfo AddError(Error err)
+			{
+				error = err;
+				return this;
+			}
     	}
 
+        public ActionResult Tickets(int? id)
+        {
+            if (!id.HasValue)
+                return RedirectShowError("no id");
+            var m = new MeetingModel(id.Value);
+            m.showall = true;
+            if (m.meeting == null)
+                return RedirectShowError("no meeting");
+
+			if (Util2.OrgMembersOnly
+				&& !DbUtil.Db.OrganizationMembers.Any(om =>
+					om.OrganizationId == m.meeting.OrganizationId
+					&& om.PeopleId == Util.UserPeopleId))
+				return RedirectShowError("You must be a member of this organization to have access to this page");
+			else if (Util2.OrgLeadersOnly
+				&& !DbUtil.Db.OrganizationMembers.Any(om =>
+					om.OrganizationId == m.meeting.OrganizationId
+					&& om.PeopleId == Util.UserPeopleId
+                    && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
+				return RedirectShowError("You must be a leader of this organization to have access to this page");
+			DbUtil.LogActivity("Tickets Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
+            return View(m);
+        }
+		[HttpPost]
+        public ActionResult TicketMeeting(int id)
+        {
+            var m = new MeetingModel(id);
+            return View(m);
+        }
     	[Authorize(Roles = "Attendance")]
         [HttpPost]
 		public ActionResult ScanTicket(string wandtarget, int MeetingId, bool? requireMember, bool? requireRegistered)
 		{
+			var d = new ScanTicketInfo { person = new Person() };
+			int pid = 0;
+
 			if (wandtarget.StartsWith("M."))
 			{
 				var a = wandtarget.Split('.');
+				if (a.Length != 3)
+					return View(d.AddError(ScanTicketInfo.Error.noorg));
+
+				var oid = a[1].ToInt2();
+				pid = a[2].ToInt();
+				d.person = DbUtil.Db.LoadPersonById(pid);
+				if(!oid.HasValue)
+					return View(d.AddError(ScanTicketInfo.Error.noorg));
+
 				var tm = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == MeetingId);
 				var mq = from m in DbUtil.Db.Meetings
 						 where m.OrganizationId == a[1].ToInt()
 						 where m.MeetingDate.Value.Date == tm.MeetingDate.Value.Date
 						 select m;
 				var mo = mq.FirstOrDefault();
-				return Content(Util.ServerLink("/Meeting/Tickets/" + mo.MeetingId));
+				if (mo == null)
+					return View(d.AddError(ScanTicketInfo.Error.nomeeting));
+				d.meeting = mo;
+				MeetingId = mo.MeetingId;
+				d.SwitchOrg = true;
+				d.attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == pid && aa.AttendanceFlag == true);
 			}
-			int wandtargetToInt = wandtarget.ToInt();
-			var q = from person in DbUtil.Db.People
-					where person.PeopleId == wandtargetToInt
-					let meeting = DbUtil.Db.Meetings.SingleOrDefault(mm => mm.MeetingId == MeetingId)
-					let attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == wandtargetToInt)
-					let orgmember = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId && om.PeopleId == wandtargetToInt)
-					select new ScanTicketInfo
-					{
-						person = person,
-						meeting = meeting,
-						attended = attended,
-						orgmember = orgmember
-					};
-			var d = q.SingleOrDefault();
-
-			if (d == null)
-				return View(new ScanTicketInfo
-				{
-					error = ScanTicketInfo.Error.noperson,
-					person = new Person()
-				});
+			else
+			{
+				pid = wandtarget.ToInt();
+				var q = from person in DbUtil.Db.People
+						where person.PeopleId == pid
+						let meeting = DbUtil.Db.Meetings.SingleOrDefault(mm => mm.MeetingId == MeetingId)
+						let attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == pid && aa.AttendanceFlag == true)
+						let orgmember = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId && om.PeopleId == pid)
+						select new ScanTicketInfo
+						{
+							person = person,
+							meeting = meeting,
+							attended = attended,
+							orgmember = orgmember
+						};
+				var d2 = q.SingleOrDefault();
+				if (d2 == null)
+					return View(d.AddError(ScanTicketInfo.Error.noperson));
+				d = d2;
+			}
 
 			d.error = ScanTicketInfo.Error.none;
 			if (d.attended != null && d.attended.AttendanceFlag == true)
@@ -237,8 +276,16 @@ namespace CmsWeb.Areas.Main.Controllers
 			else if (requireRegistered == true && (d.attended == null || d.attended.Registered != true))
 				d.error = ScanTicketInfo.Error.notregistered;
 
+			var ret = "";
 			if (d.error == ScanTicketInfo.Error.none)
-				Attend.RecordAttendance(DbUtil.Db, wandtargetToInt, MeetingId, true);
+			{
+				ret = Attend.RecordAttendance(DbUtil.Db, pid, MeetingId, true);
+				if (ret.Contains("already"))
+				{
+					d.error = ScanTicketInfo.Error.alreadymarkedelsewhere;
+					d.message = ret;
+				}
+			}
 
 			return View(d);
 		}

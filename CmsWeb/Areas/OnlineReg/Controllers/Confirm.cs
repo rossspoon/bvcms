@@ -31,6 +31,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (pf.AmtToPay < 0) pf.AmtToPay = 0;
 			if (pf.Donate < 0) pf.Donate = 0;
 
+			pf.AllowCoupon = false;
+
 			SetHeaders(pf.OrgId ?? 0);
 			ViewBag.Url = pf.Url;
 			ViewBag.timeout = INT_timeout;
@@ -94,7 +96,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				}
 				if (pf.DatumId > 0)
 					return View(ConfirmTransaction(m, ti.TransactionId, pf.AmtToPay));
-				ConfirmDuePaidTransaction(ti, ti.TransactionId, pf.AmtToPay ?? 0);
+				ConfirmDuePaidTransaction(ti, ti.TransactionId, pf.AmtToPay ?? 0, sendmail: true);
 				return View("ConfirmDuePaid", ti);
 			}
 			catch (Exception ex)

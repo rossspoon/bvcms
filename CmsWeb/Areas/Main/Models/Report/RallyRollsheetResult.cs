@@ -178,8 +178,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 		private PdfPTable StartPageSet(OrgInfo o)
 		{
 			t = new PdfPTable(5);
-			t.WidthPercentage = 80;
-			t.SetWidths(new int[] { 30, 30, 2, 6, 30 });
+			t.WidthPercentage = 100;
+			t.SetWidths(new int[] { 40, 2, 5, 20, 30 });
 			t.DefaultCell.Border = PdfPCell.NO_BORDER;
 			pageEvents.StartPageSet(
 									"{0}: {1}, {2} ({3})".Fmt(o.Division, o.Name, o.Location, o.Teacher),
@@ -189,39 +189,35 @@ namespace CmsWeb.Areas.Main.Models.Report
 		}
 		private void AddFirstRow(Font font)
 		{
-			var c = new PdfPCell(new Phrase("OrganizationId"));
-			c.Border = PdfPCell.NO_BORDER;
-			c.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
-			t.AddCell(c);
-
-			c = new PdfPCell(new Phrase("PeopleId"));
-			c.Border = PdfPCell.NO_BORDER;
-			c.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
-			t.AddCell(c);
-
 			t.AddCell("");
 			t.AddCell("");
-			t.AddCell("Parent");
+			t.AddCell("");
+
+			{
+				var p = new Phrase("Parent", boldfont);
+				var c = new PdfPCell(p);
+				c.Border = PdfPCell.NO_BORDER;
+				c.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
+				c.PaddingBottom = 3f;
+				t.AddCell(c);
+			}
+			{
+				var p = new Phrase("(OrgId, PeopleId)", boldfont);
+				var c = new PdfPCell(p);
+				c.Border = PdfPCell.NO_BORDER;
+				c.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
+				c.PaddingBottom = 3f;
+				t.AddCell(c);
+			}
 		}
 		private void AddRow(string name, int pid, int? oid, Font font)
 		{
 			var bco = new Barcode39();
 			bco.X = 1.2f;
 			bco.Font = null;
-			bco.Code = "M.{0}".Fmt(oid);
+			bco.Code = "M.{0}.{1}".Fmt(oid,pid);
 			var img = bco.CreateImageWithBarcode(dc, null, null);
 			var c = new PdfPCell(img, false);
-			c.PaddingTop = 3f;
-			c.Border = PdfPCell.NO_BORDER;
-			c.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
-			t.AddCell(c);
-
-			var bcp = new Barcode39();
-			bcp.X = 1.2f;
-			bcp.Font = null;
-			bcp.Code = "{0}".Fmt(pid);
-			var img2 = bcp.CreateImageWithBarcode(dc, null, null);
-			c = new PdfPCell(img2, false);
 			c.PaddingTop = 3f;
 			c.Border = PdfPCell.NO_BORDER;
 			c.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
@@ -230,12 +226,9 @@ namespace CmsWeb.Areas.Main.Models.Report
 			t.AddCell("");
 			t.AddCell(box);
 
-			var p = new Phrase(name, font);
-			p.Add("\n");
-			p.Add(new Chunk(" ", medfont));
-			//			if (name.Contains("Jane"))
-			//	            p.Add("\nTest1");
-			t.AddCell(p);
+			t.AddCell(name);
+			t.AddCell("({0}, {1})".Fmt(
+				oid.HasValue ? oid.ToString() : " N/A ", pid));
 		}
 		private class OrgInfo
 		{
