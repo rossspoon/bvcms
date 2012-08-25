@@ -31,6 +31,7 @@ namespace CmsWeb.Models
 		public int? Status { get; set; }
 		public int? Ministry { get; set; }
 		public string Result { get; set; }
+		public string CreatedBy { get; set; }
 
 		public ContactSearchModel()
 		{
@@ -97,6 +98,19 @@ namespace CmsWeb.Models
 				contacts = from c in contacts
 						   where c.contactsMakers.Any(p => p.person.Name.Contains(ContactorName))
 						   select c;
+
+			if (CreatedBy.HasValue())
+			{
+				var pid = CreatedBy.ToInt();
+				if (pid > 0)
+					contacts = from c in contacts
+							   where DbUtil.Db.Users.Any(uu => c.CreatedBy == uu.UserId && uu.Person.PeopleId == pid)
+							   select c;
+				else
+					contacts = from c in contacts
+							   where DbUtil.Db.Users.Any(uu => c.CreatedBy == uu.UserId && uu.Username == CreatedBy)
+							   select c;
+			}
 
 			DateTime startDateRange;
 			DateTime endDateRange;

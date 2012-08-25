@@ -47,6 +47,10 @@
             <td>@Html.DropDownListFor(vv => vv.Result, Model.Results())</td>
         </tr>
         <tr>
+            <th align="right">Created By:</th>
+            <td>@Html.TextBoxFor(vv => vv.CreatedBy, new { title="UserName or PeopleId" })</td>
+        </tr>
+        <tr>
             <td colspan="2" align="right">
                 <a id="NewSearch" class="bt">Clear</a>
                 <a id="search" class="bt">Search</a>

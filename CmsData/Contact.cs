@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CmsData.Codes;
+using UtilityExtensions;
 
 namespace CmsData
 {
@@ -15,10 +16,14 @@ namespace CmsData
                 return -1;
             if (q.Count() == 0)
                 return 0;
-            var c = new Contact { ContactDate = DateTime.Now.Date };
-            c.CreatedDate = c.ContactDate;
-            c.ContactTypeId = ContactTypeCode.Other;
-            c.ContactReasonId = ContactReasonCode.Other;
+            var c = new Contact 
+			{ 
+				ContactDate = DateTime.Now.Date, 
+				CreatedBy = Util.UserId1,
+	            CreatedDate = DateTime.Now,
+	            ContactTypeId = ContactTypeCode.Other,
+	            ContactReasonId = ContactReasonCode.Other,
+			};
             foreach (var p in q)
                 c.contactees.Add(new Contactee { PeopleId = p.PeopleId });
             DbUtil.Db.Contacts.InsertOnSubmit(c);

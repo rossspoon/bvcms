@@ -278,6 +278,10 @@ namespace CmsData
         partial void UpdateJoinType(JoinType instance);
         partial void DeleteJoinType(JoinType instance);
         
+        partial void InsertLabelFormat(LabelFormat instance);
+        partial void UpdateLabelFormat(LabelFormat instance);
+        partial void DeleteLabelFormat(LabelFormat instance);
+        
         partial void InsertManagedGiving(ManagedGiving instance);
         partial void UpdateManagedGiving(ManagedGiving instance);
         partial void DeleteManagedGiving(ManagedGiving instance);
@@ -999,6 +1003,12 @@ namespace CmsData
 		public Table< JoinType> JoinTypes
 		{
 			get	{ return this.GetTable< JoinType>(); }
+
+		}
+
+		public Table< LabelFormat> LabelFormats
+		{
+			get	{ return this.GetTable< LabelFormat>(); }
 
 		}
 
