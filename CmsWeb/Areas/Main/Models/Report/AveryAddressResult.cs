@@ -23,6 +23,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         public string format;
         public bool? titles; 
         public bool usephone { get; set; }
+		public int skip = 0;
 
         const float H = 72f;
         const float W = 197f;
@@ -85,6 +86,16 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.DefaultCell.PaddingLeft = 8f;
             t.DefaultCell.PaddingRight = 8f;
             t.DefaultCell.SetLeading(2.0f, 1f);
+
+			if (skip > 0)
+			{
+				var blankCell = new PdfPCell(t.DefaultCell);
+
+				for (int iX = 0; iX < skip; iX++)
+				{
+					t.AddCell(blankCell);
+				}
+			}
 
             foreach (var m in q)
             {

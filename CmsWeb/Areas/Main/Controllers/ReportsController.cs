@@ -158,7 +158,7 @@ namespace CmsWeb.Areas.Main.Controllers
         //{
         //    return new CouponsResult(null, null);
         //}
-        public ActionResult AveryAddress(int? id, string format, bool? titles, bool? usephone)
+        public ActionResult AveryAddress(int? id, string format, bool? titles, bool? usephone, int skipNum = 0)
         {
             if (!id.HasValue)
                 return Content("no query");
@@ -170,6 +170,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 format = format,
                 titles = titles,
                 usephone = usephone ?? false,
+				skip = skipNum,
             };
         }
         public ActionResult RollLabels(int? id, string format, bool? titles, bool? usephone)
