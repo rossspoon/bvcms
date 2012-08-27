@@ -246,6 +246,10 @@ namespace CmsData
         partial void UpdateFamilyCheckinLock(FamilyCheckinLock instance);
         partial void DeleteFamilyCheckinLock(FamilyCheckinLock instance);
         
+        partial void InsertFamilyExtra(FamilyExtra instance);
+        partial void UpdateFamilyExtra(FamilyExtra instance);
+        partial void DeleteFamilyExtra(FamilyExtra instance);
+        
         partial void InsertFamilyMemberType(FamilyMemberType instance);
         partial void UpdateFamilyMemberType(FamilyMemberType instance);
         partial void DeleteFamilyMemberType(FamilyMemberType instance);
@@ -955,6 +959,12 @@ namespace CmsData
 		public Table< FamilyCheckinLock> FamilyCheckinLocks
 		{
 			get	{ return this.GetTable< FamilyCheckinLock>(); }
+
+		}
+
+		public Table< FamilyExtra> FamilyExtras
+		{
+			get	{ return this.GetTable< FamilyExtra>(); }
 
 		}
 

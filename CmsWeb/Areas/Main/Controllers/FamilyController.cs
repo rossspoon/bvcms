@@ -105,5 +105,129 @@ namespace CmsWeb.Areas.Main.Controllers
             return Json(q.ToDictionary(k => k.Code, v => v.Value));
         }
 
+		[HttpPost]
+		public ContentResult DeleteExtra(int id, string field)
+		{
+			var e = DbUtil.Db.FamilyExtras.First(ee => ee.FamilyId == id && ee.Field == field);
+			DbUtil.Db.FamilyExtras.DeleteOnSubmit(e);
+			DbUtil.Db.SubmitChanges();
+			return Content("done");
+		}
+		[HttpPost]
+		public ContentResult EditExtra(string id, string value)
+		{
+			var a = id.SplitStr("-", 2);
+			var b = a[1].SplitStr(".", 2);
+			var f = DbUtil.Db.Families.Single(ff => ff.FamilyId == b[1].ToInt());
+			switch (a[0])
+			{
+				case "s":
+					f.AddEditExtraValue(b[0], value);
+					break;
+				case "t":
+					f.AddEditExtraData(b[0], value);
+					break;
+				case "d":
+					{
+						DateTime dt;
+						if (DateTime.TryParse(value, out dt))
+						{
+							f.AddEditExtraDate(b[0], dt);
+							value = dt.ToShortDateString();
+						}
+						else
+							value = "";
+					}
+					break;
+				case "i":
+					f.AddEditExtraInt(b[0], value.ToInt());
+					break;
+				case "b":
+					if (value == "True")
+						f.AddEditExtraBool(b[0], true);
+					else
+						f.RemoveExtraValue(DbUtil.Db, b[0]);
+					break;
+				case "m":
+				{
+					if (value == null)
+						value = Request.Form["value[]"];
+					var cc = Code.FamilyExtraValues.ExtraValueBits(b[0], b[1].ToInt());
+					var aa = value.Split(',');
+					foreach (var c in cc)
+					{
+						if (aa.Contains(c.Key)) // checked now
+							if (!c.Value) // was not checked before
+								f.AddEditExtraBool(c.Key, true);
+						if (!aa.Contains(c.Key)) // not checked now
+							if (c.Value) // was checked before
+								f.RemoveExtraValue(DbUtil.Db, c.Key);
+					}
+					DbUtil.Db.SubmitChanges();
+					break;
+				}
+			}
+			DbUtil.Db.SubmitChanges();
+			if (value == "null")
+				return Content(null);
+			return Content(value);
+		}
+		[HttpPost]
+		public JsonResult ExtraValues(string id)
+		{
+			var a = id.SplitStr("-", 2);
+			var b = a[1].SplitStr(".", 2);
+			var c = Code.FamilyExtraValues.Codes(b[0]);
+			var j = Json(c);
+			return j;
+		}
+		[HttpPost]
+		public JsonResult ExtraValues2(string id)
+		{
+			var a = id.SplitStr("-", 2);
+			var b = a[1].SplitStr(".", 2);
+			var c = Code.FamilyExtraValues.ExtraValueBits(b[0], b[1].ToInt());
+			var j = Json(c);
+			return j;
+		}
+		[HttpPost]
+		public ActionResult NewExtraValue(int id, string field, string type, string value)
+		{
+			var v = new FamilyExtra { FamilyId = id, Field = field };
+			DbUtil.Db.FamilyExtras.InsertOnSubmit(v);
+			switch (type)
+			{
+				case "string":
+					v.StrValue = value;
+					break;
+				case "text":
+					v.Data = value;
+					break;
+				case "date":
+					var dt = DateTime.MinValue;
+					DateTime.TryParse(value, out dt);
+					v.DateValue = dt;
+					break;
+				case "int":
+					v.IntValue = value.ToInt();
+					break;
+			}
+			try
+			{
+				DbUtil.Db.SubmitChanges();
+			}
+			catch (Exception ex)
+			{
+				return Content("error: " + ex.Message);
+			}
+			return Content("ok");
+		}
+		[HttpPost]
+		public ActionResult ExtrasGrid(int id)
+		{
+			var f = DbUtil.Db.FamilyExtras.Single(ff => ff.FamilyId == id);
+			return View(f);
+		}
+
     }
 }

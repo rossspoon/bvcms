@@ -72,6 +72,8 @@ namespace CmsData
    		
    		private EntitySet< FamilyCheckinLock> _FamilyCheckinLocks;
 		
+   		private EntitySet< FamilyExtra> _FamilyExtras;
+		
    		private EntitySet< Person> _People;
 		
    		private EntitySet< RelatedFamily> _RelatedFamilies1;
@@ -175,6 +177,8 @@ namespace CmsData
 		{
 			
 			this._FamilyCheckinLocks = new EntitySet< FamilyCheckinLock>(new Action< FamilyCheckinLock>(this.attach_FamilyCheckinLocks), new Action< FamilyCheckinLock>(this.detach_FamilyCheckinLocks)); 
+			
+			this._FamilyExtras = new EntitySet< FamilyExtra>(new Action< FamilyExtra>(this.attach_FamilyExtras), new Action< FamilyExtra>(this.detach_FamilyExtras)); 
 			
 			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
 			
@@ -790,6 +794,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_FamilyExtra_Family", Storage="_FamilyExtras", OtherKey="FamilyId")]
+   		public EntitySet< FamilyExtra> FamilyExtras
+   		{
+   		    get { return this._FamilyExtras; }
+
+			set	{ this._FamilyExtras.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_People_Families", Storage="_People", OtherKey="FamilyId")]
    		public EntitySet< Person> People
    		{
@@ -974,6 +988,19 @@ namespace CmsData
 		}
 
 		private void detach_FamilyCheckinLocks(FamilyCheckinLock entity)
+		{
+			this.SendPropertyChanging();
+			entity.Family = null;
+		}
+
+		
+		private void attach_FamilyExtras(FamilyExtra entity)
+		{
+			this.SendPropertyChanging();
+			entity.Family = this;
+		}
+
+		private void detach_FamilyExtras(FamilyExtra entity)
 		{
 			this.SendPropertyChanging();
 			entity.Family = null;

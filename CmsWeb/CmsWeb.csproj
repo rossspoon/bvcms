@@ -332,6 +332,7 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Code\FamilyExtraValues.cs" />
     <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
@@ -1056,6 +1057,7 @@
     <Content Include="Scripts\CheckinActivity.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
+    <Content Include="Scripts\family.js" />
     <Content Include="Scripts\meeting-ticket.js" />
     <Content Include="Scripts\TotalsByFund.js" />
     <Content Include="Scripts\ManageVolunteer.js" />
@@ -1209,6 +1211,8 @@
     <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Index.cshtml" />
     <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Progress.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\TicketMeeting.cshtml" />
+    <Content Include="Areas\Main\Views\Family\ExtrasGrid.cshtml" />
+    <Content Include="Areas\Main\Views\Family\EditorTemplates\Field.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

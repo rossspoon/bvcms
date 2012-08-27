@@ -254,6 +254,8 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="FamilyExtra.cs" />
+    <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\LabelFormat.cs" />
     <Compile Include="Meeting.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />

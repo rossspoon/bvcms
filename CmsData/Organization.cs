@@ -96,6 +96,12 @@ namespace CmsData
 			Db.DivOrgs.DeleteOnSubmit(divorg);
 			return false;
 		}
+		public void AddToDiv(CMSDataContext Db, int divid)
+		{
+			var divorg = DivOrgs.SingleOrDefault(d => d.DivId == divid);
+			if (divorg == null)
+				DivOrgs.Add(new DivOrg { DivId = divid });
+		}
 
 		public bool PurgeOrg(CMSDataContext Db)
 		{

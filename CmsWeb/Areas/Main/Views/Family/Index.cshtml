@@ -7,69 +7,10 @@
 }
 
 @section scripts
-{    <script type="text/javascript">
-        $(function () {
-            $(".clickSelect").editable("/Family/EditPosition/", {
-                indicator: '<img src="/images/loading.gif">',
-                loadurl: "/Family/PositionCodes/",
-                loadtype: "POST",
-                type: "select",
-                submit: "OK",
-                style: 'display: inline'
-            });
-            $(".clickEdit").editable("/Family/EditRelation/", {
-                indicator: "<img src='/images/loading.gif'>",
-                tooltip: "Click to edit...",
-                style: 'display: inline',
-                width: '400px',
-                height: 25
-            });
-
-            $(".bt").button();
-            $('#memberDialog').dialog({
-                title: 'Add Members Dialog',
-                bgiframe: true,
-                autoOpen: false,
-                width: 750,
-                height: 700,
-                modal: true,
-                overlay: {
-                    opacity: 0.5,
-                    background: "black"
-                }, close: function () {
-                    $('iframe', this).attr("src", "");
-                }
-            });
-            $('#AddMembers2,#AddRelatedFamily2').live("click", function (e) {
-                e.preventDefault();
-                var d = $('#memberDialog');
-                $('iframe', d).attr("src", this.href);
-                d.dialog("option", "title", this.title);
-                d.dialog("open");
-            });
-            $("a.delete").click(function (ev) {
-                ev.preventDefault();
-                if (confirm("are you sure?"))
-                    $.post("/Family/DeleteRelation/" + $(this).attr("id"), null, function (ret) {
-                        window.location.reload(true);
-                    });
-                return false;
-            });
-            $("a.split").click(function (ev) {
-                ev.preventDefault();
-                if (confirm("are you sure?"))
-                    $.post($(this).attr("href"), null, function (ret) {
-                        window.location = ret;
-                    });
-                return false;
-            });
-        });
-       function AddSelected() {
-           $('#memberDialog').dialog("close");
-           window.location.reload(true);
-        }
-</script>
+{
+<script src="/Scripts/family.js" type="text/javascript"></script>
 }
+@Html.Hidden("FamilyId", Model.familyid)
 <table class="roundbox" cellspacing="5">
     <tr><td><h2>The @((Model.Family.HeadOfHousehold ?? Model.Family.People.First()).Name) Family</h2></td></tr>
     <tr><td>
@@ -139,6 +80,29 @@
         </td>
     </tr>
 </table>
-<div id="memberDialog">
+@Html.Partial("ExtrasGrid", Model.Family)
+<div id="memberDialog" style="display:none">
 <iframe id="memberDialogiframe" style="width:100%;height:99%;border-size:0px;"></iframe>
+</div>
+<div id="newvalueform" style="display:none" class="roundbox">
+    <table>
+        <tr>
+            <th colspan="2">
+                <h2>New Extra Value</h2>
+            </th>
+        </tr>
+        <tr>
+            <th>Type:</th>
+            <td>
+                <table><tr>
+                    <td><input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">Code</label></td>
+                    <td><input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
+                    <td><input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
+                    <td><input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
+                </tr></table>
+            </td>
+        </tr>
+<tr><th>Field:</th><td>@Html.TextBox("fieldname")</td></tr>
+<tr><th>Value:</th><td>@Html.TextBox("fieldvalue")</td></tr>
+    </table>
 </div>

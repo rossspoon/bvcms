@@ -1333,6 +1333,18 @@ namespace UtilityExtensions
 			return new DateTime(year, month,
 				1 + (7 - (int)first.DayOfWeek) % 7);
 		}
+		public static int SundaysInMonth(int month, int year)
+		{
+			var first = new DateTime(year, month, 1);
+			var sun = new DateTime(year, month, 1 + (7 - (int)first.DayOfWeek) % 7);
+			int n = 0;
+			while (sun.Month == month)
+			{
+				n++;
+				sun = sun.AddDays(7);
+			}
+			return n;
+		}
 		public static bool SessionTimedOut()
 		{
 			if (HttpContext.Current.Session != null)

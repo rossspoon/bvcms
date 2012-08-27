@@ -113,6 +113,99 @@ namespace CmsData
                 Db.ChangeLogs.InsertOnSubmit(c);
             }
         }
+        public void SetExtra(string field, string value)
+        {
+            var e = FamilyExtras.FirstOrDefault(ee => ee.Field == field);
+            if (e == null)
+            {
+                e = new FamilyExtra { Field = field, FamilyId = FamilyId, TransactionTime = DateTime.Now };
+                this.FamilyExtras.Add(e);
+            }
+            e.StrValue = value;
+        }
+        public string GetExtra(string field)
+        {
+            var e = FamilyExtras.SingleOrDefault(ee => ee.Field == field);
+            if (e == null)
+                return "";
+			if (e.StrValue.HasValue())
+				return e.StrValue;
+			if (e.Data.HasValue())
+				return e.Data;
+			if (e.DateValue.HasValue)
+				return e.DateValue.FormatDate();
+			if (e.IntValue.HasValue)
+				return e.IntValue.ToString();
+			return e.BitValue.ToString();
+        }
+        public FamilyExtra GetExtraValue(string field)
+        {
+			if (!field.HasValue())
+				field = "blank";
+			field = field.Replace(",", "_");
+			var ev = FamilyExtras.AsEnumerable().FirstOrDefault(ee => string.Compare(ee.Field, field, ignoreCase:true) == 0);
+            if (ev == null)
+            {
+                ev = new FamilyExtra
+                {
+                    FamilyId = FamilyId,
+                    Field = field,
+                    TransactionTime = DateTime.Now
+                };
+                FamilyExtras.Add(ev);
+            }
+            return ev;
+        }
+        public void RemoveExtraValue(CMSDataContext Db, string field)
+        {
+			var ev = FamilyExtras.AsEnumerable().FirstOrDefault(ee => string.Compare(ee.Field, field, ignoreCase:true) == 0);
+			if (ev != null)
+				Db.FamilyExtras.DeleteOnSubmit(ev);
+        }
+        public void AddEditExtraValue(string field, string value)
+        {
+			if (!field.HasValue())
+				return;
+            if (!value.HasValue())
+                return;
+            var ev = GetExtraValue(field);
+            ev.StrValue = value;
+        }
+        public void AddEditExtraDate(string field, DateTime? value)
+        {
+			if (!value.HasValue)
+				return;
+            var ev = GetExtraValue(field);
+            ev.DateValue = value;
+        }
+        public void AddEditExtraData(string field, string value)
+        {
+            if (!value.HasValue())
+                return;
+            var ev = GetExtraValue(field);
+			ev.Data = value;
+        }
+        public void AddToExtraData(string field, string value)
+        {
+            if (!value.HasValue())
+                return;
+            var ev = GetExtraValue(field);
+			if (ev.Data.HasValue())
+				ev.Data = value + "\n" + ev.Data;
+			else
+				ev.Data = value;
+        }
+        public void AddEditExtraInt(string field, int value)
+        {
+            var ev = GetExtraValue(field);
+            ev.IntValue = value;
+        }
+        public void AddEditExtraBool(string field, bool tf)
+        {
+			if (!field.HasValue())
+				return;
+            var ev = GetExtraValue(field);
+            ev.BitValue = tf;
+        }
     }
 }
-

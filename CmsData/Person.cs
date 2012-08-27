@@ -1014,6 +1014,8 @@ namespace CmsData
         }
         public void AddEditExtraBool(string field, bool tf)
         {
+			if (!field.HasValue())
+				return;
             var ev = GetExtraValue(field);
             ev.BitValue = tf;
         }
