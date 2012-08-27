@@ -109,6 +109,46 @@ namespace CmsWeb.Models
 			return counts.guests = counts.members;
 		}
 
+		public class ActivityCount
+		{
+			public string name;
+			public int count;
+		}
+
+		public List<ActivityCount> FetchActivityCount()
+		{
+			var q1 = from e in DbUtil.Db.CheckInTimes
+					 join c in DbUtil.Db.CheckInActivities on e.Id equals c.Id
+					 where e.Location == location
+					 where e.CheckInTimeX >= dateStart || dateStart == null
+					 where e.CheckInTimeX < dateEnd || dateEnd == null
+					 group c by c.Activity into grouped
+					 select new ActivityCount() { name = grouped.Key, count = grouped.Count() };
+
+			var q2 = from e in DbUtil.Db.CheckInTimes
+					 where e.Location == location
+					 where e.CheckInTimeX >= dateStart || dateStart == null
+					 where e.CheckInTimeX < dateEnd || dateEnd == null
+					 group e by e.PeopleId into grouped
+					 select new { key = grouped.Key };
+
+			var q3 = from e in DbUtil.Db.CheckInTimes
+					 where e.Location == location
+					 where e.CheckInTimeX >= dateStart || dateStart == null
+					 where e.CheckInTimeX < dateEnd || dateEnd == null
+					 select e;
+
+			var p = new ActivityCount() { name = "Total Visits", count = q3.Count() };
+			var q = new ActivityCount() { name = "Unique People", count = q2.Count() };
+			
+
+			var lq = q1.ToList();
+			lq.Insert(0, q);
+			lq.Insert(0, p);
+
+			return lq;
+		}
+
 		private IEnumerable<CheckinTimeEx> _times;
 		public IEnumerable<CheckinTimeEx> FetchTimes()
 		{
@@ -118,6 +158,7 @@ namespace CmsWeb.Models
 			// filter
 			if (dateEnd != null)
 				dateEnd = dateEnd.Value.AddHours(24);
+
 			var q = from t in DbUtil.Db.CheckInTimes
 					where t.Location == location
 					where t.CheckInTimeX >= dateStart || dateStart == null
@@ -125,6 +166,7 @@ namespace CmsWeb.Models
 					where peopleid == 0 || t.PeopleId == peopleid || t.Guests.Any(g => g.PeopleId == peopleid)
 					where withGuest == false || (t.Guests.Any() || t.GuestOfId != null)
 					select t;
+
 			if (activity != null && !activity.Equals(ALL_ACTIVITIES))
 				q = from t in q
 					where t.CheckInActivities.Any(z => z.Activity == activity)
