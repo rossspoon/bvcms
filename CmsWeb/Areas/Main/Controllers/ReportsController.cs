@@ -117,18 +117,19 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult ShirtSizes(string org, int? div, int? schedule, string name)
         {
             var orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null;
-            var q = from om in DbUtil.Db.OrganizationMembers
-                    let o = om.Organization
-                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
-                    where o.DivOrgs.Any(t => t.DivId == div) || div == 0 || div == null
-                    where om.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule || schedule == 0 || schedule == null)
-                    group om.Person by om.Person.RecRegs.First().ShirtSize into g
-                    select new ShirtSizeInfo
-                    {
-                        Size = g.Key,
-                        Count = g.Count(),
-                    };
-            return View(q);
+			var q = from om in DbUtil.Db.OrganizationMembers
+					let o = om.Organization
+					where o.OrganizationName.Contains(name) || name.Length == 0
+					where o.OrganizationId == orgid || orgid == 0 || orgid == null
+					where o.DivOrgs.Any(t => t.DivId == div) || div == 0 || div == null
+					where om.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
+					group 1 by om.ShirtSize into g
+					select new ShirtSizeInfo
+					{
+						Size = g.Key,
+						Count = g.Count(),
+					}; 
+			return View(q);
         }
         public ActionResult Roster1(int? queryid, int? org, int? div, int? schedule, string name, string tm)
         {
