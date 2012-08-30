@@ -961,6 +961,7 @@
     <Content Include="EmailTemplates\BasicWithHeader.htm" />
     <Content Include="EmailTemplates\Plain.htm" />
     <Content Include="Errors\DatabaseNotFound.aspx" />
+    <Content Include="Errors\NoDatabase.htm" />
     <Content Include="Errors\SiteDisabled.htm" />
     <Content Include="images\arrowdnup.png" />
     <Content Include="images\calendar.gif" />

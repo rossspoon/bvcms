@@ -33,6 +33,22 @@ namespace CmsData
 				HttpContext.Current.Items[CMSDbKEY] = value;
 			}
 		}
+		public static bool DatabaseExists()
+        {
+			var exists = (bool?)HttpRuntime.Cache[Util.Host + "-DatabaseExists"];
+			if (exists.HasValue)
+				return exists.Value;
+
+			using (var cn = new SqlConnection(Util.GetMasterConnectionString()))
+			{
+				cn.Open();
+				var cmd = new SqlCommand("SELECT CAST(CASE WHEN EXISTS(SELECT NULL FROM sys.databases WHERE name = 'CMS_' + '" + Util.Host + "') THEN 1 ELSE 0 END AS BIT)", cn);
+				var r = (bool)cmd.ExecuteScalar();
+				HttpRuntime.Cache.Insert(Util.Host + "-DatabaseExists", r, null,
+					DateTime.Now.AddSeconds(60), Cache.NoSlidingExpiration);
+				return r;
+			}
+        }
 		public static CMSDataContext Db
 		{
 			get

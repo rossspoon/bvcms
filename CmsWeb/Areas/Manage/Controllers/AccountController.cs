@@ -85,13 +85,6 @@ CKEditorFuncNum, baseurl + fn, error));
 					return Content("no such database " + Util.Host);
                 return Redirect("/Error");
             }
-			//if (!Request.Browser.Cookies)
-			//    return Content("Your browser must support cookies to use this site<br>" + Request.UserAgent);
-//            if (DbUtil.Db.CmsHost.StartsWith("https://") && MyRequireHttpsAttribute.NeedRedirect(Request))
-//                if (Request.QueryString.Count > 0)
-//                    return Redirect(DbUtil.Db.CmsHost + "Logon?" + Request.QueryString);
-//                else
-//                    return Redirect(DbUtil.Db.CmsHost + "Logon");
 
             if (!User.Identity.IsAuthenticated)
             {
@@ -220,7 +213,7 @@ The bvCMS Team</p>
             var p = DbUtil.Db.LoadPersonById(pid);
             if (p == null)
                 return View("LinkUsed");
-            if (p.PositionInFamilyId == 30 || (p.Age ?? 16) < 16)
+            if ((p.Age ?? 16) < 16)
                 return Content("must be Adult (16 or older)");
             var user = MembershipService.CreateUser(DbUtil.Db, pid);
             FormsAuthentication.SetAuthCookie(user.Username, false);

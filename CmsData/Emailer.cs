@@ -199,11 +199,7 @@ namespace CmsData
 			var q = People.Where(Qb.Predicate(this));
 
 			if (wantParents || Qb.ParentsOf)
-				q = from p in q
-					from fm in People.Where(ff => ff.FamilyId == p.FamilyId)
-					where (fm.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
-					|| (fm.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
-					select fm;
+				q = PersonQueryParents(q);
 
 			var q2 = from p in q.Distinct()
 					 where p.EmailAddress != null

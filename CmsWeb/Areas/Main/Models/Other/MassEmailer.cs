@@ -10,6 +10,7 @@ using System.IO;
 using System.Web.Mvc;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Main.Models
 {
@@ -41,14 +42,7 @@ namespace CmsWeb.Areas.Main.Models
             var Qb = DbUtil.Db.LoadQueryById(QBId);
             var q = DbUtil.Db.PeopleQuery(QBId);
             if (Qb.ParentsOf || wantParents)
-            {
-                q = from p in q
-                    from fm in DbUtil.Db.People.Where(ff => ff.FamilyId == p.FamilyId)
-                    where (fm.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
-                    || (fm.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
-                    select fm;
-                q = q.Distinct();
-            }
+				q = DbUtil.Db.PersonQueryParents(q);
 
             q = from p in q
                 where p.EmailAddress != null

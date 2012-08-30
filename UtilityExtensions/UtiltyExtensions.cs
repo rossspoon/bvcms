@@ -533,6 +533,16 @@ namespace UtilityExtensions
 			cb.InitialCatalog = "CMS_{0}".Fmt(a[0]);
 			return cb.ConnectionString;
 		}
+		public static string GetMasterConnectionString()
+		{
+			var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
+			if (cs == null)
+				cs = ConfigurationManager.ConnectionStrings["CMS"];
+			var cb = new SqlConnectionStringBuilder(cs.ConnectionString);
+			cb.InitialCatalog = "master";
+			return cb.ConnectionString;
+		}
+
 		public static string ConnectionStringImage
 		{
 			get

@@ -86,6 +86,13 @@ namespace CmsWeb
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+			if (Request.Url.OriginalString.Contains("/Errors/NoDatabase.htm"))
+				return;
+			if (!DbUtil.DatabaseExists())
+			{
+				Response.Redirect("/Errors/NoDatabase.htm");
+				return;
+			}
 			var cul = DbUtil.Db.Setting("Culture", "en-US");
 			Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);

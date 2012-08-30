@@ -724,22 +724,14 @@ namespace CmsWeb.Models
 			Db.TagAll(query, tag);
         	return tag;
         }
-        private IQueryable<Person> PersonQuery()
+		private IQueryable<Person> PersonQuery()
         {
             if (Qb == null)
                 LoadScratchPad();
             Db.SetNoLock();
-            var q = Db.People.Where(Qb.Predicate(DbUtil.Db));
+            var q = Db.People.Where(Qb.Predicate(Db));
             if (Qb.ParentsOf)
-            {
-                var q2 = from p in q
-                         from m in p.Family.People
-                         where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
-                         || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
-						 where m.DeceasedDate == null
-                         select m;
-                return q2.Distinct();
-            }
+				return Db.PersonQueryParents(q);
             return q;
         }
         public void TagAll()
@@ -747,17 +739,9 @@ namespace CmsWeb.Models
             if (Qb == null)
                 LoadScratchPad();
             Db.SetNoLock();
-            var q = Db.People.Where(Qb.Predicate(DbUtil.Db));
+            var q = Db.People.Where(Qb.Predicate(Db));
             if (Qb.ParentsOf)
-            {
-                q = from p in q
-                    from m in p.Family.People
-                    where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
-                    || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
-					 where m.DeceasedDate == null
-                    select m;
-                q = q.Distinct();
-            }
+				q = Db.PersonQueryParents(q);
             Db.TagAll(q);
         }
         public void UnTagAll()
@@ -765,17 +749,9 @@ namespace CmsWeb.Models
             if (Qb == null)
                 LoadScratchPad();
             Db.SetNoLock();
-            var q = Db.People.Where(Qb.Predicate(DbUtil.Db));
+            var q = Db.People.Where(Qb.Predicate(Db));
             if (Qb.ParentsOf)
-            {
-                q = from p in q
-                    from m in p.Family.People
-                    where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
-                    || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
-					 where m.DeceasedDate == null
-                    select m;
-                q = q.Distinct();
-            }
+				q = Db.PersonQueryParents(q);
             Db.UnTagAll(q);
         }
         private IEnumerable<PeopleInfo> FetchPeopleList(IQueryable<Person> query)
