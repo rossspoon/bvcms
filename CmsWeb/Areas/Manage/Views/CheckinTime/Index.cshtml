@@ -1,4 +1,6 @@
 ﻿@using CmsWeb;
+@using CmsData;
+@using UtilityExtensions;
 @model CmsWeb.Models.CheckinTimeModel
 @{
 	ViewBag.Title = "Check-in Activity";
@@ -19,7 +21,7 @@
 {
     <script src="/Scripts/CheckinActivity.js" type="text/javascript"></script>
 }
-<form id="form" method="post" action="/Manage/CheckinTime/List">
+<form id="form" method="post" action="/Manage/CheckinTime/Index">
 @Html.Hidden("peopleid")
 <div class="roundbox floatleft">
 	<h2>
@@ -37,7 +39,7 @@
 			<td align="right">Name:</td>
             <td>
 				<span class="name">@Model.counts.name</span>
-                <a id="clearname" href="#">clear</a>
+                <a id="clearname" href="#">(Clear)</a>
 			</td>
 		</tr>
 		<tr>
@@ -58,21 +60,45 @@
 		</tr>
 	</table>
 </div>
+<div class="roundbox floatleft" style="margin-left:10px;">
+	<h2>Check-in Totals</h2>
+	<table cellspacing="7">
+		@foreach (var t in Model.FetchActivityCount())
+		{
+		<tr>
+			<td align="right">@t.name:</td>
+			<td>@t.count</td>
+		</tr>
+		} 
+	</table>
+</div>
 <div class="floatclear">
 </div>
 <table id="Checkins" class="grid" cellpadding="5">
 	<thead>
 		<tr><td colspan="3"><hr /></td></tr>
 		<tr>
-			<th align="left"><a href="#" class="sortable">Host</a> /<br/>&nbsp;
-				<a href="#" class="sortable">Person</a>
-            </th>
+			<th align="left"><a href="#" class="sortable">Host</a> / <a href="#" class="sortable">Person</a></th>
 			<th><a href="#" class="sortable">Date/Time</a></th>
 			<th><a href="#" class="sortable">Activity</a></th>
 		</tr>
 	</thead>
     <tbody>
-    	@{ Html.RenderPartial("List", Model); }
+    	@foreach (var t in Model.FetchTimes()) 
+{
+	<tr class="@t.rowclass()">
+		<td class="@t.indent()"><a href="#" person id="@t.ctime.PeopleId">@t.name</a></td>
+		<td>@t.ctime.CheckInTimeX.FormatDateTm()</td>
+		<td>@t.activities</td>
+	</tr>
+}
+	<tr><td colspan="3">
+			@Html.Hidden("membercount", Model.counts.members)
+			@Html.Hidden("guestcount", Model.counts.guests)
+			@Html.Hidden("name", Model.counts.name)
+			@{Html.RenderPartial("Pager2", Model.Pager);}
+		</td>
+	</tr>
     </tbody>
 </table>
 </form>
