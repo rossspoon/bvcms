@@ -696,7 +696,7 @@ namespace UtilityExtensions
 				if (HttpContext.Current != null)
 					if (HttpContext.Current.Session != null)
 						return HttpContext.Current.Session.SessionID;
-				return null;
+				return (string)HttpRuntime.Cache["SessionId"];
 			}
 		}
 		private const string STR_SessionStarting = "SessionStarting";

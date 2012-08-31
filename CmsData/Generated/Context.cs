@@ -1511,6 +1511,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.MasterOrg> ViewMasterOrgs
+	    {
+		    get { return this.GetTable< View.MasterOrg>(); }
+
+	    }
+
 	    public Table< View.Nick> ViewNicks
 	    {
 		    get { return this.GetTable< View.Nick>(); }

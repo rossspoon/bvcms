@@ -39,7 +39,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         public int[] groups;
         public bool? bygroup;
         public bool? altnames;
-        public string name, sgprefix;
+        public string name, sgprefix, highlightsg;
         public DateTime? dt;
 
         public override void ExecuteResult(ControllerContext context)
@@ -98,10 +98,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                                 Name2 = (altnames == true && at.Person.AltName != null && at.Person.AltName.Length > 0) ?
                                     at.Person.AltName : at.Person.Name2,
                                 at.PeopleId,
-                                at.Person.DOB
+                                at.Person.DOB,
                             };
                     foreach (var a in q)
-                        AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, font);
+                        AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font);
                 }
                 else
                 {
@@ -127,16 +127,17 @@ namespace CmsWeb.Areas.Main.Models.Report
                                     p.BirthMonth,
                                     p.BirthDay),
                                 MemberTypeCode = om.MemberType.Code,
-                                ch
+                                ch,
+								highlight = om.OrgMemMemTags.Any(mm => mm.MemberTag.Name == highlightsg) ? highlightsg : ""
                             };
                     foreach (var m in q)
-                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, m.ch ? china : font);
+                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, m.highlight, m.ch ? china : font);
                 }
 
                 if (bygroup == false && groups[0] == 0 && meeting == null)
                 {
                     foreach (var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value, NoCurrentMembers: true))
-                        AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
+                        AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont);
                     var wks = 3; // default lookback
                     var org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == o.OrgId);
                     if (org.RollSheetVisitorWks.HasValue)
@@ -164,7 +165,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                     p.BirthDay),
                             };
                     foreach (var m in q)
-                        AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, boldfont);
+                        AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont);
                 }
                 if (t.Rows.Count > 0)
                     mct.AddElement(t);
@@ -225,7 +226,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                                     "M.{0}.{1:MMddyyHHmm}".Fmt(o.OrgId, dt));
             return mct;
         }
-        private void AddRow(string Code, string name, int pid, string dob, Font font)
+        private void AddRow(string Code, string name, int pid, string dob, string highlight, Font font)
         {
             var bc = new Barcode39();
             bc.X = 1.2f;
@@ -248,8 +249,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             p.Add("\n");
             p.Add(new Chunk(" ", medfont));
             p.Add(new Chunk("({0}) {1:MMM d}".Fmt(Code, bd), smallfont));
-//			if (name.Contains("Jane"))
-//	            p.Add("\nTest1");
+			if (highlight.HasValue())
+	            p.Add("\n" + highlight);
             t.AddCell(p);
         }
         private class OrgInfo

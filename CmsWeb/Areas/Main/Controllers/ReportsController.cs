@@ -53,7 +53,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new ContactsResult(id.Value);
         }
-        public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)
+        public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames, string highlight)
         {
             return new RollsheetResult
             {
@@ -69,6 +69,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 sgprefix = sgprefix,
                 dt = dt,
                 altnames = altnames,
+				highlightsg = highlight,
             };
         }
         public ActionResult RallyRollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)

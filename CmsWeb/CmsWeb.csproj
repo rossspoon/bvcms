@@ -343,6 +343,9 @@
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
     <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
+    <Content Include="Areas\Main\Views\Person\CurrentRegistrations.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
     <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
@@ -1176,7 +1179,6 @@
     <Content Include="Areas\Main\Views\MemberDocs\Image.cshtml" />
     <Content Include="Areas\Main\Views\Person\EditorTemplates\Field.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlotsSummary.cshtml" />
-    <Content Include="Areas\Main\Views\Person\CurrentRegistrations.cshtml" />
     <Content Include="Areas\Manage\Views\UploadPeople\Progress.cshtml" />
     <Content Include="Areas\Manage\Views\UploadPeople\Index.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\TotalsByFund.cshtml" />
@@ -1214,6 +1216,7 @@
     <Content Include="Areas\Main\Views\Meeting\TicketMeeting.cshtml" />
     <Content Include="Areas\Main\Views\Family\ExtrasGrid.cshtml" />
     <Content Include="Areas\Main\Views\Family\EditorTemplates\Field.cshtml" />
+    <Content Include="Areas\Main\Views\Person\CurrentRegistrationsHtml.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

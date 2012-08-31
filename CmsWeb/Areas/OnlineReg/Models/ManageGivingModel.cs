@@ -215,7 +215,7 @@ namespace CmsWeb.Models
 		{
 			get
 			{
-				return
+				var ins = 
 					@"
 <div class=""instructions login"">{0}</div>
 <div class=""instructions select"">{1}</div>
@@ -231,6 +231,8 @@ namespace CmsWeb.Models
 							 setting.InstructionSubmit,
 							 setting.InstructionSorry
 						);
+				ins = OnlineRegModel.DoReplaceForExtraValueCode(ins, person);
+				return ins;
 			}
 		}
 	}

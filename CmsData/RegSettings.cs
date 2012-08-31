@@ -1614,5 +1614,24 @@ namespace CmsData
 						select op).ToList();
 			return list;
 		}
+		public class MasterOrgInfo
+		{
+			public int Id { get; set; }
+			public string Name { get; set; }
+		}
+		public MasterOrgInfo MasterOrg()
+		{
+			var q = from o in DbUtil.Db.ViewMasterOrgs
+					where o.PickListOrgId == OrgId
+					select new MasterOrgInfo
+					{
+						Id = o.OrganizationId,
+						Name = o.OrganizationName
+					};
+			var i = q.FirstOrDefault();
+			if (i == null)
+				return new MasterOrgInfo();
+			return i;
+		}
 	}
 }

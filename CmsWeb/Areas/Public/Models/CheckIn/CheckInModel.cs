@@ -40,7 +40,8 @@ namespace CmsWeb.Models
         }
         public List<FamilyInfo> Match(string id, int campus, int thisday)
         {
-            var ph = Util.GetDigits(id).PadLeft(10, '0');
+			id = Util.GetDigits(id);
+            var ph = id.PadLeft(10, '0');
             var p7 = ph.Substring(3);
             var ac = ph.Substring(0, 3);
             var q1 = from f in DbUtil.Db.Families

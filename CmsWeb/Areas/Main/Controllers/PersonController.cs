@@ -751,16 +751,24 @@ namespace CmsWeb.Areas.Main.Controllers
 			public string Name { get; set; }
 			public string Description { get; set; }
 		}
-		public ActionResult CurrentRegistrations()
+		public ActionResult CurrentRegistrations(bool? html)
 		{
-			var types = new[] {1, 2, 10, 11, 5, 6, 9, 14, 15};
+			var types = new[] 
+			{
+				CmsData.Codes.RegistrationTypeCode.JoinOrganization,
+				CmsData.Codes.RegistrationTypeCode.ComputeOrganizationByAge2,
+				CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2,
+				CmsData.Codes.RegistrationTypeCode.ChooseSlot,
+			};
 			var picklistorgs = DbUtil.Db.ViewPickListOrgs.Select(pp => pp.OrgId).ToArray();
 			var dt = DateTime.Today;
 			var q = from o in DbUtil.Db.Organizations
 					where !picklistorgs.Contains(o.OrganizationId)
 					where types.Contains(o.RegistrationTypeId ?? 0)
+					where (o.RegistrationClosed ?? false) == false
+					where (o.ClassFilled ?? false) == false
 					where o.RegEnd > dt || o.RegEnd == null
-					where (o.RegistrationClosed ?? false) == true
+					where o.RegStart <= dt || o.RegStart == null
 					where o.OrganizationStatusId == OrgStatusCode.Active
 					orderby o.OrganizationName
 					select new CurrentRegistration()
@@ -769,6 +777,8 @@ namespace CmsWeb.Areas.Main.Controllers
 						Name = o.OrganizationName,
 						Description = o.Description
 					};
+			if ((html ?? false) == true)
+				return View("CurrentRegistrationsHtml", q);
 			return View(q);
 		}
 		public ActionResult ContributionStatement(int id, string fr, string to)

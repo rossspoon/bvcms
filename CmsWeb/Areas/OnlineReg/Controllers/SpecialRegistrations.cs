@@ -292,6 +292,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				0, m.pid);
 
 			SetHeaders(m.orgid);
+			ViewBag.Title = "Online Recurring Giving";
+			var msg = m.Organization.GetExtra("ConfirmationDisplay");
+			if (!msg.HasValue())
+				msg = @"<p>Thank you {first}, for managing your recurring giving</p>
+<p>You should receive a confirmation email shortly.</p>";
+			msg = msg.Replace("{first}", m.person.PreferredName);
+			ViewBag.Message = msg;
 			return View(m);
 		}
 		[HttpPost]

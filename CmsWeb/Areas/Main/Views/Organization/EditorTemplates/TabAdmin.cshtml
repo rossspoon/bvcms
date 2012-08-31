@@ -40,10 +40,18 @@
 		Registration End Date:</span>
 		<span>@Html.TextBox("org.RegEnd", Model.org.RegEnd.ToString2("g"), new { @class = "datetimepicker" })</span>
     </li>
+@{
+    var masterinfo = Model.MasterOrg();
+    if (masterinfo.Id > 0)
+    {
+    <li><span class="text big">MasterOrg:</span>
+        <a href="/Organization/Index/@masterinfo.Id" target="otherorg">@masterinfo.Name</a>
+    </li>
+    }
+}
 @if (Model.org.RegistrationTypeId != CmsData.Codes.RegistrationTypeCode.JoinOrganization)
 {
-	<li>
-		<span class="text big tip" title="Organization Pick List
+	<li><span class="text big tip" title="Organization Pick List
         |This is used on the master organization 
         |and will become the dropdown for 'User Chooses Organization'">
 			Organization Pick List:</span>

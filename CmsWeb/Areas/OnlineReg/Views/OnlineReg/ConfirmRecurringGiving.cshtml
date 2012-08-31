@@ -1,10 +1,7 @@
 ﻿@model CmsWeb.Models.ManageGivingModel
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
-    ViewBag.Title = "Online Recurring Giving";
 }
    <h2>Confirmation</h2>
-    <p>
-        Thank you @Model.person.PreferredName, for managing your recurring giving<br />
-        You should receive a confirmation email shortly.</p>
+   @Html.Raw(ViewBag.Message)
 

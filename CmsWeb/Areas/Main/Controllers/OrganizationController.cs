@@ -689,6 +689,7 @@ no need to put these into the ""Source"" view of the editor anymore.
             try
             {
 				m.org.AddEditExtra(DbUtil.Db, field, value, multiline);
+				DbUtil.Db.SubmitChanges();
             }
             catch (Exception ex)
             {

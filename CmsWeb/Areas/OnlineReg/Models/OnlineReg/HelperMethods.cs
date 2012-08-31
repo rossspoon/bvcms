@@ -284,7 +284,7 @@ namespace CmsWeb.Models
                                             setting.InstructionSorry
                                             );
 					if (ins.Contains("{ev:", ignoreCase: true))
-						ins = DoReplaceForExtraValueCode(ins);
+						ins = DoReplaceForExtraValueCode(ins, last.person);
                     return Util.PickFirst(ins, div != null ? div.Instructions : "") + "\n";
                 }
                 if (div != null)
@@ -292,10 +292,9 @@ namespace CmsWeb.Models
                 return "";
             }
         }
-		private string DoReplaceForExtraValueCode(string text)
+		public static string DoReplaceForExtraValueCode(string text, Person p)
 		{
 			const string RE = @"{ev:(?<name>.+?)}";
-			var p = last.person;
 			
 			var re = new Regex(RE, RegexOptions.Singleline | RegexOptions.Multiline);
 			var match = re.Match(text);
