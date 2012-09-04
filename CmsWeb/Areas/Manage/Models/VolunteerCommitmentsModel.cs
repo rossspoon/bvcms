@@ -100,18 +100,19 @@ namespace CmsWeb.Models
 					orderby a.MeetingDate
 					select a;
 			var list = q.ToList();
-			if (list.Count == 0)
-				return;
-			var sunday = list.First().MeetingDate.Date;
+			DateTime sunday = DateTime.MinValue;
+			if (list.Count > 0)
+				sunday = list.FirstOrDefault().MeetingDate.Date;
+			sunday = sunday > Sunday ? sunday : Sunday;
 			sunday = sunday.AddDays(-(int)sunday.DayOfWeek);
 			Attends = from a in list
 					  let Day = (int)a.MeetingDate.DayOfWeek
-					  let Sunday = a.MeetingDate.Date.AddDays(-Day)
+					  let sday = a.MeetingDate.Date.AddDays(-Day)
 					  orderby a.MeetingDate
 					  select new Attendance
 					  {
 						  MeetingId = a.MeetingId,
-						  Sunday = Sunday,
+						  Sunday = sday,
 						  TimeOfWeek = a.MeetingDate.Subtract(Sunday),
 						  MeetingDate = a.MeetingDate,
 						  PeopleId = a.PeopleId,

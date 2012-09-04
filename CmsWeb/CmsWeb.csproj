@@ -962,7 +962,6 @@
     <Content Include="Errors\DatabaseNotFound.aspx" />
     <Content Include="Errors\NoDatabase.htm" />
     <Content Include="Errors\SiteDisabled.htm" />
-    <Content Include="HTMLPage1.htm" />
     <Content Include="images\arrowdnup.png" />
     <Content Include="images\calendar.gif" />
     <Content Include="images\deliveredbybvcms.gif" />

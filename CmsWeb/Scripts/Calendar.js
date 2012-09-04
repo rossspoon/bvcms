@@ -18,6 +18,7 @@
         }
     });
     $(".smallgroup").change(function () {
+        $.blockUI();
         window.location = $.URL();
     });
     $("#SortIt").click(function (ev) {
@@ -26,6 +27,7 @@
             $("#SortByWeek").val("True");
         else
             $("#SortByWeek").val("False");
+        $.blockUI();
         window.location = $.URL();
     });
     $.URL = function () {
@@ -45,6 +47,7 @@
         accept: ":not(.ui-sortable-helper)",
         drop: function (event, ui) {
             var $this = $(this);
+            $.blockUI();
             $.post("/Volunteers/DragDrop/", {
                 "id": $("#OrgId").val(),
                 "week": $this.attr("week"),
