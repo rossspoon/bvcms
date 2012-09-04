@@ -52,9 +52,9 @@
     @Html.Partial("OrgInfo", Model)
     </form>
 </div>
-<div id="buttondiv" class="dropdown" style="margin-top: 2em; margin-left: 2em; float: left;
-    font-size: 1.2em;">
-    <div>
+<div class="floatleft">
+<div id="buttondiv" class="dropdown" style="margin-top: 2em; margin-left: 2em; font-size: 1.2em;">
+    <div style="margin-top: 2em">
         <a href="#">Other Management</a></div>
     <div class="sublinks">
         @if (User.IsInRole("ManageGroups"))
@@ -64,7 +64,6 @@
 		<a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank"> Recent Attendance Report</a> 
 		<a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId"> Attendance Percentages</a> 
 		<a href="/OrgContent/Index/@o.OrganizationId" target="_blank"> Members Only Page</a> 
-		<a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId"> Volunteer Calendar</a> 
 		<a href="/RegSetting/Index/@o.OrganizationId">View Registration Document</a> 
 		<a id="tryreg" href="#">Try Registration</a> 
         <a href="/Organization/VoteTag/@o.OrganizationId" target="_blank">View VoteTags</a>
@@ -83,6 +82,21 @@
     </div>
     <div style="border-bottom: 4px solid #ddd">
     </div>
+</div>
+@if (Model.IsVolunteerLeader)
+{
+<div id="buttondiv" class="dropdown" style="margin-top: 2em; margin-left: 2em;
+    font-size: 1.2em;">
+    <div>
+        <a href="#">Volunteer Management</a></div>
+    <div class="sublinks">
+		<a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId" target="calendar">Volunteer Calendar</a>
+		<a href="/OnlineReg/ManageVolunteer/@o.OrganizationId/@UtilityExtensions.Util.UserPeopleId">Manage Volunteers</a>
+    </div>
+    <div style="border-bottom: 4px solid #ddd">
+    </div>
+</div>
+}
 </div>
 <div class="floatclear">
 </div>

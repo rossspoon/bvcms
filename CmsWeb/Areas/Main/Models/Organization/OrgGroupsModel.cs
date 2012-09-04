@@ -86,8 +86,15 @@ namespace CmsWeb.Models
             var q = OrgMembers();
             if (memtype != 0)
                 q = q.Where(om => om.MemberTypeId == memtype);
-            if (ingroup.HasValue())
-                q = q.Where(om => om.OrgMemMemTags.Any(omt => omt.MemberTag.Name.StartsWith(ingroup)));
+			if (ingroup.HasValue())
+			{
+				var groups = ingroup.Split(',');
+				for (var i = 0; i < groups.Length; i++)
+				{
+					var group = groups[i];
+					q = q.Where(om => om.OrgMemMemTags.Any(omt => omt.MemberTag.Name == group));
+				}
+			}
             if (notgroupactive)
                 if (notgroup.HasValue())
                     q = q.Where(om => !om.OrgMemMemTags.Any(omt => omt.MemberTag.Name.StartsWith(notgroup)));

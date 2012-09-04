@@ -50,13 +50,26 @@ namespace CmsWeb.Areas.Manage.Controllers
                     };
             return Json(q);
         }
-        public ActionResult Calendar(int id)
+        public ActionResult Calendar(int id, string sg1, string sg2, bool? SortByWeek)
         {
             var m = new VolunteerCommitmentsModel(id);
-            if (m.times == null)
-                return Content("no future meetings available");
+			m.SmallGroup1 = sg1;
+			m.SmallGroup2 = sg2;
+			m.SortByWeek = SortByWeek ?? false;
             return View(m);
         }
+		[HttpPost]
+		public ActionResult DragDrop(int id, int week, DateTime time, int pid)
+		{
+			var m = new VolunteerCommitmentsModel(id);
+			var q = from s in m.FetchSlots()
+					where s.Week == week
+					where s.Time.TimeOfDay == time.TimeOfDay
+					select s;
+			foreach (var s in q)
+				Attend.MarkRegistered(DbUtil.Db, id, pid, s.Time, true);
+			return Content("ok");
+		}
 
         public ActionResult CustomReport(string id)
         {

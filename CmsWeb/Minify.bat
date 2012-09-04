@@ -3,7 +3,7 @@ path=%path%;c:\Program Files (x86)\Microsoft\Microsoft Ajax Minifier
 
 ajaxmin ^
 Content/js/jquery-1.7.2.js ^
-Content/js/jquery-ui-1.8.22.custom.js ^
+Content/js/jquery-ui-1.8.23.custom.js ^
 Content/js/jquery.bgiframe-2.1.2.js ^
 Content/js/jquery.hoverIntent.js ^
 Content/js/jquery.cookie.js ^
@@ -41,7 +41,7 @@ Scripts/Person.js ^
 
 ajaxmin ^
 Content/js/jquery-1.7.2.js ^
-Content/js/jquery-ui-1.8.22.custom.js ^
+Content/js/jquery-ui-1.8.23.custom.js ^
 Content/js/jquery.validate.js ^
 Content/js/jquery.idle-timer.js ^
 Content/js/jquery.blockUI.js ^
@@ -50,7 +50,7 @@ Content/js/jquery.showpassword.js ^
 -o Min/Content/js/combined-onlinereg.js -clobber:true || pause
 
 ajaxmin ^
-Content/jquery-ui-1.8.22.custom.css ^
+Content/jquery-ui-1.8.23.custom.css ^
 Content/site.css ^
 Content/style2.css ^
 Content/cmenu.css ^
@@ -62,7 +62,7 @@ Content/joyride-1.0.5.css ^
 -o Content/combined.css -clobber:true || pause
 
 ajaxmin Content/js/jquery-1.7.2.js -o Min\Content/js/jquery-1.7.2.js -clobber:true || pause
-ajaxmin Content/js/jquery-ui-1.8.22.custom.js -o Min\Content/js/jquery-ui-1.8.22.custom.js -clobber:true || pause
+ajaxmin Content/js/jquery-ui-1.8.23.custom.js -o Min\Content/js/jquery-ui-1.8.23.custom.js -clobber:true || pause
 ajaxmin Content/js/jquery.contextMenu.js -o Min\Content/js/jquery.contextMenu.js -clobber:true || pause
 ajaxmin Content/js/jquery.form.js -o Min\Content/js/jquery.form.js -clobber:true || pause
 ajaxmin Content/js/jquery.form2.js -o Min\Content/js/jquery.form2.js -clobber:true || pause
@@ -77,6 +77,7 @@ ajaxmin Content/js/jquery-ui-timepicker-addon.js -o Min\Content/js/jquery-ui-tim
 ajaxmin Content/js/jquery.dataTables.js -o Min\Content/js/jquery.dataTables.js -clobber:true || pause
 ajaxmin Content/js/FixedHeader.js -o Min\Content/js/FixedHeader.js -clobber:true || pause
 
+ajaxmin Scripts/Calendar.js -o Min/Scripts/Calendar.js -clobber:true || pause
 ajaxmin Scripts/CheckIn.js -o Min/Scripts/CheckIn.js -clobber:true || pause
 ajaxmin Scripts/CheckInActivity.js -o Min/Scripts/CheckInActivity.js -clobber:true || pause
 ajaxmin Scripts/ContactSearch.js -o Min\Scripts/ContactSearch.js -clobber:true || pause

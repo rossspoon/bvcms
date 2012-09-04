@@ -19,22 +19,21 @@ namespace CmsData
 	public static partial class DbUtil
 	{
 		private const string CMSDbKEY = "CMSDbKey";
-		//private static CMSDataContext _idb;
 		private static CMSDataContext InternalDb
 		{
 			get
 			{
-				//return _idb;
 				return (CMSDataContext)HttpContext.Current.Items[CMSDbKEY];
 			}
 			set
 			{
-				//_idb = value;
 				HttpContext.Current.Items[CMSDbKEY] = value;
 			}
 		}
 		public static bool DatabaseExists()
         {
+			if (!Util.IsHosted)
+				return true;
 			var exists = (bool?)HttpRuntime.Cache[Util.Host + "-DatabaseExists"];
 			if (exists.HasValue)
 				return exists.Value;

@@ -5,67 +5,37 @@
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
 }
+@section head
+{
+<style type="text/css">
+    .wk-1 { background-color: #B1ECB1; }
+    .wk-2 { background-color: #E0E0FF; } 
+    .wk-3 { background-color: #FFE1E1; }
+    .wk-4 { background-color: #FFFFDB; }
+    .wk-5 { background-color: #E1E1E1; }
+</style>
+}
 @section scripts
 {
 @Html.Script("/Content/js/jquery.sortElements.js")
 @Html.Script("/Scripts/ManageVolunteer.js")
 }
+@if (Model.IsLeader)
+{
+<h2><a href="/Organization/Index/@Model.OrgId">@Model.Org.OrganizationName</a></h2>
+<h4><a href="/Volunteers/Calendar/@Model.OrgId" target="calendar">View Calendar</a></h4><br />
+@*<p>Select Volunteer: @Html.DropDownList("volunteer", Model.Volunteers())</p>*@
+}
+else
+{
 <h2>@Model.Org.OrganizationName</h2>
-<h4>Volunteer Commitment Times for @Model.Person.Name &lt;@Model.Person.EmailAddress&gt;</h4>
+}
+<h3>Volunteer Commitment Times for @Model.Person.Name &lt;@Model.Person.EmailAddress&gt;</h3>
 <div>@Html.Raw(Model.Instructions)</div>
 <div>You can sort by Week of Month, or by Date (default). Just click the column headings.</div>
 <div>Note: (# needed shown in parentheses)</div>
 @using (Html.BeginForm("ConfirmVolunteerSlots", "OnlineReg"))
 {
-@Html.HiddenFor(m => m.PeopleId);
-@Html.HiddenFor(m => m.OrgId);
-<table class="grid">
-    <thead>
-        <tr>
-            <td><br /><a href="#" id="sortday" title="Sort Chronologically">Sunday</a></td>
-			<td><br /><a href="#" id="sortweek" title="Sort by Week of Month">Week #</a></td>
-@foreach (var s in Model.Regsettings.TimeSlots)
-{ 
-            <td class="center">@s.Description<br />@s.Datetime().ToString("ddd h:mm tt")<br /> </td>
-}
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var ts in Model.FetchSlotWeeks())
-{
-        <tr>
-            <td class="day" jday="@ts[0].Sunday.ToString("yyyyMMdd")">@ts[0].Sunday.ToString("MMM d")</td>
-            <td class="center week" jweek="@ts[0].Week@ts[0].Sunday.ToString("yyyyMMdd")">@ts[0].Week</td>
-    @foreach (var si in ts)
-    {
-		<td class="center">
-			@if (si.Full)
-			{
-				<span>Filled</span>
-			}
-			else if (si.Time >= DateTime.Today)
-			{
-                if (si.Time <= Model.dtlock && si.Checked)
-                {
-				<input type="checkbox" name="Commit" value="@si.Time" @si.CHECKED disabled="true" />
-				<a class="getsub" href="/OnlineReg/GetVolSub/@si.AttendId/@Model.PeopleId">get sub</a>
-                }
-                else
-                {
-				<input type="checkbox" name="Commit" value="@si.Time" @si.CHECKED @si.DISABLED />
-                <span>(@si.Need)</span>
-                }
-			}
-		</td>
-    } 
-        </tr>
-}
-    </tbody>
-	<tfoot>
-		<tr><td align="right" colspan="@(Model.Regsettings.TimeSlots.Count + 2)">
-		    <input id="submitit" type="submit" class="submitbutton" value='Submit' /></td>
-        </tr>
-	</tfoot>
-</table>
+    @Html.Partial("VolunteerSlots", Model)
 }
 

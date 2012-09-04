@@ -336,10 +336,6 @@
     <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
-    <Content Include="App_Data\51Degrees.mobi-Lite-2012.07.31.xml" />
-    <Content Include="App_Data\51Degrees.mobi-Patch.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
     <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
@@ -389,13 +385,13 @@
     <Content Include="Content\images\sort_desc.png" />
     <Content Include="Content\images\sort_desc_disabled.png" />
     <Content Include="Content\joyride-1.0.5.css" />
-    <Content Include="Content\jquery-ui-1.8.22.custom.css" />
+    <Content Include="Content\jquery-ui-1.8.23.custom.css" />
     <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\jquery.dataTables_themeroller.css" />
     <Content Include="Content\js\FixedHeader.js" />
     <Content Include="Content\js\jquery-1.7.2.js" />
     <Content Include="Content\js\jquery-1.7.2.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.22.custom.js" />
+    <Content Include="Content\js\jquery-ui-1.8.23.custom.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Content\js\jquery.dataTables.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
@@ -966,6 +962,7 @@
     <Content Include="Errors\DatabaseNotFound.aspx" />
     <Content Include="Errors\NoDatabase.htm" />
     <Content Include="Errors\SiteDisabled.htm" />
+    <Content Include="HTMLPage1.htm" />
     <Content Include="images\arrowdnup.png" />
     <Content Include="images\calendar.gif" />
     <Content Include="images\deliveredbybvcms.gif" />
@@ -1002,7 +999,7 @@
     <Content Include="Min\Content\js\combined.js" />
     <Content Include="Min\Content\js\FixedHeader.js" />
     <Content Include="Min\Content\js\jquery-1.7.2.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.8.22.custom.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.8.23.custom.js" />
     <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Min\Content\js\jquery.checkboxtree.js" />
     <Content Include="Min\Content\js\jquery.contextMenu.js" />
@@ -1016,6 +1013,7 @@
     <Content Include="Min\Content\js\jquery.sortElements.js" />
     <Content Include="Min\Content\js\jquery.textarea.js" />
     <Content Include="Min\Content\js\jquery.transpose.js" />
+    <Content Include="Min\Scripts\Calendar.js" />
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
     <Content Include="Min\Scripts\Contributions.js" />
@@ -1061,6 +1059,7 @@
     <Content Include="Scripts\CheckinActivity.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
+    <Content Include="Scripts\Calendar.js" />
     <Content Include="Scripts\family.js" />
     <Content Include="Scripts\meeting-ticket.js" />
     <Content Include="Scripts\TotalsByFund.js" />
@@ -1150,10 +1149,6 @@
     </Content>
     <Content Include="Areas\Main\Views\Person\VolunteerDisplay.cshtml">
     </Content>
-    <None Include="App_Data\51Degrees.mobi.config0">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Content Include="App_Browsers\WebOs.browser">
       <SubType>Designer</SubType>
     </Content>
@@ -1216,6 +1211,8 @@
     <Content Include="Areas\Main\Views\Family\ExtrasGrid.cshtml" />
     <Content Include="Areas\Main\Views\Family\EditorTemplates\Field.cshtml" />
     <Content Include="Areas\Main\Views\Person\CurrentRegistrationsHtml.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlots.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\VolunteerCommitmentsSummary.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

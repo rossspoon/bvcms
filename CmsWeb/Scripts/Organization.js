@@ -41,8 +41,10 @@ $(function () {
                     $.unblockUI();
                     $.growlUI("error", ret);
                 }
-                else
+                else {
                     $.unblockUI();
+                    $.growlUI("Email", "Reminders Sent");
+                }
             });
         }
     });

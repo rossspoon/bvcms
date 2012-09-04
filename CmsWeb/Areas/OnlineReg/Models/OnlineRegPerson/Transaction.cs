@@ -37,13 +37,14 @@ namespace CmsWeb.Models
                 if (q.Count() > 0)
                     amt = q.First();
             }
-			var orgfee = 0M;
+			decimal? orgfee = null;
             if (setting.OrgFees.Count > 0)
                 // fee based on being in an organization
             {
                 var q = from o in setting.OrgFees
                         where person != null
-                        && person.OrganizationMembers.Any(om => om.OrganizationId == o.OrgId)
+	                        && person.OrganizationMembers.Any(om => om.OrganizationId == o.OrgId)
+						orderby o.Fee
                         select o.Fee ?? 0;
                 countorgs = q.Count();
                 if (countorgs > 0)
@@ -52,14 +53,8 @@ namespace CmsWeb.Models
             // just use the simple fee if nothing else has been used yet.
             if (amt == 0 && countorgs == 0 && setting.SuggestedFee == false)
                 amt = setting.Fee ?? 0;
-			//if (setting.ExtraValueFeeName.HasValue())
-			//{
-			//	var evamt = person.GetExtra(setting.ExtraValueFeeName).ToDecimal();
-			//	if (evamt.HasValue)
-			//		amt = evamt.Value;
-			//}
-			if (orgfee > 0)
-				amt = orgfee; // special price for org member
+			if (orgfee.HasValue)
+				amt = orgfee.Value; // special price for org member
 			else
 	            amt += TotalOther();
             return amt;

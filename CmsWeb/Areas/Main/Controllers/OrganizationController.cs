@@ -725,7 +725,10 @@ no need to put these into the ""Source"" view of the editor anymore.
             var m = new OrganizationModel(id, null);
 			try
 			{
-				m.SendReminders();
+				if (m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+					m.SendVolunteerReminders(this);
+				else
+					m.SendEventReminders();
 			}
 			catch (Exception ex)
 			{

@@ -23,7 +23,13 @@
     </tr>
     <tr><td colspan="2"><hr /></td></tr>
     <tr>
-        <th align="right">Is in group starting with:</th>
+        <th align="right" class="helptip" 
+            title="Filter by Groups
+            |You can put a partial name
+            |Or you can put a comma separated list of names
+            |The comma separated list must be complete names">
+            Is in group starting with 
+            <img src="/images/help_out.gif" />:</th>
         <td class="wide100">@Html.TextBox("ingroup", "", new { @class = "filter" })</td>
         <td></td>
     </tr>

@@ -267,6 +267,7 @@ namespace CmsWeb.Models
 			{
 				Util.UserId = i.u.UserId;
 				Util.UserPeopleId = i.u.PeopleId;
+				Util.UserEmail = i.u.EmailAddress;
 				Util2.CurrentPeopleId = i.u.PeopleId.Value;
 				Util.UserPreferredName = i.PreferredName;
 				Util.UserFullName = i.u.Name;

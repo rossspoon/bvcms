@@ -493,6 +493,14 @@ namespace UtilityExtensions
 					HttpContext.Current.Session[STR_ConnectionString] = value;
 			}
 		}
+		public static bool IsHosted
+		{
+			get
+			{
+				var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
+				return cs != null;
+			}
+		}
 		private const string STR_IsSage = "IsSage";
 		public static bool? IsSage
 		{
@@ -1342,6 +1350,10 @@ namespace UtilityExtensions
 			var first = new DateTime(year, month, 1);
 			return new DateTime(year, month,
 				1 + (7 - (int)first.DayOfWeek) % 7);
+		}
+		public static DateTime Sunday(this DateTime dt)
+		{
+			return dt.Date.AddDays(-(int)dt.DayOfWeek);
 		}
 		public static int SundaysInMonth(int month, int year)
 		{

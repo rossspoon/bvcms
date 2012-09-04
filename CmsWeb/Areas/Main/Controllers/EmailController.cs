@@ -8,6 +8,7 @@ using CmsWeb.Areas.Manage.Controllers;
 using UtilityExtensions;
 using CmsData;
 using Elmah;
+using System.Threading;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -136,14 +137,20 @@ namespace CmsWeb.Areas.Main.Controllers
 			}
 
 			string host = Util.Host;
+			// save these from HttpContext to set again inside thread local storage
+			var useremail = Util.UserEmail;
+			var isinroleemailtest = User.IsInRole("EmailTest");
 
 			System.Threading.Tasks.Task.Factory.StartNew(() =>
 			{
-				System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.BelowNormal;
+				Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 				try
 				{
 					var Db = new CMSDataContext(Util.GetConnectionString(host));
 					Db.Host = host;
+					// set these again inside thread local storage
+					Util.UserEmail = useremail;
+					Util.IsInRoleEmailTest = isinroleemailtest;
 					Db.SendPeopleEmail(id);
 				}
 				catch (Exception ex)

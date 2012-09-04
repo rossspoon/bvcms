@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using CmsData;
 using UtilityExtensions;
+using System.Web;
+using System.Web.Mvc;
 
 namespace CmsWeb.Models
 {
@@ -11,14 +13,18 @@ namespace CmsWeb.Models
 	{
 		public int OrgId { get; set; }
 		public int PeopleId { get; set; }
+		public bool IsLeader { get; set; }
+		public bool SendEmail { get; set; }
 		public DateTime[] Commit { get; set; }
 		public DateTime dtlock { get; set; }
 
-		public VolunteerModel(int orgId, int peopleId)
+		public VolunteerModel(int orgId, int peopleId, bool leader = false)
 		{
 			OrgId = orgId;
 			PeopleId = peopleId;
 			dtlock = DateTime.Now.AddDays(Regsettings.TimeSlotLockDays ?? 0);
+			IsLeader = leader;
+			SendEmail = leader == false;
 		}
 
 		public VolunteerModel()
@@ -62,7 +68,7 @@ namespace CmsWeb.Models
 				   group slot by slot.Sunday into g
 				   where g.Any(gg => gg.Time > DateTime.Today)
 				   orderby g.Key
-				   select g.ToList();
+				   select g.OrderBy(gg => gg.Time).ToList();
 		}
 
 		public class DateInfo
@@ -243,6 +249,15 @@ namespace CmsWeb.Models
 		public RegSettings setting
 		{
 			get { return new RegSettings(Org.RegSetting, DbUtil.Db, OrgId); }
+		}
+		public SelectList Volunteers()
+		{
+			var q = from m in DbUtil.Db.OrganizationMembers
+					where m.OrganizationId == OrgId
+					where m.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
+					orderby m.Person.Name2
+					select new { m.PeopleId, m.Person.Name };
+			return new SelectList(q, "PeopleId", "Name", PeopleId);
 		}
 	}
 }

@@ -5,6 +5,7 @@
         $(".bt").button();
     }
     $.fmtTable();
+    $(".helptip").tooltip({ showBody: "|" });
     $.loadTable = function () {
         $.blockUI();
         $.getTable($('#groupsform'));
@@ -100,6 +101,20 @@
     });
     $('#RemoveSelectedFromTargetGroup').live('click', function (ev) {
         $.performAction("/OrgGroups/RemoveSelectedFromTargetGroup");
+    }); 
+    var lastChecked = null;
+    $("input[name = 'list']").live("click", function (e) {
+        if (!lastChecked) {
+            lastChecked = this;
+            return;
+        }
+        if (e.shiftKey) {
+            var start = $("input[name = 'list']").index(this);
+            var end = $("input[name = 'list']").index(lastChecked);
+            $("input[name = 'list']").slice(Math.min(start, end), Math.max(start, end) + 1).attr('checked', lastChecked.checked);
+        }
+        lastChecked = this;
     });
+
 });
 

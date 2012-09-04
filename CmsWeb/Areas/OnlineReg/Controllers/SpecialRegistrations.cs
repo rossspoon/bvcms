@@ -6,6 +6,7 @@ using CmsWeb.Models;
 using UtilityExtensions;
 using System.Collections.Generic;
 using CmsData.Codes;
+using CmsWeb.Models.OrganizationPage;
 
 namespace CmsWeb.Areas.OnlineReg.Controllers
 {
@@ -49,15 +50,24 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return Content(ex.Message);
 			}
 		}
-		public ActionResult ManageVolunteer(string id)
+		public ActionResult ManageVolunteer(string id, int? pid)
 		{
 			if (!id.HasValue())
 				return Content("bad link");
-			VolunteerModel m;
+			VolunteerModel m = null;
+
 			var td = TempData["ps"];
 			if (td != null)
+			{
 				m = new VolunteerModel(orgId: id.ToInt(), peopleId: td.ToInt());
-			else
+			}
+			else if (pid.HasValue)
+			{
+				var leader = OrganizationModel.VolunteerLeaderInOrg(id.ToInt2());
+				if (leader)
+					m = new VolunteerModel(orgId: id.ToInt(), peopleId: pid.Value, leader: true);
+			}
+			if (m == null)
 			{
 				var guid = id.ToGuid();
 				if (guid == null)
@@ -78,10 +88,47 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				ot.Used = true;
 				DbUtil.Db.SubmitChanges();
 			}
+
 			SetHeaders(id.ToInt());
 			DbUtil.LogActivity("Pick Slots: {0} ({1})".Fmt(m.Org.OrganizationName, m.Person.Name));
 			return View(m);
 		}
+		[HttpPost]
+		public ActionResult ConfirmVolunteerSlots(VolunteerModel m)
+		{
+			m.UpdateCommitments();
+			if (m.SendEmail)
+			{
+				List<Person> Staff = null;
+				Staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId);
+				if (Staff.Count == 0)
+					Staff = DbUtil.Db.AdminPeople();
+				var staff = Staff[0];
+
+				var summary = m.Summary(this);
+				var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
+				text = text.Replace("{name}", m.Person.Name);
+				text = text.Replace("{date}", DateTime.Now.ToString("d"));
+				text = text.Replace("{email}", m.Person.EmailAddress);
+				text = text.Replace("{phone}", m.Person.HomePhone.FmtFone());
+				text = text.Replace("{contact}", staff.Name);
+				text = text.Replace("{contactemail}", staff.EmailAddress);
+				text = text.Replace("{contactphone}", m.Org.PhoneNumber.FmtFone());
+				text = text.Replace("{details}", summary);
+				DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
+						m.setting.Subject, text);
+
+				DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed volunteer commitments to {1}<br/>
+The following Committments:<br/>
+{2}".Fmt(m.Person.Name, m.Org.OrganizationName, summary));
+				ViewData["Organization"] = m.Org.OrganizationName;
+			}
+			SetHeaders(m.OrgId);
+			if (m.IsLeader)
+				return View("ManageVolunteer", m);
+			return View(m);
+		}
+
 		public ActionResult ManageSubscriptions(string id)
 		{
 			if (!id.HasValue())
@@ -299,36 +346,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 <p>You should receive a confirmation email shortly.</p>";
 			msg = msg.Replace("{first}", m.person.PreferredName);
 			ViewBag.Message = msg;
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult ConfirmVolunteerSlots(VolunteerModel m)
-		{
-			m.UpdateCommitments();
-			List<Person> Staff = null;
-			Staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId);
-			if (Staff.Count == 0)
-				Staff = DbUtil.Db.AdminPeople();
-			var staff = Staff[0];
-
-			var summary = m.Summary(this);
-			var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
-			text = text.Replace("{name}", m.Person.Name);
-			text = text.Replace("{date}", DateTime.Now.ToString("d"));
-			text = text.Replace("{email}", m.Person.EmailAddress);
-			text = text.Replace("{phone}", m.Person.HomePhone.FmtFone());
-			text = text.Replace("{contact}", staff.Name);
-			text = text.Replace("{contactemail}", staff.EmailAddress);
-			text = text.Replace("{contactphone}", m.Org.PhoneNumber.FmtFone());
-			text = text.Replace("{details}", summary);
-			DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
-					m.setting.Subject, text);
-
-			DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed volunteer commitments to {1}<br/>
-The following Committments:<br/>
-{2}".Fmt(m.Person.Name, m.Org.OrganizationName, summary));
-			ViewData["Organization"] = m.Org.OrganizationName;
-			SetHeaders(m.OrgId);
 			return View(m);
 		}
 		[AcceptVerbs(HttpVerbs.Post)]

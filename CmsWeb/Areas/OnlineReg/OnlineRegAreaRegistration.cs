@@ -33,6 +33,7 @@ namespace CmsWeb.Areas.OnlineReg
                 "OnlineReg/VolSubReport/{aid}/{pid}/{ticks}",
                 new { controller = "OnlineReg", action = "VolSubReport", aid=0, pid=0, ticks=0 }
             );
+           AddRoute(context, "Calendar", "OnlineReg", "OnlineReg/ManageVolunteer/{id}/{pid}", "ManageVolunteer");
            context.MapRoute( "ClaimVolSub",
                 "OnlineReg/ClaimVolSub/{ans}/{guid}",
                 new { controller = "OnlineReg", action = "ClaimVolSub", ans="", guid="" }

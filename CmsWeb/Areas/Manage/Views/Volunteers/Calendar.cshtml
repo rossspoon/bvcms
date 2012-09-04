@@ -1,7 +1,10 @@
-﻿@model CmsWeb.Models.VolunteerCommitmentsModel
+﻿@using UtilityExtensions
+@using CmsWeb
+@model CmsWeb.Models.VolunteerCommitmentsModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Volunteer Calendar";
+    const string DayHourFmt = "ddd h:mm tt";
 }
 @section head
 {
@@ -13,57 +16,107 @@
 #month td { min-width: 7em; padding: .2em; vertical-align: top; overflow: auto; }
 #month td .day { min-width: 7em; min-height: 3em; margin-top: .5em; }
 #month thead th { font: 150% bold Arial, Helvetica, sans-serif; padding: .2em; }
+.wk-1 { background-color: #B1ECB1; }
+.wk-2 { background-color: #E0E0FF; } 
+.wk-3 { background-color: #FFE1E1; }
+.wk-4 { background-color: #FFFFDB; }
+.wk-5 { background-color: #E1E1E1; }
 </style>
 }
 @section scripts
 {
-<script language="javascript">
-    $(function() {
-        $(".reminder").click(function(ev) {
-            ev.preventDefault();
-            window.location = "/Volunteers/EmailReminders/" + $(this).attr("mid");
-        });
-    });
-</script>
+@Html.Script("/Scripts/Calendar.js")
 }
 
-<h2>Volunteer Calendar for @Model.OrgName</h2>
-
-
-
-<table id="month">
+@Html.Hidden("OrgId", Model.OrgId)
+@Html.Hidden("SortByWeek", Model.SortByWeek)
+<h2>Volunteer Calendar for <a href="/Organization/Index/@Model.OrgId">@Model.OrgName</a></h2>
+<table id="month" class="floatleft" style="margin-right:2em">
 	<thead>
 		<tr>
 			<th>Week</th>
 @foreach (var t in Model.times)
 { 
-            <th>@t</th>
+            <th>@t.ToString(DayHourFmt)</th>
 }
         </tr>
     </thead>
     <tbody>
-@foreach (var w in Model.weeks)
-{ 
-        <tr>
-            <td valign="top"><span class="date">@w</span><div class="day"></div></td>
+@for (var wk = 1; wk <= 5; wk++)
+{
+    <tr>
+        <td align="center">Week @wk</td>
     @foreach (var t in Model.times)
     {
-        var cell = Model.details.FirstOrDefault(c => c.Sunday == w && c.DayHour == t);
+        <td><div class="drop" week="@wk" time="@t">&nbsp;</div></td>
+    }
+    </tr>
+}
+    <thead>
+        <tr>
+            <th> <a id="SortIt" href="#">@(Model.SortByWeek ? "Sort by Date" : "Sort by Week #")</a> </th>
+@foreach (var t in Model.times)
+{ 
+            <th>@t.ToString(DayHourFmt)</th>
+}
+        </tr>
+    </thead>
+@foreach (var w in Model.FetchSlotWeeks())
+{ 
+        <tr class="wk-@w[0].Week">
+            <td valign="top" align="center">
+                <p><span class="date">@w[0].Sunday.ToShortDateString()<br />
+                    Week @w[0].Week</span>
+                </p><div class="day"></div></td>
+    @foreach (var t in w)
+    {
+        var cell = Model.details.SingleOrDefault(cc => cc.DayHour == t.Time);
             <td>
         @if (cell != null)
         {
-                <span class="date"><a href="#" class="reminder" mid="@cell.MeetingId">Email Reminders(@cell.Persons.Count())</a></span><br />
-                <span class="date"><a href="/Reports/Rollsheet/?meetingid=@cell.MeetingId">Rollsheet Report</a></span>
+                <p class="date"><a href="/Reports/Rollsheet/?meetingid=@cell.MeetingId" target="_blank">Rollsheet Report (@cell.Persons.Count/@cell.Limit)</a></p>
                 <div class="day"><p>
             @foreach (var p in cell.Persons)
-            { 
+            {
+                if (Model.IsLeader)
+                {
+                <a href="/OnlineReg/ManageVolunteer/@Model.OrgId/@p.PeopleId" target="managevolunteer">@p.Name</a><br />
+                }
+                else
+                {
                 <a href="/Person/Index/@p.PeopleId">@p.Name</a><br />
+                }
             }
                 </p></div>
-        } 
+        }
             </td>
     } 
         </tr>
 }
     </tbody>
 </table>
+<div class="floatleft">
+    <p>Small Group Filters<br />
+        @Html.DropDownList("sg1", Model.SmallGroups(), new { @class="smallgroup" })<br />
+        @Html.DropDownList("sg2", Model.SmallGroups(), new { @class="smallgroup" })
+    </p>
+    <h3>Volunteers<br />With Commitments</h3>
+    <p><a id="sendreminders" class="bt" href="/Organization/Reminders/@Model.OrgId">Email Reminders</a> </p>
+@{
+    var brk = true;
+    <div class="volunteers">
+    @foreach (var v in Model.Volunteers())
+    {
+        if (v.commits == 0 && brk)
+        {
+            brk = false;
+    <h3>With No Committments</h3>
+        }
+    <p><a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" pid="@v.PeopleId" target="committments">
+        @v.Name (@v.commits)</a></p>
+    }
+    </div>
+}
+</div>
+<div class="floatclear">
+</div>
