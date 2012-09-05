@@ -114,10 +114,8 @@ Thank you for your consideration,<br />
 					where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
 					where om.Pending == false
 					where om.PeopleId != person.PeopleId
-					let a = from aa in Db.Attends
-							where aa.MeetingId == attend.MeetingId
-							select aa.PeopleId
-					where !a.Contains(om.PeopleId)
+					where !Db.Attends.Any(aa => aa.MeetingId == attend.MeetingId
+						&& aa.Registered == true && aa.PeopleId == om.PeopleId)
 					orderby om.Person.Name2
 					select om.Person;
 			return q.ToDictionary(kk => kk.PeopleId, nn => nn.Name);

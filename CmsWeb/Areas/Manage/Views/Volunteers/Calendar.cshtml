@@ -21,6 +21,7 @@
 .wk-3 { background-color: #FFE1E1; }
 .wk-4 { background-color: #FFFFDB; }
 .wk-5 { background-color: #E1E1E1; }
+.drag { cursor: move; color:Blue; }
 </style>
 }
 @section scripts
@@ -48,7 +49,7 @@
         <td align="center">Week @wk</td>
     @foreach (var t in Model.times)
     {
-        <td><div class="drop" week="@wk" time="@t">&nbsp;</div></td>
+        <td><div class="drop day" week="@wk" time="@t">Drop here</div></td>
     }
     </tr>
 }
@@ -70,17 +71,16 @@
                 </p><div class="day"></div></td>
     @foreach (var t in w)
     {
-        var cell = Model.details.SingleOrDefault(cc => cc.DayHour == t.Time);
             <td>
-        @if (cell != null)
+        @if (t.MeetingId > 0)
         {
-                <p class="date"><a href="/Reports/Rollsheet/?meetingid=@cell.MeetingId" target="_blank">Rollsheet Report (@cell.Persons.Count/@cell.Limit)</a></p>
+                <p class="date"><a href="/Reports/Rollsheet/?meetingid=@t.MeetingId" target="_blank">Rollsheet Report (@t.Persons.Count/@t.Limit)</a></p>
                 <div class="day"><p>
-            @foreach (var p in cell.Persons)
+            @foreach (var p in t.Persons)
             {
                 if (Model.IsLeader)
                 {
-                <a href="/OnlineReg/ManageVolunteer/@Model.OrgId/@p.PeopleId" target="managevolunteer">@p.Name</a><br />
+                <a href="/OnlineReg/ManageVolunteer/@Model.OrgId/@p.PeopleId" pid="@p.PeopleId" mid="@t.MeetingId" class="drag" target="managevolunteer">@p.Name</a><br />
                 }
                 else
                 {
@@ -96,12 +96,15 @@
     </tbody>
 </table>
 <div class="floatleft">
+    <p><a id="sendreminders" class="bt" href="/Organization/Reminders/@Model.OrgId">Email Reminders</a> </p>
     <p>Small Group Filters<br />
         @Html.DropDownList("sg1", Model.SmallGroups(), new { @class="smallgroup" })<br />
         @Html.DropDownList("sg2", Model.SmallGroups(), new { @class="smallgroup" })
     </p>
-    <h3>Volunteers<br />With Commitments</h3>
-    <p><a id="sendreminders" class="bt" href="/Organization/Reminders/@Model.OrgId">Email Reminders</a> </p>
+    <div class="drop day" week="0" time="1-1-1000" style="padding:5px;height:2em;border:2px solid black;">Drop here to remove all commitments</div>
+    <p><em>Drag items in blue below onto drop targets</em></p>
+    <h3 class="drag" pid="all">Volunteers</h3>
+    <h3 class="drag" pid="commits">With Commitments</h3>
 @{
     var brk = true;
     <div class="volunteers">
@@ -110,10 +113,9 @@
         if (v.commits == 0 && brk)
         {
             brk = false;
-    <h3>With No Committments</h3>
+    <h3 class="drag" pid="nocommits">With No Commitments</h3>
         }
-    <p><a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" pid="@v.PeopleId" target="committments">
-        @v.Name (@v.commits)</a></p>
+    <p><span class="drag" pid="@v.PeopleId">@v.Name (@v.commits)</span> <a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" target="committments">registration page</a></p>
     }
     </div>
 }

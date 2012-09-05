@@ -481,6 +481,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (m.List.Count == 0)
 				return Content("Can't find any registrants");
 			DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, m.NameOnAccount));
+			if (!m.last.IsNew && m.last.Found != true)
+				m.List.Remove(m.last);
 
 			var d = new ExtraDatum { Stamp = Util.Now };
 			d.Data = Util.Serialize<OnlineRegModel>(m);

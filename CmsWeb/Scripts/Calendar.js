@@ -37,22 +37,27 @@
             return u + "&sortbyweek=true";
         return u;
     }
-    $("a[pid]").draggable({
+    $(".drag").draggable({
         appendTo: "body",
         helper: "clone"
     });
     $("div.drop").droppable({
         activeClass: "ui-state-default",
-        hoverClass: "ui-state-hover",
+        hoverClass: "ui-state-active",
         accept: ":not(.ui-sortable-helper)",
         drop: function (event, ui) {
             var $this = $(this);
+            $this.addClass( "ui-state-highlight" )
+			    .find("div").html("Dropped!");
             $.blockUI();
             $.post("/Volunteers/DragDrop/", {
                 "id": $("#OrgId").val(),
                 "week": $this.attr("week"),
                 "time": $this.attr("time"),
-                "pid": ui.draggable.attr("pid")
+                "pid": ui.draggable.attr("pid"),
+                "sg1": $("#sg1").val(),
+                "sg2": $("#sg2").val(),
+                "mid": ui.draggable.attr("mid")
             }, function (ret) {
                 window.location = "/Volunteers/Calendar/" + $("#OrgId").val()
                         + "?sg1=" + $("#sg1").val() + "&sg2=" + $("#sg2").val();

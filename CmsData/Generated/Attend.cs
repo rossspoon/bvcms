@@ -52,8 +52,6 @@ namespace CmsData
 		private int? _SeqNo;
 		
    		
-   		private EntitySet< Attend> _GuestOf;
-		
    		private EntitySet< SubRequest> _SubRequests;
 		
     	
@@ -66,8 +64,6 @@ namespace CmsData
 		private EntityRef< Organization> _Organization;
 		
 		private EntityRef< Person> _Person;
-		
-		private EntityRef< Attend> _Guests;
 		
 	#endregion
 	
@@ -131,8 +127,6 @@ namespace CmsData
 		public Attend()
 		{
 			
-			this._GuestOf = new EntitySet< Attend>(new Action< Attend>(this.attach_GuestOf), new Action< Attend>(this.detach_GuestOf)); 
-			
 			this._SubRequests = new EntitySet< SubRequest>(new Action< SubRequest>(this.attach_SubRequests), new Action< SubRequest>(this.detach_SubRequests)); 
 			
 			
@@ -145,8 +139,6 @@ namespace CmsData
 			this._Organization = default(EntityRef< Organization>); 
 			
 			this._Person = default(EntityRef< Person>); 
-			
-			this._Guests = default(EntityRef< Attend>); 
 			
 			OnCreated();
 		}
@@ -509,9 +501,6 @@ namespace CmsData
 				if (this._GuestOfId != value)
 				{
 				
-					if (this._Guests.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				
                     this.OnGuestOfIdChanging(value);
 					this.SendPropertyChanging();
 					this._GuestOfId = value;
@@ -550,16 +539,6 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="GuestOf__Guests", Storage="_GuestOf", OtherKey="GuestOfId")]
-   		public EntitySet< Attend> GuestOf
-   		{
-   		    get { return this._GuestOf; }
-
-			set	{ this._GuestOf.Assign(value); }
-
-   		}
-
-		
    		[Association(Name="SubRequests__Attend", Storage="_SubRequests", OtherKey="AttendId")]
    		public EntitySet< SubRequest> SubRequests
    		{
@@ -784,48 +763,6 @@ namespace CmsData
 		}
 
 		
-		[Association(Name="GuestOf__Guests", Storage="_Guests", ThisKey="GuestOfId", IsForeignKey=true)]
-		public Attend Guests
-		{
-			get { return this._Guests.Entity; }
-
-			set
-			{
-				Attend previousValue = this._Guests.Entity;
-				if (((previousValue != value) 
-							|| (this._Guests.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._Guests.Entity = null;
-						previousValue.GuestOf.Remove(this);
-					}
-
-					this._Guests.Entity = value;
-					if (value != null)
-					{
-						value.GuestOf.Add(this);
-						
-						this._GuestOfId = value.AttendId;
-						
-					}
-
-					else
-					{
-						
-						this._GuestOfId = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("Guests");
-				}
-
-			}
-
-		}
-
-		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
@@ -843,19 +780,6 @@ namespace CmsData
 		}
 
    		
-		private void attach_GuestOf(Attend entity)
-		{
-			this.SendPropertyChanging();
-			entity.Guests = this;
-		}
-
-		private void detach_GuestOf(Attend entity)
-		{
-			this.SendPropertyChanging();
-			entity.Guests = null;
-		}
-
-		
 		private void attach_SubRequests(SubRequest entity)
 		{
 			this.SendPropertyChanging();

@@ -209,6 +209,10 @@ namespace CmsWeb.Models.OrganizationPage
 			var currmembers = from om in org.OrganizationMembers
 							  where (om.Pending ?? false) == false
 							  where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
+							  where org.Attends.Any(a => a.MeetingDate <= DateTime.Today.AddDays(7)
+								  && a.MeetingDate >= DateTime.Today
+								  && a.Registered == true
+								  && a.PeopleId == om.PeopleId)
 							  select om;
 
 			var subject = Util.PickFirst(setting.ReminderSubject, "no subject");

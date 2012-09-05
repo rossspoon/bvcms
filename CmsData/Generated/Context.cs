@@ -1529,6 +1529,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.PickListOrgs2> ViewPickListOrgs2s
+	    {
+		    get { return this.GetTable< View.PickListOrgs2>(); }
+
+	    }
+
 	    public Table< View.RandNumber> ViewRandNumbers
 	    {
 		    get { return this.GetTable< View.RandNumber>(); }

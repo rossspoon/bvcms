@@ -22,27 +22,7 @@ namespace CmsWeb.Models
 			public string Name { get; set; }
 			public int PeopleId { get; set; }
 		}
-		public class CellInfo
-		{
-			public DateTime Sunday { get; set; }
-			public DateTime DayHour { get; set; }
-			public List<NameId> Persons { get; set; }
-			public int Limit { get; set; }
-			public int MeetingId { get; set; }
-		}
-		private class Attendance
-		{
-			public DateTime Sunday { get; set; }
-			public TimeSpan TimeOfWeek { get; set; }
-			public DateTime MeetingDate { get; set; }
-			public int MeetingId { get; set; }
-			public int PeopleId { get; set; }
-			public string Name { get; set; }
-		}
-		private IEnumerable<Attendance> Attends;
 		public IEnumerable<DateTime> times;
-		public IEnumerable<DateTime> weeks;
-		public IEnumerable<CellInfo> details;
 		public string OrgName { get; set; }
 		public int OrgId { get; set; }
 		public bool IsLeader { get; set; }
@@ -93,59 +73,9 @@ namespace CmsWeb.Models
 		{
 			OrgName = (from o in DbUtil.Db.Organizations where o.OrganizationId == id select o.OrganizationName).Single();
 			OrgId = id;
-			var q = from a in DbUtil.Db.Attends
-					where a.MeetingDate > Util.Now.Date
-					where a.OrganizationId == id
-					where a.Registered == true
-					orderby a.MeetingDate
-					select a;
-			var list = q.ToList();
-			DateTime sunday = DateTime.MinValue;
-			if (list.Count > 0)
-				sunday = list.FirstOrDefault().MeetingDate.Date;
-			sunday = sunday > Sunday ? sunday : Sunday;
-			sunday = sunday.AddDays(-(int)sunday.DayOfWeek);
-			Attends = from a in list
-					  let Day = (int)a.MeetingDate.DayOfWeek
-					  let sday = a.MeetingDate.Date.AddDays(-Day)
-					  orderby a.MeetingDate
-					  select new Attendance
-					  {
-						  MeetingId = a.MeetingId,
-						  Sunday = sday,
-						  TimeOfWeek = a.MeetingDate.Subtract(Sunday),
-						  MeetingDate = a.MeetingDate,
-						  PeopleId = a.PeopleId,
-						  Name = a.Person.Name,
-					  };
-			details = from i in Attends
-					  group new NameId
-					  {
-						  PeopleId = i.PeopleId,
-						  Name = i.Name
-					  } by new
-					  {
-						  i.Sunday,
-						  i.TimeOfWeek,
-						  i.MeetingId,
-						  i.MeetingDate
-					  } into g
-					  let ts = Regsettings.TimeSlots.Single(tt => tt.Time.Value.TimeOfDay == g.Key.MeetingDate.TimeOfDay && tt.DayOfWeek == (int)g.Key.MeetingDate.DayOfWeek)
-					  select new CellInfo
-					  {
-						  Sunday = g.Key.Sunday,
-						  DayHour = g.Key.Sunday.Add(g.Key.TimeOfWeek),
-						  MeetingId = g.Key.MeetingId,
-						  Persons = g.ToList(),
-						  Limit = ts.Limit ?? 0
-					  };
 			times = from ts in Regsettings.TimeSlots
 					orderby ts.Time
 					select ts.Time.Value;
-			weeks = from i in Attends
-					group i by i.Sunday into g
-					orderby g.Key
-					select g.Key;
 
 			IsLeader = OrganizationModel.VolunteerLeaderInOrg(id);
 		}
@@ -155,32 +85,55 @@ namespace CmsWeb.Models
 			public DateTime Sunday { get; set; }
 			public int Week { get; set; }
 			public bool Disabled { get; set; }
+			public DateTime DayHour { get; set; }
+			public List<NameId> Persons { get; set; }
+			public int Limit { get; set; }
+			public int MeetingId { get; set; }
 		}
 
-		public IEnumerable<List<Slot>> FetchSlotWeeks()
+		public IEnumerable<List<Slot>> FetchSlotWeeks(int week = 0)
 		{
 			if (SortByWeek)
-				return from slot in FetchSlots()
+				return from slot in FetchSlots(week)
 					   group slot by slot.Sunday into g
 					   where g.Any(gg => gg.Time > DateTime.Today)
 					   orderby g.Key.WeekOfMonth(), g.Key
 					   select g.OrderBy(gg => gg.Time).ToList();
 			else
-				return from slot in FetchSlots()
+				return from slot in FetchSlots(week)
 					   group slot by slot.Sunday into g
 					   where g.Any(gg => gg.Time > DateTime.Today)
 					   orderby g.Key
 					   select g.OrderBy(gg => gg.Time).ToList();
 		}
-		public IEnumerable<Slot> FetchSlots()
+		public IEnumerable<Slot> FetchSlots(int week)
 		{
+			var q = from a in DbUtil.Db.Attends
+					where a.MeetingDate > Util.Now.Date
+					where a.OrganizationId == OrgId
+					where a.Registered == true
+					orderby a.MeetingDate
+					select a;
+			var alist = q.ToList();
+			var Attends = from a in alist
+					  let Day = (int)a.MeetingDate.DayOfWeek
+					  let sday = a.MeetingDate.Date.AddDays(-Day)
+					  where week == 0 || Day == week
+					  orderby a.MeetingDate
+					  select new 
+					  {
+						  a.MeetingId,
+						  a.MeetingDate,
+						  a.PeopleId,
+						  a.Person.Name,
+					  };
+
 			var list = new List<Slot>();
-			var sunday = Sunday;
-			for (; sunday <= EndDt; sunday = sunday.AddDays(7))
+			for (var sunday = Sunday; sunday <= EndDt; sunday = sunday.AddDays(7))
 			{
 				var dt = sunday;
 				{
-					var q = from ts in Regsettings.TimeSlots
+					var u = from ts in Regsettings.TimeSlots
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
 							select new Slot()
@@ -188,9 +141,14 @@ namespace CmsWeb.Models
 										Time = time,
 										Sunday = dt,
 										Week = dt.WeekOfMonth(),
-										Disabled = time < DateTime.Now
+										Disabled = time < DateTime.Now,
+										Limit = ts.Limit ?? 0,
+										Persons = (from a in Attends
+												   where a.MeetingDate == time
+												   select new NameId { Name = a.Name, PeopleId = a.PeopleId }).ToList(),
+									    MeetingId = Attends.Where(aa => aa.MeetingDate == time).Select(aa => aa.MeetingId).FirstOrDefault()
 									};
-					list.AddRange(q);
+					list.AddRange(u);
 				}
 			}
 			return list;
