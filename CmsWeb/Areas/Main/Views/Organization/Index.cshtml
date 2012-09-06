@@ -66,7 +66,10 @@
 		<a href="/OrgContent/Index/@o.OrganizationId" target="_blank"> Members Only Page</a> 
 		<a href="/RegSetting/Index/@o.OrganizationId">View Registration Document</a> 
 		<a id="tryreg" href="#">Try Registration</a> 
-        <a href="/Organization/VoteTag/@o.OrganizationId" target="_blank">View VoteTags</a>
+        @if (Model.IsVolunteerLeader)
+        {
+		<a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId" target="calendar">Volunteer Calendar</a>
+        }
         @if (User.IsInRole("Edit"))
         {
             <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
@@ -83,20 +86,6 @@
     <div style="border-bottom: 4px solid #ddd">
     </div>
 </div>
-@if (Model.IsVolunteerLeader)
-{
-<div id="buttondiv" class="dropdown" style="margin-top: 2em; margin-left: 2em;
-    font-size: 1.2em;">
-    <div>
-        <a href="#">Volunteer Management</a></div>
-    <div class="sublinks">
-		<a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId" target="calendar">Volunteer Calendar</a>
-		<a href="/OnlineReg/ManageVolunteer/@o.OrganizationId/@UtilityExtensions.Util.UserPeopleId">Manage Volunteers</a>
-    </div>
-    <div style="border-bottom: 4px solid #ddd">
-    </div>
-</div>
-}
 </div>
 <div class="floatclear">
 </div>

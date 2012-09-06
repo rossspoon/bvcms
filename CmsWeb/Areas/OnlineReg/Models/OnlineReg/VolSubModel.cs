@@ -172,6 +172,9 @@ Thank you for your consideration,<br />
 
 			var eqid = m.CreateQueue(transactional: true);
 			string host = Util.Host;
+			// save these from HttpContext to set again inside thread local storage
+			var useremail = Util.UserEmail;
+			var isinroleemailtest = User.IsInRole("EmailTest");
 
 			TaskAlias.Factory.StartNew(() =>
 			{
@@ -190,6 +193,9 @@ Thank you for your consideration,<br />
 
 					var db = new CMSDataContext(Util.GetConnectionString(host));
 					db.Host = host;
+					// set these again inside thread local storage
+					Util.UserEmail = useremail;
+					Util.IsInRoleEmailTest = isinroleemailtest;
 					var equeue = db.EmailQueues.Single(ee => ee.Id == eqid);
 					equeue.Error = ex.Message.Truncate(200);
 					db.SubmitChanges();

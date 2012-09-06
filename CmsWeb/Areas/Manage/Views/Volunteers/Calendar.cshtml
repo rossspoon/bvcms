@@ -104,17 +104,17 @@
     <div class="drop day" week="0" time="1-1-1000" style="padding:5px;height:2em;border:2px solid black;">Drop here to remove all commitments</div>
     <p><em>Drag items in blue below onto drop targets</em></p>
     <h3 class="drag" pid="all">Volunteers</h3>
-    <h3 class="drag" pid="commits">With Commitments</h3>
 @{
-    var brk = true;
+    var vlist = Model.Volunteers();
     <div class="volunteers">
-    @foreach (var v in Model.Volunteers())
+    <h3 class="drag" pid="commits">With Commitments</h3>
+    @foreach (var v in vlist.Where(vv => vv.commits > 0))
     {
-        if (v.commits == 0 && brk)
-        {
-            brk = false;
+    <p><span class="drag" pid="@v.PeopleId">@v.Name (@v.commits)</span> <a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" target="committments">registration page</a></p>
+    }
     <h3 class="drag" pid="nocommits">With No Commitments</h3>
-        }
+    @foreach (var v in vlist.Where(vv => vv.commits == 0))
+    {
     <p><span class="drag" pid="@v.PeopleId">@v.Name (@v.commits)</span> <a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" target="committments">registration page</a></p>
     }
     </div>

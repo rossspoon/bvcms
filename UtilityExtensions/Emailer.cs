@@ -43,7 +43,7 @@ namespace UtilityExtensions
 
 			foreach (var ma in to)
 			{
-				if (ma.Host != "nowhere.name")
+				if (ma.Host != "nowhere.name" || IsInRoleEmailTest)
 					msg.AddAddr(ma);
 			}
 			msg.Subject = subject;

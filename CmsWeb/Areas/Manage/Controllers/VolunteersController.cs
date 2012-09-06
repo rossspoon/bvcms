@@ -95,9 +95,15 @@ namespace CmsWeb.Areas.Manage.Controllers
 			}
 			foreach (var PeopleId in volids)
 				if (mid.ToInt() > 0)
+				{
+					DbUtil.Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.MeetingId = {0} AND a.PeopleId = {1})", mid.ToInt(), PeopleId);
 					DbUtil.Db.ExecuteCommand("DELETE dbo.Attend WHERE MeetingId = {0} AND PeopleId = {1}", mid.ToInt(), PeopleId);
+				}
 				else if (week == 0) // drop all
+				{
+					DbUtil.Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.OrganizationId = {1} AND a.MeetingDate > {1} AND a.PeopleId = {2})", m.OrgId, m.Sunday, PeopleId);
 					DbUtil.Db.ExecuteCommand("DELETE dbo.Attend WHERE OrganizationId = {0} AND MeetingDate > {1} AND PeopleId = {2}", m.OrgId, m.Sunday, PeopleId);
+				}
 				else
 					foreach (var s in slots)
 						Attend.MarkRegistered(DbUtil.Db, id, PeopleId, s.Time, true);

@@ -59,7 +59,7 @@ namespace CmsWeb.Models
 								   where a.PeopleId == om.PeopleId
 								   where a.Registered == true
 								   select a).Count()
-					orderby commits descending, om.Person.Name2
+					orderby om.Person.Name2
 					select new VolunteerInfo
 					{
 						Name = om.Person.Name,
