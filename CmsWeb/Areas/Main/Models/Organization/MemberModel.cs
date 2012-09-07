@@ -78,7 +78,8 @@ namespace CmsWeb.Models.OrganizationPage
             if (_members == null)
                 _members = from om in DbUtil.Db.OrganizationMembers
                            where om.OrganizationId == OrganizationId
-                           where om.OrgMemMemTags.Any(mt => Groups.Contains(mt.MemberTagId)) || Groups[0] <= 0
+						   let gc = om.OrgMemMemTags.Count(mt => Groups.Contains(mt.MemberTagId))
+						   where gc == Groups.Length || Groups[0] <= 0
                            where om.OrgMemMemTags.Count() == 0 || Groups[0] != -1
                            select om;
             if (Active == true)

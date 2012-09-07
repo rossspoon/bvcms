@@ -174,7 +174,7 @@ Thank you for your consideration,<br />
 			string host = Util.Host;
 			// save these from HttpContext to set again inside thread local storage
 			var useremail = Util.UserEmail;
-			var isinroleemailtest = User.IsInRole("EmailTest");
+			var isinroleemailtest = HttpContext.Current.User.IsInRole("EmailTest");
 
 			TaskAlias.Factory.StartNew(() =>
 			{

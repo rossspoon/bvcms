@@ -96,12 +96,14 @@
     </tbody>
 </table>
 <div class="floatleft">
-    <p><a id="sendreminders" class="bt" href="/Organization/Reminders/@Model.OrgId">Email Reminders</a> </p>
+    <p><a id="sendreminders" class="bt" href="/Organization/Reminders/@Model.OrgId">Email Reminders</a>
+        @Html.CheckBox("emailall") Email All (default next 7 days)
+    </p>
     <p>Small Group Filters<br />
         @Html.DropDownList("sg1", Model.SmallGroups(), new { @class="smallgroup" })<br />
         @Html.DropDownList("sg2", Model.SmallGroups(), new { @class="smallgroup" })
     </p>
-    <div class="drop day" week="0" time="1-1-1000" style="padding:5px;height:2em;border:2px solid black;">Drop here to remove all commitments</div>
+    <div class="drop day" week="0" time="1-1-1000" style="padding:5px;height:2em;border:2px solid black;">Drop here to remove commitments</div>
     <p><em>Drag items in blue below onto drop targets</em></p>
     <h3 class="drag" pid="all">Volunteers</h3>
 @{

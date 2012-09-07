@@ -75,7 +75,7 @@ namespace CmsWeb.Models
 			OrgId = id;
 			times = from ts in Regsettings.TimeSlots
 					orderby ts.Time
-					select ts.Time.Value;
+					select ts.Datetime(Sunday);
 
 			IsLeader = OrganizationModel.VolunteerLeaderInOrg(id);
 		}

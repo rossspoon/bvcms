@@ -5,7 +5,7 @@
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to send reminders?')) {
             $.blockUI({ message: "sending reminders" });
-            $.post(href, null, function (ret) {
+            $.post(href, { "sendall": $("#emailall").is(':checked') }, function (ret) {
                 if (ret != "ok") {
                     $.unblockUI();
                     $.growlUI("error", ret);
@@ -47,7 +47,7 @@
         accept: ":not(.ui-sortable-helper)",
         drop: function (event, ui) {
             var $this = $(this);
-            $this.addClass( "ui-state-highlight" )
+            $this.addClass("ui-state-highlight")
 			    .find("div").html("Dropped!");
             $.blockUI();
             $.post("/Volunteers/DragDrop/", {

@@ -2315,7 +2315,8 @@ namespace CmsData
 			Expression<Func<Person, bool>> pred = p => (
 				from m in p.OrganizationMembers
 				where m.OrganizationId == Db.CurrentOrgId
-				where m.OrgMemMemTags.Any(mt => cg.Contains(mt.MemberTagId)) || cg[0] <= 0
+				let gc = m.OrgMemMemTags.Count(mt => cg.Contains(mt.MemberTagId))
+				where gc == cg.Length || cg[0] <= 0
 				where !m.OrgMemMemTags.Any() || cg[0] != -1
 				where m.MemberTypeId != MemberTypeCode.InActive
 				where (m.Pending ?? false) == false
@@ -2336,13 +2337,15 @@ namespace CmsData
 			bool tf)
 		{
 			var cg = Db.CurrentGroups.ToArray();
-			Expression<Func<Person, bool>> pred = p =>
-					p.OrganizationMembers.Any(m =>
-						m.OrganizationId == Db.CurrentOrgId
-						&& (m.OrgMemMemTags.Any(mt => cg.Contains(mt.MemberTagId)) || cg[0] <= 0)
-						&& (m.OrgMemMemTags.Count() == 0 || cg[0] != -1)
-						&& m.MemberTypeId != MemberTypeCode.InActive
-						&& (m.Pending ?? false) == false);
+			Expression<Func<Person, bool>> pred = p => (
+					from m in p.OrganizationMembers
+					where m.OrganizationId == Db.CurrentOrgId
+					let gc = m.OrgMemMemTags.Count(mt => cg.Contains(mt.MemberTagId))
+					where gc == cg.Length || cg[0] <= 0
+					where m.OrgMemMemTags.Count() == 0 || cg[0] != -1
+					where m.MemberTypeId != MemberTypeCode.InActive
+					where (m.Pending ?? false) == false
+					select m).Any();
 			Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
 			if (!(op == CompareType.Equal && tf))
 				expr = Expression.Not(expr);

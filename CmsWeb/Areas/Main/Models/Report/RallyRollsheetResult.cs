@@ -117,7 +117,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 						Groups = new int[] { 0 };
 					var q = from om in DbUtil.Db.OrganizationMembers
 							where om.OrganizationId == o.OrgId
-							where om.OrgMemMemTags.Any(mt => Groups.Contains(mt.MemberTagId)) || (Groups[0] == 0)
+							let gc = om.OrgMemMemTags.Count(mt => Groups.Contains(mt.MemberTagId))
+							where gc == Groups.Length || Groups[0] <= 0
 							where !Groups.Contains(-1) || (Groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
 							where (om.Pending ?? false) == false
 							where om.MemberTypeId != MemberTypeCode.InActive

@@ -202,7 +202,7 @@ namespace CmsWeb.Models.OrganizationPage
 				return _RegSettings;
 			}
 		}
-		public void SendVolunteerReminders(Controller controller)
+		public void SendVolunteerReminders(bool sendall, Controller controller)
 		{
 			var Db = DbUtil.Db;
 			var setting = RegSettings;
