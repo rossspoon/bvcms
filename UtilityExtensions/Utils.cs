@@ -286,7 +286,7 @@ namespace UtilityExtensions
             else if (typBindingSource.IsEnum)
                 value = Enum.Parse(typBindingSource, textvalue);
             else
-                throw (new Exception("Field Type not Handled by Data unbinding"));
+                throw new Exception("Field Type not Handled by Data unbinding");
 
             Util.SetPropertyEx(obj, member, value);
         }

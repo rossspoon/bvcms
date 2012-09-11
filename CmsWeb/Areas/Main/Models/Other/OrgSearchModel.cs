@@ -119,6 +119,7 @@ namespace CmsWeb.Models
                          o.PhoneNumber,
                          MainFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
 						 EntryPoint = o.EntryPoint.Description,
+						 o.OrganizationStatusId,
                      };
             return q2;
         }

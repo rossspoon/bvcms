@@ -35,6 +35,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             m.org.CreatedDate = Util.Now;
             m.org.CreatedBy = Util.UserId1;
 			m.org.EntryPointId = org.EntryPointId;
+			m.org.OrganizationTypeId = org.OrganizationTypeId;
 			if (m.org.CampusId == 0)
 				m.org.CampusId = null;
 			if (!m.org.OrganizationName.HasValue())

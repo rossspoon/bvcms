@@ -189,6 +189,7 @@ namespace CmsWeb.Models
                 Action = "List",
                 Controller = "Task",
                 Count = Count,
+				ToggleTarget = true
             };
         }
     }

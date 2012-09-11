@@ -212,8 +212,6 @@ namespace CmsWeb.Areas.Public.Controllers
 				UpdateField(psb, p, "MaritalStatusId", m.marital);
 			if (keys.Contains("gender"))
 				UpdateField(psb, p, "GenderId", m.gender);
-			p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId ?? 0);
-			p.Family.LogChanges(DbUtil.Db, fsb, p.PeopleId, Util.UserPeopleId ?? 0);
 
 			var rr = p.GetRecReg();
 			if (keys.Contains("allergies"))
@@ -244,7 +242,10 @@ namespace CmsWeb.Areas.Public.Controllers
 						p.SetRecReg().ActiveInAnotherChurch = m.activeother.ToBool();
 			if (m.AskChurchName)
 				if (keys.Contains("churchname"))
-					p.OtherPreviousChurch = m.churchname;
+					UpdateField(psb, p, "OtherPreviousChurch", Trim(m.churchname));
+
+			p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId ?? 0);
+			p.Family.LogChanges(DbUtil.Db, fsb, p.PeopleId, Util.UserPeopleId ?? 0);
 			DbUtil.Db.SubmitChanges();
 		}
 		private void UpdateField(StringBuilder fsb, Family f, string prop, string value)
@@ -418,6 +419,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			p.SmallId = ImageData.Image.NewImageFromBits(bits, 120, 120).Id;
 			p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
             p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;
+			person.LogPictureUpload(DbUtil.Db, Util.UserPeopleId ?? 1);
 			DbUtil.Db.SubmitChanges();
 			return Content("done");
 		}

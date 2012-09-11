@@ -26,6 +26,7 @@ namespace CmsWeb.Models
         }
         public string Action { get; set; }
         public string Controller { get; set; }
+		public bool ToggleTarget { get; set; }
 
         private string _QueryString;
         public RouteValueDictionary QueryString

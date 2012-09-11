@@ -35,7 +35,7 @@
             $.loadTable();
         }
     });
-
+    //$("#groupidDD").multiselect();
     $("#groupsform").delegate("#groupid", "change", $.loadTable);
     $.getTable = function (f) {
         var q = f.serialize();
@@ -85,7 +85,7 @@
     });
     $.performAction = function (action) {
         if ($('#groupid').val() <= 0) {
-            $.growlUI("error",'select target group first');
+            $.growlUI("error", 'select target group first');
             return false;
         }
         $.blockUI();
@@ -101,7 +101,7 @@
     });
     $('#RemoveSelectedFromTargetGroup').live('click', function (ev) {
         $.performAction("/OrgGroups/RemoveSelectedFromTargetGroup");
-    }); 
+    });
     var lastChecked = null;
     $("input[name = 'list']").live("click", function (e) {
         if (!lastChecked) {

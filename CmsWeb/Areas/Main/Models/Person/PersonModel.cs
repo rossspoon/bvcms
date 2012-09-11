@@ -55,7 +55,7 @@ namespace CmsWeb.Models.PersonPage
             if (o is string)
                 o = ((string)o).TrimEnd();
             var p2 = new Person();
-            Util.SetPropertyFromText(p2, field, value);
+	        Util.SetPropertyFromText(p2, field, value);
             var o2 = Util.GetProperty(p2, field);
             if (o == o2)
                 return true;
@@ -86,6 +86,8 @@ namespace CmsWeb.Models.PersonPage
             switch (pf)
             {
                 case "p":
+					if (field == "Picture")
+						return false;
                     return FieldEqual(this.Person, field, value);
                 case "f":
                     return FieldEqual(this.Person.Family, field, value);

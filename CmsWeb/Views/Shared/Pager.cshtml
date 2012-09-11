@@ -39,6 +39,10 @@
     }
 } 
             <span class="page-numbers next">per page</span>
+@if(Model.ToggleTarget)
+{
+            @:&nbsp;<input type="checkbox" name="toggletarget" />Toggle Link Target
+}
         </td>
     </tr>
 </table>

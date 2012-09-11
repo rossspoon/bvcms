@@ -74,10 +74,10 @@
         {
             <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
             <a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId">Send Reminders</a>
+            <a href="/OrgChildren/Index/@Model.OrganizationId">Child Organization Management</a>
         }
         @if (User.IsInRole("Admin"))
         {
-            <a href="/OrgChildren/Index/@Model.OrganizationId">Child Organization Management</a>
             <a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">Delete Organization</a>
             <a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">Repair
                 Transactions</a>

@@ -127,11 +127,6 @@ Thank you for your consideration,<br />
 			Db.TagAll(pids, tag);
 			var dt = new DateTime(ticks);
 
-			var vrlist = (from vr in Db.SubRequests
-						  where vr.AttendId == attend.AttendId
-						  where vr.RequestorId == person.PeopleId
-						  select vr).ToDictionary(vv => vv.SubstituteId, vv => vv);
-
 			foreach (var id in pids)
 			{
 				var vr = new SubRequest
@@ -183,6 +178,9 @@ Thank you for your consideration,<br />
 				{
 					var db = new CMSDataContext(Util.GetConnectionString(host));
 					db.Host = host;
+					// set these again inside thread local storage
+					Util.UserEmail = useremail;
+					Util.IsInRoleEmailTest = isinroleemailtest;
 					db.SendPeopleEmail(eqid);
 				}
 				catch (Exception ex)

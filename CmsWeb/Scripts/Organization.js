@@ -331,7 +331,7 @@ $(function () {
         $.post("/Organization/NewSchedule", null, function (ret) {
             $("#schedules", f).append(ret).ready(function () {
                 $.renumberListItems();
-                //$.initDatePicker(f);
+                $.initDatePicker(f);
             });
         });
     });

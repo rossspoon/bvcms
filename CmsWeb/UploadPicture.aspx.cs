@@ -42,6 +42,7 @@ namespace CmsWeb
             p.SmallId = ImageData.Image.NewImageFromBits(bits, 120, 120).Id;
             p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
             p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;
+			person.LogPictureUpload(Db, Util.UserPeopleId ?? 1);
             Db.SubmitChanges();
         }
         protected override void OnPreRender(EventArgs e)

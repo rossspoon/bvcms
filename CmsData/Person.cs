@@ -936,6 +936,18 @@ namespace CmsData
 				Db.ChangeLogs.InsertOnSubmit(c);
 			}
 		}
+		public void LogPictureUpload(CMSDataContext Db, int UserPeopleId)
+		{
+			var c = new ChangeLog
+			{
+				UserPeopleId = UserPeopleId,
+				PeopleId = PeopleId,
+				Field = "Basic Info",
+				Data = "<table>\n<tr><td>Picture</td><td></td><td>(new upload)</td></tr>\n</table>",
+				Created = Util.Now
+			};
+			Db.ChangeLogs.InsertOnSubmit(c);
+		}
 		public override string ToString()
 		{
 			return Name + "(" + PeopleId + ")";

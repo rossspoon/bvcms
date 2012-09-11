@@ -179,6 +179,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 						case "BirthDayEnd":
 							o.BirthDayEnd = a[c].ToDate();
 							break;
+						case "EntryPoint":
+							o.EntryPointId = a[c].ToInt2();
+							break;
 						case "FirstMeeting":
 							o.FirstMeetingDate = a[c].ToDate();
 							break;
@@ -217,6 +220,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 							break;
 						case "OnLineCatalogSort":
 							o.OnLineCatalogSort = a[c] == "0" ? (int?)null : a[c].ToInt2();
+							break;
+						case "OrganizationStatusId":
+							o.OrganizationStatusId = a[c].ToInt();
 							break;
 						case "PhoneNumber":
 							o.PhoneNumber = a[c];
