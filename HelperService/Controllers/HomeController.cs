@@ -19,6 +19,7 @@ namespace HelperService.Controllers
             return Content("Success!");
         }
 
+        [ValidateInput(false)]
         public ActionResult CreateWebsiteThumbnail(string sHTML)
         {
             return new FileContentResult(CaptureWebPageBytes(sHTML, 100, 150), "image/jpeg");
