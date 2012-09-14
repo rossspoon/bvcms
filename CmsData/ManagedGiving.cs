@@ -106,6 +106,8 @@ namespace CmsData
 				var contributionemail = (from ex in Person.PeopleExtras
 										 where ex.Field == "ContributionEmail"
 										 select ex.Data).SingleOrDefault();
+				if (contributionemail.HasValue())
+					contributionemail = contributionemail.Trim();
 				if (!Util.ValidEmail(contributionemail))
 					contributionemail = Person.FromEmail;
 				Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(contributionemail),

@@ -392,6 +392,13 @@ namespace CmsData
 			ExecuteCommand(s, plist.Select(pp => pp.Value).ToArray());
 			return tag;
 		}
+		public Tag PopulateTemporaryTag(IEnumerable<int> a)
+		{
+			var tag = FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, NextTagId);
+			ExecuteCommand("delete TagPerson where Id = {0}", tag.Id);
+			TagAll(a, tag);
+			return tag;
+		}
 		public void PopulateSpecialTag(IQueryable<Person> q, string tagname)
 		{
 			var tag = FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);

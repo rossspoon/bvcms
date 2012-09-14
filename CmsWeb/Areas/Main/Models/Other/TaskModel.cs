@@ -330,6 +330,27 @@ namespace CmsWeb.Models
                             TaskLink(task.Description, task.Id), task.AboutName, sb.ToString(), task.Priority));
             }
         }
+        public class IncompleteTask
+        {
+            public string Desc { get; set; }
+            public string About { get; set; }
+            public DateTime AssignedDt { get; set; }
+            public string link { get; set; }
+        }
+        public IEnumerable<IncompleteTask> IncompleteTasksList(int pid)
+        {
+            var q2 = from t in DbUtil.Db.Tasks
+                     where t.StatusId != TaskStatusCode.Complete
+                     where t.CoOwnerId == pid
+                     select new IncompleteTask
+                     {
+                         Desc = t.Description,
+                         About = t.AboutName,
+                         AssignedDt = t.CreatedOn,
+                         link = TaskLink0(t.Id)
+                     };
+            return q2;
+        }
         public class TasksAbout
         {
             public string Desc { get; set; }

@@ -200,6 +200,12 @@ namespace CmsWeb.Areas.Main.Controllers
 			return View(m);
 		}
 		[HttpPost]
+		public ActionResult IncompleteTasksGrid(int id)
+		{
+			var m = new TaskModel();
+			return View(m.TasksAboutList(id));
+		}
+		[HttpPost]
 		public ActionResult PendingTasksGrid(int id)
 		{
 			var m = new TaskModel();

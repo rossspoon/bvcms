@@ -27,7 +27,7 @@
     <Field Name="DaysTillAnniversary" Title="Days Till Anniversary" Type="Integer">
       Number of days until next annivesary (if known.) Always less than 365.
     </Field>
-    <Field Name="Grade" Type="Integer">
+    <Field Name="Grade" Type="NullInteger">
       Grade in school 
     </Field>
     <Field Name="SchoolOther" Title="School" Type="CodeStr" DataSource="Schools">

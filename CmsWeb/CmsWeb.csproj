@@ -1214,6 +1214,7 @@
     <Content Include="Areas\Main\Views\Person\CurrentRegistrationsHtml.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlots.cshtml" />
     <Content Include="Areas\Main\Views\Organization\VolunteerCommitmentsSummary.cshtml" />
+    <Content Include="Areas\Main\Views\Person\IncompleteTasksGrid.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

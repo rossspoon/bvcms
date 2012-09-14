@@ -39,14 +39,15 @@ namespace CmsWeb.Areas.Dialog.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update(OrgMembersDialogModel m)
         {
-            var a = m.List.ToArray();
-            var q = from om in m.OrgMembers()
-                    where a.Contains(om.PeopleId)
-                    select om;
+			var Db = DbUtil.Db;
+			var tag = Db.PopulateTemporaryTag(m.List);
+			var q = from om in m.OrgMembers()
+					where Db.TagPeople.Any(tt => tt.Id == tag.Id && tt.PeopleId == om.PeopleId)
+					select om;
             foreach (var om in q)
             {
                 if (m.MemberType == MemberTypeCode.Drop)
-                    om.Drop(DbUtil.Db, addToHistory:true);
+                    om.Drop(Db, addToHistory:true);
                 else
                 {
                     if (m.MemberType > 0)
@@ -57,10 +58,10 @@ namespace CmsWeb.Areas.Dialog.Controllers
                         om.EnrollmentDate = m.EnrollmentDate;
                     om.Pending = m.Pending;
 					if (m.addpmt.HasValue)
-						om.AddTransaction(DbUtil.Db, m.addpmt ?? 0, m.addpmtreason);
+						om.AddTransaction(Db, m.addpmt ?? 0, m.addpmtreason);
                 }
+	            Db.SubmitChanges();
             }
-            DbUtil.Db.SubmitChanges();
             return View();
         }
         public string HelpLink(string page)

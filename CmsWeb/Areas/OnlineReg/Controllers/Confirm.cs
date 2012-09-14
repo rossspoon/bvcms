@@ -296,6 +296,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				var contributionemail = (from ex in p.person.PeopleExtras
 										 where ex.Field == "ContributionEmail"
 										 select ex.Data).SingleOrDefault();
+				if (contributionemail.HasValue())
+					contributionemail = contributionemail.Trim();
 				if (!Util.ValidEmail(contributionemail))
 					contributionemail = p.person.FromEmail;
 
