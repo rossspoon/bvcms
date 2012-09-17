@@ -13,7 +13,7 @@
 	var c = t.FirstOrDefault();
 }
 
-<h2 style="margin-bottom:5px;">Compose Email for @Model.Count @( Model.Count > 1 ? "People" : "Person") @( ViewBag.parents ? " including Parents" : "")</h2>
+<h2 style="margin-bottom:5px;">Compose Email for @Model.Count @( Model.Count != 1 ? "People" : "Person") @( ViewBag.parents ? " including Parents" : "")</h2>
 <font color="red"><b>NOTE:</b></font> Your recipient list will change if use another tab in your browser to visit another organization or person or run another query.<br />
 <br />
 <form id="SendEmail" method="post">
@@ -103,8 +103,13 @@
 @section head
 {
 	<style>
-		div.ti { border: #0000ff dashed 1px; min-height:20px }
+		div.ti { position:relative; border: #0000ff dashed 1px; min-height:20px }
 		div.ti:hover { background:#eeeeff; }
+	    div.tiAdd {
+	        position: absolute;
+	        right: 5px;
+	        bottom: 5px;
+	    }
 	</style>
 }
 
@@ -140,7 +145,7 @@
 
 		$(document).ready(
 			function () {
-				$('div[bvedit]').bind('click', hClick).addClass("ti");
+				$('div[bvedit]').bind('click', hClick).hover( hHoverIn, hHoverOut ).addClass("ti");
 				$('#htmleditor').ckeditor(editor_large);
 			}
 		);
@@ -188,10 +193,10 @@
 				d.dialog('open');
 			}
 			else {
-				$("div[bvedit]").removeClass();
+			    clearTemplateClass();
 				$("#body").val($("#tempateBody").html());
 				$("#name").val($("#newName").val());
-				$("div[bvedit]").addClass("ti");
+				addTemplateClass();
 
 				$("#SendEmail").attr("action", "/Email/SaveDraft");
 				$("#SendEmail").submit();
@@ -199,10 +204,10 @@
 		});
 
 		$("#SaveDraftButton").click(function () {
-			$("div[bvedit]").removeClass();
+		    clearTemplateClass();
 			$("#body").val($("#tempateBody").html());
 			$("#name").val($("#newName").val());
-			$("div[bvedit]").addClass("ti");
+			addTemplateClass();
 
 			$("#SendEmail").attr("action", "/Email/SaveDraft");
 			$("#SendEmail").submit();
@@ -212,9 +217,10 @@
 			var d = $("#progress");
 			d.dialog('open');
 
-			$("div[bvedit]").removeClass();
+			clearTemplateClass();
 			$("#body").val($("#tempateBody").html());
-			$("div[bvedit]").addClass("ti");
+			addTemplateClass();
+			
 			var q = $("#SendEmail").serialize();
 
 			$.post('/Email/TestEmail', q, function (ret) {
@@ -226,15 +232,61 @@
 			});
 		});
 
+		function clearTemplateClass() {
+		    hRemoveButtons();
+		    $("div[bvedit]").removeClass();
+		    $("div[bveditadd]").removeClass();
+		}
+
+		function addTemplateClass() {
+		    $("div[bveditadd]").addClass("ti");
+		    $("div[bvedit]").addClass("ti");
+		}
+
 		function hClick(e) {
-			currentDiv = this;
+		    currentDiv = this;
+		    hRemoveButtons();
 			$('#htmleditor').ckeditorGet().setData($(this).html());
 			$('#popupeditor').dialog("open");
+		}
+
+		function hHoverIn(ev)
+		{
+		    $(this).append("<div id='controlButtons' class='tiAdd'><input id='addButton' type='button' value='Add More' /></div>");
+		    $("#addButton").bind('click', addDivAfter);
+		    ev.stopPropagation();
+		}
+
+		function hHoverOut(ev)
+		{
+		    hRemoveButtons();
+		    ev.stopPropagation();
+		}
+
+		function hAddHoverIn(ev) {
+		    $(this).append("<div id='controlButtons' class='tiAdd'><input id='removeButton' type='button' value='Remove' /></div>");
+		    $("#removeButton").bind('click', removeParentDiv);
+		    ev.stopPropagation();
+		}
+
+		function hRemoveButtons() {
+		    $("#controlButtons").remove();
 		}
 
 		function updateDiv() {
 			$(currentDiv).html($('#htmleditor').ckeditorGet().getData());
 			$('#popupeditor').dialog("close");
+		}
+
+		function addDivAfter(ev) {
+		    $(this).parent().parent().after("<div bveditadd class='ti'></div>");
+		    $("div[bveditadd]").bind('click', hClick).unbind('mouseenter mouseleave').hover(hAddHoverIn, hHoverOut);
+		    ev.stopPropagation();
+		}
+
+		function removeParentDiv(ev) {
+		    $(this).parent().parent().remove();
+		    ev.stopPropagation();
 		}
 
 		CKEDITOR.on('dialogDefinition', function (ev) {
