@@ -78,6 +78,7 @@ namespace CmsData
 			TimeSlots,
 			TimeSlotLockDays,
 			Options,
+			Special,
 			Code,
 			SmallGroup,
 			Checkboxes,
@@ -194,6 +195,7 @@ namespace CmsData
 		public string InstructionSelect { get; set; }
 		public string InstructionFind { get; set; }
 		public string InstructionOptions { get; set; }
+		public string InstructionSpecial { get; set; }
 		public string InstructionLogin { get; set; }
 		public string InstructionSubmit { get; set; }
 		public string InstructionSorry { get; set; }
@@ -947,6 +949,9 @@ namespace CmsData
 					case RegKeywords.Options:
 						InstructionOptions = ParseMessage();
 						break;
+					case RegKeywords.Special:
+						InstructionSpecial = ParseMessage();
+						break;
 					case RegKeywords.Login:
 						InstructionLogin = ParseMessage();
 						break;
@@ -1547,6 +1552,7 @@ namespace CmsData
 			AddSingleOrMultiLine(1, sb, "Select", InstructionSelect);
 			AddSingleOrMultiLine(1, sb, "Find", InstructionFind);
 			AddSingleOrMultiLine(1, sb, "Options", InstructionOptions);
+			AddSingleOrMultiLine(1, sb, "Special", InstructionSpecial);
 			AddSingleOrMultiLine(1, sb, "Submit", InstructionSubmit);
 			AddSingleOrMultiLine(1, sb, "Sorry", InstructionSorry);
 		}

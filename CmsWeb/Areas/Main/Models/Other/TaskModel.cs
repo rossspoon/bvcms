@@ -334,6 +334,7 @@ namespace CmsWeb.Models
         {
             public string Desc { get; set; }
             public string About { get; set; }
+			public int? AboutId { get; set; }
             public DateTime AssignedDt { get; set; }
             public string link { get; set; }
         }
@@ -342,10 +343,12 @@ namespace CmsWeb.Models
             var q2 = from t in DbUtil.Db.Tasks
                      where t.StatusId != TaskStatusCode.Complete
                      where t.CoOwnerId == pid
+					 where t.WhoId != null
                      select new IncompleteTask
                      {
                          Desc = t.Description,
                          About = t.AboutName,
+						 AboutId = t.WhoId,
                          AssignedDt = t.CreatedOn,
                          link = TaskLink0(t.Id)
                      };
@@ -355,6 +358,7 @@ namespace CmsWeb.Models
         {
             public string Desc { get; set; }
             public string AssignedTo { get; set; }
+			public int? AssignedId { get; set; }
             public DateTime AssignedDt { get; set; }
             public string link { get; set; }
         }
@@ -368,6 +372,7 @@ namespace CmsWeb.Models
                          Desc = t.Description,
                          AssignedTo = t.CoOwnerId != null? t.CoOwner.Name : t.Owner.Name,
                          AssignedDt = t.CreatedOn,
+						 AssignedId = t.CoOwnerId,
                          link = TaskLink0(t.Id)
                      };
             return q2;

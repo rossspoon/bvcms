@@ -27,8 +27,8 @@
 <table class="grid">
 @foreach (var e in Model)
 {
-	<tr><td>@e.Field</td>
-        <td><a href="/Reports/ExtraValueQuery?field=@e.Field&val=@e.Value">@e.Value</a></td>
+	<tr><td><a href="/Reports/ExtraValueQuery?field=@e.Field&val=@e.Value">@e.Field</a></td>
+        <td>@e.Value</td>
 		<td>@e.Count</td>
         @if(User.IsInRole("Admin"))
 		{

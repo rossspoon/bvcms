@@ -41,7 +41,7 @@ div.section div, div.section table
     <div>@Html.Raw(Model.Instructions)</div>
     <h4>for @Model.person.Name &lt;@Model.person.EmailAddress&gt;</h4>
    <form method="post" action="/OnlineReg/ManageGiving">
-    @Html.Hidden("otheredit", 0)
+    @Html.Hidden("specialedit", 0)
     @Html.Hidden("pid", Model.pid)
     @Html.Hidden("orgid", Model.orgid)
         <fieldset>

@@ -111,8 +111,8 @@ namespace CmsData
 				if (!Util.ValidEmail(contributionemail))
 					contributionemail = Person.FromEmail;
 				Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(contributionemail),
-						"Recurring Giving for " + Db.Setting("NameOfChurch", Db.CmsHost),
-						"Your gift of ${0:N2} was processed this morning.".Fmt(tot),
+						"Recurring Payments for " + Db.Setting("NameOfChurch", Db.CmsHost),
+						"Your payment of ${0:N2} was processed this morning.".Fmt(tot),
 						Util.ToMailAddressList(contributionemail), 0, null);
 			}
 			else

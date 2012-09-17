@@ -367,13 +367,13 @@ namespace CmsData
                                CompType,
                                c.TextValue.ToInt());
                 // O --------------------------
-                case QueryType.OrgMemberCreatedDate:
-                    return Expressions.OrgMemberCreatedDate(parm,
-                               c.Program,
-                               c.Division,
-                               c.Organization,
-                               CompType,
-                               c.DateValue);
+                //case QueryType.OrgMemberCreatedDate:
+                //    return Expressions.OrgMemberCreatedDate(parm,
+                //               c.Program,
+                //               c.Division,
+                //               c.Organization,
+                //               CompType,
+                //               c.DateValue);
                 case QueryType.OrgInactiveDate:
                     return Expressions.OrgInactiveDate(parm,
                                c.Program,

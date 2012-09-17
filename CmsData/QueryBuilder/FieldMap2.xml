@@ -332,10 +332,10 @@
     <Field Name="OrgJoinDateCompare" Title="Org Join Date Compared to Field" Type="DateField" DisplayAs="OrgJoinDateCompared({0}, {1}, {2})" Params="Program,Division,Organization" DataSource="DateFields" DataValueField="Code">
       Selects members of an organization where the date they joined the organization is compared with another system date such as Church Join Date (less than, greater than etc..)
     </Field>
-    <Field Name="OrgMemberCreatedDate" Title="Org Member Created Date" Type="Date" DisplayAs="OrgMemberCreatedDate({0}, {1}, {2})" Params="Program,Division,Organization">
+    <!--<Field Name="OrgMemberCreatedDate" Title="Org Member Created Date" Type="Date" DisplayAs="OrgMemberCreatedDate({0}, {1}, {2})" Params="Program,Division,Organization">
       Select members of an organization by the date on which their organization membership record was created. Specify the Program or Program/Division or Program/Division/Organization.
       Todo: explain how unknown dates work
-    </Field>
+    </Field>-->
     <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual" DisplayAs="SmallGroup({0}, {1}, {2})" Params="Program,Division,Organization">
       Person is in a small group named such
     </Field>

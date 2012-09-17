@@ -63,6 +63,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             public IEnumerable<FamilyMember> Family { get; set; }
             public IEnumerable<OrganizationView> Memberships { get; set; }
             public IEnumerable<ContactInfo> Contacts { get; set; }
+            public IEnumerable<CommentInfo> Comments { get; set; }
+            public IEnumerable<CommentInfo> FamilyComments { get; set; }
             public IEnumerable<AttendInfo> Attends { get; set; }
         }
         public class FamilyMember
@@ -99,6 +101,11 @@ namespace CmsWeb.Areas.Main.Models.Report
             public string TypeOfContact { get; set; }
             public string ContactReason { get; set; }
             public string Team { get; set; }
+        }
+        public class CommentInfo
+        {
+            public string Comments { get; set; }
+            public string CommentField { get; set; }
         }
         public class AttendInfo
         {
@@ -218,6 +225,20 @@ namespace CmsWeb.Areas.Main.Models.Report
 							}
 							doc.Add(t);
 						}
+						if (p.Comments.Count() > 0)
+						{
+							t = new PdfPTable(new float[] { 31f, 134f });
+							t.SetNoBorder();
+							t.AddRow("Comments", bfont);
+							t.AddHeader("Field", bfont);
+							t.AddHeader("Comments", bfont);
+							foreach (var c in p.Comments)
+							{
+								t.Add(c.CommentField, bfont);
+								t.Add(c.Comments, font);
+							}
+							doc.Add(t);
+						}
 
 						if (p.Attends.Count() > 0)
 						{
@@ -271,6 +292,20 @@ namespace CmsWeb.Areas.Main.Models.Report
 							}
 							doc.Add(t);
 						}
+						if (p.FamilyComments.Count() > 0)
+						{
+							t = new PdfPTable(new float[] { 31f, 134f });
+							t.SetNoBorder();
+							t.AddRow("Family Comments", bfont);
+							t.AddHeader("Field", bfont);
+							t.AddHeader("Comments", bfont);
+							foreach (var c in p.FamilyComments)
+							{
+								t.Add(c.CommentField, bfont);
+								t.Add(c.Comments, font);
+							}
+							doc.Add(t);
+						}
 						if (ShowForm)
 							ContactForm();
 					}
@@ -288,6 +323,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 			else
 				q = q.OrderBy(pp => pp.PrimaryZip).ThenBy(pp => pp.Name2);
 
+			var EvCommentFields = Db.Setting("EvCommentFields", "").Split(',');
             var q2 = from p in q
                      select new ProspectInfo
                      {
@@ -353,6 +389,20 @@ namespace CmsWeb.Areas.Main.Models.Report
                                         TypeOfContact = c.ContactType.Description,
                                         Team = string.Join(",", c.contactsMakers.Select(cm => cm.person.Name).ToArray())
                                     },
+						 Comments = from ex in p.PeopleExtras
+									where EvCommentFields.Contains(ex.Field)
+									select new CommentInfo
+									{
+										 CommentField = ex.Field,
+										 Comments = ex.Data,
+									},
+						 FamilyComments = from ex in p.Family.FamilyExtras
+									where EvCommentFields.Contains(ex.Field)
+									select new CommentInfo
+									{
+										 CommentField = ex.Field,
+										 Comments = ex.Data,
+									},
                          Attends = (from a in p.Attends
                                     where a.AttendanceFlag == true
                                     let o = a.Organization

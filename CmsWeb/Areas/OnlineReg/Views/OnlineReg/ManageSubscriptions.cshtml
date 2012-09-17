@@ -13,7 +13,7 @@
 <h4>Email Subscription Options for @Model.person.Name &lt;@Model.person.EmailAddress&gt;</h4>
 @using(Html.BeginForm("ConfirmSubscriptions", "OnlineReg"))
 {
-    @Html.Hidden("otheredit", 0)
+    @Html.Hidden("specialedit", 0)
     @Html.Hidden("pid", Model.pid)
     @Html.Hidden("divid", Model.divid)
     @Html.Hidden("masterorgid", Model.masterorgid)

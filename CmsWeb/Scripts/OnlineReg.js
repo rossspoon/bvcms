@@ -83,7 +83,9 @@
             $("div.instructions.find").show();
         }
         else if ($("#otheredit").attr("id"))
-            $("div.instructions.options").show();
+            $("div.instructions.options").show(); 
+        else if ($("#specialedit").attr("id"))
+            $("div.instructions.special").show(); 
         else if ($("#username").attr("id")) {
             $("#username").focus();
             $("div.instructions.login").show();

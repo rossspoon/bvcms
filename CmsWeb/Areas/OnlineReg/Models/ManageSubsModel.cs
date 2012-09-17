@@ -201,12 +201,14 @@ namespace CmsWeb.Models
 <div class=""instructions select"">{1}</div>
 <div class=""instructions find"">{2}</div>
 <div class=""instructions options"">{3}</div>
-<div class=""instructions submit"">{4}</div>
-<div class=""instructions sorry"">{5}</div>
+<div class=""instructions special"">{4}</div>
+<div class=""instructions submit"">{5}</div>
+<div class=""instructions sorry"">{6}</div>
 ".Fmt(setting.InstructionLogin,
 					 setting.InstructionSelect,
 					 setting.InstructionFind,
 					 setting.InstructionOptions,
+					 setting.InstructionSpecial,
 					 setting.InstructionSubmit,
 					 setting.InstructionSorry
 					 );

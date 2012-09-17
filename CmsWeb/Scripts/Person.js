@@ -109,8 +109,8 @@
         $('.editarea', table).editable('/Person/EditExtra/', {
             type: 'textarea',
             submit: 'OK',
-            rows: 5,
-            width: 300,
+            rows: 10,
+            width: 600,
             indicator: '<img src="/images/loading.gif">',
             tooltip: 'Click to edit...'
         });
