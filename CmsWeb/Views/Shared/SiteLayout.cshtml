@@ -84,7 +84,7 @@
                         </td>
                         <td class="dropdown">
                             <div>
-                                <a href="/QuickSearch">People</a></div>
+                                <a id="PeopleMenu" href="/QuickSearch">People</a></div>
                             <div class="sublinks">
                                 <a href="/QuickSearch">People Search</a>
                                 <a id="addpeople" href="#">Add People</a> 
@@ -194,27 +194,27 @@
                                 @if (admin || managetrans)
                                 {
                                     <a href="/Manage/Transactions">Transactions</a>
-                                }
-								@if (admin || edit)
-        {
-									<a href="/Manage/CheckinTime">Check-in Activity</a>
-        }			
+										  }
+										  @if (admin || edit)
+                                {
+												<a href="/Manage/CheckinTime">Check-in Activity</a>
+										  }			
                                 @if (admin || manageemails)
-                                {
+										  {
                                     <a href="/Manage/Emails">Emails</a> 
-                                }
+										  }
                                 @if (admin)
-                                {
+										  {
                                     <a href="/Setup/Lookup/">Lookups</a>
                                     <a href="/Batch/UpdateFields/"> Update for a Tag</a> 
                                     <a href="/Admin/ToggleOrgMembersOnly.ashx">@(Util2.OrgMembersOnly ? "OrgMembersOnly is on" : "OrgMembersOnly is off")</a>
                                     <a href="/Admin/ToggleOrgLeadersOnly.ashx">@(Util2.OrgLeadersOnly ? "OrgLeadersOnly is on" : "OrgLeadersOnly is off")</a>
                                     <a href="/Batch/UpdateQueryBits">Update QueryBits</a>
                                     <a href="/Batch/TagPeopleIds">Tag PeopleIds</a>
-                                }
+										  }
                                 </div>
                             </td>
-    }
+	 }
                         <td class="dropdown left">
                             <div>
                                 <a id="helplink" href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help</a></div>
@@ -224,11 +224,10 @@
                                 <a href="/Home/About">About</a>
                                 <a href="#" class="heading">&mdash; Tutorials &mdash;</a>
 											@{
-    var tutorialMenu = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml";
-    if (File.Exists(tutorialMenu))
-    {
-        Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml");
-    }
+												var tutorialMenu = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml";
+													if (File.Exists(tutorialMenu)) {
+													Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml");
+												}
 											}			  
                             </div>
                         </td>
@@ -241,17 +240,16 @@
         <div id="main">
             @RenderBody()
 				@if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
-    { 
+				{ 
 				<br />
-				<b>Menus:</b> @(Util.Helpfile)@:_Menu.html<br />
-				<b>Tutorials:</b> @(Util.Helpfile)@:.html
+				<b>Menus:</b> @(Util.Helpfile)@:_Menu.cshtml<br />
+				<b>Tutorials:</b> @(Util.Helpfile)@:.cshtml
 				}		  
 				@{
-                    var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
-                    if (File.Exists(tutorialFile))
-                    {
-                        Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
-                    }
+					var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
+					if (File.Exists(tutorialFile)) {
+						Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
+					}
 				}	
         </div>
     </div>

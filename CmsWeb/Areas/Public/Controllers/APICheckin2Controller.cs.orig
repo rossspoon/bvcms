@@ -417,7 +417,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			p.CreatedBy = Util.UserName;
 			p.SmallId = ImageData.Image.NewImageFromBits(bits, 120, 120).Id;
 			p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
-            p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;
+			p.LargeId = ImageData.Image.NewImageFromBits(bits).Id;
 			DbUtil.Db.SubmitChanges();
 			return Content("done");
 		}
@@ -429,7 +429,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			if (person.PictureId != null)
 			{
 				DbUtil.LogActivity("checkin picture " + id);
-				return new ImageResult(person.Picture.MediumId ?? 0);
+				return new ImageResult(person.Picture.LargeId ?? 0);
 			}
 			return new ImageResult(0);
 		}
@@ -559,6 +559,77 @@ namespace CmsWeb.Areas.Public.Controllers
 
 			return Content(error.ToString());
 			// Error return: 0 = None, 1 = Exists, 2 = Other
+		}
+
+		[HttpPost]
+		[ValidateInput(false)]
+		public ContentResult FetchLabelFormat( string sName, int iSize )
+		{
+			if (!Authenticate()) return Content("");
+
+			// Size -30 and +30 is because some labels are a few tenths of inches different in the driver
+			var label = (from e in DbUtil.Db.LabelFormats
+						 where e.Name == sName
+						 where e.Size > (iSize-30) && e.Size < (iSize+30)
+						 select e).FirstOrDefault();
+
+			if (label == null)
+			{
+				return Content("");
+			}
+			else
+			{
+				return Content(label.Format);
+			}
+		}
+
+		[HttpPost]
+		[ValidateInput(false)]
+		public ContentResult SaveLabelFormat(string sName, int iSize, string sFormat)
+		{
+			if (!Authenticate()) return Content("2");
+
+			var label = (from e in DbUtil.Db.LabelFormats
+						 where e.Name == sName
+						 where e.Size == iSize
+						 select e).FirstOrDefault();
+
+			if (label == null)
+			{
+				LabelFormat lfNew = new LabelFormat();
+				lfNew.Name = sName;
+				lfNew.Size = iSize;
+				lfNew.Format = sFormat;
+				DbUtil.Db.LabelFormats.InsertOnSubmit(lfNew);
+				DbUtil.Db.SubmitChanges();
+			}
+			else
+			{
+				label.Format = sFormat;
+				DbUtil.Db.SubmitChanges();
+			}
+
+			return Content("0");
+		}
+
+		public ContentResult FetchLabelList()
+		{
+			if (!Authenticate()) return Content("Not Authorized");
+            Response.NoCache();
+
+			var list = from e in DbUtil.Db.LabelFormats
+					   orderby e.Size, e.Name
+					   select String.Concat( e.Name, "~", e.Size );
+
+			if (list == null)
+			{
+				return Content("No Records");
+			}
+			else
+			{
+				var types = list.ToArray<String>();
+				return Content( String.Join(",", types) );
+			}
 		}
 
 		[HttpPost]

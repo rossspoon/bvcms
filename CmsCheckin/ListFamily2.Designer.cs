@@ -106,7 +106,7 @@
 			this.Return.Name = "Return";
 			this.Return.Size = new System.Drawing.Size(381, 66);
 			this.Return.TabIndex = 18;
-			this.Return.Text = "Print Labels, Return";
+			this.Return.Text = "Return";
 			this.Return.UseVisualStyleBackColor = false;
 			this.Return.Click += new System.EventHandler(this.Return_Click);
 			// 

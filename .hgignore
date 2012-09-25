@@ -32,3 +32,8 @@ CmsWeb/TestConnectionStrings.config
 CmsWeb/ProdConnectionStrings.config
 CmsWeb/Areas/Manage/Models/CheckinTimeModel.cs.orig
 CmsCheckinSetup/bvcms2/setup.exe
+syntax: regexp
+CmsCheckin-ClickOnce/.*
+packages/.*
+CmsData/Generated/.*
+CmsDataSqlClr/.*

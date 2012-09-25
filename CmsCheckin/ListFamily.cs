@@ -12,6 +12,7 @@ using System.Configuration;
 using System.IO;
 using System.Collections.Specialized;
 using System.Xml.Serialization;
+using CmsCheckin.Classes;
 
 namespace CmsCheckin
 {
@@ -426,16 +427,26 @@ namespace CmsCheckin
                 custody = c.custody,
                 transport = c.transport,
                 requiressecuritylabel = c.RequiresSecurityLabel,
+				securitycode = Program.SecurityCode,
             };
-            using (var ms = new MemoryStream())
-            {
-                if (Program.TwoInchLabel)
-                    ms.LabelKiosk2(li);
-                else
-                    ms.LabelKiosk(li);
-                PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
-            }
 
+			if (Program.UseNewLabels)
+			{
+				IEnumerable<LabelInfo> liList = new[] { li };
+				PrinterHelper.doPrinting(liList, true);
+			}
+			else
+			{
+				using (var ms = new MemoryStream())
+				{
+					if (Program.TwoInchLabel)
+						ms.LabelKiosk2(li);
+					else
+						ms.LabelKiosk(li);
+					PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
+				}
+			}
+	
             RemoveMenu();
         }
 
@@ -667,8 +678,8 @@ namespace CmsCheckin
                 return;
 
             var qlist = list.Where(c => c.CheckedIn && c.NumLabels > 0);
-            if (!PrintAll.Text.HasValue())
-                qlist = qlist.Where(c => c.WasChecked);
+
+            if (!PrintAll.Text.HasValue()) qlist = qlist.Where(c => c.WasChecked);
 
             var q = from c in qlist
                     select new LabelInfo
@@ -685,22 +696,92 @@ namespace CmsCheckin
                         custody = c.custody,
                         transport = c.transport,
                         requiressecuritylabel = c.RequiresSecurityLabel,
+						securitycode = Program.SecurityCode,
                     };
 
-            using (var ms = new MemoryStream())
+           
+            Util.UnLockFamily();
+
+            if (Program.PrintMode == "Print To Server")
             {
-                Util.UnLockFamily();
-                if (Program.PrintMode == "Print To Server")
-                {
-                    PrintServerLabels(q);
-                    return;
-                }
-                if (Program.TwoInchLabel)
-                    doprint.PrintLabels2(ms, q);
-                else
-                    doprint.PrintLabels(ms, q);
-                doprint.FinishUp(ms);
+                PrintServerLabels(q);
+                return;
             }
+
+			if (Program.UseNewLabels)
+			{
+				PrinterHelper.doPrinting(q);
+
+				/*
+				LabelSet lsLabels = new LabelSet();
+				int iLabelSize = PrinterHelper.fetchLabelHeight( Program.Printer );
+
+				var q2 = from c in q
+						 orderby c.hour descending
+						 group c by c.pid into g
+						 select from c in g
+								select c;
+
+				var locs = from c in q
+						   where c.mv == "G"
+						   orderby c.first ascending, c.hour ascending
+						   group c by c.securitycode into g
+						   select from c in g
+								  select c;
+
+				var testList = q.ToList<LabelInfo>();
+
+				foreach (var li in q2)
+				{
+					LabelInfo liFirst = li.First();
+
+					if (liFirst.mv == "M")
+					{
+						string[] sFormats = PrinterHelper.MEMBERS;
+
+						foreach (string sItem in sFormats)
+						{
+							lsLabels.addPages(PrinterHelper.FetchLabelFormat(sItem, iLabelSize), li.ToList<LabelInfo>());
+						}
+					}
+					else
+					{
+						string[] sFormats = PrinterHelper.VISITORS;
+
+						foreach (string sItem in sFormats)
+						{
+							lsLabels.addPages(PrinterHelper.FetchLabelFormat(sItem, iLabelSize), li.ToList<LabelInfo>());
+						}
+					}
+				}
+
+				if( lsLabels.getCount() > 0 )
+				{
+					int iSecurityCount = PrinterHelper.fetchSecurityCount(q);
+
+					for (int iX = 0; iX < iSecurityCount; iX++)
+					{
+						lsLabels.addPages(PrinterHelper.FetchLabelFormat("Security", iLabelSize), q2.First().Take(1).ToList<LabelInfo>());
+					}
+
+					foreach( var lc in locs )
+					{
+						lsLabels.addPages(PrinterHelper.FetchLabelFormat("Location", iLabelSize), lc.ToList<LabelInfo>());
+					}
+				}
+
+				PrinterHelper.printAllLabels(Program.Printer, lsLabels);
+				*/
+			}
+			else
+			{
+				using (var ms = new MemoryStream())
+				{
+					if (Program.TwoInchLabel) doprint.PrintLabels2(ms, q);
+					else doprint.PrintLabels(ms, q);
+					doprint.FinishUp(ms);
+				}
+			}
         }
         private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -871,6 +952,50 @@ namespace CmsCheckin
         public string allergies { get; set; }
         public string org { get; set; } // orgname attribute
         public DateTime? hour { get; set; }
+
+		public string date
+		{
+			get
+			{
+				return hour.Value.ToString("d");
+			}
+		}
+
+		public string time
+		{
+			get
+			{
+				return hour.Value.ToString("t");
+			}
+		}
+
+        public string extra
+        {
+            get
+            {
+                if (custody || transport) return "Extra ( " + (custody ? "C " : "") + (transport ? "T " : "") + ")";
+                else return "Extra";
+            }
+        }
+
+        public string guest
+        {
+            get
+            {
+                if (custody || transport) return "Guest ( " + (custody ? "C " : "") + (transport ? "T " : "") + ")";
+                else return "Guest";
+            }
+        }
+
+        public string info
+        {
+            get
+            {
+                if (custody || transport) return (custody ? "C " : "") + (transport ? "T " : "");
+                else return "";
+            }
+        }
+
         public int pid { get; set; } // id attribute
         public string mv { get; set; }
         public string first { get; set; }
@@ -878,6 +1003,7 @@ namespace CmsCheckin
         public bool transport { get; set; }
         public bool custody { get; set; }
         public bool requiressecuritylabel { get; set; }
+		public string securitycode { get; set; }
     }
     [Serializable]
     public class PrintJob

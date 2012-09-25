@@ -40,6 +40,7 @@ namespace CmsWeb.Models.PersonPage
         public bool DoNotCallFlag { get; set; }
         public bool DoNotVisitFlag { get; set; }
         public bool DoNotMailFlag { get; set; }
+        public bool ReceiveSMS { get; set; }
 
         public int? CampusId { get; set; }
         public int MemberStatusId { get; set; }
@@ -126,6 +127,7 @@ namespace CmsWeb.Models.PersonPage
                 Title = p.TitleCode,
                 WeddingDate = p.WeddingDate,
                 WorkPhone = p.WorkPhone.FmtFone(),
+                ReceiveSMS = p.ReceiveSMS,
             };
             pi.person = p;
             return pi;

@@ -43,7 +43,8 @@
         </tr>
         <tr>
             <th>Work Phone:</th>
-            <td>@Html.TextBox("WorkPhone", Model.WorkPhone.FmtFone())</td>
+            <td>@Html.TextBox("WorkPhone", Model.WorkPhone.FmtFone())
+                @Html.CheckBox(Model.ReceiveSMS)</td>
         </tr>
         <tr>
             <th>Email:</th>

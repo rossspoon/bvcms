@@ -2,6 +2,11 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -64,8 +69,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
-    <Reference Include="DevDefined.OAuth">
-      <HintPath>Binaries\DevDefined.OAuth.dll</HintPath>
+    <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\DevDefined.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="dotless.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
@@ -83,35 +89,45 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.3\lib\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
-    <Reference Include="Intuit.Ipp.AsyncServices">
-      <HintPath>Binaries\Intuit.Ipp.AsyncServices.dll</HintPath>
+    <Reference Include="Intuit.Ipp.AsyncServices, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.AsyncServices.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Core">
-      <HintPath>Binaries\Intuit.Ipp.Core.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Core, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Data">
-      <HintPath>Binaries\Intuit.Ipp.Data.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Data, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Diagnostics">
-      <HintPath>Binaries\Intuit.Ipp.Diagnostics.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Diagnostics, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.Diagnostics.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Exception">
-      <HintPath>Binaries\Intuit.Ipp.Exception.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Exception, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.Exception.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.PlatformServices">
-      <HintPath>Binaries\Intuit.Ipp.PlatformServices.dll</HintPath>
+    <Reference Include="Intuit.Ipp.PlatformServices, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Retry">
-      <HintPath>Binaries\Intuit.Ipp.Retry.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Retry, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.Retry.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Security">
-      <HintPath>Binaries\Intuit.Ipp.Security.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Security, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Services">
-      <HintPath>Binaries\Intuit.Ipp.Services.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Services, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.Services.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Utility">
-      <HintPath>Binaries\Intuit.Ipp.Utility.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Utility, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
     <Reference Include="LumenWorks.Framework.IO, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -119,12 +135,18 @@
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="Rackspace.CloudFiles, Version=2.0.0.40, Culture=neutral, PublicKeyToken=eeb9efb45246165e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Rackspace.CloudFiles.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -166,6 +188,9 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Twilio.Api">
+      <HintPath>..\packages\Twilio.3.5.1\lib\3.5\Twilio.Api.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -173,7 +198,6 @@
       <DependentUpon>ToggleOrgLeadersOnly.ashx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
-    <Compile Include="Areas\Dialog\Controllers\AddAttendeesFromTagController.cs" />
     <Compile Include="Areas\Dialog\Controllers\DeleteMeetingController.cs" />
     <Compile Include="Areas\Dialog\Controllers\RepairTransactionsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchOrgsController.cs" />
@@ -203,7 +227,6 @@
     <Compile Include="Areas\Main\Models\Email\EmailTemplatesModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
-    <Compile Include="Areas\Main\Models\Report\RallyRollsheetResult.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
     <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />
     <Compile Include="Areas\Finance\Controllers\StatementsController.cs" />
@@ -250,6 +273,7 @@
     <Compile Include="Areas\Public\Controllers\APIPersonController.cs" />
     <Compile Include="Areas\Public\Controllers\APIOrgController.cs" />
     <Compile Include="Areas\Public\Controllers\APIMeetingController.cs" />
+    <Compile Include="Areas\Public\Controllers\ExternalServicesController.cs" />
     <Compile Include="Areas\Public\Controllers\MobileAPIController.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
@@ -327,21 +351,25 @@
     <Compile Include="Areas\OnlineReg\Models\ManagePledgesModel.cs" />
     <Compile Include="Areas\Public\Controllers\OrgContentController.cs" />
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\MobileTask.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\MobilePerson.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\Helpers\SystemHelper.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\MobileTaskBox.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\MobileTaskFull.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
-    <Compile Include="Code\FamilyExtraValues.cs" />
-    <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
+    <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\51Degrees.mobi-Patch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
     <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
-    <Content Include="Areas\Main\Views\Person\CurrentRegistrations.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
     <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
@@ -350,6 +378,17 @@
     </Content>
     <Content Include="Binaries\AuthorizeNet.dll" />
     <Content Include="Binaries\CookComputing.XmlRpcV2.dll" />
+    <Content Include="Binaries\DevDefined.OAuth.dll" />
+    <Content Include="Binaries\Intuit.Ipp.AsyncServices.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Core.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Data.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Diagnostics.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Exception.dll" />
+    <Content Include="Binaries\Intuit.Ipp.PlatformServices.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Retry.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Security.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Services.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Utility.dll" />
     <Content Include="Binaries\log4net.dll" />
     <Content Include="Binaries\Rackspace.CloudFiles.dll" />
     <Content Include="ckeditor\plugins\ajax\plugin.js" />
@@ -368,34 +407,15 @@
     <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Content\bootstrap\js\bootstrap.js" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Content\BUZZ.WAV" />
     <Content Include="Content\combined.css" />
-    <Content Include="Content\ding.wav" />
     <Content Include="Content\faary.css" />
     <Content Include="Content\healthcheck.txt" />
-    <Content Include="Content\images\back_disabled.png" />
-    <Content Include="Content\images\back_enabled.png" />
-    <Content Include="Content\images\back_enabled_hover.png" />
-    <Content Include="Content\images\forward_disabled.png" />
-    <Content Include="Content\images\forward_enabled.png" />
-    <Content Include="Content\images\forward_enabled_hover.png" />
-    <Content Include="Content\images\placeholder_160.gif" />
-    <Content Include="Content\images\placeholder_600.gif" />
-    <Content Include="Content\images\sort_asc.png" />
-    <Content Include="Content\images\sort_asc_disabled.png" />
-    <Content Include="Content\images\sort_both.png" />
-    <Content Include="Content\images\sort_desc.png" />
-    <Content Include="Content\images\sort_desc_disabled.png" />
     <Content Include="Content\joyride-1.0.5.css" />
-    <Content Include="Content\jquery-ui-1.8.23.custom.css" />
-    <Content Include="Content\jquery.dataTables.css" />
-    <Content Include="Content\jquery.dataTables_themeroller.css" />
-    <Content Include="Content\js\FixedHeader.js" />
+    <Content Include="Content\jquery-ui-1.8.22.custom.css" />
     <Content Include="Content\js\jquery-1.7.2.js" />
     <Content Include="Content\js\jquery-1.7.2.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.23.custom.js" />
+    <Content Include="Content\js\jquery-ui-1.8.22.custom.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
-    <Content Include="Content\js\jquery.dataTables.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
     <Content Include="Content\js\jquery.tmpl.js" />
@@ -957,15 +977,12 @@
     <Content Include="constants.py" />
     <Content Include="Content\Tutorials\_Home_Index_Menu.cshtml" />
     <Content Include="Content\Tutorials\_Home_Index.cshtml" />
-    <Content Include="Content\zylo.wav" />
     <Content Include="EmailTemplates\BasicNewsletter.htm" />
     <Content Include="EmailTemplates\BasicWithHeader.htm" />
     <Content Include="EmailTemplates\Plain.htm" />
     <Content Include="Errors\DatabaseNotFound.aspx" />
-    <Content Include="Errors\NoDatabase.htm" />
     <Content Include="Errors\SiteDisabled.htm" />
     <Content Include="images\arrowdnup.png" />
-    <Content Include="images\calendar.gif" />
     <Content Include="images\deliveredbybvcms.gif" />
     <Content Include="images\draggable-icon.png" />
     <Content Include="images\dropdown.gif" />
@@ -998,13 +1015,11 @@
     <Content Include="Min\Content\js\combined-org.js" />
     <Content Include="Min\Content\js\combined-person.js" />
     <Content Include="Min\Content\js\combined.js" />
-    <Content Include="Min\Content\js\FixedHeader.js" />
     <Content Include="Min\Content\js\jquery-1.7.2.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.8.23.custom.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.8.22.custom.js" />
     <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Min\Content\js\jquery.checkboxtree.js" />
     <Content Include="Min\Content\js\jquery.contextMenu.js" />
-    <Content Include="Min\Content\js\jquery.dataTables.js" />
     <Content Include="Min\Content\js\jquery.form.js" />
     <Content Include="Min\Content\js\jquery.form2.js" />
     <Content Include="Min\Content\js\jquery.idle-timer.js" />
@@ -1014,7 +1029,6 @@
     <Content Include="Min\Content\js\jquery.sortElements.js" />
     <Content Include="Min\Content\js\jquery.textarea.js" />
     <Content Include="Min\Content\js\jquery.transpose.js" />
-    <Content Include="Min\Scripts\Calendar.js" />
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
     <Content Include="Min\Scripts\Contributions.js" />
@@ -1060,8 +1074,6 @@
     <Content Include="Scripts\CheckinActivity.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
-    <Content Include="Scripts\Calendar.js" />
-    <Content Include="Scripts\family.js" />
     <Content Include="Scripts\meeting-ticket.js" />
     <Content Include="Scripts\TotalsByFund.js" />
     <Content Include="Scripts\ManageVolunteer.js" />
@@ -1150,6 +1162,10 @@
     </Content>
     <Content Include="Areas\Main\Views\Person\VolunteerDisplay.cshtml">
     </Content>
+    <None Include="App_Data\51Degrees.mobi.config0">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="App_Browsers\WebOs.browser">
       <SubType>Designer</SubType>
     </Content>
@@ -1175,6 +1191,7 @@
     <Content Include="Areas\Main\Views\MemberDocs\Image.cshtml" />
     <Content Include="Areas\Main\Views\Person\EditorTemplates\Field.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlotsSummary.cshtml" />
+    <Content Include="Areas\Main\Views\Person\CurrentRegistrations.cshtml" />
     <Content Include="Areas\Manage\Views\UploadPeople\Progress.cshtml" />
     <Content Include="Areas\Manage\Views\UploadPeople\Index.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\TotalsByFund.cshtml" />
@@ -1206,16 +1223,8 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\GetVolSub.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\EmailVolunteerSubs.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolSubReport.cshtml" />
-    <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Index.cshtml" />
-    <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Progress.cshtml" />
-    <Content Include="Areas\Main\Views\Meeting\TicketMeeting.cshtml" />
-    <Content Include="Areas\Main\Views\Family\ExtrasGrid.cshtml" />
-    <Content Include="Areas\Main\Views\Family\EditorTemplates\Field.cshtml" />
-    <Content Include="Areas\Main\Views\Person\CurrentRegistrationsHtml.cshtml" />
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlots.cshtml" />
-    <Content Include="Areas\Main\Views\Organization\VolunteerCommitmentsSummary.cshtml" />
-    <Content Include="Areas\Main\Views\Person\IncompleteTasksGrid.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
+    <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="UploadPicture.aspx" />
@@ -1863,6 +1872,7 @@
     </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1916,9 +1926,10 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="secrets.config" />
+    <Content Include="secrets.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
-    <Content Include="Views\Shared\DatePickerDefaults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -2294,7 +2305,8 @@
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
