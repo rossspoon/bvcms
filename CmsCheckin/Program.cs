@@ -13,6 +13,8 @@ namespace CmsCheckin
 {
     static class Program
     {
+		public static bool UseNewLabels = true;
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -20,8 +22,10 @@ namespace CmsCheckin
             Application.SetCompatibleTextRenderingDefault(false);
 
             var login = new Login();
+
 			if (!Util.IsDebug())
 				login.FullScreen.Checked = true;
+
             login.password.Focus();
             var r = login.ShowDialog();
             if (r == DialogResult.Cancel)
@@ -29,7 +33,7 @@ namespace CmsCheckin
             PrintMode = login.PrintMode.Text;
             PrintKiosks = login.PrintKiosks.Text;
             Printer = login.Printer.Text;
-            TwoInchLabel = login.TwoInchLabel.Checked;
+            TwoInchLabel = login.DisableLocationLabels.Checked;
 			BuildingMode = login.BuildingAccessMode.Checked;
 			FullScreen = login.FullScreen.Checked;
 
@@ -105,6 +109,8 @@ namespace CmsCheckin
         public static string Password { get; set; }
         public static string URL { get; set; }
         public static string Printer { get; set; }
+		public static string PrinterWidth { get; set; }
+		public static string PrinterHeight { get; set; }
         public static string PrintKiosks { get; set; }
         public static string AdminPassword { get; set; }
         public static int FamilyId { get; set; }
@@ -127,6 +133,7 @@ namespace CmsCheckin
         public static bool AskChurchName { get; set; }
         public static bool AskLabels { get; set; }
         public static bool TwoInchLabel { get; set; }
+        public static bool DisableLocationLabels { get; set; }
         public static bool SecurityLabelPerChild { get; set; }
         public static string PrintMode { get; set; }
         public static bool BuildingMode { get; set; }

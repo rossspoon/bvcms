@@ -612,20 +612,18 @@ namespace CmsWeb.Areas.Public.Controllers
 			return Content("0");
 		}
 
-		[HttpPost]
-		[ValidateInput(false)]
 		public ContentResult FetchLabelList()
 		{
-			if (!Authenticate()) return Content("");
+			if (!Authenticate()) return Content("Not Authorized");
+            Response.NoCache();
 
-			// Size -30 and +30 is because some labels are a few tenths of inches different in the driver
 			var list = from e in DbUtil.Db.LabelFormats
 					   orderby e.Size, e.Name
 					   select String.Concat( e.Name, "~", e.Size );
 
 			if (list == null)
 			{
-				return Content("");
+				return Content("No Records");
 			}
 			else
 			{

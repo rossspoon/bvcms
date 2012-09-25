@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Drawing.Printing;
 using System.Xml.Serialization;
 using System.IO;
+using CmsCheckin.Classes;
 
 namespace CmsCheckin
 {
@@ -68,13 +69,15 @@ namespace CmsCheckin
 			bdot.Click += buttonclick;
 			bslash.Click += buttonclick;
 
-			username.KeyPress += textBox_KeyPress;
-			password.KeyPress += textBox_KeyPress;
-			URL.KeyPress += textBox_KeyPress;
+			//username.KeyPress += textBox_KeyPress;
+			//password.KeyPress += textBox_KeyPress;
+			//URL.KeyPress += textBox_KeyPress;
 
 			username.Enter += textbox_Enter;
 			password.Enter += textbox_Enter;
 			URL.Enter += textbox_Enter;
+			LabelFormat.Enter += textbox_Enter;
+			
 			password.Focus();
 		}
 
@@ -86,9 +89,12 @@ namespace CmsCheckin
 			Settings1.Default.Kiosks = PrintKiosks.Text;
 			Settings1.Default.PrintMode = PrintMode.Text;
 			Settings1.Default.Printer = Printer.Text;
-			Settings1.Default.TwoInchLabel = TwoInchLabel.Checked;
+			Settings1.Default.DisableLocationLabels = DisableLocationLabels.Checked;
 			Settings1.Default.BuildingMode = BuildingAccessMode.Checked;
 			Settings1.Default.Building = building.Text;
+			Settings1.Default.PrinterWidth = PrinterWidth.Text;
+			Settings1.Default.PrinterHeight = PrinterHeight.Text;
+			Settings1.Default.AdvancedPageSize = AdvancedPageSize.Checked;
 			Settings1.Default.Save();
 
 			if(URL.Text.StartsWith("localhost"))
@@ -100,6 +106,10 @@ namespace CmsCheckin
 
 			Program.Username = username.Text;
 			Program.Password = password.Text;
+			Program.PrinterWidth = PrinterWidth.Text;
+			Program.PrinterHeight = PrinterHeight.Text;
+            Program.DisableLocationLabels = DisableLocationLabels.Checked;
+
 			if (BuildingAccessMode.Checked == true)
 			{
 				try
@@ -151,7 +161,7 @@ namespace CmsCheckin
 
 			if (Util.IsDebug())
 			{
-				URL.Text = "localhost:888/";
+				URL.Text = "localhost:8888/";
 				username.Text = "David";
 				var name = @"..\..\secrets.xml";
 				if (File.Exists(name))
@@ -172,52 +182,76 @@ namespace CmsCheckin
 				Printer.SelectedIndex = Printer.FindStringExact(defp);
 				if (Settings1.Default.Printer.HasValue())
 					Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
-				TwoInchLabel.Checked = Settings1.Default.TwoInchLabel;
+				DisableLocationLabels.Checked = Settings1.Default.DisableLocationLabels;
 				BuildingAccessMode.Checked = Settings1.Default.BuildingMode;
 				URL.Text = Settings1.Default.URL;
 				username.Text = Settings1.Default.username;
 				PrintKiosks.Text = Settings1.Default.Kiosks;
 				PrintMode.Text = Settings1.Default.PrintMode;
 				building.Text = Settings1.Default.Building;
+				AdvancedPageSize.Checked = Settings1.Default.AdvancedPageSize;
+				PrinterWidth.Text = Settings1.Default.PrinterWidth;
+				PrinterHeight.Text = Settings1.Default.PrinterHeight;
+
+				this.Height = 580;
+
+				PrintTest.Enabled = false;
+				label5.Enabled = false;
+				LabelFormat.Enabled = false;
+				LabelList.Enabled = false;
+				label10.Enabled = false;
+				LoadLabelList.Enabled = false;
+				SaveLabel.Enabled = false;
+
+				PrintTest.Visible = false;
+				label5.Visible = false;
+				LabelFormat.Visible = false;
+				LabelList.Visible = false;
+				label10.Visible = false;
+				LoadLabelList.Visible = false;
+				SaveLabel.Visible = false;
 			}
 		}
+
 		void buttonclick(object sender, EventArgs e)
 		{
 			var b = sender as Button;
 			var d = b.Text[0];
 			KeyStroke(d);
 		}
+
 		private void textBox_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			if (current == null)
-				return;
-			if (e.KeyChar == '\b')
-				BackSpace();
-			else
-				KeyStroke(e.KeyChar);
+			if (current == null) return;
+
+			if (e.KeyChar == '\b') BackSpace();
+			else KeyStroke(e.KeyChar);
+
 			e.Handled = true;
 		}
+
 		private void KeyStroke(char d)
 		{
-			if (current == null)
-				return;
+			if (current == null) return;
+
 			current.Text += d;
 			current.Focus();
 			current.Select(current.Text.Length, 0);
 		}
+
 		private void BackSpace()
 		{
-			if (current == null)
-				return;
+			if (current == null) return;
+
 			var t = current.Text;
 			var len = t.Length - 1;
-			if (len < 0)
-				len = 0;
+
+			if (len < 0) len = 0;
+
 			current.Text = t.Substring(0, len);
 			current.Focus();
 			current.Select(current.Text.Length, 0);
 		}
-
 
 		private void textbox_Enter(object sender, EventArgs e)
 		{
@@ -228,7 +262,6 @@ namespace CmsCheckin
 		{
 			BackSpace();
 		}
-
 
 		public bool CancelClose { get; set; }
 		private void Login_FormClosing(object sender, FormClosingEventArgs e)
@@ -335,6 +368,96 @@ namespace CmsCheckin
 				bcomma.Text = "<";
 				bdot.Text = ">";
 				bslash.Text = "?";
+			}
+		}
+
+		private void Printer_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			LabelPrinterSize.Text = "Label Size: " + PrinterHelper.getPrinterWidth(Printer.Text) + " X " + PrinterHelper.getPrinterHeight(Printer.Text);
+		}
+
+		private void PrintTest_Click(object sender, EventArgs e)
+		{
+			Program.PrinterWidth = PrinterWidth.Text;
+			Program.PrinterHeight = PrinterHeight.Text;
+
+			string[] sLabelPieces = LabelList.Text.Split(new char[] { '~' });
+
+			if( sLabelPieces.Length >= 2 ) PrinterHelper.printTestLabel(Printer.Text, LabelFormat.Text);
+			else PrinterHelper.printTestLabel(Printer.Text, LabelFormat.Text.Replace( "\r\n", "" ));
+		}
+
+		private void LoadLabelList_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.Debug.Print( "Loading Label List..." );
+
+            if( URL.Text.Contains("localhost") ) Program.URL = "http://" + URL.Text;
+            else Program.URL = "https://" + URL.Text;
+
+			Program.Username = username.Text;
+			Program.Password = password.Text;
+
+			string[] labelList = PrinterHelper.fetchLabelList();
+
+			if (labelList == null) return;
+
+			LabelList.Items.Clear();
+			LabelList.Text = "";
+			LabelFormat.Text = "";
+
+			foreach (var label in labelList)
+			{
+				LabelList.Items.Add(label);
+			}
+		}
+
+		private void LabelList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			string[] sLabelPieces = LabelList.Text.Split( new char[] { '~' } );
+			LabelFormat.Text = PrinterHelper.fetchLabelFormat( sLabelPieces[0], int.Parse( sLabelPieces[1] ) ).Replace("~", "~\r\n");
+		}
+
+		private void SaveLabel_Click(object sender, EventArgs e)
+		{
+			string[] sLabelPieces = LabelList.Text.Split(new char[] { '~' });
+			PrinterHelper.saveLabelFormat(sLabelPieces[0], sLabelPieces[1], LabelFormat.Text.Replace("\r\n", ""));
+
+			LoadLabelList.PerformClick();
+		}
+
+		private void SizeFromPrinter_Click(object sender, EventArgs e)
+		{
+			PrinterWidth.Text = PrinterHelper.getPrinterWidth(Printer.Text).ToString();
+			PrinterHeight.Text = PrinterHelper.getPrinterHeight(Printer.Text).ToString();
+		}
+
+		private void AdvancedPageSize_CheckedChanged(object sender, EventArgs e)
+		{
+			if (AdvancedPageSize.Checked)
+			{
+				PageWidthLabel.Enabled = true;
+				PageHeightLabel.Enabled = true;
+
+				PrinterWidth.Enabled = true;
+				PrinterHeight.Enabled = true;
+
+				SizeFromPrinter.Enabled = true;
+
+				PrinterWidth.Text = "";
+				PrinterHeight.Text = "";
+			}
+			else
+			{
+				PageWidthLabel.Enabled = false;
+				PageHeightLabel.Enabled = false;
+
+				PrinterWidth.Enabled = false;
+				PrinterHeight.Enabled = false;
+
+				SizeFromPrinter.Enabled = false;
+
+				PrinterWidth.Text = "";
+				PrinterHeight.Text = "";
 			}
 		}
 	}

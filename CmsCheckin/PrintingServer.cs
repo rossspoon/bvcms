@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using CmsCheckin.Classes;
 
 namespace CmsCheckin
 {
@@ -40,13 +41,22 @@ namespace CmsCheckin
                 foreach (var j in pj.jobs)
                 {
                     Program.SecurityCode = j.securitycode;
-                    var doprint = new DoPrinting();
-                    var ms = new MemoryStream();
-                    if (Program.TwoInchLabel)
-                        doprint.PrintLabels2(ms, j.list);
-                    else
-                        doprint.PrintLabels(ms, j.list);
-                    doprint.FinishUp(ms);
+
+					if (Program.UseNewLabels)
+					{
+						foreach (var e in j.list) { e.securitycode = Program.SecurityCode; }
+						PrinterHelper.doPrinting(j.list);
+					}
+					else
+					{
+						var doprint = new DoPrinting();
+						var ms = new MemoryStream();
+						if (Program.TwoInchLabel)
+							doprint.PrintLabels2(ms, j.list);
+						else
+							doprint.PrintLabels(ms, j.list);
+						doprint.FinishUp(ms);
+					}
                 }
             }
             count = INT_count;
