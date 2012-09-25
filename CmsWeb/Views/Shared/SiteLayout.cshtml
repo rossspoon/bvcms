@@ -83,7 +83,7 @@
                         </td>
                         <td class="dropdown">
                             <div>
-                                <a href="/QuickSearch">People</a></div>
+                                <a id="PeopleMenu" href="/QuickSearch">People</a></div>
                             <div class="sublinks">
                                 <a href="/QuickSearch">People Search</a>
                                 <a id="addpeople" href="#">Add People</a> 
@@ -236,8 +236,8 @@
 				@if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
 				{ 
 				<br />
-				<b>Menus:</b> @(Util.Helpfile)@:_Menu.html<br />
-				<b>Tutorials:</b> @(Util.Helpfile)@:.html
+				<b>Menus:</b> @(Util.Helpfile)@:_Menu.cshtml<br />
+				<b>Tutorials:</b> @(Util.Helpfile)@:.cshtml
 				}		  
 				@{
 					var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
