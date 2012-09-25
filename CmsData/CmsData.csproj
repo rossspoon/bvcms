@@ -213,6 +213,12 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\IronPython 2.7\Microsoft.Scripting.Metadata.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -236,6 +242,15 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Twilio.Api">
+      <HintPath>..\packages\Twilio.3.5.1\lib\3.5\Twilio.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Twilio.Mvc">
+      <HintPath>..\packages\Twilio.Mvc.3.1.9\lib\3.5\Twilio.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Twilio.Twiml">
+      <HintPath>..\packages\Twilio.TwiML.3.2.0\lib\3.5\Twilio.Twiml.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressVerify.cs" />
@@ -252,12 +267,19 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
+    <Compile Include="Generated\Functions\PledgeFulfillment.cs" />
     <Compile Include="Generated\Functions\VisitNumberSinceDate.cs" />
+    <Compile Include="Generated\LabelFormat.cs" />
     <Compile Include="Generated\ManagedGiving.cs" />
     <Compile Include="Generated\PaymentInfo.cs" />
     <Compile Include="Generated\QBConnection.cs" />
     <Compile Include="Generated\SubRequest.cs" />
+    <Compile Include="Generated\Views\MasterOrg.cs" />
+    <Compile Include="Generated\Views\PickListOrgs2.cs" />
+    <Compile Include="Generated\VolSubRequest.cs" />
+    <Compile Include="ProtectMyMinistryHelper.cs" />
     <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />
     <Compile Include="Generated\CheckedBatch.cs" />
@@ -280,6 +302,7 @@
     <Compile Include="Dynamic.cs" />
     <Compile Include="SagePayments.cs" />
     <Compile Include="TransactionResponse.cs" />
+    <Compile Include="TwilioHelper.cs" />
     <Compile Include="VolInterest.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
     <Compile Include="Generated\Duplicate.cs" />
@@ -512,6 +535,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -2,6 +2,11 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -130,12 +135,18 @@
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="Rackspace.CloudFiles, Version=2.0.0.40, Culture=neutral, PublicKeyToken=eeb9efb45246165e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Rackspace.CloudFiles.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -177,6 +188,9 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Twilio.Api">
+      <HintPath>..\packages\Twilio.3.5.1\lib\3.5\Twilio.Api.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +273,7 @@
     <Compile Include="Areas\Public\Controllers\APIPersonController.cs" />
     <Compile Include="Areas\Public\Controllers\APIOrgController.cs" />
     <Compile Include="Areas\Public\Controllers\APIMeetingController.cs" />
+    <Compile Include="Areas\Public\Controllers\ExternalServicesController.cs" />
     <Compile Include="Areas\Public\Controllers\MobileAPIController.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
@@ -336,8 +351,11 @@
     <Compile Include="Areas\OnlineReg\Models\ManagePledgesModel.cs" />
     <Compile Include="Areas\Public\Controllers\OrgContentController.cs" />
     <Compile Include="Areas\Public\Controllers\SGMapController.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\MobileTask.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\MobilePerson.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\Helpers\SystemHelper.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\MobileTaskBox.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\MobileTaskFull.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
@@ -360,6 +378,17 @@
     </Content>
     <Content Include="Binaries\AuthorizeNet.dll" />
     <Content Include="Binaries\CookComputing.XmlRpcV2.dll" />
+    <Content Include="Binaries\DevDefined.OAuth.dll" />
+    <Content Include="Binaries\Intuit.Ipp.AsyncServices.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Core.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Data.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Diagnostics.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Exception.dll" />
+    <Content Include="Binaries\Intuit.Ipp.PlatformServices.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Retry.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Security.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Services.dll" />
+    <Content Include="Binaries\Intuit.Ipp.Utility.dll" />
     <Content Include="Binaries\log4net.dll" />
     <Content Include="Binaries\Rackspace.CloudFiles.dll" />
     <Content Include="ckeditor\plugins\ajax\plugin.js" />
@@ -385,6 +414,7 @@
     <Content Include="Content\jquery-ui-1.8.22.custom.css" />
     <Content Include="Content\js\jquery-1.7.2.js" />
     <Content Include="Content\js\jquery-1.7.2.min.js" />
+    <Content Include="Content\js\jquery-ui-1.8.22.custom.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
@@ -1179,7 +1209,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Manage\Views\CheckinTime\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\CheckinTime\List.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\tickets.cshtml" />
     <Content Include="Areas\Main\Views\Meeting\ScanTicket.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Timeout.cshtml" />
@@ -1195,6 +1224,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\EmailVolunteerSubs.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolSubReport.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
+    <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="UploadPicture.aspx" />
@@ -1842,6 +1872,7 @@
     </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1895,7 +1926,9 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="secrets.config" />
+    <Content Include="secrets.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -2272,7 +2305,8 @@
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
