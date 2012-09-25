@@ -973,7 +973,7 @@ namespace CmsCheckin
         {
             get
             {
-                if (custody || transport) return "Extra ( " + (custody ? "C " : "") + (transport ? "T " : "") + ")";
+                if (custody || transport || allergies.Length > 0) return ("Extra - " + (allergies.Length > 0 ? "A|" : "") + (custody ? "C|" : "") + (transport ? "T" : "")).TrimEnd( new char[] { '|' } );
                 else return "Extra";
             }
         }
@@ -982,7 +982,7 @@ namespace CmsCheckin
         {
             get
             {
-                if (custody || transport) return "Guest ( " + (custody ? "C " : "") + (transport ? "T " : "") + ")";
+                if (custody || transport || allergies.Length > 0) return ("Guest - " + (allergies.Length > 0 ? "A|" : "") + (custody ? "C|" : "") + (transport ? "T" : "")).TrimEnd(new char[] { '|' });
                 else return "Guest";
             }
         }
@@ -991,8 +991,7 @@ namespace CmsCheckin
         {
             get
             {
-                if (custody || transport) return (custody ? "C " : "") + (transport ? "T " : "");
-                else return "";
+                return ((allergies.Length > 0 ? "A|" : "") + (custody ? "C|" : "") + (transport ? "T" : "")).TrimEnd(new char[] { '|' });
             }
         }
 
