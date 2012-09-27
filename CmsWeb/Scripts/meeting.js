@@ -51,7 +51,12 @@
         style: 'display: inline',
         width: '300px',
         height: 25,
-        submit: 'OK'
+        submit: 'OK',
+        data: function (value, settings) {
+            if (value === '0')
+                return '';
+          return value;
+        }
     });
 
     $(".bt").button();

@@ -154,24 +154,24 @@ namespace CmsWeb.Areas.Manage.Controllers
 			return Redirect("/Email/Index/{0}?subj={1}&ishtml=true"
 				.Fmt(qb.QueryId, Server.UrlEncode(subject)));
 		}
-		public ActionResult UpdateAll(string id, int? qid)
-		{
-			var orgkeys = Person.OrgKeys(id);
-			var q = DbUtil.Db.People.AsQueryable();
-			if (qid.HasValue)
-				q = DbUtil.Db.PeopleQuery(qid.Value);
-			q = from p in q
-				where p.VolInterestInterestCodes.Count(c => orgkeys.Contains(c.VolInterestCode.Org)) > 0
-				select p;
-			foreach (var person in q)
-			{
-				var m = new CmsWeb.Models
-					.VolunteerModel2 { View = id, person = person };
-				m.person.BuildVolInfoList(id); // gets existing
-				m.person.BuildVolInfoList(id); // 2nd time updates existing
-				m.person.RefreshCommitments(id);
-			}
-			return Content("done");
-		}
+		//public ActionResult UpdateAll(string id, int? qid)
+		//{
+		//	var orgkeys = Person.OrgKeys(id);
+		//	var q = DbUtil.Db.People.AsQueryable();
+		//	if (qid.HasValue)
+		//		q = DbUtil.Db.PeopleQuery(qid.Value);
+		//	q = from p in q
+		//		where p.VolInterestInterestCodes.Count(c => orgkeys.Contains(c.VolInterestCode.Org)) > 0
+		//		select p;
+		//	foreach (var person in q)
+		//	{
+		//		var m = new CmsWeb.Models
+		//			.VolunteerModel2 { View = id, person = person };
+		//		m.person.BuildVolInfoList(id); // gets existing
+		//		m.person.BuildVolInfoList(id); // 2nd time updates existing
+		//		m.person.RefreshCommitments(id);
+		//	}
+		//	return Content("done");
+		//}
 	}
 }

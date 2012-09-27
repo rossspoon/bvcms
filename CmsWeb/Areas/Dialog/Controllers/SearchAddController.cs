@@ -96,6 +96,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
             };
             s.LoadFamily();
             m.List.Add(s);
+			if (m.OnlyOne)
+				return Complete(m.typeid.ToString(), m);
             return View("List", m);
         }
 
@@ -213,6 +215,10 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 case "taskabout":
                     if (m.List.Count > 0)
                         return Json(new { close = true, how = "addselected", url = "/Task/ChangeAbout/", pid = m.List[0].PeopleId });
+                    break;
+                case "mergeto":
+                    if (m.List.Count > 0)
+						return Json(new { close = true, how = "addselected", pid = m.List[0].PeopleId });
                     break;
                 case "taskowner":
                     if (m.List.Count > 0)

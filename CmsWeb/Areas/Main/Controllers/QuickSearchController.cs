@@ -11,45 +11,23 @@ namespace CmsWeb.Areas.Main.Controllers
 {
     public class QuickSearchController : CmsController
     {
-        [HttpGet]
-        public ActionResult Index(string name)
+        public ActionResult Index(string q)
         {
-            var m = new QuickSearchModel();
-            if (name.HasValue())
+			var m = new QuickSearchModel(q);
+            if (q.HasValue())
             {
-                m.m.name = name;
-                if (m.Count() == 1)
+                if (m.people.Count == 1)
                 {
-                    var pid = m.FetchPeople().Single().PeopleId;
+                    var pid = m.people.Single().PeopleId;
                     return Redirect("/Person/Index/" + pid);
                 }
+                if (m.orgs.Count == 1 && m.people.Count == 0)
+                {
+					var oid = m.orgs.Single().Id;
+                    return Redirect("/Organization/Index/" + oid);
+                }
             }
-            else
-            {
-                var i = Session["QuickSearchInfo"] as QuickSearchInfo;
-                if (i != null)
-                    m.m = i;
-            }
-                
             return View(m);
-        }
-        [HttpPost]
-        public ActionResult Results()
-        {
-            var m = new QuickSearchModel();
-            UpdateModel(m);
-            UpdateModel(m.m);
-            Session["QuickSearchInfo"] = m.m;
-            return View(m);
-        }
-        [HttpPost]
-        public ActionResult ConvertToQuery()
-        {
-            var m = new QuickSearchModel();
-            UpdateModel(m);
-            UpdateModel(m.m);
-            Session["QuickSearchInfo"] = m.m;
-            return Content("/QueryBuilder/Main/" + m.ConvertToQuery());
         }
     }
 }

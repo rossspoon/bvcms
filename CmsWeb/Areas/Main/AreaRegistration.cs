@@ -16,8 +16,7 @@ namespace CmsWeb.Areas.Main
         {
             AddRoute(context, "Coupon");
             AddRoute(context, "Tags");
-            AddRoute(context, "QuickSearch");
-            AddRoute(context, "SearchPeople");
+            AddRoute(context, "PeopleSearch");
             AddRoute(context, "MemberDocs");
             AddRoute(context, "UserPref");
             AddRoute(context, "Email");
@@ -41,6 +40,12 @@ namespace CmsWeb.Areas.Main
             AddRoute(context, "QueryBuilderMain", "QueryBuilder", "QueryBuilder/{action}/{id}", "Main");
             AddRoute(context, "QueryBuilder");
             AddRoute(context, "CurrentRegs", "Person", "CurrentRegistrations", "CurrentRegistrations");
+
+            context.MapRoute(
+                "QuickSearch",
+                "QuickSearch/{action}/{q}",
+                new { controller = "QuickSearch", action = "Index", q = "" }
+            );
 
 
             context.MapRoute(

@@ -54,12 +54,12 @@
                                         <a href="/Admin/Activity.aspx">Activity Log</a>
 }
                                 </div>
-                                <strong>Active Tag:</strong> <span id="activetag">@Util2.CurrentTagName</span><br />
                             </div>
+                            <strong>Active Tag:</strong> <span id="activetag">@Util2.CurrentTagName</span><br />
 @if (User.IsInRole("Access"))
 {
                                 <form method="post">
-                                    <input id="SearchText" type="text" title='Partial names: "last" or "first last" or "first<sp>"' />
+                                    <input id="SearchText" type="text" default="Quick Search" title='QuickSearch|PeopleId|-OrganizationId|7 digit phone|Partial Search|Names|Employer|Address|Organization Name|Leader Name|Division"' />
                                 </form>
 }
                         </div>
@@ -84,12 +84,12 @@
                         </td>
                         <td class="dropdown">
                             <div>
-                                <a href="/QuickSearch">People</a></div>
+                                <a href="/PeopleSearch">People</a></div>
                             <div class="sublinks">
-                                <a href="/QuickSearch">People Search</a>
+                                <a href="/PeopleSearch">Search</a>
                                 <a id="addpeople" href="#">Add People</a> 
                                 <a href="/Tags">Manage Tags</a>
-                                <a href="/Task/List/">Tasks</a> <a href="/ContactSearch">Contact Search</a>
+                                <a href="/Task/List/">Tasks</a> <a href="/ContactSearch">Contacts</a>
     @if (Util2.CurrentPeopleId != 0)
     {
                                     <a href="/Person/Index/@Util2.CurrentPeopleId">
@@ -101,7 +101,8 @@
                             <div>
                                 <a id="OrgSearchLink" href="/OrgSearch">Organization</a></div>
                             <div class="sublinks">
-                                <a href="/OrgSearch">Search</a> <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a> 
+                                <a href="/OrgSearch">Search</a> 
+                                <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a> 
     @if (User.IsInRole("Edit"))
     {
                                 <a id="addorg" href="#">Add Organization</a> 
@@ -136,15 +137,15 @@
                         </td>
                         <td class="dropdown">
                             <div>
-                                <a href="/QueryBuilder/Main">QueryBuilder</a></div>
+                                <a href="/QueryBuilder/Main">SearchBuilder</a></div>
                             <div class="sublinks">
-                                <a href="/QueryBuilder/Main">Last Query</a>
-                                <a href="/QueryBuilder/NewQuery">New Query</a>
-                                <a href="/SavedQuery">Saved Queries</a>
+                                <a href="/QueryBuilder/Main">Last Search</a>
+                                <a href="/QueryBuilder/NewQuery">New Search</a>
+                                <a href="/SavedQuery">Saved Searches</a>
     @if ((string)ViewData["OnQueryBuilder"] == "true")
     {
-                                    <a id="ShowOpenQuery" href="#">Open Saved Query</a>
-                                    <a id="ShowSaveQuery" href="#">Save Query As</a>
+                                    <a id="ShowOpenQuery" href="#">Open Saved Search</a>
+                                    <a id="ShowSaveQuery" href="#">Save Search As</a>
     }
                                 <a href="/Reports/ExtraValues">Extra Values</a>
                             </div>

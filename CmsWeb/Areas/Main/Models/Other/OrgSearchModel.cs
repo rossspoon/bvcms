@@ -52,9 +52,9 @@ namespace CmsWeb.Models
             if (!_count.HasValue)
                 _count = organizations.Count();
             organizations = ApplySort(organizations).Skip(StartRow).Take(PageSize);
-            return OrganizationList(organizations);
+            return OrganizationList(organizations, TagProgramId, TagDiv);
         }
-        public IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query)
+		public static IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query, int? TagProgramId, int? TagDiv)
         {
             var q = from o in query
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED

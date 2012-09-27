@@ -35,7 +35,6 @@ Scripts/RegSetting.js ^
 ajaxmin ^
 Content/js/jquery.pagination.js ^
 Content/js/jquery.multiselect.js ^
-Scripts/SearchPeople.js ^
 Scripts/Person.js ^
 -o Min/Content/js/combined-person.js -clobber:true || pause
 
@@ -97,13 +96,13 @@ ajaxmin Scripts/Organization.js -o Min\Scripts/Organization.js -clobber:true || 
 ajaxmin Scripts/Person.js -o Min\Scripts/Person.js -clobber:true || pause
 ajaxmin Scripts/PostBundle.js -o Min\Scripts/PostBundle.js -clobber:true || pause
 ajaxmin Scripts/QueryBuilder.js -o Min\Scripts/QueryBuilder.js -clobber:true || pause
+ajaxmin Scripts/PeopleSearch.js -o Min\Scripts/PeopleSearch.js -clobber:true || pause
 ajaxmin Scripts/QuickSearch.js -o Min\Scripts/QuickSearch.js -clobber:true || pause
 ajaxmin Scripts/RegSetting.js -o Min\Scripts/RegSetting.js -clobber:true || pause
 ajaxmin Scripts/SavedQuery.js -o Min\Scripts/SavedQuery.js -clobber:true || pause
 ajaxmin Scripts/SearchAdd.js -o Min\Scripts/SearchAdd.js -clobber:true || pause
 ajaxmin Scripts/SearchDivisions.js -o Min\Scripts/SearchDivisions.js -clobber:true || pause
 ajaxmin Scripts/SearchOrgs.js -o Min\Scripts/SearchOrgs.js -clobber:true || pause
-ajaxmin Scripts/SearchPeople.js -o Min\Scripts/SearchPeople.js -clobber:true || pause
 ajaxmin Scripts/SearchUsers.js -o Min\Scripts/SearchUsers.js -clobber:true || pause
 ajaxmin Scripts/Tags.js -o Min\Scripts/Tags.js -clobber:true || pause
 ajaxmin Scripts/Task.js -o Min\Scripts/Task.js -clobber:true || pause

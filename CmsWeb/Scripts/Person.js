@@ -7,7 +7,20 @@
     var maintabs = $("#main-tab").tabs();
     $(".submitbutton,.bt").button();
     addrtabs.tabs('select', $('#addrtab').val());
-    $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
+    $('#dialogbox').dialog({
+        title: 'Search Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 700,
+        height: 630,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+        }
+    });
     $('#clipaddr').live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
@@ -51,9 +64,11 @@
         }
     });
     $('#moveperson').click(function (ev) {
-        $('#dialogbox').SearchPeople(ev, function (id, peopleid) {
-            window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + peopleid;
-        });
+        ev.preventDefault();
+        var d = $('#dialogbox');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Merge To Person");
+        d.dialog("open");
         return false;
     });
 
@@ -490,4 +505,7 @@ function RebindMemberGrids(from) {
 function RebindUserInfoGrid(from) {
     $.updateTable($('#user-tab form'));
     $("#memberDialog").dialog('close');
+}
+function AddSelected(ret) {
+    window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + ret.pid;
 }

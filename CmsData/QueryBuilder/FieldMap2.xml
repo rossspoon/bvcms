@@ -441,8 +441,8 @@
     <Field Name="HasMyTag" Title="Tagged with" Type="Bit" DisplayAs="HasMyTag({0})" DataValueField="IdCode" Params="Tags">
       Selects everyone in the tag you specify.
     </Field>
-    <Field Name="SavedQuery" Title="Saved Queries" Type="Bit" DisplayAs="Query({0})" Params="SavedQueryIdDesc" DataValueField="IdCode">
-      Selects everyone within a specified Saved Query.
+    <Field Name="SavedQuery" Title="Saved Searches" Type="Bit" DisplayAs="Searches({0})" Params="SavedQueryIdDesc" DataValueField="IdCode">
+      Selects everyone within a specified Saved Search.
     </Field>
     <Field Name="RecActiveOtherChurch" Title="Reg Other Church" Type="Bit" DataValueField="IdCode">
       Selects only those Registered children and indicated active in another church or not.

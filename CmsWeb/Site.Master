@@ -79,9 +79,9 @@
                 <div><a href="/">Home</a></div>
             </td>
             <td class="dropdown">
-                <div><a href="/QuickSearch">People</a></div>
+                <div><a href="/FindPeople">People</a></div>
                 <div class="sublinks">
-                    <a href="/QuickSearch">People Search</a>
+                    <a href="/FindPeople">Find People</a>
                     <a href="/Tags">Manage Tags</a>
                     <a href="/Task/List/">Tasks</a>
                     <a href="/ContactSearch">Contact Search</a>
@@ -128,11 +128,11 @@
                 </div>
             </td>
             <td class="dropdown">
-                <div><a href="/QueryBuilder/Main">QueryBuilder</a></div>
+                <div><a href="/QueryBuilder/Main">SearchBuilder</a></div>
                 <div class="sublinks">
                     <a href="/QueryBuilder/Main">Last Query</a>
-                        <asp:LinkButton ID="NewQueryLink" runat="server" OnClick="NewQuery_Click">New Query</asp:LinkButton>
-                    <a href="/SavedQuery">Saved Queries</a>
+                        <asp:LinkButton ID="NewQueryLink" runat="server" OnClick="NewQuery_Click">New Search</asp:LinkButton>
+                    <a href="/SavedQuery">Saved Seaches</a>
                 </div>
             </td>
     <% if (Page.User.IsInRole("Finance"))
@@ -212,7 +212,7 @@
                     if (s != "") {
                         s = s.replace(/^\s+/g, "");
                         s = s.replace(/\s+$/g, " ");
-                        var u = '/QuickSearch?name=' + escape(s);
+                        var u = '/QuickSearch?q=' + escape(s);
                         window.location = u;
                     }
                 }

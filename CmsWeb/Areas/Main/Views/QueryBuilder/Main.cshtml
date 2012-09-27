@@ -2,7 +2,7 @@
 @model CmsWeb.Models.QueryModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
-    ViewBag.Title = "QueryBuilder";
+    ViewBag.Title = "SearchBuilder";
 }
 @section head 
 {
@@ -18,7 +18,7 @@
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
 <div id="Description"><b>@Model.Description</b></div>
 <div class="roundbox floatleft">
-<h2 class="helptip" title="Next Step|After selecting a condition and configuring it|then update or add it to the Conditions below">Configure a query condition</h2>
+<h2 class="helptip" title="Next Step|After selecting a condition and configuring it|then update or add it to the Conditions below">Configure a search condition</h2>
 <table id="selectconditions" cellspacing="5">
     <tr>
         <td>
@@ -28,7 +28,7 @@
 						<a id="SelectCondition" href="#" class="bt helptip"
                             title="Select a Condition|To build a query, you should select a condition.">Select Condition</a>
 						<a class="help" href="https://www.bvcms.com/DocDialog/QB-"
-						   title="Get QueryBuilder Help|Click this link to get help on this condition.">
+						   title="Get SearchBuilder Help|Click this link to get help on this condition.">
 							<span id='ConditionText'>Group</span>
 						</a>
                       @Html.Hidden("ConditionName", "Group")
@@ -65,7 +65,7 @@
                     </td>
                 </tr>
                 <tr id="SavedQueryDiv" style="display:none">
-                    <td align="right">Saved Query:</td>
+                    <td align="right">Saved Search:</td>
                     <td>
                         @Html.DropDownList("SavedQueryDesc", Model.SavedQueries())
                     </td>
@@ -169,7 +169,7 @@
             </ul>
         </td>
 		<td align="center" valign="bottom" class="helptip"
-            title="Run Button|This will run the Query, giving you results for the Conditions">
+            title="Run Button|This will run the Search, giving you results for the Conditions">
             <div>
                 <input id="Run" type="image" src="/images/Run.png" alt="Run Query" />
             </div>
@@ -210,7 +210,7 @@
         { 
             <div class="FieldLink"><a id='@p.Name' href="#">@p.Title</a></div>
 			<div class="moreinfo"><a class="help" href="https://www.bvcms.com/DocDialog/QB-@p.Name"
-                title="Get QueryBuilder Help|Click this link to get help on this condition.">@p.Description</a></div>
+                title="Get SearchBuilder Help|Click this link to get help on this condition.">@p.Description</a></div>
         } 
         </div>
     }
@@ -227,7 +227,7 @@
 </div>
 <div id="SaveQueryDiv" class="modalDiv" style="display:none">
     <div style="text-align: left">
-        Query Description:
+        Search Description:
         @Html.TextBox("SaveQueryDesc")
         &nbsp;
         <input id="IsPublic" type="checkbox"/> Is Public

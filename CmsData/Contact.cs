@@ -30,6 +30,47 @@ namespace CmsData
             DbUtil.Db.SubmitChanges();
             return c.ContactId;
         }
+        public static Contact AddContact(CMSDataContext Db, int pid, DateTime date, string comments)
+        {
+            var c = new Contact 
+			{ 
+				ContactDate = date, 
+				CreatedBy = Util.UserPeopleId ?? Util.UserId1,
+	            CreatedDate = DateTime.Now,
+	            ContactTypeId = ContactTypeCode.Other,
+	            ContactReasonId = ContactReasonCode.Other,
+				Comments = comments
+			};
+            c.contactees.Add(new Contactee { PeopleId = pid });
+            Db.Contacts.InsertOnSubmit(c);
+            Db.SubmitChanges();
+			return c;
+        }
+		public static ContactType FetchOrCreateContactType(CMSDataContext Db, string type)
+		{
+			var ct = Db.ContactTypes.SingleOrDefault(pp => pp.Description == type);
+			if (ct == null)
+			{
+				var max = Db.ContactTypes.Max(mm => mm.Id) + 10;
+				if (max < 1000)
+					max = 1010;
+				ct = new ContactType { Id = max, Description = type, Code = type.Truncate(20) };
+				Db.ContactTypes.InsertOnSubmit(ct);
+				Db.SubmitChanges();
+			}
+			return ct;
+		}
+		public static Ministry FetchOrCreateMinistry(CMSDataContext Db, string name)
+		{
+			var m = Db.Ministries.SingleOrDefault(pp => pp.MinistryName == name);
+			if (m == null)
+			{
+				m = new Ministry { MinistryName = name };
+				Db.Ministries.InsertOnSubmit(m);
+				Db.SubmitChanges();
+			}
+			return m;
+		}
 
     }
 }

@@ -265,8 +265,8 @@ See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
 				{
 					switch (CanSub)
 					{
-						case true: return new HtmlString("<span class=\"red\">Can Substitute</span>"); break;
-						case false: return new HtmlString("Cannot Substitute"); break;
+						case true: return new HtmlString("<span class=\"red\">Can Substitute</span>");
+						case false: return new HtmlString("Cannot Substitute");
 					}
 					return new HtmlString("");
 				}

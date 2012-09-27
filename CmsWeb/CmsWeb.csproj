@@ -2,6 +2,11 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -191,6 +196,7 @@
     <Compile Include="Areas\Finance\Models\ContributionSearchModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
+    <Compile Include="Areas\Main\Controllers\PeopleSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
     <Compile Include="Areas\Main\Models\Avery\AverySpacerCell173.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddress.cs" />
@@ -201,6 +207,7 @@
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
     <Compile Include="Areas\Main\Models\Email\EmailTemplatesModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
     <Compile Include="Areas\Main\Models\Report\RallyRollsheetResult.cs" />
@@ -268,7 +275,7 @@
     <Compile Include="Areas\Main\Models\Other\MeetingModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SavedQueryModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
-    <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\PeopleSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
     <Compile Include="Areas\Finance\Models\ContributionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Person\FamilyModel.cs" />
@@ -487,10 +494,6 @@
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
     <Compile Include="Areas\Setup\Controllers\DivisionController.cs" />
     <Compile Include="Code\CmsController.cs" />
-    <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
-    <Compile Include="Areas\Main\Models\Other\SearchPeopleModel.cs" />
-    <Compile Include="Areas\Public\Controllers\StepClassController.cs" />
-    <Compile Include="Areas\Public\Models\StepClassModel.cs" />
     <Compile Include="Areas\Setup\AreaRegistration.cs" />
     <Compile Include="Areas\Manage\Controllers\DisplayController.cs" />
     <Compile Include="Areas\Finance\Controllers\FundController.cs" />
@@ -656,7 +659,6 @@
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
-    <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
     <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
     <Compile Include="EmailAttendanceNotices.aspx.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
@@ -709,11 +711,10 @@
     <Compile Include="Areas\Main\Models\Other\SearchContactModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskInfo.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskModel.cs" />
-    <Compile Include="Areas\Public\Models\VolunteerModel.cs" />
     <Compile Include="Areas\Manage\Models\VolunteersModel.cs" />
     <Compile Include="Areas\Finance\Models\QuickBooksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Include="Properties\Settings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -1038,6 +1039,7 @@
     <Content Include="Min\Scripts\OrgMembers.js" />
     <Content Include="Min\Scripts\OrgMembersDialog.js" />
     <Content Include="Min\Scripts\OrgSearch.js" />
+    <Content Include="Min\Scripts\PeopleSearch.js" />
     <Content Include="Min\Scripts\Person.js" />
     <Content Include="Min\Scripts\pickslots2.js" />
     <Content Include="Min\Scripts\PostBundle.js" />
@@ -1048,7 +1050,6 @@
     <Content Include="Min\Scripts\SearchAdd.js" />
     <Content Include="Min\Scripts\SearchDivisions.js" />
     <Content Include="Min\Scripts\SearchOrgs.js" />
-    <Content Include="Min\Scripts\SearchPeople.js" />
     <Content Include="Min\Scripts\SearchUsers.js" />
     <Content Include="Min\Scripts\Tags.js" />
     <Content Include="Min\Scripts\Task.js" />
@@ -1061,6 +1062,7 @@
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
     <Content Include="Scripts\Calendar.js" />
+    <Content Include="Scripts\QuickSearch.js" />
     <Content Include="Scripts\family.js" />
     <Content Include="Scripts\meeting-ticket.js" />
     <Content Include="Scripts\TotalsByFund.js" />
@@ -1087,7 +1089,7 @@
     <Content Include="Scripts\SavedQuery.js" />
     <Content Include="Scripts\SearchUsers.js" />
     <Content Include="Scripts\Tags.js" />
-    <Content Include="Scripts\QuickSearch.js" />
+    <Content Include="Scripts\PeopleSearch.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />
@@ -1215,6 +1217,7 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlots.cshtml" />
     <Content Include="Areas\Main\Views\Organization\VolunteerCommitmentsSummary.cshtml" />
     <Content Include="Areas\Main\Views\Person\IncompleteTasksGrid.cshtml" />
+    <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -1564,33 +1567,6 @@
     <Content Include="Areas\Manage\Views\Volunteers\Index.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step1.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step1Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step2.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step2Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step3.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step3Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Index.cshtml">
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\PickList2.cshtml">
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Unknown.cshtml">
-    </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm.cshtml">
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm2.cshtml">
@@ -1676,9 +1652,9 @@
     </Content>
     <Content Include="Areas\Manage\Views\Batch\FindTagPeople.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml">
+    <Content Include="Areas\Main\Views\PeopleSearch\Index.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\QuickSearch\Results.cshtml">
+    <Content Include="Areas\Main\Views\PeopleSearch\Results.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Tags\Index.cshtml">
     </Content>
@@ -1863,6 +1839,7 @@
     </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -2141,8 +2118,6 @@
     <Content Include="Admin\ToggleOrgMembersOnly.ashx" />
     <Content Include="Admin\Web.config" />
     <Content Include="AppReview\Web.config" />
-    <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
-    <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
     <Content Include="Binaries\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.pdb" />
@@ -2263,7 +2238,6 @@
     <Content Include="Scripts\Event.js" />
     <Content Include="Scripts\Pager.js" />
     <Content Include="Scripts\Person.js" />
-    <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Content\newsletter.css" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Site3b.Master" />
@@ -2294,7 +2268,8 @@
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
