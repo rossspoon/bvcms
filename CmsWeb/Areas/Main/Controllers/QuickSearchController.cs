@@ -16,7 +16,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			var m = new QuickSearchModel(q);
             if (q.HasValue())
             {
-                if (m.people.Count == 1)
+                if (m.people.Count == 1 && (q.AllDigits() || m.orgs.Count == 0))
                 {
                     var pid = m.people.Single().PeopleId;
                     return Redirect("/Person/Index/" + pid);

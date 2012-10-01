@@ -58,56 +58,32 @@ namespace CmsWeb.Areas.Manage.Controllers
 			m.SortByWeek = SortByWeek ?? false;
 			return View(m);
 		}
+		public class PostTargetInfo
+		{
+			public int id { get; set; }
+			public DragDropInfo[] list { get; set; }
+			public string target { get; set; }
+			public int? week { get; set; }
+			public DateTime? time { get; set; }
+			public bool SortByWeek { get; set; }
+		}
 		[HttpPost]
-		public ActionResult DragDrop(int id, int week, DateTime time, string pid, string sg1, string sg2, string mid)
+		public ActionResult ManageArea(PostTargetInfo i)
+		{
+			var m = new VolunteerCommitmentsModel(i.id);
+			m.SortByWeek = i.SortByWeek;
+			foreach (var s in i.list)
+				m.ApplyDragDrop(i.target, i.week, i.time, s);
+			return View(m);
+		}
+		[HttpPost]
+		public ActionResult ManageArea2(int id, string sg1, string sg2, bool? SortByWeek)
 		{
 			var m = new VolunteerCommitmentsModel(id);
-
 			m.SmallGroup1 = sg1;
 			m.SmallGroup2 = sg2;
-			List<VolunteerCommitmentsModel.Slot> slots = null;
-			if (week > 0)
-				slots = (from s in m.FetchSlots(week)
-						 where s.Week == week
-						 where s.Time.TimeOfDay == time.TimeOfDay
-						 select s).ToList();
-			List<int> volids = null;
-			switch(pid)
-			{
-				case "nocommits":
-					volids = (from p in m.Volunteers()
-							  where p.commits == 0
-							  select p.PeopleId).ToList();
-					break;
-				case "commits":
-					volids = (from p in m.Volunteers()
-							  where p.commits > 0
-							  select p.PeopleId).ToList();
-					break;
-				case "all":
-					volids = (from p in m.Volunteers()
-							  select p.PeopleId).ToList();
-					break;
-				case "remove":
-				default:
-					volids = new List<int>() { pid.ToInt() };
-					break;
-			}
-			foreach (var PeopleId in volids)
-				if (mid.ToInt() > 0)
-				{
-					DbUtil.Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.MeetingId = {0} AND a.PeopleId = {1})", mid.ToInt(), PeopleId);
-					DbUtil.Db.ExecuteCommand("DELETE dbo.Attend WHERE MeetingId = {0} AND PeopleId = {1}", mid.ToInt(), PeopleId);
-				}
-				else if (week == 0) // drop all
-				{
-					DbUtil.Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.OrganizationId = {1} AND a.MeetingDate > {1} AND a.PeopleId = {2})", m.OrgId, m.Sunday, PeopleId);
-					DbUtil.Db.ExecuteCommand("DELETE dbo.Attend WHERE OrganizationId = {0} AND MeetingDate > {1} AND PeopleId = {2}", m.OrgId, m.Sunday, PeopleId);
-				}
-				else
-					foreach (var s in slots)
-						Attend.MarkRegistered(DbUtil.Db, id, PeopleId, s.Time, true);
-			return Content("ok");
+			m.SortByWeek = SortByWeek ?? false;
+			return View("ManageArea", m);
 		}
 
 		public ActionResult CustomReport(string id)

@@ -1,0 +1,112 @@
+﻿@using UtilityExtensions
+@using CmsWeb
+@model CmsWeb.Models.VolunteerCommitmentsModel
+@{ 
+    const string DayHourFmt = "ddd h:mm tt"; 
+}
+
+@Html.Hidden("OrgId", Model.OrgId)
+@Html.Hidden("SortByWeek", Model.SortByWeek)
+<h2>Volunteer Calendar for <a href="/Organization/Index/@Model.OrgId">@Model.OrgName</a></h2>
+<div class="floatleft" style="margin-right:2em;">
+<table id="month">
+	<thead>
+		<tr>
+			<th>Week</th>
+@foreach (var t in Model.times)
+{ 
+            <th>@t.ToString(DayHourFmt)</th>
+}
+        </tr>
+    </thead>
+    <tbody>
+@for (var wk = 1; wk <= 5; wk++)
+{
+    <tr>
+        <td align="center">Week @wk</td>
+    @foreach (var t in Model.times)
+    {
+        <td><div class="drop day" target="week" week="@wk" time="@t">target</div></td>
+    }
+    </tr>
+}
+    <thead>
+        <tr>
+            <th> <a id="SortIt" href="#">@(Model.SortByWeek ? "Sort by Date" : "Sort by Week #")</a> </th>
+@foreach (var t in Model.times)
+{ 
+            <th>@t.ToString(DayHourFmt)</th>
+}
+        </tr>
+    </thead>
+@foreach (var w in Model.FetchSlotWeeks())
+{ 
+        <tr class="wk-@w[0].Week">
+            <td valign="top" align="center">
+                <p><span class="date">@w[0].Sunday.ToShortDateString()<br />
+                    Week @w[0].Week</span>
+                </p><div class="day"></div></td>
+    @foreach (var t in w)
+    {
+            <td>
+                <p class="date">
+        @if (t.MeetingId > 0)
+        {
+                    <a href="/Reports/Rollsheet/?meetingid=@t.MeetingId" target="_blank">Rollsheet Report (@t.Persons.Count/@t.Limit)</a>
+        }
+        else
+        {
+                    <span>&nbsp;</span>
+        }
+                </p>
+        @foreach (var p in t.Persons)
+        {
+                if (Model.IsLeader)
+                {
+                <div pid="@p.PeopleId" mid="@t.MeetingId" class="selectable" source="registered">@p.Name</div>
+                }
+                else
+                {
+                <div><a href="/Person/Index/@p.PeopleId">@p.Name</a></div>
+                }
+        }
+                <div class="drop day" target="meeting" time="@t.Time">target</div>
+            </td>
+    } 
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+@if (Model.IsLeader)
+{
+<div class="floatleft">
+    <p><a id="sendreminders" class="bt" href="/Organization/Reminders/@Model.OrgId">Email Reminders</a>
+        @Html.CheckBox("emailall") Email All (default next 7 days)
+    </p>
+    <p>Small Group Filters<br />
+        @Html.DropDownList("sg1", Model.SmallGroups(), new { @class="smallgroup" })<br />
+        @Html.DropDownList("sg2", Model.SmallGroups(), new { @class="smallgroup" })
+    </p>
+    <div class="drop day" target="clear" week="0" time="1-1-1000" style="padding:5px;height:2em;border:2px solid black;">target here to remove commitments</div>
+    <h4><em>Select header items in blue below, or a person, then click a target</em></h4>
+    @{
+    var vlist = Model.Volunteers();
+    <div class="volunteers">
+    <div class="selectable" source="all"><h3>All Volunteers</h3></div>
+    <div class="selectable" source="commits"><h3>With Commitments</h3></div>
+    @foreach (var v in vlist.Where(vv => vv.commits > 0))
+    {
+    <div class="selectable" source="person" pid="@v.PeopleId">@v.Name (@v.commits) <a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" target="committments">registration page</a></div> 
+    }
+    <div class="selectable" source="nocommits"><h3>With No Commitments</h3></div>
+    @foreach (var v in vlist.Where(vv => vv.commits == 0))
+    {
+    <div class="selectable" source="person" pid="@v.PeopleId">@v.Name (@v.commits) <a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" target="committments">registration page</a></div>
+    }
+    </div>
+    }
+</div>
+}
+<div class="floatclear">
+</div>

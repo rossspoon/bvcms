@@ -1218,6 +1218,7 @@
     <Content Include="Areas\Main\Views\Organization\VolunteerCommitmentsSummary.cshtml" />
     <Content Include="Areas\Main\Views\Person\IncompleteTasksGrid.cshtml" />
     <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Volunteers\ManageArea.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

@@ -72,7 +72,7 @@ namespace CmsWeb.Models
 						 || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
 						 )
 						 || p.PeopleId == Last.ToInt()
-						 || p.EmployerOther.Contains(text)
+						 //|| p.EmployerOther.Contains(text)
 						 || p.Family.AddressLineOne.StartsWith(text)
 						 || p.Family.AddressLineTwo.StartsWith(text)
 					 orderby p.Name2

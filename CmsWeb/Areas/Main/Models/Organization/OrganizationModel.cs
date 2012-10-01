@@ -46,6 +46,9 @@ namespace CmsWeb.Models.OrganizationPage
 		}
 		public static bool VolunteerLeaderInOrg(int? orgid)
 		{
+			if (HttpContext.Current.User.IsInRole("Admin") ||
+				HttpContext.Current.User.IsInRole("ManageVolunteers"))
+				return true;
 			var mq = from om in DbUtil.Db.OrganizationMembers
 					 where om.OrganizationId == orgid
 					 where om.Organization.RegistrationTypeId == RegistrationTypeCode.ChooseSlot

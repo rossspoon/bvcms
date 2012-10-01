@@ -24,7 +24,7 @@
         <td>
             <table style="border: 1px dashed #999" cellspacing="5">
                 <tr id="CategoryDiv2">
-                    <td colspan="2">
+                    <td nowrap colspan="2">
 						<a id="SelectCondition" href="#" class="bt helptip"
                             title="Select a Condition|To build a query, you should select a condition.">Select Condition</a>
 						<a class="help" href="https://www.bvcms.com/DocDialog/QB-"
@@ -145,7 +145,7 @@
         </td>
     </tr>
     <tr>
-        <td align="right">
+        <td nowrap align="right" colspan="2">
             <a id="Update" class="conditionButton bt disabled helptip"
                 title="Update Button|Copies the above condition into the selected condition below">Update</a>
             <a id="Add" class="conditionButton bt disabled helptip"
@@ -155,6 +155,7 @@
             <a id="Remove" class="conditionButton bt disabled helptip"
                 title="Remove Button|Removes the selected condition below">Remove</a>
         </td>
+        <td></td>
     </tr>
 </table>
 @Html.Hidden("SelectedId")

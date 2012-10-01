@@ -69,6 +69,7 @@ namespace CmsWeb.Models
 					};
 			return q;
 		}
+		public DragDropInfo ddinfo { get; set; }
 		public VolunteerCommitmentsModel(int id)
 		{
 			OrgName = (from o in DbUtil.Db.Organizations where o.OrganizationId == id select o.OrganizationName).Single();
@@ -91,22 +92,22 @@ namespace CmsWeb.Models
 			public int MeetingId { get; set; }
 		}
 
-		public IEnumerable<List<Slot>> FetchSlotWeeks(int week = 0)
+		public IEnumerable<List<Slot>> FetchSlotWeeks()
 		{
 			if (SortByWeek)
-				return from slot in FetchSlots(week)
+				return from slot in FetchSlots()
 					   group slot by slot.Sunday into g
 					   where g.Any(gg => gg.Time > DateTime.Today)
 					   orderby g.Key.WeekOfMonth(), g.Key
 					   select g.OrderBy(gg => gg.Time).ToList();
 			else
-				return from slot in FetchSlots(week)
+				return from slot in FetchSlots()
 					   group slot by slot.Sunday into g
 					   where g.Any(gg => gg.Time > DateTime.Today)
 					   orderby g.Key
 					   select g.OrderBy(gg => gg.Time).ToList();
 		}
-		public IEnumerable<Slot> FetchSlots(int week)
+		public IEnumerable<Slot> FetchSlots()
 		{
 			var q = from a in DbUtil.Db.Attends
 					where a.MeetingDate > Util.Now.Date
@@ -116,17 +117,17 @@ namespace CmsWeb.Models
 					select a;
 			var alist = q.ToList();
 			var Attends = from a in alist
-					  let Day = (int)a.MeetingDate.DayOfWeek
-					  let sday = a.MeetingDate.Date.AddDays(-Day)
-					  where week == 0 || Day == week
-					  orderby a.MeetingDate
-					  select new 
-					  {
-						  a.MeetingId,
-						  a.MeetingDate,
-						  a.PeopleId,
-						  a.Person.Name,
-					  };
+						  let Day = (int)a.MeetingDate.DayOfWeek
+						  let sday = a.MeetingDate.Date.AddDays(-Day)
+						  //where week == 0 || Day == week
+						  orderby a.MeetingDate
+						  select new
+						  {
+							  a.MeetingId,
+							  a.MeetingDate,
+							  a.PeopleId,
+							  a.Person.Name,
+						  };
 
 			var list = new List<Slot>();
 			for (var sunday = Sunday; sunday <= EndDt; sunday = sunday.AddDays(7))
@@ -146,7 +147,7 @@ namespace CmsWeb.Models
 										Persons = (from a in Attends
 												   where a.MeetingDate == time
 												   select new NameId { Name = a.Name, PeopleId = a.PeopleId }).ToList(),
-									    MeetingId = Attends.Where(aa => aa.MeetingDate == time).Select(aa => aa.MeetingId).FirstOrDefault()
+										MeetingId = Attends.Where(aa => aa.MeetingDate == time).Select(aa => aa.MeetingId).FirstOrDefault()
 									};
 					list.AddRange(u);
 				}
@@ -202,6 +203,88 @@ namespace CmsWeb.Models
 					(_regsettings = new RegSettings(Org.RegSetting, DbUtil.Db, OrgId));
 			}
 		}
+		public void ApplyDragDrop(
+			string target,
+			int? week,
+			DateTime? time,
+			DragDropInfo i)
+		{
 
+			List<int> volids = null;
+			switch (i.source)
+			{
+				case "nocommits":
+					volids = (from p in Volunteers()
+							  where p.commits == 0
+							  select p.PeopleId).ToList();
+					break;
+				case "commits":
+					volids = (from p in Volunteers()
+							  where p.commits > 0
+							  select p.PeopleId).ToList();
+					break;
+				case "all":
+					volids = (from p in Volunteers()
+							  select p.PeopleId).ToList();
+					break;
+			    case "registered":
+				case "person":
+					volids = new List<int>() { i.pid.ToInt() };
+					break;
+				default:
+					return;
+			}
+
+			if (target == "week")
+			{
+				var slots = (from s in FetchSlots()
+							 where s.Time.TimeOfDay == time.Value.TimeOfDay
+							 where s.Week == week
+							 select s).ToList();
+				foreach (var PeopleId in volids)
+				{
+					if (i.source == "registered")
+						DropFromAll(PeopleId);
+					foreach (var s in slots)
+						Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, s.Time, true);
+				}
+			}
+			else if (target == "meeting")
+			{
+				foreach (var PeopleId in volids)
+				{
+					if (i.source == "registered")
+						DropFromMeeting(i.mid.Value, PeopleId);
+					Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, time.Value, true);
+				}
+
+			}
+			else if (target == "clear")
+			{
+				foreach (var PeopleId in volids)
+				{
+					if (i.source == "registered")
+						DropFromMeeting(i.mid.Value, PeopleId);
+					else
+						DropFromAll(PeopleId);
+				}
+			}
+		}
+		private void DropFromMeeting(int meetingid, int peopleid)
+		{
+			DbUtil.Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.MeetingId = {0} AND a.PeopleId = {1})", meetingid, peopleid);
+			DbUtil.Db.ExecuteCommand("DELETE dbo.Attend WHERE MeetingId = {0} AND PeopleId = {1}", meetingid, peopleid);
+		}
+		private void DropFromAll(int peopleid)
+		{
+			DbUtil.Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.OrganizationId = {1} AND a.MeetingDate > {1} AND a.PeopleId = {2})", OrgId, Sunday, peopleid);
+			DbUtil.Db.ExecuteCommand("DELETE dbo.Attend WHERE OrganizationId = {0} AND MeetingDate > {1} AND PeopleId = {2}", OrgId, Sunday, peopleid);
+		}
+	}
+	public class DragDropInfo
+	{
+		public string source { get; set; }
+		public int? pid { get; set; }
+		public int? mid { get; set; }
 	}
 }
