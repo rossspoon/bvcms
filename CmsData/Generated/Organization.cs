@@ -143,6 +143,8 @@ namespace CmsData
 		
 		private bool? _SuspendCheckin;
 		
+		private bool? _NoAutoAbsents;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -376,6 +378,9 @@ namespace CmsData
 		
 		partial void OnSuspendCheckinChanging(bool? value);
 		partial void OnSuspendCheckinChanged();
+		
+		partial void OnNoAutoAbsentsChanging(bool? value);
+		partial void OnNoAutoAbsentsChanged();
 		
     #endregion
 		public Organization()
@@ -1824,6 +1829,28 @@ namespace CmsData
 					this._SuspendCheckin = value;
 					this.SendPropertyChanged("SuspendCheckin");
 					this.OnSuspendCheckinChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NoAutoAbsents", UpdateCheck=UpdateCheck.Never, Storage="_NoAutoAbsents", DbType="bit")]
+		public bool? NoAutoAbsents
+		{
+			get { return this._NoAutoAbsents; }
+
+			set
+			{
+				if (this._NoAutoAbsents != value)
+				{
+				
+                    this.OnNoAutoAbsentsChanging(value);
+					this.SendPropertyChanging();
+					this._NoAutoAbsents = value;
+					this.SendPropertyChanged("NoAutoAbsents");
+					this.OnNoAutoAbsentsChanged();
 				}
 
 			}

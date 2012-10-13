@@ -494,6 +494,11 @@ namespace CmsData
                                c.Days, c.Quarters.ToInt(),
                                CompType,
                                c.TextValue.ToInt());
+                case QueryType.RecentFirstTimeGiver:
+                    return Expressions.RecentFirstTimeGiver(parm, Db,
+                               c.Days, c.Quarters.ToInt(),
+                               CompType,
+							   c.CodeIds == "1");
                 case QueryType.RecentContributionAmount:
                     return Expressions.RecentContributionAmount(parm, Db,
                                c.Days, c.Quarters.ToInt(),

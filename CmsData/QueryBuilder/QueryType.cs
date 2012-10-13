@@ -153,6 +153,7 @@ namespace CmsData
         RecentCreated,
         RecentDecisionType,
         RecentEmailCount,
+		RecentFirstTimeGiver,
         RecentJoinChurch,
         RecentNewVisitCount,
         RecentPledgeAmount,
@@ -177,6 +178,6 @@ namespace CmsData
         WasMemberAsOf,
         WeddingDate,
         WidowedDate,
-        WorkPhone,
+		WorkPhone,
     }
 }

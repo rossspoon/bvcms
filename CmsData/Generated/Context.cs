@@ -1559,6 +1559,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.UserRole> ViewUserRoles
+	    {
+		    get { return this.GetTable< View.UserRole>(); }
+
+	    }
+
     #endregion
 	#region Table Functions
 		
@@ -1749,6 +1755,19 @@ namespace CmsData
 			return this.CreateMethodCallQuery< View.FindPerson4>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 PeopleId1
+                );
+		}
+
+		[Function(Name="dbo.FirstTimeGivers", IsComposable = true)]
+		public IQueryable< View.FirstTimeGiver > FirstTimeGivers(
+            [Parameter(DbType="int")] int? days,
+            [Parameter(DbType="int")] int? fundid
+            )
+		{
+			return this.CreateMethodCallQuery< View.FirstTimeGiver>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                days,
+                fundid
                 );
 		}
 

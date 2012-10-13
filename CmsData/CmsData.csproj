@@ -256,9 +256,11 @@
     <Compile Include="APIPerson.cs" />
     <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
+    <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
     <Compile Include="Generated\LabelFormat.cs" />
     <Compile Include="Generated\Views\MasterOrg.cs" />
     <Compile Include="Generated\Views\PickListOrgs2.cs" />
+    <Compile Include="Generated\Views\UserRole.cs" />
     <Compile Include="Meeting.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
     <Compile Include="Generated\Functions\PledgeFulfillment.cs" />

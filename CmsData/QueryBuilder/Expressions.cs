@@ -981,86 +981,24 @@ namespace CmsData
 			Expression expr = Expression.Invoke(pred, parm);
 			return expr;
 		}
-		//internal static Expression RecentFirstTimeGiver(
-		//	ParameterExpression parm, CMSDataContext Db,
-		//	int days,
-		//	int fund,
-		//	CompareType op,
-		//	bool tf)
-		//{
-		//	if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
-		//		return AlwaysFalse(parm);
-		//	var now = DateTime.Now;
-		//	var dt = now.AddDays(-days);
-		//	IQueryable<int> q = null;
-		//	var dt0 = DateTime.Parse("1/1/1900");
-		//	Expression<Func<Person, bool>> pred = p =>
-		//			from c in Db.Contributions2(dt, now, 0, false, false, true)
-		//				let cnt = (from p in Db.Contributions2(dt0, dt, 0, false, true)
-		//						  where p.PeopleId == c.PeopleId
-		//						  where fund == 0 || p.FundId == fund
-		//						  where p.Amount > 0
-		//						  group c by c.CreditGiverId into gg
-		//						  select gg.Count()).Single()
-		//				where fund == 0 || c.FundId == fund
-		//				where c.Amount > 0
-		//				where cnt == 0
-		//				group c by c.CreditGiverId into g
-		//				where g.Count()  cnt
-		//				select g.Key ?? 0;
-		//	Expression expr = Expression.Invoke(pred, parm);
+		internal static Expression RecentFirstTimeGiver(
+			ParameterExpression parm, CMSDataContext Db,
+			int days,
+			int fund,
+			CompareType op,
+			bool tf)
+		{
+			if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+				return AlwaysFalse(parm);
 
-		//	if (!(op == CompareType.Equal && tf))
-		//		expr = Expression.Not(expr);
+			var q = from f in Db.FirstTimeGivers(days, fund)
+					select f.PeopleId;
 
-		//	return expr;
-		//			break;
-		//		case CompareType.GreaterEqual:
-		//			q = from c in Db.Contributions2(dt, now, 0, false, false, true)
-		//				where fund == 0 || c.FundId == fund
-		//				where c.Amount > 0
-		//				group c by c.CreditGiverId into g
-		//				where g.Count() >= cnt
-		//				select g.Key ?? 0;
-		//			break;
-		//		case CompareType.Less:
-		//			q = from c in Db.Contributions2(dt, now, 0, false, false, true)
-		//				where fund == 0 || c.FundId == fund
-		//				where c.Amount > 0
-		//				group c by c.CreditGiverId into g
-		//				where g.Count() < cnt
-		//				select g.Key ?? 0;
-		//			break;
-		//		case CompareType.LessEqual:
-		//			q = from c in Db.Contributions2(dt, now, 0, false, false, true)
-		//				where fund == 0 || c.FundId == fund
-		//				where c.Amount > 0
-		//				group c by c.CreditGiverId into g
-		//				where g.Count() <= cnt
-		//				select g.Key ?? 0;
-		//			break;
-		//		case CompareType.Equal:
-		//			q = from c in Db.Contributions2(dt, now, 0, false, false, true)
-		//				where fund == 0 || c.FundId == fund
-		//				where c.Amount > 0
-		//				group c by c.CreditGiverId into g
-		//				where g.Count() == cnt
-		//				select g.Key ?? 0;
-		//			break;
-		//		case CompareType.NotEqual:
-		//			q = from c in Db.Contributions2(dt, now, 0, false, false, true)
-		//				where fund == 0 || c.FundId == fund
-		//				where c.Amount > 0
-		//				group c by c.CreditGiverId into g
-		//				where g.Count() != cnt
-		//				select g.Key ?? 0;
-		//			break;
-		//	}
-		//	var tag = Db.PopulateTemporaryTag(q);
-		//	Expression<Func<Person, bool>> pred = p => p.Tags.Any(t => t.Id == tag.Id);
-		//	Expression expr = Expression.Invoke(pred, parm);
-		//	return expr;
-		//}
+			var tag = Db.PopulateTemporaryTag(q);
+			Expression<Func<Person, bool>> pred = p => p.Tags.Any(t => t.Id == tag.Id);
+			Expression expr = Expression.Invoke(pred, parm);
+			return expr;
+		}
 		internal static Expression RecentHasIndContributions(
 			ParameterExpression parm, CMSDataContext Db,
 			int days,

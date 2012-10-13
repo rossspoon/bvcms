@@ -522,6 +522,9 @@
     <Field Name="RecentHasIndContributions" Title="Recent Has Individual Contributions" Type="Bit" DataValueField="IdCode" DisplayAs="RecentHasIndContributions({0})" Params="Days">
       Must have Finance role for this to work.
     </Field>
+    <Field Name="RecentFirstTimeGiver" Title="Recent First Time Giver" Type="Bit" DisplayAs="RecentFirstTimeGiver({0},{1})" Params="Days,Quarters" QuartersLabel="Fund Id (or blank for all)" DataValueField="IdCode">
+      Must have Finance role for this to work.
+    </Field>
     <Field Name="IsTopGiver" Title="Recent Top Giver" Type="Bit" DisplayAs="RecentTopGiver({0},{1})" Params="Days,Quarters" QuartersLabel="Top number" DataValueField="IdCode">
       Must have Finance role for this to work.
     </Field>
