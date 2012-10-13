@@ -518,6 +518,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			var pf = PaymentForm.CreatePaymentForm(m);
 			pf.DatumId = d.Id;
+			pf.FormId = Guid.NewGuid();
 			if (OnlineRegModel.GetTransactionGateway() == "serviceu")
 					return View("Payment", pf);
 			return View("ProcessPayment", pf);

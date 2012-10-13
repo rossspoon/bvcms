@@ -1,7 +1,15 @@
 ﻿@model CmsWeb.Models.TransactionsModel
 @using CmsWeb
 @using UtilityExtensions
-@{ var tt = Model.TotalTransactions(); }
+@{ 
+    var tt = Model.TotalTransactions(); 
+}
+    @if (tt == null)
+    {
+        <tr><td colspan="3">Nothing to report</td></tr>
+    }
+    else
+    {
 	<thead>
 		<tr><td align="right" colspan="2">Total:</td>
 			<td align="right">@tt.Amt.ToString("N2")</td>
@@ -23,3 +31,4 @@
 			</tr>
 		}
 	</tbody>
+    } 

@@ -7,7 +7,7 @@ $(document).ready(function () {
 			if (s != "") {
 				s = s.replace(/^\s+/g, "");
 				s = s.replace(/\s+$/g, " ");
-				var u = '/QuickSearch/Index/' + escape(s);
+				var u = '/QuickSearch/Index?q=' + escape(s);
 				window.location = u;
 			}
 		}

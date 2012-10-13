@@ -33,6 +33,7 @@ namespace CmsWeb.Models
 		public int? TypeId { get; set; }
         public string tagstr { get; set; }
         public int? OnlineReg { get; set; }
+		public bool? MainFellowship { get; set; }
 
         public OrgSearchModel()
         {
@@ -235,6 +236,11 @@ namespace CmsWeb.Models
                 organizations = from o in organizations
                                 where (o.RegistrationTypeId ?? 0) == 0
                                 select o;
+
+			if (MainFellowship == true)
+				organizations = from o in organizations
+								where o.IsBibleFellowshipOrg == true
+								select o;
 
             return organizations;
         }

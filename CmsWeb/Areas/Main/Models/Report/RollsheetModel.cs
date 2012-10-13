@@ -244,7 +244,13 @@ namespace CmsWeb.Areas.Main.Models.Report
 			var attends = (from a in DbUtil.Db.Attends
 						   where a.MeetingId == MeetingId
 						   where a.EffAttendFlag == null || a.EffAttendFlag == true || a.Registered == true
-						   select a).ToList();
+						   select new
+						   {
+							   a,
+							   a.Person.Name2,
+							   a.Person.Age,
+							   a.Person.EmailAddress
+						   }).ToList();
 
 			// Members at the time of the meeting
 			var members = FetchOrgMembers(OrgId, MeetingDate, CurrentMembers).ToList();
@@ -252,24 +258,24 @@ namespace CmsWeb.Areas.Main.Models.Report
 			// the list that will appear at the top, 
 			// members who should attend and members who did attend
 			var memberlist = from p in members
-							 join pa in attends on p.PeopleId equals pa.PeopleId into j
+							 join pa in attends on p.PeopleId equals pa.a.PeopleId into j
 							 from pa in j.DefaultIfEmpty()
 							 where CurrentMembers || MeetingDate > p.Joined// they were either a member at the time
 								 // or they attended as a member (workaround for bad transaction history)
-									|| (pa != null && !VisitAttendTypes.Contains(pa.AttendanceTypeId.Value))
+									|| (pa != null && !VisitAttendTypes.Contains(pa.a.AttendanceTypeId.Value))
 							 select new AttendInfo
 							 {
 								 PeopleId = p.PeopleId,
 								 Name = p.Name2,
 								 Email = p.Email,
-								 Attended = pa != null ? pa.AttendanceFlag : false,
-								 Registered = pa != null ? (pa.Registered ?? false) : false,
+								 Attended = pa != null ? pa.a.AttendanceFlag : false,
+								 Registered = pa != null ? (pa.a.Registered ?? false) : false,
 								 Member = true,
 								 CurrMemberType = p.MemberType,
-								 MemberType = pa != null ? (pa.MemberType != null ? pa.MemberType.Description : "") : "",
-								 AttendType = pa != null ? (pa.AttendType != null ? pa.AttendType.Description : "") : "",
+								 MemberType = pa != null ? (pa.a.MemberType != null ? pa.a.MemberType.Description : "") : "",
+								 AttendType = pa != null ? (pa.a.AttendType != null ? pa.a.AttendType.Description : "") : "",
 								 Age = p.Age,
-								 OtherAttend = pa != null ? (int?)pa.OtherAttends : null
+								 OtherAttend = pa != null ? (int?)pa.a.OtherAttends : null
 							 };
 
 			// recent visitors and new visitors
@@ -280,25 +286,43 @@ namespace CmsWeb.Areas.Main.Models.Report
 			// recent visitors who did not attend excluding those who have since become members in the previous list
 			var visitorlist = from pvisitor in visitors
 							  where !members.Any(mm => mm.PeopleId == pvisitor.PeopleId)
-							  join pattender in attends on pvisitor.PeopleId equals pattender.PeopleId into j
+							  join pattender in attends on pvisitor.PeopleId equals pattender.a.PeopleId into j
 							  from pattender in j.DefaultIfEmpty()
 							  select new AttendInfo
 							  {
 								  PeopleId = pvisitor.PeopleId,
 								  Name = pvisitor.Name2,
 								  Email = pvisitor.Email,
-								  Attended = pattender != null ? pattender.AttendanceFlag : false,
-								  Registered = pattender != null ? (pattender.Registered ?? false) : false,
+								  Attended = pattender != null ? pattender.a.AttendanceFlag : false,
+								  Registered = pattender != null ? (pattender.a.Registered ?? false) : false,
 								  Member = false,
 								  CurrMemberType = "",
-								  MemberType = pattender != null ? (pattender.MemberType != null ? pattender.MemberType.Description : "") : "",
-								  AttendType = pattender != null ? (pattender.AttendType != null ? pattender.AttendType.Description : "") : "",
+								  MemberType = pattender != null ? (pattender.a.MemberType != null ? pattender.a.MemberType.Description : "") : "",
+								  AttendType = pattender != null ? (pattender.a.AttendType != null ? pattender.a.AttendType.Description : "") : "",
 								  Age = pvisitor.Age,
-								  OtherAttend = pattender != null ? (int?)pattender.OtherAttends : null
+								  OtherAttend = pattender != null ? (int?)pattender.a.OtherAttends : null
 							  };
 
+			var otherlist = from pa in attends
+							join v in visitorlist on pa.a.PeopleId equals v.PeopleId into jv
+							join m in memberlist on pa.a.PeopleId equals m.PeopleId into jm
+							from v in jv.DefaultIfEmpty()
+							from m in jm.DefaultIfEmpty()
+							where v == null && m == null
+							select new AttendInfo
+							{
+								PeopleId = pa.a.PeopleId,
+								Name = pa.Name2,
+								Email = pa.EmailAddress,
+								Attended = true,
+								Registered = pa.a.Registered == true,
+								Member = false,
+								MemberType = "unknown",
+								AttendType = "unknown",
+							};
+
 			// the final rollsheet
-			var rollsheet = from p in memberlist.Union(visitorlist)
+			var rollsheet = from p in memberlist.Union(visitorlist).Union(otherlist)
 							select new AttendInfo
 							{
 								PeopleId = p.PeopleId,
@@ -312,6 +336,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 								AttendType = p.AttendType,
 								OtherAttend = p.OtherAttend
 							};
+
 			if (SortByName)
 				rollsheet = rollsheet.OrderBy(pp => pp.Name);
 			return rollsheet;

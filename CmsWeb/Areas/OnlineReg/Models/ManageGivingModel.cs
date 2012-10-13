@@ -229,8 +229,8 @@ namespace CmsWeb.Models
 							 setting.InstructionSelect,
 							 setting.InstructionFind,
 							 setting.InstructionOptions,
-							 setting.InstructionSpecial,
 							 setting.InstructionSubmit,
+							 setting.InstructionSpecial,
 							 setting.InstructionSorry
 						);
 				ins = OnlineRegModel.DoReplaceForExtraValueCode(ins, person);

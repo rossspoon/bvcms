@@ -66,11 +66,15 @@ namespace CmsWeb.Areas.Manage.Controllers
 			public int? week { get; set; }
 			public DateTime? time { get; set; }
 			public bool SortByWeek { get; set; }
+			public string sg1 {get; set;}
+			public string sg2 {get; set;}
 		}
 		[HttpPost]
 		public ActionResult ManageArea(PostTargetInfo i)
 		{
 			var m = new VolunteerCommitmentsModel(i.id);
+			m.SmallGroup1 = i.sg1;
+			m.SmallGroup2 = i.sg2;
 			m.SortByWeek = i.SortByWeek;
 			foreach (var s in i.list)
 				m.ApplyDragDrop(i.target, i.week, i.time, s);

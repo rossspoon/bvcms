@@ -23,6 +23,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 	{
 		public ActionResult ProcessPayment(PaymentForm pf)
 		{
+			if (Session["FormId"] != null)
+				if ((Guid)Session["FormId"] == pf.FormId)
+					return Content("Already submitted");
 			OnlineRegModel m = null;
 			var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pf.DatumId);
 			if (ed != null)
@@ -50,6 +53,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					Payments.ValidateBankAccountInfo(ModelState, pf.Routing, pf.Account);
 				if (pf.Type == "C")
 					Payments.ValidateCreditCardInfo(ModelState, pf.CreditCard, pf.Expires, pf.CCV);
+				
 				if (!ModelState.IsValid)
 					return View("ProcessPayment", pf);
 
@@ -94,6 +98,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					ModelState.AddModelError("form", ti.Message);
 					return View("ProcessPayment", pf);
 				}
+				Session["FormId"] = pf.FormId;
 				if (pf.DatumId > 0)
 					return View(ConfirmTransaction(m, ti.TransactionId, pf.AmtToPay));
 				ConfirmDuePaidTransaction(ti, ti.TransactionId, pf.AmtToPay ?? 0, sendmail: true);

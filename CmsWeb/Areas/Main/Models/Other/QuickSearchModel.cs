@@ -30,9 +30,9 @@ namespace CmsWeb.Models
 		public List<OrgSearchModel.OrganizationInfo> orgs;
 		string First, Last;
 
-		public QuickSearchModel(string text)
+		public QuickSearchModel(string t)
 		{
-			this.text = text;
+			text = t ?? "";
 			NameSplit(text, out First, out Last);
 			Db = DbUtil.Db;
 			people = PeopleList().ToList();

@@ -24,14 +24,14 @@ namespace CmsWeb.Models
             settings.Encoding = new System.Text.UTF8Encoding(false);
             using (w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
             {
-                w.WriteStartElement("Clauses");
+                w.WriteStartElement("Search");
                 WriteClause(clause);
                 w.WriteEndElement();
             }
         }
         private void WriteClause(QueryBuilderClause clause)
         {
-            w.WriteStartElement("Clause");
+            w.WriteStartElement("Condition");
             w.WriteAttributeString("ClauseOrder", clause.ClauseOrder.ToString());
             w.WriteAttributeString("Field", clause.Field);
             if (clause.Description.HasValue())

@@ -319,13 +319,13 @@ namespace CmsWeb.Models
 				sb.AppendFormat("<tr><td>AgeGroup:</td><td>{0}</td></tr>\n", AgeGroup());
 
 			if (setting.Dropdown1.Count > 0)
-				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option,
+				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", Dropdown1ItemChosen().Description,
 					Util.PickFirst(setting.Dropdown1Label, "Options"));
 			if (setting.Dropdown2.Count > 0)
-				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option2,
+				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", Dropdown2ItemChosen().Description,
 					Util.PickFirst(setting.Dropdown2Label, "Extra Options"));
 			if (setting.Dropdown3.Count > 0)
-				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option3,
+				sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", Dropdown3ItemChosen().Description,
 					Util.PickFirst(setting.Dropdown3Label, "Extra Options"));
 			if (setting.MenuItems.Count > 0)
 			{

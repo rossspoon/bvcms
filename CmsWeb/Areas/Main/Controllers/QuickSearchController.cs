@@ -9,25 +9,24 @@ using CmsData;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-    public class QuickSearchController : CmsController
-    {
-        public ActionResult Index(string q)
-        {
+	public class QuickSearchController : CmsController
+	{
+		public ActionResult Index(string q)
+		{
+			if (!q.HasValue())
+				return Redirect("/");
 			var m = new QuickSearchModel(q);
-            if (q.HasValue())
-            {
-                if (m.people.Count == 1 && (q.AllDigits() || m.orgs.Count == 0))
-                {
-                    var pid = m.people.Single().PeopleId;
-                    return Redirect("/Person/Index/" + pid);
-                }
-                if (m.orgs.Count == 1 && m.people.Count == 0)
-                {
-					var oid = m.orgs.Single().Id;
-                    return Redirect("/Organization/Index/" + oid);
-                }
-            }
-            return View(m);
-        }
-    }
+			if (m.people.Count == 1 && (q.AllDigits() || m.orgs.Count == 0))
+			{
+				var pid = m.people.Single().PeopleId;
+				return Redirect("/Person/Index/" + pid);
+			}
+			if (m.orgs.Count == 1 && m.people.Count == 0)
+			{
+				var oid = m.orgs.Single().Id;
+				return Redirect("/Organization/Index/" + oid);
+			}
+			return View(m);
+		}
+	}
 }

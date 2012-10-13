@@ -328,6 +328,10 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			return new FamilyDir(id);
 		}
+		public ActionResult FamilyDirectoryCompact(int id)
+		{
+			return new CompactDir(id);
+		}
 		public ActionResult PictureDirectory(int id)
 		{
 			return new PictureDir(id);

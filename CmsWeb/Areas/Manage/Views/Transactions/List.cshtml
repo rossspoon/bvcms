@@ -75,10 +75,13 @@
             <td align="right">@t.Donate.ToString2("N")</td>
     }
             <td align="right">@t.Amtdue.ToString2("N")</td>
-    @if (t.CanCredit)
+    @if (t.CanVoid)
     {
             <td><a class="voidcredit bt @noadmin" 
                  href='/Manage/Transactions/CreditVoid/@t.Id?type=Void'>Void</a></td>
+    }
+    @if (t.CanCredit)
+    {
             <td><a class="voidcredit bt @noadmin" 
                 href='/Manage/Transactions/CreditVoid/@t.Id?type=Credit'>Credit</a></td>
     }

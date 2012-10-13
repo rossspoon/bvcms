@@ -16,6 +16,7 @@ using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using System.Web.UI.WebControls;
 using System.Transactions;
+using System.Xml.Linq;
 
 namespace CmsWeb.Models
 {
@@ -779,6 +780,7 @@ namespace CmsWeb.Models
                         Email = p.EmailAddress,
                         BFTeacher = p.BFClass.LeaderName,
                         BFTeacherId = p.BFClass.LeaderId,
+                        Employer = p.EmployerOther,
                         Age = p.Age.ToString(),
                         HasTag = p.Tags.Any(t => t.Tag.Name == TagName && t.Tag.PeopleId == TagOwner && t.Tag.TypeId == TagTypeId),
                     };
@@ -817,6 +819,14 @@ namespace CmsWeb.Models
                     case "Fellowship Leader":
                         q = from p in q
                             orderby p.BFClass.LeaderName,
+                            p.LastName,
+                            p.FirstName,
+                            p.PeopleId
+                            select p;
+                        break;
+                    case "Employer":
+                        q = from p in q
+                            orderby p.EmployerOther,
                             p.LastName,
                             p.FirstName,
                             p.PeopleId
@@ -871,6 +881,14 @@ namespace CmsWeb.Models
                             p.PeopleId descending
                             select p;
                         break;
+                    case "Employer":
+                        q = from p in q
+                            orderby p.EmployerOther descending,
+                            p.LastName descending,
+                            p.FirstName descending,
+                            p.PeopleId descending
+                            select p;
+                        break;
                     case "Communication":
                         q = from p in q
                             orderby p.EmailAddress descending,
@@ -889,6 +907,7 @@ namespace CmsWeb.Models
             return q;
         }
         public Dictionary<string, string> Errors;
+
 
         #region Paging
         public bool ShowResults { get; set; }

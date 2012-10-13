@@ -303,7 +303,10 @@ namespace CmsWeb.Models
 				var tag = match.Value;
 				var name = match.Groups["name"].Value;
 
-				text = text.Replace(tag, p.GetExtra(name));
+				if (p == null)
+					text = text.Replace(tag, "");
+				else
+					text = text.Replace(tag, p.GetExtra(name));
 				match = match.NextMatch();
 			}
 			return text;

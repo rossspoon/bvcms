@@ -202,6 +202,8 @@
     <Compile Include="Areas\Main\Models\Avery\EmployerAddress.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddressCell.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddressRow.cs" />
+    <Compile Include="Areas\Main\Models\Directories\CompactDir.cs" />
+    <Compile Include="Areas\Main\Models\Directories\CompactRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\PictureDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\PictureRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
@@ -350,7 +352,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
-    <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
     <Content Include="Areas\Public\Views\APITest\Index.cshtml">

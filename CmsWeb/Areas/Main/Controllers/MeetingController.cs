@@ -376,7 +376,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var qb = DbUtil.Db.QueryBuilderScratchPad();
             qb.CleanSlate(DbUtil.Db);
             qb.AddNewClause(QueryType.MeetingId, CompareType.Equal, m.MeetingId);
-            var c = qb.AddNewClause(QueryType.AttendTypeAsOf, CompareType.OneOf, "40,VM;50,RV;60,NV");
+            var c = qb.AddNewClause(QueryType.AttendTypeAsOf, CompareType.OneOf, "40;50;60");
             c.StartDate = m.MeetingDate;
             c.Program = m.Organization.Division.Program.Id;
             c.Division = m.Organization.DivisionId.Value;
