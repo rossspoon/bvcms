@@ -112,7 +112,7 @@
                 $(".atck:not(:checked)").parent().parent().show();
                 break;
             case "reg":
-                $(".rgck:checked").parent().parent().show();
+                $(".rgck[val=1]").parent().parent().show();
                 $(".atck:checked").parent().parent().show();
                 break;
             case "all":
@@ -131,10 +131,13 @@
         if ($(this).is(':checked')) {
             if (!$("#showregistered").val())
                 $('#showbuttons input:radio[value=all]').click();
-            $(".atck,.rgck").removeAttr("disabled");
+            $(".atck").removeAttr("disabled");
+            $(".rgck0").addClass("rgck").removeClass("rgck0");
         }
-        else
-            $(".atck,.rgck").attr("disabled", "disabled");
+        else {
+            $(".atck").attr("disabled", "disabled");
+            $(".rgck").addClass("rgck0").removeClass("rgck");
+        }
     });
     $('#sortbyname').click(function () {
         if ($("#sort").val() == "false") {
@@ -186,25 +189,6 @@
             }
             else {
                 tr.effect("highlight", {}, 3000);
-                for (var i in ret) {
-                    $("#" + i + " span").text(ret[i]);
-                }
-            }
-        });
-    });
-    $(".rgck").change(function (ev) {
-        var ck = $(this);
-        var tr = ck.parent().parent();
-        $.post("/Meeting/MarkRegistered/", {
-            MeetingId: $("#meetingid").val(),
-            PeopleId: ck.attr("pid"),
-            Registered: ck.is(':checked')
-        }, function (ret) {
-            if (ret.error) {
-                ck.attr("checked", !ck.is(':checked'));
-                alert(ret.error);
-            }
-            else {
                 for (var i in ret) {
                     $("#" + i + " span").text(ret[i]);
                 }
@@ -294,6 +278,18 @@
                 }
             });
         return false;
+    });
+    $('#attends').bind('mousedown', function (e) {
+        if ($(e.target).hasClass("rgck")) {
+            $(e.target).editable("/Meeting/EditCommitment/", {
+                indicator: '<img src="/images/loading.gif">',
+                loadtype: 'post',
+                loadurl: "/Meeting/AttendCommitments/",
+                type: "select",
+                submit: "OK",
+                style: 'display: inline'
+            });
+        }
     });
 });
 function AddSelected(ret) {

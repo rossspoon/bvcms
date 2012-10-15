@@ -108,7 +108,6 @@ namespace CmsWeb.Models
         public bool EndDateVisible { get; set; }
         public bool StartDateVisible { get; set; }
         public bool OrganizationVisible { get; set; }
-        public bool ViewVisible { get; set; }
         public bool ScheduleVisible { get; set; }
         public bool CampusVisible { get; set; }
         public bool OrgTypeVisible { get; set; }
@@ -197,7 +196,6 @@ namespace CmsWeb.Models
             QuartersVisible = fieldMap.HasParam("Quarters");
             if (QuartersVisible)
                 QuartersLabel = fieldMap.QuartersTitle;
-            ViewVisible = fieldMap.HasParam("View");
             TagsVisible = fieldMap.HasParam("Tags");
             if (TagsVisible)
             {
@@ -345,8 +343,6 @@ namespace CmsWeb.Models
             c.Program = Program ?? 0;
             c.Division = Division ?? 0;
             c.Organization = Organization ?? 0;
-            if (ViewVisible)
-                Quarters = View;
             if (MinistryVisible)
                 c.Program = Ministry ?? 0;
             c.Schedule = Schedule ?? 0;
@@ -409,8 +405,6 @@ namespace CmsWeb.Models
             Division = c.Division;
             OrganizationData = Organizations(Division).ToList();
             Organization = c.Organization;
-            if (ViewVisible)
-                View = c.Quarters;
             Schedule = c.Schedule;
 			Campus = c.Campus;
 			OrgType = c.OrgType;
@@ -581,10 +575,6 @@ namespace CmsWeb.Models
             list.Insert(0, new SelectListItem { Text = "(None)", Value = "-1" });
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
-        }
-        public IEnumerable<SelectListItem> Views()
-        {
-            return CmsWeb.Models.VolunteersModel.Views().ToList();
         }
         public IEnumerable<SelectListItem> OrgTypes()
         {

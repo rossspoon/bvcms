@@ -33,7 +33,7 @@
         Entry Point:</span>
         @Html.DropDownList("org.EntryPointId", Model.EntryPointList())
     </li>
-    <li>
+    <li class="no6">
         <span class="keyword big tip"
         title="Grade
         |Used during promotion to assign a grade to a student who joins this class
@@ -42,7 +42,7 @@
         Grade:</span>
         @Html.TextBox("org.GradeAgeStart")
     </li>
-    <li>
+    <li class="no6">
         <span class="keyword big tip"
         title="Gender
         |For the 'Compute Org by Birthday/Gender' Registration Type.
@@ -64,7 +64,7 @@
     </li>
 @if(User.IsInRole("Admin"))
 {
-    <li>
+    <li class="no6">
         <span class="keyword big tip"
 			  title="Security Role
         |This organization will be visible to only users in this role.

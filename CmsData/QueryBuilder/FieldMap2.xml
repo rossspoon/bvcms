@@ -339,9 +339,6 @@
     <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual" DisplayAs="SmallGroup({0}, {1}, {2})" Params="Program,Division,Organization">
       Person is in a small group named such
     </Field>
-    <Field Name="HasVolunteered" Title="Has Volunteered" Type="Bit" DisplayAs="HasVolunteered({0})" DataValueField="IdCode" Params="View">
-      Indicates has Volunteered for a particular Opportunity (view)
-    </Field>
     <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">
       Indicates Volunteer Applications are in the church system
     </Field>

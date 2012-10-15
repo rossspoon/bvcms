@@ -6,6 +6,7 @@ using CmsData;
 using UtilityExtensions;
 using System.Web;
 using System.Web.Mvc;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -85,7 +86,7 @@ namespace CmsWeb.Models
 					where a.OrganizationId == OrgId
 					where a.MeetingDate >= Sunday
 					where a.MeetingDate <= EndDt
-					where a.Registered == true
+					where a.Commitment == AttendCommitmentCode.Attending
 					group a by a.MeetingDate into g
 					let attend = (from aa in g
 								  where aa.PeopleId == PeopleId
@@ -211,9 +212,9 @@ namespace CmsWeb.Models
 						  select newcommit;
 
 			foreach (var currcommit in decommits)
-				Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, currcommit, false);
+				Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, currcommit, AttendCommitmentCode.Regrets);
 			foreach (var newcommit in commits)
-				Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, newcommit, true);
+				Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, newcommit, AttendCommitmentCode.Attending);
 			OrganizationMember.InsertOrgMembers(DbUtil.Db,
 					OrgId, PeopleId, 220, DateTime.Now, null, false);
 		}

@@ -46,18 +46,18 @@ namespace CmsData
 				}
 			}
 		}
-		public static void MarkRegistered(CMSDataContext Db, int OrgId, int PeopleId, DateTime MeetingDate, bool registered)
+		public static void MarkRegistered(CMSDataContext Db, int OrgId, int PeopleId, DateTime MeetingDate, int? CommitId, bool AvoidRegrets = false)
 		{
-			if (registered == false)
+			if (CommitId == null)
 			{
 				var m = Db.Meetings.SingleOrDefault(mm => mm.OrganizationId == OrgId && mm.MeetingDate == MeetingDate);
 				if (m == null)
 					return;
 			}
 			var mid = Db.CreateMeeting(OrgId, MeetingDate);
-			MarkRegistered(Db, PeopleId, mid, registered);
+			MarkRegistered(Db, PeopleId, mid, CommitId, AvoidRegrets);
 		}
-		public static void MarkRegistered(CMSDataContext Db, int PeopleId, int MeetingId, bool registered)
+		public static void MarkRegistered(CMSDataContext Db, int PeopleId, int MeetingId, int? CommitId, bool AvoidRegrets = false)
 		{
 			var i = (from m in Db.Meetings
 					 where m.MeetingId == MeetingId
@@ -85,13 +85,13 @@ namespace CmsData
 					OtherAttends = 0,
 					MemberTypeId = i.MemberTypeId,
 					OtherOrgId = 0,
-					Registered = registered,
+					Commitment = CommitId,
 					MeetingId = MeetingId
 				};
 				Db.Attends.InsertOnSubmit(a);
 			}
-			else
-				i.a.Registered = registered;
+			else if (AvoidRegrets == false || i.a.Commitment == 1 || i.a.Commitment == null)
+				i.a.Commitment = CommitId;
 			Db.SubmitChanges();
 		}
 		public static int RecordAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)

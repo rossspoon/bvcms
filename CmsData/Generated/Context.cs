@@ -558,6 +558,10 @@ namespace CmsData
         partial void UpdateVolInterestInterestCode(VolInterestInterestCode instance);
         partial void DeleteVolInterestInterestCode(VolInterestInterestCode instance);
         
+        partial void InsertVolRequest(VolRequest instance);
+        partial void UpdateVolRequest(VolRequest instance);
+        partial void DeleteVolRequest(VolRequest instance);
+        
         partial void InsertVolunteer(Volunteer instance);
         partial void UpdateVolunteer(Volunteer instance);
         partial void DeleteVolunteer(Volunteer instance);
@@ -1427,6 +1431,12 @@ namespace CmsData
 		public Table< VolInterestInterestCode> VolInterestInterestCodes
 		{
 			get	{ return this.GetTable< VolInterestInterestCode>(); }
+
+		}
+
+		public Table< VolRequest> VolRequests
+		{
+			get	{ return this.GetTable< VolRequest>(); }
 
 		}
 

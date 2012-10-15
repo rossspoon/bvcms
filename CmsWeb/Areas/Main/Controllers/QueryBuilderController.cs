@@ -293,10 +293,6 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.AgeVisible && !int.TryParse(m.Age, out i))
                 m.Errors.Add("Age", "must be integer");
 
-            //if (m.QuartersVisible && !Regex.IsMatch(m.Quarters, "^\d+([,-](1|2|3|4))*$"))
-            //    m.Errors.Add("Quarters", "need integers separated by , or -");
-            if (m.ViewVisible && !m.View.HasValue())
-                m.Errors.Add("View", "choose View");
 
             if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
                 m.Errors.Add("IntegerValue", "need integer");

@@ -411,7 +411,6 @@ function UpdateView(vs) {
     $('#EndDiv').showhide(vs.EndDateVisible);
     $('#StartDiv').showhide(vs.StartDateVisible);
     $('#OrgDiv').showhide(vs.OrganizationVisible);
-    $('#ViewDiv').showhide(vs.ViewVisible);
     $('#DaysDiv').showhide(vs.DaysVisible);
     $('#AgeDiv').showhide(vs.AgeVisible);
     $('#OtherLabel').text(vs.OtherLabel);

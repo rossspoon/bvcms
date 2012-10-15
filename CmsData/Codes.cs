@@ -149,7 +149,7 @@ namespace CmsData.Codes
             yield return new KeyValuePair<int, string>(ManageGiving, "Manage Recurring Giving");
             yield return new KeyValuePair<int, string>(OnlineGiving, "Online Giving");
             yield return new KeyValuePair<int, string>(OnlinePledge, "Online Pledge");
-            yield return new KeyValuePair<int, string>(ChooseSlot, "Choose Volunteer Times");
+            yield return new KeyValuePair<int, string>(ChooseSlot, "Manage Volunteers");
             yield return new KeyValuePair<int, string>(UserSelectsOrganization, "--old user selects org");
             yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "--old compute org by bday");
         }
@@ -204,4 +204,44 @@ namespace CmsData.Codes
         public const int OnlinePledge = 5;
         public const int Pledge = 6;
     }
+    public static class AttendCommitmentCode
+    {
+		public const int Uncommitted = 99;
+		public const int Regrets = 0;
+		public const int Attending = 1;
+		public const int FindSub = 2;
+		public const int SubFound = 3;
+		public const int Substitute = 4;
+        public static IEnumerable<KeyValuePair<int, string>> GetCodePairs()
+        {
+            yield return new KeyValuePair<int, string>(Uncommitted, "Uncommitted");
+            yield return new KeyValuePair<int, string>(Regrets, "Regrets");
+            yield return new KeyValuePair<int, string>(Attending, "Attending");
+            yield return new KeyValuePair<int, string>(FindSub, "Find Sub");
+            yield return new KeyValuePair<int, string>(SubFound, "Sub Found");
+            yield return new KeyValuePair<int, string>(Substitute, "Substitute");
+        }
+        public static string Lookup(int? id)
+        {
+            var s = GetCodePairs().SingleOrDefault(ii => ii.Key == id);
+            return s.Value;
+        }
+		public static int Order(int? id)
+		{
+			switch(id)
+			{
+				case Substitute: 
+					return 10;
+				case FindSub: 
+					return 20;
+				case Attending: 
+					return 30;
+				case SubFound: 
+					return 40;
+				case Regrets: 
+					return 50;
+			}
+			return 0;
+		}
+	}
 }

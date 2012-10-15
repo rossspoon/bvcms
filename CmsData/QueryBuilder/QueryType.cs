@@ -73,7 +73,6 @@ namespace CmsData
         HasTaskWithName,
 		HasIncompleteTask,
 		HasInvalidEmailAddress,
-        HasVolunteered,
         HaveVolunteerApplications,
         HomePhone,
         InBFClass,

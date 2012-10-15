@@ -130,10 +130,10 @@
             <li><a href="#SettingsOrg"><span>General</span></a></li>
             <li><a href="#SettingsMeetings"><span>Attendance</span></a></li>
             <li><a href="#OnlineRegAdmin"><span>Registration</span></a></li>
-            <li><a id="tabfees" href="#OnlineRegFees"><span>Fees</span></a></li>
-            <li><a id="tabquestions" href="#OnlineRegQuestions"><span>Questions</span></a></li>
-            <li><a href="#OnlineRegMessages"><span>Messages</span></a></li>
-            <li><a href="#ExtraValues"><span>Extra Values</span></a></li>
+            <li class="no0 no6 no10 no11"><a href="#OnlineRegFees"><span>Fees</span></a></li>
+            <li class="no0 no10 no11"><a href="#OnlineRegQuestions"><span>Questions</span></a></li>
+            <li class="no0"><a href="#OnlineRegMessages"><span>Messages</span></a></li>
+            <li class="no0"><a href="#ExtraValues"><span>Extra Values</span></a></li>
         </ul>
         <div id="SettingsOrg" class="ui-tabs-hide ui-tabs-panel settings">
             <p>
@@ -156,21 +156,21 @@
             @Html.Partial("OnlineRegAdmin", Model.RegSettings)
             </form>
         </div>
-        <div id="OnlineRegFees" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="OnlineRegFees" class="ui-tabs-hide ui-tabs-panel settings no0 no6 no10 no11">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">
             @Html.Partial("OnlineRegFees", Model.RegSettings)
             </form>
         </div>
-        <div id="OnlineRegQuestions" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="OnlineRegQuestions" class="ui-tabs-hide ui-tabs-panel settings no0 no10 no11">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">
             @Html.Partial("OnlineRegQuestions", Model.RegSettings)
             </form>
         </div>
-        <div id="OnlineRegMessages" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="OnlineRegMessages" class="ui-tabs-hide ui-tabs-panel settings no0">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">

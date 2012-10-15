@@ -25,6 +25,7 @@ namespace CmsWeb.Areas.OnlineReg
                 "CreateAccount",
                 new { controller = "OnlineReg", action = "Index", id = Util.CreateAccountCode.ToString() }
             );
+           AddRoute(context, "Calendar", "OnlineReg", "OnlineReg/ManageVolunteer/{id}/{pid}", "ManageVolunteer");
            context.MapRoute( "GetVolSub",
                 "OnlineReg/GetVolSub/{aid}/{pid}",
                 new { controller = "OnlineReg", action = "GetVolSub", aid=0, pid=0 }
@@ -33,7 +34,6 @@ namespace CmsWeb.Areas.OnlineReg
                 "OnlineReg/VolSubReport/{aid}/{pid}/{ticks}",
                 new { controller = "OnlineReg", action = "VolSubReport", aid=0, pid=0, ticks=0 }
             );
-           AddRoute(context, "Calendar", "OnlineReg", "OnlineReg/ManageVolunteer/{id}/{pid}", "ManageVolunteer");
            context.MapRoute( "ClaimVolSub",
                 "OnlineReg/ClaimVolSub/{ans}/{guid}",
                 new { controller = "OnlineReg", action = "ClaimVolSub", ans="", guid="" }

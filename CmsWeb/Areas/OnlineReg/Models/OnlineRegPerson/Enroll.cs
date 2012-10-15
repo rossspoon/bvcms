@@ -249,7 +249,7 @@ namespace CmsWeb.Models
 			}
 			om.AddToGroup(DbUtil.Db, g.SmallGroup);
 			if (g.MeetingTime.HasValue)
-				Attend.MarkRegistered(DbUtil.Db, om.OrganizationId, om.PeopleId, g.MeetingTime.Value, true);
+				Attend.MarkRegistered(DbUtil.Db, om.OrganizationId, om.PeopleId, g.MeetingTime.Value, 1);
 		}
 		private void RemoveFromSmallGroup(RegSettings.MenuItem g, OrganizationMember om)
 		{

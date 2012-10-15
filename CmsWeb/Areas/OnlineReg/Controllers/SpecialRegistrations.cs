@@ -550,7 +550,7 @@ emailid={2}
 			if (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive)
 				return Content("sorry, registration has been closed");
 
-			if (q.org.Limit <= q.meeting.Attends.Count(aa => aa.Registered == true))
+			if (q.org.Limit <= q.meeting.Attends.Count(aa => aa.Commitment == 1))
 				return Content("sorry, maximum limit has been reached");
 			if (smallgroup.HasValue())
 			{
@@ -562,7 +562,7 @@ emailid={2}
 
 			ot.Used = true;
 			DbUtil.Db.SubmitChanges();
-			Attend.MarkRegistered(DbUtil.Db, pid, meetingid, true);
+			Attend.MarkRegistered(DbUtil.Db, pid, meetingid, 1);
 			DbUtil.LogActivity("Rsvplink: {0}".Fmt(q.org.OrganizationName));
 			var setting = new RegSettings(q.org.RegSetting, DbUtil.Db, q.meeting.OrganizationId);
 

@@ -207,11 +207,6 @@ namespace CmsData
                     return Expressions.HasInvalidEmailAddress(Db, parm,
                                CompType,
                                c.CodeIds == "1");
-                case QueryType.HasVolunteered:
-                    return Expressions.HasVolunteered(parm,
-                               c.Quarters,
-                               CompType,
-                               c.CodeIds == "1");
                 case QueryType.HaveVolunteerApplications:
                     return Expressions.HaveVolunteerApplications(parm,
                                CompType,

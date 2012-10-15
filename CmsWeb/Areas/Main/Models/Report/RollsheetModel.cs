@@ -9,10 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UtilityExtensions;
 using CmsData;
+using System.Data.Linq;
 using System.ComponentModel;
 using System.Collections;
 using System.Diagnostics;
 using CmsData.Codes;
+using CmsWeb.Models;
+using System.Web;
 
 namespace CmsWeb.Areas.Main.Models.Report
 {
@@ -199,7 +202,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 			var dt = MeetingDate.AddDays(wks * -7);
 
 			var q = from p in DbUtil.Db.People
-					where p.Attends.Any(a => (a.AttendanceFlag == true || a.Registered == true)
+					where p.Attends.Any(a => (a.AttendanceFlag == true || a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
 						&& (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
 						&& a.OrganizationId == orgid
 						&& (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null)
@@ -243,7 +246,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 			// people who attended, members or visitors
 			var attends = (from a in DbUtil.Db.Attends
 						   where a.MeetingId == MeetingId
-						   where a.EffAttendFlag == null || a.EffAttendFlag == true || a.Registered == true
+						   where a.EffAttendFlag == null || a.EffAttendFlag == true || a.Commitment == AttendCommitmentCode.Attending  || a.Commitment == AttendCommitmentCode.Substitute
 						   select new
 						   {
 							   a,
@@ -260,6 +263,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 			var memberlist = from p in members
 							 join pa in attends on p.PeopleId equals pa.a.PeopleId into j
 							 from pa in j.DefaultIfEmpty()
+							 let cid = pa != null ? pa.a.Commitment : null
 							 where CurrentMembers || MeetingDate > p.Joined// they were either a member at the time
 								 // or they attended as a member (workaround for bad transaction history)
 									|| (pa != null && !VisitAttendTypes.Contains(pa.a.AttendanceTypeId.Value))
@@ -269,7 +273,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 								 Name = p.Name2,
 								 Email = p.Email,
 								 Attended = pa != null ? pa.a.AttendanceFlag : false,
-								 Registered = pa != null ? (pa.a.Registered ?? false) : false,
+								 AttendCommitmentId = cid,
+								 Commitment = CmsData.Codes.AttendCommitmentCode.Lookup(cid ?? 99),
 								 Member = true,
 								 CurrMemberType = p.MemberType,
 								 MemberType = pa != null ? (pa.a.MemberType != null ? pa.a.MemberType.Description : "") : "",
@@ -288,13 +293,15 @@ namespace CmsWeb.Areas.Main.Models.Report
 							  where !members.Any(mm => mm.PeopleId == pvisitor.PeopleId)
 							  join pattender in attends on pvisitor.PeopleId equals pattender.a.PeopleId into j
 							  from pattender in j.DefaultIfEmpty()
+							  let cid = pattender != null ? pattender.a.Commitment : null
 							  select new AttendInfo
 							  {
 								  PeopleId = pvisitor.PeopleId,
 								  Name = pvisitor.Name2,
 								  Email = pvisitor.Email,
 								  Attended = pattender != null ? pattender.a.AttendanceFlag : false,
-								  Registered = pattender != null ? (pattender.a.Registered ?? false) : false,
+								  AttendCommitmentId = cid,
+								  Commitment = CmsData.Codes.AttendCommitmentCode.Lookup(cid ?? 99),
 								  Member = false,
 								  CurrMemberType = "",
 								  MemberType = pattender != null ? (pattender.a.MemberType != null ? pattender.a.MemberType.Description : "") : "",
@@ -308,6 +315,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 							join m in memberlist on pa.a.PeopleId equals m.PeopleId into jm
 							from v in jv.DefaultIfEmpty()
 							from m in jm.DefaultIfEmpty()
+						    let cid = pa != null ? pa.a.Commitment : null
 							where v == null && m == null
 							select new AttendInfo
 							{
@@ -315,7 +323,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 								Name = pa.Name2,
 								Email = pa.EmailAddress,
 								Attended = true,
-								Registered = pa.a.Registered == true,
+								AttendCommitmentId = cid,
+								Commitment = CmsData.Codes.AttendCommitmentCode.Lookup(cid ?? 99),
 								Member = false,
 								MemberType = "unknown",
 								AttendType = "unknown",
@@ -329,7 +338,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 								Name = p.Name,
 								Email = p.Email,
 								Attended = p.Attended,
-								Registered = p.Registered,
+								AttendCommitmentId = p.AttendCommitmentId,
+								Commitment = p.Commitment,
 								Member = p.Member,
 								CurrMemberType = p.CurrMemberType,
 								MemberType = p.MemberType,
@@ -348,7 +358,8 @@ namespace CmsWeb.Areas.Main.Models.Report
 			public string Age { get; set; }
 			public string Email { get; set; }
 			public bool Attended { get; set; }
-			public bool Registered { get; set; }
+			public int? AttendCommitmentId { get; set; }
+			public string Commitment { get; set; }
 			public bool CanAttend { get; set; }
 			public bool Member { get; set; }
 			public string CurrMemberType { get; set; }

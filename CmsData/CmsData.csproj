@@ -261,6 +261,7 @@
     <Compile Include="Generated\Views\MasterOrg.cs" />
     <Compile Include="Generated\Views\PickListOrgs2.cs" />
     <Compile Include="Generated\Views\UserRole.cs" />
+    <Compile Include="Generated\VolRequest.cs" />
     <Compile Include="Meeting.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
     <Compile Include="Generated\Functions\PledgeFulfillment.cs" />
@@ -291,7 +292,6 @@
     <Compile Include="Dynamic.cs" />
     <Compile Include="SagePayments.cs" />
     <Compile Include="TransactionResponse.cs" />
-    <Compile Include="VolInterest.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
     <Compile Include="Generated\Duplicate.cs" />
     <Compile Include="Generated\Functions\FindPerson4.cs" />

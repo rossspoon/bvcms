@@ -438,7 +438,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     AddPerson(p, m.List, OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
                     if (isnew)
                         p.person.CampusId = meeting.Organization.CampusId;
-                    Attend.MarkRegistered(DbUtil.Db, p.PeopleId.Value, id, true);
+                    Attend.MarkRegistered(DbUtil.Db, p.PeopleId.Value, id, 1);
                 }
                 DbUtil.Db.SubmitChanges();
                 DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);

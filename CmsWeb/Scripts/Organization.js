@@ -217,6 +217,12 @@ $(function () {
             timeOnly: false
         });
     };
+    $.showHideRegTypes = function (f) {
+        $(".no0,.no6,.no10,.no11").show();
+        $(".no" + $("#org_RegistrationTypeId").val()).hide();
+    };
+    $("#org_RegistrationTypeId").live("change", $.showHideRegTypes);
+    $.showHideRegTypes();
     $("a.displayedit,a.displayedit2").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
@@ -232,6 +238,7 @@ $(function () {
                 $("#schedules", f).sortable({ stop: $.renumberListItems });
                 $("#editor", f);
                 $.regsettingeditclick(f);
+                $.showHideRegTypes();
                 $(".helptip").tooltip({ showBody: "|" });
             });
         });
@@ -248,6 +255,7 @@ $(function () {
             $(f).html(ret).ready(function () {
                 $(".submitbutton,.bt").button();
                 $.regsettingeditclick(f);
+                $.showHideRegTypes();
             });
         });
         return false;
@@ -507,8 +515,6 @@ $(function () {
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    if ($("#orgpickdiv a[target='otherorg']").length > 0)
-        $("#tabfees,#tabquestions").hide();
 
     $.extraEditable = function () {
         $('.editarea').editable('/Organization/EditExtra/', {
@@ -597,12 +603,7 @@ function UpdateSelectedUsers(topid) {
 }
 function UpdateSelectedOrgs(list) {
     $.post("/Organization/UpdateOrgIds", { id: $("#OrganizationId").val(), list: list }, function (ret) {
-        $("#orgpickdiv").html(ret).ready(function () {
-            if ($("#orgpickdiv a[target='otherorg']").length > 0)
-                $("#tabfees,#tabquestions").hide();
-            else
-                $("#tabfees,#tabquestions").show();
-        });
+        $("#orgpickdiv").html(ret);
         $("#orgsDialog").dialog("close");
     });
 }

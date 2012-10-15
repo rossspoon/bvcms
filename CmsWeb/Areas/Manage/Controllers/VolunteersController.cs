@@ -23,20 +23,6 @@ namespace CmsWeb.Areas.Manage.Controllers
 {
 	public class VolunteersController : CmsStaffController
 	{
-		public VolunteersController()
-		{
-			ViewData["Title"] = "Volunteers";
-		}
-		public ActionResult Index(int? id)
-		{
-			var vols = new VolunteersModel { QueryId = id };
-			Session["continuelink"] = Request.Url;
-			UpdateModel(vols);
-			if (!vols.View.HasValue())
-				vols.View = "ns";
-			DbUtil.LogActivity("Volunteers");
-			return View(vols);
-		}
 		[AcceptVerbs(HttpVerbs.Post)]
 		public JsonResult Codes(string id)
 		{
@@ -90,26 +76,6 @@ namespace CmsWeb.Areas.Manage.Controllers
 			return View("ManageArea", m);
 		}
 
-		public ActionResult CustomReport(string id)
-		{
-			ViewData["content"] = DbUtil.Content("Volunteer-{0}.report".Fmt(id)).Body;
-			return View();
-		}
-		public ActionResult Query(int id)
-		{
-			var vols = new VolunteersModel { QueryId = id };
-			UpdateModel(vols);
-			var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.QueryId == id).Clone(DbUtil.Db);
-			var comp = CompareType.Equal;
-			if (vols.Org == "na")
-				comp = CompareType.NotEqual;
-			var clause = qb.AddNewClause(QueryType.HasVolunteered, comp, "1,T");
-			clause.Quarters = vols.View;
-
-			DbUtil.Db.QueryBuilderClauses.InsertOnSubmit(qb);
-			DbUtil.Db.SubmitChanges();
-			return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
-		}
 		public ActionResult EmailReminders(int id)
 		{
 			var qb = DbUtil.Db.QueryBuilderScratchPad();
@@ -134,24 +100,43 @@ namespace CmsWeb.Areas.Manage.Controllers
 			return Redirect("/Email/Index/{0}?subj={1}&ishtml=true"
 				.Fmt(qb.QueryId, Server.UrlEncode(subject)));
 		}
-		//public ActionResult UpdateAll(string id, int? qid)
-		//{
-		//	var orgkeys = Person.OrgKeys(id);
-		//	var q = DbUtil.Db.People.AsQueryable();
-		//	if (qid.HasValue)
-		//		q = DbUtil.Db.PeopleQuery(qid.Value);
-		//	q = from p in q
-		//		where p.VolInterestInterestCodes.Count(c => orgkeys.Contains(c.VolInterestCode.Org)) > 0
-		//		select p;
-		//	foreach (var person in q)
-		//	{
-		//		var m = new CmsWeb.Models
-		//			.VolunteerModel2 { View = id, person = person };
-		//		m.person.BuildVolInfoList(id); // gets existing
-		//		m.person.BuildVolInfoList(id); // 2nd time updates existing
-		//		m.person.RefreshCommitments(id);
-		//	}
-		//	return Content("done");
-		//}
+		[HttpGet]
+		public ActionResult Request(int mid, int limit)
+		{
+			var vs = new VolunteerRequestModel(mid, Util.UserPeopleId.Value) {limit = limit };
+			//SetHeaders(vs.org.OrganizationId);
+			vs.ComposeMessage();
+			return View(vs);
+		}
+		[HttpPost]
+		[ValidateInput(false)]
+		public ActionResult Request(int mid, long ticks, int[] pids, string subject, string message, int limit, int? additional)
+		{
+			var m = new VolunteerRequestModel(mid, Util.UserPeopleId.Value, ticks)
+				{subject = subject, message = message, pids = pids, limit = limit };
+			m.SendEmails(additional ?? 0);
+			return Content("Emails are being sent, thank you.");
+		}
+		public ActionResult RequestReport(int mid, int pid, long ticks)
+		{
+			var vs = new VolunteerRequestModel(mid, pid, ticks);
+			//SetHeaders(vs.org.OrganizationId);
+			return View(vs);
+		}
+		[HttpGet]
+		public ActionResult RequestResponse(string ans, string guid)
+		{
+			try
+			{
+				var vs = new VolunteerRequestModel(guid);
+				vs.ProcessReply(ans);
+				return Content(vs.DisplayMessage);
+			}
+			catch (Exception ex)
+			{
+				return Content(ex.Message);
+			}
+		}
+
 	}
 }

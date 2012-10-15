@@ -54,6 +54,8 @@ namespace CmsData
 		
    		private EntitySet< MeetingExtra> _MeetingExtras;
 		
+   		private EntitySet< VolRequest> _VolRequests;
+		
     	
 		private EntityRef< AttendCredit> _AttendCredit;
 		
@@ -121,6 +123,8 @@ namespace CmsData
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
 			this._MeetingExtras = new EntitySet< MeetingExtra>(new Action< MeetingExtra>(this.attach_MeetingExtras), new Action< MeetingExtra>(this.detach_MeetingExtras)); 
+			
+			this._VolRequests = new EntitySet< VolRequest>(new Action< VolRequest>(this.attach_VolRequests), new Action< VolRequest>(this.detach_VolRequests)); 
 			
 			
 			this._AttendCredit = default(EntityRef< AttendCredit>); 
@@ -515,6 +519,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="VolRequests__Meeting", Storage="_VolRequests", OtherKey="MeetingId")]
+   		public EntitySet< VolRequest> VolRequests
+   		{
+   		    get { return this._VolRequests; }
+
+			set	{ this._VolRequests.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -640,6 +654,19 @@ namespace CmsData
 		}
 
 		private void detach_MeetingExtras(MeetingExtra entity)
+		{
+			this.SendPropertyChanging();
+			entity.Meeting = null;
+		}
+
+		
+		private void attach_VolRequests(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Meeting = this;
+		}
+
+		private void detach_VolRequests(VolRequest entity)
 		{
 			this.SendPropertyChanging();
 			entity.Meeting = null;

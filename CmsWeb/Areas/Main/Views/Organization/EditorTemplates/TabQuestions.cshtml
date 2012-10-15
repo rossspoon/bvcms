@@ -1,7 +1,7 @@
 ﻿@model CmsData.RegSettings
 @using CmsWeb
 @using UtilityExtensions
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskRequest
     |Displays a text box for entering things like roomate/teacher/coach request
     |You can put a label on this text box to clarify what you are asking.">
@@ -10,7 +10,7 @@
       <li> <span class="keyword2">Label:</span> @Html.TextBox("RequestLabel", Model.RequestLabel, new { @class = "long" }) </li>
     </ul>
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskTickets
     |This will ask for a number of items to purchase.
     |The total will be the fee multipled by the number of items.
@@ -20,13 +20,13 @@
       <li> <span class="keyword2">Label:</span> @Html.TextBox("NumItemsLabel", Model.NumItemsLabel, new { @class = "long" }) </li>
     </ul>
   </li>
-  <li>
+  <li class="no6">
   	<span class="keyword big tip" title="TargetExtraValues
      |Small groups will actually refer to ExtraValue fields on the Person's record option
      |This option is not normally used">
 	 TargetExtraValues:</span> @Html.CheckBox("TargetExtraValues", Model.TargetExtraValues)
   </li>
-  <li>
+  <li class="no6">
     <div class="keyword big tip" title="YesNoQuestions
     |These are questions that will force a yes or no answer
     |The results will be in small groups 
@@ -40,7 +40,7 @@
     </ul>
     <div class="newitem"><a href="/Organization/NewYesNoQuestion"><img src="/images/plus1.png" /> Add Item</a></div>
   </li>
-  <li>
+  <li class="no6">
     <div class="text big tip" title="ExtraQuestions
     |These questions can be answered with text">
     ExtraQuestions:</div>
@@ -52,7 +52,7 @@
     </ul>
     <div class="newitem"><a href="/Organization/NewExtraQuestion"><img src="/images/plus1.png" /> Add Item</a></div>
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskShirtsize
     |Display a dropdown of shirtsizes.">
     AskShirtsize:</span> @Html.CheckBox("AskShirtsize", Model.AskShirtSize)
@@ -75,45 +75,45 @@
       </li>
     </ul>
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskParents
     |Displays two text boxes asking for mother and/or father's names.">
     AskParents:</span> @Html.CheckBox("AskParents", Model.AskParents)
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskDoctor
     |Asks for Doctor's name and Phone Number">
     AskDoctor:</span> @Html.CheckBox("AskDoctor", Model.AskDoctor)
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskInsurance
     |Displays two questions: Insurance name and policy #
     |Good for camp or ball teams where you might a participant might get hurt.">
     AskInsurance:</span> @Html.CheckBox("AskInsurance", Model.AskInsurance)
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskEmContact
     |Asks for the name and phone number for an emergency contact">
     AskEmContact:</span> @Html.CheckBox("AskEmContact", Model.AskEmContact)
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskAllergies
     |Displays a multi-line text box to enter any medical information">
     AskAllergies:</span> @Html.CheckBox("AskAllergies", Model.AskAllergies)
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskChurch
     |Ask whether they are a member here, or active in another church.
     |Good for indicating whether they are a prospect or not.">
     AskChurch:</span> @Html.CheckBox("AskChurch", Model.AskChurch)
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskTylenolEtc
     |Asks whether it is ok to give a child Tylenol, Advil, Robitussin, or Maalox.">
     AskTylenolEtc:</span>
     @Html.CheckBox("AskTylenolEtc", Model.AskTylenolEtc)
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="AskCoaching
     |Asks whether the parent is interested in coaching or not.">
     AskCoaching:</span> @Html.CheckBox("AskCoaching", Model.AskCoaching)
@@ -136,7 +136,7 @@
     </ul>
     <div class="newitem"><a href="/Organization/NewTimeSlot"><img src="/images/plus1.png" alt="" /> Add Item</a></div> 
   </li>
-  <li>
+  <li class="no6">
     <div class="text big tip" title="MenuItems
     |These will present a series of textboxes next to a label 
     |allowing you to enter the number of items to purchase or select.
@@ -150,7 +150,7 @@
     </ul>
     <div class="newitem"><a href="/Organization/NewMenuItem"><img src="/images/plus1.png" alt="" /> Add Item</a></div> 
   </li>
-  <li>
+  <li class="no6">
   	<span class="keyword big tip" title="Dropdown1
     |This will be presented as a dropdown selection
     |Enters them in a smallgroup within the organization.
@@ -171,7 +171,7 @@
       </li>
     </ul>
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big">Dropdown2:</span>
     <ul>
       <li> <span class="keyword2">Label:</span> @Html.TextBox("Dropdown2Label", Model.Dropdown2Label, new { @class = "long" })
@@ -185,7 +185,7 @@
       </li>
     </ul>
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big">Dropdown3:</span>
     <ul>
       <li> <span class="keyword2">Label:</span> @Html.TextBox("Dropdown3Label", Model.Dropdown3Label, new { @class = "long" })
@@ -199,7 +199,7 @@
       </li>
     </ul>
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big tip" title="Checkboxes
     |This is a group of checkboxes where you can check more than one.
     |You can specify a minumum number they must check.
@@ -223,7 +223,7 @@
       </li>
     </ul>
   </li>
-  <li>
+  <li class="no6">
     <span class="keyword big">Checkboxes2:</span>
     <ul>
       <li> <span class="keyword2">Label:</span> @Html.TextBox("CheckBox2Label", Model.CheckBox2Label, new { @class = "long" }) </li>

@@ -126,6 +126,17 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content(value);
         }
         [HttpPost]
+        public ContentResult EditCommitment(string id, string value)
+        {			
+			var a = id.Substring(1).Split('_').Select(vv => vv.ToInt()).ToArray();
+			var c = value.ToInt2();
+			if (c == 99)
+				c = null;
+            Attend.MarkRegistered(DbUtil.Db, a[1], a[0], c);
+			var desc = CmsData.Codes.AttendCommitmentCode.Lookup(c ?? 99);
+            return Content(desc);
+        }
+        [HttpPost]
         public ContentResult JoinAllVisitors(int id)
         {
             var m = new MeetingModel(id);
@@ -273,7 +284,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				d.error = ScanTicketInfo.Error.alreadymarked;
 			else if (requireMember == true && d.orgmember == null)
 				d.error = ScanTicketInfo.Error.notmember;
-			else if (requireRegistered == true && (d.attended == null || d.attended.Registered != true))
+			else if (requireRegistered == true && (d.attended == null || d.attended.Commitment == AttendCommitmentCode.Attending))
 				d.error = ScanTicketInfo.Error.notregistered;
 
 			var ret = "";
@@ -312,10 +323,17 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         [Authorize(Roles = "Attendance")]
         [HttpPost]
-        public ActionResult MarkRegistered(int PeopleId, int MeetingId, bool Registered)
+        public ActionResult MarkRegistered(int PeopleId, int MeetingId, int? CommitId)
         {
-            Attend.MarkRegistered(DbUtil.Db, PeopleId, MeetingId, Registered);
-            return Content("ok");
+			try
+			{
+	            Attend.MarkRegistered(DbUtil.Db, PeopleId, MeetingId, CommitId);
+			}
+			catch (Exception ex)
+			{
+				return Content(ex.Message);
+			}
+			return new EmptyResult();
         }
         [Authorize(Roles = "Attendance")]
         [HttpPost]
@@ -493,5 +511,11 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(value);
         }
+        [HttpPost]
+	    [ValidateInput(false)]
+		public JsonResult AttendCommitments()
+		{
+			return Json(MeetingModel.AttendCommitments());
+		}
     }
 }

@@ -7,6 +7,7 @@
             return u + "&sortbyweek=true";
         return u;
     }
+    $("div[source=registered]").tooltip({ showBody: "|" });
     $('#sendreminders').live("click", function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");

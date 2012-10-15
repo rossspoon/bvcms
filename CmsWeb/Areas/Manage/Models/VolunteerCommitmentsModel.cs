@@ -8,6 +8,7 @@ using UtilityExtensions;
 using CmsWeb.Models.OrganizationPage;
 using System.Collections;
 using System.Web.Mvc;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -21,6 +22,14 @@ namespace CmsWeb.Models
 		{
 			public string Name { get; set; }
 			public int PeopleId { get; set; }
+			public int? Commitment { get; set; }
+			public string CommitmentText
+			{
+				get
+				{
+					return CmsData.Codes.AttendCommitmentCode.Lookup(Commitment);
+				}
+			}
 		}
 		public IEnumerable<DateTime> times;
 		public string OrgName { get; set; }
@@ -57,7 +66,7 @@ namespace CmsWeb.Models
 								   where a.MeetingDate > Util.Now.Date
 								   where a.OrganizationId == om.OrganizationId
 								   where a.PeopleId == om.PeopleId
-								   where a.Registered == true
+								   where a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute
 								   select a).Count()
 					orderby om.Person.Name2
 					select new VolunteerInfo
@@ -88,6 +97,16 @@ namespace CmsWeb.Models
 			public bool Disabled { get; set; }
 			public DateTime DayHour { get; set; }
 			public List<NameId> Persons { get; set; }
+			public int Count
+			{
+				get { return Persons.Count(pp => pp.Commitment == AttendCommitmentCode.Attending || pp.Commitment == AttendCommitmentCode.Substitute); }
+			}
+			public List<NameId> OrderedPersons()
+			{
+				return (from p in Persons
+						orderby CmsData.Codes.AttendCommitmentCode.Order(p.Commitment), p.Name
+						select p).ToList();
+			}
 			public int Limit { get; set; }
 			public int MeetingId { get; set; }
 		}
@@ -109,25 +128,24 @@ namespace CmsWeb.Models
 		}
 		public IEnumerable<Slot> FetchSlots()
 		{
-			var q = from a in DbUtil.Db.Attends
-					where a.MeetingDate > Util.Now.Date
-					where a.OrganizationId == OrgId
-					where a.Registered == true
-					orderby a.MeetingDate
-					select a;
-			var alist = q.ToList();
-			var Attends = from a in alist
-						  let Day = (int)a.MeetingDate.DayOfWeek
-						  let sday = a.MeetingDate.Date.AddDays(-Day)
-						  //where week == 0 || Day == week
-						  orderby a.MeetingDate
-						  select new
-						  {
-							  a.MeetingId,
-							  a.MeetingDate,
-							  a.PeopleId,
-							  a.Person.Name,
-						  };
+			var mlist = (from m in DbUtil.Db.Meetings
+			             where m.MeetingDate > Util.Now.Date
+			             where m.OrganizationId == OrgId
+			             orderby m.MeetingDate
+			             select m).ToList();
+			var alist = (from a in DbUtil.Db.Attends
+						 where a.MeetingDate > Util.Now.Date
+						 where a.OrganizationId == OrgId
+						 where a.Commitment != null
+						 orderby a.MeetingDate
+						 select new
+						 {
+							 a.MeetingId,
+							 a.MeetingDate,
+							 a.PeopleId,
+							 a.Person.Name,
+							 a.Commitment,
+						 }).ToList();
 
 			var list = new List<Slot>();
 			for (var sunday = Sunday; sunday <= EndDt; sunday = sunday.AddDays(7))
@@ -137,17 +155,28 @@ namespace CmsWeb.Models
 					var u = from ts in Regsettings.TimeSlots
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
+							let meeting = mlist.SingleOrDefault(mm => mm.MeetingDate == time)
+							let needed = meeting != null ? 
+									(from e in meeting.MeetingExtras
+								     where e.Field == "TotalVolunteersNeeded"
+									 select e.Data).SingleOrDefault().ToInt2() : null
+							let meetingid = meeting != null ? meeting.MeetingId : 0
 							select new Slot()
 									{
 										Time = time,
 										Sunday = dt,
 										Week = dt.WeekOfMonth(),
 										Disabled = time < DateTime.Now,
-										Limit = ts.Limit ?? 0,
-										Persons = (from a in Attends
+										Limit = needed.ToInt2() ?? ts.Limit ?? 0,
+										Persons = (from a in alist
 												   where a.MeetingDate == time
-												   select new NameId { Name = a.Name, PeopleId = a.PeopleId }).ToList(),
-										MeetingId = Attends.Where(aa => aa.MeetingDate == time).Select(aa => aa.MeetingId).FirstOrDefault()
+												   select new NameId 
+												   { 
+													   Name = a.Name, 
+													   PeopleId = a.PeopleId, 
+													   Commitment = a.Commitment 
+												   }).ToList(),
+										MeetingId = meetingid
 									};
 					list.AddRange(u);
 				}
@@ -209,8 +238,8 @@ namespace CmsWeb.Models
 			DateTime? time,
 			DragDropInfo i)
 		{
-
 			List<int> volids = null;
+
 			switch (i.source)
 			{
 				case "nocommits":
@@ -227,7 +256,7 @@ namespace CmsWeb.Models
 					volids = (from p in Volunteers()
 							  select p.PeopleId).ToList();
 					break;
-			    case "registered":
+				case "registered":
 				case "person":
 					volids = new List<int>() { i.pid.ToInt() };
 					break;
@@ -246,7 +275,8 @@ namespace CmsWeb.Models
 					if (i.source == "registered")
 						DropFromAll(PeopleId);
 					foreach (var s in slots)
-						Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, s.Time, true);
+						Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, s.Time,
+							AttendCommitmentCode.Attending, AvoidRegrets: true);
 				}
 			}
 			else if (target == "meeting")
@@ -255,7 +285,8 @@ namespace CmsWeb.Models
 				{
 					if (i.source == "registered")
 						DropFromMeeting(i.mid.Value, PeopleId);
-					Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, time.Value, true);
+					Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, time.Value,
+						AttendCommitmentCode.Attending, AvoidRegrets: true);
 				}
 
 			}
@@ -277,8 +308,8 @@ namespace CmsWeb.Models
 		}
 		private void DropFromAll(int peopleid)
 		{
-			DbUtil.Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.OrganizationId = {1} AND a.MeetingDate > {1} AND a.PeopleId = {2})", OrgId, Sunday, peopleid);
-			DbUtil.Db.ExecuteCommand("DELETE dbo.Attend WHERE OrganizationId = {0} AND MeetingDate > {1} AND PeopleId = {2}", OrgId, Sunday, peopleid);
+			DbUtil.Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE ISNULL(Commitment, 1) = 1 AND a.AttendId = AttendId AND a.OrganizationId = {0} AND a.MeetingDate > {1} AND a.PeopleId = {2})", OrgId, Sunday, peopleid);
+			DbUtil.Db.ExecuteCommand("DELETE dbo.Attend WHERE OrganizationId = {0} AND MeetingDate > {1} AND PeopleId = {2} AND ISNULL(Commitment, 1) = 1", OrgId, Sunday, peopleid);
 		}
 	}
 	public class DragDropInfo

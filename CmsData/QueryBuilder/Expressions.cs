@@ -446,7 +446,7 @@ namespace CmsData
 		{
 			Expression<Func<Person, bool>> pred = p =>
 				p.Attends.Any(a =>
-					(a.Registered == true)
+					(a.Commitment == AttendCommitmentCode.Attending)
 					&& a.MeetingId == id
 					);
 			Expression expr = Expression.Invoke(pred, parm);
@@ -2441,25 +2441,25 @@ namespace CmsData
 				expr = Expression.Not(expr);
 			return expr;
 		}
-		internal static Expression HasVolunteered(ParameterExpression parm,
-			string View,
-			CompareType op,
-			bool tf)
-		{
-			Expression<Func<Person, bool>> pred;
-			if (View == "ns")
-				pred = p => p.VolInterestInterestCodes.Count() > 0;
-			else
-			{
-				var orgkeys = Person.OrgKeys(View);
-				pred = p =>
-					  p.VolInterestInterestCodes.Any(vi => orgkeys.Contains(vi.VolInterestCode.Org));
-			}
-			Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-			if (!(op == CompareType.Equal && tf))
-				expr = Expression.Not(expr);
-			return expr;
-		}
+		//internal static Expression HasVolunteered(ParameterExpression parm,
+		//	string View,
+		//	CompareType op,
+		//	bool tf)
+		//{
+		//	Expression<Func<Person, bool>> pred;
+		//	if (View == "ns")
+		//		pred = p => p.VolInterestInterestCodes.Count() > 0;
+		//	else
+		//	{
+		//		var orgkeys = Person.OrgKeys(View);
+		//		pred = p =>
+		//			  p.VolInterestInterestCodes.Any(vi => orgkeys.Contains(vi.VolInterestCode.Org));
+		//	}
+		//	Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+		//	if (!(op == CompareType.Equal && tf))
+		//		expr = Expression.Not(expr);
+		//	return expr;
+		//}
 		internal static Expression VolunteerApprovalCode(ParameterExpression parm,
 			CompareType op,
 			int[] ids)

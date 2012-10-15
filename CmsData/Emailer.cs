@@ -313,6 +313,8 @@ namespace CmsData
 				text = DoRsvpLink(text, CmsHost, emailqueueto);
 			if (text.Contains("http://volsublink", ignoreCase: true))
 				text = DoVolSubLink(text, CmsHost, emailqueueto);
+			if (text.Contains("http://volreqlink", ignoreCase: true))
+				text = DoVolReqLink(text, CmsHost, emailqueueto);
 			if (text.Contains("{barcode}", ignoreCase: true))
 			{
 				var link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
@@ -641,6 +643,45 @@ namespace CmsData
 				}
 
 				var url = Util.URLCombine(CmsHost, "/OnlineReg/ClaimVolSub/{0}/{1}".Fmt(d["ans"], ot.Id.ToCode()));
+				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
+				match = match.NextMatch();
+			}
+			return text;
+		}
+		public string DoVolReqLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+		{
+			var list = new Dictionary<string, OneTimeLink>();
+			const string VolSubLinkRE = "<a[^>]*?href=\"http://volreqlink\"[^>]*>.*?</a>";
+			var re = new Regex(VolSubLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+			var match = re.Match(text);
+			while (match.Success)
+			{
+				var tag = match.Value;
+
+				var doc = new HtmlDocument();
+				doc.LoadHtml(tag);
+				var ele = doc.DocumentNode.Element("a");
+				var inside = ele.InnerHtml;
+				var d = ele.Attributes.ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+
+				var qs = "{0},{1},{2},{3}"
+					.Fmt(d["mid"], d["pid"], d["ticks"], emailqueueto.PeopleId);
+				OneTimeLink ot = null;
+				if (list.ContainsKey(qs))
+					ot = list[qs];
+				else
+				{
+					ot = new OneTimeLink
+					{
+						Id = Guid.NewGuid(),
+						Querystring = qs
+					};
+					OneTimeLinks.InsertOnSubmit(ot);
+					SubmitChanges();
+					list.Add(qs, ot);
+				}
+
+				var url = Util.URLCombine(CmsHost, "/Manage/Volunteers/RequestResponse?ans={0}&guid={1}".Fmt(d["ans"], ot.Id.ToCode()));
 				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
 				match = match.NextMatch();
 			}

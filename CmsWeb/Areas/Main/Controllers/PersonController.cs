@@ -617,7 +617,10 @@ namespace CmsWeb.Areas.Main.Controllers
 							value = dt.ToShortDateString();
 						}
 						else
+						{
+							p.RemoveExtraValue(DbUtil.Db, b[0]);
 							value = "";
+						}
 					}
 					break;
 				case "i":

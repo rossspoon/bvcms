@@ -52,18 +52,20 @@
                 <p class="date">
         @if (t.MeetingId > 0)
         {
-                    <a href="/Reports/Rollsheet/?meetingid=@t.MeetingId" target="_blank">Rollsheet Report (@t.Persons.Count/@t.Limit)</a>
+                    @Html.ActionLink("Rollsheet ({0}/{1})".Fmt(t.Count, t.Limit), "Rollsheet", "Reports", new { meetingid = t.MeetingId }, new { target = "_blank" })<br/>
+        			@Html.ActionLink("Meeting", "Index", "Meeting", new { mid = t.MeetingId }, new { target = "meeting" })<br/>
+        			@Html.ActionLink("Request Volunteers", "Request", "Volunteers", new { mid = t.MeetingId, limit = t.Limit }, new { tClass = "volreq" })
         }
         else
         {
                     <span>&nbsp;</span>
         }
                 </p>
-        @foreach (var p in t.Persons)
+        @foreach (var p in t.OrderedPersons())
         {
                 if (Model.IsLeader)
                 {
-                <div pid="@p.PeopleId" mid="@t.MeetingId" class="selectable" source="registered">@p.Name</div>
+                <div pid="@p.PeopleId" mid="@t.MeetingId" class="selectable commit-@p.Commitment" source="registered" title="@p.CommitmentText">@p.Name</div>
                 }
                 else
                 {

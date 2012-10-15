@@ -8,13 +8,14 @@ using CmsWeb.Areas.Main.Models;
 using TaskAlias = System.Threading.Tasks.Task;
 using System.Threading;
 using Elmah;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
-	public class VolSubModel
+	public class VolunteerRequestModel
 	{
 		public long ticks { get; set; }
-		public int sid { get; set; }
+		public int vid { get; set; }
 
 		public ICollection<int> pids { get; set; }
 		public string subject { get; set; }
@@ -22,41 +23,46 @@ namespace CmsWeb.Models
 
 		private CMSDataContext Db;
 
-		public Attend attend { get; set; }
+		public Meeting meeting { get; set; }
 		public Person person { get; set; } 
 		public Organization org { get; set; }
+		public int count { get; set; }
+		public int limit { get; set; }
 
-		private void FetchEntities(int aid, int? pid)
+		private void FetchEntities(int mid, int pid)
 		{
-			var q = from attend in Db.Attends
-					where attend.AttendId == aid
-					let p = Db.People.SingleOrDefault(pp => pp.PeopleId == pid)
+			var q = from m in Db.Meetings
+					where m.MeetingId == mid
+					let c = m.Attends.Count(aa => aa.Commitment == AttendCommitmentCode.Attending || aa.Commitment == AttendCommitmentCode.Substitute)
+					let p = Db.People.Single(pp => pp.PeopleId == pid)
 					select new
 					{
-						attend,
-						org = attend.Organization,
-						person = p,
+						m,
+						org = m.Organization,
+						p,
+						c,
 					};
-			var i = q.SingleOrDefault();
+			var i = q.Single();
 			org = i.org;
-			this.attend = i.attend;
-			person = i.person;
+			meeting = i.m;
+			person = i.p;
+			count = i.c;
 		}
-		public VolSubModel()
+		public VolunteerRequestModel()
 		{
 			Db = DbUtil.Db;
 		}
-		public VolSubModel(int aid, int pid, long ticks)
-			: this(aid, pid)
+		public VolunteerRequestModel(int mid, int pid, long ticks)
+			: this(mid, pid)
 		{
 			this.ticks = ticks;
 		}
-		public VolSubModel(int aid, int pid)
+		public VolunteerRequestModel(int mid, int pid)
 			: this()
 		{
-			FetchEntities(aid, pid);
+			FetchEntities(mid, pid);
 		}
-		public VolSubModel(string guid)
+		public VolunteerRequestModel(string guid)
 			: this()
 		{
 			var error = "";
@@ -79,22 +85,22 @@ namespace CmsWeb.Models
 			var a = ot.Querystring.Split(',');
 			FetchEntities(a[0].ToInt(), a[1].ToInt());
 			ticks = a[2].ToLong();
-			sid = a[3].ToInt();
+			vid = a[3].ToInt();
 		}
 
 		public void ComposeMessage()
 		{
 			var dt = DateTime.Now;
 			ticks = dt.Ticks;
-			var yeslink = @"<a href=""http://volsublink"" aid=""{0}"" pid=""{1}"" ticks=""{2}"" ans=""yes"">
-Yes, I can sub for you.</a>".Fmt(attend.AttendId, person.PeopleId, ticks);
-			var nolink = @"<a href=""http://volsublink"" aid=""{0}"" pid=""{1}"" ticks=""{2}"" ans=""no"">
-Sorry, I cannot sub for you.</a>".Fmt(attend.AttendId, person.PeopleId, ticks);
+			var yeslink = @"<a href=""http://volreqlink"" mid=""{0}"" pid=""{1}"" ticks=""{2}"" ans=""yes"">
+Yes, I will be there.</a>".Fmt(meeting.MeetingId, person.PeopleId, ticks);
+			var nolink = @"<a href=""http://volreqlink"" mid=""{0}"" pid=""{1}"" ticks=""{2}"" ans=""no"">
+Sorry, I cannot be there.</a>".Fmt(meeting.MeetingId, person.PeopleId, ticks);
 
-			subject = "Volunteer substitute request for {0}".Fmt(org.OrganizationName);
+			subject = "Volunteer request for {0}".Fmt(org.OrganizationName);
 			message = @"
 <p>Hi {{first}},</p>
-<p>I need a substitute for {0}<br>
+<p>We need additional volunteers for {0}<br>
 on {1:dddd, MMM d} at {1:h:mm tt}</p>
 <blockquote>
 <p>{2}</p>
@@ -103,24 +109,26 @@ on {1:dddd, MMM d} at {1:h:mm tt}</p>
 <p>
 Thank you for your consideration,<br />
 {4}
-</p>".Fmt(org.OrganizationName, attend.MeetingDate, yeslink, nolink, person.Name);
+</p>".Fmt(org.OrganizationName, meeting.MeetingDate, yeslink, nolink, person.Name);
 		}
 		public string DisplayMessage { get; set; }
 		public string Error { get; set; }
-		public Dictionary<int, string> FetchPotentialSubs()
+
+
+		public Dictionary<int, string> FetchPotentialVolunteers()
 		{
 			var q = from om in Db.OrganizationMembers
 					where om.OrganizationId == org.OrganizationId
 					where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
 					where om.Pending == false
 					where om.PeopleId != person.PeopleId
-					where !Db.Attends.Any(aa => aa.MeetingId == attend.MeetingId
+					where !Db.Attends.Any(aa => aa.MeetingId == meeting.MeetingId
 						&& aa.Commitment != null && aa.PeopleId == om.PeopleId)
 					orderby om.Person.Name2
 					select om.Person;
 			return q.ToDictionary(kk => kk.PeopleId, nn => nn.Name);
 		}
-		public void SendEmails()
+		public void SendEmails(int? additional)
 		{
 			var tag = Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, Db.NextTagId);
 			Db.ExecuteCommand("delete TagPerson where Id = {0}", tag.Id);
@@ -129,33 +137,34 @@ Thank you for your consideration,<br />
 
 			foreach (var id in pids)
 			{
-				var vr = new SubRequest
+				var vr = new VolRequest
 				{
-					AttendId = attend.AttendId,
+					MeetingId = meeting.MeetingId,
 					RequestorId = person.PeopleId,
 					Requested = dt,
-					SubstituteId = id,
+					VolunteerId = id,
 				};
-				attend.SubRequests.Add(vr);
+				meeting.VolRequests.Add(vr);
 			}
 
 			var qb = Db.QueryBuilderScratchPad();
 			qb.CleanSlate(Db);
 			qb.AddNewClause(QueryType.HasMyTag, CompareType.Equal, "{0},temp".Fmt(tag.Id));
-			attend.Commitment = CmsData.Codes.AttendCommitmentCode.FindSub;
+			if (additional + limit > limit)
+				meeting.AddEditExtra(Db, "TotalVolunteersNeeded", (additional + limit).ToString());
 			Db.SubmitChanges();
 
-			var reportlink = @"<a href=""{0}OnlineReg/VolSubReport/{1}/{2}/{3}"">Substitute Status Report</a>"
-				.Fmt(Db.CmsHost, attend.AttendId, person.PeopleId, dt.Ticks);
+			var reportlink = @"<a href=""{0}Manage/RequestReport/{1}/{2}/{3}"">Volunteer Request Status Report</a>"
+				.Fmt(Db.CmsHost, meeting.MeetingId, person.PeopleId, dt.Ticks);
 			var list = Db.PeopleFromPidString(org.NotifyIds).ToList();
 			//list.Insert(0, person);
 			Db.Email(person.FromEmail, list,
-				"Volunteer Substitute Commitment for " + org.OrganizationName,
+				"Volunteer Commitment for " + org.OrganizationName,
 				@"
-<p>{0} has requested a substitute on {1:MMM d} at {1:h:mm tt}.</p>
+<p>{0} has requested volunteers on {1:MMM d} for {1:h:mm tt}.</p>
 <blockquote>
 {2}
-</blockquote>".Fmt(person.Name, attend.MeetingDate, reportlink));
+</blockquote>".Fmt(person.Name, meeting.MeetingDate, reportlink));
 
 			// Email subs
 			var m = new MassEmailer(qb.QueryId, null);
@@ -203,90 +212,95 @@ Thank you for your consideration,<br />
 		}
 		public void ProcessReply(string ans)
 		{
-			if (attend.PeopleId != person.PeopleId)
-			{
-				DisplayMessage = "This substitute request has already been covered. Thank you so much for responding.";
-				return;
-			}
 			var dt = new DateTime(ticks);
-			var r = (from rr in Db.SubRequests
-					 where rr.AttendId == attend.AttendId
+			var i = (from rr in Db.VolRequests
+					 where rr.MeetingId == meeting.MeetingId
 					 where rr.RequestorId == person.PeopleId
 					 where rr.Requested == dt
-					 where rr.SubstituteId == sid
-					 select rr).Single();
-			r.Responded = DateTime.Now;
+					 where rr.VolunteerId == vid
+					 let commits = (from a in rr.Meeting.Attends
+									where a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.FindSub
+									select a).Count()
+					 let needed = (from e in rr.Meeting.MeetingExtras
+								   where e.Field == "TotalVolunteersNeeded"
+								   select e.Data).Single()
+					 select new
+					 {
+						 volunteer = rr.Volunteer,
+						 r = rr,
+						 commits,
+						 needed
+					 }).Single();
+			if (i.commits >= i.needed.ToInt())
+			{
+				DisplayMessage = "This volunteer request has already been covered. Thank you so much for responding.";
+				return;
+			}
+			i.r.Responded = DateTime.Now;
 			if (ans != "yes")
 			{
 				DisplayMessage = "Thank you for responding";
-				r.CanSub = false;
+				i.r.CanVol = false;
 				Db.SubmitChanges();
 				return;
 			}
-			r.CanSub = true;
-			Attend.MarkRegistered(Db, r.Substitute.PeopleId, attend.MeetingId, CmsData.Codes.AttendCommitmentCode.Substitute);
-			attend.Commitment = CmsData.Codes.AttendCommitmentCode.SubFound;
+			i.r.CanVol = true;
+			Attend.MarkRegistered(Db, i.r.VolunteerId, meeting.MeetingId, AttendCommitmentCode.Attending);
 			Db.SubmitChanges();
 			var body = @"
 <p>{0},</p>
 <p>Thank you so much.</p>
-<p>You are now assigned to cover for {1}<br />
-in the {2}<br />
-on {3:MMM d, yyyy} at {3:t}.
-See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
-				org.OrganizationName, attend.MeetingDate);
+<p>You are now assigned to volunteer on {2:MMM d, yyyy} at {2:t}.
+in {1}<br />
+See you there!</p>".Fmt(i.volunteer.Name, org.OrganizationName, meeting.MeetingDate);
 
 			// on screen message
-			DisplayMessage = "<p>You have been sent the following email at {0}.</p>\n"
-				.Fmt(Util.ObscureEmail(r.Substitute.EmailAddress)) + body;
-
-			// email confirmation
-			Db.Email(r.Requestor.FromEmail, r.Substitute,
-				"Volunteer Substitute Committment for " + org.OrganizationName, body);
+			DisplayMessage = "<p>You have sent the following email from {0}.</p>\n"
+				.Fmt(Util.ObscureEmail(i.volunteer.EmailAddress)) + body;
 
 			// notify requestor and org notifyids
 			var list = Db.PeopleFromPidString(org.NotifyIds).ToList();
-			list.Insert(0, r.Requestor);
-			Db.Email(r.Substitute.FromEmail, list,
-				"Volunteer Substitute Committment for " + org.OrganizationName,
+			list.Insert(0, person);
+			Db.Email(i.volunteer.FromEmail, list,
+				"Volunteer Committment for " + org.OrganizationName,
 				@"
 <p>The following email was sent to {0}.</p>
 <blockquote>
 {1}
-</blockquote>".Fmt(r.Substitute.Name, body));
+</blockquote>".Fmt(i.volunteer.Name, body));
 		}
-		public class SubStatusInfo
+		public class VolStatusInfo
 		{
-			public string SubName { get; set; }
+			public string VolName { get; set; }
 			public DateTime Requested { get; set; }
 			public DateTime? Responded { get; set; }
-			public bool? CanSub { get; set; }
-			public HtmlString CanSubDisplay
+			public bool? CanVol { get; set; }
+			public HtmlString CanVolDisplay
 			{
 				get
 				{
-					switch (CanSub)
+					switch (CanVol)
 					{
-						case true: return new HtmlString("<span class=\"red\">Can Substitute</span>");
-						case false: return new HtmlString("Cannot Substitute");
+						case true: return new HtmlString("<span class=\"red\">Can Volunteer</span>");
+						case false: return new HtmlString("Cannot Volunteer");
 					}
 					return new HtmlString("");
 				}
 			}
 		}
-		public IEnumerable<SubStatusInfo> SubRequests()
+		public IEnumerable<VolStatusInfo> VolRequests()
 		{
 			var dt = new DateTime(ticks);
-			var q = from r in Db.SubRequests
-					where r.AttendId == attend.AttendId
+			var q = from r in Db.VolRequests
+					where r.MeetingId == meeting.MeetingId
 					where r.RequestorId == person.PeopleId
 					where r.Requested == dt
-					select new SubStatusInfo
+					select new VolStatusInfo
 					{
-						SubName = r.Substitute.Name,
+						VolName = r.Volunteer.Name,
 						Requested = r.Requested,
 						Responded = r.Responded,
-						CanSub = r.CanSub
+						CanVol = r.CanVol
 					};
 			return q;
 		}
