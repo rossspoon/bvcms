@@ -133,11 +133,14 @@
 			Selects people based on number of days since last contacted.
 			Only selects those with any contact
 		</Field>
-    <Field Name="RecentContactMinistry" Title="Recent Contact Ministry" Type="Code" DisplayAs="RecentContactType({0})" Params="Days" DataSource="Ministries" DataValueField="IdCode">
+    <Field Name="RecentContactMinistry" Title="Recent Contact Ministry" Type="Code" DisplayAs="RecentContactMinistry({0})" Params="Days" DataSource="Ministries" DataValueField="IdCode">
       Selects people based on an contact Ministry type looking back a specified number of days.
     </Field>
     <Field Name="RecentContactType" Title="Recent Contact Type" Type="Code" DisplayAs="RecentContactType({0})" Params="Days" DataSource="ContactTypeCodes" DataValueField="IdCode">
       Selects people based on an contact type looking back a specified number of days.
+    </Field>
+    <Field Name="RecentContactReason" Title="Recent Contact Reason" Type="Code" DisplayAs="RecentContactReason({0})" Params="Days" DataSource="ContactReasonCodes" DataValueField="IdCode">
+      Selects people based on an contact reason looking back a specified number of days.
     </Field>
     <Field Name="RecentEmailCount" Title="Recent Email Count" Type="Integer" DisplayAs="RecentEmailCount({0})" Params="Days">
       Selects people based on # emails received looking back a specified number of days.

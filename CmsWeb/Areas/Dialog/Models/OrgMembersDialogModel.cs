@@ -26,7 +26,8 @@ namespace CmsWeb.Models
         public DateTime? InactiveDate { get; set; }
         public DateTime? EnrollmentDate { get; set; }
         public bool Pending { get; set; }
-    	public decimal? addpmt { get; set; }
+	    public bool MemTypeOriginal { get; set; }
+	    public decimal? addpmt { get; set; }
     	public string addpmtreason { get; set; }
 
         private IList<int> list = new List<int>();

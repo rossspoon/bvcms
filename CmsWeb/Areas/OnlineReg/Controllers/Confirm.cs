@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using System.Web.Security;
 using CmsData;
 using CmsWeb.Models;
 using UtilityExtensions;
@@ -354,7 +355,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				t.Approved = true;
 				m.EnrollAndConfirm();
 				if (m.List.Any(pp => pp.PeopleId == null))
+				{
+					if ((bool?)Session["OnlineRegLogin"] == true)
+					{
+						FormsAuthentication.SignOut();
+						Session.Abandon();
+					}
 					return "error: no person";
+				}
 				m.UseCoupon(t.TransactionId);
 			}
 			else
@@ -367,7 +375,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				}
 				m.EnrollAndConfirm();
 				if (m.List.Any(pp => pp.PeopleId == null))
+				{
+					if ((bool?)Session["OnlineRegLogin"] == true)
+					{
+						FormsAuthentication.SignOut();
+						Session.Abandon();
+					}
 					return "error: no person";
+				}
 				m.UseCoupon(t.TransactionId);
 			}
 			if (m.IsCreateAccount() || m.ManagingSubscriptions())
@@ -377,6 +392,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			ViewData["orgname"] = m.org != null ? m.org.OrganizationName
 								: m.masterorgid.HasValue ? m.masterorg.OrganizationName
 								: m.div.Name;
+			if ((bool?)Session["OnlineRegLogin"] == true)
+			{
+				FormsAuthentication.SignOut();
+				Session.Abandon();
+			}
 			return confirm;
 		}
 		public ActionResult Confirm(int? id, string TransactionID, decimal? Amount)

@@ -52,17 +52,19 @@ namespace CmsWeb.Areas.Finance.Models.Report
 				using (var stream = new FileStream(OutputFile, FileMode.Create))
 					c.Run(stream, Db, qc);
 				LastSet = c.LastSet();
-				for (int i = 1; i <= LastSet; i++)
-					using(var stream = new FileStream(Output(OutputFile, i), FileMode.Create))
-						c.Run(stream, Db, qc, i);
+				var sets = c.Sets();
+				foreach(var set in sets)
+					using(var stream = new FileStream(Output(OutputFile, set), FileMode.Create))
+						c.Run(stream, Db, qc, set);
 				runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
 				runningtotals.LastSet = LastSet;
+				runningtotals.Sets = string.Join(",", sets);
 				runningtotals.Completed = DateTime.Now;
 				Db.SubmitChanges();
 			}
 			else
 			{
-				stream = new StreamWriter(OutputFile);
+				textStream = new StreamWriter(OutputFile);
 				foreach (var c in qc)
 				{
 					pageStatement = 1;
@@ -74,7 +76,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 					runningtotals.Processed += 1;
 					Db.SubmitChanges();
 				}
-				stream.Close();
+				textStream.Close();
 				runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
 				runningtotals.Completed = DateTime.Now;
 				Db.SubmitChanges();
@@ -86,17 +88,17 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			return outf;
 		}
 
-		private StreamWriter stream;
+		private StreamWriter textStream;
 		private void rWrite(string s)
 		{
 			s = s.Replace("\n", "\r\n");
-			stream.Write(s);
+			textStream.Write(s);
 		}
 		private void rWrite(char c)
 		{
 			if (c == '\n')
-				stream.Write("\r");
-			stream.Write(c);
+				textStream.Write("\r");
+			textStream.Write(c);
 		}
 		private int pageStatement = 0;
 		private string dateLine = "Date: " + Util.Now.Date.ToString("MMM dd yyyy") + "\n";

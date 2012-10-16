@@ -7,7 +7,7 @@
 
 @Html.Hidden("OrgId", Model.OrgId)
 @Html.Hidden("SortByWeek", Model.SortByWeek)
-<h2>Volunteer Calendar for <a href="/Organization/Index/@Model.OrgId">@Model.OrgName</a></h2>
+<h2>Volunteer Calendar for @Html.ActionLink(Model.OrgName, "Index", "Organization", new { area = "Main", id = Model.OrgId }, null)</h2>
 <div class="floatleft" style="margin-right:2em;">
 <table id="month">
 	<thead>
@@ -52,13 +52,13 @@
                 <p class="date">
         @if (t.MeetingId > 0)
         {
-                    @Html.ActionLink("Rollsheet ({0}/{1})".Fmt(t.Count, t.Limit), "Rollsheet", "Reports", new { meetingid = t.MeetingId }, new { target = "_blank" })<br/>
-        			@Html.ActionLink("Meeting", "Index", "Meeting", new { mid = t.MeetingId }, new { target = "meeting" })<br/>
-        			@Html.ActionLink("Request Volunteers", "Request", "Volunteers", new { mid = t.MeetingId, limit = t.Limit }, new { tClass = "volreq" })
+                @Html.ActionLink("Rollsheet ({0}/{1})".Fmt(t.Count, t.Limit), "Rollsheet", "Reports", new { area = "Main", meetingid = t.MeetingId }, new { target = "_blank" })<br/>
+        		@Html.ActionLink("Meeting", "Index", "Meeting", new { area = "Main", id = t.MeetingId }, new { target = "meeting" })<br/>
+        		@Html.ActionLink("Request Volunteers", "Request", "Volunteers", new { mid = t.MeetingId, limit = t.Limit }, new { tClass = "volreq" })
         }
         else
         {
-                    <span>&nbsp;</span>
+                <span>&nbsp;</span>
         }
                 </p>
         @foreach (var p in t.OrderedPersons())
@@ -69,7 +69,7 @@
                 }
                 else
                 {
-                <div><a href="/Person/Index/@p.PeopleId">@p.Name</a></div>
+                <div>@Html.ActionLink(p.Name, "Index", "Person", new { area = "Main", id = p.PeopleId }, null)</div>
                 }
         }
                 <div class="drop day" target="meeting" time="@t.Time">target</div>
@@ -83,9 +83,9 @@
 @if (Model.IsLeader)
 {
 <div class="floatleft">
-    <p><a id="sendreminders" class="bt" href="/Organization/Reminders/@Model.OrgId">Email Reminders</a>
-        @Html.CheckBox("emailall") Email All (default next 7 days)
-    </p>
+	<p>@Html.ActionLink("Email Reminders", "Reminders", "Organization", new { area = "Main", id = Model.OrgId }, new { id= "sendreminders", @class = "bt" })
+		@Html.CheckBox("emailall") Email All (default next 7 days)
+	</p>
     <p>Small Group Filters<br />
         @Html.DropDownList("sg1", Model.SmallGroups(), new { @class="smallgroup" })<br />
         @Html.DropDownList("sg2", Model.SmallGroups(), new { @class="smallgroup" })
@@ -93,18 +93,20 @@
     <div class="drop day" target="clear" week="0" time="1-1-1000" style="padding:5px;height:2em;border:2px solid black;">target here to remove commitments</div>
     <h4><em>Select header items in blue below, or a person, then click a target</em></h4>
     @{
-    var vlist = Model.Volunteers();
+    var vlist = Model.Volunteers().ToList();
     <div class="volunteers">
     <div class="selectable" source="all"><h3>All Volunteers</h3></div>
     <div class="selectable" source="commits"><h3>With Commitments</h3></div>
     @foreach (var v in vlist.Where(vv => vv.commits > 0))
     {
-    <div class="selectable" source="person" pid="@v.PeopleId">@v.Name (@v.commits) <a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" target="committments">registration page</a></div> 
+	<div class="selectable" source="person" pid="@v.PeopleId">@v.Name (@v.commits) 
+        @Html.ActionLink("registration page", "ManageVolunteer", "OnlineReg", new { area = "OnlineReg", id = v.OrgId, pid = v.PeopleId }, new { target = "committments" })</div> 
     }
     <div class="selectable" source="nocommits"><h3>With No Commitments</h3></div>
     @foreach (var v in vlist.Where(vv => vv.commits == 0))
     {
-    <div class="selectable" source="person" pid="@v.PeopleId">@v.Name (@v.commits) <a href="/OnlineReg/ManageVolunteer/@v.OrgId/@v.PeopleId" target="committments">registration page</a></div>
+	<div class="selectable" source="person" pid="@v.PeopleId">@v.Name (@v.commits) 
+        @Html.ActionLink("registration page", "ManageVolunteer", "OnlineReg", new { area = "OnlineReg", id = v.OrgId, pid = v.PeopleId }, new { target = "committments" })</div> 
     }
     </div>
     }

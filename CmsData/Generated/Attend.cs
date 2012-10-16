@@ -43,13 +43,13 @@ namespace CmsData
 		
 		private bool? _BFCAttendance;
 		
+		private bool? _Registered;
+		
 		private bool? _EffAttendFlag;
 		
 		private int? _SeqNo;
 		
 		private int? _Commitment;
-		
-		private bool? _Registered;
 		
    		
    		private EntitySet< SubRequest> _SubRequests;
@@ -111,6 +111,9 @@ namespace CmsData
 		partial void OnBFCAttendanceChanging(bool? value);
 		partial void OnBFCAttendanceChanged();
 		
+		partial void OnRegisteredChanging(bool? value);
+		partial void OnRegisteredChanged();
+		
 		partial void OnEffAttendFlagChanging(bool? value);
 		partial void OnEffAttendFlagChanged();
 		
@@ -119,9 +122,6 @@ namespace CmsData
 		
 		partial void OnCommitmentChanging(int? value);
 		partial void OnCommitmentChanged();
-		
-		partial void OnRegisteredChanging(bool? value);
-		partial void OnRegisteredChanged();
 		
     #endregion
 		public Attend()
@@ -447,6 +447,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Registered", UpdateCheck=UpdateCheck.Never, Storage="_Registered", DbType="bit")]
+		public bool? Registered
+		{
+			get { return this._Registered; }
+
+			set
+			{
+				if (this._Registered != value)
+				{
+				
+                    this.OnRegisteredChanging(value);
+					this.SendPropertyChanging();
+					this._Registered = value;
+					this.SendPropertyChanged("Registered");
+					this.OnRegisteredChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="EffAttendFlag", UpdateCheck=UpdateCheck.Never, Storage="_EffAttendFlag", DbType="bit", IsDbGenerated=true)]
 		public bool? EffAttendFlag
 		{
@@ -506,28 +528,6 @@ namespace CmsData
 					this._Commitment = value;
 					this.SendPropertyChanged("Commitment");
 					this.OnCommitmentChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="Registered", UpdateCheck=UpdateCheck.Never, Storage="_Registered", DbType="bit")]
-		public bool? Registered
-		{
-			get { return this._Registered; }
-
-			set
-			{
-				if (this._Registered != value)
-				{
-				
-                    this.OnRegisteredChanging(value);
-					this.SendPropertyChanging();
-					this._Registered = value;
-					this.SendPropertyChanged("Registered");
-					this.OnRegisteredChanged();
 				}
 
 			}

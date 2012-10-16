@@ -246,7 +246,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 			// people who attended, members or visitors
 			var attends = (from a in DbUtil.Db.Attends
 						   where a.MeetingId == MeetingId
-						   where a.EffAttendFlag == null || a.EffAttendFlag == true || a.Commitment == AttendCommitmentCode.Attending  || a.Commitment == AttendCommitmentCode.Substitute
+						   where a.EffAttendFlag == null || a.EffAttendFlag == true || a.Commitment != null
 						   select new
 						   {
 							   a,

@@ -19,37 +19,38 @@
 <h4>@Model.title()</h4>
 <a class="helplink" target="_blank" href='@Model.HelpLink()'>help</a>
 <table class="roundbox">
-	<tr> <td colspan="2"><h2>Filter Members</h2></td> </tr>
+	<tr> <td colspan="4"><h2>Filter Members</h2></td> </tr>
 	<tr>
 		<th>Tag: </th>
 		<td>@Html.DropDownList("tag", Model.Tags(), new { @class="filter" })</td>
+		<td>Inactive Date:</td>
+		<td rowspan="2" align="right"><a id="ClearFilter" class="bt" href="#">clear</a></td>
 	</tr>
 	<tr>
 		<th>Member Type:</th>
 		<td>@Html.DropDownList("memtype", Model.MemberTypeCodesWithNotSpecified(), new { @class = "filter" })</td>
+		<td nowrap="">@Html.TextBox("inactivedt", "", new { @class="filter datepicker" })</td>
 	</tr>
 	<tr>
-		<th>Inactive Date: </th>
-		<td valign="top">@Html.TextBox("inactivedt", "", new { @class="filter datepicker" })
-		&nbsp;&nbsp;&nbsp;&nbsp;
-        <a id="ClearFilter" class="bt" href="#">clear</a></td>
 	</tr>
-	<tr> <td colspan="2"> <h2>New Values</h2></td></tr>
-    <tr><td colspan="2">
+	<tr> <td colspan="4"> <h2>New Values</h2></td></tr>
+    <tr><td colspan="4">
 			<table>
 				<tr>
 					<td align="right">Membertype:</td>
 					<td>@Html.DropDownList("MemberType", Model.MemberTypeCodesWithDrop())</td>
 					<td>Enrollment</td>
-                    <td>@Html.TextBox("EnrollmentDate", "", new { @class = "datepicker", style = "width:100px" })</td>
+                    <td nowrap="">@Html.TextBox("EnrollmentDate", "", new { @class = "datepicker", style = "width:100px" })</td>
 					<td>Add Pmt</td>
                     <td>@Html.TextBox("addpmt")</td>
 				</tr>
 				<tr>
-					<td align="right">Pending:</td>
-					<td>@Html.CheckBox("Pending")</td>
+					<td colspan="2">
+						Pending:@Html.CheckBox("Pending")<br/>
+						MakeMemberTypes Original:@Html.CheckBox("MemTypeOriginal")
+					</td>
 					<td>InActive</td>
-                    <td>@Html.TextBox("InactiveDate", "", new { @class = "datepicker", style = "width:100px" })</td>
+                    <td nowrap="">@Html.TextBox("InactiveDate", "", new { @class = "datepicker", style = "width:100px" })</td>
 					<td>Reason:</td>
                     <td>@Html.TextBox("addpmtreason")</td>
 				</tr>
@@ -58,7 +59,7 @@
     </tr>
 </table>
 <input id="SelectAll" type="checkbox" /> Select All
-<input id="submit" type="submit" class="bt" name="Update" class="bt" value="Update Selected" />
+	<input id="submit" type="submit" class="bt" name="Update" class="bt" value="Update Selected" />
 <div>
 <table class="grid">
     <thead>

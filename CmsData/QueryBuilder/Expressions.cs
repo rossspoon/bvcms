@@ -89,7 +89,7 @@ namespace CmsData
 					where org == 0 || m.OrganizationId == org
 					where divid == 0 || dg.DivId == divid
 					where progid == 0 || pg.ProgId == progid
-					where m.Organization.OrgSchedules.Any(os => ids.Contains(os.ScheduleId.Value))
+					where m.Organization.OrgSchedules.Any(os => ids.Contains(os.ScheduleId ?? 0))
 					select m
 					).Any();
 			Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
@@ -213,7 +213,7 @@ namespace CmsData
 				where a.MeetingDate < to
 				where (a.AttendanceFlag
 						|| (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite))
-				where ids.Contains(a.AttendanceTypeId.Value)
+				where ids.Contains(a.AttendanceTypeId ?? 0)
 				where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
 				where org == 0 || a.OrganizationId == org
 				where divid == 0 || dg.DivId == divid
@@ -287,7 +287,7 @@ namespace CmsData
 				from pg in dg.Division.ProgDivs
 				where a.MeetingDate >= mindt
 				where a.AttendanceFlag || (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite)
-				where ids.Contains(a.AttendanceTypeId.Value)
+				where ids.Contains(a.AttendanceTypeId ?? 0)
 				where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
 				where org == 0 || a.Meeting.OrganizationId == org
 				where divid == 0 || dg.DivId == divid
@@ -315,7 +315,7 @@ namespace CmsData
 				from dg in m.Organization.DivOrgs
 				from pg in dg.Division.ProgDivs
 				where m.EnrollmentDate >= mindt
-				where ids.Contains(m.Organization.RegistrationTypeId.Value)
+				where ids.Contains(m.Organization.RegistrationTypeId ?? 0)
 				where orgtype == 0 || m.Organization.OrganizationTypeId == orgtype
 				where org == 0 || m.OrganizationId == org
 				where divid == 0 || dg.DivId == divid
@@ -407,6 +407,21 @@ namespace CmsData
 				expr = Expression.Not(expr);
 			return expr;
 		}
+		internal static Expression RecentContactReason(
+			ParameterExpression parm,
+			int days,
+			CompareType op,
+			int[] ids)
+		{
+			var mindt = Util.Now.AddDays(-days).Date;
+			Expression<Func<Person, bool>> pred = p =>
+				p.contactsHad.Any(a => a.contact.ContactDate >= mindt
+					&& ids.Contains(a.contact.ContactReasonId));
+			Expression expr = Expression.Invoke(pred, parm);
+			if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+				expr = Expression.Not(expr);
+			return expr;
+		}
 
 		internal static Expression RecentContactMinistry(
 			ParameterExpression parm,
@@ -417,7 +432,7 @@ namespace CmsData
 			var mindt = Util.Now.AddDays(-days).Date;
 			Expression<Func<Person, bool>> pred = p =>
 				p.contactsHad.Any(a => a.contact.ContactDate >= mindt
-					&& ids.Contains(a.contact.MinistryId.Value));
+					&& ids.Contains(a.contact.MinistryId ?? 0));
 			Expression expr = Expression.Invoke(pred, parm);
 			if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
 				expr = Expression.Not(expr);
@@ -2485,11 +2500,11 @@ namespace CmsData
 				pred = p => p.CampusId == null;
 			else if (op == CompareType.IsNotNull)
 				pred = p => p.CampusId != null;
+			else if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+				pred = p => !ids.Contains(p.CampusId ?? 0);
 			else
-				pred = p => ids.Contains(p.CampusId.Value);
+				pred = p => ids.Contains(p.CampusId ?? 0);
 			Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
-			if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
-				expr = Expression.Not(expr);
 
 			return expr;
 		}
@@ -2498,7 +2513,7 @@ namespace CmsData
 			int[] ids)
 		{
 			Expression<Func<Person, bool>> pred = p =>
-				p.Volunteers.Any(v => ids.Contains(v.StatusId.Value));
+				p.Volunteers.Any(v => ids.Contains(v.StatusId ?? 0));
 			Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
 			if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
 				expr = Expression.Not(expr);

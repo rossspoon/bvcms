@@ -34,11 +34,11 @@ namespace CmsWeb.Areas.Manage
                 new { controller = "EmailsView", action = "View", id = "" }
             );
 			context.MapRoute("RequestVolunteers",
-				 "Manage/{controller}/{action}/{mid}/{limit}",
+				 "Manage/Volunteers/{action}/{mid}/{limit}",
 				 new { controller = "Volunteers", action = "Request", mid = 0, limit = 0 }
 			 );
 			context.MapRoute("RequestReport",
-                "Manage/{controller}/{action}/{mid}/{pid}/{ticks}",
+                "Manage/Volunteers/{action}/{mid}/{pid}/{ticks}",
                 new { controller = "Volunteers", action = "RequestReport", mid=0, pid=0, ticks=0 }
             );
             AddRoute(context, "Volunteers");

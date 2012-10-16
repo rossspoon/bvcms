@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using CmsData;
 using CmsWeb.Models;
 using UtilityExtensions;
@@ -124,6 +125,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					TempData["mg"] = m.UserPeopleId;
 					return Redirect("/OnlineReg/ManageGiving/{0}".Fmt(m.orgid));
 				}
+				if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.OnlinePledge)
+				{
+					TempData["mp"] = m.UserPeopleId;
+					return Redirect("/OnlineReg/ManagePledge/{0}".Fmt(m.orgid));
+				}
 				if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
 				{
 					TempData["ps"] = m.UserPeopleId;
@@ -153,6 +159,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				ModelState.AddModelError("authentication", ret.ToString());
 				return View("Flow/List", m);
 			}
+			Session["OnlineRegLogin"] = true;
 			var user = ret as User;
 			if (m.orgid == Util.CreateAccountCode)
 				return Content("/Person/Index/" + Util.UserPeopleId);
@@ -569,6 +576,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		}
 		public ActionResult Timeout(string ret)
 		{
+			FormsAuthentication.SignOut();
+			Session.Abandon();
 			ViewBag.Url = ret;
 			return View();
 		}

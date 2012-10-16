@@ -1,7 +1,7 @@
 ﻿$(function () {
     $.dpoptions = {
         yearRange: 'c-99:c+0',
-        onSelect: function (dateText, inst) {
+        onSelect: function(dateText, inst) {
             var f = $(this).closest('form');
             $("#age", f).text($.dodate(dateText));
         }

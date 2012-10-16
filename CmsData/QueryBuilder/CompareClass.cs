@@ -469,6 +469,11 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.RecentContactReason:
+                    return Expressions.RecentContactReason(parm,
+                               c.Days,
+                               CompType,
+                               c.CodeIntIds);
                 case QueryType.RecentDecisionType:
                     return Expressions.RecentDecisionType(parm,
                                c.Days,

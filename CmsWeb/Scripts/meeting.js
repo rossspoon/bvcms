@@ -112,7 +112,7 @@
                 $(".atck:not(:checked)").parent().parent().show();
                 break;
             case "reg":
-                $(".rgck[val=1]").parent().parent().show();
+                $(".commitment:not(:contains('Uncommitted'))").parent().parent().show();
                 $(".atck:checked").parent().parent().show();
                 break;
             case "all":

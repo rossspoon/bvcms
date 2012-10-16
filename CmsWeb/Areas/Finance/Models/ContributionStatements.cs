@@ -34,6 +34,13 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			var m = pageEvents.FamilySet.Max(kp => kp.Value);
 			return m;
 		}
+		public List<int> Sets()
+		{
+			if (pageEvents.FamilySet.Count == 0)
+				return new List<int>();
+			var m = pageEvents.FamilySet.Values.Distinct().ToList();
+			return m;
+		}
 
 		public void Run(Stream stream, CMSDataContext Db, IEnumerable<ContributorInfo> q, int set = 0)
 		{
@@ -55,6 +62,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).FirstOrDefault();
 			runningtotals.Processed = 0;
 			Db.SubmitChanges();
+			var count = 0;
 			foreach (var ci in contributors)
 			{
 				if (set > 0 && pageEvents.FamilySet[ci.PeopleId] != set)
@@ -68,6 +76,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 					doc.NewPage();
 				if (set == 0)
 					pageEvents.FamilySet[ci.PeopleId] = 0;
+				count++;
 
 				var st = new StyleSheet();
 				st.LoadTagStyle("h1", "size", "18px");
@@ -301,7 +310,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 			}
 			doc.Close();
 
-			if(set == LastSet())
+			if (set == LastSet())
 				runningtotals.Completed = DateTime.Now;
 			Db.SubmitChanges();
 		}

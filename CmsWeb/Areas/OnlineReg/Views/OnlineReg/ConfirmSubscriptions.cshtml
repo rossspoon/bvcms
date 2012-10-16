@@ -8,12 +8,13 @@
 {
 @Html.Script("/Scripts/OnlineReg.js")
 }
-    @Html.Hidden("otheredit", 0)
-    <h2>Confirmation</h2>
-    <div>@Html.Raw(Model.Instructions)</div>
-    <p>
-        Thank you @Model.person.PreferredName, for managing your subscriptions to @Model.Description()<br />
-        You should receive a confirmation email shortly.</p>
-    <p> You have subscribed to the following:</p>
-    @Html.Raw(Model.Summary)
-
+<div class="confirm">
+	@Html.Hidden("otheredit", 0)
+	<h2>Confirmation</h2>
+	<div>@Html.Raw(Model.Instructions)</div>
+	<p>
+		Thank you @Model.person.PreferredName, for managing your subscriptions to @Model.Description()<br />
+		You should receive a confirmation email shortly.</p>
+	<p> You have subscribed to the following:</p>
+	@Html.Raw(Model.Summary)
+</div>

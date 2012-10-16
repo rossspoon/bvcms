@@ -59,6 +59,15 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     om.Pending = m.Pending;
 					if (m.addpmt.HasValue)
 						om.AddTransaction(Db, m.addpmt ?? 0, m.addpmtreason);
+					if (m.MemTypeOriginal)
+					{
+						var et = (from e in Db.EnrollmentTransactions
+						         where e.PeopleId == om.PeopleId
+						         where e.OrganizationId == m.orgid
+								 orderby e.TransactionDate
+						         select e).First();
+						et.MemberTypeId = om.MemberTypeId;
+					}
                 }
 	            Db.SubmitChanges();
             }
