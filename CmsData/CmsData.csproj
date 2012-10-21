@@ -530,6 +530,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MigrationScripts\Migrate-10-20-2012.sql" />
     <Content Include="QueryBuilder\FieldMap2.xml">
       <SubType>Designer</SubType>
     </Content>

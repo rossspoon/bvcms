@@ -80,19 +80,25 @@
             <td><a class="voidcredit bt @noadmin" 
                  href='/Manage/Transactions/CreditVoid/@t.Id?type=Void'>Void</a></td>
     }
+    else if (t.Voided == true)
+	{
+            <td>voided</td>
+	}
+    else
+	{
+            <td></td>
+	}
     @if (t.CanCredit)
     {
             <td><a class="voidcredit bt @noadmin" 
                 href='/Manage/Transactions/CreditVoid/@t.Id?type=Credit'>Credit</a></td>
     }
-    else if (t.Voided == true || t.Credited == true)
+    else if (t.Credited == true)
     {
-            <td>@(t.Voided == true ? "voided" : "")</td>
-            <td>@(t.Credited == true ? "credited" : "")</td>
+            <td>credited</td>
     }
     else
 	{
-            <td></td>
             <td>@(t.Amt < 0 ? "credit" : "")</td>
 	}
             <td><a class="adjust bt @noadmin" 

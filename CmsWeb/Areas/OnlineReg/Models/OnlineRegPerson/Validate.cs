@@ -414,6 +414,9 @@ Please search with a different email, phone, or birthday.";
         }
         public bool IsSmallGroupFilled(List<RegSettings.MenuItem> options, string sg, out string desc)
         {
+	        desc = null;
+			if (sg == "nocheckbox")
+				return false;
             var i = options.SingleOrDefault(dd => dd.SmallGroup == sg);
             desc = i.Description;
             if (i.Limit > 0)

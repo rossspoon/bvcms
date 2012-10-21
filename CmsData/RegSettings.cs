@@ -473,7 +473,7 @@ namespace CmsData
 		}
 		private void CheckDupSmallGroup(IEnumerable<MenuItem> list, string name)
 		{
-			var q = list.GroupBy(mi => mi.SmallGroup).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+			var q = list.Where(mi => mi.SmallGroup != "nocheckbox").GroupBy(mi => mi.SmallGroup).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
 			if (q.Any())
 				throw GetException("Duplicate SmallGroup in {0}: {1}".Fmt(name, string.Join(",", q)));
 		}

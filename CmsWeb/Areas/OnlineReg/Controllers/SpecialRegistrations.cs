@@ -97,7 +97,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		public ActionResult ConfirmVolunteerSlots(VolunteerModel m)
 		{
 			m.UpdateCommitments();
-			if (m.SendEmail)
+			if (m.SendEmail || !m.IsLeader)
 			{
 				List<Person> Staff = null;
 				Staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId);
@@ -121,8 +121,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed volunteer commitments to {1}<br/>
 The following Committments:<br/>
 {2}".Fmt(m.Person.Name, m.Org.OrganizationName, summary));
-				ViewData["Organization"] = m.Org.OrganizationName;
 			}
+			ViewData["Organization"] = m.Org.OrganizationName;
 			SetHeaders(m.OrgId);
 			if (m.IsLeader)
 				return View("ManageVolunteer", m);

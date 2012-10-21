@@ -36,14 +36,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 					};
 			return Json(q);
 		}
-		public ActionResult Calendar(int id, string sg1, string sg2, bool? SortByWeek)
-		{
-			var m = new VolunteerCommitmentsModel(id);
-			m.SmallGroup1 = sg1;
-			m.SmallGroup2 = sg2;
-			m.SortByWeek = SortByWeek ?? false;
-			return View(m);
-		}
+
 		public class PostTargetInfo
 		{
 			public int id { get; set; }
@@ -55,6 +48,16 @@ namespace CmsWeb.Areas.Manage.Controllers
 			public string sg1 {get; set;}
 			public string sg2 {get; set;}
 		}
+
+		public ActionResult Calendar(int id, string sg1, string sg2, bool? SortByWeek)
+		{
+			var m = new VolunteerCommitmentsModel(id);
+			m.SmallGroup1 = sg1;
+			m.SmallGroup2 = sg2;
+			m.SortByWeek = SortByWeek ?? false;
+			return View(m);
+		}
+
 		[HttpPost]
 		public ActionResult ManageArea(PostTargetInfo i)
 		{
@@ -66,6 +69,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 				m.ApplyDragDrop(i.target, i.week, i.time, s);
 			return View(m);
 		}
+
 		[HttpPost]
 		public ActionResult ManageArea2(int id, string sg1, string sg2, bool? SortByWeek)
 		{

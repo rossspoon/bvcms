@@ -11,71 +11,71 @@ using CmsData.Codes;
 
 namespace CmsWeb.Areas.Dialog.Controllers
 {
-    public class OrgMembersDialogController : CmsStaffController
-    {
-        public ActionResult Index(int id, bool? inactives, bool? pendings, int? sg)
-        {
-            var m = new OrgMembersDialogModel
-            {
-                orgid = id,
-                inactives = inactives ?? false,
-                pendings = pendings ?? false,
-                Pending = pendings ?? false,
-                sg = sg,
-            };
-            return View(m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Filter(OrgMembersDialogModel m)
-        {
-            return View("Rows", m);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Display(int id, int pid)
-        {
-            var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == id);
-            return View(om);
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Update(OrgMembersDialogModel m)
-        {
+	public class OrgMembersDialogController : CmsStaffController
+	{
+		public ActionResult Index(int id, bool? inactives, bool? pendings, int? sg)
+		{
+			var m = new OrgMembersDialogModel
+			{
+				orgid = id,
+				inactives = inactives ?? false,
+				pendings = pendings ?? false,
+				Pending = pendings ?? false,
+				sg = sg,
+			};
+			return View(m);
+		}
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Filter(OrgMembersDialogModel m)
+		{
+			return View("Rows", m);
+		}
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Display(int id, int pid)
+		{
+			var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == id);
+			return View(om);
+		}
+		[AcceptVerbs(HttpVerbs.Post)]
+		public ActionResult Update(OrgMembersDialogModel m)
+		{
 			var Db = DbUtil.Db;
 			var tag = Db.PopulateTemporaryTag(m.List);
 			var q = from om in m.OrgMembers()
 					where Db.TagPeople.Any(tt => tt.Id == tag.Id && tt.PeopleId == om.PeopleId)
 					select om;
-            foreach (var om in q)
-            {
-                if (m.MemberType == MemberTypeCode.Drop)
-                    om.Drop(Db, addToHistory:true);
-                else
-                {
-                    if (m.MemberType > 0)
-                        om.MemberTypeId = m.MemberType;
-                    if (m.InactiveDate.HasValue)
-                        om.InactiveDate = m.InactiveDate;
-                    if (m.EnrollmentDate.HasValue)
-                        om.EnrollmentDate = m.EnrollmentDate;
-                    om.Pending = m.Pending;
+			foreach (var om in q)
+			{
+				if (m.MemberType == MemberTypeCode.Drop)
+					om.Drop(Db, addToHistory: true);
+				else
+				{
+					if (m.MemberType > 0)
+						om.MemberTypeId = m.MemberType;
+					if (m.InactiveDate.HasValue)
+						om.InactiveDate = m.InactiveDate;
+					if (m.EnrollmentDate.HasValue)
+						om.EnrollmentDate = m.EnrollmentDate;
+					om.Pending = m.Pending;
 					if (m.addpmt.HasValue)
 						om.AddTransaction(Db, m.addpmt ?? 0, m.addpmtreason);
 					if (m.MemTypeOriginal)
 					{
 						var et = (from e in Db.EnrollmentTransactions
-						         where e.PeopleId == om.PeopleId
-						         where e.OrganizationId == m.orgid
-								 orderby e.TransactionDate
-						         select e).First();
+								  where e.PeopleId == om.PeopleId
+								  where e.OrganizationId == m.orgid
+								  orderby e.TransactionDate
+								  select e).First();
 						et.MemberTypeId = om.MemberTypeId;
 					}
-                }
-	            Db.SubmitChanges();
-            }
-            return View();
-        }
-        public string HelpLink(string page)
-        {
-            return Util.HelpLink("SearchAdd_{0}".Fmt(page));
-        }
-    }
+				}
+				Db.SubmitChanges();
+			}
+			return View();
+		}
+		public string HelpLink(string page)
+		{
+			return Util.HelpLink("SearchAdd_{0}".Fmt(page));
+		}
+	}
 }

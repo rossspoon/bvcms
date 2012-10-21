@@ -105,7 +105,6 @@ namespace CmsWeb.Models
 			if (rg != null && pi != null)
 			{
 				SemiEvery = rg.SemiEvery;
-				Type = rg.Type;
 				StartWhen = rg.StartWhen;
 				StopWhen = null; //rg.StopWhen;
 				Day1 = rg.Day1;

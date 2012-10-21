@@ -154,7 +154,7 @@ Thank you for your consideration,<br />
 				meeting.AddEditExtra(Db, "TotalVolunteersNeeded", (additional + limit).ToString());
 			Db.SubmitChanges();
 
-			var reportlink = @"<a href=""{0}Manage/RequestReport/{1}/{2}/{3}"">Volunteer Request Status Report</a>"
+			var reportlink = @"<a href=""{0}Manage/Volunteers/RequestReport/{1}/{2}/{3}"">Volunteer Request Status Report</a>"
 				.Fmt(Db.CmsHost, meeting.MeetingId, person.PeopleId, dt.Ticks);
 			var list = Db.PeopleFromPidString(org.NotifyIds).ToList();
 			//list.Insert(0, person);
@@ -253,9 +253,10 @@ Thank you for your consideration,<br />
 <p>You are now assigned to volunteer on {2:MMM d, yyyy} at {2:t}.
 in {1}<br />
 See you there!</p>".Fmt(i.volunteer.Name, org.OrganizationName, meeting.MeetingDate);
+			Db.Email(person.FromEmail, i.volunteer, "Thank you for substituting for " + person.PreferredName, body);
 
 			// on screen message
-			DisplayMessage = "<p>You have sent the following email from {0}.</p>\n"
+			DisplayMessage = "<p>You have been sent the following email at {0}.</p>\n"
 				.Fmt(Util.ObscureEmail(i.volunteer.EmailAddress)) + body;
 
 			// notify requestor and org notifyids

@@ -187,7 +187,7 @@ namespace CmsWeb.Models
 							select new
 							{
 								settled = r["settle_date"].ToDate().Value.AddHours(4),
-								tranid = r["order_number"].ToInt(),
+								tranid = r["order_number"],
 								reference = r["reference"].ToString(),
 								approved = r["approved"].ToString().ToBool(),
 								name = r["name"].ToString(),
@@ -209,7 +209,7 @@ namespace CmsWeb.Models
 				var notbefore = DateTime.Parse("6/1/12");
 				foreach (var st in q2)
 				{
-					var t = DbUtil.Db.Transactions.SingleOrDefault(j => j.Id == st.tranid && st.date >= notbefore);
+					var t = DbUtil.Db.Transactions.SingleOrDefault(j => j.TransactionId == st.reference && st.date >= notbefore);
 					var tt = new Transaction
 					{
 						Name = st.name,
