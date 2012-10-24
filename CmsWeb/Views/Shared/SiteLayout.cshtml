@@ -50,7 +50,6 @@
                                     <a href="/Tags">Manage Active Tag</a>
 @if (admin)
 {
-                                        <a href="/Admin/Users.aspx">Manage Users</a>
                                         <a href="/Admin/Activity.aspx">Activity Log</a>
 }
                                 </div>
@@ -183,6 +182,7 @@
                                 <div class="sublinks" class="last">
                                 @if (admin)
                                 {
+                                    <a href="/Manage/Users/Index">Users</a>
                                     <a href="/Setup/Program/">Programs</a> 
                                     <a href="/Setup/Division/">Divisions</a>
                                     <a href="/Setup/Setting">Settings</a> 
@@ -278,6 +278,8 @@
                 <td>
                     <input type="checkbox" id="UseTitle" name="UseTitle" />
                     Use Titles<br />
+                    <input type="checkbox" id="SortZip" name="SortZip" />
+                    Sort by Zip<br />
                     <input type="checkbox" id="UsePhone" name="UsePhone" />
                     Include Phone<br />
 						  <br />

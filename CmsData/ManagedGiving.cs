@@ -78,6 +78,8 @@ namespace CmsData
 			Db.Transactions.InsertOnSubmit(t);
 			Db.SubmitChanges();
 
+#if DEBUG
+#else
 			if (gateway == "AuthorizeNet")
 				ret = anet.createCustomerProfileTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id);
 			else
@@ -129,6 +131,7 @@ namespace CmsData
 						"<a href='{0}Manage/Transactions/Index/{2}'>message: {1}, tranid:{2}</a>".Fmt(Db.CmsHost, ret.Message, t.Id),
 						Util.ToMailAddressList(p.EmailAddress), 0, null);
 			}
+#endif
 			return 1;
 		}
 		public static int DoAllGiving(CMSDataContext Db)

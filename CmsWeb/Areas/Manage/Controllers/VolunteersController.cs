@@ -112,6 +112,16 @@ namespace CmsWeb.Areas.Manage.Controllers
 			vs.ComposeMessage();
 			return View(vs);
 		}
+		[HttpGet]
+		public ActionResult Request0(long ticks, int oid, int limit)
+		{
+			var time = new DateTime(ticks);
+			var mid = DbUtil.Db.CreateMeeting(oid, time);
+			var vs = new VolunteerRequestModel(mid, Util.UserPeopleId.Value) {limit = limit };
+			//SetHeaders(vs.org.OrganizationId);
+			vs.ComposeMessage();
+			return View("Request", vs);
+		}
 		[HttpPost]
 		[ValidateInput(false)]
 		public ActionResult Request(int mid, long ticks, int[] pids, string subject, string message, int limit, int? additional)

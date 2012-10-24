@@ -74,7 +74,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 			    coll.Add("sHTML", body.Replace("\r", "").Replace("\n","").Replace("\t","") );
 
                 var wc = new WebClient();
-                var resp = wc.UploadValues("http://localhost:8887/Home/CreateWebsiteThumbnail", "POST", coll);
+                var resp = wc.UploadValues("http://192.168.100.28:8080/Home/CreateWebsiteThumbnail", "POST", coll);
 
                 if (content.ThumbID != 0) ImageData.Image.UpdateImageFromBits(content.ThumbID, resp);
                 else content.ThumbID = ImageData.Image.NewImageFromBits(resp).Id;

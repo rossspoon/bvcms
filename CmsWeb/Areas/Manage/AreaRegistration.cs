@@ -1,3 +1,4 @@
+using System;
 using System.Web.Mvc;
 
 namespace CmsWeb.Areas.Manage
@@ -33,8 +34,12 @@ namespace CmsWeb.Areas.Manage
                 "Manage/Emails/View/{id}",
                 new { controller = "EmailsView", action = "View", id = "" }
             );
+			context.MapRoute("RequestVolunteers0",
+				 "Manage/Volunteers/Request0/{ticks}/{oid}/{limit}",
+				 new { controller = "Volunteers", action = "Request0", ticks = 0, oid = 0, limit = 0 }
+			 );
 			context.MapRoute("RequestVolunteers",
-				 "Manage/Volunteers/{action}/{mid}/{limit}",
+				 "Manage/Volunteers/Request/{mid}/{limit}",
 				 new { controller = "Volunteers", action = "Request", mid = 0, limit = 0 }
 			 );
 			context.MapRoute("RequestReport",

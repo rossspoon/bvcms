@@ -92,6 +92,7 @@ namespace CmsWeb.Models
 		public class Slot
 		{
 			public DateTime Time { get; set; }
+			public long ticks { get { return Time.Ticks; } }
 			public DateTime Sunday { get; set; }
 			public int Week { get; set; }
 			public bool Disabled { get; set; }

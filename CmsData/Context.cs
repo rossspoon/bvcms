@@ -896,6 +896,12 @@ namespace CmsData
 			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
 			return ((int)(result.ReturnValue));
 		}
+		[Function(Name = "dbo.UpdateLastActivity")]
+		public int UpdateLastActivity([Parameter(DbType = "Int")] int? userid)
+		{
+			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userid);
+			return ((int)(result.ReturnValue));
+		}
 		[Function(Name = "dbo.PurgeUser")]
 		public int PurgeUser([Parameter(DbType = "Int")] int? uid)
 		{

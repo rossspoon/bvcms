@@ -8,7 +8,7 @@ using CmsData;
 namespace CmsWeb.Areas.Finance.Controllers
 {
 	[Authorize(Roles = "Admin")]
-    public class VaultController : Controller
+    public class VaultController : CmsController
     {
         //
         // GET: /Finance/Vault/

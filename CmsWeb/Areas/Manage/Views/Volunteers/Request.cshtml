@@ -30,7 +30,7 @@
 <h2>@Model.org.OrganizationName</h2>
 <div>
 </div>
-@using (Html.BeginForm("EmailVolunteerRequest"))
+@using (Html.BeginForm("Request", "Volunteers", "post"))
 {
     @Html.Hidden("mid", Model.meeting.MeetingId);
     @Html.Hidden("pid", Model.person.PeopleId);

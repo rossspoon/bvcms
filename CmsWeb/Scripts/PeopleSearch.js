@@ -34,16 +34,16 @@
         });
         return false;
     });
-    $.gotoPage = function (e, pg) {
+    $.gotoPage = function(e, pg) {
         $("#Page").val(pg);
         $.getTable();
         return false;
-    }
+    };
     $.setPageSize = function (e) {
         $('#Page').val(1);
         $("#PageSize").val($(e).val());
         return $.getTable();
-    }
+    };
     $.getTable = function () {
         var f = $('#results').closest('form');
         var q = f.serialize();
@@ -56,7 +56,7 @@
             });
         });
         return false;
-    }
+    };
     $('#results > tbody > tr:even').addClass('alt');
     $('#results > thead a.sortable').live('click', function (ev) {
         ev.preventDefault();

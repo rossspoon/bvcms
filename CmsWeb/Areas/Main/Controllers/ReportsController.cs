@@ -178,7 +178,7 @@ namespace CmsWeb.Areas.Main.Controllers
         //{
         //    return new CouponsResult(null, null);
         //}
-        public ActionResult AveryAddress(int? id, string format, bool? titles, bool? usephone, int skipNum = 0)
+        public ActionResult AveryAddress(int? id, string format, bool? titles, bool? usephone, bool? sortzip, int skipNum = 0)
         {
             if (!id.HasValue)
                 return Content("no query");
@@ -191,9 +191,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 titles = titles,
                 usephone = usephone ?? false,
 				skip = skipNum,
+				sortzip = sortzip
             };
         }
-        public ActionResult RollLabels(int? id, string format, bool? titles, bool? usephone)
+        public ActionResult RollLabels(int? id, string format, bool? titles, bool? usephone, bool? sortzip)
         {
             if (!id.HasValue)
                 return Content("no query");
@@ -203,6 +204,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 format = format,
                 titles = titles ?? false,
                 usephone = usephone ?? false,
+				sortzip = sortzip
             };
         }
         public ActionResult Prospect(int? id, bool? Form, bool? Alpha)

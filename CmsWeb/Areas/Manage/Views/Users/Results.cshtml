@@ -1,0 +1,38 @@
+﻿@using CmsWeb
+@using UtilityExtensions
+@model CmsWeb.Models.UsersModel
+
+<table id="results" class="grid" cellpadding="4">
+    <thead>
+		<tr><td colspan="6">User Count: @Model.Count().ToString("N0")</td></tr>
+    	<tr><td colspan="6">@Html.Partial("Pager2", Model)
+            @Html.Hidden("totcnt", Model.Count().ToString("N0"))</td></tr>
+    <tr>
+        <th>UserId</th>
+        <th><a href="#" class="sortable">User</a></th>
+        <th><a href="#" class="sortable">Name</a></th>
+        <th><a href="#" class="sortable">Online</a></th>
+        <th><a href="#" class="sortable">Email</a></th>
+        <th><a href="#" class="sortable">Activity</a></th>
+    </tr>
+    </thead>
+	<tbody>
+@if(Model.Count() == 0)
+{ 
+	<tr><td colspan="6">No matching records.</td></tr>
+} 
+		@foreach (var u in Model.Users()) {
+			<tr>
+				<td>@u.userid</td>
+				<td class="tip" title="@u.roles">@u.username</td>
+				<td>@Html.ActionLink(@u.name, "Index", "Person", new { area = "Main", id = u.peopleid }, null) </td>
+				<td>@u.online</td>
+				<td>@u.email</td>
+				<td>@u.activity.FormatDateTm()</td>
+			</tr>
+		}
+	</tbody>
+    <tfoot>
+		<tr><td colspan="6">@Html.Partial("Pager2", Model)</td></tr>
+    </tfoot>
+</table>

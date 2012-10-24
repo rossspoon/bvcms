@@ -109,6 +109,7 @@ ajaxmin Scripts/Task.js -o Min\Scripts/Task.js -clobber:true || pause
 ajaxmin Scripts/TestAPI.js -o Min\Scripts/TestAPI.js -clobber:true || pause
 ajaxmin Scripts/TransactionHistory.js -o Min\Scripts/TransactionHistory.js -clobber:true || pause
 ajaxmin Scripts/Transactions.js -o Min\Scripts/Transactions.js -clobber:true || pause
+ajaxmin Scripts/Users.js -o Min\Scripts/Users.js -clobber:true || pause
 ajaxmin Scripts/UserDialog.js -o Min\Scripts/UserDialog.js -clobber:true || pause
 ajaxmin Scripts/meeting.js -o Min\Scripts/meeting.js -clobber:true || pause
 ajaxmin Scripts/ManageVolunteer.js -o Min\Scripts/ManageVolunteer.js -clobber:true || pause

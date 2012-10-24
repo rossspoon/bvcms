@@ -79,9 +79,9 @@
                 <div><a href="/">Home</a></div>
             </td>
             <td class="dropdown">
-                <div><a href="/FindPeople">People</a></div>
+                <div><a href="/PeopleSearch">People</a></div>
                 <div class="sublinks">
-                    <a href="/FindPeople">Find People</a>
+                    <a href="/PeopleSearch">Find People</a>
                     <a href="/Tags">Manage Tags</a>
                     <a href="/Task/List/">Tasks</a>
                     <a href="/ContactSearch">Contact Search</a>

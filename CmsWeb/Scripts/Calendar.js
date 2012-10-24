@@ -1,12 +1,12 @@
 ﻿$(function () {
     $("a.bt").button();
-    $.URL = function (base) {
+    $.URL = function(base) {
         var u = base + $("#OrgId").val()
-                + "?sg1=" + $("#sg1").val() + "&sg2=" + $("#sg2").val();
+            + "?sg1=" + $("#sg1").val() + "&sg2=" + $("#sg2").val();
         if ($("#SortByWeek").val() === "True")
             return u + "&sortbyweek=true";
         return u;
-    }
+    };
     $("div[source=registered]").tooltip({ showBody: "|" });
     $('#sendreminders').live("click", function (ev) {
         ev.preventDefault();

@@ -720,13 +720,13 @@ no need to put these into the ""Source"" view of the editor anymore.
         }
 		[Authorize(Roles = "Edit")]
 		[HttpPost]
-		public ActionResult Reminders(int id, bool? sendall)
+		public ActionResult Reminders(int id, bool? emailall)
 		{
             var m = new OrganizationModel(id, null);
 			try
 			{
 				if (m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
-					m.SendVolunteerReminders(sendall ?? true, this);
+					m.SendVolunteerReminders(emailall ?? false, this);
 				else
 					m.SendEventReminders();
 			}

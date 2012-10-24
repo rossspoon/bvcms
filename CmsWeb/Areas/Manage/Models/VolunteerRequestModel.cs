@@ -150,8 +150,7 @@ Thank you for your consideration,<br />
 			var qb = Db.QueryBuilderScratchPad();
 			qb.CleanSlate(Db);
 			qb.AddNewClause(QueryType.HasMyTag, CompareType.Equal, "{0},temp".Fmt(tag.Id));
-			if (additional + limit > limit)
-				meeting.AddEditExtra(Db, "TotalVolunteersNeeded", (additional + limit).ToString());
+			meeting.AddEditExtra(Db, "TotalVolunteersNeeded", ((additional ?? 0) + limit).ToString());
 			Db.SubmitChanges();
 
 			var reportlink = @"<a href=""{0}Manage/Volunteers/RequestReport/{1}/{2}/{3}"">Volunteer Request Status Report</a>"

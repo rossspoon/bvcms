@@ -58,7 +58,7 @@
         }
         else
         {
-                <span>&nbsp;</span>
+        		@Html.ActionLink("Request Volunteers", "Request0", "Volunteers", new { ticks = t.ticks, oid = Model.OrgId, limit = t.Limit }, new { @class = "volreq" })
         }
                 </p>
         @foreach (var p in t.OrderedPersons())

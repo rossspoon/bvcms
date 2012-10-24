@@ -221,8 +221,10 @@
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Main\Models\Person\VolunteerModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\UsersController.cs" />
     <Compile Include="Areas\Manage\Models\CheckinTimeModel.cs" />
     <Compile Include="Areas\Manage\Models\ContentModel.cs" />
+    <Compile Include="Areas\Manage\Models\UsersModel.cs" />
     <Compile Include="Areas\Manage\Models\UploadPeopleModel.cs" />
     <Compile Include="Areas\Manage\Models\AccountModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
@@ -1059,10 +1061,12 @@
     <Content Include="Min\Scripts\TransactionHistory.js" />
     <Content Include="Min\Scripts\Transactions.js" />
     <Content Include="Min\Scripts\UserDialog.js" />
+    <Content Include="Min\Scripts\Users.js" />
     <Content Include="Scripts\CheckinActivity.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
     <Content Include="Scripts\Calendar.js" />
+    <Content Include="Scripts\Users.js" />
     <Content Include="Scripts\QuickSearch.js" />
     <Content Include="Scripts\family.js" />
     <Content Include="Scripts\meeting-ticket.js" />
@@ -1223,6 +1227,8 @@
     <Content Include="Areas\Manage\Views\Volunteers\Request.cshtml" />
     <Content Include="Areas\Manage\Views\Volunteers\EmailVolunteerRequest.cshtml" />
     <Content Include="Areas\Manage\Views\Volunteers\RequestReport.cshtml" />
+    <Content Include="Areas\Manage\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Users\Results.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
