@@ -14,7 +14,7 @@ namespace CmsWeb.Models
 {
 	public class VolunteerRequestModel
 	{
-		public long ticks { get; set; }
+		public long ticks { get; set; } // this is the time the request was composed
 		public int vid { get; set; }
 
 		public ICollection<int> pids { get; set; }
@@ -114,19 +114,30 @@ Thank you for your consideration,<br />
 		public string DisplayMessage { get; set; }
 		public string Error { get; set; }
 
+		public class VolInfo
+		{
+			public int PeopleId { get; set; }
+			public string Name { get; set; }
+			public string Email { get; set; }
+		}
 
-		public Dictionary<int, string> FetchPotentialVolunteers()
+		public List<VolInfo> FetchPotentialVolunteers()
 		{
 			var q = from om in Db.OrganizationMembers
-					where om.OrganizationId == org.OrganizationId
-					where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
-					where om.Pending == false
-					where om.PeopleId != person.PeopleId
-					where !Db.Attends.Any(aa => aa.MeetingId == meeting.MeetingId
-						&& aa.Commitment != null && aa.PeopleId == om.PeopleId)
-					orderby om.Person.Name2
-					select om.Person;
-			return q.ToDictionary(kk => kk.PeopleId, nn => nn.Name);
+			        where om.OrganizationId == org.OrganizationId
+			        where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
+			        where om.Pending == false
+			        where om.PeopleId != person.PeopleId
+			        where !Db.Attends.Any(aa => aa.MeetingId == meeting.MeetingId
+			                                    && aa.Commitment != null && aa.PeopleId == om.PeopleId)
+			        orderby om.Person.Name2
+			        select new VolInfo()
+			        {
+						PeopleId = om.PeopleId,
+						Name = om.Person.Name,
+						Email = om.Person.EmailAddress
+			        };
+			return q.ToList();
 		}
 		public void SendEmails(int? additional)
 		{
@@ -153,7 +164,7 @@ Thank you for your consideration,<br />
 			meeting.AddEditExtra(Db, "TotalVolunteersNeeded", ((additional ?? 0) + limit).ToString());
 			Db.SubmitChanges();
 
-			var reportlink = @"<a href=""{0}Manage/Volunteers/RequestReport/{1}/{2}/{3}"">Volunteer Request Status Report</a>"
+			var reportlink = @"<a href=""{0}OnlineReg/RequestReport/{1}/{2}/{3}"">Volunteer Request Status Report</a>"
 				.Fmt(Db.CmsHost, meeting.MeetingId, person.PeopleId, dt.Ticks);
 			var list = Db.PeopleFromPidString(org.NotifyIds).ToList();
 			//list.Insert(0, person);
@@ -222,7 +233,7 @@ Thank you for your consideration,<br />
 									select a).Count()
 					 let needed = (from e in rr.Meeting.MeetingExtras
 								   where e.Field == "TotalVolunteersNeeded"
-								   select e.Data).Single()
+								   select e.Data).SingleOrDefault()
 					 select new
 					 {
 						 volunteer = rr.Volunteer,
@@ -245,18 +256,26 @@ Thank you for your consideration,<br />
 			}
 			i.r.CanVol = true;
 			Attend.MarkRegistered(Db, i.r.VolunteerId, meeting.MeetingId, AttendCommitmentCode.Attending);
-			Db.SubmitChanges();
+			Db.SubmitChanges();			
 			var body = @"
 <p>{0},</p>
 <p>Thank you so much.</p>
 <p>You are now assigned to volunteer on {2:MMM d, yyyy} at {2:t}.
 in {1}<br />
-See you there!</p>".Fmt(i.volunteer.Name, org.OrganizationName, meeting.MeetingDate);
-			Db.Email(person.FromEmail, i.volunteer, "Thank you for substituting for " + person.PreferredName, body);
+<p><a id=""{3}"" href=""http://registerlink"">Click here</a> to manage your commitments.</p>
+<p>See you there!</p>".Fmt(i.volunteer.Name, org.OrganizationName, meeting.MeetingDate, org.OrganizationId);
+			Db.Email(person.FromEmail, i.volunteer, "Thank you for responding and serving", body);
 
 			// on screen message
-			DisplayMessage = "<p>You have been sent the following email at {0}.</p>\n"
-				.Fmt(Util.ObscureEmail(i.volunteer.EmailAddress)) + body;
+			DisplayMessage = @"<p>You have been sent the following email at {4}.</p>
+<p>{0},</p>
+<p>Thank you so much.</p>
+<p>You are now assigned to volunteer on {2:MMM d, yyyy} at {2:t}.
+in {1}<br />
+<p><u>Click here</u> to manage your commitments.</p>
+<p>See you there!</p>"
+				.Fmt(i.volunteer.Name, org.OrganizationName, meeting.MeetingDate, org.OrganizationId,
+				     Util.ObscureEmail(i.volunteer.EmailAddress));
 
 			// notify requestor and org notifyids
 			var list = Db.PeopleFromPidString(org.NotifyIds).ToList();
@@ -295,6 +314,7 @@ See you there!</p>".Fmt(i.volunteer.Name, org.OrganizationName, meeting.MeetingD
 					where r.MeetingId == meeting.MeetingId
 					where r.RequestorId == person.PeopleId
 					where r.Requested == dt
+					orderby r.Responded descending, r.Volunteer.Name2
 					select new VolStatusInfo
 					{
 						VolName = r.Volunteer.Name,

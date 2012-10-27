@@ -523,6 +523,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			ViewBag.timeout = INT_timeout;
 			ViewBag.Url = m.URL;
 
+			var om =
+				DbUtil.Db.OrganizationMembers.SingleOrDefault(
+					mm => mm.OrganizationId == m.orgid && mm.PeopleId == m.List[0].PeopleId);
+			m.ParseSettings();
+
+			if (om != null && m.settings[m.orgid.Value].AllowReRegister == false)
+            {
+	            return Content("You are already registered it appears");
+            }
+
 			var pf = PaymentForm.CreatePaymentForm(m);
 			pf.DatumId = d.Id;
 			pf.FormId = Guid.NewGuid();

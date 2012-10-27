@@ -5,6 +5,12 @@
 @Html.HiddenFor(m => m.OrgId)
 @Html.HiddenFor(m => m.IsLeader)
 @Html.Hidden("specialedit", 0)
+<input id="submitit" type="submit" class="submitbutton" value='Submit' />
+@if(Model.IsLeader)
+{
+<label>@Html.CheckBox("SendEmail")Send Email Confirmation and Notice</label>
+}
+
 <table class="grid">
     <thead>
         <tr>
@@ -49,15 +55,6 @@
         </tr>
 }
     </tbody>
-	<tfoot>
-		<tr><td align="right" colspan="@(Model.Regsettings.TimeSlots.Count + 2)">
-    		    <input id="submitit" type="submit" class="submitbutton" value='Submit' />
-                @if(Model.IsLeader)
-                {
-                <label>@Html.CheckBox("SendEmail")Send Email Confirmation and Notice</label>
-                }
-            </td>
-        </tr>
-	</tfoot>
 </table>
 
+<input id="submitit" type="submit" class="submitbutton" value='Submit' />

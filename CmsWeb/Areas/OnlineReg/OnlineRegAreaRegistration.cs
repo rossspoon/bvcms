@@ -38,6 +38,14 @@ namespace CmsWeb.Areas.OnlineReg
                 "OnlineReg/ClaimVolSub/{ans}/{guid}",
                 new { controller = "OnlineReg", action = "ClaimVolSub", ans="", guid="" }
             );
+			context.MapRoute("RequestReport",
+                "OnlineReg/RequestReport/{mid}/{pid}/{ticks}",
+                new { controller = "OnlineReg", action = "RequestReport", mid=0, pid=0, ticks=0 }
+            );
+           context.MapRoute( "RequestResponse",
+                "OnlineReg/RequestResponse/{ans}/{guid}",
+                new { controller = "OnlineReg", action = "RequestResponse", ans="", guid="" }
+            );
             context.MapRoute(
                 "Public_MyData",
                 "MyData",

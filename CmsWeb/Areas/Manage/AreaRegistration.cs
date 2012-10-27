@@ -42,10 +42,6 @@ namespace CmsWeb.Areas.Manage
 				 "Manage/Volunteers/Request/{mid}/{limit}",
 				 new { controller = "Volunteers", action = "Request", mid = 0, limit = 0 }
 			 );
-			context.MapRoute("RequestReport",
-                "Manage/Volunteers/{action}/{mid}/{pid}/{ticks}",
-                new { controller = "Volunteers", action = "RequestReport", mid=0, pid=0, ticks=0 }
-            );
             AddRoute(context, "Volunteers");
             context.MapRoute(
                 "Manage_default",

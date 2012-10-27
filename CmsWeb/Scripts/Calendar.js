@@ -13,7 +13,7 @@
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to send reminders?')) {
             $.blockUI({ message: "sending reminders" });
-            $.post(href, { "sendall": $("#emailall").is(':checked') }, function (ret) {
+            $.post(href, { "emailall": $("#emailall").is(':checked') }, function (ret) {
                 if (ret != "ok") {
                     $.unblockUI();
                     $.growlUI("error", ret);

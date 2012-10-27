@@ -503,7 +503,7 @@ namespace CmsData
 		{
 			//<a dir="ltr" href="http://votelink" id="798" rel="smallgroup" title="This is a message">test</a>
 			var list = new Dictionary<string, OneTimeLink>();
-			const string VoteLinkRE = "<a[^>]*?href=\"http://votelink\"[^>]*>.*?</a>";
+			const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://votelink\"[^>]*>.*?</a>";
 			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -546,7 +546,7 @@ namespace CmsData
 		{
 			//<a dir="ltr" href="http://rsvplink" id="798" rel="meetingid" title="This is a message">test</a>
 			var list = new Dictionary<string, OneTimeLink>();
-			const string RsvpLinkRE = "<a[^>]*?href=\"http://rsvplink\"[^>]*>.*?</a>";
+			const string RsvpLinkRE = "<a[^>]*?href=\"https{0,1}://rsvplink\"[^>]*>.*?</a>";
 			var re = new Regex(RsvpLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -584,7 +584,7 @@ namespace CmsData
 		private string DoRegisterLink(string text, string CmsHost, EmailQueueTo emailqueueto)
 		{
 			var list = new Dictionary<string, OneTimeLink>();
-			const string VoteLinkRE = "<a[^>]*?href=\"http://(?<rlink>registerlink2{0,1})\"[^>]*>.*?</a>";
+			const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://(?<rlink>registerlink2{0,1})\"[^>]*>.*?</a>";
 			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -612,7 +612,7 @@ namespace CmsData
 		public string DoVolSubLink(string text, string CmsHost, EmailQueueTo emailqueueto)
 		{
 			var list = new Dictionary<string, OneTimeLink>();
-			const string VolSubLinkRE = "<a[^>]*?href=\"http://volsublink\"[^>]*>.*?</a>";
+			const string VolSubLinkRE = "<a[^>]*?href=\"https{0,1}://volsublink\"[^>]*>.*?</a>";
 			var re = new Regex(VolSubLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -651,7 +651,7 @@ namespace CmsData
 		public string DoVolReqLink(string text, string CmsHost, EmailQueueTo emailqueueto)
 		{
 			var list = new Dictionary<string, OneTimeLink>();
-			const string VolSubLinkRE = "<a[^>]*?href=\"http://volreqlink\"[^>]*>.*?</a>";
+			const string VolSubLinkRE = "<a[^>]*?href=\"https{0,1}://volreqlink\"[^>]*>.*?</a>";
 			var re = new Regex(VolSubLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -681,7 +681,7 @@ namespace CmsData
 					list.Add(qs, ot);
 				}
 
-				var url = Util.URLCombine(CmsHost, "/Manage/Volunteers/RequestResponse?ans={0}&guid={1}".Fmt(d["ans"], ot.Id.ToCode()));
+				var url = Util.URLCombine(CmsHost, "/OnlineReg/RequestResponse?ans={0}&guid={1}".Fmt(d["ans"], ot.Id.ToCode()));
 				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
 				match = match.NextMatch();
 			}

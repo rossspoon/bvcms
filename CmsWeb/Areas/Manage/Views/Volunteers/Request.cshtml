@@ -34,7 +34,7 @@
 {
     @Html.Hidden("mid", Model.meeting.MeetingId);
     @Html.Hidden("pid", Model.person.PeopleId);
-    @Html.Hidden("ticks", Model.ticks);
+    <input type="hidden" name="ticks" value="@Model.ticks"/>
     @Html.Hidden("limit", Model.limit);
     <p><label>Current Limit:</label>@Model.limit</p>
     <p><label>Current # Committed Volunteers:</label>@Model.count</p>
@@ -51,8 +51,8 @@
     @foreach (var p in Model.FetchPotentialVolunteers())
     {
     <div class="item" >
-        <input type="checkbox" name="pids" value="@p.Key" />
-        <span>@p.Value</span>
+        <input type="checkbox" name="pids" value="@p.PeopleId" />
+        <span title="@p.Email">@p.Name</span>
     </div>
     }
 </div>

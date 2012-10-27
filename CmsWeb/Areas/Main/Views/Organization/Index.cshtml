@@ -1,4 +1,5 @@
-﻿@using CmsWeb
+﻿@using CmsData.Codes
+@using CmsWeb
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -66,15 +67,22 @@
 		<a href="/OrgContent/Index/@o.OrganizationId" target="_blank"> Members Only Page</a> 
 		<a href="/RegSetting/Index/@o.OrganizationId">View Registration Document</a> 
 		<a id="tryreg" href="#">Try Registration</a> 
-        @if (Model.IsVolunteerLeader)
+        @if (Model.IsVolunteerLeader && o.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
         {
 		<a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId" target="calendar">Volunteer Calendar</a>
         }
         @if (User.IsInRole("Edit"))
         {
-            <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
-            <a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId">Send Reminders</a>
-            <a href="/OrgChildren/Index/@Model.OrganizationId">Child Organization Management</a>
+			<a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
+            if(o.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+			{
+    			<a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId">Send Volunteer Reminders</a>
+			}
+            else
+			{
+    			<a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId?emailall=true">Send Event Reminders</a>
+			}
+			<a href="/OrgChildren/Index/@Model.OrganizationId">Child Organization Management</a>
         }
         @if (User.IsInRole("Admin"))
         {

@@ -107,18 +107,31 @@ Thank you for your consideration,<br />
 		}
 		public string DisplayMessage { get; set; }
 		public string Error { get; set; }
-		public Dictionary<int, string> FetchPotentialSubs()
+
+		public class SubInfo
+		{
+			public int PeopleId { get; set; }
+			public string Name { get; set; }
+			public string Email { get; set; }
+		}
+
+		public List<SubInfo> FetchPotentialSubs()
 		{
 			var q = from om in Db.OrganizationMembers
-					where om.OrganizationId == org.OrganizationId
-					where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
-					where om.Pending == false
-					where om.PeopleId != person.PeopleId
-					where !Db.Attends.Any(aa => aa.MeetingId == attend.MeetingId
-						&& aa.Commitment != null && aa.PeopleId == om.PeopleId)
-					orderby om.Person.Name2
-					select om.Person;
-			return q.ToDictionary(kk => kk.PeopleId, nn => nn.Name);
+			        where om.OrganizationId == org.OrganizationId
+			        where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
+			        where om.Pending == false
+			        where om.PeopleId != person.PeopleId
+			        where !Db.Attends.Any(aa => aa.MeetingId == attend.MeetingId
+			                                    && aa.Commitment != null && aa.PeopleId == om.PeopleId)
+			        orderby om.Person.Name2
+			        select new SubInfo()
+			        {
+				        PeopleId = om.PeopleId,
+				        Name = om.Person.Name,
+				        Email = om.Person.EmailAddress
+			        };
+			return q.ToList();
 		}
 		public void SendEmails()
 		{
@@ -203,7 +216,7 @@ Thank you for your consideration,<br />
 		}
 		public void ProcessReply(string ans)
 		{
-			if (attend.PeopleId != person.PeopleId)
+			if (attend.SubRequests.Any(ss => ss.CanSub == true))
 			{
 				DisplayMessage = "This substitute request has already been covered. Thank you so much for responding.";
 				return;
@@ -281,6 +294,7 @@ See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
 					where r.AttendId == attend.AttendId
 					where r.RequestorId == person.PeopleId
 					where r.Requested == dt
+					orderby r.Responded descending, r.Substitute.Name2
 					select new SubStatusInfo
 					{
 						SubName = r.Substitute.Name,

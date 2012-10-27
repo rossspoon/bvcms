@@ -214,7 +214,7 @@ namespace CmsWeb.Models.OrganizationPage
 							  where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
 							  where org.Attends.Any(a => (a.MeetingDate <= DateTime.Today.AddDays(7) || sendall)
 								  && a.MeetingDate >= DateTime.Today
-								  && a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute
+								  && (a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
 								  && a.PeopleId == om.PeopleId)
 							  select om;
 
@@ -261,9 +261,12 @@ namespace CmsWeb.Models.OrganizationPage
 							  where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
 							  select om;
 
-			var subject = Util.PickFirst(setting.ReminderSubject, "no subject");
-			var message = Util.PickFirst(setting.ReminderBody, "no body");
-			if (subject == "no subject" || message == "no body")
+			string noSubject = "no subject";
+			const string noBody = "no body";
+
+			var subject = Util.PickFirst(setting.ReminderSubject, noSubject);
+			var message = Util.PickFirst(setting.ReminderBody, noBody);
+			if (subject == noSubject || message == noBody)
 				throw new Exception("no subject or body");
 			var notify = Db.StaffPeopleForOrg(org.OrganizationId).FirstOrDefault();
 			if (notify == null)
@@ -274,14 +277,14 @@ namespace CmsWeb.Models.OrganizationPage
 				var details = PrepareSummaryText2(Db, om, setting);
 				var OrganizationName = org.OrganizationName;
 
-				subject = Util.PickFirst(setting.ReminderSubject, "no subject");
-				message = Util.PickFirst(setting.ReminderBody, "no body");
+				subject = Util.PickFirst(setting.ReminderSubject, noSubject);
+				message = Util.PickFirst(setting.ReminderBody, noBody);
 
 				string Location = org.Location;
 				message = OnlineRegModel.MessageReplacements(om.Person, null, OrganizationName, Location, message);
 
 				message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
-				message = message.Replace("{details}", details.ToString());
+				message = message.Replace("{details}", details);
 
 				Db.Email(notify.FromEmail, om.Person, subject, message);
 			}

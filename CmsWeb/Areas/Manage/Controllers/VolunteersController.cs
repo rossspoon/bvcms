@@ -98,8 +98,6 @@ namespace CmsWeb.Areas.Manage.Controllers
 								meeting.Organization.Location,
 								meeting.Organization.LeaderName);
 
-			//return Redirect("/EmailPeople.aspx?id={0}&subj={1}&body={2}&ishtml=true"
-			//    .Fmt(qb.QueryId, Server.UrlEncode(subject), Server.UrlEncode(body)));
 			TempData["body"] = body;
 			return Redirect("/Email/Index/{0}?subj={1}&ishtml=true"
 				.Fmt(qb.QueryId, Server.UrlEncode(subject)));
@@ -108,17 +106,15 @@ namespace CmsWeb.Areas.Manage.Controllers
 		public ActionResult Request(int mid, int limit)
 		{
 			var vs = new VolunteerRequestModel(mid, Util.UserPeopleId.Value) {limit = limit };
-			//SetHeaders(vs.org.OrganizationId);
 			vs.ComposeMessage();
 			return View(vs);
 		}
 		[HttpGet]
 		public ActionResult Request0(long ticks, int oid, int limit)
 		{
-			var time = new DateTime(ticks);
+			var time = new DateTime(ticks); // ticks here is meeting time
 			var mid = DbUtil.Db.CreateMeeting(oid, time);
 			var vs = new VolunteerRequestModel(mid, Util.UserPeopleId.Value) {limit = limit };
-			//SetHeaders(vs.org.OrganizationId);
 			vs.ComposeMessage();
 			return View("Request", vs);
 		}
@@ -130,26 +126,6 @@ namespace CmsWeb.Areas.Manage.Controllers
 				{subject = subject, message = message, pids = pids, limit = limit };
 			m.SendEmails(additional ?? 0);
 			return Content("Emails are being sent, thank you.");
-		}
-		public ActionResult RequestReport(int mid, int pid, long ticks)
-		{
-			var vs = new VolunteerRequestModel(mid, pid, ticks);
-			//SetHeaders(vs.org.OrganizationId);
-			return View(vs);
-		}
-		[HttpGet]
-		public ActionResult RequestResponse(string ans, string guid)
-		{
-			try
-			{
-				var vs = new VolunteerRequestModel(guid);
-				vs.ProcessReply(ans);
-				return Content(vs.DisplayMessage);
-			}
-			catch (Exception ex)
-			{
-				return Content(ex.Message);
-			}
 		}
 
 	}

@@ -13,6 +13,27 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 	public partial class OnlineRegController
 	{
 		[HttpGet]
+		public ActionResult RequestReport(int mid, int pid, long ticks)
+		{
+			var vs = new VolunteerRequestModel(mid, pid, ticks);
+			SetHeaders(vs.org.OrganizationId);
+			return View(vs);
+		}
+		[HttpGet]
+		public ActionResult RequestResponse(string ans, string guid)
+		{
+			try
+			{
+				var vs = new VolunteerRequestModel(guid);
+				vs.ProcessReply(ans);
+				return Content(vs.DisplayMessage);
+			}
+			catch (Exception ex)
+			{
+				return Content(ex.Message);
+			}
+		}
+		[HttpGet]
 		public ActionResult GetVolSub(int aid, int pid)
 		{
 			var vs = new VolSubModel(aid, pid);

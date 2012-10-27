@@ -54,11 +54,11 @@
         {
                 @Html.ActionLink("Rollsheet ({0}/{1})".Fmt(t.Count, t.Limit), "Rollsheet", "Reports", new { area = "Main", meetingid = t.MeetingId }, new { target = "_blank" })<br/>
         		@Html.ActionLink("Meeting", "Index", "Meeting", new { area = "Main", id = t.MeetingId }, new { target = "meeting" })<br/>
-        		@Html.ActionLink("Request Volunteers", "Request", "Volunteers", new { mid = t.MeetingId, limit = t.Limit }, new { tClass = "volreq" })
+        		@Html.ActionLink("Request Volunteers", "Request", "Volunteers", new { mid = t.MeetingId, limit = t.Limit }, new { tClass = "volreq", target="_blank" })
         }
         else
         {
-        		@Html.ActionLink("Request Volunteers", "Request0", "Volunteers", new { ticks = t.ticks, oid = Model.OrgId, limit = t.Limit }, new { @class = "volreq" })
+        		@Html.ActionLink("Request Volunteers", "Request0", "Volunteers", new { ticks = t.ticks, oid = Model.OrgId, limit = t.Limit }, new { @class = "volreq", target="_blank" })
         }
                 </p>
         @foreach (var p in t.OrderedPersons())

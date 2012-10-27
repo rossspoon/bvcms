@@ -60,7 +60,12 @@ namespace CmsWeb.Areas.Dialog.Controllers
 				var rr = Db.DeleteMeetingRuns.Where(m => m.Meetingid == id).OrderByDescending(m => m.Id).First();
 				rr.Processed--;
 	            Db.SubmitChanges();
+				Db.ExecuteCommand(
+					"delete dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.MeetingId = {0})",
+					id);
+				Db.ExecuteCommand("DELETE dbo.VolRequest where MeetingId = {0}", id);
 				Db.ExecuteCommand("delete attend where MeetingId = {0}", id);
+				Db.ExecuteCommand("delete MeetingExtra where MeetingId = {0}", id);
 				Db.ExecuteCommand("delete meetings where MeetingId = {0}", id);
 				rr.Processed++;
 				rr.Completed = DateTime.Now;

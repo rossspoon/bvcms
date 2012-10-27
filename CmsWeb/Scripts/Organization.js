@@ -218,8 +218,12 @@ $(function () {
         });
     };
     $.showHideRegTypes = function (f) {
-        $(".no0,.no6,.no10,.no11").show();
-        $(".no" + $("#org_RegistrationTypeId").val()).hide();
+        // no = show first, then hide explicitly
+        $(".no0,.no6,.no10,.no11").show(); 
+        $(".no" + $("#org_RegistrationTypeId").val()).hide(); 
+        // yes = hide first, then show explicitly
+        $(".yes6").hide();
+        $(".yes" + $("#org_RegistrationTypeId").val()).show();
     };
     $("#org_RegistrationTypeId").live("change", $.showHideRegTypes);
     $.showHideRegTypes();
