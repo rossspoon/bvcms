@@ -1120,9 +1120,9 @@ namespace CmsData
 				CreatedBy = FinanceManagerId.Value,
 				CreatedDate = DateTime.Now,
 			};
-			var typid = (int)Contribution.TypeCode.CheckCash;
+			var typid = ContributionTypeCode.CheckCash;
 			if (pledge)
-				typid = (int)Contribution.TypeCode.Pledge;
+				typid = ContributionTypeCode.Pledge;
 			bd.Contribution = new Contribution
 			{
 				CreatedBy = FinanceManagerId.Value,

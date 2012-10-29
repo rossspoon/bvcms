@@ -254,6 +254,7 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="APIContribution.cs" />
     <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />

@@ -5,6 +5,7 @@ using System.Web;
 using System.Threading;
 using CmsData;
 using CMSPresenter;
+using CmsData.API;
 using UtilityExtensions;
 using System.IO;
 
@@ -37,7 +38,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			Db.CommandTimeout = 1200;
 
 			var noaddressok = Db.Setting("RequireAddressOnStatement", "true") == "false";
-			var qc = ContributionModel.contributors(Db, fd, td, 0, 0, 0, noaddressok, useMinAmt: true);
+			var qc = APIContribution.contributors(Db, fd, td, 0, 0, 0, noaddressok, useMinAmt: true);
 			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
 			runningtotals.Count = qc.Count();
 			Db.SubmitChanges();
@@ -154,7 +155,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			string hdrContributions = "   Date        Fund Name          Amount       Date        Fund Name          Amount\n\n";
 
 			rWrite(hdrContributions);
-			var q2 = ContributionModel.contributions(Db, c, fd, td);
+			var q2 = APIContribution.contributions(Db, c, fd, td);
 			var contrib = new List<string>();
 			foreach (var ci in q2)
 				contrib.Add("{0:MM/dd/yyyy}     {1,-16}{2,11:N2}"
@@ -198,11 +199,11 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			var recPledges = new List<string>();
 			decimal Total = 0;
 			rWrite(hdr1Pledge + hdr2Pledge);
-			foreach (var p in ContributionModel.pledges(Db, c, td))
+			foreach (var p in APIContribution.pledges(Db, c, td))
 				if (p.Fund != null)
 					recPledges.Add("{0,-16}{1,12:N2}  {2,12:N2} ".Fmt(p.Fund, p.PledgeAmount, p.ContributionAmount));
 
-			foreach (var ci in ContributionModel.quarterlySummary(Db, c, fd, td))
+			foreach (var ci in APIContribution.quarterlySummary(Db, c, fd, td))
 			{
 				Total += ci.ContributionAmount.Value;
 				if (recPledges != null && recPledges.Count > 0 && countRec < recPledges.Count)

@@ -47,6 +47,7 @@ namespace CmsWeb.Models
             public string Name { get; set; }
             public string Leader { get; set; }
             public string Division { get; set; }
+            public int DivId { get; set; }
             public string Program { get; set; }
             public string Divisions { get; set; }
             public string Location { get; set; }
@@ -57,11 +58,12 @@ namespace CmsWeb.Models
             {
                 get
                 {
-                    return "{0} ({1})|Program:{2}|Division: {3}|Leader: {4}|Location: {5}|Divisions: {6}".Fmt(
+                    return "{0} ({1})|Program:{2}|Division: {3}({4})|Leader: {5}|Location: {6}|Divisions: {7}".Fmt(
                                Name,
                                Id,
                                Program,
                                Division,
+							   DivId,
                                Leader,
                                Location,
                                Divisions
@@ -76,7 +78,8 @@ namespace CmsWeb.Models
                     let ck = (o.ParentOrgId ?? 0) == org.OrganizationId
                     let ot = o.ParentOrgId != null && o.ParentOrgId != org.OrganizationId
                     let pa = o.ChildOrgs.Count() > 0
-                    where o.DivOrgs.Any(dd => org.DivOrgs.Select(oo => oo.DivId).Contains(dd.DivId))
+					where o.DivisionId == org.DivisionId
+                    //where o.DivOrgs.Any(dd => org.DivOrgs.Select(oo => oo.DivId).Contains(dd.DivId))
                     where namesearch == null || o.OrganizationName.Contains(namesearch) || ck
                     where o.OrganizationId != org.OrganizationId
                     where o.OrganizationStatusId == OrgStatusCode.Active
@@ -89,6 +92,7 @@ namespace CmsWeb.Models
                         Leader = o.LeaderName,
                         Program = o.Division.Program.Name,
                         Division = o.Division.Name,
+                        DivId = o.DivisionId ?? 0,
                         Divisions = string.Join(",", o.DivOrgs.Select(d => d.Division.Name)),
                         Location = o.Location,
                         isChecked = ck == true,

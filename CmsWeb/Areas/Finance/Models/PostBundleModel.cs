@@ -217,9 +217,9 @@ namespace CmsWeb.Models
 				};
 				int type;
 				if (pledge == true)
-					type = (int)Contribution.TypeCode.Pledge;
+					type = ContributionTypeCode.Pledge;
 				else
-					type = (int)Contribution.TypeCode.CheckCash;
+					type = ContributionTypeCode.CheckCash;
 
 				decimal? othersplitamt = null;
 				if (splitfrom > 0)
@@ -265,9 +265,9 @@ namespace CmsWeb.Models
 		{
 			int type;
 			if (pledge == true)
-				type = (int)Contribution.TypeCode.Pledge;
+				type = ContributionTypeCode.Pledge;
 			else
-				type = (int)Contribution.TypeCode.CheckCash;
+				type = ContributionTypeCode.CheckCash;
 			var c = DbUtil.Db.Contributions.SingleOrDefault(cc => cc.ContributionId == editid);
 			if (c == null)
 				return null;
@@ -386,7 +386,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 				bd.Contribution.ContributionDesc = ck;
 				var eac = Util.Encrypt(rt + "," + ac);
@@ -466,7 +466,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = fundid ?? qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 				string ac = null, rt = null;
 				for (var c = 1; c < fieldCount; c++)
@@ -545,7 +545,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = fundid ?? qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 				string ac = null, rt = null, ck = null, sn = null;
 				for (var c = 1; c < fieldCount; c++)
@@ -647,7 +647,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = fundid ?? qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 
 				var s = csv[3];
@@ -712,7 +712,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = fundid ?? qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 
 				var dtint = csv[3].ToLong();
@@ -773,7 +773,7 @@ namespace CmsWeb.Models
 				ContributionDate = date,
 				FundId = fundid,
 				ContributionStatusId = 0,
-				ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+				ContributionTypeId = ContributionTypeCode.CheckCash,
 			};
 			return bd;
 		}

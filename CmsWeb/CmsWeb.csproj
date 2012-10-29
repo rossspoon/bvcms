@@ -262,6 +262,7 @@
     <Compile Include="Areas\Public\Controllers\APIPersonController.cs" />
     <Compile Include="Areas\Public\Controllers\APIOrgController.cs" />
     <Compile Include="Areas\Public\Controllers\APIMeetingController.cs" />
+    <Compile Include="Areas\Public\Controllers\APIContributionController.cs" />
     <Compile Include="Areas\Public\Controllers\MobileAPIController.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
@@ -355,6 +356,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
+    <EmbeddedResource Include="Areas\Public\Controllers\APITestPlan.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
     <Content Include="Areas\Public\Views\APITest\Index.cshtml">
@@ -757,6 +759,11 @@
     <Compile Include="Report\Reports.Master.designer.cs">
       <DependentUpon>Reports.Master</DependentUpon>
     </Compile>
+    <Compile Include="Resource1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -778,6 +785,10 @@
     <Compile Include="UserControls\GridPager.ascx.designer.cs">
       <DependentUpon>GridPager.ascx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsData.API;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -59,14 +60,14 @@ namespace CmsWeb.Areas.Finance.Models.Report
             {
                 case 1:
                     SpouseId = DbUtil.Db.People.Single(p => p.PeopleId == PeopleId).SpouseId.ToInt();
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok, useMinAmt);
+                    q = APIContribution.contributors(DbUtil.Db, FromDate, ToDate, PeopleId, SpouseId, 0, noaddressok, useMinAmt);
                     break;
                 case 2:
                     FamilyId = DbUtil.Db.People.Single(p => p.PeopleId == PeopleId).FamilyId;
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId, noaddressok, useMinAmt);
+                    q = APIContribution.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, FamilyId, noaddressok, useMinAmt);
                     break;
                 case 3:
-                    q = ContributionModel.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0, noaddressok, useMinAmt);
+                    q = APIContribution.contributors(DbUtil.Db, FromDate, ToDate, 0, 0, 0, noaddressok, useMinAmt);
                     break;
             }
             c.Run(Response.OutputStream, DbUtil.Db, q);

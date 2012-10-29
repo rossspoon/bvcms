@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
+using CmsData.API;
 using UtilityExtensions;
 using System.Configuration;
 using System.Reflection;
@@ -1024,13 +1025,8 @@ namespace CmsData
 				return AlwaysFalse(parm);
 			var now = DateTime.Now;
 			var dt = now.AddDays(-days);
-			var noTypes = new int[]
-			{
-				(int)Contribution.TypeCode.ReturnedCheck,
-				(int)Contribution.TypeCode.Reversed
-			};
 			Expression<Func<Person, bool>> pred = p =>
-					       p.Contributions.Any(cc => cc.ContributionDate > dt && cc.ContributionAmount > 0 && !noTypes.Contains(cc.ContributionTypeId));
+					       p.Contributions.Any(cc => cc.ContributionDate > dt && cc.ContributionAmount > 0 && !APIContribution.ReturnedReversedTypes.Contains(cc.ContributionTypeId));
 			Expression expr = Expression.Invoke(pred, parm);
 			if (!(op == CompareType.Equal && tf))
 				expr = Expression.Not(expr);

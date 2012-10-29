@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CmsData.API;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -196,7 +197,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				t.DefaultCell.Border = Rectangle.NO_BORDER;
 
 				var total = 0m;
-				foreach (var c in ContributionModel.contributions(Db, ci, FromDate, ToDate))
+				foreach (var c in APIContribution.contributions(Db, ci, FromDate, ToDate))
 				{
 					t.AddCell(new Phrase(c.ContributionDate.FormatDate(), font));
 					t.AddCell(new Phrase(c.Fund, font));
@@ -220,7 +221,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 
 
 				//------Pledges
-				var pledges = ContributionModel.pledges(Db, ci, ToDate);
+				var pledges = APIContribution.pledges(Db, ci, ToDate);
 				if (pledges.Count() > 0)
 				{
 					t = new PdfPTable(new float[] { 16f, 12f, 12f });
@@ -280,7 +281,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				t.AddCell(cell);
 
 				t.DefaultCell.Border = Rectangle.NO_BORDER;
-				foreach (var c in ContributionModel.quarterlySummary(Db, ci, FromDate, ToDate))
+				foreach (var c in APIContribution.quarterlySummary(Db, ci, FromDate, ToDate))
 				{
 					t.AddCell(new Phrase(c.Fund, font));
 					cell = new PdfPCell(t.DefaultCell);
