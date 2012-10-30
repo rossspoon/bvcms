@@ -2,10 +2,18 @@
 @using CmsWeb.Models
 @model CmsWeb.Models.ContentModel
 @{
-	Layout = "/Views/Shared/SiteLayout.cshtml";
-	ViewBag.Title = "Special Content";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Special Content";
 
-	var roleList = ContentModel.fetchRoles();
+    var roleList = ContentModel.fetchRoles();
+    const int WRAP_COUNT = 6;
+    var wrapAt = WRAP_COUNT;
+}
+@section head {
+	<style type="text/css">
+		div.templateItem { width:100px; height:150px; border:1px solid black; overflow:hidden; }
+		div.templateItem:hover { border-color:#0000ff; }
+	</style>
 }
 @section scripts
 {
@@ -44,14 +52,14 @@
 		<tr>
 			<td><b>Name/Title</b></td>
 		</tr>
-		@foreach( var item in Model.fetchHTMLFiles() )
-		{ 
+		@foreach (var item in Model.fetchHTMLFiles())
+  { 
 		<tr>
 			<td>
 				@Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id }) - @item.Title
 			</td>
 		</tr>
-		}
+  }
 		</table>
 	</div>
 	<div id="t2"> <!-- Text Files -->
@@ -60,33 +68,43 @@
 		<tr>
 			<td><b>Name</b></td>
 		</tr>
-		@foreach( var item in Model.fetchTextFiles() )
-		{
+		@foreach (var item in Model.fetchTextFiles())
+  {
 		<tr>
 			<td>
 				@Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id })
 			</td>
 		</tr>
-		}
+  }
 		</table>
 	</div>
 	<div id="t3"> <!-- e-Mail Templates -->
 		<center><a href="#" newtypewithrole="2" newmessage="Create New Email Template" class="bt">New Email Template</a></center>
 		<table class="grid" cellspacing="4">
-		<tr>
-			<td><b>Name</b></td>
-		</tr>
-		@foreach( var item in Model.fetchEmailTemplates() )
-		{
-		<tr>
-			<td>
-				@Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id })
-				@if( item.RoleID > 0 ) {
-					@: &nbsp;--&nbsp; Limited to Role: <b>@roleList.Where(r => r.RoleId == item.RoleID).FirstOrDefault().RoleName</b>
-				}
+        <tr>
+		@foreach (var t in Model.fetchEmailTemplates())
+        {
+            <td width="@( 100 / WRAP_COUNT)%" align="center">
+				@t.Name<br />
+                <a href="/Display/ContentEdit/@t.Id">
+				<div bvtemplate class="templateItem" template="@t.Id">
+				@if (t.ThumbID != 0)
+                {
+					<img alt="portrait" border="0" src="/Image.aspx?id=@t.ThumbID" />
+                }
+				</div>
+                </a>
+                Limited to Role:<br />
+                <b>@roleList.Where(r => r.RoleId == t.RoleID).FirstOrDefault().RoleName</b>
 			</td>
-		</tr>
-		}
+            wrapAt--;
+            if (wrapAt == 0)
+            {
+                wrapAt = WRAP_COUNT;
+				@:</tr><tr>
+			}
+        }
+        </tr>
 		</table>
 	</div>
 	<div id="t4"> <!-- Saved Drafts -->
@@ -94,14 +112,14 @@
 		<tr>
 			<td><b>Name</b></td>
 		</tr>
-		@foreach( var item in Model.fetchSavedDrafts() )
-		{
+		@foreach (var item in Model.fetchSavedDrafts())
+  {
 		<tr>
 			<td>
 				@Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id })
 			</td>
 		</tr>
-		}
+  }
 		</table>
 	</div>
 </div>
@@ -135,7 +153,7 @@
 	<table cellspacing="10">
 	<tr>
 		<td align="right">Role:</td>
-		<td align="left">@Html.DropDownList("newRole", new SelectList( ContentModel.fetchRoles(), "RoleId", "RoleName"))</td>
+		<td align="left">@Html.DropDownList("newRole", new SelectList(ContentModel.fetchRoles(), "RoleId", "RoleName"))</td>
 	</tr>
 	<tr>
 		<td align="right">FileName:</td>
