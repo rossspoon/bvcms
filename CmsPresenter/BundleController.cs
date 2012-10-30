@@ -482,7 +482,7 @@ namespace CMSPresenter
                 CreatedBy = Util.UserId1,
                 CreatedDate = Util.Now,
                 RecordStatus = false,
-                FundId = 1, // Local Church Operations
+                FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt(), 
             };
             DbUtil.Db.BundleHeaders.InsertOnSubmit(b);
             DbUtil.Db.SubmitChanges();

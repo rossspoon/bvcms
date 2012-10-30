@@ -1088,7 +1088,7 @@ namespace CmsData
 					ContributionDate = d,
 					CreatedDate = DateTime.Now,
 					DepositDate = DateTime.Now,
-					FundId = 1,
+					FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt(),
 					RecordStatus = false,
 					TotalCash = 0,
 					TotalChecks = 0,

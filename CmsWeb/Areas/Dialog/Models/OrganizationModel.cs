@@ -19,12 +19,15 @@ namespace CmsWeb.Models
 		public bool copyregistration { get; set; }
         public NewOrganizationModel(int? id)
         {
-			org = DbUtil.Db.LoadOrganizationById(id);
-			if (org == null)
-				org = DbUtil.Db.Organizations.First();
-			OrganizationId = org.OrganizationId;
+			if (!id.HasValue)
+		        id = DbUtil.Db.Setting("DefaultOrgId", "0").ToInt();
+	        org = DbUtil.Db.LoadOrganizationById(id);
+	        if (org == null)
+		        id = DbUtil.Db.Organizations.First().OrganizationId;
+	        OrganizationId = id;
         }
-        public NewOrganizationModel()
+
+	    public NewOrganizationModel()
         {
         }
         private CodeValueController cv = new CodeValueController();

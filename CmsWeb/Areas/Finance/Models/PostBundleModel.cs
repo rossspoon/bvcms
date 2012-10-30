@@ -354,7 +354,7 @@ namespace CmsWeb.Models
 				ContributionDate = date,
 				CreatedBy = Util.UserId,
 				CreatedDate = now,
-				FundId = 1
+				FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt()
 			};
 			DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
 
@@ -417,7 +417,7 @@ namespace CmsWeb.Models
 							ContributionDate = date,
 							CreatedBy = Util.UserId,
 							CreatedDate = now,
-							FundId = 1
+							FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt()
 						};
 			DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
 			bh.BundleStatusId = BundleStatusCode.Open;

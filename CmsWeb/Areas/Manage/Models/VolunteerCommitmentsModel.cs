@@ -269,7 +269,7 @@ namespace CmsWeb.Models
 			{
 				var slots = (from s in FetchSlots()
 							 where s.Time.TimeOfDay == time.Value.TimeOfDay
-							 where s.Week == week
+							 where s.Week == week || week == 0
 							 select s).ToList();
 				foreach (var PeopleId in volids)
 				{

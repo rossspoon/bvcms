@@ -810,7 +810,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				PeopleId = id, 
 				FromDate = frdt.Value, 
 				ToDate = todt.Value, 
-				typ = 2,
+				typ = p.PositionInFamilyId == PositionInFamily.PrimaryAdult ? 2 : 1,
 				noaddressok = true,
 				useMinAmt = false,
 			};
