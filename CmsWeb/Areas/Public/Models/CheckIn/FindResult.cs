@@ -32,6 +32,7 @@ namespace CmsWeb.Models
 				var q =
 					from p in DbUtil.Db.People
 					let notes = p.PeopleExtras.SingleOrDefault(ee => ee.Field == building + "-notes").Data
+                    let access = p.PeopleExtras.SingleOrDefault(ea => ea.Field == building + "-access").Data
 					where p.FamilyId == fid
 					where p.DeceasedDate == null
 					orderby p.PositionInFamilyId, p.PositionInFamilyId == 10 ? p.Gender.Code : "U", p.Age
@@ -56,7 +57,8 @@ namespace CmsWeb.Models
 						grade = p.Grade,
 						HasPicture = p.PictureId != null,
 						MemberStatus = p.MemberStatus.Code,
-						notes
+						notes,
+                        access
 					};
  
 				w.WriteAttributeString("familyid", fid.ToString());
@@ -81,6 +83,7 @@ namespace CmsWeb.Models
 					w.WriteAttributeString("grade", c.grade.ToString());
 					w.WriteAttributeString("haspicture", c.HasPicture.ToString());
 					w.WriteAttributeString("memberstatus", c.MemberStatus);
+                    w.WriteAttributeString("access", c.access);
 
 					if (c.notes.HasValue())
 						w.WriteString(c.notes);
