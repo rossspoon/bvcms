@@ -1,0 +1,41 @@
+﻿@using CmsData;
+@model CmsData.Volunteer
+@{
+    ViewBag.Title = "Edit Volunteer";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    var s = from e in DbUtil.Db.VolApplicationStatuses
+            select e;
+}
+<script type="text/javascript">
+    function redirect() {
+        window.location = "/Volunteering/Index/@Model.PeopleId";
+    }
+</script>
+<a href="/Person/Index/@Model.PeopleId">@Model.Person.Name</a><br />
+<br />
+<form action="/Volunteering/Update" method="post">
+    @Html.Hidden("PeopleID")
+    <table width="100%" style="border:thin solid #777777;">
+        <tr>
+            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Approvals:</b></td>
+            <td valign="top" width="30%">
+                @Html.CheckBox("Standard" )
+                Standard (references only)<br />
+                @Html.CheckBox("Leader" )
+                Leadership (background check)
+            </td>
+            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Comments:</b></td>
+            <td valign="top" width="50%">
+                <textarea name="Comments" rows="4" cols="50">@Model.Comments</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Background Check:</b></td>
+            <td valign="top">@Model.ProcessedDate</td>
+            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Status Code:</b></td>
+            <td valign="top">@Html.DropDownList("StatusId",  new SelectList( s, "Id", "Description") )</td>
+        </tr>
+    </table>
+    <br />
+    <input type="submit" value="Save" /> <input type="button" value="Cancel" onclick="redirect();" />
+</form>

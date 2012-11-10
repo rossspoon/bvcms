@@ -1,0 +1,177 @@
+﻿@using CmsData;
+@model CmsData.Volunteer
+@{
+    ViewBag.Title = "Volunteer";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+
+    var i = from e in DbUtil.Db.VolunteerForms
+            where e.PeopleId == Model.PeopleId
+            select e;
+
+    var c = from e in DbUtil.Db.BackgroundChecks
+            where e.PeopleID == Model.PeopleId
+            select e;
+}
+@section scripts
+{
+<script type="text/javascript">
+    var submitDialog;
+
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this file?");
+    }
+
+    function showSubmitDialog(id)
+    {
+        submitDialog = $("#dialogHolder");
+        $.ajax({
+            url: "/Volunteering/DialogSubmit/" + id,
+            success: function (data) {
+                submitDialog.html(data).dialog({ modal: true, width: 'auto', title: 'Submit Background Check' }).dialog('open');
+            }
+        });
+    }
+
+    function showCreateDialog(id)
+    {
+        submitDialog = $("#dialogHolder");
+        $.ajax({
+            url: "/Volunteering/DialogType/" + id,
+            success: function (data) {
+                submitDialog.html(data).dialog({ modal: true, width: 'auto', title: 'Select Background Check' }).dialog('open');
+            }
+        });
+    }
+
+    function closeSubmitDialog()
+    {
+        $(submitDialog).dialog("close");
+    }
+</script>
+}
+<a href="/Person/Index/@Model.PeopleId">@Model.Person.Name</a><br />
+<br />
+<b>Volunteer Application Information</b>
+<table width="100%" style="border:thin solid #777777;">
+    <tr>
+        <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Approvals:</b></td>
+        <td valign="top" width="30%">
+            @Html.CheckBox("Standard", new { @disabled = "disabled" } )
+            Standard (references only)<br />
+            @Html.CheckBox("Leader", new { @disabled = "disabled" } )
+            Leadership (background check)
+        </td>
+        <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Comments:</b></td>
+        <td valign="top" width="50%">
+            <textarea rows="4" cols="50" readonly="readonly">@Model.Comments</textarea>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Last Update:</b></td>
+        <td valign="top">@Model.ProcessedDate</td>
+        <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Status Code:</b></td>
+        <td valign="top">@(Model.VolApplicationStatus == null ? "Unknown" : Model.VolApplicationStatus.Description)</td>
+    </tr>
+</table>
+<form action="/Volunteering/Edit/@Model.PeopleId"><input type="submit" value="Edit" /></form><br />
+<br />
+@if (DbUtil.Db.Setting("PMMUser", "").Length > 0 && DbUtil.Db.Setting("PMMPassword", "").Length > 0)
+{
+<b>Volunteer Background Checks</b>
+<table width="100%" style="border:thin solid #777777;">
+    @if (c.Count() == 0)
+    {
+        <tr>
+            <td>No Background Checks</td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <th width="10%" style="background-color:#EFF3FB;"><b>Created</b></th>
+            <th width="10%" style="background-color:#EFF3FB;"><b>Updated</b></th>
+            <th width="10%" style="background-color:#EFF3FB;"><b>Service</b></th>
+            <th width="10%" style="background-color:#EFF3FB;"><b>Status</b></th>
+            <th width="10%" style="background-color:#EFF3FB;"><b>Report ID</b></th>
+            <th width="10%" style="background-color:#EFF3FB;"><b>Issues</b></th>
+            <th style="background-color:#EFF3FB; white-space: nowrap;"><b>Report Link/Error</b></th>
+            <th width="10%" style="background-color:#EFF3FB;"><b>Action</b></th>
+        </tr>
+    }
+    @foreach (var check in c)
+    {
+        <tr>
+            <td align="center" style="white-space: nowrap;">@check.Created.ToString("d")</td>
+            <td align="center" style="white-space: nowrap;">@check.Updated.ToString("d")</td>
+            <td align="center">@check.ServiceCode</td>
+            <td align="center" style="white-space: nowrap;">@ProtectMyMinistryHelper.getStatus( check.StatusID )</td>
+            <td align="center">@( check.ReportID > 0 ? check.ReportID.ToString() : "" )</td>
+            <td align="center">@( check.IssueCount > 0 ? "Yes" : "No" )</td>
+            <td align="center">
+                @switch (check.StatusID)
+                {
+                    case 0:
+                        <span style="color:red;">@Html.Raw( check.ErrorMessages )</span>
+                        break;
+                                   
+                    case 3:
+                        <a href="@check.ReportLink" target="_blank">Click here for the report</a>
+                        break;
+                }
+            </td>
+            <td align="center">
+            @switch (check.StatusID)
+            {
+                case 0:
+                    <input type="button" value="Resubmit" style="width:75px;" onclick="showSubmitDialog( @check.Id );" />
+                    break;
+               
+                case 1:
+                    <input type="button" value="Submit" style="width:75px;" onclick="showSubmitDialog( @check.Id );" />
+                    break;
+
+                case 2:
+                    <input type="button" value="Waiting" disabled="disabled" style="width:75px;" />
+                    break;
+                                    
+                case 3:
+                    <input type="button" value="Complete" disabled="disabled" style="width:75px;" />
+                    break;
+            }
+            </td>
+        </tr>
+    }
+   
+</table>
+<input type="button" value="New" onclick="showCreateDialog( @Model.PeopleId );" /><br />
+<br />
+}
+<b>Volunteer Documents</b>
+<table style="border:thin solid #777777;">
+    <tr>
+        @foreach (var form in i)
+        {
+            <td align="center" style="padding:7px;">
+                <a href="/Image.aspx?id=@form.MediumId">
+                    <img src="/images/adobe.png" style="border:thin solid #000000;">
+                </a>
+                <form action="/Volunteering/Delete" method="post" onsubmit="return confirmDelete();">
+                    <input type="hidden" name="id" value="@form.Id" />
+                    <input type="hidden" name="PeopleID" value="@Model.PeopleId" />
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        }
+        @if (i.Count() == 0)
+        {
+            <td align="center">No Documents Uploaded</td>
+        }
+    </tr>
+</table>
+<br />
+<form action="/Volunteering/Upload/@Model.PeopleId" method="post" enctype="multipart/form-data">
+    @Html.Hidden("PeopleID")
+    <input type="file" name="file" id="file" />
+    <input type="submit" value="Upload" />
+</form>
+<div id="dialogHolder"></div>

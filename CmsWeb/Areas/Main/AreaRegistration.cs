@@ -14,6 +14,7 @@ namespace CmsWeb.Areas.Main
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+            AddRoute(context, "Volunteering");
             AddRoute(context, "Coupon");
             AddRoute(context, "Tags");
             AddRoute(context, "QuickSearch");

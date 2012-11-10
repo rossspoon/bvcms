@@ -6,135 +6,139 @@ using System.Text;
 using System.IO;
 using System.Net;
 using System.Xml;
+using System.Xml.Linq;
 using System.Web;
 
 namespace CmsData
 {
     public class ProtectMyMinistryHelper
     {
-        public const String PMM_URL = "https://services.priorityresearch.com/webservice/default.cfm";
+        public const string PMM_URL = "https://services.priorityresearch.com/webservice/default.cfm";
+        public const string PMM_Append = "/ExternalServices/PMMResults";
 
-        public const int PACKAGE_BASIC = 1;
-        public const int PACKAGE_PLUS = 2;
+        public static readonly string[] STATUSES = { "Error", "Not Submitted", "Submitted", "Complete" };
+        public static readonly string[] TYPES = { "Combo", "MVR" };
 
-        public const int SERVICE_CRIMINAL_COUNTY = 3;
-        public const int SERVICE_CRIMINAL_STATE = 4;
-        public const int SERVICE_CRIMINAL_MULTISTATE = 5;
-        public const int SERVICE_SSN_TRACE = 6;
-        public const int SERVICE_SEXOFFENDER_MULTISTATE = 7;
-        public const int SERVICE_MOTOR_VEHICLE_RECORD = 8;
-        public const int SERVICE_EDUCATION = 9;
-        public const int SERVICE_EMPLOYMENT = 10;
-        public const int SERVICE_CREDIT = 11;
-        public const int SERVICE_WORKMANS_COMP = 12;
-        public const int SERVICE_NATIONAL_COMBO = 13;
+        public static bool bTestMode = true;
 
-        public static string[] SERVICE_CODES = { "Invalid", "BASIC", "PLUS", "CountyCrim", "StateCriminal", "MultistateCrim", "SSNTrace",
-                                                   "NationalSOR", "MVR", "EduVerify", "EmploymentVer", "Credit", "WorkersComp", "Combo" };
-
-        public bool bTestMode = true;
-        public bool bInitialized = false;
-
-        public int[] sServiceCodes;
-
-        public string sMethod = "SEND ORDER";
-
-        public string sUser;
-        public string sPassword;
-
-        public string sReturnURL = "http://steven.bvcms.com:8888/ExternalServices/PMMResults";
-        public string sBillingReference;
-        public string sOrderID = "1234567";
-
-        public string sFirstName;
-        public string sMiddleName;
-        public string sLastName;
-        public string sGeneration;
-        public string sDOB;
-        public string sSSN = "123-45-6789";
-        public string sGender;
-        public string sEthnicity;
-
-        public string sAddress;
-        public string sCity;
-        public string sState;
-        public string sZip;
-
-        public string sDLNumber;
-
-        public string sJurisdictionCode;
-        public string sJurisdictionState;
-
-        private MemoryStream msRequest;
-        private XmlWriter xwWriter;
-
-        public ProtectMyMinistryHelper()
+        public static void create( int iPeopleID, string sServiceCode )
         {
-            XmlWriterSettings xws = new XmlWriterSettings();
-            xws.Indent = true;
-            xws.NewLineOnAttributes = false;
-            //xws.NewLineChars = "";
+            BackgroundCheck bcNew = new BackgroundCheck();
 
-            msRequest = new MemoryStream();
-            xwWriter = XmlWriter.Create(msRequest, xws);
+            bcNew.StatusID = 1;
+            bcNew.UserID = Util2.CurrentPeopleId;
+            bcNew.PeopleID = iPeopleID;
+            bcNew.ServiceCode = sServiceCode; // "Combo", "MVR"
+            bcNew.Created = DateTime.Now;
+            bcNew.Updated = DateTime.Now;
+
+            DbUtil.Db.BackgroundChecks.InsertOnSubmit(bcNew);
+            DbUtil.Db.SubmitChanges();
         }
 
-        ~ProtectMyMinistryHelper()
+        public static bool submit( int iRequestID, string sSSN, string sDLN, string sResponseURL, int iStateID )
         {
-            if( msRequest != null ) msRequest.Close();
-        }
-
-        public bool init()
-        {
-            sUser = DbUtil.Db.Setting("PMMUser", null);
-            sPassword = DbUtil.Db.Setting("PMMPassword", null);
-
+            // Get User and Password from Settings
+            String sUser = DbUtil.Db.Setting("PMMUser", null);
+            String sPassword = DbUtil.Db.Setting("PMMPassword", null);
             if (sUser == null || sPassword == null) return false;
 
-            return bInitialized = true;
+            // Get the already created (via create()) background check request
+            BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
+                                  where e.Id == iRequestID
+                                  select e).Single();
+            if (bc == null) return false;
+
+            // Create XML
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.Indent = false;
+            xws.NewLineOnAttributes = false;
+            xws.NewLineChars = "";
+
+            // Create Bundle
+            SubmitBundle sb = new SubmitBundle();
+            sb.iPeopleID = bc.PeopleID;
+            sb.sUser = sUser;
+            sb.sPassword = sPassword;
+            sb.sBillingReference = bc.Id.ToString();
+            sb.sSSN = sSSN;
+            sb.sServiceCode = bc.ServiceCode;
+            sb.sResponseURL = sResponseURL;
+
+            // Get State (if MVR)
+            if (bc.ServiceCode == "MVR" && iStateID > 0)
+            {
+                BackgroundCheckMVRCode bcmc = (from e in DbUtil.Db.BackgroundCheckMVRCodes
+                                               where e.Id == iStateID
+                                               select e).Single();
+                
+                if (bcmc == null) return false;
+
+                sb.sDNL = sDLN;
+                sb.sStateCode = bcmc.Code;
+                sb.sStateAbbr = bcmc.StateAbbr;
+            }
+
+            // Main Request
+            MemoryStream msRequest = new MemoryStream();
+            XmlWriter xwWriter = XmlWriter.Create(msRequest, xws);
+            xmlCreate(xwWriter, sb);
+            string sXML = Encoding.UTF8.GetString(msRequest.ToArray()).Substring(1);
+            msRequest.Close();
+
+            // Stored Request (for Debug, can be removed later)
+            MemoryStream msRequestSave = new MemoryStream();
+            XmlWriter xwWriterSave = XmlWriter.Create(msRequestSave, xws);
+            xmlCreate(xwWriterSave, sb);
+            string sXMLSave = Encoding.UTF8.GetString(msRequestSave.ToArray()).Substring(1);
+            msRequestSave.Close();
+            bc.RequestXML = sXMLSave;
+            // End Stored Request
+
+            // Submit Request to PMM
+            var fields = new NameValueCollection();
+            fields.Add("REQUEST", sXML);
+
+            WebClient wc = new WebClient();
+            wc.Encoding = System.Text.Encoding.UTF8;
+            var response = Encoding.UTF8.GetString(wc.UploadValues(PMM_URL, "POST", fields));
+
+            bc.ResponseXML = response;
+
+            ResponseBundle rbResponse = processResponse(response);
+
+            if (rbResponse.bHasErrors)
+            {
+                bc.StatusID = 0;
+                bc.ErrorMessages = rbResponse.sErrors;
+            }
+            else
+            {
+                bc.StatusID = 2;
+                bc.ErrorMessages = "";
+                bc.ReportID = Int32.Parse( rbResponse.sReportID );
+            }
+
+            DbUtil.Db.SubmitChanges();
+            return true;
         }
 
-        public void populate(int PersonID)
+        public static bool xmlCreate( XmlWriter xwWriter, SubmitBundle sb )
         {
-            var person = (from e in DbUtil.Db.People
-                          where e.PeopleId == PersonID
+            // Get Person Information
+            var pPerson = (from e in DbUtil.Db.People
+                          where e.PeopleId == sb.iPeopleID
                           select e).FirstOrDefault();
 
-            populate(person);
-        }
-
-        public void populate(Person pPerson)
-        {
+            // Compile Birthday per requested format
             int iBirthMonth = pPerson.BirthMonth ?? 0;
             int iBirthDay = pPerson.BirthDay ?? 0;
             int iBirthYear = pPerson.BirthYear ?? 0;
+            String sDOB = iBirthMonth.ToString("D2") + "/" + iBirthDay.ToString("D2") + "/" + iBirthYear.ToString("D4");
 
-            sBillingReference = pPerson.PeopleId.ToString();
-            sFirstName = pPerson.FirstName;
-            sMiddleName = pPerson.MiddleName;
-            sLastName = pPerson.LastName;
-            sGeneration = pPerson.SuffixCode;
-            sDOB = iBirthMonth.ToString("D2") + "/" + iBirthDay.ToString("D2") + "/" + iBirthYear.ToString("D4");
-            sGender = pPerson.Gender.Description;
+            // Create OrderId
+            String sOrderID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
 
-            sAddress = pPerson.AddressLineOne;
-            sCity = pPerson.CityName;
-            sState = pPerson.StateCode;
-            sZip = pPerson.ZipCode;
-        }
-
-        public void setServiceCodes(int iNewCode)
-        {
-            sServiceCodes = new int[] { iNewCode };
-        }
-
-        public void setServiceCodes(int[] iNewCodes)
-        {
-            sServiceCodes = iNewCodes;
-        }
-
-        public bool xmlCreate()
-        {
             // Open Document
             xwWriter.WriteStartDocument();
 
@@ -142,58 +146,80 @@ namespace CmsData
             xwWriter.WriteStartElement("OrderXML");
 
             // Method (Inside OrderXML)
-            xwWriter.WriteElementString("Method", sMethod);
+            xwWriter.WriteElementString("Method", "SEND ORDER");
 
             // Authentication Section (Inside OrderXML)
             xwWriter.WriteStartElement("Authentication");
-            xwWriter.WriteElementString("Username", sUser);
-            xwWriter.WriteElementString("Password", sPassword);
+            xwWriter.WriteElementString("Username", sb.sUser);
+            xwWriter.WriteElementString("Password", sb.sPassword);
             xwWriter.WriteFullEndElement();
 
             if( bTestMode ) xwWriter.WriteElementString("TestMode", "YES");
 
             // Return URL (Inside OrderXML)
-            xwWriter.WriteElementString("ReturnResultURL", sReturnURL);
+            xwWriter.WriteElementString("ReturnResultURL", sb.sResponseURL);
 
             // Order Section (Inside OrderXML)
             xwWriter.WriteStartElement("Order");
 
             // Our Billing Reference Code (Inside Order Section)
-            xwWriter.WriteElementString("BillingReferenceCode", sBillingReference);
+            xwWriter.WriteElementString("BillingReferenceCode", sb.sBillingReference);
 
             // Subject Section (Inside Order Section)
             xwWriter.WriteStartElement("Subject");
-            xwWriter.WriteElementString("Firstname", sFirstName);
-            if( sMiddleName != null ) xwWriter.WriteElementString("Middlename", sMiddleName);
-            xwWriter.WriteElementString("Lastname", sLastName);
-            if (sGeneration != null) xwWriter.WriteElementString("Generation", sGeneration);
+            xwWriter.WriteElementString("Firstname", pPerson.FirstName);
+
+            if (pPerson.MiddleName != null) xwWriter.WriteElementString("Middlename", pPerson.MiddleName);
+
+            xwWriter.WriteElementString("Lastname", pPerson.LastName);
+
+            if (pPerson.SuffixCode != null) xwWriter.WriteElementString("Generation", pPerson.SuffixCode);
+
             xwWriter.WriteElementString("DOB", sDOB);
-            xwWriter.WriteElementString("SSN", sSSN);
-            xwWriter.WriteElementString("Gender", sGender);
-            xwWriter.WriteElementString("Ethnicity", "Caucasian");
+            xwWriter.WriteElementString("SSN", sb.sSSN);
+            xwWriter.WriteElementString("Gender", pPerson.Gender.Description);
+            //xwWriter.WriteElementString("Ethnicity", "Caucasian");
+
+            // MVR Option
+            if (sb.sServiceCode == "MVR")
+            {
+                xwWriter.WriteElementString("DLNumber", sb.sDNL);
+            }
+
             xwWriter.WriteElementString("ApplicantPosition", "Volunteer");
 
             // CurrentAddress Section (Inside Subject Section)
             xwWriter.WriteStartElement("CurrentAddress");
-            xwWriter.WriteElementString("StreetAddress", sAddress);
-            xwWriter.WriteElementString("City", sCity);
-            xwWriter.WriteElementString("State", sState);
-            xwWriter.WriteElementString("Zipcode", sZip);
+            xwWriter.WriteElementString("StreetAddress", pPerson.AddressLineOne);
+            xwWriter.WriteElementString("City", pPerson.CityName);
+            xwWriter.WriteElementString("State", pPerson.StateCode);
+            xwWriter.WriteElementString("Zipcode", pPerson.ZipCode);
             xwWriter.WriteFullEndElement();
 
             // Close Subject Section
             xwWriter.WriteFullEndElement();
 
-            // Package Service Code - Only if a package (BASIC,PLUS) (Inside Order Section)
-            xwWriter.WriteStartElement("PackageServiceCode");
-            xwWriter.WriteAttributeString("OrderId", sOrderID);
-            xwWriter.WriteString("Basic");
-            xwWriter.WriteFullEndElement();
+            if (sb.sServiceCode == "Combo")
+            {
+                // Package Service Code - Only if a package (BASIC,PLUS) (Inside Order Section)
+                xwWriter.WriteStartElement("PackageServiceCode");
+                xwWriter.WriteAttributeString("OrderId", sOrderID);
+                xwWriter.WriteString("Basic");
+                xwWriter.WriteFullEndElement();
+            }
 
             // Order Detail (Inside Order Section)
             xwWriter.WriteStartElement("OrderDetail");
-            xwWriter.WriteAttributeString("serviceCode", "combo");
+            xwWriter.WriteAttributeString("serviceCode", sb.sServiceCode);
             xwWriter.WriteAttributeString("OrderId", sOrderID);
+
+            // MVR Option
+            if (sb.sServiceCode == "MVR")
+            {
+                xwWriter.WriteElementString("JurisdictionCode", sb.sStateCode);
+                xwWriter.WriteElementString("State", sb.sStateAbbr);
+            }
+
             xwWriter.WriteEndElement();
 
             // Close Order Section
@@ -209,28 +235,60 @@ namespace CmsData
             return true;
         }
 
-        public bool submitRequest()
+        public static ResponseBundle processResponse(string sResponse)
         {
-            if (!bInitialized) return false;
+            ResponseBundle sReturn = new ResponseBundle();
 
-            xmlCreate();
+            XDocument xd = XDocument.Parse(sResponse, LoadOptions.None);
 
-            //string sXML = HttpUtility.UrlEncode( Encoding.UTF8.GetString( msRequest.GetBuffer() ) );\
-            string sXML = Encoding.UTF8.GetString( msRequest.GetBuffer() );
+            if (xd.Root.Element("Status").Value == "ERROR")
+            {
+                sReturn.bHasErrors = true;
 
-            File.WriteAllText(@"C:\RequestXML.txt", sXML);
+                var errors = xd.Root.Elements("Message");
 
-            var fields = new NameValueCollection();
-            fields.Add("REQUEST", sXML);
+                foreach (var item in errors)
+                {
+                    sReturn.sErrors += item.Value.Replace("<", "&lt;").Replace(">", "&gt;") + "<br>";
+                }
+            }
+            else
+            {
+                string sReportID = xd.Root.Element("ReferenceNumber").Value;
 
-            WebClient wc = new WebClient();
-            var response = Encoding.UTF8.GetString( wc.UploadValues( "http://dev.studio-lfp.com/api/pmm.php", "POST", fields) );
+                if (sReportID != null) sReturn.sReportID = sReportID;
+            }
 
-            return true;
+            return sReturn;
         }
 
-        public void processResponse( string sResponse )
+        public static string getStatus(int iStatusID)
         {
+            return STATUSES[iStatusID];
         }
+    }
+
+    public class SubmitBundle
+    {
+        // Internal
+        public string sUser;
+        public string sPassword;
+        public string sServiceCode;
+        public string sBillingReference;
+        public string sResponseURL;
+
+        // Person
+        public int iPeopleID;
+        public string sSSN;
+        public string sDNL;
+        public string sStateCode;
+        public string sStateAbbr;
+    }
+
+    public class ResponseBundle
+    {
+        public bool bHasErrors = false;
+        public string sErrors = "";
+        public string sReportID = "0";        
     }
 }

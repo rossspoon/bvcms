@@ -1,0 +1,78 @@
+﻿@using CmsData;
+@model CmsData.BackgroundCheck
+@{
+    var s = from e in DbUtil.Db.BackgroundCheckMVRCodes
+            orderby e.Description
+            select e;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SubmitMVR</title>
+</head>
+<body>
+    <form id="submitCheck" action="/Volunteering/SubmitCheck/@Model.Id" method="post">
+        <input type="hidden" name="iPeopleID" value="@Model.PeopleID" />
+        <table>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">First:</td>
+                <td>@Model.Person.FirstName</td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Middle:</td>
+                <td>@Model.Person.MiddleName</td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Last:</td>
+                <td>@Model.Person.LastName</td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Generation:</td>
+                <td>@Model.Person.SuffixCode</td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Address:</td>
+                <td>@Model.Person.AddressLineOne</td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">City:</td>
+                <td>@Model.Person.CityName</td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">State:</td>
+                <td>@Model.Person.StateCode</td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Zipcode:</td>
+                <td>@Model.Person.ZipCode</td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">DOB:</td>
+                <td>@( Model.Person.BDate != null ? Model.Person.BDate.Value.ToString("d") : "" )</td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Gender:</td>
+                <td>@Model.Person.Gender.Description</td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">SSN:</td>
+                <td><input name="sSSN" size="12" /></td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">License Number:</td>
+                <td><input name="sDLN" size="15" /></td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">State Code:</td>
+                <td>@Html.DropDownList( "iStateID", new SelectList( s, "ID", "Description" ) )</td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
