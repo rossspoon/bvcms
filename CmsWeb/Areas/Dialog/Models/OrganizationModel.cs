@@ -22,9 +22,9 @@ namespace CmsWeb.Models
 			if (!id.HasValue)
 		        id = DbUtil.Db.Setting("DefaultOrgId", "0").ToInt();
 	        org = DbUtil.Db.LoadOrganizationById(id);
-	        if (org == null)
-		        id = DbUtil.Db.Organizations.First().OrganizationId;
-	        OrganizationId = id;
+			if (org == null)
+				org = DbUtil.Db.Organizations.First();
+	        OrganizationId = org.OrganizationId;
         }
 
 	    public NewOrganizationModel()

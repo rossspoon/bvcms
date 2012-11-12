@@ -19,6 +19,8 @@ namespace CmsWeb
             var ctl = new MailingController();
             var sortZip = context.Request.QueryString["sortZip"];
 	        var sort = "Name";
+			var useTitles = context.Request.QueryString["titles"];
+				ctl.UseTitles = useTitles == "true";
 			if (sortZip == "true")
 				sort = "Zip";
             IEnumerable<MailingInfo> q = null;

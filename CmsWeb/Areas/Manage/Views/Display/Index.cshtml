@@ -81,8 +81,10 @@
 		<tr>
 			<td>
 				@Html.ActionLink(item.Name, "ContentEdit", new { id = item.Id })
-				@if( item.RoleID > 0 ) {
-					@: &nbsp;--&nbsp; Limited to Role: <b>@roleList.Where(r => r.RoleId == item.RoleID).FirstOrDefault().RoleName</b>
+				@if( item.RoleID > 0 ) 
+                {
+                    var ro = roleList.FirstOrDefault(r => r.RoleId == item.RoleID) ?? new Role { RoleName = "unknown" };
+					@: &nbsp;--&nbsp; Limited to Role: <b>@ro.RoleName</b>
 				}
 			</td>
 		</tr>

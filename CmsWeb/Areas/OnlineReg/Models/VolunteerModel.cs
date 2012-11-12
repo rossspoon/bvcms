@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CmsData;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Web;
 using System.Web.Mvc;
@@ -23,7 +24,7 @@ namespace CmsWeb.Models
 		{
 			OrgId = orgId;
 			PeopleId = peopleId;
-			dtlock = DateTime.Now.AddDays(Regsettings.TimeSlotLockDays ?? 0);
+			dtlock = DateTime.Now.AddDays(Regsettings.timeSlots.TimeSlotLockDays ?? 0);
 			IsLeader = leader;
 			SendEmail = leader == false;
 		}
@@ -44,14 +45,14 @@ namespace CmsWeb.Models
 			}
 		}
 
-		private RegSettings _regsettings;
+		private Settings _regsettings;
 
-		public RegSettings Regsettings
+		public Settings Regsettings
 		{
 			get
 			{
 				return _regsettings ??
-					(_regsettings = new RegSettings(Org.RegSetting, DbUtil.Db, OrgId));
+					(_regsettings = new Settings(Org.RegSetting, DbUtil.Db, OrgId));
 			}
 		}
 
@@ -143,7 +144,7 @@ namespace CmsWeb.Models
 			{
 				var dt = sunday;
 				{
-					var q = from ts in Regsettings.TimeSlots
+					var q = from ts in Regsettings.timeSlots.list
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
 							let meeting = meetings.SingleOrDefault(cc => cc.MeetingDate == time)
@@ -249,9 +250,9 @@ namespace CmsWeb.Models
 					 );
 			}
 		}
-		public RegSettings setting
+		public Settings setting
 		{
-			get { return new RegSettings(Org.RegSetting, DbUtil.Db, OrgId); }
+			get { return new Settings(Org.RegSetting, DbUtil.Db, OrgId); }
 		}
 		public SelectList Volunteers()
 		{

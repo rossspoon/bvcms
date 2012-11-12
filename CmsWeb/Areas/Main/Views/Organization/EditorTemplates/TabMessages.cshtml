@@ -1,4 +1,4 @@
-﻿@model CmsData.RegSettings
+﻿@model CmsData.Registration.Settings
 @using CmsWeb
 @using CmsData
 @using UtilityExtensions
@@ -22,21 +22,6 @@
     Online Notify Persons:</span>
         @Html.Partial("NotifyList2", Model)
   </li>
-@*  <li>
-    <div class="text big tip" title="VoteTags
-    |These will let you create votetags (votelinks) 
-    |You can display these from the Organization Management menu.
-    |They will not be displayed on the registration screen 
-    |but are intended to be used in an email.">
-    VoteTags: </div>
-    <ul id=VoteTags" class="sort">
-    @foreach(var i in Model.VoteTags.OrderBy(cc => cc.Id))
-    {
-        @Html.EditorFor(m => i);
-    }
-    </ul>
-    <div class="newitem"><a href="/Organization/NewVoteTag"><img src="/images/plus1.png" /> Add Item</a></div>
-  </li>*@
   <li>
     <span class="keyword big tip" title="Instructions
     |These are for special instructions that will show up
@@ -74,13 +59,13 @@
         Special:</span>
         @Html.EditorFor(m => m.InstructionSpecial, "Html")
       </li>
-      <li class="no6">
+      <li>
         <span class="keyword2 tip" title="Submit
         |For when you have the choice to register another or continue the registration.">
         Submit:</span>
         @Html.EditorFor(m => m.InstructionSubmit, "Html")
       </li>
-      <li class="no6"> 
+      <li> 
         <span class="keyword2 tip" title="Sorry
         |For when the Max Limit is reached or a Class is filled.
         |Good for giving them a link to join a waiting list.">
@@ -89,7 +74,7 @@
         </li>
     </ul>
   </li>
-  <li class="no6">
+  <li>
     <span class="keyword2 big tip" title="Terms
     |Some registrations like a camp, or sports team, or a trip
     |require you to agree to terms (indemnification).
@@ -111,15 +96,3 @@
       </li>
     </ul>
   </li>
-@*  <li><span class="keyword big tip" title="Messages for Divsion
-    |Edit Online Reg Messages For Division type Registrations">
-    Messages for Division:</span>
-    <div class="block">
-        <div><a href="/Display/OrgContent/@Model.OrgId?what=message&div=true">
-            Confirmation</a></div>
-        <div><a href="/Display/OrgContent/@Model.OrgId?what=instructions&div=true">
-            Instructions</a></div>
-        <div><a href="/Display/OrgContent/@Model.OrgId?what=terms&div=true">
-            Terms</a></div>
-    </div>
-  </li>*@

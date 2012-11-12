@@ -345,6 +345,7 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Code\SmartBinder.cs" />
     <Compile Include="Code\FamilyExtraValues.cs" />
     <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\Image.cs" />
@@ -401,12 +402,12 @@
     <Content Include="Content\images\sort_desc_disabled.png" />
     <Content Include="Content\joyride-1.0.5.css" />
     <Content Include="Content\jquery-ui-1.8.23.custom.css" />
+    <Content Include="Content\jquery-ui-1.9.1.custom.css" />
     <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\jquery.dataTables_themeroller.css" />
     <Content Include="Content\js\FixedHeader.js" />
-    <Content Include="Content\js\jquery-1.7.2.js" />
-    <Content Include="Content\js\jquery-1.7.2.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.23.custom.js" />
+    <Content Include="Content\js\jquery-1.8.2.js" />
+    <Content Include="Content\js\jquery-ui-1.9.1.custom.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Content\js\jquery.dataTables.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
@@ -1014,8 +1015,8 @@
     <Content Include="Min\Content\js\combined-person.js" />
     <Content Include="Min\Content\js\combined.js" />
     <Content Include="Min\Content\js\FixedHeader.js" />
-    <Content Include="Min\Content\js\jquery-1.7.2.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.8.23.custom.js" />
+    <Content Include="Min\Content\js\jquery-1.8.2.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.9.1.custom.js" />
     <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Min\Content\js\jquery.checkboxtree.js" />
     <Content Include="Min\Content\js\jquery.contextMenu.js" />
@@ -1077,6 +1078,7 @@
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
     <Content Include="Scripts\Calendar.js" />
+    <Content Include="Scripts\HomeTest.js" />
     <Content Include="Scripts\Users.js" />
     <Content Include="Scripts\QuickSearch.js" />
     <Content Include="Scripts\family.js" />
@@ -1240,6 +1242,24 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\RequestReport.cshtml" />
     <Content Include="Areas\Manage\Views\Users\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Users\Results.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskRequest.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskTickets.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskYesNoQuestions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskParents.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskExtraQuestions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskSize.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskMenu.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskCheckboxes.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\GradeOptions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\DropdownItem.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskCoaching.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskDoctor.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskInsurance.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskEmContact.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskAllergies.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskChurch.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskTylenolEtc.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskSuggestedFee.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -1759,15 +1779,9 @@
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\YesNoQuestion.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Checkbox.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\CheckboxItem.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Checkbox2.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown1.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown2.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown3.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskDropdown.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\ExtraQuestion.cshtml">
     </Content>
@@ -1777,9 +1791,7 @@
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\OrgFee.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\ShirtSize.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\VoteTag.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Size.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabAdmin.cshtml">
     </Content>
@@ -1912,6 +1924,7 @@
     <Content Include="secrets.config" />
     <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
     <Content Include="Views\Shared\DatePickerDefaults.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -2183,7 +2196,6 @@
     <Content Include="Content\js\additional-methods.js" />
     <Content Include="Content\js\center-plugin_1.0.1.js" />
     <Content Include="Content\js\jquery-idleTimeout.js" />
-    <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.dimensions.min.js" />
     <Content Include="Content\js\jquery.hoverIntent.js" />
@@ -2203,7 +2215,6 @@
     <Content Include="Content\jquery.treeview.css" />
     <Content Include="Content\js\fg.menu.js" />
     <Content Include="Content\js\jquery.anchorHandler.js" />
-    <Content Include="Content\js\jQuery.autocomplete.js" />
     <Content Include="Content\js\jquery.checkboxtree.js" />
     <Content Include="Content\js\jquery.clockpick.1.2.1.js" />
     <Content Include="Content\js\jquery.multiSelect.js" />

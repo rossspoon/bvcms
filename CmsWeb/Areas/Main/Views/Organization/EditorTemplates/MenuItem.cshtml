@@ -1,14 +1,13 @@
-﻿@model CmsData.RegSettings.MenuItem
+﻿@model CmsData.Registration.AskMenu.MenuItem
 @using CmsWeb
-    @using (var ci = Html.BeginCollectionItem("MenuItems"))
-    {
-      <li>@Html.Raw(ci.hiddenindex)
-          @Html.HiddenFor(m => m.Id, new { @class = "renumberMe" }) 
-        <ul>
-          <li><div class="sgfee">Description:</div> @Html.TextBoxFor(m => m.Description, new { @class = "long" })
-          <a class="del" href="#"><img align="top" src="/images/delete.gif" title="remove this item" /></a></li>
-          <li><div class="sgfee">SmallGroup:</div> @Html.TextBoxFor(m => m.SmallGroup) </li>
-          <li><div class="sgfee">Fee:</div> @Html.TextBoxFor(m => m.Fee) </li>
-        </ul>
-      </li>
-    }
+@using (var ci = Html.BeginCollectionItem(Model.Name))
+{
+  <li>@Html.Raw(ci.hiddenindex)
+    <ul>
+      <li><div class="sgfee">Description:</div> @Html.TextBoxFor(m => m.Description, new { @class = "long" })
+      <a class="del" href="#"><img align="top" src="/images/delete.gif" title="remove this item" /></a></li>
+      <li><div class="sgfee">SmallGroup:</div> @Html.TextBoxFor(m => m.SmallGroup) </li>
+      <li><div class="sgfee">Fee:</div> @Html.TextBoxFor(m => m.Fee) </li>
+    </ul>
+  </li>
+}

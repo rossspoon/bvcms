@@ -9,7 +9,7 @@
 };
 $(function () {
     $("#Settings-tab").tabs();
-    var maintabs = $("#main-tab").tabs();
+    $("#main-tab").tabs().show();
     $('#deleteorg').click(function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
@@ -218,12 +218,18 @@ $(function () {
         });
     };
     $.showHideRegTypes = function (f) {
-        // no = show first, then hide explicitly
-        $(".no0,.no6,.no10,.no11").show(); 
-        $(".no" + $("#org_RegistrationTypeId").val()).hide(); 
-        // yes = hide first, then show explicitly
+        $("#Settings-tab").tabs('option', 'disabled', []);
+        $("#QuestionList li").show();
         $(".yes6").hide();
-        $(".yes" + $("#org_RegistrationTypeId").val()).show();
+        switch ($("#org_RegistrationTypeId").val()) {
+            case "0":
+                $("#Settings-tab").tabs('option', 'disabled', [3, 4, 5]);
+                break;
+            case "6":
+                $("#QuestionList li").hide();
+                $(".yes6").show();
+                break;
+        }
     };
     $("#org_RegistrationTypeId").live("change", $.showHideRegTypes);
     $.showHideRegTypes();
@@ -243,11 +249,63 @@ $(function () {
                 $("#editor", f);
                 $.regsettingeditclick(f);
                 $.showHideRegTypes();
+                $.updateQuestionList();
+                $('#AddQuestion').click(function (ev) {
+                    ev.preventDefault();
+                    $("#selectquestions").toggle();
+                    return false;
+                });
                 $(".helptip").tooltip({ showBody: "|" });
+                $(".tip", f).tooltip({ showBody: "|" });
             });
         });
         return false;
     });
+    $('#selectquestions a').live("click", function (ev) {
+        ev.preventDefault();
+        $.post('/Organization/NewAsk/', { id: 'AskItems', type: $(this).attr("type") }, function (ret) {
+            $('#selectquestions').hide();
+            $('html, body').animate({ scrollTop: $("body").height() }, 800);
+            var newli = $("#QuestionList").append(ret);
+            $("#QuestionList > li:last").effect("highlight", { }, 3000);
+            $(".tip", newli).tooltip({ opacity: 0, showBody: "|" });
+            $.updateQuestionList();
+        });
+        return false;
+    });
+    $("ul.enablesort a.del").live("click", function (ev) {
+        ev.preventDefault();
+        if (!$(this).attr("href"))
+            return false;
+        $(this).parent().parent().parent().remove();
+        return false;
+    });
+    $("ul.enablesort a.delt").live("click", function (ev) {
+        ev.preventDefault();
+        if (!$(this).attr("href"))
+            return false;
+        if (confirm("are you sure?")) {
+            $(this).parent().parent().remove();
+            $.updateQuestionList();
+        }
+        return false;
+    });
+    $.exceptions = [
+        "AskDropdown",
+        "AskCheckboxes",
+        "AskExtraQuestions",
+        "AskYesNoQuestions",
+        "AskMenu"
+    ];
+    $.updateQuestionList = function() {
+        $("#selectquestions li").each(function () {
+            var type = this.className;
+            if ($.inArray(type, $.exceptions) >= 0 || $("li.type-" + type).length == 0)
+                $(this).html("<a href='#' type='" + type + "'>" + type + "</a>");
+            else
+                $(this).html("<span>" + type + "</span>");
+        });
+    };
     $(".helptip").tooltip({ showBody: "|" });
     $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
@@ -347,7 +405,8 @@ $(function () {
             });
         });
     });
-    $("a.deleteschedule").live("click", function (ev) {
+    $("a." +
+        "deleteschedule").live("click", function (ev) {
         ev.preventDefault();
         $(this).parent().remove();
         $.renumberListItems();

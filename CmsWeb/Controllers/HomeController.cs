@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using System.Diagnostics;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Threading;
 using System.Text.RegularExpressions;
@@ -55,30 +57,22 @@ namespace CmsWeb.Controllers
             qb.CleanSlate(DbUtil.Db);
             return Redirect("/QueryBuilder/Main");
         }
-		public ActionResult Test()
+		public ActionResult Test(string id)
 		{
-			var api = new CmsData.API.APIOrganization(DbUtil.Db);
-			var xml = api.ParentOrgs(214, null, null);
-			return Content(xml, "text/xml");
+			var q = from o in DbUtil.Db.Organizations
+                    where (id == null && o.OrganizationExtras.All(ee => ee.Field != "tested"))
+                        || o.OrganizationExtras.Any(ee => ee.Field == "tested" && ee.Data == id)
+					where o.RegSetting.Length > 0
+					select o;
+            return View(q);
 		}
-		public ActionResult Test2()
-		{
-			var api = new CmsData.API.APIOrganization(DbUtil.Db);
-			var xml = api.ChildOrgs(81470, null, null);
-			return Content(xml, "text/xml");
-		}
-		public ActionResult Test3()
-		{
-			var wc = new WebClient();
-			var b = wc.DownloadString("http://localhost:888/Public/APIContribution/StatementYearToDate?PeopleId=828612");
-			return Content(b, "application/pdf");
-		}
-		public ActionResult Test4()
-		{
-			var api = new CmsData.API.APIContribution(DbUtil.Db);
-			var xml = api.Contributions(24562, DateTime.Now.Year);
-			return Content(xml, "text/xml");
-		}
+        public ActionResult RecordTest(int id, string v)
+        {
+            var o = DbUtil.Db.LoadOrganizationById(id);
+            o.AddEditExtra(DbUtil.Db, "tested", v);
+            DbUtil.Db.SubmitChanges();
+            return Content(v);
+        }
     }
 }
 

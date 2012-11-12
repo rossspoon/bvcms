@@ -291,6 +291,22 @@
     <Compile Include="Generated\Views\PickListOrg.cs" />
     <Compile Include="ManagedGiving.cs" />
     <Compile Include="Dynamic.cs" />
+    <Compile Include="Registration\Ask.cs" />
+    <Compile Include="Registration\AskRequest.cs" />
+    <Compile Include="Registration\AskSize.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Registration\AskTickets.cs" />
+    <Compile Include="Registration\AskSuggestedFee.cs" />
+    <Compile Include="Registration\TimeSlots.cs" />
+    <Compile Include="Registration\AskDropdown.cs" />
+    <Compile Include="Registration\AskCheckboxes.cs" />
+    <Compile Include="Registration\AskExtraQuestions.cs" />
+    <Compile Include="Registration\GradeOptions.cs" />
+    <Compile Include="Registration\AskMenu.cs" />
+    <Compile Include="Registration\OrgFees.cs" />
+    <Compile Include="Registration\Parser.cs" />
+    <Compile Include="Registration\AskYesNoQuestions.cs" />
     <Compile Include="SagePayments.cs" />
     <Compile Include="TransactionResponse.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
@@ -316,7 +332,7 @@
     <Compile Include="Generated\OrgSchedule.cs" />
     <Compile Include="Generated\PeopleQueryBit.cs" />
     <Compile Include="Generated\QueryStat.cs" />
-    <Compile Include="RegSettings.cs" />
+    <Compile Include="Registration\Settings.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />

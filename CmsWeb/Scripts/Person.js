@@ -354,7 +354,7 @@
         rules: {
             "NickName": { maxlength: 15 },
             "Title": { maxlength: 10 },
-            "First": { maxlength: 25, required: true },
+            "First": { maxlength: 25 },
             "Middle": { maxlength: 15 },
             "Last": { maxlength: 100, required: true },
             "Suffix": { maxlength: 10 },
@@ -367,15 +367,15 @@
             "School": { maxlength: 60 },
             "Employer": { maxlength: 60 },
             "Occupation": { maxlength: 60 },
-            "WeddingDate": { date: true },
-            "DeceasedDate": { date: true },
+//            "WeddingDate": { date: true },
+//            "DeceasedDate": { date: true },
             "Grade": { number: true },
             "Address1": { maxlength: 40 },
             "Address2": { maxlength: 40 },
             "City": { maxlength: 30 },
-            "Zip": { maxlength: 15 },
-            "FromDt": { date: true },
-            "ToDt": { date: true }
+            "Zip": { maxlength: 15 }
+//            "FromDt": { date: true },
+//            "ToDt": { date: true }
         }
     });
     $('#addrf').validate();

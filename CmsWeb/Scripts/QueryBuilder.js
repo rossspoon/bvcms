@@ -309,6 +309,7 @@ function EditCondition(ev) {
             return false;
         });
         $('div.FieldLink a').click(function(ev) {
+            ev.preventDefault();
             $.post('/QueryBuilder/SelectCondition/', {
                 ConditionName: ev.target.id,
                 Id: $('#SelectedId').val()

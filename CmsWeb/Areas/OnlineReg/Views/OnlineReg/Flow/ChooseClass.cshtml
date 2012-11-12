@@ -1,9 +1,0 @@
-﻿@model CmsWeb.Models.OnlineRegModel
-   <select name="m.classid">
-@foreach (var i in Model.Classes())
-{ 
-   <option value="@i.Id" @(i.selected ? "selected=selected" : "") @(i.filled ? "disabled=disabled" : "")>@i.Text</option> 
-}
-   </select>
-<div>@Html.ValidationMessage("classid")</div>
-

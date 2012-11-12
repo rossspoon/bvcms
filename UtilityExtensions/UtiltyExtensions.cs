@@ -25,6 +25,7 @@ using System.Web.Configuration;
 using System.Diagnostics;
 using System.Web.Caching;
 using System.Globalization;
+using System.Xml.Serialization;
 
 namespace UtilityExtensions
 {
@@ -1152,17 +1153,14 @@ namespace UtilityExtensions
 
 		public static string Serialize<T>(T m)
 		{
-			var ser = new DataContractSerializer(typeof(T));
-			var ms = new MemoryStream();
-			ser.WriteObject(ms, m);
-			var s = Encoding.Default.GetString(ms.ToArray());
-			return s;
+			var sw = new StringWriter();
+			new XmlSerializer(typeof(T)).Serialize(sw, m);
+			return sw.ToString();
 		}
-		public static T DeSerialize<T>(string s)
+		public static T DeSerialize<T>(string s) where T: class
 		{
-			var ser = new DataContractSerializer(typeof(T));
-			var ms = new MemoryStream(Encoding.Default.GetBytes(s));
-			return (T)ser.ReadObject(ms);
+			var sr = new StringReader(s);
+			return (new XmlSerializer(typeof(T)).Deserialize(sr) as T);
 		}
 		public static string MaxString(this string s, int length)
 		{

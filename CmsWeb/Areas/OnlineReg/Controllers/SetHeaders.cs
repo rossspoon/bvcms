@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CmsData;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 using CmsWeb.Models;
@@ -23,7 +24,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         }
         private void SetHeaders(int id)
         {
-            RegSettings setting = null;
+            Settings setting = null;
             var org = DbUtil.Db.LoadOrganizationById(id);
             var shell = "";
             if ((settings == null || !settings.ContainsKey(id)) && org != null)
@@ -44,7 +45,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var re = new Regex(@"(.*<!--FORM START-->\s*).*(<!--FORM END-->.*)", RegexOptions.Singleline);
                 var t = re.Match(s).Groups[1].Value.Replace("<!--FORM CSS-->", 
 @"
-<link href=""/Content/jquery-ui-1.8.23.custom.css"" rel=""stylesheet"" type=""text/css"" />
+<link href=""/Content/jquery-ui-1.9.1.custom.css"" rel=""stylesheet"" type=""text/css"" />
 <link href=""/Content/onlinereg.css?v=8"" rel=""stylesheet"" type=""text/css"" />
 "); 
                 ViewData["hasshell"] = true;

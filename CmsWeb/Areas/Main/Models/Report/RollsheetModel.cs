@@ -201,13 +201,14 @@ namespace CmsWeb.Areas.Main.Models.Report
 				wks = org.RollSheetVisitorWks.Value;
 			var dt = MeetingDate.AddDays(wks * -7);
 
+// ReSharper disable ImplicitlyCapturedClosure
 			var q = from p in DbUtil.Db.People
 					where p.Attends.Any(a => (a.AttendanceFlag == true || a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
 						&& (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
 						&& a.OrganizationId == orgid
 						&& (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null)
 						&& VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
-					where NoCurrentMembers == false || !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
+					where NoCurrentMembers == false || p.OrganizationMembers.All(om => om.OrganizationId != orgid)
 					orderby p.Name2, p.Name
 					orderby p.LastName, p.FamilyId, p.Name2
 					select new PersonVisitorInfo
@@ -235,10 +236,10 @@ namespace CmsWeb.Areas.Main.Models.Report
 						LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
 						HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == Util2.CurrentTagOwnerId),
 						NameParent1 = p.Family.HohName(DbUtil.Db),
-						NameParent2 = p.Family.People.Where(x =>
-							x.FamilyPosition.Id == PositionInFamily.PrimaryAdult
-							&& x.PeopleId != p.Family.HeadOfHouseholdId).FirstOrDefault().Name,
+						NameParent2 = p.Family.People.FirstOrDefault(x => x.FamilyPosition.Id == PositionInFamily.PrimaryAdult
+                                              && x.PeopleId != p.Family.HeadOfHouseholdId).Name,
 					};
+// ReSharper restore ImplicitlyCapturedClosure
 			return q;
 		}
 		public static IEnumerable<AttendInfo> RollList(int? MeetingId, int OrgId, DateTime MeetingDate, bool SortByName = false, bool CurrentMembers = false)
@@ -272,7 +273,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 								 PeopleId = p.PeopleId,
 								 Name = p.Name2,
 								 Email = p.Email,
-								 Attended = pa != null ? pa.a.AttendanceFlag : false,
+								 Attended = pa != null && pa.a.AttendanceFlag,
 								 AttendCommitmentId = cid,
 								 Commitment = CmsData.Codes.AttendCommitmentCode.Lookup(cid ?? 99),
 								 Member = true,
@@ -290,7 +291,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 			// visitors who attended, 
 			// recent visitors who did not attend excluding those who have since become members in the previous list
 			var visitorlist = from pvisitor in visitors
-							  where !members.Any(mm => mm.PeopleId == pvisitor.PeopleId)
+							  where members.All(mm => mm.PeopleId != pvisitor.PeopleId)
 							  join pattender in attends on pvisitor.PeopleId equals pattender.a.PeopleId into j
 							  from pattender in j.DefaultIfEmpty()
 							  let cid = pattender != null ? pattender.a.Commitment : null
@@ -299,7 +300,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 								  PeopleId = pvisitor.PeopleId,
 								  Name = pvisitor.Name2,
 								  Email = pvisitor.Email,
-								  Attended = pattender != null ? pattender.a.AttendanceFlag : false,
+								  Attended = pattender != null && pattender.a.AttendanceFlag,
 								  AttendCommitmentId = cid,
 								  Commitment = CmsData.Codes.AttendCommitmentCode.Lookup(cid ?? 99),
 								  Member = false,

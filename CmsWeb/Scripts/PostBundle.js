@@ -30,29 +30,25 @@
     });
     $(".bt").button();
     $('td.name').tooltip({ showBody: "|" });
-    $("#name").autocomplete("/PostBundle/Names", {
-        minChars: 3,
-        matchContains: false,
-        mustMatch: true,
-        width: 200,
-        selectFirst: false,
-        autoFill: false,
-        formatItem: function (row, pos, len) {
-            return row[0] + " (" + row[2] + ")<br />" + row[3];
-        },
-        formatResult: function (row) {
-            return row[0];
-        }
-    });
-    $("#name").result(function (ev, data, formatted) {
-        if (data) {
-            $('#pid').val(data[1]);
-        }
-        if (this.value === '') {
-            $.growlUI("Name", "Not Found");
-            $('#pid').val('');
-        }
-    });
+    $("#name").autocomplete({
+        source: "/PostBundle/Names",
+        minLength: 3,
+        delay: 300,
+    }).data("autocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
+            .data("item.autocomplete", item)
+            .append("<a>" + item.label + "<br>" + item.desc + "</a>")
+            .appendTo(ul);
+    };
+//    $("#name").result(function (ev, data, formatted) {
+//        if (data) {
+//            $('#pid').val(data[1]);
+//        }
+//        if (this.value === '') {
+//            $.growlUI("Name", "Not Found");
+//            $('#pid').val('');
+//        }
+//    });
 
     $.Stripe = function () {
         $('#bundle tbody tr').removeClass('alt');

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Threading;
 using CmsData;
+using CmsData.Registration;
 using UtilityExtensions;
 using CmsWeb.Models.OrganizationPage;
 using System.Collections;
@@ -83,7 +84,7 @@ namespace CmsWeb.Models
 		{
 			OrgName = (from o in DbUtil.Db.Organizations where o.OrganizationId == id select o.OrganizationName).Single();
 			OrgId = id;
-			times = from ts in Regsettings.TimeSlots
+			times = from ts in Regsettings.timeSlots.list
 					orderby ts.Time
 					select ts.Datetime(Sunday);
 
@@ -153,7 +154,7 @@ namespace CmsWeb.Models
 			{
 				var dt = sunday;
 				{
-					var u = from ts in Regsettings.TimeSlots
+					var u = from ts in Regsettings.timeSlots.list
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
 							let meeting = mlist.SingleOrDefault(mm => mm.MeetingDate == time)
@@ -224,13 +225,13 @@ namespace CmsWeb.Models
 				return _sunday.Value;
 			}
 		}
-		private RegSettings _regsettings;
-		public RegSettings Regsettings
+		private Settings _regsettings;
+		public Settings Regsettings
 		{
 			get
 			{
 				return _regsettings ??
-					(_regsettings = new RegSettings(Org.RegSetting, DbUtil.Db, OrgId));
+					(_regsettings = new Settings(Org.RegSetting, DbUtil.Db, OrgId));
 			}
 		}
 		public void ApplyDragDrop(
