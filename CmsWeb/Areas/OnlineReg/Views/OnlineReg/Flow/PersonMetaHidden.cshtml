@@ -1,0 +1,14 @@
+﻿@model CmsWeb.Models.OnlineRegPersonModel
+@{ var prefix = ViewData.TemplateInfo.HtmlFieldPrefix; }
+<input type="hidden" name="@(prefix).OtherOK" value="@Model.OtherOK"/>
+<input type="hidden" name="@(prefix).orgid" value="@Model.orgid"/>
+<input type="hidden" name="@(prefix).masterorgid" value="@Model.masterorgid"/>
+<input type="hidden" name="@(prefix).divid" value="@Model.divid"/>
+<input type="hidden" name="@(prefix).classid" value="@Model.classid"/>
+<input type="hidden" name="@(prefix).PeopleId" value="@Model.PeopleId"/>
+<input type="hidden" name="@(prefix).Found" value="@Model.Found"/>
+<input type="hidden" name="@(prefix).IsNew" value="@Model.IsNew"/>
+<input type="hidden" name="@(prefix).LoggedIn" value="@Model.LoggedIn"/>
+<input type="hidden" name="@(prefix).IsValidForExisting" value="@Model.IsValidForExisting"/>
+<input type="hidden" name="@(prefix).IsValidForNew" value="@Model.IsValidForNew"/>
+<input type="hidden" name="@(prefix).ShowAddress" value="@Model.ShowAddress"/>

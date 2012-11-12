@@ -1,0 +1,106 @@
+﻿@using CmsData.Registration
+@using CmsWeb
+@model CmsWeb.Models.OnlineRegPersonModel
+@{ var prefix = ViewData.TemplateInfo.HtmlFieldPrefix; }
+@foreach(var ask in Model.setting.AskItems)
+{
+	switch (ask.Type)
+	{
+        case "AskSize":
+			<input type="hidden" name="@(prefix).shirtsize" value="@Model.shirtsize"/>
+        break;
+        case "AskRequest":
+			<input type="hidden" name="@(prefix).request" value="@Model.request"/>
+            break;
+        case "AskEmContact":
+			<input type="hidden" name="@(prefix).emcontact" value="@Model.emcontact"/>
+			<input type="hidden" name="@(prefix).emphone" value="@Model.emphone"/>
+            break;
+        case "AskInsurance":
+			<input type="hidden" name="@(prefix).insurance" value="@Model.insurance"/>
+			<input type="hidden" name="@(prefix).policy" value="@Model.policy"/>
+            break;
+        case "AskDoctor":
+			<input type="hidden" name="@(prefix).doctor" value="@Model.doctor"/>
+			<input type="hidden" name="@(prefix).docphone" value="@Model.docphone"/>
+            break;
+        case "AskAllergies":
+			<input type="hidden" name="@(prefix).medical" value="@Model.medical"/>
+            break;
+        case "AskTylenolEtc":
+			<input type="hidden" name="@(prefix).tylenol" value="@Model.tylenol"/>
+			<input type="hidden" name="@(prefix).advil" value="@Model.advil"/>
+			<input type="hidden" name="@(prefix).maalox" value="@Model.maalox"/>
+			<input type="hidden" name="@(prefix).robitussin" value="@Model.robitussin"/>
+            break;
+        case "AskParents":
+			<input type="hidden" name="@(prefix).mname" value="@Model.mname"/>
+			<input type="hidden" name="@(prefix).fname" value="@Model.fname"/>
+            break;
+        case "AskCoaching":
+			<input type="hidden" name="@(prefix).coaching" value="@Model.coaching"/>
+            break;
+        case "AskChurch":
+			<input type="hidden" name="@(prefix).memberus" value="@Model.memberus"/>
+			<input type="hidden" name="@(prefix).otherchurch" value="@Model.otherchurch"/>
+            break;
+        case "AskTickets":
+			<input type="hidden" name="@(prefix).ntickets" value="@Model.ntickets"/>
+            break;
+        case "AskSuggestedFee":
+			<input type="hidden" name="@(prefix).Suggestedfee" value="@Model.Suggestedfee"/>
+            break;
+        case "AskDropdown":
+            <input type="hidden" name="@(prefix).option" value="@(((AskDropdown)ask).SmallGroupChoice(Model.option).SmallGroup)"/>
+            break;
+        case "AskExtraQuestions":
+    		for (int n = 0; n < ((AskExtraQuestions)ask).list.Count; n++)
+    		{
+    			var a = ((AskExtraQuestions)ask).list[n];
+    			<input type="hidden" name="@(prefix).ExtraQuestion[@n].Key" value="@a.Question" />
+    			<input type="hidden" name="@(prefix).ExtraQuestion[@n].Value" value="@Model.ExtraQuestion[a.Question]" />
+    		}
+            break;
+        case "AskYesNoQuestions":
+            for (int n = 0; n < ((AskYesNoQuestions)ask).list.Count; n++)
+            {
+                var a = ((AskYesNoQuestions)ask).list[n];
+    			<input type="hidden" name="@(prefix).YesNoQuestion[@n].Key" value="@a.SmallGroup" />
+    			<input type="hidden" name="@(prefix).YesNoQuestion[@n].Value" value="@Model.YesNoQuestion[a.SmallGroup]" />
+            }
+            break;
+        case "AskCheckboxes":
+			var cbname = Html.NameFor(m => m.Checkbox);
+            foreach(var sg in Model.Checkbox)
+            { 
+                <input type="hidden" name="@cbname" value="@sg"/>
+            }
+            break;
+         case "AskMenu":
+            var nn = 0;
+			foreach (var i in ((AskMenu)ask).MenuItemsChosen(Model.MenuItem))
+			{
+    			<input type="hidden" name="@(prefix).MenuItem[@nn].Key" value="@i.sg" />
+				<input type="hidden" name="@(prefix).MenuItem[@(nn++)].Value" value="@Model.MenuItemValue(i.sg)" />
+			}
+            break;
+        case "GradeOptions":
+            <input type="hidden" name="@(prefix).gradeoption" value="@Model.gradeoption"/>
+            break;
+	}
+}
+@if (Model.OnlineGiving())
+{
+    var funame = Html.NameFor(m => m.FundItem);
+		int fn = 0;
+		foreach (var i in Model.FundItemsChosen())
+		{
+    		<input type="hidden" name="@(funame)[@fn].Key" value="@i.fundid" />
+			<input type="hidden" name="@(funame)[@(fn++)].Value" value="@i.amt" />
+		}
+}
+@if (Model.setting.Deposit > 0)
+{ 
+    <input type="hidden" name="@(prefix).paydeposit" value="@Model.paydeposit"/>
+}
+<input type="hidden" name="@(prefix).CreatingAccount" value="@Model.CreatingAccount"/>
