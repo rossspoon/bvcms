@@ -17,13 +17,13 @@
     <div>Indicate which person is the donor and enter an amount.</div>
 }
 @for (var i = 0; i < Model.List.Count; i++)
-{ 
+{
+		var viewdata = new ViewDataDictionary(ViewData)
+            { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "List[" + i + "]" } };
         var p = Model.List[i];
-        Model.current = Model.List[i];
-        Model.current.index = i;
-        @Html.Partial("Flow/PersonMetaHidden", p)
-        @Html.Partial("Flow/PersonHidden", p)
-        @Html.Partial("Flow/OtherHidden", p)
+        @Html.Partial("Flow/PersonMetaHidden", p, viewdata)
+        @Html.Partial("Flow/PersonHidden", p, viewdata)
+        @Html.Partial("Flow/OtherHidden", p, viewdata)
     if(Model.List.Count > 1)
     {
             <input type="radio" name="m.donor" value="@i" /> @(p.first + " " + p.last + " " + p.suffix) @:(@p.age)<br />

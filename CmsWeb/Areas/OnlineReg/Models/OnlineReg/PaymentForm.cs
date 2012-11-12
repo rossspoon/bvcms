@@ -25,6 +25,7 @@ namespace CmsWeb.Models
 		public int timeout { get; set; }
 		public string Terms { get; set; }
 		public int DatumId { get; set; }
+		public Guid FormId { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public bool PayBalance { get; set; }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="Users.aspx.cs" Inherits="CmsWeb.Admin.Users" %>
+﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="Users.aspx.cs" Inherits="CmsWeb.Admin.Users" EnableEventValidation="false" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>

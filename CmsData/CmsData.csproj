@@ -267,7 +267,11 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="APIContribution.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
+    <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
+    <Compile Include="Generated\Views\UserRole.cs" />
+    <Compile Include="Generated\VolRequest.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
     <Compile Include="Generated\Functions\PledgeFulfillment.cs" />
     <Compile Include="Generated\Functions\VisitNumberSinceDate.cs" />
@@ -300,10 +304,25 @@
     <Compile Include="Generated\Views\PickListOrg.cs" />
     <Compile Include="ManagedGiving.cs" />
     <Compile Include="Dynamic.cs" />
+    <Compile Include="Registration\Ask.cs" />
+    <Compile Include="Registration\AskRequest.cs" />
+    <Compile Include="Registration\AskSize.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Registration\AskTickets.cs" />
+    <Compile Include="Registration\AskSuggestedFee.cs" />
+    <Compile Include="Registration\TimeSlots.cs" />
+    <Compile Include="Registration\AskDropdown.cs" />
+    <Compile Include="Registration\AskCheckboxes.cs" />
+    <Compile Include="Registration\AskExtraQuestions.cs" />
+    <Compile Include="Registration\GradeOptions.cs" />
+    <Compile Include="Registration\AskMenu.cs" />
+    <Compile Include="Registration\OrgFees.cs" />
+    <Compile Include="Registration\Parser.cs" />
+    <Compile Include="Registration\AskYesNoQuestions.cs" />
     <Compile Include="SagePayments.cs" />
     <Compile Include="TransactionResponse.cs" />
     <Compile Include="TwilioHelper.cs" />
-    <Compile Include="VolInterest.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
     <Compile Include="Generated\Duplicate.cs" />
     <Compile Include="Generated\Functions\FindPerson4.cs" />
@@ -327,7 +346,7 @@
     <Compile Include="Generated\OrgSchedule.cs" />
     <Compile Include="Generated\PeopleQueryBit.cs" />
     <Compile Include="Generated\QueryStat.cs" />
-    <Compile Include="RegSettings.cs" />
+    <Compile Include="Registration\Settings.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
@@ -543,6 +562,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MigrationScripts\Migrate-10-20-2012.sql" />
     <Content Include="QueryBuilder\FieldMap2.xml">
       <SubType>Designer</SubType>
     </Content>

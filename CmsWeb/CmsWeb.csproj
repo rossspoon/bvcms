@@ -215,16 +215,20 @@
     <Compile Include="Areas\Finance\Models\ContributionSearchModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
+    <Compile Include="Areas\Main\Controllers\PeopleSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
     <Compile Include="Areas\Main\Models\Avery\AverySpacerCell173.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddress.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddressCell.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddressRow.cs" />
+    <Compile Include="Areas\Main\Models\Directories\CompactDir.cs" />
+    <Compile Include="Areas\Main\Models\Directories\CompactRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\PictureDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\PictureRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
     <Compile Include="Areas\Main\Models\Email\EmailTemplatesModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
@@ -235,8 +239,10 @@
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Main\Models\Person\VolunteerModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\UsersController.cs" />
     <Compile Include="Areas\Manage\Models\CheckinTimeModel.cs" />
     <Compile Include="Areas\Manage\Models\ContentModel.cs" />
+    <Compile Include="Areas\Manage\Models\UsersModel.cs" />
     <Compile Include="Areas\Manage\Models\UploadPeopleModel.cs" />
     <Compile Include="Areas\Manage\Models\AccountModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
@@ -254,6 +260,7 @@
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
+    <Compile Include="Areas\Manage\Models\VolunteerRequestModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
     <Compile Include="Areas\Public\Controllers\APIMetaController.cs" />
     <Compile Include="Areas\Public\Controllers\APITestController.cs" />
@@ -273,7 +280,6 @@
     <Compile Include="Areas\Public\Controllers\APIPersonController.cs" />
     <Compile Include="Areas\Public\Controllers\APIOrgController.cs" />
     <Compile Include="Areas\Public\Controllers\APIMeetingController.cs" />
-    <Compile Include="Areas\Public\Controllers\ExternalServicesController.cs" />
     <Compile Include="Areas\Public\Controllers\MobileAPIController.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
@@ -292,7 +298,7 @@
     <Compile Include="Areas\Main\Models\Other\MeetingModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SavedQueryModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
-    <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\PeopleSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
     <Compile Include="Areas\Finance\Models\ContributionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Person\FamilyModel.cs" />
@@ -359,6 +365,7 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Code\SmartBinder.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
     <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
@@ -371,7 +378,7 @@
     <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
     <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
     <Content Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
-    <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
+    <EmbeddedResource Include="Areas\Public\Controllers\APITestPlan.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
     <Content Include="Areas\Public\Views\APITest\Index.cshtml">
@@ -412,9 +419,9 @@
     <Content Include="Content\healthcheck.txt" />
     <Content Include="Content\joyride-1.0.5.css" />
     <Content Include="Content\jquery-ui-1.8.22.custom.css" />
-    <Content Include="Content\js\jquery-1.7.2.js" />
-    <Content Include="Content\js\jquery-1.7.2.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.22.custom.js" />
+    <Content Include="Content\jquery-ui-1.9.1.custom.css" />
+    <Content Include="Content\js\jquery-1.8.2.js" />
+    <Content Include="Content\js\jquery-ui-1.8.23.custom.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
@@ -507,10 +514,6 @@
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
     <Compile Include="Areas\Setup\Controllers\DivisionController.cs" />
     <Compile Include="Code\CmsController.cs" />
-    <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
-    <Compile Include="Areas\Main\Models\Other\SearchPeopleModel.cs" />
-    <Compile Include="Areas\Public\Controllers\StepClassController.cs" />
-    <Compile Include="Areas\Public\Models\StepClassModel.cs" />
     <Compile Include="Areas\Setup\AreaRegistration.cs" />
     <Compile Include="Areas\Manage\Controllers\DisplayController.cs" />
     <Compile Include="Areas\Finance\Controllers\FundController.cs" />
@@ -676,7 +679,6 @@
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
-    <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
     <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
     <Compile Include="EmailAttendanceNotices.aspx.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
@@ -729,11 +731,9 @@
     <Compile Include="Areas\Main\Models\Other\SearchContactModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskInfo.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskModel.cs" />
-    <Compile Include="Areas\Public\Models\VolunteerModel.cs" />
-    <Compile Include="Areas\Manage\Models\VolunteersModel.cs" />
     <Compile Include="Areas\Finance\Models\QuickBooksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Include="Properties\Settings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -773,6 +773,11 @@
     <Compile Include="Report\Reports.Master.designer.cs">
       <DependentUpon>Reports.Master</DependentUpon>
     </Compile>
+    <Compile Include="Resource1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -794,6 +799,10 @@
     <Compile Include="UserControls\GridPager.ascx.designer.cs">
       <DependentUpon>GridPager.ascx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">
@@ -1015,8 +1024,8 @@
     <Content Include="Min\Content\js\combined-org.js" />
     <Content Include="Min\Content\js\combined-person.js" />
     <Content Include="Min\Content\js\combined.js" />
-    <Content Include="Min\Content\js\jquery-1.7.2.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.8.22.custom.js" />
+    <Content Include="Min\Content\js\jquery-1.8.2.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.8.23.custom.js" />
     <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Min\Content\js\jquery.checkboxtree.js" />
     <Content Include="Min\Content\js\jquery.contextMenu.js" />
@@ -1052,6 +1061,7 @@
     <Content Include="Min\Scripts\OrgMembers.js" />
     <Content Include="Min\Scripts\OrgMembersDialog.js" />
     <Content Include="Min\Scripts\OrgSearch.js" />
+    <Content Include="Min\Scripts\PeopleSearch.js" />
     <Content Include="Min\Scripts\Person.js" />
     <Content Include="Min\Scripts\pickslots2.js" />
     <Content Include="Min\Scripts\PostBundle.js" />
@@ -1062,7 +1072,6 @@
     <Content Include="Min\Scripts\SearchAdd.js" />
     <Content Include="Min\Scripts\SearchDivisions.js" />
     <Content Include="Min\Scripts\SearchOrgs.js" />
-    <Content Include="Min\Scripts\SearchPeople.js" />
     <Content Include="Min\Scripts\SearchUsers.js" />
     <Content Include="Min\Scripts\Tags.js" />
     <Content Include="Min\Scripts\Task.js" />
@@ -1071,9 +1080,13 @@
     <Content Include="Min\Scripts\TransactionHistory.js" />
     <Content Include="Min\Scripts\Transactions.js" />
     <Content Include="Min\Scripts\UserDialog.js" />
+    <Content Include="Min\Scripts\Users.js" />
     <Content Include="Scripts\CheckinActivity.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
+    <Content Include="Scripts\HomeTest.js" />
+    <Content Include="Scripts\Users.js" />
+    <Content Include="Scripts\QuickSearch.js" />
     <Content Include="Scripts\meeting-ticket.js" />
     <Content Include="Scripts\TotalsByFund.js" />
     <Content Include="Scripts\ManageVolunteer.js" />
@@ -1099,7 +1112,7 @@
     <Content Include="Scripts\SavedQuery.js" />
     <Content Include="Scripts\SearchUsers.js" />
     <Content Include="Scripts\Tags.js" />
-    <Content Include="Scripts\QuickSearch.js" />
+    <Content Include="Scripts\PeopleSearch.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />
@@ -1223,6 +1236,31 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\GetVolSub.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\EmailVolunteerSubs.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolSubReport.cshtml" />
+    <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Volunteers\ManageArea.cshtml" />
+    <Content Include="Areas\Manage\Views\Volunteers\Request.cshtml" />
+    <Content Include="Areas\Manage\Views\Volunteers\EmailVolunteerRequest.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\RequestReport.cshtml" />
+    <Content Include="Areas\Manage\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Users\Results.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskRequest.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskTickets.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskYesNoQuestions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskParents.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskExtraQuestions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskSize.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskMenu.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskCheckboxes.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\GradeOptions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\DropdownItem.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskCoaching.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskDoctor.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskInsurance.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskEmContact.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskAllergies.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskChurch.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskTylenolEtc.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskSuggestedFee.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Minify.bat" />
@@ -1567,39 +1605,6 @@
     <Content Include="Areas\Manage\Views\Volunteers\Calendar.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Manage\Views\Volunteers\CustomReport.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Manage\Views\Volunteers\Index.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step1.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step1Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step2.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step2Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step3.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step3Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Index.cshtml">
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\PickList2.cshtml">
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Unknown.cshtml">
-    </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm.cshtml">
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm2.cshtml">
@@ -1685,9 +1690,9 @@
     </Content>
     <Content Include="Areas\Manage\Views\Batch\FindTagPeople.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml">
+    <Content Include="Areas\Main\Views\PeopleSearch\Index.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\QuickSearch\Results.cshtml">
+    <Content Include="Areas\Main\Views\PeopleSearch\Results.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Tags\Index.cshtml">
     </Content>
@@ -1776,15 +1781,9 @@
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\YesNoQuestion.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Checkbox.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\CheckboxItem.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Checkbox2.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown1.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown2.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown3.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskDropdown.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\ExtraQuestion.cshtml">
     </Content>
@@ -1794,9 +1793,7 @@
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\OrgFee.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\ShirtSize.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\VoteTag.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Size.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabAdmin.cshtml">
     </Content>
@@ -1930,6 +1927,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -2152,8 +2150,6 @@
     <Content Include="Admin\ToggleOrgMembersOnly.ashx" />
     <Content Include="Admin\Web.config" />
     <Content Include="AppReview\Web.config" />
-    <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
-    <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
     <Content Include="Binaries\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.pdb" />
@@ -2203,7 +2199,6 @@
     <Content Include="Content\js\additional-methods.js" />
     <Content Include="Content\js\center-plugin_1.0.1.js" />
     <Content Include="Content\js\jquery-idleTimeout.js" />
-    <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.dimensions.min.js" />
     <Content Include="Content\js\jquery.hoverIntent.js" />
@@ -2223,7 +2218,6 @@
     <Content Include="Content\jquery.treeview.css" />
     <Content Include="Content\js\fg.menu.js" />
     <Content Include="Content\js\jquery.anchorHandler.js" />
-    <Content Include="Content\js\jQuery.autocomplete.js" />
     <Content Include="Content\js\jquery.checkboxtree.js" />
     <Content Include="Content\js\jquery.clockpick.1.2.1.js" />
     <Content Include="Content\js\jquery.multiSelect.js" />
@@ -2274,7 +2268,6 @@
     <Content Include="Scripts\Event.js" />
     <Content Include="Scripts\Pager.js" />
     <Content Include="Scripts\Person.js" />
-    <Content Include="Scripts\SearchPeople.js" />
     <Content Include="Content\newsletter.css" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Site3b.Master" />

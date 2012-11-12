@@ -1,4 +1,4 @@
-﻿@model List<CmsWeb.Models.ApiSectionInfo>
+﻿@model CmsWeb.Models.TestPlan
 @using UtilityExtensions
 @using CmsWeb
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -6,7 +6,15 @@
 <head>
 <title>API Tester</title>
 @Html.Partial("CombinedCss")
-<link rel="stylesheet" href="/Content/faary.css?v=1" type="text/css" />
+	<link rel="stylesheet" href="/Content/faary.css?v=1" type="text/css" />
+	<style>
+	    div.section
+	    {
+	        cursor: pointer;
+            background-color:#777;
+            color:#eee;
+	    }
+	</style>
 @Html.Partial("CombinedJs")
 @Html.Script("/Scripts/TestAPI.js")
 </head>
@@ -23,10 +31,10 @@
         </ul>
     </li>
     <li><label>uname</label>
-        <input id="uname" name="uname" class="itext" type="text" value="" />
+        <input id="uname" name="uname" class="itext" type="text" />
     </li>
     <li><label>pword</label>
-        <input id="pword" name="pword" class="itext" type="password" value="" />
+        <input id="pword" name="pword" class="itext" type="password" />
     </li>
     <li><label>script</label>
 <textarea class="itextarea" spellcheck="false" name="script" rows="7">
@@ -45,11 +53,11 @@ webclient.Headers.Add('Authorization: Basic ' + credentials)
 </form>
 <div class="clear"></div>
 
-@foreach(var m in Model)
+@foreach(var m in Model.Sections)
 {
-    <div class="section" style="background-color:#777;color:#eee"><h2>&nbsp;<text>API</text>@m.section</h2></div>
+    <div class="section" title="Click the title to expand this section"><h2>&nbsp;<text>API</text>@m.name</h2></div>
     <div style="display:none">
-    @foreach (var t in m.list)
+    @foreach (var t in m.Tests)
     {
     @Html.EditorFor(mm => t)
     }

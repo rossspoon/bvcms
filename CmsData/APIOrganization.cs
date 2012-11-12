@@ -1,100 +1,102 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using System.Text;
 using System.Linq;
+using System.Xml.Serialization;
 using UtilityExtensions;
 using IronPython.Hosting;
 using System.Data.Linq;
 
 namespace CmsData.API
 {
-    public class APIOrganization
-    {
-        private CMSDataContext Db;
+	public class APIOrganization
+	{
+		private CMSDataContext Db;
 
-        public APIOrganization()
-        {
-            Db = new CMSDataContext("Data Source=.;Initial Catalog=CMS_bellevue;Integrated Security=True");
-        }
-        public APIOrganization(CMSDataContext Db)
-        {
-            this.Db = Db;
-        }
-        public string OrganizationsForDiv(int divid)
-        {
-            var q = from o in Db.Organizations
-                    where o.DivOrgs.Any(dd => dd.DivId == divid)
-                    where o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
-                    let leader = Db.People.SingleOrDefault(ll => ll.PeopleId == o.LeaderId)
-                    select new
-                    {
-                        o.OrganizationId,
-                        o.OrganizationName,
-                        o.Location,
-                        o.Description,
-                        o.LeaderName,
-                        o.LeaderId,
-                        Email = leader != null ? leader.EmailAddress : "",
-                        IsParent = o.ChildOrgs.Count() > 0,
-                        NumMembers = o.OrganizationMembers.Count(om => om.Pending != true && om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive)
-                    };
-            var w = new APIWriter();
+		public APIOrganization()
+		{
+			Db = new CMSDataContext("Data Source=.;Initial Catalog=CMS_bellevue;Integrated Security=True");
+		}
+		public APIOrganization(CMSDataContext Db)
+		{
+			this.Db = Db;
+		}
+		public string OrganizationsForDiv(int divid)
+		{
+			var q = from o in Db.Organizations
+					where o.DivOrgs.Any(dd => dd.DivId == divid)
+					where o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
+					let leader = Db.People.SingleOrDefault(ll => ll.PeopleId == o.LeaderId)
+					select new
+					{
+						o.OrganizationId,
+						o.OrganizationName,
+						o.Location,
+						o.Description,
+						o.LeaderName,
+						o.LeaderId,
+						Email = leader != null ? leader.EmailAddress : "",
+						IsParent = o.ChildOrgs.Count() > 0,
+						NumMembers = o.OrganizationMembers.Count(om => om.Pending != true && om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive)
+					};
+			var w = new APIWriter();
 
-            w.Start("Organizations");
-            foreach (var o in q)
-            {
-                w.Start("Organization");
-                w.Attr("Id", o.OrganizationId);
-                w.Attr("Name", o.OrganizationName);
-                w.Attr("NumMembers", o.NumMembers);
-                if (o.IsParent)
-                    w.Attr("IsParent", o.IsParent);
-                w.Attr("Location", o.Location);
-                w.Attr("Leader", o.LeaderName);
-                w.Attr("LeaderId", o.LeaderId);
-                w.Attr("Email", o.Email);
-                w.End();
-            }
-            w.End();
-            return w.ToString();
-        }
-        public class OrgMemberInfo
-        {
-            public OrganizationMember member { get; set; }
-            public Person person { get; set; }
-            public IEnumerable<string> tags { get; set; }
-        }
-        public List<OrgMemberInfo> OrgMembersData(int orgid)
-        {
-            // load data, do in memory joins
-            var qm = (from m in Db.OrganizationMembers
-                      where m.OrganizationId == orgid
-                      where m.MemberTypeId != Codes.MemberTypeCode.InActive
-                      select new { m, m.Person }).ToList();
-            var mt = (from m in Db.OrgMemMemTags
-                      where m.OrganizationMember.OrganizationId == orgid
-                      where m.OrganizationMember.MemberTypeId != Codes.MemberTypeCode.InActive
-                      select new { m.OrganizationMember.PeopleId, m.MemberTag.Name }).ToList();
-            var q = from i in qm
-                    select new OrgMemberInfo
-                    {
-                        member = i.m,
-                        person = i.Person,
-                        tags = from t in mt
-                               where t.PeopleId == i.m.PeopleId
-                               select t.Name,
-                    };
-            return q.ToList();
-        }
-        public string OrgMembersPython(int orgid)
-        {
-            var list = OrgMembersData(orgid);
-            var script = Db.Content("API-OrgMembers");
-            if (script == null)
-            {
-                script = new Content();
-                script.Body = @"
+			w.Start("Organizations");
+			foreach (var o in q)
+			{
+				w.Start("Organization");
+				w.Attr("Id", o.OrganizationId);
+				w.Attr("Name", o.OrganizationName);
+				w.Attr("NumMembers", o.NumMembers);
+				if (o.IsParent)
+					w.Attr("IsParent", o.IsParent);
+				w.Attr("Location", o.Location);
+				w.Attr("Leader", o.LeaderName);
+				w.Attr("LeaderId", o.LeaderId);
+				w.Attr("Email", o.Email);
+				w.End();
+			}
+			w.End();
+			return w.ToString();
+		}
+		public class OrgMemberInfo
+		{
+			public OrganizationMember member { get; set; }
+			public Person person { get; set; }
+			public IEnumerable<string> tags { get; set; }
+		}
+		public List<OrgMemberInfo> OrgMembersData(int orgid)
+		{
+			// load data, do in memory joins
+			var qm = (from m in Db.OrganizationMembers
+					  where m.OrganizationId == orgid
+					  where m.MemberTypeId != Codes.MemberTypeCode.InActive
+					  select new { m, m.Person }).ToList();
+			var mt = (from m in Db.OrgMemMemTags
+					  where m.OrganizationMember.OrganizationId == orgid
+					  where m.OrganizationMember.MemberTypeId != Codes.MemberTypeCode.InActive
+					  select new { m.OrganizationMember.PeopleId, m.MemberTag.Name }).ToList();
+			var q = from i in qm
+					select new OrgMemberInfo
+					{
+						member = i.m,
+						person = i.Person,
+						tags = from t in mt
+							   where t.PeopleId == i.m.PeopleId
+							   select t.Name,
+					};
+			return q.ToList();
+		}
+		public string OrgMembersPython(int orgid)
+		{
+			var list = OrgMembersData(orgid);
+			var script = Db.Content("API-OrgMembers");
+			if (script == null)
+			{
+				script = new Content();
+				script.Body = @"
 from System import *
 from System.Text import *
 
@@ -117,171 +119,350 @@ class OrgMembers(object):
 		w.End()
 		return w.ToString()
 ";
-            }
-            if (script == null)
-                return "<login error=\"no API-OrgMembers script\" />";
-            var engine = Python.CreateEngine();
-            var sc = engine.CreateScriptSourceFromString(script.Body);
-            try
-            {
-                var code = sc.Compile();
-                var scope = engine.CreateScope();
-                code.Execute(scope);
+			}
+			if (script == null)
+				return "<login error=\"no API-OrgMembers script\" />";
+			var engine = Python.CreateEngine();
+			var sc = engine.CreateScriptSourceFromString(script.Body);
+			try
+			{
+				var code = sc.Compile();
+				var scope = engine.CreateScope();
+				code.Execute(scope);
 
-                dynamic LoginInfo = scope.GetVariable("OrgMembers");
-                dynamic m = LoginInfo();
-                var w = new APIWriter();
-                return m.Run(this, w, list);
-            }
-            catch (Exception ex)
-            {
-                return "<login error=\"API-OrgMembers script error: {0}\" />".Fmt(ex.Message);
-            }
-        }
+				dynamic LoginInfo = scope.GetVariable("OrgMembers");
+				dynamic m = LoginInfo();
+				var w = new APIWriter();
+				return m.Run(this, w, list);
+			}
+			catch (Exception ex)
+			{
+				return "<login error=\"API-OrgMembers script error: {0}\" />".Fmt(ex.Message);
+			}
+		}
 
-        public string OrgMembers(int orgid, string search)
-        {
-            search = search ?? "";
-            var nosearch = !search.HasValue();
-            var qm = from m in Db.OrganizationMembers
-                     where m.OrganizationId == orgid
-                     where nosearch || m.Person.Name2.StartsWith(search)
-                     select new
-                     {
-                         m.PeopleId,
-                         First = m.Person.PreferredName,
-                         Last = m.Person.LastName,
-                         m.Person.EmailAddress,
-                         m.EnrollmentDate,
-                         MemberType = m.MemberType.Description,
-                         IsLeaderType = (m.MemberType.AttendanceTypeId ?? 0) == CmsData.Codes.AttendTypeCode.Leader,
-                     };
-            var mt = from m in Db.OrgMemMemTags
-                     where m.OrganizationMember.OrganizationId == orgid
-                     where m.OrganizationMember.MemberTypeId != Codes.MemberTypeCode.InActive
-                     select new
-                     {
-                         m.OrganizationMember.PeopleId,
-                         m.MemberTag.Name
-                     };
-            var mtags = mt.ToList();
+		public string OrgMembers(int orgid, string search)
+		{
+			search = search ?? "";
+			var nosearch = !search.HasValue();
+			var qm = from m in Db.OrganizationMembers
+					 where m.OrganizationId == orgid
+					 where nosearch || m.Person.Name2.StartsWith(search)
+					 select new
+					 {
+						 m.PeopleId,
+						 First = m.Person.PreferredName,
+						 Last = m.Person.LastName,
+						 m.Person.EmailAddress,
+						 m.EnrollmentDate,
+						 MemberType = m.MemberType.Description,
+						 IsLeaderType = (m.MemberType.AttendanceTypeId ?? 0) == CmsData.Codes.AttendTypeCode.Leader,
+					 };
+			var mt = from m in Db.OrgMemMemTags
+					 where m.OrganizationMember.OrganizationId == orgid
+					 where m.OrganizationMember.MemberTypeId != Codes.MemberTypeCode.InActive
+					 select new
+					 {
+						 m.OrganizationMember.PeopleId,
+						 m.MemberTag.Name
+					 };
+			var mtags = mt.ToList();
 
-            var w = new APIWriter();
-            w.Start("OrgMembers");
-            foreach (var m in qm.ToList())
-            {
-                w.Start("Member");
-                w.Attr("PreferredName", m.First);
-                w.Attr("LastName", m.Last);
-                w.Attr("Email", m.EmailAddress);
-                w.Attr("Enrolled", m.EnrollmentDate);
-                w.Attr("MemberType", m.MemberType);
-                if (m.IsLeaderType)
-                    w.Attr("IsLeader", m.IsLeaderType);
-                var qt = from t in mtags
-                         where t.PeopleId == m.PeopleId
-                         select t.Name;
-                foreach (var group in qt)
-                    w.Add("Group", group);
-                w.End();
-            }
-            w.End();
-            return w.ToString();
-        }
-        public string UpdateOrgMember(int orgid, int peopleid, int? MemberType, DateTime? EnrollDate, string InactiveDate)
-        {
-            try
-            {
-                var om = Db.OrganizationMembers.Single(mm =>
-                    mm.OrganizationId == orgid
-                    && mm.PeopleId == peopleid);
+			var w = new APIWriter();
+			w.Start("OrgMembers");
+			foreach (var m in qm.ToList())
+			{
+				w.Start("Member");
+				w.Attr("PreferredName", m.First);
+				w.Attr("LastName", m.Last);
+				w.Attr("Email", m.EmailAddress);
+				w.Attr("Enrolled", m.EnrollmentDate);
+				w.Attr("MemberType", m.MemberType);
+				if (m.IsLeaderType)
+					w.Attr("IsLeader", m.IsLeaderType);
+				var qt = from t in mtags
+						 where t.PeopleId == m.PeopleId
+						 select t.Name;
+				foreach (var group in qt)
+					w.Add("Group", group);
+				w.End();
+			}
+			w.End();
+			return w.ToString();
+		}
+		public string UpdateOrgMember(int orgid, int peopleid, int? MemberType, DateTime? EnrollDate, string InactiveDate)
+		{
+			try
+			{
+				var om = Db.OrganizationMembers.Single(mm =>
+					mm.OrganizationId == orgid
+					&& mm.PeopleId == peopleid);
 
-                if (MemberType.HasValue)
-                    om.MemberTypeId = MemberType.Value;
-                if (EnrollDate.HasValue)
-                    om.EnrollmentDate = EnrollDate;
+				if (MemberType.HasValue)
+					om.MemberTypeId = MemberType.Value;
+				if (EnrollDate.HasValue)
+					om.EnrollmentDate = EnrollDate;
 
-                var d = InactiveDate.ToDate();
-                if (d.HasValue)
-                    om.InactiveDate = d;
-                else if (InactiveDate == "null")
-                    om.InactiveDate = null;
+				var d = InactiveDate.ToDate();
+				if (d.HasValue)
+					om.InactiveDate = d;
+				else if (InactiveDate == "null")
+					om.InactiveDate = null;
 
-                Db.SubmitChanges();
+				Db.SubmitChanges();
 
-                return "ok";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-        public string DeleteExtraValue(int orgid, string field)
-        {
-            try
-            {
-                var q = from v in Db.OrganizationExtras
-                        where v.Field == field
-                        where v.OrganizationId == orgid
-                        select v;
-                Db.OrganizationExtras.DeleteAllOnSubmit(q);
-                Db.SubmitChanges();
-                return "ok";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-        public string ExtraValues(int orgid, string fields)
-        {
-            try
-            {
-                var a = (fields ?? "").Split(',');
-                var nofields = !fields.HasValue();
-                var q = from v in Db.OrganizationExtras
-                        where nofields || a.Contains(v.Field)
-                        where v.OrganizationId == orgid
-                        select v;
-                var w = new APIWriter();
-                w.Start("ExtraOrgValues");
-                w.Attr("Id", orgid);
-                foreach (var v in q)
-                    w.Add(v.Field, v.Data);
-                w.End();
-                return w.ToString();
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-        public string AddEditExtraValue(int orgid, string field, string value)
-        {
-            try
-            {
-                var q = from v in Db.OrganizationExtras
-                        where v.Field == field
-                        where v.OrganizationId == orgid
-                        select v;
-                var ev = q.SingleOrDefault();
-                if (ev == null)
-                {
-                    ev = new OrganizationExtra
-                    {
-                        OrganizationId = orgid,
-                        Field = field,
-                    };
-                    Db.OrganizationExtras.InsertOnSubmit(ev);
-                }
-                ev.Data = value;
-                Db.SubmitChanges();
-                return "ok";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-    }
+				return "ok";
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
+			}
+		}
+		public string DeleteExtraValue(int orgid, string field)
+		{
+			try
+			{
+				var q = from v in Db.OrganizationExtras
+						where v.Field == field
+						where v.OrganizationId == orgid
+						select v;
+				Db.OrganizationExtras.DeleteAllOnSubmit(q);
+				Db.SubmitChanges();
+				return "ok";
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
+			}
+		}
+		public string ExtraValues(int orgid, string fields)
+		{
+			try
+			{
+				var a = (fields ?? "").Split(',');
+				var nofields = !fields.HasValue();
+				var q = from v in Db.OrganizationExtras
+						where nofields || a.Contains(v.Field)
+						where v.OrganizationId == orgid
+						select v;
+				var w = new APIWriter();
+				w.Start("ExtraOrgValues");
+				w.Attr("Id", orgid);
+				foreach (var v in q)
+					w.Add(v.Field, v.Data);
+				w.End();
+				return w.ToString();
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
+			}
+		}
+		public string AddEditExtraValue(int orgid, string field, string value)
+		{
+			try
+			{
+				var q = from v in Db.OrganizationExtras
+						where v.Field == field
+						where v.OrganizationId == orgid
+						select v;
+				var ev = q.SingleOrDefault();
+				if (ev == null)
+				{
+					ev = new OrganizationExtra
+					{
+						OrganizationId = orgid,
+						Field = field,
+					};
+					Db.OrganizationExtras.InsertOnSubmit(ev);
+				}
+				ev.Data = value;
+				Db.SubmitChanges();
+				return "ok";
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
+			}
+		}
+
+		public string NewOrganization(int DivId, string name, string Location, int? ParentOrgId)
+		{
+			try
+			{
+				var d = Db.Divisions.Single(dd => dd.Id == DivId);
+				if (d == null)
+					throw new Exception("no division " + DivId);
+				var o = CmsData.Organization.CreateOrganization(Db, d, name);
+				o.ParentOrgId = ParentOrgId;
+				o.Location = Location;
+				Db.SubmitChanges();
+				return @"<NewOrganization id=""{0}"" status=""ok""></NewOrganization>".Fmt(o.OrganizationId);
+			}
+			catch (Exception ex)
+			{
+				return @"<NewOrganization status=""error"">" + ex.Message + "</NewOrganization>";
+			}
+		}
+		public string AddOrgMember(int OrgId, int PeopleId, string MemberType)
+		{
+			try
+			{
+				if (!MemberType.HasValue())
+					MemberType = "Member";
+				var mt = CmsData.Organization.FetchOrCreateMemberType(Db, MemberType);
+				OrganizationMember.InsertOrgMembers(Db, OrgId, PeopleId, mt.Id, DateTime.Now, null, false);
+				return @"<AddOrgMember status=""ok"" />";
+			}
+			catch (Exception ex)
+			{
+				return @"<AddOrgMember status=""error"">" + ex.Message + "</AddOrgMember>";
+			}
+		}
+		public string DropOrgMember(int OrgId, int PeopleId)
+		{
+			try
+			{
+				var om = Db.OrganizationMembers.SingleOrDefault(mm => mm.OrganizationId == OrgId && mm.PeopleId == PeopleId);
+				if (om == null)
+					throw new Exception("no orgmember");
+				om.Drop(Db, addToHistory: true);
+				return @"<DropOrgMember status=""ok"" />";
+			}
+			catch (Exception ex)
+			{
+				return @"<DropOrgMember status=""error"">" + ex.Message + "</DropOrgMember>";
+			}
+		}
+
+		[Serializable]
+		public class Member
+		{
+			[XmlAttribute]
+			public int id { get; set; }
+			public string name { get; set; }
+			public string type { get; set; }
+			public string email { get; set; }
+		}
+		[Serializable]
+		public class Organization
+		{
+			[XmlAttribute]
+			public int id { get; set; }
+			public string name { get; set; }
+			public string location { get; set; }
+			public string description { get; set; }
+			public string extravalue1 { get; set; }
+			public string extravalue2 { get; set; }
+			public List<Member> members { get; set; }
+		}
+		[Serializable]
+		public class Organizations
+		{
+			[XmlAttribute]
+			public string status { get; set; }
+			public List<Organization> List { get; set; }
+		}
+
+		public string ParentOrgs(int id, string extravalue1, string extravalue2)
+		{
+			try
+			{
+				var q = from o in Db.Organizations
+						where o.ChildOrgs.Any()
+						where o.DivisionId == id
+						select new Organization
+						{
+							id = o.OrganizationId,
+							name = o.OrganizationName,
+							location = o.Location,
+							description = o.Description,
+							extravalue1 = (from ev in o.OrganizationExtras
+										   where ev.Field == extravalue1
+										   select ev.Data).SingleOrDefault(),
+							extravalue2 = (from ev in o.OrganizationExtras
+										   where ev.Field == extravalue2
+										   select ev.Data).SingleOrDefault(),
+							members = (from m in o.OrganizationMembers
+									   where m.Pending != true
+									   where m.MemberTypeId != Codes.MemberTypeCode.InActive
+									   where m.MemberType.AttendanceTypeId == Codes.AttendTypeCode.Leader
+									   select new Member
+									   {
+										   id = m.PeopleId,
+										   name = m.Person.Name,
+										   email = m.Person.EmailAddress,
+										   type = m.MemberType.Description
+									   }).ToList()
+						};
+				return SerializeOrgs(q, "ParentOrgs", "ParentOrg", "Leaders");
+			}
+			catch (Exception ex)
+			{
+				return @"<ParentOrgs status=""error"">" + ex.Message + "</ParentOrgs>";
+			}
+
+		}
+		public string ChildOrgs(int id, string extravalue1, string extravalue2)
+		{
+			try
+			{
+				var q = from o in Db.Organizations
+						where o.ParentOrgId == id
+						select new Organization
+						{
+							id = o.OrganizationId,
+							name = o.OrganizationName,
+							location = o.Location,
+							description = o.Description,
+							extravalue1 = (from ev in o.OrganizationExtras
+										   where ev.Field == extravalue1
+										   select ev.Data).SingleOrDefault(),
+							extravalue2 = (from ev in o.OrganizationExtras
+										   where ev.Field == extravalue2
+										   select ev.Data).SingleOrDefault(),
+							members = (from m in o.OrganizationMembers
+									   where m.Pending != true
+									   where m.MemberTypeId != Codes.MemberTypeCode.InActive
+									   select new Member
+									   {
+										   id = m.PeopleId,
+										   name = m.Person.Name,
+										   email = m.Person.EmailAddress,
+										   type = m.MemberType.Description
+									   }).ToList()
+						};
+				return SerializeOrgs(q, "ChildOrgs", "ChildOrg", "Members");
+			}
+			catch (Exception ex)
+			{
+				return @"<ChildOrgs status=""error"">" + ex.Message + "</ChildOrgs>";
+			}
+
+		}
+
+		private static string SerializeOrgs(IQueryable<Organization> q, string root, string OrgElement, string MembersElement)
+		{
+			var sw = new StringWriter();
+			var a = new Organizations {status = "ok", List = q.ToList()};
+
+			var ao = new XmlAttributeOverrides();
+			ao.Add(typeof (Organizations), new XmlAttributes
+			{
+				XmlRoot = new XmlRootAttribute(root)
+			});
+			ao.Add(typeof (Organizations), "List", new XmlAttributes
+			{
+				XmlElements = {new XmlElementAttribute(OrgElement)}
+			});
+			ao.Add(typeof (Organization), "members", new XmlAttributes
+			{
+				XmlArray = new XmlArrayAttribute(MembersElement)
+			});
+
+			var xs = new XmlSerializer(typeof (Organizations), ao);
+			xs.Serialize(sw, a);
+			return sw.ToString();
+		}
+	}
 }

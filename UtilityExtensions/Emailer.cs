@@ -97,7 +97,7 @@ namespace UtilityExtensions
 			{
 				if (HttpContext.Current != null)
 					return HttpContext.Current.User.IsInRole("EmailTest");
-				return (bool)Thread.GetData(Thread.GetNamedDataSlot("IsInRoleEmailTest"));
+				return (bool?)Thread.GetData(Thread.GetNamedDataSlot("IsInRoleEmailTest")) ?? false;
 			}
 			set
 			{

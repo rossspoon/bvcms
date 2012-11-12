@@ -40,7 +40,8 @@
         }
         if (!$("#Submit").val())
             return false;
-        $("#Submit").attr("disabled", "true");
+        if ($("form").valid())
+            $("#Submit").attr("disabled", "true");
         return true;
     });
 

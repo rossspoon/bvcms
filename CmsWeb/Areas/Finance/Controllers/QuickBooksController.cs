@@ -15,7 +15,7 @@ using CmsData;
 namespace CmsWeb.Areas.Finance.Controllers
 {
 	[Authorize(Roles = "Finance")]
-	public class QuickBooksController : Controller
+	public class QuickBooksController : CmsController
 	{
 		public static IToken requestToken;
 

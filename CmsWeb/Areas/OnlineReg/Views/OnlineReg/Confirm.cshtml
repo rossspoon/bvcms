@@ -19,9 +19,15 @@
     });
 </script>
 }
-<h2>Transaction Completed</h2>
-<p style="color: Black">
-    Thank you, your transaction is complete for @ViewData["orgname"].  
-    You should receive a confirmation email at @ViewData["email"] shortly.
-</p>
-<p style="color: Blue"><a href='@ViewBag.Url'>Start a New Transaction</a></p>
+<div class="confirm">
+    <h2>Transaction Completed</h2>
+    <p style="color: Black">
+        Thank you, your transaction is complete for @ViewData["orgname"].  
+        You should receive a confirmation email at @ViewData["email"] shortly.<br /><br />
+        @if (ViewBag.ChurchWebSite != null)
+        {
+            <a href="@ViewBag.ChurchWebSite">Return to Church Website</a>
+        }
+    </p>
+	<p style="color: Blue"><a href='@ViewBag.Url'>Start a New Transaction</a></p>
+</div>

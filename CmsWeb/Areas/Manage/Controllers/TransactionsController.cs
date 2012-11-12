@@ -73,7 +73,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 					 select tt;
 			var t0 = qq.First();
 			var sage = new SagePayments(DbUtil.Db, t.Testing ?? false);
-			TransactionResponse resp;
+			TransactionResponse resp = null;
 			var re = t.TransactionId;
 			if (re.Contains("(testing"))
 				re = re.Substring(0, re.IndexOf("(testing)"));
@@ -86,7 +86,10 @@ namespace CmsWeb.Areas.Manage.Controllers
 			}
 			else
 			{
-				resp = sage.creditTransactionRequest(re, amt ?? 0);
+				if (t.Batchtyp == "eft")
+					resp = sage.creditCheckTransactionRequest(re, amt ?? 0);
+				else if (t.Batchtyp == "bankcard")
+					resp = sage.creditTransactionRequest(re, amt ?? 0);
 				if (resp.Approved)
 					t.Credited = true;
 			}

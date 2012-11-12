@@ -5,12 +5,18 @@
 @Html.HiddenFor(m => m.OrgId)
 @Html.HiddenFor(m => m.IsLeader)
 @Html.Hidden("specialedit", 0)
+<input id="submitit" type="submit" class="submitbutton" value='Submit' />
+@if(Model.IsLeader)
+{
+<label>@Html.CheckBox("SendEmail")Send Email Confirmation and Notice</label>
+}
+
 <table class="grid">
     <thead>
         <tr>
             <td><br /><a href="#" id="sortday" title="Sort Chronologically">Sunday</a></td>
 			<td><br /><a href="#" id="sortweek" title="Sort by Week of Month">Week #</a></td>
-@foreach (var s in Model.Regsettings.TimeSlots)
+@foreach (var s in Model.Regsettings.timeSlots.list)
 { 
             <td class="center">@s.Description<br />@s.Datetime().ToString("ddd h:mm tt")<br /> </td>
 }
@@ -49,15 +55,6 @@
         </tr>
 }
     </tbody>
-	<tfoot>
-		<tr><td align="right" colspan="@(Model.Regsettings.TimeSlots.Count + 2)">
-    		    <input id="submitit" type="submit" class="submitbutton" value='Submit' />
-                @if(Model.IsLeader)
-                {
-                <label>@Html.CheckBox("SendEmail")Send Email Confirmation and Notice</label>
-                }
-            </td>
-        </tr>
-	</tfoot>
 </table>
 
+<input id="submitit" type="submit" class="submitbutton" value='Submit' />

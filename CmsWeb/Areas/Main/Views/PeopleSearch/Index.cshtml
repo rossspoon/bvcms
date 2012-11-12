@@ -1,0 +1,54 @@
+﻿@using CmsWeb.Models
+@using CmsWeb
+@model PeopleSearchModel
+@{
+	ViewBag.Title = "People Search";
+	Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+@section scripts
+{
+@Html.Script("/Scripts/PeopleSearch.js")
+}
+<form id="peoplesearch" method="post" action="/PeopleSearch/Index">
+<table id="searchvalues" cellspacing="5" class="roundbox">
+<tr><td colspan="4"><h2>People Search</h2></td></tr>
+	<tr>
+		<th align="right"> Name/ID#: </th>
+		<td> @Html.TextBox("name", Model.m.name, new { title = "Starting letters of First<space>Last or just Last" })</td>
+		<th align="right"> Campus: </th>
+		<td style="min-width:10em">
+			@Html.DropDownList("campus", Model.Campuses())
+		</td>
+	</tr>
+	<tr>
+		<th align="right"> Email/Phone: </th>
+		<td> @Html.TextBox("communication", Model.m.communication, new { title = "Any part of any phone or email" })</td>
+		<th align="right"> Member: </th>
+		<td>
+			@Html.DropDownList("memberstatus", Model.MemberStatusCodes())
+		</td>
+	</tr>
+	<tr>
+		<th align="right"> Address: </th>
+		<td> @Html.TextBox("address", Model.m.address, new { title = "Any part of the address, city or zip" })</td>
+		<th align="right"> Gender: </th>
+		<td> @Html.DropDownList("gender", Model.GenderCodes()) </td>
+	</tr>
+	<tr>
+		<th align="right"> Date of Birth: </th>
+		<td> @Html.TextBox("birthdate", Model.m.birthdate, new { title = "YYYY or MM or MM/DD or MM/DD/YY" })</td>
+		<th align="right"> Married: </th>
+		<td> @Html.DropDownList("marital", Model.MaritalCodes())</td>
+	</tr>
+	<tr>
+	  <td colspan="3" valign="bottom"><b>Total Count: <span id="totalcount">@Model.Count().ToString("N0")</span></b></td>
+	  <td nowrap><br>
+		  <a href="/PeopleSearch/Results" id="search" class="bt default formlink">Search</a>
+		  <a id="clear" href="#" class="bt">Clear</a>
+		  <a id="convert" href="/PeopleSearch/ConvertToQuery" class="bt">Search Builder</a>
+	  </td>
+	</tr>
+</table>
+@Html.Partial("Results", Model)
+</form>
+<p> <a id="targetpeople" href="#">toggle link target</a> </p>

@@ -1,126 +1,106 @@
-﻿@using UtilityExtensions
+﻿@using CmsData.Registration
 @using CmsWeb
 @model CmsWeb.Models.OnlineRegPersonModel
-@if (Model.setting.AskShirtSize == true)
-{ 
-    @Html.Hidden3(Model.inputname("shirtsize"), Model.shirtsize)
-}
-@if (Model.setting.AskRequest == true)
-{ 
-    @Html.Hidden3(Model.inputname("request"), Model.request)
-}
-@*@if (Model.setting.AskGrade == true)
-{ 
-    @Html.Hidden3(Model.inputname("grade"), Model.grade)
-}
-*@@if (Model.setting.AskEmContact == true)
-{ 
-    @Html.Hidden3(Model.inputname("emcontact"), Model.emcontact)
-    @Html.Hidden3(Model.inputname("emphone"), Model.emphone)
-}
-@if (Model.setting.AskInsurance == true)
-{ 
-    @Html.Hidden3(Model.inputname("insurance"), Model.insurance)
-    @Html.Hidden3(Model.inputname("policy"), Model.policy)
-}
-@if (Model.setting.AskDoctor == true)
-{ 
-    @Html.Hidden3(Model.inputname("doctor"), Model.doctor)
-    @Html.Hidden3(Model.inputname("docphone"), Model.docphone)
-}
-@if (Model.setting.AskAllergies == true)
-{ 
-    @Html.Hidden3(Model.inputname("medical"), Model.medical)
-}
-@if (Model.setting.AskTylenolEtc == true)
-{ 
-    @Html.Hidden3(Model.inputname("tylenol"), Model.tylenol)
-    @Html.Hidden3(Model.inputname("advil"), Model.advil)
-    @Html.Hidden3(Model.inputname("maalox"), Model.maalox)
-    @Html.Hidden3(Model.inputname("robitussin"), Model.robitussin)
-}
-@if (Model.setting.AskParents == true)
-{ 
-    @Html.Hidden3(Model.inputname("mname"), Model.mname)
-    @Html.Hidden3(Model.inputname("fname"), Model.fname)
-}
-@if (Model.setting.AskCoaching == true)
-{ 
-    @Html.Hidden3(Model.inputname("coaching"), Model.coaching)
-}
-@if (Model.setting.AskChurch == true)
-{ 
-    @Html.Hidden3(Model.inputname("memberus"), Model.memberus)
-    @Html.Hidden3(Model.inputname("otherchurch"), Model.otherchurch)
-}
-@if (Model.setting.AskTickets == true)
-{ 
-    @Html.Hidden3(Model.inputname("ntickets"), Model.ntickets)
-}
-@if (Model.setting.SuggestedFee == true)
-{ 
-    @Html.Hidden3(Model.inputname("suggestedfee"), Model.suggestedfee)
-}
-@if(Model.setting.Dropdown1.Count > 0)
-{ 
-    @Html.Hidden3(Model.inputname("option"), Model.option)
-}
-@if(Model.setting.Dropdown2.Count > 0)
-{ 
-    @Html.Hidden3(Model.inputname("option2"), Model.option2)
-}
-@if(Model.setting.Dropdown3.Count > 0)
-{ 
-    @Html.Hidden3(Model.inputname("option3"), Model.option3)
-}
-@if(Model.setting.GradeOptions.Count > 0)
-{ 
-    @Html.Hidden3(Model.inputname("gradeoption"), Model.gradeoption)
-}
-@for(int n = 0; n < Model.setting.ExtraQuestions.Count; n++)
+@{ var prefix = ViewData.TemplateInfo.HtmlFieldPrefix; }
+@foreach(var ask in Model.setting.AskItems)
 {
-    var a = Model.setting.ExtraQuestions[n];
-    @Html.Hidden3(Model.inputname("ExtraQuestion[" + n + "].Key"), a.Question)
-    @Html.Hidden3(Model.inputname("ExtraQuestion[" + n + "].Value"), Model.ExtraQuestion[a.Question])
+	switch (ask.Type)
+	{
+        case "AskSize":
+			<input type="hidden" name="@(prefix).shirtsize" value="@Model.shirtsize"/>
+        break;
+        case "AskRequest":
+			<input type="hidden" name="@(prefix).request" value="@Model.request"/>
+            break;
+        case "AskEmContact":
+			<input type="hidden" name="@(prefix).emcontact" value="@Model.emcontact"/>
+			<input type="hidden" name="@(prefix).emphone" value="@Model.emphone"/>
+            break;
+        case "AskInsurance":
+			<input type="hidden" name="@(prefix).insurance" value="@Model.insurance"/>
+			<input type="hidden" name="@(prefix).policy" value="@Model.policy"/>
+            break;
+        case "AskDoctor":
+			<input type="hidden" name="@(prefix).doctor" value="@Model.doctor"/>
+			<input type="hidden" name="@(prefix).docphone" value="@Model.docphone"/>
+            break;
+        case "AskAllergies":
+			<input type="hidden" name="@(prefix).medical" value="@Model.medical"/>
+            break;
+        case "AskTylenolEtc":
+			<input type="hidden" name="@(prefix).tylenol" value="@Model.tylenol"/>
+			<input type="hidden" name="@(prefix).advil" value="@Model.advil"/>
+			<input type="hidden" name="@(prefix).maalox" value="@Model.maalox"/>
+			<input type="hidden" name="@(prefix).robitussin" value="@Model.robitussin"/>
+            break;
+        case "AskParents":
+			<input type="hidden" name="@(prefix).mname" value="@Model.mname"/>
+			<input type="hidden" name="@(prefix).fname" value="@Model.fname"/>
+            break;
+        case "AskCoaching":
+			<input type="hidden" name="@(prefix).coaching" value="@Model.coaching"/>
+            break;
+        case "AskChurch":
+			<input type="hidden" name="@(prefix).memberus" value="@Model.memberus"/>
+			<input type="hidden" name="@(prefix).otherchurch" value="@Model.otherchurch"/>
+            break;
+        case "AskTickets":
+			<input type="hidden" name="@(prefix).ntickets" value="@Model.ntickets"/>
+            break;
+        case "AskSuggestedFee":
+			<input type="hidden" name="@(prefix).Suggestedfee" value="@Model.Suggestedfee"/>
+            break;
+        case "AskDropdown":
+            <input type="hidden" name="@(prefix).option" value="@(((AskDropdown)ask).SmallGroupChoice(Model.option).SmallGroup)"/>
+            break;
+        case "AskExtraQuestions":
+    		for (int n = 0; n < ((AskExtraQuestions)ask).list.Count; n++)
+    		{
+    			var a = ((AskExtraQuestions)ask).list[n];
+    			<input type="hidden" name="@(prefix).ExtraQuestion[@n].Key" value="@a.Question" />
+    			<input type="hidden" name="@(prefix).ExtraQuestion[@n].Value" value="@Model.ExtraQuestion[a.Question]" />
+    		}
+            break;
+        case "AskYesNoQuestions":
+            for (int n = 0; n < ((AskYesNoQuestions)ask).list.Count; n++)
+            {
+                var a = ((AskYesNoQuestions)ask).list[n];
+    			<input type="hidden" name="@(prefix).YesNoQuestion[@n].Key" value="@a.SmallGroup" />
+    			<input type="hidden" name="@(prefix).YesNoQuestion[@n].Value" value="@Model.YesNoQuestion[a.SmallGroup]" />
+            }
+            break;
+        case "AskCheckboxes":
+			var cbname = Html.NameFor(m => m.Checkbox);
+            foreach(var sg in Model.Checkbox)
+            { 
+                <input type="hidden" name="@cbname" value="@sg"/>
+            }
+            break;
+         case "AskMenu":
+            var nn = 0;
+			foreach (var i in ((AskMenu)ask).MenuItemsChosen(Model.MenuItem))
+			{
+    			<input type="hidden" name="@(prefix).MenuItem[@nn].Key" value="@i.sg" />
+				<input type="hidden" name="@(prefix).MenuItem[@(nn++)].Value" value="@Model.MenuItemValue(i.sg)" />
+			}
+            break;
+        case "GradeOptions":
+            <input type="hidden" name="@(prefix).gradeoption" value="@Model.gradeoption"/>
+            break;
+	}
 }
-@for(int n = 0; n < Model.setting.YesNoQuestions.Count; n++)
-{ 
-    var a = Model.setting.YesNoQuestions[n];
-    @Html.Hidden3(Model.inputname("YesNoQuestion[" + n + "].Key"), a.SmallGroup)
-    @Html.Hidden3(Model.inputname("YesNoQuestion[" + n + "].Value"), Model.YesNoQuestion[a.SmallGroup])
-}
-@if (Model.Checkbox != null)
+@if (Model.OnlineGiving())
 {
-  foreach (var a in Model.Checkbox)
-  { 
-    @Html.Hidden3(Model.inputname("Checkbox"), a)
-  }
-}
-@if (Model.Checkbox2 != null)
-{
-  foreach (var a in Model.Checkbox2)
-  { 
-    @Html.Hidden3(Model.inputname("Checkbox2"), a)
-  }
-}
-@{
-int nn = 0;    
-    foreach (var i in Model.MenuItemsChosen())
-    { 
-    @Html.Hidden3(Model.inputname("MenuItem[" + nn + "].Key"), i.sg)
-    @Html.Hidden3(Model.inputname("MenuItem[" + nn++ + "].Value"), Model.MenuItemValue(i.sg))
-    }
-}
-@{
-int fn = 0;    
-    foreach (var i in Model.FundItemsChosen())
-    { 
-    @Html.Hidden3(Model.inputname("FundItem[" + fn + "].Key"), i.fundid)
-    @Html.Hidden3(Model.inputname("FundItem[" + fn++ + "].Value"), i.amt)
-    }
+    var funame = Html.NameFor(m => m.FundItem);
+		int fn = 0;
+		foreach (var i in Model.FundItemsChosen())
+		{
+    		<input type="hidden" name="@(funame)[@fn].Key" value="@i.fundid" />
+			<input type="hidden" name="@(funame)[@(fn++)].Value" value="@i.amt" />
+		}
 }
 @if (Model.setting.Deposit > 0)
 { 
-    @Html.Hidden3(Model.inputname("paydeposit"), Model.paydeposit)
+    <input type="hidden" name="@(prefix).paydeposit" value="@Model.paydeposit"/>
 }
-    @Html.Hidden3(Model.inputname("CreatingAccount"), Model.CreatingAccount)
+<input type="hidden" name="@(prefix).CreatingAccount" value="@Model.CreatingAccount"/>

@@ -19,6 +19,7 @@
                 + sep + "titles=" + $('#UseTitle')[0].checked
                 + "&format=" + $('input[name=addressedto]:checked').val()
                 + "&usephone=" + $('#UsePhone')[0].checked
+                + "&sortzip=" + $('#SortZip')[0].checked
 				+ "&skipNum=" + $('#SkipNum').val();
             $("#ChooseLabelType").dialog("close");
             window.open(url);

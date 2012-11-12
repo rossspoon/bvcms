@@ -1,16 +1,65 @@
-﻿@model CmsData.RegSettings
+﻿@model CmsData.Registration.Settings
 @using CmsWeb
 @using UtilityExtensions
 <div>
-<a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
-<a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+    <a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
+    <a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+    <a id="AddQuestion" class="bt" href="#">Add Question Item</a>
 </div>
+<style>
+    #selectquestions {
+        display: none;
+        border: 1px dashed gray;
+        background-color: lightgray;
+        line-height: 24px;
+        overflow: auto;
+    } 
+    #selectquestions ul {
+        float: left;
+        margin: 0 2em 0 0;
+        padding: 0 0 5px 0;
+        background-color: lightgray;
+    }
+    #selectquestions span {
+        text-decoration: line-through;
+        color: #555;
+    }
+</style>
+<div id="selectquestions">
+    <ul>
+        <li class="AskDropdown"></li>
+        <li class="AskCheckboxes"></li>
+        <li class="AskExtraQuestions"></li>
+        <li class="AskYesNoQuestions"></li>
+        <li class="AskMenu"></li>
+    </ul>
+    <ul>
+        <li class="AskAllergies"></li>
+        <li class="AskRequest"></li>
+        <li class="AskDoctor"></li>
+        <li class="AskChurch"></li>
+    </ul>
+    <ul>
+        <li class="AskCoaching"></li>
+        <li class="AskEmContact"></li>
+        <li class="AskInsurance"></li>
+        <li class="AskTylenolEtc"></li>
+    </ul>
+    <ul>
+        <li class="AskParents"></li>
+        <li class="AskSuggestedFee"></li>
+        <li class="AskTickets"></li>
+        <li class="AskSize"></li>
+    </ul>
+</div>
+<div style="clear:both"></div>
+<hr />
 <div>@Html.ValidationMessage("Form")</div>
-<ul class="enablesort">
-@Html.EditorFor(m => m, "TabQuestions")
+<ul class="enablesort sort" id="QuestionList">
+    @Html.EditorFor(m => m, "TabQuestions")
 </ul>
 <div>
-<a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
-<a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+    <a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
+    <a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
 </div>
 <div>@Html.ValidationMessage("Form")</div>

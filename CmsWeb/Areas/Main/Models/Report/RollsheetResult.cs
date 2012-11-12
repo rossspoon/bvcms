@@ -90,7 +90,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 				if (meeting != null)
 				{
 					var q = from at in meeting.Attends
-							where at.AttendanceFlag == true || at.Registered == true
+							where at.AttendanceFlag == true || at.Commitment == AttendCommitmentCode.Attending  || at.Commitment == AttendCommitmentCode.Substitute
 							orderby at.Person.LastName, at.Person.FamilyId, at.Person.Name2
 							select new
 							{

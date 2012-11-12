@@ -34,7 +34,7 @@
 {
     @Html.Hidden("aid", Model.attend.AttendId);
     @Html.Hidden("pid", Model.attend.PeopleId);
-    @Html.Hidden("ticks", Model.ticks);
+    <input type="hidden" name="ticks" value="@Model.ticks"/>
     <p><label>Subject:</label>
     @Html.TextBox("subject", Model.subject, new { style = "width:90%" })
     </p>
@@ -47,8 +47,8 @@
     @foreach (var p in Model.FetchPotentialSubs())
     {
     <div class="item" >
-        <input type="checkbox" name="pids" value="@p.Key" />
-        <span>@p.Value</span>
+        <input type="checkbox" name="pids" value="@p.PeopleId" />
+        <span title="@p.Email">@p.Name</span>
     </div>
     }
 </div>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -47,9 +48,9 @@ namespace CmsWeb.Areas.Finance.Controllers
         {
             return Json(m.DeleteContribution());
         }
-        public ActionResult Names(string q, int limit)
+        public ActionResult Names(string term)
         {
-            return Content(PostBundleModel.Names(q, limit));
+            return Content(PostBundleModel.Names(term, 10));
         }
         public ActionResult FundTotals(int id)
         {

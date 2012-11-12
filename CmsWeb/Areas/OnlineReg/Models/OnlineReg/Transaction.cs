@@ -47,7 +47,7 @@ namespace CmsWeb.Models
                 var p = List[0];
                 if (user != null)
                     return user.Name;
-                if (p.org != null && p.setting.AskParents == true)
+                if (p.org != null && p.setting.AskVisible("AskParents"))
                     return p.fname.HasValue() ? p.fname : p.mname;
                 return p.first + " " + p.last;
             }

@@ -21,33 +21,43 @@
         });
     </script>
 }
-<p style="color: Black">
-Email sent to @Util.ObscureEmail((string)ViewData["email"]) (email obscured on purpose)
-</p>
-@{  if (Model.ManagingSubscriptions())
-    { 
-<p><strong>One-Time Link</strong><br/>
-We have sent you a One-Time Link for you to manage your subscriptions. You should receive that shortly.</p>
+<div class="confirm">
+    <p style="color: Black">
+        Email sent to @Util.ObscureEmail((string)ViewData["email"]) (email obscured on purpose)
+    </p>
+    @{  if (Model.ManagingSubscriptions())
+        { 
+        <p>
+            <strong>One-Time Link</strong><br />
+            We have sent you a One-Time Link for you to manage your subscriptions. You should receive that shortly.
+        </p>
     }
-    else if (Model.ChoosingSlots())
-    { 
-<p><strong>One-Time Link</strong><br/>
-We have sent you a One-Time Link for you to manage your volunteer commitments. You should receive that shortly.</p>
+        else if (Model.ChoosingSlots())
+        { 
+        <p>
+            <strong>One-Time Link</strong><br />
+            We have sent you a One-Time Link for you to manage your volunteer commitments. You should receive that shortly.
+        </p>
     }
-    if (Model.List[0].CreatedAccount)
-    { 
-<p><strong>Account Created</strong><br />
-We have created an account for you on our church database. You should receive your credentials shortly.</p>
+        if (Model.List[0].CreatedAccount)
+        { 
+        <p>
+            <strong>Account Created</strong><br />
+            We have created an account for you on our church database. You should receive your credentials shortly.
+        </p>
     }
     if (Model.List[0].SawExistingAccount)
     { 
-<p><strong>Account Aready Exists</strong><br />
-We noticed you already have an account in our church database. We sent you some instructions on how to reset your password.
-You should receive your credentials shortly.</p>
+        <p>
+            <strong>Account Aready Exists</strong><br />
+            We noticed you already have an account in our church database. We sent you some instructions on how to reset your password.
+You should receive your credentials shortly.
+        </p>
     }
     if (((string)ViewBag.Url).HasValue())
     { 
-<p style="color: Blue"><a href='@ViewBag.Url'>Go back to your registration</a></p>
-  } }
+        <p style="color: Blue"><a href='@ViewBag.Url'>Go back to your registration</a></p>
+    } }
 
 
+</div>

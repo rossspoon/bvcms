@@ -107,7 +107,7 @@ pre {
     }
     @if (isadmin || ismanager)
     { 
-            <a id="moveperson" href="/Person/Move/@p.PeopleId">Merge Controller</a>
+            <a id="moveperson" href="/SearchAdd/Index/0?type=mergeto">Merge Controller</a>
         if (isadmin)
         { 
             <a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a>
@@ -214,10 +214,10 @@ pre {
         <div id="member-tab" class="ui-tabs-hide ui-tabs-panel">
             <ul class="ui-tabs-nav">
                 <li><a href="#membersum-tab"><span>Summary</span></a></li>
-                <li><a href="#membernotes-tab"><span>Notes</span></a></li>
-                <li><a href="#extras-tab"><span>Extra Values</span></a></li>
             @if (isaccess)
             {
+                <li><a href="#membernotes-tab"><span>Notes</span></a></li>
+                <li><a href="#extras-tab"><span>Extra Values</span></a></li>
                 <li><a href="#querybits-tab"><span>QueryBits</span></a></li>
             }
             </ul>
@@ -301,6 +301,7 @@ pre {
 }
     </div>
     <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
+    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
     </div>
     <div id="memberDialog">
     <iframe style="width:100%;height:99%;border-width:0px;"></iframe>

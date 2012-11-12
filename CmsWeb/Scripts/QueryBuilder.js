@@ -309,6 +309,7 @@ function EditCondition(ev) {
             return false;
         });
         $('div.FieldLink a').click(function(ev) {
+            ev.preventDefault();
             $.post('/QueryBuilder/SelectCondition/', {
                 ConditionName: ev.target.id,
                 Id: $('#SelectedId').val()
@@ -411,7 +412,6 @@ function UpdateView(vs) {
     $('#EndDiv').showhide(vs.EndDateVisible);
     $('#StartDiv').showhide(vs.StartDateVisible);
     $('#OrgDiv').showhide(vs.OrganizationVisible);
-    $('#ViewDiv').showhide(vs.ViewVisible);
     $('#DaysDiv').showhide(vs.DaysVisible);
     $('#AgeDiv').showhide(vs.AgeVisible);
     $('#OtherLabel').text(vs.OtherLabel);

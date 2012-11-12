@@ -8,6 +8,7 @@ relre:.hgignore~$
 relre:/Deploy/
 relre:/Config/
 relre:\.sdcs$
+relre:\.dbmdl$
 relre:RedGateDatabaseInfo.xml
 relre:CmsWeb/Upload/.*
 relre:/secrets.config

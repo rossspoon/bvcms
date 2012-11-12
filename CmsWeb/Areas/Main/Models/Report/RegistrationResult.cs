@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsData.Registration;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -86,9 +87,9 @@ namespace CmsWeb.Areas.Main.Models.Report
 				else
 					foreach (var i in q)
 					{
-						RegSettings setting = null;
+						Settings setting = null;
 						if (i.o != null)
-							setting = new RegSettings(i.o.RegSetting, DbUtil.Db, i.o.OrganizationId);
+							setting = new Settings(i.o.RegSetting, DbUtil.Db, i.o.OrganizationId);
 						var t1 = new PdfPTable(1);
 						SetDefaults(t1);
 						t1.AddCell(i.p.Name);
@@ -135,7 +136,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
 						t2.AddCell("Date of Birth");
 						t2.AddCell(i.p.DOB);
-						if (i.o == null || setting.AskShirtSize == true)
+						if (i.o == null || SettingVisible(setting, "AskSize"))
 						{
 							t2.AddCell("Shirt Size:");
 							t2.AddCell(rr.ShirtSize);
@@ -146,7 +147,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 						if (rr.MedicalDescription.HasValue())
 							doc.Add(new Phrase("Allergies or Medical Problems: " + rr.MedicalDescription));
 
-						if (i.o == null || setting.AskTylenolEtc == true)
+						if (i.o == null || SettingVisible(setting, "AskTylenolEtc"))
 						{
 							var t4 = new PdfPTable(new float[] { 20, 80 });
 							SetDefaults(t4);
@@ -164,28 +165,28 @@ namespace CmsWeb.Areas.Main.Models.Report
 						var t5 = new PdfPTable(new float[] { 45, 55 });
 						SetDefaults(t5);
 
-						if (i.o == null || setting.AskEmContact == true)
+						if (i.o == null || SettingVisible(setting, "AskEmContact"))
 						{
 							t5.AddCell("Emergency Contact:");
 							t5.AddCell(rr.Emcontact);
 							t5.AddCell("Emergency Phone:");
 							t5.AddCell(rr.Emphone.FmtFone());
 						}
-						if (i.o == null || setting.AskInsurance == true)
+						if (i.o == null || SettingVisible(setting, "AskInsurance"))
 						{
 							t5.AddCell("Health Insurance Carrier:");
 							t5.AddCell(rr.Insurance);
 							t5.AddCell("Policy #:");
 							t5.AddCell(rr.Policy);
 						}
-						if (i.o == null || setting.AskDoctor == true)
+						if (i.o == null || SettingVisible(setting, "AskDoctor"))
 						{
 							t5.AddCell("Family Physician Name:");
 							t5.AddCell(rr.Doctor);
 							t5.AddCell("Family Physician Phone:");
 							t5.AddCell(rr.Docphone.FmtFone());
 						}
-						if (i.o == null || setting.AskParents == true)
+						if (i.o == null || SettingVisible(setting, "AskParents"))
 						{
 							t5.AddCell("Mother's Name:");
 							t5.AddCell(rr.Mname);
@@ -226,6 +227,12 @@ namespace CmsWeb.Areas.Main.Models.Report
 				doc.Add(new Phrase("no data"));
 			pageEvents.EndPageSet();
 			doc.Close();
+		}
+		private bool SettingVisible(Settings setting, string name)
+		{
+			if (setting != null)
+				return setting.AskVisible(name);
+			return false;
 		}
 
 		private RecReg GetRecRegOrTemp(Person p)

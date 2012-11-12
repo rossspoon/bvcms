@@ -7,6 +7,7 @@ using CmsData;
 using System.Web.Mvc;
 using System.Text;
 using System.Configuration;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using CMSPresenter;
@@ -21,14 +22,16 @@ namespace CmsWeb.Models
 	[Serializable]
 	public partial class OnlineRegModel
 	{
-		private IList<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
-		public IList<OnlineRegPersonModel> List
+		public OnlineRegModel()
+		{
+			HttpContext.Current.Items["OnlineRegModel"] = this;
+		}
+		private List<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
+		public List<OnlineRegPersonModel> List
 		{
 			get { return list; }
 			set { list = value; }
 		}
-		[NonSerialized]
-		public OnlineRegPersonModel current;
 		[NonSerialized]
 		public bool ShowFindInstructions;
 		[NonSerialized]
@@ -50,7 +53,7 @@ namespace CmsWeb.Models
 		{
 			if (HttpContext.Current.Items.Contains("RegSettings"))
 				return;
-			var list = new Dictionary<int, RegSettings>();
+			var list = new Dictionary<int, Settings>();
 			if (_Divid.HasValue)
 			{
 				var q = from o in DbUtil.Db.Organizations
@@ -60,20 +63,20 @@ namespace CmsWeb.Models
 						where o.RegistrationTypeId != RegistrationTypeCode.None
 						select new { o.OrganizationId, o.RegSetting };
 				foreach (var i in q)
-					list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
+					list[i.OrganizationId] = new Settings(i.RegSetting, DbUtil.Db, i.OrganizationId);
 			}
 			else if (masterorgid.HasValue)
 			{
 				var q = from o in UserSelectClasses(masterorg)
 						select new { o.OrganizationId, o.RegSetting };
 				foreach (var i in q)
-					list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
-				list[masterorg.OrganizationId] = new RegSettings(masterorg.RegSetting, DbUtil.Db, masterorg.OrganizationId);
+					list[i.OrganizationId] = new Settings(i.RegSetting, DbUtil.Db, i.OrganizationId);
+				list[masterorg.OrganizationId] = new Settings(masterorg.RegSetting, DbUtil.Db, masterorg.OrganizationId);
 			}
 			else if (org == null)
 				return;
 			else
-				list[_Orgid.Value] = new RegSettings(org.RegSetting, DbUtil.Db, _Orgid.Value);
+				list[_Orgid.Value] = new Settings(org.RegSetting, DbUtil.Db, _Orgid.Value);
 			if (HttpContext.Current.Items.Contains("RegSettings"))
 				return;
 			HttpContext.Current.Items.Add("RegSettings", list);
@@ -96,9 +99,9 @@ namespace CmsWeb.Models
 				}
 			}
 		}
-		public static RegSettings ParseSetting(string RegSetting, int OrgId)
+		public static Settings ParseSetting(string RegSetting, int OrgId)
 		{
-			return new RegSettings(RegSetting, DbUtil.Db, OrgId);
+			return new Settings(RegSetting, DbUtil.Db, OrgId);
 		}
 		[NonSerialized]
 		private CmsData.Organization _masterorg;

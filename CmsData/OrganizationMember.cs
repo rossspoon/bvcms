@@ -52,6 +52,8 @@ namespace CmsData
 					Db.EnrollmentTransactions.InsertOnSubmit(droptrans);
 					Db.OrgMemMemTags.DeleteAllOnSubmit(this.OrgMemMemTags);
 					Db.OrganizationMembers.DeleteOnSubmit(this);
+					Db.ExecuteCommand("DELETE FROM dbo.SubRequest WHERE EXISTS(SELECT NULL FROM Attend a WHERE a.AttendId = AttendId AND a.OrganizationId = {0} AND a.MeetingDate > {1} AND a.PeopleId = {2})", OrganizationId, Util.Now, PeopleId);
+					Db.ExecuteCommand("DELETE dbo.Attend WHERE OrganizationId = {0} AND MeetingDate > {1} AND PeopleId = {2} AND ISNULL(Commitment, 1) = 1", OrganizationId, Util.Now, PeopleId);
 					return droptrans;
 				}
 				catch (SqlException ex)

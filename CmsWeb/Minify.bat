@@ -2,8 +2,8 @@
 path=%path%;c:\Program Files (x86)\Microsoft\Microsoft Ajax Minifier
 
 ajaxmin ^
-Content/js/jquery-1.7.2.js ^
-Content/js/jquery-ui-1.8.23.custom.js ^
+Content/js/jquery-1.8.2.js ^
+Content/js/jquery-ui-1.9.1.custom.js ^
 Content/js/jquery.bgiframe-2.1.2.js ^
 Content/js/jquery.hoverIntent.js ^
 Content/js/jquery.cookie.js ^
@@ -11,7 +11,6 @@ Content/js/jquery.blockUI.js ^
 Content/js/jquery.tooltip.js ^
 Content/js/jquery.mousewheel.js ^
 Content/js/jquery.jscrollpane.js ^
-Content/js/jQuery.autocomplete.js ^
 Content/js/jquery.jeditable.js ^
 Content/js/jquery.validate.js ^
 Content/js/jquery.joyride-1.0.5.js ^
@@ -35,13 +34,12 @@ Scripts/RegSetting.js ^
 ajaxmin ^
 Content/js/jquery.pagination.js ^
 Content/js/jquery.multiselect.js ^
-Scripts/SearchPeople.js ^
 Scripts/Person.js ^
 -o Min/Content/js/combined-person.js -clobber:true || pause
 
 ajaxmin ^
-Content/js/jquery-1.7.2.js ^
-Content/js/jquery-ui-1.8.23.custom.js ^
+Content/js/jquery-1.8.2.js ^
+Content/js/jquery-ui-1.9.1.custom.js ^
 Content/js/jquery.validate.js ^
 Content/js/jquery.idle-timer.js ^
 Content/js/jquery.blockUI.js ^
@@ -50,19 +48,18 @@ Content/js/jquery.showpassword.js ^
 -o Min/Content/js/combined-onlinereg.js -clobber:true || pause
 
 ajaxmin ^
-Content/jquery-ui-1.8.23.custom.css ^
+Content/jquery-ui-1.9.1.custom.css ^
 Content/site.css ^
 Content/style2.css ^
 Content/cmenu.css ^
 Content/pager.css ^
 Content/jquery.jscrollpane.css ^
 Content/jquery.tooltip.css ^
-Content/jquery.autocomplete.css ^
 Content/joyride-1.0.5.css ^
 -o Content/combined.css -clobber:true || pause
 
-ajaxmin Content/js/jquery-1.7.2.js -o Min\Content/js/jquery-1.7.2.js -clobber:true || pause
-ajaxmin Content/js/jquery-ui-1.8.23.custom.js -o Min\Content/js/jquery-ui-1.8.23.custom.js -clobber:true || pause
+ajaxmin Content/js/jquery-1.8.2.js -o Min\Content/js/jquery-1.8.2.js -clobber:true || pause
+ajaxmin Content/js/jquery-ui-1.9.1.custom.js -o Min\Content/js/jquery-ui-1.9.1.custom.js -clobber:true || pause
 ajaxmin Content/js/jquery.contextMenu.js -o Min\Content/js/jquery.contextMenu.js -clobber:true || pause
 ajaxmin Content/js/jquery.form.js -o Min\Content/js/jquery.form.js -clobber:true || pause
 ajaxmin Content/js/jquery.form2.js -o Min\Content/js/jquery.form2.js -clobber:true || pause
@@ -97,19 +94,20 @@ ajaxmin Scripts/Organization.js -o Min\Scripts/Organization.js -clobber:true || 
 ajaxmin Scripts/Person.js -o Min\Scripts/Person.js -clobber:true || pause
 ajaxmin Scripts/PostBundle.js -o Min\Scripts/PostBundle.js -clobber:true || pause
 ajaxmin Scripts/QueryBuilder.js -o Min\Scripts/QueryBuilder.js -clobber:true || pause
+ajaxmin Scripts/PeopleSearch.js -o Min\Scripts/PeopleSearch.js -clobber:true || pause
 ajaxmin Scripts/QuickSearch.js -o Min\Scripts/QuickSearch.js -clobber:true || pause
 ajaxmin Scripts/RegSetting.js -o Min\Scripts/RegSetting.js -clobber:true || pause
 ajaxmin Scripts/SavedQuery.js -o Min\Scripts/SavedQuery.js -clobber:true || pause
 ajaxmin Scripts/SearchAdd.js -o Min\Scripts/SearchAdd.js -clobber:true || pause
 ajaxmin Scripts/SearchDivisions.js -o Min\Scripts/SearchDivisions.js -clobber:true || pause
 ajaxmin Scripts/SearchOrgs.js -o Min\Scripts/SearchOrgs.js -clobber:true || pause
-ajaxmin Scripts/SearchPeople.js -o Min\Scripts/SearchPeople.js -clobber:true || pause
 ajaxmin Scripts/SearchUsers.js -o Min\Scripts/SearchUsers.js -clobber:true || pause
 ajaxmin Scripts/Tags.js -o Min\Scripts/Tags.js -clobber:true || pause
 ajaxmin Scripts/Task.js -o Min\Scripts/Task.js -clobber:true || pause
 ajaxmin Scripts/TestAPI.js -o Min\Scripts/TestAPI.js -clobber:true || pause
 ajaxmin Scripts/TransactionHistory.js -o Min\Scripts/TransactionHistory.js -clobber:true || pause
 ajaxmin Scripts/Transactions.js -o Min\Scripts/Transactions.js -clobber:true || pause
+ajaxmin Scripts/Users.js -o Min\Scripts/Users.js -clobber:true || pause
 ajaxmin Scripts/UserDialog.js -o Min\Scripts/UserDialog.js -clobber:true || pause
 ajaxmin Scripts/meeting.js -o Min\Scripts/meeting.js -clobber:true || pause
 ajaxmin Scripts/ManageVolunteer.js -o Min\Scripts/ManageVolunteer.js -clobber:true || pause

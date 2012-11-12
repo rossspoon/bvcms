@@ -7,7 +7,20 @@
     var maintabs = $("#main-tab").tabs();
     $(".submitbutton,.bt").button();
     addrtabs.tabs('select', $('#addrtab').val());
-    $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
+    $('#dialogbox').dialog({
+        title: 'Search Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 700,
+        height: 630,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+        }
+    });
     $('#clipaddr').live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
@@ -51,9 +64,11 @@
         }
     });
     $('#moveperson').click(function (ev) {
-        $('#dialogbox').SearchPeople(ev, function (id, peopleid) {
-            window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + peopleid;
-        });
+        ev.preventDefault();
+        var d = $('#dialogbox');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Merge To Person");
+        d.dialog("open");
         return false;
     });
 
@@ -339,7 +354,7 @@
         rules: {
             "NickName": { maxlength: 15 },
             "Title": { maxlength: 10 },
-            "First": { maxlength: 25, required: true },
+            "First": { maxlength: 25 },
             "Middle": { maxlength: 15 },
             "Last": { maxlength: 100, required: true },
             "Suffix": { maxlength: 10 },
@@ -352,15 +367,15 @@
             "School": { maxlength: 60 },
             "Employer": { maxlength: 60 },
             "Occupation": { maxlength: 60 },
-            "WeddingDate": { date: true },
-            "DeceasedDate": { date: true },
+//            "WeddingDate": { date: true },
+//            "DeceasedDate": { date: true },
             "Grade": { number: true },
             "Address1": { maxlength: 40 },
             "Address2": { maxlength: 40 },
             "City": { maxlength: 30 },
-            "Zip": { maxlength: 15 },
-            "FromDt": { date: true },
-            "ToDt": { date: true }
+            "Zip": { maxlength: 15 }
+//            "FromDt": { date: true },
+//            "ToDt": { date: true }
         }
     });
     $('#addrf').validate();
@@ -490,4 +505,7 @@ function RebindMemberGrids(from) {
 function RebindUserInfoGrid(from) {
     $.updateTable($('#user-tab form'));
     $("#memberDialog").dialog('close');
+}
+function AddSelected(ret) {
+    window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + ret.pid;
 }

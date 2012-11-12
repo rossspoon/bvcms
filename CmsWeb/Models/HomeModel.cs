@@ -70,7 +70,13 @@ namespace CmsWeb.Models
             var oids = new int[0];
             if (Util2.OrgLeadersOnly)
                 oids = DbUtil.Db.GetLeaderOrgIds(pid);
-            var q = from om in DbUtil.Db.OrganizationMembers
+
+        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+        	var orgmembers = from om in DbUtil.Db.OrganizationMembers
+        	                where om.Organization.LimitToRole == null || roles.Contains(om.Organization.LimitToRole)
+        	                select om;
+
+            var q = from om in orgmembers
                     where om.PeopleId == pid
                     where (om.Pending ?? false) == false
                     where oids.Contains(om.OrganizationId) || !(limitvisibility && om.Organization.SecurityTypeId == 3)

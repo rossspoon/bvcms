@@ -2,7 +2,7 @@
 @using CmsWeb
 @model QuickSearchModel
 @{
-	ViewBag.Title = "QuickSearch";
+	ViewBag.Title = "Quick Search";
 	Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
 @section scripts
@@ -10,45 +10,88 @@
 @Html.Script("/Scripts/QuickSearch.js")
 }
 <form id="quicksearch" method="post" action="/QuickSearch/Index">
-<table id="searchvalues" cellspacing="5" class="roundbox">
-<tr><td colspan="4"><h2>People Search</h2></td></tr>
-	<tr>
-		<th align="right"> Name/ID#: </th>
-		<td> @Html.TextBox("name", Model.m.name, new { title = "Starting letters of First<space>Last or just Last" })</td>
-		<th align="right"> Campus: </th>
-		<td style="min-width:10em">
-			@Html.DropDownList("campus", Model.Campuses())
-		</td>
-	</tr>
-	<tr>
-		<th align="right"> Email/Phone: </th>
-		<td> @Html.TextBox("communication", Model.m.communication, new { title = "Any part of any phone or email" })</td>
-		<th align="right"> Member: </th>
-		<td>
-			@Html.DropDownList("memberstatus", Model.MemberStatusCodes())
-		</td>
-	</tr>
-	<tr>
-		<th align="right"> Address: </th>
-		<td> @Html.TextBox("address", Model.m.address, new { title = "Any part of the address, city or zip" })</td>
-		<th align="right"> Gender: </th>
-		<td> @Html.DropDownList("gender", Model.GenderCodes()) </td>
-	</tr>
-	<tr>
-		<th align="right"> Date of Birth: </th>
-		<td> @Html.TextBox("birthdate", Model.m.birthdate, new { title = "YYYY or MM or MM/DD or MM/DD/YY" })</td>
-		<th align="right"> Married: </th>
-		<td> @Html.DropDownList("marital", Model.MaritalCodes())</td>
-	</tr>
-	<tr>
-	  <td colspan="3" valign="bottom"><b>Total Count: <span id="totalcount">@Model.Count().ToString("N0")</span></b></td>
-	  <td><br>
-		  <a href="/QuickSearch/Results" id="search" class="bt default formlink">Search</a>
-		  <a id="clear" href="#" class="bt">Clear</a>
-		  <a id="convert" href="/QuickSearch/ConvertToQuery" class="bt">Query</a>
-	  </td>
-	</tr>
-</table>
-@Html.Partial("Results", Model)
+<input id='q' name='q' value="@Model.text"/>
+<input id="qsearch" type="submit" value="Search" name="qsearch" />
 </form>
-<p> <a id="targetpeople" href="#">toggle link target</a> </p>
+<h2>People</h2>
+<table id="presults" class="grid">
+@if(Model.people.Count == 0)
+{ 
+	<tr><td colspan="5">No matching records.</td></tr>
+} 
+else
+{
+<thead>
+	<tr>
+		<th> <a href="#" class="sortable">Name</a> </th>
+		<th> <a href="#" class="sortable">Status</a>/Age - <a href="#" class="sortable">DOB</a> </th>
+		<th> <a href="#" class="sortable">Address</a> </th>
+		<th> <a href="#" class="sortable">Communication</a> </th>
+		<th> <a href="#" class="sortable">Fellowship Leader</a> </th>
+	</tr>
+</thead>
+}
+<tbody>
+@foreach (var p in Model.people)
+{ 
+	<tr>
+		<td><img src="/images/individual.gif" width="10px" height="12px" />
+			<a href='/Person/Index/@p.PeopleId' class="target">@p.Name</a>
+		</td>
+		<td>
+			@p.MemberStatus<br />
+			@p.Age - @p.BirthDate
+		</td>
+		<td>
+			<a href='http://www.google.com/maps?q=@p.Address,+@p.CityStateZip'>@p.Address</a>
+			<br />
+			@p.CityStateZip
+		</td>
+		<td>
+	@foreach (var ph in p.Phones)
+	{ 
+			@ph<br />
+	} 
+			<a href='mailto:@p.Email'>@p.Email</a>
+		</td>
+		<td>
+			<a href='/Person/Index/@p.BFTeacherId'>@p.BFTeacher</a>
+		</td>
+	</tr>
+}
+</tbody>
+</table>
+<h2>Organizations</h2>
+<table id="oresults" class="grid">
+<thead>
+    <tr>
+        <th><a href="#" class="sortable">ID</a></th>
+        <th align="left"><a href="#" class="sortable">Name</a></th>
+        <th align="left"><a href="#" class="sortable">Leader</a></th>
+        <th align="right"><a href="#" class="sortable">Members</a></th>
+        <th align="left"><a href="#" class="sortable">Schedule</a></th>
+        <th><a href="#" class="sortable">Self CheckIn</a></th>
+        <th><a href="#" class="sortable">BDay Start</a></th>
+        <th><a href="#" class="sortable">BDay End</a></th>
+    </tr>
+</thead>
+<tbody>
+@if(Model.orgs.Count == 0)
+{ 
+	<tr><td colspan="8">No matching records.</td></tr>
+} 
+@foreach (var o in Model.orgs)
+{ 
+    <tr>
+        <td class="tip" title="@o.ToolTip"><img src="/content/images/group.png" /></td>
+        <td><a href="/Organization/Index/@o.Id">@o.OrganizationName</a></td>
+        <td><a href="/Person/Index/@o.LeaderId">@o.LeaderName</a></td>
+        <td align="right">@o.MemberCount</td>
+        <td>@o.Schedule</td>
+        <td><span id='ck-@o.Id' class='yesno'>@(o.AllowSelfCheckIn ? "yes" : "no")</span></td>
+        <td><span id='bs-@o.Id' class='bday'>@o.BDayStart</span></td>
+        <td><span id='be-@o.Id' class='bday'>@o.BDayEnd</span></td>
+    </tr>
+}
+</tbody>
+</table>

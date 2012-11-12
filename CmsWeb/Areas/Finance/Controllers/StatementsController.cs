@@ -60,9 +60,12 @@ namespace CmsWeb.Areas.Finance.Controllers
 		{
 			var r = DbUtil.Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
 			var html = new StringBuilder("<a href=\"/Statements/Download\">All Pages</a>");
-			if (r.Completed.HasValue)
-				for (var i = 1; i <= r.LastSet; i++)
-					html.AppendFormat(" | <a href=\"/Statements/Download/{0}\">Set {0}</a>", i);
+			if (r.Sets.HasValue())
+			{
+				var sets = r.Sets.Split(',').Select(ss => ss.ToInt()).ToList();
+				foreach (var set in sets)
+					html.AppendFormat(" | <a href=\"/Statements/Download/{0}\">Set {0}</a>", set);
+			}
 			return Json(new 
 			{ 
 				r.Count, 
