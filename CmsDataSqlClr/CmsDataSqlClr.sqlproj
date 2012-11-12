@@ -22,13 +22,13 @@
     <ConnectionString>
     </ConnectionString>
     <TargetFrameworkProfile />
-    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <FileUpgradeFlags>0</FileUpgradeFlags>
     <UpgradeBackupLocation>D:\Documents\BellevueProject\BellevueHg\Backup\CmsDataSqlClr\</UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
     <Name>CmsDataSqlClr</Name>
     <ProjectVersion>4.0</ProjectVersion>
-    <ProjectGuid>{dd771799-7010-4832-972c-490d54e007c7}</ProjectGuid>
+    <ProjectGuid>{354a293b-48fc-4383-a86e-07c1b0ae8906}</ProjectGuid>
     <IncludeSchemaNameInFileName>False</IncludeSchemaNameInFileName>
     <GenerateDatabaseFile>False</GenerateDatabaseFile>
     <GenerateCreateScript>False</GenerateCreateScript>

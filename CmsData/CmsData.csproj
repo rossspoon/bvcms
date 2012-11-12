@@ -214,7 +214,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
@@ -243,7 +243,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Twilio.Api">
-      <HintPath>..\packages\Twilio.3.5.1\lib\3.5\Twilio.Api.dll</HintPath>
+      <HintPath>..\packages\Twilio.3.5.5\lib\3.5\Twilio.Api.dll</HintPath>
     </Reference>
     <Reference Include="Twilio.Mvc">
       <HintPath>..\packages\Twilio.Mvc.3.1.9\lib\3.5\Twilio.Mvc.dll</HintPath>
@@ -253,7 +253,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressVerify.cs" />
+    <Compile Include="AddressVerify.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Attend.cs" />
     <Compile Include="AuthorizeNet.cs" />
     <Compile Include="Batch\ExpressionVisitor.cs" />
@@ -268,6 +270,7 @@
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
     <Compile Include="APIContribution.cs" />
+    <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
     <Compile Include="Generated\Views\UserRole.cs" />
@@ -282,7 +285,7 @@
     <Compile Include="Generated\SubRequest.cs" />
     <Compile Include="Generated\Views\MasterOrg.cs" />
     <Compile Include="Generated\Views\PickListOrgs2.cs" />
-    <Compile Include="Generated\VolSubRequest.cs" />
+    <Compile Include="Meeting.cs" />
     <Compile Include="ProtectMyMinistryHelper.cs" />
     <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />

@@ -239,6 +239,8 @@ namespace CmsData
 		
 		private string _PrimaryCountry;
 		
+		private byte _ReceiveSMS;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -698,6 +700,9 @@ namespace CmsData
 		
 		partial void OnPrimaryCountryChanging(string value);
 		partial void OnPrimaryCountryChanged();
+		
+		partial void OnReceiveSMSChanging(byte value);
+		partial void OnReceiveSMSChanged();
 		
     #endregion
 		public Person()
@@ -3326,6 +3331,28 @@ namespace CmsData
 					this._PrimaryCountry = value;
 					this.SendPropertyChanged("PrimaryCountry");
 					this.OnPrimaryCountryChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ReceiveSMS", UpdateCheck=UpdateCheck.Never, Storage="_ReceiveSMS", DbType="tinyint NOT NULL")]
+		public byte ReceiveSMS
+		{
+			get { return this._ReceiveSMS; }
+
+			set
+			{
+				if (this._ReceiveSMS != value)
+				{
+				
+                    this.OnReceiveSMSChanging(value);
+					this.SendPropertyChanging();
+					this._ReceiveSMS = value;
+					this.SendPropertyChanged("ReceiveSMS");
+					this.OnReceiveSMSChanged();
 				}
 
 			}
