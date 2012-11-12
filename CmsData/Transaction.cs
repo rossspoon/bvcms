@@ -20,6 +20,23 @@ namespace CmsData
     			       && Credited != true
     			       && (Coupon ?? false) == false
     			       && TransactionId.HasValue()
+					   && Batchtyp == "eft" || Batchtyp == "bankcard"
+					   && Amt > 0;
+    		}
+    	}
+    	public bool CanVoid
+    	{
+    		get
+    		{
+				if (!Util.IsSage.HasValue)
+					Util.IsSage = DbUtil.Db.Setting("TransactionGateway", "").ToLower() == "sage";
+    			return Approved == true 
+					 && !CanCredit
+    			       && Util.IsSage.Value
+    			       && Voided != true
+    			       && Credited != true
+    			       && (Coupon ?? false) == false
+    			       && TransactionId.HasValue()
 					   && Amt > 0;
     		}
     	}

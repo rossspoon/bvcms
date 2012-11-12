@@ -7,7 +7,7 @@ using CmsWeb.Models;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
-	public class CheckinTimeController : Controller
+	public class CheckinTimeController : CmsController
 	{
 		public ActionResult Index(CheckinTimeModel m)
 		{

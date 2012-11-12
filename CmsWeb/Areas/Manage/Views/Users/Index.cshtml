@@ -1,0 +1,29 @@
+﻿@using CmsWeb;
+@using UtilityExtensions;
+@model CmsWeb.Models.UsersModel
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Users";
+}
+@section head 
+{
+    <link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+}
+@section scripts
+{
+@Html.Script("/Content/js/jquery.multiSelect.js")
+@Html.Script("/Scripts/Users.js")
+}
+<form id="usersearch" method="post" action="/Manage/Users/Index">
+	<table class="roundbox" cellspacing="5">
+		<tr><td colspan="2">
+    		<h2>Users</h2>
+			</td></tr>
+		<tr><td align="right">Name/Username:</td><td>@Html.TextBox("name")</td></tr>
+		<tr><td align="right">Roles:</td><td>@Html.ListBoxFor(x => x.Role, Model.Roles(), new { style = "display: none" })</td></tr>
+		<tr><td align="right" colspan="2">
+				<a id="search" href="/Manage/Users/Results" class="submitbutton bt">Search</a>
+				<a id="clear" href="#" class="bt">Clear</a></td></tr>
+	</table>
+@Html.Partial("Results", Model)
+</form>

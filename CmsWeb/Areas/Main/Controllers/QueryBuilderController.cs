@@ -293,10 +293,6 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.AgeVisible && !int.TryParse(m.Age, out i))
                 m.Errors.Add("Age", "must be integer");
 
-            //if (m.QuartersVisible && !Regex.IsMatch(m.Quarters, "^\d+([,-](1|2|3|4))*$"))
-            //    m.Errors.Add("Quarters", "need integers separated by , or -");
-            if (m.ViewVisible && !m.View.HasValue())
-                m.Errors.Add("View", "choose View");
 
             if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
                 m.Errors.Add("IntegerValue", "need integer");
@@ -334,67 +330,10 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Import(string name, string text)
-        {
-            var x = XDocument.Parse(text);
-            QueryBuilderClause c = null;
-            foreach (var xc in x.Root.Elements())
-            {
-                if (name.HasValue())
-                    c = InsertClause(xc, null, name);
-                else
-                    c = InsertClause(xc, null, Attribute(xc, "Description"));
-            }
-            return Redirect("/QueryBuilder/Main/" + c.QueryId);
-        }
-        private QueryBuilderClause InsertClause(XElement r, int? pid, string name=null)
-        {
-            var c = new QueryBuilderClause
-            {
-                Field = Attribute(r, "Field"),
-                GroupId = pid,
-                ClauseOrder = Attribute(r, "ClauseOrder").ToInt(),
-                Comparison = Attribute(r, "Comparison"),
-                TextValue = Attribute(r, "TextValue"),
-                DateValue = AttributeDate(r, "DateValue"),
-                CodeIdValue = Attribute(r, "CodeIdValue"),
-                StartDate = AttributeDate(r, "StartDate"),
-                EndDate = AttributeDate(r, "EndDate"),
-                Program = Attribute(r, "Program").ToInt(),
-                Division = Attribute(r, "Division").ToInt(),
-                Organization = Attribute(r, "Organization").ToInt(),
-                Days = Attribute(r, "Days").ToInt(),
-                Quarters = Attribute(r, "Quarters"),
-                Tags = Attribute(r, "Tags"),
-                Schedule = Attribute(r, "Schedule").ToInt(),
-                Age = Attribute(r, "Age").ToInt(),
-                Description = name,
-                SavedBy = Util.UserName
-            };
-            DbUtil.Db.QueryBuilderClauses.InsertOnSubmit(c);
-            DbUtil.Db.SubmitChanges();
-            if(c.Field == "Group")
-                foreach (var rr in r.Elements())
-                    InsertClause(rr, c.QueryId);
-            return c;
-        }
-        private string Attribute(XElement r, string attr)
-        {
-            return Attribute(r, attr, null);
-        }
-        private string Attribute(XElement r, string attr, string def)
-        {
-            var a = r.Attributes(attr).FirstOrDefault();
-            if (a == null)
-                return def;
-            return a.Value;
-        }
-        private DateTime? AttributeDate(XElement r, string attr)
-        {
-            var a = r.Attributes(attr).FirstOrDefault();
-            if (a == null)
-                return null;
-            return a.Value.ToDate();
-        }
+        public ActionResult Import(string text, string name)
+		{
+			int id = QueryFunctions.Import(DbUtil.Db, text, name);
+			return Redirect("/QueryBuilder/Main/" + id);
+		}
     }
 }

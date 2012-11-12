@@ -815,14 +815,6 @@ namespace CmsData
 			HttpContext.Current.Session["pref-" + pref] = p.ValueX;
 			SubmitChanges();
 		}
-		public ExtraDatum GetDatum<T>(T m)
-		{
-			var s = Util.Serialize<T>(m);
-			var d = new ExtraDatum { Data = s, Stamp = Util.Now };
-			ExtraDatas.InsertOnSubmit(d);
-			SubmitChanges();
-			return d;
-		}
 
 		[Function(Name = "dbo.LinkEnrollmentTransaction")]
 		public int LinkEnrollmentTransaction([Parameter(DbType = "Int")] int? tid, [Parameter(DbType = "DateTime")] DateTime? trandt, [Parameter(DbType = "Int")] int? typeid, [Parameter(DbType = "Int")] int? orgid, [Parameter(DbType = "Int")] int? pid)
@@ -894,6 +886,12 @@ namespace CmsData
 		public int UpdateSchoolGrade([Parameter(DbType = "Int")] int? pid)
 		{
 			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pid);
+			return ((int)(result.ReturnValue));
+		}
+		[Function(Name = "dbo.UpdateLastActivity")]
+		public int UpdateLastActivity([Parameter(DbType = "Int")] int? userid)
+		{
+			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userid);
 			return ((int)(result.ReturnValue));
 		}
 		[Function(Name = "dbo.PurgeUser")]

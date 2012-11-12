@@ -203,6 +203,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == OrgStatusCode.Active
                     where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
+					orderby o.OrganizationName
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,

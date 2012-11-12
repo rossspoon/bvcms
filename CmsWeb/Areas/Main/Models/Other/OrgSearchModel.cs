@@ -33,6 +33,7 @@ namespace CmsWeb.Models
 		public int? TypeId { get; set; }
         public string tagstr { get; set; }
         public int? OnlineReg { get; set; }
+		public bool? MainFellowship { get; set; }
 
         public OrgSearchModel()
         {
@@ -52,9 +53,9 @@ namespace CmsWeb.Models
             if (!_count.HasValue)
                 _count = organizations.Count();
             organizations = ApplySort(organizations).Skip(StartRow).Take(PageSize);
-            return OrganizationList(organizations);
+            return OrganizationList(organizations, TagProgramId, TagDiv);
         }
-        public IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query)
+		public static IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query, int? TagProgramId, int? TagDiv)
         {
             var q = from o in query
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
@@ -235,6 +236,11 @@ namespace CmsWeb.Models
                 organizations = from o in organizations
                                 where (o.RegistrationTypeId ?? 0) == 0
                                 select o;
+
+			if (MainFellowship == true)
+				organizations = from o in organizations
+								where o.IsBibleFellowshipOrg == true
+								select o;
 
             return organizations;
         }

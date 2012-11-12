@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CmsData;
 using System.Text;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Web.Mvc;
 using System.Xml.Linq;
@@ -46,11 +47,11 @@ namespace CmsWeb.Models
             public decimal Pledged { get; set; }
             public decimal Given { get; set; }
         }
-        public RegSettings setting
+        public Settings setting
         {
             get
             {
-                return new RegSettings(Organization.RegSetting, DbUtil.Db, orgid);
+                return new Settings(Organization.RegSetting, DbUtil.Db, orgid);
             }
         }
         public PledgeInfo GetPledgeInfo()

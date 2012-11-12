@@ -1,0 +1,703 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+using System.Text.RegularExpressions;
+using UtilityExtensions;
+using CmsData;
+using System.Text;
+using System.Reflection;
+using System.Diagnostics;
+using System.Collections.Specialized;
+
+namespace CmsData.Registration
+{
+	public class Settings
+	{
+		public List<Ask> AskItems { get; set; }
+		public bool AskVisible(string name)
+		{
+			return AskItems.Find(aa => aa.Type == name) != null;
+		}
+		public T AskObject<T>() where T : class
+		{
+			return AskItems.FirstOrDefault(aa => aa is T) as T;
+		}
+		public decimal? Deposit { get; set; }
+		public string Title { get; set; }
+		public string Shell { get; set; }
+		public decimal? Fee { get; set; }
+		public decimal? ExtraFee { get; set; }
+		public decimal? MaximumFee { get; set; }
+		public bool AllowOnlyOne { get; set; }
+		public bool TargetExtraValues { get; set; }
+		public bool AllowReRegister { get; set; }
+		public string Subject { get; set; }
+		public string Body { get; set; }
+		public string ReminderSubject { get; set; }
+		public string ReminderBody { get; set; }
+		public string Terms { get; set; }
+
+		public bool MemberOnly { get; set; }
+		public bool AskDonation { get; set; }
+		public string DonationLabel { get; set; }
+		public string ExtraValueFeeName { get; set; }
+		public bool NotReqDOB { get; set; }
+		public bool NotReqAddr { get; set; }
+		public bool NotReqPhone { get; set; }
+		public bool NotReqGender { get; set; }
+		public bool NotReqMarital { get; set; }
+		public bool NotReqZip { get; set; }
+		public int? DonationFundId { get; set; }
+		public int? TimeSlotLockDays { get; set; }
+		public string GroupToJoin { get; set; }
+		public bool GiveOrgMembAccess { get; set; }
+
+		public string DonationFund()
+		{
+			return (from f in DbUtil.Db.ContributionFunds
+					where f.FundId == DonationFundId
+					select f.FundName).SingleOrDefault();
+		}
+
+		public string InstructionSelect { get; set; }
+		public string InstructionFind { get; set; }
+		public string InstructionOptions { get; set; }
+		public string InstructionSpecial { get; set; }
+		public string InstructionLogin { get; set; }
+		public string InstructionSubmit { get; set; }
+		public string InstructionSorry { get; set; }
+		public string InstructionAll { get; set; }
+
+		public OrgFees orgFees { get; private set; }
+		public List<AgeGroup> AgeGroups { get; private set; }
+		public TimeSlots timeSlots { get; private set; }
+		public List<int> LinkGroupsFromOrgs { get; private set; }
+		public List<int> ValidateOrgIds { get; private set; }
+
+		public string ValidateOrgs
+		{
+			get { return string.Join(",", ValidateOrgIds); }
+			set
+			{
+				if (value.HasValue())
+					ValidateOrgIds = (from i in value.Split(',')
+									  where i.ToInt() > 0 || i.ToInt() < 0
+									  select i.ToInt()).ToList();
+				else
+					ValidateOrgIds = new List<int>();
+			}
+		}
+
+		public class HtmlText2
+		{
+			public string Text { get; set; }
+			public string Html { get; set; }
+			public override string ToString()
+			{
+				if (Html.HasValue())
+					return Html;
+				return Text;
+			}
+		}
+		public class AgeGroup
+		{
+			public int Id { get; set; }
+			public string SmallGroup { get; set; }
+			public int StartAge { get; set; }
+			public int EndAge { get; set; }
+			public decimal? Fee { get; set; }
+		}
+
+		public Organization org { get; set; }
+		public int OrgId { get; set; }
+		public CMSDataContext Db { get; set; }
+
+		public Settings()
+		{
+			orgFees = new OrgFees();
+			timeSlots = new TimeSlots();
+			AgeGroups = new List<AgeGroup>();
+			LinkGroupsFromOrgs = new List<int>();
+			ValidateOrgs = "";
+			AskItems = new List<Ask>();
+		}
+
+		public Settings(string s, CMSDataContext Db, int OrgId)
+			: this()
+		{
+			this.Db = Db;
+			this.OrgId = OrgId;
+			org = Db.LoadOrganizationById(OrgId);
+			var parser = new Parser(s);
+
+			while (parser.NextSection())
+				ParseSection(parser);
+			SetUniqueIds("AskDropdown");
+			SetUniqueIds("AskCheckboxes");
+			SetUniqueIds("AskMenu");
+			parser.data = null;
+		}
+
+		private void SetUniqueIds(string t)
+		{
+			var n = 0;
+			foreach (var dd in AskItems.Where(aa => aa.Type == t))
+				dd.UniqueId = n++;
+		}
+
+		private AskSize asksize; // To support old Registration Documents
+
+		void ParseSection(Parser parser)
+		{
+			switch (parser.curr.kw)
+			{
+				case Parser.RegKeywords.AskParents:
+				case Parser.RegKeywords.AskDoctor:
+				case Parser.RegKeywords.AskInsurance:
+				case Parser.RegKeywords.AskEmContact:
+				case Parser.RegKeywords.AskAllergies:
+				case Parser.RegKeywords.AskChurch:
+				case Parser.RegKeywords.AskTylenolEtc:
+				case Parser.RegKeywords.AskCoaching:
+					AskItems.Add(Ask.ParseAsk(parser));
+					break;
+				case Parser.RegKeywords.AskSuggestedFee:
+					AskItems.Add(AskSuggestedFee.Parse(parser));
+					break;
+				case Parser.RegKeywords.AskTickets:
+					AskItems.Add(AskTickets.Parse(parser));
+					break;
+				case Parser.RegKeywords.AskRequest:
+					AskItems.Add(AskRequest.Parse(parser));
+					break;
+				case Parser.RegKeywords.Dropdown:
+				case Parser.RegKeywords.AskOptions:
+				case Parser.RegKeywords.ExtraOptions:
+				case Parser.RegKeywords.Dropdown1:
+				case Parser.RegKeywords.Dropdown2:
+				case Parser.RegKeywords.Dropdown3:
+					AskItems.Add(AskDropdown.Parse(parser));
+					break;
+				case Parser.RegKeywords.MenuItems:
+					AskItems.Add(AskMenu.Parse(parser));
+					break;
+				case Parser.RegKeywords.ExtraQuestions:
+					AskItems.Add(AskExtraQuestions.Parse(parser));
+					break;
+				case Parser.RegKeywords.Checkboxes:
+				case Parser.RegKeywords.Checkboxes2:
+					AskItems.Add(AskCheckboxes.Parse(parser));
+					break;
+				case Parser.RegKeywords.YesNoQuestions:
+					AskItems.Add(AskYesNoQuestions.Parse(parser));
+					break;
+				case Parser.RegKeywords.GradeOptions:
+					AskItems.Add(GradeOptions.Parse(parser));
+					break;
+				case Parser.RegKeywords.AskSize:
+					AskItems.Add(AskSize.Parse(parser));
+					break;
+
+				case Parser.RegKeywords.MemberOnly:
+					MemberOnly = parser.GetBool();
+					break;
+				case Parser.RegKeywords.AskMedical:
+					parser.GetBool();
+					break;
+				case Parser.RegKeywords.AskDonation:
+					AskDonation = parser.GetBool();
+					break;
+				case Parser.RegKeywords.NotReqDOB:
+					NotReqDOB = parser.GetBool();
+					break;
+				case Parser.RegKeywords.NotReqAddr:
+					NotReqAddr = parser.GetBool();
+					break;
+				case Parser.RegKeywords.NotReqPhone:
+					NotReqPhone = parser.GetBool();
+					break;
+				case Parser.RegKeywords.NotReqGender:
+					NotReqGender = parser.GetBool();
+					break;
+				case Parser.RegKeywords.NotReqMarital:
+					NotReqMarital = parser.GetBool();
+					break;
+				case Parser.RegKeywords.NotReqZip:
+					NotReqZip = parser.GetBool();
+					break;
+				case Parser.RegKeywords.DonationFundId:
+					DonationFundId = parser.GetNullInt();
+					break;
+				case Parser.RegKeywords.DonationLabel:
+					DonationLabel = parser.GetString();
+					break;
+				case Parser.RegKeywords.ExtraValueFeeName:
+					ExtraValueFeeName = parser.GetString();
+					break;
+				case Parser.RegKeywords.GroupToJoin:
+					GroupToJoin = parser.GetString();
+					break;
+				case Parser.RegKeywords.GiveOrgMembAccess:
+					GiveOrgMembAccess = parser.GetBool();
+					break;
+				case Parser.RegKeywords.LinkGroupsFromOrgs:
+					LinkGroupsFromOrgs = (from i in parser.curr.value.Split(',')
+										  where i.ToInt() > 0
+										  select i.ToInt()).ToList();
+					parser.lineno++;
+					break;
+				case Parser.RegKeywords.ValidateOrgs:
+					ValidateOrgs = parser.curr.value;
+					parser.lineno++;
+					break;
+				case Parser.RegKeywords.Terms:
+					ParseTerms(parser);
+					break;
+				case Parser.RegKeywords.Instructions:
+					ParseInstructions(parser);
+					break;
+				case Parser.RegKeywords.Confirmation:
+					ParseConfirmation(parser);
+					break;
+				case Parser.RegKeywords.Reminder:
+					ParseReminder(parser);
+					break;
+				case Parser.RegKeywords.AgeGroups:
+					ParseAgeGroups(parser);
+					break;
+				case Parser.RegKeywords.OrgMemberFees:
+				case Parser.RegKeywords.OrgFees:
+					orgFees = OrgFees.Parse(parser);
+					break;
+				case Parser.RegKeywords.VoteTags:
+					ParseVoteTags(parser);
+					break;
+				case Parser.RegKeywords.Title:
+					Title = parser.GetString();
+					break;
+				case Parser.RegKeywords.Shell:
+					Shell = parser.GetString();
+					break;
+				case Parser.RegKeywords.Fee:
+					Fee = parser.GetDecimal();
+					break;
+
+
+// BEGIN support for old Registration Documents
+				case Parser.RegKeywords.AskGrade:
+					parser.GetBool();
+					parser.GetLabel("Grade");
+					break;
+
+				case Parser.RegKeywords.AskShirtSize: 
+					parser.GetBool();
+					asksize = new AskSize();
+					AskItems.Add(asksize);
+					break;
+				case Parser.RegKeywords.ShirtSizes:
+					asksize.list = AskSize.ParseShirtSizes(parser);
+					break;
+				case Parser.RegKeywords.AllowLastYearShirt:
+					asksize.AllowLastYear = parser.GetBool();
+					break;
+				case Parser.RegKeywords.ShirtFee:
+                    if (asksize == null)
+                    {
+                        asksize = new AskSize();
+                        AskItems.Add(asksize);
+                    }
+					asksize.Fee = parser.GetDecimal();
+					break;
+// END support for old Registration Documents
+
+				case Parser.RegKeywords.Deposit:
+					Deposit = parser.GetDecimal();
+					break;
+				case Parser.RegKeywords.ExtraFee:
+					ExtraFee = parser.GetDecimal();
+					break;
+				case Parser.RegKeywords.MaximumFee:
+					MaximumFee = parser.GetDecimal();
+					break;
+				case Parser.RegKeywords.AllowOnlyOne:
+					AllowOnlyOne = parser.GetBool();
+					break;
+				case Parser.RegKeywords.AllowReRegister:
+					AllowReRegister = parser.GetBool();
+					break;
+				case Parser.RegKeywords.TargetExtraValues:
+					TargetExtraValues = parser.GetBool();
+					break;
+				case Parser.RegKeywords.TimeSlotLockDays:
+					TimeSlotLockDays = parser.GetNullInt();
+					break;
+				case Parser.RegKeywords.TimeSlots:
+					timeSlots = TimeSlots.Parse(parser);
+					if (TimeSlotLockDays.HasValue)
+						timeSlots.TimeSlotLockDays = TimeSlotLockDays;
+					break;
+			}
+		}
+
+		private void ParseTerms(Parser parser)
+		{
+			Terms = parser.GetString();
+			if (Terms.HasValue() || parser.curr.indent == 0)
+				return;
+			var startindent = parser.curr.indent;
+			while (parser.curr.indent == startindent)
+			{
+				switch (parser.curr.kw)
+				{
+					case Parser.RegKeywords.Html:
+						parser.lineno++;
+						break;
+					case Parser.RegKeywords.Body:
+						Terms = parser.GetString();
+						break;
+					default:
+						throw parser.GetException("unexpected line");
+				}
+			}
+		}
+		private void ParseConfirmation(Parser parser)
+		{
+			parser.lineno++;
+			var startindent = parser.curr.indent;
+			while (parser.curr.indent == startindent)
+			{
+				switch (parser.curr.kw)
+				{
+					case Parser.RegKeywords.Html:
+						parser.lineno++;
+						break;
+					case Parser.RegKeywords.Subject:
+						Subject = parser.GetString();
+						break;
+					case Parser.RegKeywords.Body:
+						Body = parser.GetString();
+						break;
+					default:
+						throw parser.GetException("unexpected line in Confirmation");
+				}
+			}
+		}
+		private void ParseReminder(Parser parser)
+		{
+			parser.lineno++;
+			var startindent = parser.curr.indent;
+			while (parser.curr.indent == startindent)
+			{
+				switch (parser.curr.kw)
+				{
+					case Parser.RegKeywords.Html:
+						parser.lineno++;
+						break;
+					case Parser.RegKeywords.ReminderSubject:
+						ReminderSubject = parser.GetString();
+						break;
+					case Parser.RegKeywords.ReminderBody:
+						ReminderBody = parser.GetString();
+						break;
+					default:
+						throw parser.GetException("unexpected line in Reminder");
+				}
+			}
+		}
+		private void ParseInstructions(Parser parser)
+		{
+			parser.lineno++;
+			if (parser.curr.indent == 0)
+				return;
+			var startindent = parser.curr.indent;
+			while (parser.curr.indent == startindent)
+			{
+				switch (parser.curr.kw)
+				{
+					case Parser.RegKeywords.Html:
+						parser.lineno++;
+						break;
+					case Parser.RegKeywords.Select:
+						InstructionSelect = parser.GetString();
+						break;
+					case Parser.RegKeywords.Find:
+						InstructionFind = parser.GetString();
+						break;
+					case Parser.RegKeywords.Options:
+						InstructionOptions = parser.GetString();
+						break;
+					case Parser.RegKeywords.Special:
+						InstructionSpecial = parser.GetString();
+						break;
+					case Parser.RegKeywords.Login:
+						InstructionLogin = parser.GetString();
+						break;
+					case Parser.RegKeywords.Submit:
+						InstructionSubmit = parser.GetString();
+						break;
+					case Parser.RegKeywords.Sorry:
+						InstructionSorry = parser.GetString();
+						break;
+					case Parser.RegKeywords.Body:
+						InstructionAll = parser.GetString();
+						break;
+					default:
+						throw parser.GetException("unexpected line");
+				}
+			}
+		}
+		private void ParseVoteTags(Parser parser)
+		{
+			parser.lineno++;
+			if (parser.curr.indent == 0)
+				return;
+			var startindent = parser.curr.indent;
+			while (parser.curr.indent == startindent)
+			{
+				if (parser.curr.kw != Parser.RegKeywords.Display)
+					throw parser.GetException("unexpected line");
+				parser.GetString();
+				if (parser.curr.indent <= startindent)
+					throw parser.GetException("expected indented Message,Confirm, or SmallGroup");
+				var ind = parser.curr.indent;
+				while (parser.curr.indent == ind)
+				{
+					switch (parser.curr.kw)
+					{
+						case Parser.RegKeywords.Message:
+							parser.GetString();
+							break;
+						case Parser.RegKeywords.Confirm:
+							parser.GetBool();
+							break;
+						case Parser.RegKeywords.SmallGroup:
+							parser.GetString();
+							break;
+						default:
+							throw parser.GetException("unexpected line");
+					}
+				}
+			}
+		}
+		private void ParseAgeGroups(Parser parser)
+		{
+			parser.lineno++;
+			if (parser.curr.indent == 0)
+				return;
+			var startindent = parser.curr.indent;
+			while (parser.curr.indent == startindent)
+			{
+				var agegroup = new AgeGroup();
+				if (parser.curr.kw != Parser.RegKeywords.None)
+					throw parser.GetException("unexpected line");
+				agegroup.SmallGroup = parser.GetLine();
+				var m = parser.agerange.Match(agegroup.SmallGroup);
+				if (!m.Success)
+				{
+					parser.lineno--;
+					throw parser.GetException("expected age range like 0-12");
+				}
+				agegroup.StartAge = m.Groups["start"].Value.ToInt();
+				agegroup.EndAge = m.Groups["end"].Value.ToInt();
+				if (parser.curr.indent <= startindent)
+					throw parser.GetException("expected either indented SmallGroup or Fee");
+				var ind = parser.curr.indent;
+				while (parser.curr.indent == ind)
+				{
+					switch (parser.curr.kw)
+					{
+						case Parser.RegKeywords.SmallGroup:
+							agegroup.SmallGroup = parser.GetString(agegroup.SmallGroup);
+							break;
+						case Parser.RegKeywords.Fee:
+							agegroup.Fee = parser.GetDecimal();
+							break;
+						default:
+							throw parser.GetException("unexpected line");
+					}
+				}
+				AgeGroups.Add(agegroup);
+			}
+		}
+		public override string ToString()
+		{
+			var sb = new StringBuilder();
+
+			AddConfirmation(sb);
+			AddReminder(sb);
+			AddFees(sb);
+			AddDonation(sb);
+			AddAgeGroups(sb);
+			orgFees.Output(sb);
+			AddInstructions(sb);
+			AddTerms(sb);
+
+			AddValueCk(0, sb, "ValidateOrgs", ValidateOrgs);
+			AddValueCk(0, sb, "Shell", Shell);
+			AddValueCk(0, sb, "AllowOnlyOne", AllowOnlyOne);
+			AddValueCk(0, sb, "TargetExtraValues", TargetExtraValues);
+			AddValueCk(0, sb, "AllowReRegister", AllowReRegister);
+			AddValueCk(0, sb, "MemberOnly", MemberOnly);
+			AddValueCk(0, sb, "GroupToJoin", GroupToJoin);
+			AddValueCk(0, sb, "GiveOrgMembAccess", GiveOrgMembAccess);
+			AddValueCk(0, sb, "NotReqDOB", NotReqDOB);
+			AddValueCk(0, sb, "NotReqAddr", NotReqAddr);
+			AddValueCk(0, sb, "NotReqZip", NotReqZip);
+			AddValueCk(0, sb, "NotReqPhone", NotReqPhone);
+			AddValueCk(0, sb, "NotReqGender", NotReqGender);
+			AddValueCk(0, sb, "NotReqMarital", NotReqMarital);
+
+			timeSlots.Output(sb);
+			foreach(var a in AskItems)
+				a.Output(sb);
+
+			return sb.ToString();
+		}
+		private void AddFees(StringBuilder sb)
+		{
+			AddValueCk(0, sb, "Fee", Fee);
+			AddValueCk(0, sb, "Deposit", Deposit);
+			AddValueCk(0, sb, "ExtraFee", ExtraFee);
+			AddValueCk(0, sb, "MaximumFee", MaximumFee);
+			AddValueCk(0, sb, "ExtraValueFeeName", ExtraValueFeeName);
+			sb.AppendLine();
+		}
+		private void AddDonation(StringBuilder sb)
+		{
+			AddValueCk(0, sb, "AskDonation", AskDonation);
+			AddSingleOrMultiLine(0, sb, "DonationLabel", DonationLabel);
+			AddValueCk(0, sb, "DonationFundId", DonationFundId);
+			sb.AppendLine();
+		}
+		private void AddAgeGroups(StringBuilder sb)
+		{
+			if (AgeGroups.Count == 0)
+				return;
+			AddValueNoCk(0, sb, "AgeGroups", "");
+			foreach (var i in AgeGroups)
+			{
+				AddValueCk(1, sb, "{0}-{1}".Fmt(i.StartAge, i.EndAge));
+				AddValueCk(2, sb, "SmallGroup", i.SmallGroup);
+				AddValueCk(2, sb, "Fee", i.Fee);
+			}
+			sb.AppendLine();
+		}
+		private void AddConfirmation(StringBuilder sb)
+		{
+			AddValueNoCk(0, sb, "Confirmation", "");
+			AddValueNoCk(1, sb, "Subject", Subject);
+			AddSingleOrMultiLine(1, sb, "Body", Body);
+		}
+		private void AddReminder(StringBuilder sb)
+		{
+			AddValueNoCk(0, sb, "Reminder", "");
+			AddValueNoCk(1, sb, "ReminderSubject", ReminderSubject);
+			AddSingleOrMultiLine(1, sb, "ReminderBody", ReminderBody);
+		}
+		private void AddSingleOrMultiLine(int n, StringBuilder sb, string Section, string ht)
+		{
+			if (ht == null)
+				return;
+			if (ht.Contains("\n"))
+			{
+				AddValueCk(n, sb, Section, "<<");
+				sb.AppendLine("----------");
+				sb.AppendLine(ht.Trim());
+				sb.AppendLine("----------");
+			}
+			else
+				AddValueNoCk(n, sb, Section, ht);
+		}
+		private void AddInstructions(StringBuilder sb)
+		{
+			AddValueNoCk(0, sb, "Instructions", "");
+			AddSingleOrMultiLine(1, sb, "Login", InstructionLogin);
+			AddSingleOrMultiLine(1, sb, "Select", InstructionSelect);
+			AddSingleOrMultiLine(1, sb, "Find", InstructionFind);
+			AddSingleOrMultiLine(1, sb, "Options", InstructionOptions);
+			AddSingleOrMultiLine(1, sb, "Special", InstructionSpecial);
+			AddSingleOrMultiLine(1, sb, "Submit", InstructionSubmit);
+			AddSingleOrMultiLine(1, sb, "Sorry", InstructionSorry);
+		}
+		private void AddTerms(StringBuilder sb)
+		{
+			AddSingleOrMultiLine(0, sb, "Terms", Terms);
+		}
+		public static void AddValueCk(int n, StringBuilder sb, string label, int? value)
+		{
+			if (value.HasValue)
+				sb.AppendFormat("{0}{1}: {2}\n", new string('\t', n), label, value);
+		}
+		public static void AddValueCk(int n, StringBuilder sb, string label, decimal? value)
+		{
+			if (value.HasValue)
+				sb.AppendFormat("{0}{1}: {2}\n", new string('\t', n), label, value.ToString2("n2"));
+		}
+		public static void AddValueCk(int n, StringBuilder sb, string label, bool? value)
+		{
+			if (value == true)
+				sb.AppendFormat("{0}{1}: {2}\n", new string('\t', n), label, value.ToString());
+		}
+		public static void AddValueCk(int n, StringBuilder sb, string label, string value)
+		{
+			if (value.HasValue())
+				sb.AppendFormat("{0}{1}: {2}\n", new string('\t', n), label, value.Trim());
+		}
+		public static void AddValueNoCk(int n, StringBuilder sb, string label, string value)
+		{
+			sb.AppendFormat("{0}{1}: {2}\n", new string('\t', n), label, value);
+		}
+		public static void AddValueCk(int n, StringBuilder sb, string value)
+		{
+			if (value.HasValue())
+				sb.AppendFormat("{0}{1}\n", new string('\t', n), value.Trim());
+		}
+		public class OrgPickInfo
+		{
+			public int OrganizationId { get; set; }
+			public string OrganizationName { get; set; }
+		}
+		public static List<OrgPickInfo> OrganizationsFromIdString(Organization org)
+		{
+			var a = org.OrgPickList.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
+			var d = new Dictionary<int, int>();
+			var n = 0;
+			foreach (var i in a)
+				d.Add(n++, i);
+			var q = (from o in DbUtil.Db.Organizations
+					 where a.Contains(o.OrganizationId)
+					 select new OrgPickInfo
+					 {
+						 OrganizationId = o.OrganizationId,
+						 OrganizationName = o.OrganizationName
+					 }).ToList();
+			var list = (from op in q
+						join i in d on op.OrganizationId equals i.Value into j
+						from i in j
+						orderby i.Key
+						select op).ToList();
+			return list;
+		}
+		public class MasterOrgInfo
+		{
+			public int Id { get; set; }
+			public string Name { get; set; }
+		}
+		public MasterOrgInfo MasterOrg()
+		{
+			var q = from o in DbUtil.Db.ViewMasterOrgs
+					where o.PickListOrgId == OrgId
+					select new MasterOrgInfo
+					{
+						Id = o.OrganizationId,
+						Name = o.OrganizationName
+					};
+			var i = q.FirstOrDefault();
+			if (i == null)
+				return new MasterOrgInfo();
+			return i;
+		}
+	}
+}

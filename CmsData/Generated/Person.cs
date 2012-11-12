@@ -239,6 +239,8 @@ namespace CmsData
 		
 		private string _PrimaryCountry;
 		
+		private byte _ReceiveSMS;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -311,6 +313,10 @@ namespace CmsData
    		private EntitySet< Task> _TasksAboutPerson;
 		
    		private EntitySet< Task> _TasksCoOwned;
+		
+   		private EntitySet< VolRequest> _VolRequests;
+		
+   		private EntitySet< VolRequest> _VolResponses;
 		
     	
 		private EntityRef< Organization> _BFClass;
@@ -695,6 +701,9 @@ namespace CmsData
 		partial void OnPrimaryCountryChanging(string value);
 		partial void OnPrimaryCountryChanged();
 		
+		partial void OnReceiveSMSChanging(byte value);
+		partial void OnReceiveSMSChanged();
+		
     #endregion
 		public Person()
 		{
@@ -770,6 +779,10 @@ namespace CmsData
 			this._TasksAboutPerson = new EntitySet< Task>(new Action< Task>(this.attach_TasksAboutPerson), new Action< Task>(this.detach_TasksAboutPerson)); 
 			
 			this._TasksCoOwned = new EntitySet< Task>(new Action< Task>(this.attach_TasksCoOwned), new Action< Task>(this.detach_TasksCoOwned)); 
+			
+			this._VolRequests = new EntitySet< VolRequest>(new Action< VolRequest>(this.attach_VolRequests), new Action< VolRequest>(this.detach_VolRequests)); 
+			
+			this._VolResponses = new EntitySet< VolRequest>(new Action< VolRequest>(this.attach_VolResponses), new Action< VolRequest>(this.detach_VolResponses)); 
 			
 			
 			this._BFClass = default(EntityRef< Organization>); 
@@ -3325,6 +3338,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="ReceiveSMS", UpdateCheck=UpdateCheck.Never, Storage="_ReceiveSMS", DbType="tinyint NOT NULL")]
+		public byte ReceiveSMS
+		{
+			get { return this._ReceiveSMS; }
+
+			set
+			{
+				if (this._ReceiveSMS != value)
+				{
+				
+                    this.OnReceiveSMSChanging(value);
+					this.SendPropertyChanging();
+					this._ReceiveSMS = value;
+					this.SendPropertyChanged("ReceiveSMS");
+					this.OnReceiveSMSChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3685,6 +3720,26 @@ namespace CmsData
    		    get { return this._TasksCoOwned; }
 
 			set	{ this._TasksCoOwned.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="VolRequests__Requestor", Storage="_VolRequests", OtherKey="RequestorId")]
+   		public EntitySet< VolRequest> VolRequests
+   		{
+   		    get { return this._VolRequests; }
+
+			set	{ this._VolRequests.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="VolResponses__Volunteer", Storage="_VolResponses", OtherKey="VolunteerId")]
+   		public EntitySet< VolRequest> VolResponses
+   		{
+   		    get { return this._VolResponses; }
+
+			set	{ this._VolResponses.Assign(value); }
 
    		}
 
@@ -5057,6 +5112,32 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.CoOwner = null;
+		}
+
+		
+		private void attach_VolRequests(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Requestor = this;
+		}
+
+		private void detach_VolRequests(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Requestor = null;
+		}
+
+		
+		private void attach_VolResponses(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Volunteer = this;
+		}
+
+		private void detach_VolResponses(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Volunteer = null;
 		}
 
 		

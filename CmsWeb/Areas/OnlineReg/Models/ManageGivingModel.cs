@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CmsData;
 using System.Text;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Web.Mvc;
 using System.Xml.Linq;
@@ -77,9 +78,9 @@ namespace CmsWeb.Models
 			}
 		}
 
-		public RegSettings setting
+		public Settings setting
 		{
-			get { return new RegSettings(Organization.RegSetting, DbUtil.Db, orgid); }
+			get { return new Settings(Organization.RegSetting, DbUtil.Db, orgid); }
 		}
 
 		public bool NoCreditCardsAllowed { get; set; }
@@ -105,7 +106,6 @@ namespace CmsWeb.Models
 			if (rg != null && pi != null)
 			{
 				SemiEvery = rg.SemiEvery;
-				Type = rg.Type;
 				StartWhen = rg.StartWhen;
 				StopWhen = null; //rg.StopWhen;
 				Day1 = rg.Day1;
@@ -229,8 +229,8 @@ namespace CmsWeb.Models
 							 setting.InstructionSelect,
 							 setting.InstructionFind,
 							 setting.InstructionOptions,
-							 setting.InstructionSpecial,
 							 setting.InstructionSubmit,
+							 setting.InstructionSpecial,
 							 setting.InstructionSorry
 						);
 				ins = OnlineRegModel.DoReplaceForExtraValueCode(ins, person);

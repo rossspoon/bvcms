@@ -96,6 +96,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
             };
             s.LoadFamily();
             m.List.Add(s);
+			if (m.OnlyOne)
+				return Complete(m.typeid.ToString(), m);
             return View("List", m);
         }
 
@@ -213,6 +215,10 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 case "taskabout":
                     if (m.List.Count > 0)
                         return Json(new { close = true, how = "addselected", url = "/Task/ChangeAbout/", pid = m.List[0].PeopleId });
+                    break;
+                case "mergeto":
+                    if (m.List.Count > 0)
+						return Json(new { close = true, how = "addselected", pid = m.List[0].PeopleId });
                     break;
                 case "taskowner":
                     if (m.List.Count > 0)
@@ -432,7 +438,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     AddPerson(p, m.List, OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
                     if (isnew)
                         p.person.CampusId = meeting.Organization.CampusId;
-                    Attend.MarkRegistered(DbUtil.Db, p.PeopleId.Value, id, true);
+                    Attend.MarkRegistered(DbUtil.Db, p.PeopleId.Value, id, 1);
                 }
                 DbUtil.Db.SubmitChanges();
                 DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);

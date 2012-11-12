@@ -327,12 +327,10 @@ namespace CmsData.API
 		private Address2 ValidateAddress(Address2 a)
 		{
 			var sw = new StringWriter();
-			var addrok = false;
-			if (a.CityName.Text.HasValue() && a.StateCode.Text.HasValue())
+			bool addrok = a.CityName.Text.HasValue() && a.StateCode.Text.HasValue();
+			if (!addrok && a.ZipCode.Text.HasValue())
 				addrok = true;
-			if (a.ZipCode.Text.HasValue())
-				addrok = true;
-			if (!a.CityName.Text.HasValue() && !a.StateCode.Text.HasValue() && !a.ZipCode.Text.HasValue())
+			if (!addrok && !a.CityName.Text.HasValue() && !a.StateCode.Text.HasValue() && !a.ZipCode.Text.HasValue())
 				addrok = true;
 			if (!addrok)
 			{

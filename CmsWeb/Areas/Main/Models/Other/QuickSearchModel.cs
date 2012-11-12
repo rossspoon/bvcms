@@ -20,170 +20,118 @@ using System.Text.RegularExpressions;
 
 namespace CmsWeb.Models
 {
-    [Serializable]
-    public class QuickSearchInfo
-    {
-        public QuickSearchInfo()
-        {
-            marital = 99;
-            gender = 99;
-        }
-        public string name { get; set; }
-        public string communication { get; set; }
-        public string address { get; set; }
-        public string birthdate { get; set; }
-        public int campus { get; set; }
-        public int memberstatus { get; set; }
-        public int marital { get; set; }
-        public int gender { get; set; }
-    }
-    public class QuickSearchModel : PagerModel2
-    {
-        private CMSDataContext Db;
-        private int TagTypeId { get; set; }
-        private string TagName { get; set; }
-        private int? TagOwner { get; set; }
+	public class QuickSearchModel
+	{
+		private const int CountMax = 60;
+		public string text { get; set; }
+		private CMSDataContext Db;
 
-        public QuickSearchInfo m;
+		public List<PersonInfo> people;
+		public List<OrgSearchModel.OrganizationInfo> orgs;
+		string First, Last;
 
-        public QuickSearchModel()
-        {
-            Db = DbUtil.Db;
-            Direction = "asc";
-            Sort = "Name";
-            TagTypeId = DbUtil.TagTypeId_Personal;
-            TagName = Util2.CurrentTagName;
-            TagOwner = Util2.CurrentTagOwnerId;
-            m = new QuickSearchInfo();
-            GetCount = Count;
-        }
+		public QuickSearchModel(string t)
+		{
+			text = t ?? "";
+			NameSplit(text, out First, out Last);
+			Db = DbUtil.Db;
+			people = PeopleList().ToList();
+			orgs = Orglist().ToList();
+		}
 
-        public bool usersonly { get; set; }
+		private IEnumerable<PersonInfo> PeopleList()
+		{
+			var qp = DbUtil.Db.People.AsQueryable();
+			if (Util2.OrgMembersOnly)
+				qp = DbUtil.Db.OrgMembersOnlyTag2().People(DbUtil.Db);
+			else if (Util2.OrgLeadersOnly)
+				qp = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
 
-        private IQueryable<Person> people;
-        public IQueryable<Person> FetchPeople()
-        {
-            if (people != null)
-                return people;
+			var hasfirst = First.HasValue();
+			var phone = "donotmatch";
+			if (text.HasValue() && text.AllDigits() && text.Length == 7)
+				phone = text;
+			if (text.AllDigits())
+			{
+				qp = from p in qp
+					 where
+						 p.PeopleId == Last.ToInt()
+						 || p.CellPhone.Contains(phone)
+						 || p.Family.HomePhone.Contains(phone)
+						 || p.WorkPhone.Contains(phone)
+					 orderby p.Name2
+					 select p;
+			}
+			else
+				qp = from p in qp
+					 where
+						 (
+						 (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+						 || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
+						 && (!hasfirst || p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) || p.MiddleName.StartsWith(First)
+						 || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
+						 )
+						 || p.PeopleId == Last.ToInt()
+						 //|| p.EmployerOther.Contains(text)
+						 || p.Family.AddressLineOne.StartsWith(text)
+						 || p.Family.AddressLineTwo.StartsWith(text)
+					 orderby p.Name2
+					 select p;
+			return PeopleList(qp.Take(CountMax));
+		}
+		private IEnumerable<OrgSearchModel.OrganizationInfo> Orglist()
+		{
+			var roles = Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+			var qo = from o in Db.Organizations
+					 where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+					 select o;
 
-            DbUtil.Db.SetNoLock();
+			if (Util2.OrgMembersOnly)
+				qo = from o in qo
+					 where o.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId)
+					 select o;
+			else if (Util2.OrgLeadersOnly)
+			{
+				var oids = Db.GetLeaderOrgIds(Util.UserPeopleId);
+				qo = Db.Organizations.Where(o => oids.Contains(o.OrganizationId));
+			}
+			var text1 = "";
 
-            if (Util2.OrgMembersOnly)
-                people = DbUtil.Db.OrgMembersOnlyTag2().People(DbUtil.Db);
-            else if (Util2.OrgLeadersOnly)
-                people = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
-            else
-                people = DbUtil.Db.People.AsQueryable();
-            
-            if (usersonly)
-                people = people.Where(p => p.Users.Count() > 0);
-            
-            if (m.memberstatus > 0)
-                people = from p in people
-                        where p.MemberStatusId == m.memberstatus
-                        select p;
-            if (m.name.HasValue())
-            {
-				if (m.name.StartsWith("e:"))
-				{
-					var name = m.name.Substring(2);
-					people = from p in people
-							 where p.EmployerOther.Contains(name)
-							 select p;
-				}
-				else
-				{
-                string First, Last;
-                NameSplit(m.name, out First, out Last);
-                if (First.HasValue())
-                    people = from p in people
-                            where (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
-                                || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name))
-                            && (p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) || p.MiddleName.StartsWith(First)
-                                || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name))
-                            select p;
-                else
-                    if (Last.AllDigits())
-                        people = from p in people
-                                where p.PeopleId == Last.ToInt()
-                                select p;
-                    else
-                        people = from p in people
-                                where p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
-                                    || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name)
-                                select p;
-				}
-            }
-            if (m.address.IsNotNull())
-            {
-                if (AddrRegex.IsMatch(m.address))
-                {
-                    var match = AddrRegex.Match(m.address);
-                    m.address = match.Groups["addr"].Value;
-                }
-                m.address = m.address.Trim();
-                if (m.address.HasValue())
-                    people = from p in people
-                            where p.Family.AddressLineOne.Contains(m.address)
-                               || p.Family.AddressLineTwo.Contains(m.address)
-                               || p.Family.CityName.Contains(m.address)
-                               || p.Family.ZipCode.Contains(m.address)
-                            select p;
-            }
-            if (m.communication.IsNotNull())
-            {
-                m.communication = m.communication.Trim();
-                if (m.communication.HasValue())
-                    people = from p in people
-                            where p.CellPhone.Contains(m.communication)
-                            || p.EmailAddress.Contains(m.communication)
-                            || p.EmailAddress2.Contains(m.communication)
-                            || p.Family.HomePhone.Contains(m.communication)
-                            || p.WorkPhone.Contains(m.communication)
-                            select p;
-            }
-            if (m.birthdate.HasValue() && m.birthdate != "na")
-            {
-                DateTime dt;
-                if (DateTime.TryParse(m.birthdate, out dt))
-                    if (Regex.IsMatch(m.birthdate, @"\d+/\d+/\d+"))
-                        people = people.Where(p => p.BirthDay == dt.Day && p.BirthMonth == dt.Month && p.BirthYear == dt.Year);
-                    else
-                        people = people.Where(p => p.BirthDay == dt.Day && p.BirthMonth == dt.Month);
-                else
-                {
-                    int n;
-                    if (int.TryParse(m.birthdate, out n))
-                        if (n >= 1 && n <= 12)
-                            people = people.Where(p => p.BirthMonth == n);
-                        else
-                            people = people.Where(p => p.BirthYear == n);
-                }
-            }
-            if (m.campus > 0)
-                people = people.Where(p => p.CampusId == m.campus);
-            else if (m.campus == -1)
-                people = people.Where(p => p.CampusId == null);
-            if (m.gender != 99)
-                people = people.Where(p => p.GenderId == m.gender);
-            if (m.marital != 99)
-                people = people.Where(p => p.MaritalStatusId == m.marital);
-            return people;
-        }
-        
-        public IEnumerable<TaggedPersonInfo> PeopleList()
-        {
-            var people = FetchPeople();
-            if (!_count.HasValue)
-                _count = people.Count();
-            people = ApplySort(people)
-                .Skip(StartRow).Take(PageSize);
-            return PeopleList(people);
-        }
-        private IEnumerable<TaggedPersonInfo> PeopleList(IQueryable<Person> query)
+			if (text.StartsWith("-") && text.Length > 1)
+				text1 = text.Substring(1);
+			if (text1.AllDigits())
+				qo = from o in qo
+					 where
+						 o.OrganizationId == text1.ToInt()
+					 orderby o.Division.Program.Name, o.Division.Name, o.OrganizationName
+					 select o;
+			else
+				qo = from o in qo
+					 where
+						 o.OrganizationName.Contains(text)
+						 || (o.LeaderName.Contains(First) && o.LeaderName.Contains(Last))
+						 || o.DivOrgs.Any(t => t.Division.Name.Contains(text))
+					 orderby o.Division.Program.Name, o.Division.Name, o.OrganizationName
+					 select o;
+			return OrgSearchModel.OrganizationList(qo.Take(CountMax), null, null);
+		}
+
+		private static void NameSplit(string name, out string First, out string Last)
+		{
+			var a = name.Split(' ');
+			First = "";
+			if (a.Length > 1)
+			{
+				First = a[0];
+				Last = a[1];
+			}
+			else
+				Last = a[0];
+		}
+        private IEnumerable<PersonInfo> PeopleList(IQueryable<Person> query)
         {
             var q = from p in query
-                    select new TaggedPersonInfo
+                    select new PersonInfo
                     {
                         PeopleId = p.PeopleId,
                         Name = p.Name,
@@ -201,249 +149,9 @@ namespace CmsWeb.Models
                         BFTeacherId = p.BFClass.LeaderId,
                         Age = p.Age.ToString(),
                         Deceased = p.DeceasedDate.HasValue,
-                        HasTag = p.Tags.Any(t => t.Tag.Name == TagName && t.Tag.PeopleId == TagOwner && t.Tag.TypeId == TagTypeId),
                     };
             return q;
         }
 
-        private static void NameSplit(string name, out string First, out string Last)
-        {
-            var a = name.Split(' ');
-            First = "";
-            if (a.Length > 1)
-            {
-                First = a[0];
-                Last = a[1];
-            }
-            else
-                Last = a[0];
-
-        }
-        public Regex AddrRegex = new Regex(
-        @"\A(?<addr>.*);\s*(?<city>.*),\s+(?<state>[A-Z]*)\s+(?<zip>\d{5}(-\d{4})?)\z");
-
-        public IQueryable<Person> ApplySort(IQueryable<Person> query)
-        {
-            switch (Direction)
-            {
-                case "asc":
-                    switch (Sort)
-                    {
-                        case "Status":
-                            query = from p in query
-                                    orderby p.MemberStatus.Code,
-                                    p.LastName,
-                                    p.FirstName,
-                                    p.PeopleId
-                                    select p;
-                            break;
-                        case "Address":
-                            query = from p in query
-                                    orderby p.PrimaryState,
-                                    p.PrimaryCity,
-                                    p.PrimaryAddress,
-                                    p.PeopleId
-                                    select p;
-                            break;
-                        case "Fellowship Leader":
-                            query = from p in query
-                                    orderby p.BFClass.LeaderName,
-                                    p.LastName,
-                                    p.FirstName,
-                                    p.PeopleId
-                                    select p;
-                            break;
-                        case "DOB":
-                            query = from p in query
-                                    orderby p.BirthMonth, p.BirthDay,
-                                    p.LastName, p.FirstName
-                                    select p;
-                            break;
-                        case "Name":
-                            query = from p in query
-                                    orderby p.LastName,
-                                    p.FirstName,
-                                    p.PeopleId
-                                    select p;
-                            break;
-                    }
-                    break;
-                case "desc":
-                    switch (Sort)
-                    {
-                        case "Name":
-                            query = from p in query
-                                    orderby p.LastName descending,
-                                    p.FirstName,
-                                    p.PeopleId
-                                    select p;
-                            break;
-                        case "Status":
-                            query = from p in query
-                                    orderby p.MemberStatus.Code descending,
-                                    p.LastName descending,
-                                    p.FirstName descending,
-                                    p.PeopleId descending
-                                    select p;
-                            break;
-                        case "Address":
-                            query = from p in query
-                                    orderby p.PrimaryState descending,
-                                    p.PrimaryCity descending,
-                                    p.PrimaryAddress descending,
-                                    p.PeopleId descending
-                                    select p;
-                            break;
-                        case "Fellowship Leader":
-                            query = from p in query
-                                    orderby p.BFClass.LeaderName descending,
-                                    p.LastName descending,
-                                    p.FirstName descending,
-                                    p.PeopleId descending
-                                    select p;
-                            break;
-                        case "DOB":
-                            query = from p in query
-                                    orderby p.BirthMonth descending, p.BirthDay descending,
-                                    p.LastName descending, p.FirstName descending
-                                    select p;
-                            break;
-                    }
-                    break;
-            }
-            return query;
-        }
-        CodeValueController cv = new CodeValueController();
-        public SelectList GenderCodes()
-        {
-            return new SelectList(cv.GenderCodesWithUnspecified(), "Id", "Value", m.gender);
-        }
-        public SelectList MaritalCodes()
-        {
-            return new SelectList(cv.MaritalStatusCodes99(), "Id", "Value", m.marital);
-        }
-        public IEnumerable<SelectListItem> Campuses()
-        {
-            var q = from c in DbUtil.Db.Campus
-                    orderby c.Description
-                    select new SelectListItem
-                    {
-                        Value = c.Id.ToString(),
-                        Text = c.Description
-                    };
-            var list = q.ToList();
-            list.Insert(0, new SelectListItem
-            {
-                Value = "-1",
-                Text = "(not assigned)"
-            });
-            list.Insert(0, new SelectListItem
-            {
-                Value = "0",
-                Text = "(not specified)"
-            });
-            return list;
-        }
-        public SelectList MemberStatusCodes()
-        {
-            return new SelectList(cv.MemberStatusCodes0(), "Id", "Value", m.memberstatus);
-        }
-        private int? _count;
-        public int Count()
-        {
-            if (!_count.HasValue)
-                _count = FetchPeople().Count();
-            return _count.Value;
-        }
-        public int ConvertToQuery()
-        {
-            var qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate(DbUtil.Db);
-
-            if (m.memberstatus > 0)
-                qb.AddNewClause(QueryType.MemberStatusId, CompareType.Equal, m.memberstatus);
-
-            if (m.name.HasValue())
-            {
-                string First, Last;
-                NameSplit(m.name, out First, out Last);
-                if (First.HasValue())
-                {
-                    var g = qb.AddNewGroupClause(CompareType.AnyTrue);
-                    g.AddNewClause(QueryType.LastName, CompareType.StartsWith, Last);
-                    g.AddNewClause(QueryType.MaidenName, CompareType.StartsWith, Last);
-                    g = qb.AddNewGroupClause(CompareType.AnyTrue);
-                    g.AddNewClause(QueryType.FirstName, CompareType.StartsWith, First);
-                    g.AddNewClause(QueryType.NickName, CompareType.StartsWith, First);
-                    g.AddNewClause(QueryType.MiddleName, CompareType.StartsWith, First);
-                }
-                else
-                {
-                    if (Last.AllDigits())
-                        qb.AddNewClause(QueryType.PeopleId, CompareType.Equal, Last.ToInt());
-                    else
-                        qb.AddNewClause(QueryType.LastName, CompareType.StartsWith, Last);
-                }
-            }
-            if (m.address.IsNotNull())
-            {
-                if (AddrRegex.IsMatch(m.address))
-                {
-                    var match = AddrRegex.Match(m.address);
-                    m.address = match.Groups["addr"].Value;
-                }
-                m.address = m.address.Trim();
-                if (m.address.HasValue())
-                {
-                    var g = qb.AddNewGroupClause(CompareType.AnyTrue);
-                    g.AddNewClause(QueryType.PrimaryAddress, CompareType.Contains, m.address);
-                    g.AddNewClause(QueryType.PrimaryAddress2, CompareType.Contains, m.address);
-                    g.AddNewClause(QueryType.PrimaryCity, CompareType.Contains, m.address);
-                    g.AddNewClause(QueryType.PrimaryZip, CompareType.Contains, m.address);
-                }
-            }
-            if (m.communication.IsNotNull())
-            {
-                m.communication = m.communication.Trim();
-                if (m.communication.HasValue())
-                {
-                    var g = qb.AddNewGroupClause(CompareType.AnyTrue);
-                    g.AddNewClause(QueryType.CellPhone, CompareType.Contains, m.communication);
-                    g.AddNewClause(QueryType.EmailAddress, CompareType.Contains, m.communication);
-                    g.AddNewClause(QueryType.EmailAddress2, CompareType.Contains, m.communication);
-                    g.AddNewClause(QueryType.HomePhone, CompareType.Contains, m.communication);
-                    g.AddNewClause(QueryType.WorkPhone, CompareType.Contains, m.communication);
-                }
-            }
-            if (m.birthdate.HasValue() && m.birthdate != "na")
-            {
-                DateTime dt;
-                if (DateTime.TryParse(m.birthdate, out dt))
-                    if (Regex.IsMatch(m.birthdate, @"\d+/\d+/\d+"))
-                        qb.AddNewClause(QueryType.Birthday, CompareType.Equal, m.birthdate);
-                    else
-                        qb.AddNewClause(QueryType.Birthday, CompareType.Equal, m.birthdate);
-                else
-                {
-                    int n;
-                    if (int.TryParse(m.birthdate, out n))
-                        if (n >= 1 && n <= 12)
-                            qb.AddNewClause(QueryType.Birthday, CompareType.Equal, m.birthdate);
-                        else
-                            qb.AddNewClause(QueryType.Birthday, CompareType.Equal, m.birthdate);
-                }
-            }
-            if (m.campus > 0)
-                qb.AddNewClause(QueryType.CampusId, CompareType.Equal, m.campus);
-            else if (m.campus == -1)
-                qb.AddNewClause(QueryType.CampusId, CompareType.IsNull, m.campus);
-            if (m.gender != 99)
-                qb.AddNewClause(QueryType.GenderId, CompareType.Equal, m.gender);
-            if (m.marital != 99)
-                qb.AddNewClause(QueryType.MaritalStatusId, CompareType.Equal, m.marital);
-            qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
-            DbUtil.Db.SubmitChanges();
-            return qb.QueryId;
-        }
-    }
+	}
 }

@@ -1,16 +1,14 @@
-﻿@using CmsWeb
-@model CmsWeb.Models.OnlineRegPersonModel
-@Html.Hidden3("m.List.index", Model.index)
-@Html.Hidden3("m.List[" + Model.index + "].orgid", Model.orgid)
-@Html.Hidden3("m.List[" + Model.index + "].masterorgid", Model.masterorgid)
-@Html.Hidden3("m.List[" + Model.index + "].divid", Model.divid)
-@Html.Hidden3("m.List[" + Model.index + "].classid", Model.classid)
-@Html.Hidden3("m.List[" + Model.index + "].PeopleId", Model.PeopleId)
-@Html.Hidden3("m.List[" + Model.index + "].Found", Model.Found)
-@Html.Hidden3("m.List[" + Model.index + "].IsNew", Model.IsNew)
-@Html.Hidden3("m.List[" + Model.index + "].OtherOK", Model.OtherOK)
-@Html.Hidden3("m.List[" + Model.index + "].LoggedIn", Model.LoggedIn)
-@Html.Hidden3("m.List[" + Model.index + "].IsValidForExisting", Model.IsValidForExisting)
-@Html.Hidden3("m.List[" + Model.index + "].IsValidForNew", Model.IsValidForNew)
-@Html.Hidden3("m.List[" + Model.index + "].ShowAddress", Model.ShowAddress)
-
+﻿@model CmsWeb.Models.OnlineRegPersonModel
+@{ var prefix = ViewData.TemplateInfo.HtmlFieldPrefix; }
+<input type="hidden" name="@(prefix).OtherOK" value="@Model.OtherOK"/>
+<input type="hidden" name="@(prefix).orgid" value="@Model.orgid"/>
+<input type="hidden" name="@(prefix).masterorgid" value="@Model.masterorgid"/>
+<input type="hidden" name="@(prefix).divid" value="@Model.divid"/>
+<input type="hidden" name="@(prefix).classid" value="@Model.classid"/>
+<input type="hidden" name="@(prefix).PeopleId" value="@Model.PeopleId"/>
+<input type="hidden" name="@(prefix).Found" value="@Model.Found"/>
+<input type="hidden" name="@(prefix).IsNew" value="@Model.IsNew"/>
+<input type="hidden" name="@(prefix).LoggedIn" value="@Model.LoggedIn"/>
+<input type="hidden" name="@(prefix).IsValidForExisting" value="@Model.IsValidForExisting"/>
+<input type="hidden" name="@(prefix).IsValidForNew" value="@Model.IsValidForNew"/>
+<input type="hidden" name="@(prefix).ShowAddress" value="@Model.ShowAddress"/>

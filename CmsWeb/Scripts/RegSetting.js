@@ -30,16 +30,10 @@
             a.parent().prev().find(".tip").tooltip({ opacity: 0, showBody: "|" });
         });
     });
-    $("ul.enablesort a.del").live("click", function (ev) {
-        if (!$(this).attr("href"))
-            return false;
-        ev.preventDefault();
-        $(this).parent().parent().parent().remove();
-    });
 
     $.regsettingeditclick = function (f) {
         $(".tip", f).tooltip({ opacity: 0, showBody: "|" });
-        $("ul.enablesort ul.sort", f).sortable();
+        $("ul.enablesort.sort, ul.enablesort ul.sort", f).sortable();
         $("ul.noedit input", f).attr("disabled", "disabled");
         $("ul.noedit select", f).attr("disabled", "disabled");
         $("ul.noedit a", f).not('[target="otherorg"]').removeAttr("href");

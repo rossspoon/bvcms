@@ -47,9 +47,9 @@ namespace CmsData
 		
 		private bool? _EffAttendFlag;
 		
-		private int? _GuestOfId;
-		
 		private int? _SeqNo;
+		
+		private int? _Commitment;
 		
    		
    		private EntitySet< SubRequest> _SubRequests;
@@ -117,11 +117,11 @@ namespace CmsData
 		partial void OnEffAttendFlagChanging(bool? value);
 		partial void OnEffAttendFlagChanged();
 		
-		partial void OnGuestOfIdChanging(int? value);
-		partial void OnGuestOfIdChanged();
-		
 		partial void OnSeqNoChanging(int? value);
 		partial void OnSeqNoChanged();
+		
+		partial void OnCommitmentChanging(int? value);
+		partial void OnCommitmentChanged();
 		
     #endregion
 		public Attend()
@@ -491,28 +491,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="GuestOfId", UpdateCheck=UpdateCheck.Never, Storage="_GuestOfId", DbType="int")]
-		public int? GuestOfId
-		{
-			get { return this._GuestOfId; }
-
-			set
-			{
-				if (this._GuestOfId != value)
-				{
-				
-                    this.OnGuestOfIdChanging(value);
-					this.SendPropertyChanging();
-					this._GuestOfId = value;
-					this.SendPropertyChanged("GuestOfId");
-					this.OnGuestOfIdChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="SeqNo", UpdateCheck=UpdateCheck.Never, Storage="_SeqNo", DbType="int")]
 		public int? SeqNo
 		{
@@ -528,6 +506,28 @@ namespace CmsData
 					this._SeqNo = value;
 					this.SendPropertyChanged("SeqNo");
 					this.OnSeqNoChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Commitment", UpdateCheck=UpdateCheck.Never, Storage="_Commitment", DbType="int")]
+		public int? Commitment
+		{
+			get { return this._Commitment; }
+
+			set
+			{
+				if (this._Commitment != value)
+				{
+				
+                    this.OnCommitmentChanging(value);
+					this.SendPropertyChanging();
+					this._Commitment = value;
+					this.SendPropertyChanged("Commitment");
+					this.OnCommitmentChanged();
 				}
 
 			}

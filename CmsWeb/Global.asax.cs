@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using CmsData;
+using CmsData.Registration;
 using UtilityExtensions;
 using CmsWeb;
 using System.Net.Mail;
@@ -28,6 +29,7 @@ namespace CmsWeb
     {
         protected void Application_Start()
         {
+			ModelBinders.Binders.DefaultBinder = new SmartBinder();
             ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
@@ -38,6 +40,7 @@ namespace CmsWeb
         }
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.IgnoreRoute("Demo/{*pathInfo}");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.aspx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.ashx/{*pathInfo}");

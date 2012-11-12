@@ -1,9 +1,10 @@
-﻿@using UtilityExtensions
+﻿@using CmsData.Registration
+@using UtilityExtensions
 @using CmsData
 @model CmsData.OrganizationMember
 @{ 
     string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId;
-    RegSettings setting = new RegSettings(Model.Organization.RegSetting, DbUtil.Db, Model.OrganizationId);
+    Settings setting = new Settings(Model.Organization.RegSetting, DbUtil.Db, Model.OrganizationId);
 }
 
 <table class="Design2" cellspacing="5">
@@ -35,7 +36,7 @@
         <td>@Html.TextBox("RegisterEmail")</td>
     </tr>
 }
-@if (setting.AskRequest == true)
+@if (setting.AskVisible("AskRequest"))
 { 
     <tr>
         <th align='right'>Request:</th>
@@ -46,7 +47,7 @@
         <th align='right'>Grade:</th>
         <td>@Html.TextBox("Grade", Model.Grade)</td>
     </tr>
-@if (setting.AskTickets == true)
+@if (setting.AskVisible("AskTickets"))
 { 
     <tr>
         <th align='right'>No. Items:</th>
@@ -66,7 +67,7 @@
         <br /><span style="color:Red">@Html.ValidationMessage("AmountPaid")</span></td>
     </tr>
 }
-@if (setting.AskShirtSize == true)
+@if (setting.AskVisible("AskSize"))
 { 
     <tr>
         <th align='right'>ShirtSize:</th>

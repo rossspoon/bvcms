@@ -25,7 +25,13 @@ namespace CmsWeb.Areas.Main.Models.Report
         public bool usephone { get; set; }
 		public int skip = 0;
 
-        const float H = 72f;
+        public bool? sortzip; 
+	    public string sort
+	    {
+			get { return (sortzip ?? false) ? "Zip" : "Name"; }
+	    }
+
+	    const float H = 72f;
         const float W = 197f;
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private Font smfont = FontFactory.GetFont(FontFactory.HELVETICA, 8);
@@ -37,25 +43,24 @@ namespace CmsWeb.Areas.Main.Models.Report
             var ctl = new MailingController { UseTitles = titles == true };
             var Response = context.HttpContext.Response;
 
-            const string STR_Name = "Name";
             IEnumerable<MailingInfo> q = null;
             switch (format)
             {
                 case "Individual":
-                    q = ctl.FetchIndividualList(STR_Name, id.Value);
+                    q = ctl.FetchIndividualList(sort, id.Value);
                     break;
                 case "Family":
                 case "FamilyMembers":
-                    q = ctl.FetchFamilyList(STR_Name, id.Value);
+                    q = ctl.FetchFamilyList(sort, id.Value);
                     break;
                 case "ParentsOf":
-                    q = ctl.FetchParentsOfList(STR_Name, id.Value);
+                    q = ctl.FetchParentsOfList(sort, id.Value);
                     break;
                 case "CouplesEither":
-                    q = ctl.FetchCouplesEitherList(STR_Name, id.Value);
+                    q = ctl.FetchCouplesEitherList(sort, id.Value);
                     break;
                 case "CouplesBoth":
-                    q = ctl.FetchCouplesBothList(STR_Name, id.Value);
+                    q = ctl.FetchCouplesBothList(sort, id.Value);
                     break;
                 default:
                     Response.Write("unknown format");

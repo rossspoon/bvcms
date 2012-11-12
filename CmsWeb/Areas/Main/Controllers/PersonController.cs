@@ -617,7 +617,10 @@ namespace CmsWeb.Areas.Main.Controllers
 							value = dt.ToShortDateString();
 						}
 						else
+						{
+							p.RemoveExtraValue(DbUtil.Db, b[0]);
 							value = "";
+						}
 					}
 					break;
 				case "i":
@@ -807,7 +810,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				PeopleId = id, 
 				FromDate = frdt.Value, 
 				ToDate = todt.Value, 
-				typ = 2,
+				typ = p.PositionInFamilyId == PositionInFamily.PrimaryAdult ? 2 : 1,
 				noaddressok = true,
 				useMinAmt = false,
 			};

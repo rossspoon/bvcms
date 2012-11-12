@@ -35,6 +35,8 @@ namespace CmsData
 		
 		private int? _CurrSet;
 		
+		private string _Sets;
+		
    		
     	
 	#endregion
@@ -70,6 +72,9 @@ namespace CmsData
 		
 		partial void OnCurrSetChanging(int? value);
 		partial void OnCurrSetChanged();
+		
+		partial void OnSetsChanging(string value);
+		partial void OnSetsChanged();
 		
     #endregion
 		public ContributionsRun()
@@ -273,6 +278,28 @@ namespace CmsData
 					this._CurrSet = value;
 					this.SendPropertyChanged("CurrSet");
 					this.OnCurrSetChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Sets", UpdateCheck=UpdateCheck.Never, Storage="_Sets", DbType="varchar(50)")]
+		public string Sets
+		{
+			get { return this._Sets; }
+
+			set
+			{
+				if (this._Sets != value)
+				{
+				
+                    this.OnSetsChanging(value);
+					this.SendPropertyChanging();
+					this._Sets = value;
+					this.SendPropertyChanged("Sets");
+					this.OnSetsChanged();
 				}
 
 			}

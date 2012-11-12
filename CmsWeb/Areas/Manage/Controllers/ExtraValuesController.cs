@@ -39,7 +39,11 @@ namespace CmsWeb.Areas.Manage.Controllers
 		[Authorize(Roles="Admin")]
         public ActionResult DeleteAll(string field, string val)
         {
-        	DbUtil.Db.ExecuteCommand("delete PeopleExtra where field = {0} and StrValue = {1}", field, val);
+			var ev = DbUtil.Db.PeopleExtras.Where(ee => ee.Field == field).First();
+			if (ev.StrValue.HasValue())
+	        	DbUtil.Db.ExecuteCommand("delete PeopleExtra where field = {0} and StrValue = {1}", field, val);
+			else
+	        	DbUtil.Db.ExecuteCommand("delete PeopleExtra where field = {0} and BitValue = {1}", field, val);
             return Content("done");
         }
         public PeopleExtra GetExtraValue(int id, string field)

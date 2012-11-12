@@ -1,6 +1,5 @@
 ﻿$(function() {
     SearchClicked = RefreshList;
-//    $('#SearchPeopleDialog').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
     $('#tabs').tabs();
     $("#tabs > ul > li > a").click(function() {
         var x = $(this).attr("href").substring(1);
@@ -270,12 +269,6 @@ function ActOnPerson(action, peopleid) {
 function ChangeContactPage(page, pager) {
     $.post('/Task/SearchContact/' + page, queryString, function(ret) {
         $('#contacts > tbody').html(ret);
-    });
-    return false;
-}
-function ChangePeoplePage(page, pager) {
-    $.post('/SearchPeople/' + page, queryString, function(ret) {
-        $('#people > tbody').html(ret);
     });
     return false;
 }

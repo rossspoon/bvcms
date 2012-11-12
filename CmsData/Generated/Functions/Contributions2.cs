@@ -32,7 +32,7 @@ namespace CmsData.View
 		
 		private decimal? _PledgeAmount;
 		
-		private int _BundleHeaderId;
+		private int? _BundleHeaderId;
 		
 		private string _ContributionDesc;
 		
@@ -189,8 +189,8 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="BundleHeaderId", Storage="_BundleHeaderId", DbType="int NOT NULL")]
-		public int BundleHeaderId
+		[Column(Name="BundleHeaderId", Storage="_BundleHeaderId", DbType="int")]
+		public int? BundleHeaderId
 		{
 			get
 			{

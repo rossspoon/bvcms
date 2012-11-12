@@ -2,76 +2,70 @@
 @model CmsWeb.Models.OnlineRegPersonModel
     <tr><td colspan="3">Please provide additional<br />information for a new profile</td></tr>
 @if(Model.whatfamily == 3)
-{ 
+{
+    var index = Model.Index();
     <tr>
         <td>@Html.NotRequired()
-            <label for="addr">Home Phone</label> </td>
-        <td>@Html.TextBox(Model.inputname("homephone"), Model.homephone)</td>
+            Home Phone</td>
+        <td>@Html.TextBoxFor(m => m.homephone)</td>
         <td colspan="3"></td>
     </tr>
     <tr>
-        <td>@Html.IsRequired(Model.RequiredAddr())
-            <label for="addr">Address</label> </td>
-        <td>@Html.TextBox3("address", Model.inputname("address"), Model.address)
-            <div>@Html.ValidationMessage(Model.inputname("address"))</div></td>
+        <td>@Html.IsRequired(Model.RequiredAddr()) Address</td>
+        <td>@Html.TextBox3("address", Model.Parent.GetNameFor(m => m.List[index].address), Model.address)
+            <div>@Html.ValidationMessageFor(m => m.address)</div></td>
         <td colspan="3"></td>
     </tr>
     <tr>
-        <td>@Html.NotRequired()
-            <label for="addr">Address2</label> </td>
-        <td>@Html.TextBox3("address2", Model.inputname("address2"), Model.address2)
-            <div>@Html.ValidationMessage(Model.inputname("address2"))</div></td>
+        <td>@Html.NotRequired() Address2 </td>
+        <td>@Html.TextBox3("address2", Model.Parent.GetNameFor(m => m.List[index].address2), Model.address2)
+            <div>@Html.ValidationMessageFor(m => m.address2)</div></td>
         <td colspan="3"></td>
     </tr>
     <tr>
-        <td>@Html.IsRequired(Model.RequiredZip())
-            <label for="city">City</label></td>
-        <td>@Html.TextBox3("city", Model.inputname("city"), Model.city)
-            <div>@Html.ValidationMessage(Model.inputname("city"))</div></td>
+        <td>@Html.IsRequired(Model.RequiredZip()) City</td> 
+        <td>@Html.TextBox3("city", Model.Parent.GetNameFor(m => m.List[index].city), Model.city)
+            <div>@Html.ValidationMessageFor(m => m.city)</div></td>
         <td colspan="3"></td>
     </tr>
     <tr>
-        <td>@Html.IsRequired(Model.RequiredZip())
-            <label for="state">State</label></td>
-        <td>@Html.TextBox3("state", Model.inputname("state"), Model.state)
-            <div>@Html.ValidationMessage(Model.inputname("state"))</div></td>
+        <td>@Html.IsRequired(Model.RequiredZip()) State</td>
+        <td>@Html.TextBox3("state", Model.Parent.GetNameFor(m => m.List[index].state), Model.state)
+            <div>@Html.ValidationMessageFor(m => m.state)</div></td>
         <td colspan="3"></td>
     </tr>
     <tr>
-        <td>@Html.IsRequired(Model.RequiredZip())
-            <label for="zip">Zip</label></td>
-        <td>@Html.TextBox3("zip", Model.inputname("zip"), Model.zip)
-            <div>@Html.ValidationMessage(Model.inputname("zip"))</div></td>
+        <td>@Html.IsRequired(Model.RequiredZip()) Zip</td>
+        <td>@Html.TextBox3("zip", Model.Parent.GetNameFor(m => m.List[index].zip), Model.zip)
+            <div>@Html.ValidationMessageFor(m => m.zip)</div></td>
         <td colspan="3"></td>
     </tr>
     <tr>
-        <td>@Html.IsRequired(Model.RequiredZip())
-            <label for="state">Country</label></td>
-        <td>@Html.DropDownList3("country", Model.inputname("country"), Model.Countries(), Model.country)</td>
+        <td>@Html.IsRequired(Model.RequiredZip()) Country</td>
+        <td>@Html.DropDownList3("country", Model.Parent.GetNameFor(m => m.List[index].country), Model.Countries(), Model.country)</td>
         <td colspan="3"></td>
     </tr>
 } 
 else
 { 
-   @Html.Hidden3(Model.inputname("address"), Model.address)
-   @Html.Hidden3(Model.inputname("city"), Model.city)
-   @Html.Hidden3(Model.inputname("state"), Model.state)
-   @Html.Hidden3(Model.inputname("zip"), Model.zip)
+   @Html.HiddenFor(m => m.address)
+   @Html.HiddenFor(m => m.city)
+   @Html.HiddenFor(m => m.state)
+   @Html.HiddenFor(m => m.zip)
 } 
-   @Html.Hidden3(Model.inputname("whatfamily"), Model.whatfamily)
+   @Html.HiddenFor(m => m.whatfamily)
     <tr>
-        <td>@Html.IsRequired(Model.RequiredGender())
-            <label for="gender">Gender</label></td>
-        <td>@Html.RadioButton(Model.inputname("gender"), "1", Model.gender == 1) Male
-            @Html.RadioButton(Model.inputname("gender"), "2", Model.gender == 2) Female
-            <div>@Html.ValidationMessage(Model.inputname("gender"))</div></td>
+        <td>@Html.IsRequired(Model.RequiredGender()) Gender</td>
+        <td>@Html.RadioButtonFor(m => m.gender, "1") Male
+            @Html.RadioButtonFor(m => m.gender, "2") Female
+            <div>@Html.ValidationMessageFor(m => m.gender)</div></td>
         <td colspan="3"></td>
     </tr>
     <tr>
         <td>@Html.IsRequired(Model.RequiredMarital())
             <label for="married">Marital Status</label></td>
-        <td>@Html.RadioButton(Model.inputname("married"), "10", Model.married == 10) Single
-            @Html.RadioButton(Model.inputname("married"), "20", Model.married == 20) Married
-            <div>@Html.ValidationMessage(Model.inputname("married"))</div></td>
+        <td>@Html.RadioButtonFor(m => m.married, "10") Single
+            @Html.RadioButtonFor(m => m.married, "20") Married
+            <div>@Html.ValidationMessageFor(m => m.married)</div></td>
         <td colspan="3"></td>
     </tr>

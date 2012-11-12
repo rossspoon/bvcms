@@ -26,7 +26,7 @@ namespace CmsWeb.MobileAPI
 					username = cred[0];
 					password = cred[1];
 				}
-				catch (Exception e) { }
+				catch (Exception) { }
 			}
 			else
 			{

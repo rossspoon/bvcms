@@ -17,6 +17,9 @@
     <ConnectionString>
     </ConnectionString>
     <TargetFrameworkProfile />
+    <FileUpgradeFlags>0</FileUpgradeFlags>
+    <UpgradeBackupLocation>D:\Documents\BellevueProject\BellevueHg\Backup\CmsDataSqlClr\</UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

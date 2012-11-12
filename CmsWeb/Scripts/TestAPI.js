@@ -29,4 +29,5 @@
     $("div.section").click(function (ev) {
         $(this).next().toggle();
     });
+    $("div.section").tooltip();
 });

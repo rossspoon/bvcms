@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>CMS Report</title>
-    <link href="/Content/jquery-ui-1.8.23.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/jquery-ui-1.9.1.custom.css" rel="stylesheet" type="text/css" />
     <link href="/Content/pager.css" rel="stylesheet" type="text/css" />
     <link href="/Content/style2.css" rel="stylesheet" type="text/css" />
     <link href="/Content/superfish.css" rel="stylesheet" type="text/css" />

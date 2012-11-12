@@ -88,9 +88,9 @@
 				@t.Name<br />
                 <a href="/Display/ContentEdit/@t.Id">
 				<div bvtemplate class="templateItem" template="@t.Id">
-				@if (t.ThumbID != 0)
+				@if( item.RoleID > 0 ) {
                 {
-					<img alt="portrait" border="0" src="/Image.aspx?id=@t.ThumbID" />
+					@: &nbsp;--&nbsp; Limited to Role: <b>@roleList.Where(r => r.RoleId == item.RoleID).FirstOrDefault().RoleName</b>
                 }
 				</div>
                 </a>

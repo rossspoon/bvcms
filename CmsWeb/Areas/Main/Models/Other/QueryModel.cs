@@ -16,6 +16,7 @@ using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using System.Web.UI.WebControls;
 using System.Transactions;
+using System.Xml.Linq;
 
 namespace CmsWeb.Models
 {
@@ -107,7 +108,6 @@ namespace CmsWeb.Models
         public bool EndDateVisible { get; set; }
         public bool StartDateVisible { get; set; }
         public bool OrganizationVisible { get; set; }
-        public bool ViewVisible { get; set; }
         public bool ScheduleVisible { get; set; }
         public bool CampusVisible { get; set; }
         public bool OrgTypeVisible { get; set; }
@@ -196,7 +196,6 @@ namespace CmsWeb.Models
             QuartersVisible = fieldMap.HasParam("Quarters");
             if (QuartersVisible)
                 QuartersLabel = fieldMap.QuartersTitle;
-            ViewVisible = fieldMap.HasParam("View");
             TagsVisible = fieldMap.HasParam("Tags");
             if (TagsVisible)
             {
@@ -344,8 +343,6 @@ namespace CmsWeb.Models
             c.Program = Program ?? 0;
             c.Division = Division ?? 0;
             c.Organization = Organization ?? 0;
-            if (ViewVisible)
-                Quarters = View;
             if (MinistryVisible)
                 c.Program = Ministry ?? 0;
             c.Schedule = Schedule ?? 0;
@@ -408,8 +405,6 @@ namespace CmsWeb.Models
             Division = c.Division;
             OrganizationData = Organizations(Division).ToList();
             Organization = c.Organization;
-            if (ViewVisible)
-                View = c.Quarters;
             Schedule = c.Schedule;
 			Campus = c.Campus;
 			OrgType = c.OrgType;
@@ -580,10 +575,6 @@ namespace CmsWeb.Models
             list.Insert(0, new SelectListItem { Text = "(None)", Value = "-1" });
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
             return list;
-        }
-        public IEnumerable<SelectListItem> Views()
-        {
-            return CmsWeb.Models.VolunteersModel.Views().ToList();
         }
         public IEnumerable<SelectListItem> OrgTypes()
         {
@@ -779,6 +770,7 @@ namespace CmsWeb.Models
                         Email = p.EmailAddress,
                         BFTeacher = p.BFClass.LeaderName,
                         BFTeacherId = p.BFClass.LeaderId,
+                        Employer = p.EmployerOther,
                         Age = p.Age.ToString(),
                         HasTag = p.Tags.Any(t => t.Tag.Name == TagName && t.Tag.PeopleId == TagOwner && t.Tag.TypeId == TagTypeId),
                     };
@@ -817,6 +809,14 @@ namespace CmsWeb.Models
                     case "Fellowship Leader":
                         q = from p in q
                             orderby p.BFClass.LeaderName,
+                            p.LastName,
+                            p.FirstName,
+                            p.PeopleId
+                            select p;
+                        break;
+                    case "Employer":
+                        q = from p in q
+                            orderby p.EmployerOther,
                             p.LastName,
                             p.FirstName,
                             p.PeopleId
@@ -871,6 +871,14 @@ namespace CmsWeb.Models
                             p.PeopleId descending
                             select p;
                         break;
+                    case "Employer":
+                        q = from p in q
+                            orderby p.EmployerOther descending,
+                            p.LastName descending,
+                            p.FirstName descending,
+                            p.PeopleId descending
+                            select p;
+                        break;
                     case "Communication":
                         q = from p in q
                             orderby p.EmailAddress descending,
@@ -889,6 +897,7 @@ namespace CmsWeb.Models
             return q;
         }
         public Dictionary<string, string> Errors;
+
 
         #region Paging
         public bool ShowResults { get; set; }

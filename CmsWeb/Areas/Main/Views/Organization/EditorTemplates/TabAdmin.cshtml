@@ -1,4 +1,5 @@
-﻿@model CmsData.RegSettings
+﻿@model CmsData.Registration.Settings
+@using CmsData.Registration
 @using CmsWeb
 @using CmsWeb.Models.OrganizationPage
 @using UtilityExtensions
@@ -6,7 +7,6 @@
         |JoinOrganization: for a single organization registration
         |AttendMeeting: NOT WORKING YET
         |UserSelectsOrganization: good for a single registration for multiple orgs (classes)
-        |UserSelectsOrganization (div style): same as above but deprecated
         |ComputeOrganizationByAge: good for recreation leagues. Uses Birthday and Gender
         |ManageSubscriptions: allows to select multiple organizations
         |OnlineGiving: creates contribution records
@@ -83,27 +83,6 @@
         </ul>
         <div class="newitem"><a href="/Organization/NewAgeGroup"><img src="/images/plus1.png" /> Add Item</a></div>
     </li>
-    <li><span class="keyword big tip" title="GradeOptions
-        |This allows you to specify the grade being registered for">
-        GradeOptions:</span> 
-        <ul>
-            <li><span class="keyword2">Label:</span>
-            @Html.TextBox("GradeOptionsLabel", Model.GradeOptionsLabel, new { @class = "long" })
-            <ul id="GradeOptions" class="sort">
-            @foreach(var i in Model.GradeOptions.OrderBy(cc => cc.Id))
-            {
-                @Html.EditorFor(m => i)
-            }
-            </ul>
-            <div class="newitem"><a href="/Organization/NewGradeOption"><img src="/images/plus1.png" /> Add Item</a></div>
-            </li>
-        </ul>
-    </li>
-    <li><span class="keyword big tip" title="Shell
-        |Enter the name of the HTML shell for this registration 
-        |(stored in Special Content)">
-        Shell<text>:</text></span> @Html.TextBox("Shell", Model.Shell)
-    </li>
     <li> <span class="keyword big tip" title="AllowOnlyOne
         |Does not offer the 'Add other Registrations' option">
         AllowOnlyOne:</span> @Html.CheckBox("AllowOnlyOne", Model.AllowOnlyOne)
@@ -111,10 +90,6 @@
     <li> <span class="keyword big tip" title="AllowReRegister
         |Allows a person to be a member of Organization and register again.">
         AllowReRegister:</span> @Html.CheckBox("AllowReRegister", Model.AllowReRegister)
-    </li>
-    <li> <span class="keyword big tip" title="MemberOnly
-        |You must be a member of the church to register">
-        MemberOnly:</span> @Html.CheckBox("MemberOnly", Model.MemberOnly)
     </li>
     <li><span class="keyword big tip" title="GroupToJoin
         |Joins registrant to another organization at the same time">
@@ -131,6 +106,15 @@
     <li> <span class="keyword big">NotReqPhone:</span> @Html.CheckBox("NotReqPhone", Model.NotReqPhone) </li>
     <li> <span class="keyword big">NotReqGender:</span> @Html.CheckBox("NotReqGender", Model.NotReqGender) </li>
     <li> <span class="keyword big">NotReqMarital:</span> @Html.CheckBox("NotReqMarital", Model.NotReqMarital) </li>
+    <li><span class="keyword big tip" title="Shell
+        |Enter the name of the HTML shell for this registration 
+        |(stored in Special Content)">
+        Shell<text>:</text></span> @Html.TextBox("Shell", Model.Shell)
+    </li>
+    <li> <span class="keyword big tip" title="MemberOnly
+        |You must be a member of the church to register">
+        MemberOnly:</span> @Html.CheckBox("MemberOnly", Model.MemberOnly)
+    </li>
 @if (User.IsInRole("Admin"))
 {
 	<li>

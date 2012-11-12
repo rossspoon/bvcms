@@ -46,15 +46,18 @@
 <p>Showing @Model.Showcount of @Model.Count
 </p>
 <div align="right">
-Click a link above to select that person or
-@if (Model.type == "family")
-{ 
+@if(!Model.OnlyOne)
+{
+@:Click a link above to select that person or
+    if (Model.type == "family")
+    { 
     <a href="/SearchAdd/FormAbbreviated/@Model.typeid" class="bt formlink">Add New Person</a>
-}
-else
-{ 
+    }
+    else
+    { 
     <a href="/SearchAdd/SearchFamily/" class="bt formlink">Search for Family</a>
-} 
+    } 
+}
 <a class="bt formlink" href="/SearchAdd/SearchPerson/" title="back to person search">go back</a>
 </div>
 

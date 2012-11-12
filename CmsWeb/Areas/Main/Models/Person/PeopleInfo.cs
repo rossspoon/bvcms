@@ -84,6 +84,7 @@ namespace CmsWeb.Models
             get { return _WorkPhone; }
         }
         public string BFTeacher { get; set; }
+        public string Employer { get; set; }
         public int? BFTeacherId { get; set; }
         public bool HasTag { get; set; }
         

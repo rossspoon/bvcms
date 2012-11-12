@@ -558,6 +558,10 @@ namespace CmsData
         partial void UpdateVolInterestInterestCode(VolInterestInterestCode instance);
         partial void DeleteVolInterestInterestCode(VolInterestInterestCode instance);
         
+        partial void InsertVolRequest(VolRequest instance);
+        partial void UpdateVolRequest(VolRequest instance);
+        partial void DeleteVolRequest(VolRequest instance);
+        
         partial void InsertVolunteer(Volunteer instance);
         partial void UpdateVolunteer(Volunteer instance);
         partial void DeleteVolunteer(Volunteer instance);
@@ -1430,6 +1434,12 @@ namespace CmsData
 
 		}
 
+		public Table< VolRequest> VolRequests
+		{
+			get	{ return this.GetTable< VolRequest>(); }
+
+		}
+
 		public Table< Volunteer> Volunteers
 		{
 			get	{ return this.GetTable< Volunteer>(); }
@@ -1556,6 +1566,12 @@ namespace CmsData
 	    public Table< View.UserList> ViewUserLists
 	    {
 		    get { return this.GetTable< View.UserList>(); }
+
+	    }
+
+	    public Table< View.UserRole> ViewUserRoles
+	    {
+		    get { return this.GetTable< View.UserRole>(); }
 
 	    }
 
@@ -1749,6 +1765,19 @@ namespace CmsData
 			return this.CreateMethodCallQuery< View.FindPerson4>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 PeopleId1
+                );
+		}
+
+		[Function(Name="dbo.FirstTimeGivers", IsComposable = true)]
+		public IQueryable< View.FirstTimeGiver > FirstTimeGivers(
+            [Parameter(DbType="int")] int? days,
+            [Parameter(DbType="int")] int? fundid
+            )
+		{
+			return this.CreateMethodCallQuery< View.FirstTimeGiver>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                days,
+                fundid
                 );
 		}
 

@@ -4,7 +4,7 @@
     $("#clear").click(function (ev) {
         ev.preventDefault();
         $("input:text").val("");
-        $("#ProgramId,#CampusId,#ScheduleId,#OrgType").val(0);
+        $("#ProgramId,#CampusId,#ScheduleId,#TypeId").val(0);
         $("#OnlineReg").val(-1);
         $.post('/OrgSearch/DivisionIds/0', null, function (ret) {
             $('#DivisionId').html(ret);

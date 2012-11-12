@@ -1,3 +1,4 @@
+using System;
 using System.Web.Mvc;
 
 namespace CmsWeb.Areas.Manage
@@ -22,7 +23,6 @@ namespace CmsWeb.Areas.Manage
             AddRoute(context, "OrgMembers");
             AddRoute(context, "Batch");
             AddRoute(context, "Promotion");
-            AddRoute(context, "Volunteers");
             AddRoute(context, "Error", "Account", "Error", "Error");
             context.MapRoute(
                 "Public_Logon",
@@ -34,6 +34,15 @@ namespace CmsWeb.Areas.Manage
                 "Manage/Emails/View/{id}",
                 new { controller = "EmailsView", action = "View", id = "" }
             );
+			context.MapRoute("RequestVolunteers0",
+				 "Manage/Volunteers/Request0/{ticks}/{oid}/{limit}",
+				 new { controller = "Volunteers", action = "Request0", ticks = 0, oid = 0, limit = 0 }
+			 );
+			context.MapRoute("RequestVolunteers",
+				 "Manage/Volunteers/Request/{mid}/{limit}",
+				 new { controller = "Volunteers", action = "Request", mid = 0, limit = 0 }
+			 );
+            AddRoute(context, "Volunteers");
             context.MapRoute(
                 "Manage_default",
                 "Manage/{controller}/{action}/{id}",

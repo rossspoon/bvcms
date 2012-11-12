@@ -210,6 +210,8 @@ namespace CMSPresenter
             {
                 case "Name":
                     return query.OrderBy(mi => mi.LastName);
+                case "Zip":
+                    return query.OrderBy(mi => mi.Zip);
                 //break;
                 default:
                     break;

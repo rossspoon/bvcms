@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Text;
 using CmsWeb.Models.OrganizationPage;
@@ -23,7 +24,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!regsetting.HasValue())
                 regsetting = org.RegSetting;
 
-            ViewData["lines"] = RegSettings.SplitLines(regsetting);
+            ViewData["lines"] = CmsData.Registration.Parser.SplitLines(regsetting);
             ViewData["regsetting"] = regsetting;
             ViewData["OrganizationId"] = id;
             ViewData["orgname"] = org.OrganizationName;
@@ -50,7 +51,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var org = DbUtil.Db.LoadOrganizationById(id);
             try
             {
-                var os = new RegSettings(text, DbUtil.Db, id);
+                var os = new Settings(text, DbUtil.Db, id);
                 org.RegSetting = text;
             }
             catch (Exception ex)

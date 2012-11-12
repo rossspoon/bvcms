@@ -1,4 +1,4 @@
-﻿@model CmsData.RegSettings
+﻿@model CmsData.Registration.Settings
 @using CmsWeb
 @using CmsData
 @using UtilityExtensions
@@ -21,21 +21,6 @@
     |The top most user will be the 'sender' of the confirmation email.">
     Online Notify Persons:</span>
         @Html.Partial("NotifyList2", Model)
-  </li>
-  <li>
-    <div class="text big tip" title="VoteTags
-    |These will let you create votetags (votelinks) 
-    |You can display these from the Organization Management menu.
-    |They will not be displayed on the registration screen 
-    |but are intended to be used in an email.">
-    VoteTags: </div>
-    <ul id=VoteTags" class="sort">
-    @foreach(var i in Model.VoteTags.OrderBy(cc => cc.Id))
-    {
-        @Html.EditorFor(m => i);
-    }
-    </ul>
-    <div class="newitem"><a href="/Organization/NewVoteTag"><img src="/images/plus1.png" /> Add Item</a></div>
   </li>
   <li>
     <span class="keyword big tip" title="Instructions
@@ -110,16 +95,4 @@
         </div>
       </li>
     </ul>
-  </li>
-  <li><span class="keyword big tip" title="Messages for Divsion
-    |Edit Online Reg Messages For Division type Registrations">
-    Messages for Division:</span>
-    <div class="block">
-        <div><a href="/Display/OrgContent/@Model.OrgId?what=message&div=true">
-            Confirmation</a></div>
-        <div><a href="/Display/OrgContent/@Model.OrgId?what=instructions&div=true">
-            Instructions</a></div>
-        <div><a href="/Display/OrgContent/@Model.OrgId?what=terms&div=true">
-            Terms</a></div>
-    </div>
   </li>

@@ -16,6 +16,8 @@ namespace CmsWeb.Areas.Main.Models.Directories
 		public string Email { get; set; }
 		public string Cell { get; set; }
 		public int? Age { get; set; }
+		public int position { get; set; }
+		public string SafeAge { get { return Age.HasValue && Age <= 20 ? "(" + Age + ")" : ""; } }
 	}
 
 	public class FamilyInfo

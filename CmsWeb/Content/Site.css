@@ -407,3 +407,7 @@ border-bottom: #888 1px solid
 .indent {
 padding-left: 10px !important;
 }
+.text-label {
+    color: #cdcdcd;
+    font-weight: bold;
+}

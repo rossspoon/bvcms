@@ -1,0 +1,149 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using UtilityExtensions;
+
+namespace CmsData.Registration
+{
+	public class AskCheckboxes : Ask
+	{
+		public string Label { get; set; }
+		public int? Min { get; set; }
+		public int? Max { get; set; }
+		public List<CheckboxItem> list { get; set; }
+
+		public AskCheckboxes()
+			: base("AskCheckboxes")
+		{
+			list = new List<CheckboxItem>();
+		}
+
+		public override void Output(StringBuilder sb)
+		{
+			if (list.Count == 0)
+				return;
+			Settings.AddValueNoCk(0, sb, "Checkboxes", Label);
+			Settings.AddValueCk(1, sb, "Minimum", Min);
+			Settings.AddValueCk(1, sb, "Maximum", Max);
+			foreach (var i in list)
+				i.Output(sb);
+			sb.AppendLine();
+		}
+		public static AskCheckboxes Parse(Parser parser)
+		{
+			var cb = new AskCheckboxes();
+			cb.Label = parser.GetString("CheckBoxes");
+			cb.Min = parser.GetInt(Parser.RegKeywords.Minimum);
+			cb.Max = parser.GetInt(Parser.RegKeywords.Maximum);
+			cb.list = new List<CheckboxItem>();
+			if (parser.curr.indent == 0)
+				return cb;
+			var startindent = parser.curr.indent;
+			while (parser.curr.indent == startindent)
+			{
+				var m = CheckboxItem.Parse(parser, startindent);
+				cb.list.Add(m);
+			}
+			var q = cb.list.Where(mi => mi.SmallGroup != "nocheckbox").GroupBy(mi => mi.SmallGroup).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+			if (q.Any())
+				throw parser.GetException("Duplicate SmallGroup in Checkboxes: {0}".Fmt(string.Join(",", q)));
+			return cb;
+		}
+		public IEnumerable<CheckboxItem> CheckboxItemsChosen(IEnumerable<string> items)
+		{
+			var q = from i in items
+					join c in list on i equals c.SmallGroup
+					select c;
+			return q;
+		}
+		public bool IsSmallGroupFilled(List<string> smallgroups, string sg)
+		{
+			string desc;
+			return IsSmallGroupFilled(smallgroups, sg, out desc);
+		}
+		public bool IsSmallGroupFilled(IEnumerable<string> smallgroups, string sg, out string desc)
+		{
+			var i = list.SingleOrDefault(dd => string.Compare(dd.SmallGroup, sg, StringComparison.OrdinalIgnoreCase) == 0);
+			desc = null;
+			if (i == null)
+				return false;
+			desc = i.Description;
+			return i.IsSmallGroupFilled(smallgroups);
+		}
+		public class CheckboxItem
+		{
+			public string Name { get; set; }
+			public string Description { get; set; }
+			public string SmallGroup { get; set; }
+			public decimal? Fee { get; set; }
+			public int? Limit { get; set; }
+			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:g}")]
+			public DateTime? MeetingTime { get; set; }
+			public void Output(StringBuilder sb)
+			{
+				Settings.AddValueCk(1, sb, Description);
+				Settings.AddValueCk(2, sb, "SmallGroup", SmallGroup);
+				Settings.AddValueCk(2, sb, "Fee", Fee);
+				Settings.AddValueCk(2, sb, "Limit", Limit);
+				Settings.AddValueCk(2, sb, "Time", MeetingTime.FormatDateTm());
+			}
+			public static CheckboxItem Parse(Parser parser, int startindent)
+			{
+				var i = new CheckboxItem();
+				if (parser.curr.kw != Parser.RegKeywords.None)
+					throw parser.GetException("unexpected line in CheckBoxes");
+				i.Description = parser.GetLine();
+				i.SmallGroup = i.Description;
+				if (parser.curr.indent <= startindent)
+					return i;
+				var ind = parser.curr.indent;
+				while (parser.curr.indent == ind)
+				{
+					switch (parser.curr.kw)
+					{
+						case Parser.RegKeywords.SmallGroup:
+							i.SmallGroup = parser.GetString(i.Description);
+							break;
+						case Parser.RegKeywords.Fee:
+							i.Fee = parser.GetDecimal();
+							break;
+						case Parser.RegKeywords.Limit:
+							i.Limit = parser.GetNullInt();
+							break;
+						case Parser.RegKeywords.Time:
+							i.MeetingTime = parser.GetDateTime();
+							break;
+						default:
+							throw parser.GetException("unexpected line in CheckboxItem");
+					}
+				}
+				return i;
+			}
+			public void AddToSmallGroup(CMSDataContext Db, OrganizationMember om, PythonEvents pe)
+			{
+				if (om == null)
+					return;
+				if (pe != null)
+				{
+					pe.instance.AddToSmallGroup(SmallGroup, om);
+					om.Person.LogChanges(Db, om.PeopleId);
+				}
+				om.AddToGroup(Db, SmallGroup);
+				if (MeetingTime.HasValue)
+					Attend.MarkRegistered(Db, om.OrganizationId, om.PeopleId, MeetingTime.Value, 1);
+			}
+			public void RemoveFromSmallGroup(CMSDataContext Db, OrganizationMember om)
+			{
+				om.RemoveFromGroup(Db, SmallGroup);
+			}
+			public bool IsSmallGroupFilled(IEnumerable<string> smallgroups)
+			{
+				if (!(Limit > 0)) return false;
+				var cnt = smallgroups.Count(mm => mm == SmallGroup);
+				return cnt >= Limit;
+			}
+		}
+	}
+}
