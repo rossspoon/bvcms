@@ -19,8 +19,6 @@ namespace CmsData
         public static readonly string[] STATUSES = { "Error", "Not Submitted", "Submitted", "Complete" };
         public static readonly string[] TYPES = { "Combo", "MVR" };
 
-        public static bool bTestMode = true;
-
         public static void create( int iPeopleID, string sServiceCode )
         {
             BackgroundCheck bcNew = new BackgroundCheck();
@@ -64,6 +62,7 @@ namespace CmsData
             sb.sSSN = sSSN;
             sb.sServiceCode = bc.ServiceCode;
             sb.sResponseURL = sResponseURL;
+            sb.bTestMode = (DbUtil.Db.Setting("PMMTestMode", "true") == "true");
 
             // Get State (if MVR)
             if (bc.ServiceCode == "MVR" && iStateID > 0)
@@ -154,7 +153,7 @@ namespace CmsData
             xwWriter.WriteElementString("Password", sb.sPassword);
             xwWriter.WriteFullEndElement();
 
-            if( bTestMode ) xwWriter.WriteElementString("TestMode", "YES");
+            if( sb.bTestMode ) xwWriter.WriteElementString("TestMode", "YES");
 
             // Return URL (Inside OrderXML)
             xwWriter.WriteElementString("ReturnResultURL", sb.sResponseURL);
@@ -241,11 +240,11 @@ namespace CmsData
 
             XDocument xd = XDocument.Parse(sResponse, LoadOptions.None);
 
-            if (xd.Root.Element("Status").Value == "ERROR")
+            if (xd.Root.Element("Status").Value == "FAILED")
             {
                 sReturn.bHasErrors = true;
 
-                var errors = xd.Root.Elements("Message");
+                var errors = xd.Root.Element("Errors").Elements("Message");
 
                 foreach (var item in errors)
                 {
@@ -271,6 +270,8 @@ namespace CmsData
     public class SubmitBundle
     {
         // Internal
+        public bool bTestMode = true;
+
         public string sUser;
         public string sPassword;
         public string sServiceCode;

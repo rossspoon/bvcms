@@ -53,9 +53,11 @@ namespace CmsWeb.Areas.Public.Controllers
                 if (bHasAlerts) check.IssueCount = 1;
 
                 DbUtil.Db.SubmitChanges();
+
+                DbUtil.Db.Email(DbUtil.AdminMail, check.User, "BVCMS Notification: Background Check Complete", "A scheduled background check has been completed for " + check.Person.Name);
             }
 
-            System.IO.File.WriteAllText(@"C:\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".txt", req);
+            //System.IO.File.WriteAllText(@"C:\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".txt", req);
 
             return Content("<?xml version=\"1.0\" encoding=\"utf-8\"?><OrderXML><Success>TRUE</Success></OrderXML>");
         }
