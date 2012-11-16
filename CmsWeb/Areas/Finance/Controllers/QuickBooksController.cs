@@ -11,13 +11,14 @@ using CmsWeb.Models;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
 using CmsData;
+using UtilityExtensions;
 
 namespace CmsWeb.Areas.Finance.Controllers
 {
 	[Authorize(Roles = "Finance")]
 	public class QuickBooksController : Controller
 	{
-		public static IToken requestToken;
+		public static Dictionary<string,IToken> requestTokens = new Dictionary<string,IToken>();
 
 		public ActionResult Index()
 		{
@@ -26,14 +27,14 @@ namespace CmsWeb.Areas.Finance.Controllers
 
 		public ActionResult RequestOAuthToken()
 		{
-			requestToken = QuickBooksModel.getOAuthSession().GetRequestToken();
+			IToken newToken = QuickBooksModel.getOAuthSession().GetRequestToken();
 
 			DbUtil.Db.ExecuteCommand( "UPDATE dbo.QBConnections SET Active = 0" );
 
 			QBConnection qbc = new QBConnection();
 			qbc.Creation = DateTime.Now;
 			qbc.DataSource = "QBO";
-			qbc.Token = requestToken.Token;
+            qbc.Token = newToken.Token;
 			qbc.UserID = 149;
 			qbc.Active = 1;
 			qbc.Secret = "";
@@ -43,14 +44,22 @@ namespace CmsWeb.Areas.Finance.Controllers
 			DbUtil.Db.SubmitChanges();
 
 			// generate a user authorize url for this token (which you can use in a redirect from the current site)
-			string authorizationLink = QuickBooksModel.getOAuthSession().GetUserAuthorizationUrlForToken(requestToken, QuickBooksModel.getCallback());
+            string authorizationLink = QuickBooksModel.getOAuthSession().GetUserAuthorizationUrlForToken(newToken, QuickBooksModel.getCallback());
+
+            string sKey = Util.CmsHost2 + "-" + Util.UserId;
+
+            requestTokens[sKey] = newToken;
 
 			return Redirect( authorizationLink );
 		}
 
 		public ActionResult RequestAccessToken()
 		{
-			IToken accessToken = QuickBooksModel.getOAuthSession().ExchangeRequestTokenForAccessToken(requestToken, Request["oauth_verifier"]);
+            string sKey = Util.CmsHost2 + "-" + Util.UserId;
+
+            IToken currentToken = requestTokens[sKey];
+
+            IToken accessToken = QuickBooksModel.getOAuthSession().ExchangeRequestTokenForAccessToken(currentToken, Request["oauth_verifier"]);
 
 			QBConnection qbc = (from i in DbUtil.Db.QBConnections
 									  where i.Active == 1
