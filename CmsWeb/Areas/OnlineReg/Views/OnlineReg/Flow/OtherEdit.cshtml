@@ -157,20 +157,10 @@
             break;
         case "AskSuggestedFee":
         <tr>
-            <td>Suggested Fee</td>
+            <td>@Util.PickFirst(((AskSuggestedFee)ask).Label, "Suggested Fee")</td>
             <td>@Html.TextBoxFor(m => m.Suggestedfee, new { @class = "short" })
                 <div>@Html.ValidationMessageFor(m => m.Suggestedfee)</div></td>
         </tr>
-            break;
-        case "AskDropdown":
-            var dd = ((AskDropdown) ask);
-            var ddname = Html.NameFor(m => m.option);
-			<tr>
-				<td><div class="wraparound">@(dd.Label)</div></td>
-				<td>@Html.DropDownList4("", ddname, Model.DropdownList(ask), Model.option[dd.UniqueId])
-					<div>@Html.ValidationMessageFor(m => m.option[dd.UniqueId])</div>
-				</td>
-			</tr>
             break;
         case "AskExtraQuestions":
         var eqname = Html.NameFor(m => m.ExtraQuestion);
@@ -201,10 +191,19 @@
 			</tr>
         }
             break;
+        case "AskDropdown":
+            var dd = ((AskDropdown) ask);
+            var ddname = Html.NameFor(m => m.option);
+			<tr>
+				<td><div class="wraparound">@(dd.Label)</div></td>
+				<td>@Html.DropDownList4("", ddname, Model.DropdownList(ask), Model.option[dd.UniqueId])
+					<div>@Html.ValidationMessageFor(m => m.option[dd.UniqueId])</div>
+				</td>
+			</tr>
+            break;
         case "AskCheckboxes":
             var cb = ((AskCheckboxes)ask);
-			var acbname = Html.NameFor(m => m.Checkbox);
-        <tr>
+            <tr>
             <td valign="top"><div class="wraparound">@cb.Label</div></td>
             <td style="padding: 3px">
 				<table>
@@ -219,7 +218,7 @@
 						{
 							var filled = a.IsSmallGroupFilled(Model.GroupTags);
 							<tr><td valign="top">
-									<input type="checkbox" value="@a.SmallGroup" name="@(acbname)" @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") />
+									<input type="checkbox" value="@a.SmallGroup" name="@Html.NameFor(m => m.Checkbox)" @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") />
 								</td>
 								<td>
 									<span@(filled ? " class=strike" : "")>@Html.Raw(a.Description)</span>
@@ -232,7 +231,7 @@
 						}
 					}
 				</table>
-					<div>@Html.ValidationMessage(acbname)</div>
+					<div>@Html.ValidationMessageFor(m => m.Checkbox[ask.UniqueId])</div>
             </td>
         </tr>
             break;

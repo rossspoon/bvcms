@@ -26,16 +26,16 @@
         @Html.Partial("Flow/OtherHidden", p, viewdata)
     if(Model.List.Count > 1)
     {
-            <input type="radio" name="m.donor" value="@i" /> @(p.first + " " + p.last + " " + p.suffix) @:(@p.age)<br />
+            <input type="radio" name="donor" value="@i" /> @(p.first + " " + p.last + " " + p.suffix) @:(@p.age)<br />
     }
     else if(Model.List.Count == 1)
     {
-            <input type="hidden" name="m.donor" value="0" />
+            <input type="hidden" name="donor" value="0" />
     }
 }
 <hr />
 <blockquote>
-Donation Amount: <input type="text" name="m.donation" value="@Model.donation" />
+Donation Amount: <input type="text" name="donation" value="@Model.donation" />
 <input id="submitit" type="submit" class="submitbutton" value='Continue Transaction' />
 <div>@Html.ValidationMessage("donation")</div>
 </blockquote>

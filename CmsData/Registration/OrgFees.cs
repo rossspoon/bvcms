@@ -41,6 +41,7 @@ namespace CmsData.Registration
 		{
 			public int OrgId { get; set; }
 			public decimal? Fee { get; set; }
+            public string Name { get; set; }
 			public void Output(StringBuilder sb)
 			{
 				Settings.AddValueCk(1, sb, "{0}".Fmt(OrgId));

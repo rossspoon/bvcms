@@ -214,6 +214,8 @@ namespace CmsWeb.Models
         }
         private void AfterSettingConstructor()
         {
+            if (_setting == null)
+                return;
             var ndd = setting.AskItems.Count(aa => aa.Type == "AskDropdown");
             if (ndd > 0 && option == null)
                 option = new string[ndd].ToList();

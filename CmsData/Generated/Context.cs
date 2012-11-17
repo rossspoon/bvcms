@@ -54,6 +54,14 @@ namespace CmsData
         partial void UpdateAuditValue(AuditValue instance);
         partial void DeleteAuditValue(AuditValue instance);
         
+        partial void InsertBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
+        partial void UpdateBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
+        partial void DeleteBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
+        
+        partial void InsertBackgroundCheck(BackgroundCheck instance);
+        partial void UpdateBackgroundCheck(BackgroundCheck instance);
+        partial void DeleteBackgroundCheck(BackgroundCheck instance);
+        
         partial void InsertBaptismStatus(BaptismStatus instance);
         partial void UpdateBaptismStatus(BaptismStatus instance);
         partial void DeleteBaptismStatus(BaptismStatus instance);
@@ -675,6 +683,18 @@ namespace CmsData
 		public Table< AuditValue> AuditValues
 		{
 			get	{ return this.GetTable< AuditValue>(); }
+
+		}
+
+		public Table< BackgroundCheckMVRCode> BackgroundCheckMVRCodes
+		{
+			get	{ return this.GetTable< BackgroundCheckMVRCode>(); }
+
+		}
+
+		public Table< BackgroundCheck> BackgroundChecks
+		{
+			get	{ return this.GetTable< BackgroundCheck>(); }
 
 		}
 

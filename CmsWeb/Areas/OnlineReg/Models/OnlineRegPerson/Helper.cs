@@ -25,7 +25,6 @@ namespace CmsWeb.Models
 				if (_settings == null)
 				{
 					_settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, Settings>;
-					AfterSettingConstructor();
 				}
 				return _settings;
 			}
@@ -44,6 +43,7 @@ namespace CmsWeb.Models
 					if (settings == null)
 						throw new Exception("settings are null");
 					_setting = settings[org.OrganizationId];
+					AfterSettingConstructor();
 				}
 				return _setting;
 			}

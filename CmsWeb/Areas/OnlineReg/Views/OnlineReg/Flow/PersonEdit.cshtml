@@ -182,7 +182,8 @@ else
             // assume this is going to a new family if not logged in and on first registrant 
             else
             { 
-            @Html.HiddenFor(m => m.whatfamily, "3")
+                Model.whatfamily = 3;
+                @Html.HiddenFor(m => m.whatfamily)
             }
 			@* allow adding to previous registrant's family if we are not on the first registrant *@
             @if (index > 0)

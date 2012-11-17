@@ -88,9 +88,9 @@
 				@t.Name<br />
                 <a href="/Display/ContentEdit/@t.Id">
 				<div bvtemplate class="templateItem" template="@t.Id">
-				@if( item.RoleID > 0 ) {
+				@if( t.RoleID > 0 ) 
                 {
-					@: &nbsp;--&nbsp; Limited to Role: <b>@roleList.Where(r => r.RoleId == item.RoleID).FirstOrDefault().RoleName</b>
+					@: &nbsp;--&nbsp; Limited to Role: <b>@roleList.Where(r => r.RoleId == t.RoleID).FirstOrDefault().RoleName</b>
                 }
 				</div>
                 </a>

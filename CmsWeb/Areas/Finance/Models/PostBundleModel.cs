@@ -172,18 +172,30 @@ namespace CmsWeb.Models
 				return new { error = "not found" };
 			return o;
 		}
-		public static string Names(string q, int limit)
+        public class NamesInfo
+        {
+            public string Name { get; set; }
+            public string Addr { get; set; }
+            public int Pid { get; set; }
+        }
+		public static IEnumerable<NamesInfo> Names(string q, int limit)
 		{
-			var qu = from p in DbUtil.Db.People
-					 where p.Name2.StartsWith(q)
-					 orderby p.Name2
-					 select p.Name2
-					 + (p.DeceasedDate.HasValue ? " [DECEASED]" : "")
-					 + "|" + p.PeopleId
-					 + "|" + (p.Age ?? 0)
-					 + "|" + (p.PrimaryAddress ?? "");
-			var ret = string.Join("\n", qu.Take(limit).ToArray());
-			return ret;
+		    var qu = from p in DbUtil.Db.People
+		             where p.Name2.StartsWith(q)
+		             orderby p.Name2
+		             select new NamesInfo()
+		                        {
+                                    Pid = p.PeopleId,
+		                            Name = p.Name2 + (p.DeceasedDate.HasValue ? " [DECEASED]" : ""),
+                                    Addr = p.PrimaryAddress ?? ""
+		                        };
+//					 + (p.DeceasedDate.HasValue ? " [DECEASED]" : "")
+//					 + "|" + p.PeopleId
+//					 + "|" + (p.Age ?? 0)
+                     //+ "|" + (p.PrimaryAddress ?? "");
+		    return qu.Take(limit);
+//			var ret = string.Join("\n", qu.Take(limit).ToArray());
+//			return ret;
 		}
 
 		public object ContributionRowData(PostBundleController ctl, int cid, decimal? othersplitamt = null)

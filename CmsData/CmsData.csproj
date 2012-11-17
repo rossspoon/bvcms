@@ -271,6 +271,8 @@
     <Compile Include="APIPerson.cs" />
     <Compile Include="APIContribution.cs" />
     <Compile Include="FamilyExtra.cs" />
+    <Compile Include="Generated\BackgroundCheck.cs" />
+    <Compile Include="Generated\BackgroundCheckMVRCode.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
     <Compile Include="Generated\Views\UserRole.cs" />

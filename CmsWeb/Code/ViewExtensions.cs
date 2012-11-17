@@ -149,6 +149,7 @@ namespace CmsWeb
 		}
 		public static bool IsDebug(this HtmlHelper helper)
 		{
+		    //return true;
 			return Util.IsDebug();
 		}
 		public static HtmlString Script(this HtmlHelper helper, string script, bool? debug = false)
@@ -241,8 +242,8 @@ namespace CmsWeb
 				ot.MergeAttribute("value", o.Value);
 				if (value == o.Value)
 					ot.MergeAttribute("selected", "selected");
-				if (o.Filled)
-					ot.MergeAttribute("disabled", "disabled");
+//				if (o.Filled)
+//					ot.MergeAttribute("disabled", "disabled");
 				ot.SetInnerText(o.Text);
 				sb.Append(ot.ToString());
 			}

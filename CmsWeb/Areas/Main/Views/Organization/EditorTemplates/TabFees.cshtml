@@ -50,13 +50,15 @@
     |Note that this fee overrides all other fees 
     |and will not appear until the payment page.">
     OrgFees:</div>
-    <ul id="OrgFees" class="sort">
-    @foreach(var i in Model.orgFees.list)
-    {
-        @Html.EditorFor(m => i)
-    }
-    </ul>
-    <div class="newitem"><a href="/Organization/NewOrgFee"><img src="/images/plus1.png" /> Add Item</a></div>
+      <ul id="OrgFees" class="sort">
+	      @{ var listname = Html.NameFor(m => m.OrgFees.list); }
+          @foreach(var item in Model.OrgFees.list)
+          {
+              item.Name = listname; 
+              @Html.EditorFor(m => item)
+          }
+      </ul>
+    <div class="newitem"><a href="/Organization/NewOrgFee/@listname"><img src="/images/plus1.png" /> Add Item</a></div>
   </li>
   <li><span class="keyword big tip" title="ExtraValueFeeName
     |The fee will be taken from this Extra Value field">

@@ -39,10 +39,10 @@ namespace CmsWeb.Models
 					amt = q.First();
 			}
 			decimal? orgfee = null;
-			if (setting.orgFees.HasValue)
+			if (setting.OrgFees.HasValue)
 			// fee based on being in an organization
 			{
-				var q = (from o in setting.orgFees.list
+				var q = (from o in setting.OrgFees.list
 						 where person != null
 							   && person.OrganizationMembers.Any(om => om.OrganizationId == o.OrgId)
 						 orderby o.Fee
@@ -76,7 +76,7 @@ namespace CmsWeb.Models
 				        break;
 					case "AskCheckboxes":
 						if (((AskCheckboxes)ask).list.Any(vv => vv.Fee > 0))
-							amt += ((AskCheckboxes)ask).CheckboxItemsChosen(GroupTags).Sum(c => c.Fee ?? 0);
+							amt += ((AskCheckboxes)ask).CheckboxItemsChosen(Checkbox).Sum(c => c.Fee ?? 0);
 						break;
 				}
 			if (org.LastDayBeforeExtra.HasValue && setting.ExtraFee.HasValue)

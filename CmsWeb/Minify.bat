@@ -32,7 +32,6 @@ Scripts/RegSetting.js ^
 -o Min/Content/js/combined-org.js -clobber:true || pause
 
 ajaxmin ^
-Content/js/jquery.pagination.js ^
 Content/js/jquery.multiselect.js ^
 Scripts/Person.js ^
 -o Min/Content/js/combined-person.js -clobber:true || pause

@@ -144,7 +144,7 @@ pre {
 </div>
 <div class="floatclear"></div>
 
-    <div id="main-tab" class="ui-tabs">
+    <div id="main-tab" style="display:none">
         <ul class="ui-tabs-nav">
             <li><a href="#basic-tab"><span>Basic</span></a></li>
             <li><a href="#address-tab"><span>Addresses</span></a></li>
@@ -160,29 +160,29 @@ pre {
 }
 
         </ul>
-        <div id="basic-tab" class="ui-tabs-panel ui-tabs-hide">
+        <div id="basic-tab">
             <form id="basic" class="DisplayEdit" action="">
              @Html.Partial("BasicDisplay", p.basic) 
             </form>
         </div>
-        <div id="address-tab" class="ui-tabs-hide ui-tabs-panel">
+        <div id="address-tab">
             <ul class="ui-tabs-nav">
                 <li><a href="#PersonalAddr"><span>Personal</span></a></li>
                 <li><a href="#FamilyAddr"><span>Family</span></a></li>
             </ul>
-            <div id="PersonalAddr" class="ui-tabs-hide ui-tabs-panel">
+            <div id="PersonalAddr">
                 <form id="addrp" class="DisplayEdit" action="">
                  @Html.Partial("AddressDisplay", p.PersonalAddr) 
                 </form>
             </div>
-            <div id="FamilyAddr" class="ui-tabs-hide ui-tabs-panel">
+            <div id="FamilyAddr">
                 <form id="addrf" class="DisplayEdit" action="">
                  @Html.Partial("AddressDisplay", p.FamilyAddr) 
                 </form>
             </div>
             @Html.Hidden("addrtab")
         </div>
-        <div id="enrollment-tab" class="ui-tabs-hide ui-tabs-panel">
+        <div id="enrollment-tab">
             <ul class="ui-tabs-nav">
                 <li><a href="#current-tab"><span>Current</span></a></li>
                 <li><a id="previous-link" href="#previous-tab"><span>Previous</span></a></li>
@@ -190,28 +190,28 @@ pre {
                 <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
                 <li><a id="recreg-link" href="#recreg-tab"><span>Registration</span></a></li>
             </ul>
-            <div id="current-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="current-tab">
                 <form action="/Person/EnrollGrid/@p.PeopleId">
                 </form>
             </div>
-            <div id="previous-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="previous-tab">
                 <form action="/Person/PrevEnrollGrid/@p.PeopleId">
                 </form>
             </div>
-            <div id="pending-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="pending-tab">
                 <form action="/Person/PendingEnrollGrid/@p.PeopleId">
                 </form>
             </div>
-            <div id="attendance-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="attendance-tab">
                 <form action="/Person/AttendanceGrid/@p.PeopleId">
                 </form>
             </div>
-            <div id="recreg-tab" class="ui-tabs-panel ui-tabs-hide">
+            <div id="recreg-tab">
                 <form class="DisplayEdit" action="/Person/RecRegDisplay/@p.PeopleId">
                 </form>
             </div>
         </div>
-        <div id="member-tab" class="ui-tabs-hide ui-tabs-panel">
+        <div id="member-tab">
             <ul class="ui-tabs-nav">
                 <li><a href="#membersum-tab"><span>Summary</span></a></li>
             @if (isaccess)
@@ -221,22 +221,22 @@ pre {
                 <li><a href="#querybits-tab"><span>QueryBits</span></a></li>
             }
             </ul>
-            <div id="membersum-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="membersum-tab">
                 <form id="memberdisplay" class="DisplayEdit" action="/Person/MemberDisplay/@p.PeopleId">
                 </form>
             </div>
-            <div id="membernotes-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="membernotes-tab">
                 <form class="DisplayEdit" action="">
                  @Html.Partial("MemberNotesDisplay", p.membernotes) 
                 </form>
             </div>
-            <div id="extras-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="extras-tab">
                 <form action="/Person/ExtrasGrid/@p.PeopleId">
                 </form>
             </div>
         @if (isaccess)
         {
-            <div id="querybits-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="querybits-tab">
                 @foreach (var b in p.member.QueryBits())
                 {
                     @b[0] @:- @b[1]<br/>
@@ -246,27 +246,27 @@ pre {
         </div>
 @if (isaccess)
 { 
-        <div id="growth-tab" class="ui-tabs-hide ui-tabs-panel">
+        <div id="growth-tab">
             <ul class="ui-tabs-nav">
                 <li><a href="#entry-tab"><span>Entry</span></a></li>
                 <li><a id="contacts-link" href="#contacts-tab"><span>Contacts</span></a></li>
                 <li><a href="#comments-tab"><span>Comments</span></a></li>
                 <li><a id="volunteer-link" href="#volunteer-tab"><span>Volunteer</span></a></li>
             </ul>
-            <div id="entry-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="entry-tab">
                 <form class="DisplayEdit" action="">
                  @Html.Partial("GrowthDisplay", p.growth) 
                 </form>
             </div>
-            <div id="contacts-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="contacts-tab">
                  @Html.Partial("ContactsDisplay", p.PeopleId) 
             </div>
-            <div id="comments-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="comments-tab">
                 <form class="DisplayEdit" action="">
                  @Html.Partial("CommentsDisplay") 
                 </form>
             </div>
-            <div id="volunteer-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="volunteer-tab">
                 <form action="/Person/VolunteerDisplay/@p.PeopleId">
                 </form>
             </div>
@@ -274,26 +274,26 @@ pre {
 }
 @if (isedit || isadmin)
 { 
-        <div id="system-tab" class="ui-tabs-hide ui-tabs-panel">
+        <div id="system-tab">
             <ul class="ui-tabs-nav">
                 <li><a id="user-link" href="#user-tab"><span>User</span></a></li>
                 <li><a id="changes-link" href="#changes-tab"><span>Changes</span></a></li>
                 <li><a id="duplicates-link" href="#duplicates-tab"><span>Duplicates</span></a></li>
                 <li><a id="optouts-link" href="#optouts-tab"><span>Email Optouts</span></a></li>
             </ul>
-            <div id="user-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="user-tab">
                 <form action="/Person/UserInfoGrid/@p.PeopleId">
                 </form>
             </div>
-            <div id="changes-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="changes-tab">
                 <form action="/Person/ChangesGrid/@p.PeopleId">
                 </form>
             </div>
-            <div id="duplicates-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="duplicates-tab">
                 <form action="/Person/DuplicatesGrid/@p.PeopleId">
                 </form>
             </div>
-            <div id="optouts-tab" class="ui-tabs-hide ui-tabs-panel">
+            <div id="optouts-tab">
                 <form action="/Person/OptoutsGrid/@p.PeopleId">
                 </form>
             </div>

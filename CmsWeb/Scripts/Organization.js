@@ -9,7 +9,8 @@
 };
 $(function () {
     $("#Settings-tab").tabs();
-    $("#main-tab").tabs().show();
+    $("#main-tab").tabs();
+    $("#main-tab").show();
     $('#deleteorg').click(function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
@@ -205,16 +206,18 @@ $(function () {
             //beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
         });
         $("ul.edit .timepicker", f).timepicker({
-            ampm: true,
             stepHour: 1,
             stepMinute: 5,
-            timeOnly: true
+            timeOnly: true,
+            timeFormat: "hh:mm tt",
+            controlType: "slider"
         });
         $("ul.edit .datetimepicker", f).datetimepicker({
-            ampm: true,
             stepHour: 1,
             stepMinute: 15,
-            timeOnly: false
+            timeOnly: false,
+            timeFormat: "hh:mm tt",
+            controlType: "slider"
         });
     };
     $.showHideRegTypes = function (f) {
@@ -238,10 +241,6 @@ $(function () {
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function (ret) {
             $(f).html(ret).ready(function () {
-                var acopts = {
-                    minChars: 3,
-                    matchContains: 1
-                };
                 $.initDatePicker(f);
                 $(".submitbutton,.bt", f).button();
                 $(".roundbox select", f).css("width", "100%");
@@ -250,9 +249,17 @@ $(function () {
                 $.regsettingeditclick(f);
                 $.showHideRegTypes();
                 $.updateQuestionList();
-                $('#AddQuestion').click(function (ev) {
+                $("#selectquestions").dialog({
+                    title: "Add Question",
+                    autoOpen: false,
+                    width: 585,
+                    height: 190,
+                    modal: true
+                });
+                $('a.AddQuestion').click(function (ev) {
+                    var d = $('#selectquestions');
+                    d.dialog("open");
                     ev.preventDefault();
-                    $("#selectquestions").toggle();
                     return false;
                 });
                 $(".helptip").tooltip({ showBody: "|" });
@@ -264,7 +271,7 @@ $(function () {
     $('#selectquestions a').live("click", function (ev) {
         ev.preventDefault();
         $.post('/Organization/NewAsk/', { id: 'AskItems', type: $(this).attr("type") }, function (ret) {
-            $('#selectquestions').hide();
+            $('#selectquestions').dialog("close");
             $('html, body').animate({ scrollTop: $("body").height() }, 800);
             var newli = $("#QuestionList").append(ret);
             $("#QuestionList > li:last").effect("highlight", { }, 3000);
@@ -405,8 +412,7 @@ $(function () {
             });
         });
     });
-    $("a." +
-        "deleteschedule").live("click", function (ev) {
+    $("a.deleteschedule").live("click", function (ev) {
         ev.preventDefault();
         $(this).parent().remove();
         $.renumberListItems();

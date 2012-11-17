@@ -24,7 +24,7 @@ namespace CmsWeb.Models
 		{
 			OrgId = orgId;
 			PeopleId = peopleId;
-			dtlock = DateTime.Now.AddDays(Regsettings.timeSlots.TimeSlotLockDays ?? 0);
+			dtlock = DateTime.Now.AddDays(Regsettings.TimeSlots.TimeSlotLockDays ?? 0);
 			IsLeader = leader;
 			SendEmail = leader == false;
 		}
@@ -144,7 +144,7 @@ namespace CmsWeb.Models
 			{
 				var dt = sunday;
 				{
-					var q = from ts in Regsettings.timeSlots.list
+					var q = from ts in Regsettings.TimeSlots.list
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
 							let meeting = meetings.SingleOrDefault(cc => cc.MeetingDate == time)

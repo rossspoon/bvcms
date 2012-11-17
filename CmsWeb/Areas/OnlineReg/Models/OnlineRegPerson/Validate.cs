@@ -60,18 +60,24 @@ namespace CmsWeb.Models
 		public void ValidateModelForFind(ModelStateDictionary ModelState, OnlineRegModel m)
 		{
 			var i = Index();
-			var dobname = Parent.GetNameFor(mm => mm.List[i].dob);
-			var foundname = Parent.GetNameFor(mm => mm.List[i].Found);
 			IsValidForContinue = true; // true till proven false
-			if (!this.PeopleId.HasValue)
-				ValidBasic(ModelState);
 			if (UserSelectsOrganization())
 				if ((classid ?? 0) == 0)
-					if (IsFamily)
-						ModelState.AddModelError("classid", "please choose a group/event");
-					else
-						ModelState.AddModelError("classid", "please choose a group/event");
-			if (ComputesOrganizationByAge() && !birthday.HasValue)
+				{
+			        var nameclassid = Parent.GetNameFor(mm => mm.List[i].classid);
+				    const string pleaseChooseAGroupEvent = "please choose a group/event";
+				    if (IsFamily)
+				        ModelState.AddModelError(nameclassid, pleaseChooseAGroupEvent);
+				    else
+				        ModelState.AddModelError(nameclassid, pleaseChooseAGroupEvent);
+        			IsValidForExisting = ModelState.IsValid;
+				    return;
+				}
+			var dobname = Parent.GetNameFor(mm => mm.List[i].dob);
+			var foundname = Parent.GetNameFor(mm => mm.List[i].Found);
+			if (!PeopleId.HasValue)
+				ValidBasic(ModelState);
+		    if (ComputesOrganizationByAge() && !birthday.HasValue)
 				ModelState.AddModelError(dobname, "birthday required");
 			if (orgid == Util.CreateAccountCode && age < 16)
 				ModelState.AddModelError(dobname, "must be 16 to create account");
@@ -301,7 +307,7 @@ Please search with a different email, phone, or birthday.";
 						if (!insurance.HasValue())
 							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].insurance), "insurance carrier required");
 						if (!policy.HasValue())
-							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].policy), "insurnace policy # required");
+							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].policy), "insurance policy # required");
 						break;
 					case "AskDoctor":
 						if (!doctor.HasValue())
@@ -329,10 +335,11 @@ Please search with a different email, phone, or birthday.";
 						break;
 					case "AskDropdown":
 						string desc;
-						if (((AskDropdown)ask).SmallGroupChoice(option) == null)
-							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].option[ask.UniqueId]), "please select an option");
+				        string namedd = Parent.GetNameFor(mm => mm.List[i].option[ask.UniqueId]);
+				        if (((AskDropdown)ask).SmallGroupChoice(option) == null)
+							modelState.AddModelError(namedd, "please select an option");
 						else if (((AskDropdown)ask).IsSmallGroupFilled(GroupTags, option, out desc))
-							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].option[ask.UniqueId]), "limit reached for " + desc);
+							modelState.AddModelError(namedd, "limit reached for " + desc);
 						break;
 					case "AskParents":
 						if (!mname.HasValue() && !fname.HasValue())
@@ -372,11 +379,12 @@ Please search with a different email, phone, or birthday.";
 						}
 						break;
 					case "AskCheckboxes":
+				        string namecb = Parent.GetNameFor(mm => mm.List[i].Checkbox[ask.UniqueId]);
 				        var cb = ((AskCheckboxes) ask);
 						if (cb.Max > 0 && cb.CheckboxItemsChosen(Checkbox).Count() > cb.Max)
-							modelState.AddModelError("checkboxes", "Max of {0} exceded".Fmt(cb.Max));
+							modelState.AddModelError(namecb, "Max of {0} exceded".Fmt(cb.Max));
 						else if (cb.Min > 0 && (Checkbox == null || Checkbox.Count < cb.Min))
-							modelState.AddModelError("checkboxes", "Min of {0} required".Fmt(cb.Min));
+							modelState.AddModelError(namecb, "Min of {0} required".Fmt(cb.Min));
 						break;
 					case "GradeOptions":
 						if (gradeoption == "00")

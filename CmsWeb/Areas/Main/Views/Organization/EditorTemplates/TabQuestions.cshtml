@@ -1,13 +1,6 @@
 ﻿@model CmsData.Registration.Settings
-@using CmsData.Registration
 @using CmsWeb
 @using UtilityExtensions
-<li>
-	<span class="keyword big tip" title="TargetExtraValues
-     |Small groups will actually refer to ExtraValue fields on the Person's record option
-     |This option is not normally used">
-		TargetExtraValues:</span> @Html.CheckBox("TargetExtraValues", Model.TargetExtraValues)
-</li>
 
 @foreach(var ask in Model.AskItems)
 {
@@ -33,14 +26,14 @@
     |This will cause the volunteers commitment to be locked in
     |for a number of days in the future and require them to ask for a sub">
 						 Lock Commitment Days:</span>
-		<span> @Html.TextBox("TimeSlotLockDays", Model.timeSlots.TimeSlotLockDays)</span>
+		<span> @Html.TextBox("TimeSlotLockDays", Model.TimeSlots.TimeSlotLockDays)</span>
 	</li>
 	<li class="yes6">
 		<div class="text big tip" title="TimeSlots
     |These allow you to specify a series of Day / Times for registration.">
 			TimeSlots:</div>
 		<ul id="TimeSlots" class="sort">
-			@foreach (var i in Model.timeSlots.list.OrderBy(cc => cc.Id))
+			@foreach (var i in Model.TimeSlots.list.OrderBy(cc => cc.Id))
 			{
 				@Html.EditorFor(m => i)
 			}

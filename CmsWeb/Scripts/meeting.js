@@ -92,7 +92,7 @@
     $('#JoinAllVisitors').click(function (e) {
         e.preventDefault();
     });
-    if ($("#showbuttons input[@name=show]:checked").val() == "attends") {
+    if ($("#showbuttons input[name=show]:checked").val() == "attends") {
         $(".atck:not(:checked)").parent().parent().hide();
     }
     if ($('#editing').is(':checked')) {

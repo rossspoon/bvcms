@@ -1,10 +1,12 @@
-﻿$(function () {
+﻿/// <reference path="../Min/Content/js/combined-person.js" />
+$(function () {
     var addrtabs = $("#address-tab").tabs();
     $("#enrollment-tab").tabs();
     $("#member-tab").tabs();
     $("#growth-tab").tabs();
     $("#system-tab").tabs();
-    var maintabs = $("#main-tab").tabs();
+    $("#main-tab").tabs();
+    $("#main-tab").show();
     $(".submitbutton,.bt").button();
     addrtabs.tabs('select', $('#addrtab').val());
     $('#dialogbox').dialog({
@@ -264,12 +266,13 @@
     $('#family table.grid > tbody > tr:even').addClass('alt');
     $("#recreg-link").click(function (ev) {
         ev.preventDefault();
-        var f = $('#recreg-tab form')
+        var f = $('#recreg-tab form');
         if ($('table', f).size() > 0)
             return false;
         var q = f.serialize();
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret);
+            $(".bt", f).button();
         });
         return false;
     });
@@ -286,27 +289,25 @@
     });
 
     $.UpdateForSection = function (f) {
-        var acopts = {
-            minChars: 3,
-            matchContains: 1
-        };
-        $('#Employer', f).autocomplete("/Person/Employers", acopts);
-        $('#School', f).autocomplete("/Person/Schools", acopts);
-        $('#Occupation', f).autocomplete("/Person/Occupations", acopts);
-        $('#NewChurch,#PrevChurch', f).autocomplete("/Person/Churches", acopts);
+        $('#Employer', f).autocomplete({ minLength: 3, source: "/Person/Employers" });
+        $('#School', f).autocomplete({ minLength: 3, source: "/Person/Schools" });
+        $('#Occupation', f).autocomplete({ minLength: 3, source: "/Person/Occupations" });
+        $('#NewChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
+        $('#PrevChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
+        
         $(".datepicker").datepicker();
-        $(".submitbutton,.bt").button();
+        $(".submitbutton,.bt", f).button();
         $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
         $("#verifyaddress").click(function () {
-            var f = $(this).closest('form');
-            var q = f.serialize();
+            var ff = $(this).closest('form');
+            var q = ff.serialize();
             $.post($(this).attr('href'), q, function (ret) {
                 if (confirm(ret.address + "\nUse this Address?")) {
-                    $('#Address1', f).val(ret.Line1);
-                    $('#Address2', f).val(ret.Line2);
-                    $('#City', f).val(ret.City);
-                    $('#State', f).val(ret.State);
-                    $('#Zip', f).val(ret.Zip);
+                    $('#Address1', ff).val(ret.Line1);
+                    $('#Address2', ff).val(ret.Line2);
+                    $('#City', ff).val(ret.City);
+                    $('#State', ff).val(ret.State);
+                    $('#Zip', ff).val(ret.Zip);
                 }
             });
             return false;
@@ -317,7 +318,7 @@
         ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())
-            return;
+            return false;
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
             $(f).html(ret).ready(function () {

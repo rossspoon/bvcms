@@ -1,4 +1,5 @@
 ﻿@using CmsWeb
+@using UtilityExtensions
 @model CmsWeb.Models.ChurchAttendanceModel
 @{
     Layout = "/Views/Shared/Reports.cshtml";
@@ -81,7 +82,7 @@
         { 
            <td align="right">@d.Meetings.Where(m => c.Times.Contains(m.date.TimeOfDay)).Sum(m => m.Present).ToString("n0")</td>
         } 
-           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("g")&dt2=@p.Dt2.ToString("g")&divid=@d.DivId'>@d.Meetings.Sum(m => m.Present).ToString("n0")</a></td>
+           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString2("g")&dt2=@p.Dt2.ToString2("g")&divid=@d.DivId'>@d.Meetings.Sum(m => m.Present).ToString("n0")</a></td>
            <td align="right">@d.Meetings.Sum(m => m.Visitors).ToString("n0")</td>
            <td align="right">@d.Meetings.Sum(m => m.OutTowners).ToString("n0")</td>
            </tr>
@@ -92,7 +93,7 @@
     { 
            <td>@p.Divs.Sum(d => d.Meetings.Where(m => c.Times.Contains(m.date.TimeOfDay)).Sum(m => m.Present)).ToString("n0")</td>
     } 
-           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString("g")&dt2=@p.Dt2.ToString("g")&progid=@p.progid'>@p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")</a></td>
+           <td align="right"><a href='/Reports/Meetings?Dt1=@p.Dt1.ToString2("g")&dt2=@p.Dt2.ToString2("g")&progid=@p.progid'>@p.Divs.Sum(d => d.Meetings.Sum(m => m.Present)).ToString("n0")</a></td>
            <td align="right">@p.Divs.Sum(d => d.Meetings.Sum(m => m.Visitors)).ToString("n0")</td>
            <td align="right">@p.Divs.Sum(d => d.Meetings.Sum(m => m.OutTowners)).ToString("n0")</td>
            </tr>

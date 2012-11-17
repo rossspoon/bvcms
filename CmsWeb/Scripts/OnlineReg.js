@@ -117,15 +117,15 @@
         return false;
     });
     $("#copy").live("click", function () {
-        $("input:last[name$='.emcontact']").val($("input:hidden:last[name$='.emcontact']").val());
-        $("input:last[name$='.emphone']").val($("input:hidden:last[name$='.emphone']").val());
-        $("input:last[name$='.insurance']").val($("input:hidden:last[name$='.insurance']").val());
-        $("input:last[name$='.policy']").val($("input:hidden:last[name$='.policy']").val());
-        $("input:last[name$='.doctor']").val($("input:hidden:last[name$='.doctor']").val());
-        $("input:last[name$='.docphone']").val($("input:hidden:last[name$='.docphone']").val());
-        $("input:last[name$='.mname']").val($("input:hidden:last[name$='.mname']").val());
-        $("input:last[name$='.fname']").val($("input:hidden:last[name$='.fname']").val());
-        $("input:last[name$='.paydeposit']").val($("input:hidden:last[name$='.paydeposit']").val());
+        $("input[name$='.emcontact']:last").val($("input:hidden[name$='.emcontact']:last").val());
+        $("input[name$='.emphone']:last").val($("input:hidden[name$='.emphone']:last").val());
+        $("input[name$='.insurance']:last").val($("input:hidden[name$='.insurance']:last").val());
+        $("input[name$='.policy']:last").val($("input:hidden[name$='.policy']:last").val());
+        $("input[name$='.doctor']:last").val($("input:hidden[name$='.doctor']:last").val());
+        $("input[name$='.docphone']:last").val($("input:hidden[name$='.docphone']:last").val());
+        $("input[name$='.mname']:last").val($("input:hidden[name$='.mname']:last").val());
+        $("input[name$='.fname']:last").val($("input:hidden[name$='.fname']:last").val());
+        $("input[name$='.paydeposit']:last").val($("input:hidden[name$='.paydeposit']:last").val());
         return false;
     });
     $.InstructionsShow();

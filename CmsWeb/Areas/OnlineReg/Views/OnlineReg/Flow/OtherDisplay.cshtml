@@ -96,7 +96,7 @@
             break;
         case "AskSuggestedFee":
         <tr>
-            <td>Suggested Fee</td>
+            <td>@Util.PickFirst(((AskSuggestedFee)ask).Label, "Suggested Fee")</td>
             <td>@Model.Suggestedfee.ToString2("f2") </td>
         </tr>
             break;

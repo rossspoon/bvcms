@@ -70,11 +70,11 @@ namespace CmsData.Registration
 		public string InstructionSorry { get; set; }
 		public string InstructionAll { get; set; }
 
-		public OrgFees orgFees { get; private set; }
-		public List<AgeGroup> AgeGroups { get; private set; }
-		public TimeSlots timeSlots { get; private set; }
-		public List<int> LinkGroupsFromOrgs { get; private set; }
-		public List<int> ValidateOrgIds { get; private set; }
+		public OrgFees OrgFees { get; set; }
+		public List<AgeGroup> AgeGroups { get; set; }
+		public TimeSlots TimeSlots { get; set; }
+		public List<int> LinkGroupsFromOrgs { get; set; }
+		public List<int> ValidateOrgIds { get; set; }
 
 		public string ValidateOrgs
 		{
@@ -116,8 +116,8 @@ namespace CmsData.Registration
 
 		public Settings()
 		{
-			orgFees = new OrgFees();
-			timeSlots = new TimeSlots();
+			OrgFees = new OrgFees();
+			TimeSlots = new TimeSlots();
 			AgeGroups = new List<AgeGroup>();
 			LinkGroupsFromOrgs = new List<int>();
 			ValidateOrgs = "";
@@ -269,7 +269,7 @@ namespace CmsData.Registration
 					break;
 				case Parser.RegKeywords.OrgMemberFees:
 				case Parser.RegKeywords.OrgFees:
-					orgFees = OrgFees.Parse(parser);
+					OrgFees = OrgFees.Parse(parser);
 					break;
 				case Parser.RegKeywords.VoteTags:
 					ParseVoteTags(parser);
@@ -334,9 +334,9 @@ namespace CmsData.Registration
 					TimeSlotLockDays = parser.GetNullInt();
 					break;
 				case Parser.RegKeywords.TimeSlots:
-					timeSlots = TimeSlots.Parse(parser);
+					TimeSlots = TimeSlots.Parse(parser);
 					if (TimeSlotLockDays.HasValue)
-						timeSlots.TimeSlotLockDays = TimeSlotLockDays;
+						TimeSlots.TimeSlotLockDays = TimeSlotLockDays;
 					break;
 			}
 		}
@@ -530,7 +530,7 @@ namespace CmsData.Registration
 			AddFees(sb);
 			AddDonation(sb);
 			AddAgeGroups(sb);
-			orgFees.Output(sb);
+			OrgFees.Output(sb);
 			AddInstructions(sb);
 			AddTerms(sb);
 
@@ -549,7 +549,7 @@ namespace CmsData.Registration
 			AddValueCk(0, sb, "NotReqGender", NotReqGender);
 			AddValueCk(0, sb, "NotReqMarital", NotReqMarital);
 
-			timeSlots.Output(sb);
+			TimeSlots.Output(sb);
 			foreach(var a in AskItems)
 				a.Output(sb);
 

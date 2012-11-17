@@ -411,3 +411,20 @@ padding-left: 10px !important;
     color: #cdcdcd;
     font-weight: bold;
 }
+#selectquestions {
+    display: none;
+    border: 1px dashed gray;
+    background-color: lightgray;
+    line-height: 24px;
+    overflow: auto;
+} 
+#selectquestions ul {
+    float: left;
+    margin: 0 2em 0 0;
+    padding: 0 0 5px 0;
+    background-color: lightgray;
+}
+#selectquestions span {
+    text-decoration: line-through;
+    color: #555;
+}

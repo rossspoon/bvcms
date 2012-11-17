@@ -1,4 +1,4 @@
-﻿body, html {
+﻿hoody, html {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	background-image: none;
 	font-size: 12px;
@@ -310,7 +310,7 @@ input.wide
 input.short 
 {
     border: 1px solid #CCCCCC;
-    width: 4em;
+    width: 6em;
 }
 input.shorter 
 {

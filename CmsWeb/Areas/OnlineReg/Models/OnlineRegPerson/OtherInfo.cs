@@ -15,25 +15,25 @@ namespace CmsWeb.Models
     public partial class OnlineRegPersonModel
     {
 
-	    public string ExtraQuestionValue(string s)
+        public string ExtraQuestionValue(string s)
         {
             if (ExtraQuestion.ContainsKey(s))
                 return ExtraQuestion[s];
             return null;
         }
 
-	    public bool YesNoChecked(string key, bool value)
+        public bool YesNoChecked(string key, bool value)
         {
             if (YesNoQuestion != null && YesNoQuestion.ContainsKey(key))
                 return YesNoQuestion[key] == value;
             return false;
         }
 
-	    public bool CheckboxChecked(string sg)
+        public bool CheckboxChecked(string sg)
         {
             if (Checkbox == null)
                 return false;
-			return Checkbox.Contains(sg);
+            return Checkbox.Contains(sg);
         }
 
         private string[] _GroupTags;
@@ -45,7 +45,21 @@ namespace CmsWeb.Models
                     _GroupTags = (from mt in DbUtil.Db.OrgMemMemTags
                                   where mt.OrgId == org.OrganizationId
                                   select mt.MemberTag.Name).ToArray();
-                return _GroupTags;
+                var gtdd = (from pp in Parent.List
+                            where pp != this
+                            where pp.option != null
+                            from oo in pp.option
+                            where oo.HasValue()
+                            select oo).ToArray();
+                var gtcb = (from pp in Parent.List
+                            where pp != this
+                            where pp.Checkbox != null
+                            from cc in pp.Checkbox
+                            where cc.HasValue()
+                            select cc).ToArray();
+
+                var r = _GroupTags.Union(gtcb).Union(gtdd).ToArray();
+                return r;
             }
         }
         public class SelectListItemFilled : SelectListItem
@@ -56,9 +70,9 @@ namespace CmsWeb.Models
         {
             var q = from s in ((AskDropdown)ask).list
                     let amt = s.Fee.HasValue ? " ({0:C})".Fmt(s.Fee) : ""
-                    select new SelectListItemFilled 
-                    { 
-                        Text = s.Description + amt, 
+                    select new SelectListItemFilled
+                    {
+                        Text = s.Description + amt,
                         Value = s.SmallGroup,
                         Filled = s.IsSmallGroupFilled(GroupTags)
                     };
@@ -77,10 +91,10 @@ namespace CmsWeb.Models
             if (FundItem == null)
                 return new List<FundItemChosen>();
             var items = Funds();
-			var q = from i in FundItem
-					join m in items on i.Key equals m.Value.ToInt()
-					where i.Value.HasValue
-					select new FundItemChosen { fundid = m.Value.ToInt(), desc = m.Text, amt = i.Value.Value };
+            var q = from i in FundItem
+                    join m in items on i.Key equals m.Value.ToInt()
+                    where i.Value.HasValue
+                    select new FundItemChosen { fundid = m.Value.ToInt(), desc = m.Text, amt = i.Value.Value };
             return q;
         }
         public IEnumerable<SelectListItem> GradeOptions(Ask ask)
@@ -98,7 +112,7 @@ namespace CmsWeb.Models
         }
         private static List<SelectListItem> ShirtSizes(Settings setting)
         {
-			var askSize = setting.AskObject<AskSize>();
+            var askSize = setting.AskObject<AskSize>();
             var q = from ss in askSize.list
                     select new SelectListItem
                     {

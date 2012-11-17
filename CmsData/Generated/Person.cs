@@ -254,6 +254,8 @@ namespace CmsData
 		
    		private EntitySet< Attend> _Attends;
 		
+   		private EntitySet< BackgroundCheck> _BackgroundChecks;
+		
    		private EntitySet< CardIdentifier> _CardIdentifiers;
 		
    		private EntitySet< CheckInTime> _CheckInTimes;
@@ -719,6 +721,8 @@ namespace CmsData
 			this._FamiliesHeaded2 = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded2), new Action< Family>(this.detach_FamiliesHeaded2)); 
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
+			
+			this._BackgroundChecks = new EntitySet< BackgroundCheck>(new Action< BackgroundCheck>(this.attach_BackgroundChecks), new Action< BackgroundCheck>(this.detach_BackgroundChecks)); 
 			
 			this._CardIdentifiers = new EntitySet< CardIdentifier>(new Action< CardIdentifier>(this.attach_CardIdentifiers), new Action< CardIdentifier>(this.detach_CardIdentifiers)); 
 			
@@ -3424,6 +3428,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_BackgroundChecks_People", Storage="_BackgroundChecks", OtherKey="PeopleID")]
+   		public EntitySet< BackgroundCheck> BackgroundChecks
+   		{
+   		    get { return this._BackgroundChecks; }
+
+			set	{ this._BackgroundChecks.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_CardIdentifiers_People", Storage="_CardIdentifiers", OtherKey="PeopleId")]
    		public EntitySet< CardIdentifier> CardIdentifiers
    		{
@@ -4719,6 +4733,19 @@ namespace CmsData
 		}
 
 		private void detach_Attends(Attend entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_BackgroundChecks(BackgroundCheck entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_BackgroundChecks(BackgroundCheck entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

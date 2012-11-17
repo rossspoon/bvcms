@@ -345,6 +345,8 @@ namespace CmsWeb.Models
                 classid = classid,
                 IsFamily = true,
                 LoggedIn = true,
+                Found = true,
+                IsValidForExisting = true,
             };
             return p;
         }

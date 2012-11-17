@@ -47,7 +47,6 @@
                                 <a href="/Account/ChangePassword">Change Password</a>
 <% if(Page.User.IsInRole("Admin"))
    { %>
-                                <a href="/Admin/Users.aspx">Manage Users</a>
                                 <a href="/Admin/Activity.aspx">Activity Log</a>
 <% } %>
                             </div>
@@ -163,8 +162,9 @@
        if (Page.User.IsInRole("Admin"))
        { %>
             <td class="dropdown">
-                <div><a href="/Admin/Users.aspx">Admin</a></div>
+                <div><a href="/Manage/Users/Index">Admin</a></div>
                 <div class="sublinks">
+                    <a href="/Manage/Users/Index">Users</a>
                     <a href="/Setup/Program/">Programs</a>
                     <a href="/Setup/Division/">Divisions</a>
                     <a href="/Setup/Setting">Settings</a>

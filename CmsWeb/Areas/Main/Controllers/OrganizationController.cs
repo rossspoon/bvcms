@@ -333,7 +333,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			var m = GetRegSettings(id);
 			DbUtil.LogActivity("Update OnlineRegQuestions {0}".Fmt(m.org.OrganizationName));
 			m.AskItems.Clear();
-			m.timeSlots.list.Clear();
+			m.TimeSlots.list.Clear();
 			try
 			{
 				UpdateModel(m);
@@ -367,7 +367,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		public ActionResult OnlineRegFeesUpdate(int id)
 		{
 			var m = GetRegSettings(id);
-			m.orgFees.list.Clear();
+			m.OrgFees.list.Clear();
 			try
 			{
 				DbUtil.LogActivity("Update OnlineRegFees {0}".Fmt(m.org.OrganizationName));
@@ -456,9 +456,9 @@ namespace CmsWeb.Areas.Main.Controllers
 			return View("EditorTemplates/ExtraQuestion", new AskExtraQuestions.ExtraQuestion { Name = id });
 		}
 		[HttpPost]
-		public ActionResult NewOrgFee()
+		public ActionResult NewOrgFee(string id)
 		{
-			return View("EditorTemplates/OrgFee", new OrgFees.OrgFee());
+			return View("EditorTemplates/OrgFee", new OrgFees.OrgFee { Name = id });
 		}
 		[HttpPost]
 		public ActionResult NewAgeGroup()

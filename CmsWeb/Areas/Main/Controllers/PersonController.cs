@@ -282,36 +282,36 @@ namespace CmsWeb.Areas.Main.Controllers
 			var m = new PersonModel(id);
 			return View(m.displayperson);
 		}
-		public ContentResult Schools(string q, int limit)
+		public JsonResult Schools(string term)
 		{
 			var qu = from p in DbUtil.Db.People
-					 where p.SchoolOther.Contains(q)
+					 where p.SchoolOther.Contains(term)
 					 group p by p.SchoolOther into g
 					 select g.Key;
-			return Content(string.Join("\n", qu.Take(limit).ToArray()));
+			return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
 		}
-		public ContentResult Employers(string q, int limit)
+		public JsonResult Employers(string term)
 		{
 			var qu = from p in DbUtil.Db.People
-					 where p.EmployerOther.Contains(q)
+					 where p.EmployerOther.Contains(term)
 					 group p by p.EmployerOther into g
 					 select g.Key;
-			return Content(string.Join("\n", qu.Take(limit).ToArray()));
+		    return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
 		}
-		public ContentResult Occupations(string q, int limit)
+		public JsonResult Occupations(string term)
 		{
 			var qu = from p in DbUtil.Db.People
-					 where p.OccupationOther.Contains(q)
+					 where p.OccupationOther.Contains(term)
 					 group p by p.OccupationOther into g
 					 select g.Key;
-			return Content(string.Join("\n", qu.Take(limit).ToArray()));
+			return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
 		}
-		public ContentResult Churches(string q, int limit)
+		public JsonResult Churches(string term)
 		{
 			var qu = from r in DbUtil.Db.ViewChurches
-					 where r.C.Contains(q)
+					 where r.C.Contains(term)
 					 select r.C;
-			return Content(string.Join("\n", qu.Take(limit).ToArray()));
+			return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
 		}
 		[HttpPost]
 		public ActionResult BasicDisplay(int id)

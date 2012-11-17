@@ -79,8 +79,8 @@ namespace CmsWeb.Models
                     return _line.Value;
                 }
             }
-            public DateTime Dt1 { get; set; }
-            public DateTime Dt2 { get; set; }
+            public DateTime? Dt1 { get; set; }
+            public DateTime? Dt2 { get; set; }
         }
         public class DivInfo
         {

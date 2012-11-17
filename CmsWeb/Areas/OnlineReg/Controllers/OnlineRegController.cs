@@ -105,16 +105,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			if (pid > 0)
 			{
-				m.List = new List<OnlineRegPersonModel>();
+				//m.List = new List<OnlineRegPersonModel>();
 				m.UserPeopleId = pid;
 				OnlineRegPersonModel p = null;
 				if (showfamily != true)
 				{
-					p = m.LoadExistingPerson(pid);
-					p.LoggedIn = true;
-					if (m.masterorg == null && !m.divid.HasValue)
-						m.List.Add(p);
-					p.ValidateModelForFind(ModelState, m);
+                    p = m.LoadExistingPerson(pid);
+                    p.ValidateModelForFind(ModelState, m);
+                    p.LoggedIn = true;
+                    if (m.masterorg == null && !m.divid.HasValue)
+                        m.List[0] = p;
 				}
 				if (!ModelState.IsValid)
 					return View(m);
@@ -191,7 +191,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			{
 				TempData["mg"] = Util.UserPeopleId;
 				return Content("/OnlineReg/ManageGiving/{0}".Fmt(m.orgid));
-			}
+			}                    
+            if (m.UserSelectsOrganization())
+                m.List[0].ValidateModelForFind(ModelState, m);
 			m.List[0].LoggedIn = true;
 			return View("Flow/List", m);
 		}
@@ -208,19 +210,23 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		{
 			m.nologin = false;
 			m.List = new List<OnlineRegPersonModel>();
+#if DEBUG
+		    m.username = "david";
+		    m.password = "Pepperjfj.";
+#endif
 			return View("Flow/List", m);
 		}
 		[HttpPost]
 		public ActionResult Register(int id, OnlineRegModel m)
 		{
-			if (m.classid.HasValue)
-				m.orgid = m.classid;
-			var p = m.LoadExistingPerson(id);
 			int index = m.List.Count - 1;
-			m.List[index] = p;
+			if (m.List[index].classid.HasValue)
+			    m.classid = m.List[index].classid;
+			var p = m.LoadExistingPerson(id);
 			p.ValidateModelForFind(ModelState, m);
 			if (!ModelState.IsValid)
 				return View("Flow/List", m);
+			m.List[index] = p;
 			if (p.ManageSubscriptions() && p.Found == true)
 			{
 				//p.OtherOK = true;
@@ -293,12 +299,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					break;
 				default:
 #if DEBUG
-					//p.address = "235 Riveredge Cv.";
-					//p.city = "Cordova";
-					//p.state = "TN";
-					//p.zip = "38018";
-					//p.gender = 1;
-					//p.married = 10;
+					p.address = "235 Riveredge Cv.";
+					p.city = "Cordova";
+					p.state = "TN";
+					p.zip = "38018";
+					p.gender = 1;
+					p.married = 10;
 #endif
 					break;
 			}
@@ -312,13 +318,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return View("Flow/List", m);
 			DbUtil.Db.SetNoLock();
 			var p = m.List[id];
-			if (m.classid.HasValue)
+			if (p.classid.HasValue)
 			{
-				m.orgid = m.classid;
-				p.classid = m.classid;
-				p.orgid = m.classid;
+				m.orgid = p.classid;
+				m.classid = p.classid;
+				p.orgid = p.classid;
 			}
-			p.classid = m.classid;
 			p.PeopleId = null;
 			p.ValidateModelForFind(ModelState, m);
 			if (p.ManageSubscriptions()

@@ -263,7 +263,6 @@ namespace CmsWeb.Models
 		//}
 		public void CreateList()
 		{
-#if DEBUG2
             List = new List<OnlineRegPersonModel>
             {
                 new OnlineRegPersonModel
@@ -271,26 +270,16 @@ namespace CmsWeb.Models
                     divid = divid,
                     orgid = orgid,
                     masterorgid = masterorgid,
+                    LoggedIn = false,
+#if DEBUG
                     first = "David",
-                    last = "Carroll",
+                    last = "Roll",
                     dob = "5/30/52",
                     email = "david@bvcms.com",
                     phone = "",
-                    LoggedIn = false,
-                }
-            };
-#else
-			List = new List<OnlineRegPersonModel>
-            {
-                new OnlineRegPersonModel
-                {
-                    divid = divid,
-                    orgid = orgid,
-                    masterorgid = masterorgid,
-                    LoggedIn = false,
-                }
-            };
 #endif
+                }
+            };
 		}
 	}
 }

@@ -84,7 +84,7 @@ namespace CmsWeb.Models
 		{
 			OrgName = (from o in DbUtil.Db.Organizations where o.OrganizationId == id select o.OrganizationName).Single();
 			OrgId = id;
-			times = from ts in Regsettings.timeSlots.list
+			times = from ts in Regsettings.TimeSlots.list
 					orderby ts.Time
 					select ts.Datetime(Sunday);
 
@@ -154,7 +154,7 @@ namespace CmsWeb.Models
 			{
 				var dt = sunday;
 				{
-					var u = from ts in Regsettings.timeSlots.list
+					var u = from ts in Regsettings.TimeSlots.list
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
 							let meeting = mlist.SingleOrDefault(mm => mm.MeetingDate == time)

@@ -70,11 +70,11 @@ namespace CmsWeb.Models
             public bool selected { get; set; }
             public bool filled { get; set; }
         }
-        public IEnumerable<ClassInfo> Classes()
+        public IEnumerable<ClassInfo> Classes(int? cid)
         {
             if (masterorgid.HasValue)
-                return Classes(masterorg, classid ?? 0);
-            return Classes(divid, classid ?? 0);
+                return Classes(masterorg, cid ?? 0);
+            return Classes(divid, cid ?? 0);
         }
         public static List<ClassInfo> Classes(int? divid, int id)
         {

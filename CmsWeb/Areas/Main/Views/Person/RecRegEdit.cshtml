@@ -1,7 +1,6 @@
 ﻿@using UtilityExtensions
 
 @model CmsWeb.Models.PersonPage.RecRegInfo
-<a class="displayedit" href="/Person/RecRegDisplay/@Model.PeopleId">cancel</a>
 <table class="Design2">
     <tr>
         <td><label for="shirtsize">ShirtSize</label></td>
@@ -95,6 +94,10 @@
     </tr>
  } 
 <tr><td></td></tr>
-     <tr><td></td><td><a href="/Person/RecRegUpdate/@Model.PeopleId" class="submitbutton">Save Changes</a></td></tr>
+    <tr><td></td>
+        <td><a href="/Person/RecRegUpdate/@Model.PeopleId" class="submitbutton">Save Changes</a>
+            <a class="displayedit bt" href="/Person/RecRegDisplay/@Model.PeopleId">cancel</a>
+        </td>
+    </tr>
 </table>
 
