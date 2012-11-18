@@ -1274,6 +1274,8 @@
     <Content Include="Areas\Main\Views\Organization\VolunteerCommitmentsSummary.cshtml" />
     <Content Include="Areas\Main\Views\Person\CurrentRegistrationsHtml.cshtml" />
     <Content Include="Areas\Main\Views\Person\IncompleteTasksGrid.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\SQLSelect.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\SQLView.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Minify.bat" />

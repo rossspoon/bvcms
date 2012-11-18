@@ -212,7 +212,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			m.List = new List<OnlineRegPersonModel>();
 #if DEBUG
 		    m.username = "david";
-		    m.password = "Pepperjfj.";
+		    m.password = "";
 #endif
 			return View("Flow/List", m);
 		}

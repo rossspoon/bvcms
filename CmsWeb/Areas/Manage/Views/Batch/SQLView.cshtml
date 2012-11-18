@@ -1,0 +1,31 @@
+﻿@model System.Data.SqlClient.SqlDataReader
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>title</title>
+    </head>
+    <body>
+        <div>
+            <table>
+                @{ var read = Model.Read();}
+                @while (read)
+                {
+                    <tr>
+                        @for (var i = 0; i < Model.FieldCount; i++)
+                        {
+                            <td>@Model[i].ToString()</td>
+                        }
+                    </tr>
+                   read = Model.Read();
+                }
+            </table>
+              
+        </div>
+    </body>
+</html>
