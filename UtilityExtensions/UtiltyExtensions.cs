@@ -25,6 +25,7 @@ using System.Web.Configuration;
 using System.Diagnostics;
 using System.Web.Caching;
 using System.Globalization;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace UtilityExtensions
@@ -1151,11 +1152,15 @@ namespace UtilityExtensions
 			}
 		}
 
+		public static void Serialize<T>(T m, XmlWriter writer)
+		{
+			new XmlSerializer(typeof(T)).Serialize(writer, m);
+		}
 		public static string Serialize<T>(T m)
 		{
-			var sw = new StringWriter();
+		    var sw = new StringWriter();
 			new XmlSerializer(typeof(T)).Serialize(sw, m);
-			return sw.ToString();
+		    return sw.ToString();
 		}
 		public static T DeSerialize<T>(string s) where T: class
 		{

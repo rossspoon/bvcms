@@ -37,7 +37,6 @@ namespace CmsWeb.Models
             return o;
         }
         private Dictionary<int, Settings> _settings;
-		[XmlIgnore]
         public Dictionary<int, Settings> settings
         {
             get
@@ -73,7 +72,6 @@ namespace CmsWeb.Models
                 return null;
             }
         }
-        public bool? testing { get; set; }
         public string qtesting
         {
             get { return testing == true ? "?testing=true" : ""; }

@@ -416,7 +416,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return Content(confirm);
 			ViewBag.Url = m.URL;
 
-			DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
+			//DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
 			DbUtil.Db.SubmitChanges();
 
 			SetHeaders(m);

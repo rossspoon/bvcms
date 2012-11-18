@@ -125,7 +125,6 @@ namespace CmsWeb.Models
 			return settings.Values.Any(o => o.MemberOnly);
 		}
 		private CmsData.Organization _org;
-		[XmlIgnore]
 		public CmsData.Organization org
 		{
 			get
@@ -144,7 +143,6 @@ namespace CmsWeb.Models
 			}
 		}
 		private CmsData.Organization _masterorg;
-		[XmlIgnore]
 		public CmsData.Organization masterorg
 		{
 			get
@@ -365,7 +363,6 @@ Thank you</p>";
 			return q.ToArray();
 		}
 		private PythonEvents _pythonEvents;
-		[XmlIgnore]
 		public PythonEvents PythonEvents
 		{
 			get { return _pythonEvents ?? (_pythonEvents = HttpContext.Current.Items["PythonEvents"] as PythonEvents); }

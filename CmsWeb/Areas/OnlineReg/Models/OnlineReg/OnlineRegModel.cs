@@ -1,30 +1,75 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Data.Linq;
+using System.Reflection;
 using System.Web;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using CmsData;
-using System.Web.Mvc;
-using System.Text;
-using System.Configuration;
+using CmsData.API;
 using CmsData.Registration;
 using UtilityExtensions;
-using System.Data.Linq.SqlClient;
-using CMSPresenter;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
-using System.Collections;
-using System.Runtime.Serialization;
 using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
-	[Serializable]
-	public partial class OnlineRegModel
+    [Serializable]
+	public partial class OnlineRegModel : IXmlSerializable
 	{
-		public OnlineRegModel()
+        public bool? testing { get; set; }
+		public string URL { get; set; }
+		private int? _masterorgid;
+		public int? masterorgid
 		{
-			HttpContext.Current.Items["OnlineRegModel"] = this;
+			get { return _masterorgid; }
+			set
+			{
+				_masterorgid = value;
+				if (value > 0)
+					ParseSettings();
+			}
+		}
+		private int? _Orgid;
+		public int? orgid
+		{
+			get { return _Orgid; }
+			set
+			{
+				_Orgid = value;
+				if (value > 0)
+				{
+					CheckMasterOrg();
+					ParseSettings();
+				}
+			}
+		}
+		private int? _Divid;
+		public int? divid
+		{
+			get { return _Divid; }
+			set
+			{
+				_Divid = value;
+				if (value > 0)
+					ParseSettings();
+			}
+		}
+		public int? classid { get; set; }
+		public int? TranId { get; set; }
+		public string username { get; set; }
+		public bool nologin { get; set; }
+		public decimal? donation { get; set; }
+		public int? donor { get; set; }
+		public int? UserPeopleId { get; set; }
+		private string _Registertag;
+		public string registertag
+		{
+			get { return _Registertag; }
+			set { _Registertag = value; }
 		}
 		private List<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
 		public List<OnlineRegPersonModel> List
@@ -32,13 +77,68 @@ namespace CmsWeb.Models
 			get { return list; }
 			set { list = value; }
 		}
-		[NonSerialized]
+        [XmlIgnore]
+		public string password { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            var s = reader.ReadOuterXml();
+            var x = XDocument.Parse(s);
+            if (x.Root == null) return;
+
+            foreach (var e in x.Root.Elements())
+            {
+                var name = e.Name.ToString();
+                switch (name)
+                {
+                    case "List":
+                        foreach(var ee in e.Elements())
+                            list.Add(Util.DeSerialize<OnlineRegPersonModel>(ee.ToString()));
+                        break;
+                    default:
+                        Util.SetPropertyFromText(this, name, e.Value);
+                        break;
+                }
+            }
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            var w = new APIWriter(writer);
+            writer.WriteComment(DateTime.Now.ToString());
+            foreach (PropertyInfo pi in typeof(OnlineRegModel).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(vv => vv.CanRead && vv.CanWrite))
+            {
+                Debug.WriteLine(pi.Name);
+                switch (pi.Name)
+                {
+                    case "List":
+                        w.Start("List");
+                        foreach(var i in list)
+                            Util.Serialize(i, writer);
+                        w.End();
+                        break;
+                    case "password":
+                        break;
+                    default:
+                        w.Add(pi.Name, pi.GetValue(this, null));
+                        break;
+                }
+            }
+        }
+
+		public OnlineRegModel()
+		{
+			HttpContext.Current.Items["OnlineRegModel"] = this;
+		}
 		public bool ShowFindInstructions;
-		[NonSerialized]
 		public bool ShowLoginInstructions;
-		[NonSerialized]
 		public bool ShowOtherInstructions;
-		[NonSerialized]
 		private CmsData.Division _div;
 		public CmsData.Division div
 		{
@@ -103,9 +203,8 @@ namespace CmsWeb.Models
 		{
 			return new Settings(RegSetting, DbUtil.Db, OrgId);
 		}
-		[NonSerialized]
-		private CmsData.Organization _masterorg;
-		public CmsData.Organization masterorg
+		private Organization _masterorg;
+		public Organization masterorg
 		{
 			get
 			{
@@ -129,9 +228,7 @@ namespace CmsWeb.Models
 				_org = null;
 			}
 		}
-		public string URL { get; set; }
 
-		[NonSerialized]
 		private CmsData.Organization _org;
 		public CmsData.Organization org
 		{
@@ -146,52 +243,6 @@ namespace CmsWeb.Models
 			}
 		}
 
-		private int? _Divid;
-		public int? divid
-		{
-			get
-			{
-				return _Divid;
-			}
-			set
-			{
-				_Divid = value;
-				if (value > 0)
-					ParseSettings();
-			}
-		}
-		[OptionalField]
-		private int? _masterorgid;
-		public int? masterorgid
-		{
-			get { return _masterorgid; }
-			set
-			{
-				_masterorgid = value;
-				if (value > 0)
-					ParseSettings();
-			}
-		}
-		private int? _Orgid;
-		public int? orgid
-		{
-			get
-			{
-				return _Orgid;
-			}
-			set
-			{
-				_Orgid = value;
-				if (value > 0)
-				{
-					CheckMasterOrg();
-					ParseSettings();
-				}
-			}
-		}
-		public int? classid { get; set; }
-		public int? TranId { get; set; }
-		[NonSerialized]
 		private Transaction _Transaction;
 		public Transaction Transaction
 		{
@@ -202,20 +253,6 @@ namespace CmsWeb.Models
 				return _Transaction;
 			}
 		}
-		public string username { get; set; }
-		public string password { get; set; }
-		public bool nologin { get; set; }
-		public decimal? donation { get; set; }
-		public int? donor { get; set; }
-		public int? UserPeopleId { get; set; }
-		[OptionalField]
-		private string _Registertag;
-		public string registertag
-		{
-			get { return _Registertag; }
-			set { _Registertag = value; }
-		}
-		[NonSerialized]
 		private Person _User;
 		public Person user
 		{
@@ -242,25 +279,6 @@ namespace CmsWeb.Models
 			return _meeting;
 		}
 
-		//public OnlineRegModel()
-		//{
-		//}
-		//protected OnlineRegModel(SerializationInfo si, StreamingContext context)
-		//{
-		//    UserPeopleId = (int?)si.GetValue("UserPeopleId", typeof(int?));
-		//    URL = si.GetString("URL");
-		//    classid = (int?)si.GetValue("classid", typeof(int?));
-		//    divid = (int?)si.GetValue("divid", typeof(int?));
-		//    masterorgid = (int?)si.GetValue("masterorgid", typeof(int?));
-		//    nologin = si.GetBoolean("nologin");
-		//    orgid = (int?)si.GetValue("orgid", typeof(int?));
-		//    testing = si.GetBoolean("testing");
-		//    username = si.GetString("username");
-		//}
-		//public void GetObjectData(SerializationInfo info, StreamingContext context)
-		//{
-		//    throw new NotImplementedException();
-		//}
 		public void CreateList()
 		{
             List = new List<OnlineRegPersonModel>
