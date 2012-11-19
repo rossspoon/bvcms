@@ -11,6 +11,7 @@ using System.Text;
 using System.Collections;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using CmsData;
 using UtilityExtensions;
 using System.Configuration;
 using System.Web.Routing;
@@ -150,7 +151,7 @@ namespace CmsWeb
 		public static bool IsDebug(this HtmlHelper helper)
 		{
 		    //return true;
-			return Util.IsDebug();
+			return Util.IsDebug() || DbUtil.Db.Setting("NoMinify", "false").ToBool();
 		}
 		public static HtmlString Script(this HtmlHelper helper, string script, bool? debug = false)
 		{
