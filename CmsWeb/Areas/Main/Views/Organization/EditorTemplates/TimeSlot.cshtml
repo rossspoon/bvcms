@@ -1,9 +1,8 @@
 ﻿@model CmsData.Registration.TimeSlots.TimeSlot
 @using CmsWeb
-    @using (var ci = Html.BeginCollectionItem("TimeSlots"))
+    @using (var ci = Html.BeginCollectionItem(Model.Name))
     {
       <li>@Html.Raw(ci.hiddenindex)
-          @Html.HiddenFor(m => m.Id, new { @class = "renumberMe" }) 
         <ul>
           <li><div class="sgfee">Description:</div> @Html.TextBoxFor(m => m.Description, new { @class = "long" })
           <a class="del" href="#"><img align="top" src="/images/delete.gif" title="remove this item" /></a></li>

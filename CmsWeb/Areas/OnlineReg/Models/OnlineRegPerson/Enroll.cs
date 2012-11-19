@@ -144,7 +144,7 @@ namespace CmsWeb.Models
 							((AskDropdown)ask).SmallGroupChoice(option).AddToSmallGroup(DbUtil.Db, om, PythonEvents);
 						}
 						break;
-					case "GradeOptions":
+					case "AskGradeOptions":
 						if (setting.TargetExtraValues)
 							person.Grade = gradeoption.ToInt();
 						else
@@ -315,7 +315,7 @@ namespace CmsWeb.Models
 							if (a.Value.HasValue())
 								sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
 						break;
-					case "GradeOptions":
+					case "AskGradeOptions":
 						sb.AppendFormat("<tr><td>GradeOption:</td><td>{0}</td></tr>\n",
 										GradeOptions(ask).SingleOrDefault(s => s.Value == (gradeoption ?? "00")).Text);
 						break;

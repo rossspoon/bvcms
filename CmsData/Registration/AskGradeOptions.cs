@@ -5,13 +5,13 @@ using System.Text;
 
 namespace CmsData.Registration
 {
-	public class GradeOptions : Ask
+	public class AskGradeOptions : Ask
 	{
 		public string Label { get; set; }
 		public List<GradeOption> list { get; set; }
 
-		public GradeOptions()
-			: base("GradeOptions")
+		public AskGradeOptions()
+			: base("AskGradeOptions")
 		{
 			list = new List<GradeOption>();
 		}
@@ -20,15 +20,15 @@ namespace CmsData.Registration
 		{
 			if (list.Count == 0)
 				return;
-			Settings.AddValueNoCk(0, sb, "GradeOptions", Label);
+			Settings.AddValueNoCk(0, sb, "AskGradeOptions", Label);
 			foreach (var g in list)
 				g.Output(sb);
 			sb.AppendLine();
 		}
-		public static GradeOptions Parse(Parser parser)
+		public static AskGradeOptions Parse(Parser parser)
 		{
-			var go = new GradeOptions();
-			go.Label = parser.GetString("GradeOptions");
+			var go = new AskGradeOptions();
+			go.Label = parser.GetString("AskGradeOptions");
 			if (parser.curr.indent == 0)
 				throw parser.GetException("expected indented Options");
 			var startindent = parser.curr.indent;
@@ -39,7 +39,7 @@ namespace CmsData.Registration
 			}
 			var q2 = go.list.GroupBy(mi => mi.Code).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
 			if (q2.Any())
-				throw parser.GetException("Duplicate Code in GradeOptions: " + string.Join(",", q2));
+				throw parser.GetException("Duplicate Code in AskGradeOptions: " + string.Join(",", q2));
 			return go;
 		}
 		public class GradeOption

@@ -15,7 +15,7 @@
 @Html.Script("/Scripts/PostBundle.js")
 }
 @Html.Hidden("fundid", Model.bundle.FundId)
-@{ var b = Model.bundle; }<input id="autocomplete">
+@{ var b = Model.bundle; }
 <form id='pbform' action='/PostBundle/InsertRow' method="post">
 <table>
     <tr><th>BundleId</th><td><a href="/Contributions/Bundle.aspx?id=@Model.id">@Model.id@Html.Hidden("id")</a></td></tr>

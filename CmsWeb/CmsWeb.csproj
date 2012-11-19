@@ -1037,6 +1037,7 @@
     <Content Include="Min\Content\js\jquery.sortElements.js" />
     <Content Include="Min\Content\js\jquery.textarea.js" />
     <Content Include="Min\Content\js\jquery.transpose.js" />
+    <Content Include="Min\Scripts\Calendar.js" />
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
     <Content Include="Min\Scripts\Contributions.js" />
@@ -1248,7 +1249,7 @@
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskSize.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskMenu.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskCheckboxes.cshtml" />
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\GradeOptions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskGradeOptions.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\DropdownItem.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskCoaching.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskDoctor.cshtml" />
@@ -1276,6 +1277,7 @@
     <Content Include="Areas\Main\Views\Person\IncompleteTasksGrid.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\SQLSelect.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\SQLView.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\TimeSlots.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Minify.bat" />

@@ -170,7 +170,7 @@
 			<tr>
 				<td><div class="wraparound">@a.Question</div></td>
 				<td><input type="hidden" name="@(eqname)[@i].Key" value="@a.Question" />
-					<input type="textbox" name="@(eqname)[@i].Value" value="@Model.ExtraQuestionValue(a.Question)" class="wide" />
+					<input type="text" name="@(eqname)[@i].Value" value="@Model.ExtraQuestionValue(a.Question)" class="wide" />
 					<div>@Html.ValidationMessageFor(m => m.ExtraQuestion[a.Question])</div>
 				</td>
 			</tr>
@@ -262,9 +262,9 @@
 		</td>
 		</tr>
             break;
-        case "GradeOptions":
+        case "AskGradeOptions":
         <tr>
-            <td>@(((GradeOptions)ask).Label)</td>
+            <td>@(((AskGradeOptions)ask).Label)</td>
 			<td>@Html.DropDownListFor(m => m.gradeoption, Model.GradeOptions(ask));
 				<div>@Html.ValidationMessageFor(m => m.gradeoption)</div>
 			</td>
@@ -307,9 +307,10 @@
         }
         <tr>
             <td>@i.Text</td>
-            <td>@Html.TextBox("{0}[{1}].Value".Fmt(funame, n), amt, new { @class = "short sum" })
-                @Html.Hidden("{0}[{1}].Key".Fmt(funame, n), i.Value)
-                <div>@Html.ValidationMessage("{0}[{1}]".Fmt(funame, n))</div></td>
+			<td><input type="hidden" name="@(funame)[@n].Key" value="@i.Value" />
+				<input type="text" name="@(funame)[@n].Value" value="@amt" class="short sum" />
+				<div>@Html.ValidationMessageFor(m => m.FundItem[n])</div>
+			</td>
         </tr>
     }
         <tr class="alt">

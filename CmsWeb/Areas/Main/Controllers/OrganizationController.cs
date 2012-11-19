@@ -244,7 +244,7 @@ namespace CmsWeb.Areas.Main.Controllers
 					SchedTime = DateTime.Parse("8:00 AM"),
 					AttendCreditId = 1
 				});
-			return View("Flow/ScheduleInfo", s);
+			return View("EditorTemplates/ScheduleInfo", s);
 		}
 
 		[HttpPost]
@@ -438,7 +438,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		[HttpPost]
 		public ActionResult NewGradeOption(string id)
 		{
-			return View("EditorTemplates/GradeOption", new GradeOptions.GradeOption { Name = id });
+			return View("EditorTemplates/GradeOption", new AskGradeOptions.GradeOption { Name = id });
 		}
 		[HttpPost]
 		public ActionResult NewYesNoQuestion(string id)
@@ -466,9 +466,9 @@ namespace CmsWeb.Areas.Main.Controllers
 			return View("EditorTemplates/AgeGroup", new Settings.AgeGroup());
 		}
 		[HttpPost]
-		public ActionResult NewTimeSlot()
+		public ActionResult NewTimeSlot(string id)
 		{
-			return View("EditorTemplates/TimeSlot", new TimeSlots.TimeSlot());
+			return View("EditorTemplates/TimeSlot", new TimeSlots.TimeSlot { Name = id });
 		}
 
 		[HttpPost]
@@ -504,8 +504,8 @@ namespace CmsWeb.Areas.Main.Controllers
 					return View(template, new AskYesNoQuestions() { Name = id });
 				case "AskExtraQuestions":
 					return View(template, new AskExtraQuestions() { Name = id });
-				case "GradeOptions":
-					return View(template, new GradeOptions() { Name = id });
+				case "AskGradeOptions":
+					return View(template, new AskGradeOptions() { Name = id });
 			}
 			return Content("unexpected type " + type);
 		}

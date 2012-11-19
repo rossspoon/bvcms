@@ -386,7 +386,7 @@ Please search with a different email, phone, or birthday.";
 						else if (cb.Min > 0 && (Checkbox == null || Checkbox.Count < cb.Min))
 							modelState.AddModelError(namecb, "Min of {0} required".Fmt(cb.Min));
 						break;
-					case "GradeOptions":
+					case "AskGradeOptions":
 						if (gradeoption == "00")
 							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].gradeoption), "please select a grade option");
 						break;

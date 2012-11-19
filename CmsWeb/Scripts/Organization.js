@@ -229,7 +229,7 @@ $(function () {
                 $("#Settings-tab").tabs('option', 'disabled', [3, 4, 5]);
                 break;
             case "6":
-                $("#QuestionList li").hide();
+                $("#QuestionList > li").hide();
                 $(".yes6").show();
                 break;
         }
