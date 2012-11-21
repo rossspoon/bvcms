@@ -8,8 +8,6 @@ using System.Net;
 using System.Text;
 using System.IO;
 using CmsWeb.Models;
-using DevDefined.OAuth.Consumer;
-using DevDefined.OAuth.Framework;
 using CmsData;
 using UtilityExtensions;
 
@@ -18,7 +16,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 	[Authorize(Roles = "Finance")]
 	public class QuickBooksController : Controller
 	{
-		public static Dictionary<string,IToken> requestTokens = new Dictionary<string,IToken>();
+        public static Dictionary<string, QuickBooksHelper> helpers = new Dictionary<string, QuickBooksHelper>();
 
 		public ActionResult Index()
 		{
@@ -27,59 +25,35 @@ namespace CmsWeb.Areas.Finance.Controllers
 
 		public ActionResult RequestOAuthToken()
 		{
-			IToken newToken = QuickBooksModel.getOAuthSession().GetRequestToken();
+            QuickBooksHelper qbh = new QuickBooksHelper(Request);
+            string authLink = qbh.RequestOAuthToken();
 
-			DbUtil.Db.ExecuteCommand( "UPDATE dbo.QBConnections SET Active = 0" );
+            helpers[makeKey()] = qbh;
 
-			QBConnection qbc = new QBConnection();
-			qbc.Creation = DateTime.Now;
-			qbc.DataSource = "QBO";
-            qbc.Token = newToken.Token;
-			qbc.UserID = 149;
-			qbc.Active = 1;
-			qbc.Secret = "";
-			qbc.RealmID = "";
-
-			DbUtil.Db.QBConnections.InsertOnSubmit(qbc);
-			DbUtil.Db.SubmitChanges();
-
-			// generate a user authorize url for this token (which you can use in a redirect from the current site)
-            string authorizationLink = QuickBooksModel.getOAuthSession().GetUserAuthorizationUrlForToken(newToken, QuickBooksModel.getCallback());
-
-            string sKey = Util.CmsHost2 + "-" + Util.UserId;
-
-            requestTokens[sKey] = newToken;
-
-			return Redirect( authorizationLink );
+            return Redirect(authLink);
 		}
 
 		public ActionResult RequestAccessToken()
 		{
-            string sKey = Util.CmsHost2 + "-" + Util.UserId;
+            QuickBooksHelper qbh = helpers[makeKey()];
+            qbh.RequestAccessToken(Request["realmId"], Request["oauth_verifier"]);
 
-            IToken currentToken = requestTokens[sKey];
-
-            IToken accessToken = QuickBooksModel.getOAuthSession().ExchangeRequestTokenForAccessToken(currentToken, Request["oauth_verifier"]);
-
-			QBConnection qbc = (from i in DbUtil.Db.QBConnections
-									  where i.Active == 1
-									  select i).FirstOrDefault();
-
-			qbc.Token = accessToken.Token;
-			qbc.Secret = accessToken.TokenSecret;
-			qbc.RealmID = Request["realmId"];
-			DbUtil.Db.SubmitChanges();
-
-			return View("Index");
+            // TODO: Change response based on results
+            return View("Index");
 		}
 
 		public ActionResult Disconnect()
 		{
-			bool complete = QuickBooksModel.doDisconnect();
+            QuickBooksHelper qbh = new QuickBooksHelper(Request);
+            bool complete = qbh.Disconnect();
 
-			if (complete) DbUtil.Db.ExecuteCommand("UPDATE dbo.QBConnections SET Active = 0");
-
+            // TODO: Change response based on results
 			return View("Index");
 		}
+
+        public string makeKey()
+        {
+            return Util.CmsHost2 + "-" + Util.UserId;
+        }
 	}
 }
