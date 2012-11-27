@@ -27,7 +27,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				if (templateID == null)
 				{
 					ViewBag.queryID = id;
-					ViewBag.parents = parents ?? false;
+				    ViewBag.parents = (parents == true).ToString();
 					return View("SelectTemplate", new EmailTemplatesModel());
 				}
 				else
@@ -38,7 +38,7 @@ namespace CmsWeb.Areas.Main.Controllers
 					m.CmsHost = DbUtil.Db.CmsHost;
 					m.Host = Util.Host;
 
-					ViewBag.parents = parents ?? false;
+				    ViewBag.parents = (parents == true).ToString();
 					ViewBag.templateID = templateID;
 					return View("Compose", m);
 				}

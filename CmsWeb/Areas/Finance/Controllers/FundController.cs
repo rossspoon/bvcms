@@ -15,7 +15,7 @@ namespace CmsWeb.Areas.Finance.Controllers
         	var m = from f in DbUtil.Db.ContributionFunds 
 					where f.FundStatusId == (status ?? 1)
 					select f;
-        	ViewBag.status = (status ?? 1);
+            ViewBag.status = status == null ? 1 : status;
             switch (sort ?? "FundId")
             {
                 case "FundId":
