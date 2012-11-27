@@ -208,6 +208,7 @@ namespace CmsWeb.Models
             var message = Util.PickFirst(EmailMessage, "no message");
 
             message = MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
+            subject = subject.Replace("{org}", org.OrganizationName);
 
 			message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
             message = message.Replace("{tickets}", List[0].ntickets.ToString());
@@ -538,7 +539,7 @@ Total Fee paid for this registration session: {4:C}<br/>
             sb.AppendFormat("userid: {0}<br/>\n", this.UserPeopleId);
             foreach (var li in List)
             {
-                sb.AppendFormat("--------------------------------\nList: {0}<br/>\n", li.index);
+                sb.AppendFormat("--------------------------------\nList: {0}<br/>\n", li.Index());
                 sb.Append(li.ToString());
             }
             return sb.ToString();

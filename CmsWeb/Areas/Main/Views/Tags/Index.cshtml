@@ -5,38 +5,40 @@
 	ViewBag.Title = "Tags";
 	Layout = "~/Views/Shared/SiteLayout.cshtml";
 }
+@section head
+{
+<style>
+</style>
+}
 @section scripts
 {
+@Html.Script("/Scripts/SearchUsers.js")
 @Html.Script("/Scripts/Tags.js")
 }
 <form id="managetags" method="post" action="/Tags/Index">
-@*<table class="center"><tr><td>*@
-<div class="roundbox floatleft">
-<h2>Tag List</h2>
-	<table cellspacing="5">
-		<tr>
-			<th align="right"> Change Active Tag: </th>
-			<td>@Html.Partial("Tags")&nbsp;&nbsp;
-				<a id="delete" href="/Tags/Delete" confirm="are you sure?" class="bt">Delete Tag</a></td>
-		</tr>
-		<tr>
-			<th align="right" valign="top"> New Tag Name:</th>
-			<td> @Html.TextBox("tagname", Model.tagname, new { title="no colon characters" }) </td>
-		</tr>
-		<tr>
-			<td valign="top" align="right" colspan="2">
-				<a id="ShareLink" href="/Tags/SharedTags" class="bt">Shared with <span id="sharecount">@Model.SharedCount()</span> users</a>
-				<a id="makenew" class="bt" href="#">Make New Tag</a>
-				<a id="rename" class="bt" href="#">Rename Tag</a>
-				<a id="refresh" class="bt" href="/Tags/Results">Refresh</a>
-				<div>@Html.ValidationMessage("name")</div></td>
-		</tr>
-	</table>
-</div>
-@*</td></tr></table>*@
-<div class="floatclear"></div>
-@Html.Partial("Results", Model)
+    <div class="roundbox floatleft">
+        <h2>Tag List</h2>
+        <table cellspacing="5">
+            <tr>
+                <th align="right"> Change Active Tag: </th>
+                <td>@Html.Partial("Tags")&nbsp;&nbsp;
+                    <a id="delete" href="/Tags/Delete" confirm="are you sure?" class="bt">Delete Tag</a></td>
+            </tr>
+            <tr>
+                <th align="right" valign="top"> New Tag Name:</th>
+                <td> @Html.TextBox("tagname", Model.tagname, new { title="no colon characters" }) </td>
+            </tr>
+            <tr>
+                <td valign="top" align="right" colspan="2">
+                    <a id="ShareLink" href="/Tags/SharedTags" data-target="#usersDialog" class="bt">Shared with <span id="sharecount">@Model.SharedCount()</span> users</a>
+                    <a id="makenew" class="bt" href="#">Make New Tag</a>
+                    <a id="rename" class="bt" href="#">Rename Tag</a>
+                    <a id="refresh" class="bt" href="/Tags/Results">Refresh</a>
+                    <div>@Html.ValidationMessage("name")</div></td>
+            </tr>
+        </table>
+    </div>
+    <div class="floatclear"></div>
+@Html.Partial("ExportToolBar")
+    @Html.Partial("Results", Model)
 </form>
-<div id="usersDialog">
-<iframe style="width:100%;height:99%;border-width:0px;"></iframe>
-</div>

@@ -30,6 +30,12 @@ namespace CmsWeb.Areas.Main.Models.Report
         public bool titles { get; set; }
         public bool usephone { get; set; }
 
+        public bool? sortzip; 
+	    public string sort
+	    {
+			get { return (sortzip ?? false) ? "Zip" : "Name"; }
+	    }
+
         protected float H = .925f;
         protected float W = 3f;
 
@@ -53,25 +59,24 @@ namespace CmsWeb.Areas.Main.Models.Report
             var ctl = new MailingController();
             ctl.UseTitles = titles;
 
-            const string STR_Name = "Name";
             IEnumerable<MailingInfo> q = null;
             switch (format)
             {
                 case "Individual":
-                    q = ctl.FetchIndividualList(STR_Name, qid.Value);
+                    q = ctl.FetchIndividualList(sort, qid.Value);
                     break;
                 case "FamilyMembers":
                 case "Family":
-                    q = ctl.FetchFamilyList(STR_Name, qid.Value);
+                    q = ctl.FetchFamilyList(sort, qid.Value);
                     break;
                 case "ParentsOf":
-                    q = ctl.FetchParentsOfList(STR_Name, qid.Value);
+                    q = ctl.FetchParentsOfList(sort, qid.Value);
                     break;
                 case "CouplesEither":
-                    q = ctl.FetchCouplesEitherList(STR_Name, qid.Value);
+                    q = ctl.FetchCouplesEitherList(sort, qid.Value);
                     break;
                 case "CouplesBoth":
-                    q = ctl.FetchCouplesBothList(STR_Name, qid.Value);
+                    q = ctl.FetchCouplesBothList(sort, qid.Value);
                     break;
             }
             AddLabel(document, "=========", Util.UserName, "{0} labels printed".Fmt(q.Count()), "{0:g}".Fmt(DateTime.Now), String.Empty);

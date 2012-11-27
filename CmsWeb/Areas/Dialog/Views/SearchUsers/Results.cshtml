@@ -5,11 +5,11 @@
 @{
     var list = Model.PeopleList();
 }
-<table id="results">
+<table class="results table table-striped table-bordered table-condensed">
 <thead>
     <tr><td colspan="3">
         <b>showing top @Model.maxitems of @Model.count.ToString("N0")</b>
-        @Html.Hidden("topid", Model.topid)
+        <input type="hidden" id="topid" name="topid" value="@Model.topid"/>
         </td></tr>
 	<tr>
         <th></th>
@@ -39,7 +39,7 @@
         <td>@p.Address, @p.CSZ</td>
     @if (Model.ordered)
     {
-        <th id="a@p.PeopleId">
+        <th id="a@(p.PeopleId)">
         <span class="move">
         @if (@p.PeopleId != Model.topid && p.HasTag)
         {

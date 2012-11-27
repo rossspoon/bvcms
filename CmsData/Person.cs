@@ -1088,7 +1088,7 @@ namespace CmsData
 					ContributionDate = d,
 					CreatedDate = DateTime.Now,
 					DepositDate = DateTime.Now,
-					FundId = 1,
+					FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt(),
 					RecordStatus = false,
 					TotalCash = 0,
 					TotalChecks = 0,
@@ -1120,9 +1120,9 @@ namespace CmsData
 				CreatedBy = FinanceManagerId.Value,
 				CreatedDate = DateTime.Now,
 			};
-			var typid = (int)Contribution.TypeCode.CheckCash;
+			var typid = ContributionTypeCode.CheckCash;
 			if (pledge)
-				typid = (int)Contribution.TypeCode.Pledge;
+				typid = ContributionTypeCode.Pledge;
 			bd.Contribution = new Contribution
 			{
 				CreatedBy = FinanceManagerId.Value,

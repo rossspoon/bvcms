@@ -94,7 +94,33 @@ namespace CMSPresenter
                 return q2;
             return q2.Skip(startRowIndex).Take(maximumRows);
         }
-
+        public IEnumerable<MailingInfo> FetchFamilyMembers(string sortExpression, int QueryId)
+        {
+			var q = DbUtil.Db.PeopleQuery(QueryId);
+			var q2 = from pp in q
+					 group pp by pp.FamilyId into g
+					 from p in g.First().Family.People
+					 where p.DeceasedDate == null
+					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).LastName
+					 orderby famname, p.FamilyId, p.PositionInFamilyId, p.GenderId
+                     select new MailingInfo
+                     {
+                         Address = p.PrimaryAddress,
+                         Address2 = p.PrimaryAddress2,
+                         CityStateZip = Util.FormatCSZ4(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
+                         City = p.PrimaryCity,
+                         State = p.PrimaryState,
+                         Zip = p.PrimaryZip,
+                         LabelName = (UseTitles ? (p.TitleCode != null ? p.TitleCode + " " + p.Name : p.Name) : p.Name),
+                         Name = p.Name,
+                         LastName = p.LastName,
+                         CellPhone = p.CellPhone,
+                         HomePhone = p.HomePhone,
+                         PeopleId = p.PeopleId
+                     };
+            q2 = ApplySort(q2, sortExpression);
+			return q2;
+        }
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public IEnumerable<MailingInfo> FetchFamilyList(string sortExpression, int QueryId)
         {
@@ -210,6 +236,8 @@ namespace CMSPresenter
             {
                 case "Name":
                     return query.OrderBy(mi => mi.LastName);
+                case "Zip":
+                    return query.OrderBy(mi => mi.Zip);
                 //break;
                 default:
                     break;

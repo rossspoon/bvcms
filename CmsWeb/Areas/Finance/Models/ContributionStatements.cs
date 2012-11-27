@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CmsData.API;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -34,6 +35,13 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			var m = pageEvents.FamilySet.Max(kp => kp.Value);
 			return m;
 		}
+		public List<int> Sets()
+		{
+			if (pageEvents.FamilySet.Count == 0)
+				return new List<int>();
+			var m = pageEvents.FamilySet.Values.Distinct().ToList();
+			return m;
+		}
 
 		public void Run(Stream stream, CMSDataContext Db, IEnumerable<ContributorInfo> q, int set = 0)
 		{
@@ -55,6 +63,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).FirstOrDefault();
 			runningtotals.Processed = 0;
 			Db.SubmitChanges();
+			var count = 0;
 			foreach (var ci in contributors)
 			{
 				if (set > 0 && pageEvents.FamilySet[ci.PeopleId] != set)
@@ -68,6 +77,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 					doc.NewPage();
 				if (set == 0)
 					pageEvents.FamilySet[ci.PeopleId] = 0;
+				count++;
 
 				var st = new StyleSheet();
 				st.LoadTagStyle("h1", "size", "18px");
@@ -187,7 +197,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				t.DefaultCell.Border = Rectangle.NO_BORDER;
 
 				var total = 0m;
-				foreach (var c in ContributionModel.contributions(Db, ci, FromDate, ToDate))
+				foreach (var c in APIContribution.contributions(Db, ci, FromDate, ToDate))
 				{
 					t.AddCell(new Phrase(c.ContributionDate.FormatDate(), font));
 					t.AddCell(new Phrase(c.Fund, font));
@@ -211,8 +221,8 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 
 
 				//------Pledges
-				var pledges = ContributionModel.pledges(Db, ci, ToDate);
-				if (pledges.Count() > 0)
+				var pledges = APIContribution.pledges(Db, ci, ToDate).ToList();
+				if (pledges.Count > 0)
 				{
 					t = new PdfPTable(new float[] { 16f, 12f, 12f });
 					t.WidthPercentage = 100;
@@ -271,7 +281,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				t.AddCell(cell);
 
 				t.DefaultCell.Border = Rectangle.NO_BORDER;
-				foreach (var c in ContributionModel.quarterlySummary(Db, ci, FromDate, ToDate))
+				foreach (var c in APIContribution.quarterlySummary(Db, ci, FromDate, ToDate))
 				{
 					t.AddCell(new Phrase(c.Fund, font));
 					cell = new PdfPCell(t.DefaultCell);
@@ -301,7 +311,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 			}
 			doc.Close();
 
-			if(set == LastSet())
+			if (set == LastSet())
 				runningtotals.Completed = DateTime.Now;
 			Db.SubmitChanges();
 		}

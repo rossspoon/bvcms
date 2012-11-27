@@ -90,7 +90,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 				if (meeting != null)
 				{
 					var q = from at in meeting.Attends
-							where at.AttendanceFlag == true || at.Registered == true
+							where at.AttendanceFlag == true || at.Commitment == AttendCommitmentCode.Attending
 							select at.Person;
 					q = from p in q
 						from fm in DbUtil.Db.People.Where(ff => ff.FamilyId == p.FamilyId)

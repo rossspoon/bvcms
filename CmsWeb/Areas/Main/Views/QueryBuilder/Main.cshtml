@@ -2,11 +2,11 @@
 @model CmsWeb.Models.QueryModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
-    ViewBag.Title = "QueryBuilder";
+    ViewBag.Title = "SearchBuilder";
 }
 @section head 
 {
-    <link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
 }
 
 @section scripts
@@ -18,17 +18,17 @@
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
 <div id="Description"><b>@Model.Description</b></div>
 <div class="roundbox floatleft">
-<h2 class="helptip" title="Next Step|After selecting a condition and configuring it|then update or add it to the Conditions below">Configure a query condition</h2>
+<h2 class="helptip" title="Next Step|After selecting a condition and configuring it|then update or add it to the Conditions below">Configure a search condition</h2>
 <table id="selectconditions" cellspacing="5">
     <tr>
         <td>
             <table style="border: 1px dashed #999" cellspacing="5">
                 <tr id="CategoryDiv2">
-                    <td colspan="2">
+                    <td nowrap colspan="2">
 						<a id="SelectCondition" href="#" class="bt helptip"
                             title="Select a Condition|To build a query, you should select a condition.">Select Condition</a>
 						<a class="help" href="https://www.bvcms.com/DocDialog/QB-"
-						   title="Get QueryBuilder Help|Click this link to get help on this condition.">
+						   title="Get SearchBuilder Help|Click this link to get help on this condition.">
 							<span id='ConditionText'>Group</span>
 						</a>
                       @Html.Hidden("ConditionName", "Group")
@@ -52,12 +52,6 @@
                         @Html.TextBoxClass("Quarters", "validate")
                     </td>
                 </tr>
-                <tr id="ViewDiv" style="display:none">
-                    <td align="right">Volunteer Views:</td>
-                    <td>
-                        @Html.DropDownList("View", Model.Views())
-                    </td>
-                </tr>
                 <tr id="TagsDiv" style="display:none">
                     <td align="right">Tags:</td>
                     <td>
@@ -65,7 +59,7 @@
                     </td>
                 </tr>
                 <tr id="SavedQueryDiv" style="display:none">
-                    <td align="right">Saved Query:</td>
+                    <td align="right">Saved Search:</td>
                     <td>
                         @Html.DropDownList("SavedQueryDesc", Model.SavedQueries())
                     </td>
@@ -145,7 +139,7 @@
         </td>
     </tr>
     <tr>
-        <td align="right">
+        <td nowrap align="right" colspan="2">
             <a id="Update" class="conditionButton bt disabled helptip"
                 title="Update Button|Copies the above condition into the selected condition below">Update</a>
             <a id="Add" class="conditionButton bt disabled helptip"
@@ -155,6 +149,7 @@
             <a id="Remove" class="conditionButton bt disabled helptip"
                 title="Remove Button|Removes the selected condition below">Remove</a>
         </td>
+        <td></td>
     </tr>
 </table>
 @Html.Hidden("SelectedId")
@@ -169,7 +164,7 @@
             </ul>
         </td>
 		<td align="center" valign="bottom" class="helptip"
-            title="Run Button|This will run the Query, giving you results for the Conditions">
+            title="Run Button|This will run the Search, giving you results for the Conditions">
             <div>
                 <input id="Run" type="image" src="/images/Run.png" alt="Run Query" />
             </div>
@@ -210,7 +205,7 @@
         { 
             <div class="FieldLink"><a id='@p.Name' href="#">@p.Title</a></div>
 			<div class="moreinfo"><a class="help" href="https://www.bvcms.com/DocDialog/QB-@p.Name"
-                title="Get QueryBuilder Help|Click this link to get help on this condition.">@p.Description</a></div>
+                title="Get SearchBuilder Help|Click this link to get help on this condition.">@p.Description</a></div>
         } 
         </div>
     }
@@ -227,7 +222,7 @@
 </div>
 <div id="SaveQueryDiv" class="modalDiv" style="display:none">
     <div style="text-align: left">
-        Query Description:
+        Search Description:
         @Html.TextBox("SaveQueryDesc")
         &nbsp;
         <input id="IsPublic" type="checkbox"/> Is Public

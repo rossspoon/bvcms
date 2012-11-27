@@ -1,7 +1,10 @@
 ﻿@using UtilityExtensions
 @using CmsData
 @model CmsData.Person
+@if (User.IsInRole("Edit"))
+{
 <a id="newextravalue" href="#" class="bt">Add New Field</a>
+}
 <table id="extravalues" class="grid">
 <thead>
     <tr>

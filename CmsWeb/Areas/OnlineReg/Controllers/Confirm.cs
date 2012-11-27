@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using System.Web.Security;
 using CmsData;
 using CmsWeb.Models;
 using UtilityExtensions;
@@ -23,6 +24,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 	{
 		public ActionResult ProcessPayment(PaymentForm pf)
 		{
+			if (Session["FormId"] != null)
+				if ((Guid)Session["FormId"] == pf.FormId)
+					return Content("Already submitted");
 			OnlineRegModel m = null;
 			var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pf.DatumId);
 			if (ed != null)
@@ -50,6 +54,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					Payments.ValidateBankAccountInfo(ModelState, pf.Routing, pf.Account);
 				if (pf.Type == "C")
 					Payments.ValidateCreditCardInfo(ModelState, pf.CreditCard, pf.Expires, pf.CCV);
+				
 				if (!ModelState.IsValid)
 					return View("ProcessPayment", pf);
 
@@ -94,6 +99,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					ModelState.AddModelError("form", ti.Message);
 					return View("ProcessPayment", pf);
 				}
+				Session["FormId"] = pf.FormId;
 				if (pf.DatumId > 0)
 					return View(ConfirmTransaction(m, ti.TransactionId, pf.AmtToPay));
 				ConfirmDuePaidTransaction(ti, ti.TransactionId, pf.AmtToPay ?? 0, sendmail: true);
@@ -349,7 +355,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				t.Approved = true;
 				m.EnrollAndConfirm();
 				if (m.List.Any(pp => pp.PeopleId == null))
+				{
+					if ((bool?)Session["OnlineRegLogin"] == true)
+					{
+						FormsAuthentication.SignOut();
+						Session.Abandon();
+					}
 					return "error: no person";
+				}
 				m.UseCoupon(t.TransactionId);
 			}
 			else
@@ -362,7 +375,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				}
 				m.EnrollAndConfirm();
 				if (m.List.Any(pp => pp.PeopleId == null))
+				{
+					if ((bool?)Session["OnlineRegLogin"] == true)
+					{
+						FormsAuthentication.SignOut();
+						Session.Abandon();
+					}
 					return "error: no person";
+				}
 				m.UseCoupon(t.TransactionId);
 			}
 			if (m.IsCreateAccount() || m.ManagingSubscriptions())
@@ -372,6 +392,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			ViewData["orgname"] = m.org != null ? m.org.OrganizationName
 								: m.masterorgid.HasValue ? m.masterorg.OrganizationName
 								: m.div.Name;
+			if ((bool?)Session["OnlineRegLogin"] == true)
+			{
+				FormsAuthentication.SignOut();
+				Session.Abandon();
+			}
 			return confirm;
 		}
 		public ActionResult Confirm(int? id, string TransactionID, decimal? Amount)
@@ -391,7 +416,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return Content(confirm);
 			ViewBag.Url = m.URL;
 
-			DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
+			//DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
 			DbUtil.Db.SubmitChanges();
 
 			SetHeaders(m);

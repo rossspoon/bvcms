@@ -5,6 +5,7 @@ using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using System.Xml.Serialization;
 using CmsData;
 using UtilityExtensions;
 using CmsWeb.Models;
@@ -23,7 +24,15 @@ namespace CmsWeb.Areas.Public.Controllers
     {
         public ActionResult Index()
         {
-            return View(ApiTestInfo.testplan());
+			//var plan = new TestPlan { Sections = ApiTestInfo.testplan() };
+			var plan = ApiTestInfo.testplan();
+//		    var sw = new StringWriter();
+//			var xs = new XmlSerializer(typeof(TestPlan));
+//		    var ns = new XmlSerializerNamespaces();
+//		    ns.Add("", "");
+//		    xs.Serialize(sw, plan, ns);
+//		    return Content(sw.ToString(), "text/xml");
+            return View(plan);
         }
         [ValidateInput(false)]
         public ActionResult Init(string script, string uname, string pword)

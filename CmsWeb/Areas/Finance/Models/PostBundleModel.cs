@@ -172,18 +172,30 @@ namespace CmsWeb.Models
 				return new { error = "not found" };
 			return o;
 		}
-		public static string Names(string q, int limit)
+        public class NamesInfo
+        {
+            public string Name { get; set; }
+            public string Addr { get; set; }
+            public int Pid { get; set; }
+        }
+		public static IEnumerable<NamesInfo> Names(string q, int limit)
 		{
-			var qu = from p in DbUtil.Db.People
-					 where p.Name2.StartsWith(q)
-					 orderby p.Name2
-					 select p.Name2
-					 + (p.DeceasedDate.HasValue ? " [DECEASED]" : "")
-					 + "|" + p.PeopleId
-					 + "|" + (p.Age ?? 0)
-					 + "|" + (p.PrimaryAddress ?? "");
-			var ret = string.Join("\n", qu.Take(limit).ToArray());
-			return ret;
+		    var qu = from p in DbUtil.Db.People
+		             where p.Name2.StartsWith(q)
+		             orderby p.Name2
+		             select new NamesInfo()
+		                        {
+                                    Pid = p.PeopleId,
+		                            Name = p.Name2 + (p.DeceasedDate.HasValue ? " [DECEASED]" : ""),
+                                    Addr = p.PrimaryAddress ?? ""
+		                        };
+//					 + (p.DeceasedDate.HasValue ? " [DECEASED]" : "")
+//					 + "|" + p.PeopleId
+//					 + "|" + (p.Age ?? 0)
+                     //+ "|" + (p.PrimaryAddress ?? "");
+		    return qu.Take(limit);
+//			var ret = string.Join("\n", qu.Take(limit).ToArray());
+//			return ret;
 		}
 
 		public object ContributionRowData(PostBundleController ctl, int cid, decimal? othersplitamt = null)
@@ -217,9 +229,9 @@ namespace CmsWeb.Models
 				};
 				int type;
 				if (pledge == true)
-					type = (int)Contribution.TypeCode.Pledge;
+					type = ContributionTypeCode.Pledge;
 				else
-					type = (int)Contribution.TypeCode.CheckCash;
+					type = ContributionTypeCode.CheckCash;
 
 				decimal? othersplitamt = null;
 				if (splitfrom > 0)
@@ -265,9 +277,9 @@ namespace CmsWeb.Models
 		{
 			int type;
 			if (pledge == true)
-				type = (int)Contribution.TypeCode.Pledge;
+				type = ContributionTypeCode.Pledge;
 			else
-				type = (int)Contribution.TypeCode.CheckCash;
+				type = ContributionTypeCode.CheckCash;
 			var c = DbUtil.Db.Contributions.SingleOrDefault(cc => cc.ContributionId == editid);
 			if (c == null)
 				return null;
@@ -336,6 +348,9 @@ namespace CmsWeb.Models
 			if (text.StartsWith("Financial_Institution"))
 				using (var csv = new CsvReader(new StringReader(text), true))
 					return BatchProcessSunTrust(csv, date, fundid);
+            if (text.StartsWith("TOTAL DEPOSIT AMOUNT"))
+				using (var csv = new CsvReader(new StringReader(text), true))
+					return BatchProcessChase(csv, date, fundid);
 			using (var csv = new CsvReader(new StringReader(text), true))
 			{
 				var names = csv.GetFieldHeaders();
@@ -354,7 +369,7 @@ namespace CmsWeb.Models
 				ContributionDate = date,
 				CreatedBy = Util.UserId,
 				CreatedDate = now,
-				FundId = 1
+				FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt()
 			};
 			DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
 
@@ -386,7 +401,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 				bd.Contribution.ContributionDesc = ck;
 				var eac = Util.Encrypt(rt + "," + ac);
@@ -417,7 +432,7 @@ namespace CmsWeb.Models
 							ContributionDate = date,
 							CreatedBy = Util.UserId,
 							CreatedDate = now,
-							FundId = 1
+							FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt()
 						};
 			DbUtil.Db.BundleHeaders.InsertOnSubmit(bh);
 			bh.BundleStatusId = BundleStatusCode.Open;
@@ -466,7 +481,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = fundid ?? qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 				string ac = null, rt = null;
 				for (var c = 1; c < fieldCount; c++)
@@ -516,6 +531,87 @@ namespace CmsWeb.Models
 			FinishBundle(bh);
 			return bh.BundleHeaderId;
 		}
+		public static int? BatchProcessChase(CsvReader csv, DateTime date, int? fundid)
+		{
+			var prevbundle = -1;
+			var curbundle = 0;
+
+			var bh = GetBundleHeader(date, DateTime.Now);
+
+			int fieldCount = csv.FieldCount;
+			var cols = csv.GetFieldHeaders();
+
+			while (csv.ReadNextRecord())
+			{
+				var bd = new BundleDetail
+				{
+					CreatedBy = Util.UserId,
+					CreatedDate = DateTime.Now,
+				};
+				var qf = from f in DbUtil.Db.ContributionFunds
+						 where f.FundStatusId == 1
+						 orderby f.FundId
+						 select f.FundId;
+
+				bd.Contribution = new Contribution
+				{
+					CreatedBy = Util.UserId,
+					CreatedDate = DateTime.Now,
+					ContributionDate = date,
+					FundId = fundid ?? qf.First(),
+					ContributionStatusId = 0,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
+				};
+				string ac = null, rt = null, ck = null, sn = null;
+				for (var c = 1; c < fieldCount; c++)
+				{
+					switch (cols[c])
+					{
+						case "DEPOSIT NUMBER":
+							curbundle = csv[c].ToInt();
+							if (curbundle != prevbundle)
+							{
+								FinishBundle(bh);
+								bh = GetBundleHeader(date, DateTime.Now);
+								prevbundle = curbundle;
+							}
+							break;
+						case "AMOUNT":
+							bd.Contribution.ContributionAmount = csv[c].GetAmount();
+							break;
+                        case "CHECK NUMBER":
+							ck = csv[c];
+							break;
+						case "ROUTING NUMBER":
+							rt = csv[c];
+							break;
+						case "ACCOUNT NUMBER":
+							ac = csv[c];
+							break;
+					}
+				}
+				if (!ck.HasValue())
+					if (ac.Contains(' '))
+					{
+						var a = ac.SplitStr(" ", 2);
+						ck = a[0];
+						ac = a[1];
+					}
+				var eac = Util.Encrypt(rt + "|" + ac);
+				var q = from kc in DbUtil.Db.CardIdentifiers
+						where kc.Id == eac
+						select kc.PeopleId;
+				var pid = q.SingleOrDefault();
+				if (pid != null)
+					bd.Contribution.PeopleId = pid;
+				bd.Contribution.BankAccount = eac;
+			    bd.Contribution.CheckNo = ck;
+			    bd.Contribution.ContributionDesc = "Deposit Id: " + curbundle;
+				bh.BundleDetails.Add(bd);
+			}
+			FinishBundle(bh);
+			return bh.BundleHeaderId;
+		}
 		public static int? BatchProcessSunTrust(CsvReader csv, DateTime date, int? fundid)
 		{
 			var prevbundle = -1;
@@ -545,7 +641,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = fundid ?? qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 				string ac = null, rt = null, ck = null, sn = null;
 				for (var c = 1; c < fieldCount; c++)
@@ -647,7 +743,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = fundid ?? qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 
 				var s = csv[3];
@@ -712,7 +808,7 @@ namespace CmsWeb.Models
 					ContributionDate = date,
 					FundId = fundid ?? qf.First(),
 					ContributionStatusId = 0,
-					ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+					ContributionTypeId = ContributionTypeCode.CheckCash,
 				};
 
 				var dtint = csv[3].ToLong();
@@ -773,7 +869,7 @@ namespace CmsWeb.Models
 				ContributionDate = date,
 				FundId = fundid,
 				ContributionStatusId = 0,
-				ContributionTypeId = (int)Contribution.TypeCode.CheckCash,
+				ContributionTypeId = ContributionTypeCode.CheckCash,
 			};
 			return bd;
 		}

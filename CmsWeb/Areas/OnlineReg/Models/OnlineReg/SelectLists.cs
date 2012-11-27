@@ -70,11 +70,11 @@ namespace CmsWeb.Models
             public bool selected { get; set; }
             public bool filled { get; set; }
         }
-        public IEnumerable<ClassInfo> Classes()
+        public IEnumerable<ClassInfo> Classes(int? cid)
         {
             if (masterorgid.HasValue)
-                return Classes(masterorg, classid ?? 0);
-            return Classes(divid, classid ?? 0);
+                return Classes(masterorg, cid ?? 0);
+            return Classes(divid, cid ?? 0);
         }
         public static List<ClassInfo> Classes(int? divid, int id)
         {
@@ -131,21 +131,21 @@ namespace CmsWeb.Models
             return o.OrganizationName + lead + dt + loc;
         }
 
-
-        public List<SelectListItem> ShirtSizes()
-        {
-            var q = from ss in DbUtil.Db.ShirtSizes
-                    orderby ss.Id
-                    select new SelectListItem
-                    {
-                        Value = ss.Code,
-                        Text = ss.Description
-                    };
-            var list = q.ToList();
-            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
-            if (org != null && settings[orgid.Value].AllowLastYearShirt == true)
-                list.Add(new SelectListItem { Value = "lastyear", Text = "Use shirt from last year" });
-            return list;
-        }
+//
+//        public List<SelectListItem> ShirtSizes()
+//        {
+//            var q = from ss in DbUtil.Db.ShirtSizes
+//                    orderby ss.Id
+//                    select new SelectListItem
+//                    {
+//                        Value = ss.Code,
+//                        Text = ss.Description
+//                    };
+//            var list = q.ToList();
+//            list.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
+//            if (org != null && settings[orgid.Value].AllowLastYearShirt == true)
+//                list.Add(new SelectListItem { Value = "lastyear", Text = "Use shirt from last year" });
+//            return list;
+//        }
     }
 }

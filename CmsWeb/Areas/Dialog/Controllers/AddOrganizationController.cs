@@ -41,6 +41,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
 			if (!m.org.OrganizationName.HasValue())
 				m.org.OrganizationName = "New organization needs a name";
             m.org.OrganizationStatusId = 30;
+			m.org.DivisionId = org.DivisionId;
 
             DbUtil.Db.Organizations.InsertOnSubmit(m.org);
             DbUtil.Db.SubmitChanges();

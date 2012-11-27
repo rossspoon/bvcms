@@ -45,10 +45,10 @@ namespace CmsWeb.Models
 					let oid = p.PeopleExtras.FirstOrDefault(pe => pe.Field == "OtherId").Data
 					select new
 					{
-						PeopleId = p.PeopleId,
+					    p.PeopleId,
 						Title = p.TitleCode,
-						FirstName = p.PreferredName,
-						LastName = p.LastName,
+						FirstName = p.PreferredName, 
+                        p.LastName,
 						Address = p.PrimaryAddress,
 						Address2 = p.PrimaryAddress2,
 						City = p.PrimaryCity,
@@ -65,18 +65,18 @@ namespace CmsWeb.Models
 						MemberStatus = p.MemberStatus.Description,
 						Age = p.Age.ToString(),
 						Married = p.MaritalStatus.Description,
-						Wedding = p.WeddingDate.FormatDate(),
-						FamilyId = p.FamilyId,
+						Wedding = p.WeddingDate.FormatDate(), p.FamilyId,
 						FamilyPosition = p.FamilyPosition.Description,
 						Gender = p.Gender.Description,
 						School = p.SchoolOther,
 						Grade = p.Grade.ToString(),
 						FellowshipLeader = p.BFClass.LeaderName,
 						AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
-						FellowshipClass = (om == null ? "" : om.Organization.OrganizationName),
-						AltName = p.AltName,
+						FellowshipClass = (om == null ? "" : om.Organization.OrganizationName), p.AltName,
 						Employer = p.EmployerOther,
-						OtherId = oid ?? ""
+						OtherId = oid ?? "",
+                        Campus = p.Campu == null ? "" : p.Campu.Description,
+                        DecisionDate = p.DecisionDate.FormatDate()
 					};
 			return q.Take(maximumRows);
 		}

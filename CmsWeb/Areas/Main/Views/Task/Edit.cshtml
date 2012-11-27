@@ -20,7 +20,7 @@
             <tr>
                 <th>Owner</th>
                 <td>
-                    <a href="mailto:@Model.OwnerEmail?subject=@Model.Description&body=@Server.UrlEncode(DbUtil.Db.CmsHost + "/Task/List/" + Model.Id + "#detail#select")>@Model.Owner</a>
+                    <a href="mailto:@(Model.OwnerEmail)?subject=@(Model.Description)&body=@Server.UrlEncode(DbUtil.Db.CmsHost + "/Task/List/" + Model.Id + "#detail#select")">@Model.Owner</a>
 @if (Model.IsOwner) 
 { 
                     <a id="changeowner" href="/SearchAdd/Index/@Model.Id?type=taskowner">(transfer)</a>
@@ -32,12 +32,12 @@
                 <td>
 @if (Model.CoOwnerId.HasValue) 
 { 
-                    <a href="mailto:@Model.CoOwnerEmail">@Model.CoOwner</a>
+                    <a href="mailto:@(Model.CoOwnerEmail)">@Model.CoOwner</a>
 } 
 @if (Model.IsOwner)
 {
-                    <a id="delegate" href="/SearchAdd/Index/@Model.Id?type=taskdelegate">@Model.ChangeCoOwner</a>
-                    @Html.CheckBox("ForceCompleteWContact") @:Complete With Contact
+                    <a id="delegate" href="/SearchAdd/Index/@(Model.Id)?type=taskdelegate">@(Model.ChangeCoOwner)</a>
+                    @Html.CheckBox("ForceCompleteWContact") <text>Complete With Contact</text>
 }
                 </td>
             </tr>
@@ -81,7 +81,7 @@
             <tr>
                 <th>Notes:<br /></th>
                 <td>
-                    @Html.TextArea("Notes", new { style = "width: 30em" })
+                    @(Html.TextArea("Notes", new { style = "width: 30em" }))
                 </td>
             </tr>
             <tr>

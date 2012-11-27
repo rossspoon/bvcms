@@ -123,17 +123,17 @@ namespace CmsWeb.Areas.Main.Controllers
             var contactid = tasks.AddCompletedContact(id);
             return Json(new { ContactId = contactid });
         }
-        public ActionResult SearchPeople(int? id)
-        {
-            var m = new SearchPeopleModel();
-            UpdateModel(m);
-            if (id.HasValue)
-            {
-                m.Page = id;
-                return PartialView("SearchPeopleRows", m);
-            }
-            return PartialView(m);
-        }
+        //public ActionResult SearchPeople(int? id)
+        //{
+        //    var m = new SearchPeopleModel();
+        //    UpdateModel(m);
+        //    if (id.HasValue)
+        //    {
+        //        m.Page = id;
+        //        return PartialView("SearchPeopleRows", m);
+        //    }
+        //    return PartialView(m);
+        //}
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ChangeOwner(int id, int peopleid)
         {

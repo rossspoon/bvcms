@@ -14,7 +14,9 @@ namespace CmsData
 		{
 			if (ndt.Date == DateTime.Today)
 				ndt = ndt.AddDays(1).Date;
- 
+		    if (StartWhen.HasValue && ndt.Date < StartWhen)
+		        ndt = StartWhen.Value;
+
 			if (SemiEvery == "S")
 			{
 				var dt1 = new DateTime(ndt.Year, ndt.Month, Day1.Value);
@@ -60,6 +62,10 @@ namespace CmsData
 			if (!total.HasValue || total == 0)
 				return 0;
 
+			var preferredtype = (from pi in Db.PaymentInfos
+								 where pi.PeopleId == PeopleId
+								 select pi.PreferredGivingType).Single();
+
 			var t = new Transaction
 			{
 				TransactionDate = DateTime.Now,
@@ -74,10 +80,12 @@ namespace CmsData
 			Db.Transactions.InsertOnSubmit(t);
 			Db.SubmitChanges();
 
+#if DEBUG
+#else
 			if (gateway == "AuthorizeNet")
 				ret = anet.createCustomerProfileTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id);
 			else
-				ret = sage.createVaultTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id, Type);
+				ret = sage.createVaultTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id, preferredtype);
 			t.TransactionPeople.Add(new TransactionPerson { PeopleId = PeopleId, Amt = total });
 
 			t.Message = ret.Message;
@@ -122,9 +130,10 @@ namespace CmsData
 				foreach (var p in Db.FinancePeople())
 					Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(adminEmail),
 						"Recurring Giving Failed on " + Db.CmsHost,
-						"<a href='{0}Manage/Transactions/Index/{2}'>message: {1}, tranid:{2}</a>".Fmt(Db.CmsHost, ret.Message, t.Id), 
+						"<a href='{0}Manage/Transactions/Index/{2}'>message: {1}, tranid:{2}</a>".Fmt(Db.CmsHost, ret.Message, t.Id),
 						Util.ToMailAddressList(p.EmailAddress), 0, null);
 			}
+#endif
 			return 1;
 		}
 		public static int DoAllGiving(CMSDataContext Db)

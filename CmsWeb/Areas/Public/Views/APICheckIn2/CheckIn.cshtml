@@ -4,13 +4,11 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Checkin";
 }
-@section head {
-    <link href="/Content/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
-}
 
 @section scripts
 {
-@Html.Script("/Scripts/CheckIn.js")
+    @Html.Script("/Scripts/CheckIn.js")
+}
 
     @Html.Hidden("OrgId")
     @Html.Hidden("PeopleId", Model.person.PeopleId)

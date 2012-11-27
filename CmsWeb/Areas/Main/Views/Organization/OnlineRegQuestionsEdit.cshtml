@@ -1,16 +1,53 @@
-﻿@model CmsData.RegSettings
+﻿@model CmsData.Registration.Settings
 @using CmsWeb
 @using UtilityExtensions
 <div>
-<a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
-<a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+    <a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+    <a class="AddQuestion bt green" href="#">Add Question Item</a>
+    <a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 </div>
+<div style="clear:both"></div>
+<hr />
 <div>@Html.ValidationMessage("Form")</div>
-<ul class="enablesort">
-@Html.EditorFor(m => m, "TabQuestions")
+<div>
+	<span class="keyword big tip" title="TargetExtraValues
+     |Small groups will actually refer to ExtraValue fields on the Person's record option
+     |This option is not normally used">
+		TargetExtraValues:</span> @Html.CheckBox("TargetExtraValues", Model.TargetExtraValues)
+</div>
+<ul class="enablesort sort" id="QuestionList">
+    @Html.EditorFor(m => m, "TabQuestions")
 </ul>
 <div>
-<a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
-<a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+    <a class="displayedit bt" href="/Organization/OnlineRegQuestions/@Model.OrgId">Cancel</a>
+    <a class="AddQuestion bt green" href="#">Add Question Item</a>
+    <a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 </div>
 <div>@Html.ValidationMessage("Form")</div>
+<div id="selectquestions" style="display:none;padding-left:2em">
+    <ul>
+        <li class="AskDropdown"></li>
+        <li class="AskCheckboxes"></li>
+        <li class="AskExtraQuestions"></li>
+        <li class="AskYesNoQuestions"></li>
+        <li class="AskMenu"></li>
+    </ul>
+    <ul>
+        <li class="AskAllergies"></li>
+        <li class="AskRequest"></li>
+        <li class="AskDoctor"></li>
+        <li class="AskChurch"></li>
+    </ul>
+    <ul>
+        <li class="AskCoaching"></li>
+        <li class="AskEmContact"></li>
+        <li class="AskInsurance"></li>
+        <li class="AskTylenolEtc"></li>
+    </ul>
+    <ul>
+        <li class="AskParents"></li>
+        <li class="AskSuggestedFee"></li>
+        <li class="AskTickets"></li>
+        <li class="AskSize"></li>
+    </ul>
+</div>

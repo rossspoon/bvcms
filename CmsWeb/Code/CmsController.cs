@@ -43,6 +43,7 @@ namespace CmsWeb
 			Util.Helpfile = "_{0}_{1}".Fmt(
 				filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
 				filterContext.ActionDescriptor.ActionName);
+			DbUtil.Db.UpdateLastActivity(Util.UserId);
 		}
 		public string AuthenticateDeveloper(bool log = false)
 		{
@@ -121,6 +122,7 @@ namespace CmsWeb
 			Util.Helpfile = "_{0}_{1}".Fmt(
 				filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
 				filterContext.ActionDescriptor.ActionName);
+			DbUtil.Db.UpdateLastActivity(Util.UserId);
 		}
 		public ActionResult RedirectShowError(string message)
 		{
@@ -158,6 +160,7 @@ namespace CmsWeb
 			Util.Helpfile = "_{0}_{1}".Fmt(
 				filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
 				filterContext.ActionDescriptor.ActionName);
+			DbUtil.Db.UpdateLastActivity(Util.UserId);
 		}
 	}
 	public class RequireBasicAuthentication : ActionFilterAttribute

@@ -30,29 +30,34 @@
     });
     $(".bt").button();
     $('td.name').tooltip({ showBody: "|" });
-    $("#name").autocomplete("/PostBundle/Names", {
-        minChars: 3,
-        matchContains: false,
-        mustMatch: true,
-        width: 200,
-        selectFirst: false,
-        autoFill: false,
-        formatItem: function (row, pos, len) {
-            return row[0] + " (" + row[2] + ")<br />" + row[3];
-        },
-        formatResult: function (row) {
-            return row[0];
-        }
-    });
-    $("#name").result(function (ev, data, formatted) {
-        if (data) {
-            $('#pid').val(data[1]);
-        }
-        if (this.value === '') {
-            $.growlUI("Name", "Not Found");
-            $('#pid').val('');
-        }
-    });
+    $( "#name" ).autocomplete({
+            minLength: 3,
+            source: function(request, response) {
+                $.post("/PostBundle/Names", request, function(ret) {
+                    if (!ret.length) {
+                        $.growlUI("Name", "Not Found");
+                        $('#pid').val('');
+                        $('#name').val('');
+                    }
+                    response(ret.slice(0, 10));
+                }, "json");
+            },
+            focus: function( event, ui ) {
+                $( "#name" ).val( ui.item.Name );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( "#name" ).val( ui.item.Name );
+                $( "#pid" ).val( ui.item.Pid );
+                return false;
+            }
+        })
+        .data( "autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li>" )
+                .append( "<a>" + item.Name + "<br>" + item.Addr + "</a>" )
+                .appendTo( ul );
+        };
+    // TODO: fix autocomplete
 
     $.Stripe = function () {
         $('#bundle tbody tr').removeClass('alt');

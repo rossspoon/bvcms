@@ -1,176 +1,126 @@
-﻿
-<table id="toolbar">
-<tr>
-    <td class="dropdown">
-        <div><a href='/Email/Index/@ViewData["queryid"]''><img src="/images/Mail.png" /> 
-        Email</a></div>
-        <div class="sublinks">
-            <a href='/Email/Index/@ViewData["queryid"]'><img src="/images/Mail.png" /> 
-                Individuals</a>
-            <a href='/Email/Index/@ViewData["queryid"]?parents=true'><img src="/images/Mail.png" /> 
-                Parents</a>
+﻿<div class="toolbar">
+<ul horizontal-offset="-70">
+    <li>
+        <a href='#' class="trigger-dropdown">
+            Email <img src="/images/dnarrow.png" />
+        </a>
+        <div class="dropdown-menu has-tip">
+            <ul>
+                <li><a href='/Email/Index/@ViewData["queryid"]'> Individuals</a></li>
+                <li><a href='/Email/Index/@ViewData["queryid"]?parents=true'> Parents</a></li>
+            </ul>
         </div>
-    </td>
-    <td class="dropdown">
-        <div><a href='/Person/TestSMS/@ViewData["queryid"]''><img src="/images/Mail.png" />SMS</a></div>
-    </td>
-    <td class="dropdown">
-        <div><a href='#'><img src="/images/BulkMailing.png" /> 
-        Export</a></div>
-        <div class="sublinks">
-            <a href='/ExportExcel.aspx?id=@ViewData["queryid"]' class="ChooseLabelType" 
-                title="For mail merge"><img src="/images/Excel.png" /> 
-                Excel</a>
-            <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=AllFamily'
-                title="For mail merge"><img src="/images/Excel.png" /> 
-                Excel Family</a>
-            <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=IndividualPicture' 
-                title="For picture directory word merge"><img src="/images/Excel.png" /> 
-                Excel Pictures</a>
-            <a href='/Export/UpdatePeople/@ViewData["queryid"]' 
-                title="For Doing a Mass Update"><img src="/images/Excel.png" /> 
-                Excel Update</a>
-            <a href='/bulkmail.aspx?id=@ViewData["queryid"]' class="ChooseLabelType" 
-                title="Comma separated values text file, opens in excel, for bulk mailings"><img src="/images/Excel.png" /> 
-                Bulk (csv)</a>
-            <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Library'
-                title="For Atrium Library Import"><img src="/images/Excel.png" /> 
-                Excel Library</a>
-            <a href='/Export/QueryBits/@ViewData["queryid"]' 
-                title="QueryBits in Columns"><img src="/images/Excel.png" /> 
-                Query Bits Export</a>
-            <a href='/Export/ExtraValues/@ViewData["queryid"]' 
-                title="ExtraValues in Columns"><img src="/images/Excel.png" /> 
-                Extra Values Export</a>
+    </li>
+@if (User.IsInRole("Developer"))
+{
+    <li>
+        <a href='/Person/TestSMS/@ViewData["queryid"]'>
+            SMS
+        </a>
+    </li>
+}
+    <li>
+        <a href='#' class="trigger-dropdown">
+            Export <img src="/images/dnarrow.png" />
+        </a>
+        <div class="dropdown-menu has-tip">
+            <ul>
+            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]' class="ChooseLabelType" title="For mail merge"> Excel</a></li>
+            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=AllFamily' title="For mail merge"> Excel Family</a></li>
+            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=IndividualPicture' title="For picture directory word merge"> Excel Pictures</a></li>
+            <li><a href='/Export/UpdatePeople/@ViewData["queryid"]' title="For Doing a Mass Update"> Excel Update</a></li>
+            <li><a href='/bulkmail.aspx?id=@ViewData["queryid"]' class="ChooseLabelType" title="Comma separated values text file, opens in excel, for bulk mailings"> Bulk (csv)</a></li>
+            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Library' title="For Atrium Library Import"> Excel Library</a></li>
+            <li><a href='/Export/QueryBits/@ViewData["queryid"]' title="SearchBits in Columns"> Search Bits Export</a></li>
+            <li><a href='/Export/ExtraValues/@ViewData["queryid"]' title="ExtraValues in Columns"> Extra Values Export</a></li>
 @if ((bool?)ViewData["OrganizationContext"] ?? false)
 { 
-                <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Organization' title="Includes Org Member info"><img src="/images/Excel.png" /> 
-                    Member Export</a>
+            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Organization' title="Includes Org Member info"> Member Export</a></li>
      if ((bool?)ViewData["OrgMemberContext"] ?? false)
      { 
-            
-                <a href='/ExportExcel.aspx?format=Groups' title="Includes Org Member and Small Group columns"><img src="/images/Excel.png" /> 
-                    Groups Export</a>
+            <li><a href='/ExportExcel.aspx?format=Groups' title="Includes Org Member and Small Group columns"> Groups Export</a></li>
      } 
-                <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Promotion' title="Just for Promotion Mail Merge"><img src="/images/Excel.png" />
-                    Promotion Export</a>
+            <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Promotion' title="Just for Promotion Mail Merge"> Promotion Export</a></li>
  } 
+            </ul>
         </div>
-    </td>
-    <td class="dropdown">
-        <div><a href='#'><img src="/images/Report.png" /> 
-        Reports</a></div>
-        <div class="sublinks">
-            <a href='/Reports/Prospect/@ViewData["queryid"]'
-                target="_blank"><img src="/images/Report.png" /> 
-                Inreach/Outreach</a>
-            <a href='/Reports/Prospect/@ViewData["queryid"]?Form=true' 
-                target="_blank"><img src="/images/Report.png" /> 
-                Inreach/Outreach with Form</a>
-            <a href='/Reports/Contacts/@ViewData["queryid"]' 
-                target="_blank" title="Report for Robo-calling Contacts"><img src="/images/Report.png" />
-                Contact Report</a>
-            <a href='/Reports/WeeklyAttendance/@ViewData["queryid"]' 
-                target="_blank" title="General Attendance Stats"><img src="/images/Report.png" />
-                Weekly Attend</a>
-            <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Involvement' 
-                target="_blank" title="Personal, Contact and Enrollment Info"><img src="/images/Excel.png" />
-                Involvement</a>
-            <a href='/Reports/Family/@ViewData["queryid"]' 
-                target="_blank"><img src="/images/Report.png" /> 
-                Family Report</a>
-			<a href="/Reports/PictureDirectory/@ViewData["queryid"]"
-			   target="_blank"><img src="/images/Report.png" /> 
-                Picture Directory</a>
-			<a href="/Reports/FamilyDirectory/@ViewData["queryid"]"
-			   target="_blank"><img src="/images/Report.png" /> 
-                Family Directory</a>
-            <a href='/Volunteers/Index/@ViewData["queryid"]' 
-                target="_blank"><img src="/images/Report.png" /> 
-                Volunteer Report</a>
-@if ((bool?)ViewData["OrganizationContext"] ?? false)
-{ 
-            <a id="RollsheetLink" href='#' title="Rollsheet Report"><img src="/images/tags.png" />
-                Rollsheet Report</a>
-            <a id="RallyRollsheetLink" href='#' title="Rally Rollsheet Report"><img src="/images/tags.png" />
-                Rally Rollsheet</a>
-            <a href='/Reports/Registration/@ViewData["queryid"]?oid=@Util2.CurrentOrgId' 
-                target="_blank"><img src="/images/Report.png" /> 
-                Registration Report</a>
-}
-else
-{ 
-            <a href='/Reports/Registration/@ViewData["queryid"]' 
-                target="_blank"><img src="/images/Report.png" /> 
-                Registration Rpt</a>
-}    
-            <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Attend' 
-                target="_blank" title="Contains attendance information for their class"><img src="/images/Excel.png" />
-                BF Attendance</a>
-            <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Children' 
-                target="_blank" title="Contains emergency contact, who brought child info"><img src="/images/Excel.png" />
-                Children</a>
-            <a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Church' 
-                target="_blank" title="Contains other Church Info"><img src="/images/Excel.png" />
-                Other Churches</a>
+    </li>
+    <li>
+        <a href='#' class="trigger-dropdown">
+            Reports <img src="/images/dnarrow.png" />
+        </a>
+        <div class="dropdown-menu has-tip">
+            <ul>
+                <li><a href='/Reports/Prospect/@ViewData["queryid"]' target="_blank"> Inreach/Outreach</a></li>
+                <li><a href='/Reports/Prospect/@ViewData["queryid"]?Form=true' target="_blank"> Inreach/Outreach with Form</a></li>
+                <li><a href='/Reports/Contacts/@ViewData["queryid"]' target="_blank" title="Report for Robo-calling Contacts"> Contact Report</a></li>
+                <li><a href='/Reports/WeeklyAttendance/@ViewData["queryid"]' target="_blank" title="General Attendance Stats"> Weekly Attend</a></li>
+                <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Involvement' target="_blank" title="Personal, Contact and Enrollment Info"> Involvement</a></li>
+                <li><a href='/Reports/Family/@ViewData["queryid"]' target="_blank"> Family Report</a></li>
+                <li><a href="/Reports/PictureDirectory/@ViewData["queryid"]" target="_blank"> Picture Directory</a></li>
+                <li><a href="/Reports/FamilyDirectory/@ViewData["queryid"]" target="_blank"> Family Directory</a></li>
+                <li><a href="/Reports/FamilyDirectoryCompact/@ViewData["queryid"]" target="_blank"> Compact Directory</a></li>
+                <li><a href='/Volunteers/Index/@ViewData["queryid"]' target="_blank"> Volunteer Report</a></li>
+            @if ((bool?)ViewData["OrganizationContext"] ?? false)
+            { 
+                <li><a id="RollsheetLink" href='#' title="Rollsheet Report"> Rollsheet Report</a></li>
+                <li><a id="RallyRollsheetLink" href='#' title="Rally Rollsheet Report"> Rally Rollsheet</a></li>
+                <li><a href='/Reports/Registration/@ViewData["queryid"]?oid=@Util2.CurrentOrgId' target="_blank"> Registration Report</a></li>
+            }
+            else
+            { 
+                <li><a href='/Reports/Registration/@ViewData["queryid"]' target="_blank"> Registration Rpt</a></li>
+            }    
+                <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Attend' target="_blank" title="Contains attendance information for their class"> BF Attendance</a></li>
+                <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Children' target="_blank" title="Contains emergency contact, who brought child info"> Children</a></li>
+                <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Church' target="_blank" title="Contains other Church Info"> Other Churches</a></li>
+            </ul>
         </div>
-    </td>
-    <td class="dropdown">
-        <div><a href='#'><img src="/images/BulkMailing.png" /> 
-        Labels</a></div>
-        <div class="sublinks">
-            <a href='/Reports/RollLabels/@ViewData["queryid"]' class="ChooseLabelType" 
-                title="Labels (pdf for Datamax label printer)" target="_blank"><img src="/images/tags.png" /> 
-                Roll Labels</a>
-            <a href='/Reports/BarCodeLabels/@ViewData["queryid"]' 
-                target="_blank" title="Labels for Choir Attendance"><img src="/images/tags.png" />
-                Barcode Labels</a>
-            <a href='/Reports/Avery/@ViewData["queryid"]' 
-                title="Avery Name Labels" target="_blank">
-                <img src="/images/tags.png" />
-                Avery Labels</a>
-            <a href='/Reports/Avery3/@ViewData["queryid"]' 
-                title="Avery 3 Across Labels (person per row)" target="_blank">
-                <img src="/images/tags.png" />
-                Avery Labels 3</a>
-            <a href='/Reports/AveryAddress/@ViewData["queryid"]' class="ChooseLabelType" 
-                title="Address Labels"><img src="/images/tags.png" /> 
-                Avery Address</a>
-			<a href="/Reports/EmployerAddress/@ViewData["queryid"]"
-			   target="_blank"><img src="/images/tags.png" /> 
-                Avery Employer</a>
+    </li>
+    <li>
+        <a href='#' class="trigger-dropdown">
+            Labels <img src="/images/dnarrow.png" />
+        </a>
+        <div class="dropdown-menu has-tip">
+            <ul>
+            <li><a href='/Reports/RollLabels/@ViewData["queryid"]' class="ChooseLabelType" title="Labels (pdf for Datamax label printer)" target="_blank"> Roll Labels</a></li>
+            <li><a href='/Reports/BarCodeLabels/@ViewData["queryid"]' target="_blank" title="Labels for Choir Attendance"> Barcode Labels</a></li>
+            <li><a href='/Reports/Avery/@ViewData["queryid"]' title="Avery Name Labels" target="_blank">  Avery Labels</a></li>
+            <li><a href='/Reports/Avery3/@ViewData["queryid"]' title="Avery 3 Across Labels (person per row)" target="_blank">  Avery Labels 3</a></li>
+            <li><a href='/Reports/AveryAddress/@ViewData["queryid"]' class="ChooseLabelType" title="Address Labels"> Avery Address</a></li>
+			<li><a href="/Reports/EmployerAddress/@ViewData["queryid"]" target="_blank"> Avery Employer</a></li>
+            </ul>
         </div>
-    </td>
-    <td class="dropdown">
-        <div><a href='#'><img src="/images/Tag.png" />
-        Tag</a></div>
-        <div class="sublinks">
-            <a id="TagAll" href='@ViewData["TagAction"]'><img src="/images/Tag.png" />
-                Add All</a>
-            <a id="UnTagAll" href='@ViewData["UnTagAction"]'><img src="/images/Tag.png" />
-                Remove All</a>
+    </li>
+    <li>
+        <a href='#' class="trigger-dropdown">
+            Tag <img src="/images/dnarrow.png" />
+        </a>
+        <div class="dropdown-menu has-tip">
+            <ul>
+            <li><a id="TagAll" href='@ViewData["TagAction"]'> Add All</a></li>
+            <li><a id="UnTagAll" href='@ViewData["UnTagAction"]'> Remove All</a></li>
+            </ul>
         </div>
-    </td>
-    <td class="dropdown">
-        <div><a href='#'><img src="/images/Tag.png" />
-        Other</a></div>
-        <div class="sublinks">
-            <a id="AddContact" href='@ViewData["AddContact"]'>
-                Add Contact</a>
-            <a id="AddTasks" href='@ViewData["AddTasks"]'>
-                Add Tasks</a>
+    </li>
+    <li>
+        <a href='#' class="trigger-dropdown">
+            Other <img src="/images/dnarrow.png" />
+        </a>
+        <div class="dropdown-menu has-tip">
+            <ul>
+            <li><a id="AddContact" href='@ViewData["AddContact"]'> Add Contact</a></li>
+            <li><a id="AddTasks" href='@ViewData["AddTasks"]'> Add Tasks</a></li>
 @if (User.IsInRole("Admin"))
 {
-            <a href='/Manage/ExtraValues/Add/@ViewData["queryid"]' class="ChooseExtraValues">
-                Add Extra Values</a>
-            <a href='/Manage/ExtraValues/Delete/@ViewData["queryid"]' class="ChooseExtraValues">
-                Delete Extra Values</a>
-            <a href="/Reports/ExtraValuesGrid/@ViewData["queryid"]">Extra Values Grid</a>
+            <li><a href='/Manage/ExtraValues/Add/@ViewData["queryid"]' class="ChooseExtraValues"> Add Extra Values</a></li>
+            <li><a href='/Manage/ExtraValues/Delete/@ViewData["queryid"]' class="ChooseExtraValues"> Delete Extra Values</a></li>
+            <li><a href="/Reports/ExtraValuesGrid/@ViewData["queryid"]">Extra Values Grid</a></li>
 }
-            <a href='/Task/NotesExcel/@ViewData["queryid"]'>
-                Export Task Notes</a>
+            <li><a href='/Task/NotesExcel/@ViewData["queryid"]'> Export Task Notes</a></li>
+            </ul>
         </div>
-    </td>
-</tr>
-</table>
+    </li>
+</ul>
+</div>
 

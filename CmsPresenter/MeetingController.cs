@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Collections;
 using System.Diagnostics;
 using System.Web;
+using CmsData.Codes;
 
 namespace CMSPresenter
 {
@@ -50,7 +51,7 @@ namespace CMSPresenter
                        MeetingId = m.MeetingId,
                        MeetingDate = m.MeetingDate,
                        NumVisitors = m.NumNewVisit + m.NumRepeatVst + m.NumVstMembers,
-                       NumPresent = m.NumPresent + m.Attends.Count(a => !a.AttendanceFlag && a.Registered.Value),
+                       NumPresent = m.NumPresent,
                        Location = m.Location,
                        OrganizationId = m.OrganizationId,
                        GroupMeeting = m.GroupMeetingFlag,

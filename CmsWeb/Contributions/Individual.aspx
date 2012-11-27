@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Individual.aspx.cs" Inherits="CmsWeb.Contributions.Individual" %>
+    CodeBehind="Individual.aspx.cs" Inherits="CmsWeb.Contributions.Individual" EnableEventValidation="false" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

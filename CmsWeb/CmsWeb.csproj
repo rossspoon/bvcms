@@ -12,7 +12,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FC942D51-94B5-456B-9683-0BA000A1EAF4}</ProjectGuid>
-    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CmsWeb</RootNamespace>
@@ -82,9 +82,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
-    <Reference Include="FiftyOne.Foundation">
-      <HintPath>..\packages\51Degrees.mobi.2.0.6.2\lib\NET40\FiftyOne.Foundation.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.4.3\lib\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -136,7 +133,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
@@ -175,12 +172,33 @@
     <Reference Include="System.Web.Abstractions">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -189,7 +207,7 @@
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Twilio.Api">
-      <HintPath>..\packages\Twilio.3.5.1\lib\3.5\Twilio.Api.dll</HintPath>
+      <HintPath>..\packages\Twilio.3.5.5\lib\3.5\Twilio.Api.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -215,18 +233,24 @@
     <Compile Include="Areas\Finance\Models\ContributionSearchModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
+    <Compile Include="Areas\Main\Controllers\PeopleSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
+    <Compile Include="Areas\Main\Controllers\VolunteeringController.cs" />
     <Compile Include="Areas\Main\Models\Avery\AverySpacerCell173.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddress.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddressCell.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddressRow.cs" />
+    <Compile Include="Areas\Main\Models\Directories\CompactDir.cs" />
+    <Compile Include="Areas\Main\Models\Directories\CompactRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\PictureDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\PictureRow.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
     <Compile Include="Areas\Main\Models\Email\EmailTemplatesModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\RallyRollsheetResult.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
     <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />
     <Compile Include="Areas\Finance\Controllers\StatementsController.cs" />
@@ -235,8 +259,10 @@
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
     <Compile Include="Areas\Main\Models\Person\VolunteerModel.cs" />
+    <Compile Include="Areas\Manage\Controllers\UsersController.cs" />
     <Compile Include="Areas\Manage\Models\CheckinTimeModel.cs" />
     <Compile Include="Areas\Manage\Models\ContentModel.cs" />
+    <Compile Include="Areas\Manage\Models\UsersModel.cs" />
     <Compile Include="Areas\Manage\Models\UploadPeopleModel.cs" />
     <Compile Include="Areas\Manage\Models\AccountModel.cs" />
     <Compile Include="Areas\Manage\Controllers\DuplicatesController.cs" />
@@ -254,7 +280,9 @@
     <Compile Include="Areas\Main\Controllers\TagsController.cs" />
     <Compile Include="Areas\Main\Controllers\EmailController.cs" />
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
+    <Compile Include="Areas\Manage\Models\VolunteerRequestModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
+    <Compile Include="Areas\Public\Controllers\APIContributionController.cs" />
     <Compile Include="Areas\Public\Controllers\APIMetaController.cs" />
     <Compile Include="Areas\Public\Controllers\APITestController.cs" />
     <Compile Include="Areas\Public\Controllers\APIiPhoneController.cs" />
@@ -292,7 +320,7 @@
     <Compile Include="Areas\Main\Models\Other\MeetingModel.cs" />
     <Compile Include="Areas\Main\Models\Other\SavedQueryModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TagsModel.cs" />
-    <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\PeopleSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Other\FamilyModel.cs" />
     <Compile Include="Areas\Finance\Models\ContributionsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Person\FamilyModel.cs" />
@@ -359,19 +387,16 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Code\FamilyExtraValues.cs" />
+    <Compile Include="Code\Payments.cs" />
+    <Compile Include="Code\SmartBinder.cs" />
     <Compile Include="Code\Image.cs" />
     <Compile Include="Code\StandardExtraValues.cs" />
-    <Content Include="App_Data\51Degrees.mobi-Lite-2012.01.25.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\51Degrees.mobi-Patch.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
     <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
     <Content Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
-    <Content Include="Areas\OnlineReg\Models\OnlineReg\XMLFile1.xml" />
+    <EmbeddedResource Include="Areas\Public\Controllers\APITestPlan.xml" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
     <Content Include="Areas\Public\Views\APITest\Index.cshtml">
@@ -399,30 +424,160 @@
     <Content Include="ckeditor\plugins\docprops\plugin.js" />
     <Content Include="ckeditor\plugins\stylesheetparser\plugin.js" />
     <Content Include="ckeditor\plugins\xml\plugin.js" />
-    <Content Include="Content\bootstrap\css\bootstrap-responsive.css" />
-    <Content Include="Content\bootstrap\css\bootstrap-responsive.min.css" />
-    <Content Include="Content\bootstrap\css\bootstrap.css" />
-    <Content Include="Content\bootstrap\css\bootstrap.min.css" />
-    <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
-    <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
-    <Content Include="Content\bootstrap\js\bootstrap.js" />
-    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Content\combined.css" />
-    <Content Include="Content\faary.css" />
-    <Content Include="Content\healthcheck.txt" />
-    <Content Include="Content\joyride-1.0.5.css" />
-    <Content Include="Content\jquery-ui-1.8.22.custom.css" />
-    <Content Include="Content\js\jquery-1.7.2.js" />
-    <Content Include="Content\js\jquery-1.7.2.min.js" />
-    <Content Include="Content\js\jquery-ui-1.8.22.custom.js" />
+    <Content Include="Content\BUZZ.WAV" />
+    <Content Include="Content\css\checkboxtree.css" />
+    <Content Include="Content\css\clockpick.css" />
+    <Content Include="Content\css\cmenu.css" />
+    <Content Include="Content\css\combined.css" />
+    <Content Include="Content\css\Common2.css" />
+    <Content Include="Content\css\content.css" />
+    <Content Include="Content\css\cssreset.css" />
+    <Content Include="Content\css\Dialog.css" />
+    <Content Include="Content\css\dropdown.css" />
+    <Content Include="Content\css\faary.css" />
+    <Content Include="Content\css\fg.menu.css" />
+    <Content Include="Content\css\images\454545_11x11_icon_close.gif" />
+    <Content Include="Content\css\images\888888_11x11_icon_close.gif" />
+    <Content Include="Content\css\images\arrowdown.gif" />
+    <Content Include="Content\css\images\arrowleft.gif" />
+    <Content Include="Content\css\images\arrowright.gif" />
+    <Content Include="Content\css\images\arrowup.gif" />
+    <Content Include="Content\css\images\back_disabled.png" />
+    <Content Include="Content\css\images\back_enabled.png" />
+    <Content Include="Content\css\images\back_enabled_hover.png" />
+    <Content Include="Content\css\images\bl.gif" />
+    <Content Include="Content\css\images\bl.png" />
+    <Content Include="Content\css\images\br.gif" />
+    <Content Include="Content\css\images\br.png" />
+    <Content Include="Content\css\images\bvcms_8.png" />
+    <Content Include="Content\css\images\calendar.gif" />
+    <Content Include="Content\css\images\checkboxtree\bg-checkbox-checked.gif" />
+    <Content Include="Content\css\images\checkboxtree\bg-checkbox-checkedchildren.gif" />
+    <Content Include="Content\css\images\checkboxtree\bg-checkbox-over.gif" />
+    <Content Include="Content\css\images\checkboxtree\bg-checkbox.gif" />
+    <Content Include="Content\css\images\checkboxtree\img-arrow-blank.gif" />
+    <Content Include="Content\css\images\checkboxtree\img-arrow-collapsed.gif" />
+    <Content Include="Content\css\images\checkboxtree\img-arrow-expanded.gif" />
+    <Content Include="Content\css\images\closek.png" />
+    <Content Include="Content\css\images\dadada_40x100_textures_02_glass_75.png" />
+    <Content Include="Content\css\images\darrowdown.gif" />
+    <Content Include="Content\css\images\darrowleft.gif" />
+    <Content Include="Content\css\images\darrowright.gif" />
+    <Content Include="Content\css\images\darrowup.gif" />
+    <Content Include="Content\css\images\e6e6e6_40x100_textures_02_glass_75.png" />
+    <Content Include="Content\css\images\ffffff_40x100_textures_01_flat_75.png" />
+    <Content Include="Content\css\images\ffffff_40x100_textures_02_glass_65.png" />
+    <Content Include="Content\css\images\file.gif" />
+    <Content Include="Content\css\images\folder-closed.gif" />
+    <Content Include="Content\css\images\folder.gif" />
+    <Content Include="Content\css\images\forward_disabled.png" />
+    <Content Include="Content\css\images\forward_enabled.png" />
+    <Content Include="Content\css\images\forward_enabled_hover.png" />
+    <Content Include="Content\css\images\group.png" />
+    <Content Include="Content\css\images\itunes.png" />
+    <Content Include="Content\css\images\minus.gif" />
+    <Content Include="Content\css\images\person.png" />
+    <Content Include="Content\css\images\placeholder_160.gif" />
+    <Content Include="Content\css\images\placeholder_600.gif" />
+    <Content Include="Content\css\images\plus.gif" />
+    <Content Include="Content\css\images\rarrowdown.gif" />
+    <Content Include="Content\css\images\rarrowleft.gif" />
+    <Content Include="Content\css\images\rarrowright.gif" />
+    <Content Include="Content\css\images\rarrowup.gif" />
+    <Content Include="Content\css\images\select_arrow.gif" />
+    <Content Include="Content\css\images\select_arrow_bg.gif" />
+    <Content Include="Content\css\images\select_arrow_bg_hover.gif" />
+    <Content Include="Content\css\images\sort_asc.png" />
+    <Content Include="Content\css\images\sort_asc_disabled.png" />
+    <Content Include="Content\css\images\sort_both.png" />
+    <Content Include="Content\css\images\sort_desc.png" />
+    <Content Include="Content\css\images\sort_desc_disabled.png" />
+    <Content Include="Content\css\images\tl.gif" />
+    <Content Include="Content\css\images\tl.png" />
+    <Content Include="Content\css\images\tr.gif" />
+    <Content Include="Content\css\images\tr.png" />
+    <Content Include="Content\css\images\treeview-black-line.gif" />
+    <Content Include="Content\css\images\treeview-black.gif" />
+    <Content Include="Content\css\images\treeview-default-line.gif" />
+    <Content Include="Content\css\images\treeview-default.gif" />
+    <Content Include="Content\css\images\treeview-famfamfam-line.gif" />
+    <Content Include="Content\css\images\treeview-famfamfam.gif" />
+    <Content Include="Content\css\images\treeview-gray-line.gif" />
+    <Content Include="Content\css\images\treeview-gray.gif" />
+    <Content Include="Content\css\images\treeview-red-line.gif" />
+    <Content Include="Content\css\images\treeview-red.gif" />
+    <Content Include="Content\css\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\css\images\ui-bg_flat_0_eeeeee_40x100.png" />
+    <Content Include="Content\css\images\ui-bg_flat_75_cccccc_40x100.png" />
+    <Content Include="Content\css\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\css\images\ui-bg_glass_100_dadada_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_glass_75_ffffff_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\css\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
+    <Content Include="Content\css\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\css\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
+    <Content Include="Content\css\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\css\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\css\images\wait.gif" />
+    <Content Include="Content\css\joyride-1.0.5.css" />
+    <Content Include="Content\css\jqModal.css" />
+    <Content Include="Content\css\jquery-ui-1.9.2.custom.css" />
+    <Content Include="Content\css\jquery-ui-timepicker.css" />
+    <Content Include="Content\css\jquery.autocomplete.css" />
+    <Content Include="Content\css\jquery.cluetip.css" />
+    <Content Include="Content\css\jquery.contextMenu.css" />
+    <Content Include="Content\css\jquery.dataTables.css" />
+    <Content Include="Content\css\jquery.dataTables_themeroller.css" />
+    <Content Include="Content\css\jquery.jscrollpane.css" />
+    <Content Include="Content\css\jquery.multiSelect.css" />
+    <Content Include="Content\css\jquery.sb.css" />
+    <Content Include="Content\css\jquery.timepickr.css" />
+    <Content Include="Content\css\jquery.tooltip.css" />
+    <Content Include="Content\css\jquery.treeview.css" />
+    <Content Include="Content\css\jquery.ui.timepicker.css" />
+    <Content Include="Content\css\newsletter.css" />
+    <Content Include="Content\css\onlinereg.css" />
+    <Content Include="Content\css\organization.css" />
+    <Content Include="Content\css\pager.css" />
+    <Content Include="Content\css\Site.css" />
+    <Content Include="Content\css\Site2.css" />
+    <Content Include="Content\css\Site3.css" />
+    <Content Include="Content\css\site3b.css" />
+    <Content Include="Content\css\style.css" />
+    <Content Include="Content\css\Style2.css" />
+    <Content Include="Content\css\styledButton.css" />
+    <Content Include="Content\css\Stylesheet1.css" />
+    <Content Include="Content\css\thickbox.css" />
+    <Content Include="Content\css\touch.css" />
+    <Content Include="Content\css\ui.timepickr.css" />
+    <Content Include="Content\js\FixedHeader.js" />
+    <Content Include="Content\js\jquery-1.8.3.js" />
+    <Content Include="Content\js\jquery-ui-1.9.2.custom.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
+    <Content Include="Content\js\jquery.dataTables.js" />
+    <Content Include="Content\zylo.wav" />
+    <Content Include="images\calendar.gif" />
+    <Content Include="images\dnarrow.png" />
+    <Content Include="Min\Content\js\FixedHeader.js" />
+    <Content Include="Min\Content\js\jquery-1.8.3.js" />
+    <Content Include="Min\Content\js\jquery-ui-1.9.2.custom.js" />
+    <Content Include="Min\Content\js\jquery.dataTables.js" />
+    <Content Include="Scripts\dropdown.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
     <Content Include="Content\js\jquery.tmpl.js" />
     <Content Include="Content\js\json2.js" />
     <Content Include="Content\js\modernizr.mq.js" />
     <Content Include="Content\js\tutorial.js" />
-    <Content Include="Content\organization.css" />
     <Content Include="Content\js\jquery-ui-dialog-patch.js" />
     <Compile Include="Code\Word2Pdf.cs" />
     <Compile Include="Areas\Finance\Controllers\QuickBooksController.cs" />
@@ -507,10 +662,6 @@
     <Compile Include="Areas\Public\Models\PaymentModel.cs" />
     <Compile Include="Areas\Setup\Controllers\DivisionController.cs" />
     <Compile Include="Code\CmsController.cs" />
-    <Compile Include="Areas\Main\Controllers\SearchPeopleController.cs" />
-    <Compile Include="Areas\Main\Models\Other\SearchPeopleModel.cs" />
-    <Compile Include="Areas\Public\Controllers\StepClassController.cs" />
-    <Compile Include="Areas\Public\Models\StepClassModel.cs" />
     <Compile Include="Areas\Setup\AreaRegistration.cs" />
     <Compile Include="Areas\Manage\Controllers\DisplayController.cs" />
     <Compile Include="Areas\Finance\Controllers\FundController.cs" />
@@ -676,7 +827,6 @@
     <Compile Include="Areas\Manage\Controllers\PromotionController.cs" />
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
-    <Compile Include="Areas\Public\Controllers\VolunteerController.cs" />
     <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
     <Compile Include="EmailAttendanceNotices.aspx.cs">
       <DependentUpon>EmailAttendanceNotices.aspx</DependentUpon>
@@ -729,11 +879,9 @@
     <Compile Include="Areas\Main\Models\Other\SearchContactModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskInfo.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskModel.cs" />
-    <Compile Include="Areas\Public\Models\VolunteerModel.cs" />
-    <Compile Include="Areas\Manage\Models\VolunteersModel.cs" />
     <Compile Include="Areas\Finance\Models\QuickBooksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Include="Properties\Settings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -773,6 +921,11 @@
     <Compile Include="Report\Reports.Master.designer.cs">
       <DependentUpon>Reports.Master</DependentUpon>
     </Compile>
+    <Compile Include="Resource1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -794,6 +947,10 @@
     <Compile Include="UserControls\GridPager.ascx.designer.cs">
       <DependentUpon>GridPager.ascx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">
@@ -955,16 +1112,6 @@
     <Content Include="ckeditor\skins\v2\templates.css" />
     <Content Include="ckeditor\themes\default\theme.js" />
     <Content Include="Content\bvcms132x55.png" />
-    <Content Include="Content\images\select_arrow.gif" />
-    <Content Include="Content\images\select_arrow_bg.gif" />
-    <Content Include="Content\images\select_arrow_bg_hover.gif" />
-    <Content Include="Content\images\ui-bg_flat_0_eeeeee_40x100.png" />
-    <Content Include="Content\images\ui-bg_flat_75_cccccc_40x100.png" />
-    <Content Include="Content\images\ui-bg_glass_100_dadada_1x400.png" />
-    <Content Include="Content\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
-    <Content Include="Content\images\ui-icons_555555_256x240.png" />
-    <Content Include="Content\jquery-ui-timepicker.css" />
-    <Content Include="Content\jquery.sb.css" />
     <Content Include="Content\js\jquery.gmap.js" />
     <Content Include="Content\js\jquery.gmap.min.js" />
     <Content Include="Content\js\jquery.sb.js" />
@@ -987,18 +1134,12 @@
     <Content Include="images\draggable-icon.png" />
     <Content Include="images\dropdown.gif" />
     <Content Include="images\linkselect_bkgrd.png" />
-    <Content Include="Content\jquery.linkselect.css" />
-    <Content Include="Content\jquery.linkselect.style.select.css" />
-    <Content Include="Content\js\jquery.linkselect.js" />
     <Content Include="Errors\SessionTimeout.htm" />
     <Content Include="favicon.ico" />
-    <Content Include="Content\cmenu.css" />
-    <Content Include="Content\cssreset.css" />
-    <Content Include="Content\jquery.jscrollpane.css" />
     <Content Include="Content\js\jquery.jscrollpane.js" />
     <Content Include="Content\js\jquery.mousewheel.js" />
-    <Content Include="Content\magnifier.png" />
-    <Content Include="Content\Welcome.png" />
+    <Content Include="images\magnifier.png" />
+    <Content Include="images\Welcome.png" />
     <Content Include="Content\js\jquery.ba-bbq.min.js" />
     <Content Include="Content\js\jquery.bgiframe-2.1.2.js" />
     <Content Include="images\amex.jpg" />
@@ -1015,8 +1156,6 @@
     <Content Include="Min\Content\js\combined-org.js" />
     <Content Include="Min\Content\js\combined-person.js" />
     <Content Include="Min\Content\js\combined.js" />
-    <Content Include="Min\Content\js\jquery-1.7.2.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.8.22.custom.js" />
     <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Min\Content\js\jquery.checkboxtree.js" />
     <Content Include="Min\Content\js\jquery.contextMenu.js" />
@@ -1029,6 +1168,7 @@
     <Content Include="Min\Content\js\jquery.sortElements.js" />
     <Content Include="Min\Content\js\jquery.textarea.js" />
     <Content Include="Min\Content\js\jquery.transpose.js" />
+    <Content Include="Min\Scripts\Calendar.js" />
     <Content Include="Min\Scripts\CheckIn.js" />
     <Content Include="Min\Scripts\ContactSearch.js" />
     <Content Include="Min\Scripts\Contributions.js" />
@@ -1052,6 +1192,7 @@
     <Content Include="Min\Scripts\OrgMembers.js" />
     <Content Include="Min\Scripts\OrgMembersDialog.js" />
     <Content Include="Min\Scripts\OrgSearch.js" />
+    <Content Include="Min\Scripts\PeopleSearch.js" />
     <Content Include="Min\Scripts\Person.js" />
     <Content Include="Min\Scripts\pickslots2.js" />
     <Content Include="Min\Scripts\PostBundle.js" />
@@ -1062,7 +1203,6 @@
     <Content Include="Min\Scripts\SearchAdd.js" />
     <Content Include="Min\Scripts\SearchDivisions.js" />
     <Content Include="Min\Scripts\SearchOrgs.js" />
-    <Content Include="Min\Scripts\SearchPeople.js" />
     <Content Include="Min\Scripts\SearchUsers.js" />
     <Content Include="Min\Scripts\Tags.js" />
     <Content Include="Min\Scripts\Task.js" />
@@ -1071,18 +1211,19 @@
     <Content Include="Min\Scripts\TransactionHistory.js" />
     <Content Include="Min\Scripts\Transactions.js" />
     <Content Include="Min\Scripts\UserDialog.js" />
+    <Content Include="Min\Scripts\Users.js" />
+    <Content Include="Scripts\Calendar.js" />
     <Content Include="Scripts\CheckinActivity.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
+    <Content Include="Scripts\family.js" />
+    <Content Include="Scripts\HomeTest.js" />
+    <Content Include="Scripts\Users.js" />
+    <Content Include="Scripts\QuickSearch.js" />
     <Content Include="Scripts\meeting-ticket.js" />
     <Content Include="Scripts\TotalsByFund.js" />
     <Content Include="Scripts\ManageVolunteer.js" />
     <Content Include="Scripts\headermenu.js" />
-    <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.6.4.js" />
-    <Content Include="Scripts\jquery-1.6.4.min.js" />
-    <Content Include="Scripts\jquery.signalR.js" />
-    <Content Include="Scripts\jquery.signalR.min.js" />
     <Content Include="Scripts\merge.js" />
     <Content Include="Scripts\TestAPI.js" />
     <Content Include="Scripts\meeting-ipad.js" />
@@ -1099,38 +1240,15 @@
     <Content Include="Scripts\SavedQuery.js" />
     <Content Include="Scripts\SearchUsers.js" />
     <Content Include="Scripts\Tags.js" />
-    <Content Include="Scripts\QuickSearch.js" />
+    <Content Include="Scripts\PeopleSearch.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
-    <Content Include="Content\bluebullet.gif" />
-    <Content Include="Content\onlinereg.css" />
-    <Content Include="Content\images\bvcms_8.png" />
-    <Content Include="Content\images\calendar.gif" />
-    <Content Include="Content\images\closek.png" />
-    <Content Include="Content\images\file.gif" />
-    <Content Include="Content\images\folder-closed.gif" />
-    <Content Include="Content\images\folder.gif" />
-    <Content Include="Content\images\group.png" />
-    <Content Include="Content\images\minus.gif" />
-    <Content Include="Content\images\person.png" />
-    <Content Include="Content\images\plus.gif" />
-    <Content Include="Content\images\treeview-black-line.gif" />
-    <Content Include="Content\images\treeview-black.gif" />
-    <Content Include="Content\images\treeview-default-line.gif" />
-    <Content Include="Content\images\treeview-default.gif" />
-    <Content Include="Content\images\treeview-famfamfam-line.gif" />
-    <Content Include="Content\images\treeview-famfamfam.gif" />
-    <Content Include="Content\images\treeview-gray-line.gif" />
-    <Content Include="Content\images\treeview-gray.gif" />
-    <Content Include="Content\images\treeview-red-line.gif" />
-    <Content Include="Content\images\treeview-red.gif" />
     <Content Include="Content\js\jquery.showpassword.js" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="App_Offline1.htm" />
     <Content Include="Global.asax" />
-    <Content Include="Content\bodybg.png" />
     <Content Include="images\bvcms120.png" />
     <Content Include="images\bvcms130.png" />
     <Content Include="images\bvcms150.png" />
@@ -1162,10 +1280,6 @@
     </Content>
     <Content Include="Areas\Main\Views\Person\VolunteerDisplay.cshtml">
     </Content>
-    <None Include="App_Data\51Degrees.mobi.config0">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Content Include="App_Browsers\WebOs.browser">
       <SubType>Designer</SubType>
     </Content>
@@ -1223,6 +1337,50 @@
     <Content Include="Areas\OnlineReg\Views\OnlineReg\GetVolSub.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\EmailVolunteerSubs.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolSubReport.cshtml" />
+    <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Volunteers\ManageArea.cshtml" />
+    <Content Include="Areas\Manage\Views\Volunteers\Request.cshtml" />
+    <Content Include="Areas\Manage\Views\Volunteers\EmailVolunteerRequest.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\RequestReport.cshtml" />
+    <Content Include="Areas\Manage\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Users\Results.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskRequest.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskTickets.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskYesNoQuestions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskParents.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskExtraQuestions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskSize.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskMenu.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskCheckboxes.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskGradeOptions.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\DropdownItem.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskCoaching.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskDoctor.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskInsurance.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskEmContact.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskAllergies.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskChurch.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskTylenolEtc.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskSuggestedFee.cshtml" />
+    <Content Include="Areas\Main\Views\Volunteering\DialogType.cshtml" />
+    <Content Include="Areas\Main\Views\Volunteering\Edit.cshtml" />
+    <Content Include="Areas\Main\Views\Volunteering\Index.cshtml" />
+    <Content Include="Areas\Main\Views\Volunteering\SubmitCombo.cshtml" />
+    <Content Include="Areas\Main\Views\Volunteering\SubmitMVR.cshtml" />
+    <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlots.cshtml" />
+    <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Progress.cshtml" />
+    <Content Include="Areas\Main\Views\Family\EditorTemplates\Field.cshtml" />
+    <Content Include="Areas\Main\Views\Family\ExtrasGrid.cshtml" />
+    <Content Include="Areas\Main\Views\Meeting\TicketMeeting.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\VolunteerCommitmentsSummary.cshtml" />
+    <Content Include="Areas\Main\Views\Person\CurrentRegistrationsHtml.cshtml" />
+    <Content Include="Areas\Main\Views\Person\IncompleteTasksGrid.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\SQLSelect.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\SQLView.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\TimeSlots.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Minify.bat" />
@@ -1567,39 +1725,6 @@
     <Content Include="Areas\Manage\Views\Volunteers\Calendar.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Areas\Manage\Views\Volunteers\CustomReport.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Manage\Views\Volunteers\Index.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step1.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step1Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step2.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step2Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step3.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\StepClass\Step3Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Confirm.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Index.cshtml">
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\PickList2.cshtml">
-    </Content>
-    <Content Include="Areas\Public\Views\Volunteer\Unknown.cshtml">
-    </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm.cshtml">
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Confirm2.cshtml">
@@ -1642,10 +1767,6 @@
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Buttons.cshtml">
     </Content>
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\ChooseClass.cshtml">
-    </Content>
-    <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\FamilyList.cshtml">
-    </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\List.cshtml">
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\Flow\Login.cshtml">
@@ -1685,9 +1806,9 @@
     </Content>
     <Content Include="Areas\Manage\Views\Batch\FindTagPeople.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\QuickSearch\Index.cshtml">
+    <Content Include="Areas\Main\Views\PeopleSearch\Index.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\QuickSearch\Results.cshtml">
+    <Content Include="Areas\Main\Views\PeopleSearch\Results.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Tags\Index.cshtml">
     </Content>
@@ -1776,15 +1897,9 @@
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\YesNoQuestion.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Checkbox.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\CheckboxItem.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Checkbox2.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown1.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown2.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Dropdown3.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskDropdown.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\ExtraQuestion.cshtml">
     </Content>
@@ -1794,9 +1909,7 @@
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\OrgFee.cshtml">
     </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\ShirtSize.cshtml">
-    </Content>
-    <Content Include="Areas\Main\Views\Organization\EditorTemplates\VoteTag.cshtml">
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\Size.cshtml">
     </Content>
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TabAdmin.cshtml">
     </Content>
@@ -1877,7 +1990,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\SiteLayout.cshtml">
     </Content>
@@ -1930,6 +2042,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Shared\DatePickerDefaults.cshtml" />
+    <Content Include="Views\Shared\MainMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -1953,15 +2068,9 @@
     <Content Include="Binaries\itextsharp.dll" />
     <Content Include="Binaries\Microsoft.Web.Mvc.dll" />
     <Content Include="Binaries\RouteDebug.dll" />
-    <Content Include="Content\12-em-cross.png" />
-    <Content Include="Content\arrows-ffffff.png" />
-    <Content Include="Content\black.png" />
-    <Content Include="Content\black_arrow.png" />
-    <Content Include="Content\black_arrow_big.png" />
-    <Content Include="Content\black_big.png" />
-    <Content Include="Content\border-2.gif" />
-    <Content Include="Content\border.gif" />
-    <Content Include="Content\btn0.png" />
+    <Content Include="images\12-em-cross.png" />
+    <Content Include="images\border-2.gif" />
+    <Content Include="images\border.gif" />
     <Content Include="Content\bvorgfiles\archives.css" />
     <Content Include="Content\bvorgfiles\background_blog_comments.gif" />
     <Content Include="Content\bvorgfiles\background_blog_file.gif" />
@@ -2017,34 +2126,7 @@
     <Content Include="Content\bvorgfiles\textFieldBorder250.gif" />
     <Content Include="Content\bvorgfiles\textFieldBorder50.gif" />
     <Content Include="Content\bvorgfiles\twitter_logo_icon.png" />
-    <Content Include="Content\content.css" />
-    <Content Include="Content\Crosses.png" />
-    <Content Include="Content\dropdown.gif" />
-    <Content Include="Content\dropdown_active.gif" />
-    <Content Include="Content\Easy.gif" />
-    <Content Include="Content\header-gradient.png" />
-    <Content Include="Content\images\dadada_40x100_textures_02_glass_75.png" />
-    <Content Include="Content\images\e6e6e6_40x100_textures_02_glass_75.png" />
-    <Content Include="Content\images\ffffff_40x100_textures_01_flat_75.png" />
-    <Content Include="Content\images\ffffff_40x100_textures_02_glass_65.png" />
-    <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\images\ui-bg_glass_75_ffffff_1x400.png" />
-    <Content Include="Content\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
-    <Content Include="Content\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\jqModal.css" />
-    <Content Include="Content\jquery.contextMenu.css" />
-    <Content Include="Content\jquery.tooltip.css" />
+    <Content Include="images\header-gradient.png" />
     <Content Include="Content\js\hoverIntent.js" />
     <Content Include="Content\js\jqModal.js" />
     <Content Include="Content\js\jQuery-cookie.js" />
@@ -2068,27 +2150,9 @@
     <Content Include="Content\js\MicrosoftMvcAjax.debug.js" />
     <Content Include="Content\js\MicrosoftMvcAjax.js" />
     <Content Include="Content\js\simpletabs.js" />
-    <Content Include="Content\js\superfish.js" />
-    <Content Include="Content\js\supersubs.js" />
     <Content Include="Content\js\thickbox.js" />
-    <Content Include="Content\loading.gif" />
-    <Content Include="Content\navigation-shadow.png" />
-    <Content Include="Content\pager.css" />
-    <Content Include="Content\shadow.png" />
-    <Content Include="Content\Site2.css" />
-    <Content Include="Content\Site3.css" />
-    <Content Include="Content\site3b.css" />
-    <Content Include="Content\style.css" />
-    <Content Include="Content\superfish.css" />
-    <Content Include="Content\supertabfish.css" />
-    <Content Include="Content\tab.png" />
-    <Content Include="Content\tbsep.gif" />
-    <Content Include="Content\thickbox.css" />
-    <Content Include="Content\touch.css" />
-    <Content Include="Content\white.png" />
-    <Content Include="Content\white_arrow.png" />
-    <Content Include="Content\white_arrow_big.png" />
-    <Content Include="Content\white_big.png" />
+    <Content Include="images\loading.gif" />
+    <Content Include="images\navigation-shadow.png" />
     <Content Include="Contributions\All.aspx" />
     <Content Include="Contributions\Bundle.aspx" />
     <Content Include="Contributions\Bundles.aspx" />
@@ -2109,7 +2173,6 @@
     <Content Include="images\Excel.png" />
     <Content Include="images\help_out.gif" />
     <Content Include="images\individual.gif" />
-    <Content Include="images\loading.gif" />
     <Content Include="images\Mail.png" />
     <Content Include="images\minus.png" />
     <Content Include="images\pdficon_small.gif" />
@@ -2152,8 +2215,6 @@
     <Content Include="Admin\ToggleOrgMembersOnly.ashx" />
     <Content Include="Admin\Web.config" />
     <Content Include="AppReview\Web.config" />
-    <Content Include="Areas\Main\Views\SearchPeople\Index.aspx" />
-    <Content Include="Areas\Main\Views\SearchPeople\Rows.aspx" />
     <Content Include="Binaries\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.pdb" />
@@ -2165,65 +2226,22 @@
     <Content Include="Binaries\Squishit\Yahoo.Yui.Compressor.dll" />
     <Content Include="Binaries\Squishit\yui_license.txt" />
     <Content Include="BulkMail.aspx" />
-    <Content Include="Content\attention48.png" />
-    <Content Include="Content\blackredgradient.png" />
+    <Content Include="images\attention48.png" />
+    <Content Include="images\blackredgradient.png" />
     <Content Include="Content\bvorgfiles\black_bg_main_cm.jpg" />
-    <Content Include="Content\check48.png" />
-    <Content Include="Content\checkboxtree.css" />
-    <Content Include="Content\close.png" />
-    <Content Include="Content\Common2.css" />
-    <Content Include="Content\Dialog.css" />
-    <Content Include="Content\dropdown.blue.active.png" />
-    <Content Include="Content\dropdown.blue.hover.png" />
-    <Content Include="Content\dropdown.blue.png" />
-    <Content Include="Content\images\arrowdown.gif" />
-    <Content Include="Content\images\arrowleft.gif" />
-    <Content Include="Content\images\arrowright.gif" />
-    <Content Include="Content\images\arrowup.gif" />
-    <Content Include="Content\images\bl.gif" />
-    <Content Include="Content\images\bl.png" />
-    <Content Include="Content\images\br.gif" />
-    <Content Include="Content\images\br.png" />
-    <Content Include="Content\images\darrowdown.gif" />
-    <Content Include="Content\images\darrowleft.gif" />
-    <Content Include="Content\images\darrowright.gif" />
-    <Content Include="Content\images\darrowup.gif" />
-    <Content Include="Content\images\itunes.png" />
-    <Content Include="Content\images\rarrowdown.gif" />
-    <Content Include="Content\images\rarrowleft.gif" />
-    <Content Include="Content\images\rarrowright.gif" />
-    <Content Include="Content\images\rarrowup.gif" />
-    <Content Include="Content\images\tl.gif" />
-    <Content Include="Content\images\tl.png" />
-    <Content Include="Content\images\tr.gif" />
-    <Content Include="Content\images\tr.png" />
-    <Content Include="Content\images\ui-anim_basic_16x16.gif" />
-    <Content Include="Content\images\wait.gif" />
-    <Content Include="Content\jquery.cluetip.css" />
+    <Content Include="images\check48.png" />
     <Content Include="Content\js\additional-methods.js" />
     <Content Include="Content\js\center-plugin_1.0.1.js" />
     <Content Include="Content\js\jquery-idleTimeout.js" />
-    <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.cookie.js" />
     <Content Include="Content\js\jquery.dimensions.min.js" />
     <Content Include="Content\js\jquery.hoverIntent.js" />
     <Content Include="Content\js\jquery.styledButton.js" />
     <Content Include="Content\js\jquery.idle-timer.js" />
     <Content Include="Content\js\qunit.js" />
-    <Content Include="Content\star.png" />
-    <Content Include="Content\style2.css" />
-    <Content Include="Content\styledButton.css" />
-    <Content Include="Content\supertabfish2.css" />
-    <Content Include="Content\dropdown_hover.gif" />
-    <Content Include="Content\fg.menu.css" />
-    <Content Include="Content\jquery.autocomplete.css" />
-    <Content Include="Content\jquery.multiSelect.css" />
-    <Content Include="Content\jquery.timepickr.css" />
-    <Content Include="Content\clockpick.css" />
-    <Content Include="Content\jquery.treeview.css" />
+    <Content Include="images\star.png" />
     <Content Include="Content\js\fg.menu.js" />
     <Content Include="Content\js\jquery.anchorHandler.js" />
-    <Content Include="Content\js\jQuery.autocomplete.js" />
     <Content Include="Content\js\jquery.checkboxtree.js" />
     <Content Include="Content\js\jquery.clockpick.1.2.1.js" />
     <Content Include="Content\js\jquery.multiSelect.js" />
@@ -2234,11 +2252,6 @@
     <Content Include="Content\js\jquery.treeview.min.js" />
     <Content Include="Content\js\jquery.utils.js" />
     <Content Include="Content\js\ui.timepickr.js" />
-    <Content Include="Content\overlay-basic.css" />
-    <Content Include="Content\spinner_bar.gif" />
-    <Content Include="Content\Stylesheet1.css" />
-    <Content Include="Content\transparent.png" />
-    <Content Include="Content\ui.timepickr.css" />
     <Content Include="Contributions\Reports\TotalsByFundAgeRange.aspx" />
     <Content Include="Contributions\Reports\Reports.Master" />
     <Content Include="Contributions\Web.config" />
@@ -2259,13 +2272,6 @@
     <Content Include="Scripts\SearchDialog.js" />
     <Content Include="Scripts\OrgMemberDialog.js" />
     <Content Include="Scripts\RecReg.js" />
-    <Content Include="Content\images\checkboxtree\bg-checkbox-checked.gif" />
-    <Content Include="Content\images\checkboxtree\bg-checkbox-checkedchildren.gif" />
-    <Content Include="Content\images\checkboxtree\bg-checkbox-over.gif" />
-    <Content Include="Content\images\checkboxtree\bg-checkbox.gif" />
-    <Content Include="Content\images\checkboxtree\img-arrow-blank.gif" />
-    <Content Include="Content\images\checkboxtree\img-arrow-collapsed.gif" />
-    <Content Include="Content\images\checkboxtree\img-arrow-expanded.gif" />
     <Content Include="Errors\PageNotFound.aspx" />
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
@@ -2274,8 +2280,6 @@
     <Content Include="Scripts\Event.js" />
     <Content Include="Scripts\Pager.js" />
     <Content Include="Scripts\Person.js" />
-    <Content Include="Scripts\SearchPeople.js" />
-    <Content Include="Content\newsletter.css" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Site3b.Master" />
     <Content Include="Report\Reports.Master" />

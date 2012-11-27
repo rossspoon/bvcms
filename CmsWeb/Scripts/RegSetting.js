@@ -30,21 +30,22 @@
             a.parent().prev().find(".tip").tooltip({ opacity: 0, showBody: "|" });
         });
     });
-    $("ul.enablesort a.del").live("click", function (ev) {
-        if (!$(this).attr("href"))
-            return false;
-        ev.preventDefault();
-        $(this).parent().parent().parent().remove();
-    });
 
     $.regsettingeditclick = function (f) {
         $(".tip", f).tooltip({ opacity: 0, showBody: "|" });
-        $("ul.enablesort ul.sort", f).sortable();
+        $("ul.enablesort.sort, ul.enablesort ul.sort", f).sortable();
         $("ul.noedit input", f).attr("disabled", "disabled");
         $("ul.noedit select", f).attr("disabled", "disabled");
         $("ul.noedit a", f).not('[target="otherorg"]').removeAttr("href");
         $("ul.noedit a", f).not('[target="otherorg"]').css("color", "grey");
         $("ul.noedit a", f).not('[target="otherorg"]').unbind("click");
+        $('#notifylist').SearchUsers({
+            UpdateShared: function(topid) {
+                $.post("/Organization/UpdateNotifyIds", { id: $("#OrganizationId").val(), topid: topid }, function (ret) {
+                    $("#notifylist").html(ret);
+                });
+            }
+        });
     };
     $.regsettingeditclick();
     $("a.editor").live("click", function (ev) {
@@ -71,14 +72,6 @@
             }
         });
         return false;
-    });
-    $('#notifylist').live("click", function (e) {
-        if (!$(this).attr("href"))
-            return false;
-        e.preventDefault();
-        var d = $('#usersDialog');
-        $('iframe', d).attr("src", this.href);
-        d.dialog("open");
     });
 });
 CKEDITOR.on('dialogDefinition', function (ev) {

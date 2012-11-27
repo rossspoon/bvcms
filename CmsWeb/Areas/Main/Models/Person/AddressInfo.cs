@@ -224,7 +224,7 @@ namespace CmsWeb.Models.PersonPage
                     UserPeopleId = Util.UserPeopleId.Value,
                     PeopleId = PeopleId,
                     Field = Name,
-                    Data = "<table>\n" + psb.ToString() + "</table>",
+                    Data = "<table>\n" + psb + "</table>",
                     Created = Util.Now
                 };
                 DbUtil.Db.ChangeLogs.InsertOnSubmit(c);
@@ -237,7 +237,7 @@ namespace CmsWeb.Models.PersonPage
                     UserPeopleId = Util.UserPeopleId.Value,
                     PeopleId = PeopleId,
                     Field = Name,
-                    Data = "<table>\n" + fsb.ToString() + "</table>",
+                    Data = "<table>\n" + fsb + "</table>",
                     Created = Util.Now
                 };
                 DbUtil.Db.ChangeLogs.InsertOnSubmit(c);

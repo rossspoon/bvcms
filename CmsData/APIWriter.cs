@@ -19,6 +19,10 @@ namespace CmsData.API
             sb = new StringBuilder();
             w = XmlWriter.Create(sb,settings);
         }
+        public APIWriter(XmlWriter writer)
+        {
+			w = writer;
+        }
         public APIWriter Start(string element)
         {
             w.WriteStartElement(element);
@@ -38,11 +42,9 @@ namespace CmsData.API
         }
         private string tostr(object i)
         {
-            string s = null;
+            string s;
             if (i is DateTime)
                 s = ((DateTime)i).FormatDateTm();
-            else if (i is DateTime?)
-                s = ((DateTime?)i).FormatDateTm();
             else if (i == null)
                 s = string.Empty;
             else
@@ -58,7 +60,7 @@ namespace CmsData.API
         }
         public APIWriter AddText(string text)
         {
-            w.WriteRaw(text);
+            w.WriteString(text);
             return this;
         }
         public override string ToString()

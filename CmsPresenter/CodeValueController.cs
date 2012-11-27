@@ -239,6 +239,7 @@ namespace CMSPresenter
 		public IEnumerable<CodeValueItem> EntryPoints()
 		{
 			return from ms in DbUtil.Db.EntryPoints
+				   orderby ms.Description
 				   select new CodeValueItem
 				   {
 					   Id = ms.Id,

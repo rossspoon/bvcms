@@ -1,41 +1,144 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Data.Linq;
+using System.Reflection;
 using System.Web;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using CmsData;
-using System.Web.Mvc;
-using System.Text;
-using System.Configuration;
+using CmsData.API;
+using CmsData.Registration;
 using UtilityExtensions;
-using System.Data.Linq.SqlClient;
-using CMSPresenter;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
-using System.Collections;
-using System.Runtime.Serialization;
 using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
-	[Serializable]
-	public partial class OnlineRegModel
+    [Serializable]
+	public partial class OnlineRegModel : IXmlSerializable
 	{
-		private IList<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
-		public IList<OnlineRegPersonModel> List
+        public bool? testing { get; set; }
+		public string URL { get; set; }
+		private int? _masterorgid;
+		public int? masterorgid
+		{
+			get { return _masterorgid; }
+			set
+			{
+				_masterorgid = value;
+				if (value > 0)
+					ParseSettings();
+			}
+		}
+		private int? _Orgid;
+		public int? orgid
+		{
+			get { return _Orgid; }
+			set
+			{
+				_Orgid = value;
+				if (value > 0)
+				{
+					CheckMasterOrg();
+					ParseSettings();
+				}
+			}
+		}
+		private int? _Divid;
+		public int? divid
+		{
+			get { return _Divid; }
+			set
+			{
+				_Divid = value;
+				if (value > 0)
+					ParseSettings();
+			}
+		}
+		public int? classid { get; set; }
+		public int? TranId { get; set; }
+		public string username { get; set; }
+		public bool nologin { get; set; }
+		public decimal? donation { get; set; }
+		public int? donor { get; set; }
+		public int? UserPeopleId { get; set; }
+		private string _Registertag;
+		public string registertag
+		{
+			get { return _Registertag; }
+			set { _Registertag = value; }
+		}
+		private List<OnlineRegPersonModel> list = new List<OnlineRegPersonModel>();
+		public List<OnlineRegPersonModel> List
 		{
 			get { return list; }
 			set { list = value; }
 		}
-		[NonSerialized]
-		public OnlineRegPersonModel current;
-		[NonSerialized]
+        [XmlIgnore]
+		public string password { get; set; }
+
+        public XmlSchema GetSchema()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            var s = reader.ReadOuterXml();
+            var x = XDocument.Parse(s);
+            if (x.Root == null) return;
+
+            foreach (var e in x.Root.Elements())
+            {
+                var name = e.Name.ToString();
+                switch (name)
+                {
+                    case "List":
+                        foreach(var ee in e.Elements())
+                            list.Add(Util.DeSerialize<OnlineRegPersonModel>(ee.ToString()));
+                        break;
+                    default:
+                        Util.SetPropertyFromText(this, name, e.Value);
+                        break;
+                }
+            }
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            var w = new APIWriter(writer);
+            writer.WriteComment(DateTime.Now.ToString());
+            foreach (PropertyInfo pi in typeof(OnlineRegModel).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(vv => vv.CanRead && vv.CanWrite))
+            {
+                Debug.WriteLine(pi.Name);
+                switch (pi.Name)
+                {
+                    case "List":
+                        w.Start("List");
+                        foreach(var i in list)
+                            Util.Serialize(i, writer);
+                        w.End();
+                        break;
+                    case "password":
+                        break;
+                    default:
+                        w.Add(pi.Name, pi.GetValue(this, null));
+                        break;
+                }
+            }
+        }
+
+		public OnlineRegModel()
+		{
+			HttpContext.Current.Items["OnlineRegModel"] = this;
+		}
 		public bool ShowFindInstructions;
-		[NonSerialized]
 		public bool ShowLoginInstructions;
-		[NonSerialized]
 		public bool ShowOtherInstructions;
-		[NonSerialized]
 		private CmsData.Division _div;
 		public CmsData.Division div
 		{
@@ -50,7 +153,7 @@ namespace CmsWeb.Models
 		{
 			if (HttpContext.Current.Items.Contains("RegSettings"))
 				return;
-			var list = new Dictionary<int, RegSettings>();
+			var list = new Dictionary<int, Settings>();
 			if (_Divid.HasValue)
 			{
 				var q = from o in DbUtil.Db.Organizations
@@ -60,20 +163,20 @@ namespace CmsWeb.Models
 						where o.RegistrationTypeId != RegistrationTypeCode.None
 						select new { o.OrganizationId, o.RegSetting };
 				foreach (var i in q)
-					list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
+					list[i.OrganizationId] = new Settings(i.RegSetting, DbUtil.Db, i.OrganizationId);
 			}
 			else if (masterorgid.HasValue)
 			{
 				var q = from o in UserSelectClasses(masterorg)
 						select new { o.OrganizationId, o.RegSetting };
 				foreach (var i in q)
-					list[i.OrganizationId] = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId);
-				list[masterorg.OrganizationId] = new RegSettings(masterorg.RegSetting, DbUtil.Db, masterorg.OrganizationId);
+					list[i.OrganizationId] = new Settings(i.RegSetting, DbUtil.Db, i.OrganizationId);
+				list[masterorg.OrganizationId] = new Settings(masterorg.RegSetting, DbUtil.Db, masterorg.OrganizationId);
 			}
 			else if (org == null)
 				return;
 			else
-				list[_Orgid.Value] = new RegSettings(org.RegSetting, DbUtil.Db, _Orgid.Value);
+				list[_Orgid.Value] = new Settings(org.RegSetting, DbUtil.Db, _Orgid.Value);
 			if (HttpContext.Current.Items.Contains("RegSettings"))
 				return;
 			HttpContext.Current.Items.Add("RegSettings", list);
@@ -96,13 +199,12 @@ namespace CmsWeb.Models
 				}
 			}
 		}
-		public static RegSettings ParseSetting(string RegSetting, int OrgId)
+		public static Settings ParseSetting(string RegSetting, int OrgId)
 		{
-			return new RegSettings(RegSetting, DbUtil.Db, OrgId);
+			return new Settings(RegSetting, DbUtil.Db, OrgId);
 		}
-		[NonSerialized]
-		private CmsData.Organization _masterorg;
-		public CmsData.Organization masterorg
+		private Organization _masterorg;
+		public Organization masterorg
 		{
 			get
 			{
@@ -126,9 +228,7 @@ namespace CmsWeb.Models
 				_org = null;
 			}
 		}
-		public string URL { get; set; }
 
-		[NonSerialized]
 		private CmsData.Organization _org;
 		public CmsData.Organization org
 		{
@@ -143,52 +243,6 @@ namespace CmsWeb.Models
 			}
 		}
 
-		private int? _Divid;
-		public int? divid
-		{
-			get
-			{
-				return _Divid;
-			}
-			set
-			{
-				_Divid = value;
-				if (value > 0)
-					ParseSettings();
-			}
-		}
-		[OptionalField]
-		private int? _masterorgid;
-		public int? masterorgid
-		{
-			get { return _masterorgid; }
-			set
-			{
-				_masterorgid = value;
-				if (value > 0)
-					ParseSettings();
-			}
-		}
-		private int? _Orgid;
-		public int? orgid
-		{
-			get
-			{
-				return _Orgid;
-			}
-			set
-			{
-				_Orgid = value;
-				if (value > 0)
-				{
-					CheckMasterOrg();
-					ParseSettings();
-				}
-			}
-		}
-		public int? classid { get; set; }
-		public int? TranId { get; set; }
-		[NonSerialized]
 		private Transaction _Transaction;
 		public Transaction Transaction
 		{
@@ -199,20 +253,6 @@ namespace CmsWeb.Models
 				return _Transaction;
 			}
 		}
-		public string username { get; set; }
-		public string password { get; set; }
-		public bool nologin { get; set; }
-		public decimal? donation { get; set; }
-		public int? donor { get; set; }
-		public int? UserPeopleId { get; set; }
-		[OptionalField]
-		private string _Registertag;
-		public string registertag
-		{
-			get { return _Registertag; }
-			set { _Registertag = value; }
-		}
-		[NonSerialized]
 		private Person _User;
 		public Person user
 		{
@@ -239,28 +279,8 @@ namespace CmsWeb.Models
 			return _meeting;
 		}
 
-		//public OnlineRegModel()
-		//{
-		//}
-		//protected OnlineRegModel(SerializationInfo si, StreamingContext context)
-		//{
-		//    UserPeopleId = (int?)si.GetValue("UserPeopleId", typeof(int?));
-		//    URL = si.GetString("URL");
-		//    classid = (int?)si.GetValue("classid", typeof(int?));
-		//    divid = (int?)si.GetValue("divid", typeof(int?));
-		//    masterorgid = (int?)si.GetValue("masterorgid", typeof(int?));
-		//    nologin = si.GetBoolean("nologin");
-		//    orgid = (int?)si.GetValue("orgid", typeof(int?));
-		//    testing = si.GetBoolean("testing");
-		//    username = si.GetString("username");
-		//}
-		//public void GetObjectData(SerializationInfo info, StreamingContext context)
-		//{
-		//    throw new NotImplementedException();
-		//}
 		public void CreateList()
 		{
-#if DEBUG2
             List = new List<OnlineRegPersonModel>
             {
                 new OnlineRegPersonModel
@@ -268,26 +288,16 @@ namespace CmsWeb.Models
                     divid = divid,
                     orgid = orgid,
                     masterorgid = masterorgid,
+                    LoggedIn = false,
+#if DEBUG
                     first = "David",
-                    last = "Carroll",
+                    last = "Roll",
                     dob = "5/30/52",
                     email = "david@bvcms.com",
                     phone = "",
-                    LoggedIn = false,
-                }
-            };
-#else
-			List = new List<OnlineRegPersonModel>
-            {
-                new OnlineRegPersonModel
-                {
-                    divid = divid,
-                    orgid = orgid,
-                    masterorgid = masterorgid,
-                    LoggedIn = false,
-                }
-            };
 #endif
+                }
+            };
 		}
 	}
 }

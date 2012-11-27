@@ -4,17 +4,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>CMS2</title>
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link href="/Content/jquery-ui-1.8.23.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/style2.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/cmenu.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/pager.css" rel="stylesheet" type="text/css" />
+<link href='/Content/css/jquery-ui-1.9.2.custom.css' rel='stylesheet' type='text/css' />
+<link href='/Content/css/dropdown.css' rel='stylesheet' type='text/css' />
+<link href='/Content/css/site.css' rel='stylesheet' type='text/css' />
+<link href='/Content/css/style2.css' rel='stylesheet' type='text/css' />
+<link href='/Content/css/pager.css' rel='stylesheet' type='text/css' />
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
+    
+    <%  %>
    <% if (Util.UrgentMessage.HasValue())
        { %>
     <div id='urgentNotice'><%=Util.UrgentMessage%></div>
@@ -31,25 +32,26 @@
             <tr>
                 <td class="left">
                     <a href="/">
-                        <%=DbUtil.HeaderImage(@"<img src=""/Content/bvcms132x55.png"" width=""132"" height=""55"" />") %></a>
+                        <%=DbUtil.HeaderImage("<img src='/content/bvcms132x55.png' width='132' height='55' />") %></a>
                 </td>
                 <td class="center">
                     <%=DbUtil.Header() %>
                 </td>
                 <td class="right">
                     <div id="userarea">
-                        <div id="welcome" class="dropdown left">
-                            <div><a href="#">Welcome,
-                                <%=DbUtil.Db.CurrentUserPerson.PreferredName %>!
-                                <img src="/Content/Welcome.png" width="11" height="16"></a></div>
-                            <div class="sublinks">
-                                <a href="/Account/LogOff/">Logout</a>
-                                <a href="/Account/ChangePassword">Change Password</a>
+                        <div id="welcome" class="dropdown">
+                            <a href="#" class="trigger-dropdown">
+                                Welcome, <%=Util.UserPreferredName %>! <img src="/images/dnarrow.png" />
+                            </a>
+                            <div class="dropdown-menu has-tip anchor-right">
+                            <ul>
+                                <li><a href="/Account/LogOff/">Logout</a></li>
+                                <li><a href="/Account/ChangePassword">Change Password</a></li>
 <% if(Page.User.IsInRole("Admin"))
    { %>
-                                <a href="/Admin/Users.aspx">Manage Users</a>
-                                <a href="/Admin/Activity.aspx">Activity Log</a>
+                                <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
 <% } %>
+                            </ul>
                             </div>
                         </div>
 <% if (Page.User.IsInRole("Access"))
@@ -71,130 +73,260 @@
             </tr>
         </table>
 
-<% if(Page.User.IsInRole("Access"))
-   { %>
-        <table id="cmenu">
-        <tr>
-            <td class="dropdown">
-                <div><a href="/">Home</a></div>
-            </td>
-            <td class="dropdown">
-                <div><a href="/QuickSearch">People</a></div>
-                <div class="sublinks">
-                    <a href="/QuickSearch">People Search</a>
-                    <a href="/Tags">Manage Tags</a>
-                    <a href="/Task/List/">Tasks</a>
-                    <a href="/ContactSearch">Contact Search</a>
-    <% if(Util2.CurrentPeopleId != 0)
-       { %>
-                    <a href="/Person/Index/<%=Util2.CurrentPeopleId%>">
-                        <%=Session["ActivePerson"] %></a>
-    <% } %>
+<div class="navbar">
+    <ul>
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="#" class="trigger-dropdown">
+                People <img src="/images/dnarrow.png" />
+            </a>
+            <div class="dropdown-menu has-tip">
+                <ul>
+                    <li><a href="/PeopleSearch">
+                            Search
+                        </a></li>
+                    <li><a id="addpeople" href="#">
+                            Add People
+                        </a> </li>
+                    <li><a href="/Tags">
+                            Manage Tags
+                        </a></li>
+                    <li><a href="/Task/List/">
+                            Tasks
+                        </a></li>
+                    <li><a href="/ContactSearch">
+                            Contacts
+                        </a></li>
+                    <% if (Util2.CurrentPeopleId != 0)
+                       { %>
+                        <li><a href="/Person/Index/<%=Util2.CurrentPeopleId%>">
+                                <%=Session["ActivePerson"]%>
+                            </a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="trigger-dropdown">
+                Organization <img src="/images/dnarrow.png" />
+            </a>
+            <div class="dropdown-menu has-tip">
+                <ul>
+                    <li><a href="/OrgSearch">
+                            Search
+                        </a> </li>
+                    <li><a href="/EmailAttendanceNotices.aspx">
+                            Email Attendance Notices
+                        </a> </li>
+                    <% if (Page.User.IsInRole("Edit"))
+                       { %>
+                        <li><a id="addorg" href="#">
+                                Add Organization
+                            </a> </li>
+                        <li><a href="/OrgMembers">
+                                Org Members Management
+                            </a></li>
+                    <% }
+                       if (Page.User.IsInRole("Coupon"))
+                       { %>
+                        <li><a href="/Coupon/">
+                                Coupons
+                            </a></li>
+                    <% } %>
+                    <li><a href="/EnrollmentControlReport.aspx">
+                            Enrollment Control Report
+                        </a></li>
+                    <% if (((string) Session["ActiveOrganization"]).HasValue())
+                       { %>
+                        <li><a href="/Organization/Index/<%=Util2.CurrentOrgId%>">
+                                <%=Session["ActiveOrganization"]%>
+                            </a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="trigger-dropdown">
+                Reports <img src="/images/dnarrow.png" />
+            </a>
+            <div class="dropdown-menu has-tip">
+                <ul>
+                    <li><a href="/Reports/VitalStats" target="_blank">
+                            Vital Stats
+                        </a></li>
+                    <li><a href="/Reports/ChurchAttendance" target="_blank">
+                            Week at a Glance
+                        </a></li>
+                    <li><a href="/Reports/ChurchAttendance2" target="_blank">
+                            Average Week at a Glance
+                        </a></li>
+                    <% if (DbUtil.Db.Setting("Bellevue", "false") == "true")
+                       { %>
+                        <li><a href="/Report/ChurchAttendanceSummaryRpt.aspx" target="_blank">
+                                Church Attendance Summary
+                            </a></li>
+                    <% } %>
+                    <li><a href="/Report/ChurchAttendanceRpt.aspx" target="_blank">
+                            Weekly Decisions
+                        </a></li>
+                    <li><a href="/Report/DecisionSummary.aspx" target="_blank">
+                            Decision Summary
+                        </a></li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="trigger-dropdown">
+                SearchBuilder <img src="/images/dnarrow.png" />
+            </a>
+            <div class="dropdown-menu has-tip">
+                <ul>
+                    <li><a href="/QueryBuilder/Main">
+                            Last Search
+                        </a></li>
+                    <li><a href="/QueryBuilder/NewQuery">
+                            New Search
+                        </a></li>
+                    <li><a href="/SavedQuery">
+                            Saved Searches
+                        </a></li>
+                    <li><a href="/Reports/ExtraValues">
+                            Extra Values
+                        </a></li>
+                </ul>
+            </div>
+        </li>
+        <% if (Page.User.IsInRole("Finance"))
+           { %>
+            <li>
+                <a href="#" class="trigger-dropdown">
+                    Contributions <img src="/images/dnarrow.png" />
+                </a>
+                <div class="dropdown-menu has-tip">
+                    <ul>
+                        <li><a href="/Contributions/Bundles.aspx">
+                                Bundles
+                            </a></li>
+                        <li><a href="/Finance/Contributions">
+                                All
+                            </a></li>
+                        <li class="header">
+                                Reports
+                        </li>
+                        <li><a href="/Statements" target="_blank">
+                                Statements (All)
+                            </a></li>
+                        <li><a href="/Contributions/GLExtract.aspx">
+                                GL Extract
+                            </a></li>
+                        <li><a href="/FinanceReports/TotalsByFund">
+                                Totals by Fund
+                            </a></li>
+                        <li><a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">
+                                Totals by Fund Age Range
+                            </a></li>
+                        <li><a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">
+                                Totals by Fund Age Range (pledges included)
+                            </a></li>
+                        <li><a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">
+                                Totals by Fund Range
+                            </a></li>
+                        <li><a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">
+                                Pledge Totals by Fund Range
+                            </a></li>
+                        <li><a href="/FinanceReports/PledgeReport" target="_blank">
+                                Pledge Report
+                            </a></li>
+                        <li><a href="/FinanceReports/ManagedGiving" target="_blank">
+                                Managed Giving
+                            </a></li>
+                    </ul>
                 </div>
-            </td>
-            <td class="dropdown">
-                <div><a href="/OrgSearch">Organization</a></div>
-                <div class="sublinks">
-                    <a href="/OrgSearch">Search</a>
-                    <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a>
-                    <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a>
-    <% if (Page.User.IsInRole("Edit"))
-       { %>
-                    <a href="/OrgMembers">Org Members Management</a>
-    <% }
-       if (Page.User.IsInRole("Coupon"))
-       { %>
-                    <a href="/Coupon/">Coupons</a>
-    <% }
-       if (((string)Session["ActiveOrganization"]).HasValue())
-       { %>
-                    <a href="/Organization/Index/<%=Util2.CurrentOrgId%>">
-                        <%=Session["ActiveOrganization"] %></a>
-    <% } %>
+            </li>
+        <% }
+           if (Page.User.IsInRole("admin"))
+           { %>
+            <li>
+                <a href="#" class="trigger-dropdown">
+                    Admin <img src="/images/dnarrow.png" />
+                </a>
+                <div class="dropdown-menu has-tip anchor-right">
+                    <ul>
+                            <li><a href="/Manage/Users/Index">
+                                    Users
+                                </a></li>
+                            <li><a href="/Setup/Program/">
+                                    Programs
+                                </a> </li>
+                            <li><a href="/Setup/Division/">
+                                    Divisions
+                                </a></li>
+                            <li><a href="/Setup/Setting">
+                                    Settings
+                                </a> </li>
+                            <li><a href="/Setup/MetroZip/">
+                                    Metro Zips
+                                </a> </li>
+                            <li><a href="/Display/Index/">
+                                    Special Content
+                                </a></li>
+                            <li><a href="/Manage/Transactions">
+                                    Transactions
+                                </a></li>
+                            <li><a href="/Manage/CheckinTime">
+                                    Check-in Activity
+                                </a></li>
+                            <li><a href="/Manage/Emails">
+                                    Emails
+                                </a> </li>
+                            <li><a href="/Setup/Lookup/">
+                                    Lookups
+                                </a></li>
+                            <li><a href="/Batch/UpdateFields/">
+                                    Update for a Tag
+                                </a> </li>
+                            <li><a href="/Admin/ToggleOrgMembersOnly.ashx">
+                                    <%= Util2.OrgMembersOnly ? "OrgMembersOnly is on" : "OrgMembersOnly is off" %>
+                                </a></li>
+                            <li><a href="/Admin/ToggleOrgLeadersOnly.ashx">
+                                    <%= Util2.OrgLeadersOnly ? "OrgLeadersOnly is on" : "OrgLeadersOnly is off" %>
+                                </a></li>
+                            <li><a href="/Batch/UpdateQueryBits">
+                                    Update QueryBits
+                                </a></li>
+                            <li><a href="/Batch/TagPeopleIds">
+                                    Tag PeopleIds
+                                </a></li>
+                    </ul>
                 </div>
-            </td>
-            <td class="dropdown">
-                <div><a href="/Reports/ChurchAttendance" target="_blank">Reports</a></div>
-                <div class="sublinks">
-                    <a href="/Reports/ChurchAttendance" target="_blank">Week at a Glance</a>
-                    <a href="/Reports/ChurchAttendance2" target="_blank">Average Week at a Glance</a>
-    <% if (DbUtil.Db.Setting("Bellevue", "false") == "true")
-       { %>
-
-                    <a href="/Report/ChurchAttendanceSummaryRpt.aspx" target="_blank">Church Attendance Summary</a>
-    <% } %>
-                    <a href="/Report/ChurchAttendanceRpt.aspx" target="_blank">Weekly Decisions</a>
-                    <a href="/Report/DecisionSummary.aspx" target="_blank">Decision Summary</a>
-                </div>
-            </td>
-            <td class="dropdown">
-                <div><a href="/QueryBuilder/Main">QueryBuilder</a></div>
-                <div class="sublinks">
-                    <a href="/QueryBuilder/Main">Last Query</a>
-                        <asp:LinkButton ID="NewQueryLink" runat="server" OnClick="NewQuery_Click">New Query</asp:LinkButton>
-                    <a href="/SavedQuery">Saved Queries</a>
-                </div>
-            </td>
-    <% if (Page.User.IsInRole("Finance"))
-       { %>
-            <td class="dropdown">
-                <div><a href="/Contributions/Bundles.aspx">Contributions</a></div>
-                <div class="sublinks">
-                    <a href="/Contributions/Bundles.aspx">Bundles</a>
-                    <a href="/Finance/Contributions">All</a>
-                    <a href="#" class="heading">&mdash; Reports &mdash;</a>
-                    <a href="/Statements" target="_blank">Statements (All)</a>
-                    <a href="/Contributions/GLExtract.aspx">GL Extract</a>
-                    <a href="/FinanceReports/TotalsByFund">Totals by Fund</a>
-                    <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">
-                        Totals by Fund Age Range</a>
-                    <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">
-                        Totals by Fund Age Range (pledges included)</a>
-                    <a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">Totals by
-                        Fund Range</a>
-                    <a href="/Contributions/Reports/TotalsByFund2.aspx?pledged=true" target="_blank">
-                        Pledge Totals by Fund</a>
-                    <a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">
-                        Pledge Totals by Fund Range</a>
-                    <a href="/Contributions/Reports/PledgeReport.aspx" target="_blank">Pledge Report</a>
-                </div>
-            </td>
-    <% }
-       if (Page.User.IsInRole("Admin"))
-       { %>
-            <td class="dropdown">
-                <div><a href="/Admin/Users.aspx">Admin</a></div>
-                <div class="sublinks">
-                    <a href="/Setup/Program/">Programs</a>
-                    <a href="/Setup/Division/">Divisions</a>
-                    <a href="/Setup/Setting">Settings</a>
-                    <a href="/Display/Index/">Special Content</a>
-                    <a href="/Setup/MetroZip/">Metro Zips</a>
-                    <a href="/Manage/Transactions">Transactions</a>
-                    <a href="/Manage/Emails">Emails</a>
-                    <a href="/Setup/Lookup/">Lookups</a>
-                    <a href="/Admin/ToggleOrgMembersOnly.ashx">
-                        <%=Util2.OrgMembersOnly ? "Turn Off OrgMembersOnly" : "Turn On OrgMembersOnly" %></a>
-                    <a href="/Batch/UpdateQueryBits">Update QueryBits</a>
-                    <a href="/Batch/FindTagPeople">Find Tag People</a>
-                    <a href="/Batch/TagPeopleIds">Tag PeopleIds</a>
-                    <a href="/Admin/ClearCache.aspx">Clear Cache</a>
-                </div>
-            </td>
-    <% } %>
-            <td class="dropdown left">
-                <div><a href="<%=Util.HelpLink(Util.Helpfile) %>" target="_blank">Help</a></div>
-                <div class="sublinks">
-                    <a href="<%=Util.HelpLink(Util.Helpfile) %>" target="_blank">Wiki Documentation</a>
-                    <a href="mailto:support@bvcms.com?subject=Support request from <%=DbUtil.Db.CurrentUserPerson.Name%> at <%=Util.CmsHost2%>" target="_blank">Email Support</a>
-                    <a href="/Home/About">About</a>
-                </div>
-            </td>
-        </tr>
-        </table>
-<% } %>
-        <div style="clear: both; border-bottom: 4px solid #ddd"></div>
-    </div>
+            </li>
+        <% } %>
+        <li>
+            <a href="#" class="trigger-dropdown">
+                Help <img src="/images/dnarrow.png" />
+            </a>
+            <div class="dropdown-menu has-tip anchor-right">
+                <ul>
+                    <li><a href="<%=Util.HelpLink(Util.Helpfile)%>" target="_blank">
+                            Help Documentation
+                        </a></li>
+                    <li><a href="mailto:support@bvcms.com?Subject=Support request from <%=Util.UserFullName%> at <%=Util.CmsHost2%>" target="_blank">
+                            Email Support
+                        </a></li>
+                    <li><a href="/Home/About">
+                            About
+                        </a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>
+<div style="clear: both; border-bottom: 4px solid #ddd"></div>
+</div>
 
     <div id="main">
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
@@ -212,7 +344,7 @@
                     if (s != "") {
                         s = s.replace(/^\s+/g, "");
                         s = s.replace(/\s+$/g, " ");
-                        var u = '/QuickSearch?name=' + escape(s);
+                        var u = '/QuickSearch?q=' + escape(s);
                         window.location = u;
                     }
                 }

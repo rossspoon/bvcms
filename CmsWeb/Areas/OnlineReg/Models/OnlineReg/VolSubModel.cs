@@ -26,11 +26,11 @@ namespace CmsWeb.Models
 		public Person person { get; set; } 
 		public Organization org { get; set; }
 
-		private void FetchEntities(int aid, int pid)
+		private void FetchEntities(int aid, int? pid)
 		{
 			var q = from attend in Db.Attends
 					where attend.AttendId == aid
-					let p = Db.People.Single(pp => pp.PeopleId == pid)
+					let p = Db.People.SingleOrDefault(pp => pp.PeopleId == pid)
 					select new
 					{
 						attend,
@@ -107,18 +107,31 @@ Thank you for your consideration,<br />
 		}
 		public string DisplayMessage { get; set; }
 		public string Error { get; set; }
-		public Dictionary<int, string> FetchPotentialSubs()
+
+		public class SubInfo
+		{
+			public int PeopleId { get; set; }
+			public string Name { get; set; }
+			public string Email { get; set; }
+		}
+
+		public List<SubInfo> FetchPotentialSubs()
 		{
 			var q = from om in Db.OrganizationMembers
-					where om.OrganizationId == org.OrganizationId
-					where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
-					where om.Pending == false
-					where om.PeopleId != person.PeopleId
-					where !Db.Attends.Any(aa => aa.MeetingId == attend.MeetingId
-						&& aa.Registered == true && aa.PeopleId == om.PeopleId)
-					orderby om.Person.Name2
-					select om.Person;
-			return q.ToDictionary(kk => kk.PeopleId, nn => nn.Name);
+			        where om.OrganizationId == org.OrganizationId
+			        where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
+			        where om.Pending == false
+			        where om.PeopleId != person.PeopleId
+			        where !Db.Attends.Any(aa => aa.MeetingId == attend.MeetingId
+			                                    && aa.Commitment != null && aa.PeopleId == om.PeopleId)
+			        orderby om.Person.Name2
+			        select new SubInfo()
+			        {
+				        PeopleId = om.PeopleId,
+				        Name = om.Person.Name,
+				        Email = om.Person.EmailAddress
+			        };
+			return q.ToList();
 		}
 		public void SendEmails()
 		{
@@ -142,12 +155,13 @@ Thank you for your consideration,<br />
 			var qb = Db.QueryBuilderScratchPad();
 			qb.CleanSlate(Db);
 			qb.AddNewClause(QueryType.HasMyTag, CompareType.Equal, "{0},temp".Fmt(tag.Id));
+			attend.Commitment = CmsData.Codes.AttendCommitmentCode.FindSub;
 			Db.SubmitChanges();
 
 			var reportlink = @"<a href=""{0}OnlineReg/VolSubReport/{1}/{2}/{3}"">Substitute Status Report</a>"
 				.Fmt(Db.CmsHost, attend.AttendId, person.PeopleId, dt.Ticks);
 			var list = Db.PeopleFromPidString(org.NotifyIds).ToList();
-			list.Insert(0, person);
+			//list.Insert(0, person);
 			Db.Email(person.FromEmail, list,
 				"Volunteer Substitute Commitment for " + org.OrganizationName,
 				@"
@@ -202,7 +216,7 @@ Thank you for your consideration,<br />
 		}
 		public void ProcessReply(string ans)
 		{
-			if (attend.PeopleId != person.PeopleId)
+			if (attend.SubRequests.Any(ss => ss.CanSub == true))
 			{
 				DisplayMessage = "This substitute request has already been covered. Thank you so much for responding.";
 				return;
@@ -223,7 +237,8 @@ Thank you for your consideration,<br />
 				return;
 			}
 			r.CanSub = true;
-			attend.PeopleId = r.SubstituteId;
+			Attend.MarkRegistered(Db, r.Substitute.PeopleId, attend.MeetingId, CmsData.Codes.AttendCommitmentCode.Substitute);
+			attend.Commitment = CmsData.Codes.AttendCommitmentCode.SubFound;
 			Db.SubmitChanges();
 			var body = @"
 <p>{0},</p>
@@ -265,8 +280,8 @@ See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
 				{
 					switch (CanSub)
 					{
-						case true: return new HtmlString("<span class=\"red\">Can Substitute</span>"); break;
-						case false: return new HtmlString("Cannot Substitute"); break;
+						case true: return new HtmlString("<span class=\"red\">Can Substitute</span>");
+						case false: return new HtmlString("Cannot Substitute");
 					}
 					return new HtmlString("");
 				}
@@ -279,6 +294,7 @@ See you there!</p>".Fmt(r.Substitute.Name, r.Requestor.Name,
 					where r.AttendId == attend.AttendId
 					where r.RequestorId == person.PeopleId
 					where r.Requested == dt
+					orderby r.Responded descending, r.Substitute.Name2
 					select new SubStatusInfo
 					{
 						SubName = r.Substitute.Name,

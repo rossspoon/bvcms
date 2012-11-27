@@ -16,12 +16,16 @@
         {
             visibility:hidden;
         }
+        .rgck0
+        {
+            color: gray;
+        }
     </style>
 }
 
 @section scripts
 {
-@Html.Script("/Content/js/jquery.sortElements.js")
+@*@Html.Script("/Content/js/jquery.sortElements.js")*@
 @Html.Script("/Scripts/meeting.js")
     @if (!Model.meeting.GroupMeetingFlag)
     {
@@ -135,25 +139,28 @@ This will allow you to mark them as members.
     <td rowspan="2" style="width:2em"></td>
     <td valign="top" style="min-height:12em">
         <div id="buttondiv" class="dropdown" style="font-size:1.2em;margin-top:2em;">
-            <div><a href="#">Other Management</a></div>
-            <div class="sublinks">
-                <a href="/Reports/PastAttendee/@Model.meeting.OrganizationId" target="_blank">Recent Attendance Report</a>
-                <a href="/Reports/Attendee/@Model.meeting.MeetingId" target="_blank">Attendee Report</a>
-                <a href="/Reports/VisitsAbsents/@Model.meeting.MeetingId" target="_blank">Visits/Absents Report</a>
-                <a href="/Meeting/AttendanceByGroups/@Model.meeting.MeetingId" target="_blank">AttendanceByGroups</a>
-                <a href="/Meeting/iPad/@Model.meeting.MeetingId">iPad Attendance</a>
-                <a href="/Meeting/tickets/@Model.meeting.MeetingId">Ticketing Attendance</a>
-                <a href="/AddAttendeesFromTag/Index/@Model.meeting.MeetingId" class="addfromtag">Add Attendees From Tag</a>
-                <a href="#" class="heading">&mdash; Convert to Query &mdash;</a>
-                <a href="/Meeting/QueryAttendees/@Model.meeting.MeetingId">Attendees</a>
-                <a href="/Meeting/QueryVisitors/@Model.meeting.MeetingId">Visitors</a>
-                <a href="/Meeting/QueryAbsents/@Model.meeting.MeetingId">Absents</a>
-                <a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Registered">Registered</a>
-                <a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Attends">Registered Attends</a>
-                <a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Absents">Registered Absents</a>
-                <a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=UnregisteredAttends">UnRegistered Attends</a>
+            <a href="#" class="trigger-dropdown">
+                Other Management <img src="/images/dnarrow.png" />
+            </a>
+            <div class="dropdown-menu has-tip">
+                <ul>
+                    <li><a href="/Reports/PastAttendee/@Model.meeting.OrganizationId" target="_blank">Recent Attendance Report</a></li>
+                    <li><a href="/Reports/Attendee/@Model.meeting.MeetingId" target="_blank">Attendee Report</a></li>
+                    <li><a href="/Reports/VisitsAbsents/@Model.meeting.MeetingId" target="_blank">Visits/Absents Report</a></li>
+                    <li><a href="/Meeting/AttendanceByGroups/@Model.meeting.MeetingId" target="_blank">AttendanceByGroups</a></li>
+                    <li><a href="/Meeting/iPad/@Model.meeting.MeetingId">iPad Attendance</a></li>
+                    <li><a href="/Meeting/tickets/@Model.meeting.MeetingId">Ticketing Attendance</a></li>
+                    <li><a href="/AddAttendeesFromTag/Index/@Model.meeting.MeetingId" class="addfromtag">Add Attendees From Tag</a></li>
+                    <li class="label">Convert to Search</li>
+                    <li><a href="/Meeting/QueryAttendees/@Model.meeting.MeetingId">Attendees</a></li>
+                    <li><a href="/Meeting/QueryVisitors/@Model.meeting.MeetingId">Visitors</a></li>
+                    <li><a href="/Meeting/QueryAbsents/@Model.meeting.MeetingId">Absents</a></li>
+                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Registered">Registered</a></li>
+                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Attends">Registered Attends</a></li>
+                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Absents">Registered Absents</a></li>
+                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=UnregisteredAttends">UnRegistered Attends</a></li>
+                </ul>
             </div>
-            <div style="border-bottom: 4px solid #ddd"></div>
         </div>
         @if (User.IsInRole("Edit"))
         {
@@ -191,7 +198,7 @@ This will allow you to mark them as members.
 <thead>
     <tr>
         <th>Attended</th>
-        <th class="showreg">Registered</th>
+        <th class="showreg">Commitment</th>
         <th><a href="#" id="sortbyname">Name</a></th>
         <th>Current Member Type</th>
         <th>Attend Member Type</th>
@@ -204,7 +211,9 @@ This will allow you to mark them as members.
 {
     <tr rowtype="@a.Member" @(!a.Member ? "class=visitor" : "")>
         <td align="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" disabled="disabled" /></td>
-        <td align="center" class="showreg"><input type="checkbox" pid="@a.PeopleId" @(a.Registered ? "checked=checked" : "") class="rgck" disabled="disabled" /></td>
+        <td class="showreg">
+            <span id='c@(Model.meeting.MeetingId)_@(a.PeopleId)' class='clickSelect rgck0 commitment'>@a.Commitment</span>
+        </td>
         <td class="name"><a href="/Person/Index/@a.PeopleId" title="@a.Age">@a.Name</a></td>
         <td>@a.CurrMemberType</td>
         <td>@a.MemberType</td>

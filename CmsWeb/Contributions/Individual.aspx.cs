@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CmsData;
+using CmsData.Codes;
 using UtilityExtensions;
 using CMSPresenter;
 
@@ -42,7 +43,7 @@ namespace CmsWeb.Contributions
                 var now = Util.Now;
                 var r = new Contribution
                 {
-                    ContributionStatusId = (int)Contribution.StatusCode.Recorded,
+                    ContributionStatusId = ContributionStatusCode.Recorded,
                     CreatedBy = Util.UserId1,
                     CreatedDate = now,
                     PeopleId = c.PeopleId,
@@ -56,13 +57,13 @@ namespace CmsWeb.Contributions
                 switch (e.CommandName)
                 {
                     case "Reverse":
-                        c.ContributionStatusId = (int)Contribution.StatusCode.Reversed;
-                        r.ContributionTypeId = (int)Contribution.TypeCode.Reversed;
+                        c.ContributionStatusId = ContributionStatusCode.Reversed;
+                        r.ContributionTypeId = ContributionTypeCode.Reversed;
                         r.ContributionDesc = "Reversed Contribution Id = " + c.ContributionId;
                         break;
                     case "Return":
-                        c.ContributionStatusId = (int)Contribution.StatusCode.Returned;
-                        r.ContributionTypeId = (int)Contribution.TypeCode.ReturnedCheck;
+                        c.ContributionStatusId = ContributionStatusCode.Returned;
+                        r.ContributionTypeId = ContributionTypeCode.ReturnedCheck;
                         r.ContributionDesc = "Returned Check for Contribution Id = " + c.ContributionId;
                         break;
                 }

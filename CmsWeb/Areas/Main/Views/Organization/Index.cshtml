@@ -1,42 +1,13 @@
-﻿@using CmsWeb
+﻿@using CmsData.Codes
+@using CmsWeb
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Organization";
 }
 @section head {
-    <link href="/Content/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/organization.css" rel="stylesheet" type="text/css" />
-    <style type="text/css">
-        .ui-timepicker-div .ui-widget-header
-        {
-            margin-bottom: 8px;
-        }
-        .ui-timepicker-div dl
-        {
-            text-align: left;
-        }
-        .ui-timepicker-div dl dt
-        {
-            height: 25px;
-            margin-bottom: -25px;
-        }
-        .ui-timepicker-div dl dd
-        {
-            margin: 0 10px 10px 65px;
-        }
-        .ui-timepicker-div td
-        {
-            font-size: 90%;
-        }
-        .ui-tpicker-grid-label
-        {
-            background: none;
-            border: none;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    <link href="/Content/css/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/organization.css" rel="stylesheet" type="text/css" />
 }
 @section scripts
 {
@@ -53,43 +24,77 @@
     </form>
 </div>
 <div class="floatleft">
-<div id="buttondiv" class="dropdown" style="margin-top: 2em; margin-left: 2em; font-size: 1.2em;">
-    <div style="margin-top: 2em">
-        <a href="#">Other Management</a></div>
-    <div class="sublinks">
-        @if (User.IsInRole("ManageGroups"))
-        { 
-            <a href="/OrgGroups/Index/@Model.OrganizationId">Group Member Management</a>
-        }
-		<a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank"> Recent Attendance Report</a> 
-		<a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId"> Attendance Percentages</a> 
-		<a href="/OrgContent/Index/@o.OrganizationId" target="_blank"> Members Only Page</a> 
-		<a href="/RegSetting/Index/@o.OrganizationId">View Registration Document</a> 
-		<a id="tryreg" href="#">Try Registration</a> 
-        @if (Model.IsVolunteerLeader)
-        {
-		<a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId" target="calendar">Volunteer Calendar</a>
-        }
-        @if (User.IsInRole("Edit"))
-        {
-            <a href="/Organization/CopySettings/@o.OrganizationId">Copy Settings</a>
-            <a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId">Send Reminders</a>
-            <a href="/OrgChildren/Index/@Model.OrganizationId">Child Organization Management</a>
-        }
-        @if (User.IsInRole("Admin"))
-        {
-            <a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">Delete Organization</a>
-            <a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">Repair
-                Transactions</a>
-        }
+    <div id="buttondiv" class="navbar" style="margin-top: 2em; margin-left: 2em; font-size: 1.2em;">
+        <a href="#" class="trigger-dropdown">
+            Other Management <img src="/images/dnarrow.png" />
+        </a>
+        <div class="dropdown-menu">
+            <ul>
+                @if (User.IsInRole("ManageGroups"))
+                { 
+                    <li><a href="/OrgGroups/Index/@Model.OrganizationId">
+                            Group Member Management
+                        </a></li>
+                }
+                <li><a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank">
+                         Recent Attendance Report
+                    </a></li>
+                <li><a id="AttendanceRpt" href="/Reports/Attendance/@o.OrganizationId">
+                         Attendance Percentages
+                    </a> </li>
+                <li><a href="/OrgContent/Index/@o.OrganizationId" target="_blank">
+                         Members Only Page
+                    </a> </li>
+                @if (User.IsInRole("Developer"))
+                {
+                    <li><a href="/RegSetting/Index/@o.OrganizationId">
+                            View Registration Document
+                        </a></li>
+                }
+                <li><a id="tryreg" href="#">Try Registration</a> </li>
+                @if (Model.IsVolunteerLeader && o.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+                {
+                    <li><a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId" target="calendar">
+                            Volunteer Calendar
+                        </a></li>
+                }
+                @if (User.IsInRole("Edit"))
+                {
+                    <li><a href="/Organization/CopySettings/@o.OrganizationId">
+                            Copy Settings
+                        </a></li>
+                    if(o.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+                    {
+                        <li><a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId">
+                                Send Volunteer Reminders
+                            </a></li>
+                    }
+                    else
+                    {
+                        <li><a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId?emailall=true">
+                                Send Event Reminders
+                            </a></li>
+                    }
+                    <li><a href="/OrgChildren/Index/@Model.OrganizationId">
+                            Child Organization Management
+                        </a></li>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">
+                            Delete Organization
+                        </a></li>
+                    <li><a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">
+                            Repair Transactions
+                        </a></li>
+                }
+            </ul>
+        </div>
     </div>
-    <div style="border-bottom: 4px solid #ddd">
-    </div>
-</div>
 </div>
 <div class="floatclear">
 </div>
-<div id="main-tab" class="ui-tabs">
+<div id="main-tab" style="display:none">
     <ul class="ui-tabs-nav">
         <li><a href="#Members-tab"><span>Members</span></a></li>
         <li><a id="inactive-link" href="#Inactive-tab"><span>Inactive</span></a></li>
@@ -99,85 +104,85 @@
         <li><a href="#Settings-tab"><span>Settings</span></a></li>
         <li><a id="meetings-link" href="#Meetings-tab"><span>Meetings</span></a></li>
     </ul>
-    <div id="Members-tab" class="ui-tabs-panel ui-tabs-hide">
+    <div id="Members-tab">
         <form action="/Organization/CurrMemberGrid/@Model.OrganizationId" method="post">
         @Html.Partial("CurrMemberGrid", Model.MemberModel)
         </form>
     </div>
-    <div id="Inactive-tab" class="ui-tabs-panel ui-tabs-hide">
+    <div id="Inactive-tab">
         <form action="/Organization/InactiveMemberGrid/@Model.OrganizationId" method="post">
         </form>
     </div>
-    <div id="Pending-tab" class="ui-tabs-panel ui-tabs-hide">
+    <div id="Pending-tab">
         <form action="/Organization/PendingMemberGrid/@Model.OrganizationId" method="post">
         </form>
     </div>
-    <div id="Priors-tab" class="ui-tabs-panel ui-tabs-hide">
+    <div id="Priors-tab">
         <form action="/Organization/PrevMemberGrid/@Model.OrganizationId" method="post">
         </form>
     </div>
-    <div id="Visitors-tab" class="ui-tabs-panel ui-tabs-hide">
+    <div id="Visitors-tab">
         <form action="/Organization/VisitorGrid/@Model.OrganizationId" method="post">
         </form>
     </div>
-    <div id="Meetings-tab" class="ui-tabs-panel ui-tabs-hide">
+    <div id="Meetings-tab">
         <form action="/Organization/MeetingGrid/@Model.OrganizationId" method="post">
         @Html.Hidden("future", false)
         </form>
     </div>
-    <div id="Settings-tab" class="ui-tabs-hide ui-tabs-panel">
-        <ul class="ui-tabs-nav">
+    <div id="Settings-tab" style="display:none">
+        <ul>
             <li><a href="#SettingsOrg"><span>General</span></a></li>
             <li><a href="#SettingsMeetings"><span>Attendance</span></a></li>
             <li><a href="#OnlineRegAdmin"><span>Registration</span></a></li>
-            <li><a id="tabfees" href="#OnlineRegFees"><span>Fees</span></a></li>
-            <li><a id="tabquestions" href="#OnlineRegQuestions"><span>Questions</span></a></li>
+            <li><a href="#OnlineRegFees"><span>Fees</span></a></li>
+            <li><a href="#OnlineRegQuestions"><span>Questions</span></a></li>
             <li><a href="#OnlineRegMessages"><span>Messages</span></a></li>
             <li><a href="#ExtraValues"><span>Extra Values</span></a></li>
         </ul>
-        <div id="SettingsOrg" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="SettingsOrg" class="settings">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">
             @Html.Partial("SettingsOrg", Model)
             </form>
         </div>
-        <div id="SettingsMeetings" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="SettingsMeetings" class="settings">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">
             @Html.Partial("SettingsMeetings", Model)
             </form>
         </div>
-        <div id="OnlineRegAdmin" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="OnlineRegAdmin" class="settings">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">
             @Html.Partial("OnlineRegAdmin", Model.RegSettings)
             </form>
         </div>
-        <div id="OnlineRegFees" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="OnlineRegFees"class="settings">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">
             @Html.Partial("OnlineRegFees", Model.RegSettings)
             </form>
         </div>
-        <div id="OnlineRegQuestions" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="OnlineRegQuestions" class="settings">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">
             @Html.Partial("OnlineRegQuestions", Model.RegSettings)
             </form>
         </div>
-        <div id="OnlineRegMessages" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="OnlineRegMessages" class="settings no0">
             <p>
                 <i>Hover over the labels to get help</i></p>
             <form class="DisplayEdit" action="">
             @Html.Partial("OnlineRegMessages", Model.RegSettings)
             </form>
         </div>
-        <div id="ExtraValues" class="ui-tabs-hide ui-tabs-panel settings">
+        <div id="ExtraValues" class="settings">
             <table id="extras" class="grid">
                 <thead>
                     <tr>
@@ -203,6 +208,8 @@
         </div>
     </div>
 </div>
+@section PopupsPlaceholder
+{
 <div id="NewMeetingDialog" class="roundbox" style="display: none">
     <table>
         <tr>
@@ -306,9 +313,6 @@
     </select>
     </form>
 </div>
-<div id="usersDialog">
-    <iframe style="width: 100%; height: 99%; border-width: 0;"></iframe>
-</div>
 <div id="AddFromTag">
     <iframe style="width: 100%; height: 99%; border-width: 0;"></iframe>
 </div>
@@ -326,30 +330,19 @@
 </div>
 <table id="newvalueform" class="grid roundbox" style="display: none">
     <tr>
-        <td colspan="2">
-            <h2>
-                New Extra Value</h2>
-        </td>
+        <td colspan="2"> <h2> New Extra Value</h2> </td>
     </tr>
     <tr>
-        <td>
-            MultiLine:
-        </td>
-        <td>@Html.CheckBox("multiline")
-        </td>
+        <td> MultiLine: </td>
+        <td>@Html.CheckBox("multiline") </td>
     </tr>
     <tr>
-        <td>
-            Field:
-        </td>
-        <td>@Html.TextBox("fieldname")
-        </td>
+        <td> Field: </td>
+        <td>@Html.TextBox("fieldname") </td>
     </tr>
     <tr>
-        <td>
-            Value:
-        </td>
-        <td>@Html.TextBox("fieldvalue")
-        </td>
+        <td> Value: </td>
+        <td>@Html.TextBox("fieldvalue") </td>
     </tr>
 </table>
+}

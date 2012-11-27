@@ -17,25 +17,32 @@ namespace CmsWeb
             int? qid = context.Request.QueryString["id"].ToInt2();
             var labelNameFormat = context.Request.QueryString["format"];
             var ctl = new MailingController();
-            var useTitles = context.Request.QueryString["titles"];
-            ctl.UseTitles = useTitles == "true";
+            var sortZip = context.Request.QueryString["sortZip"];
+	        var sort = "Name";
+			var useTitles = context.Request.QueryString["titles"];
+				ctl.UseTitles = useTitles == "true";
+			if (sortZip == "true")
+				sort = "Zip";
             IEnumerable<MailingInfo> q = null;
             switch (labelNameFormat)
             {
                 case "Individual":
-                    q = ctl.FetchIndividualList("Name", qid.Value);
+                    q = ctl.FetchIndividualList(sort, qid.Value);
+                    break;
+                case "FamilyMembers":
+                    q = ctl.FetchFamilyMembers(sort, qid.Value);
                     break;
                 case "Family":
-                    q = ctl.FetchFamilyList("Name", qid.Value);
+                    q = ctl.FetchFamilyList(sort, qid.Value);
                     break;
                 case "ParentsOf":
-                    q = ctl.FetchParentsOfList("Name", qid.Value);
+                    q = ctl.FetchParentsOfList(sort, qid.Value);
                     break;
                 case "CouplesEither":
-                    q = ctl.FetchCouplesEitherList("Name", qid.Value);
+                    q = ctl.FetchCouplesEitherList(sort, qid.Value);
                     break;
                 case "CouplesBoth":
-                    q = ctl.FetchCouplesBothList("Name", qid.Value);
+                    q = ctl.FetchCouplesBothList(sort, qid.Value);
                     break;
             }
             var r = context.Response;
@@ -56,7 +63,7 @@ namespace CmsWeb
                 r.End();
             }
             foreach (var mi in q)
-                r.Write(string.Format("{0},{1},{2},{3},{4},{5},{6}\n",
+                r.Write(string.Format("{0},{1},{2},{3},{4},{5},{6}\r\n",
                     mi.LabelName, mi.Address, mi.Address2, mi.City, mi.State, mi.Zip.FmtZip(), mi.PeopleId));
 
         }

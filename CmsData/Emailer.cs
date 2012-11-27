@@ -313,6 +313,8 @@ namespace CmsData
 				text = DoRsvpLink(text, CmsHost, emailqueueto);
 			if (text.Contains("http://volsublink", ignoreCase: true))
 				text = DoVolSubLink(text, CmsHost, emailqueueto);
+			if (text.Contains("http://volreqlink", ignoreCase: true))
+				text = DoVolReqLink(text, CmsHost, emailqueueto);
 			if (text.Contains("{barcode}", ignoreCase: true))
 			{
 				var link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
@@ -501,7 +503,7 @@ namespace CmsData
 		{
 			//<a dir="ltr" href="http://votelink" id="798" rel="smallgroup" title="This is a message">test</a>
 			var list = new Dictionary<string, OneTimeLink>();
-			const string VoteLinkRE = "<a[^>]*?href=\"http://votelink\"[^>]*>.*?</a>";
+			const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://votelink\"[^>]*>.*?</a>";
 			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -544,7 +546,7 @@ namespace CmsData
 		{
 			//<a dir="ltr" href="http://rsvplink" id="798" rel="meetingid" title="This is a message">test</a>
 			var list = new Dictionary<string, OneTimeLink>();
-			const string RsvpLinkRE = "<a[^>]*?href=\"http://rsvplink\"[^>]*>.*?</a>";
+			const string RsvpLinkRE = "<a[^>]*?href=\"https{0,1}://rsvplink\"[^>]*>.*?</a>";
 			var re = new Regex(RsvpLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -582,7 +584,7 @@ namespace CmsData
 		private string DoRegisterLink(string text, string CmsHost, EmailQueueTo emailqueueto)
 		{
 			var list = new Dictionary<string, OneTimeLink>();
-			const string VoteLinkRE = "<a[^>]*?href=\"http://(?<rlink>registerlink2{0,1})\"[^>]*>.*?</a>";
+			const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://(?<rlink>registerlink2{0,1})\"[^>]*>.*?</a>";
 			var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -610,7 +612,7 @@ namespace CmsData
 		public string DoVolSubLink(string text, string CmsHost, EmailQueueTo emailqueueto)
 		{
 			var list = new Dictionary<string, OneTimeLink>();
-			const string VolSubLinkRE = "<a[^>]*?href=\"http://volsublink\"[^>]*>.*?</a>";
+			const string VolSubLinkRE = "<a[^>]*?href=\"https{0,1}://volsublink\"[^>]*>.*?</a>";
 			var re = new Regex(VolSubLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
 			var match = re.Match(text);
 			while (match.Success)
@@ -641,6 +643,45 @@ namespace CmsData
 				}
 
 				var url = Util.URLCombine(CmsHost, "/OnlineReg/ClaimVolSub/{0}/{1}".Fmt(d["ans"], ot.Id.ToCode()));
+				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
+				match = match.NextMatch();
+			}
+			return text;
+		}
+		public string DoVolReqLink(string text, string CmsHost, EmailQueueTo emailqueueto)
+		{
+			var list = new Dictionary<string, OneTimeLink>();
+			const string VolSubLinkRE = "<a[^>]*?href=\"https{0,1}://volreqlink\"[^>]*>.*?</a>";
+			var re = new Regex(VolSubLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+			var match = re.Match(text);
+			while (match.Success)
+			{
+				var tag = match.Value;
+
+				var doc = new HtmlDocument();
+				doc.LoadHtml(tag);
+				var ele = doc.DocumentNode.Element("a");
+				var inside = ele.InnerHtml;
+				var d = ele.Attributes.ToDictionary(aa => aa.Name.ToString(), aa => aa.Value);
+
+				var qs = "{0},{1},{2},{3}"
+					.Fmt(d["mid"], d["pid"], d["ticks"], emailqueueto.PeopleId);
+				OneTimeLink ot = null;
+				if (list.ContainsKey(qs))
+					ot = list[qs];
+				else
+				{
+					ot = new OneTimeLink
+					{
+						Id = Guid.NewGuid(),
+						Querystring = qs
+					};
+					OneTimeLinks.InsertOnSubmit(ot);
+					SubmitChanges();
+					list.Add(qs, ot);
+				}
+
+				var url = Util.URLCombine(CmsHost, "/OnlineReg/RequestResponse?ans={0}&guid={1}".Fmt(d["ans"], ot.Id.ToCode()));
 				text = text.Replace(tag, @"<a href=""{0}"">{1}</a>".Fmt(url, inside));
 				match = match.NextMatch();
 			}

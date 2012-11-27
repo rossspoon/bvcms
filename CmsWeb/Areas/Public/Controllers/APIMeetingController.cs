@@ -38,13 +38,13 @@ namespace CmsWeb.Areas.Public.Controllers
                 .DeleteExtraValue(meetingid, field));
         }
         [HttpPost]
-        public ActionResult MarkRegistered(int meetingid, int peopleid, bool registered)
+        public ActionResult MarkRegistered(int meetingid, int peopleid, int? CommitId)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
 			DbUtil.LogActivity("APIMeeting MarkRegistered {0}, {1}".Fmt(meetingid, peopleid));
-            Attend.MarkRegistered(DbUtil.Db, peopleid, meetingid, registered);
+            Attend.MarkRegistered(DbUtil.Db, peopleid, meetingid, CommitId);
             return Content("ok");
         }
     }

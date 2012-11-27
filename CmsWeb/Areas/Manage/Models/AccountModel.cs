@@ -313,7 +313,7 @@ Click on your username below to set your password and login to the system.</p>
 <blockquote>
 <h3>Your username is: <b><a href=""{link}"">{username}</a></h3>
 </blockquote>");
-			body = body.Replace("{name}", user.Name);
+			body = body.Replace("{name}", user.Person.Name);
 			body = body.Replace("{cmshost}", DbUtil.Db.Setting("DefaultHost", DbUtil.Db.Host));
 			body = body.Replace("{username}", user.Username);
 			user.ResetPasswordCode = Guid.NewGuid();

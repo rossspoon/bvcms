@@ -1,13 +1,14 @@
 ﻿
 $(document).ready(function () {
-	$('#SearchText').keypress(function (e) {
+    $("a.trigger-dropdown").dropdown();
+    $('#SearchText').keypress(function (e) {
 		if ((e.keyCode || e.which) == 13) {
 			e.preventDefault();
 			var s = $('#SearchText').val();
 			if (s != "") {
 				s = s.replace(/^\s+/g, "");
 				s = s.replace(/\s+$/g, " ");
-				var u = '/QuickSearch?name=' + escape(s);
+				var u = '/QuickSearch/Index?q=' + escape(s);
 				window.location = u;
 			}
 		}
@@ -56,6 +57,25 @@ $(document).ready(function () {
 		delay: 150,
 		showBody: "|",
 		showURL: false
+	});
+	$('#SearchText').each(function () {
+	    $(this).tooltip({
+	        showBody: "|"
+	    });
+	    $(this).attr("value", $(this).attr('default'));
+	    $(this).addClass('text-label');
+	    $(this).focus(function () {
+	        if (this.value == $(this).attr('default')) {
+	            this.value = '';
+	            $(this).removeClass('text-label');
+	        }
+	    });
+	    $(this).blur(function () {
+	        if (this.value == '') {
+	            this.value = $(this).attr('default');
+	            $(this).addClass('text-label');
+	        }
+	    });
 	});
 });
 function CloseAddDialog() {

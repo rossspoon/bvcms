@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using System.Xml.Serialization;
 using CmsData;
 using System.Web.Mvc;
 using System.Text;
 using System.Configuration;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using CMSPresenter;
@@ -22,10 +24,10 @@ namespace CmsWeb.Models
     {
         public static Organization CreateAccountOrg()
         {
-            var settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
+            var settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, Settings>;
             if (settings == null)
             {
-                settings = new Dictionary<int, RegSettings>();
+                settings = new Dictionary<int, Settings>();
                 HttpContext.Current.Items.Add("RegSettings", settings);
             }
             var o = new Organization { OrganizationId = Util.CreateAccountCode, OrganizationName = "My Data" };
@@ -34,14 +36,13 @@ namespace CmsWeb.Models
                 settings.Add(Util.CreateAccountCode, ParseSetting("AllowOnlyOne: true", Util.CreateAccountCode));
             return o;
         }
-        [NonSerialized]
-        private Dictionary<int, RegSettings> _settings;
-        public Dictionary<int, RegSettings> settings
+        private Dictionary<int, Settings> _settings;
+        public Dictionary<int, Settings> settings
         {
             get
             {
                 if (_settings == null)
-                    _settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, RegSettings>;
+                    _settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, Settings>;
                 return _settings;
             }
         }
@@ -71,7 +72,6 @@ namespace CmsWeb.Models
                 return null;
             }
         }
-        public bool? testing { get; set; }
         public string qtesting
         {
             get { return testing == true ? "?testing=true" : ""; }
@@ -152,13 +152,13 @@ namespace CmsWeb.Models
                 var setting = settings[org.OrganizationId];
                 return org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot
                     || org.RegistrationTypeId == RegistrationTypeCode.CreateAccount
-                    || setting.AllowOnlyOne == true || setting.AskTickets == true
-                    || setting.GiveOrgMembAccess == true;
+                    || setting.AllowOnlyOne || setting.AskVisible("AskTickets")
+                    || setting.GiveOrgMembAccess;
             }
             if (settings != null)
             {
                 var q = from o in settings.Values
-                        where o.AllowOnlyOne == true || o.AskTickets == true
+                        where o.AllowOnlyOne || o.AskVisible("AskTickets")
                         select o;
                 return q.Any();
             }
@@ -303,7 +303,10 @@ namespace CmsWeb.Models
 				var tag = match.Value;
 				var name = match.Groups["name"].Value;
 
-				text = text.Replace(tag, p.GetExtra(name));
+				if (p == null)
+					text = text.Replace(tag, "");
+				else
+					text = text.Replace(tag, p.GetExtra(name));
 				match = match.NextMatch();
 			}
 			return text;
@@ -323,11 +326,12 @@ namespace CmsWeb.Models
                 return "";
             }
         }
-        public OnlineRegPersonModel LoadExistingPerson(int id)
+        public OnlineRegPersonModel LoadExistingPerson(int id, int index)
         {
             var person = DbUtil.Db.LoadPersonById(id);
             var p = new OnlineRegPersonModel
             {
+                index = index,
                 dob = person.DOB,
                 email = person.EmailAddress.HasValue() ? person.EmailAddress : user.EmailAddress,
                 first = person.PreferredName,
@@ -340,6 +344,8 @@ namespace CmsWeb.Models
                 classid = classid,
                 IsFamily = true,
                 LoggedIn = true,
+                Found = true,
+                IsValidForExisting = true,
             };
             return p;
         }

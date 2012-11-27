@@ -1,13 +1,28 @@
-﻿$(function () {
+﻿/// <reference path="../Min/Content/js/combined-person.js" />
+$(function () {
     var addrtabs = $("#address-tab").tabs();
     $("#enrollment-tab").tabs();
     $("#member-tab").tabs();
     $("#growth-tab").tabs();
     $("#system-tab").tabs();
-    var maintabs = $("#main-tab").tabs();
+    $("#main-tab").tabs();
+    $("#main-tab").show();
     $(".submitbutton,.bt").button();
     addrtabs.tabs('select', $('#addrtab').val());
-    $('#dialogbox').SearchPeopleInit({ overlay: { background: "#000", opacity: 0.3} });
+    $('#dialogbox').dialog({
+        title: 'Search Dialog',
+        bgiframe: true,
+        autoOpen: false,
+        width: 700,
+        height: 630,
+        modal: true,
+        overlay: {
+            opacity: 0.5,
+            background: "black"
+        }, close: function () {
+            $('iframe', this).attr("src", "");
+        }
+    });
     $('#clipaddr').live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
@@ -51,9 +66,11 @@
         }
     });
     $('#moveperson').click(function (ev) {
-        $('#dialogbox').SearchPeople(ev, function (id, peopleid) {
-            window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + peopleid;
-        });
+        ev.preventDefault();
+        var d = $('#dialogbox');
+        $('iframe', d).attr("src", this.href);
+        d.dialog("option", "title", "Merge To Person");
+        d.dialog("open");
         return false;
     });
 
@@ -157,7 +174,6 @@
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret).ready(function () {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
-                //$('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
                 $('.bt').button();
                 $(".datepicker").datepicker();
                 $.extraEditable('#extravalues');
@@ -249,12 +265,13 @@
     $('#family table.grid > tbody > tr:even').addClass('alt');
     $("#recreg-link").click(function (ev) {
         ev.preventDefault();
-        var f = $('#recreg-tab form')
+        var f = $('#recreg-tab form');
         if ($('table', f).size() > 0)
             return false;
         var q = f.serialize();
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret);
+            $(".bt", f).button();
         });
         return false;
     });
@@ -271,27 +288,24 @@
     });
 
     $.UpdateForSection = function (f) {
-        var acopts = {
-            minChars: 3,
-            matchContains: 1
-        };
-        $('#Employer', f).autocomplete("/Person/Employers", acopts);
-        $('#School', f).autocomplete("/Person/Schools", acopts);
-        $('#Occupation', f).autocomplete("/Person/Occupations", acopts);
-        $('#NewChurch,#PrevChurch', f).autocomplete("/Person/Churches", acopts);
+        $('#Employer', f).autocomplete({ minLength: 3, source: "/Person/Employers" });
+        $('#School', f).autocomplete({ minLength: 3, source: "/Person/Schools" });
+        $('#Occupation', f).autocomplete({ minLength: 3, source: "/Person/Occupations" });
+        $('#NewChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
+        $('#PrevChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
+        
         $(".datepicker").datepicker();
-        $(".submitbutton,.bt").button();
-        $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
+        $(".submitbutton,.bt", f).button();
         $("#verifyaddress").click(function () {
-            var f = $(this).closest('form');
-            var q = f.serialize();
+            var ff = $(this).closest('form');
+            var q = ff.serialize();
             $.post($(this).attr('href'), q, function (ret) {
                 if (confirm(ret.address + "\nUse this Address?")) {
-                    $('#Address1', f).val(ret.Line1);
-                    $('#Address2', f).val(ret.Line2);
-                    $('#City', f).val(ret.City);
-                    $('#State', f).val(ret.State);
-                    $('#Zip', f).val(ret.Zip);
+                    $('#Address1', ff).val(ret.Line1);
+                    $('#Address2', ff).val(ret.Line2);
+                    $('#City', ff).val(ret.City);
+                    $('#State', ff).val(ret.State);
+                    $('#Zip', ff).val(ret.Zip);
                 }
             });
             return false;
@@ -302,7 +316,7 @@
         ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())
-            return;
+            return false;
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
             $(f).html(ret).ready(function () {
@@ -310,7 +324,6 @@
                 $.post($(bc).attr("href"), null, function (ret) {
                     $(bc).html(ret);
                 });
-                $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
                 $(".submitbutton,.bt").button();
             });
         });
@@ -339,7 +352,7 @@
         rules: {
             "NickName": { maxlength: 15 },
             "Title": { maxlength: 10 },
-            "First": { maxlength: 25, required: true },
+            "First": { maxlength: 25 },
             "Middle": { maxlength: 15 },
             "Last": { maxlength: 100, required: true },
             "Suffix": { maxlength: 10 },
@@ -352,15 +365,15 @@
             "School": { maxlength: 60 },
             "Employer": { maxlength: 60 },
             "Occupation": { maxlength: 60 },
-            "WeddingDate": { date: true },
-            "DeceasedDate": { date: true },
+//            "WeddingDate": { date: true },
+//            "DeceasedDate": { date: true },
             "Grade": { number: true },
             "Address1": { maxlength: 40 },
             "Address2": { maxlength: 40 },
             "City": { maxlength: 30 },
-            "Zip": { maxlength: 15 },
-            "FromDt": { date: true },
-            "ToDt": { date: true }
+            "Zip": { maxlength: 15 }
+//            "FromDt": { date: true },
+//            "ToDt": { date: true }
         }
     });
     $('#addrf').validate();
@@ -456,30 +469,37 @@
             $(input).val(value);
         }
     });
-    //    $.editable.addInputType("multiselect", {
-    //        element: function (settings, original) {
-    //            var textarea = $('<select />');
-    //            if (settings.rows) {
-    //                textarea.attr('rows', settings.rows);
-    //            } else {
-    //                textarea.height(settings.height);
-    //            }
-    //            if (settings.cols) {
-    //                textarea.attr('cols', settings.cols);
-    //            } else {
-    //                textarea.width(settings.width);
-    //            }
-    //            $(this).append(textarea);
-    //            return (textarea);
-    //        },
-    //        plugin: function (settings, original) {
-    //            $('textarea', this).multiselect();
-    //        },
-    //        submit: function (settings, original) {
-    //            var value = $('#hour_').val() + ':' + $('#min_').val();
-    //            $('input', this).val(value);
+    $('#vtab>ul>li').click(function() {
+        $('#vtab>ul>li').removeClass('selected');
+        $(this).addClass('selected');
+        var index = $('#vtab>ul>li').index($(this));
+        $('#vtab>div').hide().eq(index).show();
+    });
+
+    //$.editable.addInputType("multiselect", {
+    //    element: function(settings, original) {
+    //        var textarea = $('<select />');
+    //        if (settings.rows) {
+    //            textarea.attr('rows', settings.rows);
+    //        } else {
+    //            textarea.height(settings.height);
     //        }
-    //    }); 
+    //        if (settings.cols) {
+    //            textarea.attr('cols', settings.cols);
+    //        } else {
+    //            textarea.width(settings.width);
+    //        }
+    //        $(this).append(textarea);
+    //        return (textarea);
+    //    },
+    //    plugin: function(settings, original) {
+    //        $('textarea', this).multiselect();
+    //    },
+    //    submit: function(settings, original) {
+    //        var value = $('#hour_').val() + ':' + $('#min_').val();
+    //        $('input', this).val(value);
+    //    }
+    //});
 
 });
 function RebindMemberGrids(from) {
@@ -490,4 +510,7 @@ function RebindMemberGrids(from) {
 function RebindUserInfoGrid(from) {
     $.updateTable($('#user-tab form'));
     $("#memberDialog").dialog('close');
+}
+function AddSelected(ret) {
+    window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + ret.pid;
 }

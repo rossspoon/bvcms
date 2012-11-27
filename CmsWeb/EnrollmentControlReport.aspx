@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Enrollment Control" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="EnrollmentControlReport.aspx.cs" Inherits="CmsWeb.EnrollmentControlReport" %>
+    CodeBehind="EnrollmentControlReport.aspx.cs" Inherits="CmsWeb.EnrollmentControlReport" EnableEventValidation="false" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>

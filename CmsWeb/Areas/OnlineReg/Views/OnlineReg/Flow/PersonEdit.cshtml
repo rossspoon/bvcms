@@ -1,6 +1,7 @@
 ﻿@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.OnlineRegPersonModel
+@{ var index = Model.Index(); }
 <tr>
     <td align="right" colspan="2">
         @Html.Required()
@@ -14,9 +15,9 @@
             First Name:</label>
     </td>
     <td>
-        @Html.TextBox(Model.inputname("first"), Model.first, new { @class = "wide" })
+        @Html.TextBoxFor(m => m.first, new { @class = "wide" })
         <div>
-            @Html.ValidationMessage(Model.inputname("first"))</div>
+            @Html.ValidationMessageFor(m => m.first)</div>
     </td>
 </tr>
 <tr>
@@ -26,7 +27,7 @@
             Middle Initial:</label>
     </td>
     <td>
-        @Html.TextBox(Model.inputname("middle"), Model.middle, new { @class = "wide" })
+        @Html.TextBoxFor(m => m.middle, new { @class = "wide" })
     </td>
 </tr>
 <tr>
@@ -36,9 +37,9 @@
             Last Name:</label>
     </td>
     <td>
-        @Html.TextBox(Model.inputname("last"), Model.last, new { @class = "wide" })
+        @Html.TextBoxFor(m => m.last, new { @class = "wide" })
         <div>
-            @Html.ValidationMessage(Model.inputname("last"))</div>
+            @Html.ValidationMessageFor(m => m.last)</div>
     </td>
 </tr>
 <tr>
@@ -48,7 +49,7 @@
             Suffix:</label>
     </td>
     <td>
-        @Html.TextBox(Model.inputname("suffix"), Model.suffix, new { @class = "short" })
+        @Html.TextBoxFor(m => m.suffix, new { @class = "short" })
     </td>
 </tr>
 <tr>
@@ -57,29 +58,31 @@
         <label for="dob">
             Birthdate:</label>
     </td>
-    <td>@Html.TextBox3("dob", Model.inputname("dob"), Model.dob, new { @class = "dob" })
+    <td>@Html.TextBox3("dob", Html.NameFor2(m => m.dob), Model.dob, new { @class = "dob" })
          (<span id="age">@Model.age</span>)
         <div>
-            @Html.ValidationMessage(Model.inputname("dob"))</div>
+            @Html.ValidationMessageFor(m => m.dob)</div>
     </td>
 </tr>
 <tr>
     <td valign="top" nowrap="nowrap">
-@if(Model.ShowAddress == true)
-{// Home phone is asked for in address 
-           @Html.IsRequired(Model.RequiredPhone())
-        <label for="phone">Cell Phone:</label>
+@* Show Cell phone because HomePhone is already asked for in address *@
+@if(Model.ShowAddress)
+{
+        @Html.IsRequired(Model.RequiredPhone())
+    	<span>Cell Phone:</span>
 }
+// Otherwise just ask for Generic Phone
 else
-{// Otherwise just ask for either (for search purposes) but if it is new it goes in cell 
-           @Html.NotRequired()
-        <label for="phone">Phone:</label>
+{
+        @Html.NotRequired()
+    	<span>Phone:</span>
 } 
     </td>
     <td>
-        @Html.TextBox(Model.inputname("phone"), Model.phone, new { @class = "wide" })
+        @Html.TextBoxFor(m => m.phone, new { @class = "wide" })
         <div>
-            @Html.ValidationMessage(Model.inputname("phone"))</div>
+            @Html.ValidationMessageFor(m => m.phone)</div>
     </td>
 </tr>
 <tr>
@@ -89,42 +92,48 @@ else
             Email:</label>
     </td>
     <td>
-        @Html.TextBox(Model.inputname("email"), Model.email, new { @class = "wide" })
+        @Html.TextBoxFor(m => m.email, new { @class = "wide" })
         <div>
-            @Html.ValidationMessage(Model.inputname("email"))</div>
+            @Html.ValidationMessageFor(m => m.email)</div>
     </td>
 </tr>
+@* show the address fields *@
 @if (Model.ShowAddress)
-{// show the address fields 
-    @Html.Partial("Flow/AddressEdit", Model) 
+{
+    @Html.Partial("Flow/AddressEdit", Model)
 <tr>
     <td>
     </td>
+    @* allow submit here for manage subscriptions *@
     @if (Model.ManageSubscriptions())
-    {// allow submit here 
+    {
     <td align="right">
-        <input type="button" href="/OnlineReg/SubmitNew/@Model.index" class="submitbutton ajax" 
-            value="Submit" />
+		<input type="button" href="/OnlineReg/SubmitNew/@index" class="submitbutton ajax" 
+			   value="Submit" />
+        @* only allow adults to create an account *@
         @if (Model.age >= 16 || !Model.birthday.HasValue)
-        {// only allow adults to create an account
-        <div>@Html.CheckBox(Model.inputname("CreatingAccount"), Model.CreatingAccount)
+        {
+        <div>@Html.CheckBoxFor(m => m.CreatingAccount)
         Create Account (optional)</div>
         } 
     </td>
     }
-    else
-    {// submit for a new person here 
+    // submit for a new person here
+    else 
+    {
     <td align="right">
-        <input type="button" href="/OnlineReg/SubmitNew/@Model.index" class="submitbutton ajax"
+        <input type="button" href="/OnlineReg/SubmitNew/@index" class="submitbutton ajax"
             value="Submit" />
     </td>
     } 
 </tr>
 }
+// we're not showing the address yet, still searching or finding
 else 
-{// we're not showing the address yet, still searching or finding
+{ 
+    // we have not searched for the person yet, let them find their profile
     if (!Model.Found.HasValue)
-    { // we have not searched for the person yet, let them find their profile
+    {
 <tr>
     <td colspan="2" align="right">
 @section scripts
@@ -134,29 +143,31 @@ else
             $("div.instructions.find").show();
         </script>
 }
-        <input type="button" href="/OnlineReg/PersonFind/@Model.index" class="submitbutton ajax"
+        <input type="button" href="/OnlineReg/PersonFind/@index" class="submitbutton ajax"
             value="Find Profile" />
     </td>
 </tr>
     }
+    // display the results of the find 
     else
-    {// display the results of the find 
+    {
 <tr>
-    <td colspan="2">
-        <div>
-            @Html.ValidationMessage("findn")</div>
-        <div>
-            @Html.Raw(Model.NotFoundText)</div>
-    </td>
+	<td colspan="2">
+		<div>
+			@Html.ValidationMessageFor(m => m.Found)</div>
+		<div>
+			@Html.Raw(Model.NotFoundText)</div>
+	</td>
 </tr>
+        // Show how to add this person (to family, previous, new) did not find them 
         if (Model.Found == false)
-        {// did not find them 
+        {
 <tr>
     <td align="right" colspan="2">
         <table>
-            @if (Model.index > 0 || Model.LoggedIn == true)
-            { // if we are logged in or beyond the first registrant,
-              // allow adding to a new family
+			@* allow adding to a new family if we are logged in or beyond the first registrant *@
+            @if (index > 0 || Model.LoggedIn)
+            { 
             <tr>
                 <td align="left">
                     Add to which family?
@@ -164,38 +175,39 @@ else
             </tr>
             <tr>
                 <td align="left">
-                    @Html.RadioButton(Model.inputname("whatfamily"), "3")
-                    New
+                    @Html.RadioButtonFor(m => m.whatfamily, "3") New
                 </td>
             </tr>
             }
+            // assume this is going to a new family if not logged in and on first registrant 
             else
-            { // not logged in and on first registrant 
-              // assume this is going to a new family
-            @Html.Hidden(Model.inputname("whatfamily"), "3")
+            { 
+                Model.whatfamily = 3;
+                @Html.HiddenFor(m => m.whatfamily)
             }
-            @if (Model.index > 0)
-            { // we are not on the first registrant
-              // allowing, adding to previous registrant's family 
+			@* allow adding to previous registrant's family if we are not on the first registrant *@
+            @if (index > 0)
+            { 
             <tr>
                 <td align="left">
-                    @Html.RadioButton(Model.inputname("whatfamily"), "2")
+                    @Html.RadioButtonFor(m => m.whatfamily, "2")
                     Previous
                 </td>
             </tr>
-            }
-            @if (Model.LoggedIn == true)
-            { // if logged in, allow adding to logged in family
+			} 
+            @* if logged in, allow adding to logged in family *@
+            @if (Model.LoggedIn)
+            {
             <tr>
                 <td align="left">
-                    @Html.RadioButton(Model.inputname("whatfamily"), "1")
+                    @Html.RadioButtonFor(m => m.whatfamily, "1")
                     Mine
                 </td>
             </tr>
             } 
             <tr>
                 <td align="left">
-                    @Html.ValidationMessage(Model.inputname("whatfamily"))
+                    @Html.ValidationMessageFor(m => m.whatfamily)
                 </td>
             </tr>
         </table>
@@ -204,17 +216,16 @@ else
         } 
 <tr>
     <td colspan="2" align="right">
-        <input type="button" style="display: inline-block" href="/OnlineReg/PersonFind/@Model.index" class="submitbutton ajax" 
-                value="Search Again" />
-        @if (Model.IsValidForContinue  // no errors
-            && !Model.MemberOnly() // ok to add new people
-                && Model.orgid != Util.CreateAccountCode // not in a create account mode
-            )
+		<input type="button" style="display: inline-block" href="/OnlineReg/PersonFind/@index" class="submitbutton ajax" 
+			   value="Search Again" />
+        @* Allow Add New Profile if valid data, not a memberonly type registration and not in create account mode *@
+        @if (Model.IsValidForContinue && !Model.MemberOnly() && Model.orgid != Util.CreateAccountCode)
         {
-            @:or <input type="button" id="regnew" href="/OnlineReg/ShowMoreInfo/@Model.index" class="submitbutton ajax" value="Add New Profile" />
-        }
+            @:or <input type="button" id="regnew" href="/OnlineReg/ShowMoreInfo/@index" class="submitbutton ajax" value="Add New Profile" />
+		} 
+        // display helpful message if an anonomous person is trying to create an account
         else if (Model.orgid == Util.CreateAccountCode)
-        { // we are in a create account mode, but it's not found
+        {
         <p>
             Call the church if you think your record should be in the system. It may be that
             we are missing some information on your record that we need to identify you like

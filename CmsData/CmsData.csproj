@@ -214,7 +214,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
@@ -243,7 +243,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Twilio.Api">
-      <HintPath>..\packages\Twilio.3.5.1\lib\3.5\Twilio.Api.dll</HintPath>
+      <HintPath>..\packages\Twilio.3.5.5\lib\3.5\Twilio.Api.dll</HintPath>
     </Reference>
     <Reference Include="Twilio.Mvc">
       <HintPath>..\packages\Twilio.Mvc.3.1.9\lib\3.5\Twilio.Mvc.dll</HintPath>
@@ -253,7 +253,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressVerify.cs" />
+    <Compile Include="AddressVerify.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Attend.cs" />
     <Compile Include="AuthorizeNet.cs" />
     <Compile Include="Batch\ExpressionVisitor.cs" />
@@ -267,7 +269,14 @@
     <Compile Include="APIOrganization.cs" />
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
+    <Compile Include="APIContribution.cs" />
+    <Compile Include="FamilyExtra.cs" />
+    <Compile Include="Generated\BackgroundCheck.cs" />
+    <Compile Include="Generated\BackgroundCheckMVRCode.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
+    <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
+    <Compile Include="Generated\Views\UserRole.cs" />
+    <Compile Include="Generated\VolRequest.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
     <Compile Include="Generated\Functions\PledgeFulfillment.cs" />
     <Compile Include="Generated\Functions\VisitNumberSinceDate.cs" />
@@ -278,7 +287,7 @@
     <Compile Include="Generated\SubRequest.cs" />
     <Compile Include="Generated\Views\MasterOrg.cs" />
     <Compile Include="Generated\Views\PickListOrgs2.cs" />
-    <Compile Include="Generated\VolSubRequest.cs" />
+    <Compile Include="Meeting.cs" />
     <Compile Include="ProtectMyMinistryHelper.cs" />
     <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />
@@ -300,10 +309,25 @@
     <Compile Include="Generated\Views\PickListOrg.cs" />
     <Compile Include="ManagedGiving.cs" />
     <Compile Include="Dynamic.cs" />
+    <Compile Include="Registration\Ask.cs" />
+    <Compile Include="Registration\AskRequest.cs" />
+    <Compile Include="Registration\AskSize.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Registration\AskTickets.cs" />
+    <Compile Include="Registration\AskSuggestedFee.cs" />
+    <Compile Include="Registration\TimeSlots.cs" />
+    <Compile Include="Registration\AskDropdown.cs" />
+    <Compile Include="Registration\AskCheckboxes.cs" />
+    <Compile Include="Registration\AskExtraQuestions.cs" />
+    <Compile Include="Registration\AskGradeOptions.cs" />
+    <Compile Include="Registration\AskMenu.cs" />
+    <Compile Include="Registration\OrgFees.cs" />
+    <Compile Include="Registration\Parser.cs" />
+    <Compile Include="Registration\AskYesNoQuestions.cs" />
     <Compile Include="SagePayments.cs" />
     <Compile Include="TransactionResponse.cs" />
     <Compile Include="TwilioHelper.cs" />
-    <Compile Include="VolInterest.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
     <Compile Include="Generated\Duplicate.cs" />
     <Compile Include="Generated\Functions\FindPerson4.cs" />
@@ -327,7 +351,7 @@
     <Compile Include="Generated\OrgSchedule.cs" />
     <Compile Include="Generated\PeopleQueryBit.cs" />
     <Compile Include="Generated\QueryStat.cs" />
-    <Compile Include="RegSettings.cs" />
+    <Compile Include="Registration\Settings.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Division.cs" />
     <Compile Include="Coupon.cs" />
@@ -543,6 +567,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MigrationScripts\Migrate-10-20-2012.sql" />
     <Content Include="QueryBuilder\FieldMap2.xml">
       <SubType>Designer</SubType>
     </Content>

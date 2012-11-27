@@ -7,13 +7,6 @@
     @RenderSection("head", required: false)
 </head>
 <body>
-@{ 
-    var admin = User.IsInRole("Admin");
-    var manageemails = User.IsInRole("ManageEmails");
-    var managetrans = User.IsInRole("ManageTransactions");
-	var edit = User.IsInRole("Edit"); 
-	var design = User.IsInRole("Design"); 
-}
 @if (Util.UrgentMessage.HasValue())
 {
         <div id='urgentNotice'>@Util.UrgentMessage</div>
@@ -39,28 +32,29 @@
                     </td>
                     <td class="right">
                         <div id="userarea">
-                            <div id="welcome" class="dropdown left">
-                                <div>
-                                    <a href="#">Welcome, @Util.UserPreferredName!
-                                        <img src="/Content/Welcome.png" width="11" height="16"></a></div>
-                                <div class="sublinks">
-                                    <a href="/Account/LogOff/">Logout as @Util.UserName</a>
-                                    <a href="/Account/ChangePassword">Change Password</a>
-                                    <a id="cleartag" href="#" class="warntip" title="WARNING|This will CLEAR OUT the active tag">Clear Active Tag</a>
-                                    <a href="/Tags">Manage Active Tag</a>
-@if (admin)
-{
-                                        <a href="/Admin/Users.aspx">Manage Users</a>
-                                        <a href="/Admin/Activity.aspx">Activity Log</a>
-}
+                            <div id="welcome" class="dropdown">
+                                <a href="#" class="trigger-dropdown">
+                                    Welcome, @Util.UserPreferredName! <img src="/images/dnarrow.png" />
+                                </a>
+                                <div class="dropdown-menu has-tip anchor-right">
+                                    <ul>
+                                        <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
+                                        <li><a href="/Account/ChangePassword">Change Password</a></li>
+                                        <li><a id="cleartag" href="#" class="warntip" title="WARNING|This will CLEAR OUT the active tag">Clear Active Tag</a></li>
+                                        <li><a href="/Tags">Manage Active Tag</a></li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                                    }
+                                    </ul>
                                 </div>
-                                <strong>Active Tag:</strong> <span id="activetag">@Util2.CurrentTagName</span><br />
                             </div>
 @if (User.IsInRole("Access"))
 {
-                                <form method="post">
-                                    <input id="SearchText" type="text" title='Partial names: "last" or "first last" or "first<sp>"' />
-                                </form>
+                            <strong>Active Tag:</strong> <span id="activetag">@Util2.CurrentTagName</span><br />
+                            <form method="post">
+                                <input id="SearchText" type="text" default="Quick Search" title='QuickSearch|PeopleId|-OrganizationId|7 digit phone|Partial Search|Names|Address|Organization Name|Leader Name|Division"' />
+                            </form>
 }
                         </div>
                     </td>
@@ -76,167 +70,11 @@
             </table>
 @if (User.IsInRole("Access"))
 {
-                <table id="cmenu">
-                    <tr>
-                        <td class="dropdown">
-                            <div>
-                                <a href="/">Home</a></div>
-                        </td>
-                        <td class="dropdown">
-                            <div>
-                                <a id="PeopleMenu" href="/QuickSearch">People</a></div>
-                            <div class="sublinks">
-                                <a href="/QuickSearch">People Search</a>
-                                <a id="addpeople" href="#">Add People</a> 
-                                <a href="/Tags">Manage Tags</a>
-                                <a href="/Task/List/">Tasks</a> <a href="/ContactSearch">Contact Search</a>
-    @if (Util2.CurrentPeopleId != 0)
-    {
-                                    <a href="/Person/Index/@Util2.CurrentPeopleId">
-                                        @Session["ActivePerson"]</a>
-    }
-                            </div>
-                        </td>
-                        <td class="dropdown">
-                            <div>
-                                <a id="OrgSearchLink" href="/OrgSearch">Organization</a></div>
-                            <div class="sublinks">
-                                <a href="/OrgSearch">Search</a> <a href="/EmailAttendanceNotices.aspx">Email Attendance Notices</a> 
-    @if (User.IsInRole("Edit"))
-    {
-                                <a id="addorg" href="#">Add Organization</a> 
-                                <a href="/OrgMembers">Org Members Management</a>
-    }
-    @if (User.IsInRole("Coupon"))
-    {
-                                <a href="/Coupon/">Coupons</a>
-    }
-                                <a href="/EnrollmentControlReport.aspx">Enrollment Control Report</a>
-    @if (((string)Session["ActiveOrganization"]).HasValue())
-    {
-                                <a href="/Organization/Index/@Util2.CurrentOrgId">
-                                        @Session["ActiveOrganization"]</a>
-    }
-                            </div>
-                        </td>
-                        <td class="dropdown">
-                            <div>
-                                <a href="/Reports/ChurchAttendance" target="_blank">Reports</a></div>
-                            <div class="sublinks">
-                                <a href="/Reports/VitalStats" target="_blank">Vital Stats</a> 
-                                <a href="/Reports/ChurchAttendance" target="_blank">Week at a Glance</a> 
-                                <a href="/Reports/ChurchAttendance2" target="_blank">Average Week at a Glance</a> 
-    @if (DbUtil.Db.Setting("Bellevue", "false") == "true")
-    {
-                                <a href="/Report/ChurchAttendanceSummaryRpt.aspx" target="_blank">Church Attendance Summary</a> 
-    }
-                                <a href="/Report/ChurchAttendanceRpt.aspx" target="_blank">Weekly Decisions</a> 
-                                <a href="/Report/DecisionSummary.aspx" target="_blank">Decision Summary</a>
-                            </div>
-                        </td>
-                        <td class="dropdown">
-                            <div>
-                                <a href="/QueryBuilder/Main">QueryBuilder</a></div>
-                            <div class="sublinks">
-                                <a href="/QueryBuilder/Main">Last Query</a>
-                                <a href="/QueryBuilder/NewQuery">New Query</a>
-                                <a href="/SavedQuery">Saved Queries</a>
-    @if ((string)ViewData["OnQueryBuilder"] == "true")
-    {
-                                    <a id="ShowOpenQuery" href="#">Open Saved Query</a>
-                                    <a id="ShowSaveQuery" href="#">Save Query As</a>
-    }
-                                <a href="/Reports/ExtraValues">Extra Values</a>
-                            </div>
-                        </td>
-    @if (User.IsInRole("Finance"))
-    {
-                            <td class="dropdown">
-                                <div>
-                                    <a href="/Contributions/Bundles.aspx">Contributions</a></div>
-                                <div class="sublinks">
-                                    <a href="/Contributions/Bundles.aspx">Bundles</a>
-                                    <a href="/Finance/Contributions"> All</a>
-                                    <a href="#" class="heading">&mdash; Reports &mdash;</a>
-                                    <a href="/Statements" target="_blank">Statements (All)</a>
-                                    <a href="/Contributions/GLExtract.aspx">GL Extract</a>
-                                    <a href="/FinanceReports/TotalsByFund">Totals by Fund</a>
-                                    <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">Totals by Fund Age Range</a>
-                                    <a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">Totals by Fund Age Range (pledges included)</a>
-                                    <a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">Totals by Fund Range</a>
-                                    <a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">Pledge Totals by Fund Range</a>
-                                    <a href="/FinanceReports/PledgeReport" target="_blank">Pledge Report</a>
-                                    <a href="/FinanceReports/ManagedGiving" target="_blank">Managed Giving</a>
-												@if (DbUtil.Db.Setting("ShowQuickBooksMenu", "false") == "true")
-												{
-												<a href="/QuickBooks">QuickBooks</a>
-												}	
-                                </div>
-                            </td>
-    }
-    @if (admin || manageemails || managetrans || edit || design)
-    {
-                            <td class="dropdown">
-                                <div>
-                                    <a href="/Admin/Users.aspx">Admin</a></div>
-                                <div class="sublinks" class="last">
-                                @if (admin)
-                                {
-                                    <a href="/Setup/Program/">Programs</a> 
-                                    <a href="/Setup/Division/">Divisions</a>
-                                    <a href="/Setup/Setting">Settings</a> 
-                                    <a href="/Setup/MetroZip/">Metro Zips</a> 
-                                }
-                                @if (admin || design)
-                                {
-                                    <a href="/Display/Index/">Special Content</a>
-                                }
-                                @if (admin || managetrans)
-                                {
-                                    <a href="/Manage/Transactions">Transactions</a>
-										  }
-										  @if (admin || edit)
-                                {
-												<a href="/Manage/CheckinTime">Check-in Activity</a>
-										  }			
-                                @if (admin || manageemails)
-										  {
-                                    <a href="/Manage/Emails">Emails</a> 
-										  }
-                                @if (admin)
-										  {
-                                    <a href="/Setup/Lookup/">Lookups</a>
-                                    <a href="/Batch/UpdateFields/"> Update for a Tag</a> 
-                                    <a href="/Admin/ToggleOrgMembersOnly.ashx">@(Util2.OrgMembersOnly ? "OrgMembersOnly is on" : "OrgMembersOnly is off")</a>
-                                    <a href="/Admin/ToggleOrgLeadersOnly.ashx">@(Util2.OrgLeadersOnly ? "OrgLeadersOnly is on" : "OrgLeadersOnly is off")</a>
-                                    <a href="/Batch/UpdateQueryBits">Update QueryBits</a>
-                                    <a href="/Batch/TagPeopleIds">Tag PeopleIds</a>
-										  }
-                                </div>
-                            </td>
-	 }
-                        <td class="dropdown left">
-                            <div>
-                                <a id="helplink" href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help</a></div>
-                            <div class="sublinks">
-                                <a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help Documentation</a>
-                                <a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">Email Support</a>
-                                <a href="/Home/About">About</a>
-                                <a href="#" class="heading">&mdash; Tutorials &mdash;</a>
-											@{
-												var tutorialMenu = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml";
-													if (File.Exists(tutorialMenu)) {
-													Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml");
-												}
-											}			  
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+    @Html.Partial("MainMenu")
 }
-            <div style="clear: both; border-bottom: 4px solid #ddd">
-            </div>
-        </div>
+    <div style="clear: both; border-bottom: 4px solid #ddd">
+    </div>
+</div>
         <div id="main">
             @RenderBody()
 				@if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
@@ -275,6 +113,8 @@
                 <td>
                     <input type="checkbox" id="UseTitle" name="UseTitle" />
                     Use Titles<br />
+                    <input type="checkbox" id="SortZip" name="SortZip" />
+                    Sort by Zip<br />
                     <input type="checkbox" id="UsePhone" name="UsePhone" />
                     Include Phone<br />
 						  <br />

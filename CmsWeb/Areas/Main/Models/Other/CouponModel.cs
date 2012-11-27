@@ -11,6 +11,7 @@ using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Text;
 using CmsData;
@@ -157,12 +158,10 @@ namespace CmsWeb.Models
 					 select new { DivisionName = o.Division.Name, o.OrganizationName, o.RegSetting, o.OrganizationId }).ToList();
 
 			var qq = from i in q
-					 let os = new RegSettings(i.RegSetting, DbUtil.Db, i.OrganizationId)
-					 where os.Fee > 0 || os.Dropdown1.Any(mm => mm.Fee > 0)
-								   || os.Dropdown2.Any(mm => mm.Fee > 0)
-								   || os.Dropdown3.Any(mm => mm.Fee > 0)
-								   || os.Checkboxes.Any(mm => mm.Fee > 0)
-								   || os.Checkboxes2.Any(mm => mm.Fee > 0)
+					 let os = new Settings(i.RegSetting, DbUtil.Db, i.OrganizationId)
+					 where os.Fee > 0
+						 || os.AskItems.Where(aa => aa.Type == "AskDropdown").Any(aa => ((AskDropdown)aa).list.Any(dd => dd.Fee > 0))
+						 || os.AskItems.Where(aa => aa.Type == "AskCheckboxes").Any(aa => ((AskCheckboxes)aa).list.Any(dd => dd.Fee > 0))
 					 select new SelectListItem
 					 {
 						 Text = i.DivisionName + ":" + i.OrganizationName,

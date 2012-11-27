@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CMSPresenter;
+using CmsData.API;
+using CmsData.Codes;
 using UtilityExtensions;
 using System.Web.Mvc;
 using CmsData;
@@ -242,8 +244,8 @@ namespace CmsWeb.Models
         {
         	var q = FetchContributions();
 			q = from c in q
-				where c.ContributionStatusId == (int)Contribution.StatusCode.Recorded
-                where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
+				where c.ContributionStatusId == ContributionStatusCode.Recorded
+                where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
                 where c.PledgeFlag == false
                 select c;
             var t = q.Sum(c => c.ContributionAmount);
@@ -267,11 +269,6 @@ namespace CmsWeb.Models
 			list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "0" });
 			return list;
 		}
-        public static int[] ReturnedReversedTypes = new int[] 
-        { 
-            (int)Contribution.TypeCode.ReturnedCheck, 
-            (int)Contribution.TypeCode.Reversed 
-        };
 		public class ContributionInfo
 		{
 			public int BundleId { get; set; }

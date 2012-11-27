@@ -1,9 +1,9 @@
-﻿@model CmsData.RegSettings
+﻿@model CmsData.Registration.Settings
 @using CmsWeb
 @using UtilityExtensions
 <p><i>Drag the grey bars up/down arrow to reorder items.</i></p>
 <div>
-<a href="/Organization/OnlineRegFeesUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
+<a href="/Organization/OnlineRegFeesUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 <a class="displayedit bt" href="/Organization/OnlineRegFees/@Model.OrgId">Cancel</a>
 </div>
 <div>@Html.ValidationMessage("Form")</div>
@@ -11,7 +11,7 @@
 @Html.EditorFor(m => m, "TabFees")
 </ul>
 <div>
-<a href="/Organization/OnlineRegFeesUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
+<a href="/Organization/OnlineRegFeesUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 <a class="displayedit bt" href="/Organization/OnlineRegFees/@Model.OrgId">Cancel</a>
 </div>
 <div>@Html.ValidationMessage("Form")</div>

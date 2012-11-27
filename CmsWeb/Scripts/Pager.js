@@ -15,7 +15,7 @@
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret).ready(function () {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
-                $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
+                $("a.trigger-dropdown", f).dropdown();
                 $('.bt').button();
                 $(".datepicker").datepicker();
             });

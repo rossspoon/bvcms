@@ -1,8 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Data.Linq;
+using System.Reflection;
+using System.Web;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using CmsData;
+using CmsData.API;
 using UtilityExtensions;
 using System.Runtime.Serialization;
 using System.Web.Mvc;
@@ -11,50 +19,27 @@ using CmsData.Codes;
 namespace CmsWeb.Models
 {
     [Serializable]
-    public partial class OnlineRegPersonModel
+    public partial class OnlineRegPersonModel : IXmlSerializable
     {
-        public int index { get; set; }
-        public bool LastItem { get; set; }
-        public bool? CreatingAccount { get; set; }
-        public bool SawExistingAccount;
-        public bool CannotCreateAccount;
-        public bool CreatedAccount;
-
-        public int? divid { get; set; }
         public int? orgid { get; set; }
+        public int? masterorgid { get; set; }
+        public int? divid { get; set; }
         public int? classid { get; set; }
-        [OptionalField]
-        private int? _Masterorgid;
-        public int? masterorgid
-        {
-            get { return _Masterorgid; }
-            set { _Masterorgid = value; }
-        }
-
+        public int? PeopleId { get; set; }
+        public bool? Found { get; set; }
+        public bool IsNew { get; set; }
+        public bool OtherOK { get; set; }
+        public bool LoggedIn { get; set; }
+        public bool IsValidForExisting { get; set; }
+        public bool ShowAddress { get; set; }
+        public bool CreatingAccount { get; set; }
         public string first { get; set; }
-        [OptionalField]
-        private string _Middle;
-        public string middle
-        {
-            get { return _Middle; }
-            set { _Middle = value; }
-        }
+        public string middle { get; set; }
         public string last { get; set; }
         public string suffix { get; set; }
         public string dob { get; set; }
         public string phone { get; set; }
-        [OptionalField]
-        private string _Homephone;
-        public string homephone
-        {
-            get { return _Homephone; }
-            set { _Homephone = value; }
-        }
-        public string email { get; set; }
-        public string fromemail
-        {
-            get { return first + " " + last + " <" + email + ">"; }
-        }
+        public string homephone { get; set; }
         public string address { get; set; }
         public string address2 { get; set; }
         public string city { get; set; }
@@ -63,12 +48,7 @@ namespace CmsWeb.Models
         public string country { get; set; }
         public int? gender { get; set; }
         public int? married { get; set; }
-
-        public bool? Found { get; set; }
-        public bool IsNew { get; set; }
-
         public bool IsFilled { get; set; }
-
         public string shirtsize { get; set; }
         public string emcontact { get; set; }
         public string emphone { get; set; }
@@ -90,87 +70,210 @@ namespace CmsWeb.Models
         public string request { get; set; }
         public string grade { get; set; }
         public int? ntickets { get; set; }
-        public string option { get; set; }
-        
-        public string inputname(string field) 
-        {
-            return "m.List[" + index + "]." + field;
-        }
-        [OptionalField]
-        private decimal? _Suggestedfee;
-        public decimal? suggestedfee
-        {
-            get { return _Suggestedfee; }
-            set { _Suggestedfee = value; }
-        }
-        [OptionalField]
-        private string _Option2;
-        public string option2
-        {
-            get { return _Option2; }
-            set { _Option2 = value; }
-        }
-        [OptionalField]
-        private string _Option3;
-        public string option3
-        {
-            get { return _Option3; }
-            set { _Option3 = value; }
-        }
+        public int? whatfamily { get; set; }
         public string gradeoption { get; set; }
-        [OptionalField]
-        private bool _IsFamily;
-        public bool IsFamily
+        public bool IsFamily { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+        public decimal? Suggestedfee { get; set; }
+        public Dictionary<int, decimal?> FundItem { get; set; }
+        public Dictionary<string, string> ExtraQuestion { get; set; }
+        public Dictionary<string, bool?> YesNoQuestion { get; set; }
+        public List<string> option { get; set; }
+        public List<string> Checkbox { get; set; }
+        public Dictionary<string, int?> MenuItem { get; set; }
+
+        public void ReadXml(XmlReader reader)
         {
-            get { return _IsFamily; }
-            set { _IsFamily = value; }
+            var s = reader.ReadOuterXml();
+            var x = XDocument.Parse(s);
+            if (x.Root == null) return;
+
+            foreach (var e in x.Root.Elements())
+            {
+                var name = e.Name.ToString();
+                switch (name)
+                {
+                    case "FundItem":
+                        if (FundItem == null)
+                            FundItem = new Dictionary<int, decimal?>();
+                        var fu = e.Attribute("fund");
+                        if (fu != null)
+                            FundItem.Add(fu.Value.ToInt(), e.Value.ToDecimal());
+                        break;
+                    case "ExtraQuestion":
+                        if (ExtraQuestion == null)
+                            ExtraQuestion = new Dictionary<string, string>();
+                        var eq = e.Attribute("question");
+                        if (eq != null)
+                            ExtraQuestion.Add(eq.Value, e.Value);
+                        break;
+                    case "YesNoQuestion":
+                        if (YesNoQuestion == null)
+                            YesNoQuestion = new Dictionary<string, bool?>();
+                        var ynq = e.Attribute("question");
+                        if (ynq != null)
+                            YesNoQuestion.Add(ynq.Value, e.Value.ToBool());
+                        break;
+                    case "option":
+                        if (option == null)
+                            option = new List<string>();
+                        option.Add(e.Value);
+                        break;
+                    case "Checkbox":
+                        if (Checkbox == null)
+                            Checkbox = new List<string>();
+                        Checkbox.Add(e.Value);
+                        break;
+                    case "MenuItem":
+                        if (MenuItem == null)
+                            MenuItem = new Dictionary<string, int?>();
+                        var aname = e.Attribute("name");
+                        var number = e.Attribute("number");
+                        if (aname != null && number != null)
+                            MenuItem.Add(aname.Value, number.Value.ToInt());
+                        break;
+                    default:
+                        Util.SetPropertyFromText(this, name, e.Value);
+                        break;
+                }
+            }
         }
 
-        public string ErrorTarget { get { return IsFamily ? "findf" : "findn"; } }
-        public bool OtherOK { get; set; }
-        public bool ShowAddress { get; set; }
-        [OptionalField]
-        private Dictionary<string, int?> _MenuItem = new Dictionary<string, int?>();
-        public Dictionary<string, int?> MenuItem
+        public void WriteXml(XmlWriter writer)
         {
-            get { return _MenuItem; }
-            set { _MenuItem = value; }
+            var w = new APIWriter(writer);
+            foreach (PropertyInfo pi in typeof(OnlineRegPersonModel).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(vv => vv.CanRead && vv.CanWrite))
+            {
+                switch (pi.Name)
+                {
+                    case "MenuItem":
+                        if (MenuItem != null)
+                            foreach (var kv in MenuItem)
+                            {
+                                w.Start("MenuItem");
+                                w.Attr("name", kv.Key);
+                                w.Attr("number", kv.Value);
+                                w.End();
+                            }
+                        break;
+                    case "FundItem":
+                        if (FundItem != null && FundItem.Count > 0)
+                            foreach (var f in FundItem.Where(ff => ff.Value > 0))
+                            {
+                                w.Start("FundItem");
+                                w.Attr("fund", f.Key);
+                                w.AddText(f.Value.Value.ToString());
+                                w.End();
+                            }
+                        break;
+                    case "ExtraQuestion":
+                        if (ExtraQuestion != null && ExtraQuestion.Count > 0)
+                            foreach (var q in ExtraQuestion)
+                            {
+                                w.Start("ExtraQuestion");
+                                w.Attr("question", q.Key);
+                                w.AddText(q.Value);
+                                w.End();
+                            }
+                        break;
+                    case "YesNoQuestion":
+                        if (YesNoQuestion != null && YesNoQuestion.Count > 0)
+                            foreach (var q in YesNoQuestion)
+                            {
+                                w.Start("YesNoQuestion");
+                                w.Attr("question", q.Key);
+                                w.AddText(q.Value.ToString());
+                                w.End();
+                            }
+                        break;
+                    case "option":
+                        if (option != null && option.Count > 0)
+                            foreach(var o in option)
+                                w.Add("option", o);
+                        break;
+                    case "Checkbox":
+                        if (Checkbox != null && Checkbox.Count > 0)
+                            foreach (var c in Checkbox)
+                                w.Add("Checkbox", c);
+                        break;
+                    default:
+                        w.Add(pi.Name, pi.GetValue(this, null));
+                        break;
+                }
+            }
         }
+
+        public OnlineRegPersonModel()
+        {
+            YesNoQuestion = new Dictionary<string, bool?>();
+            ExtraQuestion = new Dictionary<string, string>();
+            YesNoQuestion = new Dictionary<string, bool?>();
+            FundItem = new Dictionary<int, decimal?>();
+            Parent = HttpContext.Current.Items["OnlineRegModel"] as OnlineRegModel;
+        }
+        private void AfterSettingConstructor()
+        {
+            if (_setting == null)
+                return;
+            var ndd = setting.AskItems.Count(aa => aa.Type == "AskDropdown");
+            if (ndd > 0 && option == null)
+                option = new string[ndd].ToList();
+
+            var nmi = setting.AskItems.Count(aa => aa.Type == "AskMenu");
+            if (nmi > 0 && MenuItem == null)
+                MenuItem = new Dictionary<string, int?>();
+
+            var ncb = setting.AskItems.Count(aa => aa.Type == "AskCheckboxes");
+            if (ncb > 0 && Checkbox == null)
+                Checkbox = new List<string>();
+
+            if (!Suggestedfee.HasValue && setting.AskVisible("AskSuggestedFee"))
+                Suggestedfee = setting.Fee;
+        }
+
+        public OnlineRegModel Parent;
+
+        public int? index;
+        public int Index()
+        {
+            if (!index.HasValue)
+                index = Parent.List.IndexOf(this);
+            if (index == -1)
+                index = 0;
+            return index.Value;
+        }
+
+        public bool LastItem()
+        {
+            return Index() == Parent.List.Count - 1;
+        }
+
+        public bool SawExistingAccount;
+        public bool CannotCreateAccount;
+        public bool CreatedAccount;
+
+
+        public string email { get; set; }
+        public string fromemail
+        {
+            get { return first + " " + last + " <" + email + ">"; }
+        }
+
         public int? MenuItemValue(string s)
         {
             if (MenuItem.ContainsKey(s))
                 return MenuItem[s];
             return null;
         }
-        [OptionalField]
-        private Dictionary<int, decimal?> _FundItem = new Dictionary<int, decimal?>();
-        public Dictionary<int, decimal?> FundItem
-        {
-            get { return _FundItem; }
-            set { _FundItem = value; }
-        }
+
         public decimal? FundItemValue(int n)
         {
             if (FundItem.ContainsKey(n))
                 return FundItem[n];
             return null;
         }
-        [OptionalField]
-        private int? _Whatfamily;
-        public int? whatfamily
-        {
-            get { return _Whatfamily; }
-            set { _Whatfamily = value; }
-        }
-        [OptionalField]
-        private bool? _LoggedIn;
-        public bool? LoggedIn
-        {
-            get { return _LoggedIn; }
-            set { _LoggedIn = value; }
-        }
 
-        [NonSerialized]
         private DateTime _Birthday;
         public DateTime? birthday
         {
@@ -182,10 +285,10 @@ namespace CmsWeb.Models
             }
         }
         public string NotFoundText;
-        public int? PeopleId { get; set; }
         private int count;
-        [NonSerialized]
+
         private Person _Person;
+
         public Person person
         {
             get
@@ -248,5 +351,10 @@ namespace CmsWeb.Models
                 return org.RegistrationTypeId == RegistrationTypeCode.CreateAccount;
             return false;
         }
+        public XmlSchema GetSchema()
+        {
+            throw new System.NotImplementedException("The method or operation is not implemented.");
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
@@ -49,14 +50,14 @@ namespace CmsWeb.Areas.Public.Controllers
                 .ExtraValues(id, fields), "text/xml");
         }
         [HttpPost]
-        public ActionResult AddEditExtraValue(int peopleid, string field, string value)
+        public ActionResult AddEditExtraValue(int orgid, string field, string value)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
-			DbUtil.LogActivity("APIOrg AddEditExtraValue {0}, {1}, {2}".Fmt(peopleid, field, value));
+			DbUtil.LogActivity("APIOrg AddEditExtraValue {0}, {1}, {2}".Fmt(orgid, field, value));
             return Content(new APIOrganization(DbUtil.Db)
-                .AddEditExtraValue(peopleid, field, value));
+                .AddEditExtraValue(orgid, field, value));
         }
         [HttpPost]
         public ActionResult DeleteExtraValue(int orgid, string field)
@@ -79,5 +80,59 @@ namespace CmsWeb.Areas.Public.Controllers
 			DbUtil.LogActivity("APIOrg UpdateOrgMember {0}, {1}".Fmt(OrgId, PeopleId));
             return Content("ok");
         }
+		[HttpPost]
+		public ActionResult NewOrganization(int id, string name, string location, int? ParentOrgId)
+		{
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<NewOrganization status=""error"">" + ret.Substring(1) + "</NewOrganization>");
+			DbUtil.LogActivity("APIOrganization NewOrganization");
+			return Content(new APIOrganization(DbUtil.Db).NewOrganization(id, name, location, ParentOrgId), "text/xml");
+		}
+        [HttpPost]
+        public ActionResult UpdateOrganization(int orgId, string name, string campusid, string active, string location, string description)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content(ret.Substring(1));
+            new APIOrganization(DbUtil.Db)
+                .UpdateOrganization(orgId, name, campusid, active, location, description);
+			DbUtil.LogActivity("APIOrg UpdateOrganization {0}".Fmt(orgId));
+            return Content("ok");
+        }
+		[HttpPost]
+		public ActionResult AddOrgMember(int OrgId, int PeopleId, string MemberType)
+		{
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<AddOrgMember status=""error"">" + ret.Substring(1) + "</AddOrgMember>");
+			DbUtil.LogActivity("APIOrganization AddOrgMember");
+			return Content(new APIOrganization(DbUtil.Db).AddOrgMember(OrgId, PeopleId, MemberType), "text/xml");
+		}
+		[HttpPost]
+		public ActionResult DropOrgMember(int OrgId, int PeopleId, string MemberType)
+		{
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<DropOrgMember status=""error"">" + ret.Substring(1) + "</DropOrgMember>");
+			DbUtil.LogActivity("APIOrganization DropOrgMember");
+			return Content(new APIOrganization(DbUtil.Db).DropOrgMember(OrgId, PeopleId), "text/xml");
+		}
+		public ActionResult ParentOrgs(int id, string extravalue1, string extravalue2)
+		{
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<ParentOrgs status=""error"">" + ret.Substring(1) + "</ParentOrgs>");
+			DbUtil.LogActivity("APIOrganization ParentOrgs");
+			return Content(new APIOrganization(DbUtil.Db).ParentOrgs(id, extravalue1, extravalue2), "text/xml");
+		}
+		public ActionResult ChildOrgs(int id, string extravalue1, string extravalue2)
+		{
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<ChildOrgs status=""error"">" + ret.Substring(1) + "</ChildOrgs>");
+			DbUtil.LogActivity("APIOrganization ChildOrgs");
+			return Content(new APIOrganization(DbUtil.Db).ChildOrgs(id, extravalue1, extravalue2), "text/xml");
+		}
     }
 }

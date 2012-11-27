@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CmsData;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 using CmsWeb.Models;
@@ -16,11 +17,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             ViewBag.Url = m2.URL;
             Session["gobackurl"] = m2.URL;
             ViewBag.timeout = INT_timeout;
+			var churchweb = DbUtil.Db.Setting("ChurchWebSite", "");
+			if (churchweb.HasValue())
+				ViewBag.ChurchWebSite = churchweb;
             SetHeaders(m2.orgid ?? m2.masterorgid ?? m2.divid ?? 0);
         }
         private void SetHeaders(int id)
         {
-            RegSettings setting = null;
+            Settings setting = null;
             var org = DbUtil.Db.LoadOrganizationById(id);
             var shell = "";
             if ((settings == null || !settings.ContainsKey(id)) && org != null)
@@ -41,8 +45,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var re = new Regex(@"(.*<!--FORM START-->\s*).*(<!--FORM END-->.*)", RegexOptions.Singleline);
                 var t = re.Match(s).Groups[1].Value.Replace("<!--FORM CSS-->", 
 @"
-<link href=""/Content/jquery-ui-1.8.23.custom.css"" rel=""stylesheet"" type=""text/css"" />
-<link href=""/Content/onlinereg.css?v=8"" rel=""stylesheet"" type=""text/css"" />
+<link href=""/Content/css/jquery-ui-1.9.2.custom.css"" rel=""stylesheet"" type=""text/css"" />
+<link href=""/Content/css/onlinereg.css?v=8"" rel=""stylesheet"" type=""text/css"" />
 "); 
                 ViewData["hasshell"] = true;
                 ViewData["top"] = t;

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using CmsData;
+using CmsData.Registration;
 using CmsWeb.Models;
 using UtilityExtensions;
 using System.Collections.Generic;
@@ -12,6 +13,27 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 {
 	public partial class OnlineRegController
 	{
+		[HttpGet]
+		public ActionResult RequestReport(int mid, int pid, long ticks)
+		{
+			var vs = new VolunteerRequestModel(mid, pid, ticks);
+			SetHeaders(vs.org.OrganizationId);
+			return View(vs);
+		}
+		[HttpGet]
+		public ActionResult RequestResponse(string ans, string guid)
+		{
+			try
+			{
+				var vs = new VolunteerRequestModel(guid);
+				vs.ProcessReply(ans);
+				return Content(vs.DisplayMessage);
+			}
+			catch (Exception ex)
+			{
+				return Content(ex.Message);
+			}
+		}
 		[HttpGet]
 		public ActionResult GetVolSub(int aid, int pid)
 		{
@@ -97,7 +119,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		public ActionResult ConfirmVolunteerSlots(VolunteerModel m)
 		{
 			m.UpdateCommitments();
-			if (m.SendEmail)
+			if (m.SendEmail || !m.IsLeader)
 			{
 				List<Person> Staff = null;
 				Staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId);
@@ -121,8 +143,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed volunteer commitments to {1}<br/>
 The following Committments:<br/>
 {2}".Fmt(m.Person.Name, m.Org.OrganizationName, summary));
-				ViewData["Organization"] = m.Org.OrganizationName;
 			}
+			ViewData["Organization"] = m.Org.OrganizationName;
 			SetHeaders(m.OrgId);
 			if (m.IsLeader)
 				return View("ManageVolunteer", m);
@@ -442,7 +464,7 @@ You have the following subscriptions:<br/>
 			if (q.om == null && (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive))
 				return Content("sorry, registration has been closed");
 
-			var setting = new RegSettings(q.org.RegSetting, DbUtil.Db, oid);
+			var setting = new Settings(q.org.RegSetting, DbUtil.Db, oid);
 			if (IsSmallGroupFilled(setting, oid, smallgroup))
 				return Content("sorry, maximum limit has been reached for " + smallgroup);
 
@@ -512,7 +534,7 @@ You have the following subscriptions:<br/>
 			if (q.om == null && (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive))
 				return Content("sorry, registration has been closed");
 
-			var setting = new RegSettings(q.org.RegSetting, DbUtil.Db, oid);
+			var setting = new Settings(q.org.RegSetting, DbUtil.Db, oid);
 			if (IsSmallGroupFilled(setting, oid, smallgroup))
 				return Content("sorry, maximum limit has been reached for " + smallgroup);
 
@@ -550,7 +572,7 @@ emailid={2}
 			if (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive)
 				return Content("sorry, registration has been closed");
 
-			if (q.org.Limit <= q.meeting.Attends.Count(aa => aa.Registered == true))
+			if (q.org.Limit <= q.meeting.Attends.Count(aa => aa.Commitment == 1))
 				return Content("sorry, maximum limit has been reached");
 			if (smallgroup.HasValue())
 			{
@@ -562,9 +584,9 @@ emailid={2}
 
 			ot.Used = true;
 			DbUtil.Db.SubmitChanges();
-			Attend.MarkRegistered(DbUtil.Db, pid, meetingid, true);
+			Attend.MarkRegistered(DbUtil.Db, pid, meetingid, 1);
 			DbUtil.LogActivity("Rsvplink: {0}".Fmt(q.org.OrganizationName));
-			var setting = new RegSettings(q.org.RegSetting, DbUtil.Db, q.meeting.OrganizationId);
+			var setting = new Settings(q.org.RegSetting, DbUtil.Db, q.meeting.OrganizationId);
 
 			if (confirm == true)
 			{
@@ -627,24 +649,13 @@ emailid={2}
 				url += "&showfamily=true";
 			return Redirect(url);
 		}
-		private bool IsSmallGroupFilled(RegSettings setting, int orgid, string sg)
+		private bool IsSmallGroupFilled(Settings setting, int orgid, string sg)
 		{
-			return IsSmallGroupFilled(setting.Dropdown1, orgid, sg)
-				|| IsSmallGroupFilled(setting.Dropdown2, orgid, sg)
-				|| IsSmallGroupFilled(setting.Dropdown3, orgid, sg)
-				|| IsSmallGroupFilled(setting.Checkboxes, orgid, sg)
-				|| IsSmallGroupFilled(setting.Checkboxes2, orgid, sg);
-		}
-		private bool IsSmallGroupFilled(List<CmsData.RegSettings.MenuItem> list, int orgid, string sg)
-		{
-			var i = list.SingleOrDefault(dd => string.Compare(dd.SmallGroup, sg, true) == 0);
-			if (i != null && i.Limit > 0)
-			{
-				var cnt = DbUtil.Db.OrganizationMembers.Count(mm => mm.OrganizationId == orgid && mm.OrgMemMemTags.Any(mt => mt.MemberTag.Name == sg));
-				if (cnt >= i.Limit)
-					return true;
-			}
-			return false;
+			var GroupTags = (from mt in DbUtil.Db.OrgMemMemTags
+							 where mt.OrgId == orgid
+							 select mt.MemberTag.Name).ToList();
+			return setting.AskItems.Where(aa => aa.Type == "AskDropdown").Any(aa => ((AskDropdown)aa).IsSmallGroupFilled(GroupTags, sg))
+				|| setting.AskItems.Where(aa => aa.Type == "AskCheckboxes").Any(aa => ((AskCheckboxes)aa).IsSmallGroupFilled(GroupTags, sg));
 		}
 	}
 }

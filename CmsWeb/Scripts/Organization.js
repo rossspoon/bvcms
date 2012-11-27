@@ -9,7 +9,8 @@
 };
 $(function () {
     $("#Settings-tab").tabs();
-    var maintabs = $("#main-tab").tabs();
+    $("#main-tab").tabs();
+    $("#main-tab").show();
     $('#deleteorg').click(function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
@@ -70,7 +71,6 @@ $(function () {
         return false;
     });
     $(".bt").button();
-    $("#buttondiv bt").css("width", "100%");
 
     $('form table.grid > tbody > tr:even').addClass('alt');
 
@@ -205,38 +205,113 @@ $(function () {
             //beforeShow: function () { $('#ui-datepicker-div').maxZIndex(); }
         });
         $("ul.edit .timepicker", f).timepicker({
-            ampm: true,
             stepHour: 1,
             stepMinute: 5,
-            timeOnly: true
+            timeOnly: true,
+            timeFormat: "hh:mm tt",
+            controlType: "slider"
         });
         $("ul.edit .datetimepicker", f).datetimepicker({
-            ampm: true,
             stepHour: 1,
             stepMinute: 15,
-            timeOnly: false
+            timeOnly: false,
+            timeFormat: "hh:mm tt",
+            controlType: "slider"
         });
     };
+    $.showHideRegTypes = function (f) {
+        $("#Settings-tab").tabs('option', 'disabled', []);
+        $("#QuestionList li").show();
+        $(".yes6").hide();
+        switch ($("#org_RegistrationTypeId").val()) {
+            case "0":
+                $("#Settings-tab").tabs('option', 'disabled', [3, 4, 5]);
+                break;
+            case "6":
+                $("#QuestionList > li").hide();
+                $(".yes6").show();
+                break;
+        }
+    };
+    $("#org_RegistrationTypeId").live("change", $.showHideRegTypes);
+    $.showHideRegTypes();
     $("a.displayedit,a.displayedit2").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function (ret) {
             $(f).html(ret).ready(function () {
-                var acopts = {
-                    minChars: 3,
-                    matchContains: 1
-                };
                 $.initDatePicker(f);
                 $(".submitbutton,.bt", f).button();
                 $(".roundbox select", f).css("width", "100%");
                 $("#schedules", f).sortable({ stop: $.renumberListItems });
                 $("#editor", f);
                 $.regsettingeditclick(f);
+                $.showHideRegTypes();
+                $.updateQuestionList();
+                $("#selectquestions").dialog({
+                    title: "Add Question",
+                    autoOpen: false,
+                    width: 585,
+                    height: 190,
+                    modal: true
+                });
+                $('a.AddQuestion').click(function (ev) {
+                    var d = $('#selectquestions');
+                    d.dialog("open");
+                    ev.preventDefault();
+                    return false;
+                });
                 $(".helptip").tooltip({ showBody: "|" });
+                $(".tip", f).tooltip({ showBody: "|" });
             });
         });
         return false;
     });
+    $('#selectquestions a').live("click", function (ev) {
+        ev.preventDefault();
+        $.post('/Organization/NewAsk/', { id: 'AskItems', type: $(this).attr("type") }, function (ret) {
+            $('#selectquestions').dialog("close");
+            $('html, body').animate({ scrollTop: $("body").height() }, 800);
+            var newli = $("#QuestionList").append(ret);
+            $("#QuestionList > li:last").effect("highlight", { }, 3000);
+            $(".tip", newli).tooltip({ opacity: 0, showBody: "|" });
+            $.updateQuestionList();
+        });
+        return false;
+    });
+    $("ul.enablesort a.del").live("click", function (ev) {
+        ev.preventDefault();
+        if (!$(this).attr("href"))
+            return false;
+        $(this).parent().parent().parent().remove();
+        return false;
+    });
+    $("ul.enablesort a.delt").live("click", function (ev) {
+        ev.preventDefault();
+        if (!$(this).attr("href"))
+            return false;
+        if (confirm("are you sure?")) {
+            $(this).parent().parent().remove();
+            $.updateQuestionList();
+        }
+        return false;
+    });
+    $.exceptions = [
+        "AskDropdown",
+        "AskCheckboxes",
+        "AskExtraQuestions",
+        "AskYesNoQuestions",
+        "AskMenu"
+    ];
+    $.updateQuestionList = function() {
+        $("#selectquestions li").each(function () {
+            var type = this.className;
+            if ($.inArray(type, $.exceptions) >= 0 || $("li.type-" + type).length == 0)
+                $(this).html("<a href='#' type='" + type + "'>" + type + "</a>");
+            else
+                $(this).html("<span>" + type + "</span>");
+        });
+    };
     $(".helptip").tooltip({ showBody: "|" });
     $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
@@ -248,6 +323,7 @@ $(function () {
             $(f).html(ret).ready(function () {
                 $(".submitbutton,.bt").button();
                 $.regsettingeditclick(f);
+                $.showHideRegTypes();
             });
         });
         return false;
@@ -447,20 +523,6 @@ $(function () {
             });
         return false;
     });
-    $('#usersDialog').dialog({
-        title: 'Select Users Dialog',
-        bgiframe: true,
-        autoOpen: false,
-        width: 750,
-        height: 700,
-        modal: true,
-        overlay: {
-            opacity: 0.5,
-            background: "black"
-        }, close: function () {
-            $('iframe', this).attr("src", "");
-        }
-    });
     $('#divisionsDialog').dialog({
         title: 'Select Divisions Dialog',
         bgiframe: true,
@@ -507,8 +569,6 @@ $(function () {
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    if ($("#orgpickdiv a[target='otherorg']").length > 0)
-        $("#tabfees,#tabquestions").hide();
 
     $.extraEditable = function () {
         $('.editarea').editable('/Organization/EditExtra/', {
@@ -590,19 +650,10 @@ function CloseAddDialog(from) {
     $("#memberDialog").dialog("close");
 }
 function UpdateSelectedUsers(topid) {
-    $.post("/Organization/UpdateNotifyIds", { id: $("#OrganizationId").val(), topid: topid }, function (ret) {
-        $("#notifylist").html(ret);
-        $("#usersDialog").dialog("close");
-    });
 }
 function UpdateSelectedOrgs(list) {
     $.post("/Organization/UpdateOrgIds", { id: $("#OrganizationId").val(), list: list }, function (ret) {
-        $("#orgpickdiv").html(ret).ready(function () {
-            if ($("#orgpickdiv a[target='otherorg']").length > 0)
-                $("#tabfees,#tabquestions").hide();
-            else
-                $("#tabfees,#tabquestions").show();
-        });
+        $("#orgpickdiv").html(ret);
         $("#orgsDialog").dialog("close");
     });
 }

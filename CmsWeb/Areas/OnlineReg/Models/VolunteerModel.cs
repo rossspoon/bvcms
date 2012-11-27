@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CmsData;
+using CmsData.Registration;
 using UtilityExtensions;
 using System.Web;
 using System.Web.Mvc;
+using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
@@ -22,7 +24,7 @@ namespace CmsWeb.Models
 		{
 			OrgId = orgId;
 			PeopleId = peopleId;
-			dtlock = DateTime.Now.AddDays(Regsettings.TimeSlotLockDays ?? 0);
+			dtlock = DateTime.Now.AddDays(Regsettings.TimeSlots.TimeSlotLockDays ?? 0);
 			IsLeader = leader;
 			SendEmail = leader == false;
 		}
@@ -43,14 +45,14 @@ namespace CmsWeb.Models
 			}
 		}
 
-		private RegSettings _regsettings;
+		private Settings _regsettings;
 
-		public RegSettings Regsettings
+		public Settings Regsettings
 		{
 			get
 			{
 				return _regsettings ??
-					(_regsettings = new RegSettings(Org.RegSetting, DbUtil.Db, OrgId));
+					(_regsettings = new Settings(Org.RegSetting, DbUtil.Db, OrgId));
 			}
 		}
 
@@ -85,7 +87,7 @@ namespace CmsWeb.Models
 					where a.OrganizationId == OrgId
 					where a.MeetingDate >= Sunday
 					where a.MeetingDate <= EndDt
-					where a.Registered == true
+					where a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute
 					group a by a.MeetingDate into g
 					let attend = (from aa in g
 								  where aa.PeopleId == PeopleId
@@ -142,7 +144,7 @@ namespace CmsWeb.Models
 			{
 				var dt = sunday;
 				{
-					var q = from ts in Regsettings.TimeSlots
+					var q = from ts in Regsettings.TimeSlots.list
 							orderby ts.Datetime()
 							let time = ts.Datetime(dt)
 							let meeting = meetings.SingleOrDefault(cc => cc.MeetingDate == time)
@@ -211,9 +213,9 @@ namespace CmsWeb.Models
 						  select newcommit;
 
 			foreach (var currcommit in decommits)
-				Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, currcommit, false);
+				Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, currcommit, AttendCommitmentCode.Regrets);
 			foreach (var newcommit in commits)
-				Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, newcommit, true);
+				Attend.MarkRegistered(DbUtil.Db, OrgId, PeopleId, newcommit, AttendCommitmentCode.Attending);
 			OrganizationMember.InsertOrgMembers(DbUtil.Db,
 					OrgId, PeopleId, 220, DateTime.Now, null, false);
 		}
@@ -248,9 +250,9 @@ namespace CmsWeb.Models
 					 );
 			}
 		}
-		public RegSettings setting
+		public Settings setting
 		{
-			get { return new RegSettings(Org.RegSetting, DbUtil.Db, OrgId); }
+			get { return new Settings(Org.RegSetting, DbUtil.Db, OrgId); }
 		}
 		public SelectList Volunteers()
 		{

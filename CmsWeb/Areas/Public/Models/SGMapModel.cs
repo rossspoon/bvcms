@@ -45,7 +45,7 @@ namespace CmsWeb.Models
                     from geocode in g.DefaultIfEmpty()
                     select new SGInfo
                     {
-                        desc = o.Description,
+                        desc = o.OrganizationName, //o.Description,
                         addr = o.Location,
                         name = o.OrganizationName,
                         schedule = o.OrgSchedules.First().MeetingTime,

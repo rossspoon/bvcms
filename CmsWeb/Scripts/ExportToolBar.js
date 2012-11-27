@@ -19,6 +19,7 @@
                 + sep + "titles=" + $('#UseTitle')[0].checked
                 + "&format=" + $('input[name=addressedto]:checked').val()
                 + "&usephone=" + $('#UsePhone')[0].checked
+                + "&sortzip=" + $('#SortZip')[0].checked
 				+ "&skipNum=" + $('#SkipNum').val();
             $("#ChooseLabelType").dialog("close");
             window.open(url);
@@ -76,7 +77,7 @@
         return r[item];
     };
     $.block = function () {
-        $.blockUI({ message: 'working on it...<img src="/content/loading.gif"/>' });
+        $.blockUI({ message: 'working on it...<img src="/images/loading.gif"/>' });
     };
     $.unblock = function () {
         $.unblockUI({ fadeOut: 150 });

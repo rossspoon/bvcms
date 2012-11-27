@@ -239,6 +239,8 @@ namespace CmsData
 		
 		private string _PrimaryCountry;
 		
+		private byte _ReceiveSMS;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -251,6 +253,8 @@ namespace CmsData
    		private EntitySet< Family> _FamiliesHeaded2;
 		
    		private EntitySet< Attend> _Attends;
+		
+   		private EntitySet< BackgroundCheck> _BackgroundChecks;
 		
    		private EntitySet< CardIdentifier> _CardIdentifiers;
 		
@@ -311,6 +315,10 @@ namespace CmsData
    		private EntitySet< Task> _TasksAboutPerson;
 		
    		private EntitySet< Task> _TasksCoOwned;
+		
+   		private EntitySet< VolRequest> _VolRequests;
+		
+   		private EntitySet< VolRequest> _VolResponses;
 		
     	
 		private EntityRef< Organization> _BFClass;
@@ -695,6 +703,9 @@ namespace CmsData
 		partial void OnPrimaryCountryChanging(string value);
 		partial void OnPrimaryCountryChanged();
 		
+		partial void OnReceiveSMSChanging(byte value);
+		partial void OnReceiveSMSChanged();
+		
     #endregion
 		public Person()
 		{
@@ -710,6 +721,8 @@ namespace CmsData
 			this._FamiliesHeaded2 = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded2), new Action< Family>(this.detach_FamiliesHeaded2)); 
 			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
+			
+			this._BackgroundChecks = new EntitySet< BackgroundCheck>(new Action< BackgroundCheck>(this.attach_BackgroundChecks), new Action< BackgroundCheck>(this.detach_BackgroundChecks)); 
 			
 			this._CardIdentifiers = new EntitySet< CardIdentifier>(new Action< CardIdentifier>(this.attach_CardIdentifiers), new Action< CardIdentifier>(this.detach_CardIdentifiers)); 
 			
@@ -770,6 +783,10 @@ namespace CmsData
 			this._TasksAboutPerson = new EntitySet< Task>(new Action< Task>(this.attach_TasksAboutPerson), new Action< Task>(this.detach_TasksAboutPerson)); 
 			
 			this._TasksCoOwned = new EntitySet< Task>(new Action< Task>(this.attach_TasksCoOwned), new Action< Task>(this.detach_TasksCoOwned)); 
+			
+			this._VolRequests = new EntitySet< VolRequest>(new Action< VolRequest>(this.attach_VolRequests), new Action< VolRequest>(this.detach_VolRequests)); 
+			
+			this._VolResponses = new EntitySet< VolRequest>(new Action< VolRequest>(this.attach_VolResponses), new Action< VolRequest>(this.detach_VolResponses)); 
 			
 			
 			this._BFClass = default(EntityRef< Organization>); 
@@ -3325,6 +3342,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="ReceiveSMS", UpdateCheck=UpdateCheck.Never, Storage="_ReceiveSMS", DbType="tinyint NOT NULL")]
+		public byte ReceiveSMS
+		{
+			get { return this._ReceiveSMS; }
+
+			set
+			{
+				if (this._ReceiveSMS != value)
+				{
+				
+                    this.OnReceiveSMSChanging(value);
+					this.SendPropertyChanging();
+					this._ReceiveSMS = value;
+					this.SendPropertyChanged("ReceiveSMS");
+					this.OnReceiveSMSChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3385,6 +3424,16 @@ namespace CmsData
    		    get { return this._Attends; }
 
 			set	{ this._Attends.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_BackgroundChecks_People", Storage="_BackgroundChecks", OtherKey="PeopleID")]
+   		public EntitySet< BackgroundCheck> BackgroundChecks
+   		{
+   		    get { return this._BackgroundChecks; }
+
+			set	{ this._BackgroundChecks.Assign(value); }
 
    		}
 
@@ -3685,6 +3734,26 @@ namespace CmsData
    		    get { return this._TasksCoOwned; }
 
 			set	{ this._TasksCoOwned.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="VolRequests__Requestor", Storage="_VolRequests", OtherKey="RequestorId")]
+   		public EntitySet< VolRequest> VolRequests
+   		{
+   		    get { return this._VolRequests; }
+
+			set	{ this._VolRequests.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="VolResponses__Volunteer", Storage="_VolResponses", OtherKey="VolunteerId")]
+   		public EntitySet< VolRequest> VolResponses
+   		{
+   		    get { return this._VolResponses; }
+
+			set	{ this._VolResponses.Assign(value); }
 
    		}
 
@@ -4670,6 +4739,19 @@ namespace CmsData
 		}
 
 		
+		private void attach_BackgroundChecks(BackgroundCheck entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_BackgroundChecks(BackgroundCheck entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
 		private void attach_CardIdentifiers(CardIdentifier entity)
 		{
 			this.SendPropertyChanging();
@@ -5057,6 +5139,32 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.CoOwner = null;
+		}
+
+		
+		private void attach_VolRequests(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Requestor = this;
+		}
+
+		private void detach_VolRequests(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Requestor = null;
+		}
+
+		
+		private void attach_VolResponses(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Volunteer = this;
+		}
+
+		private void detach_VolResponses(VolRequest entity)
+		{
+			this.SendPropertyChanging();
+			entity.Volunteer = null;
 		}
 
 		

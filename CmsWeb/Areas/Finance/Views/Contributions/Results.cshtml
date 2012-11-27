@@ -29,7 +29,7 @@
     <tr>
         <td><a href="/FinanceReports/ContributionYears/@c.PeopleId">@c.Name</a></td>
         <td>@c.Fund</td>
-        <td>@c.ContributionType</td>
+        <td title="@c.ContributionId">@c.ContributionType</td>
         <td>@c.ContributionDate.FormatDate()</td>
         <td align="right"><a href="/Contributions/Bundle.aspx?id=@c.BundleId">@c.ContributionAmount.ToString2("N2")</a></td>
         <td>@c.Status</td>

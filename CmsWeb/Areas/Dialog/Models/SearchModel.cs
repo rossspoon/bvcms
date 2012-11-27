@@ -21,12 +21,14 @@ namespace CmsWeb.Models
     public class SearchModel
     {
         public string type { get; set; }
-        private string[] noaddtypes = { "relatedfamily", "contactor", "taskdelegate", "owner", "taskdelegate2" };
-        private string[] usersonlytypes = { "taskdelegate", "owner", "taskdelegate2" };
+        private string[] noaddtypes = { "relatedfamily", "mergeto", "contactor", "taskdelegate", "taskowner", "taskdelegate2" };
+        private string[] usersonlytypes = { "taskdelegate", "taskowner", "taskdelegate2" };
+        private string[] onlyonetypes = { "taskdelegate", "taskowner", "taskdelegate2", "mergeto", "relatedfamily" };
         public bool CanAdd { get { return !noaddtypes.Contains(type); } }
         public string from { get; set; }
         public int? typeid { get; set; }
         public bool UsersOnly { get { return usersonlytypes.Contains(type); } }
+        public bool OnlyOne { get { return onlyonetypes.Contains(type); } }
 
         private IList<SearchPersonModel> list = new List<SearchPersonModel>();
         public IList<SearchPersonModel> List
