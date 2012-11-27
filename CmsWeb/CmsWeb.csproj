@@ -375,6 +375,7 @@
     <Compile Include="Areas\Public\Models\MobileAPI\Helpers\SystemHelper.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\MobileTaskBox.cs" />
     <Compile Include="Areas\Public\Models\MobileAPI\MobileTaskFull.cs" />
+    <Compile Include="Areas\Public\Models\MobileAPI\MobileTaskStatus.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
