@@ -13,7 +13,7 @@
 				<ul id="GradeOptions" class="sort">
 					@foreach(var item in Model.list)
 					{
-                        item.Name = Html.NameFor(m => m.list);
+                        item.Name = Html.NameFor2(m => m.list);
 						@Html.EditorFor(m => item)
 					}
 				</ul>

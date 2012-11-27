@@ -6,7 +6,7 @@
 @if (Model.AnyOtherInfo())
 {
     if (index > 0 && Model.NeedsCopyFromPrevious())
-    { 
+    {
         <tr>
             <td colspan="2" align="right"><a href="#" id="copy">copy from previous</a></td>
         </tr>
@@ -163,7 +163,7 @@
         </tr>
             break;
         case "AskExtraQuestions":
-        var eqname = Html.NameFor(m => m.ExtraQuestion);
+        var eqname = Html.NameFor2(m => m.ExtraQuestion);
 		for (int i = 0; i < ((AskExtraQuestions)ask).list.Count; i++)
 		{
 			var a = ((AskExtraQuestions)ask).list[i];
@@ -177,7 +177,7 @@
 		}
             break;
         case "AskYesNoQuestions":
-        var ynqname = Html.NameFor(m => m.YesNoQuestion);
+        var ynqname = Html.NameFor2(m => m.YesNoQuestion);
         for (int n = 0; n < ((AskYesNoQuestions)ask).list.Count; n++)
         {
             var a = ((AskYesNoQuestions)ask).list[n];
@@ -193,7 +193,7 @@
             break;
         case "AskDropdown":
             var dd = ((AskDropdown) ask);
-            var ddname = Html.NameFor(m => m.option);
+            var ddname = Html.NameFor2(m => m.option);
 			<tr>
 				<td><div class="wraparound">@(dd.Label)</div></td>
 				<td>@Html.DropDownList4("", ddname, Model.DropdownList(ask), Model.option[dd.UniqueId])
@@ -218,7 +218,7 @@
 						{
 							var filled = a.IsSmallGroupFilled(Model.GroupTags);
 							<tr><td valign="top">
-									<input type="checkbox" value="@a.SmallGroup" name="@Html.NameFor(m => m.Checkbox)" @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") />
+									<input type="checkbox" value="@a.SmallGroup" name="@Html.NameFor2(m => m.Checkbox)" @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") />
 								</td>
 								<td>
 									<span@(filled ? " class=strike" : "")>@Html.Raw(a.Description)</span>
@@ -237,7 +237,7 @@
             break;
         case "AskMenu":
             var mu = ((AskMenu)ask);
-            var mnuname = Html.NameFor(m => m.MenuItem);
+            var mnuname = Html.NameFor2(m => m.MenuItem);
         <tr>
 		<td><strong>@(mu.Label)</strong></td>
 		<td>
@@ -293,7 +293,7 @@
 }
 @if (Model.OnlineGiving())
 {
-    var funame = Html.NameFor(m => m.FundItem);
+    var funame = Html.NameFor2(m => m.FundItem);
     var funds = CmsWeb.Models.OnlineRegPersonModel.Funds();
     decimal? tot = null;
     <tr><td colspan="2" align="center"><table class="grid" cellpadding="2">

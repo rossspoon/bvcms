@@ -234,7 +234,7 @@ namespace CmsWeb.Models
 
         public OnlineRegModel Parent;
 
-        private int? index;
+        public int? index;
         public int Index()
         {
             if (!index.HasValue)

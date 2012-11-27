@@ -160,7 +160,7 @@ function FillConditionGrid(html) {
         return r[item];
     };
     $.block = function() {
-        $.blockUI({ message: 'working on it...<img src="/content/loading.gif"/>' });
+        $.blockUI({ message: 'working on it...<img src="/images/loading.gif"/>' });
     };
     $.unblock = function() {
         $.unblockUI({ fadeOut: 150 });

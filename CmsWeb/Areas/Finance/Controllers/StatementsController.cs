@@ -12,12 +12,14 @@ namespace CmsWeb.Areas.Finance.Controllers
 	[Authorize(Roles="Finance")]
 	public class StatementsController : CmsController 
 	{
-		public ActionResult Index()
+		public ActionResult Index(string startswith)
 		{
+		    if (startswith.HasValue())
+		        ViewBag.startswith = startswith;
 			return View();
 		}
 		[HttpPost]
-		public ActionResult ContributionStatements(bool? PDF, DateTime? FromDate, DateTime? EndDate)
+		public ActionResult ContributionStatements(bool? PDF, DateTime? FromDate, DateTime? EndDate, string startswith)
 		{
 			if (!FromDate.HasValue || !EndDate.HasValue)
 				return Content("<h3>Must have a Startdate and Enddate</h3>");
@@ -29,6 +31,8 @@ namespace CmsWeb.Areas.Finance.Controllers
 					Count = 0,
 					Processed = 0
 				};
+			    if (!startswith.HasValue())
+			        startswith = null;
 				DbUtil.Db.ContributionsRuns.InsertOnSubmit(runningtotals);
 				DbUtil.Db.SubmitChanges();
 				var host = Util.Host;
@@ -36,7 +40,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 				System.Threading.Tasks.Task.Factory.StartNew(() =>
 				{
 					System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Lowest;
-					var m = new ContributionStatementsExtract(host, FromDate.Value, EndDate.Value, PDF.Value, output);
+					var m = new ContributionStatementsExtract(host, FromDate.Value, EndDate.Value, PDF.Value, output, startswith);
 					m.DoWork();
 				});
 			}

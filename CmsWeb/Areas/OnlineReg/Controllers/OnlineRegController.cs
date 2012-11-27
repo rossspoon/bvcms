@@ -58,10 +58,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			SetHeaders(m);
 
-#if DEBUG2
-
+#if DEBUG
+		    m.username = "trecord";
 			m.testing = true;
-			m.username = "David";
 #else
             m.testing = testing;
 #endif
@@ -110,7 +109,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				OnlineRegPersonModel p = null;
 				if (showfamily != true)
 				{
-                    p = m.LoadExistingPerson(pid);
+                    p = m.LoadExistingPerson(pid, 0);
                     p.ValidateModelForFind(ModelState, m);
                     p.LoggedIn = true;
                     if (m.masterorg == null && !m.divid.HasValue)
@@ -211,8 +210,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			m.nologin = false;
 			m.List = new List<OnlineRegPersonModel>();
 #if DEBUG
-		    m.username = "david";
-		    m.password = "";
+		    m.username = "trecord";
 #endif
 			return View("Flow/List", m);
 		}
@@ -222,8 +220,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			int index = m.List.Count - 1;
 			if (m.List[index].classid.HasValue)
 			    m.classid = m.List[index].classid;
-			var p = m.LoadExistingPerson(id);
-			p.ValidateModelForFind(ModelState, m);
+			var p = m.LoadExistingPerson(id, index);
+			p.ValidateModelForFind(ModelState, m, selectfromfamily: true);
 			if (!ModelState.IsValid)
 				return View("Flow/List", m);
 			m.List[index] = p;
@@ -491,7 +489,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (m.List.Count == 0)
 				return Content("Can't find any registrants");
 			DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, m.NameOnAccount));
-			if (!m.last.IsNew && m.last.Found != true)
+			if (!m.last.IsNew && !m.last.Found == true)
 				m.List.Remove(m.last);
 
 			var d = new ExtraDatum { Stamp = Util.Now };

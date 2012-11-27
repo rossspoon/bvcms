@@ -7,9 +7,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-@Html.Css("/Content/jquery-ui-1.9.1.custom.css")
-@Html.Css("/Content/Dialog.css")
-@Html.Css("/Content/jquery.tooltip.css")
+@Html.Css("/Content/css/jquery-ui-1.9.2.custom.css")
+@Html.Css("/Content/css/Dialog.css")
+@Html.Css("/Content/css/jquery.tooltip.css")
 <style type="text/css">
 .item
 {
@@ -41,9 +41,9 @@
 </div>
 <div style="clear:both"></div>
 <hr />
-<a href="/Person/UserUpdate/@Model.UserId" class="submitbutton save">Save Changes</a>
-<a href="/Person/UserWelcome/@Model.UserId" class="submitbutton save">Save Changes, Send Welcome Email</a>
-<a id="deluser" href="/Person/UserDelete/@Model.UserId" class="submitbutton">Delete User</a>
+<a href="/Person/UserUpdate/@Model.UserId" class="submitbutton save bt blue">Save Changes</a>
+<a href="/Person/UserWelcome/@Model.UserId" class="submitbutton save bt blue">Save Changes, Send Welcome Email</a>
+<a id="deluser" href="/Person/UserDelete/@Model.UserId" class="submitbutton bt red">Delete User</a>
 </form>
 @Html.Partial("CombinedJs")
 @Html.Script("/Content/js/jquery.transpose.js")

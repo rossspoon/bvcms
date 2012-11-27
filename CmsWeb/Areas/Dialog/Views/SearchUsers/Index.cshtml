@@ -1,41 +1,22 @@
 ﻿@using CmsWeb.Models
 @using CmsWeb
 @model SearchUsersModel
-<html>
-<head>
-<title>Index</title>
-<link rel="stylesheet" type="text/css"  href="/Content/jquery-ui-1.8.9.custom.css" />
-<link rel="stylesheet" type="text/css"  href="/Content/site.css" />
-<link rel="stylesheet" type="text/css"  href="/Content/Style2.css" />
-<link rel="stylesheet" type="text/css"  href="/Content/jquery.tooltip.css" />
-<link rel="stylesheet" type="text/css"  href="/Content/pager.css" />
-
-@Html.Partial("CombinedJs")
-@Html.Script("/Scripts/SearchUsers.js")
-</head>
-<body>
-<form name="form1">
-@Html.Hidden("ordered", Model.ordered)
-@Html.Hidden("singlemode", Model.singlemode)
-  <table id="searchvalues" class="roundbox" cellspacing="5">
-      <tr>
-        <th align="right"> Name/ID#: </th>
-        <td><input id="name" name="name" title="Starting letters of First&lt;space>Last or just Last" type="text" value="" /></td>
-      </tr>
-      <tr>
-        <td>
-@if (!Model.singlemode)
-{
-            <input type="button" class="bt" value="Update Selected" id="UpdateSelected" />
-}
-        </td>
-        <td align="right">
-            <a href="/SearchUsers/Results" id="search" class="bt default formlink">Search</a>
-            <a id="clear" href="#" class="bt">Clear</a>
-        </td>
-      </tr>
-  </table>
+<form>
+    @Html.Hidden("ordered", Model.ordered)
+    @Html.Hidden("singlemode", Model.singlemode)
+    <div>
+        <div>
+            <div>
+                <input name="name" type="text" title="Starting letters of First&lt;space>Last or just Last" class="span2 search-query">
+                <a href="/SearchUsers/Results" type="submit" class="search bt">Search</a>
+            </div>
+        </div>
+    </div>
+    <div style="overflow-y: auto;max-height: 400px">
 @Html.Partial("Results", Model)
+    </div>
+    <div style="float:right;margin-top:1em;">
+        <button class="close bt">Close</button>
+        <button class="UpdateSelected blue bt">Save changes</button>
+    </div>
 </form>
-</body>
-</html>

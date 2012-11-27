@@ -32,7 +32,7 @@ namespace CmsWeb.Models
 
         public SearchUsersModel()
         {
-            maxitems = 15;
+            maxitems = 25;
         }
         private IQueryable<Person> people;
         public IQueryable<Person> FetchPeople()

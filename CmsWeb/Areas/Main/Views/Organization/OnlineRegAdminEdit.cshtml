@@ -4,7 +4,7 @@
 @using UtilityExtensions
 <p><i>Drag the grey bars up/down arrow to reorder items.</i></p>
 <div>
-<a href="/Organization/OnlineRegAdminUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
+<a href="/Organization/OnlineRegAdminUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 <a class="displayedit bt" href="/Organization/OnlineRegAdmin/@Model.OrgId">Cancel</a>
 </div>
 <div>@Html.ValidationMessage("Form")</div>
@@ -12,7 +12,7 @@
 @Html.EditorFor(m => m, "TabAdmin")
 </ul>
 <div>
-<a href="/Organization/OnlineRegAdminUpdate/@Model.OrgId" class="submitbutton bt">Save Changes</a>
+<a href="/Organization/OnlineRegAdminUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 <a class="displayedit bt" href="/Organization/OnlineRegAdmin/@Model.OrgId">Cancel</a>
 </div>
 <div>@Html.ValidationMessage("Form")</div>

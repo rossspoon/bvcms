@@ -51,10 +51,10 @@
     |and will not appear until the payment page.">
     OrgFees:</div>
       <ul id="OrgFees" class="sort">
-	      @{ var listname = Html.NameFor(m => m.OrgFees.list); }
+	      @{ var listname = Html.NameFor2(m => m.OrgFees.list); }
           @foreach(var item in Model.OrgFees.list)
           {
-              item.Name = listname; 
+              item.Name = listname;
               @Html.EditorFor(m => item)
           }
       </ul>

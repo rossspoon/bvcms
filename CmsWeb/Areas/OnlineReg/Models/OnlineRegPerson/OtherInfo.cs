@@ -142,7 +142,7 @@ namespace CmsWeb.Models
                         if (om != null)
                             request = om.Request;
                     }
-                    if (setting.AskVisible("AskShirtSize"))
+                    if (setting.AskVisible("AskSize"))
                         shirtsize = rr.ShirtSize;
                     if (setting.AskVisible("AskEmContact"))
                     {

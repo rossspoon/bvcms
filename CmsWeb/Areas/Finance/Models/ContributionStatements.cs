@@ -221,8 +221,8 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 
 
 				//------Pledges
-				var pledges = APIContribution.pledges(Db, ci, ToDate);
-				if (pledges.Count() > 0)
+				var pledges = APIContribution.pledges(Db, ci, ToDate).ToList();
+				if (pledges.Count > 0)
 				{
 					t = new PdfPTable(new float[] { 16f, 12f, 12f });
 					t.WidthPercentage = 100;

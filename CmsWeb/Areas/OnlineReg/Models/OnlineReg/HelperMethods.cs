@@ -326,11 +326,12 @@ namespace CmsWeb.Models
                 return "";
             }
         }
-        public OnlineRegPersonModel LoadExistingPerson(int id)
+        public OnlineRegPersonModel LoadExistingPerson(int id, int index)
         {
             var person = DbUtil.Db.LoadPersonById(id);
             var p = new OnlineRegPersonModel
             {
+                index = index,
                 dob = person.DOB,
                 email = person.EmailAddress.HasValue() ? person.EmailAddress : user.EmailAddress,
                 first = person.PreferredName,

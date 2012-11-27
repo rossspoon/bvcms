@@ -4,7 +4,7 @@
 
 @foreach(var ask in Model.AskItems)
 {
-    ask.Name = Html.NameFor(m => m.AskItems);
+    ask.Name = Html.NameFor2(m => m.AskItems);
     switch (ask.Type)
     {
         case "AskParents":

@@ -120,7 +120,7 @@ namespace CmsData.API
             ContributionTypeCode.Reversed 
         };
 
-        public static IEnumerable<ContributorInfo> contributors(CMSDataContext Db, DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId, bool noaddressok, bool useMinAmt)
+        public static IEnumerable<ContributorInfo> contributors(CMSDataContext Db, DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId, bool noaddressok, bool useMinAmt, string startswith = null)
         {
             var MinAmt = Db.Setting("MinContributionAmount", "5").ToDecimal();
             if (!useMinAmt)
@@ -141,8 +141,9 @@ namespace CmsData.API
                                              : "Mr. and Mrs. " + p.SpouseName))))
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
                       where option != 9 || noaddressok
+                      where startswith == null || p.LastName.StartsWith(startswith)
 #if DEBUG2
-					  where p.PeopleId < 1000
+					  where p.FamilyId == 17371
 #endif
                       where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
@@ -200,7 +201,7 @@ namespace CmsData.API
                 ContributionTypeCode.Reversed 
             };
 
-			var showPledgeIfMet = DbUtil.Db.Setting("ShowPledgeIfMet", "true").ToBool();
+			var showPledgeIfMet = Db.Setting("ShowPledgeIfMet", "true").ToBool();
 
             var qp = from p in Db.Contributions
                      where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
@@ -221,7 +222,7 @@ namespace CmsData.API
             var q = from p in qp
                     join c in qc on p.FundId equals c.FundId into items
                     from c in items.DefaultIfEmpty()
-					where p.Total > c.Total || showPledgeIfMet
+					where (p.Total ?? 0) > (c == null ? 0 : c.Total ?? 0) || showPledgeIfMet
                     orderby p.Fund descending
                     select new PledgeSummaryInfo
                     {

@@ -71,7 +71,6 @@ $(function () {
         return false;
     });
     $(".bt").button();
-    $("#buttondiv bt").css("width", "100%");
 
     $('form table.grid > tbody > tr:even').addClass('alt');
 
@@ -524,20 +523,6 @@ $(function () {
             });
         return false;
     });
-    $('#usersDialog').dialog({
-        title: 'Select Users Dialog',
-        bgiframe: true,
-        autoOpen: false,
-        width: 750,
-        height: 700,
-        modal: true,
-        overlay: {
-            opacity: 0.5,
-            background: "black"
-        }, close: function () {
-            $('iframe', this).attr("src", "");
-        }
-    });
     $('#divisionsDialog').dialog({
         title: 'Select Divisions Dialog',
         bgiframe: true,
@@ -665,10 +650,6 @@ function CloseAddDialog(from) {
     $("#memberDialog").dialog("close");
 }
 function UpdateSelectedUsers(topid) {
-    $.post("/Organization/UpdateNotifyIds", { id: $("#OrganizationId").val(), topid: topid }, function (ret) {
-        $("#notifylist").html(ret);
-        $("#usersDialog").dialog("close");
-    });
 }
 function UpdateSelectedOrgs(list) {
     $.post("/Organization/UpdateOrgIds", { id: $("#OrganizationId").val(), list: list }, function (ret) {

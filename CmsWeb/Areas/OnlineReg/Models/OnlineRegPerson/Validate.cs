@@ -57,7 +57,7 @@ namespace CmsWeb.Models
 			if (phone.HasValue() && d < 10)
 				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].phone), "10+ digits required");
 		}
-		public void ValidateModelForFind(ModelStateDictionary ModelState, OnlineRegModel m)
+		public void ValidateModelForFind(ModelStateDictionary ModelState, OnlineRegModel m, bool selectfromfamily = false)
 		{
 			var i = Index();
 			IsValidForContinue = true; // true till proven false
@@ -111,7 +111,10 @@ Please call the church to resolve this before we can complete your information."
 					}
 					else if (ComputesOrganizationByAge() && org == null)
 					{
-						ModelState.AddModelError(dobname, "Sorry, cannot find an appropriate age group");
+                        if (selectfromfamily)
+    						ModelState.AddModelError("age-" + person.PeopleId, "Sorry, cannot find an appropriate age group");
+                        else
+    						ModelState.AddModelError(dobname, "Sorry, cannot find an appropriate age group");
 						IsValidForContinue = false;
 					}
 					else if (MemberOnly() && person.MemberStatusId != MemberStatusCode.Member)
@@ -325,7 +328,7 @@ Please search with a different email, phone, or birthday.";
 						if (!robitussin.HasValue)
 							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].robitussin), "please indicate");
 						break;
-					case "AskShirtSize":
+					case "AskSize":
 						if (shirtsize == "0")
 							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].shirtsize), "please select a shirt size");
 						break;

@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>User Management</title>
-<link href='/Content/site.css' rel='stylesheet' type='text/css' />
+<link href='/Content/css/site.css' rel='stylesheet' type='text/css' />
 </head>
 <body>
     <form id="form1" runat="server">

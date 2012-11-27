@@ -1,0 +1,227 @@
+﻿body
+{
+    color: #333;
+    font-family: Verdana,Helvetica,Sans-Serif;
+    font-size: 0.75em;
+    margin: 0;
+    padding: 0;
+}
+a:link
+{
+    color: white;
+    text-decoration: underline;
+}
+a:visited
+{
+    color: white;
+}
+a:hover
+{
+    color: #ddd;
+    text-decoration: none;
+}
+a:active
+{
+    color: white;
+}
+p, ul
+{
+    line-height: 1.6em;
+    margin-bottom: 20px;
+}
+h1, h2, h3, h4, h5, h6
+{
+    color: #ddd;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 1.5em;
+}
+h1
+{
+    font-size: 2em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+h2
+{
+    color: Black;
+    padding: 0 0 5px;
+}
+h3
+{
+    font-size: 1.2em;
+}
+h4
+{
+    font-size: 1.1em;
+}
+h5, h6
+{
+    font-size: 1em;
+}
+.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
+{
+    margin-top: 0;
+}
+.page
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+#header
+{
+    color: white;
+    margin-bottom: 0;
+    min-height: 4em;
+    padding: 0;
+    position: relative;
+    height: 95px;
+}
+#header h1
+{
+    border: medium none;
+    color: white;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 32px !important;
+    font-weight: bold;
+    line-height: 2em;
+    margin: 0;
+    padding: 5px 0;
+}
+#main
+{
+    margin-bottom: 30px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+#main > form
+{
+    background: black url(/images/blackredgradient.png) repeat-y;
+    border: solid 2px black;
+    color: #ddd;
+}
+#footer
+{
+    color: #999;
+    font-size: 0.9em;
+    line-height: normal;
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+}
+fieldset
+{
+    border: 1px solid #CCCCCC;
+    margin: 1em 0;
+    padding: 1em;
+}
+fieldset p
+{
+    margin: 2px 12px 10px 10px;
+}
+fieldset label
+{
+    display: block;
+}
+fieldset label.inline
+{
+    display: inline;
+}
+legend
+{
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 2px 4px 8px;
+}
+input[type="text"]
+{
+    border: 1px solid #CCCCCC;
+    width: 200px;
+}
+textarea
+{
+    height: 3em;
+    width: 200px;
+}
+.clear
+{
+    clear: both;
+}
+.error
+{
+    color: Red;
+}
+#menucontainer
+{
+    margin-top: 40px;
+}
+div#title
+{
+    display: block;
+    float: left;
+    text-align: left;
+}
+.field-validation-error
+{
+    color: #FF99FF;
+}
+.input-validation-error
+{
+    background-color: #FFEEEE;
+    border: 1px solid #FF0000;
+}
+.validation-summary-errors
+{
+    color: #FF0000;
+    font-weight: bold;
+}
+.smlheader
+{
+background-image: url(/images/star.png);
+background-position: 0% 50%;
+background-repeat: no-repeat;
+color: #BD0000;
+font-size: 18px;
+margin: 15px 0px 0px;
+padding: 0px 0px 0px 20px;
+text-align: left;
+text-transform: uppercase;
+}
+h2
+{
+background-image: url(/images/star.png);
+background-position: 0% 50%;
+background-repeat: no-repeat;
+color: #BD0000;
+font-size: 18px;
+margin: 15px 0px 0px;
+padding: 0px 0px 0px 20px;
+text-align: left;
+text-transform: uppercase;
+}
+a.submitbutton, a.button
+{
+    padding: 5px;
+    background-color: #E0E0E0;
+    border: 1px solid #000000;
+    color: #333333;
+    text-decoration: none;
+    margin-top: 10px;
+}
+td.alt1
+{
+    border: thin solid #999999;
+    width: 100%;
+}
+td.alt0
+{
+    border: thin solid #CCCCCC;
+    width: 100%;
+}
+form.DisplayEdit input.short 
+{
+    width: 1.5em;
+}
+
+

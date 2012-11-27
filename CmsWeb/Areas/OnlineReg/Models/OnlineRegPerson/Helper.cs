@@ -138,8 +138,12 @@ namespace CmsWeb.Models
 					_org = DbUtil.Db.LoadOrganizationById(classid.Value);
 				if (_org == null && (divid.HasValue || masterorgid.HasValue) && (Found == true || IsValidForNew))
 					if (ComputesOrganizationByAge())
-						_org = GetAppropriateOrg();
-				return _org;
+					{
+					    _org = GetAppropriateOrg();
+					}
+                if (_org != null)
+				    orgid = _org.OrganizationId;
+			    return _org;
 			}
 		}
 		private CmsData.Organization _masterorg;

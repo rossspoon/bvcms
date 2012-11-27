@@ -79,7 +79,7 @@
                 $('#results > tbody > tr:even').addClass('alt');
                 $("#activetag").text($("#actag").val());
                 $("#sharecount").text($("#shcnt").val());
-                $('.dropdown').hoverIntent(dropdownshow, dropdownhide);
+                //$('.dropdown').hoverIntent(dropdownshow, dropdownhide);
                 $.unblockUI();
             });
         });
@@ -114,18 +114,12 @@
         });
         return false;
     });
-    $('#usersDialog').dialog({
-        title: 'Select Users Dialog',
-        bgiframe: true,
-        autoOpen: false,
-        width: 690,
-        height: 650,
-        modal: true,
-        overlay: {
-            opacity: 0.5,
-            background: "black"
-        }, close: function () {
-            $('iframe', this).attr("src", "");
+    
+    $("#ShareLink").SearchUsers({
+        UpdateShared: function() {
+            $.post("/Tags/UpdateShared", null, function(ret) {
+                $("#sharecount").text(ret);
+            });
         }
     });
     $('#ShareLink').live("click", function (e) {

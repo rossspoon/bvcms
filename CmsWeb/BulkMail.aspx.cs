@@ -29,6 +29,9 @@ namespace CmsWeb
                 case "Individual":
                     q = ctl.FetchIndividualList(sort, qid.Value);
                     break;
+                case "FamilyMembers":
+                    q = ctl.FetchFamilyMembers(sort, qid.Value);
+                    break;
                 case "Family":
                     q = ctl.FetchFamilyList(sort, qid.Value);
                     break;

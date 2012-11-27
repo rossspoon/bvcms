@@ -19,14 +19,16 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		public string OutputFile { get; set; }
 		public string Host { get; set; }
 		public int LastSet { get; set; }
+		public string StartsWith { get; set; }
 
-		public ContributionStatementsExtract(string Host, DateTime fd, DateTime td, bool PDF, string OutputFile)
+		public ContributionStatementsExtract(string Host, DateTime fd, DateTime td, bool PDF, string OutputFile, string startswith = null)
 		{
 			this.fd = fd;
 			this.td = td;
 			this.PDF = PDF;
 			this.Host = Host;
 			this.OutputFile = OutputFile;
+		    StartsWith = startswith;
 		}
 
 
@@ -38,7 +40,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			Db.CommandTimeout = 1200;
 
 			var noaddressok = Db.Setting("RequireAddressOnStatement", "true") == "false";
-			var qc = APIContribution.contributors(Db, fd, td, 0, 0, 0, noaddressok, useMinAmt: true);
+			var qc = APIContribution.contributors(Db, fd, td, 0, 0, 0, noaddressok, useMinAmt: true, startswith: StartsWith);
 			var runningtotals = Db.ContributionsRuns.OrderByDescending(mm => mm.Id).First();
 			runningtotals.Count = qc.Count();
 			Db.SubmitChanges();
