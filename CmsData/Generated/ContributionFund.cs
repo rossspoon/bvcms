@@ -51,6 +51,10 @@ namespace CmsData
 		
 		private bool? _NonTaxDeductible;
 		
+		private int _QBIncomeAccount;
+		
+		private int _QBAssetAccount;
+		
    		
    		private EntitySet< BundleHeader> _BundleHeaders;
 		
@@ -116,6 +120,12 @@ namespace CmsData
 		
 		partial void OnNonTaxDeductibleChanging(bool? value);
 		partial void OnNonTaxDeductibleChanged();
+		
+		partial void OnQBIncomeAccountChanging(int value);
+		partial void OnQBIncomeAccountChanged();
+		
+		partial void OnQBAssetAccountChanging(int value);
+		partial void OnQBAssetAccountChanged();
 		
     #endregion
 		public ContributionFund()
@@ -501,6 +511,50 @@ namespace CmsData
 					this._NonTaxDeductible = value;
 					this.SendPropertyChanged("NonTaxDeductible");
 					this.OnNonTaxDeductibleChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="QBIncomeAccount", UpdateCheck=UpdateCheck.Never, Storage="_QBIncomeAccount", DbType="int NOT NULL")]
+		public int QBIncomeAccount
+		{
+			get { return this._QBIncomeAccount; }
+
+			set
+			{
+				if (this._QBIncomeAccount != value)
+				{
+				
+                    this.OnQBIncomeAccountChanging(value);
+					this.SendPropertyChanging();
+					this._QBIncomeAccount = value;
+					this.SendPropertyChanged("QBIncomeAccount");
+					this.OnQBIncomeAccountChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="QBAssetAccount", UpdateCheck=UpdateCheck.Never, Storage="_QBAssetAccount", DbType="int NOT NULL")]
+		public int QBAssetAccount
+		{
+			get { return this._QBAssetAccount; }
+
+			set
+			{
+				if (this._QBAssetAccount != value)
+				{
+				
+                    this.OnQBAssetAccountChanging(value);
+					this.SendPropertyChanging();
+					this._QBAssetAccount = value;
+					this.SendPropertyChanged("QBAssetAccount");
+					this.OnQBAssetAccountChanged();
 				}
 
 			}

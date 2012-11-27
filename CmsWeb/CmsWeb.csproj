@@ -71,7 +71,7 @@
     </Reference>
     <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\DevDefined.OAuth.dll</HintPath>
+      <HintPath>Binaries\DevDefined.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="dotless.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
@@ -88,43 +88,43 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="Intuit.Ipp.AsyncServices, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.AsyncServices.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.AsyncServices.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Core, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.Core.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Data, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.Data.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.Data.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Diagnostics, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.Diagnostics.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Exception, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.Exception.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.Exception.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.PlatformServices, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.PlatformServices.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Retry, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.Retry.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.Retry.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Security, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.Security.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.Security.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Services, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.Services.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.Services.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Utility, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Intuit.Ipp.Utility.dll</HintPath>
+      <HintPath>Binaries\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
     <Reference Include="LumenWorks.Framework.IO, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -132,18 +132,12 @@
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="NPOI">
       <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="Rackspace.CloudFiles, Version=2.0.0.40, Culture=neutral, PublicKeyToken=eeb9efb45246165e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Rackspace.CloudFiles.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -206,9 +200,6 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Twilio.Api">
-      <HintPath>..\packages\Twilio.3.5.5\lib\3.5\Twilio.Api.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -879,7 +870,6 @@
     <Compile Include="Areas\Main\Models\Other\SearchContactModel.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskInfo.cs" />
     <Compile Include="Areas\Main\Models\Other\TaskModel.cs" />
-    <Compile Include="Areas\Finance\Models\QuickBooksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings1.Designer.cs">
       <AutoGen>True</AutoGen>

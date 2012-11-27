@@ -181,8 +181,41 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevDefined.OAuth">
+      <HintPath>..\CmsWeb\Binaries\DevDefined.OAuth.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\CmsWeb\Binaries\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.AsyncServices">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.AsyncServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Core">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Data">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Diagnostics">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Exception">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Exception.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.PlatformServices">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Retry">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Retry.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Security">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Services">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Utility">
+      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
     <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -245,12 +278,6 @@
     <Reference Include="Twilio.Api">
       <HintPath>..\packages\Twilio.3.5.5\lib\3.5\Twilio.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Twilio.Mvc">
-      <HintPath>..\packages\Twilio.Mvc.3.1.9\lib\3.5\Twilio.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="Twilio.Twiml">
-      <HintPath>..\packages\Twilio.TwiML.3.2.0\lib\3.5\Twilio.Twiml.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressVerify.cs">
@@ -309,6 +336,7 @@
     <Compile Include="Generated\Views\PickListOrg.cs" />
     <Compile Include="ManagedGiving.cs" />
     <Compile Include="Dynamic.cs" />
+    <Compile Include="QuickBooksHelper.cs" />
     <Compile Include="Registration\Ask.cs" />
     <Compile Include="Registration\AskRequest.cs" />
     <Compile Include="Registration\AskSize.cs">
