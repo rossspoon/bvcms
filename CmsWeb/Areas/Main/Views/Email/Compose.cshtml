@@ -13,7 +13,7 @@
 	var c = t.FirstOrDefault();
 }
 
-<h2 style="margin-bottom:5px;">Compose Email for @Model.Count @( Model.Count != 1 ? "People" : "Person") @( ViewBag.parents ? " including Parents" : "")</h2>
+<h2 style="margin-bottom:5px;">Compose Email for @Model.Count @( Model.Count != 1 ? "People" : "Person") @( string.Compare(ViewBag.parents,"true", ignoreCase: true) == 0 ? " including Parents" : "")))</h2>
 <font color="red"><b>NOTE:</b></font> Your recipient list will change if use another tab in your browser to visit another organization or person or run another query.<br />
 <br />
 <form id="SendEmail" method="post">
