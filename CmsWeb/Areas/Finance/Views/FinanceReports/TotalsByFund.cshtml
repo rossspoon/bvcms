@@ -1,9 +1,11 @@
 ﻿@model CmsWeb.Models.TotalsByFundModel
 @using UtilityExtensions
 @using CmsWeb
+@using CmsData
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Totals By Fund";
+    var qbh = new QuickBooksHelper();
 }
 @section head
 {
@@ -30,8 +32,9 @@ Include Unclosed Bundles:@Html.CheckBox("IncUnclosedBundles")
 		<input id="run" type="submit" value="Run Report" class="bt" />
 		<input id="export" type="submit" value="Export Contributions" class="bt" />
 		<input id="exporttotals" type="submit" value="Export Contribution Totals" class="bt" />
-		@if( CmsWeb.Models.QuickBooksModel.hasActiveConnection() ) {
-	 	<input id="toquickbooks" type="submit" value="Push to QuickBooks" class="bt" />
+		@if (qbh.hasActiveConnection())
+        {
+	 	    <input id="toquickbooks" type="submit" value="To QuickBooks" class="bt" />
 		}
 	</p>
     <hr />

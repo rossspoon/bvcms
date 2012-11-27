@@ -11,6 +11,7 @@ using CmsWeb.Models;
 using System.Text;
 using System.Web.UI;
 using System.Data.SqlClient;
+using Intuit.Ipp.Data.Qbo;
 
 namespace CmsWeb.Areas.Finance.Controllers
 {
@@ -65,7 +66,11 @@ namespace CmsWeb.Areas.Finance.Controllers
 		[HttpPost]
 		public ActionResult ToQuickBooks(TotalsByFundModel m)
 		{
+            List<int> lFunds = new List<int>();
 			var entries = m.TotalsByFund();
+
+            QuickBooksHelper qbh = new QuickBooksHelper();
+            qbh.InitJournalEntires();
 
 			foreach (var item in entries)
 			{
@@ -73,10 +78,40 @@ namespace CmsWeb.Areas.Finance.Controllers
 							where e.FundId == item.FundId
 							select e).Single();
 
-				QuickBooksModel.CreateJournalEntry(item.FundName, item.Total ?? 0, accts.FundCashAccount.ToInt(), accts.FundAccountCode.ToInt());
+                if (accts.QBAssetAccount > 0 && accts.QBIncomeAccount > 0)
+                {
+                    JournalEntryLine jelFrom = new JournalEntryLine();
+                    jelFrom.Desc = item.FundName;
+                    jelFrom.Amount = item.Total ?? 0;
+                    jelFrom.AmountSpecified = true;
+                    jelFrom.AccountId = new IdType() { Value = accts.QBIncomeAccount.ToString() };
+                    jelFrom.PostingType = PostingTypeEnum.Credit;
+                    jelFrom.PostingTypeSpecified = true;
+
+                    JournalEntryLine jelTo = new JournalEntryLine();
+                    jelTo.Desc = item.FundName;
+                    jelTo.Amount = item.Total ?? 0;
+                    jelTo.AmountSpecified = true;
+                    jelTo.AccountId = new IdType() { Value = accts.QBAssetAccount.ToString() };
+                    jelTo.PostingType = PostingTypeEnum.Debit;
+                    jelTo.PostingTypeSpecified = true;
+
+                    qbh.AddJournalEntry(jelFrom);
+                    qbh.AddJournalEntry(jelTo);
+                }
+
+                lFunds.Add(item.FundId);
 			}
 
-			return Content("");
+            int iJournalID = qbh.CommitJournalEntries( "Bundle from BVCMS" );
+
+            if (iJournalID > 0)
+            {
+                string sFundList = string.Join( ",", lFunds.ToArray() );
+                DbUtil.Db.ExecuteCommand("UPDATE dbo.Contribution SET QBSyncID = " + iJournalID + " WHERE FundId IN (" + sFundList + ")");
+            }
+
+            return View("TotalsByFund", m);
 		}
 		public ActionResult PledgeFulfillments(int id)
 		{

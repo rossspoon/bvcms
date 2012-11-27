@@ -15,7 +15,7 @@ namespace CmsCheckin.Classes
 		public const int TEST_HEIGHT = 200;
 
 		public static string[] MAIN = { "Main" };
-		public static string[] GUEST = { "Main", "Guest" };
+		public static string[] GUEST = { "Guest" };
 		public static string[] NAMETAG = { "NameTag" };
 		public static string[] SINGLE = { "Main" };
 
@@ -57,7 +57,7 @@ namespace CmsCheckin.Classes
 
             var q2 = from c in q
                      orderby c.first ascending, c.hour descending
-                     group c by new { c.pid, c.mv } into g
+                     group c by new { c.pid } into g
                      select from c in g
                             select c;
 
@@ -93,26 +93,28 @@ namespace CmsCheckin.Classes
 
 				foreach (var li in q2)
 				{
-    				LabelInfo liFirst = li.First();
-
                     int iPersonSecurityCount = PrinterHelper.getSecurityCount(li);
 
                     if (iPersonSecurityCount > 0)
                     {
-                        if (liFirst.mv == "M")
+                        string[] sFormats = PrinterHelper.MAIN;
+                        foreach (string sItem in sFormats)
                         {
-                            string[] sFormats = PrinterHelper.MAIN;
-                            foreach (string sItem in sFormats)
-                            {
-                                lsLabels.addPages(PrinterHelper.fetchLabelFormat(sItem, iLabelSize), li.ToList<LabelInfo>());
-                            }
+                            lsLabels.addPages(PrinterHelper.fetchLabelFormat(sItem, iLabelSize), li.ToList<LabelInfo>());
                         }
-                        else
+
+                        var guestIn = from gi in li
+                                      where gi.mv != "M"
+                                      select gi;
+                        
+                        foreach( var guestLabel in guestIn )
                         {
-                            string[] sFormats = PrinterHelper.GUEST;
-                            foreach (string sItem in sFormats)
+                            string[] sGuestFormats = PrinterHelper.GUEST;
+                            IEnumerable<LabelInfo> iGuestLabels = new [] { guestLabel };
+
+                            foreach (string sItem in sGuestFormats)
                             {
-                                lsLabels.addPages(PrinterHelper.fetchLabelFormat(sItem, iLabelSize), li.ToList<LabelInfo>());
+                                lsLabels.addPages(PrinterHelper.fetchLabelFormat(sItem, iLabelSize), iGuestLabels.ToList<LabelInfo>());
                             }
                         }
                     }

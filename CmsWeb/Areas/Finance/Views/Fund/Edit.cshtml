@@ -1,9 +1,10 @@
 ﻿@using CmsWeb.Models
+@using CmsData
 @model CmsData.ContributionFund
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Fund";
-	 var QBActive = QuickBooksModel.hasActiveConnection(); 
+    var qhb = new QuickBooksHelper(); 
 }
 @section head 
 {
@@ -46,14 +47,7 @@
         </p>
         <p>
             <label for="FundAccountCode">FundAccountCode:</label>
-				@if (QBActive)
-				{
-					@Html.DropDownList("FundAccountCode", new SelectList(QuickBooksModel.ListAllAccounts(), "Id.Value", "Name", Model.FundAccountCode)) 
-				}
-				else
-				{  
-					@Html.TextBox("FundAccountCode")
-				}
+            @Html.TextBox("FundAccountCode")
         </p>
         <p>
             <label for="FundIncomeDept">FundIncomeDept:</label>
@@ -73,19 +67,24 @@
         </p>
         <p>
             <label for="FundCashAccount">FundCashAccount:</label>
-				@if (QBActive)
-				{
-					@Html.DropDownList("FundCashAccount", new SelectList(QuickBooksModel.ListAllAccounts(), "Id.Value", "Name", Model.FundCashAccount)) 
-				}
-				else
-				{  
-					@Html.TextBox("FundCashAccount")
-				}
+		    @Html.TextBox("FundCashAccount")
         </p>
         <p>
             <label for="FundCashFund">FundCashFund:</label>
             @Html.TextBox("FundCashFund")
         </p>
+        @if (qhb.hasActiveConnection())
+		{
+            var list = qhb.ListAllAccounts();
+            <p>
+                <label for="QBIncomeAccount">QB Income Account:</label>
+                @Html.DropDownList("QBIncomeAccount", new SelectList(list, "Id.Value", "Name", Model.QBIncomeAccount)) 
+            </p>
+            <p>
+                <label for="QBAssetAccount">QB Asset Account:</label>
+                @Html.DropDownList("QBAssetAccount", new SelectList(list, "Id.Value", "Name", Model.QBAssetAccount)) 
+            </p>
+        }
         <p>
             @Html.Hidden("FundId")
             <input type="submit" class="bt" value="Save" />

@@ -47,5 +47,11 @@
 		var q = f.serialize();
 		$.post("/FinanceReports/ToQuickBooks", q, function (ret) { $.unblockUI(); });
 	});
+	$("#IncUnclosedBundles").click(function (ev) {
+	    if (this.checked)
+	        $("#toquickbooks").css( "display", "none" );
+	    else
+	        $("#toquickbooks").css( "display", "inline" );
+	});
 	$(".bt").button();
 });

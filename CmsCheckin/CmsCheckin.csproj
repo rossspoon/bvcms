@@ -39,15 +39,15 @@
     <TargetCulture>en</TargetCulture>
     <ProductName>BVCMS Check-In</ProductName>
     <PublisherName>BVCMS %28www.bvcms.com%29</PublisherName>
-    <SuiteName>BVCMS</SuiteName>
-    <MinimumRequiredVersion>1.0.0.5</MinimumRequiredVersion>
+    <MinimumRequiredVersion>1.0.0.6</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
@@ -165,6 +165,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ClickOnce Beta|AnyCPU'">
+    <OutputPath>bin\ClickOnce Beta\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BarcodeLib, Version=1.0.0.13, Culture=neutral, processorArchitecture=MSIL">
