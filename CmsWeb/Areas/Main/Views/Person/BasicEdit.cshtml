@@ -39,12 +39,13 @@
         </tr>
         <tr>
             <th>Cell Phone:</th>
-            <td>@Html.TextBox("CellPhone", Model.CellPhone.FmtFone())</td>
+            <td>@Html.TextBox("CellPhone", Model.CellPhone.FmtFone())
+                @Html.CheckBox("ReceiveSMS") Receive Texts
+            </td>
         </tr>
         <tr>
             <th>Work Phone:</th>
-            <td>@Html.TextBox("WorkPhone", Model.WorkPhone.FmtFone())
-                @Html.CheckBox(Model.ReceiveSMS)</td>
+            <td>@Html.TextBox("WorkPhone", Model.WorkPhone.FmtFone())</td>
         </tr>
         <tr>
             <th>Email:</th>
