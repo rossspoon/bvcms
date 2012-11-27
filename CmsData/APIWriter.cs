@@ -60,7 +60,7 @@ namespace CmsData.API
         }
         public APIWriter AddText(string text)
         {
-            w.WriteRaw(text);
+            w.WriteString(text);
             return this;
         }
         public override string ToString()

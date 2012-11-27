@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>AddToOrgFromTag</title>
-    <link href="/Content/jquery-ui-1.9.1.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/jquery.tooltip.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/Site.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/jquery.tooltip.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div class="roundbox">
@@ -12,7 +12,7 @@
     <form action="/AddToOrgFromTag/Start" method="post">
     @Html.Hidden("orgid")
     Tag: @Html.DropDownList("tag")</br>
-    <input type="submit" class="bt" name="Submit" value="Run" />
+    <input type="submit" class="bt blue" name="Submit" value="Run" />
     </form>
 </div>
 </body>

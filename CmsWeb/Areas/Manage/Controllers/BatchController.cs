@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -710,6 +712,23 @@ namespace CmsWeb.Areas.Manage.Controllers
 		{
 			ManagedGiving.DoAllGiving(DbUtil.Db);
 			return Content("done");
+		}
+        [HttpGet]
+		[Authorize(Roles = "Admin")]
+		public ActionResult SQLView(string id)
+        {
+            try
+            {
+                var cmd = new SqlCommand("select * from guest." + id.Replace(" ", ""));
+                cmd.Connection = new SqlConnection(Util.ConnectionString);
+                cmd.Connection.Open();
+                var rdr = cmd.ExecuteReader();
+                return View(rdr);
+            }
+            catch (Exception e)
+            {
+                return Content("cannot find view guest." + id);
+            }
 		}
 	}
 }

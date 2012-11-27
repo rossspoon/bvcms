@@ -3,15 +3,15 @@
 @using UtilityExtensions
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
 <div>
-<a href="/Organization/SettingsOrgUpdate/@Model.OrganizationId" class="submitbutton bt">Save Changes</a>
 <a class="displayedit bt" href="/Organization/SettingsOrg/@Model.OrganizationId">Cancel</a>
+<a href="/Organization/SettingsOrgUpdate/@Model.OrganizationId" class="submitbutton bt blue">Save Changes</a>
 </div>
 <div>@Html.ValidationMessage("Form")</div>
 <ul>
 @Html.EditorFor(m => m, "TabOrg")
 </ul>
 <div>
-<a href="/Organization/SettingsOrgUpdate/@Model.OrganizationId" class="submitbutton bt">Save Changes</a>
 <a class="displayedit bt" href="/Organization/SettingsOrg/@Model.OrganizationId">Cancel</a>
+<a href="/Organization/SettingsOrgUpdate/@Model.OrganizationId" class="submitbutton bt blue">Save Changes</a>
 </div>
 <div>@Html.ValidationMessage("Form")</div>

@@ -39,6 +39,13 @@
         $("ul.noedit a", f).not('[target="otherorg"]').removeAttr("href");
         $("ul.noedit a", f).not('[target="otherorg"]').css("color", "grey");
         $("ul.noedit a", f).not('[target="otherorg"]').unbind("click");
+        $('#notifylist').SearchUsers({
+            UpdateShared: function(topid) {
+                $.post("/Organization/UpdateNotifyIds", { id: $("#OrganizationId").val(), topid: topid }, function (ret) {
+                    $("#notifylist").html(ret);
+                });
+            }
+        });
     };
     $.regsettingeditclick();
     $("a.editor").live("click", function (ev) {
@@ -65,14 +72,6 @@
             }
         });
         return false;
-    });
-    $('#notifylist').live("click", function (e) {
-        if (!$(this).attr("href"))
-            return false;
-        e.preventDefault();
-        var d = $('#usersDialog');
-        $('iframe', d).attr("src", this.href);
-        d.dialog("open");
     });
 });
 CKEDITOR.on('dialogDefinition', function (ev) {

@@ -30,8 +30,8 @@
 <table width="100%" cellspacing="4">
 @Html.Partial("EditPerson", np)
 	<tr><td align="right" colspan="3">
-		<a href="/SearchAdd/AddToFamily/" class="bt formlink default">Submit</a>
         <a href="/SearchAdd/PersonCancel/@n" class="bt formlink" title="@(Model.List.Count > 0 ? "back to selections" : "back to search person")">go back</a>
+		<a href="/SearchAdd/AddToFamily/" class="bt formlink default blue">Submit</a>
 		</td>
     </tr>
 </table>

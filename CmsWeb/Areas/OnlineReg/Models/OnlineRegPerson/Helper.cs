@@ -125,7 +125,6 @@ namespace CmsWeb.Models
 			return settings.Values.Any(o => o.MemberOnly);
 		}
 		private CmsData.Organization _org;
-		[XmlIgnore]
 		public CmsData.Organization org
 		{
 			get
@@ -139,12 +138,15 @@ namespace CmsWeb.Models
 					_org = DbUtil.Db.LoadOrganizationById(classid.Value);
 				if (_org == null && (divid.HasValue || masterorgid.HasValue) && (Found == true || IsValidForNew))
 					if (ComputesOrganizationByAge())
-						_org = GetAppropriateOrg();
-				return _org;
+					{
+					    _org = GetAppropriateOrg();
+					}
+                if (_org != null)
+				    orgid = _org.OrganizationId;
+			    return _org;
 			}
 		}
 		private CmsData.Organization _masterorg;
-		[XmlIgnore]
 		public CmsData.Organization masterorg
 		{
 			get
@@ -365,7 +367,6 @@ Thank you</p>";
 			return q.ToArray();
 		}
 		private PythonEvents _pythonEvents;
-		[XmlIgnore]
 		public PythonEvents PythonEvents
 		{
 			get { return _pythonEvents ?? (_pythonEvents = HttpContext.Current.Items["PythonEvents"] as PythonEvents); }

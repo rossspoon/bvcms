@@ -208,6 +208,7 @@ namespace CmsWeb.Models
             var message = Util.PickFirst(EmailMessage, "no message");
 
             message = MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
+            subject = subject.Replace("{org}", org.OrganizationName);
 
 			message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
             message = message.Replace("{tickets}", List[0].ntickets.ToString());

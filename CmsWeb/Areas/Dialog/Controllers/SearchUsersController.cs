@@ -37,14 +37,15 @@ namespace CmsWeb.Areas.Dialog.Controllers
         public ActionResult TagUntag(int id, bool ischecked)
         {
             var t = DbUtil.Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_AddSelected);
+            var tp = DbUtil.Db.TagPeople.SingleOrDefault(tt => tt.PeopleId == id && tt.Id == t.Id);
             if (ischecked)
             {
-                var tp = DbUtil.Db.TagPeople.SingleOrDefault(tt => tt.PeopleId == id && tt.Id == t.Id);
 				if (tp != null)
 					DbUtil.Db.TagPeople.DeleteOnSubmit(tp);
             }
             else
-                t.PersonTags.Add(new TagPerson { PeopleId = id });
+                if (tp == null)
+                    t.PersonTags.Add(new TagPerson { PeopleId = id });
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }

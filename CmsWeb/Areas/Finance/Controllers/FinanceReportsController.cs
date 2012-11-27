@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CmsWeb.Areas.Finance.Models.Report;
 using CmsData;
 using System.IO;
+using Intuit.Ipp.Data.Qbo;
 using UtilityExtensions;
 using CmsWeb.Models;
 using System.Text;

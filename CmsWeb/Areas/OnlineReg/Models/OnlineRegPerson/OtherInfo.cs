@@ -99,7 +99,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> GradeOptions(Ask ask)
         {
-            var q = from s in ((GradeOptions)ask).list
+            var q = from s in ((AskGradeOptions)ask).list
                     select new SelectListItem { Text = s.Description, Value = s.Code.ToString() };
             var list = q.ToList();
             list.Insert(0, new SelectListItem { Text = "(please select)", Value = "00" });
@@ -142,7 +142,7 @@ namespace CmsWeb.Models
                         if (om != null)
                             request = om.Request;
                     }
-                    if (setting.AskVisible("AskShirtSize"))
+                    if (setting.AskVisible("AskSize"))
                         shirtsize = rr.ShirtSize;
                     if (setting.AskVisible("AskEmContact"))
                     {

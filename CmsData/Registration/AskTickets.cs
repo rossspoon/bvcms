@@ -17,7 +17,7 @@ namespace CmsData.Registration
 		public override void Output(StringBuilder sb)
 		{
             Settings.AddValueCk(0, sb, "AskTickets", true);
-			if (Label.HasValue())
+			if (!Label.HasValue())
 				Label = "No. of Items";
 			Settings.AddValueCk(1, sb, "Label", Label);
 			sb.AppendLine();

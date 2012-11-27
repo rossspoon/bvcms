@@ -51,6 +51,8 @@ namespace CmsData
 		
 		private string _CheckNo;
 		
+		private int? _QBSyncID;
+		
    		
    		private EntitySet< BundleDetail> _BundleDetails;
 		
@@ -122,6 +124,9 @@ namespace CmsData
 		
 		partial void OnCheckNoChanging(string value);
 		partial void OnCheckNoChanged();
+		
+		partial void OnQBSyncIDChanging(int? value);
+		partial void OnQBSyncIDChanged();
 		
     #endregion
 		public Contribution()
@@ -528,6 +533,28 @@ namespace CmsData
 					this._CheckNo = value;
 					this.SendPropertyChanged("CheckNo");
 					this.OnCheckNoChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="QBSyncID", UpdateCheck=UpdateCheck.Never, Storage="_QBSyncID", DbType="int")]
+		public int? QBSyncID
+		{
+			get { return this._QBSyncID; }
+
+			set
+			{
+				if (this._QBSyncID != value)
+				{
+				
+                    this.OnQBSyncIDChanging(value);
+					this.SendPropertyChanging();
+					this._QBSyncID = value;
+					this.SendPropertyChanged("QBSyncID");
+					this.OnQBSyncIDChanged();
 				}
 
 			}

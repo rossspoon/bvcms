@@ -35,6 +35,7 @@ namespace CmsData.API
 						o.OrganizationName,
 						o.Location,
 						o.Description,
+						o.CampusId,
 						o.LeaderName,
 						o.LeaderId,
 						Email = leader != null ? leader.EmailAddress : "",
@@ -53,6 +54,8 @@ namespace CmsData.API
 				if (o.IsParent)
 					w.Attr("IsParent", o.IsParent);
 				w.Attr("Location", o.Location);
+				w.Attr("Description", o.Description);
+				w.Attr("CampusId", o.CampusId);
 				w.Attr("Leader", o.LeaderName);
 				w.Attr("LeaderId", o.LeaderId);
 				w.Attr("Email", o.Email);
@@ -302,6 +305,28 @@ class OrgMembers(object):
 			catch (Exception ex)
 			{
 				return @"<NewOrganization status=""error"">" + ex.Message + "</NewOrganization>";
+			}
+		}
+		public string UpdateOrganization(int orgid, string name, string campusid, string active, string location, string description)
+		{
+			try
+			{
+			    var o = Db.Organizations.Single(oo => oo.OrganizationId == orgid);
+                if (name.HasValue())
+    			    o.OrganizationName = name;
+			    o.CampusId = campusid.ToInt2();
+                if (active.HasValue())
+    			    o.OrganizationStatusId = active.ToBool() ? Codes.OrgStatusCode.Active : Codes.OrgStatusCode.Inactive;
+			    o.Location = location;
+			    o.Description = description;
+
+				Db.SubmitChanges();
+
+				return "ok";
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
 			}
 		}
 		public string AddOrgMember(int OrgId, int PeopleId, string MemberType)

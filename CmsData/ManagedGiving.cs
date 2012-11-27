@@ -14,6 +14,8 @@ namespace CmsData
 		{
 			if (ndt.Date == DateTime.Today)
 				ndt = ndt.AddDays(1).Date;
+		    if (StartWhen.HasValue && ndt.Date < StartWhen)
+		        ndt = StartWhen.Value;
 
 			if (SemiEvery == "S")
 			{

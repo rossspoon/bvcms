@@ -44,7 +44,7 @@ namespace CmsWeb
 					case "AskTickets": return new AskTickets();
 					case "AskYesNoQuestions": return new AskYesNoQuestions();
 					case "AskExtraQuestions": return new AskExtraQuestions();
-					case "GradeOptions": return new GradeOptions();
+					case "AskGradeOptions": return new AskGradeOptions();
 					default:
 						return base.CreateModel(controllerContext, bindingContext, modelType);
 				}

@@ -5,12 +5,14 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 using System;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Web;
 using System.Text;
 using System.Collections;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using CmsData;
 using UtilityExtensions;
 using System.Configuration;
 using System.Web.Routing;
@@ -150,7 +152,7 @@ namespace CmsWeb
 		public static bool IsDebug(this HtmlHelper helper)
 		{
 		    //return true;
-			return Util.IsDebug();
+			return Util.IsDebug() || DbUtil.Db.Setting("NoMinify", "false").ToBool();
 		}
 		public static HtmlString Script(this HtmlHelper helper, string script, bool? debug = false)
 		{
@@ -298,6 +300,22 @@ namespace CmsWeb
 			tb.MergeAttribute("value", s ?? viewDataValue);
 			return new HtmlString(tb.ToString());
 		}
+        public static HtmlString HiddenFor2<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        {
+			var tb = new TagBuilder("input");
+			tb.MergeAttribute("type", "hidden");
+            var name = ExpressionHelper.GetExpressionText(expression);
+            var v = htmlHelper.ViewData.Eval(name);
+            var prefix = htmlHelper.ViewData.TemplateInfo.HtmlFieldPrefix;
+            if (prefix.HasValue())
+                name = prefix + "." + name;
+            tb.MergeAttribute("name", name);
+            if (v != null)
+    			tb.MergeAttribute("value", v.ToString());
+            else
+    			tb.MergeAttribute("value", "");
+			return new HtmlString(tb.ToString());
+        }
 		public static HtmlString DatePicker(this HtmlHelper helper, string name)
 		{
 			var tb = new TagBuilder("input");
@@ -405,6 +423,17 @@ namespace CmsWeb
 			}
 			return new HtmlString("");
 		}
+		public static HtmlString ValidationMessage2(this HtmlHelper helper, string name)
+		{
+            var m = helper.ViewData.ModelState[name];
+		    if (m == null || m.Errors.Count == 0)
+    		    return new HtmlString("");
+	        var e = m.Errors[0].ErrorMessage;
+	        var b = new TagBuilder("span");
+	        b.AddCssClass(HtmlHelper.ValidationMessageCssClassName);
+            b.SetInnerText(e);
+	        return new HtmlString(b.ToString());
+		}
 		public static string Json(this HtmlHelper html, string variableName, object model)
 		{
 			TagBuilder tag = new TagBuilder("script");
@@ -413,10 +442,10 @@ namespace CmsWeb
 			tag.InnerHtml = "var " + variableName + " = " + jsonSerializer.Serialize(model) + ";";
 			return tag.ToString();
 		}
-		public static string NameFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
-		{
-			return htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(expression));
-		}
+        public static string NameFor2<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        {
+            return htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(expression));
+        }
 
 		public static CollectionItemNamePrefixScope BeginCollectionItem<TModel>(this HtmlHelper<TModel> html, string collectionName)
 		{

@@ -4,8 +4,7 @@
 <table id="results" class="grid" cellspacing="5">
 <thead>
 	<tr><td colspan="6">
-		<h4>Count: @Model.Count()</h4>
-		@Html.Partial("ExportToolBar")
+        <div><b>Count: @Model.Count()</b></div>
 		@Html.Partial("Pager2", Model)
 		@Html.Hidden("actag", Util2.CurrentTagName)
 		@Html.Hidden("shcnt", Model.SharedCount())</td></tr>

@@ -302,6 +302,8 @@ namespace CmsData
 		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
+   		private EntitySet< BackgroundCheck> _People;
+		
    		private EntitySet< SubRequest> _SubRequests;
 		
    		private EntitySet< SubRequest> _SubResponses;
@@ -769,6 +771,8 @@ namespace CmsData
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
+			
+			this._People = new EntitySet< BackgroundCheck>(new Action< BackgroundCheck>(this.attach_People), new Action< BackgroundCheck>(this.detach_People)); 
 			
 			this._SubRequests = new EntitySet< SubRequest>(new Action< SubRequest>(this.attach_SubRequests), new Action< SubRequest>(this.detach_SubRequests)); 
 			
@@ -3668,6 +3672,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="People__User", Storage="_People", OtherKey="UserID")]
+   		public EntitySet< BackgroundCheck> People
+   		{
+   		    get { return this._People; }
+
+			set	{ this._People.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="SubRequests__Requestor", Storage="_SubRequests", OtherKey="RequestorId")]
    		public EntitySet< SubRequest> SubRequests
    		{
@@ -5048,6 +5062,19 @@ namespace CmsData
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;
+		}
+
+		
+		private void attach_People(BackgroundCheck entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_People(BackgroundCheck entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
 		}
 
 		

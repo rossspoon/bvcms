@@ -174,7 +174,6 @@ $(function () {
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret).ready(function () {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
-                //$('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
                 $('.bt').button();
                 $(".datepicker").datepicker();
                 $.extraEditable('#extravalues');
@@ -297,7 +296,6 @@ $(function () {
         
         $(".datepicker").datepicker();
         $(".submitbutton,.bt", f).button();
-        $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
         $("#verifyaddress").click(function () {
             var ff = $(this).closest('form');
             var q = ff.serialize();
@@ -326,7 +324,6 @@ $(function () {
                 $.post($(bc).attr("href"), null, function (ret) {
                     $(bc).html(ret);
                 });
-                $('.dropdown', f).hoverIntent(dropdownshow, dropdownhide);
                 $(".submitbutton,.bt").button();
             });
         });
@@ -472,30 +469,37 @@ $(function () {
             $(input).val(value);
         }
     });
-    //    $.editable.addInputType("multiselect", {
-    //        element: function (settings, original) {
-    //            var textarea = $('<select />');
-    //            if (settings.rows) {
-    //                textarea.attr('rows', settings.rows);
-    //            } else {
-    //                textarea.height(settings.height);
-    //            }
-    //            if (settings.cols) {
-    //                textarea.attr('cols', settings.cols);
-    //            } else {
-    //                textarea.width(settings.width);
-    //            }
-    //            $(this).append(textarea);
-    //            return (textarea);
-    //        },
-    //        plugin: function (settings, original) {
-    //            $('textarea', this).multiselect();
-    //        },
-    //        submit: function (settings, original) {
-    //            var value = $('#hour_').val() + ':' + $('#min_').val();
-    //            $('input', this).val(value);
+    $('#vtab>ul>li').click(function() {
+        $('#vtab>ul>li').removeClass('selected');
+        $(this).addClass('selected');
+        var index = $('#vtab>ul>li').index($(this));
+        $('#vtab>div').hide().eq(index).show();
+    });
+
+    //$.editable.addInputType("multiselect", {
+    //    element: function(settings, original) {
+    //        var textarea = $('<select />');
+    //        if (settings.rows) {
+    //            textarea.attr('rows', settings.rows);
+    //        } else {
+    //            textarea.height(settings.height);
     //        }
-    //    }); 
+    //        if (settings.cols) {
+    //            textarea.attr('cols', settings.cols);
+    //        } else {
+    //            textarea.width(settings.width);
+    //        }
+    //        $(this).append(textarea);
+    //        return (textarea);
+    //    },
+    //    plugin: function(settings, original) {
+    //        $('textarea', this).multiselect();
+    //    },
+    //    submit: function(settings, original) {
+    //        var value = $('#hour_').val() + ':' + $('#min_').val();
+    //        $('input', this).val(value);
+    //    }
+    //});
 
 });
 function RebindMemberGrids(from) {

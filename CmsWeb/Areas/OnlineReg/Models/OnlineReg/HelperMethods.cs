@@ -37,7 +37,6 @@ namespace CmsWeb.Models
             return o;
         }
         private Dictionary<int, Settings> _settings;
-		[XmlIgnore]
         public Dictionary<int, Settings> settings
         {
             get
@@ -73,7 +72,6 @@ namespace CmsWeb.Models
                 return null;
             }
         }
-        public bool? testing { get; set; }
         public string qtesting
         {
             get { return testing == true ? "?testing=true" : ""; }
@@ -328,11 +326,12 @@ namespace CmsWeb.Models
                 return "";
             }
         }
-        public OnlineRegPersonModel LoadExistingPerson(int id)
+        public OnlineRegPersonModel LoadExistingPerson(int id, int index)
         {
             var person = DbUtil.Db.LoadPersonById(id);
             var p = new OnlineRegPersonModel
             {
+                index = index,
                 dob = person.DOB,
                 email = person.EmailAddress.HasValue() ? person.EmailAddress : user.EmailAddress,
                 first = person.PreferredName,

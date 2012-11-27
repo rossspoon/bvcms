@@ -1,6 +1,7 @@
 ﻿
 $(document).ready(function () {
-	$('#SearchText').keypress(function (e) {
+    $("a.trigger-dropdown").dropdown();
+    $('#SearchText').keypress(function (e) {
 		if ((e.keyCode || e.which) == 13) {
 			e.preventDefault();
 			var s = $('#SearchText').val();

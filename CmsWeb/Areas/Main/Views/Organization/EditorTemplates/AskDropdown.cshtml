@@ -2,7 +2,7 @@
 @using CmsWeb
 @using (var ci = Html.BeginCollectionItem(Model.Name))
 {
-	var listname = Html.NameFor(m => m.list);
+	var listname = Html.NameFor2(m => m.list);
 	<li class="type-@Model.Type">@Html.Raw(ci.hiddenindex)
         @Html.HiddenFor(m => m.Type)
 		<span class="keyword big tip" title="Dropdown

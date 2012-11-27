@@ -53,7 +53,7 @@
 				<div class="filtertransaction" originalid="@t.OriginalId">@t.Id</div>
 			</td>
             <td>@t.TransactionId</td>
-            <td>@if (t.Approved == true){<img alt="Y" src="/Content/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
+            <td>@if (t.Approved == true){<img alt="Y" src="/Content/css/images/checkboxtree/bg-checkbox-checked.gif" />}</td>
 			<td nowrap="nowrap">@t.TransactionDate.FormatDateTm()
 				@if(Model.isSage)
 				{
@@ -68,7 +68,7 @@
 	{
 			<td>@t.Description</td>
 	}
-            <td><a href='@Util.ResolveServerUrl("/OnlineReg/ConfirmTest/")@t.DatumId'>@t.Name</a></td>
+            <td><a href="/OnlineReg/ConfirmTestXml/@t.DatumId">@t.Name</a></td>
             <td align="right" nowrap="nowrap">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>
     @if (Model.finance)
     {

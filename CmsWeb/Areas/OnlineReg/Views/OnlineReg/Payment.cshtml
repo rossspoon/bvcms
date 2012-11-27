@@ -50,8 +50,8 @@
     <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     Amount: @Model.AmtToPay.ToString2("N2")
     @Html.Hidden("Amount", Model.AmtToPay) 
-    @Html.Hidden("OrgID", ServiceUOrgID)
-    @Html.Hidden("OrgAccountID", ServiceUOrgAccountID)
+    <input type="hidden" name="OrgID" value="@ServiceUOrgID"/>
+    <input type="hidden" name="OrgAccountID" value="@ServiceUOrgAccountID"/>
     @Html.Hidden("PostbackURL", Util.ServerLink("/OnlineReg/Confirm/" + Model.DatumId))
     @Html.Hidden("NameOnAccount", Model.Name)
     @Html.Hidden("Address", Model.Address)

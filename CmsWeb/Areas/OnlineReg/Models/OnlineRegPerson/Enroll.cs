@@ -144,7 +144,7 @@ namespace CmsWeb.Models
 							((AskDropdown)ask).SmallGroupChoice(option).AddToSmallGroup(DbUtil.Db, om, PythonEvents);
 						}
 						break;
-					case "GradeOptions":
+					case "AskGradeOptions":
 						if (setting.TargetExtraValues)
 							person.Grade = gradeoption.ToInt();
 						else
@@ -282,7 +282,7 @@ namespace CmsWeb.Models
 							{
 								string row;
 								if (i.amt > 0)
-									row = "<tr><td>{0}</td><td>{1} {2} (at {3:N2}</td></tr>\n".Fmt(menulabel, i.number, i.desc, i.amt);
+									row = "<tr><td>{0}</td><td>{1} {2} (at {3:N2})</td></tr>\n".Fmt(menulabel, i.number, i.desc, i.amt);
 								else
 									row = "<tr><td>{0}</td><td>{1} {2}</td></tr>\n".Fmt(menulabel, i.number, i.desc);
 								sb.AppendFormat(row);
@@ -297,7 +297,7 @@ namespace CmsWeb.Models
 							{
 								string row;
 								if (i.Fee > 0)
-									row = "<tr><td>{0}</td><td>{1} (${2:N2}</td></tr>\n".Fmt(menulabel, i.Description, i.Fee);
+									row = "<tr><td>{0}</td><td>{1} (${2:N2})</td></tr>\n".Fmt(menulabel, i.Description, i.Fee);
 								else
 									row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, i.Description);
 								sb.AppendFormat(row);
@@ -315,7 +315,7 @@ namespace CmsWeb.Models
 							if (a.Value.HasValue())
 								sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
 						break;
-					case "GradeOptions":
+					case "AskGradeOptions":
 						sb.AppendFormat("<tr><td>GradeOption:</td><td>{0}</td></tr>\n",
 										GradeOptions(ask).SingleOrDefault(s => s.Value == (gradeoption ?? "00")).Text);
 						break;

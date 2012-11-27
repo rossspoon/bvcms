@@ -2,8 +2,8 @@
 @model CmsWeb.Models.PersonPage.BasicPersonInfo
     <table class="Design2 basicedit">
         <tr><td colspan="2" align="right">
-            <a href="/Person/BasicUpdate/@Model.PeopleId" class="submitbutton">Save Changes</a>
             <a class="displayedit bt" href="/Person/BasicDisplay/@Model.PeopleId">Cancel</a>
+            <a href="/Person/BasicUpdate/@Model.PeopleId" class="submitbutton bt blue">Save Changes</a>
         </td></tr>
         <tr><th>Goes By:</th>
             <td>@Html.TextBox("NickName")</td>
@@ -105,8 +105,8 @@
         <tr><td>Do Not Visit</td><td>@Html.CheckBox("DoNotVisitFlag") </td></tr>
         <tr><td>Do Not Mail</td><td>@Html.CheckBox("DoNotMailFlag") </td></tr>
         <tr><td colspan="2" align="right">
-            <a href="/Person/BasicUpdate/@Model.PeopleId" class="submitbutton">Save Changes</a>
             <a class="displayedit bt" href="/Person/BasicDisplay/@Model.PeopleId">Cancel</a>
+            <a href="/Person/BasicUpdate/@Model.PeopleId" class="submitbutton bt blue">Save Changes</a>
         </td></tr>
     </table>
 

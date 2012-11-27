@@ -89,6 +89,17 @@ namespace CmsWeb.Areas.Public.Controllers
 			DbUtil.LogActivity("APIOrganization NewOrganization");
 			return Content(new APIOrganization(DbUtil.Db).NewOrganization(id, name, location, ParentOrgId), "text/xml");
 		}
+        [HttpPost]
+        public ActionResult UpdateOrganization(int orgId, string name, string campusid, string active, string location, string description)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content(ret.Substring(1));
+            new APIOrganization(DbUtil.Db)
+                .UpdateOrganization(orgId, name, campusid, active, location, description);
+			DbUtil.LogActivity("APIOrg UpdateOrganization {0}".Fmt(orgId));
+            return Content("ok");
+        }
 		[HttpPost]
 		public ActionResult AddOrgMember(int OrgId, int PeopleId, string MemberType)
 		{

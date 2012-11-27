@@ -103,7 +103,7 @@
         case "AskDropdown":
         <tr>
             <td><div class="wraparound">@Util.PickFirst(((AskDropdown)ask).Label, "Options")</div></td>
-            <td>@(((AskDropdown)ask).SmallGroupChoice(Model.option).Description)/td>
+            <td>@(((AskDropdown)ask).SmallGroupChoice(Model.option).Description)</td>
         </tr>
         break;
         case "AskExtraQuestions":
@@ -142,7 +142,7 @@
         </tr>
             }
             break;
-        case "GradeOptions":
+        case "AskGradeOptions":
         <tr>
             <td>Grade Option</td>
             <td>@Model.GradeOptions(ask).SingleOrDefault(s => s.Value == (Model.gradeoption ?? "00")).Text </td>

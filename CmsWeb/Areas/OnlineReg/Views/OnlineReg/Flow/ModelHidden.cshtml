@@ -1,9 +1,10 @@
-﻿@model CmsWeb.Models.OnlineRegModel
-<input type="hidden" name="divid" value="@Model.divid" />
-<input type="hidden" name="masterorgid" value="@Model.masterorgid" />
-<input type="hidden" name="orgid" value="@Model.orgid" />
-<input type="hidden" name="testing" value="@Model.testing" />
-<input type="hidden" name="URL" value="@Model.URL" />
-<input type="hidden" name="UserPeopleId" value="@Model.UserPeopleId" />
-<input type="hidden" name="nologin" value="@Model.nologin" />
-<input type="hidden" name="registertag" value="@Model.registertag" />
+﻿@using CmsWeb
+@model CmsWeb.Models.OnlineRegModel
+@Html.HiddenFor2(mm => mm.divid)
+@Html.HiddenFor2(mm => mm.masterorgid)
+@Html.HiddenFor2(mm => mm.orgid)
+@Html.HiddenFor2(mm => mm.testing)
+@Html.HiddenFor2(mm => mm.URL)
+@Html.HiddenFor2(mm => mm.UserPeopleId)
+@Html.HiddenFor2(mm => mm.nologin)
+@Html.HiddenFor2(mm => mm.registertag)

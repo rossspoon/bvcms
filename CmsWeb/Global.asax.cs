@@ -81,8 +81,10 @@ namespace CmsWeb
         protected void Session_Start(object sender, EventArgs e)
         {
             if (User.Identity.IsAuthenticated)
-                Models.AccountModel.SetUserInfo(Util.UserName, Session);
-                //Models.AccountModel.SetUserInfo("trecord", Session);
+                if (1 == 1)
+                    Models.AccountModel.SetUserInfo(Util.UserName, Session);
+                else
+                    Models.AccountModel.SetUserInfo("trecord", Session);
             Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
 			Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Util.SessionStarting = true;
