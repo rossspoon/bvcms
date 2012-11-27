@@ -75,6 +75,7 @@ namespace CmsCheckin
 			Program.FamilyId = fid;
 			ShowFamily(xdoc);
 		}
+
 		public void ShowFamily(XDocument x)
 		{
 			xdoc = x;
@@ -119,6 +120,7 @@ namespace CmsCheckin
 					Row = list.Count,
 					HasPicture = bool.Parse(e.Attribute("haspicture").Value),
 					MemberStatus = e.Attribute("memberstatus").Value,
+                    access = e.Attribute("access").Value,
 					notes = e.Value,
 				};
 				list.Add(a);
@@ -144,7 +146,7 @@ namespace CmsCheckin
 			Font labfont;
 			string Present = "Attend";
 			string Labels = "Labels";
-			Return.Text = "Print Labels, Return";
+			//Return.Text = "Print Labels, Return";
 
 			var cols = new int[6];
 
@@ -350,7 +352,14 @@ namespace CmsCheckin
 			if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 1)
 				return;
 
-			if( Program.BuildingInfo.membersonly && c.MemberStatus != "Yes" && Program.addguests == null )
+            if (c.access == "false")
+            {
+                Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because they are not permitted to use the facility.");
+                MessageBox.Show("An access error has occurred. Please check with the attendant.", "Access Error");
+                return;
+            }
+
+			if( Program.BuildingInfo.membersonly && c.MemberStatus != "Yes" && Program.addguests == null && c.access != "true" )
 			{
 				Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because they are not a member.");
 				MessageBox.Show( "Only members may check-in. You will need to be a guest of a member to check-in.", "Members Only Error" );
@@ -516,7 +525,7 @@ namespace CmsCheckin
 		}
 		private void ComputeLabels()
 		{
-			Return.Text = "Print Labels, Return";
+			//Return.Text = "Print Labels, Return";
 		}
 
 		void EditRecord_Click(object sender, EventArgs e)
@@ -728,6 +737,7 @@ namespace CmsCheckin
 		public bool HasPicture { get; set; }
 		public string MemberStatus { get; set; }
 		public string notes { get; set; }
+        public string access { get; set; }
 
 		public string name
 		{

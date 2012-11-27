@@ -34,17 +34,28 @@ namespace CmsCheckin.Classes
 			{
 				if (lItems.Count() == 0) return;
 
-				LabelPage lpNew = new LabelPage();
-				int iOffset = lpNew.populate(lFormats, lItems, 0);
-				lPages.Add(lpNew);
+                int iMaxRepeat = getMaxRepeat(lFormats);
+                int iCount = (int)Math.Ceiling( (decimal)lItems.Count() / iMaxRepeat);
 
-				while( iOffset > 0 )
-				{
-					lpNew = new LabelPage();
-					iOffset = lpNew.populate(lFormats, lItems, iOffset);
-					lPages.Add(lpNew);
-				}
+                for (int iX = 0; iX < iCount; iX++)
+                {
+                    LabelPage lpNew = new LabelPage();
+                    lpNew.populate(lFormats, lItems, iX * iMaxRepeat);
+                    lPages.Add(lpNew);
+                }
 			}
 		}
+
+        public int getMaxRepeat(List<LabelEntryBase> lebList)
+        {
+            int iMax = 0;
+
+            foreach (LabelEntryBase lebItem in lebList)
+            {
+                if (lebItem.iRepeat > iMax) iMax = lebItem.iRepeat;
+            }
+
+            return iMax;
+        }
 	}
 }
