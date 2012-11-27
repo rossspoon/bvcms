@@ -16,7 +16,11 @@ namespace CmsWeb.Areas.Public.Controllers
 		{
 			BaseReturn br = new BaseReturn();
 
-			if (SystemHelper.Authenticate()) return br;
+			if (CmsWeb.Models.AccountModel.Authenticate())
+            {
+                br.id = Util2.CurrentPeopleId;
+                return br;
+            }
 			else
 			{
 				br.error = 1;
@@ -155,6 +159,84 @@ namespace CmsWeb.Areas.Public.Controllers
 
 			return br;
 		}
+
+        public ActionResult TaskStatusList()
+        {
+            BaseReturn br = new BaseReturn();
+            List<MobileTaskStatus> ls = new List<MobileTaskStatus>();
+
+            br.type = 105;
+
+            var s = from e in DbUtil.Db.TaskStatuses
+                    select e;
+
+            foreach (var item in s)
+            {
+                ls.Add(new MobileTaskStatus().populate(item));
+            }
+
+            br.count = s.Count();
+            br.data = JSONHelper.JsonSerializer<List<MobileTaskStatus>>(ls);
+
+            return br;
+        }
+
+        [ValidateInput(false)]
+        public ActionResult TaskCreate( string type, string data ) // Type 1001
+        {
+            BaseReturn br = new BaseReturn();
+            br.type = 1001;
+
+            MobileTask mt = JSONHelper.JsonDeserialize<MobileTask>(data);
+            if (mt != null) br.id = mt.addToDB();
+            else
+            {
+                br.error = 1;
+                br.data = "Task was not created.";
+            }
+
+            return br;
+        }
+
+        [ValidateInput(false)]
+        public ActionResult TaskUpdate( string type, string data ) // Type 1002
+        {
+            BaseReturn br = new BaseReturn();
+            br.type = 1002;
+
+            MobileTask mt = JSONHelper.JsonDeserialize<MobileTask>(data);
+
+            var t = from e in DbUtil.Db.Tasks
+                    where e.Id == mt.id
+                    select e;
+
+            if (t != null)
+            {
+                var task = t.Single();
+
+                if (mt.updateDue > 0) task.Due = mt.due;
+                if (mt.statusID > 0) task.StatusId = mt.statusID;
+                if (mt.priority > 0) task.Priority = mt.priority;
+                if (mt.notes.Length > 0) task.Notes = mt.notes;
+                if (mt.description.Length > 0) task.Description = mt.description;
+                if (mt.ownerID > 0) task.OwnerId = mt.ownerID;
+                if (mt.boxID > 0) task.ListId = mt.boxID;
+                if (mt.aboutID > 0) task.WhoId = mt.aboutID;
+                if (mt.delegatedID > 0) task.CoOwnerId = mt.delegatedID;
+                if (mt.notes.Length > 0) task.Notes = mt.notes;
+
+                DbUtil.Db.SubmitChanges();
+
+                br.data = "Task updated.";
+            }
+            else
+            {
+                br.error = 1;
+                br.data = "Task not found.";
+            }
+
+            return br;
+        }
 	}
 
 	public class BaseReturn : ActionResult
@@ -162,6 +244,7 @@ namespace CmsWeb.Areas.Public.Controllers
 		public int error = 0;
 		public int type = 0;
 		public int count = 0;
+        public int id = 0;
 		public string data = "";
 
 		public override void ExecuteResult(ControllerContext context)

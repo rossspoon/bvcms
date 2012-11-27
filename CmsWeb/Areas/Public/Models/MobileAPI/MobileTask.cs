@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CmsData;
+using UtilityExtensions;
 
 namespace CmsWeb.MobileAPI
 {
@@ -34,7 +36,11 @@ namespace CmsWeb.MobileAPI
 	{
 		public int id = 0;
 
-		public DateTime due = new DateTime();
+        public int ownerID = 0;
+        public int boxID = 0; // Connects to a list
+
+        public int updateDue = 0;
+		public DateTime due = DateTime.Now;
 		public int priority = 0;
 		
 		public string description = "";
@@ -54,6 +60,9 @@ namespace CmsWeb.MobileAPI
 		{
 			id = t.Id;
 
+            ownerID = t.OwnerId;
+            boxID = t.ListId;
+
 			due = t.Due ?? DateTime.Now;
 			priority = t.Priority ?? 0;
 
@@ -72,5 +81,25 @@ namespace CmsWeb.MobileAPI
 
 			return this;
 		}
+
+        public int addToDB()
+        {
+            Task t = new Task();
+
+            t.OwnerId = ownerID;
+            t.ListId = boxID;
+            t.Due = due;
+            t.Priority = priority;
+            t.Description = description;
+            t.StatusId = statusID;
+            t.WhoId = aboutID;
+            if(delegatedID > 0) t.CoOwnerId = delegatedID;
+            t.Notes = notes;
+
+            DbUtil.Db.Tasks.InsertOnSubmit(t);
+            DbUtil.Db.SubmitChanges();
+
+            return t.Id;
+        }
 	}
 }
