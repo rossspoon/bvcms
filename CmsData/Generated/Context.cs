@@ -486,6 +486,14 @@ namespace CmsData
         partial void UpdateShirtSize(ShirtSize instance);
         partial void DeleteShirtSize(ShirtSize instance);
         
+        partial void InsertSMSItem(SMSItem instance);
+        partial void UpdateSMSItem(SMSItem instance);
+        partial void DeleteSMSItem(SMSItem instance);
+        
+        partial void InsertSMSList(SMSList instance);
+        partial void UpdateSMSList(SMSList instance);
+        partial void DeleteSMSList(SMSList instance);
+        
         partial void InsertStateLookup(StateLookup instance);
         partial void UpdateStateLookup(StateLookup instance);
         partial void DeleteStateLookup(StateLookup instance);
@@ -1331,6 +1339,18 @@ namespace CmsData
 		public Table< ShirtSize> ShirtSizes
 		{
 			get	{ return this.GetTable< ShirtSize>(); }
+
+		}
+
+		public Table< SMSItem> SMSItems
+		{
+			get	{ return this.GetTable< SMSItem>(); }
+
+		}
+
+		public Table< SMSList> SMSLists
+		{
+			get	{ return this.GetTable< SMSList>(); }
 
 		}
 

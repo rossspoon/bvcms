@@ -302,6 +302,8 @@
     <Compile Include="Generated\BackgroundCheckMVRCode.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
+    <Compile Include="Generated\SMSItem.cs" />
+    <Compile Include="Generated\SMSList.cs" />
     <Compile Include="Generated\Views\UserRole.cs" />
     <Compile Include="Generated\VolRequest.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />
