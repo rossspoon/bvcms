@@ -22,23 +22,18 @@ namespace CmsWeb.Areas.Main.Controllers
 			if (!body.HasValue())
 				body = TempData["body"] as string;
 
+			var m = new MassEmailer(id.Value, parents);
 			if(!subj.HasValue() && templateID != 0 && DbUtil.Db.Setting("UseEmailTemplates", "false") == "true" )
 			{
 				if (templateID == null)
-				{
-					ViewBag.queryID = id;
-				    ViewBag.parents = (parents == true).ToString();
-					return View("SelectTemplate", new EmailTemplatesModel());
-				}
+					return View("SelectTemplate", new EmailTemplatesModel() { wantparents = parents ?? false, queryid = id.Value});
 				else
 				{
 					DbUtil.LogActivity("Emailing people");
 
-					var m = new MassEmailer(id.Value, parents);
 					m.CmsHost = DbUtil.Db.CmsHost;
 					m.Host = Util.Host;
 
-				    ViewBag.parents = (parents == true).ToString();
 					ViewBag.templateID = templateID;
 					return View("Compose", m);
 				}

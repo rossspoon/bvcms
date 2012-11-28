@@ -193,18 +193,22 @@ class OrgMembers(object):
 			w.End();
 			return w.ToString();
 		}
-		public string UpdateOrgMember(int orgid, int peopleid, int? MemberType, DateTime? EnrollDate, string InactiveDate)
+		public string UpdateOrgMember(int orgid, int peopleid, string MemberType, DateTime? EnrollDate, string InactiveDate, bool? pending)
 		{
 			try
 			{
 				var om = Db.OrganizationMembers.Single(mm =>
 					mm.OrganizationId == orgid
 					&& mm.PeopleId == peopleid);
-
-				if (MemberType.HasValue)
-					om.MemberTypeId = MemberType.Value;
-				if (EnrollDate.HasValue)
+			    if (MemberType.HasValue())
+			    {
+			        var mt = CmsData.Organization.FetchOrCreateMemberType(Db, MemberType);
+			        om.MemberTypeId = mt.Id;
+			    }
+			    if (EnrollDate.HasValue)
 					om.EnrollmentDate = EnrollDate;
+			    if (pending.HasValue)
+			        om.Pending = pending;
 
 				var d = InactiveDate.ToDate();
 				if (d.HasValue)
@@ -329,14 +333,14 @@ class OrgMembers(object):
 				return ex.Message;
 			}
 		}
-		public string AddOrgMember(int OrgId, int PeopleId, string MemberType)
+		public string AddOrgMember(int OrgId, int PeopleId, string MemberType, bool? pending)
 		{
 			try
 			{
 				if (!MemberType.HasValue())
 					MemberType = "Member";
 				var mt = CmsData.Organization.FetchOrCreateMemberType(Db, MemberType);
-				OrganizationMember.InsertOrgMembers(Db, OrgId, PeopleId, mt.Id, DateTime.Now, null, false);
+				OrganizationMember.InsertOrgMembers(Db, OrgId, PeopleId, mt.Id, DateTime.Now, null, pending ?? false);
 				return @"<AddOrgMember status=""ok"" />";
 			}
 			catch (Exception ex)

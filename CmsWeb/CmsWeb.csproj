@@ -388,7 +388,9 @@
     <Content Include="Areas\Main\Views\Email\SelectTemplate.cshtml" />
     <Content Include="Areas\Main\Views\Email\Compose.cshtml" />
     <Content Include="Areas\Manage\Views\Display\EditTemplate.cshtml" />
-    <EmbeddedResource Include="Areas\Public\Controllers\APITestPlan.xml" />
+    <EmbeddedResource Include="Areas\Public\Controllers\APITestPlan.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
     <Content Include="Areas\Public\Views\APITest\Index.cshtml">
