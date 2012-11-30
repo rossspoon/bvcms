@@ -262,13 +262,13 @@ namespace CmsWeb.Models
                     orgstaff, Header,
 @"{0} has registered for {1}<br/>
 Feepaid for this registrant: {2:C}<br/>
-Total Fee paid for this registration: {3:C}<br/>
+Total Fee for this registration: {3:C}<br/>
 AmountDue: {4:C}<br/>
 <pre>{5}</pre>".Fmt(p.person.Name,
                Header,
                amtpaid,
                TotalAmount(),
-               TotalAmount() - Amount(),
+               TotalAmount() - PayAmount(), // Amount Due
                p.PrepareSummaryText(ti)));
             }
         }
@@ -421,7 +421,7 @@ Total Fee paid for this registration session: {4:C}<br/>
                     var c = DbUtil.Db.Coupons.SingleOrDefault(cp => cp.Id == coupon);
                     if (c != null)
                     {
-                        c.RegAmount = Amount();
+                        c.RegAmount = PayAmount();
                         c.Used = DateTime.Now;
                         c.PeopleId = List[0].PeopleId;
                     }

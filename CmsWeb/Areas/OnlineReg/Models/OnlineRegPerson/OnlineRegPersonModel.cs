@@ -141,22 +141,15 @@ namespace CmsWeb.Models
 
         public void WriteXml(XmlWriter writer)
         {
+            var optionsAdded = false;
+            var checkoxesAdded = false;
+            var menuitemsAdded = false;
             var w = new APIWriter(writer);
             foreach (PropertyInfo pi in typeof(OnlineRegPersonModel).GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(vv => vv.CanRead && vv.CanWrite))
             {
                 switch (pi.Name)
                 {
-                    case "MenuItem":
-                        if (MenuItem != null)
-                            foreach (var kv in MenuItem)
-                            {
-                                w.Start("MenuItem");
-                                w.Attr("name", kv.Key);
-                                w.Attr("number", kv.Value);
-                                w.End();
-                            }
-                        break;
                     case "FundItem":
                         if (FundItem != null && FundItem.Count > 0)
                             foreach (var f in FundItem.Where(ff => ff.Value > 0))
@@ -188,14 +181,27 @@ namespace CmsWeb.Models
                             }
                         break;
                     case "option":
-                        if (option != null && option.Count > 0)
+                        if (option != null && option.Count > 0 && !optionsAdded)
                             foreach(var o in option)
                                 w.Add("option", o);
+                        optionsAdded = true;
                         break;
                     case "Checkbox":
-                        if (Checkbox != null && Checkbox.Count > 0)
+                        if (Checkbox != null && Checkbox.Count > 0 && !checkoxesAdded)
                             foreach (var c in Checkbox)
                                 w.Add("Checkbox", c);
+                        checkoxesAdded = true;
+                        break;
+                    case "MenuItem":
+                        if (MenuItem != null && !menuitemsAdded)
+                            foreach (var kv in MenuItem)
+                            {
+                                w.Start("MenuItem");
+                                w.Attr("name", kv.Key);
+                                w.Attr("number", kv.Value);
+                                w.End();
+                            }
+                        menuitemsAdded = true;
                         break;
                     default:
                         w.Add(pi.Name, pi.GetValue(this, null));

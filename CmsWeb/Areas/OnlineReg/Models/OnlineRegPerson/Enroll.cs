@@ -296,11 +296,13 @@ namespace CmsWeb.Models
 							foreach (var i in ((AskCheckboxes)ask).CheckboxItemsChosen(Checkbox))
 							{
 								string row;
+                                if (menulabel.HasValue())
+									sb.Append("<tr><td colspan='2'><br>{0}</td></tr>\n".Fmt(menulabel));
 								if (i.Fee > 0)
-									row = "<tr><td>{0}</td><td>{1} (${2:N2})</td></tr>\n".Fmt(menulabel, i.Description, i.Fee);
+									row = "<tr><td></td><td>{0} (${1:N2})<br>({2})</td></tr>\n".Fmt(i.Description, i.Fee, i.SmallGroup);
 								else
-									row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, i.Description);
-								sb.AppendFormat(row);
+									row = "<tr><td></td><td>{0}<br>({1})</td></tr>\n".Fmt(i.Description, i.SmallGroup);
+								sb.Append(row);
 								menulabel = string.Empty;
 							}
 						}

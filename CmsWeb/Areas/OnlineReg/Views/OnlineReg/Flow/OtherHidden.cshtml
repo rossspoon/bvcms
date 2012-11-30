@@ -1,7 +1,10 @@
 ﻿@using CmsData.Registration
 @using CmsWeb
 @model CmsWeb.Models.OnlineRegPersonModel
-@{ var prefix = ViewData.TemplateInfo.HtmlFieldPrefix; }
+@{ 
+    var prefix = ViewData.TemplateInfo.HtmlFieldPrefix;
+    var checkoxesAdded = false;
+}
 @foreach(var ask in Model.setting.AskItems)
 {
 	switch (ask.Type)
@@ -70,12 +73,16 @@
             }
             break;
         case "AskCheckboxes":
-			var cbname = Html.NameFor(m => m.Checkbox);
-            foreach(var sg in Model.Checkbox)
-            { 
+            if(!checkoxesAdded)
+            {
+    			var cbname = Html.NameFor(m => m.Checkbox);
+                foreach(var sg in Model.Checkbox)
+                { 
                 <input type="hidden" name="@cbname" value="@sg"/>
+                }
+    	        checkoxesAdded = true;
             }
-            break;
+        break;
          case "AskMenu":
             var nn = 0;
 			foreach (var i in ((AskMenu)ask).MenuItemsChosen(Model.MenuItem))

@@ -25,7 +25,7 @@ namespace CmsWeb.Models
         {
             return DbUtil.Db.Setting("TransactionGateway", "serviceu").ToLower();
         }
-        public decimal Amount()
+        public decimal PayAmount()
         {
             var amt = List.Sum(p => p.AmountToPay());
             var max = List.Max(p => p.org != null ? p.setting.MaximumFee ?? 0 : 0);
@@ -38,7 +38,14 @@ namespace CmsWeb.Models
         }
         public decimal TotalAmount()
         {
-            return List.Sum(p => p.TotalAmount());
+            var amt = List.Sum(p => p.TotalAmount());
+            var max = List.Max(p => p.org != null ? p.setting.MaximumFee ?? 0 : 0);
+            if (max == 0)
+                return amt;
+            var totalother = List.Sum(p => p.TotalOther());
+            if ((amt - totalother) > max)
+                amt = max + totalother;
+            return amt;
         }
         public string NameOnAccount
         {

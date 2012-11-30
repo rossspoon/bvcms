@@ -81,7 +81,7 @@ namespace CmsWeb
         protected void Session_Start(object sender, EventArgs e)
         {
             if (User.Identity.IsAuthenticated)
-                if (1 == 1)
+                if (1 == 1) // should be 1 == 1 (or just true) to run normally
                     Models.AccountModel.SetUserInfo(Util.UserName, Session);
                 else
                     Models.AccountModel.SetUserInfo("trecord", Session);

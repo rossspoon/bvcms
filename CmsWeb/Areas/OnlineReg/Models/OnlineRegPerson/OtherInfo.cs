@@ -36,29 +36,31 @@ namespace CmsWeb.Models
             return Checkbox.Contains(sg);
         }
 
-        private string[] _GroupTags;
-        public string[] GroupTags
+        private List<string> _GroupTags;
+        public List<string> GroupTags
         {
             get
             {
                 if (_GroupTags == null)
                     _GroupTags = (from mt in DbUtil.Db.OrgMemMemTags
                                   where mt.OrgId == org.OrganizationId
-                                  select mt.MemberTag.Name).ToArray();
+                                  select mt.MemberTag.Name).ToList();
                 var gtdd = (from pp in Parent.List
                             where pp != this
                             where pp.option != null
                             from oo in pp.option
                             where oo.HasValue()
-                            select oo).ToArray();
+                            select oo).ToList();
                 var gtcb = (from pp in Parent.List
                             where pp != this
                             where pp.Checkbox != null
                             from cc in pp.Checkbox
                             where cc.HasValue()
-                            select cc).ToArray();
-
-                var r = _GroupTags.Union(gtcb).Union(gtdd).ToArray();
+                            select cc).ToList();
+                var r = new List<string>();
+                r.AddRange(_GroupTags);
+                r.AddRange(gtdd);
+                r.AddRange(gtcb);
                 return r;
             }
         }

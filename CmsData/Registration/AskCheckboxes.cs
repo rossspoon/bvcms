@@ -74,6 +74,10 @@ namespace CmsData.Registration
 		}
 		public class CheckboxItem
 		{
+            public override string ToString()
+            {
+                return "{0}: {1}|{2} (limit={3},fee={4})".Fmt(Name, Description, SmallGroup, Limit, Fee);
+            }
 			public string Name { get; set; }
 			public string Description { get; set; }
 			public string SmallGroup { get; set; }

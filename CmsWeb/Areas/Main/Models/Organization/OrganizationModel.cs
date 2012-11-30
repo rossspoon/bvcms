@@ -47,15 +47,18 @@ namespace CmsWeb.Models.OrganizationPage
 		}
 		public static bool VolunteerLeaderInOrg(int? orgid)
 		{
+		    if (orgid == null)
+		        return false;
+		    var o = DbUtil.Db.LoadOrganizationById(orgid);
+		    if (o == null || o.RegistrationTypeId != RegistrationTypeCode.ChooseSlot)
+		        return false;
 			if (HttpContext.Current.User.IsInRole("Admin") ||
 				HttpContext.Current.User.IsInRole("ManageVolunteers"))
 				return true;
-			var mq = from om in DbUtil.Db.OrganizationMembers
-					 where om.OrganizationId == orgid
-					 where om.Organization.RegistrationTypeId == RegistrationTypeCode.ChooseSlot
-					 where om.PeopleId == Util.UserPeopleId
-					 select om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader;
-			return mq.SingleOrDefault();
+			var leaderorgs = DbUtil.Db.GetLeaderOrgIds(Util.UserPeopleId);
+		    if (leaderorgs == null)
+		        return false;
+		    return leaderorgs.Contains(orgid.Value);
 		}
 		public MemberModel MemberModel;
 

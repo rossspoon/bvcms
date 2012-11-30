@@ -154,7 +154,7 @@ namespace CmsWeb.Models
 
 		var pf = new PaymentForm
 					 {
-						 AmtToPay = m.Amount() + (m.donation ?? 0),
+						 AmtToPay = m.PayAmount() + (m.donation ?? 0),
 						 AskDonation = m.AskDonation(),
 						 AllowCoupon = !m.OnlineGiving(),
 						 PayBalance = false,

@@ -497,7 +497,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
 			DbUtil.Db.SubmitChanges();
 
-			if (m.Amount() == 0 && (m.donation ?? 0) == 0 && !m.Terms.HasValue())
+			if (m.PayAmount() == 0 && (m.donation ?? 0) == 0 && !m.Terms.HasValue())
 				return RedirectToAction("Confirm",
 					new
 					{
@@ -510,7 +510,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				ViewData["Terms"] = terms;
 
 			SetHeaders(m);
-			if (m.Amount() == 0 && m.Terms.HasValue())
+			if (m.PayAmount() == 0 && m.Terms.HasValue())
 			{
 				return View("Terms", new PaymentModel
 					{
