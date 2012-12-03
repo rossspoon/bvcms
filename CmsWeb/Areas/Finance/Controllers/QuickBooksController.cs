@@ -10,14 +10,13 @@ using System.IO;
 using CmsWeb.Models;
 using CmsData;
 using UtilityExtensions;
+using DevDefined.OAuth.Framework;
 
 namespace CmsWeb.Areas.Finance.Controllers
 {
 	[Authorize(Roles = "Finance")]
 	public class QuickBooksController : Controller
 	{
-        public static Dictionary<string, QuickBooksHelper> helpers = new Dictionary<string, QuickBooksHelper>();
-
 		public ActionResult Index()
 		{
 			return View();
@@ -28,14 +27,15 @@ namespace CmsWeb.Areas.Finance.Controllers
             QuickBooksHelper qbh = new QuickBooksHelper(Request);
             string authLink = qbh.RequestOAuthToken();
 
-            helpers[makeKey()] = qbh;
+            Session["QBToken"] = qbh.GetCurrentToken();
 
             return Redirect(authLink);
 		}
 
 		public ActionResult RequestAccessToken()
 		{
-            QuickBooksHelper qbh = helpers[makeKey()];
+            QuickBooksHelper qbh = new QuickBooksHelper(Request);
+            qbh.SetCurrentToken( (IToken)Session["QBToken"] );
             qbh.RequestAccessToken(Request["realmId"], Request["oauth_verifier"]);
 
             // TODO: Change response based on results
