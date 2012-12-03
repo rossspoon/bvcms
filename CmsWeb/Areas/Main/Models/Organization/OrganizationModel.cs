@@ -20,7 +20,7 @@ namespace CmsWeb.Models.OrganizationPage
 		public List<ScheduleInfo> schedules { get; set; }
 		public string Schedule { get; set; }
 		public bool IsVolunteerLeader { get; set; }
-		public OrganizationModel(int? id, int[] groups)
+		public OrganizationModel(int? id)
 		{
 			OrganizationId = id;
 			var q = from o in DbUtil.Db.Organizations
@@ -41,7 +41,7 @@ namespace CmsWeb.Models.OrganizationPage
 					orderby s.Id
 					select new ScheduleInfo(s);
 			schedules = u.ToList();
-			MemberModel = new MemberModel(id, groups, MemberModel.GroupSelect.Active, String.Empty);
+			MemberModel = new MemberModel(id, MemberModel.GroupSelect.Active, String.Empty);
 
 			IsVolunteerLeader = VolunteerLeaderInOrg(OrganizationId);
 		}

@@ -294,23 +294,25 @@
 </div>
 <div id="FilterGroups" class="modalDiv" style="display: none;">
     <form action="">
-    <h3>
-        Name Filter</h3>
+    <div><b>
+        Name Filter</b></div>
     <div>
         First and last name or just last name. You can put just the first few letters of
-        each.</div>
-    <input name="namefilter" type="text" />
-    <h3>
-        Small Group Filter</h3>
-    <div>
-        Select multiple items by holding down the control key (individual) or shift key
-        (range) while you click. Select (not specified) to cancel the filter.</div>
-    <select id="smallgrouplist" name="smallgrouplist" multiple="multiple" size="10">
-        @foreach (var s in Model.MemberModel.SmallGroups())
-        { 
-            <option @(s.Selected ? "selected='selected'" : "") value="@s.Value">@s.Text</option>
-        }
-    </select>
+            each.</div>
+        <input id="namefilter" name="namefilter" type="text" />
+        <hr/>
+        <div><b>
+            Small Group Filter</b></div>
+        <div><label>@Html.RadioButton("selectmode", "0") Match Any</label> <label>@Html.RadioButton("selectmode", "1") Match All</label></div>
+        <div>
+            Select multiple items by holding down the control key (individual) or shift key
+            (range) while you click. Select (not specified) to cancel the filter.</div>
+        <select id="smallgrouplist" name="smallgrouplist" multiple="multiple" size="10">
+            @foreach (var s in Model.MemberModel.SmallGroups())
+            { 
+                <option @(s.Selected ? "selected='selected'" : "") value="@s.Value">@s.Text</option>
+            }
+        </select>
     </form>
 </div>
 <div id="AddFromTag">

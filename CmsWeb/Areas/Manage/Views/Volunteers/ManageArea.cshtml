@@ -91,11 +91,19 @@
 		</td>
         <td>&nbsp;</td>
 		<td valign="top">
-@if (Model.IsLeader)
-{
-        	<p>@Html.ActionLink("Email Reminders", "Reminders", "Organization", new { area = "Main", id = Model.OrgId }, new { id= "sendreminders", @class = "bt" })
-        		@Html.CheckBox("emailall") Email All (default next 7 days)
-        	</p>
+        @if (Model.IsLeader)
+        {
+            <p>
+                @if (User.IsInRole("Edit"))
+                {
+                    @Html.ActionLink("Email Reminders", "Reminders", "Organization", new {area = "Main", id = Model.OrgId}, new {id = "sendreminders", @class = "bt"})
+                }
+                else
+                {
+                    <a enabled="false">Email Reminders</a>
+                }
+                @Html.CheckBox("emailall") Email All (default next 7 days)
+            </p>
             <p>Small Group Filters<br />
                 @Html.DropDownList("sg1", Model.SmallGroups(), new { @class="smallgroup" })<br />
                 @Html.DropDownList("sg2", Model.SmallGroups(), new { @class="smallgroup" })
@@ -118,7 +126,7 @@
                 @Html.ActionLink("registration page", "ManageVolunteer", "OnlineReg", new { area = "OnlineReg", id = v.OrgId, pid = v.PeopleId }, new { target = "committments" })</div> 
             }
             </div>
-}
+        }
 		</td>
     </tr>
 </table>

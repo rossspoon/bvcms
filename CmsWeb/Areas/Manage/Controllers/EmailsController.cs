@@ -33,6 +33,8 @@ namespace CmsWeb.Areas.Manage.Controllers
 		public ActionResult Details(int id, string filter)
 		{
 			var m = new EmailModel { id = id, filter = filter ?? "All" };
+		    if (m.queue == null)
+		        return Content("no email found");
 			if (User.IsInRole("Admin") || User.IsInRole("ManageEmails"))
 				return View(m);
 			var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);

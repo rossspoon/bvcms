@@ -126,9 +126,10 @@ namespace CmsWeb.Models
 					 group pp by pp.FamilyId into g
 					 from p in g.First().Family.People
 					 where p.DeceasedDate == null
+                     let pos = p.PositionInFamilyId * 100 + (p.PositionInFamilyId == 10 ? p.GenderId : p.Age)
 					 let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
 					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).LastName
-					 orderby famname, p.FamilyId, p.PositionInFamilyId, p.GenderId
+					 orderby famname, p.FamilyId, pos
 					 select new
 					 {
 						 PeopleId = p.PeopleId,
@@ -153,7 +154,7 @@ namespace CmsWeb.Models
 						 Married = p.MaritalStatus.Description,
 						 FamilyName = famname,
 						 FamilyId = p.FamilyId,
-						 FamilyPosition = p.PositionInFamilyId,
+						 FamilyPosition = pos,
 						 Grade = p.Grade.ToString(),
 						 FellowshipLeader = p.BFClass.LeaderName,
 						 AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),

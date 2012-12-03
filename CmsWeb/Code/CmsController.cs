@@ -45,7 +45,7 @@ namespace CmsWeb
 				filterContext.ActionDescriptor.ActionName);
 			DbUtil.Db.UpdateLastActivity(Util.UserId);
 		}
-		public string AuthenticateDeveloper(bool log = false)
+		public string AuthenticateDeveloper(bool log = false, string addrole = "")
 		{
 			var auth = Request.Headers["Authorization"];
 			if (auth.HasValue())
@@ -62,6 +62,8 @@ namespace CmsWeb
 					var roles = CMSRoleProvider.provider;
 					var u = CmsWeb.Models.AccountModel.SetUserInfo(username, Session);
 					if (!roles.IsUserInRole(username, "Developer"))
+						valid = false;
+                    if (addrole.HasValue() && !roles.IsUserInRole(username, addrole))
 						valid = false;
 				}
 				if (valid)
