@@ -28,6 +28,16 @@ namespace CmsData
             sBaseURL = request.Url.Scheme + "://" + request.Url.Authority;
         }
 
+        public IToken GetCurrentToken()
+        {
+            return itToken;
+        }
+
+        public void SetCurrentToken( IToken itNew )
+        {
+            itToken = itNew;
+        }
+
         public string RequestOAuthToken()
         {
             itToken = getOAuthSession().GetRequestToken();
