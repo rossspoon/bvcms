@@ -87,16 +87,16 @@ namespace CmsWeb.Models
 					select new
 					{
 						c.FamilyId,
-						Date = c.DateX,
+						Date = c.DateX.Value,
 						GiverId = c.PeopleId,
-						c.CreditGiverId,
+						CreditGiverId = c.CreditGiverId.Value,
 						c.HeadName,
 						c.SpouseName,
 						Amount = c.Amount ?? 0m,
 						c.ContributionDesc,
 						c.FundId,
 						c.FundName,
-						c.BundleHeaderId,
+						BundleHeaderId = c.BundleHeaderId ?? 0,
 						c.BundleType,
 						c.BundleStatus
 					};

@@ -385,9 +385,10 @@ $(function () {
         }
     });
 
-    $.getTable = function (f, q) {
-        q = q || f.serialize();
-        q = q + '&' + $("#FilterGroups form").serialize();
+    $.getTable = function (f) {
+        var q = q || f.serialize();
+        var ff = $("#FilterGroups form");
+        q = q + '&' + ff.serialize();
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret).ready(function () {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
@@ -400,7 +401,7 @@ $(function () {
     };
     $("a.filtergroupslink").live("click", function (ev) {
         ev.preventDefault();
-        var f = $(this).closest('form');
+        var f = $(this).closest("form");
         $("#FilterGroups").dialog({
             title: "Filter by Name, Small Groups",
             width: "300px",
@@ -423,8 +424,7 @@ $(function () {
                     "text": 'Ok',
                     "class": 'blue bt',
                     "click": function() {
-                        var q = $('#FilterGroups form').serialize();
-                        $.getTable(f, q);
+                        $.getTable(f);
                         $("#FilterGroups").dialog("close");
                     }
                 }

@@ -869,7 +869,7 @@ namespace CmsData
             CompareType op,
             int cnt)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
 
             var now = DateTime.Now;
@@ -878,7 +878,7 @@ namespace CmsData
             switch (op)
             {
                 case CompareType.Greater:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.PledgeAmount > 0
                         group c by c.CreditGiverId into g
@@ -886,7 +886,7 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.GreaterEqual:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.PledgeAmount > 0
                         group c by c.CreditGiverId into g
@@ -894,7 +894,7 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.Less:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.PledgeAmount > 0
                         group c by c.CreditGiverId into g
@@ -902,7 +902,7 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.LessEqual:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.PledgeAmount > 0
                         group c by c.CreditGiverId into g
@@ -910,7 +910,7 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.Equal:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.PledgeAmount > 0
                         group c by c.CreditGiverId into g
@@ -918,7 +918,7 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.NotEqual:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.PledgeAmount > 0
                         group c by c.CreditGiverId into g
@@ -938,7 +938,7 @@ namespace CmsData
             CompareType op,
             decimal amt)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
@@ -946,21 +946,21 @@ namespace CmsData
             switch (op)
             {
                 case CompareType.Greater:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         group c by c.CreditGiverId into g
                         where g.Sum(cc => cc.PledgeAmount) > amt
                         select g.Key ?? 0;
                     break;
                 case CompareType.GreaterEqual:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         group c by c.CreditGiverId into g
                         where g.Sum(cc => cc.PledgeAmount) >= amt
                         select g.Key ?? 0;
                     break;
                 case CompareType.Less:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.Amount > 0
                         group c by c.CreditGiverId into g
@@ -968,7 +968,7 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.LessEqual:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.Amount > 0
                         group c by c.CreditGiverId into g
@@ -976,7 +976,7 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.Equal:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.Amount > 0
                         group c by c.CreditGiverId into g
@@ -984,7 +984,7 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.NotEqual:
-                    q = from c in Db.Contributions2(dt, now, 0, false, false, true)
+                    q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.Amount > 0
                         group c by c.CreditGiverId into g
@@ -1004,7 +1004,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
 
             var q = from f in Db.FirstTimeGivers(days, fund)
@@ -1021,7 +1021,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
@@ -1039,7 +1039,7 @@ namespace CmsData
             CompareType op,
             int cnt)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
@@ -1107,7 +1107,7 @@ namespace CmsData
             CompareType op,
             decimal amt)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
@@ -1174,7 +1174,7 @@ namespace CmsData
             CompareType op,
             decimal amt)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             IQueryable<int> q = null;
             switch (op)
@@ -1238,7 +1238,7 @@ namespace CmsData
             CompareType op,
             double pct)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var q = Db.GivingCurrentPercentOfFormer(dt1, dt2,
                 op == CompareType.Greater ? ">" :
@@ -1272,7 +1272,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
             var mindt = Util.Now.AddDays(-days).Date;
@@ -1293,7 +1293,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (!Db.CurrentUser.Roles.Any(rr => rr == "Finance"))
+            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
             var mindt = Util.Now.AddDays(-days).Date;

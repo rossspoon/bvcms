@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using CmsWeb.Code;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -101,6 +102,19 @@ namespace CmsWeb.Areas.Manage.Controllers
             }
 
 			DbUtil.Db.SubmitChanges();
+            if (string.Compare(content.Name, "StandardExtraValues.xml", ignoreCase: true) == 0)
+            {
+                try
+                {
+                	StandardExtraValues.GetExtraValues();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    if (ex.InnerException is System.Xml.XmlException)
+                        return Content(Util.EndShowMessage(ex.InnerException.Message, "javascript: history.go(-1)", "Go Back to Repair"));
+                }
+            }
+
 			return RedirectToAction("Index");
 		}
 
