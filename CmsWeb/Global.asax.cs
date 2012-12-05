@@ -41,6 +41,7 @@ namespace CmsWeb
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("Demo/{*pathInfo}");
+            routes.IgnoreRoute("ForceError.aspx");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.aspx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.ashx/{*pathInfo}");
@@ -115,10 +116,32 @@ namespace CmsWeb
                     Response.Redirect(r);
             }
         }
+
+        public void ErrorLog_Logged(object sender, ErrorLoggedEventArgs args)
+        {
+            HttpContext.Current.Items["error"] = args.Entry.Error.Exception.Message;
+        }
+
+        public void ErrorLog_Filtering(object sender, ExceptionFilterEventArgs e)
+        {
+            Filter(e);
+        }
+
         public void ErrorMail_Filtering(object sender, ExceptionFilterEventArgs e)
         {
-            var httpException = e.Exception as HttpException;
-            if (httpException != null && httpException.GetHttpCode() == 404)
+            Filter(e);
+        }
+
+        private void Filter(ExceptionFilterEventArgs e)
+        {
+            var ex = e.Exception.GetBaseException();
+            var httpex = ex as HttpException;
+
+            if (httpex != null &&
+                httpex.GetHttpCode() == 404)
+                e.Dismiss();
+
+            if (ex is FileNotFoundException || ex is HttpRequestValidationException)
                 e.Dismiss();
         }
     }

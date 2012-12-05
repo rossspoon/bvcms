@@ -114,7 +114,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="RptGroup", UpdateCheck=UpdateCheck.Never, Storage="_RptGroup", DbType="varchar(50)")]
+		[Column(Name="RptGroup", UpdateCheck=UpdateCheck.Never, Storage="_RptGroup", DbType="varchar(200)")]
 		public string RptGroup
 		{
 			get { return this._RptGroup; }

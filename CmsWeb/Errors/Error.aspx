@@ -12,7 +12,7 @@
         
       IDisposable disposable = prng as IDisposable;
       if (disposable != null) { disposable.Dispose(); }
-    }
+   }
 </script>
 
 <html>
@@ -32,6 +32,7 @@
 <body>
     <div>
     <h1>An error occurred while processing your request.</h1>
+    <h3><%=HttpContext.Current.Items["error"] %></h3>
     <div>An email has been sent to the developer to report the problem.</div>
     <a href="/">Home</a>
     </div>

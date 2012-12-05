@@ -18,7 +18,10 @@
             ev.preventDefault();
             if (confirm("are you sure?"))
                 $.post("/Setup/Lookup/Delete/" + $(this).attr("id"), { type: $('#type').val() }, function (ret) {
-                    window.location = "/Setup/Lookup/Index/" + $('#type').val();
+                    if (ret && ret.error)
+                        alert(ret.error);
+                    else
+                        window.location = "/Setup/Lookup/Index/" + $('#type').val();
                 });
         });
         $(".bt").button();

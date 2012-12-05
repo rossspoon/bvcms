@@ -12,8 +12,8 @@
 </head>
 <body>
 @RenderBody()
-@Html.Script("/Content/js/jquery-1.8.3.js")
-@Html.Script("/Content/js/jquery-ui-1.9.2.custom.js")
+@Html.Partial("CombinedJs")
+@Html.Partial("DatePickerDefaults")
 @RenderSection("scripts", required: false)
 </body>
 </html>

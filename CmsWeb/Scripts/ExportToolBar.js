@@ -128,10 +128,21 @@
         });
         return false;
     });
+    $.DateValid = function(d) {
+        var reDate = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
+        if ($.dateFormat.startsWith('d'))
+            reDate = /^(0?[1-9]|[12][0-9]|3[01])[\/-](0?[1-9]|1[012])[\/-]((19|20)?[0-9]{2})$/i;
+        var v = true;
+        if (!reDate.test(d)) {
+            $.growlUI("error", "enter valid date");
+            v = false;
+        }
+        return v;
+    };
 });
 String.prototype.startsWith = function(t, i) {
     return (t == this.substring(0, t.length));
-}
+};
 String.prototype.appendQuery = function(q) {
     if (this && this.length > 0)
         if (this.contains("&") || this.contains("?"))

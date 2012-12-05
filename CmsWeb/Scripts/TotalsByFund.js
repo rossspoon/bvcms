@@ -1,8 +1,12 @@
 ﻿$(function () {
-	$(".datepicker").datepicker();
+    $(".datepicker").datepicker();
 	$("#run").click(function (ev) {
-		ev.preventDefault();
-		var f = $(this).closest('form');
+	    ev.preventDefault();
+	    if (!$.DateValid($("#Dt1").val()))
+	        return;
+	    if (!$.DateValid($("#Dt2").val()))
+	        return;
+	    var f = $(this).closest('form');
 		var q = f.serialize();
 		$.post("/FinanceReports/TotalsByFundResults", q, function (ret) {
 			$("#results").html(ret).ready(function () {

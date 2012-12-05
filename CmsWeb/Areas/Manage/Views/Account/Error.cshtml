@@ -35,13 +35,10 @@
 <body>
     <div>
     @{ 
-        string error = (string)TempData["message"];
-        string em = "";
-            em = "An email has been sent to the developer to report the problem.";
+        string error = HttpContext.Current.Items["error"] as string;
     }
     <h1>An error occurred while processing your request.</h1>
     <div>@error</div>
-    <div>@em</div>
     <a href="/">Home</a>
     </div>
 </body>
