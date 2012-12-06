@@ -20,7 +20,7 @@
                     <td>Amount</td>
                     <td>@Html.TextBox("amount")</td>
                 </tr>
-            @if (User.IsInRole("Admin"))
+            @if (User.IsInRole("Admin") || User.IsInRole("Coupon2"))
             {
                 <tr>
                     <td>Coupon Code</td>

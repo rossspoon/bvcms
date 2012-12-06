@@ -29,11 +29,11 @@ namespace CmsWeb
     {
         protected void Application_Start()
         {
-			ModelBinders.Binders.DefaultBinder = new SmartBinder();
+            ModelBinders.Binders.DefaultBinder = new SmartBinder();
             ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
-            RouteTable.Routes.RouteExistingFiles = true; 
+            RouteTable.Routes.RouteExistingFiles = true;
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
 #endif
@@ -87,23 +87,23 @@ namespace CmsWeb
                 else
                     Models.AccountModel.SetUserInfo("trecord", Session);
             Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
-			Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Util.SessionStarting = true;
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-			if (Request.Url.OriginalString.Contains("/Errors/NoDatabase.htm"))
-				return;
-			if (!DbUtil.DatabaseExists())
-			{
-				Response.Redirect("/Errors/NoDatabase.htm");
-				return;
-			}
-			var cul = DbUtil.Db.Setting("Culture", "en-US");
-			Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
-			Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
-			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
-		}
+            if (Request.Url.OriginalString.Contains("/Errors/NoDatabase.htm"))
+                return;
+            if (!DbUtil.DatabaseExists())
+            {
+                Response.Redirect("/Errors/NoDatabase.htm");
+                return;
+            }
+            var cul = DbUtil.Db.Setting("Culture", "en-US");
+            Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
+        }
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)
@@ -137,10 +137,13 @@ namespace CmsWeb
             var ex = e.Exception.GetBaseException();
             var httpex = ex as HttpException;
 
-            if (httpex != null &&
-                httpex.GetHttpCode() == 404)
-                e.Dismiss();
-
+            if (httpex != null)
+            {
+                if (httpex.GetHttpCode() == 404)
+                    e.Dismiss();
+                else if (httpex.Message.Contains("The remote host closed the connection"))
+                    e.Dismiss();
+            }
             if (ex is FileNotFoundException || ex is HttpRequestValidationException)
                 e.Dismiss();
         }

@@ -342,6 +342,11 @@ $(function () {
             return false;
         return true;
     });
+    $.validator.addMethod("date2", function (value, element, params) {
+        var v = $.DateValid(value);
+        return this.optional(element) || v;
+    }, $.format("Please enter valid date"));
+    
     $.validator.setDefaults({
         highlight: function (input) {
             $(input).addClass("ui-state-highlight");
@@ -365,15 +370,15 @@ $(function () {
             "School": { maxlength: 60 },
             "Employer": { maxlength: 60 },
             "Occupation": { maxlength: 60 },
-//            "WeddingDate": { date: true },
-//            "DeceasedDate": { date: true },
+            "WeddingDate": { date2: true },
+            "DeceasedDate": { date2: true },
             "Grade": { number: true },
             "Address1": { maxlength: 40 },
             "Address2": { maxlength: 40 },
             "City": { maxlength: 30 },
-            "Zip": { maxlength: 15 }
-//            "FromDt": { date: true },
-//            "ToDt": { date: true }
+            "Zip": { maxlength: 15 },
+            "FromDt": { date2: true },
+            "ToDt": { date2: true }
         }
     });
     $('#addrf').validate();

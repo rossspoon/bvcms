@@ -209,7 +209,7 @@ namespace CmsWeb.Models
 				return false;
 			if (IsFamily)
 				return IsValidForExisting;
-			else if (IsNew && IsValidForNew)
+			if (IsNew && IsValidForNew)
 				return true;
 			return false;
 		}

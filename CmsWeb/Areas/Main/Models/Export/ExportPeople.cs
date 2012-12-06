@@ -128,14 +128,14 @@ namespace CmsWeb.Models
 					 where p.DeceasedDate == null
                      let pos = p.PositionInFamilyId * 1000 + (p.PositionInFamilyId == 10 ? p.GenderId : 1000 - (p.Age ?? 0))
 					 let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
-					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).LastName
+					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).Name2
 					 orderby famname, p.FamilyId, pos
 					 select new
 					 {
-						 PeopleId = p.PeopleId,
+						 p.PeopleId,
 						 Title = p.TitleCode,
 						 FirstName = p.PreferredName,
-						 LastName = p.LastName,
+						 p.LastName,
 						 Address = p.PrimaryAddress,
 						 Address2 = p.PrimaryAddress2,
 						 City = p.PrimaryCity,
@@ -153,13 +153,13 @@ namespace CmsWeb.Models
 						 School = p.SchoolOther,
 						 Married = p.MaritalStatus.Description,
 						 FamilyName = famname,
-						 FamilyId = p.FamilyId,
+						 p.FamilyId,
 						 FamilyPosition = pos,
 						 Grade = p.Grade.ToString(),
 						 FellowshipLeader = p.BFClass.LeaderName,
 						 AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
 						 FellowshipClass = (om == null ? "" : om.Organization.OrganizationName),
-						 AltName = p.AltName,
+						 p.AltName,
 					 };
 			return q2;
 		}

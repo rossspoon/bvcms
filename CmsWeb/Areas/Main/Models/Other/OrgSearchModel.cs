@@ -34,6 +34,7 @@ namespace CmsWeb.Models
         public string tagstr { get; set; }
         public int? OnlineReg { get; set; }
 		public bool? MainFellowship { get; set; }
+		public bool? ParentOrg { get; set; }
 
         public OrgSearchModel()
         {
@@ -240,6 +241,11 @@ namespace CmsWeb.Models
 			if (MainFellowship == true)
 				organizations = from o in organizations
 								where o.IsBibleFellowshipOrg == true
+								select o;
+
+			if (ParentOrg == true)
+				organizations = from o in organizations
+								where o.ChildOrgs.Any()
 								select o;
 
             return organizations;

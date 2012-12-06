@@ -6,6 +6,7 @@ using System.Web.Security;
 using CmsData;
 using CmsData.Registration;
 using CmsWeb.Models;
+using Elmah;
 using UtilityExtensions;
 using System.Text;
 using System.Collections.Generic;
@@ -316,6 +317,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return View("Flow/List", m);
 			DbUtil.Db.SetNoLock();
 			var p = m.List[id];
+		    if (p.IsValidForNew)
+    			return ErrorResult(m, "Unexpected onlinereg state: IsValidForNew is true and in PersonFind", "PersonFind, unexpected state");
+
 			if (p.classid.HasValue)
 			{
 				m.orgid = p.classid;
@@ -346,7 +350,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			return View("Flow/List", m);
 		}
-		// Set suggested giving fee for an indidividual person
+
+	    private ActionResult ErrorResult(OnlineRegModel m, string errorMessage, string errorDisplay)
+	    {
+	        var d = new ExtraDatum {Stamp = Util.Now};
+	        d.Data = Util.Serialize<OnlineRegModel>(m);
+	        DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
+	        DbUtil.Db.SubmitChanges();
+	        var ex = new Exception(errorMessage + ", datum: " + d.Id);
+	        ErrorSignal.FromCurrentContext().Raise(ex);
+	        TempData["error"] = errorDisplay;
+	        return Content("/Error/");
+	    }
+
+	    // Set suggested giving fee for an indidividual person
 		private static void CheckSetFee(OnlineRegModel m, OnlineRegPersonModel p)
 		{
 			if (m.OnlineGiving() && p.setting.ExtraValueFeeName.HasValue())

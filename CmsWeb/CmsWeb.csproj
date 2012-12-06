@@ -843,13 +843,6 @@
     <Compile Include="ExportExcel.aspx.designer.cs">
       <DependentUpon>ExportExcel.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ForceError.aspx.cs">
-      <DependentUpon>ForceError.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ForceError.aspx.designer.cs">
-      <DependentUpon>ForceError.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2044,9 +2037,6 @@
     <Content Include="EmailAttendanceNotices.aspx" />
     <Content Include="EnrollmentControlReport.aspx" />
     <Content Include="Errors\Error.aspx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ForceError.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Activity.aspx" />

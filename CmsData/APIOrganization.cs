@@ -469,6 +469,37 @@ class OrgMembers(object):
 			}
 
 		}
+		public string ChildOrgMembers(int id)
+		{
+			try
+			{
+				var q = from o in Db.Organizations
+						where o.ParentOrgId == id
+						select new Organization
+						{
+							id = o.OrganizationId,
+							name = o.OrganizationName,
+							location = o.Location,
+							description = o.Description,
+							members = (from m in o.OrganizationMembers
+									   where m.Pending != true
+									   where m.MemberTypeId != Codes.MemberTypeCode.InActive
+									   select new Member
+									   {
+										   id = m.PeopleId,
+										   name = m.Person.Name,
+										   email = m.Person.EmailAddress,
+										   type = m.MemberType.Description
+									   }).ToList()
+						};
+				return SerializeOrgs(q, "ChildOrgs", "ChildOrg", "Members");
+			}
+			catch (Exception ex)
+			{
+				return @"<ChildOrgs status=""error"">" + ex.Message + "</ChildOrgs>";
+			}
+
+		}
 
 		private static string SerializeOrgs(IQueryable<Organization> q, string root, string OrgElement, string MembersElement)
 		{

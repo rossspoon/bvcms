@@ -2535,12 +2535,23 @@ namespace CmsData
             var right = Expression.Constant(months, typeof(int?));
             return Compare(left, op, right);
         }
-        internal static Expression HaveVolunteerApplications(ParameterExpression parm,
+        internal static Expression HasVolunteerApplications(ParameterExpression parm,
             CompareType op,
             bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
                     p.Volunteers.Any(v => v.VolunteerForms.Count() > 0);
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
+        internal static Expression HasMemberDocs(ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p =>
+                    p.MemberDocForms.Any();
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -2611,6 +2622,34 @@ namespace CmsData
                     && m.MemberStatusId == 10 // church member
                     //&& m.PeopleId != p.PeopleId // someone else in family
                     );
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(tf), left.Type);
+            return Compare(left, op, right);
+        }
+        internal static Expression LeadersUnderCurrentOrg(
+            ParameterExpression parm, CMSDataContext Db,
+            CompareType op,
+            bool tf)
+        {
+			var oids = Db.GetParentChildOrgIds(Db.CurrentOrgId);
+            Expression<Func<Person, bool>> pred = p =>
+                p.OrganizationMembers.Any(m =>
+                    p.OrganizationMembers.Any(mm => oids.Contains(mm.OrganizationId) && mm.MemberType.AttendanceTypeId == AttendTypeCode.Leader)
+                );
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(tf), left.Type);
+            return Compare(left, op, right);
+        }
+        internal static Expression MembersUnderCurrentOrg(
+            ParameterExpression parm, CMSDataContext Db,
+            CompareType op,
+            bool tf)
+        {
+			var oids = Db.GetParentChildOrgIds(Db.CurrentOrgId);
+            Expression<Func<Person, bool>> pred = p =>
+                p.OrganizationMembers.Any(m =>
+                    p.OrganizationMembers.Any(mm => oids.Contains(mm.OrganizationId))
+                );
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(tf), left.Type);
             return Compare(left, op, right);

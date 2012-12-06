@@ -56,7 +56,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			ViewBag.OrganizationContext = true;
 		    ViewBag.selectmode = 0;
 			var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
-			InitExportToolbar(id.Value, qb.QueryId);
+			InitExportToolbar(id.Value, qb.QueryId, checkparent:true);
 			Session["ActiveOrganization"] = m.org.OrganizationName;
 			return View(m);
 		}
@@ -115,10 +115,20 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.LogActivity("Creating new meeting for {0}".Fmt(organization.OrganizationName));
 			return Content("/Meeting/Index/" + mt.MeetingId);
 		}
-		private void InitExportToolbar(int oid, int qid)
+		private void InitExportToolbar(int oid, int qid, bool checkparent = false)
 		{
 			Util2.CurrentOrgId = oid;
-			ViewData["queryid"] = qid;
+		    if (checkparent)
+		    {
+		        var isParent = DbUtil.Db.Organizations.Any(oo => oo.ParentOrgId == oid);
+		        if (isParent)
+		        {
+		            ViewData["ParentOrgContext"] = true;
+		            ViewData["leadersqid"] = DbUtil.Db.QueryBuilderLeadersUnderCurrentOrg().QueryId;
+		            ViewData["membersqid"] = DbUtil.Db.QueryBuilderMembersUnderCurrentOrg().QueryId;
+		        }
+		    }
+		    ViewData["queryid"] = qid;
 			ViewData["TagAction"] = "/Organization/TagAll/{0}?m=tag".Fmt(qid);
 			ViewData["UnTagAction"] = "/Organization/TagAll/{0}?m=untag".Fmt(qid);
 			ViewData["AddContact"] = "/Organization/AddContact/" + qid;
@@ -132,7 +142,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			Util2.CurrentGroups = smallgrouplist;
 		    Util2.CurrentGroupsMode = selectmode.Value;
 			var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
-			InitExportToolbar(id, qb.QueryId);
+			InitExportToolbar(id, qb.QueryId, checkparent:true);
 			var m = new MemberModel(id, MemberModel.GroupSelect.Active, namefilter);
 			UpdateModel(m.Pager);
 			return View(m);

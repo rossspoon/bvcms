@@ -8,6 +8,11 @@
             <ul>
                 <li><a href='/Email/Index/@ViewData["queryid"]'> Individuals</a></li>
                 <li><a href='/Email/Index/@ViewData["queryid"]?parents=true'> Parents</a></li>
+@if ((bool?)ViewData["ParentOrgContext"] == true)
+{
+                <li><a href='/Email/Index/@ViewData["leadersqid"]'> Leaders under this org</a></li>
+                <li><a href='/Email/Index/@ViewData["membersqid"]'> Members under this org</a></li>
+}
             </ul>
         </div>
     </li>
