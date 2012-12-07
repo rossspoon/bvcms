@@ -345,6 +345,8 @@ namespace CmsData
             CompareType op,
             string task)
         {
+            if (task == null)
+                task = "";
             Expression<Func<Person, bool>> pred = p =>
                 p.TasksAboutPerson.Any(t => t.Description.Contains(task)
                     && t.StatusId != TaskStatusCode.Complete);

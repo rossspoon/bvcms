@@ -36,17 +36,17 @@
           <td>@Html.DropDownList("OnlineReg", Model.RegistrationTypeIds())</td>
       </tr>
   	<tr>
-	    <td align="right" valign="top" colspan="2">
+	      <td align="right" valign="top" colspan="2" nowrap="nowrap">
+	          MainFellowship @Html.CheckBox("MainFellowship") |
+	          ParentOrg @Html.CheckBox("ParentOrg")
+	      </td>
+          <td align="right" colspan="2">
 @if (User.IsInRole("OrgTagger"))
 { 
-            <a href="#" id="hideshow" style="padding-top:7px">Manager</a> <text>|</text>
+            <a href="#" id="hideshow" class="bt">Manager</a>
 }
-	        MainFellowship @Html.CheckBox("MainFellowship") |
-	        ParentOrg @Html.CheckBox("ParentOrg")
-	      </td>
-		<td colspan="2" align="right">
-          <a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a>
           <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a>
+          <a href="/OrgSearch/Results" id="search" class="blue bt default formlink">Search</a>
 		</td>
 	</tr>
 

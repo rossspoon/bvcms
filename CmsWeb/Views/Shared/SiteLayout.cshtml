@@ -4,6 +4,9 @@
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     @Html.Partial("CombinedCss")
+    @Html.Partial("CombinedJs")
+    @Html.Partial("DatePickerDefaults")
+    @RenderSection("scripts", required: false)
     @RenderSection("head", required: false)
 </head>
 <body>
@@ -152,9 +155,6 @@
     <iframe id="AddDialogiframe" style="width:99%;height:99%;border-width:0px"></iframe>
     </div>
 @RenderSection("PopupsPlaceholder", required: false)
-@Html.Partial("CombinedJs")
-@Html.Partial("DatePickerDefaults")
-@RenderSection("scripts", required: false)
 </body>
 </html>
 

@@ -509,14 +509,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			if (!m.last.IsNew && !m.last.Found == true)
 				m.List.Remove(m.last);
+            if (!(m.last.IsValidForNew || m.last.IsValidForExisting))
+				m.List.Remove(m.last);
 
 			var d = new ExtraDatum { Stamp = Util.Now };
 			d.Data = Util.Serialize<OnlineRegModel>(m);
 			DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
 			DbUtil.Db.SubmitChanges();
-
-            if (!m.List.All(pp => pp.IsValidForNew || pp.IsValidForExisting))
-				return Content("Unexpected: some registratants are not valid, please try again");
 
 			if (m.PayAmount() == 0 && (m.donation ?? 0) == 0 && !m.Terms.HasValue())
 				return RedirectToAction("Confirm",

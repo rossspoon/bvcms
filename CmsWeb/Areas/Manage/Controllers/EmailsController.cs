@@ -207,7 +207,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 			var em = new EmailQueue
 			{
 				Subject = email.Subject,
-				Body = email.Body.Replace("{track}", "").Replace("{first}", "").Replace("", "")
+				Body = email.Body.Replace("{track}", "").Replace("{first}", "")
 			};
 			return View(em);
 		}

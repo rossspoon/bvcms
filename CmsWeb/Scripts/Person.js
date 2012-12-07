@@ -378,7 +378,13 @@ $(function () {
             "City": { maxlength: 30 },
             "Zip": { maxlength: 15 },
             "FromDt": { date2: true },
-            "ToDt": { date2: true }
+            "ToDt": { date2: true },
+            "DecisionDate": { date2: true },
+            "JoinDate": { date2: true },
+            "BaptismDate": { date2: true },
+            "BaptismSchedDate": { date2: true },
+            "DropDate": { date2: true },
+            "NewMemberClassDate": { date2: true }
         }
     });
     $('#addrf').validate();

@@ -512,7 +512,9 @@ namespace CmsData
 			               	roleids = u.UserRoles.Select(uu => uu.RoleId).ToArray(),
 			               	roles = u.UserRoles.Select(uu => uu.Role.RoleName).ToArray(),
 			               };
-			var i = q.Single();
+			var i = q.SingleOrDefault();
+		    if (i == null)
+		        return;
 			_roles = i.roles;
 			_roleids = i.roleids;
 			_currentuser = i.u;

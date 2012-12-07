@@ -150,7 +150,9 @@ namespace CmsWeb.Models
             if (organizations != null)
                 return organizations;
 
-        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+            var u = DbUtil.Db.CurrentUser;
+
+        	var roles = u.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
         	organizations = from o in DbUtil.Db.Organizations
         	                where o.LimitToRole == null || roles.Contains(o.LimitToRole)
         	                select o;

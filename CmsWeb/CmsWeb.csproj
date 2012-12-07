@@ -432,6 +432,7 @@
     <Content Include="Content\css\fg.menu.css" />
     <Content Include="Content\css\images\454545_11x11_icon_close.gif" />
     <Content Include="Content\css\images\888888_11x11_icon_close.gif" />
+    <Content Include="Content\css\images\ajax-loader.gif" />
     <Content Include="Content\css\images\arrowdown.gif" />
     <Content Include="Content\css\images\arrowleft.gif" />
     <Content Include="Content\css\images\arrowright.gif" />
@@ -468,6 +469,10 @@
     <Content Include="Content\css\images\forward_enabled.png" />
     <Content Include="Content\css\images\forward_enabled_hover.png" />
     <Content Include="Content\css\images\group.png" />
+    <Content Include="Content\css\images\icons-18-black.png" />
+    <Content Include="Content\css\images\icons-18-white.png" />
+    <Content Include="Content\css\images\icons-36-black.png" />
+    <Content Include="Content\css\images\icons-36-white.png" />
     <Content Include="Content\css\images\itunes.png" />
     <Content Include="Content\css\images\minus.gif" />
     <Content Include="Content\css\images\person.png" />
@@ -532,6 +537,14 @@
     <Content Include="Content\css\jquery.dataTables.css" />
     <Content Include="Content\css\jquery.dataTables_themeroller.css" />
     <Content Include="Content\css\jquery.jscrollpane.css" />
+    <Content Include="Content\css\jquery.mobile-1.2.0.css" />
+    <Content Include="Content\js\jquery.mobile-1.2.0.js" />
+    <Content Include="Content\css\jquery.mobile-1.2.0.min.css" />
+    <Content Include="Content\js\jquery.mobile-1.2.0.min.js" />
+    <Content Include="Content\css\jquery.mobile.structure-1.2.0.css" />
+    <Content Include="Content\css\jquery.mobile.structure-1.2.0.min.css" />
+    <Content Include="Content\css\jquery.mobile.theme-1.2.0.css" />
+    <Content Include="Content\css\jquery.mobile.theme-1.2.0.min.css" />
     <Content Include="Content\css\jquery.multiSelect.css" />
     <Content Include="Content\css\jquery.sb.css" />
     <Content Include="Content\css\jquery.timepickr.css" />

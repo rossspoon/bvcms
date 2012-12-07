@@ -41,11 +41,11 @@
 		<td> @Html.DropDownList("marital", Model.MaritalCodes())</td>
 	</tr>
 	<tr>
-	  <td colspan="3" valign="bottom"><b>Total Count: <span id="totalcount">@Model.Count().ToString("N0")</span></b></td>
-	  <td nowrap><br>
-		  <a href="/PeopleSearch/Results" id="search" class="bt default formlink">Search</a>
+	  <td colspan="2" valign="bottom"><b>Total Count: <span id="totalcount">@Model.Count().ToString("N0")</span></b></td>
+	  <td nowrap colspan="2"><br>
+		  <a id="convert" href="/PeopleSearch/ConvertToQuery">Convert to Search Builder</a>
 		  <a id="clear" href="#" class="bt">Clear</a>
-		  <a id="convert" href="/PeopleSearch/ConvertToQuery" class="bt">Search Builder</a>
+		  <a href="/PeopleSearch/Results" id="search" class="bt blue default formlink">Search</a>
 	  </td>
 	</tr>
 </table>
