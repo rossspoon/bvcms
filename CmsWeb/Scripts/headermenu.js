@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $("a.trigger-dropdown").dropdown();
     $('#SearchText').keypress(function (e) {
 		if ((e.keyCode || e.which) == 13) {
@@ -37,7 +36,6 @@ $(document).ready(function () {
 		$('iframe', d).attr("src", "/SearchAdd?type=addpeople");
 		d.dialog("option", "title", "Add People");
 		d.dialog("open");
-		d.resize();
 	});
 	$('#addorg').click(function (e) {
 		e.preventDefault();
@@ -48,10 +46,10 @@ $(document).ready(function () {
 	});
 	$('#cleartag').click(function (e) {
 		e.preventDefault();
-		//if (alert("are you sure?"))
-		$.post("/Tags/ClearTag", {}, function () {
-			window.location.reload();
-		});
+		if (confirm("are you sure you want to empty the active tag?"))
+    		$.post("/Tags/ClearTag", {}, function () {
+    			window.location.reload();
+    		});
 	});
 	$('.warntip').tooltip({
 		delay: 150,

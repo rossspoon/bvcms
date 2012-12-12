@@ -1,11 +1,12 @@
-﻿@model System.Collections.Generic.IEnumerable<CmsWeb.Areas.OnlineReg.Controllers.OnlineRegController.CurrentRegistration>
+﻿@using System.Web.Optimization
+@model System.Collections.Generic.IEnumerable<CmsWeb.Areas.OnlineReg.Controllers.OnlineRegController.CurrentRegistration>
 
 @{
 	Layout = null;
 }
 <html>
 	<head>
-    @Html.Partial("CombinedCss")
+    @Styles.Render("~/Content/styles/css")
 		
 	</head>
 	<body>

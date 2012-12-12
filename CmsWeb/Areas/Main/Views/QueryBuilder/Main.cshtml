@@ -1,4 +1,5 @@
-﻿@using CmsWeb
+﻿@using System.Web.Optimization
+@using CmsWeb
 @model CmsWeb.Models.QueryModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -6,14 +7,12 @@
 }
 @section head 
 {
-    <link href="/Content/css/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/styles/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
 }
 
 @section scripts
 {
-@Html.Script("/Content/js/jquery.multiSelect.js")
-@Html.Script("/Content/js/jquery.contextMenu.js")
-@Html.Script("/Scripts/QueryBuilder.js")
+    @Scripts.Render("~/bundles/task-js")
 }
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
 <div id="Description"><b>@Model.Description</b></div>

@@ -446,7 +446,7 @@ namespace CmsData
                 case QueryType.PeopleIds:
                     return Expressions.PeopleIds(parm,
                                 CompType,
-								c.TextValue.Split(',').Select(aa => aa.ToInt()).ToArray());
+								(c.TextValue ?? "").Split(',').Select(aa => aa.ToInt()).ToArray());
                 case QueryType.PreviousCurrentOrg:
                     return Expressions.PreviousCurrentOrg(Db, parm,
                                CompType,

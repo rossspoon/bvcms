@@ -89,6 +89,12 @@ namespace CmsData
 			else
 				base.SubmitChanges(failureMode);
 		}
+        public void ClearCache2()
+        {
+            const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var method = this.GetType().GetMethod("ClearCache", Flags);
+            method.Invoke(this, null);
+        }
 
 		private int GetMaxLength(string dbType)
 		{

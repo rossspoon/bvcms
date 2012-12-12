@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.VolunteerCommitmentsModel
 @{
@@ -41,7 +42,7 @@ div.selectable h3 { color: blue; }
 }
 @section scripts
 {
-@Html.Script("/Scripts/Calendar.js")
+@Scripts.Render("~/bundles/Calendar-js")
 }
 <div id="managearea">
     @Html.Partial("ManageArea", Model)

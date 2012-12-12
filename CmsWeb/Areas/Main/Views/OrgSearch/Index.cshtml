@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.OrgSearchModel
+@using System.Web.Optimization
 @using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -6,7 +7,7 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/OrgSearch.js")
+@Scripts.Render("~/bundles/OrgSearch-js")
 }
 <form method="post">
   <table id="searchvalues" cellspacing="5" class="roundbox floatleft">

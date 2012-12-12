@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
 using CmsData;
 using CmsData.Registration;
@@ -33,6 +34,7 @@ namespace CmsWeb
             ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteTable.Routes.RouteExistingFiles = true;
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
@@ -142,6 +144,8 @@ namespace CmsWeb
                 if (httpex.GetHttpCode() == 404)
                     e.Dismiss();
                 else if (httpex.Message.Contains("The remote host closed the connection"))
+                    e.Dismiss();
+                else if (httpex.Message.Contains("A potentially dangerous Request.Path value was detected from the client"))
                     e.Dismiss();
             }
             if (ex is FileNotFoundException || ex is HttpRequestValidationException)

@@ -464,7 +464,9 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.Attends.Any(a =>
-                    (a.Commitment == AttendCommitmentCode.Attending)
+                    (a.Commitment == AttendCommitmentCode.Attending
+                    || a.Commitment == AttendCommitmentCode.Substitute
+                    || a.Commitment == AttendCommitmentCode.FindSub)
                     && a.MeetingId == id
                     );
             Expression expr = Expression.Invoke(pred, parm);

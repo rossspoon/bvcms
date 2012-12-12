@@ -126,11 +126,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				m.TranId = ti.Id;
 			}
 
-			string first, last;
-			Person.NameSplit(pf.Name, out first, out last);
 			if (!pid.HasValue)
 			{
-				var pds = DbUtil.Db.FindPerson(first, last, null, pf.Email, pf.Phone);
+				var pds = DbUtil.Db.FindPerson(pf.First, pf.Last, null, pf.Email, pf.Phone);
 				if (pds.Count() == 1)
 					pid = pds.Single().PeopleId.Value;
 			}
@@ -152,7 +150,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.Routing, pf.Account,
 							pf.AmtToPay ?? 0,
 							ti.Id, pf.Description,
-							pid ?? 0, first, last,
+							pid ?? 0, pf.First, pf.Last,
 							pf.Address, pf.City, pf.State, pf.Zip,
 							pf.testing);
 					else
@@ -160,7 +158,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.CreditCard, pf.CCV, pf.Expires,
 							pf.AmtToPay ?? 0,
 							ti.Id, pf.Description,
-							pid ?? 0, pf.Email, first, last,
+							pid ?? 0, pf.Email, pf.First, pf.First,
 							pf.Address, pf.City, pf.State, pf.Zip,
 							pf.testing);
 			else if (gateway == "sage")
@@ -180,7 +178,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.Routing, pf.Account,
 							pf.AmtToPay ?? 0,
 							ti.Id, pf.Description,
-							pid ?? 0, pf.Email, first, last, "",
+							pid ?? 0, pf.Email, pf.First, pf.MiddleInitial, pf.Last, pf.Suffix,
 							pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
 							pf.testing);
 					else
@@ -188,7 +186,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.CreditCard, pf.CCV, pf.Expires,
 							pf.AmtToPay ?? 0,
 							ti.Id, pf.Description,
-							pid ?? 0, pf.Email, first, last,
+							pid ?? 0, pf.Email, pf.First, pf.MiddleInitial, pf.Last, pf.Suffix,
 							pf.Address, pf.City, pf.State, pf.Zip, pf.Phone,
 							pf.testing);
 

@@ -22,15 +22,6 @@ namespace CmsWeb.Contributions {
         protected global::System.Web.UI.WebControls.TextBox FromDate;
         
         /// <summary>
-        /// FromExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender FromExtender;
-        
-        /// <summary>
         /// ToDate control.
         /// </summary>
         /// <remarks>
@@ -38,15 +29,6 @@ namespace CmsWeb.Contributions {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ToDate;
-        
-        /// <summary>
-        /// ToDateExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ToDateExtender;
         
         /// <summary>
         /// btnSubmit control.

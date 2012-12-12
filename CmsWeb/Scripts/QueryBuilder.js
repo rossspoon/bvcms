@@ -87,9 +87,8 @@ $(function () {
     $('#Export').click(function (ev) {
         window.location = "QueryBuilder/Export/" + $("#QueryId").val();
     });
-    dialogOptions = {
+    var dialogOptions = {
         overlay: { background: "#000", opacity: 0.3 },
-        bgiframe: true,
         modal: true,
         autoOpen: false,
         closeOnEscape: true,

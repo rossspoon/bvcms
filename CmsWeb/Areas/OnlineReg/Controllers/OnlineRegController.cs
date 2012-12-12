@@ -304,6 +304,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					p.zip = "38018";
 					p.gender = 1;
 					p.married = 10;
+					p.homephone = "9017581862";
 #endif
 					break;
 			}
@@ -505,7 +506,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			if (m.List.Count == 0)
 				return Content("Can't find any registrants");
-			DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, m.NameOnAccount));
 
 			if (!m.last.IsNew && !m.last.Found == true)
 				m.List.Remove(m.last);
@@ -516,6 +516,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			d.Data = Util.Serialize<OnlineRegModel>(m);
 			DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
 			DbUtil.Db.SubmitChanges();
+			DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, d.Id));
 
 			if (m.PayAmount() == 0 && (m.donation ?? 0) == 0 && !m.Terms.HasValue())
 				return RedirectToAction("Confirm",

@@ -190,8 +190,7 @@ namespace UtilityExtensions
 				return "";
 			if (name.HasValue())
 				return "mailto:{0} <{1}>".Fmt(name, addr);
-			else
-				return "mailto:" + addr;
+			return "mailto:" + addr;
 		}
 		public static string FormatBirthday(int? y, int? m, int? d)
 		{

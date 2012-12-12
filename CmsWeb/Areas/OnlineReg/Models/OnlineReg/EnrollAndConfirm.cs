@@ -245,7 +245,7 @@ namespace CmsWeb.Models
                 message = message.Replace("{donation}", ti.Donate.ToString2("N2"));
                 // send donation confirmations
                 Db.Email(notify.FromEmail, NotifyIds, subject + "-donation",
-                    "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.Name));
+                    "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.FullName));
             }
             else
                 message = re.Replace(message, "");

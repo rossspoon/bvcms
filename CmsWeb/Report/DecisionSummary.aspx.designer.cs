@@ -40,24 +40,6 @@ namespace CmsWeb.StaffOnly {
         protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
-        /// FromExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender FromExtender;
-        
-        /// <summary>
-        /// ToDateExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ToDateExtender;
-        
-        /// <summary>
         /// ToDateValidator control.
         /// </summary>
         /// <remarks>

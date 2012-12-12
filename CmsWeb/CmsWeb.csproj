@@ -65,6 +65,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\AjaxControlToolkit.dll</HintPath>
     </Reference>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=2.5.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\CookComputing.XmlRpcV2.dll</HintPath>
@@ -174,6 +178,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
@@ -200,6 +208,10 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +391,7 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Code\BundleConfig.cs" />
     <Compile Include="Code\FamilyExtraValues.cs" />
     <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\SmartBinder.cs" />
@@ -419,153 +432,153 @@
     <Content Include="ckeditor\plugins\stylesheetparser\plugin.js" />
     <Content Include="ckeditor\plugins\xml\plugin.js" />
     <Content Include="Content\BUZZ.WAV" />
-    <Content Include="Content\css\checkboxtree.css" />
-    <Content Include="Content\css\clockpick.css" />
-    <Content Include="Content\css\cmenu.css" />
-    <Content Include="Content\css\combined.css" />
-    <Content Include="Content\css\Common2.css" />
-    <Content Include="Content\css\content.css" />
-    <Content Include="Content\css\cssreset.css" />
-    <Content Include="Content\css\Dialog.css" />
-    <Content Include="Content\css\dropdown.css" />
-    <Content Include="Content\css\faary.css" />
-    <Content Include="Content\css\fg.menu.css" />
-    <Content Include="Content\css\images\454545_11x11_icon_close.gif" />
-    <Content Include="Content\css\images\888888_11x11_icon_close.gif" />
-    <Content Include="Content\css\images\ajax-loader.gif" />
-    <Content Include="Content\css\images\arrowdown.gif" />
-    <Content Include="Content\css\images\arrowleft.gif" />
-    <Content Include="Content\css\images\arrowright.gif" />
-    <Content Include="Content\css\images\arrowup.gif" />
-    <Content Include="Content\css\images\back_disabled.png" />
-    <Content Include="Content\css\images\back_enabled.png" />
-    <Content Include="Content\css\images\back_enabled_hover.png" />
-    <Content Include="Content\css\images\bl.gif" />
-    <Content Include="Content\css\images\bl.png" />
-    <Content Include="Content\css\images\br.gif" />
-    <Content Include="Content\css\images\br.png" />
-    <Content Include="Content\css\images\bvcms_8.png" />
-    <Content Include="Content\css\images\calendar.gif" />
-    <Content Include="Content\css\images\checkboxtree\bg-checkbox-checked.gif" />
-    <Content Include="Content\css\images\checkboxtree\bg-checkbox-checkedchildren.gif" />
-    <Content Include="Content\css\images\checkboxtree\bg-checkbox-over.gif" />
-    <Content Include="Content\css\images\checkboxtree\bg-checkbox.gif" />
-    <Content Include="Content\css\images\checkboxtree\img-arrow-blank.gif" />
-    <Content Include="Content\css\images\checkboxtree\img-arrow-collapsed.gif" />
-    <Content Include="Content\css\images\checkboxtree\img-arrow-expanded.gif" />
-    <Content Include="Content\css\images\closek.png" />
-    <Content Include="Content\css\images\dadada_40x100_textures_02_glass_75.png" />
-    <Content Include="Content\css\images\darrowdown.gif" />
-    <Content Include="Content\css\images\darrowleft.gif" />
-    <Content Include="Content\css\images\darrowright.gif" />
-    <Content Include="Content\css\images\darrowup.gif" />
-    <Content Include="Content\css\images\e6e6e6_40x100_textures_02_glass_75.png" />
-    <Content Include="Content\css\images\ffffff_40x100_textures_01_flat_75.png" />
-    <Content Include="Content\css\images\ffffff_40x100_textures_02_glass_65.png" />
-    <Content Include="Content\css\images\file.gif" />
-    <Content Include="Content\css\images\folder-closed.gif" />
-    <Content Include="Content\css\images\folder.gif" />
-    <Content Include="Content\css\images\forward_disabled.png" />
-    <Content Include="Content\css\images\forward_enabled.png" />
-    <Content Include="Content\css\images\forward_enabled_hover.png" />
-    <Content Include="Content\css\images\group.png" />
-    <Content Include="Content\css\images\icons-18-black.png" />
-    <Content Include="Content\css\images\icons-18-white.png" />
-    <Content Include="Content\css\images\icons-36-black.png" />
-    <Content Include="Content\css\images\icons-36-white.png" />
-    <Content Include="Content\css\images\itunes.png" />
-    <Content Include="Content\css\images\minus.gif" />
-    <Content Include="Content\css\images\person.png" />
-    <Content Include="Content\css\images\placeholder_160.gif" />
-    <Content Include="Content\css\images\placeholder_600.gif" />
-    <Content Include="Content\css\images\plus.gif" />
-    <Content Include="Content\css\images\rarrowdown.gif" />
-    <Content Include="Content\css\images\rarrowleft.gif" />
-    <Content Include="Content\css\images\rarrowright.gif" />
-    <Content Include="Content\css\images\rarrowup.gif" />
-    <Content Include="Content\css\images\select_arrow.gif" />
-    <Content Include="Content\css\images\select_arrow_bg.gif" />
-    <Content Include="Content\css\images\select_arrow_bg_hover.gif" />
-    <Content Include="Content\css\images\sort_asc.png" />
-    <Content Include="Content\css\images\sort_asc_disabled.png" />
-    <Content Include="Content\css\images\sort_both.png" />
-    <Content Include="Content\css\images\sort_desc.png" />
-    <Content Include="Content\css\images\sort_desc_disabled.png" />
-    <Content Include="Content\css\images\tl.gif" />
-    <Content Include="Content\css\images\tl.png" />
-    <Content Include="Content\css\images\tr.gif" />
-    <Content Include="Content\css\images\tr.png" />
-    <Content Include="Content\css\images\treeview-black-line.gif" />
-    <Content Include="Content\css\images\treeview-black.gif" />
-    <Content Include="Content\css\images\treeview-default-line.gif" />
-    <Content Include="Content\css\images\treeview-default.gif" />
-    <Content Include="Content\css\images\treeview-famfamfam-line.gif" />
-    <Content Include="Content\css\images\treeview-famfamfam.gif" />
-    <Content Include="Content\css\images\treeview-gray-line.gif" />
-    <Content Include="Content\css\images\treeview-gray.gif" />
-    <Content Include="Content\css\images\treeview-red-line.gif" />
-    <Content Include="Content\css\images\treeview-red.gif" />
-    <Content Include="Content\css\images\ui-anim_basic_16x16.gif" />
-    <Content Include="Content\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\css\images\ui-bg_flat_0_eeeeee_40x100.png" />
-    <Content Include="Content\css\images\ui-bg_flat_75_cccccc_40x100.png" />
-    <Content Include="Content\css\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\css\images\ui-bg_glass_100_dadada_1x400.png" />
-    <Content Include="Content\css\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\css\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\css\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\css\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\css\images\ui-bg_glass_75_ffffff_1x400.png" />
-    <Content Include="Content\css\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\css\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
-    <Content Include="Content\css\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\css\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
-    <Content Include="Content\css\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\css\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\css\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\css\images\ui-icons_555555_256x240.png" />
-    <Content Include="Content\css\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\css\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\css\images\wait.gif" />
-    <Content Include="Content\css\joyride-1.0.5.css" />
-    <Content Include="Content\css\jqModal.css" />
-    <Content Include="Content\css\jquery-ui-1.9.2.custom.css" />
-    <Content Include="Content\css\jquery-ui-timepicker.css" />
-    <Content Include="Content\css\jquery.autocomplete.css" />
-    <Content Include="Content\css\jquery.cluetip.css" />
-    <Content Include="Content\css\jquery.contextMenu.css" />
-    <Content Include="Content\css\jquery.dataTables.css" />
-    <Content Include="Content\css\jquery.dataTables_themeroller.css" />
-    <Content Include="Content\css\jquery.jscrollpane.css" />
-    <Content Include="Content\css\jquery.mobile-1.2.0.css" />
+    <Content Include="Content\styles\checkboxtree.css" />
+    <Content Include="Content\styles\clockpick.css" />
+    <Content Include="Content\styles\cmenu.css" />
+    <Content Include="Content\styles\combined.css" />
+    <Content Include="Content\styles\Common2.css" />
+    <Content Include="Content\styles\content.css" />
+    <Content Include="Content\styles\cssreset.css" />
+    <Content Include="Content\styles\Dialog.css" />
+    <Content Include="Content\styles\dropdown.css" />
+    <Content Include="Content\styles\faary.css" />
+    <Content Include="Content\styles\fg.menu.css" />
+    <Content Include="Content\styles\images\454545_11x11_icon_close.gif" />
+    <Content Include="Content\styles\images\888888_11x11_icon_close.gif" />
+    <Content Include="Content\styles\images\ajax-loader.gif" />
+    <Content Include="Content\styles\images\arrowdown.gif" />
+    <Content Include="Content\styles\images\arrowleft.gif" />
+    <Content Include="Content\styles\images\arrowright.gif" />
+    <Content Include="Content\styles\images\arrowup.gif" />
+    <Content Include="Content\styles\images\back_disabled.png" />
+    <Content Include="Content\styles\images\back_enabled.png" />
+    <Content Include="Content\styles\images\back_enabled_hover.png" />
+    <Content Include="Content\styles\images\bl.gif" />
+    <Content Include="Content\styles\images\bl.png" />
+    <Content Include="Content\styles\images\br.gif" />
+    <Content Include="Content\styles\images\br.png" />
+    <Content Include="Content\styles\images\bvcms_8.png" />
+    <Content Include="Content\styles\images\calendar.gif" />
+    <Content Include="Content\styles\images\checkboxtree\bg-checkbox-checked.gif" />
+    <Content Include="Content\styles\images\checkboxtree\bg-checkbox-checkedchildren.gif" />
+    <Content Include="Content\styles\images\checkboxtree\bg-checkbox-over.gif" />
+    <Content Include="Content\styles\images\checkboxtree\bg-checkbox.gif" />
+    <Content Include="Content\styles\images\checkboxtree\img-arrow-blank.gif" />
+    <Content Include="Content\styles\images\checkboxtree\img-arrow-collapsed.gif" />
+    <Content Include="Content\styles\images\checkboxtree\img-arrow-expanded.gif" />
+    <Content Include="Content\styles\images\closek.png" />
+    <Content Include="Content\styles\images\dadada_40x100_textures_02_glass_75.png" />
+    <Content Include="Content\styles\images\darrowdown.gif" />
+    <Content Include="Content\styles\images\darrowleft.gif" />
+    <Content Include="Content\styles\images\darrowright.gif" />
+    <Content Include="Content\styles\images\darrowup.gif" />
+    <Content Include="Content\styles\images\e6e6e6_40x100_textures_02_glass_75.png" />
+    <Content Include="Content\styles\images\ffffff_40x100_textures_01_flat_75.png" />
+    <Content Include="Content\styles\images\ffffff_40x100_textures_02_glass_65.png" />
+    <Content Include="Content\styles\images\file.gif" />
+    <Content Include="Content\styles\images\folder-closed.gif" />
+    <Content Include="Content\styles\images\folder.gif" />
+    <Content Include="Content\styles\images\forward_disabled.png" />
+    <Content Include="Content\styles\images\forward_enabled.png" />
+    <Content Include="Content\styles\images\forward_enabled_hover.png" />
+    <Content Include="images\group.png" />
+    <Content Include="Content\styles\images\icons-18-black.png" />
+    <Content Include="Content\styles\images\icons-18-white.png" />
+    <Content Include="Content\styles\images\icons-36-black.png" />
+    <Content Include="Content\styles\images\icons-36-white.png" />
+    <Content Include="Content\styles\images\itunes.png" />
+    <Content Include="Content\styles\images\minus.gif" />
+    <Content Include="Content\styles\images\person.png" />
+    <Content Include="Content\styles\images\placeholder_160.gif" />
+    <Content Include="Content\styles\images\placeholder_600.gif" />
+    <Content Include="Content\styles\images\plus.gif" />
+    <Content Include="Content\styles\images\rarrowdown.gif" />
+    <Content Include="Content\styles\images\rarrowleft.gif" />
+    <Content Include="Content\styles\images\rarrowright.gif" />
+    <Content Include="Content\styles\images\rarrowup.gif" />
+    <Content Include="Content\styles\images\select_arrow.gif" />
+    <Content Include="Content\styles\images\select_arrow_bg.gif" />
+    <Content Include="Content\styles\images\select_arrow_bg_hover.gif" />
+    <Content Include="Content\styles\images\sort_asc.png" />
+    <Content Include="Content\styles\images\sort_asc_disabled.png" />
+    <Content Include="Content\styles\images\sort_both.png" />
+    <Content Include="Content\styles\images\sort_desc.png" />
+    <Content Include="Content\styles\images\sort_desc_disabled.png" />
+    <Content Include="Content\styles\images\tl.gif" />
+    <Content Include="Content\styles\images\tl.png" />
+    <Content Include="Content\styles\images\tr.gif" />
+    <Content Include="Content\styles\images\tr.png" />
+    <Content Include="Content\styles\images\treeview-black-line.gif" />
+    <Content Include="Content\styles\images\treeview-black.gif" />
+    <Content Include="Content\styles\images\treeview-default-line.gif" />
+    <Content Include="Content\styles\images\treeview-default.gif" />
+    <Content Include="Content\styles\images\treeview-famfamfam-line.gif" />
+    <Content Include="Content\styles\images\treeview-famfamfam.gif" />
+    <Content Include="Content\styles\images\treeview-gray-line.gif" />
+    <Content Include="Content\styles\images\treeview-gray.gif" />
+    <Content Include="Content\styles\images\treeview-red-line.gif" />
+    <Content Include="Content\styles\images\treeview-red.gif" />
+    <Content Include="Content\styles\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\styles\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\styles\images\ui-bg_flat_0_eeeeee_40x100.png" />
+    <Content Include="Content\styles\images\ui-bg_flat_75_cccccc_40x100.png" />
+    <Content Include="Content\styles\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\styles\images\ui-bg_glass_100_dadada_1x400.png" />
+    <Content Include="Content\styles\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\styles\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\styles\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\styles\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\styles\images\ui-bg_glass_75_ffffff_1x400.png" />
+    <Content Include="Content\styles\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\styles\images\ui-bg_highlight-hard_90_cccccc_1x100.png" />
+    <Content Include="Content\styles\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\styles\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
+    <Content Include="Content\styles\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\styles\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\styles\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\styles\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\styles\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\styles\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\styles\images\wait.gif" />
+    <Content Include="Content\styles\joyride-1.0.5.css" />
+    <Content Include="Content\styles\jqModal.css" />
+    <Content Include="Content\styles\jquery-ui-1.9.2.custom.css" />
+    <Content Include="Content\styles\jquery-ui-timepicker.css" />
+    <Content Include="Content\styles\jquery.autocomplete.css" />
+    <Content Include="Content\styles\jquery.cluetip.css" />
+    <Content Include="Content\styles\jquery.contextMenu.css" />
+    <Content Include="Content\styles\jquery.dataTables.css" />
+    <Content Include="Content\styles\jquery.dataTables_themeroller.css" />
+    <Content Include="Content\styles\jquery.jscrollpane.css" />
+    <Content Include="Content\styles\jquery.mobile-1.2.0.css" />
     <Content Include="Content\js\jquery.mobile-1.2.0.js" />
-    <Content Include="Content\css\jquery.mobile-1.2.0.min.css" />
+    <Content Include="Content\styles\jquery.mobile-1.2.0.min.css" />
     <Content Include="Content\js\jquery.mobile-1.2.0.min.js" />
-    <Content Include="Content\css\jquery.mobile.structure-1.2.0.css" />
-    <Content Include="Content\css\jquery.mobile.structure-1.2.0.min.css" />
-    <Content Include="Content\css\jquery.mobile.theme-1.2.0.css" />
-    <Content Include="Content\css\jquery.mobile.theme-1.2.0.min.css" />
-    <Content Include="Content\css\jquery.multiSelect.css" />
-    <Content Include="Content\css\jquery.sb.css" />
-    <Content Include="Content\css\jquery.timepickr.css" />
-    <Content Include="Content\css\jquery.tooltip.css" />
-    <Content Include="Content\css\jquery.treeview.css" />
-    <Content Include="Content\css\jquery.ui.timepicker.css" />
-    <Content Include="Content\css\newsletter.css" />
-    <Content Include="Content\css\onlinereg.css" />
-    <Content Include="Content\css\organization.css" />
-    <Content Include="Content\css\pager.css" />
-    <Content Include="Content\css\Site.css" />
-    <Content Include="Content\css\Site2.css" />
-    <Content Include="Content\css\Site3.css" />
-    <Content Include="Content\css\site3b.css" />
-    <Content Include="Content\css\style.css" />
-    <Content Include="Content\css\Style2.css" />
-    <Content Include="Content\css\styledButton.css" />
-    <Content Include="Content\css\Stylesheet1.css" />
-    <Content Include="Content\css\thickbox.css" />
-    <Content Include="Content\css\touch.css" />
-    <Content Include="Content\css\ui.timepickr.css" />
+    <Content Include="Content\styles\jquery.mobile.structure-1.2.0.css" />
+    <Content Include="Content\styles\jquery.mobile.structure-1.2.0.min.css" />
+    <Content Include="Content\styles\jquery.mobile.theme-1.2.0.css" />
+    <Content Include="Content\styles\jquery.mobile.theme-1.2.0.min.css" />
+    <Content Include="Content\styles\jquery.multiSelect.css" />
+    <Content Include="Content\styles\jquery.sb.css" />
+    <Content Include="Content\styles\jquery.timepickr.css" />
+    <Content Include="Content\styles\jquery.tooltip.css" />
+    <Content Include="Content\styles\jquery.treeview.css" />
+    <Content Include="Content\styles\jquery.ui.timepicker.css" />
+    <Content Include="Content\styles\newsletter.css" />
+    <Content Include="Content\styles\onlinereg.css" />
+    <Content Include="Content\styles\organization.css" />
+    <Content Include="Content\styles\pager.css" />
+    <Content Include="Content\styles\Site.css" />
+    <Content Include="Content\styles\Site2.css" />
+    <Content Include="Content\styles\Site3.css" />
+    <Content Include="Content\styles\site3b.css" />
+    <Content Include="Content\styles\style.css" />
+    <Content Include="Content\styles\Style2.css" />
+    <Content Include="Content\styles\styledButton.css" />
+    <Content Include="Content\styles\Stylesheet1.css" />
+    <Content Include="Content\styles\thickbox.css" />
+    <Content Include="Content\styles\touch.css" />
+    <Content Include="Content\styles\ui.timepickr.css" />
     <Content Include="Content\js\FixedHeader.js" />
     <Content Include="Content\js\jquery-1.8.3.js" />
     <Content Include="Content\js\jquery-ui-1.9.2.custom.js" />
@@ -574,10 +587,7 @@
     <Content Include="Content\zylo.wav" />
     <Content Include="images\calendar.gif" />
     <Content Include="images\dnarrow.png" />
-    <Content Include="Min\Content\js\FixedHeader.js" />
-    <Content Include="Min\Content\js\jquery-1.8.3.js" />
-    <Content Include="Min\Content\js\jquery-ui-1.9.2.custom.js" />
-    <Content Include="Min\Content\js\jquery.dataTables.js" />
+    <Content Include="Scripts\compose.js" />
     <Content Include="Scripts\dropdown.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
@@ -735,13 +745,6 @@
     <Compile Include="Admin\UploadFile.aspx.designer.cs">
       <DependentUpon>UploadFile.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Users.aspx.cs">
-      <DependentUpon>Users.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Users.aspx.designer.cs">
-      <DependentUpon>Users.aspx</DependentUpon>
-    </Compile>
     <Compile Include="AppReview\FormImage.aspx.cs">
       <DependentUpon>FormImage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -891,20 +894,6 @@
     </Compile>
     <Compile Include="Report\ChurchAttendanceRpt.aspx.designer.cs">
       <DependentUpon>ChurchAttendanceRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\ChurchAttendanceSummaryRpt.aspx.cs">
-      <DependentUpon>ChurchAttendanceSummaryRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\ChurchAttendanceSummaryRpt.aspx.designer.cs">
-      <DependentUpon>ChurchAttendanceSummaryRpt.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\AttendanceDetail.aspx.cs">
-      <DependentUpon>AttendanceDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\AttendanceDetail.aspx.designer.cs">
-      <DependentUpon>AttendanceDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\DecisionSummary.aspx.cs">
       <DependentUpon>DecisionSummary.aspx</DependentUpon>
@@ -1151,72 +1140,13 @@
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
-    <Content Include="Min\Content\js\combined-onlinereg.js" />
-    <Content Include="Min\Content\js\combined-org.js" />
-    <Content Include="Min\Content\js\combined-person.js" />
-    <Content Include="Min\Content\js\combined.js" />
-    <Content Include="Min\Content\js\jquery-ui-timepicker-addon.js" />
-    <Content Include="Min\Content\js\jquery.checkboxtree.js" />
-    <Content Include="Min\Content\js\jquery.contextMenu.js" />
-    <Content Include="Min\Content\js\jquery.form.js" />
-    <Content Include="Min\Content\js\jquery.form2.js" />
-    <Content Include="Min\Content\js\jquery.idle-timer.js" />
-    <Content Include="Min\Content\js\jquery.multiSelect.js" />
-    <Content Include="Min\Content\js\jquery.pagination.js" />
-    <Content Include="Min\Content\js\jquery.showpassword.js" />
-    <Content Include="Min\Content\js\jquery.sortElements.js" />
-    <Content Include="Min\Content\js\jquery.textarea.js" />
-    <Content Include="Min\Content\js\jquery.transpose.js" />
-    <Content Include="Min\Scripts\Calendar.js" />
-    <Content Include="Min\Scripts\CheckIn.js" />
-    <Content Include="Min\Scripts\ContactSearch.js" />
-    <Content Include="Min\Scripts\Contributions.js" />
-    <Content Include="Min\Scripts\CheckInActivity.js" />
-    <Content Include="Min\Scripts\Divisions.js" />
-    <Content Include="Min\Scripts\edit.js" />
-    <Content Include="Min\Scripts\email.js" />
-    <Content Include="Min\Scripts\Funds.js" />
-    <Content Include="Min\Scripts\ManageVolunteer.js" />
-    <Content Include="Min\Scripts\meeting-ipad.js" />
-    <Content Include="Min\Scripts\meeting-ticket.js" />
-    <Content Include="Min\Scripts\meeting.js" />
-    <Content Include="Min\Scripts\Meetings.js" />
-    <Content Include="Min\Scripts\merge.js" />
-    <Content Include="Min\Scripts\OnlineReg.js" />
-    <Content Include="Min\Scripts\OnlineRegPayment.js" />
-    <Content Include="Min\Scripts\Organization.js" />
-    <Content Include="Min\Scripts\OrgChildren.js" />
-    <Content Include="Min\Scripts\OrgGroups.js" />
-    <Content Include="Min\Scripts\OrgMemberDialog.js" />
-    <Content Include="Min\Scripts\OrgMembers.js" />
-    <Content Include="Min\Scripts\OrgMembersDialog.js" />
-    <Content Include="Min\Scripts\OrgSearch.js" />
-    <Content Include="Min\Scripts\PeopleSearch.js" />
-    <Content Include="Min\Scripts\Person.js" />
-    <Content Include="Min\Scripts\pickslots2.js" />
-    <Content Include="Min\Scripts\PostBundle.js" />
-    <Content Include="Min\Scripts\QueryBuilder.js" />
-    <Content Include="Min\Scripts\QuickSearch.js" />
-    <Content Include="Min\Scripts\RegSetting.js" />
-    <Content Include="Min\Scripts\SavedQuery.js" />
-    <Content Include="Min\Scripts\SearchAdd.js" />
-    <Content Include="Min\Scripts\SearchDivisions.js" />
-    <Content Include="Min\Scripts\SearchOrgs.js" />
-    <Content Include="Min\Scripts\SearchUsers.js" />
-    <Content Include="Min\Scripts\Tags.js" />
-    <Content Include="Min\Scripts\Task.js" />
-    <Content Include="Min\Scripts\TestAPI.js" />
-    <Content Include="Min\Scripts\TotalsByFund.js" />
-    <Content Include="Min\Scripts\TransactionHistory.js" />
-    <Content Include="Min\Scripts\Transactions.js" />
-    <Content Include="Min\Scripts\UserDialog.js" />
-    <Content Include="Min\Scripts\Users.js" />
     <Content Include="Scripts\Calendar.js" />
     <Content Include="Scripts\CheckinActivity.js" />
     <Content Include="Scripts\ContactSearch.js" />
     <Content Include="Scripts\Contributions.js" />
     <Content Include="Scripts\family.js" />
     <Content Include="Scripts\HomeTest.js" />
+    <Content Include="Scripts\PeopleSearch.js" />
     <Content Include="Scripts\Users.js" />
     <Content Include="Scripts\QuickSearch.js" />
     <Content Include="Scripts\meeting-ticket.js" />
@@ -1239,9 +1169,6 @@
     <Content Include="Scripts\SavedQuery.js" />
     <Content Include="Scripts\SearchUsers.js" />
     <Content Include="Scripts\Tags.js" />
-    <Content Include="Scripts\PeopleSearch.js" />
-    <Content Include="Scripts\menu.js" />
-    <Content Include="Scripts\pagetour.js" />
     <Content Include="Scripts\OnlineRegPayment.js" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="Content\js\jquery.showpassword.js" />
@@ -1254,8 +1181,6 @@
     <Content Include="images\req.gif" />
     <Content Include="Scripts\Edit.js" />
     <Content Include="Scripts\Email.js" />
-    <Content Include="Scripts\pickslots.js" />
-    <Content Include="Scripts\pickslots2.js" />
     <Content Include="Scripts\TransactionHistory.js" />
     <Content Include="Scripts\Transactions.js" />
     <Content Include="Scripts\UserDialog.js" />
@@ -1291,8 +1216,6 @@
     <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Index.cshtml">
     </Content>
     <Content Include="Areas\Dialog\Views\AddToOrgFromTag\Progress.cshtml">
-    </Content>
-    <Content Include="Views\Shared\CombinedJs.cshtml">
     </Content>
     <Content Include="Areas\Dialog\Views\RepairTransactions\Progress.cshtml">
     </Content>
@@ -1382,7 +1305,6 @@
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TimeSlots.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
-    <None Include="Minify.bat" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml">
@@ -2025,14 +1947,6 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Shared\CombinedOrgJs.cshtml">
-    </Content>
-    <Content Include="Views\Shared\CombinedPersonJs.cshtml">
-    </Content>
-    <Content Include="Views\Shared\CombinedOnlineRegJs.cshtml">
-    </Content>
-    <Content Include="Views\Shared\CombinedCss.cshtml">
-    </Content>
     <Content Include="Web.bvcms2.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -2057,7 +1971,6 @@
     <Content Include="Admin\DeleteSpecialTags.aspx" />
     <Content Include="Admin\LastActivity.aspx" />
     <Content Include="Admin\UploadFile.aspx" />
-    <Content Include="Admin\Users.aspx" />
     <Content Include="AppReview\FormImage.aspx" />
     <Content Include="AppReview\VolunteerApp.aspx" />
     <Content Include="Binaries\AjaxControlToolkit.dll" />
@@ -2180,7 +2093,6 @@
     <Content Include="images\unknown.jpg" />
     <Content Include="images\work.gif" />
     <Content Include="Report\ChurchAttendanceRpt.aspx" />
-    <Content Include="Report\ChurchAttendanceSummaryRpt.aspx" />
     <Content Include="Report\DecisionSummary.aspx" />
     <Content Include="Site.Master" />
     <Content Include="UserControls\GridPager.ascx" />
@@ -2265,13 +2177,10 @@
     <Content Include="Scripts\Organization.js" />
     <Content Include="Scripts\OrgSearch.js" />
     <Content Include="Scripts\SearchAdd.js" />
-    <Content Include="Scripts\SearchDialog.js" />
     <Content Include="Scripts\OrgMemberDialog.js" />
-    <Content Include="Scripts\RecReg.js" />
     <Content Include="Errors\PageNotFound.aspx" />
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
-    <Content Include="Report\AttendanceDetail.aspx" />
     <Content Include="Scripts\CheckIn.js" />
     <Content Include="Scripts\Event.js" />
     <Content Include="Scripts\Pager.js" />

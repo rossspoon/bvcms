@@ -111,7 +111,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					Db.Email(p0.FromEmail,
 						Db.PeopleFromPidString(org.NotifyIds),
 						"payment received for " + ti.Description,
-						"{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.Name, Amount, ti.Description, ti.Amtdue, names));
+						"{0} paid {1:c} for {2}, balance of {3:c}\n({4})".Fmt(ti.FullName, Amount, ti.Description, ti.Amtdue, names));
 				}
 			}
 		}

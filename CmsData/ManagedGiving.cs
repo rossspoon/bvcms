@@ -70,7 +70,10 @@ namespace CmsData
             {
                 TransactionDate = DateTime.Now,
                 TransactionId = "started",
-                Name = this.Person.Name,
+                First = Person.FirstName,
+                MiddleInitial = Person.MiddleName.Truncate(1) ?? "",
+                Last = Person.LastName,
+                Suffix = Person.SuffixCode,
                 Amt = total,
                 Description = "Recurring Giving",
                 Testing = false,

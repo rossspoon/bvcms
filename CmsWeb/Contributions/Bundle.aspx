@@ -2,7 +2,6 @@
     CodeBehind="Bundle.aspx.cs" Inherits="CmsWeb.Contributions.Bundle" EnableEventValidation="false" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -33,9 +32,6 @@
             <td>
                 <cc1:DisplayOrEditDate ID="ContributionDate" runat="server" BindingSource="bundleheader"
                     BindingMode="TwoWay" AssociatedRowId="TR_ContributionDate" />
-                <cc2:CalendarExtender ID="ContributionDate_CalendarExtender" runat="server" Enabled="True"
-                    TargetControlID="ContributionDate">
-                </cc2:CalendarExtender>
             </td>
         </tr>
         <tr id="TR_BundleHeaderTypeId" runat="server">
@@ -55,9 +51,6 @@
             <td>
                 <cc1:DisplayOrEditDate ID="DepositDate" runat="server" BindingSource="bundleheader"
                     BindingMode="TwoWay" />
-                <cc2:CalendarExtender ID="DepositDate_CalendarExtender" runat="server" Enabled="True"
-                    TargetControlID="DepositDate">
-                </cc2:CalendarExtender>
             </td>
         </tr>
         <tr>

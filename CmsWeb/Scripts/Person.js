@@ -1,5 +1,4 @@
-﻿/// <reference path="../Min/Content/js/combined-person.js" />
-$(function () {
+﻿$(function () {
     var addrtabs = $("#address-tab").tabs();
     $("#enrollment-tab").tabs();
     $("#member-tab").tabs();

@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsData
 @using CmsWeb
 @model CmsData.User
@@ -7,9 +8,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-@Html.Css("/Content/css/jquery-ui-1.9.2.custom.css")
-@Html.Css("/Content/css/Dialog.css")
-@Html.Css("/Content/css/jquery.tooltip.css")
+    @Styles.Render("~/Content/styles/css")
+    @Styles.Render("~/Content/styles/dialog-css")
 <style type="text/css">
 .item
 {
@@ -20,6 +20,8 @@
     padding: 0 0 5px 0;
 }
 </style>
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/UserDialog-js")
 </head>
 <body>
 <a class="helplink" target="_blank" href='@Util.HelpLink("UserUpdate")'>help</a>
@@ -45,9 +47,6 @@
 <a href="/Person/UserWelcome/@Model.UserId" class="submitbutton save bt blue">Save Changes, Send Welcome Email</a>
 <a id="deluser" href="/Person/UserDelete/@Model.UserId" class="submitbutton bt red">Delete User</a>
 </form>
-@Html.Partial("CombinedJs")
-@Html.Script("/Content/js/jquery.transpose.js")
-@Html.Script("/Scripts/UserDialog.js")
 </body>
 </html>
 

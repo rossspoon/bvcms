@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.VolSubModel 
+@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @{
@@ -20,12 +21,9 @@
 }
 @section scripts
 {
-@Html.Script("/Content/js/jquery.transpose.js")
-@Html.Script("/Scripts/ManageVolunteer.js")
+@Scripts.Render("~/bundles/ManageVolunteer-js")
 <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-<script src="/ckeditor/adapters/jquery.js" type="text/javascript"></script>
-@Html.Script("/Scripts/Email.js")
-@Html.Script("/Scripts/Edit.js")
+@Scripts.Render("~/bundles/edit-js")
 }
 <h2>@Model.org.OrganizationName</h2>
 <div>

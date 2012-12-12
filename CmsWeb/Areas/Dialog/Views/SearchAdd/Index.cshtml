@@ -1,15 +1,16 @@
 ﻿@model CmsWeb.Models.SearchModel
+@using System.Web.Optimization
 @using CmsWeb
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-@Html.Partial("CombinedCss")
+    @Styles.Render("~/Content/styles/css")
 </head>
 
 <body>
-@Html.Partial("CombinedJs")
-@Html.Partial("DatePickerDefaults")
-@Html.Script("/Scripts/SearchAdd.js")
+    @Scripts.Render("~/bundles/js")
+    @Html.Partial("DatePickerDefaults")
+    @Scripts.Render("~/bundles/SearchAdd-js")
 <form action="/SearchAdd/Complete/" method="post" class="DisplayEdit">
  @Html.Partial("SearchPerson", Model) 
 </form>

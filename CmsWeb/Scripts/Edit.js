@@ -29,7 +29,7 @@
     ['Bold', 'Italic', 'Underline'],
     ['Image'],
     ['Font', 'FontSize'],
-    ['TextColor', 'BGColor'],
+    ['TextColor', 'BGColor']
     ]
     });
 });

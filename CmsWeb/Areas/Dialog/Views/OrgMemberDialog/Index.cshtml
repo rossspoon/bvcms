@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsData.OrganizationMember
 
@@ -6,19 +7,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-    <link href="/Content/css/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/Site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/jquery.tooltip.css" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/styles/css")
 <style type="text/css">
 .bt { font-size: 8pt; }
 body { margin: 1px; }
 </style>
+    @Scripts.Render("~/bundles/js")
+    @Html.Partial("DatePickerDefaults")
+    @Scripts.Render("~/bundles/OrgMemberDialog-js")
 </head>
 
 <body>
-@Html.Partial("CombinedJs")
-@Html.Partial("DatePickerDefaults")
-@Html.Script("/Scripts/OrgMemberDialog.js")
 
 @{ string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; }
 @Html.Hidden("from")

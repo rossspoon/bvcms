@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.MeetingModel
 @{
@@ -25,8 +26,7 @@
 
 @section scripts
 {
-@*@Html.Script("/Content/js/jquery.sortElements.js")*@
-@Html.Script("/Scripts/meeting.js")
+@Scripts.Render("~/bundles/meeting-js")
     @if (!Model.meeting.GroupMeetingFlag)
     {
     <script type="text/javascript">

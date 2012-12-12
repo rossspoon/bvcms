@@ -1,15 +1,14 @@
-﻿@using CmsWeb.Models
+﻿@using System.Web.Optimization
+@using CmsWeb.Models
 @using CmsWeb
 @model SearchDivisionsModel
 <html>
 <head>
 <title>Index</title>
-    <link href="/Content/css/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/Site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/jquery.tooltip.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/style2.css" rel="stylesheet" type="text/css" />
-@Html.Partial("CombinedJs")
-@Html.Script("/Scripts/SearchDivisions.js")
+    @Styles.Render("~/Content/styles/css")
+    <link href="/Content/styles/style2.css" rel="stylesheet" type="text/css" />
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/SearchDivisions-js")
 </head>
 <body>
 <form name="form1">

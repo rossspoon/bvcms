@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.ContactSearchModel
 @{
@@ -7,7 +8,7 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/ContactSearch.js")
+@Scripts.Render("~/bundles/ContactSearch-js")
 }
 <form action="" id="form">
 <div class="roundbox floatleft">

@@ -1,10 +1,11 @@
+@using System.Web.Optimization
 @if ((bool?)ViewData["hasshell"] == true)
 {
 @Html.Raw((string)ViewData["top"])
 @RenderSection("head", false)
 @RenderBody()
 @Html.Raw((string)ViewData["bottom"])
-@Html.Partial("CombinedOnlineRegJs")
+@Scripts.Render("~/bundles/OnlineRegister-js")
 @RenderSection("scripts", false)
 }
 else
@@ -15,8 +16,8 @@ else
 <title>Online Registration</title>
 @Html.Raw(Util.PickFirst((string)ViewData["header"], @"
 <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-<link href='/Content/css/jquery-ui-1.9.2.custom.css' rel='stylesheet' type='text/css' />
-<link href='/Content/css/onlinereg.css?v=7' rel='stylesheet' type='text/css' />
+<link href='/Content/styles/jquery-ui-1.9.2.custom.css' rel='stylesheet' type='text/css' />
+<link href='/Content/styles/onlinereg.css?v=7' rel='stylesheet' type='text/css' />
 "))
 @RenderSection("head", false)
 </head>
@@ -24,7 +25,7 @@ else
 @Html.Raw((string)ViewData["top"])
 @RenderBody()
 @Html.Raw((string)ViewData["bottom"])
-@Html.Partial("CombinedOnlineRegJs")
+@Scripts.Render("~/bundles/OnlineRegister-js")
 @RenderSection("scripts", false)
 </body>
 </html>

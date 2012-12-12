@@ -103,6 +103,10 @@ namespace CmsWeb.Areas.Manage.Controllers
 				{
 					TransactionId = resp.TransactionId + (t.Testing == true ? "(testing)" : ""),
 					Name = t.Name,
+                    First = t.First,
+                    MiddleInitial = t.MiddleInitial,
+                    Last = t.Last,
+                    Suffix = t.Suffix,
 					Amt = -amt,
 					Amtdue = t0.Amtdue + amt,
 					Approved = true,
@@ -135,7 +139,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 <tr><td>Date</td><td>{6}</td></tr>
 <tr><td>TranIds</td><td>Org: {7} {8}, Curr: {9} {10}</td></tr>
 <tr><td>User</td><td>{11}</td></tr>
-</table>".Fmt(t.Name, t.Emails, t.Address, t.Phone,
+</table>".Fmt(t.FullName, t.Emails, t.Address, t.Phone,
 		 t.Description, 
 		 -amt,
 		 t.TransactionDate.Value.FormatDateTm(),
@@ -163,6 +167,10 @@ namespace CmsWeb.Areas.Manage.Controllers
 				{
 					TransactionId = "Adjustment",
 					Name = t.Name,
+                    First = t.First,
+                    MiddleInitial = t.MiddleInitial,
+                    Last = t.Last,
+                    Suffix = t.Suffix,
 					Amt = amt,
 					Amtdue = t.Amtdue - amt,
 					Approved = true,
@@ -194,7 +202,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 <tr><td>Amount</td><td>{5:N2}</td></tr>
 <tr><td>Date</td><td>{6}</td></tr>
 <tr><td>TranIds</td><td>Org: {7} {8}, Curr: {9} {10}</td></tr>
-</table>".Fmt(t.Name, t.Emails, t.Address, t.Phone,
+</table>".Fmt(t.FullName, t.Emails, t.Address, t.Phone,
 		 t.Description, 
 		 t.Amt,
 		 t.TransactionDate.Value.FormatDateTm(),

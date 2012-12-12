@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.PromotionModel
+@using System.Web.Optimization
 @using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -25,9 +26,7 @@
 }
 @section scripts
 {
-@Html.Script("/Content/js/jquery.pagination.js")
-@Html.Script("/Content/js/jquery.form.js")
-@Html.Script("/Content/js/jquery.form2.js")
+    @Scripts.Render("~/bundles/task-js")
 <script type="text/javascript">
     $(function () {
         $(".bt").button();
