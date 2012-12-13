@@ -390,6 +390,9 @@ div.roundbox select {
 .error, .red {
     color: red;
 }
+.white {
+    color: white;
+}
 
 .disabled {
     color: #999 !important;
@@ -626,3 +629,32 @@ div.toolbar > ul {
             padding-top: 5px;
             margin-top: 0;
         }
+input.wide
+{
+    border: 1px solid #CCCCCC;
+    width: 100%;
+}
+input.short 
+{
+    border: 1px solid #CCCCCC;
+    width: 6em;
+}
+input.shorter 
+{
+    border: 1px solid #CCCCCC;
+    width: 2em;
+}
+input.wide70
+{
+    border: 1px solid #CCCCCC;
+    width: 70%;
+}
+input {
+    border: 1px solid #CCCCCC;
+}
+select {
+    border: 1px solid #CCCCCC;
+}
+#nametable td {
+    padding-right: 4px;
+}

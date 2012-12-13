@@ -587,6 +587,7 @@
     <Content Include="Content\zylo.wav" />
     <Content Include="images\calendar.gif" />
     <Content Include="images\dnarrow.png" />
+    <Content Include="images\RapidSSL_SEAL-90x50.gif" />
     <Content Include="Scripts\compose.js" />
     <Content Include="Scripts\dropdown.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />

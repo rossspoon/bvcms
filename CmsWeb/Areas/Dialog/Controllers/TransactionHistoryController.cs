@@ -14,6 +14,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
         public ActionResult Index(int id, int oid)
         {
             var m = new TransactionHistoryModel(id, oid);
+            ViewBag.orgid = oid;
+            ViewBag.PeopleId = id;
             return View(m);
         }
         public ActionResult Delete(int id)
@@ -23,6 +25,13 @@ namespace CmsWeb.Areas.Dialog.Controllers
             DbUtil.Db.EnrollmentTransactions.DeleteOnSubmit(t);
             DbUtil.Db.SubmitChanges();
             return View("History", m.FetchHistory());
+        }
+        public ActionResult DeleteAll(int orgid, int peopleid)
+        {
+            var q = DbUtil.Db.EnrollmentTransactions.Where(tt => tt.OrganizationId == orgid && tt.PeopleId == peopleid);
+            DbUtil.Db.EnrollmentTransactions.DeleteAllOnSubmit(q);
+            DbUtil.Db.SubmitChanges();
+            return Content("ok");
         }
         public ActionResult Edit(string id, DateTime value)
         {

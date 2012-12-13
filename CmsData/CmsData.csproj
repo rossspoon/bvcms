@@ -300,6 +300,7 @@
     <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\BackgroundCheck.cs" />
     <Compile Include="Generated\BackgroundCheckMVRCode.cs" />
+    <Compile Include="Generated\ContentKeyWord.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
     <Compile Include="Generated\SMSItem.cs" />

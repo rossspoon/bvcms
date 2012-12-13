@@ -283,7 +283,7 @@ namespace CmsData
 		}
 		public TransactionResponse createCheckTransactionRequest(int PeopleId, decimal amt,
 			string routing, string acct, string description, int tranid,
-			string email, string first, string last, string middle, string suffix,
+			string email, string first, string middle, string last, string suffix,
 			string addr, string city, string state, string zip, string phone)
 		{
 			try

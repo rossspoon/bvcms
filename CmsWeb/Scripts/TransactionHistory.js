@@ -9,6 +9,15 @@
             });
         return false;
     });
+    $("#deleteall").live("click", function (ev) {
+        ev.preventDefault();
+        if (confirm("are you sure you want to delete all transactions (will not affect attendance)?"))
+            $.post($(this).attr("href"), {}, function () {
+                $("#history").replaceWith("");
+                alert("You will need to refresh your organization page to see the changes there");
+            });
+        return false;
+    });
     $("span.date").editable('/TransactionHistory/Edit/', {
         tooltip: 'click to edit...',
         event: 'click',

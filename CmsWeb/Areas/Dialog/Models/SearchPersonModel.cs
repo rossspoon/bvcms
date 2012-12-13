@@ -120,10 +120,10 @@ namespace CmsWeb.Models
         internal void ValidateModelForNew(ModelStateDictionary ModelState, bool checkaddress)
         {
             if (!first.HasValue())
-                ModelState.AddModelError("first", "first name required");
+                ModelState.AddModelError("name", "first name required");
 
             if (!last.HasValue())
-                ModelState.AddModelError("last", "last name required");
+                ModelState.AddModelError("name", "last name required");
 
             if (!birthday.HasValue && dob != "na")
                 ModelState.AddModelError("dob", "valid birthday (or \"na\")");
@@ -135,7 +135,7 @@ namespace CmsWeb.Models
             int count = 0;
             PeopleSearchModel.FindPerson(first, last, birthday ?? DateTime.MinValue, string.Empty, phone.GetDigits(), out count);
             if (count > 0)
-                ModelState.AddModelError("first", "name/dob already exists in db");
+                ModelState.AddModelError("name", "name/dob already exists in db");
 
             if (!Util.ValidEmail(email) && email != "na")
                 ModelState.AddModelError("email", "valid email address (or \"na\")");

@@ -80,7 +80,7 @@ namespace CmsWeb.Models
             var ti = new Transaction
                      {
                          First = First,
-                         MiddleInitial = MiddleInitial,
+                         MiddleInitial = MiddleInitial.Truncate(1) ?? "",
                          Last = Last,
                          Suffix = Suffix,
                          Donate = Donate,
@@ -129,7 +129,7 @@ namespace CmsWeb.Models
                          Email = Util.FirstAddress(ti.Emails).Address,
 
                          First = ti.First,
-                         MiddleInitial = ti.MiddleInitial,
+                         MiddleInitial = ti.MiddleInitial.Truncate(1) ?? "",
                          Last = ti.Last,
                          Suffix = ti.Suffix,
 

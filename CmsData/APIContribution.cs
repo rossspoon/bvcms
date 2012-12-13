@@ -33,7 +33,8 @@ namespace CmsData.API
 			        c.ContributionDate = dt;
                 if (type.HasValue)
     			    c.ContributionTypeId = type.Value;
-				return @"<PostContribution status=""ok"" />";
+                Db.SubmitChanges();
+				return @"<PostContribution status=""ok"" id=""{0}"" />".Fmt(c.ContributionId);
 			}
 			catch (Exception ex)
 			{

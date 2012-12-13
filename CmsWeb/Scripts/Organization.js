@@ -359,6 +359,11 @@ $(function () {
             $(input).removeClass("ui-state-highlight");
         }
     });
+    $("#orginfoform").validate({
+        rules: {
+            "org.OrganizationName": { required: true, maxlength: 100 }
+        }
+    });
     // validate signup form on keyup and submit
     $("#settingsForm").validate({
         rules: {

@@ -38,6 +38,8 @@ namespace CmsData
 		private int _OwnerID;
 		
    		
+   		private EntitySet< ContentKeyWord> _ContentKeyWords;
+		
     	
 	#endregion
 	
@@ -79,6 +81,8 @@ namespace CmsData
     #endregion
 		public Content()
 		{
+			
+			this._ContentKeyWords = new EntitySet< ContentKeyWord>(new Action< ContentKeyWord>(this.attach_ContentKeyWords), new Action< ContentKeyWord>(this.detach_ContentKeyWords)); 
 			
 			
 			OnCreated();
@@ -311,6 +315,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_ContentKeyWords_Content", Storage="_ContentKeyWords", OtherKey="Id")]
+   		public EntitySet< ContentKeyWord> ContentKeyWords
+   		{
+   		    get { return this._ContentKeyWords; }
+
+			set	{ this._ContentKeyWords.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -332,6 +346,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_ContentKeyWords(ContentKeyWord entity)
+		{
+			this.SendPropertyChanging();
+			entity.Content = this;
+		}
+
+		private void detach_ContentKeyWords(ContentKeyWord entity)
+		{
+			this.SendPropertyChanging();
+			entity.Content = null;
+		}
+
+		
 	}
 
 }
