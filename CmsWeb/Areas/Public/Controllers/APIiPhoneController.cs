@@ -32,7 +32,7 @@ namespace CmsWeb.Areas.Public.Controllers
         }
         public ActionResult SearchResults(string name, string comm, string addr)
         {
-			if (!AccountModel.Authenticate())
+			if (!AccountModel.Authenticate(checkorgmembersonly: true))
                 return Content("not authorized");
 			if (!CMSRoleProvider.provider.IsUserInRole(AccountModel.UserName2, "Access"))
                 return Content("not authorized");

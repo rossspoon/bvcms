@@ -16,6 +16,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             var m = new TransactionHistoryModel(id, oid);
             ViewBag.orgid = oid;
             ViewBag.PeopleId = id;
+            ViewBag.IsMember = DbUtil.Db.OrganizationMembers.Any(mm => mm.OrganizationId == oid && mm.PeopleId == id);
             return View(m);
         }
         public ActionResult Delete(int id)

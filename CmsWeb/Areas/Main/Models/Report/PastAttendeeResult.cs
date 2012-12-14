@@ -155,25 +155,8 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         public static IEnumerable<AttendInfo> Attendees(int orgid)
         {
-            var q = from a in DbUtil.Db.Attends
-                    where a.Meeting.OrganizationId == orgid
-                    where a.MeetingDate >= a.Organization.FirstMeetingDate || a.Organization.FirstMeetingDate == null
-                    where a.EffAttendFlag == true
-                    group a by a.Person into g
-                    let a = g.OrderByDescending(aa => aa.MeetingDate).First()
-                    let p = a.Person
-                    let lastattend = a.MeetingDate
-                    let attendpct = a.Organization.OrganizationMembers
-                                    .Where(aa => aa.PeopleId == a.PeopleId)
-                                    .Select(aa => aa.AttendPct)
-                                    .SingleOrDefault()
-                    let attendstr = a.Organization.OrganizationMembers
-                                    .Where(aa => aa.PeopleId == a.PeopleId)
-                                    .Select(aa => aa.AttendStr)
-                                    .SingleOrDefault()
-                    let visitor = !a.Organization.OrganizationMembers.Any(m => m.PeopleId == p.PeopleId)
-                    orderby !visitor, lastattend descending, p.Name2
-
+            var q = from ra in DbUtil.Db.RecentAttendance(orgid)
+                    let p = DbUtil.Db.People.Single(pp => pp.PeopleId == ra.PeopleId)
                     select new AttendInfo
                     {
                         PeopleId = p.PeopleId,
@@ -184,11 +167,11 @@ namespace CmsWeb.Areas.Main.Models.Report
                         HomePhone = p.HomePhone,
                         CellPhone = p.CellPhone,
                         CSZ = Util.FormatCSZ4(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
-                        visitor = visitor,
-                        LastAttend = lastattend,
-                        AttendPct = attendpct,
-                        AttendStr = attendstr,
-                        AttendType = a.AttendType.Description
+                        visitor = ra.Visitor == 1,
+                        LastAttend = ra.Lastattend,
+                        AttendPct = ra.Attendpct,
+                        AttendStr = ra.Attendstr,
+                        AttendType = ra.Attendtype
                     };
             return q;
         }

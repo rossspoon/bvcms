@@ -1977,6 +1977,17 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.RecentAttendance", IsComposable = true)]
+		public IQueryable< View.RecentAttendance > RecentAttendance(
+            [Parameter(DbType="int")] int? oid
+            )
+		{
+			return this.CreateMethodCallQuery< View.RecentAttendance>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid
+                );
+		}
+
 		[Function(Name="dbo.Split", IsComposable = true)]
 		public IQueryable< View.Split > Split(
             [Parameter(DbType="varchar")] string InputText,

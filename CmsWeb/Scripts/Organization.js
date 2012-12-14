@@ -542,7 +542,7 @@ $(function () {
         $("#AttendCreditList").val(a[2]);
     });
     $.GetMeetingDateTime = function () {
-        var reTime = /^ *(\d{1,2}):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
+        var reTime = /^ *(\d{1,2}):[0-5][0-9] *((a|p|A|P)(m|M)){0,1} *$/;
         var d = $('#NewMeetingDate').val();
         var t = $('#NewMeetingTime').val();
         var v = true;

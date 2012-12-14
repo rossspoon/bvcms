@@ -28,13 +28,13 @@
 } 
         <tr>
             <th> Status: </th>
-            <td> @Html.DropDownList("StatusId", Model.TaskStatusCodes(), new { onchange = "RefreshList()" }) </td>
+            <td> @Html.DropDownList("StatusId", Model.TaskStatusCodes()) </td>
         </tr>
         <tr>
             <td colspan="2">
                 <label for="OnwerOnly" class="Bold">
                     Owned Tasks Only:</label>
-                @Html.CheckBox("OwnerOnly", new { onclick = "RefreshList()" })
+                @Html.CheckBox("OwnerOnly")
             </td>
         </tr>
     </table>
@@ -53,12 +53,12 @@
         <table>
             <tr>
                 <td>
-                    @Html.DropDownList("actions", ViewData.Model.ActionItems(), new { onchange = "DoAction()" })
+                    @Html.DropDownList("actions", ViewData.Model.ActionItems())
                 </td>
                 <td>
                     New Task:
-                    <input type="text" id="TaskDesc" maxlength="100" style="width: 217px" onkeypress="return AddTaskEnter(event)" />
-                    <a href="javascript:AddTaskClick()">Add Task</a>
+                    <input type="text" id="TaskDesc" maxlength="100" style="width: 217px" />
+                    <a id="AddTask" href="#">Add Task</a>
                 </td>
             </tr>
         </table>
@@ -66,7 +66,6 @@
             <thead>
                 <tr>
                     <th> </th>
-                    <th title="sort by priority"> <a href="#" class="sortable">123</a> </th>
                     <th> <a href="#" class="sortable">Due/Completed</a> </th>
                     <th> <a href="#" class="sortable">Task</a> </th>
                     <th> <a href="#" class="sortable">About</a> </th>
@@ -81,14 +80,12 @@
          @Html.Partial("Pager", Model.pagerModel()) 
         <div>
             New List(tab):
-            <input type="text" id="ListName" maxlength="50" style="width: 217px" onkeypress="return AddListEnter(event)" />
-            <a href="#" onclick="return AddListClick()">Add List</a>
+            <input type="text" id="ListName" maxlength="50" style="width: 217px" />
+            <a id="AddList" href="#">Add List</a>
         </div>
 <input type="hidden" id="Count" value='@Model.Count' />
 @Html.Hidden("Sort",Model.Sort)
     </form>
     <div id="dialogbox">
     <iframe id="searchDialogiframe" style="width:100%;height:99%;border-width:0px;"></iframe>
-    </div>
-    <div id="dialogbox2" title="Search Contacts" style="width: 560px; overflow: scroll">
     </div>

@@ -303,6 +303,7 @@
     <Compile Include="Generated\ContentKeyWord.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
+    <Compile Include="Generated\Functions\RecentAttendance.cs" />
     <Compile Include="Generated\SMSItem.cs" />
     <Compile Include="Generated\SMSList.cs" />
     <Compile Include="Generated\Views\UserRole.cs" />

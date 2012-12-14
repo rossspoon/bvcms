@@ -74,13 +74,13 @@ namespace CmsWeb
                 "~/Scripts/RegSetting.js"
                             ));
 
-
             bundles.Add(new ScriptBundle("~/bundles/task-js").Include(
-                "~/Content/js/jquery.pagination.js",
                 "~/Content/js/jquery.form.js",
                 "~/Content/js/jquery.form2.js",
+                "~/Scripts/Task.js"
+                            ));
+            bundles.Add(new ScriptBundle("~/bundles/querybuilder-js").Include(
                 "~/Content/js/jquery.contextMenu.js",
-                "~/Scripts/Task.js",
                 "~/Scripts/QueryBuilder.js"
                             ));
 
