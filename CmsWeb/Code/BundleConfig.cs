@@ -86,6 +86,7 @@ namespace CmsWeb
 
             bundles.Add(new ScriptBundle("~/bundles/edit-js").Include(
                 "~/ckeditor/adapters/jquery.js",
+                "~/Content/js/jquery-ui-dialog-patch.js",
                 "~/Scripts/Edit.js"
                             ));
 
