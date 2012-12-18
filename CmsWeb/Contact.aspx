@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs"
+﻿
+<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs"
     Inherits="CmsWeb.Contact" Title="Person" EnableEventValidation="false" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>

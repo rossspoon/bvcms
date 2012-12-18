@@ -8,7 +8,7 @@
 }
 @section scripts
 {
-@Scripts.Render("~/bundles/ContactSearch-js")
+@Scripts.Render("~/bundles/single/ContactSearch-js")
 }
 <form action="" id="form">
 <div class="roundbox floatleft">
@@ -25,11 +25,11 @@
         </tr>
         <tr>
             <th align="right">Contact Start Date:</th>
-            <td>@Html.TextBoxFor(vv => vv.StartDate)</td>
+            <td>@Html.TextBoxFor(vv => vv.StartDate, new { @class = "datepicker"})</td>
         </tr>
         <tr>
             <th align="right">Contact End Date:</th>
-            <td>@Html.TextBoxFor(vv => vv.EndDate)</td>
+            <td>@Html.TextBoxFor(vv => vv.EndDate, new { @class = "datepicker"})</td>
         </tr>
         <tr>
             <th align="right">Contact Type:</th>
@@ -67,7 +67,7 @@
     <div class="dropdown-menu has-tip">
         <ul>
             <li><a id="ConvertToQuery" href="/ContactSearch/ConvertToQuery/">Convert To Search (Contactors)</a></li>
-            <li><a id="ContactorSummary" href="/ContactSearch/ContactorSummary">Contactor Summary Report<br/>(requires start/end and optionally ministry)</a></li>
+            <li><a id="ContactorSummary" href="/ContactSearch/ContactorSummary">Contactor Summary Report</a></li>
         </ul>
     </div>
 </div>

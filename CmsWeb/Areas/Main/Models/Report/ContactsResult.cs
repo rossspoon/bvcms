@@ -117,7 +117,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             if (t.Rows.Count % 2 == 0)
                 t.DefaultCell.BackgroundColor = new GrayColor(240);
             else
-                t.DefaultCell.BackgroundColor = Color.WHITE;
+                t.DefaultCell.BackgroundColor = BaseColor.WHITE;
 
             var t2 = new PdfPTable(w2);
             t2.WidthPercentage = 100;

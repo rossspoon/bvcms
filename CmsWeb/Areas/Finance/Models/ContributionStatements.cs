@@ -173,8 +173,11 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 
 				doc.Add(new Phrase("\n  Period: {0:d} - {1:d}".Fmt(FromDate, ToDate), boldfont));
 
-				var mct = new MultiColumnText();
-				mct.AddRegularColumns(doc.Left, doc.Right, 20f, 2);
+			    var pos = w.GetVerticalPosition(true);
+
+			    var ct = new ColumnText(dc);
+                float gutter = 20f;
+                float colwidth = (doc.Right - doc.Left - gutter) / 2;
 
 				var t = new PdfPTable(new float[] { 10f, 24f, 10f });
 				t.WidthPercentage = 100;
@@ -217,7 +220,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				cell.Phrase = new Phrase(total.ToString("N2"), font);
 				t.AddCell(cell);
 
-				mct.AddElement(t);
+				ct.AddElement(t);
 
 
 				//------Pledges
@@ -259,7 +262,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 						cell.Phrase = new Phrase(c.ContributionAmount.ToString2("N2"), font);
 						t.AddCell(cell);
 					}
-					mct.AddElement(t);
+					ct.AddElement(t);
 				}
 
 				//-----Summary
@@ -295,9 +298,27 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				cell.HorizontalAlignment = Element.ALIGN_RIGHT;
 				cell.Phrase = new Phrase(total.ToString("N2"), font);
 				t.AddCell(cell);
-				mct.AddElement(t);
+				ct.AddElement(t);
 
-				doc.Add(mct);
+			    var col = 0;
+                var status = 0;
+                while(ColumnText.HasMoreText(status))
+                {
+                    var leftcol = new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, pos);
+                    var rightcol = new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, pos);
+                    if (col == 0)
+                        ct.SetSimpleColumn(leftcol);
+                    else if(col == 1)
+                        ct.SetSimpleColumn(rightcol);
+                    status = ct.Go();
+                    ++col;
+                    if (col > 1)
+                    {
+                        col = 0;
+                        pos = doc.Top;
+                        doc.NewPage();
+                    }
+                }
 
 				runningtotals.Processed += 1;
 				runningtotals.CurrSet = set;

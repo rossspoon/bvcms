@@ -111,14 +111,14 @@ namespace CmsWeb.Areas.Main.Models.Report
             cell.AddElement(RightTable);
             MainTable.AddCell(cell);
         }
-        Color color = Color.BLACK;
+        BaseColor color = BaseColor.BLACK;
 
         private void AddRow(Person p)
         {
-            if (color == Color.WHITE)
+            if (color == BaseColor.WHITE)
                 color = new GrayColor(240);
             else
-                color = Color.WHITE;
+                color = BaseColor.WHITE;
 
             MainTable.DefaultCell.BackgroundColor = color;
 

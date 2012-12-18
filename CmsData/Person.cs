@@ -1072,7 +1072,7 @@ namespace CmsData
 			d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
 			var q = from b in Db.BundleHeaders
 					where b.BundleHeaderTypeId == typecode
-					where b.BundleStatusId == CmsData.Codes.BundleStatusCode.Open
+					where b.BundleStatusId == BundleStatusCode.Open
 					where b.ContributionDate >= d
 					where b.ContributionDate < Util.Now
 					orderby b.ContributionDate descending

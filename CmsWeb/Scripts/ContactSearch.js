@@ -38,13 +38,35 @@
     });
     $("#ContactorSummary").click(function (ev) {
         ev.preventDefault();
-        window.location = $(this).attr('href')
-            + "?start=" + $("#StartDate").val()
-            + "&end=" + $("#EndDate").val()
-            + "&ministry=" + $("#Ministry").val();
+        if ($("#StartDate").val() && $("#EndDate").val() && $("#form").valid())
+            window.location = $(this).attr('href')
+                + "?start=" + $("#StartDate").val()
+                + "&end=" + $("#EndDate").val()
+                + "&ministry=" + $("#Ministry").val();
+        else
+            alert("need valid dates");
+        
         return false;
     });
     $("#NewSearch").click(function () {
         form.reset();
     });
+    $.validator.addMethod("date2", function (value, element, params) {
+        var v = $.DateValid(value);
+        return this.optional(element) || v;
+    }, $.format("Please enter valid date"));
+    
+    $.validator.setDefaults({
+        highlight: function (input) {
+            $(input).addClass("ui-state-highlight");
+        },
+        unhighlight: function (input) {
+            $(input).removeClass("ui-state-highlight");
+        },
+        rules: {
+            "StartDate": { date2: true },
+            "EndDate": { date2: true }
+        }
+    });
+    $('#form').validate();
 });

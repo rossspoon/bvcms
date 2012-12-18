@@ -8,16 +8,14 @@
     <asp:HyperLink ID="BundlesLink" NavigateUrl="~/Contributions/Bundles.aspx" runat="server">Bundles</asp:HyperLink>
     <table class="Design2">
         <tr>
-            <th>
-                Bundle Id
+            <th>Bundle Id
             </th>
             <td>
                 <asp:Label ID="BundleId" runat="server">1001</asp:Label>
             </td>
         </tr>
         <tr id="TR_BundleStatusId" runat="server">
-            <th>
-                Bundle Status:
+            <th>Bundle Status:
             </th>
             <td>
                 <cc1:DisplayOrEditDropDown ID="BundleStatusIdDropDown" runat="server" BindingMember="BundleStatusId"
@@ -26,17 +24,15 @@
             </td>
         </tr>
         <tr id="TR_ContributionDate" runat="server">
-            <th>
-                Contribution Date:
+            <th>Contribution Date:
             </th>
             <td>
-                <cc1:DisplayOrEditDate ID="ContributionDate" runat="server" BindingSource="bundleheader"
+                <cc1:DisplayOrEditDate ID="ContributionDate" CssClass="datepicker" runat="server" BindingSource="bundleheader"
                     BindingMode="TwoWay" AssociatedRowId="TR_ContributionDate" />
             </td>
         </tr>
         <tr id="TR_BundleHeaderTypeId" runat="server">
-            <th>
-                Bundle Type:
+            <th>Bundle Type:
             </th>
             <td>
                 <cc1:DisplayOrEditDropDown ID="BundleHeaderTypeIdDropDown" runat="server" BindingMember="BundleHeaderTypeId"
@@ -45,56 +41,51 @@
             </td>
         </tr>
         <tr>
-            <th>
-                Deposit Date:
+            <th>Deposit Date:
             </th>
             <td>
-                <cc1:DisplayOrEditDate ID="DepositDate" runat="server" BindingSource="bundleheader"
+                <cc1:DisplayOrEditDate ID="DepositDate" CssClass="datepicker" runat="server" BindingSource="bundleheader"
                     BindingMode="TwoWay" />
             </td>
         </tr>
         <tr>
-            <th>
-                Total Cash:
+            <th>Total Cash:
             </th>
             <td>
                 <cc1:DisplayOrEditText ID="TotalCash" runat="server" BindingSource="bundleheader"
                     BindingMode="TwoWay" />
-                <asp:RequiredFieldValidator ID="ReqTotalCash" runat="server" 
+                <asp:RequiredFieldValidator ID="ReqTotalCash" runat="server"
                     ErrorMessage="required" ControlToValidate="TotalCash"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="ValTotalCash" runat="server" ControlToValidate="TotalCash"
                     ErrorMessage="amount invalid" ValidationExpression="^\d*(\.\d{0,2})?$"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
-            <th>
-                Total Checks:
+            <th>Total Checks:
             </th>
             <td>
                 <cc1:DisplayOrEditText ID="TotalChecks" runat="server" BindingSource="bundleheader"
                     BindingMode="TwoWay" />
-                <asp:RequiredFieldValidator ID="ReqTotalChecks" runat="server" 
+                <asp:RequiredFieldValidator ID="ReqTotalChecks" runat="server"
                     ErrorMessage="required" ControlToValidate="TotalChecks"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="TotalChecks"
                     ErrorMessage="amount invalid" ValidationExpression="^\d*(\.\d{0,2})?$"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
-            <th>
-                Total Coin:
+            <th>Total Coin:
             </th>
             <td>
                 <cc1:DisplayOrEditText ID="TotalEnvelopes" runat="server" BindingSource="bundleheader"
                     BindingMode="TwoWay" />
-                <asp:RequiredFieldValidator ID="ReqTotalEnv" runat="server" 
+                <asp:RequiredFieldValidator ID="ReqTotalEnv" runat="server"
                     ErrorMessage="required" ControlToValidate="TotalEnvelopes"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="TotalEnvelopes"
                     ErrorMessage="amount invalid" ValidationExpression="^\d*(\.\d{0,2})?$"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
-            <th>
-                Fund:
+            <th>Fund:
             </th>
             <td>
                 <cc1:DisplayOrEditDropDown ID="FundIdDropDown" runat="server" BindingMember="FundId"
@@ -113,16 +104,14 @@
     | <a href="/PostBundle/Index/<%=bundleheader.BundleHeaderId %>">PostBundle (edit)</a>
     <table style="font-size: 110%">
         <tr>
-            <td>
-                Total Header:
+            <td>Total Header:
             </td>
             <td>
                 <asp:Label ID="TotalHeader" runat="server"></asp:Label>
             </td>
         </tr>
         <tr>
-            <td>
-                Total Items:
+            <td>Total Items:
             </td>
             <td>
                 <asp:Label ID="TotalItems" runat="server"></asp:Label>
@@ -135,45 +124,35 @@
                 <tr runat="server">
                     <td runat="server">
                         <table id="itemPlaceholderContainer" runat="server" border="0" class="grid" cellspacing="4">
-                        <thead>
-                            <tr runat="server">
-                                <th runat="server">
-                                    Fund
-                                </th>
-                                <th runat="server">
-                                    Type
-                                </th>
-                                <th runat="server">
-                                    Name
-                                </th>
-                                <th runat="server">
-                                    Date
-                                </th>
-                                <th runat="server">
-                                    Amount
-                                </th>
-                                <th runat="server">
-                                    Status
-                                </th>
-                                <th runat="server">
-                                    Pledge
-                                </th>
-                                <th runat="server">
-                                    Ck #
-                                </th>
-                                <th runat="server">
-                                    Notes
-                                </th>
-                            </tr>
-                        </thead>
+                            <thead>
+                                <tr runat="server">
+                                    <th runat="server">Fund
+                                    </th>
+                                    <th runat="server">Type
+                                    </th>
+                                    <th runat="server">Name
+                                    </th>
+                                    <th runat="server">Date
+                                    </th>
+                                    <th runat="server">Amount
+                                    </th>
+                                    <th runat="server">Status
+                                    </th>
+                                    <th runat="server">Pledge
+                                    </th>
+                                    <th runat="server">Ck #
+                                    </th>
+                                    <th runat="server">Notes
+                                    </th>
+                                </tr>
+                            </thead>
                             <tr id="itemPlaceholder" runat="server">
                             </tr>
                         </table>
                     </td>
                 </tr>
                 <tr runat="server">
-                    <td runat="server" style="">
-                    </td>
+                    <td runat="server" style=""></td>
                 </tr>
             </table>
         </LayoutTemplate>
@@ -213,8 +192,7 @@
         <EmptyDataTemplate>
             <table runat="server" style="">
                 <tr>
-                    <td>
-                        No data was returned.
+                    <td>No data was returned.
                     </td>
                 </tr>
             </table>
@@ -227,14 +205,17 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="StatusTypesODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="BundleStatusTypes" TypeName="CMSPresenter.CodeValueController">
-    </asp:ObjectDataSource>
+        SelectMethod="BundleStatusTypes" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="HeaderTypesODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="BundleHeaderTypes" TypeName="CMSPresenter.CodeValueController">
-    </asp:ObjectDataSource>
+        SelectMethod="BundleHeaderTypes" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="FundsODS" runat="server" OldValuesParameterFormatString="original_{0}"
         SelectMethod="OpenFunds" TypeName="CMSPresenter.BundleController"></asp:ObjectDataSource>
 </asp:Content>
 
 <asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+    <script type="text/javascript">
+        $(function () {
+            $("input.datepicker").datepicker();
+        });
+    </script>
 </asp:Content>

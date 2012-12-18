@@ -25,7 +25,7 @@
 {
     <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
     @Scripts.Render("~/bundles/edit-js")
-    @Scripts.Render("~/bundles/compose-js")
+    @Scripts.Render("~/bundles/single/compose-js")
 }
 
 <h2 style="margin-bottom:5px;">Compose Email for @Model.Count @( Model.Count != 1 ? "People" : "Person") @(Model.wantParents ? " including Parents" : "")</h2>

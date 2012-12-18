@@ -52,14 +52,14 @@ namespace CmsWeb.Areas.Main.Models.Report
             {
                 var t = StartPageSet(o);
 
-                var color = Color.BLACK;
+                var color = BaseColor.BLACK;
                 foreach (var m in RollsheetModel.FetchOrgMembers(o.OrgId, null)
                     .Where(om => om.MemberTypeId != MemberTypeCode.Member))
                 {
-                    if (color == Color.WHITE)
+                    if (color == BaseColor.WHITE)
                         color = new GrayColor(240);
                     else
-                        color = Color.WHITE;
+                        color = BaseColor.WHITE;
                     AddRow(t,
                             m.PeopleId,
                             m.Name,
@@ -102,7 +102,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             return t;
         }
 
-        private void AddRow(PdfPTable t, int PeopleId, string Name, string Email, string HomePhone, string CellPhone, string WorkPhone, string MemberType, Color color)
+        private void AddRow(PdfPTable t, int PeopleId, string Name, string Email, string HomePhone, string CellPhone, string WorkPhone, string MemberType, BaseColor color)
         {
             t.DefaultCell.BackgroundColor = color;
 

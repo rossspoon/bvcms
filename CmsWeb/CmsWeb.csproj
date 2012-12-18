@@ -130,7 +130,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca" />
+    <Reference Include="itextsharp, Version=5.3.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\iTextSharp.5.3.3\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="LumenWorks.Framework.IO, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\LumenWorks.Framework.IO.dll</HintPath>
@@ -1975,7 +1978,6 @@
     <Content Include="AppReview\FormImage.aspx" />
     <Content Include="AppReview\VolunteerApp.aspx" />
     <Content Include="Binaries\AjaxControlToolkit.dll" />
-    <Content Include="Binaries\itextsharp.dll" />
     <Content Include="Binaries\Microsoft.Web.Mvc.dll" />
     <Content Include="Binaries\RouteDebug.dll" />
     <Content Include="images\12-em-cross.png" />

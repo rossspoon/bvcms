@@ -69,7 +69,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             {
                 var t = StartPageSet(o);
 
-                var color = Color.BLACK;
+                var color = BaseColor.BLACK;
 
                 var q = from om in DbUtil.Db.OrganizationMembers
                         where om.OrganizationId == o.OrgId
@@ -96,10 +96,10 @@ namespace CmsWeb.Areas.Main.Models.Report
 
                 foreach (var m in q)
                 {
-                    if (color == Color.WHITE)
+                    if (color == BaseColor.WHITE)
                         color = new GrayColor(240);
                     else
-                        color = Color.WHITE;
+                        color = BaseColor.WHITE;
                     AddRow(t, m, color);
                 }
                 doc.Add(t);
@@ -135,7 +135,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             return t;
         }
 
-        private void AddRow(PdfPTable t, MemberInfo p, Color color)
+        private void AddRow(PdfPTable t, MemberInfo p, BaseColor color)
         {
             t.DefaultCell.BackgroundColor = color;
 

@@ -41,7 +41,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             return View("Row", di); 
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+ 
         public ActionResult Edit(string id, string value)
         {
             if (!id.HasValue())

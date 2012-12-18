@@ -62,10 +62,6 @@ namespace CmsWeb
                 "~/Content/js/jquery.showpassword.js"
                             ));
 
-            bundles.Add(new ScriptBundle("~/bundles/person-js").Include(
-                "~/Scripts/Person.js"
-                            ));
-
             bundles.Add(new ScriptBundle("~/bundles/org-js").Include(
                 "~/Content/js/jquery-ui-timepicker-addon.js",
                 "~/Content/js/jquery-ui-dialog-patch.js",
@@ -115,11 +111,11 @@ namespace CmsWeb
             bundles.AddOneScript("OnlineRegPayment");
             bundles.AddOneScript("OrgChildren");
             bundles.AddOneScript("OrgGroups");
-            bundles.AddOneScript("OrgMemberDialog");
             bundles.AddOneScript("OrgMembers");
             bundles.AddOneScript("OrgMembersDialog");
             bundles.AddOneScript("OrgSearch");
             bundles.AddOneScript("PeopleSearch");
+            bundles.AddOneScript("Person");
             bundles.AddOneScript("PostBundle");
             bundles.AddOneScript("QuickSearch");
             bundles.AddOneScript("RegSettings");
@@ -142,7 +138,7 @@ namespace CmsWeb
         private static void AddOneScript(this BundleCollection bundles, string f)
         {
             var file = f + ".js";
-            bundles.Add(new ScriptBundle("~/bundles/{0}-js".Fmt(f)).Include("~/Scripts/" + file));
+            bundles.Add(new ScriptBundle("~/bundles/single/{0}-js".Fmt(f)).Include("~/Scripts/" + file));
         }
     }
 }
