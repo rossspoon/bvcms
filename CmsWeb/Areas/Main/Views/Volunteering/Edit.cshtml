@@ -1,4 +1,5 @@
 ﻿@using CmsData;
+@using UtilityExtensions
 @model CmsData.Volunteer
 @{
     ViewBag.Title = "Edit Volunteer";
@@ -6,11 +7,17 @@
     var s = from e in DbUtil.Db.VolApplicationStatuses
             select e;
 }
+@section scripts
+{
 <script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker();
+    });
     function redirect() {
         window.location = "/Volunteering/Index/@Model.PeopleId";
     }
 </script>
+}
 <a href="/Person/Index/@Model.PeopleId">@Model.Person.Name</a><br />
 <br />
 <form action="/Volunteering/Update" method="post">
@@ -30,9 +37,9 @@
             </td>
         </tr>
         <tr>
-            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Background Check:</b></td>
-            <td valign="top">@Model.ProcessedDate</td>
-            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Status Code:</b></td>
+            <td align="right" valign="top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Last Background Check:</b></td>
+            <td valign="top">@Html.TextBox("ProcessedDate", Model.ProcessedDate.FormatDate(), new { @class = "datepicker" })</td>
+            <td align="right" valign="top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Status Code:</b></td>
             <td valign="top">@Html.DropDownList("StatusId",  new SelectList( s, "Id", "Description") )</td>
         </tr>
     </table>

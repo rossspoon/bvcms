@@ -134,6 +134,11 @@ namespace CmsWeb.Areas.Main.Controllers
             String sResponseURL = Request.Url.Scheme + "://" + Request.Url.Authority + ProtectMyMinistryHelper.PMM_Append;
 
             ProtectMyMinistryHelper.submit(id, sSSN, sDLN, sResponseURL, iStateID);
+
+            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == iPeopleID);
+            vol.ProcessedDate = DateTime.Now;
+            DbUtil.Db.SubmitChanges();
+
             return Redirect("/Volunteering/Index/" + iPeopleID);
         }
 
