@@ -194,8 +194,12 @@ namespace CmsWeb.Models
                 NotifyIds = Db.StaffPeopleForOrg(masterorg.OrganizationId);
             else if (org != null)
                 NotifyIds = Db.StaffPeopleForOrg(org.OrganizationId);
+            var hasnotifyids = true;
             if (NotifyIds.Count() == 0)
+            {
                 NotifyIds = Db.AdminPeople();
+                hasnotifyids = false;
+            }
             var notify = NotifyIds[0];
 
             string Location = null;
@@ -260,7 +264,7 @@ namespace CmsWeb.Models
 				orgstaff.AddRange(NotifyIds);
                 Db.Email(Util.PickFirst(p.person.FromEmail, notify.FromEmail),
                     orgstaff, Header,
-@"{0} has registered for {1}<br/>
+@"{6}{0} has registered for {1}<br/>
 Feepaid for this registrant: {2:C}<br/>
 Total Fee for this registration: {3:C}<br/>
 AmountDue: {4:C}<br/>
@@ -269,7 +273,9 @@ AmountDue: {4:C}<br/>
                amtpaid,
                TotalAmount(),
                TotalAmount() - PayAmount(), // Amount Due
-               p.PrepareSummaryText(ti)));
+               p.PrepareSummaryText(ti),
+               hasnotifyids? "" : @"<span style='color:red'>THERE ARE NO NOTIFY IDS ON THIS REGISTRATION!!</span><br/>
+<a href='http://www.bvcms.com/Doc/MessagesSettings'>see documentation</a><br/>"));
             }
         }
         private void EnrollAndConfirm2()

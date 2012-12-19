@@ -83,8 +83,6 @@ namespace CmsData
             Db.Transactions.InsertOnSubmit(t);
             Db.SubmitChanges();
 
-#if DEBUG2
-#else
             if (gateway == "AuthorizeNet")
                 ret = anet.createCustomerProfileTransactionRequest(PeopleId, total ?? 0, "Recurring Giving", t.Id);
             else
@@ -97,6 +95,15 @@ namespace CmsData
             t.TransactionId = ret.TransactionId;
             var systemEmail = Db.Setting("SystemEmailAddress", "mailer@bvcms.com");
 
+            var contributionemail = (from ex in Person.PeopleExtras
+                                     where ex.Field == "ContributionEmail"
+                                     select ex.Data).SingleOrDefault();
+            if (contributionemail.HasValue())
+                contributionemail = contributionemail.Trim();
+            if (!Util.ValidEmail(contributionemail))
+                contributionemail = Person.FromEmail;
+            var gift = Db.Setting("NameForPayment", "gift");
+            var church = Db.Setting("NameOfChurch", Db.CmsHost);
             if (ret.Approved)
             {
                 var q = from a in Db.RecurringAmounts
@@ -116,30 +123,32 @@ namespace CmsData
                 Db.SubmitChanges();
                 if (tot > 0)
                 {
-                    var contributionemail = (from ex in Person.PeopleExtras
-                                             where ex.Field == "ContributionEmail"
-                                             select ex.Data).SingleOrDefault();
-                    if (contributionemail.HasValue())
-                        contributionemail = contributionemail.Trim();
-                    if (!Util.ValidEmail(contributionemail))
-                        contributionemail = Person.FromEmail;
                     Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(contributionemail),
-                            "Recurring Payments for " + Db.Setting("NameOfChurch", Db.CmsHost),
-                            "Your payment of ${0:N2} was processed this morning.".Fmt(tot),
-                            Util.ToMailAddressList(contributionemail), 0, null);
+                                 "Recurring {0} for {1}".Fmt(gift, church),
+                                 "Your payment of ${0:N2} was processed this morning.".Fmt(tot),
+                                 Util.ToMailAddressList(contributionemail), 0, null);
                 }
             }
             else
             {
                 Db.SubmitChanges();
+                var failedGivingMessage = Db.Content("FailedGivingMessage", @"
+{first},
+<p>We are very sorry, but something has gone wrong and your online giving transaction did not complete.</p>
+<p>Please contact the church for help in resolving this issue.</p>
+<p>Thank you.</p>
+");
                 var adminEmail = Db.Setting("AdminMail", systemEmail);
+                Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(contributionemail),
+                        "Recurring {0} failed for {1}".Fmt(gift, church),
+                        failedGivingMessage.Replace("{first}", Person.PreferredName),
+                        Util.ToMailAddressList(contributionemail), 0, null);
                 foreach (var p in Db.FinancePeople())
                     Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(adminEmail),
                         "Recurring Giving Failed on " + Db.CmsHost,
                         "<a href='{0}Manage/Transactions/Index/{2}'>message: {1}, tranid:{2}</a>".Fmt(Db.CmsHost, ret.Message, t.Id),
                         Util.ToMailAddressList(p.EmailAddress), 0, null);
             }
-#endif
             return 1;
         }
         public static int DoAllGiving(CMSDataContext Db)

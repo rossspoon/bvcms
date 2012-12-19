@@ -38,14 +38,17 @@
 { 
     <div class="item" >
        <input name="role" value="@r" class="ckbox" type="checkbox" @(Model.Roles.Any(ro => ro == r) ? "checked='checked'" : "") />
-       <span>@r</span></div>
+            @if (r == "OrgLeadersOnly" || r == "OrgMembersOnly")
+            { <span class="red tip" title="Limiting role|See documentation on help link above">@r</span> }
+            else { <span>@r</span> }
+    </div>
 }
 </div>
 <div style="clear:both"></div>
 <hr />
 <a href="/Person/UserUpdate/@Model.UserId" class="submitbutton save bt blue">Save Changes</a>
 <a href="/Person/UserWelcome/@Model.UserId" class="submitbutton save bt blue">Save Changes, Send Welcome Email</a>
-<a id="deluser" href="/Person/UserDelete/@Model.UserId" class="submitbutton bt red">Delete User</a>
+<a id="deluser" href="/Person/UserDelete/@Model.UserId" class="submitbutton bt">Delete User</a>
 </form>
 </body>
 </html>

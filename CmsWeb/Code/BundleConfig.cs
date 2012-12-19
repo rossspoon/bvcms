@@ -112,6 +112,7 @@ namespace CmsWeb
             bundles.AddOneScript("OrgChildren");
             bundles.AddOneScript("OrgGroups");
             bundles.AddOneScript("OrgMembers");
+            bundles.AddOneScript("OrgMemberDialog");
             bundles.AddOneScript("OrgMembersDialog");
             bundles.AddOneScript("OrgSearch");
             bundles.AddOneScript("PeopleSearch");
