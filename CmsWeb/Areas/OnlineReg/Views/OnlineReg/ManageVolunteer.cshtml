@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.VolunteerModel 
+@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @{
@@ -17,8 +18,7 @@
 }
 @section scripts
 {
-@Html.Script("/Content/js/jquery.sortElements.js")
-@Html.Script("/Scripts/ManageVolunteer.js")
+@Scripts.Render("~/bundles/single/ManageVolunteer-js")
 }
 @if (Model.IsLeader)
 {

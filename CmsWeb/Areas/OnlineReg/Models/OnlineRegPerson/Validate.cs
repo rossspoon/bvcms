@@ -46,7 +46,7 @@ namespace CmsWeb.Models
 			var d = phone.GetDigits().Length;
 			if (phone.HasValue() && d >= 10)
 				n++;
-			if (d > 17)
+			if (d > 20)
 				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].phone), "too many digits in phone");
 
 			if (n == 0)
@@ -224,6 +224,9 @@ Please search with a different email, phone, or birthday.";
 
 			if (RequiredPhone() && n == 0)
 				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].phone), "cell or home phone required");
+
+            if (homephone.HasValue() && homephone.GetDigits().Length > 20)
+				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].homephone), "homephone too long");
 
 			if (email.HasValue())
 				email = email.Trim();

@@ -110,7 +110,10 @@ namespace CMSPresenter
         };
         public string Range
         {
-            get { return RangeLabels[RangeId - 1]; }
+            get 
+            {
+                return RangeLabels[RangeId - 1];
+            }
         }
         public int RangeId { get; set; }
         public int? Count { get; set; }
@@ -153,7 +156,7 @@ namespace CMSPresenter
         {
             get
             {
-                if (RangeId <= 15)
+                if (RangeId >= 0 && RangeId <= 15)
                     return RangeLabels[RangeId];
                 return "0";
             }

@@ -101,14 +101,14 @@ namespace CmsWeb.Areas.Main.Models.Report
                 t.AddHeader("Status", boldfont);
                 mt.AddCell(t);
 
-                var color = Color.BLACK;
+                var color = BaseColor.BLACK;
 
                 foreach (var p in q)
                 {
-                    if (color == Color.WHITE)
+                    if (color == BaseColor.WHITE)
                         color = new GrayColor(240);
                     else
-                        color = Color.WHITE;
+                        color = BaseColor.WHITE;
 
                     t = new PdfPTable(widths);
                     t.DefaultCell.Border = PdfPCell.NO_BORDER;

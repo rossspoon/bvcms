@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -53,11 +54,18 @@ namespace CmsWeb.Areas.Setup.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public EmptyResult Delete(string id, string type)
+        public ActionResult Delete(string id, string type)
         {
-            var iid = id.Substring(1).ToInt();
-            DbUtil.Db.ExecuteCommand("delete lookup." + type + " where id = {0}", iid);
-            return new EmptyResult();
+            try
+            {
+                var iid = id.Substring(1).ToInt();
+                DbUtil.Db.ExecuteCommand("delete lookup." + type + " where id = {0}", iid);
+                return new EmptyResult();
+            }
+            catch (SqlException ex)
+            {
+                return Json(new { error = "Cannot delete OrgType because it is in use"});
+            }
         }
     }
 }

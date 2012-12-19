@@ -27,24 +27,24 @@ namespace CmsWeb.Areas.Main.Controllers
             if (!id.HasValue)
                 return RedirectShowError("no id");
             var m = new MeetingModel(id.Value);
-			m.currmembers = CurrentMembers ?? false;
+            m.currmembers = CurrentMembers ?? false;
             m.showall = showall == true;
             m.sortbyname = sortbyname == true;
             if (m.meeting == null)
                 return RedirectShowError("no meeting");
 
-			if (Util2.OrgMembersOnly
-				&& !DbUtil.Db.OrganizationMembers.Any(om =>
-					om.OrganizationId == m.meeting.OrganizationId
-					&& om.PeopleId == Util.UserPeopleId))
-				return RedirectShowError("You must be a member of this organization to have access to this page");
-			else if (Util2.OrgLeadersOnly
-				&& !DbUtil.Db.OrganizationMembers.Any(om =>
-					om.OrganizationId == m.meeting.OrganizationId
-					&& om.PeopleId == Util.UserPeopleId
+            if (Util2.OrgMembersOnly
+                && !DbUtil.Db.OrganizationMembers.Any(om =>
+                    om.OrganizationId == m.meeting.OrganizationId
+                    && om.PeopleId == Util.UserPeopleId))
+                return RedirectShowError("You must be a member of this organization to have access to this page");
+            else if (Util2.OrgLeadersOnly
+                && !DbUtil.Db.OrganizationMembers.Any(om =>
+                    om.OrganizationId == m.meeting.OrganizationId
+                    && om.PeopleId == Util.UserPeopleId
                     && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
-				return RedirectShowError("You must be a leader of this organization to have access to this page");
-			DbUtil.LogActivity("Viewing Meeting for {0}".Fmt(m.meeting.Organization.OrganizationName));
+                return RedirectShowError("You must be a leader of this organization to have access to this page");
+            DbUtil.LogActivity("Viewing Meeting for {0}".Fmt(m.meeting.Organization.OrganizationName));
             return View(m);
         }
         public ActionResult iPad(int? id)
@@ -56,18 +56,18 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.meeting == null)
                 return RedirectShowError("no meeting");
 
-			if (Util2.OrgMembersOnly
-				&& !DbUtil.Db.OrganizationMembers.Any(om =>
-					om.OrganizationId == m.meeting.OrganizationId
-					&& om.PeopleId == Util.UserPeopleId))
-				return RedirectShowError("You must be a member of this organization to have access to this page");
-			else if (Util2.OrgLeadersOnly
-				&& !DbUtil.Db.OrganizationMembers.Any(om =>
-					om.OrganizationId == m.meeting.OrganizationId
-					&& om.PeopleId == Util.UserPeopleId
+            if (Util2.OrgMembersOnly
+                && !DbUtil.Db.OrganizationMembers.Any(om =>
+                    om.OrganizationId == m.meeting.OrganizationId
+                    && om.PeopleId == Util.UserPeopleId))
+                return RedirectShowError("You must be a member of this organization to have access to this page");
+            else if (Util2.OrgLeadersOnly
+                && !DbUtil.Db.OrganizationMembers.Any(om =>
+                    om.OrganizationId == m.meeting.OrganizationId
+                    && om.PeopleId == Util.UserPeopleId
                     && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
-				return RedirectShowError("You must be a leader of this organization to have access to this page");
-			DbUtil.LogActivity("iPad Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
+                return RedirectShowError("You must be a leader of this organization to have access to this page");
+            DbUtil.LogActivity("iPad Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
             return View(m);
         }
         [HttpPost]
@@ -101,101 +101,107 @@ namespace CmsWeb.Areas.Main.Controllers
                     };
             return Json(q.ToDictionary(k => k.Code, v => v.Value));
         }
-		[HttpPost]
+        [HttpPost]
         public JsonResult MeetingTypes()
         {
-			var d = new Dictionary<string, string>
-			{{"true","Group (headcount)"},{"false","Regular"}};
+            var d = new Dictionary<string, string> { { "true", "Group (headcount)" }, { "false", "Regular" } };
             return Json(d);
         }
         [HttpPost]
         public ContentResult Edit(string id, string value)
         {
-            var i = id.Substring(2).ToInt();
-            var m = new MeetingModel(i);
-            switch (id[0])
+            try
             {
-                case 'd':
-                    m.meeting.Description = value;
-                    break;
-                case 'n':
-                    m.meeting.NumPresent = value.ToInt();
-                    break;
+                var i = id.Substring(2).ToInt();
+                var m = new MeetingModel(i);
+                switch (id[0])
+                {
+                    case 'd':
+                        m.meeting.Description = value;
+                        break;
+                    case 'n':
+                        m.meeting.NumPresent = value.ToInt();
+                        break;
+                }
+                DbUtil.Db.SubmitChanges();
+                return Content(value);
             }
-            DbUtil.Db.SubmitChanges();
-            return Content(value);
+            catch (Exception ex)
+            {
+                return Content("error: " + ex.Message);
+            }
         }
         [HttpPost]
         public ContentResult EditCommitment(string id, string value)
-        {			
-			var a = id.Substring(1).Split('_').Select(vv => vv.ToInt()).ToArray();
-			var c = value.ToInt2();
-			if (c == 99)
-				c = null;
+        {
+            var a = id.Substring(1).Split('_').Select(vv => vv.ToInt()).ToArray();
+            var c = value.ToInt2();
+            if (c == 99)
+                c = null;
             Attend.MarkRegistered(DbUtil.Db, a[1], a[0], c);
-			var desc = CmsData.Codes.AttendCommitmentCode.Lookup(c ?? 99);
+            var desc = CmsData.Codes.AttendCommitmentCode.Lookup(c ?? 99);
             return Content(desc);
         }
         [HttpPost]
         public ContentResult JoinAllVisitors(int id)
         {
             var m = new MeetingModel(id);
-			int n = 0;
-			foreach (var a in m.VisitAttends())
-			{
-	            OrganizationMember.InsertOrgMembers(DbUtil.Db,
-	                m.meeting.OrganizationId, a.PeopleId, MemberTypeCode.Member,
-	                DateTime.Today, null, false);
-				n++;
-			}
-			if (n > 0)
-			{
-				DbUtil.Db.UpdateMainFellowship(m.meeting.OrganizationId);
-				return Content("Joined {0} visitors".Fmt(n));
-			}
-			return Content("no visitors");
+            int n = 0;
+            foreach (var a in m.VisitAttends())
+            {
+                OrganizationMember.InsertOrgMembers(DbUtil.Db,
+                    m.meeting.OrganizationId, a.PeopleId, MemberTypeCode.Member,
+                    DateTime.Today, null, false);
+                n++;
+            }
+            if (n > 0)
+            {
+                DbUtil.Db.UpdateMainFellowship(m.meeting.OrganizationId);
+                return Content("Joined {0} visitors".Fmt(n));
+            }
+            return Content("no visitors");
         }
 
 
-    	public class ScanTicketInfo
-    	{
-			public enum Error
-			{
-				none,
-				alreadymarked,
-				alreadymarkedelsewhere,
-				notmember,
-				notregistered,
-				noperson,
-				noorg,
-				nomeeting,
-			}
-    		public Error error { get; set; }
-    		public Person person { get; set; }
-    		public Meeting meeting { get; set; }
-			public string message { get; set; }
-			public bool SwitchOrg { get; set; }
-    		public MeetingModel model
-			{
-				get
-				{
-					return new MeetingModel(meeting.MeetingId);
-				}
-			}
-    		public Attend attended { get; set; }
-    		public OrganizationMember orgmember { get; set; }
-			public string CssClass()
-			{
-				if (error == Error.none)
-					return "bgyellow";
-				return "bgred";
-			}
-			public ScanTicketInfo AddError(Error err)
-			{
-				error = err;
-				return this;
-			}
-    	}
+        public class ScanTicketInfo
+        {
+            public enum Error
+            {
+                none,
+                alreadymarked,
+                alreadymarkedelsewhere,
+                notmember,
+                notregistered,
+                noperson,
+                noorg,
+                nomeeting,
+            }
+            public Error error { get; set; }
+            public Person person { get; set; }
+            public Meeting meeting { get; set; }
+            public string message { get; set; }
+            public bool SwitchOrg { get; set; }
+            public MeetingModel model
+            {
+                get
+                {
+                    return new MeetingModel(meeting.MeetingId);
+                }
+            }
+            public Attend attended { get; set; }
+            public OrganizationMember orgmember { get; set; }
+            public string CssClass()
+            {
+                if (error == Error.none)
+                    return "bgyellow";
+                return "bgred";
+            }
+            public ScanTicketInfo AddError(Error err)
+            {
+                error = err;
+                return this;
+            }
+        }
 
         public ActionResult Tickets(int? id)
         {
@@ -206,100 +212,100 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.meeting == null)
                 return RedirectShowError("no meeting");
 
-			if (Util2.OrgMembersOnly
-				&& !DbUtil.Db.OrganizationMembers.Any(om =>
-					om.OrganizationId == m.meeting.OrganizationId
-					&& om.PeopleId == Util.UserPeopleId))
-				return RedirectShowError("You must be a member of this organization to have access to this page");
-			else if (Util2.OrgLeadersOnly
-				&& !DbUtil.Db.OrganizationMembers.Any(om =>
-					om.OrganizationId == m.meeting.OrganizationId
-					&& om.PeopleId == Util.UserPeopleId
+            if (Util2.OrgMembersOnly
+                && !DbUtil.Db.OrganizationMembers.Any(om =>
+                    om.OrganizationId == m.meeting.OrganizationId
+                    && om.PeopleId == Util.UserPeopleId))
+                return RedirectShowError("You must be a member of this organization to have access to this page");
+            else if (Util2.OrgLeadersOnly
+                && !DbUtil.Db.OrganizationMembers.Any(om =>
+                    om.OrganizationId == m.meeting.OrganizationId
+                    && om.PeopleId == Util.UserPeopleId
                     && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
-				return RedirectShowError("You must be a leader of this organization to have access to this page");
-			DbUtil.LogActivity("Tickets Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
+                return RedirectShowError("You must be a leader of this organization to have access to this page");
+            DbUtil.LogActivity("Tickets Meeting for {0}({1:d})".Fmt(m.meeting.OrganizationId, m.meeting.MeetingDate));
             return View(m);
         }
-		[HttpPost]
+        [HttpPost]
         public ActionResult TicketMeeting(int id)
         {
             var m = new MeetingModel(id);
             return View(m);
         }
-    	[Authorize(Roles = "Attendance")]
+        [Authorize(Roles = "Attendance")]
         [HttpPost]
-		public ActionResult ScanTicket(string wandtarget, int MeetingId, bool? requireMember, bool? requireRegistered)
-		{
-			var d = new ScanTicketInfo { person = new Person() };
-			int pid = 0;
+        public ActionResult ScanTicket(string wandtarget, int MeetingId, bool? requireMember, bool? requireRegistered)
+        {
+            var d = new ScanTicketInfo { person = new Person() };
+            int pid = 0;
 
-			if (wandtarget.StartsWith("M."))
-			{
-				var a = wandtarget.Split('.');
-				if (a.Length != 3)
-					return View(d.AddError(ScanTicketInfo.Error.noorg));
+            if (wandtarget.StartsWith("M."))
+            {
+                var a = wandtarget.Split('.');
+                if (a.Length != 3)
+                    return View(d.AddError(ScanTicketInfo.Error.noorg));
 
-				var oid = a[1].ToInt2();
-				pid = a[2].ToInt();
-				d.person = DbUtil.Db.LoadPersonById(pid);
-				if(!oid.HasValue)
-					return View(d.AddError(ScanTicketInfo.Error.noorg));
+                var oid = a[1].ToInt2();
+                pid = a[2].ToInt();
+                d.person = DbUtil.Db.LoadPersonById(pid);
+                if (!oid.HasValue)
+                    return View(d.AddError(ScanTicketInfo.Error.noorg));
 
-				var tm = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == MeetingId);
-				var mq = from m in DbUtil.Db.Meetings
-						 where m.OrganizationId == a[1].ToInt()
-						 where m.MeetingDate.Value.Date == tm.MeetingDate.Value.Date
-						 select m;
-				var mo = mq.FirstOrDefault();
-				if (mo == null)
-					return View(d.AddError(ScanTicketInfo.Error.nomeeting));
-				d.meeting = mo;
-				MeetingId = mo.MeetingId;
-				d.SwitchOrg = true;
-				d.attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == pid && aa.AttendanceFlag == true);
-			}
-			else
-			{
-				pid = wandtarget.ToInt();
-				var q = from person in DbUtil.Db.People
-						where person.PeopleId == pid
-						let meeting = DbUtil.Db.Meetings.SingleOrDefault(mm => mm.MeetingId == MeetingId)
-						let attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == pid && aa.AttendanceFlag == true)
-						let orgmember = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId && om.PeopleId == pid)
-						select new ScanTicketInfo
-						{
-							person = person,
-							meeting = meeting,
-							attended = attended,
-							orgmember = orgmember
-						};
-				var d2 = q.SingleOrDefault();
-				if (d2 == null)
-					return View(d.AddError(ScanTicketInfo.Error.noperson));
-				d = d2;
-			}
+                var tm = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == MeetingId);
+                var mq = from m in DbUtil.Db.Meetings
+                         where m.OrganizationId == a[1].ToInt()
+                         where m.MeetingDate.Value.Date == tm.MeetingDate.Value.Date
+                         select m;
+                var mo = mq.FirstOrDefault();
+                if (mo == null)
+                    return View(d.AddError(ScanTicketInfo.Error.nomeeting));
+                d.meeting = mo;
+                MeetingId = mo.MeetingId;
+                d.SwitchOrg = true;
+                d.attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == pid && aa.AttendanceFlag == true);
+            }
+            else
+            {
+                pid = wandtarget.ToInt();
+                var q = from person in DbUtil.Db.People
+                        where person.PeopleId == pid
+                        let meeting = DbUtil.Db.Meetings.SingleOrDefault(mm => mm.MeetingId == MeetingId)
+                        let attended = DbUtil.Db.Attends.SingleOrDefault(aa => aa.MeetingId == MeetingId && aa.PeopleId == pid && aa.AttendanceFlag == true)
+                        let orgmember = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == meeting.OrganizationId && om.PeopleId == pid)
+                        select new ScanTicketInfo
+                        {
+                            person = person,
+                            meeting = meeting,
+                            attended = attended,
+                            orgmember = orgmember
+                        };
+                var d2 = q.SingleOrDefault();
+                if (d2 == null)
+                    return View(d.AddError(ScanTicketInfo.Error.noperson));
+                d = d2;
+            }
 
-			d.error = ScanTicketInfo.Error.none;
-			if (d.attended != null && d.attended.AttendanceFlag == true)
-				d.error = ScanTicketInfo.Error.alreadymarked;
-			else if (requireMember == true && d.orgmember == null)
-				d.error = ScanTicketInfo.Error.notmember;
-			else if (requireRegistered == true && (d.attended == null || d.attended.Commitment == AttendCommitmentCode.Attending))
-				d.error = ScanTicketInfo.Error.notregistered;
+            d.error = ScanTicketInfo.Error.none;
+            if (d.attended != null && d.attended.AttendanceFlag == true)
+                d.error = ScanTicketInfo.Error.alreadymarked;
+            else if (requireMember == true && d.orgmember == null)
+                d.error = ScanTicketInfo.Error.notmember;
+            else if (requireRegistered == true && (d.attended == null || d.attended.Commitment == AttendCommitmentCode.Attending))
+                d.error = ScanTicketInfo.Error.notregistered;
 
-			var ret = "";
-			if (d.error == ScanTicketInfo.Error.none)
-			{
-				ret = Attend.RecordAttendance(DbUtil.Db, pid, MeetingId, true);
-				if (ret.Contains("already"))
-				{
-					d.error = ScanTicketInfo.Error.alreadymarkedelsewhere;
-					d.message = ret;
-				}
-			}
+            var ret = "";
+            if (d.error == ScanTicketInfo.Error.none)
+            {
+                ret = Attend.RecordAttendance(DbUtil.Db, pid, MeetingId, true);
+                if (ret.Contains("already"))
+                {
+                    d.error = ScanTicketInfo.Error.alreadymarkedelsewhere;
+                    d.message = ret;
+                }
+            }
 
-			return View(d);
-		}
+            return View(d);
+        }
         [Authorize(Roles = "Attendance")]
         [HttpPost]
         public ActionResult MarkAttendance(int PeopleId, int MeetingId, bool Present)
@@ -310,14 +316,14 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.UpdateMeetingCounters(MeetingId);
             var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == MeetingId);
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, m);
-            var v = Json(new 
-            { 
-                m.NumPresent, 
-                m.NumMembers, 
-                m.NumVstMembers, 
-                m.NumRepeatVst, 
-                m.NumNewVisit, 
-                m.NumOtherAttends 
+            var v = Json(new
+            {
+                m.NumPresent,
+                m.NumMembers,
+                m.NumVstMembers,
+                m.NumRepeatVst,
+                m.NumNewVisit,
+                m.NumOtherAttends
             });
             return v;
         }
@@ -325,15 +331,15 @@ namespace CmsWeb.Areas.Main.Controllers
         [HttpPost]
         public ActionResult MarkRegistered(int PeopleId, int MeetingId, int? CommitId)
         {
-			try
-			{
-	            Attend.MarkRegistered(DbUtil.Db, PeopleId, MeetingId, CommitId);
-			}
-			catch (Exception ex)
-			{
-				return Content(ex.Message);
-			}
-			return new EmptyResult();
+            try
+            {
+                Attend.MarkRegistered(DbUtil.Db, PeopleId, MeetingId, CommitId);
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+            return new EmptyResult();
         }
         [Authorize(Roles = "Attendance")]
         [HttpPost]
@@ -357,27 +363,27 @@ namespace CmsWeb.Areas.Main.Controllers
                 g.Groups[5].Value.ToInt(),
                 0);
             var newMtg = DbUtil.Db.Meetings.FirstOrDefault(m => m.OrganizationId == orgid && m.MeetingDate == dt);
-			if (newMtg == null)
-			{
+            if (newMtg == null)
+            {
                 var attsch = organization.OrgSchedules.SingleOrDefault(ss => ss.MeetingTime.Value.TimeOfDay == dt.TimeOfDay && ss.MeetingTime.Value.DayOfWeek == dt.DayOfWeek);
                 int? attcred = null;
                 if (attsch != null)
                     attcred = attsch.AttendCreditId;
                 newMtg = new CmsData.Meeting
-				{
-					CreatedDate = Util.Now,
+                {
+                    CreatedDate = Util.Now,
                     CreatedBy = Util.UserId1,
-					OrganizationId = orgid,
-					GroupMeetingFlag = false,
-					Location = organization.Location,
-					MeetingDate = dt,
+                    OrganizationId = orgid,
+                    GroupMeetingFlag = false,
+                    Location = organization.Location,
+                    MeetingDate = dt,
                     AttendCreditId = attcred,
-				};
-				DbUtil.Db.Meetings.InsertOnSubmit(newMtg);
-				DbUtil.Db.SubmitChanges();
-				DbUtil.LogActivity("Created new meeting for {0}".Fmt(organization.OrganizationName));
-			}
-			return Content("/Meeting/Index/{0}?showall=true".Fmt(newMtg.MeetingId));
+                };
+                DbUtil.Db.Meetings.InsertOnSubmit(newMtg);
+                DbUtil.Db.SubmitChanges();
+                DbUtil.LogActivity("Created new meeting for {0}".Fmt(organization.OrganizationName));
+            }
+            return Content("/Meeting/Index/{0}?showall=true".Fmt(newMtg.MeetingId));
         }
         public ActionResult QueryAttendees(int Id)
         {
@@ -446,36 +452,36 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public class ttt
         {
-        	public bool Attended { get; set; }
-        	public string SmallGroup { get; set; }
-        	public string Name { get; set; }
+            public bool Attended { get; set; }
+            public string SmallGroup { get; set; }
+            public string Name { get; set; }
         }
         public ActionResult AttendanceByGroups(int id)
         {
             var q = from a in DbUtil.Db.Attends
                     where a.MeetingId == id
-                    join om in DbUtil.Db.OrgMemMemTags 
-						on new { a.OrganizationId, a.PeopleId } 
-						equals new { OrganizationId = om.OrgId, om.PeopleId }
+                    join om in DbUtil.Db.OrgMemMemTags
+                        on new { a.OrganizationId, a.PeopleId }
+                        equals new { OrganizationId = om.OrgId, om.PeopleId }
                     select new { a.Person.Name, SmallGroup = om.MemberTag.Name, Attended = a.AttendanceFlag };
-			var j = from i in q
-					group i by new { i.Attended, i.SmallGroup } into g
-					from i in g
-					orderby i.Attended descending, i.SmallGroup, i.Name
-					select new ttt()
-					{ 
-						Attended = i.Attended, 
-						SmallGroup = i.SmallGroup, 
-						Name = i.Name 
-					};
-//            var list = new List<ttt>();
-//            foreach (var i in j)
-//            {
-//                list.Add(new ttt { label = "SmallGroup", name = "{0} ({1})".Fmt(i.Key, i.g.Count()) });
-//                foreach (var name in i.g)
-//                    list.Add(new ttt { label = "", name = name });
-//            }
-			return View(j);
+            var j = from i in q
+                    group i by new { i.Attended, i.SmallGroup } into g
+                    from i in g
+                    orderby i.Attended descending, i.SmallGroup, i.Name
+                    select new ttt()
+                    {
+                        Attended = i.Attended,
+                        SmallGroup = i.SmallGroup,
+                        Name = i.Name
+                    };
+            //            var list = new List<ttt>();
+            //            foreach (var i in j)
+            //            {
+            //                list.Add(new ttt { label = "SmallGroup", name = "{0} ({1})".Fmt(i.Key, i.g.Count()) });
+            //                foreach (var name in i.g)
+            //                    list.Add(new ttt { label = "", name = name });
+            //            }
+            return View(j);
         }
         public ActionResult NewExtraValue(int id, string field, string value, bool multiline)
         {
@@ -512,10 +518,10 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content(value);
         }
         [HttpPost]
-	    [ValidateInput(false)]
-		public JsonResult AttendCommitments()
-		{
-			return Json(MeetingModel.AttendCommitments());
-		}
+        [ValidateInput(false)]
+        public JsonResult AttendCommitments()
+        {
+            return Json(MeetingModel.AttendCommitments());
+        }
     }
 }

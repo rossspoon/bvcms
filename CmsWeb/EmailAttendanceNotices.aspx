@@ -1,6 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="EmailAttendanceNotices.aspx.cs" Inherits="CmsWeb.EmailAttendanceNotices" EnableEventValidation="false" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <table class="modalPopup">
@@ -9,9 +8,7 @@
                 Attendance Date:
             </td>
             <td class="style1">
-                <asp:TextBox ID="EndDate" runat="server"></asp:TextBox><cc2:calendarextender id="CalendarExtender2"
-                        runat="server" targetcontrolid="EndDate">
-                                            </cc2:calendarextender>
+                <asp:TextBox ID="EndDate" runat="server"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
                     ControlToValidate="EndDate" ErrorMessage="RequiredFieldValidator"></asp:RequiredFieldValidator>
             </td>

@@ -10,8 +10,10 @@
         $("#PageSize", f).val($(e).val());
         return $.getTable(f);
     };
-    $.getTable = function (f, q) {
-        q = q || f.serialize();
+    $.getTable = function (f) {
+        var q;
+        if (f)
+            q = f.serialize();
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret).ready(function () {
                 $('table.grid > tbody > tr:even', f).addClass('alt');

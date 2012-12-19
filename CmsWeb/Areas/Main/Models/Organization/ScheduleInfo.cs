@@ -94,7 +94,8 @@ namespace CmsWeb.Models.OrganizationPage
         {
             get
             {
-                return NewMeetingTime.ToString("g") + "," + AttendCreditId;
+                var dt = NewMeetingTime;
+                return "{0},{1},{2}".Fmt(dt.Date.ToShortDateString(), dt.ToShortTimeString(), AttendCreditId);
             }
         }
         public DateTime NewMeetingTime

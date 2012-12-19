@@ -1,12 +1,13 @@
 ﻿@model CmsWeb.Models.TestPlan
+@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>API Tester</title>
-@Html.Partial("CombinedCss")
-	<link rel="stylesheet" href="/Content/css/faary.css?v=1" type="text/css" />
+    @Styles.Render("~/Content/styles/css")
+	<link rel="stylesheet" href="/Content/styles/faary.css?v=1" type="text/css" />
 	<style>
 	    div.section
 	    {
@@ -15,8 +16,8 @@
             color:#eee;
 	    }
 	</style>
-@Html.Partial("CombinedJs")
-@Html.Script("/Scripts/TestAPI.js")
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/single/TestAPI-js")
 </head>
 <body>
 

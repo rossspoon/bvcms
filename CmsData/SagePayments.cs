@@ -283,7 +283,7 @@ namespace CmsData
 		}
 		public TransactionResponse createCheckTransactionRequest(int PeopleId, decimal amt,
 			string routing, string acct, string description, int tranid,
-			string email, string first, string last, string middle,
+			string email, string first, string middle, string last, string suffix,
 			string addr, string city, string state, string zip, string phone)
 		{
 			try
@@ -296,10 +296,9 @@ namespace CmsData
 				coll["M_KEY"] = key;
 				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", ""); // 1031360711, 1031412710
 				coll["C_FIRST_NAME"] = first;
-				var mi = (middle ?? " ").PadRight(1, ' ').Substring(0, 1).Trim();
-				coll["C_MIDDLE_INITIAL"] = mi;
+			    coll["C_MIDDLE_INITIAL"] = middle.Truncate(1) ?? "";
 				coll["C_LAST_NAME"] = last;
-				coll["C_SUFFIX"] = last;
+				coll["C_SUFFIX"] = suffix;
 				coll["C_ADDRESS"] = addr;
 				coll["C_CITY"] = city;
 				coll["C_STATE"] = state;
@@ -333,6 +332,15 @@ namespace CmsData
 		}
 		public TransactionResponse createVaultTransactionRequest(int PeopleId, decimal amt, string description, int tranid, string type)
 		{
+#if DEBUG
+			return new TransactionResponse
+			{
+				Approved = false,
+				AuthCode = "failure",
+				Message = "failure",
+				TransactionId = "010101"
+			};
+#endif
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
 			if (pi == null)
@@ -355,8 +363,7 @@ namespace CmsData
 				coll["GUID"] = guid;
 				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", "");
 				coll["C_FIRST_NAME"] = p.FirstName;
-				var mi = (p.MiddleName ?? " ").FirstOrDefault().ToString().Trim();
-				coll["C_MIDDLE_INITIAL"] = mi;
+			    coll["C_MIDDLE_INITIAL"] = p.MiddleName.Truncate(1) ?? "";
 				coll["C_LAST_NAME"] = p.LastName;
 				coll["C_SUFFIX"] = p.SuffixCode;
 				coll["C_ADDRESS"] = p.PrimaryAddress;

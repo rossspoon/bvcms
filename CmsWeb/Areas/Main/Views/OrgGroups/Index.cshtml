@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.OrgGroupsModel
+@using System.Web.Optimization
 @using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -6,12 +7,10 @@
 }           
 @section scripts
 {
-@Html.Script("/Content/js/jquery.multiSelect.js")
-@Html.Script("/Scripts/OrgGroups.js")
+@Scripts.Render("~/bundles/single/OrgGroups-js")
 }
 @section head
 {
-@Html.Css("/Content/css/jquery.multiselect.css")
 <style>
     td.wide100 * 
     {

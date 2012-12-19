@@ -5,8 +5,8 @@
 @{var link=Server.UrlEncode(DbUtil.Db.CmsHost + "/Task/List/" + Model.Id + "#detail#select"); }
 <td colspan="7"><a name="detail"></a>
     <table class="Design2" style="border: 3px solid black">
-    <tr><td align="right" colspan="2"><a href="#" onclick="Deselect();return false">
-        <img style="border:0" src="/Content/css/images/closek.png" /></a></td></tr>
+    <tr><td align="right" colspan="2"><a href="#" class="deselect">
+        <img style="border:0" src="/Content/styles/images/closek.png" /></a></td></tr>
         <tr>
    
             <th>Task</th>
@@ -49,29 +49,16 @@
             <td> @Model.Due.ToString2("d") </td>
         </tr>
         <tr>
-            <th>Priority</th>
-            <td>
-                <span id="Priority" style="margin-right:3em">@Model.Priority</span>
-@if(Model.IsAnOwner) 
-{ 
-                    <a href="#" onclick="SetPriority(@Model.Id,1);return false;"> 1 </a>
-                    <a href="#" onclick="SetPriority(@Model.Id,2);return false;"> 2 </a>
-                    <a href="#" onclick="SetPriority(@Model.Id,3);return false;"> 3 </a>
-                    <a href="#" onclick="SetPriority(@Model.Id,0);return false;">None</a>
-} 
-            </td>
-        </tr>
-        <tr>
             <th>Status:</th>
             <td>
                 <span class="edit-select" vid="Status" canedit="@Model.IsAnOwner">@Model.Status</span>
 @if (Model.CanComplete)
 { 
-                <a href="#" onclick="SetComplete(@Model.Id);return false;" style="font-size:120%">(complete)</a>
+                <a href="#" class="complete" task="@Model.Id" style="font-size:120%">(complete)</a>
 }
 @if (Model.CanAccept)
 { 
-                <a href="#" onclick="Accept(@Model.Id);return false;" style="font-size:120%">(accept)</a>
+                <a href="#" class="accept" task="@Model.Id" style="font-size:120%">(accept)</a>
 }
 @if (Model.ShowCompleted)
 { 
@@ -124,22 +111,12 @@
         </tr>
 } 
         <tr>
-            <th>Source Contact:</th>
-            <td>
-                <a href="/Contact.aspx?id=@Model.SourceContactId">@Model.SourceContact.FormatDate()</a>
-@if(Model.IsAnOwner)
-{ 
-                <a href="#" onclick="SearchContacts();return false;">@Model.SourceContactChange</a>
-} 
-            </td>
-        </tr>
-        <tr>
             <th>Completed Contact:</th>
             <td>
                 <a href="/Contact.aspx?id=@Model.CompletedContactId">@Model.CompletedContact.FormatDate()</a>
 @if(Model.CanCompleteWithContact) 
 { 
-                <a href="#" onclick="CompleteWithContact()">(complete)</a>
+                <a href="#" class="completewcontact">(complete)</a>
 } 
             </td>
         </tr>
@@ -155,7 +132,7 @@
 { 
         <tr>
             <td colspan="2" align="center">
-                <input type="button" value="Edit" onclick="Edit(@Model.Id)" />
+                <input type="button" value="Edit" class="edit" task="@Model.Id" />
             </td>
         </tr>
 } 

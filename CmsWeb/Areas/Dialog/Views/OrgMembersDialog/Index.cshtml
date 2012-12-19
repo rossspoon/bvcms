@@ -1,17 +1,16 @@
 ﻿@model CmsWeb.Models.OrgMembersDialogModel
+@using System.Web.Optimization
 @using CmsWeb
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-    <link href="/Content/css/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/Site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/jquery.tooltip.css" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/styles/css")
+    @Scripts.Render("~/bundles/js")
+    @Html.Partial("DatePickerDefaults")
+    @Scripts.Render("~/bundles/single/OrgMembersDialog-js")
 </head>
 <body>
-@Html.Partial("CombinedJs")
-@Html.Partial("DatePickerDefaults")
-@Html.Script("/Scripts/OrgMembersDialog.js")
 <form action="/OrgMembersDialog/Update" method="post">
 @Html.Hidden("orgid")
 @Html.Hidden("pendings")

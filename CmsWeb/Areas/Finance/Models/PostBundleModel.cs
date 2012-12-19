@@ -182,20 +182,16 @@ namespace CmsWeb.Models
 		{
 		    var qu = from p in DbUtil.Db.People
 		             where p.Name2.StartsWith(q)
+		             let deceased = p.DeceasedDate.HasValue ? " [DECEASED]" : ""
+		             let age = p.Age.HasValue ? " (" + p.Age + ")" : ""
 		             orderby p.Name2
 		             select new NamesInfo()
 		                        {
                                     Pid = p.PeopleId,
-		                            Name = p.Name2 + (p.DeceasedDate.HasValue ? " [DECEASED]" : ""),
-                                    Addr = p.PrimaryAddress ?? ""
+		                            Name = p.Name2 + deceased + age,
+                                    Addr = p.PrimaryAddress ?? "",
 		                        };
-//					 + (p.DeceasedDate.HasValue ? " [DECEASED]" : "")
-//					 + "|" + p.PeopleId
-//					 + "|" + (p.Age ?? 0)
-                     //+ "|" + (p.PrimaryAddress ?? "");
 		    return qu.Take(limit);
-//			var ret = string.Join("\n", qu.Take(limit).ToArray());
-//			return ret;
 		}
 
 		public object ContributionRowData(PostBundleController ctl, int cid, decimal? othersplitamt = null)

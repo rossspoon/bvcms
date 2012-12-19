@@ -2,7 +2,6 @@
     CodeBehind="Bundles.aspx.cs" Inherits="CmsWeb.Contributions.Bundles" EnableEventValidation="false" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

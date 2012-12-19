@@ -1,16 +1,14 @@
-﻿@using CmsWeb.Models
+﻿@using System.Web.Optimization
+@using CmsWeb.Models
 @using CmsWeb
 @model SearchOrgsModel
 <html>
 <head>
 <title>Index</title>
-    <link href="/Content/css/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/Site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/jquery.tooltip.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/style2.css" rel="stylesheet" type="text/css" />
-
-@Html.Partial("CombinedJs")
-@Html.Script("/Scripts/SearchOrgs.js")
+    @Styles.Render("~/Content/styles/css")
+    <link href="/Content/styles/style2.css" rel="stylesheet" type="text/css" />
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/single/SearchOrgs-js")
 </head>
 <body>
 <form name="form1">

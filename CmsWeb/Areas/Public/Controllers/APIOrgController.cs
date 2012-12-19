@@ -70,13 +70,13 @@ namespace CmsWeb.Areas.Public.Controllers
                 .DeleteExtraValue(orgid, field));
         }
         [HttpPost]
-        public ActionResult UpdateOrgMember(int OrgId, int PeopleId, int? type, DateTime? enrolled, string inactive)
+        public ActionResult UpdateOrgMember(int OrgId, int PeopleId, string type, DateTime? enrolled, string inactive, bool? pending)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
             new APIOrganization(DbUtil.Db)
-                .UpdateOrgMember(OrgId, PeopleId, type, enrolled, inactive);
+                .UpdateOrgMember(OrgId, PeopleId, type, enrolled, inactive, pending);
 			DbUtil.LogActivity("APIOrg UpdateOrgMember {0}, {1}".Fmt(OrgId, PeopleId));
             return Content("ok");
         }
@@ -101,13 +101,13 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content("ok");
         }
 		[HttpPost]
-		public ActionResult AddOrgMember(int OrgId, int PeopleId, string MemberType)
+		public ActionResult AddOrgMember(int OrgId, int PeopleId, string MemberType, bool? pending)
 		{
 			var ret = AuthenticateDeveloper();
 			if (ret.StartsWith("!"))
 				return Content(@"<AddOrgMember status=""error"">" + ret.Substring(1) + "</AddOrgMember>");
 			DbUtil.LogActivity("APIOrganization AddOrgMember");
-			return Content(new APIOrganization(DbUtil.Db).AddOrgMember(OrgId, PeopleId, MemberType), "text/xml");
+			return Content(new APIOrganization(DbUtil.Db).AddOrgMember(OrgId, PeopleId, MemberType, pending), "text/xml");
 		}
 		[HttpPost]
 		public ActionResult DropOrgMember(int OrgId, int PeopleId, string MemberType)

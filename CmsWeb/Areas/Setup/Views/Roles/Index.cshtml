@@ -12,7 +12,12 @@
             tooltip: "Click to edit...",
             style: 'display: inline',
             width: '200px',
-            height: 25
+            height: 25,
+            callback: function (value) {
+                if (value.startsWith("/")) {
+                    window.location = value;
+                }
+            }
         });
         $("a.delete").click(function (ev) {
             if (confirm("are you sure?"))

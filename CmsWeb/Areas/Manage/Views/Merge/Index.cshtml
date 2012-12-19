@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.MergeModel
+@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @{
@@ -7,7 +8,7 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/merge.js")
+@Scripts.Render("~/bundles/single/merge-js")
 }
 <h2>
     Merge Controller</h2>

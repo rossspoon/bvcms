@@ -63,7 +63,12 @@
 else if (User.IsInRole("Admin") || Model.queue.QueuedBy == Util.UserPeopleId)
 {
     <a href="/Manage/Emails/MakePublic/@Model.queue.Id" class="bt">Make Public</a>
+    if (Model.queue.Transactional == true)
+    {
+        <a href="/Manage/Emails/Resend/@Model.queue.Id" class="bt">Resend</a>
+    }
 }
+<div class="red"><b>@TempData["message"]</b></div>
 <h2>@Html.Raw(Model.queue.Subject)</h2>
 <div style="max-width: 600px">@Html.Raw(Model.queue.Body)</div>
 <hr />

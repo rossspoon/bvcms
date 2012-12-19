@@ -20,15 +20,21 @@ namespace CmsData.API
         {
             this.Db = Db;
         }
-		public string PostContribution(int PeopleId, decimal Amount, int FundId, string desc)
+		public string PostContribution(int PeopleId, decimal Amount, int FundId, string desc, string date, int? type)
 		{
 			try
 			{
 				var p = Db.LoadPersonById(PeopleId);
 				if (p == null)
 					throw new Exception("no person");
-				p.PostUnattendedContribution(Db, Amount, FundId, desc);
-				return @"<PostContribution status=""ok"" />";
+				var c = p.PostUnattendedContribution(Db, Amount, FundId, desc);
+			    DateTime dt;
+			    if (date.DateTryParse(out dt))
+			        c.ContributionDate = dt;
+                if (type.HasValue)
+    			    c.ContributionTypeId = type.Value;
+                Db.SubmitChanges();
+				return @"<PostContribution status=""ok"" id=""{0}"" />".Fmt(c.ContributionId);
 			}
 			catch (Exception ex)
 			{

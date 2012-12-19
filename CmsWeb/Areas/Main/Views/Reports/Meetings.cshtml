@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.MeetingsModel
+@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @{
@@ -7,7 +8,7 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/Meetings.js")
+@Scripts.Render("~/bundles/single/Meetings-js")
 }
 <h2>Meetings</h2>
 <form>

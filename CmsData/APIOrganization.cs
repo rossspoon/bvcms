@@ -193,18 +193,22 @@ class OrgMembers(object):
 			w.End();
 			return w.ToString();
 		}
-		public string UpdateOrgMember(int orgid, int peopleid, int? MemberType, DateTime? EnrollDate, string InactiveDate)
+		public string UpdateOrgMember(int orgid, int peopleid, string MemberType, DateTime? EnrollDate, string InactiveDate, bool? pending)
 		{
 			try
 			{
 				var om = Db.OrganizationMembers.Single(mm =>
 					mm.OrganizationId == orgid
 					&& mm.PeopleId == peopleid);
-
-				if (MemberType.HasValue)
-					om.MemberTypeId = MemberType.Value;
-				if (EnrollDate.HasValue)
+			    if (MemberType.HasValue())
+			    {
+			        var mt = CmsData.Organization.FetchOrCreateMemberType(Db, MemberType);
+			        om.MemberTypeId = mt.Id;
+			    }
+			    if (EnrollDate.HasValue)
 					om.EnrollmentDate = EnrollDate;
+			    if (pending.HasValue)
+			        om.Pending = pending;
 
 				var d = InactiveDate.ToDate();
 				if (d.HasValue)
@@ -329,14 +333,14 @@ class OrgMembers(object):
 				return ex.Message;
 			}
 		}
-		public string AddOrgMember(int OrgId, int PeopleId, string MemberType)
+		public string AddOrgMember(int OrgId, int PeopleId, string MemberType, bool? pending)
 		{
 			try
 			{
 				if (!MemberType.HasValue())
 					MemberType = "Member";
 				var mt = CmsData.Organization.FetchOrCreateMemberType(Db, MemberType);
-				OrganizationMember.InsertOrgMembers(Db, OrgId, PeopleId, mt.Id, DateTime.Now, null, false);
+				OrganizationMember.InsertOrgMembers(Db, OrgId, PeopleId, mt.Id, DateTime.Now, null, pending ?? false);
 				return @"<AddOrgMember status=""ok"" />";
 			}
 			catch (Exception ex)
@@ -446,6 +450,37 @@ class OrgMembers(object):
 							extravalue2 = (from ev in o.OrganizationExtras
 										   where ev.Field == extravalue2
 										   select ev.Data).SingleOrDefault(),
+							members = (from m in o.OrganizationMembers
+									   where m.Pending != true
+									   where m.MemberTypeId != Codes.MemberTypeCode.InActive
+									   select new Member
+									   {
+										   id = m.PeopleId,
+										   name = m.Person.Name,
+										   email = m.Person.EmailAddress,
+										   type = m.MemberType.Description
+									   }).ToList()
+						};
+				return SerializeOrgs(q, "ChildOrgs", "ChildOrg", "Members");
+			}
+			catch (Exception ex)
+			{
+				return @"<ChildOrgs status=""error"">" + ex.Message + "</ChildOrgs>";
+			}
+
+		}
+		public string ChildOrgMembers(int id)
+		{
+			try
+			{
+				var q = from o in Db.Organizations
+						where o.ParentOrgId == id
+						select new Organization
+						{
+							id = o.OrganizationId,
+							name = o.OrganizationName,
+							location = o.Location,
+							description = o.Description,
 							members = (from m in o.OrganizationMembers
 									   where m.Pending != true
 									   where m.MemberTypeId != Codes.MemberTypeCode.InActive

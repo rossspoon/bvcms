@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
@@ -29,7 +30,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("<Lookups error=\"{0}\" />".Fmt(ret.Substring(1)));
             if (!id.HasValue())
                 return Content("Lookups error=\"not found\">");
-            var q = DbUtil.Db.ExecuteQuery<CmsWeb.Areas.Setup.Controllers.LookupController.Row>("select * from lookup." + id);
+            var q = DbUtil.Db.ExecuteQuery<Setup.Controllers.LookupController.Row>("select * from lookup." + id);
             var w = new CmsData.API.APIWriter();
             w.Start("Lookups");
             w.Attr("name", id);
@@ -50,6 +51,42 @@ namespace CmsWeb.Areas.Public.Controllers
 			if (Request.Browser.Cookies == true)
 				return Content("supports cookies<br>" + s);
 			return Content("does not support cookies<br>" + s);
+		}
+        [HttpGet]
+		public ActionResult SQLView(string id)
+        {
+            var ret = AuthenticateDeveloper();
+            if (ret.StartsWith("!"))
+                return Content("<SQLView error=\"{0}\" />".Fmt(ret.Substring(1)));
+            if (!id.HasValue())
+                return Content("<SQLView error\"no view name\" />");
+            try
+            {
+                var cmd = new SqlCommand("select * from guest." + id.Replace(" ", ""));
+                cmd.Connection = new SqlConnection(Util.ConnectionString);
+                cmd.Connection.Open();
+                var rdr = cmd.ExecuteReader();
+    			DbUtil.LogActivity("APIMeta SQLView " + id);
+                var w = new APIWriter();
+                w.Start("SQLView");
+                w.Attr("name", id);
+
+                var read = rdr.Read();
+                while (read)
+                {
+                    w.Start("row");
+                    for (var i = 0; i < rdr.FieldCount; i++)
+                        w.Attr(rdr.GetName(i), rdr[i].ToString());
+                    w.End();
+                   read = rdr.Read();
+                }
+                w.End();
+                return Content(w.ToString(), "text/xml");
+            }
+            catch (Exception e)
+            {
+                return Content("<SQLView error=\"cannot find view guest.{0}\" />".Fmt(id));
+            }
 		}
     }
 }

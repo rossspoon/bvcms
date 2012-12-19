@@ -64,8 +64,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.AddCell(StartPageSet());
 
             t.DefaultCell.Border = PdfPCell.TOP_BORDER;
-            t.DefaultCell.BorderColor = Color.BLACK;
-            t.DefaultCell.BorderColorTop = Color.BLACK;
+            t.DefaultCell.BorderColor = BaseColor.BLACK;
+            t.DefaultCell.BorderColorTop = BaseColor.BLACK;
             t.DefaultCell.BorderWidthTop = 2.0f;
 
             if (qid.HasValue) // print using a query
@@ -94,13 +94,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                     ft.DefaultCell.Border = PdfPCell.NO_BORDER;
                     ft.DefaultCell.Padding = 5;
                     int fn = 1;
-                    var color = Color.BLACK;
+                    var color = BaseColor.BLACK;
                     foreach (var p in f.members.OrderBy(m => m.order))
                     {
-                        if (color == Color.WHITE)
+                        if (color == BaseColor.WHITE)
                             color = new GrayColor(240);
                         else
-                            color = Color.WHITE;
+                            color = BaseColor.WHITE;
                         Debug.WriteLine("{0:##}: {1}".Fmt(p.order, p.person.Name));
                         AddRow(ft, p.person, fn, color);
                         fn++;
@@ -134,7 +134,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             return t;
         }
 
-        private void AddRow(PdfPTable t, Person p, int fn, Color color)
+        private void AddRow(PdfPTable t, Person p, int fn, BaseColor color)
         {
             t.DefaultCell.BackgroundColor = color;
 

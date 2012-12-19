@@ -127,10 +127,16 @@
         case "AskCheckboxes":
             foreach (var a in ((AskCheckboxes)ask).list)
             {
-        <tr>
-            <td><div class="wraparound">@a.Description</div></td>
-            <td> @(Model.CheckboxChecked(a.SmallGroup) ? "Checked" : "") </td>
-        </tr>
+                if (a.SmallGroup == "nocheckbox")
+                {
+                    <tr><td colspan="2"><b>@Html.Raw(a.Description)</b></td></tr>
+                }
+                else if (Model.CheckboxChecked(a.SmallGroup))
+                {
+                    <tr><td><div class="wraparound">@a.Description</div></td>
+                        <td>Checked</td>
+                    </tr>
+                }
             }
             break;
         case "AskMenu":

@@ -36,7 +36,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             Response.AddHeader("content-disposition", "filename=foo.pdf");
             var doc = new Document(PageSize.LETTER, 36, 36, 36, 42);
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
-            w.PageEvent = new HeadFoot();
 
             string divtext = "", subdivtext = "";
             divtext = DbUtil.Db.Programs.Single(p => p.Id == div).Name;
@@ -48,11 +47,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                 scheduletext = sdt.Value.ToString("dddd h:mm tt");
 
             var headtext = "Enrollment Control for {0}:{1} {2}".Fmt(divtext, subdivtext, scheduletext);
+            w.PageEvent = new HeadFoot(headtext);
+
 
             var boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 8);
-            var header = new HeaderFooter(new Phrase(headtext, boldfont), false);
-            header.Border = Rectangle.NO_BORDER;
-            doc.Header = header;
 
             doc.Open();
 
@@ -111,6 +109,12 @@ namespace CmsWeb.Areas.Main.Models.Report
             private PdfTemplate tpl;
             private PdfContentByte dc;
             private BaseFont font;
+            private string sText;
+
+            public HeadFoot(string headertext)
+            {
+                sText = headertext;
+            }
 
             public override void OnOpenDocument(PdfWriter writer, Document document)
             {
@@ -123,11 +127,9 @@ namespace CmsWeb.Areas.Main.Models.Report
             {
                 base.OnEndPage(writer, document);
 
-                string sText;
                 float fLen;
 
                 //---Column 1: Title
-                sText = "Enrollment Control";
                 fLen = font.GetWidthPoint(sText, 8);
                 dc.BeginText();
                 dc.SetFontAndSize(font, 8);

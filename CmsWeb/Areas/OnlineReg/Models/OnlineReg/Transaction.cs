@@ -25,7 +25,7 @@ namespace CmsWeb.Models
         {
             return DbUtil.Db.Setting("TransactionGateway", "serviceu").ToLower();
         }
-        public decimal Amount()
+        public decimal PayAmount()
         {
             var amt = List.Sum(p => p.AmountToPay());
             var max = List.Max(p => p.org != null ? p.setting.MaximumFee ?? 0 : 0);
@@ -38,42 +38,117 @@ namespace CmsWeb.Models
         }
         public decimal TotalAmount()
         {
-            return List.Sum(p => p.TotalAmount());
+            var amt = List.Sum(p => p.TotalAmount());
+            var max = List.Max(p => p.org != null ? p.setting.MaximumFee ?? 0 : 0);
+            if (max == 0)
+                return amt;
+            var totalother = List.Sum(p => p.TotalOther());
+            if ((amt - totalother) > max)
+                amt = max + totalother;
+            return amt;
         }
-        public string NameOnAccount
+        public class TransactionInfo
         {
-            get
-            {
-                var p = List[0];
-                if (user != null)
-                    return user.Name;
-                if (p.org != null && p.setting.AskVisible("AskParents"))
-                    return p.fname.HasValue() ? p.fname : p.mname;
-                return p.first + " " + p.last;
-            }
+            public string First { get; set; }
+            public string Last { get; set; }
+            public string Email { get; set; }
+            public string Middle { get; set; }
+            public string Suffix { get; set; }
+            public string Address { get; set; }
+            public string City { get; set; }
+            public string State { get; set; }
+            public string Zip { get; set; }
+            public string Phone { get; set; }
+            public PaymentInfo payinfo { get; set; }
         }
+        public TransactionInfo GetTransactionInfo()
+        {
+			var p = List[0];
+			var pp = p.person;
+            var r = new TransactionInfo();
+
+			if (user != null && string.Equals(GetTransactionGateway(), "Sage", StringComparison.InvariantCultureIgnoreCase))
+				r.payinfo = pp.PaymentInfos.FirstOrDefault();
+			if (r.payinfo == null)
+				r.payinfo = new PaymentInfo { MaskedAccount = "", MaskedCard = "" };
+
+			if (user != null)
+			{
+				pp = user;
+			    r.First = pp.FirstName;
+			    r.Last = pp.LastName;
+			    r.Middle = pp.MiddleName.Truncate(1);
+			    r.Email = pp.EmailAddress;
+			    r.Suffix = pp.SuffixCode;
+			    r.Phone = (pp.HomePhone ?? pp.CellPhone).FmtFone();
+			}
+            else
+            {
+			    r.Email = p.email;
+			    r.Suffix = p.suffix;
+                r.First = p.first;
+                r.Middle = p.middle;
+                r.Last = p.last;
+                r.Suffix = p.suffix;
+                r.Phone = p.homephone ?? p.phone;
+            } 
+
+            if (p.org != null && p.setting.AskVisible("AskParents"))
+            {
+                p.suffix = "";
+                var a = (p.fname ?? p.mname).Trim().Split(' ');
+                if (a.Length > 1)
+                {
+                    r.First = a[0];
+                    r.Last = a[1];
+                }
+                else
+                    r.Last = a[0];
+            }
+            if (UserPeopleId.HasValue || p.IsNew)
+            {
+                if (pp == null)
+                {
+                    r.Address = p.address.Truncate(50);
+                    r.City = p.city;
+                    r.State = p.state;
+                    r.Zip = p.zip;
+                    r.Phone = p.phone.FmtFone();
+                }
+                else
+                {
+                    r.Address = pp.PrimaryAddress.Truncate(50);
+                    r.City = pp.PrimaryCity;
+                    r.State = pp.PrimaryState;
+                    r.Zip = pp.PrimaryZip;
+                    r.Phone = Util.PickFirst(pp.HomePhone, pp.CellPhone).FmtFone();
+                }
+            }
+            return r;
+        }
+
         public static TransactionResponse PostTransaction(
-            string card, 
-            string ccv, 
-            string expdate, 
-            decimal amt, 
-            int tranid, 
+            string card,
+            string ccv,
+            string expdate,
+            decimal amt,
+            int tranid,
             string description,
-            int PeopleId, 
+            int PeopleId,
             string email,
-            string first, 
-            string last, 
-            string addr, 
-            string city, 
-            string state, 
-            string zip, 
+            string first,
+            string last,
+            string addr,
+            string city,
+            string state,
+            string zip,
             bool testing)
         {
             string url = "https://secure.authorize.net/gateway/transact.dll";
             if (testing)
                 url = "https://test.authorize.net/gateway/transact.dll";
 
-            
+
             var p = new Dictionary<string, string>();
             p["x_delim_data"] = "TRUE";
             p["x_delim_char"] = "|";
@@ -213,28 +288,28 @@ namespace CmsWeb.Models
             }
         }
         public static TransactionResponse PostTransactionSage(
-            string card, string ccv, string expdate, 
+            string card, string ccv, string expdate,
             decimal amt, int tranid, string description,
-            int PeopleId, string email, string first, string last,
+            int PeopleId, string email, string first, string middle, string last, string suffix,
             string addr, string city, string state, string zip, string phone,
             bool testing)
         {
-        	var t = new SagePayments(DbUtil.Db, testing);
-			var resp = t.createTransactionRequest(PeopleId, amt, card, expdate, description, tranid, ccv,
-				email, first, last, addr, city, state, zip, phone);
-        	return resp;
+            var t = new SagePayments(DbUtil.Db, testing);
+            var resp = t.createTransactionRequest(PeopleId, amt, card, expdate, description, tranid, ccv,
+                email, first, last, addr, city, state, zip, phone);
+            return resp;
         }
         public static TransactionResponse PostVirtualCheckTransactionSage(
             string routing, string acct,
             decimal amt, int tranid, string description,
-            int PeopleId, string email, string first, string last, string middle,
+            int PeopleId, string email, string first, string middle, string last, string suffix,
             string addr, string city, string state, string zip, string phone,
             bool testing)
         {
-        	var t = new SagePayments(DbUtil.Db, testing);
-			var resp = t.createCheckTransactionRequest(PeopleId, amt, routing, acct, description, tranid,
-				email, first, last, middle, addr, city, state, zip, phone);
-        	return resp;
+            var t = new SagePayments(DbUtil.Db, testing);
+            var resp = t.createCheckTransactionRequest(PeopleId, amt, routing, acct, description, tranid,
+                email, first, middle, last, suffix, addr, city, state, zip, phone);
+            return resp;
         }
     }
 }

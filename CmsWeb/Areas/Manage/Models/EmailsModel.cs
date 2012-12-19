@@ -28,14 +28,11 @@ namespace CmsWeb.Models
             }
         }
         public int? senderid { get; set; }
-        public string sender
+        public Person sender
         {
             get
             {
-                var nam = (from p in DbUtil.Db.People
-                          where p.PeopleId == senderid
-                          select p.Name).SingleOrDefault();
-                return nam;
+                return DbUtil.Db.LoadPersonById(senderid ?? 0);
             }
         }
         public string subject { get; set; }
@@ -79,6 +76,9 @@ namespace CmsWeb.Models
         {
             if (_emails != null)
                 return _emails;
+            var sndr = sender;
+            if (sndr == null)
+                sndr = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
             _emails
                = from t in DbUtil.Db.EmailQueues
                  where t.Sent >= startdt || startdt == null
@@ -86,7 +86,7 @@ namespace CmsWeb.Models
                  where body == null || t.Body.Contains(body)
                  where @from == null || t.FromName.Contains(@from) || t.FromAddr.Contains(@from)
                  where peopleid == null || t.EmailQueueTos.Any(et => et.PeopleId == peopleid)
-                 where senderid == null || t.QueuedBy == senderid
+                 where senderid == null || t.QueuedBy == senderid || t.FromAddr == sndr.EmailAddress
                  where (t.Transactional ?? false) == transactional
                  where scheduled == (t.SendWhen != null && t.Sent == null) 
                  select t;

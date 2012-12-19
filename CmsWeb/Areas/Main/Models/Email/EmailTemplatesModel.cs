@@ -10,6 +10,8 @@ namespace CmsWeb.Areas.Main.Models
 {
 	public class EmailTemplatesModel
 	{
+	    public bool wantparents { get; set; }
+	    public int queryid { get; set; }
 		public IQueryable<Content> fetchTemplates()
 		{
 			var currentRoleIds = DbUtil.Db.CurrentRoleIds();

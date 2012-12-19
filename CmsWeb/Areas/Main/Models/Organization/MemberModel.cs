@@ -19,16 +19,24 @@ namespace CmsWeb.Models.OrganizationPage
         }
         public int? OrganizationId { get; set; }
         private int[] Groups;
+        private int GroupsMode;
         private GroupSelect Select;
         private string NameFilter;
 
         public PagerModel2 Pager { get; set; }
-        public MemberModel(int? id, int[] groups, GroupSelect select, string name)
+        public MemberModel(int? id, GroupSelect select, string name)
         {
             OrganizationId = id;
-            if (groups == null)
-                groups = new int[] { 0 };
-            Groups = groups;
+            if (Util2.CurrentGroups != null && @select == GroupSelect.Active)
+            {
+                Groups = Util2.CurrentGroups;
+                GroupsMode = Util2.CurrentGroupsMode;
+            }
+            else // No Filter
+            {
+                Groups = new int[] {0}; 
+                GroupsMode = 0;
+            }
             Select = select;
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
@@ -79,10 +87,14 @@ namespace CmsWeb.Models.OrganizationPage
                 _members = from om in DbUtil.Db.OrganizationMembers
                            where om.OrganizationId == OrganizationId
 						   let gc = om.OrgMemMemTags.Count(mt => Groups.Contains(mt.MemberTagId))
-						   where gc == Groups.Length || Groups[0] <= 0
+                           // for Match Any
+						   where gc > 0 || Groups[0] <= 0 || GroupsMode == 1
+                           // for Match All
+						   where gc == Groups.Length || Groups[0] <= 0 || GroupsMode == 0
+                           // for Match No SmallGroup assigned
                            where om.OrgMemMemTags.Count() == 0 || Groups[0] != -1
                            select om;
-            if (Active == true)
+            if (Active)
                 if (Pending == false) // current
                     _members = from om in _members
                                where om.MemberTypeId != inactive

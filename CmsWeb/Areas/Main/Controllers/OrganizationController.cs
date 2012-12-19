@@ -23,9 +23,12 @@ namespace CmsWeb.Areas.Main.Controllers
 			if (!id.HasValue)
 				return Content("no org");
 			if (Util2.CurrentOrgId != id)
+			{
 				Util2.CurrentGroups = null;
+				Util2.CurrentGroupsMode = 0;
+			}
 
-			var m = new OrganizationModel(id.Value, Util2.CurrentGroups);
+			var m = new OrganizationModel(id.Value);
 
 			if (m.org == null)
 				return Content("organization not found");
@@ -34,7 +37,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			{
 				if (m.org.SecurityTypeId == 3)
 					return NotAllowed("You do not have access to this page", m.org.OrganizationName);
-				else if (!m.org.OrganizationMembers.Any(om => om.PeopleId == Util.UserPeopleId))
+				else if (m.org.OrganizationMembers.All(om => om.PeopleId != Util.UserPeopleId))
 					return NotAllowed("You must be a member of this organization", m.org.OrganizationName);
 			}
 			else if (Util2.OrgLeadersOnly)
@@ -50,9 +53,10 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.LogActivity("Viewing Organization ({0})".Fmt(m.org.OrganizationName));
 
 			Util2.CurrentOrgId = m.org.OrganizationId;
-			ViewData["OrganizationContext"] = true;
+			ViewBag.OrganizationContext = true;
+		    ViewBag.selectmode = 0;
 			var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
-			InitExportToolbar(id.Value, qb.QueryId);
+			InitExportToolbar(id.Value, qb.QueryId, checkparent:true);
 			Session["ActiveOrganization"] = m.org.OrganizationName;
 			return View(m);
 		}
@@ -75,6 +79,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				return Content("error, not deleted");
 			Util2.CurrentOrgId = 0;
 			Util2.CurrentGroups = null;
+			Util2.CurrentGroupsMode = 0;
 			DbUtil.LogActivity("Delete Org {0}".Fmt(Session["ActiveOrganization"]));
 			Session.Remove("ActiveOrganization");
 			return Content("ok");
@@ -110,10 +115,20 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.LogActivity("Creating new meeting for {0}".Fmt(organization.OrganizationName));
 			return Content("/Meeting/Index/" + mt.MeetingId);
 		}
-		private void InitExportToolbar(int oid, int qid)
+		private void InitExportToolbar(int oid, int qid, bool checkparent = false)
 		{
 			Util2.CurrentOrgId = oid;
-			ViewData["queryid"] = qid;
+		    if (checkparent)
+		    {
+		        var isParent = DbUtil.Db.Organizations.Any(oo => oo.ParentOrgId == oid);
+		        if (isParent)
+		        {
+		            ViewData["ParentOrgContext"] = true;
+		            ViewData["leadersqid"] = DbUtil.Db.QueryBuilderLeadersUnderCurrentOrg().QueryId;
+		            ViewData["membersqid"] = DbUtil.Db.QueryBuilderMembersUnderCurrentOrg().QueryId;
+		        }
+		    }
+		    ViewData["queryid"] = qid;
 			ViewData["TagAction"] = "/Organization/TagAll/{0}?m=tag".Fmt(qid);
 			ViewData["UnTagAction"] = "/Organization/TagAll/{0}?m=untag".Fmt(qid);
 			ViewData["AddContact"] = "/Organization/AddContact/" + qid;
@@ -121,13 +136,14 @@ namespace CmsWeb.Areas.Main.Controllers
 			ViewData["OrganizationContext"] = true;
 		}
 
-		public ActionResult CurrMemberGrid(int id, int[] smallgrouplist, string namefilter)
+		public ActionResult CurrMemberGrid(int id, int[] smallgrouplist, int? selectmode, string namefilter)
 		{
 			ViewData["OrgMemberContext"] = true;
 			Util2.CurrentGroups = smallgrouplist;
+		    Util2.CurrentGroupsMode = selectmode.Value;
 			var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
-			InitExportToolbar(id, qb.QueryId);
-			var m = new MemberModel(id, Util2.CurrentGroups, MemberModel.GroupSelect.Active, namefilter);
+			InitExportToolbar(id, qb.QueryId, checkparent:true);
+			var m = new MemberModel(id, MemberModel.GroupSelect.Active, namefilter);
 			UpdateModel(m.Pager);
 			return View(m);
 		}
@@ -156,7 +172,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			var qb = DbUtil.Db.QueryBuilderPendingCurrentOrg();
 			InitExportToolbar(id, qb.QueryId);
-			var m = new MemberModel(id, null, MemberModel.GroupSelect.Pending, namefilter);
+			var m = new MemberModel(id, MemberModel.GroupSelect.Pending, namefilter);
 			UpdateModel(m.Pager);
 			return View(m);
 		}
@@ -165,7 +181,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			var qb = DbUtil.Db.QueryBuilderInactiveCurrentOrg();
 			InitExportToolbar(id, qb.QueryId);
-			var m = new MemberModel(id, null, MemberModel.GroupSelect.Inactive, namefilter);
+			var m = new MemberModel(id, MemberModel.GroupSelect.Inactive, namefilter);
 			UpdateModel(m.Pager);
 			DbUtil.LogActivity("Viewing Inactive for {0}".Fmt(Session["ActiveOrganization"]));
 			return View(m);
@@ -182,19 +198,19 @@ namespace CmsWeb.Areas.Main.Controllers
 		[HttpPost]
 		public ActionResult SettingsOrg(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			return View(m);
 		}
 		[HttpPost]
 		public ActionResult SettingsOrgEdit(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			return View(m);
 		}
 		[HttpPost]
 		public ActionResult SettingsOrgUpdate(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			UpdateModel(m);
 			if (!m.org.LimitToRole.HasValue())
 				m.org.LimitToRole = null;
@@ -211,19 +227,19 @@ namespace CmsWeb.Areas.Main.Controllers
 		[HttpPost]
 		public ActionResult SettingsMeetings(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			return View(m);
 		}
 		[HttpPost]
 		public ActionResult SettingsMeetingsEdit(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			return View(m);
 		}
 		[HttpPost]
 		public ActionResult SettingsMeetingsUpdate(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			m.schedules.Clear();
 
 			UpdateModel(m);
@@ -250,19 +266,19 @@ namespace CmsWeb.Areas.Main.Controllers
 		[HttpPost]
 		public ActionResult OrgInfo(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			return View(m);
 		}
 		[HttpPost]
 		public ActionResult OrgInfoEdit(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			return View(m);
 		}
 		[HttpPost]
 		public ActionResult OrgInfoUpdate(int id)
 		{
-			var m = new OrganizationModel(id, Util2.CurrentGroups);
+			var m = new OrganizationModel(id);
 			UpdateModel(m);
 			if (m.org.CampusId == 0)
 				m.org.CampusId = null;
@@ -510,12 +526,12 @@ namespace CmsWeb.Areas.Main.Controllers
 			return Content("unexpected type " + type);
 		}
 
-		[AcceptVerbs(HttpVerbs.Post)]
-		public ActionResult SmallGroups()
-		{
-			var m = new OrganizationModel(Util2.CurrentOrgId, Util2.CurrentGroups);
-			return View(m);
-		}
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public ActionResult SmallGroups()
+        //{
+        //    var m = new OrganizationModel(Util2.CurrentOrgId, Util2.CurrentGroups, Util2.CurrentGroupsMode);
+        //    return View(m);
+        //}
 		[Authorize(Roles = "Edit")]
 		public ActionResult CopySettings()
 		{
@@ -652,7 +668,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		[Authorize(Roles = "Edit")]
 		public ActionResult NewExtraValue(int id, string field, string value, bool multiline)
 		{
-			var m = new OrganizationModel(id, null);
+			var m = new OrganizationModel(id);
 			try
 			{
 				m.org.AddEditExtra(DbUtil.Db, field, value, multiline);
@@ -671,7 +687,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			var e = DbUtil.Db.OrganizationExtras.Single(ee => ee.OrganizationId == id && ee.Field == field);
 			DbUtil.Db.OrganizationExtras.DeleteOnSubmit(e);
 			DbUtil.Db.SubmitChanges();
-			var m = new OrganizationModel(id, null);
+			var m = new OrganizationModel(id);
 			return View("ExtrasGrid", m.org);
 		}
 		[HttpPost]
@@ -689,7 +705,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		[HttpPost]
 		public ActionResult Reminders(int id, bool? emailall)
 		{
-			var m = new OrganizationModel(id, null);
+			var m = new OrganizationModel(id);
 			try
 			{
 				if (m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)

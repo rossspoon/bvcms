@@ -20,8 +20,10 @@
         $("#name").val($(this).attr("originalid"));
         $('#filter').click();
     });
-    $.getTable = function (f, q) {
-        q = q || f.serialize();
+    $.getTable = function (f) {
+        var q = null;
+        if (f)
+            q = f.serialize();
         $.blockUI();
         $.post("/Manage/Transactions/List", q, function (ret) {
             $('#Transactions').html(ret);

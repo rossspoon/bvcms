@@ -249,6 +249,7 @@ The following Committments:<br/>
 		public ActionResult ManageGiving(ManageGivingModel m)
 		{
 			SetHeaders(m.orgid);
+		    m.Account = m.Account.GetDigits();
 			m.ValidateModel(ModelState);
 			if (!ModelState.IsValid)
 				return View(m);

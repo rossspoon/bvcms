@@ -14,6 +14,7 @@ namespace CmsData
     {
         public int? CurrentOrgId { get; set; }
         public int[] CurrentGroups { get; set; }
+        public int CurrentGroupsMode { get; set; }
         public int CurrentPeopleId { get; set; }
         public int? CurrentTagOwnerId { get; set; }
         public string CurrentTagName { get; set; }
@@ -28,6 +29,7 @@ namespace CmsData
             {
                 CurrentOrgId = Util2.CurrentOrgId;
                 CurrentGroups = Util2.CurrentGroups;
+                CurrentGroupsMode = Util2.CurrentGroupsMode;
                 CurrentPeopleId = Util2.CurrentPeopleId;
                 CurrentTagOwnerId = Util2.CurrentTagOwnerId;
                 CurrentTagName = Util2.CurrentTagName;
@@ -42,6 +44,7 @@ namespace CmsData
             var s = new Session2();
             s.CurrentOrgId = CurrentOrgId;
             s.CurrentGroups = CurrentGroups;
+            s.CurrentGroupsMode = CurrentGroupsMode;
             s.CurrentPeopleId = CurrentPeopleId;
             s.CurrentTagOwnerId = CurrentTagOwnerId;
             s.CurrentTagName = CurrentTagName;
@@ -55,6 +58,7 @@ namespace CmsData
         {
             CurrentOrgId = s.CurrentOrgId;
             CurrentGroups = s.CurrentGroups;
+            CurrentGroupsMode = s.CurrentGroupsMode;
             CurrentPeopleId = s.CurrentPeopleId;
             CurrentTagOwnerId = s.CurrentTagOwnerId;
             CurrentTagName = s.CurrentTagName;
@@ -127,6 +131,7 @@ namespace CmsData
     {
         public int? CurrentOrgId { get; set; }
         public int[] CurrentGroups { get; set; }
+        public int CurrentGroupsMode { get; set; }
         public int CurrentPeopleId { get; set; }
         public int? CurrentTagOwnerId { get; set; }
         public string CurrentTagName { get; set; }

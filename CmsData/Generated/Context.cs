@@ -146,6 +146,10 @@ namespace CmsData
         partial void UpdateContent(Content instance);
         partial void DeleteContent(Content instance);
         
+        partial void InsertContentKeyWord(ContentKeyWord instance);
+        partial void UpdateContentKeyWord(ContentKeyWord instance);
+        partial void DeleteContentKeyWord(ContentKeyWord instance);
+        
         partial void InsertContribution(Contribution instance);
         partial void UpdateContribution(Contribution instance);
         partial void DeleteContribution(Contribution instance);
@@ -829,6 +833,12 @@ namespace CmsData
 		public Table< Content> Contents
 		{
 			get	{ return this.GetTable< Content>(); }
+
+		}
+
+		public Table< ContentKeyWord> ContentKeyWords
+		{
+			get	{ return this.GetTable< ContentKeyWord>(); }
 
 		}
 
@@ -1964,6 +1974,17 @@ namespace CmsData
 			return this.CreateMethodCallQuery< View.QBClause>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 qid
+                );
+		}
+
+		[Function(Name="dbo.RecentAttendance", IsComposable = true)]
+		public IQueryable< View.RecentAttendance > RecentAttendance(
+            [Parameter(DbType="int")] int? oid
+            )
+		{
+			return this.CreateMethodCallQuery< View.RecentAttendance>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid
                 );
 		}
 

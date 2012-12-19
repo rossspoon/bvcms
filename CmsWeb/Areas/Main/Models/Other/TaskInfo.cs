@@ -205,16 +205,6 @@ namespace CmsWeb.Models
             var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
             return "/Reports/Prospect/" + qb.QueryId + "?form=true";
         }
-        public IEnumerable<SelectListItem> PriorityList()
-        {
-            return new SelectListItem[]
-            {
-                new SelectListItem { Value = "", Text = "None" },
-                new SelectListItem { Value = "1", Text = "1st Priority" },
-                new SelectListItem { Value = "2", Text = "2nd Priority" },
-                new SelectListItem { Value = "3", Text = "3rd Priority" },
-            };
-        }
         public IEnumerable<SelectListItem> StatusList()
         {
             return from s in DbUtil.Db.TaskStatuses

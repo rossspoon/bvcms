@@ -56,6 +56,11 @@
             if (value === '0')
                 return '';
           return value;
+        },
+        callback: function (value) {
+            if (value.startsWith("error:"))
+                alert(value);
+            value = "";
         }
     });
 

@@ -236,9 +236,11 @@ namespace CmsWeb.Models
             {
                 if (masterorg != null)
                 {
-                    var setting1 = settings[masterorg.OrganizationId];
+                    var setting1 = new Settings();
+                    if(settings.ContainsKey(masterorg.OrganizationId))
+                        setting1 = settings[masterorg.OrganizationId];
                     var setting2 = setting1;
-                    if (last != null && last.org != null)
+                    if (last != null && last.org != null && settings.ContainsKey(last.org.OrganizationId))
                         setting1 = settings[last.org.OrganizationId];
                     return @"
 <div class=""instructions login"">{0}</div>
@@ -257,7 +259,9 @@ namespace CmsWeb.Models
                 }
                 if (org != null)
                 {
-                    var setting = settings[org.OrganizationId];
+                    var setting = new Settings();
+                    if (settings.ContainsKey(org.OrganizationId))
+                        setting = settings[org.OrganizationId];
                     if (setting.InstructionAll != null)
                         if (setting.InstructionAll.ToString().HasValue())
                             return setting.InstructionAll.ToString();

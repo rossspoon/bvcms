@@ -285,7 +285,10 @@ namespace CmsWeb.Models
                          NotiPhone = !iPhone,
                          ForceCompleteWContact = t.ForceCompleteWContact ?? false,
                      };
-            return q2.Single();
+            var tt = q2.SingleOrDefault();
+            if (tt == null)
+                return null;
+            return tt;
         }
         public class ContactTaskInfo
         {

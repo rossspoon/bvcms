@@ -89,6 +89,12 @@ namespace CmsData
 			else
 				base.SubmitChanges(failureMode);
 		}
+        public void ClearCache2()
+        {
+            const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var method = this.GetType().GetMethod("ClearCache", Flags);
+            method.Invoke(this, null);
+        }
 
 		private int GetMaxLength(string dbType)
 		{
@@ -237,6 +243,38 @@ namespace CmsData
 				qb.Description = STR_InCurrentOrg;
 				qb.SavedBy = STR_System;
 				qb.AddNewClause(QueryType.InCurrentOrg, CompareType.Equal, "1,T");
+				QueryBuilderClauses.InsertOnSubmit(qb);
+				SubmitChanges();
+			}
+			return qb;
+		}
+		public QueryBuilderClause QueryBuilderLeadersUnderCurrentOrg()
+		{
+            const string STR_LeadersUnderCurrentOrg = "LeadersUnderCurrentOrg";
+			var qb = QueryBuilderClauses.FirstOrDefault(c => c.SavedBy == STR_System
+                && c.Description == STR_LeadersUnderCurrentOrg);
+			if (qb == null)
+			{
+				qb = QueryBuilderClause.NewGroupClause();
+                qb.Description = STR_LeadersUnderCurrentOrg;
+				qb.SavedBy = STR_System;
+				qb.AddNewClause(QueryType.LeadersUnderCurrentOrg, CompareType.Equal, "1,T");
+				QueryBuilderClauses.InsertOnSubmit(qb);
+				SubmitChanges();
+			}
+			return qb;
+		}
+		public QueryBuilderClause QueryBuilderMembersUnderCurrentOrg()
+		{
+            const string STR_MembersUnderCurrentOrg = "MembersUnderCurrentOrg";
+			var qb = QueryBuilderClauses.FirstOrDefault(c => c.SavedBy == STR_System
+                && c.Description == STR_MembersUnderCurrentOrg);
+			if (qb == null)
+			{
+				qb = QueryBuilderClause.NewGroupClause();
+                qb.Description = STR_MembersUnderCurrentOrg;
+				qb.SavedBy = STR_System;
+				qb.AddNewClause(QueryType.MembersUnderCurrentOrg, CompareType.Equal, "1,T");
 				QueryBuilderClauses.InsertOnSubmit(qb);
 				SubmitChanges();
 			}
@@ -480,7 +518,9 @@ namespace CmsData
 			               	roleids = u.UserRoles.Select(uu => uu.RoleId).ToArray(),
 			               	roles = u.UserRoles.Select(uu => uu.Role.RoleName).ToArray(),
 			               };
-			var i = q.Single();
+			var i = q.SingleOrDefault();
+		    if (i == null)
+		        return;
 			_roles = i.roles;
 			_roleids = i.roleids;
 			_currentuser = i.u;
@@ -611,7 +651,24 @@ namespace CmsData
 		public int[] GetLeaderOrgIds(int? me)
 		{
 			var o1 = from o in Organizations
-					 where o.OrganizationMembers.Any(om => om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader && om.PeopleId == me)
+					 where o.OrganizationMembers.Any(om => om.MemberType.AttendanceTypeId == AttendTypeCode.Leader && om.PeopleId == me)
+					 select o.OrganizationId;
+			var o2 = from o in Organizations
+					 where o1.Contains(o.OrganizationId)
+					 from co in o.ChildOrgs
+					 select co.OrganizationId;
+			var o3 = from o in Organizations
+					 where o1.Contains(o.OrganizationId)
+					 from co in o.ChildOrgs
+					 from cco in co.ChildOrgs
+					 select cco.OrganizationId;
+			var oids = o1.Union(o2).Union(o3).ToArray();
+			return oids;
+		}
+		public int[] GetParentChildOrgIds(int? parent)
+		{
+			var o1 = from o in Organizations
+					 where o.OrganizationId == parent
 					 select o.OrganizationId;
 			var o2 = from o in Organizations
 					 where o1.Contains(o.OrganizationId)

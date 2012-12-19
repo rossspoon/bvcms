@@ -67,15 +67,6 @@ namespace CmsWeb.Contributions {
         protected global::CustomControls.DisplayOrEditDate ContributionDate;
         
         /// <summary>
-        /// ContributionDate_CalendarExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender ContributionDate_CalendarExtender;
-        
-        /// <summary>
         /// TR_BundleHeaderTypeId control.
         /// </summary>
         /// <remarks>
@@ -101,15 +92,6 @@ namespace CmsWeb.Contributions {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CustomControls.DisplayOrEditDate DepositDate;
-        
-        /// <summary>
-        /// DepositDate_CalendarExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender DepositDate_CalendarExtender;
         
         /// <summary>
         /// TotalCash control.

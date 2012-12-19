@@ -34,6 +34,7 @@ namespace CmsWeb.Models
         public string tagstr { get; set; }
         public int? OnlineReg { get; set; }
 		public bool? MainFellowship { get; set; }
+		public bool? ParentOrg { get; set; }
 
         public OrgSearchModel()
         {
@@ -149,7 +150,9 @@ namespace CmsWeb.Models
             if (organizations != null)
                 return organizations;
 
-        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+            var u = DbUtil.Db.CurrentUser;
+
+        	var roles = u.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
         	organizations = from o in DbUtil.Db.Organizations
         	                where o.LimitToRole == null || roles.Contains(o.LimitToRole)
         	                select o;
@@ -240,6 +243,11 @@ namespace CmsWeb.Models
 			if (MainFellowship == true)
 				organizations = from o in organizations
 								where o.IsBibleFellowshipOrg == true
+								select o;
+
+			if (ParentOrg == true)
+				organizations = from o in organizations
+								where o.ChildOrgs.Any()
 								select o;
 
             return organizations;

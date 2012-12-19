@@ -12,8 +12,6 @@
 
 @section scripts
 {
-@Html.Script("/Scripts/OnlineRegPayment.js")
-
     <script type="text/javascript">
         $(function() {
             $(document).bind("idle.idleTimer", function() {
@@ -30,14 +28,14 @@
     @Html.Hidden("OrgID", ServiceUOrgID)
     @Html.Hidden("OrgAccountID", ServiceUOrgAccountID)
     @Html.Hidden("PostbackURL", Util.ServerLink("/OnlineReg/ConfirmDuePaid/" + Model.TranId))
-    @Html.Hidden("NameOnAccount", Model.Name) 
+    @Html.Hidden("NameOnAccount", Model.FullName()) 
     @Html.Hidden("Address", Model.Address)
     @Html.Hidden("City", Model.City)
     @Html.Hidden("State", Model.State)
     @Html.Hidden("PostalCode", Model.Zip)
     @Html.Hidden("Phone", Model.Phone)
     @Html.Hidden("Email", Model.Email)
-    @Html.Hidden("Misc1", Model.Name)
+    @Html.Hidden("Misc1", Model.FullName())
     @Html.Hidden("Misc2", Model.Description)
     @Html.Hidden("Misc3")
     @Html.Hidden("Misc4")

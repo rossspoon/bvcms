@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
 using CmsData;
 using CmsData.Registration;
@@ -29,11 +30,12 @@ namespace CmsWeb
     {
         protected void Application_Start()
         {
-			ModelBinders.Binders.DefaultBinder = new SmartBinder();
+            ModelBinders.Binders.DefaultBinder = new SmartBinder();
             ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
-            RouteTable.Routes.RouteExistingFiles = true; 
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            RouteTable.Routes.RouteExistingFiles = true;
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
 #endif
@@ -41,6 +43,7 @@ namespace CmsWeb
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("Demo/{*pathInfo}");
+            routes.IgnoreRoute("ForceError.aspx");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.aspx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.ashx/{*pathInfo}");
@@ -81,28 +84,28 @@ namespace CmsWeb
         protected void Session_Start(object sender, EventArgs e)
         {
             if (User.Identity.IsAuthenticated)
-                if (1 == 1)
+                if (1 == 1) // should be 1 == 1 (or just true) to run normally
                     Models.AccountModel.SetUserInfo(Util.UserName, Session);
                 else
                     Models.AccountModel.SetUserInfo("trecord", Session);
             Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
-			Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Util.SessionStarting = true;
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-			if (Request.Url.OriginalString.Contains("/Errors/NoDatabase.htm"))
-				return;
-			if (!DbUtil.DatabaseExists())
-			{
-				Response.Redirect("/Errors/NoDatabase.htm");
-				return;
-			}
-			var cul = DbUtil.Db.Setting("Culture", "en-US");
-			Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
-			Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
-			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
-		}
+            if (Request.Url.OriginalString.Contains("/Errors/NoDatabase.htm"))
+                return;
+            if (!DbUtil.DatabaseExists())
+            {
+                Response.Redirect("/Errors/NoDatabase.htm");
+                return;
+            }
+            var cul = DbUtil.Db.Setting("Culture", "en-US");
+            Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
+        }
         protected void Application_EndRequest(object sender, EventArgs e)
         {
             if (HttpContext.Current != null)
@@ -115,10 +118,37 @@ namespace CmsWeb
                     Response.Redirect(r);
             }
         }
+
+        public void ErrorLog_Logged(object sender, ErrorLoggedEventArgs args)
+        {
+            HttpContext.Current.Items["error"] = args.Entry.Error.Exception.Message;
+        }
+
+        public void ErrorLog_Filtering(object sender, ExceptionFilterEventArgs e)
+        {
+            Filter(e);
+        }
+
         public void ErrorMail_Filtering(object sender, ExceptionFilterEventArgs e)
         {
-            var httpException = e.Exception as HttpException;
-            if (httpException != null && httpException.GetHttpCode() == 404)
+            Filter(e);
+        }
+
+        private void Filter(ExceptionFilterEventArgs e)
+        {
+            var ex = e.Exception.GetBaseException();
+            var httpex = ex as HttpException;
+
+            if (httpex != null)
+            {
+                if (httpex.GetHttpCode() == 404)
+                    e.Dismiss();
+                else if (httpex.Message.Contains("The remote host closed the connection"))
+                    e.Dismiss();
+                else if (httpex.Message.Contains("A potentially dangerous Request.Path value was detected from the client"))
+                    e.Dismiss();
+            }
+            if (ex is FileNotFoundException || ex is HttpRequestValidationException)
                 e.Dismiss();
         }
     }

@@ -87,16 +87,16 @@ namespace CmsWeb.Models
 					select new
 					{
 						c.FamilyId,
-						Date = c.DateX,
+						Date = c.DateX.Value,
 						GiverId = c.PeopleId,
-						c.CreditGiverId,
+						CreditGiverId = c.CreditGiverId.Value,
 						c.HeadName,
 						c.SpouseName,
 						Amount = c.Amount ?? 0m,
 						c.ContributionDesc,
 						c.FundId,
 						c.FundName,
-						c.BundleHeaderId,
+						BundleHeaderId = c.BundleHeaderId ?? 0,
 						c.BundleType,
 						c.BundleStatus
 					};
@@ -126,15 +126,16 @@ namespace CmsWeb.Models
 					 group pp by pp.FamilyId into g
 					 from p in g.First().Family.People
 					 where p.DeceasedDate == null
+                     let pos = p.PositionInFamilyId * 1000 + (p.PositionInFamilyId == 10 ? p.GenderId : 1000 - (p.Age ?? 0))
 					 let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
-					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).LastName
-					 orderby famname, p.FamilyId, p.PositionInFamilyId, p.GenderId
+					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).Name2
+					 orderby famname, p.FamilyId, pos
 					 select new
 					 {
-						 PeopleId = p.PeopleId,
+						 p.PeopleId,
 						 Title = p.TitleCode,
 						 FirstName = p.PreferredName,
-						 LastName = p.LastName,
+						 p.LastName,
 						 Address = p.PrimaryAddress,
 						 Address2 = p.PrimaryAddress2,
 						 City = p.PrimaryCity,
@@ -152,13 +153,13 @@ namespace CmsWeb.Models
 						 School = p.SchoolOther,
 						 Married = p.MaritalStatus.Description,
 						 FamilyName = famname,
-						 FamilyId = p.FamilyId,
-						 FamilyPosition = p.PositionInFamilyId,
+						 p.FamilyId,
+						 FamilyPosition = pos,
 						 Grade = p.Grade.ToString(),
 						 FellowshipLeader = p.BFClass.LeaderName,
 						 AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
 						 FellowshipClass = (om == null ? "" : om.Organization.OrganizationName),
-						 AltName = p.AltName,
+						 p.AltName,
 					 };
 			return q2;
 		}

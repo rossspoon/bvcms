@@ -2,7 +2,6 @@
     Inherits="CmsWeb.VolunteerApp" Title="Volunteer Application Review" EnableEventValidation="false" %>
 
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -32,10 +31,7 @@
                 Background Check:
             </th>
             <td>
-                <cc1:DisplayOrEditDate ID="ProcessedDate" runat="server" BindingSource="vol"></cc1:DisplayOrEditDate>
-                <cc2:CalendarExtender ID="ProcessedDate_CalendarExtender" runat="server" Enabled="True"
-                    TargetControlID="ProcessedDate">
-                </cc2:CalendarExtender>
+                <cc1:DisplayOrEditDate ID="ProcessedDate" CssClass="datepicker" runat="server" BindingSource="vol"></cc1:DisplayOrEditDate>
             </td>
             <th>
                 Status Code:
@@ -60,10 +56,7 @@
             <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl='<%# Eval("ThumbId", "~/Image.aspx?id={0}") %>'
                 NavigateUrl='<%# Eval("Id", "~/AppReview/FormImage.aspx?id={0}") %>' ToolTip='<%# Eval("AppDate", "Uploaded: {0}") %>'
                 BorderStyle="Solid" BorderWidth="1px"></asp:HyperLink><br />
-            <asp:LinkButton ID="delete" CommandName="delete" CommandArgument='<%# Eval("Id") %>' runat="server">delete</asp:LinkButton>
-            <cc2:ConfirmButtonExtender ID="delete_ConfirmButtonExtender" runat="server" 
-                Enabled="True" ConfirmText="Are you sure you want to delete?" TargetControlID="delete">
-            </cc2:ConfirmButtonExtender>
+            <asp:LinkButton ID="delete" CssClass="delete" CommandName="delete" CommandArgument='<%# Eval("Id") %>' runat="server">delete</asp:LinkButton>
         </ItemTemplate>
     </asp:DataList><br />
     <div id="UploadDiv" runat="server">
@@ -85,4 +78,17 @@
 </asp:Content>
 
 <asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+    <script type="text/javascript">
+        $(function () {
+            $("input.datepicker").datepicker();
+            $(".delete").click(function(ev) {
+                if (confirm("are you sure you want to delete?"))
+                    return true;
+                else {
+                    ev.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
 </asp:Content>

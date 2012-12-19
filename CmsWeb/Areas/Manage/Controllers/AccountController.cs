@@ -66,6 +66,15 @@ namespace CmsWeb.Areas.Manage.Controllers
 "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction( {0}, '{1}', '{2}' );</script>",
 CKEditorFuncNum, baseurl + fn, error));
         }
+
+        public ActionResult ForceError()
+        {
+            var y = 2;
+            var z = 0;
+            var x = 2/z;
+            return Content("error");
+        }
+
         public ActionResult Error()
         {
             return View();

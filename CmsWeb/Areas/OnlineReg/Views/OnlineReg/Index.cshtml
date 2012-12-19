@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.OnlineRegModel
 @{
@@ -15,12 +16,13 @@
         .pagecontainer {display:none;}
     </style>
     <div class="noscriptmsg">
-    This registration site requires javascript to be enabled on your browser.
+        This registration site requires javascript to be enabled on your browser.
     </div>
 </noscript>
+
 @section scripts
 {
-@Html.Script("/Scripts/OnlineReg.js")
+    @Scripts.Render("~/bundles/single/OnlineReg-js")
     <script type="text/javascript">
         $(function () {
             $.refreshenabled = false; // false until something happens

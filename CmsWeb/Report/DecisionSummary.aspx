@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="DecisionSummary.aspx.cs" Inherits="CmsWeb.StaffOnly.DecisionSummary" EnableEventValidation="false" %>
 
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
         body
@@ -33,7 +32,7 @@
                     From Date:
                 </td>
                 <td>
-                    <asp:TextBox ID="FromDate" runat="server" AutoPostBack="false" Style="font-size: 110%"
+                    <asp:TextBox ID="FromDate" CssClass="datepicker" runat="server" AutoPostBack="false" Style="font-size: 110%"
                         Width="100"></asp:TextBox>
                 </td>
                 <td>
@@ -45,7 +44,7 @@
                     To Date:
                 </td>
                 <td>
-                    <asp:TextBox ID="ToDate" runat="server" AutoPostBack="false" Style="font-size: 110%"
+                    <asp:TextBox ID="ToDate"  CssClass="datepicker" runat="server" AutoPostBack="false" Style="font-size: 110%"
                         Width="100"></asp:TextBox>
                 </td>
                 <td>
@@ -54,10 +53,6 @@
                 </td>
             </tr>
         </table>
-        <cc2:CalendarExtender ID="FromExtender" runat="server" TargetControlID="FromDate">
-        </cc2:CalendarExtender>
-        <cc2:CalendarExtender ID="ToDateExtender" runat="server" TargetControlID="ToDate">
-        </cc2:CalendarExtender>
         <asp:CompareValidator ID="ToDateValidator" runat="server" ErrorMessage="CompareValidator"
             ControlToValidate="ToDate" ControlToCompare="FromDate" Operator="GreaterThanEqual"
             SetFocusOnError="True" ValidationGroup="vgDates" Type="Date" Text="To Date must be after From Date."
@@ -311,4 +306,9 @@
 </asp:Content>
 
 <asp:Content ID="Contentscr" ContentPlaceHolderID="scripts" runat="server">
+    <script type="text/javascript">
+        $(function () {
+            $("input.datepicker").datepicker();
+        });
+    </script>
 </asp:Content>

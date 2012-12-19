@@ -359,6 +359,11 @@ $(function () {
             $(input).removeClass("ui-state-highlight");
         }
     });
+    $("#orginfoform").validate({
+        rules: {
+            "org.OrganizationName": { required: true, maxlength: 100 }
+        }
+    });
     // validate signup form on keyup and submit
     $("#settingsForm").validate({
         rules: {
@@ -385,22 +390,62 @@ $(function () {
         }
     });
 
+    $.getTable = function (f) {
+        var q = q || f.serialize();
+        var ff = $("#FilterGroups form");
+        q = q + '&' + ff.serialize();
+        $.post(f.attr('action'), q, function (ret) {
+            $(f).html(ret).ready(function () {
+                $('table.grid > tbody > tr:even', f).addClass('alt');
+                $("a.trigger-dropdown", f).dropdown();
+                $('.bt').button();
+                $(".datepicker").datepicker();
+            });
+        });
+        return false;
+    };
     $("a.filtergroupslink").live("click", function (ev) {
         ev.preventDefault();
-        var f = $(this).closest('form');
+        var f = $(this).closest("form");
         $("#FilterGroups").dialog({
             title: "Filter by Name, Small Groups",
             width: "300px",
-            buttons: {
-                Ok: function () {
-                    var q = $('#FilterGroups form').serialize();
-                    $.getTable(f, q);
-                    $("#FilterGroups").dialog("close");
+            buttons: [{
+                    "text": 'Cancel',
+                    "class": 'bt',
+                    "click": function() {
+                        $("#FilterGroups").dialog("close");
+                    }
+                }, {
+                    "text": 'Clear',
+                    "class": 'bt green',
+                    "click": function() {
+                        $("#namefilter").val('');
+                        $("#smallgrouplist").val(null);
+                        $.getTable(f);
+                        $("#FilterGroups").dialog("close");
+                    }
+                }, {
+                    "text": 'Ok',
+                    "class": 'blue bt',
+                    "click": function() {
+                        $.getTable(f);
+                        $("#FilterGroups").dialog("close");
+                    }
                 }
-            }
+            ]
         });
         return false;
     });
+    $("#namefilter").keypress(function (e) {
+        if ((e.keyCode || e.which) == 13) {
+            e.preventDefault();
+            var d = $("#FilterGroups").dialog();
+            buttons = d.dialog('option', 'buttons');
+            buttons[2].click();
+        }
+		return true;
+	});
     $("#addsch").live("click", function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
@@ -497,8 +542,7 @@ $(function () {
         $("#AttendCreditList").val(a[2]);
     });
     $.GetMeetingDateTime = function () {
-        var reTime = /^ *(\d{1,2}):[0-5][0-9] *(a|p|A|P)(m|M) *$/;
-        var reDate = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
+        var reTime = /^ *(\d{1,2}):[0-5][0-9] *((a|p|A|P)(m|M)){0,1} *$/;
         var d = $('#NewMeetingDate').val();
         var t = $('#NewMeetingTime').val();
         var v = true;
@@ -506,7 +550,7 @@ $(function () {
             $.growlUI("error", "enter valid time");
             v = false;
         }
-        if (!reDate.test(d)) {
+        if (!$.DateValid(d)) {
             $.growlUI("error", "enter valid date");
             v = false;
         }

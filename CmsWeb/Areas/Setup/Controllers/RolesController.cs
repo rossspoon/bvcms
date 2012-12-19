@@ -33,9 +33,20 @@ namespace CmsWeb.Areas.Setup.Controllers
             var a = id.Split('.');
             var c = new ContentResult();
             c.Content = value;
+            if (a[1] == value)
+                return c;
+            var existingrole = DbUtil.Db.Roles.SingleOrDefault(m => m.RoleName == value);
             var role = DbUtil.Db.Roles.SingleOrDefault(m => m.RoleName == a[1]);
             if (role == null)
-                return c;
+            {
+                TempData["error"] = "no role";
+                return Content("/Error/");
+            }
+            if (existingrole != null && existingrole.RoleName != role.RoleName)
+            {
+                TempData["error"] = "duplicate role";
+                return Content("/Error/");
+            }
             switch (a[0])
             {
                 case "RoleName":

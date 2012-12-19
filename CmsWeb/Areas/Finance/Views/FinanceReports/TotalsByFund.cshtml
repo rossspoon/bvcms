@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.TotalsByFundModel
+@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @using CmsData
@@ -16,7 +17,7 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/TotalsByFund.js")
+@Scripts.Render("~/bundles/single/TotalsByFund-js")
 }
 
 <h1>Totals By Fund</h1>
