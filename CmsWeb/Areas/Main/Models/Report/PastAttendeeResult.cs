@@ -157,6 +157,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             var q = from ra in DbUtil.Db.RecentAttendance(orgid)
                     let p = DbUtil.Db.People.Single(pp => pp.PeopleId == ra.PeopleId)
+                    orderby ra.Visitor descending, ra.Lastattend descending, p.Name2 
                     select new AttendInfo
                     {
                         PeopleId = p.PeopleId,

@@ -173,10 +173,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                     float colwidth = (doc.Right - doc.Left - gutter) / 2;
                     leftcol = new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, doc.Top);
                     rightcol = new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, doc.Top);
-                    ct.SetSimpleColumn(leftcol);
 
                     if (t.Rows.Count == 0)
                     {
+                        ct.SetSimpleColumn(leftcol);
                         ct.AddElement(new Phrase("no data"));
                         ct.Go();
                     }
@@ -201,7 +201,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                     }
                 }
             }
-            pageEvents.EndPageSet();
             Response.Flush();
             doc.Close();
         }
@@ -299,7 +298,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     where o.DivOrgs.Any(t => t.DivId == divid) || divid == 0 || divid == null
                     where o.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
                     where o.OrganizationStatusId == OrgStatusCode.Active
-                    where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || name == "" || name == null
+                    where o.OrganizationName.Contains(name) || o.LeaderName.Contains(name) || o.Location.Contains(name) || name == "" || name == null
                     orderby o.Division.Name, o.OrganizationName
                     select new OrgInfo
                     {
@@ -350,7 +349,19 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         class PageEvent : PdfPageEventHelper
         {
-            private PdfTemplate npages;
+            class NPages
+            {
+                public NPages(PdfContentByte dc)
+                {
+                    template = dc.CreateTemplate(50, 50);
+                }
+                public bool juststartednewset;
+                public PdfTemplate template;
+                public int n;
+            }
+            private NPages npages;
+            private int pg;
+
             private PdfWriter writer;
             private Document document;
             private PdfContentByte dc;
@@ -366,29 +377,32 @@ namespace CmsWeb.Areas.Main.Models.Report
                 base.OnOpenDocument(writer, document);
                 font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
                 dc = writer.DirectContent;
+                npages = new NPages(dc);
             }
             public void EndPageSet()
             {
                 if (npages == null)
                     return;
-                npages.BeginText();
-                npages.SetFontAndSize(font, 8);
-                npages.ShowText((writer.PageNumber + 1).ToString());
-                npages.EndText();
+                npages.template.BeginText();
+                npages.template.SetFontAndSize(font, 8);
+                npages.template.ShowText(npages.n.ToString());
+                pg = 1;
+                npages.template.EndText();
+                npages = new NPages(dc);
             }
             public void StartPageSet(string header1, string header2, string barcode)
             {
-                EndPageSet();
                 document.NewPage();
-                document.ResetPageCount();
                 this.HeadText = header1;
                 this.HeadText2 = header2;
                 this.Barcode = barcode;
-                npages = dc.CreateTemplate(50, 50);
+                npages.juststartednewset = true;
             }
             public override void OnEndPage(PdfWriter writer, Document document)
             {
                 base.OnEndPage(writer, document);
+                if(npages.juststartednewset)
+                    EndPageSet();
 
                 string text;
                 float len;
@@ -419,14 +433,15 @@ namespace CmsWeb.Areas.Main.Models.Report
                 dc.AddImage(img);
 
                 //---Column 1
-                text = "Page " + (writer.PageNumber + 1) + " of ";
+                text = "Page " + (pg) + " of ";
                 len = font.GetWidthPoint(text, 8);
                 dc.BeginText();
                 dc.SetFontAndSize(font, 8);
                 dc.SetTextMatrix(30, 30);
                 dc.ShowText(text);
                 dc.EndText();
-                dc.AddTemplate(npages, 30 + len, 30);
+                dc.AddTemplate(npages.template, 30 + len, 30);
+                npages.n = pg++;
 
                 //---Column 2
                 text = "Attendance Rollsheet";
@@ -445,6 +460,12 @@ namespace CmsWeb.Areas.Main.Models.Report
                 dc.SetTextMatrix(document.PageSize.Width - 30 - len, 30);
                 dc.ShowText(text);
                 dc.EndText();
+
+            }
+            public override void OnCloseDocument(PdfWriter writer, Document document)
+            {
+                base.OnCloseDocument(writer, document);
+                EndPageSet();
             }
             private float PutText(string text, BaseFont font, float size, float x, float y)
             {

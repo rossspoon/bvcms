@@ -332,15 +332,6 @@ namespace CmsData
 		}
 		public TransactionResponse createVaultTransactionRequest(int PeopleId, decimal amt, string description, int tranid, string type)
 		{
-#if DEBUG
-			return new TransactionResponse
-			{
-				Approved = false,
-				AuthCode = "failure",
-				Message = "failure",
-				TransactionId = "010101"
-			};
-#endif
 			var p = Db.LoadPersonById(PeopleId);
 			var pi = p.PaymentInfo();
 			if (pi == null)

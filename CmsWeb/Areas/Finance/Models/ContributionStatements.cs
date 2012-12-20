@@ -325,11 +325,11 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				Db.SubmitChanges();
 			}
 
-			if (!pageEvents.EndPageSet())
-			{
-				doc.NewPage();
-				doc.Add(new Phrase("no data"));
-			}
+            //if (!pageEvents.EndPageSet())
+            //{
+            //    doc.NewPage();
+            //    doc.Add(new Phrase("no data"));
+            //}
 			doc.Close();
 
 			if (set == LastSet())
@@ -338,7 +338,19 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 		}
 		class PageEvent : PdfPageEventHelper
 		{
-			private PdfTemplate npages;
+            class NPages
+            {
+                public NPages(PdfContentByte dc)
+                {
+                    template = dc.CreateTemplate(50, 50);
+                }
+                public bool juststartednewset;
+                public PdfTemplate template;
+                public int n;
+            }
+            private NPages npages;
+            private int pg;
+
 			private PdfWriter writer;
 			private Document document;
 			private PdfContentByte dc;
@@ -355,6 +367,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				base.OnOpenDocument(writer, document);
 				font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 				dc = writer.DirectContent;
+                npages = new NPages(dc);
 				if (set == 0)
 					FamilySet = new Dictionary<int, int>();
 			}
@@ -362,45 +375,51 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 			{
 				if (npages == null)
 					return false;
-				npages.BeginText();
-				npages.SetFontAndSize(font, 8);
-				npages.ShowText((writer.PageNumber + 1).ToString());
+				npages.template.BeginText();
+				npages.template.SetFontAndSize(font, 8);
+				npages.template.ShowText(npages.n.ToString());
 				if (set == 0)
 				{
 					var list = FamilySet.Where(kp => kp.Value == 0).ToList();
 					foreach (var kp in list)
 						if (kp.Value == 0)
-							FamilySet[kp.Key] = writer.PageNumber + 1;
+							FamilySet[kp.Key] = npages.n;
 				}
-				npages.EndText();
+                pg = 1;
+				npages.template.EndText();
+                npages = new NPages(dc);
 				return true;
 			}
 			public bool StartPageSet()
 			{
-				EndPageSet();
 				document.NewPage();
-				document.ResetPageCount();
-				npages = dc.CreateTemplate(50, 50);
+                npages.juststartednewset = true;
 				return true;
 			}
 			public override void OnEndPage(PdfWriter writer, Document document)
 			{
 				base.OnEndPage(writer, document);
+                if(npages.juststartednewset)
+                    EndPageSet();
 
 				string text;
 				float len;
 
-				text = "Page " + (writer.PageNumber + 1) + " of ";
+				text = "Page " + (pg) + " of ";
 				len = font.GetWidthPoint(text, 8);
 				dc.BeginText();
 				dc.SetFontAndSize(font, 8);
 				dc.SetTextMatrix(document.PageSize.Width - 30 - len, 30);
 				dc.ShowText(text);
 				dc.EndText();
-				if (npages == null)
-					return;
-				dc.AddTemplate(npages, document.PageSize.Width - 30, 30);
+				dc.AddTemplate(npages.template, document.PageSize.Width - 30, 30);
+                npages.n = pg++;
 			}
+            public override void OnCloseDocument(PdfWriter writer, Document document)
+            {
+                base.OnCloseDocument(writer, document);
+                EndPageSet();
+            }
 		}
 		//public void splitPDF(Stream inputStream, Stream outputStream, bool multi)
 		//{
