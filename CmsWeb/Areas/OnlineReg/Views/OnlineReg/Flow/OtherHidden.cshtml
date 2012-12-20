@@ -10,7 +10,7 @@
 	switch (ask.Type)
 	{
         case "AskSize":
-	        Html.HiddenFor2(m => m.shirtsize);
+	        @Html.HiddenFor2(m => m.shirtsize);
         break;
         case "AskRequest":
             @Html.HiddenFor2(m => m.request);

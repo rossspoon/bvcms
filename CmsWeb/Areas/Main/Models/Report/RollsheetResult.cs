@@ -167,36 +167,36 @@ namespace CmsWeb.Areas.Main.Models.Report
                                        };
                     foreach (var m in q)
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont);
-                    var col = 0;
-                    var ct = new ColumnText(dc);
-                    float gutter = 20f;
-                    float colwidth = (doc.Right - doc.Left - gutter) / 2;
-                    leftcol = new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, doc.Top);
-                    rightcol = new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, doc.Top);
+                }
+                var col = 0;
+                var ct = new ColumnText(dc);
+                float gutter = 20f;
+                float colwidth = (doc.Right - doc.Left - gutter) / 2;
+                leftcol = new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, doc.Top);
+                rightcol = new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, doc.Top);
 
-                    if (t.Rows.Count == 0)
+                if (t.Rows.Count == 0)
+                {
+                    ct.SetSimpleColumn(leftcol);
+                    ct.AddElement(new Phrase("no data"));
+                    ct.Go();
+                }
+                else
+                {
+                    ct.AddElement(t);
+                    var status = 0;
+                    while (ColumnText.HasMoreText(status))
                     {
-                        ct.SetSimpleColumn(leftcol);
-                        ct.AddElement(new Phrase("no data"));
-                        ct.Go();
-                    }
-                    else
-                    {
-                        ct.AddElement(t);
-                        var status = 0;
-                        while(ColumnText.HasMoreText(status))
+                        if (col == 0)
+                            ct.SetSimpleColumn(leftcol);
+                        else if (col == 1)
+                            ct.SetSimpleColumn(rightcol);
+                        status = ct.Go();
+                        ++col;
+                        if (col > 1)
                         {
-                            if (col == 0)
-                                ct.SetSimpleColumn(leftcol);
-                            else if(col == 1)
-                                ct.SetSimpleColumn(rightcol);
-                            status = ct.Go();
-                            ++col;
-                            if (col > 1)
-                            {
-                                col = 0;
-                                doc.NewPage();
-                            }
+                            col = 0;
+                            doc.NewPage();
                         }
                     }
                 }
@@ -401,7 +401,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             public override void OnEndPage(PdfWriter writer, Document document)
             {
                 base.OnEndPage(writer, document);
-                if(npages.juststartednewset)
+                if (npages.juststartednewset)
                     EndPageSet();
 
                 string text;

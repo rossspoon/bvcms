@@ -126,7 +126,7 @@ namespace CmsWeb
                     dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Organization":
-                    dg.DataSource = ExportInvolvements.OrgMemberList(qid.Value, maxExcelRows);
+                    dg.DataSource = ExportInvolvements.OrgMemberList(qid.Value);
                     dg.DataBind();
                     dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;

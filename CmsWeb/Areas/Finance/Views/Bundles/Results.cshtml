@@ -1,0 +1,44 @@
+﻿@model CmsWeb.Areas.Finance.Models.BundlesModel
+@using UtilityExtensions
+<table class="grid" cellpadding="4">
+    <thead>
+		<tr><td colspan="6">User Count: @Model.Count().ToString("N0")</td></tr>
+    	<tr><td colspan="6">@Html.Partial("Pager2", Model)
+            @Html.Hidden("totcnt", Model.Count())</td></tr>
+        <tr>
+            <th><a href="#" class="sortable">Type</a></th>
+            <th><a href="#" class="sortable">Deposit Date</a></th>
+            <th><a href="#" class="sortable">Total Bundle</a></th>
+            <th>Total Items</th>
+            <th><a href="#" class="sortable">Posting Date</a></th>
+            <th><a href="#" class="sortable">Status</a></th>
+        </tr>
+    </thead>
+    <tbody>
+@if(Model.Count() == 0)
+{ 
+    	<tr><td colspan="6">No bundles yet.</td></tr>
+} 
+    @foreach (var b in Model.Bundles()) 
+    {
+		<tr>
+		    <td><a href="/Contributions/Bundle.aspx?id=@b.BundleId">@b.HeaderType</a></td>
+    		<td><a href="/Contributions/Deposit.aspx?dt=@b.DepositDate.FormatDate()">@b.DepositDate.FormatDate()</a></td>
+		    <td>@b.TotalBundle.ToString("N2")</td>
+		    <td>@b.TotalItems.ToString("N2")</td>
+		    <td>@b.PostingDate.FormatDate()</td>
+        @if (b.Status == "Open")
+        {
+            <td><a href="/PostBundle/Index/@b.BundleId">@b.Status</a></td>
+        }
+        else
+        {
+            <td>@b.Status</td>   
+        }
+		</tr>
+    }
+    </tbody>
+    <tfoot>
+		<tr><td colspan="6">@Html.Partial("Pager2", Model)</td></tr>
+    </tfoot>
+</table>

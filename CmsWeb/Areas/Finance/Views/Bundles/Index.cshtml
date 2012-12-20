@@ -1,0 +1,17 @@
+﻿@model CmsWeb.Areas.Finance.Models.BundlesModel
+@using System.Web.Optimization
+@using UtilityExtensions
+@{
+    ViewBag.Title = "Contribution Bundles";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+}
+
+@section scripts
+{
+@Scripts.Render("~/bundles/single/bundles-js")
+}
+<h2>Contribution Bundles</h2>
+<a id="newbundle" href="#" class="bt blue">Create New Bundle</a>
+<form id="results">
+@Html.Partial("Results", Model)
+</form>
