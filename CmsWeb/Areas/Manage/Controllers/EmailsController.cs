@@ -58,7 +58,21 @@ namespace CmsWeb.Areas.Manage.Controllers
 						 where e.Id == id
 						 select e).Single();
 			var m = new EmailModel { id = id };
-			if (!m.CanDelete())
+            if (m.queue.Sent.HasValue || !m.queue.SendWhen.HasValue || !m.CanDelete())
+				return Redirect("/");
+			DbUtil.Db.EmailQueueTos.DeleteAllOnSubmit(email.EmailQueueTos);
+			DbUtil.Db.EmailQueues.DeleteOnSubmit(email);
+			DbUtil.Db.SubmitChanges();
+			return Redirect("/Manage/Emails");
+		}
+		[Authorize(Roles = "Admin")]
+		public ActionResult Delete(int id)
+		{
+			var email = (from e in DbUtil.Db.EmailQueues
+						 where e.Id == id
+						 select e).Single();
+			var m = new EmailModel { id = id };
+            if (!m.CanDelete())
 				return Redirect("/");
 			DbUtil.Db.EmailQueueTos.DeleteAllOnSubmit(email.EmailQueueTos);
 			DbUtil.Db.EmailQueues.DeleteOnSubmit(email);

@@ -421,3 +421,6 @@ table.grid td.center
 .text-label {
     color: #cdcdcd;
 }
+select.options {
+    max-width: 300px;
+}

@@ -1,8 +1,13 @@
-﻿@{
+﻿@using System.Web.Optimization
+@{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
 }
 
+@section scripts
+{
+@Scripts.Render("~/bundles/single/onlinereg-js")
+}
 
 <div class="confirm">
     <h2>Transaction Completed</h2>

@@ -1,9 +1,11 @@
-﻿@{
+﻿@using System.Web.Optimization
+@{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Transaction";
 }
 @section scripts
 {
+@Scripts.Render("~/bundles/single/onlinereg-js")
 <script type="text/javascript">
     $(function() {
         $(document).bind("idle.idleTimer", function() {

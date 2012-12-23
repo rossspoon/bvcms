@@ -1,4 +1,5 @@
-﻿@model CmsWeb.Models.ManageGivingModel 
+﻿@using System.Web.Optimization
+@model CmsWeb.Models.ManageGivingModel 
 @using CmsWeb
 @using UtilityExtensions
 @{
@@ -7,6 +8,7 @@
 }
 @section scripts
 {
+@Scripts.Render("~/bundles/single/OnlineReg-js")
 @Html.Partial("DatePickerDefaults")
 <script type="text/javascript">
     $(function () {
