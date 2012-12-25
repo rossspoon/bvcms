@@ -32,7 +32,9 @@ namespace CmsWeb.Models
             if (max == 0)
                 return amt;
             var totalother = List.Sum(p => p.TotalOther());
-            if ((amt - totalother) > max)
+            if (List.Any(p => p.setting.ApplyMaxToOtherFees) && amt > max)
+                amt = max;
+            else if ((amt - totalother) > max)
                 amt = max + totalother;
             return amt;
         }
@@ -43,7 +45,9 @@ namespace CmsWeb.Models
             if (max == 0)
                 return amt;
             var totalother = List.Sum(p => p.TotalOther());
-            if ((amt - totalother) > max)
+            if (List.Any(p => p.setting.ApplyMaxToOtherFees) && amt > max)
+                amt = max;
+            else if ((amt - totalother) > max)
                 amt = max + totalother;
             return amt;
         }

@@ -300,16 +300,20 @@ $(function () {
         "AskDropdown",
         "AskCheckboxes",
         "AskExtraQuestions",
-        "AskYesNoQuestions",
+        "AskHeader",
+        "AskInstruction",
         "AskMenu"
     ];
     $.updateQuestionList = function() {
         $("#selectquestions li").each(function () {
             var type = this.className;
+            var text = $(this).text();
+            if (!text)
+                text = type;
             if ($.inArray(type, $.exceptions) >= 0 || $("li.type-" + type).length == 0)
-                $(this).html("<a href='#' type='" + type + "'>" + type + "</a>");
+                $(this).html("<a href='#' type='" + type + "'>" + text + "</a>");
             else
-                $(this).html("<span>" + type + "</span>");
+                $(this).html("<span>" + text + "</span>");
         });
     };
     $(".helptip").tooltip({ showBody: "|" });

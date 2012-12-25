@@ -15,10 +15,10 @@ namespace CmsWeb.Models
     public partial class OnlineRegPersonModel
     {
 
-        public string ExtraQuestionValue(string s)
+        public string ExtraQuestionValue(int set, string s)
         {
-            if (ExtraQuestion.ContainsKey(s))
-                return ExtraQuestion[s];
+            if (ExtraQuestion[set].ContainsKey(s))
+                return ExtraQuestion[set][s];
             return null;
         }
 
@@ -114,7 +114,7 @@ namespace CmsWeb.Models
         }
         private static List<SelectListItem> ShirtSizes(Settings setting)
         {
-            var askSize = setting.AskObject<AskSize>();
+            var askSize = setting.AskItems.FirstOrDefault(aa => aa is AskSize) as AskSize;
             var q = from ss in askSize.list
                     select new SelectListItem
                     {

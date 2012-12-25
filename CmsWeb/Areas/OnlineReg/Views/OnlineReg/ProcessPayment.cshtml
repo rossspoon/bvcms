@@ -46,6 +46,7 @@
 } 
     <form action="/onlinereg/ProcessPayment" method="post">
     @Html.Hidden("pf.DatumId", Model.DatumId)
+    @Html.Hidden("pf.TranId", Model.TranId)
     @Html.Hidden("pf.Url", Model.Url)
     @Html.Hidden("pf.Description", Model.Description)
     @Html.Hidden("pf.FormId", Model.FormId)

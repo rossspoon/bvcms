@@ -101,8 +101,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				}
 				Session["FormId"] = pf.FormId;
 				if (pf.DatumId > 0)
-					return View(ConfirmTransaction(m, ti.TransactionId, pf.AmtToPay));
-				ConfirmDuePaidTransaction(ti, ti.TransactionId, pf.AmtToPay ?? 0, sendmail: true);
+					return View(ConfirmTransaction(m, ti.TransactionId));
+
+				ConfirmDuePaidTransaction(ti, ti.TransactionId, sendmail: true);
 				return View("ConfirmDuePaid", ti);
 			}
 			catch (Exception ex)
@@ -111,11 +112,15 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return View("ProcessPayment", pf);
 			}
 		}
-		public Transaction ProcessPaymentTransaction(OnlineRegModel m, PaymentForm pf)
+		private Transaction ProcessPaymentTransaction(OnlineRegModel m, PaymentForm pf)
 		{
-			var ti = pf.CreateTransaction(DbUtil.Db);
+			Transaction ti = null;
+		    if (m != null && m.Transaction != null)
+		        ti = PaymentForm.CreateTransaction(DbUtil.Db, m.Transaction, pf.AmtToPay);
+		    else
+		        ti = pf.CreateTransaction(DbUtil.Db);
 
-			int? pid = null;
+		    int? pid = null;
 			if (m != null)
 			{
 				m.ParseSettings();
@@ -123,7 +128,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				if (terms.HasValue())
 					ViewData["Terms"] = terms;
 				pid = m.UserPeopleId;
-				m.TranId = ti.Id;
+                if (m.TranId == null)
+    				m.TranId = ti.Id;
 			}
 
 			if (!pid.HasValue)
@@ -194,7 +200,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				throw new Exception("unknown gateway " + gateway);
 
 			ti.TransactionId = tinfo.TransactionId;
-			if (ti.Testing == true)
+			if (ti.Testing == true && !ti.TransactionId.Contains("(testing)"))
 				ti.TransactionId += "(testing)";
 			ti.Approved = tinfo.Approved;
 			if (ti.Approved == false)
@@ -210,7 +216,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			return ti;
 		}
 
-		private string ConfirmTransaction(OnlineRegModel m, string TransactionID, decimal? Amount)
+		private string ConfirmTransaction(OnlineRegModel m, string TransactionID)
 		{
 			m.ParseSettings();
 			string confirm = "Confirm";
@@ -220,18 +226,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (t == null && !managingsubs && !choosingslots)
 			{
 				var pf = PaymentForm.CreatePaymentForm(m);
-				t = pf.CreateTransaction(DbUtil.Db);
+			    t = pf.CreateTransaction(DbUtil.Db);
 				m.TranId = t.Id;
 			}
-			if (t != null)
-			{
-				t.Amt = Amount;
-				t.Amtdue -= t.Amt;
-				ViewData["message"] = t.Message;
-				t.Approved = true;
-				t.TransactionDate = Util.Now;
-				DbUtil.Db.SubmitChanges();
-			}
+			ViewData["message"] = t.Message;
 
 			if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
 			{
@@ -294,7 +292,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				if (!t.TransactionId.HasValue())
 				{
 					t.TransactionId = TransactionID;
-					if (m.testing == true)
+					if (m.testing == true && !t.TransactionId.Contains("(testing)"))
 						t.TransactionId += "(testing)";
 				}
 				var contributionemail = (from ex in p.person.PeopleExtras
@@ -344,10 +342,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
 				confirm = "ConfirmAccount";
 			}
-			else if (t.TransactionGateway == "ServiceU")
+			else if (t.TransactionGateway.ToLower() == "serviceu")
 			{
 				t.TransactionId = TransactionID;
-				if (m.testing == true)
+				if (m.testing == true && !t.TransactionId.Contains("(testing)"))
 					t.TransactionId += "(testing)";
 				t.Message = "Transaction Completed";
 				t.Approved = true;
@@ -368,7 +366,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				if (!t.TransactionId.HasValue())
 				{
 					t.TransactionId = TransactionID;
-					if (m.testing == true)
+					if (m.testing == true && !t.TransactionId.Contains("(testing)"))
 						t.TransactionId += "(testing)";
 				}
 				m.EnrollAndConfirm();
@@ -397,11 +395,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			}
 			return confirm;
 		}
-		public ActionResult Confirm(int? id, string TransactionID, decimal? Amount)
+		public ActionResult Confirm(int? id, string transactionId, decimal? amount)
 		{
 			if (!id.HasValue)
 				return View("Unknown");
-			if (!TransactionID.HasValue())
+			if (!transactionId.HasValue())
 				return Content("error no transaction");
 
 			var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
@@ -409,7 +407,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return Content("no pending confirmation found");
 
 			var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
-			var confirm = ConfirmTransaction(m, TransactionID, Amount);
+			var confirm = ConfirmTransaction(m, transactionId);
 			if (confirm.StartsWith("error:"))
 				return Content(confirm);
 			ViewBag.Url = m.URL;

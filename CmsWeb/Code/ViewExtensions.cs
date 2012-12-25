@@ -203,12 +203,14 @@ namespace CmsWeb
 			tb.InnerHtml = sb.ToString();
 			return new HtmlString(tb.ToString());
 		}
-		public static HtmlString DropDownList4(this HtmlHelper helper, string id, string name, IEnumerable<CmsWeb.Models.OnlineRegPersonModel.SelectListItemFilled> list, string value)
+		public static HtmlString DropDownList4(this HtmlHelper helper, string id, string name, IEnumerable<CmsWeb.Models.OnlineRegPersonModel.SelectListItemFilled> list, string value, string cssClass = "")
 		{
 			var tb = new TagBuilder("select");
 			if (id.HasValue())
 				tb.MergeAttribute("id", id);
 			tb.MergeAttribute("name", name);
+            if (cssClass.HasValue())
+    			tb.MergeAttribute("class", cssClass);
 			var sb = new StringBuilder();
 			foreach (var o in list)
 			{

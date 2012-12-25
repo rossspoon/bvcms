@@ -15,9 +15,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
         public ActionResult ApplyCoupon(PaymentForm pf)
         {
 			OnlineRegModel m = null;
-			if (pf.PayBalance == false)
+			ExtraDatum ed = null;
+            if (pf.PayBalance == false)
 			{
-				var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pf.DatumId);
+                ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == pf.DatumId);
 				m = Util.DeSerialize<OnlineRegModel>(ed.Data);
 				m.ParseSettings();
 			}
@@ -40,13 +41,16 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (c.Canceled.HasValue)
                 return Json(new { error = "coupon canceled" });
 
-			var ti = pf.CreateTransaction(DbUtil.Db);
-			if (m != null)
-				m.TranId = ti.OriginalId;
-
+            var ti = pf.CreateTransaction(DbUtil.Db, c.Amount);
+			if (m != null) // Start this transaction in the chain
+			{
+			    m.TranId = ti.OriginalId;
+			    ed.Data = Util.Serialize<OnlineRegModel>(m);
+			}
 			var tid = "Coupon({0:n2})".Fmt(Util.fmtcoupon(coupon));
 
-			ConfirmDuePaidTransaction(ti, tid, c.Amount ?? 0, sendmail: false);
+			ConfirmDuePaidTransaction(ti, tid, sendmail: false);
+			
 			var msg = "<i class='red'>Your coupon for {0:n2} has been applied, your balance is now {1:n2}</i>."
 				.Fmt(c.Amount, ti.Amtdue );
 			if (pf.PayBalance)
@@ -61,8 +65,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             DbUtil.Db.SubmitChanges();
 
 			pf.AmtToPay -= ti.Amt;
-			if (pf.AmtToPay == 0 && pf.PayBalance == false)
-				return Json( new { confirm = "/OnlineReg/Confirm/{0}?TransactionId={1}".Fmt(pf.DatumId, "zero paid") });
+			if (pf.AmtToPay <= 0 && pf.PayBalance == false)
+				return Json( new { confirm = "/OnlineReg/Confirm/{0}?TransactionId={1}".Fmt(pf.DatumId, "Coupon") });
             return Json(new { tiamt = pf.AmtToPay, amtdue=ti.Amtdue, amt=pf.AmtToPay.ToString2("N2"), msg });
         }
         [HttpPost]
@@ -89,7 +93,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 return Json(new { error = "coupon org not match" });
             if (DateTime.Now.Subtract(c.Created).TotalHours > 24)
                 return Json(new { error = "coupon expired" });
-            if (c.Used.HasValue)
+        	if (c.Used.HasValue && c.Id.Length == 12)
                 return Json(new { error = "coupon already used" });
             if (c.Canceled.HasValue)
                 return Json(new { error = "coupon canceled" });

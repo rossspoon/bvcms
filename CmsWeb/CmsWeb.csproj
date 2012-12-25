@@ -1312,6 +1312,8 @@
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\TimeSlots.cshtml" />
     <Content Include="Areas\Finance\Views\Bundles\Index.cshtml" />
     <Content Include="Areas\Finance\Views\Bundles\Results.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskHeader.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskInstruction.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

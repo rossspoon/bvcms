@@ -13,7 +13,7 @@ namespace CmsWeb.Models
 		public decimal AmountToPay()
 		{
 			if (paydeposit == true && setting.Deposit.HasValue && setting.Deposit > 0)
-				return setting.Deposit.Value;
+				return setting.Deposit.Value + (setting.IncludeOtherFeesWithDeposit ? TotalOther() : 0);
 			return TotalAmount();
 		}
 		public decimal TotalAmount()
@@ -54,7 +54,7 @@ namespace CmsWeb.Models
 			// just use the simple fee if nothing else has been used yet.
 			if (amt == 0 && countorgs == 0 && !setting.AskVisible("AskSuggestedFee"))
 				amt = setting.Fee ?? 0;
-			if (orgfee.HasValue)
+			if (orgfee.HasValue && !setting.OtherFeesAddedToOrgFee)
 				amt = orgfee.Value; // special price for org member
 			else
 				amt += TotalOther();
@@ -84,7 +84,7 @@ namespace CmsWeb.Models
 					amt += setting.ExtraFee.Value;
 			if (FundItem.Count > 0)
 				amt += FundItemsChosen().Sum(f => f.amt);
-			var askSize = setting.AskObject<AskSize>();
+            var askSize = setting.AskItems.FirstOrDefault(aa => aa is AskSize) as AskSize;
 			if (askSize != null && shirtsize != "lastyear" && askSize.Fee.HasValue)
 				amt += askSize.Fee.Value;
 			return amt;

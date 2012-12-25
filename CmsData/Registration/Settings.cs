@@ -20,19 +20,18 @@ namespace CmsData.Registration
 		{
 			return AskItems.Find(aa => aa.Type == name) != null;
 		}
-		public T AskObject<T>() where T : class
-		{
-			return AskItems.FirstOrDefault(aa => aa is T) as T;
-		}
 		public decimal? Deposit { get; set; }
 		public string Title { get; set; }
 		public string Shell { get; set; }
 		public decimal? Fee { get; set; }
 		public decimal? ExtraFee { get; set; }
 		public decimal? MaximumFee { get; set; }
+		public bool ApplyMaxToOtherFees { get; set; }
 		public bool AllowOnlyOne { get; set; }
 		public bool TargetExtraValues { get; set; }
 		public bool AllowReRegister { get; set; }
+		public bool OtherFeesAddedToOrgFee { get; set; }
+		public bool IncludeOtherFeesWithDeposit { get; set; }
 		public string Subject { get; set; }
 		public string Body { get; set; }
 		public string ReminderSubject { get; set; }
@@ -135,6 +134,7 @@ namespace CmsData.Registration
 			while (parser.NextSection())
 				ParseSection(parser);
 			SetUniqueIds("AskDropdown");
+			SetUniqueIds("AskExtraQuestions");
 			SetUniqueIds("AskCheckboxes");
 			SetUniqueIds("AskMenu");
 			parser.data = null;
@@ -171,6 +171,12 @@ namespace CmsData.Registration
 					break;
 				case Parser.RegKeywords.AskRequest:
 					AskItems.Add(AskRequest.Parse(parser));
+					break;
+				case Parser.RegKeywords.AskHeader:
+					AskItems.Add(AskHeader.Parse(parser));
+					break;
+				case Parser.RegKeywords.AskInstruction:
+					AskItems.Add(AskInstruction.Parse(parser));
 					break;
 				case Parser.RegKeywords.Dropdown:
 				case Parser.RegKeywords.AskOptions:
@@ -323,6 +329,16 @@ namespace CmsData.Registration
 					break;
 				case Parser.RegKeywords.AllowOnlyOne:
 					AllowOnlyOne = parser.GetBool();
+					break;
+				case Parser.RegKeywords.OtherFeesAdded:
+				case Parser.RegKeywords.OtherFeesAddedToOrgFee:
+					OtherFeesAddedToOrgFee = parser.GetBool();
+					break;
+				case Parser.RegKeywords.IncludeOtherFeesWithDeposit:
+					IncludeOtherFeesWithDeposit = parser.GetBool();
+					break;
+				case Parser.RegKeywords.ApplyMaxToOtherFees:
+					ApplyMaxToOtherFees = parser.GetBool();
 					break;
 				case Parser.RegKeywords.AllowReRegister:
 					AllowReRegister = parser.GetBool();
@@ -528,9 +544,11 @@ namespace CmsData.Registration
 			AddConfirmation(sb);
 			AddReminder(sb);
 			AddFees(sb);
+			AddValueCk(0, sb, "IncludeOtherFeesWithDeposit", IncludeOtherFeesWithDeposit);
 			AddDonation(sb);
 			AddAgeGroups(sb);
 			OrgFees.Output(sb);
+			AddValueCk(0, sb, "OtherFeesAddedToOrgFee", OtherFeesAddedToOrgFee);
 			AddInstructions(sb);
 			AddTerms(sb);
 
@@ -561,6 +579,7 @@ namespace CmsData.Registration
 			AddValueCk(0, sb, "Deposit", Deposit);
 			AddValueCk(0, sb, "ExtraFee", ExtraFee);
 			AddValueCk(0, sb, "MaximumFee", MaximumFee);
+			AddValueCk(0, sb, "ApplyMaxToOtherFees", ApplyMaxToOtherFees);
 			AddValueCk(0, sb, "ExtraValueFeeName", ExtraValueFeeName);
 			sb.AppendLine();
 		}

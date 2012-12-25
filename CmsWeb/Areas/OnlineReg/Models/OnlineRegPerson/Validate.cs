@@ -376,12 +376,13 @@ Please search with a different email, phone, or birthday.";
 						}
 						break;
 					case "AskExtraQuestions":
-						for (int n = 0; n < ((AskExtraQuestions)ask).list.Count; n++)
+				        var eq = (AskExtraQuestions)ask;
+						for (int n = 0; n < eq.list.Count; n++)
 						{
-							var a = ((AskExtraQuestions)ask).list[n];
-							if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(a.Question) ||
-								!ExtraQuestion[a.Question].HasValue())
-								modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].ExtraQuestion[a.Question]), "please give some answer");
+							var a = eq.list[n];
+							if (ExtraQuestion == null || !ExtraQuestion[eq.UniqueId].ContainsKey(a.Question) ||
+								!ExtraQuestion[eq.UniqueId][a.Question].HasValue())
+								modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].ExtraQuestion[eq.UniqueId][a.Question]), "please give some answer");
 						}
 						break;
 					case "AskCheckboxes":
@@ -400,6 +401,8 @@ Please search with a different email, phone, or birthday.";
 			if (setting.Deposit > 0)
 				if (!paydeposit.HasValue)
 					modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), "please indicate");
+                else if(paydeposit == true && AmountToPay() > TotalAmount())
+					modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), "Cannot use deposit since total due is less");
 			if (OnlineGiving() && TotalAmount() <= 0)
 				modelState.AddModelError("form", "Gift amount required");
 

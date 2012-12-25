@@ -57,11 +57,13 @@
             <input type="hidden" name="@(prefix).option" value="@(((AskDropdown)ask).SmallGroupChoice(Model.option).SmallGroup)"/>
             break;
         case "AskExtraQuestions":
-    		for (int n = 0; n < ((AskExtraQuestions)ask).list.Count; n++)
+	        var eq = (AskExtraQuestions) ask;
+            var eqname = Html.NameFor2(m => m.ExtraQuestion);
+    		for (int n = 0; n < eq.list.Count; n++)
     		{
-    			var a = ((AskExtraQuestions)ask).list[n];
-    			<input type="hidden" name="@(prefix).ExtraQuestion[@n].Key" value="@a.Question" />
-    			<input type="hidden" name="@(prefix).ExtraQuestion[@n].Value" value="@Model.ExtraQuestion[a.Question]" />
+    			var a = eq.list[n];
+    			<input type="hidden" name="@(eqname)[@eq.UniqueId][@n].Key" value="@a.Question" />
+    			<input type="hidden" name="@(eqname)[@eq.UniqueId][@n].Value" value="@Model.ExtraQuestionValue(eq.UniqueId, a.Question)" />
     		}
             break;
         case "AskYesNoQuestions":

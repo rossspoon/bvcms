@@ -29,6 +29,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		// Main page
 		public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login, string registertag, bool? showfamily)
 		{
+#if DEBUG
+		    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(mm => mm.OrganizationId == 329 && mm.PeopleId == 2);
+            if (om != null)
+            {
+    		    om.Drop(DbUtil.Db, false);
+                DbUtil.Db.SubmitChanges();
+            }
+#endif
 			Util.NoCache(Response);
 			if (!id.HasValue && !div.HasValue)
 				return Content("no organization");

@@ -17,6 +17,13 @@
             <td>@Model.request </td>
         </tr>
             break;
+        case "AskHeader":
+        <tr>
+            <td colspan="2"><h4>@Html.Raw(((AskHeader)ask).Label)</h4></td>
+        </tr>
+            break;
+        case "AskInstruction":
+            break;
         case "AskEmContact":
         <tr>
             <td>Emergency Contact</td>
@@ -107,11 +114,12 @@
         </tr>
         break;
         case "AskExtraQuestions":
-            foreach (var a in ((AskExtraQuestions)ask).list)
+            var eq = (AskExtraQuestions)ask;
+            foreach (var a in eq.list)
             {
         <tr>
             <td><div class="wraparound">@a.Question</div></td>
-            <td> @Model.ExtraQuestion[a.Question]</td>
+            <td> @Model.ExtraQuestion[eq.UniqueId][a.Question]</td>
         </tr>
             }
             break;

@@ -456,7 +456,6 @@ a.sz1.bt {
 #selectquestions {
     display: none;
     border: 1px dashed gray;
-    background-color: lightgray;
     line-height: 24px;
     overflow: auto;
 }
@@ -465,7 +464,6 @@ a.sz1.bt {
         float: left;
         margin: 0 2em 0 0;
         padding: 0 0 5px 0;
-        background-color: lightgray;
     }
 
     #selectquestions span {

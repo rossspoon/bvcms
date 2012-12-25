@@ -514,6 +514,10 @@ namespace CmsWeb.Areas.Main.Controllers
 					return View(template, new AskSize() { Name = id});
 				case "AskRequest":
 					return View(template, new AskRequest() { Name = id });
+				case "AskHeader":
+					return View(template, new AskHeader() { Name = id });
+				case "AskInstruction":
+					return View(template, new AskInstruction() { Name = id });
 				case "AskTickets":
 					return View(template, new AskTickets() { Name = id });
 				case "AskYesNoQuestions":

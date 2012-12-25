@@ -101,15 +101,11 @@ namespace CmsWeb.Models
 						}
 						break;
 					case "AskExtraQuestions":
-						if (setting.TargetExtraValues)
-						{
-							foreach (var g in ExtraQuestion)
-								if (g.Value.HasValue())
+						foreach (var g in ExtraQuestion[ask.UniqueId])
+							if (g.Value.HasValue())
+        						if (setting.TargetExtraValues)
 									person.AddEditExtraData(g.Key, g.Value);
-						}
-						else
-							foreach (var g in ExtraQuestion)
-								if (g.Value.HasValue())
+        						else
 									om.AddToMemberData("{0}: {1}".Fmt(g.Key, g.Value));
 						break;
 					case "AskMenu":
@@ -251,6 +247,11 @@ namespace CmsWeb.Models
 					case "AskRequest":
 						sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", om.Request, ((AskRequest)ask).Label);
 						break;
+					case "AskHeader":
+				        sb.AppendFormat("<tr><td colspan='2'><h4>{0}</h4></td></tr>\n", ((AskHeader)ask).Label);
+						break;
+					case "AskInstruction":
+				        break;
 					case "AskAllergies":
 						sb.AppendFormat("<tr><td>Medical:</td><td>{0}</td></tr>\n", rr.MedicalDescription);
 						break;
@@ -291,9 +292,10 @@ namespace CmsWeb.Models
 						}
 						break;
 					case "AskCheckboxes":
-						{
-							var menulabel = ((AskCheckboxes)ask).Label;
-							foreach (var i in ((AskCheckboxes)ask).CheckboxItemsChosen(Checkbox))
+				        {
+				            var askcb = (AskCheckboxes) ask;
+				            var menulabel = askcb.Label;
+							foreach (var i in askcb.CheckboxItemsChosen(Checkbox))
 							{
 								string row;
                                 if (menulabel.HasValue())
@@ -313,7 +315,7 @@ namespace CmsWeb.Models
 													   YesNoQuestion[a.SmallGroup] == true ? "Yes" : "No"));
 						break;
 					case "AskExtraQuestions":
-						foreach (var a in ExtraQuestion)
+						foreach (var a in ExtraQuestion[ask.UniqueId])
 							if (a.Value.HasValue())
 								sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
 						break;

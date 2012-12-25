@@ -75,8 +75,13 @@ namespace CmsWeb.Models
         public string Phone { get; set; }
         public int? TranId { get; set; }
 
-        public Transaction CreateTransaction(CMSDataContext Db)
+        public Transaction CreateTransaction(CMSDataContext Db, decimal? amount = null)
         {
+            if (!amount.HasValue)
+                amount = AmtToPay;
+            decimal? amtdue = null;
+            if (Amtdue > 0)
+                amtdue = Amtdue - (amount ?? 0);
             var ti = new Transaction
                      {
                          First = First,
@@ -85,7 +90,8 @@ namespace CmsWeb.Models
                          Suffix = Suffix,
                          Donate = Donate,
                          Regfees = AmtToPay,
-                         Amtdue = Amtdue,
+                         Amt = amount,
+                         Amtdue = amtdue,
                          Emails = Email,
                          Testing = testing,
                          Description = Description,
@@ -222,8 +228,9 @@ namespace CmsWeb.Models
             pf.Type = pf.NoEChecksAllowed ? "C" : pf.Type;
             return pf;
         }
-        public static Transaction CreateTransaction(CMSDataContext Db, Transaction t)
+        public static Transaction CreateTransaction(CMSDataContext Db, Transaction t, decimal? amount)
         {
+            var amtdue = t.Amtdue != null ? t.Amtdue - (amount ?? 0) : null;
             var ti = new Transaction
                      {
                          Name = t.Name,
@@ -232,7 +239,8 @@ namespace CmsWeb.Models
                          Last = t.Last,
                          Suffix = t.Suffix,
                          Donate = t.Donate,
-                         Amtdue = t.Amtdue,
+                         Amtdue = amtdue,
+                         Amt = amount,
                          Emails = Util.FirstAddress(t.Emails).Address,
                          Testing = t.Testing,
                          Description = t.Description,
