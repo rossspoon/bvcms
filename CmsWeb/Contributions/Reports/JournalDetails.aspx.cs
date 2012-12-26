@@ -27,8 +27,11 @@ namespace CmsWeb.Contributions.Reports
         {
             var c = ListView1.FindControl("Count") as Label;
             var t = ListView1.FindControl("Total") as Label;
-            c.Text = ctl.JournalTotal.Count.ToString("n0");
-            t.Text = ctl.JournalTotal.Total.ToString("c");
+            if (ctl.JournalTotal.Count.HasValue)
+            {
+                c.Text = ctl.JournalTotal.Count.ToString2("n0");
+                t.Text = ctl.JournalTotal.Total.ToString2("c");
+            }
             FundName.Text = ctl.JournalTotal.FundName;
         }
 

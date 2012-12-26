@@ -30,7 +30,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login, string registertag, bool? showfamily)
 		{
 #if DEBUG
-		    var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(mm => mm.OrganizationId == 329 && mm.PeopleId == 2);
+            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(mm => mm.OrganizationId == 89469 && mm.PeopleId == 828612);
             if (om != null)
             {
     		    om.Drop(DbUtil.Db, false);

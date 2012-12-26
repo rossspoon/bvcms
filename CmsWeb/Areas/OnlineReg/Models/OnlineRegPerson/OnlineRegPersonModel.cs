@@ -88,6 +88,7 @@ namespace CmsWeb.Models
             var x = XDocument.Parse(s);
             if (x.Root == null) return;
 
+            var eqset = 0;
             foreach (var e in x.Root.Elements())
             {
                 var name = e.Name.ToString();
@@ -103,7 +104,9 @@ namespace CmsWeb.Models
                     case "ExtraQuestion":
                         if (ExtraQuestion == null)
                             ExtraQuestion = new List<Dictionary<string, string>>();
-                        var eqset = e.Attribute("set").Value.ToInt();
+                        var eqsetattr = e.Attribute("set");
+                        if(eqsetattr != null)
+                            eqset = eqsetattr.Value.ToInt();
                         if (ExtraQuestion.Count == eqset)
                             ExtraQuestion.Add(new Dictionary<string, string>());
                         var eq = e.Attribute("question");

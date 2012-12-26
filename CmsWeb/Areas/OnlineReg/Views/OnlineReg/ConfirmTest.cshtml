@@ -2,9 +2,9 @@
 @using UtilityExtensions
 @model IEnumerable<CmsWeb.Areas.OnlineReg.Controllers.OnlineRegController.ConfirmTestInfo>
 <html>
-<head><title>Incomplete Registrations</title></head>
+<head><title>Registration History</title></head>
 <body>
-<h2>Registrations that were started but never completed for one reason or another.</h2>
+<h2>Registration History</h2>
 @if (Model.Count() > 0)
 {
 <table border="1" cellpadding="2" cellspacing="0">
@@ -13,7 +13,7 @@
   {
    <tr>
        <td>@i.ed.Id</td>
-       <td><a href="/OnlineReg/ConfirmTestXml/@i.ed.Id">@i.ed.Stamp.Value</a></td>
+       <td><a href="@(Util.ResolveServerUrl("/OnlineReg/ConfirmTestXml"))/@i.ed.Id">@i.ed.Stamp.Value</a></td>
     @if (i.m.orgid > 0)
     {
            <td><a href='/Organization/Index/@i.m.orgid'>@i.m.org.OrganizationName</a></td>

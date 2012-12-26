@@ -398,12 +398,18 @@ Please search with a different email, phone, or birthday.";
 							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].gradeoption), "please select a grade option");
 						break;
 				}
-			if (setting.Deposit > 0)
-				if (!paydeposit.HasValue)
-					modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), "please indicate");
-                else if(paydeposit == true && AmountToPay() > TotalAmount())
-					modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), "Cannot use deposit since total due is less");
-			if (OnlineGiving() && TotalAmount() <= 0)
+		    var totalAmount = TotalAmount();
+		    if (setting.Deposit > 0)
+			    if (!paydeposit.HasValue)
+			        modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), "please indicate");
+			    else
+			    {
+			        var amountToPay = AmountToPay();
+			        if (paydeposit == true && amountToPay > totalAmount)
+			            modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), 
+                            "Cannot use deposit since total due is less");
+			    }
+		    if (OnlineGiving() && totalAmount <= 0)
 				modelState.AddModelError("form", "Gift amount required");
 
 			OtherOK = modelState.IsValid;

@@ -54,10 +54,13 @@ namespace CmsWeb.Models
 			// just use the simple fee if nothing else has been used yet.
 			if (amt == 0 && countorgs == 0 && !setting.AskVisible("AskSuggestedFee"))
 				amt = setting.Fee ?? 0;
-			if (orgfee.HasValue && !setting.OtherFeesAddedToOrgFee)
-				amt = orgfee.Value; // special price for org member
-			else
-				amt += TotalOther();
+            if (orgfee.HasValue)
+                if (setting.OtherFeesAddedToOrgFee)
+                    amt = orgfee.Value + TotalOther(); // special price for org member
+                else
+                    amt = orgfee.Value;
+            else
+                amt += TotalOther();
 			return amt;
 		}
 		public decimal TotalOther()

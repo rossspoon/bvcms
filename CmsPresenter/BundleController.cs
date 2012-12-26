@@ -805,9 +805,9 @@ namespace CMSPresenter
         {
             public int HeaderId { get; set; }
             public string FundName { get; set; }
-            public decimal Total { get; set; }
+            public decimal? Total { get; set; }
             public DateTime Date { get; set; }
-            public int Count { get; set; }
+            public int? Count { get; set; }
         }
         public JournalInfo JournalTotal;
         [DataObjectMethod(DataObjectMethodType.Select, false)]
@@ -825,7 +825,7 @@ namespace CMSPresenter
                     select new JournalInfo
                     {
                         HeaderId = g.Key.BundleHeaderId,
-                        Total = g.Sum(t => t.ContributionAmount).Value,
+                        Total = g.Sum(t => t.ContributionAmount),
                         Date = g.Key.ContributionDate.Value,
                         Count = g.Count(),
                         FundName = g.First().ContributionFund.FundName,
@@ -834,7 +834,7 @@ namespace CMSPresenter
             {
                 Count = q.Sum(t => t.Count),
                 Total = q.Sum(t => t.Total),
-                FundName = q.First().FundName,
+                FundName = q.Select(ff => ff.FundName).FirstOrDefault(),
             };
             return q.OrderBy(j => j.HeaderId).ThenBy(j => j.Date);
         }

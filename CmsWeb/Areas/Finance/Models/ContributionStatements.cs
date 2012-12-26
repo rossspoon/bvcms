@@ -325,11 +325,11 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				Db.SubmitChanges();
 			}
 
-            //if (!pageEvents.EndPageSet())
-            //{
-            //    doc.NewPage();
-            //    doc.Add(new Phrase("no data"));
-            //}
+            if (count == 0)
+            {
+                doc.NewPage();
+                doc.Add(new Phrase("no data"));
+            }
 			doc.Close();
 
 			if (set == LastSet())

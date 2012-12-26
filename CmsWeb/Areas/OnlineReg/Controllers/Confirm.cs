@@ -99,6 +99,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					ModelState.AddModelError("form", ti.Message);
 					return View("ProcessPayment", pf);
 				}
+    			if (m != null) 
+    			{
+    			    m.TranId = ti.Id;
+    			    ed.Data = Util.Serialize<OnlineRegModel>(m);
+                    DbUtil.Db.SubmitChanges();
+    			}
 				Session["FormId"] = pf.FormId;
 				if (pf.DatumId > 0)
 					return View(ConfirmTransaction(m, ti.TransactionId));

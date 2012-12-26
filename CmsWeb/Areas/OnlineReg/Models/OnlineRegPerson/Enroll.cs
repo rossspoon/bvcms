@@ -175,8 +175,7 @@ namespace CmsWeb.Models
 
 			string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
 			om.AddToMemberData(tstamp);
-			var tran = "{0:C} ({1}{2})".Fmt(
-					om.AmountPaid.ToString2("C"), ti.TransactionId, testing == true ? " test" : "");
+			var tran = "{0:C} ({1})".Fmt(om.AmountPaid.ToString2("C"), ti.TransactionId);
 			if (om.AmountPaid > 0)
 			{
 				om.AddToMemberData(tran);

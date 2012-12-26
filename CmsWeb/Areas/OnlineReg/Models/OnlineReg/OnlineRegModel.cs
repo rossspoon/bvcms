@@ -58,9 +58,19 @@ namespace CmsWeb.Models
 					ParseSettings();
 			}
 		}
+        private int? _tranId;
+		public int? TranId
+		{
+		    get { return _tranId; }
+		    set
+		    {
+		        _tranId = value;
+		        _Transaction = null;
+		    }
+		}
+
 		public int? classid { get; set; }
-		public int? TranId { get; set; }
-		public string username { get; set; }
+        public string username { get; set; }
 		public bool nologin { get; set; }
 		public decimal? donation { get; set; }
 		public int? donor { get; set; }
@@ -265,7 +275,8 @@ namespace CmsWeb.Models
 		}
 
 		private CmsData.Meeting _meeting;
-		public CmsData.Meeting meeting()
+
+        public CmsData.Meeting meeting()
 		{
 			if (_meeting == null)
 			{
