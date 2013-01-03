@@ -5,6 +5,7 @@ using CmsData;
 using CmsWeb.Areas.Finance.Controllers;
 using CmsWeb.Models;
 using UtilityExtensions;
+using CmsData.Codes;
 
 namespace CmsWeb.Areas.Finance.Models
 {
@@ -35,7 +36,7 @@ namespace CmsWeb.Areas.Finance.Models
         public IEnumerable<BundleInfo> Bundles()
         {
             var q = ApplySort();
-            var q2 = q.Skip(StartRow).Take(PageSize).ToList();
+            var q2 = q.Skip(StartRow).Take(PageSize);
             var q3 = from b in q2
                      where b.RecordStatus == false
                      select new BundleInfo
@@ -44,9 +45,9 @@ namespace CmsWeb.Areas.Finance.Models
                                     HeaderType = b.BundleHeaderType.Description,
                                     PostingDate = b.BundleDetails.Max(bd => bd.Contribution.PostingDate),
                                     DepositDate = b.DepositDate,
-                                    TotalBundle = b.TotalCash ?? 0 + b.TotalChecks ?? 0 + b.TotalEnvelopes ?? 0,
+                                    TotalBundle = (b.TotalCash ?? 0) + (b.TotalChecks ?? 0) + (b.TotalEnvelopes ?? 0),
                                     TotalItems = b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount ?? 0),
-                                    TotalTaxDed = b.BundleDetails.Where(bd => bd.Contribution.ContributionFund.NonTaxDeductible == true).Sum(bd => bd.Contribution.ContributionAmount ?? 0),
+                                    TotalNonTaxDed = b.BundleDetails.Where(bd => bd.Contribution.ContributionFund.NonTaxDeductible == true || bd.Contribution.ContributionTypeId == ContributionTypeCode.NonTaxDed).Sum(bd => bd.Contribution.ContributionAmount ?? 0),
                                     FundId = b.FundId,
                                     Fund = b.Fund.FundName,
                                     Status = b.BundleStatusType.Description,
@@ -80,6 +81,7 @@ namespace CmsWeb.Areas.Finance.Models
                             orderby b.BundleDetails.Max(bd => bd.Contribution.PostingDate)
                             select b;
                         break;
+                    case "Id":
                     case "Status":
                         q = from b in q
                             orderby b.BundleStatusType.Description descending, b.BundleHeaderId descending 
@@ -109,6 +111,7 @@ namespace CmsWeb.Areas.Finance.Models
                             orderby b.BundleDetails.Max(bd => bd.Contribution.PostingDate) descending 
                             select b;
                         break;
+                    case "Id":
                     case "Status":
                         q = from b in q
                             orderby b.BundleStatusType.Description descending, b.BundleHeaderId descending 
@@ -124,9 +127,9 @@ namespace CmsWeb.Areas.Finance.Models
         public DateTime? PostingDate { get; set; }
         public string HeaderType { get; set; }
         public DateTime? DepositDate { get; set; }
-        public decimal TotalBundle { get; set; }
-        public decimal TotalItems { get; set; }
-        public decimal TotalTaxDed { get; set; }
+        public decimal? TotalBundle { get; set; }
+        public decimal? TotalItems { get; set; }
+        public decimal? TotalNonTaxDed { get; set; }
         public int? FundId { get; set; }
         public string Fund { get; set; }
         public string Status { get; set; }

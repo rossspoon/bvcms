@@ -1132,7 +1132,6 @@ namespace CmsData
 				ContributionDate = bd.CreatedDate,
 				ContributionAmount = Amt,
 				ContributionStatusId = 0,
-				PledgeFlag = pledge,
 				ContributionTypeId = typid,
 				ContributionDesc = Description,
 			};

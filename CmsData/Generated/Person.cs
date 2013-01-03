@@ -3280,7 +3280,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(127)", IsDbGenerated=true)]
+		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(139)", IsDbGenerated=true)]
 		public string Name2
 		{
 			get { return this._Name2; }

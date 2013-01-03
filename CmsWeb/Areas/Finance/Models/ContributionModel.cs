@@ -35,9 +35,9 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		{
 			var q = from c in DbUtil.Db.Contributions
 			        where person.PeopleId == c.PeopleId || person == null
-			        where c.PledgeFlag == false
+			        where c.ContributionTypeId != ContributionTypeCode.Pledge
 			        where c.ContributionStatusId == ContributionStatusCode.Recorded
-			        where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+			        where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
 			        group c by c.ContributionDate.Value.Year
 			        into g
 			        orderby g.Key descending

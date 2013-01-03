@@ -23,6 +23,8 @@ namespace CmsData
 		
 		private string _Description;
 		
+		private bool? _Hardwired;
+		
    		
    		private EntitySet< Person> _People;
 		
@@ -42,6 +44,9 @@ namespace CmsData
 		
 		partial void OnDescriptionChanging(string value);
 		partial void OnDescriptionChanged();
+		
+		partial void OnHardwiredChanging(bool? value);
+		partial void OnHardwiredChanged();
 		
     #endregion
 		public MemberLetterStatus()
@@ -115,6 +120,28 @@ namespace CmsData
 					this._Description = value;
 					this.SendPropertyChanged("Description");
 					this.OnDescriptionChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Hardwired", UpdateCheck=UpdateCheck.Never, Storage="_Hardwired", DbType="bit")]
+		public bool? Hardwired
+		{
+			get { return this._Hardwired; }
+
+			set
+			{
+				if (this._Hardwired != value)
+				{
+				
+                    this.OnHardwiredChanging(value);
+					this.SendPropertyChanging();
+					this._Hardwired = value;
+					this.SendPropertyChanged("Hardwired");
+					this.OnHardwiredChanged();
 				}
 
 			}

@@ -595,28 +595,6 @@ namespace CMSPresenter
 				   };
 		}
 
-		public IEnumerable<CodeValueItem> MeetingTypes()
-		{
-			return from c in DbUtil.Db.MeetingTypes
-				   select new CodeValueItem
-				   {
-					   Id = c.Id,
-					   Code = c.Code,
-					   Value = c.Description,
-				   };
-		}
-
-		public IEnumerable<CodeValueItem> GenderClasses()
-		{
-			return from c in DbUtil.Db.GenderClasses
-				   select new CodeValueItem
-				   {
-					   Id = c.Id,
-					   Code = c.Code,
-					   Value = c.Description,
-				   };
-		}
-
 		public IEnumerable<CodeValueItem> RegistrationTypes()
 		{
 			return from i in CmsData.Codes.RegistrationTypeCode.GetCodePairs()

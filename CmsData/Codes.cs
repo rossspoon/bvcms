@@ -74,7 +74,6 @@ namespace CmsData.Codes
 		public const int Requested = 50;
 		public const int Other = 98;
 		public const int NotDropped = 0;
-		public const int Duplicate = 10;
 		public const int Deceased = 30;
 	}
 	public static class EnvelopeOptionCode
@@ -100,7 +99,6 @@ namespace CmsData.Codes
 	}
 	public static class MemberTypeCode
 	{
-		public const int Leader = 140;
 		public const int Teacher = 160;
 		public const int Member = 220;
 		public const int InActive = 230;
@@ -197,7 +195,6 @@ namespace CmsData.Codes
 	}
 	public class BundleTypeCode
 	{
-		public const int GenericEnvelope = 1;
 		public const int ChecksAndCash = 2;
 		public const int PreprintedEnvelope = 3;
 		public const int Online = 4;
@@ -213,11 +210,27 @@ namespace CmsData.Codes
 	public class ContributionTypeCode
 	{
 		public const int CheckCash = 1;
-		public const int BrokeredProperty = 3;
-		public const int GraveSite = 4;
 		public const int ReturnedCheck = 6;
 		public const int Reversed = 7;
 		public const int Pledge = 8;
+		public const int NonTaxDed = 9;
+		public const int GiftInKind = 10;
+        public static int[] SpecialTypes = new int[]
+        {
+            ContributionTypeCode.GiftInKind,
+            ContributionTypeCode.NonTaxDed,
+            ContributionTypeCode.Pledge
+        };
+        public static int[] NonTaxTypes = new int[]
+        {
+            ContributionTypeCode.NonTaxDed,
+            ContributionTypeCode.Pledge
+        };
+        public static int[] ReturnedReversedTypes = new int[] 
+        { 
+            ContributionTypeCode.ReturnedCheck, 
+            ContributionTypeCode.Reversed 
+        };
 	}
 	public static class AttendCommitmentCode
 	{

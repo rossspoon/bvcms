@@ -262,7 +262,6 @@ $(function () {
                     return false;
                 });
                 $(".helptip").tooltip({ showBody: "|" });
-                $(".tip", f).tooltip({ showBody: "|" });
             });
         });
         return false;

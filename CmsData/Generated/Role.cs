@@ -21,6 +21,8 @@ namespace CmsData
 		
 		private int _RoleId;
 		
+		private bool? _Hardwired;
+		
    		
    		private EntitySet< UserRole> _UserRoles;
 		
@@ -37,6 +39,9 @@ namespace CmsData
 		
 		partial void OnRoleIdChanging(int value);
 		partial void OnRoleIdChanged();
+		
+		partial void OnHardwiredChanging(bool? value);
+		partial void OnHardwiredChanged();
 		
     #endregion
 		public Role()
@@ -88,6 +93,28 @@ namespace CmsData
 					this._RoleId = value;
 					this.SendPropertyChanged("RoleId");
 					this.OnRoleIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="hardwired", UpdateCheck=UpdateCheck.Never, Storage="_Hardwired", DbType="bit")]
+		public bool? Hardwired
+		{
+			get { return this._Hardwired; }
+
+			set
+			{
+				if (this._Hardwired != value)
+				{
+				
+                    this.OnHardwiredChanging(value);
+					this.SendPropertyChanging();
+					this._Hardwired = value;
+					this.SendPropertyChanged("Hardwired");
+					this.OnHardwiredChanged();
 				}
 
 			}

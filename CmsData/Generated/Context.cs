@@ -278,10 +278,6 @@ namespace CmsData
         partial void UpdateGender(Gender instance);
         partial void DeleteGender(Gender instance);
         
-        partial void InsertGenderClass(GenderClass instance);
-        partial void UpdateGenderClass(GenderClass instance);
-        partial void DeleteGenderClass(GenderClass instance);
-        
         partial void InsertGeoCode(GeoCode instance);
         partial void UpdateGeoCode(GeoCode instance);
         partial void DeleteGeoCode(GeoCode instance);
@@ -342,10 +338,6 @@ namespace CmsData
         partial void UpdateMinistry(Ministry instance);
         partial void DeleteMinistry(Ministry instance);
         
-        partial void InsertNameSuffix(NameSuffix instance);
-        partial void UpdateNameSuffix(NameSuffix instance);
-        partial void DeleteNameSuffix(NameSuffix instance);
-        
         partial void InsertNameTitle(NameTitle instance);
         partial void UpdateNameTitle(NameTitle instance);
         partial void DeleteNameTitle(NameTitle instance);
@@ -405,10 +397,6 @@ namespace CmsData
         partial void InsertPeopleExtra(PeopleExtra instance);
         partial void UpdatePeopleExtra(PeopleExtra instance);
         partial void DeletePeopleExtra(PeopleExtra instance);
-        
-        partial void InsertPhonePreference(PhonePreference instance);
-        partial void UpdatePhonePreference(PhonePreference instance);
-        partial void DeletePhonePreference(PhonePreference instance);
         
         partial void InsertPicture(Picture instance);
         partial void UpdatePicture(Picture instance);
@@ -1034,12 +1022,6 @@ namespace CmsData
 
 		}
 
-		public Table< GenderClass> GenderClasses
-		{
-			get	{ return this.GetTable< GenderClass>(); }
-
-		}
-
 		public Table< GeoCode> GeoCodes
 		{
 			get	{ return this.GetTable< GeoCode>(); }
@@ -1130,12 +1112,6 @@ namespace CmsData
 
 		}
 
-		public Table< NameSuffix> NameSuffixes
-		{
-			get	{ return this.GetTable< NameSuffix>(); }
-
-		}
-
 		public Table< NameTitle> NameTitles
 		{
 			get	{ return this.GetTable< NameTitle>(); }
@@ -1223,12 +1199,6 @@ namespace CmsData
 		public Table< PeopleExtra> PeopleExtras
 		{
 			get	{ return this.GetTable< PeopleExtra>(); }
-
-		}
-
-		public Table< PhonePreference> PhonePreferences
-		{
-			get	{ return this.GetTable< PhonePreference>(); }
 
 		}
 

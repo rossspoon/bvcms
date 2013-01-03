@@ -57,7 +57,6 @@
                 .append( "<a>" + item.Name + "<br>" + item.Addr + "</a>" )
                 .appendTo( ul );
         };
-    // TODO: fix autocomplete
 
     $.Stripe = function () {
         $('#bundle tbody tr').removeClass('alt');
@@ -117,7 +116,12 @@
         $('#pid').val($("a.pid", tr).text());
         $('#name').val($("td.name", tr).text());
         $('#fund').val($("td.fund", tr).attr('val'));
-        $('#pledge').attr('checked', $("td.fund", tr).attr('pledge') == 'true');
+        
+        var plnt = $("td.PLNT", tr).text();
+        $("#entry .PLNT").html(plnt);
+        plnt = plnt || "CN";
+        $("input[name=PLNT][value=" + plnt + "]").prop('checked', true);
+        
         var a = $('#amt');
         a.val($("td.amt", tr).attr("val"));
         $('#checkno').val($("td.checkno", tr).text());
@@ -130,6 +134,12 @@
         $('a.split').hide();
         $('a.delete').hide();
         $.Stripe();
+    });
+    $("input[name='PLNT']").change(function () {
+        var v = $(this).val();
+        if (v == 'CN')
+            v = "";
+        $("#entry .PLNT").text(v);
     });
     $('a.split').live("click", function (ev) {
         ev.preventDefault();
@@ -204,8 +214,13 @@
     $.PostRow = function (options) {
         if (!options.q) {
             var n = parseFloat($('#amt').val());
-            if (!n > 0) {
+            var plnt = $("#entry .PLNT").text();
+            if (!n > 0 && plnt != 'GK') {
                 $.growlUI("Contribution", "Cannot post, No Amount");
+                return;
+            }
+            if (!isNaN(n) && n != 0 && plnt == 'GK') {
+                $.growlUI("Contribution", "Cannot post, Gift In Kind must be zero");
                 return;
             }
             options.q = $('#pbform').serialize();

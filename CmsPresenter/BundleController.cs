@@ -76,7 +76,7 @@ namespace CMSPresenter
                 if (!StatusId.HasValue)
                     return true;
                 return StatusId.Value != ContributionStatusCode.Recorded
-                    || APIContribution.ReturnedReversedTypes.Contains(ContributionTypeId.Value);
+                    || ContributionTypeCode.ReturnedReversedTypes.Contains(ContributionTypeId.Value);
             }
         }
     }
@@ -280,7 +280,6 @@ namespace CMSPresenter
                         ContributionTypeId = d.Contribution.ContributionTypeId,
                         Fund = d.Contribution.ContributionFund.FundName,
                         PeopleId = d.Contribution.PeopleId,
-                        Pledge = d.Contribution.PledgeFlag,
                         StatusId = d.Contribution.ContributionStatusId.Value,
                         Status = d.Contribution.ContributionStatus.Description,
                         Name = d.Contribution.Person.Name2,
@@ -332,7 +331,6 @@ namespace CMSPresenter
                          ContributionType = c.ContributionType.Description,
                          ContributionTypeId = c.ContributionTypeId,
                          Fund = c.ContributionFund.FundName,
-                         Pledge = c.PledgeFlag,
                          StatusId = c.ContributionStatusId,
                          Status = c.ContributionStatus.Description,
                          Name = c.Person.Name,
@@ -359,8 +357,8 @@ namespace CMSPresenter
         {
             var q = from c in DbUtil.Db.Contributions
                     where c.ContributionStatusId == ContributionStatusCode.Recorded
-                    where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                    where c.PledgeFlag == false
+                    where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                    where c.ContributionTypeId != ContributionTypeCode.Pledge
                     select c;
             q = ApplyWhere(q, peopleId, year, statusid, typeid, fundid);
             decimal? t = q.Sum(c => (decimal?)c.ContributionAmount);
@@ -373,7 +371,7 @@ namespace CMSPresenter
             var q = from d in DbUtil.Db.BundleDetails
                     where d.BundleHeaderId == BundleId
                     where d.Contribution.ContributionStatusId == ContributionStatusCode.Recorded
-                    where !APIContribution.ReturnedReversedTypes.Contains(d.Contribution.ContributionTypeId)
+                    where !ContributionTypeCode.ReturnedReversedTypes.Contains(d.Contribution.ContributionTypeId)
                     select d.Contribution;
             decimal? t = q.Sum(c => (decimal?)c.ContributionAmount);
             if (t.HasValue)
@@ -393,9 +391,9 @@ namespace CMSPresenter
         {
             var q = from c in DbUtil.Db.Contributions
                     where peopleId == c.PeopleId || peopleId == 0
-                    where c.PledgeFlag == false
+                    where c.ContributionTypeId != ContributionTypeCode.Pledge
                     where c.ContributionStatusId == ContributionStatusCode.Recorded
-                    where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                    where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
                     group c by c.ContributionDate.Value.Year into g
                     orderby g.Key descending
                     select new YearInfo
@@ -424,11 +422,6 @@ namespace CMSPresenter
                         orderby c.ContributionTypeId, c.ContributionDate descending
                         select c;
                     break;
-                case "Pledge":
-                    q = from c in q
-                        orderby c.PledgeFlag, c.ContributionDate descending
-                        select c;
-                    break;
                 case "Status":
                     q = from c in q
                         orderby c.ContributionStatusId, c.ContributionDate descending
@@ -451,11 +444,6 @@ namespace CMSPresenter
                 case "Type DESC":
                     q = from c in q
                         orderby c.ContributionTypeId descending, c.ContributionDate descending
-                        select c;
-                    break;
-                case "Pledge DESC":
-                    q = from c in q
-                        orderby c.PledgeFlag descending, c.ContributionDate descending
                         select c;
                     break;
                 case "Status DESC":
@@ -562,8 +550,8 @@ namespace CMSPresenter
                 where dt1 <= c.PostingDate.Value.Date
                 where c.PostingDate.Value.Date <= dt2
                 where d.BundleHeader.BundleStatusId == 0
-                where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                where !c.PledgeFlag
+                where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                where c.ContributionTypeId != ContributionTypeCode.Pledge
                 group c by new { d.BundleHeaderId, c.ContributionFund, c.ContributionDate } into g
                 select new ExtractInfo
                 {
@@ -583,8 +571,8 @@ namespace CMSPresenter
                 where dt1 <= c.PostingDate.Value.Date
                 where c.PostingDate.Value.Date <= dt2
                 where d.BundleHeader.BundleStatusId == 0
-                where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId) // no 6,7(reversals, returns)
-                where !c.PledgeFlag
+                where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId) // no 6,7(reversals, returns)
+                where c.ContributionTypeId != ContributionTypeCode.Pledge
                 group c by new { d.BundleHeaderId, c.ContributionFund, c.ContributionDate } into g
                 select new ExtractInfo
                 {
@@ -602,8 +590,8 @@ namespace CMSPresenter
                 from c in DbUtil.Db.Contributions
                 where dt1 <= c.PostingDate.Value.Date
                 where c.PostingDate.Value.Date <= dt2
-                where APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId) // Yes 6,7 (reversals, returns)
-                where !c.PledgeFlag
+                where ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId) // Yes 6,7 (reversals, returns)
+                where c.ContributionTypeId != ContributionTypeCode.Pledge
                 select new ExtractInfo
                 {
                     Fund = c.ContributionFund.FundIncomeFund,
@@ -620,8 +608,8 @@ namespace CMSPresenter
                 from c in DbUtil.Db.Contributions
                 where dt1 <= c.PostingDate.Value.Date
                 where c.PostingDate.Value.Date <= dt2
-                where APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId) // Yes 6,7 (reversals, returns)
-                where !c.PledgeFlag
+                where ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId) // Yes 6,7 (reversals, returns)
+                where c.ContributionTypeId != ContributionTypeCode.Pledge
                 select new ExtractInfo
                 {
                     Fund = c.ContributionFund.FundCashFund,
@@ -648,11 +636,12 @@ namespace CMSPresenter
         public IEnumerable<FundTotalInfo> TotalsByFund(DateTime dt1, DateTime dt2, bool Pledges, int CampusId)
         {
             var q = from c in DbUtil.Db.Contributions
-                    where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                    where c.ContributionTypeId != ContributionTypeCode.BrokeredProperty
+                    where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                    where c.ContributionTypeId != ContributionTypeCode.GiftInKind
                     where Pledges || c.ContributionStatusId == ContributionStatusCode.Recorded
                     where c.ContributionDate >= dt1 && c.ContributionDate.Value.Date <= dt2
-                    where c.PledgeFlag == Pledges
+                    where (c.ContributionTypeId == ContributionTypeCode.Pledge && Pledges)
+                        || (c.ContributionTypeId != ContributionTypeCode.Pledge && !Pledges)
                     where c.BundleDetails.First().BundleHeader.BundleStatusId == 0
                     //where Pledges || c.PostingDate != null
                     where CampusId == 0 || c.Person.CampusId == CampusId
@@ -679,7 +668,7 @@ namespace CMSPresenter
             var q0 = from c in DbUtil.Db.Contributions
                      where dt1 <= c.ContributionDate.Value.Date
                      where c.ContributionDate.Value.Date <= dt2
-                     where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                     where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
                      where c.FundId == fundid || fundid == 0
                      where CampusId == 0 || c.Person.CampusId == CampusId
                      select c;
@@ -687,21 +676,22 @@ namespace CMSPresenter
             {
                 case "true":
                     q0 = from c in q0
-                         where c.PledgeFlag
+                         where c.ContributionTypeId == ContributionTypeCode.Pledge
                          select c;
                     break;
                 case "false":
                     q0 = from c in q0
                          where c.ContributionStatusId == ContributionStatusCode.Recorded
-                         where !c.PledgeFlag
+                         where c.ContributionTypeId != ContributionTypeCode.Pledge
                          where c.PostingDate != null
                          select c;
                     break;
                 case "both":
                     q0 = from c in q0
-                         where (!c.PledgeFlag && c.ContributionStatusId == ContributionStatusCode.Recorded)
-                                || c.PledgeFlag
-                         where (!c.PledgeFlag && c.PostingDate != null) || c.PledgeFlag
+                         where (c.ContributionTypeId != ContributionTypeCode.Pledge && c.ContributionStatusId == ContributionStatusCode.Recorded)
+                                || c.ContributionTypeId == ContributionTypeCode.Pledge
+                         where (c.ContributionTypeId != ContributionTypeCode.Pledge && c.PostingDate != null)
+                                || c.ContributionTypeId == ContributionTypeCode.Pledge
                          select c;
                     break;
             }
@@ -742,7 +732,7 @@ namespace CMSPresenter
             var q0 = from c in DbUtil.Db.Contributions
                      where dt1 <= c.ContributionDate.Value.Date
                      where c.ContributionDate.Value.Date <= dt2
-                     where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                     where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
                      where c.FundId == fundid || fundid == 0
                      where CampusId == 0 || c.Person.CampusId == CampusId
                      select c;
@@ -750,21 +740,22 @@ namespace CMSPresenter
             {
                 case "true":
                     q0 = from c in q0
-                         where c.PledgeFlag
+                         where c.ContributionTypeId == ContributionTypeCode.Pledge
                          select c;
                     break;
                 case "false":
                     q0 = from c in q0
                          where c.ContributionStatusId == ContributionStatusCode.Recorded
-                         where !c.PledgeFlag
+                         where c.ContributionTypeId != ContributionTypeCode.Pledge
                          where c.PostingDate != null
                          select c;
                     break;
                 case "both":
                     q0 = from c in q0
-                         where (!c.PledgeFlag && c.ContributionStatusId == ContributionStatusCode.Recorded)
-                                || c.PledgeFlag
-                         where (!c.PledgeFlag && c.PostingDate != null) || c.PledgeFlag
+                         where (c.ContributionTypeId != ContributionTypeCode.Pledge && c.ContributionStatusId == ContributionStatusCode.Recorded)
+                                || c.ContributionTypeId == ContributionTypeCode.Pledge
+                         where (c.ContributionTypeId != ContributionTypeCode.Pledge && c.PostingDate != null)
+                                || c.ContributionTypeId == ContributionTypeCode.Pledge
                          select c;
                     break;
             }
@@ -817,8 +808,8 @@ namespace CMSPresenter
                     where dt1 <= c.ContributionDate.Value.Date
                     where c.ContributionDate.Value.Date <= dt2
                     where c.ContributionStatusId == ContributionStatusCode.Recorded
-                    where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                    where c.PledgeFlag == false
+                    where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                    where c.ContributionTypeId != ContributionTypeCode.Pledge
                     where c.FundId == FundId
                     where c.BundleDetails.First().BundleHeader.BundleStatusId == 0
                     group c by new { c.BundleDetails.FirstOrDefault().BundleHeader.BundleHeaderId, c.ContributionDate } into g

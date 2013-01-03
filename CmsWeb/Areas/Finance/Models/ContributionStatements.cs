@@ -47,6 +47,7 @@ namespace CmsWeb.Areas.Finance.Models.Report
 		{
 			pageEvents.set = set;
 			IEnumerable<ContributorInfo> contributors = q;
+		    var toDate = ToDate.Date.AddHours(24).AddSeconds(-1);
 
 			PdfContentByte dc;
 			var font = FontFactory.GetFont(FontFactory.HELVETICA, 11);
@@ -68,13 +69,12 @@ namespace CmsWeb.Areas.Finance.Models.Report
 			{
 				if (set > 0 && pageEvents.FamilySet[ci.PeopleId] != set)
 					continue;
+			    doc.NewPage();
 				if (prevfid != ci.FamilyId)
 				{
 					prevfid = ci.FamilyId;
-					pageEvents.StartPageSet();
+					pageEvents.EndPageSet();
 				}
-				else
-					doc.NewPage();
 				if (set == 0)
 					pageEvents.FamilySet[ci.PeopleId] = 0;
 				count++;
@@ -171,7 +171,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				doc.Add(new Paragraph(" "));
 				doc.Add(new Paragraph(" ") { SpacingBefore = 72f * 2.125f });
 
-				doc.Add(new Phrase("\n  Period: {0:d} - {1:d}".Fmt(FromDate, ToDate), boldfont));
+				doc.Add(new Phrase("\n  Period: {0:d} - {1:d}".Fmt(FromDate, toDate), boldfont));
 
 			    var pos = w.GetVerticalPosition(true);
 
@@ -200,7 +200,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				t.DefaultCell.Border = Rectangle.NO_BORDER;
 
 				var total = 0m;
-				foreach (var c in APIContribution.contributions(Db, ci, FromDate, ToDate))
+				foreach (var c in APIContribution.contributions(Db, ci, FromDate, toDate))
 				{
 					t.AddCell(new Phrase(c.ContributionDate.FormatDate(), font));
 					t.AddCell(new Phrase(c.Fund, font));
@@ -224,7 +224,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 
 
 				//------Pledges
-				var pledges = APIContribution.pledges(Db, ci, ToDate).ToList();
+				var pledges = APIContribution.pledges(Db, ci, toDate).ToList();
 				if (pledges.Count > 0)
 				{
 					t = new PdfPTable(new float[] { 16f, 12f, 12f });
@@ -265,6 +265,44 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 					ct.AddElement(t);
 				}
 
+				//------Gifts In Kind
+				var giftsinkind = APIContribution.GiftsInKind(Db, ci, FromDate, toDate).ToList();
+				if (giftsinkind.Count > 0)
+				{
+					t = new PdfPTable(new float[] { 12f, 18f, 20f });
+					t.WidthPercentage = 100;
+					t.DefaultCell.Border = Rectangle.NO_BORDER;
+					t.HeaderRows = 2;
+
+					cell = new PdfPCell(t.DefaultCell);
+					cell.Colspan = 3;
+					cell.Phrase = new Phrase("\n\nGifts in Kind\n", boldfont);
+					t.AddCell(cell);
+
+					t.DefaultCell.Border = Rectangle.BOTTOM_BORDER;
+					t.AddCell(new Phrase("Date", boldfont));
+					cell = new PdfPCell(t.DefaultCell);
+					cell.Phrase = new Phrase("Fund", boldfont);
+					t.AddCell(cell);
+					cell = new PdfPCell(t.DefaultCell);
+					cell.Phrase = new Phrase("Description", boldfont);
+					t.AddCell(cell);
+
+					t.DefaultCell.Border = Rectangle.NO_BORDER;
+
+					foreach (var c in giftsinkind)
+					{
+						t.AddCell(new Phrase(c.ContributionDate.FormatDate(), font));
+						cell = new PdfPCell(t.DefaultCell);
+						cell.Phrase = new Phrase(c.Fund, font);
+						t.AddCell(cell);
+						cell = new PdfPCell(t.DefaultCell);
+						cell.Phrase = new Phrase(c.Description, font);
+						t.AddCell(cell);
+					}
+					ct.AddElement(t);
+				}
+
 				//-----Summary
 				t = new PdfPTable(new float[] { 29f, 9f });
 				t.WidthPercentage = 100;
@@ -284,7 +322,7 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				t.AddCell(cell);
 
 				t.DefaultCell.Border = Rectangle.NO_BORDER;
-				foreach (var c in APIContribution.quarterlySummary(Db, ci, FromDate, ToDate))
+				foreach (var c in APIContribution.quarterlySummary(Db, ci, FromDate, toDate))
 				{
 					t.AddCell(new Phrase(c.Fund, font));
 					cell = new PdfPCell(t.DefaultCell);
@@ -351,11 +389,11 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
             private NPages npages;
             private int pg;
 
-			private PdfWriter writer;
+            private PdfWriter writer;
 			private Document document;
 			private PdfContentByte dc;
 			private BaseFont font;
-			public int PeopleId { get; set; }
+		    private int recentpage;
 			public int set { get; set; }
 
 			public Dictionary<int, int> FamilySet { get; set; }
@@ -367,101 +405,58 @@ Thank you for your faithfulness in the giving of your time, talents, and resourc
 				base.OnOpenDocument(writer, document);
 				font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 				dc = writer.DirectContent;
-                npages = new NPages(dc);
 				if (set == 0)
 					FamilySet = new Dictionary<int, int>();
-			}
-			public bool EndPageSet()
-			{
-				if (npages == null)
-					return false;
-				npages.template.BeginText();
-				npages.template.SetFontAndSize(font, 8);
-				npages.template.ShowText(npages.n.ToString());
-				if (set == 0)
-				{
-					var list = FamilySet.Where(kp => kp.Value == 0).ToList();
-					foreach (var kp in list)
-						if (kp.Value == 0)
-							FamilySet[kp.Key] = npages.n;
-				}
-                pg = 1;
-				npages.template.EndText();
                 npages = new NPages(dc);
-				return true;
 			}
-			public bool StartPageSet()
-			{
-				document.NewPage();
+            public void EndPageSet()
+            {
+                if (npages == null)
+                    return;
+                npages.template.BeginText();
+                npages.template.SetFontAndSize(font, 8);
+                npages.template.ShowText(npages.n.ToString());
+                if (set == 0)
+                {
+                        var list = FamilySet.Where(kp => kp.Value == 0).ToList();
+                        foreach (var kp in list)
+                            if (kp.Value == 0)
+                                FamilySet[kp.Key] = npages.n;
+                    
+                }
+                pg = 1;
+                npages.template.EndText();
+                npages = new NPages(dc);
+            }
+            public void StartPageSet()
+            {
                 npages.juststartednewset = true;
-				return true;
-			}
-			public override void OnEndPage(PdfWriter writer, Document document)
-			{
-				base.OnEndPage(writer, document);
-                if(npages.juststartednewset)
+            }
+            public override void OnEndPage(PdfWriter writer, Document document)
+            {
+                base.OnEndPage(writer, document);
+                if (npages.juststartednewset)
                     EndPageSet();
 
-				string text;
-				float len;
+                string text;
+                float len;
 
-				text = "Page " + (pg) + " of ";
-				len = font.GetWidthPoint(text, 8);
-				dc.BeginText();
-				dc.SetFontAndSize(font, 8);
-				dc.SetTextMatrix(document.PageSize.Width - 30 - len, 30);
-				dc.ShowText(text);
-				dc.EndText();
-				dc.AddTemplate(npages.template, document.PageSize.Width - 30, 30);
+                text = "Page " + (pg) + " of ";
+                len = font.GetWidthPoint(text, 8);
+                dc.BeginText();
+                dc.SetFontAndSize(font, 8);
+                dc.SetTextMatrix(30, 30);
+                dc.ShowText(text);
+                dc.EndText();
+                dc.AddTemplate(npages.template, 30 + len, 30);
                 npages.n = pg++;
-			}
+            }
             public override void OnCloseDocument(PdfWriter writer, Document document)
             {
                 base.OnCloseDocument(writer, document);
                 EndPageSet();
             }
 		}
-		//public void splitPDF(Stream inputStream, Stream outputStream, bool multi)
-		//{
-		//	var document = new Document();
-		//	try
-		//	{
-		//		var inputPDF = new PdfReader(inputStream);
-		//		var totalPages = inputPDF.NumberOfPages;
-		//		var writer = PdfWriter.GetInstance(document, outputStream);
-
-		//		document.Open();
-		//		var cb = writer.DirectContent; // Holds the PDF data
-		//		PdfImportedPage page;
-
-		//		for(var i = 0; i < this.pageEvents.multipages.Count; i++)
-		//			if(pageEvents.multipages[i] == multi)
-		//			{
-		//				document.NewPage();
-		//				page = writer.GetImportedPage(inputPDF, i+1);
-		//				cb.AddTemplate(page, 0, 0);
-		//			}
-		//		outputStream.Flush();
-		//		document.Close();
-		//		outputStream.Close();
-		//	}
-		//	catch (Exception e)
-		//	{
-		//	}
-		//	finally
-		//	{
-		//		if (document.IsOpen())
-		//			document.Close();
-		//		try
-		//		{
-		//			if (outputStream != null)
-		//				outputStream.Close();
-		//		}
-		//		catch (IOException ioe)
-		//		{
-		//		}
-		//	}
-		//}
 	}
 }
 

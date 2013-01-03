@@ -1,0 +1,67 @@
+﻿@using CmsData
+@using UtilityExtensions
+@model CmsWeb.Areas.Finance.Models.BundleModel
+<table id="bundle" cellspacing="5">
+    <tr>
+        <th>Bundle Status</th>
+        <td>
+            @if (Model.CanChangeStatus)
+            {
+                @Html.CheckBox("IsOpen") @:Open
+            }
+            else
+            {
+                <div class="red">Cannot close the bundle because totals do not match,<br />
+                    or there are contributions not associated with a person</div>
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>Contribution Date</th>
+        <td>@Html.EditorFor(m => m.Bundle.ContributionDate)</td>
+    </tr>
+    <tr>
+        <th>Bundle Type</th>
+        <td>@Html.DropDownListFor(m => m.Bundle.BundleHeaderTypeId, 
+                new SelectList(DbUtil.Db.BundleHeaderTypes, "Id", "Description", Model.Bundle.BundleHeaderTypeId))
+        </td>
+    </tr>
+    <tr>
+        <th>Deposit Date</th>
+        <td>@Html.EditorFor(m => m.Bundle.DepositDate)</td>
+    </tr>
+    <tr>
+        <th>Total Cash</th>
+        <td>@Html.EditorFor(m => m.Bundle.TotalCash)</td>
+    </tr>
+    <tr>
+        <th>Total Checks</th>
+        <td>@Html.EditorFor(m => m.Bundle.TotalChecks)</td>
+    </tr>
+    <tr>
+        <th>Total Coin</th>
+        <td>@Html.EditorFor(m => m.Bundle.TotalEnvelopes)</td>
+    </tr>
+    <tr>
+        <th>Default Fund</th>
+        <td>@Html.DropDownListFor(m => m.Bundle.FundId, 
+                new SelectList(DbUtil.Db.ContributionFunds.Where(ff => ff.FundStatusId == 1), 
+                    "FundId", "FundName", Model.Bundle.FundId))
+        </td>
+    </tr>
+    <tr>
+        <th>Total Header</th>
+        <td>@Model.TotalHeader().ToString("c")</td>
+    </tr>
+    <tr>
+        <th>Total Items</th>
+        <td>@Model.TotalItems().ToString("c")</td>
+    </tr>
+    <tr>
+        <th></th>
+        <td align="right">
+            <a href="/Bundle/Cancel/@Model.BundleId" class="bt displayedit">Cancel</a>
+            <a href="/Bundle/Update/@Model.BundleId" class="bt displayedit blue">Update</a>
+        </td>
+    </tr>
+</table>

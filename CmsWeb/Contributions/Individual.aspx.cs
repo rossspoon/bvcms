@@ -51,7 +51,6 @@ namespace CmsWeb.Contributions
                     ContributionDate = now.Date,
                     PostingDate = now,
                     FundId = c.FundId,
-                    PledgeFlag = c.PledgeFlag,
                 };
                 DbUtil.Db.Contributions.InsertOnSubmit(r);
                 switch (e.CommandName)

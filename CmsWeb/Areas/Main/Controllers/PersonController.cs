@@ -98,6 +98,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				return Content("no user");
 			if (user.Roles.Contains("Finance") && !User.IsInRole("Finance"))
 				return Content("cannot impersonate finance");
+            Session.Remove("CurrentTag");
 			FormsAuthentication.SetAuthCookie(id, false);
 			AccountModel.SetUserInfo(id, Session);
 			Util.FormsBasedAuthentication = true;

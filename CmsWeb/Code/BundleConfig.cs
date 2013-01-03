@@ -92,6 +92,7 @@ namespace CmsWeb
                 "~/scripts/meeting-ipad.js"
                 ));
 
+            bundles.AddOneScript("Bundle");
             bundles.AddOneScript("Bundles");
             bundles.AddOneScript("Calendar");
             bundles.AddOneScript("CheckIn");

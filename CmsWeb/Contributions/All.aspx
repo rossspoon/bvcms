@@ -117,7 +117,7 @@
                         Text='<%# Eval("ContributionDate", "{0:d}") %>' />
                 </td>
                 <td align="right">
-                    <asp:HyperLink ID="HyperLink1" NavigateUrl='<%# Eval("BundleId", "~/Contributions/Bundle.aspx?id={0}") %>'
+                    <asp:HyperLink ID="HyperLink1" NavigateUrl='<%# Eval("BundleId", "/Bundle/Index/{0}") %>'
                         Text='<%# Eval("ContributionAmount", "{0:n2}") %>' runat="server"></asp:HyperLink>
                 </td>
                 <td>

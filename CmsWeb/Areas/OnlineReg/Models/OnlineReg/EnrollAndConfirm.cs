@@ -272,7 +272,7 @@ AmountDue: {4:C}<br/>
                Header,
                amtpaid,
                TotalAmount(),
-               TotalAmount() - PayAmount(), // Amount Due
+               amtdue, // Amount Due
                p.PrepareSummaryText(ti),
                hasnotifyids? "" : @"<span style='color:red'>THERE ARE NO NOTIFY IDS ON THIS REGISTRATION!!</span><br/>
 <a href='http://www.bvcms.com/Doc/MessagesSettings'>see documentation</a><br/>"));

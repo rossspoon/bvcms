@@ -688,11 +688,13 @@ namespace CmsData
 			var dt = Util.Now.AddYears(-1);
 
 			var oids = GetLeaderOrgIds(Util.UserPeopleId);
+            // current members of one of my orgs I lead
 			var q = from p in People
 					where p.OrganizationMembers.Any(m => oids.Contains(m.OrganizationId))
 					select p;
 			var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgLeadersOnly);
 
+            // previous members of my org
 			q = from p in People
 				where p.EnrollmentTransactions.Any(et =>
 						et.TransactionDate > dt

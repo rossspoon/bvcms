@@ -16,6 +16,8 @@ namespace CmsWeb.Areas.Finance
 		{
 			AddRoute(context, "QuickBooks");
             AddRoute(context, "PostBundle");
+            AddRoute(context, "Bundle");
+            AddRoute(context, "Bundles");
             AddRoute(context, "FinanceReports");
             AddRoute(context, "Statements");
 			context.MapRoute(

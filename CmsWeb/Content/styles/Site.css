@@ -656,3 +656,6 @@ select {
 #nametable td {
     padding-right: 4px;
 }
+td.right {
+    text-align: right;
+}

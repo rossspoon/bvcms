@@ -21,6 +21,8 @@ namespace CmsData
 		
 		private string _StateName;
 		
+		private bool? _Hardwired;
+		
    		
     	
 	#endregion
@@ -35,6 +37,9 @@ namespace CmsData
 		
 		partial void OnStateNameChanging(string value);
 		partial void OnStateNameChanged();
+		
+		partial void OnHardwiredChanging(bool? value);
+		partial void OnHardwiredChanged();
 		
     #endregion
 		public StateLookup()
@@ -84,6 +89,28 @@ namespace CmsData
 					this._StateName = value;
 					this.SendPropertyChanged("StateName");
 					this.OnStateNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Hardwired", UpdateCheck=UpdateCheck.Never, Storage="_Hardwired", DbType="bit")]
+		public bool? Hardwired
+		{
+			get { return this._Hardwired; }
+
+			set
+			{
+				if (this._Hardwired != value)
+				{
+				
+                    this.OnHardwiredChanging(value);
+					this.SendPropertyChanging();
+					this._Hardwired = value;
+					this.SendPropertyChanged("Hardwired");
+					this.OnHardwiredChanged();
 				}
 
 			}

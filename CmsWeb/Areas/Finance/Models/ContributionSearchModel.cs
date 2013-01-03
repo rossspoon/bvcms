@@ -26,6 +26,7 @@ namespace CmsWeb.Models
 		public int? Status { get; set; }
 		public decimal? MinAmt { get; set; }
 		public decimal? MaxAmt { get; set; }
+	    public string taxDedNonTaxDedPledge { get; set; }
 		private int? _peopleId;
 		public int? PeopleId
 		{
@@ -46,6 +47,7 @@ namespace CmsWeb.Models
 			GetCount = Count;
 			Sort = "Date";
 			Direction = "desc";
+            taxDedNonTaxDedPledge = "TaxDed";
 		}
 
 		private IQueryable<Contribution> contributions;
@@ -71,7 +73,7 @@ namespace CmsWeb.Models
 						 ContributionType = c.ContributionType.Description,
 						 ContributionTypeId = c.ContributionTypeId,
 						 Fund = c.ContributionFund.FundName,
-						 Pledge = c.PledgeFlag,
+						 NonTaxDed = c.ContributionTypeId == ContributionTypeCode.NonTaxDed || (c.ContributionFund.NonTaxDeductible ?? false),
 						 StatusId = c.ContributionStatusId,
 						 Status = c.ContributionStatus.Description,
 						 Name = c.Person.Name,
@@ -96,6 +98,10 @@ namespace CmsWeb.Models
 
 			contributions = from c in DbUtil.Db.Contributions
 							where c.PeopleId == PeopleId || PeopleId == null
+                            where taxDedNonTaxDedPledge == "All" 
+                                || (taxDedNonTaxDedPledge == "TaxDed" && !ContributionTypeCode.NonTaxTypes.Contains(c.ContributionTypeId))
+                                || (taxDedNonTaxDedPledge == "NonTaxDed" && c.ContributionTypeId == ContributionTypeCode.NonTaxDed)
+                                || (taxDedNonTaxDedPledge == "Pledge" && c.ContributionTypeId == ContributionTypeCode.Pledge) 
 							select c;
 
 			if (MinAmt.HasValue)
@@ -163,11 +169,6 @@ namespace CmsWeb.Models
 							orderby c.ContributionTypeId, c.ContributionDate descending
 							select c;
 						break;
-					case "Pledge":
-						q = from c in q
-							orderby c.PledgeFlag, c.ContributionDate descending
-							select c;
-						break;
 					case "Status":
 						q = from c in q
 							orderby c.ContributionStatusId, c.ContributionDate descending
@@ -193,11 +194,6 @@ namespace CmsWeb.Models
 					case "Type":
 						q = from c in q
 							orderby c.ContributionTypeId descending, c.ContributionDate descending
-							select c;
-						break;
-					case "Pledge":
-						q = from c in q
-							orderby c.PledgeFlag descending, c.ContributionDate descending
 							select c;
 						break;
 					case "Status":
@@ -245,8 +241,8 @@ namespace CmsWeb.Models
         	var q = FetchContributions();
 			q = from c in q
 				where c.ContributionStatusId == ContributionStatusCode.Recorded
-                where !APIContribution.ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                where c.PledgeFlag == false
+                where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                where taxDedNonTaxDedPledge != "All" || c.ContributionTypeId != ContributionTypeCode.Pledge
                 select c;
             var t = q.Sum(c => c.ContributionAmount);
             if (t.HasValue)
@@ -282,7 +278,7 @@ namespace CmsWeb.Models
 			public decimal? ContributionAmount { get; set; }
 			public string Status { get; set; }
 			public int? StatusId { get; set; }
-			public bool Pledge { get; set; }
+			public bool NonTaxDed { get; set; }
 			public string Description { get; set; }
 			public string CheckNo { get; set; }
 		}

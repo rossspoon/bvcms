@@ -235,7 +235,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			    t = pf.CreateTransaction(DbUtil.Db);
 				m.TranId = t.Id;
 			}
-			ViewData["message"] = t.Message;
+            if (t != null)
+    			ViewData["message"] = t.Message;
 
 			if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
 			{

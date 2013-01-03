@@ -34,11 +34,12 @@ namespace CmsWeb.Models
 		public decimal? amt { get; set; }
 		public int? splitfrom { get; set; }
 		public int fund { get; set; }
-		public bool pledge { get; set; }
+		public string PLNT { get; set; }
 		public string notes { get; set; }
 		public string checkno { get; set; }
 		private BundleHeader _bundle;
 		public string FundName { get; set; }
+        public bool DefaultFundIsPledge { get; set; }
 		public BundleHeader bundle
 		{
 			get
@@ -46,19 +47,22 @@ namespace CmsWeb.Models
 				if (_bundle == null)
 				{
 					_bundle = DbUtil.Db.BundleHeaders.SingleOrDefault(bh => bh.BundleHeaderId == id);
-					if (_bundle != null && _bundle.FundId.HasValue)
-						FundName = _bundle.Fund.FundName;
+				    if (_bundle != null && _bundle.FundId.HasValue)
+				    {
+				        FundName = _bundle.Fund.FundName;
+				        DefaultFundIsPledge = _bundle.Fund.FundPledgeFlag;
+				    }
 				}
 				return _bundle;
 			}
 		}
 		public PostBundleModel()
 		{
-
 		}
 		public PostBundleModel(int id)
 		{
 			this.id = id;
+		    PLNT = "CN";
 		}
 
 		public IEnumerable<ContributionInfo> FetchContributions(int? cid = null)
@@ -86,7 +90,7 @@ namespace CmsWeb.Models
 						Zip = d.Contribution.Person.PrimaryZip,
 						Age = d.Contribution.Person.Age,
 						extra = d.Contribution.ExtraDatum.Data,
-						pledge = d.Contribution.PledgeFlag,
+                        PLNT = ContributionTypeCode.SpecialTypes.Contains(d.Contribution.ContributionTypeId) ? d.Contribution.ContributionType.Code : "",
 						memstatus = d.Contribution.Person.MemberStatus.Description,
 					};
 			var list = q.ToList();
@@ -224,10 +228,21 @@ namespace CmsWeb.Models
 					CreatedDate = DateTime.Now,
 				};
 				int type;
-				if (pledge == true)
-					type = ContributionTypeCode.Pledge;
-				else
-					type = ContributionTypeCode.CheckCash;
+                switch (PLNT)
+                {
+                    case "PL":
+    					type = ContributionTypeCode.Pledge;
+                        break;
+                    case "NT":
+    					type = ContributionTypeCode.NonTaxDed;
+                        break;
+                    case "GK":
+    					type = ContributionTypeCode.GiftInKind;
+                        break;
+                    default:
+    					type = ContributionTypeCode.CheckCash;
+                        break;
+                }
 
 				decimal? othersplitamt = null;
 				if (splitfrom > 0)
@@ -255,7 +270,6 @@ namespace CmsWeb.Models
 					ContributionDate = bundle.ContributionDate,
 					ContributionAmount = amt,
 					ContributionStatusId = 0,
-					PledgeFlag = pledge,
 					ContributionTypeId = type,
 					ContributionDesc = notes,
 					CheckNo = checkno
@@ -272,17 +286,27 @@ namespace CmsWeb.Models
 		public object UpdateContribution(PostBundleController ctl)
 		{
 			int type;
-			if (pledge == true)
-				type = ContributionTypeCode.Pledge;
-			else
-				type = ContributionTypeCode.CheckCash;
+            switch (PLNT)
+            {
+                case "PL":
+					type = ContributionTypeCode.Pledge;
+                    break;
+                case "NT":
+					type = ContributionTypeCode.NonTaxDed;
+                    break;
+                case "GK":
+					type = ContributionTypeCode.GiftInKind;
+                    break;
+                default:
+					type = ContributionTypeCode.CheckCash;
+                    break;
+            }
 			var c = DbUtil.Db.Contributions.SingleOrDefault(cc => cc.ContributionId == editid);
 			if (c == null)
 				return null;
 			c.FundId = fund;
 			c.PeopleId = pid.ToInt2();
 			c.ContributionAmount = amt;
-			c.PledgeFlag = pledge;
 			c.ContributionTypeId = type;
 			c.ContributionDesc = notes;
 			c.CheckNo = checkno;
@@ -970,7 +994,7 @@ namespace CmsWeb.Models
 			public string City { get; set; }
 			public string State { get; set; }
 			public string Zip { get; set; }
-			public bool pledge { get; set; }
+			public string PLNT { get; set; }
 			public string memstatus { get; set; }
 			public string CityStateZip
 			{

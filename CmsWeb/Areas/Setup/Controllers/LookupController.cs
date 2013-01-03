@@ -18,6 +18,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             public int Id { get; set; }
             public string Code { get; set; }
             public string Description { get; set; }
+            public bool? Hardwired { get; set; }
         }
         public ActionResult Index(string id)
         {
@@ -64,7 +65,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             }
             catch (SqlException ex)
             {
-                return Json(new { error = "Cannot delete OrgType because it is in use"});
+                return Json(new { error = "Cannot delete {0} because it is in use".Fmt(type)});
             }
         }
     }

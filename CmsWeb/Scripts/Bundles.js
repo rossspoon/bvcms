@@ -17,12 +17,14 @@
         $.post("/finance/bundles/results", q, function(ret) {
             $('#results').html(ret).ready(function() {
                 $('#results > table > tbody > tr:even').addClass('alt');
+                $(".tip").tooltip({ showBody: "|", showURL: false });
                 $.unblockUI();
             });
         });
         return false;
     };
     $('#results > table > tbody > tr:even').addClass('alt');
+    $(".tip").tooltip({ showBody: "|", showURL: false });
 });
 
 

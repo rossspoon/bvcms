@@ -1030,7 +1030,7 @@ namespace CmsData
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
             Expression<Func<Person, bool>> pred = p =>
-                           p.Contributions.Any(cc => cc.ContributionDate > dt && cc.ContributionAmount > 0 && !APIContribution.ReturnedReversedTypes.Contains(cc.ContributionTypeId));
+                           p.Contributions.Any(cc => cc.ContributionDate > dt && cc.ContributionAmount > 0 && !ContributionTypeCode.ReturnedReversedTypes.Contains(cc.ContributionTypeId));
             Expression expr = Expression.Invoke(pred, parm);
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);

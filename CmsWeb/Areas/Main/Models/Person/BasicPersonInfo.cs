@@ -191,11 +191,6 @@ namespace CmsWeb.Models.PersonPage
                         .Fmt(Util.UserName, First + " " + Last, PeopleId, psb.ToString(),fsb.ToString()));
                 }
         }
-        public static IEnumerable<SelectListItem> TitleCodes()
-        {
-            var cv = new CodeValueController();
-            return QueryModel.ConvertToSelect(cv.TitleCodes(), "Id");
-        }
         public static IEnumerable<SelectListItem> GenderCodes()
         {
             var cv = new CodeValueController();

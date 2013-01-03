@@ -232,6 +232,7 @@
     <Compile Include="Areas\Dialog\Models\SearchOrgsModel.cs" />
     <Compile Include="Areas\Dialog\Models\SearchDivisionsModel.cs" />
     <Compile Include="Areas\Dialog\Models\TransactionHistoryModel.cs" />
+    <Compile Include="Areas\Finance\Controllers\BundlesController.cs" />
     <Compile Include="Areas\Finance\Controllers\BundleController.cs" />
     <Compile Include="Areas\Finance\Models\BundlesModel.cs" />
     <Compile Include="Areas\Finance\Controllers\ContributionsController.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Areas\Finance\Controllers\VaultController.cs" />
     <Compile Include="Areas\Finance\FinanceAreaRegistration.cs" />
     <Compile Include="Areas\Finance\Models\ContributionSearchModel.cs" />
+    <Compile Include="Areas\Finance\Models\BundleModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
     <Compile Include="Areas\Main\Controllers\PeopleSearchController.cs" />
@@ -595,6 +597,7 @@
     <Content Include="images\RapidSSL_SEAL-90x50.gif" />
     <Content Include="Scripts\compose.js" />
     <Content Include="Scripts\Bundles.js" />
+    <Content Include="Scripts\Bundle.js" />
     <Content Include="Scripts\dropdown.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
@@ -781,20 +784,6 @@
     </Compile>
     <Compile Include="Contributions\All.aspx.designer.cs">
       <DependentUpon>All.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Bundle.aspx.cs">
-      <DependentUpon>Bundle.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Bundle.aspx.designer.cs">
-      <DependentUpon>Bundle.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\Bundles.aspx.cs">
-      <DependentUpon>Bundles.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\Bundles.aspx.designer.cs">
-      <DependentUpon>Bundles.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contributions\Deposit.aspx.cs">
       <DependentUpon>Deposit.aspx</DependentUpon>
@@ -1314,6 +1303,10 @@
     <Content Include="Areas\Finance\Views\Bundles\Results.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskHeader.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\AskInstruction.cshtml" />
+    <Content Include="Areas\Finance\Views\Bundle\Index.cshtml" />
+    <Content Include="Areas\Finance\Views\Bundle\Results.cshtml" />
+    <Content Include="Areas\Finance\Views\Bundle\Display.cshtml" />
+    <Content Include="Areas\Finance\Views\Bundle\Edit.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -1969,6 +1962,8 @@
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Shared\DatePickerDefaults.cshtml" />
     <Content Include="Views\Shared\MainMenu.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -2073,8 +2068,6 @@
     <Content Include="images\loading.gif" />
     <Content Include="images\navigation-shadow.png" />
     <Content Include="Contributions\All.aspx" />
-    <Content Include="Contributions\Bundle.aspx" />
-    <Content Include="Contributions\Bundles.aspx" />
     <Content Include="Contributions\Deposit.aspx" />
     <Content Include="Contributions\GLExtract.aspx" />
     <Content Include="Contributions\Individual.aspx" />

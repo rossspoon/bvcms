@@ -44,13 +44,16 @@
 { 
     <tr>
         <td>@item.RoleId</td>
-        <td>
-            <span id='RoleName.@item.RoleName' 
-                class='clickEdit'>@item.RoleName</span>
-        </td>
-        <td>
-            <a id='d@(item.RoleId)' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
-        </td>
+    @if (item.Hardwired == true)
+    {
+        <td> @item.RoleName </td>
+        <td> <i>hardwired</i> </td>
+    }
+    else
+    {
+        <td> <span id='RoleName.@item.RoleName' class='clickEdit'>@item.RoleName</span> </td>
+        <td> <a id='d@(item.RoleId)' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a> </td>
+    }
     </tr>
 }
 </table>

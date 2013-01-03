@@ -299,6 +299,7 @@
     <Compile Include="APIMeeting.cs" />
     <Compile Include="APIPerson.cs" />
     <Compile Include="APIContribution.cs" />
+    <Compile Include="BundleHeader.cs" />
     <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\BackgroundCheck.cs" />
     <Compile Include="Generated\BackgroundCheckMVRCode.cs" />

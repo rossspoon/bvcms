@@ -137,7 +137,7 @@ namespace CmsData
             var q = from c in Db.Contributions
                     where c.ContributionDate >= dt1
                     where days2 == 0 || c.ContributionDate <= dt2
-                    where c.PledgeFlag == false
+                    where c.ContributionTypeId != ContributionTypeCode.Pledge
                     where fundids.Length == 0 || fundids.Contains(c.FundId)
                     where exfundids.Length == 0 || !exfundids.Contains(c.FundId)
                     where !typs.Contains(c.ContributionTypeId)
@@ -162,7 +162,7 @@ namespace CmsData
             var q = from c in Db.Contributions
                     where c.ContributionDate >= dt1
                     where days2 == 0 || c.ContributionDate <= dt2
-                    where c.PledgeFlag == false
+                    where c.ContributionTypeId != ContributionTypeCode.Pledge
                     where c.ContributionAmount > 0
                     where fundids.Length == 0 || fundids.Contains(c.FundId)
                     where exfundids.Length == 0 || !exfundids.Contains(c.FundId)
@@ -186,7 +186,7 @@ namespace CmsData
             var typs = new int[] { 6, 7 };
             var q = from c in Db.Contributions
                     where c.ContributionDate >= dt
-                    where c.PledgeFlag == false
+                    where c.ContributionTypeId != ContributionTypeCode.Pledge
                     where c.ContributionAmount > 0
                     where fundids.Length == 0 || fundids.Contains(c.FundId)
                     where exfundids.Length == 0 || !exfundids.Contains(c.FundId)

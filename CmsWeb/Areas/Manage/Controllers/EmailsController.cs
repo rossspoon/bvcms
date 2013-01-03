@@ -74,6 +74,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 			var m = new EmailModel { id = id };
             if (!m.CanDelete())
 				return Redirect("/");
+            DbUtil.Db.EmailResponses.DeleteAllOnSubmit(email.EmailResponses);
 			DbUtil.Db.EmailQueueTos.DeleteAllOnSubmit(email.EmailQueueTos);
 			DbUtil.Db.EmailQueues.DeleteOnSubmit(email);
 			DbUtil.Db.SubmitChanges();
