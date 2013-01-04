@@ -9,6 +9,9 @@
         <input type="hidden" name="iPeopleID" value="@Model.PeopleID" />
         <table>
             <tr>
+                <th colspan="2"><div style="padding-bottom:5px;"><b><u>Person Information</u></b></div></th>
+            </tr>
+            <tr>
                 <td align="right" style="background-color:#EFF3FB; font-weight:bold;">First:</td>
                 <td>@Model.Person.FirstName</td>
             </tr>
@@ -27,19 +30,19 @@
             <tr><td>&nbsp;</td></tr>
             <tr>
                 <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Address:</td>
-                <td>@Model.Person.AddressLineOne</td>
+                <td>@Model.Person.PrimaryAddress</td>
             </tr>
             <tr>
                 <td align="right" style="background-color:#EFF3FB; font-weight:bold;">City:</td>
-                <td>@Model.Person.CityName</td>
+                <td>@Model.Person.PrimaryCity</td>
             </tr>
             <tr>
                 <td align="right" style="background-color:#EFF3FB; font-weight:bold;">State:</td>
-                <td>@Model.Person.StateCode</td>
+                <td>@Model.Person.PrimaryState</td>
             </tr>
             <tr>
                 <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Zipcode:</td>
-                <td>@Model.Person.ZipCode</td>
+                <td>@Model.Person.PrimaryZip</td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
@@ -53,6 +56,18 @@
             <tr>
                 <td align="right" style="background-color:#EFF3FB; font-weight:bold;">SSN:</td>
                 <td><input name="sSSN" size="12" /></td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <th colspan="2"><div style="padding-bottom:5px;"><b><u>Protect My Ministry Login</u></b></div></th>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">User:</td>
+                <td><input name="sUser" size="12" /></td>
+            </tr>
+            <tr>
+                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Password:</td>
+                <td><input type="password" name="sPassword" size="12" /></td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
