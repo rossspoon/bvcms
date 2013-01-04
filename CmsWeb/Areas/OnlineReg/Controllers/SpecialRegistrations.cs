@@ -297,6 +297,17 @@ The following Committments:<br/>
 				mg.StartWhen = m.StartWhen;
 				mg.StopWhen = m.StopWhen;
 				mg.NextDate = mg.FindNextDate(DateTime.Today);
+                
+    			var pi = m.person.PaymentInfo();
+			    pi.FirstName = m.firstname.Truncate(50);
+			    pi.MiddleInitial = m.middleinitial.Truncate(10);
+			    pi.LastName = m.lastname.Truncate(50);
+			    pi.Suffix = m.suffix.Truncate(10);
+			    pi.Address = m.address.Truncate(50);
+			    pi.City = m.city.Truncate(50);
+			    pi.State = m.state.Truncate(10);
+			    pi.Zip = m.zip.Truncate(15);
+			    pi.Phone = m.phone.Truncate(25);
 
 				var q = from ra in DbUtil.Db.RecurringAmounts
 						where ra.PeopleId == m.pid

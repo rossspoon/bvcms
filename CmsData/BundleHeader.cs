@@ -17,8 +17,12 @@ namespace CmsData
         {
             ContributionDateChanged = true;
         }
-
         public bool ContributionDateChanged { get; private set; }
 
+        partial void OnBundleStatusIdChanged()
+        {
+            BundleStatusIdChanged = true;
+        }
+        public bool BundleStatusIdChanged { get; private set; }
     }
 }

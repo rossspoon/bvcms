@@ -36,6 +36,15 @@ namespace CmsWeb.Models
 		public bool testing { get; set; }
 		public decimal total { get; set; }
 		public string HeadingLabel { get; set; }
+	    public string firstname { get; set; }
+	    public string middleinitial { get; set; }
+	    public string lastname { get; set; }
+	    public string suffix { get; set; }
+	    public string address { get; set; }
+	    public string city { get; set; }
+	    public string state { get; set; }
+	    public string zip { get; set; }
+	    public string phone { get; set; }
 
 		private Dictionary<int, decimal?> _FundItem = new Dictionary<int, decimal?>();
 
@@ -139,7 +148,19 @@ namespace CmsWeb.Models
 				if (f != null && evamt > 0)
 					FundItem.Add(f.Value.ToInt(), evamt);
 			}
-			total = FundItem.Sum(ff => ff.Value) ?? 0;
+            if (pi == null)
+                pi = new PaymentInfo();
+	        firstname = pi.FirstName ?? person.FirstName;
+	        middleinitial = (pi.MiddleInitial ?? person.MiddleName).Truncate(1);
+	        lastname = pi.LastName ?? person.LastName;
+	        suffix = pi.Suffix ?? person.SuffixCode;
+	        address = pi.Address ?? person.PrimaryAddress;
+	        city = pi.City ?? person.PrimaryCity;
+	        state = pi.State ?? person.PrimaryState;
+	        zip = pi.Zip ?? person.PrimaryZip;
+	        phone = pi.Phone ?? person.HomePhone ?? person.CellPhone;
+
+		    total = FundItem.Sum(ff => ff.Value) ?? 0;
 		}
 
 		public void ValidateModel(ModelStateDictionary ModelState)
@@ -172,6 +193,21 @@ namespace CmsWeb.Models
 				ModelState.AddModelError("StartWhen", "StartDate must occur after today");
 			else if (StopWhen.HasValue && StopWhen <= StartWhen)
 				ModelState.AddModelError("StopWhen", "StopDate must occur after StartDate");
+
+            if(!firstname.HasValue())
+				ModelState.AddModelError("firstname", "needs name");
+            if(!lastname.HasValue())
+				ModelState.AddModelError("firstname", "needs name");
+            if(!address.HasValue())
+				ModelState.AddModelError("address", "Needs address");
+            if(!city.HasValue())
+				ModelState.AddModelError("city", "Needs city");
+            if(!state.HasValue())
+				ModelState.AddModelError("state", "Needs state");
+            if(!zip.HasValue())
+				ModelState.AddModelError("zip", "Needs zip");
+            if(!phone.HasValue())
+				ModelState.AddModelError("phone", "Needs phone");
 		}
 
 

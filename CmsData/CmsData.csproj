@@ -305,6 +305,7 @@
     <Compile Include="Generated\BackgroundCheckMVRCode.cs" />
     <Compile Include="Generated\ContentKeyWord.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
+    <Compile Include="Generated\FamilyRelationship.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
     <Compile Include="Generated\Functions\RecentAttendance.cs" />
     <Compile Include="Generated\SMSItem.cs" />
@@ -510,7 +511,6 @@
     <Compile Include="Generated\EntryPoint.cs" />
     <Compile Include="Generated\EnvelopeOption.cs" />
     <Compile Include="Generated\Functions\TagsForUser.cs" />
-    <Compile Include="Generated\GenderClass.cs" />
     <Compile Include="Generated\InterestPoint.cs" />
     <Compile Include="Generated\MeetingType.cs" />
     <Compile Include="Generated\MemberLetterStatus.cs" />
@@ -561,7 +561,6 @@
     <Compile Include="Generated\Family.cs" />
     <Compile Include="Generated\FamilyMemberType.cs" />
     <Compile Include="Generated\FamilyPosition.cs" />
-    <Compile Include="Generated\FamilyRelationship.cs" />
     <Compile Include="Generated\Gender.cs" />
     <Compile Include="Generated\Interest.cs" />
     <Compile Include="Generated\MaritalStatus.cs" />
@@ -569,12 +568,10 @@
     <Compile Include="Generated\MemberStatus.cs" />
     <Compile Include="Generated\MemberType.cs" />
     <Compile Include="Generated\Ministry.cs" />
-    <Compile Include="Generated\NameSuffix.cs" />
     <Compile Include="Generated\NameTitle.cs" />
     <Compile Include="Generated\Organization.cs" />
     <Compile Include="Generated\OrganizationMember.cs" />
     <Compile Include="Generated\Person.cs" />
-    <Compile Include="Generated\PhonePreference.cs" />
     <Compile Include="Generated\PostalLookup.cs" />
     <Compile Include="Generated\Promotion.cs" />
     <Compile Include="Generated\QueryBuilderClause.cs" />

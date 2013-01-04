@@ -127,7 +127,7 @@ namespace CmsData.API
             if (!useMinAmt)
                 MinAmt = 0;
             var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok)
-                      let option = (p.ContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.ContributionOptionsId
+                      let option = (p.ContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 && (p.SpouseContributionOptionsId ?? 0) != 1 ? 2 : 1) : p.ContributionOptionsId
                       let option2 = (p.SpouseContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.SpouseContributionOptionsId
                       let name = (option == 1 ?
                                  (p.Title != null ? p.Title + " " + p.Name : p.Name)
@@ -143,8 +143,8 @@ namespace CmsData.API
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
                       where option != 9 || noaddressok
                       where startswith == null || p.LastName.StartsWith(startswith)
-#if DEBUG2
-					  where p.PeopleId == 6080
+#if DEBUG
+					  where p.FamilyId == 104235
 #endif
                       where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age

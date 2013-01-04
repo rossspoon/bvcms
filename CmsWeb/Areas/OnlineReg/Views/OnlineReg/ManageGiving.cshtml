@@ -19,24 +19,45 @@
     });
 </script>
 }
-<style>
-div.section label 
+@section head
 {
-    display: inline-block;
-    font-weight: bold;
-    line-height: 1.8;
-    min-height: 30px;
+    <style>
+        #namefields th {
+            color: #AAA;
+            text-align: left;
+            font-size: 70%;
+        }
+        div.section label
+        {
+            display: inline-block;
+            font-weight: bold;
+            line-height: 1.8;
+            min-height: 30px;
+        }
+        div.paymentinfo p label
+        {
+            width: 10em;
+            font-weight: normal;
+        }
+        div.accountinfo p label
+        {
+            width: 7em;
+            font-weight: normal;
+            min-height: 0;
+            line-height: 1.1;
+        }
+        div.section div, div.section table
+        {
+            margin-left: 1em;
+        }
+        #namefields {
+            border-collapse: collapse;
+            display: inline-table;
+            margin-left: 0; 
+            margin-bottom: .5em;
+        }
+    </style>
 }
-div.paymentinfo p label
-{
-    width: 10em;
-    font-weight: normal;
-}
-div.section div, div.section table
-{
-    margin-left: 1em;
-}
-</style>
 <div class="regform">
     <h2>@Model.Organization.OrganizationName</h2>
     <div>@Html.Raw(Model.Instructions)</div>
@@ -98,48 +119,79 @@ div.section div, div.section table
             <div class="section">
                 <label>Payment Information</label>
                 <div>
-@if (!Model.NoCreditCardsAllowed && !Model.NoEChecksAllowed)
-{
-                    <div><br />
-                        @Html.RadioButton("Type", "C")Debit/Credit Card
-                        @Html.RadioButton("Type", "B")Bank Account
-                        @Html.Hidden("allowcc", "true")
-                        <div>@Html.ValidationMessage("Type")</div><br>
+                    @if (!Model.NoCreditCardsAllowed && !Model.NoEChecksAllowed)
+                    {
+                        <div><br />
+                            @Html.RadioButton("Type", "C")Debit/Credit Card
+                            @Html.RadioButton("Type", "B")Bank Account
+                            @Html.Hidden("allowcc", "true")
+                            <div>@Html.ValidationMessage("Type")</div><br>
+                        </div>
+                    }
+                    else if (Model.NoCreditCardsAllowed)
+                    {
+                        @Html.Hidden("Type", "B");
+                    }
+                    else
+                    {
+                        @Html.Hidden("Type", "C");
+                    }
+                    @if (Model.NoCreditCardsAllowed == false)
+                    {
+                        <div class="Card paymentinfo">
+                            <p><label>Credit Card Number</label>
+                                @Html.TextBox("Cardnumber", null, Model.Autocomplete)
+                                <div>@Html.ValidationMessage("Cardnumber")</div></p>
+                            <p><label>Expires</label>
+                                @Html.TextBox("Expires", null, new { @class = "short" }) mmyy
+                                <div>@Html.ValidationMessage("Expires")</div></p>
+                            <p><label>Card Code</label>
+                                @Html.TextBox("Cardcode", null, Model.Autocomplete)
+                                <div>@Html.ValidationMessage("Cardcode")</div></p>
+                        </div>
+                    }
+                    @if (Model.NoEChecksAllowed == false)
+                    {
+                        <div class="Bank paymentinfo">
+                            <p><label>Bank Routing Number</label>
+                                @Html.TextBox("Routing", Model.Routing, Model.Autocomplete)
+                                <div>@Html.ValidationMessage("Routing")</div></p>
+                            <p><label>Checking Account Number</label>
+                                @Html.TextBox("Account", Model.Account, Model.Autocomplete)
+                                <div>@Html.ValidationMessage("Account")</div></p>
+                        </div>
+                    }
+                </div>
+                <div class-="section">
+                    <label>Name/Billing Address on Account</label>
+                    <div class="accountinfo">
+                        <p><label>Name</label>
+                        <table id="namefields">
+                            <tr><th>First</th><th>MI</th><th>Last</th><th>Suffix</th></tr>
+                            <tr>
+                                <td>@Html.TextBox("firstname", Model.firstname, new { @class = "short"})</td>
+                                <td>@Html.TextBox("middleinitial", Model.middleinitial, new { @class = "shorter" })</td>
+                                <td>@Html.TextBox("lastname", Model.lastname, new { @class = "short"})</td>
+                                <td>@Html.TextBox("suffix", Model.suffix, new { @class = "shorter" })</td>
+                            </tr>
+                        </table></p>
+
+                        <p><label>Address</label>
+                            @Html.TextBox("address")
+                            <div>@Html.ValidationMessage("address")</div></p>
+                        <p><label>City</label>
+                            @Html.TextBox("city")
+                            <div>@Html.ValidationMessage("city")</div></p>
+                        <p><label>State</label>
+                            @Html.TextBox("state")
+                            <div>@Html.ValidationMessage("state")</div></p>
+                        <p><label>Zip</label>
+                            @Html.TextBox("zip")
+                            <div>@Html.ValidationMessage("zip")</div></p>
+                        <p><label>Phone</label>
+                            @Html.TextBox("phone")
+                            <div>@Html.ValidationMessage("phone")</div></p>
                     </div>
-}
-else if (Model.NoCreditCardsAllowed)
-{
-                    @Html.Hidden("Type", "B");
-}
-else
-{
-                    @Html.Hidden("Type", "C");
-}
-@if (Model.NoCreditCardsAllowed == false)
-{
-                    <div class="Card paymentinfo">
-                        <p><label>Credit Card Number</label>
-                        @Html.TextBox("Cardnumber", null, Model.Autocomplete)
-                        <div>@Html.ValidationMessage("Cardnumber")</div></p>
-                        <p><label>Expires</label>
-                        @Html.TextBox("Expires", null, new { @class = "short" }) mmyy
-                        <div>@Html.ValidationMessage("Expires")</div></p>
-                        <p><label>Card Code</label>
-                        @Html.TextBox("Cardcode", null, Model.Autocomplete)
-                        <div>@Html.ValidationMessage("Cardcode")</div></p>
-                    </div>
-}
-@if (Model.NoEChecksAllowed == false)
-{
-                    <div class="Bank paymentinfo">
-                        <p><label>Bank Routing Number</label>
-                        @Html.TextBox("Routing", Model.Routing, Model.Autocomplete)
-                        <div>@Html.ValidationMessage("Routing")</div></p>
-                        <p><label>Checking Account Number</label>
-                        @Html.TextBox("Account", Model.Account, Model.Autocomplete)
-                        <div>@Html.ValidationMessage("Account")</div></p>
-                    </div>
-}
                 </div>
                 <div>
                     <input id="submitit" type="submit" class="submitbutton" value='Submit' />

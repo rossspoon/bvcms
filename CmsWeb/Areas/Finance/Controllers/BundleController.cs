@@ -47,6 +47,12 @@ namespace CmsWeb.Areas.Finance.Controllers
                 foreach (var c in q)
                     c.ContributionDate = m.Bundle.ContributionDate;
             }
+            var postingdt = Util.Now;
+            if (m.Bundle.BundleStatusIdChanged && m.Bundle.BundleStatusId == BundleStatusCode.Closed)
+            {
+                foreach (var d in m.Bundle.BundleDetails)
+                    d.Contribution.PostingDate = postingdt;
+            }
             DbUtil.Db.SubmitChanges();
             m.BundleId = id; // refresh values
             return View("Display", m);

@@ -57,14 +57,11 @@ namespace CmsWeb.Controllers
             qb.CleanSlate(DbUtil.Db);
             return Redirect("/QueryBuilder/Main");
         }
-		public ActionResult Test(string id)
+		public ActionResult Test()
 		{
-			var q = from o in DbUtil.Db.Organizations
-                    where (id == null && o.OrganizationExtras.All(ee => ee.Field != "tested"))
-                        || o.OrganizationExtras.Any(ee => ee.Field == "tested" && ee.Data == id)
-					where o.RegSetting.Length > 0
-					select o;
-            return View(q);
+            string test = null;
+            var x = test.Replace('3','4');
+		    return Content("done");
 		}
         public ActionResult RecordTest(int id, string v)
         {

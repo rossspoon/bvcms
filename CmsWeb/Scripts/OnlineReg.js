@@ -1,7 +1,7 @@
 ﻿$(function () {
     $.dpoptions = {
         yearRange: 'c-99:c+0',
-        onSelect: function(dateText, inst) {
+        onSelect: function (dateText, inst) {
             var f = $(this).closest('form');
             $("#age", f).text($.dodate(dateText));
         }
@@ -69,10 +69,14 @@
         var v = $("input[name=Type]:checked").val();
         $("div.Card").hide();
         $("div.Bank").hide();
-        if (v === 'C')
+        $("div.accountinfo").hide();
+        if (v === 'C') {
             $("div.Card").show();
-        else if (v === 'B')
+            $("div.accountinfo").show();
+        } else if (v === 'B') {
             $("div.Bank").show();
+            $("div.accountinfo").show();
+        }
     };
     $.InstructionsShow = function () {
         $("div.instructions").hide();
@@ -83,9 +87,9 @@
             $("div.instructions.find").show();
         }
         else if ($("#otheredit").attr("id"))
-            $("div.instructions.options").show(); 
+            $("div.instructions.options").show();
         else if ($("#specialedit").attr("id"))
-            $("div.instructions.special").show(); 
+            $("div.instructions.special").show();
         else if ($("#username").attr("id")) {
             $("#username").focus();
             $("div.instructions.login").show();
