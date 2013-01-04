@@ -265,6 +265,7 @@
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\VisitsAbsentsResult2.cs" />
     <Compile Include="Areas\Main\Models\Report\RallyRollsheetResult.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
     <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />

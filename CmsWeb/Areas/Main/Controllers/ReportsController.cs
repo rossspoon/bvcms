@@ -225,6 +225,12 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no meetingid");
             return new VisitsAbsentsResult(id);
         }
+        public ActionResult VisitsAbsents2(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no meetingid");
+            return new VisitsAbsentsResult2(id);
+        }
         public ActionResult PastAttendee(int? id)
         {
             if (!id.HasValue)
