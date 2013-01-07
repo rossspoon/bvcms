@@ -143,7 +143,7 @@ namespace CmsData.API
                            + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
                       where option != 9 || noaddressok
                       where startswith == null || p.LastName.StartsWith(startswith)
-#if DEBUG
+#if DEBUG2
 					  where p.FamilyId == 104235
 #endif
                       where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)

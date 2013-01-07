@@ -259,7 +259,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             var ip = p.InterestPoint != null ? p.InterestPoint.Description : "";
             if (ep.HasValue() || ip.HasValue())
                 list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, "Entry, Interest: {0}, {1}".Fmt(ep, ip), font));
-            foreach (var pc in cq)
+            foreach (var pc in cq.Take(10))
             {
                 var cname = "unknown";
                 if (pc.madeby != null)
@@ -272,6 +272,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                         pc.contact.ContactDate, ctype, cname, comments);
                 list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, s, font));
             }
+            if (cq.Count() > 10)
+                list.Add(new ListItem(1.2f*font.Size, "(showing most recent 10 of {0})".Fmt(cq.Count()), font));
             return list;
         }
         class PageEvent : PdfPageEventHelper

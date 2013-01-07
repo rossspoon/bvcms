@@ -1,25 +1,56 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html>
 <head>
-    <title>Error</title>
+    <!-- meta -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="en-US">
+    <meta name="viewport" content="maximum-scale=1.0,width=device-width,initial-scale=1.0">
+    <!-- title -->
+    <title>No Access</title>
+    <!-- css -->
     <style type="text/css">
-        body
-        {
-            font-family: Arial;
+        * {
+            margin: 0;
+            padding: 0;
         }
-        H1
-        {
-            color: Red;
+
+        body {
+            background: #F0F0F0;
+            font: 14px/18px Arial, "Helvetica Neue", sans-serif;
+            text-align: center;
+        }
+
+        #surface {
+            margin: 40px auto;
+            position: relative;
+            width: 480px;
+        }
+
+        h1 {
+            color: #222;
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 26px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        @media all and (max-width: 480px) {
+            #surface {
+                margin: 40px 10px;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>
-        Access Denied</h1>
-    <div>
-        You are attempting to access the church management system but do not have privileges.<br />
-        An email has been sent to inform the administrator.
+    <div id="surface">
+        <h1>No Access</h1>
+        <p>Sorry, this page is not available for your account.</p>
+        <p><a href="/">Home Page</a></p>
     </div>
-    <div><a href="/">Home Page</a></div>
 </body>
 </html>

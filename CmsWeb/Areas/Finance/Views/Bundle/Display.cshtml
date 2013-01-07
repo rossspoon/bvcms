@@ -49,7 +49,7 @@
         <th colspan="2">
             @if (Model.IsAdmin || Model.IsOpen)
             {
-                <a href="/Bundle/Delete/@Model.BundleId" class="bt displayedit red">Delete</a>
+                <a id="delete" href="/Bundle/Delete/@Model.BundleId" class="bt red">Delete</a>
             }
             @if(Model.CanEdit)
             {

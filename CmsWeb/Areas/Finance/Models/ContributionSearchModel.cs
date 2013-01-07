@@ -113,12 +113,17 @@ namespace CmsWeb.Models
 								where c.ContributionAmount <= MaxAmt
 								select c;
 
-			if (Name.HasValue())
-				contributions = from c in contributions
-								where c.Person.Name.Contains(Name)
-								select c;
+		    var i = Name.ToInt();
+			if (i > 0)
+			    contributions = from c in contributions
+			                    where c.Person.PeopleId == i
+			                    select c;
+			else if (Name.HasValue())
+			    contributions = from c in contributions
+			                    where c.Person.Name.Contains(Name) 
+			                    select c;
 
-			if (Comments.HasValue())
+		    if (Comments.HasValue())
 				contributions = from c in contributions
 								where c.ContributionDesc.Contains(Comments)
 									|| c.CheckNo == Comments

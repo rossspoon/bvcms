@@ -1,19 +1,19 @@
 ﻿$(function () {
-    $('#delete').click(function (ev) {
+    $('#delete').live("click", function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
             $.blockUI({ message: "deleting bundle" });
             $.post(href, null, function (ret) {
-                if (ret != "ok") {
+                if (!ret.startsWith("/")) {
                     $.blockUI({ message: ret });
                     $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
                 }
                 else {
-                    $.blockUI({ message: "org deleted" });
+                    $.blockUI({ message: "Bundle Deleted, click screen to return to bundles" });
                     $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
                         $.unblockUI();
-                        window.location = "/Finance/Bundles";
+                        window.location = ret;
                     });
                 }
             });

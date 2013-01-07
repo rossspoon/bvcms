@@ -82,8 +82,9 @@ namespace CmsWeb.Areas.Main.Models.Report
                                        where !m.DeceasedDate.HasValue
                                        select new
                                        {
-                                           order = g.Any(p => p.PeopleId == m.PeopleId) ? 1 :
-                                                 m.PositionInFamilyId,
+                                           order = m.PositionInFamilyId * 1000 + (m.PositionInFamilyId == 10 ? m.GenderId : 1000 - (m.Age ?? 0)),
+//                                           order = g.Any(p => p.PeopleId == m.PeopleId) ? 1 :
+//                                                 m.PositionInFamilyId,
                                            person = m
                                        }
                          };

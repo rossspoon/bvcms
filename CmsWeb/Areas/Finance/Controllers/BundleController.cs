@@ -73,7 +73,7 @@ namespace CmsWeb.Areas.Finance.Controllers
             DbUtil.Db.BundleDetails.DeleteAllOnSubmit(m.Bundle.BundleDetails);
             DbUtil.Db.BundleHeaders.DeleteOnSubmit(m.Bundle);
             DbUtil.Db.SubmitChanges();
-            return Json(new {message = "Bundle Deleted, click screen to return to bundles", location = "/Bundles"});
+            return Content("/Bundles");
         }
     }
 }

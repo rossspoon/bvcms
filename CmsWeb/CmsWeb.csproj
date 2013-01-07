@@ -31,7 +31,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NOEMAIL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -50,6 +50,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PublishDatabases>false</PublishDatabases>
     <PackageAsSingleFile>false</PackageAsSingleFile>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'bvcms|AnyCPU'">
     <OutputPath>bin\</OutputPath>
@@ -138,6 +139,9 @@
     <Reference Include="itextsharp, Version=5.3.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\iTextSharp.5.3.3\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker">
+      <HintPath>..\packages\itextsharp.xmlworker.1.2.0\lib\itextsharp.xmlworker.dll</HintPath>
     </Reference>
     <Reference Include="LumenWorks.Framework.IO, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -248,6 +252,7 @@
     <Compile Include="Areas\Finance\Models\BundleModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
+    <Compile Include="Areas\Main\Controllers\MemberDirectoryController.cs" />
     <Compile Include="Areas\Main\Controllers\PeopleSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
     <Compile Include="Areas\Main\Controllers\VolunteeringController.cs" />
@@ -262,6 +267,7 @@
     <Compile Include="Areas\Main\Models\Directories\FamilyDir.cs" />
     <Compile Include="Areas\Main\Models\Directories\FamilyRow.cs" />
     <Compile Include="Areas\Main\Models\Email\EmailTemplatesModel.cs" />
+    <Compile Include="Areas\Main\Models\Other\MemberDirectoryModel.cs" />
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
@@ -494,6 +500,7 @@
     <Content Include="Content\styles\images\forward_disabled.png" />
     <Content Include="Content\styles\images\forward_enabled.png" />
     <Content Include="Content\styles\images\forward_enabled_hover.png" />
+    <None Include="Areas\Main\Views\MemberDirectory\NoAccess.cshtml" />
     <Content Include="images\group.png" />
     <Content Include="Content\styles\images\icons-18-black.png" />
     <Content Include="Content\styles\images\icons-18-white.png" />
@@ -1313,6 +1320,8 @@
     <Content Include="Areas\Finance\Views\Bundle\Results.cshtml" />
     <Content Include="Areas\Finance\Views\Bundle\Display.cshtml" />
     <Content Include="Areas\Finance\Views\Bundle\Edit.cshtml" />
+    <Content Include="Areas\Main\Views\MemberDirectory\Index.cshtml" />
+    <Content Include="Areas\Main\Views\MemberDirectory\Results.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -1914,6 +1923,7 @@
     </Content>
     <Content Include="Areas\Manage\Views\Batch\ExtraValuesFromPeopleIds.cshtml">
     </Content>
+    <None Include="Properties\PublishProfiles\bvcms2.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings1.Designer.cs</LastGenOutput>

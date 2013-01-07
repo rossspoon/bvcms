@@ -145,6 +145,8 @@ namespace CmsData
 		
 		private bool? _NoAutoAbsents;
 		
+		private bool? _PublishDirectory;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -381,6 +383,9 @@ namespace CmsData
 		
 		partial void OnNoAutoAbsentsChanging(bool? value);
 		partial void OnNoAutoAbsentsChanged();
+		
+		partial void OnPublishDirectoryChanging(bool? value);
+		partial void OnPublishDirectoryChanged();
 		
     #endregion
 		public Organization()
@@ -1851,6 +1856,28 @@ namespace CmsData
 					this._NoAutoAbsents = value;
 					this.SendPropertyChanged("NoAutoAbsents");
 					this.OnNoAutoAbsentsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PublishDirectory", UpdateCheck=UpdateCheck.Never, Storage="_PublishDirectory", DbType="bit")]
+		public bool? PublishDirectory
+		{
+			get { return this._PublishDirectory; }
+
+			set
+			{
+				if (this._PublishDirectory != value)
+				{
+				
+                    this.OnPublishDirectoryChanging(value);
+					this.SendPropertyChanging();
+					this._PublishDirectory = value;
+					this.SendPropertyChanged("PublishDirectory");
+					this.OnPublishDirectoryChanged();
 				}
 
 			}

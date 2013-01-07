@@ -179,6 +179,7 @@ a, a:visited, a:focus {
     margin-bottom: 5px;
     margin-top: 5px;
     background-color: #F8F8F8;
+    display: table;
 }
 
     .roundbox.pad10 {

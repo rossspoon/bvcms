@@ -44,7 +44,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			}
 			return View(m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Results(ContactSearchModel m)
 		{
 			SaveToSession(m);
@@ -64,7 +64,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				StatusId = m.Status
 			};
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ContentResult Edit(string id, string value)
 		{
 			var a = id.Split('-');

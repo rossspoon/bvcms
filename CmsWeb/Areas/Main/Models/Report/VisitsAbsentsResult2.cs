@@ -224,8 +224,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             var q = from a in DbUtil.Db.Attends
                     where a.PeopleId == pid
                     where a.AttendanceFlag == true
-                    orderby a.MeetingDate.Date descending
                     group a by a.MeetingDate.Date into g
+                    orderby g.Key descending
                     select g.Key;
             var list = q.ToList();
 
@@ -289,7 +289,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                        }).Single();
             if (epip.ep.HasValue() || epip.ip.HasValue())
                 list.Add(new ListItem(1.2f * font.Size, "Entry, Interest: {0}, {1}".Fmt(epip.ep, epip.ip), font));
-            foreach (var pc in cq)
+            foreach (var pc in cq.Take(10))
             {
                 var cname = "unknown";
                 if (pc.madeby != null)
@@ -301,7 +301,10 @@ namespace CmsWeb.Areas.Main.Models.Report
                 string s = "{0:d}: {1} by {2}\n{3}".Fmt(
                         pc.contact.ContactDate, ctype, cname, comments);
                 list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, s, font));
-            }
+            } 
+            if (cq.Count() > 10)
+                list.Add(new ListItem(1.2f * font.Size, "(showing most recent 10 of {0})".Fmt(cq.Count()), font));
+
             return list;
         }
         public IEnumerable<AttendInfo> VisitsAbsents(int mtgid)
