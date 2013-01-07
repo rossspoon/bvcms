@@ -14,7 +14,7 @@
     <form id="submitCheck" action="/Volunteering/SubmitCheck/@Model.Id" method="post">
         <input type="hidden" name="iPeopleID" value="@Model.PeopleID" />
         <table>
-             <tr>
+            <tr>
                 <th colspan="2"><div style="padding-bottom:5px;"><b><u>Person Information</u></b></div></th>
             </tr>
             <tr>
@@ -62,14 +62,6 @@
             <tr>
                 <td align="right" style="background-color:#EFF3FB; font-weight:bold;">SSN:</td>
                 <td><input name="sSSN" size="12" /></td>
-            </tr>
-            <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">License Number:</td>
-                <td><input name="sDLN" size="15" /></td>
-            </tr>
-            <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">State Code:</td>
-                <td>@Html.DropDownList( "iStateID", new SelectList( s, "ID", "Description" ) )</td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>

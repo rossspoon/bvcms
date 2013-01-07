@@ -123,17 +123,17 @@ namespace CmsWeb.Areas.Main.Controllers
             return vol;
         }
 
-        public ActionResult CreateCheck(int id, string sCombo)
+        public ActionResult CreateCheck(int id, string code, int type)
         {
-            ProtectMyMinistryHelper.create(id, sCombo);
+            ProtectMyMinistryHelper.create(id, code, type);
             return Redirect("/Volunteering/Index/" + id);
         }
 
-        public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, int iStateID = 0 )
+        public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0 )
         {
             String sResponseURL = Request.Url.Scheme + "://" + Request.Url.Authority + ProtectMyMinistryHelper.PMM_Append;
 
-            ProtectMyMinistryHelper.submit(id, sSSN, sDLN, sResponseURL, iStateID);
+            ProtectMyMinistryHelper.submit(id, sSSN, sDLN, sResponseURL, iStateID, sUser, sPassword);
 
             Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == iPeopleID);
             vol.ProcessedDate = DateTime.Now;
@@ -160,15 +160,23 @@ namespace CmsWeb.Areas.Main.Controllers
                     return View("SubmitMVR", bc);
                 }
 
+                case "Credit":
+                {
+                    return View("SubmitCredit", bc);
+                }
+
                 default: return View();
             }
         }
 
-        public ActionResult DialogType(int id)
+        public ActionResult DialogType(int id, int type)
         {
             Person p = (from e in DbUtil.Db.People
                         where e.PeopleId == id
                         select e).Single();
+
+            ViewBag.dialogType = type;
+
             return View( p );
         }
     }

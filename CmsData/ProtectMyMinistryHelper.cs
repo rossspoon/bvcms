@@ -8,6 +8,7 @@ using System.Net;
 using System.Xml;
 using System.Xml.Linq;
 using System.Web;
+using UtilityExtensions;
 
 namespace CmsData
 {
@@ -16,29 +17,31 @@ namespace CmsData
         public const string PMM_URL = "https://services.priorityresearch.com/webservice/default.cfm";
         public const string PMM_Append = "/ExternalServices/PMMResults";
 
-        public static readonly string[] STATUSES = { "Error", "Not Submitted", "Submitted", "Complete" };
-        public static readonly string[] TYPES = { "Combo", "MVR" };
+        public const int TYPE_BACKGROUND = 1;
+        public const int TYPE_CREDIT = 2;
 
-        public static void create( int iPeopleID, string sServiceCode )
+        public static readonly string[] STATUSES = { "Error", "Not Submitted", "Submitted", "Complete" };
+        public static readonly string[] BACKGROUND_TYPES = { "Combo", "MVR" };
+        public static readonly string[] CREDIT_TYPES = { "Credit" };
+
+        public static void create( int iPeopleID, string sServiceCode, int iType )
         {
             BackgroundCheck bcNew = new BackgroundCheck();
 
             bcNew.StatusID = 1;
-            bcNew.UserID = Util2.CurrentPeopleId;
+            bcNew.UserID = Util.UserPeopleId ?? 0;
             bcNew.PeopleID = iPeopleID;
             bcNew.ServiceCode = sServiceCode; // "Combo", "MVR"
             bcNew.Created = DateTime.Now;
             bcNew.Updated = DateTime.Now;
+            bcNew.ReportTypeID = iType;
 
             DbUtil.Db.BackgroundChecks.InsertOnSubmit(bcNew);
             DbUtil.Db.SubmitChanges();
         }
 
-        public static bool submit( int iRequestID, string sSSN, string sDLN, string sResponseURL, int iStateID )
+        public static bool submit( int iRequestID, string sSSN, string sDLN, string sResponseURL, int iStateID, string sUser, string sPassword )
         {
-            // Get User and Password from Settings
-            String sUser = DbUtil.Db.Setting("PMMUser", null);
-            String sPassword = DbUtil.Db.Setting("PMMPassword", null);
             if (sUser == null || sPassword == null) return false;
 
             // Get the already created (via create()) background check request
@@ -189,10 +192,10 @@ namespace CmsData
 
             // CurrentAddress Section (Inside Subject Section)
             xwWriter.WriteStartElement("CurrentAddress");
-            xwWriter.WriteElementString("StreetAddress", pPerson.AddressLineOne);
-            xwWriter.WriteElementString("City", pPerson.CityName);
-            xwWriter.WriteElementString("State", pPerson.StateCode);
-            xwWriter.WriteElementString("Zipcode", pPerson.ZipCode);
+            xwWriter.WriteElementString("StreetAddress", pPerson.PrimaryAddress);
+            xwWriter.WriteElementString("City", pPerson.PrimaryCity);
+            xwWriter.WriteElementString("State", pPerson.PrimaryState);
+            xwWriter.WriteElementString("Zipcode", pPerson.PrimaryZip);
             xwWriter.WriteFullEndElement();
 
             // Close Subject Section

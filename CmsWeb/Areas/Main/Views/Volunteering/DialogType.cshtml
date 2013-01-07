@@ -1,26 +1,59 @@
 ﻿@using CmsData;
 @model CmsData.Person
+@{
+    int type = ViewBag.dialogType;
+}
 <!DOCTYPE html>
 <html>
 <head>
     <title>DialogType</title>
 </head>
 <body>
-    <form action="/Volunteering/CreateCheck/@Model.PeopleId" method="post">
-        <table>
-            <tr>
-                <td align="right" valign="top"><b>Person:</b></td>
-                <td valign="top">@Model.Name</td>
-            </tr>
-            <tr>
-                <td align="right" valign="top"><b>Type:</b></td>
-                <td valign="top">@Html.DropDownList("sCombo",  new SelectList( ProtectMyMinistryHelper.TYPES ) )</td>
-            </tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
-            </tr>
-        </table>
-    </form>
+    @switch( type )
+    {
+        case ProtectMyMinistryHelper.TYPE_BACKGROUND:
+        {
+            <form action="/Volunteering/CreateCheck/@Model.PeopleId" method="post">
+                <input type="hidden" name="type" value="@type" />
+                <table>
+                    <tr>
+                        <td align="right" valign="top"><b>Person:</b></td>
+                        <td valign="top">@Model.Name</td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top"><b>Type:</b></td>
+                        <td valign="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.BACKGROUND_TYPES ) )</td>
+                    </tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
+                    </tr>
+                </table>
+            </form>
+            break;
+        }
+
+        case ProtectMyMinistryHelper.TYPE_CREDIT:
+        {
+            <form action="/Volunteering/CreateCheck/@Model.PeopleId" method="post">
+                <input type="hidden" name="type" value="@type" />
+                <table>
+                    <tr>
+                        <td align="right" valign="top"><b>Person:</b></td>
+                        <td valign="top">@Model.Name</td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top"><b>Type:</b></td>
+                        <td valign="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.CREDIT_TYPES ) )</td>
+                    </tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
+                    </tr>
+                </table>
+            </form>
+            break;
+        }
+    }
 </body>
 </html>
