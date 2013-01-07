@@ -222,7 +222,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			return ti;
 		}
 
-		private string ConfirmTransaction(OnlineRegModel m, string TransactionID)
+		private string ConfirmTransaction(OnlineRegModel m, string TransactionID, ExtraDatum ed = null)
 		{
 			m.ParseSettings();
 			string confirm = "Confirm";
@@ -232,8 +232,15 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (t == null && !managingsubs && !choosingslots)
 			{
 				var pf = PaymentForm.CreatePaymentForm(m);
+			    if (ed != null)
+			        pf.DatumId = ed.Id;
 			    t = pf.CreateTransaction(DbUtil.Db);
 				m.TranId = t.Id;
+			    if (ed != null)
+			    {
+			        ed.Data = Util.Serialize<OnlineRegModel>(m);
+			        DbUtil.Db.SubmitChanges();
+			    }
 			}
             if (t != null)
     			ViewData["message"] = t.Message;
@@ -414,7 +421,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return Content("no pending confirmation found");
 
 			var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
-			var confirm = ConfirmTransaction(m, transactionId);
+			var confirm = ConfirmTransaction(m, transactionId, ed);
 			if (confirm.StartsWith("error:"))
 				return Content(confirm);
 			ViewBag.Url = m.URL;

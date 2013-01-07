@@ -68,7 +68,16 @@
 	{
 			<td>@t.Description</td>
 	}
-            <td><a href="/OnlineReg/ConfirmTestXml/@t.DatumId">@t.FullName</a></td>
+            <td>
+            @if (t.DatumId > 0)
+            {
+                <a href="/OnlineReg/ConfirmTestXml/@t.DatumId">@t.FullName</a>
+            }
+            else
+            {
+                @t.FullName
+            }
+            </td>
             <td align="right" nowrap="nowrap">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>
     @if (Model.finance)
     {
