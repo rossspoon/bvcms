@@ -373,7 +373,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					}
 					return "error: no person";
 				}
-				m.UseCoupon(t.TransactionId);
+				m.UseCoupon(t.TransactionId, t.Amt ?? 0);
 			}
 			else
 			{
@@ -393,7 +393,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					}
 					return "error: no person";
 				}
-				m.UseCoupon(t.TransactionId);
+				m.UseCoupon(t.TransactionId, t.Amt ?? 0);
 			}
 			if (m.IsCreateAccount() || m.ManagingSubscriptions())
 				ViewData["email"] = m.List[0].person.EmailAddress;

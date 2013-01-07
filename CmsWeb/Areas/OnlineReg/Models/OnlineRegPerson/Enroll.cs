@@ -16,7 +16,7 @@ namespace CmsWeb.Models
 				org.OrganizationId, person.PeopleId,
 				MemberTypeCode.Member, DateTime.Now, null, false);
 			om.Amount = TotalAmount();
-			om.AmountPaid = AmountToPay();
+		    om.AmountPaid = ti.Amt;
 
 			var reg = person.RecRegs.SingleOrDefault();
 

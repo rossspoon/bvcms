@@ -59,9 +59,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				msg += "You still must complete this transaction with a payment";
 				
 			if (m != null)
-				m.UseCoupon(ti.TransactionId);
+				m.UseCoupon(ti.TransactionId, ti.Amt ?? 0);
 			else
-				c.UseCoupon(ti.FirstTransactionPeopleId(), ti.Amtdue ?? 0);
+				c.UseCoupon(ti.FirstTransactionPeopleId(), ti.Amt ?? 0);
             DbUtil.Db.SubmitChanges();
 
 			pf.AmtToPay -= ti.Amt;

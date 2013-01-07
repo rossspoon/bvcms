@@ -1,6 +1,7 @@
 relre:/bin/
 relre:/obj/
 relre:\.docstates$
+relre:\.pubxml$
 relre:\.suo$
 relre:\.user$
 relre:\.msi$

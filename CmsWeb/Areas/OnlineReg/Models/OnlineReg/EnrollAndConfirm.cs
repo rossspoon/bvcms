@@ -412,7 +412,7 @@ Total Fee paid for this registration session: {4:C}<br/>
             message = message.Replace("{cmshost}", DbUtil.Db.CmsHost);
             return message;
         }
-        public void UseCoupon(string TransactionID)
+        public void UseCoupon(string TransactionID, decimal AmtPaid)
         {
             string matchcoupon = @"Coupon\((?<coupon>[^)]*)\)";
             if (Regex.IsMatch(TransactionID, matchcoupon, RegexOptions.IgnoreCase))
@@ -427,7 +427,7 @@ Total Fee paid for this registration session: {4:C}<br/>
                     var c = DbUtil.Db.Coupons.SingleOrDefault(cp => cp.Id == coupon);
                     if (c != null)
                     {
-                        c.RegAmount = PayAmount();
+                        c.RegAmount = AmtPaid;
                         c.Used = DateTime.Now;
                         c.PeopleId = List[0].PeopleId;
                     }
