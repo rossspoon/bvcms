@@ -355,7 +355,23 @@ Click on your username below to set your password and login to the system.</p>
 The BVCMS Team</p>".Fmt(url), Util.ToMailAddressList(p.EmailAddress ?? p.EmailAddress2), 0, null);
 					return Util.ObscureEmail(p.EmailAddress ?? p.EmailAddress2);
 				}
-				return null;
+                if (Util.ValidEmail(username)) // did not find their email address, let them know this 
+                {
+                    var c = DbUtil.Db.Content("ForgotPasswordBadEmail", @"
+<p>You recently requested a new password for this email address {email}.  
+However, we could not find an account associated with this email address.
+You may try a different email address, or contact the church.</p>
+<p>If you did not request a new password, please disregard this message.</p>
+<p>Thanks,<br />
+The BVCMS Team</p>");
+                    c = c.Replace("{email}", username);
+        			Util.SendMsg(ConfigurationManager.AppSettings["sysfromemail"],
+        				DbUtil.Db.CmsHost, Util.FirstAddress(DbUtil.AdminMail),
+        				"Forgot password request for " + DbUtil.Db.Setting("NameOfChurch", "bvcms"),
+        				c, Util.ToMailAddressList(username), 0, null);
+        			return Util.ObscureEmail(username);
+                }
+			    return null;
 			}
 			var sb = new StringBuilder();
 			var addrlist = new List<MailAddress>();

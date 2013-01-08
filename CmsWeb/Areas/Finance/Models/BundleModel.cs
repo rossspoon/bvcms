@@ -102,6 +102,8 @@ namespace CmsWeb.Areas.Finance.Models
             if (_bundleItems == null)
                 _bundleItems = from d in DbUtil.Db.BundleDetails
                                where d.BundleHeaderId == BundleId
+            				   let sort = d.BundleSort1 > 0 ? d.BundleSort1 : d.BundleDetailId
+                               orderby sort, d.ContributionId
                                select d.Contribution;
             return _bundleItems;
         }

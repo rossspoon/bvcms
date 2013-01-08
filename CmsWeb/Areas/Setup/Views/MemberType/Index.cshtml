@@ -69,7 +69,11 @@
             <span id='a@(item.Id)' class='clickSelect'>@(item.AttendTypeId == null ? "" : item.AttendType)</span>
         </td>
         <td>
-            @if (item.Hardwired != true)
+            @if (item.Hardwired == true)
+            {
+                <i>hardwired</i>
+            }
+            else
             {
                 <a id='d@(item.Id)' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
             }
