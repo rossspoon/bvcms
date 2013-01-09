@@ -31,6 +31,7 @@ namespace CmsWeb.Models
             return new SelectList(new[] { 
                 "(not specified)",
                 "Campus",
+                "Drop Type",
                 "Employer",
                 "Family Position",
                 "Gender",
@@ -68,6 +69,7 @@ namespace CmsWeb.Models
             return new List<TitleItems>
             {
                 new TitleItems { title = "Member Status Codes", items = Model.MemberStatusCodes() },
+                new TitleItems { title = "Drop Type Codes", items = Model.DropTypes() },
                 new TitleItems { title = "Baptism Status Codes", items = Model.BaptismStatuses() },
                 new TitleItems { title = "Baptism Type Codes", items = Model.BaptismTypes() },
                 new TitleItems { title = "Campus Codes", items = Model.AllCampuses() },

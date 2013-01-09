@@ -417,7 +417,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return Content("error no transaction");
 
 			var ed = DbUtil.Db.ExtraDatas.SingleOrDefault(e => e.Id == id);
-			if (ed == null)
+			if (ed == null || ed.Completed == true)
 				return Content("no pending confirmation found");
 
 			var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
@@ -427,6 +427,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			ViewBag.Url = m.URL;
 
 			//DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
+            ed.Completed = true;
 			DbUtil.Db.SubmitChanges();
 
 			SetHeaders(m);

@@ -200,6 +200,7 @@ namespace CmsData.Codes
 		public const int Online = 4;
 		public const int OnlinePledge = 5;
 		public const int Pledge = 6;
+		public const int GiftsInKind = 7;
 	}
 	public class ContributionStatusCode
 	{

@@ -76,6 +76,7 @@ namespace CmsWeb.Areas.Finance.Models
         public BundleModel(int id)
         {
             BundleId = id;
+            
         }
 
         private IQueryable<Contribution> _bundleItems;

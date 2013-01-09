@@ -76,7 +76,7 @@
     var i = funds[n];
                     <tr>
                         <td>@i.Text</td>
-                        <td>@Html.TextBox("FundItem[" + n + "].Value", Model.FundItemValue(i.Value.ToInt()), new { @class = "short sum" })
+                        <td>@Html.TextBox("FundItem[" + n + "].Value", Model.FundItemValue(i.Value.ToInt()).ToString2("0.00"), new { @class = "short sum" })
                             @Html.Hidden("FundItem[" + n + "].Key", i.Value)
                             <div>@Html.ValidationMessage("FundItem[" + n + "].Value")</div>
                         </td>

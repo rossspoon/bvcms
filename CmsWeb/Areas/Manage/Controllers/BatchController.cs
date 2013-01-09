@@ -417,6 +417,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 					case "Member Status":
 						p.MemberStatusId = m.NewValue.ToInt();
 						break;
+					case "Drop Type":
+						p.DropCodeId = m.NewValue.ToInt();
+						break;
 					case "Baptism Status":
 						p.BaptismStatusId = m.NewValue.ToInt();
 						break;

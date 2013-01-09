@@ -74,6 +74,8 @@ namespace CmsWeb.Models
             {
                 if (p.PeopleId == null)
                     return;
+                if (pids2.Any(pp => pp.PeopleId == p.PeopleId))
+                    continue;
                 pids2.Add(new TransactionPerson
                 {
                     PeopleId = p.PeopleId.Value,
