@@ -141,7 +141,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					TempData["mp"] = m.UserPeopleId;
 					return Redirect("/OnlineReg/ManagePledge/{0}".Fmt(m.orgid));
 				}
-				if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+				if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
 				{
 					TempData["ps"] = m.UserPeopleId;
 					return Redirect("/OnlineReg/ManageVolunteer/{0}".Fmt(m.orgid));

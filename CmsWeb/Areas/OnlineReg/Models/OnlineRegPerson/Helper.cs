@@ -218,7 +218,7 @@ namespace CmsWeb.Models
 			if (org != null)
 				if (org.RegistrationTypeId == RegistrationTypeCode.CreateAccount)
 					return false;
-				else if (org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+				else if (org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
 					return false;
 			return settings.Values.Any(s => s.AskItems.Any() || s.Deposit > 0);
 		}

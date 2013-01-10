@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CmsData;
+using CmsData.Codes;
 using CmsWeb.Areas.Manage.Controllers;
 
 namespace CmsWeb.Models
@@ -12,7 +13,7 @@ namespace CmsWeb.Models
 		public IQueryable<Content> fetchHTMLFiles()
 		{
 			return from c in DbUtil.Db.Contents
-					 where c.TypeID == DisplayController.TYPE_HTML
+					 where c.TypeID == ContentTypeCode.TypeHtml
 					 orderby c.Name
 					 select c;
 		}
@@ -20,7 +21,7 @@ namespace CmsWeb.Models
 		public IQueryable<Content> fetchTextFiles()
 		{
 			return from c in DbUtil.Db.Contents
-					 where c.TypeID == DisplayController.TYPE_TEXT
+					 where c.TypeID == ContentTypeCode.TypeText
 					 orderby c.Name
 					 select c;
 		}
@@ -28,7 +29,7 @@ namespace CmsWeb.Models
 		public IQueryable<Content> fetchEmailTemplates()
 		{
 			return from c in DbUtil.Db.Contents
-					 where c.TypeID == DisplayController.TYPE_EMAIL_TEMPLATE
+					 where c.TypeID == ContentTypeCode.TypeEmailTemplate
 					 orderby c.Name
 					 select c;
 		}
@@ -36,7 +37,7 @@ namespace CmsWeb.Models
 		public IQueryable<Content> fetchSavedDrafts()
 		{
 			return from c in DbUtil.Db.Contents
-					 where c.TypeID == DisplayController.TYPE_SAVED_DRAFT
+					 where c.TypeID == ContentTypeCode.TypeSavedDraft
 					 orderby c.Name
 					 select c;
 		}

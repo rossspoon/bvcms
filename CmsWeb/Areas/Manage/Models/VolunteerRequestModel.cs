@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CmsData;
+using CmsWeb.Areas.Manage.Controllers;
 using UtilityExtensions;
 using CmsWeb.Areas.Main.Models;
 using TaskAlias = System.Threading.Tasks.Task;
@@ -98,18 +99,13 @@ Yes, I will be there.</a>".Fmt(meeting.MeetingId, person.PeopleId, ticks);
 Sorry, I cannot be there.</a>".Fmt(meeting.MeetingId, person.PeopleId, ticks);
 
 			subject = "Volunteer request for {0}".Fmt(org.OrganizationName);
-			message = @"
-<p>Hi {{first}},</p>
-<p>We need additional volunteers for {0}<br>
-on {1:dddd, MMM d} at {1:h:mm tt}</p>
-<blockquote>
-<p>{2}</p>
-<p>{3}</p>
-</blockquote>
-<p>
-Thank you for your consideration,<br />
-{4}
-</p>".Fmt(org.OrganizationName, meeting.MeetingDate, yeslink, nolink, person.Name);
+		    message = DbUtil.Db.ContentHtml("VolunteerRequest", Resource1.VolunteerRequestModel_ComposeMessage_Body);
+		    message = message.Replace("{org}", org.OrganizationName);
+            message = message.Replace("{meetingdate}", meeting.MeetingDate.ToString2("dddd, MMM d"));
+            message = message.Replace("{meetingtime}", meeting.MeetingDate.ToString2("h:mm tt"));
+            message = message.Replace("{yeslink}", yeslink);
+            message = message.Replace("{nolink}", nolink);
+            message = message.Replace("{sendername}", person.Name);
 		}
 		public string DisplayMessage { get; set; }
 		public string Error { get; set; }

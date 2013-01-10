@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CmsData.Codes;
 using CmsWeb.Areas.Main.Models;
 using CmsWeb.Areas.Manage.Controllers;
 using UtilityExtensions;
@@ -74,7 +75,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			{
 				content = new Content();
 				content.Name = name;
-				content.TypeID = DisplayController.TYPE_SAVED_DRAFT;
+			    content.TypeID = ContentTypeCode.TypeSavedDraft;
 				content.RoleID = roleid;
 			}
 						

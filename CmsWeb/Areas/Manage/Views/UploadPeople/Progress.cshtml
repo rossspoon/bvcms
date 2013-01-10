@@ -9,7 +9,7 @@
 <body>
     <h2>
         Upload People</h2>
-        <a href="/FindPeople">Find People Page</a>
+        <a href="/PeopleSearch">People Search Page</a>
     <table>
         <tr> <td> Started </td> <td> @Model.Started </td> </tr>
         <tr> <td> Total Records </td> <td> <span id="count">@Model.Count</span> </td> </tr>
@@ -27,7 +27,7 @@
                 $("#processed").text(json.Processed);
                 $("#found").text(json.Found);
                 $("#completed").text(json.Completed);
-                $("#error").text(json.Error);
+                $("#error").text(json.Error || "");
                 if (!json.Running) {
                     window.clearInterval(intervalId);
                 }

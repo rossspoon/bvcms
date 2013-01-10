@@ -50,7 +50,7 @@ namespace CmsWeb.Models.OrganizationPage
 		    if (orgid == null)
 		        return false;
 		    var o = DbUtil.Db.LoadOrganizationById(orgid);
-		    if (o == null || o.RegistrationTypeId != RegistrationTypeCode.ChooseSlot)
+		    if (o == null || o.RegistrationTypeId != RegistrationTypeCode.ChooseVolunteerTimes)
 		        return false;
 			if (HttpContext.Current.User.IsInRole("Admin") ||
 				HttpContext.Current.User.IsInRole("ManageVolunteers"))

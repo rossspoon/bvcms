@@ -150,7 +150,7 @@ namespace CmsWeb.Models
             if (org != null)
             {
                 var setting = settings[org.OrganizationId];
-                return org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot
+                return org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes
                     || org.RegistrationTypeId == RegistrationTypeCode.CreateAccount
                     || setting.AllowOnlyOne || setting.AskVisible("AskTickets")
                     || setting.GiveOrgMembAccess;
@@ -167,7 +167,7 @@ namespace CmsWeb.Models
         public bool ChoosingSlots()
         {
             if (org != null)
-                return org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot;
+                return org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes;
             return false;
         }
         public bool ManagingSubscriptions()

@@ -712,7 +712,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			var m = new OrganizationModel(id);
 			try
 			{
-				if (m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+				if (m.org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
 					m.SendVolunteerReminders(emailall ?? false, this);
 				else
 					m.SendEventReminders();

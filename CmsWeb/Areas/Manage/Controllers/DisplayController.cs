@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using CmsData;
+using CmsData.Codes;
 using UtilityExtensions;
 using CmsWeb.Models;
 using System.Data.SqlClient;
@@ -31,11 +32,6 @@ namespace CmsWeb.Areas.Manage.Controllers
     [ValidateInput(false)]
     public class DisplayController : CmsStaffController
     {
-        public const int TYPE_HTML = 0;
-        public const int TYPE_TEXT = 1;
-        public const int TYPE_EMAIL_TEMPLATE = 2;
-        public const int TYPE_SAVED_DRAFT = 3;
-
         public ActionResult Index()
         {
             return View(new ContentModel());
@@ -78,7 +74,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 
             string sRenderType = DbUtil.Db.Setting("RenderEmailTemplate", "none");
 
-            if (content.TypeID == TYPE_EMAIL_TEMPLATE)
+            if (content.TypeID == ContentTypeCode.TypeEmailTemplate)
                 switch (sRenderType)
                 {
                     case "Local":// Uses local server resources 
@@ -133,14 +129,14 @@ namespace CmsWeb.Areas.Manage.Controllers
         {
             switch (cContent.TypeID) // 0 = HTML, 1 = Text, 2 = eMail Template
             {
-                case TYPE_HTML:
+                case ContentTypeCode.TypeHtml:
                     return View("EditHTML", cContent);
 
-                case TYPE_TEXT:
+                case ContentTypeCode.TypeText:
                     return View("EditText", cContent);
 
-                case TYPE_EMAIL_TEMPLATE:
-                case TYPE_SAVED_DRAFT:
+                case ContentTypeCode.TypeEmailTemplate:
+                case ContentTypeCode.TypeSavedDraft:
                     return View("EditTemplate", cContent);
             }
 

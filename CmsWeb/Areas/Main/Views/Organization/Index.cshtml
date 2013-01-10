@@ -52,7 +52,7 @@
                         </a></li>
                 }
                 <li><a id="tryreg" href="#">Try Registration</a> </li>
-                @if (Model.IsVolunteerLeader && o.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+                @if (Model.IsVolunteerLeader && o.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
                 {
                     <li><a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId" target="calendar">
                             Volunteer Calendar
@@ -63,7 +63,7 @@
                     <li><a href="/Organization/CopySettings/@o.OrganizationId">
                             Copy Settings
                         </a></li>
-                    if(o.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+                    if(o.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
                     {
                         <li><a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId">
                                 Send Volunteer Reminders

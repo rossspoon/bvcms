@@ -146,7 +146,7 @@ Please call the church to resolve this before we can complete your account.<br /
 #endif
 						}
 						else if (om != null && setting.AllowReRegister == false
-							&& om.Organization.RegistrationTypeId != RegistrationTypeCode.ChooseSlot)
+							&& om.Organization.RegistrationTypeId != RegistrationTypeCode.ChooseVolunteerTimes)
 						{
 							ModelState.AddModelError(foundname, "This person is already registered");
 							IsValidForContinue = false;

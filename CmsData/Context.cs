@@ -1040,6 +1040,31 @@ namespace CmsData
 				return content.Body;
 			return def;
 		}
+		public string Content2(string name, string def, int ContentTypeId)
+		{
+			var c = Contents.SingleOrDefault(cc => cc.Name == name);
+			if (c == null)
+			{
+                c = new Content()
+                        {
+                            Name = name,
+                            Title = name,
+                            Body = def,
+                            TypeID = ContentTypeId
+                        };
+                DbUtil.Db.Contents.InsertOnSubmit(c);
+                DbUtil.Db.SubmitChanges();
+			}
+			return c.Body;
+		}
+		public string ContentHtml(string name, string def)
+		{
+		    return Content2(name, def, ContentTypeCode.TypeHtml);
+		}
+		public string ContentText(string name, string def)
+		{
+		    return Content2(name, def, ContentTypeCode.TypeText);
+		}
 		public void SetNoLock()
 		{
 			//ExecuteCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED"); 
