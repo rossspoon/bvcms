@@ -126,6 +126,8 @@
 &lt;p&gt;Hi {first},&lt;/p&gt;
 &lt;p&gt;We need additional volunteers for {org}&lt;br&gt;
 on {meetingdate} at {meetingtime}&lt;/p&gt;
+
+&lt;p&gt;DO NOT REPLY. Instead, click one of the links below.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;{yeslink}&lt;/p&gt;
 &lt;p&gt;{nolink}&lt;/p&gt;
@@ -137,14 +139,23 @@ Thank you for your consideration,&lt;br /&gt;
   </data>
   <data name="VolSubModel_ComposeMessage_Body" xml:space="preserve">
     <value>&lt;p&gt;Hi {first},&lt;/p&gt;
+
 &lt;p&gt;I need a substitute for {org}&lt;br&gt;
+
 on {meetingdate} at {meetingtime}&lt;/p&gt;
+
+&lt;p&gt;DO NOT REPLY. Instead, click one of the links below.&lt;/p&gt;
 &lt;blockquote&gt;
+
 &lt;p&gt;{yeslink}&lt;/p&gt;
+
 &lt;p&gt;{nolink}&lt;/p&gt;
+
 &lt;/blockquote&gt;
+
 &lt;p&gt;
 Thank you for your consideration,&lt;br /&gt;
+
 {sendername}
 &lt;/p&gt;</value>
   </data>

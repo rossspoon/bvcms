@@ -35,7 +35,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				ti.State = "TN";
 			}
 #endif
-			var pf = PaymentForm.CreatePaymentForm(ti);
+			var pf = PaymentForm.CreatePaymentFormForBalanceDue(ti);
 			SetHeaders(pf.OrgId ?? 0);
 
 			ViewBag.Url = pf.Url;
@@ -124,8 +124,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #if DEBUG
 			ti.Testing = true;
 #endif
-			ti = PaymentForm.CreateTransaction(DbUtil.Db, ti, Amount);
-			ConfirmDuePaidTransaction(ti, TransactionID, sendmail: false);
+			//ti = PaymentForm.CreateTransaction(DbUtil.Db, ti, Amount);
+			ConfirmDuePaidTransaction(ti, TransactionID, sendmail: true);
 			SetHeaders(ti.OrgId ?? 0);
 			ViewData["timeout"] = INT_timeout;
 			ViewData["Url"] = ti.Url;

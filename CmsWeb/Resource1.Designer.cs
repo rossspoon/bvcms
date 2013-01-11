@@ -90,14 +90,23 @@ namespace CmsWeb {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;Hi {first},&lt;/p&gt;
+        ///
         ///&lt;p&gt;I need a substitute for {org}&lt;br&gt;
+        ///
         ///on {meetingdate} at {meetingtime}&lt;/p&gt;
+        ///
+        ///&lt;p&gt;DO NOT REPLY. Instead, click one of the links below.&lt;/p&gt;
         ///&lt;blockquote&gt;
+        ///
         ///&lt;p&gt;{yeslink}&lt;/p&gt;
+        ///
         ///&lt;p&gt;{nolink}&lt;/p&gt;
+        ///
         ///&lt;/blockquote&gt;
+        ///
         ///&lt;p&gt;
         ///Thank you for your consideration,&lt;br /&gt;
+        ///
         ///{sendername}
         ///&lt;/p&gt;.
         /// </summary>
@@ -112,6 +121,8 @@ namespace CmsWeb {
         ///&lt;p&gt;Hi {first},&lt;/p&gt;
         ///&lt;p&gt;We need additional volunteers for {org}&lt;br&gt;
         ///on {meetingdate} at {meetingtime}&lt;/p&gt;
+        ///
+        ///&lt;p&gt;DO NOT REPLY. Instead, click one of the links below.&lt;/p&gt;
         ///&lt;blockquote&gt;
         ///&lt;p&gt;{yeslink}&lt;/p&gt;
         ///&lt;p&gt;{nolink}&lt;/p&gt;

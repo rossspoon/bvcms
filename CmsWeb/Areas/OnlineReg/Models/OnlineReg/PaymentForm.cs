@@ -114,7 +114,7 @@ namespace CmsWeb.Models
                 ti.OriginalId = ti.Id;
             return ti;
         }
-        public static PaymentForm CreatePaymentForm(Transaction ti)
+        public static PaymentForm CreatePaymentFormForBalanceDue(Transaction ti)
         {
             PaymentInfo pi = null;
             if (ti.Person != null && string.Equals(OnlineRegModel.GetTransactionGateway(),
