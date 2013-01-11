@@ -1,5 +1,6 @@
 ﻿@using System.Web.Optimization
 @using CmsData
+@using CmsData.Codes
 @using CmsWeb.Areas.Manage.Controllers
 @model CmsWeb.Areas.Main.Models.MassEmailer
 @{
@@ -38,7 +39,7 @@
    @Html.Hidden("Count", Model.Count)
    @Html.Hidden("wantParents", Model.wantParents)
 	@Html.Hidden("roleid", c.RoleID)
-	<input type="hidden" name="saveid" value="@(c.TypeID == DisplayController.TYPE_EMAIL_TEMPLATE ? 0 : c.Id )" />
+	<input type="hidden" name="saveid" value="@(c.TypeID == ContentTypeCode.TypeEmailTemplate ? 0 : c.Id )" />
 	<input type="hidden" id="body" name="body" />
 	<input type="hidden" id="name" name="name" value="@c.Name" />
 
@@ -51,7 +52,7 @@
 	<tr>
 		<td colspan="3">
 			<label>Subject:</label>
-			<input name="Subject" size="75" value="@(c.TypeID == DisplayController.TYPE_EMAIL_TEMPLATE ? "" : c.Title)" /> &nbsp;&nbsp; @Html.CheckBox("PublicViewable") Publicly viewable?
+			<input name="Subject" size="75" value="@(c.TypeID == ContentTypeCode.TypeEmailTemplate ? "" : c.Title)" /> &nbsp;&nbsp; @Html.CheckBox("PublicViewable") Publicly viewable?
 		</td>
 	</tr>
 	<tr>
@@ -66,12 +67,12 @@
 			<input type="button" id="TestSend" class="bt" value="Test (Send To Yourself)" />
 		</td>
 		<td width="33%" valign="top" align="center">
-			<input type="button" id="SaveDraft" class="bt" savetype="@( c.TypeID == DisplayController.TYPE_EMAIL_TEMPLATE ? 0 : 1 )" value="@( c.TypeID == DisplayController.TYPE_EMAIL_TEMPLATE ? "Save As Draft" : "Save Current Draft" )" />
+			<input type="button" id="SaveDraft" class="bt" savetype="@( c.TypeID == ContentTypeCode.TypeEmailTemplate ? 0 : 1 )" value="@( c.TypeID == ContentTypeCode.TypeEmailTemplate ? "Save As Draft" : "Save Current Draft" )" />
 		</td>
 		<td width="33%" align="right">
 			<input type="button" id="Send" value="Send" class="bt" /><br />
 			<br />
-			@if( c.TypeID == DisplayController.TYPE_SAVED_DRAFT ) {
+			@if( c.TypeID == ContentTypeCode.TypeSavedDraft ) {
 				@:Keep Draft:<input type="checkbox" name="keepdraft" /><br />
 			}
 			@if ((User.IsInRole("ScheduleEmails") || User.IsInRole("Edit")) && System.Web.Configuration.WebConfigurationManager.AppSettings["UseEmailScheduler"] == "true")

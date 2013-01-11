@@ -113,7 +113,7 @@
         ev.preventDefault();
         var tr = $(this).closest("tr");
         $('#editid').val(tr.attr("cid"));
-        $('#pid').val($("a.pid", tr).text());
+        $('#pid').val($.trim($("a.pid", tr).text()));
         $('#name').val($("td.name", tr).text());
         $('#fund').val($("td.fund", tr).attr('val'));
         
@@ -129,6 +129,7 @@
         tr.hide();
         if (a.val() == '0.00')
             a.val('');
+        $('html,body').animate({ scrollTop: 0 }, 600);
         a.focus();
         $('a.edit').hide();
         $('a.split').hide();
@@ -266,7 +267,7 @@
             $.Stripe();
             $('#pid').focus();
             keyallowed = true;
-            var top = tr.offset().top - 60;
+            var top = tr.offset().top - 360;
             if (options.scroll == true) {
                 $('html,body').animate({ scrollTop: top }, 1000);
             }

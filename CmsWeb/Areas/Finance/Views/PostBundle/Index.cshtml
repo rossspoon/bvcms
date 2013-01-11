@@ -9,7 +9,6 @@
 @section head 
 {
 <style type="text/css"> 
-    .alt { background-color: #eee; } 
     td.PLNT {
         font-style: italic;
         font-weight: bold;
@@ -22,6 +21,10 @@
     table.roundbox td {
         white-space: nowrap;
         padding: .2em .7em;
+    }
+    #headerrow td {
+        font-weight: bold;
+        text-align: left;
     }
 </style>
 }
@@ -68,18 +71,18 @@
 @Html.Hidden("editid")
 <table id='bundle'>
     <thead>
-        <tr>
-            <th>PeopleId</th>
-            <th>Name</th>
-            <th>Amount</th>
-            <th class="tip" title="Indicator|Pledge|Non Tax Deductible">PL/NT</th>
-            <th>Fund(s)</th>
-            <th>CheckNo</th>
-            <th>Notes</th>
-            <th colspan="3"></th>
+        <tr id="headerrow">
+            <td>PeopleId</td>
+            <td>Name</td>
+            <td style="text-align: center">Amount</td>
+            <td style="text-align: center" class="tip" title="Indicator|Pledge|Non Tax Deductible">PL/NT</td>
+            <td>Fund(s)</td>
+            <td>CheckNo</td>
+            <td>Notes</td>
+            <td colspan="3"></td>
         </tr>
         <tr id="entry">
-            <td><input id="pid" name="pid" type="text" style="width:5em" /></td>
+            <td><input id="pid" name="pid" type="text" style="width:5em;" /></td>
             <td><input id="name" name="name" type="text" style="width:10em" /></td>
             <td><input id="amt" name="amt" type="text" style="width:5em" /></td>
             <td class="PLNT">@Model.PLNT</td>

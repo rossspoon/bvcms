@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<CmsWeb.Areas.Dialog.Models.TransactionHistoryModel.TransactionInfo>
 @using UtilityExtensions
-@if (User.IsInRole("Admin") && !ViewBag.IsMember)
+@if (User.IsInRole("Admin") && ViewBag.IsMember == true)
 {
 <div><a id="deleteall" class="bt red" href="/TransactionHistory/DeleteAll/@ViewBag.orgid/@ViewBag.PeopleId">Delete all enrollment history</a></div>
 }
