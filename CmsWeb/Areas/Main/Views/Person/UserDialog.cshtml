@@ -3,7 +3,6 @@
 @using CmsData
 @using CmsWeb
 @model CmsData.User
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -34,7 +33,7 @@
 </table>
 <hr />
 <div class="wrapper">
-@foreach (var r in DbUtil.Db.Roles.Select(ro => ro.RoleName).OrderBy(ro=> ro))
+@foreach (var r in CmsData.User.AllRoles(DbUtil.Db).Select(rr => rr.RoleName))
 { 
     <div class="item" >
        <input name="role" value="@r" class="ckbox" type="checkbox" @(Model.Roles.Any(ro => ro == r) ? "checked='checked'" : "") />

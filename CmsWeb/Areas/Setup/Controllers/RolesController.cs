@@ -14,7 +14,7 @@ namespace CmsWeb.Areas.Setup.Controllers
     {
         public ActionResult Index()
         {
-            var r = DbUtil.Db.Roles.AsEnumerable();
+            var r = CmsData.User.AllRoles(DbUtil.Db);
             return View(r);
         }
 

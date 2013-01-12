@@ -5,6 +5,7 @@
     var managetrans = User.IsInRole("ManageTransactions");
 	var edit = User.IsInRole("Edit"); 
 	var design = User.IsInRole("Design"); 
+	var finance = User.IsInRole("Finance"); 
 }
 
 <div class="navbar">
@@ -199,7 +200,7 @@
                 </div>
             </li>
         }
-        @if (admin || manageemails || managetrans || edit || design)
+        @if (admin || manageemails || managetrans || edit || design || finance)
         {
             <li>
                 <a href="#" class="trigger-dropdown">
@@ -249,11 +250,14 @@
                                     Emails
                                 </a> </li>
                         }
-                        @if (admin)
+                        @if (admin || finance)
                         {
                             <li><a href="/Setup/Lookup/">
                                     Lookups
                                 </a></li>
+                        }
+                        @if (admin)
+                        {
                             <li><a href="/Batch/UpdateFields/">
                                     Update for a Tag
                                 </a> </li>
