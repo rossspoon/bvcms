@@ -30,7 +30,18 @@
     });
     $(".bt").button();
     $('td.name').tooltip({ showBody: "|" });
-    $( "#name" ).autocomplete({
+    $( ".ui-autocomplete-input" ).live( "autocompleteopen", function() {
+    	var autocomplete = $( this ).data( "autocomplete" ),
+    		menu = autocomplete.menu;
+
+    	if ( !autocomplete.options.selectFirst ) {
+    		return;
+    	}
+
+    	menu.activate( $.Event({ type: "mouseenter" }), menu.element.children().first() );
+    });
+    $("#name").autocomplete({
+        autoFocus: true,
             minLength: 3,
             source: function(request, response) {
                 $.post("/PostBundle/Names", request, function(ret) {
@@ -41,10 +52,6 @@
                     }
                     response(ret.slice(0, 10));
                 }, "json");
-            },
-            focus: function( event, ui ) {
-                $( "#name" ).val( ui.item.Name );
-                return false;
             },
             select: function( event, ui ) {
                 $( "#name" ).val( ui.item.Name );

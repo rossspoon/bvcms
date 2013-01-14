@@ -61,6 +61,51 @@ namespace CmsWeb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Someone recently requested a new password for this email address {email}.  
+        ///However, we could not find an account associated with this email address.
+        ///You may try a different email address, or contact the church.&lt;/p&gt;
+        ///&lt;p&gt;If this is a mistake, please disregard this message, your password will not be changed.&lt;/p&gt;
+        ///&lt;p&gt;Thanks,&lt;br /&gt;
+        ///The BVCMS Team&lt;/p&gt;
+        ///.
+        /// </summary>
+        internal static string AccountModel_ForgotPasswordBadEmail {
+            get {
+                return ResourceManager.GetString("AccountModel_ForgotPasswordBadEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Someone recently requested a new password for this email address {email}.
+        ///To set your password, click the link below:&lt;/p&gt;
+        ///&lt;blockquote&gt;&lt;a href=&quot;{resetlink}&quot;&gt;New Password&lt;/a&gt;&lt;/blockquote&gt;
+        ///&lt;p&gt;If this is a mistake, please disregard this message, your password will not be changed.&lt;/p&gt;
+        ///&lt;p&gt;Thanks,&lt;br /&gt;
+        ///The BVCMS Team&lt;/p&gt;
+        ///.
+        /// </summary>
+        internal static string AccountModel_ForgotPasswordReset {
+            get {
+                return ResourceManager.GetString("AccountModel_ForgotPasswordReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Someone recently requested a new password for this email address {email}.
+        ///To set your password, click your username below:&lt;/p&gt;
+        ///&lt;blockquote&gt;{resetlink}&lt;/blockquote&gt;
+        ///&lt;p&gt;If you did not request a new password, please disregard this message.&lt;/p&gt;
+        ///&lt;p&gt;Thanks,&lt;br /&gt;
+        ///The BVCMS Team&lt;/p&gt;
+        ///.
+        /// </summary>
+        internal static string AccountModel_ForgotPasswordReset2 {
+            get {
+                return ResourceManager.GetString("AccountModel_ForgotPasswordReset2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;
         ///&lt;TestPlan&gt;
         ///  &lt;Sections&gt;

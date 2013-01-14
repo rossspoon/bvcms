@@ -1236,7 +1236,17 @@ namespace UtilityExtensions
 				return null;
 			}
 		}
-		public static string UrgentMessage
+
+	    public static bool AppOffline
+	    {
+	        get
+	        {
+                var path = WebConfigurationManager.AppSettings["AppOfflineFile"];
+	            return path.HasValue() && File.Exists(path);
+	        }
+	    }
+
+	    public static string UrgentMessage
 		{
 			get
 			{

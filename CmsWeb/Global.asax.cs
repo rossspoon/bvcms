@@ -44,6 +44,7 @@ namespace CmsWeb
         {
             routes.IgnoreRoute("Demo/{*pathInfo}");
             routes.IgnoreRoute("ForceError.aspx");
+            routes.IgnoreRoute("healthcheck.txt");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.aspx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.ashx/{*pathInfo}");
@@ -94,8 +95,14 @@ namespace CmsWeb
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            if (Request.Url.OriginalString.Contains("/Errors/NoDatabase.htm"))
+            var url = Request.Url.OriginalString;
+            if (url.Contains("/Errors/") || url.Contains("healthcheck.txt"))
                 return;
+            if (Util.AppOffline)
+            {
+                Response.Redirect("/Errors/AppOffline.htm");
+                return;
+            }
             if (!DbUtil.DatabaseExists())
             {
                 Response.Redirect("/Errors/NoDatabase.htm");

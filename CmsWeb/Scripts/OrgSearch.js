@@ -238,10 +238,10 @@
         ev.preventDefault();
         $('div.dialog').dialog('close');
         var did = $('#DivisionId').val();
-        if (did == '0') {
-            $.growlUI("error", 'must choose division');
-            return false;
-        }
+//        if (did == '0') {
+//            $.growlUI("error", 'must choose division');
+//            return false;
+//        }
         var args = "?divid=" + did +
                "&schedid=" + $('#ScheduleId').val() +
                "&name=" + $('#Name').val() +

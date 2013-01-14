@@ -35,7 +35,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         {
             var q = from dio in DbUtil.Db.DivOrgs
                     let sc = dio.Organization.OrgSchedules.FirstOrDefault() // SCHED
-                    where dio.DivId == divid
+                    where dio.DivId == divid || divid == 0
                     from m in dio.Organization.Meetings
                     where m.MeetingDate >= dt1
                     where m.MeetingDate < dt2

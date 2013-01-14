@@ -4,6 +4,7 @@ using System.Web;
 using System.ComponentModel;
 using System.Linq;
 using System.Collections.Generic;
+using CmsData.Properties;
 using UtilityExtensions;
 
 namespace CmsData
@@ -132,12 +133,7 @@ namespace CmsData
             else
             {
                 Db.SubmitChanges();
-                var failedGivingMessage = Db.Content("FailedGivingMessage", @"
-{first},
-<p>We are very sorry, but something has gone wrong and your online giving transaction did not complete.</p>
-<p>Please contact the church for help in resolving this issue.</p>
-<p>Thank you.</p>
-");
+                var failedGivingMessage = Db.ContentHtml("FailedGivingMessage", Resources.ManagedGiving_FailedGivingMessage);
                 var adminEmail = Db.Setting("AdminMail", systemEmail);
                 Util.SendMsg(systemEmail, Db.CmsHost, Util.TryGetMailAddress(contributionemail),
                         "Recurring {0} failed for {1}".Fmt(gift, church),

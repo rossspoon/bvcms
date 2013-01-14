@@ -501,6 +501,8 @@
     <Content Include="Content\styles\images\forward_enabled.png" />
     <Content Include="Content\styles\images\forward_enabled_hover.png" />
     <Content Include="Areas\Main\Views\MemberDirectory\NoAccess.cshtml" />
+    <Content Include="Errors\AppOffline.htm" />
+    <Content Include="healthcheck.txt" />
     <Content Include="images\group.png" />
     <Content Include="Content\styles\images\icons-18-black.png" />
     <Content Include="Content\styles\images\icons-18-white.png" />
@@ -1183,7 +1185,6 @@
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
     <Content Include="Content\js\jquery.showpassword.js" />
     <Content Include="Errors\AccessDenied.htm" />
-    <Content Include="App_Offline1.htm" />
     <Content Include="Global.asax" />
     <Content Include="images\bvcms120.png" />
     <Content Include="images\bvcms130.png" />
