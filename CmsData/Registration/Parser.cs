@@ -309,6 +309,7 @@ namespace CmsData.Registration
 			Checkboxes2,
 			Minimum,
 			Maximum,
+			Columns,
 			Items,
 			Subject,
 			Body,

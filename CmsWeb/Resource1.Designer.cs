@@ -91,10 +91,10 @@ namespace CmsWeb {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Someone recently requested a new password for this email address {email}.
+        ///   Looks up a localized string similar to &lt;p&gt;Someone recently requested a new password for {email}.
         ///To set your password, click your username below:&lt;/p&gt;
         ///&lt;blockquote&gt;{resetlink}&lt;/blockquote&gt;
-        ///&lt;p&gt;If you did not request a new password, please disregard this message.&lt;/p&gt;
+        ///&lt;p&gt;If this is a mistake, please disregard this message, your password will not be changed.&lt;/p&gt;
         ///&lt;p&gt;Thanks,&lt;br /&gt;
         ///The BVCMS Team&lt;/p&gt;
         ///.
@@ -102,6 +102,20 @@ namespace CmsWeb {
         internal static string AccountModel_ForgotPasswordReset2 {
             get {
                 return ResourceManager.GetString("AccountModel_ForgotPasswordReset2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hi {name},
+        ///&lt;p&gt;You have a new account on our Church Management System. 
+        ///Click on your username below to set your password and login to the system.&lt;/p&gt;
+        ///&lt;blockquote&gt;
+        ///&lt;h3&gt;Your username is: &lt;b&gt;&lt;a href=&quot;{link}&quot;&gt;{username}&lt;/a&gt;&lt;/h3&gt;
+        ///&lt;/blockquote&gt;.
+        /// </summary>
+        internal static string AccountModel_NewUserWelcome {
+            get {
+                return ResourceManager.GetString("AccountModel_NewUserWelcome", resourceCulture);
             }
         }
         

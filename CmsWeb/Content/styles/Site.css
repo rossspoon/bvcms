@@ -659,3 +659,6 @@ select {
 td.right {
     text-align: right;
 }
+div.formerror {
+    color: red;
+}

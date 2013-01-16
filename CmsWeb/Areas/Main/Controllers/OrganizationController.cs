@@ -352,7 +352,13 @@ namespace CmsWeb.Areas.Main.Controllers
 			m.TimeSlots.list.Clear();
 			try
 			{
-				UpdateModel(m);
+				if (!TryUpdateModel(m))
+				{
+				    var q = from e in ModelState.Values
+				            where e.Errors.Count > 0
+				            select e.Errors[0].ErrorMessage;
+                    throw new Exception(q.First());
+				}
 			    string s = m.ToString();
 			    m = new Settings(s, DbUtil.Db, id);
 				m.org.RegSetting = m.ToString();
@@ -364,7 +370,8 @@ namespace CmsWeb.Areas.Main.Controllers
 			catch (Exception ex)
 			{
 				ModelState.AddModelError("Form", ex.Message);
-				return View("OnlineRegQuestionsEdit", m);
+			    return Content("error:" + ex.Message);
+				//return View("OnlineRegQuestionsEdit", m);
 			}
 		}
 

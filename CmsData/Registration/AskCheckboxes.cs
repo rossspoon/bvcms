@@ -12,6 +12,7 @@ namespace CmsData.Registration
 		public string Label { get; set; }
 		public int? Min { get; set; }
 		public int? Max { get; set; }
+        public int? Cols  { get; set; }
 		public List<CheckboxItem> list { get; set; }
 
 		public AskCheckboxes()
@@ -27,6 +28,7 @@ namespace CmsData.Registration
 			Settings.AddValueNoCk(0, sb, "Checkboxes", Label);
 			Settings.AddValueCk(1, sb, "Minimum", Min);
 			Settings.AddValueCk(1, sb, "Maximum", Max);
+			Settings.AddValueCk(1, sb, "Columns", Cols);
 			foreach (var i in list)
 				i.Output(sb);
 			sb.AppendLine();
@@ -37,6 +39,7 @@ namespace CmsData.Registration
 			cb.Label = parser.GetString("CheckBoxes");
 			cb.Min = parser.GetInt(Parser.RegKeywords.Minimum);
 			cb.Max = parser.GetInt(Parser.RegKeywords.Maximum);
+			cb.Cols = parser.GetInt(Parser.RegKeywords.Columns) ?? 1;
 			cb.list = new List<CheckboxItem>();
 			if (parser.curr.indent == 0)
 				return cb;

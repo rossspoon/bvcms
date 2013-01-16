@@ -323,11 +323,15 @@ $(function () {
             return false;
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
-            $(f).html(ret).ready(function () {
-                $(".submitbutton,.bt").button();
-                $.regsettingeditclick(f);
-                $.showHideRegTypes();
-            });
+            if (ret.startsWith("error:")) {
+                $("div.formerror", f).html(ret.substring(6));
+            } else {
+                $(f).html(ret).ready(function() {
+                    $(".submitbutton,.bt").button();
+                    $.regsettingeditclick(f);
+                    $.showHideRegTypes();
+                });
+            }
         });
         return false;
     });

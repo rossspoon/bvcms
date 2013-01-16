@@ -415,6 +415,10 @@ table.grid td.center
     text-align: center;
 	padding: 5px;
 }
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+  background-color: #f2f2f2;
+}
 .alt {
 	background-color: #EEE;
 }

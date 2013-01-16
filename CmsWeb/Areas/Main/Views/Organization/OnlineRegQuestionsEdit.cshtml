@@ -8,7 +8,7 @@
 </div>
 <div style="clear:both"></div>
 <hr />
-<div>@Html.ValidationMessage("Form")</div>
+<div class="formerror">@Html.ValidationMessage("Form")</div>
 <div>
 	<span class="keyword big tip" title="TargetExtraValues
      |Small groups will actually refer to ExtraValue fields on the Person's record option
@@ -23,7 +23,7 @@
     <a class="AddQuestion bt green" href="#">Add Question Item</a>
     <a href="/Organization/OnlineRegQuestionsUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 </div>
-<div>@Html.ValidationMessage("Form")</div>
+<div class="formerror">@Html.ValidationMessage("Form")</div>
 <div id="selectquestions" style="display:none;padding-left:2em">
     <ul>
         <li class="AskDropdown"></li>

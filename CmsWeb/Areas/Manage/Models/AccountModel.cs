@@ -302,13 +302,7 @@ namespace CmsWeb.Models
         public static void SendNewUserEmail(string username)
         {
             var user = DbUtil.Db.Users.First(u => u.Username == username);
-            var body = DbUtil.Content("NewUserWelcome",
-                    @"Hi {name},
-<p>You have a new account on our Church Management System. 
-Click on your username below to set your password and login to the system.</p>
-<blockquote>
-<h3>Your username is: <b><a href=""{link}"">{username}</a></h3>
-</blockquote>");
+            var body = DbUtil.Db.ContentHtml("NewUserWelcome", Resource1.AccountModel_NewUserWelcome);
             body = body.Replace("{name}", user.Person.Name);
             body = body.Replace("{cmshost}", DbUtil.Db.Setting("DefaultHost", DbUtil.Db.Host));
             body = body.Replace("{username}", user.Username);
@@ -329,9 +323,10 @@ Click on your username below to set your password and login to the system.</p>
             var list = q.ToList();
             if (list.Count == 0)
             {
+                var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
                 var q2 = from uu in DbUtil.Db.People
                          where uu.EmailAddress == username || uu.EmailAddress2 == username
-                         where uu.Age == null || uu.Age >= 16
+                         where uu.Age == null || uu.Age >= minage
                          select uu;
                 if (q2.Count() == 1)
                 {

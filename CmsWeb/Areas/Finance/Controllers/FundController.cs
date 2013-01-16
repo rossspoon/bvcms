@@ -7,7 +7,7 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Finance.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Finance")]
     public class FundController : CmsStaffController
     {
         public ActionResult Index(string sort, int? status)
