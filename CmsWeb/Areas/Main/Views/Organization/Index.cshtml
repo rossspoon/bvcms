@@ -45,12 +45,9 @@
                 <li><a href="/OrgContent/Index/@o.OrganizationId" target="_blank">
                          Members Only Page
                     </a> </li>
-                @if (User.IsInRole("Developer"))
-                {
-                    <li><a href="/RegSetting/Index/@o.OrganizationId">
-                            View Registration Document
-                        </a></li>
-                }
+                <li class="hideAlt"><a href="/RegSetting/Index/@o.OrganizationId">
+                        View Registration Document
+                    </a></li>
                 <li><a id="tryreg" href="#">Try Registration</a> </li>
                 @if (Model.IsVolunteerLeader && o.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
                 {
@@ -84,7 +81,7 @@
                     <li><a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">
                             Delete Organization
                         </a></li>
-                    <li><a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">
+                    <li class="hideAlt"><a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">
                             Repair Transactions
                         </a></li>
                 }
