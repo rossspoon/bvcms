@@ -97,6 +97,9 @@ namespace CmsData
             bc.RequestXML = sXMLSave;
             // End Stored Request
 
+            // TODO: Temporary - Remove Later
+            DbUtil.Db.SubmitChanges();
+
             // Submit Request to PMM
             var fields = new NameValueCollection();
             fields.Add("REQUEST", sXML);
