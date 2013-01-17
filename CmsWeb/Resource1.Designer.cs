@@ -148,6 +148,33 @@ namespace CmsWeb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;h1&gt;Sample Church&lt;/h1&gt;
+        ///&lt;h2&gt;2000 Appling Rd. | Cordova | TN 38088-1210 | (901) 347-2000&lt;/h2&gt;.
+        /// </summary>
+        internal static string ContributionStatementHeader {
+            get {
+                return ResourceManager.GetString("ContributionStatementHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;&lt;i&gt;
+        ///NOTE: No goods or services were provided to you by the church in connection with any contibution;
+        ///any value received consisted entirely of intangible religious benefits.
+        ///Sample Church, FEIN # 1234, is a 501(c)(3) organization and
+        ///qualifies as a part of the Southern Baptist Convention&apos;s group tax exemption ruling number GEN #1674.
+        ///&lt;/i&gt;&lt;/p&gt;
+        ///&lt;p&gt;&lt;i&gt;
+        ///Thank you for your faithfulness in the giving of your time, talents, and resources. Together we can share the love of Jesus with our city.
+        ///&lt;/i&gt;&lt;/p&gt;.
+        /// </summary>
+        internal static string ContributionStatementNotice {
+            get {
+                return ResourceManager.GetString("ContributionStatementNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;Hi {first},&lt;/p&gt;
         ///
         ///&lt;p&gt;I need a substitute for {org}&lt;br&gt;

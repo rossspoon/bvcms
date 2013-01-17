@@ -44,7 +44,7 @@ namespace CmsWeb.Code
 				ModelState.AddModelError("Routing", "invalid routing number");
 			if (!Account.HasValue())
 				ModelState.AddModelError("Account", "need account number");
-			else if (Account.Length <= 4)
+			else if (!Account.StartsWith("X") && Account.Length <= 4)
 				ModelState.AddModelError("Account", "please enter entire account number with any leading zeros");
 		}
 		private static bool checkABA(string s)

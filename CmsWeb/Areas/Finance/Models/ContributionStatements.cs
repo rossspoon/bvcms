@@ -105,11 +105,7 @@ p { font-size: 11px; }
                 var t1 = new PdfPTable(1);
                 t1.TotalWidth = 72f * 5f;
                 t1.DefaultCell.Border = Rectangle.NO_BORDER;
-                string html1 = @"<h1>Bellevue Baptist Church</h1>
-<h2>2000 Appling Rd. | Cordova | TN 38088-1210 | (901) 347-2000</h2>";
-                var content = Db.Contents.SingleOrDefault(c => c.Name == "StatementHeader");
-                if (content != null)
-                    html1 = content.Body;
+                string html1 = DbUtil.Db.ContentHtml("StatementHeader", Resource1.ContributionStatementHeader);
 
                 var mh = new MyHandler();
                 using (var sr = new StringReader(css + html1))
@@ -154,19 +150,7 @@ p { font-size: 11px; }
                 t2.DefaultCell.Border = Rectangle.NO_BORDER;
                 t2.AddCell(new Phrase("\nPrint Date: {0:d}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
                 t2.AddCell("");
-                string html2 = @"<p><i>
-NOTE: No goods or services were provided to you by the church in connection with any contibution;
-any value received consisted entirely of intangible religious benefits.
-Bellevue Baptist Church, FEIN # 62-60017-10, is a 501(c)(3) organization and
-qualifies as a part of the Southern Baptist Convention's group tax exemption ruling number GEN #1674.
-</i></p>
-<p> </p>
-<p><i>
-Thank you for your faithfulness in the giving of your time, talents, and resources. Together we can share the love of Jesus with our city.
-</i></p>";
-                content = Db.Contents.SingleOrDefault(c => c.Name == "StatementNotice");
-                if (content != null)
-                    html2 = content.Body;
+                string html2 = Db.Content("StatementNotice", Resource1.ContributionStatementNotice);
                 var mh2 = new MyHandler();
                 using (var sr = new StringReader(css + html2))
                     XMLWorkerHelper.GetInstance().ParseXHtml(mh2, sr);

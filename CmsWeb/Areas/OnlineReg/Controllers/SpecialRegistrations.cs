@@ -249,7 +249,8 @@ The following Committments:<br/>
 		public ActionResult ManageGiving(ManageGivingModel m)
 		{
 			SetHeaders(m.orgid);
-		    m.Account = m.Account.GetDigits();
+            if (!m.Account.StartsWith("X"))
+    		    m.Account = m.Account.GetDigits();
 			m.ValidateModel(ModelState);
 			if (!ModelState.IsValid)
 				return View(m);
@@ -485,8 +486,23 @@ You have the following subscriptions:<br/>
 				oid, pid, 220, DateTime.Now, null, false);
 			//DbUtil.Db.UpdateMainFellowship(oid);
 
-			omb.AddToGroup(DbUtil.Db, smallgroup);
-			omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
+		    if (q.org.AddToSmallGroupScript.HasValue())
+		    {
+		        var script = DbUtil.Db.Content(q.org.AddToSmallGroupScript);
+		        if (script != null && script.Body.HasValue())
+		        {
+		            try
+		            {
+		                var pe = new PythonEvents(DbUtil.Db, "RegisterEvent", script.Body);
+		                pe.instance.AddToSmallGroup(smallgroup, omb);
+		            }
+		            catch (Exception)
+		            {
+		            }
+		        }
+		    }
+	        omb.AddToGroup(DbUtil.Db, smallgroup);
+		    omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
 			ot.Used = true;
 			DbUtil.Db.SubmitChanges();
 			DbUtil.LogActivity("Votelink: {0}".Fmt(q.org.OrganizationName));
