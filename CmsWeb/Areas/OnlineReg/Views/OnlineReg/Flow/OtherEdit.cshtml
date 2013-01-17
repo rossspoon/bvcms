@@ -38,7 +38,7 @@
             break;
         case "AskInstruction":
         <tr>
-            <td colspan="2"><blockquote><i>@Html.Raw(((AskInstruction)ask).Label)</i></blockquote></td>
+            <td colspan="2"><i style="margin-left: 1em; display:inline-block;">@Html.Raw(((AskInstruction)ask).Label)</i></td>
         </tr>
             break;
         case "AskEmContact":
@@ -217,15 +217,18 @@
             if (cb.Cols > 1)
             {
             <tr>
-            <td style="padding: 3px" colspan="2">
+            <td style="padding: 3px" colspan="2" align="center">
                 <div>@cb.Label</div>
-                <table class="grid table-striped" style="border: 1px solid #ddd">
+                <table class="checkboxes grid table-striped">
                     <thead>
                         <tr>
                             @for (var n = 0; n < cb.Cols; n++)
                             {
                                 var a = cb.list[n];
-                                <th>@Html.Raw(a.Description)</th> 
+                                if (a.SmallGroup == "nocheckbox")
+                                {
+                                <th>@Html.Raw(a.Description)</th>
+                                }
                             }
                         </tr>
                     </thead>
@@ -233,34 +236,29 @@
                     @for (var n = cb.Cols.Value; n < cb.list.Count; n++)
                     {
                         var a = cb.list[n];
-                        var filled = a.IsSmallGroupFilled(Model.GroupTags);
                         if (n%cb.Cols == 0)
                         {
                             @Html.Raw("<tr>")
-                            @Html.Raw("<th>")
-                        }
-                        else
-                        {
-                            @Html.Raw("<th>")
                         }
                         if (a.SmallGroup == "nocheckbox")
                         {
-                            @Html.Raw(a.Description)
+                            <td>@Html.Raw(a.Description)</td>
                         }
-                        else
+                        else if(a.SmallGroup != "comment")
                         {
-                            <input type="checkbox" value="@a.SmallGroup" name="@Html.NameFor2(m => m.Checkbox)" @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") />
+                            if (a.IsSmallGroupFilled(Model.GroupTags))
+                            {
+                            <td><i>filled</i></td>
+                            }
+                            else
+                            {
+                            <td><input type="checkbox" value="@a.SmallGroup" name="@Html.NameFor2(m => m.Checkbox)" @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") /></td>
+                            }
                         }
-                        if (n%cb.Cols == 0)
+                        if (n%cb.Cols == cb.Cols - 1)
                         {
-                            @Html.Raw("</th>")
+                            @Html.Raw("</tr>")
                         }
-                        else
-                        {
-                            @Html.Raw("</td>")
-                        }
-                        if (n % cb.Cols == cb.Cols - 1) 
-                        { @Html.Raw("</tr>") }
                     }
                     </tbody>
                 </table>
@@ -278,24 +276,24 @@
 					{
                         var a = cb.list[n];
                         var filled = a.IsSmallGroupFilled(Model.GroupTags);
-						if (a.SmallGroup == "nocheckbox")
-						{
-							<tr><td></td><td>@Html.Raw(a.Description)</td></tr>
-						}
-                        else
-                        {
-                            <tr><td valign="top">
-                                    <input type="checkbox" value="@a.SmallGroup" name="@Html.NameFor2(m => m.Checkbox)" @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") />
-                                </td>
-                                <td>
-                                    <span@(filled ? " class=strike" : "")>@Html.Raw(a.Description)</span>
-                                    @if (a.Fee > 0)
-                                    {
-                                        @:&nbsp;($@a.Fee.ToString2("N2")) 
-                                    }
-                                </td>
-                            </tr>
-                        }
+				        if (a.SmallGroup == "nocheckbox")
+				        {
+				            <tr><td></td><td>@Html.Raw(a.Description)</td></tr>
+				        }
+				        else if (a.SmallGroup != "comment")
+				        {
+				            <tr><td valign="top">
+				                    <input type="checkbox" value="@a.SmallGroup" name="@Html.NameFor2(m => m.Checkbox)" @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") />
+				                </td>
+				                <td>
+				                    <span@(filled ? " class=strike" : "")>@Html.Raw(a.Description)</span>
+				                    @if (a.Fee > 0)
+				                    {
+				                        @:&nbsp;($@a.Fee.ToString2("N2"))
+				                    }
+				                </td>
+				            </tr>
+				        }
 					}
 				</table>
 				<div>@Html.ValidationMessageFor(m => m.Checkbox[ask.UniqueId])</div>

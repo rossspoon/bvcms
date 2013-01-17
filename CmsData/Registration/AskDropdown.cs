@@ -39,7 +39,12 @@ namespace CmsData.Registration
 				var m = DropdownItem.Parse(parser, startindent);
 				dd.list.Add(m);
 			}
-			var q = dd.list.Where(mi => mi.SmallGroup != "nocheckbox").GroupBy(mi => mi.SmallGroup).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+            var q = (from i in dd.list
+                     where i.SmallGroup != "nocheckbox"
+                     where i.SmallGroup != "comment"
+                     group i by i.SmallGroup into g
+                     where g.Count() > 1
+                     select g.Key).ToList();
 			if (q.Any())
 				throw parser.GetException("Duplicate SmallGroup in Dropdown: {0}".Fmt(string.Join(",", q)));
 			return dd;

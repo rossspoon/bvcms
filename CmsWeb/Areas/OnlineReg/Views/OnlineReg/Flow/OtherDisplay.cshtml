@@ -133,9 +133,13 @@
         	}
             break;
         case "AskCheckboxes":
-            foreach (var a in ((AskCheckboxes)ask).list)
+	        var cb = (AskCheckboxes) ask;
+            foreach (var a in cb.list)
             {
-                if (a.SmallGroup == "nocheckbox")
+                if (a.SmallGroup == "comment")
+                {
+                }
+                else if (a.SmallGroup == "nocheckbox" && cb.Cols == 1)
                 {
                     <tr><td colspan="2"><b>@Html.Raw(a.Description)</b></td></tr>
                 }

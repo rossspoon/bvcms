@@ -22,9 +22,10 @@ namespace CmsWeb.Models.OrganizationPage
         private int GroupsMode;
         private GroupSelect Select;
         private string NameFilter;
+        private string SgPrefix;
 
         public PagerModel2 Pager { get; set; }
-        public MemberModel(int? id, GroupSelect select, string name)
+        public MemberModel(int? id, GroupSelect select, string name, string sgprefix = "")
         {
             OrganizationId = id;
             if (Util2.CurrentGroups != null && @select == GroupSelect.Active)
@@ -42,6 +43,7 @@ namespace CmsWeb.Models.OrganizationPage
             Pager.Direction = "asc";
             Pager.Sort = "Name";
             NameFilter = name;
+            SgPrefix = sgprefix;
         }
         public IEnumerable<SelectListItem> SmallGroups()
         {
@@ -60,7 +62,7 @@ namespace CmsWeb.Models.OrganizationPage
         }
         public bool isFiltered
         {
-            get { return Util2.CurrentGroups[0] != 0 || NameFilter.HasValue(); }
+            get { return Util2.CurrentGroups[0] != 0 || NameFilter.HasValue() || SgPrefix.HasValue(); }
         }
 
         private IQueryable<OrganizationMember> _members;
@@ -124,6 +126,20 @@ namespace CmsWeb.Models.OrganizationPage
                                let p = om.Person
                                where p.LastName.StartsWith(Last)
                                select om;
+            }
+            if (SgPrefix.HasValue())
+            {
+                var a = SgPrefix.Split(',');
+                foreach(var p in a)
+                    if (p.StartsWith("-"))
+                        _members = from om in _members
+                                   where om.OrgMemMemTags.All(mm => !mm.MemberTag.Name.StartsWith(p.Substring(1)))
+                                   select om;
+                    else
+                        _members = from om in _members
+                                   where om.OrgMemMemTags.Any(mm => mm.MemberTag.Name.StartsWith(p))
+                                   select om;
+
             }
             return _members;
         }

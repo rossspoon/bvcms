@@ -136,14 +136,14 @@ namespace CmsWeb.Areas.Main.Controllers
 			ViewData["OrganizationContext"] = true;
 		}
 
-		public ActionResult CurrMemberGrid(int id, int[] smallgrouplist, int? selectmode, string namefilter)
+		public ActionResult CurrMemberGrid(int id, int[] smallgrouplist, int? selectmode, string namefilter, string sgprefix)
 		{
 			ViewData["OrgMemberContext"] = true;
 			Util2.CurrentGroups = smallgrouplist;
 		    Util2.CurrentGroupsMode = selectmode.Value;
 			var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
 			InitExportToolbar(id, qb.QueryId, checkparent:true);
-			var m = new MemberModel(id, MemberModel.GroupSelect.Active, namefilter);
+			var m = new MemberModel(id, MemberModel.GroupSelect.Active, namefilter, sgprefix);
 			UpdateModel(m.Pager);
 			return View(m);
 		}

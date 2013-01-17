@@ -79,8 +79,9 @@ namespace CmsWeb.Models
 				ValidBasic(ModelState);
 		    if (ComputesOrganizationByAge() && !birthday.HasValue)
 				ModelState.AddModelError(dobname, "birthday required");
-			if (orgid == Util.CreateAccountCode && age < 16)
-				ModelState.AddModelError(dobname, "must be 16 to create account");
+		    var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
+		    if (orgid == Util.CreateAccountCode && age < minage)
+				ModelState.AddModelError(dobname, "must be {0} to create account".Fmt(minage));
 			if (!IsFamily && (!email.HasValue() || !Util.ValidEmail(email)))
 				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].email), "Please specify a valid email address.");
 			if (ModelState.IsValid)
@@ -209,8 +210,9 @@ Please search with a different email, phone, or birthday.";
 			else if (!birthday.HasValue && RequiredDOB())
 				ModelState.AddModelError(dobname, "birthday required");
 
-			if (orgid == Util.CreateAccountCode && age < 16)
-				ModelState.AddModelError(dobname, "must be 16 to create account");
+		    var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
+		    if (orgid == Util.CreateAccountCode && age < minage)
+				ModelState.AddModelError(dobname, "must be {0} to create account".Fmt(minage));
 
 			if (ComputesOrganizationByAge() && GetAppropriateOrg() == null)
 				ModelState.AddModelError(dobname, "Sorry, cannot find an appropriate age group");

@@ -25,9 +25,10 @@ namespace CmsWeb.Areas.Main.Models.Report
     public class ContactsResult : ActionResult
     {
         private int? qid;
-        public ContactsResult(int? id)
+        public ContactsResult(int? id, bool? sortAddress)
         {
             qid = id;
+            this.sortAddress = sortAddress ?? false;
         }
         private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
@@ -39,6 +40,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         private Document doc;
         private DateTime dt;
         private PdfContentByte dc;
+        private bool sortAddress { get; set; }
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -58,9 +60,15 @@ namespace CmsWeb.Areas.Main.Models.Report
             if (qid.HasValue) // print using a query
             {
                 var q = DbUtil.Db.PeopleQuery(qid.Value);
-                q = from p in q
-                    orderby p.Name2
-                    select p;
+                
+                if (sortAddress)
+                    q = from p in q
+                        orderby p.PrimaryState, p.PrimaryCity, p.PrimaryZip, p.PrimaryCity, p.PrimaryAddress, p.Name2
+                        select p;
+                else
+                    q = from p in q
+                        orderby p.Name2
+                        select p;
                 foreach (var p in q)
                     AddRow(p);
                 if (t.Rows.Count > 1)

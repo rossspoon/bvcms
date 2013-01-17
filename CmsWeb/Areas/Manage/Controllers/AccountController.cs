@@ -222,8 +222,9 @@ The bvCMS Team</p>
             var p = DbUtil.Db.LoadPersonById(pid);
             if (p == null)
                 return View("LinkUsed");
-            if ((p.Age ?? 16) < 16)
-                return Content("must be Adult (16 or older)");
+		    var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
+		    if ((p.Age ?? 16) < minage)
+                return Content("must be Adult ({0} or older)".Fmt(minage));
             var user = MembershipService.CreateUser(DbUtil.Db, pid);
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);

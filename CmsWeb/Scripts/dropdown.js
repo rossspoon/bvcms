@@ -33,5 +33,11 @@ $(function() {
 		if( !$.browser.msie || ($.browser.msie && $.browser.version >= 9) ) {
 			$(window).on('resize.dropdown', hideDropdowns);
 		}
+	    $(document).keydown(function(e) {
+	        if (e.keyCode == 17) {
+	            $("li.hideAlt").toggle();
+	        }
+	    });
+        $("li.hideAlt").hide();
 	});
 });
