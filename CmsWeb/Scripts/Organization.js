@@ -428,6 +428,7 @@ $(function () {
                     "class": 'bt green',
                     "click": function() {
                         $("#namefilter").val('');
+                        $("#sgprefix").val('');
                         $("#smallgrouplist").val(null);
                         $.getTable(f);
                         $("#FilterGroups").dialog("close");

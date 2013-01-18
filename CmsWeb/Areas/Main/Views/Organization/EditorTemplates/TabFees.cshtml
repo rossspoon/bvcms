@@ -1,4 +1,5 @@
 ﻿@model CmsData.Registration.Settings
+@using CmsData
 @using CmsWeb
 @using UtilityExtensions
   <li><span class="keyword big tip" title="Fee
@@ -71,12 +72,15 @@
       </ul>
     <div class="newitem"><a href="/Organization/NewOrgFee/@listname"><img src="/images/plus1.png" /> Add Item</a></div>
   </li>
-  <li><span class="keyword big tip" title="OtherFeesAddedToOrgFee
+<li><span class="keyword big tip" title="OtherFeesAddedToOrgFee
     |Indicate whether the special fees for orgs includes 
     |Other Fees on the Questions tab.">
-    Other Fees are Additional:</span> @Html.CheckBox("OtherFeesAddedToOrgFee", Model.OtherFeesAddedToOrgFee)
-  </li>
-  <li><span class="keyword big tip" title="ExtraValueFeeName
+        Other Fees are Additional:</span> @Html.CheckBox("OtherFeesAddedToOrgFee", Model.OtherFeesAddedToOrgFee)
+</li>
+@if (DbUtil.Db.Setting("ShowExtraValueFeeName", "false").ToBool())
+{
+    <li><span class="keyword big tip" title="ExtraValueFeeName
     |The fee will be taken from this Extra Value field">
-    ExtraValueFeeName:</span> @Html.TextBox("ExtraValueFeeName", Model.ExtraValueFeeName)
-  </li>
+            ExtraValueFeeName:</span> @Html.TextBox("ExtraValueFeeName", Model.ExtraValueFeeName)
+    </li>
+}

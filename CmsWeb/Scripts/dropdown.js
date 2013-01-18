@@ -27,6 +27,7 @@ $(function() {
 		    return;
 		$('div.dropdown-menu').hide();
 		$('a.trigger-dropdown').removeClass('dropdown-open');
+        $("li.hideAlt").hide();
 	};
 	$(function () {
 		$('HTML').on('click.dropdown', hideDropdowns);
@@ -34,7 +35,7 @@ $(function() {
 			$(window).on('resize.dropdown', hideDropdowns);
 		}
 	    $(document).keydown(function(e) {
-	        if (e.keyCode == 17) {
+	        if (e.keyCode == 17 && $("a.trigger-dropdown").hasClass("dropdown-open")) {
 	            $("li.hideAlt").toggle();
 	        }
 	    });
