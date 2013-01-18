@@ -2,6 +2,12 @@
 @model CmsData.Person
 @{
     int type = ViewBag.dialogType;
+
+    var labels = from e in DbUtil.Db.BackgroundCheckLabels
+                 orderby e.Name
+                 select e;
+
+    var labelEnabled = DbUtil.Db.Setting("EnableBackgroundLabels", "false") == "true";
 }
 <!DOCTYPE html>
 <html>
@@ -24,6 +30,12 @@
                         <td align="right" valign="top"><b>Type:</b></td>
                         <td valign="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.BACKGROUND_TYPES ) )</td>
                     </tr>
+                    @if( labelEnabled ) {
+                    <tr>
+                        <td align="right" valign="top"><b>Label:</b></td>
+                        <td valign="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name" ) )</td>
+                    </tr>
+                    }
                     <tr><td>&nbsp;</td></tr>
                     <tr>
                         <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
@@ -46,6 +58,12 @@
                         <td align="right" valign="top"><b>Type:</b></td>
                         <td valign="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.CREDIT_TYPES ) )</td>
                     </tr>
+                    @if( labelEnabled ) {
+                    <tr>
+                        <td align="right" valign="top"><b>Label:</b></td>
+                        <td valign="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name" ) )</td>
+                    </tr>
+                    }
                     <tr><td>&nbsp;</td></tr>
                     <tr>
                         <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>

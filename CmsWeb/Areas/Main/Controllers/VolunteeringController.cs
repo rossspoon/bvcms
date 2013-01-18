@@ -123,10 +123,23 @@ namespace CmsWeb.Areas.Main.Controllers
             return vol;
         }
 
-        public ActionResult CreateCheck(int id, string code, int type)
+        public ActionResult CreateCheck(int id, string code, int type, int label = 0)
         {
-            ProtectMyMinistryHelper.create(id, code, type);
+            ProtectMyMinistryHelper.create(id, code, type, label);
             return Redirect("/Volunteering/Index/" + id);
+        }
+
+        public ActionResult EditCheck(int id, int label = 0)
+        {
+            BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
+                                  where e.Id == id
+                                  select e).Single();
+
+            bc.ReportLabelID = label;
+
+            DbUtil.Db.SubmitChanges();
+
+            return Redirect("/Volunteering/Index/" + bc.PeopleID);
         }
 
         public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0 )
@@ -167,6 +180,15 @@ namespace CmsWeb.Areas.Main.Controllers
 
                 default: return View();
             }
+        }
+
+        public ActionResult DialogEdit(int id)
+        {
+            BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
+                                  where e.Id == id
+                                  select e).Single();
+
+            return View(bc);
         }
 
         public ActionResult DialogType(int id, int type)

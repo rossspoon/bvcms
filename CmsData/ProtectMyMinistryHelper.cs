@@ -24,7 +24,7 @@ namespace CmsData
         public static readonly string[] BACKGROUND_TYPES = { "Combo", "MVR" };
         public static readonly string[] CREDIT_TYPES = { "Credit" };
 
-        public static void create( int iPeopleID, string sServiceCode, int iType )
+        public static void create( int iPeopleID, string sServiceCode, int iType, int iLabel )
         {
             BackgroundCheck bcNew = new BackgroundCheck();
 
@@ -35,6 +35,7 @@ namespace CmsData
             bcNew.Created = DateTime.Now;
             bcNew.Updated = DateTime.Now;
             bcNew.ReportTypeID = iType;
+            bcNew.ReportLabelID = iLabel;
 
             DbUtil.Db.BackgroundChecks.InsertOnSubmit(bcNew);
             DbUtil.Db.SubmitChanges();
@@ -251,6 +252,17 @@ namespace CmsData
                 sReturn.bHasErrors = true;
 
                 var errors = xd.Root.Element("Errors").Elements("Message");
+
+                foreach (var item in errors)
+                {
+                    sReturn.sErrors += item.Value.Replace("<", "&lt;").Replace(">", "&gt;") + "<br>";
+                }
+            }
+            else if (xd.Root.Element("Status").Value == "ERROR")
+            {
+                sReturn.bHasErrors = true;
+
+                var errors = xd.Root.Elements("Message");
 
                 foreach (var item in errors)
                 {

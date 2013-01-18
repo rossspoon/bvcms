@@ -45,6 +45,10 @@ namespace CmsData
 		
 		private string _ErrorMessages;
 		
+		private int _ReportTypeID;
+		
+		private int _ReportLabelID;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -99,6 +103,12 @@ namespace CmsData
 		
 		partial void OnErrorMessagesChanging(string value);
 		partial void OnErrorMessagesChanged();
+		
+		partial void OnReportTypeIDChanging(int value);
+		partial void OnReportTypeIDChanged();
+		
+		partial void OnReportLabelIDChanging(int value);
+		partial void OnReportLabelIDChanged();
 		
     #endregion
 		public BackgroundCheck()
@@ -422,6 +432,50 @@ namespace CmsData
 					this._ErrorMessages = value;
 					this.SendPropertyChanged("ErrorMessages");
 					this.OnErrorMessagesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ReportTypeID", UpdateCheck=UpdateCheck.Never, Storage="_ReportTypeID", DbType="int NOT NULL")]
+		public int ReportTypeID
+		{
+			get { return this._ReportTypeID; }
+
+			set
+			{
+				if (this._ReportTypeID != value)
+				{
+				
+                    this.OnReportTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._ReportTypeID = value;
+					this.SendPropertyChanged("ReportTypeID");
+					this.OnReportTypeIDChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ReportLabelID", UpdateCheck=UpdateCheck.Never, Storage="_ReportLabelID", DbType="int NOT NULL")]
+		public int ReportLabelID
+		{
+			get { return this._ReportLabelID; }
+
+			set
+			{
+				if (this._ReportLabelID != value)
+				{
+				
+                    this.OnReportLabelIDChanging(value);
+					this.SendPropertyChanging();
+					this._ReportLabelID = value;
+					this.SendPropertyChanged("ReportLabelID");
+					this.OnReportLabelIDChanged();
 				}
 
 			}
