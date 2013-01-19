@@ -30,11 +30,11 @@ namespace CmsData
             DbUtil.Db.SubmitChanges();
             return c.ContactId;
         }
-        public static Contact AddContact(CMSDataContext Db, int pid, DateTime date, string comments)
+        public static Contact AddContact(CMSDataContext Db, int pid, DateTime? date, string comments)
         {
             var c = new Contact 
 			{ 
-				ContactDate = date, 
+				ContactDate = date ?? DateTime.Parse("1/1/1900"), 
 				CreatedBy = Util.UserPeopleId ?? Util.UserId1,
 	            CreatedDate = DateTime.Now,
 	            ContactTypeId = ContactTypeCode.Other,

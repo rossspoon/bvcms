@@ -92,7 +92,7 @@ namespace CmsWeb.Models
 				for (var i = 0; i < groups.Length; i++)
 				{
 					var group = groups[i];
-					q = q.Where(om => om.OrgMemMemTags.Any(omt => omt.MemberTag.Name == group));
+					q = q.Where(om => om.OrgMemMemTags.Any(omt => omt.MemberTag.Name.StartsWith(group)));
 				}
 			}
             if (notgroupactive)

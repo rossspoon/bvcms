@@ -347,7 +347,7 @@ namespace CMSPresenter
 		public IEnumerable<CodeValueItem> ContactReasonCodes()
 		{
 			return from c in DbUtil.Db.ContactReasons
-				   orderby c.Description
+				   orderby c.Description.StartsWith("-") ? "Z" + c.Description : c.Description
 				   select new CodeValueItem
 				   {
 					   Id = c.Id,
@@ -362,7 +362,7 @@ namespace CMSPresenter
 		public IEnumerable<CodeValueItem> ContactTypeCodes()
 		{
 			return from c in DbUtil.Db.ContactTypes
-				   orderby c.Description
+				   orderby c.Description.StartsWith("-") ? "Z" + c.Description : c.Description
 				   select new CodeValueItem
 				   {
 					   Id = c.Id,

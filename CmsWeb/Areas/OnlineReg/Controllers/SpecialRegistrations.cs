@@ -249,7 +249,9 @@ The following Committments:<br/>
 		public ActionResult ManageGiving(ManageGivingModel m)
 		{
 			SetHeaders(m.orgid);
-            if (!m.Account.StartsWith("X"))
+            if (!m.Account.HasValue())
+                m.Account = m.Account.GetDigits();
+            else if (!m.Account.StartsWith("X"))
     		    m.Account = m.Account.GetDigits();
 			m.ValidateModel(ModelState);
 			if (!ModelState.IsValid)

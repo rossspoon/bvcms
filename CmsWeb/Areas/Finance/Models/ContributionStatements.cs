@@ -105,7 +105,8 @@ p { font-size: 11px; }
                 var t1 = new PdfPTable(1);
                 t1.TotalWidth = 72f * 5f;
                 t1.DefaultCell.Border = Rectangle.NO_BORDER;
-                string html1 = DbUtil.Db.ContentHtml("StatementHeader", Resource1.ContributionStatementHeader);
+                string html1 = Db.ContentHtml("StatementHeader", Resource1.ContributionStatementHeader);
+                string html2 = Db.ContentHtml("StatementNotice", Resource1.ContributionStatementNotice);
 
                 var mh = new MyHandler();
                 using (var sr = new StringReader(css + html1))
@@ -150,7 +151,6 @@ p { font-size: 11px; }
                 t2.DefaultCell.Border = Rectangle.NO_BORDER;
                 t2.AddCell(new Phrase("\nPrint Date: {0:d}   (id:{1} {2})".Fmt(DateTime.Now, ci.PeopleId, ci.CampusId), font));
                 t2.AddCell("");
-                string html2 = Db.Content("StatementNotice", Resource1.ContributionStatementNotice);
                 var mh2 = new MyHandler();
                 using (var sr = new StringReader(css + html2))
                     XMLWorkerHelper.GetInstance().ParseXHtml(mh2, sr);
