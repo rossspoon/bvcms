@@ -17,6 +17,11 @@
                  where e.PeopleID == Model.PeopleId
                  where e.ReportTypeID == ProtectMyMinistryHelper.TYPE_CREDIT
                  select e;
+
+    var labels = from e in DbUtil.Db.BackgroundCheckLabels
+                 select e;
+
+    var labelEnabled = DbUtil.Db.Setting("EnableBackgroundLabels", "false") == "true";
 }
 @section scripts
 {
@@ -45,6 +50,17 @@
             url: "/Volunteering/DialogType/" + id + "?type=" + type,
             success: function (data) {
                 submitDialog.html(data).dialog({ modal: true, width: 'auto', title: 'Select Check Type' }).dialog('open');
+            }
+        });
+    }
+
+    function showEditDialog(id)
+    {
+        submitDialog = $("#dialogHolder");
+        $.ajax({
+            url: "/Volunteering/DialogEdit/" + id,
+            success: function (data) {
+                submitDialog.html(data).dialog({ modal: true, width: 'auto', title: 'Edit Check' }).dialog('open');
             }
         });
     }
@@ -94,21 +110,32 @@
     else
     {
         <tr>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Created</b></th>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Updated</b></th>
+            <th width="8%" style="background-color:#EFF3FB;"><b>Updated</b></th>
+            @if( labelEnabled ) {
+                <th width="25%" style="background-color:#EFF3FB;"><b>Label</b></th>
+            }
             <th width="10%" style="background-color:#EFF3FB;"><b>Service</b></th>
             <th width="10%" style="background-color:#EFF3FB;"><b>Status</b></th>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Report ID</b></th>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Issues</b></th>
+            <th width="8%" style="background-color:#EFF3FB;"><b>Report ID</b></th>
+            <th width="6%" style="background-color:#EFF3FB;"><b>Issues</b></th>
             <th style="background-color:#EFF3FB; white-space: nowrap;"><b>Report Link/Error</b></th>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Action</b></th>
+            <th width="8%" style="background-color:#EFF3FB;"><b>Action</b></th>
         </tr>
     }
     @foreach (var check in bg)
     {
         <tr>
-            <td align="center" style="white-space: nowrap;">@check.Created.ToString("d")</td>
             <td align="center" style="white-space: nowrap;">@check.Updated.ToString("d")</td>
+            @if( labelEnabled ) {
+                <td align="center" style="white-space: nowrap;">
+                @if (check.ReportLabelID > 0)
+                {
+                    <a href="javascript:void(0)" onclick="showEditDialog( @check.Id );">
+                        @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Name
+                    </a>
+                }
+                </td>
+            }
             <td align="center">@check.ServiceCode</td>
             <td align="center" style="white-space: nowrap;">@ProtectMyMinistryHelper.getStatus( check.StatusID )</td>
             <td align="center">@( check.ReportID > 0 ? check.ReportID.ToString() : "" )</td>
@@ -165,21 +192,32 @@
     else
     {
         <tr>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Created</b></th>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Updated</b></th>
+            <th width="8%" style="background-color:#EFF3FB;"><b>Created</b></th>
+            @if( labelEnabled ) {
+                <th width="25%" style="background-color:#EFF3FB;"><b>Label</b></th>
+            }
             <th width="10%" style="background-color:#EFF3FB;"><b>Service</b></th>
             <th width="10%" style="background-color:#EFF3FB;"><b>Status</b></th>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Report ID</b></th>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Issues</b></th>
+            <th width="8%" style="background-color:#EFF3FB;"><b>Report ID</b></th>
+            <th width="6%" style="background-color:#EFF3FB;"><b>Issues</b></th>
             <th style="background-color:#EFF3FB; white-space: nowrap;"><b>Report Link/Error</b></th>
-            <th width="10%" style="background-color:#EFF3FB;"><b>Action</b></th>
+            <th width="8%" style="background-color:#EFF3FB;"><b>Action</b></th>
         </tr>
     }
     @foreach (var check in credit)
     {
         <tr>
             <td align="center" style="white-space: nowrap;">@check.Created.ToString("d")</td>
-            <td align="center" style="white-space: nowrap;">@check.Updated.ToString("d")</td>
+            @if( labelEnabled ) {
+                <td align="center" style="white-space: nowrap;">
+                @if (check.ReportLabelID > 0)
+                {
+                    <a href="javascript:void(0)" onclick="showEditDialog( @check.Id );">
+                        @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Name
+                    </a>
+                }
+                </td>
+            }
             <td align="center">@check.ServiceCode</td>
             <td align="center" style="white-space: nowrap;">@ProtectMyMinistryHelper.getStatus( check.StatusID )</td>
             <td align="center">@( check.ReportID > 0 ? check.ReportID.ToString() : "" )</td>

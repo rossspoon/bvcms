@@ -47,6 +47,8 @@ namespace CmsData
 		
 		private int _ReportTypeID;
 		
+		private int _ReportLabelID;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -104,6 +106,9 @@ namespace CmsData
 		
 		partial void OnReportTypeIDChanging(int value);
 		partial void OnReportTypeIDChanged();
+		
+		partial void OnReportLabelIDChanging(int value);
+		partial void OnReportLabelIDChanged();
 		
     #endregion
 		public BackgroundCheck()
@@ -449,6 +454,28 @@ namespace CmsData
 					this._ReportTypeID = value;
 					this.SendPropertyChanged("ReportTypeID");
 					this.OnReportTypeIDChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ReportLabelID", UpdateCheck=UpdateCheck.Never, Storage="_ReportLabelID", DbType="int NOT NULL")]
+		public int ReportLabelID
+		{
+			get { return this._ReportLabelID; }
+
+			set
+			{
+				if (this._ReportLabelID != value)
+				{
+				
+                    this.OnReportLabelIDChanging(value);
+					this.SendPropertyChanging();
+					this._ReportLabelID = value;
+					this.SendPropertyChanged("ReportLabelID");
+					this.OnReportLabelIDChanged();
 				}
 
 			}
