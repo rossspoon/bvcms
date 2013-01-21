@@ -227,6 +227,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult VisitsAbsents2(int? id)
         {
+            //This is basically a Contact Report version of the Visits Absents
             if (!id.HasValue)
                 return Content("no meetingid");
             return new VisitsAbsentsResult2(id);
@@ -267,6 +268,13 @@ namespace CmsWeb.Areas.Main.Controllers
                 Dt2 = Dt1.Value.AddDays(1);
             var m = new AttendanceDetailModel(Dt1.Value, Dt2, name, divid, schedid, campusid);
             return View(m);
+        }
+        public ActionResult RecentAbsents(int? id, int? divid, int? days)
+        {
+            var q = from p in DbUtil.Db.RecentAbsents(id, divid, days ?? 36)
+                    orderby p.OrganizationName, p.OrganizationId, p.Consecutive, p.Name2
+                    select p;
+            return View(q);
         }
         public ActionResult Meetings(MeetingsModel m)
         {

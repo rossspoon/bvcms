@@ -54,6 +54,10 @@ namespace CmsData
         partial void UpdateAuditValue(AuditValue instance);
         partial void DeleteAuditValue(AuditValue instance);
         
+        partial void InsertBackgroundCheckLabel(BackgroundCheckLabel instance);
+        partial void UpdateBackgroundCheckLabel(BackgroundCheckLabel instance);
+        partial void DeleteBackgroundCheckLabel(BackgroundCheckLabel instance);
+        
         partial void InsertBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
         partial void UpdateBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
         partial void DeleteBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
@@ -683,6 +687,12 @@ namespace CmsData
 		public Table< AuditValue> AuditValues
 		{
 			get	{ return this.GetTable< AuditValue>(); }
+
+		}
+
+		public Table< BackgroundCheckLabel> BackgroundCheckLabels
+		{
+			get	{ return this.GetTable< BackgroundCheckLabel>(); }
 
 		}
 
@@ -1634,6 +1644,21 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.ContactTypeTotals", IsComposable = true)]
+		public IQueryable< View.ContactTypeTotal > ContactTypeTotals(
+            [Parameter(DbType="datetime")] DateTime? dt1,
+            [Parameter(DbType="datetime")] DateTime? dt2,
+            [Parameter(DbType="int")] int? min
+            )
+		{
+			return this.CreateMethodCallQuery< View.ContactTypeTotal>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt1,
+                dt2,
+                min
+                );
+		}
+
 		[Function(Name="dbo.ContributionCountTable", IsComposable = true)]
 		public IQueryable< View.ContributionCountTable > ContributionCountTable(
             [Parameter(DbType="int")] int? days,
@@ -1944,6 +1969,21 @@ namespace CmsData
 			return this.CreateMethodCallQuery< View.QBClause>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 qid
+                );
+		}
+
+		[Function(Name="dbo.RecentAbsents", IsComposable = true)]
+		public IQueryable< View.RecentAbsent > RecentAbsents(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? divid,
+            [Parameter(DbType="int")] int? days
+            )
+		{
+			return this.CreateMethodCallQuery< View.RecentAbsent>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                divid,
+                days
                 );
 		}
 

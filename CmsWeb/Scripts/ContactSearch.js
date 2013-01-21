@@ -38,14 +38,26 @@
     });
     $("#ContactorSummary").click(function (ev) {
         ev.preventDefault();
-        if ($("#StartDate").val() && $("#EndDate").val() && $("#form").valid())
+        if ($("#StartDate").val() && $("#EndDate").val() && $("#form").valid()) {
             window.location = $(this).attr('href')
                 + "?start=" + $("#StartDate").val()
                 + "&end=" + $("#EndDate").val()
                 + "&ministry=" + $("#Ministry").val();
-        else
+        } else
             alert("need valid dates");
-        
+
+        return false;
+    });
+    $("#ContactTypeTotals").click(function (ev) {
+        ev.preventDefault();
+        var loc = window.location = $(this).attr('href') + "?ministry=" + $("#Ministry").val();
+        if ($("#StartDate").val())
+            loc = loc.appendQuery("start=" + $("#StartDate").val());
+        if ($("#EndDate").val())
+            loc = loc.appendQuery("end=" + $("#EndDate").val());
+        hideDropdowns();
+        $.block();
+        window.location = loc;
         return false;
     });
     $("#NewSearch").click(function () {

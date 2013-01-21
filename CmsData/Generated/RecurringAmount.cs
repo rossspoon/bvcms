@@ -110,7 +110,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Amt", UpdateCheck=UpdateCheck.Never, Storage="_Amt", DbType="decimal")]
+		[Column(Name="Amt", UpdateCheck=UpdateCheck.Never, Storage="_Amt", DbType="money")]
 		public decimal? Amt
 		{
 			get { return this._Amt; }

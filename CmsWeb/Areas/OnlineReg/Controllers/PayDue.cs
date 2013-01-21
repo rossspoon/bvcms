@@ -124,8 +124,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #if DEBUG
 			ti.Testing = true;
 #endif
-            if (OnlineRegModel.GetTransactionGateway() == "serviceu")
-    			ti = PaymentForm.CreateTransaction(DbUtil.Db, ti, Amount);
+//            if (OnlineRegModel.GetTransactionGateway() == "serviceu")
+//    			ti = PaymentForm.CreateTransaction(DbUtil.Db, ti, Amount);
 			ConfirmDuePaidTransaction(ti, TransactionID, sendmail: true);
 			SetHeaders(ti.OrgId ?? 0);
 			ViewData["timeout"] = INT_timeout;

@@ -302,11 +302,14 @@
     <Compile Include="BundleHeader.cs" />
     <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\BackgroundCheck.cs" />
+    <Compile Include="Generated\BackgroundCheckLabel.cs" />
     <Compile Include="Generated\BackgroundCheckMVRCode.cs" />
     <Compile Include="Generated\ContentKeyWord.cs" />
     <Compile Include="Generated\FamilyExtra.cs" />
     <Compile Include="Generated\FamilyRelationship.cs" />
+    <Compile Include="Generated\Functions\ContactTypeTotal.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
+    <Compile Include="Generated\Functions\RecentAbsent.cs" />
     <Compile Include="Generated\Functions\RecentAttendance.cs" />
     <Compile Include="Generated\SMSItem.cs" />
     <Compile Include="Generated\SMSList.cs" />

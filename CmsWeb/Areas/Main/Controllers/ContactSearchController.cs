@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Models;
@@ -132,5 +133,38 @@ namespace CmsWeb.Areas.Main.Controllers
 					};
 			return new DataGridResult(q);
 		}
+
+		public ActionResult ContactTypeTotals(DateTime? start, DateTime? end, int? ministry)
+		{
+		    var q = from c in DbUtil.Db.ContactTypeTotals(start, end, ministry ?? 0)
+		            orderby c.Count descending
+		            select c;
+		    ViewBag.candelete = User.IsInRole("Developer") && start == null && end == null && (ministry ?? 0) == 0;
+			return View(q);
+		}
+
+	    public ActionResult ContactTypeSearchBuilder(int id)
+	    {
+			var qb = DbUtil.Db.QueryBuilderScratchPad();
+			qb.CleanSlate(DbUtil.Db);
+			var comp = CompareType.Equal;
+			var clause = qb.AddNewClause(QueryType.RecentContactType, comp, "1,T");
+	        clause.Days = 10000;
+			var cvc = new CMSPresenter.CodeValueController();
+			var q = from v in cvc.ContactTypeCodes()
+					where v.Id == id
+					select v.IdCode;
+	        clause.CodeIdValue = q.Single();
+			DbUtil.Db.SubmitChanges();
+			return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+	    }
+        [Authorize(Roles = "Developer")]
+	    public ActionResult DeleteContactsForType(int id)
+        {
+            DbUtil.Db.ExecuteCommand("DELETE dbo.Contactees FROM dbo.Contactees ce JOIN dbo.Contact c ON ce.ContactId = c.ContactId WHERE c.ContactTypeId = {0}", id);
+            DbUtil.Db.ExecuteCommand("DELETE dbo.Contactors FROM dbo.Contactors co JOIN dbo.Contact c ON co.ContactId = c.ContactId WHERE c.ContactTypeId = {0}", id);
+            DbUtil.Db.ExecuteCommand("DELETE dbo.Contact WHERE ContactTypeId = {0}", id);
+            return Redirect("/ContactSearch/ContactTypeTotals");
+        }
 	}
 }

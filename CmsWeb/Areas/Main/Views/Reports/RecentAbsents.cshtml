@@ -1,0 +1,27 @@
+﻿@model IEnumerable<CmsData.View.RecentAbsent>
+
+@{
+    ViewBag.Title = "RecentAbsents";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+
+<h2>Recent Absents</h2>
+
+<table class="grid table-striped">
+    <tr>
+        <th>Organization</th>
+        <th>Name</th>
+        <th>Consecutive</th>
+        <th>Last Meeting</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td> <a href="/Organization/Index/@item.OrganizationId">@item.OrganizationName</a> (@item.LeaderName) </td>
+        <td> <a href="/Person/Index/@item.PeopleId" target="person">@item.Name2</a> </td>
+        <td align="right"> @item.Consecutive </td>
+        <td> @item.Lastmeeting.Value.ToShortDateString() </td>
+    </tr>
+}
+</table>

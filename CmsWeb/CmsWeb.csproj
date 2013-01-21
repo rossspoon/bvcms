@@ -1325,6 +1325,8 @@
     <Content Include="Areas\Main\Views\MemberDirectory\Index.cshtml" />
     <Content Include="Areas\Main\Views\MemberDirectory\Results.cshtml" />
     <Content Include="Areas\Main\Views\Volunteering\SubmitCredit.cshtml" />
+    <Content Include="Areas\Main\Views\ContactSearch\ContactTypeTotals.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\RecentAbsents.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

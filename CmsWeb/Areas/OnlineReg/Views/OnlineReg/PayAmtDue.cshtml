@@ -12,6 +12,7 @@
 
 @section scripts
 {
+    <script src="/Scripts/OnlineRegPayment.js"></script>
     <script type="text/javascript">
         $(function() {
             $(document).bind("idle.idleTimer", function() {
@@ -24,7 +25,7 @@
 }   
     <h2>Payment Processing</h2>
     
-    <form action="https://public.serviceu.com/transaction/pay.asp" method="post">
+<form action="https://public.serviceu.com/transaction/pay.asp" method="post">
     @Html.Hidden("OrgID", ServiceUOrgID)
     @Html.Hidden("OrgAccountID", ServiceUOrgAccountID)
     @Html.Hidden("PostbackURL", Util.ServerLink("/OnlineReg/ConfirmDuePaid/" + Model.TranId))
@@ -47,10 +48,23 @@
     <p>
     @Html.TextBox("Amount", (Model.AmtToPay ?? 0).ToString("f2"))
     <input type="submit" id="Submit" name="Submit" value="Make Payment" /></p>
+</form>
     <p>If you have a coupon, please enter that number here and click the button below it:</p>
+<form action="https://public.serviceu.com/transaction/pay.asp" method="post">
+    @Html.Hidden("PayBalance")
+    @Html.Hidden("OrgId")
+    @Html.Hidden("DatumId")
+    @Html.Hidden("TranId")
+    @Html.Hidden("Amtdue")
+    @Html.Hidden("Url")
+    @Html.Hidden("Description")
+    @Html.Hidden("FormId")
+    @Html.Hidden("Email")
+    @Html.Hidden("testing")
+    @Html.Hidden("OriginalId")
+    @Html.Hidden("PayBalance")
     <input id="Coupon" name="Coupon" type="password" value="@Model.Coupon" autocomplete="off" /> <br />
-    <input type="button" href="/OnlineReg/PayWithCoupon2/@Model.OriginalId" class="submitbutton ajax"
-        value="Pay with coupon" />
+    <input type="button" href="/OnlineReg/ApplyCoupon" class="submitbutton ajax" value="Apply Code" />
     <span style="color:Red" id="validatecoupon"></span>
-    </form>
+</form>
 

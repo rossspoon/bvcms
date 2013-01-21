@@ -234,6 +234,14 @@
         window.open("/Reports/Meetings" + args);
         return false;
     });
+    $('#RecentAbsents').click(function (ev) {
+        ev.preventDefault();
+        var loc = "/Reports/RecentAbsents"
+        if ($('#DivisionId').val() > 0)
+            loc = loc.appendQuery("divid=" + $('#DivisionId').val());
+        window.open(loc);
+        return false;
+    });
     $('#attdetail2').click(function (ev) {
         ev.preventDefault();
         $('div.dialog').dialog('close');
