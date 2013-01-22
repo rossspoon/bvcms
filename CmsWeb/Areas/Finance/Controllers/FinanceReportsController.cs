@@ -60,7 +60,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 		{ 
 			var m = new ManageGivingModel(id);
 			m.testing = true;
-			var body = CmsController.RenderPartialViewToString(this, "ManageGiving2", m);
+			var body = ViewExtensions2.RenderPartialViewToString(this, "ManageGiving2", m);
 			return Content(body);
 		}
 

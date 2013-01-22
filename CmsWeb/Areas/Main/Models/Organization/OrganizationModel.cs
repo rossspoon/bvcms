@@ -227,7 +227,7 @@ namespace CmsWeb.Models.OrganizationPage
 						select a.MeetingDate;
 				if (!q.Any())
 					continue;
-				var details = CmsController.RenderPartialViewToString(controller, "VolunteerCommitmentsSummary", q);
+				var details = ViewExtensions2.RenderPartialViewToString(controller, "VolunteerCommitmentsSummary", q);
 
 				var OrganizationName = org.OrganizationName;
 

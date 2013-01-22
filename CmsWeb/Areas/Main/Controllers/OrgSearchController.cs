@@ -249,5 +249,14 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return Redirect("/Meeting/Index/{0}?showall=true".Fmt(newMtg.MeetingId));
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Attendance")]
+        public ActionResult EmailAttendanceNotices(int id)
+        {
+            OrgSearchModel.SendNotices(this, id);
+            return Content("ok");
+        }
+
     }
 }

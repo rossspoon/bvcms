@@ -347,7 +347,7 @@ The following Committments:<br/>
 			m.testing = true;
 #else
 #endif
-			var details = RenderPartialViewToString(this, "ManageGiving2", m);
+			var details = ViewExtensions2.RenderPartialViewToString(this, "ManageGiving2", m);
 
 			var staff = DbUtil.Db.StaffPeopleForOrg(m.orgid)[0];
 			var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));

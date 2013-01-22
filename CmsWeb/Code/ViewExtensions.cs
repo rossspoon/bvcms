@@ -6,6 +6,7 @@
  */
 using System;
 using System.Globalization;
+using System.IO;
 using System.Linq.Expressions;
 using System.Web;
 using System.Text;
@@ -420,6 +421,25 @@ namespace CmsWeb
         {
             return htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(expression));
         }
+
+		public static string RenderPartialViewToString(Controller controller, string viewName, object model)
+		{
+			controller.ViewData.Model = model;
+			try
+			{
+				using (var sw = new StringWriter())
+				{
+					ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
+					ViewContext viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
+					viewResult.View.Render(viewContext, sw);
+					return sw.GetStringBuilder().ToString();
+				}
+			}
+			catch (Exception ex)
+			{
+				return ex.ToString();
+			}
+		}
 
 		public static CollectionItemNamePrefixScope BeginCollectionItem<TModel>(this HtmlHelper<TModel> html, string collectionName)
 		{

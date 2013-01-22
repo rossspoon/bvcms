@@ -202,7 +202,7 @@ namespace CmsWeb.Models
         public object ContributionRowData(PostBundleController ctl, int cid, decimal? othersplitamt = null)
         {
             var cinfo = FetchContributions(cid).Single();
-            var body = CmsController.RenderPartialViewToString(ctl, "Row", cinfo);
+            var body = ViewExtensions2.RenderPartialViewToString(ctl, "Row", cinfo);
             var q = from c in DbUtil.Db.Contributions
                     let bh = c.BundleDetails.First().BundleHeader
                     where c.ContributionId == cid

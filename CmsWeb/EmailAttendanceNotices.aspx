@@ -2,6 +2,8 @@
     CodeBehind="EmailAttendanceNotices.aspx.cs" Inherits="CmsWeb.EmailAttendanceNotices" EnableEventValidation="false" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <h2 style="font-style: italic; color:blue;">Note that this function has been improved and moved to the the Organization Search page on the menu Exports/Reports, Email Attendance Notices item.</h2>
+    </h2>
     <table class="modalPopup">
         <tr>
             <td class="style1">

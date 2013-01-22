@@ -94,6 +94,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     doc.Add(t);
                 else
                     doc.Add(new Phrase("no data"));
+                pageEvents.EndPageSet();
 
             }
             doc.Close();
