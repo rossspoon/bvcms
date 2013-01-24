@@ -207,6 +207,9 @@
     <Field Name="DoNotMailFlag" Title="Do Not Mail" Type="Bit" DataValueField="IdCode">
       Person has asked to be removed from mailing list or we do not have a correct address for them.
     </Field>
+    <Field Name="DoNotPublishPhones" Title="Do Not Publish Phones" Type="Bit" DataValueField="IdCode">
+      Person has asked to not display phones on directories
+    </Field>
     <Field Name="PrimaryBadAddrFlag" Title="Bad Address Flag" Type="Bit" DataValueField="IdCode">
       Address is flagged as invalid
     </Field>

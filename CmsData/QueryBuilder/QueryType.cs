@@ -42,6 +42,7 @@ namespace CmsData
         DoNotCallFlag,
         DoNotMailFlag,
         DoNotVisitFlag,
+        DoNotPublishPhones,
         DropDate,
         DropCodeId,
         EmailAddress,

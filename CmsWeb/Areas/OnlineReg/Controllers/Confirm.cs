@@ -170,7 +170,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 							pf.CreditCard, pf.CCV, pf.Expires,
 							pf.AmtToPay ?? 0,
 							ti.Id, pf.Description,
-							pid ?? 0, pf.Email, pf.First, pf.First,
+							pid ?? 0, pf.Email, pf.First, pf.Last,
 							pf.Address, pf.City, pf.State, pf.Zip,
 							pf.testing);
 			else if (gateway == "sage")
