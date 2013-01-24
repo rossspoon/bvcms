@@ -38,7 +38,13 @@
         title="Publish Directory
         |This makes available an accessible directory for any member of this organization.">
         Publish Directory:</span>
-        @Html.CheckBox("org.PublishDirectory")
+        @Html.DropDownList("org.PublishDirectory", 
+            new SelectListItem[]
+                {
+                    new SelectListItem { Value = "0", Text = "No Directory" },
+                    new SelectListItem { Value = "1", Text = "Yes Publish Directory" },
+                    new SelectListItem { Value = "2", Text = "Yes, Publish Family Directory" },
+                })
     </li>
     <li>
         <span class="keyword big tip"

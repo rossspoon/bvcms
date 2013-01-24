@@ -309,6 +309,7 @@
     <Compile Include="Generated\FamilyRelationship.cs" />
     <Compile Include="Generated\Functions\ContactTypeTotal.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
+    <Compile Include="Generated\Functions\GetTotalContributionsRange.cs" />
     <Compile Include="Generated\Functions\RecentAbsent.cs" />
     <Compile Include="Generated\Functions\RecentAttendance.cs" />
     <Compile Include="Generated\SMSItem.cs" />

@@ -80,7 +80,7 @@ namespace CmsWeb.Models
 					};
 			return q.Take(maximumRows);
 		}
-		public static IEnumerable ExcelContributions(DateTime startdt, DateTime enddt,
+		public static IEnumerable DonorDetails(DateTime startdt, DateTime enddt,
 			int fundid, int campusid, bool pledges, bool nontaxdeductible, bool includeUnclosed)
 		{
 			var q = from c in DbUtil.Db.Contributions2(startdt, enddt, campusid, pledges, nontaxdeductible, includeUnclosed)
@@ -102,7 +102,23 @@ namespace CmsWeb.Models
 					};
 			return q;
 		}
-		public static IEnumerable ExcelContributionTotals(DateTime startdt, DateTime enddt,
+		public static IEnumerable ExcelDonorTotals(DateTime startdt, DateTime enddt,
+			int campusid, bool pledges, bool nontaxdeductible, bool includeUnclosed)
+		{
+            var q2 = from r in DbUtil.Db.GetTotalContributions2(startdt, enddt, campusid, nontaxdeductible, includeUnclosed)
+                     group r by new { r.CreditGiverId, r.HeadName, r.SpouseName } into g
+                     select new
+                     {
+                         g.Key.CreditGiverId,
+                         Count = g.Sum(gg => gg.Count ?? 0),
+                         Amount = g.Sum(gg => gg.Amount ?? 0m),
+                         Pledged = g.Sum(gg => gg.PledgeAmount ?? 0m),
+                         Name = g.Key.HeadName,
+                         SpouseName = g.Key.SpouseName ?? "",
+                     };
+			return q2;
+		}
+		public static IEnumerable ExcelDonorFundTotals(DateTime startdt, DateTime enddt,
 			int fundid, int campusid, bool pledges, bool nontaxdeductible, bool includeUnclosed)
 		{
 			var q2 = from r in DbUtil.Db.GetTotalContributions2(startdt, enddt, campusid, nontaxdeductible, includeUnclosed)

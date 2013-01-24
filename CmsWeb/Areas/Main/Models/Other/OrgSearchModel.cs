@@ -563,9 +563,11 @@ namespace CmsWeb.Models
                     select p;
             return ViewExtensions2.RenderPartialViewToString(c, "RecentAbsentsEmail", q);
         }
-        public static void SendNotices(OrgSearchController c, int divid)
+        public void SendNotices(OrgSearchController c)
         {
-            var list = (from p in DbUtil.Db.RecentAbsents(null, divid, 36)
+            var olist = FetchOrgs().Select(oo => oo.OrganizationId).ToList();
+            var list = (from p in DbUtil.Db.RecentAbsents(null, null, 36)
+                        where olist.Contains(p.OrganizationId)
                         select p).ToList();
             var glist = from pp in list
                         group pp by new
@@ -574,7 +576,8 @@ namespace CmsWeb.Models
                             pp.OrganizationName,
                             pp.MeetingId,
                             pp.Lastmeeting,
-                            pp.LeaderName
+                            pp.LeaderName,
+                            pp.ConsecutiveAbsentsThreshold
                         }
                         into g
                         select g;
@@ -603,7 +606,7 @@ namespace CmsWeb.Models
                                      mt.Organization.OrganizationName,
                                      mt.MeetingDate,
                                      mt.Organization.LeaderName,
-                                     mt.Organization.Location
+                                     mt.Organization.Location,
                                 };
                         foreach (var mt in q2)
                         {
@@ -616,7 +619,7 @@ namespace CmsWeb.Models
                         sb.Append(RecentAbsentsEmail(c, list.Where(pp => pp.OrganizationId == om.OrganizationId)));
                     }
                     DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, person, null,
-                                    "Attendance reports ready for viewing on CMS", sb.ToString(), false);
+                                    "Attendance reports are ready for viewing", sb.ToString(), false);
                 }
                 sb2.Append("</table>\n");
                 DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, DbUtil.Db.CurrentUser.Person, null,

@@ -241,6 +241,8 @@ namespace CmsData
 		
 		private string _Name2;
 		
+		private bool? _DoNotPublishPhones;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -707,6 +709,9 @@ namespace CmsData
 		
 		partial void OnName2Changing(string value);
 		partial void OnName2Changed();
+		
+		partial void OnDoNotPublishPhonesChanging(bool? value);
+		partial void OnDoNotPublishPhonesChanged();
 		
     #endregion
 		public Person()
@@ -3361,6 +3366,28 @@ namespace CmsData
 					this._Name2 = value;
 					this.SendPropertyChanged("Name2");
 					this.OnName2Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="DoNotPublishPhones", UpdateCheck=UpdateCheck.Never, Storage="_DoNotPublishPhones", DbType="bit")]
+		public bool? DoNotPublishPhones
+		{
+			get { return this._DoNotPublishPhones; }
+
+			set
+			{
+				if (this._DoNotPublishPhones != value)
+				{
+				
+                    this.OnDoNotPublishPhonesChanging(value);
+					this.SendPropertyChanging();
+					this._DoNotPublishPhones = value;
+					this.SendPropertyChanged("DoNotPublishPhones");
+					this.OnDoNotPublishPhonesChanged();
 				}
 
 			}

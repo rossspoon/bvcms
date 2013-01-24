@@ -446,14 +446,15 @@ namespace CmsWeb.Models
         public void SaveQuery()
         {
             var saveto = Db.QueryBuilderClauses.FirstOrDefault(c =>
-                c.SavedBy == Util.UserName && c.Description == SavedQueryDesc);
+                (c.SavedBy == Util.UserName || c.SavedBy == "public") && c.Description == SavedQueryDesc);
             if (saveto == null)
             {
                 saveto = new QueryBuilderClause();
                 Db.QueryBuilderClauses.InsertOnSubmit(saveto);
             }
             saveto.CopyFromAll(Qb, DbUtil.Db); // save Qb on top of existing
-            saveto.SavedBy = Util.UserName;
+            if (saveto.SavedBy != "public")
+                saveto.SavedBy = Util.UserName;
             saveto.Description = SavedQueryDesc;
             saveto.IsPublic = IsPublic;
             Db.SubmitChanges();

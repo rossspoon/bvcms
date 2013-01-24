@@ -20,6 +20,7 @@ namespace CmsWeb.Models
         public string Name { get; set; }
         public int OrgId { get; set; }
         public string OrgName { get; set; }
+        public bool FamilyOption { get; set; }
 
         public MemberDirectoryModel()
         {
@@ -30,7 +31,15 @@ namespace CmsWeb.Models
             : this()
         {
             OrgId = oid;
-            OrgName = DbUtil.Db.Organizations.Where(oo => oo.OrganizationId == oid).Select(oo => oo.OrganizationName).Single();
+            var q = from o in DbUtil.Db.Organizations
+                    where o.OrganizationId == OrgId
+                    select new
+                       {
+                           o.OrganizationName,
+                           o.PublishDirectory
+                       };
+            OrgName = q.Single().OrganizationName;
+            FamilyOption = q.Single().PublishDirectory == 2;
         }
 
         private IQueryable<Person> members;
@@ -72,10 +81,11 @@ namespace CmsWeb.Models
                          Address = p.PrimaryAddress,
                          Address2 = p.PrimaryAddress2,
                          CityStateZip = p.CityStateZip,
-                         Cell = p.CellPhone.FmtFone(),
-                         Home = p.HomePhone.FmtFone(),
-                         Email = p.SendEmailAddress1 != false ? p.EmailAddress : "",
-                         Email2 = p.SendEmailAddress2 == true ? p.EmailAddress2 : "",
+                         Cell = p.CellPhone.FmtFone("C"),
+                         Home = p.HomePhone.FmtFone("H"),
+                         Email = (p.SendEmailAddress1 ?? true) ? p.EmailAddress : "",
+                         Email2 = (p.SendEmailAddress2 ?? false) ? p.EmailAddress2 : "",
+                         DoNotPublishPhones = p.DoNotPublishPhones
                      };
 
             return q2;
@@ -100,9 +110,22 @@ namespace CmsWeb.Models
             if (members != null)
                 return members;
 
-            members = from p in DbUtil.Db.People
-                      where p.OrganizationMembers.Any(mm => mm.OrganizationId == OrgId)
-                      select p;
+            var q = from o in DbUtil.Db.Organizations
+                    where o.OrganizationId == OrgId
+                    select o.PublishDirectory;
+            FamilyOption = q.Single() == 2;
+
+            if(FamilyOption)
+                members = from p in DbUtil.Db.People
+                          where p.Family.People.Any(pp => pp.OrganizationMembers.Any(mm => mm.OrganizationId == OrgId))
+                          where p.DeceasedDate == null
+                          select p;
+            else
+                members = from p in DbUtil.Db.People
+                          where p.OrganizationMembers.Any(mm => mm.OrganizationId == OrgId)
+                          where p.DeceasedDate == null
+                          select p;
+
             if (Name.HasValue())
                 members = from p in members
                           where p.Name.Contains(Name)
@@ -124,6 +147,7 @@ namespace CmsWeb.Models
             public string Cell { get; set; }
             public string Email { get; set; }
             public string Email2 { get; set; }
+            public bool? DoNotPublishPhones { get; set; }
         }
 
         public MvcHtmlString AddDiv(string s)

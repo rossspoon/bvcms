@@ -211,7 +211,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			ti.Approved = tinfo.Approved;
 			if (ti.Approved == false)
 			{
-				ti.Amt = ti.Amtdue;
+			    ti.Amtdue += ti.Amt;
 				if (m != null && m.OnlineGiving())
 					ti.Amtdue = 0;
 			}

@@ -307,7 +307,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 
 			runProperties7.Append(noProof7);
 			Text text12 = new Text();
-			text12.Text = ii.HomePhone;
+			text12.Text = ii.HomePhone.FmtFone();
 
 			run13.Append(runProperties7);
 			run13.Append(text12);
@@ -365,7 +365,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 
 			runProperties8.Append(noProof8);
 			Text text15 = new Text();
-			text15.Text = ii.CellPhone;
+			text15.Text = ii.CellPhone.FmtFone();
 
 			run16.Append(runProperties8);
 			run16.Append(text15);
@@ -416,7 +416,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 
 			runProperties9.Append(noProof9);
 			Text text17 = new Text();
-			text17.Text = ii.WorkPhone;
+			text17.Text = ii.WorkPhone.FmtFone();
 
 			run18.Append(runProperties9);
 			run18.Append(text17);

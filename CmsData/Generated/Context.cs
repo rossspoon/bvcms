@@ -1899,6 +1899,25 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.GetTotalContributionsRange", IsComposable = true)]
+		public IQueryable< View.GetTotalContributionsRange > GetTotalContributionsRange(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? campusid,
+            [Parameter(DbType="bit")] bool? nontaxded,
+            [Parameter(DbType="bit")] bool? includeUnclosed
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTotalContributionsRange>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                campusid,
+                nontaxded,
+                includeUnclosed
+                );
+		}
+
 		[Function(Name="dbo.GivingCurrentPercentOfFormer", IsComposable = true)]
 		public IQueryable< View.GivingCurrentPercentOfFormer > GivingCurrentPercentOfFormer(
             [Parameter(DbType="datetime")] DateTime? dt1,

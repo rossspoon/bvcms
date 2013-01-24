@@ -613,6 +613,7 @@
     <Content Include="Scripts\compose.js" />
     <Content Include="Scripts\Bundles.js" />
     <Content Include="Scripts\Bundle.js" />
+    <Content Include="Scripts\TotalsByRange.js" />
     <Content Include="Scripts\dropdown.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
     <Content Include="Content\js\jquery.showpassword.min.js" />
@@ -1328,6 +1329,8 @@
     <Content Include="Areas\Main\Views\ContactSearch\ContactTypeTotals.cshtml" />
     <Content Include="Areas\Main\Views\Reports\RecentAbsents.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\RecentAbsentsEmail.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRange.cshtml" />
+    <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRangeResults.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

@@ -636,37 +636,38 @@ namespace CmsData
             DateTime? dt)
         {
             int n = number.ToInt2() ?? 1;
+            var cdt = Db.Setting("DbConversionDate", "1/1/1900").ToDate();
 
             Expression<Func<Person, bool>> pred = null;
             switch (op)
             {
                 case CompareType.Greater:
-                    pred = p =>
+                    pred = p => p.CreatedDate > cdt &&
                            p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate > dt);
                     break;
                 case CompareType.Less:
-                    pred = p =>
+                    pred = p => p.CreatedDate > cdt &&
                            p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate < dt);
                     break;
                 case CompareType.GreaterEqual:
-                    pred = p =>
+                    pred = p => p.CreatedDate > cdt &&
                            p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate >= dt);
                     break;
                 case CompareType.LessEqual:
-                    pred = p =>
+                    pred = p => p.CreatedDate > cdt &&
                            p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate <= dt);
                     break;
                 case CompareType.Equal:
-                    pred = p =>
+                    pred = p => p.CreatedDate > cdt &&
                            p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate.Date == dt);
                     break;
                 case CompareType.NotEqual:
                 case CompareType.IsNull:
-                    pred = p =>
+                    pred = p => p.CreatedDate > cdt &&
                            !p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate.Date == dt);
                     break;
                 case CompareType.IsNotNull:
-                    pred = p =>
+                    pred = p => p.CreatedDate > cdt &&
                            p.Attends.Any(aa => aa.SeqNo == n);
                     break;
             }
@@ -681,8 +682,9 @@ namespace CmsData
             bool tf)
         {
             int n = number.ToInt2() ?? 1;
-            var dt = DateTime.Today.AddDays(-days);
-            Expression<Func<Person, bool>> pred = p =>
+            var dt = DateTime.Now.AddDays(-days);
+            var cdt = Db.Setting("DbConversionDate", "1/1/1900").ToDate();
+            Expression<Func<Person, bool>> pred = p => p.CreatedDate > cdt && 
                 p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate > dt);
             Expression expr = Expression.Invoke(pred, parm);
 

@@ -123,6 +123,9 @@ $(function () {
         });
         return false;
     });
+    if ($("#AutoRun").val() == "True")
+        $("#Run").click();
+
 });
 function HighlightCondition() {
     $('#ConditionGrid li a').removeClass('SelectedRow');

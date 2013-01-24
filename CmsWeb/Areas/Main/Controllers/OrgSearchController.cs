@@ -252,9 +252,9 @@ namespace CmsWeb.Areas.Main.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Attendance")]
-        public ActionResult EmailAttendanceNotices(int id)
+        public ActionResult EmailAttendanceNotices(OrgSearchModel m)
         {
-            OrgSearchModel.SendNotices(this, id);
+            m.SendNotices(this);
             return Content("ok");
         }
 

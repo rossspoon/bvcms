@@ -130,6 +130,7 @@ namespace CmsWeb
             bundles.AddOneScript("Tags");
             bundles.AddOneScript("TestAPI");
             bundles.AddOneScript("TotalsByFund");
+            bundles.AddOneScript("TotalsByRange");
             bundles.AddOneScript("Transactions");
             bundles.AddOneScript("TransactionHistory");
             bundles.AddOneScript("UserDialog");

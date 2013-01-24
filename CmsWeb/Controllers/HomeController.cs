@@ -70,6 +70,46 @@ namespace CmsWeb.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(v);
         }
+		public ActionResult NthTimeVisitors(int id)
+		{
+		    var name = "VisitNumber-" + id;
+		    var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.IsPublic && c.Description == name && c.SavedBy == "public");
+		    if (qb == null)
+		    {
+			    qb = DbUtil.Db.QueryBuilderScratchPad();
+                qb.CleanSlate(DbUtil.Db);
+
+		        var comp = CompareType.Equal;
+		        QueryBuilderClause clause = null;
+		        switch (id)
+		        {
+		            case 1:
+		                clause = qb.AddNewClause(QueryType.RecentVisitNumber, comp, "1,T");
+		                clause.Quarters = "1";
+		                clause.Days = 7;
+		                break;
+		            case 2:
+		                clause = qb.AddNewClause(QueryType.RecentVisitNumber, comp, "1,T");
+		                clause.Quarters = "2";
+		                clause.Days = 7;
+		                clause = qb.AddNewClause(QueryType.RecentVisitNumber, comp, "0,F");
+		                clause.Quarters = "1";
+		                clause.Days = 7;
+		                break;
+		            case 3:
+		                clause = qb.AddNewClause(QueryType.RecentVisitNumber, comp, "1,T");
+		                clause.Quarters = "3";
+		                clause.Days = 7;
+		                clause = qb.AddNewClause(QueryType.RecentVisitNumber, comp, "0,F");
+		                clause.Quarters = "2";
+		                clause.Days = 7;
+		                break;
+		        }
+		        qb = qb.SaveTo(DbUtil.Db, name, "public", true);
+		    }
+		    TempData["autorun"] = true;
+			return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+		}
     }
 }
 

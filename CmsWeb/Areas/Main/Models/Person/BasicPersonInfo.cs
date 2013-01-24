@@ -51,6 +51,7 @@ namespace CmsWeb.Models.PersonPage
         public string Birthday { get; set; }
         public DateTime? DeceasedDate { get; set; }
         public string Age { get; set; }
+        public bool DoNotPublishPhones { get; set; }
 
         public string Campus
         {
@@ -101,6 +102,7 @@ namespace CmsWeb.Models.PersonPage
                 DoNotCallFlag = p.DoNotCallFlag,
                 DoNotMailFlag = p.DoNotMailFlag,
                 DoNotVisitFlag = p.DoNotVisitFlag,
+                DoNotPublishPhones = p.DoNotPublishPhones ?? false,
                 EmailAddress = p.EmailAddress,
                 SendEmailAddress1 = p.SendEmailAddress1 ?? true,
                 EmailAddress2 = p.EmailAddress2,
@@ -146,6 +148,7 @@ namespace CmsWeb.Models.PersonPage
             p.UpdateValue(psb, "DoNotCallFlag", DoNotCallFlag);
             p.UpdateValue(psb, "DoNotMailFlag", DoNotMailFlag);
             p.UpdateValue(psb, "DoNotVisitFlag", DoNotVisitFlag);
+            p.UpdateValue(psb, "DoNotPublishPhones", DoNotPublishPhones);
             p.UpdateValue(psb, "EmailAddress", EmailAddress);
             p.UpdateValue(psb, "EmailAddress2", EmailAddress2);
             p.UpdateValue(psb, "SendEmailAddress1", SendEmailAddress1);

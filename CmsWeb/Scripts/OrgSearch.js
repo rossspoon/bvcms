@@ -196,7 +196,8 @@
         if (!confirm("This will send email notices to leaders, continue?"))
             return false;
         $.block();
-        $.post("/OrgSearch/EmailAttendanceNotices/" + did, null, function () {
+        var q = $("#orgsearchform").serialize();
+        $.post("/OrgSearch/EmailAttendanceNotices/" + did, q, function () {
             $.unblock();
             $.growlUI("complete", "Email Notices Sent");
         });

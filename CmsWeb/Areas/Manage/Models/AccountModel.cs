@@ -66,7 +66,7 @@ namespace CmsWeb.Models
             get { return HttpContext.Current.Items[STR_UserName2] as String; }
             set { HttpContext.Current.Items[STR_UserName2] = value; }
         }
-        public static bool Authenticate(string role = null, bool checkorgmembersonly = false)
+        public static bool AuthenticateMobile(string role = null, bool checkorgmembersonly = false)
         {
             string username, password;
             var auth = HttpContext.Current.Request.Headers["Authorization"];
@@ -99,7 +99,7 @@ namespace CmsWeb.Models
                     return false;
             }
             UserName2 = user.Username;
-            SetUserInfo(user.Username, HttpContext.Current.Session);
+            SetUserInfo(user.Username, HttpContext.Current.Session, deleteSpecialTags:false);
             if (checkorgmembersonly)
                 if (!Util2.OrgMembersOnly && roleProvider.IsUserInRole(username, "OrgMembersOnly"))
                 {
@@ -206,10 +206,6 @@ namespace CmsWeb.Models
                             "{0} tried to login at {1}".Fmt(userName, Util.Now));
                     return problem;
                 }
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
-                    CMSRoleProvider.provider.GetDevelopers(),
-                    "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host),
-                    Util.Now.ToString());
             }
             return user;
         }
@@ -237,13 +233,14 @@ namespace CmsWeb.Models
                 notify = CMSRoleProvider.provider.GetRoleUsers("Admin").Select(u => u.Person).Distinct();
             DbUtil.Db.EmailRedacted(DbUtil.AdminMail, notify, subject, message);
         }
-        public static void SetUserInfo(string username, System.Web.SessionState.HttpSessionState Session)
+        public static void SetUserInfo(string username, System.Web.SessionState.HttpSessionState Session, bool deleteSpecialTags = true)
         {
             var u = SetUserInfo(username);
             if (u == null)
                 return;
             Session["ActivePerson"] = u.Name;
-            DbUtil.Db.DeleteSpecialTags(u.PeopleId);
+            if (deleteSpecialTags)
+                DbUtil.Db.DeleteSpecialTags(u.PeopleId);
         }
         public static User SetUserInfo(string username, HttpSessionStateBase Session)
         {

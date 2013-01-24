@@ -12,9 +12,9 @@ namespace CmsWeb.Areas.Main.Controllers
     {
         public ActionResult Index(int id)
         {
-            if (DbUtil.Db.Organizations.Any(oo => oo.OrganizationId == id && oo.PublishDirectory == true) 
+            if (DbUtil.Db.Organizations.Any(oo => oo.OrganizationId == id && oo.PublishDirectory > 0)
                 && (User.IsInRole("Admin") || DbUtil.Db.OrganizationMembers.Any(
-                        mm => mm.OrganizationId == id && mm.PeopleId == UtilityExtensions.Util.UserPeopleId)))
+                    mm => mm.OrganizationId == id && mm.PeopleId == UtilityExtensions.Util.UserPeopleId)))
                 return View(new MemberDirectoryModel(id));
             return RedirectToAction("NoAccess");
         }

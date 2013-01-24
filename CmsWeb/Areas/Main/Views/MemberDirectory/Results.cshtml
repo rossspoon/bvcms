@@ -38,8 +38,11 @@ Count: @Model.Count().ToString("n0") @(Model.Sort == "Birthday" ? "people" : "fa
                     @Model.AddDiv(m.CityStateZip)
                 </td>
                 <td>
-                    @Model.AddDiv(m.Home)
-                    @Model.AddDiv(m.Cell)
+                    @if (m.DoNotPublishPhones != true)
+                    {
+                        @Model.AddDiv(m.Home)
+                        @Model.AddDiv(m.Cell)
+                    }
                 </td>
                 <td>
                     @Model.AddDiv(m.Email)

@@ -14,6 +14,7 @@
 {
     @Scripts.Render("~/bundles/querybuilder-js")
 }
+@Html.Hidden("AutoRun")
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
 <div id="Description"><b>@Model.Description</b></div>
 <div class="roundbox floatleft">
