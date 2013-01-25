@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using CMSPresenter;
 using System.Text;
 using System.Web.Mvc;
 using CmsWeb.Models;
@@ -43,7 +42,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             var ctl = new MailingController { UseTitles = titles == true };
             var Response = context.HttpContext.Response;
 
-            IEnumerable<MailingInfo> q = null;
+            IEnumerable<MailingController.MailingInfo> q = null;
             switch (format)
             {
                 case "Individual":

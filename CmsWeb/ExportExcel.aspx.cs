@@ -49,7 +49,7 @@ namespace CmsWeb
                 r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
             }
             r.Write(header);
-            var ctl = new CMSPresenter.MailingController();
+            var ctl = new MailingController();
             var useTitles = Request.QueryString["titles"];
             ctl.UseTitles = useTitles == "true";
             var dg = new DataGrid();

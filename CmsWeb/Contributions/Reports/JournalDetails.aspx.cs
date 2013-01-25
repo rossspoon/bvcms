@@ -10,14 +10,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CMSPresenter;
+using CmsWeb.Models;
 using UtilityExtensions;
 
 namespace CmsWeb.Contributions.Reports
 {
     public partial class JournalDetails : System.Web.UI.Page
     {
-        BundleController ctl = new BundleController();
+        BundleModel ctl = new BundleModel();
         protected void Page_Load(object sender, EventArgs e)
         {
             FromDt.Text = Request.QueryString["dt1"];

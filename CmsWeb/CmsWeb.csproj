@@ -271,6 +271,7 @@
     <Compile Include="Areas\Main\Models\Other\QuickSearchModel.cs" />
     <Compile Include="Areas\Main\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\Finance\Models\TotalsByFundModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\MailingController.cs" />
     <Compile Include="Areas\Main\Models\Report\VisitsAbsentsResult2.cs" />
     <Compile Include="Areas\Main\Models\Report\RallyRollsheetResult.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
@@ -411,6 +412,11 @@
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
     <Compile Include="Code\BundleConfig.cs" />
+    <Compile Include="Code\BundleModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Code\CodeValueModel.cs" />
+    <Compile Include="Code\CodeValueItem.cs" />
     <Compile Include="Code\FamilyExtraValues.cs" />
     <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\SmartBinder.cs" />
@@ -770,20 +776,6 @@
     </Compile>
     <Compile Include="Admin\UploadFile.aspx.designer.cs">
       <DependentUpon>UploadFile.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AppReview\FormImage.aspx.cs">
-      <DependentUpon>FormImage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AppReview\FormImage.aspx.designer.cs">
-      <DependentUpon>FormImage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AppReview\VolunteerApp.aspx.cs">
-      <DependentUpon>VolunteerApp.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AppReview\VolunteerApp.aspx.designer.cs">
-      <DependentUpon>VolunteerApp.aspx</DependentUpon>
     </Compile>
     <Compile Include="Code\IMetaWebLog.cs" />
     <Compile Include="Code\ViewExtensions.cs" />
@@ -1576,9 +1568,6 @@
     </Content>
     <Content Include="Areas\Finance\Views\FinanceReports\ContributionYears.cshtml">
     </Content>
-    <Content Include="Areas\Manage\Views\Account\AddUser.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Areas\Manage\Views\Account\ChangePassword.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\Account\ChangePasswordSuccess.cshtml">
@@ -2002,8 +1991,6 @@
     <Content Include="Admin\DeleteSpecialTags.aspx" />
     <Content Include="Admin\LastActivity.aspx" />
     <Content Include="Admin\UploadFile.aspx" />
-    <Content Include="AppReview\FormImage.aspx" />
-    <Content Include="AppReview\VolunteerApp.aspx" />
     <Content Include="Binaries\AjaxControlToolkit.dll" />
     <Content Include="Binaries\Microsoft.Web.Mvc.dll" />
     <Content Include="Binaries\RouteDebug.dll" />
@@ -2150,7 +2137,6 @@
   <ItemGroup>
     <Content Include="Admin\ToggleOrgMembersOnly.ashx" />
     <Content Include="Admin\Web.config" />
-    <Content Include="AppReview\Web.config" />
     <Content Include="Binaries\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.dll" />
     <Content Include="Binaries\Squishit\dotless.Core.pdb" />

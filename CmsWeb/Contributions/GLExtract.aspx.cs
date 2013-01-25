@@ -10,7 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CMSPresenter;
+using CmsWeb.Models;
 using UtilityExtensions;
 using CmsData;
 
@@ -38,7 +38,7 @@ namespace CmsWeb.Contributions
             Response.Buffer = true;
             Response.ContentType = "text/plain";
             Response.AddHeader("Content-Disposition", "attachment;filename=GLTRN2000.txt");
-            var ctl = new BundleController();
+            var ctl = new BundleModel();
             var q = ctl.GetGLExtract(dt1, dt2);
             var GLBundlePrefix = DbUtil.Db.Setting("GLBundlePrefix", "CM");
             foreach (var i in q)

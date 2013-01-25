@@ -16,7 +16,6 @@ using System.Threading;
 using System.Data.Linq;
 using CmsData;
 using System.Collections.Generic;
-using CMSPresenter;
 
 namespace CmsWeb.Models
 {
@@ -50,7 +49,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Tags()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id");
             tg = tg.Select(tt => new SelectListItem { Text = "tag: {0}:{1}".Fmt(tt.Value, tt.Text) }).ToList();
             var q = from e in DbUtil.Db.PeopleExtras
@@ -65,7 +64,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<TitleItems> TitleItems()
         {
-            var Model = new CodeValueController();
+            var Model = new CodeValueModel();
             return new List<TitleItems>
             {
                 new TitleItems { title = "Member Status Codes", items = Model.MemberStatusCodes() },

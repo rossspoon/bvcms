@@ -5,7 +5,6 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Data.Linq.SqlClient;
 using System.Data.Linq;
 using System.Text;
@@ -14,7 +13,7 @@ namespace CmsWeb.Models.PersonPage
 {
 	public class MemberInfo
 	{
-		private static CodeValueController cv = new CodeValueController();
+		private static CodeValueModel cv = new CodeValueModel();
 		public int PeopleId { get; set; }
 
 		public int? StatementOptionId { get; set; }

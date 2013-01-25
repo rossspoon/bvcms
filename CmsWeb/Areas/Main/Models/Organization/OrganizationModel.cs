@@ -7,7 +7,6 @@ using CmsData;
 using System.Web.Mvc;
 using CmsData.Registration;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text.RegularExpressions;
 using CmsData.Codes;
 
@@ -62,7 +61,7 @@ namespace CmsWeb.Models.OrganizationPage
 		}
 		public MemberModel MemberModel;
 
-		private CodeValueController cv = new CodeValueController();
+		private CodeValueModel cv = new CodeValueModel();
 
 		public IEnumerable<SelectListItem> Groups()
 		{
@@ -78,7 +77,7 @@ namespace CmsWeb.Models.OrganizationPage
 		}
 		public static IEnumerable<SelectListItem> Tags()
 		{
-			var cv = new CodeValueController();
+			var cv = new CodeValueModel();
 			var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
 			if (HttpContext.Current.User.IsInRole("Edit"))
 				tg.Insert(0, new SelectListItem { Value = "-1", Text = "(last query)" });
@@ -124,7 +123,7 @@ namespace CmsWeb.Models.OrganizationPage
 		}
 		public IEnumerable<SelectListItem> LeaderTypeList()
 		{
-			var items = CodeValueController.MemberTypeCodes0().Select(c => new CodeValueItem { Code = c.Code, Id = c.Id, Value = c.Value });
+			var items = CodeValueModel.MemberTypeCodes0().Select(c => new CodeValueItem { Code = c.Code, Id = c.Id, Value = c.Value });
 			return QueryModel.ConvertToSelect(items, "Id");
 		}
 		public IEnumerable<SelectListItem> EntryPointList()
@@ -141,7 +140,7 @@ namespace CmsWeb.Models.OrganizationPage
 		}
 		public IEnumerable<SelectListItem> AttendCreditList()
 		{
-			return QueryModel.ConvertToSelect(CodeValueController.AttendCredits(), "Id");
+			return QueryModel.ConvertToSelect(CodeValueModel.AttendCredits(), "Id");
 		}
 		public IEnumerable<SelectListItem> SecurityTypeList()
 		{
@@ -153,7 +152,7 @@ namespace CmsWeb.Models.OrganizationPage
 		}
 		public static IEnumerable<SelectListItem> RegistrationTypes()
 		{
-			var cv = new CodeValueController();
+			var cv = new CodeValueModel();
 			return QueryModel.ConvertToSelect(cv.RegistrationTypes(), "Id");
 		}
 		public string NewMeetingTime

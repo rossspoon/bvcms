@@ -17,11 +17,11 @@ using System.Data.Linq.SqlClient;
 using System.Web.Security;
 using CmsData.Codes;
 
-namespace CMSPresenter
+namespace CmsWeb.Models
 {
-	public class CodeValueController
+	public class CodeValueModel
 	{
-		public CodeValueController()
+		public CodeValueModel()
 		{
 		}
 		public static List<CodeValueItem> GetStateList()

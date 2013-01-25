@@ -9,7 +9,6 @@ using System.Text;
 using System.Configuration;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
-using CMSPresenter;
 
 namespace CmsWeb.Areas.Setup.Models
 {

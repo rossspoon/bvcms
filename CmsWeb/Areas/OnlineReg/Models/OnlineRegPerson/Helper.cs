@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using CmsData;
 using CmsData.Registration;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Web.Mvc;
 using System.Text;
 using System.Net.Mail;
@@ -320,12 +319,12 @@ Thank you</p>";
 		}
 		public IEnumerable<SelectListItem> StateCodes()
 		{
-			var cv = new CodeValueController();
+			var cv = new CodeValueModel();
 			return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
 		}
 		public IEnumerable<SelectListItem> Countries()
 		{
-			var list = QueryModel.ConvertToSelect(CodeValueController.GetCountryList(), null);
+			var list = QueryModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
 			list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
 			return list;
 		}

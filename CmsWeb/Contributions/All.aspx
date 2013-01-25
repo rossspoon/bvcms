@@ -146,7 +146,7 @@
     </asp:DataPager>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" EnablePaging="True" OldValuesParameterFormatString="original_{0}"
         SelectCountMethod="CountContributions" SelectMethod="FetchContributions" SortParameterName="sortExpression"
-        TypeName="CMSPresenter.BundleController">
+        TypeName="CmsWeb.Models.BundleModel">
         <SelectParameters>
             <asp:ControlParameter ControlID="YearSearch" Name="year" PropertyName="SelectedValue"
                 Type="Int32" />
@@ -162,19 +162,19 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="StatusesODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="ContributionStatuses" TypeName="CMSPresenter.CodeValueController">
+        SelectMethod="ContributionStatuses" TypeName="CmsWeb.Models.CodeValueModel">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="TypesODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="ContributionTypes" TypeName="CMSPresenter.CodeValueController">
+        SelectMethod="ContributionTypes" TypeName="CmsWeb.Models.CodeValueModel">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="FundsODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="Funds" TypeName="CMSPresenter.BundleController">
+        SelectMethod="Funds" TypeName="CmsWeb.Models.BundleModel">
         <SelectParameters>
             <asp:Parameter Name="PeopleId" Type="Int32" DefaultValue="0" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="YearsODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="Years" TypeName="CMSPresenter.BundleController">
+        SelectMethod="Years" TypeName="CmsWeb.Models.BundleModel">
         <SelectParameters>
             <asp:Parameter Name="PeopleId" Type="Int32" DefaultValue="0" />
         </SelectParameters>

@@ -85,7 +85,7 @@
             </EmptyDataTemplate>
         </asp:ListView>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" OldValuesParameterFormatString="original_{0}"
-            SelectMethod="FetchDepositBundles" TypeName="CMSPresenter.BundleController">
+            SelectMethod="FetchDepositBundles" TypeName="CmsWeb.Models.BundleModel">
             <SelectParameters>
                 <asp:QueryStringParameter Name="depositdt" QueryStringField="dt" Type="DateTime" />
             </SelectParameters>

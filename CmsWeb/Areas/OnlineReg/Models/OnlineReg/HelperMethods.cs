@@ -11,7 +11,6 @@ using System.Configuration;
 using CmsData.Registration;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
-using CMSPresenter;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Collections;

@@ -7,14 +7,13 @@ using UtilityExtensions;
 using CmsData;
 using System.Text;
 using System.Data.Linq;
-using CMSPresenter;
 using CmsData.Codes;
 
 namespace CmsWeb.Models
 {
     public class SearchPersonModel
     {
-        private static CodeValueController cv = new CodeValueController();
+        private static CodeValueModel cv = new CodeValueModel();
 
         public int index { get; set; }
         public string first { get; set; }
@@ -84,7 +83,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Countries()
         {
-            var list = QueryModel.ConvertToSelect(CodeValueController.GetCountryList(), null);
+            var list = QueryModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
             return list;
         }

@@ -11,7 +11,6 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 using System.Web.Mvc;
 using System.Collections.Generic;
@@ -268,7 +267,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         private List GetContacts(int pid)
         {
-            var ctl = new CMSPresenter.CodeValueController();
+            var ctl = new CodeValueModel();
             var cts = ctl.ContactTypeCodes();
 
             var cq = from ce in DbUtil.Db.Contactees

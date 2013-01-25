@@ -6,7 +6,6 @@ using CmsData;
 using System.Data.Linq;
 using System.ComponentModel;
 using UtilityExtensions;
-using CMSPresenter.InfoClasses;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;

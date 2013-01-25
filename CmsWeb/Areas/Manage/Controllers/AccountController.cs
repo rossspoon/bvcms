@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.IO;
 using System.Web.Configuration;
 using System.Data.SqlClient;
@@ -141,17 +140,6 @@ CKEditorFuncNum, baseurl + fn, error));
             if (returnUrl.HasValue())
                 return Redirect(returnUrl);
             return Redirect("/");
-        }
-		[MyRequireHttps]
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public ActionResult UsersPage(string newpassword)
-        {
-            if (!User.IsInRole("Admin"))
-                return Content("unauthorized");
-
-            Session[UserController.STR_ShowPassword] = newpassword;
-            return Redirect("/Admin/Users.aspx?create=1");
         }
 		[MyRequireHttps]
         public ActionResult LogOff()

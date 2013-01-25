@@ -77,7 +77,7 @@
             </LayoutTemplate>
         </asp:ListView>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" OldValuesParameterFormatString="original_{0}"
-            SelectMethod="JournalDetails" TypeName="CMSPresenter.BundleController" OnObjectCreated="ObjectDataSource1_ObjectCreated">
+            SelectMethod="JournalDetails" TypeName="CmsWeb.Models.BundleModel" OnObjectCreated="ObjectDataSource1_ObjectCreated">
             <SelectParameters>
                 <asp:ControlParameter Name="dt1" ControlID="FromDt" Type="DateTime" />
                 <asp:ControlParameter Name="dt2" ControlID="ToDt" Type="DateTime" />

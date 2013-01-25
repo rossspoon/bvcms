@@ -98,7 +98,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			clause.Program = m.Ministry ?? 0;
 			clause.StartDate = m.StartDate ?? DateTime.Parse("1/1/2000");
 			clause.EndDate = m.EndDate ?? DateTime.Today;
-			var cvc = new CMSPresenter.CodeValueController();
+			var cvc = new CodeValueModel();
 			var q = from v in cvc.ContactTypeCodes0()
 					where v.Id == m.ContactType
 					select v.IdCode;
@@ -150,7 +150,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			var comp = CompareType.Equal;
 			var clause = qb.AddNewClause(QueryType.RecentContactType, comp, "1,T");
 	        clause.Days = 10000;
-			var cvc = new CMSPresenter.CodeValueController();
+			var cvc = new CodeValueModel();
 			var q = from v in cvc.ContactTypeCodes()
 					where v.Id == id
 					select v.IdCode;

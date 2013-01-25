@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CMSPresenter;
 using UtilityExtensions;
 using CmsData;
 
@@ -60,14 +59,14 @@ namespace CmsWeb.Models.OrganizationPage
         }
         public SelectList AttendCredits()
         {
-            return new SelectList(CodeValueController.AttendCredits(),
+            return new SelectList(CodeValueModel.AttendCredits(),
                 "Id", "Value", AttendCreditId.ToString());
         }
         public string DisplayAttendCredit
         {
             get
             {
-                return (from i in CodeValueController.AttendCredits()
+                return (from i in CodeValueModel.AttendCredits()
                         where i.Id == AttendCreditId
                         select i.Value).Single();
             }

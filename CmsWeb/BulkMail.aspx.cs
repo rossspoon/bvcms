@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using CmsWeb.Models;
 using UtilityExtensions;
-using CMSPresenter;
 
 namespace CmsWeb
 {
@@ -23,7 +23,7 @@ namespace CmsWeb
 				ctl.UseTitles = useTitles == "true";
 			if (sortZip == "true")
 				sort = "Zip";
-            IEnumerable<MailingInfo> q = null;
+            IEnumerable<MailingController.MailingInfo> q = null;
             switch (labelNameFormat)
             {
                 case "Individual":

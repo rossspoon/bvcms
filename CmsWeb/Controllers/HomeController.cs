@@ -110,6 +110,27 @@ namespace CmsWeb.Controllers
 		    TempData["autorun"] = true;
 			return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
 		}
+        [Authorize(Roles = "Admin")]
+		public ActionResult ActiveRecords()
+		{
+		    var name = "ActiveRecords";
+		    var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.IsPublic && c.Description == name && c.SavedBy == "public");
+		    if (qb == null)
+		    {
+			    qb = DbUtil.Db.QueryBuilderScratchPad();
+                qb.CleanSlate(DbUtil.Db);
+                qb.SetComparisonType(CompareType.AnyTrue);
+
+                var clause = qb.AddNewClause(QueryType.RecentAttendCount, CompareType.GreaterEqual, "1");
+                clause.Days = 365;
+		        clause = qb.AddNewClause(QueryType.RecentHasIndContributions, CompareType.Equal, "1,T");
+		        clause.Days = 365;
+		        qb = qb.SaveTo(DbUtil.Db, name, "public", true);
+		    }
+            var count = DbUtil.Db.PeopleQuery(qb.QueryId).Count();
+            TempData["ActiveRecords"] = count;
+            return View("About");
+		}
     }
 }
 

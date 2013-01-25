@@ -16,7 +16,6 @@ using System.Threading;
 using System.Data.Linq;
 using CmsData;
 using System.Collections;
-using CMSPresenter;
 
 namespace CmsWeb.Models
 {
@@ -248,17 +247,17 @@ namespace CmsWeb.Models
 		}
 		public SelectList ContactTypes()
 		{
-			return new SelectList(new CodeValueController().ContactTypeCodes0(),
+			return new SelectList(new CodeValueModel().ContactTypeCodes0(),
 				"Id", "Value", ContactType.ToString());
 		}
 		public SelectList ContactReasons()
 		{
-			return new SelectList(new CodeValueController().ContactReasonCodes0(),
+			return new SelectList(new CodeValueModel().ContactReasonCodes0(),
 				"Id", "Value", ContactReason.ToString());
 		}
 		public SelectList Ministries()
 		{
-			return new SelectList(new CodeValueController().Ministries0(),
+			return new SelectList(new CodeValueModel().Ministries0(),
 				"Id", "Value", Ministry.ToString());
 		}
 		public IEnumerable<SelectListItem> Results()

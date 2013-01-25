@@ -5,7 +5,6 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Data.Linq;
 using System.Text;
 
@@ -13,7 +12,7 @@ namespace CmsWeb.Models.PersonPage
 {
     public class AddressInfo
     {
-        private CodeValueController cv = new CodeValueController();
+        private CodeValueModel cv = new CodeValueModel();
 
         public int PeopleId { get; set; }
         public Person person { get; set; }
@@ -66,7 +65,7 @@ namespace CmsWeb.Models.PersonPage
         public int? ResCodeId { get; set; }
         public string ResCode
         {
-            get { return CodeValueController.ResidentCodesWithZero().ItemValue(ResCodeId ?? 0); }
+            get { return CodeValueModel.ResidentCodesWithZero().ItemValue(ResCodeId ?? 0); }
         }
         public bool Preferred { get; set; }
         public DateTime? FromDt { get; set; }
@@ -74,15 +73,15 @@ namespace CmsWeb.Models.PersonPage
 
         public static IEnumerable<SelectListItem> ResCodes()
         {
-            return QueryModel.ConvertToSelect(CodeValueController.ResidentCodesWithZero(), "Id");
+            return QueryModel.ConvertToSelect(CodeValueModel.ResidentCodesWithZero(), "Id");
         }
         public static IEnumerable<SelectListItem> States()
         {
-            return QueryModel.ConvertToSelect(CodeValueController.GetStateList(), "Code");
+            return QueryModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
         }
         public static IEnumerable<SelectListItem> Countries()
         {
-            var list = QueryModel.ConvertToSelect(CodeValueController.GetCountryList(), null);
+            var list = QueryModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
             return list;
         }
@@ -284,7 +283,7 @@ namespace CmsWeb.Models.PersonPage
         }
         public static IEnumerable<SelectListItem> StateCodes()
         {
-            return QueryModel.ConvertToSelect(CodeValueController.GetStateList(), "Code");
+            return QueryModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
         }
     }
 }

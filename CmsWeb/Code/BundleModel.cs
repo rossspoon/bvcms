@@ -18,7 +18,7 @@ using System.Web;
 using System.Collections;
 using System.Diagnostics;
 
-namespace CMSPresenter
+namespace CmsWeb.Models
 {
     public class ExtractInfo
     {
@@ -178,7 +178,7 @@ namespace CMSPresenter
         public decimal PctTotal { get; set; }
     }
     [DataObject]
-    public class BundleController
+    public class BundleModel
     {
         public class YearInfo
         {

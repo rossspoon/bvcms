@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Threading;
 using CmsData;
-using CMSPresenter;
 using UtilityExtensions;
 using System.IO;
 using System.Web.Mvc;
@@ -62,7 +61,7 @@ namespace CmsWeb.Areas.Main.Models
 
         public IEnumerable<SelectListItem> EmailFroms()
         {
-            return new SelectList(new CodeValueController().UsersToEmailFrom(), "Code", "Value");
+            return new SelectList(new CodeValueModel().UsersToEmailFrom(), "Code", "Value");
         }
     }
 }

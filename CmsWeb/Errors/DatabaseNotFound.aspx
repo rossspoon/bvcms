@@ -50,8 +50,7 @@
 </head>
 <body>
     <div id="surface">
-        <h1>Database not found</h1>
-        <p>error: <%=HttpContext.Current.Items["message"] %></p>
+        <h1>Database not found: <%=Request.QueryString["dbname"] %></h1>
         <p><a href="http://www.bvcms.com">BVCMS homepage</a></p>
     </div>
 </body>

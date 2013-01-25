@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CMSPresenter;
 using CmsData.API;
 using CmsData.Codes;
 using UtilityExtensions;
@@ -216,17 +215,17 @@ namespace CmsWeb.Models
 		}
 		public SelectList ContributionStatuses()
 		{
-			return new SelectList(new CodeValueController().ContributionStatuses99(),
+			return new SelectList(new CodeValueModel().ContributionStatuses99(),
 				"Id", "Value", Status.ToString());
 		}
 		public SelectList ContributionTypes()
 		{
-			return new SelectList(new CodeValueController().ContributionTypes0(),
+			return new SelectList(new CodeValueModel().ContributionTypes0(),
 				"Id", "Value", Type.ToString());
 		}
 		public SelectList BundleTypes()
 		{
-			return new SelectList(new CodeValueController().BundleHeaderTypes0(),
+			return new SelectList(new CodeValueModel().BundleHeaderTypes0(),
 				"Id", "Value", Type.ToString());
 		}
 		public IEnumerable<SelectListItem> Years()

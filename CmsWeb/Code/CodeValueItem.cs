@@ -12,7 +12,7 @@ using System.Linq;
 using System.ComponentModel;
 using UtilityExtensions;
 
-namespace CMSPresenter
+namespace CmsWeb.Models
 {
     public class CodeValueItem
     {

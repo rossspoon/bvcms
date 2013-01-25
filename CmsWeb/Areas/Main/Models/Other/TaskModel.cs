@@ -14,7 +14,6 @@ using System.ComponentModel;
 using System.Collections;
 using System.Text;
 using System.Web;
-using CMSPresenter;
 using System.Web.Mvc;
 using System.Web.Routing;
 using CmsData.Codes;
@@ -444,7 +443,7 @@ namespace CmsWeb.Models
         }
         public string JsonStatusCodes()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             var sb = new StringBuilder("{");
             foreach (var c in cv.TaskStatusCodes())
             {
@@ -529,7 +528,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> TaskStatusCodes()
         {
-            var c = new CodeValueController();
+            var c = new CodeValueModel();
             return top.Union(c.TaskStatusCodes().Select(cv =>
                 new SelectListItem { Text = cv.Value, Value = cv.Id.ToString() })); ;
         }
@@ -672,7 +671,7 @@ namespace CmsWeb.Models
         public void SetStatus(int id, string value)
         {
             var task = DbUtil.Db.Tasks.Single(t => t.Id == id);
-            var cvc = new CodeValueController();
+            var cvc = new CodeValueModel();
             var ts = cvc.TaskStatusCodes();
             var statusid = ts.Single(t => t.Value == value).Id;
             var sb = new StringBuilder();

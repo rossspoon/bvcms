@@ -305,6 +305,12 @@
                     <li><a href="/Home/About">
                             About
                         </a></li>
+                @if (admin)
+                {
+                    <li><a href="javascript:$.block();window.location='/Home/ActiveRecords';">
+                            Active Records
+                        </a></li>
+                }
                     <li class="header">
                         Tutorials
                     </li>

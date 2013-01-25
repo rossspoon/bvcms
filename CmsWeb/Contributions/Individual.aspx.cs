@@ -12,8 +12,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using CmsData;
 using CmsData.Codes;
+using CmsWeb.Models;
 using UtilityExtensions;
-using CMSPresenter;
 
 namespace CmsWeb.Contributions
 {
@@ -89,7 +89,7 @@ namespace CmsWeb.Contributions
 
         protected void ListView1_DataBound(object sender, EventArgs e)
         {
-            var ctl = new BundleController();
+            var ctl = new BundleModel();
             Total.Text = ctl.Total(peopleid,
                 YearSearch.SelectedValue.ToInt(),
                 StatusSearch.SelectedValue.ToInt(),

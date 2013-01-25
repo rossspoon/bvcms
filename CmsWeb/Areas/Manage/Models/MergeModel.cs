@@ -43,7 +43,7 @@ namespace CmsWeb.Models
 
         public class BasicInfo
         {
-            private CMSPresenter.CodeValueController cvc = new CMSPresenter.CodeValueController();
+            private CodeValueModel cvc = new CodeValueModel();
 
             public int PeopleId { get; set; }
             public Person person
@@ -221,17 +221,17 @@ namespace CmsWeb.Models
         }
         public SelectList GenderList()
         {
-            var cv = new CMSPresenter.CodeValueController();
+            var cv = new CodeValueModel();
             return new SelectList(cv.GenderCodes(), "Id", "Value");
         }
         public SelectList MaritalStatusList()
         {
-            var cv = new CMSPresenter.CodeValueController();
+            var cv = new CodeValueModel();
             return new SelectList(cv.MaritalStatusCodes(), "Id", "Value");
         }
         public SelectList CampusList()
         {
-            var cv = new CMSPresenter.CodeValueController();
+            var cv = new CodeValueModel();
             return new SelectList(cv.AllCampuses0(), "Id", "Value");
         }
     }

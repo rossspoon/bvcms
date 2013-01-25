@@ -5,14 +5,13 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 
 namespace CmsWeb.Models.PersonPage
 {
     public class BasicPersonInfo
     {
-        private CodeValueController cv = new CodeValueController();
+        private CodeValueModel cv = new CodeValueModel();
         public int PeopleId { get; set; }
         public Person person { get; set; }
         public string NickName { get; set; }
@@ -196,22 +195,22 @@ namespace CmsWeb.Models.PersonPage
         }
         public static IEnumerable<SelectListItem> GenderCodes()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             return QueryModel.ConvertToSelect(cv.GenderCodes(), "Id");
         }
         public static IEnumerable<SelectListItem> Campuses()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             return QueryModel.ConvertToSelect(cv.AllCampuses0(), "Id");
         }
         public static IEnumerable<SelectListItem> MemberStatuses()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             return QueryModel.ConvertToSelect(cv.MemberStatusCodes(), "Id");
         }
         public static IEnumerable<SelectListItem> MaritalStatuses()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             return QueryModel.ConvertToSelect(cv.MaritalStatusCodes(), "Id");
         }
     }

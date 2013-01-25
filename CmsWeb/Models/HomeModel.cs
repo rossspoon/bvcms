@@ -289,12 +289,12 @@ namespace CmsWeb.Models
                     };
             return q;
         }
-        public IEnumerable<CMSPresenter.CodeValueItem> Tags()
+        public IEnumerable<CodeValueItem> Tags()
         {
             var up = DbUtil.Db.CurrentUserPerson;
             if (up == null)
-                return new List<CMSPresenter.CodeValueItem>();
-            var ctl = new CMSPresenter.CodeValueController();
+                return new List<CodeValueItem>();
+            var ctl = new CodeValueModel();
             var pid = DbUtil.Db.CurrentUser.PeopleId;
             var list = ctl.UserTags(pid);
             return list;

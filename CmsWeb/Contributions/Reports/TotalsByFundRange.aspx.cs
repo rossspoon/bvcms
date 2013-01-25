@@ -10,13 +10,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using CmsWeb.Models;
 using UtilityExtensions;
 
 namespace CmsWeb.Reports
 {
     public partial class TotalsByFundRange : System.Web.UI.Page
     {
-        CMSPresenter.BundleController ctl = new CMSPresenter.BundleController();
+        BundleModel ctl = new BundleModel();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)

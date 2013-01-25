@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsWeb.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -250,7 +251,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         private List GetContacts(Person p)
         {
-            var ctl = new CMSPresenter.CodeValueController();
+            var ctl = new CodeValueModel();
             var cts = ctl.ContactTypeCodes();
 
             var cq = from ce in DbUtil.Db.Contactees

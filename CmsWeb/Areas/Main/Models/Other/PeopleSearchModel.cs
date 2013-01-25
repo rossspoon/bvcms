@@ -15,7 +15,6 @@ using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using System.Web.UI.WebControls;
 using System.Transactions;
-using CMSPresenter;
 using System.Text.RegularExpressions;
 
 namespace CmsWeb.Models
@@ -171,7 +170,7 @@ namespace CmsWeb.Models
             return people;
         }
         
-        public IEnumerable<TaggedPersonInfo> PeopleList()
+        public IEnumerable<MailingController.TaggedPersonInfo> PeopleList()
         {
             var people = FetchPeople();
             if (!_count.HasValue)
@@ -180,10 +179,10 @@ namespace CmsWeb.Models
                 .Skip(StartRow).Take(PageSize);
             return PeopleList(people);
         }
-        private IEnumerable<TaggedPersonInfo> PeopleList(IQueryable<Person> query)
+        private IEnumerable<MailingController.TaggedPersonInfo> PeopleList(IQueryable<Person> query)
         {
             var q = from p in query
-                    select new TaggedPersonInfo
+                    select new MailingController.TaggedPersonInfo
                     {
                         PeopleId = p.PeopleId,
                         Name = p.Name,
@@ -313,7 +312,7 @@ namespace CmsWeb.Models
             }
             return query;
         }
-        CodeValueController cv = new CodeValueController();
+        CodeValueModel cv = new CodeValueModel();
         public SelectList GenderCodes()
         {
             return new SelectList(cv.GenderCodesWithUnspecified(), "Id", "Value", m.gender);

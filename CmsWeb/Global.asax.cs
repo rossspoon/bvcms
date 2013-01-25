@@ -10,7 +10,6 @@ using UtilityExtensions;
 using CmsWeb;
 using System.Net.Mail;
 using System.Web.Configuration;
-using CMSPresenter;
 using System.Net;
 using System.Text;
 using System.IO;
@@ -105,7 +104,7 @@ namespace CmsWeb
             }
             if (!DbUtil.DatabaseExists())
             {
-                Response.Redirect("/Errors/NoDatabase.htm");
+                Response.Redirect("/Errors/DatabaseNotFound.aspx?dbname=" + Util.Host);
                 return;
             }
             var cul = DbUtil.Db.Setting("Culture", "en-US");

@@ -149,7 +149,7 @@
         </asp:ListView>
     </div>
     <asp:ObjectDataSource ID="ODSRanges" runat="server" SelectMethod="TotalsByFundAgeRange"
-        TypeName="CMSPresenter.BundleController" OnObjectCreated="ObjectDataSource1_ObjectCreated"
+        TypeName="CmsWeb.Models.BundleModel" OnObjectCreated="ObjectDataSource1_ObjectCreated"
         OldValuesParameterFormatString="original_{0}">
         <SelectParameters>
             <asp:ControlParameter Name="fundid" ControlID="Fund" PropertyName="SelectedValue"
@@ -162,6 +162,6 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSFunds" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="Funds" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="CampusIds" runat="server" SelectMethod="AllCampuses0" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+        SelectMethod="Funds" TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="CampusIds" runat="server" SelectMethod="AllCampuses0" TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
 </asp:Content>
