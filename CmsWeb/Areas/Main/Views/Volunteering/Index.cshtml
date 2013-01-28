@@ -4,24 +4,35 @@
     ViewBag.Title = "Volunteer";
     Layout = "/Views/Shared/SiteLayout.cshtml";
 
+    IQueryable<BackgroundCheck> bg = null;
+    IQueryable<BackgroundCheck> credit = null;
+    IQueryable<BackgroundCheckLabel> labels = null;
+    
+    var labelEnabled = DbUtil.Db.Setting("EnableBackgroundLabels", "false") == "true";
+    var checkEnabled = DbUtil.Db.Setting("EnableBackgroundChecks", "false") == "true";
+
     var i = from e in DbUtil.Db.VolunteerForms
             where e.PeopleId == Model.PeopleId
             select e;
 
-    var bg = from e in DbUtil.Db.BackgroundChecks
-            where e.PeopleID == Model.PeopleId
-            where e.ReportTypeID == ProtectMyMinistryHelper.TYPE_BACKGROUND
-            select e;
+    if( checkEnabled )
+    {
+        bg = from e in DbUtil.Db.BackgroundChecks
+                where e.PeopleID == Model.PeopleId
+                where e.ReportTypeID == ProtectMyMinistryHelper.TYPE_BACKGROUND
+                select e;
 
-    var credit = from e in DbUtil.Db.BackgroundChecks
+        credit = from e in DbUtil.Db.BackgroundChecks
                  where e.PeopleID == Model.PeopleId
                  where e.ReportTypeID == ProtectMyMinistryHelper.TYPE_CREDIT
                  select e;
-
-    var labels = from e in DbUtil.Db.BackgroundCheckLabels
-                 select e;
-
-    var labelEnabled = DbUtil.Db.Setting("EnableBackgroundLabels", "false") == "true";
+        
+        if( labelEnabled )
+        {
+            labels = from e in DbUtil.Db.BackgroundCheckLabels
+                     select e;
+        }
+    }    
 }
 @section scripts
 {
@@ -101,7 +112,7 @@
 {
 <b>Volunteer Background Checks</b>
 <table width="100%" style="border:thin solid #777777;">
-    @if (bg.Count() == 0)
+    @if( bg != null && bg.Count() == 0)
     {
         <tr>
             <td>No Background Checks</td>
@@ -132,6 +143,12 @@
                 {
                     <a href="javascript:void(0)" onclick="showEditDialog( @check.Id );">
                         @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Name
+                    </a>
+                }
+                else
+                {
+                    <a href="javascript:void(0)" onclick="showEditDialog( @check.Id );">
+                        Assign Label
                     </a>
                 }
                 </td>
@@ -183,7 +200,7 @@
 {
 <b>Volunteer Credit Checks</b>
 <table width="100%" style="border:thin solid #777777;">
-    @if (credit.Count() == 0)
+    @if ( credit != null && credit.Count() == 0)
     {
         <tr>
             <td>No Credit Checks</td>
@@ -214,6 +231,12 @@
                 {
                     <a href="javascript:void(0)" onclick="showEditDialog( @check.Id );">
                         @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Name
+                    </a>
+                }
+                else
+                {
+                    <a href="javascript:void(0)" onclick="showEditDialog( @check.Id );">
+                        Assign Label
                     </a>
                 }
                 </td>
