@@ -127,6 +127,14 @@ namespace CmsWeb.Areas.Manage.Controllers
 			m.SendEmails(additional ?? 0);
 			return Content("Emails are being sent, thank you.");
 		}
-
+        public ActionResult EmailSlot(int id)
+        {
+            var m = DbUtil.Db.Meetings.Single(mm => mm.MeetingId == id);
+            var qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            qb.AddNewClause(QueryType.RegisteredForMeetingId, CompareType.Equal, m.MeetingId);
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/Email/Index/{0}?TemplateId=0&body={1} {2}&subj={1} {2}".Fmt(qb.QueryId, m.Organization.OrganizationName, m.MeetingDate.FormatDateTm()));
+        }
 	}
 }

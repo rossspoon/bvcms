@@ -10,7 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CMSPresenter;
+using CmsWeb.Models;
 using UtilityExtensions;
 using CmsData;
 using System.Text;
@@ -20,7 +20,7 @@ namespace CmsWeb
 {
     public partial class EmailAttendanceNotices : System.Web.UI.Page
     {
-        private readonly CodeValueController CVController = new CodeValueController();
+        private readonly CodeValueModel cvModel = new CodeValueModel();
         protected void Page_Load(object sender, EventArgs e)
         {
             Button1.Enabled = User.IsInRole("Attendance");
@@ -29,7 +29,7 @@ namespace CmsWeb
                 DivOrg.Items.Clear();
                 DivOrg.Items.Add(new ListItem("(not specified)", "0"));
                 DivOrg.SelectedIndex = -1;
-                DivOrg.DataSource = CVController.OrgDivTags();
+                DivOrg.DataSource = cvModel.OrgDivTags();
                 DivOrg.DataBind();
             }
         }
@@ -37,7 +37,7 @@ namespace CmsWeb
         {
             if (SubDivOrg.Visible)
             {
-                SubDivOrg.DataSource = CVController
+                SubDivOrg.DataSource = cvModel
                     .OrgSubDivTags(DivOrg.SelectedValue.ToInt());
                 SubDivOrg.DataBind();
             }
@@ -55,7 +55,7 @@ namespace CmsWeb
         {
             if (Organization.Visible)
             {
-                Organization.DataSource = CVController
+                Organization.DataSource = cvModel
                     .Organizations(SubDivOrg.SelectedValue.ToInt());
                 Organization.DataBind();
             }

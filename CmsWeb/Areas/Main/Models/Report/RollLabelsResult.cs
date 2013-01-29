@@ -9,13 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsWeb.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Collections;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -59,7 +59,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             var ctl = new MailingController();
             ctl.UseTitles = titles;
 
-            IEnumerable<MailingInfo> q = null;
+            IEnumerable<MailingController.MailingInfo> q = null;
             switch (format)
             {
                 case "Individual":

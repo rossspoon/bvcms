@@ -249,6 +249,10 @@ The following Committments:<br/>
 		public ActionResult ManageGiving(ManageGivingModel m)
 		{
 			SetHeaders(m.orgid);
+            if (!m.Account.HasValue())
+                m.Account = m.Account.GetDigits();
+            else if (!m.Account.StartsWith("X"))
+    		    m.Account = m.Account.GetDigits();
 			m.ValidateModel(ModelState);
 			if (!ModelState.IsValid)
 				return View(m);
@@ -296,6 +300,17 @@ The following Committments:<br/>
 				mg.StartWhen = m.StartWhen;
 				mg.StopWhen = m.StopWhen;
 				mg.NextDate = mg.FindNextDate(DateTime.Today);
+                
+    			var pi = m.person.PaymentInfo();
+			    pi.FirstName = m.firstname.Truncate(50);
+			    pi.MiddleInitial = m.middleinitial.Truncate(10);
+			    pi.LastName = m.lastname.Truncate(50);
+			    pi.Suffix = m.suffix.Truncate(10);
+			    pi.Address = m.address.Truncate(50);
+			    pi.City = m.city.Truncate(50);
+			    pi.State = m.state.Truncate(10);
+			    pi.Zip = m.zip.Truncate(15);
+			    pi.Phone = m.phone.Truncate(25);
 
 				var q = from ra in DbUtil.Db.RecurringAmounts
 						where ra.PeopleId == m.pid
@@ -332,7 +347,7 @@ The following Committments:<br/>
 			m.testing = true;
 #else
 #endif
-			var details = RenderPartialViewToString(this, "ManageGiving2", m);
+			var details = ViewExtensions2.RenderPartialViewToString(this, "ManageGiving2", m);
 
 			var staff = DbUtil.Db.StaffPeopleForOrg(m.orgid)[0];
 			var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
@@ -473,8 +488,23 @@ You have the following subscriptions:<br/>
 				oid, pid, 220, DateTime.Now, null, false);
 			//DbUtil.Db.UpdateMainFellowship(oid);
 
-			omb.AddToGroup(DbUtil.Db, smallgroup);
-			omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
+		    if (q.org.AddToSmallGroupScript.HasValue())
+		    {
+		        var script = DbUtil.Db.Content(q.org.AddToSmallGroupScript);
+		        if (script != null && script.Body.HasValue())
+		        {
+		            try
+		            {
+		                var pe = new PythonEvents(DbUtil.Db, "RegisterEvent", script.Body);
+		                pe.instance.AddToSmallGroup(smallgroup, omb);
+		            }
+		            catch (Exception)
+		            {
+		            }
+		        }
+		    }
+	        omb.AddToGroup(DbUtil.Db, smallgroup);
+		    omb.AddToGroup(DbUtil.Db, "emailid:" + emailid);
 			ot.Used = true;
 			DbUtil.Db.SubmitChanges();
 			DbUtil.LogActivity("Votelink: {0}".Fmt(q.org.OrganizationName));

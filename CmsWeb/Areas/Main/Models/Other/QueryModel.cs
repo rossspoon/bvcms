@@ -199,13 +199,13 @@ namespace CmsWeb.Models
             TagsVisible = fieldMap.HasParam("Tags");
             if (TagsVisible)
             {
-                var cv = new CMSPresenter.CodeValueController();
+                var cv = new CodeValueModel();
                 TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
             }
             StartDateVisible = fieldMap.HasParam("StartDate");
             EndDateVisible = fieldMap.HasParam("EndDate");
 
-            var cvctl = new CMSPresenter.CodeValueController();
+            var cvctl = new CodeValueModel();
             switch (fieldMap.Type)
             {
                 case FieldType.Bit:
@@ -264,7 +264,7 @@ namespace CmsWeb.Models
         }
         public static List<SelectListItem> ConvertToSelect(object items, string valuefield)
         {
-            var list = items as IEnumerable<CMSPresenter.CodeValueItem>;
+            var list = items as IEnumerable<CodeValueItem>;
             List<SelectListItem> list2;
             switch (valuefield)
             {
@@ -421,7 +421,7 @@ namespace CmsWeb.Models
             {
                 if (c.Tags != null)
                     Tags = c.Tags.Split(';');
-                var cv = new CMSPresenter.CodeValueController();
+                var cv = new CodeValueModel();
                 TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
                 foreach (var i in TagData)
                     i.Selected = Tags.Contains(i.Value);
@@ -446,14 +446,15 @@ namespace CmsWeb.Models
         public void SaveQuery()
         {
             var saveto = Db.QueryBuilderClauses.FirstOrDefault(c =>
-                c.SavedBy == Util.UserName && c.Description == SavedQueryDesc);
+                (c.SavedBy == Util.UserName || c.SavedBy == "public") && c.Description == SavedQueryDesc);
             if (saveto == null)
             {
                 saveto = new QueryBuilderClause();
                 Db.QueryBuilderClauses.InsertOnSubmit(saveto);
             }
             saveto.CopyFromAll(Qb, DbUtil.Db); // save Qb on top of existing
-            saveto.SavedBy = Util.UserName;
+            if (saveto.SavedBy != "public")
+                saveto.SavedBy = Util.UserName;
             saveto.Description = SavedQueryDesc;
             saveto.IsPublic = IsPublic;
             Db.SubmitChanges();
@@ -663,7 +664,7 @@ namespace CmsWeb.Models
         }
         public List<SelectListItem> SavedQueries()
         {
-            var cv = new CMSPresenter.CodeValueController();
+            var cv = new CodeValueModel();
             return ConvertToSelect(cv.UserQueries(), "Code");
         }
         public List<SelectListItem> Ministries()

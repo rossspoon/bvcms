@@ -33,7 +33,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
                          select new FamilyInfo()
                          {
 							 FamilyName = hhname,
-							 HomePhone = family.HomePhone,
+							 HomePhone = family.People.Any(pp => pp.DoNotPublishPhones == true) ? "" : family.HomePhone,
 							 Address = family.AddressLineOne,
 							 Address2 = family.AddressLineTwo,
 							 CityStateZip = family.CityStateZip,
@@ -47,7 +47,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 										   Last = m.LastName,
 										   Age = m.Age,
 										   Email = m.EmailAddress,
-										   Cell = m.CellPhone
+										   Cell = m.DoNotPublishPhones == true ? "" : m.CellPhone
                                        }
                          };
 			

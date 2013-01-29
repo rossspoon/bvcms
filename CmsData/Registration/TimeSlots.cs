@@ -49,6 +49,7 @@ namespace CmsData.Registration
 			public int DayOfWeek { get; set; }
 			public int? Limit { get; set; }
 		    public string Name { get; set; }
+            [DataType(DataType.Time)]
 			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:t}")]
 			public DateTime? Time { get; set; }
 			public DateTime Datetime()

@@ -25,6 +25,8 @@ namespace CmsData
 		
 		private int? _AttendanceTypeId;
 		
+		private bool? _Hardwired;
+		
    		
    		private EntitySet< Attend> _Attends;
 		
@@ -53,6 +55,9 @@ namespace CmsData
 		
 		partial void OnAttendanceTypeIdChanging(int? value);
 		partial void OnAttendanceTypeIdChanged();
+		
+		partial void OnHardwiredChanging(bool? value);
+		partial void OnHardwiredChanged();
 		
     #endregion
 		public MemberType()
@@ -157,6 +162,28 @@ namespace CmsData
 					this._AttendanceTypeId = value;
 					this.SendPropertyChanged("AttendanceTypeId");
 					this.OnAttendanceTypeIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Hardwired", UpdateCheck=UpdateCheck.Never, Storage="_Hardwired", DbType="bit")]
+		public bool? Hardwired
+		{
+			get { return this._Hardwired; }
+
+			set
+			{
+				if (this._Hardwired != value)
+				{
+				
+                    this.OnHardwiredChanging(value);
+					this.SendPropertyChanging();
+					this._Hardwired = value;
+					this.SendPropertyChanged("Hardwired");
+					this.OnHardwiredChanged();
 				}
 
 			}

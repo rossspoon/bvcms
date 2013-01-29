@@ -145,6 +145,10 @@ namespace CmsData
 		
 		private bool? _NoAutoAbsents;
 		
+		private int? _PublishDirectory;
+		
+		private int? _ConsecutiveAbsentsThreshold;
+		
    		
    		private EntitySet< Person> _BFMembers;
 		
@@ -381,6 +385,12 @@ namespace CmsData
 		
 		partial void OnNoAutoAbsentsChanging(bool? value);
 		partial void OnNoAutoAbsentsChanged();
+		
+		partial void OnPublishDirectoryChanging(int? value);
+		partial void OnPublishDirectoryChanged();
+		
+		partial void OnConsecutiveAbsentsThresholdChanging(int? value);
+		partial void OnConsecutiveAbsentsThresholdChanged();
 		
     #endregion
 		public Organization()
@@ -1851,6 +1861,50 @@ namespace CmsData
 					this._NoAutoAbsents = value;
 					this.SendPropertyChanged("NoAutoAbsents");
 					this.OnNoAutoAbsentsChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PublishDirectory", UpdateCheck=UpdateCheck.Never, Storage="_PublishDirectory", DbType="int")]
+		public int? PublishDirectory
+		{
+			get { return this._PublishDirectory; }
+
+			set
+			{
+				if (this._PublishDirectory != value)
+				{
+				
+                    this.OnPublishDirectoryChanging(value);
+					this.SendPropertyChanging();
+					this._PublishDirectory = value;
+					this.SendPropertyChanged("PublishDirectory");
+					this.OnPublishDirectoryChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ConsecutiveAbsentsThreshold", UpdateCheck=UpdateCheck.Never, Storage="_ConsecutiveAbsentsThreshold", DbType="int")]
+		public int? ConsecutiveAbsentsThreshold
+		{
+			get { return this._ConsecutiveAbsentsThreshold; }
+
+			set
+			{
+				if (this._ConsecutiveAbsentsThreshold != value)
+				{
+				
+                    this.OnConsecutiveAbsentsThresholdChanging(value);
+					this.SendPropertyChanging();
+					this._ConsecutiveAbsentsThreshold = value;
+					this.SendPropertyChanged("ConsecutiveAbsentsThreshold");
+					this.OnConsecutiveAbsentsThresholdChanged();
 				}
 
 			}

@@ -6,6 +6,7 @@
  */
 using System;
 using System.Globalization;
+using System.IO;
 using System.Linq.Expressions;
 using System.Web;
 using System.Text;
@@ -149,34 +150,6 @@ namespace CmsWeb
 			tb.MergeAttributes<string, object>(attr);
 			return new HtmlString(tb.ToString());
 		}
-		public static bool IsDebug(this HtmlHelper helper)
-		{
-		    //return true;
-			return Util.IsDebug() || DbUtil.Db.Setting("NoMinify", "false").ToBool();
-		}
-		public static HtmlString Script(this HtmlHelper helper, string script, bool? debug = false)
-		{
-			if (Util.Version == "?")
-				Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-			if (helper.IsDebug() || debug == true)
-				return new HtmlString(@"<script src=""{0}"" type=""text/javascript""></script>".Fmt(script));
-			var v = Util.Version;
-			var v2 = v.Substring(v.Length - 3);
-			return new HtmlString(@"<script src=""/Min{0}?v={1}"" type=""text/javascript""></script>".Fmt(script, v2));
-		}
-		public static HtmlString Css(this HtmlHelper helper, string css)
-		{
-			if (Util.Version == "?")
-				Util.Version =
-					System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString().GetHashCode().ToString();
-			if (!helper.IsDebug())
-			{
-				var v = Util.Version;
-				var v2 = v.Substring(v.Length - 3);
-				return new HtmlString(@"<link href='{0}?v={1}' rel='stylesheet' type='text/css'></script>".Fmt(css, v2));
-			}
-			return new HtmlString(@"<link href='{0}' rel='stylesheet' type='text/css'></script>".Fmt(css));
-		}
 		private static string TryGetModel(this HtmlHelper helper, string name)
 		{
 			ModelState val;
@@ -231,12 +204,14 @@ namespace CmsWeb
 			tb.InnerHtml = sb.ToString();
 			return new HtmlString(tb.ToString());
 		}
-		public static HtmlString DropDownList4(this HtmlHelper helper, string id, string name, IEnumerable<CmsWeb.Models.OnlineRegPersonModel.SelectListItemFilled> list, string value)
+		public static HtmlString DropDownList4(this HtmlHelper helper, string id, string name, IEnumerable<CmsWeb.Models.OnlineRegPersonModel.SelectListItemFilled> list, string value, string cssClass = "")
 		{
 			var tb = new TagBuilder("select");
 			if (id.HasValue())
 				tb.MergeAttribute("id", id);
 			tb.MergeAttribute("name", name);
+            if (cssClass.HasValue())
+    			tb.MergeAttribute("class", cssClass);
 			var sb = new StringBuilder();
 			foreach (var o in list)
 			{
@@ -446,6 +421,25 @@ namespace CmsWeb
         {
             return htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(expression));
         }
+
+		public static string RenderPartialViewToString(Controller controller, string viewName, object model)
+		{
+			controller.ViewData.Model = model;
+			try
+			{
+				using (var sw = new StringWriter())
+				{
+					ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
+					ViewContext viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
+					viewResult.View.Render(viewContext, sw);
+					return sw.GetStringBuilder().ToString();
+				}
+			}
+			catch (Exception ex)
+			{
+				return ex.ToString();
+			}
+		}
 
 		public static CollectionItemNamePrefixScope BeginCollectionItem<TModel>(this HtmlHelper<TModel> html, string collectionName)
 		{

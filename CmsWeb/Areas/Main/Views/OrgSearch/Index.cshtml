@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.OrgSearchModel
+@using System.Web.Optimization
 @using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -6,9 +7,9 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/OrgSearch.js")
+@Scripts.Render("~/bundles/single/OrgSearch-js")
 }
-<form method="post">
+<form id="orgsearchform" method="post">
   <table id="searchvalues" cellspacing="5" class="roundbox floatleft">
   <tr><td colspan="4"> <h2>Organization Search</h2> </td></tr>
       <tr>
@@ -36,16 +37,17 @@
           <td>@Html.DropDownList("OnlineReg", Model.RegistrationTypeIds())</td>
       </tr>
   	<tr>
-		<td>
+	      <td align="right" valign="top" colspan="2" nowrap="nowrap">
+	          MainFellowship @Html.CheckBox("MainFellowship") |
+	          ParentOrg @Html.CheckBox("ParentOrg")
+	      </td>
+          <td align="right" colspan="2">
 @if (User.IsInRole("OrgTagger"))
 { 
-          <div style="padding-top:7px"><a href="#" id="hideshow">Manager</a></div>
+            <a href="#" id="hideshow" class="bt">Manager</a>
 }
-		</td>
-          <td align="right" valign="top">MainFellowship @Html.CheckBox("MainFellowship")</td>
-		<td colspan="2" align="right">
-          <a href="/OrgSearch/Results" id="search" class="bt default formlink">Search</a>
           <a href="/OrgSearch/Results" id="clear" class="bt">Clear</a>
+          <a href="/OrgSearch/Results" id="search" class="blue bt default formlink">Search</a>
 		</td>
 	</tr>
 
@@ -72,15 +74,20 @@
       </tr>
 }
     </table>
-<div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 1em;float:left;font-size:1.2em;">
+<div id="buttondiv" class="extrabar" style="margin-top:2em;margin-left: 1em;float:left;font-size:1.2em;">
     <a href="#" class="trigger-dropdown">
         Exports/Reports <img src="/images/dnarrow.png" />
     </a>
     <div class="dropdown-menu has-tip">
         <ul>
             <li><a id="ExportExcel" href="#">Export to Excel</a></li>
+            @if (User.IsInRole("Attendance"))
+            {
+            <li><a id="AttNotices" href="#">Email Attendance Notices</a></li>
+            }
             <li><a id="rollsheet1" href='#'>Roll Sheet(s)</a></li>
             <li><a id="Meetings" href="#">Meetings</a></li>
+            <li><a id="RecentAbsents" href="/Reports/RecentAbsents/">Recent Absents</a></li>
             <li><a id="Roster" href="#">Roster</a></li>
             <li><a class="ViewReport" href="/Reports/OrgLeaders/">Leaders</a></li>
             <li><a class="ViewReport" href="/Reports/ClassList/">Class List</a></li>
@@ -101,6 +108,15 @@
 <hr />
      @Html.Partial("Results", Model) 
     </form>
+    <div id="PanelAttendanceNotices" class="modalDiv dialog" style="display: none">
+        <table>
+        <tr><th colspan="2">Select a meeting date</th></tr>
+        <tr><th>Meeting Date</th><td><input id="MeetingDateAttNotices" type="text" class='datepicker' /></td></tr>
+        <tr><td align="right" colspan="2">
+            <a class="bt" id="AttendanceNotices" href="#">Run</a></td>
+        </tr>
+        </table>
+    </div>
     <div id="PanelRollsheet" class="modalDiv dialog" style="display: none">
         <table>
         <tr><th colspan="2">Select a meeting date and time</th></tr>

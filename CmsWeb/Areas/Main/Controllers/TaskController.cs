@@ -35,13 +35,6 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(tasks);
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult Priority(int id, int priority)
-        {
-            var tasks = new TaskModel { Id = id.ToString() };
-            tasks.SetPriority(priority);
-            return Json(new { Priority = id == 0 ? "" : priority.ToString() });
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SetComplete(int id)
         {
             var tasks = new TaskModel { Id = id.ToString() };

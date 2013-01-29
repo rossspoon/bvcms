@@ -14,7 +14,7 @@
         $.post($(this).attr('href'), q, function (ret) {
             if (ret.error) {
                 $('#validatecoupon').text(ret.error);
-            } else if (ret.amt) {
+            } else if (ret.amt && ret.amt > 0) {
                 $('#validatecoupon').text('');
                 $('#amt').text(ret.amt);
                 $('#pf_AmtToPay').val(ret.tiamt);
@@ -27,6 +27,24 @@
         });
         return false;
     });
+	$('.clearField').each(function () {
+        if ($(this).val() == '') {
+            $(this).val($(this).attr('default'));
+            $(this).addClass('text-label');
+        }
+	    $(this).focus(function () {
+	        if (this.value == $(this).attr('default')) {
+	            this.value = '';
+	            $(this).removeClass('text-label');
+	        }
+	    });
+	    $(this).blur(function () {
+	        if (this.value == '') {
+	            this.value = $(this).attr('default');
+	            $(this).addClass('text-label');
+	        }
+	    });
+	});
     $('#pf_Coupon').showPassword();
 
     $('#findidclick').click(function () {
@@ -104,13 +122,23 @@
     // validate signup form on keyup and submit
     $("form").validate({
         rules: {
-            "pf.Name": { required: true, maxlength: 50 },
+            "pf.First": { required: true, maxlength: 50 },
+            "pf.MiddleInitial": { maxlength: 1},
+            "pf.Last": { required: true, maxlength: 50 },
+            "pf.Suffix": { maxlength: 10 },
             "pf.Address": { required: true, maxlength: 50 },
             "pf.City": { required: true, maxlength: 50 },
             "pf.State": { required: true, maxlength: 4 },
             "pf.Zip": { required: true, maxlength: 15 },
-            "pf.Email": { required: true, maxlength: 80 },
             "pf.Phone": { maxlength: 50 }
+        },
+        errorPlacement: function(error, element) {
+            if (element.hasClass("clearField")) {
+                $("#errorName").append(error);
+            }
+            else {
+                error.insertAfter(element);
+            }
         }
     });
 

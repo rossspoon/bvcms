@@ -37,7 +37,7 @@ namespace CmsData
 		
 		private int? _ContributionStatusId;
 		
-		private bool _PledgeFlag;
+		private bool? _PledgeFlag;
 		
 		private int? _ModifiedBy;
 		
@@ -104,7 +104,7 @@ namespace CmsData
 		partial void OnContributionStatusIdChanging(int? value);
 		partial void OnContributionStatusIdChanged();
 		
-		partial void OnPledgeFlagChanging(bool value);
+		partial void OnPledgeFlagChanging(bool? value);
 		partial void OnPledgeFlagChanged();
 		
 		partial void OnModifiedByChanging(int? value);
@@ -383,8 +383,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="PledgeFlag", UpdateCheck=UpdateCheck.Never, Storage="_PledgeFlag", DbType="bit NOT NULL")]
-		public bool PledgeFlag
+		[Column(Name="PledgeFlag", UpdateCheck=UpdateCheck.Never, Storage="_PledgeFlag", DbType="bit")]
+		public bool? PledgeFlag
 		{
 			get { return this._PledgeFlag; }
 

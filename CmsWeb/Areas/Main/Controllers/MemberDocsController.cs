@@ -39,49 +39,48 @@ namespace CmsWeb.Areas.Main.Controllers
 		public ActionResult Upload(int id, HttpPostedFileBase file)
 		{
 			var m = new MemberDocs { PeopleId = id };
-			var mdf = new MemberDocForm 
-			{ 
-				PeopleId = id, 
-				DocDate = Util.Now,
-				UploaderId = Util2.CurrentPeopleId
-			};
-            DbUtil.Db.MemberDocForms.InsertOnSubmit(mdf);
-            var bits = new byte[file.ContentLength];
-            file.InputStream.Read(bits, 0, bits.Length);
-            var mimetype = file.ContentType.ToLower();
-            switch (mimetype)
-            {
-                case "image/jpeg":
-                case "image/pjpeg":
-                case "image/gif":
-                    mdf.IsDocument = false;
-                    try
-                    {
-                        mdf.SmallId = ImageData.Image.NewImageFromBits(bits, 165, 220).Id;
-                        mdf.MediumId = ImageData.Image.NewImageFromBits(bits, 675, 900).Id;
-                        mdf.LargeId = ImageData.Image.NewImageFromBits(bits).Id;
-                    }
-                    catch (Exception ex)
-                    {
-						ModelState.AddModelError("File", ex);
-						return View("Index", m);
-                    }
-                    break;
-                case "text/plain":
-                case "application/pdf":
-                case "application/msword":
-                case "application/vnd.ms-excel":
-                    mdf.MediumId = ImageData.Image.NewImageFromBits(bits, mimetype).Id;
-                    mdf.SmallId = mdf.MediumId;
-                    mdf.LargeId = mdf.MediumId;
-                    mdf.IsDocument = true;
-                    break;
-                default:
-					ModelState.AddModelError("File", "file type not supported: " + mimetype);
-					return View("Index", m);
-            }
-            DbUtil.Db.SubmitChanges();
-            DbUtil.LogActivity("Uploading MemberDoc for {0}".Fmt(mdf.Person.Name));
+		    try
+		    {
+    			var mdf = new MemberDocForm 
+    			{ 
+    				PeopleId = id, 
+    				DocDate = Util.Now,
+    				UploaderId = Util2.CurrentPeopleId
+    			};
+                DbUtil.Db.MemberDocForms.InsertOnSubmit(mdf);
+                var bits = new byte[file.ContentLength];
+                file.InputStream.Read(bits, 0, bits.Length);
+                var mimetype = file.ContentType.ToLower();
+                switch (mimetype)
+                {
+                    case "image/jpeg":
+                    case "image/pjpeg":
+                    case "image/gif":
+                        mdf.IsDocument = false;
+                            mdf.SmallId = ImageData.Image.NewImageFromBits(bits, 165, 220).Id;
+                            mdf.MediumId = ImageData.Image.NewImageFromBits(bits, 675, 900).Id;
+                            mdf.LargeId = ImageData.Image.NewImageFromBits(bits).Id;
+                        break;
+                    case "text/plain":
+                    case "application/pdf":
+                    case "application/msword":
+                    case "application/vnd.ms-excel":
+                        mdf.MediumId = ImageData.Image.NewImageFromBits(bits, mimetype).Id;
+                        mdf.SmallId = mdf.MediumId;
+                        mdf.LargeId = mdf.MediumId;
+                        mdf.IsDocument = true;
+                        break;
+                    default:
+    					throw new FormatException("file type not supported: " + mimetype);
+                }
+                DbUtil.Db.SubmitChanges();
+                DbUtil.LogActivity("Uploading MemberDoc for {0}".Fmt(mdf.Person.Name));
+		    }
+		    catch (Exception ex)
+		    {
+                ModelState.AddModelError("ImageFile", ex.Message);
+    			return View("Index", m);
+		    }
 			return View("Index", m);
 		}
 	}

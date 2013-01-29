@@ -5,13 +5,12 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
-using CMSPresenter;
 
 namespace CmsWeb.Models.PersonPage
 {
     public class GrowthInfo
     {
-        private static CodeValueController cv = new CodeValueController();
+        private static CodeValueModel cv = new CodeValueModel();
 
         public int PeopleId { get; set; }
 

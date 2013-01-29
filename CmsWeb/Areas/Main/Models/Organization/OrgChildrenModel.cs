@@ -5,7 +5,6 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text.RegularExpressions;
 using System.Collections;
 using CmsData.Codes;
@@ -78,8 +77,8 @@ namespace CmsWeb.Models
                     let ck = (o.ParentOrgId ?? 0) == org.OrganizationId
                     let ot = o.ParentOrgId != null && o.ParentOrgId != org.OrganizationId
                     let pa = o.ChildOrgs.Count() > 0
-					where o.DivisionId == org.DivisionId
-                    //where o.DivOrgs.Any(dd => org.DivOrgs.Select(oo => oo.DivId).Contains(dd.DivId))
+					//where o.DivisionId == org.DivisionId
+                    where o.DivOrgs.Any(dd => org.DivOrgs.Select(oo => oo.DivId).Contains(dd.DivId))
                     where namesearch == null || o.OrganizationName.Contains(namesearch) || ck
                     where o.OrganizationId != org.OrganizationId
                     where o.OrganizationStatusId == OrgStatusCode.Active

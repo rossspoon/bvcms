@@ -14,7 +14,6 @@ using System.Collections;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using CMSPresenter;
 using CmsData;
 using CmsData.Codes;
 
@@ -204,16 +203,6 @@ namespace CmsWeb.Models
             HttpContext.Current.Session["ActivePerson"] = Who;
             var qb = DbUtil.Db.QueryBuilderIsCurrentPerson();
             return "/Reports/Prospect/" + qb.QueryId + "?form=true";
-        }
-        public IEnumerable<SelectListItem> PriorityList()
-        {
-            return new SelectListItem[]
-            {
-                new SelectListItem { Value = "", Text = "None" },
-                new SelectListItem { Value = "1", Text = "1st Priority" },
-                new SelectListItem { Value = "2", Text = "2nd Priority" },
-                new SelectListItem { Value = "3", Text = "3rd Priority" },
-            };
         }
         public IEnumerable<SelectListItem> StatusList()
         {

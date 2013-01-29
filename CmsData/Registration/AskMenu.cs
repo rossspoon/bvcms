@@ -41,9 +41,12 @@ namespace CmsData.Registration
 				var m = MenuItem.Parse(parser, startindent);
 				mi.list.Add(m);
 			}
-			var q =
-				mi.list.Where(ii => ii.SmallGroup != "nocheckbox").GroupBy(ii => ii.SmallGroup).Where(g => g.Count() > 1).Select(
-					g => g.Key).ToList();
+            var q = (from i in mi.list
+                     where i.SmallGroup != "nocheckbox"
+                     where i.SmallGroup != "comment"
+                     group i by i.SmallGroup into g
+                     where g.Count() > 1
+                     select g.Key).ToList();
 			if (q.Any())
 				throw parser.GetException("Duplicate SmallGroup in MenuItems: {0}".Fmt(string.Join(",", q)));
 			return mi;

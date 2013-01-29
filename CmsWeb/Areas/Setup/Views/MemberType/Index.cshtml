@@ -39,7 +39,8 @@
 </script>
 }
 <h2>Member Types</h2>
-<table>
+<blockquote style="max-width:40em"><i>Click to edit the Code or Name. The items that cannot be deleted are expected to be there by the system. The description for those can be edited as long as the meaning is the same.</i></blockquote>
+<table class="grid">
     <tr>
         <th> Id </th>
         <th> Code </th>
@@ -52,19 +53,30 @@
     <tr>
         <td>@item.Id</td>
         <td>
-            <span id='c@(item.Id)' 
-                class='clickEdit'>@item.Code</span>
+            @if (item.Hardwired == true)
+            {
+                @item.Code   
+            }
+            else
+            {
+            <span id='c@(item.Id)' class='clickEdit'>@item.Code</span>
+            }
         </td>
         <td>
-            <span id='v@(item.Id)'
-                class='clickEdit'>@item.Description</span>
+            <span id='v@(item.Id)' class='clickEdit'>@item.Description</span>
         </td>
         <td>
-            <span id='a@(item.Id)' 
-                class='clickSelect'>@(item.AttendTypeId == null ? "" : item.AttendType)</span>
+            <span id='a@(item.Id)' class='clickSelect'>@(item.AttendTypeId == null ? "" : item.AttendType)</span>
         </td>
         <td>
-            <a id='d@(item.Id)' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
+            @if (item.Hardwired == true)
+            {
+                <i>hardwired</i>
+            }
+            else
+            {
+                <a id='d@(item.Id)' href="#" class="delete"><img border="0" src="/images/delete.gif" /></a>
+            }
         </td>
     </tr>
 }

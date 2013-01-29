@@ -16,7 +16,7 @@ namespace CmsWeb.Areas.Public.Controllers
 	{
 		private bool Authenticate()
 		{
-			return AccountModel.Authenticate("Checkin");
+			return AccountModel.AuthenticateMobile("Checkin");
 		}
 
 		public ActionResult Match(string id, int campus, int thisday, int? page, string kiosk, bool? kioskmode)

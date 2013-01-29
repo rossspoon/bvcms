@@ -35,11 +35,9 @@ namespace CmsData.Registration
 			while (parser.curr.indent == startindent)
 			{
 				var option = GradeOption.Parse(parser, startindent);
-				go.list.Add(option);
+                if(go.list.All(gg => gg.Code != option.Code))
+    				go.list.Add(option);
 			}
-			var q2 = go.list.GroupBy(mi => mi.Code).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
-			if (q2.Any())
-				throw parser.GetException("Duplicate Code in AskGradeOptions: " + string.Join(",", q2));
 			return go;
 		}
 		public class GradeOption

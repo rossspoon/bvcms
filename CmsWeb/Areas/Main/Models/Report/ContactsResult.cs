@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsWeb.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
@@ -25,9 +26,10 @@ namespace CmsWeb.Areas.Main.Models.Report
     public class ContactsResult : ActionResult
     {
         private int? qid;
-        public ContactsResult(int? id)
+        public ContactsResult(int? id, bool? sortAddress)
         {
             qid = id;
+            this.sortAddress = sortAddress ?? false;
         }
         private Font monofont = FontFactory.GetFont(FontFactory.COURIER, 8);
         private Font boldfont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
@@ -39,6 +41,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         private Document doc;
         private DateTime dt;
         private PdfContentByte dc;
+        private bool sortAddress { get; set; }
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -58,9 +61,15 @@ namespace CmsWeb.Areas.Main.Models.Report
             if (qid.HasValue) // print using a query
             {
                 var q = DbUtil.Db.PeopleQuery(qid.Value);
-                q = from p in q
-                    orderby p.Name2
-                    select p;
+                
+                if (sortAddress)
+                    q = from p in q
+                        orderby p.PrimaryState, p.PrimaryCity, p.PrimaryZip, p.PrimaryCity, p.PrimaryAddress, p.Name2
+                        select p;
+                else
+                    q = from p in q
+                        orderby p.Name2
+                        select p;
                 foreach (var p in q)
                     AddRow(p);
                 if (t.Rows.Count > 1)
@@ -117,7 +126,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             if (t.Rows.Count % 2 == 0)
                 t.DefaultCell.BackgroundColor = new GrayColor(240);
             else
-                t.DefaultCell.BackgroundColor = Color.WHITE;
+                t.DefaultCell.BackgroundColor = BaseColor.WHITE;
 
             var t2 = new PdfPTable(w2);
             t2.WidthPercentage = 100;
@@ -242,7 +251,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         }
         private List GetContacts(Person p)
         {
-            var ctl = new CMSPresenter.CodeValueController();
+            var ctl = new CodeValueModel();
             var cts = ctl.ContactTypeCodes();
 
             var cq = from ce in DbUtil.Db.Contactees
@@ -259,7 +268,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             var ip = p.InterestPoint != null ? p.InterestPoint.Description : "";
             if (ep.HasValue() || ip.HasValue())
                 list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, "Entry, Interest: {0}, {1}".Fmt(ep, ip), font));
-            foreach (var pc in cq)
+            foreach (var pc in cq.Take(10))
             {
                 var cname = "unknown";
                 if (pc.madeby != null)
@@ -272,6 +281,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                         pc.contact.ContactDate, ctype, cname, comments);
                 list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, s, font));
             }
+            if (cq.Count() > 10)
+                list.Add(new ListItem(1.2f*font.Size, "(showing most recent 10 of {0})".Fmt(cq.Count()), font));
             return list;
         }
         class PageEvent : PdfPageEventHelper

@@ -1,0 +1,1002 @@
+* {
+   padding:0;
+   margin:0;
+}
+body, html {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-image: none;
+    font-size: 12px;
+    color: #222;
+}
+
+table, tbody, tfoot, thead, tr, th, td {
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+}
+
+img {
+    border: none;
+}
+
+
+#topNotice {
+}
+
+#container {
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+#header {
+    width: 100%;
+    font-size: 16px;
+    background: #e4e2d5;
+    border-bottom: 1px solid #444;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+    #header div,
+    #header dl,
+    #header dt,
+    #header dd,
+    #header ul,
+    #header ol,
+    #header li,
+    #header h1,
+    #header h2,
+    #header h3,
+    #header h4,
+    #header h5,
+    #header h6,
+    #header pre,
+    #header code,
+    #header form,
+    #header fieldset,
+    #header legend,
+    #header p,
+    #header blockquote {
+        margin: 0;
+        padding: 0;
+        font-size: 100%;
+    }
+
+    #header li {
+        list-style: none;
+    }
+
+    #header table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+#urgentNotice {
+    background-color: #FF0;
+    font-size: 120%;
+    padding: .2em 1em .2em 1em;
+}
+
+#header h1 {
+    font-size: 150%;
+    font-weight: normal;
+}
+
+#header h2 {
+    font-size: 80%;
+    font-weight: normal;
+    color: #666;
+}
+
+#header td #userarea {
+    font-size: 80%;
+    display: inline-block;
+}
+
+#header #welcome {
+    font-size: 110%;
+}
+
+    #header #welcome > a {
+        color: #7c9c33;
+        font-weight: bold;
+    }
+
+#header table td.right {
+    text-align: right;
+}
+
+a, a:visited, a:focus {
+    text-decoration: none;
+    color: #3E553B;
+}
+
+    a:hover, a:active {
+        text-decoration: underline;
+        color: #3E553B;
+    }
+
+.grid a, .grid a:visited {
+    text-decoration: none;
+    color: #3E553B;
+}
+
+    .grid a:hover, .grid a:active {
+        text-decoration: underline;
+        color: #3E553B;
+    }
+
+#main {
+    width: 100%;
+}
+
+#mainlayout tr td {
+    vertical-align: top;
+    height: 100%;
+}
+
+#mainlayout {
+    width: 100%;
+}
+
+#main div.homebox {
+    height: 500px;
+    width: 30%;
+    float: left;
+}
+
+.floatleft {
+    float: left;
+}
+
+.floatclear {
+    clear: both;
+}
+
+.roundbox {
+    border: 1px solid #808183;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 1%;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    background-color: #F8F8F8;
+}
+
+    .roundbox.pad10 {
+        padding: 10px;
+    }
+
+    .roundbox h2 {
+        color: #666;
+        border-bottom-color: #7c9c33;
+        border-bottom-width: 3px;
+        border-bottom-style: solid;
+        margin-top: .6em;
+        margin-bottom: 6px;
+        font-size: 160%;
+    }
+
+    .roundbox h3 {
+        font-size: 120%;
+        font-weight: bold;
+        margin-top: .3em;
+        border-bottom: 1px solid #ccc;
+        color: #666;
+    }
+
+    .roundbox p {
+        font-size: 90%;
+    }
+
+#ConditionGrid {
+    font-size: 120%;
+    list-style-type: none;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-top: 0;
+    padding-left: 0;
+}
+
+#ConditionText {
+    font-size: 140%;
+}
+
+#main tr.ConditionTitle {
+    font-size: 120%;
+}
+
+#ConfigCondition tbody .QBConditionTitle td {
+    font-size: 130%;
+}
+
+#CommonFooter {
+    clear: both;
+    margin: 40px 0 0 0;
+    padding: 24px 0 24px 0;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    font-size: 85%;
+    font-weight: bold;
+    color: #aaa;
+}
+
+div.drow {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+    div.drow.isnew0 a {
+        color: #BE3D00;
+        font-weight: bold;
+    }
+
+    div.drow.isnew1 a {
+        color: #b74700;
+        font-weight: bold;
+    }
+
+    div.drow.isnew2 a {
+        color: #b05200;
+        font-weight: bold;
+    }
+
+    div.drow.isnew3 a {
+        color: #a85c00;
+        font-weight: bold;
+    }
+
+    div.drow.isnew4 a {
+        color: #a16700;
+        font-weight: bold;
+    }
+
+    div.drow.isnew5 a {
+        color: #997100;
+        font-weight: bold;
+    }
+
+    div.drow.isnew6 a {
+        color: #927c00;
+        font-weight: bold;
+    }
+
+    div.drow.isnew7 a {
+        color: #8a8700;
+        font-weight: bold;
+    }
+
+.alt:not(.section) {
+    background-color: #EEE;
+}
+
+#QueryConditionSelect {
+    display: none;
+    width: 750px;
+    height: 575px;
+    background: #FFF;
+    font-size: 80%;
+}
+
+    #QueryConditionSelect div.FieldLink {
+        margin-top: .2em;
+    }
+
+        #QueryConditionSelect div.FieldLink a {
+            color: #336699;
+            font-size: 180%;
+        }
+
+    #QueryConditionSelect div.moreinfo {
+        margin-left: 3em;
+        font-color: #999;
+        font-size: 110%;
+        font-style: italic;
+    }
+
+.QBConditionTitle {
+    background-color: #a9cfe2;
+    border: solid 1px Gray;
+    color: Black;
+    font-size: 130%;
+}
+
+.jspVerticalBar .jspCap {
+    height: 20px;
+}
+
+.jspCap {
+    display: block;
+    background: #eeeef4;
+}
+
+.jscroll {
+    height: 10em;
+    overflow: auto;
+    width: 100%;
+}
+
+table.aspgrid tr td,
+table.aspgrid tr th {
+    padding: 4px;
+}
+
+.displayedit.edit {
+    position: absolute;
+    right: 0px;
+    margin-right: 22px;
+}
+
+#main-tab {
+    z-index: 500!important;
+}
+
+#SearchText {
+    background-image: url('/images/magnifier.png');
+    background-repeat: no-repeat;
+    background-position: top left;
+    padding-left: 1.5em;
+    height: 1.5em;
+    font-size: 130%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #999;
+    width: 15em;
+}
+
+.field-validation-error {
+    color: #FF0000;
+}
+
+.input-validation-error {
+    background-color: #FFEEEE;
+    border: 1px solid #FF0000;
+}
+
+.validation-summary-errors {
+    color: #FF0000;
+    font-weight: bold;
+}
+/*
+div.roundbox select {
+	min-width: 20em;
+	margin-right:1em;
+}*/
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.error, .red {
+    color: red;
+}
+.white {
+    color: white;
+}
+
+.disabled {
+    color: #999 !important;
+}
+
+.selectbox.fixed_width .display {
+    width: 73px;
+    padding: 0 24px 0 3px; /* remember padding contributes to the overall width. padding-right is large enough here for the arrow graphic. */
+}
+
+.selectbox.fixed_width.items {
+    width: 100px; /* width of display text plus the padding (73 + 27) = 100, so they line up */
+}
+
+a.helplink /* for dialog boxes */ {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
+
+table.grid {
+    border-collapse: collapse;
+    text-align: left;
+}
+
+    table.grid thead {
+        border-bottom: 2px solid #555;
+        font-weight: bold;
+        color: #555;
+    }
+
+        table.grid thead th, table.grid thead td {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+    table.grid td {
+        padding: 5px;
+    }
+
+a.sz1.bt {
+    font-size: .85em;
+}
+
+.section {
+    font-size: 110%;
+    color: #888;
+    font-style: italic;
+    border-bottom: #888 1px solid;
+}
+
+.indent {
+    padding-left: 10px !important;
+}
+
+.text-label {
+    color: #cdcdcd;
+    font-weight: bold;
+}
+
+#selectquestions {
+    display: none;
+    border: 1px dashed gray;
+    line-height: 24px;
+    overflow: auto;
+}
+
+    #selectquestions ul {
+        float: left;
+        margin: 0 2em 0 0;
+        padding: 0 0 5px 0;
+    }
+
+    #selectquestions span {
+        text-decoration: line-through;
+        color: #555;
+    }
+
+
+.blue.ui-state-default {
+    color: #ffffff;
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#049cdb', endColorstr='#0064cd', GradientType=0);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.blue.ui-state-hover {
+    color: #ffffff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+
+.green.ui-state-default {
+    color: #ffffff;
+    background-color: #7c9c33;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#96bd3e), to(#7c9c33));
+    background-image: -moz-linear-gradient(top, #96bd3e, #7c9c33);
+    background-image: -ms-linear-gradient(top, #96bd3e, #7c9c33);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #96bd3e), color-stop(100%, #7c9c33));
+    background-image: -webkit-linear-gradient(top, #96bd3e, #7c9c33);
+    background-image: -o-linear-gradient(top, #96bd3e, #7c9c33);
+    background-image: linear-gradient(top, #96bd3e, #7c9c33);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7c9c33', endColorstr='#96bd3e', GradientType=0);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border-color: #7c9c33 #7c9c33 #96bd3e;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.green.ui-state-hover {
+    color: #ffffff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+
+div.toolbar > ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+    div.toolbar > ul > li {
+        display: inline;
+        text-align: left;
+    }
+
+        div.toolbar > ul > li > a {
+            text-decoration: none;
+            border-width: 1px;
+            padding: .4em .5em;
+            white-space: nowrap;
+            line-height: 1.8em;
+            color: #ffffff;
+            background-color: #7c9c33;
+            background-repeat: repeat-x;
+            background-image: -khtml-gradient(linear, left top, left bottom, from(#96bd3e), to(#7c9c33));
+            background-image: -moz-linear-gradient(top, #96bd3e, #7c9c33);
+            background-image: -ms-linear-gradient(top, #96bd3e, #7c9c33);
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #96bd3e), color-stop(100%, #7c9c33));
+            background-image: -webkit-linear-gradient(top, #96bd3e, #7c9c33);
+            background-image: -o-linear-gradient(top, #96bd3e, #7c9c33);
+            background-image: linear-gradient(top, #96bd3e, #7c9c33);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7c9c33', endColorstr='#96bd3e', GradientType=0);
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            border-color: #7c9c33 #7c9c33 #96bd3e;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+        }
+
+            div.toolbar > ul > li > a:hover {
+                background-position: 0 -15px;
+            }
+
+input.wide
+{
+    border: 1px solid #CCCCCC;
+    width: 100%;
+}
+input.short 
+{
+    border: 1px solid #CCCCCC;
+    width: 6em;
+}
+input.shorter 
+{
+    border: 1px solid #CCCCCC;
+    width: 2em;
+}
+input.wide70
+{
+    border: 1px solid #CCCCCC;
+    width: 70%;
+}
+input {
+    border: 1px solid #CCCCCC;
+}
+select {
+    border: 1px solid #CCCCCC;
+}
+#nametable td {
+    padding-right: 4px;
+}
+td.right {
+    text-align: right;
+}
+div.formerror {
+    color: red;
+}
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+    background-color: #eee;
+}
+
+.PersonHead
+{
+	background-color: #8B8B8B;
+	font-size: 130%;
+	color: white;
+	padding: 4px 0 4px 4px;
+}
+.SearchDialog
+{
+    width: 600px; 
+    height: 475px;
+}
+.pagerstyle
+{
+	color: #444444;
+	background-color: #e5e5e5;
+	font-size: x-small;
+	text-align: right;
+}
+.pagerstyle select
+{
+	font-size: x-small;
+}
+.leadername
+{
+	float: right;
+}
+
+/*Hover Menu*/
+.popupMenu
+{
+	position: absolute;
+	display:none;
+	background-color: white;
+	border: 1px outset white;
+	padding: 5px;
+	z-index: 2004; /*	opacity:.9; 	filter: alpha(opacity=90); */
+}
+.modalBackground
+{
+	background-color: Gray;
+	-ms-filter: alpha(opacity=70);
+	-ms-opacity: 0.7;
+}
+
+.modalPopup
+{
+	background-color: #eff3fb;
+	border-width: 3px;
+	border-style: solid;
+	border-color: Gray;
+	padding: 10px;
+}
+.SelectedRow
+{
+	background-color: #DDD;
+}
+
+table.Design2 th {
+    /*border: solid 1px #EEEEEE;*/
+    text-align: left;
+    font-weight: lighter;
+    color: #4B4B4B;
+    /*font-size: 85%;*/
+    background-color: #EFF3FB;
+    empty-cells : show;
+}
+.modalBackground 
+{
+    background-color:Gray;
+    filter:alpha(opacity=70);
+    opacity:0.7;
+}
+.modalDiv
+{
+	font-family:lucida grande,arial,helvetica,sans-serif;
+	font-size:11px;
+	background-color:#fff;
+	border:solid 2px #000;
+	padding:4px;
+}
+.modalDiv .footer
+{
+	text-align:right;
+	padding:8px;
+}
+
+/*AutoComplete */
+.autocomplete_list
+{  
+    visibility:hidden;
+    margin:0px!important;
+    padding:0px;
+    background-color:inherit;
+    color:windowtext;
+    border:buttonshadow;
+    border-width:1px;
+    border-style:solid;
+    cursor:default;
+    text-align:left; 
+    list-style-type:none;
+    overflow:auto;
+    font-weight:normal;
+    font-family:tahoma;
+    font-size:100%;            
+}
+.autocomplete_highlighted_listitem
+{
+    background-color:Highlight;
+    color:HighlightText;
+    padding:3px;
+}
+.autocomplete_listItem 
+{
+    background-color:window;
+    color:windowtext;
+    padding:3px;
+}  
+
+
+
+/* Cascading Stylesheet for Common Elements */
+
+/* Begin: General */
+body.template
+{
+    padding-left: 8px;
+    padding-right: 8px;
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 75%;
+    color: #666666;
+}
+body.template h1
+{
+    padding-bottom: 12px;
+    border-bottom: 1px dotted #bbbbbb;
+    font-size: 2.2em;
+    font-family: Trebuchet MS, Arial, sans-serif;
+    color: #888888;
+}
+span.allcaps
+{
+    font-variant: small-caps;
+}
+body.template h2
+{
+    margin-bottom: 10px;
+    font-family: Trebuchet MS, Arial, sans-serif;
+    font-size: 1.65em;
+    color: #888888;
+}
+div.back
+{
+    margin-bottom: -20px;
+    position: relative;
+    top: -28px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+div.back img
+{
+    position: relative;
+    margin-top: 0em;
+    padding-left: 8px;
+    padding-right: 8px;
+    border: none;
+    background-color: #ffffff;
+}
+div.back a:link,
+div.back a:visited
+{
+    color: #839ce7;
+    text-decoration: none;
+    background-color: #ffffff;
+    padding-right: 8px;
+    top: -.2em;
+    left: .25em;
+}
+div.back a:hover
+{
+    color: #000099;
+    text-decoration: underline !important;
+}
+/* End: General */
+
+/* Begin: Tables */
+body.template table.listview, table.gridview, table.detailstable 
+{
+    border: 1px solid #dbddff; 
+    border-bottom: 3px solid #dbddff;
+    border-collapse: collapse;
+    font-family: Tahoma, Arial, sans-serif;
+    color: #666666;
+    font-size: 95%; 
+
+}
+
+body.template table.listview th, table.gridview th, table.detailstable th,
+body.template table.listview td, table.gridview td, table.detailstable td 
+{
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 1.1em;
+}
+
+body.template table.listview th, table.gridview th, table.detailstable th
+{
+    background-position: 1px 1px;
+    background-repeat: repeat-x;
+    background-color: #ffffff;
+    font-size: 100%;
+    text-align: left;
+    line-height: 1.3em;
+    color: #666666;
+    border-left: 1px solid #dbddff;
+    border-right: 1px solid #dbddff;
+    border-bottom: 1px solid #dbddff;
+}
+
+body.template table.listview td, table.gridview td, table.detailstable td
+{
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 1px dotted #dadada;
+}
+
+body.template td.bold {
+    font-weight:bold;
+}
+
+body.template th a:link,
+body.template th a:visited,
+body.template th a:hover
+{
+    color: #666666;
+    text-decoration: none;
+}
+
+body.template td a:link,
+body.template td a:visited
+{
+    color: #718ABE;
+    text-decoration: none;
+    padding-right: 6px;
+}
+body.template td a:hover
+{
+    color: #000099;
+    text-decoration: underline !important;
+}
+table.gridview
+{
+    width: 100%;
+}
+table.gridview table td
+{
+    padding-left: .5em;
+    padding-right: .5em;
+}
+
+table.gridview th {
+    background-image:url(DynamicData/Content/Images/header_back.gif);
+}
+
+table.listview
+{
+    width: 100%;
+}
+table.listview td a:link, 
+table.listview td a:visited
+{
+    font-size: 100%;
+}
+table.listview table td
+{
+    padding-left: .5em;
+    padding-right: .5em;
+}
+
+table.listview th {
+    background-image:url(DynamicData/Content/Images/header_back.gif);
+}
+
+table.detailstable td
+{
+    border-left: 1px solid #dbddff;
+    border-right: 1px solid #dbddff;
+    vertical-align:top;
+}
+
+table.detailstable th
+{
+    background: #FCFDFE;
+    vertical-align:top;
+}
+
+td.nowrap 
+{
+    white-space: nowrap;
+}
+/* The following modifies the details table */
+body.template tr
+{
+    background: #FCFDFE;
+}
+/* The following modifies the controls in the list table footer */
+tr.footer td
+{
+    background: #dbddff;
+    height: 1.5em;
+}
+
+/* The following modifies the selected row in the list table */
+tr.selected td
+{
+    background: #fdffb8;
+}
+
+/* End: Tables */
+
+/* The following modifies the page number control which exists under the main table */
+div.pager
+{
+    padding: 0px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+span.results1
+{
+    float:left;
+}
+span.results2
+{
+    float:right;
+}
+/* The following modifies the results per page control which exists under the main table */
+div.results
+{
+    display: inline;
+    position: relative;
+    padding: 0px;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-top: -1.75em;
+    float:right;
+}
+/* Set's the appearance of the drop down control*/
+.droplist
+{
+    padding: 0px;
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: .95em;
+    color: #666666;
+}
+/* Bottom hyperlink design*/
+div.bottomhyperlink
+{
+    font-family: Tahoma, Arial, Sans-Serif;
+    font-size: 100%;
+    margin-top: -3px;
+}
+div.bottomhyperlink a:link,
+div.bottomhyperlink a:visited
+{
+    color: #839ce7;
+    text-decoration: none;
+
+    font-family: Tahoma, Arial, Sans-Serif;
+
+    font-size: 100%;
+
+    margin-top: -3px;
+}
+div.bottomhyperlink a:hover
+{
+
+    color: #000099;
+
+    text-decoration: underline !important;
+
+    font-family: Tahoma, Arial, Sans-Serif;
+
+    font-size: 100%;
+}
+div.bottomhyperlink img
+{
+    position: relative;
+    top: 0em;
+    padding-right: .4em;
+    border: none;
+}
+.dashbox 
+{
+    background-color:#EFF3FB;
+    border:1px solid #D1DDF1;
+    font-size: .9em;
+    min-width: 30em;
+}
+.dashtitle
+{
+    background-color:#4296CC;
+    color:White;
+    font-weight:bold;
+}
+/*
+table.participant tr
+{
+    padding-left:1em;
+}
+table.participant tr.out
+{
+    padding-left: 0;
+}
+*/
+.instruct
+{
+    position:relative;
+    left: -1em;
+    color:Blue;
+    font-size: 110%;
+}

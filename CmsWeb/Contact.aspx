@@ -1,8 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs"
+﻿
+<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs"
     Inherits="CmsWeb.Contact" Title="Person" EnableEventValidation="false" %>
 
-<%@ Register Src="UserControls/GridPager.ascx" TagName="GridPager" TagPrefix="uc1" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -18,12 +17,9 @@
                 Contact Date:
             </th>
             <td>
-                <cc1:DisplayOrEditDate ID="ContactDate" runat="server" BindingMember="ContactDate"
+                <cc1:DisplayOrEditDate ID="ContactDate" CssClass="datepicker" runat="server" BindingMember="ContactDate"
                     BindingMode="TwoWay" BindingSource="contact">
                 </cc1:DisplayOrEditDate>
-                <cc2:CalendarExtender ID="TextBox2_CalendarExtender" runat="server" Enabled="True"
-                    TargetControlID="ContactDate">
-                </cc2:CalendarExtender>
             </td>
         </tr>
         <tr runat="server" id="TaskRow">
@@ -296,11 +292,11 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSMinistryId" runat="server" SelectMethod="Ministries0"
-        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+        TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSContactTypeId" runat="server" SelectMethod="ContactTypeCodes"
-        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+        TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSContactReasonId" runat="server" SelectMethod="ContactReasonCodes"
-        TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+        TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
     <asp:LinkButton ID="HiddenDoNothingButton" runat="server" Style="display: none"></asp:LinkButton>
     <div id="contactDialog" style="display:none">
     <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
@@ -329,6 +325,7 @@
                 d.dialog("option", "title", this.title);
                 d.dialog("open");
             });
+            $("input.datepicker").datepicker();
         });
        function AddSelected() {
            var d = $('#contactDialog');

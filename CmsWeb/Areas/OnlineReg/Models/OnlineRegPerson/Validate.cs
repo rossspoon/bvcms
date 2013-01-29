@@ -46,7 +46,7 @@ namespace CmsWeb.Models
 			var d = phone.GetDigits().Length;
 			if (phone.HasValue() && d >= 10)
 				n++;
-			if (d > 17)
+			if (d > 20)
 				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].phone), "too many digits in phone");
 
 			if (n == 0)
@@ -79,8 +79,9 @@ namespace CmsWeb.Models
 				ValidBasic(ModelState);
 		    if (ComputesOrganizationByAge() && !birthday.HasValue)
 				ModelState.AddModelError(dobname, "birthday required");
-			if (orgid == Util.CreateAccountCode && age < 16)
-				ModelState.AddModelError(dobname, "must be 16 to create account");
+		    var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
+		    if (orgid == Util.CreateAccountCode && age < minage)
+				ModelState.AddModelError(dobname, "must be {0} to create account".Fmt(minage));
 			if (!IsFamily && (!email.HasValue() || !Util.ValidEmail(email)))
 				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].email), "Please specify a valid email address.");
 			if (ModelState.IsValid)
@@ -146,7 +147,7 @@ Please call the church to resolve this before we can complete your account.<br /
 #endif
 						}
 						else if (om != null && setting.AllowReRegister == false
-							&& om.Organization.RegistrationTypeId != RegistrationTypeCode.ChooseSlot)
+							&& om.Organization.RegistrationTypeId != RegistrationTypeCode.ChooseVolunteerTimes)
 						{
 							ModelState.AddModelError(foundname, "This person is already registered");
 							IsValidForContinue = false;
@@ -209,8 +210,9 @@ Please search with a different email, phone, or birthday.";
 			else if (!birthday.HasValue && RequiredDOB())
 				ModelState.AddModelError(dobname, "birthday required");
 
-			if (orgid == Util.CreateAccountCode && age < 16)
-				ModelState.AddModelError(dobname, "must be 16 to create account");
+		    var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
+		    if (orgid == Util.CreateAccountCode && age < minage)
+				ModelState.AddModelError(dobname, "must be {0} to create account".Fmt(minage));
 
 			if (ComputesOrganizationByAge() && GetAppropriateOrg() == null)
 				ModelState.AddModelError(dobname, "Sorry, cannot find an appropriate age group");
@@ -224,6 +226,9 @@ Please search with a different email, phone, or birthday.";
 
 			if (RequiredPhone() && n == 0)
 				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].phone), "cell or home phone required");
+
+            if (homephone.HasValue() && homephone.GetDigits().Length > 20)
+				ModelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].homephone), "homephone too long");
 
 			if (email.HasValue())
 				email = email.Trim();
@@ -373,12 +378,13 @@ Please search with a different email, phone, or birthday.";
 						}
 						break;
 					case "AskExtraQuestions":
-						for (int n = 0; n < ((AskExtraQuestions)ask).list.Count; n++)
+				        var eq = (AskExtraQuestions)ask;
+						for (int n = 0; n < eq.list.Count; n++)
 						{
-							var a = ((AskExtraQuestions)ask).list[n];
-							if (ExtraQuestion == null || !ExtraQuestion.ContainsKey(a.Question) ||
-								!ExtraQuestion[a.Question].HasValue())
-								modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].ExtraQuestion[a.Question]), "please give some answer");
+							var a = eq.list[n];
+							if (ExtraQuestion == null || !ExtraQuestion[eq.UniqueId].ContainsKey(a.Question) ||
+								!ExtraQuestion[eq.UniqueId][a.Question].HasValue())
+								modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].ExtraQuestion[eq.UniqueId][a.Question]), "please give some answer");
 						}
 						break;
 					case "AskCheckboxes":
@@ -394,10 +400,18 @@ Please search with a different email, phone, or birthday.";
 							modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].gradeoption), "please select a grade option");
 						break;
 				}
-			if (setting.Deposit > 0)
-				if (!paydeposit.HasValue)
-					modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), "please indicate");
-			if (OnlineGiving() && TotalAmount() <= 0)
+		    var totalAmount = TotalAmount();
+		    if (setting.Deposit > 0)
+			    if (!paydeposit.HasValue)
+			        modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), "please indicate");
+			    else
+			    {
+			        var amountToPay = AmountToPay();
+			        if (paydeposit == true && amountToPay > totalAmount)
+			            modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].paydeposit), 
+                            "Cannot use deposit since total due is less");
+			    }
+		    if (OnlineGiving() && totalAmount <= 0)
 				modelState.AddModelError("form", "Gift amount required");
 
 			OtherOK = modelState.IsValid;

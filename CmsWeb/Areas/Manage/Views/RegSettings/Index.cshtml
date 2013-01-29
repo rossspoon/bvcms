@@ -1,4 +1,5 @@
-﻿@using CmsWeb
+﻿@using System.Web.Optimization
+@using CmsWeb
 @model IEnumerable<CmsWeb.Areas.Manage.Controllers.RegSettingsController.RegSettingInfo>
 
 @{
@@ -7,7 +8,7 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/RegSettings.js")
+@Scripts.Render("~/bundles/single/RegSettings-js")
 }
 <h2>RegSettings</h2>
 

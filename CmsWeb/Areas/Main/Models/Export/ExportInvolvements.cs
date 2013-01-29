@@ -6,7 +6,6 @@ using CmsData;
 using System.Data.Linq;
 using System.ComponentModel;
 using UtilityExtensions;
-using CMSPresenter.InfoClasses;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -241,6 +240,7 @@ namespace CmsWeb.Models
     		public string Medical { get; set; }
     		public int PeopleId { get; set; }
     		public string EnrollDate { get; set; }
+            public string Groups { get; set; }
     		private string _fname;
     		public string Fname
     		{
@@ -253,7 +253,7 @@ namespace CmsWeb.Models
     			set { _mname = value; }
     		}
     	}
-        public static IEnumerable<MemberInfoClass> OrgMemberList(int queryid, int maximumRows)
+        public static IEnumerable<MemberInfoClass> OrgMemberList(int queryid)
         {
             var Db = DbUtil.Db;
             var q = Db.PeopleQuery(queryid);
@@ -270,7 +270,7 @@ namespace CmsWeb.Models
                          Request = om.Request,
                          Amount = om.Amount ?? 0,
                          AmountPaid = om.AmountPaid ?? 0,
-                         //Groups = string.Join(",", om.OrgMemMemTags.Select(mt => mt.MemberTag.Name).ToArray()),
+                         Groups = string.Join(",", om.OrgMemMemTags.Select(mt => mt.MemberTag.Name)),
                          Email = p.EmailAddress,
                          HomePhone = p.HomePhone.FmtFone(),
                          CellPhone = p.CellPhone.FmtFone(),
@@ -290,7 +290,7 @@ namespace CmsWeb.Models
                          PeopleId = p.PeopleId,
                          EnrollDate = om.EnrollmentDate.FormatDate(),
                      };
-            return q2.Take(maximumRows);
+            return q2;
         }
         public static IEnumerable PromoList(int queryid, int maximumRows)
         {

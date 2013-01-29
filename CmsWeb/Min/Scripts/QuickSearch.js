@@ -1,1 +1,0 @@
-$(function(){$(".bt").button(),$(".grid td.tip[title]").tooltip({showBody:"|"}),$("#q").focus().select(),$("#quicksearch").live("keypress",function(n){return n.which&&n.which==13||n.keyCode&&n.keyCode==13?($("#qsearch").click(),!1):!0})})

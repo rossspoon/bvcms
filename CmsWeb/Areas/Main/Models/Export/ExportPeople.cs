@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Collections;
+using System.Xml.Linq;
 using CmsData;
 using UtilityExtensions;
 using System.Data.SqlClient;
@@ -80,29 +81,45 @@ namespace CmsWeb.Models
 					};
 			return q.Take(maximumRows);
 		}
-		public static IEnumerable ExcelContributions(DateTime startdt, DateTime enddt,
+		public static IEnumerable DonorDetails(DateTime startdt, DateTime enddt,
 			int fundid, int campusid, bool pledges, bool nontaxdeductible, bool includeUnclosed)
 		{
 			var q = from c in DbUtil.Db.Contributions2(startdt, enddt, campusid, pledges, nontaxdeductible, includeUnclosed)
 					select new
 					{
 						c.FamilyId,
-						Date = c.DateX,
+						Date = c.DateX.Value.ToShortDateString(),
 						GiverId = c.PeopleId,
-						c.CreditGiverId,
+						CreditGiverId = c.CreditGiverId.Value,
 						c.HeadName,
 						c.SpouseName,
 						Amount = c.Amount ?? 0m,
 						c.ContributionDesc,
 						c.FundId,
 						c.FundName,
-						c.BundleHeaderId,
+						BundleHeaderId = c.BundleHeaderId ?? 0,
 						c.BundleType,
 						c.BundleStatus
 					};
 			return q;
 		}
-		public static IEnumerable ExcelContributionTotals(DateTime startdt, DateTime enddt,
+		public static IEnumerable ExcelDonorTotals(DateTime startdt, DateTime enddt,
+			int campusid, bool pledges, bool nontaxdeductible, bool includeUnclosed)
+		{
+            var q2 = from r in DbUtil.Db.GetTotalContributions2(startdt, enddt, campusid, nontaxdeductible, includeUnclosed)
+                     group r by new { r.CreditGiverId, r.HeadName, r.SpouseName } into g
+                     select new
+                     {
+                         g.Key.CreditGiverId,
+                         Count = g.Sum(gg => gg.Count ?? 0),
+                         Amount = g.Sum(gg => gg.Amount ?? 0m),
+                         Pledged = g.Sum(gg => gg.PledgeAmount ?? 0m),
+                         Name = g.Key.HeadName,
+                         SpouseName = g.Key.SpouseName ?? "",
+                     };
+			return q2;
+		}
+		public static IEnumerable ExcelDonorFundTotals(DateTime startdt, DateTime enddt,
 			int fundid, int campusid, bool pledges, bool nontaxdeductible, bool includeUnclosed)
 		{
 			var q2 = from r in DbUtil.Db.GetTotalContributions2(startdt, enddt, campusid, nontaxdeductible, includeUnclosed)
@@ -126,15 +143,16 @@ namespace CmsWeb.Models
 					 group pp by pp.FamilyId into g
 					 from p in g.First().Family.People
 					 where p.DeceasedDate == null
+                     let pos = p.PositionInFamilyId * 1000 + (p.PositionInFamilyId == 10 ? p.GenderId : 1000 - (p.Age ?? 0))
 					 let om = p.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == p.BibleFellowshipClassId)
-					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).LastName
-					 orderby famname, p.FamilyId, p.PositionInFamilyId, p.GenderId
+					 let famname = g.First().Family.People.Single(hh => hh.PeopleId == hh.Family.HeadOfHouseholdId).Name2
+					 orderby famname, p.FamilyId, pos
 					 select new
 					 {
-						 PeopleId = p.PeopleId,
+						 p.PeopleId,
 						 Title = p.TitleCode,
 						 FirstName = p.PreferredName,
-						 LastName = p.LastName,
+						 p.LastName,
 						 Address = p.PrimaryAddress,
 						 Address2 = p.PrimaryAddress2,
 						 City = p.PrimaryCity,
@@ -152,13 +170,13 @@ namespace CmsWeb.Models
 						 School = p.SchoolOther,
 						 Married = p.MaritalStatus.Description,
 						 FamilyName = famname,
-						 FamilyId = p.FamilyId,
-						 FamilyPosition = p.PositionInFamilyId,
+						 p.FamilyId,
+						 FamilyPosition = pos,
 						 Grade = p.Grade.ToString(),
 						 FellowshipLeader = p.BFClass.LeaderName,
 						 AttendPctBF = (om == null ? 0 : om.AttendPct == null ? 0 : om.AttendPct.Value),
 						 FellowshipClass = (om == null ? "" : om.Organization.OrganizationName),
-						 AltName = p.AltName,
+						 p.AltName,
 					 };
 			return q2;
 		}
@@ -273,12 +291,22 @@ namespace CmsWeb.Models
 		}
 		public static IEnumerable ExportExtraValues(int qid)
 		{
-			var name = "ExtraExcelResult " + DateTime.Now;
+            var roles = CMSRoleProvider.provider.GetRolesForUser(Util.UserName);
+            var xml = XDocument.Parse(DbUtil.Db.Content("StandardExtraValues.xml", "<Fields/>"));
+            var fields = (from ff in xml.Root.Elements("Field")
+                          let vroles = ff.Attribute("VisibilityRoles")
+                          where vroles != null && (vroles.Value.Split(',').All(rr => !roles.Contains(rr)))
+                          select ff.Attribute("name").Value);
+            var nodisplaycols = string.Join(",", fields);
+
 			var tag = DbUtil.Db.PopulateSpecialTag(qid, DbUtil.TagTypeId_ExtraValues);
 
-			var cmd = new SqlCommand("dbo.ExtraValues {0}".Fmt(tag.Id));
-			cmd.Connection = new SqlConnection(Util.ConnectionString);
-			cmd.Connection.Open();
+            var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2, @p3");
+			cmd.Parameters.AddWithValue("@p1", tag.Id);
+			cmd.Parameters.AddWithValue("@p2", "");
+			cmd.Parameters.AddWithValue("@p3", nodisplaycols);
+            cmd.Connection = new SqlConnection(Util.ConnectionString);
+            cmd.Connection.Open();
 			return cmd.ExecuteReader();
 		}
 	}

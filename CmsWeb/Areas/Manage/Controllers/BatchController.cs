@@ -12,7 +12,6 @@ using CmsData;
 using LumenWorks.Framework.IO.Csv;
 using System.IO;
 using CmsWeb.Models;
-using CMSPresenter;
 using System.Text.RegularExpressions;
 using System.Data.SqlTypes;
 using Alias = System.Threading.Tasks;
@@ -416,6 +415,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 				{
 					case "Member Status":
 						p.MemberStatusId = m.NewValue.ToInt();
+						break;
+					case "Drop Type":
+						p.DropCodeId = m.NewValue.ToInt();
 						break;
 					case "Baptism Status":
 						p.BaptismStatusId = m.NewValue.ToInt();

@@ -14,7 +14,7 @@ public static class TableUtil
             t.CompleteRow();
             var c = new PdfPCell(t.DefaultCell);
             c.Border = PdfPCell.TOP_BORDER;
-            c.BorderColorTop = Color.BLACK;
+            c.BorderColorTop = BaseColor.BLACK;
             c.BorderWidthTop = 2.0f;
             c.Colspan = t.NumberOfColumns;
             c.AddElement(new Paragraph(s, bfont));

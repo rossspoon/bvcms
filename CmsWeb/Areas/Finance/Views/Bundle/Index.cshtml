@@ -1,0 +1,52 @@
+﻿@model CmsWeb.Areas.Finance.Models.BundleModel
+@using System.Web.Optimization
+@using UtilityExtensions
+@{
+    ViewBag.Title = "Contribution Bundles";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+}
+@section head 
+{
+    <style type="text/css">
+        .alt {
+            background-color: #eee;
+        }
+
+        td.PLNT {
+            font-style: italic;
+            font-weight: bold;
+            text-align: center;
+        }
+        div.roundbox table th {
+            text-align: right;
+        }
+        div.roundbox table td {
+            padding: .2em .7em;
+        }
+        div.roundbox {
+            display: table;
+            white-space: nowrap;
+        }
+    </style>
+}
+@section scripts
+{
+@Scripts.Render("~/bundles/single/bundle-js")
+}
+<div class="roundbox">
+    <a href="/Bundles">Back to Bundle List</a>
+    <h2>Contribution Bundle #@Model.BundleId</h2>
+    <form id="bundleform">
+    @if ((bool?) TempData["createbundle"] == true)
+    {
+        @Html.Partial("Edit", Model)
+    }
+    else
+    {
+        @Html.Partial("Display", Model)
+    }
+    </form>
+</div>
+<form id="results">
+    @Html.Partial("Results", Model)
+</form>

@@ -66,13 +66,13 @@ namespace CmsWeb.Models.iPhone
         {
             if (query.IsNotNull())
                 return query;
-            var Db = DbUtil.Db;
+            var db = DbUtil.Db;
             if (Util2.OrgMembersOnly)
-                query = DbUtil.Db.OrgMembersOnlyTag2().People(DbUtil.Db);
+                query = db.OrgMembersOnlyTag2().People(db);
             else if (Util2.OrgLeadersOnly)
-                query = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
+                query = db.OrgLeadersOnlyTag2().People(db);
             else
-                query = Db.People.Select(p => p);
+                query = db.People.Select(p => p);
 
             if (Name.HasValue())
             {

@@ -23,6 +23,8 @@ namespace CmsData
 		
 		private DateTime? _Stamp;
 		
+		private bool? _Completed;
+		
    		
    		private EntitySet< Contribution> _Contributions;
 		
@@ -42,6 +44,9 @@ namespace CmsData
 		
 		partial void OnStampChanging(DateTime? value);
 		partial void OnStampChanged();
+		
+		partial void OnCompletedChanging(bool? value);
+		partial void OnCompletedChanged();
 		
     #endregion
 		public ExtraDatum()
@@ -115,6 +120,28 @@ namespace CmsData
 					this._Stamp = value;
 					this.SendPropertyChanged("Stamp");
 					this.OnStampChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="completed", UpdateCheck=UpdateCheck.Never, Storage="_Completed", DbType="bit")]
+		public bool? Completed
+		{
+			get { return this._Completed; }
+
+			set
+			{
+				if (this._Completed != value)
+				{
+				
+                    this.OnCompletedChanging(value);
+					this.SendPropertyChanging();
+					this._Completed = value;
+					this.SendPropertyChanged("Completed");
+					this.OnCompletedChanged();
 				}
 
 			}

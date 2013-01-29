@@ -89,6 +89,12 @@ namespace CmsData
 			else
 				base.SubmitChanges(failureMode);
 		}
+        public void ClearCache2()
+        {
+            const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var method = this.GetType().GetMethod("ClearCache", Flags);
+            method.Invoke(this, null);
+        }
 
 		private int GetMaxLength(string dbType)
 		{
@@ -174,8 +180,9 @@ namespace CmsData
 		{
 			var q2 = from p in q
 					 from m in p.Family.People
-					 where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
-					 || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
+                     where m.PositionInFamilyId == 10
+//					 where (m.PositionInFamilyId == 10 && p.PositionInFamilyId != 10)
+//					 || (m.PeopleId == p.PeopleId && p.PositionInFamilyId == 10)
 					 where m.DeceasedDate == null
 					 select m.PeopleId;
 			var tag = PopulateTemporaryTag(q2.Distinct());
@@ -237,6 +244,38 @@ namespace CmsData
 				qb.Description = STR_InCurrentOrg;
 				qb.SavedBy = STR_System;
 				qb.AddNewClause(QueryType.InCurrentOrg, CompareType.Equal, "1,T");
+				QueryBuilderClauses.InsertOnSubmit(qb);
+				SubmitChanges();
+			}
+			return qb;
+		}
+		public QueryBuilderClause QueryBuilderLeadersUnderCurrentOrg()
+		{
+            const string STR_LeadersUnderCurrentOrg = "LeadersUnderCurrentOrg";
+			var qb = QueryBuilderClauses.FirstOrDefault(c => c.SavedBy == STR_System
+                && c.Description == STR_LeadersUnderCurrentOrg);
+			if (qb == null)
+			{
+				qb = QueryBuilderClause.NewGroupClause();
+                qb.Description = STR_LeadersUnderCurrentOrg;
+				qb.SavedBy = STR_System;
+				qb.AddNewClause(QueryType.LeadersUnderCurrentOrg, CompareType.Equal, "1,T");
+				QueryBuilderClauses.InsertOnSubmit(qb);
+				SubmitChanges();
+			}
+			return qb;
+		}
+		public QueryBuilderClause QueryBuilderMembersUnderCurrentOrg()
+		{
+            const string STR_MembersUnderCurrentOrg = "MembersUnderCurrentOrg";
+			var qb = QueryBuilderClauses.FirstOrDefault(c => c.SavedBy == STR_System
+                && c.Description == STR_MembersUnderCurrentOrg);
+			if (qb == null)
+			{
+				qb = QueryBuilderClause.NewGroupClause();
+                qb.Description = STR_MembersUnderCurrentOrg;
+				qb.SavedBy = STR_System;
+				qb.AddNewClause(QueryType.MembersUnderCurrentOrg, CompareType.Equal, "1,T");
 				QueryBuilderClauses.InsertOnSubmit(qb);
 				SubmitChanges();
 			}
@@ -480,7 +519,9 @@ namespace CmsData
 			               	roleids = u.UserRoles.Select(uu => uu.RoleId).ToArray(),
 			               	roles = u.UserRoles.Select(uu => uu.Role.RoleName).ToArray(),
 			               };
-			var i = q.Single();
+			var i = q.SingleOrDefault();
+		    if (i == null)
+		        return;
 			_roles = i.roles;
 			_roleids = i.roleids;
 			_currentuser = i.u;
@@ -611,7 +652,24 @@ namespace CmsData
 		public int[] GetLeaderOrgIds(int? me)
 		{
 			var o1 = from o in Organizations
-					 where o.OrganizationMembers.Any(om => om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader && om.PeopleId == me)
+					 where o.OrganizationMembers.Any(om => om.MemberType.AttendanceTypeId == AttendTypeCode.Leader && om.PeopleId == me)
+					 select o.OrganizationId;
+			var o2 = from o in Organizations
+					 where o1.Contains(o.OrganizationId)
+					 from co in o.ChildOrgs
+					 select co.OrganizationId;
+			var o3 = from o in Organizations
+					 where o1.Contains(o.OrganizationId)
+					 from co in o.ChildOrgs
+					 from cco in co.ChildOrgs
+					 select cco.OrganizationId;
+			var oids = o1.Union(o2).Union(o3).ToArray();
+			return oids;
+		}
+		public int[] GetParentChildOrgIds(int? parent)
+		{
+			var o1 = from o in Organizations
+					 where o.OrganizationId == parent
 					 select o.OrganizationId;
 			var o2 = from o in Organizations
 					 where o1.Contains(o.OrganizationId)
@@ -631,11 +689,13 @@ namespace CmsData
 			var dt = Util.Now.AddYears(-1);
 
 			var oids = GetLeaderOrgIds(Util.UserPeopleId);
+            // current members of one of my orgs I lead
 			var q = from p in People
 					where p.OrganizationMembers.Any(m => oids.Contains(m.OrganizationId))
 					select p;
 			var tag = PopulateSpecialTag(q, DbUtil.TagTypeId_OrgLeadersOnly);
 
+            // previous members of my org
 			q = from p in People
 				where p.EnrollmentTransactions.Any(et =>
 						et.TransactionDate > dt
@@ -980,6 +1040,31 @@ namespace CmsData
 			if (content != null)
 				return content.Body;
 			return def;
+		}
+		public string Content2(string name, string def, int ContentTypeId)
+		{
+			var c = Contents.SingleOrDefault(cc => cc.Name == name);
+			if (c == null)
+			{
+                c = new Content()
+                        {
+                            Name = name,
+                            Title = name,
+                            Body = def,
+                            TypeID = ContentTypeId
+                        };
+                DbUtil.Db.Contents.InsertOnSubmit(c);
+                DbUtil.Db.SubmitChanges();
+			}
+			return c.Body;
+		}
+		public string ContentHtml(string name, string def)
+		{
+		    return Content2(name, def, ContentTypeCode.TypeHtml);
+		}
+		public string ContentText(string name, string def)
+		{
+		    return Content2(name, def, ContentTypeCode.TypeText);
 		}
 		public void SetNoLock()
 		{

@@ -23,6 +23,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             public string Description { get; set; }
             public string AttendType { get; set; }
             public int? AttendTypeId { get; set; }
+            public bool? Hardwired { get; set; }
         }
         public ActionResult Index()
         {
@@ -34,6 +35,7 @@ namespace CmsWeb.Areas.Setup.Controllers
                         Description = mt.Description,
                         AttendType = mt.AttendType.Description,
                         AttendTypeId = mt.AttendanceTypeId,
+                        Hardwired = mt.Hardwired
                     };
             return View(q);
         }

@@ -121,7 +121,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 			if (spouse != null && spouse.First.HasValue())
 				text2.Text = ", {0} & {1}".Fmt(head.First, spouse.First);
 			else
-				text2.Text = ", {0} {1}".Fmt(head.First, head.SafeAge);
+				text2.Text = ", {0}".Fmt(head.First);
 
             run2.Append(runProperties2);
             run2.Append(text2);

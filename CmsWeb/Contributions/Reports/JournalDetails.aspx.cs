@@ -10,14 +10,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CMSPresenter;
+using CmsWeb.Models;
 using UtilityExtensions;
 
 namespace CmsWeb.Contributions.Reports
 {
     public partial class JournalDetails : System.Web.UI.Page
     {
-        BundleController ctl = new BundleController();
+        BundleModel ctl = new BundleModel();
         protected void Page_Load(object sender, EventArgs e)
         {
             FromDt.Text = Request.QueryString["dt1"];
@@ -27,8 +27,11 @@ namespace CmsWeb.Contributions.Reports
         {
             var c = ListView1.FindControl("Count") as Label;
             var t = ListView1.FindControl("Total") as Label;
-            c.Text = ctl.JournalTotal.Count.ToString("n0");
-            t.Text = ctl.JournalTotal.Total.ToString("c");
+            if (ctl.JournalTotal.Count.HasValue)
+            {
+                c.Text = ctl.JournalTotal.Count.ToString2("n0");
+                t.Text = ctl.JournalTotal.Total.ToString2("c");
+            }
             FundName.Text = ctl.JournalTotal.FundName;
         }
 

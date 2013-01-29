@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,7 +10,7 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.Setup.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Finance")]
     public class LookupController : CmsStaffController
     {
         public class Row
@@ -17,6 +18,7 @@ namespace CmsWeb.Areas.Setup.Controllers
             public int Id { get; set; }
             public string Code { get; set; }
             public string Description { get; set; }
+            public bool? Hardwired { get; set; }
         }
         public ActionResult Index(string id)
         {
@@ -53,11 +55,18 @@ namespace CmsWeb.Areas.Setup.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public EmptyResult Delete(string id, string type)
+        public ActionResult Delete(string id, string type)
         {
-            var iid = id.Substring(1).ToInt();
-            DbUtil.Db.ExecuteCommand("delete lookup." + type + " where id = {0}", iid);
-            return new EmptyResult();
+            try
+            {
+                var iid = id.Substring(1).ToInt();
+                DbUtil.Db.ExecuteCommand("delete lookup." + type + " where id = {0}", iid);
+                return new EmptyResult();
+            }
+            catch (SqlException ex)
+            {
+                return Json(new { error = "Cannot delete {0} because it is in use".Fmt(type)});
+            }
         }
     }
 }

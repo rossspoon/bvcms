@@ -1,74 +1,96 @@
 ﻿@model CmsWeb.Models.ContributionSearchModel
+@using System.Web.Optimization
 @using CmsWeb
 @using UtilityExtensions
 @{
-	ViewBag.Title = "Contributions";
+    ViewBag.Title = "Contributions";
     Layout = "/Views/Shared/SiteLayout.cshtml";
+}
+@section head
+{
+    <style type="text/css">
+        .PLNT {
+            font-style: italic;
+            font-weight: bold;
+        }
+    </style>
 }
 @section scripts
 {
-@Html.Script("/Scripts/Contributions.js")
+    @Scripts.Render("~/bundles/single/Contributions-js")
 }
 
 <form action="" id="form">
-@Html.Hidden("PeopleId")
-<div class="roundbox floatleft">
-    <table cellspacing="5">
-        <tbody>
-        <tr><td colspan="2"><h2>Contributions</h2></td></tr>
-        @if(Model.person != null)
-		{
-        <tr>
-            <th align="right">Name:</th>
-			<td><a href="/Person/Index/@Model.PeopleId">@Model.person.Name</a></td>
-        </tr>
-		}
-        else
-		{
-        <tr>
-            <th align="right">Name:</th>
-            <td>@Html.TextBoxFor(vv => vv.Name) <em>All or part of full name</em></td>
-        </tr>
-		}
-        <tr>
-            <th align="right">Min/Max Amounts:</th>
-            <td>@Html.TextBoxFor(vv => vv.MinAmt) @Html.TextBoxFor(vv => vv.MaxAmt) </td>
-        </tr>
-        <tr>
-            <th align="right">Notes:</th>
-            <td>@Html.TextBoxFor(vv => vv.Comments) <em>Check # or phrase</em></td>
-        </tr>
-        <tr>
-            <th align="right">Bundle Type:</th>
-            <td>@Html.DropDownListFor(vv => vv.BundleType, Model.BundleTypes())</td>
-        </tr>
-        <tr>
-            <th align="right">Contribution Type:</th>
-            <td>@Html.DropDownListFor(vv => vv.Type, Model.ContributionTypes())</td>
-        </tr>
-        <tr>
-            <th align="right">Fund:</th>
-            <td>@Html.DropDownListFor(vv => vv.FundId, Model.Funds())</td>
-        </tr>
-        <tr>
-            <th align="right">Status:</th>
-            <td>@Html.DropDownListFor(vv => vv.Status, Model.ContributionStatuses())</td>
-        </tr>
-        <tr>
-            <th align="right">Year:</th>
-            <td>@Html.DropDownListFor(vv => vv.Year, Model.Years())</td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
-                <a id="NewSearch" class="bt">Clear</a>
-                <a id="search" class="bt">Search</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-</div>
-<div class="floatclear"></div>
-@Html.Partial("Results", Model)
+    @Html.Hidden("PeopleId")
+    <div class="roundbox floatleft">
+        <table cellspacing="5">
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <h2>Contributions</h2>
+                    </td>
+                </tr>
+                @if (Model.person != null)
+                {
+                    <tr>
+                        <th align="right">Name:</th>
+                        <td><a href="/Person/Index/@Model.PeopleId">@Model.person.Name</a></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <th align="right">Name:</th>
+                        <td>@Html.TextBoxFor(vv => vv.Name) <em>All or part of full name, or PeopleId</em></td>
+                    </tr>
+                }
+                <tr>
+                    <th align="right">Min/Max Amounts:</th>
+                    <td>@Html.TextBoxFor(vv => vv.MinAmt) @Html.TextBoxFor(vv => vv.MaxAmt) </td>
+                </tr>
+                <tr>
+                    <th align="right">Notes:</th>
+                    <td>@Html.TextBoxFor(vv => vv.Comments) <em>Check # or phrase</em></td>
+                </tr>
+                <tr>
+                    <th align="right">Bundle Type:</th>
+                    <td>@Html.DropDownListFor(vv => vv.BundleType, Model.BundleTypes())</td>
+                </tr>
+                <tr>
+                    <th align="right">Contribution Type:</th>
+                    <td>@Html.DropDownListFor(vv => vv.Type, Model.ContributionTypes())</td>
+                </tr>
+                <tr>
+                    <th align="right">Fund:</th>
+                    <td>@Html.DropDownListFor(vv => vv.FundId, Model.Funds())</td>
+                </tr>
+                <tr>
+                    <th align="right">Status:</th>
+                    <td>@Html.DropDownListFor(vv => vv.Status, Model.ContributionStatuses())
+                        Tax Type:
+                        <select name="taxDedNonTaxDedPledge">
+                            <option value="TaxDed">Tax Deductible</option>
+                            <option value="NonTaxDed">Non-Tax Deductible</option>
+                            <option value="Pledge">Pledges</option>
+                            <option value="All">All Items</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th align="right">Year:</th>
+                    <td>@Html.DropDownListFor(vv => vv.Year, Model.Years())</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right">
+                        <a id="NewSearch" class="bt">Clear</a>
+                        <a id="search" class="bt blue">Search</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="floatclear"></div>
+    @Html.Partial("Results", Model)
 </form>
 @if (Model.person != null)
 {

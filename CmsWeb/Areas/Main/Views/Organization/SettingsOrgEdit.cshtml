@@ -6,7 +6,7 @@
 <a class="displayedit bt" href="/Organization/SettingsOrg/@Model.OrganizationId">Cancel</a>
 <a href="/Organization/SettingsOrgUpdate/@Model.OrganizationId" class="submitbutton bt blue">Save Changes</a>
 </div>
-<div>@Html.ValidationMessage("Form")</div>
+<div class="formerror">@Html.ValidationMessage("Form")</div>
 <ul>
 @Html.EditorFor(m => m, "TabOrg")
 </ul>
@@ -14,4 +14,4 @@
 <a class="displayedit bt" href="/Organization/SettingsOrg/@Model.OrganizationId">Cancel</a>
 <a href="/Organization/SettingsOrgUpdate/@Model.OrganizationId" class="submitbutton bt blue">Save Changes</a>
 </div>
-<div>@Html.ValidationMessage("Form")</div>
+<div class="formerror">@Html.ValidationMessage("Form")</div>

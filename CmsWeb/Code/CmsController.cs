@@ -45,7 +45,7 @@ namespace CmsWeb
 				filterContext.ActionDescriptor.ActionName);
 			DbUtil.Db.UpdateLastActivity(Util.UserId);
 		}
-		public string AuthenticateDeveloper(bool log = false)
+		public string AuthenticateDeveloper(bool log = false, string addrole = "")
 		{
 			var auth = Request.Headers["Authorization"];
 			if (auth.HasValue())
@@ -63,6 +63,8 @@ namespace CmsWeb
 					var u = CmsWeb.Models.AccountModel.SetUserInfo(username, Session);
 					if (!roles.IsUserInRole(username, "Developer"))
 						valid = false;
+                    if (addrole.HasValue() && !roles.IsUserInRole(username, addrole))
+						valid = false;
 				}
 				if (valid)
 					ret = " API {0} authenticated".Fmt(username);
@@ -73,24 +75,6 @@ namespace CmsWeb
 				return ret;
 			}
 			return "!API no Authorization Header";
-		}
-		public static string RenderPartialViewToString(Controller controller, string viewName, object model)
-		{
-			controller.ViewData.Model = model;
-			try
-			{
-				using (var sw = new StringWriter())
-				{
-					ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
-					ViewContext viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
-					viewResult.View.Render(viewContext, sw);
-					return sw.GetStringBuilder().ToString();
-				}
-			}
-			catch (Exception ex)
-			{
-				return ex.ToString();
-			}
 		}
 	}
 	[MyRequireHttps]

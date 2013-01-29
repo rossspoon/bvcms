@@ -5,11 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>CMS Report</title>
-    <link href="/Content/css/jquery-ui-1.9.2.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/pager.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/style2.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/superfish.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/supertabfish.css" rel="stylesheet" type="text/css" />
+    <%: Styles.Render("~/Content/styles/css") %>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <style type="text/css" media="print">

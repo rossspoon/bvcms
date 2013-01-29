@@ -20,15 +20,21 @@ namespace CmsData.API
         {
             this.Db = Db;
         }
-		public string PostContribution(int PeopleId, decimal Amount, int FundId, string desc)
+		public string PostContribution(int PeopleId, decimal Amount, int FundId, string desc, string date, int? type)
 		{
 			try
 			{
 				var p = Db.LoadPersonById(PeopleId);
 				if (p == null)
 					throw new Exception("no person");
-				p.PostUnattendedContribution(Db, Amount, FundId, desc);
-				return @"<PostContribution status=""ok"" />";
+				var c = p.PostUnattendedContribution(Db, Amount, FundId, desc);
+			    DateTime dt;
+			    if (date.DateTryParse(out dt))
+			        c.ContributionDate = dt;
+                if (type.HasValue)
+    			    c.ContributionTypeId = type.Value;
+                Db.SubmitChanges();
+				return @"<PostContribution status=""ok"" id=""{0}"" />".Fmt(c.ContributionId);
 			}
 			catch (Exception ex)
 			{
@@ -114,11 +120,6 @@ namespace CmsData.API
 		    xs.Serialize(sw, f, ns);
 		    return sw.ToString();
 	    }
-        public static int[] ReturnedReversedTypes = new int[] 
-        { 
-            ContributionTypeCode.ReturnedCheck, 
-            ContributionTypeCode.Reversed 
-        };
 
         public static IEnumerable<ContributorInfo> contributors(CMSDataContext Db, DateTime fromDate, DateTime toDate, int PeopleId, int? SpouseId, int FamilyId, bool noaddressok, bool useMinAmt, string startswith = null)
         {
@@ -126,7 +127,7 @@ namespace CmsData.API
             if (!useMinAmt)
                 MinAmt = 0;
             var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok)
-                      let option = (p.ContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.ContributionOptionsId
+                      let option = (p.ContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 && (p.SpouseContributionOptionsId ?? 0) != 1 ? 2 : 1) : p.ContributionOptionsId
                       let option2 = (p.SpouseContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.SpouseContributionOptionsId
                       let name = (option == 1 ?
                                  (p.Title != null ? p.Title + " " + p.Name : p.Name)
@@ -143,7 +144,7 @@ namespace CmsData.API
                       where option != 9 || noaddressok
                       where startswith == null || p.LastName.StartsWith(startswith)
 #if DEBUG2
-					  where p.FamilyId == 17371
+					  where p.FamilyId == 104235
 #endif
                       where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
@@ -172,13 +173,13 @@ namespace CmsData.API
         public static IEnumerable<ContributionInfo> contributions(CMSDataContext Db, ContributorInfo ci, DateTime fromDate, DateTime toDate)
         {
             var q = from c in Db.Contributions
-                    where !ReturnedReversedTypes.Contains(c.ContributionTypeId)
-                    where c.ContributionTypeId != ContributionTypeCode.BrokeredProperty
+                    where !ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionTypeId)
+                    where c.ContributionTypeId != ContributionTypeCode.GiftInKind
                     where c.ContributionStatusId == ContributionStatusCode.Recorded
                     where c.ContributionDate >= fromDate && c.ContributionDate.Value.Date <= toDate
                     where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
-					where (c.ContributionFund.NonTaxDeductible ?? false) == false
-                    where c.PledgeFlag == false
+					where !(c.ContributionFund.NonTaxDeductible ?? false)
+                    where !ContributionTypeCode.NonTaxTypes.Contains(c.ContributionTypeId)
                     orderby c.ContributionDate
                     select new ContributionInfo
                     {
@@ -196,16 +197,14 @@ namespace CmsData.API
         {
             var PledgeExcludes = new int[] 
             { 
-                ContributionTypeCode.BrokeredProperty, 
-                ContributionTypeCode.GraveSite, 
-                ContributionTypeCode.Reversed 
+                ContributionTypeCode.Reversed,
             };
 
 			var showPledgeIfMet = Db.Setting("ShowPledgeIfMet", "true").ToBool();
 
             var qp = from p in Db.Contributions
                      where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
-                     where p.PledgeFlag && p.ContributionTypeId == ContributionTypeCode.Pledge
+                     where p.ContributionTypeId == ContributionTypeCode.Pledge
                      where p.ContributionStatusId.Value != ContributionStatusCode.Reversed
                      where p.ContributionFund.FundStatusId == 1 // active
                      where p.ContributionDate <= toDate
@@ -214,7 +213,7 @@ namespace CmsData.API
             var qc = from c in Db.Contributions
                      where !PledgeExcludes.Contains(c.ContributionTypeId)
                      where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
-                     where !c.PledgeFlag
+                     where c.ContributionTypeId != ContributionTypeCode.Pledge
                      where c.ContributionStatusId != ContributionStatusCode.Reversed
                      where c.ContributionDate <= toDate
                      group c by c.FundId into g
@@ -235,13 +234,21 @@ namespace CmsData.API
 
         public static IEnumerable<ContributionInfo> quarterlySummary(CMSDataContext Db, ContributorInfo ci, DateTime fromDate, DateTime toDate)
         {
+            int[] excludetypes = new int[]
+             {
+                 ContributionTypeCode.ReturnedCheck,
+                 ContributionTypeCode.Reversed,
+                 ContributionTypeCode.GiftInKind,
+                 ContributionTypeCode.NonTaxDed,
+                 ContributionTypeCode.Pledge,
+             };
             var q = from c in Db.Contributions
-                    where c.ContributionTypeId == ContributionTypeCode.CheckCash
+                    where !excludetypes.Contains(c.ContributionTypeId)
                     where c.ContributionStatusId == ContributionStatusCode.Recorded
                     where c.ContributionDate >= fromDate
                     where c.ContributionDate <= toDate
                     where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
-                    where c.PledgeFlag == false
+                    where c.ContributionTypeId != ContributionTypeCode.Pledge
 					where (c.ContributionFund.NonTaxDeductible ?? false) == false
                     group c by c.ContributionFund.FundName into g
                     orderby g.Key
@@ -251,6 +258,23 @@ namespace CmsData.API
                         Fund = g.Key,
                     };
 
+            return q;
+        }
+
+        public static IEnumerable<ContributionInfo> GiftsInKind(CMSDataContext Db, ContributorInfo ci, DateTime fromDate, DateTime toDate)
+        {
+            var q = from c in Db.Contributions
+                    where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
+                    where c.ContributionTypeId == ContributionTypeCode.GiftInKind
+                    where c.ContributionStatusId.Value != ContributionStatusCode.Reversed
+                    where c.ContributionDate <= toDate
+                    orderby c.ContributionDate
+                    select new ContributionInfo
+                    {
+                        ContributionDate = c.ContributionDate,
+                        Fund = c.ContributionFund.FundName,
+                        Description = c.ContributionDesc
+                    };
             return q;
         }
     }
@@ -303,7 +327,7 @@ namespace CmsData.API
                 if (!StatusId.HasValue)
                     return true;
                 return StatusId.Value != (int)ContributionStatusCode.Recorded
-                    || APIContribution.ReturnedReversedTypes.Contains(ContributionTypeId.Value);
+                    || ContributionTypeCode.ReturnedReversedTypes.Contains(ContributionTypeId.Value);
             }
         }
     }

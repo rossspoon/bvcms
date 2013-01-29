@@ -35,6 +35,19 @@
     </li>
     <li>
         <span class="keyword big tip"
+        title="Publish Directory
+        |This makes available an accessible directory for any member of this organization.">
+        Publish Directory:</span>
+        @Html.DropDownList("org.PublishDirectory", 
+            new SelectListItem[]
+                {
+                    new SelectListItem { Value = "0", Text = "No Directory" },
+                    new SelectListItem { Value = "1", Text = "Yes Publish Directory" },
+                    new SelectListItem { Value = "2", Text = "Yes, Publish Family Directory" },
+                })
+    </li>
+    <li>
+        <span class="keyword big tip"
         title="Grade
         |Used during promotion to assign a grade to a student who joins this class
         |Only effective for graded classes (not something like grades 7-10).

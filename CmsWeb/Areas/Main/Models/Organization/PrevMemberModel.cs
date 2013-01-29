@@ -72,6 +72,7 @@ namespace CmsWeb.Models.OrganizationPage
         {
             var q = ApplySort();
             q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
+            var tagownerid = Util2.CurrentTagOwnerId;
             var q2 = from om in q
                      let p = om.Person
                      let att = om.Person.Attends.Where(a => a.OrganizationId == om.OrganizationId).Max(a => a.MeetingDate)
@@ -103,7 +104,8 @@ namespace CmsWeb.Models.OrganizationPage
                          AttendPct = om.AttendancePercentage,
                          LastAttended = att,
                          Joined = om.EnrollmentDate,
-                         Dropped = om.TransactionDate
+                         Dropped = om.TransactionDate,
+                         HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == tagownerid),
                      };
             return q2;
         }

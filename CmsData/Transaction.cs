@@ -44,5 +44,23 @@ namespace CmsData
 		{
 			return OriginalTransaction.TransactionPeople.Select(pp => pp.PeopleId).FirstOrDefault();
 		}
+        public string FullName
+        {
+            get
+            {
+                var s = "";
+                if (Last.HasValue())
+                {
+                    if (MiddleInitial.HasValue())
+                        s = "{0} {1} {2}".Fmt(First, MiddleInitial, Last);
+                    else
+                        s = "{0} {1}".Fmt(First, Last);
+                    if (Suffix.HasValue())
+                        s = s + ", " + Suffix;
+                    return s;
+                }
+                return Name;
+            }
+        }
     }
 }

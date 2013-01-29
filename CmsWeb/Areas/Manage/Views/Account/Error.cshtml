@@ -1,7 +1,5 @@
 ﻿@using System.Security.Cryptography
 @using System.Threading
-@using UtilityExtensions
-
 @{
     Layout = null;
     byte[] delay = new byte[1];
@@ -14,35 +12,58 @@
     if (disposable != null) {
         disposable.Dispose();
     }
+    string error = TempData["error"] as string;
 }
-
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <title>Error</title>
-    <style type="text/css">
-        body
-        {
-            font-family: Arial;
-        }
-        H1
-        {
-            color: Red;
-        }
-    </style>
+  <!-- meta -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="language" content="en-US">
+  <meta name="viewport" content="maximum-scale=1.0,width=device-width,initial-scale=1.0">
+  <!-- title -->
+  <title>BVCMS error</title>
+  <!-- css -->
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #F0F0F0;
+      font: 14px/18px Arial, "Helvetica Neue", sans-serif;
+      text-align: center;
+    }
+    #surface {
+      margin: 40px auto;
+      position: relative;
+      width: 480px;
+    }
+    h1 { 
+      color: #222; 
+      font-size: 22px; 
+      font-weight: bold; 
+      line-height: 26px; 
+      margin-bottom: 10px; 
+    }
+    p { 
+      margin-bottom: 10px;
+    }
+
+    @@media all and (max-width: 480px) {
+      #surface {
+        margin: 40px 10px;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div>
-    @{ 
-        string error = (string)TempData["message"];
-        string em = "";
-            em = "An email has been sent to the developer to report the problem.";
-    }
-    <h1>An error occurred while processing your request.</h1>
-    <div>@error</div>
-    <div>@em</div>
-    <a href="/">Home</a>
+    <div id="surface">
+    <h1>Oops! Something didn't go so well.</h1>
+    <p>Please try again. The message below might help.</p>
+    <h4>@error</h4>
     </div>
 </body>
 </html>
+

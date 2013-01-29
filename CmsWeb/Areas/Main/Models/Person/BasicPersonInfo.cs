@@ -5,14 +5,13 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 
 namespace CmsWeb.Models.PersonPage
 {
     public class BasicPersonInfo
     {
-        private CodeValueController cv = new CodeValueController();
+        private CodeValueModel cv = new CodeValueModel();
         public int PeopleId { get; set; }
         public Person person { get; set; }
         public string NickName { get; set; }
@@ -51,6 +50,7 @@ namespace CmsWeb.Models.PersonPage
         public string Birthday { get; set; }
         public DateTime? DeceasedDate { get; set; }
         public string Age { get; set; }
+        public bool DoNotPublishPhones { get; set; }
 
         public string Campus
         {
@@ -101,6 +101,7 @@ namespace CmsWeb.Models.PersonPage
                 DoNotCallFlag = p.DoNotCallFlag,
                 DoNotMailFlag = p.DoNotMailFlag,
                 DoNotVisitFlag = p.DoNotVisitFlag,
+                DoNotPublishPhones = p.DoNotPublishPhones ?? false,
                 EmailAddress = p.EmailAddress,
                 SendEmailAddress1 = p.SendEmailAddress1 ?? true,
                 EmailAddress2 = p.EmailAddress2,
@@ -146,6 +147,7 @@ namespace CmsWeb.Models.PersonPage
             p.UpdateValue(psb, "DoNotCallFlag", DoNotCallFlag);
             p.UpdateValue(psb, "DoNotMailFlag", DoNotMailFlag);
             p.UpdateValue(psb, "DoNotVisitFlag", DoNotVisitFlag);
+            p.UpdateValue(psb, "DoNotPublishPhones", DoNotPublishPhones);
             p.UpdateValue(psb, "EmailAddress", EmailAddress);
             p.UpdateValue(psb, "EmailAddress2", EmailAddress2);
             p.UpdateValue(psb, "SendEmailAddress1", SendEmailAddress1);
@@ -191,29 +193,24 @@ namespace CmsWeb.Models.PersonPage
                         .Fmt(Util.UserName, First + " " + Last, PeopleId, psb.ToString(),fsb.ToString()));
                 }
         }
-        public static IEnumerable<SelectListItem> TitleCodes()
-        {
-            var cv = new CodeValueController();
-            return QueryModel.ConvertToSelect(cv.TitleCodes(), "Id");
-        }
         public static IEnumerable<SelectListItem> GenderCodes()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             return QueryModel.ConvertToSelect(cv.GenderCodes(), "Id");
         }
         public static IEnumerable<SelectListItem> Campuses()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             return QueryModel.ConvertToSelect(cv.AllCampuses0(), "Id");
         }
         public static IEnumerable<SelectListItem> MemberStatuses()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             return QueryModel.ConvertToSelect(cv.MemberStatusCodes(), "Id");
         }
         public static IEnumerable<SelectListItem> MaritalStatuses()
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             return QueryModel.ConvertToSelect(cv.MaritalStatusCodes(), "Id");
         }
     }

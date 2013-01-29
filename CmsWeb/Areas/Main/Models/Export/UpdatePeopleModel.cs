@@ -10,7 +10,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.Collections;
 using System.Data.Common;
-using CMSPresenter;
 using System.IO;
 using NPOI.HSSF.UserModel;
 using System.Text;
@@ -158,7 +157,7 @@ namespace CmsWeb.Models
         };
         private static void UpdatePeople(DbConnection cn, CMSDataContext Db, int UserPeopleId)
         {
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             var pcmd = cn.CreateCommand();
             pcmd.CommandText = "select * from [Sheet1$]";
             var rd = pcmd.ExecuteReader();

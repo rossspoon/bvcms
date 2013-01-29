@@ -1,0 +1,36 @@
+﻿@model CmsWeb.Areas.Finance.Models.BundleModel
+@using UtilityExtensions
+<table class="grid" cellpadding="4">
+    <thead>
+        <tr><td colspan="8">Bundle Count: @Model.Count().ToString("N0")</td></tr>
+        <tr>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Fund</th>
+            <th>Check</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+@if(Model.Count() == 0)
+{ 
+    	<tr><td colspan="8">No items yet.</td></tr>
+} 
+    @foreach (var c in Model.Contributions())
+    {
+        <tr>
+            <td class="@(c.ReversedReturned ? "red" : "")">c.Status</td>
+            <td>@c.Date.FormatDate()</td>
+            <td><a href="/FinanceReports/ContributionYears/@c.PeopleId">@c.Name</a></td>
+            <td align="right">@c.Amount.ToString2("N2")</td>
+            <td>@c.Type</td>
+            <td>@c.Fund</td>
+            <td>@c.Check</td>
+            <td>@c.Notes</td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,21 +1,31 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.PaymentForm
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
 }
+@section head
+{
+    <style>
+        #namefields th {
+            color: #AAA;
+            text-align: left;
+            font-size: 70%;
+        }
+    </style>
+}
 @section scripts
 {
-@Html.Script("/Scripts/OnlineRegPayment.js")
-
+    @Scripts.Render("~/bundles/single/onlineregpayment-js")
 <script type="text/javascript">
     $(function () {
         $(document).bind("idle.idleTimer", function () {
             window.location.href = '@ViewBag.Url';
         });
         var tmout = parseInt('@ViewBag.timeout');
-        $.idleTimer(tmout);
+        //$.idleTimer(tmout);
     });
 </script>
 }
@@ -26,7 +36,7 @@
 { 
     <a id="displayterms" title="click to display terms" href="#">Display Terms</a>
     <div id="Terms" title="Terms of Agreement" class="modalPopup" style="display: none;
-        width: 400px; padding: 10px">
+                                                                                                        width: 400px; padding: 10px">
         @Html.Raw(Model.Terms)</div>
     <p>
         @Html.CheckBox("IAgree")
@@ -36,6 +46,7 @@
 } 
     <form action="/onlinereg/ProcessPayment" method="post">
     @Html.Hidden("pf.DatumId", Model.DatumId)
+    @Html.Hidden("pf.TranId", Model.TranId)
     @Html.Hidden("pf.Url", Model.Url)
     @Html.Hidden("pf.Description", Model.Description)
     @Html.Hidden("pf.FormId", Model.FormId)
@@ -55,10 +66,22 @@
     <table>
     <colgroup>
         <col style="text-align: right;white-space:nowrap;padding-right:10px" />
-		<col />
+        <col />
     </colgroup>
     <tr><td>Name</td>
-        <td>@Html.TextBox("pf.Name", Model.Name, new { @class = "wide" })</td></tr>
+        <td nowrap="nowrap">
+            <table id="namefields">
+                <tr><th>First</th><th>MI</th><th>Last</th><th>Suffix</th></tr>
+                <tr>
+                    <td>@Html.TextBox("pf.First", Model.First, new { @class = "short"})</td>
+                    <td>@Html.TextBox("pf.MiddleInitial", Model.MiddleInitial, new { @class = "shorter" })</td>
+                    <td>@Html.TextBox("pf.Last", Model.Last, new { @class = "short"})</td>
+                    <td>@Html.TextBox("pf.Suffix", Model.Suffix, new { @class = "shorter" })</td>
+                </tr>
+            </table>
+            <div id="errorName"></div>
+        </td>
+    </tr>
     <tr><td>Address</td>
         <td>@Html.TextBox("pf.Address", Model.Address, new { @class = "wide" })</td></tr>
     <tr><td>City</td>
@@ -119,8 +142,7 @@ else
 @if (Model.NoEChecksAllowed == false)
 {
 	<tr class="Bank">
-		<td>Checking Account<br/>
-			Bank Routing Number</td>
+		<td>Routing Number</td>
 		<td>@Html.TextBox("pf.Routing", Model.Routing, Model.Autocomplete())
             <div>@Html.ValidationMessage("Routing")</div>
         </td>

@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.PostBundleModel
 @{
@@ -7,46 +8,88 @@
 }
 @section head 
 {
-<style type="text/css"> .alt { background-color: #eee; } </style>
+<style type="text/css"> 
+    td.PLNT {
+        font-style: italic;
+        font-weight: bold;
+        text-align: center;
+    }
+    table.roundbox th {
+        text-align: right;
+        white-space: nowrap;
+    }
+    table.roundbox td {
+        white-space: nowrap;
+        padding: .2em .7em;
+    }
+    #headerrow td {
+        font-weight: bold;
+        text-align: left;
+    }
+</style>
 }
-    <h2>PostBundle</h2>
 @section scripts
 {
-@Html.Script("/Scripts/PostBundle.js")
+@Scripts.Render("~/bundles/single/PostBundle-js")
 }
 @Html.Hidden("fundid", Model.bundle.FundId)
+@Html.Hidden("fundispledge", Model.FundName)
 @{ var b = Model.bundle; }
 <form id='pbform' action='/PostBundle/InsertRow' method="post">
-<table>
-    <tr><th>BundleId</th><td><a href="/Contributions/Bundle.aspx?id=@Model.id">@Model.id@Html.Hidden("id")</a></td></tr>
-    <tr><th>Date</th><td>@Model.bundle.ContributionDate.ToShortDateString()</td></tr>
-    <tr><th>Fund</th><td><a target="_blank" href='/PostBundle/FundTotals/@Model.id'>@Model.FundName (@Model.bundle.FundId)</a></td></tr>
-    <tr><th>Pledge</th><td>@Html.CheckBox("pledge")</td></tr>
-    <tr><th>Total</th><td>@((b.TotalCash + b.TotalChecks + b.TotalEnvelopes).ToString2("N2"))</td></tr>
-    <tr><th>Total Items</th><td><span id="totalitems">@b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount).ToString2("N2")</span></td></tr>
-    <tr><th>Item Count</th><td><span id="itemcount">@b.BundleDetails.Count()</span></td></tr>
-</table>
+    <table class="roundbox">
+        <thead>
+            <tr><td colspan="2"><h2>Post Bundle / Edit</h2></td></tr>
+        </thead>
+        <tbody>
+            <tr><th>BundleId:</th>
+                <td><a class="bt" href="/Bundle/Index/@Model.id">@Model.id@Html.Hidden("id")</a></td>
+            </tr>
+            <tr><th>Contribution Date:</th>
+                <td>@Model.bundle.ContributionDate.ToShortDateString()</td>
+            </tr>
+            <tr><th>Default Fund:</th>
+                <td><a target="_blank" href='/PostBundle/FundTotals/@Model.id'>@Model.FundName (@Model.bundle.FundId)</a></td>
+            </tr>
+            <tr><th>Total:</th>
+                <td>@((b.TotalCash + b.TotalChecks + b.TotalEnvelopes).ToString2("N2"))</td>
+            </tr>
+            <tr><th>Total Items:</th>
+                <td><span id="totalitems">@b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount).ToString2("N2")</span></td></tr>
+            <tr><th>Item Count:</th>
+                <td><span id="itemcount">@b.BundleDetails.Count()</span></td>
+            </tr>
+            <tr><td colspan="2" align="right">
+                    @Html.RadioButton("PLNT", "CN")Tax Deductible 
+                    @Html.RadioButton("PLNT", "PL")Pledge 
+                    @Html.RadioButton("PLNT", "NT")Non Tax Ded 
+                    @Html.RadioButton("PLNT", "GK")Gift In Kind
+                </td>
+            </tr>
+        </tbody>
+    </table>
 @Html.Hidden("id")
 @Html.Hidden("editid")
 <table id='bundle'>
     <thead>
-        <tr>
-            <th>PeopleId</th>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Fund(s)</th>
-            <th>CheckNo</th>
-            <th>Notes</th>
-            <th colspan="3"></th>
+        <tr id="headerrow">
+            <td>PeopleId</td>
+            <td>Name</td>
+            <td style="text-align: center">Amount</td>
+            <td style="text-align: center" class="tip" title="Indicator|Pledge|Non Tax Deductible">PL/NT</td>
+            <td>Fund(s)</td>
+            <td>CheckNo</td>
+            <td>Notes</td>
+            <td colspan="3"></td>
         </tr>
         <tr id="entry">
-            <td><input id="pid" name="pid" type="text" style="width:5em" /></td>
-            <td><input id="name" name="name" type="text" /></td>
+            <td><input id="pid" name="pid" type="text" style="width:5em;" /></td>
+            <td><input id="name" name="name" type="text" style="width:10em" /></td>
             <td><input id="amt" name="amt" type="text" style="width:5em" /></td>
-            <td>@Html.DropDownList("fund", Model.Funds())</td>
+            <td class="PLNT">@Model.PLNT</td>
+            <td>@Html.DropDownList("fund", Model.Funds(), new { style = "width:15em"})</td>
             <td><input id="checkno" name="checkno" type="text" style="width:4em" /></td>
-            <td><input id="notes" name="notes" type="text" /></td>
-            <td colspan="3"><a class="update bt" href='#'>update</a></td>
+            <td><input id="notes" name="notes" type="text" style="width:98%;min-width: 15em;"/></td>
+            <td colspan="3"><a class="update bt blue" href='#'>update</a></td>
         </tr>
     </thead>
     <tbody>

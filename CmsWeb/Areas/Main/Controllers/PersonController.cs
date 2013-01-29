@@ -98,6 +98,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				return Content("no user");
 			if (user.Roles.Contains("Finance") && !User.IsInRole("Finance"))
 				return Content("cannot impersonate finance");
+            Session.Remove("CurrentTag");
 			FormsAuthentication.SetAuthCookie(id, false);
 			AccountModel.SetUserInfo(id, Session);
 			Util.FormsBasedAuthentication = true;
@@ -767,7 +768,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				CmsData.Codes.RegistrationTypeCode.JoinOrganization,
 				CmsData.Codes.RegistrationTypeCode.ComputeOrganizationByAge2,
 				CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2,
-				CmsData.Codes.RegistrationTypeCode.ChooseSlot,
+				CmsData.Codes.RegistrationTypeCode.ChooseVolunteerTimes,
 			};
 			var picklistorgs = DbUtil.Db.ViewPickListOrgs.Select(pp => pp.OrgId).ToArray();
 			var dt = DateTime.Today;

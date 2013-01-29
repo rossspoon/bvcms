@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Areas.Dialog.Models.TransactionHistoryModel
+@using System.Web.Optimization
 @using CmsWeb
 @using UtilityExtensions
 @{
@@ -8,13 +9,11 @@
 <html>
 <head>
     <title>History</title>
-<link rel="stylesheet" type="text/css"  href="/Content/css/jquery-ui-1.8.9.custom.css" />
-<link rel="stylesheet" type="text/css"  href="/Content/css/site.css" />
-<link rel="stylesheet" type="text/css"  href="/Content/css/Style2.css" />
-
-@Html.Partial("CombinedJs")
-@Html.Partial("DatePickerDefaults")
-@Html.Script("/Scripts/TransactionHistory.js")
+    @Styles.Render("~/Content/styles/css")
+    <link href="/Content/styles/style2.css" rel="stylesheet" type="text/css" />
+    @Scripts.Render("~/bundles/js")
+    @Html.Partial("DatePickerDefaults")
+    @Scripts.Render("~/bundles/single/TransactionHistory-js")
 </head>
 <body>
     <div>

@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.IO;
 using System.Web.Configuration;
 using System.Data.SqlClient;
@@ -66,6 +65,15 @@ namespace CmsWeb.Areas.Manage.Controllers
 "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction( {0}, '{1}', '{2}' );</script>",
 CKEditorFuncNum, baseurl + fn, error));
         }
+
+        public ActionResult ForceError()
+        {
+            var y = 2;
+            var z = 0;
+            var x = 2/z;
+            return Content("error");
+        }
+
         public ActionResult Error()
         {
             return View();
@@ -73,18 +81,11 @@ CKEditorFuncNum, baseurl + fn, error));
 		[MyRequireHttps]
         public ActionResult LogOn()
         {
-            try
-            {
-                if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
+		    if (!DbUtil.DatabaseExists())
+		        return Redirect("/Errors/DatabaseNotFound.aspx?dbname=" + Util.Host);
+
+		    if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
                     return Content("Site is disabled, contact {0} for help".Fmt(Util.SendErrorsTo()[0].Address));
-            }
-            catch (SqlException ex)
-            {
-                TempData["message"] = ex.Message;
-				if (ex.Message.StartsWith("Cannot open database"))
-					return Content("no such database " + Util.Host);
-                return Redirect("/Error");
-            }
 
             if (!User.Identity.IsAuthenticated)
             {
@@ -132,17 +133,6 @@ CKEditorFuncNum, baseurl + fn, error));
             if (returnUrl.HasValue())
                 return Redirect(returnUrl);
             return Redirect("/");
-        }
-		[MyRequireHttps]
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public ActionResult UsersPage(string newpassword)
-        {
-            if (!User.IsInRole("Admin"))
-                return Content("unauthorized");
-
-            Session[UserController.STR_ShowPassword] = newpassword;
-            return Redirect("/Admin/Users.aspx?create=1");
         }
 		[MyRequireHttps]
         public ActionResult LogOff()
@@ -213,8 +203,9 @@ The bvCMS Team</p>
             var p = DbUtil.Db.LoadPersonById(pid);
             if (p == null)
                 return View("LinkUsed");
-            if ((p.Age ?? 16) < 16)
-                return Content("must be Adult (16 or older)");
+		    var minage = DbUtil.Db.Setting("MinimumUserAge", "16").ToInt();
+		    if ((p.Age ?? 16) < minage)
+                return Content("must be Adult ({0} or older)".Fmt(minage));
             var user = MembershipService.CreateUser(DbUtil.Db, pid);
             FormsAuthentication.SetAuthCookie(user.Username, false);
             AccountModel.SetUserInfo(user.Username, Session);

@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @using CmsData
 @model CmsWeb.Models.PaymentForm
@@ -13,8 +14,7 @@
 
 @section scripts
 {
-@Html.Script("/Scripts/OnlineRegPayment.js")
-
+    @Scripts.Render("~/bundles/single/onlineregpayment-js")
     <script type="text/javascript">
         $(function () {
             $(document).bind("idle.idleTimer", function () {
@@ -53,14 +53,14 @@
     <input type="hidden" name="OrgID" value="@ServiceUOrgID"/>
     <input type="hidden" name="OrgAccountID" value="@ServiceUOrgAccountID"/>
     @Html.Hidden("PostbackURL", Util.ServerLink("/OnlineReg/Confirm/" + Model.DatumId))
-    @Html.Hidden("NameOnAccount", Model.Name)
+    @Html.Hidden("NameOnAccount", Model.FullName())
     @Html.Hidden("Address", Model.Address)
     @Html.Hidden("City", Model.City)
     @Html.Hidden("State", Model.State)
     @Html.Hidden("PostalCode", Model.Zip)
     @Html.Hidden("Phone", Model.Phone)
     @Html.Hidden("Email", Model.Email)
-    @Html.Hidden("Misc1", Model.Name)
+    @Html.Hidden("Misc1", Model.FullName())
     @Html.Hidden("Misc2", Model.Description)
     @Html.Hidden("Misc3")
     @Html.Hidden("Misc4")

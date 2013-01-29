@@ -26,7 +26,7 @@ namespace CmsData.View
 		
 		private int? _StatusId;
 		
-		private bool _Pledged;
+		private bool? _Pledged;
 		
 		private int? _Age;
 		
@@ -132,8 +132,8 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Pledged", Storage="_Pledged", DbType="bit NOT NULL")]
-		public bool Pledged
+		[Column(Name="Pledged", Storage="_Pledged", DbType="bit")]
+		public bool? Pledged
 		{
 			get
 			{

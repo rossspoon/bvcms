@@ -89,7 +89,7 @@ namespace CmsWeb.Models
 				 where t.Amt > gtamount || gtamount == null
 				 where t.Amt <= ltamount || ltamount == null
 				 where description == null || t.Description.Contains(description)
-				 where name == null || t.Name.Contains(name) || t.Batchref == name || t.TransactionId == name || t.OriginalId == nameid || t.Id == nameid
+				 where name == null || t.Name.Contains(name) || t.Last.Contains(name) || t.Batchref == name || t.TransactionId == name || t.OriginalId == nameid || t.Id == nameid
 				 where (t.Testing ?? false) == testtransactions
 				 where apprtransactions == (t.Moneytran == true) || !apprtransactions
 				 where (nocoupons && !t.TransactionId.Contains("Coupon")) || !nocoupons
@@ -281,7 +281,7 @@ namespace CmsWeb.Models
 						break;
 					case "Name":
 						q = from t in q
-							orderby t.Name, t.TransactionDate descending
+							orderby t.Name, t.First, t.Last, t.TransactionDate descending
 							select t;
 						break;
 					case "Amount":
@@ -325,7 +325,7 @@ namespace CmsWeb.Models
 						break;
 					case "Name":
 						q = from t in q
-							orderby t.Name descending, t.TransactionDate
+							orderby t.Name descending, t.First descending, t.Last descending, t.TransactionDate
 							select t;
 						break;
 					case "Amount":
@@ -362,7 +362,7 @@ namespace CmsWeb.Models
 					 Amtdue = t.Amtdue ?? 0,
 					 t.Description,
 					 t.Message,
-					 t.Name,
+					 t.FullName,
 					 t.Address,
 					 t.City,
 					 t.State,

@@ -262,33 +262,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BundleController.cs" />
-    <Compile Include="ChurchAttendanceConstants.cs" />
-    <Compile Include="ChurchAttendanceSummaryController.cs" />
-    <Compile Include="ChurchAttendanceController.cs" />
-    <Compile Include="ActivityController.cs" />
-    <Compile Include="DecisionSummaryController.cs" />
-    <Compile Include="InfoClasses\SavedQueryInfo.cs" />
-    <Compile Include="InfoClasses\ContacteeInfo.cs" />
-    <Compile Include="InfoClasses\ContactorInfo.cs" />
-    <Compile Include="InfoClasses\MailingInfo.cs" />
-    <Compile Include="InfoClasses\TaggedPersonInfo.cs" />
-    <Compile Include="ContactController.cs" />
-    <Compile Include="InfoClasses\ContactInfo.cs" />
-    <Compile Include="MailingController.cs" />
-    <Compile Include="MeetingController.cs" />
-    <Compile Include="InfoClasses\AttendInfo.cs" />
-    <Compile Include="InfoClasses\CodeValueItem.cs" />
-    <Compile Include="InfoClasses\MeetingInfo.cs" />
-    <Compile Include="InfoClasses\PastAttendeeInfo.cs" />
-    <Compile Include="InfoClasses\PersonInfo.cs" />
-    <Compile Include="CodeValueController.cs" />
-    <Compile Include="RoleController.cs" />
-    <Compile Include="UserController.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VolunteerAppController.cs">
+    <Compile Include="ActivityController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ChurchAttendanceController.cs" />
+    <Compile Include="DecisionSummaryController.cs" />
+    <Compile Include="InfoClasses\ContacteeInfo.cs" />
+    <Compile Include="InfoClasses\ContactorInfo.cs" />
+    <Compile Include="ContactController.cs" />
+    <Compile Include="InfoClasses\ContactInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CmsData\CmsData.csproj">

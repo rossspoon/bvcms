@@ -40,6 +40,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.ShowResults = true;
             m.LoadScratchPad();
             ViewData["queryid"] = m.QueryId;
+            ViewBag.AutoRun = (bool?)(TempData["AutoRun"]) == true;
             return View(m);
         }
         [HttpPost]

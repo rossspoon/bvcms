@@ -1,4 +1,5 @@
 ﻿@model CmsData.Registration.Settings
+@using CmsData
 @using CmsWeb
 @using UtilityExtensions
   <li><span class="keyword big tip" title="Fee
@@ -13,6 +14,11 @@
     |They can make as many additional payments as they want until paid in full.
     |Like an installment payment.">
     Deposit:</span> @Html.TextBox("Deposit", Model.Deposit)
+  </li>
+  <li><span class="keyword big tip" title="IncludeOtherFeesWithDeposit
+    |Indicate whether the Other Fees (Questions tab)
+    |Are paid with the deposit.">
+    Other Fees Required With Deposit:</span> @Html.CheckBox("IncludeOtherFeesWithDeposit", Model.IncludeOtherFeesWithDeposit)
   </li>
   <li><span class="keyword big tip" title="ExtraFee
     |A late registration fee.">
@@ -29,6 +35,11 @@
     |Does not include shirt fees and other extra fees.">
     MaximumFee:</span> @Html.TextBox("MaximumFee", Model.MaximumFee)
   </li>
+<li><span class="keyword big tip" title="ApplyMaxToOtherFees
+    |Indicate whether the maximum applies to other fees too, 
+    |or just to main fee.">
+    Apply Max to Other Fees:</span> @Html.CheckBox("ApplyMaxToOtherFees", Model.ApplyMaxToOtherFees)
+  </li>
   <li><span class="keyword big tip" title="AskDonation
     |Indicate whether you want to ask for an extra donation.
     |Creates a contribution record for that amount too.">
@@ -44,11 +55,12 @@
     DonationLabel:</span> 
     @Html.EditorFor(m => m.DonationLabel, "Html")
   </li>
-  <li><div class="text big tip" title="OrgFees
+<li><div class="text big tip" title="OrgFees
     |This will give registrants a special fee
     |if they are members of a particular organization.
     |Note that this fee overrides all other fees 
-    |and will not appear until the payment page.">
+    |and will not appear until the payment page.
+    |If it is zero, the payment page will be skipped.">
     OrgFees:</div>
       <ul id="OrgFees" class="sort">
 	      @{ var listname = Html.NameFor2(m => m.OrgFees.list); }
@@ -60,7 +72,15 @@
       </ul>
     <div class="newitem"><a href="/Organization/NewOrgFee/@listname"><img src="/images/plus1.png" /> Add Item</a></div>
   </li>
-  <li><span class="keyword big tip" title="ExtraValueFeeName
+<li><span class="keyword big tip" title="OtherFeesAddedToOrgFee
+    |Indicate whether the special fees for orgs includes 
+    |Other Fees on the Questions tab.">
+        Other Fees are Additional:</span> @Html.CheckBox("OtherFeesAddedToOrgFee", Model.OtherFeesAddedToOrgFee)
+</li>
+@if (DbUtil.Db.Setting("ShowExtraValueFeeName", "false").ToBool())
+{
+    <li><span class="keyword big tip" title="ExtraValueFeeName
     |The fee will be taken from this Extra Value field">
-    ExtraValueFeeName:</span> @Html.TextBox("ExtraValueFeeName", Model.ExtraValueFeeName)
-  </li>
+            ExtraValueFeeName:</span> @Html.TextBox("ExtraValueFeeName", Model.ExtraValueFeeName)
+    </li>
+}

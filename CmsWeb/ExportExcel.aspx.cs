@@ -49,7 +49,7 @@ namespace CmsWeb
                 r.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
             }
             r.Write(header);
-            var ctl = new CMSPresenter.MailingController();
+            var ctl = new MailingController();
             var useTitles = Request.QueryString["titles"];
             ctl.UseTitles = useTitles == "true";
             var dg = new DataGrid();
@@ -126,7 +126,7 @@ namespace CmsWeb
                     dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;
                 case "Organization":
-                    dg.DataSource = ExportInvolvements.OrgMemberList(qid.Value, maxExcelRows);
+                    dg.DataSource = ExportInvolvements.OrgMemberList(qid.Value);
                     dg.DataBind();
                     dg.RenderControl(new HtmlTextWriter(r.Output));
                     break;

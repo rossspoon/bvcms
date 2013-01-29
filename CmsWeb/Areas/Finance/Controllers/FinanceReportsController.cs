@@ -30,6 +30,17 @@ namespace CmsWeb.Areas.Finance.Controllers
             return new ContributionStatementResult { PeopleId = id, FromDate = FromDate, ToDate = ToDate, typ = typ };
         }
 		[HttpGet]
+        public ActionResult DonorTotalsByRange()
+		{
+			var m = new TotalsByFundModel();
+            return View(m);
+        }
+		[HttpPost]
+        public ActionResult DonorTotalsByRangeResults(TotalsByFundModel m)
+        {
+            return View(m);
+        }
+		[HttpGet]
         public ActionResult TotalsByFund()
 		{
 			var m = new TotalsByFundModel();
@@ -60,7 +71,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 		{ 
 			var m = new ManageGivingModel(id);
 			m.testing = true;
-			var body = CmsController.RenderPartialViewToString(this, "ManageGiving2", m);
+			var body = ViewExtensions2.RenderPartialViewToString(this, "ManageGiving2", m);
 			return Content(body);
 		}
 

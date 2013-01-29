@@ -1072,7 +1072,7 @@ namespace CmsData
 			d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
 			var q = from b in Db.BundleHeaders
 					where b.BundleHeaderTypeId == typecode
-					where b.BundleStatusId == CmsData.Codes.BundleStatusCode.Open
+					where b.BundleStatusId == BundleStatusCode.Open
 					where b.ContributionDate >= d
 					where b.ContributionDate < Util.Now
 					orderby b.ContributionDate descending
@@ -1088,7 +1088,7 @@ namespace CmsData
 					ContributionDate = d,
 					CreatedDate = DateTime.Now,
 					DepositDate = DateTime.Now,
-					FundId = DbUtil.Db.Setting("DefaultFundId", "1").ToInt(),
+					FundId = Db.Setting("DefaultFundId", "1").ToInt(),
 					RecordStatus = false,
 					TotalCash = 0,
 					TotalChecks = 0,
@@ -1132,7 +1132,6 @@ namespace CmsData
 				ContributionDate = bd.CreatedDate,
 				ContributionAmount = Amt,
 				ContributionStatusId = 0,
-				PledgeFlag = pledge,
 				ContributionTypeId = typid,
 				ContributionDesc = Description,
 			};

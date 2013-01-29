@@ -32,4 +32,5 @@
     $("#NewSearch").click(function () {
         form.reset();
     });
+    $('.tip').tooltip({ showBody: "|" });
 });

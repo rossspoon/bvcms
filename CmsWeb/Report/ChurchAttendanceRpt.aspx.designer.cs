@@ -22,15 +22,6 @@ namespace CmsWeb.Reports {
         protected global::System.Web.UI.WebControls.TextBox SundayDate;
         
         /// <summary>
-        /// SundayDateExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.CalendarExtender SundayDateExtender;
-        
-        /// <summary>
         /// Decisions control.
         /// </summary>
         /// <remarks>

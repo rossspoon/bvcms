@@ -41,6 +41,8 @@ namespace CmsWeb
 					case "AskSuggestedFee": return new AskSuggestedFee();
 					case "AskSize": return new AskSize();
 					case "AskRequest": return new AskRequest();
+					case "AskHeader": return new AskHeader();
+					case "AskInstruction": return new AskInstruction();
 					case "AskTickets": return new AskTickets();
 					case "AskYesNoQuestions": return new AskYesNoQuestions();
 					case "AskExtraQuestions": return new AskExtraQuestions();

@@ -233,13 +233,15 @@ namespace CmsData
 		
 		private string _Name;
 		
-		private string _Name2;
-		
 		private string _PreferredName;
 		
 		private string _PrimaryCountry;
 		
 		private byte _ReceiveSMS;
+		
+		private string _Name2;
+		
+		private bool? _DoNotPublishPhones;
 		
    		
    		private EntitySet< Contactee> _contactsHad;
@@ -696,9 +698,6 @@ namespace CmsData
 		partial void OnNameChanging(string value);
 		partial void OnNameChanged();
 		
-		partial void OnName2Changing(string value);
-		partial void OnName2Changed();
-		
 		partial void OnPreferredNameChanging(string value);
 		partial void OnPreferredNameChanged();
 		
@@ -707,6 +706,12 @@ namespace CmsData
 		
 		partial void OnReceiveSMSChanging(byte value);
 		partial void OnReceiveSMSChanged();
+		
+		partial void OnName2Changing(string value);
+		partial void OnName2Changed();
+		
+		partial void OnDoNotPublishPhonesChanging(bool? value);
+		partial void OnDoNotPublishPhonesChanged();
 		
     #endregion
 		public Person()
@@ -3280,28 +3285,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(127)", IsDbGenerated=true)]
-		public string Name2
-		{
-			get { return this._Name2; }
-
-			set
-			{
-				if (this._Name2 != value)
-				{
-				
-                    this.OnName2Changing(value);
-					this.SendPropertyChanging();
-					this._Name2 = value;
-					this.SendPropertyChanged("Name2");
-					this.OnName2Changed();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(25)", IsDbGenerated=true)]
 		public string PreferredName
 		{
@@ -3361,6 +3344,50 @@ namespace CmsData
 					this._ReceiveSMS = value;
 					this.SendPropertyChanged("ReceiveSMS");
 					this.OnReceiveSMSChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Name2", UpdateCheck=UpdateCheck.Never, Storage="_Name2", DbType="varchar(139)", IsDbGenerated=true)]
+		public string Name2
+		{
+			get { return this._Name2; }
+
+			set
+			{
+				if (this._Name2 != value)
+				{
+				
+                    this.OnName2Changing(value);
+					this.SendPropertyChanging();
+					this._Name2 = value;
+					this.SendPropertyChanged("Name2");
+					this.OnName2Changed();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="DoNotPublishPhones", UpdateCheck=UpdateCheck.Never, Storage="_DoNotPublishPhones", DbType="bit")]
+		public bool? DoNotPublishPhones
+		{
+			get { return this._DoNotPublishPhones; }
+
+			set
+			{
+				if (this._DoNotPublishPhones != value)
+				{
+				
+                    this.OnDoNotPublishPhonesChanging(value);
+					this.SendPropertyChanging();
+					this._DoNotPublishPhones = value;
+					this.SendPropertyChanged("DoNotPublishPhones");
+					this.OnDoNotPublishPhonesChanged();
 				}
 
 			}

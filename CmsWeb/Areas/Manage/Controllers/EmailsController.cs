@@ -33,13 +33,18 @@ namespace CmsWeb.Areas.Manage.Controllers
 		public ActionResult Details(int id, string filter)
 		{
 			var m = new EmailModel { id = id, filter = filter ?? "All" };
-			if (User.IsInRole("Admin") || User.IsInRole("ManageEmails"))
-				return View(m);
-			var u = DbUtil.Db.LoadPersonById(Util.UserPeopleId.Value);
-			if (m.queue.FromAddr != u.EmailAddress
-					&& !m.queue.EmailQueueTos.Any(et => et.PeopleId == u.PeopleId))
-				return Content("not authorized");
-			return View(m);
+		    if (m.queue == null)
+		        return Content("no email found");
+			var curruser = DbUtil.Db.LoadPersonById(Util.UserPeopleId ?? 0);
+            if (curruser == null)
+    			return Content("no user");
+            if (User.IsInRole("Admin") 
+                || User.IsInRole("ManageEmails")
+                || m.queue.FromAddr == curruser.EmailAddress 
+                || m.queue.QueuedBy == curruser.PeopleId
+                || m.queue.EmailQueueTos.Any(et => et.PeopleId == curruser.PeopleId))
+    			return View(m);
+			return Content("not authorized");
 		}
 
 		[Authorize(Roles = "Admin, ManageEmails")]
@@ -53,12 +58,39 @@ namespace CmsWeb.Areas.Manage.Controllers
 						 where e.Id == id
 						 select e).Single();
 			var m = new EmailModel { id = id };
-			if (!m.CanDelete())
+            if (m.queue.Sent.HasValue || !m.queue.SendWhen.HasValue || !m.CanDelete())
 				return Redirect("/");
 			DbUtil.Db.EmailQueueTos.DeleteAllOnSubmit(email.EmailQueueTos);
 			DbUtil.Db.EmailQueues.DeleteOnSubmit(email);
 			DbUtil.Db.SubmitChanges();
 			return Redirect("/Manage/Emails");
+		}
+		[Authorize(Roles = "Admin")]
+		public ActionResult Delete(int id)
+		{
+			var email = (from e in DbUtil.Db.EmailQueues
+						 where e.Id == id
+						 select e).Single();
+			var m = new EmailModel { id = id };
+            if (!m.CanDelete())
+				return Redirect("/");
+            DbUtil.Db.EmailResponses.DeleteAllOnSubmit(email.EmailResponses);
+			DbUtil.Db.EmailQueueTos.DeleteAllOnSubmit(email.EmailQueueTos);
+			DbUtil.Db.EmailQueues.DeleteOnSubmit(email);
+			DbUtil.Db.SubmitChanges();
+			return Redirect("/Manage/Emails");
+		}
+		public ActionResult Resend(int id)
+		{
+			var email = (from e in DbUtil.Db.EmailQueues
+						 where e.Id == id
+						 select e).Single();
+		    var et = email.EmailQueueTos.First();
+		    var p = DbUtil.Db.LoadPersonById(et.PeopleId);
+			DbUtil.Db.Email(email.FromAddr, p, email.Subject, email.Body);
+
+		    TempData["message"] = "Mail Resent";
+			return RedirectToAction("Details", new { id = id });
 		}
 		public ActionResult MakePublic(int id)
 		{
@@ -179,11 +211,12 @@ namespace CmsWeb.Areas.Manage.Controllers
 
 	public class EmailsViewController : CmsControllerNoHttps
 	{
-		public ActionResult View(int id)
+		public ActionResult View(string id)
 		{
-			var email = DbUtil.Db.EmailQueues.SingleOrDefault(ee => ee.Id == id);
+		    var iid = id.ToInt();
+			var email = DbUtil.Db.EmailQueues.SingleOrDefault(ee => ee.Id == iid);
 			if (email == null)
-				return Content("document not found, sorry");
+				return Content("email document not found");
 			if ((email.PublicX ?? false) == false)
 				return Content("no email available");
 			var em = new EmailQueue

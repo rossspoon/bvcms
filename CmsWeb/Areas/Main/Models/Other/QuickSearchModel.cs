@@ -15,7 +15,6 @@ using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using System.Web.UI.WebControls;
 using System.Transactions;
-using CMSPresenter;
 using System.Text.RegularExpressions;
 
 namespace CmsWeb.Models
@@ -26,7 +25,7 @@ namespace CmsWeb.Models
 		public string text { get; set; }
 		private CMSDataContext Db;
 
-		public List<PersonInfo> people;
+		public List<MailingController.PersonInfo> people;
 		public List<OrgSearchModel.OrganizationInfo> orgs;
 		string First, Last;
 
@@ -39,7 +38,7 @@ namespace CmsWeb.Models
 			orgs = Orglist().ToList();
 		}
 
-		private IEnumerable<PersonInfo> PeopleList()
+		private IEnumerable<MailingController.PersonInfo> PeopleList()
 		{
 			var qp = DbUtil.Db.People.AsQueryable();
 			if (Util2.OrgMembersOnly)
@@ -128,10 +127,10 @@ namespace CmsWeb.Models
 			else
 				Last = a[0];
 		}
-        private IEnumerable<PersonInfo> PeopleList(IQueryable<Person> query)
+        private IEnumerable<MailingController.PersonInfo> PeopleList(IQueryable<Person> query)
         {
             var q = from p in query
-                    select new PersonInfo
+                    select new MailingController.PersonInfo
                     {
                         PeopleId = p.PeopleId,
                         Name = p.Name,

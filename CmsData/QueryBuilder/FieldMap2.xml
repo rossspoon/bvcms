@@ -207,6 +207,9 @@
     <Field Name="DoNotMailFlag" Title="Do Not Mail" Type="Bit" DataValueField="IdCode">
       Person has asked to be removed from mailing list or we do not have a correct address for them.
     </Field>
+    <Field Name="DoNotPublishPhones" Title="Do Not Publish Phones" Type="Bit" DataValueField="IdCode">
+      Person has asked to not display phones on directories
+    </Field>
     <Field Name="PrimaryBadAddrFlag" Title="Bad Address Flag" Type="Bit" DataValueField="IdCode">
       Address is flagged as invalid
     </Field>
@@ -291,6 +294,9 @@
     <Field Name="ContributionOptionsId" Title="Contribution Options" Type="Code" DataSource="EnvelopeOptions" DataValueField="IdCode">
       Contribution Options
     </Field>
+    <Field Name="HasMemberDocs" Title="Has Membership Documents" Type="Bit" DataValueField="IdCode">
+      Indicates Membership Documents have been uploaded 
+    </Field>
   </Category>
   <Category Title="Enrollments">
     <Field Name="InBFClass" Title="In Bible Fellowship" Type="Bit" DataValueField="IdCode">
@@ -371,6 +377,12 @@
     </Field>
     <Field Name="PreviousCurrentOrg" Title="Previous Member in Current Organization" Type="Bit" DataValueField="IdCode">
       Selects everyone who was a previous member (but not currently a member) of the last organization you worked with. (used internally, but you can too if it will help you)
+    </Field>
+    <Field Name="LeadersUnderCurrentOrg" Title="Leaders under current org" Type="Bit" DataValueField="IdCode">
+      People that are a leader of an organization  in this org or in a child org of the current organization
+    </Field>
+    <Field Name="MembersUnderCurrentOrg" Title="Members under current org" Type="Bit" DataValueField="IdCode">
+      People that are a Member of an organization  in this org or in a child org of the current organization
     </Field>
   </Category>
   <Category Title="Attendance">
@@ -533,6 +545,9 @@
     </Field>
     <Field Name="PeopleIds" Title="HasOneOfPeopleIds" Type="StringEqual" >
       People with one of these PeopleIds
+    </Field>
+    <Field Name="ActiveRecords" Title="Active Records" Type="Bit" DisplayAs="ActiveRecords" DataValueField="IdCode">
+      Active Record
     </Field>
   </Category>
 </Fields>

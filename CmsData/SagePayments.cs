@@ -283,7 +283,7 @@ namespace CmsData
 		}
 		public TransactionResponse createCheckTransactionRequest(int PeopleId, decimal amt,
 			string routing, string acct, string description, int tranid,
-			string email, string first, string last, string middle,
+			string email, string first, string middle, string last, string suffix,
 			string addr, string city, string state, string zip, string phone)
 		{
 			try
@@ -296,10 +296,9 @@ namespace CmsData
 				coll["M_KEY"] = key;
 				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", ""); // 1031360711, 1031412710
 				coll["C_FIRST_NAME"] = first;
-				var mi = (middle ?? " ").PadRight(1, ' ').Substring(0, 1).Trim();
-				coll["C_MIDDLE_INITIAL"] = mi;
+			    coll["C_MIDDLE_INITIAL"] = middle.Truncate(1) ?? "";
 				coll["C_LAST_NAME"] = last;
-				coll["C_SUFFIX"] = last;
+				coll["C_SUFFIX"] = suffix;
 				coll["C_ADDRESS"] = addr;
 				coll["C_CITY"] = city;
 				coll["C_STATE"] = state;
@@ -354,20 +353,19 @@ namespace CmsData
 				var guid = pi.SageBankGuid.ToString().Replace("-", "");
 				coll["GUID"] = guid;
 				coll["C_ORIGINATOR_ID"] = Db.Setting("SageOriginatorId", "");
-				coll["C_FIRST_NAME"] = p.FirstName;
-				var mi = (p.MiddleName ?? " ").FirstOrDefault().ToString().Trim();
-				coll["C_MIDDLE_INITIAL"] = mi;
-				coll["C_LAST_NAME"] = p.LastName;
-				coll["C_SUFFIX"] = p.SuffixCode;
-				coll["C_ADDRESS"] = p.PrimaryAddress;
-				coll["C_CITY"] = p.PrimaryCity;
-				coll["C_STATE"] = p.PrimaryState;
-				coll["C_ZIP"] = p.PrimaryZip;
+				coll["C_FIRST_NAME"] = pi.FirstName ?? p.FirstName;
+			    coll["C_MIDDLE_INITIAL"] = (pi.MiddleInitial ?? p.MiddleName).Truncate(1) ?? "";
+				coll["C_LAST_NAME"] = pi.LastName ?? p.LastName;
+				coll["C_SUFFIX"] = pi.Suffix ?? p.SuffixCode;
+				coll["C_ADDRESS"] = pi.Address ?? p.PrimaryAddress;
+				coll["C_CITY"] = pi.City ?? p.PrimaryCity;
+				coll["C_STATE"] = pi.State ?? p.PrimaryState;
+				coll["C_ZIP"] = pi.Zip ?? p.PrimaryZip;
 				coll["C_COUNTRY"] = p.PrimaryCountry;
 				coll["C_EMAIL"] = p.EmailAddress;
 				coll["T_AMT"] = amt.ToString("n2");
 				coll["T_ORDERNUM"] = tranid.ToString();
-				coll["C_TELEPHONE"] = p.HomePhone;
+				coll["C_TELEPHONE"] = pi.Phone;
 				AddShipping(coll);
 
 				var b = wc.UploadValues("VIRTUAL_CHECK_PPD_SALE", "POST", coll);
@@ -384,17 +382,17 @@ namespace CmsData
 				coll["M_KEY"] = key;
 				var guid = pi.SageCardGuid.ToString().Replace("-", "");
 				coll["GUID"] = guid;
-				coll["C_NAME"] = p.FirstName + " " + p.LastName;
-				coll["C_ADDRESS"] = p.PrimaryAddress;
-				coll["C_CITY"] = p.PrimaryCity;
-				coll["C_STATE"] = p.PrimaryState;
-				coll["C_ZIP"] = p.PrimaryZip;
+                coll["C_NAME"] = (pi.FirstName ?? p.FirstName) + (pi.MiddleInitial ?? p.MiddleName).Truncate(1) + (p.LastName ?? pi.LastName);
+				coll["C_ADDRESS"] = pi.Address ?? p.PrimaryAddress;
+				coll["C_CITY"] = pi.City ?? p.PrimaryCity;
+				coll["C_STATE"] = pi.State ?? p.PrimaryState;
+				coll["C_ZIP"] = pi.Zip ?? p.PrimaryZip;
 				coll["C_COUNTRY"] = p.PrimaryCountry;
 				coll["C_EMAIL"] = p.EmailAddress;
 				coll["T_AMT"] = amt.ToString("n2");
 				coll["T_ORDERNUM"] = tranid.ToString();
 				coll["C_TELEPHONE"] = p.HomePhone;
-				coll["T_CUSTOMER_NUMBER"] = p.HomePhone;
+			    coll["T_CUSTOMER_NUMBER"] = p.PeopleId.ToString();
 				coll["C_CVV"] = pi.Ccv;
 				AddShipping(coll);
 

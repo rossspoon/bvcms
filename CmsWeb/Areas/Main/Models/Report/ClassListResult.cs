@@ -53,13 +53,13 @@ namespace CmsWeb.Areas.Main.Models.Report
             {
                 var t = StartPageSet(o);
 
-                var color = Color.BLACK;
+                var color = BaseColor.BLACK;
                 foreach (var m in RollsheetModel.FetchOrgMembers(o.OrgId, null))
                 {
-                    if (color == Color.WHITE)
+                    if (color == BaseColor.WHITE)
                         color = new GrayColor(240);
                     else
-                        color = Color.WHITE;
+                        color = BaseColor.WHITE;
                     AddRow(t, m,  color);
                     haddata = true;
                 }
@@ -97,7 +97,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             return t;
         }
 
-        private void AddRow(PdfPTable t, RollsheetModel.PersonMemberInfo p, Color color)
+        private void AddRow(PdfPTable t, RollsheetModel.PersonMemberInfo p, BaseColor color)
         {
             t.DefaultCell.BackgroundColor = color;
 

@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Models.TotalsByFundModel
+@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @using CmsData
@@ -16,29 +17,33 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/TotalsByFund.js")
+@Scripts.Render("~/bundles/single/TotalsByFund-js")
 }
 
-<h1>Totals By Fund</h1>
-<form id="totals">
-Campus: @Html.DropDownList("CampusId", Model.Campuses())
-Start Date: @Html.TextBox("Dt1", Model.Dt1.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
-End Date: @Html.TextBox("Dt2", Model.Dt2.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
-<div style="color: Red">@Html.ValidationMessage("dates")</div>
-Non Tax Deductible:@Html.CheckBox("NonTaxDeductible")
-Pledges:@Html.CheckBox("Pledges")
-Include Unclosed Bundles:@Html.CheckBox("IncUnclosedBundles")
-	<p>
-		<input id="run" type="submit" value="Run Report" class="bt" />
-		<input id="export" type="submit" value="Export Contributions" class="bt" />
-		<input id="exporttotals" type="submit" value="Export Contribution Totals" class="bt" />
-		@if (qbh.hasActiveConnection())
-        {
-	 	    <input id="toquickbooks" type="submit" value="To QuickBooks" class="bt" />
-		}
-	</p>
-    <hr />
-</form>
+<div class="roundbox floatleft">
+    <h2>Totals By Fund</h2>
+    <form id="totals">
+        Campus: @Html.DropDownList("CampusId", Model.Campuses())
+        Start Date: @Html.TextBox("Dt1", Model.Dt1.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
+        End Date: @Html.TextBox("Dt2", Model.Dt2.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
+        <div style="color: Red">@Html.ValidationMessage("dates")</div>
+        Non Tax Deductible:@Html.CheckBox("NonTaxDeductible")
+        Pledges:@Html.CheckBox("Pledges")
+        Include Unclosed Bundles:@Html.CheckBox("IncUnclosedBundles")
+        <p>
+            <input id="run" type="submit" value="Run Report" class="bt" />
+            <input id="exportdonordetails" type="submit" value="Export Donor Details" class="bt" />
+            <input id="exportdonorfundtotals" type="submit" value="Export Donor Fund Totals" class="bt" />
+            <input id="exportdonortotals" type="submit" value="Export Donor Totals" class="bt" />
+            @if (qbh.hasActiveConnection())
+            {
+                <input id="toquickbooks" type="submit" value="To QuickBooks" class="bt" />
+            }
+        </p>
+        <hr />
+    </form>
+</div>
+<div style="clear: both"></div>
 <div id="results">
 	
 </div>

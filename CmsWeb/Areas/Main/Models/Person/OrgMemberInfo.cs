@@ -22,5 +22,6 @@ namespace CmsWeb.Models
         public Decimal? AttendPct { get; set; }
         public string DivisionName { get; set; }
     	public string OrgType { get; set; }
+    	public string HasDirectory { get; set; }
     }
 }

@@ -124,7 +124,7 @@
                         Text='<%# Eval("ContributionDate", "{0:d}") %>' />
                 </td>
                 <td align="right">
-                    <asp:HyperLink ID="HyperLink1" Enabled='<%# (int)Eval("BundleId") > 0 %>' NavigateUrl='<%# Eval("BundleId", "~/Contributions/Bundle.aspx?id={0}") %>'
+                    <asp:HyperLink ID="HyperLink1" Enabled='<%# (int)Eval("BundleId") > 0 %>' NavigateUrl='<%# Eval("BundleId", "/Bundle/Index/{0}") %>'
                         Text='<%# Eval("ContributionAmount", "{0:n2}") %>' runat="server"></asp:HyperLink>
                 </td>
                 <td>
@@ -161,7 +161,7 @@
         </Fields>
     </asp:DataPager>
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="FetchContributions" SortParameterName="sortExpression" TypeName="CMSPresenter.BundleController"
+        SelectMethod="FetchContributions" SortParameterName="sortExpression" TypeName="CmsWeb.Models.BundleModel"
         EnablePaging="True" SelectCountMethod="CountContributions">
         <SelectParameters>
             <asp:Parameter Name="startRowIndex" Type="Int32" />
@@ -179,19 +179,19 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="StatusesODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="ContributionStatuses" TypeName="CMSPresenter.CodeValueController">
+        SelectMethod="ContributionStatuses" TypeName="CmsWeb.Models.CodeValueModel">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="TypesODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="ContributionTypes" TypeName="CMSPresenter.CodeValueController">
+        SelectMethod="ContributionTypes" TypeName="CmsWeb.Models.CodeValueModel">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="FundsODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="Funds" TypeName="CMSPresenter.BundleController">
+        SelectMethod="Funds" TypeName="CmsWeb.Models.BundleModel">
         <SelectParameters>
             <asp:QueryStringParameter Name="PeopleId" QueryStringField="id" Type="Int32" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="YearsODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="Years" TypeName="CMSPresenter.BundleController">
+        SelectMethod="Years" TypeName="CmsWeb.Models.BundleModel">
         <SelectParameters>
             <asp:QueryStringParameter Name="PeopleId" QueryStringField="id" Type="Int32" />
         </SelectParameters>

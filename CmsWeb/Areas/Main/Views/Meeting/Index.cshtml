@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.MeetingModel
 @{
@@ -25,8 +26,7 @@
 
 @section scripts
 {
-@*@Html.Script("/Content/js/jquery.sortElements.js")*@
-@Html.Script("/Scripts/meeting.js")
+@Scripts.Render("~/bundles/single/meeting-js")
     @if (!Model.meeting.GroupMeetingFlag)
     {
     <script type="text/javascript">
@@ -138,20 +138,25 @@ This will allow you to mark them as members.
     </td>
     <td rowspan="2" style="width:2em"></td>
     <td valign="top" style="min-height:12em">
-        <div id="buttondiv" class="dropdown" style="font-size:1.2em;margin-top:2em;">
+        <div id="buttondiv" class="extrabar" style="font-size:1.2em;margin-top:2em;">
             <a href="#" class="trigger-dropdown">
                 Other Management <img src="/images/dnarrow.png" />
             </a>
             <div class="dropdown-menu has-tip">
                 <ul>
+                    @if (Model.meeting.MeetingDate >= DateTime.Today)
+                    {
+                        <li><a id="rollsheet" href="#">Rollsheet Report</a></li>
+                    }
                     <li><a href="/Reports/PastAttendee/@Model.meeting.OrganizationId" target="_blank">Recent Attendance Report</a></li>
                     <li><a href="/Reports/Attendee/@Model.meeting.MeetingId" target="_blank">Attendee Report</a></li>
                     <li><a href="/Reports/VisitsAbsents/@Model.meeting.MeetingId" target="_blank">Visits/Absents Report</a></li>
+                    <li><a href="/Reports/VisitsAbsents2/@Model.meeting.MeetingId" target="_blank">Visits/Absents Contact Report</a></li>
                     <li><a href="/Meeting/AttendanceByGroups/@Model.meeting.MeetingId" target="_blank">AttendanceByGroups</a></li>
                     <li><a href="/Meeting/iPad/@Model.meeting.MeetingId">iPad Attendance</a></li>
                     <li><a href="/Meeting/tickets/@Model.meeting.MeetingId">Ticketing Attendance</a></li>
                     <li><a href="/AddAttendeesFromTag/Index/@Model.meeting.MeetingId" class="addfromtag">Add Attendees From Tag</a></li>
-                    <li class="label">Convert to Search</li>
+                    <li class="header"><span>Convert to Search</span></li>
                     <li><a href="/Meeting/QueryAttendees/@Model.meeting.MeetingId">Attendees</a></li>
                     <li><a href="/Meeting/QueryVisitors/@Model.meeting.MeetingId">Visitors</a></li>
                     <li><a href="/Meeting/QueryAbsents/@Model.meeting.MeetingId">Absents</a></li>
@@ -231,8 +236,14 @@ This will allow you to mark them as members.
 </div>
 
 <table id="newvalueform" class="grid roundbox" style="display:none">
-<tr><td colspan="2"><h2>New Extra Value</h2></td></tr>
-<tr><td>MultiLine:</td><td>@Html.CheckBox("multiline")</td></tr>
-<tr><td>Field:</td><td>@Html.TextBox("fieldname")</td></tr>
-<tr><td>Value:</td><td>@Html.TextBox("fieldvalue")</td></tr>
+    <tr><td colspan="2"><h2>New Extra Value</h2></td></tr>
+    <tr><td>MultiLine:</td><td>@Html.CheckBox("multiline")</td></tr>
+    <tr><td>Field:</td><td>@Html.TextBox("fieldname")</td></tr>
+    <tr><td>Value:</td><td>@Html.TextBox("fieldvalue")</td></tr>
+</table>
+
+<table id="rollsheetoptions" class="grid roundbox" style="display:none">
+<tr><td colspan="2"><h2>Rollsheet Report</h2></td></tr>
+<tr><td>By Group:</td><td>@Html.CheckBox("bygroup")</td></tr>
+<tr><td>SmallGroup Prefix (optional):</td><td>@Html.TextBox("sgprefix")</td></tr>
 </table>

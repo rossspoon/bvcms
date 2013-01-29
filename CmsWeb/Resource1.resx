@@ -121,4 +121,92 @@
   <data name="APITestPlan" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>areas\public\controllers\apitestplan.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
   </data>
+  <data name="VolunteerRequestModel_ComposeMessage_Body" xml:space="preserve">
+    <value>
+&lt;p&gt;Hi {first},&lt;/p&gt;
+&lt;p&gt;We need additional volunteers for {org}&lt;br&gt;
+on {meetingdate} at {meetingtime}&lt;/p&gt;
+
+&lt;p&gt;DO NOT REPLY. Instead, click one of the links below.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;{yeslink}&lt;/p&gt;
+&lt;p&gt;{nolink}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+Thank you for your consideration,&lt;br /&gt;
+{sendername}
+&lt;/p&gt;</value>
+  </data>
+  <data name="VolSubModel_ComposeMessage_Body" xml:space="preserve">
+    <value>&lt;p&gt;Hi {first},&lt;/p&gt;
+
+&lt;p&gt;I need a substitute for {org}&lt;br&gt;
+
+on {meetingdate} at {meetingtime}&lt;/p&gt;
+
+&lt;p&gt;DO NOT REPLY. Instead, click one of the links below.&lt;/p&gt;
+&lt;blockquote&gt;
+
+&lt;p&gt;{yeslink}&lt;/p&gt;
+
+&lt;p&gt;{nolink}&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+&lt;p&gt;
+Thank you for your consideration,&lt;br /&gt;
+
+{sendername}
+&lt;/p&gt;</value>
+  </data>
+  <data name="AccountModel_ForgotPasswordReset" xml:space="preserve">
+    <value>&lt;p&gt;Someone recently requested a new password for this email address {email}.
+To set your password, click the link below:&lt;/p&gt;
+&lt;blockquote&gt;&lt;a href="{resetlink}"&gt;New Password&lt;/a&gt;&lt;/blockquote&gt;
+&lt;p&gt;If this is a mistake, please disregard this message, your password will not be changed.&lt;/p&gt;
+&lt;p&gt;Thanks,&lt;br /&gt;
+The BVCMS Team&lt;/p&gt;
+</value>
+  </data>
+  <data name="AccountModel_ForgotPasswordBadEmail" xml:space="preserve">
+    <value>&lt;p&gt;Someone recently requested a new password for this email address {email}.  
+However, we could not find an account associated with this email address.
+You may try a different email address, or contact the church.&lt;/p&gt;
+&lt;p&gt;If this is a mistake, please disregard this message, your password will not be changed.&lt;/p&gt;
+&lt;p&gt;Thanks,&lt;br /&gt;
+The BVCMS Team&lt;/p&gt;
+</value>
+  </data>
+  <data name="AccountModel_ForgotPasswordReset2" xml:space="preserve">
+    <value>&lt;p&gt;Someone recently requested a new password for {email}.
+To set your password, click your username below:&lt;/p&gt;
+&lt;blockquote&gt;{resetlink}&lt;/blockquote&gt;
+&lt;p&gt;If this is a mistake, please disregard this message, your password will not be changed.&lt;/p&gt;
+&lt;p&gt;Thanks,&lt;br /&gt;
+The BVCMS Team&lt;/p&gt;
+</value>
+  </data>
+  <data name="AccountModel_NewUserWelcome" xml:space="preserve">
+    <value>Hi {name},
+&lt;p&gt;You have a new account on our Church Management System. 
+Click on your username below to set your password and login to the system.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h3&gt;Your username is: &lt;b&gt;&lt;a href="{link}"&gt;{username}&lt;/a&gt;&lt;/h3&gt;
+&lt;/blockquote&gt;</value>
+  </data>
+  <data name="ContributionStatementHeader" xml:space="preserve">
+    <value>&lt;h1&gt;Sample Church&lt;/h1&gt;
+&lt;h2&gt;2000 Appling Rd. | Cordova | TN 38088-1210 | (901) 347-2000&lt;/h2&gt;</value>
+  </data>
+  <data name="ContributionStatementNotice" xml:space="preserve">
+    <value>&lt;p&gt;&lt;i&gt;
+NOTE: No goods or services were provided to you by the church in connection with any contibution;
+any value received consisted entirely of intangible religious benefits.
+Sample Church, FEIN # 1234, is a 501(c)(3) organization and
+qualifies as a part of the Southern Baptist Convention's group tax exemption ruling number GEN #1674.
+&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;
+Thank you for your faithfulness in the giving of your time, talents, and resources. Together we can share the love of Jesus with our city.
+&lt;/i&gt;&lt;/p&gt;</value>
+  </data>
 </root>

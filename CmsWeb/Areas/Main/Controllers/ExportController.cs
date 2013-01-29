@@ -34,8 +34,9 @@ namespace CmsWeb.Areas.Main.Controllers
             return new FreshBooksResult(id);
         }
         [Authorize(Roles="Finance")]
-        public ActionResult Contributions(ContributionsExcelResult m)
+        public ActionResult Contributions(string id, ContributionsExcelResult m)
         {
+            m.type = id;
         	return m;
         }
         public ActionResult RedeemerCampus()

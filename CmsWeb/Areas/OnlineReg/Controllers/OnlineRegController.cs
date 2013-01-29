@@ -6,6 +6,7 @@ using System.Web.Security;
 using CmsData;
 using CmsData.Registration;
 using CmsWeb.Models;
+using Elmah;
 using UtilityExtensions;
 using System.Text;
 using System.Collections.Generic;
@@ -28,6 +29,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		// Main page
 		public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login, string registertag, bool? showfamily)
 		{
+#if DEBUG
+            var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(mm => mm.OrganizationId == 89469 && mm.PeopleId == 828612);
+            if (om != null)
+            {
+    		    om.Drop(DbUtil.Db, false);
+                DbUtil.Db.SubmitChanges();
+            }
+#endif
 			Util.NoCache(Response);
 			if (!id.HasValue && !div.HasValue)
 				return Content("no organization");
@@ -132,7 +141,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					TempData["mp"] = m.UserPeopleId;
 					return Redirect("/OnlineReg/ManagePledge/{0}".Fmt(m.orgid));
 				}
-				if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+				if (m.org != null && m.org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
 				{
 					TempData["ps"] = m.UserPeopleId;
 					return Redirect("/OnlineReg/ManageVolunteer/{0}".Fmt(m.orgid));
@@ -303,6 +312,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					p.zip = "38018";
 					p.gender = 1;
 					p.married = 10;
+					p.homephone = "9017581862";
 #endif
 					break;
 			}
@@ -316,6 +326,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				return View("Flow/List", m);
 			DbUtil.Db.SetNoLock();
 			var p = m.List[id];
+		    if (p.IsValidForNew)
+    			return ErrorResult(m, "Unexpected onlinereg state: IsValidForNew is true and in PersonFind", "PersonFind, unexpected state");
+
 			if (p.classid.HasValue)
 			{
 				m.orgid = p.classid;
@@ -346,7 +359,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			return View("Flow/List", m);
 		}
-		// Set suggested giving fee for an indidividual person
+
+	    private ActionResult ErrorResult(OnlineRegModel m, string errorMessage, string errorDisplay)
+	    {
+	        var d = new ExtraDatum {Stamp = Util.Now};
+	        d.Data = Util.Serialize<OnlineRegModel>(m);
+	        DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
+	        DbUtil.Db.SubmitChanges();
+	        var ex = new Exception(errorMessage + ", datum: " + d.Id);
+	        ErrorSignal.FromCurrentContext().Raise(ex);
+	        TempData["error"] = errorDisplay;
+	        return Content("/Error/");
+	    }
+
+	    // Set suggested giving fee for an indidividual person
 		private static void CheckSetFee(OnlineRegModel m, OnlineRegPersonModel p)
 		{
 			if (m.OnlineGiving() && p.setting.ExtraValueFeeName.HasValue())
@@ -488,16 +514,19 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			if (m.List.Count == 0)
 				return Content("Can't find any registrants");
-			DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, m.NameOnAccount));
+
 			if (!m.last.IsNew && !m.last.Found == true)
+				m.List.Remove(m.last);
+            if (!(m.last.IsValidForNew || m.last.IsValidForExisting))
 				m.List.Remove(m.last);
 
 			var d = new ExtraDatum { Stamp = Util.Now };
 			d.Data = Util.Serialize<OnlineRegModel>(m);
 			DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
 			DbUtil.Db.SubmitChanges();
+			DbUtil.LogActivity("Online Registration: {0} ({1})".Fmt(m.Header, d.Id));
 
-			if (m.Amount() == 0 && (m.donation ?? 0) == 0 && !m.Terms.HasValue())
+			if (m.PayAmount() == 0 && (m.donation ?? 0) == 0 && !m.Terms.HasValue())
 				return RedirectToAction("Confirm",
 					new
 					{
@@ -510,7 +539,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				ViewData["Terms"] = terms;
 
 			SetHeaders(m);
-			if (m.Amount() == 0 && m.Terms.HasValue())
+			if (m.PayAmount() == 0 && m.Terms.HasValue())
 			{
 				return View("Terms", new PaymentModel
 					{

@@ -274,6 +274,8 @@ namespace CmsData.Registration
 			AskCoaching,
 			AskGrade,
 			AskDonation,
+            AskHeader,
+            AskInstruction,
 			DonationLabel,
 			ExtraValueFeeName,
 			DonationFundId,
@@ -307,6 +309,7 @@ namespace CmsData.Registration
 			Checkboxes2,
 			Minimum,
 			Maximum,
+			Columns,
 			Items,
 			Subject,
 			Body,
@@ -328,8 +331,12 @@ namespace CmsData.Registration
 			AskSize,
 			Sizes,
 			AllowLastYear,
+            OtherFeesAddedToOrgFee,
+		    ApplyMaxToOtherFees,
+            IncludeOtherFeesWithDeposit,
 
 
+            OtherFeesAdded,
 			AskOptions,
 			AskMedical
 		}

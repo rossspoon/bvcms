@@ -87,9 +87,8 @@ $(function () {
     $('#Export').click(function (ev) {
         window.location = "QueryBuilder/Export/" + $("#QueryId").val();
     });
-    dialogOptions = {
+    var dialogOptions = {
         overlay: { background: "#000", opacity: 0.3 },
-        bgiframe: true,
         modal: true,
         autoOpen: false,
         closeOnEscape: true,
@@ -98,11 +97,11 @@ $(function () {
     $('#SaveQueryDiv').dialog(dialogOptions);
     $('#OpenQueryDiv').dialog(dialogOptions);
 
-    $('#ShowSaveQuery').click(function (ev) {
+    $('#ShowSaveQuery').live("click", function (ev) {
         $('#SaveQueryDesc').val($('#Description').text());
         $('#SaveQueryDiv').dialog("open");
     });
-    $('#ShowOpenQuery').click(function (ev) {
+    $('#ShowOpenQuery').live("click", function (ev) {
         $.post("/QueryBuilder/SavedQueries", null, function (ret) {
             $('#ExistingQueries').fillOptions(ret);
         });
@@ -124,6 +123,9 @@ $(function () {
         });
         return false;
     });
+    if ($("#AutoRun").val() == "True")
+        $("#Run").click();
+
 });
 function HighlightCondition() {
     $('#ConditionGrid li a').removeClass('SelectedRow');

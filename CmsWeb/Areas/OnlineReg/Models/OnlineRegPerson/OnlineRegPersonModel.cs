@@ -76,7 +76,7 @@ namespace CmsWeb.Models
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal? Suggestedfee { get; set; }
         public Dictionary<int, decimal?> FundItem { get; set; }
-        public Dictionary<string, string> ExtraQuestion { get; set; }
+        public List<Dictionary<string, string>> ExtraQuestion { get; set; }
         public Dictionary<string, bool?> YesNoQuestion { get; set; }
         public List<string> option { get; set; }
         public List<string> Checkbox { get; set; }
@@ -88,6 +88,7 @@ namespace CmsWeb.Models
             var x = XDocument.Parse(s);
             if (x.Root == null) return;
 
+            var eqset = 0;
             foreach (var e in x.Root.Elements())
             {
                 var name = e.Name.ToString();
@@ -102,10 +103,15 @@ namespace CmsWeb.Models
                         break;
                     case "ExtraQuestion":
                         if (ExtraQuestion == null)
-                            ExtraQuestion = new Dictionary<string, string>();
+                            ExtraQuestion = new List<Dictionary<string, string>>();
+                        var eqsetattr = e.Attribute("set");
+                        if(eqsetattr != null)
+                            eqset = eqsetattr.Value.ToInt();
+                        if (ExtraQuestion.Count == eqset)
+                            ExtraQuestion.Add(new Dictionary<string, string>());
                         var eq = e.Attribute("question");
                         if (eq != null)
-                            ExtraQuestion.Add(eq.Value, e.Value);
+                            ExtraQuestion[eqset].Add(eq.Value, e.Value);
                         break;
                     case "YesNoQuestion":
                         if (YesNoQuestion == null)
@@ -141,22 +147,15 @@ namespace CmsWeb.Models
 
         public void WriteXml(XmlWriter writer)
         {
+            var optionsAdded = false;
+            var checkoxesAdded = false;
+            var menuitemsAdded = false;
             var w = new APIWriter(writer);
             foreach (PropertyInfo pi in typeof(OnlineRegPersonModel).GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(vv => vv.CanRead && vv.CanWrite))
             {
                 switch (pi.Name)
                 {
-                    case "MenuItem":
-                        if (MenuItem != null)
-                            foreach (var kv in MenuItem)
-                            {
-                                w.Start("MenuItem");
-                                w.Attr("name", kv.Key);
-                                w.Attr("number", kv.Value);
-                                w.End();
-                            }
-                        break;
                     case "FundItem":
                         if (FundItem != null && FundItem.Count > 0)
                             foreach (var f in FundItem.Where(ff => ff.Value > 0))
@@ -168,14 +167,17 @@ namespace CmsWeb.Models
                             }
                         break;
                     case "ExtraQuestion":
-                        if (ExtraQuestion != null && ExtraQuestion.Count > 0)
-                            foreach (var q in ExtraQuestion)
-                            {
-                                w.Start("ExtraQuestion");
-                                w.Attr("question", q.Key);
-                                w.AddText(q.Value);
-                                w.End();
-                            }
+                        if(ExtraQuestion != null)
+                            for (var i = 0; i < ExtraQuestion.Count; i++)
+                                if (ExtraQuestion[i] != null && ExtraQuestion[i].Count > 0)
+                                    foreach (var q in ExtraQuestion[i])
+                                    {
+                                        w.Start("ExtraQuestion");
+                                        w.Attr("set", i);
+                                        w.Attr("question", q.Key);
+                                        w.AddText(q.Value);
+                                        w.End();
+                                    }
                         break;
                     case "YesNoQuestion":
                         if (YesNoQuestion != null && YesNoQuestion.Count > 0)
@@ -188,14 +190,27 @@ namespace CmsWeb.Models
                             }
                         break;
                     case "option":
-                        if (option != null && option.Count > 0)
+                        if (option != null && option.Count > 0 && !optionsAdded)
                             foreach(var o in option)
                                 w.Add("option", o);
+                        optionsAdded = true;
                         break;
                     case "Checkbox":
-                        if (Checkbox != null && Checkbox.Count > 0)
+                        if (Checkbox != null && Checkbox.Count > 0 && !checkoxesAdded)
                             foreach (var c in Checkbox)
                                 w.Add("Checkbox", c);
+                        checkoxesAdded = true;
+                        break;
+                    case "MenuItem":
+                        if (MenuItem != null && !menuitemsAdded)
+                            foreach (var kv in MenuItem)
+                            {
+                                w.Start("MenuItem");
+                                w.Attr("name", kv.Key);
+                                w.Attr("number", kv.Value);
+                                w.End();
+                            }
+                        menuitemsAdded = true;
                         break;
                     default:
                         w.Add(pi.Name, pi.GetValue(this, null));
@@ -206,8 +221,6 @@ namespace CmsWeb.Models
 
         public OnlineRegPersonModel()
         {
-            YesNoQuestion = new Dictionary<string, bool?>();
-            ExtraQuestion = new Dictionary<string, string>();
             YesNoQuestion = new Dictionary<string, bool?>();
             FundItem = new Dictionary<int, decimal?>();
             Parent = HttpContext.Current.Items["OnlineRegModel"] as OnlineRegModel;
@@ -220,6 +233,13 @@ namespace CmsWeb.Models
             if (ndd > 0 && option == null)
                 option = new string[ndd].ToList();
 
+            var neqsets = setting.AskItems.Count(aa => aa.Type == "AskExtraQuestions");
+            if (neqsets > 0 && ExtraQuestion == null)
+            {
+                ExtraQuestion = new List<Dictionary<string, string>>();
+                for(var i = 0; i < neqsets; i++)
+                    ExtraQuestion.Add(new Dictionary<string, string>());
+            }
             var nmi = setting.AskItems.Count(aa => aa.Type == "AskMenu");
             if (nmi > 0 && MenuItem == null)
                 MenuItem = new Dictionary<string, int?>();

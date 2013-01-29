@@ -11,7 +11,6 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 using System.Web.Mvc;
 using System.Collections.Generic;
@@ -106,14 +105,14 @@ namespace CmsWeb.Areas.Main.Models.Report
                 t.AddHeader("Visit/Member", boldfont);
                 mt.AddCell(t);
 
-                var color = Color.BLACK;
+                var color = BaseColor.BLACK;
                 bool? v = null;
                 foreach (var p in q)
                 {
-                    if (color == Color.WHITE)
+                    if (color == BaseColor.WHITE)
                         color = new GrayColor(240);
                     else
-                        color = Color.WHITE;
+                        color = BaseColor.WHITE;
 
                     t = new PdfPTable(widths);
                     t.SetNoBorder();

@@ -16,7 +16,7 @@ namespace CmsWeb.Areas.Public.Controllers
 		{
 			BaseReturn br = new BaseReturn();
 
-			if (CmsWeb.Models.AccountModel.Authenticate())
+			if (CmsWeb.Models.AccountModel.AuthenticateMobile())
             {
                 br.id = Util2.CurrentPeopleId;
                 return br;

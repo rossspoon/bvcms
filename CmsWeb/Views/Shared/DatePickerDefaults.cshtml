@@ -1,7 +1,11 @@
+@{
+    var newlook = DbUtil.Db.UserPreference("newlook", "false").ToBool();
+}
 <script type="text/javascript">
+    $.dateFormat = '@Util.jQueryDateFormat';
     $(function () {
         $.datepicker.setDefaults({
-            dateFormat: '@Util.jQueryDateFormat',
+            dateFormat: $.dateFormat,
             changeMonth: true,
             changeYear: true,
             yearRange: "1925:2015",
@@ -9,5 +13,9 @@
             buttonImage: "/images/calendar.gif",
             buttonImageOnly: true
         });
+    @if (newlook)
+    {
+        @:$("#SearchText").dropdownFocus();
+    }
     });
 </script>

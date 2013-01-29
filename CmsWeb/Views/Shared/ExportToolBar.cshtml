@@ -8,6 +8,11 @@
             <ul>
                 <li><a href='/Email/Index/@ViewData["queryid"]'> Individuals</a></li>
                 <li><a href='/Email/Index/@ViewData["queryid"]?parents=true'> Parents</a></li>
+@if ((bool?)ViewData["ParentOrgContext"] == true)
+{
+                <li><a href='/Email/Index/@ViewData["leadersqid"]'> Leaders under this org</a></li>
+                <li><a href='/Email/Index/@ViewData["membersqid"]'> Members under this org</a></li>
+}
             </ul>
         </div>
     </li>
@@ -33,10 +38,10 @@
             <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Library' title="For Atrium Library Import"> Excel Library</a></li>
             <li><a href='/Export/QueryBits/@ViewData["queryid"]' title="SearchBits in Columns"> Search Bits Export</a></li>
             <li><a href='/Export/ExtraValues/@ViewData["queryid"]' title="ExtraValues in Columns"> Extra Values Export</a></li>
-@if ((bool?)ViewData["OrganizationContext"] ?? false)
+@if ((bool?)ViewData["OrganizationContext"] == true)
 { 
             <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Organization' title="Includes Org Member info"> Member Export</a></li>
-     if ((bool?)ViewData["OrgMemberContext"] ?? false)
+     if ((bool?)ViewData["OrgMemberContext"] == true)
      { 
             <li><a href='/ExportExcel.aspx?format=Groups' title="Includes Org Member and Small Group columns"> Groups Export</a></li>
      } 
@@ -54,6 +59,7 @@
                 <li><a href='/Reports/Prospect/@ViewData["queryid"]' target="_blank"> Inreach/Outreach</a></li>
                 <li><a href='/Reports/Prospect/@ViewData["queryid"]?Form=true' target="_blank"> Inreach/Outreach with Form</a></li>
                 <li><a href='/Reports/Contacts/@ViewData["queryid"]' target="_blank" title="Report for Robo-calling Contacts"> Contact Report</a></li>
+                <li class="hideAlt"><a href='/Reports/Contacts/@ViewData["queryid"]?sortAddress=true' target="_blank">Contact Report (by addr)</a></li>
                 <li><a href='/Reports/WeeklyAttendance/@ViewData["queryid"]' target="_blank" title="General Attendance Stats"> Weekly Attend</a></li>
                 <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Involvement' target="_blank" title="Personal, Contact and Enrollment Info"> Involvement</a></li>
                 <li><a href='/Reports/Family/@ViewData["queryid"]' target="_blank"> Family Report</a></li>
@@ -61,7 +67,7 @@
                 <li><a href="/Reports/FamilyDirectory/@ViewData["queryid"]" target="_blank"> Family Directory</a></li>
                 <li><a href="/Reports/FamilyDirectoryCompact/@ViewData["queryid"]" target="_blank"> Compact Directory</a></li>
                 <li><a href='/Volunteers/Index/@ViewData["queryid"]' target="_blank"> Volunteer Report</a></li>
-            @if ((bool?)ViewData["OrganizationContext"] ?? false)
+            @if ((bool?)ViewData["OrganizationContext"] == true)
             { 
                 <li><a id="RollsheetLink" href='#' title="Rollsheet Report"> Rollsheet Report</a></li>
                 <li><a id="RallyRollsheetLink" href='#' title="Rally Rollsheet Report"> Rally Rollsheet</a></li>

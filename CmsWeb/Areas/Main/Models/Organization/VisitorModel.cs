@@ -60,6 +60,7 @@ namespace CmsWeb.Models.OrganizationPage
         {
             var q = ApplySort();
             q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
+            var tagownerid = Util2.CurrentTagOwnerId;
             var q2 = from p in q
                      select new PersonMemberInfo
                      {
@@ -84,6 +85,7 @@ namespace CmsWeb.Models.OrganizationPage
                          BFTeacherId = p.BFClass.LeaderId,
                          Age = p.Age.ToString(),
                          LastAttended = DbUtil.Db.LastAttended(OrganizationId, p.PeopleId),
+                         HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == tagownerid),
                      };
             return q2;
         }

@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 				select new CompactFamilyInfo()
 				 {
 					 FamilyName = hhname,
-					 HomePhone = family.HomePhone,
+					 HomePhone = family.People.Any(pp => pp.DoNotPublishPhones == true) ? "" : family.HomePhone,
 					 Address = family.AddressLineOne,
 					 Address2 = family.AddressLineTwo,
 					 CityStateZip = family.CityStateZip,
@@ -44,7 +44,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 						 Last = family.HeadOfHousehold.LastName,
 						 Age = family.HeadOfHousehold.Age,
 						 Email = family.HeadOfHousehold.EmailAddress,
-						 Cell = family.HeadOfHousehold.CellPhone
+						 Cell = family.HeadOfHousehold.DoNotPublishPhones == true ? "" : family.HeadOfHousehold.CellPhone
 					 },
 					 spouse = new PersonInfo
 					 {
@@ -52,7 +52,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 						 Last = family.HeadOfHouseholdSpouse.LastName,
 						 Age = family.HeadOfHouseholdSpouse.Age,
 						 Email = family.HeadOfHouseholdSpouse.EmailAddress,
-						 Cell = family.HeadOfHouseholdSpouse.CellPhone
+						 Cell = family.HeadOfHouseholdSpouse.DoNotPublishPhones == true ? "" : family.HeadOfHouseholdSpouse.CellPhone
 					 },
 					 children = from m in family.People
 								where m.DeceasedDate == null
@@ -65,7 +65,7 @@ namespace CmsWeb.Areas.Main.Models.Directories
 									Last = m.LastName,
 									Age = m.Age,
 									Email = m.EmailAddress,
-									Cell = m.CellPhone
+									Cell = m.DoNotPublishPhones == true ? "" : m.CellPhone
 								}
 				 };
 

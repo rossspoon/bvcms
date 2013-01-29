@@ -14,6 +14,8 @@ namespace CmsData
     {
         public int? CurrentOrgId { get; set; }
         public int[] CurrentGroups { get; set; }
+        public string CurrentGroupsPrefix { get; set; }
+        public int CurrentGroupsMode { get; set; }
         public int CurrentPeopleId { get; set; }
         public int? CurrentTagOwnerId { get; set; }
         public string CurrentTagName { get; set; }
@@ -28,6 +30,8 @@ namespace CmsData
             {
                 CurrentOrgId = Util2.CurrentOrgId;
                 CurrentGroups = Util2.CurrentGroups;
+                CurrentGroupsPrefix = Util2.CurrentGroupsPrefix;
+                CurrentGroupsMode = Util2.CurrentGroupsMode;
                 CurrentPeopleId = Util2.CurrentPeopleId;
                 CurrentTagOwnerId = Util2.CurrentTagOwnerId;
                 CurrentTagName = Util2.CurrentTagName;
@@ -37,32 +41,35 @@ namespace CmsData
                 Host = Util.Host;
             }
         }
-        public Session2 ExportSession()
-        {
-            var s = new Session2();
-            s.CurrentOrgId = CurrentOrgId;
-            s.CurrentGroups = CurrentGroups;
-            s.CurrentPeopleId = CurrentPeopleId;
-            s.CurrentTagOwnerId = CurrentTagOwnerId;
-            s.CurrentTagName = CurrentTagName;
-            s.OrgMembersOnly = OrgMembersOnly;
-            s.OrgLeadersOnly = OrgLeadersOnly;
-            s.VisitLookbackDays = VisitLookbackDays;
-            s.Host = Host;
-            return s;
-        }
-        public void ImportSession(Session2 s)
-        {
-            CurrentOrgId = s.CurrentOrgId;
-            CurrentGroups = s.CurrentGroups;
-            CurrentPeopleId = s.CurrentPeopleId;
-            CurrentTagOwnerId = s.CurrentTagOwnerId;
-            CurrentTagName = s.CurrentTagName;
-            OrgMembersOnly = s.OrgMembersOnly;
-            OrgLeadersOnly = s.OrgLeadersOnly;
-            VisitLookbackDays = s.VisitLookbackDays;
-            Host = s.Host;
-        }
+//        public Session2 ExportSession()
+//        {
+//            var s = new Session2();
+//            s.CurrentOrgId = CurrentOrgId;
+//            s.CurrentGroups = CurrentGroups;
+//            s.CurrentGroupsPrefix = CurrentGroupsPrefix;
+//            s.CurrentGroupsMode = CurrentGroupsMode;
+//            s.CurrentPeopleId = CurrentPeopleId;
+//            s.CurrentTagOwnerId = CurrentTagOwnerId;
+//            s.CurrentTagName = CurrentTagName;
+//            s.OrgMembersOnly = OrgMembersOnly;
+//            s.OrgLeadersOnly = OrgLeadersOnly;
+//            s.VisitLookbackDays = VisitLookbackDays;
+//            s.Host = Host;
+//            return s;
+//        }
+//        public void ImportSession(Session2 s)
+//        {
+//            CurrentOrgId = s.CurrentOrgId;
+//            CurrentGroups = s.CurrentGroups;
+//            CurrentGroupsMode = s.CurrentGroupsMode;
+//            CurrentPeopleId = s.CurrentPeopleId;
+//            CurrentTagOwnerId = s.CurrentTagOwnerId;
+//            CurrentTagName = s.CurrentTagName;
+//            OrgMembersOnly = s.OrgMembersOnly;
+//            OrgLeadersOnly = s.OrgLeadersOnly;
+//            VisitLookbackDays = s.VisitLookbackDays;
+//            Host = s.Host;
+//        }
         public string Setting(string name, string defaultvalue)
         {
 			var list = HttpRuntime.Cache[Host + "Setting"] as Dictionary<string, string>;
@@ -127,6 +134,7 @@ namespace CmsData
     {
         public int? CurrentOrgId { get; set; }
         public int[] CurrentGroups { get; set; }
+        public int CurrentGroupsMode { get; set; }
         public int CurrentPeopleId { get; set; }
         public int? CurrentTagOwnerId { get; set; }
         public string CurrentTagName { get; set; }

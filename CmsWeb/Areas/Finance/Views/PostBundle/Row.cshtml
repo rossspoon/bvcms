@@ -7,15 +7,16 @@
     </td>
     <td class="name" title="@Model.tip">@Model.Name</td>
     <td class="amt" val="@Model.Amt" align="right">
-    <span id='a@(Model.ContributionId)' class='clickEdit'>@Model.AmtDisplay</span>            
+        <span id='a@(Model.ContributionId)' class='clickEdit'>@Model.AmtDisplay</span>            
     </td>
-    <td class="fund" val="@Model.FundId" pledge="@Model.pledge.ToString().ToLower()">
+    <td class="PLNT">@Model.PLNT</td>
+    <td class="fund" val="@Model.FundId">
         <span id='f@(Model.ContributionId)' 
             class='clickSelect'>@Model.FundDisplay</span>
     </td>
     <td class="checkno">@Model.CheckNo</td>
     <td class="notes">@Model.Notes</td>
-    <td><a class="edit bt" href='#'>edit</a></td>
-    <td><a class="split bt" href='#'>split</a></td>
+    <td><small><a class="edit bt" href='#'>edit</a></small></td>
+    <td><small><a class="split bt" href='#'>split</a></small></td>
 	<td><a class="delete" href='#'><img src="/images/delete.gif"/></a></td>
 </tr>

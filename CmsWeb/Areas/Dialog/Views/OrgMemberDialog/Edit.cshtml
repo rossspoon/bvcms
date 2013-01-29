@@ -80,8 +80,10 @@
         <td>@Html.TextArea("UserData", new { style = "height:100px;width:100%" })</td>
     </tr>
 <tr><td></td></tr>
-     <tr><td colspan="2" align="right">
-     <a class="display bt" href="/OrgMemberDialog/Display/@Model.OrganizationId?pid=@Model.PeopleId">cancel</a></td></tr>
-     <a href="/OrgMemberDialog/Update/@Model.OrganizationId?pid=@Model.PeopleId" class="submitbutton bt blue">Save Changes</a>
+    <tr><td colspan="2" align="right">
+            <a class="display bt" href="/OrgMemberDialog/Display/@Model.OrganizationId?pid=@Model.PeopleId">cancel</a>
+            <a href="/OrgMemberDialog/Update/@Model.OrganizationId?pid=@Model.PeopleId" class="submitbutton bt blue">Save Changes</a>
+        </td>
+    </tr>
 </table>
 

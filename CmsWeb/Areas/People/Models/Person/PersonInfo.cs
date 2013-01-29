@@ -1,0 +1,184 @@
+using System.Linq;
+using CmsData;
+using UtilityExtensions;
+
+namespace CmsWeb.Areas.People.Models.Person
+{
+    public class PersonInfo
+    {
+        public CmsWeb.Models.PersonPage.BasicPersonInfo basic { get; set; }
+        public CmsWeb.Models.PersonPage.MemberInfo member { get; set; }
+        public CmsWeb.Models.PersonPage.GrowthInfo growth { get; set; }
+        public CmsWeb.Models.PersonPage.MemberNotesInfo membernotes { get; set; }
+
+        public int PeopleId { get; set; }
+        public int FamilyId { get; set; }
+        public int? SpouseId { get; set; }
+
+        public bool Deceased { get; set; }
+        public string Name { get; set; }
+        public int? SmallPicId { get; set; }
+
+        public int AddressTypeId { get; set; }
+        private CmsWeb.Models.PersonPage.AddressInfo _PrimaryAddr;
+        public CmsWeb.Models.PersonPage.AddressInfo PrimaryAddr
+        {
+            get
+            {
+                if (_PrimaryAddr == null)
+                    if (FamilyAddr.Preferred)
+                        _PrimaryAddr = FamilyAddr;
+                    else if (PersonalAddr.Preferred)
+                        _PrimaryAddr = PersonalAddr;
+                return _PrimaryAddr;
+            }
+        }
+        public CmsWeb.Models.PersonPage.AddressInfo FamilyAddr { get; set; }
+        public CmsWeb.Models.PersonPage.AddressInfo PersonalAddr { get; set; }
+        public static PersonInfo GetPersonInfo(int? id)
+        {
+			var i = (from pp in DbUtil.Db.People
+					 let spouse = (from sp in pp.Family.People where sp.PeopleId == pp.SpouseId select sp.Name).SingleOrDefault()
+					 where pp.PeopleId == id
+					 select new
+					 {
+						 pp,
+						 f = pp.Family,
+						 spouse = spouse,
+						 pp.Picture.SmallId,
+					 }).FirstOrDefault();
+            if (i == null)
+                return null;
+			var p = i.pp;
+			var fam = i.f;
+
+            var pi = new PersonInfo
+            {
+                PeopleId = p.PeopleId,
+                AddressTypeId = p.AddressTypeId,
+                Deceased = p.Deceased,
+                FamilyId = p.FamilyId,
+                Name = p.Name,
+                SmallPicId = i.SmallId,
+                SpouseId = p.SpouseId,
+
+                member = new CmsWeb.Models.PersonPage.MemberInfo
+                {
+                    PeopleId = p.PeopleId,
+                    BaptismSchedDate = p.BaptismSchedDate,
+                    BaptismTypeId = p.BaptismTypeId ?? 0,
+                    BaptismStatusId = p.BaptismStatusId ?? 0,
+                    BaptismDate = p.BaptismDate,
+                    DecisionDate = p.DecisionDate,
+                    DecisionTypeId = p.DecisionTypeId ?? 0,
+                    DropDate = p.DropDate,
+                    DropTypeId = p.DropCodeId,
+                    EnvelopeOptionId = p.EnvelopeOptionsId ?? 0,
+                    StatementOptionId = p.ContributionOptionsId ?? 0,
+                    JoinTypeId = p.JoinCodeId,
+                    NewChurch = p.OtherNewChurch,
+                    PrevChurch = p.OtherPreviousChurch,
+                    NewMemberClassDate = p.NewMemberClassDate,
+                    NewMemberClassStatusId = p.NewMemberClassStatusId ?? 0,
+                    MemberStatusId = p.MemberStatusId,
+                    JoinDate = p.JoinDate,
+                },
+                basic = new CmsWeb.Models.PersonPage.BasicPersonInfo
+                {
+                    PeopleId = p.PeopleId,
+                    person = p,
+                    Age = p.Age.ToString(),
+                    Birthday = p.DOB,
+                    CampusId = p.CampusId ?? 0,
+                    CellPhone = p.CellPhone.FmtFone(),
+                    DeceasedDate = p.DeceasedDate,
+                    DoNotCallFlag = p.DoNotCallFlag,
+                    DoNotMailFlag = p.DoNotMailFlag,
+                    DoNotVisitFlag = p.DoNotVisitFlag,
+                    EmailAddress = p.EmailAddress,
+                    SendEmailAddress1 = p.SendEmailAddress1 ?? true,
+                    EmailAddress2 = p.EmailAddress2,
+                    SendEmailAddress2 = p.SendEmailAddress2 ?? false,
+                    Employer = p.EmployerOther,
+                    First = p.FirstName,
+                    GenderId = p.GenderId,
+                    Created = p.CreatedDate,
+                    Grade = p.Grade.ToString(),
+                    HomePhone = p.Family.HomePhone,
+                    JoinDate = p.JoinDate,
+                    Last = p.LastName,
+                    AltName = p.AltName,
+                    Maiden = p.MaidenName,
+                    MaritalStatusId = p.MaritalStatusId,
+                    MemberStatusId = p.MemberStatusId,
+                    Middle = p.MiddleName,
+                    NickName = p.NickName,
+                    Occupation = p.OccupationOther,
+                    School = p.SchoolOther,
+                    Spouse = i.spouse,
+                    Suffix = p.SuffixCode,
+                    Title = p.TitleCode,
+                    WeddingDate = p.WeddingDate,
+                    WorkPhone = p.WorkPhone,
+                },
+                growth = new CmsWeb.Models.PersonPage.GrowthInfo
+                {
+                    PeopleId = p.PeopleId,
+                    InterestPointId = p.InterestPointId ?? 0,
+                    OriginId = p.OriginId ?? 0,
+                    EntryPointId = p.EntryPointId ?? 0,
+                    ChristAsSavior = p.ChristAsSavior,
+                    Comments = p.Comments,
+                    InterestedInJoining = p.InterestedInJoining,
+                    MemberAnyChurch = p.MemberAnyChurch,
+                    PleaseVisit = p.PleaseVisit,
+                    SendInfo = p.InfoBecomeAChristian,
+                },
+                membernotes = new CmsWeb.Models.PersonPage.MemberNotesInfo
+                {
+                    PeopleId = p.PeopleId,
+                    LetterStatusId = p.LetterStatusId ?? 0,
+                    LetterReceived = p.LetterDateReceived,
+                    LetterRequested = p.LetterDateRequested,
+                    LetterNotes = p.LetterStatusNotes,
+                },
+                FamilyAddr = new CmsWeb.Models.PersonPage.AddressInfo
+                {
+                    Name = "FamilyAddr",
+                    PeopleId = p.PeopleId,
+                    person = p,
+                    Address1 = fam.AddressLineOne,
+                    Address2 = fam.AddressLineTwo,
+                    City = fam.CityName,
+                    State = fam.StateCode,
+                    Zip = fam.ZipCode,
+                    Country = fam.CountryName,
+                    BadAddress = fam.BadAddressFlag,
+                    ResCodeId = fam.ResCodeId ?? 0,
+                    FromDt = fam.AddressFromDate,
+                    ToDt = fam.AddressToDate,
+                    Preferred = p.AddressTypeId == 10,
+                },
+                PersonalAddr = new CmsWeb.Models.PersonPage.AddressInfo
+                {
+                    Name = "PersonalAddr",
+                    PeopleId = p.PeopleId,
+                    person = p,
+                    Address1 = p.AddressLineOne,
+                    Address2 = p.AddressLineTwo,
+                    City = p.CityName,
+                    State = p.StateCode,
+                    Zip = p.ZipCode,
+                    Country = p.CountryName,
+                    BadAddress = p.BadAddressFlag,
+                    ResCodeId = p.ResCodeId ?? 0,
+                    FromDt = p.AddressFromDate,
+                    ToDt = p.AddressToDate,
+                    Preferred = p.AddressTypeId == 30,
+                },
+                //familymembers = i.familymembers
+            };
+            return pi;
+        }
+    }
+}

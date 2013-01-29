@@ -16,7 +16,7 @@ namespace CmsWeb.Models
 				org.OrganizationId, person.PeopleId,
 				MemberTypeCode.Member, DateTime.Now, null, false);
 			om.Amount = TotalAmount();
-			om.AmountPaid = AmountToPay();
+		    om.AmountPaid = ti.Amt;
 
 			var reg = person.RecRegs.SingleOrDefault();
 
@@ -101,15 +101,11 @@ namespace CmsWeb.Models
 						}
 						break;
 					case "AskExtraQuestions":
-						if (setting.TargetExtraValues)
-						{
-							foreach (var g in ExtraQuestion)
-								if (g.Value.HasValue())
+						foreach (var g in ExtraQuestion[ask.UniqueId])
+							if (g.Value.HasValue())
+        						if (setting.TargetExtraValues)
 									person.AddEditExtraData(g.Key, g.Value);
-						}
-						else
-							foreach (var g in ExtraQuestion)
-								if (g.Value.HasValue())
+        						else
 									om.AddToMemberData("{0}: {1}".Fmt(g.Key, g.Value));
 						break;
 					case "AskMenu":
@@ -179,8 +175,7 @@ namespace CmsWeb.Models
 
 			string tstamp = Util.Now.ToString("MMM d yyyy h:mm tt");
 			om.AddToMemberData(tstamp);
-			var tran = "{0:C} ({1}{2})".Fmt(
-					om.AmountPaid.ToString2("C"), ti.TransactionId, testing == true ? " test" : "");
+			var tran = "{0:C} ({1})".Fmt(om.AmountPaid.ToString2("C"), ti.TransactionId);
 			if (om.AmountPaid > 0)
 			{
 				om.AddToMemberData(tran);
@@ -251,6 +246,11 @@ namespace CmsWeb.Models
 					case "AskRequest":
 						sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", om.Request, ((AskRequest)ask).Label);
 						break;
+					case "AskHeader":
+				        sb.AppendFormat("<tr><td colspan='2'><h4>{0}</h4></td></tr>\n", ((AskHeader)ask).Label);
+						break;
+					case "AskInstruction":
+				        break;
 					case "AskAllergies":
 						sb.AppendFormat("<tr><td>Medical:</td><td>{0}</td></tr>\n", rr.MedicalDescription);
 						break;
@@ -291,16 +291,19 @@ namespace CmsWeb.Models
 						}
 						break;
 					case "AskCheckboxes":
-						{
-							var menulabel = ((AskCheckboxes)ask).Label;
-							foreach (var i in ((AskCheckboxes)ask).CheckboxItemsChosen(Checkbox))
+				        {
+				            var askcb = (AskCheckboxes) ask;
+				            var menulabel = askcb.Label;
+							foreach (var i in askcb.CheckboxItemsChosen(Checkbox))
 							{
 								string row;
+                                if (menulabel.HasValue())
+									sb.Append("<tr><td colspan='2'><br>{0}</td></tr>\n".Fmt(menulabel));
 								if (i.Fee > 0)
-									row = "<tr><td>{0}</td><td>{1} (${2:N2})</td></tr>\n".Fmt(menulabel, i.Description, i.Fee);
+									row = "<tr><td></td><td>{0} (${1:N2})<br>({2})</td></tr>\n".Fmt(i.Description, i.Fee, i.SmallGroup);
 								else
-									row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(menulabel, i.Description);
-								sb.AppendFormat(row);
+									row = "<tr><td></td><td>{0}<br>({1})</td></tr>\n".Fmt(i.Description, i.SmallGroup);
+								sb.Append(row);
 								menulabel = string.Empty;
 							}
 						}
@@ -311,7 +314,7 @@ namespace CmsWeb.Models
 													   YesNoQuestion[a.SmallGroup] == true ? "Yes" : "No"));
 						break;
 					case "AskExtraQuestions":
-						foreach (var a in ExtraQuestion)
+						foreach (var a in ExtraQuestion[ask.UniqueId])
 							if (a.Value.HasValue())
 								sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Key, a.Value));
 						break;

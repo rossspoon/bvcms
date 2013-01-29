@@ -190,8 +190,7 @@ namespace UtilityExtensions
 				return "";
 			if (name.HasValue())
 				return "mailto:{0} <{1}>".Fmt(name, addr);
-			else
-				return "mailto:" + addr;
+			return "mailto:" + addr;
 		}
 		public static string FormatBirthday(int? y, int? m, int? d)
 		{
@@ -558,8 +557,10 @@ namespace UtilityExtensions
 			get
 			{
 #if DEBUG
-				return ConfigurationManager.ConnectionStrings["CMSImage"].ConnectionString;
-#else
+				var dcs = ConfigurationManager.ConnectionStrings["CMSImage"];
+                if (dcs != null)
+                    return dcs.ConnectionString;
+#endif
                 var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
                 if (cs == null)
                     cs = ConfigurationManager.ConnectionStrings["CMS"];
@@ -567,7 +568,6 @@ namespace UtilityExtensions
                 var a = Host.SplitStr(".:");
                 cb.InitialCatalog = "CMS_{0}_img".Fmt(a[0]);
                 return cb.ConnectionString;
-#endif
 			}
 		}
 		public static string UserName
@@ -1237,7 +1237,17 @@ namespace UtilityExtensions
 				return null;
 			}
 		}
-		public static string UrgentMessage
+
+	    public static bool AppOffline
+	    {
+	        get
+	        {
+                var path = WebConfigurationManager.AppSettings["AppOfflineFile"];
+	            return path.HasValue() && File.Exists(path);
+	        }
+	    }
+
+	    public static string UrgentMessage
 		{
 			get
 			{

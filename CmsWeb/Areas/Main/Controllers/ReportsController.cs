@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
+using System.Xml.Linq;
 using CmsWeb.Areas.Main.Models.Avery;
 using CmsWeb.Areas.Main.Models.Directories;
 using CmsWeb.Areas.Main.Models.Report;
@@ -10,7 +12,6 @@ using CmsData;
 using System.IO;
 using CmsWeb.Code;
 using UtilityExtensions;
-using CmsWeb.Models;
 using System.Text;
 using System.Web.UI;
 using System.Data.SqlClient;
@@ -47,11 +48,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new BarCodeLabelsResult(id.Value);
         }
-        public ActionResult Contacts(int? id)
+        public ActionResult Contacts(int? id, bool? sortAddress)
         {
             if (!id.HasValue)
                 return Content("no query");
-            return new ContactsResult(id.Value);
+            return new ContactsResult(id.Value, sortAddress);
         }
         public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames, string highlight)
         {
@@ -225,6 +226,13 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no meetingid");
             return new VisitsAbsentsResult(id);
         }
+        public ActionResult VisitsAbsents2(int? id)
+        {
+            //This is basically a Contact Report version of the Visits Absents
+            if (!id.HasValue)
+                return Content("no meetingid");
+            return new VisitsAbsentsResult2(id);
+        }
         public ActionResult PastAttendee(int? id)
         {
             if (!id.HasValue)
@@ -261,6 +269,13 @@ namespace CmsWeb.Areas.Main.Controllers
                 Dt2 = Dt1.Value.AddDays(1);
             var m = new AttendanceDetailModel(Dt1.Value, Dt2, name, divid, schedid, campusid);
             return View(m);
+        }
+        public ActionResult RecentAbsents(int? id, int? divid, int? days)
+        {
+            var q = from p in DbUtil.Db.RecentAbsents(id, divid, days ?? 36)
+                    orderby p.OrganizationName, p.OrganizationId, p.Consecutive, p.Name2
+                    select p;
+            return View(q);
         }
         public ActionResult Meetings(MeetingsModel m)
         {
@@ -315,11 +330,19 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult ExtraValuesGrid(int id, string sort)
         {
-            var name = "ExtraExcelResult " + DateTime.Now;
+            var roles = CMSRoleProvider.provider.GetRolesForUser(Util.UserName);
+            var xml = XDocument.Parse(DbUtil.Db.Content("StandardExtraValues.xml", "<Fields/>"));
+            var fields = (from ff in xml.Root.Elements("Field")
+                          let vroles = ff.Attribute("VisibilityRoles")
+                          where vroles != null && (vroles.Value.Split(',').All(rr => !roles.Contains(rr)))
+                          select ff.Attribute("name").Value);
+            var nodisplaycols = string.Join(",", fields);
+
             var tag = DbUtil.Db.PopulateSpecialTag(id, DbUtil.TagTypeId_ExtraValues);
-            var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2");
+            var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2, @p3");
 			cmd.Parameters.AddWithValue("@p1", tag.Id);
 			cmd.Parameters.AddWithValue("@p2", sort ?? "");
+			cmd.Parameters.AddWithValue("@p3", nodisplaycols);
             cmd.Connection = new SqlConnection(Util.ConnectionString);
             cmd.Connection.Open();
             var rdr = cmd.ExecuteReader();

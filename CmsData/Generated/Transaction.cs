@@ -93,6 +93,14 @@ namespace CmsData
 		
 		private int? _LoginPeopleId;
 		
+		private string _First;
+		
+		private string _MiddleInitial;
+		
+		private string _Last;
+		
+		private string _Suffix;
+		
    		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
@@ -225,6 +233,18 @@ namespace CmsData
 		
 		partial void OnLoginPeopleIdChanging(int? value);
 		partial void OnLoginPeopleIdChanged();
+		
+		partial void OnFirstChanging(string value);
+		partial void OnFirstChanged();
+		
+		partial void OnMiddleInitialChanging(string value);
+		partial void OnMiddleInitialChanged();
+		
+		partial void OnLastChanging(string value);
+		partial void OnLastChanged();
+		
+		partial void OnSuffixChanging(string value);
+		partial void OnSuffixChanged();
 		
     #endregion
 		public Transaction()
@@ -665,7 +685,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Phone", UpdateCheck=UpdateCheck.Never, Storage="_Phone", DbType="varchar(15)")]
+		[Column(Name="Phone", UpdateCheck=UpdateCheck.Never, Storage="_Phone", DbType="varchar(20)")]
 		public string Phone
 		{
 			get { return this._Phone; }
@@ -1082,6 +1102,94 @@ namespace CmsData
 					this._LoginPeopleId = value;
 					this.SendPropertyChanged("LoginPeopleId");
 					this.OnLoginPeopleIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="First", UpdateCheck=UpdateCheck.Never, Storage="_First", DbType="varchar(50)")]
+		public string First
+		{
+			get { return this._First; }
+
+			set
+			{
+				if (this._First != value)
+				{
+				
+                    this.OnFirstChanging(value);
+					this.SendPropertyChanging();
+					this._First = value;
+					this.SendPropertyChanged("First");
+					this.OnFirstChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MiddleInitial", UpdateCheck=UpdateCheck.Never, Storage="_MiddleInitial", DbType="varchar(1)")]
+		public string MiddleInitial
+		{
+			get { return this._MiddleInitial; }
+
+			set
+			{
+				if (this._MiddleInitial != value)
+				{
+				
+                    this.OnMiddleInitialChanging(value);
+					this.SendPropertyChanging();
+					this._MiddleInitial = value;
+					this.SendPropertyChanged("MiddleInitial");
+					this.OnMiddleInitialChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Last", UpdateCheck=UpdateCheck.Never, Storage="_Last", DbType="varchar(50)")]
+		public string Last
+		{
+			get { return this._Last; }
+
+			set
+			{
+				if (this._Last != value)
+				{
+				
+                    this.OnLastChanging(value);
+					this.SendPropertyChanging();
+					this._Last = value;
+					this.SendPropertyChanged("Last");
+					this.OnLastChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Suffix", UpdateCheck=UpdateCheck.Never, Storage="_Suffix", DbType="varchar(10)")]
+		public string Suffix
+		{
+			get { return this._Suffix; }
+
+			set
+			{
+				if (this._Suffix != value)
+				{
+				
+                    this.OnSuffixChanging(value);
+					this.SendPropertyChanging();
+					this._Suffix = value;
+					this.SendPropertyChanged("Suffix");
+					this.OnSuffixChanged();
 				}
 
 			}

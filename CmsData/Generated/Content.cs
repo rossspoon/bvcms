@@ -37,7 +37,17 @@ namespace CmsData
 		
 		private int _OwnerID;
 		
+		private DateTime? _Archived;
+		
+		private string _CreatedBy;
+		
+		private int? _ArchivedFromId;
+		
+		private int? _UseTimes;
+		
    		
+   		private EntitySet< ContentKeyWord> _ContentKeyWords;
+		
     	
 	#endregion
 	
@@ -76,9 +86,23 @@ namespace CmsData
 		partial void OnOwnerIDChanging(int value);
 		partial void OnOwnerIDChanged();
 		
+		partial void OnArchivedChanging(DateTime? value);
+		partial void OnArchivedChanged();
+		
+		partial void OnCreatedByChanging(string value);
+		partial void OnCreatedByChanged();
+		
+		partial void OnArchivedFromIdChanging(int? value);
+		partial void OnArchivedFromIdChanged();
+		
+		partial void OnUseTimesChanging(int? value);
+		partial void OnUseTimesChanged();
+		
     #endregion
 		public Content()
 		{
+			
+			this._ContentKeyWords = new EntitySet< ContentKeyWord>(new Action< ContentKeyWord>(this.attach_ContentKeyWords), new Action< ContentKeyWord>(this.detach_ContentKeyWords)); 
 			
 			
 			OnCreated();
@@ -307,10 +331,108 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="Archived", UpdateCheck=UpdateCheck.Never, Storage="_Archived", DbType="datetime")]
+		public DateTime? Archived
+		{
+			get { return this._Archived; }
+
+			set
+			{
+				if (this._Archived != value)
+				{
+				
+                    this.OnArchivedChanging(value);
+					this.SendPropertyChanging();
+					this._Archived = value;
+					this.SendPropertyChanged("Archived");
+					this.OnArchivedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="CreatedBy", UpdateCheck=UpdateCheck.Never, Storage="_CreatedBy", DbType="varchar(50)")]
+		public string CreatedBy
+		{
+			get { return this._CreatedBy; }
+
+			set
+			{
+				if (this._CreatedBy != value)
+				{
+				
+                    this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ArchivedFromId", UpdateCheck=UpdateCheck.Never, Storage="_ArchivedFromId", DbType="int")]
+		public int? ArchivedFromId
+		{
+			get { return this._ArchivedFromId; }
+
+			set
+			{
+				if (this._ArchivedFromId != value)
+				{
+				
+                    this.OnArchivedFromIdChanging(value);
+					this.SendPropertyChanging();
+					this._ArchivedFromId = value;
+					this.SendPropertyChanged("ArchivedFromId");
+					this.OnArchivedFromIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="UseTimes", UpdateCheck=UpdateCheck.Never, Storage="_UseTimes", DbType="int")]
+		public int? UseTimes
+		{
+			get { return this._UseTimes; }
+
+			set
+			{
+				if (this._UseTimes != value)
+				{
+				
+                    this.OnUseTimesChanging(value);
+					this.SendPropertyChanging();
+					this._UseTimes = value;
+					this.SendPropertyChanged("UseTimes");
+					this.OnUseTimesChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_ContentKeyWords_Content", Storage="_ContentKeyWords", OtherKey="Id")]
+   		public EntitySet< ContentKeyWord> ContentKeyWords
+   		{
+   		    get { return this._ContentKeyWords; }
+
+			set	{ this._ContentKeyWords.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -332,6 +454,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_ContentKeyWords(ContentKeyWord entity)
+		{
+			this.SendPropertyChanging();
+			entity.Content = this;
+		}
+
+		private void detach_ContentKeyWords(ContentKeyWord entity)
+		{
+			this.SendPropertyChanging();
+			entity.Content = null;
+		}
+
+		
 	}
 
 }

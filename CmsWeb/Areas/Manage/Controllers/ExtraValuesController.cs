@@ -39,7 +39,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 		[Authorize(Roles="Admin")]
         public ActionResult DeleteAll(string field, string val)
         {
-			var ev = DbUtil.Db.PeopleExtras.Where(ee => ee.Field == field).First();
+			var ev = DbUtil.Db.PeopleExtras.Where(ee => ee.Field == field).FirstOrDefault();
+		    if (ev == null)
+		        return Content("error: no field");
 			if (ev.StrValue.HasValue())
 	        	DbUtil.Db.ExecuteCommand("delete PeopleExtra where field = {0} and StrValue = {1}", field, val);
 			else

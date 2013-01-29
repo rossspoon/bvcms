@@ -1,10 +1,43 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Optimization
+@{
+    var newlook = DbUtil.Db.UserPreference("newlook", "false").ToBool();
+}
+<!DOCTYPE html>
 <html>
 <head>
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    @Html.Partial("CombinedCss")
+    @if (newlook)
+    {
+        @Styles.Render("~/Content/styles/css2")
+        <link href="~/Content/styles/Main.css" rel="stylesheet" />
+        <link href="~/Content/styles/Menu.css" rel="stylesheet" />
+        <link href="~/Content/styles/pager.css" rel="stylesheet" />
+    }
+    else
+    {
+        @Styles.Render("~/Content/styles/css")
+    }
+<!--[if gte IE 8]>
+<style type="text/css">
+    /* div.navbar > ul > li { float: left; } */
+</style>
+<![endif]-->
     @RenderSection("head", required: false)
+    @if (newlook)
+    {
+        @Scripts.Render("~/bundles/main-js")
+        <script src="~/Scripts/dropdown.js"></script>
+        <script src="~/Scripts/ExportToolBar.js"></script>
+        <script src="~/Scripts/Pager.js"></script>
+        <script src="~/Scripts/headermenu.js"></script>
+    }
+    else
+    {
+        @Scripts.Render("~/bundles/js")
+    }
+    @Html.Partial("DatePickerDefaults")
+    @RenderSection("scripts", required: false)
 </head>
 <body>
 @if (Util.UrgentMessage.HasValue())
@@ -19,79 +52,61 @@
 {
         <div id="urgentNotice">You are running IE7. This application requires IE8+, Firefox, Chrome or Safari</div>
 }
+@if (newlook)
+{
+    Html.RenderPartial("NewHeader");
     <div id="container">
-        <div class="header">
-            <table cellpadding="0" cellspacing="0" style="width: 100%">
-                <tr>
-                    <td class="left">
-                        <a href="/">
-                            @Html.Raw(DbUtil.HeaderImage(@"<img src=""/Content/bvcms132x55.png"" width=""132"" height=""55"" />"))</a>
-                    </td>
-                    <td class="center">
-                        @Html.Raw(DbUtil.Header())
-                    </td>
-                    <td class="right">
-                        <div id="userarea">
-                            <div id="welcome" class="dropdown">
-                                <a href="#" class="trigger-dropdown">
-                                    Welcome, @Util.UserPreferredName! <img src="/images/dnarrow.png" />
-                                </a>
-                                <div class="dropdown-menu has-tip anchor-right">
-                                    <ul>
-                                        <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
-                                        <li><a href="/Account/ChangePassword">Change Password</a></li>
-                                        <li><a id="cleartag" href="#" class="warntip" title="WARNING|This will CLEAR OUT the active tag">Clear Active Tag</a></li>
-                                        <li><a href="/Tags">Manage Active Tag</a></li>
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
-                                    }
-                                    </ul>
-                                </div>
-                            </div>
-@if (User.IsInRole("Access"))
-{
-                            <strong>Active Tag:</strong> <span id="activetag">@Util2.CurrentTagName</span><br />
-                            <form method="post">
-                                <input id="SearchText" type="text" default="Quick Search" title='QuickSearch|PeopleId|-OrganizationId|7 digit phone|Partial Search|Names|Address|Organization Name|Leader Name|Division"' />
-                            </form>
-}
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div>
-                        </div>
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-            </table>
-@if (User.IsInRole("Access"))
-{
-    @Html.Partial("MainMenu")
-}
-    <div style="clear: both; border-bottom: 4px solid #ddd">
-    </div>
-</div>
         <div id="main">
             @RenderBody()
-				@if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
-				{ 
-				<br />
-				<b>Menus:</b> @(Util.Helpfile)@:_Menu.cshtml<br />
-				<b>Tutorials:</b> @(Util.Helpfile)@:.cshtml
-				}		  
-				@{
-					var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
-					if (File.Exists(tutorialFile)) {
-						Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
-					}
-				}	
+            @if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
+            {
+                <br />
+                <b>Menus:</b>
+                @(Util.Helpfile)@:_Menu.cshtml<br />
+                <b>Tutorials:</b>
+                @(Util.Helpfile)@:.cshtml
+            }		  
+            @{
+                var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
+                if (File.Exists(tutorialFile))
+                {
+                    Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
+                }
+            }	
         </div>
+        
+        @if (Util.IsHosted)
+        {
+            <div style="float: right"><a href="http://www.bvcms.com"><img src="~/images/bvcms-provided.png" /></a></div>
+            <div style="clear: both"></div>
+        }
     </div>
-    <div id="ChooseLabelType" class="modalPopup" style="display: none; width: 400px;
+}
+else
+{
+<div id="container">
+    @Html.Partial("OldHeader")
+    <div id="main">
+        @RenderBody()
+        @if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
+        {
+            <br />
+            <b>Menus:</b>
+            @(Util.Helpfile)@:_Menu.cshtml<br />
+            <b>Tutorials:</b>
+            @(Util.Helpfile)@:.cshtml
+        }		  
+        @{
+            var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
+            if (File.Exists(tutorialFile))
+            {
+                Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
+            }
+        }	
+    </div>
+</div>
+}
+   <div id="ChooseLabelType" class="modalPopup" style="display: none; width: 400px;
         padding: 10px">
         <table>
             <tr>
@@ -151,9 +166,5 @@
     <iframe id="AddDialogiframe" style="width:99%;height:99%;border-width:0px"></iframe>
     </div>
 @RenderSection("PopupsPlaceholder", required: false)
-@Html.Partial("CombinedJs")
-@Html.Partial("DatePickerDefaults")
-@RenderSection("scripts", required: false)
 </body>
 </html>
-

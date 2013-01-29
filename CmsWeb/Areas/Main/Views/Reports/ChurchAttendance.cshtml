@@ -1,6 +1,6 @@
 ﻿@using CmsWeb
 @using UtilityExtensions
-@model CmsWeb.Models.ChurchAttendanceModel
+@model CmsWeb.Areas.Main.Models.Report.ChurchAttendanceModel
 @{
     Layout = "/Views/Shared/Reports.cshtml";
     ViewBag.Title = "ChurchAttendanceReport";
@@ -34,8 +34,12 @@
     <script type="text/javascript">
         $(function() {
             $(".datepicker").datepicker();
-            $(".datepicker").change(function() {
-                window.location = "/Reports/ChurchAttendance/" + this.value.replace(/\//ig, "-");
+            $("a.run").button();
+            $("a.run").click(function (ev) {
+                ev.preventDefault();
+                if (!$.DateValid($("#Sunday").val(), true))
+                    return;
+                window.location = "/Reports/ChurchAttendance/" + $("#Sunday").val().replace(/\//ig, "-");
             });
         });
     </script>
@@ -44,7 +48,7 @@
         <h1>
            Week at a Glance Attendance Report</h1>
         Sunday Date:
-        @Html.DatePicker("Sunday")
+        @Html.DatePicker("Sunday") <a class="run bt">Run</a>
         <hr />
         
 @foreach(var p in Model.FetchInfo())

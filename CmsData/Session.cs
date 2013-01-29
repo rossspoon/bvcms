@@ -62,6 +62,32 @@ namespace CmsData
                     HttpContext.Current.Session[STR_ActiveGroupId] = value;
             }
         }
+        const string STR_ActiveGroupPrefix = "ActiveGroupPrefix";
+        public static string CurrentGroupsPrefix
+        {
+            get
+            {
+                return (string)GetSessionObj(STR_ActiveGroupPrefix, null);
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_ActiveGroupPrefix] = value;
+            }
+        }
+        const string STR_ActiveGroupMode = "ActiveGroupMode";
+        public static int CurrentGroupsMode
+        {
+            get
+            {
+                return (int)GetSessionObj(STR_ActiveGroupMode, 0);
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_ActiveGroupMode] = value;
+            }
+        }
         const string STR_ActivePersonId = "ActivePersonId";
         public static int CurrentPeopleId
         {

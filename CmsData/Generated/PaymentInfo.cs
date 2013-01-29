@@ -43,6 +43,24 @@ namespace CmsData
 		
 		private string _Routing;
 		
+		private string _FirstName;
+		
+		private string _MiddleInitial;
+		
+		private string _LastName;
+		
+		private string _Suffix;
+		
+		private string _Address;
+		
+		private string _City;
+		
+		private string _State;
+		
+		private string _Zip;
+		
+		private string _Phone;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -92,6 +110,33 @@ namespace CmsData
 		
 		partial void OnRoutingChanging(string value);
 		partial void OnRoutingChanged();
+		
+		partial void OnFirstNameChanging(string value);
+		partial void OnFirstNameChanged();
+		
+		partial void OnMiddleInitialChanging(string value);
+		partial void OnMiddleInitialChanged();
+		
+		partial void OnLastNameChanging(string value);
+		partial void OnLastNameChanged();
+		
+		partial void OnSuffixChanging(string value);
+		partial void OnSuffixChanged();
+		
+		partial void OnAddressChanging(string value);
+		partial void OnAddressChanged();
+		
+		partial void OnCityChanging(string value);
+		partial void OnCityChanged();
+		
+		partial void OnStateChanging(string value);
+		partial void OnStateChanged();
+		
+		partial void OnZipChanging(string value);
+		partial void OnZipChanged();
+		
+		partial void OnPhoneChanging(string value);
+		partial void OnPhoneChanged();
 		
     #endregion
 		public PaymentInfo()
@@ -388,6 +433,204 @@ namespace CmsData
 					this._Routing = value;
 					this.SendPropertyChanged("Routing");
 					this.OnRoutingChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="FirstName", UpdateCheck=UpdateCheck.Never, Storage="_FirstName", DbType="varchar(50)")]
+		public string FirstName
+		{
+			get { return this._FirstName; }
+
+			set
+			{
+				if (this._FirstName != value)
+				{
+				
+                    this.OnFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="MiddleInitial", UpdateCheck=UpdateCheck.Never, Storage="_MiddleInitial", DbType="varchar(10)")]
+		public string MiddleInitial
+		{
+			get { return this._MiddleInitial; }
+
+			set
+			{
+				if (this._MiddleInitial != value)
+				{
+				
+                    this.OnMiddleInitialChanging(value);
+					this.SendPropertyChanging();
+					this._MiddleInitial = value;
+					this.SendPropertyChanged("MiddleInitial");
+					this.OnMiddleInitialChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="LastName", UpdateCheck=UpdateCheck.Never, Storage="_LastName", DbType="varchar(50)")]
+		public string LastName
+		{
+			get { return this._LastName; }
+
+			set
+			{
+				if (this._LastName != value)
+				{
+				
+                    this.OnLastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LastName = value;
+					this.SendPropertyChanged("LastName");
+					this.OnLastNameChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Suffix", UpdateCheck=UpdateCheck.Never, Storage="_Suffix", DbType="varchar(10)")]
+		public string Suffix
+		{
+			get { return this._Suffix; }
+
+			set
+			{
+				if (this._Suffix != value)
+				{
+				
+                    this.OnSuffixChanging(value);
+					this.SendPropertyChanging();
+					this._Suffix = value;
+					this.SendPropertyChanged("Suffix");
+					this.OnSuffixChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Address", UpdateCheck=UpdateCheck.Never, Storage="_Address", DbType="varchar(50)")]
+		public string Address
+		{
+			get { return this._Address; }
+
+			set
+			{
+				if (this._Address != value)
+				{
+				
+                    this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="City", UpdateCheck=UpdateCheck.Never, Storage="_City", DbType="varchar(50)")]
+		public string City
+		{
+			get { return this._City; }
+
+			set
+			{
+				if (this._City != value)
+				{
+				
+                    this.OnCityChanging(value);
+					this.SendPropertyChanging();
+					this._City = value;
+					this.SendPropertyChanged("City");
+					this.OnCityChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="State", UpdateCheck=UpdateCheck.Never, Storage="_State", DbType="varchar(10)")]
+		public string State
+		{
+			get { return this._State; }
+
+			set
+			{
+				if (this._State != value)
+				{
+				
+                    this.OnStateChanging(value);
+					this.SendPropertyChanging();
+					this._State = value;
+					this.SendPropertyChanged("State");
+					this.OnStateChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Zip", UpdateCheck=UpdateCheck.Never, Storage="_Zip", DbType="varchar(15)")]
+		public string Zip
+		{
+			get { return this._Zip; }
+
+			set
+			{
+				if (this._Zip != value)
+				{
+				
+                    this.OnZipChanging(value);
+					this.SendPropertyChanging();
+					this._Zip = value;
+					this.SendPropertyChanged("Zip");
+					this.OnZipChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Phone", UpdateCheck=UpdateCheck.Never, Storage="_Phone", DbType="varchar(25)")]
+		public string Phone
+		{
+			get { return this._Phone; }
+
+			set
+			{
+				if (this._Phone != value)
+				{
+				
+                    this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
 				}
 
 			}

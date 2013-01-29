@@ -7,7 +7,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
+using CmsData.View;
+using CmsWeb.Areas.Main.Controllers;
 using UtilityExtensions;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -30,10 +33,11 @@ namespace CmsWeb.Models
         public int? ScheduleId { get; set; }
         public int? CampusId { get; set; }
         public int? StatusId { get; set; }
-		public int? TypeId { get; set; }
+        public int? TypeId { get; set; }
         public string tagstr { get; set; }
         public int? OnlineReg { get; set; }
-		public bool? MainFellowship { get; set; }
+        public bool? MainFellowship { get; set; }
+        public bool? ParentOrg { get; set; }
 
         public OrgSearchModel()
         {
@@ -55,7 +59,7 @@ namespace CmsWeb.Models
             organizations = ApplySort(organizations).Skip(StartRow).Take(PageSize);
             return OrganizationList(organizations, TagProgramId, TagDiv);
         }
-		public static IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query, int? TagProgramId, int? TagDiv)
+        public static IEnumerable<OrganizationInfo> OrganizationList(IQueryable<CmsData.Organization> query, int? TagProgramId, int? TagDiv)
         {
             var q = from o in query
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
@@ -103,8 +107,8 @@ namespace CmsWeb.Models
                          LastMeeting = o.LastMeetingDate.FormatDate(),
                          Schedule = DbUtil.Db.GetScheduleDesc(sc.MeetingTime),
                          o.Location,
-						 RegStart = o.RegStart.FormatDate(),
-						 RegEnd = o.RegEnd.FormatDate(),
+                         RegStart = o.RegStart.FormatDate(),
+                         RegEnd = o.RegEnd.FormatDate(),
                          RollSheetVisitorWks = o.RollSheetVisitorWks ?? 0,
                          Limit = o.Limit.ToString(),
                          CampusId = o.CampusId ?? 0,
@@ -119,8 +123,8 @@ namespace CmsWeb.Models
                          NumWorkerCheckInLabels = o.NumWorkerCheckInLabels ?? 0,
                          o.PhoneNumber,
                          MainFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
-						 EntryPoint = o.EntryPoint.Description,
-						 o.OrganizationStatusId,
+                         EntryPoint = o.EntryPoint.Description,
+                         o.OrganizationStatusId,
                      };
             return q2;
         }
@@ -149,10 +153,12 @@ namespace CmsWeb.Models
             if (organizations != null)
                 return organizations;
 
-        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
-        	organizations = from o in DbUtil.Db.Organizations
-        	                where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-        	                select o;
+            var u = DbUtil.Db.CurrentUser;
+
+            var roles = u.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+            organizations = from o in DbUtil.Db.Organizations
+                            where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+                            select o;
 
             if (Util2.OrgMembersOnly)
                 organizations = from o in organizations
@@ -205,7 +211,7 @@ namespace CmsWeb.Models
                 organizations = from o in organizations
                                 where o.OrganizationStatusId == StatusId
                                 select o;
-			
+
             if (TypeId > 0)
                 organizations = from o in organizations
                                 where o.OrganizationTypeId == TypeId
@@ -237,10 +243,15 @@ namespace CmsWeb.Models
                                 where (o.RegistrationTypeId ?? 0) == 0
                                 select o;
 
-			if (MainFellowship == true)
-				organizations = from o in organizations
-								where o.IsBibleFellowshipOrg == true
-								select o;
+            if (MainFellowship == true)
+                organizations = from o in organizations
+                                where o.IsBibleFellowshipOrg == true
+                                select o;
+
+            if (ParentOrg == true)
+                organizations = from o in organizations
+                                where o.ChildOrgs.Any()
+                                select o;
 
             return organizations;
         }
@@ -497,7 +508,7 @@ namespace CmsWeb.Models
             });
             return list;
         }
-		public IEnumerable<SelectListItem> OrgTypes()
+        public IEnumerable<SelectListItem> OrgTypes()
         {
             var q = from t in DbUtil.Db.OrganizationTypes
                     orderby t.Code
@@ -544,6 +555,76 @@ namespace CmsWeb.Models
             if (dt < Util.Now.Date)
                 dt = dt.AddDays(7);
             return dt.Add(sdt.Value.TimeOfDay);
+        }
+        private static string RecentAbsentsEmail(OrgSearchController c, IEnumerable<RecentAbsent> list)
+        {
+            var q = from p in list
+                    orderby p.Consecutive, p.Name2
+                    select p;
+            return ViewExtensions2.RenderPartialViewToString(c, "RecentAbsentsEmail", q);
+        }
+        public void SendNotices(OrgSearchController c)
+        {
+            var olist = FetchOrgs().Select(oo => oo.OrganizationId).ToList();
+            var list = (from p in DbUtil.Db.RecentAbsents(null, null, 36)
+                        where olist.Contains(p.OrganizationId)
+                        select p).ToList();
+            var glist = from pp in list
+                        group pp by new
+                        {
+                            pp.OrganizationId,
+                            pp.OrganizationName,
+                            pp.MeetingId,
+                            pp.Lastmeeting,
+                            pp.LeaderName,
+                            pp.ConsecutiveAbsentsThreshold
+                        }
+                        into g
+                        select g;
+            foreach (var g in glist)
+            {
+                var q = from m in DbUtil.Db.OrganizationMembers
+                        where m.OrganizationId == g.Key.OrganizationId
+                        where m.MemberType.AttendanceTypeId == AttendTypeCode.Leader
+                        let u = m.Person.Users.FirstOrDefault(uu => uu.UserRoles.Any(r => r.Role.RoleName == "Access"))
+                        where u != null
+                        group m by m.Person into gg
+                        select gg;
+                var sb2 = new StringBuilder("Notices sent to:</br>\n<table>\n");
+                foreach (var gg in q)
+                {
+                    var person = gg.Key;
+                    var sb = new StringBuilder("The following meetings are ready to be viewed:<br/>\n");
+                    foreach (var om in gg)
+                    {
+                        var q2 = from mt in DbUtil.Db.Meetings
+                                 where mt.OrganizationId == om.OrganizationId
+                                 where mt.MeetingDate.Value.Date == g.Key.Lastmeeting.Value.Date
+                                 select new
+                                 { 
+                                     mt.MeetingId,
+                                     mt.Organization.OrganizationName,
+                                     mt.MeetingDate,
+                                     mt.Organization.LeaderName,
+                                     mt.Organization.Location,
+                                };
+                        foreach (var mt in q2)
+                        {
+                            string orgname = Organization.FormatOrgName(mt.OrganizationName, mt.LeaderName, mt.Location);
+                            sb.AppendFormat("<a href='{0}/Meeting/Index/{1}'>{2} - {3}</a><br/>\n",
+                                            DbUtil.Db.CmsHost, mt.MeetingId, orgname, mt.MeetingDate);
+                            sb2.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2:g}</td></tr>\n",
+                                             person.Name, orgname, mt.MeetingDate);
+                        }
+                        sb.Append(RecentAbsentsEmail(c, list.Where(pp => pp.OrganizationId == om.OrganizationId)));
+                    }
+                    DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, person, null,
+                                    "Attendance reports are ready for viewing", sb.ToString(), false);
+                }
+                sb2.Append("</table>\n");
+                DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, DbUtil.Db.CurrentUser.Person, null,
+                                "Attendance emails sent", sb2.ToString(), false);
+            }
         }
 
         public class OrganizationInfo

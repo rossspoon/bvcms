@@ -26,6 +26,10 @@ namespace CmsWeb.Areas.Dialog
             AddRoute(context, "DeleteMeeting");
             AddRoute(context, "TransactionHistory");
             AddRoute(context, "OrgMembersDialog");
+           context.MapRoute( "DeleteAllTranHistory",
+                "TransactionHistory/DeleteAll/{orgid}/{peopleid}",
+                new { controller = "TransactionHistory", action = "DeleteAll", orgid="", peopleid="" }
+            );
             context.MapRoute(
                 "Dialog_default",
                 "Dialog/{controller}/{action}/{id}",

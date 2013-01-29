@@ -6,7 +6,7 @@
 <a href="/Organization/OnlineRegFeesUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 <a class="displayedit bt" href="/Organization/OnlineRegFees/@Model.OrgId">Cancel</a>
 </div>
-<div>@Html.ValidationMessage("Form")</div>
+<div class="formerror">@Html.ValidationMessage("Form")</div>
 <ul class="enablesort edit">
 @Html.EditorFor(m => m, "TabFees")
 </ul>
@@ -14,4 +14,4 @@
 <a href="/Organization/OnlineRegFeesUpdate/@Model.OrgId" class="submitbutton bt blue">Save Changes</a>
 <a class="displayedit bt" href="/Organization/OnlineRegFees/@Model.OrgId">Cancel</a>
 </div>
-<div>@Html.ValidationMessage("Form")</div>
+<div class="formerror">@Html.ValidationMessage("Form")</div>

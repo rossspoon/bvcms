@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Web.Optimization
+@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.ContactSearchModel
 @{
@@ -7,7 +8,7 @@
 }
 @section scripts
 {
-@Html.Script("/Scripts/ContactSearch.js")
+@Scripts.Render("~/bundles/single/ContactSearch-js")
 }
 <form action="" id="form">
 <div class="roundbox floatleft">
@@ -24,11 +25,11 @@
         </tr>
         <tr>
             <th align="right">Contact Start Date:</th>
-            <td>@Html.TextBoxFor(vv => vv.StartDate)</td>
+            <td>@Html.TextBoxFor(vv => vv.StartDate, new { @class = "datepicker"})</td>
         </tr>
         <tr>
             <th align="right">Contact End Date:</th>
-            <td>@Html.TextBoxFor(vv => vv.EndDate)</td>
+            <td>@Html.TextBoxFor(vv => vv.EndDate, new { @class = "datepicker"})</td>
         </tr>
         <tr>
             <th align="right">Contact Type:</th>
@@ -53,20 +54,21 @@
         <tr>
             <td colspan="2" align="right">
                 <a id="NewSearch" class="bt">Clear</a>
-                <a id="search" class="bt">Search</a>
+                <a id="search" class="blue bt">Search</a>
             </td>
         </tr>
     </tbody>
 </table>
 </div>
-<div id="buttondiv" class="dropdown" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
+<div id="buttondiv" class="extrabar" style="margin-top:2em;margin-left: 2em;float:left;font-size:1.2em;">
     <a href="#" class="trigger-dropdown">
         Contacts Management <img src="/images/dnarrow.png" />
     </a>
     <div class="dropdown-menu has-tip">
         <ul>
             <li><a id="ConvertToQuery" href="/ContactSearch/ConvertToQuery/">Convert To Search (Contactors)</a></li>
-            <li><a id="ContactorSummary" href="/ContactSearch/ContactorSummary">Contactor Summary Report<br/>(requires start/end and optionally ministry)</a></li>
+            <li><a id="ContactorSummary" href="/ContactSearch/ContactorSummary">Contactor Summary Report</a></li>
+            <li><a id="ContactTypeTotals" href="/ContactSearch/ContactTypeTotals">Contact Type Totals</a></li>
         </ul>
     </div>
 </div>

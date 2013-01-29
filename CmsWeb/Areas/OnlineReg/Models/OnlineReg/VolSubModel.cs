@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CmsData;
+using CmsWeb.Areas.Manage.Controllers;
 using UtilityExtensions;
 using CmsWeb.Areas.Main.Models;
 using TaskAlias = System.Threading.Tasks.Task;
@@ -92,18 +93,13 @@ Yes, I can sub for you.</a>".Fmt(attend.AttendId, person.PeopleId, ticks);
 Sorry, I cannot sub for you.</a>".Fmt(attend.AttendId, person.PeopleId, ticks);
 
 			subject = "Volunteer substitute request for {0}".Fmt(org.OrganizationName);
-			message = @"
-<p>Hi {{first}},</p>
-<p>I need a substitute for {0}<br>
-on {1:dddd, MMM d} at {1:h:mm tt}</p>
-<blockquote>
-<p>{2}</p>
-<p>{3}</p>
-</blockquote>
-<p>
-Thank you for your consideration,<br />
-{4}
-</p>".Fmt(org.OrganizationName, attend.MeetingDate, yeslink, nolink, person.Name);
+            message = DbUtil.Db.ContentHtml("VolunteerSubRequest", Resource1.VolSubModel_ComposeMessage_Body);
+		    message = message.Replace("{org}", org.OrganizationName);
+            message = message.Replace("{meetingdate}", attend.MeetingDate.ToString("dddd, MMM d"));
+            message = message.Replace("{meetingtime}", attend.MeetingDate.ToString("h:mm tt"));
+            message = message.Replace("{yeslink}", yeslink);
+            message = message.Replace("{nolink}", nolink);
+            message = message.Replace("{sendername}", person.Name);
 		}
 		public string DisplayMessage { get; set; }
 		public string Error { get; set; }

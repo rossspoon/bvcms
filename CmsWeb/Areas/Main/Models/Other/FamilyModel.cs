@@ -5,7 +5,6 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using UtilityExtensions;
-using CMSPresenter;
 
 namespace CmsWeb.Models.PersonPage
 {

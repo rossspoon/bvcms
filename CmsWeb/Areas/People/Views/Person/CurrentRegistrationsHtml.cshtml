@@ -1,0 +1,9 @@
+﻿@model IQueryable<CmsWeb.Areas.Main.Controllers.PersonController.CurrentRegistration>
+<ul id="CurrentRegistrations">
+@foreach(var v in Model)
+{
+	<li><a href="/OnlineReg/Index/@v.OrgId">@v.Name</a><br />
+        @v.Description
+    </li>
+}
+</ul>

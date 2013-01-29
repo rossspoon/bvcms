@@ -1,10 +1,13 @@
 ﻿@model CmsWeb.Models.NewOrganizationModel
+@using System.Web.Optimization
 @using CmsWeb
 @using UtilityExtensions
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Add Organization</title>
-@Html.Partial("CombinedCss")
+    @Styles.Render("~/Content/styles/css")
+    @Scripts.Render("~/bundles/js")
+    @Html.Partial("DatePickerDefaults")
 </head>
 <body>
 <form action="/AddOrganization/Submit/@Model.OrganizationId" method="post">
@@ -48,7 +51,5 @@
     </tr>
 </table>
 </form>
-@Html.Partial("CombinedJs")
-@Html.Partial("DatePickerDefaults")
 </body>
 </html>

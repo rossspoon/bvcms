@@ -1,4 +1,5 @@
-﻿@using CmsData.Codes
+﻿@using System.Web.Optimization
+@using CmsData.Codes
 @using CmsWeb
 @model CmsWeb.Models.OrganizationPage.OrganizationModel
 @{
@@ -6,14 +7,13 @@
     ViewBag.Title = "Organization";
 }
 @section head {
-    <link href="/Content/css/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/css/organization.css" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/styles/org-css")
 }
 @section scripts
 {
     <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-    <script src="/ckeditor/adapters/jquery.js" type="text/javascript"></script>
-    @Html.Partial("CombinedOrgJs")
+    @Scripts.Render("~/bundles/edit-js")
+    @Scripts.Render("~/bundles/org-js")
 }
 @{ CmsData.Organization o = Model.org; }
 @Html.Hidden("refreshed", "no")
@@ -24,7 +24,7 @@
     </form>
 </div>
 <div class="floatleft">
-    <div id="buttondiv" class="navbar" style="margin-top: 2em; margin-left: 2em; font-size: 1.2em;">
+    <div id="buttondiv" class="extrabar" style="margin-top: 2em; margin-left: 2em; font-size: 1.2em;">
         <a href="#" class="trigger-dropdown">
             Other Management <img src="/images/dnarrow.png" />
         </a>
@@ -36,6 +36,9 @@
                             Group Member Management
                         </a></li>
                 }
+                <li><a id="RecentAbsents" href="/Reports/RecentAbsents/@o.OrganizationId" target="_blank">
+                         Recent Absents Report
+                    </a></li>
                 <li><a id="RecentAttendRpt" href="/Reports/PastAttendee/@o.OrganizationId" target="_blank">
                          Recent Attendance Report
                     </a></li>
@@ -45,14 +48,11 @@
                 <li><a href="/OrgContent/Index/@o.OrganizationId" target="_blank">
                          Members Only Page
                     </a> </li>
-                @if (User.IsInRole("Developer"))
-                {
-                    <li><a href="/RegSetting/Index/@o.OrganizationId">
-                            View Registration Document
-                        </a></li>
-                }
+                <li class="hideAlt"><a href="/RegSetting/Index/@o.OrganizationId">
+                        View Registration Document
+                    </a></li>
                 <li><a id="tryreg" href="#">Try Registration</a> </li>
-                @if (Model.IsVolunteerLeader && o.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+                @if (Model.IsVolunteerLeader && o.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
                 {
                     <li><a id="VolunteerCalendar" href="/Volunteers/Calendar/@o.OrganizationId" target="calendar">
                             Volunteer Calendar
@@ -63,7 +63,7 @@
                     <li><a href="/Organization/CopySettings/@o.OrganizationId">
                             Copy Settings
                         </a></li>
-                    if(o.RegistrationTypeId == RegistrationTypeCode.ChooseSlot)
+                    if(o.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
                     {
                         <li><a id="sendreminders" href="/Organization/Reminders/@o.OrganizationId">
                                 Send Volunteer Reminders
@@ -84,7 +84,7 @@
                     <li><a id="deleteorg" href="/Organization/Delete/@o.OrganizationId">
                             Delete Organization
                         </a></li>
-                    <li><a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">
+                    <li class="hideAlt"><a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">
                             Repair Transactions
                         </a></li>
                 }
@@ -294,23 +294,31 @@
 </div>
 <div id="FilterGroups" class="modalDiv" style="display: none;">
     <form action="">
-    <h3>
-        Name Filter</h3>
+    <div><b>
+        Name Filter</b></div>
     <div>
         First and last name or just last name. You can put just the first few letters of
-        each.</div>
-    <input name="namefilter" type="text" />
-    <h3>
-        Small Group Filter</h3>
+            each.</div>
+        <input id="namefilter" name="namefilter" type="text" />
+        <hr/>
+    <div><b>
+        Small Group Prefix</b></div>
     <div>
-        Select multiple items by holding down the control key (individual) or shift key
-        (range) while you click. Select (not specified) to cancel the filter.</div>
-    <select id="smallgrouplist" name="smallgrouplist" multiple="multiple" size="10">
-        @foreach (var s in Model.MemberModel.SmallGroups())
-        { 
-            <option @(s.Selected ? "selected='selected'" : "") value="@s.Value">@s.Text</option>
-        }
-    </select>
+        Match on the first few letters of a small group. Lead with - to eliminate. Comma separate for more.</div>
+        <input id="sgprefix" name="sgprefix" type="text" />
+        <hr/>
+        <div><b>
+            Small Group Filter</b></div>
+        <div><label>@Html.RadioButton("selectmode", "0") Match Any</label> <label>@Html.RadioButton("selectmode", "1") Match All</label></div>
+        <div>
+            Select multiple items by holding down the control key (individual) or shift key
+            (range) while you click. Select (not specified) to cancel the filter.</div>
+        <select id="smallgrouplist" name="smallgrouplist" multiple="multiple" size="10">
+            @foreach (var s in Model.MemberModel.SmallGroups())
+            { 
+                <option @(s.Selected ? "selected='selected'" : "") value="@s.Value">@s.Text</option>
+            }
+        </select>
     </form>
 </div>
 <div id="AddFromTag">

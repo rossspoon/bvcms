@@ -17,6 +17,13 @@
             <td>@Model.request </td>
         </tr>
             break;
+        case "AskHeader":
+        <tr>
+            <td colspan="2"><h4>@Html.Raw(((AskHeader)ask).Label)</h4></td>
+        </tr>
+            break;
+        case "AskInstruction":
+            break;
         case "AskEmContact":
         <tr>
             <td>Emergency Contact</td>
@@ -107,11 +114,12 @@
         </tr>
         break;
         case "AskExtraQuestions":
-            foreach (var a in ((AskExtraQuestions)ask).list)
+            var eq = (AskExtraQuestions)ask;
+            foreach (var a in eq.list)
             {
         <tr>
             <td><div class="wraparound">@a.Question</div></td>
-            <td> @Model.ExtraQuestion[a.Question]</td>
+            <td> @Model.ExtraQuestion[eq.UniqueId][a.Question]</td>
         </tr>
             }
             break;
@@ -125,12 +133,22 @@
         	}
             break;
         case "AskCheckboxes":
-            foreach (var a in ((AskCheckboxes)ask).list)
+	        var cb = (AskCheckboxes) ask;
+            foreach (var a in cb.list)
             {
-        <tr>
-            <td><div class="wraparound">@a.Description</div></td>
-            <td> @(Model.CheckboxChecked(a.SmallGroup) ? "Checked" : "") </td>
-        </tr>
+                if (a.SmallGroup == "comment")
+                {
+                }
+                else if (a.SmallGroup == "nocheckbox" && cb.Cols == 1)
+                {
+                    <tr><td colspan="2"><b>@Html.Raw(a.Description)</b></td></tr>
+                }
+                else if (Model.CheckboxChecked(a.SmallGroup))
+                {
+                    <tr><td><div class="wraparound">@a.Description</div></td>
+                        <td>Checked</td>
+                    </tr>
+                }
             }
             break;
         case "AskMenu":

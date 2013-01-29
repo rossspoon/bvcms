@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TotalsByFundRange.aspx.cs"
     MasterPageFile="~/Contributions/Reports/Reports.Master" Inherits="CmsWeb.Reports.TotalsByFundRange" EnableEventValidation="false" %>
 
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -144,7 +143,7 @@
         </asp:ListView>
     </div>
     <asp:ObjectDataSource ID="ODSRanges" runat="server" SelectMethod="TotalsByFundRange"
-        TypeName="CMSPresenter.BundleController" OnObjectCreated="ObjectDataSource1_ObjectCreated"
+        TypeName="CmsWeb.Models.BundleModel" OnObjectCreated="ObjectDataSource1_ObjectCreated"
         OldValuesParameterFormatString="original_{0}">
         <SelectParameters>
             <asp:ControlParameter Name="fundid" ControlID="Fund" PropertyName="SelectedValue"
@@ -157,6 +156,6 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSFunds" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="Funds" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="CampusIds" runat="server" SelectMethod="AllCampuses0" TypeName="CMSPresenter.CodeValueController"></asp:ObjectDataSource>
+        SelectMethod="Funds" TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="CampusIds" runat="server" SelectMethod="AllCampuses0" TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
 </asp:Content>

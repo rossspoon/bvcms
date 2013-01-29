@@ -1,0 +1,41 @@
+﻿@model CmsWeb.Models.TotalsByFundModel
+@using System.Web.Optimization
+@using UtilityExtensions
+@using CmsWeb
+@using CmsData
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Donor Totals By Range";
+}
+@section head
+{
+    <style type="text/css" media="print">
+        input.noPrint { display: none; }
+        span.noPrint { display: none; }
+    </style>
+}
+@section scripts
+{
+@Scripts.Render("~/bundles/single/TotalsByRange-js")
+}
+
+<div class="roundbox floatleft">
+    <h2>Donor Totals By Range</h2>
+    <form id="totals">
+        Campus: @Html.DropDownList("CampusId", Model.Campuses())
+        Start Date: @Html.TextBox("Dt1", Model.Dt1.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
+        End Date: @Html.TextBox("Dt2", Model.Dt2.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
+        <div style="color: Red">@Html.ValidationMessage("dates")</div>
+        Non Tax Deductible:@Html.CheckBox("NonTaxDeductible")
+        Pledges:@Html.CheckBox("Pledges")
+        Include Unclosed Bundles:@Html.CheckBox("IncUnclosedBundles")
+        <p>
+            <input id="run" type="submit" value="Run Report" class="bt" />
+        </p>
+        <hr />
+    </form>
+</div>
+<div style="clear: both"></div>
+<div id="results">
+	
+</div>

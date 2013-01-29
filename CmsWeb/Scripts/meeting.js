@@ -56,6 +56,11 @@
             if (value === '0')
                 return '';
           return value;
+        },
+        callback: function (value) {
+            if (value.startsWith("error:"))
+                alert(value);
+            value = "";
         }
     });
 
@@ -290,6 +295,27 @@
                 style: 'display: inline'
             });
         }
+    });
+    $("#rollsheetoptions").dialog({
+        autoOpen: false,
+        buttons: {
+            "Ok": function () {
+                var ck = $("#bygroup").is(':checked');
+                var sg = $("#sgprefix").val();
+                var q = "?MeetingId=" + $("#meetingid").val();
+                if (ck)
+                    q = q.appendQuery("bygroup=1");
+                if (sg.length > 0)
+                    q = q.appendQuery("sgprefix=" + sg);
+                $(this).dialog("close");
+                window.open("/Reports/Rollsheet" + q);
+            }
+        }
+    });
+    $("#rollsheet").live("click", function (ev) {
+        ev.preventDefault();
+        var d = $('#rollsheetoptions');
+        d.dialog("open");
     });
 });
 function AddSelected(ret) {

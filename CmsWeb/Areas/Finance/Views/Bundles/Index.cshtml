@@ -1,0 +1,22 @@
+﻿@model CmsWeb.Areas.Finance.Models.BundlesModel
+@using System.Web.Optimization
+@using UtilityExtensions
+@{
+    ViewBag.Title = "Contribution Bundles";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+}
+@section scripts
+{
+@Scripts.Render("~/bundles/single/bundles-js")
+}
+<table class="roundbox">
+    <tr><td nowrap="nowrap"><h2>Contribution Bundles</h2></td></tr>
+    <tr><td align="right">
+            @Html.ActionLink( "Create New Bundle", "NewBundle", "Bundles", null,
+                              new { @class="bt blue", onclick = "return confirm('Are you sure?');" } )
+        </td>
+    </tr>
+</table>
+<form id="results">
+@Html.Partial("Results", Model)
+</form>

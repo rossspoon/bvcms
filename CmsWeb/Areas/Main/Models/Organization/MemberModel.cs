@@ -19,21 +19,31 @@ namespace CmsWeb.Models.OrganizationPage
         }
         public int? OrganizationId { get; set; }
         private int[] Groups;
+        private int GroupsMode;
         private GroupSelect Select;
         private string NameFilter;
+        private string SgPrefix;
 
         public PagerModel2 Pager { get; set; }
-        public MemberModel(int? id, int[] groups, GroupSelect select, string name)
+        public MemberModel(int? id, GroupSelect select, string name, string sgprefix = "")
         {
             OrganizationId = id;
-            if (groups == null)
-                groups = new int[] { 0 };
-            Groups = groups;
+            if (Util2.CurrentGroups != null && @select == GroupSelect.Active)
+            {
+                Groups = Util2.CurrentGroups;
+                GroupsMode = Util2.CurrentGroupsMode;
+            }
+            else // No Filter
+            {
+                Groups = new int[] {0}; 
+                GroupsMode = 0;
+            }
             Select = select;
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
             Pager.Sort = "Name";
             NameFilter = name;
+            SgPrefix = sgprefix;
         }
         public IEnumerable<SelectListItem> SmallGroups()
         {
@@ -52,7 +62,7 @@ namespace CmsWeb.Models.OrganizationPage
         }
         public bool isFiltered
         {
-            get { return Util2.CurrentGroups[0] != 0 || NameFilter.HasValue(); }
+            get { return Util2.CurrentGroups[0] != 0 || NameFilter.HasValue() || SgPrefix.HasValue(); }
         }
 
         private IQueryable<OrganizationMember> _members;
@@ -79,10 +89,14 @@ namespace CmsWeb.Models.OrganizationPage
                 _members = from om in DbUtil.Db.OrganizationMembers
                            where om.OrganizationId == OrganizationId
 						   let gc = om.OrgMemMemTags.Count(mt => Groups.Contains(mt.MemberTagId))
-						   where gc == Groups.Length || Groups[0] <= 0
+                           // for Match Any
+						   where gc > 0 || Groups[0] <= 0 || GroupsMode == 1
+                           // for Match All
+						   where gc == Groups.Length || Groups[0] <= 0 || GroupsMode == 0
+                           // for Match No SmallGroup assigned
                            where om.OrgMemMemTags.Count() == 0 || Groups[0] != -1
                            select om;
-            if (Active == true)
+            if (Active)
                 if (Pending == false) // current
                     _members = from om in _members
                                where om.MemberTypeId != inactive
@@ -112,6 +126,20 @@ namespace CmsWeb.Models.OrganizationPage
                                let p = om.Person
                                where p.LastName.StartsWith(Last)
                                select om;
+            }
+            if (SgPrefix.HasValue())
+            {
+                var a = SgPrefix.Split(',');
+                foreach(var p in a)
+                    if (p.StartsWith("-"))
+                        _members = from om in _members
+                                   where om.OrgMemMemTags.All(mm => !mm.MemberTag.Name.StartsWith(p.Substring(1)))
+                                   select om;
+                    else
+                        _members = from om in _members
+                                   where om.OrgMemMemTags.Any(mm => mm.MemberTag.Name.StartsWith(p))
+                                   select om;
+
             }
             return _members;
         }

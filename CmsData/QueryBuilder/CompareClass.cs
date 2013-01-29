@@ -57,6 +57,10 @@ namespace CmsData
         {
             switch (c.FieldInfo.QueryType)
             {
+                case QueryType.ActiveRecords:
+                    return Expressions.ActiveRecords(parm,
+                        CompType, 
+                        c.CodeIds == "1");
                 case QueryType.AttendPct:
                     return Expressions.AttendPct(parm,
                                c.Program,
@@ -208,7 +212,11 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HaveVolunteerApplications:
-                    return Expressions.HaveVolunteerApplications(parm,
+                    return Expressions.HasVolunteerApplications(parm,
+                               CompType,
+                               c.CodeIds == "1");
+                case QueryType.HasMemberDocs:
+                    return Expressions.HasMemberDocs(parm,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HasContacts:
@@ -301,7 +309,16 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.TextValue.ToInt());
+                // L -------------------
+                case QueryType.LeadersUnderCurrentOrg:
+                    return Expressions.LeadersUnderCurrentOrg(parm, Db,
+                               CompType,
+                               c.CodeIds == "1");
                 // M -------------------
+                case QueryType.MembersUnderCurrentOrg:
+                    return Expressions.MembersUnderCurrentOrg(parm, Db,
+                               CompType,
+                               c.CodeIds == "1");
                 case QueryType.MadeContactTypeAsOf:
                     return Expressions.MadeContactTypeAsOf(parm,
                                c.StartDate,
@@ -433,7 +450,7 @@ namespace CmsData
                 case QueryType.PeopleIds:
                     return Expressions.PeopleIds(parm,
                                 CompType,
-								c.TextValue.Split(',').Select(aa => aa.ToInt()).ToArray());
+								(c.TextValue ?? "").Split(',').Select(aa => aa.ToInt()).ToArray());
                 case QueryType.PreviousCurrentOrg:
                     return Expressions.PreviousCurrentOrg(Db, parm,
                                CompType,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CmsData.Codes;
 using CmsWeb.Areas.Main.Models;
 using CmsWeb.Areas.Manage.Controllers;
 using UtilityExtensions;
@@ -22,23 +23,18 @@ namespace CmsWeb.Areas.Main.Controllers
 			if (!body.HasValue())
 				body = TempData["body"] as string;
 
+			var m = new MassEmailer(id.Value, parents);
 			if(!subj.HasValue() && templateID != 0 && DbUtil.Db.Setting("UseEmailTemplates", "false") == "true" )
 			{
 				if (templateID == null)
-				{
-					ViewBag.queryID = id;
-					ViewBag.parents = parents ?? false;
-					return View("SelectTemplate", new EmailTemplatesModel());
-				}
+					return View("SelectTemplate", new EmailTemplatesModel() { wantparents = parents ?? false, queryid = id.Value});
 				else
 				{
 					DbUtil.LogActivity("Emailing people");
 
-					var m = new MassEmailer(id.Value, parents);
 					m.CmsHost = DbUtil.Db.CmsHost;
 					m.Host = Util.Host;
 
-					ViewBag.parents = parents ?? false;
 					ViewBag.templateID = templateID;
 					return View("Compose", m);
 				}
@@ -79,7 +75,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			{
 				content = new Content();
 				content.Name = name;
-				content.TypeID = DisplayController.TYPE_SAVED_DRAFT;
+			    content.TypeID = ContentTypeCode.TypeSavedDraft;
 				content.RoleID = roleid;
 			}
 						

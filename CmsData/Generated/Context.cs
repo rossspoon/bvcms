@@ -54,6 +54,10 @@ namespace CmsData
         partial void UpdateAuditValue(AuditValue instance);
         partial void DeleteAuditValue(AuditValue instance);
         
+        partial void InsertBackgroundCheckLabel(BackgroundCheckLabel instance);
+        partial void UpdateBackgroundCheckLabel(BackgroundCheckLabel instance);
+        partial void DeleteBackgroundCheckLabel(BackgroundCheckLabel instance);
+        
         partial void InsertBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
         partial void UpdateBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
         partial void DeleteBackgroundCheckMVRCode(BackgroundCheckMVRCode instance);
@@ -145,6 +149,10 @@ namespace CmsData
         partial void InsertContent(Content instance);
         partial void UpdateContent(Content instance);
         partial void DeleteContent(Content instance);
+        
+        partial void InsertContentKeyWord(ContentKeyWord instance);
+        partial void UpdateContentKeyWord(ContentKeyWord instance);
+        partial void DeleteContentKeyWord(ContentKeyWord instance);
         
         partial void InsertContribution(Contribution instance);
         partial void UpdateContribution(Contribution instance);
@@ -274,10 +282,6 @@ namespace CmsData
         partial void UpdateGender(Gender instance);
         partial void DeleteGender(Gender instance);
         
-        partial void InsertGenderClass(GenderClass instance);
-        partial void UpdateGenderClass(GenderClass instance);
-        partial void DeleteGenderClass(GenderClass instance);
-        
         partial void InsertGeoCode(GeoCode instance);
         partial void UpdateGeoCode(GeoCode instance);
         partial void DeleteGeoCode(GeoCode instance);
@@ -338,10 +342,6 @@ namespace CmsData
         partial void UpdateMinistry(Ministry instance);
         partial void DeleteMinistry(Ministry instance);
         
-        partial void InsertNameSuffix(NameSuffix instance);
-        partial void UpdateNameSuffix(NameSuffix instance);
-        partial void DeleteNameSuffix(NameSuffix instance);
-        
         partial void InsertNameTitle(NameTitle instance);
         partial void UpdateNameTitle(NameTitle instance);
         partial void DeleteNameTitle(NameTitle instance);
@@ -401,10 +401,6 @@ namespace CmsData
         partial void InsertPeopleExtra(PeopleExtra instance);
         partial void UpdatePeopleExtra(PeopleExtra instance);
         partial void DeletePeopleExtra(PeopleExtra instance);
-        
-        partial void InsertPhonePreference(PhonePreference instance);
-        partial void UpdatePhonePreference(PhonePreference instance);
-        partial void DeletePhonePreference(PhonePreference instance);
         
         partial void InsertPicture(Picture instance);
         partial void UpdatePicture(Picture instance);
@@ -694,6 +690,12 @@ namespace CmsData
 
 		}
 
+		public Table< BackgroundCheckLabel> BackgroundCheckLabels
+		{
+			get	{ return this.GetTable< BackgroundCheckLabel>(); }
+
+		}
+
 		public Table< BackgroundCheckMVRCode> BackgroundCheckMVRCodes
 		{
 			get	{ return this.GetTable< BackgroundCheckMVRCode>(); }
@@ -829,6 +831,12 @@ namespace CmsData
 		public Table< Content> Contents
 		{
 			get	{ return this.GetTable< Content>(); }
+
+		}
+
+		public Table< ContentKeyWord> ContentKeyWords
+		{
+			get	{ return this.GetTable< ContentKeyWord>(); }
 
 		}
 
@@ -1024,12 +1032,6 @@ namespace CmsData
 
 		}
 
-		public Table< GenderClass> GenderClasses
-		{
-			get	{ return this.GetTable< GenderClass>(); }
-
-		}
-
 		public Table< GeoCode> GeoCodes
 		{
 			get	{ return this.GetTable< GeoCode>(); }
@@ -1120,12 +1122,6 @@ namespace CmsData
 
 		}
 
-		public Table< NameSuffix> NameSuffixes
-		{
-			get	{ return this.GetTable< NameSuffix>(); }
-
-		}
-
 		public Table< NameTitle> NameTitles
 		{
 			get	{ return this.GetTable< NameTitle>(); }
@@ -1213,12 +1209,6 @@ namespace CmsData
 		public Table< PeopleExtra> PeopleExtras
 		{
 			get	{ return this.GetTable< PeopleExtra>(); }
-
-		}
-
-		public Table< PhonePreference> PhonePreferences
-		{
-			get	{ return this.GetTable< PhonePreference>(); }
 
 		}
 
@@ -1654,6 +1644,21 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.ContactTypeTotals", IsComposable = true)]
+		public IQueryable< View.ContactTypeTotal > ContactTypeTotals(
+            [Parameter(DbType="datetime")] DateTime? dt1,
+            [Parameter(DbType="datetime")] DateTime? dt2,
+            [Parameter(DbType="int")] int? min
+            )
+		{
+			return this.CreateMethodCallQuery< View.ContactTypeTotal>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt1,
+                dt2,
+                min
+                );
+		}
+
 		[Function(Name="dbo.ContributionCountTable", IsComposable = true)]
 		public IQueryable< View.ContributionCountTable > ContributionCountTable(
             [Parameter(DbType="int")] int? days,
@@ -1894,6 +1899,25 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.GetTotalContributionsRange", IsComposable = true)]
+		public IQueryable< View.GetTotalContributionsRange > GetTotalContributionsRange(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? campusid,
+            [Parameter(DbType="bit")] bool? nontaxded,
+            [Parameter(DbType="bit")] bool? includeUnclosed
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTotalContributionsRange>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                campusid,
+                nontaxded,
+                includeUnclosed
+                );
+		}
+
 		[Function(Name="dbo.GivingCurrentPercentOfFormer", IsComposable = true)]
 		public IQueryable< View.GivingCurrentPercentOfFormer > GivingCurrentPercentOfFormer(
             [Parameter(DbType="datetime")] DateTime? dt1,
@@ -1964,6 +1988,32 @@ namespace CmsData
 			return this.CreateMethodCallQuery< View.QBClause>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 qid
+                );
+		}
+
+		[Function(Name="dbo.RecentAbsents", IsComposable = true)]
+		public IQueryable< View.RecentAbsent > RecentAbsents(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? divid,
+            [Parameter(DbType="int")] int? days
+            )
+		{
+			return this.CreateMethodCallQuery< View.RecentAbsent>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                divid,
+                days
+                );
+		}
+
+		[Function(Name="dbo.RecentAttendance", IsComposable = true)]
+		public IQueryable< View.RecentAttendance > RecentAttendance(
+            [Parameter(DbType="int")] int? oid
+            )
+		{
+			return this.CreateMethodCallQuery< View.RecentAttendance>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                oid
                 );
 		}
 

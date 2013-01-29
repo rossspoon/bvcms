@@ -9,13 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Linq;
 using System.Web;
+using CmsWeb.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Collections;
 using CmsData;
 using UtilityExtensions;
-using CMSPresenter;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -64,8 +64,8 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.AddCell(StartPageSet());
 
             t.DefaultCell.Border = PdfPCell.TOP_BORDER;
-            t.DefaultCell.BorderColor = Color.BLACK;
-            t.DefaultCell.BorderColorTop = Color.BLACK;
+            t.DefaultCell.BorderColor = BaseColor.BLACK;
+            t.DefaultCell.BorderColorTop = BaseColor.BLACK;
             t.DefaultCell.BorderWidthTop = 2.0f;
 
             if (qid.HasValue) // print using a query
@@ -82,8 +82,9 @@ namespace CmsWeb.Areas.Main.Models.Report
                                        where !m.DeceasedDate.HasValue
                                        select new
                                        {
-                                           order = g.Any(p => p.PeopleId == m.PeopleId) ? 1 :
-                                                 m.PositionInFamilyId,
+                                           order = m.PositionInFamilyId * 1000 + (m.PositionInFamilyId == 10 ? m.GenderId : 1000 - (m.Age ?? 0)),
+//                                           order = g.Any(p => p.PeopleId == m.PeopleId) ? 1 :
+//                                                 m.PositionInFamilyId,
                                            person = m
                                        }
                          };
@@ -94,13 +95,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                     ft.DefaultCell.Border = PdfPCell.NO_BORDER;
                     ft.DefaultCell.Padding = 5;
                     int fn = 1;
-                    var color = Color.BLACK;
+                    var color = BaseColor.BLACK;
                     foreach (var p in f.members.OrderBy(m => m.order))
                     {
-                        if (color == Color.WHITE)
+                        if (color == BaseColor.WHITE)
                             color = new GrayColor(240);
                         else
-                            color = Color.WHITE;
+                            color = BaseColor.WHITE;
                         Debug.WriteLine("{0:##}: {1}".Fmt(p.order, p.person.Name));
                         AddRow(ft, p.person, fn, color);
                         fn++;
@@ -134,7 +135,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             return t;
         }
 
-        private void AddRow(PdfPTable t, Person p, int fn, Color color)
+        private void AddRow(PdfPTable t, Person p, int fn, BaseColor color)
         {
             t.DefaultCell.BackgroundColor = color;
 
@@ -142,7 +143,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             c1.Add(new Chunk(p.Name, boldfont));
             c1.Add(new Chunk("  ({0})\n".Fmt(p.PeopleId), smallfont));
             var contact = new StringBuilder();
-            var cv = new CodeValueController();
+            var cv = new CodeValueModel();
             if (fn == 1)
             {
                 AddLine(contact, p.PrimaryAddress);

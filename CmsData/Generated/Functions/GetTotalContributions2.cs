@@ -32,6 +32,8 @@ namespace CmsData.View
 		
 		private string _FundName;
 		
+		private int _QBSynced;
+		
 		
 		public GetTotalContributions2()
 		{
@@ -56,7 +58,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="HeadName", Storage="_HeadName", DbType="varchar(127)")]
+		[Column(Name="HeadName", Storage="_HeadName", DbType="varchar(139)")]
 		public string HeadName
 		{
 			get
@@ -73,7 +75,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(127)")]
+		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(139)")]
 		public string SpouseName
 		{
 			get
@@ -170,6 +172,23 @@ namespace CmsData.View
 			{
 				if (this._FundName != value)
 					this._FundName = value;
+			}
+
+		}
+
+		
+		[Column(Name="QBSynced", Storage="_QBSynced", DbType="int NOT NULL")]
+		public int QBSynced
+		{
+			get
+			{
+				return this._QBSynced;
+			}
+
+			set
+			{
+				if (this._QBSynced != value)
+					this._QBSynced = value;
 			}
 
 		}

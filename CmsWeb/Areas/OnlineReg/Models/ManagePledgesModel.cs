@@ -64,8 +64,8 @@ namespace CmsWeb.Models
                     group c by pid into g
                     select new PledgeInfo
                     {
-                        Pledged = g.Where(c => c.PledgeFlag == true).Sum(c => c.ContributionAmount) ?? 0,
-                        Given = g.Where(c => c.PledgeFlag == false).Sum(c => c.ContributionAmount) ?? 0,
+                        Pledged = g.Where(c => c.ContributionTypeId == ContributionTypeCode.Pledge).Sum(c => c.ContributionAmount) ?? 0,
+                        Given = g.Where(c => c.ContributionTypeId != ContributionTypeCode.Pledge).Sum(c => c.ContributionAmount) ?? 0,
                     };
             return q.SingleOrDefault() ?? new PledgeInfo { Given = 0m, Pledged = 0m };
         }

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CmsData.View.ContactTypeTotal>
+@{
+    ViewBag.Title = "ContactTypeTotals";
+    Layout = "~/Views/Shared/SiteLayout.cshtml";
+}
+@section scripts
+{
+    <script>
+        $(function() {
+            $("a.delete").click(function (ev) {
+                ev.preventDefault();
+                if (confirm("are you sure?"))
+                    window.location = $(this).attr("href");
+                return false;
+            });
+        });
+
+    </script> 
+}
+<h2>Contact Type Totals</h2>
+<table class="grid table-striped">
+    <thead>
+        <tr>
+            <td>Description</td>
+            <td>#Contacts</td>
+            <td>#People</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <td>
+                    <a href="/ContactSearch/ContactTypeSearchBuilder/@i.Id">@i.Description</a>
+                </td>
+                <td align="right">@i.Count</td>
+                <td align="right">@i.CountPeople</td>
+                <td>
+                    @if (ViewBag.candelete && i.Description.StartsWith("-"))
+                    {
+                        <a class="delete" href="/ContactSearch/DeleteContactsForType/@i.Id"><img src="~/images/delete.gif"/></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

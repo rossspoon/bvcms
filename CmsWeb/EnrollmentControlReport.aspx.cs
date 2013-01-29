@@ -10,7 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CMSPresenter;
+using CmsWeb.Models;
 using UtilityExtensions;
 using CmsData;
 
@@ -18,13 +18,13 @@ namespace CmsWeb
 {
     public partial class EnrollmentControlReport : System.Web.UI.Page
     {
-        private CodeValueController CVController = new CodeValueController();
+        private CodeValueModel cvModel = new CodeValueModel();
         protected void Page_Load(object sender, EventArgs e)
         {
             Run.Enabled = User.IsInRole("Attendance");
             if (!IsPostBack)
             {
-                DivOrg.DataSource = CVController.OrgDivTags();
+                DivOrg.DataSource = cvModel.OrgDivTags();
                 DivOrg.DataBind();
             }
         }
@@ -32,7 +32,7 @@ namespace CmsWeb
         {
             DivOrg.Items.FindByValue("0").Enabled = false;
             SubDivOrg.SelectedIndex = -1;
-            SubDivOrg.DataSource = CVController.OrgSubDivTags(DivOrg.SelectedValue.ToInt());
+            SubDivOrg.DataSource = cvModel.OrgSubDivTags(DivOrg.SelectedValue.ToInt());
             SubDivOrg.DataBind();
             BindSchedule();
         }

@@ -46,6 +46,8 @@ namespace CmsData.View
 		
 		private string _BundleStatus;
 		
+		private int? _QBSyncID;
+		
 		
 		public Contributions2()
 		{
@@ -121,7 +123,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="HeadName", Storage="_HeadName", DbType="varchar(127)")]
+		[Column(Name="HeadName", Storage="_HeadName", DbType="varchar(139)")]
 		public string HeadName
 		{
 			get
@@ -138,7 +140,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(127)")]
+		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(139)")]
 		public string SpouseName
 		{
 			get
@@ -303,6 +305,23 @@ namespace CmsData.View
 			{
 				if (this._BundleStatus != value)
 					this._BundleStatus = value;
+			}
+
+		}
+
+		
+		[Column(Name="QBSyncID", Storage="_QBSyncID", DbType="int")]
+		public int? QBSyncID
+		{
+			get
+			{
+				return this._QBSyncID;
+			}
+
+			set
+			{
+				if (this._QBSyncID != value)
+					this._QBSyncID = value;
 			}
 
 		}

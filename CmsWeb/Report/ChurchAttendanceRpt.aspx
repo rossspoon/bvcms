@@ -1,8 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ChurchAttendanceRpt.aspx.cs"
     MasterPageFile="~/Report/Reports.Master" Inherits="CmsWeb.Reports.ChurchAttendanceRpt" EnableEventValidation="false" %>
 
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
-<%@ Register Assembly="CustomControls" Namespace="CustomControls" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
         body
@@ -19,15 +17,19 @@
             border-bottom: 2px solid black;
         }
     </style>
+    <%: Scripts.Render("~/bundles/js") %>
+    <script type="text/javascript">
+        $(function () {
+            $("input.datepicker").datepicker();
+        });
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div style="text-align:center">
         <h1>
             Church Attendance</h1>
         Sunday Date:
-        <asp:TextBox ID="SundayDate" runat="server" AutoPostBack="True" Width="100" Style="font-size: 110%"></asp:TextBox>
-        <cc2:CalendarExtender ID="SundayDateExtender" runat="server" TargetControlID="SundayDate">
-        </cc2:CalendarExtender>
+        <asp:TextBox ID="SundayDate" CssClass="datepicker" runat="server" AutoPostBack="True" Width="100" Style="font-size: 110%"></asp:TextBox>
         <hr />
         <table align="center">
             <tr style="vertical-align: top">
