@@ -85,23 +85,53 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             foreach (var o in list1)
             {
-                StartPageSet(o);
 
                 if (meeting != null)
                 {
-                    var q = from at in meeting.Attends
-                            where at.AttendanceFlag == true || at.Commitment == AttendCommitmentCode.Attending || at.Commitment == AttendCommitmentCode.Substitute
-                            orderby at.Person.LastName, at.Person.FamilyId, at.Person.Name2
-                            select new
-                            {
-                                at.MemberType.Code,
-                                Name2 = (altnames == true && at.Person.AltName != null && at.Person.AltName.Length > 0) ?
-                                    at.Person.AltName : at.Person.Name2,
-                                at.PeopleId,
-                                at.Person.DOB,
-                            };
-                    foreach (var a in q)
-                        AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font);
+                    var Groups = o.Groups;
+                    if (Groups[0] == 0)
+                    {
+                        var q = from at in meeting.Attends
+                                where at.AttendanceFlag == true || at.Commitment == AttendCommitmentCode.Attending || at.Commitment == AttendCommitmentCode.Substitute
+                                orderby at.Person.LastName, at.Person.FamilyId, at.Person.Name2
+                                select new
+                                           {
+                                               at.MemberType.Code,
+                                               Name2 = (altnames == true && at.Person.AltName != null && at.Person.AltName.Length > 0) ? at.Person.AltName : at.Person.Name2,
+                                               at.PeopleId,
+                                               at.Person.DOB,
+                                           };
+                        if (q.Count() > 0)
+                            StartPageSet(o);
+                        foreach (var a in q)
+                            AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font);
+                    }
+                    else
+                    {
+                        var q = from at in meeting.Attends
+                                let om =
+                                    at.Organization.OrganizationMembers.SingleOrDefault(mm => mm.PeopleId == at.PeopleId)
+                                let gc = om.OrgMemMemTags.Count(mt => Groups.Contains(mt.MemberTagId))
+                                where gc == Groups.Length || Groups[0] <= 0
+                                where gc > 0
+                                where !Groups.Contains(-1) || (Groups.Contains(-1) && om.OrgMemMemTags.Count() == 0)
+                                where
+                                    at.AttendanceFlag == true || at.Commitment == AttendCommitmentCode.Attending ||
+                                    at.Commitment == AttendCommitmentCode.Substitute
+                                orderby at.Person.LastName, at.Person.FamilyId, at.Person.Name2
+                                select new
+                                           {
+                                               at.MemberType.Code,
+                                               Name2 = (altnames == true && at.Person.AltName != null && at.Person.AltName.Length > 0) ? at.Person.AltName : at.Person.Name2,
+                                               at.PeopleId,
+                                               at.Person.DOB,
+                                           };
+                        if (q.Count() > 0)
+                            StartPageSet(o);
+                        foreach (var a in q)
+                            AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font);
+                        
+                    }
                 }
                 else
                 {
@@ -131,6 +161,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                                 ch,
                                 highlight = om.OrgMemMemTags.Any(mm => mm.MemberTag.Name == highlightsg) ? highlightsg : ""
                             };
+                    if (q.Count() > 0)
+                        StartPageSet(o);
                     foreach (var m in q)
                         AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, m.highlight, m.ch ? china : font);
                 }
@@ -168,6 +200,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                     foreach (var m in q)
                         AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont);
                 }
+                if (t == null)
+                    continue;
                 var col = 0;
                 var ct = new ColumnText(dc);
                 float gutter = 20f;

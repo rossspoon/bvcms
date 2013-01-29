@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using CmsData;
-using System.Text;
-using System.Collections;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 
-namespace CmsWeb.Models
+namespace CmsWeb.Areas.Main.Models.Report
 {
     public class ChurchAttendanceModel
     {

@@ -144,6 +144,10 @@ This will allow you to mark them as members.
             </a>
             <div class="dropdown-menu has-tip">
                 <ul>
+                    @if (Model.meeting.MeetingDate >= DateTime.Today)
+                    {
+                        <li><a id="rollsheet" href="#">Rollsheet Report</a></li>
+                    }
                     <li><a href="/Reports/PastAttendee/@Model.meeting.OrganizationId" target="_blank">Recent Attendance Report</a></li>
                     <li><a href="/Reports/Attendee/@Model.meeting.MeetingId" target="_blank">Attendee Report</a></li>
                     <li><a href="/Reports/VisitsAbsents/@Model.meeting.MeetingId" target="_blank">Visits/Absents Report</a></li>
@@ -232,8 +236,14 @@ This will allow you to mark them as members.
 </div>
 
 <table id="newvalueform" class="grid roundbox" style="display:none">
-<tr><td colspan="2"><h2>New Extra Value</h2></td></tr>
-<tr><td>MultiLine:</td><td>@Html.CheckBox("multiline")</td></tr>
-<tr><td>Field:</td><td>@Html.TextBox("fieldname")</td></tr>
-<tr><td>Value:</td><td>@Html.TextBox("fieldvalue")</td></tr>
+    <tr><td colspan="2"><h2>New Extra Value</h2></td></tr>
+    <tr><td>MultiLine:</td><td>@Html.CheckBox("multiline")</td></tr>
+    <tr><td>Field:</td><td>@Html.TextBox("fieldname")</td></tr>
+    <tr><td>Value:</td><td>@Html.TextBox("fieldvalue")</td></tr>
+</table>
+
+<table id="rollsheetoptions" class="grid roundbox" style="display:none">
+<tr><td colspan="2"><h2>Rollsheet Report</h2></td></tr>
+<tr><td>By Group:</td><td>@Html.CheckBox("bygroup")</td></tr>
+<tr><td>SmallGroup Prefix (optional):</td><td>@Html.TextBox("sgprefix")</td></tr>
 </table>
