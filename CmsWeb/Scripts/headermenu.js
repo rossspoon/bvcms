@@ -12,7 +12,7 @@
 			}
 		}
 		return true;
-	});
+    });
 	$("a.tutorial").click(function (ev) {
 		ev.preventDefault();
 		startTutorial($(this).attr("href"));

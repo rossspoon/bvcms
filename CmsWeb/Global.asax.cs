@@ -1,4 +1,5 @@
 using System;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -83,11 +84,20 @@ namespace CmsWeb
 
         protected void Session_Start(object sender, EventArgs e)
         {
+            if (Util.Host.StartsWith("direct"))
+                return;
             if (User.Identity.IsAuthenticated)
+            {
+                if (!DbUtil.DatabaseExists())
+                {
+                    Response.Redirect("/Errors/DatabaseNotFound.aspx?dbname=" + Util.Host);
+                    return;
+                }
                 if (1 == 1) // should be 1 == 1 (or just true) to run normally
                     Models.AccountModel.SetUserInfo(Util.UserName, Session);
                 else
                     Models.AccountModel.SetUserInfo("trecord", Session);
+            }
             Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
             Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Util.SessionStarting = true;

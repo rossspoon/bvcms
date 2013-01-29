@@ -23,6 +23,23 @@ namespace CmsData
 {
     internal static class Expressions
     {
+        internal static Expression ActiveRecords(
+            ParameterExpression parm,
+            CompareType op,
+            bool tf)
+        {
+            var dt1 = DateTime.Now.AddDays(-365);
+            Expression<Func<Person, bool>> pred = p =>
+                                                  p.Attends.Any(aa => aa.AttendanceFlag == true && aa.MeetingDate >= dt1) ||
+                                                  p.Contributions.Any(cc =>
+                                                      cc.ContributionDate > dt1 && cc.ContributionAmount > 0 &&
+                                                      !ContributionTypeCode.ReturnedReversedTypes.Contains
+                                                           (cc.ContributionTypeId));
+            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression MemberTypeIds(
             ParameterExpression parm,
             int? progid,
@@ -585,18 +602,28 @@ namespace CmsData
             int cnt)
         {
             var mindt = Util.Now.AddDays(-days).Date;
-            Expression<Func<Person, int>> pred = p => (
-                from a in p.Attends
-                from dg in a.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
-                where a.MeetingDate > mindt
-                where a.AttendanceFlag
-                where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
-                where org == 0 || a.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
-                select a
-                ).Count();
+            Expression<Func<Person, int>> pred = null;
+            if (progid > 0)
+                pred = p => (
+                                from a in p.Attends
+                                from dg in a.Organization.DivOrgs
+                                from pg in dg.Division.ProgDivs
+                                where a.MeetingDate > mindt
+                                where a.AttendanceFlag
+                                where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
+                                where org == 0 || a.OrganizationId == org
+                                where divid == 0 || dg.DivId == divid
+                                where progid == 0 || pg.ProgId == progid
+                                select a
+                            ).Count();
+            else
+                pred = p => (
+                                from a in p.Attends
+                                where a.MeetingDate > mindt
+                                where a.AttendanceFlag
+                                where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
+                                select a
+                            ).Count();
 
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
@@ -684,7 +711,7 @@ namespace CmsData
             int n = number.ToInt2() ?? 1;
             var dt = DateTime.Now.AddDays(-days);
             var cdt = Db.Setting("DbConversionDate", "1/1/1900").ToDate();
-            Expression<Func<Person, bool>> pred = p => p.CreatedDate > cdt && 
+            Expression<Func<Person, bool>> pred = p => p.CreatedDate > cdt &&
                 p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate > dt);
             Expression expr = Expression.Invoke(pred, parm);
 
@@ -2390,8 +2417,38 @@ namespace CmsData
                     where !m.OrgMemMemTags.Any() || cg[0] != -1
                     where m.MemberTypeId != MemberTypeCode.InActive
                     where (m.Pending ?? false) == false
-                    select m).Any();
+                    select m
+                    ).Any();
+
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (Db.CurrentGroupsPrefix.HasValue())
+            {
+                var aa = Db.CurrentGroupsPrefix.Split(',');
+                foreach (var sg in aa)
+                {
+                    Expression<Func<Person, bool>> pred2 = null;
+                    if (sg.StartsWith("-"))
+                    {
+                        var g = sg.Substring(1);
+                        pred2 = p => (from om in p.OrganizationMembers
+                                      where om.OrganizationId == Db.CurrentOrgId
+                                      where om.OrgMemMemTags.All(
+                                          mm => !mm.MemberTag.Name.StartsWith(g))
+                                      select om).Any();
+                    }
+                    else
+                    {
+                        pred2 = p => (from om in p.OrganizationMembers
+                                      where om.OrganizationId == Db.CurrentOrgId
+                                      where om.OrgMemMemTags.Any(
+                                          mm => mm.MemberTag.Name.StartsWith(sg))
+                                      select om).Any();
+                    }
+                    var expr1 = Expression.Invoke(pred2, parm);
+                    expr = Expression.And(expr1, expr);
+                }
+            }
+
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
             return expr;
@@ -2637,7 +2694,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-			var oids = Db.GetParentChildOrgIds(Db.CurrentOrgId);
+            var oids = Db.GetParentChildOrgIds(Db.CurrentOrgId);
             Expression<Func<Person, bool>> pred = p =>
                 p.OrganizationMembers.Any(m =>
                     p.OrganizationMembers.Any(mm => oids.Contains(mm.OrganizationId) && mm.MemberType.AttendanceTypeId == AttendTypeCode.Leader)
@@ -2651,7 +2708,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-			var oids = Db.GetParentChildOrgIds(Db.CurrentOrgId);
+            var oids = Db.GetParentChildOrgIds(Db.CurrentOrgId);
             Expression<Func<Person, bool>> pred = p =>
                 p.OrganizationMembers.Any(m =>
                     p.OrganizationMembers.Any(mm => oids.Contains(mm.OrganizationId))

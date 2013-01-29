@@ -14,8 +14,15 @@ namespace CmsWeb
                 "~/Content/styles/dropdown.css",
                 "~/Content/styles/site.css",
                 "~/Content/styles/style2.css",
-                "~/Content/styles/cmenu.css",
                 "~/Content/styles/pager.css",
+                "~/Content/styles/jquery.jscrollpane.css",
+                "~/Content/styles/jquery.tooltip.css",
+                "~/Content/styles/joyride-1.0.5.css",
+                "~/Content/styles/jquery.multiselect.css"
+                            ));
+
+            bundles.Add(new StyleBundle("~/Content/styles/css2").Include(
+                "~/Content/styles/jquery-ui-1.9.2.custom.css",
                 "~/Content/styles/jquery.jscrollpane.css",
                 "~/Content/styles/jquery.tooltip.css",
                 "~/Content/styles/joyride-1.0.5.css",
@@ -50,6 +57,25 @@ namespace CmsWeb
                 "~/Scripts/ExportToolBar.js",
                 "~/Scripts/Pager.js",
                 "~/Scripts/headermenu.js"
+                            ));
+            bundles.Add(new ScriptBundle("~/bundles/main-js").Include(
+                "~/Content/js/jquery-1.8.3.js",
+                "~/Content/js/jquery-ui-1.9.2.custom.js",
+                "~/Content/js/jquery.bgiframe-2.1.2.js",
+                "~/Content/js/jquery.cookie.js",
+                "~/Content/js/jquery.blockUI.js",
+                "~/Content/js/jquery.tooltip.js",
+                "~/Content/js/jquery.mousewheel.js",
+                "~/Content/js/jquery.jscrollpane.js",
+                "~/Content/js/jquery.jeditable.js",
+                "~/Content/js/jquery.validate.js",
+                "~/Content/js/jquery.joyride-1.0.5.js",
+                "~/Content/js/modernizr.mq.js",
+                "~/Content/js/tutorial.js",
+                "~/Content/js/jquery.multiSelect.js",
+                "~/Content/js/jquery.sortElements.js",
+                "~/Content/js/jquery.textarea.js",
+                "~/Content/js/jquery.transpose.js"
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/onlineregister-js").Include(
@@ -135,8 +161,6 @@ namespace CmsWeb
             bundles.AddOneScript("TransactionHistory");
             bundles.AddOneScript("UserDialog");
             bundles.AddOneScript("Users");
-
-            //BundleTable.EnableOptimizations = true;
         }
 
         private static void AddOneScript(this BundleCollection bundles, string f)

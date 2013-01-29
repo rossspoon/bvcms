@@ -1,25 +1,29 @@
-﻿
-@{ 
+﻿@{ 
     var admin = User.IsInRole("Admin");
     var manageemails = User.IsInRole("ManageEmails");
     var managetrans = User.IsInRole("ManageTransactions");
 	var edit = User.IsInRole("Edit"); 
 	var design = User.IsInRole("Design"); 
-	var finance = User.IsInRole("Finance"); 
+	var finance = User.IsInRole("Finance");
+    var newlook = DbUtil.Db.UserPreference("newlook", "false").ToBool();
+    var onqb = (string) ViewData["OnQueryBuilder"] == "true";
 }
 
 <div class="navbar">
+    @if (newlook)
+    {
+        <a href="/"><img src="~/images/Home.png" /></a>
+    }
     <ul>
-        <li>
-            <a href="/">
-                Home
-            </a>
-        </li>
+    @if (!newlook)
+    {
+        <li> <a href="/"> Home </a> </li>
+    }
         <li>
             <a href="#" class="trigger-dropdown">
-                People <img src="/images/dnarrow.png" />
+                People <img src="/images/dnarrowt.png" />
             </a>
-            <div class="dropdown-menu has-tip">
+            <div class="dropdown-menu">
                 <ul>
                     <li><a href="/PeopleSearch">
                             Search
@@ -48,9 +52,9 @@
         </li>
         <li>
             <a href="#" class="trigger-dropdown">
-                Organization <img src="/images/dnarrow.png" />
+                Organization <img src="/images/dnarrowt.png" />
             </a>
-            <div class="dropdown-menu has-tip">
+            <div class="dropdown-menu">
                 <ul>
                     <li><a href="/OrgSearch">
                             Search
@@ -88,9 +92,9 @@
         </li>
         <li>
             <a href="#" class="trigger-dropdown">
-                Reports <img src="/images/dnarrow.png" />
+                Reports <img src="/images/dnarrowt.png" />
             </a>
-            <div class="dropdown-menu has-tip">
+            <div class="dropdown-menu">
                 <ul>
                     <li><a href="/Reports/VitalStats" target="_blank">
                             Vital Stats
@@ -122,46 +126,28 @@
                     <li><a href="/Home/NthTimeVisitors/3">
                             Third Time Attenders
                         </a></li>
-                </ul>
-            </div>
-        </li>
-        <li>
-            <a href="#" class="trigger-dropdown">
-                SearchBuilder <img src="/images/dnarrow.png" />
-            </a>
-            <div class="dropdown-menu has-tip">
-                <ul>
-                    <li><a href="/QueryBuilder/Main">
-                            Last Search
-                        </a></li>
-                    <li><a href="/QueryBuilder/NewQuery">
-                            New Search
-                        </a></li>
-                    <li><a href="/SavedQuery">
-                            Saved Searches
-                        </a></li>
-                    @if ((string)ViewData["OnQueryBuilder"] == "true")
-                    {
-                        <li><a id="ShowOpenQuery" href="#">
-                                Open Saved Search
-                            </a></li>
-                        <li><a id="ShowSaveQuery" href="#">
-                                Save Search As
-                            </a></li>
-                    }
                     <li><a href="/Reports/ExtraValues">
                             Extra Values
                         </a></li>
                 </ul>
             </div>
         </li>
+        @if (!newlook)
+        {
+            <li>
+                <a href="#" class="trigger-dropdown">
+                    SearchBuilder <img src="/images/dnarrowt.png" />
+                </a>
+                @Helper.SearchBuilderDropdown(onqb, newlook)
+            </li>
+        }
         @if (User.IsInRole("Finance"))
         {
             <li>
                 <a href="#" class="trigger-dropdown">
-                    Contributions <img src="/images/dnarrow.png" />
+                    Contributions <img src="/images/dnarrowt.png" />
                 </a>
-                <div class="dropdown-menu has-tip">
+                <div class="dropdown-menu">
                     <ul>
                         <li><a href="/Finance/Bundles">
                                 Bundles
@@ -169,8 +155,7 @@
                         <li><a href="/Finance/Contributions">
                                 All
                             </a></li>
-                        <li class="header">
-                            Reports
+                        <li class="header"><span>Reports</span>
                         </li>
                         <li><a href="/Statements" target="_blank">
                                 Statements (All)
@@ -216,9 +201,9 @@
         {
             <li>
                 <a href="#" class="trigger-dropdown">
-                    Admin <img src="/images/dnarrow.png" />
+                    Admin <img src="/images/dnarrowt.png" />
                 </a>
-                <div class="dropdown-menu has-tip anchor-right">
+                <div class="dropdown-menu">
                     <ul>
                         @if (admin)
                         {
@@ -292,9 +277,9 @@
         }
         <li>
             <a href="#" class="trigger-dropdown">
-                Help <img src="/images/dnarrow.png" />
+                Help <img src="/images/dnarrowt.png" />
             </a>
-            <div class="dropdown-menu has-tip anchor-right">
+            <div class="dropdown-menu anchor-right">
                 <ul>
                     <li><a href="@Util.HelpLink(Util.Helpfile)" target="_blank">
                             Help Documentation
@@ -302,24 +287,35 @@
                     <li><a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">
                             Email Support
                         </a></li>
+                    @if (admin)
+                    {
+                         if (newlook)
+                         {
+                             <li><a href="/Home/UseOldLook">Use OLD Look</a></li>
+                         }
+                         else
+                         {
+                             <li><a href="/Home/UseNewLook">Use NEW Look</a></li>
+                         }
+                    }
                     <li><a href="/Home/About">
                             About
                         </a></li>
-                @if (admin)
-                {
-                    <li><a href="javascript:$.block();window.location='/Home/ActiveRecords';">
-                            Active Records
-                        </a></li>
-                }
-                    <li class="header">
-                        Tutorials
+                    @if (admin)
+                    {
+                        <li><a href="javascript:$.block();window.location='/Home/ActiveRecords';">
+                                Active Records
+                            </a></li>
+                    }
+@*                    <li class="header">
+                        <span>Tutorials</span>
                     </li>
                     @{
                         var tutorialMenu = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml";
                         if (File.Exists(tutorialMenu)) {
                             Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml");
                         }
-                    }			  
+                    }			  *@
                 </ul>
             </div>
         </li>

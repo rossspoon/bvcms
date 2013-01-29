@@ -305,6 +305,29 @@
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
     <Compile Include="Areas\Manage\Models\VolunteerRequestModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
+    <Compile Include="Areas\People\Controllers\PersonController.cs" />
+    <Compile Include="Areas\People\Models\Person\AddressInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\AttendHistoryModel.cs" />
+    <Compile Include="Areas\People\Models\Person\BasicPersonInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\ContactsMadeModel.cs" />
+    <Compile Include="Areas\People\Models\Person\ContactsReceivedModel.cs" />
+    <Compile Include="Areas\People\Models\Person\DuplicatesModel.cs" />
+    <Compile Include="Areas\People\Models\Person\EnrollmentsModel.cs" />
+    <Compile Include="Areas\People\Models\Person\FamilyMemberInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\FamilyModel.cs" />
+    <Compile Include="Areas\People\Models\Person\GrowthInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\MemberDocs.cs" />
+    <Compile Include="Areas\People\Models\Person\MemberInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\MemberNotesInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\OrgMemberInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\PendingEnrollmentsModel.cs" />
+    <Compile Include="Areas\People\Models\Person\PeopleInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\PersonInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\PersonModel.cs" />
+    <Compile Include="Areas\People\Models\Person\PrevEnrollmentsModel.cs" />
+    <Compile Include="Areas\People\Models\Person\RecRegInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\VolunteerModel.cs" />
+    <Compile Include="Areas\People\PeopleAreaRegistration.cs" />
     <Compile Include="Areas\Public\Controllers\APIContributionController.cs" />
     <Compile Include="Areas\Public\Controllers\APIMetaController.cs" />
     <Compile Include="Areas\Public\Controllers\APITestController.cs" />
@@ -463,6 +486,8 @@
     <Content Include="Content\styles\combined.css" />
     <Content Include="Content\styles\Common2.css" />
     <Content Include="Content\styles\content.css" />
+    <Content Include="Content\styles\Menu.css" />
+    <Content Include="Content\styles\Main.css" />
     <Content Include="Content\styles\cssreset.css" />
     <Content Include="Content\styles\Dialog.css" />
     <Content Include="Content\styles\dropdown.css" />
@@ -509,6 +534,9 @@
     <Content Include="Areas\Main\Views\MemberDirectory\NoAccess.cshtml" />
     <Content Include="Errors\AppOffline.htm" />
     <Content Include="healthcheck.txt" />
+    <Content Include="images\bvcms-provided.png" />
+    <Content Include="images\dnarrow.png" />
+    <Content Include="images\dnarrowt.png" />
     <Content Include="images\group.png" />
     <Content Include="Content\styles\images\icons-18-black.png" />
     <Content Include="Content\styles\images\icons-18-white.png" />
@@ -614,7 +642,7 @@
     <Content Include="Content\js\jquery.dataTables.js" />
     <Content Include="Content\zylo.wav" />
     <Content Include="images\calendar.gif" />
-    <Content Include="images\dnarrow.png" />
+    <Content Include="images\Home.png" />
     <Content Include="images\RapidSSL_SEAL-90x50.gif" />
     <Content Include="Scripts\compose.js" />
     <Content Include="Scripts\Bundles.js" />
@@ -1323,6 +1351,44 @@
     <Content Include="Areas\Main\Views\OrgSearch\RecentAbsentsEmail.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRange.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRangeResults.cshtml" />
+    <Content Include="Areas\People\Views\Web.config" />
+    <Content Include="Areas\People\Views\Person\AddressDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\AddressEdit.cshtml" />
+    <Content Include="Areas\People\Views\Person\AttendanceGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\BasicDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\BasicEdit.cshtml" />
+    <Content Include="Areas\People\Views\Person\BusinessCard.cshtml" />
+    <Content Include="Areas\People\Views\Person\ChangesGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\CommentsDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\CommentsEdit.cshtml" />
+    <Content Include="Areas\People\Views\Person\ContactsDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\ContactsMadeGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\ContactsReceivedGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\CurrentRegistrations.cshtml" />
+    <Content Include="Areas\People\Views\Person\CurrentRegistrationsHtml.cshtml" />
+    <Content Include="Areas\People\Views\Person\DuplicateRow.cshtml" />
+    <Content Include="Areas\People\Views\Person\DuplicatesGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\EditorTemplates\Field.cshtml" />
+    <Content Include="Areas\People\Views\Person\EnrollGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\ExtrasGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\FamilyGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\GrowthDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\GrowthEdit.cshtml" />
+    <Content Include="Areas\People\Views\Person\IncompleteTasksGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\Index.cshtml" />
+    <Content Include="Areas\People\Views\Person\MemberDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\MemberEdit.cshtml" />
+    <Content Include="Areas\People\Views\Person\MemberNotesDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\MemberNotesEdit.cshtml" />
+    <Content Include="Areas\People\Views\Person\OptoutsGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\PendingEnrollGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\PendingTasksGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\PrevEnrollGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\RecRegDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\RecRegEdit.cshtml" />
+    <Content Include="Areas\People\Views\Person\UserDialog.cshtml" />
+    <Content Include="Areas\People\Views\Person\UserInfoGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\VolunteerDisplay.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -1922,6 +1988,7 @@
     <Content Include="Areas\Manage\Views\Batch\ExtraValuesFromPeopleIds.cshtml">
     </Content>
     <None Include="Properties\PublishProfiles\bvcms2.pubxml" />
+    <None Include="Properties\PublishProfiles\test.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
@@ -1978,6 +2045,9 @@
     <Content Include="Views\Shared\MainMenu.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
+    <Content Include="App_Code\Helper.cshtml" />
+    <Content Include="Views\Shared\NewHeader.cshtml" />
+    <Content Include="Views\Shared\OldHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -2223,8 +2293,10 @@
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\OnlineReg\Models\Payments\" />
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
+    <Folder Include="Areas\People\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
+    <Folder Include="Models\PersonPage\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

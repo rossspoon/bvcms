@@ -1,0 +1,29 @@
+﻿@using UtilityExtensions
+@using CmsData
+@model CmsWeb.Models.PersonPage.PersonInfo
+<table cellspacing="5">
+@if (Model.Deceased)
+{ 
+    <tr><td>
+        <span style="color: Red">Deceased: @Model.basic.DeceasedDate.FormatDate()</span>
+    </td></tr>
+} 
+    <tr><td>
+            <a href="http://www.google.com/maps?q=@Model.PrimaryAddr.AddrCityStateZip()" target="_blank">
+                @Model.PrimaryAddr.Address1</a>
+        @if (Model.PrimaryAddr.BadAddress == true)
+        {
+            <span style="color: Red">bad address</span>
+        }
+    </td></tr>
+@if (Model.PrimaryAddr.Address2.HasValue())
+{ 
+    <tr><td>
+            <a href="http://www.google.com/maps?q=@Model.PrimaryAddr.Addr2CityStateZip()"
+                target="_blank">@Model.PrimaryAddr.Address2</a>
+    </td></tr>
+} 
+    <tr><td> @Model.PrimaryAddr.CityStateZip4() </td></tr>
+    <tr><td> <a href="mailto:@Model.basic.EmailAddress">@Model.basic.EmailAddress</a> </td></tr>
+    <tr><td> @Model.basic.HomePhone.FmtFone("h") </td></tr>
+</table>

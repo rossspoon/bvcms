@@ -97,11 +97,11 @@ $(function () {
     $('#SaveQueryDiv').dialog(dialogOptions);
     $('#OpenQueryDiv').dialog(dialogOptions);
 
-    $('#ShowSaveQuery').click(function (ev) {
+    $('#ShowSaveQuery').live("click", function (ev) {
         $('#SaveQueryDesc').val($('#Description').text());
         $('#SaveQueryDiv').dialog("open");
     });
-    $('#ShowOpenQuery').click(function (ev) {
+    $('#ShowOpenQuery').live("click", function (ev) {
         $.post("/QueryBuilder/SavedQueries", null, function (ret) {
             $('#ExistingQueries').fillOptions(ret);
         });

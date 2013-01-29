@@ -36,16 +36,17 @@ namespace CmsWeb.Models
         public IEnumerable<FundTotalInfo> TotalsByFund()
         {
             var q = from c in DbUtil.Db.GetTotalContributions2(Dt1, Dt2, CampusId, NonTaxDeductible, IncUnclosedBundles)
-                    group c by c.FundId
-                    into g
-                    orderby g.Key
-                    select new FundTotalInfo
-                               {
-                                   FundId = g.Key,
-                                   FundName = g.First().FundName,
-                                   Total = g.Sum(t => t.Amount).Value,
-                                   Count = g.Count()
-                               };
+                    group c by new { c.FundId, c.QBSynced}
+                        into g
+                        orderby g.Key.FundId, g.Key.QBSynced
+                        select new FundTotalInfo
+                                   {
+                                       FundId = g.Key.FundId,
+                                       QBSynced = g.Key.QBSynced,
+                                       FundName = g.First().FundName,
+                                       Total = g.Sum(t => t.Amount).Value,
+                                       Count = g.Count()
+                                   };
             FundTotal = new FundTotalInfo
                             {
                                 Count = q.Sum(t => t.Count),
@@ -85,6 +86,7 @@ namespace CmsWeb.Models
         public class FundTotalInfo
         {
             public int FundId { get; set; }
+            public int QBSynced { get; set; }
             public string FundName { get; set; }
             public decimal? Total { get; set; }
             public int? Count { get; set; }

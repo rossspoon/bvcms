@@ -9,7 +9,9 @@
 {
 @Scripts.Render("~/bundles/single/SavedQuery-js")
 }
-<h2>Index</h2>
+<div class="roundbox" style="display: table">
+<h2>Saved Search Builder Queries</h2>
 @using (Html.BeginForm("Results", "SavedQuery")) {
     Html.RenderPartial("Results", Model);
 }
+</div>

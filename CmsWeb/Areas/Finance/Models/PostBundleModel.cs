@@ -364,6 +364,8 @@ namespace CmsWeb.Models
         {
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "FBCStark")
                 return BatchProcessFbcStark2(text, date, fundid);
+            if (DbUtil.Db.Setting("BankDepositFormat", "none") == "DiscoverCrosspoint")
+                return BatchProcessDiscoverCrosspoint(text, date, fundid);
             if (text.StartsWith("From MICR :"))
                 return BatchProcessMagTek(text, date);
             if (text.StartsWith("Financial_Institution"))
@@ -851,6 +853,67 @@ namespace CmsWeb.Models
                 ck = csv[4];
                 rt = csv[6];
                 ac = csv[7];
+
+                bd.Contribution.CheckNo = ck;
+                var eac = Util.Encrypt(rt + "|" + ac);
+                var q = from kc in DbUtil.Db.CardIdentifiers
+                        where kc.Id == eac
+                        select kc.PeopleId;
+                var pid = q.SingleOrDefault();
+                if (pid != null)
+                    bd.Contribution.PeopleId = pid;
+                bd.Contribution.BankAccount = eac;
+                bh.BundleDetails.Add(bd);
+            }
+            FinishBundle(bh);
+            return bh.BundleHeaderId;
+        }
+        public static int? BatchProcessDiscoverCrosspoint(string text, DateTime date, int? fundid)
+        {
+            var prevdt = DateTime.MinValue;
+            BundleHeader bh = null;
+            var sr = new StringReader(text);
+            for (; ; )
+            {
+                var line = sr.ReadLine();
+                if (line == null)
+                    break;
+                var csv = line.Split(',');
+                var bd = new BundleDetail
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                };
+                var qf = from f in DbUtil.Db.ContributionFunds
+                         where f.FundStatusId == 1
+                         orderby f.FundId
+                         select f.FundId;
+
+                bd.Contribution = new Contribution
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                    ContributionDate = date,
+                    FundId = fundid ?? qf.First(),
+                    ContributionStatusId = 0,
+                    ContributionTypeId = ContributionTypeCode.CheckCash,
+                };
+
+                var dt = csv[2].ToDate().Value;
+
+                if (dt != prevdt)
+                {
+                    if (bh != null)
+                        FinishBundle(bh);
+                    bh = GetBundleHeader(dt, DateTime.Now);
+                    prevdt = dt;
+                }
+                bd.Contribution.ContributionAmount = csv[1].ToDecimal();
+
+                string ck, rt, ac;
+                ck = csv[3];
+                rt = csv[4];
+                ac = csv[0];
 
                 bd.Contribution.CheckNo = ck;
                 var eac = Util.Encrypt(rt + "|" + ac);

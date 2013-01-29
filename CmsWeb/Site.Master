@@ -223,7 +223,7 @@
                                     </a></li>
                                     <li><a href="/Finance/Contributions">All
                                     </a></li>
-                                    <li class="header">Reports
+                                    <li class="header"><span>Reports</span>
                                     </li>
                                     <li><a href="/Statements" target="_blank">Statements (All)
                                     </a></li>

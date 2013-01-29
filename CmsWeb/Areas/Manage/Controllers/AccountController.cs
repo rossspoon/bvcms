@@ -81,18 +81,11 @@ CKEditorFuncNum, baseurl + fn, error));
 		[MyRequireHttps]
         public ActionResult LogOn()
         {
-            try
-            {
-                if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
+		    if (!DbUtil.DatabaseExists())
+		        return Redirect("/Errors/DatabaseNotFound.aspx?dbname=" + Util.Host);
+
+		    if (DbUtil.Db.Roles.Any(rr => rr.RoleName == "disabled"))
                     return Content("Site is disabled, contact {0} for help".Fmt(Util.SendErrorsTo()[0].Address));
-            }
-            catch (SqlException ex)
-            {
-                TempData["message"] = ex.Message;
-				if (ex.Message.StartsWith("Cannot open database"))
-					return Content("no such database " + Util.Host);
-                return Redirect("/Error");
-            }
 
             if (!User.Identity.IsAuthenticated)
             {

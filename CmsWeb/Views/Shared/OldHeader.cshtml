@@ -1,0 +1,65 @@
+﻿@{
+    var access = User.IsInRole("Access");
+    var onqb = (string) ViewData["OnQueryBuilder"] == "true";
+    var headimage = DbUtil.HeaderImage("");
+    if (!headimage.HasValue())
+    {
+        headimage = @"<img src=""/Content/bvcms132x55.png"" width=""132"" height=""55"" />";
+    }
+}
+    <div class="header">
+        <table cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="left">
+                    <a href="/">@Html.Raw(headimage)</a>
+                </td>
+                <td class="center">
+                    @Html.Raw(DbUtil.Header())
+                </td>
+                <td class="right">
+                    <div id="userarea">
+                        <div id="welcome" class="dropdown">
+                            <a href="#" class="trigger-dropdown">
+                                Welcome, @Util.UserPreferredName! <img src="/images/dnarrow.png" />
+                            </a>
+                            <div class="dropdown-menu has-tip anchor-right">
+                                <ul>
+                                    <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
+                                    <li><a href="/Account/ChangePassword">Change Password</a></li>
+                                    <li><a id="cleartag" href="#">Empty Active Tag</a></li>
+                                    <li><a href="/Tags">Manage Active Tag</a></li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        @if (access)
+                        {
+                            <strong>Active Tag:</strong>
+                            <span id="activetag">@Util2.CurrentTagName</span>
+                            <form method="post">
+                                <input id="SearchText" class="trigger-dropdown" type="text" default="Quick Search" title='QuickSearch|PeopleId|-OrganizationId|7 digit phone|Partial Search|Names|Address|Organization Name|Leader Name|Division"' />
+                                @Helper.SearchBuilderDropdown(onqb, newlook: false)
+                            </form>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div>
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        @if (access)
+        {
+            @Html.Partial("MainMenu")
+            <div style="clear: both; border-bottom: 4px solid #ddd">
+            </div>
+        }
+    </div>

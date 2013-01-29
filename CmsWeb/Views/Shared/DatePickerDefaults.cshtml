@@ -1,3 +1,6 @@
+@{
+    var newlook = DbUtil.Db.UserPreference("newlook", "false").ToBool();
+}
 <script type="text/javascript">
     $.dateFormat = '@Util.jQueryDateFormat';
     $(function () {
@@ -10,5 +13,9 @@
             buttonImage: "/images/calendar.gif",
             buttonImageOnly: true
         });
+    @if (newlook)
+    {
+        @:$("#SearchText").dropdownFocus();
+    }
     });
 </script>

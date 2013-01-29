@@ -1,0 +1,59 @@
+﻿@{
+    var access = User.IsInRole("Access");
+    var onqb = (string) ViewData["OnQueryBuilder"] == "true";
+    var headimage = DbUtil.HeaderImage("");
+    if (!headimage.HasValue())
+    {
+        headimage = DbUtil.Header();
+    }
+}
+@if (access)
+{
+    @Html.Partial("MainMenu")
+}
+<div id="header">
+    <div style="margin-left: 4%;margin-right: 4%;">
+        <table cellpadding="0" cellspacing="0" style="width: 100%;">
+            <tr>
+                <td>
+                    @Html.Raw(headimage)
+                </td>
+                <td class="right">
+                    @if (access)
+                    {
+                        <div style="display:inline-block; text-align: left;">
+                            <form method="post">
+                                <input id="SearchText" class="trigger-dropdown" type="text" default="Search" title='QuickSearch|PeopleId|-OrganizationId|7 digit phone|Partial Search|Names|Address|Organization Name|Leader Name|Division"' />
+                                @Helper.SearchBuilderDropdown(onqb, newlook: true)
+                            </form>
+                        </div>
+                    }
+                    <div id="userarea">
+                        <div id="welcome" class="dropdown">
+                            <a href="#" class="trigger-dropdown">
+                                Welcome, @Util.UserPreferredName! <img src="/images/dnarrow.png" />
+                            </a>
+                            <div class="dropdown-menu has-tip anchor-right">
+                                <ul>
+                                    <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
+                                    <li><a href="/Account/ChangePassword">Change Password</a></li>
+                                    <li><a id="cleartag" href="#">Empty Active Tag</a></li>
+                                    <li><a href="/Tags">Manage Active Tag</a></li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        @if (access)
+                        {
+                            <strong>Active Tag:</strong>
+                            <span id="activetag">@Util2.CurrentTagName</span>
+                        }
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

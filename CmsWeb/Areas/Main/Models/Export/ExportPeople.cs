@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Collections;
+using System.Xml.Linq;
 using CmsData;
 using UtilityExtensions;
 using System.Data.SqlClient;
@@ -87,7 +88,7 @@ namespace CmsWeb.Models
 					select new
 					{
 						c.FamilyId,
-						Date = c.DateX.Value,
+						Date = c.DateX.Value.ToShortDateString(),
 						GiverId = c.PeopleId,
 						CreditGiverId = c.CreditGiverId.Value,
 						c.HeadName,
@@ -290,12 +291,22 @@ namespace CmsWeb.Models
 		}
 		public static IEnumerable ExportExtraValues(int qid)
 		{
-			var name = "ExtraExcelResult " + DateTime.Now;
+            var roles = CMSRoleProvider.provider.GetRolesForUser(Util.UserName);
+            var xml = XDocument.Parse(DbUtil.Db.Content("StandardExtraValues.xml", "<Fields/>"));
+            var fields = (from ff in xml.Root.Elements("Field")
+                          let vroles = ff.Attribute("VisibilityRoles")
+                          where vroles != null && (vroles.Value.Split(',').All(rr => !roles.Contains(rr)))
+                          select ff.Attribute("name").Value);
+            var nodisplaycols = string.Join(",", fields);
+
 			var tag = DbUtil.Db.PopulateSpecialTag(qid, DbUtil.TagTypeId_ExtraValues);
 
-			var cmd = new SqlCommand("dbo.ExtraValues {0}".Fmt(tag.Id));
-			cmd.Connection = new SqlConnection(Util.ConnectionString);
-			cmd.Connection.Open();
+            var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2, @p3");
+			cmd.Parameters.AddWithValue("@p1", tag.Id);
+			cmd.Parameters.AddWithValue("@p2", "");
+			cmd.Parameters.AddWithValue("@p3", nodisplaycols);
+            cmd.Connection = new SqlConnection(Util.ConnectionString);
+            cmd.Connection.Open();
 			return cmd.ExecuteReader();
 		}
 	}

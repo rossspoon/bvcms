@@ -22,7 +22,7 @@
     @foreach (var c in Model.Contributions())
     {
         <tr>
-            <td>@c.Status</td>
+            <td class="@(c.ReversedReturned ? "red" : "")">c.Status</td>
             <td>@c.Date.FormatDate()</td>
             <td><a href="/FinanceReports/ContributionYears/@c.PeopleId">@c.Name</a></td>
             <td align="right">@c.Amount.ToString2("N2")</td>

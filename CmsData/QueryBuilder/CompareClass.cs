@@ -57,6 +57,10 @@ namespace CmsData
         {
             switch (c.FieldInfo.QueryType)
             {
+                case QueryType.ActiveRecords:
+                    return Expressions.ActiveRecords(parm,
+                        CompType, 
+                        c.CodeIds == "1");
                 case QueryType.AttendPct:
                     return Expressions.AttendPct(parm,
                                c.Program,

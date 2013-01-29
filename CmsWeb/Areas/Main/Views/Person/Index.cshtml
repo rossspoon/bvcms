@@ -86,7 +86,7 @@ pre {
        </tr>
     </table>
 <div class="floatleft">
-    <div id="buttondiv" class="dropdown" style="margin-top:1em;margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
+    <div id="buttondiv" class="extrabar" style="margin-top:1em;margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
         <a href="#" class="trigger-dropdown">
             Maps and Directions <img src="/images/dnarrow.png" />
         </a>
@@ -101,7 +101,7 @@ pre {
     </div>
 @if (isadmin || ismanager)
 {
-    <div id="buttondiv" class="dropdown" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
+    <div id="buttondiv" class="extrabar" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
         <a href="#" class="trigger-dropdown">
             Other Management <img src="/images/dnarrow.png" />
         </a>
@@ -134,7 +134,7 @@ pre {
 @if (isfinance || Util.UserPeopleId == Model.Person.PeopleId)
 {
     var yr = DateTime.Now.Year;
-    <div id="buttondiv" class="dropdown" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
+    <div id="buttondiv" class="extrabar" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
         <a href="#" class="trigger-dropdown">
             Contributions <img src="/images/dnarrow.png" />
         </a>

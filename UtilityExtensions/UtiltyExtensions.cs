@@ -557,8 +557,10 @@ namespace UtilityExtensions
 			get
 			{
 #if DEBUG
-				return ConfigurationManager.ConnectionStrings["CMSImage"].ConnectionString;
-#else
+				var dcs = ConfigurationManager.ConnectionStrings["CMSImage"];
+                if (dcs != null)
+                    return dcs.ConnectionString;
+#endif
                 var cs = ConfigurationManager.ConnectionStrings["CMSHosted"];
                 if (cs == null)
                     cs = ConfigurationManager.ConnectionStrings["CMS"];
@@ -566,7 +568,6 @@ namespace UtilityExtensions
                 var a = Host.SplitStr(".:");
                 cb.InitialCatalog = "CMS_{0}_img".Fmt(a[0]);
                 return cb.ConnectionString;
-#endif
 			}
 		}
 		public static string UserName

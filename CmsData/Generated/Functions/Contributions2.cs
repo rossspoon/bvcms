@@ -46,6 +46,8 @@ namespace CmsData.View
 		
 		private string _BundleStatus;
 		
+		private int? _QBSyncID;
+		
 		
 		public Contributions2()
 		{
@@ -303,6 +305,23 @@ namespace CmsData.View
 			{
 				if (this._BundleStatus != value)
 					this._BundleStatus = value;
+			}
+
+		}
+
+		
+		[Column(Name="QBSyncID", Storage="_QBSyncID", DbType="int")]
+		public int? QBSyncID
+		{
+			get
+			{
+				return this._QBSyncID;
+			}
+
+			set
+			{
+				if (this._QBSyncID != value)
+					this._QBSyncID = value;
 			}
 
 		}

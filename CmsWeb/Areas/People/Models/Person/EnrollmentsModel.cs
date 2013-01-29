@@ -1,0 +1,92 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using CmsData;
+using CmsWeb.Models;
+using UtilityExtensions;
+
+namespace CmsWeb.Areas.People.Models.Person
+{
+    public class PersonEnrollmentsModel
+    {
+        private int PeopleId;
+        public CmsData.Person person { get; set; }
+        public PagerModel2 Pager { get; set; }
+        public PersonEnrollmentsModel(int id)
+        {
+            PeopleId = id;
+            person = DbUtil.Db.LoadPersonById(id);
+            Pager = new PagerModel2(Count);
+        }
+        private IQueryable<OrganizationMember> _enrollments;
+        private IQueryable<OrganizationMember> FetchEnrollments()
+        {
+            if (_enrollments == null)
+            {
+                var limitvisibility = Util2.OrgMembersOnly || Util2.OrgLeadersOnly
+                    || !HttpContext.Current.User.IsInRole("Access");
+                var oids = new int[0];
+                if (Util2.OrgLeadersOnly)
+                    oids = DbUtil.Db.GetLeaderOrgIds(Util.UserPeopleId);
+            	var roles = DbUtil.Db.CurrentRoles();
+                _enrollments = from om in DbUtil.Db.OrganizationMembers
+							   let org = om.Organization
+                               where om.PeopleId == PeopleId
+                               where (om.Pending ?? false) == false
+                               where oids.Contains(om.OrganizationId) || !(limitvisibility && om.Organization.SecurityTypeId == 3) 
+							   where org.LimitToRole == null || roles.Contains(org.LimitToRole)
+                               select om;
+            }
+            return _enrollments;
+        }
+        int? _count;
+        public int Count()
+        {
+            if (!_count.HasValue)
+                _count = FetchEnrollments().Count();
+            return _count.Value;
+        }
+        public IEnumerable<OrgMemberInfo> Enrollments()
+        {
+            var q = ApplySort();
+            q = q.Skip(Pager.StartRow).Take(Pager.PageSize);
+            var q2 = from om in q
+                     let sc = om.Organization.OrgSchedules.FirstOrDefault() // SCHED
+                     select new OrgMemberInfo
+                     {
+                         OrgId = om.OrganizationId,
+                         PeopleId = om.PeopleId,
+                         Name = om.Organization.OrganizationName,
+                         Location = om.Organization.Location,
+                         LeaderName = om.Organization.LeaderName,
+                         MeetingTime = sc.MeetingTime,
+                         MemberType = om.MemberType.Description,
+                         LeaderId = om.Organization.LeaderId,
+                         EnrollDate = om.EnrollmentDate,
+                         AttendPct = om.AttendPct,
+                         DivisionName = om.Organization.Division.Program.Name + "/" + om.Organization.Division.Name,
+						 OrgType = om.Organization.OrganizationType.Description ?? "Other"
+                     };
+            return q2;
+        }
+        private IQueryable<OrganizationMember> ApplySort()
+        {
+            var q = FetchEnrollments();
+            switch (Pager.SortExpression)
+            {
+                case "Enroll Date":
+                case "Enroll Date desc":
+					q = from om in q
+						orderby om.Organization.OrganizationType.Code ?? "z", om.EnrollmentDate
+						select om;
+                    break;
+				default:
+					q = from om in q
+						orderby om.Organization.OrganizationType.Code ?? "z", om.Organization.OrganizationName
+						select om;
+                    break;
+            }
+            return q;
+        }
+    }
+}

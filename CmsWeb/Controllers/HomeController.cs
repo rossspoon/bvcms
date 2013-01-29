@@ -125,12 +125,27 @@ namespace CmsWeb.Controllers
                 clause.Days = 365;
 		        clause = qb.AddNewClause(QueryType.RecentHasIndContributions, CompareType.Equal, "1,T");
 		        clause.Days = 365;
-		        qb = qb.SaveTo(DbUtil.Db, name, "public", true);
+		        qb.SaveTo(DbUtil.Db, name, "public", true);
 		    }
+            qb = DbUtil.Db.QueryBuilderScratchPad();
+            qb.CleanSlate(DbUtil.Db);
+            qb.AddNewClause(QueryType.ActiveRecords, CompareType.Equal, "1,T");
             var count = DbUtil.Db.PeopleQuery(qb.QueryId).Count();
             TempData["ActiveRecords"] = count;
             return View("About");
 		}
+        public ActionResult UseOldLook()
+        {
+            DbUtil.Db.SetUserPreference("newlook", "false");
+            DbUtil.Db.SubmitChanges();
+            return Redirect(Request.UrlReferrer.OriginalString);
+        }
+        public ActionResult UseNewLook()
+        {
+            DbUtil.Db.SetUserPreference("newlook", "true");
+            DbUtil.Db.SubmitChanges();
+            return Redirect(Request.UrlReferrer.OriginalString);
+        }
     }
 }
 

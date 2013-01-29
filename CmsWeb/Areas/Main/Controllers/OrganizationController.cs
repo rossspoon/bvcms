@@ -25,6 +25,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			if (Util2.CurrentOrgId != id)
 			{
 				Util2.CurrentGroups = null;
+				Util2.CurrentGroupsPrefix = null;
 				Util2.CurrentGroupsMode = 0;
 			}
 
@@ -79,6 +80,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				return Content("error, not deleted");
 			Util2.CurrentOrgId = 0;
 			Util2.CurrentGroups = null;
+			Util2.CurrentGroupsPrefix = null;
 			Util2.CurrentGroupsMode = 0;
 			DbUtil.LogActivity("Delete Org {0}".Fmt(Session["ActiveOrganization"]));
 			Session.Remove("ActiveOrganization");
@@ -140,6 +142,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			ViewData["OrgMemberContext"] = true;
 			Util2.CurrentGroups = smallgrouplist;
+			Util2.CurrentGroupsPrefix = sgprefix;
 		    Util2.CurrentGroupsMode = selectmode.Value;
 			var qb = DbUtil.Db.QueryBuilderInCurrentOrg();
 			InitExportToolbar(id, qb.QueryId, checkparent:true);

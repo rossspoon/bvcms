@@ -206,13 +206,16 @@ namespace CmsWeb.Models
                             "{0} tried to login at {1}".Fmt(userName, Util.Now));
                     return problem;
                 }
+                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
+                    CMSRoleProvider.provider.GetDevelopers(),
+                    "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host),
+                    Util.Now.ToString());
             }
             return user;
         }
         public static object AuthenticateLogon(string userName, string password, HttpSessionStateBase Session, HttpRequestBase Request)
         {
             var o = AuthenticateLogon(userName, password, Request.Url.OriginalString);
-            DbUtil.LogActivity("User {0} logged in".Fmt(userName));
             if (o is User)
             {
                 var user = o as User;
