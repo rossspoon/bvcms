@@ -346,5 +346,29 @@ namespace CmsCheckin {
                 this["DisableLocationLabels"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ExtraBlankLabel {
+            get {
+                return ((bool)(this["ExtraBlankLabel"]));
+            }
+            set {
+                this["ExtraBlankLabel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OldLabels {
+            get {
+                return ((bool)(this["OldLabels"]));
+            }
+            set {
+                this["OldLabels"] = value;
+            }
+        }
     }
 }
