@@ -125,7 +125,7 @@ namespace CmsWeb.Areas.Finance.Models
                          Status = c.ContributionStatus.Description,
                          Check = c.CheckNo,
                          Notes = c.ContributionDesc,
-                         ReversedReturned = ContributionTypeCode.ReturnedReversedTypes.Contains(c.ContributionStatusId ?? 0)
+                         ReversedReturned = c.ContributionStatusId > 0
                      };
             return q3;
         }
