@@ -205,7 +205,7 @@ namespace CmsData.API
 
             var qp = from p in Db.Contributions
                      where p.PeopleId == ci.PeopleId || (ci.Joint && p.PeopleId == ci.SpouseID)
-                     where p.PledgeFlag && p.ContributionTypeId == ContributionTypeCode.Pledge
+                     where p.PledgeFlag ?? false && p.ContributionTypeId == ContributionTypeCode.Pledge
                      where p.ContributionStatusId.Value != ContributionStatusCode.Reversed
                      where p.ContributionFund.FundStatusId == 1 // active
                      where p.ContributionDate <= toDate
@@ -214,7 +214,7 @@ namespace CmsData.API
             var qc = from c in Db.Contributions
                      where !PledgeExcludes.Contains(c.ContributionTypeId)
                      where c.PeopleId == ci.PeopleId || (ci.Joint && c.PeopleId == ci.SpouseID)
-                     where !c.PledgeFlag
+                     where !(c.PledgeFlag ?? false )
                      where c.ContributionStatusId != ContributionStatusCode.Reversed
                      where c.ContributionDate <= toDate
                      group c by c.FundId into g
