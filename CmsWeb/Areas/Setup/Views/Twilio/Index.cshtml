@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Twilio Management";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+
+    int activePanel = 0;
+
+    if (ViewBag.Tab != null) { activePanel = (int)ViewBag.Tab; }
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#tabs").tabs({
+                active: @activePanel,
+                load: function( event, ui ) {
+                    $("a.bt").button();
+
+                    $("a[newtype]").click(function (e) {
+                        e.preventDefault();
+                        $.blockUI({ message: $('#' + $(this).attr("newtype")) });
+                    });
+                }
+            });
+
+        });
+    </script>
+}
+<div id="tabs">
+    <ul>
+        <li><a href="#t1"><span>Twilio Introduction</span></a></li>
+        <li><a href="/Setup/Twilio/GroupList"><span>Group List</span></a></li>
+        <li><a href="/Setup/Twilio/NumberList"><span>Number List</span></a></li>
+        <li><a href="/Setup/Twilio/GroupManagement"><span>Group Management</span></a></li>
+    </ul>
+    <div id="t1">
+        <b>Step 1: Create a Group</b><br />
+        <br />
+        A Group will consist of one or more Twilio SMS numbers along with a list of users who can send SMS message from that group.<br />
+        <br />
+        <b>Step 2: Add a Number</b><br />
+        <br />
+        Once a group has been created, you can add Twilio SMS numbers and assign them to a group. Every number must be in a group.<br />
+        <br />
+        <b>Step 3: Add a User</b><br />
+        <br />
+        Now that a group has been created and it has a number associated with it, add the users that will be authorized to send SMS messages from that group.<br />
+        <br />
+         <b>Step 4: Add SendSMS role to the User</b><br />
+        <br />
+        After a User has been added to a group, make sure they have the SendSMS role to enable them to send SMS messages.
+        <br />
+    </div>
+    <div id="t2">
+    </div>
+    <div id="t3">
+    </div>
+    <div id="t4">
+    </div>
+</div>

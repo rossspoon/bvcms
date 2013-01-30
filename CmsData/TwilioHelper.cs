@@ -16,6 +16,7 @@ namespace CmsData
         {
             var q = DbUtil.Db.PeopleQuery(iQBID);
 
+            // Create new SMS send list
             var list = new SMSList();
 
             list.Created = DateTime.Now;
@@ -26,6 +27,7 @@ namespace CmsData
             DbUtil.Db.SMSLists.InsertOnSubmit(list);
             DbUtil.Db.SubmitChanges();
 
+            // Check for how many people have cell numbers and want to receive texts
             var qSMS = from p in q
                 where p.CellPhone != null
                 where p.ReceiveSMS > 0
@@ -50,6 +52,7 @@ namespace CmsData
                 DbUtil.Db.SubmitChanges();
             }
 
+            // Check for how many people do not have cell numbers or don't want to receive texts but have e-mails
             var qEMail = from p in q
                          where p.ReceiveSMS == 0
                          where p.EmailAddress != null
@@ -75,6 +78,7 @@ namespace CmsData
                 DbUtil.Db.SubmitChanges();
             }
 
+            // Add counts for SMS, e-Mail and none
             list.SentSMS = countSMS;
             list.SentEMail = countEMail;
             list.SentNone = q.Count() - countSMS - countEMail;

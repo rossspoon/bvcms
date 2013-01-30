@@ -14,6 +14,12 @@ namespace CmsCheckin.Classes
 
 		public int getCount() { return lPages.Count(); }
 
+        public void addBlank()
+        {
+            LabelPage lpNew = new LabelPage();
+            lPages.Add(lpNew);
+        }
+
 		public void addPages( string sLabelFormat, List<LabelInfo> lItems )
 		{
 			lFormats = new List<LabelEntryBase>();

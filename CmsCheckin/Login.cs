@@ -95,9 +95,10 @@ namespace CmsCheckin
 			Settings1.Default.PrinterWidth = PrinterWidth.Text;
 			Settings1.Default.PrinterHeight = PrinterHeight.Text;
 			Settings1.Default.AdvancedPageSize = AdvancedPageSize.Checked;
+            Settings1.Default.UseSSL = UseSSL.Checked;
 			Settings1.Default.Save();
 
-			if(URL.Text.StartsWith("localhost"))
+			if(URL.Text.StartsWith("localhost") || !UseSSL.Checked)
                 Program.URL = "http://" + URL.Text;
             else if (Settings1.Default.UseSSL)
                 Program.URL = "https://" + URL.Text;
@@ -141,13 +142,32 @@ namespace CmsCheckin
 					return;
 				}
 				campuses = XDocument.Parse(str);
-				this.Hide();
 			}
 			catch (WebException ex)
 			{
 				MessageBox.Show("cannot find " + Program.URL);
 				CancelClose = true;
 			}
+
+            if (CancelClose == false)
+            {
+                bool bHorizontalCheck = PrinterHelper.getPrinterWidth(Printer.Text) > 270 && PrinterHelper.getPrinterWidth(Printer.Text) < 330;
+                bool bVerticalCheck = (PrinterHelper.getPrinterHeight(Printer.Text) > 70 && PrinterHelper.getPrinterHeight(Printer.Text) < 130) ||
+                                        (PrinterHelper.getPrinterHeight(Printer.Text) > 170 && PrinterHelper.getPrinterHeight(Printer.Text) < 230);
+
+                if (!bHorizontalCheck || !bVerticalCheck)
+                {
+                    if (MessageBox.Show("The selected printer does not have a valid page size.  Do you want to continue?", "Printer Configuration Error", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        CancelClose = true;
+                    }
+                }
+            }
+
+            if (CancelClose == false)
+            {
+                this.Hide();
+            }
 		}
 
 		TextBox current = null;
@@ -159,58 +179,57 @@ namespace CmsCheckin
 			foreach (var s in PrinterSettings.InstalledPrinters)
 				Printer.Items.Add(s);
 
-			if (Util.IsDebug())
-			{
-				URL.Text = "localhost:8888/";
-				username.Text = "David";
-				var name = @"..\..\secrets.xml";
-				if (File.Exists(name))
-				{
-					var xd = XDocument.Load(name);
-					var pa = xd.Descendants("password").FirstOrDefault();
-					if (pa != null)
-						password.Text = pa.Value;
-				}
-				PrintKiosks.Text = "";
-				PrintMode.Text = "Print to Printer";
-				Printer.SelectedIndex = Printer.FindStringExact("Godex EZ-DT-4");
-				BuildingAccessMode.Checked = true;
-				building.Text = "recreation";
-			}
-			else
-			{
-				Printer.SelectedIndex = Printer.FindStringExact(defp);
-				if (Settings1.Default.Printer.HasValue())
-					Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
-				DisableLocationLabels.Checked = Settings1.Default.DisableLocationLabels;
-				BuildingAccessMode.Checked = Settings1.Default.BuildingMode;
-				URL.Text = Settings1.Default.URL;
-				username.Text = Settings1.Default.username;
-				PrintKiosks.Text = Settings1.Default.Kiosks;
-				PrintMode.Text = Settings1.Default.PrintMode;
-				building.Text = Settings1.Default.Building;
-				AdvancedPageSize.Checked = Settings1.Default.AdvancedPageSize;
-				PrinterWidth.Text = Settings1.Default.PrinterWidth;
-				PrinterHeight.Text = Settings1.Default.PrinterHeight;
+			Printer.SelectedIndex = Printer.FindStringExact(defp);
+			if (Settings1.Default.Printer.HasValue())
+				Printer.SelectedIndex = Printer.FindStringExact(Settings1.Default.Printer);
+			DisableLocationLabels.Checked = Settings1.Default.DisableLocationLabels;
+			BuildingAccessMode.Checked = Settings1.Default.BuildingMode;
+			URL.Text = Settings1.Default.URL;
+			username.Text = Settings1.Default.username;
+			PrintKiosks.Text = Settings1.Default.Kiosks;
+			PrintMode.Text = Settings1.Default.PrintMode;
+			building.Text = Settings1.Default.Building;
+			AdvancedPageSize.Checked = Settings1.Default.AdvancedPageSize;
+			PrinterWidth.Text = Settings1.Default.PrinterWidth;
+			PrinterHeight.Text = Settings1.Default.PrinterHeight;
+            UseSSL.Checked = Settings1.Default.UseSSL;
 
-				this.Height = 580;
+            if (!Util.IsDebug())
+            {
+                this.Height = 570;
 
-				PrintTest.Enabled = false;
-				label5.Enabled = false;
-				LabelFormat.Enabled = false;
-				LabelList.Enabled = false;
-				label10.Enabled = false;
-				LoadLabelList.Enabled = false;
-				SaveLabel.Enabled = false;
+                PrintTest.Enabled = false;
+                label5.Enabled = false;
+                LabelFormat.Enabled = false;
+                LabelList.Enabled = false;
+                label10.Enabled = false;
+                LoadLabelList.Enabled = false;
+                SaveLabel.Enabled = false;
+                UseSSL.Enabled = false;
 
-				PrintTest.Visible = false;
-				label5.Visible = false;
-				LabelFormat.Visible = false;
-				LabelList.Visible = false;
-				label10.Visible = false;
-				LoadLabelList.Visible = false;
-				SaveLabel.Visible = false;
-			}
+                PrintTest.Visible = false;
+                label5.Visible = false;
+                LabelFormat.Visible = false;
+                LabelList.Visible = false;
+                label10.Visible = false;
+                LoadLabelList.Visible = false;
+                SaveLabel.Visible = false;
+                UseSSL.Visible = false;
+
+            }
+
+            if (PrintMode.Text == "Print From Server")
+            {
+                PrintKiosks.Enabled = true;
+                label12.Enabled = true;
+                label1.Enabled = true;
+            }
+            else
+            {
+                PrintKiosks.Enabled = false;
+                label12.Enabled = false;
+                label1.Enabled = false;
+            }
 		}
 
 		void buttonclick(object sender, EventArgs e)
@@ -460,5 +479,22 @@ namespace CmsCheckin
 				PrinterHeight.Text = "";
 			}
 		}
+
+        private void PrintMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PrintMode.SelectedIndex == 2)
+            {
+                PrintKiosks.Enabled = true;
+                label12.Enabled = true;
+                label1.Enabled = true;
+            }
+            else
+            {
+                PrintKiosks.Enabled = false;
+                label12.Enabled = false;
+                label1.Enabled = false;
+                PrintKiosks.Text = "";
+            }
+        }
 	}
 }

@@ -84,21 +84,25 @@ namespace CmsCheckin
             Program.FamilyId = x.Root.Attribute("familyid").Value.ToInt();
 
 			list = new List<PersonInfo>();
-			if (x.Descendants("member").Count() == 0)
-			{
-				ClearControls();
-				var lab = new Label();
-				lab.Font = pfont;
-				lab.Location = new Point(15, 200);
-				lab.AutoSize = true;
-				pgup.Visible = false;
-				pgdn.Visible = false;
-				lab.Text = "Not Found, try another phone number, or 411?";
-				this.Controls.Add(lab);
-				Return.Text = "Try Again";
-				controls.Add(lab);
-				return;
-			}
+            if (x.Descendants("member").Count() == 0)
+            {
+                ClearControls();
+                var lab = new Label();
+                lab.Font = pfont;
+                lab.Location = new Point(15, 200);
+                lab.AutoSize = true;
+                pgup.Visible = false;
+                pgdn.Visible = false;
+                lab.Text = "Not Found, try another phone number, or 411?";
+                this.Controls.Add(lab);
+                Return.Text = "Try Again";
+                controls.Add(lab);
+                return;
+            }
+            else
+            {
+                Return.Text = "Return";
+            }
 
 			foreach (var e in x.Descendants("member"))
 			{
@@ -628,6 +632,7 @@ namespace CmsCheckin
 				this.GoHome(string.Empty);
 				return;
 			}
+
 			if (Program.addguests == null)
 			{
 				Program.addguests = new AddGuests();
