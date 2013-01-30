@@ -86,6 +86,8 @@ namespace CmsWeb.Areas.Finance.Controllers
 
 			foreach (var item in entries)
 			{
+                if (item.QBSynced > 0) continue;
+
 				var accts = (from e in DbUtil.Db.ContributionFunds
 							where e.FundId == item.FundId
 							select e).Single();
