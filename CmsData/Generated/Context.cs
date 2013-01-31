@@ -1935,6 +1935,21 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.LastMeetings", IsComposable = true)]
+		public IQueryable< View.LastMeeting > LastMeetings(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? divid,
+            [Parameter(DbType="int")] int? days
+            )
+		{
+			return this.CreateMethodCallQuery< View.LastMeeting>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                divid,
+                days
+                );
+		}
+
 		[Function(Name="dbo.MembersAsOf", IsComposable = true)]
 		public IQueryable< View.MembersAsOf > MembersAsOf(
             [Parameter(DbType="datetime")] DateTime? from,

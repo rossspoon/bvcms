@@ -565,13 +565,20 @@ namespace CmsWeb.Models
         }
         public void SendNotices(OrgSearchController c)
         {
+            const int days = 36;
+
             var olist = FetchOrgs().Select(oo => oo.OrganizationId).ToList();
+
+            var mlist = (from r in DbUtil.Db.LastMeetings(null, DivisionId, days)
+                         where olist.Contains(r.OrganizationId)
+                         select r).ToList();
+
             var list = (from p in DbUtil.Db.RecentAbsents(null, null, 36)
-                        where olist.Contains(p.OrganizationId)
+                         where olist.Contains(p.OrganizationId)
                         select p).ToList();
             var glist = from pp in list
                         group pp by new
-                        {
+                         {
                             pp.OrganizationId,
                             pp.OrganizationName,
                             pp.MeetingId,
@@ -581,6 +588,8 @@ namespace CmsWeb.Models
                         }
                         into g
                         select g;
+
+            var sb2 = new StringBuilder("Notices sent to:</br>\n<table>\n");
             foreach (var g in glist)
             {
                 var q = from m in DbUtil.Db.OrganizationMembers
@@ -590,7 +599,7 @@ namespace CmsWeb.Models
                         where u != null
                         group m by m.Person into gg
                         select gg;
-                var sb2 = new StringBuilder("Notices sent to:</br>\n<table>\n");
+
                 foreach (var gg in q)
                 {
                     var person = gg.Key;
@@ -601,13 +610,13 @@ namespace CmsWeb.Models
                                  where mt.OrganizationId == om.OrganizationId
                                  where mt.MeetingDate.Value.Date == g.Key.Lastmeeting.Value.Date
                                  select new
-                                 { 
+                                 {
                                      mt.MeetingId,
                                      mt.Organization.OrganizationName,
                                      mt.MeetingDate,
                                      mt.Organization.LeaderName,
                                      mt.Organization.Location,
-                                };
+                                 };
                         foreach (var mt in q2)
                         {
                             string orgname = Organization.FormatOrgName(mt.OrganizationName, mt.LeaderName, mt.Location);
@@ -621,10 +630,10 @@ namespace CmsWeb.Models
                     DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, person, null,
                                     "Attendance reports are ready for viewing", sb.ToString(), false);
                 }
-                sb2.Append("</table>\n");
-                DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, DbUtil.Db.CurrentUser.Person, null,
-                                "Attendance emails sent", sb2.ToString(), false);
             }
+            sb2.Append("</table>\n");
+            DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, DbUtil.Db.CurrentUser.Person, null,
+                            "Attendance emails sent", sb2.ToString(), false);
         }
 
         public class OrganizationInfo

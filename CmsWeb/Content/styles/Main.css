@@ -375,6 +375,9 @@ div.roundbox select {
 .white {
     color: white;
 }
+.blue {
+    color: blue;
+}
 
 .disabled {
     color: #999 !important;

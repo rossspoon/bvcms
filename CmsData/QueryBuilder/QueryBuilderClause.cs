@@ -410,5 +410,16 @@ namespace CmsData
             }
             return qb;
         }
+        public QueryBuilderClause SaveTo(CMSDataContext db, string name, string user, bool ispublic)
+        {
+            var saveto = new QueryBuilderClause();
+            db.QueryBuilderClauses.InsertOnSubmit(saveto);
+            saveto.CopyFromAll(this, db);
+            saveto.SavedBy = user;
+            saveto.Description = name;
+            saveto.IsPublic = ispublic;
+            db.SubmitChanges();
+            return saveto;
+	}
     }
 }
