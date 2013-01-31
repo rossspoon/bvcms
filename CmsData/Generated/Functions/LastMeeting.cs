@@ -26,6 +26,8 @@ namespace CmsData.View
 		
 		private int _MeetingId;
 		
+		private string _Location;
+		
 		
 		public LastMeeting()
 		{
@@ -113,6 +115,23 @@ namespace CmsData.View
 			{
 				if (this._MeetingId != value)
 					this._MeetingId = value;
+			}
+
+		}
+
+		
+		[Column(Name="Location", Storage="_Location", DbType="varchar(40)")]
+		public string Location
+		{
+			get
+			{
+				return this._Location;
+			}
+
+			set
+			{
+				if (this._Location != value)
+					this._Location = value;
 			}
 
 		}

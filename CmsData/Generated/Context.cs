@@ -482,6 +482,14 @@ namespace CmsData
         partial void UpdateShirtSize(ShirtSize instance);
         partial void DeleteShirtSize(ShirtSize instance);
         
+        partial void InsertSMSGroupMember(SMSGroupMember instance);
+        partial void UpdateSMSGroupMember(SMSGroupMember instance);
+        partial void DeleteSMSGroupMember(SMSGroupMember instance);
+        
+        partial void InsertSMSGroup(SMSGroup instance);
+        partial void UpdateSMSGroup(SMSGroup instance);
+        partial void DeleteSMSGroup(SMSGroup instance);
+        
         partial void InsertSMSItem(SMSItem instance);
         partial void UpdateSMSItem(SMSItem instance);
         partial void DeleteSMSItem(SMSItem instance);
@@ -489,6 +497,10 @@ namespace CmsData
         partial void InsertSMSList(SMSList instance);
         partial void UpdateSMSList(SMSList instance);
         partial void DeleteSMSList(SMSList instance);
+        
+        partial void InsertSMSNumber(SMSNumber instance);
+        partial void UpdateSMSNumber(SMSNumber instance);
+        partial void DeleteSMSNumber(SMSNumber instance);
         
         partial void InsertStateLookup(StateLookup instance);
         partial void UpdateStateLookup(StateLookup instance);
@@ -1332,6 +1344,18 @@ namespace CmsData
 
 		}
 
+		public Table< SMSGroupMember> SMSGroupMembers
+		{
+			get	{ return this.GetTable< SMSGroupMember>(); }
+
+		}
+
+		public Table< SMSGroup> SMSGroups
+		{
+			get	{ return this.GetTable< SMSGroup>(); }
+
+		}
+
 		public Table< SMSItem> SMSItems
 		{
 			get	{ return this.GetTable< SMSItem>(); }
@@ -1341,6 +1365,12 @@ namespace CmsData
 		public Table< SMSList> SMSLists
 		{
 			get	{ return this.GetTable< SMSList>(); }
+
+		}
+
+		public Table< SMSNumber> SMSNumbers
+		{
+			get	{ return this.GetTable< SMSNumber>(); }
 
 		}
 

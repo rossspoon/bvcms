@@ -569,67 +569,46 @@ namespace CmsWeb.Models
 
             var olist = FetchOrgs().Select(oo => oo.OrganizationId).ToList();
 
+            var alist = (from p in DbUtil.Db.RecentAbsents(null, null, days)
+                         where olist.Contains(p.OrganizationId)
+                         select p).ToList();
+
             var mlist = (from r in DbUtil.Db.LastMeetings(null, DivisionId, days)
                          where olist.Contains(r.OrganizationId)
                          select r).ToList();
 
-            var list = (from p in DbUtil.Db.RecentAbsents(null, null, 36)
-                         where olist.Contains(p.OrganizationId)
-                        select p).ToList();
-            var glist = from pp in list
-                        group pp by new
-                         {
-                            pp.OrganizationId,
-                            pp.OrganizationName,
-                            pp.MeetingId,
-                            pp.Lastmeeting,
-                            pp.LeaderName,
-                            pp.ConsecutiveAbsentsThreshold
-                        }
-                        into g
-                        select g;
+            var plist = from om in DbUtil.Db.OrganizationMembers
+                        where olist.Contains(om.OrganizationId)
+                        where om.MemberType.AttendanceTypeId == AttendTypeCode.Leader
+                        let u =
+                            om.Person.Users.FirstOrDefault(uu => uu.UserRoles.Any(r => r.Role.RoleName == "Access"))
+                        where u != null
+                        group om.OrganizationId by om.Person
+                            into leaderlist
+                            select leaderlist;
 
             var sb2 = new StringBuilder("Notices sent to:</br>\n<table>\n");
-            foreach (var g in glist)
+            foreach (var p in plist)
             {
-                var q = from m in DbUtil.Db.OrganizationMembers
-                        where m.OrganizationId == g.Key.OrganizationId
-                        where m.MemberType.AttendanceTypeId == AttendTypeCode.Leader
-                        let u = m.Person.Users.FirstOrDefault(uu => uu.UserRoles.Any(r => r.Role.RoleName == "Access"))
-                        where u != null
-                        group m by m.Person into gg
-                        select gg;
-
-                foreach (var gg in q)
+                var sb = new StringBuilder("The following meetings are ready to be viewed:<br/>\n");
+                var leader = p.Key;
+                var orgids = p.Select(vv => vv).ToList();
+                var meetings = mlist.Where(m => orgids.Contains(m.OrganizationId)).ToList();
+                foreach (var m in meetings)
                 {
-                    var person = gg.Key;
-                    var sb = new StringBuilder("The following meetings are ready to be viewed:<br/>\n");
-                    foreach (var om in gg)
-                    {
-                        var q2 = from mt in DbUtil.Db.Meetings
-                                 where mt.OrganizationId == om.OrganizationId
-                                 where mt.MeetingDate.Value.Date == g.Key.Lastmeeting.Value.Date
-                                 select new
-                                 {
-                                     mt.MeetingId,
-                                     mt.Organization.OrganizationName,
-                                     mt.MeetingDate,
-                                     mt.Organization.LeaderName,
-                                     mt.Organization.Location,
-                                 };
-                        foreach (var mt in q2)
-                        {
-                            string orgname = Organization.FormatOrgName(mt.OrganizationName, mt.LeaderName, mt.Location);
-                            sb.AppendFormat("<a href='{0}/Meeting/Index/{1}'>{2} - {3}</a><br/>\n",
-                                            DbUtil.Db.CmsHost, mt.MeetingId, orgname, mt.MeetingDate);
-                            sb2.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2:g}</td></tr>\n",
-                                             person.Name, orgname, mt.MeetingDate);
-                        }
-                        sb.Append(RecentAbsentsEmail(c, list.Where(pp => pp.OrganizationId == om.OrganizationId)));
-                    }
-                    DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, person, null,
-                                    "Attendance reports are ready for viewing", sb.ToString(), false);
+                    string orgname = Organization.FormatOrgName(m.OrganizationName, m.LeaderName, m.Location);
+                    sb.AppendFormat("<a href='{0}/Meeting/Index/{1}'>{2} - {3}</a><br/>\n",
+                                    DbUtil.Db.CmsHost, m.MeetingId, orgname, m.Lastmeeting.FormatDateTm());
+                    sb2.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2:g}</td></tr>\n",
+                                     leader.Name, orgname, m.Lastmeeting.FormatDateTm());
                 }
+                foreach (var m in meetings)
+                {
+                    var absents = alist.Where(a => a.OrganizationId == m.OrganizationId);
+                    sb.Append(RecentAbsentsEmail(c, absents));
+                }
+                DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, leader, null,
+                                "Attendance reports are ready for viewing", sb.ToString(), false);
             }
             sb2.Append("</table>\n");
             DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, DbUtil.Db.CurrentUser.Person, null,

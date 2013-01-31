@@ -444,6 +444,7 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Areas\Setup\Controllers\TwilioController.cs" />
     <Compile Include="Code\BundleConfig.cs" />
     <Compile Include="Code\BundleModel.cs">
       <SubType>Code</SubType>
@@ -1392,6 +1393,10 @@
     <Content Include="Areas\People\Views\Person\UserDialog.cshtml" />
     <Content Include="Areas\People\Views\Person\UserInfoGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\VolunteerDisplay.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\GroupList.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\GroupManagement.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\Index.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\NumberList.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
