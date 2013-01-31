@@ -56,6 +56,7 @@ namespace CmsCheckin.Classes
             foreach( var u in (from c in q where c.mv != "M" select c) ) { u.mv = "G"; }
 
             var q2 = from c in q
+                     where c.n > 0
                      orderby c.first ascending, c.hour descending
                      group c by new { c.pid } into g
                      select from c in g
@@ -85,7 +86,8 @@ namespace CmsCheckin.Classes
 
 				var locs = from c in q
 						   where c.mv != "M"
-                           where c.requiressecuritylabel == true
+                           where c.age < 18
+                           where c.n > 0
 						   orderby c.first ascending, c.hour ascending
 						   group c by c.securitycode into g
 						   select from c in g
@@ -95,7 +97,7 @@ namespace CmsCheckin.Classes
 				{
                     int iPersonSecurityCount = PrinterHelper.getSecurityCount(li);
 
-                    if (iPersonSecurityCount > 0)
+                    if (iPersonSecurityCount > 0 || li.First().age < 18)
                     {
                         string[] sFormats = PrinterHelper.MAIN;
                         foreach (string sItem in sFormats)
@@ -155,16 +157,15 @@ namespace CmsCheckin.Classes
 
                     if (Program.DisableLocationLabels == false)
                     {
-                        if (iSecurityCount > 0)
+                        foreach (var lc in locs)
                         {
-                            foreach (var lc in locs)
-                            {
-                                lsLabels.addPages(PrinterHelper.fetchLabelFormat("Location", iLabelSize), lc.ToList<LabelInfo>());
-                            }
+                            lsLabels.addPages(PrinterHelper.fetchLabelFormat("Location", iLabelSize), lc.ToList<LabelInfo>());
                         }
                     }
 				}
 			}
+
+            if (Settings1.Default.ExtraBlankLabel == true && q.Count() > 0) lsLabels.addBlank();
 
 			PrinterHelper.printAllLabels(Program.Printer, lsLabels);
 		}

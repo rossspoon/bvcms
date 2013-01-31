@@ -697,9 +697,9 @@ namespace CmsCheckin
                         transport = c.transport,
                         requiressecuritylabel = c.RequiresSecurityLabel,
 						securitycode = Program.SecurityCode,
+                        dob = ( c.dob != null && c.dob.Length > 0 ? DateTime.Parse( c.dob ) : DateTime.Now ),
                     };
-
-           
+                       
             Util.UnLockFamily();
 
             if (Program.PrintMode == "Print To Server")
@@ -711,74 +711,14 @@ namespace CmsCheckin
 			if (Program.UseNewLabels)
 			{
 				PrinterHelper.doPrinting(q);
-
-				/*
-				LabelSet lsLabels = new LabelSet();
-				int iLabelSize = PrinterHelper.fetchLabelHeight( Program.Printer );
-
-				var q2 = from c in q
-						 orderby c.hour descending
-						 group c by c.pid into g
-						 select from c in g
-								select c;
-
-				var locs = from c in q
-						   where c.mv == "G"
-						   orderby c.first ascending, c.hour ascending
-						   group c by c.securitycode into g
-						   select from c in g
-								  select c;
-
-				var testList = q.ToList<LabelInfo>();
-
-				foreach (var li in q2)
-				{
-					LabelInfo liFirst = li.First();
-
-					if (liFirst.mv == "M")
-					{
-						string[] sFormats = PrinterHelper.MEMBERS;
-
-						foreach (string sItem in sFormats)
-						{
-							lsLabels.addPages(PrinterHelper.FetchLabelFormat(sItem, iLabelSize), li.ToList<LabelInfo>());
-						}
-					}
-					else
-					{
-						string[] sFormats = PrinterHelper.VISITORS;
-
-						foreach (string sItem in sFormats)
-						{
-							lsLabels.addPages(PrinterHelper.FetchLabelFormat(sItem, iLabelSize), li.ToList<LabelInfo>());
-						}
-					}
-				}
-
-				if( lsLabels.getCount() > 0 )
-				{
-					int iSecurityCount = PrinterHelper.fetchSecurityCount(q);
-
-					for (int iX = 0; iX < iSecurityCount; iX++)
-					{
-						lsLabels.addPages(PrinterHelper.FetchLabelFormat("Security", iLabelSize), q2.First().Take(1).ToList<LabelInfo>());
-					}
-
-					foreach( var lc in locs )
-					{
-						lsLabels.addPages(PrinterHelper.FetchLabelFormat("Location", iLabelSize), lc.ToList<LabelInfo>());
-					}
-				}
-
-				PrinterHelper.printAllLabels(Program.Printer, lsLabels);
-				*/
 			}
 			else
 			{
 				using (var ms = new MemoryStream())
 				{
-					if (Program.TwoInchLabel) doprint.PrintLabels2(ms, q);
-					else doprint.PrintLabels(ms, q);
+					//if (Program.TwoInchLabel) doprint.PrintLabels2(ms, q);
+					//else doprint.PrintLabels(ms, q);
+                    doprint.PrintLabels(ms, q);
 					doprint.FinishUp(ms);
 				}
 			}
@@ -948,16 +888,29 @@ namespace CmsCheckin
     public class LabelInfo 
     {
         public int n { get; set; } // numlabels attribute
+        public DateTime dob { get; set; } // dob
         public string location { get; set; } // loc attribute
         public string allergies { get; set; }
         public string org { get; set; } // orgname attribute
         public DateTime? hour { get; set; }
 
+        public int age
+        {
+            get
+            {
+                DateTime now = DateTime.Now;
+                int age = now.Year - dob.Year;
+                if (now < dob.AddYears(age)) age--;
+                return age;
+            }
+        }
+
 		public string date
 		{
 			get
 			{
-				return hour.Value.ToString("d");
+                if (hour != null) return hour.Value.ToString("d");
+                else return "";
 			}
 		}
 
@@ -965,7 +918,8 @@ namespace CmsCheckin
 		{
 			get
 			{
-				return hour.Value.ToString("t");
+                if (hour != null) return hour.Value.ToString("t");
+                else return "";
 			}
 		}
 
@@ -983,6 +937,15 @@ namespace CmsCheckin
             get
             {
                 if (custody || transport || allergies.Length > 0) return ("Guest - " + (allergies.Length > 0 ? "A|" : "") + (custody ? "C|" : "") + (transport ? "T" : "")).TrimEnd(new char[] { '|' });
+                else return "Guest";
+            }
+        }
+
+        public string guestoption
+        {
+            get
+            {
+                if (mv == "M") return "";
                 else return "Guest";
             }
         }

@@ -1,0 +1,41 @@
+﻿@using CmsData
+@{
+    var gl = from e in DbUtil.Db.SMSGroups
+             select e;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GroupList</title>
+</head>
+<body>
+    <center><a href="#" newtype="newGroup" class="bt">New Group</a></center>
+    Group List
+
+    <div id="newGroup" style="display:none">
+	    <br />
+	    <span style="font-weight:bold">New Group</span>
+	    <center>
+	        <form action="/Setup/Twilio/GroupCreate" method="post">
+	            <table cellspacing="10">
+	            <tr>
+		            <td align="right">Name:</td>
+		            <td align="left"><input name="name" size="25" /></td>
+	            </tr>
+                    <tr>
+		            <td align="right">Description:</td>
+		            <td align="left"><input name="description" size="25" /></td>
+	            </tr>
+	            <tr>
+		            <td align="center" colspan="2">
+			            <input type="submit" class="bt" value="Submit" /> &nbsp;&nbsp; <input type="button" class="bt" onclick="$.unblockUI()" value="Cancel" />
+		            </td>
+	            </tr>
+	            </table>
+	        </form>
+	    </center>
+	    <br />
+    </div>
+</body>
+</html>

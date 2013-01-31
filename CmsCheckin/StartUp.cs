@@ -72,7 +72,13 @@ namespace CmsCheckin
             Settings1.Default.LeadHours = LeadHours.Text.ToInt();
             Settings1.Default.LateMinutes = LateMinutes.Text.ToInt();
             Settings1.Default.DisableJoin = DisableJoin.Checked;
+            Settings1.Default.ExtraBlankLabel = ExtraBlankLabel.Checked;
+            Settings1.Default.OldLabels = OldLabels.Checked;
             Settings1.Default.Save();
+
+            if (OldLabels.Checked) Program.UseNewLabels = false;
+            else Program.UseNewLabels = true;
+
             this.Hide();
         }
 
@@ -107,6 +113,21 @@ namespace CmsCheckin
             AskChurchName.Checked = Settings1.Default.AskChurchName;
             KioskName.Text = Settings1.Default.KioskName;
             DisableJoin.Checked = Settings1.Default.DisableJoin;
+            ExtraBlankLabel.Checked = Settings1.Default.ExtraBlankLabel;
+            OldLabels.Checked = Settings1.Default.OldLabels;
+        }
+
+        private void OldLabels_CheckedChanged(object sender, EventArgs e)
+        {
+            if (OldLabels.Checked)
+            {
+                ExtraBlankLabel.Checked = false;
+                ExtraBlankLabel.Enabled = false;
+            }
+            else
+            {
+                ExtraBlankLabel.Enabled = true;
+            }
         }
     }
     class DayOfWeek
