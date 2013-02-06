@@ -151,7 +151,7 @@ namespace CmsCheckin
 
             if (CancelClose == false)
             {
-                bool bHorizontalCheck = PrinterHelper.getPrinterWidth(Printer.Text) > 270 && PrinterHelper.getPrinterWidth(Printer.Text) < 330;
+                bool bHorizontalCheck = PrinterHelper.getPrinterWidth(Printer.Text) > 290;
                 bool bVerticalCheck = (PrinterHelper.getPrinterHeight(Printer.Text) > 70 && PrinterHelper.getPrinterHeight(Printer.Text) < 130) ||
                                         (PrinterHelper.getPrinterHeight(Printer.Text) > 170 && PrinterHelper.getPrinterHeight(Printer.Text) < 230);
 
