@@ -549,5 +549,8 @@
     <Field Name="ActiveRecords" Title="Active Records" Type="Bit" DisplayAs="ActiveRecords" DataValueField="IdCode">
       Active Record
     </Field>
+    <Field Name="MatchAnything" Title="Match Anything" Type="Bit" DisplayAs="MatchAnything" DataValueField="IdCode">
+      This condition is always true
+    </Field>
   </Category>
 </Fields>

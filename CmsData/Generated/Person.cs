@@ -243,6 +243,8 @@ namespace CmsData
 		
 		private bool? _DoNotPublishPhones;
 		
+		private bool? _IsDeceased;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -712,6 +714,9 @@ namespace CmsData
 		
 		partial void OnDoNotPublishPhonesChanging(bool? value);
 		partial void OnDoNotPublishPhonesChanged();
+		
+		partial void OnIsDeceasedChanging(bool? value);
+		partial void OnIsDeceasedChanged();
 		
     #endregion
 		public Person()
@@ -3388,6 +3393,28 @@ namespace CmsData
 					this._DoNotPublishPhones = value;
 					this.SendPropertyChanged("DoNotPublishPhones");
 					this.OnDoNotPublishPhonesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="IsDeceased", UpdateCheck=UpdateCheck.Never, Storage="_IsDeceased", DbType="bit", IsDbGenerated=true)]
+		public bool? IsDeceased
+		{
+			get { return this._IsDeceased; }
+
+			set
+			{
+				if (this._IsDeceased != value)
+				{
+				
+                    this.OnIsDeceasedChanging(value);
+					this.SendPropertyChanging();
+					this._IsDeceased = value;
+					this.SendPropertyChanged("IsDeceased");
+					this.OnIsDeceasedChanged();
 				}
 
 			}

@@ -1,15 +1,20 @@
-﻿@model CmsWeb.Models.ManageSubsModel 
+﻿@using System.Web.Optimization
+@model CmsWeb.Models.ManageSubsModel 
 @using CmsWeb
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
+}
+@section scripts
+{
+@Scripts.Render("~/bundles/single/OnlineReg-js")
 }
 <h2>@Model.Description()</h2>
 <div>@Html.Raw(Model.Instructions)</div>
 <h4>Email Subscription Options for @Model.person.Name &lt;@Model.person.EmailAddress&gt;</h4>
 @using(Html.BeginForm("ConfirmSubscriptions", "OnlineReg"))
 {
-    @Html.Hidden("specialedit", 0)
+    @Html.Hidden("specialedit", 1)
     @Html.Hidden("pid", Model.pid)
     @Html.Hidden("divid", Model.divid)
     @Html.Hidden("masterorgid", Model.masterorgid)

@@ -10,23 +10,26 @@
     @if (newlook)
     {
         @Styles.Render("~/Content/styles/css2")
+        <link href="~/Content/styles/layout.css" rel="stylesheet" />
         <link href="~/Content/styles/Main.css" rel="stylesheet" />
         <link href="~/Content/styles/Menu.css" rel="stylesheet" />
         <link href="~/Content/styles/pager.css" rel="stylesheet" />
+        <link href="~/Content/font/font-awesome.min.css" rel="stylesheet">
+        <link href="~/Content/font/proximanova/fonts.css" rel="stylesheet">
+        <link href="~/Content/chosen/chosen.css" rel="stylesheet">
     }
     else
     {
         @Styles.Render("~/Content/styles/css")
     }
-<!--[if gte IE 8]>
-<style type="text/css">
-    /* div.navbar > ul > li { float: left; } */
-</style>
-<![endif]-->
     @RenderSection("head", required: false)
     @if (newlook)
     {
+        <style type="text/css">
+            #header { background: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
+        </style>
         @Scripts.Render("~/bundles/main-js")
+        <script src="~/Content/js/jquery.simplemodal.1.4.4.min.js"></script>
         <script src="~/Scripts/dropdown.js"></script>
         <script src="~/Scripts/ExportToolBar.js"></script>
         <script src="~/Scripts/Pager.js"></script>
@@ -75,11 +78,11 @@
             }	
         </div>
         
-        @if (Util.IsHosted)
+@*        @if (Util.IsHosted)
         {
             <div style="float: right"><a href="http://www.bvcms.com"><img src="~/images/bvcms-provided.png" /></a></div>
             <div style="clear: both"></div>
-        }
+        }*@
     </div>
 }
 else

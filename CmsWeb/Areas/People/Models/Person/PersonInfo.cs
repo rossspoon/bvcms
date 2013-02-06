@@ -56,7 +56,7 @@ namespace CmsWeb.Areas.People.Models.Person
             {
                 PeopleId = p.PeopleId,
                 AddressTypeId = p.AddressTypeId,
-                Deceased = p.Deceased,
+                Deceased = p.IsDeceased ?? false,
                 FamilyId = p.FamilyId,
                 Name = p.Name,
                 SmallPicId = i.SmallId,

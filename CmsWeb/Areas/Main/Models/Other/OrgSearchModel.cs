@@ -585,6 +585,7 @@ namespace CmsWeb.Models
                         where u != null
                         group om.OrganizationId by om.Person
                             into leaderlist
+                        orderby leaderlist.Key.Name2
                             select leaderlist;
 
             var sb2 = new StringBuilder("Notices sent to:</br>\n<table>\n");
@@ -597,7 +598,7 @@ namespace CmsWeb.Models
                 foreach (var m in meetings)
                 {
                     string orgname = Organization.FormatOrgName(m.OrganizationName, m.LeaderName, m.Location);
-                    sb.AppendFormat("<a href='{0}/Meeting/Index/{1}'>{2} - {3}</a><br/>\n",
+                    sb.AppendFormat("<a href='{0}Meeting/Index/{1}'>{2} - {3}</a><br/>\n",
                                     DbUtil.Db.CmsHost, m.MeetingId, orgname, m.Lastmeeting.FormatDateTm());
                     sb2.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2:g}</td></tr>\n",
                                      leader.Name, orgname, m.Lastmeeting.FormatDateTm());

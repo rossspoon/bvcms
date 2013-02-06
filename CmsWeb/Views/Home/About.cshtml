@@ -4,7 +4,7 @@
     var active = TempData["ActiveRecords"].ToInt();
 }
 <h2>About</h2>
-<p>Build Version: @ViewData["build"]</p>
+<p>Build Date: @Util.BuildDate()
 @if (active > 0)
 {
     <div>Active Records: @active.ToString("N0")</div>

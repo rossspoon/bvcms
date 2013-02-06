@@ -202,7 +202,7 @@ function FillConditionGrid(html) {
             $(this).replaceWith(s);
         });
     };
-    $.fn.multiSelectRemove = function() {
+    $.fn.multiSelectRemove = function () {
         $(this).each(function() {
             $(this).next('.multiselect').remove();
             $(this).next('.multiSelectOptions').remove();

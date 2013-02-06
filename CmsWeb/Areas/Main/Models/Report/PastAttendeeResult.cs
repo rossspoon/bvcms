@@ -69,12 +69,13 @@ namespace CmsWeb.Areas.Main.Models.Report
                      {
                          o.OrganizationName,
                          o.LeaderName,
+                         o.FirstMeetingDate
                      }).SingleOrDefault();
 
             w.PageEvent = new HeadFoot
             {
-                HeaderText = "Recent Attendee Report: {0} - {1}".Fmt(
-                    i.OrganizationName, i.LeaderName),
+                HeaderText = "Recent Attendee Report: {0} - {1} ({2})".Fmt(
+                    i.OrganizationName, i.LeaderName, i.FirstMeetingDate.HasValue ? "since " + i.FirstMeetingDate.FormatDate() : "no First Meeting Date set"),
                 FooterText = "Recent Attendee Report"
             };
             doc.Open();
@@ -120,7 +121,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     t.DefaultCell.BackgroundColor = color;
 
                     if (v != p.visitor)
-                        t.Add("             ------ {0} ------".Fmt(p.visitor == true ? "Visitors" : "Members"), 6, bigboldfont);
+                        t.Add("             ------ {0} ------".Fmt(p.visitor == true ? "Visitors and Previous Members" : "Members"), 6, bigboldfont);
                     v = p.visitor;
 
                     t.Add(p.Name, font);

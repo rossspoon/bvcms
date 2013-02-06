@@ -37,12 +37,7 @@ namespace CmsWeb.Controllers
         }
         public ActionResult About()
         {
-            ViewData["build"] = BuildDate();
             return View();
-        }
-        public string BuildDate()
-        {
-			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
         [ValidateInput(false)]
         public ActionResult ShowError(string error, string url)
@@ -112,19 +107,20 @@ namespace CmsWeb.Controllers
 		}
         [Authorize(Roles = "Admin")]
 		public ActionResult ActiveRecords()
-		{
+        {
 		    var name = "ActiveRecords";
 		    var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.IsPublic && c.Description == name && c.SavedBy == "public");
 		    if (qb == null)
 		    {
 			    qb = DbUtil.Db.QueryBuilderScratchPad();
                 qb.CleanSlate(DbUtil.Db);
-                qb.SetComparisonType(CompareType.AnyTrue);
+		        var anygroup = qb.AddNewGroupClause(CompareType.AnyTrue);
 
-                var clause = qb.AddNewClause(QueryType.RecentAttendCount, CompareType.GreaterEqual, "1");
+                var clause = anygroup.AddNewClause(QueryType.RecentAttendCount, CompareType.GreaterEqual, "1");
                 clause.Days = 365;
-		        clause = qb.AddNewClause(QueryType.RecentHasIndContributions, CompareType.Equal, "1,T");
+		        clause = anygroup.AddNewClause(QueryType.RecentHasIndContributions, CompareType.Equal, "1,T");
 		        clause.Days = 365;
+		        qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
 		        qb.SaveTo(DbUtil.Db, name, "public", true);
 		    }
             qb = DbUtil.Db.QueryBuilderScratchPad();
@@ -143,6 +139,18 @@ namespace CmsWeb.Controllers
         public ActionResult UseNewLook()
         {
             DbUtil.Db.SetUserPreference("newlook", "true");
+            DbUtil.Db.SubmitChanges();
+            return Redirect(Request.UrlReferrer.OriginalString);
+        }
+        public ActionResult UseAdvancedSearch()
+        {
+            DbUtil.Db.SetUserPreference("advancedsearch", "true");
+            DbUtil.Db.SubmitChanges();
+            return Redirect(Request.UrlReferrer.OriginalString);
+        }
+        public ActionResult UseSearchBuilder()
+        {
+            DbUtil.Db.SetUserPreference("advancedsearch", "false");
             DbUtil.Db.SubmitChanges();
             return Redirect(Request.UrlReferrer.OriginalString);
         }

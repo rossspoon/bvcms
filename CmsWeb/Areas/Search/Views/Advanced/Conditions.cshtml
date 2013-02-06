@@ -1,0 +1,268 @@
+﻿@using System.Web.UI.WebControls
+@using CmsWeb.Areas.Search.Models
+@model CmsWeb.Areas.Search.Models.AdvancedModel
+@{
+    var editing = false;
+    var prev = -1;
+}
+<div id="conditions" style="width:300px">
+    <input type="hidden" id="SelectedId" name="SelectedId" value="@Model.SelectedId"/>
+    @foreach (var c in Model.ConditionList())
+    {
+        if (c.Level <= prev)
+        {
+            @Html.Raw("</li>")
+            if (c.Level < prev)
+            {
+                @Html.Raw("</ul>")
+            }
+        }
+        else
+        {
+            @Html.Raw("<ul>")
+        }
+        if (Model.SelectedId == c.Clause.QueryId)
+        {
+            editing = true;
+            Model.EditCondition();
+            @Html.Raw("<li>")
+            <div qid="@c.Clause.QueryId" id='editconditionli' style="visibility: hidden">@c.Clause</div>
+        }
+        else
+        {
+            @Html.Raw("<li>")
+            <a qid="@c.Clause.QueryId" href='#' class="editconditionlink">@c.Clause</a>
+        }
+        prev = c.Level;
+    }
+    @while(prev >= 0)
+    {
+        @Html.Raw("</li></ul>")
+        prev--;
+    }
+    @if (editing)
+    {
+        <div id="editcondition" style="border: 3px solid #999; position: absolute; background-color: #f2f2f2">
+            <div style="margin:1em">
+                <div id="CategoryDiv2">
+                    @if (Model.ConditionName == "Group")
+                    {
+                            <span id="ConditionText">@Model.ConditionText</span>
+                    }
+                    else
+                    {
+                        <a id="SelectCondition" href="#" title="Select a Condition|To build a query, you should select a condition.">
+                            <span id="ConditionText">@Model.ConditionText</span>
+                        </a>
+                    }
+                    <input type="hidden" id="ConditionName" name="ConditionName" value="@Model.ConditionName"/>
+                    @if (Model.ComparePanelVisible)
+                    {
+                        <div id="ComparePanel" style="display: inline-block">
+                            @Html.DropDownList("Comparison", Model.Comparisons())
+                        </div>
+                    }
+
+                    @if (Model.RightPanelVisible)
+                    {
+                        <div id="RightPanel" style="display: inline-block">
+                            @if (Model.CodeVisible)
+                            {
+                                <div id="CodesDiv">
+                                    @Html.Partial("CodesDropdown", Model)
+                                </div>
+                            }
+
+                            @if (Model.TextVisible)
+                            {
+                                @Html.TextBox("TextValue")
+                                <div>@Html.ValidationMessage("TextValue")</div>
+                            }
+
+                            @if (Model.NumberVisible)
+                            {
+                                @Html.TextBox("NumberValue")
+                                <div>@Html.ValidationMessage("NumberValue")</div>
+                            }
+
+                            @if (Model.IntegerVisible)
+                            {
+                                @Html.TextBox("IntegerValue")
+                                <div>@Html.ValidationMessage("IntegerValue")</div>
+                            }
+
+                            @if (Model.DateVisible)
+                            {
+                                @Html.TextBox("DateValue")
+                                <div>@Html.ValidationMessage("DateValue")</div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                @if (Model.DaysVisible)
+                {
+                    <div id="DaysDiv">
+                        <span>Days:</span>
+                        <div style="display: inline-block">
+                            @Html.TextBox("Days")
+                            <div>@Html.ValidationMessage("Days")</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.AgeVisible)
+                {
+                    <div id="AgeDiv">
+                        <span>Age Less or Equal:</span>
+                        <div style="display: inline-block">
+                            @Html.TextBox("Age")
+                            <div>@Html.ValidationMessage("Age")</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.QuartersVisible)
+                {
+                    <div id="QuartersDiv">
+                        <span id="QuartersLabel">Quarters</span>:
+                        <div style="display: inline-block">
+                            @Html.TextBox("Quarters")
+                        </div>
+                    </div>
+                }
+
+                @if (Model.TagsVisible)
+                {
+                    <div id="TagsDiv">
+                        <span>Tags:</span>
+                        <div style="display: inline-block">
+                            <span id="tagvalues" style="display: none"></span>
+                            <div>@Html.ValidationMessage("tagvalues")</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.SavedQueryVisible)
+                {
+                    <div id="SavedQueryDiv">
+                        <span>Saved Search:</span>
+                        <div style="display: inline-block">
+                            @Html.DropDownList("SavedQueryDesc", Model.SavedQueries())
+                        </div>
+                    </div>
+                }
+
+                @if (Model.MinistryVisible)
+                {
+                    <div id="MinistryDiv">
+                        <span>Ministry:</span>
+                        <div style="display: inline-block">
+                            @Html.DropDownList("Ministry", Model.Ministries())
+                        </div>
+                    </div>
+                }
+
+                @if (Model.StartDateVisible)
+                {
+                    <div id="StartDiv">
+                        <span>Start Date:</span>
+                        <div style="display: inline-block">
+                            @Html.TextBox("StartDate", Model.StartDate, new { @class = "datepicker" })
+                            <div>@Html.ValidationMessage("StartDate")</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.EndDateVisible)
+                {
+                    <div id="EndDiv">
+                        <span>End Date:</span>
+                        <div style="display: inline-block">
+                            @Html.TextBox("EndDate", Model.EndDate, new { @class = "datepicker" })
+                            <div>@Html.ValidationMessage("EndDate")</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.ProgramVisible)
+                {
+                    <div id="ProgDiv">
+                        <span>Program:</span>
+                        <div style="display: inline-block">
+                            @Html.DropDownList("Program", Model.Programs())
+                        </div>
+                    </div>
+                }
+
+                @if (Model.DivisionVisible)
+                {
+                    <div id="DivDiv">
+                        <span>Division:</span>
+                        <div style="display: inline-block">
+                            @Html.DropDownList("Division", AdvancedModel.Divisions(Model.Program))
+                        </div>
+                    </div>
+                }
+
+                @if (Model.OrganizationVisible)
+                {
+                    <div id="OrgDiv">
+                        <span>Organization:</span>
+                        <div style="display: inline-block">
+                            @Html.DropDownList("Organization", AdvancedModel.Organizations(Model.Division))
+                        </div>
+                    </div>
+                }
+
+                @if (Model.OrgTypeVisible)
+                {
+                    <div id="OrgTypeDiv">
+                        <span>Org Type:</span>
+                        <div style="display: inline-block">
+                            @Html.DropDownList("OrgType", Model.OrgTypes())
+                        </div>
+                    </div>
+                }
+
+                @if (Model.ScheduleVisible)
+                {
+                    <div id="SchedDiv">
+                        <span>Schedule:</span>
+                        <div style="display: inline-block">
+                            @Html.DropDownList("Schedule", Model.Schedules())
+                        </div>
+                    </div>
+                }
+
+                @if (Model.CampusVisible)
+                {
+                    <div id="CampusDiv">
+                        <span>Campus:</span>
+                        <div style="display: inline-block">
+                            @Html.DropDownList("Campus", Model.Campuses())
+                        </div>
+                    </div>
+                }
+            </div>
+            <div style="text-align: right;margin:1em;">
+                @if (Model.RemoveEnabled)
+                {
+                    <a id="RemoveCondition" class="conditionButton bt red">Remove</a>
+                }
+                @if (Model.AddToGroupEnabled)
+                {
+                    <a id="AddConditionToGroup" class="conditionButton bt">Add To Group</a>
+                }
+                @if (Model.AddEnabled)
+                {
+                    <a id="AddCondition" class="conditionButton bt green">Add As New</a>
+                }
+                @if (Model.UpdateEnabled)
+                {
+                    <a id="SaveCondition" class="conditionButton bt blue">Save</a>
+                }
+            </div>
+        </div>
+    }
+</div>

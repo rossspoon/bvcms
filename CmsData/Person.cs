@@ -987,7 +987,6 @@ namespace CmsData
 			{
 				ev = new PeopleExtra
 				{
-					PeopleId = PeopleId,
 					Field = field,
 					TransactionTime = DateTime.Now
 				};

@@ -45,7 +45,7 @@ namespace CmsWeb.Models.PersonPage
                         FamilyPosition = m.FamilyPosition.Description,
                         Age = m.Age,
                         MemberStatus = m.MemberStatus.Description,
-                        Deceased = m.Deceased
+                        Deceased = m.IsDeceased ?? false
                     };
             return q;
         }

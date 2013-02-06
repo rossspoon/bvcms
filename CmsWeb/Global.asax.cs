@@ -36,6 +36,7 @@ namespace CmsWeb
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteTable.Routes.RouteExistingFiles = true;
+            HttpRuntime.Cache.Remove("BuildDate");
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
 #endif

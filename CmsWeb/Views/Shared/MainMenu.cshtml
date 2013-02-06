@@ -289,14 +289,23 @@
                         </a></li>
                     @if (admin)
                     {
-                         if (newlook)
-                         {
-                             <li><a href="/Home/UseOldLook">Use OLD Look</a></li>
-                         }
-                         else
-                         {
-                             <li><a href="/Home/UseNewLook">Use NEW Look</a></li>
-                         }
+                        
+                        if (newlook)
+                        {
+                            <li><a href="/Home/UseOldLook">Use OLD Look</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="/Home/UseNewLook">Use NEW Look</a></li>
+                        }
+                        if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
+                        {
+                            <li><a href="/Home/UseSearchBuilder">Use Search Builder</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="/Home/UseAdvancedSearch">Use Advanced Search</a></li>
+                        }
                     }
                     <li><a href="/Home/About">
                             About
