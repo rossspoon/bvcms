@@ -93,5 +93,68 @@ namespace CmsData
 
             var status = msg.Status;
         }
+
+        public static List<IncomingPhoneNumber> getNumberList()
+        {
+            var twilio = new TwilioRestClient( getSID(), getToken() );
+            var numbers = twilio.ListIncomingPhoneNumbers();
+
+            return numbers.IncomingPhoneNumbers;
+        }
+
+        public static List<IncomingPhoneNumber> getUnusedNumberList()
+        {
+            var twilio = new TwilioRestClient(getSID(), getToken());
+            var numbers = twilio.ListIncomingPhoneNumbers();
+
+            var used = (from e in DbUtil.Db.SMSNumbers
+                        select e).ToList();
+
+            for (var iX = numbers.IncomingPhoneNumbers.Count() - 1; iX > -1; iX--)
+            {
+                if (used.Where(n => n.Number == numbers.IncomingPhoneNumbers[iX].PhoneNumber).Count() > 0)
+                    numbers.IncomingPhoneNumbers.RemoveAt(iX);
+            }
+
+            return numbers.IncomingPhoneNumbers;
+        }
+
+        public static List<UserRole> getUnassignedPeople(int id)
+        {
+            var role = (from e in DbUtil.Db.Roles
+                        where e.RoleName == "SendSMS"
+                        select e).SingleOrDefault();
+
+            // If no results on the role, send back empty list
+            if( role == null ) return new List<UserRole>();
+
+
+            var assigned = (from e in DbUtil.Db.SMSGroupMembers
+                            where e.GroupID == id
+                            select e).ToList();
+
+            var people = (from e in DbUtil.Db.UserRoles
+                          where e.RoleId == role.RoleId
+                          select e).ToList();
+
+            for (var iX = people.Count() - 1; iX > -1; iX--)
+            {
+                if (assigned.Where(n => n.UserID == people[iX].UserId).Count() > 0)
+                    people.RemoveAt(iX);
+            }
+
+            return people;
+        }
+
+        public static string getSID()
+        {
+            return DbUtil.Db.Setting("TwilioSID", "");
+        }
+
+        public static string getToken()
+        {
+            return DbUtil.Db.Setting("TwilioToken", "");
+        }
+   
     }
 }

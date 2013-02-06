@@ -1,0 +1,27 @@
+﻿@using CmsData
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NumberDialog</title>
+</head>
+<body>
+    <center>
+	    <form action="/Setup/Twilio/UserAdd" method="post">
+            <input type="hidden" name="groupID" value="@ViewBag.ID" />
+	        <table cellspacing="10">
+	        <tr>
+		        <td align="right">Person:</td>
+		        <td align="left">@Html.DropDownList( "userID", new SelectList( TwilioHelper.getUnassignedPeople( ViewBag.ID ), "UserId", "User.Name" ) )</td>
+	        </tr>
+	        <tr>
+		        <td align="center" colspan="2">
+                    <br />
+			        <input type="submit" class="bt" value="Submit" /> &nbsp;&nbsp; <input type="button" class="bt" cancelbutton="dialog" value="Cancel" />
+		        </td>
+	        </tr>
+	        </table>
+	    </form>
+	</center>
+</body>
+</html>
