@@ -5,7 +5,7 @@
 @{var link=Server.UrlEncode(DbUtil.Db.CmsHost + "/Task/List/" + Model.Id + "#detail#select"); }
 <td colspan="7"><a name="detail"></a>
     <table class="Design2" style="border: 3px solid black">
-    <tr><td align="right" colspan="2"><a href="#" class="deselect">
+    <tr><td class="right" colspan="2"><a href="#" class="deselect">
         <img style="border:0" src="/Content/styles/images/closek.png" /></a></td></tr>
         <tr>
    
@@ -131,7 +131,7 @@
 @if(Model.IsAnOwner)
 { 
         <tr>
-            <td colspan="2" align="center">
+            <td colspan="2" class="center">
                 <input type="button" value="Edit" class="edit" task="@Model.Id" />
             </td>
         </tr>

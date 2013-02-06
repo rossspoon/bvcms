@@ -15,49 +15,49 @@
                 <th colspan="2"><div style="padding-bottom:5px;"><b><u>Person Information</u></b></div></th>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">First:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">First:</td>
                 <td>@Model.Person.FirstName</td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Middle:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Middle:</td>
                 <td>@Model.Person.MiddleName</td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Last:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Last:</td>
                 <td>@Model.Person.LastName</td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Generation:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Generation:</td>
                 <td>@Model.Person.SuffixCode</td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Address:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Address:</td>
                 <td>@Model.Person.PrimaryAddress</td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">City:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">City:</td>
                 <td>@Model.Person.PrimaryCity</td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">State:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">State:</td>
                 <td>@Model.Person.PrimaryState</td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Zipcode:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Zipcode:</td>
                 <td>@Model.Person.PrimaryZip</td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">DOB:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">DOB:</td>
                 <td>@( Model.Person.BDate != null ? Model.Person.BDate.Value.ToString("d") : "" )</td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Gender:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Gender:</td>
                 <td>@Model.Person.Gender.Description</td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">SSN:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">SSN:</td>
                 <td><input name="sSSN" size="12" /></td>
             </tr>
             <tr><td>&nbsp;</td></tr>
@@ -65,16 +65,16 @@
                 <th colspan="2"><div style="padding-bottom:5px;"><b><u>Protect My Ministry Login</u></b></div></th>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">User:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">User:</td>
                 <td><input name="sUser" size="12" /></td>
             </tr>
             <tr>
-                <td align="right" style="background-color:#EFF3FB; font-weight:bold;">Password:</td>
+                <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Password:</td>
                 <td><input type="password" name="sPassword" size="12" /></td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
+                <td colspan="2" class="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
             </tr>
         </table>
     </form>

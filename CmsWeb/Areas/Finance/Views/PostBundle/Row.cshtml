@@ -6,7 +6,7 @@
 		@(Model.PeopleId == null? "select" : Model.PeopleId.ToString())</a>
     </td>
     <td class="name" title="@Model.tip">@Model.Name</td>
-    <td class="amt" val="@Model.Amt" align="right">
+    <td class="amt" val="@Model.Amt" class="right">
         <span id='a@(Model.ContributionId)' class='clickEdit'>@Model.AmtDisplay</span>            
     </td>
     <td class="PLNT">@Model.PLNT</td>

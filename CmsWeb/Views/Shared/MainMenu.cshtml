@@ -5,20 +5,12 @@
 	var edit = User.IsInRole("Edit"); 
 	var design = User.IsInRole("Design"); 
 	var finance = User.IsInRole("Finance");
-    var newlook = DbUtil.Db.UserPreference("newlook", "false").ToBool();
     var onqb = (string) ViewData["OnQueryBuilder"] == "true";
 }
 
 <div class="navbar">
-    @if (newlook)
-    {
-        <a href="/"><img src="~/images/Home.png" /></a>
-    }
     <ul>
-    @if (!newlook)
-    {
         <li> <a href="/"> Home </a> </li>
-    }
         <li>
             <a href="#" class="trigger-dropdown">
                 People <img src="/images/dnarrowt.png" />
@@ -129,15 +121,12 @@
                 </ul>
             </div>
         </li>
-        @if (!newlook)
-        {
-            <li>
-                <a href="#" class="trigger-dropdown">
-                    SearchBuilder <img src="/images/dnarrowt.png" />
-                </a>
-                @Helper.SearchBuilderDropdown(onqb, newlook)
-            </li>
-        }
+        <li>
+            <a href="#" class="trigger-dropdown">
+                SearchBuilder <img src="/images/dnarrowt.png" />
+            </a>
+            @Helper.SearchBuilderDropdown(onqb, newlook: false)
+        </li>
         @if (User.IsInRole("Finance"))
         {
             <li>
@@ -290,14 +279,7 @@
                     @if (admin)
                     {
                         
-                        if (newlook)
-                        {
-                            <li><a href="/Home/UseOldLook">Use OLD Look</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="/Home/UseNewLook">Use NEW Look</a></li>
-                        }
+                        <li><a href="/Home/UseNewLook">Use NEW Look</a></li>
                         if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
                         {
                             <li><a href="/Home/UseSearchBuilder">Use Search Builder</a></li>

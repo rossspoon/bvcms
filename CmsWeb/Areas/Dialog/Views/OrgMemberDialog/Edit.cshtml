@@ -10,59 +10,59 @@
 <table class="Design2" cellspacing="5">
     <tr>
         <td><b>@Model.Person.Name</b></td>
-        <td align="right"></td>
+        <td class="right"></td>
     </tr>
     <tr>
-        <th align='right'>Member Type:</th>
+        <th class='right'>Member Type:</th>
         <td>@Html.DropDownList("MemberTypeId", (IEnumerable<SelectListItem>)ViewData["MemberTypes"])</td>
     </tr>
     <tr>
-        <th align='right'>Inactive Date:</th>
+        <th class='right'>Inactive Date:</th>
         <td>@Html.TextBox("InactiveDate", Model.InactiveDate.FormatDate(), new { @class = "datepicker" })
         <br /><span style="color:Red">@Html.ValidationMessage("InactiveDate")</span></td>
     </tr>
     <tr>
-        <th align='right'>Enrollment Date:</th>
+        <th class='right'>Enrollment Date:</th>
         <td>@Html.TextBox("EnrollmentDate", Model.EnrollmentDate.FormatDate(), new { @class = "datepicker" })</td>
     </tr>
     <tr>
-        <th align='right'>Pending:</th>
+        <th class='right'>Pending:</th>
         <td>@Html.CheckBox("Pending")</td>
     </tr>
 @if (Model.RegisterEmail.HasValue())
 {     
     <tr>
-        <th align='right'>RegisterEmail:</th>
+        <th class='right'>RegisterEmail:</th>
         <td>@Html.TextBox("RegisterEmail")</td>
     </tr>
 }
 @if (setting.AskVisible("AskRequest"))
 { 
     <tr>
-        <th align='right'>Request:</th>
+        <th class='right'>Request:</th>
         <td>@Html.TextBox("Request")</td>
     </tr>
 } 
     <tr>
-        <th align='right'>Grade:</th>
+        <th class='right'>Grade:</th>
         <td>@Html.TextBox("Grade", Model.Grade)</td>
     </tr>
 @if (setting.AskVisible("AskTickets"))
 { 
     <tr>
-        <th align='right'>No. Items:</th>
+        <th class='right'>No. Items:</th>
         <td>@Html.TextBox("Tickets", Model.Tickets)</td>
     </tr>
 }
 @if (Model.Organization.RegistrationTypeId > 0)
 { 
     <tr>
-        <th align='right'>Total Amount:</th>
+        <th class='right'>Total Amount:</th>
         <td>@Html.TextBox("Amount", Model.Amount.ToString2("f2"))
         <br /><span style="color:Red">@Html.ValidationMessage("Amount")</span></td>
     </tr>
     <tr>
-        <th align='right'>Amount Paid:</th>
+        <th class='right'>Amount Paid:</th>
         <td>@Html.TextBox("AmountPaid", Model.AmountPaid.ToString2("f2"))
         <br /><span style="color:Red">@Html.ValidationMessage("AmountPaid")</span></td>
     </tr>
@@ -70,17 +70,17 @@
 @if (setting.AskVisible("AskSize"))
 { 
     <tr>
-        <th align='right'>ShirtSize:</th>
+        <th class='right'>ShirtSize:</th>
         <td>@Html.DropDownList("ShirtSize",
                 CmsWeb.Models.OnlineRegPersonModel.ShirtSizes(CmsData.DbUtil.Db, Model.Organization))</td>
     </tr>
 }
     <tr>
-        <th valign="top" align='right'>Extra Member Info:</th>
+        <th class='right top'>Extra Member Info:</th>
         <td>@Html.TextArea("UserData", new { style = "height:100px;width:100%" })</td>
     </tr>
 <tr><td></td></tr>
-    <tr><td colspan="2" align="right">
+    <tr><td colspan="2" class="right">
             <a class="display bt" href="/OrgMemberDialog/Display/@Model.OrganizationId?pid=@Model.PeopleId">cancel</a>
             <a href="/OrgMemberDialog/Update/@Model.OrganizationId?pid=@Model.PeopleId" class="submitbutton bt blue">Save Changes</a>
         </td>

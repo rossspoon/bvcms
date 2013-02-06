@@ -35,98 +35,98 @@
                     </td>
                 </tr>
                 <tr id="DaysDiv" style="display:none">
-                    <td align="right">Days:</td>
+                    <td class="right">Days:</td>
                     <td>
                         @Html.TextBoxClass("Days", "validate")
                     </td>
                 </tr>
                 <tr id="AgeDiv" style="display:none">
-                    <td align="right">Age Less or Equal:</td>
+                    <td class="right">Age Less or Equal:</td>
                     <td>
                         @Html.TextBoxClass("Age", "validate")
                     </td>
                 </tr>
                 <tr id="QuartersDiv" style="display:none">
-                    <td align="right"><span id="QuartersLabel">Quarters</span>:</td>
+                    <td class="right"><span id="QuartersLabel">Quarters</span>:</td>
                     <td>
                         @Html.TextBoxClass("Quarters", "validate")
                     </td>
                 </tr>
                 <tr id="TagsDiv" style="display:none">
-                    <td align="right">Tags:</td>
+                    <td class="right">Tags:</td>
                     <td>
                         <span id="tagvalues" class="validate" style="display:none"></span>
                     </td>
                 </tr>
                 <tr id="SavedQueryDiv" style="display:none">
-                    <td align="right">Saved Search:</td>
+                    <td class="right">Saved Search:</td>
                     <td>
                         @Html.DropDownList("SavedQueryDesc", Model.SavedQueries())
                     </td>
                 </tr>
                 <tr id="MinistryDiv" style="display:none">
-                    <td align="right">Ministry:</td>
+                    <td class="right">Ministry:</td>
                     <td>
                         @Html.DropDownList("Ministry", Model.Ministries())
                     </td>
                 </tr>
                 <tr id="StartDiv" style="display:none">
-                    <td align="right">Start Date:</td>
+                    <td class="right">Start Date:</td>
                     <td>
                         @Html.TextBoxClass("StartDate", "datepicker validate")
                     </td>
                 </tr>
                 <tr id="EndDiv" style="display:none">
-                    <td align="right">End Date:</td>
+                    <td class="right">End Date:</td>
                     <td>
                         @Html.TextBoxClass("EndDate", "datepicker validate")
                     </td>
                 </tr>
                 <tr id="ProgDiv" style="display:none">
-                    <td align="right">Program:</td>
+                    <td class="right">Program:</td>
                     <td>
                         @Html.DropDownList("Program", Model.Programs())
                     </td>
                 </tr>
                 <tr id="DivDiv" style="display:none">
-                    <td align="right">Division:</td>
+                    <td class="right">Division:</td>
                     <td>
                         <select id="Division" ></select>
                     </td>
                 </tr>
                 <tr id="OrgDiv" style="display:none">
-                    <td align="right">Organization:</td>
+                    <td class="right">Organization:</td>
                     <td>
                         <select id="Organization" ></select>
                     </td>
                 </tr>
                 <tr id="OrgTypeDiv" style="display:none">
-                    <td align="right">Org Type:</td>
+                    <td class="right">Org Type:</td>
                     <td>
                         @Html.DropDownList("OrgType", Model.OrgTypes())
                     </td>
                 </tr>
                 <tr id="SchedDiv" style="display:none">
-                    <td align="right">Schedule:</td>
+                    <td class="right">Schedule:</td>
                     <td>
                         @Html.DropDownList("Schedule", Model.Schedules())
                     </td>
                 </tr>
                 <tr id="CampusDiv" style="display:none">
-                    <td align="right">Campus:</td>
+                    <td class="right">Campus:</td>
                     <td>
                         @Html.DropDownList("Campus", Model.Campuses())
                     </td>
                 </tr>
             </table>
         </td>
-        <td valign="top">
+        <td class="top">
 			<b style="color:#999" class="helptip"
 			   title="Comparison|Choose how the Condition on the left 
                |should compare with the value(s)">Comparison</b><hr />
             @Html.DropDownList("Comparison", Model.Comparisons())
         </td>
-        <td valign="top" id="RightPanel" style="display:none">
+        <td class="top" id="RightPanel" style="display:none">
 			<b style="color:#999" class="helptip"
 			   title="To Value|This is what you are comparing 
                |to the result of the Condition on the left
@@ -139,7 +139,7 @@
         </td>
     </tr>
     <tr>
-        <td nowrap align="right" colspan="2">
+        <td nowrap class="right" colspan="2">
             <a id="Update" class="conditionButton bt disabled helptip"
                 title="Update Button|Copies the above condition into the selected condition below">Update</a>
             <a id="Add" class="conditionButton bt disabled helptip"
@@ -163,7 +163,7 @@
              @Html.Partial("Conditions", Model) 
             </ul>
         </td>
-		<td align="center" valign="bottom" class="helptip"
+		<td class="center" class="bottom" class="helptip"
             title="Run Button|This will run the Search, giving you results for the Conditions">
             <div>
                 <input id="Run" type="image" src="/images/Run.png" alt="Run Query" />

@@ -67,10 +67,10 @@ else
 <thead>
     <tr>
         <th><a href="#" class="sortable">ID</a></th>
-        <th align="left"><a href="#" class="sortable">Name</a></th>
-        <th align="left"><a href="#" class="sortable">Leader</a></th>
-        <th align="right"><a href="#" class="sortable">Members</a></th>
-        <th align="left"><a href="#" class="sortable">Schedule</a></th>
+        <th class="left"><a href="#" class="sortable">Name</a></th>
+        <th class="left"><a href="#" class="sortable">Leader</a></th>
+        <th class="right"><a href="#" class="sortable">Members</a></th>
+        <th class="left"><a href="#" class="sortable">Schedule</a></th>
         <th><a href="#" class="sortable">Self CheckIn</a></th>
         <th><a href="#" class="sortable">BDay Start</a></th>
         <th><a href="#" class="sortable">BDay End</a></th>
@@ -87,7 +87,7 @@ else
         <td class="tip" title="@o.ToolTip"><img src="/images/group.png" /></td>
         <td><a href="/Organization/Index/@o.Id">@o.OrganizationName</a></td>
         <td><a href="/Person/Index/@o.LeaderId">@o.LeaderName</a></td>
-        <td align="right">@o.MemberCount</td>
+        <td class="right">@o.MemberCount</td>
         <td>@o.Schedule</td>
         <td><span id='ck-@o.Id' class='yesno'>@(o.AllowSelfCheckIn ? "yes" : "no")</span></td>
         <td><span id='bs-@o.Id' class='bday'>@o.BDayStart</span></td>

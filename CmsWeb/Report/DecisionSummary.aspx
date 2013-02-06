@@ -60,7 +60,7 @@
         <hr />
         <table cellspacing="18" style="margin-left:auto;margin-right:auto">
             <tr>
-                <td colspan="2" align="center">
+                <td colspan="2" class="center">
                     <asp:ListView ID="DecisionsView" runat="server" DataSourceID="ODSDecisions" 
                         onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -76,16 +76,16 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td align="left" class='<%# Eval("CssClass") %>'>
+                                <td class="left" class='<%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForDecisionType" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td align="right" class='<%# Eval("CssClass") %>'>
+                                <td class="right" class='<%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
                         </ItemTemplate>
                         <EmptyDataTemplate>
-                            <table id="Table1" runat="server" style="" align="center">
+                            <table id="Table1" runat="server" style="" class="center">
                                 <tr>
                                     <th>
                                         No Decisions
@@ -97,7 +97,7 @@
                 </td>
             </tr>
             <tr>
-                <td valign="top" align="center">
+                <td class="top center">
                     <asp:ListView ID="BaptismsByAgeView" runat="server" 
                         DataSourceID="ODSBaptismsByAge" onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -113,10 +113,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td align="left" class='<%# Eval("CssClass") %>'>
+                                <td class="left" class='<%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForBaptismAge" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td align="right" class='<%# Eval("CssClass") %>'>
+                                <td class="right" class='<%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -132,7 +132,7 @@
                         </EmptyDataTemplate>
                     </asp:ListView>
                 </td>
-                <td valign="top" align="center">
+                <td class="top center">
                     <asp:ListView ID="BaptismsByTypeView" runat="server" 
                         DataSourceID="ODSBaptismsByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -148,10 +148,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td align="left" class='<%# Eval("CssClass") %>'>
+                                <td class="left" class='<%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForBaptismType" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td align="right" class='<%# Eval("CssClass") %>'>
+                                <td class="right" class='<%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -160,7 +160,7 @@
                 </td>
             </tr>
             <tr>
-                <td valign="top" align="center">
+                <td class="top center">
                     <asp:ListView ID="NewMemberView" runat="server" 
                         DataSourceID="ODSNewMemberByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -176,10 +176,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td align="left" class='<%# Eval("CssClass") %>'>
+                                <td class="left" class='<%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForNewMemberType" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td align="right" class='<%# Eval("CssClass") %>'>
+                                <td class="right" class='<%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -195,7 +195,7 @@
                         </EmptyDataTemplate>
                     </asp:ListView>
                 </td>
-                <td valign="top" align="center">
+                <td class="top center">
                     <asp:ListView ID="DroppedMemberView" runat="server" 
                         DataSourceID="ODSDroppedMemberByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -211,10 +211,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td align="left" class='<%# Eval("CssClass") %>'>
+                                <td class="left" class='<%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForDropType" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td align="right" class='<%# Eval("CssClass") %>'>
+                                <td class="right" class='<%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -232,7 +232,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" align="center">
+                <td colspan="2" class="center">
                     <asp:ListView ID="DroppedMemberChurchView" runat="server" 
                         DataSourceID="ODSDroppedMembersByChurch" onitemcommand="ItemCommand">
                         <LayoutTemplate>
@@ -248,10 +248,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td align="left" class='<%# Eval("CssClass") %>'>
+                                <td class="left" class='<%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="DroppedForChurch" CommandArgument='<%# Eval("Desc") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td align="right" class='<%# Eval("CssClass") %>'>
+                                <td class="right" class='<%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>

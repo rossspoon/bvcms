@@ -33,39 +33,39 @@
                 @if (Model.person != null)
                 {
                     <tr>
-                        <th align="right">Name:</th>
+                        <th class="right">Name:</th>
                         <td><a href="/Person/Index/@Model.PeopleId">@Model.person.Name</a></td>
                     </tr>
                 }
                 else
                 {
                     <tr>
-                        <th align="right">Name:</th>
+                        <th class="right">Name:</th>
                         <td>@Html.TextBoxFor(vv => vv.Name) <em>All or part of full name, or PeopleId</em></td>
                     </tr>
                 }
                 <tr>
-                    <th align="right">Min/Max Amounts:</th>
+                    <th class="right">Min/Max Amounts:</th>
                     <td>@Html.TextBoxFor(vv => vv.MinAmt) @Html.TextBoxFor(vv => vv.MaxAmt) </td>
                 </tr>
                 <tr>
-                    <th align="right">Notes:</th>
+                    <th class="right">Notes:</th>
                     <td>@Html.TextBoxFor(vv => vv.Comments) <em>Check # or phrase</em></td>
                 </tr>
                 <tr>
-                    <th align="right">Bundle Type:</th>
+                    <th class="right">Bundle Type:</th>
                     <td>@Html.DropDownListFor(vv => vv.BundleType, Model.BundleTypes())</td>
                 </tr>
                 <tr>
-                    <th align="right">Contribution Type:</th>
+                    <th class="right">Contribution Type:</th>
                     <td>@Html.DropDownListFor(vv => vv.Type, Model.ContributionTypes())</td>
                 </tr>
                 <tr>
-                    <th align="right">Fund:</th>
+                    <th class="right">Fund:</th>
                     <td>@Html.DropDownListFor(vv => vv.FundId, Model.Funds())</td>
                 </tr>
                 <tr>
-                    <th align="right">Status:</th>
+                    <th class="right">Status:</th>
                     <td>@Html.DropDownListFor(vv => vv.Status, Model.ContributionStatuses())
                         Tax Type:
                         <select name="taxDedNonTaxDedPledge">
@@ -77,11 +77,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th align="right">Year:</th>
+                    <th class="right">Year:</th>
                     <td>@Html.DropDownListFor(vv => vv.Year, Model.Years())</td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="right">
+                    <td colspan="2" class="right">
                         <a id="NewSearch" class="bt">Clear</a>
                         <a id="search" class="bt blue">Search</a>
                     </td>

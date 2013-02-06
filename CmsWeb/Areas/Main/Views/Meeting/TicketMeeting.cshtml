@@ -5,7 +5,7 @@
 <table class="roundbox" cellspacing="5">
 	<tr><td colspan="2" nowrap>
 			<h2>@Model.meeting.Organization.OrganizationName <a href="/Meeting/Index/@Model.meeting.MeetingId"><span style="font-size:12px">@Model.meeting.MeetingDate.FormatDateTm()</span></a></h2></td></tr>
-	<tr><td align="right">Description:</td>
+	<tr><td class="right">Description:</td>
 		<td>@Model.meeting.Description</td></tr>
 	<tr><td colspan="2">
 			@Html.CheckBox("requireMember")Require Org Member |

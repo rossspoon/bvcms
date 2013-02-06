@@ -31,7 +31,7 @@
         Sunday Date:
         <asp:TextBox ID="SundayDate" CssClass="datepicker" runat="server" AutoPostBack="True" Width="100" Style="font-size: 110%"></asp:TextBox>
         <hr />
-        <table align="center">
+        <table class="center">
             <tr style="vertical-align: top">
                 <td>
                     <asp:ListView ID="Decisions" runat="server" DataSourceID="dsDecisions">
@@ -49,10 +49,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr <%# (string)Eval("Name") == "Total" ? "class='totalrow'" : "" %> style='background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>'>
-                                <td align="left">
+                                <td class="left">
                                     <asp:Label ID="lblSource" runat="server" Text='<%# Eval("Name")%>'></asp:Label>
                                 </td>
-                                <td align="right">
+                                <td class="right">
                                     <asp:Label ID="lblCount" runat="server" Text='<%# Eval("Count","{0:#,0}")%>'></asp:Label>
                                 </td>
                             </tr>
@@ -87,10 +87,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr <%# (string)Eval("Name") == "Total" ? "class='totalrow'" : "" %> style='background-color: <%# (Container.DataItemIndex % 2 == 0)?"#eee":"#fff" %>'>
-                                <td align="left">
+                                <td class="left">
                                     <asp:Label ID="lblSource" runat="server" Text='<%# Eval("Name")%>'></asp:Label>
                                 </td>
-                                <td align="right">
+                                <td class="right">
                                     <asp:Label ID="lblCount" runat="server" Text='<%# Eval("Count","{0:#,0}")%>'></asp:Label>
                                 </td>
                             </tr>

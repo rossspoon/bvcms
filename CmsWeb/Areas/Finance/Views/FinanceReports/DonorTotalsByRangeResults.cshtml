@@ -20,14 +20,14 @@
                     @((r + 1).ToString("n0")) @:- @t.Range.ToString("n0")
                 }
             </td>
-            <td align="right">@t.Total.ToString2("c")</td>
-            <td align="right">@t.Count.ToString2("n0")</td>
+            <td class="right">@t.Total.ToString2("c")</td>
+            <td class="right">@t.Count.ToString2("n0")</td>
         </tr>
         r = t.Range;
     }
     <tr style="border-top: 2px solid black">
         <th> Total </th>
-        <th align="right">@Model.RangeTotal.Total.ToString2("c") </th>
-        <th align="right">@Model.RangeTotal.Count.ToString2("n0") </th>
+        <th class="right">@Model.RangeTotal.Total.ToString2("c") </th>
+        <th class="right">@Model.RangeTotal.Count.ToString2("n0") </th>
     </tr>
 </table>

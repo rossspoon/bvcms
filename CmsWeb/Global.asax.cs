@@ -44,8 +44,8 @@ namespace CmsWeb
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("Demo/{*pathInfo}");
-            routes.IgnoreRoute("ForceError.aspx");
             routes.IgnoreRoute("healthcheck.txt");
+            routes.IgnoreRoute("index.html");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.aspx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.ashx/{*pathInfo}");

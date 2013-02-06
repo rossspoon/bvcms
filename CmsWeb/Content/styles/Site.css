@@ -669,3 +669,28 @@ div.formerror {
 .table-striped tbody > tr:nth-child(odd) > th {
     background-color: #eee;
 }
+td.right, th.right {
+    text-align: right;
+}
+td.left, th.left {
+    text-align: left;
+}
+td.center, th.center {
+    text-align: center;
+}
+td.nowrap, th.nowrap
+{
+    white-space: nowrap;
+}
+td.top, th.top
+{
+    vertical-align: top;
+}
+td.middle, th.middle
+{
+    vertical-align: middle;
+}
+td.bottom, th.bottom
+{
+    vertical-align: bottom;
+}

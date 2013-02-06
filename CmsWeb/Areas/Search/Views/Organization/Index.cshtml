@@ -13,35 +13,35 @@
   <table id="searchvalues" cellspacing="5" class="roundbox floatleft">
   <tr><td colspan="4"> <h2>Organization Search</h2> </td></tr>
       <tr>
-        <td align="right">Name:</td>
+        <td class="right">Name:</td>
         <td>@Html.TextBox("Name", Model.Name, new { title = "OrganizationId, Location or part of Name (organization, leader, division)" })</td>
-          <td valign="top" align="right">Status: </td>
-          <td valign="top">@Html.DropDownList("StatusId", Model.StatusIds()) </td>
+          <td class="top right">Status: </td>
+          <td class="top">@Html.DropDownList("StatusId", Model.StatusIds()) </td>
       </tr>
       <tr>
-        <td align="right">Org Type:</td>
+        <td class="right">Org Type:</td>
         <td>@Html.DropDownList("TypeId", Model.OrgTypes())</td>
-        <td align="right">Campus:</td>
+        <td class="right">Campus:</td>
         <td style="min-width:10em">@Html.DropDownList("CampusId", Model.CampusIds())</td>
       </tr>
       <tr>
-        <td align="right">Program:</td>
+        <td class="right">Program:</td>
         <td>@Html.DropDownList("ProgramId", Model.ProgramIds())</td>
-        <td align="right">Schedule:</td>
+        <td class="right">Schedule:</td>
         <td>@Html.DropDownList("ScheduleId", Model.ScheduleIds())</td>
       </tr>
       <tr>
-        <td align="right">Division:</td>
+        <td class="right">Division:</td>
         <td>@Html.DropDownList("DivisionId", Model.DivisionIds())</td>
-	  	<td align="right"><span style="padding-left: 1em;">Online Reg:</span></td>
+	  	<td class="right"><span style="padding-left: 1em;">Online Reg:</span></td>
           <td>@Html.DropDownList("OnlineReg", Model.RegistrationTypeIds())</td>
       </tr>
   	<tr>
-	      <td align="right" valign="top" colspan="2" nowrap="nowrap">
+	      <td class="right top" colspan="2" nowrap="nowrap">
 	          MainFellowship @Html.CheckBox("MainFellowship") |
 	          ParentOrg @Html.CheckBox("ParentOrg")
 	      </td>
-          <td align="right" colspan="2">
+          <td class="right" colspan="2">
 @if (User.IsInRole("OrgTagger"))
 { 
             <a href="#" id="hideshow" class="bt">Manager</a>
@@ -56,19 +56,19 @@
       <tr class="managedivisions" style="display:none">
         <td colspan="4"> <h2>Manage Organization Structure</h2> </td></tr>
       <tr class="managedivisions" style="display:none">
-	  	<td align="right">Target<br />Program</td>
+	  	<td class="right">Target<br />Program</td>
         <td>@Html.DropDownList("TagProgramId", Model.ProgramIds())</td>
-	  	<td align="right">Target<br />Division</td>
+	  	<td class="right">Target<br />Division</td>
         <td>@Html.DropDownList("TagDiv", Model.DivisionIds())</td>
       </tr>
       <tr class="managedivisions" style="display:none">
-          <td align="right">New<br />Divsion</td>
+          <td class="right">New<br />Divsion</td>
           <td>@Html.TextBox("NewDiv", "", new { style = "width:95%" }) </td>
           <td colspan="2"><a id="MakeNewDiv" href="/OrgSearch/MakeNewDiv" class="bt">New</a>
             <a id="RenameDiv" href="/OrgSearch/RenameDiv" class="bt">Rename</a></td>
       </tr>
       <tr class="managedivisions" style="display:none">
-          <td align="right">Target<br />Type</td>
+          <td class="right">Target<br />Type</td>
           <td>@Html.DropDownList("TargetType", Model.OrgTypes())</td>
           <td colspan="2"><a id="ApplyType" href="#" class="bt">Apply to Filtered List</a></td>
       </tr>
@@ -112,7 +112,7 @@
         <table>
         <tr><th colspan="2">Select a meeting date</th></tr>
         <tr><th>Meeting Date</th><td><input id="MeetingDateAttNotices" type="text" class='datepicker' /></td></tr>
-        <tr><td align="right" colspan="2">
+        <tr><td class="right" colspan="2">
             <a class="bt" id="AttendanceNotices" href="#">Run</a></td>
         </tr>
         </table>
@@ -130,7 +130,7 @@
             <th id="altnames">Parents (rally mode)</th>
             <td>@Html.CheckBox("rallymode")</td>
         </tr>
-        <tr><td align="right" colspan="2">
+        <tr><td class="right" colspan="2">
             <a class="bt" id="rollsheet2" href="#">create</a></td>
         </tr>
         </table>
@@ -140,7 +140,7 @@
         <tr><th colspan="2">Select a date range</th></tr>
         <tr><th>Meetings Start Date</th><td><input id="MeetingDate1" type="text"  class='datepicker' /></td></tr>
         <tr><th>Meetings End Date</th><td><input id="MeetingDate2" type="text" class='datepicker' /></td></tr>
-        <tr><td align="right" colspan="2">
+        <tr><td class="right" colspan="2">
             <a class="bt" id="attdetail2" href="#"> run </a></td>
         </tr>
         </table>

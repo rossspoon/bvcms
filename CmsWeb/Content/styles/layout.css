@@ -512,7 +512,7 @@ a img {
   padding: 4px 12px;
   margin-bottom: 0;
   *margin-left: 0.3em;
-  font-family: "ProximaNova", "Helvetica Neue", Arial, sans-serif;
+  font-family: Verdana, "ProximaNova", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #333;
@@ -1137,9 +1137,9 @@ table th[class*="span"],
   margin-bottom: 1px;
 }
 body {
-  font-family: "ProximaNova", "Helvetica Neue", Arial, sans-serif;
+  font-family: Verdana, ProximaNova, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
-  font-size: 10px;
+  font-size: 12px;
 }
 #header {
   zoom: 1;
@@ -1156,6 +1156,7 @@ body {
 }
 #header #brand {
   height: 50px;
+  padding-top: 5px;
 }
 #main {
   zoom: 1;
@@ -1482,6 +1483,9 @@ footer.container .powered {
   padding-top: 60px;
   overflow: hidden;
   background: url("../img/bvcms-provided.png") 100% 50% no-repeat;
+}
+.vcard {
+    vertical-align: text-bottom;
 }
 fieldset {
   padding: 20px 0;

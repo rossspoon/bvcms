@@ -24,23 +24,23 @@
     @Html.Hidden("PeopleID")
     <table width="100%" style="border:thin solid #777777;">
         <tr>
-            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Approvals:</b></td>
-            <td valign="top" width="30%">
+            <td class="right top" style="background-color:#EFF3FB;"><b>Approvals:</b></td>
+            <td class="top" width="30%">
                 @Html.CheckBox("Standard" )
                 Standard (references only)<br />
                 @Html.CheckBox("Leader" )
                 Leadership (background check)
             </td>
-            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Comments:</b></td>
-            <td valign="top" width="50%">
+            <td class="right top" style="background-color:#EFF3FB;"><b>Comments:</b></td>
+            <td class="top" width="50%">
                 <textarea name="Comments" rows="4" cols="50">@Model.Comments</textarea>
             </td>
         </tr>
         <tr>
-            <td align="right" valign="top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Last Background Check:</b></td>
-            <td valign="top">@Html.TextBox("ProcessedDate", Model.ProcessedDate.FormatDate(), new { @class = "datepicker" })</td>
-            <td align="right" valign="top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Status Code:</b></td>
-            <td valign="top">@Html.DropDownList("StatusId",  new SelectList( s, "Id", "Description") )</td>
+            <td class="right top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Last Background Check:</b></td>
+            <td class="top">@Html.TextBox("ProcessedDate", Model.ProcessedDate.FormatDate(), new { @class = "datepicker" })</td>
+            <td class="right top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Status Code:</b></td>
+            <td class="top">@Html.DropDownList("StatusId",  new SelectList( s, "Id", "Description") )</td>
         </tr>
     </table>
     <br />

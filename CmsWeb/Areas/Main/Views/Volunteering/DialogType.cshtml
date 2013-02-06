@@ -23,22 +23,22 @@
                 <input type="hidden" name="type" value="@type" />
                 <table>
                     <tr>
-                        <td align="right" valign="top"><b>Person:</b></td>
-                        <td valign="top">@Model.Name</td>
+                        <td class="right top"><b>Person:</b></td>
+                        <td class="top">@Model.Name</td>
                     </tr>
                     <tr>
-                        <td align="right" valign="top"><b>Type:</b></td>
-                        <td valign="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.BACKGROUND_TYPES ) )</td>
+                        <td align="right top"><b>Type:</b></td>
+                        <td class="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.BACKGROUND_TYPES ) )</td>
                     </tr>
                     @if( labelEnabled ) {
                     <tr>
-                        <td align="right" valign="top"><b>Label:</b></td>
-                        <td valign="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name" ) )</td>
+                        <td class="right top"><b>Label:</b></td>
+                        <td class="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name" ) )</td>
                     </tr>
                     }
                     <tr><td>&nbsp;</td></tr>
                     <tr>
-                        <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
+                        <td colspan="2" class="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
                     </tr>
                 </table>
             </form>
@@ -51,22 +51,22 @@
                 <input type="hidden" name="type" value="@type" />
                 <table>
                     <tr>
-                        <td align="right" valign="top"><b>Person:</b></td>
-                        <td valign="top">@Model.Name</td>
+                        <td class="right top"><b>Person:</b></td>
+                        <td class="top">@Model.Name</td>
                     </tr>
                     <tr>
-                        <td align="right" valign="top"><b>Type:</b></td>
-                        <td valign="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.CREDIT_TYPES ) )</td>
+                        <td class="right top"><b>Type:</b></td>
+                        <td class="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.CREDIT_TYPES ) )</td>
                     </tr>
                     @if( labelEnabled ) {
                     <tr>
-                        <td align="right" valign="top"><b>Label:</b></td>
-                        <td valign="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name" ) )</td>
+                        <td class="right top"><b>Label:</b></td>
+                        <td class="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name" ) )</td>
                     </tr>
                     }
                     <tr><td>&nbsp;</td></tr>
                     <tr>
-                        <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
+                        <td colspan="2" class="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
                     </tr>
                 </table>
             </form>

@@ -476,7 +476,7 @@
     <EmbeddedResource Include="Areas\Public\Controllers\APITestPlan.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Areas\People\Views\Person\index.html" />
+    <Content Include="index.html" />
     <Content Include="Areas\Public\Views\APITest\EditorTemplates\ApiTestInfo.cshtml">
     </Content>
     <Content Include="Areas\Public\Views\APITest\Index.cshtml">

@@ -21,7 +21,7 @@
    <table id="subs">
     @foreach (var o in Model.OrderSubs(Model.FetchSubs()))
     { 
-		<tr><td valign="top">
+		<tr><td class="top">
 			    <input type="checkbox" name="Subscribe" @o.CHECKED value="@o.OrgId" /></td>
 			<td><h3>@o.Name</h3>
 				<h4>@o.Description</h4></td>

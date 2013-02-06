@@ -14,35 +14,35 @@
 <table id="searchvalues" cellspacing="5" class="roundbox">
 <tr><td colspan="4"><h2>People Search</h2></td></tr>
 	<tr>
-		<th align="right"> Name/ID#: </th>
+		<th class="right"> Name/ID#: </th>
 		<td> @Html.TextBox("name", Model.m.name, new { title = "Starting letters of First<space>Last or just Last" })</td>
-		<th align="right"> Campus: </th>
+		<th class="right"> Campus: </th>
 		<td style="min-width:10em">
 			@Html.DropDownList("campus", Model.Campuses())
 		</td>
 	</tr>
 	<tr>
-		<th align="right"> Email/Phone: </th>
+		<th class="right"> Email/Phone: </th>
 		<td> @Html.TextBox("communication", Model.m.communication, new { title = "Any part of any phone or email" })</td>
-		<th align="right"> Member: </th>
+		<th class="right"> Member: </th>
 		<td>
 			@Html.DropDownList("memberstatus", Model.MemberStatusCodes())
 		</td>
 	</tr>
 	<tr>
-		<th align="right"> Address: </th>
+		<th class="right"> Address: </th>
 		<td> @Html.TextBox("address", Model.m.address, new { title = "Any part of the address, city or zip" })</td>
-		<th align="right"> Gender: </th>
+		<th class="right"> Gender: </th>
 		<td> @Html.DropDownList("gender", Model.GenderCodes()) </td>
 	</tr>
 	<tr>
-		<th align="right"> Date of Birth: </th>
+		<th class="right"> Date of Birth: </th>
 		<td> @Html.TextBox("birthdate", Model.m.birthdate, new { title = "YYYY or MM or MM/DD or MM/DD/YY" })</td>
-		<th align="right"> Married: </th>
+		<th class="right"> Married: </th>
 		<td> @Html.DropDownList("marital", Model.MaritalCodes())</td>
 	</tr>
 	<tr>
-	  <td colspan="2" valign="bottom"><b>Total Count: <span id="totalcount">@Model.Count().ToString("N0")</span></b></td>
+	  <td colspan="2" class="bottom"><b>Total Count: <span id="totalcount">@Model.Count().ToString("N0")</span></b></td>
 	  <td nowrap colspan="2"><br>
 		  <a id="convert" href="/PeopleSearch/ConvertToQuery">Convert to Search Builder</a>
 		  <a id="clear" href="#" class="bt">Clear</a>
