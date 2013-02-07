@@ -31,9 +31,12 @@
                                 @if (Util2.CurrentPeopleId != 0)
                                 {
                                     <li class="divider"></li>
-                                    <li><a href="/Person/Index/@Util2.CurrentPeopleId">
-                                        @Session["ActivePerson"]
-                                    </a></li>
+                                    <li>
+                                    @if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
+                                    {
+                                        <a href="/Person/Index/@Util2.CurrentPeopleId"> @Session["ActivePerson"]</a>
+                                    }
+                                    </li>
                                 }
                             </ul>
                         </div>
@@ -204,6 +207,16 @@
                                     else
                                     {
                                     <li><a href="/Home/UseAdvancedSearch">Use Advanced Search
+                                    </a></li>
+                                    }
+                                    if (DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
+                                    {
+                                    <li><a href="/Home/UseOldPeoplePage">Use Old Person Page
+                                    </a></li>
+                                    }
+                                    else
+                                    {
+                                    <li><a href="/Home/UseNewPeoplePage">Use New People page
                                     </a></li>
                                     }
                                 }

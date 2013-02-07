@@ -1,104 +1,71 @@
-﻿@using System.Web.Optimization
-@using CmsWeb
-@using CmsWeb.Models
-@using CmsData
-@using UtilityExtensions
-@model CmsWeb.Models.PersonPage.PersonModel
-@{
-    Layout = "/Views/Shared/SiteLayout.cshtml";
-    ViewBag.Title = "Person";
-}
-@{ 
-    CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson;
-    var isaccess = User.IsInRole("Access");
-    var isadmin = User.IsInRole("Admin");
-    var isedit = User.IsInRole("Edit");
-    var isfinance = User.IsInRole("Finance");
-    var ismanager = User.IsInRole("Manager");
-    var memberedit = isadmin || User.IsInRole("Membership");
-}
-@section scripts
-{
-    @Scripts.Render("~/bundles/single/person-js")  
-    <script src="/Content/chosen/chosen.jquery.min.js"></script>
-  <script src="/Content/js/jquery.simplemodal.1.4.4.min.js"></script>
-  <script>
-    $(function() {
-      $("form select").chosen();
-      $("input.date").datepicker();
-      /* accordion */
-      $(".accordion h3").click(function(){
-        var h = $(".accordion h3.active");
-        if (h)
-          h.removeClass("active").next("div").slideUp("fast");
-        if (!h || h.get(0) != this)
-          $(this).addClass("active").next("div").slideDown("fast");
-      });
-      /* end accordion */
-      /* set up modals/dialogs */
-      $('body').on('click', 'a[data-modal-id]', function(e) {
-        e.preventDefault();
-        var modalLocation = $(this).attr('data-modal-id');
-        $('#'+modalLocation).dialog();
-      });
-      /* end modal */
-      /* edit button for form
-          will need more advanced config for form save/cancel */
-      $("button.display").click(function(e) {
-        e.preventDefault();
-        $("fieldset.display").hide();
-        $("fieldset.edit").show();
-        $(this).hide().siblings(".edit").show();
-      }).siblings("button.btn-neutral").click(function(e) {
-        e.preventDefault();
-        $("fieldset.display").show();
-        $("fieldset.edit").hide();
-        $(this).hide().siblings(".btn-primary").hide().siblings(".display").show();
-      });
-      /* end edit button */
 
-      /* local environment js */
-      /*                                  */
-      if (window.location.hash) displayPane(window.location.hash, false);
-      else displayPane("#personal", false);
-      $("#nav-tabs a").click(function (e) {
-        e.preventDefault();
-        if (!$(this).parents(".active").size()) {
-          $($(this).attr("href")).addClass("loading");
-          $(".pane:visible").fadeOut("fast", function() {
-            displayPane("#"+$(".pane.loading").removeClass("loading").attr("id"), true);
-          });
-        }
-      });
-      /* demo sorting styles */
-      $("th").on("click", 'a', function(e) {
-        e.preventDefault();
-        if (!$(this).parents("th.active").size()) {
-          var th = $(this).parents("th").eq(0);
-          th.addClass("active asc");
-          th.siblings("th").removeClass("asc desc active");
-        } else {
-          if ($(this).parents("th.asc").size()) $(this).parents("th").removeClass("asc").addClass("desc");
-          else $(this).parents("th").removeClass("desc").addClass("asc");
-        }
-      });
-
-    });
-    function displayPane(hash, pushURL) {
-      $(hash).fadeIn("fast", function() {
-        $("#nav-tabs li.active").removeClass("active");
-        $("a[href=#"+$(".pane:visible").attr("id")+"]").parents("li:eq(0)").addClass("active");
-        if (pushURL && window.history && window.history.pushState && window.history.replaceState) {
-          window.location.replace(hash);
-          window.history.pushState(null, null, window.location.href);
-        }
-      });
-    }
-  </script>
-}
-@Html.Hidden("PeopleId", p.PeopleId)
-
-
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8">
+<title>bvcms dev</title>
+<link href="css/bvcms_base.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="font/font-awesome.min.css" type="text/css">
+<link href="font/proximanova/fonts.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="chosen/chosen.css" type="text/css">
+<link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+<body>
+<header id="header" class="row">
+    <nav id="nav-global" class="nav-horizontal">
+      <div class="container" id="wrap-nav-global">
+        <ul class="parent">
+          <li><a href=""><i class="icon-home"></i></a></li>
+          <li><a href="" class="trigger-dropdown">People <i class="icon-caret-down"></i></a>
+            <div class="dropdown-menu">
+              <ul>
+                <li><a href="">Search</a></li>
+                <li><a href="">Add People</a></li>
+                <li><a href="">Manage Tags</a></li>
+                <li><a href="">Tasks</a></li>
+                <li><a href="">Contacts</a></li>
+                <li class="divider"></li>
+                <li><a href="">Edgar A. Poe</a></li>
+              </ul>
+            </div>
+          </li>
+          <li><a href="" class="trigger-dropdown">Organization <i class="icon-caret-down"></i></a></li>
+          <li><a href="" class="trigger-dropdown">Reports <i class="icon-caret-down"></i></a></li>
+          <li><a href="" class="trigger-dropdown">Contributions <i class="icon-caret-down"></i></a></li>
+          <li><a href="" class="trigger-dropdown">Admin <i class="icon-caret-down"></i></a></li>
+          <li><a href="" class="trigger-dropdown">Help <i class="icon-caret-down"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div id="wrap-brand">
+        <h1 id="brand" class="eight columns"><a href=""></a></h1>
+        <div class="five columns">
+          <form action="" method="post" class="search">
+            <input type="text" placeholder="Search" name="search">
+            <button><i class="icon-search"></i></button>
+          </form>
+        </div>
+        <div class="three columns">
+          <nav id="nav-user">
+            <a href="" class="trigger-dropdown">Edgar <i class="icon-caret-down"></i></a>
+            <div class="dropdown-menu">
+              <ul>
+                <li><a href="">Clear Active Tag</a></li>
+                <li><a href="">Manage Active Tag</a></li>
+                <li class="divider"></li>
+                <li><a href="">Activity Log</a></li>
+                <li><a href="">Change Password</a></li>
+                <li class="divider"></li>
+                <li><a href="">Logout</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section id="main" class="container">
     <nav id="nav-family" class="four columns alpha">
       <div class="group">
       <h2>Family Members
@@ -554,34 +521,98 @@
     <!-- end member profile pane -->\
 
     </section>
+  
+  </section>
+  <footer class="container">
+    <p class="vcard ten columns alpha">
+      <span class="org">Bellevue Baptist Church</span>
+      <span class="address">2000 Appling Road, Cordova TN 38016</span>
+      <span class="phone">(901) 347-2000</span>
+      <span class="email">webmaster@bellevue.org</span>
+    </p>
+    <p class="powered six columns omega">Powered by BVCMS</p>
+  </footer>
+  <div id="addDialog" class="modal">
+    <iframe src="https://pullswitch.bvcms.com/SearchAdd?type=addpeople" frameborder="0" id="addDialogiFrame"></iframe>
+    <a class="close-modal">&#215;</a>
+  </div>
+  <script src="js/bvcms_base.js"></script>
+  <script src="chosen/chosen.jquery.min.js"></script>
+  <script src="js/dropdown.js"></script>
+  <script src="js/jquery.simplemodal.1.4.4.min.js"></script>
+  <script>
+    $(function() {
+      $(".trigger-dropdown").dropdown();
+      $("form select").chosen();
+      $("input.date").datepicker();
+      /* accordion */
+      $(".accordion h3").click(function(){
+        var h = $(".accordion h3.active");
+        if (h)
+          h.removeClass("active").next("div").slideUp("fast");
+        if (!h || h.get(0) != this)
+          $(this).addClass("active").next("div").slideDown("fast");
+      });
+      /* end accordion */
+      /* set up modals/dialogs */
+      $('a[data-modal-id]').live('click', function(e) {
+        e.preventDefault();
+        var modalLocation = $(this).attr('data-modal-id');
+        $('#'+modalLocation).dialog();
+      });
+      /* end modal */
+      /* edit button for form
+          will need more advanced config for form save/cancel */
+      $("button.display").click(function(e) {
+        e.preventDefault();
+        $("fieldset.display").hide();
+        $("fieldset.edit").show();
+        $(this).hide().siblings(".edit").show();
+      }).siblings("button.btn-neutral").click(function(e) {
+        e.preventDefault();
+        $("fieldset.display").show();
+        $("fieldset.edit").hide();
+        $(this).hide().siblings(".btn-primary").hide().siblings(".display").show();
+      });
+      /* end edit button */
 
+      /* local environment js */
+      /*                                  */
+      if (window.location.hash) displayPane(window.location.hash, false);
+      else displayPane("#personal", false);
+      $("#nav-tabs a").click(function (e) {
+        e.preventDefault();
+        if (!$(this).parents(".active").size()) {
+          $($(this).attr("href")).addClass("loading");
+          $(".pane:visible").fadeOut("fast", function() {
+            displayPane("#"+$(".pane.loading").removeClass("loading").attr("id"), true);
+          });
+        }
+      });
+      /* demo sorting styles */
+      $("th a").live("click", function(e) {
+        e.preventDefault();
+        if (!$(this).parents("th.active").size()) {
+          var th = $(this).parents("th").eq(0);
+          th.addClass("active asc");
+          th.siblings("th").removeClass("asc desc active");
+        } else {
+          if ($(this).parents("th.asc").size()) $(this).parents("th").removeClass("asc").addClass("desc");
+          else $(this).parents("th").removeClass("desc").addClass("asc");
+        }
+      });
 
-<div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
-    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
-    </div>
-    <div id="memberDialog">
-    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
-    </div>
-
-<div id="newvalueform" style="display:none" class="roundbox">
-    <table>
-        <tr>
-            <th colspan="2">
-                <h2>New Extra Value</h2>
-            </th>
-        </tr>
-        <tr>
-            <th>Type:</th>
-            <td>
-                <table><tr>
-                    <td><input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">Code</label></td>
-                    <td><input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
-                    <td><input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
-                    <td><input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
-                </tr></table>
-            </td>
-        </tr>
-<tr><th>Field:</th><td>@Html.TextBox("fieldname")</td></tr>
-<tr><th>Value:</th><td>@Html.TextBox("fieldvalue")</td></tr>
-    </table>
-</div>
+    });
+    function displayPane(hash, pushURL) {
+      $(hash).fadeIn("fast", function() {
+        $("#nav-tabs li.active").removeClass("active");
+        $("a[href=#"+$(".pane:visible").attr("id")+"]").parents("li:eq(0)").addClass("active");
+        if (pushURL && window.history && window.history.pushState && window.history.replaceState) {
+          window.location.replace(hash);
+          window.history.pushState(null, null, window.location.href);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -30,7 +30,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             if (DbUtil.Db.UserPreference("newlook", "false").ToBool()
                 && DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
-                return Redirect(Request.RawUrl.ToLower().Replace("/querybuilder", "/search/advanced"));
+                return Redirect(Request.RawUrl.ToLower().Replace("querybuilder", "search/advanced"));
             ViewData["Title"] = "QueryBuilder";
             ViewData["OnQueryBuilder"] = "true";
             ViewData["TagAction"] = "/QueryBuilder/TagAll/";

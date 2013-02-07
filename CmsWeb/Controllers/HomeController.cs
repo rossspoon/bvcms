@@ -154,6 +154,18 @@ namespace CmsWeb.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect(Request.UrlReferrer.OriginalString);
         }
+        public ActionResult UseNewPeoplePage()
+        {
+            DbUtil.Db.SetUserPreference("newpeoplepage", "true");
+            DbUtil.Db.SubmitChanges();
+            return Redirect(Request.UrlReferrer.OriginalString);
+        }
+        public ActionResult UseOldPersonPage()
+        {
+            DbUtil.Db.SetUserPreference("newpeoplepage", "false");
+            DbUtil.Db.SubmitChanges();
+            return Redirect(Request.UrlReferrer.OriginalString);
+        }
     }
 }
 
