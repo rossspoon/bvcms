@@ -68,7 +68,7 @@
     ]
     };
     $("#textarea.editor").ckeditor(editor_large);
-    $("#CreateVoteTag").live("click", function (ev) {
+    $("body").on("click", '#CreateVoteTag', function (ev) {
         ev.preventDefault();
         CKEDITOR.instances["votetagcontent"].updateElement();
         var q = $(this).closest('form').serialize();

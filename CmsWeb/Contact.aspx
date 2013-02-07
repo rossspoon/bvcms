@@ -318,7 +318,7 @@
                     $('iframe', this).attr("src", "");
                 }
             });
-            $('#AddContacteeLink,#AddContactorLink').live("click", function (e) {
+            $('body').on("click", '#AddContacteeLink,#AddContactorLink', function (e) {
                 e.preventDefault();
                 var d = $('#contactDialog');
                 $('iframe', d).attr("src", this.href);

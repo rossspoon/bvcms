@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $('#delete').live("click", function (ev) {
+    $('body').on("click", '#delete', function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
@@ -24,7 +24,7 @@
     $("a.bt").button();
     $("input.datepicker").datepicker();
 
-    $("a.displayedit").live('click', function (ev) {
+    $("body").on('click', 'a.displayedit', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();

@@ -20,7 +20,7 @@
         ]
     };
     $("#editor").ckeditor(editor_config);
-    $("ul.enablesort div.newitem > a").live("click", function (ev) {
+    $("ul.enablesort").on("click", 'div.newitem > a', function (ev) {
         if (!$(this).attr("href"))
             return false;
         ev.preventDefault();
@@ -48,7 +48,7 @@
         });
     };
     $.regsettingeditclick();
-    $("a.editor").live("click", function (ev) {
+    $("body").on("click", 'a.editor', function (ev) {
         if (!$(this).attr("href"))
             return false;
         var name = $(this).attr("tb");

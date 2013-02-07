@@ -34,11 +34,11 @@
         }
         return age - 2;
     };
-    $('form.DisplayEdit input.dob').live("blur", function () {
+    $('form.DisplayEdit').on("blur", 'input.dob', function () {
         var f = $(this).closest('form');
         $("#age", f).text($.dodate($(this).val()));
     });
-    $("a.submitbutton, a.submitlink, input.submitbutton.ajax", "form.DisplayEdit").live('click', function (ev) {
+    $("form.DisplayEdit").on('click', 'a.submitbutton, a.submitlink, input.submitbutton.ajax', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -107,7 +107,7 @@
         $("#submitit").attr("disabled", "true");
         return true;
     });
-    $("form.DisplayEdit a.cancel").live('click', function (ev) {
+    $("form.DisplayEdit").on('click', 'a.cancel', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -120,7 +120,7 @@
         });
         return false;
     });
-    $("#copy").live("click", function () {
+    $("body").on("click", '#copy', function () {
         $("input[name$='.emcontact']:last").val($("input[name$='.emcontact']:hidden:last").val());
         $("input[name$='.emphone']:last").val($("input[name$='.emphone']:hidden:last").val());
         $("input[name$='.insurance']:last").val($("input[name$='.insurance']:hidden:last").val());
@@ -146,12 +146,12 @@
             "m.donation": { number: true }
         }
     });
-    $(".personheader a").live("click", function (e) {
+    $(".personheader").on("click", 'a', function (e) {
         e.preventDefault();
         $(this).closest('div').nextAll('table').slideToggle();
         return false;
     });
-    $("input.sum").live("change", function () {
+    $("body").on("change", "input.sum", function () {
         var sum = 0;
         $("input.sum").each(function () {
             if (!isNaN(this.value) && this.value.length != 0) {
@@ -160,9 +160,9 @@
         });
         $("#total").html(sum.toFixed(2));
     });
-    $("input[name=Type]").live("change", $.ShowPaymentInfo);
+    $("body").on("change", 'input[name=Type]', $.ShowPaymentInfo);
 
-    $("#password").live("keypress", function (e) {
+    $("body").on("keypress", '#password', function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#loginbt').click();
             return false;

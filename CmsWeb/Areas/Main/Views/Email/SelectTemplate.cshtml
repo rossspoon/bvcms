@@ -15,7 +15,7 @@
 {
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$("[bvtemplate]").on("click", function (e) {
+		    $("body").on("click", '[bvtemplate]', function (e) {
 				$("#templateID").val($(this).attr("template"));
 				$("#selectTemplate").submit();
 			});

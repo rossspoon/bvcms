@@ -37,7 +37,7 @@ margin-right: 1em;
         <div id="toolbar" style='@(Model.ShowResults ? "" : "display:none")'>
             @Html.Partial("ExportToolBar")
         </div>
-        <div id="Results" style="clear: both; margin-top: 6px">
+        <div id="Results" style="clear: both; margin-top: 6px; max-width: 870px">
             @if (Model.ShowResults)
             {
                 @Html.Partial("Results", Model) 

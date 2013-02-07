@@ -17,16 +17,7 @@
                 var api = $(this).data('jsp');
                 var throttleTimeout;
                 $(window).bind('resize', function () {
-                    if ($.browser.msie) {
-                        if (!throttleTimeout) {
-                            throttleTimeout = setTimeout(function () {
-                                api.reinitialise();
-                                throttleTimeout = null;
-                            }, 50);
-                        }
-                    } else {
-                        api.reinitialise();
-                    }
+                    api.reinitialise();
                 });
             });
             $('div.jscroll div.drow:even').addClass('alt');

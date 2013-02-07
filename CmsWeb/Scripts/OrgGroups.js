@@ -6,16 +6,16 @@
     }
     $.fmtTable();
     $(".helptip").tooltip({ showBody: "|" });
-    $.loadTable = function () {
+    $.loadTable = function() {
         $.blockUI();
         $.getTable($('#groupsform'));
         $.unblockUI();
-    }
-    $('#filter').live("click", function (ev) {
+    };
+    $('body').on("click", '#filter', function (ev) {
         ev.preventDefault();
         $.loadTable();
     });
-    $('a.sortable').live("click", function (ev) {
+    $('body').on("click", 'a.sortable', function (ev) {
         ev.preventDefault();
         $('#sort').val($(this).text());
         $.loadTable();
@@ -46,10 +46,10 @@
     }
     $(".datepicker").datepicker();
 
-    $("#SelectAll").live("click", function () {
+    $("body").on("click", '#SelectAll', function () {
         $("input[name='list']").attr('checked', $(this).attr('checked'));
     });
-    $("a.display").live('click', function (ev) {
+    $("body").on('click', 'a.display', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post(this.href, q, function (ret) {
@@ -60,7 +60,7 @@
         });
         return false;
     });
-    $("a.groupmanager").live('click', function (ev) {
+    $("body").on('click', 'a.groupmanager', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?")) {
             var f = $(this).closest('form');
@@ -96,14 +96,14 @@
         });
         return false;
     };
-    $('#AssignSelectedToTargetGroup').live('click', function (ev) {
+    $('body').on('click', '#AssignSelectedToTargetGroup', function (ev) {
         $.performAction("/OrgGroups/AssignSelectedToTargetGroup");
     });
-    $('#RemoveSelectedFromTargetGroup').live('click', function (ev) {
+    $('body').on('click', '#RemoveSelectedFromTargetGroup', function (ev) {
         $.performAction("/OrgGroups/RemoveSelectedFromTargetGroup");
     });
     var lastChecked = null;
-    $("input[name = 'list']").live("click", function (e) {
+    $("body").on("click", "input[name = 'list']", function (e) {
         if (!lastChecked) {
             lastChecked = this;
             return;

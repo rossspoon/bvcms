@@ -58,13 +58,13 @@
             SetFocusOnError="True" ValidationGroup="vgDates" Type="Date" Text="To Date must be after From Date."
             CssClass="noPrint"></asp:CompareValidator>
         <hr />
-        <table cellspacing="18" style="margin-left:auto;margin-right:auto">
+        <table cellspacing="18" class="center">
             <tr>
                 <td colspan="2" class="center">
                     <asp:ListView ID="DecisionsView" runat="server" DataSourceID="ODSDecisions" 
                         onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0">
+                            <table id="itemPlaceholderContainer" runat="server" border="0" class="center">
                                 <tr id="Tr7" runat="server" style="">
                                     <th class="HeaderLine" id="Th13" runat="server" colspan="2">
                                         Decisions
@@ -136,7 +136,7 @@
                     <asp:ListView ID="BaptismsByTypeView" runat="server" 
                         DataSourceID="ODSBaptismsByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0"  style="margin-left:auto;margin-right:auto">
+                            <table id="itemPlaceholderContainer" runat="server" border="0"  class="center">
                                 <tr id="Tr10" runat="server" style="">
                                     <th class="HeaderLine" id="Th16" runat="server" colspan="2">
                                         Baptisms by Type
@@ -164,7 +164,7 @@
                     <asp:ListView ID="NewMemberView" runat="server" 
                         DataSourceID="ODSNewMemberByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0" style="">
+                            <table id="itemPlaceholderContainer" runat="server" border="0" class="center">
                                 <tr id="Tr11" runat="server" style="">
                                     <th class="HeaderLine" id="Th17" runat="server" colspan="2">
                                         New Members by Type
@@ -199,7 +199,7 @@
                     <asp:ListView ID="DroppedMemberView" runat="server" 
                         DataSourceID="ODSDroppedMemberByType" onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0" style="">
+                            <table id="itemPlaceholderContainer" runat="server" border="0" class="center">
                                 <tr id="Tr12" runat="server" style="">
                                     <th class="HeaderLine" id="Th18" runat="server" colspan="2">
                                         Dropped Members by Type
@@ -236,7 +236,7 @@
                     <asp:ListView ID="DroppedMemberChurchView" runat="server" 
                         DataSourceID="ODSDroppedMembersByChurch" onitemcommand="ItemCommand">
                         <LayoutTemplate>
-                            <table id="itemPlaceholderContainer" runat="server" border="0">
+                            <table id="itemPlaceholderContainer" runat="server" border="0" class="center">
                                 <tr id="Tr13" runat="server" style="">
                                     <th class="HeaderLine" id="Th19" runat="server" colspan="2">
                                         Dropped Members by Church

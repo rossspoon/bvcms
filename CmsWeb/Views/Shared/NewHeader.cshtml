@@ -239,9 +239,9 @@
                 @if (access)
                 {
                     <form action="" method="post" class="search">
-                        <input type="text" id="SearchText" placeholder="Search" name="search">
-                        <button><i class="icon-search"></i></button>
+                        <input type="text" id="SearchText" class="trigger-dropdown" placeholder="Search" name="search">
                         @Helper.SearchBuilderDropdown(onqb, newlook: true)
+                        <button class="trigger-dropdown"><i class="icon-search"></i></button>
                     </form>
                 }
             </div>

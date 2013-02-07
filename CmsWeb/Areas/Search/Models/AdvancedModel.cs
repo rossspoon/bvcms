@@ -339,7 +339,7 @@ namespace CmsWeb.Areas.Search.Models
             if (Tags != null)
                 c.Tags = string.Join(";", Tags);
             c.SavedQueryIdDesc = SavedQueryDesc;
-            Db.SubmitChanges();
+            //Db.SubmitChanges();
             SelectedId = null;
         }
         public void EditCondition()
@@ -437,6 +437,7 @@ namespace CmsWeb.Areas.Search.Models
         {
             var c = Db.LoadQueryById(SelectedId);
             var nc = NewCondition(c, c.MaxClauseOrder() + 1);
+            Db.SubmitChanges();
             if (nc.IsGroup)
             {
                 nc = nc.AddNewClause(QueryType.MatchAnything, CompareType.Equal, null);
@@ -449,13 +450,13 @@ namespace CmsWeb.Areas.Search.Models
         {
             var c = Db.LoadQueryById(SelectedId);
             var nc = NewCondition(c.Parent, c.ClauseOrder + 1);
+            Db.SubmitChanges();
             if (nc.IsGroup)
             {
                 nc = nc.AddNewClause(QueryType.MatchAnything, CompareType.Equal, null);
                 Db.SubmitChanges();
                 SelectedId = nc.QueryId;
             }
-            Db.SubmitChanges();
         }
         private QueryBuilderClause NewCondition(QueryBuilderClause gc, int order)
         {

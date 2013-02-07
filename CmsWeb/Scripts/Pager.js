@@ -24,7 +24,7 @@
         });
         return false;
     };
-    $('table.grid > thead a.sortable').live("click", function () {
+    $('table.grid > thead').on("click", 'a.sortable', function () {
         var f = $(this).closest("form");
         var newsort = $(this).text();
         var sort = $("#Sort", f);
@@ -47,7 +47,7 @@
             $.getTable(f);
         return false;
     };
-    $("input[name='toggletarget']").live("click", function (ev) {
+    $("body").on("click", "input[name='toggletarget']", function (ev) {
         if ($('a.target[target="people"]').length == 0) {
             $("a.target").attr("target", "people");
             $("input[name='toggletarget']").attr("checked", true);

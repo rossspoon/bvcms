@@ -58,7 +58,7 @@
         return false;
     };
     $('#results > tbody > tr:even').addClass('alt');
-    $('#results > thead a.sortable').live('click', function (ev) {
+    $('#results > thead').on('click', 'a.sortable', function (ev) {
         ev.preventDefault();
         var newsort = $(this).text();
         var sort = $("#Sort");
@@ -71,14 +71,14 @@
         $.getTable();
         return false;
     });
-    $("form input").live("keypress", function (e) {
+    $("form").on("keypress", 'input', function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#search').click();
             return false;
         }
         return true;
     });
-    $('a.taguntag').live('click', function (ev) {
+    $('body').on('click', 'a.taguntag', function (ev) {
         ev.preventDefault();
         var a = $(this);
         $.post('/Tags/ToggleTag/' + $(this).attr('value'), null, function (ret) {

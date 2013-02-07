@@ -111,7 +111,7 @@ $(function () {
             RebindMemberGrids();
         }
     });
-    $('a.addfromtag').live("click", function (e) {
+    $('body').on("click", 'a.addfromtag', function (e) {
         e.preventDefault();
         var d = $('#AddFromTag');
         $('iframe', d).attr("src", this.href);
@@ -133,14 +133,14 @@ $(function () {
             $.updateTable($('#Meetings-tab form'));
         }
     });
-    $('#RepairTransactions').live("click", function (e) {
+    $('body').on("click", '#RepairTransactions', function (e) {
         e.preventDefault();
         var d = $('#LongRunOp');
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", "Repair Transactions");
         d.dialog("open");
     });
-    $('.delmeeting').live('click', function (ev) {
+    $('body').on('click', '.delmeeting', function (ev) {
         ev.preventDefault();
         if (confirm("delete meeting for sure?")) {
             var d = $('#LongRunOp');
@@ -152,14 +152,14 @@ $(function () {
     });
 
 
-    $('a.addmembers').live("click", function (e) {
+    $('body').on("click", 'a.addmembers', function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
         d.dialog("option", "title", "Add Members");
         d.dialog("open");
     });
-    $('a.memberdialog').live("click", function (e) {
+    $('body').on("click", 'a.memberdialog', function (e) {
         e.preventDefault();
         var title;
         var d = $('#memberDialog');
@@ -233,9 +233,9 @@ $(function () {
                 break;
         }
     };
-    $("#org_RegistrationTypeId").live("change", $.showHideRegTypes);
+    $("body").on("change", '#org_RegistrationTypeId', $.showHideRegTypes);
     $.showHideRegTypes();
-    $("a.displayedit,a.displayedit2").live('click', function (ev) {
+    $("body").on('click', 'a.displayedit,a.displayedit2', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function (ret) {
@@ -266,7 +266,7 @@ $(function () {
         });
         return false;
     });
-    $('#selectquestions a').live("click", function (ev) {
+    $('#selectquestions').on("click", "a", function (ev) {
         ev.preventDefault();
         $.post('/Organization/NewAsk/', { id: 'AskItems', type: $(this).attr("type") }, function (ret) {
             $('#selectquestions').dialog("close");
@@ -278,14 +278,14 @@ $(function () {
         });
         return false;
     });
-    $("ul.enablesort a.del").live("click", function (ev) {
+    $("ul.enablesort").on("click", 'a.del', function (ev) {
         ev.preventDefault();
         if (!$(this).attr("href"))
             return false;
         $(this).parent().parent().parent().remove();
         return false;
     });
-    $("ul.enablesort a.delt").live("click", function (ev) {
+    $("ul.enablesort").on("click", 'a.delt', function (ev) {
         ev.preventDefault();
         if (!$(this).attr("href"))
             return false;
@@ -316,7 +316,7 @@ $(function () {
         });
     };
     $(".helptip").tooltip({ showBody: "|" });
-    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
+    $("form.DisplayEdit").on('click', 'a.submitbutton', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())
@@ -335,7 +335,7 @@ $(function () {
         });
         return false;
     });
-    $("#future").live('click', function () {
+    $("body").on('click', '#future', function () {
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(f).attr("action"), q, function (ret) {
@@ -348,7 +348,7 @@ $(function () {
             return false;
         return true;
     });
-    $('a.taguntag').live("click", function (ev) {
+    $('body').on("click", 'a.taguntag', function (ev) {
         ev.preventDefault();
         $.post('/Organization/ToggleTag/' + $(this).attr('pid'), null, function (ret) {
             $(ev.target).text(ret);
@@ -411,7 +411,7 @@ $(function () {
         });
         return false;
     };
-    $("a.filtergroupslink").live("click", function (ev) {
+    $("body").on("click", 'a.filtergroupslink', function (ev) {
         ev.preventDefault();
         var f = $(this).closest("form");
         $("#FilterGroups").dialog({
@@ -454,7 +454,7 @@ $(function () {
         }
 		return true;
 	});
-    $("#addsch").live("click", function (ev) {
+    $("body").on("click", '#addsch', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post("/Organization/NewSchedule", null, function (ret) {
@@ -464,13 +464,13 @@ $(function () {
             });
         });
     });
-    $("a.deleteschedule").live("click", function (ev) {
+    $("body").on("click", 'a.deleteschedule', function (ev) {
         ev.preventDefault();
         $(this).parent().remove();
         $.renumberListItems();
     });
     $.renumberListItems = function () {
-        i = 1;
+        var i = 1;
         $(".renumberMe").each(function () {
             $(this).val(i);
             i++;
@@ -482,7 +482,7 @@ $(function () {
         height: 450,
         modal: true
     });
-    $('#RollsheetLink').live("click", function (ev) {
+    $('body').on("click", '#RollsheetLink', function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("By Group");
         var d = $("#NewMeetingDialog");
@@ -502,7 +502,7 @@ $(function () {
         });
         d.dialog('open');
     });
-    $('#RallyRollsheetLink').live("click", function (ev) {
+    $('body').on("click", '#RallyRollsheetLink', function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("By Group");
         var d = $("#NewMeetingDialog");
@@ -522,7 +522,7 @@ $(function () {
         });
         d.dialog('open');
     });
-    $('#NewMeeting').live("click", function (ev) {
+    $('body').on("click", '#NewMeeting', function (ev) {
         ev.preventDefault();
         $('#grouplabel').text("Group Meeting");
         var d = $("#NewMeetingDialog");
@@ -564,7 +564,7 @@ $(function () {
         }
         return { date: d, time: t, valid: v };
     };
-    $('a.joinlink').live('click', function (ev) {
+    $('body').on('click', 'a.joinlink', function (ev) {
         ev.preventDefault();
         $.post("/Organization/Join/", { id: this.id },
             function (ret) {
@@ -595,7 +595,7 @@ $(function () {
             });
         }
     });
-    $('#divisionlist').live("click", function (e) {
+    $('body').on("click", '#divisionlist', function (e) {
         e.preventDefault();
         var d = $('#divisionsDialog');
         $('iframe', d).attr("src", this.href);
@@ -615,7 +615,7 @@ $(function () {
             $('iframe', this).attr("src", "");
         }
     });
-    $('#orgpicklist').live("click", function (e) {
+    $('body').on("click", '#orgpicklist', function (e) {
         e.preventDefault();
         var d = $('#orgsDialog');
         $('iframe', d).attr("src", this.href);
@@ -662,7 +662,7 @@ $(function () {
             }
         }
     });
-    $("#newextravalue").live("click", function (ev) {
+    $("body").on("click", '#newextravalue', function (ev) {
         ev.preventDefault();
         var d = $('#newvalueform');
         d.dialog("open");
@@ -671,12 +671,12 @@ $(function () {
         autoOpen: false,
         width: 500
     });
-    $("#tryreg").live("click", function (ev) {
+    $("body").on("click", '#tryreg', function (ev) {
         ev.preventDefault();
         var d = $('#TryRegDialog');
         d.dialog("open");
     });
-    $("a.deleteextra").live("click", function (ev) {
+    $("body").on("click", 'a.deleteextra', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))
             $.post("/Organization/DeleteExtra/" + $("#OrganizationId").val(), { field: $(this).attr("field") }, function (ret) {

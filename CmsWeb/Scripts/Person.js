@@ -7,7 +7,7 @@
     $("#main-tab").tabs();
     $("#main-tab").show();
     $(".submitbutton,.bt").button();
-    addrtabs.tabs('select', $('#addrtab').val());
+    addrtabs.tabs('option', "active", $('#addrtab').val());
     $('#dialogbox').dialog({
         title: 'Search Dialog',
         bgiframe: true,
@@ -22,7 +22,7 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('#clipaddr').live('click', function () {
+    $('body').on('click', '#clipaddr', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
             var range = inElement.createTextRange();
@@ -50,7 +50,7 @@
         }
         return false;
     });
-    $('a.deloptout').live("click", function (ev) {
+    $('body').on("click", 'a.deloptout', function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
@@ -195,13 +195,13 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('form a.membertype').live("click", function (e) {
+    $('form').on("click", 'a.membertype', function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    $('#previous-tab form a.membertype').live("click", function (e) {
+    $('#previous-tab form').on("click", 'a.membertype', function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
@@ -275,7 +275,7 @@
         return false;
     });
 
-    $("a.displayedit").live('click', function (ev) {
+    $("form").on('click', 'a.displayedit', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function (ret) {
@@ -292,26 +292,26 @@
         $('#Occupation', f).autocomplete({ minLength: 3, source: "/Person/Occupations" });
         $('#NewChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
         $('#PrevChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
-        
+
         $(".datepicker").datepicker();
         $(".submitbutton,.bt", f).button();
-        $("#verifyaddress").click(function () {
-            var ff = $(this).closest('form');
-            var q = ff.serialize();
-            $.post($(this).attr('href'), q, function (ret) {
-                if (confirm(ret.address + "\nUse this Address?")) {
-                    $('#Address1', ff).val(ret.Line1);
-                    $('#Address2', ff).val(ret.Line2);
-                    $('#City', ff).val(ret.City);
-                    $('#State', ff).val(ret.State);
-                    $('#Zip', ff).val(ret.Zip);
-                }
-            });
-            return false;
-        });
         return false;
     };
-    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
+    $("form").on("click", "#verifyaddress", function () {
+        var ff = $(this).closest('form');
+        var q = ff.serialize();
+        $.post($(this).attr('href'), q, function (ret) {
+            if (confirm(ret.address + "\nUse this Address?")) {
+                $('#Address1', ff).val(ret.Line1);
+                $('#Address2', ff).val(ret.Line2);
+                $('#City', ff).val(ret.City);
+                $('#State', ff).val(ret.State);
+                $('#Zip', ff).val(ret.Zip);
+            }
+        });
+        return false;
+    });
+    $("form.DisplayEdit").on('click', 'a.submitbutton', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())
@@ -328,7 +328,7 @@
         });
         return false;
     });
-    $("#future").live('click', function (ev) {
+    $("form").on('click', '#future', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -345,7 +345,7 @@
         var v = $.DateValid(value);
         return this.optional(element) || v;
     }, $.format("Please enter valid date"));
-    
+
     $.validator.setDefaults({
         highlight: function (input) {
             $(input).addClass("ui-state-highlight");
@@ -389,7 +389,7 @@
     $('#addrf').validate();
     $('#addrp').validate();
     $('#basic').validate();
-    $(".atck").live("change", function (ev) {
+    $("body").on("change", '.atck', function (ev) {
         var ck = $(this);
         $.post("/Meeting/MarkAttendance/", {
             MeetingId: $(this).attr("mid"),
@@ -431,12 +431,12 @@
             }
         }
     });
-    $("#newextravalue").live("click", function (ev) {
+    $("body").on("click", '#newextravalue', function (ev) {
         ev.preventDefault();
         var d = $('#newvalueform');
         d.dialog("open");
     });
-    $("a.deleteextra").live("click", function (ev) {
+    $("body").on("click", 'a.deleteextra', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))
             $.post("/Person/DeleteExtra/" + $("#PeopleId").val(), { field: $(this).attr("field") }, function (ret) {
@@ -449,7 +449,7 @@
             });
         return false;
     });
-    $("a.reverse").live('click', function (ev) {
+    $("form").on('click', 'a.reverse', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post("/Person/Reverse", {
@@ -479,7 +479,7 @@
             $(input).val(value);
         }
     });
-    $('#vtab>ul>li').click(function() {
+    $('#vtab>ul>li').click(function () {
         $('#vtab>ul>li').removeClass('selected');
         $(this).addClass('selected');
         var index = $('#vtab>ul>li').index($(this));

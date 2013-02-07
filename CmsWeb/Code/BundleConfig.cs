@@ -10,21 +10,21 @@ namespace CmsWeb
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/Content/styles/css").Include(
-                "~/Content/styles/jquery-ui-1.9.2.custom.css",
+                "~/Content/styles/jquery-ui-1.10.0.custom.css",
                 "~/Content/styles/dropdown.css",
                 "~/Content/styles/site.css",
                 "~/Content/styles/style2.css",
                 "~/Content/styles/pager.css",
                 "~/Content/styles/jquery.jscrollpane.css",
-                "~/Content/styles/jquery.tooltip.css",
+//                "~/Content/styles/jquery.tooltip.css",
                 "~/Content/styles/joyride-1.0.5.css",
                 "~/Content/styles/jquery.multiselect.css"
                             ));
 
             bundles.Add(new StyleBundle("~/Content/styles/css2").Include(
-                "~/Content/styles/jquery-ui-1.9.2.custom.css",
+                "~/Content/styles/jquery-ui-1.10.0.custom.css",
                 "~/Content/styles/jquery.jscrollpane.css",
-                "~/Content/styles/jquery.tooltip.css",
+//                "~/Content/styles/jquery.tooltip.css",
                 "~/Content/styles/joyride-1.0.5.css",
                 "~/Content/styles/jquery.multiselect.css"
                             ));
@@ -36,12 +36,12 @@ namespace CmsWeb
                 "~/Content/styles/Dialog.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                "~/Content/js/jquery-1.8.3.js",
-                "~/Content/js/jquery-ui-1.9.2.custom.js",
-                "~/Content/js/jquery.bgiframe-2.1.2.js",
+                "~/Content/js/jquery-1.9.0.js",
+                "~/Content/js/jquery-ui-1.10.0.custom.js",
+//                "~/Content/js/jquery.bgiframe-2.1.2.js",
                 "~/Content/js/jquery.cookie.js",
                 "~/Content/js/jquery.blockUI.js",
-                "~/Content/js/jquery.tooltip.js",
+//                "~/Content/js/jquery.tooltip.js",
                 "~/Content/js/jquery.mousewheel.js",
                 "~/Content/js/jquery.jscrollpane.js",
                 "~/Content/js/jquery.jeditable.js",
@@ -59,12 +59,12 @@ namespace CmsWeb
                 "~/Scripts/headermenu.js"
                             ));
             bundles.Add(new ScriptBundle("~/bundles/main-js").Include(
-                "~/Content/js/jquery-1.8.3.js",
-                "~/Content/js/jquery-ui-1.9.2.custom.js",
-                "~/Content/js/jquery.bgiframe-2.1.2.js",
+                "~/Content/js/jquery-1.9.0.js",
+                "~/Content/js/jquery-ui-1.10.0.custom.js",
+//                "~/Content/js/jquery.bgiframe-2.1.2.js",
                 "~/Content/js/jquery.cookie.js",
                 "~/Content/js/jquery.blockUI.js",
-                "~/Content/js/jquery.tooltip.js",
+//                "~/Content/js/jquery.tooltip.js",
                 "~/Content/js/jquery.mousewheel.js",
                 "~/Content/js/jquery.jscrollpane.js",
                 "~/Content/js/jquery.jeditable.js",
@@ -79,12 +79,12 @@ namespace CmsWeb
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/onlineregister-js").Include(
-                "~/Content/js/jquery-1.8.3.js",
-                "~/Content/js/jquery-ui-1.9.2.custom.js",
+                "~/Content/js/jquery-1.9.0.js",
+                "~/Content/js/jquery-ui-1.10.0.custom.js",
                 "~/Content/js/jquery.validate.js",
                 "~/Content/js/jquery.idle-timer.js",
                 "~/Content/js/jquery.blockUI.js",
-                "~/Content/js/jquery.tooltip.js",
+//                "~/Content/js/jquery.tooltip.js",
                 "~/Content/js/jquery.showpassword.js"
                             ));
 
@@ -113,7 +113,7 @@ namespace CmsWeb
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/meeting-ipad-js").Include(
-                "~/Content/js/jquery-1.8.3.js",
+                "~/Content/js/jquery-1.9.0.js",
                 "~/Content/js/jquery.mobile-1.2.0.min.js",
                 "~/scripts/meeting-ipad.js"
                 ));

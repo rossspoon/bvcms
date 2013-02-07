@@ -110,7 +110,7 @@
             $("a.submitbutton").removeAttr("disabled");
         }
     };
-    $("input[name=Type]").live("change", function () {
+    $("body").on("change", 'input[name=Type]', function () {
         var v = $("input[name=Type]:checked").val();
         $("#pf_Type").val(v);
         $.ShowPaymentInfo(v);

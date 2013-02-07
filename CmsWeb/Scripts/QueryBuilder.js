@@ -16,7 +16,7 @@ $(function () {
             $('iframe', this).attr("src", "");
         }
     });
-    $('a.help').live("click", function (event) {
+    $('body').on("click", 'a.help', function (event) {
         event.preventDefault();
         var d = $('#QueryConditionHelp');
         if (this.href.endsWith('-'))
@@ -42,7 +42,7 @@ $(function () {
             $("#selectconditions select").css("width", "100%");
         });
     });
-    $('#AddToGroup[href]').live("click", function () {
+    $('body').on("click", '#AddToGroup[href]', function () {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/AddToGroup/', qs, function (ret) {
             var a = ret.split("<---------->");
@@ -51,7 +51,7 @@ $(function () {
         });
         return false;
     });
-    $('#Add[href]').live("click", function () {
+    $('body').on("click", '#Add[href]', function () {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Add/', qs, function (ret) {
             var a = ret.split("<---------->");
@@ -60,7 +60,7 @@ $(function () {
         });
         return false;
     });
-    $('#Update[href]').live("click", function () {
+    $('body').on("click", '#Update[href]', function () {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Update/', qs, function (ret) {
             var a = ret.split("<---------->");
@@ -69,7 +69,7 @@ $(function () {
         });
         return false;
     });
-    $('#Remove[href]').live("click", function () {
+    $('body').on("click", '#Remove[href]', function () {
         qs = $('#conditionForm').serialize();
         $.post('/QueryBuilder/Remove/', qs, function (ret) {
             UpdateView(ret);
@@ -97,11 +97,11 @@ $(function () {
     $('#SaveQueryDiv').dialog(dialogOptions);
     $('#OpenQueryDiv').dialog(dialogOptions);
 
-    $('#ShowSaveQuery').live("click", function (ev) {
+    $('body').on("click", '#ShowSaveQuery', function (ev) {
         $('#SaveQueryDesc').val($('#Description').text());
         $('#SaveQueryDiv').dialog("open");
     });
-    $('#ShowOpenQuery').live("click", function (ev) {
+    $('body').on("click", '#ShowOpenQuery', function (ev) {
         $.post("/QueryBuilder/SavedQueries", null, function (ret) {
             $('#ExistingQueries').fillOptions(ret);
         });

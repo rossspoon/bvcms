@@ -8,7 +8,7 @@
         return u;
     };
     $("div[source=registered]").tooltip({ showBody: "|" });
-    $('#sendreminders').live("click", function (ev) {
+    $('body').on("click", '#sendreminders', function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to send reminders?')) {
@@ -25,7 +25,7 @@
             });
         }
     });
-    $(".smallgroup").live("change", function () {
+    $("body").on("change", '.smallgroup', function () {
         $.blockUI();
         $.post("/Volunteers/ManageArea2/" + $("#OrgId").val(), {
             sg1: $("#sg1").val(),
@@ -36,7 +36,7 @@
             $.unblockUI();
         });
     });
-    $("#SortIt").live("click", function (ev) {
+    $("body").on("click", '#SortIt', function (ev) {
         ev.preventDefault();
         if ($("#SortByWeek").val() === "False")
             $("#SortByWeek").val("True");
@@ -45,7 +45,7 @@
         $.blockUI();
         window.location = $.URL("/Volunteers/Calendar/");
     });
-   $(".selectable").live("click", function (ev) {
+    $("body").on("click", '.selectable', function (ev) {
         if (ev.target.nodeName != 'A') {
             if ($(this).attr("source") != $(".selected").attr("source"))
                 $(".selectable").removeClass("pidHighlight2")
@@ -87,7 +87,7 @@
         );
     };
     $readyHover();
-    $("div.drop.ui-state-active").live("click", function (ev) {
+    $("body").on("click", "div.drop.ui-state-active", function (ev) {
         var $this = $(this);
         var list = [];
         $(".selected").each(function (index) {

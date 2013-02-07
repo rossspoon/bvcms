@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $("a.formlink").live('click', function (ev) {
+    $("body").on('click', 'a.formlink', function (ev) {
         ev.preventDefault();
         var a = $(this);
         var f = a.closest('form');
@@ -47,7 +47,7 @@
         return false;
     });
     $("a.bt").button();
-    $('a.clear').live('click', function (ev) {
+    $('body').on('click', 'a.clear', function (ev) {
         ev.preventDefault();
         $("#name").val('');
         $("#phone").val('');
@@ -55,7 +55,7 @@
         $("#dob").val('');
         return false;
     });
-    $("form input").live("keypress", function (e) {
+    $("form").on("keypress", 'input', function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();
             return false;

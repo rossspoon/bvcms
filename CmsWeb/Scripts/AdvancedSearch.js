@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $('a.editconditionlink').live("click", function () {
+    $('body').on("click", 'a.editconditionlink', function () {
         var qid = $(this).attr("qid");
         $.post('/Search/Advanced/EditCondition/' + qid, null, function (ret) {
             $("#conditions").replaceWith(ret).ready($.AdjustEditCondition);
@@ -13,7 +13,7 @@
         var pos = $("#editconditionli").position();
         $("#editcondition").css("left", pos.left).css("top", pos.top);
     };
-    $('#Comparison').live("change", function (ev) {
+    $('body').on("change", '#Comparison', function (ev) {
         if ($("#Codesdiv").length > 0) {
             var q = $('#conditionForm').serialize();
             $.post('/Search/Advanced/CodesDropdown', q, function (ret) {
@@ -38,7 +38,7 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('a.help').live("click", function (event) {
+    $('body').on("click", 'a.help', function (event) {
         event.preventDefault();
         var d = $('#QueryConditionHelp');
         if (this.href.endsWith('-'))
@@ -55,18 +55,18 @@
     $(".bt").button();
     $("#editcondition select").css("width", "100%");
 
-    $('#Program').live("change", function (ev) {
+    $('body').on("change", '#Program', function (ev) {
         $.post('/Search/Advanced/Divisions/' + $(this).val(), null, function (ret) {
             $("#Division").replaceWith(ret);
             $("#Organization").replaceWith("<select id='Organization' name='Organization'><option value='0'>(not specified)</option></select>")
         });
     });
-    $('#Division').live("change", function (ev) {
+    $('body').on("change", '#Division', function (ev) {
         $.post('/Search/Advanced/Organizations/' + $(this).val(), null, function (ret) {
             $("#Organization").replaceWith(ret);
         });
     });
-    $('#AddCondition').live("click", function () {
+    $('body').on("click", '#AddCondition', function () {
         var qs = $('#conditionForm').serialize();
         $.post('/Search/Advanced/AddCondition/', qs, function (ret) {
             $("#conditions").replaceWith(ret).ready(function () {
@@ -75,14 +75,14 @@
         });
         return false;
     });
-    $('#AddConditionToGroup').live("click", function () {
+    $('body').on("click", '#AddConditionToGroup', function () {
         var qs = $('#conditionForm').serialize();
         $.post('/Search/Advanced/AddConditionToGroup/', qs, function (ret) {
             $("#conditions").replaceWith(ret).ready($.AdjustEditCondition);
         });
         return false;
     });
-    $('#SaveCondition').live("click", function () {
+    $('body').on("click", '#SaveCondition', function () {
         var qs = $('#conditionForm').serialize();
         $.post('/Search/Advanced/SaveCondition/', qs, function (ret) {
             $("#conditions").replaceWith(ret).ready(function () {
@@ -91,7 +91,7 @@
         });
         return false;
     });
-    $('#RemoveCondition').live("click", function () {
+    $('body').on("click", '#RemoveCondition', function () {
         var qid = $("#SelectedId").val();
         $.post('/Search/Advanced/RemoveCondition/' + qid, null, function (ret) {
             $("#conditions").replaceWith(ret).ready(function () {
@@ -118,11 +118,11 @@
     $('#SaveQueryDiv').dialog(dialogOptions);
     $('#OpenQueryDiv').dialog(dialogOptions);
 
-    $('#ShowSaveQuery').live("click", function (ev) {
+    $('body').on("click", '#ShowSaveQuery', function (ev) {
         $('#SaveQueryDesc').val($('#Description').text());
         $('#SaveQueryDiv').dialog("open");
     });
-    $('#ShowOpenQuery').live("click", function (ev) {
+    $('body').on("click", '#ShowOpenQuery', function (ev) {
         $.post("/Search/Advanced/SavedQueries", null, function (ret) {
             $('#ExistingQueries').fillOptions(ret);
         });
@@ -159,7 +159,7 @@
     });
     $("#tabber").tabs();
     
-    $("#SelectCondition").live("click", function (ev) {
+    $("body").on("click", '#SelectCondition', function (ev) {
         $('#QueryConditionSelect').dialog("open");
         return false;
     });
@@ -168,10 +168,7 @@
         var qid = $("#SelectedId").val();
         $.post('/Search/Advanced/SelectCondition/' + qid, { conditionName: ev.target.id }, function (ret) {
             $('#QueryConditionSelect').dialog("close");
-            $("#conditions").replaceWith(ret).ready(function () {
-                $('#CodeValues').multiselect();
-                $(".bt").button();
-            });
+            $("#conditions").replaceWith(ret).ready($.AdjustEditCondition);
         });
         return false;
     });

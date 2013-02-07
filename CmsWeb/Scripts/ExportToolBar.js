@@ -7,7 +7,7 @@
         closeOnEscape: true,
         width: 400
     });
-    $(".ChooseLabelType").live("click", function (ev) {
+    $("body").on("click", '.ChooseLabelType', function (ev) {
         ev.preventDefault();
         var d = $("#ChooseLabelType");
         d.dialog("open");
@@ -27,7 +27,7 @@
         });
         return false;
     });
-    $('#TagAll,#UnTagAll').live("click", function (ev) {
+    $('body').on("click", '#TagAll,#UnTagAll', function (ev) {
         ev.preventDefault();
         $.block();
         $.post(this.href, null, function (ret) {
@@ -36,7 +36,7 @@
         });
         return false;
     });
-    $('#AddContact').live("click", function (ev) {
+    $('body').on("click", '#AddContact', function (ev) {
         ev.preventDefault();
         if (!confirm("Are you sure you want to add a contact for all these people?"))
             return false;
@@ -52,7 +52,7 @@
         });
         return false;
     });
-    $('#AddTasks').live("click", function (ev) {
+    $('body').on("click", '#AddTasks', function (ev) {
         ev.preventDefault();
         if (!confirm("Are you sure you want to add a task for each of these people?"))
             return false;
@@ -95,7 +95,7 @@
     };
     $("#ExportStartEnd").dialog($di3);
     $("#SetExtraValues").dialog($di3);
-    $(".ChooseStartEnd").live("click", function (ev) {
+    $("body").on("click", '.ChooseStartEnd', function (ev) {
         ev.preventDefault();
         var d = $("#ExportStartEnd");
         d.dialog("open");
@@ -110,7 +110,7 @@
         });
         return false;
     });
-    $("a.ChooseExtraValues").live("click", function (ev) {
+    $("body").on("click", 'a.ChooseExtraValues', function (ev) {
         ev.preventDefault();
         var d = $("#SetExtraValues");
         d.dialog('option', 'title', $(this).text().trim());

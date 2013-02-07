@@ -97,7 +97,10 @@ namespace CmsWeb.Areas.Search.Controllers
         {
             m.LoadScratchPad();
             if (m.Validate(ModelState))
+            {
                 m.UpdateCondition();
+                DbUtil.Db.SubmitChanges();
+            }
             return View("Conditions", m);
         }
         [HttpPost]

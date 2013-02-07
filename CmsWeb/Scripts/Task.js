@@ -24,7 +24,7 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('#changeowner').live("click", function (ev) {
+    $('body').on("click", '#changeowner', function (ev) {
         ev.preventDefault();
         var d = $('#dialogbox');
         $('iframe', d).attr("src", this.href);
@@ -32,7 +32,7 @@
         d.dialog("open");
         return false;
     });
-    $('#delegate').live("click", function (ev) {
+    $('body').on("click", '#delegate', function (ev) {
         ev.preventDefault();
         var d = $('#dialogbox');
         $('iframe', d).attr("src", this.href);
@@ -40,7 +40,7 @@
         d.dialog("open");
         return false;
     });
-    $('#changeabout').live("click", function (ev) {
+    $('body').on("click", '#changeabout', function (ev) {
         ev.preventDefault();
         var d = $('#dialogbox');
         $('iframe', d).attr("src", this.href);
@@ -65,7 +65,8 @@
     var selectTab = function(tab) {
         if (tab)
             $('#CurTab').val(tab);
-        $('#tabs').tabs('select', '#' + $('#CurTab').val());
+        var index = $('#tabs a[href="#' + $('#CurTab').val() + '"]').parent().index();
+        $('#tabs').tabs('option', "active", index);
     };
 
     var stripeList = function() {
@@ -81,7 +82,7 @@
     };
     
     SearchClicked = refreshList;
-    selectTab();
+    selectTab($.cookie("CurTaskTab"));
     stripeList();
 
     $("#actions").change(function() {
@@ -174,7 +175,7 @@
     $("#OwnerOnly").click(refreshList);
     $("#StatusId").change(refreshList);
 
-    $("a.showdetail").live("click", function(ev) {
+    $("body").on("click", 'a.showdetail', function (ev) {
         ev.preventDefault();
         var id = $(this).attr("task");
         var drid = $("#TaskId").val();
@@ -193,7 +194,7 @@
         }
     });
 
-    $(".deselect").live("click", function(ev) {
+    $("body").on("click", '.deselect', function (ev) {
         ev.preventDefault();
         var id = $("#TaskId").val();
         $.post('/Task/Columns/' + id, function(ret) {
@@ -202,7 +203,7 @@
         return false;
     });
 
-    $("a.complete").live("click", function(ev) {
+    $("body").on("click", 'a.complete', function (ev) {
         ev.preventDefault();
         var id = $(this).attr("task");
         $.post('/Task/SetComplete/' + id, null, function(ret) {
@@ -211,7 +212,7 @@
         return false;
     });
 
-    $("a.accept").live("click", function(ev) {
+    $("body").on("click", 'a.accept', function (ev) {
         ev.preventDefault();
         var id = $(this).attr("task");
         $.post('/Task/Accept/' + id, null, function(ret) {
@@ -233,7 +234,7 @@
             SearchClicked = refreshList;
         }
     });
-    $("a.completewcontact").live("click", function (ev) {
+    $("body").on("click", 'a.completewcontact', function (ev) {
         ev.preventDefault();
         var taskid = $('#TaskId').val();
         $.post('/Task/CompleteWithContact/' + taskid, null, function(ret) {
@@ -241,7 +242,7 @@
         });
         return false;
     });
-    $("input.edit").live("click", function(ev) {
+    $("body").on("click", 'input.edit', function (ev) {
         ev.preventDefault();
         var id = $("#TaskId").val();
         $.post('/Task/Edit/' + id, function(ret) {
@@ -249,7 +250,7 @@
             $(".datepicker").datepicker();
         });
     });
-    $("input.update").live("click", function(ev) {
+    $("body").on("click", 'input.update', function (ev) {
         ev.preventDefault();
         var id = $("#TaskId").val();
         var qs = $("#Edit").formSerialize2();

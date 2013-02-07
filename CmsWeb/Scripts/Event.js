@@ -1,5 +1,5 @@
 ﻿$(function() {
-    $('form.DisplayEdit input.dob').live("blur", function() {
+    $('form.DisplayEdit').on("blur", 'input.dob', function () {
         var bd = $(this).val();
         var re0 = /^(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2})$/i;
         var re = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
@@ -19,7 +19,7 @@
 
         var by = bday.getFullYear();
         var bm = bday.getMonth();
-        var bd = bday.getDate();
+        bd = bday.getDate();
         var age = 0;
         while (bday <= tday) {
             bday = new Date(by + age, bm, bd);
@@ -29,7 +29,7 @@
         var f = $(this).closest('form');
         $("#age", f).text(age);
     });
-    $("form.DisplayEdit a.submitbutton").live('click', function(ev) {
+    $("form.DisplayEdit").on('click', 'a.submitbutton', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -43,7 +43,7 @@
             return false;
         return true;
     });
-    $("form.DisplayEdit a.cancel").live('click', function(ev) {
+    $("form.DisplayEdit").on('click', 'a.cancel', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -52,7 +52,7 @@
         });
         return false;
     });
-    $("#zip").live("blur", function() {
+    $("body").on("blur", "#zip", function () {
         $.post('/OnlineReg/CityState/' + $(this).val(), null, function(ret) {
             if (ret) {
                 $('#state').val(ret.state);

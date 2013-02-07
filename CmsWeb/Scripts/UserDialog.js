@@ -1,6 +1,6 @@
 ﻿$(function () {
     $(".submitbutton").button();
-    $(".save").live('click', function (ev) {
+    $("body").on('click', '.save', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -12,7 +12,7 @@
         });
         return false;
     });
-    $("#deluser").live('click', function (ev) {
+    $("body").on('click', '#deluser', function (ev) {
         ev.preventDefault();
         if (!confirm("are you sure you want to delete?"))
             return false;

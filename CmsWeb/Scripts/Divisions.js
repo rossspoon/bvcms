@@ -43,7 +43,7 @@
             return false;
         }
     });
-    $('a.taguntag').live('click', function(ev) {
+    $('body').on('click', 'a.taguntag', function(ev) {
         ev.preventDefault();
         var f = $('#progform');
         var q = f.serialize();
@@ -55,7 +55,7 @@
         });
         return false;
     });
-    $('a.mainprog').live('click', function(ev) {
+    $('body').on('click', 'a.mainprog', function(ev) {
         ev.preventDefault();
         var f = $('#progform');
         var q = f.serialize();
@@ -67,7 +67,7 @@
         });
         return false;
     });
-    $("a.delete").live("click", function(ev) {
+    $("body").on("click", 'a.delete', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))
             $.post("/Setup/Division/Delete/" + $(this).attr("id"), null, function(ret) {
