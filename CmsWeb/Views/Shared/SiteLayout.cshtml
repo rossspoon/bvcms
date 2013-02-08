@@ -1,6 +1,6 @@
 ﻿@using System.Web.Optimization
 @{
-    var newlook = DbUtil.Db.UserPreference("newlook", "false").ToBool();
+    var newlook = DbUtil.Db.UserPreference("newlook2", "false").ToBool();
 }
 <!DOCTYPE html>
 <html>
@@ -10,8 +10,9 @@
     @if (newlook)
     {
         @Styles.Render("~/Content/styles/css2")
-        <link href="~/Content/styles/Main.css" rel="stylesheet" />
+        //Dave: I put layout.css before main.css      
         <link href="~/Content/styles/layout.css" rel="stylesheet" />
+        <link href="~/Content/styles/Main.css" rel="stylesheet" />
         <link href="~/Content/styles/pager.css" rel="stylesheet" />
         <link href="~/Content/font/font-awesome.min.css" rel="stylesheet">
         <link href="~/Content/font/proximanova/fonts.css" rel="stylesheet">
@@ -25,7 +26,7 @@
     @if (newlook)
     {
         <style type="text/css">
-            #header { background: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
+            #header { background-color: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
         </style>
         @Scripts.Render("~/bundles/main-js")
         <script src="~/Content/js/jquery.simplemodal.1.4.4.min.js"></script>
@@ -111,7 +112,7 @@ else
 </div>
 }
    <div id="ChooseLabelType" class="modalPopup" style="display: none; width: 400px;
-        padding: 10px">
+                                               padding: 10px">
         <table>
             <tr>
                 <td style="margin: 3px; border: solid thin black" nowrap="nowrap">

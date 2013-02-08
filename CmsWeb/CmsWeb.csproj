@@ -594,6 +594,7 @@
     <Content Include="Content\styles\images\forward_enabled.png" />
     <Content Include="Content\styles\images\forward_enabled_hover.png" />
     <Content Include="Areas\Main\Views\MemberDirectory\NoAccess.cshtml" />
+    <Content Include="Content\styles\search.css" />
     <Content Include="Errors\AppOffline.htm" />
     <Content Include="healthcheck.txt" />
     <Content Include="images\bullet.png" />

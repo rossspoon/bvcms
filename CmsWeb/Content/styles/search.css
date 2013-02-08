@@ -1,0 +1,17 @@
+﻿#conditions ul {
+    display: block;
+    list-style-type: disc;
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 13px;
+}
+    #conditions ul li {
+        margin-top: .5em;
+    }
+#Results table {
+    margin-top: 1em;
+}
+#Results h4 {
+    margin-top: .5em;
+    margin-bottom: .5em;
+}

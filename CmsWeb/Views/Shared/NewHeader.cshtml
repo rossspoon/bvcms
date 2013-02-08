@@ -12,6 +12,7 @@
     {
         var admin = User.IsInRole("Admin");
         var manageemails = User.IsInRole("ManageEmails");
+        var developer = User.IsInRole("Developer");
         var managetrans = User.IsInRole("ManageTransactions");
         var edit = User.IsInRole("Edit");
         var design = User.IsInRole("Design");
@@ -195,7 +196,7 @@
                                 </a></li>
                                 <li><a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">Email Support 
                                 </a></li>
-                                @if (admin)
+                                @if (developer)
                                 {
 
                                     <li><a href="/Home/UseOldLook">Use OLD Look</a></li>
@@ -211,7 +212,7 @@
                                     }
                                     if (DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
                                     {
-                                    <li><a href="/Home/UseOldPeoplePage">Use Old Person Page
+                                    <li><a href="/Home/UseOldPersonPage">Use Old Person Page
                                     </a></li>
                                     }
                                     else

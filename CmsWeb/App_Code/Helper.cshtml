@@ -6,7 +6,6 @@
         <ul>
             @if (newlook && DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
             {
-                <li class="header"><span>Search Builder</span></li>
                 <li><a href="/Search/Advanced/Main">
                         Last Search
                     </a></li>

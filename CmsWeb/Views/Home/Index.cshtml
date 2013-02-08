@@ -24,71 +24,87 @@
         });
     </script>
 }
-    <div class="homebox roundbox">
+<div class="homebox roundbox">
+    <div style="height: 33%;">
         <h2 id="bdays"><a href="Tags?tag=TrackBirthdays">Birthdays</a></h2>
-        <div class="jscroll" style="height:10em">
-@foreach (var bi in Model.Birthdays())
-{
-            <div class="drow"><a href="/Person/Index/@bi.PeopleId">@bi.Name (@bi.Birthday.ToString("m"))</a></div>
-}
+        <div class="jscroll" style="height: 130px">
+            @foreach (var bi in Model.Birthdays())
+            {
+                <div class="drow"><a href="/Person/Index/@bi.PeopleId">@bi.Name (@bi.Birthday.ToString("m"))</a></div>
+            }
         </div>
+    </div>
+    <div style="height: 33%;">
         <h2><a href="/Person/Index/@Util.UserPeopleId">My Involvement</a></h2>
-        <div class="jscroll" style="height:10em">
-@{ var pOrgType = "Other"; }
-@foreach (var my in Model.MyInvolvements())
-{
-    if(my.OrgType != pOrgType)
-    {
-        pOrgType = my.OrgType;
-            <div class="drow section">@my.OrgType</div>
-    }
-            <div class="drow indent"><a href="/Organization/Index/@my.OrgId">@my.Name</a></div>
-}
+        <div class="jscroll" style="height: 130px">
+            @{ var pOrgType = "Other"; }
+            @foreach (var my in Model.MyInvolvements())
+            {
+                if (my.OrgType != pOrgType)
+                {
+                    pOrgType = my.OrgType;
+                <div class="drow section">@my.OrgType</div>
+                }
+                <div class="drow indent"><a href="/Organization/Index/@my.OrgId">@my.Name</a></div>
+            }
         </div>
+    </div>
+    <div style="height: 34%;">
         <h2><a href="/QueryBuilder/Main">My Searches</a></h2>
-        <div class="jscroll" style="height:10em">
-@foreach (var q in Model.MyQueries())
-{
-            <div class="drow"><a href="/QueryBuilder/Main/@q.QueryId">@q.Name</a></div>
-}
+        <div class="jscroll" style="height: 130px">
+            @foreach (var q in Model.MyQueries())
+            {
+                <div class="drow"><a href="/QueryBuilder/Main/@q.QueryId">@q.Name</a></div>
+            }
         </div>
     </div>
-    <div style="margin-left:1%;float:left;">&nbsp;</div>
-    <div class="homebox roundbox">
+</div>
+<div style="margin-left: 1%; float: left;">&nbsp;</div>
+<div class="homebox roundbox">
+    <div style="height: 50%">
         <h2><a href="@DbUtil.Db.Setting("BlogAppUrl", "#")">BVCMS News</a></h2>
-        <div class="jscroll" style="height:17em">
-@foreach (var ni in Model.BVCMSNews())
-{
-            var days = (int)Math.Ceiling(DateTime.Now.Subtract(ni.Published).TotalDays);
-            <div class="drow @(days < 8 ? "isnew" + days:"")" >
-            <a href="@ni.Url" target="news">@ni.Title</a></div>
-}
+        <div class="jscroll" style="height: 215px">
+            @foreach (var ni in Model.BVCMSNews())
+            {
+                var days = (int)Math.Ceiling(DateTime.Now.Subtract(ni.Published).TotalDays);
+                <div class="drow @(days < 8 ? "isnew" + days : "")" >
+                    <a href="@ni.Url" target="news">@ni.Title</a>
+                </div>
+            }
         </div>
+    </div>
+    <div style="height: 50%">
         <h2><a href="@DbUtil.Db.Setting("ChurchBlogUrl", "#")">Church News</a></h2>
-        <div class="jscroll" style="height:17em">
-@foreach (var ni in Model.ChurchNews())
-{
-            var days = (int)Math.Ceiling(DateTime.Now.Subtract(ni.Published).TotalDays);
-            <div class="drow @(days < 8 ? "isnew" + days:"")" >
-            <a href="@ni.Url" target="news">@ni.Title</a></div>
-}
+        <div class="jscroll" style="height: 215px">
+            @foreach (var ni in Model.ChurchNews())
+            {
+                var days = (int)Math.Ceiling(DateTime.Now.Subtract(ni.Published).TotalDays);
+                <div class="drow @(days < 8 ? "isnew" + days : "")" >
+                    <a href="@ni.Url" target="news">@ni.Title</a>
+                </div>
+            }
         </div>
     </div>
-    <div style="margin-left:1%;float:left;">&nbsp;</div>
-    <div class="homebox roundbox">
+</div>
+<div style="margin-left: 1%; float: left;">&nbsp;</div>
+<div class="homebox roundbox">
+    <div style="height: 50%">
         <h2 id="tags"><a href="/Tags">My Tags</a></h2>
-        <div class="jscroll" style="height:10em">
-@foreach (var t in Model.Tags())
-{
-            <div class="drow"><a href="/Tags?tag=@t.Value">@t.Value</a></div>
-}
-        </div>
-        <h2 id="tasks"><a href="/Task/List">My Tasks</a></h2>
-        <div class="jscroll" style="height:25em">
-@foreach (var t in Model.Tasks())
-{
-            <div class="drow"><a href="/Task/List/@t.TaskId#Detail">@t.Description</a> (<a href="/Person/Index/@t.PeopleId">@t.Who</a>)</div>
-}
+        <div class="jscroll" style="height: 215px">
+            @foreach (var t in Model.Tags())
+            {
+                <div class="drow"><a href="/Tags?tag=@t.Value">@t.Value</a></div>
+            }
         </div>
     </div>
-    <div style="clear:both"></div>
+    <div style="height: 50%">
+        <h2 id="tasks"><a href="/Task/List">My Tasks</a></h2>
+        <div class="jscroll" style="height: 215px">
+            @foreach (var t in Model.Tasks())
+            {
+                <div class="drow"><a href="/Task/List/@t.TaskId#Detail">@t.Description</a> (<a href="/Person/Index/@t.PeopleId">@t.Who</a>)</div>
+            }
+        </div>
+    </div>
+</div>
+<div style="clear: both"></div>
