@@ -108,6 +108,17 @@
         @:</tr><tr>
     }
 }
+@{
+    int iCount = gl.Count();
+    int iLeft =  iCount % 4;
+    if ( iLeft != 0)
+    {
+        for (int iX = 0; iX < (4-iLeft); iX++)
+        {
+            @:<td width="25%">&nbsp;</td>
+        }
+    }
+}
 </tr>
 </table>
 

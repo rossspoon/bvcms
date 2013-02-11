@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Diagnostics;
 using Twilio;
+using UtilityExtensions;
+using CmsData;
 
 namespace CmsData
 {
     public class TwilioHelper
     {
-        public const int SENT_NONE = 0;
-        public const int SENT_SMS = 1;
-        public const int SENT_EMAIL = 2;
+        public const Boolean bTestMode = true;
 
-        public static void QueueSMS(int iQBID, string sMessage)
+        public static void QueueSMS(int iQBID, int iSendGroupID, string sMessage)
         {
             var q = DbUtil.Db.PeopleQuery(iQBID);
 
@@ -22,6 +24,7 @@ namespace CmsData
             list.Created = DateTime.Now;
             list.SendAt = DateTime.Now;
             list.SenderID = Util2.CurrentPeopleId;
+            list.SendGroupID = iSendGroupID;
             list.Message = sMessage;
 
             DbUtil.Db.SMSLists.InsertOnSubmit(list);
@@ -30,7 +33,7 @@ namespace CmsData
             // Check for how many people have cell numbers and want to receive texts
             var qSMS = from p in q
                 where p.CellPhone != null
-                where p.ReceiveSMS > 0
+                where p.ReceiveSMS == true
                 select p;
 
             var countSMS = qSMS.Count();
@@ -42,35 +45,8 @@ namespace CmsData
                     var item = new SMSItem();
 
                     item.ListID = list.Id;
-                    item.SendToID = i.PeopleId;
-                    item.SendBy = SENT_SMS;
-                    item.SendAddress = i.CellPhone;
-
-                    DbUtil.Db.SMSItems.InsertOnSubmit(item);
-                }
-
-                DbUtil.Db.SubmitChanges();
-            }
-
-            // Check for how many people do not have cell numbers or don't want to receive texts but have e-mails
-            var qEMail = from p in q
-                         where p.ReceiveSMS == 0
-                         where p.EmailAddress != null
-                         where p.EmailAddress != ""
-                         where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
-                         select p;
-
-            var countEMail = qEMail.Count();
-            if ( countEMail > 0)
-            {
-                foreach (var i in qEMail)
-                {
-                    var item = new SMSItem();
-
-                    item.ListID = list.Id;
-                    item.SendToID = i.PeopleId;
-                    item.SendBy = SENT_EMAIL;
-                    item.SendAddress = i.EmailAddress;
+                    item.PeopleID = i.PeopleId;
+                    item.Number = i.CellPhone;
 
                     DbUtil.Db.SMSItems.InsertOnSubmit(item);
                 }
@@ -80,20 +56,81 @@ namespace CmsData
 
             // Add counts for SMS, e-Mail and none
             list.SentSMS = countSMS;
-            list.SentEMail = countEMail;
-            list.SentNone = q.Count() - countSMS - countEMail;
+            list.SentNone = q.Count() - countSMS;
+
             DbUtil.Db.SubmitChanges();
+
+            ProcessQueue(list.Id);
         }
 
-        public static void sendSMS( String sFrom, String sTo, String sBody )
+        public static void ProcessQueue( int iNewListID )
+        {
+            string sHost = Util.Host;
+            string sSID = getSID();
+            string sToken = getToken();
+            int iListID = iNewListID;
+
+            if (sSID.Length == 0 || sToken.Length == 0) return;
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+
+                string stSID = sSID;
+                string stToken = sToken;
+                int itListID = iListID;
+
+                try
+                {
+                    var Db = new CMSDataContext(Util.GetConnectionString(sHost));
+                    Db.Host = sHost;
+
+                    var smsList = (from e in Db.SMSLists
+                                   where e.Id == itListID
+                                   select e).Single();
+
+                    var smsItems = from e in Db.SMSItems
+                                   where e.ListID == itListID
+                                   select e;
+
+                    var smsGroup = (from e in Db.SMSNumbers
+                                    where e.GroupID == smsList.SendGroupID
+                                    select e).ToList();
+
+                    int iCount = 0;
+
+                    foreach (var item in smsItems)
+                    {
+                        sendSMS( stSID, stToken, smsGroup[iCount].Number, item.Number, smsList.Message );
+
+                        iCount++;
+                        if( iCount >= smsGroup.Count() ) iCount = 0;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            });
+        }
+
+
+        public static void sendSMS( String sSID, String sToken, String sFrom, String sTo, String sBody )
         {
             // Needs API keys. Removed to keep private
-            var twilio = new TwilioRestClient("", "");
-            var msg = twilio.SendSmsMessage(sFrom, sTo, sBody);
 
-            var status = msg.Status;
+            if (bTestMode)
+            {
+                Debug.WriteLine("Message sending to " + sTo + " from " + sFrom + ": " + sBody + " --- via " + sSID + " / " + sToken);
+            }
+            else
+            {
+                var twilio = new TwilioRestClient(sSID, sToken);
+                var msg = twilio.SendSmsMessage(sFrom, sTo, sBody);
+                var status = msg.Status;
+            }
         }
-
         public static List<IncomingPhoneNumber> getNumberList()
         {
             var twilio = new TwilioRestClient( getSID(), getToken() );
@@ -144,6 +181,15 @@ namespace CmsData
             }
 
             return people;
+        }
+
+        public static List<SMSGroup> getAvailableLists(int iUserID)
+        {
+            var groups = (from e in DbUtil.Db.SMSGroups
+                          where e.SMSGroupMembers.Any( f => f.UserID == iUserID )
+                          select e).ToList();
+
+            return groups;
         }
 
         public static string getSID()
