@@ -1,5 +1,5 @@
 ﻿$(function() {
-    $('form.DisplayEdit').on("blur", 'input.dob', function () {
+    $('body').on("blur", 'form.DisplayEdit input.dob', function () {
         var bd = $(this).val();
         var re0 = /^(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])((19|20)?[0-9]{2})$/i;
         var re = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
@@ -29,7 +29,7 @@
         var f = $(this).closest('form');
         $("#age", f).text(age);
     });
-    $("form.DisplayEdit").on('click', 'a.submitbutton', function (ev) {
+    $("body").on('click', 'form.DisplayEdit a.submitbutton', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -43,7 +43,7 @@
             return false;
         return true;
     });
-    $("form.DisplayEdit").on('click', 'a.cancel', function (ev) {
+    $("body").on('click', 'form.DisplayEdit a.cancel', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();

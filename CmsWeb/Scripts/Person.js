@@ -36,13 +36,13 @@
         if (confirm('Are you sure you want to delete?')) {
             $.post(href, null, function (ret) {
                 if (ret != "ok") {
-                    $.blockUI({ message: "delete Failed: " + ret });
-                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
+                    $.block("delete Failed: " + ret);
+                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblock);
                 }
                 else {
-                    $.blockUI({ message: "person deleted" });
+                    $.block("person deleted");
                     $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
-                        $.unblockUI();
+                        $.unblock();
                         window.location = "/";
                     });
                 }
@@ -201,7 +201,7 @@
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    $('#previous-tab form').on("click", 'a.membertype', function (e) {
+    $('body').on("click", '#previous-tab form a.membertype', function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);

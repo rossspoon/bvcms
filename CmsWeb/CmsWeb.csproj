@@ -326,6 +326,7 @@
     <Compile Include="Areas\People\Models\Person\FamilyMemberInfo.cs" />
     <Compile Include="Areas\People\Models\Person\FamilyModel.cs" />
     <Compile Include="Areas\People\Models\Person\GrowthInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\PictureResult.cs" />
     <Compile Include="Areas\People\Models\Person\MemberDocs.cs" />
     <Compile Include="Areas\People\Models\Person\MemberInfo.cs" />
     <Compile Include="Areas\People\Models\Person\MemberNotesInfo.cs" />
@@ -478,9 +479,23 @@
     </EmbeddedResource>
     <Content Include="Areas\People\Views\Person\index.html" />
     <Content Include="Content\chosen\chosen-sprite%402x.png" />
+    <Content Include="Content\js\Images\cut.png" />
+    <Content Include="Content\js\Images\door.png" />
+    <Content Include="Content\js\Images\page_white_add.png" />
+    <Content Include="Content\js\Images\page_white_copy.png" />
+    <Content Include="Content\js\Images\page_white_delete.png" />
+    <Content Include="Content\js\Images\page_white_edit.png" />
+    <Content Include="Content\js\Images\page_white_paste.png" />
+    <Content Include="Content\js\jquery-migrate-1.1.0.js" />
+    <Content Include="Content\js\jquery.alerts.js" />
+    <Content Include="Content\js\jquery.contextmenu.r2.js" />
+    <Content Include="Content\styles\jquery.alerts.css" />
+    <Content Include="Content\styles\person.css" />
+    <Content Include="Content\styles\jquery.contextMenu.css" />
     <Content Include="Content\js\jquery-1.9.0.js" />
     <Content Include="Content\js\jquery-ui-1.10.0.custom.js" />
     <Content Include="Content\js\jquery-ui-1.10.0.custom.min.js" />
+    <Content Include="Content\js\jquery.simplemodal-1.4.4.js" />
     <Content Include="Content\styles\images\animated-overlay.gif" />
     <Content Include="Content\styles\jquery-ui-1.10.0.custom.css" />
     <Content Include="Content\styles\jquery-ui-1.10.0.custom.min.css" />
@@ -666,7 +681,6 @@
     <Content Include="Content\styles\jquery-ui-timepicker.css" />
     <Content Include="Content\styles\jquery.autocomplete.css" />
     <Content Include="Content\styles\jquery.cluetip.css" />
-    <Content Include="Content\styles\jquery.contextMenu.css" />
     <Content Include="Content\styles\jquery.dataTables.css" />
     <Content Include="Content\styles\jquery.dataTables_themeroller.css" />
     <Content Include="Content\styles\jquery.jscrollpane.css" />
@@ -700,8 +714,6 @@
     <Content Include="Content\styles\touch.css" />
     <Content Include="Content\styles\ui.timepickr.css" />
     <Content Include="Content\js\FixedHeader.js" />
-    <Content Include="Content\js\jquery-1.8.3.js" />
-    <Content Include="Content\js\jquery-ui-1.9.2.custom.js" />
     <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
     <Content Include="Content\js\jquery.dataTables.js" />
     <Content Include="Content\zylo.wav" />
@@ -713,6 +725,7 @@
     <Content Include="Scripts\Bundles.js" />
     <Content Include="Scripts\Bundle.js" />
     <Content Include="Scripts\AdvancedSearch.js" />
+    <Content Include="Scripts\Person2.js" />
     <Content Include="Scripts\TotalsByRange.js" />
     <Content Include="Scripts\dropdown.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
@@ -1520,6 +1533,8 @@
     <Content Include="Content\font\proximanova\ProximaNova-XboldIt-webfont.eot" />
     <Content Include="Content\font\proximanova\ProximaNova-XboldIt-webfont.ttf" />
     <Content Include="Content\font\proximanova\ProximaNova-XboldIt-webfont.woff" />
+    <Content Include="Areas\Manage\Views\Display\ContentView.cshtml" />
+    <Content Include="Areas\Search\Views\Advanced\EditCondition.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -2259,7 +2274,6 @@
     <Content Include="Content\js\jquery.base64.js" />
     <Content Include="Content\js\jquery.blockUI.js" />
     <Content Include="Content\js\jquery.confirm-1.2.js" />
-    <Content Include="Content\js\jquery.contextMenu.js" />
     <Content Include="Content\js\jquery.dimensions.js" />
     <Content Include="Content\js\jquery.form.js" />
     <Content Include="Content\js\jquery.form2.js" />

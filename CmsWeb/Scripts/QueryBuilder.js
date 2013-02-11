@@ -131,20 +131,30 @@ function HighlightCondition() {
     $('#ConditionGrid li a').removeClass('SelectedRow');
     $('#ConditionGrid li a#' + $('#SelectedId').val()).addClass('SelectedRow');
     $('#ConditionGrid li a').click(EditCondition);
-    $(".conditionPopup").contextMenu({ menu: 'InsCopyMenu' }, function(action, el, pos) {
-	    switch (action) {
-	        case "ins":
-	            $.post("/QueryBuilder/InsGroupAbove/" + $(el).attr('id'), null, function(ret) {
-	                $.navigate("/QueryBuilder/Main/" + ret);
-	            });
-	            break;
-	        case "copy":
-	            $.post("/QueryBuilder/CopyAsNew/" + $(el).attr('id'), null, function(ret) {
-	                $.navigate("/QueryBuilder/Main/" + ret);
-	            });
-	            break;
-	    }
-	});
+    //    $.contextMenu(".conditionPopup", { menu: 'InsCopyMenu' }, function (action, el, pos) {
+    //        switch (action) {
+    //            case "ins":
+    //                $.post("/QueryBuilder/InsGroupAbove/" + $(el).attr('id'), null, function (ret) {
+    //                    $.navigate("/QueryBuilder/Main/" + ret);
+    //                });
+    //                break;
+    //            case "copy":
+    //                $.post("/QueryBuilder/CopyAsNew/" + $(el).attr('id'), null, function (ret) {
+    //                    $.navigate("/QueryBuilder/Main/" + ret);
+    //                });
+    //                break;
+    //        }
+    //    });
+    $('.conditionPopup').contextMenu('InsCopyMenu', {
+        bindings: {
+            'ins': function (t) {
+                alert('Trigger was ' + t.id + '\nAction was ins');
+            },
+            'copy': function (t) {
+                alert('Trigger was ' + t.id + '\nAction was copy');
+            }
+        }
+    });
 }
 function FillConditionGrid(html) {
     $('#ConditionGrid').html(html).ready(function () {
@@ -152,49 +162,43 @@ function FillConditionGrid(html) {
         $('#ConditionGrid li a').click(EditCondition);
     });
 }
-(function($) {
-    $.QueryString = function(q, item) {
+(function ($) {
+    $.QueryString = function (q, item) {
         var r = new Object();
-        $.each(q.split('&'), function() {
+        $.each(q.split('&'), function () {
             var kv = this.split('=');
             r[kv[0]] = kv[1];
         });
         return r[item];
     };
-    $.block = function() {
-        $.blockUI({ message: 'working on it...<img src="/images/loading.gif"/>' });
-    };
-    $.unblock = function() {
-        $.unblockUI({ fadeOut: 150 });
-    };
-    $.navigate = function(url, data) {
+    $.navigate = function (url, data) {
         url += (url.match(/\?/) ? "&" : "?") + data;
         window.location = url;
     };
-    $.fn.showhide = function(bool) {
+    $.fn.showhide = function (bool) {
         if (bool)
             $(this).show();
         else
             $(this).hide();
         return this;
     };
-    $.fn.enabled = function(bool) {
+    $.fn.enabled = function (bool) {
         if (bool)
             $(this).attr("href", "#").removeClass("disabled");
         else
             $(this).removeAttr("href").addClass("disabled");
         return this;
     };
-    $.fn.fillOptions = function(a, multiple) {
+    $.fn.fillOptions = function (a, multiple) {
         var options = '';
         if (a)
             for (var i = 0; i < a.length; i++) {
-            options += '<option value="' + a[i].Value + '"';
-            if (a[i].Selected)
-                options += ' selected=\'selected\''
-            options += '>' + a[i].Text + '</option>';
-        }
-        return this.each(function() {
+                options += '<option value="' + a[i].Value + '"';
+                if (a[i].Selected)
+                    options += ' selected=\'selected\''
+                options += '>' + a[i].Text + '</option>';
+            }
+        return this.each(function () {
             var s = "<select id='" + this.id + "' name='" + this.id + "'";
             if (multiple)
                 s += " multiple='multiple'";
@@ -203,7 +207,7 @@ function FillConditionGrid(html) {
         });
     };
     $.fn.multiSelectRemove = function () {
-        $(this).each(function() {
+        $(this).each(function () {
             $(this).next('.multiselect').remove();
             $(this).next('.multiSelectOptions').remove();
         });
@@ -263,20 +267,20 @@ function SetPageSize(sz) {
     return false;
 }
 function CascadeDivision() {
-    $('#Division').change(function(ev) {
-        $.post('/QueryBuilder/GetOrganizations/' + $(this).val(), null, function(ret) {
+    $('#Division').change(function (ev) {
+        $.post('/QueryBuilder/GetOrganizations/' + $(this).val(), null, function (ret) {
             $('#Organization').fillOptions(ret);
             $("#selectconditions select").css("width", "100%");
         });
     });
 }
 function CascadeComparison() {
-    
-    $('#Comparison').change(function(ev) {
+
+    $('#Comparison').change(function (ev) {
         $.post('/QueryBuilder/GetCodes/', {
             ConditionName: $('#ConditionName').val(),
             Comparison: $('#Comparison').val()
-        }, function(ret) {
+        }, function (ret) {
             UpdateCodes(ret);
         });
     });
@@ -285,15 +289,15 @@ function EditCondition(ev) {
     $('#ConditionGrid li').removeClass('SelectedRow');
     var qid = $(this).parent("li").attr("id");
     $('#ConditionGrid li#' + qid).addClass('SelectedRow');
-    $.post('/QueryBuilder/EditCondition/' + qid, null, function(ret) {
+    $.post('/QueryBuilder/EditCondition/' + qid, null, function (ret) {
         UpdateView(ret);
     });
     return false;
 }
 
-(function($) {
+(function ($) {
     var o = {};
-    $.fn.SelectCondition = function() {
+    $.fn.SelectCondition = function () {
         $('#QueryConditionSelect').dialog({
             overlay: { background: "#000", opacity: 0.3 },
             bgiframe: true,
@@ -305,24 +309,24 @@ function EditCondition(ev) {
             position: 'top'
         });
         $("#tabber").tabs();
-        this.click(function(ev) {
+        this.click(function (ev) {
             o.Id = this.id;
             $('#QueryConditionSelect').dialog("open");
             return false;
         });
-        $('div.FieldLink a').click(function(ev) {
+        $('div.FieldLink a').click(function (ev) {
             ev.preventDefault();
             $.post('/QueryBuilder/SelectCondition/', {
                 ConditionName: ev.target.id,
                 Id: $('#SelectedId').val()
-            }, function(ret) {
+            }, function (ret) {
                 //$.unblockUI();
                 $('#QueryConditionSelect').dialog("close");
                 UpdateView(ret);
             });
             return false;
         });
-        $("a.closeit").click(function(ev) {
+        $("a.closeit").click(function (ev) {
             $.unblockUI();
         });
         return this;
@@ -348,13 +352,13 @@ function UpdateCodes(ret) {
 }
 
 function ShowErrors(j) {
-    $('.validate').each(function() {
+    $('.validate').each(function () {
         $(this).next(".error").remove();
     });
     var e = eval('(' + j + ')');
     if (e.count == 0)
         return false;
-    $('.validate').each(function() {
+    $('.validate').each(function () {
         if (e[this.id])
             $(this).after("<span class='error'> " + e[this.id] + "</span>");
     });
@@ -376,7 +380,7 @@ function UpdateView(vs) {
         $('#tagvalues').after('<select id="Tags"></select>');
         $('#Tags').fillOptions(vs.TagData, true);
         $('#Tags').multiselect();
-    } 
+    }
 
     $('#ConditionName').val(vs.ConditionName);
     $('#ConditionText').text(vs.ConditionText);
@@ -384,7 +388,7 @@ function UpdateView(vs) {
     $('#IntegerValue').val(vs.IntegerValue);
     $('#NumberValue').val(vs.NumberValue);
     $('#DateValue').val(vs.DateValue);
-    if(vs.CodeValue != "")
+    if (vs.CodeValue != "")
         $('#CodeValue').val(vs.CodeValue);
     $('#CodesValue').val(vs.CodesValue);
     $('#Program').val(vs.Program);
@@ -438,13 +442,13 @@ function UpdateView(vs) {
     $('#Add').enabled(vs.AddEnabled);
     $('#AddToGroup').enabled(vs.AddToGroupEnabled);
     $('#Remove').enabled(vs.RemoveEnabled);
-//    var widest = null;
-//    $("#selectconditions select").each(function() {
-//      if (widest == null)
-//        widest = $(this);
-//      else
-//      if ($(this).width() > widest.width())
-//        widest = $(this);
-//    });
+    //    var widest = null;
+    //    $("#selectconditions select").each(function() {
+    //      if (widest == null)
+    //        widest = $(this);
+    //      else
+    //      if ($(this).width() > widest.width())
+    //        widest = $(this);
+    //    });
     $("#selectconditions select").css("width", "100%");
 }

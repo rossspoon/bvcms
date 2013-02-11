@@ -2,12 +2,13 @@ namespace CmsWeb.Areas.People.Models.Person
 {
     public class FamilyMemberInfo
     {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public int? Age { get; set; }
-            public string Color { get; set; }
-            public string PositionInFamily { get; set; }
-            public string SpouseIndicator { get; set; }
-            public string Email { get; set; }
+        public int Id { get; set; }
+        public int? SmallPicId { get; set; }
+        public string Name { get; set; }
+        public int? Age { get; set; }
+        public string Color { get; set; }
+        public string PositionInFamily { get; set; }
+        public string SpouseIndicator { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -18,9 +18,19 @@ namespace CmsData.View
 		
 		private int _PeopleId;
 		
-		private string _HeadName;
+		private string _First;
 		
-		private string _SpouseName;
+		private string _Last;
+		
+		private string _Spouse;
+		
+		private string _Address;
+		
+		private string _City;
+		
+		private string _State;
+		
+		private string _Zip;
 		
 		private DateTime? _PledgeDate;
 		
@@ -56,35 +66,120 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="HeadName", Storage="_HeadName", DbType="varchar(127)")]
-		public string HeadName
+		[Column(Name="First", Storage="_First", DbType="varchar(25)")]
+		public string First
 		{
 			get
 			{
-				return this._HeadName;
+				return this._First;
 			}
 
 			set
 			{
-				if (this._HeadName != value)
-					this._HeadName = value;
+				if (this._First != value)
+					this._First = value;
 			}
 
 		}
 
 		
-		[Column(Name="SpouseName", Storage="_SpouseName", DbType="varchar(127)")]
-		public string SpouseName
+		[Column(Name="Last", Storage="_Last", DbType="varchar(100) NOT NULL")]
+		public string Last
 		{
 			get
 			{
-				return this._SpouseName;
+				return this._Last;
 			}
 
 			set
 			{
-				if (this._SpouseName != value)
-					this._SpouseName = value;
+				if (this._Last != value)
+					this._Last = value;
+			}
+
+		}
+
+		
+		[Column(Name="Spouse", Storage="_Spouse", DbType="varchar(25)")]
+		public string Spouse
+		{
+			get
+			{
+				return this._Spouse;
+			}
+
+			set
+			{
+				if (this._Spouse != value)
+					this._Spouse = value;
+			}
+
+		}
+
+		
+		[Column(Name="Address", Storage="_Address", DbType="varchar(100)")]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+
+			set
+			{
+				if (this._Address != value)
+					this._Address = value;
+			}
+
+		}
+
+		
+		[Column(Name="City", Storage="_City", DbType="varchar(30)")]
+		public string City
+		{
+			get
+			{
+				return this._City;
+			}
+
+			set
+			{
+				if (this._City != value)
+					this._City = value;
+			}
+
+		}
+
+		
+		[Column(Name="State", Storage="_State", DbType="varchar(20)")]
+		public string State
+		{
+			get
+			{
+				return this._State;
+			}
+
+			set
+			{
+				if (this._State != value)
+					this._State = value;
+			}
+
+		}
+
+		
+		[Column(Name="Zip", Storage="_Zip", DbType="varchar(15)")]
+		public string Zip
+		{
+			get
+			{
+				return this._Zip;
+			}
+
+			set
+			{
+				if (this._Zip != value)
+					this._Zip = value;
 			}
 
 		}

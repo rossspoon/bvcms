@@ -7,7 +7,7 @@ $(function() {
                     dd = $($(this).next('.dropdown-menu')),
                     isOpen = trigger.hasClass('dropdown-open');
                 $("div.dropdown-menu").hide();
-                $("a.trigger-dropdown").removeClass("dropdown-open");
+                $(".trigger-dropdown").removeClass("dropdown-open");
                 if (isOpen)
                     return false;
                 dd.show();

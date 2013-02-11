@@ -29,11 +29,11 @@
     $.getTable = function () {
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post($('#search').attr('href'), q, function (ret) {
             $('#results').replaceWith(ret).ready(function () {
                 $.fmtTable();
-                $.unblockUI();
+                $.unblock();
             });
         });
         return false;
@@ -130,7 +130,7 @@
         ev.preventDefault();
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post('/OrgSearch/ApplyType/' + $("#TargetType").val(), q, function (ret) {
             $.getTable();
         });

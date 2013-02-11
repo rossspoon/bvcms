@@ -59,23 +59,18 @@ namespace CmsData
         public override string ToString()
         {
             if (Field == "MatchAnything")
-                return "MatchAnything";
+                return "Match Anything";
             if (!IsGroup)
                 if (Compare != null)
                     return Compare.ToString(this);
-            var selectwhen = "Select when ";
-            if (!IsFirst)
-                selectwhen = "";
             switch (ComparisonType)
             {
                 case CompareType.AllTrue:
-                    return selectwhen + "ALL of these conditions match";
+                    return "Match ALL of the conditions below";
                 case CompareType.AnyTrue:
-                    return selectwhen + "ANY of these conditions match";
+                    return "Match ANY of the conditions below";
                 case CompareType.AllFalse:
-                    return selectwhen + "ALL of these conditions do not match";
-                case CompareType.AnyFalse:
-                    return selectwhen + "ANY of these conditions do not match";
+                    return "Match NONE of the conditions below";
             }
             return "null";
         }
@@ -131,18 +126,12 @@ namespace CmsData
         {
             get
             {
-                return Parent.IsGroup
-                    && (Parent.ComparisonType == CompareType.AllFalse
-                        || Parent.ComparisonType == CompareType.AnyFalse);
+                return Parent.IsGroup && Parent.ComparisonType == CompareType.AllFalse;
             }
         }
         private bool AnyFalseTrue
         {
-            get
-            {
-                return ComparisonType == CompareType.AnyTrue
-                    || ComparisonType == CompareType.AnyFalse;
-            }
+            get { return ComparisonType == CompareType.AnyTrue; }
         }
         private Expression ExpressionTree(ParameterExpression parm, CMSDataContext Db)
         {
@@ -354,14 +343,15 @@ namespace CmsData
             SetComparisonType(CompareType.AllTrue);
             Db.SubmitChanges();
         }
-        public void CleanSlate2(CMSDataContext Db)
+        public int CleanSlate2(CMSDataContext Db)
         {
             foreach (var c in Clauses)
                 DeleteClause(c, Db);
             SetQueryType(QueryType.Group);
             SetComparisonType(CompareType.AllTrue);
-            AddNewClause(QueryType.MatchAnything, CompareType.Equal, null);
+            var nc = AddNewClause(QueryType.MatchAnything, CompareType.Equal, null);
             Db.SubmitChanges();
+            return nc.QueryId;
         }
         public static QueryBuilderClause NewGroupClause()
         {
@@ -434,6 +424,11 @@ namespace CmsData
             saveto.IsPublic = ispublic;
             db.SubmitChanges();
             return saveto;
+        }
+
+        public bool CanRemove
+        {
+            get { return !IsFirst && !IsLastNode; }
         }
     }
 }

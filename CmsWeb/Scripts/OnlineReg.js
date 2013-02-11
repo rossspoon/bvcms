@@ -34,11 +34,11 @@
         }
         return age - 2;
     };
-    $('form.DisplayEdit').on("blur", 'input.dob', function () {
+    $('body').on("blur", 'form.DisplayEdit input.dob', function () {
         var f = $(this).closest('form');
         $("#age", f).text($.dodate($(this).val()));
     });
-    $("form.DisplayEdit").on('click', 'a.submitbutton, a.submitlink, input.submitbutton.ajax', function (ev) {
+    $("body").on('click', 'form.DisplayEdit a.submitbutton, a.submitlink, input.submitbutton.ajax', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -107,7 +107,7 @@
         $("#submitit").attr("disabled", "true");
         return true;
     });
-    $("form.DisplayEdit").on('click', 'a.cancel', function (ev) {
+    $("body").on('click', 'form.DisplayEdit a.cancel', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -146,7 +146,7 @@
             "m.donation": { number: true }
         }
     });
-    $(".personheader").on("click", 'a', function (e) {
+    $("body").on("click", '.personheader a', function (e) {
         e.preventDefault();
         $(this).closest('div').nextAll('table').slideToggle();
         return false;

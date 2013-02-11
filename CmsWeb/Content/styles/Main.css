@@ -2,7 +2,18 @@
 #main {
     font-size: 12px;
 }
+#nav-family .group ul.members li a img {
+    width: auto;
+    height: auto;
+}
 
+    #main a {
+        text-decoration: none;
+    }
+
+    .dropdown-menu {
+        z-index: 999;
+    }
 .dropdown-menu li a {
     text-decoration: none;
 }
@@ -17,14 +28,15 @@
     font-size: 70%;
 }
 
-.dropdown-menu a {
+.dropdown-menu a,
+.dropdown-menu a:visited,
+.dropdown-menu a:active,
+.dropdown-menu a:focus
+ {
     color: #fff;
 }
 
-    .dropdown-menu a:hover,
-    .dropdown-menu a:focus,
-    .dropdown-menu a:visited,
-    .dropdown-menu a:active {
+    .dropdown-menu a:hover {
         background-color: #111;
         color: #fff;
     }
@@ -72,8 +84,6 @@ a, a:visited, a:focus {
 
 #main div.homebox {
     height: 520px;
-    width: 30%;
-    float: left;
     font-size: 1.1em;
 }
 
@@ -82,11 +92,14 @@ a, a:visited, a:focus {
     font-size: 120%;
     padding: .2em 1em .2em 1em;
 }
-
-.roundbox table, table.roundbox {
-    border-spacing: 5px;
+#tooltip h3 {
+    font-size: 14px;
+    font-weight: bold;
+    height: 17px;
 }
-
+#tooltip div.body {
+    font-size: 12px;
+}
 
 .floatleft {
     float: left;
@@ -100,9 +113,9 @@ a, a:visited, a:focus {
     border: 1px solid #808183;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    padding: 1%;
     margin-bottom: 5px;
     margin-top: 5px;
+    padding: 5px;
     background-color: #F8F8F8;
 }
 
@@ -131,6 +144,11 @@ a, a:visited, a:focus {
     .roundbox p {
         font-size: 90%;
     }
+
+    .roundbox table td, table.roundbox td {
+        padding: 5px;
+    }
+
 
 #ConditionGrid {
     font-size: 120%;

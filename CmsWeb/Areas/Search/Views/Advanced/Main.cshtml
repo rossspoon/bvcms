@@ -17,6 +17,14 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/single/advancedsearch-js")
+    @if (ViewBag.NewSearch == true)
+    {
+    <script>
+        $(function () {
+            
+        });
+    </script>
+    }
 }
 @Html.Hidden("AutoRun")
 <form id="conditionForm">
@@ -24,9 +32,6 @@
     <div class="roundbox floatleft" style="display:table;margin-right:1em">
         <h2>Advanced Search</h2>
         @Html.Partial("Conditions", Model)
-        <div style="text-align: right">
-            <a href="" id="Run" class="bt blue">Run Search</a>
-        </div>
     </div>
     <div class="floatleft" style="margin-top:1em">
         <div id="toolbar" style='@(Model.ShowResults ? "" : "display:none")'>

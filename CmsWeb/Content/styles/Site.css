@@ -16,6 +16,9 @@ table, tbody, tfoot, thead, tr, th, td {
 img {
     border: none;
 }
+.ui-front {
+    z-index: 9999;
+}
 
 
 #topNotice {
@@ -158,7 +161,7 @@ a, a:visited, a:focus {
 }
 
 #main div.homebox {
-    height: 500px;
+    height: 570px;
     width: 30%;
     float: left;
 }

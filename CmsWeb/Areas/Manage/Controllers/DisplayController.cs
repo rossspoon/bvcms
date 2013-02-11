@@ -37,9 +37,10 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(new ContentModel());
         }
 
-        public ActionResult ContentView(string id)
+        public ActionResult ContentView(int id)
         {
-            return View();
+            var content = DbUtil.ContentFromID(id);
+            return View(content);
         }
 
         public ActionResult ContentEdit(int id)

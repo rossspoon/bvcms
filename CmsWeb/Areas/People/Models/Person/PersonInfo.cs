@@ -6,10 +6,10 @@ namespace CmsWeb.Areas.People.Models.Person
 {
     public class PersonInfo
     {
-        public CmsWeb.Models.PersonPage.BasicPersonInfo basic { get; set; }
-        public CmsWeb.Models.PersonPage.MemberInfo member { get; set; }
-        public CmsWeb.Models.PersonPage.GrowthInfo growth { get; set; }
-        public CmsWeb.Models.PersonPage.MemberNotesInfo membernotes { get; set; }
+        public BasicPersonInfo basic { get; set; }
+        public MemberInfo member { get; set; }
+        public GrowthInfo growth { get; set; }
+        public MemberNotesInfo membernotes { get; set; }
 
         public int PeopleId { get; set; }
         public int FamilyId { get; set; }
@@ -20,8 +20,8 @@ namespace CmsWeb.Areas.People.Models.Person
         public int? SmallPicId { get; set; }
 
         public int AddressTypeId { get; set; }
-        private CmsWeb.Models.PersonPage.AddressInfo _PrimaryAddr;
-        public CmsWeb.Models.PersonPage.AddressInfo PrimaryAddr
+        private AddressInfo _PrimaryAddr;
+        public AddressInfo PrimaryAddr
         {
             get
             {
@@ -33,8 +33,8 @@ namespace CmsWeb.Areas.People.Models.Person
                 return _PrimaryAddr;
             }
         }
-        public CmsWeb.Models.PersonPage.AddressInfo FamilyAddr { get; set; }
-        public CmsWeb.Models.PersonPage.AddressInfo PersonalAddr { get; set; }
+        public AddressInfo FamilyAddr { get; set; }
+        public AddressInfo PersonalAddr { get; set; }
         public static PersonInfo GetPersonInfo(int? id)
         {
 			var i = (from pp in DbUtil.Db.People
@@ -62,7 +62,7 @@ namespace CmsWeb.Areas.People.Models.Person
                 SmallPicId = i.SmallId,
                 SpouseId = p.SpouseId,
 
-                member = new CmsWeb.Models.PersonPage.MemberInfo
+                member = new MemberInfo
                 {
                     PeopleId = p.PeopleId,
                     BaptismSchedDate = p.BaptismSchedDate,
@@ -83,7 +83,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     MemberStatusId = p.MemberStatusId,
                     JoinDate = p.JoinDate,
                 },
-                basic = new CmsWeb.Models.PersonPage.BasicPersonInfo
+                basic = new BasicPersonInfo
                 {
                     PeopleId = p.PeopleId,
                     person = p,
@@ -121,7 +121,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     WeddingDate = p.WeddingDate,
                     WorkPhone = p.WorkPhone,
                 },
-                growth = new CmsWeb.Models.PersonPage.GrowthInfo
+                growth = new GrowthInfo
                 {
                     PeopleId = p.PeopleId,
                     InterestPointId = p.InterestPointId ?? 0,
@@ -134,7 +134,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     PleaseVisit = p.PleaseVisit,
                     SendInfo = p.InfoBecomeAChristian,
                 },
-                membernotes = new CmsWeb.Models.PersonPage.MemberNotesInfo
+                membernotes = new MemberNotesInfo
                 {
                     PeopleId = p.PeopleId,
                     LetterStatusId = p.LetterStatusId ?? 0,
@@ -142,7 +142,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     LetterRequested = p.LetterDateRequested,
                     LetterNotes = p.LetterStatusNotes,
                 },
-                FamilyAddr = new CmsWeb.Models.PersonPage.AddressInfo
+                FamilyAddr = new AddressInfo
                 {
                     Name = "FamilyAddr",
                     PeopleId = p.PeopleId,
@@ -159,7 +159,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     ToDt = fam.AddressToDate,
                     Preferred = p.AddressTypeId == 10,
                 },
-                PersonalAddr = new CmsWeb.Models.PersonPage.AddressInfo
+                PersonalAddr = new AddressInfo
                 {
                     Name = "PersonalAddr",
                     PeopleId = p.PeopleId,

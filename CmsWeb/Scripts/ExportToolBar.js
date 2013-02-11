@@ -9,6 +9,7 @@
     });
     $("body").on("click", '.ChooseLabelType', function (ev) {
         ev.preventDefault();
+		$('div.dropdown-menu').hide();
         var d = $("#ChooseLabelType");
         d.dialog("open");
 
@@ -29,6 +30,7 @@
     });
     $('body').on("click", '#TagAll,#UnTagAll', function (ev) {
         ev.preventDefault();
+		$('div.dropdown-menu').hide();
         $.block();
         $.post(this.href, null, function (ret) {
             $(".taguntag:visible").text(ret);
@@ -37,6 +39,7 @@
         return false;
     });
     $('body').on("click", '#AddContact', function (ev) {
+		$('div.dropdown-menu').hide();
         ev.preventDefault();
         if (!confirm("Are you sure you want to add a contact for all these people?"))
             return false;
@@ -54,6 +57,7 @@
     });
     $('body').on("click", '#AddTasks', function (ev) {
         ev.preventDefault();
+		$('div.dropdown-menu').hide();
         if (!confirm("Are you sure you want to add a task for each of these people?"))
             return false;
         $.block();
@@ -76,11 +80,25 @@
         });
         return r[item];
     };
-    $.block = function () {
-        $.blockUI({ message: 'working on it...<img src="/images/loading.gif"/>' });
-    };
+    $.block = function (message) {
+        if (!message)
+            message = '<h1>working on it...</h1>';
+        $.blockUI({
+                message: message,
+                overlayCSS: { opacity: 0 },
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+        };
     $.unblock = function () {
-        $.unblockUI({ fadeOut: 150 });
+        $.unblockUI();
     };
     $.navigate = function (url, data) {
         url += (url.match(/\?/) ? "&" : "?") + data;
@@ -112,6 +130,7 @@
     });
     $("body").on("click", 'a.ChooseExtraValues', function (ev) {
         ev.preventDefault();
+        hideDropdowns();
         var d = $("#SetExtraValues");
         d.dialog('option', 'title', $(this).text().trim());
         d.dialog("open");

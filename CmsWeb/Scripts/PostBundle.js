@@ -30,7 +30,7 @@
     });
     $(".bt").button();
     $('td.name').tooltip({ showBody: "|" });
-    $("body").on("autocompleteopen", '.ui-autocomplete-input', function () {
+    $(".ui-autocomplete-input").on("autocompleteopen", function () {
     	var autocomplete = $( this ).data( "autocomplete" ),
     		menu = autocomplete.menu;
 
@@ -59,7 +59,7 @@
                 return false;
             }
         })
-        .data( "autocomplete" )._renderItem = function( ul, item ) {
+        .data("uiAutocomplete")._renderItem = function (ul, item) {
             return $( "<li>" )
                 .append( "<a>" + item.Name + "<br>" + item.Addr + "</a>" )
                 .appendTo( ul );

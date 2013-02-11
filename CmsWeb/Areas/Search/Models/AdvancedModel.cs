@@ -51,8 +51,6 @@ namespace CmsWeb.Areas.Search.Models
                     SavedQueryDesc = Qb.Description;
                     Qb.Description = Util.ScratchPad;
                     Db.SubmitChanges();
-                    SelectedId = Qb.QueryId;
-                    EditCondition();
                 }
             }
             QueryId = Qb.QueryId;
@@ -230,7 +228,7 @@ namespace CmsWeb.Areas.Search.Models
             UpdateEnabled = !cc.IsGroup && !cc.IsFirst;
             AddToGroupEnabled = cc.IsGroup;
             AddEnabled = !cc.IsFirst;
-            RemoveEnabled = !cc.IsFirst && !cc.IsLastNode;
+            RemoveEnabled = cc.CanRemove;
 
             if (fieldMap.Type == FieldType.Group)
             {
@@ -439,13 +437,37 @@ namespace CmsWeb.Areas.Search.Models
             var nc = NewCondition(c, c.MaxClauseOrder() + 1);
             Db.SubmitChanges();
             if (nc.IsGroup)
-            {
-                nc = nc.AddNewClause(QueryType.MatchAnything, CompareType.Equal, null);
-                Db.SubmitChanges();
-                SelectedId = nc.QueryId;
-                EditCondition();
-            }
+                AddMatchAnyThingToGroup(nc);
         }
+        public void AddNewConditionAfterCurrent(int id)
+        {
+            var c = Db.LoadQueryById(id);
+            var nc = c.Parent.AddNewClause(QueryType.MatchAnything, CompareType.Equal, null);
+            Db.SubmitChanges();
+            SelectedId = nc.QueryId;
+            EditCondition();
+        }
+        public void CopyCurrentCondition(int id)
+        {
+            var c = Db.LoadQueryById(id);
+            SelectedId = id;
+            EditCondition();
+            var nc = NewCondition(c.Parent, c.ClauseOrder + 1);
+            Db.SubmitChanges();
+            SelectedId = nc.QueryId;
+            if (nc.IsGroup)
+                AddMatchAnyThingToGroup(nc);
+            EditCondition();
+        }
+
+        private void AddMatchAnyThingToGroup(QueryBuilderClause nc)
+        {
+            nc = nc.AddNewClause(QueryType.MatchAnything, CompareType.Equal, null);
+            Db.SubmitChanges();
+            SelectedId = nc.QueryId;
+            EditCondition();
+        }
+
         public void AddConditionAfterCurrent()
         {
             var c = Db.LoadQueryById(SelectedId);

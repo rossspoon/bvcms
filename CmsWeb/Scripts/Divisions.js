@@ -88,11 +88,11 @@
     $.getTable = function() {
         var f = $('#progform');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post("/Setup/Division/Results", q, function(ret) {
             $('#results').replaceWith(ret).ready(function() {
                 $.fmtTable();
-                $.unblockUI();
+                $.unblock();
             });
         });
         return false;

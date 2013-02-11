@@ -1,6 +1,6 @@
 ﻿@using System.Web.Optimization
 @{
-    var newlook = DbUtil.Db.UserPreference("newlook2", "false").ToBool();
+    var newlook = DbUtil.Db.UserPreference("newlook2", "false") == "true";
 }
 <!DOCTYPE html>
 <html>
@@ -10,33 +10,17 @@
     @if (newlook)
     {
         @Styles.Render("~/Content/styles/css2")
-        //Dave: I put layout.css before main.css      
-        <link href="~/Content/styles/layout.css" rel="stylesheet" />
-        <link href="~/Content/styles/Main.css" rel="stylesheet" />
-        <link href="~/Content/styles/pager.css" rel="stylesheet" />
-        <link href="~/Content/font/font-awesome.min.css" rel="stylesheet">
-        <link href="~/Content/font/proximanova/fonts.css" rel="stylesheet">
-        <link href="~/Content/chosen/chosen.css" rel="stylesheet">
-    }
-    else
-    {
-        @Styles.Render("~/Content/styles/css")
-    }
-    @RenderSection("head", required: false)
-    @if (newlook)
-    {
+        <link href="~/Content/font/font-awesome.min.css" rel="stylesheet" />
+        @RenderSection("head", required: false)
         <style type="text/css">
             #header { background-color: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
         </style>
         @Scripts.Render("~/bundles/main-js")
-        <script src="~/Content/js/jquery.simplemodal.1.4.4.min.js"></script>
-        <script src="~/Scripts/dropdown.js"></script>
-        <script src="~/Scripts/ExportToolBar.js"></script>
-        <script src="~/Scripts/Pager.js"></script>
-        <script src="~/Scripts/headermenu.js"></script>
     }
     else
     {
+        @Styles.Render("~/Content/styles/css")
+        @RenderSection("head", required: false)
         @Scripts.Render("~/bundles/js")
     }
     @Html.Partial("DatePickerDefaults")
@@ -59,7 +43,7 @@
 {
     Html.RenderPartial("NewHeader");
     <section id="main" class="container">
-        <section class="sixteen columns omega">
+        <section class="sixteen columns">
             @RenderBody()
         </section>
     </section>

@@ -70,12 +70,12 @@
         $("#PageSize").val($(e).val());
         return $.getTable();
     }
-    $.getTable = function () {
+    $.getTable = function() {
         var f = $('#results').closest('form');
         var q = f.serialize();
         $.blockUI();
-        $.post($('#refresh').attr('href'), q, function (ret) {
-            $('#results').replaceWith(ret).ready(function () {
+        $.post($('#refresh').attr('href'), q, function(ret) {
+            $('#results').replaceWith(ret).ready(function() {
                 $('#results > tbody > tr:even').addClass('alt');
                 $("#activetag").text($("#actag").val());
                 $("#sharecount").text($("#shcnt").val());
@@ -84,9 +84,9 @@
             });
         });
         return false;
-    }
+    };
     $('#results > tbody > tr:even').addClass('alt');
-    $('#results > thead').on('click', 'a.sortable', function (ev) {
+    $('body').on('click', '#results > thead a.sortable', function (ev) {
         ev.preventDefault();
         var newsort = $(this).text();
         var sort = $("#Sort");

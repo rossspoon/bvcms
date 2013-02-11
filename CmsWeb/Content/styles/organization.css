@@ -1,7 +1,7 @@
-﻿#main ul {
+﻿#main-tab form li ul {
     margin-left: 2em;
 }
-#main li {
+#main-tab form li {
     margin-top: .5em;
 }
 
@@ -122,12 +122,6 @@ div.border
 div.settings i
 {
     color: Blue;
-}
-
-div.settings ul
-{
-    list-style: none;
-    margin-left: -20px;
 }
 
 div.settings > form > ul > li

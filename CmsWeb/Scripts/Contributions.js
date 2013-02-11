@@ -23,10 +23,10 @@
     $.getTable = function () {
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post('/Finance/Contributions/Results', q, function (ret) {
             $('#results').replaceWith(ret).ready($.fmtTable);
-            $.unblockUI();
+            $.unblock();
         });
     };
     $("#NewSearch").click(function () {

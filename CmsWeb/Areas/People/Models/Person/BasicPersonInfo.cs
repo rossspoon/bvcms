@@ -85,7 +85,24 @@ namespace CmsWeb.Areas.People.Models.Person
         public string DoNotMail
         {
             get { return DoNotMailFlag ? "Do Not Mail" : ""; }
-            
+        }
+        public bool DoNotContactAny
+        {
+            get { return DoNotCallFlag || DoNotCallFlag || DoNotVisitFlag; }
+        }
+        public string DoNotContactBy
+        {
+            get 
+            { 
+                var list = new List<string>();
+                if (DoNotCallFlag)
+                    list.Add("by Phone");
+                if (DoNotMailFlag)
+                    list.Add("by Mail");
+                if (DoNotVisitFlag)
+                    list.Add("in Person");
+                return string.Join(", ", list);
+            }
         }
 
         public static BasicPersonInfo GetBasicPersonInfo(int? id)

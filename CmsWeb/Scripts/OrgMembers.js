@@ -2,11 +2,11 @@
     $.RefreshPage = function () {
         var f = $('#form');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post("/OrgMembers/List", q, function (ret) {
             $(f).html(ret).ready(function () {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
-                $.unblockUI();
+                $.unblock();
                 $(".bt").button();
                 $("#manage select").css("width", "100%");
             });
@@ -24,11 +24,11 @@
         e.preventDefault();
         var f = $('#form');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post("/OrgMembers/Move", q, function (ret) {
             $(f).html(ret).ready(function () {
                 $('table.grid > tbody > tr:even', f).addClass('alt');
-                $.unblockUI();
+                $.unblock();
                 $.growlUI("Move", "Completed");
                 $(".bt").button();
                 $("#manage select").css("width", "100%");

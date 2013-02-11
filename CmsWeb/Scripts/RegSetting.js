@@ -20,7 +20,7 @@
         ]
     };
     $("#editor").ckeditor(editor_config);
-    $("ul.enablesort").on("click", 'div.newitem > a', function (ev) {
+    $("body").on("click", 'ul.enablesort div.newitem > a', function (ev) {
         if (!$(this).attr("href"))
             return false;
         ev.preventDefault();

@@ -124,12 +124,12 @@ def CheckDecisionStatus(p):
 def DropMembership(p, Db):
 
     if (p.MemberStatusId == MemberStatusCode.Member):
-        if p.IsDeceased:
+        if p.Deceased:
             p.DropCodeId = DropTypeCode.Deceased
         p.MemberStatusId = MemberStatusCode.Previous
         p.DropDate = p.Now().Date
 
-    if p.IsDeceased:
+    if p.Deceased:
         p.EmailAddress = None
         p.DoNotCallFlag = True
         p.DoNotMailFlag = True
@@ -138,7 +138,7 @@ def DropMembership(p, Db):
     if p.SpouseId != None:
         spouse = Db.LoadPersonById(p.SpouseId)
 
-        if p.IsDeceased:
+        if p.Deceased:
             spouse.MaritalStatusId = MaritalStatusCode.Widowed
             if spouse.EnvelopeOptionsId != None: # not null
                 if spouse.EnvelopeOptionsId != EnvelopeOptionCode.NoEnvelope:
@@ -186,3 +186,15 @@ class MembershipAutomation:
         if p.DropCodeIdChanged:
             if p.DropCodesThatDrop.Contains(p.DropCodeId):
                 DropMembership(p, Db)
+
+        om2 = Db.LoadOrgMember(p.PeopleId, "Step 1", False)
+        if om2 != None:
+            om2 = None
+
+
+        # this does new member class completed
+        if (p.NewMemberClassStatusIdChanged
+		and p.NewMemberClassStatusId == NewMemberClassStatusCode.Attended):
+            om = Db.LoadOrgMember(p.PeopleId, "Step 1", False)
+            if om != None:
+                om.Drop(Db, True) # drops and records drop in history

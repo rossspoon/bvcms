@@ -20,16 +20,15 @@ namespace CmsWeb.Areas.Search.Controllers
     {
         public ActionResult Main(int? id, int? run)
         {
-
             if (!DbUtil.Db.UserPreference("newlook2", "false").ToBool()
                 || !DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
                 return Redirect(Request.RawUrl.ToLower().Replace("search/advanced", "querybuilder"));
             ViewData["Title"] = "QueryBuilder";
             ViewData["OnQueryBuilder"] = "true";
-            ViewData["TagAction"] = "/Search/AdvancedTagAll/";
-            ViewData["UnTagAction"] = "/Search/AdvancedUnTagAll/";
-            ViewData["AddContact"] = "/Search/AdvancedAddContact/";
-            ViewData["AddTasks"] = "/Search/AdvancedAddTasks/";
+            ViewData["TagAction"] = "/Search/Advanced/TagAll/";
+            ViewData["UnTagAction"] = "/Search/Advanced/UnTagAll/";
+            ViewData["AddContact"] = "/Search/Advanced/AddContact/";
+            ViewData["AddTasks"] = "/Search/Advanced/AddTasks/";
             var m = new AdvancedModel { QueryId = id };
             DbUtil.LogActivity("QueryBuilder");
             if (run.HasValue)
@@ -37,6 +36,12 @@ namespace CmsWeb.Areas.Search.Controllers
             m.LoadScratchPad();
             ViewData["queryid"] = m.QueryId;
             ViewBag.AutoRun = (bool?)(TempData["AutoRun"]) == true;
+            var newsearchid = (int?)TempData["newsearch"];
+            if (newsearchid.HasValue)
+            {
+                ViewBag.NewSearch = true;
+                m.SelectedId = newsearchid.Value;
+            }
             return View(m);
         }
         [HttpPost]
@@ -78,19 +83,24 @@ namespace CmsWeb.Areas.Search.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCondition(AdvancedModel m)
+        public ActionResult AddNewCondition(int id)
         {
+            var m = new AdvancedModel { SelectedId = id };
             m.LoadScratchPad();
-            if (m.Validate(ModelState))
-                m.AddConditionAfterCurrent();
+            m.EditCondition();
+            if (m.ConditionName == "Group")
+                m.AddConditionToGroup();
+            else
+                m.AddNewConditionAfterCurrent(id);
             return View("Conditions", m);
         }
         [HttpPost]
-        public ActionResult AddConditionToGroup(AdvancedModel m)
+        public ActionResult DuplicateCondition(int id)
         {
+            var m = new AdvancedModel();
             m.LoadScratchPad();
-            if (m.Validate(ModelState))
-                m.AddConditionToGroup();
+            m.EditCondition();
+            m.CopyCurrentCondition(id);
             return View("Conditions", m);
         }
         [HttpPost]
@@ -102,6 +112,13 @@ namespace CmsWeb.Areas.Search.Controllers
                 m.UpdateCondition();
                 DbUtil.Db.SubmitChanges();
             }
+            return View("Conditions", m);
+        }
+        [HttpPost]
+        public ActionResult Reload()
+        {
+            var m = new AdvancedModel();
+            m.LoadScratchPad();
             return View("Conditions", m);
         }
         [HttpPost]
@@ -212,7 +229,8 @@ namespace CmsWeb.Areas.Search.Controllers
         public ActionResult NewQuery()
         {
             var qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate2(DbUtil.Db);
+            var ncid = qb.CleanSlate2(DbUtil.Db);
+            TempData["newsearch"] = ncid;
             return RedirectToAction("Main");
         }
         [HttpPost]

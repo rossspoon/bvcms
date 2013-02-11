@@ -15,16 +15,16 @@ $(function () {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to delete?')) {
-            $.blockUI({ message: "deleting org" });
+            $.block("deleting org");
             $.post(href, null, function (ret) {
                 if (ret != "ok") {
-                    $.blockUI({ message: ret });
-                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
+                    $.block(ret);
+                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblock);
                 }
                 else {
-                    $.blockUI({ message: "org deleted" });
+                    $.block("org deleted");
                     $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
-                        $.unblockUI();
+                        $.unblock();
                         window.location = "/";
                     });
                 }
@@ -36,14 +36,14 @@ $(function () {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to send reminders?')) {
-            $.blockUI({ message: "sending reminders" });
+            $.block("sending reminders");
             $.post(href, null, function (ret) {
                 if (ret != "ok") {
-                    $.unblockUI();
+                    $.unblock();
                     $.growlUI("error", ret);
                 }
                 else {
-                    $.unblockUI();
+                    $.unblock();
                     $.growlUI("Email", "Reminders Sent");
                 }
             });
@@ -53,16 +53,16 @@ $(function () {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to send reminders?')) {
-            $.blockUI({ message: "sending reminders" });
+            $.block("sending reminders");
             $.post(href, null, function (ret) {
                 if (ret != "ok") {
-                    $.blockUI({ message: ret });
-                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
+                    $.block(ret);
+                    $('.blockOverlay').attr('title', 'Click to unblock').click($.unblock);
                 }
                 else {
-                    $.blockUI({ message: "org deleted" });
+                    $.block("org deleted");
                     $('.blockOverlay').attr('title', 'Click to unblock').click(function () {
-                        $.unblockUI();
+                        $.unblock();
                         window.location = "/";
                     });
                 }
@@ -86,6 +86,7 @@ $(function () {
         title: 'Add Members Dialog',
         bgiframe: true,
         autoOpen: false,
+        zindex: 9999,
         width: 750,
         height: 700,
         modal: true,
@@ -266,7 +267,7 @@ $(function () {
         });
         return false;
     });
-    $('#selectquestions').on("click", "a", function (ev) {
+    $('body').on("click", "#selectquestions a", function (ev) {
         ev.preventDefault();
         $.post('/Organization/NewAsk/', { id: 'AskItems', type: $(this).attr("type") }, function (ret) {
             $('#selectquestions').dialog("close");
@@ -278,14 +279,14 @@ $(function () {
         });
         return false;
     });
-    $("ul.enablesort").on("click", 'a.del', function (ev) {
+    $("body").on("click", 'ul.enablesort a.del', function (ev) {
         ev.preventDefault();
         if (!$(this).attr("href"))
             return false;
         $(this).parent().parent().parent().remove();
         return false;
     });
-    $("ul.enablesort").on("click", 'a.delt', function (ev) {
+    $("body").on("click", 'ul.enablesort a.delt', function (ev) {
         ev.preventDefault();
         if (!$(this).attr("href"))
             return false;
@@ -315,8 +316,8 @@ $(function () {
                 $(this).html("<span>" + text + "</span>");
         });
     };
-    $(".helptip").tooltip({ showBody: "|" });
-    $("form.DisplayEdit").on('click', 'a.submitbutton', function (ev) {
+    $(".helptip").tooltip({ showBody: "|", blocked: true });
+    $("body").on('click', 'form.DisplayEdit a.submitbutton', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())

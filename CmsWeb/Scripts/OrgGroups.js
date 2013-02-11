@@ -7,9 +7,9 @@
     $.fmtTable();
     $(".helptip").tooltip({ showBody: "|" });
     $.loadTable = function() {
-        $.blockUI();
+        $.block();
         $.getTable($('#groupsform'));
-        $.unblockUI();
+        $.unblock();
     };
     $('body').on("click", '#filter', function (ev) {
         ev.preventDefault();
@@ -65,7 +65,7 @@
         if (confirm("are you sure?")) {
             var f = $(this).closest('form');
             var q = f.serialize();
-            $.blockUI();
+            $.block();
             $.post($(this).attr('href'), q, function (ret) {
                 if (ret.substring(0, 5) != "error") {
                     f.html(ret).ready(function () {
@@ -75,7 +75,7 @@
                         $.fmtTable();
                     });
                 }
-                $.unblockUI();
+                $.unblock();
             });
         }
     });
@@ -88,11 +88,11 @@
             $.growlUI("error", 'select target group first');
             return false;
         }
-        $.blockUI();
+        $.block();
         var q = $('form').serialize();
         $.post(action, q, function (ret) {
             $("table.grid > tbody").html(ret).ready($.fmtTable);
-            $.unblockUI();
+            $.unblock();
         });
         return false;
     };

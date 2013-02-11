@@ -3,13 +3,13 @@
 @using CmsWeb.Models
 @using CmsData
 @using UtilityExtensions
-@model CmsWeb.Models.PersonPage.PersonModel
+@model CmsWeb.Areas.People.Models.Person.PersonModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Person";
 }
 @{ 
-    CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson;
+    var p = Model.displayperson;
     var isaccess = User.IsInRole("Access");
     var isadmin = User.IsInRole("Admin");
     var isedit = User.IsInRole("Edit");
@@ -17,451 +17,466 @@
     var ismanager = User.IsInRole("Manager");
     var memberedit = isadmin || User.IsInRole("Membership");
 }
+@section head
+{
+    <link href="~/Content/styles/person.css" rel="stylesheet" />
+}
 @section scripts
 {
-    @Scripts.Render("~/bundles/single/person-js")  
-    <script src="/Content/chosen/chosen.jquery.min.js"></script>
-  <script src="/Content/js/jquery.simplemodal.1.4.4.min.js"></script>
-  <script>
-    $(function() {
-      $("form select").chosen();
-      $("input.date").datepicker();
-      /* accordion */
-      $(".accordion h3").click(function(){
-        var h = $(".accordion h3.active");
-        if (h)
-          h.removeClass("active").next("div").slideUp("fast");
-        if (!h || h.get(0) != this)
-          $(this).addClass("active").next("div").slideDown("fast");
-      });
-      /* end accordion */
-      /* set up modals/dialogs */
-      $('body').on('click', 'a[data-modal-id]', function(e) {
-        e.preventDefault();
-        var modalLocation = $(this).attr('data-modal-id');
-        $('#'+modalLocation).dialog();
-      });
-      /* end modal */
-      /* edit button for form
-          will need more advanced config for form save/cancel */
-      $("button.display").click(function(e) {
-        e.preventDefault();
-        $("fieldset.display").hide();
-        $("fieldset.edit").show();
-        $(this).hide().siblings(".edit").show();
-      }).siblings("button.btn-neutral").click(function(e) {
-        e.preventDefault();
-        $("fieldset.display").show();
-        $("fieldset.edit").hide();
-        $(this).hide().siblings(".btn-primary").hide().siblings(".display").show();
-      });
-      /* end edit button */
-
-      /* local environment js */
-      /*                                  */
-      if (window.location.hash) displayPane(window.location.hash, false);
-      else displayPane("#personal", false);
-      $("#nav-tabs a").click(function (e) {
-        e.preventDefault();
-        if (!$(this).parents(".active").size()) {
-          $($(this).attr("href")).addClass("loading");
-          $(".pane:visible").fadeOut("fast", function() {
-            displayPane("#"+$(".pane.loading").removeClass("loading").attr("id"), true);
-          });
-        }
-      });
-      /* demo sorting styles */
-      $("th").on("click", 'a', function(e) {
-        e.preventDefault();
-        if (!$(this).parents("th.active").size()) {
-          var th = $(this).parents("th").eq(0);
-          th.addClass("active asc");
-          th.siblings("th").removeClass("asc desc active");
-        } else {
-          if ($(this).parents("th.asc").size()) $(this).parents("th").removeClass("asc").addClass("desc");
-          else $(this).parents("th").removeClass("desc").addClass("asc");
-        }
-      });
-
-    });
-    function displayPane(hash, pushURL) {
-      $(hash).fadeIn("fast", function() {
-        $("#nav-tabs li.active").removeClass("active");
-        $("a[href=#"+$(".pane:visible").attr("id")+"]").parents("li:eq(0)").addClass("active");
-        if (pushURL && window.history && window.history.pushState && window.history.replaceState) {
-          window.location.replace(hash);
-          window.history.pushState(null, null, window.location.href);
-        }
-      });
-    }
-  </script>
+    @Scripts.Render("~/bundles/single/person-js")
+    @Scripts.Render("~/bundles/single/person2-js")
 }
 @Html.Hidden("PeopleId", p.PeopleId)
 
-
-    <nav id="nav-family" class="four columns alpha">
-      <div class="group">
-      <h2>Family Members
-          <a href="" class="add"><i class="icon-plus-sign"></i></a>
-        </h2>
-        <ul class="members">
-          <li><a href=""><img src="" alt=""><span>John</span></a></li>
-          <li class="active"><a href=""><img src="" alt=""><span>Elizabeth</span></a></li>
-          <li><a href=""><img src="" alt=""><span>Samantha</span></a></li>
-          <li><a href=""><img src="" alt=""><span>Elle</span></a></li>
-        </ul>
-      </div>
-      <div class="group">
-        <h2>
-          Home
-          <a href="" class="add"><i class="icon-plus-sign"></i></a>
+<nav id="nav-family" class="four columns alpha">
+    @Html.Partial("FamilyGrid", Model)
+    <div class="group">
+        <h2>Home
+            <a href="" class="add"><i class="icon-plus-sign"></i></a>
         </h2>
         <ul class="home">
-          <li class="address">
-            <a href="" class="edit"><i class="icon-pencil"></i></a>
-            <a href="" class="action"><i class="icon-map-marker"></i></a>
-            <span class="address label">
-              345 Maple Lane<br>
-              Farmington, AL 35271
-            </span>
-          </li>
-          <li class="phone">
-            <a href="" class="edit"><i class="icon-pencil"></i></a>
-            <a href="" class="action"><i class="icon-phone"></i> <span class="label">(345) 555-2901</span></a>
-          </li>
+            <li class="address">
+                <a href="" class="edit"><i class="icon-pencil"></i></a>
+                <a href="" class="action"><i class="icon-map-marker"></i></a>
+                <span class="address label">@p.FamilyAddr.Address1<br>
+                                                                  @if (p.FamilyAddr.Address2.HasValue())
+                                                                  {
+                                                                      @:@p.FamilyAddr.Address2<br />
+                                                                  }
+                                                                  @p.FamilyAddr.CityStateZip()
+                </span>
+            </li>
+            <li class="phone">
+                <a href="" class="edit"><i class="icon-pencil"></i></a>
+                <a href="" class="action"><i class="icon-phone"></i><span class="label">@p.basic.HomePhone</span></a>
+            </li>
         </ul>
-      </div>
-      <div class="group">
+    </div>
+    <div class="group">
         <h2>Related Families
-          <a href="" class="add" data-modal-id="addDialog"><i class="icon-plus-sign"></i></a>
+            <a href="" class="add" data-modal-id="addDialog"><i class="icon-plus-sign"></i></a>
         </h2>
         <ul class="related">
-          <li><a href="" class="edit"><i class="icon-pencil"></i></a>
-            <div class="label">Nicolas &amp; Jessica Brody</div>
-            <div class="summary">Grandparents</div>
-          </li>
-          <li><a href="" class="edit"><i class="icon-pencil"></i></a>
-            <div class="label">Bo &amp; Cassie Wiggin</div>
-            <div class="summary">Cousins</div>
-          </li>
+            <li><a href="" class="edit"><i class="icon-pencil"></i></a>
+                <div class="label">Nicolas &amp; Jessica Brody</div>
+                <div class="summary">Grandparents</div>
+            </li>
+            <li><a href="" class="edit"><i class="icon-pencil"></i></a>
+                <div class="label">Bo &amp; Cassie Wiggin</div>
+                <div class="summary">Cousins</div>
+            </li>
         </ul>
-      </div>
-    </nav>
+    </div>
+</nav>
 
-    <section id="person" class="twelve columns omega">
-      <header class="container">
+<section id="person" class="twelve columns omega">
+    <header class="container">
         <div id="snapshot" class="nine columns alpha">
-          <img src="" alt="">
-          <h1>Elizabeth Queen</h1>
-          <span class="role">Primary Adult</span>
-          <ul class="attributes">
-            <li>
-              <span class="attribute">Membership Status:</span>
-              <span class="value">Member</span>
-            </li>
-            <li>
-              <span class="attribute">Campus Affiliation:</span>
-              <span class="value">--</span>
-            </li>
-          </ul>
+            <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
+            <h1>@p.Name</h1>
+            <span class="role">@Model.Person.FamilyPosition.Description</span>
+            <ul class="attributes">
+                <li>
+                    <span class="attribute">Membership Status:</span>
+                    <span class="value">@p.member.MemberStatus</span>
+                </li>
+                <li>
+                    <span class="attribute">Campus Affiliation:</span>
+                    <span class="value">@p.basic.Campus</span>
+                </li>
+            </ul>
         </div>
         <div class="three columns action">
-          <p class="meta">Record added 08/12/07</p>
-          <div class="btn-group">
-            <button class="btn">
-                <i class="icon-envelope"></i>
-            </button>
-            <button class="btn">
-                <i class="icon-cloud-download"></i>
-            </button>
-            <button class="btn">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="icon-cog"></i>
-                <i class="icon-caret-down"></i>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="">Add New User</a></li>
-                <li><a href="">Impersonate</a></li>
-                <li class="divider"></li>
-                <li><a href="">Add New Address</a></li>
-                <li><a href="">Mark As Deceased</a></li>
-                <li class="divider"></li>
-                <li><a href="">Split</a></li>
-                <li><a href="">Merge</a></li>
-                <li><a href="">Delete</a></li>
-              </ul>
-            </button>
-          </div>
+            <p class="meta">Record added @p.basic.Created.FormatDate()</p>
+            <div class="btn-group">
+                <button class="btn">
+                    <i class="icon-envelope"></i>
+                </button>
+                <button class="btn">
+                    <i class="icon-cloud-download"></i>
+                </button>
+                <button class="btn trigger-dropdown">
+                    <i class="icon-cog"></i>
+                    <i class="icon-caret-down"></i>
+                </button>
+                <div class="dropdown-menu anchor-right">
+                    <ul>
+                        <li><a href="#">Add New User</a></li>
+                        <li><a href="#">Impersonate</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Add New Address</a></li>
+                        <li><a href="#">Mark As Deceased</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Split</a></li>
+                        <li><a href="#">Merge</a></li>
+                        <li><a href="#">Delete</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <ul id="badges">
-          <li>Do Not Visit</li>
-          <li>Do Not Call</li>
+            <li>Do Not Visit</li>
+            <li>Do Not Call</li>
+            <ul>
+    </header>
+    <nav id="nav-tabs">
         <ul>
-      </header>
-      <nav id="nav-tabs">
-        <ul>
-          <li><a href="#personal">Personal</a></li>
-          <li><a href="#involvement">Involvement</a></li>
-          <li><a href="#member-profile">Member Profile</a></li>
-          <li><a href="#giving">Giving</a></li>
-          <li><a href="#account">Account</a></li>
-          <li><a href="#comments" class="omega">Comments</a></li>
+            <li><a href="#personal">Personal</a></li>
+            <li><a href="#involvement">Involvement</a></li>
+            <li><a href="#member-profile">Member Profile</a></li>
+            <li><a href="#giving">Giving</a></li>
+            <li><a href="#account">Account</a></li>
+            <li><a href="#comments" class="omega">Comments</a></li>
         </ul>
-      </nav>
+    </nav>
 
-      <!--  Personal pane -->
-      <div id="personal" class="pane">
-    <form action="" method="post">
-      <div class="submit-row">
-        <button class="btn btn-neutral display">Edit</button>
-        <button class="btn btn-neutral edit">Cancel</button>
-        <button class="btn btn-primary edit">Save Changes</button>
-      </div>
-      <fieldset class="edit">
-        <div class="control-group">
-          <label for="">Title</label>
-          <div class="controls">
-            <select name="" id="" class="xs">
-              <option value="">Mr</option>
-              <option value="">Ms</option>
-              <option value="">Miss</option>
-              <option value="" selected>Mrs</option>
-              <option value="">Lt</option>
-              <option value="">Dr</option>
-              <option value="">Rep</option>
-              <option value="">Amb</option>
-              <option value="">Fr</option>
-              <option value="">Capt</option>
-              <option value="">Sr</option>
-            </select>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label for="">First Name</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text" value="Elizabeth"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Goes By</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text" value="Eliza"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Middle Name</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text" value="Cassandra"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Last Name</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text" value="Queen"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Alt Name</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Former</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text" value="Shepherd"></div>
-        </div>
-        <div class="control-group em">
-          <label for="">Suffix</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text m strict"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Gender</label>
-          <div class="controls"><label><input type="radio" name="gender" id="id_" class="radio"> Male</label> <label><input type="radio" name="gender" id="id_" class="radio" checked> Female</label></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Birthdate</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text date" value="4/11/1976"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Marital Status</label>
-          <div class="controls">
-            <select name="" id="id_">
-              <option value="">Single</option>
-              <option value="" selected>Married</option>
-              <option value="">Separated</option>
-              <option value="">Divorced</option>
-            </select>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label for="">Wedding Date</label>
-          <div class="controls"><input type="text" name="" id="id_" class="text date" value="1/12/2000"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Occupation</label>
-          <div class="controls"><input type="text" name=""  id="id_" class="text" value="Analyst"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Employer</label>
-          <div class="controls"><input type="text" name=""  id="id_" class="text" value="National Society of Arondissements"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">School</label>
-          <div class="controls"><input type="text" name=""  id="id_" class="text" value="Brown"></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Grade</label>
-          <div class="controls"><input type="text" name=""  id="id_" class="text"></div>
-        </div>
-      </fieldset>
-      <fieldset class="edit">
-        <div class="control-group em">
-          <label for="" class="lg">Do Not Contact&nbsp;By</label>
-          <div class="controls">
-            <label for=""><input type="checkbox" name="no_contact" value="email"> Email</label>
-            <label for=""><input type="checkbox" name="no_contact" value="phone" checked> Telephone</label>
-            <label for=""><input type="checkbox" name="no_contact" value="mail"> Mail</label>
-            <label for=""><input type="checkbox" name="no_contact" value="person" checked> In Person</label>
-          </div>
-        </div>
-        <div class="control-group half halfsy">
-          <label for="">Primary Email</label>
-          <div class="controls">
-            <div class="textcombo">
-              <input type="text" name="email_primary" class="text email">
-              <input type="checkbox" name="email_primary_active">
+    <!--  Personal pane -->
+    <div id="personal" class="pane">
+        <form action="" method="post">
+            <div class="submit-row">
+                <button class="btn btn-neutral display">Edit</button>
+                <button class="btn btn-neutral edit">Cancel</button>
+                <button class="btn btn-primary edit">Save Changes</button>
             </div>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label for="">Mobile</label>
-          <div class="controls">
-            <input type="text" name="mobile" class="text phone">
-          </div>
-        </div>
-        <div class="control-group half halfsy">
-          <label for="">Alt Email</label>
-          <div class="controls">
-            <div class="textcombo">
-              <input type="text" name="email_secondary" class="text email lg">
-              <input type="checkbox" name="email_secondary_active">
+            <fieldset class="edit">
+                <div class="control-group">
+                    <label for="">Title</label>
+                    <div class="controls">
+                        <select name="" id="" class="xs">
+                            <option value="">Mr</option>
+                            <option value="">Ms</option>
+                            <option value="">Miss</option>
+                            <option value="" selected>Mrs</option>
+                            <option value="">Lt</option>
+                            <option value="">Dr</option>
+                            <option value="">Rep</option>
+                            <option value="">Amb</option>
+                            <option value="">Fr</option>
+                            <option value="">Capt</option>
+                            <option value="">Sr</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">First Name</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Elizabeth">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Goes By</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Eliza">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Middle Name</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Cassandra">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Last Name</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Queen">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Alt Name</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Former</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Shepherd">
+                    </div>
+                </div>
+                <div class="control-group em">
+                    <label for="">Suffix</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text m strict">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Gender</label>
+                    <div class="controls">
+                        <label>
+                            <input type="radio" name="gender" id="id_" class="radio">
+                            Male</label>
+                        <label>
+                            <input type="radio" name="gender" id="id_" class="radio" checked>
+                            Female</label>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Birthdate</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text date" value="4/11/1976">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Marital Status</label>
+                    <div class="controls">
+                        <select name="" id="id_">
+                            <option value="">Single</option>
+                            <option value="" selected>Married</option>
+                            <option value="">Separated</option>
+                            <option value="">Divorced</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Wedding Date</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text date" value="1/12/2000">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Occupation</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Analyst">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Employer</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="National Society of Arondissements">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">School</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Brown">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Grade</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="edit">
+                <div class="control-group em">
+                    <label for="" class="lg">Do Not Contact&nbsp;By</label>
+                    <div class="controls">
+                        <label for="">
+                            <input type="checkbox" name="no_contact" value="email">
+                            Email</label>
+                        <label for="">
+                            <input type="checkbox" name="no_contact" value="phone" checked>
+                            Telephone</label>
+                        <label for="">
+                            <input type="checkbox" name="no_contact" value="mail">
+                            Mail</label>
+                        <label for="">
+                            <input type="checkbox" name="no_contact" value="person" checked>
+                            In Person</label>
+                    </div>
+                </div>
+                <div class="control-group half halfsy">
+                    <label for="">Primary Email</label>
+                    <div class="controls">
+                        <div class="textcombo">
+                            <input type="text" name="email_primary" class="text email">
+                            <input type="checkbox" name="email_primary_active">
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Mobile</label>
+                    <div class="controls">
+                        <input type="text" name="mobile" class="text phone">
+                    </div>
+                </div>
+                <div class="control-group half halfsy">
+                    <label for="">Alt Email</label>
+                    <div class="controls">
+                        <div class="textcombo">
+                            <input type="text" name="email_secondary" class="text email lg">
+                            <input type="checkbox" name="email_secondary_active">
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Work</label>
+                    <div class="controls">
+                        <input type="text" name="mobile" class="text phone">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="display">
+                <div class="control-group">
+                    <label for="">Title</label>
+                    <div class="controls">
+                        <p>@p.basic.Title</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">First Name</label>
+                    <div class="controls">
+                        <p>@p.basic.First</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Goes By</label>
+                    <div class="controls">
+                        <p>@p.basic.NickName</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Middle Name</label>
+                    <div class="controls">
+                        <p>@p.basic.Middle</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Last Name</label>
+                    <div class="controls">
+                        <p>@p.basic.Last</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Alt Name</label>
+                    <div class="controls">
+                        <p>@p.basic.AltName</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Former</label>
+                    <div class="controls">
+                        <p>@p.basic.Maiden</p>
+                    </div>
+                </div>
+                <div class="control-group em">
+                    <label for="">Suffix</label>
+                    <div class="controls">
+                        <p>@p.basic.Suffix</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Gender</label>
+                    <div class="controls">
+                        <p>@p.basic.Gender</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Birthdate</label>
+                    <div class="controls">
+                        <p>@p.basic.Birthday</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Marital Status</label>
+                    <div class="controls">
+                        <p>@p.basic.MaritalStatus</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Wedding Date</label>
+                    <div class="controls">
+                        <p>@p.basic.WeddingDate.FormatDate()</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Occupation</label>
+                    <div class="controls">
+                        <p>@p.basic.Occupation</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Employer</label>
+                    <div class="controls">
+                        <p>@p.basic.Employer</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">School</label>
+                    <div class="controls">
+                        <p>@p.basic.School</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Grade</label>
+                    <div class="controls">@p.basic.Grade</div>
+                </div>
+            </fieldset>
+            <fieldset class="display">
+                <div class="control-group em">
+                    <label for="" class="lg">
+                        @if (p.basic.DoNotContactAny)
+                        {
+                            @:Do Not Contact
+                        }
+                    </label>
+                    <div class="controls">
+                        <p>
+                            @string.Join(", ", p.basic.DoNotContactBy)
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group half halfsy">
+                    <label for="">Primary Email</label>
+                    <div class="controls">
+                        <p>
+                            @p.basic.EmailAddress
+                            @if (p.basic.SendEmailAddress1)
+                            {
+                                <i class="icon-check"></i>
+                            }
+                            else
+                            {
+                                <i class="icon-check-empty"></i>
+                            }
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Mobile</label>
+                    <div class="controls">
+                        <p>
+                            @p.basic.CellPhone.FmtFone()
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group half halfsy">
+                    <label for="">Alt Email</label>
+                    <div class="controls">
+                        <p>
+                            @p.basic.EmailAddress2
+                            @if (p.basic.SendEmailAddress2)
+                            {
+                                <i class="icon-check"></i>
+                            }
+                            else
+                            {
+                                <i class="icon-check-empty"></i>
+                            }
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Work</label>
+                    <div class="controls">
+                        <p>
+                            @p.basic.WorkPhone.FmtFone()
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="submit-row">
+                <button class="btn btn-neutral display">Edit</button>
+                <button class="btn btn-neutral edit">Cancel</button>
+                <button class="btn btn-primary edit">Save Changes</button>
             </div>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label for="">Work</label>
-          <div class="controls">
-            <input type="text" name="mobile" class="text phone">
-          </div>
-        </div>
-      </fieldset>
-      <fieldset class="display">
-        <div class="control-group">
-          <label for="">Title</label>
-          <div class="controls"><p>
-                      Mrs.
-                    </p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">First Name</label>
-          <div class="controls"><p>Elizabeth</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Goes By</label>
-          <div class="controls"><p>Eliza</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Middle Name</label>
-          <div class="controls"><p>Cassandra</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Last Name</label>
-          <div class="controls"><p>Queen</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Alt Name</label>
-          <div class="controls"><p></p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Former</label>
-          <div class="controls"><p>Shepherd</p></div>
-        </div>
-        <div class="control-group em">
-          <label for="">Suffix</label>
-          <div class="controls"><p></p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Gender</label>
-          <div class="controls"><p>Female</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Birthdate</label>
-          <div class="controls"><p>April 11, 1976</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Marital Status</label>
-          <div class="controls">
-            <p>Married</p>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label for="">Wedding Date</label>
-          <div class="controls"><p>January 12, 2000</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Occupation</label>
-          <div class="controls"><p>Analyst</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Employer</label>
-          <div class="controls"><p>National Society for Arondissements</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">School</label>
-          <div class="controls"><p>Brown</p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Grade</label>
-          <div class="controls"></div>
-        </div>
-      </fieldset>
-      <fieldset class="display">
-        <div class="control-group em">
-          <label for="" class="lg">Do Not Contact&nbsp;By</label>
-          <div class="controls"><p>
-                      In Person, Telephone
-                    </p></div>
-        </div>
-        <div class="control-group half halfsy">
-          <label for="">Primary Email</label>
-            <div class="controls"><p>
-                          e.queen@nsa.us.gov 
-                          <i class="icon-check"></i>
-                        </p></div>
-        </div>
-        <div class="control-group half">
-          <label for="">Mobile</label>
-          <div class="controls"><p>
-                      (122) 555-4419
-                    </p></div>
-        </div>
-        <div class="control-group half halfsy">
-          <label for="">Alt Email</label>
-          <div class="controls">
-            <p>
-              peliza.queen@gmail.com 
-              <i class="icon-check"></i>
-            </p>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label for="">Work</label>
-          <div class="controls"><p>
-                      (101) 555-1234
-                    </p></div>
-        </div>
-      </fieldset>
-      <div class="submit-row">
-        <button class="btn btn-neutral display">Edit</button>
-        <button class="btn btn-neutral edit">Cancel</button>
-        <button class="btn btn-primary edit">Save Changes</button>
-      </div>
-    </form>
-  </div>
-  <!-- end personal pane -->
+        </form>
+    </div>
+    <!-- end personal pane -->
 
 
-  <!-- involvement pane -->
+    <!-- involvement pane -->
 
     <div id="involvement" class="pane">
         <ul class="nav nav-tabs">
@@ -508,11 +523,11 @@
         </table>
     </div>
 
-  <!-- end involvement pane -->
+    <!-- end involvement pane -->
 
 
-  <!-- member profile pane -->
-      <div id="member-profile" class="pane">
+    <!-- member profile pane -->
+    <div id="member-profile" class="pane">
         <div class="submit-row">
             <button class="btn">Add Growth Request</button>
             <button class="btn">Add Group</button>
@@ -551,19 +566,20 @@
             <div></div>
         </div>
     </div>
-    <!-- end member profile pane -->\
+    <!-- end member profile pane -->
+    \
 
-    </section>
+</section>
 
 
 <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
-    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
-    </div>
-    <div id="memberDialog">
-    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
-    </div>
+    <iframe style="width: 100%; height: 99%; border-width: 0px;"></iframe>
+</div>
+<div id="memberDialog">
+    <iframe style="width: 100%; height: 99%; border-width: 0px;"></iframe>
+</div>
 
-<div id="newvalueform" style="display:none" class="roundbox">
+<div id="newvalueform" style="display: none" class="roundbox">
     <table>
         <tr>
             <th colspan="2">
@@ -573,15 +589,27 @@
         <tr>
             <th>Type:</th>
             <td>
-                <table><tr>
-                    <td><input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">Code</label></td>
-                    <td><input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
-                    <td><input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
-                    <td><input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
-                </tr></table>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">Code</label></td>
+                        <td>
+                            <input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
+                        <td>
+                            <input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
+                        <td>
+                            <input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
+                    </tr>
+                </table>
             </td>
         </tr>
-<tr><th>Field:</th><td>@Html.TextBox("fieldname")</td></tr>
-<tr><th>Value:</th><td>@Html.TextBox("fieldvalue")</td></tr>
+        <tr>
+            <th>Field:</th>
+            <td>@Html.TextBox("fieldname")</td>
+        </tr>
+        <tr>
+            <th>Value:</th>
+            <td>@Html.TextBox("fieldvalue")</td>
+        </tr>
     </table>
 </div>

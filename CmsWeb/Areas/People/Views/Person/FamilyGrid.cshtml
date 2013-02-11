@@ -1,32 +1,36 @@
-﻿@model CmsWeb.Models.PersonPage.PersonFamilyModel
-<table class="grid">
-    <thead>
-    <tr>
-        <th class="left" colspan="4">
-        @if (User.IsInRole("Access"))
-        { 
-            <a href="/Family/Index/@Model.person.FamilyId"><strong>Family Members</strong></a>
-        }
-        else
-        { 
-           <strong>Family Members</strong>
-        } 
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-@foreach (var m in Model.Members())
-{ 
-    <tr>
-        <td><a href="/Person/Index/@m.Id"><span style='color: @m.Color'>@m.Name</span></a></td>
-        <td>@Html.Raw(m.SpouseIndicator)</td>
-        <td>@m.Age</td>
-        <td>@m.Email</td>
-    </tr>
+﻿@using CmsWeb.Areas.People.Models.Person
+@model PersonModel
+@{
+    var fm = new PersonFamilyModel(Model.displayperson.PeopleId);
 }
-    </tbody>
-</table>
-@if (Model.Count() > 10)
+<div class="group">
+    <h2>Family Members
+        <a href="#" class="add"><i class="icon-plus-sign"></i></a>
+    </h2>
+    <ul class="members">
+        @foreach (var m in fm.Members())
+        {
+            if (m.Id == fm.person.PeopleId)
+            {
+                <li class="active">@PersonPictureAndLink(m)</li>
+            }
+            else
+            {
+                <li>@PersonPictureAndLink(m)</li>
+            }
+        }
+    </ul>
+</div>
+
+@helper PersonPictureAndLink(FamilyMemberInfo m)
 {
-@Html.Partial("Pager2", Model.Pager) 
+    <a href="/People/Person/Index/@m.Id"><img src="/Image.aspx?portrait=1&id=@m.SmallPicId" alt="" /><span style='color: @m.Color'>@m.Name</span>@Html.Raw(m.SpouseIndicator) @Age(@m.Age)</a>
+    <div>@m.Email</div>
+}
+@helper Age(int? age)
+{
+    if (age.HasValue)
+    {
+        @:(@age)
+    }
 }

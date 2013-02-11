@@ -68,7 +68,7 @@
         return false;
     });
     $('form').submit(function () {
-        $.blockUI();
+        $.block();
         return true;
     });
 });

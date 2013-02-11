@@ -1,23 +1,96 @@
 ﻿$(function () {
-    $('body').on("click", 'a.editconditionlink', function () {
-        var qid = $(this).attr("qid");
-        $.post('/Search/Advanced/EditCondition/' + qid, null, function (ret) {
-            $("#conditions").replaceWith(ret).ready($.AdjustEditCondition);
+    var $editplaceholderheight = 0;
+    $('#conditions').on("click", 'a.editconditionlink', function () {
+        var qid = $(this).closest("tr").attr("qid");
+        $editplaceholderheight = $(this).parent().height();
+        if ($("#editcondition").is(":visible")) {
+            var h = $("#editcondition").attr("orginalheight");
+            $("#editconditionplaceholder").animate({ height: h }, 150);
+            $("#editcondition").hide("fade", { direction: "up" }, 150, function () {
+                $.post('/Search/Advanced/EditCondition/' + qid, null, function (ret) {
+                    $("#conditions").html(ret).ready($.AdjustEditCondition);
+                });
+            });
+        }
+        else
+            $.post('/Search/Advanced/EditCondition/' + qid, null, function (ret) {
+                $("#conditions").html(ret).ready($.AdjustEditCondition);
+            });
+        return false;
+    });
+    $("a.tip").tooltip({ showBody: "|", showURL: false });
+    $.AdjustEditCondition = function () {
+        $(".bt").button();
+        $('#CodeValues').multiselect();
+        var h = $("#editcondition").outerHeight();
+        $("#editcondition").attr("orginalheight", $("#editconditionplaceholder").height());
+        $("#editconditionplaceholder").animate({ height: h }, 300);
+        var pos = $("#editconditionplaceholder").position();
+        $("#editcondition").css("left", pos.left).css("top", pos.top - 2);
+        $("#editcondition").show("fade", { direction: "up" }, 300);
+        $("a.tip").tooltip({ showBody: "|", showURL: false });
+    };
+    $('#conditions').on("click", 'a.addnewclause', function () {
+        var qid = $(this).closest("tr").attr("qid");
+        $.post('/Search/Advanced/AddNewCondition/' + qid, {}, function (ret) {
+            $("#conditions").html(ret).ready($.AdjustEditCondition);
+            $('#QueryConditionSelect').dialog("open");
         });
         return false;
     });
-    $.AdjustEditCondition = function() {
-        $(".bt").button();
-        $('#CodeValues').multiselect();
-        $("#editconditionli").css("height", $("#editcondition").outerHeight() + "px");
-        var pos = $("#editconditionli").position();
-        $("#editcondition").css("left", pos.left).css("top", pos.top);
-    };
+    $('#conditions').on("click", 'a.duplicateclause', function () {
+        var qid = $(this).closest("tr").attr("qid");
+        $.post('/Search/Advanced/DuplicateCondition/' + qid, {}, function (ret) {
+            $("#conditions").html(ret).ready($.AdjustEditCondition);
+        });
+        return false;
+    });
+    $('#conditions').on("click", '#SaveCondition', function () {
+        var qs = $('#conditionForm').serialize();
+        $("#editconditionplaceholder").animate({ height: $editplaceholderheight }, 200);
+        $("#editcondition").hide("slide", { direction: "up" }, 200, function () {
+            $.post('/Search/Advanced/SaveCondition/', qs, function (ret) {
+                $("#conditions").html(ret).ready(function () {
+                    $(".bt").button();
+                    $("#conditions a.trigger-dropdown").dropdown();
+                    setTimeout(function () { $("#Run").click(); }, 100);
+                });
+            });
+            return false;
+        });
+    });
+    $('#conditions').on("click", '#CancelChange', function () {
+        $("#editconditionplaceholder").animate({ height: $editplaceholderheight }, 200);
+        $("#editcondition").hide("slide", { direction: "up" }, 300, function () {
+            $.post('/Search/Advanced/Reload/', null, function (ret) {
+                $("#conditions").html(ret).ready(function () {
+                    $(".bt").button();
+                    $("#conditions a.trigger-dropdown").dropdown();
+                });
+            });
+        });
+        return false;
+    });
+    $('#conditions').on("click", 'a.removeclause', function () {
+        jConfirm('Confirm Delete?', 'Confirmation Dialog', function (del) {
+            if (del) {
+                var qid = $("#SelectedId").val();
+                $.post('/Search/Advanced/RemoveCondition/' + qid, null, function(ret) {
+                    $("#conditions").html(ret).ready(function() {
+                        $(".bt").button();
+                        $("#conditions a.trigger-dropdown").dropdown();
+                        $("#Run").click();
+                    });
+                });
+            }
+        });
+        return false;
+    });
     $('body').on("change", '#Comparison', function (ev) {
-        if ($("#Codesdiv").length > 0) {
+        if ($("#CodesDiv").length > 0) {
             var q = $('#conditionForm').serialize();
             $.post('/Search/Advanced/CodesDropdown', q, function (ret) {
-                $("#CodesDiv").html(ret).ready(function () {
+                $("#CodesDiv").replaceWith(ret).ready(function () {
                     $('#CodeValues').multiselect();
                 });
             });
@@ -47,13 +120,11 @@
             $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    $("a.help,.helptip").tooltip({ showBody: "|", showURL: false });
     $('#Tags').click(function (ev) {
         $('#TagsPopup').show();
     });
     $(".datepicker").datepicker();
     $(".bt").button();
-    $("#editcondition select").css("width", "100%");
 
     $('body').on("change", '#Program', function (ev) {
         $.post('/Search/Advanced/Divisions/' + $(this).val(), null, function (ret) {
@@ -66,42 +137,7 @@
             $("#Organization").replaceWith(ret);
         });
     });
-    $('body').on("click", '#AddCondition', function () {
-        var qs = $('#conditionForm').serialize();
-        $.post('/Search/Advanced/AddCondition/', qs, function (ret) {
-            $("#conditions").replaceWith(ret).ready(function () {
-                $(".bt").button();
-            });
-        });
-        return false;
-    });
-    $('body').on("click", '#AddConditionToGroup', function () {
-        var qs = $('#conditionForm').serialize();
-        $.post('/Search/Advanced/AddConditionToGroup/', qs, function (ret) {
-            $("#conditions").replaceWith(ret).ready($.AdjustEditCondition);
-        });
-        return false;
-    });
-    $('body').on("click", '#SaveCondition', function () {
-        var qs = $('#conditionForm').serialize();
-        $.post('/Search/Advanced/SaveCondition/', qs, function (ret) {
-            $("#conditions").replaceWith(ret).ready(function () {
-                $(".bt").button();
-            });
-        });
-        return false;
-    });
-    $('body').on("click", '#RemoveCondition', function () {
-        var qid = $("#SelectedId").val();
-        $.post('/Search/Advanced/RemoveCondition/' + qid, null, function (ret) {
-            $("#conditions").replaceWith(ret).ready(function () {
-                $(".bt").button();
-            });
-        });
-        return false;
-    });
-    $('#Run').click(function (ev) {
-        var qs = $('#conditionForm').serialize();
+    $('body').on("click", "#Run", function (ev) {
         RefreshList();
         return false;
     });
@@ -157,8 +193,12 @@
         height: 575,
         position: 'top'
     });
+    if ($("#SelectedId").val() > 0) {
+        $.AdjustEditCondition();
+        $('#QueryConditionSelect').dialog("open");
+    }
     $("#tabber").tabs();
-    
+
     $("body").on("click", '#SelectCondition', function (ev) {
         $('#QueryConditionSelect').dialog("open");
         return false;
@@ -168,12 +208,12 @@
         var qid = $("#SelectedId").val();
         $.post('/Search/Advanced/SelectCondition/' + qid, { conditionName: ev.target.id }, function (ret) {
             $('#QueryConditionSelect').dialog("close");
-            $("#conditions").replaceWith(ret).ready($.AdjustEditCondition);
+            $("#conditions").html(ret).ready($.AdjustEditCondition);
         });
         return false;
     });
     $("a.closeit").click(function (ev) {
-        $.unblockUI();
+        $.unblock();
     });
     $.navigate = function (url, data) {
         url += (url.match(/\?/) ? "&" : "?") + data;
@@ -188,9 +228,11 @@
     };
 });
 
-function RefreshList() {
+function RefreshList(qs) {
+    if (!qs)
+        qs = $("#conditionForm").serialize();
+
     $.block();
-    var qs = $("#conditionForm").serialize();
     $.ajax({
         type: "POST",
         url: "/Search/Advanced/Results/",
@@ -230,13 +272,13 @@ function RefreshList() {
     });
 }
 function GotoPage(pg) {
-    qs = $('#conditionForm').serialize() + "&Page=" + pg;
-    RefreshList();
+    var qs = $('#conditionForm').serialize() + "&Page=" + pg;
+    RefreshList(qs);
     return false;
 }
 function SetPageSize(sz) {
-    qs = $('#conditionForm').serialize() + "&PageSize=" + sz;
-    RefreshList();
+    var qs = $('#conditionForm').serialize() + "&PageSize=" + sz;
+    RefreshList(qs);
     return false;
 }
 
