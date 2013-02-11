@@ -165,8 +165,12 @@ $(function () {
     function hClickAdd(e) {
         removeButtons();
         parentTR = $(currentHover).parent();
-        $(parentTR).after("<tr><td bvrepeatadd>" + $(currentHover).html() + "</td></tr>");
-        $('td[bvrepeatadd]').mouseenter(hAddHoverIn).mouseleave(hHoverOut);
+        dup = $(currentHover).clone();
+        $(parentTR).after($(dup));
+        dup.wrap("<tr></tr>");
+        dup.attr("bvrepeatadd", "");
+        dup.removeAttr("bvrepeat");
+        dup.mouseenter(hAddHoverIn).mouseleave(hHoverOut);
         $('div[bvedit]').bind('click', hClick).addClass("ti");
     }
 
