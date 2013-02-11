@@ -151,9 +151,24 @@ namespace CmsCheckin
 
             if (CancelClose == false)
             {
-                bool bHorizontalCheck = PrinterHelper.getPrinterWidth(Printer.Text) > 290;
-                bool bVerticalCheck = (PrinterHelper.getPrinterHeight(Printer.Text) > 70 && PrinterHelper.getPrinterHeight(Printer.Text) < 130) ||
-                                        (PrinterHelper.getPrinterHeight(Printer.Text) > 170 && PrinterHelper.getPrinterHeight(Printer.Text) < 230);
+                bool bHorizontalCheck = false;
+                bool bVerticalCheck = false;
+
+                if (AdvancedPageSize.Checked)
+                {
+                    if (PrinterWidth.Text.Length == 0) PrinterWidth.Text = "0";
+                    if (PrinterHeight.Text.Length == 0) PrinterHeight.Text = "0";
+
+                    bHorizontalCheck = int.Parse( PrinterWidth.Text ) >= 290;
+                    bVerticalCheck = (int.Parse(PrinterHeight.Text) > 70 && int.Parse(PrinterHeight.Text) < 130) ||
+                                            (int.Parse(PrinterHeight.Text) > 170 && int.Parse(PrinterHeight.Text) < 230);
+                }
+                else
+                {
+                    bHorizontalCheck = PrinterHelper.getPrinterWidth(Printer.Text) > 290;
+                    bVerticalCheck = (PrinterHelper.getPrinterHeight(Printer.Text) > 70 && PrinterHelper.getPrinterHeight(Printer.Text) < 130) ||
+                                            (PrinterHelper.getPrinterHeight(Printer.Text) > 170 && PrinterHelper.getPrinterHeight(Printer.Text) < 230);
+                }
 
                 if (!bHorizontalCheck || !bVerticalCheck)
                 {

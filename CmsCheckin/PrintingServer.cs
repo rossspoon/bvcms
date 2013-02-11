@@ -32,6 +32,8 @@ namespace CmsCheckin
         }
         private void CheckServer()
         {
+            int iLabelSize = PrinterHelper.getPageHeight(Program.Printer);
+
             timer1.Stop();
             Countdown.Text = "Checking...";
             Refresh();
@@ -51,7 +53,7 @@ namespace CmsCheckin
 					{
 						var doprint = new DoPrinting();
 						var ms = new MemoryStream();
-						if (Program.TwoInchLabel)
+                        if (iLabelSize >= 170 && iLabelSize <= 230)
 							doprint.PrintLabels2(ms, j.list);
 						else
 							doprint.PrintLabels(ms, j.list);
