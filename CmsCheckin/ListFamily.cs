@@ -437,9 +437,11 @@ namespace CmsCheckin
 			}
 			else
 			{
+                int iLabelSize = PrinterHelper.getPageHeight(Program.Printer);
+
 				using (var ms = new MemoryStream())
 				{
-					if (Program.TwoInchLabel)
+					if ( iLabelSize >= 170 && iLabelSize <= 230 )
 						ms.LabelKiosk2(li);
 					else
 						ms.LabelKiosk(li);

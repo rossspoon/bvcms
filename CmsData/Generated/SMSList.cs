@@ -25,11 +25,11 @@ namespace CmsData
 		
 		private DateTime _SendAt;
 		
+		private int _SendGroupID;
+		
 		private string _Message;
 		
 		private int _SentSMS;
-		
-		private int _SentEMail;
 		
 		private int _SentNone;
 		
@@ -54,14 +54,14 @@ namespace CmsData
 		partial void OnSendAtChanging(DateTime value);
 		partial void OnSendAtChanged();
 		
+		partial void OnSendGroupIDChanging(int value);
+		partial void OnSendGroupIDChanged();
+		
 		partial void OnMessageChanging(string value);
 		partial void OnMessageChanged();
 		
 		partial void OnSentSMSChanging(int value);
 		partial void OnSentSMSChanged();
-		
-		partial void OnSentEMailChanging(int value);
-		partial void OnSentEMailChanged();
 		
 		partial void OnSentNoneChanging(int value);
 		partial void OnSentNoneChanged();
@@ -165,6 +165,28 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="SendGroupID", UpdateCheck=UpdateCheck.Never, Storage="_SendGroupID", DbType="int NOT NULL")]
+		public int SendGroupID
+		{
+			get { return this._SendGroupID; }
+
+			set
+			{
+				if (this._SendGroupID != value)
+				{
+				
+                    this.OnSendGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._SendGroupID = value;
+					this.SendPropertyChanged("SendGroupID");
+					this.OnSendGroupIDChanged();
+				}
+
+			}
+
+		}
+
+		
 		[Column(Name="Message", UpdateCheck=UpdateCheck.Never, Storage="_Message", DbType="varchar(160) NOT NULL")]
 		public string Message
 		{
@@ -202,28 +224,6 @@ namespace CmsData
 					this._SentSMS = value;
 					this.SendPropertyChanged("SentSMS");
 					this.OnSentSMSChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="SentEMail", UpdateCheck=UpdateCheck.Never, Storage="_SentEMail", DbType="int NOT NULL")]
-		public int SentEMail
-		{
-			get { return this._SentEMail; }
-
-			set
-			{
-				if (this._SentEMail != value)
-				{
-				
-                    this.OnSentEMailChanging(value);
-					this.SendPropertyChanging();
-					this._SentEMail = value;
-					this.SendPropertyChanged("SentEMail");
-					this.OnSentEMailChanged();
 				}
 
 			}

@@ -39,7 +39,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public bool DoNotCallFlag { get; set; }
         public bool DoNotVisitFlag { get; set; }
         public bool DoNotMailFlag { get; set; }
-        public byte ReceiveSMS { get; set; }
+        public bool ReceiveSMS { get; set; }
 
         public int? CampusId { get; set; }
         public int MemberStatusId { get; set; }

@@ -21,11 +21,9 @@ namespace CmsData
 		
 		private int _ListID;
 		
-		private int _SendToID;
+		private int _PeopleID;
 		
-		private byte _SendBy;
-		
-		private string _SendAddress;
+		private string _Number;
 		
 		private bool _Sent;
 		
@@ -44,14 +42,11 @@ namespace CmsData
 		partial void OnListIDChanging(int value);
 		partial void OnListIDChanged();
 		
-		partial void OnSendToIDChanging(int value);
-		partial void OnSendToIDChanged();
+		partial void OnPeopleIDChanging(int value);
+		partial void OnPeopleIDChanged();
 		
-		partial void OnSendByChanging(byte value);
-		partial void OnSendByChanged();
-		
-		partial void OnSendAddressChanging(string value);
-		partial void OnSendAddressChanged();
+		partial void OnNumberChanging(string value);
+		partial void OnNumberChanged();
 		
 		partial void OnSentChanging(bool value);
 		partial void OnSentChanged();
@@ -111,21 +106,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SendToID", UpdateCheck=UpdateCheck.Never, Storage="_SendToID", DbType="int NOT NULL")]
-		public int SendToID
+		[Column(Name="PeopleID", UpdateCheck=UpdateCheck.Never, Storage="_PeopleID", DbType="int NOT NULL")]
+		public int PeopleID
 		{
-			get { return this._SendToID; }
+			get { return this._PeopleID; }
 
 			set
 			{
-				if (this._SendToID != value)
+				if (this._PeopleID != value)
 				{
 				
-                    this.OnSendToIDChanging(value);
+                    this.OnPeopleIDChanging(value);
 					this.SendPropertyChanging();
-					this._SendToID = value;
-					this.SendPropertyChanged("SendToID");
-					this.OnSendToIDChanged();
+					this._PeopleID = value;
+					this.SendPropertyChanged("PeopleID");
+					this.OnPeopleIDChanged();
 				}
 
 			}
@@ -133,43 +128,21 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SendBy", UpdateCheck=UpdateCheck.Never, Storage="_SendBy", DbType="tinyint NOT NULL")]
-		public byte SendBy
+		[Column(Name="Number", UpdateCheck=UpdateCheck.Never, Storage="_Number", DbType="varchar(25) NOT NULL")]
+		public string Number
 		{
-			get { return this._SendBy; }
+			get { return this._Number; }
 
 			set
 			{
-				if (this._SendBy != value)
+				if (this._Number != value)
 				{
 				
-                    this.OnSendByChanging(value);
+                    this.OnNumberChanging(value);
 					this.SendPropertyChanging();
-					this._SendBy = value;
-					this.SendPropertyChanged("SendBy");
-					this.OnSendByChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="SendAddress", UpdateCheck=UpdateCheck.Never, Storage="_SendAddress", DbType="varchar(100) NOT NULL")]
-		public string SendAddress
-		{
-			get { return this._SendAddress; }
-
-			set
-			{
-				if (this._SendAddress != value)
-				{
-				
-                    this.OnSendAddressChanging(value);
-					this.SendPropertyChanging();
-					this._SendAddress = value;
-					this.SendPropertyChanged("SendAddress");
-					this.OnSendAddressChanged();
+					this._Number = value;
+					this.SendPropertyChanged("Number");
+					this.OnNumberChanged();
 				}
 
 			}

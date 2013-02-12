@@ -1,0 +1,42 @@
+﻿@using CmsData
+@{
+    int groupID = ViewBag.ID;
+    SMSGroup group = null;
+    
+    if( groupID > 0 )
+    {
+        group = (from e in DbUtil.Db.SMSGroups
+                 where e.Id == groupID
+                 select e).Single();
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NumberDialog</title>
+</head>
+<body>
+    <center>
+	    <form action="@( groupID > 0 ? "/Setup/Twilio/GroupUpdate" : "/Setup/Twilio/GroupCreate" )" method="post">
+            <input type="hidden" name="id" value="@groupID" />
+	        <table cellspacing="10">
+	        <tr>
+		        <td align="right">Name:</td>
+		        <td align="left"><input name="name" size="25" value="@( groupID > 0 ? group.Name : "" )" /></td>
+	        </tr>
+                <tr>
+		        <td align="right">Description:</td>
+		        <td align="left"><input name="description" size="25" value="@( groupID > 0 ? group.Description : "" )" /></td>
+	        </tr>
+	        <tr>
+		        <td align="center" colspan="2">
+                    <br />
+			        <input type="submit" class="bt" value="Submit" /> &nbsp;&nbsp; <input type="button" class="bt" cancelbutton="dialog" value="Cancel" />
+		        </td>
+	        </tr>
+	        </table>
+	    </form>
+	</center>
+</body>
+</html>

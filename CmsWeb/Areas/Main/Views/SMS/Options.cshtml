@@ -1,0 +1,17 @@
+﻿@using CmsData;
+@using UtilityExtensions;
+@{
+    ViewBag.Title = "Options";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+
+    var groups = TwilioHelper.getAvailableLists(Util.UserId);
+}
+<br />
+<form action="/SMS/Send" method="post">
+    <input type="hidden" name="iQBID" value="@ViewBag.QBID" /><br />
+    @Html.DropDownList( "iSendGroup", new SelectList( groups, "ID", "Name" ) )<br />
+    <br />
+    <textarea name="sMessage" cols="40" rows="4"></textarea><br />
+    <br />
+    <input type="submit" value="Send SMS" />
+</form>
