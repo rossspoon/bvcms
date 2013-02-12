@@ -24,7 +24,7 @@
         });
         return false;
     };
-    $('table.grid > thead > a.sortable').live("click", function () {
+    $('table.grid > thead a.sortable').live("click", function () {
         var f = $(this).closest("form");
         var newsort = $(this).text();
         var sort = $("#Sort", f);

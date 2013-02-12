@@ -131,27 +131,17 @@ function HighlightCondition() {
     $('#ConditionGrid li a').removeClass('SelectedRow');
     $('#ConditionGrid li a#' + $('#SelectedId').val()).addClass('SelectedRow');
     $('#ConditionGrid li a').click(EditCondition);
-    //    $.contextMenu(".conditionPopup", { menu: 'InsCopyMenu' }, function (action, el, pos) {
-    //        switch (action) {
-    //            case "ins":
-    //                $.post("/QueryBuilder/InsGroupAbove/" + $(el).attr('id'), null, function (ret) {
-    //                    $.navigate("/QueryBuilder/Main/" + ret);
-    //                });
-    //                break;
-    //            case "copy":
-    //                $.post("/QueryBuilder/CopyAsNew/" + $(el).attr('id'), null, function (ret) {
-    //                    $.navigate("/QueryBuilder/Main/" + ret);
-    //                });
-    //                break;
-    //        }
-    //    });
     $('.conditionPopup').contextMenu('InsCopyMenu', {
         bindings: {
             'ins': function (t) {
-                alert('Trigger was ' + t.id + '\nAction was ins');
+                $.post("/QueryBuilder/InsGroupAbove/" + t.id, null, function (ret) {
+                    $.navigate("/QueryBuilder/Main/" + ret);
+                });
             },
             'copy': function (t) {
-                alert('Trigger was ' + t.id + '\nAction was copy');
+                $.post("/QueryBuilder/CopyAsNew/" + t.id, null, function (ret) {
+                    $.navigate("/QueryBuilder/Main/" + ret);
+                });
             }
         }
     });

@@ -1,6 +1,6 @@
 ﻿@using System.Web.Optimization
 @{
-    var newlook = DbUtil.Db.UserPreference("newlook2", "false") == "true";
+    var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
 }
 <!DOCTYPE html>
 <html>
@@ -152,8 +152,9 @@ else
         </table>
     </div>
     <div id="AddDialog">
-    <iframe id="AddDialogiframe" style="width:99%;height:99%;border-width:0px"></iframe>
+        <iframe id="AddDialogiframe" style="width:99%;height:99%;border-width:0px"></iframe>
     </div>
+    <div id="darkLayer" class="darkClass" style="display:none"></div>
 @RenderSection("PopupsPlaceholder", required: false)
 </body>
 </html>

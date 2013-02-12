@@ -12,7 +12,7 @@
     {
         var admin = User.IsInRole("Admin");
         var manageemails = User.IsInRole("ManageEmails");
-        var developer = User.IsInRole("Developer");
+        var innewlook = User.IsInRole("Newlook");
         var managetrans = User.IsInRole("ManageTransactions");
         var edit = User.IsInRole("Edit");
         var design = User.IsInRole("Design");
@@ -196,7 +196,7 @@
                                 </a></li>
                                 <li><a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">Email Support 
                                 </a></li>
-                                @if (developer)
+                                @if (innewlook)
                                 {
 
                                     <li><a href="/Home/UseOldLook">Use OLD Look</a></li>

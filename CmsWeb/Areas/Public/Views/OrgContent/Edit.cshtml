@@ -8,14 +8,13 @@
 @section scripts
 {
     <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-    @Scripts.Render("~/bundles/edit-js")
     <script type="text/javascript">
         $(function () {
-            $('textarea.editor').ckeditor(function () { }, {
+            CKEDITOR.replace('Html', {
                 height: 400,
-                filebrowserUploadUrl: '/OrgContent/CKEditorUpload/@(Model.OrgId)',
-                filebrowserImageUploadUrl: '/OrgContent/CKEditorUpload/@(Model.OrgId)',
-                toolbar_Full: toolbar_Full
+                fullPage: true,
+                filebrowserUploadUrl: '/Account/CKEditorUpload/',
+                filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
             });
         });
     </script>

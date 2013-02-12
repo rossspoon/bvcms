@@ -132,7 +132,7 @@ namespace CmsWeb.Controllers
 		}
         public ActionResult UseOldLook()
         {
-            DbUtil.Db.SetUserPreference("newlook2", "false");
+            DbUtil.Db.SetUserPreference("newlook3", "false");
             DbUtil.Db.SubmitChanges();
             if (Request.UrlReferrer != null)
                 return Redirect(Request.UrlReferrer.OriginalString);
@@ -140,7 +140,7 @@ namespace CmsWeb.Controllers
         }
         public ActionResult UseNewLook()
         {
-            DbUtil.Db.SetUserPreference("newlook2", "true");
+            DbUtil.Db.SetUserPreference("newlook3", "true");
             DbUtil.Db.SubmitChanges();
             if (Request.UrlReferrer != null)
                 return Redirect(Request.UrlReferrer.OriginalString);

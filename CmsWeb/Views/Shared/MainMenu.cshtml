@@ -1,6 +1,6 @@
 ﻿@{ 
     var admin = User.IsInRole("Admin");
-    var developer = User.IsInRole("Developer");
+    var innewlook = User.IsInRole("Newlook");
     var manageemails = User.IsInRole("ManageEmails");
     var managetrans = User.IsInRole("ManageTransactions");
 	var edit = User.IsInRole("Edit"); 
@@ -277,7 +277,7 @@
                     <li><a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">
                             Email Support
                         </a></li>
-                    @if (developer)
+                    @if (innewlook)
                     {
                         <li><a href="/Home/UseNewLook">Use New Look (under construction)</a></li>
                         if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())

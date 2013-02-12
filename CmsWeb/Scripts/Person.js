@@ -7,7 +7,8 @@
     $("#main-tab").tabs();
     $("#main-tab").show();
     $(".submitbutton,.bt").button();
-    addrtabs.tabs('option', "active", $('#addrtab').val());
+    var index = $('#address-tab a[href="#' + $('#addrtab').val() + '"]').parent().index();
+    addrtabs.tabs('option', "active", index);
     $('#dialogbox').dialog({
         title: 'Search Dialog',
         bgiframe: true,
@@ -22,7 +23,7 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('body').on('click', '#clipaddr', function () {
+    $("#clipaddr").live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
             var range = inElement.createTextRange();

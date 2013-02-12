@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.People.Controllers
 		{
 			if (!id.HasValue)
 				return Content("no id");
-            if (!DbUtil.Db.UserPreference("newlook2", "false").ToBool()
+            if (!DbUtil.Db.UserPreference("newlook3", "false").ToBool()
                 || !DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
                 return Redirect(Request.RawUrl.ToLower().Replace("people/person", "person"));
 			var m = new PersonModel(id);

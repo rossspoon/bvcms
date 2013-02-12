@@ -25,7 +25,6 @@
 @section scripts
 {
     <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-    @Scripts.Render("~/bundles/edit-js")
     @Scripts.Render("~/bundles/single/compose-js")
 }
 
@@ -90,10 +89,13 @@
 <div id="progress">
 <h2>Working...</h2>
 </div>
-<div id="popupeditor">
-	<form action="javascript:updateDiv()">
-		<textarea id="htmleditor"></textarea>
-		<input type="submit" value="Save" />
+<div id="popupeditor" style="display:none;position: absolute;z-index: 1005;">
+	<form>
+	    <textarea id="htmleditor"></textarea>
+        <div style="text-align: right;">
+    	    <a href="#" class="bt cancel">Cancel</a>
+            <a href="#" class="bt save blue">Save</a>
+        </div>
 	</form>
 </div>
 <div id="askName" style="display:none">

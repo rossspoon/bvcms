@@ -159,7 +159,27 @@
         }
         return v;
     };
+    jQuery.fn.center = function(parent) {
+        if (parent) {
+            parent = this.parent();
+        } else {
+            parent = window;
+        }
+        this.css({
+            "position": "absolute",
+            "top": ((($(parent).height() - this.outerHeight()) / 2) + $(parent).scrollTop() + "px"),
+            "left": ((($(parent).width() - this.outerWidth()) / 2) + $(parent).scrollLeft() + "px")
+        });
+        return this;
+    };
 });
+function dimOff() {
+    $("#darkLayer").hide();
+}
+function dimOn()
+{
+    $("#darkLayer").show();
+}
 String.prototype.startsWith = function(t, i) {
     return (t == this.substring(0, t.length));
 };

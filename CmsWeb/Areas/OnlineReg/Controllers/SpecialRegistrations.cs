@@ -251,9 +251,12 @@ The following Committments:<br/>
 			SetHeaders(m.orgid);
             if (!m.Account.HasValue())
                 m.Account = m.Account.GetDigits();
-            else if (!m.Account.StartsWith("X"))
-    		    m.Account = m.Account.GetDigits();
-			m.ValidateModel(ModelState);
+            else if (!m.Account.StartsWith("X") || !m.Routing.StartsWith("X"))
+            {
+                m.Account = m.Account.GetDigits();
+                m.Routing = m.Routing.GetDigits();
+            }
+		    m.ValidateModel(ModelState);
 			if (!ModelState.IsValid)
 				return View(m);
 			try

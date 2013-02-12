@@ -18,7 +18,7 @@ $(function () {
             $(input).val(value);
         }
     });
-    $.onready = function () {
+    $.onready = function() {
         $(".clickEdit").editable("/SavedQuery/Edit/", {
             indicator: "<img src='/images/loading.gif'>",
             tooltip: "Click to edit...",
@@ -32,7 +32,7 @@ $(function () {
             onblur: 'ignore',
             submit: 'OK'
         });
-    }
+    };
     $('table.grid > tbody > tr:even').addClass('alt');
     $.getTable = function(f) {
         var q;
@@ -49,14 +49,14 @@ $(function () {
         });
         return false;
     };
-    $("body").on("click", '#filter', function (ev) {
+    $("#filter").live("click", function (ev) {
         ev.preventDefault();
         $.getTable($(this).closest("form"));
         $.onready();
     });
     $(".bt").button();
 
-    $("body").on("click", 'a.delete', function () {
+    $("a.delete").live("click", function () {
         var a = $(this);
         $.post("/SavedQuery/Edit", { id: a.attr("id") }, function (ret) {
             a.closest("tr").fadeOut().remove();

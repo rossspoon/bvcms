@@ -20,7 +20,7 @@ namespace CmsWeb.Areas.Search.Controllers
     {
         public ActionResult Main(int? id, int? run)
         {
-            if (!DbUtil.Db.UserPreference("newlook2", "false").ToBool()
+            if (!DbUtil.Db.UserPreference("newlook3", "false").ToBool()
                 || !DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
                 return Redirect(Request.RawUrl.ToLower().Replace("search/advanced", "querybuilder"));
             ViewData["Title"] = "QueryBuilder";
