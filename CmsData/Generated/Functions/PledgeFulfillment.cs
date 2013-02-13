@@ -32,6 +32,8 @@ namespace CmsData.View
 		
 		private string _Zip;
 		
+		private string _MemberStatus;
+		
 		private DateTime? _PledgeDate;
 		
 		private decimal? _PledgeAmt;
@@ -180,6 +182,23 @@ namespace CmsData.View
 			{
 				if (this._Zip != value)
 					this._Zip = value;
+			}
+
+		}
+
+		
+		[Column(Name="MemberStatus", Storage="_MemberStatus", DbType="varchar(50)")]
+		public string MemberStatus
+		{
+			get
+			{
+				return this._MemberStatus;
+			}
+
+			set
+			{
+				if (this._MemberStatus != value)
+					this._MemberStatus = value;
 			}
 
 		}

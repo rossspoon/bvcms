@@ -24,6 +24,8 @@ namespace CmsData
 		private string _Description;
 		
    		
+   		private EntitySet< SMSGroupMember> _SMSGroupMembers;
+		
     	
 	#endregion
 	
@@ -44,6 +46,8 @@ namespace CmsData
     #endregion
 		public SMSGroup()
 		{
+			
+			this._SMSGroupMembers = new EntitySet< SMSGroupMember>(new Action< SMSGroupMember>(this.attach_SMSGroupMembers), new Action< SMSGroupMember>(this.detach_SMSGroupMembers)); 
 			
 			
 			OnCreated();
@@ -122,6 +126,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_SMSGroupMembers_SMSGroups", Storage="_SMSGroupMembers", OtherKey="GroupID")]
+   		public EntitySet< SMSGroupMember> SMSGroupMembers
+   		{
+   		    get { return this._SMSGroupMembers; }
+
+			set	{ this._SMSGroupMembers.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -143,6 +157,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_SMSGroupMembers(SMSGroupMember entity)
+		{
+			this.SendPropertyChanging();
+			entity.SMSGroup = this;
+		}
+
+		private void detach_SMSGroupMembers(SMSGroupMember entity)
+		{
+			this.SendPropertyChanging();
+			entity.SMSGroup = null;
+		}
+
+		
 	}
 
 }

@@ -1,4 +1,6 @@
 ﻿$(function () {
+    var currentDiv = null;
+    
     CKEDITOR.replace('htmleditor', {
         height: 400,
         autoParagraph: false,
@@ -61,7 +63,6 @@
                 $('#progress').html("<h2>Working...</h2>");
             }
         });
-    var currentDiv = null;
 
     //$("#popupeditor").dialog({ autoOpen: false, modal: true, closeOnEscape: true, title: "Edit Template Section", minWidth: 600, minHeight: 400 });
     $("#askName").dialog({ autoOpen: false, modal: true, closeOnEscape: true, title: "Save Draft", resizable: false, width: 'auto' });
@@ -98,10 +99,10 @@
             var d = $("#askName");
             d.dialog('open');
         } else {
-            clearTemplateClass();
+            $.clearTemplateClass();
             $("#body").val($("#tempateBody").html());
             $("#name").val($("#newName").val());
-            addTemplateClass();
+            $.addTemplateClass();
 
             $("#SendEmail").attr("action", "/Email/SaveDraft");
             $("#SendEmail").submit();
@@ -109,10 +110,10 @@
     });
 
     $("#SaveDraftButton").click(function () {
-        clearTemplateClass();
+        $.clearTemplateClass();
         $("#body").val($("#tempateBody").html());
         $("#name").val($("#newName").val());
-        addTemplateClass();
+        $.addTemplateClass();
 
         $("#SendEmail").attr("action", "/Email/SaveDraft");
         $("#SendEmail").submit();
@@ -122,9 +123,9 @@
         var d = $("#progress");
         d.dialog('open');
 
-        clearTemplateClass();
+        $.clearTemplateClass();
         $("#body").val($("#tempateBody").html());
-        addTemplateClass();
+        $.addTemplateClass();
 
         var q = $("#SendEmail").serialize();
 
@@ -137,11 +138,19 @@
         });
     });
 
+    $.removeButtons = function () {
+        $("#controlButtons").remove();
+    };
+
     $.hClickAdd = function (e) {
         $.removeButtons();
         parentTR = $(currentHover).parent();
-        $(parentTR).after("<tr><td bvrepeatadd>" + $(currentHover).html() + "</td></tr>");
-        $('td[bvrepeatadd]').mouseenter($.hAddHoverIn).mouseleave($.hHoverOut);
+        var dup = $(currentHover).clone();
+        $(parentTR).after($(dup));
+        dup.wrap("<tr></tr>");
+        dup.attr("bvrepeatadd", "");
+        dup.removeAttr("bvrepeat");
+        dup.mouseenter($.hAddHoverIn).mouseleave($.hHoverOut);
         $('div[bvedit]').bind('click', $.hClick).addClass("ti");
     };
 
@@ -154,7 +163,7 @@
         ev.stopPropagation();
     };
     $.clearTemplateClass = function () {
-        removeButtons();
+        $.removeButtons();
         $("div[bvedit]").removeClass();
         $("div[bveditadd]").removeClass();
     };
@@ -162,10 +171,6 @@
     $.addTemplateClass = function () {
         $("div[bveditadd]").addClass("ti");
         $("div[bvedit]").addClass("ti");
-    };
-
-    $.removeButtons = function () {
-        $("#controlButtons").remove();
     };
 
     $.hHoverOut = function (ev) {

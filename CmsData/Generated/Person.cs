@@ -237,7 +237,7 @@ namespace CmsData
 		
 		private string _PrimaryCountry;
 		
-		private byte _ReceiveSMS;
+		private bool _ReceiveSMS;
 		
 		private string _Name2;
 		
@@ -706,7 +706,7 @@ namespace CmsData
 		partial void OnPrimaryCountryChanging(string value);
 		partial void OnPrimaryCountryChanged();
 		
-		partial void OnReceiveSMSChanging(byte value);
+		partial void OnReceiveSMSChanging(bool value);
 		partial void OnReceiveSMSChanged();
 		
 		partial void OnName2Changing(string value);
@@ -3334,8 +3334,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ReceiveSMS", UpdateCheck=UpdateCheck.Never, Storage="_ReceiveSMS", DbType="tinyint NOT NULL")]
-		public byte ReceiveSMS
+		[Column(Name="ReceiveSMS", UpdateCheck=UpdateCheck.Never, Storage="_ReceiveSMS", DbType="bit NOT NULL")]
+		public bool ReceiveSMS
 		{
 			get { return this._ReceiveSMS; }
 
