@@ -5,6 +5,7 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CmsData;
@@ -28,7 +29,8 @@ namespace CmsWeb.Areas.Main.Models.Other
                                    Approvals = (from a in v.VoluteerApprovalIds
                                                 select a.VolunteerCode).ToList(),
                                    NonApprovals = (from n in DbUtil.Db.VolunteerCodes
-                                                   where !v.VoluteerApprovalIds.Select(vv => vv.ApprovaiId).Contains(n.Id)
+                                                   where !v.VoluteerApprovalIds.Select(vv => vv.ApprovalId).Contains(n.Id)
+                                                   where n.Id > 0
                                                    select n).ToList()
                                };
             var i = q.SingleOrDefault() ?? new 
@@ -50,7 +52,7 @@ namespace CmsWeb.Areas.Main.Models.Other
             return vol;
         }
 
-        internal void Update(System.DateTime processDate, int statusId, string comments, List<int> approvals)
+        internal void Update(DateTime? processDate, int statusId, string comments, List<int> approvals)
         {
             V.ProcessedDate = processDate;
             V.StatusId = statusId;
@@ -62,7 +64,7 @@ namespace CmsWeb.Areas.Main.Models.Other
                        where v == null
                        select a;
             foreach (var a in adds)
-                V.VoluteerApprovalIds.Add(new VoluteerApprovalId { ApprovaiId = a });
+                V.VoluteerApprovalIds.Add(new VoluteerApprovalId { ApprovalId = a });
 
             var removes = from b in Approvals
                        join a in approvals on b.Id equals a into j

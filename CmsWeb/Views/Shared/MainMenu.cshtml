@@ -194,12 +194,8 @@
                     <ul>
                         @if (admin)
                         {
-                            <li><a href="/Manage/Users/Index">
-                                    Users
-                                </a></li>
-                            <li><a href="/Setup/Program/">
-                                    Programs
-                                </a> </li>
+                            <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                            <li>@Html.ActionLink("Programs", "Index", "Program")</li>
                             <li><a href="/Setup/Division/">
                                     Divisions
                                 </a></li>

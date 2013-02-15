@@ -152,6 +152,7 @@ namespace CmsWeb.Models.PersonPage
             p.UpdateValue(psb, "EmailAddress2", EmailAddress2);
             p.UpdateValue(psb, "SendEmailAddress1", SendEmailAddress1);
             p.UpdateValue(psb, "SendEmailAddress2", SendEmailAddress2);
+            p.UpdateValue(psb, "ReceiveSMS", ReceiveSMS);
             p.UpdateValue(psb, "FirstName", First);
             p.UpdateValue(psb, "LastName", Last);
             p.UpdateValue(psb, "AltName", AltName);

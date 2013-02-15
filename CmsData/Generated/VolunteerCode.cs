@@ -153,7 +153,7 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
-   		[Association(Name="FK_VoluteerApprovalIds_VolunteerCodes", Storage="_VoluteerApprovalIds", OtherKey="ApprovaiId")]
+   		[Association(Name="FK_VoluteerApprovalIds_VolunteerCodes", Storage="_VoluteerApprovalIds", OtherKey="ApprovalId")]
    		public EntitySet< VoluteerApprovalId> VoluteerApprovalIds
    		{
    		    get { return this._VoluteerApprovalIds; }
