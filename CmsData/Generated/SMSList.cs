@@ -27,6 +27,8 @@ namespace CmsData
 		
 		private int _SendGroupID;
 		
+		private string _Title;
+		
 		private string _Message;
 		
 		private int _SentSMS;
@@ -34,7 +36,13 @@ namespace CmsData
 		private int _SentNone;
 		
    		
+   		private EntitySet< SMSItem> _SMSItems;
+		
     	
+		private EntityRef< Person> _Person;
+		
+		private EntityRef< SMSGroup> _SMSGroup;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -57,6 +65,9 @@ namespace CmsData
 		partial void OnSendGroupIDChanging(int value);
 		partial void OnSendGroupIDChanged();
 		
+		partial void OnTitleChanging(string value);
+		partial void OnTitleChanged();
+		
 		partial void OnMessageChanging(string value);
 		partial void OnMessageChanged();
 		
@@ -70,6 +81,12 @@ namespace CmsData
 		public SMSList()
 		{
 			
+			this._SMSItems = new EntitySet< SMSItem>(new Action< SMSItem>(this.attach_SMSItems), new Action< SMSItem>(this.detach_SMSItems)); 
+			
+			
+			this._Person = default(EntityRef< Person>); 
+			
+			this._SMSGroup = default(EntityRef< SMSGroup>); 
 			
 			OnCreated();
 		}
@@ -131,6 +148,9 @@ namespace CmsData
 				if (this._SenderID != value)
 				{
 				
+					if (this._Person.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnSenderIDChanging(value);
 					this.SendPropertyChanging();
 					this._SenderID = value;
@@ -175,11 +195,36 @@ namespace CmsData
 				if (this._SendGroupID != value)
 				{
 				
+					if (this._SMSGroup.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnSendGroupIDChanging(value);
 					this.SendPropertyChanging();
 					this._SendGroupID = value;
 					this.SendPropertyChanged("SendGroupID");
 					this.OnSendGroupIDChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Title", UpdateCheck=UpdateCheck.Never, Storage="_Title", DbType="varchar(150) NOT NULL")]
+		public string Title
+		{
+			get { return this._Title; }
+
+			set
+			{
+				if (this._Title != value)
+				{
+				
+                    this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
 				}
 
 			}
@@ -257,10 +302,104 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_SMSItems_SMSList", Storage="_SMSItems", OtherKey="ListID")]
+   		public EntitySet< SMSItem> SMSItems
+   		{
+   		    get { return this._SMSItems; }
+
+			set	{ this._SMSItems.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_SMSList_People", Storage="_Person", ThisKey="SenderID", IsForeignKey=true)]
+		public Person Person
+		{
+			get { return this._Person.Entity; }
+
+			set
+			{
+				Person previousValue = this._Person.Entity;
+				if (((previousValue != value) 
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Person.Entity = null;
+						previousValue.SMSLists.Remove(this);
+					}
+
+					this._Person.Entity = value;
+					if (value != null)
+					{
+						value.SMSLists.Add(this);
+						
+						this._SenderID = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._SenderID = default(int);
+						
+					}
+
+					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_SMSList_SMSGroups", Storage="_SMSGroup", ThisKey="SendGroupID", IsForeignKey=true)]
+		public SMSGroup SMSGroup
+		{
+			get { return this._SMSGroup.Entity; }
+
+			set
+			{
+				SMSGroup previousValue = this._SMSGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._SMSGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._SMSGroup.Entity = null;
+						previousValue.SMSLists.Remove(this);
+					}
+
+					this._SMSGroup.Entity = value;
+					if (value != null)
+					{
+						value.SMSLists.Add(this);
+						
+						this._SendGroupID = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._SendGroupID = default(int);
+						
+					}
+
+					this.SendPropertyChanged("SMSGroup");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
@@ -278,6 +417,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_SMSItems(SMSItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.SMSList = this;
+		}
+
+		private void detach_SMSItems(SMSItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.SMSList = null;
+		}
+
+		
 	}
 
 }

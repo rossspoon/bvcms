@@ -1,0 +1,103 @@
+﻿@using CmsWeb;
+@model CmsWeb.Models.SMSModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".datepicker").datepicker();
+            $(".bt").button();
+
+            $("form a.submitbutton").on("click", function (event) {
+                $("#form").submit();
+            });
+
+            $('a.sortable').on("click", function () {
+                var newsort = $(this).text();
+                var sort = $("#Sort");
+                var dir = $("#Direction");
+
+                if ($(sort).val() == newsort && $(dir).val() == 'asc')
+                    $(dir).val('desc');
+                else
+                    $(dir).val('asc');
+
+                $(sort).val(newsort);
+                $("#form").submit();
+                return false;
+            });
+        });
+
+        $.gotoPage = function (e, pg) {
+            $("#form").submit();
+        };
+
+        $.setPageSize = function (e) {
+            $("#form").submit();
+        };
+    </script>
+}
+<form id="form" method="post" action="/Manage/SMS/Index">
+<div class="roundbox floatleft">
+<h2>SMS Messages</h2>
+<table cellspacing="5">
+<tr>
+    <td align="right">Start Date:</td>
+    <td>@Html.DatePicker("start")</td>
+</tr>
+<tr>
+    <td align="right">End Date:</td>
+    <td>@Html.DatePicker("end")</td>
+</tr>
+<tr>
+    <td align="right" colspan="2">
+        <a href="#" class="submitbutton bt">Filter</a>
+        <a href="/Manage/Emails" class="bt">Clear</a>
+    </td>
+</tr>
+</table>
+</div>
+<div class="floatclear"></div>
+<br />
+<table class="grid" cellpadding="4">
+    <thead>
+    <tr>
+        <th align="center"><a href="#" class="sortable">Sent/Scheduled</a></th>
+        <th><a href="#" class="sortable">From</a></th>
+        <th><a href="#" class="sortable">Title</a></th>
+        <th align="center"><a href="#" class="sortable">Included</a></th>
+        <th align="center"><a href="#" class="sortable">Excluded</a></th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var i in Model.GetList())
+{
+    <tr>
+        <td align="center">
+            @i.Created
+        </td>
+        <td>
+            @i.Person.Name
+        </td>
+        <td>
+            @i.Title
+        </td>
+        <td align="center">
+            @i.SentSMS
+        </td>
+        <td align="center">
+            @i.SentNone
+        </td>
+        <td align="center">
+            <a href="/Manage/SMS/Details/@i.Id">Details</a>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+@{Html.RenderPartial("Pager2", Model.Pager);}
+</form>

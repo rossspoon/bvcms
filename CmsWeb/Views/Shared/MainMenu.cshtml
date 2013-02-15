@@ -250,6 +250,12 @@
                                     Emails
                                 </a> </li>
                         }
+                        @if (admin)
+                        {
+                            <li><a href="/Manage/SMS">
+                                    SMS Messages
+                                </a> </li>
+                        }
                         @if (admin || finance)
                         {
                             <li><a href="/Setup/Lookup/">

@@ -5,12 +5,18 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
 
     var groups = TwilioHelper.getAvailableLists(Util.UserId);
+    var count = TwilioHelper.getSendCount(ViewBag.QBID);
 }
 <br />
+<b>Sending to @(count) @( count == 1 ? "person" : "people" )</b>
 <form action="/SMS/Send" method="post">
     <input type="hidden" name="iQBID" value="@ViewBag.QBID" /><br />
     @Html.DropDownList( "iSendGroup", new SelectList( groups, "ID", "Name" ) )<br />
     <br />
+    <b>Title:</b><br />
+    <input name="sTitle" size="40" /><br />
+    <br />
+    <b>Message:</b><br />
     <textarea name="sMessage" cols="40" rows="4"></textarea><br />
     <br />
     <input type="submit" value="Send SMS" />

@@ -310,10 +310,14 @@
     <Compile Include="Generated\Functions\ContactTypeTotal.cs" />
     <Compile Include="Generated\Functions\FirstTimeGiver.cs" />
     <Compile Include="Generated\Functions\GetTotalContributionsRange.cs" />
+    <Compile Include="Generated\Functions\LastMeeting.cs" />
     <Compile Include="Generated\Functions\RecentAbsent.cs" />
     <Compile Include="Generated\Functions\RecentAttendance.cs" />
+    <Compile Include="Generated\SMSGroup.cs" />
+    <Compile Include="Generated\SMSGroupMember.cs" />
     <Compile Include="Generated\SMSItem.cs" />
     <Compile Include="Generated\SMSList.cs" />
+    <Compile Include="Generated\SMSNumber.cs" />
     <Compile Include="Generated\Views\UserRole.cs" />
     <Compile Include="Generated\VolRequest.cs" />
     <Compile Include="Generated\Functions\GivingCurrentPercentOfFormer.cs" />

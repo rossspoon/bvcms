@@ -1,0 +1,49 @@
+﻿@using CmsData
+@{
+    ViewBag.Title = "Details";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+
+    int ListID = ViewBag.ListID;
+    
+    var l = (from e in DbUtil.Db.SMSLists
+             where e.Id == ListID
+             select e).Single();
+}
+<br />
+<h2>SMS Message Details</h2>
+<a href="/Manage/SMS/Index">Back to list</a><br />
+<br />
+<table class="grid" cellpadding="4">
+    <thead>
+    <tr>
+        <th align="center">Person</th>
+        <th align="center">Number</th>
+        <th align="center">Sent</th>
+        <th align="center">Number</th>
+        <th align="center">Opt-In</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var i in l.SMSItems.OrderBy(e => e.Person.Name).OrderByDescending(e => e.Sent))
+{
+    <tr>
+        <td>
+            @i.Person.Name
+        </td>
+        <td align="center" @( i.NoNumber ? "bgcolor=#FFCCCC" : "" )>
+            @i.Number
+        </td>
+        <td align="center" @( i.Sent ? "bgcolor=#CCFFCC" : "" )>
+            @( i.Sent ? "Yes" : "No" )
+        </td>
+        <td align="center" @( i.NoNumber ? "bgcolor=#FFCCCC" : "" )>
+            @( i.NoNumber ? "No" : "Yes" )
+        </td>
+        <td align="center" @( i.NoOptIn ? "bgcolor=#FFCCCC" : "" )>
+            @( i.NoOptIn ? "No" : "Yes" )
+        </td>
+    </tr>
+}
+    </tbody>
+</table>

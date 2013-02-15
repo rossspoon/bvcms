@@ -237,11 +237,13 @@ namespace CmsData
 		
 		private string _PrimaryCountry;
 		
-		private byte _ReceiveSMS;
+		private bool _ReceiveSMS;
 		
 		private string _Name2;
 		
 		private bool? _DoNotPublishPhones;
+		
+		private bool? _IsDeceased;
 		
    		
    		private EntitySet< Contactee> _contactsHad;
@@ -285,6 +287,10 @@ namespace CmsData
    		private EntitySet< RecReg> _RecRegs;
 		
    		private EntitySet< RecurringAmount> _RecurringAmounts;
+		
+   		private EntitySet< SMSItem> _SMSItems;
+		
+   		private EntitySet< SMSList> _SMSLists;
 		
    		private EntitySet< TagShare> _TagShares;
 		
@@ -704,7 +710,7 @@ namespace CmsData
 		partial void OnPrimaryCountryChanging(string value);
 		partial void OnPrimaryCountryChanged();
 		
-		partial void OnReceiveSMSChanging(byte value);
+		partial void OnReceiveSMSChanging(bool value);
 		partial void OnReceiveSMSChanged();
 		
 		partial void OnName2Changing(string value);
@@ -712,6 +718,9 @@ namespace CmsData
 		
 		partial void OnDoNotPublishPhonesChanging(bool? value);
 		partial void OnDoNotPublishPhonesChanged();
+		
+		partial void OnIsDeceasedChanging(bool? value);
+		partial void OnIsDeceasedChanged();
 		
     #endregion
 		public Person()
@@ -758,6 +767,10 @@ namespace CmsData
 			this._RecRegs = new EntitySet< RecReg>(new Action< RecReg>(this.attach_RecRegs), new Action< RecReg>(this.detach_RecRegs)); 
 			
 			this._RecurringAmounts = new EntitySet< RecurringAmount>(new Action< RecurringAmount>(this.attach_RecurringAmounts), new Action< RecurringAmount>(this.detach_RecurringAmounts)); 
+			
+			this._SMSItems = new EntitySet< SMSItem>(new Action< SMSItem>(this.attach_SMSItems), new Action< SMSItem>(this.detach_SMSItems)); 
+			
+			this._SMSLists = new EntitySet< SMSList>(new Action< SMSList>(this.attach_SMSLists), new Action< SMSList>(this.detach_SMSLists)); 
 			
 			this._TagShares = new EntitySet< TagShare>(new Action< TagShare>(this.attach_TagShares), new Action< TagShare>(this.detach_TagShares)); 
 			
@@ -3329,8 +3342,8 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="ReceiveSMS", UpdateCheck=UpdateCheck.Never, Storage="_ReceiveSMS", DbType="tinyint NOT NULL")]
-		public byte ReceiveSMS
+		[Column(Name="ReceiveSMS", UpdateCheck=UpdateCheck.Never, Storage="_ReceiveSMS", DbType="bit NOT NULL")]
+		public bool ReceiveSMS
 		{
 			get { return this._ReceiveSMS; }
 
@@ -3388,6 +3401,28 @@ namespace CmsData
 					this._DoNotPublishPhones = value;
 					this.SendPropertyChanged("DoNotPublishPhones");
 					this.OnDoNotPublishPhonesChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="IsDeceased", UpdateCheck=UpdateCheck.Never, Storage="_IsDeceased", DbType="bit", IsDbGenerated=true)]
+		public bool? IsDeceased
+		{
+			get { return this._IsDeceased; }
+
+			set
+			{
+				if (this._IsDeceased != value)
+				{
+				
+                    this.OnIsDeceasedChanging(value);
+					this.SendPropertyChanging();
+					this._IsDeceased = value;
+					this.SendPropertyChanged("IsDeceased");
+					this.OnIsDeceasedChanged();
 				}
 
 			}
@@ -3605,6 +3640,26 @@ namespace CmsData
    		    get { return this._RecurringAmounts; }
 
 			set	{ this._RecurringAmounts.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_SMSItems_People", Storage="_SMSItems", OtherKey="PeopleID")]
+   		public EntitySet< SMSItem> SMSItems
+   		{
+   		    get { return this._SMSItems; }
+
+			set	{ this._SMSItems.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_SMSList_People", Storage="_SMSLists", OtherKey="SenderID")]
+   		public EntitySet< SMSList> SMSLists
+   		{
+   		    get { return this._SMSLists; }
+
+			set	{ this._SMSLists.Assign(value); }
 
    		}
 
@@ -4969,6 +5024,32 @@ namespace CmsData
 		}
 
 		private void detach_RecurringAmounts(RecurringAmount entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_SMSItems(SMSItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_SMSItems(SMSItem entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_SMSLists(SMSList entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_SMSLists(SMSList entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

@@ -12,9 +12,9 @@ namespace CmsData
 {
     public class TwilioHelper
     {
-        public const Boolean bTestMode = true;
+        public const Boolean bTestMode = false;
 
-        public static void QueueSMS(int iQBID, int iSendGroupID, string sMessage)
+        public static void QueueSMS(int iQBID, int iSendGroupID, string sTitle, string sMessage)
         {
             var q = DbUtil.Db.PeopleQuery(iQBID);
 
@@ -23,11 +23,41 @@ namespace CmsData
 
             list.Created = DateTime.Now;
             list.SendAt = DateTime.Now;
-            list.SenderID = Util2.CurrentPeopleId;
+            list.SenderID = Util.UserPeopleId ?? 1;
             list.SendGroupID = iSendGroupID;
+            list.Title = sTitle;
             list.Message = sMessage;
 
             DbUtil.Db.SMSLists.InsertOnSubmit(list);
+            DbUtil.Db.SubmitChanges();
+
+            // Load all people but tell why they can or can't be sent to
+
+            foreach (var i in q)
+            {
+                var item = new SMSItem();
+
+                item.ListID = list.Id;
+                item.PeopleID = i.PeopleId;
+
+                if (i.CellPhone != null && i.CellPhone.Length > 0)
+                {
+                    item.Number = i.CellPhone;
+                }
+                else
+                {
+                    item.Number = "";
+                    item.NoNumber = true;
+                }
+
+                if (!i.ReceiveSMS)
+                {
+                    item.NoOptIn = true;
+                }
+
+                DbUtil.Db.SMSItems.InsertOnSubmit(item);
+            }
+
             DbUtil.Db.SubmitChanges();
 
             // Check for how many people have cell numbers and want to receive texts
@@ -38,6 +68,7 @@ namespace CmsData
 
             var countSMS = qSMS.Count();
 
+            /*
             if (countSMS > 0)
             {
                 foreach (var i in qSMS)
@@ -50,9 +81,8 @@ namespace CmsData
 
                     DbUtil.Db.SMSItems.InsertOnSubmit(item);
                 }
-
-                DbUtil.Db.SubmitChanges();
             }
+            */
 
             // Add counts for SMS, e-Mail and none
             list.SentSMS = countSMS;
@@ -79,6 +109,7 @@ namespace CmsData
                 string stSID = sSID;
                 string stToken = sToken;
                 int itListID = iListID;
+                bool btSent = false;
 
                 try
                 {
@@ -101,7 +132,15 @@ namespace CmsData
 
                     foreach (var item in smsItems)
                     {
-                        sendSMS( stSID, stToken, smsGroup[iCount].Number, item.Number, smsList.Message );
+                        if (item.NoNumber || item.NoOptIn) continue;
+
+                        btSent = sendSMS( stSID, stToken, smsGroup[iCount].Number, item.Number, smsList.Message );
+
+                        if (btSent)
+                        {
+                            item.Sent = true;
+                            Db.SubmitChanges();
+                        }
 
                         iCount++;
                         if( iCount >= smsGroup.Count() ) iCount = 0;
@@ -116,21 +155,24 @@ namespace CmsData
         }
 
 
-        public static void sendSMS( String sSID, String sToken, String sFrom, String sTo, String sBody )
+        public static bool sendSMS( String sSID, String sToken, String sFrom, String sTo, String sBody )
         {
             // Needs API keys. Removed to keep private
 
             if (bTestMode)
             {
                 Debug.WriteLine("Message sending to " + sTo + " from " + sFrom + ": " + sBody + " --- via " + sSID + " / " + sToken);
+                return true;
             }
             else
             {
                 var twilio = new TwilioRestClient(sSID, sToken);
                 var msg = twilio.SendSmsMessage(sFrom, sTo, sBody);
-                var status = msg.Status;
+                if (msg.Status != "failed") return true;
+                else return false;
             }
         }
+
         public static List<IncomingPhoneNumber> getNumberList()
         {
             var twilio = new TwilioRestClient( getSID(), getToken() );
@@ -190,6 +232,16 @@ namespace CmsData
                           select e).ToList();
 
             return groups;
+        }
+
+        public static int getSendCount(int iQBID)
+        {
+            var q = DbUtil.Db.PeopleQuery(iQBID);
+
+            return (from p in q
+                    where p.CellPhone != null
+                    where p.ReceiveSMS == true
+                    select p).Count();
         }
 
         public static string getSID()

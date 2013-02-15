@@ -161,6 +161,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Rackspace.CloudFiles.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -262,9 +266,11 @@
     <Compile Include="Areas\Finance\Models\BundleModel.cs" />
     <Compile Include="Areas\Main\AreaRegistration.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddToOrgFromTagController.cs" />
+    <Compile Include="Areas\Main\Controllers\MeetingsController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDirectoryController.cs" />
     <Compile Include="Areas\Main\Controllers\PeopleSearchController.cs" />
     <Compile Include="Areas\Main\Controllers\MemberDocsController.cs" />
+    <Compile Include="Areas\Main\Controllers\SMSController.cs" />
     <Compile Include="Areas\Main\Controllers\VolunteeringController.cs" />
     <Compile Include="Areas\Main\Models\Avery\AverySpacerCell173.cs" />
     <Compile Include="Areas\Main\Models\Avery\EmployerAddress.cs" />
@@ -285,6 +291,7 @@
     <Compile Include="Areas\Main\Models\Report\VisitsAbsentsResult2.cs" />
     <Compile Include="Areas\Main\Models\Report\RallyRollsheetResult.cs" />
     <Compile Include="Areas\Manage\Controllers\CheckinTimeController.cs" />
+    <Compile Include="Areas\Manage\Controllers\SMSController.cs" />
     <Compile Include="Areas\Manage\Controllers\UploadPeopleController.cs" />
     <Compile Include="Areas\Finance\Controllers\StatementsController.cs" />
     <Compile Include="Areas\Main\Controllers\OrgChildrenController.cs" />
@@ -295,6 +302,7 @@
     <Compile Include="Areas\Manage\Controllers\UsersController.cs" />
     <Compile Include="Areas\Manage\Models\CheckinTimeModel.cs" />
     <Compile Include="Areas\Manage\Models\ContentModel.cs" />
+    <Compile Include="Areas\Manage\Models\SMSModel.cs" />
     <Compile Include="Areas\Manage\Models\UsersModel.cs" />
     <Compile Include="Areas\Manage\Models\UploadPeopleModel.cs" />
     <Compile Include="Areas\Manage\Models\AccountModel.cs" />
@@ -444,6 +452,7 @@
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
+    <Compile Include="Areas\Setup\Controllers\TwilioController.cs" />
     <Compile Include="Code\BundleConfig.cs" />
     <Compile Include="Code\BundleModel.cs">
       <SubType>Code</SubType>
@@ -1399,6 +1408,21 @@
     <Content Include="Areas\People\Views\Person\UserDialog.cshtml" />
     <Content Include="Areas\People\Views\Person\UserInfoGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\VolunteerDisplay.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\Index.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\NumberDialog.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\GroupDialog.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\UserDialog.cshtml" />
+    <Content Include="Areas\Setup\Views\Twilio\RemoveDialog.cshtml" />
+    <Content Include="Areas\Main\Views\Meetings\Calendar.cshtml" />
+    <Content Include="Areas\Main\Views\Meetings\ManageArea.cshtml" />
+    <Content Include="Areas\Main\Views\Volunteering\DialogEdit.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Main\Views\SMS\Index.cshtml" />
+    <Content Include="Areas\Main\Views\SMS\Options.cshtml" />
+    <Content Include="Areas\Main\Views\SMS\Send.cshtml" />
+    <Content Include="Areas\Manage\Views\SMS\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\SMS\Details.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

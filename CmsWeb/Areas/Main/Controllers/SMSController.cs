@@ -21,9 +21,9 @@ namespace CmsWeb.Areas.Main.Controllers
             return View();
         }
 
-        public ActionResult Send(int iQBID, int iSendGroup, string sMessage)
+        public ActionResult Send(int iQBID, int iSendGroup, string sTitle, string sMessage)
         {
-            TwilioHelper.QueueSMS(iQBID, iSendGroup, sMessage);
+            TwilioHelper.QueueSMS(iQBID, iSendGroup, sTitle, sMessage);
 
             ViewBag.QBID = iQBID;
             return View();

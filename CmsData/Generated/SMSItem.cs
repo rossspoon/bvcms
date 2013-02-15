@@ -27,8 +27,16 @@ namespace CmsData
 		
 		private bool _Sent;
 		
+		private bool _NoNumber;
+		
+		private bool _NoOptIn;
+		
    		
     	
+		private EntityRef< Person> _Person;
+		
+		private EntityRef< SMSList> _SMSList;
+		
 	#endregion
 	
     #region Extensibility Method Definitions
@@ -51,10 +59,20 @@ namespace CmsData
 		partial void OnSentChanging(bool value);
 		partial void OnSentChanged();
 		
+		partial void OnNoNumberChanging(bool value);
+		partial void OnNoNumberChanged();
+		
+		partial void OnNoOptInChanging(bool value);
+		partial void OnNoOptInChanged();
+		
     #endregion
 		public SMSItem()
 		{
 			
+			
+			this._Person = default(EntityRef< Person>); 
+			
+			this._SMSList = default(EntityRef< SMSList>); 
 			
 			OnCreated();
 		}
@@ -94,6 +112,9 @@ namespace CmsData
 				if (this._ListID != value)
 				{
 				
+					if (this._SMSList.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
                     this.OnListIDChanging(value);
 					this.SendPropertyChanging();
 					this._ListID = value;
@@ -115,6 +136,9 @@ namespace CmsData
 			{
 				if (this._PeopleID != value)
 				{
+				
+					if (this._Person.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnPeopleIDChanging(value);
 					this.SendPropertyChanging();
@@ -172,6 +196,50 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="NoNumber", UpdateCheck=UpdateCheck.Never, Storage="_NoNumber", DbType="bit NOT NULL")]
+		public bool NoNumber
+		{
+			get { return this._NoNumber; }
+
+			set
+			{
+				if (this._NoNumber != value)
+				{
+				
+                    this.OnNoNumberChanging(value);
+					this.SendPropertyChanging();
+					this._NoNumber = value;
+					this.SendPropertyChanged("NoNumber");
+					this.OnNoNumberChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="NoOptIn", UpdateCheck=UpdateCheck.Never, Storage="_NoOptIn", DbType="bit NOT NULL")]
+		public bool NoOptIn
+		{
+			get { return this._NoOptIn; }
+
+			set
+			{
+				if (this._NoOptIn != value)
+				{
+				
+                    this.OnNoOptInChanging(value);
+					this.SendPropertyChanging();
+					this._NoOptIn = value;
+					this.SendPropertyChanged("NoOptIn");
+					this.OnNoOptInChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -180,6 +248,90 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_SMSItems_People", Storage="_Person", ThisKey="PeopleID", IsForeignKey=true)]
+		public Person Person
+		{
+			get { return this._Person.Entity; }
+
+			set
+			{
+				Person previousValue = this._Person.Entity;
+				if (((previousValue != value) 
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Person.Entity = null;
+						previousValue.SMSItems.Remove(this);
+					}
+
+					this._Person.Entity = value;
+					if (value != null)
+					{
+						value.SMSItems.Add(this);
+						
+						this._PeopleID = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._PeopleID = default(int);
+						
+					}
+
+					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_SMSItems_SMSList", Storage="_SMSList", ThisKey="ListID", IsForeignKey=true)]
+		public SMSList SMSList
+		{
+			get { return this._SMSList.Entity; }
+
+			set
+			{
+				SMSList previousValue = this._SMSList.Entity;
+				if (((previousValue != value) 
+							|| (this._SMSList.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._SMSList.Entity = null;
+						previousValue.SMSItems.Remove(this);
+					}
+
+					this._SMSList.Entity = value;
+					if (value != null)
+					{
+						value.SMSItems.Add(this);
+						
+						this._ListID = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._ListID = default(int);
+						
+					}
+
+					this.SendPropertyChanged("SMSList");
+				}
+
+			}
+
+		}
+
+		
 	#endregion
 	
 		public event PropertyChangingEventHandler PropertyChanging;
