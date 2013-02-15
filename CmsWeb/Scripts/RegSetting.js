@@ -37,21 +37,26 @@
             return false;
         var name = $(this).attr("tb");
         ev.preventDefault();
-        $("#editor").val($("#" + name).val());
+        CKEDITOR.instances['editor'].setData($("#" + name).val());
         dimOn();
         $("#EditorDialog").center().show();
-        $("#saveedit").off("click").on("click", function() {
-            var v = $("#editor").val();
+        $("#saveedit").off("click").on("click", function (ev) {
+            ev.preventDefault();
+            var v = CKEDITOR.instances['editor'].getData();
             $("#" + name).val(v);
             $("#" + name + "_ro").html(v);
+            CKEDITOR.instances['editor'].setData('');
             $('#EditorDialog').hide("close");
             dimOff();
+            return false;
         });
         return false;
     });
-    $("#canceledit").live("click", function() {
+    $("#canceledit").live("click", function (ev) {
+        ev.preventDefault();
         $('#EditorDialog').hide("close");
         dimOff();
+        return false;
     });
 });
 CKEDITOR.on('dialogDefinition', function (ev) {

@@ -43,7 +43,7 @@ namespace CmsWeb
                 "~/Content/styles/Dialog.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                "~/Content/js/jquery-1.9.0.js"
+                "~/Content/js/jquery-1.9.1.js"
                 , "~/Content/js/jquery-migrate-1.1.0.js"
                 , "~/Content/js/jquery-ui-1.10.0.custom.js"
                 //, "~/Content/js/dialog-patch.js"
@@ -67,7 +67,7 @@ namespace CmsWeb
                 , "~/Scripts/headermenu.js"
                             ));
             bundles.Add(new ScriptBundle("~/bundles/main-js").Include(
-                "~/Content/js/jquery-1.9.0.js"
+                "~/Content/js/jquery-1.9.1.js"
                 , "~/Content/js/jquery-migrate-1.1.0.js"
                 , "~/Content/js/jquery-ui-1.10.0.custom.js"
                 //, "~/Content/js/dialog-patch.js"
@@ -95,7 +95,7 @@ namespace CmsWeb
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/onlineregister-js").Include(
-                "~/Content/js/jquery-1.9.0.js",
+                "~/Content/js/jquery-1.9.1.js",
                 "~/Content/js/jquery-ui-1.10.0.custom.js",
                 "~/Content/js/jquery.validate.js",
                 "~/Content/js/jquery.idle-timer.js",
@@ -122,7 +122,7 @@ namespace CmsWeb
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/edit-js").Include(
-                "~/ckeditor/adapters/jquery.js",
+                "~/ckeditor2/adapters/jquery.js",
                 "~/Content/js/jquery-ui-dialog-patch.js",
                 "~/Scripts/Edit.js"
                             ));

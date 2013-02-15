@@ -70,13 +70,16 @@ var CKBUILDER_CONFIG = {
 		'listblock' : 1,
 		'fakeobjects' : 1,
 		'menubutton' : 1,
-		'font' : 1,
-		'liststyle' : 1,
-		'selectall' : 1,
 		'panelbutton' : 1,
 		'colorbutton' : 1,
-		'xml' : 1,
-		'preview' : 1
+		'find' : 1,
+		'font' : 1,
+		'justify' : 1,
+		'liststyle' : 1,
+		'mediaembed' : 1,
+		'preview' : 1,
+		'selectall' : 1,
+		'xml' : 1
 	},
 	languages : {
 		'en' : 1,

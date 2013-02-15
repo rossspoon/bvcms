@@ -23,7 +23,6 @@
         });
         return false;
     });
-    $(".wrapper .item").transpose();
     $(".tip").tooltip({ showBody: "|", showURL: false });
 });
 

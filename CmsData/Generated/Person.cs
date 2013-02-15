@@ -304,6 +304,8 @@ namespace CmsData
 		
    		private EntitySet< VolunteerForm> _VolunteerForms;
 		
+   		private EntitySet< VoluteerApprovalId> _VoluteerApprovalIds;
+		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
    		private EntitySet< BackgroundCheck> _People;
@@ -779,6 +781,8 @@ namespace CmsData
 			this._Volunteers = new EntitySet< Volunteer>(new Action< Volunteer>(this.attach_Volunteers), new Action< Volunteer>(this.detach_Volunteers)); 
 			
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
+			
+			this._VoluteerApprovalIds = new EntitySet< VoluteerApprovalId>(new Action< VoluteerApprovalId>(this.attach_VoluteerApprovalIds), new Action< VoluteerApprovalId>(this.detach_VoluteerApprovalIds)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
@@ -3716,6 +3720,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_VoluteerApprovalIds_People", Storage="_VoluteerApprovalIds", OtherKey="PeopleId")]
+   		public EntitySet< VoluteerApprovalId> VoluteerApprovalIds
+   		{
+   		    get { return this._VoluteerApprovalIds; }
+
+			set	{ this._VoluteerApprovalIds.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="ORGANIZATION_MEMBERS_PPL_FK", Storage="_OrganizationMembers", OtherKey="PeopleId")]
    		public EntitySet< OrganizationMember> OrganizationMembers
    		{
@@ -5100,6 +5114,19 @@ namespace CmsData
 		}
 
 		private void detach_VolunteerForms(VolunteerForm entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_VoluteerApprovalIds(VoluteerApprovalId entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_VoluteerApprovalIds(VoluteerApprovalId entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

@@ -4,7 +4,7 @@
     CKEDITOR.replace('htmleditor', {
         height: 400,
         autoParagraph: false,
-        fullPage: true,
+        fullPage: false,
         filebrowserUploadUrl: '/Account/CKEditorUpload/',
         filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
     });
@@ -190,7 +190,8 @@
     };
 
     $.updateDiv = function () {
-        $(currentDiv).html($('#htmleditor').ckeditorGet().getData());
+        var h = CKEDITOR.instances['htmleditor'].getData();
+        $(currentDiv).html(h);
         $('#popupeditor').hide("close");
     };
 

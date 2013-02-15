@@ -1,0 +1,44 @@
+﻿$(function () {
+
+    var submitDialog;
+
+    $(".showSubmitDialog").click(function (ev) {
+        ev.preventDefault();
+        var id = $(this).attr("cid");
+        submitDialog = $("#dialogHolder");
+        $.post("/Volunteering/DialogSubmit/" + id, null, function(data) {
+            submitDialog.html(data).dialog({ modal: true, width: 'auto', title: 'Submit Check' }).dialog('open');
+        });
+    });
+
+    $(".showCreateDialog").click(function (ev) {
+        ev.preventDefault();
+        var id = $(this).attr("pid");
+        var type = $(this).attr("ctype");
+        submitDialog = $("#dialogHolder");
+        $.post("/Volunteering/DialogType/" + id + "?type=" + type, null, function(data) {
+            submitDialog.html(data).dialog({
+                modal: true,
+                width: 'auto',
+                title: 'Select Check Type'
+            }).dialog('open');
+        });
+    });
+
+    $("#showEditDialog").click(function (ev) {
+        ev.preventDefault();
+        var id = $(this).attr("cid");
+        submitDialog = $("#dialogHolder");
+        $.post("/Volunteering/DialogEdit/" + id, null, function(data) {
+            submitDialog.html(data).dialog({ modal: true, width: 'auto', title: 'Edit Check' }).dialog('open');
+        });
+    });
+
+    $("#closeSubmitDialog").live("click", function (ev) {
+        ev.preventDefault();
+        $(submitDialog).dialog("close");
+    });
+});
+function confirmDelete() {
+    return confirm("Are you sure you want to delete this file?");
+}

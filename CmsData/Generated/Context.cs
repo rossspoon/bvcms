@@ -598,6 +598,10 @@ namespace CmsData
         partial void UpdateVolunteerForm(VolunteerForm instance);
         partial void DeleteVolunteerForm(VolunteerForm instance);
         
+        partial void InsertVoluteerApprovalId(VoluteerApprovalId instance);
+        partial void UpdateVoluteerApprovalId(VoluteerApprovalId instance);
+        partial void DeleteVoluteerApprovalId(VoluteerApprovalId instance);
+        
         partial void InsertWord(Word instance);
         partial void UpdateWord(Word instance);
         partial void DeleteWord(Word instance);
@@ -1515,6 +1519,12 @@ namespace CmsData
 		public Table< VolunteerForm> VolunteerForms
 		{
 			get	{ return this.GetTable< VolunteerForm>(); }
+
+		}
+
+		public Table< VoluteerApprovalId> VoluteerApprovalIds
+		{
+			get	{ return this.GetTable< VoluteerApprovalId>(); }
 
 		}
 

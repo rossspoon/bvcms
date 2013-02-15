@@ -49,7 +49,7 @@
 
     CKEDITOR.replace('Body', {
         height: 400,
-        fullPage: true,
+        fullPage: false,
         filebrowserUploadUrl: '/Account/CKEditorUpload/',
         filebrowserImageUploadUrl: '/Account/CKEditorUpload/' 
     });

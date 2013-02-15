@@ -67,7 +67,7 @@
             </tr>
             <tr>
                 <td class="right" style="background-color:#EFF3FB; font-weight:bold;">User:</td>
-                <td><input name="sUser" size="12" /></td>
+                <td><input name="sUser" size="12" value="@DbUtil.Db.Setting("PMMUser", "")"/></td>
             </tr>
             <tr>
                 <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Password:</td>
@@ -75,7 +75,7 @@
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
-                <td colspan="2" class="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input type="button" value="Cancel" onclick="closeSubmitDialog();" /></td>
+                <td colspan="2" class="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input id="closeSubmitDialog" type="button" value="Cancel"  /></td>
             </tr>
         </table>
     </form>

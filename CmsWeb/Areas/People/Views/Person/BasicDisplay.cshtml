@@ -51,7 +51,7 @@
         </tr>
         <tr>
             <th>Cell Phone:</th>
-            <td><span title="Receive text messages">@Html.CheckBoxReadonly( (Model.ReceiveSMS > 0) )</span>
+            <td><span title="Receive text messages">@Html.CheckBoxReadonly( (Model.ReceiveSMS) )</span>
                 @Model.CellPhone.FmtFone()</td>
         </tr>
         <tr>

@@ -293,18 +293,18 @@ namespace CmsData
 				if (frrecreg.ActiveInAnotherChurch.HasValue)
 					torecreg.ActiveInAnotherChurch = frrecreg.ActiveInAnotherChurch;
 			}
-			var mg = DbUtil.Db.ManagedGivings.FirstOrDefault(mm => mm.PeopleId == otherid);
+			var mg = Db.ManagedGivings.FirstOrDefault(mm => mm.PeopleId == otherid);
 			if (mg != null)
 				foreach (var v in this.ManagedGivings)
 				{
-					var qq = from ra in DbUtil.Db.RecurringAmounts
+					var qq = from ra in Db.RecurringAmounts
 							 where ra.PeopleId == PeopleId
 							 select ra;
 					foreach (var ra in qq)
 						ra.PeopleId = otherid;
 					v.PeopleId = otherid;
 				}
-			var pi = DbUtil.Db.PaymentInfos.FirstOrDefault(mm => mm.PeopleId == otherid);
+			var pi = Db.PaymentInfos.FirstOrDefault(mm => mm.PeopleId == otherid);
 			if (pi != null)
 				foreach (var i in PaymentInfos)
 					i.PeopleId = otherid;

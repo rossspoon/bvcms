@@ -1059,8 +1059,8 @@ namespace CmsData
                             Body = def,
                             TypeID = ContentTypeId
                         };
-                DbUtil.Db.Contents.InsertOnSubmit(c);
-                DbUtil.Db.SubmitChanges();
+                Contents.InsertOnSubmit(c);
+                SubmitChanges();
 			}
 			return c.Body;
 		}
