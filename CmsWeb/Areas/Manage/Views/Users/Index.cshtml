@@ -19,9 +19,9 @@
 		<tr><td colspan="2">
     		<h2>Users</h2>
 			</td></tr>
-		<tr><td align="right">Name/Username:</td><td>@Html.TextBox("name")</td></tr>
-		<tr><td align="right">Roles:</td><td>@Html.ListBoxFor(x => x.Role, Model.Roles(), new { style = "display: none" })</td></tr>
-	    <tr><td align="right" colspan="2">
+		<tr><td class="right">Name/Username:</td><td>@Html.TextBox("name")</td></tr>
+		<tr><td class="right">Roles:</td><td>@Html.ListBoxFor(x => x.Role, Model.Roles(), new { style = "display: none" })</td></tr>
+	    <tr><td class="right" colspan="2">
 	            <a id="clear" href="#" class="bt">Clear</a>
 	            <a id="search" href="/Manage/Users/Results" class="submitbutton bt blue">Search</a>
 	        </td>

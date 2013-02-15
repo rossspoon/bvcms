@@ -34,6 +34,9 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			if (!id.HasValue)
 				return Content("no id");
+            if (DbUtil.Db.UserPreference("newlook3", "false").ToBool()
+                && DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
+                return Redirect(Request.RawUrl.ToLower().Replace("person", "people/person"));
 			var m = new PersonModel(id);
 			if (User.IsInRole("Access"))
 			{

@@ -13,7 +13,7 @@
             window.location.reload();
         }
     });
-    $('a.addfromtag').live("click", function (e) {
+    $('body').on("click", 'a.addfromtag', function (e) {
         e.preventDefault();
         var d = $('#AddFromTag');
         $('iframe', d).attr("src", this.href);
@@ -266,12 +266,12 @@
             }
         }
     });
-    $("#newextravalue").live("click", function (ev) {
+    $("body").on("click", '#newextravalue', function (ev) {
         ev.preventDefault();
         var d = $('#newvalueform');
         d.dialog("open");
     });
-    $("a.deleteextra").live("click", function (ev) {
+    $("body").on("click", 'a.deleteextra', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))
             $.post("/Meeting/DeleteExtra/" + $("#meetingid").val(), { field: $(this).attr("field") }, function (ret) {
@@ -312,7 +312,7 @@
             }
         }
     });
-    $("#rollsheet").live("click", function (ev) {
+    $("body").on("click", '#rollsheet', function (ev) {
         ev.preventDefault();
         var d = $('#rollsheetoptions');
         d.dialog("open");

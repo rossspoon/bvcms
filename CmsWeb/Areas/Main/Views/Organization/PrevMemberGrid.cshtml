@@ -10,7 +10,7 @@ Count: <strong>@Model.Count()</strong>
 <tr>
     <th><br /><a href="#" class="sortable">Name</a></th>
     <th><br /><a title="Sort by Organization Member Type" href="#" class="sortable">MemberType</a></th>
-    <th align="left">
+    <th class="left">
         <a title="Sort by Church Member Status" href="#" class="sortable">Church</a><br />
         <a href="#" class="sortable">Age</a> - <a title="Sort by Birthday" href="#" class="sortable">Bday</a>
     </th>
@@ -47,7 +47,7 @@ Count: <strong>@Model.Count()</strong>
     <td>
         <span>@om.AttendPct.ToString2("N1")%</span>
     </td>
-    <td align="center">
+    <td class="center">
         <span>@om.Dropped.FormatDate()</span><br />
         <span>@om.LastAttended.FormatDate("-")</span>
     </td>

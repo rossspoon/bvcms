@@ -5,26 +5,26 @@
 <table class="searchenter roundbox" width="100%" cellspacing="5">
     <tr>
         <td nowrap="nowrap"><b>Search for Person</b></td>
-        <td align="right" valign="top">
+        <td class="right top">
             <a class="helplink" target="_blank" href='@Model.HelpLink("SearchPerson")'>help</a></td>
     </tr>
     <tr>
-        <td align="right"><label for="name">Name</label></td>
+        <td class="right"><label for="name">Name</label></td>
         <td width="100%"><input id="name" type="text" name="m.name" value="@Model.name" /> Starting letters of First<space>Last or just Last</td>
     </tr>
     <tr>
-        <td align="right"><label for="phone">Email/Phone</label></td>
+        <td class="right"><label for="phone">Email/Phone</label></td>
         <td><input id="phone" type="text" name="m.phone" value="@Model.phone" /> Any part of any phone or email</td>
     </tr>
     <tr>
-        <td align="right"><label for="address">Address</label></td>
+        <td class="right"><label for="address">Address</label></td>
         <td><input id="address" type="text" name="m.address" value="@Model.address" /> Any part of the address, city or zip</td>
     </tr>
      <tr>
-        <td align="right"><label for="dob">Date of Birth</label></td>
+        <td class="right"><label for="dob">Date of Birth</label></td>
         <td><input id="dob" type="text" name="m.dob" value="@Model.dob" class="dob" /> YYYY or MM or MM/DD or MM/DD/YY</td>
     </tr>
-    <tr><td colspan="2" align="right">
+    <tr><td colspan="2" class="right">
 @if(Model.CanAdd)
 {
     if (Model.type == "family")

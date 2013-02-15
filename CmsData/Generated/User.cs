@@ -80,6 +80,8 @@ namespace CmsData
 		
    		private EntitySet< Coupon> _Coupons;
 		
+   		private EntitySet< SMSGroupMember> _SMSGroupMembers;
+		
    		private EntitySet< Preference> _Preferences;
 		
    		private EntitySet< UserRole> _UserRoles;
@@ -194,6 +196,8 @@ namespace CmsData
 			this._ActivityLogs = new EntitySet< ActivityLog>(new Action< ActivityLog>(this.attach_ActivityLogs), new Action< ActivityLog>(this.detach_ActivityLogs)); 
 			
 			this._Coupons = new EntitySet< Coupon>(new Action< Coupon>(this.attach_Coupons), new Action< Coupon>(this.detach_Coupons)); 
+			
+			this._SMSGroupMembers = new EntitySet< SMSGroupMember>(new Action< SMSGroupMember>(this.attach_SMSGroupMembers), new Action< SMSGroupMember>(this.detach_SMSGroupMembers)); 
 			
 			this._Preferences = new EntitySet< Preference>(new Action< Preference>(this.attach_Preferences), new Action< Preference>(this.detach_Preferences)); 
 			
@@ -879,6 +883,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_SMSGroupMembers_Users", Storage="_SMSGroupMembers", OtherKey="UserID")]
+   		public EntitySet< SMSGroupMember> SMSGroupMembers
+   		{
+   		    get { return this._SMSGroupMembers; }
+
+			set	{ this._SMSGroupMembers.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_UserPreferences_Users", Storage="_Preferences", OtherKey="UserId")]
    		public EntitySet< Preference> Preferences
    		{
@@ -1012,6 +1026,19 @@ namespace CmsData
 		}
 
 		private void detach_Coupons(Coupon entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+
+		
+		private void attach_SMSGroupMembers(SMSGroupMember entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+
+		private void detach_SMSGroupMembers(SMSGroupMember entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;

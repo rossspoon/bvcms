@@ -16,43 +16,43 @@
         <tbody>
         <tr><td colspan="2"><h2>Contacts</h2></td></tr>
         <tr>
-            <th align="right">Contactee Name:</th>
+            <th class="right">Contactee Name:</th>
             <td>@Html.TextBoxFor(vv => vv.ContacteeName, new { title="Part of the Contactees Name" })</td>
         </tr>
         <tr>
-            <th align="right">Contactor Name:</th>
+            <th class="right">Contactor Name:</th>
             <td>@Html.TextBoxFor(vv => vv.ContactorName, new { title="Part of the Contactors Name" })</td>
         </tr>
         <tr>
-            <th align="right">Contact Start Date:</th>
+            <th class="right">Contact Start Date:</th>
             <td>@Html.TextBoxFor(vv => vv.StartDate, new { @class = "datepicker"})</td>
         </tr>
         <tr>
-            <th align="right">Contact End Date:</th>
+            <th class="right">Contact End Date:</th>
             <td>@Html.TextBoxFor(vv => vv.EndDate, new { @class = "datepicker"})</td>
         </tr>
         <tr>
-            <th align="right">Contact Type:</th>
+            <th class="right">Contact Type:</th>
             <td>@Html.DropDownListFor(vv => vv.ContactType, Model.ContactTypes())</td>
         </tr>
         <tr>
-            <th align="right">Contact Reason:</th>
+            <th class="right">Contact Reason:</th>
             <td>@Html.DropDownListFor(vv => vv.ContactReason, Model.ContactReasons())</td>
         </tr>
         <tr>
-            <th align="right">Ministry:</th>
+            <th class="right">Ministry:</th>
             <td>@Html.DropDownListFor(vv => vv.Ministry, Model.Ministries())</td>
         </tr>
         <tr>
-            <th align="right">Results:</th>
+            <th class="right">Results:</th>
             <td>@Html.DropDownListFor(vv => vv.Result, Model.Results())</td>
         </tr>
         <tr>
-            <th align="right">Created By:</th>
+            <th class="right">Created By:</th>
             <td>@Html.TextBoxFor(vv => vv.CreatedBy, new { title="UserName or PeopleId" })</td>
         </tr>
         <tr>
-            <td colspan="2" align="right">
+            <td colspan="2" class="right">
                 <a id="NewSearch" class="bt">Clear</a>
                 <a id="search" class="blue bt">Search</a>
             </td>

@@ -129,7 +129,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 		}
 		public ActionResult PledgeFulfillments(int id)
 		{
-			var list = DbUtil.Db.PledgeFulfillment(id).OrderBy(vv => vv.HeadName);
+			var list = DbUtil.Db.PledgeFulfillment(id).OrderBy(vv => vv.Last).ThenBy(vv => vv.First);
 			return new DataGridResult(list);
 		}
     }

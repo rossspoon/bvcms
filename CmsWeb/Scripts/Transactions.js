@@ -10,12 +10,12 @@
         });
     };
     $.preptable();
-    $(".filterbatch").live("click", function (e) {
+    $("body").on("click", '.filterbatch', function (e) {
         e.preventDefault();
         $("#name").val($(this).text());
         $('#filter').click();
     });
-    $(".filtertransaction").live("click", function (e) {
+    $("body").on("click", '.filtertransaction', function (e) {
         e.preventDefault();
         $("#name").val($(this).attr("originalid"));
         $('#filter').click();
@@ -32,14 +32,14 @@
         });
         return false;
     };
-    $('#filter').live('click', function (ev) {
+    $('body').on('click', '#filter', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $('#Page', f).val(1);
         $.getTable(f);
         return false;
     });
-    $('.report').live('click', function (ev) {
+    $('body').on('click', '.report', function (ev) {
         ev.preventDefault();
         var sdt = $('#startdt').val();
         var edt = $('#enddt').val();
@@ -56,7 +56,7 @@
         });
         return false;
     });
-    $('#export').live('click', function (ev) {
+    $('body').on('click', '#export', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         f.attr("action", "/Manage/Transactions/Export");
@@ -64,7 +64,7 @@
         f.attr("action", "/Manage/Transactions/List");
         return false;
     });
-    $("a.voidcredit").live("click", function (ev) {
+    $("body").on("click", 'a.voidcredit', function (ev) {
         ev.preventDefault();
         var a = $(this);
         if (a.hasClass("noadmin")) {
@@ -92,7 +92,7 @@
         }
         return false;
     });
-    $("a.adjust").live("click", function (ev) {
+    $("body").on("click", 'a.adjust', function (ev) {
         ev.preventDefault();
         var a = $(this);
         if (a.hasClass("noadmin")) {

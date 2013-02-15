@@ -1,59 +1,282 @@
 ﻿@{
     var access = User.IsInRole("Access");
-    var onqb = (string) ViewData["OnQueryBuilder"] == "true";
+    var onqb = (string)ViewData["OnQueryBuilder"] == "true";
     var headimage = DbUtil.HeaderImage("");
     if (!headimage.HasValue())
     {
         headimage = DbUtil.Header();
     }
 }
-@if (access)
-{
-    @Html.Partial("MainMenu")
-}
-<div id="header">
-    <div style="margin-left: 4%;margin-right: 4%;">
-        <table cellpadding="0" cellspacing="0" style="width: 100%;">
-            <tr>
-                <td>
-                    @Html.Raw(headimage)
-                </td>
-                <td class="right">
-                    @if (access)
-                    {
-                        <div style="display:inline-block; text-align: left;">
-                            <form method="post">
-                                <input id="SearchText" class="trigger-dropdown" type="text" default="Search" title='QuickSearch|PeopleId|-OrganizationId|7 digit phone|Partial Search|Names|Address|Organization Name|Leader Name|Division"' />
-                                @Helper.SearchBuilderDropdown(onqb, newlook: true)
-                            </form>
-                        </div>
-                    }
-                    <div id="userarea">
-                        <div id="welcome" class="dropdown">
-                            <a href="#" class="trigger-dropdown">
-                                Welcome, @Util.UserPreferredName! <img src="/images/dnarrow.png" />
-                            </a>
-                            <div class="dropdown-menu has-tip anchor-right">
-                                <ul>
-                                    <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
-                                    <li><a href="/Account/ChangePassword">Change Password</a></li>
-                                    <li><a id="cleartag" href="#">Empty Active Tag</a></li>
-                                    <li><a href="/Tags">Manage Active Tag</a></li>
-                                    @if (User.IsInRole("Admin"))
+<div id="header" class="row">
+    @if (access)
+    {
+        var admin = User.IsInRole("Admin");
+        var manageemails = User.IsInRole("ManageEmails");
+        var innewlook = User.IsInRole("Newlook");
+        var managetrans = User.IsInRole("ManageTransactions");
+        var edit = User.IsInRole("Edit");
+        var design = User.IsInRole("Design");
+        var finance = User.IsInRole("Finance");
+        <nav id="nav-global" class="nav-horizontal">
+            <div class="container" id="wrap-nav-global">
+                <ul class="parent">
+                    <li><a href="/"><i class="icon-home"></i></a></li>
+                    <li><a href="" class="trigger-dropdown">People <i class="icon-caret-down"></i></a>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li><a href="/PeopleSearch">Search </a></li>
+                                <li><a id="addpeople" href="#">Add People </a></li>
+                                <li><a href="/Tags">Manage Tags </a></li>
+                                <li><a href="/Task/List/">Tasks </a></li>
+                                <li><a href="/ContactSearch">Contacts </a></li>
+                                @if (Util2.CurrentPeopleId != 0)
+                                {
+                                    <li class="divider"></li>
+                                    <li>
+                                    @if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
                                     {
-                                        <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                                        <a href="/Person/Index/@Util2.CurrentPeopleId"> @Session["ActivePerson"]</a>
+                                    }
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="" class="trigger-dropdown">Organization <i class="icon-caret-down"></i></a>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li><a href="/OrgSearch">Search </a></li>
+                                @if (User.IsInRole("Edit"))
+                                {
+                                    <li><a id="addorg" href="#">Add Organization </a></li>
+                                    <li><a href="/OrgMembers">Org Members Management </a></li>
+                                }
+                                @if (User.IsInRole("Coupon"))
+                                {
+                                    <li><a href="/Coupon/">Coupons </a></li>
+                                }
+                                <li><a href="/EnrollmentControlReport.aspx">Enrollment Control Report </a></li>
+                                @if (((string)Session["ActiveOrganization"]).HasValue())
+                                {
+                                    <li class="divider"></li>
+                                    <li><a href="/Organization/Index/@Util2.CurrentOrgId">
+                                        @Session["ActiveOrganization"]
+                                    </a></li>
+                                }
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="" class="trigger-dropdown">Reports <i class="icon-caret-down"></i></a>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li><a href="/Reports/VitalStats" target="_blank">Vital Stats </a></li>
+                                <li><a href="/Reports/ChurchAttendance" target="_blank">Week at a Glance </a></li>
+                                <li><a href="/Reports/ChurchAttendance2" target="_blank">Average Week at a Glance </a></li>
+                                @if (DbUtil.Db.Setting("Bellevue", "false") == "true")
+                                {
+                                    <li><a href="/Report/ChurchAttendanceSummaryRpt.aspx" target="_blank">Church Attendance Summary </a></li>
+                                }
+                                <li><a href="/Report/ChurchAttendanceRpt.aspx" target="_blank">Weekly Decisions </a></li>
+                                <li><a href="/Report/DecisionSummary.aspx" target="_blank">Decision Summary </a></li>
+                                <li><a href="/Home/NthTimeVisitors/1">First Time Attenders </a></li>
+                                <li><a href="/Home/NthTimeVisitors/2">Second Time Attenders </a></li>
+                                <li><a href="/Home/NthTimeVisitors/3">Third Time Attenders </a></li>
+                                <li><a href="/Reports/ExtraValues">Extra Values </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @if (User.IsInRole("Finance"))
+                    {
+                        <li><a href="" class="trigger-dropdown">Contributions <i class="icon-caret-down"></i></a>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a href="/Finance/Bundles">Bundles
+                                    </a></li>
+                                    <li><a href="/Finance/Contributions">All
+                                    </a></li>
+                                    <li class="header"><span>Reports
+                                    </span></li>
+                                    <li><a href="/Statements" target="_blank">Statements (All)
+                                    </a></li>
+                                    <li><a href="/Contributions/GLExtract.aspx">GL Extract
+                                    </a></li>
+                                    <li><a href="/FinanceReports/TotalsByFund">Totals by Fund
+                                    </a></li>
+                                    <li><a href="/FinanceReports/DonorTotalsByRange">Donor Totals by Range
+                                    </a></li>
+                                    <li><a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">Totals by Fund Age Range
+                                    </a></li>
+                                    <li><a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">Totals by Fund Age Range (pledges included)
+                                    </a></li>
+                                    <li><a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">Totals by Fund Range
+                                    </a></li>
+                                    <li><a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">Pledge Totals by Fund Range
+                                    </a></li>
+                                    <li><a href="/FinanceReports/PledgeReport" target="_blank">Pledge Report
+                                    </a></li>
+                                    <li><a href="/FinanceReports/ManagedGiving" target="_blank">Managed Giving
+                                    </a></li>
+                                    @if (DbUtil.Db.Setting("ShowQuickBooksMenu", "false") == "true")
+                                    {
+                                        <li><a href="/QuickBooks">QuickBooks
+                                        </a></li>
                                     }
                                 </ul>
                             </div>
-                        </div>
-                        @if (access)
-                        {
-                            <strong>Active Tag:</strong>
-                            <span id="activetag">@Util2.CurrentTagName</span>
+                        </li>
+                    }
+                    @if (admin || manageemails || managetrans || edit || design || finance)
+                    {
+                        <li><a href="" class="trigger-dropdown">Admin <i class="icon-caret-down"></i></a>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    @if (admin)
+                                    {
+                                        <li><a href="/Manage/Users/Index">Users
+                                        </a></li>
+                                        <li><a href="/Setup/Program/">Programs
+                                        </a></li>
+                                        <li><a href="/Setup/Division/">Divisions
+                                        </a></li>
+                                        <li><a href="/Setup/Setting">Settings
+                                        </a></li>
+                                        <li><a href="/Setup/MetroZip/">Metro Zips
+                                        </a></li>
+                                        <li class="hideAlt"><a href="/Setup/Twilio/">Twilio Management
+                                        </a></li>
+                                    }
+                                    @if (admin || design)
+                                    {
+                                        <li><a href="/Display/Index/">Special Content
+                                        </a></li>
+                                    }
+                                    @if (admin || managetrans)
+                                    {
+                                        <li><a href="/Manage/Transactions">Transactions
+                                        </a></li>
+                                    }
+                                    @if (admin || edit)
+                                    {
+                                        <li><a href="/Manage/CheckinTime">Check-in Activity
+                                        </a></li>
+                                    }
+                                    @if (admin || manageemails)
+                                    {
+                                        <li><a href="/Manage/Emails">Emails
+                                        </a></li>
+                                    }
+                                    @if (admin || finance)
+                                    {
+                                        <li><a href="/Setup/Lookup/">Lookups
+                                        </a></li>
+                                    }
+                                    @if (admin)
+                                    {
+                                        <li><a href="/Batch/UpdateFields/">Update for a Tag
+                                        </a></li>
+                                        <li><a href="/Admin/ToggleOrgMembersOnly.ashx">
+                                            @(Util2.OrgMembersOnly ? "OrgMembersOnly is on" : "OrgMembersOnly is off")
+                                        </a></li>
+                                        <li><a href="/Admin/ToggleOrgLeadersOnly.ashx">
+                                            @(Util2.OrgLeadersOnly ? "OrgLeadersOnly is on" : "OrgLeadersOnly is off")
+                                        </a></li>
+                                        <li><a href="/Batch/UpdateQueryBits">Update QueryBits
+                                        </a></li>
+                                        <li><a href="/Batch/TagPeopleIds">Tag PeopleIds
+                                        </a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                    <li><a href="" class="trigger-dropdown">Help <i class="icon-caret-down"></i></a>
+                        <div class="dropdown-menu anchor-right">
+                            <ul>
+                                <li><a href="@Util.HelpLink(Util.Helpfile)" target="_blank">Help Documentation 
+                                </a></li>
+                                <li><a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">Email Support 
+                                </a></li>
+                                @if (innewlook)
+                                {
+
+                                    <li><a href="/Home/UseOldLook">Use OLD Look</a></li>
+                                    if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
+                                    {
+                                    <li><a href="/Home/UseSearchBuilder">Use Search Builder
+                                    </a></li>
+                                    }
+                                    else
+                                    {
+                                    <li><a href="/Home/UseAdvancedSearch">Use Advanced Search
+                                    </a></li>
+                                    }
+                                    if (DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
+                                    {
+                                    <li><a href="/Home/UseOldPersonPage">Use Old Person Page
+                                    </a></li>
+                                    }
+                                    else
+                                    {
+                                    <li><a href="/Home/UseNewPeoplePage">Use New People page
+                                    </a></li>
+                                    }
+                                }
+                                <li><a href="/Home/About">About 
+                                </a></li>
+                                @if (admin)
+                                {
+                                    <li><a href="javascript:$.block();window.location='/Home/ActiveRecords';">Active Records 
+                                    </a></li>
+                                }
+@*                    <li class="header">
+                        <span>Tutorials</span>
+                    </li>
+                    @{
+                        var tutorialMenu = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml";
+                        if (File.Exists(tutorialMenu)) {
+                            Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + "_Menu.cshtml");
                         }
+                    }			  *@
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    }
+    <div class="container">
+        <div id="wrap-brand">
+            <div id="brand" class="eight columns">
+                @Html.Raw(headimage)
+            </div>
+            <div class="five columns">
+                @if (access)
+                {
+                    <form action="" method="post" class="search">
+                        <input type="text" id="SearchText" class="trigger-dropdown" placeholder="Search" name="search">
+                        @Helper.SearchBuilderDropdown(onqb, newlook: true)
+                        <button class="trigger-dropdown"><i class="icon-search"></i></button>
+                    </form>
+                }
+            </div>
+            <div class="three columns">
+                <nav id="nav-user">
+                    <a href="" class="trigger-dropdown">@Util.UserPreferredName<i class="icon-caret-down"></i></a>
+                    <div class="dropdown-menu anchor-right">
+                        <ul>
+                            <li><a id="cleartag" href="#">Empty Active Tag</a></li>
+                            <li><a href="/Tags">Manage Active Tag</a></li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                            }
+                            <li><a href="/Account/ChangePassword">Change Password</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
+                        </ul>
                     </div>
-                </td>
-            </tr>
-        </table>
+                </nav>
+            </div>
+        </div>
     </div>
 </div>

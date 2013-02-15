@@ -3,13 +3,13 @@
 @model CmsWeb.Models.OnlineRegPersonModel
 @{ var index = Model.Index(); }
 <tr>
-    <td align="right" colspan="2">
+    <td class="right" colspan="2">
         @Html.Required()
         required
     </td>
 </tr>
 <tr>
-    <td valign="top" nowrap="nowrap" width="30%">
+    <td class="top" nowrap="nowrap" width="30%">
         @Html.Required()
         <label id="personedit" for="first">
             First Name:</label>
@@ -21,7 +21,7 @@
     </td>
 </tr>
 <tr>
-    <td valign="top" nowrap="nowrap">
+    <td class="top" nowrap="nowrap">
         @Html.NotRequired()
         <label for="middle">
             Middle Initial:</label>
@@ -31,7 +31,7 @@
     </td>
 </tr>
 <tr>
-    <td valign="top" nowrap="nowrap">
+    <td class="top" nowrap="nowrap">
         @Html.Required()
         <label for="last">
             Last Name:</label>
@@ -43,7 +43,7 @@
     </td>
 </tr>
 <tr>
-    <td valign="top" nowrap="nowrap">
+    <td class="top" nowrap="nowrap">
         @Html.NotRequired()
         <label for="last">
             Suffix:</label>
@@ -53,7 +53,7 @@
     </td>
 </tr>
 <tr>
-    <td valign="top" nowrap="nowrap">
+    <td class="top" nowrap="nowrap">
         @Html.IsRequired(Model.RequiredDOB())
         <label for="dob">
             Birthdate:</label>
@@ -65,7 +65,7 @@
     </td>
 </tr>
 <tr>
-    <td valign="top" nowrap="nowrap">
+    <td class="top" nowrap="nowrap">
 @* Show Cell phone because HomePhone is already asked for in address *@
 @if(Model.ShowAddress)
 {
@@ -86,7 +86,7 @@ else
     </td>
 </tr>
 <tr>
-    <td valign="top" nowrap="nowrap">
+    <td class="top" nowrap="nowrap">
         @Html.Required()
         <label for="email">
             Email:</label>
@@ -107,7 +107,7 @@ else
     @* allow submit here for manage subscriptions *@
     @if (Model.ManageSubscriptions())
     {
-    <td align="right">
+    <td class="right">
 		<input type="button" href="/OnlineReg/SubmitNew/@index" class="submitbutton ajax" 
 			   value="Submit" />
         @* only allow adults to create an account *@
@@ -121,7 +121,7 @@ else
     // submit for a new person here
     else 
     {
-    <td align="right">
+    <td class="right">
         <input type="button" href="/OnlineReg/SubmitNew/@index" class="submitbutton ajax"
             value="Submit" />
     </td>
@@ -135,7 +135,7 @@ else
     if (!Model.Found.HasValue)
     {
 <tr>
-    <td colspan="2" align="right">
+    <td colspan="2" class="right">
 @section scripts
 {
         <script type="text/javascript">
@@ -163,18 +163,18 @@ else
         if (Model.Found == false)
         {
 <tr>
-    <td align="right" colspan="2">
+    <td class="right" colspan="2">
         <table>
 			@* allow adding to a new family if we are logged in or beyond the first registrant *@
             @if (index > 0 || Model.LoggedIn)
             { 
             <tr>
-                <td align="left">
+                <td class="left">
                     Add to which family?
                 </td>
             </tr>
             <tr>
-                <td align="left">
+                <td class="left">
                     @Html.RadioButtonFor(m => m.whatfamily, "3") New
                 </td>
             </tr>
@@ -189,7 +189,7 @@ else
             @if (index > 0)
             { 
             <tr>
-                <td align="left">
+                <td class="left">
                     @Html.RadioButtonFor(m => m.whatfamily, "2")
                     Previous
                 </td>
@@ -199,14 +199,14 @@ else
             @if (Model.LoggedIn)
             {
             <tr>
-                <td align="left">
+                <td class="left">
                     @Html.RadioButtonFor(m => m.whatfamily, "1")
                     Mine
                 </td>
             </tr>
             } 
             <tr>
-                <td align="left">
+                <td class="left">
                     @Html.ValidationMessageFor(m => m.whatfamily)
                 </td>
             </tr>
@@ -215,7 +215,7 @@ else
 </tr>
         } 
 <tr>
-    <td colspan="2" align="right">
+    <td colspan="2" class="right">
 		<input type="button" style="display: inline-block" href="/OnlineReg/PersonFind/@index" class="submitbutton ajax" 
 			   value="Search Again" />
         @* Allow Add New Profile if valid data, not a memberonly type registration and not in create account mode *@

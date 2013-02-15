@@ -509,14 +509,6 @@ namespace CmsWeb.Models
 					select f.Title).ToList();
 		}
 
-		public List<CodeValueItem> BitCodes()
-		{
-			return new List<CodeValueItem> 
-				{
-					new CodeValueItem { Id = 1, Value = "True", Code = "T" },
-					new CodeValueItem { Id = 0, Value = "False", Code = "F" },
-				};
-		}
 		//public List<CodeValueItem> MeetingStatusCodes()
 		//{
 		//    var list = HttpRuntime.Cache[DbUtil.Db.Host + NAME] as List<CodeValueItem>;

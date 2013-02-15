@@ -38,7 +38,7 @@ namespace CmsWeb.Areas.Finance.Controllers
             qbh.SetCurrentToken( (IToken)Session["QBToken"] );
             qbh.RequestAccessToken(Request["realmId"], Request["oauth_verifier"]);
 
-            // TODO: Change response based on results
+            // david: Change response based on results
             return View("Index");
 		}
 

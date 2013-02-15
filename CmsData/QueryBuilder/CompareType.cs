@@ -29,7 +29,6 @@ namespace CmsData
         AllTrue,
         AnyTrue,
         AllFalse,
-        AnyFalse,
         StrGreater,
         StrLess,
         StrLessEqual,

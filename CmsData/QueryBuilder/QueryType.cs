@@ -102,6 +102,7 @@ namespace CmsData
         LetterStatusId,
         LetterDateRequested,
         MaidenName,
+        MatchAnything,
         MeetingId,
         MadeContactTypeAsOf,
         MaritalStatusId,

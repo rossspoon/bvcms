@@ -1,6 +1,6 @@
 ﻿$(function () {
     $("table.grid > tbody > tr:even").addClass("alt");
-    $("a.deltran").live("click", function (ev) {
+    $("body").on("click", 'a.deltran', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure"))
             $.post($(this).attr("href"), {}, function (ret) {
@@ -9,7 +9,7 @@
             });
         return false;
     });
-    $("#deleteall").live("click", function (ev) {
+    $("body").on("click", '#deleteall', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure you want to delete all transactions (will not affect attendance)?"))
             $.post($(this).attr("href"), {}, function () {

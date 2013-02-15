@@ -57,19 +57,19 @@
             </LayoutTemplate>
             <ItemTemplate>
                 <tr style='<%# (string)Eval("BundleId") == "TOTALS" ? "font-weight: bold": "" %>'>
-                    <td align="center">
+                    <td class="center">
                         <asp:Label ID="BundleIdLabel" runat="server" Text='<%# Eval("BundleId") %>' />
                     </td>
-                    <td align="right" style="padding-right: .4em">
+                    <td class="right" style="padding-right: .4em">
                         <asp:Label ID="TotalLabel" runat="server" Text='<%# Eval("Total", "{0:c}") %>' />
                     </td>
-                    <td align="right" style="padding-right: .4em">
+                    <td class="right" style="padding-right: .4em">
                         <asp:Label ID="ChecksLabel" runat="server" Text='<%# Eval("Checks", "{0:c}") %>' />
                     </td>
-                    <td align="right" style="padding-right: .4em">
+                    <td class="right" style="padding-right: .4em">
                         <asp:Label ID="CashLabel" runat="server" Text='<%# Eval("Cash", "{0:c}") %>' />
                     </td>
-                    <td align="right" style="padding-right: .4em">
+                    <td class="right" style="padding-right: .4em">
                         <asp:Label ID="CoinsLabel" runat="server" Text='<%# Eval("Coins", "{0:c}") %>' />
                     </td>
                 </tr>

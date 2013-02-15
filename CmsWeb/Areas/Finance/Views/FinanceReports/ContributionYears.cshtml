@@ -36,7 +36,7 @@
         $(function () {
             $(".datepicker").datepicker();
             $("#StatementDialog").dialog({ autoOpen: false });
-            $('#Statement').live("click", function (ev) {
+            $('body').on("click", '#Statement', function (ev) {
                 ev.preventDefault();
                 var a = this;
                 var d = $("#StatementDialog");
@@ -67,10 +67,10 @@
             <th>
                 Year
             </th>
-            <th align="right">
+            <th class="right">
                 Count
             </th>
-            <th align="right">
+            <th class="right">
                 Amount
             </th>
         </tr>
@@ -79,9 +79,9 @@
             <tr>
                 <td>@y.Year
                 </td>
-                <td align="right">@y.Count.ToString2("n0")
+                <td class="right">@y.Count.ToString2("n0")
                 </td>
-                <td align="right">
+                <td class="right">
                     <a href='/Finance/Contributions?id=@y.PeopleId&year=@y.Year'>@y.Amount.ToString2("n")</a>
                 </td>
             </tr>

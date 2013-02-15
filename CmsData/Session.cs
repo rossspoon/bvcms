@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Caching;
 using UtilityExtensions;
 
 namespace CmsData
@@ -160,6 +161,19 @@ namespace CmsData
             {
                 if (HttpContext.Current != null)
                     HttpContext.Current.Session[STR_VisitLookbackDays] = value;
+            }
+        }
+        public const string STR_NewLook = "NewLook";
+        public static bool NewLook
+        {
+            get
+            {
+                return (bool)GetSessionObj(STR_NewLook, false);
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_NewLook] = value;
             }
         }
     }

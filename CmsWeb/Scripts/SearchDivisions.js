@@ -28,9 +28,9 @@
         $('#results > tbody > tr:even').addClass('alt');
     };
     $.formatTable();
-    $('input:checkbox').live('change', function (ev) {
+    $('body').on('change', 'input:checkbox', function (ev) {
         var sp = $(this).parents('tr:eq(0)').find("span.move");
-        var ck = $(this).is(":checked")
+        var ck = $(this).is(":checked");
         var did = $(this).attr("value");
         $.post("/SearchDivisions/AddRemoveDiv/",
             { id: $("#id").val(), divid: did, ischecked: ck
@@ -41,7 +41,7 @@
                     sp.empty();
             });
     });
-    $("a.move").live("click", function (ev) {
+    $("body").on("click", 'a.move', function (ev) {
         ev.preventDefault();
         var f = $('#results').closest('form');
         $("#topid").val($(this).attr("value"));
@@ -50,7 +50,7 @@
             $('#results').replaceWith(ret).ready($.formatTable);
         });
     });
-    $("form input").live("keypress", function (e) {
+    $("form").on("keypress", 'input', function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#search').click();
             return false;

@@ -1,7 +1,7 @@
 ﻿@model CmsWeb.Models.ManageGivingModel
 <table cellpadding="4" style="font-family: Sans-Serif">
 <tr>
-    <td align="right">Give to Funds:</td>
+    <td class="right">Give to Funds:</td>
     <td>
         <table class="grid" cellpadding="2">
 @{ var funds = CmsWeb.Models.OnlineRegPersonModel.Funds(); }
@@ -14,19 +14,19 @@
     {
             <tr>
                 <td>@i.Text</td>
-                <td align="right">@amt.ToString("n2")</td>
+                <td class="right">@amt.ToString("n2")</td>
             </tr>
     }
 }
             <tr class="alt">
                 <td>Total</td>
-                <td align="right">$@Model.total.ToString("n2")</td>
+                <td class="right">$@Model.total.ToString("n2")</td>
             </tr>
         </table>
     </td>
 </tr>
 <tr>
-    <td align="right">Frequency:</td>
+    <td class="right">Frequency:</td>
     <td>
             @if (Model.SemiEvery == "S")
             {
@@ -39,17 +39,17 @@
     </td>
 </tr>
 <tr>
-    <td align="right">First Payment:</td>
+    <td class="right">First Payment:</td>
     <td>
         On or after @UtilityExtensions.Util.FormatDate(Model.StartWhen)
     </td>
 </tr>
 @*<tr>*@
-@*    <td align="right">Stop Payments:</td>*@
+@*    <td class="right">Stop Payments:</td>*@
 @*    <td> After @UtilityExtensions.Util.FormatDate(Model.StopWhen) </td>*@
 @*</tr>*@
 <tr>
-    <td align="right">Pay From:</td>
+    <td class="right">Pay From:</td>
     <td>
     @if (Model.Type == "C")
     {

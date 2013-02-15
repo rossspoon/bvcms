@@ -30,7 +30,7 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('#AddMembers2,#AddRelatedFamily2').live("click", function (e) {
+    $('body').on("click", '#AddMembers2,#AddRelatedFamily2', function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
@@ -192,12 +192,12 @@
             }
         }
     });
-    $("#newextravalue").live("click", function (ev) {
+    $("body").on("click", '#newextravalue', function (ev) {
         ev.preventDefault();
         var d = $('#newvalueform');
         d.dialog("open");
     });
-    $("a.deleteextra").live("click", function (ev) {
+    $("body").on("click", 'a.deleteextra', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))
             $.post("/Family/DeleteExtra/" + $("#FamilyId").val(), { field: $(this).attr("field") }, function (ret) {

@@ -23,6 +23,12 @@ namespace CmsData
 {
     internal static class Expressions
     {
+        internal static Expression MatchAnything(
+            ParameterExpression parm)
+        {
+            Expression<Func<Person, bool>> pred = p => true;
+            return Expression.Invoke(pred, parm);
+        }
         internal static Expression ActiveRecords(
             ParameterExpression parm,
             CompareType op,

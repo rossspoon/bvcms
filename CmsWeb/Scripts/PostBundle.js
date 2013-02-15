@@ -30,7 +30,7 @@
     });
     $(".bt").button();
     $('td.name').tooltip({ showBody: "|" });
-    $( ".ui-autocomplete-input" ).live( "autocompleteopen", function() {
+    $(".ui-autocomplete-input").on("autocompleteopen", function () {
     	var autocomplete = $( this ).data( "autocomplete" ),
     		menu = autocomplete.menu;
 
@@ -59,7 +59,7 @@
                 return false;
             }
         })
-        .data( "autocomplete" )._renderItem = function( ul, item ) {
+        .data("uiAutocomplete")._renderItem = function (ul, item) {
             return $( "<li>" )
                 .append( "<a>" + item.Name + "<br>" + item.Addr + "</a>" )
                 .appendTo( ul );
@@ -116,7 +116,7 @@
         event.preventDefault();
         $.PostRow({ scroll: true });
     });
-    $('a.edit').live("click", function (ev) {
+    $('body').on("click", 'a.edit', function (ev) {
         ev.preventDefault();
         var tr = $(this).closest("tr");
         $('#editid').val(tr.attr("cid"));
@@ -149,7 +149,7 @@
             v = "";
         $("#entry .PLNT").text(v);
     });
-    $('a.split').live("click", function (ev) {
+    $('body').on("click", 'a.split', function (ev) {
         ev.preventDefault();
         var newamt = prompt("Amount to split out", "");
         newamt = parseFloat(newamt);
@@ -170,7 +170,7 @@
         };
         $.PostRow({ scroll: true, q: q });
     });
-    $('a.delete').live("click", function (ev) {
+    $('body').on("click", 'a.delete', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?")) {
             var tr = $(this).closest("tr");
@@ -185,7 +185,7 @@
             });
         }
     });
-    $('a.pid').live("click", function (event) {
+    $('body').on("click", 'a.pid', function (event) {
         event.preventDefault();
         var d = $('#searchDialog');
         $('iframe', d).attr("src", this.href);

@@ -6,22 +6,22 @@
 <table class="searchenter roundbox" width="100%" cellspacing="5">
     <tr>
         <td nowrap="nowrap"><b>Search for Family</b></td>
-        <td align="right" valign="top">
+        <td class="right top">
             <a class="helplink" target="_blank" href='@Model.HelpLink("SearchFamily")'>help</a></td>
     </tr>
     <tr>
-        <td align="right"><label for="name">Last Name</label></td>
+        <td class="right"><label for="name">Last Name</label></td>
         <td width="100%"><input id="name" type="text" name="m.name" value="@Model.name" /> Starting letters of Lastname</td>
     </tr>
     <tr>
-        <td align="right"><label for="phone">Email/Phone</label></td>
+        <td class="right"><label for="phone">Email/Phone</label></td>
         <td><input id="phone" type="text" name="m.phone" value="@Model.phone" /> Any part of any phone or email</td>
     </tr>
     <tr>
-        <td align="right"><label for="address">Address</label></td>
+        <td class="right"><label for="address">Address</label></td>
         <td><input id="address" type="text" name="m.address" value="@Model.address" /> Any part of the address, city or zip</td>
     </tr>
-    <tr><td colspan="2" align="right">
+    <tr><td colspan="2" class="right">
     <a href="/SearchAdd/ResultsFamily/" class="bt formlink default blue">Search</a>
     <a href="/SearchAdd/SearchFamilyCancel/" class="bt formlink" title="back to person search">Go back</a>
     <a href="#" class="clear bt">Clear</a></td>

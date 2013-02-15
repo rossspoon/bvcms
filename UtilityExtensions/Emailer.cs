@@ -15,7 +15,7 @@ namespace UtilityExtensions
 {
 	public static partial class Util
 	{
-		public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, int? pid)
+	    public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, int? pid)
 		{
 			if (WebConfigurationManager.AppSettings["sendemail"] == "false")
 				return;
@@ -132,5 +132,6 @@ namespace UtilityExtensions
 					Thread.SetData(Thread.GetNamedDataSlot(STR_UserEmail), value);
 			}
 		}
+
 	}
 }

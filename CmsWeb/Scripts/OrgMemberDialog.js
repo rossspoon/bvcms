@@ -6,7 +6,7 @@
         return true;
     });
     $(".bt").button();
-    $("a.display").live('click', function (ev) {
+    $("body").on('click', 'a.display', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function (ret) {
@@ -14,14 +14,14 @@
         });
         return false;
     });
-    $("a.delete").live("click", function (ev) {
+    $("body").on("click", 'a.delete', function (ev) {
         if (confirm("are you sure?"))
             $.post($(this).attr("href"), null, function (ret) {
                 self.parent.RebindMemberGrids($("#from").val());
             });
         return false;
     });
-    $("a.move").live('click', function (ev) {
+    $("body").on('click', 'a.move', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         if (confirm("are you sure?"))
@@ -30,7 +30,7 @@
             });
         return false;
     });
-    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
+    $("form.DisplayEdit").on('click', 'a.submitbutton', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();

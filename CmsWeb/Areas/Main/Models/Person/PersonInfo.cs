@@ -60,7 +60,7 @@ namespace CmsWeb.Models.PersonPage
             {
                 PeopleId = p.PeopleId,
                 AddressTypeId = p.AddressTypeId,
-                Deceased = p.Deceased,
+                Deceased = p.IsDeceased ?? false,
                 FamilyId = p.FamilyId,
                 Name = p.Name,
                 SmallPicId = i.SmallId,

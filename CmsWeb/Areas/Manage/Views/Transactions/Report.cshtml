@@ -11,15 +11,15 @@
     else
     {
 	<thead>
-		<tr><td align="right" colspan="4">Total:</td>
-			<td align="right">@tt.Amt.ToString("N2")</td>
+		<tr><td class="right" colspan="4">Total:</td>
+			<td class="right">@tt.Amt.ToString("N2")</td>
 		</tr>
         <tr><td colspan="5"><hr/></td></tr>
 		<tr><td>BatchRef</td>
 			<td>Settled</td>
 			<td>Type</td>
-            <td align="right">Count</td>
-			<td align="right">Total</td>
+            <td class="right">Count</td>
+			<td class="right">Total</td>
         </tr>
 	</thead>
    <tbody>
@@ -29,8 +29,8 @@
 				<td><a href="#" class="filterbatch">@r.BatchRef</a></td>
 				<td>@r.batchdate.FormatDate()</td>
 				<td>@r.BatchType</td>
-				<td align="right">@r.count</td>
-				<td align="right">@r.Total.ToString("N2")</td>
+				<td class="right">@r.count</td>
+				<td class="right">@r.Total.ToString("N2")</td>
 			</tr>
 		}
 	</tbody>

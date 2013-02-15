@@ -11,14 +11,14 @@
     else
     {
 	<thead>
-		<tr><td align="right" colspan="2">Total:</td>
-			<td align="right">@tt.Amt.ToString("N2")</td>
+		<tr><td class="right" colspan="2">Total:</td>
+			<td class="right">@tt.Amt.ToString("N2")</td>
 		</tr>
         <tr><td colspan="3"><hr/></td></tr>
 		<tr>
 			<td>Description</td>
-			<td align="right">Count</td>
-			<td align="right">Total</td>
+			<td class="right">Count</td>
+			<td class="right">Total</td>
 		</tr>
 	</thead>
    <tbody>
@@ -26,8 +26,8 @@
 		{
 			<tr>
 				<td>@r.Description</td>
-				<td align="right">@r.count</td>
-				<td align="right">@r.Total.ToString("N2")</td>
+				<td class="right">@r.count</td>
+				<td class="right">@r.Total.ToString("N2")</td>
 			</tr>
 		}
 	</tbody>

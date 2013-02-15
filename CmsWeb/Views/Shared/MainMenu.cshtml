@@ -1,24 +1,17 @@
 ﻿@{ 
     var admin = User.IsInRole("Admin");
+    var innewlook = User.IsInRole("Newlook");
     var manageemails = User.IsInRole("ManageEmails");
     var managetrans = User.IsInRole("ManageTransactions");
 	var edit = User.IsInRole("Edit"); 
 	var design = User.IsInRole("Design"); 
 	var finance = User.IsInRole("Finance");
-    var newlook = DbUtil.Db.UserPreference("newlook", "false").ToBool();
     var onqb = (string) ViewData["OnQueryBuilder"] == "true";
 }
 
 <div class="navbar">
-    @if (newlook)
-    {
-        <a href="/"><img src="~/images/Home.png" /></a>
-    }
     <ul>
-    @if (!newlook)
-    {
         <li> <a href="/"> Home </a> </li>
-    }
         <li>
             <a href="#" class="trigger-dropdown">
                 People <img src="/images/dnarrowt.png" />
@@ -58,9 +51,6 @@
                 <ul>
                     <li><a href="/OrgSearch">
                             Search
-                        </a> </li>
-                    <li><a href="/EmailAttendanceNotices.aspx">
-                            Email Attendance Notices
                         </a> </li>
                     @if (User.IsInRole("Edit"))
                     {
@@ -132,15 +122,12 @@
                 </ul>
             </div>
         </li>
-        @if (!newlook)
-        {
-            <li>
-                <a href="#" class="trigger-dropdown">
-                    SearchBuilder <img src="/images/dnarrowt.png" />
-                </a>
-                @Helper.SearchBuilderDropdown(onqb, newlook)
-            </li>
-        }
+        <li>
+            <a href="#" class="trigger-dropdown">
+                SearchBuilder <img src="/images/dnarrowt.png" />
+            </a>
+            @Helper.SearchBuilderDropdown(onqb, newlook: false)
+        </li>
         @if (User.IsInRole("Finance"))
         {
             <li>
@@ -222,7 +209,7 @@
                             <li><a href="/Setup/MetroZip/">
                                     Metro Zips
                                 </a> </li>
-                            <li><a href="/Setup/Twilio/">
+                            <li class="hideAlt"><a href="/Setup/Twilio/">
                                     Twilio Management
                                 </a> </li>
                         }
@@ -296,16 +283,17 @@
                     <li><a href="mailto:support@bvcms.com?Subject=Support request from @Util.UserFullName at @Util.CmsHost2" target="_blank">
                             Email Support
                         </a></li>
-                    @if (admin)
+                    @if (innewlook)
                     {
-                         if (newlook)
-                         {
-                             <li><a href="/Home/UseOldLook">Use OLD Look</a></li>
-                         }
-                         else
-                         {
-                             <li><a href="/Home/UseNewLook">Use NEW Look</a></li>
-                         }
+                        <li><a href="/Home/UseNewLook">Use New Look (under construction)</a></li>
+                        if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
+                        {
+                            <li><a href="/Home/UseSearchBuilder">Use Search Builder</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="/Home/UseAdvancedSearch">Use Advanced Search (under construction)</a></li>
+                        }
                     }
                     <li><a href="/Home/About">
                             About

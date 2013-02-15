@@ -44,6 +44,10 @@ namespace CmsWeb.Areas.Main.Controllers
                     && om.PeopleId == Util.UserPeopleId
                     && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
                 return RedirectShowError("You must be a leader of this organization to have access to this page");
+			if (m.org.LimitToRole.HasValue())
+				if (!User.IsInRole(m.org.LimitToRole))
+					return RedirectShowError("no privilege to view" + m.org.OrganizationName);
+
             DbUtil.LogActivity("Viewing Meeting for {0}".Fmt(m.meeting.Organization.OrganizationName));
             return View(m);
         }

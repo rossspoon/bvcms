@@ -28,6 +28,8 @@ namespace CmsData
         internal string ToString(QueryBuilderClause c)
         {
             string fld = c.FieldInfo.Display(c);
+            if (c.Field == "MatchAnything")
+                return fld;
             switch (FieldType)
             {
                 case FieldType.NullBit:
@@ -58,6 +60,7 @@ namespace CmsData
             switch (c.FieldInfo.QueryType)
             {
                 case QueryType.ActiveRecords:
+                    c.SetIncludeDeceased();
                     return Expressions.ActiveRecords(parm,
                         CompType, 
                         c.CodeIds == "1");
@@ -611,6 +614,8 @@ namespace CmsData
                                c.Division,
                                c.Organization,
                                CompType, c.TextValue);
+                case QueryType.MatchAnything:
+                    return Expressions.MatchAnything(parm);
 
                 // U ----------------------
                 case QueryType.UserRole:
@@ -740,6 +745,8 @@ namespace CmsData
         }
         public static CompareType Convert(string type)
         {
+            if (type == null)
+                return CompareType.Equal;
             return (CompareType)Enum.Parse(typeof(CompareType), type);
         }
         public static List<CompareClass> Comparisons

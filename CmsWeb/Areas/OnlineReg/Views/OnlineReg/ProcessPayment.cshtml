@@ -142,7 +142,8 @@ else
 @if (Model.NoEChecksAllowed == false)
 {
 	<tr class="Bank">
-		<td>Routing Number</td>
+	    <td>Routing Number<br />
+			<a id="findacctclick" href="#"><span style="font-size: 65%">Find your bank routing/account?</span></a></td>
 		<td>@Html.TextBox("pf.Routing", Model.Routing, Model.Autocomplete())
             <div>@Html.ValidationMessage("Routing")</div>
         </td>
@@ -195,9 +196,16 @@ else
     <td><h3>MasterCard</h3></td>
     <td><img src="/images/mastercard.jpg" alt="mastercard" /></td>
 </tr>
-<tr>
-    <td><h3>Discover</h3></td>
-    <td><img src="/images/discovercard.jpg" alt="discover" /></td>
-</tr>
+    <tr>
+        <td><h3>Discover</h3></td>
+        <td><img src="/images/discovercard.jpg" alt="discover" /></td>
+    </tr>
 </table>
+</div> 
+<div id="findacct" style="display:none"> 
+    <h2>Bank Routing # / Account #</h2>
+    <p>Look at the numbers on the bottom of your check</p>
+    <div>
+        <img src="https://a1d932c175f6f84ca65d-434e90644472f15e2ba76cac2f5de424.ssl.cf2.rackcdn.com/check.png" alt="check"/>
+    </div>
 </div> 

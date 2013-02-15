@@ -24,8 +24,7 @@
 
 @section scripts
 {
-    <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-    @Scripts.Render("~/bundles/edit-js")
+    <script src="/ckeditor2/ckeditor.js" type="text/javascript"></script>
     @Scripts.Render("~/bundles/single/compose-js")
 }
 
@@ -63,13 +62,13 @@
 		</td>
 	</tr>
 	<tr>
-		<td width="33%" valign="top">
+		<td width="33%" class="top">
 			<input type="button" id="TestSend" class="bt" value="Test (Send To Yourself)" />
 		</td>
-		<td width="33%" valign="top" align="center">
+		<td width="33%" class="top center">
 			<input type="button" id="SaveDraft" class="bt" savetype="@( c.TypeID == ContentTypeCode.TypeEmailTemplate ? 0 : 1 )" value="@( c.TypeID == ContentTypeCode.TypeEmailTemplate ? "Save As Draft" : "Save Current Draft" )" />
 		</td>
-		<td width="33%" align="right">
+		<td width="33%" class="right">
 			<input type="button" id="Send" value="Send" class="bt" /><br />
 			<br />
 			@if( c.TypeID == ContentTypeCode.TypeSavedDraft ) {
@@ -90,10 +89,13 @@
 <div id="progress">
 <h2>Working...</h2>
 </div>
-<div id="popupeditor">
-	<form action="javascript:updateDiv()">
-		<textarea id="htmleditor"></textarea>
-		<input type="submit" value="Save" />
+<div id="popupeditor" style="display:none;position: absolute;z-index: 1005;">
+	<form>
+	    <textarea id="htmleditor"></textarea>
+        <div style="text-align: right;">
+    	    <a href="#" class="bt cancel">Cancel</a>
+            <a href="#" class="bt save blue">Save</a>
+        </div>
 	</form>
 </div>
 <div id="askName" style="display:none">
@@ -103,11 +105,11 @@
 	<form action="javascript:void(0)" onsubmit="javascript:$('#SaveDraftButton').click()">
 	<table cellspacing="10">
 	<tr>
-		<td align="right">FileName:</td>
-		<td align="left"><input id="newName" name="newName" size="25" /></td>
+		<td class="right">FileName:</td>
+		<td class="left"><input id="newName" name="newName" size="25" /></td>
 	</tr>
 	<tr>
-		<td align="center" colspan="2">
+		<td class="center" colspan="2">
 			<input id="SaveDraftButton" type="button" class="bt" value="Submit" /> &nbsp;&nbsp; <input type="button" class="bt" onclick="$('#askName').dialog('close')" value="Cancel" />
 		</td>
 	</tr>

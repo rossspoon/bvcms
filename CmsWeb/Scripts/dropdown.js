@@ -7,7 +7,7 @@ $(function() {
                     dd = $($(this).next('.dropdown-menu')),
                     isOpen = trigger.hasClass('dropdown-open');
                 $("div.dropdown-menu").hide();
-                $("a.trigger-dropdown").removeClass("dropdown-open");
+                $(".trigger-dropdown").removeClass("dropdown-open");
                 if (isOpen)
                     return false;
                 dd.show();
@@ -41,13 +41,17 @@ $(function() {
                 trigger.addClass('dropdown-open');
                 return false;
             });
+            $(this).click(function(ev) {
+                var trigger = $(this), isOpen = trigger.hasClass('dropdown-open');
+                if (isOpen)
+                    return false;
+                return true;
+            });
         });
     };
 	$(function () {
 		$('HTML').on('click.dropdown', hideDropdowns);
-		if( !$.browser.msie || ($.browser.msie && $.browser.version >= 9) ) {
-			$(window).on('resize.dropdown', hideDropdowns);
-		}
+		$(window).on('resize.dropdown', hideDropdowns);
 	    $(document).keydown(function(e) {
 	        if (e.keyCode == 17 && $("a.trigger-dropdown").hasClass("dropdown-open")) {
 	            $("li.hideAlt").toggle();
@@ -60,8 +64,6 @@ $(function() {
 		var targetGroup = event ? $(event.target).parents().andSelf() : null;
 		if (targetGroup && targetGroup.is('.dropdown-menu') && !targetGroup.is('A'))
 		    return;
-        if (targetGroup != null && targetGroup.is('#SearchText'))
-            return;
 		$('div.dropdown-menu').hide();
 		$('.trigger-dropdown').removeClass('dropdown-open');
         $("li.hideAlt").hide();

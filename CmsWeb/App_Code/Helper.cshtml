@@ -1,26 +1,34 @@
-﻿@helper SearchBuilderDropdown(bool onqb, bool newlook)
+﻿@using CmsData
+@using UtilityExtensions
+@helper SearchBuilderDropdown(bool onqb, bool newlook)
 {
     <div class="dropdown-menu">
         <ul>
-            @if (newlook)
+            @if (newlook && DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
             {
-                <li class="header"><span>Search Builder</span></li>
+                <li><a href="/Search/Advanced/Main">
+                        Last Search
+                    </a></li>
+                <li><a href="/Search/Advanced/NewQuery">
+                        New Search
+                    </a></li>
             }
-            <li><a href="/QueryBuilder/Main">
-                    Last Search
-                </a></li>
-            <li><a href="/QueryBuilder/NewQuery">
-                    New Search
-                </a></li>
+            else
+            {
+                <li><a href="/QueryBuilder/Main">
+                        Last Search
+                    </a></li>
+                <li><a href="/QueryBuilder/NewQuery">
+                        New Search
+                    </a></li>
+                
+            }
             <li><a href="/SavedQuery">
                     Saved Searches
                 </a></li>
                         
             @if (onqb)
             {
-                <li><a id="ShowOpenQuery" href="#">
-                        Open Saved Search
-                    </a></li>
                 <li><a id="ShowSaveQuery" href="#">
                         Save Search As
                     </a></li>

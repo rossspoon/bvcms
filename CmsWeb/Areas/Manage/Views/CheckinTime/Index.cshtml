@@ -29,35 +29,35 @@
 		Check-in Activity</h2>
 	<table cellspacing="7">
 		<tr>
-			<td align="right">Start Date: </td>
+			<td class="right">Start Date: </td>
 			<td>@Html.DatePicker("dateStart")</td>
-			<td align="right">@Html.CheckBox("withGuest", Model.withGuest )</td>
+			<td class="right">@Html.CheckBox("withGuest", Model.withGuest )</td>
 			<td>Show With Guest</td>
 		</tr>
 		<tr>
-			<td align="right">End Date: </td>
+			<td class="right">End Date: </td>
 			<td>@Html.DatePicker("dateEnd")</td>
-			<td align="right">Name:</td>
+			<td class="right">Name:</td>
             <td>
 				<span class="name">@Model.counts.name</span>
                 <a id="clearname" href="#">(Clear)</a>
 			</td>
 		</tr>
 		<tr>
-			<td align="right">Locations: </td>
+			<td class="right">Locations: </td>
 			<td>@Html.DropDownList( "location", new SelectList(Model.Locations()) )</td>
 			<td colspan="2">&nbsp;</td>
 		</tr>
 		<tr>
-			<td align="right">Activity: </td>
+			<td class="right">Activity: </td>
 			<td>@Html.DropDownList( "activity", new SelectList( Model.Activities()))</td>
-			<td colspan="2" align="center">
+			<td colspan="2" class="center">
 				Members: <span class="membercount">@Model.counts.members</span> - 
                 Guests: <span class="guestcount">@Model.counts.guests</span>
 			</td>
 		</tr>
 		<tr>
-			<td align="right" colspan="4"><a id="filter" href="#" class="submitbutton bt">Filter</a> <a id="clear" href="#" class="submitbutton bt">Clear</a></td>
+			<td class="right" colspan="4"><a id="filter" href="#" class="submitbutton bt">Filter</a> <a id="clear" href="#" class="submitbutton bt">Clear</a></td>
 		</tr>
 	</table>
 </div>
@@ -67,7 +67,7 @@
 		@foreach (var t in Model.FetchActivityCount())
 		{
 		<tr>
-			<td align="right">@t.name:</td>
+			<td class="right">@t.name:</td>
 			<td>@t.count</td>
 		</tr>
 		} 
@@ -79,7 +79,7 @@
 	<thead>
 		<tr><td colspan="3"><hr /></td></tr>
 		<tr>
-			<th align="left"><a href="#" class="sortable">Host</a> / <a href="#" class="sortable">Person</a></th>
+			<th class="left"><a href="#" class="sortable">Host</a> / <a href="#" class="sortable">Person</a></th>
 			<th><a href="#" class="sortable">Date/Time</a></th>
 			<th><a href="#" class="sortable">Activity</a></th>
 		</tr>

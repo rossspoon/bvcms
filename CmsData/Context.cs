@@ -960,6 +960,12 @@ namespace CmsData
 			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), uid);
 			return ((int)(result.ReturnValue));
 		}
+		[Function(Name = "dbo.DeleteQBTree")]
+		public int DeleteQBTree([Parameter(DbType = "Int")] int? qid)
+		{
+			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), qid);
+			return ((int)(result.ReturnValue));
+		}
 		[Function(Name = "dbo.SetMainDivision")]
 		public int SetMainDivision([Parameter(DbType = "Int")] int? orgid, [Parameter(DbType = "Int")] int? divid)
 		{
@@ -1053,8 +1059,8 @@ namespace CmsData
                             Body = def,
                             TypeID = ContentTypeId
                         };
-                DbUtil.Db.Contents.InsertOnSubmit(c);
-                DbUtil.Db.SubmitChanges();
+                Contents.InsertOnSubmit(c);
+                SubmitChanges();
 			}
 			return c.Body;
 		}

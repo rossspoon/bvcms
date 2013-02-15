@@ -172,6 +172,12 @@ namespace CmsWeb.Models
         }
         public string ConditionText { get { return fieldMap.Title; } }
 
+        private static List<CodeValueItem> BitCodes = 
+            new List<CodeValueItem> 
+            { 
+                new CodeValueItem { Id = 1, Value = "True", Code = "T" }, 
+                new CodeValueItem { Id = 0, Value = "False", Code = "F" }, 
+            };
         public void SetVisibility()
         {
             RightPanelVisible = true;
@@ -211,7 +217,7 @@ namespace CmsWeb.Models
                 case FieldType.Bit:
                 case FieldType.NullBit:
                     CodeVisible = true;
-                    CodeData = ConvertToSelect(cvctl.BitCodes(), fieldMap.DataValueField);
+                    CodeData = ConvertToSelect(BitCodes, fieldMap.DataValueField);
                     break;
                 case FieldType.String:
                 case FieldType.StringEqual:

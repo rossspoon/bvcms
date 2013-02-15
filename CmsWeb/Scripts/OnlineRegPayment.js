@@ -47,8 +47,15 @@
 	});
     $('#pf_Coupon').showPassword();
 
-    $('#findidclick').click(function () {
+    $('#findidclick').click(function (ev) {
+        ev.preventDefault();
         $("#findid").dialog({ width: 400 });
+        return false;
+    });
+    $('#findacctclick').click(function (ev) {
+        ev.preventDefault();
+        $("#findacct").dialog({ width: 450 });
+        return false;
     });
     var agreeterms = true;
     $("form").submit(function () {
@@ -103,7 +110,7 @@
             $("a.submitbutton").removeAttr("disabled");
         }
     };
-    $("input[name=Type]").live("change", function () {
+    $("body").on("change", 'input[name=Type]', function () {
         var v = $("input[name=Type]:checked").val();
         $("#pf_Type").val(v);
         $.ShowPaymentInfo(v);

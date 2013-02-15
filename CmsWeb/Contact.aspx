@@ -13,7 +13,7 @@
         <a href="/ContactSearch">Contacts</a></h1>
     <table>
         <tr>
-            <th align="right">
+            <th class="right">
                 Contact Date:
             </th>
             <td>
@@ -23,7 +23,7 @@
             </td>
         </tr>
         <tr runat="server" id="TaskRow">
-            <th align="right">
+            <th class="right">
                 Completed Task:
             </th>
             <td>
@@ -31,7 +31,7 @@
             </td>
         </tr>
         <tr>
-            <th align="right">
+            <th class="right">
                 Ministry:
             </th>
             <td>
@@ -43,7 +43,7 @@
             </td>
         </tr>
         <tr>
-            <th align="right">
+            <th class="right">
                 Type:
             </th>
             <td>
@@ -54,7 +54,7 @@
             </td>
         </tr>
         <tr>
-            <th align="right">
+            <th class="right">
                 Reason:
             </th>
             <td>
@@ -318,7 +318,7 @@
                     $('iframe', this).attr("src", "");
                 }
             });
-            $('#AddContacteeLink,#AddContactorLink').live("click", function (e) {
+            $('body').on("click", '#AddContacteeLink,#AddContactorLink', function (e) {
                 e.preventDefault();
                 var d = $('#contactDialog');
                 $('iframe', d).attr("src", this.href);

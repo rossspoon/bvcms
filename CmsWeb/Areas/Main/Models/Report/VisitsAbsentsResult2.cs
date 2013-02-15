@@ -289,7 +289,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                        }).Single();
             if (epip.ep.HasValue() || epip.ip.HasValue())
                 list.Add(new ListItem(1.2f * font.Size, "Entry, Interest: {0}, {1}".Fmt(epip.ep, epip.ip), font));
-            foreach (var pc in cq.Take(10))
+            const int maxcontacts = 4;
+            foreach (var pc in cq.Take(maxcontacts))
             {
                 var cname = "unknown";
                 if (pc.madeby != null)
@@ -302,7 +303,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         pc.contact.ContactDate, ctype, cname, comments);
                 list.Add(new iTextSharp.text.ListItem(1.2f * font.Size, s, font));
             } 
-            if (cq.Count() > 10)
+            if (cq.Count() > maxcontacts)
                 list.Add(new ListItem(1.2f * font.Size, "(showing most recent 10 of {0})".Fmt(cq.Count()), font));
 
             return list;

@@ -1,6 +1,6 @@
 ﻿@using CmsData;
 @using UtilityExtensions
-@model CmsData.Volunteer
+@model CmsWeb.Areas.Main.Models.Other.VolunteerModel
 @{
     ViewBag.Title = "Edit Volunteer";
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -14,33 +14,39 @@
         $(".datepicker").datepicker();
     });
     function redirect() {
-        window.location = "/Volunteering/Index/@Model.PeopleId";
+        window.location = "/Volunteering/Index/@Model.V.PeopleId";
     }
 </script>
 }
-<a href="/Person/Index/@Model.PeopleId">@Model.Person.Name</a><br />
+<a href="/Person/Index/@Model.V.PeopleId">@Model.V.Person.Name</a><br />
 <br />
 <form action="/Volunteering/Update" method="post">
-    @Html.Hidden("PeopleID")
+    @Html.Hidden("Id", Model.V.PeopleId)
     <table width="100%" style="border:thin solid #777777;">
         <tr>
-            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Approvals:</b></td>
-            <td valign="top" width="30%">
-                @Html.CheckBox("Standard" )
-                Standard (references only)<br />
-                @Html.CheckBox("Leader" )
-                Leadership (background check)
+            <td class="right top" style="background-color:#EFF3FB;"><b>Approvals:</b></td>
+            <td class="top" width="30%">
+            @foreach (var ck in Model.Approvals)
+            {
+                <input type="checkbox" name="approvals" checked="checked" value="@ck.Id"/>
+                @ck.Description<br />
+            }
+            @foreach (var ck in Model.NonApprovals)
+            {
+                <input type="checkbox" name="approvals" value="@ck.Id"/>
+                @ck.Description<br />
+            }
             </td>
-            <td align="right" valign="top" style="background-color:#EFF3FB;"><b>Comments:</b></td>
-            <td valign="top" width="50%">
-                <textarea name="Comments" rows="4" cols="50">@Model.Comments</textarea>
+            <td class="right top" style="background-color:#EFF3FB;"><b>Comments:</b></td>
+            <td class="top" width="50%">
+                <textarea name="comments" rows="4" cols="50">@Model.V.Comments</textarea>
             </td>
         </tr>
         <tr>
-            <td align="right" valign="top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Last Background Check:</b></td>
-            <td valign="top">@Html.TextBox("ProcessedDate", Model.ProcessedDate.FormatDate(), new { @class = "datepicker" })</td>
-            <td align="right" valign="top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Status Code:</b></td>
-            <td valign="top">@Html.DropDownList("StatusId",  new SelectList( s, "Id", "Description") )</td>
+            <td class="right top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Last Background Check:</b></td>
+            <td class="top">@Html.TextBox("processDate", Model.V.ProcessedDate.FormatDate(), new { @class = "datepicker" })</td>
+            <td class="right top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Status Code:</b></td>
+            <td class="top">@Html.DropDownList("statusId",  new SelectList( s, "Id", "Description") )</td>
         </tr>
     </table>
     <br />

@@ -1,4 +1,11 @@
-﻿div.settings .left
+﻿#main-tab form li ul {
+    margin-left: 2em;
+}
+#main-tab form li {
+    margin-top: .5em;
+}
+
+div.settings .left
 {
     float: left;
 }
@@ -117,12 +124,6 @@ div.settings i
     color: Blue;
 }
 
-div.settings ul
-{
-    list-style: none;
-    margin-left: -20px;
-}
-
 div.settings > form > ul > li
 {
     margin-top: 15px;
@@ -134,6 +135,7 @@ ul.sort > li
     margin-top: 12px;
     margin-bottom: 12px;
     border-left: 7px solid grey;
+    padding-left: 3px;
 }
 
 div.settings ul.padded

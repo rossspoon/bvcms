@@ -9,12 +9,31 @@
 @section scripts
 {
 @Scripts.Render("~/bundles/single/OnlineReg-js")
-@Html.Partial("DatePickerDefaults")
 <script type="text/javascript">
+    $.dateFormat = '@Util.jQueryDateFormat';
     $(function () {
+        $.datepicker.setDefaults({
+            dateFormat: $.dateFormat,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1925:2015",
+            showOn: "button",
+            buttonImage: "/images/calendar.gif",
+            buttonImageOnly: true
+        });
         $(".datepicker").datepicker();
         $("form").submit(function () {
             $("#submitit").attr("disabled", "disabled");
+        });
+        $('#findidclick').click(function (ev) {
+            ev.preventDefault();
+            $("#findid").dialog({ width: 400 });
+            return false;
+        });
+        $('#findacctclick').click(function (ev) {
+            ev.preventDefault();
+            $("#findacct").dialog({ width: 450 });
+            return false;
         });
     });
 </script>
@@ -147,7 +166,9 @@
                                 <div>@Html.ValidationMessage("Expires")</div></p>
                             <p><label>Card Code</label>
                                 @Html.TextBox("Cardcode", null, Model.Autocomplete)
-                                <div>@Html.ValidationMessage("Cardcode")</div></p>
+                                <div>@Html.ValidationMessage("Cardcode")</div>
+                                <div><a id="findidclick" href="#"><span style="font-size: 65%">How to find your card code</span></a></div>
+                            </p>
                         </div>
                     }
                     @if (Model.NoEChecksAllowed == false)
@@ -157,8 +178,9 @@
                                 @Html.TextBox("Routing", Model.Routing, Model.Autocomplete)
                                 <div>@Html.ValidationMessage("Routing")</div></p>
                             <p><label>Checking Account Number</label>
-                                @Html.TextBox("Account", Model.Account, Model.Autocomplete)
-                                <div>@Html.ValidationMessage("Account")</div></p>
+                                @Html.TextBox("Account", Model.Account, Model.Autocomplete)</p>
+                                <div>@Html.ValidationMessage("Account")</div>
+                                <div><a id="findacctclick" href="#"><span style="font-size: 65%">How to find routing and account #</span></a></div>
                         </div>
                     }
                 </div>
@@ -201,4 +223,32 @@
         </fieldset>
     </form>
 </div>
+<div id="findid" style="display:none"> 
+<h2>Card Identification #</h2>
+<table width="100%">
+<tr>
+    <td><h3>American Express</h3></td>
+    <td><img src="/images/amex.jpg" alt="amex" /></td>
+</tr>
+<tr>
+    <td><h3>Visa</h3></td>
+    <td><img src="/images/visa.jpg" alt="visa" /></td>
+</tr>
+<tr>
+    <td><h3>MasterCard</h3></td>
+    <td><img src="/images/mastercard.jpg" alt="mastercard" /></td>
+</tr>
+    <tr>
+        <td><h3>Discover</h3></td>
+        <td><img src="/images/discovercard.jpg" alt="discover" /></td>
+    </tr>
+</table>
+</div> 
+<div id="findacct" style="display:none"> 
+<h2>Bank Routing # / Account #</h2>
+    <p>Look at the numbers on the bottom of your check</p>
+<div>
+    <img src="https://a1d932c175f6f84ca65d-434e90644472f15e2ba76cac2f5de424.ssl.cf2.rackcdn.com/check.png" alt="check"/>
+</div>
+</div> 
 

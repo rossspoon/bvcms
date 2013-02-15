@@ -55,7 +55,7 @@ namespace CmsData.Registration
 
 		public string DonationFund()
 		{
-			return (from f in DbUtil.Db.ContributionFunds
+			return (from f in Db.ContributionFunds
 					where f.FundId == DonationFundId
 					select f.FundName).SingleOrDefault();
 		}
@@ -678,14 +678,14 @@ namespace CmsData.Registration
 			public int OrganizationId { get; set; }
 			public string OrganizationName { get; set; }
 		}
-		public static List<OrgPickInfo> OrganizationsFromIdString(Organization org)
+		public List<OrgPickInfo> OrganizationsFromIdString(Organization org)
 		{
 			var a = org.OrgPickList.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
 			var d = new Dictionary<int, int>();
 			var n = 0;
 			foreach (var i in a)
 				d.Add(n++, i);
-			var q = (from o in DbUtil.Db.Organizations
+			var q = (from o in Db.Organizations
 					 where a.Contains(o.OrganizationId)
 					 select new OrgPickInfo
 					 {
@@ -706,7 +706,7 @@ namespace CmsData.Registration
 		}
 		public MasterOrgInfo MasterOrg()
 		{
-			var q = from o in DbUtil.Db.ViewMasterOrgs
+			var q = from o in Db.ViewMasterOrgs
 					where o.PickListOrgId == OrgId
 					select new MasterOrgInfo
 					{

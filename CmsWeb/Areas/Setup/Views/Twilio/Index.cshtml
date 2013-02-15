@@ -15,7 +15,7 @@
 
             $("a[dialogurl]").on("click", function (e) {
                 e.preventDefault();
-                
+                $.block($('#' + $(this).attr("newtype")));
                 $("#dialog").attr("title", $(this).attr("dialogtitle"));
                 $("#dialog").load( $(this).attr("dialogurl"), contentLoaded );
             });

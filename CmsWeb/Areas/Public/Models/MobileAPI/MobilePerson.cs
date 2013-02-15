@@ -66,7 +66,7 @@ namespace CmsWeb.MobileAPI
 			status = p.MemberStatusId;
 
 			picture = p.PictureId ?? 0;
-			deceased = ( p.Deceased ? 1 : 0 );
+			deceased = ( (p.IsDeceased ?? false) ? 1 : 0 );
 
 			return this;
 		}

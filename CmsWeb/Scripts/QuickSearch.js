@@ -4,7 +4,7 @@
         showBody: "|"
     });
     $("#q").focus().select();
-    $("#quicksearch").live("keypress", function (e) {
+    $("body").on("keypress", '#quicksearch', function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#qsearch').click();
             return false;

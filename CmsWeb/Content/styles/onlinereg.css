@@ -441,3 +441,29 @@ table.checkboxes {
     table.checkboxes > tbody > tr > td {
         text-align: center;
     }
+
+td.right, th.right {
+    text-align: right;
+}
+td.left, th.left {
+    text-align: left;
+}
+td.center, th.center {
+    text-align: center;
+}
+td.nowrap, th.nowrap
+{
+    white-space: nowrap;
+}
+td.top, th.top
+{
+    vertical-align: top;
+}
+td.middle, th.middle
+{
+    vertical-align: middle;
+}
+td.bottom, th.bottom
+{
+    vertical-align: bottom;
+}

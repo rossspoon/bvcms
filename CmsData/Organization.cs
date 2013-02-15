@@ -263,6 +263,16 @@ namespace CmsData
 				return CreateOrganization(Db, division, organization);
 			return o;
 		}
+		public static Organization FetchOrCreateOrganization(CMSDataContext Db, Division division, string organization, string description)
+		{
+		    var o = Db.Organizations.SingleOrDefault(oo => oo.Description == description);
+		    if (o == null)
+		    {
+		        o = CreateOrganization(Db, division, organization);
+                o.Description = description;
+		    }
+		    return o;
+		}
 		public static Organization CreateOrganization(CMSDataContext Db, Division division, string organization)
 		{
 			var o = new Organization

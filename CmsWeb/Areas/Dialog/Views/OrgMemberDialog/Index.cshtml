@@ -31,13 +31,13 @@ body { margin: 1px; }
         </td>
     </tr>
     <tr>
-    <td valign="top">
+    <td class="top">
     <form class="DisplayEdit" action="/OrgMemberDialog/Update/@Model.OrganizationId&pid=@Model.PeopleId" method="post">
      @Html.Partial("Display", Model) 
     </form>
     </td>
     <td></td>
-    <td valign="top">
+    <td class="top">
         <div style="border: solid 1px #555; padding:1em">
         <strong>Groups:</strong><br />
         <table>
