@@ -43,7 +43,7 @@
                     @if (User.IsInRole("Edit"))
                     {
                         <li>@Helper.JQueryIdLink("Add Organization", "addorg")</li>
-                        <li>@Html.ActionLink("Org Members Management", "Index", "OrgMembers", new { Area = "Main" }, null)</li>
+                        <li>@Html.ActionLink("Org Members Management", "Index", "OrgMembers", new { Area = "Manage" }, null)</li>
                     }
                     @if (User.IsInRole("Coupon"))
                     {

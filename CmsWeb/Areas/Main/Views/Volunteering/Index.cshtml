@@ -253,7 +253,8 @@
             <td class="center" style="padding: 7px;">
                 <a href="/Image.aspx?id=@form.MediumId">
                     <img src="/images/adobe.png" style="border: thin solid #000000;">
-                </a>
+                </a><br/>
+                <span id="n.@form.Id" class="editable">@form.Name</span>
                 <form action="/Volunteering/Delete" method="post" onsubmit="return confirmDelete();">
                     <input type="hidden" name="id" value="@form.Id" />
                     <input type="hidden" name="PeopleID" value="@Model.V.PeopleId" />

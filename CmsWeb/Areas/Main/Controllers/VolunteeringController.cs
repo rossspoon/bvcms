@@ -30,13 +30,17 @@ namespace CmsWeb.Areas.Main.Controllers
             return RedirectToAction("Index", "Volunteering", new {id = id});
         }
 
-        public ActionResult Upload(int PeopleID, HttpPostedFileBase file)
+        public ActionResult Upload(int id, HttpPostedFileBase file)
         {
-            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == PeopleID);
+            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == id);
 
-            var f = new VolunteerForm { UploaderId = Util.UserId1, PeopleId = vol.PeopleId };
-            f.AppDate = Util.Now;
-            f.UploaderId = Util.UserId1;
+            var f = new VolunteerForm
+                        {
+                            UploaderId = Util.UserId1, 
+                            PeopleId = vol.PeopleId, 
+                            Name = file.FileName,
+                            AppDate = Util.Now,
+                        };
 
             var bits = new byte[file.ContentLength];
             file.InputStream.Read(bits, 0, bits.Length);
@@ -48,6 +52,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 case "image/jpeg":
                 case "image/pjpeg":
                 case "image/gif":
+                case "image/png":
                     {
                         f.IsDocument = false;
 
@@ -171,6 +176,19 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewBag.dialogType = type;
 
             return View(p);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult Edit(string id, string value)
+        {
+            var iid = id.Substring(2).ToInt();
+            var f = DbUtil.Db.VolunteerForms.Single(m => m.Id == iid);
+            if (id.StartsWith("n"))
+                f.Name = value;
+            DbUtil.Db.SubmitChanges();
+            var c = new ContentResult();
+            c.Content = value;
+            return c;
         }
     }
 }

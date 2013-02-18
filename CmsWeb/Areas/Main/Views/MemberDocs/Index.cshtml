@@ -6,47 +6,56 @@
 }
 @section scripts
 {
-<script type="text/javascript">
-    $(function () {
-        $("a.delete").click(function (e) {
-            e.preventDefault();
-            if (confirm("are you sure?")) {
-                $.post(this.href, {}, function (ret) {
-                    window.location = ret;
-                });
-            }
+    <script type="text/javascript">
+        $(function () {
+            $("a.delete").click(function (e) {
+                e.preventDefault();
+                if (confirm("are you sure?")) {
+                    $.post(this.href, {}, function (ret) {
+                        window.location = ret;
+                    });
+                }
+            });
+            $("a.bt,input.bt").button();
+            $("span.editable").editable("/MemberDocs/Edit/", {
+                indicator: "<img src='/images/loading.gif'>",
+                tooltip: "Click to edit...",
+                style: 'display: inline',
+                width: '200px',
+                height: 25
+            });
         });
-        $("a.bt,input.bt").button();
-    });
-</script>
+    </script>
 }
-<h2>
-    Membership Docs</h2>
+<h2>Membership Docs</h2>
 <div>
-    <a id="name" href="/Person/Index/@Model.PeopleId">@Model.person.Name</a> <br />
+    <a id="name" href="/Person/Index/@Model.PeopleId">@Model.person.Name</a>
+    <br />
     <span>
-    @foreach (var i in Model.DocForms())
-    {
-        string url = null;
-        string img = null;
-        if(i.IsDocument == true)
+        @foreach (var i in Model.DocForms())
         {
-            url = "/Image.aspx?id=" + i.Docid;
-            img = "/images/adobe.png";
-        }
-        else
-        {
-            url = "/MemberDocs/Image/" + i.Id;
-            img = "/Image.aspx?id=" + i.ThumbId;
-        }
-        <span style="display: inline-block; margin: 1em;">
+            string url = null;
+            string img = null;
+            if (i.IsDocument == true)
+            {
+                url = "/Image.aspx?id=" + i.Docid;
+                img = "/images/adobe.png";
+            }
+            else
+            {
+                url = "/MemberDocs/Image/" + i.Id;
+                img = "/Image.aspx?id=" + i.ThumbId;
+            }
+            <span style="display: inline-block; margin: 1em;">
 
-            <a href="@url" target="docpage" >
-                <img title="Uploaded: @i.DocDate.FormatDateTm()" src="@img" alt="" />
-            </a><br />
-            <a href="/MemberDocs/Delete/@i.Id" class="bt delete">Delete</a>
-        </span>
-    }
+                <a href="@url" target="docpage" >
+                    <img title="Uploaded: @i.DocDate.FormatDateTm()" src="@img" alt="" />
+                </a>
+                <br />
+                <span id="n.@i.Id" class="editable">@i.FormName</span><br/><br/>
+                <a href="/MemberDocs/Delete/@i.Id" class="bt delete">Delete</a>
+            </span>
+        }
     </span>
     <br />
     <form action="/MemberDocs/Upload/@Model.PeopleId" method="post" enctype="multipart/form-data">

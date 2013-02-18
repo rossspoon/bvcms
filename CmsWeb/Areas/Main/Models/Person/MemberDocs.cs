@@ -41,6 +41,7 @@ namespace CmsWeb.Models
 			public bool? IsDocument { get; set; }
 			public int PeopleId { get; set; }
 			public string Name { get; set; }
+			public string FormName { get; set; }
 		}
         public IEnumerable<DocInfo> DocForms()
         {
@@ -56,7 +57,8 @@ namespace CmsWeb.Models
                        Docid = f.MediumId,
                        IsDocument = f.IsDocument,
 					   PeopleId = f.PeopleId,
-					   Name = f.Person.Name
+					   Name = f.Person.Name,
+                       FormName = f.Name
                    });
             return q2;
         }
