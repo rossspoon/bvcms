@@ -34,12 +34,6 @@
         }
     }    
 }
-@section head
-{
-    <style>
-        
-    </style>
-}
 @section scripts
 {
     <script src="/Scripts/volunteering.js"></script>
@@ -51,20 +45,11 @@
     <tr>
         <td class="right top" style="background-color: #EFF3FB;"><b>Approvals:</b></td>
         <td class="top" width="30%">
-            @foreach (var ck in Model.Approvals)
+            @foreach (var ck in Model.ApprovalList)
             {
-                @Html.CheckBox("a." + ck.Id, true, new { @disabled = "disabled" })
+                <input type="checkbox" @(ck.Approved ? "checked='checked'" : "") disabled="disabled"/>
                 @ck.Description<br />
             }
-            @foreach (var ck in Model.NonApprovals)
-            {
-                @Html.CheckBox("n." + ck.Id, false, new { @disabled = "disabled" })
-                @ck.Description<br />
-            }
-            @*            @Html.CheckBox("Standard", new { @disabled = "disabled" } )
-            Standard (references only)<br />
-            @Html.CheckBox("Leader", new { @disabled = "disabled" } )
-            Leadership (background check)*@
         </td>
         <td class="right top" style="background-color: #EFF3FB;"><b>Comments:</b></td>
         <td class="top" width="50%">

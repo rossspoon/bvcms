@@ -44,6 +44,7 @@ namespace CmsWeb.Models
                 "Title",
                 "Occupation",
                 "School",
+                "ReceiveSMS",
             }.Select(x => new { value = x, text = x }),
                 "value", "text");
         }

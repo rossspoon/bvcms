@@ -2554,13 +2554,9 @@ namespace CmsData
             CompareType op,
             int[] ids)
         {
-            Expression<Func<Person, bool>> pred = p =>
-                p.Volunteers.Any(v =>
-                    (!v.Standard && !v.Children && !v.Leader && ids.Contains(0))
-                    || (v.Standard && ids.Contains(10))
-                    || (v.Children && ids.Contains(20))
-                    || (v.Leader && ids.Contains(30)))
-                || (p.Volunteers.Count() == 0 && ids.Contains(0));
+            Expression<Func<Person, bool>> pred =
+                p => p.VoluteerApprovalIds.Any(vid => ids.Contains(vid.ApprovalId))
+                     || (!p.VoluteerApprovalIds.Any() && ids.Contains(0));
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);

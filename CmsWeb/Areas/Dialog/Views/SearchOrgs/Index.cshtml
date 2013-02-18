@@ -7,8 +7,6 @@
 <title>Index</title>
     @Styles.Render("~/Content/styles/css")
     <link href="/Content/styles/style2.css" rel="stylesheet" type="text/css" />
-    @Scripts.Render("~/bundles/js")
-    @Scripts.Render("~/bundles/single/SearchOrgs-js")
 </head>
 <body>
 <form name="form1">
@@ -32,5 +30,7 @@
   </table>
 @Html.Partial("Results", Model)
 </form>
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/single/SearchOrgs-js")
 </body>
 </html>

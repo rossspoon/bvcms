@@ -30,7 +30,7 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('body').on("click", '#AddMembers2,#AddRelatedFamily2', function (e) {
+    $('#AddMembers2,#AddRelatedFamily2').live("click", function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);

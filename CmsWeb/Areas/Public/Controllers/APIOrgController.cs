@@ -81,13 +81,13 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content("ok");
         }
 		[HttpPost]
-		public ActionResult NewOrganization(int id, string name, string location, int? ParentOrgId)
+		public ActionResult NewOrganization(int divId, string name, string location, int? parentOrgId, int? campusId)
 		{
 			var ret = AuthenticateDeveloper();
 			if (ret.StartsWith("!"))
 				return Content(@"<NewOrganization status=""error"">" + ret.Substring(1) + "</NewOrganization>");
 			DbUtil.LogActivity("APIOrganization NewOrganization");
-			return Content(new APIOrganization(DbUtil.Db).NewOrganization(id, name, location, ParentOrgId), "text/xml");
+			return Content(new APIOrganization(DbUtil.Db).NewOrganization(divId, name, location, parentOrgId, campusId), "text/xml");
 		}
         [HttpPost]
         public ActionResult UpdateOrganization(int orgId, string name, string campusid, string active, string location, string description)

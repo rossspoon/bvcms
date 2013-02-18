@@ -2,7 +2,7 @@
     $("#clear").click(function () {
         $("input:text").val("");
     });
-    $('#name').focus();
+    //$('#name').focus();
     $("#search").click(function (ev) {
         ev.preventDefault();
         $.getTable();

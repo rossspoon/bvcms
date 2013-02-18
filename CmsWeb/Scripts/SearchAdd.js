@@ -1,12 +1,12 @@
 ﻿$(function () {
-    $("body").on('click', 'a.formlink', function (ev) {
+    $("a.formlink").live('click', function (ev) {
         ev.preventDefault();
         var a = $(this);
         var f = a.closest('form');
         var q = f.serialize();
         var h = a.attr('href');
         if (a.text() === 'Commit and Add') {
-            $.blockUI();
+            $.block();
         }
         $.post(h, q, function (ret) {
             if (ret.close) {
@@ -42,12 +42,12 @@
                     $('#people > tbody > tr:even').addClass('alt');
                 });
             }
-            $.unblockUI();
+            $.unblock();
         });
         return false;
     });
     $("a.bt").button();
-    $('body').on('click', 'a.clear', function (ev) {
+    $("a.clear").live('click', function (ev) {
         ev.preventDefault();
         $("#name").val('');
         $("#phone").val('');
@@ -55,7 +55,7 @@
         $("#dob").val('');
         return false;
     });
-    $("form").on("keypress", 'input', function (e) {
+    $("form input").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();
             return false;

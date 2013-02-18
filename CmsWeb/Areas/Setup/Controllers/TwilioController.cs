@@ -7,7 +7,7 @@ using CmsData;
 
 namespace CmsWeb.Areas.Setup.Controllers
 {
-    public class TwilioController : Controller
+    public class TwilioController : CmsStaffController
     {
         public ActionResult Index( int activeTab = 0 )
         {

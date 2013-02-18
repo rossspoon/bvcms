@@ -11,7 +11,7 @@
     <h2>Add Attendees to Meeting From Tag</h2>
     <form action="/AddAttendeesFromTag/Start" method="post">
     @Html.Hidden("meetingid")
-    Tag: @Html.DropDownList("tag")</br>
+        Tag: @Html.DropDownList("tag")<br/>
     <label>@Html.CheckBox("addasmembers")Add as Organization Members too</label>
     <input type="submit" class="bt blue" name="Submit" value="Run" />
     </form>

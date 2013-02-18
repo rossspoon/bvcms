@@ -587,7 +587,7 @@ $(function () {
             opacity: 0.5,
             background: "black"
         }, close: function () {
-            $('iframe', this).attr("src", "");
+            $('iframe', this).remove();
             var f = $("#orginfoform");
             $.post("/Organization/OrgInfo/" + $("#OrganizationId").val(), null, function (ret) {
                 $(f).html(ret).ready(function () {
@@ -596,11 +596,11 @@ $(function () {
             });
         }
     });
-    $('body').on("click", '#divisionlist', function (e) {
+    $("#divisionlist").live("click", function (e) {
         e.preventDefault();
-        var d = $('#divisionsDialog');
-        $('iframe', d).attr("src", this.href);
-        d.dialog("open");
+        $('#divisionsDialog').dialog("open");
+        var iframe = $("<iframe style='width: 100%; height: 99%; border-width: 0;'></iframe>").appendTo("#divisionsDialog");
+        iframe.attr("src", this.href);
     });
     $('#orgsDialog').dialog({
         title: 'Select Orgs Dialog',

@@ -124,6 +124,7 @@ namespace CmsWeb.Models.PersonPage
                     Title = p.TitleCode,
                     WeddingDate = p.WeddingDate,
                     WorkPhone = p.WorkPhone,
+                    ReceiveSMS = p.ReceiveSMS,
                 },
                 growth = new GrowthInfo
                 {

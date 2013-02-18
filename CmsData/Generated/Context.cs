@@ -2009,6 +2009,17 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.MostRecentItems", IsComposable = true)]
+		public IQueryable< View.MostRecentItem > MostRecentItems(
+            [Parameter(DbType="int")] int? uid
+            )
+		{
+			return this.CreateMethodCallQuery< View.MostRecentItem>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                uid
+                );
+		}
+
 		[Function(Name="dbo.PledgeFulfillment", IsComposable = true)]
 		public IQueryable< View.PledgeFulfillment > PledgeFulfillment(
             [Parameter(DbType="int")] int? fundid

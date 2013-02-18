@@ -587,9 +587,9 @@ namespace CmsWeb.Areas.People.Controllers
 		[HttpPost]
 		public ActionResult VolunteerDisplay(int id)
 		{
-			var m = new CmsWeb.Models.PersonPage.VolunteerModel(id);
-			return View(m);
-		}
+            var m = new Main.Models.Other.VolunteerModel(id);
+            return View(m);
+        }
 		[HttpPost]
 		public ContentResult DeleteExtra(int id, string field)
 		{

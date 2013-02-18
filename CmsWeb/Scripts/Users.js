@@ -6,7 +6,7 @@
         $("#Role").val(-1);
         return false;
     });
-    $('#Name').focus();
+    //$('#Name').focus();
     $("#search").click(function (ev) {
         ev.preventDefault();
         $.getTable();

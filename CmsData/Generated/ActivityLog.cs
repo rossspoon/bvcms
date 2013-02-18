@@ -29,8 +29,16 @@ namespace CmsData
 		
 		private string _Machine;
 		
+		private int? _OrgId;
+		
+		private int? _PeopleId;
+		
    		
     	
+		private EntityRef< Organization> _Organization;
+		
+		private EntityRef< Person> _Person;
+		
 		private EntityRef< User> _User;
 		
 	#endregion
@@ -58,10 +66,20 @@ namespace CmsData
 		partial void OnMachineChanging(string value);
 		partial void OnMachineChanged();
 		
+		partial void OnOrgIdChanging(int? value);
+		partial void OnOrgIdChanged();
+		
+		partial void OnPeopleIdChanging(int? value);
+		partial void OnPeopleIdChanged();
+		
     #endregion
 		public ActivityLog()
 		{
 			
+			
+			this._Organization = default(EntityRef< Organization>); 
+			
+			this._Person = default(EntityRef< Person>); 
 			
 			this._User = default(EntityRef< User>); 
 			
@@ -206,6 +224,56 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="OrgId", UpdateCheck=UpdateCheck.Never, Storage="_OrgId", DbType="int")]
+		public int? OrgId
+		{
+			get { return this._OrgId; }
+
+			set
+			{
+				if (this._OrgId != value)
+				{
+				
+					if (this._Organization.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnOrgIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrgId = value;
+					this.SendPropertyChanged("OrgId");
+					this.OnOrgIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="PeopleId", UpdateCheck=UpdateCheck.Never, Storage="_PeopleId", DbType="int")]
+		public int? PeopleId
+		{
+			get { return this._PeopleId; }
+
+			set
+			{
+				if (this._PeopleId != value)
+				{
+				
+					if (this._Person.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnPeopleIdChanging(value);
+					this.SendPropertyChanging();
+					this._PeopleId = value;
+					this.SendPropertyChanged("PeopleId");
+					this.OnPeopleIdChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -214,6 +282,90 @@ namespace CmsData
 	
 	#region Foreign Keys
     	
+		[Association(Name="FK_ActivityLog_Organizations", Storage="_Organization", ThisKey="OrgId", IsForeignKey=true)]
+		public Organization Organization
+		{
+			get { return this._Organization.Entity; }
+
+			set
+			{
+				Organization previousValue = this._Organization.Entity;
+				if (((previousValue != value) 
+							|| (this._Organization.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Organization.Entity = null;
+						previousValue.ActivityLogs.Remove(this);
+					}
+
+					this._Organization.Entity = value;
+					if (value != null)
+					{
+						value.ActivityLogs.Add(this);
+						
+						this._OrgId = value.OrganizationId;
+						
+					}
+
+					else
+					{
+						
+						this._OrgId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Organization");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_ActivityLog_People", Storage="_Person", ThisKey="PeopleId", IsForeignKey=true)]
+		public Person Person
+		{
+			get { return this._Person.Entity; }
+
+			set
+			{
+				Person previousValue = this._Person.Entity;
+				if (((previousValue != value) 
+							|| (this._Person.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._Person.Entity = null;
+						previousValue.ActivityLogs.Remove(this);
+					}
+
+					this._Person.Entity = value;
+					if (value != null)
+					{
+						value.ActivityLogs.Add(this);
+						
+						this._PeopleId = value.PeopleId;
+						
+					}
+
+					else
+					{
+						
+						this._PeopleId = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("Person");
+				}
+
+			}
+
+		}
+
+		
 		[Association(Name="FK_ActivityLog_Users", Storage="_User", ThisKey="UserId", IsForeignKey=true)]
 		public User User
 		{

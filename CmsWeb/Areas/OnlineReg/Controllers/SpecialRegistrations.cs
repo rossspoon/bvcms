@@ -476,6 +476,9 @@ You have the following subscriptions:<br/>
 			if (q.org == null)
 				return Content("org missing, bad link");
 
+		    if (q.org.RegistrationTypeId == RegistrationTypeCode.None)
+		        return Content("registration is no longer active");
+
 			if (q.om == null && q.org.Limit <= q.org.MemberCount)
 				return Content("sorry, maximum limit has been reached");
 
@@ -525,7 +528,7 @@ You have the following subscriptions:<br/>
 				DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
 				DbUtil.Db.Email(q.p.FromEmail, NotifyIds,
 						q.org.OrganizationName,
-						"{0} has registered for {1}<br>{2}".Fmt(q.p.Name, q.org.OrganizationName, smallgroup));
+						"{0} has registered for {1}<br>{2}<br>(from votelink)".Fmt(q.p.Name, q.org.OrganizationName, smallgroup));
 			}
 
 			return Content(message);

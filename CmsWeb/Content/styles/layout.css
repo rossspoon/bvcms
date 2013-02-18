@@ -1689,6 +1689,8 @@ fieldset .control-group input.date {
   border-radius: 0;
   border-color: #333;
   border-width: 2px;
+  /* Dave: dc added this */
+    z-index: 1002;
 }
 .ui-dialog .ui-widget-header {
   margin-top: -0.2em;

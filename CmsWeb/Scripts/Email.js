@@ -47,13 +47,7 @@
         });
     });
 
-    CKEDITOR.replace('Body', {
-        height: 400,
-        fullPage: false,
-        filebrowserUploadUrl: '/Account/CKEditorUpload/',
-        filebrowserImageUploadUrl: '/Account/CKEditorUpload/' 
-    });
-    $("body").on("click", '#CreateVoteTag', function (ev) {
+    $("#CreateVoteTag").live("click", function (ev) {
         ev.preventDefault();
         CKEDITOR.instances["votetagcontent"].updateElement();
         var q = $(this).closest('form').serialize();

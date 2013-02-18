@@ -300,6 +300,7 @@
     <Compile Include="APIPerson.cs" />
     <Compile Include="APIContribution.cs" />
     <Compile Include="BundleHeader.cs" />
+    <Compile Include="Generated\Functions\MostRecentItem.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />
     <Compile Include="Volunteer.cs" />
     <Compile Include="FamilyExtra.cs" />

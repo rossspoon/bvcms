@@ -5,10 +5,12 @@
 <html>
 <head>
 <title>Index</title>
+<script type="text/javascript">
+    if(typeof(Object)==="undefined"){
+        window.location.reload();
+    }
+</script>
     @Styles.Render("~/Content/styles/css")
-    <link href="/Content/styles/style2.css" rel="stylesheet" type="text/css" />
-    @Scripts.Render("~/bundles/js")
-    @Scripts.Render("~/bundles/single/SearchDivisions-js")
 </head>
 <body>
 <form name="form1">
@@ -33,5 +35,7 @@
   </table>
 @Html.Partial("Results", Model)
 </form>
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/single/SearchDivisions-js")
 </body>
 </html>

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using CmsData.View;
 using UtilityExtensions;
 using System.Xml.Linq;
 using System.Web.Caching;
@@ -66,7 +67,7 @@ namespace CmsData
 				InternalDb = value;
 			}
 		}
-		public static void LogActivity(string activity)
+		public static void LogActivity(string activity, string name = null, int? orgid = null, int? pid = null)
 		{
 			var db = new CMSDataContext(Util.ConnectionString);
 			int? uid = Util.UserId;
@@ -78,10 +79,32 @@ namespace CmsData
 				UserId = uid,
 				Activity = activity,
 				Machine = System.Environment.MachineName,
+                OrgId = orgid,
+                PeopleId = pid
 			};
 			db.ActivityLogs.InsertOnSubmit(a);
 			db.SubmitChanges();
 			db.Dispose();
+		    if (orgid.HasValue)
+		    {
+		        var mru = Util2.MostRecentOrgs;
+		        var i = mru.SingleOrDefault(vv => vv.Id == orgid);
+		        if (i != null)
+		            mru.Remove(i);
+		        mru.Insert(0, new Util2.MostRecentItem() { Id = orgid.Value, Name = name });
+                if (mru.Count > 5)
+    	            mru.RemoveAt(mru.Count-1);
+		    }
+		    else if (pid.HasValue && pid != Util.UserPeopleId)
+		    {
+		        var mru = Util2.MostRecentPeople;
+		        var i = mru.SingleOrDefault(vv => vv.Id == pid);
+		        if (i != null)
+		            mru.Remove(i);
+		        mru.Insert(0, new Util2.MostRecentItem() { Id = pid.Value, Name = name });
+                if (mru.Count > 5)
+    	            mru.RemoveAt(mru.Count-1);
+		    }
 		}
 		public static void DbDispose()
 		{

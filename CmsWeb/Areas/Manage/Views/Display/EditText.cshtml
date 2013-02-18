@@ -16,6 +16,7 @@
                 });
             }
         });
+        $("textarea").tabby();
     });
 </script>
 }
@@ -29,7 +30,7 @@
 	 @Html.Hidden("name")
 	 @Html.Hidden("title")
     <div>
-    <textarea name="body" cols="80" rows="40" wrap='off' style="width:99%">@Html.Raw(@Model.Body)</textarea>
+    <textarea name="body" cols="80" rows="40" wrap='off' spellcheck="false" style="width:99%">@Html.Raw(@Model.Body)</textarea>
     </div>
 	 <br />
 		<input type="submit" class="bt" value="Save" /> &nbsp;&nbsp; 

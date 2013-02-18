@@ -28,7 +28,6 @@ namespace CmsWeb
                 , "~/Content/styles/jquery.multiselect.css"
                 , "~/Content/styles/jquery.tooltip.css"
                 , "~/Content/styles/jquery.alerts.css"
-                //Dave: I put layout.css before main.css      
                 , "~/Content/styles/layout.css"
                 , "~/Content/styles/Main.css"
                 , "~/Content/styles/pager.css"
@@ -46,7 +45,6 @@ namespace CmsWeb
                 "~/Content/js/jquery-1.9.1.js"
                 , "~/Content/js/jquery-migrate-1.1.0.js"
                 , "~/Content/js/jquery-ui-1.10.0.custom.js"
-                //, "~/Content/js/dialog-patch.js"
                 , "~/Content/js/jquery.cookie.js"
                 , "~/Content/js/jquery.blockUI.js"
                 , "~/Content/js/jquery.mousewheel.js"
@@ -70,7 +68,6 @@ namespace CmsWeb
                 "~/Content/js/jquery-1.9.1.js"
                 , "~/Content/js/jquery-migrate-1.1.0.js"
                 , "~/Content/js/jquery-ui-1.10.0.custom.js"
-                //, "~/Content/js/dialog-patch.js"
                 , "~/Content/js/jquery.cookie.js"
                 , "~/Content/js/jquery.blockUI.js"
                 , "~/Content/js/jquery.mousewheel.js"
@@ -95,12 +92,13 @@ namespace CmsWeb
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/onlineregister-js").Include(
-                "~/Content/js/jquery-1.9.1.js",
-                "~/Content/js/jquery-ui-1.10.0.custom.js",
-                "~/Content/js/jquery.validate.js",
-                "~/Content/js/jquery.idle-timer.js",
-                "~/Content/js/jquery.blockUI.js",
-                "~/Content/js/jquery.showpassword.js"
+                "~/Content/js/jquery-1.9.1.js"
+                , "~/Content/js/jquery-migrate-1.1.0.js"
+                , "~/Content/js/jquery-ui-1.10.0.custom.js"
+                , "~/Content/js/jquery.validate.js"
+                , "~/Content/js/jquery.idle-timer.js"
+                , "~/Content/js/jquery.blockUI.js"
+                , "~/Content/js/jquery.showpassword.js"
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/org-js").Include(
@@ -119,12 +117,6 @@ namespace CmsWeb
             bundles.Add(new ScriptBundle("~/bundles/querybuilder-js").Include(
                 "~/Content/js/jquery.contextmenu.r2.js",
                 "~/Scripts/QueryBuilder.js"
-                            ));
-
-            bundles.Add(new ScriptBundle("~/bundles/edit-js").Include(
-                "~/ckeditor2/adapters/jquery.js",
-                "~/Content/js/jquery-ui-dialog-patch.js",
-                "~/Scripts/Edit.js"
                             ));
 
             bundles.AddOneScript("AdvancedSearch");

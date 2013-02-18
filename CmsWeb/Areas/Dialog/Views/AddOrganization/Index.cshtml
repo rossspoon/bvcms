@@ -6,8 +6,6 @@
 <head>
     <title>Add Organization</title>
     @Styles.Render("~/Content/styles/css")
-    @Scripts.Render("~/bundles/js")
-    @Html.Partial("DatePickerDefaults")
 </head>
 <body>
 <form action="/AddOrganization/Submit/@Model.OrganizationId" method="post">
@@ -51,5 +49,7 @@
     </tr>
 </table>
 </form>
+    @Scripts.Render("~/bundles/js")
+    @Html.Partial("DatePickerDefaults")
 </body>
 </html>

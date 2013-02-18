@@ -294,7 +294,6 @@
     <Compile Include="Areas\Main\Models\Export\FreshbooksResult.cs" />
     <Compile Include="Areas\Main\Models\Export\ExtraExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Organization\OrgChildrenModel.cs" />
-    <Compile Include="Areas\Main\Models\Person\VolunteerModel.cs" />
     <Compile Include="Areas\Manage\Controllers\UsersController.cs" />
     <Compile Include="Areas\Manage\Models\CheckinTimeModel.cs" />
     <Compile Include="Areas\Manage\Models\ContentModel.cs" />
@@ -1270,7 +1269,6 @@
     <Content Include="Scripts\OrgChildren.js" />
     <Content Include="Scripts\Meetings.js" />
     <Content Include="Scripts\SearchDivisions.js" />
-    <Content Include="Scripts\Edit2.js" />
     <Content Include="Scripts\Funds.js" />
     <Content Include="Scripts\RegSetting.js" />
     <Content Include="Scripts\markers.js" />
@@ -1288,7 +1286,6 @@
     <Content Include="images\bvcms130.png" />
     <Content Include="images\bvcms150.png" />
     <Content Include="images\req.gif" />
-    <Content Include="Scripts\Edit.js" />
     <Content Include="Scripts\Email.js" />
     <Content Include="Scripts\TransactionHistory.js" />
     <Content Include="Scripts\Transactions.js" />
