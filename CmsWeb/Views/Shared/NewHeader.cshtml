@@ -47,7 +47,7 @@
                                 @if (User.IsInRole("Edit"))
                                 {
                                     <li>@Helper.JQueryIdLink("Add Organization", "addorg")</li>
-                                    <li>@Html.ActionLink("Org Members Management", "Index", "OrgMembers", new { Area = "Main" }, null)</li>
+                                    <li>@Html.ActionLink("Org Members Management", "Index", "OrgMembers", new { Area = "Manage" }, null)</li>
                                 }
                                 @if (User.IsInRole("Coupon"))
                                 {
@@ -75,9 +75,9 @@
                                 }
                                 <li>@Helper.AnchorLink("Weekly Decisions", "/Report/ChurchAttendanceRpt.aspx", "_blank")</li>
                                 <li>@Helper.AnchorLink("Decision Summary", "/Report/DecisionSummary.aspx", "_blank")</li>
-                                <li>@Html.ActionLink("First Time Attenders", "NthTimeVisitors", "Home", new { Id=1, Area = "Main" }, null)</li>
-                                <li>@Html.ActionLink("Sedond Time Attenders", "NthTimeVisitors", "Home", new { Id=2, Area = "Main" }, null)</li>
-                                <li>@Html.ActionLink("Third Time Attenders", "NthTimeVisitors", "Home", new { Id=3, Area = "Main" }, null)</li>
+                                <li>@Html.ActionLink("First Time Attenders", "NthTimeVisitors", "Home", new { Id=1 }, null)</li>
+                                <li>@Html.ActionLink("Sedond Time Attenders", "NthTimeVisitors", "Home", new { Id=2 }, null)</li>
+                                <li>@Html.ActionLink("Third Time Attenders", "NthTimeVisitors", "Home", new { Id=3 }, null)</li>
                                 <li>@Html.ActionLink("Extra Values", "ExtraValues", "Reports", new { Area = "Main" }, null)</li>
                             </ul>
                         </div>

@@ -169,7 +169,10 @@ else
 @if (Model.AllowCoupon)
 {
     <tr><td>Payment Code</td>
-        <td>@Html.Password("pf.Coupon", Model.Coupon, new { autocomplete = "off" })</td>
+        <td>
+            <input id="pf_Coupon" name="pf.Coupon" type="password" autocomplete="off" data-typetoggle='#showpassword' value="@Model.Coupon" />
+            <input id="showpassword" type="checkbox" /><label>Show Code</label>
+        </td>
     </tr>
     <tr><td></td>
 		<td class="coupon">

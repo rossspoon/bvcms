@@ -86,6 +86,8 @@ namespace CmsWeb.Areas.Main.Models.Other
             V.StatusId = statusId;
             V.Comments = comments;
 
+            if (approvals == null)
+                approvals = new List<int>();
             var adds = from a in approvals
                        join b in ApprovalList.Where(aa => aa.Approved) on a equals b.Id into j
                        from v in j.DefaultIfEmpty()

@@ -76,10 +76,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td class="left" class='<%# Eval("CssClass") %>'>
+                                <td class='left <%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForDecisionType" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td class="right" class='<%# Eval("CssClass") %>'>
+                                <td class='right <%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -113,10 +113,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td class="left" class='<%# Eval("CssClass") %>'>
+                                <td class='left <%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForBaptismAge" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td class="right" class='<%# Eval("CssClass") %>'>
+                                <td class='right <%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -148,10 +148,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td class="left" class='<%# Eval("CssClass") %>'>
+                                <td class='left <%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForBaptismType" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td class="right" class='<%# Eval("CssClass") %>'>
+                                <td class='right <%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -176,10 +176,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td class="left" class='<%# Eval("CssClass") %>'>
+                                <td class='left <%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForNewMemberType" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td class="right" class='<%# Eval("CssClass") %>'>
+                                <td class='right <%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -211,10 +211,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td class="left" class='<%# Eval("CssClass") %>'>
+                                <td class='left <%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="ForDropType" CommandArgument='<%# Eval("Id") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td class="right" class='<%# Eval("CssClass") %>'>
+                                <td class='right <%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
@@ -248,10 +248,10 @@
                         </LayoutTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td class="left" class='<%# Eval("CssClass") %>'>
+                                <td class='left <%# Eval("CssClass") %>'>
                                     <asp:LinkButton ID="DetailButton" CommandName="DroppedForChurch" CommandArgument='<%# Eval("Desc") %>' Text='<%# Eval("Desc") %>' runat="server"></asp:LinkButton>
                                 </td>
-                                <td class="right" class='<%# Eval("CssClass") %>'>
+                                <td class='right <%# Eval("CssClass") %>'>
                                     <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                                 </td>
                             </tr>
