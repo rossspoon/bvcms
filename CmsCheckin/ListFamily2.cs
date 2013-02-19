@@ -363,7 +363,7 @@ namespace CmsCheckin
                 return;
             }
 
-			if( Program.BuildingInfo.membersonly && c.MemberStatus != "Yes" && Program.addguests == null && c.access != "true" )
+			if( Program.BuildingInfo.membersonly && c.MemberStatus != "Member" && Program.addguests == null && c.access != "true" )
 			{
 				Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because they are not a member.");
 				MessageBox.Show( "Only members may check-in. You will need to be a guest of a member to check-in.", "Members Only Error" );
@@ -374,7 +374,7 @@ namespace CmsCheckin
 			{
 				var p = Program.GuestOf();
 
-				if (c.MemberStatus != "Yes" && p != null && Util.GetGuestCount(p.pid) >= Program.BuildingInfo.maxguests)
+				if (c.MemberStatus != "Member" && p != null && Util.GetGuestCount(p.pid) >= Program.BuildingInfo.maxguests)
 				{
 					Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because " + p.name + " reached the guest limit.");
 					MessageBox.Show("No additional guests are permitted for today.", "Guest Limit Error");

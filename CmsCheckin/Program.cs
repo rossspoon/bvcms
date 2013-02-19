@@ -33,7 +33,7 @@ namespace CmsCheckin
             PrintMode = login.PrintMode.Text;
             PrintKiosks = login.PrintKiosks.Text;
             Printer = login.Printer.Text;
-            TwoInchLabel = login.DisableLocationLabels.Checked;
+            DisableLocationLabels = login.DisableLocationLabels.Checked;
 			BuildingMode = login.BuildingAccessMode.Checked;
 			FullScreen = login.FullScreen.Checked;
 
@@ -132,7 +132,6 @@ namespace CmsCheckin
         public static bool AskChurch { get; set; }
         public static bool AskChurchName { get; set; }
         public static bool AskLabels { get; set; }
-        public static bool TwoInchLabel { get; set; }
         public static bool DisableLocationLabels { get; set; }
         public static bool SecurityLabelPerChild { get; set; }
         public static string PrintMode { get; set; }

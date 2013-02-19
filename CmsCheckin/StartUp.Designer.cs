@@ -292,9 +292,9 @@
             this.OldLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OldLabels.Location = new System.Drawing.Point(433, 330);
             this.OldLabels.Name = "OldLabels";
-            this.OldLabels.Size = new System.Drawing.Size(270, 24);
+            this.OldLabels.Size = new System.Drawing.Size(222, 24);
             this.OldLabels.TabIndex = 32;
-            this.OldLabels.Text = "Use Direct Datamax 1 Inch Labels";
+            this.OldLabels.Text = "Use Direct Datamax Labels";
             this.OldLabels.UseVisualStyleBackColor = true;
             this.OldLabels.CheckedChanged += new System.EventHandler(this.OldLabels_CheckedChanged);
             // 

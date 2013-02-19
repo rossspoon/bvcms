@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using CmsCheckin.Classes;
 
 namespace CmsCheckin
 {
@@ -44,8 +45,10 @@ namespace CmsCheckin
             {
                 if (RequiresSecurityLabels > 0)
                 {
+                    int iLabelSize = PrinterHelper.getPageHeight(Program.Printer);
+
                 	var n = RequiresSecurityLabels;
-                    if (Program.TwoInchLabel)
+                    if (iLabelSize >= 170 && iLabelSize <= 230)
                         LabelsPrinted += ms.SecurityLabel2(time, Program.SecurityCode, n);
                     else
                         LabelsPrinted += ms.SecurityLabel(time, Program.SecurityCode, n);

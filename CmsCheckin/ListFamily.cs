@@ -716,13 +716,28 @@ namespace CmsCheckin
 			}
 			else
 			{
+                int iLabelSize = PrinterHelper.getPageHeight(Program.Printer);
+
+                using (var ms = new MemoryStream())
+                {
+                    if (iLabelSize >= 170 && iLabelSize <= 230)
+                        doprint.PrintLabels2(ms, q);
+                    else
+                        doprint.PrintLabels(ms, q);
+
+                    doprint.FinishUp(ms);
+                }
+
+                /*
 				using (var ms = new MemoryStream())
 				{
-					//if (Program.TwoInchLabel) doprint.PrintLabels2(ms, q);
+
+					//if (Program.TwoInchLabel) 
 					//else doprint.PrintLabels(ms, q);
                     doprint.PrintLabels(ms, q);
 					doprint.FinishUp(ms);
 				}
+                 */
 			}
         }
         private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
