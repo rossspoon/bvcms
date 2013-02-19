@@ -1,31 +1,42 @@
-﻿@helper SearchBuilderDropdown(bool onqb, bool newlook)
+﻿@using CmsWeb
+@using CmsData
+@using UtilityExtensions
+@helper SearchBuilderDropdown(bool onqb, bool newlook)
 {
     <div class="dropdown-menu">
         <ul>
-            @if (newlook)
+            @if (newlook && DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
             {
-                <li class="header"><span>Search Builder</span></li>
+                <li>@AnchorLink("Last Search", "/Search/Advanced/Main")</li>
+                <li>@AnchorLink("New Search", "/Search/Advanced/NewQuery")</li>
             }
-            <li><a href="/QueryBuilder/Main">
-                    Last Search
-                </a></li>
-            <li><a href="/QueryBuilder/NewQuery">
-                    New Search
-                </a></li>
-            <li><a href="/SavedQuery">
-                    Saved Searches
-                </a></li>
-                        
+            else
+            {
+                <li>@AnchorLink("Last Search", "/QueryBuilder/Main")</li>
+                <li>@AnchorLink("New Search", "/QueryBuilder/NewQuery")</li>
+                
+            }
+            <li><a href="/SavedQuery">Saved Searches</a></li>
             @if (onqb)
             {
-                <li><a id="ShowOpenQuery" href="#">
-                        Open Saved Search
-                    </a></li>
-                <li><a id="ShowSaveQuery" href="#">
-                        Save Search As
-                    </a></li>
+                <li>@JQueryIdLink("Save Search As", "ShowSaveQuery")</li>
             }
         </ul>
     </div>
+}
+@helper AnchorLink(string text, string href, string target = null)
+{
+    if (target.HasValue())
+    {
+        <a href="@href" target="@target">@text</a>
+    }
+    else
+    {
+        <a href="@href">@text</a>
+    }
+}
+@helper JQueryIdLink(string text, string id)
+{
+    <a id="@id" href="#">@text</a>
 }
 

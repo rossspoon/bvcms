@@ -8,44 +8,44 @@
         return u;
     };
     $("div[source=registered]").tooltip({ showBody: "|" });
-    $('#sendreminders').live("click", function (ev) {
+    $('body').on("click", '#sendreminders', function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
         if (confirm('Are you sure you want to send reminders?')) {
-            $.blockUI({ message: "sending reminders" });
+            $.block("sending reminders");
             $.post(href, { "emailall": $("#emailall").is(':checked') }, function (ret) {
                 if (ret != "ok") {
-                    $.unblockUI();
+                    $.unblock();
                     $.growlUI("error", ret);
                 }
                 else {
-                    $.unblockUI();
+                    $.unblock();
                     $.growlUI("Email", "Reminders Sent");
                 }
             });
         }
     });
-    $(".smallgroup").live("change", function () {
-        $.blockUI();
+    $("body").on("change", '.smallgroup', function () {
+        $.block();
         $.post("/Volunteers/ManageArea2/" + $("#OrgId").val(), {
             sg1: $("#sg1").val(),
             sg2: $("#sg2").val(),
             SortByWeek: $("#SortByWeek").val()
         }, function (ret) {
             $("#managearea").html(ret).ready($readyHover);
-            $.unblockUI();
+            $.unblock();
         });
     });
-    $("#SortIt").live("click", function (ev) {
+    $("body").on("click", '#SortIt', function (ev) {
         ev.preventDefault();
         if ($("#SortByWeek").val() === "False")
             $("#SortByWeek").val("True");
         else
             $("#SortByWeek").val("False");
-        $.blockUI();
+        $.block();
         window.location = $.URL("/Volunteers/Calendar/");
     });
-   $(".selectable").live("click", function (ev) {
+    $("body").on("click", '.selectable', function (ev) {
         if (ev.target.nodeName != 'A') {
             if ($(this).attr("source") != $(".selected").attr("source"))
                 $(".selectable").removeClass("pidHighlight2")
@@ -87,7 +87,7 @@
         );
     };
     $readyHover();
-    $("div.drop.ui-state-active").live("click", function (ev) {
+    $("body").on("click", "div.drop.ui-state-active", function (ev) {
         var $this = $(this);
         var list = [];
         $(".selected").each(function (index) {
@@ -99,7 +99,7 @@
         });
         if (list.length == 0)
             return;
-        $.blockUI();
+        $.block();
         var $info = {
             "id": $("#OrgId").val(),
             "sg1": $("#sg1").val(),
@@ -115,7 +115,7 @@
             data: JSON.stringify($info),
             success: function (ret) {
                 $("#managearea").html(ret).ready($readyHover);
-                $.unblockUI();
+                $.unblock();
             },
             error: function (ret) {
                 alert(ret);

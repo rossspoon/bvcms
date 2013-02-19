@@ -8,7 +8,7 @@
     if (index > 0 && Model.NeedsCopyFromPrevious())
     {
         <tr>
-            <td colspan="2" align="right"><a href="#" id="copy">copy from previous</a></td>
+            <td colspan="2" class="right"><a href="#" id="copy">copy from previous</a></td>
         </tr>
     }
 }
@@ -217,7 +217,7 @@
             if (cb.Cols > 1)
             {
             <tr>
-            <td style="padding: 3px" colspan="2" align="center">
+            <td style="padding: 3px" colspan="2" class="center">
                 <div>@cb.Label</div>
                 <table class="checkboxes grid table-striped">
                     <thead>
@@ -269,7 +269,7 @@
             else
             {
             <tr>
-            <td valign="top"><div class="wraparound">@cb.Label</div></td>
+            <td class="top"><div class="wraparound">@cb.Label</div></td>
             <td style="padding: 3px">
 				<table>
 					@for(var n = 0; n< cb.list.Count; n++)
@@ -282,7 +282,7 @@
 				        }
 				        else if (a.SmallGroup != "comment")
 				        {
-				            <tr><td valign="top">
+				            <tr><td class="top">
 				                    <input type="checkbox" value="@a.SmallGroup" name="@Html.NameFor2(m => m.Checkbox)" @(filled ? "disabled='disabled'" : "") @(Model.CheckboxChecked(a.SmallGroup) ? "checked='checked'" : "") />
 				                </td>
 				                <td>
@@ -362,7 +362,7 @@
     var funame = Html.NameFor2(m => m.FundItem);
     var funds = CmsWeb.Models.OnlineRegPersonModel.Funds();
     decimal? tot = null;
-    <tr><td colspan="2" align="center"><table class="grid" cellpadding="2">
+    <tr><td colspan="2" class="center"><table class="grid" cellpadding="2">
     @for (var n = 0; n < funds.Length; n++)
     {
         var i = funds[n];
@@ -386,7 +386,7 @@
     </table></td>
     </tr>
 }
-    <tr><td align="right" colspan="2">
+    <tr><td class="right" colspan="2">
 			<input type="button" id="otheredit" href="/OnlineReg/SubmitOtherInfo/@index" class="submitbutton ajax" 
 				   value="Submit" />
 <div class="formerror">@Html.ValidationMessage("Form")</div>

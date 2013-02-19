@@ -6,9 +6,6 @@
 <head>
     <title>Index</title>
     @Styles.Render("~/Content/styles/css")
-    @Scripts.Render("~/bundles/js")
-    @Html.Partial("DatePickerDefaults")
-    @Scripts.Render("~/bundles/single/OrgMembersDialog-js")
 </head>
 <body>
 <form action="/OrgMembersDialog/Update" method="post">
@@ -23,7 +20,7 @@
 		<th>Tag: </th>
 		<td>@Html.DropDownList("tag", Model.Tags(), new { @class="filter" })</td>
 		<td>Inactive Date:</td>
-		<td rowspan="2" align="right"><a id="ClearFilter" class="bt" href="#">clear</a></td>
+		<td rowspan="2" class="right"><a id="ClearFilter" class="bt" href="#">clear</a></td>
 	</tr>
 	<tr>
 		<th>Member Type:</th>
@@ -36,7 +33,7 @@
     <tr><td colspan="4">
 			<table>
 				<tr>
-					<td align="right">Membertype:</td>
+					<td class="right">Membertype:</td>
 					<td>@Html.DropDownList("MemberType", Model.MemberTypeCodesWithDrop())</td>
 					<td>Enrollment</td>
                     <td nowrap="">@Html.TextBox("EnrollmentDate", "", new { @class = "datepicker", style = "width:100px" })</td>
@@ -77,6 +74,9 @@
 </table>
 </div>
 </form>
+    @Scripts.Render("~/bundles/js")
+    @Html.Partial("DatePickerDefaults")
+    @Scripts.Render("~/bundles/single/OrgMembersDialog-js")
 </body>
 </html>
 

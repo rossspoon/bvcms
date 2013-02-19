@@ -461,6 +461,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 					case "Title":
 						p.TitleCode = m.NewValue;
 						break;
+					case "ReceiveSMS":
+				        p.ReceiveSMS = m.NewValue.ToBool();
+						break;
 				}
 				DbUtil.Db.SubmitChanges();
 			}

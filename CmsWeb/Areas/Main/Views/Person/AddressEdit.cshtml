@@ -61,7 +61,7 @@
         <th>Preferred Address</th>
         <td>@Html.CheckBox("Preferred", Model.Preferred, Model.Preferred ? new { disabled = "disabled" } : null)</td>
     </tr>
-    <tr><td align="right" colspan="2">
+    <tr><td class="right" colspan="2">
             <a class="displayedit bt" href="/Person/AddressDisplay/@Model.PeopleId?type=@Model.Name">Cancel</a>
             <a href="/Person/AddressUpdate/@Model.PeopleId?type=@Model.Name" class="submitbutton bt blue">Save Changes</a>
             <div>@Html.ValidationMessage("error")</div>

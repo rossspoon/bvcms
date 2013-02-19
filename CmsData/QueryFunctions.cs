@@ -30,7 +30,7 @@ namespace CmsData
         public static string VitalStats(CMSDataContext Db)
         {
             var qf = new QueryFunctions(Db);
-            var script = DbUtil.Content("VitalStats");
+            var script = Db.Content("VitalStats");
             if (script == null)
                 return "no VitalStats script";
 #if DEBUG2
@@ -209,7 +209,7 @@ namespace CmsData
 		}
         public string Export(int id, string name)
         {
-            var clause = DbUtil.Db.LoadQueryById(id);
+            var clause = Db.LoadQueryById(id);
             var w = new APIWriter();
             w.Start("Search");
 			w.Attr("Description", name);

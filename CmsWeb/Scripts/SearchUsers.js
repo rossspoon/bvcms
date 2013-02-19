@@ -43,7 +43,8 @@
                         d.dialog("close");
                         return false;
                     });
-                    $("input[type=checkbox]", d).die('click').live("change", function () {
+                    $(d).off('click', 'input[type=checkbox]');
+                    $(d).on("change", "input[type=checkbox]", function () {
                         var sp = $(this).parents('tr:eq(0)').find("span.move");
                         var ck = $(this).is(":checked");
                         var pid = $(this).attr("value");
@@ -54,8 +55,9 @@
                                 sp.empty();
                         });
                     });
-                    $("a.move", d).die("click").live("click", function(ev) {
-                        ev.preventDefault();
+                    $(d).off("click", 'a.move');
+                    $(d).on("click", 'a.move', function(ev2) {
+                        ev2.preventDefault();
                         var f = $(this).closest('form');
                         $("#topid").val($(this).attr("value"));
                         var q = f.serialize();

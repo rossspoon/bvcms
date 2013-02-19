@@ -58,7 +58,7 @@ Donation Amount: <input type="text" name="donation" value="@Model.donation" />
                 });
             else
                 $.idleTimer(tmout);
-            $(".personheader a").live("click", function (e) {
+            $("body").on("click", '.personheader a', function (e) {
                 e.preventDefault();
                 $(this).closest('div').nextAll('table').slideToggle();
                 return false;

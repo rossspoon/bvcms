@@ -186,7 +186,8 @@
     // delete timeout and show helper
     function show() {
         tID = null;
-        if ((!IE || !$.fn.bgiframe) && settings(current).fade) {
+        var curr = settings(current);
+        if ((!IE || !$.fn.bgiframe) && curr && curr.fade) {
             if (helper.parent.is(":animated"))
                 helper.parent.stop().show().fadeTo(settings(current).fade, current.tOpacity);
             else
@@ -238,7 +239,8 @@
                 top = event.pageY + settings(current).top;
             }
             var right = 'auto';
-            if (settings(current).positionLeft) {
+            var curr = settings(current);
+            if (curr && curr.positionLeft) {
                 right = $(window).width() - left;
                 left = 'auto';
             }

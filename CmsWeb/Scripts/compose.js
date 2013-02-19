@@ -1,34 +1,60 @@
-﻿var currentDiv = null;
-$(function () {
-    CKEDITOR.config.jqueryOverrideVal = true;
-    CKEDITOR.config.fullPage = false;
-    CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
-
-    var editor_large = {
+﻿$(function () {
+    var currentDiv = null;
+    
+    CKEDITOR.replace('htmleditor', {
+        height: 400,
         autoParagraph: false,
+        fullPage: false,
         filebrowserUploadUrl: '/Account/CKEditorUpload/',
-        filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
-        toolbar_Full: [
-            ['Save'], ['Source'],
-            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'SpellChecker', 'Scayt'],
-            ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
-            '/',
-            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv'],
-            ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
-            ['Link', 'Unlink', 'Anchor'],
-            ['Image', 'Table', 'SpecialChar'],
-            '/',
-            ['Styles', 'Format', 'Font', 'FontSize'],
-            ['TextColor', 'BGColor'],
-            ['Maximize', 'ShowBlocks', '-', 'About']
-        ]
+        filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
+    });
+
+    CKEDITOR.on('dialogDefinition', function (ev) {
+        var dialogName = ev.data.name;
+        var dialogDefinition = ev.data.definition;
+        if (dialogName == 'link') {
+            var advancedTab = dialogDefinition.getContents('advanced');
+            advancedTab.label = "SpecialLinks";
+            advancedTab.remove('advCSSClasses');
+            advancedTab.remove('advCharset');
+            advancedTab.remove('advContentType');
+            advancedTab.remove('advStyles');
+            advancedTab.remove('advAccessKey');
+            advancedTab.remove('advName');
+            advancedTab.remove('advLangCode');
+            advancedTab.remove('advTabIndex');
+
+            var relField = advancedTab.get('advRel');
+            relField.label = "SmallGroup";
+            var titleField = advancedTab.get('advTitle');
+            titleField.label = "Message";
+            var idField = advancedTab.get('advId');
+            idField.label = "OrgId/MeetingId";
+            var langdirField = advancedTab.get('advLangDir');
+            langdirField.label = "Confirmation";
+            langdirField.items[1][0] = "Yes, send confirmation";
+            langdirField.items[2][0] = "No, do not send confirmation";
+        }
+    });
+    $("a.save").click(function () {
+        var h = CKEDITOR.instances['htmleditor'].getData();
+        $(currentDiv).html(h);
+        $('#popupeditor').hide();
+        dimOff();
+    });
+    $("a.cancel").click(function () {
+        $('#popupeditor').hide();
+        dimOff();
+    });
+    $("a.bt").button();
+    $.hClick = function (e) {
+        currentDiv = this;
+        $.removeButtons();
+        CKEDITOR.instances['htmleditor'].setData($(this).html());
+        dimOn();
+        $("#popupeditor").show().center();
     };
-
-    $('div[bvedit]').bind('click', hClick).addClass("ti");
-    $('td[bvrepeat]').mouseenter(hHoverIn).mouseleave(hHoverOut);
-    $('#htmleditor').ckeditor(editor_large);
-
+    $('div[bvedit]').bind('click', $.hClick).addClass("ti");
     $("#progress").dialog(
         {
             autoOpen: false,
@@ -38,7 +64,7 @@ $(function () {
             }
         });
 
-    $("#popupeditor").dialog({ autoOpen: false, modal: true, closeOnEscape: true, title: "Edit Template Section", minWidth: 600, minHeight: 400 });
+    //$("#popupeditor").dialog({ autoOpen: false, modal: true, closeOnEscape: true, title: "Edit Template Section", minWidth: 600, minHeight: 400 });
     $("#askName").dialog({ autoOpen: false, modal: true, closeOnEscape: true, title: "Save Draft", resizable: false, width: 'auto' });
 
     $("#Send").click(function () {
@@ -73,10 +99,10 @@ $(function () {
             var d = $("#askName");
             d.dialog('open');
         } else {
-            clearTemplateClass();
+            $.clearTemplateClass();
             $("#body").val($("#tempateBody").html());
             $("#name").val($("#newName").val());
-            addTemplateClass();
+            $.addTemplateClass();
 
             $("#SendEmail").attr("action", "/Email/SaveDraft");
             $("#SendEmail").submit();
@@ -84,10 +110,10 @@ $(function () {
     });
 
     $("#SaveDraftButton").click(function () {
-        clearTemplateClass();
+        $.clearTemplateClass();
         $("#body").val($("#tempateBody").html());
         $("#name").val($("#newName").val());
-        addTemplateClass();
+        $.addTemplateClass();
 
         $("#SendEmail").attr("action", "/Email/SaveDraft");
         $("#SendEmail").submit();
@@ -97,9 +123,9 @@ $(function () {
         var d = $("#progress");
         d.dialog('open');
 
-        clearTemplateClass();
+        $.clearTemplateClass();
         $("#body").val($("#tempateBody").html());
-        addTemplateClass();
+        $.addTemplateClass();
 
         var q = $("#SendEmail").serialize();
 
@@ -112,108 +138,74 @@ $(function () {
         });
     });
 
+    $.removeButtons = function () {
+        $("#controlButtons").remove();
+    };
 
-    CKEDITOR.on('dialogDefinition', function (ev) {
-        var dialogName = ev.data.name;
-        var dialogDefinition = ev.data.definition;
-        if (dialogName == 'link') {
-            var advancedTab = dialogDefinition.getContents('advanced');
-            advancedTab.label = "SpecialLinks";
-            advancedTab.remove('advCSSClasses');
-            advancedTab.remove('advCharset');
-            advancedTab.remove('advContentType');
-            advancedTab.remove('advStyles');
-            advancedTab.remove('advAccessKey');
-            advancedTab.remove('advName');
-            advancedTab.remove('advLangCode');
-            advancedTab.remove('advTabIndex');
-
-            var relField = advancedTab.get('advRel');
-            relField.label = "SmallGroup";
-            var titleField = advancedTab.get('advTitle');
-            titleField.label = "Message";
-            var idField = advancedTab.get('advId');
-            idField.label = "OrgId/MeetingId";
-            var langdirField = advancedTab.get('advLangDir');
-            langdirField.label = "Confirmation";
-            langdirField.items[1][0] = "Yes, send confirmation";
-            langdirField.items[2][0] = "No, do not send confirmation";
-        }
-    });
-});
-
-
-
-    function clearTemplateClass() {
-        removeButtons();
-        $("div[bvedit]").removeClass();
-        $("div[bveditadd]").removeClass();
-    }
-
-    function addTemplateClass() {
-        $("div[bveditadd]").addClass("ti");
-        $("div[bvedit]").addClass("ti");
-    }
-
-    function hClick(e) {
-        currentDiv = this;
-        removeButtons();
-        $('#htmleditor').ckeditorGet().setData($(this).html());
-        $('#popupeditor').dialog("open");
-    }
-
-    function hClickAdd(e) {
-        removeButtons();
+    $.hClickAdd = function (e) {
+        $.removeButtons();
         parentTR = $(currentHover).parent();
-        dup = $(currentHover).clone();
+        var dup = $(currentHover).clone();
         $(parentTR).after($(dup));
         dup.wrap("<tr></tr>");
         dup.attr("bvrepeatadd", "");
         dup.removeAttr("bvrepeat");
-        dup.mouseenter(hAddHoverIn).mouseleave(hHoverOut);
-        $('div[bvedit]').bind('click', hClick).addClass("ti");
-    }
+        dup.mouseenter($.hAddHoverIn).mouseleave($.hHoverOut);
+        $('div[bvedit]').bind('click', $.hClick).addClass("ti");
+    };
 
-    function hHoverIn(ev) {
+    $.hHoverIn = function (ev) {
         currentHover = this;
         $(this).css("border", "solid 1px #ff0000");
         $(this).append("<div id='controlButtons' class='tiAdd'><input id='addButton' type='button' value='Copy Section' /></div>");
         $("#controlButtons").css("top", $(this).offset().top + 5).css("left", $(this).offset().left + 5);
-        $("#addButton").bind("click", hClickAdd);
+        $("#addButton").bind("click", $.hClickAdd);
         ev.stopPropagation();
-    }
+    };
+    $.clearTemplateClass = function () {
+        $.removeButtons();
+        $("div[bvedit]").removeClass();
+        $("div[bveditadd]").removeClass();
+    };
 
-    function hHoverOut(ev) {
+    $.addTemplateClass = function () {
+        $("div[bveditadd]").addClass("ti");
+        $("div[bvedit]").addClass("ti");
+    };
+
+    $.hHoverOut = function (ev) {
         currentHover = null;
         $(this).css("border", "");
-        removeButtons();
+        $.removeButtons();
         ev.stopPropagation();
-    }
+    };
+    $('td[bvrepeat]').mouseenter($.hHoverIn).mouseleave($.hHoverOut);
 
-    function removeButtons() {
-        $("#controlButtons").remove();
-    }
-
-    function hAddHoverIn(ev) {
+    $.hAddHoverIn = function (ev) {
         currentHover = this;
         $(this).css("border", "solid 1px #ff0000");
         $(this).append("<div id='controlButtons' class='tiAdd'><input id='removeButton' type='button' value='Remove' /></div>");
         $("#controlButtons").css("top", $(this).offset().top + 5).css("left", $(this).offset().left + 5);
-        $("#removeButton").bind('click', removeSection);
-    }
+        $("#removeButton").bind('click', $.removeSection);
+    };
 
-    function updateDiv() {
-        $(currentDiv).html($('#htmleditor').ckeditorGet().getData());
-        $('#popupeditor').dialog("close");
-    }
-    
-    function addRowAfter(ev) {
+    $.updateDiv = function () {
+        var h = CKEDITOR.instances['htmleditor'].getData();
+        $(currentDiv).html(h);
+        $('#popupeditor').hide("close");
+    };
+
+    $.addRowAfter = function (ev) {
         $(this).parent().parent().after("<tr bvrepeatadd=''>" + $(this).html() + "</tr>");
-        $("div[bvrepeatadd]").hover(hAddHoverIn, hHoverOut);
+        $("div[bvrepeatadd]").hover($.hAddHoverIn, $.hHoverOut);
         ev.stopPropagation();
-    }
+    };
 
-    function removeSection(ev) {
+    $.removeSection = function (ev) {
         $(currentHover).parent().remove();
         ev.stopPropagation();
-    }
+    };
+});
+
+
+

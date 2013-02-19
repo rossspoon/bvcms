@@ -57,29 +57,29 @@ This will allow you to mark them as members.
                 <h2><a href="/Organization/Index/@Model.meeting.OrganizationId">@Model.meeting.Organization.OrganizationName</a> <span style="font-size:12px">@Model.meeting.MeetingDate.FormatDateTm()</span></h2></td></tr>
         @if (User.IsInRole("Attendance"))
         {
-            <tr><td align="right">Description:</td>
+            <tr><td class="right">Description:</td>
                 <td><span id="d-@Model.meeting.MeetingId" class="clickEdit">@Model.meeting.Description</span></td></tr>
-            <tr><td align="right">Meeting Type:</td>
+            <tr><td class="right">Meeting Type:</td>
                 <td><span id='g-@Model.meeting.MeetingId' class='clickSelectG'>@(Model.meeting.GroupMeetingFlag ? "Group (headcount)" : "Regular")</span> | 
                     <span id='c-@Model.meeting.MeetingId' class='clickSelectC'>@Model.AttendCreditType()</span>
                 </td></tr>
         }
         else
         {
-            <tr><td align="right">Description:</td>
+            <tr><td class="right">Description:</td>
                 <td>@Model.meeting.Description</td></tr>
-            <tr><td align="right">Meeting Type:</td>
+            <tr><td class="right">Meeting Type:</td>
                 <td>@(Model.meeting.GroupMeetingFlag ? "Group (headcount)" : "Regular") |
                     @Model.AttendCreditType()
                 </td></tr>
         }
             <tr>
-            	<td align="right" valign="top">Attendance:</td>
+            	<td class="right top">Attendance:</td>
               <td><fieldset>
                 <table width="100%" cellpadding="4">
                   <tr>
-                    <td align="right">Present:</td>
-                    <td align="right" id="NumPresent">
+                    <td class="right">Present:</td>
+                    <td class="right" id="NumPresent">
         @if (User.IsInRole("Attendance"))
         {
                         <span id="n=@Model.meeting.MeetingId" class="clickEdit numpresent">@Model.meeting.NumPresent</span>
@@ -89,26 +89,26 @@ This will allow you to mark them as members.
                         @Model.meeting.NumPresent
         }
                     </td>
-                    <td align="right">New Visitors:</td>
-                    <td align="right" id="NumNewVisit"><span>@Model.meeting.NumNewVisit</span></td>
+                    <td class="right">New Visitors:</td>
+                    <td class="right" id="NumNewVisit"><span>@Model.meeting.NumNewVisit</span></td>
                     </tr>
                   <tr>
-                    <td align="right">Members:</td>
-                    <td align="right" id="NumMembers"><span>@Model.meeting.NumMembers</span></td>
-                    <td align="right">Repeat Visitors:</td>
-                    <td align="right" id="NumRepeatVst"><span>@Model.meeting.NumRepeatVst</span></td>
+                    <td class="right">Members:</td>
+                    <td class="right" id="NumMembers"><span>@Model.meeting.NumMembers</span></td>
+                    <td class="right">Repeat Visitors:</td>
+                    <td class="right" id="NumRepeatVst"><span>@Model.meeting.NumRepeatVst</span></td>
                     </tr>
                   <tr>
-                    <td align="right">Other Attends:</td>
-                    <td align="right" id="NumOtherAttends"><span>@Model.meeting.NumOtherAttends</span></td>
-                    <td align="right">Visiting Members:</td>
-                    <td align="right" id="NumVstMembers"><span>@Model.meeting.NumVstMembers</span></td>
+                    <td class="right">Other Attends:</td>
+                    <td class="right" id="NumOtherAttends"><span>@Model.meeting.NumOtherAttends</span></td>
+                    <td class="right">Visiting Members:</td>
+                    <td class="right" id="NumVstMembers"><span>@Model.meeting.NumVstMembers</span></td>
                     </tr>
                 </table></fieldset></td>
             </tr>
             <tr>
-              <td align="right">Show:</td>
-              <td nowrap id="showbuttons" align="center">
+              <td class="right">Show:</td>
+              <td nowrap id="showbuttons" class="center">
                 <table width="100%"><tr>
                     <td><input type="radio" id="showall" name="show" value="all" /><label for="showall">All</label></td>
                     <td><input type="radio" id="showattends" name="show" value="attends" checked="checked" /><label for="showattends">Attends</label></td>
@@ -120,14 +120,14 @@ This will allow you to mark them as members.
             
             @if (User.IsInRole("Attendance"))
             {
-            <tr><td align="right">Enable:</td><td>
+            <tr><td class="right">Enable:</td><td>
                 <table width="100%"><tr>
-                  <td align="left" nowrap>
+                  <td class="left" nowrap>
                     <label for="editing" style="padding-right:2em;">@Html.CheckBox("editing", Model.showall) Editing</label><br>
                     <label for="registering" style="padding-right:2em;">@Html.CheckBox("registering", Model.showregister) Register</label><br />
                     <label for="currmembers">@Html.CheckBox("currmembers", Model.currmembers)</label> Current Mbrs
                   </td>
-                  <td align="right" nowrap>
+                  <td class="right" nowrap>
                     <a id="addregistered" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=registered" class="bt hidden">Add Registered</a>
                     <a id="addvisitor" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=visitor" class="bt" title="shift-click to Join All Visitors">Add Visitors</a>
                   </td>
@@ -137,7 +137,7 @@ This will allow you to mark them as members.
         </table>
     </td>
     <td rowspan="2" style="width:2em"></td>
-    <td valign="top" style="min-height:12em">
+    <td class="top" style="min-height:12em">
         <div id="buttondiv" class="extrabar" style="font-size:1.2em;margin-top:2em;">
             <a href="#" class="trigger-dropdown">
                 Other Management <img src="/images/dnarrow.png" />
@@ -215,7 +215,7 @@ This will allow you to mark them as members.
 @foreach (var a in Model.Attends())
 {
     <tr rowtype="@a.Member" @(!a.Member ? "class=visitor" : "")>
-        <td align="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" disabled="disabled" /></td>
+        <td class="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" disabled="disabled" /></td>
         <td class="showreg">
             <span id='c@(Model.meeting.MeetingId)_@(a.PeopleId)' class='clickSelect rgck0 commitment'>@a.Commitment</span>
         </td>

@@ -16,6 +16,9 @@ table, tbody, tfoot, thead, tr, th, td {
 img {
     border: none;
 }
+.ui-front {
+    z-index: 9999;
+}
 
 
 #topNotice {
@@ -158,7 +161,7 @@ a, a:visited, a:focus {
 }
 
 #main div.homebox {
-    height: 500px;
+    height: 570px;
     width: 30%;
     float: left;
 }
@@ -392,6 +395,9 @@ div.roundbox select {
 }
 .white {
     color: white;
+}
+.blue {
+    color: blue;
 }
 
 .disabled {
@@ -665,4 +671,48 @@ div.formerror {
 .table-striped tbody > tr:nth-child(odd) > td,
 .table-striped tbody > tr:nth-child(odd) > th {
     background-color: #eee;
+}
+td.right, th.right {
+    text-align: right;
+}
+td.left, th.left {
+    text-align: left;
+}
+td.center, th.center {
+    text-align: center;
+}
+td.nowrap, th.nowrap
+{
+    white-space: nowrap;
+}
+td.top, th.top
+{
+    vertical-align: top;
+}
+td.middle, th.middle
+{
+    vertical-align: middle;
+}
+td.bottom, th.bottom
+{
+    vertical-align: bottom;
+}
+table.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+.darkClass
+{
+    background-color: white;
+    filter:alpha(opacity=50); /* IE */
+    opacity: 0.5; /* Safari, Opera */
+    -moz-opacity:0.50; /* FireFox */
+    z-index: 1002;
+    height: 100%;
+    width: 100%;
+    background-repeat:no-repeat;
+    background-position:center;
+    position:absolute;
+    top: 0px;
+    left: 0px;
 }

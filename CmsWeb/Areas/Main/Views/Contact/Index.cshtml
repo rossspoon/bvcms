@@ -11,19 +11,19 @@
 <table cellpadding="5">
   <tbody>
     <tr>
-      <th align="right">Contact Date:</th>
+      <th class="right">Contact Date:</th>
       <td>@Model.contact.ContactDate.ToShortDateString()</td>
     </tr>
     <tr>
-      <th align="right">Ministry:</th>
+      <th class="right">Ministry:</th>
       <td><span>@Model.Ministry</span></td>
     </tr>
     <tr>
-      <th align="right">Type:</th>
+      <th class="right">Type:</th>
       <td><span>@Model.ContactType</span></td>
     </tr>
     <tr>
-      <th align="right">Reason:</th>
+      <th class="right">Reason:</th>
       <td><span>@Model.Reason</span></td>
     </tr>
   </tbody>
@@ -79,7 +79,7 @@
 <table>
   <tbody>
     <tr>
-      <td valign="top"><strong>Ministry Team:</strong>
+      <td class="top"><strong>Ministry Team:</strong>
         <table>
           <tbody>
             <tr>
@@ -87,11 +87,11 @@
                 <table cellspacing="0" cellpadding="3" border="0" id="ctl00_ContentPlaceHolder1_ContactorGrid">
                   <tbody>
                     <tr>
-                      <th align="left" valign="middle" scope="col">Name</th>
+                      <th class="left middle" scope="col">Name</th>
                       <th scope="col"> </th>
                     </tr>
                     <tr>
-                      <td align="left" valign="middle"><a id="ctl00_ContentPlaceHolder1_ContactorGrid_ctl03_namelink" href="http://localhost:58724/Person/Index/33631">Joe Jernigan</a></td>
+                      <td class="left middle"><a id="ctl00_ContentPlaceHolder1_ContactorGrid_ctl03_namelink" href="http://localhost:58724/Person/Index/33631">Joe Jernigan</a></td>
                       <td><a onclick="javascript:return confirm('Are you sure you want to remove contactor from the list?')" id="ctl00_ContentPlaceHolder1_ContactorGrid_ctl03_btnRemoveContactor" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$ContactorGrid$ctl03$btnRemoveContactor','')">Remove</a></td>
                     </tr>
                   </tbody>
@@ -105,7 +105,7 @@
           </tbody>
         </table></td>
       <td>&nbsp;</td>
-      <td valign="top"><strong>Persons ministered to:</strong>
+      <td class="top"><strong>Persons ministered to:</strong>
         <table>
           <tbody>
             <tr>
@@ -121,10 +121,10 @@
                     </tr>
                     <tr>
                       <td><a href="/Person/Index/16690">Marge Lenow</a></td>
-                      <td align="center"><span disabled="disabled">
+                      <td class="center"><span disabled="disabled">
                         <input id="ctl00_ContentPlaceHolder1_ContacteeGrid_ctl03_ctl00" type="checkbox" name="ctl00$ContentPlaceHolder1$ContacteeGrid$ctl03$ctl00" disabled="disabled" />
                       </span></td>
-                      <td align="center"><span disabled="disabled">
+                      <td class="center"><span disabled="disabled">
                         <input id="ctl00_ContentPlaceHolder1_ContacteeGrid_ctl03_ctl01" type="checkbox" name="ctl00$ContentPlaceHolder1$ContacteeGrid$ctl03$ctl01" disabled="disabled" />
                       </span></td>
                       <td><a onclick="javascript:return confirm('Are you sure you want to remove contactee from the list?')" id="ctl00_ContentPlaceHolder1_ContacteeGrid_ctl03_btnRemoveContactee" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$ContacteeGrid$ctl03$btnRemoveContactee','')">Remove</a></td>

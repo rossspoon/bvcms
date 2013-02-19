@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Caching;
 using UtilityExtensions;
 
 namespace CmsData
@@ -21,7 +22,7 @@ namespace CmsData
             }
             return def;
         }
-        
+
         public static string CurrentTag
         {
             get
@@ -160,6 +161,58 @@ namespace CmsData
             {
                 if (HttpContext.Current != null)
                     HttpContext.Current.Session[STR_VisitLookbackDays] = value;
+            }
+        }
+        public const string STR_NewLook = "NewLook";
+        public static bool NewLook
+        {
+            get
+            {
+                return (bool)GetSessionObj(STR_NewLook, false);
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_NewLook] = value;
+            }
+        }
+
+        [Serializable] 
+        public class MostRecentItem
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+        public const string STR_MostRecentOrgs = "MostRecentOrgs";
+        public static List<MostRecentItem> MostRecentOrgs
+        {
+            get
+            {
+                var mru = (List<MostRecentItem>)GetSessionObj(STR_MostRecentOrgs, null);
+                if (mru == null)
+                {
+                    mru = (from i in DbUtil.Db.MostRecentItems(Util.UserId)
+                           where i.Type == "org"
+                           select new MostRecentItem() { Id = i.Id.Value, Name = i.Name }).ToList();
+                    HttpContext.Current.Session[STR_MostRecentOrgs] = mru;
+                }
+                return mru;
+            }
+        }
+        public const string STR_MostRecentPeople = "MostRecentPeople";
+        public static List<MostRecentItem> MostRecentPeople
+        {
+            get
+            {
+                var mru = (List<MostRecentItem>)GetSessionObj(STR_MostRecentPeople, null);
+                if (mru == null)
+                {
+                    mru = (from i in DbUtil.Db.MostRecentItems(Util.UserId)
+                           where i.Type == "per"
+                           select new MostRecentItem() { Id = i.Id.Value, Name = i.Name }).ToList();
+                    HttpContext.Current.Session[STR_MostRecentPeople] = mru;
+                }
+                return mru;
             }
         }
     }

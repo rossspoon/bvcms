@@ -10,7 +10,7 @@
 <h2>Volunteer Calendar for @Html.ActionLink(Model.OrgName, "Index", "Organization", new { area = "Main", id = Model.OrgId }, null)</h2>
 <table>
     <tr>
-		<td valign="top">
+		<td class="top">
 			<table id="month">
 				<thead>
 					<tr>
@@ -23,7 +23,7 @@
 				</thead>
 				<tbody>
 						<tr>
-							<td valign="middle" align="center">All Weeks</td>
+							<td class="middle" class="center">All Weeks</td>
 							@foreach (var t in Model.times)
 							{
 								<td><div class="drop day" target="week" week="0" time="@t">target</div></td>
@@ -32,7 +32,7 @@
 					@for (var wk = 1; wk <= 5; wk++)
 					{
 						<tr>
-							<td valign="middle" align="center">Week @wk</td>
+							<td class="middle" class="center">Week @wk</td>
 							@foreach (var t in Model.times)
 							{
 								<td><div class="drop day" target="week" week="@wk" time="@t">target</div></td>
@@ -51,7 +51,7 @@
 					@foreach (var w in Model.FetchSlotWeeks())
 					{ 
 						<tr class="wk-@w[0].Week">
-							<td valign="top" align="center">
+							<td class="top" class="center">
 								<p><span class="date">@w[0].Sunday.ToShortDateString()<br />
 									   Week @w[0].Week</span>
 								</p><div class="day"></div></td>
@@ -91,7 +91,7 @@
 			</table>
 		</td>
         <td>&nbsp;</td>
-		<td valign="top">
+		<td class="top">
         @if (Model.IsLeader)
         {
             <p>

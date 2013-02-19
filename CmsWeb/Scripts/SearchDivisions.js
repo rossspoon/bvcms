@@ -2,7 +2,7 @@
     $("#clear").click(function () {
         $("input:text").val("");
     });
-    $('#name').focus();
+    //$('#name').focus();
     $("#search").click(function (ev) {
         ev.preventDefault();
         $.getTable();
@@ -16,7 +16,7 @@
             $('#results').replaceWith(ret).ready($.formatTable);
         });
         return false;
-    }
+    };
     $("#close").click(function () {
         window.parent.$('#divisionsDialog').dialog('close');
     });
@@ -28,12 +28,13 @@
         $('#results > tbody > tr:even').addClass('alt');
     };
     $.formatTable();
-    $('input:checkbox').live('change', function (ev) {
+    $('input:checkbox').live("change", function (ev) {
         var sp = $(this).parents('tr:eq(0)').find("span.move");
-        var ck = $(this).is(":checked")
+        var ck = $(this).is(":checked");
         var did = $(this).attr("value");
         $.post("/SearchDivisions/AddRemoveDiv/",
-            { id: $("#id").val(), divid: did, ischecked: ck
+            {
+                id: $("#id").val(), divid: did, ischecked: ck
             }, function (ret) {
                 if (ck)
                     sp.html("<a href='#' class='move' value='" + did + "'>move to top</a>");
@@ -41,7 +42,7 @@
                     sp.empty();
             });
     });
-    $("a.move").live("click", function (ev) {
+    $("a.move").live('click', function (ev) {
         ev.preventDefault();
         var f = $('#results').closest('form');
         $("#topid").val($(this).attr("value"));
@@ -50,7 +51,7 @@
             $('#results').replaceWith(ret).ready($.formatTable);
         });
     });
-    $("form input").live("keypress", function (e) {
+    $("input").keypress(function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#search').click();
             return false;

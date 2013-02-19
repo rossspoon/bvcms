@@ -21,16 +21,16 @@ namespace CmsData
         {
             get
             {
-            	try
-            	{
-					if ((_FieldInfo == null || _FieldInfo.Name != Field))
-						_FieldInfo = FieldClass.Fields[Field];
-					return _FieldInfo;
-            	}
-            	catch (Exception)
-            	{
-            		throw new Exception("QB Field not found: " + Field);
-            	}
+                try
+                {
+                    if ((_FieldInfo == null || _FieldInfo.Name != Field))
+                        _FieldInfo = FieldClass.Fields[Field];
+                    return _FieldInfo;
+                }
+                catch (Exception)
+                {
+                    throw new Exception("QB Field not found: " + Field);
+                }
             }
         }
         public void SetComparisonType(CompareType value)
@@ -58,31 +58,21 @@ namespace CmsData
         }
         public override string ToString()
         {
+            if (Field == "MatchAnything")
+                return "Match Anything";
             if (!IsGroup)
                 if (Compare != null)
                     return Compare.ToString(this);
-                else
-                    return "null";
-
-            var sb = new StringBuilder();
-            if (IsFirst)
-                sb.Append("Select records where ");
             switch (ComparisonType)
             {
                 case CompareType.AllTrue:
-                    sb.Append("ALL of these are TRUE");
-                    break;
+                    return "Match ALL of the conditions below";
                 case CompareType.AnyTrue:
-                    sb.Append("ANY of these is TRUE");
-                    break;
+                    return "Match ANY of the conditions below";
                 case CompareType.AllFalse:
-                    sb.Append("ALL of these are FALSE");
-                    break;
-                case CompareType.AnyFalse:
-                    sb.Append("ANY of these is FALSE");
-                    break;
+                    return "Match NONE of the conditions below";
             }
-            return sb.ToString();
+            return "null";
         }
         internal void SetIncludeDeceased()
         {
@@ -109,7 +99,7 @@ namespace CmsData
                 tree = Expressions.CompareConstant(parm, "PeopleId", CompareType.NotEqual, 0);
             if (includeDeceased == false)
                 tree = Expression.And(tree, Expressions.CompareConstant(parm,
-                     "DeceasedDate", CompareType.Equal, new DateTime?()));
+                                        "IsDeceased", CompareType.NotEqual, true));
             if (Util2.OrgMembersOnly)
                 tree = Expression.And(OrgMembersOnly(db, parm), tree);
             else if (Util2.OrgLeadersOnly)
@@ -136,18 +126,12 @@ namespace CmsData
         {
             get
             {
-                return Parent.IsGroup
-                    && (Parent.ComparisonType == CompareType.AllFalse
-                        || Parent.ComparisonType == CompareType.AnyFalse);
+                return Parent.IsGroup && Parent.ComparisonType == CompareType.AllFalse;
             }
         }
         private bool AnyFalseTrue
         {
-            get
-            {
-                return ComparisonType == CompareType.AnyTrue
-                    || ComparisonType == CompareType.AnyFalse;
-            }
+            get { return ComparisonType == CompareType.AnyTrue; }
         }
         private Expression ExpressionTree(ParameterExpression parm, CMSDataContext Db)
         {
@@ -168,13 +152,10 @@ namespace CmsData
                     }
                 return expr;
             }
-            else
-            {
-                expr = Compare.Expression(this, parm, Db);
-                if (InAllAnyFalse)
-                    expr = Expression.Not(expr);
-                return expr;
-            }
+            expr = Compare.Expression(this, parm, Db);
+            if (InAllAnyFalse)
+                expr = Expression.Not(expr);
+            return expr;
         }
         public int MaxClauseOrder()
         {
@@ -199,7 +180,11 @@ namespace CmsData
         {
             get
             {
+                if (Field == "MatchAnything")
+                    return false;
                 var e = Compare;
+                if (e == null)
+                    return false;
                 return e.CompType == CompareType.OneOf
                     || e.CompType == CompareType.NotOneOf;
             }
@@ -292,6 +277,10 @@ namespace CmsData
         {
             get { return FieldInfo.Type == FieldType.Group; }
         }
+        public bool IsLastNode
+        {
+            get { return Parent == null || Parent.Clauses.Count == 1; }
+        }
         partial void OnValidate(System.Data.Linq.ChangeAction action)
         {
             switch (action)
@@ -354,6 +343,16 @@ namespace CmsData
             SetComparisonType(CompareType.AllTrue);
             Db.SubmitChanges();
         }
+        public int CleanSlate2(CMSDataContext Db)
+        {
+            foreach (var c in Clauses)
+                DeleteClause(c, Db);
+            SetQueryType(QueryType.Group);
+            SetComparisonType(CompareType.AllTrue);
+            var nc = AddNewClause(QueryType.MatchAnything, CompareType.Equal, null);
+            Db.SubmitChanges();
+            return nc.QueryId;
+        }
         public static QueryBuilderClause NewGroupClause()
         {
             var qb = new QueryBuilderClause();
@@ -377,12 +376,17 @@ namespace CmsData
             qb.SetQueryType(type);
             this.Clauses.Add(qb);
             qb.SetComparisonType(op);
-			if (type == QueryType.HasMyTag)
-			{
-				qb.Tags = value.ToString();
-				qb.CodeIdValue = "1,true";
-				return qb;
-			}
+            if (type == QueryType.MatchAnything)
+            {
+                qb.CodeIdValue = "1,true";
+                return qb;
+            }
+            if (type == QueryType.HasMyTag)
+            {
+                qb.Tags = value.ToString();
+                qb.CodeIdValue = "1,true";
+                return qb;
+            }
             switch (qb.FieldInfo.Type)
             {
                 case FieldType.NullBit:
@@ -409,6 +413,22 @@ namespace CmsData
                     throw new ArgumentException("type not allowed");
             }
             return qb;
+        }
+        public QueryBuilderClause SaveTo(CMSDataContext db, string name, string user, bool ispublic)
+        {
+            var saveto = new QueryBuilderClause();
+            db.QueryBuilderClauses.InsertOnSubmit(saveto);
+            saveto.CopyFromAll(this, db);
+            saveto.SavedBy = user;
+            saveto.Description = name;
+            saveto.IsPublic = ispublic;
+            db.SubmitChanges();
+            return saveto;
+        }
+
+        public bool CanRemove
+        {
+            get { return !IsFirst && !IsLastNode; }
         }
     }
 }

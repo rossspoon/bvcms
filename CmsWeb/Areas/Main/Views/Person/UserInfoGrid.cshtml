@@ -24,13 +24,13 @@
     <tr>
         @if (User.IsInRole("Admin"))
         { 
-		<td valign="top"> <a href="/Person/Impersonate/@u.Username" class="bt">impersonate</a> </td>
-		<td valign="top"><a href="/Person/UserDialog/@u.UserId" class="membertype bt">@u.Username</a></td>
+		<td class="top"> <a href="/Person/Impersonate/@u.Username" class="bt">impersonate</a> </td>
+		<td class="top"><a href="/Person/UserDialog/@u.UserId" class="membertype bt">@u.Username</a></td>
         }
 	
         else
         { 
-        <td valign="top">@u.Username</td>
+        <td class="top">@u.Username</td>
         } 
         <td>
         <table>

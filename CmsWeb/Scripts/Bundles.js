@@ -13,12 +13,12 @@
     $.getTable = function() {
         var f = $('#results');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post("/finance/bundles/results", q, function(ret) {
             $('#results').html(ret).ready(function() {
                 $('#results > table > tbody > tr:even').addClass('alt');
                 $(".tip").tooltip({ showBody: "|", showURL: false });
-                $.unblockUI();
+                $.unblock();
             });
         });
         return false;

@@ -49,9 +49,9 @@ No Zero Meetings: @Html.CheckBox("NoZero")
         else
         {
             <td><a href="/Meeting/Index/@m.MeetingId">@m.Time.ToString2("h:mm tt")</a></td>
-            <td align="right">@m.Attended</td>
+            <td class="right">@m.Attended</td>
         }
-            <td align="right">@(m.OtherAttends > 0 ? "*" : "")</td>
+            <td class="right">@(m.OtherAttends > 0 ? "*" : "")</td>
             <td> <span title="@m.Program">@m.Division</span> </td>
             <td> <a title="@m.Tracking" href="/Organization/Index/@m.OrganizationId">@m.Organization</a> </td>
             <td>@m.Leader</td>
@@ -62,24 +62,24 @@ No Zero Meetings: @Html.CheckBox("NoZero")
     <tfoot>
     <tr><td colspan="7"><hr /></td></tr>
         <tr>
-            <td align="right">Total Meetings</td>
-            <td align="right">@Model.MeetingsCount.ToString("N0")</td>
+            <td class="right">Total Meetings</td>
+            <td class="right">@Model.MeetingsCount.ToString("N0")</td>
             <td colspan="4"> </td>
         </tr>
         <tr>
-            <td align="right"> Total Attends </td>
-            <td align="right">@Model.TotalAttends.ToString("N0")</td>
+            <td class="right"> Total Attends </td>
+            <td class="right">@Model.TotalAttends.ToString("N0")</td>
             <td colspan="4"> </td>
         </tr>
         <tr>
-            <td align="right"> Other Attends </td>
-            <td align="right">@Model.OtherAttends.ToString("N0")</td>
+            <td class="right"> Other Attends </td>
+            <td class="right">@Model.OtherAttends.ToString("N0")</td>
             <td>*</td>
             <td colspan="3"> </td>
         </tr>
         <tr>
-            <td align="right"> Total People </td>
-            <td align="right">@Model.TotalPeople.ToString("N0")</td>
+            <td class="right"> Total People </td>
+            <td class="right">@Model.TotalPeople.ToString("N0")</td>
             <td colspan="4"> </td>
         </tr>
     </tfoot>

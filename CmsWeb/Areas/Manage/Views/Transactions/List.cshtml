@@ -9,13 +9,13 @@
 @if(tt != null)
 {
 	<tr>
-		<td align="right" colspan="6"><strong>Total: </strong></td>
-		<td align="right">@((tt.Amt - tt.Donate).ToString("N"))</td>
+		<td class="right" colspan="6"><strong>Total: </strong></td>
+		<td class="right">@((tt.Amt - tt.Donate).ToString("N"))</td>
 		@if (Model.finance)
 		{
-			<td align="right">@tt.Donate.ToString("N")</td>
+			<td class="right">@tt.Donate.ToString("N")</td>
 		}
-		<td align="right">@tt.Amtdue.ToString("N")</td>
+		<td class="right">@tt.Amtdue.ToString("N")</td>
 		<td colspan="2"></td>
 	</tr>
 	<tr><td colspan="10"><hr/></td></tr>
@@ -32,12 +32,12 @@
             </th>
             <th><a href="#" class="sortable">Description</a></th>
             <th><a href="#" class="sortable">Name</a></th>
-            <th align="right"><a href="#" class="sortable">Amt</a></th>
+            <th class="right"><a href="#" class="sortable">Amt</a></th>
         @if(Model.finance)
         {
-            <th align="right"><a href="#" class="sortable">Donate</a></th>
+            <th class="right"><a href="#" class="sortable">Donate</a></th>
         }
-            <th align="right"><a href="#" class="sortable">Due</a></th>
+            <th class="right"><a href="#" class="sortable">Due</a></th>
             <th colspan="2"></th>
         </tr>
     </thead>
@@ -78,12 +78,12 @@
                 @t.FullName
             }
             </td>
-            <td align="right" nowrap="nowrap">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>
+            <td class="right" nowrap="nowrap">@((t.Amt ?? 0 - t.Donate ?? 0).ToString("N"))</td>
     @if (Model.finance)
     {
-            <td align="right">@t.Donate.ToString2("N")</td>
+            <td class="right">@t.Donate.ToString2("N")</td>
     }
-            <td align="right">@t.Amtdue.ToString2("N")</td>
+            <td class="right">@t.Amtdue.ToString2("N")</td>
     @if (t.CanVoid)
     {
             <td><a class="voidcredit bt @noadmin" 

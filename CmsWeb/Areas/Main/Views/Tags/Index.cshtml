@@ -16,16 +16,16 @@
         <h2>Tag List</h2>
         <table cellspacing="5">
             <tr>
-                <th align="right"> Change Active Tag: </th>
+                <th class="right"> Change Active Tag: </th>
                 <td>@Html.Partial("Tags")&nbsp;&nbsp;
                     <a id="delete" href="/Tags/Delete" confirm="are you sure?" class="bt">Delete Tag</a></td>
             </tr>
             <tr>
-                <th align="right" valign="top"> New Tag Name:</th>
+                <th class="right top"> New Tag Name:</th>
                 <td> @Html.TextBox("tagname", Model.tagname, new { title="no colon characters" }) </td>
             </tr>
             <tr>
-                <td valign="top" align="right" colspan="2">
+                <td class="top" class="right" colspan="2">
                     <a id="ShareLink" href="/Tags/SharedTags" data-target="#usersDialog" class="bt">Shared with <span id="sharecount">@Model.SharedCount()</span> users</a>
                     <a id="makenew" class="bt" href="#">Make New Tag</a>
                     <a id="rename" class="bt" href="#">Rename Tag</a>

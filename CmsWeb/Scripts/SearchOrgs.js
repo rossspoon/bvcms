@@ -2,7 +2,7 @@
     $("#clear").click(function () {
         $("input:text").val("");
     });
-    $('#name').focus();
+    //$('#name').focus();
     $("#search").click(function (ev) {
         ev.preventDefault();
         $.getTable();
@@ -43,8 +43,8 @@
         }).get().join(',');
         $.post("/SearchOrgs/SaveOrgIds/" + $("#id").val(), { oids: list });
     };
-    $('input:checkbox').live('change', $.SaveOrgIds);
-    $("form input").live("keypress", function (e) {
+    $('body').on('change', 'input:checkbox', $.SaveOrgIds);
+    $("form").on("keypress", 'input', function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#search').click();
             return false;

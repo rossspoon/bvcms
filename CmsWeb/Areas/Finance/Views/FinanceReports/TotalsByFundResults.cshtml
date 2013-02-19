@@ -10,13 +10,13 @@
     {
         <tr>
 		<td><a href="/Contributions/Reports/JournalDetails.aspx?FundId=@t.FundId&dt1=@Model.Dt1&dt2=@Model.Dt2">@t.FundName</a> @(t.QBSynced == 1 ? " (QBSynced)" : "")  </td>
-			<td align="right">@t.Total.ToString2("c")</td>
-            <td align="right">@t.Count.ToString2("n0")</td>
+			<td class="right">@t.Total.ToString2("c")</td>
+            <td class="right">@t.Count.ToString2("n0")</td>
         </tr>
     }
     <tr style="border-top: 2px solid black">
         <th> Total </th>
-        <th align="right">@Model.FundTotal.Total.ToString2("c") </th>
-        <th align="right">@Model.FundTotal.Count.ToString2("n0") </th>
+        <th class="right">@Model.FundTotal.Total.ToString2("c") </th>
+        <th class="right">@Model.FundTotal.Count.ToString2("n0") </th>
     </tr>
 </table>

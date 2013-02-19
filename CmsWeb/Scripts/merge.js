@@ -1,6 +1,6 @@
 ﻿$(function () {
     $("form").submit(function () {
-        $.blockUI();
+        $.block();
         return true;
     });
     $('table.grid > tbody > tr:odd').addClass('alt');

@@ -11,7 +11,7 @@
 <tr><td><b>Tag:</b></td><td><b>Field:</b></td></tr>
 <tr><td>@Html.DropDownList("Tag", Model.Tags())</td>
     <td>@Html.DropDownList("Field", Model.Fields())</td></tr>
-<tr><td align="right"><b>New Value:</b>@Html.TextBox("NewValue")</td><td></td></tr>
+<tr><td class="right"><b>New Value:</b>@Html.TextBox("NewValue")</td><td></td></tr>
 <tr><td></td><td><input type="submit" class="bt" value="Run" /></td></tr>
 </table>
 </form>
@@ -21,7 +21,7 @@
 <blockquote>
 <hr />
 <table>
-    <tr><th colspan="2" align="left">Grade</th></tr>
+    <tr><th colspan="2" class="left">Grade</th></tr>
     <tr><td><b>Code</b></td><td><b>Description</b></td></tr>
     <tr><td>-1</td><td>Pre K</td></tr>
     <tr><td>&nbsp;0</td><td>Kindergarten</td></tr>
@@ -35,4 +35,11 @@
     <tr><td>+1</td><td>Add 1 to the Grade</td></tr>
 </table>
 <hr />
+    <table>
+        <tr><th colspan="2" class="left">ReceiveSMS</th></tr>
+        <tr><td><b>Code</b></td><td><b>Description</b></td></tr>
+        <tr><td>true</td><td>Yes, Receive SMS Text messages</td></tr>
+        <tr><td>false</td><td>No, Do not Receive SMS Text messages</td></tr>
+    </table>
+    <hr/>
 </blockquote>

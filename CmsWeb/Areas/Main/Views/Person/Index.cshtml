@@ -58,7 +58,7 @@ pre {
     <table cellspacing="5" class="roundbox floatleft">
         <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
         <tr>
-            <td valign="top">
+            <td class="top">
             @if (Model.Person.CanUserEditBasic)
             {
                 <a id="Picture" href="/UploadPicture.aspx?id=@p.PeopleId" title="Click to see larger version or upload new">
@@ -71,14 +71,14 @@ pre {
             }
             </td>
             <td>&nbsp;</td>
-            <td valign="top">
+            <td class="top">
                 <div id="businesscard" href="/Person/BusinessCard/@p.PeopleId">
                  @Html.Partial("BusinessCard", p) 
                 </div>
                 <div> @p.basic.DoNotCall </div>
             </td>
             <td>&nbsp;</td>
-            <td valign="top">
+            <td class="top">
                 <form id="family" action="/Person/FamilyGrid/@p.PeopleId">
                 @Html.Partial("FamilyGrid", new CmsWeb.Models.PersonPage.PersonFamilyModel(p.PeopleId))
                 </form>

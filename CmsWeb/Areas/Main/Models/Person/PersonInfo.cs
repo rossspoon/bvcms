@@ -60,7 +60,7 @@ namespace CmsWeb.Models.PersonPage
             {
                 PeopleId = p.PeopleId,
                 AddressTypeId = p.AddressTypeId,
-                Deceased = p.Deceased,
+                Deceased = p.IsDeceased ?? false,
                 FamilyId = p.FamilyId,
                 Name = p.Name,
                 SmallPicId = i.SmallId,
@@ -124,6 +124,7 @@ namespace CmsWeb.Models.PersonPage
                     Title = p.TitleCode,
                     WeddingDate = p.WeddingDate,
                     WorkPhone = p.WorkPhone,
+                    ReceiveSMS = p.ReceiveSMS,
                 },
                 growth = new GrowthInfo
                 {

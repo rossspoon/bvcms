@@ -14,7 +14,7 @@
                 showURL: false,
                 showBody: "|"
             });
-            $("form a.submitbutton").live('click', function (ev) {
+            $("form").on('click', 'a.submitbutton', function (ev) {
                 ev.preventDefault();
                 var f = $(this).closest('form');
                 var q = f.serialize();

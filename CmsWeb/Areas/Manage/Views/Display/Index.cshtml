@@ -23,14 +23,14 @@
 				e.preventDefault();
 				$("#newType", $("#askName")).val($(this).attr("newtype"));
 				$("#newMessage", $("#askName")).html($(this).attr("newmessage"));
-				$.blockUI({ message: $('#askName') });
+				$.block($('#askName'));
 			});
 
 			$("a[newtypewithrole]").click(function (e) {
 				e.preventDefault();
 				$("#newType", $("#askNameWithRole")).val($(this).attr("newtypewithrole"));
 				$("#newMessage", $("#askNameWithRole")).html($(this).attr("newmessage"));
-				$.blockUI({ message: $('#askNameWithRole') });
+				$.block($('#askNameWithRole'));
 			});
 
 			$("a.bt").button();
@@ -84,7 +84,7 @@
         <tr>
 		@foreach (var t in Model.fetchEmailTemplates())
         {
-            <td width="@( 100 / WRAP_COUNT)%" align="center">
+            <td width="@( 100 / WRAP_COUNT)%" class="center">
 				@t.Name<br />
                 <a href="/Display/ContentEdit/@t.Id">
 				<div bvtemplate class="templateItem" template="@t.Id">
@@ -131,11 +131,11 @@
 	<input type="hidden" id="newType" name="newType" value="0" />
 	<table cellspacing="10">
 	<tr>
-		<td align="right">FileName:</td>
-		<td align="left"><input name="newName" size="25" /></td>
+		<td class="right">FileName:</td>
+		<td class="left"><input name="newName" size="25" /></td>
 	</tr>
 	<tr>
-		<td align="center" colspan="2">
+		<td class="center" colspan="2">
 			<input type="submit" class="bt" value="Submit" /> &nbsp;&nbsp; <input type="button" class="bt" onclick="$.unblockUI()" value="Cancel" />
 		</td>
 	</tr>
@@ -152,15 +152,15 @@
 	<input type="hidden" id="newType" name="newType" value="0" />
 	<table cellspacing="10">
 	<tr>
-		<td align="right">Role:</td>
-		<td align="left">@Html.DropDownList("newRole", new SelectList(ContentModel.fetchRoles(), "RoleId", "RoleName"))</td>
+		<td class="right">Role:</td>
+		<td class="left">@Html.DropDownList("newRole", new SelectList(ContentModel.fetchRoles(), "RoleId", "RoleName"))</td>
 	</tr>
 	<tr>
-		<td align="right">FileName:</td>
-		<td align="left"><input name="newName" size="25" /></td>
+		<td class="right">FileName:</td>
+		<td class="left"><input name="newName" size="25" /></td>
 	</tr>
 	<tr>
-		<td align="center" colspan="2">
+		<td class="center" colspan="2">
 			<input type="submit" class="bt" value="Submit" /> &nbsp;&nbsp; <input type="button" class="bt" onclick="$.unblockUI()" value="Cancel" />
 		</td>
 	</tr>

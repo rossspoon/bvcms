@@ -8,7 +8,7 @@
 		ev.preventDefault();
 		$.getTable();
 	});
-	$("a[person]").live("click", function (ev) {
+	$("body").on("click", "a[person]", function (ev) {
 		$("#peopleid").val($(this).attr("id"));
 		ev.preventDefault();
 		$.getTable();

@@ -6,7 +6,7 @@
         var q = f.serialize();
         var h = a.attr('href');
         if (a.text() === 'Commit and Add') {
-            $.blockUI();
+            $.block();
         }
         $.post(h, q, function (ret) {
             if (ret.close) {
@@ -42,12 +42,12 @@
                     $('#people > tbody > tr:even').addClass('alt');
                 });
             }
-            $.unblockUI();
+            $.unblock();
         });
         return false;
     });
     $("a.bt").button();
-    $('a.clear').live('click', function (ev) {
+    $("a.clear").live('click', function (ev) {
         ev.preventDefault();
         $("#name").val('');
         $("#phone").val('');

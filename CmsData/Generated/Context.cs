@@ -482,6 +482,14 @@ namespace CmsData
         partial void UpdateShirtSize(ShirtSize instance);
         partial void DeleteShirtSize(ShirtSize instance);
         
+        partial void InsertSMSGroupMember(SMSGroupMember instance);
+        partial void UpdateSMSGroupMember(SMSGroupMember instance);
+        partial void DeleteSMSGroupMember(SMSGroupMember instance);
+        
+        partial void InsertSMSGroup(SMSGroup instance);
+        partial void UpdateSMSGroup(SMSGroup instance);
+        partial void DeleteSMSGroup(SMSGroup instance);
+        
         partial void InsertSMSItem(SMSItem instance);
         partial void UpdateSMSItem(SMSItem instance);
         partial void DeleteSMSItem(SMSItem instance);
@@ -489,6 +497,10 @@ namespace CmsData
         partial void InsertSMSList(SMSList instance);
         partial void UpdateSMSList(SMSList instance);
         partial void DeleteSMSList(SMSList instance);
+        
+        partial void InsertSMSNumber(SMSNumber instance);
+        partial void UpdateSMSNumber(SMSNumber instance);
+        partial void DeleteSMSNumber(SMSNumber instance);
         
         partial void InsertStateLookup(StateLookup instance);
         partial void UpdateStateLookup(StateLookup instance);
@@ -585,6 +597,10 @@ namespace CmsData
         partial void InsertVolunteerForm(VolunteerForm instance);
         partial void UpdateVolunteerForm(VolunteerForm instance);
         partial void DeleteVolunteerForm(VolunteerForm instance);
+        
+        partial void InsertVoluteerApprovalId(VoluteerApprovalId instance);
+        partial void UpdateVoluteerApprovalId(VoluteerApprovalId instance);
+        partial void DeleteVoluteerApprovalId(VoluteerApprovalId instance);
         
         partial void InsertWord(Word instance);
         partial void UpdateWord(Word instance);
@@ -1332,6 +1348,18 @@ namespace CmsData
 
 		}
 
+		public Table< SMSGroupMember> SMSGroupMembers
+		{
+			get	{ return this.GetTable< SMSGroupMember>(); }
+
+		}
+
+		public Table< SMSGroup> SMSGroups
+		{
+			get	{ return this.GetTable< SMSGroup>(); }
+
+		}
+
 		public Table< SMSItem> SMSItems
 		{
 			get	{ return this.GetTable< SMSItem>(); }
@@ -1341,6 +1369,12 @@ namespace CmsData
 		public Table< SMSList> SMSLists
 		{
 			get	{ return this.GetTable< SMSList>(); }
+
+		}
+
+		public Table< SMSNumber> SMSNumbers
+		{
+			get	{ return this.GetTable< SMSNumber>(); }
 
 		}
 
@@ -1485,6 +1519,12 @@ namespace CmsData
 		public Table< VolunteerForm> VolunteerForms
 		{
 			get	{ return this.GetTable< VolunteerForm>(); }
+
+		}
+
+		public Table< VoluteerApprovalId> VoluteerApprovalIds
+		{
+			get	{ return this.GetTable< VoluteerApprovalId>(); }
 
 		}
 
@@ -1935,6 +1975,21 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.LastMeetings", IsComposable = true)]
+		public IQueryable< View.LastMeeting > LastMeetings(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? divid,
+            [Parameter(DbType="int")] int? days
+            )
+		{
+			return this.CreateMethodCallQuery< View.LastMeeting>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                divid,
+                days
+                );
+		}
+
 		[Function(Name="dbo.MembersAsOf", IsComposable = true)]
 		public IQueryable< View.MembersAsOf > MembersAsOf(
             [Parameter(DbType="datetime")] DateTime? from,
@@ -1951,6 +2006,17 @@ namespace CmsData
                 progid,
                 divid,
                 orgid
+                );
+		}
+
+		[Function(Name="dbo.MostRecentItems", IsComposable = true)]
+		public IQueryable< View.MostRecentItem > MostRecentItems(
+            [Parameter(DbType="int")] int? uid
+            )
+		{
+			return this.CreateMethodCallQuery< View.MostRecentItem>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                uid
                 );
 		}
 

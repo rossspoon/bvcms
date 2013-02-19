@@ -4,10 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsWeb.Areas.People.Models.Person;
+using CmsWeb.Models;
 using UtilityExtensions;
 using System.Text;
-using CmsWeb.Models.PersonPage;
-using CmsWeb.Models;
 using System.Diagnostics;
 using System.Web.Routing;
 using System.Threading;
@@ -34,6 +34,9 @@ namespace CmsWeb.Areas.People.Controllers
 		{
 			if (!id.HasValue)
 				return Content("no id");
+            if (!DbUtil.Db.UserPreference("newlook3", "false").ToBool()
+                || !DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
+                return Redirect(Request.RawUrl.ToLower().Replace("people/person", "person"));
 			var m = new PersonModel(id);
 			if (User.IsInRole("Access"))
 			{
@@ -100,7 +103,7 @@ namespace CmsWeb.Areas.People.Controllers
 				return Content("cannot impersonate finance");
             Session.Remove("CurrentTag");
 			FormsAuthentication.SetAuthCookie(id, false);
-			AccountModel.SetUserInfo(id, Session);
+			CmsWeb.Models.AccountModel.SetUserInfo(id, Session);
 			Util.FormsBasedAuthentication = true;
 			Util.UserPeopleId = user.PeopleId;
 			Util.UserPreferredName = user.Username;
@@ -203,13 +206,13 @@ namespace CmsWeb.Areas.People.Controllers
 		[HttpPost]
 		public ActionResult IncompleteTasksGrid(int id)
 		{
-			var m = new TaskModel();
+			var m = new CmsWeb.Models.TaskModel();
 			return View(m.IncompleteTasksList(id));
 		}
 		[HttpPost]
 		public ActionResult PendingTasksGrid(int id)
 		{
-			var m = new TaskModel();
+			var m = new CmsWeb.Models.TaskModel();
 			return View(m.TasksAboutList(id));
 		}
 		[HttpPost]
@@ -505,7 +508,7 @@ namespace CmsWeb.Areas.People.Controllers
 				u = DbUtil.Db.Users.Single(us => us.UserId == id);
 			else
 			{
-				u = AccountModel.AddUser(Util2.CurrentPeopleId);
+				u = CmsWeb.Models.AccountModel.AddUser(Util2.CurrentPeopleId);
 				DbUtil.LogActivity("New User for: {0}".Fmt(Session["ActivePerson"]));
 			}
 			return View(u);
@@ -547,7 +550,7 @@ namespace CmsWeb.Areas.People.Controllers
 			if (password2.HasValue())
 				u.ChangePassword(password2);
 			DbUtil.Db.SubmitChanges();
-			AccountModel.SendNewUserEmail(username);
+			CmsWeb.Models.AccountModel.SendNewUserEmail(username);
 			DbUtil.LogActivity("Welcome Email for: {0}".Fmt(Session["ActivePerson"]));
 			return Content("ok");
 		}
@@ -584,9 +587,9 @@ namespace CmsWeb.Areas.People.Controllers
 		[HttpPost]
 		public ActionResult VolunteerDisplay(int id)
 		{
-			var m = new CmsWeb.Models.PersonPage.VolunteerModel(id);
-			return View(m);
-		}
+            var m = new Main.Models.Other.VolunteerModel(id);
+            return View(m);
+        }
 		[HttpPost]
 		public ContentResult DeleteExtra(int id, string field)
 		{
@@ -815,6 +818,28 @@ namespace CmsWeb.Areas.People.Controllers
 				noaddressok = true,
 				useMinAmt = false,
 			};
+		}
+		public ActionResult Image(string size, int id)
+		{
+		    var q = from p in DbUtil.Db.People
+		            where p.PeopleId == id
+		            select new
+		                       {
+		                           p.Picture.SmallId,
+		                           p.Picture.ThumbId,
+		                           p.Picture.MediumId,
+		                       };
+		    var i = q.Single();
+            switch (size)
+            {
+                case "small":
+    				return new PictureResult(size, id);
+                case "tiny":
+    				return new ImageResult(i.ThumbId ?? 0);
+                case "medium":
+    				return new ImageResult(i.MediumId ?? 0);
+            }
+			return new ImageResult(0);
 		}
 	}
 }

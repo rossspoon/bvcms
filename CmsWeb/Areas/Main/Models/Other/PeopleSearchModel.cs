@@ -360,7 +360,8 @@ namespace CmsWeb.Models
             qb.CleanSlate(DbUtil.Db);
 
             if (m.memberstatus > 0)
-                qb.AddNewClause(QueryType.MemberStatusId, CompareType.Equal, m.memberstatus);
+                qb.AddNewClause(QueryType.MemberStatusId, CompareType.Equal,
+                                QueryModel.IdCode(cv.MemberStatusCodes(), m.memberstatus));
 
             if (m.name.HasValue())
             {
@@ -433,13 +434,17 @@ namespace CmsWeb.Models
                 }
             }
             if (m.campus > 0)
-                qb.AddNewClause(QueryType.CampusId, CompareType.Equal, m.campus);
+                qb.AddNewClause(QueryType.CampusId, CompareType.Equal, 
+                                QueryModel.IdCode(cv.AllCampuses(), m.campus));
             else if (m.campus == -1)
-                qb.AddNewClause(QueryType.CampusId, CompareType.IsNull, m.campus);
+                qb.AddNewClause(QueryType.CampusId, CompareType.IsNull,
+                                QueryModel.IdCode(cv.AllCampuses(), m.campus));
             if (m.gender != 99)
-                qb.AddNewClause(QueryType.GenderId, CompareType.Equal, m.gender);
+                qb.AddNewClause(QueryType.GenderId, CompareType.Equal,
+                                QueryModel.IdCode(cv.GenderCodes(), m.gender));
             if (m.marital != 99)
-                qb.AddNewClause(QueryType.MaritalStatusId, CompareType.Equal, m.marital);
+                qb.AddNewClause(QueryType.MaritalStatusId, CompareType.Equal, 
+                                QueryModel.IdCode(cv.MaritalStatusCodes(), m.marital));
             qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
             DbUtil.Db.SubmitChanges();
             return qb.QueryId;

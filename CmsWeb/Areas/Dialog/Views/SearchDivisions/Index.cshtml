@@ -5,10 +5,12 @@
 <html>
 <head>
 <title>Index</title>
+<script type="text/javascript">
+    if(typeof(Object)==="undefined"){
+        window.location.reload();
+    }
+</script>
     @Styles.Render("~/Content/styles/css")
-    <link href="/Content/styles/style2.css" rel="stylesheet" type="text/css" />
-    @Scripts.Render("~/bundles/js")
-    @Scripts.Render("~/bundles/single/SearchDivisions-js")
 </head>
 <body>
 <form name="form1">
@@ -18,14 +20,14 @@
 @Html.Hidden("topid")
   <table id="searchvalues" class="roundbox" cellspacing="5">
       <tr>
-        <th align="right"> Name/ID#: </th>
+        <th class="right"> Name/ID#: </th>
         <td><input id="name" name="name" title="Partial Program / Division Name" type="text" value="" /></td>
       </tr>
       <tr>
         <td>
             <a id="close" href="#" class="bt">Close</a>
         </td>
-        <td align="right">
+        <td class="right">
             <a id="clear" href="#" class="bt">Clear</a>
             <a href="/SearchDivisions/Results" id="search" class="bt default formlink blue">Search</a>
         </td>
@@ -33,5 +35,7 @@
   </table>
 @Html.Partial("Results", Model)
 </form>
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/single/SearchDivisions-js")
 </body>
 </html>

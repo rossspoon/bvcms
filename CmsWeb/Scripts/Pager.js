@@ -1,4 +1,4 @@
-﻿(function ($) {
+﻿$(document).ready(function () {
     $.gotoPage = function (e, pg) {
         var f = $(e).closest('form');
         $("#Page", f).val(pg);
@@ -37,7 +37,7 @@
         $.getTable(f);
         return false;
     });
-    $.showTable = function(f) {
+    $.showTable = function (f) {
         if ($('table.grid', f).size() == 0)
             $.getTable(f);
         return false;
@@ -47,14 +47,13 @@
             $.getTable(f);
         return false;
     };
-    $("input[name='toggletarget']").live("click", function (ev) {
+    $("body").on("click", "input[name='toggletarget']", function (ev) {
         if ($('a.target[target="people"]').length == 0) {
             $("a.target").attr("target", "people");
             $("input[name='toggletarget']").attr("checked", true);
-        }
-        else {
+        } else {
             $("a.target").removeAttr("target");
             $("input[name='toggletarget']").removeAttr("checked");
         }
     });
-})(jQuery);
+});

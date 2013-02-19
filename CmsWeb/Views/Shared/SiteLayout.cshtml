@@ -1,6 +1,6 @@
 ﻿@using System.Web.Optimization
 @{
-    var newlook = DbUtil.Db.UserPreference("newlook", "false").ToBool();
+    var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
 }
 <!DOCTYPE html>
 <html>
@@ -10,30 +10,17 @@
     @if (newlook)
     {
         @Styles.Render("~/Content/styles/css2")
-        <link href="~/Content/styles/Main.css" rel="stylesheet" />
-        <link href="~/Content/styles/Menu.css" rel="stylesheet" />
-        <link href="~/Content/styles/pager.css" rel="stylesheet" />
+        <link href="~/Content/font/font-awesome.min.css" rel="stylesheet" />
+        @RenderSection("head", required: false)
+        <style type="text/css">
+            #header { background-color: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
+        </style>
+        @Scripts.Render("~/bundles/main-js")
     }
     else
     {
         @Styles.Render("~/Content/styles/css")
-    }
-<!--[if gte IE 8]>
-<style type="text/css">
-    /* div.navbar > ul > li { float: left; } */
-</style>
-<![endif]-->
-    @RenderSection("head", required: false)
-    @if (newlook)
-    {
-        @Scripts.Render("~/bundles/main-js")
-        <script src="~/Scripts/dropdown.js"></script>
-        <script src="~/Scripts/ExportToolBar.js"></script>
-        <script src="~/Scripts/Pager.js"></script>
-        <script src="~/Scripts/headermenu.js"></script>
-    }
-    else
-    {
+        @RenderSection("head", required: false)
         @Scripts.Render("~/bundles/js")
     }
     @Html.Partial("DatePickerDefaults")
@@ -55,32 +42,34 @@
 @if (newlook)
 {
     Html.RenderPartial("NewHeader");
-    <div id="container">
-        <div id="main">
+    <section id="main" class="container">
+        <section class="sixteen columns">
             @RenderBody()
-            @if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
-            {
-                <br />
-                <b>Menus:</b>
-                @(Util.Helpfile)@:_Menu.cshtml<br />
-                <b>Tutorials:</b>
-                @(Util.Helpfile)@:.cshtml
-            }		  
-            @{
-                var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
-                if (File.Exists(tutorialFile))
-                {
-                    Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
-                }
-            }	
-        </div>
-        
-        @if (Util.IsHosted)
+        </section>
+    </section>
+    <footer class="container">
+    <p class="vcard ten columns alpha">
+      <span class="org">@DbUtil.Db.Setting("nameofchurch","Name of Church")</span>
+      <span class="phone">@DbUtil.Db.Setting("phone","phone")</span>
+      <span class="email">@DbUtil.AdminMail</span>
+    </p>
+    <p class="powered six columns omega">Powered by BVCMS</p>
+    @if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
+    {
+        <br />
+        <b>Menus:</b>
+        @(Util.Helpfile)@:_Menu.cshtml<br />
+        <b>Tutorials:</b>
+        @(Util.Helpfile)@:.cshtml
+    }		  
+    @{
+        var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
+        if (File.Exists(tutorialFile))
         {
-            <div style="float: right"><a href="http://www.bvcms.com"><img src="~/images/bvcms-provided.png" /></a></div>
-            <div style="clear: both"></div>
+            Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
         }
-    </div>
+    }	
+  </footer>
 }
 else
 {
@@ -107,7 +96,7 @@ else
 </div>
 }
    <div id="ChooseLabelType" class="modalPopup" style="display: none; width: 400px;
-        padding: 10px">
+                                               padding: 10px">
         <table>
             <tr>
                 <td style="margin: 3px; border: solid thin black" nowrap="nowrap">
@@ -137,7 +126,7 @@ else
                 </td>
             </tr>
             <tr>
-                <td colspan="2" align="right">
+                <td colspan="2" class="right">
                     <input id="cmdOK" type="button" value="OK" />
                 </td>
             </tr>
@@ -148,7 +137,7 @@ else
         <tr><th colspan="2">Select a date range</th></tr>
         <tr><th>Start Date</th><td><input id="startdt" type="text"  class='datepicker' /></td></tr>
         <tr><th>End Date</th><td><input id="enddt" type="text" class='datepicker' /></td></tr>
-        <tr><td align="right" colspan="2">
+        <tr><td class="right" colspan="2">
             <a class="bt" id="ExportStartEndRun" href="#"> run </a></td>
         </tr>
         </table>
@@ -157,14 +146,15 @@ else
         <table>
         <tr><th>Field</th><td><input id="field" type="text" /></td></tr>
         <tr><th>Value</th><td><input id="value" type="text" /></td></tr>
-        <tr><td align="right" colspan="2">
+        <tr><td class="right" colspan="2">
             <a class="bt" id="SetExtraValuesRun" href="#"> OK </a></td>
         </tr>
         </table>
     </div>
     <div id="AddDialog">
-    <iframe id="AddDialogiframe" style="width:99%;height:99%;border-width:0px"></iframe>
+        <iframe id="AddDialogiframe" style="width:99%;height:99%;border-width:0px"></iframe>
     </div>
+    <div id="darkLayer" class="darkClass" style="display:none"></div>
 @RenderSection("PopupsPlaceholder", required: false)
 </body>
 </html>

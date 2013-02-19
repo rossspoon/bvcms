@@ -14,6 +14,7 @@ namespace CmsWeb.Models
 	public class MeetingModel
 	{
 		public CmsData.Meeting meeting;
+		public CmsData.Organization org;
 
 		public bool showall { get; set; }
 		public bool currmembers { get; set; }
@@ -23,7 +24,15 @@ namespace CmsWeb.Models
 
 		public MeetingModel(int id)
 		{
-			meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.MeetingId == id);
+		    var i = (from m in DbUtil.Db.Meetings
+		            where m.MeetingId == id
+		            select new
+		                       {
+		                           org = m.Organization,
+		                           m
+		                       }).Single();
+		    meeting = i.m;
+		    org = i.org;
 		}
 		public IEnumerable<RollsheetModel.AttendInfo> Attends(bool sorted = false)
 		{

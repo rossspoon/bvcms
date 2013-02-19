@@ -1,26 +1,10 @@
 ﻿$(function () {
-    var editor_config = {
+    CKEDITOR.replace('editor', {
         height: 200,
         filebrowserUploadUrl: '/Account/CKEditorUpload/',
-        filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
-        toolbar_Full: [
-            ['Source'],
-            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'SpellChecker', 'Scayt'],
-            ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
-            '/',
-            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv'],
-            ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
-            ['Link', 'Unlink', 'Anchor'],
-            ['Image', 'Table', 'SpecialChar'],
-            '/',
-            ['Styles', 'Format', 'Font', 'FontSize'],
-            ['TextColor', 'BGColor'],
-            ['Maximize', 'ShowBlocks', '-', 'About']
-        ]
-    };
-    $("#editor").ckeditor(editor_config);
-    $("ul.enablesort div.newitem > a").live("click", function (ev) {
+        filebrowserImageUploadUrl: '/Account/CKEditorUpload/' 
+    });
+    $("body").on("click", 'ul.enablesort div.newitem > a', function (ev) {
         if (!$(this).attr("href"))
             return false;
         ev.preventDefault();
@@ -53,24 +37,25 @@
             return false;
         var name = $(this).attr("tb");
         ev.preventDefault();
-        $("#EditorDialog").dialog({
-            width: 650,
-            height: 450,
-            modal: true,
-            draggable: true,
-            resizable: true,
-            open: function () {
-                $("#editor").val($("#" + name).val());
-            },
-            buttons: {
-                'Save': function () {
-                    var v = $("#editor").val();
-                    $("#" + name).val(v);
-                    $("#" + name + "_ro").html(v);
-                    $(this).dialog('close');
-                }
-            }
+        CKEDITOR.instances['editor'].setData($("#" + name).val());
+        dimOn();
+        $("#EditorDialog").center().show();
+        $("#saveedit").off("click").on("click", function (ev) {
+            ev.preventDefault();
+            var v = CKEDITOR.instances['editor'].getData();
+            $("#" + name).val(v);
+            $("#" + name + "_ro").html(v);
+            CKEDITOR.instances['editor'].setData('');
+            $('#EditorDialog').hide("close");
+            dimOff();
+            return false;
         });
+        return false;
+    });
+    $("#canceledit").live("click", function (ev) {
+        ev.preventDefault();
+        $('#EditorDialog').hide("close");
+        dimOff();
         return false;
     });
 });

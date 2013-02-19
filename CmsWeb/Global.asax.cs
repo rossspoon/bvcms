@@ -34,8 +34,10 @@ namespace CmsWeb
             ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
+            //BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteTable.Routes.RouteExistingFiles = true;
+            HttpRuntime.Cache.Remove("BuildDate");
 #if DEBUG
             //HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler.Initialize();
 #endif
@@ -43,8 +45,8 @@ namespace CmsWeb
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("Demo/{*pathInfo}");
-            routes.IgnoreRoute("ForceError.aspx");
             routes.IgnoreRoute("healthcheck.txt");
+            routes.IgnoreRoute("index.html");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.aspx/{*pathInfo}");
             routes.IgnoreRoute("{myWebForms}.ashx/{*pathInfo}");
@@ -60,7 +62,7 @@ namespace CmsWeb
             routes.IgnoreRoute("Contributions/{*pathInfo}");
             routes.IgnoreRoute("Report/{*pathInfo}");
             routes.IgnoreRoute("Dialog/{*pathInfo}");
-            routes.IgnoreRoute("ckeditor/{*pathInfo}");
+            routes.IgnoreRoute("ckeditor2/{*pathInfo}");
             routes.IgnoreRoute("StaffOnly/{*pathInfo}");
             routes.IgnoreRoute("images/{*pathInfo}");
             routes.IgnoreRoute("App_Themes/{*pathInfo}");

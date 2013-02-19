@@ -256,6 +256,8 @@ namespace CmsData
 		
    		private EntitySet< Family> _FamiliesHeaded2;
 		
+   		private EntitySet< ActivityLog> _ActivityLogs;
+		
    		private EntitySet< Attend> _Attends;
 		
    		private EntitySet< BackgroundCheck> _BackgroundChecks;
@@ -307,6 +309,8 @@ namespace CmsData
    		private EntitySet< Volunteer> _Volunteers;
 		
    		private EntitySet< VolunteerForm> _VolunteerForms;
+		
+   		private EntitySet< VoluteerApprovalId> _VoluteerApprovalIds;
 		
    		private EntitySet< OrganizationMember> _OrganizationMembers;
 		
@@ -736,6 +740,8 @@ namespace CmsData
 			
 			this._FamiliesHeaded2 = new EntitySet< Family>(new Action< Family>(this.attach_FamiliesHeaded2), new Action< Family>(this.detach_FamiliesHeaded2)); 
 			
+			this._ActivityLogs = new EntitySet< ActivityLog>(new Action< ActivityLog>(this.attach_ActivityLogs), new Action< ActivityLog>(this.detach_ActivityLogs)); 
+			
 			this._Attends = new EntitySet< Attend>(new Action< Attend>(this.attach_Attends), new Action< Attend>(this.detach_Attends)); 
 			
 			this._BackgroundChecks = new EntitySet< BackgroundCheck>(new Action< BackgroundCheck>(this.attach_BackgroundChecks), new Action< BackgroundCheck>(this.detach_BackgroundChecks)); 
@@ -787,6 +793,8 @@ namespace CmsData
 			this._Volunteers = new EntitySet< Volunteer>(new Action< Volunteer>(this.attach_Volunteers), new Action< Volunteer>(this.detach_Volunteers)); 
 			
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
+			
+			this._VoluteerApprovalIds = new EntitySet< VoluteerApprovalId>(new Action< VoluteerApprovalId>(this.attach_VoluteerApprovalIds), new Action< VoluteerApprovalId>(this.detach_VoluteerApprovalIds)); 
 			
 			this._OrganizationMembers = new EntitySet< OrganizationMember>(new Action< OrganizationMember>(this.attach_OrganizationMembers), new Action< OrganizationMember>(this.detach_OrganizationMembers)); 
 			
@@ -3484,6 +3492,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_ActivityLog_People", Storage="_ActivityLogs", OtherKey="PeopleId")]
+   		public EntitySet< ActivityLog> ActivityLogs
+   		{
+   		    get { return this._ActivityLogs; }
+
+			set	{ this._ActivityLogs.Assign(value); }
+
+   		}
+
+		
    		[Association(Name="FK_AttendWithAbsents_TBL_PEOPLE_TBL", Storage="_Attends", OtherKey="PeopleId")]
    		public EntitySet< Attend> Attends
    		{
@@ -3740,6 +3758,16 @@ namespace CmsData
    		    get { return this._VolunteerForms; }
 
 			set	{ this._VolunteerForms.Assign(value); }
+
+   		}
+
+		
+   		[Association(Name="FK_VoluteerApprovalIds_People", Storage="_VoluteerApprovalIds", OtherKey="PeopleId")]
+   		public EntitySet< VoluteerApprovalId> VoluteerApprovalIds
+   		{
+   		    get { return this._VoluteerApprovalIds; }
+
+			set	{ this._VoluteerApprovalIds.Assign(value); }
 
    		}
 
@@ -4822,6 +4850,19 @@ namespace CmsData
 		}
 
 		
+		private void attach_ActivityLogs(ActivityLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_ActivityLogs(ActivityLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
 		private void attach_Attends(Attend entity)
 		{
 			this.SendPropertyChanging();
@@ -5154,6 +5195,19 @@ namespace CmsData
 		}
 
 		private void detach_VolunteerForms(VolunteerForm entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = null;
+		}
+
+		
+		private void attach_VoluteerApprovalIds(VoluteerApprovalId entity)
+		{
+			this.SendPropertyChanging();
+			entity.Person = this;
+		}
+
+		private void detach_VoluteerApprovalIds(VoluteerApprovalId entity)
 		{
 			this.SendPropertyChanging();
 			entity.Person = null;

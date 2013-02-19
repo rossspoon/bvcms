@@ -41,13 +41,14 @@ namespace CmsWeb.Areas.People.Models.Person
                 _count = FetchMembers().Count();
             return _count.Value;
         }
-        public IEnumerable<CmsWeb.Models.PersonPage.FamilyMemberInfo> Members()
+        public IEnumerable<FamilyMemberInfo> Members()
         {
             var q = FetchMembers();
             var q2 = from m in q
-                     select new CmsWeb.Models.PersonPage.FamilyMemberInfo
+                     select new FamilyMemberInfo
                      {
                         Id = m.PeopleId,
+                        SmallPicId = m.Picture.SmallId,
                         Name = m.Name,
                         Age = m.Age,
                         Color = m.DeceasedDate != null ? "red" : "auto",

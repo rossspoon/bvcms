@@ -23,7 +23,7 @@ namespace CmsWeb.Models
         {
             get
             {
-                return IsLeader || Util.IsInRole("ContentEdit");
+                return IsLeader || Util.IsInRole("ContentEdit") || Util.IsInRole("Admin");
             }
         }
         public OrgContent oc { get; set; }

@@ -29,6 +29,8 @@ namespace CmsData
 		
 		private int? _SmallId;
 		
+		private int? _ThumbId;
+		
    		
    		private EntitySet< Person> _People;
 		
@@ -57,6 +59,9 @@ namespace CmsData
 		
 		partial void OnSmallIdChanging(int? value);
 		partial void OnSmallIdChanged();
+		
+		partial void OnThumbIdChanging(int? value);
+		partial void OnThumbIdChanged();
 		
     #endregion
 		public Picture()
@@ -196,6 +201,28 @@ namespace CmsData
 					this._SmallId = value;
 					this.SendPropertyChanged("SmallId");
 					this.OnSmallIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ThumbId", UpdateCheck=UpdateCheck.Never, Storage="_ThumbId", DbType="int")]
+		public int? ThumbId
+		{
+			get { return this._ThumbId; }
+
+			set
+			{
+				if (this._ThumbId != value)
+				{
+				
+                    this.OnThumbIdChanging(value);
+					this.SendPropertyChanging();
+					this._ThumbId = value;
+					this.SendPropertyChanged("ThumbId");
+					this.OnThumbIdChanged();
 				}
 
 			}

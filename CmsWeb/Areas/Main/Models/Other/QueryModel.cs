@@ -172,6 +172,12 @@ namespace CmsWeb.Models
         }
         public string ConditionText { get { return fieldMap.Title; } }
 
+        private static List<CodeValueItem> BitCodes =
+            new List<CodeValueItem> 
+            { 
+                new CodeValueItem { Id = 1, Value = "True", Code = "T" }, 
+                new CodeValueItem { Id = 0, Value = "False", Code = "F" }, 
+            };
         public void SetVisibility()
         {
             RightPanelVisible = true;
@@ -211,7 +217,7 @@ namespace CmsWeb.Models
                 case FieldType.Bit:
                 case FieldType.NullBit:
                     CodeVisible = true;
-                    CodeData = ConvertToSelect(cvctl.BitCodes(), fieldMap.DataValueField);
+                    CodeData = ConvertToSelect(BitCodes, fieldMap.DataValueField);
                     break;
                 case FieldType.String:
                 case FieldType.StringEqual:
@@ -230,12 +236,12 @@ namespace CmsWeb.Models
                 case FieldType.Code:
                 case FieldType.CodeStr:
                     CodeVisible = true;
-					if (fieldMap.DataSource == "ExtraValues")
-						CodeData = StandardExtraValues.ExtraValueCodes();
-					else if (fieldMap.DataSource == "Campuses")
-						CodeData = Campuses();
-					else
-						CodeData = ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
+                    if (fieldMap.DataSource == "ExtraValues")
+                        CodeData = StandardExtraValues.ExtraValueCodes();
+                    else if (fieldMap.DataSource == "Campuses")
+                        CodeData = Campuses();
+                    else
+                        CodeData = ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
                     break;
                 case FieldType.Date:
                 case FieldType.DateSimple:
@@ -284,6 +290,14 @@ namespace CmsWeb.Models
             if (list2.Count > 0)
                 list2[0].Selected = true;
             return list2;
+        }
+        public static string IdCode(object items, int id)
+        {
+            var list = items as IEnumerable<CodeValueItem>;
+            var ret = (from v in list
+                       where v.Id == id
+                       select v.IdCode).Single();
+            return ret;
         }
         DateTime? DateParse(string s)
         {
@@ -346,8 +360,8 @@ namespace CmsWeb.Models
             if (MinistryVisible)
                 c.Program = Ministry ?? 0;
             c.Schedule = Schedule ?? 0;
-			c.Campus = Campus ?? 0;
-			c.OrgType = OrgType ?? 0;
+            c.Campus = Campus ?? 0;
+            c.OrgType = OrgType ?? 0;
             c.StartDate = DateParse(StartDate);
             c.EndDate = DateParse(EndDate);
             c.Days = Days.ToInt();
@@ -406,8 +420,8 @@ namespace CmsWeb.Models
             OrganizationData = Organizations(Division).ToList();
             Organization = c.Organization;
             Schedule = c.Schedule;
-			Campus = c.Campus;
-			OrgType = c.OrgType;
+            Campus = c.Campus;
+            OrgType = c.OrgType;
             StartDate = DateString(c.StartDate);
             EndDate = DateString(c.EndDate);
             SelectMultiple = c.HasMultipleCodes;
@@ -473,8 +487,8 @@ namespace CmsWeb.Models
         public void DeleteCondition()
         {
             var c = Db.LoadQueryById(SelectedId);
-			if (c == null)
-				return;
+            if (c == null)
+                return;
             SelectedId = c.Parent.QueryId;
             Db.DeleteQueryBuilderClauseOnSubmit(c);
             Db.SubmitChanges();
@@ -564,7 +578,7 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> Campuses()
         {
             var q = from o in DbUtil.Db.Organizations
-					where o.CampusId != null
+                    where o.CampusId != null
                     group o by o.CampusId into g
                     orderby g.Key
                     select new SelectListItem
@@ -619,9 +633,9 @@ namespace CmsWeb.Models
         }
         public IEnumerable<SelectListItem> Organizations(int? divid)
         {
-        	var roles = Db.CurrentRoles();
+            var roles = Db.CurrentRoles();
             var q = from ot in Db.DivOrgs
-        	        where ot.Organization.LimitToRole == null || roles.Contains(ot.Organization.LimitToRole)
+                    where ot.Organization.LimitToRole == null || roles.Contains(ot.Organization.LimitToRole)
                     where ot.DivId == divid
                     && (SqlMethods.DateDiffMonth(ot.Organization.OrganizationClosedDate, Util.Now) < 14
                         || ot.Organization.OrganizationStatusId == 30)
@@ -689,41 +703,41 @@ namespace CmsWeb.Models
             count = query.Count();
             return count ?? 0;
         }
-		public List<PeopleInfo> Results;
-		public void PopulateResults()
-		{
-			query = PersonQuery();
-			count = query.Count();
-			query = ApplySort(query);
+        public List<PeopleInfo> Results;
+        public void PopulateResults()
+        {
+            query = PersonQuery();
+            count = query.Count();
+            query = ApplySort(query);
             query = query.Skip(StartRow).Take(PageSize.Value);
             Results = FetchPeopleList(query).ToList();
-		}
+        }
         public IEnumerable<PeopleInfo> FetchPeopleList()
         {
             query = ApplySort(query);
             query = query.Skip(StartRow).Take(PageSize.Value);
             return FetchPeopleList(query);
         }
-		public class MyClass
-		{
-			public int Id { get; set; }
-			public int PeopleId { get; set; }
-		}
+        public class MyClass
+        {
+            public int Id { get; set; }
+            public int PeopleId { get; set; }
+        }
         public Tag TagAllIds()
         {
             query = PersonQuery();
-			var tag = Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_Query);
-			Db.TagAll(query, tag);
-        	return tag;
+            var tag = Db.FetchOrCreateTag(Util.SessionId, Util.UserPeopleId, DbUtil.TagTypeId_Query);
+            Db.TagAll(query, tag);
+            return tag;
         }
-		private IQueryable<Person> PersonQuery()
+        private IQueryable<Person> PersonQuery()
         {
             if (Qb == null)
                 LoadScratchPad();
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate(Db));
             if (Qb.ParentsOf)
-				return Db.PersonQueryParents(q);
+                return Db.PersonQueryParents(q);
             return q;
         }
         public void TagAll()
@@ -733,7 +747,7 @@ namespace CmsWeb.Models
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate(Db));
             if (Qb.ParentsOf)
-				q = Db.PersonQueryParents(q);
+                q = Db.PersonQueryParents(q);
             Db.TagAll(q);
         }
         public void UnTagAll()
@@ -743,17 +757,17 @@ namespace CmsWeb.Models
             Db.SetNoLock();
             var q = Db.People.Where(Qb.Predicate(Db));
             if (Qb.ParentsOf)
-				q = Db.PersonQueryParents(q);
+                q = Db.PersonQueryParents(q);
             Db.UnTagAll(q);
         }
         private IEnumerable<PeopleInfo> FetchPeopleList(IQueryable<Person> query)
         {
-			if (query == null)
-			{
-				Db.SetNoLock();
-				query = PersonQuery();
-				count = query.Count();
-			}
+            if (query == null)
+            {
+                Db.SetNoLock();
+                query = PersonQuery();
+                count = query.Count();
+            }
             var q = from p in query
                     select new PeopleInfo
                     {
@@ -941,7 +955,7 @@ namespace CmsWeb.Models
                 Action = "List",
                 Controller = "Task",
                 Count = Count,
-				ToggleTarget = true
+                ToggleTarget = true
             };
         }
         #endregion

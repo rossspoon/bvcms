@@ -7,7 +7,7 @@
     <tr>
         <th>Id</th>
         <th>Time</th>
-        <th align="right">Amounts</th>
+        <th class="right">Amounts</th>
         <th>Header</th>
         <th>Person</th>
     </tr>
@@ -19,13 +19,13 @@
         continue;
     }
        <tr>
-           <td valign="top">@i.ed.Id</td>
-           <td valign="top">@i.ed.Stamp.Value</td>
-           <td align="right" valign="top">@i.ti.AmountPaid.ToString("c")<br />
+           <td class="top">@i.ed.Id</td>
+           <td class="top">@i.ed.Stamp.Value</td>
+           <td class="right top">@i.ti.AmountPaid.ToString("c")<br />
            @i.ti.AmountDue.ToString("c")</td>
-           <td valign="top">@i.ti.Header<br />
+           <td class="top">@i.ti.Header<br />
            @i.ti.URL</td>
-           <td valign="top">@i.ti.Name<br />
+           <td class="top">@i.ti.Name<br />
            @i.ti.Address<br />
            @i.ti.City<br />
            @i.ti.State<br />
@@ -36,8 +36,8 @@
        </tr>
     foreach(var p in i.ti.people)
     { 
-       <tr><td valign="top" colspan="4">participant</td>
-           <td valign="top">
+       <tr><td class="top" colspan="4">participant</td>
+           <td class="top">
            @p.name<br />
            @p.pid<br/>
            @p.amt.ToString("c")</td>

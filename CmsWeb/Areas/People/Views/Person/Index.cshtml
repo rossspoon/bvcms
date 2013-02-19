@@ -3,35 +3,13 @@
 @using CmsWeb.Models
 @using CmsData
 @using UtilityExtensions
-@model CmsWeb.Models.PersonPage.PersonModel
+@model CmsWeb.Areas.People.Models.Person.PersonModel
 @{
-    Layout = "/Views/Shared/Site.cshtml";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Person";
 }
-@section head
-{
-<style type="text/css">
-#family td
-{
-    padding: 2px;
-}
-div.pager
-{
-    padding: 0px;
-    margin-bottom:0px;
-}
-pre {
- white-space: pre-wrap;       /* css-3 */
- white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
- white-space: -pre-wrap;      /* Opera 4-6 */
- white-space: -o-pre-wrap;    /* Opera 7 */
- word-wrap: break-word;       /* Internet Explorer 5.5+ */
-}
-</style>
-}
-
 @{ 
-    CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson;
+    var p = Model.displayperson;
     var isaccess = User.IsInRole("Access");
     var isadmin = User.IsInRole("Admin");
     var isedit = User.IsInRole("Edit");
@@ -39,284 +17,569 @@ pre {
     var ismanager = User.IsInRole("Manager");
     var memberedit = isadmin || User.IsInRole("Membership");
 }
+@section head
+{
+    <link href="~/Content/styles/person.css" rel="stylesheet" />
+}
 @section scripts
 {
     @Scripts.Render("~/bundles/single/person-js")
-@if(memberedit)
-{
-    <script type="text/javascript"> function ShowMemberDocs() { $("#memberdocs").show(); } </script>
-}
-    <script type="text/javascript">
-        function ShowMemberExtras() {
-            if (window.ShowMemberDocs)
-                ShowMemberDocs();
-            $.extraEditable('#memberextras');
-        }
-    </script>
+    @Scripts.Render("~/bundles/single/person2-js")
 }
 @Html.Hidden("PeopleId", p.PeopleId)
-    <table cellspacing="5" class="roundbox floatleft">
-        <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
-        <tr>
-            <td valign="top">
-            @if (Model.Person.CanUserEditBasic)
-            {
-                <a id="Picture" href="/UploadPicture.aspx?id=@p.PeopleId" title="Click to see larger version or upload new">
-                <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
-                </a>
-            }
-            else
-            {
-                <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
-            }
-            </td>
-            <td>&nbsp;</td>
-            <td valign="top">
-                <div id="businesscard" href="/Person/BusinessCard/@p.PeopleId">
-                 @Html.Partial("BusinessCard", p) 
-                </div>
-                <div> @p.basic.DoNotCall </div>
-            </td>
-            <td>&nbsp;</td>
-            <td valign="top">
-                <form id="family" action="/Person/FamilyGrid/@p.PeopleId">
-                @Html.Partial("FamilyGrid", new CmsWeb.Models.PersonPage.PersonFamilyModel(p.PeopleId))
-                </form>
-            </td>
-       </tr>
-    </table>
-<div class="floatleft">
-    <div id="buttondiv" class="extrabar" style="margin-top:1em;margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
-        <a href="#" class="trigger-dropdown">
-            Maps and Directions <img src="/images/dnarrow.png" />
-        </a>
-        <div class="dropdown-menu has-tip">
-            <ul>
-                <li><a href="http://www.google.com/maps?q=@p.PrimaryAddr.AddrCityStateZip()" target="_blank">Google Map</a></li>
-                <li><a href="http://www.bing.com/maps/?q=@p.PrimaryAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
-                <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PrimaryAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PrimaryAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
-            </ul>
-        </div>
-    </div>
-@if (isadmin || ismanager)
-{
-    <div id="buttondiv" class="extrabar" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
-        <a href="#" class="trigger-dropdown">
-            Other Management <img src="/images/dnarrow.png" />
-        </a>
-        <div class="dropdown-menu has-tip">
-            <ul>
-                @if (Model.CanCheckIn)
-                { 
-                    <li><a href="/CheckIn/CheckIn/@Model.ckorg?pid=@p.PeopleId">CheckIn</a></li>
-                }
-                @if (isadmin || ismanager)
-                { 
-                    <li><a id="moveperson" href="/SearchAdd/Index/0?type=mergeto">Merge Controller</a></li>
-                    if (isadmin)
-                    { 
-                        <li><a id="deleteperson" href="/Person/Delete/@p.PeopleId">Delete Person</a></li>
-                        if (Session["showallmeetings"] == null)
-                        {
-                            <li><a href="/Person/ShowMeetings/@p.PeopleId?all=true">Show All Meetings</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="/Person/ShowMeetings/@p.PeopleId?all=false">Show Only Attends</a></li>
-                        }
-                    } 
-                }
-            </ul>
-        </div>
-    </div>
-}
-@if (isfinance || Util.UserPeopleId == Model.Person.PeopleId)
-{
-    var yr = DateTime.Now.Year;
-    <div id="buttondiv" class="extrabar" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
-        <a href="#" class="trigger-dropdown">
-            Contributions <img src="/images/dnarrow.png" />
-        </a>
-        <div class="dropdown-menu has-tip">
-            <ul>
-                @if (isfinance)
-                {
-                    <li><a href="/FinanceReports/ContributionYears/@p.PeopleId">History</a></li>
-                }
-                <li><a href="/Person/ContributionStatement/@p.PeopleId/0101@(yr)/@(DateTime.Now.ToString("MMddyyyy"))">Statement Year to date</a></li>
-                <li><a href="/Person/ContributionStatement/@p.PeopleId/0101@(yr-1)/1231@(yr-1)">Last Year's Statement</a></li>
-            </ul>
-        </div>
-    </div>
-}
-</div>
-<div class="floatclear"></div>
 
-    <div id="main-tab" style="display:none">
-        <ul class="ui-tabs-nav">
-            <li><a href="#basic-tab"><span>Basic</span></a></li>
-            <li><a href="#address-tab"><span>Addresses</span></a></li>
-            <li><a id="enrollment-link" href="#enrollment-tab"><span>Enrollment</span></a></li>
-            <li><a id="member-link" href="#member-tab"><span>Member Profile</span></a></li>
-@if (isaccess)
-{ 
-            <li><a href="#growth-tab"><span>Growth</span></a></li>
-}
-@if (isedit || isadmin)
-{ 
-            <li><a id="system-link" href="#system-tab"><span>System</span></a></li>
-}
-
+<nav id="nav-family" class="four columns alpha">
+    @Html.Partial("FamilyGrid", Model)
+    <div class="group">
+        <h2>Home
+            <a href="" class="add"><i class="icon-plus-sign"></i></a>
+        </h2>
+        <ul class="home">
+            <li class="address">
+                <a href="" class="edit"><i class="icon-pencil"></i></a>
+                <a href="" class="action"><i class="icon-map-marker"></i></a>
+                <span class="address label">@p.FamilyAddr.Address1<br>
+                                                                  @if (p.FamilyAddr.Address2.HasValue())
+                                                                  {
+                                                                      @:@p.FamilyAddr.Address2<br />
+                                                                  }
+                                                                  @p.FamilyAddr.CityStateZip()
+                </span>
+            </li>
+            <li class="phone">
+                <a href="" class="edit"><i class="icon-pencil"></i></a>
+                <a href="" class="action"><i class="icon-phone"></i><span class="label">@p.basic.HomePhone</span></a>
+            </li>
         </ul>
-        <div id="basic-tab">
-            <form id="basic" class="DisplayEdit" action="">
-             @Html.Partial("BasicDisplay", p.basic) 
-            </form>
-        </div>
-        <div id="address-tab">
-            <ul class="ui-tabs-nav">
-                <li><a href="#PersonalAddr"><span>Personal</span></a></li>
-                <li><a href="#FamilyAddr"><span>Family</span></a></li>
-            </ul>
-            <div id="PersonalAddr">
-                <form id="addrp" class="DisplayEdit" action="">
-                 @Html.Partial("AddressDisplay", p.PersonalAddr) 
-                </form>
-            </div>
-            <div id="FamilyAddr">
-                <form id="addrf" class="DisplayEdit" action="">
-                 @Html.Partial("AddressDisplay", p.FamilyAddr) 
-                </form>
-            </div>
-            @Html.Hidden("addrtab")
-        </div>
-        <div id="enrollment-tab">
-            <ul class="ui-tabs-nav">
-                <li><a href="#current-tab"><span>Current</span></a></li>
-                <li><a id="previous-link" href="#previous-tab"><span>Previous</span></a></li>
-                <li><a id="pending-link" href="#pending-tab"><span>Pending</span></a></li>
-                <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
-                <li><a id="recreg-link" href="#recreg-tab"><span>Registration</span></a></li>
-            </ul>
-            <div id="current-tab">
-                <form action="/Person/EnrollGrid/@p.PeopleId">
-                </form>
-            </div>
-            <div id="previous-tab">
-                <form action="/Person/PrevEnrollGrid/@p.PeopleId">
-                </form>
-            </div>
-            <div id="pending-tab">
-                <form action="/Person/PendingEnrollGrid/@p.PeopleId">
-                </form>
-            </div>
-            <div id="attendance-tab">
-                <form action="/Person/AttendanceGrid/@p.PeopleId">
-                </form>
-            </div>
-            <div id="recreg-tab">
-                <form class="DisplayEdit" action="/Person/RecRegDisplay/@p.PeopleId">
-                </form>
-            </div>
-        </div>
-        <div id="member-tab">
-            <ul class="ui-tabs-nav">
-                <li><a href="#membersum-tab"><span>Summary</span></a></li>
-            @if (isaccess)
-            {
-                <li><a href="#membernotes-tab"><span>Notes</span></a></li>
-                <li><a href="#extras-tab"><span>Extra Values</span></a></li>
-                <li><a href="#querybits-tab"><span>QueryBits</span></a></li>
-            }
-            </ul>
-            <div id="membersum-tab">
-                <form id="memberdisplay" class="DisplayEdit" action="/Person/MemberDisplay/@p.PeopleId">
-                </form>
-            </div>
-            <div id="membernotes-tab">
-                <form class="DisplayEdit" action="">
-                 @Html.Partial("MemberNotesDisplay", p.membernotes) 
-                </form>
-            </div>
-            <div id="extras-tab">
-                <form action="/Person/ExtrasGrid/@p.PeopleId">
-                </form>
-            </div>
-        @if (isaccess)
-        {
-            <div id="querybits-tab">
-                @foreach (var b in p.member.QueryBits())
-                {
-                    @b[0] @:- @b[1]<br/>
-                }
-            </div>
-        }
-        </div>
-@if (isaccess)
-{ 
-        <div id="growth-tab">
-            <ul class="ui-tabs-nav">
-                <li><a href="#entry-tab"><span>Entry</span></a></li>
-                <li><a id="contacts-link" href="#contacts-tab"><span>Contacts</span></a></li>
-                <li><a href="#comments-tab"><span>Comments</span></a></li>
-                <li><a id="volunteer-link" href="#volunteer-tab"><span>Volunteer</span></a></li>
-            </ul>
-            <div id="entry-tab">
-                <form class="DisplayEdit" action="">
-                 @Html.Partial("GrowthDisplay", p.growth) 
-                </form>
-            </div>
-            <div id="contacts-tab">
-                 @Html.Partial("ContactsDisplay", p.PeopleId) 
-            </div>
-            <div id="comments-tab">
-                <form class="DisplayEdit" action="">
-                 @Html.Partial("CommentsDisplay") 
-                </form>
-            </div>
-            <div id="volunteer-tab">
-                <form action="/Person/VolunteerDisplay/@p.PeopleId">
-                </form>
-            </div>
-        </div>
-}
-@if (isedit || isadmin)
-{ 
-        <div id="system-tab">
-            <ul class="ui-tabs-nav">
-                <li><a id="user-link" href="#user-tab"><span>User</span></a></li>
-                <li><a id="changes-link" href="#changes-tab"><span>Changes</span></a></li>
-                <li><a id="duplicates-link" href="#duplicates-tab"><span>Duplicates</span></a></li>
-                <li><a id="optouts-link" href="#optouts-tab"><span>Email Optouts</span></a></li>
-            </ul>
-            <div id="user-tab">
-                <form action="/Person/UserInfoGrid/@p.PeopleId">
-                </form>
-            </div>
-            <div id="changes-tab">
-                <form action="/Person/ChangesGrid/@p.PeopleId">
-                </form>
-            </div>
-            <div id="duplicates-tab">
-                <form action="/Person/DuplicatesGrid/@p.PeopleId">
-                </form>
-            </div>
-            <div id="optouts-tab">
-                <form action="/Person/OptoutsGrid/@p.PeopleId">
-                </form>
-            </div>
-        </div>
-}
     </div>
-    <div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
-    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
+    <div class="group">
+        <h2>Related Families
+            <a href="" class="add" data-modal-id="addDialog"><i class="icon-plus-sign"></i></a>
+        </h2>
+        <ul class="related">
+            <li><a href="" class="edit"><i class="icon-pencil"></i></a>
+                <div class="label">Nicolas &amp; Jessica Brody</div>
+                <div class="summary">Grandparents</div>
+            </li>
+            <li><a href="" class="edit"><i class="icon-pencil"></i></a>
+                <div class="label">Bo &amp; Cassie Wiggin</div>
+                <div class="summary">Cousins</div>
+            </li>
+        </ul>
     </div>
-    <div id="memberDialog">
-    <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
+</nav>
+
+<section id="person" class="twelve columns omega">
+    <header class="container">
+        <div id="snapshot" class="nine columns alpha">
+            <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
+            <h1>@p.Name</h1>
+            <span class="role">@Model.Person.FamilyPosition.Description</span>
+            <ul class="attributes">
+                <li>
+                    <span class="attribute">Membership Status:</span>
+                    <span class="value">@p.member.MemberStatus</span>
+                </li>
+                <li>
+                    <span class="attribute">Campus Affiliation:</span>
+                    <span class="value">@p.basic.Campus</span>
+                </li>
+            </ul>
+        </div>
+        <div class="three columns action">
+            <p class="meta">Record added @p.basic.Created.FormatDate()</p>
+            <div class="btn-group">
+                <button class="btn">
+                    <i class="icon-envelope"></i>
+                </button>
+                <button class="btn">
+                    <i class="icon-cloud-download"></i>
+                </button>
+                <button class="btn trigger-dropdown">
+                    <i class="icon-cog"></i>
+                    <i class="icon-caret-down"></i>
+                </button>
+                <div class="dropdown-menu anchor-right">
+                    <ul>
+                        <li><a href="#">Add New User</a></li>
+                        <li><a href="#">Impersonate</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Add New Address</a></li>
+                        <li><a href="#">Mark As Deceased</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Split</a></li>
+                        <li><a href="#">Merge</a></li>
+                        <li><a href="#">Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul id="badges">
+            <li>Do Not Visit</li>
+            <li>Do Not Call</li>
+            <ul>
+    </header>
+    <nav id="nav-tabs">
+        <ul>
+            <li><a href="#personal">Personal</a></li>
+            <li><a href="#involvement">Involvement</a></li>
+            <li><a href="#member-profile">Member Profile</a></li>
+            <li><a href="#giving">Giving</a></li>
+            <li><a href="#account">Account</a></li>
+            <li><a href="#comments" class="omega">Comments</a></li>
+        </ul>
+    </nav>
+
+    <!--  Personal pane -->
+    <div id="personal" class="pane">
+        <form action="" method="post">
+            <div class="submit-row">
+                <button class="btn btn-neutral display">Edit</button>
+                <button class="btn btn-neutral edit">Cancel</button>
+                <button class="btn btn-primary edit">Save Changes</button>
+            </div>
+            <fieldset class="edit">
+                <div class="control-group">
+                    <label for="">Title</label>
+                    <div class="controls">
+                        <select name="" id="" class="xs">
+                            <option value="">Mr</option>
+                            <option value="">Ms</option>
+                            <option value="">Miss</option>
+                            <option value="" selected>Mrs</option>
+                            <option value="">Lt</option>
+                            <option value="">Dr</option>
+                            <option value="">Rep</option>
+                            <option value="">Amb</option>
+                            <option value="">Fr</option>
+                            <option value="">Capt</option>
+                            <option value="">Sr</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">First Name</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Elizabeth">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Goes By</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Eliza">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Middle Name</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Cassandra">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Last Name</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Queen">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Alt Name</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Former</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Shepherd">
+                    </div>
+                </div>
+                <div class="control-group em">
+                    <label for="">Suffix</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text m strict">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Gender</label>
+                    <div class="controls">
+                        <label>
+                            <input type="radio" name="gender" id="id_" class="radio">
+                            Male</label>
+                        <label>
+                            <input type="radio" name="gender" id="id_" class="radio" checked>
+                            Female</label>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Birthdate</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text date" value="4/11/1976">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Marital Status</label>
+                    <div class="controls">
+                        <select name="" id="id_">
+                            <option value="">Single</option>
+                            <option value="" selected>Married</option>
+                            <option value="">Separated</option>
+                            <option value="">Divorced</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Wedding Date</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text date" value="1/12/2000">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Occupation</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Analyst">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Employer</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="National Society of Arondissements">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">School</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text" value="Brown">
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Grade</label>
+                    <div class="controls">
+                        <input type="text" name="" id="id_" class="text">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="edit">
+                <div class="control-group em">
+                    <label for="" class="lg">Do Not Contact&nbsp;By</label>
+                    <div class="controls">
+                        <label for="">
+                            <input type="checkbox" name="no_contact" value="email">
+                            Email</label>
+                        <label for="">
+                            <input type="checkbox" name="no_contact" value="phone" checked>
+                            Telephone</label>
+                        <label for="">
+                            <input type="checkbox" name="no_contact" value="mail">
+                            Mail</label>
+                        <label for="">
+                            <input type="checkbox" name="no_contact" value="person" checked>
+                            In Person</label>
+                    </div>
+                </div>
+                <div class="control-group half halfsy">
+                    <label for="">Primary Email</label>
+                    <div class="controls">
+                        <div class="textcombo">
+                            <input type="text" name="email_primary" class="text email">
+                            <input type="checkbox" name="email_primary_active">
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Mobile</label>
+                    <div class="controls">
+                        <input type="text" name="mobile" class="text phone">
+                    </div>
+                </div>
+                <div class="control-group half halfsy">
+                    <label for="">Alt Email</label>
+                    <div class="controls">
+                        <div class="textcombo">
+                            <input type="text" name="email_secondary" class="text email lg">
+                            <input type="checkbox" name="email_secondary_active">
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Work</label>
+                    <div class="controls">
+                        <input type="text" name="mobile" class="text phone">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="display">
+                <div class="control-group">
+                    <label for="">Title</label>
+                    <div class="controls">
+                        <p>@p.basic.Title</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">First Name</label>
+                    <div class="controls">
+                        <p>@p.basic.First</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Goes By</label>
+                    <div class="controls">
+                        <p>@p.basic.NickName</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Middle Name</label>
+                    <div class="controls">
+                        <p>@p.basic.Middle</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Last Name</label>
+                    <div class="controls">
+                        <p>@p.basic.Last</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Alt Name</label>
+                    <div class="controls">
+                        <p>@p.basic.AltName</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Former</label>
+                    <div class="controls">
+                        <p>@p.basic.Maiden</p>
+                    </div>
+                </div>
+                <div class="control-group em">
+                    <label for="">Suffix</label>
+                    <div class="controls">
+                        <p>@p.basic.Suffix</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Gender</label>
+                    <div class="controls">
+                        <p>@p.basic.Gender</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Birthdate</label>
+                    <div class="controls">
+                        <p>@p.basic.Birthday</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Marital Status</label>
+                    <div class="controls">
+                        <p>@p.basic.MaritalStatus</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Wedding Date</label>
+                    <div class="controls">
+                        <p>@p.basic.WeddingDate.FormatDate()</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Occupation</label>
+                    <div class="controls">
+                        <p>@p.basic.Occupation</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Employer</label>
+                    <div class="controls">
+                        <p>@p.basic.Employer</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">School</label>
+                    <div class="controls">
+                        <p>@p.basic.School</p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Grade</label>
+                    <div class="controls">@p.basic.Grade</div>
+                </div>
+            </fieldset>
+            <fieldset class="display">
+                <div class="control-group em">
+                    <label for="" class="lg">
+                        @if (p.basic.DoNotContactAny)
+                        {
+                            @:Do Not Contact
+                        }
+                    </label>
+                    <div class="controls">
+                        <p>
+                            @string.Join(", ", p.basic.DoNotContactBy)
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group half halfsy">
+                    <label for="">Primary Email</label>
+                    <div class="controls">
+                        <p>
+                            @p.basic.EmailAddress
+                            @if (p.basic.SendEmailAddress1)
+                            {
+                                <i class="icon-check"></i>
+                            }
+                            else
+                            {
+                                <i class="icon-check-empty"></i>
+                            }
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Mobile</label>
+                    <div class="controls">
+                        <p>
+                            @p.basic.CellPhone.FmtFone()
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group half halfsy">
+                    <label for="">Alt Email</label>
+                    <div class="controls">
+                        <p>
+                            @p.basic.EmailAddress2
+                            @if (p.basic.SendEmailAddress2)
+                            {
+                                <i class="icon-check"></i>
+                            }
+                            else
+                            {
+                                <i class="icon-check-empty"></i>
+                            }
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group half">
+                    <label for="">Work</label>
+                    <div class="controls">
+                        <p>
+                            @p.basic.WorkPhone.FmtFone()
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="submit-row">
+                <button class="btn btn-neutral display">Edit</button>
+                <button class="btn btn-neutral edit">Cancel</button>
+                <button class="btn btn-primary edit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+    <!-- end personal pane -->
+
+
+    <!-- involvement pane -->
+
+    <div id="involvement" class="pane">
+        <ul class="nav nav-tabs">
+            <li><a href="">Current</a></li>
+            <li><a href="">Pending</a></li>
+            <li><a href="">Previous</a></li>
+            <li class="active"><a href="">Attendance History</a></li>
+            <li><a href="">Registration</a></li>
+        </ul>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="active asc"><a href="">Meeting</a></th>
+                    <th><a href="">Organization</a></th>
+                    <th><a href="">Member Type</a></th>
+                    <th><a href="">Attend Type</a></th>
+                    <th><a href="">Other</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>02/24/2012</td>
+                    <td>Community Group</td>
+                    <td>Member</td>
+                    <td>In Person</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>04/17/2012</td>
+                    <td>Mailing List</td>
+                    <td>Member</td>
+                    <td>Virtual</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>07/09/2012</td>
+                    <td>Community Group</td>
+                    <td>Member</td>
+                    <td>In Person</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-<div id="newvalueform" style="display:none" class="roundbox">
+    <!-- end involvement pane -->
+
+
+    <!-- member profile pane -->
+    <div id="member-profile" class="pane">
+        <div class="submit-row">
+            <button class="btn">Add Growth Request</button>
+            <button class="btn">Add Group</button>
+        </div>
+        <div class="accordion">
+            <h3>Membership</h3>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Joined</th>
+                            <th>Attends</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Member</td>
+                            <td>01/13/2008</td>
+                            <td>West Side</td>
+                            <td><a href="" class="edit"><i class="icon-pencil"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3>Volunteer &amp; Leadership Status</h3>
+            <div></div>
+            <h3>Entry</h3>
+            <div></div>
+            <h3>Joined</h3>
+            <div></div>
+            <h3>New Member Class</h3>
+            <div></div>
+            <h3>Baptism</h3>
+            <div></div>
+        </div>
+    </div>
+    <!-- end member profile pane -->
+    \
+
+</section>
+
+
+<div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
+    <iframe style="width: 100%; height: 99%; border-width: 0px;"></iframe>
+</div>
+<div id="memberDialog">
+    <iframe style="width: 100%; height: 99%; border-width: 0px;"></iframe>
+</div>
+
+<div id="newvalueform" style="display: none" class="roundbox">
     <table>
         <tr>
             <th colspan="2">
@@ -326,15 +589,27 @@ pre {
         <tr>
             <th>Type:</th>
             <td>
-                <table><tr>
-                    <td><input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">Code</label></td>
-                    <td><input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
-                    <td><input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
-                    <td><input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
-                </tr></table>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">Code</label></td>
+                        <td>
+                            <input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
+                        <td>
+                            <input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
+                        <td>
+                            <input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
+                    </tr>
+                </table>
             </td>
         </tr>
-<tr><th>Field:</th><td>@Html.TextBox("fieldname")</td></tr>
-<tr><th>Value:</th><td>@Html.TextBox("fieldvalue")</td></tr>
+        <tr>
+            <th>Field:</th>
+            <td>@Html.TextBox("fieldname")</td>
+        </tr>
+        <tr>
+            <th>Value:</th>
+            <td>@Html.TextBox("fieldvalue")</td>
+        </tr>
     </table>
 </div>

@@ -54,7 +54,7 @@
         });
         return false;
     });
-    $("#tag").live("change", function (ev) {
+    $("body").on("change", '#tag', function (ev) {
         ev.preventDefault();
         $.getTable();
         return false;
@@ -70,12 +70,12 @@
         $("#PageSize").val($(e).val());
         return $.getTable();
     }
-    $.getTable = function () {
+    $.getTable = function() {
         var f = $('#results').closest('form');
         var q = f.serialize();
         $.blockUI();
-        $.post($('#refresh').attr('href'), q, function (ret) {
-            $('#results').replaceWith(ret).ready(function () {
+        $.post($('#refresh').attr('href'), q, function(ret) {
+            $('#results').replaceWith(ret).ready(function() {
                 $('#results > tbody > tr:even').addClass('alt');
                 $("#activetag").text($("#actag").val());
                 $("#sharecount").text($("#shcnt").val());
@@ -84,9 +84,9 @@
             });
         });
         return false;
-    }
+    };
     $('#results > tbody > tr:even').addClass('alt');
-    $('#results > thead a.sortable').live('click', function (ev) {
+    $('body').on('click', '#results > thead a.sortable', function (ev) {
         ev.preventDefault();
         var newsort = $(this).text();
         var sort = $("#Sort");
@@ -99,14 +99,14 @@
         $.getTable();
         return false;
     });
-    $("form input").live("keypress", function (e) {
+    $("form").on("keypress", 'input', function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#refresh').click();
             return false;
         }
         return true;
     });
-    $('a.taguntag').live('click', function (ev) {
+    $('body').on('click', 'a.taguntag', function (ev) {
         ev.preventDefault();
         var a = $(this);
         $.post(a.attr('href'), null, function (ret) {
@@ -122,7 +122,7 @@
             });
         }
     });
-    $('#ShareLink').live("click", function (e) {
+    $('body').on("click", '#ShareLink', function (e) {
         e.preventDefault();
         var d = $('#usersDialog');
         $('iframe', d).attr("src", this.href);

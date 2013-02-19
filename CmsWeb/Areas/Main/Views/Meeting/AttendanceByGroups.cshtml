@@ -24,7 +24,7 @@
 		var next = i.Attended + i.SmallGroup;
 		if (prev.HasValue() && prev != next)
 		{
-			<tr><td colspan="2" align="right">Total:</td><td>@n.ToString("N0")</td></tr>
+			<tr><td colspan="2" class="right">Total:</td><td>@n.ToString("N0")</td></tr>
             n = 0;
 		}
         n++;
@@ -32,7 +32,7 @@
 		prev = next;
 	}
 }
-			<tr><td colspan="2" align="right">Total:</td><td>@n.ToString("N0")</td></tr>
+			<tr><td colspan="2" class="right">Total:</td><td>@n.ToString("N0")</td></tr>
 			</tbody> 
 		</table>
 	</body>

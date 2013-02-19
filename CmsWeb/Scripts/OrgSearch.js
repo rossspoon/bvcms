@@ -29,11 +29,11 @@
     $.getTable = function () {
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post($('#search').attr('href'), q, function (ret) {
             $('#results').replaceWith(ret).ready(function () {
                 $.fmtTable();
-                $.unblockUI();
+                $.unblock();
             });
         });
         return false;
@@ -130,7 +130,7 @@
         ev.preventDefault();
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.blockUI();
+        $.block();
         $.post('/OrgSearch/ApplyType/' + $("#TargetType").val(), q, function (ret) {
             $.getTable();
         });
@@ -166,7 +166,7 @@
         $("#search").click();
     });
 
-    $("form input").live("keypress", function (e) {
+    $("form").on("keypress", 'input', function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('a.default').click();
             return false;
@@ -327,7 +327,7 @@
         window.open($(this).attr("href") + args);
         return false;
     });
-    $('a.taguntag').live('click', function (ev) {
+    $('body').on('click', 'a.taguntag', function (ev) {
         ev.preventDefault();
         hideDropdowns();
         var a = $(this);
@@ -343,7 +343,7 @@
             });
         return false;
     });
-    $('a.maindiv').live('click', function (ev) {
+    $('body').on('click', 'a.maindiv', function (ev) {
         ev.preventDefault();
         var a = $(this);
         $.post(a.attr('href'), { tagdiv: $('#TagDiv').val() }, function (ret) {

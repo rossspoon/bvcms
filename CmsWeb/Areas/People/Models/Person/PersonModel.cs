@@ -11,10 +11,10 @@ namespace CmsWeb.Areas.People.Models.Person
 {
     public class PersonModel
     {
-        public CmsWeb.Models.PersonPage.PersonInfo displayperson;
+        public PersonInfo displayperson;
         public PersonModel(int? id)
         {
-            displayperson = CmsWeb.Models.PersonPage.PersonInfo.GetPersonInfo(id);
+            displayperson = PersonInfo.GetPersonInfo(id);
         }
         private CmsData.Person _person;
         public CmsData.Person Person

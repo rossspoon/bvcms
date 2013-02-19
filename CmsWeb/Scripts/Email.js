@@ -46,28 +46,7 @@
             d.html(ret);
         });
     });
-    var editor_large = {
-        height: 400,
-        fullPage: true,
-        filebrowserUploadUrl: '/Account/CKEditorUpload/',
-        filebrowserImageUploadUrl: '/Account/CKEditorUpload/',
-        toolbar_Full: [
-    ['Source'],
-    ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'SpellChecker', 'Scayt'],
-    ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
-    '/',
-    ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript'],
-    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv'],
-    ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
-    ['Link', 'Unlink', 'Anchor'],
-    ['Image', 'Table', 'SpecialChar'],
-    '/',
-    ['Styles', 'Format', 'Font', 'FontSize'],
-    ['TextColor', 'BGColor'],
-    ['Maximize', 'ShowBlocks', '-', 'About']
-    ]
-    };
-    $("#textarea.editor").ckeditor(editor_large);
+
     $("#CreateVoteTag").live("click", function (ev) {
         ev.preventDefault();
         CKEDITOR.instances["votetagcontent"].updateElement();
@@ -77,7 +56,7 @@
                 CKEDITOR.instances["votetagcontent"].setMode("source");
             });
         });
-    });	
+    });
 });
 //<a dir="ltr" href="http://votelink" id="798" rel="smallgroup" title="This is a message">test</a>
 CKEDITOR.on('dialogDefinition', function (ev) {
@@ -85,7 +64,7 @@ CKEDITOR.on('dialogDefinition', function (ev) {
     var dialogDefinition = ev.data.definition;
     if (dialogName == 'link') {
         var advancedTab = dialogDefinition.getContents('advanced');
-	advancedTab.label = "SpecialLinks";
+        advancedTab.label = "SpecialLinks";
         advancedTab.remove('advCSSClasses');
         advancedTab.remove('advCharset');
         advancedTab.remove('advContentType');
@@ -103,7 +82,7 @@ CKEDITOR.on('dialogDefinition', function (ev) {
         idField.label = "OrgId/MeetingId";
         var langdirField = advancedTab.get('advLangDir');
         langdirField.label = "Confirmation";
-	langdirField.items[1][0] = "Yes, send confirmation";
-	langdirField.items[2][0] = "No, do not send confirmation";
+        langdirField.items[1][0] = "Yes, send confirmation";
+        langdirField.items[2][0] = "No, do not send confirmation";
     }
 });

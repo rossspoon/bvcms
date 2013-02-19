@@ -60,7 +60,7 @@
 	    $(this).tooltip({
 	        showBody: "|"
 	    });
-	    $(this).attr("value", $(this).attr('default'));
+	    //$(this).attr("value", $(this).attr('default'));
 	    $(this).addClass('text-label');
 	    $(this).focus(function () {
 	        if (this.value == $(this).attr('default')) {
@@ -69,7 +69,7 @@
 	        }
 	    });
 	    $(this).blur(function () {
-	        if (this.value == '') {
+	        if (this.value == '' && $(this).attr('default')) {
 	            this.value = $(this).attr('default');
 	            $(this).addClass('text-label');
 	        }

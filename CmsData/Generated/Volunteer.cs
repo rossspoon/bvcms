@@ -34,6 +34,8 @@ namespace CmsData
    		
    		private EntitySet< VolunteerForm> _VolunteerForms;
 		
+   		private EntitySet< VoluteerApprovalId> _VoluteerApprovalIds;
+		
     	
 		private EntityRef< Person> _Person;
 		
@@ -72,6 +74,8 @@ namespace CmsData
 		{
 			
 			this._VolunteerForms = new EntitySet< VolunteerForm>(new Action< VolunteerForm>(this.attach_VolunteerForms), new Action< VolunteerForm>(this.detach_VolunteerForms)); 
+			
+			this._VoluteerApprovalIds = new EntitySet< VoluteerApprovalId>(new Action< VoluteerApprovalId>(this.attach_VoluteerApprovalIds), new Action< VoluteerApprovalId>(this.detach_VoluteerApprovalIds)); 
 			
 			
 			this._Person = default(EntityRef< Person>); 
@@ -258,6 +262,16 @@ namespace CmsData
    		}
 
 		
+   		[Association(Name="FK_VoluteerApprovalIds_Volunteer", Storage="_VoluteerApprovalIds", OtherKey="PeopleId")]
+   		public EntitySet< VoluteerApprovalId> VoluteerApprovalIds
+   		{
+   		    get { return this._VoluteerApprovalIds; }
+
+			set	{ this._VoluteerApprovalIds.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -370,6 +384,19 @@ namespace CmsData
 		}
 
 		private void detach_VolunteerForms(VolunteerForm entity)
+		{
+			this.SendPropertyChanging();
+			entity.Volunteer = null;
+		}
+
+		
+		private void attach_VoluteerApprovalIds(VoluteerApprovalId entity)
+		{
+			this.SendPropertyChanging();
+			entity.Volunteer = this;
+		}
+
+		private void detach_VoluteerApprovalIds(VoluteerApprovalId entity)
 		{
 			this.SendPropertyChanging();
 			entity.Volunteer = null;

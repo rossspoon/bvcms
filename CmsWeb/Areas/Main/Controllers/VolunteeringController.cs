@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsWeb.Areas.Main.Models.Other;
 using UtilityExtensions;
 
 namespace CmsWeb.Areas.Main.Controllers
@@ -12,35 +13,21 @@ namespace CmsWeb.Areas.Main.Controllers
     {
         public ActionResult Index(int id)
         {
-            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == id);
-
-            if (vol == null) vol = initVolunteer(id);
-
+            var vol = new VolunteerModel(id);
             return View(vol);
         }
 
         public ActionResult Edit(int id)
         {
-            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == id);
-
-            if (vol == null) initVolunteer(id);
-
+            var vol = new VolunteerModel(id);
             return View(vol);
         }
 
-        public ActionResult Update(Volunteer v)
+        public ActionResult Update(int id, DateTime? processDate, int statusId, string comments, List<int> approvals)
         {
-            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == v.PeopleId);
-
-            vol.Leader = v.Leader;
-            vol.ProcessedDate = v.ProcessedDate;
-            vol.Standard = v.Standard;
-            vol.StatusId = v.StatusId;
-            vol.Children = v.Children;
-            vol.Comments = v.Comments;
-
-            DbUtil.Db.SubmitChanges();
-            return View("Index", vol);
+            var m = new VolunteerModel(id);
+            m.Update(processDate, statusId, comments, approvals);
+            return RedirectToAction("Index", "Volunteering", new {id = id});
         }
 
         public ActionResult Upload(int PeopleID, HttpPostedFileBase file)
@@ -61,34 +48,34 @@ namespace CmsWeb.Areas.Main.Controllers
                 case "image/jpeg":
                 case "image/pjpeg":
                 case "image/gif":
-                {
-                    f.IsDocument = false;
-
-                    try
                     {
-                        f.SmallId = ImageData.Image.NewImageFromBits(bits, 165, 220).Id;
-                        f.MediumId = ImageData.Image.NewImageFromBits(bits, 675, 900).Id;
-                        f.LargeId = ImageData.Image.NewImageFromBits(bits).Id;
-                    }
-                    catch
-                    {
-                        return View("Index", vol);
-                    }
+                        f.IsDocument = false;
 
-                    break;
-                }
+                        try
+                        {
+                            f.SmallId = ImageData.Image.NewImageFromBits(bits, 165, 220).Id;
+                            f.MediumId = ImageData.Image.NewImageFromBits(bits, 675, 900).Id;
+                            f.LargeId = ImageData.Image.NewImageFromBits(bits).Id;
+                        }
+                        catch
+                        {
+                            return View("Index", vol);
+                        }
+
+                        break;
+                    }
 
                 case "text/plain":
                 case "application/pdf":
                 case "application/msword":
                 case "application/vnd.ms-excel":
-                {
-                    f.MediumId = ImageData.Image.NewImageFromBits(bits, mimetype).Id;
-                    f.SmallId = f.MediumId;
-                    f.LargeId = f.MediumId;
-                    f.IsDocument = true;
-                    break;
-                }
+                    {
+                        f.MediumId = ImageData.Image.NewImageFromBits(bits, mimetype).Id;
+                        f.SmallId = f.MediumId;
+                        f.LargeId = f.MediumId;
+                        f.IsDocument = true;
+                        break;
+                    }
 
                 default: return View("Index", vol);
             }
@@ -114,14 +101,6 @@ namespace CmsWeb.Areas.Main.Controllers
             return Redirect("/Volunteering/Index/" + PeopleID);
         }
 
-        private Volunteer initVolunteer(int id)
-        {
-            Volunteer vol = new Volunteer { PeopleId = id };
-            DbUtil.Db.Volunteers.InsertOnSubmit(vol);
-            DbUtil.Db.SubmitChanges();
-            DbUtil.LogActivity("Viewing VolunteerApp for {0}".Fmt(vol.Person.Name));
-            return vol;
-        }
 
         public ActionResult CreateCheck(int id, string code, int type, int label = 0)
         {
@@ -142,7 +121,7 @@ namespace CmsWeb.Areas.Main.Controllers
             return Redirect("/Volunteering/Index/" + bc.PeopleID);
         }
 
-        public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0 )
+        public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0)
         {
             String sResponseURL = Request.Url.Scheme + "://" + Request.Url.Authority + ProtectMyMinistryHelper.PMM_Append;
 
@@ -161,24 +140,16 @@ namespace CmsWeb.Areas.Main.Controllers
                                   where e.Id == id
                                   select e).Single();
 
-            switch( bc.ServiceCode )
+            switch (bc.ServiceCode)
             {
                 case "Combo":
-                {
                     return View("SubmitCombo", bc);
-                }
-
                 case "MVR":
-                {
                     return View("SubmitMVR", bc);
-                }
-
                 case "Credit":
-                {
                     return View("SubmitCredit", bc);
-                }
-
-                default: return View();
+                default:
+                    return Content("no view");
             }
         }
 
@@ -199,7 +170,7 @@ namespace CmsWeb.Areas.Main.Controllers
 
             ViewBag.dialogType = type;
 
-            return View( p );
+            return View(p);
         }
     }
 }

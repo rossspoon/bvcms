@@ -6,12 +6,12 @@
     <tr><td colspan="3">
         <h2><a href="/Organization/Index/@Model.orgid">Manage Groups for @Model.OrgName</a></h2></td></tr>
     <tr>
-        <th align="right">Change Target Group:</th>
+        <th class="right">Change Target Group:</th>
         <td colspan="2" class="wide100">@Html.DropDownList("groupidDD", Model.Groups(), new { @onchange = "groupid.value = this.value" })
          <input type="hidden" name="groupid" id="groupid" value="@Model.groupid" /></td>
     </tr>
     <tr>
-        <th align="right">New Group Name:</th>
+        <th class="right">New Group Name:</th>
         <td colspan="2" class="wide100">@Html.TextBox("GroupName")</td>
     </tr>
     <tr>
@@ -23,7 +23,7 @@
     </tr>
     <tr><td colspan="2"><hr /></td></tr>
     <tr>
-        <th align="right" class="helptip" 
+        <th class="right" class="helptip" 
             title="Filter by Groups
             |You can put a partial name
             |Or you can put a comma separated list of names
@@ -34,12 +34,12 @@
         <td></td>
     </tr>
     <tr>
-        <th align="right">Not in group starting with:</th>
+        <th class="right">Not in group starting with:</th>
         <td class="wide100">@Html.TextBox("notgroup", "", new { @class = "filter" })</td>
         <td>Active: @Html.CheckBox("notgroupactive", new { @class = "filter" })</td>
     </tr>
     <tr>
-        <th align="right">Is in Tag:</th>
+        <th class="right">Is in Tag:</th>
         <td class="wide100">@Html.DropDownList("tagfilter", Model.Tags())</td>
         <td></td>
     </tr>
@@ -58,12 +58,12 @@
     <thead>
 	<tr>
 		<th>Select</th>
-		<th align="left"><a href='#' class="sortable">Name</a></th>
-		<th align="left">Address </th>
+		<th class="left"><a href='#' class="sortable">Name</a></th>
+		<th class="left">Address </th>
 		<th>Gender </th>
 		<th>Age </th>
-		<th align="left"><a href='#' class="sortable">Request</a></th>
-		<th align="left" width="25%"><a href="#" class="sortable">Groups</a></th>
+		<th class="left"><a href='#' class="sortable">Request</a></th>
+		<th class="left" width="25%"><a href="#" class="sortable">Groups</a></th>
 	</tr>
 	</thead>
 	<tbody>

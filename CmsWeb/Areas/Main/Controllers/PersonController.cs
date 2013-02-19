@@ -34,6 +34,9 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			if (!id.HasValue)
 				return Content("no id");
+            if (DbUtil.Db.UserPreference("newlook3", "false").ToBool()
+                && DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
+                return Redirect(Request.RawUrl.ToLower().Replace("person", "people/person"));
 			var m = new PersonModel(id);
 			if (User.IsInRole("Access"))
 			{
@@ -71,7 +74,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			ViewData["PeopleId"] = id.Value;
 			Util2.CurrentPeopleId = id.Value;
 			Session["ActivePerson"] = m.displayperson.Name;
-			DbUtil.LogActivity("Viewing Person: {0}".Fmt(m.displayperson.Name));
+			DbUtil.LogActivity("Viewing Person: {0}".Fmt(m.displayperson.Name), m.displayperson.Name, pid: id);
 			InitExportToolbar(id);
 			return View(m);
 		}
@@ -584,7 +587,7 @@ namespace CmsWeb.Areas.Main.Controllers
 		[HttpPost]
 		public ActionResult VolunteerDisplay(int id)
 		{
-			var m = new CmsWeb.Models.PersonPage.VolunteerModel(id);
+		    var m = new Models.Other.VolunteerModel(id);
 			return View(m);
 		}
 		[HttpPost]

@@ -19,16 +19,16 @@
         <asp:ListView ID="ListView1" runat="server" DataSourceID="ObjectDataSource1" OnDataBound="ListView1_DataBound">
             <ItemTemplate>
                 <tr style="">
-                    <td align="left">
+                    <td class="left">
                         <asp:Label ID="HeaderIdLabel" runat="server" Text='<%# Eval("HeaderId") %>' />
                     </td>
-                    <td align="left">
+                    <td class="left">
                         <asp:Label ID="DateLabel" runat="server" Text='<%# Eval("Date", "{0:d}") %>' />
                     </td>
-                    <td align="right">
+                    <td class="right">
                         <asp:Label ID="TotalLabel" runat="server" Text='<%# Eval("Total", "{0:#,###.00}") %>' />
                     </td>
-                    <td align="right">
+                    <td class="right">
                         <asp:Label ID="CountLabel" runat="server" Text='<%# Eval("Count", "{0:n0}") %>' />
                     </td>
                 </tr>
@@ -61,15 +61,15 @@
                     <tr id="itemPlaceholder" runat="server">
                     </tr>
                     <tr style="border-top: 2px solid black">
-                        <th align="left">
+                        <th class="left">
                             Total
                         </th>
                         <th>
                         </th>
-                        <th align="right">
+                        <th class="right">
                             <asp:Label ID="Total" runat="server" />
                         </th>
-                        <th align="right">
+                        <th class="right">
                             <asp:Label ID="Count" runat="server" />
                         </th>
                     </tr>

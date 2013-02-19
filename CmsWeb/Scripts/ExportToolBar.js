@@ -7,8 +7,9 @@
         closeOnEscape: true,
         width: 400
     });
-    $(".ChooseLabelType").live("click", function (ev) {
+    $("body").on("click", '.ChooseLabelType', function (ev) {
         ev.preventDefault();
+		$('div.dropdown-menu').hide();
         var d = $("#ChooseLabelType");
         d.dialog("open");
 
@@ -27,8 +28,9 @@
         });
         return false;
     });
-    $('#TagAll,#UnTagAll').live("click", function (ev) {
+    $('body').on("click", '#TagAll,#UnTagAll', function (ev) {
         ev.preventDefault();
+		$('div.dropdown-menu').hide();
         $.block();
         $.post(this.href, null, function (ret) {
             $(".taguntag:visible").text(ret);
@@ -36,7 +38,8 @@
         });
         return false;
     });
-    $('#AddContact').live("click", function (ev) {
+    $('body').on("click", '#AddContact', function (ev) {
+		$('div.dropdown-menu').hide();
         ev.preventDefault();
         if (!confirm("Are you sure you want to add a contact for all these people?"))
             return false;
@@ -52,8 +55,9 @@
         });
         return false;
     });
-    $('#AddTasks').live("click", function (ev) {
+    $('body').on("click", '#AddTasks', function (ev) {
         ev.preventDefault();
+		$('div.dropdown-menu').hide();
         if (!confirm("Are you sure you want to add a task for each of these people?"))
             return false;
         $.block();
@@ -76,11 +80,25 @@
         });
         return r[item];
     };
-    $.block = function () {
-        $.blockUI({ message: 'working on it...<img src="/images/loading.gif"/>' });
-    };
+    $.block = function (message) {
+        if (!message)
+            message = '<h1>working on it...</h1>';
+        $.blockUI({
+                message: message,
+                overlayCSS: { opacity: 0 },
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+        };
     $.unblock = function () {
-        $.unblockUI({ fadeOut: 150 });
+        $.unblockUI();
     };
     $.navigate = function (url, data) {
         url += (url.match(/\?/) ? "&" : "?") + data;
@@ -95,7 +113,7 @@
     };
     $("#ExportStartEnd").dialog($di3);
     $("#SetExtraValues").dialog($di3);
-    $(".ChooseStartEnd").live("click", function (ev) {
+    $("body").on("click", '.ChooseStartEnd', function (ev) {
         ev.preventDefault();
         var d = $("#ExportStartEnd");
         d.dialog("open");
@@ -110,8 +128,9 @@
         });
         return false;
     });
-    $("a.ChooseExtraValues").live("click", function (ev) {
+    $("body").on("click", 'a.ChooseExtraValues', function (ev) {
         ev.preventDefault();
+        hideDropdowns();
         var d = $("#SetExtraValues");
         d.dialog('option', 'title', $(this).text().trim());
         d.dialog("open");
@@ -140,7 +159,27 @@
         }
         return v;
     };
+    jQuery.fn.center = function(parent) {
+        if (parent) {
+            parent = this.parent();
+        } else {
+            parent = window;
+        }
+        this.css({
+            "position": "absolute",
+            "top": ((($(parent).height() - this.outerHeight()) / 2) + $(parent).scrollTop() + "px"),
+            "left": ((($(parent).width() - this.outerWidth()) / 2) + $(parent).scrollLeft() + "px")
+        });
+        return this;
+    };
 });
+function dimOff() {
+    $("#darkLayer").hide();
+}
+function dimOn()
+{
+    $("#darkLayer").show();
+}
 String.prototype.startsWith = function(t, i) {
     return (t == this.substring(0, t.length));
 };

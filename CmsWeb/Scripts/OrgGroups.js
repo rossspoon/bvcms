@@ -6,16 +6,16 @@
     }
     $.fmtTable();
     $(".helptip").tooltip({ showBody: "|" });
-    $.loadTable = function () {
-        $.blockUI();
+    $.loadTable = function() {
+        $.block();
         $.getTable($('#groupsform'));
-        $.unblockUI();
-    }
-    $('#filter').live("click", function (ev) {
+        $.unblock();
+    };
+    $('body').on("click", '#filter', function (ev) {
         ev.preventDefault();
         $.loadTable();
     });
-    $('a.sortable').live("click", function (ev) {
+    $('body').on("click", 'a.sortable', function (ev) {
         ev.preventDefault();
         $('#sort').val($(this).text());
         $.loadTable();
@@ -46,10 +46,10 @@
     }
     $(".datepicker").datepicker();
 
-    $("#SelectAll").live("click", function () {
+    $("body").on("click", '#SelectAll', function () {
         $("input[name='list']").attr('checked', $(this).attr('checked'));
     });
-    $("a.display").live('click', function (ev) {
+    $("body").on('click', 'a.display', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post(this.href, q, function (ret) {
@@ -60,12 +60,12 @@
         });
         return false;
     });
-    $("a.groupmanager").live('click', function (ev) {
+    $("body").on('click', 'a.groupmanager', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?")) {
             var f = $(this).closest('form');
             var q = f.serialize();
-            $.blockUI();
+            $.block();
             $.post($(this).attr('href'), q, function (ret) {
                 if (ret.substring(0, 5) != "error") {
                     f.html(ret).ready(function () {
@@ -75,7 +75,7 @@
                         $.fmtTable();
                     });
                 }
-                $.unblockUI();
+                $.unblock();
             });
         }
     });
@@ -88,22 +88,22 @@
             $.growlUI("error", 'select target group first');
             return false;
         }
-        $.blockUI();
+        $.block();
         var q = $('form').serialize();
         $.post(action, q, function (ret) {
             $("table.grid > tbody").html(ret).ready($.fmtTable);
-            $.unblockUI();
+            $.unblock();
         });
         return false;
     };
-    $('#AssignSelectedToTargetGroup').live('click', function (ev) {
+    $('body').on('click', '#AssignSelectedToTargetGroup', function (ev) {
         $.performAction("/OrgGroups/AssignSelectedToTargetGroup");
     });
-    $('#RemoveSelectedFromTargetGroup').live('click', function (ev) {
+    $('body').on('click', '#RemoveSelectedFromTargetGroup', function (ev) {
         $.performAction("/OrgGroups/RemoveSelectedFromTargetGroup");
     });
     var lastChecked = null;
-    $("input[name = 'list']").live("click", function (e) {
+    $("body").on("click", "input[name = 'list']", function (e) {
         if (!lastChecked) {
             lastChecked = this;
             return;

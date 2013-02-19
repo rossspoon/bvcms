@@ -66,7 +66,7 @@
             </td>
             <td>
             </td>
-            <td colspan="2" align="center">
+            <td colspan="2" class="center">
                 <asp:Button ID="SearchButton" runat="server" Text="Search" OnClick="SearchButton_Click"
                     TabIndex="6" Width="114px" />
             </td>
@@ -95,7 +95,7 @@
                     <th id="Th3" runat="server">
                         <asp:LinkButton ID="LinkButton3" CommandName="Sort" CommandArgument="Date" runat="server">Date</asp:LinkButton>
                     </th>
-                    <th id="Th4" align="right" runat="server">
+                    <th id="Th4" class="right" runat="server">
                         <asp:LinkButton ID="LinkButton4" CommandName="Sort" CommandArgument="Amount" runat="server">Amount</asp:LinkButton>
                     </th>
                     <th id="Th5" runat="server">
@@ -123,7 +123,7 @@
                     <asp:Label ID="ContributionDateLabel" runat="server" ToolTip='<%# Eval("ContributionId") %>'
                         Text='<%# Eval("ContributionDate", "{0:d}") %>' />
                 </td>
-                <td align="right">
+                <td class="right">
                     <asp:HyperLink ID="HyperLink1" Enabled='<%# (int)Eval("BundleId") > 0 %>' NavigateUrl='<%# Eval("BundleId", "/Bundle/Index/{0}") %>'
                         Text='<%# Eval("ContributionAmount", "{0:n2}") %>' runat="server"></asp:HyperLink>
                 </td>

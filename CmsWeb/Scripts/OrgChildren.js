@@ -24,14 +24,14 @@
         }
     });
 
-    $.getTable = function (f) {
+    $.getTable = function(f) {
         var q = f.serialize();
-        $.post("/OrgChildren/Filter", q, function (ret) {
+        $.post("/OrgChildren/Filter", q, function(ret) {
             $('table.grid > tbody').html(ret).ready($.fmtTable);
         });
         return false;
-    }
-    $("a.display").live('click', function (ev) {
+    };
+    $("body").live('click', 'a.display', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post(this.href, q, function (ret) {
@@ -42,7 +42,7 @@
         });
         return false;
     });
-    $(".orgcheck").live("change", function (ev) {
+    $("body").on("change", '.orgcheck', function (ev) {
         var ck = $(this);
         var tr = ck.parent().parent();
         $.post("/OrgChildren/UpdateOrg/", {

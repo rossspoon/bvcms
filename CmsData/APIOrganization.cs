@@ -293,16 +293,17 @@ class OrgMembers(object):
 			}
 		}
 
-		public string NewOrganization(int DivId, string name, string Location, int? ParentOrgId)
+		public string NewOrganization(int divId, string name, string location, int? parentOrgId, int? campusId)
 		{
 			try
 			{
-				var d = Db.Divisions.Single(dd => dd.Id == DivId);
+				var d = Db.Divisions.Single(dd => dd.Id == divId);
 				if (d == null)
-					throw new Exception("no division " + DivId);
+					throw new Exception("no division " + divId);
 				var o = CmsData.Organization.CreateOrganization(Db, d, name);
-				o.ParentOrgId = ParentOrgId;
-				o.Location = Location;
+				o.ParentOrgId = parentOrgId;
+				o.Location = location;
+			    o.CampusId = campusId;
 				Db.SubmitChanges();
 				return @"<NewOrganization id=""{0}"" status=""ok""></NewOrganization>".Fmt(o.OrganizationId);
 			}

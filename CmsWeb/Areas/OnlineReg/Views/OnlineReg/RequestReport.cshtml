@@ -22,8 +22,6 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/single/ManageVolunteer-js")
-    <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-    @Scripts.Render("~/bundles/edit-js")
 }
 <h2>@Model.org.OrganizationName</h2>
 <h3>@Model.person.Name on @Model.meeting.MeetingDate.ToString2("MMM d, yyyy") at @Model.meeting.MeetingDate.ToString2("h:mm tt")</h3>

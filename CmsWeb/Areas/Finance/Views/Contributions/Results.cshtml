@@ -3,10 +3,10 @@
 <table id="results" class="grid">
 <thead>
 	<tr><td>Total:</td>
-        <td align="right">@Model.Total().ToString("c")</td>
+        <td class="right">@Model.Total().ToString("c")</td>
         <td colspan="6"><em>excludes reversals/returns</em></td></tr>
 	<tr><td>Count:</td>
-        <td align="right">@Model.Count().ToString("n0")</td>
+        <td class="right">@Model.Count().ToString("n0")</td>
         <td colspan="6"></td></tr>
 	<tr><td colspan="8">
         @Html.Partial("Pager2", Model)</td>
@@ -29,7 +29,7 @@
         <td title="@c.ContributionId">@c.Status</td>
         <td><a href="/FinanceReports/ContributionYears/@c.PeopleId">@c.Name</a></td>
         <td>@c.ContributionDate.FormatDate()</td>
-        <td align="right"><a href="/Bundle/Index/@c.BundleId">@c.ContributionAmount.ToString2("N2")</a></td>
+        <td class="right"><a href="/Bundle/Index/@c.BundleId">@c.ContributionAmount.ToString2("N2")</a></td>
         <td>@c.ContributionType</td>
         <td>@c.Fund</td>
         <td>@c.CheckNo</td>

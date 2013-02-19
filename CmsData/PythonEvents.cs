@@ -1,5 +1,6 @@
 using UtilityExtensions;
 using IronPython.Hosting;
+using System;
 
 namespace CmsData
 {
@@ -30,6 +31,10 @@ namespace CmsData
             Db.Email(DbUtil.SystemEmailAddress, DbUtil.Db.LoadPersonById(forPeopleId),
                 "TASK: " + description,
                 Task.TaskLink(Db, description, t.Id) + "<br/>" + p.Name);
+		}
+		public void JoinOrg(int orgId, Person p)
+		{
+		    OrganizationMember.InsertOrgMembers(Db, orgId, p.PeopleId, 220, DateTime.Now, null, false);
 		}
 		public void UpdateField(Person p, string field, object value)
 		{
