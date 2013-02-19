@@ -16,7 +16,7 @@
             </ul>
         </div>
     </li>
-@if (User.IsInRole("Developer"))
+@if(TwilioHelper.userSendSMS(Util.UserId))
 {
     <li>
         <a href='/SMS/Options/@ViewData["queryid"]'>

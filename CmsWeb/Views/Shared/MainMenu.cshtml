@@ -222,6 +222,9 @@
                             <li><a href="/Setup/MetroZip/">
                                     Metro Zips
                                 </a> </li>
+                        }
+                        @if (admin && TwilioHelper.getSID().Length > 0 && TwilioHelper.getToken().Length > 0 )
+                        {
                             <li><a href="/Setup/Twilio/">
                                     Twilio Management
                                 </a> </li>
