@@ -38,6 +38,14 @@
 {
     <script src="/Scripts/volunteering.js"></script>
 }
+@section head
+{
+    <style>
+        div.name {
+            padding: 1em;
+        }
+    </style>
+}
 <a href="/Person/Index/@Model.V.PeopleId">@Model.V.Person.Name</a><br />
 <br />
 <b>Volunteer Application Information</b>
@@ -253,8 +261,10 @@
             <td class="center" style="padding: 7px;">
                 <a href="/Image.aspx?id=@form.MediumId">
                     <img src="/images/adobe.png" style="border: thin solid #000000;">
-                </a><br/>
-                <span id="n.@form.Id" class="editable">@form.Name</span>
+                </a>
+                <div class="name">
+                    <span id="n.@form.Id" class="editable">@form.Name</span>
+                </div>
                 <form action="/Volunteering/Delete" method="post" onsubmit="return confirmDelete();">
                     <input type="hidden" name="id" value="@form.Id" />
                     <input type="hidden" name="PeopleID" value="@Model.V.PeopleId" />

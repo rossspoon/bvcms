@@ -17,7 +17,7 @@ namespace CmsWeb
 {
     public partial class UploadPicture : System.Web.UI.Page
     {
-        Person person;
+        public Person person;
         protected void Page_Load(object sender, EventArgs e)
         {
             var id = this.QueryString<int>("id");

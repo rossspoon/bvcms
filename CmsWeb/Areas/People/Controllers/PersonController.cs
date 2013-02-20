@@ -153,7 +153,7 @@ namespace CmsWeb.Areas.People.Controllers
 		[HttpPost]
 		public ActionResult FamilyGrid(int id)
 		{
-			var m = new PersonFamilyModel(id);
+			var m = new FamilyModel(id);
 			UpdateModel(m.Pager);
 			return View(m);
 		}

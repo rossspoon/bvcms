@@ -94,12 +94,13 @@ namespace CmsWeb.Models
 						c.HeadName,
 						c.SpouseName,
 						Amount = c.Amount ?? 0m,
+                        c.CheckNo,
 						c.ContributionDesc,
 						c.FundId,
 						c.FundName,
 						BundleHeaderId = c.BundleHeaderId ?? 0,
 						c.BundleType,
-						c.BundleStatus
+						c.BundleStatus,
 					};
 			return q;
 		}

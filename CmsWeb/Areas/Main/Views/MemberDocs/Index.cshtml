@@ -27,6 +27,14 @@
         });
     </script>
 }
+@section head
+{
+    <style>
+        div.name {
+            padding: 1em;
+        }
+    </style>
+}
 <h2>Membership Docs</h2>
 <div>
     <a id="name" href="/Person/Index/@Model.PeopleId">@Model.person.Name</a>
@@ -51,8 +59,9 @@
                 <a href="@url" target="docpage" >
                     <img title="Uploaded: @i.DocDate.FormatDateTm()" src="@img" alt="" />
                 </a>
-                <br />
-                <span id="n.@i.Id" class="editable">@i.FormName</span><br/><br/>
+                <div class="name">
+                    <span id="n.@i.Id" class="editable">@i.FormName</span>
+                </div>
                 <a href="/MemberDocs/Delete/@i.Id" class="bt delete">Delete</a>
             </span>
         }

@@ -1,0 +1,180 @@
+﻿@using UtilityExtensions
+@using CmsWeb
+@model CmsWeb.Areas.People.Models.Person.PersonModel
+
+@helper SubmitRow()
+{
+    <div class="submit-row">
+        <button class="btn btn-neutral">Cancel</button>
+        <button class="btn btn-primary">Save Changes</button>
+    </div>
+}
+@{
+    var p = Model.displayperson.basic;
+}
+@SubmitRow()
+<fieldset class="edit">
+    <div class="control-group">
+        <label for="">Title</label>
+        <div class="controls">
+            <select name="" id="" class="xs">
+                <option value="">Mr</option>
+                <option value="">Ms</option>
+                <option value="">Miss</option>
+                <option value="" selected>Mrs</option>
+                <option value="">Lt</option>
+                <option value="">Dr</option>
+                <option value="">Rep</option>
+                <option value="">Amb</option>
+                <option value="">Fr</option>
+                <option value="">Capt</option>
+                <option value="">Sr</option>
+            </select>
+        </div>
+    </div>
+    @Html.EditorFor(m => m.displayperson.basic.First)
+    <div class="control-group half">
+        <label for="">Goes By</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text" value="Eliza">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Middle Name</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text" value="Cassandra">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Last Name</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text" value="Queen">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Alt Name</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Former</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text" value="Shepherd">
+        </div>
+    </div>
+    <div class="control-group em">
+        <label for="">Suffix</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text m strict">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Gender</label>
+        <div class="controls">
+            <label>
+                <input type="radio" name="gender" id="id_" class="radio">
+                Male</label>
+            <label>
+                <input type="radio" name="gender" id="id_" class="radio" checked>
+                Female</label>
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Birthdate</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text date" value="4/11/1976">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Marital Status</label>
+        <div class="controls">
+            <select name="" id="id_">
+                <option value="">Single</option>
+                <option value="" selected>Married</option>
+                <option value="">Separated</option>
+                <option value="">Divorced</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Wedding Date</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text date" value="1/12/2000">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Occupation</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text" value="Analyst">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Employer</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text" value="National Society of Arondissements">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">School</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text" value="Brown">
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Grade</label>
+        <div class="controls">
+            <input type="text" name="" id="id_" class="text">
+        </div>
+    </div>
+</fieldset>
+<fieldset class="edit">
+    <div class="control-group em">
+        <label for="" class="lg">Do Not Contact&nbsp;By</label>
+        <div class="controls">
+            <label for="">
+                <input type="checkbox" name="no_contact" value="email">
+                Email</label>
+            <label for="">
+                <input type="checkbox" name="no_contact" value="phone" checked>
+                Telephone</label>
+            <label for="">
+                <input type="checkbox" name="no_contact" value="mail">
+                Mail</label>
+            <label for="">
+                <input type="checkbox" name="no_contact" value="person" checked>
+                In Person</label>
+        </div>
+    </div>
+    <div class="control-group half halfsy">
+        <label for="">Primary Email</label>
+        <div class="controls">
+            <div class="textcombo">
+                <input type="text" name="email_primary" class="text email">
+                <input type="checkbox" name="email_primary_active">
+            </div>
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Mobile</label>
+        <div class="controls">
+            <input type="text" name="mobile" class="text phone">
+        </div>
+    </div>
+    <div class="control-group half halfsy">
+        <label for="">Alt Email</label>
+        <div class="controls">
+            <div class="textcombo">
+                <input type="text" name="email_secondary" class="text email lg">
+                <input type="checkbox" name="email_secondary_active">
+            </div>
+        </div>
+    </div>
+    <div class="control-group half">
+        <label for="">Work</label>
+        <div class="controls">
+            <input type="text" name="mobile" class="text phone">
+        </div>
+    </div>
+</fieldset>
+@SubmitRow()

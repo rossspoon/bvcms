@@ -41,7 +41,7 @@
             <td class="right top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Last Background Check:</b></td>
             <td class="top">@Html.TextBox("processDate", Model.V.ProcessedDate.FormatDate(), new { @class = "datepicker" })</td>
             <td class="right top" style="background-color:#EFF3FB;" nowrap="nowrap"><b>Status Code:</b></td>
-            <td class="top">@Html.DropDownList("statusId",  new SelectList( s, "Id", "Description") )</td>
+            <td class="top">@Html.DropDownList("statusId", new SelectList( s, "Id", "Description", Model.V.StatusId))</td>
         </tr>
     </table>
     <br />

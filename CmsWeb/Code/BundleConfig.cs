@@ -103,7 +103,6 @@ namespace CmsWeb
 
             bundles.Add(new ScriptBundle("~/bundles/org-js").Include(
                 "~/Content/js/jquery-ui-timepicker-addon.js",
-                "~/Content/js/jquery-ui-dialog-patch.js",
                 "~/Scripts/Organization.js",
                 "~/Scripts/SearchUsers.js",
                 "~/Scripts/RegSetting.js"

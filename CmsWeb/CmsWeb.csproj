@@ -469,6 +469,7 @@
     <Compile Include="Code\CodeValueModel.cs" />
     <Compile Include="Code\CodeValueItem.cs" />
     <Compile Include="Code\FamilyExtraValues.cs" />
+    <Compile Include="Code\LabelMetaData.cs" />
     <Compile Include="Code\Payments.cs" />
     <Compile Include="Code\SmartBinder.cs" />
     <Compile Include="Code\Image.cs" />
@@ -882,7 +883,6 @@
     <Content Include="Scripts\TotalsByRange.js" />
     <Content Include="Scripts\dropdown.js" />
     <Content Include="Content\js\jquery.joyride-1.0.5.js" />
-    <Content Include="Content\js\jquery.showpassword.min.js" />
     <Content Include="Content\js\jquery.tmpl.js" />
     <Content Include="Content\js\json2.js" />
     <Content Include="Content\js\modernizr.mq.js" />
@@ -1429,8 +1429,8 @@
     <Content Include="Areas\People\Views\Person\AddressDisplay.cshtml" />
     <Content Include="Areas\People\Views\Person\AddressEdit.cshtml" />
     <Content Include="Areas\People\Views\Person\AttendanceGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\BasicDisplay.cshtml" />
-    <Content Include="Areas\People\Views\Person\BasicEdit.cshtml" />
+    <Content Include="Areas\People\Views\Person\DisplayTemplates\BasicPersonInfo.cshtml" />
+    <Content Include="Areas\People\Views\Person\EditorTemplates\BasicPersonInfo.cshtml" />
     <Content Include="Areas\People\Views\Person\BusinessCard.cshtml" />
     <Content Include="Areas\People\Views\Person\ChangesGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\CommentsDisplay.cshtml" />
@@ -1442,7 +1442,7 @@
     <Content Include="Areas\People\Views\Person\CurrentRegistrationsHtml.cshtml" />
     <Content Include="Areas\People\Views\Person\DuplicateRow.cshtml" />
     <Content Include="Areas\People\Views\Person\DuplicatesGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\EditorTemplates\Field.cshtml" />
+    <Content Include="Areas\People\Views\Person\EditorTemplates\ExtraValue.cshtml" />
     <Content Include="Areas\People\Views\Person\EnrollGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\ExtrasGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\FamilyGrid.cshtml" />
@@ -1553,6 +1553,10 @@
     <Content Include="Areas\Setup\Views\Twilio\NumberDialog.cshtml" />
     <Content Include="Areas\Setup\Views\Twilio\RemoveDialog.cshtml" />
     <Content Include="Areas\Setup\Views\Twilio\UserDialog.cshtml" />
+    <Content Include="Areas\People\Views\Person\RelatedFamiliesGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
+    <Content Include="Areas\People\Views\Person\EditorTemplates\Field.cshtml" />
+    <Content Include="Areas\People\Views\Person\DisplayTemplates\Field.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
