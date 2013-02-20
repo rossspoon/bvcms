@@ -2,7 +2,7 @@
 @model CmsData.BackgroundCheck
 @{
     var labels = from e in DbUtil.Db.BackgroundCheckLabels
-                 orderby e.Name
+                 orderby e.Description
                  select e;
 }
 <!DOCTYPE html>
@@ -19,11 +19,11 @@
             </tr>
             <tr>
                 <td align="right" valign="top"><b>Label:</b></td>
-                <td valign="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name", @Model.ReportLabelID ) )</td>
+                <td valign="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Description", @Model.ReportLabelID ) )</td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input id="closeSubmitDialog" type="button" value="Cancel" /></td>
+                <td colspan="2" align="center"><input class="bt" type="submit" value="Submit" /> &nbsp;&nbsp; <input class="bt" id="closeSubmitDialog" type="button" value="Cancel" /></td>
             </tr>
         </table>
     </form>

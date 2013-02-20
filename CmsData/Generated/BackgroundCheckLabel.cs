@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace CmsData
 {
-	[Table(Name="dbo.BackgroundCheckLabels")]
+	[Table(Name="lookup.BackgroundCheckLabels")]
 	public partial class BackgroundCheckLabel : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -19,7 +19,11 @@ namespace CmsData
 		
 		private int _Id;
 		
-		private string _Name;
+		private string _Code;
+		
+		private string _Description;
+		
+		private bool? _Hardwired;
 		
    		
     	
@@ -33,8 +37,14 @@ namespace CmsData
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
 		
-		partial void OnNameChanging(string value);
-		partial void OnNameChanged();
+		partial void OnCodeChanging(string value);
+		partial void OnCodeChanged();
+		
+		partial void OnDescriptionChanging(string value);
+		partial void OnDescriptionChanged();
+		
+		partial void OnHardwiredChanging(bool? value);
+		partial void OnHardwiredChanged();
 		
     #endregion
 		public BackgroundCheckLabel()
@@ -47,7 +57,7 @@ namespace CmsData
 		
     #region Columns
 		
-		[Column(Name="ID", UpdateCheck=UpdateCheck.Never, Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[Column(Name="Id", UpdateCheck=UpdateCheck.Never, Storage="_Id", DbType="int NOT NULL", IsPrimaryKey=true)]
 		public int Id
 		{
 			get { return this._Id; }
@@ -69,21 +79,65 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(50) NOT NULL")]
-		public string Name
+		[Column(Name="Code", UpdateCheck=UpdateCheck.Never, Storage="_Code", DbType="varchar(20)")]
+		public string Code
 		{
-			get { return this._Name; }
+			get { return this._Code; }
 
 			set
 			{
-				if (this._Name != value)
+				if (this._Code != value)
 				{
 				
-                    this.OnNameChanging(value);
+                    this.OnCodeChanging(value);
 					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Description", UpdateCheck=UpdateCheck.Never, Storage="_Description", DbType="varchar(100)")]
+		public string Description
+		{
+			get { return this._Description; }
+
+			set
+			{
+				if (this._Description != value)
+				{
+				
+                    this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Hardwired", UpdateCheck=UpdateCheck.Never, Storage="_Hardwired", DbType="bit")]
+		public bool? Hardwired
+		{
+			get { return this._Hardwired; }
+
+			set
+			{
+				if (this._Hardwired != value)
+				{
+				
+                    this.OnHardwiredChanging(value);
+					this.SendPropertyChanging();
+					this._Hardwired = value;
+					this.SendPropertyChanged("Hardwired");
+					this.OnHardwiredChanged();
 				}
 
 			}

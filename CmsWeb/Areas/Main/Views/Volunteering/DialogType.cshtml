@@ -4,7 +4,7 @@
     int type = ViewBag.dialogType;
 
     var labels = from e in DbUtil.Db.BackgroundCheckLabels
-                 orderby e.Name
+                 orderby e.Description
                  select e;
 
     var labelEnabled = DbUtil.Db.Setting("EnableBackgroundLabels", "false") == "true";
@@ -33,12 +33,12 @@
                     @if( labelEnabled ) {
                     <tr>
                         <td class="right top"><b>Label:</b></td>
-                        <td class="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name" ) )</td>
+                        <td class="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Description" ) )</td>
                     </tr>
                     }
                     <tr><td>&nbsp;</td></tr>
                     <tr>
-                        <td colspan="2" class="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input id="closeSubmitDialog" type="button" value="Cancel" /></td>
+                        <td colspan="2" class="center"><input class="bt" type="submit" value="Submit" /> &nbsp;&nbsp; <input class="bt" id="closeSubmitDialog" type="button" value="Cancel" /></td>
                     </tr>
                 </table>
             </form>
@@ -61,12 +61,12 @@
                     @if( labelEnabled ) {
                     <tr>
                         <td class="right top"><b>Label:</b></td>
-                        <td class="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Name" ) )</td>
+                        <td class="top">@Html.DropDownList("label",  new SelectList( labels, "ID", "Description" ) )</td>
                     </tr>
                     }
                     <tr><td>&nbsp;</td></tr>
                     <tr>
-                        <td colspan="2" class="center"><input type="submit" value="Submit" /> &nbsp;&nbsp; <input id="closeSubmitDialog" type="button" value="Cancel" /></td>
+                        <td colspan="2" class="center"><input class="bt" type="submit" value="Submit" /> &nbsp;&nbsp; <input class="bt" id="closeSubmitDialog" type="button" value="Cancel" /></td>
                     </tr>
                 </table>
             </form>

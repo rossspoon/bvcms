@@ -11,6 +11,7 @@
 {
 <script type="text/javascript">
     $(function () {
+        $(".bt").button();
         $(".datepicker").datepicker();
     });
     function redirect() {
@@ -45,5 +46,5 @@
         </tr>
     </table>
     <br />
-    <input type="submit" value="Save" /> <input type="button" value="Cancel" onclick="redirect();" />
+    <input class="bt" type="submit" value="Save" /> <input class="bt" type="button" value="Cancel" onclick="redirect();" />
 </form>

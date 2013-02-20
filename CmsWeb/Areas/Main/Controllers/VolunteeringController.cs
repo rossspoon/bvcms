@@ -121,6 +121,22 @@ namespace CmsWeb.Areas.Main.Controllers
             return Redirect("/Volunteering/Index/" + bc.PeopleID);
         }
 
+        public ActionResult DeleteCheck(int id)
+        {
+            int iPeopleID = 0;
+
+            BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
+                                  where e.Id == id
+                                  select e).Single();
+
+            iPeopleID = bc.PeopleID;
+
+            DbUtil.Db.BackgroundChecks.DeleteOnSubmit(bc);
+            DbUtil.Db.SubmitChanges();
+
+            return Redirect("/Volunteering/Index/" + iPeopleID);
+        }
+
         public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0)
         {
             String sResponseURL = Request.Url.Scheme + "://" + Request.Url.Authority + ProtectMyMinistryHelper.PMM_Append;
@@ -160,6 +176,12 @@ namespace CmsWeb.Areas.Main.Controllers
                                   select e).Single();
 
             return View(bc);
+        }
+
+        public ActionResult DialogDelete(int id)
+        {
+            ViewBag.ID = id;
+            return View();
         }
 
         public ActionResult DialogType(int id, int type)
