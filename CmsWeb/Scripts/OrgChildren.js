@@ -1,16 +1,16 @@
 ﻿$(function () {
-    $.fmtTable = function () {
+    $.fmtTable = function() {
         $("table.grid td.tip").tooltip({ showBody: "|" });
         $('table.grid > tbody > tr:even').addClass('alt');
         if (!$('#canedit').val()) {
             $('table.grid input').attr("disabled", "disabled");
         }
         $(".bt").button();
-    }
+    };
     $.fmtTable();
-    $.loadTable = function () {
+    $.loadTable = function() {
         $.getTable($('#groupsform'));
-    }
+    };
     $('#filter').live("click", function (ev) {
         ev.preventDefault();
         $.loadTable();
@@ -31,9 +31,10 @@
         });
         return false;
     };
-    $("body").live('click', 'a.display', function (ev) {
+    $("a.display").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
+        var q = f.serialize();
         $.post(this.href, q, function (ret) {
             $(f).html(ret).ready(function () {
                 $.fmtTable();
@@ -42,7 +43,7 @@
         });
         return false;
     });
-    $("body").on("change", '.orgcheck', function (ev) {
+    $(".orgcheck").live("change", function (ev) {
         var ck = $(this);
         var tr = ck.parent().parent();
         $.post("/OrgChildren/UpdateOrg/", {

@@ -59,16 +59,9 @@ pre {
         <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
         <tr>
             <td class="top">
-            @if (Model.Person.CanUserEditBasic)
-            {
                 <a id="Picture" href="/UploadPicture.aspx?id=@p.PeopleId" title="Click to see larger version or upload new">
                 <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
                 </a>
-            }
-            else
-            {
-                <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@p.SmallPicId" />
-            }
             </td>
             <td>&nbsp;</td>
             <td class="top">

@@ -13,10 +13,13 @@
         <div>
             <asp:HyperLink ID="HyperLink2" runat="server" ForeColor="Red"></asp:HyperLink>
         </div>
+        <% if (person.CanUserEditBasic)
+           { %>
         Select Image File To Upload:
         <asp:FileUpload ID="ImageFile" runat="server" Width="307px" />
         <br />
         <asp:Button ID="Upload" runat="server" Text="Submit" OnClick="Upload_Click"></asp:Button>
+        <% } %>
         <div>
             <asp:HiddenField ID="HiddenField1" runat="server" />
         </div>

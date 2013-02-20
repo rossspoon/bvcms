@@ -65,7 +65,7 @@
                     @if (User.IsInRole("Edit"))
                     {
                         <li><a id="addorg" href="#">
-                                Add Organization
+                        <li>@Html.ActionLink("Org Members Management", "Index", "OrgMembers", new { Area = "Main" }, null)</li>
                             </a> </li>
                         <li><a href="/OrgMembers">
                                 Org Members Management
@@ -115,9 +115,9 @@
                             Weekly Decisions
                         </a></li>
                     <li><a href="/Report/DecisionSummary.aspx" target="_blank">
-                            Decision Summary
-                        </a></li>
-                    <li><a href="/Home/NthTimeVisitors/1">
+                    <li>@Html.ActionLink("First Time Attenders", "NthTimeVisitors", "Home", new { Id=1 }, null)</li>
+                    <li>@Html.ActionLink("Sedond Time Attenders", "NthTimeVisitors", "Home", new { Id=2 }, null)</li>
+                    <li>@Html.ActionLink("Third Time Attenders", "NthTimeVisitors", "Home", new { Id=3 }, null)</li>
                             First Time Attenders
                         </a></li>
                     <li><a href="/Home/NthTimeVisitors/2">

@@ -45,7 +45,8 @@ namespace CmsWeb.Areas.Main.Controllers
     			{ 
     				PeopleId = id, 
     				DocDate = Util.Now,
-    				UploaderId = Util2.CurrentPeopleId
+    				UploaderId = Util2.CurrentPeopleId,
+                    Name = file.FileName
     			};
                 DbUtil.Db.MemberDocForms.InsertOnSubmit(mdf);
                 var bits = new byte[file.ContentLength];
@@ -56,6 +57,7 @@ namespace CmsWeb.Areas.Main.Controllers
                     case "image/jpeg":
                     case "image/pjpeg":
                     case "image/gif":
+                    case "image/png":
                         mdf.IsDocument = false;
                             mdf.SmallId = ImageData.Image.NewImageFromBits(bits, 165, 220).Id;
                             mdf.MediumId = ImageData.Image.NewImageFromBits(bits, 675, 900).Id;
@@ -83,5 +85,17 @@ namespace CmsWeb.Areas.Main.Controllers
 		    }
 			return View("Index", m);
 		}
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ContentResult Edit(string id, string value)
+        {
+            var iid = id.Substring(2).ToInt();
+            var f = DbUtil.Db.MemberDocForms.Single(m => m.Id == iid);
+            if (id.StartsWith("n"))
+                f.Name = value;
+            DbUtil.Db.SubmitChanges();
+            var c = new ContentResult();
+            c.Content = value;
+            return c;
+        }
 	}
 }
