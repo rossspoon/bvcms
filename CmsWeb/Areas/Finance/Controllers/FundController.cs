@@ -87,7 +87,6 @@ namespace CmsWeb.Areas.Finance.Controllers
             	return Json(new {error = ex.Message});
             }
         }
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             var fund = DbUtil.Db.ContributionFunds.SingleOrDefault(f => f.FundId == id);
@@ -96,7 +95,6 @@ namespace CmsWeb.Areas.Finance.Controllers
             return View(fund);
         }
 
-        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             var f = DbUtil.Db.ContributionFunds.SingleOrDefault(fu => fu.FundId == id);

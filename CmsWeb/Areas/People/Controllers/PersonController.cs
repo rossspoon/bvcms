@@ -322,13 +322,13 @@ namespace CmsWeb.Areas.People.Controllers
 		{
 			InitExportToolbar(id);
 			var m = BasicPersonInfo.GetBasicPersonInfo(id);
-			return View(m);
+			return View("DisplayTemplates/BasicPersonInfo", m);
 		}
 		[HttpPost]
 		public ActionResult BasicEdit(int id)
 		{
 			var m = BasicPersonInfo.GetBasicPersonInfo(id);
-			return View(m);
+			return View("EditorTemplates/BasicPersonInfo", m);
 		}
 		[HttpPost]
 		public ActionResult BasicUpdate(int id)
@@ -339,7 +339,7 @@ namespace CmsWeb.Areas.People.Controllers
 			m = BasicPersonInfo.GetBasicPersonInfo(id);
 			DbUtil.LogActivity("Update Basic Info for: {0}".Fmt(m.person.Name));
 			InitExportToolbar(id);
-			return View("BasicDisplay", m);
+			return View("DisplayTemplates/BasicPersonInfo", m);
 		}
 		[HttpPost]
 		public ActionResult Reverse(int id, string field, string value, string pf)

@@ -1,6 +1,5 @@
 ﻿$(function () {
     $("button.trigger-dropdown").dropdown();
-    $("form select").chosen();
     $("input.date").datepicker();
     /* accordion */
     $(".accordion h3").click(function () {
@@ -20,17 +19,17 @@
     /* end modal */
     /* edit button for form
         will need more advanced config for form save/cancel */
-    $("button.display").click(function (e) {
-        e.preventDefault();
-        $("fieldset.display").hide();
-        $("fieldset.edit").show();
-        $(this).hide().siblings(".edit").show();
-    }).siblings("button.btn-neutral").click(function (e) {
-        e.preventDefault();
-        $("fieldset.display").show();
-        $("fieldset.edit").hide();
-        $(this).hide().siblings(".btn-primary").hide().siblings(".display").show();
-    });
+    //$("button.display").click(function (e) {
+    //    e.preventDefault();
+    //    $("fieldset.display").hide();
+    //    $("fieldset.edit").show();
+    //    $(this).hide().siblings(".edit").show();
+    //}).siblings("button.btn-neutral").click(function (e) {
+    //    e.preventDefault();
+    //    $("fieldset.display").show();
+    //    $("fieldset.edit").hide();
+    //    $(this).hide().siblings(".btn-primary").hide().siblings(".display").show();
+    //});
     /* end edit button */
 
     /* local environment js */
@@ -47,7 +46,7 @@
         }
     });
     /* demo sorting styles */
-    $("body").on("click", 'th a', function (e) {
+    $("th a").live("click", function (e) {
         e.preventDefault();
         if (!$(this).parents("th.active").size()) {
             var th = $(this).parents("th").eq(0);

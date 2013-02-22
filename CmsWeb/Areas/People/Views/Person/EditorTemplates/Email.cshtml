@@ -1,0 +1,14 @@
+﻿@model CmsWeb.Areas.People.Models.Person.EmailInfo
+@{
+    var label = ViewData.ModelMetadata.AdditionalValues["label"];
+    var classes = ViewData.ModelMetadata.AdditionalValues["classes"];
+}
+<div class="control-group @classes">
+    <label for="">@label</label>
+    <div class="controls">
+        <div class="textcombo">
+            @Html.TextBoxFor(m => m.Address, new { @class = "text email" })
+            @Html.CheckBoxFor(m => m.Send )
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿@using UtilityExtensions
+@model CmsWeb.Areas.People.Models.Person.PersonModel
+<div class="three columns action">
+    <p class="meta">Record added @Model.displayperson.basic.Created.FormatDate()</p>
+    <div class="btn-group">
+        <button class="btn">
+            <i class="icon-envelope"></i>
+        </button>
+        <button class="btn">
+            <i class="icon-cloud-download"></i>
+        </button>
+        <button class="btn trigger-dropdown">
+            <i class="icon-cog"></i>
+            <i class="icon-caret-down"></i>
+        </button>
+        <div class="dropdown-menu anchor-right">
+            <ul>
+                <li><a href="#">Add New User</a></li>
+                <li><a href="#">Impersonate</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Add New Address</a></li>
+                <li><a href="#">Mark As Deceased</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Split</a></li>
+                <li><a href="#">Merge</a></li>
+                <li><a href="#">Delete</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -80,12 +80,12 @@
                 </ul>
             </div>
         </li>
-            <li>
-                <a href="#" class="trigger-dropdown">
-                    SearchBuilder <img src="/images/dnarrowt.png" />
-                </a>
+        <li>
+            <a href="#" class="trigger-dropdown">
+                SearchBuilder <img src="/images/dnarrowt.png" />
+            </a>
             @Helper.SearchBuilderDropdown(onqb, newlook: false)
-            </li>
+        </li>
         @if (User.IsInRole("Finance"))
         {
             <li>
@@ -130,12 +130,7 @@
                             <li>@Html.ActionLink("Divisions", "Index", "Division", new { Area = "Setup" }, null)</li>
                             <li>@Html.ActionLink("Settings", "Index", "Setting", new { Area = "Setup" }, null)</li>
                             <li>@Html.ActionLink("Metro Zips", "Index", "MetroZip", new { Area = "Setup" }, null)</li>
-                        }
-                        @if (admin && TwilioHelper.getSID().Length > 0 && TwilioHelper.getToken().Length > 0 )
-                        {
-                            <li><a href="/Setup/Twilio/">
-                                    Twilio Management
-                                </a> </li>
+                            <li>@Html.ActionLink("Twilio Management", "Index", "Twilio", new { Area = "Setup" }, new { @class = "hideAlt" })</li>
                         }
                         @if (admin || design)
                         {
@@ -185,13 +180,13 @@
                     {
                         <li>@Html.ActionLink("Use New Look (under construction)", "UseNewLook", "Home", new { Area = "" }, null)</li>
                         if (DbUtil.Db.UserPreference("advancedsearch", "false").ToBool())
-                         {
+                        {
                             <li>@Html.ActionLink("Use Search Builder", "UseSearchBuilder", "Home", new { Area = "" }, null)</li>
-                         }
-                         else
-                         {
+                        }
+                        else
+                        {
                             <li>@Html.ActionLink("Use Advanced Search", "UseAdvancedSearch", "Home", new { Area = "" }, null)</li>
-                         }
+                        }
                     }
                     <li>@Html.ActionLink("About", "About", "Home", new { Area = "" }, null)</li>
                     @if (admin)

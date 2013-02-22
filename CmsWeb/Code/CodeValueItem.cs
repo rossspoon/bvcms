@@ -37,6 +37,11 @@ namespace CmsWeb.Models
             var item = list.SingleOrDefault(i => i.Id == id);
             return item == null ? "(not specified)" : item.Value;
         }
+        public static string ItemValue(this IEnumerable<CodeValueItem> list, string id)
+        {
+            var item = list.SingleOrDefault(i => i.Id == id.ToInt2());
+            return item == null ? "(not specified)" : item.Value;
+        }
         public static string ItemValue(this IEnumerable<MemberTypeItem> list, int? id)
         {
             var item = list.SingleOrDefault(i => i.Id == id);

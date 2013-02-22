@@ -196,13 +196,13 @@
             $('iframe', this).attr("src", "");
         }
     });
-    $('form').on("click", 'a.membertype', function (e) {
+    $('form a.membertype').live("click", function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
         d.dialog("open");
     });
-    $('body').on("click", '#previous-tab form a.membertype', function (e) {
+    $('#previous-tab form a.membertype').live("click", function (e) {
         e.preventDefault();
         var d = $('#memberDialog');
         $('iframe', d).attr("src", this.href);
@@ -276,7 +276,7 @@
         return false;
     });
 
-    $("form").on('click', 'a.displayedit', function (ev) {
+    $("a.displayedit").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         $.post($(this).attr('href'), null, function (ret) {
@@ -294,6 +294,10 @@
         $('#NewChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
         $('#PrevChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
 
+        if ($("#newlook")) {
+            $("form select").chosen();
+            $("input.date").datepicker();
+        }
         $(".datepicker").datepicker();
         $(".submitbutton,.bt", f).button();
         return false;
@@ -312,7 +316,7 @@
         });
         return false;
     });
-    $("form.DisplayEdit").on('click', 'a.submitbutton', function (ev) {
+    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         if (!$(f).valid())

@@ -1,5 +1,7 @@
 using System.Linq;
+using System.Web.Mvc;
 using CmsData;
+using CmsWeb.Models;
 using UtilityExtensions;
 
 namespace CmsWeb.Areas.People.Models.Person
@@ -37,6 +39,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public AddressInfo PersonalAddr { get; set; }
         public static PersonInfo GetPersonInfo(int? id)
         {
+            var cv = new CodeValueModel();
 			var i = (from pp in DbUtil.Db.People
 					 let spouse = (from sp in pp.Family.People where sp.PeopleId == pp.SpouseId select sp.Name).SingleOrDefault()
 					 where pp.PeopleId == id
@@ -95,13 +98,13 @@ namespace CmsWeb.Areas.People.Models.Person
                     DoNotCallFlag = p.DoNotCallFlag,
                     DoNotMailFlag = p.DoNotMailFlag,
                     DoNotVisitFlag = p.DoNotVisitFlag,
-                    EmailAddress = p.EmailAddress,
-                    SendEmailAddress1 = p.SendEmailAddress1 ?? true,
-                    EmailAddress2 = p.EmailAddress2,
-                    SendEmailAddress2 = p.SendEmailAddress2 ?? false,
+                    Email1 = new EmailInfo(p.EmailAddress, p.SendEmailAddress1 ?? true),
+                    Email2 = new EmailInfo(p.EmailAddress2, p.SendEmailAddress2 ?? false),
+                    Gender = new CodeInfo(p.GenderId, cv.GenderCodesWithUnspecified()),
+                    MaritalStatus = new CodeInfo(p.MaritalStatusId, cv.MaritalStatusCodes99()),
+                    MemberStatus = new CodeInfo(p.MemberStatusId, cv.MemberStatusCodes0()),
                     Employer = p.EmployerOther,
                     First = p.FirstName,
-                    GenderId = p.GenderId,
                     Created = p.CreatedDate,
                     Grade = p.Grade.ToString(),
                     HomePhone = p.Family.HomePhone,
@@ -109,7 +112,6 @@ namespace CmsWeb.Areas.People.Models.Person
                     Last = p.LastName,
                     AltName = p.AltName,
                     Maiden = p.MaidenName,
-                    MaritalStatusId = p.MaritalStatusId,
                     MemberStatusId = p.MemberStatusId,
                     Middle = p.MiddleName,
                     NickName = p.NickName,
@@ -117,9 +119,9 @@ namespace CmsWeb.Areas.People.Models.Person
                     School = p.SchoolOther,
                     Spouse = i.spouse,
                     Suffix = p.SuffixCode,
-                    Title = p.TitleCode,
-                    WeddingDate = p.WeddingDate,
-                    WorkPhone = p.WorkPhone,
+                    Title = new CodeInfo(p.TitleCode, cv.TitleCodes(), "Value"),
+                    WeddingDate = p.WeddingDate.FormatDate(),
+                    WorkPhone = p.WorkPhone.FmtFone(),
                 },
                 growth = new GrowthInfo
                 {

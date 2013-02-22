@@ -94,8 +94,15 @@ namespace CmsWeb.Models
         {
             if (query.IsNotNull())
                 return query;
-            var Db = DbUtil.Db;
-            query = Db.People.Select(p => p);
+
+            var db = DbUtil.Db;
+			if (Util2.OrgMembersOnly)
+				query = db.OrgMembersOnlyTag2().People(db);
+			else if (Util2.OrgLeadersOnly)
+				query = db.OrgLeadersOnlyTag2().People(db);
+            else
+    			query = db.People.AsQueryable();
+
             if (UsersOnly)
                 query = query.Where(p => p.Users.Any(uu => uu.UserRoles.Any(ur => ur.Role.RoleName == "Access")));
 
