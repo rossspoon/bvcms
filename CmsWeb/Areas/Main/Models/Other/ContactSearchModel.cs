@@ -87,10 +87,25 @@ namespace CmsWeb.Models
 			if (contacts != null)
 				return contacts;
 
+		    var db = DbUtil.Db;
+
+		    IQueryable<int> ppl = null; 
+
+			if (Util2.OrgMembersOnly)
+				ppl = db.OrgMembersOnlyTag2().People(db).Select(pp => pp.PeopleId);
+			else if (Util2.OrgLeadersOnly)
+				ppl = db.OrgLeadersOnlyTag2().People(db).Select(pp => pp.PeopleId);
+
 			contacts = DbUtil.Db.Contacts.AsQueryable();
+
+		    if (ppl != null && Util.UserPeopleId != null)
+		        contacts = from c in contacts
+                           where c.contactsMakers.Any(cm => cm.PeopleId == Util.UserPeopleId.Value)
+		                   select c;
+
 			if (ContacteeName.HasValue())
 				contacts = from c in contacts
-						   where c.contactees.Any(p => p.person.Name.Contains(ContacteeName))
+						   where c.contactsMakers.Any(p => p.person.Name.Contains(ContacteeName))
 						   select c;
 
 			if (ContactorName.HasValue())

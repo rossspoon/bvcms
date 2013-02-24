@@ -275,16 +275,17 @@ namespace CmsWeb.Areas.People.Controllers
 		public ActionResult AddAboutTask(int id)
 		{
 			var p = DbUtil.Db.LoadPersonById(id);
-
+		    if (p == null || !Util.UserPeopleId.HasValue)
+		        return Content("no id");
 			var t = p.AddTaskAbout(DbUtil.Db, Util.UserPeopleId.Value, "Please Contact");
 			DbUtil.Db.SubmitChanges();
 			return Content("/Task/List/{0}".Fmt(t.Id));
 		}
 		[HttpPost]
-		public ActionResult BusinessCard(int id)
+		public ActionResult Snapshot(int id)
 		{
 			var m = new PersonModel(id);
-			return View(m.displayperson);
+			return View(m);
 		}
 		public JsonResult Schools(string term)
 		{

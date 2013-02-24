@@ -24,7 +24,8 @@ namespace CmsWeb.Areas.Main.Models.Directories
 		public FamilyDir(int? qid)
 		{
                 var q0 = DbUtil.Db.PeopleQuery(qid.Value);
-                q = from p in q0
+    		    var tag = DbUtil.Db.PopulateTemporaryTag(q0.Select(vv => vv.PeopleId));
+    			q = from p in tag.People(DbUtil.Db)
                          let person = p
                          group p by p.FamilyId into g
 						 let family = g.First().Family

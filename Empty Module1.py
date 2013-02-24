@@ -1,5 +1,5 @@
 CAMPUSES = {
-    "East Side":[731, 3],
+    "East Side": [731, 3],
     "West Side": [733, 2],
     "Downtown": [158, 4],
     "Do Not Attend": [None, 6]

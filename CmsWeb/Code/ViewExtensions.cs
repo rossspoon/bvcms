@@ -429,8 +429,8 @@ namespace CmsWeb
 			{
 				using (var sw = new StringWriter())
 				{
-					ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
-					ViewContext viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
+					var viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
+					var viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
 					viewResult.View.Render(viewContext, sw);
 					return sw.GetStringBuilder().ToString();
 				}

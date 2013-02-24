@@ -294,7 +294,7 @@
         $('#NewChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
         $('#PrevChurch', f).autocomplete({ minLength: 3, source: "/Person/Churches" });
 
-        if ($("#newlook")) {
+        if ($("#newlook").val() == "true") {
             $("form select").chosen();
             $("input.date").datepicker();
         }

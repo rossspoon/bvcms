@@ -11,6 +11,7 @@ using System.Data.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsData.Codes;
 using UtilityExtensions;
 using System.Data.Linq.SqlClient;
 using System.Web.UI.WebControls;
@@ -83,6 +84,7 @@ namespace CmsWeb.Models
 			var roles = Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
 			var qo = from o in Db.Organizations
 					 where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+                     where o.OrganizationStatusId == OrgStatusCode.Active
 					 select o;
 
 			if (Util2.OrgMembersOnly)

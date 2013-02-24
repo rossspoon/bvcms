@@ -112,7 +112,7 @@
                         @if (check.ReportLabelID > 0)
                         {
                             <a href="#" class="showEditDialog" cid="@check.Id">
-                                @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Description
+                                @(labels.Where(e => e.Id == check.ReportLabelID).Select(e => e.Description).SingleOrDefault() ?? check.ReportLabelID.ToString())
                             </a>
                         }
                         else

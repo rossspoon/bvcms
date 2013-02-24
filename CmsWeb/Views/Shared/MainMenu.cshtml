@@ -26,7 +26,7 @@
                     <li class="header"><span>Most Recent People</span></li>
                     @foreach (var p in Util2.MostRecentPeople)
                     {
-                        <li>@Html.ActionLink(p.Name, "Index", "Person", new { Id = p.Id, Area = "Main" }, null)</li>
+                        <li>@Html.ActionLink(p.Name ?? "unknown", "Index", "Person", new { Id = p.Id, Area = "Main" }, null)</li>
                     }
                     <li class="divider"></li>
                     <li>@Html.ActionLink(Util.UserFullName, "Index", "Person", new { Id = Util.UserPeopleId, Area = "Main" }, null)</li>

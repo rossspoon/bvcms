@@ -98,6 +98,7 @@ namespace CmsWeb
                 , "~/Content/js/jquery.validate.js"
                 , "~/Content/js/jquery.idle-timer.js"
                 , "~/Content/js/jquery.blockUI.js"
+                , "~/Content/js/jquery.sortElements.js"
                 , "~/Content/js/jquery.showpassword.js"
                             ));
 

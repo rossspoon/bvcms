@@ -52,10 +52,13 @@
         </form>
     </div>
 
-@Html.Partial("Involvement")
-@Html.Partial("MemberProfile")
+    @Html.Partial("Involvement")
+    @Html.Partial("MemberProfile")
 
 </section>
 
-@Html.Partial("Dialogs")
+@section PopupsPlaceholder
+{
+    @Html.Partial("Dialogs")
+}
 

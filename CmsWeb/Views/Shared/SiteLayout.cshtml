@@ -1,10 +1,10 @@
 ﻿@using System.Web.Optimization
-@{
-    var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
-}
 <!DOCTYPE html>
 <html>
 <head>
+@{
+    var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
+}
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     @if (newlook)
