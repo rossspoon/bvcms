@@ -39,6 +39,7 @@ namespace CmsWeb
             p.CreatedBy = Util.UserName;
             var bits = new byte[ImageFile.PostedFile.ContentLength];
             ImageFile.PostedFile.InputStream.Read(bits, 0, bits.Length);
+            p.ThumbId = ImageData.Image.NewImageFromBits(bits, 28, 28).Id;
             p.SmallId = ImageData.Image.NewImageFromBits(bits, 120, 120).Id;
             p.MediumId = ImageData.Image.NewImageFromBits(bits, 320, 400).Id;
             p.LargeId = ImageData.Image.NewImageFromBits(bits, 570, 800).Id;

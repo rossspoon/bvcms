@@ -1,120 +1,69 @@
 using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.Web.Mvc;
-using System.Xml.Linq;
-using UtilityExtensions;
-using System.Linq;
-using CmsData;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace CmsWeb.Areas.People.Models.Person
 {
     public class PictureResult : ActionResult
     {
-        int Id;
-        string Size;
-        public PictureResult(string size, int id)
+        private int id;
+        private int size;
+        public PictureResult(int id, int s)
         {
-            Id = id;
-            Size = size;
-        }
-        private class FamilyImages
-        {
-            public class MemberData
-            {
-                public int PeopleId;
-                public int? SmallId;
-                public int? ThumbId;
-                public byte[] tiny;
-            }
-            public List<MemberData> members;
-            public byte[] current;
+            this.id = id;
+            size = s;
         }
         public override void ExecuteResult(ControllerContext context)
         {
             context.HttpContext.Response.Clear();
-            var fam = context.HttpContext.Items["familyimages"] as FamilyImages;
-            if (fam == null)
+            context.HttpContext.Response.Cache.SetExpires(DateTime.Now.AddYears(1));
+            context.HttpContext.Response.Cache.SetCacheability(HttpCacheability.Public);
+            if (id == -2)
             {
-                var q = from p in DbUtil.Db.People
-                        where p.PeopleId == Id
-                        from m in p.Family.People
-                        select new FamilyImages.MemberData()
-                                   {
-                                       PeopleId = m.PeopleId,
-                                       SmallId = m.Picture.SmallId,
-                                       ThumbId = m.Picture.ThumbId,
-                                   };
-                fam = new FamilyImages()
-                          {
-                              members = q.ToList()
-                          };
-                var idlist = new Dictionary<int, ImageData.Image>();
-                foreach (var m in fam.members)
-                {
-                    if (m.ThumbId.HasValue)
-                        idlist.Add(m.ThumbId.Value, null);
-                    if (m.PeopleId == Id && m.SmallId.HasValue)
-                        idlist.Add(m.SmallId.Value, null);
-                }
-                var i = from im in ImageData.DbUtil.Db.Images
-                        where idlist.Keys.Contains(im.Id)
-                        select im;
-                var imglist = i.ToList();
-                foreach (var m in fam.members)
-                {
-                    var img = imglist.SingleOrDefault(ii => ii.Id == m.ThumbId);
-                    if (img != null)
-                        m.tiny = img.Bits;
-                    img = imglist.SingleOrDefault(ii => ii.Id == m.SmallId);
-                    if (img != null)
-                        fam.current = img.Bits;
-                }
-                switch (Size)
-                {
-                    case "small":
-                        break;
-                    case "tiny":
-                        break;
-                    case "medium":
-                        break;
-                }
-                var image = ImageData.DbUtil.Db.Images.SingleOrDefault(ii => ii.Id == Id);
+                context.HttpContext.Response.ContentType = "image/jpeg";
+                context.HttpContext.Response.BinaryWrite(NoPic2());
             }
-//            if (image == null)
-//                NoPic(context.HttpContext);
-//            else
-//            {
-//                context.HttpContext.Response.ContentType = image.Mimetype;
-//                context.HttpContext.Response.BinaryWrite(image.Bits);
-//            }
-        }
-        void NoPic(System.Web.HttpContextBase context)
-        {
-            var portrait = context.Request.QueryString["portrait"].ToInt2();
-            if (portrait == 1)
+            else if (id == -2)
             {
-                context.Response.ContentType = "image/jpeg";
-                var u = context.Cache["unknownimage"] as Byte[];
-                if (u == null)
-                {
-                    u = File.ReadAllBytes(context.Server.MapPath("/images/unknown.jpg"));
-                    context.Cache["unknownimage"] = u;
-                }
-                context.Response.BinaryWrite(u);
+                context.HttpContext.Response.ContentType = "image/jpeg";
+                context.HttpContext.Response.BinaryWrite(NoPic1());
             }
             else
             {
-                var bmp = new Bitmap(200, 200, PixelFormat.Format24bppRgb);
-                var g = Graphics.FromImage(bmp);
-                g.Clear(Color.Bisque);
-                g.DrawString("No Image", new Font("Verdana", 22, FontStyle.Bold), SystemBrushes.WindowText, new PointF(2, 2));
-                context.Response.ContentType = "image/gif";
-                bmp.Save(context.Response.OutputStream, ImageFormat.Gif);
+                var i = ImageData.DbUtil.Db.Images.SingleOrDefault(ii => ii.Id == id);
+                if (i == null)
+                {
+                    context.HttpContext.Response.ContentType = "image/jpeg";
+                    context.HttpContext.Response.BinaryWrite(size == 1 ? NoPic1() : NoPic2());
+                }
+                else
+                {
+                    context.HttpContext.Response.ContentType = i.Mimetype ?? "image/jpeg";
+                    context.HttpContext.Response.BinaryWrite(i.Bits);
+                }
             }
+        }
+        private static byte[] NoPic1()
+        {
+            var u = HttpRuntime.Cache["unknownimagesm"] as byte[];
+            if (u == null)
+            {
+                u = File.ReadAllBytes(HttpContext.Current.Server.MapPath("/images/unknownsm.jpg"));
+                HttpRuntime.Cache["unknownimagesm"] = u;
+            }
+            return u;
+        }
+        private static byte[] NoPic2()
+        {
+            var u = HttpRuntime.Cache["unknownimage"] as byte[];
+            if (u == null)
+            {
+                u = File.ReadAllBytes(HttpContext.Current.Server.MapPath("/images/unknown.jpg"));
+                HttpRuntime.Cache["unknownimage"] = u;
+            }
+            return u;
         }
     }
 }

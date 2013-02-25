@@ -319,28 +319,37 @@
     <Compile Include="Areas\Manage\Models\VolunteerRequestModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
     <Compile Include="Areas\People\Controllers\PersonController.cs" />
-    <Compile Include="Areas\People\Models\Person\AddressInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\AttendHistoryModel.cs" />
-    <Compile Include="Areas\People\Models\Person\BasicPersonInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\ContactsMadeModel.cs" />
-    <Compile Include="Areas\People\Models\Person\ContactsReceivedModel.cs" />
-    <Compile Include="Areas\People\Models\Person\DuplicatesModel.cs" />
-    <Compile Include="Areas\People\Models\Person\EnrollmentsModel.cs" />
-    <Compile Include="Areas\People\Models\Person\FamilyMemberInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\FamilyModel.cs" />
-    <Compile Include="Areas\People\Models\Person\GrowthInfo.cs" />
     <Compile Include="Areas\People\Models\Person\PictureResult.cs" />
-    <Compile Include="Areas\People\Models\Person\MemberDocs.cs" />
-    <Compile Include="Areas\People\Models\Person\MemberInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\MemberNotesInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\OrgMemberInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\PendingEnrollmentsModel.cs" />
-    <Compile Include="Areas\People\Models\Person\PeopleInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\PersonInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\PersonModel.cs" />
-    <Compile Include="Areas\People\Models\Person\PrevEnrollmentsModel.cs" />
-    <Compile Include="Areas\People\Models\Person\RecRegInfo.cs" />
-    <Compile Include="Areas\People\Models\Person\VolunteerModel.cs" />
+    <Compile Include="Areas\People\Models\Person\AddressInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\BasicPersonInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\CurrentEnrollments.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\FamilyMemberInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\FamilyModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\GrowthInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\MemberInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\MemberNotesInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\PersonInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\People\Models\Person\PersonModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Areas\People\PeopleAreaRegistration.cs" />
     <Compile Include="Areas\Public\Controllers\APIContributionController.cs" />
     <Compile Include="Areas\Public\Controllers\APIMetaController.cs" />
@@ -481,7 +490,7 @@
     <EmbeddedResource Include="Areas\Public\Controllers\APITestPlan.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Areas\People\Views\Person\Old\index.html" />
+    <Content Include="Areas\People\Views\Person\index.html" />
     <Content Include="ckeditor2\build-config.js" />
     <Content Include="ckeditor2\ckeditor.js" />
     <Content Include="ckeditor2\config.js" />
@@ -638,7 +647,17 @@
     <Content Include="ckeditor2\skins\kama\images\sprites_ie6.png" />
     <Content Include="ckeditor2\skins\kama\images\toolbar_start.gif" />
     <Content Include="ckeditor2\styles.js" />
+    <Content Include="Content\bootstrap\css\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="Content\bootstrap\js\bootstrap.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\chosen\chosen-sprite%402x.png" />
+    <Content Include="Content\styles\datepicker.css" />
+    <Content Include="Content\js\bootstrap-datepicker.js" />
     <Content Include="Content\js\dialog-patch.js" />
     <Content Include="Content\js\Images\cut.png" />
     <Content Include="Content\js\Images\door.png" />
@@ -650,6 +669,7 @@
     <Content Include="Content\js\jquery-1.9.1.js" />
     <Content Include="Content\js\jquery-1.9.1.min.js" />
     <Content Include="Content\js\jquery-migrate-1.1.0.js" />
+    <Content Include="Content\js\jquery.address-1.5.js" />
     <Content Include="Content\js\jquery.alerts.js" />
     <Content Include="Content\js\jquery.contextmenu.r2.js" />
     <Content Include="Content\styles\jquery.alerts.css" />
@@ -766,6 +786,7 @@
     <Content Include="Content\styles\search.css" />
     <Content Include="Errors\AppOffline.htm" />
     <Content Include="healthcheck.txt" />
+    <Content Include="images\28pix.gif" />
     <Content Include="images\bullet.png" />
     <Content Include="images\bvcms-provided.png" />
     <Content Include="images\dnarrow.png" />
@@ -874,11 +895,14 @@
     <Content Include="images\calendar.gif" />
     <Content Include="images\Home.png" />
     <Content Include="images\RapidSSL_SEAL-90x50.gif" />
+    <Content Include="images\unknownsm.jpg" />
     <Content Include="MembershipAutomation2.py" />
     <Content Include="Scripts\compose.js" />
     <Content Include="Scripts\Bundles.js" />
     <Content Include="Scripts\Bundle.js" />
     <Content Include="Scripts\AdvancedSearch.js" />
+    <Content Include="Scripts\headermenu2.js" />
+    <Content Include="Scripts\Person1.js" />
     <Content Include="Scripts\Person2.js" />
     <Content Include="Scripts\TotalsByRange.js" />
     <Content Include="Scripts\dropdown.js" />
@@ -1568,7 +1592,7 @@
     <Content Include="Areas\People\Views\Person\Snapshot.cshtml" />
     <Content Include="Areas\People\Views\Person\Toolbar.cshtml" />
     <Content Include="Areas\People\Views\Person\Dialogs.cshtml" />
-    <Content Include="Areas\People\Views\Person\Involvement.cshtml" />
+    <Content Include="Areas\People\Views\Person\DisplayTemplates\CurrentEnrollments.cshtml" />
     <Content Include="Areas\People\Views\Person\MemberProfile.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
@@ -2230,6 +2254,7 @@
     <Content Include="App_Code\Helper.cshtml" />
     <Content Include="Views\Shared\NewHeader.cshtml" />
     <Content Include="Views\Shared\OldHeader.cshtml" />
+    <Content Include="Views\Shared\DatePickerDefaults2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -2473,6 +2498,7 @@
     <Folder Include="Areas\Manage\Models\Reports\" />
     <Folder Include="Areas\OnlineReg\Models\Payments\" />
     <Folder Include="Areas\OnlineReg\Views\Shared\" />
+    <Folder Include="Areas\People\Models\Person\Old\" />
     <Folder Include="Areas\People\Views\Shared\" />
     <Folder Include="Areas\Public\Views\Shared\" />
     <Folder Include="Areas\Search\Views\Shared\" />

@@ -1,6 +1,5 @@
 ﻿$(function () {
     $("button.trigger-dropdown").dropdown();
-    $("input.date").datepicker();
     /* accordion */
     $(".accordion h3").click(function () {
         var h = $(".accordion h3.active");
@@ -11,7 +10,7 @@
     });
     /* end accordion */
     /* set up modals/dialogs */
-    $('body').on('click', 'a[data-modal-id]', function (e) {
+    $('a[data-modal-id]').live('click', function (e) {
         e.preventDefault();
         var modalLocation = $(this).attr('data-modal-id');
         $('#' + modalLocation).dialog();
@@ -19,24 +18,28 @@
     /* end modal */
     /* edit button for form
         will need more advanced config for form save/cancel */
-    //$("button.display").click(function (e) {
-    //    e.preventDefault();
-    //    $("fieldset.display").hide();
-    //    $("fieldset.edit").show();
-    //    $(this).hide().siblings(".edit").show();
-    //}).siblings("button.btn-neutral").click(function (e) {
-    //    e.preventDefault();
-    //    $("fieldset.display").show();
-    //    $("fieldset.edit").hide();
-    //    $(this).hide().siblings(".btn-primary").hide().siblings(".display").show();
-    //});
+    $("button.display").click(function (e) {
+        e.preventDefault();
+        $("fieldset.display").hide();
+        $("fieldset.edit").show();
+        $(this).hide().siblings(".edit").show();
+    }).siblings("button.btn-neutral").click(function (e) {
+        e.preventDefault();
+        $("fieldset.display").show();
+        $("fieldset.edit").hide();
+        $(this).hide().siblings(".btn-primary").hide().siblings(".display").show();
+    });
     /* end edit button */
 
     /* local environment js */
     /*                                  */
-    if (window.location.hash) displayPane(window.location.hash, false);
-    else displayPane("#personal", false);
-    $("#nav-tabs a").click(function (e) {
+    if (window.location.hash)
+        displayPane(window.location.hash, false);
+    else
+        displayPane("#personal", false);
+
+    //Dave: looks like this only works on the first level tab, also, I need to do JIT loading of panes.
+    $("#nav-tabs a").click(function (e) { 
         e.preventDefault();
         if (!$(this).parents(".active").size()) {
             $($(this).attr("href")).addClass("loading");
@@ -44,6 +47,7 @@
                 displayPane("#" + $(".pane.loading").removeClass("loading").attr("id"), true);
             });
         }
+        return false; // Dave: I put this in to try to fix something, did not help
     });
     /* demo sorting styles */
     $("th a").live("click", function (e) {
@@ -61,11 +65,12 @@
 });
 function displayPane(hash, pushURL) {
     $(hash).fadeIn("fast", function () {
-        $("#nav-tabs li.active").removeClass("active");
+        $("li.active", "#person").removeClass("active");
         $("a[href=#" + $(".pane:visible").attr("id") + "]").parents("li:eq(0)").addClass("active");
-        if (pushURL && window.history && window.history.pushState && window.history.replaceState) {
-            window.location.replace(hash);
-            window.history.pushState(null, null, window.location.href);
-        }
+        // Dave: this is doing something weird, commented out
+        //if (pushURL && window.history && window.history.pushState && window.history.replaceState) {
+        //    window.location.replace(hash);
+        //    window.history.pushState(null, null, window.location.href);
+        //}
     });
 }

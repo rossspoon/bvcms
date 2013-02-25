@@ -1,6 +1,6 @@
 ﻿@model CmsWeb.Areas.People.Models.Person.PersonModel
 <div id="snapshot" class="nine columns alpha">
-    <img alt="portrait" border="0" src="/Image.aspx?portrait=1&id=@Model.displayperson.SmallPicId" />
+    <img src="@Model.displayperson.Picture.SmallUrl" alt="" />
     <h1>@Model.Name</h1>
     <span class="role">@Model.Person.FamilyPosition.Description</span>
     <ul class="attributes">

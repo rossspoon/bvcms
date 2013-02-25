@@ -9,21 +9,37 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     @if (newlook)
     {
-        @Styles.Render("~/Content/styles/css2")
+        if (ViewBag.OnNewPage == true)
+        {
+            @Styles.Render("~/Content/styles/new2/css")
+        }
+        else
+        {
+            @Styles.Render("~/Content/styles/new/css")
+        }
         <link href="~/Content/font/font-awesome.min.css" rel="stylesheet" />
         @RenderSection("head", required: false)
         <style type="text/css">
             #header { background-color: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
         </style>
-        @Scripts.Render("~/bundles/main-js")
+        if (ViewBag.OnNewPage == true)
+        {
+            @Scripts.Render("~/bundles/main2-js")
+            @Html.Partial("DatePickerDefaults2")
+        }
+        else
+        {
+            @Scripts.Render("~/bundles/main-js")
+            @Html.Partial("DatePickerDefaults")
+        }
     }
     else
     {
         @Styles.Render("~/Content/styles/css")
         @RenderSection("head", required: false)
         @Scripts.Render("~/bundles/js")
+        @Html.Partial("DatePickerDefaults")
     }
-    @Html.Partial("DatePickerDefaults")
     @RenderSection("scripts", required: false)
 </head>
 <body>

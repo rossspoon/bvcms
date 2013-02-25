@@ -14,8 +14,7 @@
 }
 @section scripts
 {
-    @Scripts.Render("~/bundles/single/person-js")
-    @Scripts.Render("~/bundles/single/person2-js")
+    @Scripts.Render("~/bundles/person-js")
 }
 @Html.Hidden("newlook", "true")
 @Html.Hidden("PeopleId", Model.displayperson.PeopleId)
@@ -36,7 +35,7 @@
         </ul>
     </header>
     <nav id="nav-tabs">
-        <ul>
+        <ul class="nav nav-tabs">
             <li><a href="#personal">Personal</a></li>
             <li><a href="#involvement">Involvement</a></li>
             <li><a href="#member-profile">Member Profile</a></li>
@@ -45,16 +44,29 @@
             <li><a href="#comments" class="omega">Comments</a></li>
         </ul>
     </nav>
-
     <div id="personal" class="pane">
         <form method="post" class="DisplayEdit">
             @Html.DisplayFor(m => m.displayperson.basic)
         </form>
     </div>
-
-    @Html.Partial("Involvement")
-    @Html.Partial("MemberProfile")
-
+    <div id="involvement" class="pane">
+        <ul class="nav nav-tabs">
+            <li><a href="#current-tab"><span>Current</span></a></li>
+            <li><a id="previous-link" href="#previous-tab"><span>Previous</span></a></li>
+            <li><a id="pending-link" href="#pending-tab"><span>Pending</span></a></li>
+            <li><a id="attendance-link" href="#attendance-tab"><span>Attendance History</span></a></li>
+            <li><a id="recreg-link" href="#recreg-tab"><span>Registration</span></a></li>
+        </ul>
+        <div id="current-tab">
+            <form action="/People/Person/EnrollGrid/@Model.displayperson.PeopleId">
+            </form>
+        </div>
+    </div>
+    <div id="member-profile" class="pane">
+        <form method="post" class="DisplayEdit">
+            @Html.Partial("MemberProfile")
+        </form>
+    </div>
 </section>
 
 @section PopupsPlaceholder

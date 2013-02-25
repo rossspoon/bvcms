@@ -24,8 +24,11 @@
 
 @helper PersonPictureAndLink(FamilyMemberInfo m)
 {
-    <a href="/People/Person/Index/@m.Id"><img src="/Image.aspx?portrait=1&id=@m.SmallPicId" alt="" /><span style='color: @m.Color'>@m.Name</span>@Html.Raw(m.SpouseIndicator) @Age(@m.Age)</a>
-    <div>@m.Email</div>
+    <a href="/People/Person/Index/@m.Id">
+        <img src="@m.Pictures.ThumbUrl" alt="" />
+        <span>@m.Name @Html.Raw(m.SpouseIndicator) @Age(@m.Age)<br/>
+        @m.Email</span>
+    </a>
 }
 @helper Age(int? age)
 {

@@ -19,10 +19,16 @@ namespace CmsWeb.Areas.People.Models.Person
 
         public bool Deceased { get; set; }
         public string Name { get; set; }
-        public int? SmallPicId { get; set; }
+        public Picture Picture
+        {
+            get { return picture ?? new Picture(); }
+            set { picture = value; }
+        }
 
         public int AddressTypeId { get; set; }
         private AddressInfo _PrimaryAddr;
+        private Picture picture;
+
         public AddressInfo PrimaryAddr
         {
             get
@@ -48,7 +54,7 @@ namespace CmsWeb.Areas.People.Models.Person
 						 pp,
 						 f = pp.Family,
 						 spouse = spouse,
-						 pp.Picture.SmallId,
+						 pp.Picture,
 					 }).FirstOrDefault();
             if (i == null)
                 return null;
@@ -62,7 +68,7 @@ namespace CmsWeb.Areas.People.Models.Person
                 Deceased = p.IsDeceased ?? false,
                 FamilyId = p.FamilyId,
                 Name = p.Name,
-                SmallPicId = i.SmallId,
+                Picture = i.Picture,
                 SpouseId = p.SpouseId,
 
                 member = new MemberInfo

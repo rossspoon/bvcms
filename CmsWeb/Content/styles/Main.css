@@ -1,6 +1,10 @@
 #main {
     font-size: 12px;
 }
+/* Dave: Don't know why Ihad to remove the border on this */
+#nav-tabs {
+    border: none;
+}
 
 #nav-family .group ul.members li a img {
     width: auto;

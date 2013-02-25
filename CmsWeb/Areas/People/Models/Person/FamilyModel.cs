@@ -34,13 +34,13 @@ namespace CmsWeb.Areas.People.Models.Person
             {
                 var mindt = DateTime.Parse("1/1/1900");
                 members = from m in DbUtil.Db.People
-                           where m.FamilyId == Person.FamilyId
-                           orderby
-                                m.DeceasedDate ?? mindt,
-                                m.PositionInFamilyId,
-                                m.PositionInFamilyId == 10 ? m.GenderId : 0,
-                                m.Age descending, m.Name2
-                           select m;
+                          where m.FamilyId == Person.FamilyId
+                          orderby
+                               m.DeceasedDate ?? mindt,
+                               m.PositionInFamilyId,
+                               m.PositionInFamilyId == 10 ? m.GenderId : 0,
+                               m.Age descending, m.Name2
+                          select m;
             }
             return members;
         }
@@ -57,16 +57,32 @@ namespace CmsWeb.Areas.People.Models.Person
             var q2 = from m in q
                      select new FamilyMemberInfo
                      {
-                        Id = m.PeopleId,
-                        SmallPicId = m.Picture.SmallId,
-                        Name = m.Name,
-                        Age = m.Age,
-                        Color = m.DeceasedDate != null ? "red" : "auto",
-                        PositionInFamily = m.FamilyPosition.Code,
-                        SpouseIndicator = m.PeopleId == Person.SpouseId ? "*" : "&nbsp;",
-                        Email = m.EmailAddress
+                         Id = m.PeopleId,
+                         Pictures = m.Picture,
+                         Name = m.Name,
+                         Age = m.Age,
+                         Color = m.DeceasedDate != null ? "red" : "auto",
+                         PositionInFamily = m.FamilyPosition.Code,
+                         SpouseIndicator = m.PeopleId == Person.SpouseId ? "*" : "&nbsp;",
+                         Email = m.EmailAddress
                      };
-            return q2.Skip(Pager.StartRow).Take(Pager.PageSize);
+            var list = q2.ToList();
+            foreach (var m in list)
+            {
+                if (m.Pictures == null)
+                    m.Pictures = new Picture();
+                if (!m.Pictures.ThumbId.HasValue && m.Pictures.LargeId.HasValue)
+                {
+                    var i = ImageData.DbUtil.Db.Images.SingleOrDefault(im => m.Pictures.LargeId == im.Id);
+                    if (i != null)
+                    {
+                        var th = ImageData.Image.NewImageFromBits(i.Bits, 50, 50);
+                        m.Pictures.ThumbId = th.Id;
+                    }
+                }
+            }
+            DbUtil.Db.SubmitChanges();
+            return list.Skip(Pager.StartRow).Take(Pager.PageSize);
         }
         public class RelatedFamilyInfo
         {
@@ -77,32 +93,32 @@ namespace CmsWeb.Areas.People.Models.Person
             public string Description { get; set; }
             public string Name { get; set; }
         }
-         public IEnumerable<RelatedFamilyInfo> RelatedFamilies()
-         {
-             var rf1 = from rf in Family.RelatedFamilies1
-                       let hh = rf.RelatedFamily2.HeadOfHousehold
-                       select new RelatedFamilyInfo
-                       {
-                           Id = Person.FamilyId,
-                           Id1 = rf.FamilyId,
-                           Id2 = rf.RelatedFamilyId,
-                           PeopleId = hh != null ? hh.PeopleId : 0,
-                           Name = "The " + (hh != null ? hh.Name : "?") + " Family",
-                           Description = rf.FamilyRelationshipDesc
-                       };
-             var rf2 = from rf in Family.RelatedFamilies2
-                       let hh = rf.RelatedFamily1.HeadOfHousehold
-                       select new RelatedFamilyInfo
-                       {
-                           Id = Person.FamilyId,
-                           Id1 = rf.FamilyId,
-                           Id2 = rf.RelatedFamilyId,
-                           PeopleId = hh != null ? hh.PeopleId : 0,
-                           Name = "The " + (hh != null ? hh.Name : "?") + " Family",
-                           Description = rf.FamilyRelationshipDesc
-                       };
-             var q = rf1.Union(rf2);
-             return q;
-         }
+        public IEnumerable<RelatedFamilyInfo> RelatedFamilies()
+        {
+            var rf1 = from rf in Family.RelatedFamilies1
+                      let hh = rf.RelatedFamily2.HeadOfHousehold
+                      select new RelatedFamilyInfo
+                      {
+                          Id = Person.FamilyId,
+                          Id1 = rf.FamilyId,
+                          Id2 = rf.RelatedFamilyId,
+                          PeopleId = hh != null ? hh.PeopleId : 0,
+                          Name = "The " + (hh != null ? hh.Name : "?") + " Family",
+                          Description = rf.FamilyRelationshipDesc
+                      };
+            var rf2 = from rf in Family.RelatedFamilies2
+                      let hh = rf.RelatedFamily1.HeadOfHousehold
+                      select new RelatedFamilyInfo
+                      {
+                          Id = Person.FamilyId,
+                          Id1 = rf.FamilyId,
+                          Id2 = rf.RelatedFamilyId,
+                          PeopleId = hh != null ? hh.PeopleId : 0,
+                          Name = "The " + (hh != null ? hh.Name : "?") + " Family",
+                          Description = rf.FamilyRelationshipDesc
+                      };
+            var q = rf1.Union(rf2);
+            return q;
+        }
     }
 }

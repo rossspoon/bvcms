@@ -27,14 +27,18 @@ namespace CmsWeb.Areas.People.Models.Person
     {
         public CodeInfo(object value, IEnumerable<CodeValueItem> items, string valuefield = "Id")
         {
-            Value = value.ToString();
+            if (value != null)
+                Value = value.ToString();
             Items = new SelectList(items, valuefield, "Value", value);
         }
         public string Value { get; set; }
         public SelectList Items { get; set; }
         public override string ToString()
         {
-            return Items.Single(ii => ii.Value == Value).Text;
+            var i = Items.SingleOrDefault(ii => ii.Value == Value);
+            if (i == null)
+                return "";
+            return i.Text;
         }
     }
 
