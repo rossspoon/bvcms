@@ -2255,6 +2255,10 @@
     <Content Include="Views\Shared\NewHeader.cshtml" />
     <Content Include="Views\Shared\OldHeader.cshtml" />
     <Content Include="Views\Shared\DatePickerDefaults2.cshtml" />
+    <Content Include="Views\Shared\SiteLayout2.cshtml" />
+    <Content Include="Views\Shared\Dialogs.cshtml" />
+    <Content Include="Views\Shared\Footer.cshtml" />
+    <Content Include="Views\Shared\Notices.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />

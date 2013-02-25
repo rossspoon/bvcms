@@ -37,7 +37,6 @@ namespace CmsWeb.Areas.People.Controllers
             if (!DbUtil.Db.UserPreference("newlook3", "false").ToBool()
                 || !DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
                 return Redirect(Request.RawUrl.ToLower().Replace("people/person", "person"));
-		    ViewBag.OnNewPage = true;
 			var m = new PersonModel(id);
 			if (User.IsInRole("Access"))
 			{

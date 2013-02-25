@@ -2,36 +2,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-@{
-    var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
-}
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    @{ var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true"; }
     @if (newlook)
     {
-        if (ViewBag.OnNewPage == true)
-        {
-            @Styles.Render("~/Content/styles/new2/css")
-        }
-        else
-        {
-            @Styles.Render("~/Content/styles/new/css")
-        }
+        @Styles.Render("~/Content/styles/new/css")
         <link href="~/Content/font/font-awesome.min.css" rel="stylesheet" />
         @RenderSection("head", required: false)
         <style type="text/css">
             #header { background-color: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
         </style>
-        if (ViewBag.OnNewPage == true)
-        {
-            @Scripts.Render("~/bundles/main2-js")
-            @Html.Partial("DatePickerDefaults2")
-        }
-        else
-        {
-            @Scripts.Render("~/bundles/main-js")
-            @Html.Partial("DatePickerDefaults")
-        }
+        @Scripts.Render("~/bundles/main-js")
+        @Html.Partial("DatePickerDefaults")
     }
     else
     {
@@ -43,134 +26,27 @@
     @RenderSection("scripts", required: false)
 </head>
 <body>
-@if (Util.UrgentMessage.HasValue())
-{
-        <div id='urgentNotice'>@Util.UrgentMessage</div>
-}
-@if (DbUtil.TopNotice().HasValue())
-{
-        <div id='TopNotice'>@Html.Raw(DbUtil.TopNotice())</div>
-}
-@if (Request.Browser.Type == "IE7")
-{
-        <div id="urgentNotice">You are running IE7. This application requires IE8+, Firefox, Chrome or Safari</div>
-}
-@if (newlook)
-{
-    Html.RenderPartial("NewHeader");
-    <section id="main" class="container">
-        <section class="sixteen columns">
-            @RenderBody()
-        </section>
-    </section>
-    <footer class="container">
-    <p class="vcard ten columns alpha">
-      <span class="org">@DbUtil.Db.Setting("nameofchurch","Name of Church")</span>
-      <span class="phone">@DbUtil.Db.Setting("phone","phone")</span>
-      <span class="email">@DbUtil.AdminMail</span>
-    </p>
-    <p class="powered six columns omega">Powered by BVCMS</p>
-    @if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
+    @Html.Partial("Notices")
+    @if (newlook)
     {
-        <br />
-        <b>Menus:</b>
-        @(Util.Helpfile)@:_Menu.cshtml<br />
-        <b>Tutorials:</b>
-        @(Util.Helpfile)@:.cshtml
-    }		  
-    @{
-        var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
-        if (File.Exists(tutorialFile))
-        {
-            Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
-        }
-    }	
-  </footer>
-}
-else
-{
-<div id="container">
-    @Html.Partial("OldHeader")
-    <div id="main">
-        @RenderBody()
-        @if (DbUtil.Db.Setting("ShowTutorialFileNames", "false") == "true")
-        {
-            <br />
-            <b>Menus:</b>
-            @(Util.Helpfile)@:_Menu.cshtml<br />
-            <b>Tutorials:</b>
-            @(Util.Helpfile)@:.cshtml
-        }		  
-        @{
-            var tutorialFile = Server.MapPath(".") + "/Content/Tutorials/" + Util.Helpfile + ".cshtml";
-            if (File.Exists(tutorialFile))
-            {
-                Html.RenderPartial("/Content/Tutorials/" + Util.Helpfile + ".cshtml");
-            }
-        }	
-    </div>
-</div>
-}
-   <div id="ChooseLabelType" class="modalPopup" style="display: none; width: 400px;
-                                               padding: 10px">
-        <table>
-            <tr>
-                <td style="margin: 3px; border: solid thin black" nowrap="nowrap">
-                    <input type="radio" id="addressedto1" name="addressedto" value="Individual" checked="checked"
-                        title="Addressed to individuals" />
-                    Individual<br />
-                    <input type="radio" id="addressedto2" name="addressedto" value="Family" title="Addressed as a family when there are children" />
-                    Family<br />
-                    <input type="radio" id="addressedto6" name="addressedto" value="FamilyMembers" title="Includes entire Family as individuals" />
-                    Family Members<br />
-                    <input type="radio" id="addressedto3" name="addressedto" value="CouplesBoth" title="Addressed to a couple, if both are in selection" />
-                    Couples (both)<br />
-                    <input type="radio" id="addressedto4" name="addressedto" value="CouplesEither" title="Addressed to a couple, if one or both are in selection" />
-                    Couples (either)<br />
-                    <input type="radio" id="addressedto5" name="addressedto" value="ParentsOf" title="Addressed to parents or parent" />
-                    Parents Of<br />
-                </td>
-                <td>
-                    <input type="checkbox" id="UseTitle" name="UseTitle" />
-                    Use Titles<br />
-                    <input type="checkbox" id="SortZip" name="SortZip" />
-                    Sort by Zip<br />
-                    <input type="checkbox" id="UsePhone" name="UsePhone" />
-                    Include Phone<br />
-						  <br />
-						  Skip: <input id="SkipNum" name="SkipNum" size="3" value="0"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="right">
-                    <input id="cmdOK" type="button" value="OK" />
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div id="ExportStartEnd" class="modalDiv dialog" style="display: none">
-        <table>
-        <tr><th colspan="2">Select a date range</th></tr>
-        <tr><th>Start Date</th><td><input id="startdt" type="text"  class='datepicker' /></td></tr>
-        <tr><th>End Date</th><td><input id="enddt" type="text" class='datepicker' /></td></tr>
-        <tr><td class="right" colspan="2">
-            <a class="bt" id="ExportStartEndRun" href="#"> run </a></td>
-        </tr>
-        </table>
-    </div>
-    <div id="SetExtraValues" class="modalDiv dialog" style="display: none">
-        <table>
-        <tr><th>Field</th><td><input id="field" type="text" /></td></tr>
-        <tr><th>Value</th><td><input id="value" type="text" /></td></tr>
-        <tr><td class="right" colspan="2">
-            <a class="bt" id="SetExtraValuesRun" href="#"> OK </a></td>
-        </tr>
-        </table>
-    </div>
-    <div id="AddDialog">
-        <iframe id="AddDialogiframe" style="width:99%;height:99%;border-width:0px"></iframe>
-    </div>
-    <div id="darkLayer" class="darkClass" style="display:none"></div>
-@RenderSection("PopupsPlaceholder", required: false)
+        Html.RenderPartial("NewHeader");
+        <section id="main" class="container">
+            <section class="sixteen columns">
+                @RenderBody()
+            </section>
+        </section>
+        @Html.Partial("Footer")
+    }
+    else
+    {
+        <div id="container">
+            @Html.Partial("OldHeader")
+            <div id="main">
+                @RenderBody()
+            </div>
+        </div>
+    }
+    @Html.Partial("Dialogs")
+    @RenderSection("PopupsPlaceholder", required: false)
 </body>
 </html>

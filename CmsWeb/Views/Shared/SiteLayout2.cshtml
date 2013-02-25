@@ -1,0 +1,29 @@
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    @Styles.Render("~/Content/styles/new2/css")
+    <link href="~/Content/font/font-awesome.min.css" rel="stylesheet" />
+    @RenderSection("head", required: false)
+    <style type="text/css">
+        #header { background-color: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
+    </style>
+    @Scripts.Render("~/bundles/main2-js")
+    @Html.Partial("DatePickerDefaults2")
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    @Html.Partial("Notices")
+    @Html.Partial("NewHeader")
+    <section id="main" class="container">
+        <section class="sixteen columns">
+            @RenderBody()
+        </section>
+    </section>
+    @Html.Partial("Footer")
+    @Html.Partial("Dialogs")
+    @RenderSection("PopupsPlaceholder", required: false)
+</body>
+</html>
