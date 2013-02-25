@@ -35,6 +35,8 @@ namespace CmsData
 		
 		private int? _SmallId;
 		
+		private string _Name;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -72,6 +74,9 @@ namespace CmsData
 		
 		partial void OnSmallIdChanging(int? value);
 		partial void OnSmallIdChanged();
+		
+		partial void OnNameChanging(string value);
+		partial void OnNameChanged();
 		
     #endregion
 		public MemberDocForm()
@@ -280,6 +285,28 @@ namespace CmsData
 					this._SmallId = value;
 					this.SendPropertyChanged("SmallId");
 					this.OnSmallIdChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(50)")]
+		public string Name
+		{
+			get { return this._Name; }
+
+			set
+			{
+				if (this._Name != value)
+				{
+				
+                    this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
 				}
 
 			}

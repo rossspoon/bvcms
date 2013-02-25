@@ -1,45 +1,49 @@
-/* Dave: I am using this stylesheet to override things in layout.css */
 #main {
     font-size: 12px;
 }
+/* Dave: Don't know why Ihad to remove the border on this */
+#nav-tabs {
+    border: none;
+}
+
 #nav-family .group ul.members li a img {
     width: auto;
     height: auto;
 }
 
-    #main a {
-        text-decoration: none;
-    }
-
-    .dropdown-menu {
-        z-index: 999;
-    }
-.dropdown-menu li a {
+#main a {
     text-decoration: none;
 }
 
-.dropdown-menu li.divider {
-    border-bottom: 1px solid #fff;
+.dropdown-menu {
+    z-index: 999;
 }
 
-.dropdown-menu li.header {
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 70%;
-}
+    .dropdown-menu li a {
+        text-decoration: none;
+    }
 
-.dropdown-menu a,
-.dropdown-menu a:visited,
-.dropdown-menu a:active,
-.dropdown-menu a:focus
- {
-    color: #fff;
-}
+    .dropdown-menu li.divider {
+        border-bottom: 1px solid #fff;
+    }
 
-    .dropdown-menu a:hover {
-        background-color: #111;
+    .dropdown-menu li.header {
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 70%;
+    }
+
+    .dropdown-menu a,
+    .dropdown-menu a:visited,
+    .dropdown-menu a:active,
+    .dropdown-menu a:focus {
         color: #fff;
     }
+
+        .dropdown-menu a:hover {
+            background-color: #111;
+            color: #fff;
+        }
 
 #header {
     font-size: 16px;
@@ -92,11 +96,13 @@ a, a:visited, a:focus {
     font-size: 120%;
     padding: .2em 1em .2em 1em;
 }
+
 #tooltip h3 {
     font-size: 14px;
     font-weight: bold;
     height: 17px;
 }
+
 #tooltip div.body {
     font-size: 12px;
 }
@@ -501,6 +507,11 @@ div.toolbar > ul {
             div.toolbar > ul > li > a:hover {
                 background-position: 0 -15px;
             }
+
+fieldset .control-group input.date {
+    width: 82%;
+    background: none;
+}
 
 input.wide {
     border: 1px solid #CCCCCC;
@@ -965,18 +976,18 @@ table.center {
     margin-left: auto;
     margin-right: auto;
 }
-.darkClass
-{
+
+.darkClass {
     background-color: white;
-    filter:alpha(opacity=50); /* IE */
+    filter: alpha(opacity=50); /* IE */
     opacity: 0.5; /* Safari, Opera */
-    -moz-opacity:0.50; /* FireFox */
+    -moz-opacity: 0.50; /* FireFox */
     z-index: 1002;
     height: 100%;
     width: 100%;
-    background-repeat:no-repeat;
-    background-position:center;
-    position:absolute;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
     top: 0px;
     left: 0px;
 }

@@ -1,0 +1,11 @@
+﻿@model CmsWeb.Areas.People.Models.Person.CodeInfo
+@{
+    var label = ViewData.ModelMetadata.AdditionalValues["label"];
+    var classes = ViewData.ModelMetadata.AdditionalValues["classes"];
+}
+<div class="control-group @classes">
+    <label>@label</label>
+    <div class="controls">
+        <p>@Model</p>
+    </div>
+</div>

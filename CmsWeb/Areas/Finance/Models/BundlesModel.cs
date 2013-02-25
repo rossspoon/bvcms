@@ -47,6 +47,7 @@ namespace CmsWeb.Areas.Finance.Models
                                     DepositDate = b.DepositDate,
                                     TotalBundle = (b.TotalCash ?? 0) + (b.TotalChecks ?? 0) + (b.TotalEnvelopes ?? 0),
                                     TotalItems = b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount ?? 0),
+                                    ItemCount = b.BundleDetails.Count(),
                                     TotalNonTaxDed = b.BundleDetails.Where(bd => bd.Contribution.ContributionFund.NonTaxDeductible == true || bd.Contribution.ContributionTypeId == ContributionTypeCode.NonTaxDed).Sum(bd => bd.Contribution.ContributionAmount ?? 0),
                                     FundId = b.FundId,
                                     Fund = b.Fund.FundName,
@@ -66,7 +67,7 @@ namespace CmsWeb.Areas.Finance.Models
                             orderby b.BundleHeaderType.Description
                             select b;
                         break;
-                    case "Deposit Date":
+                    case "Deposited":
                         q = from b in q
                             orderby b.DepositDate
                             select b;
@@ -76,9 +77,22 @@ namespace CmsWeb.Areas.Finance.Models
                             orderby b.TotalCash ?? 0 + b.TotalChecks ?? 0 + b.TotalEnvelopes ?? 0
                             select b;
                         break;
-                    case "Posting Date":
+                    case "Items":
                         q = from b in q
-                            orderby b.BundleDetails.Max(bd => bd.Contribution.PostingDate)
+                            let totalItems = b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount ?? 0)
+                            orderby totalItems
+                            select b;
+                        break;
+                    case "Count":
+                        q = from b in q
+                            let itemCount = b.BundleDetails.Count()
+                            orderby itemCount
+                            select b;
+                        break;
+                    case "Posted":
+                        q = from b in q
+                            let postingDate = b.BundleDetails.Max(bd => bd.Contribution.PostingDate)
+                            orderby postingDate
                             select b;
                         break;
                     case "Id":
@@ -96,7 +110,7 @@ namespace CmsWeb.Areas.Finance.Models
                             orderby b.BundleHeaderType.Description descending 
                             select b;
                         break;
-                    case "Deposit Date":
+                    case "Deposited":
                         q = from b in q
                             orderby b.DepositDate descending 
                             select b;
@@ -106,7 +120,19 @@ namespace CmsWeb.Areas.Finance.Models
                             orderby b.TotalCash ?? 0 + b.TotalChecks ?? 0 + b.TotalEnvelopes ?? 0 descending 
                             select b;
                         break;
-                    case "Posting Date":
+                    case "Items":
+                        q = from b in q
+                            let totalItems = b.BundleDetails.Sum(bd => bd.Contribution.ContributionAmount ?? 0)
+                            orderby totalItems descending 
+                            select b;
+                        break;
+                    case "Count":
+                        q = from b in q
+                            let itemCount = b.BundleDetails.Count()
+                            orderby itemCount descending 
+                            select b;
+                        break;
+                    case "Posted":
                         q = from b in q
                             orderby b.BundleDetails.Max(bd => bd.Contribution.PostingDate) descending 
                             select b;
@@ -130,6 +156,7 @@ namespace CmsWeb.Areas.Finance.Models
         public decimal? TotalBundle { get; set; }
         public decimal? TotalItems { get; set; }
         public decimal? TotalNonTaxDed { get; set; }
+        public int ItemCount { get; set; }
         public int? FundId { get; set; }
         public string Fund { get; set; }
         public string Status { get; set; }

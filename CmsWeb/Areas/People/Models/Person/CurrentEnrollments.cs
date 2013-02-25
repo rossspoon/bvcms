@@ -7,12 +7,12 @@ using UtilityExtensions;
 
 namespace CmsWeb.Areas.People.Models.Person
 {
-    public class PersonEnrollmentsModel
+    public class CurrentEnrollments
     {
         private int PeopleId;
         public CmsData.Person person { get; set; }
         public PagerModel2 Pager { get; set; }
-        public PersonEnrollmentsModel(int id)
+        public CurrentEnrollments(int id)
         {
             PeopleId = id;
             person = DbUtil.Db.LoadPersonById(id);

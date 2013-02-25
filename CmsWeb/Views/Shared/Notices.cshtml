@@ -1,0 +1,12 @@
+﻿@if (Util.UrgentMessage.HasValue())
+{
+    <div id='urgentNotice'>@Util.UrgentMessage</div>
+}
+@if (DbUtil.TopNotice().HasValue())
+{
+    <div id='TopNotice'>@Html.Raw(DbUtil.TopNotice())</div>
+}
+@if (Request.Browser.Type == "IE7")
+{
+    <div id="urgentNotice">You are running IE7. This application requires IE8+, Firefox, Chrome or Safari</div>
+}

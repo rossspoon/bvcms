@@ -75,9 +75,9 @@
                                 }
                                 <li>@Helper.AnchorLink("Weekly Decisions", "/Report/ChurchAttendanceRpt.aspx", "_blank")</li>
                                 <li>@Helper.AnchorLink("Decision Summary", "/Report/DecisionSummary.aspx", "_blank")</li>
-                                <li>@Html.ActionLink("First Time Attenders", "NthTimeVisitors", "Home", new { Id=1 }, null)</li>
-                                <li>@Html.ActionLink("Sedond Time Attenders", "NthTimeVisitors", "Home", new { Id=2 }, null)</li>
-                                <li>@Html.ActionLink("Third Time Attenders", "NthTimeVisitors", "Home", new { Id=3 }, null)</li>
+                                <li>@Html.ActionLink("First Time Attenders", "NthTimeAttenders", "Home", new { Id=1 }, null)</li>
+                                <li>@Html.ActionLink("Second Time Attenders", "NthTimeAttenders", "Home", new { Id=2 }, null)</li>
+                                <li>@Html.ActionLink("Third Time Attenders", "NthTimeAttenders", "Home", new { Id=3 }, null)</li>
                                 <li>@Html.ActionLink("Extra Values", "ExtraValues", "Reports", new { Area = "Main" }, null)</li>
                             </ul>
                         </div>
@@ -151,7 +151,7 @@
                                     {
                                         <li>@Html.ActionLink("Update for a Tag", "UpdateFields", "Batch", new { Area = "Manage" }, null)</li>
                                         <li>@Helper.AnchorLink(Util2.OrgMembersOnly ? "OrgMembersOnly is on" : "OrgMembersOnly is off", "/Admin/ToggleOrgMembersOnly.ashx")</li>
-                                        <li>@Helper.AnchorLink(Util2.OrgLeadersOnly ? "OrgLeadersOnly is on" : "OrgLeadersOnly is off", "/Admin/ToggleOrgMembersOnly.ashx")</li>
+                                        <li>@Helper.AnchorLink(Util2.OrgLeadersOnly ? "OrgLeadersOnly is on" : "OrgLeadersOnly is off", "/Admin/ToggleOrgLeadersOnly.ashx")</li>
                                         <li>@Html.ActionLink("Update QueryBits", "UpdateQueryBits", "Batch", new { Area = "Manage" }, null)</li>
                                         <li>@Html.ActionLink("Tag PeopleIds", "TagPeopleIds", "Batch", new { Area = "Manage" }, null)</li>
                                     }

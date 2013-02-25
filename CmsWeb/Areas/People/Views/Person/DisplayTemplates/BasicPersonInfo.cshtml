@@ -1,0 +1,37 @@
+﻿@model CmsWeb.Areas.People.Models.Person.BasicPersonInfo
+@helper SubmitRow()
+{
+    <div class="submit-row">
+        @Html.ActionLink("Edit", "BasicEdit", "Person", Model.RouteVals, Model.Classes("btn btn-neutral displayedit"))
+    </div>
+}
+@SubmitRow()
+<fieldset class="display">
+    @Html.DisplayFor(m => m.Title)
+    @Html.DisplayFor(m => m.First)
+    @Html.DisplayFor(m => m.NickName)
+    @Html.DisplayFor(m => m.Middle)
+    @Html.DisplayFor(m => m.Last)
+    @Html.DisplayFor(m => m.AltName)
+    @Html.DisplayFor(m => m.Maiden)
+    @Html.DisplayFor(m => m.Suffix)
+    @Html.DisplayFor(m => m.Gender)
+    @Html.DisplayFor(m => m.Birthday)
+    @Html.DisplayFor(m => m.MaritalStatus)
+    @Html.DisplayFor(m => m.WeddingDate)
+    @Html.DisplayFor(m => m.Occupation)
+    @Html.DisplayFor(m => m.Employer)
+    @Html.DisplayFor(m => m.School)
+    @Html.DisplayFor(m => m.Grade)
+</fieldset>
+<fieldset class="display">
+    @if (Model.DoNotContactAny)
+    {
+        @Html.DisplayFor(m => m.DoNotContactBy)
+    }
+    @Html.DisplayFor(m => m.Email1)
+    @Html.DisplayFor(m => m.CellPhone)
+    @Html.DisplayFor(m => m.Email2)
+    @Html.DisplayFor(m => m.WorkPhone)
+</fieldset>
+@SubmitRow()

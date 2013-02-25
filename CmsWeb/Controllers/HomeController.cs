@@ -65,7 +65,7 @@ namespace CmsWeb.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(v);
         }
-		public ActionResult NthTimeVisitors(int id)
+		public ActionResult NthTimeAttenders(int id)
 		{
 		    var name = "VisitNumber-" + id;
 		    var qb = DbUtil.Db.QueryBuilderClauses.FirstOrDefault(c => c.IsPublic && c.Description == name && c.SavedBy == "public");

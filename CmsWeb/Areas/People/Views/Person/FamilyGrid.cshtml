@@ -1,7 +1,7 @@
 ﻿@using CmsWeb.Areas.People.Models.Person
 @model PersonModel
 @{
-    var fm = new PersonFamilyModel(Model.displayperson.PeopleId);
+    var fm = new FamilyModel(Model.displayperson.PeopleId);
 }
 <div class="group">
     <h2>Family Members
@@ -10,7 +10,7 @@
     <ul class="members">
         @foreach (var m in fm.Members())
         {
-            if (m.Id == fm.person.PeopleId)
+            if (m.Id == fm.Person.PeopleId)
             {
                 <li class="active">@PersonPictureAndLink(m)</li>
             }
@@ -24,8 +24,11 @@
 
 @helper PersonPictureAndLink(FamilyMemberInfo m)
 {
-    <a href="/People/Person/Index/@m.Id"><img src="/Image.aspx?portrait=1&id=@m.SmallPicId" alt="" /><span style='color: @m.Color'>@m.Name</span>@Html.Raw(m.SpouseIndicator) @Age(@m.Age)</a>
-    <div>@m.Email</div>
+    <a href="/People/Person/Index/@m.Id">
+        <img src="@m.Pictures.ThumbUrl" alt="" />
+        <span>@m.Name @Html.Raw(m.SpouseIndicator) @Age(@m.Age)<br/>
+        @m.Email</span>
+    </a>
 }
 @helper Age(int? age)
 {

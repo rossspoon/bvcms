@@ -153,56 +153,56 @@ namespace CmsWeb.Areas.People.Controllers
 		[HttpPost]
 		public ActionResult FamilyGrid(int id)
 		{
-			var m = new PersonFamilyModel(id);
+			var m = new FamilyModel(id);
 			UpdateModel(m.Pager);
 			return View(m);
 		}
 		[HttpPost]
 		public ActionResult EnrollGrid(int id)
 		{
-			var m = new PersonEnrollmentsModel(id);
+			var m = new CurrentEnrollments(id);
+			UpdateModel(m.Pager);
 			DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
-			UpdateModel(m.Pager);
-			return View(m);
+			return View("DisplayTemplates/CurrentEnrollments", m);
 		}
-		[HttpPost]
-		public ActionResult PrevEnrollGrid(int id)
-		{
-			var m = new PersonPrevEnrollmentsModel(id);
-			DbUtil.LogActivity("Viewing Prev Enrollments for: {0}".Fmt(m.person.Name));
-			UpdateModel(m.Pager);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult PendingEnrollGrid(int id)
-		{
-			var m = new PersonPendingEnrollmentsModel(id);
-			DbUtil.LogActivity("Viewing Pending Enrollments for: {0}".Fmt(m.person.Name));
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult AttendanceGrid(int id, bool? future)
-		{
-			var m = new PersonAttendHistoryModel(id, future == true);
-			DbUtil.LogActivity("Viewing Attendance History for: {0}".Fmt(Session["ActivePerson"]));
-			UpdateModel(m.Pager);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult ContactsMadeGrid(int id)
-		{
-			var m = new PersonContactsMadeModel(id);
-			DbUtil.LogActivity("Viewing Contacts Tab for: {0}".Fmt(Session["ActivePerson"]));
-			UpdateModel(m.Pager);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult ContactsReceivedGrid(int id)
-		{
-			var m = new PersonContactsReceivedModel(id);
-			UpdateModel(m.Pager);
-			return View(m);
-		}
+//		[HttpPost]
+//		public ActionResult PrevEnrollGrid(int id)
+//		{
+//			var m = new PersonPrevEnrollmentsModel(id);
+//			DbUtil.LogActivity("Viewing Prev Enrollments for: {0}".Fmt(m.person.Name));
+//			UpdateModel(m.Pager);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult PendingEnrollGrid(int id)
+//		{
+//			var m = new PersonPendingEnrollmentsModel(id);
+//			DbUtil.LogActivity("Viewing Pending Enrollments for: {0}".Fmt(m.person.Name));
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult AttendanceGrid(int id, bool? future)
+//		{
+//			var m = new PersonAttendHistoryModel(id, future == true);
+//			DbUtil.LogActivity("Viewing Attendance History for: {0}".Fmt(Session["ActivePerson"]));
+//			UpdateModel(m.Pager);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult ContactsMadeGrid(int id)
+//		{
+//			var m = new PersonContactsMadeModel(id);
+//			DbUtil.LogActivity("Viewing Contacts Tab for: {0}".Fmt(Session["ActivePerson"]));
+//			UpdateModel(m.Pager);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult ContactsReceivedGrid(int id)
+//		{
+//			var m = new PersonContactsReceivedModel(id);
+//			UpdateModel(m.Pager);
+//			return View(m);
+//		}
 		[HttpPost]
 		public ActionResult IncompleteTasksGrid(int id)
 		{
@@ -275,45 +275,46 @@ namespace CmsWeb.Areas.People.Controllers
 		public ActionResult AddAboutTask(int id)
 		{
 			var p = DbUtil.Db.LoadPersonById(id);
-
+		    if (p == null || !Util.UserPeopleId.HasValue)
+		        return Content("no id");
 			var t = p.AddTaskAbout(DbUtil.Db, Util.UserPeopleId.Value, "Please Contact");
 			DbUtil.Db.SubmitChanges();
 			return Content("/Task/List/{0}".Fmt(t.Id));
 		}
 		[HttpPost]
-		public ActionResult BusinessCard(int id)
+		public ActionResult Snapshot(int id)
 		{
 			var m = new PersonModel(id);
-			return View(m.displayperson);
+			return View(m);
 		}
-		public JsonResult Schools(string term)
+		public JsonResult Schools(string query)
 		{
 			var qu = from p in DbUtil.Db.People
-					 where p.SchoolOther.Contains(term)
+					 where p.SchoolOther.Contains(query)
 					 group p by p.SchoolOther into g
 					 select g.Key;
 			return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
 		}
-		public JsonResult Employers(string term)
+		public JsonResult Employers(string query)
 		{
 			var qu = from p in DbUtil.Db.People
-					 where p.EmployerOther.Contains(term)
+					 where p.EmployerOther.Contains(query)
 					 group p by p.EmployerOther into g
 					 select g.Key;
 		    return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
 		}
-		public JsonResult Occupations(string term)
+		public JsonResult Occupations(string query)
 		{
 			var qu = from p in DbUtil.Db.People
-					 where p.OccupationOther.Contains(term)
+					 where p.OccupationOther.Contains(query)
 					 group p by p.OccupationOther into g
 					 select g.Key;
 			return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
 		}
-		public JsonResult Churches(string term)
+		public JsonResult Churches(string query)
 		{
 			var qu = from r in DbUtil.Db.ViewChurches
-					 where r.C.Contains(term)
+					 where r.C.Contains(query)
 					 select r.C;
 			return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
 		}
@@ -322,13 +323,13 @@ namespace CmsWeb.Areas.People.Controllers
 		{
 			InitExportToolbar(id);
 			var m = BasicPersonInfo.GetBasicPersonInfo(id);
-			return View(m);
+			return View("DisplayTemplates/BasicPersonInfo", m);
 		}
 		[HttpPost]
 		public ActionResult BasicEdit(int id)
 		{
 			var m = BasicPersonInfo.GetBasicPersonInfo(id);
-			return View(m);
+			return View("EditorTemplates/BasicPersonInfo", m);
 		}
 		[HttpPost]
 		public ActionResult BasicUpdate(int id)
@@ -339,7 +340,7 @@ namespace CmsWeb.Areas.People.Controllers
 			m = BasicPersonInfo.GetBasicPersonInfo(id);
 			DbUtil.LogActivity("Update Basic Info for: {0}".Fmt(m.person.Name));
 			InitExportToolbar(id);
-			return View("BasicDisplay", m);
+			return View("DisplayTemplates/BasicPersonInfo", m);
 		}
 		[HttpPost]
 		public ActionResult Reverse(int id, string field, string value, string pf)
@@ -371,121 +372,121 @@ namespace CmsWeb.Areas.People.Controllers
 			DbUtil.LogActivity("Update Address for: {0}".Fmt(m.person.Name));
 			return View("AddressDisplay", m);
 		}
-		[HttpPost]
-		public ActionResult MemberDisplay(int id)
-		{
-			var m = MemberInfo.GetMemberInfo(id);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult MemberEdit(int id)
-		{
-			var m = MemberInfo.GetMemberInfo(id);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult MemberUpdate(int id)
-		{
-			var m = MemberInfo.GetMemberInfo(id);
-			UpdateModel(m);
-			var ret = m.UpdateMember();
-			if (ret != "ok")
-			{
-				ModelState.AddModelError("MemberTab", ret);
-				return View("MemberEdit", m);
-			}
-			m = MemberInfo.GetMemberInfo(id);
-			DbUtil.LogActivity("Update Member Info for: {0}".Fmt(Session["ActivePerson"]));
-			return View("MemberDisplay", m);
-		}
-		[HttpPost]
-		public ActionResult GrowthDisplay(int id)
-		{
-			var m = GrowthInfo.GetGrowthInfo(id);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult GrowthEdit(int id)
-		{
-			var m = GrowthInfo.GetGrowthInfo(id);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult GrowthUpdate(int id)
-		{
-			var m = GrowthInfo.GetGrowthInfo(id);
-			UpdateModel(m);
-			m.UpdateGrowth();
-			DbUtil.LogActivity("Update Growth Info for: {0}".Fmt(Session["ActivePerson"]));
-			return View("GrowthDisplay", m);
-		}
-		[HttpPost]
-		public ActionResult CommentsDisplay(int id)
-		{
-			ViewData["Comments"] = Util.SafeFormat(DbUtil.Db.People.Single(p => p.PeopleId == id).Comments);
-			ViewData["PeopleId"] = id;
-			return View();
-		}
-		[HttpPost]
-		public ActionResult CommentsEdit(int id)
-		{
-			ViewData["Comments"] = DbUtil.Db.People.Single(p => p.PeopleId == id).Comments;
-			ViewData["PeopleId"] = id;
-			return View();
-		}
-		[HttpPost]
-		public ActionResult CommentsUpdate(int id, string Comments)
-		{
-			var p = DbUtil.Db.LoadPersonById(id);
-			p.Comments = Comments;
-			DbUtil.Db.SubmitChanges();
-			ViewData["Comments"] = Util.SafeFormat(Comments);
-			ViewData["PeopleId"] = id;
-			DbUtil.LogActivity("Update Comments for: {0}".Fmt(Session["ActivePerson"]));
-			return View("CommentsDisplay");
-		}
-		[HttpPost]
-		public ActionResult MemberNotesDisplay(int id)
-		{
-			var m = MemberNotesInfo.GetMemberNotesInfo(id);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult MemberNotesEdit(int id)
-		{
-			var m = MemberNotesInfo.GetMemberNotesInfo(id);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult MemberNotesUpdate(int id)
-		{
-			var m = MemberNotesInfo.GetMemberNotesInfo(id);
-			UpdateModel(m);
-			m.UpdateMemberNotes();
-			DbUtil.LogActivity("Update Member Notes for: {0}".Fmt(Session["ActivePerson"]));
-			return View("MemberNotesDisplay", m);
-		}
-		[HttpPost]
-		public ActionResult RecRegDisplay(int id)
-		{
-			var m = RecRegInfo.GetRecRegInfo(id);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult RecRegEdit(int id)
-		{
-			var m = RecRegInfo.GetRecRegInfo(id);
-			return View(m);
-		}
-		[HttpPost]
-		public ActionResult RecRegUpdate(int id)
-		{
-			var m = RecRegInfo.GetRecRegInfo(id);
-			UpdateModel(m);
-			m.UpdateRecReg();
-			DbUtil.LogActivity("Update Registration Tab for: {0}".Fmt(Session["ActivePerson"]));
-			return View("RecRegDisplay", m);
-		}
+//		[HttpPost]
+//		public ActionResult MemberDisplay(int id)
+//		{
+//			var m = MemberInfo.GetMemberInfo(id);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult MemberEdit(int id)
+//		{
+//			var m = MemberInfo.GetMemberInfo(id);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult MemberUpdate(int id)
+//		{
+//			var m = MemberInfo.GetMemberInfo(id);
+//			UpdateModel(m);
+//			var ret = m.UpdateMember();
+//			if (ret != "ok")
+//			{
+//				ModelState.AddModelError("MemberTab", ret);
+//				return View("MemberEdit", m);
+//			}
+//			m = MemberInfo.GetMemberInfo(id);
+//			DbUtil.LogActivity("Update Member Info for: {0}".Fmt(Session["ActivePerson"]));
+//			return View("MemberDisplay", m);
+//		}
+//		[HttpPost]
+//		public ActionResult GrowthDisplay(int id)
+//		{
+//			var m = GrowthInfo.GetGrowthInfo(id);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult GrowthEdit(int id)
+//		{
+//			var m = GrowthInfo.GetGrowthInfo(id);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult GrowthUpdate(int id)
+//		{
+//			var m = GrowthInfo.GetGrowthInfo(id);
+//			UpdateModel(m);
+//			m.UpdateGrowth();
+//			DbUtil.LogActivity("Update Growth Info for: {0}".Fmt(Session["ActivePerson"]));
+//			return View("GrowthDisplay", m);
+//		}
+//		[HttpPost]
+//		public ActionResult CommentsDisplay(int id)
+//		{
+//			ViewData["Comments"] = Util.SafeFormat(DbUtil.Db.People.Single(p => p.PeopleId == id).Comments);
+//			ViewData["PeopleId"] = id;
+//			return View();
+//		}
+//		[HttpPost]
+//		public ActionResult CommentsEdit(int id)
+//		{
+//			ViewData["Comments"] = DbUtil.Db.People.Single(p => p.PeopleId == id).Comments;
+//			ViewData["PeopleId"] = id;
+//			return View();
+//		}
+//		[HttpPost]
+//		public ActionResult CommentsUpdate(int id, string Comments)
+//		{
+//			var p = DbUtil.Db.LoadPersonById(id);
+//			p.Comments = Comments;
+//			DbUtil.Db.SubmitChanges();
+//			ViewData["Comments"] = Util.SafeFormat(Comments);
+//			ViewData["PeopleId"] = id;
+//			DbUtil.LogActivity("Update Comments for: {0}".Fmt(Session["ActivePerson"]));
+//			return View("CommentsDisplay");
+//		}
+//		[HttpPost]
+//		public ActionResult MemberNotesDisplay(int id)
+//		{
+//			var m = MemberNotesInfo.GetMemberNotesInfo(id);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult MemberNotesEdit(int id)
+//		{
+//			var m = MemberNotesInfo.GetMemberNotesInfo(id);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult MemberNotesUpdate(int id)
+//		{
+//			var m = MemberNotesInfo.GetMemberNotesInfo(id);
+//			UpdateModel(m);
+//			m.UpdateMemberNotes();
+//			DbUtil.LogActivity("Update Member Notes for: {0}".Fmt(Session["ActivePerson"]));
+//			return View("MemberNotesDisplay", m);
+//		}
+//		[HttpPost]
+//		public ActionResult RecRegDisplay(int id)
+//		{
+//			var m = RecRegInfo.GetRecRegInfo(id);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult RecRegEdit(int id)
+//		{
+//			var m = RecRegInfo.GetRecRegInfo(id);
+//			return View(m);
+//		}
+//		[HttpPost]
+//		public ActionResult RecRegUpdate(int id)
+//		{
+//			var m = RecRegInfo.GetRecRegInfo(id);
+//			UpdateModel(m);
+//			m.UpdateRecReg();
+//			DbUtil.LogActivity("Update Registration Tab for: {0}".Fmt(Session["ActivePerson"]));
+//			return View("RecRegDisplay", m);
+//		}
 		[HttpPost]
 		public ActionResult AddContact(int id)
 		{
@@ -735,12 +736,12 @@ namespace CmsWeb.Areas.People.Controllers
 			var m = new PersonModel(id);
 			return View(m);
 		}
-		[HttpPost]
-		public ActionResult DuplicatesGrid(int id)
-		{
-			var m = new DuplicatesModel(id);
-			return View(m);
-		}
+//		[HttpPost]
+//		public ActionResult DuplicatesGrid(int id)
+//		{
+//			var m = new DuplicatesModel(id);
+//			return View(m);
+//		}
 		public ActionResult ShowMeetings(int id, bool all)
 		{
 			if (all == true)
@@ -806,7 +807,7 @@ namespace CmsWeb.Areas.People.Controllers
 			var todt = Util.ParseMMddyy(to);
 			if (!(frdt.HasValue && todt.HasValue))
 				return Content("date formats invalid");
-
+            
 			DbUtil.LogActivity("Contribution Statement for ({0})".Fmt(id));
 
 			return new CmsWeb.Areas.Finance.Models.Report.ContributionStatementResult 
@@ -819,27 +820,9 @@ namespace CmsWeb.Areas.People.Controllers
 				useMinAmt = false,
 			};
 		}
-		public ActionResult Image(string size, int id)
+		public ActionResult Image(int id, int s)
 		{
-		    var q = from p in DbUtil.Db.People
-		            where p.PeopleId == id
-		            select new
-		                       {
-		                           p.Picture.SmallId,
-		                           p.Picture.ThumbId,
-		                           p.Picture.MediumId,
-		                       };
-		    var i = q.Single();
-            switch (size)
-            {
-                case "small":
-    				return new PictureResult(size, id);
-                case "tiny":
-    				return new ImageResult(i.ThumbId ?? 0);
-                case "medium":
-    				return new ImageResult(i.MediumId ?? 0);
-            }
-			return new ImageResult(0);
+			return new PictureResult(id, s);
 		}
 	}
 }

@@ -36,6 +36,8 @@ namespace CmsData.View
 		
 		private string _ContributionDesc;
 		
+		private string _CheckNo;
+		
 		private int _FundId;
 		
 		private string _FundName;
@@ -220,6 +222,23 @@ namespace CmsData.View
 			{
 				if (this._ContributionDesc != value)
 					this._ContributionDesc = value;
+			}
+
+		}
+
+		
+		[Column(Name="CheckNo", Storage="_CheckNo", DbType="varchar(20)")]
+		public string CheckNo
+		{
+			get
+			{
+				return this._CheckNo;
+			}
+
+			set
+			{
+				if (this._CheckNo != value)
+					this._CheckNo = value;
 			}
 
 		}

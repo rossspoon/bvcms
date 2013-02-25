@@ -1,0 +1,41 @@
+﻿@*<div id="dialogbox" title="Search People" style="width: 560px; overflow: scroll">
+    <iframe style="width: 100%; height: 99%; border-width: 0px;"></iframe>
+</div>
+<div id="memberDialog">
+    <iframe style="width: 100%; height: 99%; border-width: 0px;"></iframe>
+</div>
+
+<div id="newvalueform" style="display: none" class="roundbox">
+    <table>
+        <tr>
+            <th colspan="2">
+                <h2>New Extra Value</h2>
+            </th>
+        </tr>
+        <tr>
+            <th>Type:</th>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" id="typestring" name="typeval" value="string" checked="checked" /><label for="typestring">Code</label></td>
+                        <td>
+                            <input type="radio" id="typetext" name="typeval" value="text" /><label for="typetext">Text</label></td>
+                        <td>
+                            <input type="radio" id="typedate" name="typeval" value="date" /><label for="typedate">Date</label></td>
+                        <td>
+                            <input type="radio" id="typeint" name="typeval" value="int" /><label for="typeint">Integer</label></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Field:</th>
+            <td>@Html.TextBox("fieldname")</td>
+        </tr>
+        <tr>
+            <th>Value:</th>
+            <td>@Html.TextBox("fieldvalue")</td>
+        </tr>
+    </table>
+</div>*@

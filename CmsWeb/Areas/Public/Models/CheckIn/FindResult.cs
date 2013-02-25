@@ -57,6 +57,7 @@ namespace CmsWeb.Models
 						grade = p.Grade,
 						HasPicture = p.PictureId != null,
 						MemberStatus = p.MemberStatus.Code,
+						MemberStatusId = p.MemberStatus.Id.ToString(),
 						notes,
                         access
 					};
@@ -83,6 +84,7 @@ namespace CmsWeb.Models
 					w.WriteAttributeString("grade", c.grade.ToString());
 					w.WriteAttributeString("haspicture", c.HasPicture.ToString());
 					w.WriteAttributeString("memberstatus", c.MemberStatus);
+					w.WriteAttributeString("memberstatusid", c.MemberStatusId);
                     w.WriteAttributeString("access", c.access);
 
                     int visits = (from e in DbUtil.Db.CheckInTimes

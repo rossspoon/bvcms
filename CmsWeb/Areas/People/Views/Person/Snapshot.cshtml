@@ -1,0 +1,16 @@
+﻿@model CmsWeb.Areas.People.Models.Person.PersonModel
+<div id="snapshot" class="nine columns alpha">
+    <img src="@Model.displayperson.Picture.SmallUrl" alt="" />
+    <h1>@Model.Name</h1>
+    <span class="role">@Model.Person.FamilyPosition.Description</span>
+    <ul class="attributes">
+        <li>
+            <span class="attribute">Membership Status:</span>
+            <span class="value">@Model.displayperson.member.MemberStatus</span>
+        </li>
+        <li>
+            <span class="attribute">Campus Affiliation:</span>
+            <span class="value">@Model.displayperson.basic.Campus</span>
+        </li>
+    </ul>
+</div>

@@ -33,6 +33,8 @@ namespace CmsData
 		
 		private bool? _IsDocument;
 		
+		private string _Name;
+		
    		
     	
 		private EntityRef< Person> _Person;
@@ -71,6 +73,9 @@ namespace CmsData
 		
 		partial void OnIsDocumentChanging(bool? value);
 		partial void OnIsDocumentChanged();
+		
+		partial void OnNameChanging(string value);
+		partial void OnNameChanged();
 		
     #endregion
 		public VolunteerForm()
@@ -264,6 +269,28 @@ namespace CmsData
 					this._IsDocument = value;
 					this.SendPropertyChanged("IsDocument");
 					this.OnIsDocumentChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(50)")]
+		public string Name
+		{
+			get { return this._Name; }
+
+			set
+			{
+				if (this._Name != value)
+				{
+				
+                    this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
 				}
 
 			}

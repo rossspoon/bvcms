@@ -1,0 +1,38 @@
+﻿@model CmsWeb.Areas.People.Models.Person.BasicPersonInfo
+@helper SubmitRow()
+{
+    <div class="submit-row">
+        @Html.ActionLink("Cancel", "BasicDisplay", "Person", Model.RouteVals, Model.Classes("btn btn-neutral displayedit"))
+        @Html.ActionLink("Save Changes", "BasicUpdate", "Person", Model.RouteVals, Model.Classes("btn btn-primary submitbutton"))
+    </div>
+}
+@SubmitRow()
+<fieldset class="display">
+    @Html.EditorFor(m => m.Title)
+    @Html.EditorFor(m => m.First)
+    @Html.EditorFor(m => m.NickName)
+    @Html.EditorFor(m => m.Middle)
+    @Html.EditorFor(m => m.Last)
+    @Html.EditorFor(m => m.AltName)
+    @Html.EditorFor(m => m.Maiden)
+    @Html.EditorFor(m => m.Suffix)
+    @Html.EditorFor(m => m.Gender)
+    @Html.EditorFor(m => m.Birthday)
+    @Html.EditorFor(m => m.MaritalStatus)
+    @Html.EditorFor(m => m.WeddingDate)
+    @Html.EditorFor(m => m.Occupation)
+    @Html.EditorFor(m => m.Employer)
+    @Html.EditorFor(m => m.School)
+    @Html.EditorFor(m => m.Grade)
+</fieldset>
+<fieldset class="display">
+    @if (Model.DoNotContactAny)
+    {
+        @Html.EditorFor(m => m.DoNotContactBy)
+    }
+    @Html.EditorFor(m => m.Email1)
+    @Html.EditorFor(m => m.CellPhone)
+    @Html.EditorFor(m => m.Email2)
+    @Html.EditorFor(m => m.WorkPhone)
+</fieldset>
+@SubmitRow()

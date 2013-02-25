@@ -21,7 +21,7 @@ namespace CmsWeb
                 , "~/Content/styles/jquery.tooltip.css"
                             ));
 
-            bundles.Add(new StyleBundle("~/Content/styles/css2").Include(
+            bundles.Add(new StyleBundle("~/Content/styles/new/css").Include(
                 "~/Content/styles/jquery-ui-1.10.0.custom.css"
                 , "~/Content/styles/jquery.jscrollpane.css"
                 , "~/Content/styles/joyride-1.0.5.css"
@@ -30,6 +30,21 @@ namespace CmsWeb
                 , "~/Content/styles/jquery.alerts.css"
                 , "~/Content/styles/layout.css"
                 , "~/Content/styles/Main.css"
+                , "~/Content/styles/pager.css"
+                , "~/Content/font/proximanova/fonts.css"
+                , "~/Content/chosen/chosen.css"
+                            ));
+
+            bundles.Add(new StyleBundle("~/Content/styles/new2/css").Include(
+                "~/Content/bootstrap/css/bootstrap.css"
+                , "~/Content/styles/jquery.jscrollpane.css"
+                , "~/Content/styles/joyride-1.0.5.css"
+                , "~/Content/styles/jquery.multiselect.css"
+                , "~/Content/styles/jquery.tooltip.css"
+                , "~/Content/styles/jquery.alerts.css"
+                , "~/Content/styles/layout.css"
+                , "~/Content/styles/Main.css"
+                , "~/Content/styles/datepicker.css"
                 , "~/Content/styles/pager.css"
                 , "~/Content/font/proximanova/fonts.css"
                 , "~/Content/chosen/chosen.css"
@@ -91,6 +106,35 @@ namespace CmsWeb
                 , "~/Content/chosen/chosen.jquery.js"
                             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/main2-js").Include(
+                "~/Content/js/jquery-1.9.1.js"
+                , "~/Content/js/jquery-migrate-1.1.0.js"
+                , "~/Content/bootstrap/js/bootstrap.js"
+                , "~/Content/js/jquery.cookie.js"
+                , "~/Content/js/jquery.blockUI.js"
+                , "~/Content/js/jquery.mousewheel.js"
+                , "~/Content/js/jquery.jscrollpane.js"
+                , "~/Content/js/jquery.jeditable.js"
+                , "~/Content/js/jquery.validate.js"
+                , "~/Content/js/jquery.joyride-1.0.5.js"
+                , "~/Content/js/modernizr.mq.js"
+                , "~/Content/js/tutorial.js"
+                // Dave: need a multiselect dropdown, chosen?
+                //, "~/Content/js/jquery.multiSelect.js"
+                , "~/Content/js/jquery.sortElements.js"
+                , "~/Content/js/jquery.textarea.js"
+                , "~/Content/js/jquery.tooltip.js"
+                , "~/Content/js/jquery.alerts.js"
+                //, "~/Content/js/jquery.simplemodal.1.4.4.js"
+                , "~/Content/js/bootstrap-datepicker.js"
+                , "~/Scripts/dropdown.js"
+                , "~/Scripts/Pager.js"
+                // Dave: this is going to be a big deal to replace the ExportToolbar functionality
+                //, "~/Scripts/ExportToolBar.js"
+                , "~/Scripts/headermenu2.js"
+                , "~/Content/chosen/chosen.jquery.js"
+                            ));
+
             bundles.Add(new ScriptBundle("~/bundles/onlineregister-js").Include(
                 "~/Content/js/jquery-1.9.1.js"
                 , "~/Content/js/jquery-migrate-1.1.0.js"
@@ -98,12 +142,12 @@ namespace CmsWeb
                 , "~/Content/js/jquery.validate.js"
                 , "~/Content/js/jquery.idle-timer.js"
                 , "~/Content/js/jquery.blockUI.js"
+                , "~/Content/js/jquery.sortElements.js"
                 , "~/Content/js/jquery.showpassword.js"
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/org-js").Include(
                 "~/Content/js/jquery-ui-timepicker-addon.js",
-                "~/Content/js/jquery-ui-dialog-patch.js",
                 "~/Scripts/Organization.js",
                 "~/Scripts/SearchUsers.js",
                 "~/Scripts/RegSetting.js"
@@ -117,6 +161,12 @@ namespace CmsWeb
             bundles.Add(new ScriptBundle("~/bundles/querybuilder-js").Include(
                 "~/Content/js/jquery.contextmenu.r2.js",
                 "~/Scripts/QueryBuilder.js"
+                            ));
+
+            bundles.Add(new ScriptBundle("~/bundles/person-js").Include(
+                "~/Content/js/jquery.address-1.5"
+                ,"~/Scripts/person1.js"
+                ,"~/Scripts/person2.js"
                             ));
 
             bundles.AddOneScript("AdvancedSearch");

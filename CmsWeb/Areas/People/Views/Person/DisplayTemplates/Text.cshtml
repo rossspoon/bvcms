@@ -1,0 +1,18 @@
+﻿@using UtilityExtensions
+@model string
+@{
+    var label = ViewData.ModelMetadata.AdditionalValues["label"];
+    var classes = ViewData.ModelMetadata.AdditionalValues["classes"];
+    var labelclasses = (string)ViewData.ModelMetadata.AdditionalValues["labelclasses"];
+    var labelclass = "";
+    if (labelclasses.HasValue())
+    {
+        labelclass = "class='" + labelclasses + "'";
+    }
+}
+<div class="control-group @classes">
+    <label @labelclass>@label</label>
+    <div class="controls">
+        <p>@Model</p>
+    </div>
+</div>

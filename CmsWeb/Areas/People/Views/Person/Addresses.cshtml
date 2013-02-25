@@ -1,0 +1,45 @@
+﻿@using UtilityExtensions
+@model CmsWeb.Areas.People.Models.Person.PersonModel
+@{
+    var p = Model.displayperson;
+}
+<div class="group">
+    <h2>Home<a href="#" class="add"><i class="icon-plus-sign"></i></a></h2>
+    <ul class="home">
+        <li class="address">
+            <a href="" class="edit"><i class="icon-pencil"></i></a>
+            <a href="" class="action"><i class="icon-map-marker"></i></a>
+            <span class="address label">
+                @p.FamilyAddr.Address1<br>
+                @if (p.FamilyAddr.Address2.HasValue())
+                {
+                    @:@p.FamilyAddr.Address2<br />
+                }
+                @p.FamilyAddr.CityStateZip()
+            </span>
+        </li>
+        <li class="phone">
+            <a href="" class="edit"><i class="icon-pencil"></i></a>
+            <a href="" class="action"><i class="icon-phone"></i><span class="label">@p.basic.HomePhone</span></a>
+        </li>
+        @if (p.PersonalAddr.Address1.HasValue())
+        {
+            <li class="address">
+                <a href="" class="edit"><i class="icon-pencil"></i></a>
+                <a href="" class="action"><i class="icon-map-marker"></i></a>
+                <span class="address label">
+                    @p.PersonalAddr.Address1<br>
+                    @if (p.PersonalAddr.Address2.HasValue())
+                    {
+                        @:@p.PersonalAddr.Address2<br />
+                    }
+                    @p.PersonalAddr.CityStateZip()
+                </span>
+            </li>
+        }
+        <li class="phone">
+            <a href="#" class="edit"><i class="icon-pencil"></i></a>
+            <a href="#" class="action"><i class="icon-phone"></i><span class="label">@p.basic.CellPhone</span></a>
+        </li>
+    </ul>
+</div>

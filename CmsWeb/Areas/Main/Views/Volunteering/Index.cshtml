@@ -38,6 +38,14 @@
 {
     <script src="/Scripts/volunteering.js"></script>
 }
+@section head
+{
+    <style>
+        div.name {
+            padding: 1em;
+        }
+    </style>
+}
 <a href="/Person/Index/@Model.V.PeopleId">@Model.V.Person.Name</a><br />
 <br />
 <b>Volunteer Application Information</b>
@@ -104,7 +112,7 @@
                         @if (check.ReportLabelID > 0)
                         {
                             <a href="#" class="showEditDialog" cid="@check.Id">
-                                @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Description
+                                @(labels.Where(e => e.Id == check.ReportLabelID).Select(e => e.Description).SingleOrDefault() ?? check.ReportLabelID.ToString())
                             </a>
                         }
                         else
@@ -269,6 +277,9 @@
                 <a href="/Image.aspx?id=@form.MediumId">
                     <img src="/images/adobe.png" style="border: thin solid #000000;">
                 </a>
+                <div class="name">
+                    <span id="n.@form.Id" class="editable">@form.Name</span>
+                </div>
                 <form action="/Volunteering/Delete" method="post" onsubmit="return confirmDelete();">
                     <input type="hidden" name="id" value="@form.Id" />
                     <input type="hidden" name="PeopleID" value="@Model.V.PeopleId" />

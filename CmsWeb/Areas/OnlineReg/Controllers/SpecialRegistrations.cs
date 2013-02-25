@@ -478,7 +478,7 @@ You have the following subscriptions:<br/>
 				return Content("org missing, bad link");
 
 		    if (q.org.RegistrationTypeId == RegistrationTypeCode.None)
-		        return Content("registration is no longer active");
+		        return Content("votelink is no longer active");
 
 			if (q.om == null && q.org.Limit <= q.org.MemberCount)
 				return Content("sorry, maximum limit has been reached");
@@ -608,6 +608,9 @@ emailid={2}
 
 			if (q.org.RegistrationClosed == true || q.org.OrganizationStatusId == OrgStatusCode.Inactive)
 				return Content("sorry, registration has been closed");
+
+		    if (q.org.RegistrationTypeId == RegistrationTypeCode.None)
+		        return Content("rsvp is no longer available");
 
 			if (q.org.Limit <= q.meeting.Attends.Count(aa => aa.Commitment == 1))
 				return Content("sorry, maximum limit has been reached");

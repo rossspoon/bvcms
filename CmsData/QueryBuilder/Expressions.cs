@@ -1605,13 +1605,13 @@ namespace CmsData
             CompareType op,
             string name)
         {
-            Expression<Func<Person, bool>> pred1 = p =>
-                    p.OrganizationMembers.Any(m =>
-                        (org == 0 || m.OrganizationId == org)
-                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
-                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
-                        );
-            var expr1 = Expression.Convert(Expression.Invoke(pred1, parm), typeof(bool));
+//            Expression<Func<Person, bool>> pred1 = p =>
+//                    p.OrganizationMembers.Any(m =>
+//                        (org == 0 || m.OrganizationId == org)
+//                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+//                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+//                        );
+//            var expr1 = Expression.Convert(Expression.Invoke(pred1, parm), typeof(bool));
             if (name.HasValue())
             {
                 Expression<Func<Person, bool>> pred = p =>
@@ -1624,7 +1624,8 @@ namespace CmsData
                 var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
                 if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                     expr = Expression.Not(expr);
-                return Expression.And(expr1, expr);
+                return expr;
+                //return Expression.And(expr1, expr);
             }
             else
             {
@@ -1638,7 +1639,8 @@ namespace CmsData
                 var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
                 if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                     expr = Expression.Not(expr);
-                return Expression.And(expr1, expr);
+                return expr;
+                //return Expression.And(expr1, expr);
             }
         }
 
