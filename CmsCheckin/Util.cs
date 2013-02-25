@@ -427,7 +427,7 @@ namespace CmsCheckin
 			return false;
 		}
 
-		public static int BuildingCheckin(int pid, List<Activity> activities)
+		public static int BuildingCheckin(int pid, List<Activity> activities, int accesstype )
 		{
 			try
 			{
@@ -437,7 +437,7 @@ namespace CmsCheckin
 
 				var bits = Encoding.UTF8.GetBytes(sw.ToString());
 				var wc = CreateWebClient();
-				var s = "Checkin2/BuildingCheckin/{0}?location={1}".Fmt(pid,Program.Building) ;
+				var s = "Checkin2/BuildingCheckin/{0}?location={1}&accesstype={2}".Fmt(pid,Program.Building,accesstype);
 				var g = Program.GuestOf();
 				if (g != null)
 					s += "&guestof=" + g.CheckinId;

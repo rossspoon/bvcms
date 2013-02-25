@@ -117,7 +117,7 @@
             this.button1.Location = new System.Drawing.Point(676, 429);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(83, 95);
-            this.button1.TabIndex = 6;
+            this.button1.TabIndex = 14;
             this.button1.Text = "GO";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -132,6 +132,7 @@
             this.b0.Name = "b0";
             this.b0.Size = new System.Drawing.Size(47, 49);
             this.b0.TabIndex = 107;
+            this.b0.TabStop = false;
             this.b0.Text = "0";
             this.b0.UseVisualStyleBackColor = false;
             // 
@@ -145,6 +146,7 @@
             this.b1.Name = "b1";
             this.b1.Size = new System.Drawing.Size(47, 49);
             this.b1.TabIndex = 98;
+            this.b1.TabStop = false;
             this.b1.Text = "1";
             this.b1.UseVisualStyleBackColor = false;
             // 
@@ -158,6 +160,7 @@
             this.b2.Name = "b2";
             this.b2.Size = new System.Drawing.Size(47, 49);
             this.b2.TabIndex = 99;
+            this.b2.TabStop = false;
             this.b2.Text = "2";
             this.b2.UseVisualStyleBackColor = false;
             // 
@@ -171,6 +174,7 @@
             this.b3.Name = "b3";
             this.b3.Size = new System.Drawing.Size(47, 49);
             this.b3.TabIndex = 100;
+            this.b3.TabStop = false;
             this.b3.Text = "3";
             this.b3.UseVisualStyleBackColor = false;
             // 
@@ -184,6 +188,7 @@
             this.b4.Name = "b4";
             this.b4.Size = new System.Drawing.Size(47, 49);
             this.b4.TabIndex = 101;
+            this.b4.TabStop = false;
             this.b4.Text = "4";
             this.b4.UseVisualStyleBackColor = false;
             // 
@@ -197,6 +202,7 @@
             this.b5.Name = "b5";
             this.b5.Size = new System.Drawing.Size(47, 49);
             this.b5.TabIndex = 102;
+            this.b5.TabStop = false;
             this.b5.Text = "5";
             this.b5.UseVisualStyleBackColor = false;
             // 
@@ -210,6 +216,7 @@
             this.b6.Name = "b6";
             this.b6.Size = new System.Drawing.Size(47, 49);
             this.b6.TabIndex = 103;
+            this.b6.TabStop = false;
             this.b6.Text = "6";
             this.b6.UseVisualStyleBackColor = false;
             // 
@@ -223,6 +230,7 @@
             this.b7.Name = "b7";
             this.b7.Size = new System.Drawing.Size(47, 49);
             this.b7.TabIndex = 104;
+            this.b7.TabStop = false;
             this.b7.Text = "7";
             this.b7.UseVisualStyleBackColor = false;
             // 
@@ -236,6 +244,7 @@
             this.b9.Name = "b9";
             this.b9.Size = new System.Drawing.Size(47, 49);
             this.b9.TabIndex = 106;
+            this.b9.TabStop = false;
             this.b9.Text = "9";
             this.b9.UseVisualStyleBackColor = false;
             // 
@@ -249,6 +258,7 @@
             this.b8.Name = "b8";
             this.b8.Size = new System.Drawing.Size(47, 49);
             this.b8.TabIndex = 105;
+            this.b8.TabStop = false;
             this.b8.Text = "8";
             this.b8.UseVisualStyleBackColor = false;
             // 
@@ -262,6 +272,7 @@
             this.bm.Name = "bm";
             this.bm.Size = new System.Drawing.Size(47, 49);
             this.bm.TabIndex = 97;
+            this.bm.TabStop = false;
             this.bm.Text = "m";
             this.bm.UseVisualStyleBackColor = false;
             // 
@@ -275,6 +286,7 @@
             this.bn.Name = "bn";
             this.bn.Size = new System.Drawing.Size(47, 49);
             this.bn.TabIndex = 96;
+            this.bn.TabStop = false;
             this.bn.Text = "n";
             this.bn.UseVisualStyleBackColor = false;
             // 
@@ -288,6 +300,7 @@
             this.bb.Name = "bb";
             this.bb.Size = new System.Drawing.Size(47, 49);
             this.bb.TabIndex = 95;
+            this.bb.TabStop = false;
             this.bb.Text = "b";
             this.bb.UseVisualStyleBackColor = false;
             // 
@@ -301,6 +314,7 @@
             this.bv.Name = "bv";
             this.bv.Size = new System.Drawing.Size(47, 49);
             this.bv.TabIndex = 94;
+            this.bv.TabStop = false;
             this.bv.Text = "v";
             this.bv.UseVisualStyleBackColor = false;
             // 
@@ -314,6 +328,7 @@
             this.bc.Name = "bc";
             this.bc.Size = new System.Drawing.Size(47, 49);
             this.bc.TabIndex = 93;
+            this.bc.TabStop = false;
             this.bc.Text = "c";
             this.bc.UseVisualStyleBackColor = false;
             // 
@@ -327,6 +342,7 @@
             this.bx.Name = "bx";
             this.bx.Size = new System.Drawing.Size(47, 49);
             this.bx.TabIndex = 92;
+            this.bx.TabStop = false;
             this.bx.Text = "x";
             this.bx.UseVisualStyleBackColor = false;
             // 
@@ -340,6 +356,7 @@
             this.bz.Name = "bz";
             this.bz.Size = new System.Drawing.Size(47, 49);
             this.bz.TabIndex = 91;
+            this.bz.TabStop = false;
             this.bz.Text = "z";
             this.bz.UseVisualStyleBackColor = false;
             // 
@@ -353,6 +370,7 @@
             this.ba.Name = "ba";
             this.ba.Size = new System.Drawing.Size(47, 50);
             this.ba.TabIndex = 82;
+            this.ba.TabStop = false;
             this.ba.Text = "a";
             this.ba.UseVisualStyleBackColor = false;
             // 
@@ -366,6 +384,7 @@
             this.bs.Name = "bs";
             this.bs.Size = new System.Drawing.Size(47, 50);
             this.bs.TabIndex = 83;
+            this.bs.TabStop = false;
             this.bs.Text = "s";
             this.bs.UseVisualStyleBackColor = false;
             // 
@@ -379,6 +398,7 @@
             this.bd.Name = "bd";
             this.bd.Size = new System.Drawing.Size(47, 50);
             this.bd.TabIndex = 84;
+            this.bd.TabStop = false;
             this.bd.Text = "d";
             this.bd.UseVisualStyleBackColor = false;
             // 
@@ -392,6 +412,7 @@
             this.bf.Name = "bf";
             this.bf.Size = new System.Drawing.Size(47, 50);
             this.bf.TabIndex = 85;
+            this.bf.TabStop = false;
             this.bf.Text = "f";
             this.bf.UseVisualStyleBackColor = false;
             // 
@@ -405,6 +426,7 @@
             this.bg.Name = "bg";
             this.bg.Size = new System.Drawing.Size(47, 50);
             this.bg.TabIndex = 86;
+            this.bg.TabStop = false;
             this.bg.Text = "g";
             this.bg.UseVisualStyleBackColor = false;
             // 
@@ -418,6 +440,7 @@
             this.bh.Name = "bh";
             this.bh.Size = new System.Drawing.Size(47, 50);
             this.bh.TabIndex = 87;
+            this.bh.TabStop = false;
             this.bh.Text = "h";
             this.bh.UseVisualStyleBackColor = false;
             // 
@@ -431,6 +454,7 @@
             this.bj.Name = "bj";
             this.bj.Size = new System.Drawing.Size(47, 50);
             this.bj.TabIndex = 88;
+            this.bj.TabStop = false;
             this.bj.Text = "j";
             this.bj.UseVisualStyleBackColor = false;
             // 
@@ -444,6 +468,7 @@
             this.bl.Name = "bl";
             this.bl.Size = new System.Drawing.Size(47, 50);
             this.bl.TabIndex = 90;
+            this.bl.TabStop = false;
             this.bl.Text = "l";
             this.bl.UseVisualStyleBackColor = false;
             // 
@@ -457,6 +482,7 @@
             this.bk.Name = "bk";
             this.bk.Size = new System.Drawing.Size(47, 50);
             this.bk.TabIndex = 89;
+            this.bk.TabStop = false;
             this.bk.Text = "k";
             this.bk.UseVisualStyleBackColor = false;
             // 
@@ -470,6 +496,7 @@
             this.bp.Name = "bp";
             this.bp.Size = new System.Drawing.Size(47, 49);
             this.bp.TabIndex = 81;
+            this.bp.TabStop = false;
             this.bp.Text = "p";
             this.bp.UseVisualStyleBackColor = false;
             // 
@@ -483,6 +510,7 @@
             this.bq.Name = "bq";
             this.bq.Size = new System.Drawing.Size(47, 49);
             this.bq.TabIndex = 69;
+            this.bq.TabStop = false;
             this.bq.Text = "q";
             this.bq.UseVisualStyleBackColor = false;
             // 
@@ -496,6 +524,7 @@
             this.bbs.Name = "bbs";
             this.bbs.Size = new System.Drawing.Size(62, 50);
             this.bbs.TabIndex = 78;
+            this.bbs.TabStop = false;
             this.bbs.Text = "Õ";
             this.bbs.UseVisualStyleBackColor = false;
             this.bbs.Click += new System.EventHandler(this.bbs_Click);
@@ -510,6 +539,7 @@
             this.bw.Name = "bw";
             this.bw.Size = new System.Drawing.Size(47, 49);
             this.bw.TabIndex = 70;
+            this.bw.TabStop = false;
             this.bw.Text = "w";
             this.bw.UseVisualStyleBackColor = false;
             // 
@@ -523,6 +553,7 @@
             this.be.Name = "be";
             this.be.Size = new System.Drawing.Size(47, 49);
             this.be.TabIndex = 71;
+            this.be.TabStop = false;
             this.be.Text = "e";
             this.be.UseVisualStyleBackColor = false;
             // 
@@ -536,6 +567,7 @@
             this.br.Name = "br";
             this.br.Size = new System.Drawing.Size(47, 49);
             this.br.TabIndex = 72;
+            this.br.TabStop = false;
             this.br.Text = "r";
             this.br.UseVisualStyleBackColor = false;
             // 
@@ -549,6 +581,7 @@
             this.bt.Name = "bt";
             this.bt.Size = new System.Drawing.Size(47, 49);
             this.bt.TabIndex = 73;
+            this.bt.TabStop = false;
             this.bt.Text = "t";
             this.bt.UseVisualStyleBackColor = false;
             // 
@@ -562,6 +595,7 @@
             this.by.Name = "by";
             this.by.Size = new System.Drawing.Size(47, 49);
             this.by.TabIndex = 74;
+            this.by.TabStop = false;
             this.by.Text = "y";
             this.by.UseVisualStyleBackColor = false;
             // 
@@ -575,6 +609,7 @@
             this.bu.Name = "bu";
             this.bu.Size = new System.Drawing.Size(47, 49);
             this.bu.TabIndex = 75;
+            this.bu.TabStop = false;
             this.bu.Text = "u";
             this.bu.UseVisualStyleBackColor = false;
             // 
@@ -588,6 +623,7 @@
             this.bo.Name = "bo";
             this.bo.Size = new System.Drawing.Size(47, 49);
             this.bo.TabIndex = 77;
+            this.bo.TabStop = false;
             this.bo.Text = "o";
             this.bo.UseVisualStyleBackColor = false;
             // 
@@ -601,6 +637,7 @@
             this.bi.Name = "bi";
             this.bi.Size = new System.Drawing.Size(47, 49);
             this.bi.TabIndex = 76;
+            this.bi.TabStop = false;
             this.bi.Text = "i";
             this.bi.UseVisualStyleBackColor = false;
             // 
@@ -634,6 +671,7 @@
             this.bdot.Name = "bdot";
             this.bdot.Size = new System.Drawing.Size(47, 49);
             this.bdot.TabIndex = 112;
+            this.bdot.TabStop = false;
             this.bdot.Text = ".";
             this.bdot.UseVisualStyleBackColor = false;
             // 
@@ -643,7 +681,7 @@
             this.username.Location = new System.Drawing.Point(116, 58);
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(193, 31);
-            this.username.TabIndex = 3;
+            this.username.TabIndex = 2;
             // 
             // password
             // 
@@ -652,7 +690,7 @@
             this.password.Name = "password";
             this.password.PasswordChar = '*';
             this.password.Size = new System.Drawing.Size(193, 31);
-            this.password.TabIndex = 5;
+            this.password.TabIndex = 3;
             // 
             // URL
             // 
@@ -682,6 +720,7 @@
             this.bslash.Name = "bslash";
             this.bslash.Size = new System.Drawing.Size(47, 49);
             this.bslash.TabIndex = 114;
+            this.bslash.TabStop = false;
             this.bslash.Text = "/";
             this.bslash.UseVisualStyleBackColor = false;
             // 
@@ -695,6 +734,7 @@
             this.bcolon.Name = "bcolon";
             this.bcolon.Size = new System.Drawing.Size(47, 50);
             this.bcolon.TabIndex = 115;
+            this.bcolon.TabStop = false;
             this.bcolon.Text = ";";
             this.bcolon.UseVisualStyleBackColor = false;
             // 
@@ -705,7 +745,7 @@
             this.PrintKiosks.Location = new System.Drawing.Point(573, 58);
             this.PrintKiosks.Name = "PrintKiosks";
             this.PrintKiosks.Size = new System.Drawing.Size(166, 31);
-            this.PrintKiosks.TabIndex = 117;
+            this.PrintKiosks.TabIndex = 6;
             // 
             // label1
             // 
@@ -730,7 +770,7 @@
             this.PrintMode.Location = new System.Drawing.Point(573, 14);
             this.PrintMode.Name = "PrintMode";
             this.PrintMode.Size = new System.Drawing.Size(166, 28);
-            this.PrintMode.TabIndex = 119;
+            this.PrintMode.TabIndex = 5;
             this.PrintMode.Text = "Print To Printer";
             this.PrintMode.SelectedIndexChanged += new System.EventHandler(this.PrintMode_SelectedIndexChanged);
             // 
@@ -743,6 +783,7 @@
             this.Printer.Name = "Printer";
             this.Printer.Size = new System.Drawing.Size(309, 33);
             this.Printer.TabIndex = 121;
+            this.Printer.TabStop = false;
             this.Printer.SelectedIndexChanged += new System.EventHandler(this.Printer_SelectedIndexChanged);
             // 
             // label4
@@ -762,7 +803,7 @@
             this.DisableLocationLabels.Location = new System.Drawing.Point(531, 206);
             this.DisableLocationLabels.Name = "DisableLocationLabels";
             this.DisableLocationLabels.Size = new System.Drawing.Size(220, 24);
-            this.DisableLocationLabels.TabIndex = 122;
+            this.DisableLocationLabels.TabIndex = 9;
             this.DisableLocationLabels.Text = "Disable Location Labels";
             this.DisableLocationLabels.UseVisualStyleBackColor = true;
             // 
@@ -786,6 +827,7 @@
             this.bshift.Name = "bshift";
             this.bshift.Size = new System.Drawing.Size(81, 47);
             this.bshift.TabIndex = 124;
+            this.bshift.TabStop = false;
             this.bshift.Text = "Shift";
             this.bshift.UseVisualStyleBackColor = false;
             this.bshift.Click += new System.EventHandler(this.bshift_Click);
@@ -800,6 +842,7 @@
             this.bcomma.Name = "bcomma";
             this.bcomma.Size = new System.Drawing.Size(47, 49);
             this.bcomma.TabIndex = 125;
+            this.bcomma.TabStop = false;
             this.bcomma.Text = ",";
             this.bcomma.UseVisualStyleBackColor = false;
             // 
@@ -810,7 +853,7 @@
             this.BuildingAccessMode.Location = new System.Drawing.Point(343, 157);
             this.BuildingAccessMode.Name = "BuildingAccessMode";
             this.BuildingAccessMode.Size = new System.Drawing.Size(141, 24);
-            this.BuildingAccessMode.TabIndex = 126;
+            this.BuildingAccessMode.TabIndex = 8;
             this.BuildingAccessMode.Text = "Building Mode";
             this.BuildingAccessMode.UseVisualStyleBackColor = true;
             // 
@@ -824,6 +867,7 @@
             this.bdash.Name = "bdash";
             this.bdash.Size = new System.Drawing.Size(47, 49);
             this.bdash.TabIndex = 127;
+            this.bdash.TabStop = false;
             this.bdash.Text = "-";
             this.bdash.UseVisualStyleBackColor = false;
             // 
@@ -837,6 +881,7 @@
             this.bequal.Name = "bequal";
             this.bequal.Size = new System.Drawing.Size(47, 49);
             this.bequal.TabIndex = 128;
+            this.bequal.TabStop = false;
             this.bequal.Text = "=";
             this.bequal.UseVisualStyleBackColor = false;
             // 
@@ -850,6 +895,7 @@
             this.brbrace.Name = "brbrace";
             this.brbrace.Size = new System.Drawing.Size(47, 49);
             this.brbrace.TabIndex = 130;
+            this.brbrace.TabStop = false;
             this.brbrace.Text = "]";
             this.brbrace.UseVisualStyleBackColor = false;
             // 
@@ -863,6 +909,7 @@
             this.blbrace.Name = "blbrace";
             this.blbrace.Size = new System.Drawing.Size(47, 49);
             this.blbrace.TabIndex = 129;
+            this.blbrace.TabStop = false;
             this.blbrace.Text = "[";
             this.blbrace.UseVisualStyleBackColor = false;
             // 
@@ -872,7 +919,7 @@
             this.building.Location = new System.Drawing.Point(116, 152);
             this.building.Name = "building";
             this.building.Size = new System.Drawing.Size(193, 31);
-            this.building.TabIndex = 131;
+            this.building.TabIndex = 4;
             // 
             // FullScreen
             // 
@@ -881,7 +928,7 @@
             this.FullScreen.Location = new System.Drawing.Point(343, 109);
             this.FullScreen.Name = "FullScreen";
             this.FullScreen.Size = new System.Drawing.Size(168, 24);
-            this.FullScreen.TabIndex = 132;
+            this.FullScreen.TabIndex = 7;
             this.FullScreen.Text = "Full Screen Mode";
             this.FullScreen.UseVisualStyleBackColor = true;
             // 
@@ -902,6 +949,7 @@
             this.PrintTest.Name = "PrintTest";
             this.PrintTest.Size = new System.Drawing.Size(62, 34);
             this.PrintTest.TabIndex = 134;
+            this.PrintTest.TabStop = false;
             this.PrintTest.Text = "Test";
             this.PrintTest.UseVisualStyleBackColor = true;
             this.PrintTest.Click += new System.EventHandler(this.PrintTest_Click);
@@ -925,6 +973,7 @@
             this.LabelFormat.Name = "LabelFormat";
             this.LabelFormat.Size = new System.Drawing.Size(743, 206);
             this.LabelFormat.TabIndex = 136;
+            this.LabelFormat.TabStop = false;
             // 
             // LoadLabelList
             // 
@@ -932,6 +981,7 @@
             this.LoadLabelList.Name = "LoadLabelList";
             this.LoadLabelList.Size = new System.Drawing.Size(73, 23);
             this.LoadLabelList.TabIndex = 138;
+            this.LoadLabelList.TabStop = false;
             this.LoadLabelList.Text = "Load List";
             this.LoadLabelList.UseVisualStyleBackColor = true;
             this.LoadLabelList.Click += new System.EventHandler(this.LoadLabelList_Click);
@@ -944,6 +994,7 @@
             this.LabelList.Name = "LabelList";
             this.LabelList.Size = new System.Drawing.Size(143, 21);
             this.LabelList.TabIndex = 139;
+            this.LabelList.TabStop = false;
             this.LabelList.SelectedIndexChanged += new System.EventHandler(this.LabelList_SelectedIndexChanged);
             // 
             // label10
@@ -961,6 +1012,7 @@
             this.SaveLabel.Name = "SaveLabel";
             this.SaveLabel.Size = new System.Drawing.Size(75, 23);
             this.SaveLabel.TabIndex = 143;
+            this.SaveLabel.TabStop = false;
             this.SaveLabel.Text = "Save";
             this.SaveLabel.UseVisualStyleBackColor = true;
             this.SaveLabel.Click += new System.EventHandler(this.SaveLabel_Click);
@@ -993,7 +1045,7 @@
             this.PrinterWidth.Location = new System.Drawing.Point(116, 245);
             this.PrinterWidth.Name = "PrinterWidth";
             this.PrinterWidth.Size = new System.Drawing.Size(85, 31);
-            this.PrinterWidth.TabIndex = 146;
+            this.PrinterWidth.TabIndex = 13;
             this.PrinterWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // PageHeightLabel
@@ -1014,7 +1066,7 @@
             this.PrinterHeight.Location = new System.Drawing.Point(295, 245);
             this.PrinterHeight.Name = "PrinterHeight";
             this.PrinterHeight.Size = new System.Drawing.Size(85, 31);
-            this.PrinterHeight.TabIndex = 148;
+            this.PrinterHeight.TabIndex = 12;
             this.PrinterHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // SizeFromPrinter
@@ -1024,7 +1076,7 @@
             this.SizeFromPrinter.Location = new System.Drawing.Point(394, 243);
             this.SizeFromPrinter.Name = "SizeFromPrinter";
             this.SizeFromPrinter.Size = new System.Drawing.Size(105, 34);
-            this.SizeFromPrinter.TabIndex = 149;
+            this.SizeFromPrinter.TabIndex = 11;
             this.SizeFromPrinter.Text = "From Printer";
             this.SizeFromPrinter.UseVisualStyleBackColor = true;
             this.SizeFromPrinter.Click += new System.EventHandler(this.SizeFromPrinter_Click);
@@ -1047,7 +1099,7 @@
             this.AdvancedPageSize.Location = new System.Drawing.Point(531, 249);
             this.AdvancedPageSize.Name = "AdvancedPageSize";
             this.AdvancedPageSize.Size = new System.Drawing.Size(230, 24);
-            this.AdvancedPageSize.TabIndex = 151;
+            this.AdvancedPageSize.TabIndex = 10;
             this.AdvancedPageSize.Text = "Use Advanced Page Size";
             this.AdvancedPageSize.UseVisualStyleBackColor = true;
             this.AdvancedPageSize.CheckedChanged += new System.EventHandler(this.AdvancedPageSize_CheckedChanged);
@@ -1060,6 +1112,7 @@
             this.UseSSL.Name = "UseSSL";
             this.UseSSL.Size = new System.Drawing.Size(195, 24);
             this.UseSSL.TabIndex = 152;
+            this.UseSSL.TabStop = false;
             this.UseSSL.Text = "Use SSL Connection";
             this.UseSSL.UseVisualStyleBackColor = true;
             // 

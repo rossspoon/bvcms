@@ -29,6 +29,8 @@ namespace CmsData
 		
 		private int _GuestOfPersonID;
 		
+		private int? _AccessTypeID;
+		
    		
    		private EntitySet< CheckInActivity> _CheckInActivities;
 		
@@ -63,6 +65,9 @@ namespace CmsData
 		
 		partial void OnGuestOfPersonIDChanging(int value);
 		partial void OnGuestOfPersonIDChanged();
+		
+		partial void OnAccessTypeIDChanging(int? value);
+		partial void OnAccessTypeIDChanged();
 		
     #endregion
 		public CheckInTime()
@@ -214,6 +219,28 @@ namespace CmsData
 					this._GuestOfPersonID = value;
 					this.SendPropertyChanged("GuestOfPersonID");
 					this.OnGuestOfPersonIDChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="AccessTypeID", UpdateCheck=UpdateCheck.Never, Storage="_AccessTypeID", DbType="int")]
+		public int? AccessTypeID
+		{
+			get { return this._AccessTypeID; }
+
+			set
+			{
+				if (this._AccessTypeID != value)
+				{
+				
+                    this.OnAccessTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._AccessTypeID = value;
+					this.SendPropertyChanged("AccessTypeID");
+					this.OnAccessTypeIDChanged();
 				}
 
 			}

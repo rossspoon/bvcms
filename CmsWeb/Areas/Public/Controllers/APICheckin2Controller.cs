@@ -636,7 +636,7 @@ namespace CmsWeb.Areas.Public.Controllers
 
 		[HttpPost]
 		[ValidateInput(false)]
-		public ContentResult BuildingCheckin(int id, string location, int? guestof)
+		public ContentResult BuildingCheckin(int id, string location, int accesstype, int? guestof)
 		{
 			if (!Authenticate())
 				return Content("not authorized");
@@ -657,7 +657,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			var xs = new XmlSerializer(typeof(List<Activity>), new XmlRootAttribute("Activities"));
 			var activities = xs.Deserialize(new StringReader(s)) as List<Activity>;
 
-			var ac = new CheckInTime() { PeopleId = id, Location = location, CheckInTimeX = DateTime.Now, GuestOfId = guestof, GuestOfPersonID = (g != null ? g.PeopleId ?? 0 : 0)};
+			var ac = new CheckInTime() { PeopleId = id, Location = location, CheckInTimeX = DateTime.Now, GuestOfId = guestof, GuestOfPersonID = (g != null ? g.PeopleId ?? 0 : 0), AccessTypeID = accesstype};
 
 			foreach (var a in activities)
 				ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name });

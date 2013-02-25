@@ -76,7 +76,10 @@ namespace CmsCheckin
 			username.Enter += textbox_Enter;
 			password.Enter += textbox_Enter;
 			URL.Enter += textbox_Enter;
-			LabelFormat.Enter += textbox_Enter;
+            building.Enter += textbox_Enter;
+            PrintKiosks.Enter += textbox_Enter;
+            PrinterWidth.Enter += textbox_Enter;
+            PrinterHeight.Enter += textbox_Enter;
 			
 			password.Focus();
 		}
@@ -149,7 +152,7 @@ namespace CmsCheckin
 				CancelClose = true;
 			}
 
-            if (CancelClose == false)
+            if (CancelClose == false && !BuildingAccessMode.Checked)
             {
                 bool bHorizontalCheck = false;
                 bool bVerticalCheck = false;

@@ -85,6 +85,14 @@ namespace CmsWeb.Models
 					w.WriteAttributeString("memberstatus", c.MemberStatus);
                     w.WriteAttributeString("access", c.access);
 
+                    int visits = (from e in DbUtil.Db.CheckInTimes
+                                  where e.PeopleId == c.Id
+                                  where e.Location == building
+                                  where e.AccessTypeID == 2
+                                  select e).Count();
+
+                    w.WriteAttributeString("visitcount", visits.ToString());
+
 					if (c.notes.HasValue())
 						w.WriteString(c.notes);
 
