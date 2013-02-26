@@ -184,8 +184,9 @@
     <Reference Include="DevDefined.OAuth">
       <HintPath>..\CmsWeb\Binaries\DevDefined.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\CmsWeb\Binaries\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.AsyncServices">
       <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.AsyncServices.dll</HintPath>
@@ -300,6 +301,7 @@
     <Compile Include="APIPerson.cs" />
     <Compile Include="APIContribution.cs" />
     <Compile Include="BundleHeader.cs" />
+    <Compile Include="Generated\BuildingAccessType.cs" />
     <Compile Include="Picture.cs" />
     <Compile Include="Generated\Functions\MostRecentItem.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />

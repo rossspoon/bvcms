@@ -36,8 +36,8 @@ namespace CmsWeb
                             ));
 
             bundles.Add(new StyleBundle("~/Content/styles/new2/css").Include(
-                "~/Content/bootstrap/css/bootstrap.css"
-                , "~/Content/styles/jquery.jscrollpane.css"
+                "~/Content/styles/jquery.jscrollpane.css"
+               // , "~/Content/bootstrap/css/bootstrap.css"
                 , "~/Content/styles/joyride-1.0.5.css"
                 , "~/Content/styles/jquery.multiselect.css"
                 , "~/Content/styles/jquery.tooltip.css"
