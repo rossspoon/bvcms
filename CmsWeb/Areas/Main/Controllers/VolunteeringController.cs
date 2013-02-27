@@ -38,7 +38,7 @@ namespace CmsWeb.Areas.Main.Controllers
                         {
                             UploaderId = Util.UserId1, 
                             PeopleId = vol.PeopleId, 
-                            Name = file.FileName,
+                            Name = System.IO.Path.GetFileName(file.FileName),
                             AppDate = Util.Now,
                         };
 

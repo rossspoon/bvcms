@@ -172,7 +172,7 @@ namespace CmsData
                 p = CMSRoleProvider.provider.GetAdmins().First();
             return p;
         }
-        public EmailQueue CreateQueue(MailAddress From, string subject, string body, DateTime? schedule, int QBId, bool wantParents, bool PublicViewable)
+        public EmailQueue CreateQueue(MailAddress From, string subject, string body, DateTime? schedule, int tagId, bool publicViewable)
         {
             var emailqueue = new EmailQueue
             {
@@ -184,7 +184,7 @@ namespace CmsData
                 SendWhen = schedule,
                 QueuedBy = Util.UserPeopleId,
                 Transactional = false,
-                PublicX = PublicViewable,
+                PublicX = publicViewable,
             };
             EmailQueues.InsertOnSubmit(emailqueue);
 
@@ -196,11 +196,8 @@ namespace CmsData
                 emailqueue.Body = re.Replace(body, link);
             }
 
-            var Qb = LoadQueryById(QBId);
-            var q = People.Where(Qb.Predicate(this));
-
-            if (wantParents || Qb.ParentsOf)
-                q = PersonQueryParents(q);
+            var tag = TagById(tagId);
+            var q = tag.People(this); 
 
             var q2 = from p in q.Distinct()
                      where p.EmailAddress != null

@@ -23,7 +23,6 @@ namespace CmsWeb.Areas.Main.Controllers
 			if (!body.HasValue())
 				body = TempData["body"] as string;
 
-			var m = new MassEmailer(id.Value, parents);
 			if(!subj.HasValue() && templateID != 0 && DbUtil.Db.Setting("UseEmailTemplates", "false") == "true" )
 			{
 				if (templateID == null)
@@ -32,6 +31,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				{
 					DbUtil.LogActivity("Emailing people");
 
+        			var m = new MassEmailer(id.Value, parents);
 					m.CmsHost = DbUtil.Db.CmsHost;
 					m.Host = Util.Host;
 

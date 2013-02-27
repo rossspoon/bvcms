@@ -740,7 +740,7 @@ namespace CmsWeb.Models
                 return Db.PersonQueryParents(q);
             return q;
         }
-        public void TagAll()
+        public void TagAll(Tag tag = null)
         {
             if (Qb == null)
                 LoadScratchPad();
@@ -748,7 +748,10 @@ namespace CmsWeb.Models
             var q = Db.People.Where(Qb.Predicate(Db));
             if (Qb.ParentsOf)
                 q = Db.PersonQueryParents(q);
-            Db.TagAll(q);
+            if (tag != null)
+                Db.TagAll(q, tag);
+            else
+                Db.TagAll(q);
         }
         public void UnTagAll()
         {

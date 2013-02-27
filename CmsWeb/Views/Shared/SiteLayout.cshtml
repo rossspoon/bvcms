@@ -4,7 +4,9 @@
 <head>
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    @{ var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true"; }
+    @{
+        var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
+    }
     @if (newlook)
     {
         @Styles.Render("~/Content/styles/new/css")

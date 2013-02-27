@@ -1,7 +1,10 @@
 ﻿@using System.Web.Optimization
+@using CmsData
+@using UtilityExtensions
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Transaction";
+    var churchWebSite = DbUtil.Db.Setting("ChurchWebSite", "");
 }
 @section scripts
 {
@@ -26,9 +29,9 @@
     <p style="color: Black">
         Thank you, your transaction is complete for @ViewData["orgname"].  
         You should receive a confirmation email at @ViewData["email"] shortly.<br /><br />
-        @if (ViewBag.ChurchWebSite != null)
+        @if (churchWebSite.HasValue())
         {
-            <a href="@ViewBag.ChurchWebSite">Return to Church Website</a>
+            <a href="@churchWebSite">Return to Church Website</a>
         }
     </p>
 	<p style="color: Blue"><a href='@ViewBag.Url'>Start a New Transaction</a></p>

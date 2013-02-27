@@ -438,7 +438,11 @@ namespace CmsData
 			TagAll(a, tag);
 			return tag;
 		}
-		public void PopulateSpecialTag(IQueryable<Person> q, string tagname)
+	    public void ClearTag(Tag tag)
+	    {
+			ExecuteCommand("delete TagPerson where Id = {0}", tag.Id);
+	    }
+	    public void PopulateSpecialTag(IQueryable<Person> q, string tagname)
 		{
 			var tag = FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
 			TagPeople.DeleteAllOnSubmit(tag.PersonTags);

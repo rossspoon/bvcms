@@ -7,9 +7,16 @@
         closeOnEscape: true,
         width: 400
     });
-    $("body").on("click", '.ChooseLabelType', function (ev) {
+    $("#TagAllDialog").dialog({
+        overlay: { background: "#000", opacity: 0.3 },
+        bgiframe: true,
+        modal: true,
+        autoOpen: false,
+        closeOnEscape: true
+    });
+    $(".ChooseLabelType").live("click", function (ev) {
         ev.preventDefault();
-		$('div.dropdown-menu').hide();
+        $('div.dropdown-menu').hide();
         var d = $("#ChooseLabelType");
         d.dialog("open");
 
@@ -28,9 +35,31 @@
         });
         return false;
     });
-    $('body').on("click", '#TagAll,#UnTagAll', function (ev) {
+    $('#TagAll').live("click", function (ev) {
         ev.preventDefault();
-		$('div.dropdown-menu').hide();
+        var action = this.href;
+        $('div.dropdown-menu').hide();
+        var d = $("#TagAllDialog").dialog("open");
+        $("#TagAllRun").click(function (ev) {
+            ev.preventDefault();
+            d.dialog("close");
+            var q = $(this).closest("form").serialize();
+            $.block();
+            $.post(action, q, function (ret) {
+                if (ret === "Manage")
+                    window.location = "/Tags";
+                else {
+                    $(".taguntag:visible").text(ret);
+                    $.unblock();
+                }
+            });
+            return false;
+        });
+        return false;
+    });
+    $('#UnTagAll').live("click", function (ev) {
+        ev.preventDefault();
+        $('div.dropdown-menu').hide();
         $.block();
         $.post(this.href, null, function (ret) {
             $(".taguntag:visible").text(ret);
@@ -39,7 +68,7 @@
         return false;
     });
     $('body').on("click", '#AddContact', function (ev) {
-		$('div.dropdown-menu').hide();
+        $('div.dropdown-menu').hide();
         ev.preventDefault();
         if (!confirm("Are you sure you want to add a contact for all these people?"))
             return false;
@@ -57,7 +86,7 @@
     });
     $('body').on("click", '#AddTasks', function (ev) {
         ev.preventDefault();
-		$('div.dropdown-menu').hide();
+        $('div.dropdown-menu').hide();
         if (!confirm("Are you sure you want to add a task for each of these people?"))
             return false;
         $.block();
@@ -84,19 +113,19 @@
         if (!message)
             message = '<h1>working on it...</h1>';
         $.blockUI({
-                message: message,
-                overlayCSS: { opacity: 0 },
-                css: {
-                    border: 'none',
-                    padding: '15px',
-                    backgroundColor: '#000',
-                    '-webkit-border-radius': '10px',
-                    '-moz-border-radius': '10px',
-                    opacity: .5,
-                    color: '#fff'
-                }
-            });
-        };
+            message: message,
+            overlayCSS: { opacity: 0 },
+            css: {
+                border: 'none',
+                padding: '15px',
+                backgroundColor: '#000',
+                '-webkit-border-radius': '10px',
+                '-moz-border-radius': '10px',
+                opacity: .5,
+                color: '#fff'
+            }
+        });
+    };
     $.unblock = function () {
         $.unblockUI();
     };
@@ -147,7 +176,7 @@
         });
         return false;
     });
-    $.DateValid = function(d, growl) {
+    $.DateValid = function (d, growl) {
         var reDate = /^(0?[1-9]|1[012])[\/-](0?[1-9]|[12][0-9]|3[01])[\/-]((19|20)?[0-9]{2})$/i;
         if ($.dateFormat.startsWith('d'))
             reDate = /^(0?[1-9]|[12][0-9]|3[01])[\/-](0?[1-9]|1[012])[\/-]((19|20)?[0-9]{2})$/i;
@@ -159,7 +188,7 @@
         }
         return v;
     };
-    jQuery.fn.center = function(parent) {
+    jQuery.fn.center = function (parent) {
         if (parent) {
             parent = this.parent();
         } else {
@@ -176,14 +205,13 @@
 function dimOff() {
     $("#darkLayer").hide();
 }
-function dimOn()
-{
+function dimOn() {
     $("#darkLayer").show();
 }
-String.prototype.startsWith = function(t, i) {
+String.prototype.startsWith = function (t, i) {
     return (t == this.substring(0, t.length));
 };
-String.prototype.appendQuery = function(q) {
+String.prototype.appendQuery = function (q) {
     if (this && this.length > 0)
         if (this.contains("&") || this.contains("?"))
             return this + '&' + q;
@@ -191,13 +219,13 @@ String.prototype.appendQuery = function(q) {
             return this + '?' + q;
     return q;
 };
-String.prototype.contains = function(it) { 
-    return this.indexOf(it) != -1; 
+String.prototype.contains = function (it) {
+    return this.indexOf(it) != -1;
 };
-String.prototype.endsWith = function(t, i) {
+String.prototype.endsWith = function (t, i) {
     return (t == this.substring(this.length - t.length));
 };
-String.prototype.addCommas = function() {
+String.prototype.addCommas = function () {
     var x = this.split('.');
     var x1 = x[0];
     var x2 = x.length > 1 ? '.' + x[1] : '';

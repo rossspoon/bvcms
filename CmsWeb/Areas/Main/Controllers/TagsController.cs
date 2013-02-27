@@ -81,15 +81,27 @@ namespace CmsWeb.Areas.Main.Controllers
             return Content(t ? "Remove" : "Add");
         }
         [AcceptVerbs(HttpVerbs.Post)]
-        public ContentResult TagAll(int id, string m)
+        public ContentResult TagAll(int id, string m, string tagname, bool forcenew)
         {
             DbUtil.Db.SetNoLock();
             var q = DbUtil.Db.PeopleQuery(id);
             switch (m)
             {
                 case "tag":
-                    DbUtil.Db.TagAll(q);
-                    return Content("Remove");
+			        if (Util2.CurrentTagName == tagname && !forcenew)
+			        {
+			            DbUtil.Db.TagAll(q);
+    					return Content("Remove");
+			        }
+			        {
+    			        var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+                        if (forcenew)
+                            DbUtil.Db.ClearTag(tag);
+			            DbUtil.Db.TagAll(q, tag);
+			            Util2.CurrentTag = tagname;
+                        DbUtil.Db.TagCurrent();
+    					return Content("Manage");
+			        }
                 case "untag":
                     DbUtil.Db.UnTagAll(q);
                     return Content("Add");

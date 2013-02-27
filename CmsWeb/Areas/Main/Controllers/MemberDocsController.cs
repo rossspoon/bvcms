@@ -46,7 +46,7 @@ namespace CmsWeb.Areas.Main.Controllers
     				PeopleId = id, 
     				DocDate = Util.Now,
     				UploaderId = Util2.CurrentPeopleId,
-                    Name = file.FileName
+                    Name = System.IO.Path.GetFileName(file.FileName)
     			};
                 DbUtil.Db.MemberDocForms.InsertOnSubmit(mdf);
                 var bits = new byte[file.ContentLength];

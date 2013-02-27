@@ -17,7 +17,7 @@ using System.Xml.Linq;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-	[SessionExpire]
+    [SessionExpire]
     public class QueryBuilderController : CmsStaffAsyncController
     {
         public ActionResult NewQuery()
@@ -183,73 +183,81 @@ namespace CmsWeb.Areas.Main.Controllers
             c.Content = m.Description;
             return c;
         }
-		public void Results2Async()
-		{
-			AsyncManager.OutstandingOperations.Increment();
-			string host = Util.Host;
-			ThreadPool.QueueUserWorkItem((e) =>
-			{
-				var Db = new CMSDataContext(Util.GetConnectionString(host));
-				Db.DeleteQueryBitTags();
-				foreach (var a in Db.QueryBitsFlags())
-				{
-					var t = Db.FetchOrCreateSystemTag(a[0]);
-					Db.TagAll(Db.PeopleQuery(a[0] + ":" + a[1]), t);
-					Db.SubmitChanges();
-				}
-				AsyncManager.OutstandingOperations.Decrement();
-			});
-		}
-		public ActionResult Results2Completed()
-		{
-			return null;
-		}
+        public void Results2Async()
+        {
+            AsyncManager.OutstandingOperations.Increment();
+            string host = Util.Host;
+            ThreadPool.QueueUserWorkItem((e) =>
+            {
+                var Db = new CMSDataContext(Util.GetConnectionString(host));
+                Db.DeleteQueryBitTags();
+                foreach (var a in Db.QueryBitsFlags())
+                {
+                    var t = Db.FetchOrCreateSystemTag(a[0]);
+                    Db.TagAll(Db.PeopleQuery(a[0] + ":" + a[1]), t);
+                    Db.SubmitChanges();
+                }
+                AsyncManager.OutstandingOperations.Decrement();
+            });
+        }
+        public ActionResult Results2Completed()
+        {
+            return null;
+        }
 
-    	[HttpPost]
+        [HttpPost]
         public ActionResult Results()
         {
-			var cb = new SqlConnectionStringBuilder(Util.ConnectionString);
-        	cb.ApplicationName = "qb";
-			DbUtil.Db = new CMSDataContext(cb.ConnectionString);
+            var cb = new SqlConnectionStringBuilder(Util.ConnectionString);
+            cb.ApplicationName = "qb";
+            DbUtil.Db = new CMSDataContext(cb.ConnectionString);
             var m = new QueryModel();
-			try
-			{
-	            UpdateModel<IQBUpdateable>(m);
-			}
-			catch (Exception ex)
-			{
-				return Content("Something went wrong<br><p>" + ex.Message + "</p>");
-			}
+            try
+            {
+                UpdateModel<IQBUpdateable>(m);
+            }
+            catch (Exception ex)
+            {
+                return Content("Something went wrong<br><p>" + ex.Message + "</p>");
+            }
             m.LoadScratchPad();
 
-			var starttime = DateTime.Now;
-			m.PopulateResults();
-			DbUtil.LogActivity("QB Results ({0:N1}, {1})".Fmt(DateTime.Now.Subtract(starttime).TotalSeconds, m.QueryId));
+            var starttime = DateTime.Now;
+            m.PopulateResults();
+            DbUtil.LogActivity("QB Results ({0:N1}, {1})".Fmt(DateTime.Now.Subtract(starttime).TotalSeconds, m.QueryId));
             return View(m);
         }
         [HttpPost]
         public JsonResult ToggleTag(int id)
         {
-			try
-			{
-	            var r = Person.ToggleTag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
-	            DbUtil.Db.SubmitChanges();
-	            return Json(new { HasTag = r });
-			}
-			catch (Exception ex)
-			{
-				return Json(new { error = ex.Message + ". Please report this to support@bvcms.com" });
-			}
+            try
+            {
+                var r = Person.ToggleTag(id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+                DbUtil.Db.SubmitChanges();
+                return Json(new { HasTag = r });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message + ". Please report this to support@bvcms.com" });
+            }
         }
         [HttpPost]
-        public ContentResult TagAll()
+        public ContentResult TagAll(string tagname, bool forcenew)
         {
             var m = new QueryModel();
             m.LoadScratchPad();
-            m.TagAll();
-            var c = new ContentResult();
-            c.Content = "Remove";
-            return c;
+            if (Util2.CurrentTagName == tagname && !forcenew)
+            {
+                m.TagAll();
+                return Content("Remove");
+            }
+            var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+            if (forcenew)
+                DbUtil.Db.ClearTag(tag);
+            m.TagAll(tag);
+            Util2.CurrentTag = tagname;
+            DbUtil.Db.TagCurrent();
+            return Content("Manage");
         }
         [HttpPost]
         public ContentResult UnTagAll()
@@ -335,9 +343,9 @@ namespace CmsWeb.Areas.Main.Controllers
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Import(string text, string name)
-		{
-			int id = QueryFunctions.Import(DbUtil.Db, text, name);
-			return Redirect("/QueryBuilder/Main/" + id);
-		}
+        {
+            int id = QueryFunctions.Import(DbUtil.Db, text, name);
+            return Redirect("/QueryBuilder/Main/" + id);
+        }
     }
 }

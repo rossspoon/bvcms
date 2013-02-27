@@ -230,5 +230,6 @@ namespace CmsData
 		public const int TagTypeId_AddSelected = 5;
 		public const int TagTypeId_ExtraValues = 6;
 		public const int TagTypeId_Query = 7;
+		public const int TagTypeId_Emailer = 8;
 	}
 }

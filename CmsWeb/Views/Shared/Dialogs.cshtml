@@ -89,6 +89,19 @@
         </tr>
     </table>
 </div>
+<div id="TagAllDialog" class="modalDiv dialog" style="display: none;">
+    <form>
+        <table style="white-space: nowrap">
+            <tr>
+                <td>TagName:
+                    <input name="tagname" type="text" value="@Util2.CurrentTagName" />
+                    Force New: @Html.CheckBox("forcenew", false)
+                </td>
+            </tr>
+            <tr><td class="right"><a class="bt" id="TagAllRun" href="#" style="text-align: right">OK </a></td></tr>
+        </table>
+    </form>
+</div>
 <div id="AddDialog">
     <iframe id="AddDialogiframe" style="width: 99%; height: 99%; border-width: 0px"></iframe>
 </div>

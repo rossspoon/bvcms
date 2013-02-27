@@ -29,14 +29,15 @@
 }
 
 <h2 style="margin-bottom:5px;">Compose Email for @Model.Count @( Model.Count != 1 ? "People" : "Person") @(Model.wantParents ? " including Parents" : "")</h2>
-<font color="red"><b>NOTE:</b></font> Your recipient list will change if use another tab in your browser to visit another organization or person or run another query.<br />
+<em style="display:inline-block"><span style="color: blue;font-size: 120%;">Please Note</span>: 
+Your recipient list has been saved in a tag, so you can run queries in other tabs. But you should not compose two emails simultaneously as one will overwrite the other.</em></p>
 <br />
 <form id="SendEmail" method="post">
-	@Html.Hidden("QBId")
-   @Html.Hidden("Host")
-   @Html.Hidden("CmsHost")
-   @Html.Hidden("Count", Model.Count)
-   @Html.Hidden("wantParents", Model.wantParents)
+    @Html.Hidden("TagId")
+    @Html.Hidden("Host")
+    @Html.Hidden("CmsHost")
+    @Html.Hidden("Count", Model.Count)
+    @Html.Hidden("wantParents", Model.wantParents)
 	@Html.Hidden("roleid", c.RoleID)
 	<input type="hidden" name="saveid" value="@(c.TypeID == ContentTypeCode.TypeEmailTemplate ? 0 : c.Id )" />
 	<input type="hidden" id="body" name="body" />

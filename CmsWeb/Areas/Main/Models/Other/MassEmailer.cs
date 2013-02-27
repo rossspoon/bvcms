@@ -18,7 +18,7 @@ namespace CmsWeb.Areas.Main.Models
     {
         public int Count { get; set; }
 
-        public int QBId { get; set; }
+        public int TagId { get; set; }
         public bool wantParents { get; set; }
         public string FromAddress { get; set; }
         public string FromName { get; set; }
@@ -36,7 +36,6 @@ namespace CmsWeb.Areas.Main.Models
         }
         public MassEmailer(int QBId, bool? parents)
         {
-            this.QBId = QBId;
             this.wantParents = parents ?? false;
             var Qb = DbUtil.Db.LoadQueryById(QBId);
             var q = DbUtil.Db.PeopleQuery(QBId);
@@ -49,12 +48,14 @@ namespace CmsWeb.Areas.Main.Models
                 where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
                 select p;
             Count = q.Count();
+            var tag = DbUtil.Db.PopulateSpecialTag(q, DbUtil.TagTypeId_Emailer);
+            TagId = tag.Id;
         }
 
         public int CreateQueue(bool transactional = false)
         {
             var From = new MailAddress(FromAddress, FromName);
-			var emailqueue = DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, QBId, wantParents , PublicViewable);
+			var emailqueue = DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, TagId, PublicViewable);
 			emailqueue.Transactional = transactional;
 			return emailqueue.Id;
         }

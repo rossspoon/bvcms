@@ -277,7 +277,7 @@ The following Committments:<br/>
 				}
 				else if (gateway == "sage")
 				{
-					var sg = new CmsData.SagePayments(DbUtil.Db, m.testing);
+					var sg = new SagePayments(DbUtil.Db, m.testing);
 					sg.storeVault(m.pid,
 						m.Type,
 						m.Cardnumber,
@@ -417,9 +417,9 @@ You have the following subscriptions:<br/>
 		[HttpPost]
 		public ActionResult ConfirmPledge(ManagePledgesModel m)
 		{
-			var Staff = DbUtil.Db.StaffPeopleForOrg(m.orgid);
-			if (Staff.Count() == 0)
-				Staff = DbUtil.Db.AdminPeople();
+			var staff = DbUtil.Db.StaffPeopleForOrg(m.orgid);
+			if (!staff.Any())
+				staff = DbUtil.Db.AdminPeople();
 
 			//OrganizationMember.InsertOrgMembers(DbUtil.Db, m.orgid, m.pid, 220, DateTime.Now, null, false);
 
@@ -437,13 +437,15 @@ You have the following subscriptions:<br/>
 
 			var pi = m.GetPledgeInfo();
 			var body = m.setting.Body;
+		    if (!body.HasValue())
+		        return Content("There is no Confirmation Message (required)");
 			body = body.Replace("{amt}", pi.Pledged.ToString("N2"));
 			body = body.Replace("{org}", m.Organization.OrganizationName);
 			body = body.Replace("{first}", m.person.PreferredName);
-			DbUtil.Db.EmailRedacted(Staff.First().FromEmail, m.person,
+			DbUtil.Db.EmailRedacted(staff.First().FromEmail, m.person,
 				m.setting.Subject, body);
 
-			DbUtil.Db.Email(m.person.FromEmail, Staff, "Online Pledge", @"{0} made a pledge to {1}".Fmt(m.person.Name, m.Organization.OrganizationName));
+			DbUtil.Db.Email(m.person.FromEmail, staff, "Online Pledge", @"{0} made a pledge to {1}".Fmt(m.person.Name, m.Organization.OrganizationName));
 
 			SetHeaders(m.orgid);
 			return View(m);
