@@ -137,15 +137,15 @@ namespace CmsWeb.Areas.Main.Controllers
 			return Content("ok");
 		}
 		[HttpPost]
-		public ActionResult Tag(int id, string tagname, bool forcenew)
+		public ActionResult Tag(int id, string tagname, bool cleartagfirst)
 		{
-            if (Util2.CurrentTagName == tagname && !forcenew)
+            if (Util2.CurrentTagName == tagname && !cleartagfirst)
             {
     			Person.Tag(DbUtil.Db, id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
                 return Content("Remove");
             }
             var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-            if (forcenew)
+            if (cleartagfirst)
                 DbUtil.Db.ClearTag(tag);
             Util2.CurrentTag = tagname;
             DbUtil.Db.TagCurrent();

@@ -38,7 +38,7 @@ namespace CmsWeb.Areas.Main.Controllers
                         {
                             UploaderId = Util.UserId1, 
                             PeopleId = vol.PeopleId, 
-                            Name = System.IO.Path.GetFileName(file.FileName),
+                            Name = System.IO.Path.GetFileName(file.FileName).Truncate(100),
                             AppDate = Util.Now,
                         };
 
@@ -206,7 +206,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var iid = id.Substring(2).ToInt();
             var f = DbUtil.Db.VolunteerForms.Single(m => m.Id == iid);
             if (id.StartsWith("n"))
-                f.Name = value;
+                f.Name = value.Truncate(100);
             DbUtil.Db.SubmitChanges();
             var c = new ContentResult();
             c.Content = value;

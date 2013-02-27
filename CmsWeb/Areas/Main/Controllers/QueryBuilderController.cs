@@ -242,17 +242,17 @@ namespace CmsWeb.Areas.Main.Controllers
             }
         }
         [HttpPost]
-        public ContentResult TagAll(string tagname, bool forcenew)
+        public ContentResult TagAll(string tagname, bool cleartagfirst)
         {
             var m = new QueryModel();
             m.LoadScratchPad();
-            if (Util2.CurrentTagName == tagname && !forcenew)
+            if (Util2.CurrentTagName == tagname && !cleartagfirst)
             {
                 m.TagAll();
                 return Content("Remove");
             }
             var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-            if (forcenew)
+            if (cleartagfirst)
                 DbUtil.Db.ClearTag(tag);
             m.TagAll(tag);
             Util2.CurrentTag = tagname;

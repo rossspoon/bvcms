@@ -597,21 +597,21 @@ namespace CmsWeb.Areas.Main.Controllers
 			return Content(t ? "Remove" : "Add");
 		}
 		[HttpPost]
-		public ContentResult TagAll(int id, string m, string tagname, bool forcenew)
+		public ContentResult TagAll(int id, string m, string tagname, bool cleartagfirst)
 		{
 			DbUtil.Db.SetNoLock();
 			var q = DbUtil.Db.PeopleQuery(id);
 			switch (m)
 			{
 				case "tag":
-			        if (Util2.CurrentTagName == tagname && !forcenew)
+			        if (Util2.CurrentTagName == tagname && !cleartagfirst)
 			        {
 			            DbUtil.Db.TagAll(q);
     					return Content("Remove");
 			        }
 			        {
     			        var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-                        if (forcenew)
+                        if (cleartagfirst)
                             DbUtil.Db.ClearTag(tag);
 			            DbUtil.Db.TagAll(q, tag);
 			            Util2.CurrentTag = tagname;

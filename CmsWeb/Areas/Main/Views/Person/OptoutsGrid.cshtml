@@ -1,7 +1,9 @@
 ﻿@model CmsData.Person
+@using CmsData
+@using UtilityExtensions
 <a href="/Manage/Emails/Failed/@Model.PeopleId">Failed Sent Emails</a>
 @if (Model.EmailOptOuts.Count > 0)
-{ 
+{
 <table class="grid" cellspacing="5">
 <thead>
     <tr>
@@ -14,6 +16,7 @@
     { 
     <tr>
         <td>@oo.FromEmail</td>
+        <td>@oo.DateX.FormatDate())</td>
         <td><a class="deloptout" href="/Person/DeleteOptout/@oo.ToPeopleId?email=@oo.FromEmail"><img src="/images/delete.gif" /></a></td>
     </tr>
     } 

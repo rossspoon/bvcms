@@ -52,6 +52,7 @@ namespace CmsWeb.Areas.Public.Controllers
                     {
                         ToPeopleId = a[0].ToInt(),
                         FromEmail = a[1],
+                        DateX = DateTime.Now
                     };
                     DbUtil.Db.EmailOptOuts.InsertOnSubmit(oo);
                     DbUtil.Db.SubmitChanges();

@@ -592,7 +592,7 @@ namespace CmsData
             Expression<Func<Person, bool>> pred = p =>
                 (from oo in p.EmailOptOuts
                  where email == null || email == "" || oo.FromEmail == email
-                 where @to == null || (oo.DateX != null && oo.DateX >= @to)
+                 where @to == null || (oo.DateX >= @to)
                  select oo).Any();
             Expression expr = Expression.Invoke(pred, parm);
             return expr;
