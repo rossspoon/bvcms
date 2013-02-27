@@ -11,7 +11,7 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            $("[class='bt']").button();
+            $(".bt").button();
 
             $("a[dialogurl]").on("click", function (e) {
                 e.preventDefault();
@@ -25,6 +25,7 @@
         function contentLoaded( responseText, statusText, xmlRequest )
         {
             $("#dialog").dialog({ width: "auto", modal: true });
+            $(".bt").button();
             enableClose();
         }
 
