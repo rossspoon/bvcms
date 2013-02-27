@@ -5,6 +5,7 @@ using System.Web;
 using System.Diagnostics;
 using CmsData;
 using UtilityExtensions;
+using System.Data.Linq;
 
 namespace CmsWeb.Models
 {
@@ -14,10 +15,10 @@ namespace CmsWeb.Models
 
 		public DateTime? dateStart { get; set; }
 		public DateTime? dateEnd { get; set; }
-		public int peopleid { get; set; }
+		//public int peopleid { get; set; }
+        public int accesstype { get; set; }
 		public string location { get; set; }
 		public string activity { get; set; }
-		public bool withGuest { get; set; }
 
 		public PagerModel2 Pager { get; set; }
 
@@ -26,7 +27,7 @@ namespace CmsWeb.Models
 			Pager = new PagerModel2();
 			Pager.setCountDelegate(Count);
 			Pager.Direction = "desc";
-			Pager.Sort = "Host";
+            Pager.Sort = "Date/Time";
 			var locs = Locations();
 			location = DbUtil.Db.UserPreference("checkintimes-location", locs.FirstOrDefault());
 		}
@@ -40,6 +41,18 @@ namespace CmsWeb.Models
 			list.Insert(0, ALL_ACTIVITIES);
 			return list;
 		}
+
+        public List<string> AccessTypes( bool bForDropDown = false )
+        {
+            var q = from a in DbUtil.Db.BuildingAccessTypes
+                    select a.Description;
+            var list = q.ToList();
+
+            if (bForDropDown) list.Insert(0, "- All Types -");
+            else list.Insert(0, "Unknown");
+
+            return list;
+        }
 
 		private List<string> locations;
 		public List<string> Locations()
@@ -61,36 +74,23 @@ namespace CmsWeb.Models
 			public CheckInTime ctime { get; set; }
 			public string name { get; set; }
 			public string activities { get; set; }
-			public int guests { get; set; }
-			internal PagerModel2 pager;
-			public string rowclass()
-			{
-				if (pager.Sort != "Host")
-					return null;
-				if (ctime.GuestOfId == null)
-					return "host";
-				return "guest";
-			}
-			public string indent()
-			{
-				if (pager.Sort != "Host")
-					return null;
-				if (ctime.GuestOfId != null)
-					return "indent";
-				return null;
-			}
+			public EntitySet<CheckInTime> guests { get; set; }
+            public int guestcount { get; set; }
+            public int accesstype { get; set; }
 		}
 
 		public class CountInfo
 		{
 			public int members { get; set; }
 			public int guests { get; set; }
-			private string _name;
+			/*
+            private string _name;
 			public string name
 			{
 				get { return _name.HasValue() ? _name : "Not Specified"; }
 				set { _name = value; }
 			}
+             */
 		}
 
 		private CountInfo _counts;
@@ -163,8 +163,9 @@ namespace CmsWeb.Models
 					where t.Location == location
 					where t.CheckInTimeX >= dateStart || dateStart == null
 					where t.CheckInTimeX < dateEnd || dateEnd == null
-					where peopleid == 0 || t.PeopleId == peopleid || t.Guests.Any(g => g.PeopleId == peopleid)
-					where withGuest == false || (t.Guests.Any() || t.GuestOfId != null)
+					//where peopleid == 0 || t.PeopleId == peopleid || t.Guests.Any(g => g.PeopleId == peopleid)
+                    where accesstype == 0 || t.AccessTypeID == accesstype || t.Guests.Any(g => g.AccessTypeID == accesstype)
+                    where t.GuestOfId == null
 					select t;
 
 			if (activity != null && !activity.Equals(ALL_ACTIVITIES))
@@ -173,16 +174,22 @@ namespace CmsWeb.Models
 					select t;
 
 			// count
-			var q2 = from t in q
-					 group t by 1 into g
-					 select new CountInfo()
-					 {
-						 members = g.Count(tt => tt.GuestOfId == null),
-						 guests = g.Count(tt => tt.GuestOfId != null),
-						 name = (from p in DbUtil.Db.People
-								 where p.PeopleId == peopleid
-								 select p.Name).SingleOrDefault()
-					 };
+
+			var q2 = from t in DbUtil.Db.CheckInTimes
+				     where t.Location == location
+				     where t.CheckInTimeX >= dateStart || dateStart == null
+				     where t.CheckInTimeX < dateEnd || dateEnd == null
+				     //where peopleid == 0 || t.PeopleId == peopleid || t.Guests.Any(g => g.PeopleId == peopleid)
+                     where accesstype == 0 || t.AccessTypeID == accesstype || t.Guests.Any(g => g.AccessTypeID == accesstype)
+				     group t by 1 into g
+				     select new CountInfo()
+				     {
+					     members = g.Count(tt => tt.GuestOfId == null),
+					     guests = g.Count(tt => tt.GuestOfId != null),
+					     //name = (from p in DbUtil.Db.People
+				 		//	    where p.PeopleId == peopleid
+				 		//	    select p.Name).SingleOrDefault()
+				     };
 			_counts = q2.Single();
 
 			// sort
@@ -196,11 +203,13 @@ namespace CmsWeb.Models
 						 activities = string.Join(",",
 							 t.CheckInActivities.Select(a => a.Activity)),
 						 name = t.Person.Name,
-						 guests = t.Guests.Count(),
-						 pager = Pager,
+						 guestcount = t.Guests.Count(),
+                         guests = t.Guests,
+                         accesstype = t.AccessTypeID ?? 0,
 					 };
 			return _times;
 		}
+
 		public IQueryable<CheckInTime> SortItems(IQueryable<CheckInTime> results)
 		{
 			if (Pager.Sort == "Host")
