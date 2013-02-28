@@ -66,32 +66,32 @@ namespace CmsWeb.Areas.Main.Controllers
 
 		[HttpPost]
 		[ValidateInput(false)]
-		public ActionResult SaveDraft(int QBId, bool wantParents, int saveid, string name, string subject, string body, int roleid)
+		public ActionResult SaveDraft(int tagId, bool wantParents, int saveid, string name, string subject, string body, int roleid)
 		{
 			Content content;
 
-			if (saveid > 0) content = DbUtil.ContentFromID(saveid);
-			else
-			{
-				content = new Content();
-				content.Name = name;
-			    content.TypeID = ContentTypeCode.TypeSavedDraft;
-				content.RoleID = roleid;
-			}
-						
-			content.Title = subject;
+		    if (saveid > 0)
+		        content = DbUtil.ContentFromID(saveid);
+		    else
+		        content = new Content {Name = name, TypeID = ContentTypeCode.TypeSavedDraft, RoleID = roleid};
+
+		    content.Title = subject;
 			content.Body = body;
 			content.OwnerID = Util.UserId;
 
 			if( saveid == 0 ) DbUtil.Db.Contents.InsertOnSubmit(content);
 			DbUtil.Db.SubmitChanges();
 
-			var m = new MassEmailer(QBId, wantParents);
-			m.CmsHost = DbUtil.Db.CmsHost;
-			m.Host = Util.Host;
-			m.Subject = subject;
+			var m = new MassEmailer
+			            {
+			                TagId = tagId,
+			                wantParents = wantParents,
+			                CmsHost = DbUtil.Db.CmsHost,
+			                Host = Util.Host,
+			                Subject = subject,
+			            };
 
-			System.Diagnostics.Debug.Print("Template ID: " + content.Id);
+		    System.Diagnostics.Debug.Print("Template ID: " + content.Id);
 
 			ViewBag.parents = wantParents;
 			ViewBag.templateID = content.Id;
