@@ -1726,6 +1726,23 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.Contributions0", IsComposable = true)]
+		public IQueryable< View.Contributions0 > Contributions0(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? fundid,
+            [Parameter(DbType="int")] int? campusid
+            )
+		{
+			return this.CreateMethodCallQuery< View.Contributions0>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                fundid,
+                campusid
+                );
+		}
+
 		[Function(Name="dbo.Contributions2", IsComposable = true)]
 		public IQueryable< View.Contributions2 > Contributions2(
             [Parameter(DbType="datetime")] DateTime? fd,
@@ -2052,6 +2069,23 @@ namespace CmsData
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 fd,
                 td,
+                campusid
+                );
+		}
+
+		[Function(Name="dbo.Pledges0", IsComposable = true)]
+		public IQueryable< View.Pledges0 > Pledges0(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? fundid,
+            [Parameter(DbType="int")] int? campusid
+            )
+		{
+			return this.CreateMethodCallQuery< View.Pledges0>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                fundid,
                 campusid
                 );
 		}

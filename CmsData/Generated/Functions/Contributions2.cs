@@ -24,6 +24,8 @@ namespace CmsData.View
 		
 		private int? _CreditGiverId;
 		
+		private int? _SpouseId;
+		
 		private string _HeadName;
 		
 		private string _SpouseName;
@@ -120,6 +122,23 @@ namespace CmsData.View
 			{
 				if (this._CreditGiverId != value)
 					this._CreditGiverId = value;
+			}
+
+		}
+
+		
+		[Column(Name="SpouseId", Storage="_SpouseId", DbType="int")]
+		public int? SpouseId
+		{
+			get
+			{
+				return this._SpouseId;
+			}
+
+			set
+			{
+				if (this._SpouseId != value)
+					this._SpouseId = value;
 			}
 
 		}

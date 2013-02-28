@@ -949,6 +949,14 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.Equal:
+                    if (cnt == 0) // special case, use different approach
+                    {
+                        q = from pid in Db.Pledges0(dt, now, fund, 0)
+                            select pid.PeopleId;
+                        Expression<Func<Person, bool>> pred0 = p => q.Contains(p.PeopleId);
+                        Expression expr0 = Expression.Invoke(pred0, parm);
+                        return expr0;
+                    }
                     q = from c in Db.Contributions2(dt, now, 0, true, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.PledgeAmount > 0
@@ -1096,7 +1104,7 @@ namespace CmsData
                 case CompareType.GreaterEqual:
                     q = from c in Db.Contributions2(dt, now, 0, false, false, true)
                         where fund == 0 || c.FundId == fund
-                        where c.Amount > 0
+                        where c.Amount > 0 || cnt == 0
                         group c by c.CreditGiverId into g
                         where g.Count() >= cnt
                         select g.Key ?? 0;
@@ -1118,6 +1126,14 @@ namespace CmsData
                         select g.Key ?? 0;
                     break;
                 case CompareType.Equal:
+                    if (cnt == 0) // This is a very special case, use different approach
+                    {
+                        q = from pid in Db.Contributions0(dt, now, fund, 0)
+                            select pid.PeopleId;
+                        Expression<Func<Person, bool>> pred0 = p => q.Contains(p.PeopleId);
+                        Expression expr0 = Expression.Invoke(pred0, parm);
+                        return expr0;
+                    }
                     q = from c in Db.Contributions2(dt, now, 0, false, false, true)
                         where fund == 0 || c.FundId == fund
                         where c.Amount > 0
@@ -1605,13 +1621,13 @@ namespace CmsData
             CompareType op,
             string name)
         {
-//            Expression<Func<Person, bool>> pred1 = p =>
-//                    p.OrganizationMembers.Any(m =>
-//                        (org == 0 || m.OrganizationId == org)
-//                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
-//                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
-//                        );
-//            var expr1 = Expression.Convert(Expression.Invoke(pred1, parm), typeof(bool));
+            //            Expression<Func<Person, bool>> pred1 = p =>
+            //                    p.OrganizationMembers.Any(m =>
+            //                        (org == 0 || m.OrganizationId == org)
+            //                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
+            //                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
+            //                        );
+            //            var expr1 = Expression.Convert(Expression.Invoke(pred1, parm), typeof(bool));
             if (name.HasValue())
             {
                 Expression<Func<Person, bool>> pred = p =>
