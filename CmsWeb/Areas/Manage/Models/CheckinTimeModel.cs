@@ -9,6 +9,33 @@ using System.Data.Linq;
 
 namespace CmsWeb.Models
 {
+    /*
+     * Update for Special Access
+
+        UPDATE c
+        SET c.AccessTypeID = 4
+        FROM dbo.CheckInTimes c
+        INNER JOIN dbo.People ON c.PeopleId = dbo.People.PeopleId
+        WHERE MemberStatusId != 10
+	    AND GuestOfId IS NULL
+    
+     * Update for Members
+    
+        UPDATE c
+        SET c.AccessTypeID = 1
+        FROM dbo.CheckInTimes c
+        INNER JOIN dbo.People ON c.PeopleId = dbo.People.PeopleId
+        WHERE MemberStatusId = 10
+    
+     * Update for Guest of Members
+     
+        UPDATE c
+        SET c.AccessTypeID = 3
+        FROM dbo.CheckInTimes c
+        INNER JOIN dbo.People ON c.PeopleId = dbo.People.PeopleId
+        WHERE MemberStatusId != 10
+	        AND GuestOfId IS NOT NULL
+    */
     public class CheckinTimeModel
     {
         public static string ALL_ACTIVITIES = "- All Activities -";
