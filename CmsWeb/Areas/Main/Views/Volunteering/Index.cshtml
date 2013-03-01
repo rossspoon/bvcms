@@ -130,7 +130,7 @@
                             break;
                     }
                 </td>
-                <td class="center">
+                <td class="center" nowrap="nowrap">
                     @switch (check.StatusID)
                     {
                         case 0:
@@ -139,6 +139,7 @@
 
                         case 1:
                         <input type="button" value="Submit" style="width:75px;" class="showSubmitDialog" cid="@check.Id" />
+                        <input type="button" value="Delete" style="width:75px;" class="showDeleteDialog" cid="@check.Id" />
                             break;
 
                         case 2:
@@ -226,7 +227,7 @@
                             break;
                     }
                 </td>
-                <td class="center">
+                <td class="center" nowrap="nowrap">
                     @switch (check.StatusID)
                     {
                         case 0:
@@ -235,6 +236,7 @@
 
                         case 1:
                         <input type="button" value="Submit" style="width:75px;" class="showSubmitDialog" cid="@check.Id" />
+                        <input type="button" value="Delete" style="width:75px;" class="showDeleteDialog" cid="@check.Id" />
                             break;
 
                         case 2:

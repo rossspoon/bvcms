@@ -143,9 +143,16 @@ namespace CmsWeb.Areas.Main.Controllers
 
             ProtectMyMinistryHelper.submit(id, sSSN, sDLN, sResponseURL, iStateID, sUser, sPassword);
 
-            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == iPeopleID);
-            vol.ProcessedDate = DateTime.Now;
-            DbUtil.Db.SubmitChanges();
+            BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
+                                  where e.Id == id
+                                  select e).Single();
+
+            if (bc != null && bc.ServiceCode == "Combo")
+            {
+                Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == iPeopleID);
+                vol.ProcessedDate = DateTime.Now;
+                DbUtil.Db.SubmitChanges();
+            }
 
             return Redirect("/Volunteering/Index/" + iPeopleID);
         }
