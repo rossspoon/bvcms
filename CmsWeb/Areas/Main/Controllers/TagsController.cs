@@ -68,8 +68,8 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             var qb = DbUtil.Db.QueryBuilderHasCurrentTag();
             ViewData["queryid"] = qb.QueryId;
-            ViewData["TagAction"] = "/Tags/TagAll/{0}?m=tag".Fmt(qb.QueryId);
-            ViewData["UnTagAction"] = "/Tags/TagAll/{0}?m=untag".Fmt(qb.QueryId);
+            ViewData["TagAction"] = "/Tags/TagAll/{0}".Fmt(qb.QueryId);
+            ViewData["UnTagAction"] = "/Tags/UnTagAll/{0}".Fmt(qb.QueryId);
             ViewData["AddContact"] = "/Tags/AddContact/" + qb.QueryId;
             ViewData["AddTasks"] = "/Tags/AddTasks/" + qb.QueryId;
         }
@@ -80,40 +80,37 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(t ? "Remove" : "Add");
         }
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ContentResult TagAll(int id, string m, string tagname, bool cleartagfirst)
+        [HttpPost]
+        public ContentResult TagAll(int id, string tagname, bool cleartagfirst)
         {
             DbUtil.Db.SetNoLock();
             var q = DbUtil.Db.PeopleQuery(id);
-            switch (m)
+            if (Util2.CurrentTagName == tagname && !cleartagfirst)
             {
-                case "tag":
-			        if (Util2.CurrentTagName == tagname && !cleartagfirst)
-			        {
-			            DbUtil.Db.TagAll(q);
-    					return Content("Remove");
-			        }
-			        {
-    			        var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
-                        if (cleartagfirst)
-                            DbUtil.Db.ClearTag(tag);
-			            DbUtil.Db.TagAll(q, tag);
-			            Util2.CurrentTag = tagname;
-                        DbUtil.Db.TagCurrent();
-    					return Content("Manage");
-			        }
-                case "untag":
-                    DbUtil.Db.UnTagAll(q);
-                    return Content("Add");
+                DbUtil.Db.TagAll(q);
+                return Content("Remove");
             }
-            return Content("?");
+            var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+            if (cleartagfirst)
+                DbUtil.Db.ClearTag(tag);
+            DbUtil.Db.TagAll(q, tag);
+            Util2.CurrentTag = tagname;
+            DbUtil.Db.TagCurrent();
+            return Content("Manage");
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        public ContentResult UnTagAll(int id)
+        {
+            var q = DbUtil.Db.PeopleQuery(id);
+            DbUtil.Db.UnTagAll(q);
+            return Content("Add");
+        }
+        [HttpPost]
         public ContentResult ClearTag()
         {
-			var tag = DbUtil.Db.TagCurrent();
-			DbUtil.Db.ExecuteCommand("delete dbo.TagPerson where Id = {0}", tag.Id);
-			return Content("ok");
+            var tag = DbUtil.Db.TagCurrent();
+            DbUtil.Db.ExecuteCommand("delete dbo.TagPerson where Id = {0}", tag.Id);
+            return Content("ok");
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddContact(int id)

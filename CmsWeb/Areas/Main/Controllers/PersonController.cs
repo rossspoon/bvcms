@@ -142,6 +142,7 @@ namespace CmsWeb.Areas.Main.Controllers
             if (Util2.CurrentTagName == tagname && !cleartagfirst)
             {
     			Person.Tag(DbUtil.Db, id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+                DbUtil.Db.SubmitChanges();
                 return Content("Remove");
             }
             var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
@@ -150,6 +151,7 @@ namespace CmsWeb.Areas.Main.Controllers
             Util2.CurrentTag = tagname;
             DbUtil.Db.TagCurrent();
 			Person.Tag(DbUtil.Db, id, Util2.CurrentTagName, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
+            DbUtil.Db.SubmitChanges();
             return Content("Manage");
 		}
 		[HttpPost]

@@ -248,14 +248,22 @@ namespace CmsWeb.Areas.Search.Controllers
 			}
         }
         [HttpPost]
-        public ContentResult TagAll()
+        public ContentResult TagAll(string tagname, bool cleartagfirst)
         {
             var m = new AdvancedModel();
             m.LoadScratchPad();
-            m.TagAll();
-            var c = new ContentResult();
-            c.Content = "Remove";
-            return c;
+            if (Util2.CurrentTagName == tagname && !cleartagfirst)
+            {
+                m.TagAll();
+                return Content("Remove");
+            }
+            var tag = DbUtil.Db.FetchOrCreateTag(tagname, Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+            if (cleartagfirst)
+                DbUtil.Db.ClearTag(tag);
+            m.TagAll(tag);
+            Util2.CurrentTag = tagname;
+            DbUtil.Db.TagCurrent();
+            return Content("Manage");
         }
         [HttpPost]
         public ContentResult UnTagAll()

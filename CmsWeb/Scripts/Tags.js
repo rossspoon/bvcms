@@ -54,22 +54,22 @@
         });
         return false;
     });
-    $("body").on("change", '#tag', function (ev) {
+    $("#tag").live("change", function (ev) {
         ev.preventDefault();
         $.getTable();
         return false;
     });
 
-    $.gotoPage = function (e, pg) {
+    $.gotoPage = function(e, pg) {
         $("#Page").val(pg);
         $.getTable();
         return false;
-    }
-    $.setPageSize = function (e) {
+    };
+    $.setPageSize = function(e) {
         $('#Page').val(1);
         $("#PageSize").val($(e).val());
         return $.getTable();
-    }
+    };
     $.getTable = function() {
         var f = $('#results').closest('form');
         var q = f.serialize();
@@ -86,7 +86,7 @@
         return false;
     };
     $('#results > tbody > tr:even').addClass('alt');
-    $('body').on('click', '#results > thead a.sortable', function (ev) {
+    $('#results > thead a.sortable').live('click', function (ev) {
         ev.preventDefault();
         var newsort = $(this).text();
         var sort = $("#Sort");
@@ -99,14 +99,14 @@
         $.getTable();
         return false;
     });
-    $("form").on("keypress", 'input', function (e) {
+    $("form input").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#refresh').click();
             return false;
         }
         return true;
     });
-    $('body').on('click', 'a.taguntag', function (ev) {
+    $('a.taguntag').live('click', function (ev) {
         ev.preventDefault();
         var a = $(this);
         $.post(a.attr('href'), null, function (ret) {
@@ -122,7 +122,7 @@
             });
         }
     });
-    $('body').on("click", '#ShareLink', function (e) {
+    $('#ShareLink').live("click", function (e) {
         e.preventDefault();
         var d = $('#usersDialog');
         $('iframe', d).attr("src", this.href);
