@@ -49,6 +49,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			var m = new VolSubModel(aid, pid, ticks);
 			m.subject = subject;
 			m.message = message;
+		    if (pids == null)
+                return Content("no emails sent (no recipients were selected)");
 			m.pids = pids;
 			m.SendEmails();
 			return Content("Emails are being sent, thank you.");

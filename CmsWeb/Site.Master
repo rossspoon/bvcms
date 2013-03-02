@@ -12,13 +12,13 @@
 
     <%:Scripts.Render("~/bundles/js") %>
     <script type="text/javascript">
-        $.dateFormat = '<%=@Util.jQueryDateFormat%>';
+        $.dateFormat = '<%=Util.jQueryDateFormat%>';
         $(document).ready(function () {
             $.datepicker.setDefaults({
                 dateFormat: $.dateFormat,
                 changeMonth: true,
                 changeYear: true,
-                yearRange: "c-95:c+5",
+                yearRange: "-95:+5",
                 showOn: "button",
                 buttonImage: "/images/calendar.gif",
                 buttonImageOnly: true

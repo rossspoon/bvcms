@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Configuration;
+using System.Web;
 using System.Web.Optimization;
 using CmsData;
 using UtilityExtensions;
@@ -9,6 +10,9 @@ namespace CmsWeb
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
+            if(ConfigurationManager.AppSettings["testing"].ToBool())
+                BundleTable.EnableOptimizations = false;
+
             bundles.Add(new StyleBundle("~/Content/styles/css").Include(
                 "~/Content/styles/jquery-ui-1.10.0.custom.css"
                 , "~/Content/styles/dropdown.css"

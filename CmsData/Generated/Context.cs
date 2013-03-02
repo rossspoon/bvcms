@@ -1966,6 +1966,25 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.GetTotalContributionsDonor2", IsComposable = true)]
+		public IQueryable< View.GetTotalContributionsDonor2 > GetTotalContributionsDonor2(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? campusid,
+            [Parameter(DbType="bit")] bool? nontaxded,
+            [Parameter(DbType="bit")] bool? includeUnclosed
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTotalContributionsDonor2>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                campusid,
+                nontaxded,
+                includeUnclosed
+                );
+		}
+
 		[Function(Name="dbo.GetTotalContributionsRange", IsComposable = true)]
 		public IQueryable< View.GetTotalContributionsRange > GetTotalContributionsRange(
             [Parameter(DbType="datetime")] DateTime? fd,

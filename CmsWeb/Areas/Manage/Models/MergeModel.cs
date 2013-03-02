@@ -176,7 +176,7 @@ namespace CmsWeb.Models
         public void Delete()
         {
             var p = DbUtil.Db.LoadPersonById(pi[0].PeopleId);
-            p.PurgePerson(DbUtil.Db);
+            DbUtil.Db.PurgePerson(p.PeopleId);
         }
         public void Update()
         {

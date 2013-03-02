@@ -303,6 +303,7 @@
     <Compile Include="BundleHeader.cs" />
     <Compile Include="Generated\BuildingAccessType.cs" />
     <Compile Include="Generated\Functions\Contributions0.cs" />
+    <Compile Include="Generated\Functions\GetTotalContributionsDonor2.cs" />
     <Compile Include="Generated\Functions\Pledges0.cs" />
     <Compile Include="Picture.cs" />
     <Compile Include="Generated\Functions\MostRecentItem.cs" />

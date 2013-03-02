@@ -192,67 +192,74 @@ namespace CmsWeb.Models
             return cmd.ExecuteReader();
         }
 
-    	public class MemberInfoClass
-    	{
-    		public string FirstName { get; set; }
-    		public string LastName { get; set; }
-    		public string Gender { get; set; }
-    		public string Grade { get; set; }
-    		public string ShirtSize { get; set; }
-    		public string Request { get; set; }
-    		public decimal Amount { get; set; }
-    		public decimal AmountPaid { get; set; }
-    		public string Email { get; set; }
-    		public string HomePhone { get; set; }
-    		public string CellPhone { get; set; }
-    		public string WorkPhone { get; set; }
-    		public string Age { get; set; }
-    		public string BirthDate { get; set; }
-    		public string JoinDate { get; set; }
-    		public string MemberStatus { get; set; }
-    		public string School { get; set; }
-    		public string LastAttend { get; set; }
-    		public string AttendPct { get; set; }
-    		public string AttendStr { get; set; }
-    		public string MemberType { get; set; }
-    		public string MemberInfo
-    		{
-    			get 
-				{
-					var sb = new StringBuilder();
-					if (_memberInfoRaw.HasValue())
-						sb.Append(_memberInfoRaw.Replace("\n", "<br/>"));
-					if (_fname.HasValue())
-						sb.AppendFormat("Father: {0}<br/>", _fname);
-					if (_mname.HasValue())
-						sb.AppendFormat("Mother: {0}<br/>", _mname);
-					return sb.ToString();
-				}
-    		}
+        public class MemberInfoClass
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Gender { get; set; }
+            public string Grade { get; set; }
+            public string ShirtSize { get; set; }
+            public string Request { get; set; }
+            public decimal Amount { get; set; }
+            public decimal AmountPaid { get; set; }
+            public string Email { get; set; }
+            public string HomePhone { get; set; }
+            public string CellPhone { get; set; }
+            public string WorkPhone { get; set; }
+            public string Age { get; set; }
+            public string BirthDate { get; set; }
+            public string JoinDate { get; set; }
+            public string MemberStatus { get; set; }
+            public string School { get; set; }
+            public string LastAttend { get; set; }
+            public string AttendPct { get; set; }
+            public string AttendStr { get; set; }
+            public string MemberType { get; set; }
 
-    		private string _memberInfoRaw;
-    		public string MemberInfoRaw
-    		{
-    			set { _memberInfoRaw = value; }
-    		}
+            public string MemberInfo
+            {
+                get
+                {
+                    var sb = new StringBuilder();
+                    if (_memberInfoRaw.HasValue())
+                        sb.Append(_memberInfoRaw.Replace("\n", "<br/>"));
+                    if (_fname.HasValue())
+                        sb.AppendFormat("Father: {0}<br/>", _fname);
+                    if (_mname.HasValue())
+                        sb.AppendFormat("Mother: {0}<br/>", _mname);
+                    return sb.ToString();
+                }
+            }
 
-    		public string InactiveDate { get; set; }
-    		public string Medical { get; set; }
-    		public int PeopleId { get; set; }
-    		public string EnrollDate { get; set; }
+            private string _memberInfoRaw;
+
+            public string MemberInfoRaw
+            {
+                set { _memberInfoRaw = value; }
+            }
+
+            public string InactiveDate { get; set; }
+            public string Medical { get; set; }
+            public int PeopleId { get; set; }
+            public string EnrollDate { get; set; }
             public string Groups { get; set; }
-    		private string _fname;
-    		public string Fname
-    		{
-    			set { _fname = value; }
-    		}
+            private string _fname;
 
-    		private string _mname;
-    		public string Mname
-    		{
-    			set { _mname = value; }
-    		}
-    	}
+            public string Fname
+            {
+                set { _fname = value; }
+            }
+
+            private string _mname;
+
+            public string Mname
+            {
+                set { _mname = value; }
+            }
+
+            public string Tickets { get; set; }
+        }
+
         public static IEnumerable<MemberInfoClass> OrgMemberList(int queryid)
         {
             var Db = DbUtil.Db;
@@ -289,6 +296,7 @@ namespace CmsWeb.Models
                          Medical = recreg.MedicalDescription,
                          PeopleId = p.PeopleId,
                          EnrollDate = om.EnrollmentDate.FormatDate(),
+                         Tickets = om.Tickets.ToString(),
                      };
             return q2;
         }

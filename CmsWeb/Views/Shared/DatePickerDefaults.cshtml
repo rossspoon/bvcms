@@ -9,15 +9,15 @@
             dateFormat: $.dateFormat,
             changeMonth: true,
             changeYear: true,
-            yearRange: "c-95:c+5",
+            yearRange: "-95:+5",
             showOn: "button",
             buttonImage: "@imgsrc",
             buttonImageOnly: true,
             buttonText: 'Pick a date'
         });
-    @if (newlook)
-    {
-        @:$("#SearchText").dropdownFocus();
-    }
+        @if (newlook)
+        {
+            @:$("#SearchText").dropdownFocus();
+        }
     });
 </script>

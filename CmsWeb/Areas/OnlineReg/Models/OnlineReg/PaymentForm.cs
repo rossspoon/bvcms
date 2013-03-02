@@ -103,7 +103,7 @@ namespace CmsWeb.Models
                          State = State,
                          Zip = Zip,
                          DatumId = DatumId,
-                         Phone = Phone,
+                         Phone = Phone.Truncate(20),
                          OriginalId = OriginalId,
                          Financeonly = FinanceOnly,
                          TransactionDate = DateTime.Now

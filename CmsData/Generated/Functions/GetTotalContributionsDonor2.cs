@@ -10,8 +10,8 @@ using System.ComponentModel;
 
 namespace CmsData.View
 {
-	[Table(Name="GetTotalContributions2")]
-	public partial class GetTotalContributions2
+	[Table(Name="GetTotalContributionsDonor2")]
+	public partial class GetTotalContributionsDonor2
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
@@ -28,18 +28,12 @@ namespace CmsData.View
 		
 		private decimal? _PledgeAmount;
 		
-		private int _FundId;
-		
-		private string _FundName;
-		
-		private int _QBSynced;
-		
 		private string _MainFellowship;
 		
 		private string _MemberStatus;
 		
 		
-		public GetTotalContributions2()
+		public GetTotalContributionsDonor2()
 		{
 		}
 
@@ -142,57 +136,6 @@ namespace CmsData.View
 			{
 				if (this._PledgeAmount != value)
 					this._PledgeAmount = value;
-			}
-
-		}
-
-		
-		[Column(Name="FundId", Storage="_FundId", DbType="int NOT NULL")]
-		public int FundId
-		{
-			get
-			{
-				return this._FundId;
-			}
-
-			set
-			{
-				if (this._FundId != value)
-					this._FundId = value;
-			}
-
-		}
-
-		
-		[Column(Name="FundName", Storage="_FundName", DbType="varchar(256) NOT NULL")]
-		public string FundName
-		{
-			get
-			{
-				return this._FundName;
-			}
-
-			set
-			{
-				if (this._FundName != value)
-					this._FundName = value;
-			}
-
-		}
-
-		
-		[Column(Name="QBSynced", Storage="_QBSynced", DbType="int NOT NULL")]
-		public int QBSynced
-		{
-			get
-			{
-				return this._QBSynced;
-			}
-
-			set
-			{
-				if (this._QBSynced != value)
-					this._QBSynced = value;
 			}
 
 		}

@@ -1,6 +1,12 @@
 ﻿$(function () {
     $.dpoptions = {
-        yearRange: 'c-99:c+0',
+        dateFormat: $.dateFormat,
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-95:+0",
+        showOn: "button",
+        buttonImage: "/images/calendar.gif",
+        buttonImageOnly: true,
         onSelect: function (dateText, inst) {
             var f = $(this).closest('form');
             $("#age", f).text($.dodate(dateText));
@@ -34,11 +40,11 @@
         }
         return age - 2;
     };
-    $('body').on("blur", 'form.DisplayEdit input.dob', function () {
+    $('form.DisplayEdit input.dob').live("blur", function () {
         var f = $(this).closest('form');
         $("#age", f).text($.dodate($(this).val()));
     });
-    $("body").on('click', 'form.DisplayEdit a.submitbutton, a.submitlink, input.submitbutton.ajax', function (ev) {
+    $("form.DisplayEdit a.submitbutton, a.submitlink, input.submitbutton.ajax").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -107,7 +113,7 @@
         $("#submitit").attr("disabled", "true");
         return true;
     });
-    $("body").on('click', 'form.DisplayEdit a.cancel', function (ev) {
+    $("form.DisplayEdit a.cancel").live('click', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
         var q = f.serialize();
@@ -120,7 +126,7 @@
         });
         return false;
     });
-    $("body").on("click", '#copy', function () {
+    $("#copy").live("click", function () {
         $("input[name$='.emcontact']:last").val($("input[name$='.emcontact']:hidden:last").val());
         $("input[name$='.emphone']:last").val($("input[name$='.emphone']:hidden:last").val());
         $("input[name$='.insurance']:last").val($("input[name$='.insurance']:hidden:last").val());
@@ -146,12 +152,12 @@
             "m.donation": { number: true }
         }
     });
-    $("body").on("click", '.personheader a', function (e) {
+    $(".personheader a").live("click", function (e) {
         e.preventDefault();
         $(this).closest('div').nextAll('table').slideToggle();
         return false;
     });
-    $("body").on("change", "input.sum", function () {
+    $("input.sum").live("change", function () {
         var sum = 0;
         $("input.sum").each(function () {
             if (!isNaN(this.value) && this.value.length != 0) {
@@ -160,9 +166,9 @@
         });
         $("#total").html(sum.toFixed(2));
     });
-    $("body").on("change", 'input[name=Type]', $.ShowPaymentInfo);
+    $("input[name=Type]").live("change", $.ShowPaymentInfo);
 
-    $("body").on("keypress", '#password', function (e) {
+    $("#password").live("keypress", function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('#loginbt').click();
             return false;

@@ -20,7 +20,7 @@ namespace CmsData.API
         {
             this.Db = Db;
         }
-		public string PostContribution(int PeopleId, decimal Amount, int FundId, string desc, string date, int? type)
+		public string PostContribution(int PeopleId, decimal Amount, int FundId, string desc, string date, int? type, string checkno)
 		{
 			try
 			{
@@ -33,6 +33,8 @@ namespace CmsData.API
 			        c.ContributionDate = dt;
                 if (type.HasValue)
     			    c.ContributionTypeId = type.Value;
+			    if (checkno.HasValue())
+			        c.CheckNo = checkno;
                 Db.SubmitChanges();
 				return @"<PostContribution status=""ok"" id=""{0}"" />".Fmt(c.ContributionId);
 			}

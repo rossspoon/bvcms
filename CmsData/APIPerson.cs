@@ -160,6 +160,8 @@ namespace CmsData.API
 			public DateTime? DropDate { get; set; }
 			[XmlElementAttribute(IsNullable = true)]
 			public string OtherNewChurch { get; set; }
+			public string EmContact { get; set; }
+			public string EmPhone { get; set; }
 			public int? NewMemberClassStatusId { get; set; }
 			public DateTime? NewMemberClassDate { get; set; }
 			public Address FamilyAddress { get; set; }
@@ -179,6 +181,7 @@ namespace CmsData.API
 					where first == null || (first == p.FirstName || first == p.NickName)
 					where last == null || (last == p.LastName || last == p.MaidenName)
 					let sp = p.Family.People.SingleOrDefault(pp => pp.PeopleId == p.SpouseId)
+                    let rr = p.RecRegs.FirstOrDefault()
 					select new Person
 					{
 						PeopleId = p.PeopleId,
@@ -227,6 +230,8 @@ namespace CmsData.API
 						NewMemberClassStatusId = p.NewMemberClassStatusId,
 						OtherNewChurch = p.OtherNewChurch,
 						OtherPreviousChurch = p.OtherPreviousChurch,
+                        EmContact = rr.Emcontact,
+                        EmPhone = rr.Emphone,
 						AddressTypeId = p.AddressTypeId,
 						FamilyAddress = new Address
 						{
@@ -253,7 +258,8 @@ namespace CmsData.API
 							AddressToDate = p.AddressToDate
 						},
 						Usernames = (from u in p.Users
-									 select u.Username).ToList()
+									 select u.Username).ToList(),
+
 					};
 			return q.Take(100);
 		}
@@ -301,6 +307,12 @@ namespace CmsData.API
 						if (addr.Error.HasValue())
 							return serialize(addr);
 						break;
+                    case "EmContact":
+				        p.GetRecReg().Emcontact = e.Value;
+				        break;
+                    case "EmPhone":
+				        p.GetRecReg().Emphone = e.Value;
+				        break;
 					default:
 						break;
 				}
@@ -311,6 +323,8 @@ namespace CmsData.API
 					case "FamilyAddress":
 					case "SpouseName":
 					case "FamilyId":
+					case "EmContact":
+					case "EmPhone":
 						break;
 					case "HomePhone":
 						u.UpdateFamily(e);

@@ -130,8 +130,7 @@ namespace CmsWeb.Areas.Main.Controllers
 				Session.Remove("ActivePerson");
 			}
 
-			if (!person.PurgePerson(DbUtil.Db))
-				return Content("error, not deleted");
+		    DbUtil.Db.PurgePerson(p.PeopleId);
 
 			DbUtil.LogActivity("Deleted Record {0}".Fmt(person.PeopleId));
 			return Content("ok");

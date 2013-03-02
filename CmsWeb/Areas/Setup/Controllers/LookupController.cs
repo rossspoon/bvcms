@@ -24,6 +24,8 @@ namespace CmsWeb.Areas.Setup.Controllers
         {
             if (!id.HasValue())
                 return View("list");
+            if (!User.IsInRole("Admin") && string.Compare(id, "funds", ignoreCase: true) != 0)
+                return Content("must be admin");
             ViewData["type"] = id;
             var q = DbUtil.Db.ExecuteQuery<Row>("select * from lookup." + id);
             return View(q);

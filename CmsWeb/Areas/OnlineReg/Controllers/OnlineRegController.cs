@@ -498,10 +498,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		{
 			if (m.List.Count == 0)
 				return Content("Can't find any registrants");
-			SetHeaders(m);
+			RemmoveLastRegistrantIfEmpty(m);
+		    SetHeaders(m);
 			return View(m);
 		}
-		[HttpPost]
+
+	    private static void RemmoveLastRegistrantIfEmpty(OnlineRegModel m)
+	    {
+	        if (!m.last.IsNew && !m.last.Found == true)
+	            m.List.Remove(m.last);
+	        if (!(m.last.IsValidForNew || m.last.IsValidForExisting))
+	            m.List.Remove(m.last);
+	    }
+
+	    [HttpPost]
 		public ActionResult CompleteRegistration(OnlineRegModel m)
 		{
 			if (m.AskDonation() && !m.donor.HasValue && m.donation > 0)
@@ -515,10 +525,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (m.List.Count == 0)
 				return Content("Can't find any registrants");
 
-			if (!m.last.IsNew && !m.last.Found == true)
-				m.List.Remove(m.last);
-            if (!(m.last.IsValidForNew || m.last.IsValidForExisting))
-				m.List.Remove(m.last);
+			RemmoveLastRegistrantIfEmpty(m);
 
 			var d = new ExtraDatum { Stamp = Util.Now };
 			d.Data = Util.Serialize<OnlineRegModel>(m);

@@ -16,7 +16,9 @@ namespace CmsData.View
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		
-		private int _PeopleId;
+		private int? _CreditGiverId;
+		
+		private int? _SpouseId;
 		
 		private string _First;
 		
@@ -51,18 +53,35 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="PeopleId", Storage="_PeopleId", DbType="int NOT NULL")]
-		public int PeopleId
+		[Column(Name="CreditGiverId", Storage="_CreditGiverId", DbType="int")]
+		public int? CreditGiverId
 		{
 			get
 			{
-				return this._PeopleId;
+				return this._CreditGiverId;
 			}
 
 			set
 			{
-				if (this._PeopleId != value)
-					this._PeopleId = value;
+				if (this._CreditGiverId != value)
+					this._CreditGiverId = value;
+			}
+
+		}
+
+		
+		[Column(Name="SpouseId", Storage="_SpouseId", DbType="int")]
+		public int? SpouseId
+		{
+			get
+			{
+				return this._SpouseId;
+			}
+
+			set
+			{
+				if (this._SpouseId != value)
+					this._SpouseId = value;
 			}
 
 		}

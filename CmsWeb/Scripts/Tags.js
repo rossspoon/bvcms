@@ -78,6 +78,7 @@
             $('#results').replaceWith(ret).ready(function() {
                 $('#results > tbody > tr:even').addClass('alt');
                 $("#activetag").text($("#actag").val());
+                $("#tagalltagname").val($("#actag").val());
                 $("#sharecount").text($("#shcnt").val());
                 //$('.dropdown').hoverIntent(dropdownshow, dropdownhide);
                 $.unblockUI();
