@@ -174,6 +174,10 @@ namespace CmsData
         }
         public EmailQueue CreateQueue(MailAddress From, string subject, string body, DateTime? schedule, int tagId, bool publicViewable)
         {
+            var tag = TagById(tagId);
+            if (tag == null)
+                return null;
+
             var emailqueue = new EmailQueue
             {
                 Queued = DateTime.Now,
@@ -196,7 +200,6 @@ namespace CmsData
                 emailqueue.Body = re.Replace(body, link);
             }
 
-            var tag = TagById(tagId);
             var q = tag.People(this); 
 
             var q2 = from p in q.Distinct()

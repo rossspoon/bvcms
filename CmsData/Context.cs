@@ -1091,7 +1091,7 @@ namespace CmsData
 			if(FundId > 0)
 				fund = ContributionFunds.SingleOrDefault(f => f.FundId == FundId);
 			else
-				fund = ContributionFunds.SingleOrDefault(f => f.FundName == Description && f.FundStatusId == 1);
+				fund = ContributionFunds.FirstOrDefault(f => f.FundName == Description && f.FundStatusId == 1);
 			if (fund == null)
 			{
 				int nextfundid;

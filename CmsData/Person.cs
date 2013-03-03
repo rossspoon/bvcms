@@ -333,7 +333,32 @@ namespace CmsData
             var pi = db.PaymentInfos.FirstOrDefault(mm => mm.PeopleId == targetid);
             if (pi == null) // the target has none
                 foreach (var i in PaymentInfos)
-                    i.PeopleId = targetid;
+                    DbUtil.Db.PaymentInfos.InsertOnSubmit(
+                        new PaymentInfo()
+                            {
+                                Address = i.Address,
+                                AuNetCustId = i.AuNetCustId,
+                                Ccv = i.Ccv,
+                                AuNetCustPayId = i.AuNetCustPayId,
+                                City = i.City,
+                                Expires = i.Expires,
+                                FirstName = i.FirstName,
+                                LastName = i.LastName,
+                                MaskedAccount = i.MaskedAccount,
+                                MaskedCard = i.MaskedCard,
+                                MiddleInitial = i.MiddleInitial,
+                                PeopleId = targetid,
+                                Phone = i.Phone,
+                                PreferredGivingType = i.PreferredGivingType,
+                                PreferredPaymentType = i.PreferredPaymentType,
+                                Routing = i.Routing,
+                                SageBankGuid = i.SageBankGuid,
+                                SageCardGuid = i.SageCardGuid,
+                                State = i.State,
+                                Suffix = i.Suffix,
+                                Testing = i.Testing,
+                                Zip = i.Zip,
+                            });
             TrySubmit(db, "PaymentInfos");
 
             foreach (var c in this.CheckInTimes)

@@ -121,8 +121,13 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     p = m.LoadExistingPerson(pid, 0);
                     p.ValidateModelForFind(ModelState, m);
                     p.LoggedIn = true;
-                    if (m.masterorg == null && !m.divid.HasValue)
-                        m.List[0] = p;
+				    if (m.masterorg == null && !m.divid.HasValue)
+				    {
+                        if (m.List.Count == 0)
+                            m.List.Add(p);
+                        else
+    				        m.List[0] = p;
+				    }
 				}
 				if (!ModelState.IsValid)
 					return View(m);

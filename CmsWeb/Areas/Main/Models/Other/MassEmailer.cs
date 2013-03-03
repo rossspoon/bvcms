@@ -57,6 +57,8 @@ namespace CmsWeb.Areas.Main.Models
             var From = new MailAddress(FromAddress, FromName);
             DbUtil.Db.CopySession();
 			var emailqueue = DbUtil.Db.CreateQueue(From, Subject, Body, Schedule, TagId, PublicViewable);
+            if (emailqueue == null)
+                return 0;
 			emailqueue.Transactional = transactional;
 			return emailqueue.Id;
         }
