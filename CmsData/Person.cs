@@ -318,17 +318,39 @@ namespace CmsData
             TrySubmit(db, "RegReg");
 
             var mg = db.ManagedGivings.FirstOrDefault(mm => mm.PeopleId == targetid);
-            if (mg != null)
-                foreach (var v in this.ManagedGivings)
+            if (mg == null)
+            {
+                var v = this.ManagedGivings.FirstOrDefault();
+                if (v!=null)
                 {
+                    db.ManagedGivings.InsertOnSubmit(new ManagedGiving()
+                                {
+                                    Day1 = v.Day1,
+                                    Day2 = v.Day2,
+                                    EveryN = v.EveryN,
+                                    NextDate = v.NextDate,
+                                    PeopleId = targetid,
+                                    Period = v.Period,
+                                    SemiEvery = v.SemiEvery,
+                                    StartWhen = v.StartWhen,
+                                    StopAfter = v.StopAfter,
+                                    StopWhen = v.StopWhen,
+                                    Type = v.Type,
+                                });
                     var qq = from ra in db.RecurringAmounts
                              where ra.PeopleId == PeopleId
                              select ra;
                     foreach (var ra in qq)
-                        ra.PeopleId = targetid;
-                    v.PeopleId = targetid;
+                        db.RecurringAmounts.InsertOnSubmit(
+                            new RecurringAmount()
+                                {
+                                    PeopleId = targetid,
+                                    Amt = ra.Amt,
+                                    FundId = ra.FundId,
+                                });
                 }
-            TrySubmit(db, "ManagedGivings");
+                TrySubmit(db, "ManagedGivings");
+            }
 
             var pi = db.PaymentInfos.FirstOrDefault(mm => mm.PeopleId == targetid);
             if (pi == null) // the target has none

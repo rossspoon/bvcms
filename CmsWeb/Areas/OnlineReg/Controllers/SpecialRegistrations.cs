@@ -251,14 +251,7 @@ The following Committments:<br/>
 		public ActionResult ManageGiving(ManageGivingModel m)
 		{
 			SetHeaders(m.orgid);
-		    if (m.Account.HasValue())
-		    {
-		        if (!m.Account.StartsWith("X") || !m.Routing.StartsWith("X"))
-		        {
-		            m.Account = m.Account.GetDigits();
-		            m.Routing = m.Routing.GetDigits();
-		        }
-		    }
+		    RemoveNonDigitsIfNecessary(m);
 		    m.ValidateModel(ModelState);
 			if (!ModelState.IsValid)
 				return View(m);
@@ -344,7 +337,25 @@ The following Committments:<br/>
 			TempData["managegiving"] = m;
 			return Redirect("ConfirmRecurringGiving");
 		}
-		public ActionResult ConfirmRecurringGiving()
+
+	    private static void RemoveNonDigitsIfNecessary(ManageGivingModel m)
+	    {
+	        bool dorouting = false;
+	        bool doaccount = m.Account.HasValue() && !m.Account.StartsWith("X");
+
+	        if (m.Routing.HasValue() && !m.Routing.StartsWith("X"))
+	            dorouting = true;
+
+            if (doaccount || dorouting)
+	        {
+	            if (doaccount)
+	                m.Account = m.Account.GetDigits();
+                if (dorouting)
+	                m.Routing = m.Routing.GetDigits();
+	        }
+	    }
+
+	    public ActionResult ConfirmRecurringGiving()
 		{
 			var m = TempData["managegiving"] as ManageGivingModel;
 			if (m == null)

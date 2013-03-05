@@ -295,7 +295,7 @@
 </table>
 <br />
 <form action="/Volunteering/Upload/@Model.V.PeopleId" method="post" enctype="multipart/form-data">
-    @Html.Hidden("PeopleID")
+    @Html.Hidden("PeopleID", @Model.V.PeopleId)
     <input type="file" name="file" id="file" />
     <input type="submit" class="bt" value="Upload" />
 </form>
