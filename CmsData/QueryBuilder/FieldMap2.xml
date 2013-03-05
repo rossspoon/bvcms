@@ -433,6 +433,9 @@
     <Field Name="DaysBetween12Attendance" Title="Days Between First/Second Attend" Type="Integer" DisplayAs="DaysBetween12Attendance({0}, {1}, {2}, {3})" Params="Days,Program,Division,Organization">
       Selects attendees based on # days between their first and second attendance. The first attendance is assumed to be the entry point in the church, probably worship. The second attendance can be specified to be within a Program, Program/Division or Program/Division/Organization for a specified date range.
     </Field>
+    <Field Name="DaysAfterNthVisitDateRange" Title="Attend Days After Nth Visit" Type="Integer" DisplayAs="DaysAfterNthVisitDateRange({0}, {1}, {2}, {3}, {4}, {5})" Params="StartDate,EndDate,Quarters,Program,Division,Organization" QuartersLabel="Nth Visit Number">
+      Selects attendees based on # days between their Nth Attendance during a specified date range and the next attendance in the specified prog/div/org. The nth attendance is not limited to the specified prog/div/org.
+    </Field>
     <Field Name="MeetingId" Type="Integer">
       Advanced use
     </Field>

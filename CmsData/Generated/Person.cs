@@ -231,8 +231,6 @@ namespace CmsData
 		
 		private DateTime? _NewMemberClassDate;
 		
-		private string _Name;
-		
 		private string _PreferredName;
 		
 		private string _PrimaryCountry;
@@ -244,6 +242,8 @@ namespace CmsData
 		private bool? _DoNotPublishPhones;
 		
 		private bool? _IsDeceased;
+		
+		private string _Name;
 		
    		
    		private EntitySet< Contactee> _contactsHad;
@@ -705,9 +705,6 @@ namespace CmsData
 		partial void OnNewMemberClassDateChanging(DateTime? value);
 		partial void OnNewMemberClassDateChanged();
 		
-		partial void OnNameChanging(string value);
-		partial void OnNameChanged();
-		
 		partial void OnPreferredNameChanging(string value);
 		partial void OnPreferredNameChanged();
 		
@@ -725,6 +722,9 @@ namespace CmsData
 		
 		partial void OnIsDeceasedChanging(bool? value);
 		partial void OnIsDeceasedChanged();
+		
+		partial void OnNameChanging(string value);
+		partial void OnNameChanged();
 		
     #endregion
 		public Person()
@@ -3284,28 +3284,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(126)", IsDbGenerated=true)]
-		public string Name
-		{
-			get { return this._Name; }
-
-			set
-			{
-				if (this._Name != value)
-				{
-				
-                    this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="PreferredName", UpdateCheck=UpdateCheck.Never, Storage="_PreferredName", DbType="varchar(25)", IsDbGenerated=true)]
 		public string PreferredName
 		{
@@ -3431,6 +3409,28 @@ namespace CmsData
 					this._IsDeceased = value;
 					this.SendPropertyChanged("IsDeceased");
 					this.OnIsDeceasedChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Name", UpdateCheck=UpdateCheck.Never, Storage="_Name", DbType="varchar(126)", IsDbGenerated=true)]
+		public string Name
+		{
+			get { return this._Name; }
+
+			set
+			{
+				if (this._Name != value)
+				{
+				
+                    this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
 				}
 
 			}

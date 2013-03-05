@@ -141,7 +141,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="MainFellowship", Storage="_MainFellowship", DbType="varchar(100)")]
+		[Column(Name="MainFellowship", Storage="_MainFellowship", DbType="varchar(100) NOT NULL")]
 		public string MainFellowship
 		{
 			get

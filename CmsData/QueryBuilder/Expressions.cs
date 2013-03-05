@@ -260,23 +260,27 @@ namespace CmsData
         {
             Expression<Func<Person, int>> pred = p =>
                     Db.DaysBetween12Attend(p.PeopleId, progid, divid, org, lookback).Value;
-            var mindt = Util.Now.AddDays(-days).Date;
-            Expression<Func<Person, bool>> pred2 = p => (
-                from a in p.Attends
-                from dg in a.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
-                where a.MeetingDate >= mindt
-                where a.AttendanceFlag
-                where org == 0 || a.Meeting.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
-                select a
-                ).Any();
             Expression left = Expression.Invoke(pred, parm);
-            Expression attended = Expression.Invoke(pred2, parm);
             var right = Expression.Convert(Expression.Constant(days), left.Type);
-            Expression cmp = Compare(left, op, right);
-            return Expression.And(attended, cmp);
+            return  Compare(left, op, right);
+        }
+        internal static Expression DaysAfterNthVisitDateRange(
+            ParameterExpression parm, CMSDataContext db,
+            DateTime? from,
+            DateTime? to,
+            int nthvisit,
+            int? progid,
+            int? divid,
+            int? org,
+            CompareType op,
+            int days)
+        {
+            Expression<Func<Person, int>> pred = p =>
+                 db.AttendDaysAfterNthVisitInDateRange(p.PeopleId, progid, divid, org,
+                                                       from, to, nthvisit).Value;
+            Expression left = Expression.Invoke(pred, parm);
+            var right = Expression.Convert(Expression.Constant(days), left.Type);
+            return  Compare(left, op, right);
         }
         internal static Expression RecentJoinChurch(
             ParameterExpression parm,

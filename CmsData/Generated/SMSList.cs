@@ -27,13 +27,13 @@ namespace CmsData
 		
 		private int _SendGroupID;
 		
-		private string _Title;
-		
 		private string _Message;
 		
 		private int _SentSMS;
 		
 		private int _SentNone;
+		
+		private string _Title;
 		
    		
    		private EntitySet< SMSItem> _SMSItems;
@@ -65,9 +65,6 @@ namespace CmsData
 		partial void OnSendGroupIDChanging(int value);
 		partial void OnSendGroupIDChanged();
 		
-		partial void OnTitleChanging(string value);
-		partial void OnTitleChanged();
-		
 		partial void OnMessageChanging(string value);
 		partial void OnMessageChanged();
 		
@@ -76,6 +73,9 @@ namespace CmsData
 		
 		partial void OnSentNoneChanging(int value);
 		partial void OnSentNoneChanged();
+		
+		partial void OnTitleChanging(string value);
+		partial void OnTitleChanged();
 		
     #endregion
 		public SMSList()
@@ -210,28 +210,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Title", UpdateCheck=UpdateCheck.Never, Storage="_Title", DbType="varchar(150) NOT NULL")]
-		public string Title
-		{
-			get { return this._Title; }
-
-			set
-			{
-				if (this._Title != value)
-				{
-				
-                    this.OnTitleChanging(value);
-					this.SendPropertyChanging();
-					this._Title = value;
-					this.SendPropertyChanged("Title");
-					this.OnTitleChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="Message", UpdateCheck=UpdateCheck.Never, Storage="_Message", DbType="varchar(160) NOT NULL")]
 		public string Message
 		{
@@ -291,6 +269,28 @@ namespace CmsData
 					this._SentNone = value;
 					this.SendPropertyChanged("SentNone");
 					this.OnSentNoneChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Title", UpdateCheck=UpdateCheck.Never, Storage="_Title", DbType="varchar(150) NOT NULL")]
+		public string Title
+		{
+			get { return this._Title; }
+
+			set
+			{
+				if (this._Title != value)
+				{
+				
+                    this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
 				}
 
 			}

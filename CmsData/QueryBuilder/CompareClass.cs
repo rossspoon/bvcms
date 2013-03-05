@@ -64,6 +64,16 @@ namespace CmsData
                     return Expressions.ActiveRecords(parm,
                         CompType, 
                         c.CodeIds == "1");
+                case QueryType.DaysAfterNthVisitDateRange:
+                    return Expressions.DaysAfterNthVisitDateRange(parm, Db,
+                               c.StartDate,
+                               c.EndDate,
+                               c.Quarters.ToInt(),
+                               c.Program,
+                               c.Division,
+                               c.Organization,
+                               CompType,
+                               c.TextValue.ToInt());
                 case QueryType.AttendPct:
                     return Expressions.AttendPct(parm,
                                c.Program,

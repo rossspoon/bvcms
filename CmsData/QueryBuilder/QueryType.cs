@@ -9,6 +9,7 @@ namespace CmsData
     {
         ActiveRecords,
         Age,
+        DaysAfterNthVisitDateRange,
         AttendMemberTypeAsOf,
         AttendPct,
         AttendPctHistory,

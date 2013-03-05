@@ -19,11 +19,11 @@ namespace CmsData
 		
 		private int _Id;
 		
-		private DateTime _LastUpdated;
-		
 		private int _GroupID;
 		
 		private string _Number;
+		
+		private DateTime _LastUpdated;
 		
    		
     	
@@ -37,14 +37,14 @@ namespace CmsData
 		partial void OnIdChanging(int value);
 		partial void OnIdChanged();
 		
-		partial void OnLastUpdatedChanging(DateTime value);
-		partial void OnLastUpdatedChanged();
-		
 		partial void OnGroupIDChanging(int value);
 		partial void OnGroupIDChanged();
 		
 		partial void OnNumberChanging(string value);
 		partial void OnNumberChanged();
+		
+		partial void OnLastUpdatedChanging(DateTime value);
+		partial void OnLastUpdatedChanged();
 		
     #endregion
 		public SMSNumber()
@@ -72,28 +72,6 @@ namespace CmsData
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
-				}
-
-			}
-
-		}
-
-		
-		[Column(Name="LastUpdated", UpdateCheck=UpdateCheck.Never, Storage="_LastUpdated", DbType="datetime NOT NULL")]
-		public DateTime LastUpdated
-		{
-			get { return this._LastUpdated; }
-
-			set
-			{
-				if (this._LastUpdated != value)
-				{
-				
-                    this.OnLastUpdatedChanging(value);
-					this.SendPropertyChanging();
-					this._LastUpdated = value;
-					this.SendPropertyChanged("LastUpdated");
-					this.OnLastUpdatedChanged();
 				}
 
 			}
@@ -138,6 +116,28 @@ namespace CmsData
 					this._Number = value;
 					this.SendPropertyChanged("Number");
 					this.OnNumberChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="LastUpdated", UpdateCheck=UpdateCheck.Never, Storage="_LastUpdated", DbType="datetime NOT NULL")]
+		public DateTime LastUpdated
+		{
+			get { return this._LastUpdated; }
+
+			set
+			{
+				if (this._LastUpdated != value)
+				{
+				
+                    this.OnLastUpdatedChanging(value);
+					this.SendPropertyChanging();
+					this._LastUpdated = value;
+					this.SendPropertyChanged("LastUpdated");
+					this.OnLastUpdatedChanged();
 				}
 
 			}

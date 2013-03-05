@@ -23,9 +23,9 @@ namespace CmsData
 		
 		private int _PeopleID;
 		
-		private string _Number;
-		
 		private bool _Sent;
+		
+		private string _Number;
 		
 		private bool _NoNumber;
 		
@@ -53,11 +53,11 @@ namespace CmsData
 		partial void OnPeopleIDChanging(int value);
 		partial void OnPeopleIDChanged();
 		
-		partial void OnNumberChanging(string value);
-		partial void OnNumberChanged();
-		
 		partial void OnSentChanging(bool value);
 		partial void OnSentChanged();
+		
+		partial void OnNumberChanging(string value);
+		partial void OnNumberChanged();
 		
 		partial void OnNoNumberChanging(bool value);
 		partial void OnNoNumberChanged();
@@ -152,28 +152,6 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Number", UpdateCheck=UpdateCheck.Never, Storage="_Number", DbType="varchar(25) NOT NULL")]
-		public string Number
-		{
-			get { return this._Number; }
-
-			set
-			{
-				if (this._Number != value)
-				{
-				
-                    this.OnNumberChanging(value);
-					this.SendPropertyChanging();
-					this._Number = value;
-					this.SendPropertyChanged("Number");
-					this.OnNumberChanged();
-				}
-
-			}
-
-		}
-
-		
 		[Column(Name="Sent", UpdateCheck=UpdateCheck.Never, Storage="_Sent", DbType="bit NOT NULL")]
 		public bool Sent
 		{
@@ -189,6 +167,28 @@ namespace CmsData
 					this._Sent = value;
 					this.SendPropertyChanged("Sent");
 					this.OnSentChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="Number", UpdateCheck=UpdateCheck.Never, Storage="_Number", DbType="varchar(25) NOT NULL")]
+		public string Number
+		{
+			get { return this._Number; }
+
+			set
+			{
+				if (this._Number != value)
+				{
+				
+                    this.OnNumberChanging(value);
+					this.SendPropertyChanging();
+					this._Number = value;
+					this.SendPropertyChanged("Number");
+					this.OnNumberChanged();
 				}
 
 			}
