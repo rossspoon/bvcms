@@ -153,6 +153,7 @@ namespace CmsWeb.Models
                         }
                 }
             }
+            var now = DateTime.Now;
             if (!testing)
                 Db.SubmitChanges();
             var campuses = Db.Campus.ToDictionary(cp => cp.Description, cp => cp.Id);
@@ -271,6 +272,7 @@ namespace CmsWeb.Models
                             p.LogChanges(Db, psb, PeopleId);
                             p.Family.LogChanges(Db, fsb, p.PeopleId, PeopleId);
                             Db.SubmitChanges();
+                            Person.Tag(Db, p.PeopleId, "InsertPeopleUpdated", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
                         }
                     }
                     else // new person
@@ -278,17 +280,17 @@ namespace CmsWeb.Models
                         if (f == null || !a[names["FamilyId"]].HasValue())
                         {
                             f = new Family();
-                            if (names.ContainsKey("Address"))
+                            if (names.ContainsKey("Address") && a[names["Address"]].HasValue())
                                 f.AddressLineOne = a[names["Address"]];
-                            if (names.ContainsKey("Address2"))
+                            if (names.ContainsKey("Address2") && a[names["Address2"]].HasValue())
                                 f.AddressLineTwo = a[names["Address2"]];
-                            if (names.ContainsKey("City"))
+                            if (names.ContainsKey("City") && a[names["City"]].HasValue())
                                 f.CityName = a[names["City"]];
-                            if (names.ContainsKey("State"))
+                            if (names.ContainsKey("State") && a[names["State"]].HasValue())
                                 f.StateCode = a[names["State"]];
-                            if (names.ContainsKey("Zip"))
+                            if (names.ContainsKey("Zip") && a[names["Zip"]].HasValue())
                                 f.ZipCode = a[names["Zip"]];
-                            if (names.ContainsKey("HomePhone"))
+                            if (names.ContainsKey("HomePhone") && a[names["HomePhone"]].HasValue())
                                 f.HomePhone = a[names["HomePhone"]].GetDigits();
                             Db.Families.InsertOnSubmit(f);
                             if (!testing)
@@ -371,7 +373,6 @@ namespace CmsWeb.Models
                     var nq = from name in names.Keys
                              where !standardnames.Contains(name)
                              select name;
-                    var now = DateTime.Now;
                     foreach (var name in nq)
                     {
                         var b = name.Split('.');
@@ -396,7 +397,10 @@ namespace CmsWeb.Models
                     }
                     rt.Processed++;
                     if (!testing)
+                    {
                         Db.SubmitChanges();
+                        Person.Tag(Db, p.PeopleId, "InsertPeopleAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+                    }
                 }
                 if (!testing)
                     Db.SubmitChanges();

@@ -82,6 +82,8 @@ namespace CmsData
                 else if (s2 == "View")
                     s2 = "Quarters";
                 object prop = Util.GetProperty(c, s2);
+                if (prop is DateTime?)
+                    prop = ((DateTime?) prop).FormatDate();
                 if (s == "SavedQueryValue")
                     prop = ((string)prop).Split(',')[1];
                 p.Add(prop);

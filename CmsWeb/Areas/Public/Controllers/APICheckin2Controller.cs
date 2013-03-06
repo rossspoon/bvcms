@@ -404,9 +404,12 @@ namespace CmsWeb.Areas.Public.Controllers
 		[HttpPost]
 		public ContentResult UploadImage(int id)
 		{
-			if (!Authenticate())
+			if (!AccountModel.AuthenticateMobile())
 				return Content("not authorized");
-			DbUtil.LogActivity("checkin uploadpic " + id);
+//		    if (!User.IsInRole("Edit") && !User.IsInRole("Checkin"))
+//				return Content("not authorized");
+
+		    DbUtil.LogActivity("checkin uploadpic " + id);
 			var person = DbUtil.Db.People.Single(pp => pp.PeopleId == id);
 			if (person.Picture == null)
 				person.Picture = new Picture();

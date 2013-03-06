@@ -33,5 +33,6 @@ namespace CmsData
         StrLess,
         StrLessEqual,
         StrGreaterEqual,
+        AnyValue,
     }
 }
