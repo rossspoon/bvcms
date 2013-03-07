@@ -166,6 +166,9 @@
     <Field Name="PleaseVisit" Title="Please Visit" Type="Bit" DataValueField="IdCode">
       From a checkbox on a decision card, desires a visit from a minister.
     </Field>
+    <Field Name="PmmBackgroundCheckStatus" Title ="PMM Background Check" Type="CodeStr" DisplayAs="PmmBackgroundCheckStatus({0}, {1})"  QuartersLabel="Username or PeopleId" Params="Quarters,PmmLabels" DataValueField="IdCode" DataSource="BackgroundStatuses">
+      Find people with a Background Check
+    </Field>
 	</Category>
   <Category Title="Contact Info">
     <Field Name="PrimaryResCode" Title="Resident Code" Type="Code" DataSource="ResidentCodes" DataValueField="IdCode">
@@ -219,6 +222,9 @@
     <Field Name="SendEmailAddress1" Title="Send EmailAddress1" Type="NullBit" DataValueField="IdCode">
     </Field>
     <Field Name="SendEmailAddress2" Title="Send EmailAddress2" Type="NullBit" DataValueField="IdCode">
+    </Field>
+    <Field Name="ReceiveSms" Title="Receive SMS" Type="Bit" DataValueField="IdCode">
+      Indicates Opt-in status
     </Field>
   </Category>
   <Category Title="Church Status">

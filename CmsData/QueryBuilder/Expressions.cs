@@ -46,6 +46,31 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression BackgroundCheckStatus(ParameterExpression parm, 
+            string labels, 
+            string usernameOrPeopleId, 
+            CompareType op, 
+            int[] ids)
+        {
+            int[] lab = (labels ?? "99").Split(',').Select(vv => vv.ToInt()).ToArray();
+            var pid = usernameOrPeopleId.ToInt();
+            var user = "";
+            if (usernameOrPeopleId.HasValue())
+                if (pid == 0)
+                    user = usernameOrPeopleId ?? "";
+
+            Expression<Func<Person, bool>> pred = p =>
+              p.BackgroundChecks.Any(bc => 
+                  ids.Contains(bc.StatusID)
+                  && (user == "" || bc.User.Users.Any(uu => uu.Username == user))
+                  && (pid == 0 || bc.UserID == pid)
+                  && (lab.Contains(bc.ReportLabelID) || lab.Length == 0 || lab[0] == 99)
+                  );
+            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
         internal static Expression MemberTypeIds(
             ParameterExpression parm,
             int? progid,
@@ -2929,5 +2954,6 @@ namespace CmsData
             }
             return expr;
         }
+
     }
 }

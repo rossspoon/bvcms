@@ -81,6 +81,8 @@ namespace CmsData
                     s2 = "Program";
                 else if (s2 == "View")
                     s2 = "Quarters";
+                else if (s2 == "PmmLabels")
+                    s2 = "Tags";
                 object prop = Util.GetProperty(c, s2);
                 if (prop is DateTime?)
                     prop = ((DateTime?) prop).FormatDate();

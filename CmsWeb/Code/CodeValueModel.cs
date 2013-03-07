@@ -375,6 +375,31 @@ namespace CmsWeb.Models
 			return ContactTypeCodes().AddNotSpecified();
 		}
 
+		public List<CodeValueItem> PmmLabels()
+		{
+		    var list = (from lab in DbUtil.Db.BackgroundCheckLabels
+		            select new CodeValueItem()
+		                       {
+		                           Id = lab.Id,
+		                           Code = lab.Code,
+		                           Value = lab.Description
+		                       }).ToList();
+            list.Insert(0, new CodeValueItem { Id = 0, Code = "LB", Value = "(not specified)" });
+		    return list;
+		}
+		public List<CodeValueItem> BackgroundStatuses()
+		{
+            var list = new List<CodeValueItem>();
+		    for (var i = 0; i < ProtectMyMinistryHelper.STATUSES.Length; i++)
+		        list.Add(new CodeValueItem()
+		                     {
+		                         Id = i,
+		                         Code = i.ToString(),
+		                         Value = ProtectMyMinistryHelper.STATUSES[i]
+		                     });
+		    list.Insert(0, new CodeValueItem { Id = 99, Code = "99", Value = "(not specified)" });
+		    return list;
+		}
 		public List<CodeValueItem> UserTags(int? UserPeopleId)
 		{
 			var ownerstring = "";

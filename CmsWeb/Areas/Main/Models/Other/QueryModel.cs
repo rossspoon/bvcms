@@ -37,6 +37,7 @@ namespace CmsWeb.Models
         string EndDate { get; set; }
         string Comparison { get; set; }
         string[] Tags { get; set; }
+        int[] PmmLabels { get; set; }
         string CodeValue { get; set; }
         string[] CodeValues { get; set; }
         string View { get; set; }
@@ -117,8 +118,10 @@ namespace CmsWeb.Models
         public bool MinistryVisible { get; set; }
         public bool QuartersVisible { get; set; }
         public bool TagsVisible { get; set; }
+        public bool PmmLabelsVisible { get; set; }
 
         public List<SelectListItem> TagData { get; set; }
+        public List<SelectListItem> PmmLabelData { get; set; }
         public IEnumerable<SelectListItem> CodeData { get; set; }
         public List<SelectListItem> CompareData { get; set; }
         public List<SelectListItem> ProgramData { get; set; }
@@ -140,6 +143,7 @@ namespace CmsWeb.Models
         public string EndDate { get; set; }
         public string Comparison { get; set; }
         public string[] Tags { get; set; }
+        public int[] PmmLabels { get; set; }
         public int? Ministry { get; set; }
         public string SavedQueryDesc { get; set; }
         public bool IsPublic { get; set; }
@@ -207,6 +211,12 @@ namespace CmsWeb.Models
             {
                 var cv = new CodeValueModel();
                 TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
+            }
+            PmmLabelsVisible = fieldMap.HasParam("PmmLabels");
+            if (PmmLabelsVisible)
+            {
+                var cv = new CodeValueModel();
+                PmmLabelData = ConvertToSelect(cv.PmmLabels(), "Code");
             }
             StartDateVisible = fieldMap.HasParam("StartDate");
             EndDateVisible = fieldMap.HasParam("EndDate");
@@ -369,6 +379,10 @@ namespace CmsWeb.Models
             c.Quarters = Quarters;
             if (Tags != null)
                 c.Tags = string.Join(";", Tags);
+            else if (PmmLabels != null)
+                c.Tags = string.Join(",", PmmLabels);
+            else
+                c.Tags = null;
             c.SavedQueryIdDesc = SavedQueryDesc;
             Db.SubmitChanges();
         }
@@ -439,6 +453,16 @@ namespace CmsWeb.Models
                 TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
                 foreach (var i in TagData)
                     i.Selected = Tags.Contains(i.Value);
+            }
+            if (PmmLabelsVisible)
+            {
+                if (c.Tags != null)
+                    PmmLabels = c.Tags.Split(',').Select(vv => vv.ToInt()).ToArray();
+                var cv = new CodeValueModel();
+                PmmLabelData = ConvertToSelect(cv.PmmLabels(), "Id");
+                if(PmmLabels != null)
+                    foreach (var i in PmmLabelData)
+                        i.Selected = PmmLabels.Contains(i.Value.ToInt());
             }
             if (MinistryVisible)
                 Ministry = c.Program;

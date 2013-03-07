@@ -364,12 +364,20 @@ function UpdateView(vs) {
     CascadeDivision();
     $('#Organization').fillOptions(vs.OrganizationData);
     $('#TagsDiv').showhide(vs.TagsVisible);
+    $('#PmmLabelsDiv').showhide(vs.PmmLabelsVisible);
     if (vs.TagsVisible) {
         $('#tagvalues').multiSelectRemove();
         $('#Tags').remove();
         $('#tagvalues').after('<select id="Tags"></select>');
         $('#Tags').fillOptions(vs.TagData, true);
         $('#Tags').multiselect();
+    }
+    if (vs.PmmLabelsVisible) {
+        $('#labelvalues').multiSelectRemove();
+        $('#PmmLabels').remove();
+        $('#labelvalues').after('<select id="PmmLabels"></select>');
+        $('#PmmLabels').fillOptions(vs.PmmLabelData, true);
+        $('#PmmLabels').multiselect();
     }
 
     $('#ConditionName').val(vs.ConditionName);

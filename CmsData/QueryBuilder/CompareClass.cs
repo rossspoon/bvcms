@@ -120,6 +120,12 @@ namespace CmsData
                                CompType,
                                string.Join(",", c.CodeStrIds));
                 // B --------------------
+                case QueryType.PmmBackgroundCheckStatus:
+                    return Expressions.BackgroundCheckStatus(parm,
+                               c.Tags,
+                               c.Quarters,
+                               CompType,
+                               c.CodeIntIds);
                 case QueryType.Birthday:
                     return Expressions.Birthday(parm, CompType, c.TextValue);
                 // C ------------------------
