@@ -37,7 +37,7 @@ namespace CmsWeb.Models
         string EndDate { get; set; }
         string Comparison { get; set; }
         string[] Tags { get; set; }
-        int[] PmmLabels { get; set; }
+        string[] PmmLabels { get; set; }
         string CodeValue { get; set; }
         string[] CodeValues { get; set; }
         string View { get; set; }
@@ -143,7 +143,7 @@ namespace CmsWeb.Models
         public string EndDate { get; set; }
         public string Comparison { get; set; }
         public string[] Tags { get; set; }
-        public int[] PmmLabels { get; set; }
+        public string[] PmmLabels { get; set; }
         public int? Ministry { get; set; }
         public string SavedQueryDesc { get; set; }
         public bool IsPublic { get; set; }
@@ -457,12 +457,12 @@ namespace CmsWeb.Models
             if (PmmLabelsVisible)
             {
                 if (c.Tags != null)
-                    PmmLabels = c.Tags.Split(',').Select(vv => vv.ToInt()).ToArray();
+                    PmmLabels = c.Tags.Split(',').Select(vv => vv).ToArray();
                 var cv = new CodeValueModel();
                 PmmLabelData = ConvertToSelect(cv.PmmLabels(), "Id");
                 if(PmmLabels != null)
                     foreach (var i in PmmLabelData)
-                        i.Selected = PmmLabels.Contains(i.Value.ToInt());
+                        i.Selected = PmmLabels.Contains(i.Value);
             }
             if (MinistryVisible)
                 Ministry = c.Program;
