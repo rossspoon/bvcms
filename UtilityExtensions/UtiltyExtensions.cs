@@ -624,7 +624,7 @@ namespace UtilityExtensions
         {
             get
             {
-                string name = null;
+                string name = "-";
                 if (HttpContext.Current != null)
                     if (HttpContext.Current.Session != null)
                         if (HttpContext.Current.Session[STR_UserFullName] != null)

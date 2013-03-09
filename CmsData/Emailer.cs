@@ -566,7 +566,7 @@ namespace CmsData
         {
             //<a dir="ltr" href="http://votelink" id="798" rel="smallgroup" title="This is a message">test</a>
             var list = new Dictionary<string, OneTimeLink>();
-            const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://votelink\"[^>]*>.*?</a>";
+            const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://votelink/{0,1}\"[^>]*>.*?</a>";
             var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
             var match = re.Match(text);
             while (match.Success)
@@ -609,7 +609,7 @@ namespace CmsData
         {
             //<a dir="ltr" href="http://rsvplink" id="798" rel="meetingid" title="This is a message">test</a>
             var list = new Dictionary<string, OneTimeLink>();
-            const string RsvpLinkRE = "<a[^>]*?href=\"https{0,1}://rsvplink\"[^>]*>.*?</a>";
+            const string RsvpLinkRE = "<a[^>]*?href=\"https{0,1}://rsvplink/{0,1}\"[^>]*>.*?</a>";
             var re = new Regex(RsvpLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
             var match = re.Match(text);
             while (match.Success)
@@ -647,7 +647,7 @@ namespace CmsData
         private string DoRegisterLink(string text, string CmsHost, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
-            const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://(?<rlink>registerlink2{0,1})\"[^>]*>.*?</a>";
+            const string VoteLinkRE = "<a[^>]*?href=\"https{0,1}://(?<rlink>registerlink2{0,1})/{0,1}\"[^>]*>.*?</a>";
             var re = new Regex(VoteLinkRE, RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnoreCase);
             var match = re.Match(text);
             while (match.Success)
@@ -854,7 +854,7 @@ namespace CmsData
             string msg,
             string confirm)
         {
-            var qs = "{0},{1},{2}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id);
+            var qs = "{0},{1},{2},{3}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id, smallgroup);
             OneTimeLink ot;
             if (list.ContainsKey(qs))
                 ot = list[qs];
@@ -869,8 +869,8 @@ namespace CmsData
                 SubmitChanges();
                 list.Add(qs, ot);
             }
-            var url = Util.URLCombine(CmsHost, "/OnlineReg/RsvpLink/{0}?confirm={1}&smallgroup={2}&message={3}"
-                .Fmt(ot.Id.ToCode(), confirm, smallgroup, HttpUtility.UrlEncode(msg)));
+            var url = Util.URLCombine(CmsHost, "/OnlineReg/RsvpLinkSg/{0}?confirm={1}&message={2}"
+                .Fmt(ot.Id.ToCode(), confirm, HttpUtility.UrlEncode(msg)));
             return url;
         }
         private string VoteLinkUrl(string text,
@@ -884,7 +884,7 @@ namespace CmsData
             string smallgroup,
             string pre)
         {
-            var qs = "{0},{1},{2},{3}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id, pre);
+            var qs = "{0},{1},{2},{3},{4}".Fmt(id, emailqueueto.PeopleId, emailqueueto.Id, pre, smallgroup);
             OneTimeLink ot;
             if (list.ContainsKey(qs))
                 ot = list[qs];
@@ -899,8 +899,8 @@ namespace CmsData
                 SubmitChanges();
                 list.Add(qs, ot);
             }
-            var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLink/{0}?smallgroup={1}&confirm={2}&message={3}"
-                .Fmt(ot.Id.ToCode(), HttpUtility.UrlEncode(smallgroup), confirm, HttpUtility.UrlEncode(msg)));
+            var url = Util.URLCombine(CmsHost, "/OnlineReg/VoteLinkSg/{0}?confirm={1}&message={2}"
+                .Fmt(ot.Id.ToCode(), confirm, HttpUtility.UrlEncode(msg)));
             return url;
         }
         private string RegisterTagUrl(string text,

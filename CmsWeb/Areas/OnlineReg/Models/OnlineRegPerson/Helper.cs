@@ -60,11 +60,11 @@ namespace CmsWeb.Models
 		}
 		public string genderdisplay
 		{
-			get { return gender == 1 ? "Male" : "Female"; }
+			get { return gender == 1 ? "Male" : gender == 2 ? "Female" : "not specified"; }
 		}
 		public string marrieddisplay
 		{
-			get { return married == 10 ? "Single" : "Married"; }
+			get { return married == 10 ? "Single" : married == 20 ? "Married" : "not specified"; }
 		}
 		public IEnumerable<Organization> GetOrgsInDiv()
 		{

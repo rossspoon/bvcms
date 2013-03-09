@@ -218,6 +218,11 @@ namespace CmsData.Codes
         public const int Reversed = 1;
         public const int Returned = 2;
     }
+    public class FundStatusCode 
+    {
+        public const int Open = 1;
+        public const int Closed = 2;
+    }
     public class ContributionTypeCode
     {
         public const int CheckCash = 1;
