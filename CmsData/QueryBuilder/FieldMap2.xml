@@ -351,7 +351,7 @@
       Select members of an organization by the date on which their organization membership record was created. Specify the Program or Program/Division or Program/Division/Organization.
       Todo: explain how unknown dates work
     </Field>-->
-    <Field Name="SmallGroup" Title="In Small Group" Type="StringEqual" DisplayAs="SmallGroup({0}, {1}, {2})" Params="Program,Division,Organization">
+    <Field Name="SmallGroup" Title="In Small Group" Type="StringEqualOrStartsWith" DisplayAs="SmallGroup({0}, {1}, {2})" Params="Program,Division,Organization">
       Person is in a small group named such
     </Field>
     <Field Name="HaveVolunteerApplications" Title="Has Volunteer Applications" Type="Bit" DataValueField="IdCode">

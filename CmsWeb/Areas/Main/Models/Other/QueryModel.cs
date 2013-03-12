@@ -231,6 +231,7 @@ namespace CmsWeb.Models
                     break;
                 case FieldType.String:
                 case FieldType.StringEqual:
+                case FieldType.StringEqualOrStartsWith:
                     TextVisible = true;
                     break;
                 case FieldType.NullNumber:
@@ -337,6 +338,7 @@ namespace CmsWeb.Models
             {
                 case FieldType.String:
                 case FieldType.StringEqual:
+                case FieldType.StringEqualOrStartsWith:
                     c.TextValue = TextValue;
                     break;
                 case FieldType.Integer:
@@ -398,6 +400,7 @@ namespace CmsWeb.Models
             {
                 case FieldType.String:
                 case FieldType.StringEqual:
+                case FieldType.StringEqualOrStartsWith:
                     TextValue = c.TextValue;
                     break;
                 case FieldType.Integer:

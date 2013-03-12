@@ -25,6 +25,7 @@ namespace CmsData
         NullInteger,
         Group,
         StringEqual,
+        StringEqualOrStartsWith,
         IntegerEqual,
         IntegerSimple,
     }

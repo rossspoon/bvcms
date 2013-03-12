@@ -130,7 +130,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                             StartPageSet(o);
                         foreach (var a in q)
                             AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font);
-                        
+
                     }
                 }
                 else
@@ -204,21 +204,17 @@ namespace CmsWeb.Areas.Main.Models.Report
                 }
                 if (t == null)
                     continue;
-                var col = 0;
-                var ct = new ColumnText(dc);
-                float gutter = 20f;
-                float colwidth = (doc.Right - doc.Left - gutter) / 2;
-                leftcol = new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, doc.Top);
-                rightcol = new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, doc.Top);
 
                 if (t.Rows.Count == 0)
-                {
-                    ct.SetSimpleColumn(leftcol);
-                    ct.AddElement(new Phrase("no data"));
-                    ct.Go();
-                }
+                    doc.Add(new Phrase("no data"));
                 else
                 {
+                    var col = 0;
+                    float gutter = 20f;
+                    float colwidth = (doc.Right - doc.Left - gutter) / 2;
+                    leftcol = new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, doc.Top);
+                    rightcol = new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, doc.Top);
+                    var ct = new ColumnText(dc);
                     ct.AddElement(t);
                     var status = 0;
                     while (ColumnText.HasMoreText(status))
@@ -237,7 +233,6 @@ namespace CmsWeb.Areas.Main.Models.Report
                     }
                 }
             }
-            Response.Flush();
             doc.Close();
         }
         private static int[] VisitAttendTypes = new int[] 

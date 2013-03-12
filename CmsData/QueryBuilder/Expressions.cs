@@ -46,10 +46,10 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression BackgroundCheckStatus(ParameterExpression parm, 
-            string labels, 
-            string usernameOrPeopleId, 
-            CompareType op, 
+        internal static Expression BackgroundCheckStatus(ParameterExpression parm,
+            string labels,
+            string usernameOrPeopleId,
+            CompareType op,
             int[] ids)
         {
             int[] lab = (labels ?? "99").Split(',').Select(vv => vv.ToInt()).ToArray();
@@ -60,7 +60,7 @@ namespace CmsData
                     user = usernameOrPeopleId ?? "";
 
             Expression<Func<Person, bool>> pred = p =>
-              p.BackgroundChecks.Any(bc => 
+              p.BackgroundChecks.Any(bc =>
                   ids.Contains(bc.StatusID)
                   && (user == "" || bc.User.Users.Any(uu => uu.Username == user))
                   && (pid == 0 || bc.UserID == pid)
@@ -287,7 +287,7 @@ namespace CmsData
                     Db.DaysBetween12Attend(p.PeopleId, progid, divid, org, lookback).Value;
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(days), left.Type);
-            return  Compare(left, op, right);
+            return Compare(left, op, right);
         }
         internal static Expression DaysAfterNthVisitDateRange(
             ParameterExpression parm, CMSDataContext db,
@@ -305,7 +305,7 @@ namespace CmsData
                                                        from, to, nthvisit).Value;
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(days), left.Type);
-            return  Compare(left, op, right);
+            return Compare(left, op, right);
         }
         internal static Expression RecentJoinChurch(
             ParameterExpression parm,
@@ -1650,42 +1650,51 @@ namespace CmsData
             CompareType op,
             string name)
         {
-            //            Expression<Func<Person, bool>> pred1 = p =>
-            //                    p.OrganizationMembers.Any(m =>
-            //                        (org == 0 || m.OrganizationId == org)
-            //                        && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
-            //                        && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
-            //                        );
-            //            var expr1 = Expression.Convert(Expression.Invoke(pred1, parm), typeof(bool));
             if (name.HasValue())
             {
-                Expression<Func<Person, bool>> pred = p =>
-                        p.OrganizationMembers.Any(m =>
-                            m.OrgMemMemTags.Any(mt => mt.MemberTag.Name.Contains(name))
-                            && (org == 0 || m.OrganizationId == org)
-                            && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
-                            && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
-                            );
+                Expression<Func<Person, bool>> pred = null;
+                switch (op)
+                {
+                    case CompareType.Equal:
+                        pred = p => (
+                            from m in p.OrganizationMembers
+                            where m.OrgMemMemTags.Any(mt => mt.MemberTag.Name == name)
+                            where org == 0 || m.OrganizationId == org
+                            where divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid)
+                            where progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))
+                            select m
+                        ).Any();
+                        break;
+                    case CompareType.StartsWith:
+                        pred = p => (
+                            from m in p.OrganizationMembers
+                            where m.OrgMemMemTags.Any(mt => mt.MemberTag.Name.StartsWith(name))
+                            where org == 0 || m.OrganizationId == org
+                            where divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid)
+                            where progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))
+                            select m
+                        ).Any();
+                        break;
+                }
                 var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
-                if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                if (op == CompareType.NotEqual)
                     expr = Expression.Not(expr);
                 return expr;
-                //return Expression.And(expr1, expr);
             }
             else
             {
-                Expression<Func<Person, bool>> pred = p =>
-                        p.OrganizationMembers.Any(m =>
-                            m.OrgMemMemTags.Count() == 0
-                            && (org == 0 || m.OrganizationId == org)
-                            && (divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid))
-                            && (progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid)))
-                            );
+                Expression<Func<Person, bool>> pred = p => (
+                            from m in p.OrganizationMembers
+                            where !m.OrgMemMemTags.Any()
+                            where org == 0 || m.OrganizationId == org
+                            where divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid)
+                            where progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))
+                            select m
+                        ).Any();
                 var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
                 if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                     expr = Expression.Not(expr);
                 return expr;
-                //return Expression.And(expr1, expr);
             }
         }
 
