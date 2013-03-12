@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsData.Classes.ProtectMyMinistry;
 using CmsWeb.Areas.Main.Models.Other;
 using UtilityExtensions;
 
