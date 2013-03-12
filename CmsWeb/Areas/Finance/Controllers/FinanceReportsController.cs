@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Areas.Finance.Models.Report;
 using CmsData;
+using CmsData.Classes.QuickBooks;
 using System.IO;
 using Intuit.Ipp.Data.Qbo;
 using UtilityExtensions;
@@ -79,10 +80,11 @@ namespace CmsWeb.Areas.Finance.Controllers
 		public ActionResult ToQuickBooks(TotalsByFundModel m)
 		{
             List<int> lFunds = new List<int>();
+            List<QBJournalEntryLine> qbjel = new List<QBJournalEntryLine>();
+
 			var entries = m.TotalsByFund();
 
             QuickBooksHelper qbh = new QuickBooksHelper();
-            qbh.InitJournalEntires();
 
 			foreach (var item in entries)
 			{
@@ -94,30 +96,26 @@ namespace CmsWeb.Areas.Finance.Controllers
 
                 if (accts.QBAssetAccount > 0 && accts.QBIncomeAccount > 0)
                 {
-                    JournalEntryLine jelFrom = new JournalEntryLine();
-                    jelFrom.Desc = item.FundName;
-                    jelFrom.Amount = item.Total ?? 0;
-                    jelFrom.AmountSpecified = true;
-                    jelFrom.AccountId = new IdType() { Value = accts.QBIncomeAccount.ToString() };
-                    jelFrom.PostingType = PostingTypeEnum.Credit;
-                    jelFrom.PostingTypeSpecified = true;
+                    QBJournalEntryLine jelCredit = new QBJournalEntryLine();
 
-                    JournalEntryLine jelTo = new JournalEntryLine();
-                    jelTo.Desc = item.FundName;
-                    jelTo.Amount = item.Total ?? 0;
-                    jelTo.AmountSpecified = true;
-                    jelTo.AccountId = new IdType() { Value = accts.QBAssetAccount.ToString() };
-                    jelTo.PostingType = PostingTypeEnum.Debit;
-                    jelTo.PostingTypeSpecified = true;
+                    jelCredit.sDescrition = item.FundName;
+                    jelCredit.dAmount = item.Total ?? 0;
+                    jelCredit.sAccountID = accts.QBIncomeAccount.ToString();
+                    jelCredit.bCredit = true;
 
-                    qbh.AddJournalEntry(jelFrom);
-                    qbh.AddJournalEntry(jelTo);
+                    QBJournalEntryLine jelDebit = new QBJournalEntryLine(jelCredit);
+
+                    jelDebit.sAccountID = accts.QBAssetAccount.ToString();
+                    jelDebit.bCredit = false;
+
+                    qbjel.Add(jelCredit);
+                    qbjel.Add(jelDebit);
                 }
 
                 lFunds.Add(item.FundId);
 			}
 
-            int iJournalID = qbh.CommitJournalEntries( "Bundle from BVCMS" );
+            int iJournalID = qbh.CommitJournalEntries( "Bundle from BVCMS", qbjel );
 
             if (iJournalID > 0)
             {

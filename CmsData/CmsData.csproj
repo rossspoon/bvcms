@@ -182,40 +182,40 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevDefined.OAuth">
-      <HintPath>..\CmsWeb\Binaries\DevDefined.OAuth.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DevDefined.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth">
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DotNetOpenAuth.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
-      <HintPath>..\CmsWeb\Binaries\HtmlAgilityPack.dll</HintPath>
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.AsyncServices">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.AsyncServices.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.AsyncServices.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Core">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Core.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Data">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Data.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Data.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Diagnostics">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Diagnostics.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Exception">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Exception.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.PlatformServices">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.PlatformServices.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Exception.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Retry">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Retry.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Retry.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Security">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Security.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Security.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Services">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Services.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Services.dll</HintPath>
     </Reference>
     <Reference Include="Intuit.Ipp.Utility">
-      <HintPath>..\CmsWeb\Binaries\Intuit.Ipp.Utility.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
     <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -289,6 +289,8 @@
     <Compile Include="AuthorizeNet.cs" />
     <Compile Include="Batch\ExpressionVisitor.cs" />
     <Compile Include="Batch\LinqToSqlExtensions.cs" />
+    <Compile Include="Classes\QuickBooks\QBAccount.cs" />
+    <Compile Include="Classes\QuickBooks\QBJournalEntryLine.cs" />
     <Compile Include="CMSMembershipProvider.cs" />
     <Compile Include="CMSRoleProvider.cs" />
     <Compile Include="Codes.cs" />
@@ -300,8 +302,12 @@
     <Compile Include="APIPerson.cs" />
     <Compile Include="APIContribution.cs" />
     <Compile Include="BundleHeader.cs" />
+    <Compile Include="Generated\BuildingAccessType.cs" />
+    <Compile Include="Generated\CheckInAccessType.cs" />
     <Compile Include="Generated\Functions\MostRecentItem.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />
+    <Compile Include="Classes\QuickBooks\QBDHelper.cs" />
+    <Compile Include="Classes\QuickBooks\QBOHelper.cs" />
     <Compile Include="Volunteer.cs" />
     <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\BackgroundCheck.cs" />
@@ -334,7 +340,7 @@
     <Compile Include="Generated\Views\MasterOrg.cs" />
     <Compile Include="Generated\Views\PickListOrgs2.cs" />
     <Compile Include="Meeting.cs" />
-    <Compile Include="ProtectMyMinistryHelper.cs" />
+    <Compile Include="Classes\ProtectMyMinistry\ProtectMyMinistryHelper.cs" />
     <Compile Include="PythonEvents.cs" />
     <Compile Include="Generated\AddToOrgFromTagRun.cs" />
     <Compile Include="Generated\CheckedBatch.cs" />
@@ -355,7 +361,7 @@
     <Compile Include="Generated\Views\PickListOrg.cs" />
     <Compile Include="ManagedGiving.cs" />
     <Compile Include="Dynamic.cs" />
-    <Compile Include="QuickBooksHelper.cs" />
+    <Compile Include="Classes\QuickBooks\QuickBooksHelper.cs" />
     <Compile Include="Registration\Ask.cs" />
     <Compile Include="Registration\AskRequest.cs" />
     <Compile Include="Registration\AskSize.cs">
@@ -376,7 +382,7 @@
     <Compile Include="Registration\AskYesNoQuestions.cs" />
     <Compile Include="SagePayments.cs" />
     <Compile Include="TransactionResponse.cs" />
-    <Compile Include="TwilioHelper.cs" />
+    <Compile Include="Classes\Twilio\TwilioHelper.cs" />
     <Compile Include="Generated\ChangeDetail.cs" />
     <Compile Include="Generated\Duplicate.cs" />
     <Compile Include="Generated\Functions\FindPerson4.cs" />
