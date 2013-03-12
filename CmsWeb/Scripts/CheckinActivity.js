@@ -22,4 +22,5 @@
 	};
 	$.formatTable();
 	$(".bt").button();
+	$(".datepicker").datepicker();
 });

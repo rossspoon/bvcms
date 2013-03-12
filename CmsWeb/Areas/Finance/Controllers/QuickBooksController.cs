@@ -9,6 +9,7 @@ using System.Text;
 using System.IO;
 using CmsWeb.Models;
 using CmsData;
+using CmsData.Classes.QuickBooks;
 using UtilityExtensions;
 using DevDefined.OAuth.Framework;
 
@@ -36,7 +37,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 		{
             QuickBooksHelper qbh = new QuickBooksHelper(Request);
             qbh.SetCurrentToken( (IToken)Session["QBToken"] );
-            qbh.RequestAccessToken(Request["realmId"], Request["oauth_verifier"]);
+            qbh.RequestAccessToken(Request["realmId"], Request["oauth_verifier"], Request["dataSource"]);
 
             // david: Change response based on results
             return View("Index");
@@ -50,10 +51,5 @@ namespace CmsWeb.Areas.Finance.Controllers
             // TODO: Change response based on results
 			return View("Index");
 		}
-
-        public string makeKey()
-        {
-            return Util.CmsHost2 + "-" + Util.UserId;
-        }
 	}
 }

@@ -49,7 +49,6 @@ namespace CmsWeb.Areas.Public.Controllers
                 check.ReportID = iReportID;
                 check.ReportLink = sReportLink;
                 check.StatusID = 3;
-                check.ReportXML = req;
                 if (bHasAlerts) check.IssueCount = 1;
 
                 DbUtil.Db.SubmitChanges();

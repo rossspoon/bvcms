@@ -8,7 +8,7 @@ using Twilio;
 using UtilityExtensions;
 using CmsData;
 
-namespace CmsData
+namespace CmsData.Classes.Twilio
 {
     public class TwilioHelper
     {

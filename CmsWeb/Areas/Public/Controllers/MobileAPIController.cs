@@ -18,7 +18,7 @@ namespace CmsWeb.Areas.Public.Controllers
 
 			if (CmsWeb.Models.AccountModel.AuthenticateMobile())
             {
-                br.id = Util2.CurrentPeopleId;
+                br.id = Util.UserPeopleId ?? 0;
                 return br;
             }
 			else

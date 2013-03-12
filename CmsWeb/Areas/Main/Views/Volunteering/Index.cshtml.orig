@@ -38,14 +38,6 @@
 {
     <script src="/Scripts/volunteering.js"></script>
 }
-@section head
-{
-    <style>
-        div.name {
-            padding: 1em;
-        }
-    </style>
-}
 <a href="/Person/Index/@Model.V.PeopleId">@Model.V.Person.Name</a><br />
 <br />
 <b>Volunteer Application Information</b>
@@ -71,13 +63,14 @@
         <td class="top">@(Model.V.VolApplicationStatus == null ? "Unknown" : Model.V.VolApplicationStatus.Description)</td>
     </tr>
 </table>
+<br />
 <form action="/Volunteering/Edit/@Model.V.PeopleId">
-    <input type="submit" value="Edit" /></form>
+    <input type="submit" class="bt" value="Edit" /></form>
 <br />
 <br />
 @if (DbUtil.Db.Setting("EnableBackgroundChecks", "false") == "true" && User.IsInRole("BackgroundCheck"))
 {
-    <b>Volunteer Background Checks</b>
+    <b>Volunteer Background Checks</b> @:(<a href="#" id="newcheck" class="showCreateDialog" pid="@Model.V.PeopleId" ctype="@ProtectMyMinistryHelper.TYPE_BACKGROUND" />Create New</a>)<br />
     <table width="100%" style="border: thin solid #777777;">
         @if (bg != null && !bg.Any())
         {
@@ -110,8 +103,8 @@
                     <td class="center" style="white-space: nowrap;">
                         @if (check.ReportLabelID > 0)
                         {
-                            <a href="#" id="showEditDialog" cid="@check.Id">
-                                @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Name
+                            <a href="#" class="showEditDialog" cid="@check.Id">
+                                @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Description
                             </a>
                         }
                         else
@@ -137,7 +130,7 @@
                             break;
                     }
                 </td>
-                <td class="center">
+                <td class="center" nowrap="nowrap">
                     @switch (check.StatusID)
                     {
                         case 0:
@@ -146,6 +139,7 @@
 
                         case 1:
                         <input type="button" value="Submit" style="width:75px;" class="showSubmitDialog" cid="@check.Id" />
+                        <input type="button" value="Delete" style="width:75px;" class="showDeleteDialog" cid="@check.Id" />
                             break;
 
                         case 2:
@@ -153,7 +147,14 @@
                             break;
 
                         case 3:
-                        <input type="button" value="Complete" disabled="disabled" style="width: 75px;" />
+                            if (check.IssueCount > 0)
+                            {
+                                <input type="button" value="Delete" style="width:75px;" class="showDeleteDialog" cid="@check.Id" />
+                            }
+                            else
+                            {
+                                <input type="button" value="Complete" disabled="disabled" style="width: 75px;" />
+                            }
                             break;
                     }
                 </td>
@@ -161,12 +162,12 @@
         }
 
     </table>
-    <input id="newcheck" type="button" value="New Background Check" class="showCreateDialog" pid="@Model.V.PeopleId" ctype="@ProtectMyMinistryHelper.TYPE_BACKGROUND" /><br />
+    <br />
     <br />
 }
 @if (DbUtil.Db.Setting("EnableBackgroundChecks", "false") == "true" && User.IsInRole("CreditCheck"))
 {
-    <b>Volunteer Credit Checks</b>
+    <b>Volunteer Credit Checks</b> @:(<a href="#" id="newcheck" class="showCreateDialog" pid="@Model.V.PeopleId" ctype="@ProtectMyMinistryHelper.TYPE_CREDIT" />Create New</a>)<br />
     <table width="100%" style="border: thin solid #777777;">
         @if (credit != null && credit.Count() == 0)
         {
@@ -200,7 +201,7 @@
                         @if (check.ReportLabelID > 0)
                         {
                             <a href="#" class="showEditDialog" cid="@check.Id">
-                                @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Name
+                                @labels.Where(e => e.Id == check.ReportLabelID).SingleOrDefault().Description
                             </a>
                         }
                         else
@@ -226,7 +227,7 @@
                             break;
                     }
                 </td>
-                <td class="center">
+                <td class="center" nowrap="nowrap">
                     @switch (check.StatusID)
                     {
                         case 0:
@@ -235,6 +236,7 @@
 
                         case 1:
                         <input type="button" value="Submit" style="width:75px;" class="showSubmitDialog" cid="@check.Id" />
+                        <input type="button" value="Delete" style="width:75px;" class="showDeleteDialog" cid="@check.Id" />
                             break;
 
                         case 2:
@@ -242,7 +244,14 @@
                             break;
 
                         case 3:
-                        <input type="button" value="Complete" disabled="disabled" style="width: 75px;" />
+                            if (check.IssueCount > 0)
+                            {
+                                <input type="button" value="Delete" style="width:75px;" class="showDeleteDialog" cid="@check.Id" />
+                            }
+                            else
+                            {
+                                <input type="button" value="Complete" disabled="disabled" style="width: 75px;" />
+                            }
                             break;
                     }
                 </td>
@@ -250,7 +259,7 @@
         }
 
     </table>
-    <input type="button" value="New Credit Check" class="showCreateDialog" pid="@Model.V.PeopleId" ctype="@ProtectMyMinistryHelper.TYPE_CREDIT" /><br />
+    <br />
     <br />
 }
 <b>Volunteer Documents</b>
@@ -262,13 +271,10 @@
                 <a href="/Image.aspx?id=@form.MediumId">
                     <img src="/images/adobe.png" style="border: thin solid #000000;">
                 </a>
-                <div class="name">
-                    <span id="n.@form.Id" class="editable">@form.Name</span>
-                </div>
                 <form action="/Volunteering/Delete" method="post" onsubmit="return confirmDelete();">
                     <input type="hidden" name="id" value="@form.Id" />
                     <input type="hidden" name="PeopleID" value="@Model.V.PeopleId" />
-                    <input type="submit" value="Delete" />
+                    <input type="submit" class="bt" value="Delete" />
                 </form>
             </td>
         }
@@ -282,6 +288,6 @@
 <form action="/Volunteering/Upload/@Model.V.PeopleId" method="post" enctype="multipart/form-data">
     @Html.Hidden("PeopleID")
     <input type="file" name="file" id="file" />
-    <input type="submit" value="Upload" />
+    <input type="submit" class="bt" value="Upload" />
 </form>
 <div id="dialogHolder"></div>

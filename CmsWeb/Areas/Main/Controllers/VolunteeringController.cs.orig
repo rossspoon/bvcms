@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsData.Classes.ProtectMyMinistry;
 using CmsWeb.Areas.Main.Models.Other;
 using UtilityExtensions;
 
@@ -30,17 +31,13 @@ namespace CmsWeb.Areas.Main.Controllers
             return RedirectToAction("Index", "Volunteering", new {id = id});
         }
 
-        public ActionResult Upload(int id, HttpPostedFileBase file)
+        public ActionResult Upload(int PeopleID, HttpPostedFileBase file)
         {
-            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == id);
+            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == PeopleID);
 
-            var f = new VolunteerForm
-                        {
-                            UploaderId = Util.UserId1, 
-                            PeopleId = vol.PeopleId, 
-                            Name = file.FileName,
-                            AppDate = Util.Now,
-                        };
+            var f = new VolunteerForm { UploaderId = Util.UserId1, PeopleId = vol.PeopleId };
+            f.AppDate = Util.Now;
+            f.UploaderId = Util.UserId1;
 
             var bits = new byte[file.ContentLength];
             file.InputStream.Read(bits, 0, bits.Length);
@@ -52,7 +49,6 @@ namespace CmsWeb.Areas.Main.Controllers
                 case "image/jpeg":
                 case "image/pjpeg":
                 case "image/gif":
-                case "image/png":
                     {
                         f.IsDocument = false;
 
@@ -126,15 +122,38 @@ namespace CmsWeb.Areas.Main.Controllers
             return Redirect("/Volunteering/Index/" + bc.PeopleID);
         }
 
+        public ActionResult DeleteCheck(int id)
+        {
+            int iPeopleID = 0;
+
+            BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
+                                  where e.Id == id
+                                  select e).Single();
+
+            iPeopleID = bc.PeopleID;
+
+            DbUtil.Db.BackgroundChecks.DeleteOnSubmit(bc);
+            DbUtil.Db.SubmitChanges();
+
+            return Redirect("/Volunteering/Index/" + iPeopleID);
+        }
+
         public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0)
         {
             String sResponseURL = Request.Url.Scheme + "://" + Request.Url.Authority + ProtectMyMinistryHelper.PMM_Append;
 
             ProtectMyMinistryHelper.submit(id, sSSN, sDLN, sResponseURL, iStateID, sUser, sPassword);
 
-            Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == iPeopleID);
-            vol.ProcessedDate = DateTime.Now;
-            DbUtil.Db.SubmitChanges();
+            BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
+                                  where e.Id == id
+                                  select e).Single();
+
+            if (bc != null && bc.ServiceCode == "Combo")
+            {
+                Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == iPeopleID);
+                vol.ProcessedDate = DateTime.Now;
+                DbUtil.Db.SubmitChanges();
+            }
 
             return Redirect("/Volunteering/Index/" + iPeopleID);
         }
@@ -167,6 +186,12 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(bc);
         }
 
+        public ActionResult DialogDelete(int id)
+        {
+            ViewBag.ID = id;
+            return View();
+        }
+
         public ActionResult DialogType(int id, int type)
         {
             Person p = (from e in DbUtil.Db.People
@@ -176,19 +201,6 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewBag.dialogType = type;
 
             return View(p);
-        }
-
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ContentResult Edit(string id, string value)
-        {
-            var iid = id.Substring(2).ToInt();
-            var f = DbUtil.Db.VolunteerForms.Single(m => m.Id == iid);
-            if (id.StartsWith("n"))
-                f.Name = value;
-            DbUtil.Db.SubmitChanges();
-            var c = new ContentResult();
-            c.Content = value;
-            return c;
         }
     }
 }

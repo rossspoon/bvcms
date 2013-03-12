@@ -1,5 +1,6 @@
 ﻿@using CmsWeb.Models
 @using CmsData
+@using CmsData.Classes.QuickBooks
 @model CmsData.ContributionFund
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
@@ -75,14 +76,14 @@
         </p>
         @if (qhb.hasActiveConnection())
 		{
-            var list = qhb.ListAllAccounts();
+            var list = qhb.getAllAccounts();
             <p>
                 <label for="QBIncomeAccount">QB Income Account:</label>
-                @Html.DropDownList("QBIncomeAccount", new SelectList(list, "Id.Value", "Name", Model.QBIncomeAccount)) 
+                @Html.DropDownList("QBIncomeAccount", new SelectList(list, "ID", "Name", Model.QBIncomeAccount)) 
             </p>
             <p>
                 <label for="QBAssetAccount">QB Asset Account:</label>
-                @Html.DropDownList("QBAssetAccount", new SelectList(list, "Id.Value", "Name", Model.QBAssetAccount)) 
+                @Html.DropDownList("QBAssetAccount", new SelectList(list, "ID", "Name", Model.QBAssetAccount)) 
             </p>
         }
         <p>
