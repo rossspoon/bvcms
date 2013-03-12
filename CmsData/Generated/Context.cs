@@ -74,6 +74,10 @@ namespace CmsData
         partial void UpdateBaptismType(BaptismType instance);
         partial void DeleteBaptismType(BaptismType instance);
         
+        partial void InsertBuildingAccessType(BuildingAccessType instance);
+        partial void UpdateBuildingAccessType(BuildingAccessType instance);
+        partial void DeleteBuildingAccessType(BuildingAccessType instance);
+        
         partial void InsertBundleDetail(BundleDetail instance);
         partial void UpdateBundleDetail(BundleDetail instance);
         partial void DeleteBundleDetail(BundleDetail instance);
@@ -109,10 +113,6 @@ namespace CmsData
         partial void InsertCheckedBatch(CheckedBatch instance);
         partial void UpdateCheckedBatch(CheckedBatch instance);
         partial void DeleteCheckedBatch(CheckedBatch instance);
-        
-        partial void InsertCheckInAccessType(CheckInAccessType instance);
-        partial void UpdateCheckInAccessType(CheckInAccessType instance);
-        partial void DeleteCheckInAccessType(CheckInAccessType instance);
         
         partial void InsertCheckInActivity(CheckInActivity instance);
         partial void UpdateCheckInActivity(CheckInActivity instance);
@@ -740,6 +740,12 @@ namespace CmsData
 
 		}
 
+		public Table< BuildingAccessType> BuildingAccessTypes
+		{
+			get	{ return this.GetTable< BuildingAccessType>(); }
+
+		}
+
 		public Table< BundleDetail> BundleDetails
 		{
 			get	{ return this.GetTable< BundleDetail>(); }
@@ -791,12 +797,6 @@ namespace CmsData
 		public Table< CheckedBatch> CheckedBatches
 		{
 			get	{ return this.GetTable< CheckedBatch>(); }
-
-		}
-
-		public Table< CheckInAccessType> CheckInAccessTypes
-		{
-			get	{ return this.GetTable< CheckInAccessType>(); }
 
 		}
 
