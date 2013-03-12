@@ -13,11 +13,14 @@ namespace CmsCheckin
 {
     public partial class PrintingServer : Form
     {
+        private DateTime dtLastPrint;
         private const int INT_count = 10;
+
         public PrintingServer()
         {
             InitializeComponent();
         }
+
         private void PrintingServer_Load(object sender, EventArgs e)
         {
             timer1 = new Timer();
@@ -26,10 +29,12 @@ namespace CmsCheckin
             count = INT_count;
             timer1.Start();
         }
+
         private void CheckNow_Click(object sender, EventArgs e)
         {
             CheckServer();
         }
+
         private void CheckServer()
         {
             int iLabelSize = PrinterHelper.getPageHeight(Program.Printer);
@@ -40,6 +45,8 @@ namespace CmsCheckin
             var pj = Util.FetchPrintJob();
             if (pj.jobs.Count > 0)
             {
+                dtLastPrint = DateTime.Now;
+
                 foreach (var j in pj.jobs)
                 {
                     Program.SecurityCode = j.securitycode;

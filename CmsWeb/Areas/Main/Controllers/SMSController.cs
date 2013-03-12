@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsData.Classes.Twilio;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
@@ -26,6 +27,8 @@ namespace CmsWeb.Areas.Main.Controllers
             TwilioHelper.QueueSMS(iQBID, iSendGroup, sTitle, sMessage);
 
             ViewBag.QBID = iQBID;
+            ViewBag.sTitle = sTitle;
+            ViewBag.sMessage = sMessage;
             return View();
         }
     }
