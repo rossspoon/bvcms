@@ -16,6 +16,7 @@ using System.Configuration;
 using System.Data.Linq.SqlClient;
 using System.Web.Security;
 using CmsData.Codes;
+using CmsData.Classes.ProtectMyMinistry;
 
 namespace CmsWeb.Models
 {
