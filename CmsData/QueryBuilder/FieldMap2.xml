@@ -561,5 +561,11 @@
     <Field Name="MatchAnything" Title="Select Condition" Type="Bit" DisplayAs="Select Condition" DataValueField="IdCode">
       This condition is always true
     </Field>
+    <Field Name="HasManagedGiving" Title="Has Managed Giving" Type="Bit" DisplayAs="Has Managed Giving" DataValueField="IdCode">
+      People who have Managed Giving
+    </Field>
+    <Field Name="CheckInVisits" Title="Number of visits" Type="Integer" DisplayAs="Number of visits" DataValueField="IdCode">
+      People who have a given number of building check-in visits
+    </Field>
   </Category>
 </Fields>
