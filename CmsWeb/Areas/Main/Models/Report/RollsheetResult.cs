@@ -41,6 +41,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         public bool? altnames;
         public string name, sgprefix, highlightsg;
         public DateTime? dt;
+        bool pageSetStarted;
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -60,7 +61,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             else
                 list1 = ReportList(orgid, groups, pid, div, schedule, name);
 
-            if (list1.Count() == 0)
+            if (!list1.Any())
             {
                 Response.Write("no data found");
                 return;
@@ -82,10 +83,11 @@ namespace CmsWeb.Areas.Main.Models.Report
             box = new PdfPCell();
             box.Border = PdfPCell.NO_BORDER;
             box.CellEvent = new CellEvent();
+            List<PdfPTable> list = null;
 
             foreach (var o in list1)
             {
-
+                list = new List<PdfPTable>();
                 if (meeting != null)
                 {
                     var Groups = o.Groups;
@@ -104,7 +106,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         if (q.Count() > 0)
                             StartPageSet(o);
                         foreach (var a in q)
-                            AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font);
+                            list.Add(AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font));
                     }
                     else
                     {
@@ -129,8 +131,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                         if (q.Count() > 0)
                             StartPageSet(o);
                         foreach (var a in q)
-                            AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font);
-
+                            list.Add(AddRow(a.Code, a.Name2, a.PeopleId, a.DOB, "", font));
                     }
                 }
                 else
@@ -164,15 +165,15 @@ namespace CmsWeb.Areas.Main.Models.Report
                     if (q.Count() > 0)
                         StartPageSet(o);
                     foreach (var m in q)
-                        AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, m.highlight, m.ch ? china : font);
+                        list.Add(AddRow(m.MemberTypeCode, m.Name2, m.PeopleId, m.BirthDate, m.highlight, m.ch ? china : font));
                 }
 
                 if (bygroup == false && groups[0] == 0 && meeting == null)
                 {
-                    if (t == null)
+                    if (!pageSetStarted)
                         StartPageSet(o);
                     foreach (var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value, NoCurrentMembers: true))
-                        AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont);
+                        list.Add(AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont));
                     var wks = 3; // default lookback
                     var org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == o.OrgId);
                     if (org.RollSheetVisitorWks.HasValue)
@@ -200,37 +201,43 @@ namespace CmsWeb.Areas.Main.Models.Report
                                                p.BirthDay),
                                        };
                     foreach (var m in q)
-                        AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont);
+                        list.Add(AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont));
                 }
-                if (t == null)
+                if (!pageSetStarted)
                     continue;
 
-                if (t.Rows.Count == 0)
-                    doc.Add(new Phrase("no data"));
-                else
+                var col = 0;
+                float gutter = 20f;
+                float colwidth = (doc.Right - doc.Left - gutter) / 2;
+                var cols = new Rectangle[]
+                               {
+                                   new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, doc.Top),
+                                   new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, doc.Top)
+                               };
+                var ct = new ColumnText(dc);
+                ct.SetSimpleColumn(cols[0]);
+                int status = 0;
+                float y;
+                foreach (var li in list)
                 {
-                    var col = 0;
-                    float gutter = 20f;
-                    float colwidth = (doc.Right - doc.Left - gutter) / 2;
-                    leftcol = new Rectangle(doc.Left, doc.Bottom, doc.Left + colwidth, doc.Top);
-                    rightcol = new Rectangle(doc.Right - colwidth, doc.Bottom, doc.Right, doc.Top);
-                    var ct = new ColumnText(dc);
-                    ct.AddElement(t);
-                    var status = 0;
-                    while (ColumnText.HasMoreText(status))
+                    y = ct.YLine;
+                    ct.AddElement(li);
+                    status = ct.Go(true);
+                    if (ColumnText.HasMoreText(status))
                     {
-                        if (col == 0)
-                            ct.SetSimpleColumn(leftcol);
-                        else if (col == 1)
-                            ct.SetSimpleColumn(rightcol);
-                        status = ct.Go();
                         ++col;
                         if (col > 1)
                         {
                             col = 0;
                             doc.NewPage();
                         }
+                        ct.SetSimpleColumn(cols[col]);
+                        y = doc.Top;
                     }
+                    ct.YLine = y;
+                    ct.SetText(null);
+                    ct.AddElement(li);
+                    status = ct.Go();
                 }
             }
             doc.Close();
@@ -258,7 +265,6 @@ namespace CmsWeb.Areas.Main.Models.Report
         private Font medfont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
         private Font china = null;
         private PageEvent pageEvents = new PageEvent();
-        private PdfPTable t;
         private Document doc;
         private PdfContentByte dc;
         private Rectangle leftcol;
@@ -267,6 +273,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 
         private void StartPageSet(OrgInfo o)
         {
+            pageSetStarted = true;
             if (altnames == true)
             {
                 BaseFont.AddToResourceSearch(HttpContext.Current.Server.MapPath("/iTextAsian.dll"));
@@ -274,17 +281,18 @@ namespace CmsWeb.Areas.Main.Models.Report
                     "UniCNS-UCS2-H", BaseFont.EMBEDDED);
                 china = new Font(bfchina, 12, Font.NORMAL);
             }
-            t = new PdfPTable(4);
-            t.WidthPercentage = 100;
-            t.SetWidths(new int[] { 30, 4, 6, 30 });
-            t.DefaultCell.Border = PdfPCell.NO_BORDER;
             pageEvents.StartPageSet(
                                     "{0}: {1}, {2} ({3})".Fmt(o.Division, o.Name, o.Location, o.Teacher),
                                     "{0:f} ({1})".Fmt(dt, o.OrgId),
                                     "M.{0}.{1:MMddyyHHmm}".Fmt(o.OrgId, dt));
         }
-        private void AddRow(string Code, string name, int pid, string dob, string highlight, Font font)
+        private PdfPTable AddRow(string Code, string name, int pid, string dob, string highlight, Font font)
         {
+            var t = new PdfPTable(4);
+            t.WidthPercentage = 100;
+            t.SetWidths(new int[] { 30, 4, 6, 30 });
+            t.DefaultCell.Border = PdfPCell.NO_BORDER;
+
             var bc = new Barcode39();
             bc.X = 1.2f;
             bc.Font = null;
@@ -309,6 +317,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             if (highlight.HasValue())
                 p.Add("\n" + highlight);
             t.AddCell(p);
+            return t;
         }
         private class OrgInfo
         {

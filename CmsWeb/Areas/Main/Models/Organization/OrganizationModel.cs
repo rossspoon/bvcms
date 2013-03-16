@@ -175,8 +175,8 @@ namespace CmsWeb.Models.OrganizationPage
 					var d = Util.Now.Date;
 					d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
 					d = d.AddDays(sc.SchedDay ?? 0);
-					if (d > Util.Now.Date)
-						d = d.AddDays(-7);
+					if (d < Util.Now.Date)
+						d = d.AddDays(7);
 					return d;
 				}
 				return Util.Now.Date;

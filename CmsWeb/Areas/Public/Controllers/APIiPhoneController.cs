@@ -65,7 +65,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
 			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
-            var dt = DateTime.Parse(datetime);
+            var dt = datetime.ToDateValue();
             var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
             if (meeting == null)
             {
@@ -213,7 +213,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
-            var dt = DateTime.Parse(datetime);
+		    var dt = datetime.ToDateValue();
             return new RollListResult(id, dt);
         }
         [HttpPost]
@@ -222,7 +222,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
-            var dt = DateTime.Parse(datetime);
+            var dt = datetime.ToDateValue();
 			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
             RecordAttend2Extracted(id, PeopleId, Present, dt, u);
             return new EmptyResult();
@@ -233,7 +233,7 @@ namespace CmsWeb.Areas.Public.Controllers
         {
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
-            var dt = DateTime.Parse(datetime);
+            var dt = datetime.ToDateValue();
 			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
 
             RecordAttend2Extracted(id, PeopleId, true, dt, u);

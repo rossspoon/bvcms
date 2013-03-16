@@ -23,10 +23,11 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(vol);
         }
 
-        public ActionResult Update(int id, DateTime? processDate, int statusId, string comments, List<int> approvals)
+        public ActionResult Update(int id, string processDate, int statusId, string comments, List<int> approvals)
         {
             var m = new VolunteerModel(id);
-            m.Update(processDate, statusId, comments, approvals);
+            var dt = processDate.ToDate();
+            m.Update(dt, statusId, comments, approvals);
             return RedirectToAction("Index", "Volunteering", new {id = id});
         }
 

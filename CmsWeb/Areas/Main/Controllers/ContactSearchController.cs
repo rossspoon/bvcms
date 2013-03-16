@@ -107,11 +107,14 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.Db.SubmitChanges();
 			return Content("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
 		}
-		public ActionResult ContactorSummary(DateTime start, DateTime end, int ministry)
+		public ActionResult ContactorSummary(string start, string end, int ministry)
 		{
+		    var sdt = start.ToDate();
+		    var edt = end.ToDate();
+
 			var q = from c in DbUtil.Db.Contactors
-					where c.contact.ContactDate >= start
-					where c.contact.ContactDate <= end
+					where c.contact.ContactDate >= sdt
+					where c.contact.ContactDate <= edt
 					where ministry == 0 || ministry == c.contact.MinistryId
 					group c by new
 					{
@@ -134,12 +137,15 @@ namespace CmsWeb.Areas.Main.Controllers
 			return new DataGridResult(q);
 		}
 
-		public ActionResult ContactTypeTotals(DateTime? start, DateTime? end, int? ministry)
+		public ActionResult ContactTypeTotals(string start, string end, int? ministry)
 		{
-		    var q = from c in DbUtil.Db.ContactTypeTotals(start, end, ministry ?? 0)
+		    var sdt = start.ToDate();
+		    var edt = end.ToDate();
+
+		    var q = from c in DbUtil.Db.ContactTypeTotals(sdt, edt, ministry ?? 0)
 		            orderby c.Count descending
 		            select c;
-		    ViewBag.candelete = User.IsInRole("Developer") && start == null && end == null && (ministry ?? 0) == 0;
+		    ViewBag.candelete = User.IsInRole("Developer") && sdt == null && edt == null && (ministry ?? 0) == 0;
 			return View(q);
 		}
 

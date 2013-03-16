@@ -24,10 +24,16 @@ namespace CmsWeb.Areas.Finance.Controllers
             var m = new ContributionModel(id);
             return View(m);
         }
-        public ActionResult ContributionStatement(int id, DateTime FromDate, DateTime ToDate, int typ)
+        public ActionResult ContributionStatement(int id, string FromDate, string ToDate, int typ)
         {
             DbUtil.LogActivity("Contribution Statement for ({0})".Fmt(id));
-            return new ContributionStatementResult { PeopleId = id, FromDate = FromDate, ToDate = ToDate, typ = typ };
+            return new ContributionStatementResult
+                       {
+                           PeopleId = id, 
+                           FromDate = FromDate.ToDateValue(), 
+                           ToDate = ToDate.ToDateValue(), 
+                           typ = typ
+                       };
         }
 		[HttpGet]
         public ActionResult DonorTotalsByRange()

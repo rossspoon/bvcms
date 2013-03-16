@@ -67,8 +67,9 @@ namespace CmsWeb.Areas.Finance.Controllers
             ViewData["date"] = dt;
             return View();
         }
-        public ActionResult BatchUpload(DateTime date, HttpPostedFileBase file, int? fundid, string text)
+        public ActionResult BatchUpload(string date, HttpPostedFileBase file, int? fundid, string text)
         {
+            var dt = date.ToDateValue();
             string s;
             if (file != null)
             {
@@ -88,7 +89,7 @@ namespace CmsWeb.Areas.Finance.Controllers
             }
             else
                 s = text;
-            var id = PostBundleModel.BatchProcess(s, date, fundid);
+            var id = PostBundleModel.BatchProcess(s, dt, fundid);
             if (id.HasValue)
                 return Redirect("/PostBundle/Index/" + id);
             return RedirectToAction("Batch");

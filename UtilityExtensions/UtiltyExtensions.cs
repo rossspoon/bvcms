@@ -81,6 +81,10 @@ namespace UtilityExtensions
                 return dt;
             return null;
         }
+        public static DateTime ToDateValue(this string s)
+        {
+            return DateTime.Parse(s);
+        }
         public static DateTime? ToDate(this object o)
         {
             return o.ToString().ToDate();

@@ -19,9 +19,11 @@ namespace CmsWeb.Areas.Finance.Controllers
 			return View();
 		}
 		[HttpPost]
-		public ActionResult ContributionStatements(bool? PDF, DateTime? FromDate, DateTime? EndDate, string startswith)
+		public ActionResult ContributionStatements(bool? PDF, string FromDate, string EndDate, string startswith)
 		{
-			if (!FromDate.HasValue || !EndDate.HasValue)
+		    var fdt = FromDate.ToDate();
+		    var edt = EndDate.ToDate();
+			if (!fdt.HasValue || !edt.HasValue)
 				return Content("<h3>Must have a Startdate and Enddate</h3>");
 			else
 			{
@@ -40,7 +42,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 				System.Threading.Tasks.Task.Factory.StartNew(() =>
 				{
 					System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Lowest;
-					var m = new ContributionStatementsExtract(host, FromDate.Value, EndDate.Value, PDF.Value, output, startswith);
+					var m = new ContributionStatementsExtract(host, fdt.Value, edt.Value, PDF.Value, output, startswith);
 					m.DoWork();
 				});
 			}
