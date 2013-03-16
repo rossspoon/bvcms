@@ -659,20 +659,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 		{
 			return View();
 		}
-		public ActionResult TagUploadPeopleIds(string name, HttpPostedFileBase file, string text, bool newtag)
+		public ActionResult TagUploadPeopleIds(string name, string text, bool newtag)
 		{
-			string s;
-			if (file != null)
-			{
-				byte[] buffer = new byte[file.ContentLength];
-				file.InputStream.Read(buffer, 0, file.ContentLength);
-				var enc = new System.Text.ASCIIEncoding();
-				s = enc.GetString(buffer);
-			}
-			else
-				s = text;
-
-			var q = from line in s.Split('\n')
+			var q = from line in text.Split('\n')
 					select line.ToInt();
 			if (newtag)
 			{
@@ -735,5 +724,21 @@ namespace CmsWeb.Areas.Manage.Controllers
                 return Content("cannot find view guest." + id);
             }
 		}
+        [HttpGet]
+		[Authorize(Roles = "Admin")]
+		public ActionResult RunScript(string id)
+        {
+            try
+            {
+                var script = DbUtil.Db.Content(id);
+                var pe = new PythonEvents(DbUtil.Db, id, script.Body);
+                pe.instance.Run();
+            }
+            catch (Exception e)
+            {
+                return Content(e.Message);
+            }
+            return Content("done");
+        }
 	}
 }

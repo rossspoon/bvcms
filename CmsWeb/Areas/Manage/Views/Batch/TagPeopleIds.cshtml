@@ -5,7 +5,6 @@
 <h2>Tag PeopleIds</h2>
 <em>One row per PeopleId</em>
 <form action="/Batch/TagUploadPeopleIds" method="post" enctype="multipart/form-data">
-    <label>Filename: <input type="file" name="file" /></label> |
     <label>Tag name: </label> @Html.TextBox("name")
     <label>@Html.CheckBox("newtag")Force New Tag</label>&nbsp;&nbsp;&nbsp;
     <input type="submit" class="bt" value="Submit" />
