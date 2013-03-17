@@ -22,24 +22,24 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(m);
         }
 
-        public ActionResult Report(string sdt, string edt)
+        [HttpPost]
+        public ActionResult Report(DateTime? sdt, DateTime? edt)
         {
-            var Sdt = sdt.ToDate();
-            var Edt = edt.ToDate();
 			var m = new TransactionsModel() 
 			{ 
-				startdt = Sdt,
-				enddt = Edt,
+				startdt = sdt,
+				enddt = edt,
 				usebatchdates = true,
 			};
             return View(m);
         }
-        public ActionResult ReportByDescription(string sdt, string edt)
+        [HttpPost]
+        public ActionResult ReportByDescription(DateTime? sdt, DateTime? edt)
         {
 			var m = new TransactionsModel() 
 			{ 
-				startdt = sdt.ToDateValue(),
-				enddt = edt.ToDateValue(),
+				startdt = sdt,
+				enddt = edt,
 				usebatchdates = true,
 			};
             return View(m);

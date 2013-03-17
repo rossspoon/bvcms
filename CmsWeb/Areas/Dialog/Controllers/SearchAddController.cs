@@ -26,24 +26,24 @@ namespace CmsWeb.Areas.Dialog.Controllers
 #endif
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Results(SearchModel m)
         {
             DbUtil.Db.SetNoLock();
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult ResultsFamily(SearchModel m)
         {
             DbUtil.Db.SetNoLock();
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SearchPerson(SearchModel m)
         {
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SearchFamily(SearchModel m)
         {
             m.dob = null;
@@ -51,19 +51,19 @@ namespace CmsWeb.Areas.Dialog.Controllers
             m.name = a[a.Length - 1];
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SearchCancel(SearchModel m)
         {
             if (m.List.Count > 0)
                 return View("List", m);
             return Complete("0", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SearchFamilyCancel(SearchModel m)
         {
             return View("SearchPerson", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PersonCancel(int id, SearchModel m)
         {
             m.List.RemoveAt(id);
@@ -71,7 +71,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 return View("List", m);
             return View("SearchPerson", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Select(int id, SearchModel m)
         {
             if (m.List.AsEnumerable().Any(li => li.PeopleId == id))
@@ -100,7 +100,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             return View("List", m);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddNewFamily(SearchModel m)
         {
             var p = m.List[m.List.Count - 1];
@@ -109,7 +109,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 return View("FormFull", m);
             return View("List", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddToFamily(SearchModel m)
         {
             var p = m.List[m.List.Count - 1];
@@ -140,7 +140,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             m.List.Add(p);
             return p;
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult FormAbbreviated(int id, SearchModel m)
         {
             var p = NewPerson(id, m);
@@ -157,7 +157,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 p.LoadFamily();
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult FormFull(SearchModel m)
         {
             int id = 0;
@@ -175,7 +175,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
 #endif
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Complete(string id, SearchModel m)
         {
 			var iid = id.ToInt();

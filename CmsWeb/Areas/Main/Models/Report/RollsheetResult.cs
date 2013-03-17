@@ -172,36 +172,36 @@ namespace CmsWeb.Areas.Main.Models.Report
                 {
                     if (!pageSetStarted)
                         StartPageSet(o);
-                    foreach (var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value, NoCurrentMembers: true))
+                    foreach (var m in RollsheetModel.FetchVisitors(o.OrgId, dt.Value, NoCurrentMembers: true, UseAltNames: altnames == true))
                         list.Add(AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont));
-                    var wks = 3; // default lookback
-                    var org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == o.OrgId);
-                    if (org.RollSheetVisitorWks.HasValue)
-                        wks = org.RollSheetVisitorWks.Value;
-                    var MeetingDate = dt.Value.AddDays(wks * -7);
-
-                    var q = from p in DbUtil.Db.People
-                            where p.Attends.Any(a => a.AttendanceFlag == true
-                                                     && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
-                                                     && a.OrganizationId == orgid
-                                                     && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
-                                                     && a.MeetingDate >= a.Organization.FirstMeetingDate)
-                            let ch = altnames == true && p.AltName != null && p.AltName.Length > 0
-                            where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
-                            orderby p.Name2, p.Name
-                            orderby p.LastName, p.FamilyId, p.Name2
-                            select new PersonVisitorInfo
-                                       {
-                                           VisitorType = p.MemberStatusId == (int)MemberStatusCode.Member ? "VM" : "VS",
-                                           PeopleId = p.PeopleId,
-                                           Name2 = ch ? p.AltName : p.Name2,
-                                           BirthDate = Util.FormatBirthday(
-                                               p.BirthYear,
-                                               p.BirthMonth,
-                                               p.BirthDay),
-                                       };
-                    foreach (var m in q)
-                        list.Add(AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont));
+//                    var wks = 3; // default lookback
+//                    var org = DbUtil.Db.Organizations.Single(oo => oo.OrganizationId == o.OrgId);
+//                    if (org.RollSheetVisitorWks.HasValue)
+//                        wks = org.RollSheetVisitorWks.Value;
+//                    var MeetingDate = dt.Value.AddDays(wks * -7);
+//
+//                    var q = from p in DbUtil.Db.People
+//                            where p.Attends.Any(a => a.AttendanceFlag == true
+//                                                     && (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
+//                                                     && a.OrganizationId == orgid
+//                                                     && VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
+//                                                     && a.MeetingDate >= a.Organization.FirstMeetingDate)
+//                            let ch = altnames == true && p.AltName != null && p.AltName.Length > 0
+//                            where !p.OrganizationMembers.Any(om => om.OrganizationId == orgid)
+//                            orderby p.Name2, p.Name
+//                            orderby p.LastName, p.FamilyId, p.Name2
+//                            select new PersonVisitorInfo
+//                                       {
+//                                           VisitorType = p.MemberStatusId == (int)MemberStatusCode.Member ? "VM" : "VS",
+//                                           PeopleId = p.PeopleId,
+//                                           Name2 = ch ? p.AltName : p.Name2,
+//                                           BirthDate = Util.FormatBirthday(
+//                                               p.BirthYear,
+//                                               p.BirthMonth,
+//                                               p.BirthDay),
+//                                       };
+//                    foreach (var m in q)
+//                        list.Add(AddRow(m.VisitorType, m.Name2, m.PeopleId, m.BirthDate, "", boldfont));
                 }
                 if (!pageSetStarted)
                     continue;

@@ -897,6 +897,7 @@
     <Content Include="images\RapidSSL_SEAL-90x50.gif" />
     <Content Include="images\unknownsm.jpg" />
     <Content Include="MembershipAutomation2.py" />
+    <Content Include="Scripts\ChurchAttendance.js" />
     <Content Include="Scripts\compose.js" />
     <Content Include="Scripts\Bundles.js" />
     <Content Include="Scripts\Bundle.js" />
@@ -1594,6 +1595,7 @@
     <Content Include="Areas\People\Views\Person\Dialogs.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\CurrentEnrollments.cshtml" />
     <Content Include="Areas\People\Views\Person\MemberProfile.cshtml" />
+    <Content Include="Areas\Main\Views\Organization\EditorTemplates\DateTimePicker.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -2249,7 +2251,6 @@
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Shared\DatePickerDefaults.cshtml" />
     <Content Include="Views\Shared\MainMenu.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
     <Content Include="App_Code\Helper.cshtml" />
     <Content Include="Views\Shared\NewHeader.cshtml" />
@@ -2259,6 +2260,7 @@
     <Content Include="Views\Shared\Dialogs.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Shared\Notices.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />

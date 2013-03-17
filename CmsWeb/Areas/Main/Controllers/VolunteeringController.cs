@@ -23,14 +23,15 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(vol);
         }
 
-        public ActionResult Update(int id, string processDate, int statusId, string comments, List<int> approvals)
+        [HttpPost]
+        public ActionResult Update(int id, DateTime? processDate, int statusId, string comments, List<int> approvals)
         {
             var m = new VolunteerModel(id);
-            var dt = processDate.ToDate();
-            m.Update(dt, statusId, comments, approvals);
+            m.Update(processDate, statusId, comments, approvals);
             return RedirectToAction("Index", "Volunteering", new {id = id});
         }
 
+        [HttpPost]
         public ActionResult Upload(int id, HttpPostedFileBase file)
         {
             Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == id);
@@ -201,7 +202,7 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(p);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult Edit(string id, string value)
         {
             var iid = id.Substring(2).ToInt();

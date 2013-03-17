@@ -60,24 +60,23 @@ namespace CmsWeb.Areas.Public.Controllers
             return new OrgResult(Util.UserPeopleId);
         }
         [HttpPost]
-        public ActionResult RollList( int id, string datetime )
+        public ActionResult RollList( int id, DateTime datetime )
         {
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
 			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
-            var dt = datetime.ToDateValue();
-            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == dt);
+            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == datetime);
             if (meeting == null)
             {
                 var acr = (from s in DbUtil.Db.OrgSchedules
                            where s.OrganizationId == id
-                           where s.SchedTime.Value.TimeOfDay == dt.TimeOfDay
-                           where s.SchedDay == (int)dt.DayOfWeek
+                           where s.SchedTime.Value.TimeOfDay == datetime.TimeOfDay
+                           where s.SchedDay == (int)datetime.DayOfWeek
                            select s.AttendCreditId).SingleOrDefault();
                 meeting = new CmsData.Meeting
                 {
                     OrganizationId = id,
-                    MeetingDate = dt,
+                    MeetingDate = datetime,
                     CreatedDate = Util.Now,
                     CreatedBy = u.UserId,
                     GroupMeetingFlag = false,
@@ -208,36 +207,33 @@ namespace CmsWeb.Areas.Public.Controllers
         }
 
 		[HttpPost]
-        public ActionResult RollList2(int id, string datetime)
+        public ActionResult RollList2(int id, DateTime datetime)
             // id = OrganizationId
         {
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
-		    var dt = datetime.ToDateValue();
-            return new RollListResult(id, dt);
+            return new RollListResult(id, datetime);
         }
         [HttpPost]
-        public ActionResult RecordAttend2(int id, string datetime, int PeopleId, bool Present)
+        public ActionResult RecordAttend2(int id, DateTime datetime, int PeopleId, bool Present)
             // id = OrganizationId
         {
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
-            var dt = datetime.ToDateValue();
 			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
-            RecordAttend2Extracted(id, PeopleId, Present, dt, u);
+            RecordAttend2Extracted(id, PeopleId, Present, datetime, u);
             return new EmptyResult();
         }
         [HttpPost]
-        public ActionResult RecordVisit2(int id, string datetime, int PeopleId)
+        public ActionResult RecordVisit2(int id, DateTime datetime, int PeopleId)
             // id = OrganizationId
         {
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
-            var dt = datetime.ToDateValue();
 			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
 
-            RecordAttend2Extracted(id, PeopleId, true, dt, u);
-            return new RollListResult(id, dt);
+            RecordAttend2Extracted(id, PeopleId, true, datetime, u);
+            return new RollListResult(id, datetime);
         }
         private static void RecordAttend2Extracted(int id, int PeopleId, bool Present, DateTime dt, User u)
         {

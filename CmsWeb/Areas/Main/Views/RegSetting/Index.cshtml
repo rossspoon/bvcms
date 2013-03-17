@@ -1,4 +1,5 @@
-﻿@using UtilityExtensions
+﻿@using System.Text
+@using UtilityExtensions
 @{
     ViewBag.Title = "RegSetting";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
@@ -7,18 +8,22 @@
 <h2>Registration Settings for <a href="/Organization/Index/@ViewData["OrganizationId"]">@ViewData["orgname"]</a></h2>
 <h4 style="color:Red">The main editor for these is now located under the Settings tab on the Organization Page</h4>
 <form action="/RegSetting/Edit/@ViewData["OrganizationId"]" method="post">
-<input id="edit" type="submit" class="bt" value="Edit Text" />
+    <input id="edit" type="submit" class="bt" value="Edit Text" />
+    <a href="/RegSetting/ConvertFromMdy/@ViewBag.OrganizationId" class="bt">Convert From MDY</a>
+    <a href="/RegSetting/ConvertFromDmy/@ViewBag.OrganizationId" class="bt">Convert From DMY</a>
 @{ var lines = (string[])ViewData["lines"]; }
 <input type="hidden" name="regsetting" value="@ViewData["regsetting"]" />
 </form>
 <p style="color: red">@TempData["error"]</p>
-<pre>
 @{
+    var sb = new StringBuilder();
     for(var i = 0; i < lines.Length; i++)
     {
-        <text>@string.Format("  {0,3}\t{1}\n", i+1, lines[i])</text>
+        sb.AppendFormat("  {0,3}\t{1}\n", i + 1, lines[i]);
     }
 }
+<pre>
+@sb.ToString()
 </pre>
 @section scripts
 {

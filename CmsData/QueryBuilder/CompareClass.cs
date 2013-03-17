@@ -39,6 +39,7 @@ namespace CmsData
                     return Display.Fmt(fld, c.CodeValues);
                 case FieldType.String:
                 case FieldType.StringEqual:
+                case FieldType.StringEqualOrStartsWith:
                 case FieldType.Number:
                 case FieldType.NullNumber:
                 case FieldType.Integer:

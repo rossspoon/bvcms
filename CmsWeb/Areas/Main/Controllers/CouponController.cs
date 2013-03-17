@@ -19,7 +19,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new CouponModel();
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Create(CouponModel m)
         {
             if (m.couponcode.HasValue())
@@ -44,7 +44,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new CouponModel();
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult List(string submit, CouponModel m)
         {
             if (submit == "Excel")

@@ -34,14 +34,14 @@ namespace CmsWeb.Areas.Dialog.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("ok");
         }
-        public ActionResult Edit(string id, string value)
+        [HttpPost]
+        public ActionResult Edit(string id, DateTime value)
         {
-            var dt = value.ToDateValue();
             var iid = id.Substring(2).ToInt();
             var t = DbUtil.Db.EnrollmentTransactions.Single(tt => tt.TransactionId == iid);
-            t.TransactionDate = dt;
+            t.TransactionDate = value;
             DbUtil.Db.SubmitChanges();
-            return Content(dt.ToString("g"));
+            return Content(value.ToString("g"));
         }
     }
 }

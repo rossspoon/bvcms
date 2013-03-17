@@ -27,23 +27,23 @@ namespace CmsWeb.Areas.Finance.Controllers
             m.fund = m.bundle.FundId ?? 1;
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult GetNamePid(PostBundleModel m)
         {
             var o = m.GetNamePidFromId();
             return Json(o);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PostRow(PostBundleModel m)
         {
             return Json(m.PostContribution(this));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult UpdateRow(PostBundleModel m)
         {
             return Json(m.UpdateContribution(this));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult DeleteRow(PostBundleModel m)
         {
             return Json(m.DeleteContribution());
@@ -59,7 +59,7 @@ namespace CmsWeb.Areas.Finance.Controllers
             var m = new PostBundleModel(id);
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Get)]
+        [HttpGet]
         public ActionResult Batch()
         {
             var dt = Util.Now.Date;
@@ -67,9 +67,9 @@ namespace CmsWeb.Areas.Finance.Controllers
             ViewData["date"] = dt;
             return View();
         }
-        public ActionResult BatchUpload(string date, HttpPostedFileBase file, int? fundid, string text)
+        [HttpPost]
+        public ActionResult BatchUpload(DateTime date, HttpPostedFileBase file, int? fundid, string text)
         {
-            var dt = date.ToDateValue();
             string s;
             if (file != null)
             {
@@ -89,18 +89,18 @@ namespace CmsWeb.Areas.Finance.Controllers
             }
             else
                 s = text;
-            var id = PostBundleModel.BatchProcess(s, dt, fundid);
+            var id = PostBundleModel.BatchProcess(s, date, fundid);
             if (id.HasValue)
                 return Redirect("/PostBundle/Index/" + id);
             return RedirectToAction("Batch");
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult Funds()
         {
             var m = new PostBundleModel();
             return Json(m.Funds2());
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Edit(string id, string value)
         {
             var iid = id.Substring(1).ToInt();
@@ -120,6 +120,5 @@ namespace CmsWeb.Areas.Finance.Controllers
                 }
             return new EmptyResult();
         }
-
     }
 }

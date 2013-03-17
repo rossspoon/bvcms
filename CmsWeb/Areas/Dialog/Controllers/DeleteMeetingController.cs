@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Areas.Main.Models.Report;
@@ -39,8 +41,11 @@ namespace CmsWeb.Areas.Dialog.Controllers
 			var host = Util.Host;
 			System.Threading.Tasks.Task.Factory.StartNew(() =>
 			{
-				System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.BelowNormal;
+				Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 				var Db = new CMSDataContext(Util.GetConnectionString(host));
+			    var cul = Db.Setting("Culture", "en-US");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
 
 	            var meeting = Db.Meetings.SingleOrDefault(m => m.MeetingId == id);
 				var q = from a in Db.Attends

@@ -99,7 +99,7 @@ namespace CmsData.Registration
                 Settings.AddValueCk(2, sb, "SmallGroup", SmallGroup);
                 Settings.AddValueCk(2, sb, "Fee", Fee);
                 Settings.AddValueCk(2, sb, "Limit", Limit);
-                Settings.AddValueCk(2, sb, "Time", MeetingTime.FormatDateTm());
+                Settings.AddValueCk(2, sb, "Time", MeetingTime.ToString2("s"));
             }
             public static CheckboxItem Parse(Parser parser, int startindent)
             {

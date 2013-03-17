@@ -1656,6 +1656,7 @@ namespace CmsData
                 switch (op)
                 {
                     case CompareType.Equal:
+                    case CompareType.NotEqual:
                         pred = p => (
                             from m in p.OrganizationMembers
                             where m.OrgMemMemTags.Any(mt => mt.MemberTag.Name == name)

@@ -26,6 +26,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			public int? MinistryId { get; set; }
 		}
 		private const string STR_ContactSearch = "ContactSearch";
+
 		public ActionResult Index()
 		{
 			Response.NoCache();
@@ -89,6 +90,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			DbUtil.Db.SubmitChanges();
 			return c;
 		}
+        [HttpPost]
 		public ActionResult ConvertToQuery(ContactSearchModel m)
 		{
 			var qb = DbUtil.Db.QueryBuilderScratchPad();
@@ -105,7 +107,7 @@ namespace CmsWeb.Areas.Main.Controllers
 			var idvalue = q.Single();
 			clause.CodeIdValue = idvalue;
 			DbUtil.Db.SubmitChanges();
-			return Content("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
+			return Redirect("/QueryBuilder/Main/{0}".Fmt(qb.QueryId));
 		}
 		public ActionResult ContactorSummary(string start, string end, int ministry)
 		{

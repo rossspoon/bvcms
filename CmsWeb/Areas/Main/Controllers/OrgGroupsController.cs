@@ -19,18 +19,18 @@ namespace CmsWeb.Areas.Main.Controllers
             };
             return View(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Filter(OrgGroupsModel m)
         {
             return View("Rows", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Display(int id, int pid)
         {
             var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == id);
             return View(om);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AssignSelectedToTargetGroup(OrgGroupsModel m)
         {
             var a = m.List.ToArray();
@@ -44,7 +44,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return View("Rows", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult RemoveSelectedFromTargetGroup(OrgGroupsModel m)
         {
             var a = m.List.ToArray();
@@ -58,7 +58,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return View("Rows", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult MakeNewGroup(OrgGroupsModel m)
         {
             if (!m.GroupName.HasValue())
@@ -80,7 +80,7 @@ namespace CmsWeb.Areas.Main.Controllers
             ViewData["newgid"] = group.Id;
             return View("Form", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult RenameGroup(OrgGroupsModel m)
         {
             if (!m.GroupName.HasValue() || m.groupid == 0)
@@ -91,7 +91,7 @@ namespace CmsWeb.Areas.Main.Controllers
             m.GroupName = null;
             return View("Form", m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult DeleteGroup(OrgGroupsModel m)
         {
             var group = DbUtil.Db.MemberTags.SingleOrDefault(g => g.Id == m.groupid);

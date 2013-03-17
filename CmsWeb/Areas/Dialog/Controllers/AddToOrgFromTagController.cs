@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using CmsWeb.Areas.Main.Models.Report;
@@ -43,8 +45,11 @@ namespace CmsWeb.Areas.Dialog.Controllers
 			var qid = Util.QueryBuilderScratchPadId;
 			System.Threading.Tasks.Task.Factory.StartNew(() =>
 			{
-				System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.BelowNormal;
+				Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 				var Db = new CMSDataContext(Util.GetConnectionString(host));
+			    var cul = Db.Setting("Culture", "en-US");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
 				IEnumerable<int> q = null;
 				if (tag == -1) // (last query)
 					q = Db.PeopleQuery(qid).Select(pp => pp.PeopleId);

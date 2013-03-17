@@ -128,24 +128,30 @@ namespace CmsData.API
             if (!useMinAmt)
                 MinAmt = 0;
             var q11 = from p in Db.Contributors(fromDate, toDate, PeopleId, SpouseId, FamilyId, noaddressok)
-                      let option = (p.ContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 && (p.SpouseContributionOptionsId ?? 0) != 1 ? 2 : 1) : p.ContributionOptionsId
-                      let option2 = (p.SpouseContributionOptionsId ?? 0) == 0 ? (p.SpouseId > 0 ? 2 : 1) : p.SpouseContributionOptionsId
-                      let name = (option == 1 ?
-                                 (p.Title != null ? p.Title + " " + p.Name : p.Name)
-                                 : (p.SpouseId == null ?
-                                     (p.Title != null ? p.Title + " " + p.Name : p.Name)
-                                     : (p.HohFlag == 1 ?
-                                         ((p.Title != null && p.Title != "") ?
-                                             p.Title + " and Mrs. " + p.Name
-                                             : "Mr. and Mrs. " + p.Name)
-                                         : ((p.SpouseTitle != null && p.SpouseTitle != "") ?
-                                             p.SpouseTitle + " and Mrs. " + p.SpouseName
-                                             : "Mr. and Mrs. " + p.SpouseName))))
-                           + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
+                      let option =
+                          (p.ContributionOptionsId ?? 0) == 0
+                              ? (p.SpouseId > 0 && (p.SpouseContributionOptionsId ?? 0) != 1 ? 2 : 1)
+                              : p.ContributionOptionsId
+                      let option2 =
+                          (p.SpouseContributionOptionsId ?? 0) == 0
+                              ? (p.SpouseId > 0 ? 2 : 1)
+                              : p.SpouseContributionOptionsId
+                      let name = (option == 1
+                                      ? (p.Title != null ? p.Title + " " + p.Name : p.Name)
+                                      : (p.SpouseId == null
+                                             ? (p.Title != null ? p.Title + " " + p.Name : p.Name)
+                                             : (p.HohFlag == 1
+                                                    ? ((p.Title != null && p.Title != "")
+                                                           ? p.Title + " and Mrs. " + p.Name
+                                                           : "Mr. and Mrs. " + p.Name)
+                                                    : ((p.SpouseTitle != null && p.SpouseTitle != "")
+                                                           ? p.SpouseTitle + " and Mrs. " + p.SpouseName
+                                                           : "Mr. and Mrs. " + p.SpouseName))))
+                                 + ((p.Suffix == null || p.Suffix == "") ? "" : ", " + p.Suffix)
                       where option != 9 || noaddressok
                       where startswith == null || p.LastName.StartsWith(startswith)
 #if DEBUG2
-					  where p.FamilyId == 104235
+                      where p.LastName.StartsWith("V") 
 #endif
                       where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
@@ -168,7 +174,11 @@ namespace CmsData.API
                           CampusId = p.CampusId,
                       };
 
+#if DEBUG
+            return q11.Take(30);
+#else
             return q11;
+#endif
         }
 
         public static IEnumerable<ContributionInfo> contributions(CMSDataContext Db, ContributorInfo ci, DateTime fromDate, DateTime toDate)

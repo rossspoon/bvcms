@@ -24,14 +24,14 @@ namespace CmsWeb.Areas.Finance.Controllers
             var m = new ContributionModel(id);
             return View(m);
         }
-        public ActionResult ContributionStatement(int id, string FromDate, string ToDate, int typ)
+        public ActionResult ContributionStatement(int id, DateTime fromDate, DateTime toDate, int typ)
         {
             DbUtil.LogActivity("Contribution Statement for ({0})".Fmt(id));
             return new ContributionStatementResult
                        {
                            PeopleId = id, 
-                           FromDate = FromDate.ToDateValue(), 
-                           ToDate = ToDate.ToDateValue(), 
+                           FromDate = fromDate,
+                           ToDate = toDate,
                            typ = typ
                        };
         }

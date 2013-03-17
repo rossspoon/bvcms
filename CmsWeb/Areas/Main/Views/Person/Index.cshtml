@@ -126,7 +126,10 @@ pre {
 }
 @if (isfinance || Util.UserPeopleId == Model.Person.PeopleId)
 {
-    var yr = DateTime.Now.Year;
+    var jan1 = new DateTime(DateTime.Now.Year, 1, 1).ToSortableDate();
+    var today = DateTime.Today.ToSortableDate();
+    var jan1Last = new DateTime(DateTime.Now.Year - 1, 1, 1).ToSortableDate();
+    var dec31Last = new DateTime(DateTime.Now.Year - 1, 12, 31).ToSortableDate();
     <div id="buttondiv" class="extrabar" style="margin-bottom:1em;margin-left: 1em;font-size:1.2em;">
         <a href="#" class="trigger-dropdown">
             Contributions <img src="/images/dnarrow.png" />
@@ -137,8 +140,8 @@ pre {
                 {
                     <li><a href="/FinanceReports/ContributionYears/@p.PeopleId">History</a></li>
                 }
-                <li><a href="/Person/ContributionStatement/@p.PeopleId/0101@(yr)/@(DateTime.Now.ToString("MMddyyyy"))">Statement Year to date</a></li>
-                <li><a href="/Person/ContributionStatement/@p.PeopleId/0101@(yr-1)/1231@(yr-1)">Last Year's Statement</a></li>
+                <li><a href="/Person/ContributionStatement/@p.PeopleId/@jan1/@today">Statement Year to date</a></li>
+                <li><a href="/Person/ContributionStatement/@p.PeopleId/@jan1Last/@dec31Last">Last Year's Statement</a></li>
             </ul>
         </div>
     </div>

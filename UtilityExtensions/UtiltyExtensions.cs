@@ -81,10 +81,6 @@ namespace UtilityExtensions
                 return dt;
             return null;
         }
-        public static DateTime ToDateValue(this string s)
-        {
-            return DateTime.Parse(s);
-        }
         public static DateTime? ToDate(this object o)
         {
             return o.ToString().ToDate();
@@ -216,6 +212,12 @@ namespace UtilityExtensions
                 return dt.Value.ToString("d");
             return "";
         }
+
+        public static string ToSortableDate(this DateTime dt)
+        {
+            return dt.ToString("yyyy-MM-dd");
+        }
+
         public static string FormatDate(this DateTime? dt, string def = "")
         {
             if (dt.HasValue)
@@ -1114,7 +1116,7 @@ namespace UtilityExtensions
             var smtp = new SmtpClient();
             if (ConfigurationManager.AppSettings["requiresSsl"] == "true")
                 smtp.EnableSsl = true;
-#if DEBUG
+#if DEBUG2
             smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
             smtp.PickupDirectoryLocation = @"c:\email";
             smtp.Host = "localhost";
