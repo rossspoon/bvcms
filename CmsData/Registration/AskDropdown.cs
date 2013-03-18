@@ -71,7 +71,7 @@ namespace CmsData.Registration
 		}
 		public class DropdownItem
 		{
-			public string Name { get; set; }
+		    public string Name { get; set; }
 			public string Description { get; set; }
 			public string SmallGroup { get; set; }
 			public decimal? Fee { get; set; }
@@ -79,7 +79,13 @@ namespace CmsData.Registration
 			[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:g}")]
 			public DateTime? MeetingTime { get; set; }
 
-			public DropdownItem()
+		    public string MeetingTimeString
+		    {
+		        get { return MeetingTime.ToString2("g"); }
+		        set { MeetingTime = value.ToDate(); }
+		    }
+
+		    public DropdownItem()
 			{
 				
 			}

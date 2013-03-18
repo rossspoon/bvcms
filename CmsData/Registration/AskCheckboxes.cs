@@ -93,6 +93,13 @@ namespace CmsData.Registration
             public int? Limit { get; set; }
             [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:g}")]
             public DateTime? MeetingTime { get; set; }
+
+		    public string MeetingTimeString
+		    {
+		        get { return MeetingTime.ToString2("g"); }
+		        set { MeetingTime = value.ToDate(); }
+		    }
+
             public void Output(StringBuilder sb)
             {
                 Settings.AddValueCk(1, sb, Description);
