@@ -23,6 +23,7 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(vol);
         }
 
+        [HttpPost]
         public ActionResult Update(int id, DateTime? processDate, int statusId, string comments, List<int> approvals)
         {
             var m = new VolunteerModel(id);
@@ -30,6 +31,7 @@ namespace CmsWeb.Areas.Main.Controllers
             return RedirectToAction("Index", "Volunteering", new {id = id});
         }
 
+        [HttpPost]
         public ActionResult Upload(int id, HttpPostedFileBase file)
         {
             Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == id);
@@ -38,7 +40,7 @@ namespace CmsWeb.Areas.Main.Controllers
                         {
                             UploaderId = Util.UserId1, 
                             PeopleId = vol.PeopleId, 
-                            Name = file.FileName,
+                            Name = System.IO.Path.GetFileName(file.FileName).Truncate(100),
                             AppDate = Util.Now,
                         };
 
@@ -126,6 +128,22 @@ namespace CmsWeb.Areas.Main.Controllers
             return Redirect("/Volunteering/Index/" + bc.PeopleID);
         }
 
+        public ActionResult DeleteCheck(int id)
+        {
+            int iPeopleID = 0;
+
+            BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
+                                  where e.Id == id
+                                  select e).Single();
+
+            iPeopleID = bc.PeopleID;
+
+            DbUtil.Db.BackgroundChecks.DeleteOnSubmit(bc);
+            DbUtil.Db.SubmitChanges();
+
+            return Redirect("/Volunteering/Index/" + iPeopleID);
+        }
+
         public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0)
         {
             String sResponseURL = Request.Url.Scheme + "://" + Request.Url.Authority + ProtectMyMinistryHelper.PMM_Append;
@@ -167,6 +185,12 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(bc);
         }
 
+        public ActionResult DialogDelete(int id)
+        {
+            ViewBag.ID = id;
+            return View();
+        }
+
         public ActionResult DialogType(int id, int type)
         {
             Person p = (from e in DbUtil.Db.People
@@ -178,13 +202,13 @@ namespace CmsWeb.Areas.Main.Controllers
             return View(p);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ContentResult Edit(string id, string value)
         {
             var iid = id.Substring(2).ToInt();
             var f = DbUtil.Db.VolunteerForms.Single(m => m.Id == iid);
             if (id.StartsWith("n"))
-                f.Name = value;
+                f.Name = value.Truncate(100);
             DbUtil.Db.SubmitChanges();
             var c = new ContentResult();
             c.Content = value;

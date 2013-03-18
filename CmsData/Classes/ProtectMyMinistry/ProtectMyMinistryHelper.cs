@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using System.Web;
 using UtilityExtensions;
 
-namespace CmsData
+namespace CmsData.Classes.ProtectMyMinistry
 {
     public class ProtectMyMinistryHelper
     {
@@ -89,18 +89,6 @@ namespace CmsData
             string sXML = Encoding.UTF8.GetString(msRequest.ToArray()).Substring(1);
             msRequest.Close();
 
-            // Stored Request (for Debug, can be removed later)
-            MemoryStream msRequestSave = new MemoryStream();
-            XmlWriter xwWriterSave = XmlWriter.Create(msRequestSave, xws);
-            xmlCreate(xwWriterSave, sb);
-            string sXMLSave = Encoding.UTF8.GetString(msRequestSave.ToArray()).Substring(1);
-            msRequestSave.Close();
-            bc.RequestXML = sXMLSave;
-            // End Stored Request
-
-            // TODO: Temporary - Remove Later
-            DbUtil.Db.SubmitChanges();
-
             // Submit Request to PMM
             var fields = new NameValueCollection();
             fields.Add("REQUEST", sXML);
@@ -108,8 +96,6 @@ namespace CmsData
             WebClient wc = new WebClient();
             wc.Encoding = System.Text.Encoding.UTF8;
             var response = Encoding.UTF8.GetString(wc.UploadValues(PMM_URL, "POST", fields));
-
-            bc.ResponseXML = response;
 
             ResponseBundle rbResponse = processResponse(response);
 

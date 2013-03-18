@@ -2965,5 +2965,75 @@ namespace CmsData
             return expr;
         }
 
+        internal static Expression CheckInVisits(
+            ParameterExpression parm, CMSDataContext Db,
+            CompareType op,
+            int visits)
+        {
+            Expression<Func<Person, bool>> pred = null;
+            switch (op)
+            {
+                case CompareType.Greater:
+                    pred = p => (from e in p.CheckInTimes
+                                 where e.AccessTypeID == 2
+                                 group e by e.PeopleId into g
+                                 where g.Count() > visits
+                                 select g).Any();
+                    break;
+                case CompareType.Less:
+                    pred = p => (from e in p.CheckInTimes
+                                 where e.AccessTypeID == 2
+                                 group e by e.PeopleId into g
+                                 where g.Count() < visits
+                                 select g).Any();
+                    break;
+                case CompareType.GreaterEqual:
+                    pred = p => (from e in p.CheckInTimes
+                                 where e.AccessTypeID == 2
+                                 group e by e.PeopleId into g
+                                 where g.Count() >= visits
+                                 select g).Any();
+                    break;
+                case CompareType.LessEqual:
+                    pred = p => (from e in p.CheckInTimes
+                                 where e.AccessTypeID == 2
+                                 group e by e.PeopleId into g
+                                 where g.Count() <= visits
+                                 select g).Any();
+                    break;
+                case CompareType.Equal:
+                    pred = p => (from e in p.CheckInTimes
+                                 where e.AccessTypeID == 2
+                                 group e by e.PeopleId into g
+                                 where g.Count() == visits
+                                 select g).Any();
+                    break;
+                case CompareType.NotEqual:
+                    pred = p => (from e in p.CheckInTimes
+                                 where e.AccessTypeID == 2
+                                 group e by e.PeopleId into g
+                                 where g.Count() != visits
+                                 select g).Any();
+                    break;
+            }
+
+            Expression expr = Expression.Invoke(pred, parm);
+            return expr;
+        }
+
+        internal static Expression HasManagedGiving(
+            ParameterExpression parm, CMSDataContext Db,
+            CompareType op,
+            bool tf)
+        {
+            Expression<Func<Person, bool>> pred = p => (from e in p.RecurringAmounts
+                                                        where e.Amt > 0
+                                                        select e).Any();
+
+            Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
+            if (!(op == CompareType.Equal && tf))
+                expr = Expression.Not(expr);
+            return expr;
+        }
     }
 }

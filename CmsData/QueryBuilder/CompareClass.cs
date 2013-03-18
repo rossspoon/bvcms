@@ -134,6 +134,9 @@ namespace CmsData
                     return Expressions.CampusId(parm,
                                CompType,
                                c.CodeIntIds);
+                case QueryType.CheckInVisits:
+                    return Expressions.CheckInVisits(parm, Db,
+                        CompType, c.TextValue.ToInt());
                 case QueryType.CreatedBy:
                     return Expressions.CreatedBy(parm, Db,
                         CompType, c.TextValue);
@@ -233,6 +236,10 @@ namespace CmsData
                                c.CodeIds == "1");
                 case QueryType.HaveVolunteerApplications:
                     return Expressions.HasVolunteerApplications(parm,
+                               CompType,
+                               c.CodeIds == "1");
+                case QueryType.HasManagedGiving:
+                    return Expressions.HasManagedGiving(parm, Db,
                                CompType,
                                c.CodeIds == "1");
                 case QueryType.HasMemberDocs:

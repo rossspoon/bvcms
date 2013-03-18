@@ -12,3 +12,5 @@ relre:\.pubxml$
 relre:CmsDataSqlClr.dbmdl
 relre:CmsDataSqlClr_.*.sqlproj
 relre:/secrets.config
+syntax: glob
+CmsCheckin-ClickOnce*

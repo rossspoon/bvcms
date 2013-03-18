@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,7 +8,7 @@ using Twilio;
 using UtilityExtensions;
 using CmsData;
 
-namespace CmsData
+namespace CmsData.Classes.Twilio
 {
     public class TwilioHelper
     {
@@ -116,9 +115,6 @@ namespace CmsData
                 {
                     var Db = new CMSDataContext(Util.GetConnectionString(sHost));
                     Db.Host = sHost;
-    			    var cul = Db.Setting("Culture", "en-US");
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
-                    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
 
                     var smsList = (from e in Db.SMSLists
                                    where e.Id == itListID

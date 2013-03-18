@@ -3,7 +3,5 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
 }
 
-<h2>Sent</h2>
-<br />
-<a href="/Email/Index/@ViewBag.QBID">Click Here</a> to send an e-mail to the same people.<br />
-<br />
+<h2>SMS Messages Sent</h2>
+<a href="/Email/Index/@ViewBag.QBID?subj=@Server.UrlEncode(ViewBag.sTitle)&body=@Server.UrlEncode(ViewBag.sMessage)">Click Here</a> to send an e-mail to the same people.<br />
