@@ -295,6 +295,7 @@ namespace CmsWeb.Areas.Public.Controllers
 		{
 			if (!Authenticate())
 				return Content("not authorized");
+
 			DbUtil.LogActivity("checkin {0}, {1}, {2}".Fmt(PeopleId, OrgId, Present ? "attend0" : "unattend0"));
 			var m = new CheckInModel();
 			m.RecordAttend(PeopleId, OrgId, Present, thisday);
@@ -655,22 +656,73 @@ namespace CmsWeb.Areas.Public.Controllers
 
 			var reader = new StreamReader(Request.InputStream);
 			string s = reader.ReadToEnd();
+
 			if (!s.HasValue())
 				s = "<Activities />";
+
 			var xs = new XmlSerializer(typeof(List<Activity>), new XmlRootAttribute("Activities"));
 			var activities = xs.Deserialize(new StringReader(s)) as List<Activity>;
 
-			var ac = new CheckInTime() { PeopleId = id, Location = location, CheckInTimeX = DateTime.Now, GuestOfId = guestof, GuestOfPersonID = (g != null ? g.PeopleId ?? 0 : 0), AccessTypeID = accesstype};
+            var last = from e in DbUtil.Db.CheckInTimes
+                       where e.PeopleId == id
+                       where e.CheckInTimeX <= DateTime.Now
+                       where e.CheckInTimeX >= DateTime.Now.AddHours( -1.5 )
+                       select e;
 
-			foreach (var a in activities)
-				ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name });
-			DbUtil.Db.CheckInTimes.InsertOnSubmit(ac);
+            if (guestof == null)
+            {
+                last = from f in last
+                       where f.GuestOfId == null
+                       select f;
+            }
+            else
+            {
+                last = from f in last
+                       where f.GuestOfId == guestof
+                       select f;
+            }
+
+            CheckInTime ac = null;
+
+            if (last.Count() > 0)
+            {
+                ac = last.Single();
+
+                foreach (var e in ac.CheckInActivities)
+                    DbUtil.Db.CheckInActivities.DeleteOnSubmit(e);
+
+                DbUtil.Db.SubmitChanges();
+
+                foreach (var a in activities)
+                    ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name });
+            }
+            else
+            {
+                ac = new CheckInTime()
+                {
+                    PeopleId = id,
+                    Location = location,
+                    CheckInTimeX = DateTime.Now,
+                    GuestOfId = guestof,
+                    GuestOfPersonID = (g != null ? g.PeopleId ?? 0 : 0),
+                    AccessTypeID = accesstype
+                };
+
+                foreach (var a in activities)
+                    ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name });
+
+                DbUtil.Db.CheckInTimes.InsertOnSubmit(ac);
+            }
+
+			
 			DbUtil.Db.SubmitChanges();
+
 			foreach (var a in activities)
 			{
 				if (a.org > 0)
 					Attend.RecordAttend(DbUtil.Db, id, a.org, true, DateTime.Today);
 			}
+
 			return Content(ac.Id.ToString());
 		}
 		[HttpPost]

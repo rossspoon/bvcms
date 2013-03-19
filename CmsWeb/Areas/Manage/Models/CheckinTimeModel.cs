@@ -222,15 +222,17 @@ namespace CmsWeb.Models
                     select t;
             }
 
-            var q3 = from c in q2
-                     group c by 1 into gr
-                     select new CountInfo()
-                     {
-                         members = gr.Count(tt => tt.GuestOfId == null),
-                         guests = gr.Sum(tt => tt.Guests.Count()),
-                     };
+            CountInfo ci = new CountInfo();
 
-            _counts = q3.Single();
+            ci.members = (from c in q2
+                          where c.AccessTypeID == 1
+                          select c).Count();
+
+            ci.guests = (from c in q2
+                          where c.AccessTypeID != 1
+                          select c).Count();
+
+            _counts = ci;
 
             // sort
             q = SortItems(q);
