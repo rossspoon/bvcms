@@ -140,7 +140,7 @@ namespace CmsData.Classes.QuickBooks
             qbc.Creation = DateTime.Now;
             qbc.DataSource = "";
             qbc.Token = itToken.Token;
-            qbc.UserID = 149;
+            qbc.UserID = Util.UserId;
             qbc.Active = 1;
             qbc.Secret = "";
             qbc.RealmID = "";
