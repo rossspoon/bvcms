@@ -24,18 +24,18 @@ namespace CmsWeb.Areas.Dialog.Controllers
 			};
 			return View(m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Filter(OrgMembersDialogModel m)
 		{
 			return View("Rows", m);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Display(int id, int pid)
 		{
 			var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == id);
 			return View(om);
 		}
-		[AcceptVerbs(HttpVerbs.Post)]
+		[HttpPost]
 		public ActionResult Update(OrgMembersDialogModel m)
 		{
 			var Db = DbUtil.Db;

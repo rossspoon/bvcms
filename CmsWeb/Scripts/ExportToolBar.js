@@ -188,6 +188,16 @@
         }
         return v;
     };
+    $.SortableDate = function (s) {
+        var dt;
+        if ($.dateFormat.startsWith('d'))
+            dt = new Date(s.split('/')[2], s.split('/')[1] - 1, s.split('/')[0]);
+        else
+            dt = new Date(s.split('/')[2], s.split('/')[0] - 1, s.split('/')[1]);
+        var dt2 = dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate();
+        return dt2;
+    };
+
     jQuery.fn.center = function (parent) {
         if (parent) {
             parent = this.parent();
@@ -235,6 +245,5 @@ String.prototype.addCommas = function () {
     }
     return x1 + x2;
 };
-
 
 

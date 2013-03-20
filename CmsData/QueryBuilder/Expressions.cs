@@ -643,7 +643,7 @@ namespace CmsData
                                 from a in p.Attends
                                 from dg in a.Organization.DivOrgs
                                 from pg in dg.Division.ProgDivs
-                                where a.MeetingDate > mindt
+                                where a.MeetingDate >= mindt
                                 where a.AttendanceFlag
                                 where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
                                 where org == 0 || a.OrganizationId == org
@@ -654,7 +654,7 @@ namespace CmsData
             else
                 pred = p => (
                                 from a in p.Attends
-                                where a.MeetingDate > mindt
+                                where a.MeetingDate >= mindt
                                 where a.AttendanceFlag
                                 where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
                                 select a
@@ -1656,6 +1656,7 @@ namespace CmsData
                 switch (op)
                 {
                     case CompareType.Equal:
+                    case CompareType.NotEqual:
                         pred = p => (
                             from m in p.OrganizationMembers
                             where m.OrgMemMemTags.Any(mt => mt.MemberTag.Name == name)
@@ -2849,8 +2850,11 @@ namespace CmsData
             CompareType op,
             DateTime? dt)
         {
+            if(!dt.HasValue)
+                return Expressions.CompareConstant(parm, prop, CompareType.IsNull, null);
+
             Expression left = Expression.Property(parm, prop);
-            if (dt.HasValue && dt.Value.Date == dt) // 12:00:00 AM?
+            if (dt.Value.Date == dt) // 12:00:00 AM?
             {
                 left = Expression.MakeMemberAccess(left, typeof(DateTime?).GetProperty("Value"));
                 left = Expression.MakeMemberAccess(left, typeof(DateTime).GetProperty("Date"));
@@ -2870,6 +2874,35 @@ namespace CmsData
                 else if (value.GetType() == typeof(string[]))
                     return CompareContains(parm, prop, op, value, typeof(string[]), typeof(string));
             var left = Expression.Property(parm, prop);
+            var right = Expression.Convert(Expression.Constant(value), left.Type);
+            return Compare(left, op, right);
+        }
+        internal static Expression CompareCodeConstant(
+            ParameterExpression parm,
+            string prop,
+            CompareType op,
+            object value)
+        {
+            if (value != null)
+                if (value.GetType() == typeof(int[])) // use isarray?
+                    return CompareContains(parm, prop, op, value, typeof(int[]), typeof(int));
+            var left = Expression.Coalesce(Expression.Property(parm, prop), Expression.Constant(0));
+            var right = Expression.Convert(Expression.Constant(value), left.Type);
+            return Compare(left, op, right);
+        }
+        internal static Expression CompareStringConstant(
+            ParameterExpression parm,
+            string prop,
+            CompareType op,
+            object value)
+        {
+            if (value != null)
+                if (value.GetType() == typeof(int[])) // use isarray?
+                    return CompareContains(parm, prop, op, value, typeof(int[]), typeof(int));
+                else if (value.GetType() == typeof(string[]))
+                    return CompareContains(parm, prop, op, value, typeof(string[]), typeof(string));
+
+            var left = Expression.Call(Expression.Coalesce(Expression.Property(parm, prop), Expression.Constant("")), "Trim", null);
             var right = Expression.Convert(Expression.Constant(value), left.Type);
             return Compare(left, op, right);
         }

@@ -22,7 +22,8 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(m);
         }
 
-        public ActionResult Report(DateTime sdt, DateTime edt)
+        [HttpPost]
+        public ActionResult Report(DateTime? sdt, DateTime? edt)
         {
 			var m = new TransactionsModel() 
 			{ 
@@ -32,7 +33,8 @@ namespace CmsWeb.Areas.Manage.Controllers
 			};
             return View(m);
         }
-        public ActionResult ReportByDescription(DateTime sdt, DateTime edt)
+        [HttpPost]
+        public ActionResult ReportByDescription(DateTime? sdt, DateTime? edt)
         {
 			var m = new TransactionsModel() 
 			{ 

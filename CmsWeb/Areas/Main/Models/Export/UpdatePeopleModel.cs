@@ -115,17 +115,16 @@ namespace CmsWeb.Models
                     };
             return q;
         }
-        public static void UpdatePeople(string path, string host, int UserPeopleId)
+        public static void UpdatePeople(string path, string host, int userPeopleId)
         {
             var factory = DbProviderFactories.GetFactory("System.Data.OleDb");
             using (var cn = factory.CreateConnection())
             {
-                cn.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source="
-                    + path + ";Extended Properties=\"Excel 8.0;HDR=YES;\";";
+                cn.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
+                                      + path + ";Extended Properties=\"Excel 12.0;HDR=YES;\"";
                 cn.Open();
-
                 var Db = new CMSDataContext(Util.GetConnectionString(host));
-                UpdatePeople(cn, Db, UserPeopleId);
+                UpdatePeople(cn, Db, userPeopleId);
             }
         }
         public class UpdatePeopleItem
@@ -155,7 +154,7 @@ namespace CmsWeb.Models
             public string Employer { get; set; }
             public DateTime? Deceased { get; set; }
         };
-        private static void UpdatePeople(DbConnection cn, CMSDataContext Db, int UserPeopleId)
+        private static void UpdatePeople(DbConnection cn, CMSDataContext Db, int userPeopleId)
         {
             var cv = new CodeValueModel();
             var pcmd = cn.CreateCommand();
@@ -185,7 +184,7 @@ namespace CmsWeb.Models
                 p.UpdateValue(psb, "OccupationOther", i.Occupation);
                 p.UpdateValue(psb, "EmployerOther", i.Employer);
                 p.UpdateValue(psb, "Grade", i.Grade);
-                p.UpdateValue(psb, "Deceased", i.Deceased);
+                p.UpdateValue(psb, "DeceasedDate", i.Deceased);
 
                 p.UpdateValue(psb, "MemberStatusId", CviOrNull(cv.MemberStatusCodes().SingleOrDefault(c => c.Value == i.Member)) ?? 20);
                 p.UpdateValue(psb, "GenderId", CviOrNull(cv.GenderCodes().SingleOrDefault(c => c.Value == i.Gender)) ?? 0);
@@ -193,7 +192,7 @@ namespace CmsWeb.Models
                 p.UpdateValue(psb, "PositionInFamilyId", CviOrNull(cv.FamilyPositionCodes().SingleOrDefault(c => c.Value == i.FamilyPos)) ?? 0);
                 p.UpdateValue(psb, "CampusId", CviOrNull(cv.AllCampuses().SingleOrDefault(c => c.Value == i.Campus)));
                
-                p.LogChanges(Db, psb, UserPeopleId);
+                p.LogChanges(Db, psb, userPeopleId);
                 Db.SubmitChanges();
             }
         }

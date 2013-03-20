@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
@@ -63,6 +65,29 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/RegSetting/Index/" + id);
         }
-
+        public ActionResult ConvertFromMdy(int id)
+        {
+            var cul = "en-US";
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            var m = new Settings(org.RegSetting, DbUtil.Db, id);
+            var os = new Settings(m.ToString(), DbUtil.Db, id);
+            m.org.RegSetting = os.ToString();
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/RegSetting/Index/" + id);
+        }
+        public ActionResult ConvertFromDmy(int id)
+        {
+            var cul = "en-GB";
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            var m = new Settings(org.RegSetting, DbUtil.Db, id);
+            var os = new Settings(m.ToString(), DbUtil.Db, id);
+            m.org.RegSetting = os.ToString();
+            DbUtil.Db.SubmitChanges();
+            return Redirect("/RegSetting/Index/" + id);
+        }
     }
 }

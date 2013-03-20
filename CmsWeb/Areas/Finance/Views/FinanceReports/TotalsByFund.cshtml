@@ -23,7 +23,7 @@
 
 <div class="roundbox floatleft">
     <h2>Totals By Fund</h2>
-    <form id="totals">
+    <form id="totals" method="POST">
         Campus: @Html.DropDownList("CampusId", Model.Campuses())
         Start Date: @Html.TextBox("Dt1", Model.Dt1.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })
         End Date: @Html.TextBox("Dt2", Model.Dt2.ToString2("d"), new { style = "width: 100px; font-size: 110%", @class = "datepicker" })

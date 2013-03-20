@@ -315,6 +315,7 @@ namespace CmsWeb.Models
         }
         public static string ForgotPassword(string username)
         {
+            username = username.Trim();
             var q = DbUtil.Db.Users.Where(uu =>
                 uu.Username == username ||
                 uu.Person.EmailAddress == username ||

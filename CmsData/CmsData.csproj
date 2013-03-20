@@ -181,40 +181,51 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevDefined.OAuth">
+    <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetOpenAuth">
+    <Reference Include="DotNetOpenAuth, Version=3.4.7.11121, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DotNetOpenAuth.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.AsyncServices">
+    <Reference Include="Intuit.Ipp.AsyncServices, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.AsyncServices.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Core">
+    <Reference Include="Intuit.Ipp.Core, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Data">
+    <Reference Include="Intuit.Ipp.Data, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Diagnostics">
+    <Reference Include="Intuit.Ipp.Diagnostics, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Exception">
+    <Reference Include="Intuit.Ipp.Exception, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Exception.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Retry">
+    <Reference Include="Intuit.Ipp.Retry, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Retry.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Security">
+    <Reference Include="Intuit.Ipp.Security, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Services">
+    <Reference Include="Intuit.Ipp.Services, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Services.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Utility">
+    <Reference Include="Intuit.Ipp.Utility, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
     <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
@@ -302,12 +313,17 @@
     <Compile Include="APIPerson.cs" />
     <Compile Include="APIContribution.cs" />
     <Compile Include="BundleHeader.cs" />
+    <Compile Include="DoReplacements.cs" />
     <Compile Include="Generated\BuildingAccessType.cs" />
     <Compile Include="Generated\CheckInAccessType.cs" />
+    <Compile Include="Generated\Functions\Contributions0.cs" />
+    <Compile Include="Generated\Functions\GetTotalContributionsDonor2.cs" />
     <Compile Include="Generated\Functions\MostRecentItem.cs" />
+    <Compile Include="Generated\Functions\Pledges0.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />
     <Compile Include="Classes\QuickBooks\QBDHelper.cs" />
     <Compile Include="Classes\QuickBooks\QBOHelper.cs" />
+    <Compile Include="Picture.cs" />
     <Compile Include="Volunteer.cs" />
     <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\BackgroundCheck.cs" />

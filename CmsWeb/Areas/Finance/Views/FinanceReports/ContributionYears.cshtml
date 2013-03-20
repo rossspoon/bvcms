@@ -42,8 +42,8 @@
                 var d = $("#StatementDialog");
                 d.dialog("option", "buttons", {
                     "Ok": function () {
-                        var fd = $('#FromDate').val();
-                        var td = $('#ToDate').val();
+                        var fd = $.SortableDate($('#FromDate').val());
+                        var td = $.SortableDate($('#ToDate').val());
                         var typ = $('input[name=indfam]:radio:checked').val();
                         var args = "@Model.person.PeopleId?FromDate=" + fd + "&ToDate=" + td + "&typ=" + typ;
                         var newWindowUrl = "/FinanceReports/ContributionStatement/" + args;

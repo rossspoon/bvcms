@@ -19,6 +19,7 @@ namespace CmsWeb.Areas.Finance.Controllers
 				m.Year = year.Value;
             return View(m);
         }
+        [HttpPost]
 		public ActionResult Results(ContributionSearchModel m)
 		{
 			return View(m);

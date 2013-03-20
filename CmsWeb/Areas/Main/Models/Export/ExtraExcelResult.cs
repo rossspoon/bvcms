@@ -41,7 +41,7 @@ namespace CmsWeb.Models
                           let vroles = ff.Attribute("VisibilityRoles")
                           where vroles != null && (vroles.Value.Split(',').All(rr => !roles.Contains(rr)))
                           select ff.Attribute("name").Value);
-            var nodisplaycols = string.Join(",", fields);
+            var nodisplaycols = string.Join("|", fields);
 
             var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2, @p3");
 			cmd.Parameters.AddWithValue("@p1", tag.Id);

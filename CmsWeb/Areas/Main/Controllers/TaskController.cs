@@ -34,14 +34,14 @@ namespace CmsWeb.Areas.Main.Controllers
                 return PartialView("Rows", tasks);
             return View(tasks);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SetComplete(int id)
         {
             var tasks = new TaskModel { Id = id.ToString() };
             tasks.CompleteTask(id);
             return PartialView("Columns", tasks.FetchTask(id));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Accept(int id)
         {
             var tasks = new TaskModel { Id = id.ToString() };
@@ -69,7 +69,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var tasks = new TaskModel();
             return PartialView(tasks.FetchTask(id));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddTask(string CurTab, string TaskDesc)
         {
             var model = new TaskModel { CurTab = CurTab };
@@ -84,7 +84,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var tid = model.AddTask(model.PeopleId, listid, TaskDesc);
             return PartialView("Row", model.FetchTask(tid));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddList(string ListName)
         {
             var model = new TaskModel();
@@ -102,14 +102,14 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return PartialView(m);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult AddSourceContact(int id, int contactid)
         {
             var tasks = new TaskModel();
             tasks.AddSourceContact(id, contactid);
             return PartialView("Detail", tasks.FetchTask(id));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public JsonResult CompleteWithContact(int id)
         {
             var tasks = new TaskModel();
@@ -127,21 +127,21 @@ namespace CmsWeb.Areas.Main.Controllers
         //    }
         //    return PartialView(m);
         //}
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult ChangeOwner(int id, int peopleid)
         {
             var tasks = new TaskModel();
             tasks.ChangeOwner(id, peopleid);
             return PartialView("Detail", tasks.FetchTask(id));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Delegate(int id, int peopleid)
         {
             var tasks = new TaskModel();
             tasks.Delegate(id, peopleid);
             return PartialView("Detail", tasks.FetchTask(id));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult DelegateAll(int id, string items)
         {
             var tasks = new TaskModel();
@@ -155,7 +155,7 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return PartialView("Rows", tasks);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult ChangeAbout(int id, int peopleid)
         {
             TaskModel.SetWhoId(id, peopleid);
@@ -167,7 +167,7 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new TaskModel();
             return PartialView(m.FetchTask(id));
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Update(int id)
         {
             var m = new TaskModel();
@@ -177,7 +177,7 @@ namespace CmsWeb.Areas.Main.Controllers
             t = m.FetchTask(id);
             return View("Detail", t);
         }
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Action(int? id, string option, string items, string curtab)
         {
             var tasks = new TaskModel();

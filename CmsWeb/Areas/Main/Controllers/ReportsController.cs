@@ -54,8 +54,10 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new ContactsResult(id.Value, sortAddress);
         }
-        public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames, string highlight)
+        public ActionResult Rollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, string dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames, string highlight)
         {
+            var dt2 = dt.ToDate();
+
             return new RollsheetResult
             {
                 qid = id,
@@ -68,13 +70,15 @@ namespace CmsWeb.Areas.Main.Controllers
                 meetingid = meetingid,
                 bygroup = bygroup.HasValue,
                 sgprefix = sgprefix,
-                dt = dt,
+                dt = dt2,
                 altnames = altnames,
 				highlightsg = highlight,
             };
         }
-        public ActionResult RallyRollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, DateTime? dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)
+        public ActionResult RallyRollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, string dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)
         {
+            var dt2 = dt.ToDate();
+
             return new RallyRollsheetResult
             {
                 qid = id,
@@ -87,7 +91,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 meetingid = meetingid,
                 bygroup = bygroup.HasValue,
                 sgprefix = sgprefix,
-                dt = dt,
+                dt = dt2,
                 altnames = altnames,
             };
         }
@@ -245,29 +249,34 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new RegistrationResult(id, oid);
         }
-        public ActionResult ChurchAttendance(DateTime? id)
+        public ActionResult ChurchAttendance(string id)
         {
-            if (!id.HasValue)
-                id = ChurchAttendanceModel.MostRecentAttendedSunday();
-            var m = new ChurchAttendanceModel(id.Value);
+            var dt2 = id.ToDate();
+            if (!dt2.HasValue)
+                dt2 = ChurchAttendanceModel.MostRecentAttendedSunday();
+            var m = new ChurchAttendanceModel(dt2.Value);
             return View(m);
         }
-        public ActionResult ChurchAttendance2(DateTime? Dt1, DateTime? Dt2, string skipweeks)
+        public ActionResult ChurchAttendance2(string Dt1, string Dt2, string skipweeks)
         {
-            if (!Dt1.HasValue)
-                Dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
-            if (!Dt2.HasValue)
-                Dt2 = DateTime.Today;
-            var m = new ChurchAttendance2Model(Dt1, Dt2, skipweeks);
+            var dt1 = Dt1.ToDate();
+            var dt2 = Dt2.ToDate();
+            if (!dt1.HasValue)
+                dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
+            if (!dt2.HasValue)
+                dt2 = DateTime.Today;
+            var m = new ChurchAttendance2Model(dt1, dt2, skipweeks);
             return View(m);
         }
-        public ActionResult AttendanceDetail(DateTime? Dt1, DateTime? Dt2, string name, int? divid, int? schedid, int? campusid)
+        public ActionResult AttendanceDetail(string Dt1, string Dt2, string name, int? divid, int? schedid, int? campusid)
         {
-            if (!Dt1.HasValue)
-                Dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
-            if (!Dt2.HasValue)
-                Dt2 = Dt1.Value.AddDays(1);
-            var m = new AttendanceDetailModel(Dt1.Value, Dt2, name, divid, schedid, campusid);
+            var dt1 = Dt1.ToDate();
+            if (!dt1.HasValue)
+                dt1 = ChurchAttendanceModel.MostRecentAttendedSunday();
+            var dt2 = Dt2.ToDate();
+            if (!dt2.HasValue)
+                dt2 = dt1.Value.AddDays(1);
+            var m = new AttendanceDetailModel(dt1.Value, dt2, name, divid, schedid, campusid);
             return View(m);
         }
         public ActionResult RecentAbsents(int? id, int? divid, int? days)
@@ -336,7 +345,7 @@ namespace CmsWeb.Areas.Main.Controllers
                           let vroles = ff.Attribute("VisibilityRoles")
                           where vroles != null && (vroles.Value.Split(',').All(rr => !roles.Contains(rr)))
                           select ff.Attribute("name").Value);
-            var nodisplaycols = string.Join(",", fields);
+            var nodisplaycols = string.Join("|", fields);
 
             var tag = DbUtil.Db.PopulateSpecialTag(id, DbUtil.TagTypeId_ExtraValues);
             var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2, @p3");

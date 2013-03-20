@@ -16,39 +16,21 @@
 	});
 	$("#exportdonordetails").click(function (ev) {
 		ev.preventDefault();
-		$.blockUI({
-			theme: true,
-			title: 'Producing Contributions Export',
-			message: '<p>Click the page to continue after your download appears.</p>'
-		});
 		var f = $(this).closest('form');
-		var q = f.serialize();
-		window.location = "/Export/Contributions/donordetails?" + q;
-		$('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
+		f.attr("action", "/Export/Contributions/donordetails");
+	    f.submit();
 	});
 	$("#exportdonorfundtotals").click(function (ev) {
 		ev.preventDefault();
-		$.blockUI({
-			theme: true,
-			title: 'Producing Contributor Fund Totals Export',
-			message: '<p>Click the page to continue after your download appears.</p>'
-		});
 		var f = $(this).closest('form');
-		var q = f.serialize();
-		window.location = "/Export/Contributions/donorfundtotals?" + q;
-		$('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
+		f.attr("action", "/Export/Contributions/donorfundtotals");
+	    f.submit();
 	});
 	$("#exportdonortotals").click(function (ev) {
 		ev.preventDefault();
-		$.blockUI({
-			theme: true,
-			title: 'Producing Donor Totals Export',
-			message: '<p>Click the page to continue after your download appears.</p>'
-		});
 		var f = $(this).closest('form');
-		var q = f.serialize();
-		window.location = "/Export/Contributions/donortotals?" + q;
-		$('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
+		f.attr("action", "/Export/Contributions/donortotals");
+	    f.submit();
 	});
 	$("#toquickbooks").click(function (ev) {
 		ev.preventDefault();

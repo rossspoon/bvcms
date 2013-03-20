@@ -193,7 +193,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             AttendTypeCode.OtherClass
         };
 
-		public static IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate, bool NoCurrentMembers)
+		public static IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate, bool NoCurrentMembers, bool UseAltNames = false)
 		{
 			var wks = 3; // default lookback
 			var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
@@ -209,6 +209,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 						&& (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null)
 						&& VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
 					where NoCurrentMembers == false || p.OrganizationMembers.All(om => om.OrganizationId != orgid)
+                    let ch = UseAltNames && p.AltName != null && p.AltName.Length > 0
 					orderby p.Name2, p.Name
 					orderby p.LastName, p.FamilyId, p.Name2
 					select new PersonVisitorInfo
@@ -216,7 +217,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 						VisitorType = p.MemberStatusId == MemberStatusCode.Member ? "VM" : "VS",
 						PeopleId = p.PeopleId,
 						Name = p.Name,
-						Name2 = p.Name2,
+                        Name2 = ch ? p.AltName : p.Name2,
 						BirthDate = Util.FormatBirthday(
 							p.BirthYear,
 							p.BirthMonth,

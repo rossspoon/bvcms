@@ -34,6 +34,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("ok");
         }
+        [HttpPost]
         public ActionResult Edit(string id, DateTime value)
         {
             var iid = id.Substring(2).ToInt();

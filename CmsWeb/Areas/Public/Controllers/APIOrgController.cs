@@ -70,13 +70,13 @@ namespace CmsWeb.Areas.Public.Controllers
                 .DeleteExtraValue(orgid, field));
         }
         [HttpPost]
-        public ActionResult UpdateOrgMember(int OrgId, int PeopleId, string type, DateTime? enrolled, string inactive, bool? pending)
+        public ActionResult UpdateOrgMember(int OrgId, int PeopleId, string type, string enrolled, string inactive, bool? pending)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
             new APIOrganization(DbUtil.Db)
-                .UpdateOrgMember(OrgId, PeopleId, type, enrolled, inactive, pending);
+                .UpdateOrgMember(OrgId, PeopleId, type, enrolled.ToDate(), inactive, pending);
 			DbUtil.LogActivity("APIOrg UpdateOrgMember {0}, {1}".Fmt(OrgId, PeopleId));
             return Content("ok");
         }

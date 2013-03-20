@@ -30,18 +30,16 @@
     $("#ConvertToQuery").click(function (ev) {
         ev.preventDefault();
         var f = $('#results').closest('form');
-        var q = f.serialize();
-        $.post($(this).attr('href'), q, function (ret) {
-            window.location = ret;
-        });
+        f.attr("action", $(this).attr('href'));
+        f.submit();
         return false;
     });
     $("#ContactorSummary").click(function (ev) {
         ev.preventDefault();
         if ($("#StartDate").val() && $("#EndDate").val() && $("#form").valid()) {
             window.location = $(this).attr('href')
-                + "?start=" + $("#StartDate").val()
-                + "&end=" + $("#EndDate").val()
+                + "?start=" + $.SortableDate($("#StartDate").val())
+                + "&end=" + $.SortableDate($("#EndDate").val())
                 + "&ministry=" + $("#Ministry").val();
         } else
             alert("need valid dates");
@@ -52,9 +50,9 @@
         ev.preventDefault();
         var loc = window.location = $(this).attr('href') + "?ministry=" + $("#Ministry").val();
         if ($("#StartDate").val())
-            loc = loc.appendQuery("start=" + $("#StartDate").val());
+            loc = loc.appendQuery("start=" + $.SortableDate($("#StartDate").val()));
         if ($("#EndDate").val())
-            loc = loc.appendQuery("end=" + $("#EndDate").val());
+            loc = loc.appendQuery("end=" + $.SortableDate($("#EndDate").val()));
         hideDropdowns();
         $.block();
         window.location = loc;
