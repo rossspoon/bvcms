@@ -81,12 +81,16 @@
     </Reference>
     <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\DevDefined.OAuth.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="dotless.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\Squishit\dotless.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth, Version=3.4.7.11121, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DotNetOpenAuth.dll</HintPath>
     </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -97,45 +101,41 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
-    <Reference Include="Intuit.Ipp.AsyncServices, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.AsyncServices, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.AsyncServices.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.AsyncServices.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Core, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.Core, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.Core.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Data, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.Data, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.Data.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Diagnostics, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.Diagnostics, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.Diagnostics.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Exception, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.Exception, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.Exception.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Exception.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.PlatformServices, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.Retry, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.PlatformServices.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Retry.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Retry, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.Security, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.Retry.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Security, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.Services, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.Security.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Services.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Services, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Intuit.Ipp.Utility, Version=2.1.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.Services.dll</HintPath>
-    </Reference>
-    <Reference Include="Intuit.Ipp.Utility, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Binaries\Intuit.Ipp.Utility.dll</HintPath>
+      <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.3.3.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -687,17 +687,6 @@
     </Content>
     <Content Include="Binaries\AuthorizeNet.dll" />
     <Content Include="Binaries\CookComputing.XmlRpcV2.dll" />
-    <Content Include="Binaries\DevDefined.OAuth.dll" />
-    <Content Include="Binaries\Intuit.Ipp.AsyncServices.dll" />
-    <Content Include="Binaries\Intuit.Ipp.Core.dll" />
-    <Content Include="Binaries\Intuit.Ipp.Data.dll" />
-    <Content Include="Binaries\Intuit.Ipp.Diagnostics.dll" />
-    <Content Include="Binaries\Intuit.Ipp.Exception.dll" />
-    <Content Include="Binaries\Intuit.Ipp.PlatformServices.dll" />
-    <Content Include="Binaries\Intuit.Ipp.Retry.dll" />
-    <Content Include="Binaries\Intuit.Ipp.Security.dll" />
-    <Content Include="Binaries\Intuit.Ipp.Services.dll" />
-    <Content Include="Binaries\Intuit.Ipp.Utility.dll" />
     <Content Include="Binaries\log4net.dll" />
     <Content Include="Binaries\Rackspace.CloudFiles.dll" />
     <Content Include="Content\BUZZ.WAV" />

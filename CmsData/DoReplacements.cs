@@ -391,7 +391,7 @@ namespace CmsData
             while (match.Success)
             {
                 var tag = match.Value;
-                var rlink = match.Groups["rlink"].Value;
+                var rlink = match.Groups["rlink"].Value.ToLower();
 
                 var doc = new HtmlDocument();
                 doc.LoadHtml(tag);

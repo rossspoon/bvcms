@@ -35,6 +35,7 @@ namespace CmsData
                 case FieldType.NullBit:
                 case FieldType.Bit:
                 case FieldType.Code:
+                case FieldType.NullCode:
                 case FieldType.CodeStr:
                     return Display.Fmt(fld, c.CodeValues);
                 case FieldType.String:
@@ -711,7 +712,7 @@ namespace CmsData
 				case QueryType.EmailAddress2:
                     if (CompType == CompareType.IsNull || CompType == CompareType.IsNotNull)
 						return Expressions.CompareConstant(parm, c.Field, CompType, null);
-					return Expressions.CompareConstant(parm, c.Field, CompType, c.TextValue ?? "");
+					return Expressions.CompareStringConstant(parm, c.Field, CompType, c.TextValue ?? "");
             	default:
                     if (CompType == CompareType.IsNull || CompType == CompareType.IsNotNull)
                         return Expressions.CompareConstant(parm,
@@ -728,6 +729,11 @@ namespace CmsData
                                        c.CodeIds == "1");
                         case FieldType.Code:
                             return Expressions.CompareConstant(parm,
+                                       c.Field,
+                                       CompType,
+                                       IsMultiple ? (object)c.CodeIntIds : (object)c.CodeIds.ToInt());
+                        case FieldType.NullCode:
+                            return Expressions.CompareCodeConstant(parm,
                                        c.Field,
                                        CompType,
                                        IsMultiple ? (object)c.CodeIntIds : (object)c.CodeIds.ToInt());

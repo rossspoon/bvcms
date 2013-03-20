@@ -174,6 +174,10 @@ namespace CmsData
         }
         public EmailQueue CreateQueue(MailAddress From, string subject, string body, DateTime? schedule, int tagId, bool publicViewable)
         {
+            return CreateQueue(Util.UserPeopleId, From, subject, body, schedule, tagId, publicViewable);
+        }
+        public EmailQueue CreateQueue(int? queuedBy, MailAddress from, string subject, string body, DateTime? schedule, int tagId, bool publicViewable)
+        {
             var tag = TagById(tagId);
             if (tag == null)
                 return null;
@@ -181,12 +185,12 @@ namespace CmsData
             var emailqueue = new EmailQueue
             {
                 Queued = DateTime.Now,
-                FromAddr = From.Address,
-                FromName = From.DisplayName,
+                FromAddr = from.Address,
+                FromName = from.DisplayName,
                 Subject = subject,
                 Body = body,
                 SendWhen = schedule,
-                QueuedBy = Util.UserPeopleId,
+                QueuedBy = queuedBy,
                 Transactional = false,
                 PublicX = publicViewable,
             };
@@ -206,7 +210,7 @@ namespace CmsData
                      where p.EmailAddress != null
                      where p.EmailAddress != ""
                      where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
-                     where !p.EmailOptOuts.Any(oo => oo.FromEmail == emailqueue.FromAddr)
+                     where p.EmailOptOuts.All(oo => oo.FromEmail != emailqueue.FromAddr)
                      orderby p.PeopleId
                      select p.PeopleId;
 
