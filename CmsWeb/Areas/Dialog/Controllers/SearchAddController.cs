@@ -22,8 +22,44 @@ namespace CmsWeb.Areas.Dialog.Controllers
         public ActionResult Index(int? id, string type, string from)
         {
             var m = new SearchModel { typeid = id, type = type, from = from };
-#if DEBUG
-#endif
+            Organization org = null;
+            m.CampusId = null;
+            switch (m.type)
+            {
+                case "addpeople":
+                    m.EntryPointId = 0;
+                    break;
+                case "addtotag":
+                    m.EntryPointId = null;
+                    break;
+                case "family":
+                case "relatedfamily":
+                    m.EntryPointId = 0;
+                    break;
+                case "org":
+                case "pending":
+                    org = DbUtil.Db.LoadOrganizationById(id);
+                    m.CampusId = org.CampusId;
+                    m.EntryPointId = org.EntryPointId ?? 0;
+                    break;
+                case "visitor":
+                case "registered":
+                    org = (from meeting in DbUtil.Db.Meetings
+                           where meeting.MeetingId == id
+                           select meeting.Organization).Single();
+                    m.EntryPointId = org.EntryPointId ?? 0;
+                    m.CampusId = org.CampusId;
+                    break;
+                case "contactee":
+                    m.EntryPointId = 0;
+                    break;
+                case "contactor":
+                    m.EntryPointId = 0;
+                    break;
+                case "contributor":
+                    m.EntryPointId = 0;
+                    break;
+            }
             return View(m);
         }
         [HttpPost]
@@ -126,6 +162,8 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 index = m.List.Count,
                 gender = 99,
                 marital = 99,
+                campus = m.CampusId,
+                entrypoint = m.EntryPointId
             };
 #if DEBUG
             //p.title = "Mr.";
@@ -143,6 +181,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
         [HttpPost]
         public ActionResult FormAbbreviated(int id, SearchModel m)
         {
+            var org = DbUtil.Db.LoadOrganizationById(id);
             var p = NewPerson(id, m);
             if (id < 0)
             {
@@ -234,7 +273,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 var c = DbUtil.Db.Contacts.Single(ct => ct.ContactId == id);
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, OriginCode.Visit, 0);
+                    AddPerson(p, m.List, OriginCode.Visit, m.EntryPointId);
                     var ctee = c.contactees.SingleOrDefault(ct =>
                         ct.ContactId == id && ct.PeopleId == p.person.PeopleId);
                     if (ctee == null)
@@ -260,7 +299,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     return Json(new { close = true, how = "CloseAddDialog" });
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, 0, 0);
+                    AddPerson(p, m.List, 0, m.EntryPointId);
                     var ctor = c.contactsMakers.SingleOrDefault(ct =>
                         ct.ContactId == id && ct.PeopleId == p.person.PeopleId);
                     if (ctor == null)
@@ -286,7 +325,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var i in m.List)
                 {
                     var isnew = i.IsNew;
-                    AddPerson(i, m.List, OriginCode.NewFamilyMember, 0);
+                    AddPerson(i, m.List, OriginCode.NewFamilyMember, m.EntryPointId);
                     if (!isnew)
                     {
                         var fm = f.People.SingleOrDefault(fa => fa.PeopleId == i.person.PeopleId);
@@ -314,7 +353,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             {
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, OriginCode.NewFamilyMember, 0);
+                    AddPerson(p, m.List, OriginCode.NewFamilyMember, m.EntryPointId);
                     SearchModel.AddRelatedFamily(id, p.PeopleId.Value);
                 }
                 DbUtil.Db.SubmitChanges();
@@ -324,7 +363,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
         private JsonResult AddPeople(SearchModel m)
         {
             foreach (var p in m.List)
-                AddPerson(p, m.List, 0, 0);
+                AddPerson(p, m.List, 0, m.EntryPointId);
             DbUtil.Db.SubmitChanges();
             return Json(new { close = true, how = "CloseAddDialog" });
         }
@@ -354,7 +393,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 }
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, OriginCode.Enrollment, org.EntryPointId ?? 0);
+                    AddPerson(p, m.List, OriginCode.Enrollment, m.EntryPointId);
                     OrganizationMember.InsertOrgMembers(DbUtil.Db,
                         id, p.PeopleId.Value, 220, Util.Now, null, pending);
                 }
@@ -369,7 +408,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             {
                 var p = m.List[0];
                 var c = DbUtil.Db.Contributions.Single(cc => cc.ContributionId == id);
-                AddPerson(p, m.List, OriginCode.Contribution, 0);
+                AddPerson(p, m.List, OriginCode.Contribution, m.EntryPointId);
                 c.PeopleId = p.PeopleId;
 
                 if (c.BankAccount.HasValue())
@@ -397,7 +436,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             {
                 foreach (var p in m.List)
                 {
-					AddPerson(p, m.List, 0, null);
+                    AddPerson(p, m.List, 0, m.EntryPointId);
 					Person.Tag(DbUtil.Db, p.person.PeopleId, id, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
                 }
                 DbUtil.Db.SubmitChanges();
@@ -414,7 +453,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var p in m.List)
                 {
                     var isnew = p.IsNew;
-                    AddPerson(p, m.List, OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
+                    AddPerson(p, m.List, OriginCode.Visit, m.EntryPointId);
 					if (isnew)
 						p.person.UpdateValue("CampusId", meeting.Organization.CampusId);
                     var err = Attend.RecordAttendance(p.PeopleId.Value, id, true);
@@ -434,7 +473,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var p in m.List)
                 {
                     var isnew = p.IsNew;
-                    AddPerson(p, m.List, OriginCode.Visit, meeting.Organization.EntryPointId ?? 0);
+                    AddPerson(p, m.List, OriginCode.Visit, m.EntryPointId);
                     if (isnew)
                         p.person.CampusId = meeting.Organization.CampusId;
                     Attend.MarkRegistered(DbUtil.Db, p.PeopleId.Value, id, 1);
@@ -444,18 +483,18 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             return Json(new { close = true, how = "addselected" });
         }
-        private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int Origin, int? EntryPoint)
+        private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int originid, int? entrypointid)
         {
             if (p.IsNew)
-                p.AddPerson(Origin, EntryPoint);
+                p.AddPerson(originid, entrypointid);
             else 
             {
-                if (EntryPoint != 0 && 
+                if (entrypointid != 0 && 
                         (!p.person.EntryPointId.HasValue || p.person.EntryPointId == 0))
-                    p.person.EntryPointId = EntryPoint;
-                if (Origin != 0 &&
+                    p.person.EntryPointId = entrypointid;
+                if (originid != 0 &&
                         (!p.person.OriginId.HasValue || p.person.OriginId == 0))
-                    p.person.OriginId = Origin;
+                    p.person.OriginId = originid;
                 DbUtil.Db.SubmitChanges();
             }
             if (p.FamilyId < 0) // fix up new family pointers

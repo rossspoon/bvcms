@@ -3353,6 +3353,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.ParentNamesAndCells", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string ParentNamesAndCells(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.SpaceToNull", IsComposable = true)]
 		[return: Parameter(DbType = "varchar")]
 		public string SpaceToNull(

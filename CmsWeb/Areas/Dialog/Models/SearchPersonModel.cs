@@ -27,6 +27,8 @@ namespace CmsWeb.Models
         public string email { get; set; }
         public int gender { get; set; }
         public int marital { get; set; }
+        public int? campus { get; set; }
+        public int? entrypoint { get; set; }
 
         public string homephone { get; set; }
         public string address { get; set; }
@@ -76,6 +78,14 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> MaritalStatuses()
         {
             return QueryModel.ConvertToSelect(cv.MaritalStatusCodes99(), "Id");
+        }
+        public IEnumerable<SelectListItem> CampusCodes()
+        {
+            return QueryModel.ConvertToSelect(cv.AllCampuses0(), "Id");
+        }
+        public IEnumerable<SelectListItem> EntryPointCodes()
+        {
+            return QueryModel.ConvertToSelect(cv.EntryPoints(), "Id");
         }
         public IEnumerable<SelectListItem> StateCodes()
         {
@@ -145,6 +155,9 @@ namespace CmsWeb.Models
             if (marital == 99)
                 ModelState.AddModelError("marital", "specify marital status");
 
+            if (entrypoint == 0)
+                ModelState.AddModelError("entrypoint", "specify entrypoint");
+
             if (checkaddress)
             {
 
@@ -202,7 +215,7 @@ namespace CmsWeb.Models
                 }
             }
         }
-        internal void AddPerson(int origin, int? entrypoint)
+        internal void AddPerson(int originid, int? entrypointid)
         {
             Family f;
             string na = "na";
@@ -234,14 +247,14 @@ namespace CmsWeb.Models
 
             _Person = Person.Add(f, position,
                 null, first.Trim(), goesby, last.Trim(), dob, false, gender,
-                    origin, entrypoint);
+                    originid, entrypointid);
             if (title.HasValue())
                 person.TitleCode = title;
             person.EmailAddress = email.Disallow(na);
             person.MaritalStatusId = marital;
             person.SuffixCode = suffix;
             person.MiddleName = middle;
-            person.CampusId = DbUtil.Db.Setting("DefaultCampusId", "").ToInt2();
+            person.CampusId = Util.PickFirst(campus.ToString(), DbUtil.Db.Setting("DefaultCampusId", "")).ToInt2();
 
             person.CellPhone = phone.GetDigits();
             DbUtil.Db.SubmitChanges();

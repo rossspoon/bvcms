@@ -30,6 +30,9 @@ namespace CmsWeb.Models
         public bool UsersOnly { get { return usersonlytypes.Contains(type); } }
         public bool OnlyOne { get { return onlyonetypes.Contains(type); } }
 
+        public int? EntryPointId { get; set; }
+        public int? CampusId { get; set; }
+
         private IList<SearchPersonModel> list = new List<SearchPersonModel>();
         public IList<SearchPersonModel> List
         {
@@ -181,6 +184,7 @@ namespace CmsWeb.Models
             public DateTime? JoinDate { get; set; }
             public string BirthDate { get; set; }
             public string Email { get; set; }
+
             public string ToolTip
             {
                 get
