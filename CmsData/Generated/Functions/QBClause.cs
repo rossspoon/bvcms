@@ -18,11 +18,17 @@ namespace CmsData.View
 		
 		private int? _QueryId;
 		
+		private int? _TopId;
+		
 		private int? _GroupId;
 		
 		private string _SavedBy;
 		
 		private string _Description;
+		
+		private string _Field;
+		
+		private string _Comparison;
 		
 		private int? _Level;
 		
@@ -45,6 +51,23 @@ namespace CmsData.View
 			{
 				if (this._QueryId != value)
 					this._QueryId = value;
+			}
+
+		}
+
+		
+		[Column(Name="TopId", Storage="_TopId", DbType="int")]
+		public int? TopId
+		{
+			get
+			{
+				return this._TopId;
+			}
+
+			set
+			{
+				if (this._TopId != value)
+					this._TopId = value;
 			}
 
 		}
@@ -84,7 +107,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Description", Storage="_Description", DbType="varchar(80)")]
+		[Column(Name="DESCRIPTION", Storage="_Description", DbType="varchar(150)")]
 		public string Description
 		{
 			get
@@ -96,6 +119,40 @@ namespace CmsData.View
 			{
 				if (this._Description != value)
 					this._Description = value;
+			}
+
+		}
+
+		
+		[Column(Name="Field", Storage="_Field", DbType="varchar(32)")]
+		public string Field
+		{
+			get
+			{
+				return this._Field;
+			}
+
+			set
+			{
+				if (this._Field != value)
+					this._Field = value;
+			}
+
+		}
+
+		
+		[Column(Name="Comparison", Storage="_Comparison", DbType="varchar(20)")]
+		public string Comparison
+		{
+			get
+			{
+				return this._Comparison;
+			}
+
+			set
+			{
+				if (this._Comparison != value)
+					this._Comparison = value;
 			}
 
 		}

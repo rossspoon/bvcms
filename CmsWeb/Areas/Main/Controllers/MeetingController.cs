@@ -33,23 +33,31 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.meeting == null)
                 return RedirectShowError("no meeting");
 
-            if (Util2.OrgMembersOnly
-                && !DbUtil.Db.OrganizationMembers.Any(om =>
-                    om.OrganizationId == m.meeting.OrganizationId
-                    && om.PeopleId == Util.UserPeopleId))
-                return RedirectShowError("You must be a member of this organization to have access to this page");
-            else if (Util2.OrgLeadersOnly
-                && !DbUtil.Db.OrganizationMembers.Any(om =>
-                    om.OrganizationId == m.meeting.OrganizationId
-                    && om.PeopleId == Util.UserPeopleId
-                    && om.MemberType.AttendanceTypeId == CmsData.Codes.AttendTypeCode.Leader))
-                return RedirectShowError("You must be a leader of this organization to have access to this page");
-			if (m.org.LimitToRole.HasValue())
-				if (!User.IsInRole(m.org.LimitToRole))
-					return RedirectShowError("no privilege to view" + m.org.OrganizationName);
+            if (Util2.OrgMembersOnly)
+            {
+                if (m.org.SecurityTypeId == 3)
+                    return NotAllowed("You do not have access to this page", m.org.OrganizationName);
+                else if (m.org.OrganizationMembers.All(om => om.PeopleId != Util.UserPeopleId))
+                    return NotAllowed("You must be a member of this organization", m.org.OrganizationName);
+            }
+            else if (Util2.OrgLeadersOnly)
+            {
+                var oids = DbUtil.Db.GetLeaderOrgIds(Util.UserPeopleId);
+                if (!oids.Contains(m.org.OrganizationId))
+                    return NotAllowed("You must be a leader of this organization", m.org.OrganizationName);
+            }
+            if (m.org.LimitToRole.HasValue())
+                if (!User.IsInRole(m.org.LimitToRole))
+                    return NotAllowed("no privilege to view ", m.org.OrganizationName);
 
             DbUtil.LogActivity("Viewing Meeting for {0}".Fmt(m.meeting.Organization.OrganizationName));
             return View(m);
+        }
+        private ActionResult NotAllowed(string error, string name)
+        {
+            DbUtil.LogActivity("Trying to view Meeting for Org ({0})".Fmt(name));
+            return Content("<h3 style='color:red'>{0}</h3>\n<a href='{1}'>{2}</a>"
+                                    .Fmt(error, "javascript: history.go(-1)", "Go Back"));
         }
         public ActionResult iPad(int? id)
         {

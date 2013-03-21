@@ -47,8 +47,10 @@ namespace CmsWeb.Areas.Manage.Controllers
 			return View();
 		}
         [HttpPost]
-		public ActionResult Find(DateTime FromDate, DateTime ToDate)
+		public ActionResult Find(string FromDate, string ToDate)
         {
+            var fdt = FromDate.ToDate();
+            var tdt = ToDate.ToDate();
 			string host = Util.Host; 
 			var runningtotals = new DuplicatesRun
 			{
@@ -67,8 +69,8 @@ namespace CmsWeb.Areas.Manage.Controllers
 				var rt = Db.DuplicatesRuns.OrderByDescending(mm => mm.Id).First();
                 Db.ExecuteCommand("delete duplicate");
 				var q = from p in Db.People
-						where p.CreatedDate > FromDate
-						where p.CreatedDate < ToDate.AddDays(1)
+						where p.CreatedDate > fdt
+						where p.CreatedDate < tdt.Value.AddDays(1)
 						select p.PeopleId;
 				rt.Count = q.Count();
 				Db.SubmitChanges();

@@ -319,9 +319,9 @@ namespace CmsWeb.Areas.Main.Controllers
             if (m.CodesVisible && m.CodeValues.Length == 0)
                 m.Errors.Add("CodeValues", "must select item(s)");
 
-            if (m.DateVisible && !m.Comparison.EndsWith("Null"))
-                if (!DateTime.TryParse(m.DateValue, out dt) || dt.Year <= 1900 || dt.Year >= 2200)
-                    m.Errors.Add("DateValue", "need valid date");
+//            if (m.DateVisible && !m.Comparison.EndsWith("Null"))
+//                if (!DateTime.TryParse(m.DateValue, out dt) || dt.Year <= 1900 || dt.Year >= 2200)
+//                    m.Errors.Add("DateValue", "need valid date");
 
             if (m.Comparison == "Contains")
                 if (!m.TextValue.HasValue())

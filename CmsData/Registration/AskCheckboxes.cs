@@ -93,13 +93,20 @@ namespace CmsData.Registration
             public int? Limit { get; set; }
             [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:g}")]
             public DateTime? MeetingTime { get; set; }
+
+		    public string MeetingTimeString
+		    {
+		        get { return MeetingTime.ToString2("g"); }
+		        set { MeetingTime = value.ToDate(); }
+		    }
+
             public void Output(StringBuilder sb)
             {
                 Settings.AddValueCk(1, sb, Description);
                 Settings.AddValueCk(2, sb, "SmallGroup", SmallGroup);
                 Settings.AddValueCk(2, sb, "Fee", Fee);
                 Settings.AddValueCk(2, sb, "Limit", Limit);
-                Settings.AddValueCk(2, sb, "Time", MeetingTime.FormatDateTm());
+                Settings.AddValueCk(2, sb, "Time", MeetingTime.ToString2("s"));
             }
             public static CheckboxItem Parse(Parser parser, int startindent)
             {

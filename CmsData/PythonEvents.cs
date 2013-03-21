@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Net.Mail;
 using UtilityExtensions;
 using IronPython.Hosting;
 using System;
@@ -23,6 +25,10 @@ namespace CmsData
 			dynamic Event = scope.GetVariable(classname);
 			instance = Event();
 		}
+
+
+        // List of api functions to call from Python
+
 		public void CreateTask(int forPeopleId, Person p, string description)
 		{
 			DbUtil.LogActivity("Adding Task about: {0}".Fmt(p.Name));
@@ -40,5 +46,47 @@ namespace CmsData
 		{
 			p.UpdateValue(field, value);
 		}
+
+	    public void Email(string savedquery, int queuedBy, string fromaddr, string fromname, string subject, string body, bool transactional = false)
+	    {
+            var from = new MailAddress(fromaddr, fromname);
+			var qB = Db.QueryBuilderClauses.FirstOrDefault(c => c.Description == savedquery && c.IsPublic && c.SavedBy == "public");
+	        if (qB == null)
+	            return;
+            var q = Db.PeopleQuery(qB.QueryId);
+            if (qB.ParentsOf)
+				q = Db.PersonQueryParents(q);
+
+            q = from p in q
+                where p.EmailAddress != null
+                where p.EmailAddress != ""
+                where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
+                select p;
+            var tag = Db.PopulateSpecialTag(q, DbUtil.TagTypeId_Emailer);
+	        var emailqueue = Db.CreateQueue(queuedBy, from, subject, body, null, tag.Id, false);
+            Db.SendPeopleEmail(emailqueue.Id);
+	    }
+	    public void EmailContent(string savedquery, int queuedBy, string fromaddr, string fromname, string subject, string content)
+	    {
+            var from = new MailAddress(fromaddr, fromname);
+			var qB = Db.QueryBuilderClauses.FirstOrDefault(cc => cc.Description == savedquery && cc.IsPublic && cc.SavedBy == "public");
+	        if (qB == null)
+	            return;
+            var q = Db.PeopleQuery(qB.QueryId);
+            if (qB.ParentsOf)
+				q = Db.PersonQueryParents(q);
+
+            q = from p in q
+                where p.EmailAddress != null
+                where p.EmailAddress != ""
+                where (p.SendEmailAddress1 ?? true) || (p.SendEmailAddress2 ?? false)
+                select p;
+            var tag = Db.PopulateSpecialTag(q, DbUtil.TagTypeId_Emailer);
+	        var c = Db.Content(content);
+	        if (c == null)
+	            return;
+	        var emailqueue = Db.CreateQueue(queuedBy, from, subject, c.Body, null, tag.Id, false);
+            Db.SendPeopleEmail(emailqueue.Id);
+	    }
 	}
 }

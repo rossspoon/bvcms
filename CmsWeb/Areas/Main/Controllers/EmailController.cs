@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -146,6 +147,9 @@ namespace CmsWeb.Areas.Main.Controllers
 				{
 					var Db = new CMSDataContext(Util.GetConnectionString(host));
 					Db.Host = host;
+    			    var cul = Db.Setting("Culture", "en-US");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
 					// set these again inside thread local storage
 					Util.UserEmail = useremail;
 					Util.IsInRoleEmailTest = isinroleemailtest;

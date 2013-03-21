@@ -778,10 +778,10 @@ namespace CmsWeb.Areas.Main.Controllers
 		{
 			var types = new[] 
 			{
-				CmsData.Codes.RegistrationTypeCode.JoinOrganization,
-				CmsData.Codes.RegistrationTypeCode.ComputeOrganizationByAge2,
-				CmsData.Codes.RegistrationTypeCode.UserSelectsOrganization2,
-				CmsData.Codes.RegistrationTypeCode.ChooseVolunteerTimes,
+				RegistrationTypeCode.JoinOrganization,
+				RegistrationTypeCode.ComputeOrganizationByAge2,
+				RegistrationTypeCode.UserSelectsOrganization2,
+				RegistrationTypeCode.ChooseVolunteerTimes,
 			};
 			var picklistorgs = DbUtil.Db.ViewPickListOrgs.Select(pp => pp.OrgId).ToArray();
 			var dt = DateTime.Today;
@@ -804,7 +804,9 @@ namespace CmsWeb.Areas.Main.Controllers
 				return View("CurrentRegistrationsHtml", q);
 			return View(q);
 		}
-		public ActionResult ContributionStatement(int id, string fr, string to)
+        // the datetime arguments come across as sortable dates to make them universal for all cultures
+        [HttpGet]
+		public ActionResult ContributionStatement(int id, DateTime fr, DateTime to)
 		{
 			if (Util.UserPeopleId != id && !User.IsInRole("Finance"))
 				return Content("No permission to view statement");
@@ -812,18 +814,13 @@ namespace CmsWeb.Areas.Main.Controllers
 			if (p == null)
 				return Content("Invalid Id");
 
-			var frdt = Util.ParseMMddyy(fr);
-			var todt = Util.ParseMMddyy(to);
-			if (!(frdt.HasValue && todt.HasValue))
-				return Content("date formats invalid");
-
 			DbUtil.LogActivity("Contribution Statement for ({0})".Fmt(id));
 
-			return new CmsWeb.Areas.Finance.Models.Report.ContributionStatementResult 
+			return new Finance.Models.Report.ContributionStatementResult 
 			{ 
 				PeopleId = id, 
-				FromDate = frdt.Value, 
-				ToDate = todt.Value, 
+				FromDate = fr,
+				ToDate = to,
 				typ = p.PositionInFamilyId == PositionInFamily.PrimaryAdult ? 2 : 1,
 				noaddressok = true,
 				useMinAmt = false,

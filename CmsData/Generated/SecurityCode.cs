@@ -74,7 +74,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="Code", UpdateCheck=UpdateCheck.Never, Storage="_Code", DbType="char(3) NOT NULL")]
+		[Column(Name="Code", UpdateCheck=UpdateCheck.Never, Storage="_Code", DbType="char(4) NOT NULL")]
 		public string Code
 		{
 			get { return this._Code; }

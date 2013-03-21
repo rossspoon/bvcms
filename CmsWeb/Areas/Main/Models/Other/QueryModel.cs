@@ -244,6 +244,7 @@ namespace CmsWeb.Models
                 case FieldType.IntegerEqual:
                     IntegerVisible = true;
                     break;
+                case FieldType.NullCode:
                 case FieldType.Code:
                 case FieldType.CodeStr:
                     CodeVisible = true;
@@ -356,6 +357,7 @@ namespace CmsWeb.Models
                     c.DateValue = DateParse(DateValue);
                     break;
                 case FieldType.Code:
+                case FieldType.NullCode:
                 case FieldType.CodeStr:
                 case FieldType.DateField:
                 case FieldType.Bit:
@@ -418,6 +420,7 @@ namespace CmsWeb.Models
                     DateValue = DateString(c.DateValue);
                     break;
                 case FieldType.Code:
+                case FieldType.NullCode:
                 case FieldType.CodeStr:
                 case FieldType.DateField:
                 case FieldType.Bit:

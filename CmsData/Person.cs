@@ -28,7 +28,7 @@ namespace CmsData
 
     public partial class Person
     {
-        public static int[] DiscClassStatusCompletedCodes = new int[] 
+        public static int[] DiscClassStatusCompletedCodes = new int[]
         { 
             NewMemberClassStatusCode.AdminApproval, 
             NewMemberClassStatusCode.Attended, 
@@ -544,8 +544,9 @@ namespace CmsData
             {
                 if (Util.UserPeopleId.HasValue
                         && Util.UserPeopleId.Value != Db.NewPeopleManagerId
-                        && !HttpContext.Current.User.IsInRole("OrgMembersOnly")
-                        && HttpContext.Current.User.IsInRole("Access"))
+                        && HttpContext.Current.User.IsInRole("Access")
+                        && !HttpContext.Current.User.IsInRole("OrgMembersOnly") 
+                        && !HttpContext.Current.User.IsInRole("OrgLeadersOnly"))
                     Task.AddNewPerson(p.PeopleId);
                 else
                     Db.Email(Util.SysFromEmail, Db.GetNewPeopleManagers(),

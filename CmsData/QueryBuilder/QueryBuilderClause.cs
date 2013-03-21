@@ -197,6 +197,7 @@ namespace CmsData
                 return e.FieldType == FieldType.Bit
                     || e.FieldType == FieldType.NullBit
                     || e.FieldType == FieldType.Code
+                    || e.FieldType == FieldType.NullCode
                     || e.FieldType == FieldType.CodeStr
                     || e.FieldType == FieldType.DateField;
             }
@@ -392,6 +393,7 @@ namespace CmsData
                 case FieldType.NullBit:
                 case FieldType.Bit:
                 case FieldType.Code:
+                case FieldType.NullCode:
                 case FieldType.CodeStr:
                     qb.CodeIdValue = value.ToString();
                     break;

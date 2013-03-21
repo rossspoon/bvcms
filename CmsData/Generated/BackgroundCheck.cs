@@ -37,6 +37,12 @@ namespace CmsData
 		
 		private int _IssueCount;
 		
+		private string _RequestXML;
+		
+		private string _ResponseXML;
+		
+		private string _ReportXML;
+		
 		private string _ErrorMessages;
 		
 		private int _ReportTypeID;
@@ -85,6 +91,15 @@ namespace CmsData
 		
 		partial void OnIssueCountChanging(int value);
 		partial void OnIssueCountChanged();
+		
+		partial void OnRequestXMLChanging(string value);
+		partial void OnRequestXMLChanged();
+		
+		partial void OnResponseXMLChanging(string value);
+		partial void OnResponseXMLChanged();
+		
+		partial void OnReportXMLChanging(string value);
+		partial void OnReportXMLChanged();
 		
 		partial void OnErrorMessagesChanging(string value);
 		partial void OnErrorMessagesChanged();
@@ -329,6 +344,72 @@ namespace CmsData
 					this._IssueCount = value;
 					this.SendPropertyChanged("IssueCount");
 					this.OnIssueCountChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="RequestXML", UpdateCheck=UpdateCheck.Never, Storage="_RequestXML", DbType="varchar")]
+		public string RequestXML
+		{
+			get { return this._RequestXML; }
+
+			set
+			{
+				if (this._RequestXML != value)
+				{
+				
+                    this.OnRequestXMLChanging(value);
+					this.SendPropertyChanging();
+					this._RequestXML = value;
+					this.SendPropertyChanged("RequestXML");
+					this.OnRequestXMLChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ResponseXML", UpdateCheck=UpdateCheck.Never, Storage="_ResponseXML", DbType="varchar")]
+		public string ResponseXML
+		{
+			get { return this._ResponseXML; }
+
+			set
+			{
+				if (this._ResponseXML != value)
+				{
+				
+                    this.OnResponseXMLChanging(value);
+					this.SendPropertyChanging();
+					this._ResponseXML = value;
+					this.SendPropertyChanged("ResponseXML");
+					this.OnResponseXMLChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="ReportXML", UpdateCheck=UpdateCheck.Never, Storage="_ReportXML", DbType="varchar")]
+		public string ReportXML
+		{
+			get { return this._ReportXML; }
+
+			set
+			{
+				if (this._ReportXML != value)
+				{
+				
+                    this.OnReportXMLChanging(value);
+					this.SendPropertyChanging();
+					this._ReportXML = value;
+					this.SendPropertyChanged("ReportXML");
+					this.OnReportXMLChanged();
 				}
 
 			}

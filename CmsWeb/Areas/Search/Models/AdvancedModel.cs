@@ -97,6 +97,7 @@ namespace CmsWeb.Areas.Search.Models
                 case FieldType.NullBit:
                     return ConvertToSelect(BitCodes, fieldMap.DataValueField);
                 case FieldType.Code:
+                case FieldType.NullCode:
                 case FieldType.CodeStr:
                     if (fieldMap.DataSource == "ExtraValues")
                         return StandardExtraValues.ExtraValueCodes();
@@ -198,6 +199,7 @@ namespace CmsWeb.Areas.Search.Models
                 case FieldType.Bit:
                 case FieldType.NullBit:
                 case FieldType.Code:
+                case FieldType.NullCode:
                 case FieldType.CodeStr:
                 case FieldType.DateField:
                     CodeVisible = true;
@@ -313,6 +315,7 @@ namespace CmsWeb.Areas.Search.Models
                     c.DateValue = DateParse(DateValue);
                     break;
                 case FieldType.Code:
+                case FieldType.NullCode:
                 case FieldType.CodeStr:
                 case FieldType.DateField:
                 case FieldType.Bit:
@@ -372,6 +375,7 @@ namespace CmsWeb.Areas.Search.Models
                     DateValue = DateString(c.DateValue);
                     break;
                 case FieldType.Code:
+                case FieldType.NullCode:
                 case FieldType.CodeStr:
                 case FieldType.DateField:
                 case FieldType.Bit:

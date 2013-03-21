@@ -212,6 +212,12 @@ namespace UtilityExtensions
                 return dt.Value.ToString("d");
             return "";
         }
+
+        public static string ToSortableDate(this DateTime dt)
+        {
+            return dt.ToString("yyyy-MM-dd");
+        }
+
         public static string FormatDate(this DateTime? dt, string def = "")
         {
             if (dt.HasValue)
@@ -1110,11 +1116,12 @@ namespace UtilityExtensions
             var smtp = new SmtpClient();
             if (ConfigurationManager.AppSettings["requiresSsl"] == "true")
                 smtp.EnableSsl = true;
-#if DEBUG
-            smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-            smtp.PickupDirectoryLocation = @"c:\email";
-            smtp.Host = "localhost";
-#endif
+            if (SmtpDebug)
+            {
+                smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+                smtp.PickupDirectoryLocation = @"c:\email";
+                smtp.Host = "localhost";
+            }
             return smtp;
         }
         private const string STR_SysFromEmail = "UnNamed";
@@ -1455,6 +1462,37 @@ namespace UtilityExtensions
 #endif
             return d;
         }
+
+        private const string STR_SMTPDEBUG = "SMTPDebug";
+		public static bool SmtpDebug
+		{
+			get
+			{
+			    bool? deb = false;
+			    if (HttpContext.Current != null)
+			    {
+			        if (HttpContext.Current.Session != null)
+			            if (HttpContext.Current.Session[STR_SMTPDEBUG] != null)
+			                deb = (bool) HttpContext.Current.Session[STR_SMTPDEBUG];
+			    }
+			    else
+			    {
+			        var localDataStoreSlot = Thread.GetNamedDataSlot(STR_SMTPDEBUG);
+			        deb = (bool?) Thread.GetData(localDataStoreSlot);
+			    }
+			    return deb ?? false;
+			}
+			set
+			{
+				if (HttpContext.Current != null)
+				{
+					if (HttpContext.Current.Session != null)
+						HttpContext.Current.Session[STR_SMTPDEBUG] = value;
+				}
+				else
+					Thread.SetData(Thread.GetNamedDataSlot(STR_SMTPDEBUG), value);
+			}
+		}
         public static string ToProper(this string s)
         {
             var textinfo = Thread.CurrentThread.CurrentCulture.TextInfo;

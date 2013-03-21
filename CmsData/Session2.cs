@@ -26,7 +26,7 @@ namespace CmsData
 
         public void CopySession()
         {
-            if (Util.SessionId != null)
+            if (HttpContext.Current != null && HttpContext.Current.Session != null)
             {
                 CurrentOrgId = Util2.CurrentOrgId;
                 CurrentGroups = Util2.CurrentGroups;

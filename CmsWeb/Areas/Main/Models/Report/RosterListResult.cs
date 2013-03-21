@@ -27,9 +27,11 @@ namespace CmsWeb.Areas.Main.Models.Report
     {
         public int PeopleId { get; set; }
         public string Name { get; set; }
+        public int? Age { get; set; }
         public string Address { get; set; }
         public string Address2 { get; set; }
         public string CityStateZip { get; set; }
+        public string Parents { get; set; }
         public string HomePhone { get; set; }
         public string CellPhone { get; set; }
         public string MemberStatus { get; set; }
@@ -90,7 +92,9 @@ namespace CmsWeb.Areas.Main.Models.Report
                             FamMemberThis = om.Person.Family.People.Any(f => f.PositionInFamilyId == 10 && f.MemberStatusId == MemberStatusCode.Member),
                             Name = om.Person.Name,
                             Medical = rr.MedicalDescription,
-                            PeopleId = om.PeopleId
+                            PeopleId = om.PeopleId,
+                            Parents = DbUtil.Db.ParentNamesAndCells(om.PeopleId),
+                            Age = om.Person.Age
                         };
 
                 foreach (var m in q)
@@ -148,7 +152,15 @@ namespace CmsWeb.Areas.Main.Models.Report
             AddLine(sb, p.Address2);
             AddLine(sb, p.CityStateZip);
             AddPhone(sb, p.HomePhone, "h ");
-            AddPhone(sb, p.CellPhone, "c ");
+            if ((p.Age ?? 0) <= 18)
+            {
+                var a = p.Parents.Replace(", c ", "|c ").Split('|');
+                foreach(var li in a)
+                    AddLine(sb, li);
+            }
+            else
+                AddPhone(sb, p.CellPhone, "c ");
+
             t.AddCell(new Phrase(sb.ToString(), font));
 
             sb = new StringBuilder();

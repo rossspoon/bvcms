@@ -307,7 +307,7 @@ namespace CmsWeb.Models
                           let vroles = ff.Attribute("VisibilityRoles")
                           where vroles != null && (vroles.Value.Split(',').All(rr => !roles.Contains(rr)))
                           select ff.Attribute("name").Value);
-            var nodisplaycols = string.Join(",", fields);
+            var nodisplaycols = string.Join("|", fields);
 
             var tag = DbUtil.Db.PopulateSpecialTag(qid, DbUtil.TagTypeId_ExtraValues);
 
