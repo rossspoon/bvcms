@@ -26,6 +26,8 @@ namespace CmsData
 		private string _StateAbbr;
 		
    		
+   		private EntitySet< Person> _People;
+		
     	
 	#endregion
 	
@@ -49,6 +51,8 @@ namespace CmsData
     #endregion
 		public BackgroundCheckMVRCode()
 		{
+			
+			this._People = new EntitySet< Person>(new Action< Person>(this.attach_People), new Action< Person>(this.detach_People)); 
 			
 			
 			OnCreated();
@@ -149,6 +153,16 @@ namespace CmsData
         
     #region Foreign Key Tables
    		
+   		[Association(Name="FK_People_BackgroundCheckMVRCodes", Storage="_People", OtherKey="DLStateID")]
+   		public EntitySet< Person> People
+   		{
+   		    get { return this._People; }
+
+			set	{ this._People.Assign(value); }
+
+   		}
+
+		
 	#endregion
 	
 	#region Foreign Keys
@@ -170,6 +184,19 @@ namespace CmsData
 		}
 
    		
+		private void attach_People(Person entity)
+		{
+			this.SendPropertyChanging();
+			entity.BackgroundCheckMVRCode = this;
+		}
+
+		private void detach_People(Person entity)
+		{
+			this.SendPropertyChanging();
+			entity.BackgroundCheckMVRCode = null;
+		}
+
+		
 	}
 
 }

@@ -65,6 +65,7 @@ namespace CmsWeb.Areas.Main.Controllers
                         }
                         catch
                         {
+                            // TODO: Breaks, fix
                             return View("Index", vol);
                         }
 
@@ -83,6 +84,7 @@ namespace CmsWeb.Areas.Main.Controllers
                         break;
                     }
 
+                // TODO: Breaks, fix
                 default: return View("Index", vol);
             }
 
@@ -146,6 +148,38 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0)
         {
             String sResponseURL = Request.Url.Scheme + "://" + Request.Url.Authority + ProtectMyMinistryHelper.PMM_Append;
+
+            Person p = (from e in DbUtil.Db.People
+                        where e.PeopleId == iPeopleID
+                        select e).Single();
+
+            // Check for existing SSN
+            if (sSSN.Substring(0, 3) == "XXX")
+            {
+                sSSN = Util.Decrypt(p.Ssn, "People");
+            }
+            else
+            {
+                sSSN.Replace("-", "");
+                p.Ssn = Util.Encrypt(sSSN, "People");
+            }
+
+            // Check for existing DLN and DL State
+            if (sDLN != null)
+            {
+                if (sDLN.Substring(0, 3) == "XXX")
+                {
+                    sDLN = Util.Decrypt(p.Dln, "People");
+                    iStateID = p.DLStateID ?? 0;
+                }
+                else
+                {
+                    p.Dln = Util.Encrypt(sDLN, "People");
+                    p.DLStateID = iStateID;
+                }
+            }
+
+            DbUtil.Db.SubmitChanges();
 
             ProtectMyMinistryHelper.submit(id, sSSN, sDLN, sResponseURL, iStateID, sUser, sPassword);
 
