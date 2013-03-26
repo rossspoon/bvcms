@@ -2850,8 +2850,12 @@ namespace CmsData
             CompareType op,
             DateTime? dt)
         {
-            if(!dt.HasValue)
-                return Expressions.CompareConstant(parm, prop, CompareType.IsNull, null);
+            if (!dt.HasValue)
+            {
+                if (op == CompareType.NotEqual)
+                    return CompareConstant(parm, prop, CompareType.IsNotNull, null);
+                return CompareConstant(parm, prop, CompareType.IsNull, null);
+            }
 
             Expression left = Expression.Property(parm, prop);
             if (dt.Value.Date == dt) // 12:00:00 AM?
@@ -2860,6 +2864,17 @@ namespace CmsData
                 left = Expression.MakeMemberAccess(left, typeof(DateTime).GetProperty("Date"));
             }
             var right = Expression.Convert(Expression.Constant(dt), typeof(DateTime));
+            return Compare(left, op, right);
+        }
+        internal static Expression CompareIntConstant(
+            ParameterExpression parm,
+            string prop,
+            CompareType op,
+            string value)
+        {
+            var left = Expression.Property(parm, prop);
+            int? i = value.ToInt2();
+            var right = Expression.Convert(Expression.Constant(i), left.Type);
             return Compare(left, op, right);
         }
         internal static Expression CompareConstant(
@@ -2964,10 +2979,10 @@ namespace CmsData
                         typeof(string).GetMethod("Contains", new[] { typeof(string) }),
                         new[] { right });
                     break;
-                case CompareType.StrGreater:
-                case CompareType.StrGreaterEqual:
-                case CompareType.StrLess:
-                case CompareType.StrLessEqual:
+                case CompareType.After:
+                case CompareType.AfterOrSame:
+                case CompareType.Before:
+                case CompareType.BeforeOrSame:
                     expr = Expression.Call(left,
                         typeof(string).GetMethod("CompareTo", new[] { typeof(string) }),
                         new[] { right });
@@ -2981,16 +2996,16 @@ namespace CmsData
                 case CompareType.DoesNotStartWith:
                     expr = Expression.Not(expr);
                     break;
-                case CompareType.StrGreater:
+                case CompareType.After:
                     expr = Expression.GreaterThan(expr, Expression.Constant(0));
                     break;
-                case CompareType.StrGreaterEqual:
+                case CompareType.AfterOrSame:
                     expr = Expression.GreaterThanOrEqual(expr, Expression.Constant(0));
                     break;
-                case CompareType.StrLess:
+                case CompareType.Before:
                     expr = Expression.LessThan(expr, Expression.Constant(0));
                     break;
-                case CompareType.StrLessEqual:
+                case CompareType.BeforeOrSame:
                     expr = Expression.LessThanOrEqual(expr, Expression.Constant(0));
                     break;
             }

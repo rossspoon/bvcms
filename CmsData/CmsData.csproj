@@ -262,6 +262,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\packages\RazorEngine.3.2.0\lib\net40\RazorEngine.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
@@ -279,6 +282,10 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -319,7 +326,10 @@
     <Compile Include="Generated\Functions\Contributions0.cs" />
     <Compile Include="Generated\Functions\GetTotalContributionsDonor2.cs" />
     <Compile Include="Generated\Functions\MostRecentItem.cs" />
+    <Compile Include="Generated\Functions\OrgMembersAsOfDate.cs" />
+    <Compile Include="Generated\Functions\OrgVisitorsAsOfDate.cs" />
     <Compile Include="Generated\Functions\Pledges0.cs" />
+    <Compile Include="Generated\Views\OrganizationStructure.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />
     <Compile Include="Classes\QuickBooks\QBDHelper.cs" />
     <Compile Include="Classes\QuickBooks\QBOHelper.cs" />

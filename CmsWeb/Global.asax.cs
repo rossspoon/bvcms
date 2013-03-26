@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -99,7 +100,7 @@ namespace CmsWeb
                 else
                     Models.AccountModel.SetUserInfo("trecord", Session);
             }
-            Util.SysFromEmail = WebConfigurationManager.AppSettings["sysfromemail"];
+            Util.SysFromEmail = ConfigurationManager.AppSettings["sysfromemail"];
             Util.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Util.SessionStarting = true;
         }
@@ -118,7 +119,6 @@ namespace CmsWeb
                 Response.Redirect("/Errors/DatabaseNotFound.aspx?dbname=" + Util.Host);
                 return;
             }
-            Response.AddHeader ("p3p", "CP=\"RDC DJP CVR XDM DHVe TAIu PGA PLD IWAi OVDi CBNi HJS OYR IKD ENT\"");
             var cul = DbUtil.Db.Setting("Culture", "en-US");
             Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);

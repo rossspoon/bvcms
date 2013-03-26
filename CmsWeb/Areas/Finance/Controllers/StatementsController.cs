@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -55,7 +56,7 @@ namespace CmsWeb.Areas.Finance.Controllers
         }
         private string Output(bool? pdf)
         {
-            string output = WebConfigurationManager.AppSettings["SharedFolder"];
+            string output = ConfigurationManager.AppSettings["SharedFolder"];
             if (pdf == true)
                 output = output + "/Statements/contributions_{0}.pdf".Fmt(Util.Host);
             else

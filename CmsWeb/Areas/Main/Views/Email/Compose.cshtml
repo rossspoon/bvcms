@@ -1,4 +1,5 @@
-﻿@using System.Web.Optimization
+﻿@using System.Configuration
+@using System.Web.Optimization
 @using CmsData
 @using CmsData.Codes
 @using CmsWeb.Areas.Manage.Controllers
@@ -75,7 +76,7 @@ Your recipient list has been saved in a tag, so you can run queries in other tab
 			@if( c.TypeID == ContentTypeCode.TypeSavedDraft ) {
 				@:Keep Draft:<input type="checkbox" name="keepdraft" /><br />
 			}
-			@if ((User.IsInRole("ScheduleEmails") || User.IsInRole("Edit")) && System.Web.Configuration.WebConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
+			@if ((User.IsInRole("ScheduleEmails") || User.IsInRole("Edit")) && ConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
 			{ 
 				@:Scheduled Date and Time (Optional)<br />
 				@:(mm/dd/yy h:mm AM|PM)<br />

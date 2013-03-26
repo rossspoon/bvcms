@@ -727,17 +727,17 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(value);
         }
-        [Authorize(Roles = "Edit")]
         [HttpPost]
-        public ActionResult Reminders(int id, bool? emailall)
+        public ActionResult Reminders(int id, bool? emailall, string apiKey)
         {
-            var m = new OrganizationModel(id);
+            var org = DbUtil.Db.LoadOrganizationById(id);
+            var m = new CmsData.API.APIOrganization(DbUtil.Db);
             try
             {
-                if (m.org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
-                    m.SendVolunteerReminders(emailall ?? false, this);
+                if (org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
+                    m.SendVolunteerReminders(id, emailall ?? false);
                 else
-                    m.SendEventReminders();
+                    m.SendEventReminders(id);
             }
             catch (Exception ex)
             {

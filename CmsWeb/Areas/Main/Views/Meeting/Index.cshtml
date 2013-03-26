@@ -17,9 +17,8 @@
         {
             visibility:hidden;
         }
-        .rgck0
-        {
-            color: gray;
+        #attends tr td {
+            border-bottom: 1px solid #999;
         }
     </style>
 }
@@ -216,8 +215,8 @@ This will allow you to mark them as members.
 {
     <tr rowtype="@a.Member" @(!a.Member ? "class=visitor" : "")>
         <td class="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" disabled="disabled" /></td>
-        <td class="showreg">
-            <span id='c@(Model.meeting.MeetingId)_@(a.PeopleId)' class='clickSelect rgck0 commitment'>@a.Commitment</span>
+        <td class="showreg" style="display:none">
+            <span id='c@(Model.meeting.MeetingId)_@(a.PeopleId)' class='clickSelect rgck commitment'>@a.Commitment</span>
         </td>
         <td class="name"><a href="/Person/Index/@a.PeopleId" title="@a.Age">@a.Name</a></td>
         <td>@a.CurrMemberType</td>

@@ -13,8 +13,6 @@
   <FieldType Name="NullBit">
     <Comparison Type="Equal" Display="{0} = {1}" />
     <Comparison Type="NotEqual" Display="{0} &lt;&gt; {1}" />
-    <Comparison Type="IsNull" Display="{0} is null" />
-    <Comparison Type="IsNotNull" Display="{0} is not null" />
   </FieldType>
   <FieldType Name="Code">
     <Comparison Type="Equal" Display="{0} = {1}" />
@@ -27,8 +25,6 @@
     <Comparison Type="NotEqual" Display="{0} &lt;&gt; {1}" />
     <Comparison Type="OneOf" Display="{0} in ({1})" />
     <Comparison Type="NotOneOf" Display="{0} not in ({1})" />
-    <Comparison Type="IsNull" Display="{0} is null" />
-    <Comparison Type="IsNotNull" Display="{0} is not null" />
   </FieldType>
   <FieldType Name="CodeStr">
     <Comparison Type="Equal" Display="{0} = {1}" />
@@ -43,8 +39,6 @@
     <Comparison Type="Less" Display="{0} &lt; '{1:d}'" />
     <Comparison Type="LessEqual" Display="{0} &lt;= '{1:d}'" />
     <Comparison Type="NotEqual" Display="{0} &lt;&gt; '{1:d}'" />
-    <Comparison Type="IsNull" Display="{0} is null" />
-    <Comparison Type="IsNotNull" Display="{0} is not null" />
   </FieldType>
   <FieldType Name="DateField">
     <Comparison Type="Equal" Display="{0} = {1}" />
@@ -69,8 +63,6 @@
     <Comparison Type="Less" Display="{0} &lt; {1}" />
     <Comparison Type="LessEqual" Display="{0} &lt;= {1}" />
     <Comparison Type="NotEqual" Display="{0} &lt;&gt; {1}" />
-    <Comparison Type="IsNull" Display="{0} is null" />
-    <Comparison Type="IsNotNull" Display="{0} is not null" />
   </FieldType>
   <FieldType Name="Integer">
     <Comparison Type="Equal" Display="{0} = {1}" />
@@ -87,8 +79,6 @@
     <Comparison Type="Less" Display="{0} &lt; {1}" />
     <Comparison Type="LessEqual" Display="{0} &lt;= {1}" />
     <Comparison Type="NotEqual" Display="{0} &lt;&gt; {1}" />
-    <Comparison Type="IsNull" Display="{0} is null" />
-    <Comparison Type="IsNotNull" Display="{0} is not null" />
   </FieldType>
   <FieldType Name="IntegerEqual">
     <Comparison Type="Equal" Display="{0} = {1}" />
@@ -103,12 +93,10 @@
     <Comparison Type="DoesNotEndWith" Display="{0} &lt;&gt; '{1}*'" />
     <Comparison Type="DoesNotContain" Display="{0} &lt;&gt; '*{1}*'" />
     <Comparison Type="NotEqual" Display="{0} &lt;&gt; '{1}'" />
-    <Comparison Type="StrGreater" Display="{0} &gt; '{1}'" />
-    <Comparison Type="StrGreaterEqual" Display="{0} &gt;= '{1}'" />
-    <Comparison Type="StrLess" Display="{0} &lt; '{1}'" />
-    <Comparison Type="StrLessEqual" Display="{0} &lt;= '{1}'" />
-    <Comparison Type="IsNull" Display="{0} is null" />
-    <Comparison Type="IsNotNull" Display="{0} is not null" />
+    <Comparison Type="After" Display="{0} &gt; '{1}'" />
+    <Comparison Type="AfterOrSame" Display="{0} &gt;= '{1}'" />
+    <Comparison Type="Before" Display="{0} &lt; '{1}'" />
+    <Comparison Type="BeforeOrSame" Display="{0} &lt;= '{1}'" />
   </FieldType>
   <FieldType Name="StringEqual">
     <Comparison Type="Equal" Display="{0} = '{1}'" />

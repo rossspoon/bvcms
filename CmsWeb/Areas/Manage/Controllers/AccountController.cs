@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
@@ -33,13 +34,13 @@ namespace CmsWeb.Areas.Manage.Controllers
 			var fn = "{0}.{1:yyMMddHHmm}.{2}".Fmt(DbUtil.Db.Host, DateTime.Now, 
 				m.CleanFileName(Path.GetFileName(file.FileName)));
 			var error = string.Empty;
-			var rackspacecdn = WebConfigurationManager.AppSettings["RackspaceUrlCDN"];
+			var rackspacecdn = ConfigurationManager.AppSettings["RackspaceUrlCDN"];
 
 			if (rackspacecdn.HasValue())
 			{
 				baseurl = rackspacecdn;
-				var username = WebConfigurationManager.AppSettings["RackspaceUser"];
-				var key = WebConfigurationManager.AppSettings["RackspaceKey"];
+				var username = ConfigurationManager.AppSettings["RackspaceUser"];
+				var key = ConfigurationManager.AppSettings["RackspaceKey"];
 				var userCreds = new UserCredentials(username, key);
 	            var connection = new Rackspace.CloudFiles.Connection(userCreds);
                 connection.PutStorageItem("AllFiles", file.InputStream, fn);

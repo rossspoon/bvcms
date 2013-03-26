@@ -6,6 +6,7 @@
         var q = f.serialize();
         var h = a.attr('href');
         if (a.text() === 'Commit and Add') {
+            $(this).attr("href", "");
             $.block();
         }
         $.post(h, q, function (ret) {

@@ -1613,6 +1613,12 @@ namespace CmsData
 
 	    }
 
+	    public Table< View.OrganizationStructure> ViewOrganizationStructures
+	    {
+		    get { return this.GetTable< View.OrganizationStructure>(); }
+
+	    }
+
 	    public Table< View.PickListOrg> ViewPickListOrgs
 	    {
 		    get { return this.GetTable< View.PickListOrg>(); }
@@ -2063,6 +2069,34 @@ namespace CmsData
 			return this.CreateMethodCallQuery< View.MostRecentItem>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 uid
+                );
+		}
+
+		[Function(Name="dbo.OrgMembersAsOfDate", IsComposable = true)]
+		public IQueryable< View.OrgMembersAsOfDate > OrgMembersAsOfDate(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="datetime")] DateTime? meetingdt
+            )
+		{
+			return this.CreateMethodCallQuery< View.OrgMembersAsOfDate>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                meetingdt
+                );
+		}
+
+		[Function(Name="dbo.OrgVisitorsAsOfDate", IsComposable = true)]
+		public IQueryable< View.OrgVisitorsAsOfDate > OrgVisitorsAsOfDate(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="datetime")] DateTime? meetingdt,
+            [Parameter(DbType="bit")] bool? NoCurrentMembers
+            )
+		{
+			return this.CreateMethodCallQuery< View.OrgVisitorsAsOfDate>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                meetingdt,
+                NoCurrentMembers
                 );
 		}
 

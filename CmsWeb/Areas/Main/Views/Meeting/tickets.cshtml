@@ -21,14 +21,18 @@
 <embed src="/Content/zylo.wav" autostart="false" width="0" height="0" id="zylo" enablejavascript="true">
 <embed src="/Content/ding.wav" autostart="false" width="0" height="0" id="ding" enablejavascript="true">
 
-<form method="Post">
+<form id="markform" method="Post">
     <table>
         <tr>
         	<td id="meeting">
                 @Html.Partial("TicketMeeting", Model)
             </td>
         	<td class="bottom" style="margin-left:1em">
-        		Wand Target<br />
+        		Find Name<br />
+	            @Html.TextBox("name") 
+	            <br/>
+                <br/>
+	            Wand Target<br />
         		@Html.TextBox("wandtarget") 
             </td>
         </tr>

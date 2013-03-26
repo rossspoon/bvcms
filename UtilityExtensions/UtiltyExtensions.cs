@@ -178,6 +178,16 @@ namespace UtilityExtensions
         {
             return string.Format(fmt, p);
         }
+        public static bool Equal(this string s, string s2)
+        {
+            return string.Compare(s, s2, StringComparison.OrdinalIgnoreCase) == 0;
+        }
+
+        public static bool NotEqual(this string s, string s2)
+        {
+            return !s.Equal(s2);
+        }
+
         public static string Truncate(this string source, int length)
         {
             if (source.HasValue() && source.Length > length)
@@ -194,16 +204,23 @@ namespace UtilityExtensions
         }
         public static string FormatBirthday(int? y, int? m, int? d)
         {
-            if (m.HasValue && d.HasValue)
-                if (!y.HasValue)
-                    return new DateTime(2000, m.Value, d.Value).ToString("m");
-                else
-                    return new DateTime(y.Value, m.Value, d.Value).ToString("d");
-            if (y.HasValue)
-                if (m.HasValue && !d.HasValue)
-                    return new DateTime(y.Value, m.Value, 1).ToString("y");
-                else
-                    return y.ToString();
+            try
+            {
+                if (m.HasValue && d.HasValue)
+                    if (!y.HasValue)
+                        return new DateTime(2000, m.Value, d.Value).ToString("m");
+                    else
+                        return new DateTime(y.Value, m.Value, d.Value).ToString("d");
+                if (y.HasValue)
+                    if (m.HasValue && !d.HasValue)
+                        return new DateTime(y.Value, m.Value, 1).ToString("y");
+                    else
+                        return y.ToString();
+            }
+            catch (Exception)
+            {
+                return "bad date {0}/{1}/{2}".Fmt(m ?? 0, d ?? 0, y ?? 0);
+            }
             return "";
         }
         public static string FormatDate(this DateTime? dt)
@@ -938,7 +955,7 @@ namespace UtilityExtensions
         }
         public static List<MailAddress> SendErrorsTo()
         {
-            var a = WebConfigurationManager.AppSettings["senderrorsto"];
+            var a = ConfigurationManager.AppSettings["senderrorsto"];
             return EmailAddressListFromString(a);
         }
         public static List<MailAddress> EmailAddressListFromString(string addresses)
@@ -1094,7 +1111,7 @@ namespace UtilityExtensions
         {
             var v = value ?? "";
             value = v.Trim();
-            if (value == dissallow)
+            if (value.Equal(dissallow))
                 return "";
             return value;
         }
@@ -1129,7 +1146,7 @@ namespace UtilityExtensions
         {
             get
             {
-                var tag = WebConfigurationManager.AppSettings["sysfromemail"];
+                var tag = ConfigurationManager.AppSettings["sysfromemail"];
                 if (HttpContext.Current != null)
                     if (HttpContext.Current.Session != null)
                         if (HttpContext.Current.Session[STR_SysFromEmail] != null)
@@ -1210,7 +1227,7 @@ namespace UtilityExtensions
         public static MailAddress FirstAddress(string addrs, string name)
         {
             if (!addrs.HasValue())
-                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
+                addrs = ConfigurationManager.AppSettings["senderrorsto"];
             var a = addrs.SplitStr(",;");
             try
             {
@@ -1228,7 +1245,7 @@ namespace UtilityExtensions
         public static MailAddress FirstAddress2(string addrs, string name)
         {
             if (!addrs.HasValue())
-                addrs = WebConfigurationManager.AppSettings["senderrorsto"];
+                addrs = ConfigurationManager.AppSettings["senderrorsto"];
             var a = addrs.SplitStr(",;");
             try
             {
@@ -1244,7 +1261,7 @@ namespace UtilityExtensions
         {
             get
             {
-                var path = WebConfigurationManager.AppSettings["AppOfflineFile"];
+                var path = ConfigurationManager.AppSettings["AppOfflineFile"];
                 return path.HasValue() && File.Exists(path);
             }
         }
@@ -1253,7 +1270,7 @@ namespace UtilityExtensions
         {
             get
             {
-                var path = WebConfigurationManager.AppSettings["UrgentTextFile"];
+                var path = ConfigurationManager.AppSettings["UrgentTextFile"];
                 if (!path.HasValue())
                     return HttpContext.Current.Application["UrgentMessage"] as string;
                 string fileContent = HttpRuntime.Cache["UrgentMessage"] as string;
@@ -1266,7 +1283,7 @@ namespace UtilityExtensions
             }
             set
             {
-                var path = WebConfigurationManager.AppSettings["UrgentTextFile"];
+                var path = ConfigurationManager.AppSettings["UrgentTextFile"];
                 if (!path.HasValue())
                 {
                     if (value.HasValue())
@@ -1464,35 +1481,35 @@ namespace UtilityExtensions
         }
 
         private const string STR_SMTPDEBUG = "SMTPDebug";
-		public static bool SmtpDebug
-		{
-			get
-			{
-			    bool? deb = false;
-			    if (HttpContext.Current != null)
-			    {
-			        if (HttpContext.Current.Session != null)
-			            if (HttpContext.Current.Session[STR_SMTPDEBUG] != null)
-			                deb = (bool) HttpContext.Current.Session[STR_SMTPDEBUG];
-			    }
-			    else
-			    {
-			        var localDataStoreSlot = Thread.GetNamedDataSlot(STR_SMTPDEBUG);
-			        deb = (bool?) Thread.GetData(localDataStoreSlot);
-			    }
-			    return deb ?? false;
-			}
-			set
-			{
-				if (HttpContext.Current != null)
-				{
-					if (HttpContext.Current.Session != null)
-						HttpContext.Current.Session[STR_SMTPDEBUG] = value;
-				}
-				else
-					Thread.SetData(Thread.GetNamedDataSlot(STR_SMTPDEBUG), value);
-			}
-		}
+        public static bool SmtpDebug
+        {
+            get
+            {
+                bool? deb = false;
+                if (HttpContext.Current != null)
+                {
+                    if (HttpContext.Current.Session != null)
+                        if (HttpContext.Current.Session[STR_SMTPDEBUG] != null)
+                            deb = (bool)HttpContext.Current.Session[STR_SMTPDEBUG];
+                }
+                else
+                {
+                    var localDataStoreSlot = Thread.GetNamedDataSlot(STR_SMTPDEBUG);
+                    deb = (bool?)Thread.GetData(localDataStoreSlot);
+                }
+                return deb ?? false;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                {
+                    if (HttpContext.Current.Session != null)
+                        HttpContext.Current.Session[STR_SMTPDEBUG] = value;
+                }
+                else
+                    Thread.SetData(Thread.GetNamedDataSlot(STR_SMTPDEBUG), value);
+            }
+        }
         public static string ToProper(this string s)
         {
             var textinfo = Thread.CurrentThread.CurrentCulture.TextInfo;

@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Text;
 using System.Linq;
 using System.Net.Mail;
@@ -17,14 +18,14 @@ namespace UtilityExtensions
 	{
 	    public static void SendMsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, int? pid)
 		{
-			if (WebConfigurationManager.AppSettings["sendemail"] == "false")
+			if (ConfigurationManager.AppSettings["sendemail"] == "false")
 				return;
 			sendmsg(SysFromEmail, CmsHost, From, subject, Message, to, id, pid);
 			return;
 		}
 		public static void sendmsg(string SysFromEmail, string CmsHost, MailAddress From, string subject, string Message, List<MailAddress> to, int id, int? pid, List<LinkedResource> attachments = null)
 		{
-			var senderrorsto = WebConfigurationManager.AppSettings["senderrorsto"];
+			var senderrorsto = ConfigurationManager.AppSettings["senderrorsto"];
 			var msg = new MailMessage();
 			if (From == null)
 				From = Util.FirstAddress(senderrorsto);

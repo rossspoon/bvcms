@@ -230,7 +230,7 @@ namespace CmsData
         }
         public void SendPersonEmail(string CmsHost, int id, int pid)
         {
-            var SysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
+            var sysFromEmail = Util.SysFromEmail;
             var emailqueue = EmailQueues.Single(eq => eq.Id == id);
             var emailqueueto = EmailQueueTos.Single(eq => eq.Id == id && eq.PeopleId == pid);
             var fromname = emailqueue.FromName;
@@ -262,9 +262,9 @@ namespace CmsData
                 if (Setting("sendemail", "true") != "false")
                 {
                     if (aa.Count > 0)
-                        Util.SendMsg(SysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, pid);
+                        Util.SendMsg(sysFromEmail, CmsHost, From, emailqueue.Subject, text, aa, emailqueue.Id, pid);
                     else
-                        Util.SendMsg(SysFromEmail, CmsHost, From,
+                        Util.SendMsg(sysFromEmail, CmsHost, From,
                             "(no email address) " + emailqueue.Subject,
                             "<p style='color:red'>You are receiving this because there is no email address for {0}({1}). You should probably contact them since they were probably expecting this information.</p>\n{2}".Fmt(p.Name, p.PeopleId, text),
                             Util.ToMailAddressList(From),
@@ -278,7 +278,7 @@ namespace CmsData
             }
             catch (Exception ex)
             {
-                Util.SendMsg(SysFromEmail, CmsHost, From,
+                Util.SendMsg(sysFromEmail, CmsHost, From,
                     "sent emails - error", ex.ToString(),
                     Util.ToMailAddressList(From),
                     emailqueue.Id, null);
@@ -314,13 +314,13 @@ namespace CmsData
         public void SendPeopleEmail(int queueid)
         {
             var emailqueue = EmailQueues.Single(ee => ee.Id == queueid);
-            var sysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
-            var From = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
+            var sysFromEmail = Util.SysFromEmail;
+            var from = Util.FirstAddress(emailqueue.FromAddr, emailqueue.FromName);
             if (!emailqueue.Subject.HasValue() || !emailqueue.Body.HasValue())
             {
-                Util.SendMsg(sysFromEmail, CmsHost, From,
+                Util.SendMsg(sysFromEmail, CmsHost, from,
                     "sent emails - error", "no subject or body, no emails sent",
-                    Util.ToMailAddressList(From),
+                    Util.ToMailAddressList(from),
                     emailqueue.Id, null);
                 return;
             }
@@ -340,7 +340,7 @@ namespace CmsData
                     var p = LoadPersonById(To.PeopleId);
                     string text = emailqueue.Body;
                     var aa = DoReplacements(ref text, CmsHost, p, To);
-                    var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(To.PeopleId, From.Address));
+                    var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(To.PeopleId, from.Address));
                     var url = Util.URLCombine(CmsHost, qs);
                     var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
                     text = text.Replace("{unsubscribe}", link);
@@ -350,12 +350,12 @@ namespace CmsData
                         text = text.Replace("{toemail}", aa[0].Address);
                         text = text.Replace("%7Btoemail%7D", aa[0].Address);
                     }
-                    text = text.Replace("{fromemail}", From.Address);
-                    text = text.Replace("%7Bfromemail%7D", From.Address);
+                    text = text.Replace("{fromemail}", from.Address);
+                    text = text.Replace("%7Bfromemail%7D", from.Address);
 
                     if (Setting("sendemail", "true") != "false")
                     {
-                        Util.SendMsg(sysFromEmail, CmsHost, From,
+                        Util.SendMsg(sysFromEmail, CmsHost, from,
                             emailqueue.Subject, text, aa, emailqueue.Id, To.PeopleId);
                         To.Sent = DateTime.Now;
 
@@ -364,11 +364,11 @@ namespace CmsData
                 }
                 catch (Exception ex)
                 {
-                    Util.SendMsg(sysFromEmail, CmsHost, From,
+                    Util.SendMsg(sysFromEmail, CmsHost, from,
                         "sent emails - error: {0}".Fmt(CmsHost), ex.Message,
-                        Util.ToMailAddressList(From),
+                        Util.ToMailAddressList(from),
                         emailqueue.Id, null);
-                    Util.SendMsg(sysFromEmail, CmsHost, From,
+                    Util.SendMsg(sysFromEmail, CmsHost, from,
                         "sent emails - error: {0}".Fmt(CmsHost), ex.Message,
                         Util.SendErrorsTo(),
                         emailqueue.Id, null);
@@ -381,7 +381,7 @@ namespace CmsData
             {
                 var nitems = emailqueue.EmailQueueTos.Count();
                 if (nitems > 1)
-                    NotifySentEmails(CmsHost, From.Address, From.DisplayName,
+                    NotifySentEmails(CmsHost, from.Address, from.DisplayName,
                         emailqueue.Subject, nitems, emailqueue.Id);
             }
             SubmitChanges();
@@ -395,14 +395,14 @@ namespace CmsData
                 string subj = "sent emails: " + subject;
                 var uri = new Uri(new Uri(CmsHost), "/Manage/Emails/Details/" + id);
                 string body = @"<a href=""{0}"">{1} emails sent</a>".Fmt(uri, count);
-                var SysFromEmail = Setting("SysFromEmail", ConfigurationManager.AppSettings["sysfromemail"]);
-                var SendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
-                SendErrorsTo = SendErrorsTo.Replace(';', ',');
+                var sysFromEmail = Util.SysFromEmail;
+                var sendErrorsTo = ConfigurationManager.AppSettings["senderrorsto"];
+                sendErrorsTo = sendErrorsTo.Replace(';', ',');
 
-                Util.SendMsg(SysFromEmail, CmsHost, from,
+                Util.SendMsg(sysFromEmail, CmsHost, from,
                     subj, body, Util.ToMailAddressList(from), id, null);
                 var host = uri.Host;
-                Util.SendMsg(SysFromEmail, CmsHost, from,
+                Util.SendMsg(sysFromEmail, CmsHost, from,
                     host + " " + subj, body,
                     Util.SendErrorsTo(), id, null);
             }

@@ -213,7 +213,7 @@ namespace CmsWeb.Models
             var subject = Util.PickFirst(EmailSubject, "no subject");
             var message = Util.PickFirst(EmailMessage, "no message");
 
-            message = MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
+            message = CmsData.API.APIOrganization.MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
             subject = subject.Replace("{org}", org.OrganizationName);
 
 			message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
@@ -377,7 +377,7 @@ AmountDue: {4:C}<br/>
                 if (!Location.HasValue())
                     Location = masterorg.Location;
 
-                message = MessageReplacements(p.person, DivisionName, OrganizationName, Location, message);
+                message = CmsData.API.APIOrganization.MessageReplacements(p.person, DivisionName, OrganizationName, Location, message);
 
                 string details = p.PrepareSummaryText(ti);
                 message = message.Replace("{phone}", p.org.PhoneNumber.FmtFone7());
@@ -403,16 +403,6 @@ Total Fee paid for this registration session: {4:C}<br/>
                amtpaid,
                p.PrepareSummaryText(ti)));
             }
-        }
-        public static string MessageReplacements(Person p, string DivisionName, string OrganizationName, string Location, string message)
-        {
-            message = message.Replace("{first}", p.PreferredName);
-            message = message.Replace("{name}", p.Name);
-            message = message.Replace("{division}", DivisionName);
-            message = message.Replace("{org}", OrganizationName);
-            message = message.Replace("{location}", Location);
-            message = message.Replace("{cmshost}", DbUtil.Db.CmsHost);
-            return message;
         }
         public void UseCoupon(string TransactionID, decimal AmtPaid)
         {

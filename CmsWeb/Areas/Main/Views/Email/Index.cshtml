@@ -1,4 +1,5 @@
 ﻿@model CmsWeb.Areas.Main.Models.MassEmailer
+@using System.Configuration
 @using System.Web.Optimization
 @using CmsWeb
 @{
@@ -46,7 +47,7 @@ You can include a file, image, mp3 or whatever you like in your email.
         Your recipient list has been saved in a tag, so you can run queries in other tabs. But you should not compose two emails simultaneously as one will overwrite the other.</em></p>
    <p>
         <input type="button" id="Send" value="Send" class="bt" style="width:62px;height: 42px" />
-        @if ((User.IsInRole("ScheduleEmails") || User.IsInRole("Edit")) && System.Web.Configuration.WebConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
+        @if ((User.IsInRole("ScheduleEmails") || User.IsInRole("Edit")) && ConfigurationManager.AppSettings["UseEmailScheduler"] == "true")
         { 
         @:Scheduled Date and Time (mm/dd/yy h:mm AM|PM)@Html.TextBox("Schedule", Model.Schedule, new { style = "width:120px" }) (Optional, note: this is Central Time)</p>
         } 

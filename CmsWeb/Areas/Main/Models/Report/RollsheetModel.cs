@@ -109,78 +109,104 @@ namespace CmsWeb.Areas.Main.Models.Report
 		{
 			var tagownerid = Util2.CurrentTagOwnerId;
 			IEnumerable<PersonMemberInfo> q = null;
-			if (CurrentMembers)
-				q = from m in DbUtil.Db.OrganizationMembers
-					where m.OrganizationId == OrganizationId
-					let p = m.Person
-					let enrolled = m.EnrollmentDate
-					where m.MemberTypeId != MemberTypeCode.InActive
-					orderby p.LastName, p.FamilyId, p.PreferredName
-					select new PersonMemberInfo
-					{
-						PeopleId = p.PeopleId,
-						Name = p.Name,
-						Name2 = p.Name2,
+		    if (CurrentMembers)
+		        q = from m in DbUtil.Db.OrganizationMembers
+		            where m.OrganizationId == OrganizationId
+		            let p = m.Person
+		            let enrolled = m.EnrollmentDate
+		            where m.MemberTypeId != MemberTypeCode.InActive
+		            orderby p.LastName, p.FamilyId, p.PreferredName
+		            select new PersonMemberInfo
+		                       {
+		                           PeopleId = p.PeopleId,
+		                           Name = p.Name,
+		                           Name2 = p.Name2,
+		                           BirthDate = Util.FormatBirthday(
+		                               p.BirthYear,
+		                               p.BirthMonth,
+		                               p.BirthDay),
+		                           Address = p.PrimaryAddress,
+		                           Address2 = p.PrimaryAddress2,
+		                           CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
+		                           PhonePref = p.PhonePrefId,
+		                           HomePhone = p.HomePhone,
+		                           CellPhone = p.CellPhone,
+		                           WorkPhone = p.WorkPhone,
+		                           MemberStatus = p.MemberStatus.Description,
+		                           Email = p.EmailAddress,
+		                           BFTeacher = p.BFClass.LeaderName,
+		                           BFTeacherId = p.BFClass.LeaderId,
+		                           Age = p.Age.ToString(),
+		                           MemberTypeCode = m.MemberType.Code,
+		                           MemberType = m.MemberType.Description,
+		                           MemberTypeId = m.MemberTypeId,
+		                           Joined = m.EnrollmentDate
+		                       };
+		    else
+		        q = from m in DbUtil.Db.OrgMembersAsOfDate(OrganizationId, MeetingDate)
+					orderby m.LastName, m.FamilyId, m.PreferredName
+		            select new PersonMemberInfo
+		            {
+						PeopleId = m.PeopleId,
+						Name = m.PreferredName + " " + m.LastName,
+						Name2 = m.LastName + ", " + m.PreferredName,
 						BirthDate = Util.FormatBirthday(
-							p.BirthYear,
-							p.BirthMonth,
-							p.BirthDay),
-						Address = p.PrimaryAddress,
-						Address2 = p.PrimaryAddress2,
-						CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
-						PhonePref = p.PhonePrefId,
-						HomePhone = p.HomePhone,
-						CellPhone = p.CellPhone,
-						WorkPhone = p.WorkPhone,
-						MemberStatus = p.MemberStatus.Description,
-						Email = p.EmailAddress,
-						BFTeacher = p.BFClass.LeaderName,
-						BFTeacherId = p.BFClass.LeaderId,
-						Age = p.Age.ToString(),
-						MemberTypeCode = m.MemberType.Code,
-						MemberType = m.MemberType.Description,
+							m.BirthYear,
+							m.BirthMonth,
+							m.BirthDay),
+						Address = m.PrimaryAddress,
+						Address2 = m.PrimaryAddress2,
+						CityStateZip = Util.FormatCSZ(m.PrimaryCity, m.PrimaryState, m.PrimaryZip),
+						HomePhone = m.HomePhone,
+						CellPhone = m.CellPhone,
+						WorkPhone = m.WorkPhone,
+						MemberStatus = m.MemberStatus,
+						Email = m.EmailAddress,
+						BFTeacher = m.BFTeacher,
+						BFTeacherId = m.BFTeacherId,
+						Age = m.Age.ToString(),
+						MemberType = m.MemberType,
 						MemberTypeId = m.MemberTypeId,
-						Joined = m.EnrollmentDate
-					};
-			else
-				q = from ee in DbUtil.Db.EnrollmentTransactions
-					where ee.TransactionTypeId <= 3 // enrollments or changes
-					where ee.TransactionStatus == false
-					where ee.TransactionDate <= MeetingDate // transaction starts <= looked for end
-					where (ee.Pending ?? false) == false
-					where (ee.NextTranChangeDate >= MeetingDate || ee.NextTranChangeDate == null)// transaction ends >= looked for start
-					where ee.OrganizationId == OrganizationId
-					group ee by ee.PeopleId into g
-					let enrolled = g.OrderByDescending(laet => laet.TransactionDate).FirstOrDefault()
-					where enrolled != null && enrolled.MemberTypeId != MemberTypeCode.InActive
-					let p = enrolled.Person
-					orderby p.LastName, p.FamilyId, p.PreferredName
-					select new PersonMemberInfo
-					{
-						PeopleId = p.PeopleId,
-						Name = p.Name,
-						Name2 = p.Name2,
-						BirthDate = Util.FormatBirthday(
-							p.BirthYear,
-							p.BirthMonth,
-							p.BirthDay),
-						Address = p.PrimaryAddress,
-						Address2 = p.PrimaryAddress2,
-						CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
-						PhonePref = p.PhonePrefId,
-						HomePhone = p.HomePhone,
-						CellPhone = p.CellPhone,
-						WorkPhone = p.WorkPhone,
-						MemberStatus = p.MemberStatus.Description,
-						Email = p.EmailAddress,
-						BFTeacher = p.BFClass.LeaderName,
-						BFTeacherId = p.BFClass.LeaderId,
-						Age = p.Age.ToString(),
-						MemberTypeCode = enrolled.MemberType.Code,
-						MemberType = enrolled.MemberType.Description,
-						MemberTypeId = enrolled.MemberTypeId,
-						Joined = enrolled.EnrollmentDate ?? enrolled.TransactionDate,
-					};
+						Joined = m.Joined
+		            };
+//				q = from ee in DbUtil.Db.EnrollmentTransactions
+//					where ee.TransactionTypeId <= 3 // enrollments or changes
+//					where ee.TransactionStatus == false
+//					where ee.TransactionDate <= MeetingDate // transaction starts <= looked for end
+//					where (ee.Pending ?? false) == false
+//					where (ee.NextTranChangeDate >= MeetingDate || ee.NextTranChangeDate == null)// transaction ends >= looked for start
+//					where ee.OrganizationId == OrganizationId
+//					group ee by ee.PeopleId into g
+//					let enrolled = g.OrderByDescending(laet => laet.TransactionDate).FirstOrDefault()
+//					where enrolled != null && enrolled.MemberTypeId != MemberTypeCode.InActive
+//					let p = enrolled.Person
+//					orderby p.LastName, p.FamilyId, p.PreferredName
+//					select new PersonMemberInfo
+//					{
+//						PeopleId = p.PeopleId,
+//						Name = p.Name,
+//						Name2 = p.Name2,
+//						BirthDate = Util.FormatBirthday(
+//							p.BirthYear,
+//							p.BirthMonth,
+//							p.BirthDay),
+//						Address = p.PrimaryAddress,
+//						Address2 = p.PrimaryAddress2,
+//						CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
+//						PhonePref = p.PhonePrefId,
+//						HomePhone = p.HomePhone,
+//						CellPhone = p.CellPhone,
+//						WorkPhone = p.WorkPhone,
+//						MemberStatus = p.MemberStatus.Description,
+//						Email = p.EmailAddress,
+//						BFTeacher = p.BFClass.LeaderName,
+//						BFTeacherId = p.BFClass.LeaderId,
+//						Age = p.Age.ToString(),
+//						MemberTypeCode = enrolled.MemberType.Code,
+//						MemberType = enrolled.MemberType.Description,
+//						MemberTypeId = enrolled.MemberTypeId,
+//						Joined = enrolled.EnrollmentDate ?? enrolled.TransactionDate,
+//					};
 
 			return q;
 		}
@@ -195,29 +221,14 @@ namespace CmsWeb.Areas.Main.Models.Report
 
 		public static IEnumerable<PersonVisitorInfo> FetchVisitors(int orgid, DateTime MeetingDate, bool NoCurrentMembers, bool UseAltNames = false)
 		{
-			var wks = 3; // default lookback
-			var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
-			if (org.RollSheetVisitorWks.HasValue)
-				wks = org.RollSheetVisitorWks.Value;
-			var dt = MeetingDate.AddDays(wks * -7);
-
-// ReSharper disable ImplicitlyCapturedClosure
-			var q = from p in DbUtil.Db.People
-					where p.Attends.Any(a => (a.AttendanceFlag == true || a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
-						&& (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
-						&& a.OrganizationId == orgid
-						&& (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null)
-						&& VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
-					where NoCurrentMembers == false || p.OrganizationMembers.All(om => om.OrganizationId != orgid)
-                    let ch = UseAltNames && p.AltName != null && p.AltName.Length > 0
-					orderby p.Name2, p.Name
-					orderby p.LastName, p.FamilyId, p.Name2
-					select new PersonVisitorInfo
-					{
-						VisitorType = p.MemberStatusId == MemberStatusCode.Member ? "VM" : "VS",
+		    var q = from p in DbUtil.Db.OrgVisitorsAsOfDate(orgid, MeetingDate, NoCurrentMembers)
+					orderby p.LastName, p.FamilyId, p.PreferredName
+		            select new PersonVisitorInfo()
+		            {
+						VisitorType = p.VisitorType,
 						PeopleId = p.PeopleId,
-						Name = p.Name,
-                        Name2 = ch ? p.AltName : p.Name2,
+						Name = p.PreferredName + " " + p.LastName,
+						Name2 = p.LastName + ", " + p.PreferredName,
 						BirthDate = Util.FormatBirthday(
 							p.BirthYear,
 							p.BirthMonth,
@@ -225,21 +236,61 @@ namespace CmsWeb.Areas.Main.Models.Report
 						Address = p.PrimaryAddress,
 						Address2 = p.PrimaryAddress2,
 						CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
-						PhonePref = p.PhonePrefId,
 						HomePhone = p.HomePhone,
 						CellPhone = p.CellPhone,
 						WorkPhone = p.WorkPhone,
-						MemberStatus = p.MemberStatus.Description,
-						Email = p.EmailAddress,
-						BFTeacher = p.BFClass.LeaderName,
-						BFTeacherId = p.BFClass.LeaderId,
+						MemberStatus = p.MemberStatus,
+						Email = p.Email,
+						BFTeacher = p.BFTeacher,
+						BFTeacherId = p.BFTeacherId,
 						Age = p.Age.ToString(),
-						LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
-						HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == Util2.CurrentTagOwnerId),
-						NameParent1 = p.Family.HohName(DbUtil.Db),
-						NameParent2 = p.Family.People.FirstOrDefault(x => x.FamilyPosition.Id == PositionInFamily.PrimaryAdult
-                                              && x.PeopleId != p.Family.HeadOfHouseholdId).Name,
-					};
+						LastAttended = p.LastAttended,
+                   };
+//			var wks = 3; // default lookback
+//			var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
+//			if (org.RollSheetVisitorWks.HasValue)
+//				wks = org.RollSheetVisitorWks.Value;
+//			var dt = MeetingDate.AddDays(wks * -7);
+//
+//// ReSharper disable ImplicitlyCapturedClosure
+//			var q = from p in DbUtil.Db.People
+//					where p.Attends.Any(a => (a.AttendanceFlag == true || a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
+//						&& (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
+//						&& a.OrganizationId == orgid
+//						&& (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null)
+//						&& VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
+//					where NoCurrentMembers == false || p.OrganizationMembers.All(om => om.OrganizationId != orgid)
+//                    let ch = UseAltNames && p.AltName != null && p.AltName.Length > 0
+//					orderby p.Name2, p.Name
+//					orderby p.LastName, p.FamilyId, p.Name2
+//					select new PersonVisitorInfo
+//					{
+//						VisitorType = p.MemberStatusId == MemberStatusCode.Member ? "VM" : "VS",
+//						PeopleId = p.PeopleId,
+//						Name = p.Name,
+//                        Name2 = ch ? p.AltName : p.Name2,
+//						BirthDate = Util.FormatBirthday(
+//							p.BirthYear,
+//							p.BirthMonth,
+//							p.BirthDay),
+//						Address = p.PrimaryAddress,
+//						Address2 = p.PrimaryAddress2,
+//						CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
+//						PhonePref = p.PhonePrefId,
+//						HomePhone = p.HomePhone,
+//						CellPhone = p.CellPhone,
+//						WorkPhone = p.WorkPhone,
+//						MemberStatus = p.MemberStatus.Description,
+//						Email = p.EmailAddress,
+//						BFTeacher = p.BFClass.LeaderName,
+//						BFTeacherId = p.BFClass.LeaderId,
+//						Age = p.Age.ToString(),
+//						LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
+//						HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == Util2.CurrentTagOwnerId),
+//						NameParent1 = p.Family.HohName(DbUtil.Db),
+//						NameParent2 = p.Family.People.FirstOrDefault(x => x.FamilyPosition.Id == PositionInFamily.PrimaryAdult
+//                                              && x.PeopleId != p.Family.HeadOfHouseholdId).Name,
+//					};
 // ReSharper restore ImplicitlyCapturedClosure
 			return q;
 		}

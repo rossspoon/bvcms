@@ -141,7 +141,7 @@ namespace CmsWeb.Models
                             || p.WorkPhone.Contains(m.communication)
                             select p;
             }
-            if (m.birthdate.HasValue() && m.birthdate != "na")
+            if (m.birthdate.HasValue() && m.birthdate.NotEqual("na"))
             {
                 DateTime dt;
                 if (DateTime.TryParse(m.birthdate, out dt))
@@ -415,7 +415,7 @@ namespace CmsWeb.Models
                     g.AddNewClause(QueryType.WorkPhone, CompareType.Contains, m.communication);
                 }
             }
-            if (m.birthdate.HasValue() && m.birthdate != "na")
+            if (m.birthdate.HasValue() && m.birthdate.NotEqual("na"))
             {
                 DateTime dt;
                 if (DateTime.TryParse(m.birthdate, out dt))

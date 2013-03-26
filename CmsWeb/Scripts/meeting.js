@@ -55,7 +55,7 @@
         data: function (value, settings) {
             if (value === '0')
                 return '';
-          return value;
+            return value;
         },
         callback: function (value) {
             if (value.startsWith("error:"))
@@ -100,31 +100,43 @@
     if ($("#showbuttons input[name=show]:checked").val() == "attends") {
         $(".atck:not(:checked)").parent().parent().hide();
     }
-    if ($('#editing').is(':checked')) {
-        $(".atck").removeAttr("disabled");
-        $(".rgck").removeAttr("disabled");
-    }
+    $.atckenabled = $('#editing').is(':checked');
 
     $("#attends > tbody > tr:visible:even").addClass("alt");
-
     $('#showbuttons input:radio').change(function () {
-        $("#attends > tbody > tr").hide().removeClass("alt");
-        switch ($(this).val()) {
-            case "attends":
-                $(".atck:checked").parent().parent().show();
-                break;
-            case "absents":
-                $(".atck:not(:checked)").parent().parent().show();
-                break;
-            case "reg":
-                $(".commitment:not(:contains('Uncommitted'))").parent().parent().show();
-                $(".atck:checked").parent().parent().show();
-                break;
-            case "all":
-                $("#attends > tbody > tr").show();
-                break;
-        }
-        $("#attends > tbody > tr:visible:even").addClass("alt");
+        var r = $(this);
+        $.blockUI({
+            overlayCSS: { opacity: 0 },
+            css: {
+                border: 'none',
+                padding: '15px',
+                backgroundColor: '#000',
+                '-webkit-border-radius': '10px',
+                '-moz-border-radius': '10px',
+                opacity: .5,
+                color: '#fff'
+            },
+            onBlock: function () {
+                $("#attends > tbody > tr").hide().removeClass("alt");
+                switch (r.val()) {
+                    case "attends":
+                        $(".atck:checked").parent().parent().show();
+                        break;
+                    case "absents":
+                        $(".atck:not(:checked)").parent().parent().show();
+                        break;
+                    case "reg":
+                        $(".commitment:not(:contains('Uncommitted'))").parent().parent().show();
+                        $(".atck:checked").parent().parent().show();
+                        break;
+                    case "all":
+                        $("#attends > tbody > tr").show();
+                        break;
+                }
+                $("#attends > tbody > tr:visible:even").addClass("alt");
+                $.unblock();
+            }
+        });
     });
     $('#currmembers').change(function () {
         if ($(this).is(':checked'))
@@ -134,15 +146,15 @@
     });
     $('#editing').change(function () {
         if ($(this).is(':checked')) {
-            if (!$("#showregistered").val())
+            if (!$("#showregistered").val()) {
+                $.block();
                 $('#showbuttons input:radio[value=all]').click();
-            $(".atck").removeAttr("disabled");
-            $(".rgck0").addClass("rgck").removeClass("rgck0");
+                $.unblock();
+            }
+            $.atckenabled = true;
         }
-        else {
-            $(".atck").attr("disabled", "disabled");
-            $(".rgck").addClass("rgck0").removeClass("rgck");
-        }
+        else
+            $.atckenabled = false;
     });
     $('#sortbyname').click(function () {
         if ($("#sort").val() == "false") {
@@ -174,14 +186,34 @@
             $("#addregistered").addClass("hidden");
         }
     });
-    $(".showreg").hide();
+    //$(".showreg").hide();
     if ($("#showregistered").val()) {
         $('#showbuttons input:radio[value=reg]').click();
         $('#registering').click();
     }
 
-    $(".atck").change(function (ev) {
-        var ck = $(this);
+
+    $('#attends').bind('mousedown', function (e) {
+        if ($.atckenabled) {
+            if ($(e.target).hasClass("rgck")) {
+                $(e.target).editable("/Meeting/EditCommitment/", {
+                    indicator: '<img src="/images/loading.gif">',
+                    loadtype: 'post',
+                    loadurl: "/Meeting/AttendCommitments/",
+                    type: "select",
+                    submit: "OK",
+                    style: 'display: inline'
+                });
+            }
+            if ($(e.target).hasClass("atck")) {
+                e.preventDefault();
+                var ck = $(e.target);
+                $.atckClick(ck);
+            }
+        }
+    });
+    $.atckClick = function (ck) {
+        ck.prop("checked", !ck.prop("checked"));
         var tr = ck.parent().parent();
         $.post("/Meeting/MarkAttendance/", {
             MeetingId: $("#meetingid").val(),
@@ -191,15 +223,14 @@
             if (ret.error) {
                 ck.attr("checked", !ck.is(':checked'));
                 alert(ret.error);
-            }
-            else {
+            } else {
                 tr.effect("highlight", {}, 3000);
                 for (var i in ret) {
                     $("#" + i + " span").text(ret[i]);
                 }
             }
         });
-    });
+    };
     $("#wandtarget").keypress(function (ev) {
         if (ev.which != 13)
             return true;
@@ -221,7 +252,7 @@
         var cb = $('input[pid=' + text + '].atck');
         if (cb[0]) {
             cb[0].scrollIntoView();
-            cb.click();
+            $.atckClick(cb);
         }
         return false;
     });
@@ -244,7 +275,7 @@
             height: 25,
             submit: 'OK'
         });
-    }
+    };
     $("#newvalueform").dialog({
         autoOpen: false,
         buttons: {
@@ -283,18 +314,6 @@
                 }
             });
         return false;
-    });
-    $('#attends').bind('mousedown', function (e) {
-        if ($(e.target).hasClass("rgck")) {
-            $(e.target).editable("/Meeting/EditCommitment/", {
-                indicator: '<img src="/images/loading.gif">',
-                loadtype: 'post',
-                loadurl: "/Meeting/AttendCommitments/",
-                type: "select",
-                submit: "OK",
-                style: 'display: inline'
-            });
-        }
     });
     $("#rollsheetoptions").dialog({
         autoOpen: false,

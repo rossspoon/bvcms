@@ -656,6 +656,7 @@
     <Content Include="Content\bootstrap\js\bootstrap.js" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\chosen\chosen-sprite%402x.png" />
+    <Content Include="Content\ding.wav" />
     <Content Include="Content\styles\datepicker.css" />
     <Content Include="Content\js\bootstrap-datepicker.js" />
     <Content Include="Content\js\dialog-patch.js" />
@@ -1020,13 +1021,6 @@
     <Compile Include="Admin\Activity.aspx.designer.cs">
       <DependentUpon>Activity.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ClearCache.aspx.cs">
-      <DependentUpon>ClearCache.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\ClearCache.aspx.designer.cs">
-      <DependentUpon>ClearCache.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\DeleteSpecialTags.aspx.cs">
       <DependentUpon>DeleteSpecialTags.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1059,13 +1053,6 @@
     </Compile>
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contributions\All.aspx.cs">
-      <DependentUpon>All.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contributions\All.aspx.designer.cs">
-      <DependentUpon>All.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contributions\Deposit.aspx.cs">
       <DependentUpon>Deposit.aspx</DependentUpon>
@@ -1585,6 +1572,7 @@
     <Content Include="Areas\People\Views\Person\DisplayTemplates\CurrentEnrollments.cshtml" />
     <Content Include="Areas\People\Views\Person\MemberProfile.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\DateTimePicker.cshtml" />
+    <Content Include="Areas\Main\Views\OrgSearch\OrganizationStructure.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
@@ -2258,7 +2246,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Activity.aspx" />
-    <Content Include="Admin\ClearCache.aspx" />
     <Content Include="Admin\DeleteSpecialTags.aspx" />
     <Content Include="Admin\LastActivity.aspx" />
     <Content Include="Admin\UploadFile.aspx" />
@@ -2349,7 +2336,6 @@
     <Content Include="Content\js\thickbox.js" />
     <Content Include="images\loading.gif" />
     <Content Include="images\navigation-shadow.png" />
-    <Content Include="Contributions\All.aspx" />
     <Content Include="Contributions\Deposit.aspx" />
     <Content Include="Contributions\GLExtract.aspx" />
     <Content Include="Contributions\Individual.aspx" />

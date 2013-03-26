@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -215,7 +216,7 @@ namespace CmsWeb
 			{
 				if (filterContext.HttpContext.Request.IsLocal)
 					return;
-				if (WebConfigurationManager.AppSettings["INSERT_X-FORWARDED-PROTO"] == "true")
+				if (ConfigurationManager.AppSettings["INSERT_X-FORWARDED-PROTO"] == "true")
 				{
 					if (filterContext.HttpContext.Request.Headers["X-Forwarded-Proto"] == "http")
 					{
@@ -224,16 +225,16 @@ namespace CmsWeb
 					}
 					return;
 				}
-				else if (!WebConfigurationManager.AppSettings["cmshost"].StartsWith("https:"))
+				else if (!ConfigurationManager.AppSettings["cmshost"].StartsWith("https:"))
 					return;
 			}
 			base.OnAuthorization(filterContext);
 		}
 		public static bool NeedRedirect(HttpRequestBase Request)
 		{
-			if (WebConfigurationManager.AppSettings["INSERT_X-FORWARDED-PROTO"] == "true")
+			if (ConfigurationManager.AppSettings["INSERT_X-FORWARDED-PROTO"] == "true")
 				return Request.Headers["X-Forwarded-Proto"] == "http";
-			return WebConfigurationManager.AppSettings["cmshost"].StartsWith("https:");
+			return ConfigurationManager.AppSettings["cmshost"].StartsWith("https:");
 		}
 	}
 }

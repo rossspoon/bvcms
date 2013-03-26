@@ -306,22 +306,22 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.Errors.Add("Age", "must be integer");
 
 
-            if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
-                m.Errors.Add("IntegerValue", "need integer");
+//            if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
+//                m.Errors.Add("IntegerValue", "need integer");
 
             if (m.TagsVisible && string.Join(",", m.Tags).Length > 500)
                 m.Errors.Add("tagvalues", "too many tags selected");
 
-            decimal d;
-            if (m.NumberVisible && !m.Comparison.EndsWith("Null") && !decimal.TryParse(m.NumberValue, out d))
-                m.Errors.Add("NumberValue", "need number");
+//            decimal d;
+//            if (m.NumberVisible && !m.Comparison.EndsWith("Null") && !decimal.TryParse(m.NumberValue, out d))
+//                m.Errors.Add("NumberValue", "need number");
 
             if (m.CodesVisible && m.CodeValues.Length == 0)
                 m.Errors.Add("CodeValues", "must select item(s)");
 
-//            if (m.DateVisible && !m.Comparison.EndsWith("Null"))
-//                if (!DateTime.TryParse(m.DateValue, out dt) || dt.Year <= 1900 || dt.Year >= 2200)
-//                    m.Errors.Add("DateValue", "need valid date");
+            if (m.DateVisible && !m.Comparison.EndsWith("Equal"))
+                if (!DateTime.TryParse(m.DateValue, out dt) || dt.Year <= 1900 || dt.Year >= 2200)
+                    m.Errors.Add("DateValue", "need valid date");
 
             if (m.Comparison == "Contains")
                 if (!m.TextValue.HasValue())

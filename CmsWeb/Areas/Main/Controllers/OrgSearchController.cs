@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace CmsWeb.Areas.Main.Controllers
 {
-	[SessionExpire]
+    [SessionExpire]
     public class OrgSearchController : CmsStaffController
     {
         [Serializable]
@@ -41,6 +42,11 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.TagProgramId = m.ProgramId;
                 m.TagDiv = div;
             }
+            else if (progid.HasValue)
+            {
+                m.ProgramId = progid;
+                m.TagProgramId = m.ProgramId;
+            }
             else if (Session[STR_OrgSearch].IsNotNull())
             {
                 var os = Session[STR_OrgSearch] as OrgSearchInfo;
@@ -50,8 +56,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.ScheduleId = os.Sched;
                 m.StatusId = os.Status;
                 m.OnlineReg = os.OnlineReg;
-				m.TypeId = os.Type;
-				m.CampusId = os.Campus;
+                m.TypeId = os.Type;
+                m.CampusId = os.Campus;
             }
             return View(m);
         }
@@ -75,11 +81,11 @@ namespace CmsWeb.Areas.Main.Controllers
             return View("DivisionIds", m);
         }
         [HttpPost]
-		public ActionResult ApplyType(int id, OrgSearchModel m)
+        public ActionResult ApplyType(int id, OrgSearchModel m)
         {
-			foreach (var o in m.FetchOrgs())
-				o.OrganizationTypeId = id == -1 ? (int?)null : id;
-			DbUtil.Db.SubmitChanges();
+            foreach (var o in m.FetchOrgs())
+                o.OrganizationTypeId = id == -1 ? (int?)null : id;
+            DbUtil.Db.SubmitChanges();
             return View("Results", m);
         }
         [HttpPost]
@@ -109,14 +115,14 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult ExportExcel(int prog, int div, int schedule, int status, int campus, string name)
         {
-            var m = new OrgSearchModel 
-            { 
-                ProgramId = prog, 
-                DivisionId = div, 
-                ScheduleId = schedule, 
-                StatusId = status, 
-                CampusId = campus, 
-                Name = name 
+            var m = new OrgSearchModel
+            {
+                ProgramId = prog,
+                DivisionId = div,
+                ScheduleId = schedule,
+                StatusId = status,
+                CampusId = campus,
+                Name = name
             };
             return new OrgExcelResult(m);
         }
@@ -130,8 +136,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 Sched = m.ScheduleId,
                 Status = m.StatusId,
                 OnlineReg = m.OnlineReg,
-				Type = m.TypeId,
-				Campus = m.CampusId,
+                Type = m.TypeId,
+                Campus = m.CampusId,
             };
         }
         [HttpPost]
@@ -256,6 +262,17 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             m.SendNotices(this);
             return Content("ok");
+        }
+        [HttpGet]
+        public ActionResult OrganizationStructure(bool? active)
+        {
+            var q = from o in DbUtil.Db.ViewOrganizationStructures
+                    select o;
+            if (active == true)
+                q = q.Where(o => o.OrgStatus == "Active");
+            else if (active == false)
+                q = q.Where(o => o.OrgStatus != "Active");
+            return View(q.OrderBy(oo => oo.Program).ThenBy(oo => oo.Division).ThenBy(oo => oo.Organization));
         }
 
     }

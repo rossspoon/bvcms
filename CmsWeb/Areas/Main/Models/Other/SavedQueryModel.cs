@@ -18,6 +18,7 @@ namespace CmsWeb.Models
 
         public SavedQueryModel()
         {
+            onlyMine = true;
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
             Pager.Sort = "Name";

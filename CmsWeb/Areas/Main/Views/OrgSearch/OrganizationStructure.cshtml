@@ -1,0 +1,53 @@
+﻿@using UtilityExtensions
+@model IEnumerable<CmsData.View.OrganizationStructure>
+@{
+    ViewBag.Title = "Organization Structure";
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    var prevprog = "";
+    var prevdiv = "";
+}
+@section head
+{
+    <style>
+        .dim {
+            color: #bbb;
+        }
+    </style>
+}
+<h2>@ViewBag.Title</h2>
+<div>
+    <table class="grid" cellpadding="4">
+        <thead>
+            <tr>
+                <td>Program</td>
+                <td>Division</td>
+                <td>Status</td>
+                <td>Members</td>
+                <td>Previous</td>
+                <td>Organization</td>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var o in Model)
+        {
+            <tr>
+                <td><a href="/OrgSearch/Index?progid=@o.ProgId">
+                        <span class="@(o.Program == prevprog ? "dim" : "")">@o.Program</span>
+                    </a>
+                </td>
+                <td><a href="/OrgSearch/Index?progid=@(o.ProgId)&div=@o.DivId">
+                        <span class="@(o.Division == prevdiv ? "dim" : "")">@o.Division</span>
+                    </a>
+                </td>
+                <td>@o.OrgStatus</td>
+                <td>@o.Members</td>
+                <td>@o.Previous</td>
+                <td>@Html.ActionLink(o.Organization.HasValue() ? o.Organization : "noname", "Index", "Organization", new { area = "Main", Id=o.OrgId })</td>
+            </tr>
+            prevdiv = o.Division;
+            prevprog = o.Program;
+        }
+        </tbody>
+    </table>
+
+</div>

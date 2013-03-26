@@ -128,6 +128,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 dob = p.DOB,
                 gender = p.GenderId,
                 phone = p.CellPhone,
+                context = m.type,
             };
             s.LoadFamily();
             m.List.Add(s);
@@ -163,17 +164,20 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 gender = 99,
                 marital = 99,
                 campus = m.CampusId,
-                entrypoint = m.EntryPointId
+                entrypoint = m.EntryPointId,
+                context = m.type,
             };
 #if DEBUG
-            //p.title = "Mr.";
-            //p.first = "David5";
-            //p.last = "Carroll";
-            //p.gender = 1;
-            //p.marital = 20;
-            //p.dob = "5/30/52";
-            //p.email = "david@bvcms.com";
-            //p.phone = "9014890611";
+            p.first = "David";
+            p.last = "Carr." + DateTime.Now.Millisecond;
+            p.gender = 0;
+            p.marital = 0;
+            p.dob = "na";
+            p.email = "na";
+            p.phone = "na";
+            p.address = "na";
+            p.zip = "na";
+            p.homephone = "na";
 #endif
             m.List.Add(p);
             return p;
@@ -221,27 +225,27 @@ namespace CmsWeb.Areas.Dialog.Controllers
             switch (m.type)
             {
                 case "addpeople":
-                    return AddPeople(m);
+                    return AddPeople(m, OriginCode.MainMenu);
                 case "addtotag":
-                    return AddPeopleToTag(id, m);
+                    return AddPeopleToTag(id, m, 0);
                 case "family":
-                    return AddFamilyMembers(iid, m, false);
+                    return AddFamilyMembers(iid, m, OriginCode.NewFamilyMember);
                 case "relatedfamily":
-                    return AddRelatedFamilys(iid, m, false);
+                    return AddRelatedFamilys(iid, m, OriginCode.NewFamilyMember);
                 case "org":
-                    return AddOrgMembers(iid, m, false);
+                    return AddOrgMembers(iid, m, false, OriginCode.Enrollment);
                 case "pending":
-                    return AddOrgMembers(iid, m, true);
+                    return AddOrgMembers(iid, m, true, OriginCode.Enrollment);
                 case "visitor":
-                    return AddVisitors(iid, m);
+                    return AddVisitors(iid, m, OriginCode.Visit);
                 case "registered":
-                    return AddRegistered(iid, m);
+                    return AddRegistered(iid, m, OriginCode.Visit);
                 case "contactee":
-                    return AddContactees(iid, m);
+                    return AddContactees(iid, m, OriginCode.Visit);
                 case "contactor":
-                    return AddContactors(iid, m);
+                    return AddContactors(iid, m, 0);
                 case "contributor":
-                    return AddContributor(iid, m);
+                    return AddContributor(iid, m, OriginCode.Contribution);
                 case "taskdelegate":
                     if (m.List.Count > 0)
                         return Json(new { close = true, how = "addselected", url="/Task/Delegate/", pid = m.List[0].PeopleId });
@@ -266,7 +270,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             return Json(new { close = true });
         }
 
-        private JsonResult AddContactees(int id, SearchModel m)
+        private JsonResult AddContactees(int id, SearchModel m, int origin)
         {
             if (id > 0)
             {
@@ -290,7 +294,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             return Json(new { close = true, how = "addselected" });
         }
-        private JsonResult AddContactors(int id, SearchModel m)
+        private JsonResult AddContactors(int id, SearchModel m, int origin)
         {
             if (id > 0)
             {
@@ -299,7 +303,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                     return Json(new { close = true, how = "CloseAddDialog" });
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, 0, m.EntryPointId);
+                    AddPerson(p, m.List, origin, m.EntryPointId);
                     var ctor = c.contactsMakers.SingleOrDefault(ct =>
                         ct.ContactId == id && ct.PeopleId == p.person.PeopleId);
                     if (ctor == null)
@@ -316,7 +320,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             return Json(new { close = true, how = "addselected" });
         }
-        private JsonResult AddFamilyMembers(int id, SearchModel m, bool pending)
+        private JsonResult AddFamilyMembers(int id, SearchModel m, int origin)
         {
             if (id > 0)
             {
@@ -325,7 +329,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var i in m.List)
                 {
                     var isnew = i.IsNew;
-                    AddPerson(i, m.List, OriginCode.NewFamilyMember, m.EntryPointId);
+                    AddPerson(i, m.List, origin, m.EntryPointId);
                     if (!isnew)
                     {
                         var fm = f.People.SingleOrDefault(fa => fa.PeopleId == i.person.PeopleId);
@@ -347,27 +351,27 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             return Json(new { close = true, how = "addselected" });
         }
-        private JsonResult AddRelatedFamilys(int id, SearchModel m, bool pending)
+        private JsonResult AddRelatedFamilys(int id, SearchModel m, int origin)
         {
             if (id > 0)
             {
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, OriginCode.NewFamilyMember, m.EntryPointId);
+                    AddPerson(p, m.List, origin, m.EntryPointId);
                     SearchModel.AddRelatedFamily(id, p.PeopleId.Value);
                 }
                 DbUtil.Db.SubmitChanges();
             }
             return Json(new { close = true, how = "addselected" });
         }
-        private JsonResult AddPeople(SearchModel m)
+        private JsonResult AddPeople(SearchModel m, int origin)
         {
             foreach (var p in m.List)
-                AddPerson(p, m.List, 0, m.EntryPointId);
+                AddPerson(p, m.List, origin, m.EntryPointId);
             DbUtil.Db.SubmitChanges();
             return Json(new { close = true, how = "CloseAddDialog" });
         }
-        private JsonResult AddOrgMembers(int id, SearchModel m, bool pending)
+        private JsonResult AddOrgMembers(int id, SearchModel m, bool pending, int origin)
         {
             string message = null;
             if (id > 0)
@@ -393,7 +397,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 }
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, OriginCode.Enrollment, m.EntryPointId);
+                    AddPerson(p, m.List, origin, m.EntryPointId);
                     OrganizationMember.InsertOrgMembers(DbUtil.Db,
                         id, p.PeopleId.Value, 220, Util.Now, null, pending);
                 }
@@ -402,13 +406,13 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             return Json(new { close = true, how = "rebindgrids", message = message });
         }
-        private JsonResult AddContributor(int id, SearchModel m)
+        private JsonResult AddContributor(int id, SearchModel m, int origin)
         {
             if (id > 0)
             {
                 var p = m.List[0];
                 var c = DbUtil.Db.Contributions.Single(cc => cc.ContributionId == id);
-                AddPerson(p, m.List, OriginCode.Contribution, m.EntryPointId);
+                AddPerson(p, m.List, origin, m.EntryPointId);
                 c.PeopleId = p.PeopleId;
 
                 if (c.BankAccount.HasValue())
@@ -430,13 +434,13 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             return Json(new { close = true, how = "addselected" });
         }
-        private JsonResult AddPeopleToTag(string id, SearchModel m)
+        private JsonResult AddPeopleToTag(string id, SearchModel m, int origin)
         {
             if (id.HasValue())
             {
                 foreach (var p in m.List)
                 {
-                    AddPerson(p, m.List, 0, m.EntryPointId);
+                    AddPerson(p, m.List, origin, m.EntryPointId);
 					Person.Tag(DbUtil.Db, p.person.PeopleId, id, Util2.CurrentTagOwnerId, DbUtil.TagTypeId_Personal);
                 }
                 DbUtil.Db.SubmitChanges();
@@ -444,7 +448,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
 			return Json(new { close = true, how = "addselected" });
         }
 
-        private JsonResult AddVisitors(int id, SearchModel m)
+        private JsonResult AddVisitors(int id, SearchModel m, int origin)
         {
             var sb = new StringBuilder();
             if (id > 0)
@@ -453,7 +457,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var p in m.List)
                 {
                     var isnew = p.IsNew;
-                    AddPerson(p, m.List, OriginCode.Visit, m.EntryPointId);
+                    AddPerson(p, m.List, origin, m.EntryPointId);
 					if (isnew)
 						p.person.UpdateValue("CampusId", meeting.Organization.CampusId);
                     var err = Attend.RecordAttendance(p.PeopleId.Value, id, true);
@@ -465,7 +469,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             return Json(new { close = true, how = "addselected", error = sb.ToString() });
         }
-        private JsonResult AddRegistered(int id, SearchModel m)
+        private JsonResult AddRegistered(int id, SearchModel m, int origin)
         {
             if (id > 0)
             {
@@ -473,7 +477,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 foreach (var p in m.List)
                 {
                     var isnew = p.IsNew;
-                    AddPerson(p, m.List, OriginCode.Visit, m.EntryPointId);
+                    AddPerson(p, m.List, origin, m.EntryPointId);
                     if (isnew)
                         p.person.CampusId = meeting.Organization.CampusId;
                     Attend.MarkRegistered(DbUtil.Db, p.PeopleId.Value, id, 1);
@@ -486,7 +490,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
         private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int originid, int? entrypointid)
         {
             if (p.IsNew)
-                p.AddPerson(originid, entrypointid);
+                p.AddPerson(originid, p.entrypoint, p.campus);
             else 
             {
                 if (entrypointid != 0 && 

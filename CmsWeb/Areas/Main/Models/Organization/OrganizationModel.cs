@@ -195,126 +195,52 @@ namespace CmsWeb.Models.OrganizationPage
 				return _RegSettings;
 			}
 		}
-		public void SendVolunteerReminders(bool sendall, Controller controller)
-		{
-			var Db = DbUtil.Db;
-			var setting = RegSettings;
-			var currmembers = from om in org.OrganizationMembers
-							  where (om.Pending ?? false) == false
-							  where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
-							  where org.Attends.Any(a => (a.MeetingDate <= DateTime.Today.AddDays(7) || sendall)
-								  && a.MeetingDate >= DateTime.Today
-								  && (a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
-								  && a.PeopleId == om.PeopleId)
-							  select om;
-
-			var subject = Util.PickFirst(setting.ReminderSubject, "no subject");
-			var message = Util.PickFirst(setting.ReminderBody, "no body");
-			if (subject == "no subject" || message == "no body")
-				throw new Exception("no subject or body");
-			var notify = Db.StaffPeopleForOrg(org.OrganizationId).FirstOrDefault();
-			if (notify == null)
-				throw new Exception("no notify person");
-
-			foreach (var om in currmembers)
-			{
-				var q = from a in org.Attends
-						where a.PeopleId == om.PeopleId
-						where a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute
-						where a.MeetingDate >= DateTime.Today
-						orderby a.MeetingDate
-						select a.MeetingDate;
-				if (!q.Any())
-					continue;
-				var details = ViewExtensions2.RenderPartialViewToString(controller, "VolunteerCommitmentsSummary", q);
-
-				var OrganizationName = org.OrganizationName;
-
-				subject = Util.PickFirst(setting.ReminderSubject, "no subject");
-				message = Util.PickFirst(setting.ReminderBody, "no body");
-
-				string Location = org.Location;
-				message = OnlineRegModel.MessageReplacements(om.Person, null, OrganizationName, Location, message);
-
-				message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
-				message = message.Replace("{details}", details.ToString());
-
-				Db.Email(notify.FromEmail, om.Person, subject, message);
-			}
-		}
-		public void SendEventReminders()
-		{
-			var Db = DbUtil.Db;
-			var setting = RegSettings;
-			var currmembers = from om in org.OrganizationMembers
-							  where (om.Pending ?? false) == false
-							  where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
-							  select om;
-
-			string noSubject = "no subject";
-			const string noBody = "no body";
-
-			var subject = Util.PickFirst(setting.ReminderSubject, noSubject);
-			var message = Util.PickFirst(setting.ReminderBody, noBody);
-			if (subject == noSubject || message == noBody)
-				throw new Exception("no subject or body");
-			var notify = Db.StaffPeopleForOrg(org.OrganizationId).FirstOrDefault();
-			if (notify == null)
-				throw new Exception("no notify person");
-
-			foreach (var om in currmembers)
-			{
-				var details = PrepareSummaryText2(Db, om, setting);
-				var OrganizationName = org.OrganizationName;
-
-				subject = Util.PickFirst(setting.ReminderSubject, noSubject);
-				message = Util.PickFirst(setting.ReminderBody, noBody);
-
-				string Location = org.Location;
-				message = OnlineRegModel.MessageReplacements(om.Person, null, OrganizationName, Location, message);
-
-				message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
-				message = message.Replace("{details}", details);
-
-				Db.Email(notify.FromEmail, om.Person, subject, message);
-			}
-		}
-		private string PrepareSummaryText2(CMSDataContext Db, OrganizationMember om, Settings setting)
-		{
-			var org = om.Organization;
-			var person = om.Person;
-			var sb = new StringBuilder();
-			sb.Append("<table>");
-			sb.AppendFormat("<tr><td>Org:</td><td>{0}</td></tr>\n", org.OrganizationName);
-			sb.AppendFormat("<tr><td>First:</td><td>{0}</td></tr>\n", person.PreferredName);
-			sb.AppendFormat("<tr><td>Last:</td><td>{0}</td></tr>\n", person.LastName);
-
-			foreach (var ask in setting.AskItems)
-			{
-				if (ask.Type == "AskDropdown")
-				{
-					var option = ((AskDropdown)ask).list.Where(mm => om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == mm.SmallGroup)).ToList();
-					if (option.Any())
-						sb.AppendFormat("<tr><td>{1}:</td><td>{0}</td></tr>\n", option.First().Description,
-										Util.PickFirst(((AskDropdown)ask).Label, "Options"));
-				}
-				else if (ask.Type == "AskCheckboxes")
-				{
-					var option = ((AskCheckboxes)ask).list.Where(mm => om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == mm.SmallGroup)).ToList();
-					if (option.Any())
-					{
-						var label = ((AskCheckboxes)ask).Label;
-						foreach (var m in option)
-						{
-							var row = "<tr><td>{0}</td><td>{1}</td></tr>\n".Fmt(label, m.Description);
-							sb.AppendFormat(row);
-							label = string.Empty;
-						}
-					}
-				}
-			}
-			sb.Append("</table>");
-			return sb.ToString();
-		}
+//		public void SendVolunteerReminders(bool sendall)
+//		{
+//			var Db = DbUtil.Db;
+//			var setting = RegSettings;
+//			var currmembers = from om in org.OrganizationMembers
+//							  where (om.Pending ?? false) == false
+//							  where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
+//							  where org.Attends.Any(a => (a.MeetingDate <= DateTime.Today.AddDays(7) || sendall)
+//								  && a.MeetingDate >= DateTime.Today
+//								  && (a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
+//								  && a.PeopleId == om.PeopleId)
+//							  select om;
+//
+//			var subject = Util.PickFirst(setting.ReminderSubject, "no subject");
+//			var message = Util.PickFirst(setting.ReminderBody, "no body");
+//			if (subject == "no subject" || message == "no body")
+//				throw new Exception("no subject or body");
+//			var notify = Db.StaffPeopleForOrg(org.OrganizationId).FirstOrDefault();
+//			if (notify == null)
+//				throw new Exception("no notify person");
+//
+//			foreach (var om in currmembers)
+//			{
+//				var q = from a in org.Attends
+//						where a.PeopleId == om.PeopleId
+//						where a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute
+//						where a.MeetingDate >= DateTime.Today
+//						orderby a.MeetingDate
+//						select a.MeetingDate;
+//				if (!q.Any())
+//					continue;
+//				var details = ViewExtensions2.RenderPartialViewToString(controller, "VolunteerCommitmentsSummary", q);
+//
+//				var OrganizationName = org.OrganizationName;
+//
+//				subject = Util.PickFirst(setting.ReminderSubject, "no subject");
+//				message = Util.PickFirst(setting.ReminderBody, "no body");
+//
+//				string Location = org.Location;
+//				message = OnlineRegModel.MessageReplacements(om.Person, null, OrganizationName, Location, message);
+//
+//				message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
+//				message = message.Replace("{details}", details.ToString());
+//
+//				Db.Email(notify.FromEmail, om.Person, subject, message);
+//			}
+//		}
 	}
 }

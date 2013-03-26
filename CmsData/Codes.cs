@@ -11,6 +11,7 @@ namespace CmsData.Codes
         public const int Visit = 10;
         public const int Enrollment = 70;
         public const int Contribution = 90;
+        public const int MainMenu = 97;
         public const int NewFamilyMember = 100;
     }
     public static class DecisionCode

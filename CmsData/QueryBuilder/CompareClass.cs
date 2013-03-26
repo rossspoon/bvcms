@@ -756,10 +756,10 @@ namespace CmsData
                         case FieldType.Integer:
                         case FieldType.IntegerSimple:
                         case FieldType.NullInteger:
-                            return Expressions.CompareConstant(parm,
+                            return Expressions.CompareIntConstant(parm,
                                        c.Field,
                                        CompType,
-                                       int.Parse(c.TextValue));
+                                       c.TextValue);
                         case FieldType.Date:
                         case FieldType.DateSimple:
                             if (c.Field == "DeceasedDate")

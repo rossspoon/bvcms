@@ -16,6 +16,7 @@ namespace CmsWeb.Models
         private static CodeValueModel cv = new CodeValueModel();
 
         public int index { get; set; }
+        public string context { get; set; }
         public string first { get; set; }
         public string goesby { get; set; }
         public string middle { get; set; }
@@ -39,17 +40,19 @@ namespace CmsWeb.Models
         public string country { get; set; }
 
         private DateTime? _Birthday;
+
         public DateTime? birthday
         {
             get
             {
                 DateTime dt;
-                if (!_Birthday.HasValue && dob != "na")
+                if (!_Birthday.HasValue && dob.NotEqual("na"))
                     if (Util.DateValid(dob, out dt))
                         _Birthday = dt;
                 return _Birthday;
             }
         }
+
         public int? age
         {
             get
@@ -59,42 +62,51 @@ namespace CmsWeb.Models
                 return null;
             }
         }
+
         public string genderdisplay
         {
             get { return cv.GenderCodesWithUnspecified().ItemValue(gender); }
         }
+
         public string marrieddisplay
         {
             get { return cv.MaritalStatusCodes99().ItemValue(marital); }
         }
+
         public IEnumerable<SelectListItem> TitleCodes()
         {
             return QueryModel.ConvertToSelect(cv.TitleCodes(), "Code");
         }
+
         public IEnumerable<SelectListItem> GenderCodes()
         {
             return QueryModel.ConvertToSelect(cv.GenderCodesWithUnspecified(), "Id");
         }
+
         public IEnumerable<SelectListItem> MaritalStatuses()
         {
             return QueryModel.ConvertToSelect(cv.MaritalStatusCodes99(), "Id");
         }
+
         public IEnumerable<SelectListItem> CampusCodes()
         {
             return QueryModel.ConvertToSelect(cv.AllCampuses0(), "Id");
         }
+
         public IEnumerable<SelectListItem> EntryPointCodes()
         {
             return QueryModel.ConvertToSelect(cv.EntryPoints(), "Id");
         }
+
         public IEnumerable<SelectListItem> StateCodes()
         {
             return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
         }
+
         public IEnumerable<SelectListItem> Countries()
         {
             var list = QueryModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
-            list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
+            list.Insert(0, new SelectListItem {Text = "(not specified)", Value = ""});
             return list;
         }
 
@@ -105,6 +117,7 @@ namespace CmsWeb.Models
 
         public int FamilyId { get; set; }
         private Family _family;
+
         public Family family
         {
             get
@@ -114,8 +127,10 @@ namespace CmsWeb.Models
                 return _family;
             }
         }
+
         public int? PeopleId { get; set; }
         private Person _Person;
+
         public Person person
         {
             get
@@ -134,19 +149,20 @@ namespace CmsWeb.Models
             if (!last.HasValue())
                 ModelState.AddModelError("name", "last name required");
 
-            if (!birthday.HasValue && dob != "na")
+            if (!birthday.HasValue && dob.NotEqual("na"))
                 ModelState.AddModelError("dob", "valid birthday (or \"na\")");
 
             var d = phone.GetDigits().Length;
-            if (d != 7 && d < 10 && phone != "na")
+            if (d != 7 && d < 10 && phone.NotEqual("na"))
                 ModelState.AddModelError("phone", "7 or 10+ digits (or \"na\")");
 
             int count = 0;
-            PeopleSearchModel.FindPerson(first, last, birthday ?? DateTime.MinValue, string.Empty, phone.GetDigits(), out count);
+            PeopleSearchModel.FindPerson(first, last, birthday ?? DateTime.MinValue, string.Empty, phone.GetDigits(),
+                                         out count);
             if (count > 0)
                 ModelState.AddModelError("name", "name/dob already exists in db");
 
-            if (!Util.ValidEmail(email) && email != "na")
+            if (!Util.ValidEmail(email) && email.NotEqual("na"))
                 ModelState.AddModelError("email", "valid email address (or \"na\")");
 
             if (gender == 99)
@@ -154,9 +170,6 @@ namespace CmsWeb.Models
 
             if (marital == 99)
                 ModelState.AddModelError("marital", "specify marital status");
-
-            if (entrypoint == 0)
-                ModelState.AddModelError("entrypoint", "specify entrypoint");
 
             if (checkaddress)
             {
@@ -169,21 +182,23 @@ namespace CmsWeb.Models
                     addrok = true;
                 if (zip.HasValue())
                     addrok = true;
-                if (city == "na" && state == "na" && zip == "na")
+                if (city.Equal("na") && state.Equal("na") && zip.Equal("na"))
                     addrok = true;
                 if (!addrok)
                     ModelState.AddModelError("zip", "city/state required or zip required (or \"na\" in all)");
 
                 if (ModelState.IsValid
-                    && address != "na" && city != "na" && state != "na"
-                    && (country == "United States" || !country.HasValue()))
+                    && address.NotEqual("na") && city.NotEqual("na") && state.NotEqual("na")
+                    && (country.Equal("United States") || !country.HasValue()))
                 {
                     var r = AddressVerify.LookupAddress(address, address2, city, state, zip);
                     if (r.Line1 != "error")
                     {
                         if (!r.found)
                         {
-                            ModelState.AddModelError("zip", r.address + ", if your address will not validate, change the country to 'USA, Not Validated'");
+                            ModelState.AddModelError("zip",
+                                                     r.address +
+                                                     ", if your address will not validate, change the country to 'USA, Not Validated'");
                             return;
                         }
                         if (r.Line1 != address)
@@ -215,7 +230,8 @@ namespace CmsWeb.Models
                 }
             }
         }
-        internal void AddPerson(int originid, int? entrypointid)
+
+        internal void AddPerson(int originid, int? entrypointid, int? campusid)
         {
             Family f;
             string na = "na";
@@ -223,14 +239,14 @@ namespace CmsWeb.Models
                 f = family;
             else
                 f = new Family
-                {
-                    HomePhone = homephone.GetDigits(),
-                    AddressLineOne = address.Disallow(na),
-                    AddressLineTwo = address2,
-                    CityName = city.Disallow(na),
-                    StateCode = state.Disallow(na),
-                    ZipCode = zip.Disallow(na),
-                };
+                        {
+                            HomePhone = homephone.GetDigits(),
+                            AddressLineOne = address.Disallow(na),
+                            AddressLineTwo = address2,
+                            CityName = city.Disallow(na),
+                            StateCode = state.Disallow(na),
+                            ZipCode = zip.Disallow(na),
+                        };
 
             if (goesby != null)
                 goesby = goesby.Trim();
@@ -239,22 +255,26 @@ namespace CmsWeb.Models
                 position = PositionInFamily.PrimaryAdult;
             if (age >= 18)
                 if (f.People.Count(per =>
-                     per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
-                     < 2)
+                                   per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
+                    < 2)
                     position = PositionInFamily.PrimaryAdult;
                 else
                     position = PositionInFamily.SecondaryAdult;
 
             _Person = Person.Add(f, position,
-                null, first.Trim(), goesby, last.Trim(), dob, false, gender,
-                    originid, entrypointid);
+                                 null, first.Trim(), goesby, last.Trim(), dob, false, gender,
+                                 originid, entrypointid);
             if (title.HasValue())
                 person.TitleCode = title;
             person.EmailAddress = email.Disallow(na);
             person.MaritalStatusId = marital;
             person.SuffixCode = suffix;
             person.MiddleName = middle;
-            person.CampusId = Util.PickFirst(campus.ToString(), DbUtil.Db.Setting("DefaultCampusId", "")).ToInt2();
+            if (campusid == 0)
+                campusid = null;
+            person.CampusId = Util.PickFirst(campusid.ToString(), DbUtil.Db.Setting("DefaultCampusId", "")).ToInt2();
+            if (person.CampusId == 0)
+                person.CampusId = null;
 
             person.CellPhone = phone.GetDigits();
             DbUtil.Db.SubmitChanges();
@@ -273,6 +293,7 @@ namespace CmsWeb.Models
             state = family.StateCode;
             zip = family.ZipCode;
         }
+
         public string ToolTip
         {
             get
@@ -289,9 +310,11 @@ namespace CmsWeb.Models
                     marrieddisplay);
             }
         }
+
         public string CityStateZip
         {
             get { return "{0}, {1} {2}".Fmt(city, state, zip); }
         }
+
     }
 }

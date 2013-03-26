@@ -53,6 +53,11 @@ namespace CmsWeb.Areas.Main.Controllers
             DbUtil.LogActivity("Viewing Meeting for {0}".Fmt(m.meeting.Organization.OrganizationName));
             return View(m);
         }
+        public ActionResult Names(string term)
+        {
+            var n = PostBundleModel.Names(term, 10).ToArray();
+            return Json(n, JsonRequestBehavior.AllowGet);
+        }
         private ActionResult NotAllowed(string error, string name)
         {
             DbUtil.LogActivity("Trying to view Meeting for Org ({0})".Fmt(name));

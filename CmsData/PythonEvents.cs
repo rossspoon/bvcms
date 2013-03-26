@@ -1,8 +1,12 @@
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
+using CmsData.Codes;
 using UtilityExtensions;
 using IronPython.Hosting;
 using System;
+using System.Text;
 
 namespace CmsData
 {
@@ -26,7 +30,6 @@ namespace CmsData
 			instance = Event();
 		}
 
-
         // List of api functions to call from Python
 
 		public void CreateTask(int forPeopleId, Person p, string description)
@@ -46,11 +49,23 @@ namespace CmsData
 		{
 			p.UpdateValue(field, value);
 		}
+        public void EmailReminders(int orgId)
+        {
+            var org = Db.LoadOrganizationById(orgId);
+            var m = new API.APIOrganization(Db);
+            if (org.RegistrationTypeId == RegistrationTypeCode.ChooseVolunteerTimes)
+                m.SendVolunteerReminders(orgId, false);
+            else
+                m.SendEventReminders(orgId);
+        }
+
+        public int DayOfWeek { get { return DateTime.Today.DayOfWeek.ToInt(); } }
+	    public DateTime DateTime { get { return DateTime.Now; } }
 
 	    public void Email(string savedquery, int queuedBy, string fromaddr, string fromname, string subject, string body, bool transactional = false)
 	    {
             var from = new MailAddress(fromaddr, fromname);
-			var qB = Db.QueryBuilderClauses.FirstOrDefault(c => c.Description == savedquery && c.IsPublic && c.SavedBy == "public");
+			var qB = Db.QueryBuilderClauses.FirstOrDefault(c => c.Description == savedquery && c.SavedBy == "public");
 	        if (qB == null)
 	            return;
             var q = Db.PeopleQuery(qB.QueryId);
@@ -69,7 +84,7 @@ namespace CmsData
 	    public void EmailContent(string savedquery, int queuedBy, string fromaddr, string fromname, string subject, string content)
 	    {
             var from = new MailAddress(fromaddr, fromname);
-			var qB = Db.QueryBuilderClauses.FirstOrDefault(cc => cc.Description == savedquery && cc.IsPublic && cc.SavedBy == "public");
+			var qB = Db.QueryBuilderClauses.FirstOrDefault(cc => cc.Description == savedquery && cc.SavedBy == "public");
 	        if (qB == null)
 	            return;
             var q = Db.PeopleQuery(qB.QueryId);

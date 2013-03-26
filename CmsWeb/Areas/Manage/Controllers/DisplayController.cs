@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -91,7 +92,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                         coll.Add("sHTML", body.Replace("\r", "").Replace("\n", "").Replace("\t", ""));
 
                         var wc = new WebClient();
-                        var resp = wc.UploadValues(WebConfigurationManager.AppSettings["CreateThumbnailService"], "POST", coll);
+                        var resp = wc.UploadValues(ConfigurationManager.AppSettings["CreateThumbnailService"], "POST", coll);
 
                         ii = ImageData.DbUtil.Db.Images.FirstOrDefault(i => i.Id == content.ThumbID);
                         if (ii != null) 

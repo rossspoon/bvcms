@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
@@ -133,6 +134,19 @@ namespace CmsWeb.Areas.Public.Controllers
 				return Content(@"<ChildOrgs status=""error"">" + ret.Substring(1) + "</ChildOrgs>");
 			DbUtil.LogActivity("APIOrganization ChildOrgs");
 			return Content(new APIOrganization(DbUtil.Db).ChildOrgs(id, extravalue1, extravalue2), "text/xml");
+		}
+		public ActionResult EmailReminders(int id)
+		{
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<EmailReminders status=""error"">" + ret.Substring(1) + "</EmailReminders>");
+			DbUtil.LogActivity("APIOrganization EmailReminders");
+		    var URL = Util.ServerLink("/Organization/Reminders/" + id);
+		    var wc = new WebClient();
+		    var content = wc.UploadString(URL, "");
+            if (content == "ok")
+    		    return Content(content);
+            return Content(@"<EmailReminders status=""error"">" + content + "</EmailReminders>");
 		}
     }
 }
