@@ -154,20 +154,27 @@ namespace CmsWeb.Areas.Main.Controllers
                         select e).Single();
 
             // Check for existing SSN
-            if (sSSN.Substring(0, 3) == "XXX")
+            if (sSSN != null && sSSN.Length > 1)
             {
-                sSSN = Util.Decrypt(p.Ssn, "People");
+                if (sSSN.Substring(0, 1) == "X")
+                {
+                    sSSN = Util.Decrypt(p.Ssn, "People");
+                }
+                else
+                {
+                    sSSN = sSSN.Replace("-", "").Replace(" ", ""); ;
+                    p.Ssn = Util.Encrypt(sSSN, "People");
+                }
             }
             else
             {
-                sSSN.Replace("-", "");
-                p.Ssn = Util.Encrypt(sSSN, "People");
+                sSSN = Util.Decrypt(p.Ssn, "People");
             }
 
             // Check for existing DLN and DL State
-            if (sDLN != null)
+            if (sDLN != null && sDLN.Length > 1)
             {
-                if (sDLN.Substring(0, 3) == "XXX")
+                if (sDLN.Substring(0, 1) == "X")
                 {
                     sDLN = Util.Decrypt(p.Dln, "People");
                     iStateID = p.DLStateID ?? 0;
