@@ -245,6 +245,12 @@ namespace CmsData
 		
 		private string _Name;
 		
+		private string _Ssn;
+		
+		private string _Dln;
+		
+		private int? _DLStateID;
+		
    		
    		private EntitySet< Contactee> _contactsHad;
 		
@@ -338,6 +344,8 @@ namespace CmsData
 		private EntityRef< Organization> _BFClass;
 		
 		private EntityRef< EnvelopeOption> _EnvelopeOption;
+		
+		private EntityRef< BackgroundCheckMVRCode> _BackgroundCheckMVRCode;
 		
 		private EntityRef< BaptismStatus> _BaptismStatus;
 		
@@ -726,6 +734,15 @@ namespace CmsData
 		partial void OnNameChanging(string value);
 		partial void OnNameChanged();
 		
+		partial void OnSsnChanging(string value);
+		partial void OnSsnChanged();
+		
+		partial void OnDlnChanging(string value);
+		partial void OnDlnChanged();
+		
+		partial void OnDLStateIDChanging(int? value);
+		partial void OnDLStateIDChanged();
+		
     #endregion
 		public Person()
 		{
@@ -822,6 +839,8 @@ namespace CmsData
 			this._BFClass = default(EntityRef< Organization>); 
 			
 			this._EnvelopeOption = default(EntityRef< EnvelopeOption>); 
+			
+			this._BackgroundCheckMVRCode = default(EntityRef< BackgroundCheckMVRCode>); 
 			
 			this._BaptismStatus = default(EntityRef< BaptismStatus>); 
 			
@@ -3438,6 +3457,75 @@ namespace CmsData
 		}
 
 		
+		[Column(Name="SSN", UpdateCheck=UpdateCheck.Never, Storage="_Ssn", DbType="nchar(50)")]
+		public string Ssn
+		{
+			get { return this._Ssn; }
+
+			set
+			{
+				if (this._Ssn != value)
+				{
+				
+                    this.OnSsnChanging(value);
+					this.SendPropertyChanging();
+					this._Ssn = value;
+					this.SendPropertyChanged("Ssn");
+					this.OnSsnChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="DLN", UpdateCheck=UpdateCheck.Never, Storage="_Dln", DbType="nchar(75)")]
+		public string Dln
+		{
+			get { return this._Dln; }
+
+			set
+			{
+				if (this._Dln != value)
+				{
+				
+                    this.OnDlnChanging(value);
+					this.SendPropertyChanging();
+					this._Dln = value;
+					this.SendPropertyChanged("Dln");
+					this.OnDlnChanged();
+				}
+
+			}
+
+		}
+
+		
+		[Column(Name="DLStateID", UpdateCheck=UpdateCheck.Never, Storage="_DLStateID", DbType="int")]
+		public int? DLStateID
+		{
+			get { return this._DLStateID; }
+
+			set
+			{
+				if (this._DLStateID != value)
+				{
+				
+					if (this._BackgroundCheckMVRCode.HasLoadedOrAssignedValue)
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				
+                    this.OnDLStateIDChanging(value);
+					this.SendPropertyChanging();
+					this._DLStateID = value;
+					this.SendPropertyChanged("DLStateID");
+					this.OnDLStateIDChanged();
+				}
+
+			}
+
+		}
+
+		
     #endregion
         
     #region Foreign Key Tables
@@ -3963,6 +4051,48 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("EnvelopeOption");
+				}
+
+			}
+
+		}
+
+		
+		[Association(Name="FK_People_BackgroundCheckMVRCodes", Storage="_BackgroundCheckMVRCode", ThisKey="DLStateID", IsForeignKey=true)]
+		public BackgroundCheckMVRCode BackgroundCheckMVRCode
+		{
+			get { return this._BackgroundCheckMVRCode.Entity; }
+
+			set
+			{
+				BackgroundCheckMVRCode previousValue = this._BackgroundCheckMVRCode.Entity;
+				if (((previousValue != value) 
+							|| (this._BackgroundCheckMVRCode.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if (previousValue != null)
+					{
+						this._BackgroundCheckMVRCode.Entity = null;
+						previousValue.People.Remove(this);
+					}
+
+					this._BackgroundCheckMVRCode.Entity = value;
+					if (value != null)
+					{
+						value.People.Add(this);
+						
+						this._DLStateID = value.Id;
+						
+					}
+
+					else
+					{
+						
+						this._DLStateID = default(int?);
+						
+					}
+
+					this.SendPropertyChanged("BackgroundCheckMVRCode");
 				}
 
 			}

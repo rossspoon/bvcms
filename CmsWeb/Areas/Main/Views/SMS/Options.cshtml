@@ -8,6 +8,20 @@
     var groups = TwilioHelper.getAvailableLists(Util.UserId);
     var count = TwilioHelper.getSendCount(ViewBag.QBID);
 }
+@section scripts
+{
+    <script type="text/javascript">
+        var maxSMS = 160;
+
+        $(document).ready(function () {
+            $("#sMessage").on("keydown", function (event) {
+                if ($(this).val().length >= maxSMS)
+                    $(this).val($(this).val().substring(0, maxSMS));
+                $("#charCount").html(($(this).val().length + "/" + maxSMS));
+            });
+        });
+    </script>
+}
 <br />
 <b>Sending to @(count) @( count == 1 ? "person" : "people" )</b>
 <form action="/SMS/Send" method="post">
@@ -18,7 +32,8 @@
     <input name="sTitle" size="40" /><br />
     <br />
     <b>Message:</b><br />
-    <textarea name="sMessage" cols="40" rows="4"></textarea><br />
+    <textarea id="sMessage" name="sMessage" cols="40" rows="4"></textarea><br />
+    <div id="charCount">0/160</div>
     <br />
     <input type="submit" value="Send SMS" />
 </form>

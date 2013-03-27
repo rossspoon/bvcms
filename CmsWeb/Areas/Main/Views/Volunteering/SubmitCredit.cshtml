@@ -1,4 +1,5 @@
 ﻿@using CmsData;
+@using UtilityExtensions;
 @model CmsData.BackgroundCheck
 @{
     var s = from e in DbUtil.Db.BackgroundCheckMVRCodes
@@ -61,7 +62,7 @@
             </tr>
             <tr>
                 <td class="right" style="background-color:#EFF3FB; font-weight:bold;">SSN:</td>
-                <td><input name="sSSN" size="12" /></td>
+                <td><input name="sSSN" size="12" value="@( Util.getMasked( Util.Decrypt( Model.Person.Ssn, "People" ), 4, true, "XXX-XX-" ) )" /></td>
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
