@@ -114,7 +114,7 @@ namespace CmsWeb.Models.OrganizationPage
             if (NameFilter.HasValue())
             {
                 string First, Last;
-                Person.NameSplit(NameFilter, out First, out Last);
+                Util.NameSplit(NameFilter, out First, out Last);
                 if (First.HasValue())
                     _members = from om in _members
                                let p = om.Person

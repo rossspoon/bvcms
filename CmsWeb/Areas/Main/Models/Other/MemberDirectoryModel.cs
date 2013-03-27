@@ -155,5 +155,11 @@ namespace CmsWeb.Models
                 return new MvcHtmlString("<div>{0}</div>\n".Fmt(s));
             return null;
         }
+        public MvcHtmlString AddEmailDiv(string s)
+        {
+            if (s.HasValue())
+                return new MvcHtmlString("<div><a href='mailto:{0}'>{0}</a></div>\n".Fmt(s));
+            return null;
+        }
     }
 }

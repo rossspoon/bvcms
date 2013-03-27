@@ -21,10 +21,10 @@
             <tr>
                 <td>Program</td>
                 <td>Division</td>
-                <td>Status</td>
                 <td>Members</td>
                 <td>Previous</td>
                 <td>Organization</td>
+                <td>Status</td>
             </tr>
         </thead>
         <tbody>
@@ -39,10 +39,13 @@
                         <span class="@(o.Division == prevdiv ? "dim" : "")">@o.Division</span>
                     </a>
                 </td>
-                <td>@o.OrgStatus</td>
                 <td>@o.Members</td>
                 <td>@o.Previous</td>
-                <td>@Html.ActionLink(o.Organization.HasValue() ? o.Organization : "noname", "Index", "Organization", new { area = "Main", Id=o.OrgId })</td>
+                <td><a href="/Organization/Index/@o.OrgId">
+                        @(o.Organization.HasValue() ? o.Organization : "noname")
+                    </a>
+                </td>
+                <td>@o.OrgStatus</td>
             </tr>
             prevdiv = o.Division;
             prevprog = o.Program;

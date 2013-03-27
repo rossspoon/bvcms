@@ -416,7 +416,7 @@ namespace CmsData
         {
             get { return Util.FullEmail(EmailAddress2, Name); }
         }
-        public static void NameSplit(string name, out string First, out string Last)
+        private static void NameSplit(string name, out string First, out string Last)
         {
             First = "";
             Last = "";

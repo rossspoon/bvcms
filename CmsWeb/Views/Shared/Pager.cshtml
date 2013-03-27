@@ -1,4 +1,7 @@
 ﻿@model CmsWeb.Models.PagerModel
+@{
+    var targetperson = Util2.TargetLinkPeople ? "checked='checked'" : "";
+}
 <table width="100%">
     <tr>
         <td class="pager">
@@ -41,7 +44,7 @@
             <span class="page-numbers next">per page</span>
 @if(Model.ToggleTarget)
 {
-            @:&nbsp;<input type="checkbox" name="toggletarget" />Toggle Link Target
+            @:&nbsp;<input type="checkbox" name="toggletarget" @targetperson />Toggle Link Target
 }
         </td>
     </tr>

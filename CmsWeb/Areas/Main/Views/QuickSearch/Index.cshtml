@@ -1,10 +1,12 @@
 ﻿@using System.Web.Optimization
+@using CmsData
 @using CmsWeb.Models
 @using CmsWeb
 @model QuickSearchModel
 @{
 	ViewBag.Title = "Quick Search";
 	Layout = "~/Views/Shared/SiteLayout.cshtml";
+    var target = Util2.TargetLinkPeople ? "target='people'" : "";
 }
 @section scripts
 {
@@ -37,7 +39,7 @@ else
 { 
 	<tr>
 		<td><img src="/images/individual.gif" width="10px" height="12px" />
-			<a href='/Person/Index/@p.PeopleId' class="target">@p.Name</a>
+			<a href='/Person/Index/@p.PeopleId' class="target" @target>@p.Name</a>
 		</td>
 		<td>
 			@p.MemberStatus<br />

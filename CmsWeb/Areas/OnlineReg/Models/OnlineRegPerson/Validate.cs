@@ -355,11 +355,11 @@ Please search with a different email, phone, or birthday.";
 						else
 						{
 							string mfirst, mlast;
-							Person.NameSplit(mname, out mfirst, out mlast);
+							Util.NameSplit(mname, out mfirst, out mlast);
 							if (mname.HasValue() && !mfirst.HasValue())
 								modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].mname), "provide first and last names");
 							string ffirst, flast;
-							Person.NameSplit(fname, out ffirst, out flast);
+							Util.NameSplit(fname, out ffirst, out flast);
 							if (fname.HasValue() && !ffirst.HasValue())
 								modelState.AddModelError(Parent.GetNameFor(mm => mm.List[i].fname), "provide first and last names");
 						}

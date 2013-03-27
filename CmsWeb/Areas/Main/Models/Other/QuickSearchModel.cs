@@ -33,7 +33,7 @@ namespace CmsWeb.Models
 		public QuickSearchModel(string t)
 		{
 			text = t ?? "";
-			NameSplit(text, out First, out Last);
+			Util.NameSplit(text, out First, out Last);
 			Db = DbUtil.Db;
 			people = PeopleList().ToList();
 			orgs = Orglist().ToList();
@@ -117,18 +117,6 @@ namespace CmsWeb.Models
 			return OrgSearchModel.OrganizationList(qo.Take(CountMax), null, null);
 		}
 
-		private static void NameSplit(string name, out string First, out string Last)
-		{
-			var a = name.Split(' ');
-			First = "";
-			if (a.Length > 1)
-			{
-				First = a[0];
-				Last = a[1];
-			}
-			else
-				Last = a[0];
-		}
         private IEnumerable<MailingController.PersonInfo> PeopleList(IQueryable<Person> query)
         {
             var q = from p in query

@@ -177,7 +177,7 @@ namespace CmsData
             }
         }
 
-        [Serializable] 
+        [Serializable]
         public class MostRecentItem
         {
             public int Id { get; set; }
@@ -213,6 +213,13 @@ namespace CmsData
                     HttpContext.Current.Session[STR_MostRecentPeople] = mru;
                 }
                 return mru;
+            }
+        }
+        public static bool TargetLinkPeople
+        {
+            get
+            {
+                return DbUtil.Db.UserPreference("TargetLinkPeople", "false").ToBool();
             }
         }
     }

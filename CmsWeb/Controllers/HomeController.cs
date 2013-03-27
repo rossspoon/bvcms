@@ -178,6 +178,14 @@ namespace CmsWeb.Controllers
                 return Redirect(Request.UrlReferrer.OriginalString);
             return Redirect("/");
         }
+        public ActionResult TargetPerson(bool id)
+        {
+            DbUtil.Db.SetUserPreference("TargetLinkPeople", id ? "false" : "true");
+            DbUtil.Db.SubmitChanges();
+            if (Request.UrlReferrer != null)
+                return Redirect(Request.UrlReferrer.OriginalString);
+            return Redirect("/");
+        }
     }
 }
 

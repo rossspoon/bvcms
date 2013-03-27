@@ -1559,6 +1559,18 @@ namespace UtilityExtensions
             dt = dt.AddHours(TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours);
             return dt;
         }
+	    public static void NameSplit(string name, out string First, out string Last)
+		{
+			var a = name.Split(' ');
+			First = "";
+			if (a.Length > 1)
+			{
+				First = a[0];
+				Last = a[1];
+			}
+			else
+				Last = a[0];
+		}
     }
     public class EventArg<T> : EventArgs
     {

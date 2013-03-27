@@ -202,7 +202,7 @@ This will allow you to mark them as members.
 <thead>
     <tr>
         <th>Attended</th>
-        <th class="showreg">Commitment</th>
+        <th class="showreg" style="display:none">Commitment</th>
         <th><a href="#" id="sortbyname">Name</a></th>
         <th>Current Member Type</th>
         <th>Attend Member Type</th>
@@ -214,7 +214,7 @@ This will allow you to mark them as members.
 @foreach (var a in Model.Attends())
 {
     <tr rowtype="@a.Member" @(!a.Member ? "class=visitor" : "")>
-        <td class="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" disabled="disabled" /></td>
+        <td class="center"><input type="checkbox" pid="@a.PeopleId" @(a.Attended ? "checked=checked" : "") class="atck" onclick="return false" onkeydown="return false"  /></td>
         <td class="showreg" style="display:none">
             <span id='c@(Model.meeting.MeetingId)_@(a.PeopleId)' class='clickSelect rgck commitment'>@a.Commitment</span>
         </td>

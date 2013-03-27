@@ -45,8 +45,8 @@ Count: @Model.Count().ToString("n0") @(Model.Sort == "Birthday" ? "people" : "fa
                     }
                 </td>
                 <td>
-                    @Model.AddDiv(m.Email)
-                    @Model.AddDiv(m.Email2)
+                    @Model.AddEmailDiv(m.Email)
+                    @Model.AddEmailDiv(m.Email2)
                 </td>
             </tr>
         }

@@ -49,7 +49,7 @@ namespace CmsWeb.Models
             if (name.HasValue())
             {
                 string First, Last;
-                Person.NameSplit(name, out First, out Last);
+                Util.NameSplit(name, out First, out Last);
                 if (First.HasValue())
                     people = from p in people
                             where (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)

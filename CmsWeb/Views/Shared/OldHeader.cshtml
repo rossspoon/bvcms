@@ -2,6 +2,7 @@
     var access = User.IsInRole("Access");
     var onqb = (string) ViewData["OnQueryBuilder"] == "true";
     var headimage = DbUtil.HeaderImage("");
+    var targetperson = DbUtil.Db.UserPreference("TargetLinkPeople", "false").ToBool();
     if (!headimage.HasValue())
     {
         headimage = @"<img src=""/Content/bvcms132x55.png"" width=""132"" height=""55"" />";
@@ -28,6 +29,7 @@
                                     <li><a href="/Account/ChangePassword">Change Password</a></li>
                                     <li><a id="cleartag" href="#">Empty Active Tag</a></li>
                                     <li><a href="/Tags">Manage Active Tag</a></li>
+                                    <li><a href="/Home/TargetPerson/@targetperson.ToString()">@(targetperson ? "Target Same Tab" : "Target People Tag")</a></li>
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <li><a href="/Admin/Activity.aspx">Activity Log</a></li>

@@ -1,8 +1,10 @@
 ﻿@model System.Data.SqlClient.SqlDataReader
+@using CmsData
 @using UtilityExtensions
 @{
     ViewBag.Title = "ExtraValuesGrid";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
+    var target = Util2.TargetLinkPeople ? "target='people'" : "";
 }
 @section head
 {
@@ -45,7 +47,7 @@
 @while (Model.Read())
 {
     <tr>
-        <td><a class="target" href="/Person/Index/@Model.GetValue(0)" target="person">@Model.GetValue(1)</a></td>
+        <td><a class="target" href="/Person/Index/@Model.GetValue(0)" @target>@Model.GetValue(1)</a></td>
     @for (var c = 2; c < Model.FieldCount; c++)
     {
         var v = Model.GetValue(c).ToString();

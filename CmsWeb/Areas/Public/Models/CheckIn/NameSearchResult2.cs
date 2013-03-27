@@ -32,7 +32,7 @@ namespace CmsWeb.Models
                 string first;
                 string last;
                 var q = DbUtil.Db.People.Select(p => p);
-                Person.NameSplit(name, out first, out last);
+                Util.NameSplit(name, out first, out last);
                 if (first.HasValue())
                     q = from p in q
                         where (p.LastName.StartsWith(last) || p.MaidenName.StartsWith(last))

@@ -1,5 +1,10 @@
-﻿@using CmsWeb.Models
+﻿@using CmsData
+@using CmsWeb.Models
+@using UtilityExtensions
 @model PeopleSearchModel
+@{
+    var target = Util2.TargetLinkPeople ? "target='people'" : "";
+}
 <table id="results" class="grid">
 <thead>
 	<tr><td colspan="6">@Html.Partial("Pager2", Model)
@@ -22,7 +27,7 @@
 { 
 	<tr>
 		<td><img src="/images/individual.gif" width="10px" height="12px" />
-			<a href='/Person/Index/@p.PeopleId' class="target">@p.Name</a>
+			<a href='/Person/Index/@p.PeopleId' class="target" @target>@p.Name</a>
 		</td>
 		<td>
 			@p.MemberStatus<br />

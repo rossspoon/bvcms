@@ -40,6 +40,7 @@ namespace CmsWeb.Areas.Public.Controllers
                 return Content("not authorized");
             Response.NoCache();
 
+            DbUtil.LogActivity("iphone search '{0}'".Fmt(name));
             var m = new SearchModel(name, comm, addr);
             return new SearchResult(m.PeopleList(), m.Count);
         }
@@ -84,13 +85,6 @@ namespace CmsWeb.Areas.Public.Controllers
                 };
                 DbUtil.Db.Meetings.InsertOnSubmit(meeting);
                 DbUtil.Db.SubmitChanges();
-
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
-                    CMSRoleProvider.provider.GetDevelopers(),
-                    "meeting created with iphone on " + Util.Host,
-                    "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
-                        .Fmt(meeting.Organization.OrganizationName,
-                        Util.ResolveServerUrl("/Meeting/Index/" + meeting.MeetingId), u.Name));
             }
             return new RollListResult(meeting);
         }
@@ -190,15 +184,6 @@ namespace CmsWeb.Areas.Public.Controllers
             else if (om != null && !Member)
                 om.Drop(DbUtil.Db, addToHistory: true);
             DbUtil.Db.SubmitChanges();
-            //if (om != null && om.Organization.EmailAddresses.HasValue())
-            //{
-            //    var smtp = Util.Smtp();
-            //    Util.Email(smtp, null, om.Organization.EmailAddresses, 
-            //        "cms check-in, join class " + Util.CmsHost, 
-            //        "<a href='{0}/Person/Index/{1}'>{2}</a> joined {3}".Fmt( 
-            //            Util.ServerLink("/Person/Index/" + om.PeopleId), 
-            //            om.PeopleId, om.Person.Name, om.Organization.OrganizationName));
-            //}
             return Content("OK");
         }
         private static string Trim(string s)
@@ -256,12 +241,6 @@ namespace CmsWeb.Areas.Public.Controllers
                                where s.SchedDay == (int)dt.DayOfWeek
                                select s.AttendCreditId).SingleOrDefault();
 				meeting.AttendCreditId = acr;
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
-                    CMSRoleProvider.provider.GetDevelopers(),
-                    "meeting created with iphone on {0}".Fmt(Util.Host),
-                    "{0} <a href='{1}'>meeting</a> created by {2}<br/>"
-                        .Fmt(meeting.Organization.OrganizationName,
-                        Util.ResolveServerUrl("/Meeting/Index/" + meeting.MeetingId)));
             }
             Attend.RecordAttendance(PeopleId, meeting.MeetingId, Present);
             DbUtil.Db.UpdateMeetingCounters(id);
