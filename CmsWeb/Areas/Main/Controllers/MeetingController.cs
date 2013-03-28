@@ -55,8 +55,8 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult Names(string term)
         {
-            var n = PostBundleModel.Names(term, 10).ToArray();
-            return Json(n, JsonRequestBehavior.AllowGet);
+            var q = MeetingModel.Names(term, 10).ToList();
+            return Json(q, JsonRequestBehavior.AllowGet);
         }
         private ActionResult NotAllowed(string error, string name)
         {

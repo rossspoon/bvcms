@@ -206,10 +206,6 @@ namespace CmsWeb.Models
                             "{0} tried to login at {1}".Fmt(userName, Util.Now));
                     return problem;
                 }
-                DbUtil.Db.EmailRedacted(DbUtil.AdminMail,
-                    CMSRoleProvider.provider.GetDevelopers(),
-                    "{0} is being impersonated on {1}".Fmt(user.Username, Util.Host),
-                    Util.Now.ToString());
             }
             return user;
         }

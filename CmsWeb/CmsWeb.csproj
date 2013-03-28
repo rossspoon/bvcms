@@ -1573,6 +1573,7 @@
     <Content Include="Areas\People\Views\Person\MemberProfile.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\DateTimePicker.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\OrganizationStructure.cshtml" />
+    <Content Include="Areas\Main\Views\Volunteering\DialogDelete.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

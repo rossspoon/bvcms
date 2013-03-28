@@ -18,11 +18,13 @@ namespace CmsData.View
 		
 		private int _PeopleId;
 		
-		private DateTime? _Lastattend;
+		private string _Name;
 		
-		private decimal? _Attendpct;
+		private DateTime _Lastattend;
 		
-		private string _Attendstr;
+		private decimal? _AttendPct;
+		
+		private string _AttendStr;
 		
 		private string _Attendtype;
 		
@@ -52,8 +54,25 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="lastattend", Storage="_Lastattend", DbType="datetime")]
-		public DateTime? Lastattend
+		[Column(Name="Name", Storage="_Name", DbType="varchar(126)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+
+			set
+			{
+				if (this._Name != value)
+					this._Name = value;
+			}
+
+		}
+
+		
+		[Column(Name="lastattend", Storage="_Lastattend", DbType="datetime NOT NULL")]
+		public DateTime Lastattend
 		{
 			get
 			{
@@ -69,35 +88,35 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="attendpct", Storage="_Attendpct", DbType="real")]
-		public decimal? Attendpct
+		[Column(Name="AttendPct", Storage="_AttendPct", DbType="real")]
+		public decimal? AttendPct
 		{
 			get
 			{
-				return this._Attendpct;
+				return this._AttendPct;
 			}
 
 			set
 			{
-				if (this._Attendpct != value)
-					this._Attendpct = value;
+				if (this._AttendPct != value)
+					this._AttendPct = value;
 			}
 
 		}
 
 		
-		[Column(Name="attendstr", Storage="_Attendstr", DbType="varchar(200)")]
-		public string Attendstr
+		[Column(Name="AttendStr", Storage="_AttendStr", DbType="varchar(200)")]
+		public string AttendStr
 		{
 			get
 			{
-				return this._Attendstr;
+				return this._AttendStr;
 			}
 
 			set
 			{
-				if (this._Attendstr != value)
-					this._Attendstr = value;
+				if (this._AttendStr != value)
+					this._AttendStr = value;
 			}
 
 		}

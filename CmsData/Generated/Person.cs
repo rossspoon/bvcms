@@ -345,8 +345,6 @@ namespace CmsData
 		
 		private EntityRef< EnvelopeOption> _EnvelopeOption;
 		
-		private EntityRef< BackgroundCheckMVRCode> _BackgroundCheckMVRCode;
-		
 		private EntityRef< BaptismStatus> _BaptismStatus;
 		
 		private EntityRef< BaptismType> _BaptismType;
@@ -839,8 +837,6 @@ namespace CmsData
 			this._BFClass = default(EntityRef< Organization>); 
 			
 			this._EnvelopeOption = default(EntityRef< EnvelopeOption>); 
-			
-			this._BackgroundCheckMVRCode = default(EntityRef< BackgroundCheckMVRCode>); 
 			
 			this._BaptismStatus = default(EntityRef< BaptismStatus>); 
 			
@@ -3457,7 +3453,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="SSN", UpdateCheck=UpdateCheck.Never, Storage="_Ssn", DbType="nchar(50)")]
+		[Column(Name="SSN", UpdateCheck=UpdateCheck.Never, Storage="_Ssn", DbType="varchar(50)")]
 		public string Ssn
 		{
 			get { return this._Ssn; }
@@ -3479,7 +3475,7 @@ namespace CmsData
 		}
 
 		
-		[Column(Name="DLN", UpdateCheck=UpdateCheck.Never, Storage="_Dln", DbType="nchar(75)")]
+		[Column(Name="DLN", UpdateCheck=UpdateCheck.Never, Storage="_Dln", DbType="varchar(75)")]
 		public string Dln
 		{
 			get { return this._Dln; }
@@ -3510,9 +3506,6 @@ namespace CmsData
 			{
 				if (this._DLStateID != value)
 				{
-				
-					if (this._BackgroundCheckMVRCode.HasLoadedOrAssignedValue)
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 				
                     this.OnDLStateIDChanging(value);
 					this.SendPropertyChanging();
@@ -4051,48 +4044,6 @@ namespace CmsData
 					}
 
 					this.SendPropertyChanged("EnvelopeOption");
-				}
-
-			}
-
-		}
-
-		
-		[Association(Name="FK_People_BackgroundCheckMVRCodes", Storage="_BackgroundCheckMVRCode", ThisKey="DLStateID", IsForeignKey=true)]
-		public BackgroundCheckMVRCode BackgroundCheckMVRCode
-		{
-			get { return this._BackgroundCheckMVRCode.Entity; }
-
-			set
-			{
-				BackgroundCheckMVRCode previousValue = this._BackgroundCheckMVRCode.Entity;
-				if (((previousValue != value) 
-							|| (this._BackgroundCheckMVRCode.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if (previousValue != null)
-					{
-						this._BackgroundCheckMVRCode.Entity = null;
-						previousValue.People.Remove(this);
-					}
-
-					this._BackgroundCheckMVRCode.Entity = value;
-					if (value != null)
-					{
-						value.People.Add(this);
-						
-						this._DLStateID = value.Id;
-						
-					}
-
-					else
-					{
-						
-						this._DLStateID = default(int?);
-						
-					}
-
-					this.SendPropertyChanged("BackgroundCheckMVRCode");
 				}
 
 			}

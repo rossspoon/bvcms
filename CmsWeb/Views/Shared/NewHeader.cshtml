@@ -2,6 +2,7 @@
     var access = User.IsInRole("Access");
     var onqb = (string)ViewData["OnQueryBuilder"] == "true";
     var headimage = DbUtil.HeaderImage("");
+    var targetperson = DbUtil.Db.UserPreference("TargetLinkPeople", "false").ToBool();
     if (!headimage.HasValue())
     {
         headimage = DbUtil.Header();
@@ -232,6 +233,7 @@
                                 <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
                             }
                             <li><a href="/Account/ChangePassword">Change Password</a></li>
+                            <li><a href="/Home/TargetPerson/@targetperson.ToString()">@(targetperson ? "Target Same Tab" : "Target People Tab")</a></li>
                             <li class="divider"></li>
                             <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
                         </ul>

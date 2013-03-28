@@ -32,10 +32,6 @@
         minLength: 3,
         source: function (request, response) {
             $.post("/Meeting/Names", request, function (ret) {
-                if (!ret.length) {
-                    $.growlUI("Name", "Not Found");
-                    $('#name').val('');
-                }
                 response(ret.slice(0, 10));
             }, "json");
         },

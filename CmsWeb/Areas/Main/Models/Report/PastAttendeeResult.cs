@@ -170,8 +170,8 @@ namespace CmsWeb.Areas.Main.Models.Report
                         CSZ = Util.FormatCSZ4(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
                         visitor = ra.Visitor == 1,
                         LastAttend = ra.Lastattend,
-                        AttendPct = ra.Attendpct,
-                        AttendStr = ra.Attendstr,
+                        AttendPct = ra.AttendPct,
+                        AttendStr = ra.AttendStr,
                         AttendType = ra.Attendtype
                     };
             return q;

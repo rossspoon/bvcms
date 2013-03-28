@@ -11,52 +11,124 @@ using System.Collections;
 
 namespace CmsWeb.Models
 {
-	public class MeetingModel
-	{
-		public CmsData.Meeting meeting;
-		public CmsData.Organization org;
+    public class MeetingModel
+    {
+        public CmsData.Meeting meeting;
+        public CmsData.Organization org;
 
-		public bool showall { get; set; }
-		public bool currmembers { get; set; }
-		public bool showregister { get; set; }
-		public bool showregistered { get; set; }
-		public bool sortbyname { get; set; }
+        public bool showall { get; set; }
+        public bool currmembers { get; set; }
+        public bool showregister { get; set; }
+        public bool showregistered { get; set; }
+        public bool sortbyname { get; set; }
 
-		public MeetingModel(int id)
-		{
-		    var i = (from m in DbUtil.Db.Meetings
-		            where m.MeetingId == id
-		            select new
-		                       {
-		                           org = m.Organization,
-		                           m
-		                       }).Single();
-		    meeting = i.m;
-		    org = i.org;
-		}
-		public IEnumerable<RollsheetModel.AttendInfo> Attends(bool sorted = false)
-		{
-			return RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sorted, currmembers);
-		}
-		public IEnumerable<RollsheetModel.AttendInfo> VisitAttends(bool sorted = false)
-		{
-			var q = RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sorted);
-			return q.Where(vv => !vv.Member);
-		}
-		public string AttendCreditType()
-		{
-			if (meeting.AttendCredit == null)
-				return "Every Meeting";
-			return meeting.AttendCredit.Description;
-		}
-		public bool HasRegistered()
-		{
-			return meeting.Attends.Any(aa => aa.Commitment != null);
-		}
-		public static IEnumerable AttendCommitments()
-		{
-			var q = CmsData.Codes.AttendCommitmentCode.GetCodePairs();
-			return q.ToDictionary(k => k.Key.ToString(), v => v.Value);
-		}
-	}
+        public MeetingModel(int id)
+        {
+            var i = (from m in DbUtil.Db.Meetings
+                     where m.MeetingId == id
+                     select new
+                                {
+                                    org = m.Organization,
+                                    m
+                                }).Single();
+            meeting = i.m;
+            org = i.org;
+        }
+        public IEnumerable<RollsheetModel.AttendInfo> Attends(bool sorted = false)
+        {
+            return RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sorted, currmembers);
+        }
+        public IEnumerable<RollsheetModel.AttendInfo> VisitAttends(bool sorted = false)
+        {
+            var q = RollsheetModel.RollList(meeting.MeetingId, meeting.OrganizationId, meeting.MeetingDate.Value, sorted);
+            return q.Where(vv => !vv.Member);
+        }
+        public string AttendCreditType()
+        {
+            if (meeting.AttendCredit == null)
+                return "Every Meeting";
+            return meeting.AttendCredit.Description;
+        }
+        public bool HasRegistered()
+        {
+            return meeting.Attends.Any(aa => aa.Commitment != null);
+        }
+        public static IEnumerable AttendCommitments()
+        {
+            var q = CmsData.Codes.AttendCommitmentCode.GetCodePairs();
+            return q.ToDictionary(k => k.Key.ToString(), v => v.Value);
+        }
+        public class NamesInfo
+        {
+            public string Name { get; set; }
+            public string Addr { get; set; }
+            public int Pid { get; set; }
+        }
+        public static IEnumerable<NamesInfo> Names(string text, int limit)
+        {
+            string First, Last;
+            var qp = DbUtil.Db.People.AsQueryable();
+			if (Util2.OrgLeadersOnly)
+				qp = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
+
+			Util.NameSplit(text, out First, out Last);
+
+			var hasfirst = First.HasValue();
+            if (text.AllDigits())
+            {
+                string phone = null;
+                if (text.HasValue() && text.AllDigits() && text.Length == 7)
+                    phone = text;
+                if (phone.HasValue())
+                {
+                    var id = Last.ToInt();
+                    qp = from p in qp
+                         where
+                             p.PeopleId == id
+                             || p.CellPhone.Contains(phone)
+                             || p.Family.HomePhone.Contains(phone)
+                             || p.WorkPhone.Contains(phone)
+                         orderby p.Name2
+                         select p;
+                }
+                else
+                {
+                    var id = Last.ToInt();
+                    qp = from p in qp
+                         where p.PeopleId == id
+                         orderby p.Name2
+                         select p;
+                }
+            }
+            else
+            {
+                var id = Last.ToInt();
+                qp = from p in qp
+                     where
+                         (
+                             (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+                              || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
+                             &&
+                             (!hasfirst || p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) ||
+                              p.MiddleName.StartsWith(First)
+                              || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
+                         )
+                         || p.PeopleId == id
+                     orderby p.Name2
+                     select p;
+            }
+
+            var r = from p in qp
+                    let deceased = p.DeceasedDate.HasValue ? " [DECEASED]" : ""
+                    let age = p.Age.HasValue ? " (" + p.Age + ")" : ""
+                    orderby p.Name2
+                    select new NamesInfo()
+                               {
+                                   Pid = p.PeopleId,
+                                   Name = p.Name2 + deceased + age,
+                                   Addr = p.PrimaryAddress ?? "",
+                               };
+            return r.Take(limit);
+        }
+    }
 }

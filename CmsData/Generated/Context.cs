@@ -3281,18 +3281,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.IsValidEmail", IsComposable = true)]
-		[return: Parameter(DbType = "bit")]
-		public bool? IsValidEmail(
-            [Parameter(Name = "addr", DbType="nvarchar")] string addr
-            )
-		{
-			return ((bool?)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                addr
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.PledgeAmount", IsComposable = true)]
 		[return: Parameter(DbType = "money")]
 		public decimal? PledgeAmount(
@@ -3396,6 +3384,18 @@ namespace CmsData
 			return ((string)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 pid
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.IsValidEmail", IsComposable = true)]
+		[return: Parameter(DbType = "bit")]
+		public bool? IsValidEmail(
+            [Parameter(Name = "addr", DbType="nvarchar")] string addr
+            )
+		{
+			return ((bool?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                addr
                 ).ReturnValue));
 		}
 
