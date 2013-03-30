@@ -1561,7 +1561,7 @@ namespace UtilityExtensions
         }
 	    public static void NameSplit(string name, out string First, out string Last)
 		{
-			var a = name.Split(' ');
+			var a = (name ?? "").Split(' ');
 			First = "";
 			if (a.Length > 1)
 			{

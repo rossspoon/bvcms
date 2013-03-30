@@ -70,6 +70,9 @@ namespace CmsWeb.Models
             var qp = DbUtil.Db.People.AsQueryable();
 			if (Util2.OrgLeadersOnly)
 				qp = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
+            qp = from p in qp
+                 where p.DeceasedDate == null
+                 select p;
 
 			Util.NameSplit(text, out First, out Last);
 
@@ -119,13 +122,12 @@ namespace CmsWeb.Models
             }
 
             var r = from p in qp
-                    let deceased = p.DeceasedDate.HasValue ? " [DECEASED]" : ""
                     let age = p.Age.HasValue ? " (" + p.Age + ")" : ""
                     orderby p.Name2
                     select new NamesInfo()
                                {
                                    Pid = p.PeopleId,
-                                   Name = p.Name2 + deceased + age,
+                                   Name = p.Name2 + age,
                                    Addr = p.PrimaryAddress ?? "",
                                };
             return r.Take(limit);

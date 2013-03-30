@@ -1,6 +1,9 @@
 ﻿@using CmsWeb.Models
 @using CmsData
 @model TagsModel
+@{
+    var target = Util2.TargetLinkPeople ? "target='people'" : "";
+}
 <table id="results" class="grid" cellspacing="5">
 <thead>
 	<tr><td colspan="6">
@@ -26,7 +29,7 @@
 { 
 	<tr>
 		<td><img src="/images/individual.gif" width="10px" height="12px" />
-			<a href='/Person/Index/@p.PeopleId'>@p.Name</a>
+			<a href='/Person/Index/@p.PeopleId' @target>@p.Name</a>
 		</td>
 		<td>
 			@p.MemberStatus<br />
@@ -44,7 +47,7 @@
 	} 
 			<a href='mailto:@p.Email'>@p.Email</a>
 		</td>
-		<td><a href='/Person/Index/@p.BFTeacherId'>@p.BFTeacher</a></td>
+		<td><a href='/Person/Index/@p.BFTeacherId' @target>@p.BFTeacher</a></td>
 		<td><a href="/Tags/ToggleTag/@p.PeopleId" class="taguntag" title="Add to/Remove from Active Tag" value='@p.PeopleId'>@(p.HasTag? "Remove" : "Add")</a></td>
 	</tr>
 }

@@ -3,6 +3,7 @@
     var onqb = (string) ViewData["OnQueryBuilder"] == "true";
     var headimage = DbUtil.HeaderImage("");
     var targetperson = DbUtil.Db.UserPreference("TargetLinkPeople", "false").ToBool();
+    var oldQuickSearch = DbUtil.Db.UserPreference("oldQuickSearch", "true").ToBool();
     if (!headimage.HasValue())
     {
         headimage = @"<img src=""/Content/bvcms132x55.png"" width=""132"" height=""55"" />";
@@ -29,7 +30,8 @@
                                     <li><a href="/Account/ChangePassword">Change Password</a></li>
                                     <li><a id="cleartag" href="#">Empty Active Tag</a></li>
                                     <li><a href="/Tags">Manage Active Tag</a></li>
-                                    <li><a href="/Home/TargetPerson/@targetperson.ToString()">@(targetperson ? "Target Same Tab" : "Target People Tab")</a></li>
+                                    <li><a href="/Home/TargetPerson/@targetperson.ToString()">Target Person Tab is @(targetperson ? "ON" : "OFF")</a></li>
+                                    <li><a href="/Home/OldQuickSearch/@oldQuickSearch.ToString()">OldQuickSearch is @(oldQuickSearch ? "ON" : "OFF")</a></li>
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
@@ -42,7 +44,9 @@
                             <strong>Active Tag:</strong>
                             <span id="activetag">@Util2.CurrentTagName</span>
                             <form method="post">
-                                <input id="SearchText" class="trigger-dropdown" type="text" default="Quick Search" title='QuickSearch|PeopleId|-OrganizationId|7 digit phone|Partial Search|Names|Address|Organization Name|Leader Name|Division"' />
+                                <input id="SearchText" class="trigger-dropdown" type="text" default="Quick Search" value="Quick Search" />
+                                <div id="SearchResults" style="text-align: left;">
+                                </div>
                                 @Helper.SearchBuilderDropdown(onqb, newlook: false)
                             </form>
                         }

@@ -216,7 +216,7 @@
                 {
                     <form action="" method="post" class="search">
                         <input type="text" id="SearchText" class="trigger-dropdown" placeholder="Search" name="search">
-                        @Helper.SearchBuilderDropdown(onqb, newlook: true)
+                        @*@Helper.SearchBuilderDropdown(onqb, newlook: true)*@
                         <button class="trigger-dropdown"><i class="icon-search"></i></button>
                     </form>
                 }
@@ -233,7 +233,7 @@
                                 <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
                             }
                             <li><a href="/Account/ChangePassword">Change Password</a></li>
-                            <li><a href="/Home/TargetPerson/@targetperson.ToString()">@(targetperson ? "Target Same Tab" : "Target People Tab")</a></li>
+                            <li><a href="/Home/TargetPerson/@targetperson.ToString()">Target Person Tab is @(targetperson ? "ON" : "OFF")</a></li>
                             <li class="divider"></li>
                             <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
                         </ul>

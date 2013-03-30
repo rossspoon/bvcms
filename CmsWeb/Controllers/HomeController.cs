@@ -186,6 +186,21 @@ namespace CmsWeb.Controllers
                 return Redirect(Request.UrlReferrer.OriginalString);
             return Redirect("/");
         }
+
+        public ActionResult OldQuickSearch(string id)
+        {
+            var b = id.ToBool();
+            DbUtil.Db.SetUserPreference("oldQuickSearch", b ? "false" : "true");
+            DbUtil.Db.SubmitChanges();
+            if (Request.UrlReferrer != null)
+                return Redirect(Request.UrlReferrer.OriginalString);
+            return Redirect("/");
+        }
+        public ActionResult Names(string term)
+        {
+            var q = HomeModel.Names(term).ToList();
+            return Json(q, JsonRequestBehavior.AllowGet);
+        }
     }
 }
 

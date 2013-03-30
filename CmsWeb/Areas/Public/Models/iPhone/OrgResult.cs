@@ -26,14 +26,24 @@ namespace CmsWeb.Models.iPhone
 			var dt = DateTime.Parse("8:00 AM");
 
         	var roles = DbUtil.Db.CurrentRoles();
-            var q = from o in DbUtil.Db.Organizations
-        	        where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+            IQueryable<Organization> q = null;
+            if (oids == null)
+                q = from o in DbUtil.Db.Organizations
+                    where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
-                    where (oids == null && o.OrganizationMembers.Any(om => om.PeopleId == pid
-							&& (om.Pending ?? false) == false
-							&& (om.MemberTypeId != MemberTypeCode.InActive)))
-						|| oids.Contains(o.OrganizationId)
+                    where o.OrganizationMembers.Any(om => om.PeopleId == pid
+                              && (om.Pending ?? false) == false
+                              && (om.MemberTypeId != MemberTypeCode.InActive))
                     where o.SecurityTypeId != 3
+                    select o;
+            else
+                q = from o in DbUtil.Db.Organizations
+                    where o.LimitToRole == null || roles.Contains(o.LimitToRole)
+                    where oids.Contains(o.OrganizationId)
+                    where o.SecurityTypeId != 3
+                    select o;
+            return from o in q
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
                     select new OrgInfo
                     {
                         OrgId = o.OrganizationId,
@@ -41,7 +51,6 @@ namespace CmsWeb.Models.iPhone
                         MeetingTime = sc.SchedTime ?? dt,
                         MeetingDay = sc.SchedDay ?? 0
                     };
-            return q;
         }
         public class OrgInfo
         {

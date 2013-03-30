@@ -99,7 +99,7 @@ namespace CmsWeb.Models
             if (p.org != null && p.setting.AskVisible("AskParents"))
             {
                 p.suffix = "";
-                var a = (p.fname ?? p.mname).Trim().Split(' ');
+                var a = (p.fname ?? p.mname ?? "").Trim().Split(' ');
                 if (a.Length > 1)
                 {
                     r.First = a[0];

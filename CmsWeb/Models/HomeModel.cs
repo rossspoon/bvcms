@@ -56,7 +56,7 @@ namespace CmsWeb.Models
             public string Name { get; set; }
             public string MemberType { get; set; }
             public int OrgId { get; set; }
-        	public string OrgType { get; set; }
+            public string OrgType { get; set; }
         }
         public IEnumerable<MyInvolvementInfo> MyInvolvements()
         {
@@ -71,10 +71,10 @@ namespace CmsWeb.Models
             if (Util2.OrgLeadersOnly)
                 oids = DbUtil.Db.GetLeaderOrgIds(pid);
 
-        	var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
-        	var orgmembers = from om in DbUtil.Db.OrganizationMembers
-        	                where om.Organization.LimitToRole == null || roles.Contains(om.Organization.LimitToRole)
-        	                select om;
+            var roles = DbUtil.Db.CurrentUser.UserRoles.Select(uu => uu.Role.RoleName).ToArray();
+            var orgmembers = from om in DbUtil.Db.OrganizationMembers
+                             where om.Organization.LimitToRole == null || roles.Contains(om.Organization.LimitToRole)
+                             select om;
 
             var q = from om in orgmembers
                     where om.PeopleId == pid
@@ -86,7 +86,7 @@ namespace CmsWeb.Models
                         Name = om.Organization.OrganizationName,
                         MemberType = om.MemberType.Description,
                         OrgId = om.OrganizationId,
-						OrgType = om.Organization.OrganizationType.Description ?? "Other",
+                        OrgType = om.Organization.OrganizationType.Description ?? "Other",
                     };
 
             return q;
@@ -168,7 +168,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<NewsInfo> ChurchNews()
         {
-			var feedurl = DbUtil.Db.Setting("ChurchFeedUrl", "");
+            var feedurl = DbUtil.Db.Setting("ChurchFeedUrl", "");
 
             var feed = DbUtil.Db.RssFeeds.FirstOrDefault(r => r.Url == feedurl);
 
@@ -219,8 +219,8 @@ namespace CmsWeb.Models
                         var reader = XmlReader.Create(new StringReader(feed.Data));
                         var f = SyndicationFeed.Load(reader);
                         var posts = from item in f.Items
-									let a = item.Authors.FirstOrDefault()
-									let au = a == null ? "" : a.Name
+                                    let a = item.Authors.FirstOrDefault()
+                                    let au = a == null ? "" : a.Name
                                     select new NewsInfo
                                     {
                                         Title = item.Title.Text,
@@ -297,6 +297,115 @@ namespace CmsWeb.Models
             var ctl = new CodeValueModel();
             var pid = DbUtil.Db.CurrentUser.PeopleId;
             var list = ctl.UserTags(pid);
+            return list;
+        }
+        public class SearchInfo
+        {
+            public string line1 { get; set; }
+            public string line2 { get; set; }
+            public bool isOrg { get; set; }
+            public int id { get; set; }
+        }
+        public static IEnumerable<SearchInfo> Names(string text)
+        {
+            string First, Last;
+            var qp = DbUtil.Db.People.AsQueryable();
+            var qo = from o in DbUtil.Db.Organizations
+                     where o.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
+                     select o;
+            if (Util2.OrgLeadersOnly)
+                qp = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
+
+            qp = from p in qp
+                 where p.DeceasedDate == null
+                 select p;
+
+            Util.NameSplit(text, out First, out Last);
+
+            var hasfirst = First.HasValue();
+            if (text.AllDigits())
+            {
+                string phone = null;
+                if (text.HasValue() && text.AllDigits() && text.Length == 7)
+                    phone = text;
+                if (phone.HasValue())
+                {
+                    var id = Last.ToInt();
+                    qp = from p in qp
+                         where
+                             p.PeopleId == id
+                             || p.CellPhone.Contains(phone)
+                             || p.Family.HomePhone.Contains(phone)
+                             || p.WorkPhone.Contains(phone)
+                         select p;
+                    qo = from o in qo
+                         where o.OrganizationId == id
+                         select o;
+                }
+                else
+                {
+                    var id = Last.ToInt();
+                    qp = from p in qp
+                         where p.PeopleId == id
+                         select p;
+                    qo = from o in qo
+                         where o.OrganizationId == id
+                         select o;
+                }
+            }
+            else
+            {
+                qp = from p in qp
+                     where
+                         (
+                             (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+                              || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
+                             &&
+                             (!hasfirst || p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) ||
+                              p.MiddleName.StartsWith(First)
+                              || p.LastName.StartsWith(text) || p.MaidenName.StartsWith(text))
+                         )
+                     select p;
+
+                qo = from o in qo
+                     where o.OrganizationName.Contains(text) || o.LeaderName.Contains(text)
+                     select o;
+            }
+
+            var rp = from p in qp
+                     let age = p.Age.HasValue ? " (" + p.Age + ")" : ""
+                     orderby p.Name2
+                     select new SearchInfo()
+                                {
+                                    id = p.PeopleId,
+                                    line1 = p.Name2 + age,
+                                    line2 = p.PrimaryAddress ?? "",
+                                    isOrg = false,
+                                };
+            var ro = from o in qo
+                     orderby o.OrganizationName
+                     select new SearchInfo()
+                                {
+                                    id = o.OrganizationId,
+                                    line1 = o.OrganizationName,
+                                    line2 = o.Division.Name,
+                                    isOrg = true
+                                };
+
+            var list = new List<SearchInfo>();
+            list.AddRange(rp.Take(6));
+            if (list.Count > 0)
+                list.Add(new SearchInfo() { id = 0 });
+            var roTake = ro.Take(4).ToList();
+            list.AddRange(roTake);
+            if (roTake.Count > 0)
+                list.Add(new SearchInfo() { id = 0 });
+            list.AddRange(new List<SearchInfo>() 
+            { 
+                new SearchInfo() { id = -1, line1 = "People Search"  }, 
+                new SearchInfo() { id = -2, line1 = "Advanced Search" }, 
+                new SearchInfo() { id = -3, line1 = "Organization Search" }, 
+            });
             return list;
         }
     }

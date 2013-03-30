@@ -46,6 +46,9 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new SavedQueryModel();
             UpdateModel(m.Pager);
             UpdateModel(m);
+            var onlyMine = DbUtil.Db.UserPreference("savedSearchOnlyMine", "true").ToBool();
+            if (m.onlyMine != onlyMine)
+                DbUtil.Db.SetUserPreference("savedSearchOnlyMine", m.onlyMine);
             return View(m);
         }
     }

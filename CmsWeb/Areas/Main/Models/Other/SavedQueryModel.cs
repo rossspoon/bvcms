@@ -18,7 +18,7 @@ namespace CmsWeb.Models
 
         public SavedQueryModel()
         {
-            onlyMine = true;
+            onlyMine = DbUtil.Db.UserPreference("savedSearchOnlyMine", "true").ToBool();
             Pager = new PagerModel2(Count);
             Pager.Direction = "asc";
             Pager.Sort = "Name";
