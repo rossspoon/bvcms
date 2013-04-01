@@ -19,27 +19,25 @@ namespace CmsWeb.Models.iPhone
         }
         private IEnumerable<OrgInfo> OrgList()
         {
-            int[] oids = null;
-            if (Util2.OrgLeadersOnly)
-                oids = DbUtil.Db.GetLeaderOrgIds(pid);
-                
+            var oids = DbUtil.Db.GetLeaderOrgIds(pid);
 			var dt = DateTime.Parse("8:00 AM");
 
         	var roles = DbUtil.Db.CurrentRoles();
             IQueryable<Organization> q = null;
-            if (oids == null)
+            if (Util2.OrgLeadersOnly)
                 q = from o in DbUtil.Db.Organizations
                     where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
-                    where o.OrganizationMembers.Any(om => om.PeopleId == pid
-                              && (om.Pending ?? false) == false
-                              && (om.MemberTypeId != MemberTypeCode.InActive))
+                    where oids.Contains(o.OrganizationId)
                     where o.SecurityTypeId != 3
                     select o;
             else
                 q = from o in DbUtil.Db.Organizations
                     where o.LimitToRole == null || roles.Contains(o.LimitToRole)
-                    where oids.Contains(o.OrganizationId)
+                    let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                    where (o.OrganizationMembers.Any(om => om.PeopleId == pid // either a member
+                              && (om.Pending ?? false) == false
+                              && (om.MemberTypeId != MemberTypeCode.InActive))
+                          || oids.Contains(o.OrganizationId)) // or a leader of a parent org
                     where o.SecurityTypeId != 3
                     select o;
             return from o in q

@@ -17,49 +17,46 @@
         });
     }
     else {
-        $("#SearchText").autocomplete({
-            appendTo: "#SearchResults",
-            open: function () {
-                var pos = $("#SearchText").position();
-                $("#SearchResults > ul").css({
-                    left: (pos.left + $("#SearchText").outerWidth() - $("#SearchResults > ul").width()) + "px"
-                });
-            },
-            autoFocus: true,
-            minLength: 3,
-            source: function (request, response) {
-                if (request.term === '---')
-                    response([
-                        { id: -1, line1: "People Search" },
-                        { id: -2, line1: "Advanced Search" },
-                        { id: -3, line1: "Organization Search" }
-                    ]);
-                else
-                    $.post("/Home/Names", request, function (ret) {
-                        response(ret.slice(0, 15));
-                    }, "json");
-            },
-            select: function (event, ui) {
-                if (ui.item.id === -1)
-                    window.location = "/PeopleSearch";
-                else if (ui.item.id === -2)
-                    window.location = "/QueryBuilder/Main";
-                else if (ui.item.id === -3)
-                    window.location = "/OrgSearch";
-                else
-                    window.location = (ui.item.isOrg ? "/Organization/Index/" : "/Person/Index/") + ui.item.id;
-            }
-        }).data("uiAutocomplete")._renderItem = function (ul, item) {
-            if (item.id === 0)
-                return $("<li>").append("<hr/>").appendTo(ul);
-            var li = "<a><b>" + (item.isOrg ? "Org: " : "") + item.line1 + "</b>";
-            if (item.id > 0)
-                li += "<br>" + (item.isOrg ? "Div: " : "") + item.line2;
-            li += "</a>";
-            return $("<li>")
-                .append(li)
-                .appendTo(ul);
-        };
+        $('#SearchText').each(function () {
+            $(this).autocomplete({
+                appendTo: "#SearchResults",
+                position: { my: "right top", at: "right bottom", of: $("#SearchText") },
+                autoFocus: true,
+                minLength: 3,
+                source: function (request, response) {
+                    if (request.term === '---')
+                        response([
+                            { id: -1, line1: "People Search" },
+                            { id: -2, line1: "Advanced Search" },
+                            { id: -3, line1: "Organization Search" }
+                        ]);
+                    else
+                        $.post("/Home/Names", request, function (ret) {
+                            response(ret.slice(0, 15));
+                        }, "json");
+                },
+                select: function (event, ui) {
+                    if (ui.item.id === -1)
+                        window.location = "/PeopleSearch";
+                    else if (ui.item.id === -2)
+                        window.location = "/QueryBuilder/Main";
+                    else if (ui.item.id === -3)
+                        window.location = "/OrgSearch";
+                    else
+                        window.location = (ui.item.isOrg ? "/Organization/Index/" : "/Person/Index/") + ui.item.id;
+                }
+            }).data("uiAutocomplete")._renderItem = function (ul, item) {
+                if (item.id === 0)
+                    return $("<li>").append("<hr/>").appendTo(ul);
+                var li = "<a><b>" + (item.isOrg ? "Org: " : "") + item.line1 + "</b>";
+                if (item.id > 0)
+                    li += "<br>" + (item.isOrg ? "Div: " : "") + item.line2;
+                li += "</a>";
+                return $("<li>")
+                    .append(li)
+                    .appendTo(ul);
+            };
+        });
     }
 
     $("a.tutorial").click(function (ev) {
@@ -108,7 +105,7 @@
     $('#SearchText').each(function () {
         $(this).addClass('text-label');
         $(this).focus(function () {
-            if (this.value === $(this).attr('default')) {
+            if (this.value === '' || this.value === $(this).attr('default')) {
                 this.value = '';
                 $(this).removeClass('text-label');
                 if(!$.oldQuickSearch)

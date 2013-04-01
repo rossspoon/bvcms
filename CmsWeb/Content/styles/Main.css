@@ -299,6 +299,9 @@ table.aspgrid tr th {
     z-index: 500!important;
 }
 
+form.search input {
+    width: 96%;
+}
 /*
 #SearchText {
     background-image: url('/images/magnifier.png');
