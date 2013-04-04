@@ -322,15 +322,15 @@ namespace CmsWeb.Areas.Main.Models.Report
                         || a.EffAttendFlag == false
                     let p = a.Person
                     let status = a.EffAttendFlag == false ? a.MemberType.Description : a.AttendType.Description
-                    let lastattend = a.Organization.Attends
+                    let lastattend = a.Meeting.Organization.Attends
                                     .Where(aa => aa.PeopleId == a.PeopleId && aa.AttendanceFlag == true)
                                     .Where(aa => aa.MeetingId != mtgid)
                                     .Max(aa => aa.MeetingDate)
-                    let attendpct = a.Organization.OrganizationMembers
+                    let attendpct = a.Meeting.Organization.OrganizationMembers
                                     .Where(aa => aa.PeopleId == a.PeopleId)
                                     .Select(aa => aa.AttendPct)
                                     .SingleOrDefault()
-                    let attendstr = a.Organization.OrganizationMembers
+                    let attendstr = a.Meeting.Organization.OrganizationMembers
                                     .Where(aa => aa.PeopleId == a.PeopleId)
                                     .Select(aa => aa.AttendStr)
                                     .SingleOrDefault()

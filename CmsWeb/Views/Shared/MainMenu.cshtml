@@ -20,7 +20,14 @@
             <div class="dropdown-menu">
                 <ul>
                     <li>@Html.ActionLink("Search", "Index", "PeopleSearch", new { Area = "Main" }, null)</li>
+                    @if (DbUtil.Db.Setting("MenuAddPeople", "true") == "true")
+                    {
                     <li>@Helper.JQueryIdLink("Add People", "addpeople")</li>
+                    }
+                    else
+                    {
+                    <li>@Helper.AnchorLink("Add People", "http://www.bvcms.com/doc/AddPeopleContext", "_blank")</li>
+                    }
                     <li>@Html.ActionLink("Manage Tags", "Index", "Tags", new { Area = "Main" }, null)</li>
                     <li>@Html.ActionLink("Tasks", "List", "Task", new { Area = "Main" }, null)</li>
                     <li>@Html.ActionLink("Contacts", "Index", "ContactSearch", new { Area = "Main" }, null)</li>

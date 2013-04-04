@@ -1085,6 +1085,20 @@ namespace CmsData
 		{
 			return FetchOrCreateFund(0, Description);
 		}
+		public EntryPoint FetchOrCreateEntryPoint(string type)
+		{
+			var ep = EntryPoints.SingleOrDefault(pp => pp.Description == type);
+			if (ep == null)
+			{
+				var max = EntryPoints.Max(mm => mm.Id) + 10;
+				if (max < 1000)
+					max = 1010;
+				ep = new EntryPoint { Id = max, Description = type, Code = type.Truncate(20) };
+				EntryPoints.InsertOnSubmit(ep);
+				SubmitChanges();
+			}
+			return ep;
+		}
 		public ContributionFund FetchOrCreateFund(int FundId, string Description)
 		{
 			ContributionFund fund;
@@ -1114,5 +1128,6 @@ namespace CmsData
 			}
 			return fund;
 		}
+
 	}
 }

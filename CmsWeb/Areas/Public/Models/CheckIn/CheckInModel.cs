@@ -181,22 +181,22 @@ namespace CmsWeb.Models
                 from a in DbUtil.Db.Attends
                 where a.Person.FamilyId == id
                 where a.Person.DeceasedDate == null
-                where a.Organization.CanSelfCheckin.Value
-                where a.Organization.AllowNonCampusCheckIn == true 
-								|| a.Organization.CampusId == campus || campus == 0
-				where a.Organization.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
+                where a.Meeting.Organization.CanSelfCheckin.Value
+                where a.Meeting.Organization.AllowNonCampusCheckIn == true 
+								|| a.Meeting.Organization.CampusId == campus || campus == 0
+				where a.Meeting.Organization.OrganizationStatusId == CmsData.Codes.OrgStatusCode.Active
                 where a.AttendanceFlag && 
-					(a.MeetingDate >= a.Organization.FirstMeetingDate.Value.Date || a.Organization.FirstMeetingDate == null)
-				where a.AttendanceFlag && (a.MeetingDate >= a.Organization.VisitorDate.Value.Date)
+					(a.MeetingDate >= a.Meeting.Organization.FirstMeetingDate.Value.Date || a.Meeting.Organization.FirstMeetingDate == null)
+				where a.AttendanceFlag && (a.MeetingDate >= a.Meeting.Organization.VisitorDate.Value.Date)
 				where Attend.VisitAttendTypes.Contains(a.AttendanceTypeId.Value)
-                where !a.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
-                group a by new { a.PeopleId, a.OrganizationId } into g
+                where !a.Meeting.Organization.OrganizationMembers.Any(om => om.PeopleId == a.PeopleId)
+                group a by new { a.PeopleId, a.Meeting.OrganizationId } into g
                 let a = g.OrderByDescending(att => att.MeetingDate).First()
-                let meetingHours = DbUtil.Db.GetTodaysMeetingHours(a.OrganizationId, thisday)
+                let meetingHours = DbUtil.Db.GetTodaysMeetingHours(a.Meeting.OrganizationId, thisday)
                 let recreg = a.Person.RecRegs.FirstOrDefault()
                 from meeting in meetingHours
                 let CheckedIn = DbUtil.Db.Attends.FirstOrDefault(aa =>
-                    aa.OrganizationId == a.OrganizationId
+                    aa.Meeting.OrganizationId == a.Meeting.OrganizationId
                     && aa.PeopleId == a.PeopleId
                     && aa.MeetingDate == meeting.Hour
                     && aa.AttendanceFlag == true) != null
@@ -212,14 +212,14 @@ namespace CmsWeb.Models
                     BYear = a.Person.BirthYear,
                     BMon = a.Person.BirthMonth,
                     BDay = a.Person.BirthDay,
-                    Class = a.Organization.OrganizationName,
-                    Leader = a.Organization.LeaderName,
+                    Class = a.Meeting.Organization.OrganizationName,
+                    Leader = a.Meeting.Organization.LeaderName,
                     OrgId = a.OrganizationId,
                     //OrgId = (a.Organization.CanSelfCheckin ?? false) ? a.OrganizationId : 0,
-                    Location = a.Organization.Location,
+                    Location = a.Meeting.Organization.Location,
                     Age = a.Person.Age ?? 0,
                     Gender = a.Person.Gender.Code,
-                    NumLabels = a.Organization.NumCheckInLabels ?? 1,
+                    NumLabels = a.Meeting.Organization.NumCheckInLabels ?? 1,
                     Hour = meeting.Hour,
                     CheckedIn = CheckedIn,
 
@@ -241,7 +241,7 @@ namespace CmsWeb.Models
                     HasPicture = a.Person.PictureId != null,
                     Custody = (a.Person.CustodyIssue ?? false) == true,
                     Transport = (a.Person.OkTransport ?? false) == true,
-                    RequiresSecurityLabel = ((a.Person.Age ?? 0) < 18) && (a.Organization.NoSecurityLabel ?? false) == false,
+                    RequiresSecurityLabel = ((a.Person.Age ?? 0) < 18) && (a.Meeting.Organization.NoSecurityLabel ?? false) == false,
                     church = a.Person.OtherNewChurch,
                 };
 

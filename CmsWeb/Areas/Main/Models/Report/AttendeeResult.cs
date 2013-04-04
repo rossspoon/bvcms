@@ -157,11 +157,11 @@ namespace CmsWeb.Areas.Main.Models.Report
                                     .Where(aa => aa.MeetingDate < a.MeetingDate)
                                     .Max(aa => aa.MeetingDate)
                     let status = a.AttendType.Description
-                    let attendpct = a.Organization.OrganizationMembers
+                    let attendpct = a.Meeting.Organization.OrganizationMembers
                                     .Where(aa => aa.PeopleId == a.PeopleId)
                                     .Select(aa => aa.AttendPct)
                                     .SingleOrDefault()
-                    let attendstr = a.Organization.OrganizationMembers
+                    let attendstr = a.Meeting.Organization.OrganizationMembers
                                     .Where(aa => aa.PeopleId == a.PeopleId)
                                     .Select(aa => aa.AttendStr)
                                     .SingleOrDefault()

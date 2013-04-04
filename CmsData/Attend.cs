@@ -136,5 +136,22 @@ namespace CmsData
 			Db.Attends.InsertOnSubmit(a);
 			return meeting.MeetingId;
 		}
+		public static Attend AddAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, int attendtype, int membertype, DateTime dt)
+		{
+			var meeting = Meeting.FetchOrCreateMeeting(Db, OrgId, dt);
+			var a = new Attend
+			{
+				AttendanceFlag = Present,
+				AttendanceTypeId = attendtype,
+				MemberTypeId = membertype,
+				MeetingId = meeting.MeetingId,
+				MeetingDate = dt,
+				PeopleId = PeopleId,
+				OrganizationId = OrgId,
+				CreatedDate = DateTime.Now,
+			};
+			Db.Attends.InsertOnSubmit(a);
+            return a;
+		}
 	}
 }

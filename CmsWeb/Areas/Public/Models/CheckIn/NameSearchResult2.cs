@@ -75,6 +75,8 @@ namespace CmsWeb.Models
                 var count = q.Count();
                 const int INT_PageSize = 10;
                 var startrow = (page - 1) * INT_PageSize;
+                if (startrow < 0)
+                    startrow = 0;
                 if (count > startrow + INT_PageSize)
                     w.WriteAttributeString("next", (page + 1).ToString());
                 else

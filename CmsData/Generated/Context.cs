@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Linq;
 using System.Linq.Expressions;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace CmsData
 {
@@ -3126,7 +3127,6 @@ namespace CmsData
                 meetingtime
                 ).ReturnValue));
 		}
-
 		[Function(Name="dbo.NextAnniversary", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? NextAnniversary(

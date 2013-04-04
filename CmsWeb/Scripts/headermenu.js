@@ -18,11 +18,22 @@
     }
     else {
         $('#SearchText').each(function () {
+            var searchterm = "";
             $(this).autocomplete({
                 appendTo: "#SearchResults",
                 position: { my: "right top", at: "right bottom", of: $("#SearchText") },
-                autoFocus: true,
                 minLength: 3,
+                autoFocus: true,
+                open: function () {
+                    $("#SearchResults > ul").css("z-index", 1002);
+                },
+                close: function(event) {
+                    var thisval = $(this).val();
+                    if (searchterm !== thisval && thisval !== "") {
+                        return $("#SearchText").autocomplete("search");
+                    }
+                    $("#SearchText").val('');
+                },
                 source: function (request, response) {
                     if (request.term === '---')
                         response([
@@ -30,12 +41,18 @@
                             { id: -2, line1: "Advanced Search" },
                             { id: -3, line1: "Organization Search" }
                         ]);
-                    else
+                    else {
+                        searchterm = request.term;
                         $.post("/Home/Names", request, function (ret) {
                             response(ret.slice(0, 15));
                         }, "json");
+                    }
                 },
                 select: function (event, ui) {
+                    var thisval = $(this).val();
+                    if (searchterm !== thisval && thisval !== "") {
+                        return false;
+                    }
                     if (ui.item.id === -1)
                         window.location = "/PeopleSearch";
                     else if (ui.item.id === -2)
@@ -44,6 +61,7 @@
                         window.location = "/OrgSearch";
                     else
                         window.location = (ui.item.isOrg ? "/Organization/Index/" : "/Person/Index/") + ui.item.id;
+                    return true;
                 }
             }).data("uiAutocomplete")._renderItem = function (ul, item) {
                 if (item.id === 0)
@@ -108,7 +126,7 @@
             if (this.value === '' || this.value === $(this).attr('default')) {
                 this.value = '';
                 $(this).removeClass('text-label');
-                if(!$.oldQuickSearch)
+                if (!$.oldQuickSearch)
                     $(this).autocomplete("search", "---");
             }
         });

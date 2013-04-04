@@ -205,6 +205,29 @@ namespace CmsData
 					   "<span style='color:red'>need a main division</span>";
 			}
 		}
+        public static OrgSchedule ParseSchedule(string s)
+        {
+            var m = Regex.Match(s, @"\A(?<dow>.*)\s(?<time>\d{1,2}:\d{2}\s(A|P)M)", RegexOptions.IgnoreCase);
+            var d = new Dictionary<string, int>
+            {
+                { "Sun", 0 },
+                { "Mon", 1 },
+                { "Tue", 2 },
+                { "Wed", 3 },
+                { "Thu", 4 },
+                { "Fri", 5 },
+                { "Sat", 6 },
+            };
+            var dow = m.Groups["dow"].Value;
+            var time = m.Groups["time"].Value;
+            var sc = new OrgSchedule
+            {
+                SchedDay = d[dow],
+                SchedTime = DateTime.Parse(time),
+                AttendCreditId = 1
+            };
+            return sc;
+        }
 		public static OrganizationType FetchOrCreateType(CMSDataContext Db, string type)
 		{
 			var t = Db.OrganizationTypes.SingleOrDefault(pp => pp.Description == type);

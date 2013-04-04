@@ -405,7 +405,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 									},
                          Attends = (from a in p.Attends
                                     where a.AttendanceFlag == true
-                                    let o = a.Organization
+                                    let o = a.Meeting.Organization
                                     orderby a.MeetingDate descending, o.OrganizationName
                                     select new AttendInfo
                                     {

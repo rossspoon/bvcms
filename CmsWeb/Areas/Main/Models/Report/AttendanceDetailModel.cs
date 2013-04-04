@@ -7,7 +7,7 @@ using CmsData;
 namespace CmsWeb.Areas.Main.Models.Report
 {
     public class AttendanceDetailModel
-    {  
+    {
         DateTime dt1;
         DateTime? dt2;
         string name;
@@ -15,8 +15,8 @@ namespace CmsWeb.Areas.Main.Models.Report
         int? schedid;
         int? campusid;
 
-        public AttendanceDetailModel (DateTime dt1, DateTime? dt2, string name, int? divid, int? schedid, int? campusid)
-    	{
+        public AttendanceDetailModel(DateTime dt1, DateTime? dt2, string name, int? divid, int? schedid, int? campusid)
+        {
             if (dt2.HasValue)
             {
                 if (dt2.Value.TimeOfDay == TimeSpan.Zero)
@@ -30,31 +30,31 @@ namespace CmsWeb.Areas.Main.Models.Report
             this.divid = divid;
             this.schedid = schedid;
             this.campusid = campusid;
-    	}
+        }
         public IEnumerable<MeetingRow> FetchMeetings()
         {
-            var q = from dio in DbUtil.Db.DivOrgs
-                    let sc = dio.Organization.OrgSchedules.FirstOrDefault() // SCHED
-                    where dio.DivId == divid || divid == 0
-                    from m in dio.Organization.Meetings
-                    where m.MeetingDate >= dt1
-                    where m.MeetingDate < dt2
-                    where campusid == null || campusid == 0 || m.Organization.CampusId == campusid
-                    where schedid == null || schedid == 0 || sc.ScheduleId == schedid
-                    where name == null || name == "" || m.Organization.OrganizationName.Contains(name)
-                    orderby m.Organization.OrganizationName, m.OrganizationId, m.MeetingDate descending
-                    select new
-                    {
-                        MeetingId = m.MeetingId,
-                        OrgName = m.Organization.OrganizationName,
-                        Leader = m.Organization.LeaderName,
-                        location = m.Organization.Location,
-                        date = m.MeetingDate.Value,
-                        OrgId = m.OrganizationId,
-                        Present = m.NumPresent,
-                        Visitors = m.NumNewVisit + m.NumRepeatVst,
-                        OutTowners = m.NumOutTown ?? 0
-                    };
+            var q = from m in DbUtil.Db.Meetings
+                     let sc = m.Organization.OrgSchedules.FirstOrDefault() // SCHED
+                     where m.Organization.DivOrgs.Any(dd => dd.DivId == divid || divid == 0)
+                     where m.MeetingDate >= dt1
+                     where m.MeetingDate < dt2
+                     where campusid == null || campusid == 0 || m.Organization.CampusId == campusid
+                     where schedid == null || schedid == 0 || sc.ScheduleId == schedid
+                     where name == null || name == "" || m.Organization.OrganizationName.Contains(name)
+                     orderby m.Organization.OrganizationName, m.OrganizationId, m.MeetingDate descending
+                     select new
+                     {
+                         MeetingId = m.MeetingId,
+                         OrgName = m.Organization.OrganizationName,
+                         Leader = m.Organization.LeaderName,
+                         location = m.Organization.Location,
+                         date = m.MeetingDate.Value,
+                         OrgId = m.OrganizationId,
+                         Present = m.NumPresent,
+                         Visitors = m.NumNewVisit + m.NumRepeatVst,
+                         OutTowners = m.NumOutTown ?? 0
+                     };
+
             var q2 = from m in q.ToList()
                      select new MeetingRow
                      {

@@ -183,6 +183,11 @@ namespace CmsWeb.Models
 							orderby c.FundId, c.ContributionDate descending
 							select c;
 						break;
+                    case "Name":
+						q = from c in q
+							orderby c.Person.Name2
+							select c;
+						break;
 				}
 			else
 				switch (Sort)
@@ -208,6 +213,11 @@ namespace CmsWeb.Models
 					case "Fund":
 						q = from c in q
 							orderby c.FundId descending, c.ContributionDate descending
+							select c;
+						break;
+                    case "Name":
+						q = from c in q
+							orderby c.Person.Name2 descending
 							select c;
 						break;
 				}

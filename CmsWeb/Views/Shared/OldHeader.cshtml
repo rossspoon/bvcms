@@ -42,13 +42,9 @@
                         @if (access)
                         {
                             <strong>Active Tag:</strong>
-                            <span id="activetag">@Util2.CurrentTagName</span>
-                            <form method="post">
-                                <input id="SearchText" class="trigger-dropdown" type="text" default="Search" value="Search" />
-                                <div id="SearchResults" style="text-align: left;">
-                                </div>
-                                @Helper.SearchBuilderDropdown(onqb, newlook: false)
-                            </form>
+                            <div id="activetag">@Util2.CurrentTagName</div>
+                            <input id="SearchText" class="trigger-dropdown" type="text" default="Search" value="Search" />
+                            <div id="SearchResults" style="text-align: left;"></div>
                         }
                     </div>
                 </td>

@@ -95,6 +95,7 @@ namespace CmsWeb.Models
             var q = FetchOrgs();
             var q2 = from o in q
                      let sc = o.OrgSchedules.FirstOrDefault() // SCHED
+                     let lt = DbUtil.Db.MemberTypes.SingleOrDefault(ttt => ttt.Id == o.LeaderMemberTypeId)
                      select new
                      {
                          OrgId = o.OrganizationId,
@@ -124,6 +125,7 @@ namespace CmsWeb.Models
                          o.PhoneNumber,
                          MainFellowshipOrg = o.IsBibleFellowshipOrg ?? false,
                          EntryPoint = o.EntryPoint.Description,
+                         LeaderType = lt == null ? "" : lt.Description,
                          o.OrganizationStatusId,
                      };
             return q2;

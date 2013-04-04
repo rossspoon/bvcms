@@ -256,15 +256,15 @@ namespace CmsData
             to = to.HasValue ? to.Value.AddDays(1) : from.Value.AddDays(1);
             Expression<Func<Person, bool>> pred = p => (
                 from a in p.Attends
-                from dg in a.Organization.DivOrgs
+                from dg in a.Meeting.Organization.DivOrgs
                 from pg in dg.Division.ProgDivs
                 where a.MeetingDate >= @from
                 where a.MeetingDate < to
                 where (a.AttendanceFlag
                         || (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite))
                 where ids.Contains(a.AttendanceTypeId ?? 0)
-                where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
-                where org == 0 || a.OrganizationId == org
+                where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
+                where org == 0 || a.Meeting.OrganizationId == org
                 where divid == 0 || dg.DivId == divid
                 where progid == 0 || pg.ProgId == progid
                 select a
@@ -336,12 +336,12 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred = p => (
                 from a in p.Attends
-                from dg in a.Organization.DivOrgs
+                from dg in a.Meeting.Organization.DivOrgs
                 from pg in dg.Division.ProgDivs
                 where a.MeetingDate >= mindt
                 where a.AttendanceFlag || (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite)
                 where ids.Contains(a.AttendanceTypeId ?? 0)
-                where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
+                where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
                 where org == 0 || a.Meeting.OrganizationId == org
                 where divid == 0 || dg.DivId == divid
                 where progid == 0 || pg.ProgId == progid
@@ -641,12 +641,12 @@ namespace CmsData
             if (progid > 0)
                 pred = p => (
                                 from a in p.Attends
-                                from dg in a.Organization.DivOrgs
+                                from dg in a.Meeting.Organization.DivOrgs
                                 from pg in dg.Division.ProgDivs
                                 where a.MeetingDate >= mindt
                                 where a.AttendanceFlag
-                                where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
-                                where org == 0 || a.OrganizationId == org
+                                where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
+                                where org == 0 || a.Meeting.OrganizationId == org
                                 where divid == 0 || dg.DivId == divid
                                 where progid == 0 || pg.ProgId == progid
                                 select a
@@ -656,7 +656,7 @@ namespace CmsData
                                 from a in p.Attends
                                 where a.MeetingDate >= mindt
                                 where a.AttendanceFlag
-                                where orgtype == 0 || a.Organization.OrganizationTypeId == orgtype
+                                where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
                                 select a
                             ).Count();
 
@@ -677,7 +677,7 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, int>> pred = p => (
                 from a in p.Attends
-                from dg in a.Organization.DivOrgs
+                from dg in a.Meeting.Organization.DivOrgs
                 from pg in dg.Division.ProgDivs
                 where a.AttendanceFlag
                 where a.MeetingDate >= mindt
@@ -776,9 +776,9 @@ namespace CmsData
                 case CompareType.Greater:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Organization.DivOrgs
+                                from dg in a.Meeting.Organization.DivOrgs
                                 from pg in dg.Division.ProgDivs
-                                where org == 0 || a.OrganizationId == org
+                                where org == 0 || a.Meeting.OrganizationId == org
                                 where divid == 0 || dg.DivId == divid
                                 where progid == 0 || pg.ProgId == progid
                                 where a.AttendanceFlag
@@ -791,9 +791,9 @@ namespace CmsData
                 case CompareType.GreaterEqual:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Organization.DivOrgs
+                                from dg in a.Meeting.Organization.DivOrgs
                                 from pg in dg.Division.ProgDivs
-                                where org == 0 || a.OrganizationId == org
+                                where org == 0 || a.Meeting.OrganizationId == org
                                 where divid == 0 || dg.DivId == divid
                                 where progid == 0 || pg.ProgId == progid
                                 where a.AttendanceFlag
@@ -806,9 +806,9 @@ namespace CmsData
                 case CompareType.Less:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Organization.DivOrgs
+                                from dg in a.Meeting.Organization.DivOrgs
                                 from pg in dg.Division.ProgDivs
-                                where org == 0 || a.OrganizationId == org
+                                where org == 0 || a.Meeting.OrganizationId == org
                                 where divid == 0 || dg.DivId == divid
                                 where progid == 0 || pg.ProgId == progid
                                 where a.AttendanceFlag
@@ -821,9 +821,9 @@ namespace CmsData
                 case CompareType.LessEqual:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Organization.DivOrgs
+                                from dg in a.Meeting.Organization.DivOrgs
                                 from pg in dg.Division.ProgDivs
-                                where org == 0 || a.OrganizationId == org
+                                where org == 0 || a.Meeting.OrganizationId == org
                                 where divid == 0 || dg.DivId == divid
                                 where progid == 0 || pg.ProgId == progid
                                 where a.AttendanceFlag
@@ -836,9 +836,9 @@ namespace CmsData
                 case CompareType.Equal:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Organization.DivOrgs
+                                from dg in a.Meeting.Organization.DivOrgs
                                 from pg in dg.Division.ProgDivs
-                                where org == 0 || a.OrganizationId == org
+                                where org == 0 || a.Meeting.OrganizationId == org
                                 where divid == 0 || dg.DivId == divid
                                 where progid == 0 || pg.ProgId == progid
                                 where a.AttendanceFlag
@@ -851,9 +851,9 @@ namespace CmsData
                 case CompareType.NotEqual:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Organization.DivOrgs
+                                from dg in a.Meeting.Organization.DivOrgs
                                 from pg in dg.Division.ProgDivs
-                                where org == 0 || a.OrganizationId == org
+                                where org == 0 || a.Meeting.OrganizationId == org
                                 where divid == 0 || dg.DivId == divid
                                 where progid == 0 || pg.ProgId == progid
                                 where a.AttendanceFlag
@@ -1455,7 +1455,7 @@ namespace CmsData
                     from a in p.Attends
                     where a.AttendanceFlag
                     where a.MeetingDate >= mindt
-                    let dt = a.Organization.FirstMeetingDate
+                    let dt = a.Meeting.Organization.FirstMeetingDate
                     where dt == null || a.MeetingDate >= dt
                     where a.MeetingDate > Db.LastDrop(a.OrganizationId, a.PeopleId)
                     where ids.Contains(a.AttendanceTypeId.Value)
@@ -1505,7 +1505,7 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred = p => (
                 from a in p.Attends
-                from dg in a.Organization.DivOrgs
+                from dg in a.Meeting.Organization.DivOrgs
                 from pg in dg.Division.ProgDivs
                 where a.AttendanceFlag
                 where a.MeetingDate >= mindt
@@ -2036,7 +2036,7 @@ namespace CmsData
                 end = start.Value.AddDays(1);
             Expression<Func<Person, int>> pred = p => (
                 from a in p.Attends
-                from dg in a.Organization.DivOrgs
+                from dg in a.Meeting.Organization.DivOrgs
                 from pg in dg.Division.ProgDivs
                 where a.AttendanceFlag
                 where a.MeetingDate >= start
@@ -2087,11 +2087,11 @@ namespace CmsData
                 case CompareType.Greater:
                     q2 = from p in q
                          let g = from a in p.Attends
-                                 from dg in a.Organization.DivOrgs
+                                 from dg in a.Meeting.Organization.DivOrgs
                                  from pg in dg.Division.ProgDivs
                                  where a.MeetingDate >= start
                                  where a.MeetingDate <= end
-                                 where org == 0 || a.OrganizationId == org
+                                 where org == 0 || a.Meeting.OrganizationId == org
                                  where divid == 0 || dg.DivId == divid
                                  where progid == 0 || pg.ProgId == progid
                                  select a
@@ -2103,11 +2103,11 @@ namespace CmsData
                 case CompareType.GreaterEqual:
                     q2 = from p in q
                          let g = from a in p.Attends
-                                 from dg in a.Organization.DivOrgs
+                                 from dg in a.Meeting.Organization.DivOrgs
                                  from pg in dg.Division.ProgDivs
                                  where a.MeetingDate >= start
                                  where a.MeetingDate <= end
-                                 where org == 0 || a.OrganizationId == org
+                                 where org == 0 || a.Meeting.OrganizationId == org
                                  where divid == 0 || dg.DivId == divid
                                  where progid == 0 || pg.ProgId == progid
                                  select a
@@ -2119,11 +2119,11 @@ namespace CmsData
                 case CompareType.Less:
                     q2 = from p in q
                          let g = from a in p.Attends
-                                 from dg in a.Organization.DivOrgs
+                                 from dg in a.Meeting.Organization.DivOrgs
                                  from pg in dg.Division.ProgDivs
                                  where a.MeetingDate >= start
                                  where a.MeetingDate <= end
-                                 where org == 0 || a.OrganizationId == org
+                                 where org == 0 || a.Meeting.OrganizationId == org
                                  where divid == 0 || dg.DivId == divid
                                  where progid == 0 || pg.ProgId == progid
                                  select a
@@ -2135,11 +2135,11 @@ namespace CmsData
                 case CompareType.LessEqual:
                     q2 = from p in q
                          let g = from a in p.Attends
-                                 from dg in a.Organization.DivOrgs
+                                 from dg in a.Meeting.Organization.DivOrgs
                                  from pg in dg.Division.ProgDivs
                                  where a.MeetingDate >= start
                                  where a.MeetingDate <= end
-                                 where org == 0 || a.OrganizationId == org
+                                 where org == 0 || a.Meeting.OrganizationId == org
                                  where divid == 0 || dg.DivId == divid
                                  where progid == 0 || pg.ProgId == progid
                                  select a

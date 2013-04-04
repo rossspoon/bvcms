@@ -58,7 +58,7 @@
                         </ul>
                     </div>
                 </td>
-@*                <td>
+                @*                <td>
                     @if (c.Clause.CanRemove)
                     {
                         <a href="#" class="tip trigger-dropdown" title="Delete Condition"><i class="icon-trash icon-large"></i></a>
@@ -72,8 +72,14 @@
             </tr>
         }
     </table>
-    <div style="text-align: right;margin-top: 5px;">
-        <a id="Run@(editing ? "1" : "")"class="bt blue">Run Search <i class="icon-play"></i></a>
+    <div style="margin-top: 5px">
+        <div style="float: left">
+            <a href="/Search/Advanced/NewQuery" class="bt green">New Search</a>
+        </div>
+        <div style="float: right;">
+            <a id="Run@(editing ? "1" : "")"class="bt blue">Run Search <i class="icon-play"></i></a>
+        </div>
+        <br style="clear: both" />
     </div>
     @if (editing)
     {
