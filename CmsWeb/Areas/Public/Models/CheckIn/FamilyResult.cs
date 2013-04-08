@@ -42,9 +42,7 @@ namespace CmsWeb.Models
         public override void ExecuteResult(ControllerContext context)
         {
             context.HttpContext.Response.ContentType = "text/xml";
-            var settings = new XmlWriterSettings();
-            settings.Encoding = new System.Text.UTF8Encoding(false);
-            settings.Indent = true;
+            var settings = new XmlWriterSettings() { Encoding = new System.Text.UTF8Encoding(false), Indent = true };
 
             using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
             { 

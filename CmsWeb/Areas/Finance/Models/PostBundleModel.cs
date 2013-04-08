@@ -362,6 +362,8 @@ namespace CmsWeb.Models
         }
         public static int? BatchProcess(string text, DateTime date, int? fundid)
         {
+            if (DbUtil.Db.Setting("BankDepositFormat", "none") == "BankOfNorthGeorgia")
+                return BatchProcessBankOfNorthGeorgia(text, date, fundid);
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "FBCStark")
                 return BatchProcessFbcStark2(text, date, fundid);
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "DiscoverCrosspoint")
@@ -714,6 +716,81 @@ namespace CmsWeb.Models
                         ac = a[1];
                     }
                 bd.Contribution.ContributionDesc = string.Join(" ", sn, ck);
+                var eac = Util.Encrypt(rt + "|" + ac);
+                var q = from kc in DbUtil.Db.CardIdentifiers
+                        where kc.Id == eac
+                        select kc.PeopleId;
+                var pid = q.SingleOrDefault();
+                if (pid != null)
+                    bd.Contribution.PeopleId = pid;
+                bd.Contribution.BankAccount = eac;
+                bh.BundleDetails.Add(bd);
+            }
+            FinishBundle(bh);
+            return bh.BundleHeaderId;
+        }
+        public static int? BatchProcessBankOfNorthGeorgia(string text, DateTime date, int? fundid)
+        {
+            var prevdt = DateTime.MinValue;
+            BundleHeader bh = null;
+            var sr = new StringReader(text);
+            string line = "";
+            do
+            {
+                line = sr.ReadLine();
+                if (line == null)
+                    return null;
+            } while (!line.Contains("Item ID"));
+            var sep = ',';
+            if (line.Contains("Item ID\t"))
+                sep = '\t';
+
+            for (; ; )
+            {
+                line = sr.ReadLine();
+                if (line == null)
+                    break;
+                line = line.TrimStart();
+                var csv = line.Split(sep);
+                if (!csv[6].HasValue())
+                    continue;
+                var bd = new BundleDetail
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                };
+                var qf = from f in DbUtil.Db.ContributionFunds
+                         where f.FundStatusId == 1
+                         orderby f.FundId
+                         select f.FundId;
+
+                bd.Contribution = new Contribution
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                    ContributionDate = date,
+                    FundId = fundid ?? qf.First(),
+                    ContributionStatusId = 0,
+                    ContributionTypeId = ContributionTypeCode.CheckCash,
+                };
+
+                var dt = DateTime.Parse(csv[13]).Date;
+
+                if (dt != prevdt)
+                {
+                    if (bh != null)
+                        FinishBundle(bh);
+                    bh = GetBundleHeader(dt, DateTime.Now);
+                    prevdt = dt;
+                }
+
+                string ck, rt, ac;
+                rt = csv[14];
+                ac = csv[20];
+                ck = csv[17];
+                bd.Contribution.ContributionAmount = csv[9].GetAmount();
+
+                bd.Contribution.CheckNo = ck;
                 var eac = Util.Encrypt(rt + "|" + ac);
                 var q = from kc in DbUtil.Db.CardIdentifiers
                         where kc.Id == eac

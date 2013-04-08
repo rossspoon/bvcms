@@ -311,6 +311,21 @@ namespace CmsData
 			Db.SubmitChanges();
 			return o;
 		}
+		public static Organization CreateOrganization(CMSDataContext Db, int divid, string organization)
+		{
+			var o = new Organization
+			{
+				OrganizationName = organization,
+				SecurityTypeId = 0,
+				CreatedDate = Util.Now,
+				CreatedBy = Util.UserId1,
+				OrganizationStatusId = 30,
+                DivisionId = divid,
+			};
+			Db.DivOrgs.InsertOnSubmit(new DivOrg { DivId = divid, Organization = o });
+			Db.SubmitChanges();
+			return o;
+		}
 		public OrganizationExtra GetExtraValue(string field)
 		{
 			var ev = OrganizationExtras.AsEnumerable().FirstOrDefault(ee => string.Compare(ee.Field, field, ignoreCase: true) == 0);

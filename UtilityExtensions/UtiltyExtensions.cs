@@ -74,12 +74,20 @@ namespace UtilityExtensions
             {
                 var d = ParseMMddyy(s);
                 if (d.HasValue)
-                    return d;
+                    return GoodDate(d);
             }
             DateTime dt;
             if (DateTime.TryParse(s, out dt))
-                return dt;
+                return GoodDate(dt);
             return null;
+        }
+        private static DateTime? GoodDate(DateTime? dt)
+        {
+            if (!dt.HasValue)
+                return null;
+            while (dt.Value.Year < 1900)
+                dt = dt.Value.AddYears(100);
+            return dt;
         }
         public static DateTime? ToDate(this object o)
         {
@@ -194,6 +202,13 @@ namespace UtilityExtensions
                 source = source.Substring(0, length).Trim();
             return source;
         }
+        public static string trim(this string source)
+        {
+            if (source != null)
+                source = source.Trim();
+            return source;
+        }
+
         public static string EmailHref(this string addr, string name)
         {
             if (!addr.HasValue())

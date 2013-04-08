@@ -28,9 +28,13 @@
                         d.dialog("close");
                         return false;
                     });
+                    var f = $("a.search", d).closest('form');
+                    f.submit(function (ev) {
+                        $("a.search", d).click();
+                        return false;
+                    });
                     $("a.search", d).click(function(ev) {
                         ev.preventDefault();
-                        var f = $(this).closest('form');
                         var q = f.serialize();
                         $.post($(this).attr('href'), q, function(ret) {
                             $('table.results', f).replaceWith(ret);

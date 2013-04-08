@@ -25,10 +25,10 @@
         $("ul.noedit a", f).not('[target="otherorg"]').removeAttr("href");
         $("ul.noedit a", f).not('[target="otherorg"]').css("color", "grey");
         $("ul.noedit a", f).not('[target="otherorg"]').unbind("click");
-        $('#notifylist').SearchUsers({
+        $('ul.edit a.notifylist').SearchUsers({
             UpdateShared: function(topid) {
                 $.post("/Organization/UpdateNotifyIds", { id: $("#OrganizationId").val(), topid: topid }, function (ret) {
-                    $("#notifylist").html(ret);
+                    $("a.notifylist").html(ret);
                 });
             }
         });

@@ -33,6 +33,7 @@ namespace CmsWeb.Models
                 "Drop Type",
                 "Employer",
                 "Family Position",
+                "Entry Point",
                 "Gender",
                 "Grade",
                 "Marital Status",
@@ -78,6 +79,7 @@ namespace CmsWeb.Models
                 new TitleItems { title = "Family Position Codes", items = Model.FamilyPositionCodes() },
                 new TitleItems { title = "Contribution Statement Options", items = Model.EnvelopeOptions() },
                 new TitleItems { title = "Envelope Options", items = Model.EnvelopeOptions() },
+                new TitleItems { title = "Entry Point Codes", items = Model.EntryPoints() },
             };
         }
     }

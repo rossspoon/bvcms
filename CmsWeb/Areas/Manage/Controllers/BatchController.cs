@@ -210,6 +210,9 @@ namespace CmsWeb.Areas.Manage.Controllers
                                     o.LeaderMemberTypeId = id;
                             }
 							break;
+						case "SecurityType":
+							o.SecurityTypeId = string.Compare(a[c], "LeadersOnly", true) == 0 ? 2 : string.Compare(a[c], "UnShared", true) == 0 ? 3 : 0;
+							break;
 						case "FirstMeeting":
 							o.FirstMeetingDate = a[c].ToDate();
 							break;
@@ -402,7 +405,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             return Redirect("/");
         }
         [Authorize(Roles = "Admin")]
-        public ActionResult UpdateFields()
+        public ActionResult UpdateFields() // UpdateForATag
         {
             var m = new UpdateFieldsModel();
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -460,6 +463,9 @@ namespace CmsWeb.Areas.Manage.Controllers
                         break;
                     case "Family Position":
                         p.PositionInFamilyId = m.NewValue.ToInt();
+                        break;
+                    case "Entry Point":
+                        p.EntryPointId = m.NewValue.ToInt();
                         break;
                     case "Gender":
                         p.GenderId = m.NewValue.ToInt();
