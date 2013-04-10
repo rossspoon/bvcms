@@ -157,8 +157,10 @@ namespace CmsCheckin
             var ph = e.Argument as string;
 			var lb = Program.attendant.NameDisplay;
 			lb.SetPropertyThreadSafe(() => lb.Text, "finding " + ph);
-            var x = this.GetDocument("Checkin2/Find/" + ph
-                + Program.QueryString + "&page=1&building=" + Program.Building);
+
+            var url = "Checkin2/Find/" + ph + Program.QueryString + "&page=1&building=" + Program.Building + "&querybit=" + Program.BuildingInfo.querybit;
+
+            var x = this.GetDocument(url);
             e.Result = x;
         }
 
