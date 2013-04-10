@@ -13,12 +13,15 @@ namespace CmsWeb.Models
 	{
 		int fid;
 		string building;
+        string querybit;
 
-		public FindResult(int fid, string building)
+		public FindResult(int fid, string building, string querybit)
 		{
 			this.fid = fid;
 			this.building = building;
+            this.querybit = querybit;
 		}
+
 		public override void ExecuteResult(ControllerContext context)
 		{
 			context.HttpContext.Response.ContentType = "text/xml";
@@ -32,7 +35,7 @@ namespace CmsWeb.Models
 				var q =
 					from p in DbUtil.Db.People
 					let notes = p.PeopleExtras.SingleOrDefault(ee => ee.Field == building + "-notes").Data
-                    let access = p.PeopleExtras.SingleOrDefault(ea => ea.Field == building + "-access").StrValue
+                    let accessflag = p.PeopleExtras.SingleOrDefault(ea => ea.Field == building + "-access").StrValue
 					where p.FamilyId == fid
 					where p.DeceasedDate == null
 					orderby p.PositionInFamilyId, p.PositionInFamilyId == 10 ? p.Gender.Code : "U", p.Age
@@ -59,7 +62,7 @@ namespace CmsWeb.Models
 						MemberStatus = p.MemberStatus.Code,
 						MemberStatusId = p.MemberStatus.Id.ToString(),
 						notes,
-                        access
+                        access = accessflag == "false" ? "restricted" : p.Tags.Any( t => t.Tag.Name == querybit ).ToString().ToLower();
 					};
  
 				w.WriteAttributeString("familyid", fid.ToString());

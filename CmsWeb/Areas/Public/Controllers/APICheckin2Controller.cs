@@ -36,7 +36,8 @@ namespace CmsWeb.Areas.Public.Controllers
 				return new FamilyResult(matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked, kioskmode ?? false);
 			return new MultipleResult(matches, page);
 		}
-		public ActionResult Find(string id, string building, int? page)
+
+		public ActionResult Find(string id, string building, int? page, string querybit)
 		{
 			if (!Authenticate())
 				return Content("not authorized");
@@ -48,11 +49,13 @@ namespace CmsWeb.Areas.Public.Controllers
 			var matches = m.Find(id);
 
 			if (!matches.Any())
-				return new FindResult(0, building);
+                return new FindResult(0, building, querybit);
 			if (matches.Count() == 1)
-				return new FindResult(matches.Single().FamilyId, building);
+                return new FindResult(matches.Single().FamilyId, building, querybit);
+
 			return new MultipleResult(matches, page);
 		}
+
 		public ActionResult Family(int id, int campus, int thisday, string kiosk, bool? kioskmode)
 		{
 			if (!Authenticate())
@@ -62,6 +65,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			DbUtil.LogActivity("checkin fam " + id);
 			return new FamilyResult(id, campus, thisday, 0, false, kioskmode ?? false);
 		}
+
 		public ActionResult SingleFamily(int id, string building)
 		{
 			if (!Authenticate())
@@ -69,8 +73,9 @@ namespace CmsWeb.Areas.Public.Controllers
 			Response.NoCache();
 			DbUtil.Db.SetNoLock();
 			DbUtil.LogActivity("checkin fam " + building + " " + id);
-			return new FindResult(id, building);
+			return new FindResult(id, building, null);
 		}
+
 		public ActionResult Class(int id, int thisday)
 		{
 			if (!Authenticate())
@@ -695,6 +700,8 @@ namespace CmsWeb.Areas.Public.Controllers
 
                 foreach (var a in activities)
                     ac.CheckInActivities.Add(new CheckInActivity() { Activity = a.Name });
+
+                ac.AccessTypeID = accesstype;
             }
             else
             {

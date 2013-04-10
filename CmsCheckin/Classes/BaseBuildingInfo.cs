@@ -11,7 +11,7 @@ namespace CmsCheckin
 	public class BaseBuildingInfo
 	{
 		[XmlAttribute]
-		public bool membersonly { get; set; }
+		public string querybit { get; set; }
 
 		[XmlAttribute]
 		public int maxguests { get; set; }
@@ -24,7 +24,7 @@ namespace CmsCheckin
 
 		public BaseBuildingInfo()
 		{
-			membersonly = false;
+            querybit = "";
 			maxguests = -1;
 		}
 	}

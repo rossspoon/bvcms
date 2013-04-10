@@ -350,6 +350,7 @@ namespace CmsCheckin
 		{
 			Attend_Click((Button)sender);
 		}
+
 		public void Attend_Click(Button ab)
 		{
 			Program.TimerReset();
@@ -357,7 +358,7 @@ namespace CmsCheckin
 			if (c.lastpress.HasValue && DateTime.Now.Subtract(c.lastpress.Value).TotalSeconds < 1)
 				return;
 
-            if (c.access == "false")
+            if (c.access == "restricted")
             {
                 Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because they are not permitted to use the facility.");
                 MessageBox.Show("An access error has occurred. Please check with the attendant.", "Access Error");
@@ -366,44 +367,37 @@ namespace CmsCheckin
 
             if (c.access == "true")
             {
-                c.accesstype = 4;
+                c.accesstype = 1;
             }
             else
             {
-                if (Program.BuildingInfo.membersonly && c.MemberStatus != "Member")
+                if (c.visitcount < Program.BuildingInfo.maxvisits && Program.addguests == null)
                 {
-                    if (c.visitcount < Program.BuildingInfo.maxvisits && Program.addguests == null)
-                    {
-                        MessageBox.Show("Welcome " + c.name + "! This is visit number " + (c.visitcount + 1) + " of " + Program.BuildingInfo.maxvisits + ".", "Guest Information");
-                        c.accesstype = 2;
-                    }
-                    else
-                    {
-                        if (Program.addguests == null)
-                        {
-                            Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because they are not a member.");
-                            MessageBox.Show("Only members may check-in. You will need to be a guest of a member to check-in.", "Members Only Error");
-                            return;
-                        }
-
-                        if (Program.BuildingInfo.maxguests > -1)
-                        {
-                            var p = Program.GuestOf();
-
-                            if (p != null && Util.GetGuestCount(p.pid) >= Program.BuildingInfo.maxguests)
-                            {
-                                Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because " + p.name + " reached the guest limit.");
-                                MessageBox.Show("No additional guests are permitted for today.", "Guest Limit Error");
-                                return;
-                            }
-
-                            c.accesstype = 3;
-                        }
-                    }
+                    MessageBox.Show("Welcome " + c.name + "! This is visit number " + (c.visitcount + 1) + " of " + Program.BuildingInfo.maxvisits + ".", "Guest Information");
+                    c.accesstype = 2;
                 }
                 else
                 {
-                    c.accesstype = 1;
+                    if (Program.addguests == null)
+                    {
+                        Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because they are not a member.");
+                        MessageBox.Show("Only members may check-in. You will need to be a guest of a member to check-in.", "Members Only Error");
+                        return;
+                    }
+
+                    if (Program.BuildingInfo.maxguests > -1)
+                    {
+                        var p = Program.GuestOf();
+
+                        if (p != null && Util.GetGuestCount(p.pid) >= Program.BuildingInfo.maxguests)
+                        {
+                            Program.attendant.AddHistoryString("-- " + DateTime.Now.ToString("MM-dd-yy hh:mm tt") + " Check-in rejected for " + c.name + " because " + p.name + " reached the guest limit.");
+                            MessageBox.Show("No additional guests are permitted for today.", "Guest Limit Error");
+                            return;
+                        }
+
+                        c.accesstype = 3;
+                    }
                 }
             }
 
