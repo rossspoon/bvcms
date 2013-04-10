@@ -62,7 +62,7 @@ namespace CmsWeb.Models
 						MemberStatus = p.MemberStatus.Code,
 						MemberStatusId = p.MemberStatus.Id.ToString(),
 						notes,
-                        access = accessflag == "false" ? "restricted" : p.Tags.Any( t => t.Tag.Name == querybit ).ToString().ToLower();
+                        access = accessflag == "false" ? "restricted" : p.Tags.Any( t => t.Tag.Name == querybit ).ToString().ToLower()
 					};
  
 				w.WriteAttributeString("familyid", fid.ToString());
