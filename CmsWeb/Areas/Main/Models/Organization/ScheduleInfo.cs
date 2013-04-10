@@ -77,7 +77,7 @@ namespace CmsWeb.Models.OrganizationPage
             {
                 return (from i in DaysOfWeek()
                         where i.Value == SchedDay.ToString()
-                        select i.Text).Single();
+                        select i.Text).SingleOrDefault();
             }
         }
         public string Display

@@ -46,7 +46,7 @@ namespace CmsWeb.Areas.Main.Models.Report
         public int OtherAttends { get; set; }
         public int TotalPeople { get; set; }
 
-        private IQueryable<Organization> ApplySearch(IQueryable<Organization> query)
+        private IQueryable<CmsData.Organization> ApplySearch(IQueryable<CmsData.Organization> query)
         {
             if (Name.HasValue())
             {

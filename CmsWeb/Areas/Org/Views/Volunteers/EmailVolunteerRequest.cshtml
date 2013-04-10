@@ -1,0 +1,20 @@
+﻿@model CmsWeb.Areas.Org.Models.VolunteerRequestModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>EmailVolunteerRequest</title>
+</head>
+<body>
+    <div>
+        @foreach (var i in Model.pids)
+        {
+            @i<br />
+        }
+    </div>
+</body>
+</html>

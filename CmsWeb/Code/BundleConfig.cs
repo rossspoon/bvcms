@@ -177,6 +177,7 @@ namespace CmsWeb
             bundles.AddOneScript("Bundle");
             bundles.AddOneScript("Bundles");
             bundles.AddOneScript("Calendar");
+            bundles.AddOneScript("Calendar2");
             bundles.AddOneScript("CheckIn");
             bundles.AddOneScript("CheckinActivity");
             bundles.AddOneScript("compose");
@@ -187,6 +188,7 @@ namespace CmsWeb
             bundles.AddOneScript("family");
             bundles.AddOneScript("Funds");
             bundles.AddOneScript("ManageVolunteer");
+            bundles.AddOneScript("ManageVolunteer2");
             bundles.AddOneScript("meeting-ticket");
             bundles.AddOneScript("meeting");
             bundles.AddOneScript("Meetings");

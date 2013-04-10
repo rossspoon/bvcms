@@ -47,6 +47,8 @@ namespace CmsData
             }
             if (text.Contains("{createaccount}"))
                 text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
+            if (text.Contains("{peopleid}"))
+                text = text.Replace("{peopleid}", emailqueueto.PeopleId.ToString());
             if (text.Contains("http://votelink", ignoreCase: true))
                 text = DoVoteLink(text, CmsHost, emailqueueto);
             if (text.Contains("http://registerlink", ignoreCase: true))

@@ -731,7 +731,6 @@ namespace CmsWeb.Models
         }
         public static int? BatchProcessBankOfNorthGeorgia(string text, DateTime date, int? fundid)
         {
-            var prevdt = DateTime.MinValue;
             BundleHeader bh = null;
             var sr = new StringReader(text);
             string line = "";
@@ -754,6 +753,15 @@ namespace CmsWeb.Models
                 var csv = line.Split(sep);
                 if (!csv[6].HasValue())
                     continue;
+
+                if(csv[21] == "VDP")
+                {
+                    if (bh != null)
+                        FinishBundle(bh);
+                    bh = GetBundleHeader(date, DateTime.Now);
+                    continue;
+                }
+
                 var bd = new BundleDetail
                 {
                     CreatedBy = Util.UserId,
@@ -774,15 +782,6 @@ namespace CmsWeb.Models
                     ContributionTypeId = ContributionTypeCode.CheckCash,
                 };
 
-                var dt = DateTime.Parse(csv[13]).Date;
-
-                if (dt != prevdt)
-                {
-                    if (bh != null)
-                        FinishBundle(bh);
-                    bh = GetBundleHeader(dt, DateTime.Now);
-                    prevdt = dt;
-                }
 
                 string ck, rt, ac;
                 rt = csv[14];

@@ -160,10 +160,13 @@ namespace CmsWeb.Areas.Manage.Controllers
 				for (var c = 1; c < a.Length; c++)
 					switch (names[c].Trim())
 					{
-						case "CampusId":
-							o.CampusId = a[c].ToInt2();
-							if (o.CampusId == 0)
-								o.CampusId = null;
+						case "Campus":
+                            if (a[c].AllDigits())
+                            {
+                                o.CampusId = a[c].ToInt();
+                                if (o.CampusId == 0)
+                                    o.CampusId = null;
+                            }
 							break;
 						case "CanSelfCheckin":
 							o.CanSelfCheckin = a[c].ToBool2();

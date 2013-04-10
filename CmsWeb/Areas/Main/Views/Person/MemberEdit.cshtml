@@ -2,6 +2,11 @@
 @model CmsWeb.Models.PersonPage.MemberInfo
 <div>@Html.ValidationMessage("MemberTab")</div>
 <table class="Design2">
+     <tr><td colspan="2" class="right">
+        <a class="displayedit bt" href="/Person/MemberDisplay/@Model.PeopleId">Cancel</a>
+        <a href="/Person/MemberUpdate/@Model.PeopleId" class="submitbutton bt blue">Save Changes</a>
+    </td></tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
     <tr>
         <th>Contribution Statement:</th>
         <td>@Html.DropDownList("StatementOptionId", CmsWeb.Models.PersonPage.MemberInfo.EnvelopeOptions())</td>
@@ -98,7 +103,7 @@
         <th>Date:</th>
         <td>@Html.TextBox("NewMemberClassDate", Model.NewMemberClassDate.FormatDate(), new { @class = "datepicker" })</td>
     </tr>
-<tr><td></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
      <tr><td colspan="2" class="right">
         <a class="displayedit bt" href="/Person/MemberDisplay/@Model.PeopleId">Cancel</a>
         <a href="/Person/MemberUpdate/@Model.PeopleId" class="submitbutton bt blue">Save Changes</a>
