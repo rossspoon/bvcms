@@ -746,6 +746,7 @@ namespace UtilityExtensions
                         return HttpContext.Current.Session.SessionID;
                 return (string)HttpRuntime.Cache["SessionId"];
             }
+            set { HttpRuntime.Cache["SessionId"] = value; }
         }
         private const string STR_SessionStarting = "SessionStarting";
         public static bool SessionStarting
@@ -1235,6 +1236,28 @@ namespace UtilityExtensions
             }
             return new string(password);
         }
+        static public string Replace(this string str, string oldValue, string newValue, bool ignoreCase = false)
+        {
+            var sb = new StringBuilder();
+            var comparison = StringComparison.CurrentCulture;
+            if (ignoreCase)
+                comparison = StringComparison.CurrentCultureIgnoreCase;
+
+            int previousIndex = 0;
+            int index = str.IndexOf(oldValue, comparison);
+            while (index != -1)
+            {
+                sb.Append(str.Substring(previousIndex, index - previousIndex));
+                sb.Append(newValue);
+                index += oldValue.Length;
+
+                previousIndex = index;
+                index = str.IndexOf(oldValue, index, comparison);
+            }
+            sb.Append(str.Substring(previousIndex));
+
+            return sb.ToString();
+        }
         public static MailAddress FirstAddress(string addrs)
         {
             return FirstAddress(addrs, null);
@@ -1388,7 +1411,7 @@ namespace UtilityExtensions
         {
             var sundays = DaysOfMonth(sunday).Where(dd => dd.DayOfWeek == 0).ToList();
             var wk = 0;
-            while (sunday > sundays[wk])
+            while (wk < sundays.Count && sunday.Date > sundays[wk])
                 wk++;
             return wk + 1;
         }
@@ -1574,18 +1597,18 @@ namespace UtilityExtensions
             dt = dt.AddHours(TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours);
             return dt;
         }
-	    public static void NameSplit(string name, out string First, out string Last)
-		{
-			var a = (name ?? "").Split(' ');
-			First = "";
-			if (a.Length > 1)
-			{
-				First = a[0];
-				Last = a[1];
-			}
-			else
-				Last = a[0];
-		}
+        public static void NameSplit(string name, out string First, out string Last)
+        {
+            var a = (name ?? "").Split(' ');
+            First = "";
+            if (a.Length > 1)
+            {
+                First = a[0];
+                Last = a[1];
+            }
+            else
+                Last = a[0];
+        }
     }
     public class EventArg<T> : EventArgs
     {

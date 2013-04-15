@@ -17,18 +17,25 @@ namespace CmsData
         {
             if (text == null)
                 text = "(no content)";
-            if (p.Name.Contains("?") || p.Name.Contains("unknown", true))
-                text = text.Replace("{name}", string.Empty);
-            else
-                text = text.Replace("{name}", p.Name);
+            if (text.Contains("{name}", ignoreCase: true))
+                if (p.Name.Contains("?") || p.Name.Contains("unknown", true))
+                    text = text.Replace("{name}", string.Empty);
+                else
+                    text = text.Replace("{name}", p.Name, ignoreCase: true);
 
-            if (p.PreferredName.Contains("?", true) || (p.PreferredName.Contains("unknown", true)))
-                text = text.Replace("{first}", string.Empty);
-            else
-                text = text.Replace("{first}", p.PreferredName);
-            text = text.Replace("{occupation}", p.OccupationOther);
-            var eurl = Util.URLCombine(CmsHost, "Manage/Emails/View/" + emailqueueto.Id);
-            text = text.Replace("{emailhref}", eurl);
+            if (text.Contains("{first}", ignoreCase: true))
+                if (p.PreferredName.Contains("?", true) || (p.PreferredName.Contains("unknown", true)))
+                    text = text.Replace("{first}", string.Empty);
+                else
+                    text = text.Replace("{first}", p.PreferredName);
+            if (text.Contains("{occupation}", ignoreCase: true))
+                text = text.Replace("{occupation}", p.OccupationOther);
+
+            if (text.Contains("{emailhref}", ignoreCase: true))
+            {
+                var eurl = Util.URLCombine(CmsHost, "Manage/Emails/View/" + emailqueueto.Id);
+                text = text.Replace("{emailhref}", eurl, ignoreCase: true);
+            }
 
             text = DoVoteLinkAnchorStyle(text, CmsHost, emailqueueto);
             text = DoVoteTag(text, CmsHost, emailqueueto);
@@ -38,17 +45,17 @@ namespace CmsData
             text = DoExtraValueData(text, emailqueueto);
             if (emailqueueto.OrgId.HasValue)
             {
-                if (text.Contains("{smallgroup:"))
+                if (text.Contains("{smallgroup:", ignoreCase: true))
                     text = DoSmallGroupData(text, emailqueueto);
-                if (text.Contains("{addsmallgroup:"))
+                if (text.Contains("{addsmallgroup:", ignoreCase: true))
                     text = DoAddSmallGroup(text, emailqueueto);
-                if (text.Contains("{nextmeetingtime}"))
+                if (text.Contains("{nextmeetingtime}", ignoreCase: true))
                     text = DoMeetingDate(text, emailqueueto);
             }
-            if (text.Contains("{createaccount}"))
+            if (text.Contains("{createaccount}", ignoreCase: true))
                 text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
-            if (text.Contains("{peopleid}"))
-                text = text.Replace("{peopleid}", emailqueueto.PeopleId.ToString());
+            if (text.Contains("{peopleid}", ignoreCase: true))
+                text = text.Replace("{peopleid}", emailqueueto.PeopleId.ToString(), ignoreCase: true);
             if (text.Contains("http://votelink", ignoreCase: true))
                 text = DoVoteLink(text, CmsHost, emailqueueto);
             if (text.Contains("http://registerlink", ignoreCase: true))
@@ -62,24 +69,24 @@ namespace CmsData
             if (text.Contains("{barcode}", ignoreCase: true))
             {
                 var link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
-                text = text.Replace("{barcode}", "<img src='" + link + "' />");
+                text = text.Replace("{barcode}", "<img src='" + link + "' />", ignoreCase: true);
             }
             if (text.Contains("{cellphone}"))
                 if (p.CellPhone.HasValue())
-                    text = text.Replace("{cellphone}", p.CellPhone.FmtFone());
+                    text = text.Replace("{cellphone}", p.CellPhone.FmtFone(), ignoreCase: true);
                 else
-                    text = text.Replace("{cellphone}", "no cellphone on record");
+                    text = text.Replace("{cellphone}", "no cellphone on record", ignoreCase: true);
 
             if (text.Contains("{campus}", ignoreCase: true))
                 if (p.CampusId != null)
-                    text = text.Replace("{campus}", p.Campu.Description);
+                    text = text.Replace("{campus}", p.Campu.Description, ignoreCase: true);
                 else
-                    text = text.Replace("{campus}", "No Campus Specified");
+                    text = text.Replace("{campus}", "No Campus Specified", ignoreCase: true);
 
             if (emailqueueto.Guid.HasValue)
             {
                 var turl = Util.URLCombine(CmsHost, "/Track/Key/" + emailqueueto.Guid.Value.GuidToQuerystring());
-                text = text.Replace("{track}", "<img src=\"{0}\" />".Fmt(turl));
+                text = text.Replace("{track}", "<img src=\"{0}\" />".Fmt(turl), ignoreCase: true);
             }
 
             var aa = GetAddressList(p);
@@ -96,8 +103,10 @@ namespace CmsData
                 if (qm != null)
                 {
                     if (qm.PayLink.HasValue())
-                        text = text.Replace("{paylink}", "<a href=\"{0}\">payment link</a>".Fmt(qm.PayLink));
-                    text = text.Replace("{amtdue}", (qm.Amount - qm.AmountPaid).ToString2("c"));
+                        if (text.Contains("{paylink}", ignoreCase: true))
+                            text = text.Replace("{paylink}", "<a href=\"{0}\">payment link</a>".Fmt(qm.PayLink), ignoreCase: true);
+                    if (text.Contains("{amtdue}", ignoreCase: true))
+                        text = text.Replace("{amtdue}", (qm.Amount - qm.AmountPaid).ToString2("c"), ignoreCase: true);
                     Util.AddGoodAddress(aa, Util.FullEmail(qm.RegisterEmail, p.Name));
                 }
             }

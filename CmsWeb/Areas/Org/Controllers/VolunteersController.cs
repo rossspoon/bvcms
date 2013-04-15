@@ -136,5 +136,25 @@ namespace CmsWeb.Areas.Org.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/Email/Index/{0}?TemplateId=0&body={1} {2}&subj={1} {2}".Fmt(qb.QueryId, m.Organization.OrganizationName, m.MeetingDate.FormatDateTm()));
         }
+        [HttpPost]
+	    public ActionResult NewMeetingSlot(long ticks, int oid, int limit)
+	    {
+			var time = new DateTime(ticks); // ticks here is meeting time
+		    var sunday = time.Sunday();
+			var mid = DbUtil.Db.CreateMeeting(oid, time);
+			var slot = new VolunteerCommitmentsModel.Slot()
+			{
+                OrgId = oid,
+                IsLeader = true,
+				Time = time,
+				Sunday = sunday,
+				Week = time.WeekOfMonth(),
+				Disabled = time < DateTime.Now,
+				Limit = limit,
+				Persons = new List<VolunteerCommitmentsModel.NameId>(),
+				MeetingId = mid
+			};
+	        return View("Slot", slot);
+	    }
 	}
 }

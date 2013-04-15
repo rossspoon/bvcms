@@ -8,21 +8,10 @@
 	ViewBag.Title = "Quick Search";
 	Layout = "~/Views/Shared/SiteLayout.cshtml";
     var target = Util2.TargetLinkPeople ? "target='people'" : "";
-    var oldQuickSearch = DbUtil.Db.UserPreference("oldQuickSearch", "true").ToBool();
 }
 @section scripts
 {
 @Scripts.Render("~/bundles/single/QuickSearch-js")
-}
-@if(oldQuickSearch)
-{
-    <div class="roundbox" style="width:50em">There is a new way to use Quick Search that you should try.
-        And it is even quicker than this page. 
-        On the "Welcome, @Util.UserPreferredName!" menu (in the top right corner of the page)
-        is a "OldQuickSearch is ON" menu item. Click that to toggle it to OFF.
-        Then give the Quick Search another try. We think you will like it. See the blog post about that.
-    </div>
-    <div style="clear:both"></div>
 }
 <form id="quicksearch" method="post" action="/QuickSearch/Index">
 <input id='q' name='q' value="@Model.text"/>

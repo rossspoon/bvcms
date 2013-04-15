@@ -187,10 +187,10 @@ namespace CmsWeb.Controllers
             return Redirect("/");
         }
 
-        public ActionResult OldQuickSearch(string id)
+        public ActionResult NewQuickSearch(string id)
         {
             var b = id.ToBool();
-            DbUtil.Db.SetUserPreference("oldQuickSearch", b ? "false" : "true");
+            DbUtil.Db.SetUserPreference("NewQuickSearch", b ? "false" : "true");
             DbUtil.Db.SubmitChanges();
             if (Request.UrlReferrer != null)
                 return Redirect(Request.UrlReferrer.OriginalString);

@@ -119,6 +119,15 @@ namespace CmsWeb.Areas.Public.Controllers
 			DbUtil.LogActivity("APIOrganization DropOrgMember");
 			return Content(new APIOrganization(DbUtil.Db).DropOrgMember(OrgId, PeopleId), "text/xml");
 		}
+		[HttpPost]
+		public ActionResult CreateProgramDivision(string program, string division)
+		{
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<CreateProgramDivision status=""error"">" + ret.Substring(1) + "</CreateProgramDivision>");
+            DbUtil.LogActivity("APIOrganization CreateProgramDivision");
+			return Content(new APIOrganization(DbUtil.Db).CreateProgramDivision(program, division), "text/xml");
+		}
 		public ActionResult ParentOrgs(int id, string extravalue1, string extravalue2)
 		{
 			var ret = AuthenticateDeveloper();

@@ -1,7 +1,7 @@
 ﻿@using CmsData.Classes.Twilio
 @{ 
     var admin = User.IsInRole("Admin");
-    var innewlook = User.IsInRole("Newlook");
+    var innewlook = User.IsInRole("Newlook") || User.IsInRole("Developer");
     var manageemails = User.IsInRole("ManageEmails");
     var managetrans = User.IsInRole("ManageTransactions");
 	var edit = User.IsInRole("Edit"); 
@@ -202,10 +202,6 @@
                          }
                     }
                     <li>@Html.ActionLink("About", "About", "Home", new { Area = "" }, null)</li>
-                    @if (admin)
-                    {
-                        <li>@Helper.AnchorLink("Active Records", "javascript:$.block();window.location='/Home/ActiveRecords';")</li>
-                    }
 @*                    <li class="header">
                         <span>Tutorials</span>
                     </li>

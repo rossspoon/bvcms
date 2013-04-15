@@ -3,7 +3,7 @@
     var onqb = (string)ViewData["OnQueryBuilder"] == "true";
     var headimage = DbUtil.HeaderImage("");
     var targetperson = DbUtil.Db.UserPreference("TargetLinkPeople", "false").ToBool();
-    var oldQuickSearch = DbUtil.Db.UserPreference("oldQuickSearch", "true").ToBool();
+    var NewQuickSearch = DbUtil.Db.UserPreference("NewQuickSearch", "false").ToBool();
     if (!headimage.HasValue())
     {
         headimage = DbUtil.Header();
@@ -14,7 +14,7 @@
     {
         var admin = User.IsInRole("Admin");
         var manageemails = User.IsInRole("ManageEmails");
-        var innewlook = User.IsInRole("Newlook");
+        var innewlook = User.IsInRole("Newlook") || User.IsInRole("Developer");
         var managetrans = User.IsInRole("ManageTransactions");
         var edit = User.IsInRole("Edit");
         var design = User.IsInRole("Design");
@@ -194,10 +194,6 @@
                                     }
                                 }
                                 <li>@Html.ActionLink("About", "About", "Home", new { Area = "" }, null)</li>
-                                @if (admin)
-                                {
-                                    <li>@Helper.AnchorLink("Active Records", "javascript:$.block();window.location='/Home/ActiveRecords';")</li>
-                                }
 @*                    <li class="header">
                         <span>Tutorials</span>
                     </li>
@@ -242,7 +238,7 @@
                             }
                             <li><a href="/Account/ChangePassword">Change Password</a></li>
                             <li><a href="/Home/TargetPerson/@targetperson.ToString()">Target Person Tab is @(targetperson ? "ON" : "OFF")</a></li>
-                            <li><a href="/Home/OldQuickSearch/@oldQuickSearch.ToString()">OldQuickSearch is @(oldQuickSearch ? "ON" : "OFF")</a></li>
+                            <li><a href="/Home/NewQuickSearch/@NewQuickSearch.ToString()">NewQuickSearch is @(NewQuickSearch ? "ON" : "OFF")</a></li>
                             <li class="divider"></li>
                             <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
                         </ul>

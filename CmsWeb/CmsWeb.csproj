@@ -318,7 +318,7 @@
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
     <Compile Include="Areas\Manage\Models\VolunteerRequestModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
-    <Compile Include="Areas\Org\OrganizationAreaRegistration.cs" />
+    <Compile Include="Areas\Org\OrgAreaRegistration.cs" />
     <Compile Include="Areas\People\Controllers\PersonController.cs" />
     <Compile Include="Areas\Org\Controllers\VolunteersController.cs" />
     <Compile Include="Areas\People\Models\Person\PictureResult.cs" />
@@ -403,6 +403,7 @@
     <Compile Include="Areas\Main\Models\Export\UpdatePeopleModel.cs" />
     <Compile Include="Areas\Public\Models\APITestModel.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\FindResult.cs" />
+    <Compile Include="Areas\Public\Models\CheckIn\FindResult2.cs" />
     <Compile Include="Areas\Public\Models\Code39BarCode.cs" />
     <Compile Include="Areas\Public\Models\iPhone\DetailResult.cs" />
     <Compile Include="Areas\Public\Models\iPhone\SearchResult.cs" />
@@ -783,8 +784,10 @@
     <Content Include="images\28pix.gif" />
     <Content Include="images\bullet.png" />
     <Content Include="images\bvcms-provided.png" />
+    <Content Include="images\cross.gif" />
     <Content Include="images\dnarrow.png" />
     <Content Include="images\dnarrowt.png" />
+    <Content Include="images\gear.png" />
     <Content Include="images\group.png" />
     <Content Include="Content\styles\images\icons-18-black.png" />
     <Content Include="Content\styles\images\icons-18-white.png" />
@@ -1585,6 +1588,8 @@
     <Content Include="Areas\Org\Views\Volunteers\ManageArea.cshtml" />
     <Content Include="Areas\Org\Views\Volunteers\Request.cshtml" />
     <Content Include="Areas\Org\Views\Web.config" />
+    <Content Include="Areas\Org\Views\Volunteers\Slot.cshtml" />
+    <Content Include="Areas\Manage\Views\Volunteers\Slot.cshtml" />
     <None Include="Content\LibraryTemplate.xls" />
     <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />

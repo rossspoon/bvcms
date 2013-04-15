@@ -1,22 +1,7 @@
 ﻿$(document).ready(function () {
     $("a.trigger-dropdown").dropdown();
 
-    if ($.oldQuickSearch) {
-        $('#SearchText').keypress(function (e) {
-            if ((e.keyCode || e.which) === 13) {
-                e.preventDefault();
-                var s = $('#SearchText').val();
-                if (s !== "") {
-                    s = s.replace(/^\s+/g, "");
-                    s = s.replace(/\s+$/g, " ");
-                    var u = '/QuickSearch/Index?q=' + escape(s);
-                    window.location = u;
-                }
-            }
-            return true;
-        });
-    }
-    else {
+    if ($.NewQuickSearch) {
         $('#SearchText').each(function () {
             var searchterm = "";
             $(this).autocomplete({
@@ -76,6 +61,21 @@
             };
         });
     }
+    else {
+        $('#SearchText').keypress(function (e) {
+            if ((e.keyCode || e.which) === 13) {
+                e.preventDefault();
+                var s = $('#SearchText').val();
+                if (s !== "") {
+                    s = s.replace(/^\s+/g, "");
+                    s = s.replace(/\s+$/g, " ");
+                    var u = '/QuickSearch/Index?q=' + escape(s);
+                    window.location = u;
+                }
+            }
+            return true;
+        });
+    }
 
     $("a.tutorial").click(function (ev) {
         ev.preventDefault();
@@ -126,7 +126,7 @@
             if (this.value === '' || this.value === $(this).attr('default')) {
                 this.value = '';
                 $(this).removeClass('text-label');
-                if (!$.oldQuickSearch)
+                if ($.NewQuickSearch)
                     $(this).autocomplete("search", "---");
             }
         });

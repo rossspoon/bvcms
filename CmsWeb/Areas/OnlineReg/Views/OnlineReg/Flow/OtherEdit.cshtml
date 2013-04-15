@@ -18,7 +18,7 @@
     {
         case "AskSize":
         <tr>
-            <td>ShirtSize</td>
+            <td>@Html.Raw(((AskSize)ask).Label)</td>
 			<td>@Html.DropDownListFor(m => m.shirtsize, Model.ShirtSizes())
 				<div>@Html.ValidationMessageFor(m => m.shirtsize)</div>
 			</td>

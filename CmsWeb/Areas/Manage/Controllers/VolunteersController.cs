@@ -136,5 +136,6 @@ namespace CmsWeb.Areas.Manage.Controllers
             DbUtil.Db.SubmitChanges();
             return Redirect("/Email/Index/{0}?TemplateId=0&body={1} {2}&subj={1} {2}".Fmt(qb.QueryId, m.Organization.OrganizationName, m.MeetingDate.FormatDateTm()));
         }
+
 	}
 }

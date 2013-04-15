@@ -7,6 +7,63 @@
             return u + "&sortbyweek=true";
         return u;
     };
+    $("a.tip").tooltip({ showBody: "|", showURL: false });
+    $("#swk > li > a").click(function(ev) {
+        ev.preventDefault();
+        var wk = $(this).data("week");
+        if (wk === 0) {
+            $("#month .wki").removeClass("hidewkn");
+        } else {
+            $("#month .wki").addClass("hidewkn");
+            $("#month .wkn" + wk).removeClass("hidewkn");
+        }
+        $("#swk > li > a").removeClass("selected");
+        $(this).addClass("selected");
+        $.DisplayWeeks(1);
+    });
+    $("#goright").click(function(ev) {
+        ev.preventDefault();
+        var pg = parseInt($("#page").val()) + 1;
+        $.DisplayWeeks(pg);
+    });
+    $("#goleft").click(function(ev) {
+        ev.preventDefault();
+        var pg = parseInt($("#page").val()) - 1;
+        $.DisplayWeeks(pg);
+        return false;
+    });
+    $.DisplayWeeks = function(pg) {
+        $("#month .wki").removeClass("hidewki");
+        var items = $("#month thead th:visible").map(function() {
+            return $(this).data("item");
+        });
+        var weekstoshow = parseInt($("#weekstoshow").val());
+        var i;
+        var li = items[items.length - 1];
+        $("#month .wki").addClass("hidewki");
+        var fi = (pg - 1) * weekstoshow;
+        if (fi >= li) {
+            fi = li - 1;
+            pg -= 1;
+        }
+        if (li - fi < weekstoshow)
+            fi = li - weekstoshow;
+        if (fi < 0)
+            return $.DisplayWeeks(1);
+        for (i = fi; i < (fi + weekstoshow) && i < li; i++)
+            $("#month .wki" + items[i]).removeClass("hidewki");
+        $("#page").val(pg);
+        return false;
+    };
+    $("#CreateMeeting").live("click", function(ev) {
+        ev.preventDefault();
+        var q = $(this).data("item");
+        var td = $(this).closest("td");
+        $.post("/Org/Volunteers/NewMeetingSlot", q, function (ret) {
+            td.html(ret);
+        });
+        return false;
+    });
     $("div[source=registered]").tooltip({ showBody: "|" });
     $('body').on("click", '#sendreminders', function (ev) {
         ev.preventDefault();
@@ -25,7 +82,7 @@
             });
         }
     });
-    $("body").on("change", '.smallgroup', function () {
+    $(".smallgroup").live("change", function () {
         $.block();
         $.post("/Org/Volunteers/ManageArea2/" + $("#OrgId").val(), {
             sg1: $("#sg1").val(),
@@ -36,7 +93,7 @@
             $.unblock();
         });
     });
-    $("body").on("click", '#SortIt', function (ev) {
+    $("#SortId").live("click", function (ev) {
         ev.preventDefault();
         if ($("#SortByWeek").val() === "False")
             $("#SortByWeek").val("True");
@@ -45,7 +102,7 @@
         $.block();
         window.location = $.URL("/Org/Volunteers/Calendar/");
     });
-    $("body").on("click", '.selectable', function (ev) {
+    $(".selectable").live("click", function (ev) {
         if (ev.target.nodeName != 'A') {
             if ($(this).attr("source") != $(".selected").attr("source"))
                 $(".selectable").removeClass("pidHighlight2")
@@ -87,7 +144,7 @@
         );
     };
     $readyHover();
-    $("body").on("click", "div.drop.ui-state-active", function (ev) {
+    $("div.drop.ul-state-active").live("click", function (ev) {
         var $this = $(this);
         var list = [];
         $(".selected").each(function (index) {

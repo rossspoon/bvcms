@@ -29,6 +29,15 @@ img {
     margin-left: 4%;
     margin-right: 4%;
 }
+.hide {
+  display: none;
+}
+td.noborder, th.noborder {
+    border: none!important;
+}
+.floatright {
+    float: right;
+}
 
 .header {
     width: 100%;
@@ -559,6 +568,37 @@ div.toolbar > ul {
 
             div.toolbar > ul > li > a:hover {
                 background-position: 0 -15px;
+            }
+
+div.selectbar > ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+    div.selectbar > ul > li {
+        display: inline;
+        text-align: left;
+    }
+
+        div.selectbar > ul > li > a {
+            text-decoration: none;
+            font-size: 16px;
+            border-width: 1px;
+            padding: .4em .5em;
+            white-space: nowrap;
+            line-height: 1.8em;
+            color: #222;
+            background-color: #ccc;
+            border-color: #444;
+        }
+            div.selectbar > ul > li > a.selected {
+                background-color: #bbb;
+            }
+
+            div.selectbar > ul > li > a:hover {
+                background-position: 0 -15px;
+                background-color: #ddd;
             }
 
 #vtab {

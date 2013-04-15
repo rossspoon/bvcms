@@ -48,10 +48,17 @@ namespace CmsWeb.Areas.Public.Controllers
 			var m = new CheckInModel();
 			var matches = m.Find(id);
 
+#if DEBUG
 			if (!matches.Any())
-                return new FindResult(0, building, querybit);
+                return new FindResult2(0, building, querybit);
 			if (matches.Count() == 1)
-                return new FindResult(matches.Single().FamilyId, building, querybit);
+                return new FindResult2(matches.Single().FamilyId, building, querybit);
+#else
+			if (!matches.Any())
+                return new FindResult(0, building);
+			if (matches.Count() == 1)
+                return new FindResult(matches.Single().FamilyId, building);
+#endif
 
 			return new MultipleResult(matches, page);
 		}
@@ -73,7 +80,11 @@ namespace CmsWeb.Areas.Public.Controllers
 			Response.NoCache();
 			DbUtil.Db.SetNoLock();
 			DbUtil.LogActivity("checkin fam " + building + " " + id);
-			return new FindResult(id, building, null);
+#if DEBUG
+			return new FindResult2(id, building, null);
+#else
+			return new FindResult(id, building);
+#endif
 		}
 
 		public ActionResult Class(int id, int thisday)

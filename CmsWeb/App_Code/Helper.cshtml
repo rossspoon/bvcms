@@ -39,4 +39,8 @@
 {
     <a id="@id" href="#">@text</a>
 }
+@helper JQueryIdLink(string text, string id, string data)
+{
+    <a id="@id" data-item="@data">@text</a>
+}
 

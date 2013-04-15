@@ -1,11 +1,11 @@
 @{
     var newlook = DbUtil.Db.UserPreference("newlook3", "false").ToBool();
-    var oldQuickSearch = DbUtil.Db.UserPreference("oldQuickSearch", "true").ToBool();
+    var NewQuickSearch = DbUtil.Db.UserPreference("NewQuickSearch", "true").ToBool();
     var imgsrc = newlook ? "/Content/img/calendar.png" : "/images/calendar.gif";
 }
 <script type="text/javascript">
     $.dateFormat = '@Util.jQueryDateFormat';
-    $.oldQuickSearch = '@oldQuickSearch' === 'True';
+    $.NewQuickSearch = '@NewQuickSearch' === 'True';
     $(function () {
         $.datepicker.setDefaults({
             dateFormat: $.dateFormat,

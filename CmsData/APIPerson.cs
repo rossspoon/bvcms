@@ -307,10 +307,10 @@ namespace CmsData.API
 							return serialize(addr);
 						break;
                     case "EmContact":
-				        p.GetRecReg().Emcontact = e.Value;
+				        p.SetRecReg().Emcontact = e.Value;
 				        break;
                     case "EmPhone":
-				        p.GetRecReg().Emphone = e.Value;
+				        p.SetRecReg().Emphone = e.Value;
 				        break;
 					default:
 						break;

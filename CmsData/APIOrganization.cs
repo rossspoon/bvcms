@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web;
 using System.Xml;
 using System.Text;
 using System.Linq;
@@ -313,7 +314,8 @@ class OrgMembers(object):
             }
             catch (Exception ex)
             {
-                return @"<NewOrganization status=""error"">" + ex.Message + "</NewOrganization>";
+                return @"<NewOrganization status=""error"">{0}</NewOrganization>"
+                    .Fmt(HttpUtility.HtmlEncode(ex.Message));
             }
         }
         public string UpdateOrganization(int orgid, string name, string campusid, string active, string location, string description)
@@ -350,7 +352,8 @@ class OrgMembers(object):
             }
             catch (Exception ex)
             {
-                return @"<AddOrgMember status=""error"">" + ex.Message + "</AddOrgMember>";
+                return @"<AddOrgMember status=""error"">{0}</AddOrgMember>"
+                    .Fmt(HttpUtility.HtmlEncode(ex.Message));
             }
         }
         public string DropOrgMember(int OrgId, int PeopleId)
@@ -361,11 +364,27 @@ class OrgMembers(object):
                 if (om == null)
                     throw new Exception("no orgmember");
                 om.Drop(Db, addToHistory: true);
+                Db.SubmitChanges();
                 return @"<DropOrgMember status=""ok"" />";
             }
             catch (Exception ex)
             {
-                return @"<DropOrgMember status=""error"">" + ex.Message + "</DropOrgMember>";
+                return @"<DropOrgMember status=""error"">{0}</DropOrgMember>"
+                    .Fmt(HttpUtility.HtmlEncode(ex.Message));
+            }
+        }
+        public string CreateProgramDivision(string program, string division)
+        {
+            try
+            {
+                var p = CmsData.Organization.FetchOrCreateProgram(Db, program);
+                var d = CmsData.Organization.FetchOrCreateDivision(Db, p, division);
+                return @"<CreateProgramDivsion status=""ok"" progid=""{0}"" divid=""{1}"" />".Fmt(p.Id, d.Id);
+            }
+            catch (Exception ex)
+            {
+                return @"<CreateProgramDivision status=""error"">{0}</CreateProgramDivision>"
+                    .Fmt(HttpUtility.HtmlEncode(ex.Message));
             }
         }
 
@@ -433,7 +452,8 @@ class OrgMembers(object):
             }
             catch (Exception ex)
             {
-                return @"<ParentOrgs status=""error"">" + ex.Message + "</ParentOrgs>";
+                return @"<ParentOrgs status=""error"">{0}</ParentOrgs>"
+                    .Fmt(HttpUtility.HtmlEncode(ex.Message));
             }
 
         }
@@ -470,7 +490,8 @@ class OrgMembers(object):
             }
             catch (Exception ex)
             {
-                return @"<ChildOrgs status=""error"">" + ex.Message + "</ChildOrgs>";
+                return @"<ChildOrgs status=""error"">{0}</ChildOrgs>"
+                    .Fmt(HttpUtility.HtmlEncode(ex.Message));
             }
 
         }
@@ -501,7 +522,8 @@ class OrgMembers(object):
             }
             catch (Exception ex)
             {
-                return @"<ChildOrgs status=""error"">" + ex.Message + "</ChildOrgs>";
+                return @"<ChildOrgs status=""error"">{0}</ChildOrgs>"
+                    .Fmt(HttpUtility.HtmlEncode(ex.Message));
             }
 
         }
@@ -605,7 +627,7 @@ class OrgMembers(object):
         public void SendEventReminders(int id)
         {
             var org = Db.LoadOrganizationById(id);
-            var setting = new Settings(org.RegSetting, Db, org.OrganizationId) {org = org};
+            var setting = new Settings(org.RegSetting, Db, org.OrganizationId) { org = org };
             var currmembers = from om in org.OrganizationMembers
                               where (om.Pending ?? false) == false
                               where om.MemberTypeId != CmsData.Codes.MemberTypeCode.InActive
@@ -677,9 +699,9 @@ class OrgMembers(object):
             }
             public IEnumerable<AskItem> List()
             {
-                var types = new[] {"AskDropdown", "AskCheckboxes"};
-                return from ask in setting.AskItems 
-                       where types.Contains(ask.Type) 
+                var types = new[] { "AskDropdown", "AskCheckboxes" };
+                return from ask in setting.AskItems
+                       where types.Contains(ask.Type)
                        select new AskItem(ask, om);
             }
 
@@ -708,7 +730,7 @@ class OrgMembers(object):
                         var option = ((AskCheckboxes)ask).list.Where(mm => om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == mm.SmallGroup)).ToList();
                         foreach (var m in option)
                         {
-                            yield return new Row() {Label = label, Description = m.Description};
+                            yield return new Row() { Label = label, Description = m.Description };
                             label = string.Empty;
                         }
                     }
@@ -716,9 +738,9 @@ class OrgMembers(object):
                     {
                         var option = ((AskDropdown)ask).list.Where(mm => om.OrgMemMemTags.Any(mt => mt.MemberTag.Name == mm.SmallGroup)).ToList();
                         if (option.Any())
-                            yield return new Row() 
+                            yield return new Row()
                             {
-                                Label = Util.PickFirst(((AskDropdown) ask).Label, "Options"),
+                                Label = Util.PickFirst(((AskDropdown)ask).Label, "Options"),
                                 Description = option.First().Description
                             };
                     }

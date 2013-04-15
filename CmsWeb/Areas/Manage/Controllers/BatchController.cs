@@ -544,13 +544,13 @@ namespace CmsWeb.Areas.Manage.Controllers
             var uid = Util.UserId;
             ThreadPool.QueueUserWorkItem((e) =>
             {
+                Util.SessionId = Guid.NewGuid().ToString();
                 var Db = new CMSDataContext(Util.GetConnectionString(host));
-                Db.DeleteQueryBitTags();
-                foreach (var a in Db.QueryBitsFlags())
+                var qbits = Db.QueryBitsFlags().ToList();//.Where(bb => bb[0] == "F11").ToList();
+                foreach (var a in qbits)
                 {
                     var t = Db.FetchOrCreateSystemTag(a[0]);
-                    Db.TagAll(Db.PeopleQuery(a[0] + ":" + a[1]), t);
-                    Db.SubmitChanges();
+                    Db.TagAll2(Db.PeopleQuery(a[0] + ":" + a[1]), t);
                 }
                 AsyncManager.OutstandingOperations.Decrement();
             });
@@ -568,6 +568,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             var uid = Util.UserId;
             ThreadPool.QueueUserWorkItem((e) =>
             {
+                Util.SessionId = Guid.NewGuid().ToString();
                 var Db = new CMSDataContext(Util.GetConnectionString(host));
                 var d = DateTime.Today.Subtract(DateTime.Parse("1/1/1900")).Days;
                 var list = Db.QueryStats.Where(ss => ss.RunId == d);

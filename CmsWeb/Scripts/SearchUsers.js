@@ -20,8 +20,8 @@
                     d.dialog("option", "width", d.offsetWidth + 10);
                     $('table.results > tbody > tr:even', d).addClass('alt');
                     $(".bt").button();
-                    $(".UpdateSelected", $(this)).click(function(ev) {
-                        ev.preventDefault();
+                    $(".UpdateSelected", $(this)).click(function(ev2) {
+                        ev2.preventDefault();
                         var topid = $("table.results tbody tr:first ", d).find("input[type=checkbox]").attr("value");
                         if (opts.UpdateShared)
                             opts.UpdateShared(topid);
@@ -29,12 +29,12 @@
                         return false;
                     });
                     var f = $("a.search", d).closest('form');
-                    f.submit(function (ev) {
+                    f.submit(function () {
                         $("a.search", d).click();
                         return false;
                     });
-                    $("a.search", d).click(function(ev) {
-                        ev.preventDefault();
+                    $("a.search", d).click(function(ev2) {
+                        ev2.preventDefault();
                         var q = f.serialize();
                         $.post($(this).attr('href'), q, function(ret) {
                             $('table.results', f).replaceWith(ret);
@@ -42,8 +42,8 @@
                         });
                         return false;
                     });
-                    $("a.close", d).click(function(ev) {
-                        ev.preventDefault();
+                    $("a.close", d).click(function(ev2) {
+                        ev2.preventDefault();
                         d.dialog("close");
                         return false;
                     });
@@ -62,12 +62,12 @@
                     $(d).off("click", 'a.move');
                     $(d).on("click", 'a.move', function(ev2) {
                         ev2.preventDefault();
-                        var f = $(this).closest('form');
+                        var f1 = $(this).closest('form');
                         $("#topid").val($(this).attr("value"));
-                        var q = f.serialize();
+                        var q = f1.serialize();
                         $.post("/SearchUsers/MoveToTop", q, function(ret) {
-                            $('table.results', f).replaceWith(ret).ready(function() {
-                                $('table.results > tbody > tr:even', f).addClass('alt');
+                            $('table.results', f1).replaceWith(ret).ready(function() {
+                                $('table.results > tbody > tr:even', f1).addClass('alt');
                             });
                         });
                     });

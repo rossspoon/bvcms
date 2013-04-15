@@ -8,14 +8,20 @@
 }
 @section head
 {
+    <link href="~/Content/font/font-awesome.min.css" rel="stylesheet" />
 <style type="text/css">
 #container { margin: 3em auto  0 3em; padding-bottom: 3em; background-color: #fff; }
-#month { border-collapse: collapse; margin-left: 2em; }
-#month th, #month td { border: 1px solid #000; }
-#month thead { background-color:#9c9; }
-#month td { min-width: 7em; padding: .2em; vertical-align: top; overflow: auto; }
+#month { border-collapse: collapse;}
+#month thead td { padding: 10px;}
+#month th, #month td { border: 1px solid #000; vertical-align: top; }
+#month td { padding: .2em; vertical-align: top; overflow: auto; }
+#month td.wki { min-width: 145px; }
+#month td.wki img { width: 100%;height: 100%; }
 #month td .day { min-width: 7em; min-height: 1em;  }
-#month thead th { font: 150% bold Arial, Helvetica, sans-serif; padding: .2em; }
+#month th { font: 150% bold Arial, Helvetica, sans-serif; padding: .2em; }
+td.hidewki, th.hidewki, td.hidewkn, th.hidewkn {
+    display: none;
+}
 .wk-1 { background-color: #C5ECC5; }
 .wk-2 { background-color: #E2E2FF; } 
 .wk-3 { background-color: #FFE5E5; }

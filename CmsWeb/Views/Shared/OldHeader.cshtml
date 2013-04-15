@@ -3,7 +3,7 @@
     var onqb = (string) ViewData["OnQueryBuilder"] == "true";
     var headimage = DbUtil.HeaderImage("");
     var targetperson = DbUtil.Db.UserPreference("TargetLinkPeople", "false").ToBool();
-    var oldQuickSearch = DbUtil.Db.UserPreference("oldQuickSearch", "true").ToBool();
+    var NewQuickSearch = DbUtil.Db.UserPreference("NewQuickSearch", "true").ToBool();
     if (!headimage.HasValue())
     {
         headimage = @"<img src=""/Content/bvcms132x55.png"" width=""132"" height=""55"" />";
@@ -31,7 +31,7 @@
                                     <li><a id="cleartag" href="#">Empty Active Tag</a></li>
                                     <li><a href="/Tags">Manage Active Tag</a></li>
                                     <li><a href="/Home/TargetPerson/@targetperson.ToString()">Target Person Tab is @(targetperson ? "ON" : "OFF")</a></li>
-                                    <li><a href="/Home/OldQuickSearch/@oldQuickSearch.ToString()">OldQuickSearch is @(oldQuickSearch ? "ON" : "OFF")</a></li>
+                                    <li><a href="/Home/NewQuickSearch/@NewQuickSearch.ToString()">NewQuickSearch is @(NewQuickSearch ? "ON" : "OFF")</a></li>
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <li><a href="/Admin/Activity.aspx">Activity Log</a></li>

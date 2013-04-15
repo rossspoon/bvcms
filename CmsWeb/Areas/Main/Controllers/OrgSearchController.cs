@@ -173,7 +173,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Json(new { error = "bad tagdiv" });
             bool t = organization.ToggleTag(DbUtil.Db, tagdiv);
             Db.SubmitChanges();
-            var m = new OrgSearchModel { TagDiv = tagdiv, Name = id.ToString() };
+            var m = new OrgSearchModel { StatusId = 0, TagDiv = tagdiv, Name = id.ToString() };
             var o = m.OrganizationList().SingleOrDefault();
             if (o == null)
                 return Content("error");
