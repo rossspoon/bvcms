@@ -79,7 +79,8 @@ namespace CmsWeb.Models
 					|| (opened == false && filter == "Not Opened")
 					//|| (fail != null && filter == "Failed")
                     select t;
-            if (!DbUtil.Db.CurrentUser.Roles.Contains("Admin")
+            if ((!DbUtil.Db.CurrentUser.Roles.Contains("Admin") 
+                        || DbUtil.Db.CurrentUser.Roles.Contains("ManageEmails"))
                     && queue.QueuedBy != Util.UserPeopleId)
                 q = q.Where(ee => ee.PeopleId == Util.UserPeopleId);
             return q;

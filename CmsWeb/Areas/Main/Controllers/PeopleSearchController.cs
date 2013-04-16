@@ -18,11 +18,11 @@ namespace CmsWeb.Areas.Main.Controllers
             if (name.HasValue())
             {
                 m.m.name = name;
-                if (m.Count() == 1)
-                {
-                    var pid = m.FetchPeople().Single().PeopleId;
-                    return Redirect("/Person/Index/" + pid);
-                }
+//                if (m.Count() == 1)
+//                {
+//                    var pid = m.FetchPeople().Single().PeopleId;
+//                    return Redirect("/Person/Index/" + pid);
+//                }
             }
             else
             {

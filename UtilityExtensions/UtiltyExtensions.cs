@@ -506,7 +506,7 @@ namespace UtilityExtensions
             get
             {
                 var h = ConfigurationManager.AppSettings["cmshost"];
-                return h.Replace("{church}", Host);
+                return h.Replace("{church}", Host, ignoreCase:true);
             }
         }
         private const string STR_ConnectionString = "ConnectionString";

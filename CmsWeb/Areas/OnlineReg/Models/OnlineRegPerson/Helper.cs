@@ -267,11 +267,11 @@ It is important that you call the church <strong>{phone}</strong> to update our 
 so that you will receive future important notices regarding this registration.</p>";
 					c.Title = "{org}, different email address than one on record";
 				}
-				var msg = c.Body.Replace("{name}", person.Name);
-				msg = msg.Replace("{first}", person.PreferredName);
-				msg = msg.Replace("{org}", orgname);
-				msg = msg.Replace("{phone}", phone.FmtFone());
-				var subj = c.Title.Replace("{org}", orgname);
+				var msg = c.Body.Replace("{name}", person.Name, ignoreCase:true);
+				msg = msg.Replace("{first}", person.PreferredName, ignoreCase:true);
+				msg = msg.Replace("{org}", orgname, ignoreCase:true);
+				msg = msg.Replace("{phone}", phone.FmtFone(), ignoreCase:true);
+				var subj = c.Title.Replace("{org}", orgname, ignoreCase:true);
 				DbUtil.Db.Email(fromemail,
 					person, Util.ToMailAddressList(regemail),
 					subj, msg, false);
@@ -295,10 +295,10 @@ Thank you</p>";
 					c.Title = "{org}, no email on your record";
 				}
 				var msg = c.Body.Replace("{name}", person.Name);
-				msg = msg.Replace("{first}", person.PreferredName);
-				msg = msg.Replace("{org}", orgname);
-				msg = msg.Replace("{phone}", phone.FmtFone());
-				var subj = c.Title.Replace("{org}", orgname);
+				msg = msg.Replace("{first}", person.PreferredName, ignoreCase:true);
+				msg = msg.Replace("{org}", orgname, ignoreCase:true);
+				msg = msg.Replace("{phone}", phone.FmtFone(), ignoreCase:true);
+				var subj = c.Title.Replace("{org}", orgname, ignoreCase:true);
 				DbUtil.Db.Email(fromemail,
 					person, Util.ToMailAddressList(regemail),
 					subj, msg, false);

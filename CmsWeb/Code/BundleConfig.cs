@@ -41,17 +41,18 @@ namespace CmsWeb
 
             bundles.Add(new StyleBundle("~/Content/styles/new2/css").Include(
                 "~/Content/styles/jquery.jscrollpane.css"
-               // , "~/Content/bootstrap/css/bootstrap.css"
+                , "~/Content/bootstrap/css/bootstrap.css"
                 , "~/Content/styles/joyride-1.0.5.css"
                 , "~/Content/styles/jquery.multiselect.css"
                 , "~/Content/styles/jquery.tooltip.css"
                 , "~/Content/styles/jquery.alerts.css"
                 , "~/Content/styles/layout.css"
                 , "~/Content/styles/Main.css"
-                , "~/Content/styles/datepicker.css"
+                , "~/Content/datepicker/css/datepicker.css"
                 , "~/Content/styles/pager.css"
                 , "~/Content/font/proximanova/fonts.css"
                 , "~/Content/chosen/chosen.css"
+                , "~/Content/autocomplete/jquery-ui-1.10.2.custom.css"
                             ));
 
             bundles.Add(new StyleBundle("~/Content/styles/org-css").Include(
@@ -130,13 +131,14 @@ namespace CmsWeb
                 , "~/Content/js/jquery.tooltip.js"
                 , "~/Content/js/jquery.alerts.js"
                 //, "~/Content/js/jquery.simplemodal.1.4.4.js"
-                , "~/Content/js/bootstrap-datepicker.js"
+                , "~/Content/datepicker/js/bootstrap-datepicker.js"
                 , "~/Scripts/dropdown.js"
                 , "~/Scripts/Pager.js"
                 // Dave: this is going to be a big deal to replace the ExportToolbar functionality
                 //, "~/Scripts/ExportToolBar.js"
                 , "~/Scripts/headermenu2.js"
                 , "~/Content/chosen/chosen.jquery.js"
+                , "~/Content/autocomplete/jquery-ui-1.10.2.custom.js"
                             ));
 
             bundles.Add(new ScriptBundle("~/bundles/onlineregister-js").Include(

@@ -29,7 +29,7 @@ namespace CmsData
             get
             {
                 var h = ConfigurationManager.AppSettings["cmshost"];
-                return h.Replace("{church}", Host);
+                return h.Replace("{church}", Host, ignoreCase:true);
             }
         }
         public void Email(string from, Person p, string subject, string body)
@@ -249,15 +249,15 @@ namespace CmsData
                 var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(emailqueueto.PeopleId, From.Address));
                 var url = Util.URLCombine(CmsHost, qs);
                 var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
-                text = text.Replace("{unsubscribe}", link);
-                text = text.Replace("{Unsubscribe}", link);
+                text = text.Replace("{unsubscribe}", link, ignoreCase: true);
+                text = text.Replace("{Unsubscribe}", link, ignoreCase: true);
                 if (aa.Count > 0)
                 {
-                    text = text.Replace("{toemail}", aa[0].Address);
-                    text = text.Replace("%7Btoemail%7D", aa[0].Address);
+                    text = text.Replace("{toemail}", aa[0].Address, ignoreCase: true);
+                    text = text.Replace("%7Btoemail%7D", aa[0].Address, ignoreCase: true);
                 }
-                text = text.Replace("{fromemail}", From.Address);
-                text = text.Replace("%7Bfromemail%7D", From.Address);
+                text = text.Replace("{fromemail}", From.Address, ignoreCase: true);
+                text = text.Replace("%7Bfromemail%7D", From.Address, ignoreCase: true);
 
                 if (Setting("sendemail", "true") != "false")
                 {

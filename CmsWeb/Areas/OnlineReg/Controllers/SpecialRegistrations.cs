@@ -130,15 +130,15 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 var staff = Staff[0];
 
                 var summary = m.Summary(this);
-                var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
-                text = text.Replace("{name}", m.Person.Name);
-                text = text.Replace("{date}", DateTime.Now.ToString("d"));
-                text = text.Replace("{email}", m.Person.EmailAddress);
-                text = text.Replace("{phone}", m.Person.HomePhone.FmtFone());
-                text = text.Replace("{contact}", staff.Name);
-                text = text.Replace("{contactemail}", staff.EmailAddress);
-                text = text.Replace("{contactphone}", m.Org.PhoneNumber.FmtFone());
-                text = text.Replace("{details}", summary);
+                var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"), ignoreCase:true);
+                text = text.Replace("{name}", m.Person.Name, ignoreCase:true);
+                text = text.Replace("{date}", DateTime.Now.ToString("d"), ignoreCase:true);
+                text = text.Replace("{email}", m.Person.EmailAddress, ignoreCase:true);
+                text = text.Replace("{phone}", m.Person.HomePhone.FmtFone(), ignoreCase:true);
+                text = text.Replace("{contact}", staff.Name, ignoreCase:true);
+                text = text.Replace("{contactemail}", staff.EmailAddress, ignoreCase:true);
+                text = text.Replace("{contactphone}", m.Org.PhoneNumber.FmtFone(), ignoreCase:true);
+                text = text.Replace("{details}", summary, ignoreCase:true);
                 DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
                         m.setting.Subject, text);
 
@@ -367,15 +367,15 @@ The following Committments:<br/>
             var details = ViewExtensions2.RenderPartialViewToString(this, "ManageGiving2", m);
 
             var staff = DbUtil.Db.StaffPeopleForOrg(m.orgid)[0];
-            var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"));
-            text = text.Replace("{name}", m.person.Name);
-            text = text.Replace("{date}", DateTime.Now.ToString("d"));
-            text = text.Replace("{email}", m.person.EmailAddress);
-            text = text.Replace("{phone}", m.person.HomePhone.FmtFone());
-            text = text.Replace("{contact}", staff.Name);
-            text = text.Replace("{contactemail}", staff.EmailAddress);
-            text = text.Replace("{contactphone}", m.Organization.PhoneNumber.FmtFone());
-            text = text.Replace("{details}", details);
+            var text = m.setting.Body.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "church"), ignoreCase:true);
+            text = text.Replace("{name}", m.person.Name, ignoreCase:true);
+            text = text.Replace("{date}", DateTime.Now.ToString("d"), ignoreCase:true);
+            text = text.Replace("{email}", m.person.EmailAddress, ignoreCase:true);
+            text = text.Replace("{phone}", m.person.HomePhone.FmtFone(), ignoreCase:true);
+            text = text.Replace("{contact}", staff.Name, ignoreCase:true);
+            text = text.Replace("{contactemail}", staff.EmailAddress, ignoreCase:true);
+            text = text.Replace("{contactphone}", m.Organization.PhoneNumber.FmtFone(), ignoreCase:true);
+            text = text.Replace("{details}", details, ignoreCase:true);
 
             var contributionemail = (from ex in DbUtil.Db.PeopleExtras
                                      where ex.Field == "ContributionEmail"
@@ -398,7 +398,7 @@ The following Committments:<br/>
             if (!msg.HasValue())
                 msg = @"<p>Thank you {first}, for managing your recurring giving</p>
 <p>You should receive a confirmation email shortly.</p>";
-            msg = msg.Replace("{first}", m.person.PreferredName);
+            msg = msg.Replace("{first}", m.person.PreferredName, ignoreCase:true);
             ViewBag.Message = msg;
             return View(m);
         }
@@ -452,9 +452,9 @@ You have the following subscriptions:<br/>
             var body = m.setting.Body;
             if (!body.HasValue())
                 return Content("There is no Confirmation Message (required)");
-            body = body.Replace("{amt}", pi.Pledged.ToString("N2"));
-            body = body.Replace("{org}", m.Organization.OrganizationName);
-            body = body.Replace("{first}", m.person.PreferredName);
+            body = body.Replace("{amt}", pi.Pledged.ToString("N2"), ignoreCase:true);
+            body = body.Replace("{org}", m.Organization.OrganizationName, ignoreCase:true);
+            body = body.Replace("{first}", m.person.PreferredName, ignoreCase:true);
             DbUtil.Db.EmailRedacted(staff.First().FromEmail, m.person,
                 m.setting.Subject, body);
 

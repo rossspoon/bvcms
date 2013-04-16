@@ -232,7 +232,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 			var em = new EmailQueue
 			{
 				Subject = email.Subject,
-				Body = email.Body.Replace("{track}", "").Replace("{first}", "")
+				Body = email.Body.Replace("{track}", "", ignoreCase: true).Replace("{first}", "", ignoreCase: true)
 			};
 			return View(em);
 		}

@@ -25,11 +25,11 @@ namespace CmsData
 
             if (text.Contains("{first}", ignoreCase: true))
                 if (p.PreferredName.Contains("?", true) || (p.PreferredName.Contains("unknown", true)))
-                    text = text.Replace("{first}", string.Empty);
+                    text = text.Replace("{first}", string.Empty, ignoreCase:true);
                 else
-                    text = text.Replace("{first}", p.PreferredName);
+                    text = text.Replace("{first}", p.PreferredName, ignoreCase:true);
             if (text.Contains("{occupation}", ignoreCase: true))
-                text = text.Replace("{occupation}", p.OccupationOther);
+                text = text.Replace("{occupation}", p.OccupationOther, ignoreCase:true);
 
             if (text.Contains("{emailhref}", ignoreCase: true))
             {
@@ -71,7 +71,7 @@ namespace CmsData
                 var link = Util.URLCombine(CmsHost, "/Track/Barcode/" + emailqueueto.PeopleId);
                 text = text.Replace("{barcode}", "<img src='" + link + "' />", ignoreCase: true);
             }
-            if (text.Contains("{cellphone}"))
+            if (text.Contains("{cellphone}", ignoreCase: true))
                 if (p.CellPhone.HasValue())
                     text = text.Replace("{cellphone}", p.CellPhone.FmtFone(), ignoreCase: true);
                 else

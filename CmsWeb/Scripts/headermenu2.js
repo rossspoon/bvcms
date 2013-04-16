@@ -15,33 +15,59 @@
                 $(this).addClass('text-label');
             }
         });
+        var searchterm = "";
         $(this).autocomplete({
             appendTo: "#SearchResults",
-            autoFocus: true,
+            position: { my: "right top", at: "right bottom", of: $("#SearchText") },
             minLength: 3,
+            autoFocus: true,
+            open: function () {
+                $("#SearchResults > ul").css("z-index", 1002);
+            },
+            close: function (event) {
+                console.log("close");
+                var thisval = $(this).val();
+                if (searchterm !== thisval && thisval !== "") {
+                    return $("#SearchText").autocomplete("search");
+                }
+                $("#SearchText").val('');
+            },
             source: function (request, response) {
+                console.log("source");
                 if (request.term === '---')
                     response([
                         { id: -1, line1: "People Search" },
                         { id: -2, line1: "Advanced Search" },
                         { id: -3, line1: "Organization Search" }
                     ]);
-                else
+                else {
+                    searchterm = request.term;
                     $.post("/Home/Names", request, function (ret) {
                         response(ret.slice(0, 15));
                     }, "json");
+                }
             },
             select: function (event, ui) {
+                console.log("select");
+                var thisval = $(this).val();
+                if (searchterm !== thisval && thisval !== "") {
+                    return false;
+                }
                 if (ui.item.id === -1)
-                    window.location = "/PeopleSearch";
+                    window.location = "/PeopleSearch?name=" + searchterm;
                 else if (ui.item.id === -2)
                     window.location = "/QueryBuilder/Main";
                 else if (ui.item.id === -3)
                     window.location = "/OrgSearch";
                 else
                     window.location = (ui.item.isOrg ? "/Organization/Index/" : "/Person/Index/") + ui.item.id;
+                return true;
+            },
+            focus: function (ev) {
+                ev.preventDefault();
             }
         }).data("uiAutocomplete")._renderItem = function (ul, item) {
+            console.log("render");
             if (item.id === 0)
                 return $("<li>").append("<hr/>").appendTo(ul);
             var li = "<a><b>" + (item.isOrg ? "Org: " : "") + item.line1 + "</b>";

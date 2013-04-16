@@ -303,7 +303,7 @@
         $('#NewChurch', f).typeahead($.options("/People/Person/Churches"));
         $('#PrevChurch', f).typeahead($.options("/People/Person/Churches"));
         $("form select").chosen();
-        $("input.date").datepicker($.dtOptions);
+        $("input.date2").datepicker($.dtOptions);
         return false;
     };
     $("form").on("click", "#verifyaddress", function () {

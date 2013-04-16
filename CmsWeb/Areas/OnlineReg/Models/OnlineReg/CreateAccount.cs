@@ -57,9 +57,9 @@ Just login to <a href=""{host}"">{host}</a> and you will be taken to your record
             Db.OneTimeLinks.InsertOnSubmit(ot);
             Db.SubmitChanges();
 
-            var message = body.Replace("{url}", url + ot.Id.ToCode());
-            message = message.Replace("{name}", person.Name);
-            message = message.Replace("{first}", person.PreferredName);
+            var message = body.Replace("{url}", url + ot.Id.ToCode(), ignoreCase:true);
+            message = message.Replace("{name}", person.Name, ignoreCase:true);
+            message = message.Replace("{first}", person.PreferredName, ignoreCase:true);
 
             Db.Email(from, person, subject, message);
         }

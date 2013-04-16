@@ -553,12 +553,12 @@ class OrgMembers(object):
         }
         public static string MessageReplacements(Person p, string DivisionName, string OrganizationName, string Location, string message)
         {
-            message = message.Replace("{first}", p.PreferredName);
-            message = message.Replace("{name}", p.Name);
-            message = message.Replace("{division}", DivisionName);
-            message = message.Replace("{org}", OrganizationName);
-            message = message.Replace("{location}", Location);
-            message = message.Replace("{cmshost}", DbUtil.Db.CmsHost);
+            message = message.Replace("{first}", p.PreferredName, ignoreCase:true);
+            message = message.Replace("{name}", p.Name, ignoreCase:true);
+            message = message.Replace("{division}", DivisionName, ignoreCase:true);
+            message = message.Replace("{org}", OrganizationName, ignoreCase:true);
+            message = message.Replace("{location}", Location, ignoreCase:true);
+            message = message.Replace("{cmshost}", DbUtil.Db.CmsHost, ignoreCase:true);
             return message;
         }
         public void SendVolunteerReminders(int id, bool sendall)
