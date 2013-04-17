@@ -99,6 +99,8 @@ namespace CmsCheckin
 			Settings1.Default.PrinterHeight = PrinterHeight.Text;
 			Settings1.Default.AdvancedPageSize = AdvancedPageSize.Checked;
             Settings1.Default.UseSSL = UseSSL.Checked;
+            Settings1.Default.AdminPIN = AdminPIN.Text;
+            Settings1.Default.AdminPINTimeout = AdminPINTimeout.Text;
 			Settings1.Default.Save();
 
 			if(URL.Text.StartsWith("localhost") || !UseSSL.Checked)
@@ -113,6 +115,9 @@ namespace CmsCheckin
 			Program.PrinterWidth = PrinterWidth.Text;
 			Program.PrinterHeight = PrinterHeight.Text;
             Program.DisableLocationLabels = DisableLocationLabels.Checked;
+
+            Program.AdminPIN = AdminPIN.Text;
+            Program.AdminPINTimeout = int.Parse(AdminPINTimeout.Text);
 
 			if (BuildingAccessMode.Checked == true)
 			{
@@ -211,6 +216,8 @@ namespace CmsCheckin
 			PrinterWidth.Text = Settings1.Default.PrinterWidth;
 			PrinterHeight.Text = Settings1.Default.PrinterHeight;
             UseSSL.Checked = Settings1.Default.UseSSL;
+            AdminPIN.Text = Settings1.Default.AdminPIN;
+            AdminPINTimeout.Text = Settings1.Default.AdminPINTimeout;
 
             if (!Util.IsDebug())
             {

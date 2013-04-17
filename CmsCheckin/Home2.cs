@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -158,9 +159,19 @@ namespace CmsCheckin
 			var lb = Program.attendant.NameDisplay;
 			lb.SetPropertyThreadSafe(() => lb.Text, "finding " + ph);
 
-            var url = "Checkin2/Find/" + ph + Program.QueryString + "&page=1&building=" + Program.Building + "&querybit=" + Program.BuildingInfo.querybit;
+            // Get Method
+            //var url = "Checkin2/Find/" + ph + Program.QueryString + "&page=1&building=" + Program.Building + "&querybit=" + Program.BuildingInfo.querybit;
+            //var x = this.GetDocument(url);
 
-            var x = this.GetDocument(url);
+            var url = "Checkin2/Find/" + ph;
+
+            var post = new NameValueCollection();
+            post.Add("page", "1");
+            post.Add("building", Program.Building);
+            post.Add("querybit", Program.BuildingInfo.querybit);
+
+            var x = this.PostDocument(url, post);
+
             e.Result = x;
         }
 

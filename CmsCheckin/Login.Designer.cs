@@ -108,6 +108,10 @@
             this.label12 = new System.Windows.Forms.Label();
             this.AdvancedPageSize = new System.Windows.Forms.CheckBox();
             this.UseSSL = new System.Windows.Forms.CheckBox();
+            this.AdminPIN = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.AdminPINTimeout = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -117,7 +121,7 @@
             this.button1.Location = new System.Drawing.Point(676, 429);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(83, 95);
-            this.button1.TabIndex = 14;
+            this.button1.TabIndex = 18;
             this.button1.Text = "GO";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -745,7 +749,7 @@
             this.PrintKiosks.Location = new System.Drawing.Point(573, 58);
             this.PrintKiosks.Name = "PrintKiosks";
             this.PrintKiosks.Size = new System.Drawing.Size(166, 31);
-            this.PrintKiosks.TabIndex = 6;
+            this.PrintKiosks.TabIndex = 10;
             // 
             // label1
             // 
@@ -770,7 +774,7 @@
             this.PrintMode.Location = new System.Drawing.Point(573, 14);
             this.PrintMode.Name = "PrintMode";
             this.PrintMode.Size = new System.Drawing.Size(166, 28);
-            this.PrintMode.TabIndex = 5;
+            this.PrintMode.TabIndex = 9;
             this.PrintMode.Text = "Print To Printer";
             this.PrintMode.SelectedIndexChanged += new System.EventHandler(this.PrintMode_SelectedIndexChanged);
             // 
@@ -782,7 +786,7 @@
             this.Printer.Location = new System.Drawing.Point(116, 199);
             this.Printer.Name = "Printer";
             this.Printer.Size = new System.Drawing.Size(309, 33);
-            this.Printer.TabIndex = 121;
+            this.Printer.TabIndex = 7;
             this.Printer.TabStop = false;
             this.Printer.SelectedIndexChanged += new System.EventHandler(this.Printer_SelectedIndexChanged);
             // 
@@ -803,7 +807,7 @@
             this.DisableLocationLabels.Location = new System.Drawing.Point(531, 206);
             this.DisableLocationLabels.Name = "DisableLocationLabels";
             this.DisableLocationLabels.Size = new System.Drawing.Size(220, 24);
-            this.DisableLocationLabels.TabIndex = 9;
+            this.DisableLocationLabels.TabIndex = 13;
             this.DisableLocationLabels.Text = "Disable Location Labels";
             this.DisableLocationLabels.UseVisualStyleBackColor = true;
             // 
@@ -850,10 +854,10 @@
             // 
             this.BuildingAccessMode.AutoSize = true;
             this.BuildingAccessMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BuildingAccessMode.Location = new System.Drawing.Point(343, 157);
+            this.BuildingAccessMode.Location = new System.Drawing.Point(329, 157);
             this.BuildingAccessMode.Name = "BuildingAccessMode";
             this.BuildingAccessMode.Size = new System.Drawing.Size(141, 24);
-            this.BuildingAccessMode.TabIndex = 8;
+            this.BuildingAccessMode.TabIndex = 6;
             this.BuildingAccessMode.Text = "Building Mode";
             this.BuildingAccessMode.UseVisualStyleBackColor = true;
             // 
@@ -919,17 +923,17 @@
             this.building.Location = new System.Drawing.Point(116, 152);
             this.building.Name = "building";
             this.building.Size = new System.Drawing.Size(193, 31);
-            this.building.TabIndex = 4;
+            this.building.TabIndex = 5;
             // 
             // FullScreen
             // 
             this.FullScreen.AutoSize = true;
             this.FullScreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FullScreen.Location = new System.Drawing.Point(343, 109);
+            this.FullScreen.Location = new System.Drawing.Point(329, 110);
             this.FullScreen.Name = "FullScreen";
-            this.FullScreen.Size = new System.Drawing.Size(168, 24);
-            this.FullScreen.TabIndex = 7;
-            this.FullScreen.Text = "Full Screen Mode";
+            this.FullScreen.Size = new System.Drawing.Size(119, 24);
+            this.FullScreen.TabIndex = 4;
+            this.FullScreen.Text = "Full Screen";
             this.FullScreen.UseVisualStyleBackColor = true;
             // 
             // label3
@@ -948,7 +952,7 @@
             this.PrintTest.Location = new System.Drawing.Point(437, 200);
             this.PrintTest.Name = "PrintTest";
             this.PrintTest.Size = new System.Drawing.Size(62, 34);
-            this.PrintTest.TabIndex = 134;
+            this.PrintTest.TabIndex = 8;
             this.PrintTest.TabStop = false;
             this.PrintTest.Text = "Test";
             this.PrintTest.UseVisualStyleBackColor = true;
@@ -1045,7 +1049,7 @@
             this.PrinterWidth.Location = new System.Drawing.Point(116, 245);
             this.PrinterWidth.Name = "PrinterWidth";
             this.PrinterWidth.Size = new System.Drawing.Size(85, 31);
-            this.PrinterWidth.TabIndex = 13;
+            this.PrinterWidth.TabIndex = 15;
             this.PrinterWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // PageHeightLabel
@@ -1066,7 +1070,7 @@
             this.PrinterHeight.Location = new System.Drawing.Point(295, 245);
             this.PrinterHeight.Name = "PrinterHeight";
             this.PrinterHeight.Size = new System.Drawing.Size(85, 31);
-            this.PrinterHeight.TabIndex = 12;
+            this.PrinterHeight.TabIndex = 16;
             this.PrinterHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // SizeFromPrinter
@@ -1076,7 +1080,7 @@
             this.SizeFromPrinter.Location = new System.Drawing.Point(394, 243);
             this.SizeFromPrinter.Name = "SizeFromPrinter";
             this.SizeFromPrinter.Size = new System.Drawing.Size(105, 34);
-            this.SizeFromPrinter.TabIndex = 11;
+            this.SizeFromPrinter.TabIndex = 17;
             this.SizeFromPrinter.Text = "From Printer";
             this.SizeFromPrinter.UseVisualStyleBackColor = true;
             this.SizeFromPrinter.Click += new System.EventHandler(this.SizeFromPrinter_Click);
@@ -1099,7 +1103,7 @@
             this.AdvancedPageSize.Location = new System.Drawing.Point(531, 249);
             this.AdvancedPageSize.Name = "AdvancedPageSize";
             this.AdvancedPageSize.Size = new System.Drawing.Size(230, 24);
-            this.AdvancedPageSize.TabIndex = 10;
+            this.AdvancedPageSize.TabIndex = 14;
             this.AdvancedPageSize.Text = "Use Advanced Page Size";
             this.AdvancedPageSize.UseVisualStyleBackColor = true;
             this.AdvancedPageSize.CheckedChanged += new System.EventHandler(this.AdvancedPageSize_CheckedChanged);
@@ -1116,11 +1120,61 @@
             this.UseSSL.Text = "Use SSL Connection";
             this.UseSSL.UseVisualStyleBackColor = true;
             // 
+            // AdminPIN
+            // 
+            this.AdminPIN.Enabled = false;
+            this.AdminPIN.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AdminPIN.Location = new System.Drawing.Point(667, 104);
+            this.AdminPIN.Name = "AdminPIN";
+            this.AdminPIN.Size = new System.Drawing.Size(72, 31);
+            this.AdminPIN.TabIndex = 11;
+            this.AdminPIN.Text = "12345";
+            this.AdminPIN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.AdminPIN.Visible = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(563, 112);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(98, 20);
+            this.label9.TabIndex = 154;
+            this.label9.Text = "Admin PIN:";
+            this.label9.Visible = false;
+            // 
+            // AdminPINTimeout
+            // 
+            this.AdminPINTimeout.Enabled = false;
+            this.AdminPINTimeout.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AdminPINTimeout.Location = new System.Drawing.Point(667, 150);
+            this.AdminPINTimeout.Name = "AdminPINTimeout";
+            this.AdminPINTimeout.Size = new System.Drawing.Size(72, 31);
+            this.AdminPINTimeout.TabIndex = 12;
+            this.AdminPINTimeout.Text = "300";
+            this.AdminPINTimeout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.AdminPINTimeout.Visible = false;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(549, 157);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(112, 20);
+            this.label11.TabIndex = 156;
+            this.label11.Text = "PIN Timeout:";
+            this.label11.Visible = false;
+            // 
             // Login
             // 
             this.AcceptButton = this.brbrace;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(767, 818);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.AdminPINTimeout);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.AdminPIN);
             this.Controls.Add(this.UseSSL);
             this.Controls.Add(this.AdvancedPageSize);
             this.Controls.Add(this.label12);
@@ -1295,5 +1349,9 @@
 		private System.Windows.Forms.Label label12;
 		public System.Windows.Forms.CheckBox AdvancedPageSize;
         public System.Windows.Forms.CheckBox UseSSL;
+        public System.Windows.Forms.TextBox AdminPIN;
+        private System.Windows.Forms.Label label9;
+        public System.Windows.Forms.TextBox AdminPINTimeout;
+        private System.Windows.Forms.Label label11;
     }
 }

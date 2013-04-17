@@ -105,6 +105,9 @@ namespace CmsCheckin
             }
             Application.Run(b);
         }
+        public static string AdminPIN { get; set; }
+        public static int AdminPINTimeout { get; set; }
+
         public static string Username { get; set; }
         public static string Password { get; set; }
         public static string URL { get; set; }

@@ -652,13 +652,13 @@ namespace CmsCheckin
 				return;
 			}
 
-            if (Program.addguests == null && list.Where(i => i.ischecked && i.MemberStatus == "Member").Any())
+            if (Program.addguests == null && list.Where(i => i.ischecked && i.access == "true").Any())
 			{
 				Program.addguests = new AddGuests();
 				Program.addguests.StartPosition = FormStartPosition.Manual;
 				Program.addguests.Location = new Point(Program.baseform.Location.X + 100, Program.baseform.Location.Y + 100);
 				var i = 1;
-				foreach (var p in list.Where(pp => pp.ischecked && pp.MemberStatus == "Member"))
+                foreach (var p in list.Where(pp => pp.ischecked && pp.access == "true"))
 				{
 					var rb = Program.addguests.Controls.Find("rb" + i, true)[0] as RadioButton;
 					rb.Text = p.name;
