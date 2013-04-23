@@ -12,7 +12,6 @@ using Intuit.Ipp.Data;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
 
-
 namespace CmsData.Classes.QuickBooks
 {
     public class QuickBooksHelper

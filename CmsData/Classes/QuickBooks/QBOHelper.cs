@@ -37,6 +37,14 @@ namespace CmsData.Classes.QuickBooks
             return lReturn;
         }
 
+        public Account GetAccountByID(string sAccountID)
+        {
+            Account acct = new Account();
+            acct.Id = new IdType { Value = sAccountID };
+
+            return getDataService().FindById<Account>(acct) as Account;
+        }
+
         public JournalEntryLine TranslateJournalEntry(QBJournalEntryLine qbjel, bool bCredit)
         {
             JournalEntryLine jel = new JournalEntryLine();
@@ -46,7 +54,7 @@ namespace CmsData.Classes.QuickBooks
             jel.AccountId = new IdType() { Value = qbjel.sAccountID };
 
             if (bCredit) jel.PostingType = PostingTypeEnum.Credit;
-            else jel.PostingType = PostingTypeEnum.Credit;
+            else jel.PostingType = PostingTypeEnum.Debit;
 
             jel.PostingTypeSpecified = true;
 
