@@ -66,14 +66,14 @@ namespace CmsWeb.Areas.Public.Controllers
 			return new FamilyResult(id, campus, thisday, 0, false, kioskmode ?? false);
 		}
 
-		public ActionResult SingleFamily(int id, string building)
+        public ActionResult SingleFamily(int id, string building, string querybit)
 		{
 			if (!Authenticate())
 				return Content("not authorized");
 			Response.NoCache();
 			DbUtil.Db.SetNoLock();
 			DbUtil.LogActivity("checkin fam " + building + " " + id);
-			return new FindResult(id, building, null);
+            return new FindResult(id, building, querybit);
 		}
 
 		public ActionResult Class(int id, int thisday)
