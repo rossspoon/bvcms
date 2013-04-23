@@ -140,7 +140,10 @@ namespace CmsCheckin
                 return;
             }
             if (textBox1.Text == "411")
-                this.Swap(namesearch);
+            {
+                if (Program.CheckAdminPIN())
+                    this.Swap(namesearch);
+            }
             else
             {
                 PleaseWaitForm = new PleaseWait();
@@ -196,7 +199,8 @@ namespace CmsCheckin
 
         private void MagicButton_Click(object sender, EventArgs e)
         {
-            this.Swap(namesearch);
+            if( Program.CheckAdminPIN() )
+                this.Swap(namesearch);
         }
 
         void first_GoBack(object sender, EventArgs e)

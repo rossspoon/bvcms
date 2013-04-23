@@ -1051,6 +1051,7 @@
             this.PrinterWidth.Size = new System.Drawing.Size(85, 31);
             this.PrinterWidth.TabIndex = 15;
             this.PrinterWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.PrinterWidth.TextChanged += new System.EventHandler(this.NumbersOnly);
             // 
             // PageHeightLabel
             // 
@@ -1072,6 +1073,7 @@
             this.PrinterHeight.Size = new System.Drawing.Size(85, 31);
             this.PrinterHeight.TabIndex = 16;
             this.PrinterHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.PrinterHeight.TextChanged += new System.EventHandler(this.NumbersOnly);
             // 
             // SizeFromPrinter
             // 
@@ -1122,49 +1124,44 @@
             // 
             // AdminPIN
             // 
-            this.AdminPIN.Enabled = false;
             this.AdminPIN.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AdminPIN.Location = new System.Drawing.Point(667, 104);
+            this.AdminPIN.Location = new System.Drawing.Point(642, 104);
             this.AdminPIN.Name = "AdminPIN";
-            this.AdminPIN.Size = new System.Drawing.Size(72, 31);
+            this.AdminPIN.Size = new System.Drawing.Size(97, 31);
             this.AdminPIN.TabIndex = 11;
-            this.AdminPIN.Text = "12345";
             this.AdminPIN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.AdminPIN.Visible = false;
+            this.AdminPIN.TextChanged += new System.EventHandler(this.NumbersOnly);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(563, 112);
+            this.label9.Location = new System.Drawing.Point(536, 112);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(98, 20);
             this.label9.TabIndex = 154;
             this.label9.Text = "Admin PIN:";
-            this.label9.Visible = false;
             // 
             // AdminPINTimeout
             // 
-            this.AdminPINTimeout.Enabled = false;
             this.AdminPINTimeout.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AdminPINTimeout.Location = new System.Drawing.Point(667, 150);
+            this.AdminPINTimeout.Location = new System.Drawing.Point(642, 150);
             this.AdminPINTimeout.Name = "AdminPINTimeout";
-            this.AdminPINTimeout.Size = new System.Drawing.Size(72, 31);
+            this.AdminPINTimeout.Size = new System.Drawing.Size(97, 31);
             this.AdminPINTimeout.TabIndex = 12;
-            this.AdminPINTimeout.Text = "300";
+            this.AdminPINTimeout.Text = "90";
             this.AdminPINTimeout.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.AdminPINTimeout.Visible = false;
+            this.AdminPINTimeout.TextChanged += new System.EventHandler(this.NumbersOnly);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(549, 157);
+            this.label11.Location = new System.Drawing.Point(522, 157);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(112, 20);
             this.label11.TabIndex = 156;
             this.label11.Text = "PIN Timeout:";
-            this.label11.Visible = false;
             // 
             // Login
             // 

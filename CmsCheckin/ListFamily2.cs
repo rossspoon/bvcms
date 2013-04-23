@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -70,10 +71,20 @@ namespace CmsCheckin
 
 		public void ShowFamily(int fid)
 		{
-			page = 1;
-			xdoc = this.GetDocument("Checkin2/SingleFamily/" + fid + "?Building=" + Program.Building);
-			Program.FamilyId = fid;
-			ShowFamily(xdoc);
+			//page = 1;
+			//xdoc = this.GetDocument("Checkin2/SingleFamily/" + fid + "?Building=" + Program.Building);
+
+            Program.FamilyId = fid;
+
+            var url = "Checkin2/SingleFamily/" + fid;
+
+            var post = new NameValueCollection();
+            post.Add("building", Program.Building);
+            post.Add("querybit", Program.BuildingInfo.querybit);
+
+            var x = this.PostDocument(url, post);
+			
+			ShowFamily(x);
 		}
 
 		public void ShowFamily(XDocument x)
@@ -604,6 +615,8 @@ namespace CmsCheckin
 
 		private void MagicButton_Click(object sender, EventArgs e)
 		{
+            if (!Program.CheckAdminPIN()) return;
+
 			Program.TimerStop();
 			if (list.Count == 0)
 			{

@@ -784,6 +784,8 @@ namespace CmsCheckin
 
         private void MagicButton_Click(object sender, EventArgs e)
         {
+            if (!Program.CheckAdminPIN()) return;
+
             Program.TimerStop();
             if (list.Count == 0)
             {

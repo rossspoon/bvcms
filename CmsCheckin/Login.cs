@@ -12,6 +12,7 @@ using System.Drawing.Printing;
 using System.Xml.Serialization;
 using System.IO;
 using CmsCheckin.Classes;
+using System.Text.RegularExpressions;
 
 namespace CmsCheckin
 {
@@ -100,7 +101,25 @@ namespace CmsCheckin
 			Settings1.Default.AdvancedPageSize = AdvancedPageSize.Checked;
             Settings1.Default.UseSSL = UseSSL.Checked;
             Settings1.Default.AdminPIN = AdminPIN.Text;
-            Settings1.Default.AdminPINTimeout = AdminPINTimeout.Text;
+
+            if (AdminPINTimeout.Text.Length > 0)
+            {
+                try
+                {
+                    Program.AdminPINTimeout = int.Parse(AdminPINTimeout.Text);
+                    Settings1.Default.AdminPINTimeout = AdminPINTimeout.Text;
+                }
+                catch (Exception ex)
+                {
+                    Program.AdminPINTimeout = 0;
+                    Settings1.Default.AdminPINTimeout = "0";
+                }
+            }
+            else
+            {
+                Program.AdminPINTimeout = 0;
+            }
+
 			Settings1.Default.Save();
 
 			if(URL.Text.StartsWith("localhost") || !UseSSL.Checked)
@@ -117,7 +136,8 @@ namespace CmsCheckin
             Program.DisableLocationLabels = DisableLocationLabels.Checked;
 
             Program.AdminPIN = AdminPIN.Text;
-            Program.AdminPINTimeout = int.Parse(AdminPINTimeout.Text);
+
+            
 
 			if (BuildingAccessMode.Checked == true)
 			{
@@ -135,7 +155,6 @@ namespace CmsCheckin
 				{
 					MessageBox.Show("cannot find " + Program.URL);
 					CancelClose = true;
-					throw;
 				}
 			}
 			var wc = Util.CreateWebClient();
@@ -520,6 +539,20 @@ namespace CmsCheckin
                 label1.Enabled = false;
                 PrintKiosks.Text = "";
             }
+        }
+
+        private Regex rx = new Regex("\\D");
+
+        private void NumbersOnly(object sender, EventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+
+            try
+            {
+                tb.Text = rx.Replace(tb.Text, "");
+                tb.Select(tb.Text.Length, 0);
+            }
+            catch (ArgumentException ex) { }
         }
 	}
 }

@@ -385,7 +385,7 @@ namespace CmsCheckin {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        [global::System.Configuration.DefaultSettingValueAttribute("90")]
         public string AdminPINTimeout {
             get {
                 return ((string)(this["AdminPINTimeout"]));
