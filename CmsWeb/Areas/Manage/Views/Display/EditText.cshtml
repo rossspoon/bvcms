@@ -2,10 +2,9 @@
 @model CmsData.Content
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
-}
-@section scripts
-{
-<script type="text/javascript">
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+@<script type="text/javascript">
     $(function () {
         $(".bt").button();
         $("#delete").click(function (ev) {
@@ -18,7 +17,7 @@
         });
         $("textarea").tabby();
     });
-</script>
+</script>);
 }
 @using (Html.BeginForm("ContentUpdate", "Display", FormMethod.Post))
 { 

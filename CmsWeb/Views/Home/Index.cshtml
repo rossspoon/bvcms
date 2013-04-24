@@ -5,24 +5,23 @@
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
     var newlook = DbUtil.Db.UserPreference("newlook3", "false").ToBool();
-}
-@section scripts
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.jscroll').each(function () {
-                $(this).jScrollPane({
-                    showArrows: true,
-                    verticalGutter: 5
-                });
-                var api = $(this).data('jsp');
-                $(window).bind('resize', function () {
-                    api.reinitialise();
-                });
-            });
-            $('div.jscroll div.drow:even').addClass('alt');
-        });
-    </script>
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+        @<script type="text/javascript">
+             $(document).ready(function() {
+                 $('.jscroll').each(function() {
+                     $(this).jScrollPane({
+                         showArrows: true,
+                         verticalGutter: 5
+                     });
+                     var api = $(this).data('jsp');
+                     $(window).bind('resize', function() {
+                         api.reinitialise();
+                     });
+                 });
+                 $('div.jscroll div.drow:even').addClass('alt');
+             });
+         </script>);
 }
 <div class="homebox roundbox five columns alpha">
     <div style="height: 33%;">

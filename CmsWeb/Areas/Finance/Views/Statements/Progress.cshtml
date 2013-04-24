@@ -1,10 +1,13 @@
 ﻿@model CmsData.ContributionsRun
-@using System.Web.Optimization
+@using CmsWeb
 @using UtilityExtensions
+@{
+    CassetteConfiguration.BundleRefJs();
+}
 <html>
 <head>
     <title>Contribution Statements</title>
-    @Scripts.Render("~/bundles/js")
+    @Bundles.RenderScripts()
 </head>
 <body>
     <h2>

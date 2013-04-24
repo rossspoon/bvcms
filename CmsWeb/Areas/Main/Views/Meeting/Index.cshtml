@@ -1,10 +1,19 @@
-﻿@using System.Web.Optimization
-@using UtilityExtensions
+﻿@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.MeetingModel
 @{
     ViewBag.Title = "Meeting";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("meeting");
+    if (!Model.meeting.GroupMeetingFlag)
+    {
+        Bundles.AddInlineScript(
+        @<script type="text/javascript">
+            $(function () { $(".numpresent").editable("disable"); });
+        </script>);
+    
+    }
 }
 @section head
 {
@@ -21,17 +30,6 @@
             border-bottom: 1px solid #999;
         }
     </style>
-}
-
-@section scripts
-{
-@Scripts.Render("~/bundles/single/meeting-js")
-    @if (!Model.meeting.GroupMeetingFlag)
-    {
-    <script type="text/javascript">
-        $(function () { $(".numpresent").editable("disable"); });
-    </script>
-    }
 }
 
 @Html.Hidden("meetingid", Model.meeting.MeetingId)

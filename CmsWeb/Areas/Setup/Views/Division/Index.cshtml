@@ -1,13 +1,10 @@
-﻿@using System.Web.Optimization
-@using CmsWeb
+﻿@using CmsWeb
 @model CmsWeb.Models.DivisionModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Divisions";
-}
-@section scripts 
-{
-@Scripts.Render("~/bundles/single/Divisions-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("Divisions");
 }
 <form id="progform">
 Filter for Program: @Html.DropDownList("ProgramId", Model.ProgramIds())

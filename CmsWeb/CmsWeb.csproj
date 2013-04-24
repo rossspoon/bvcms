@@ -4,6 +4,8 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -71,9 +73,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
+    <Reference Include="AjaxMin">
+      <HintPath>..\packages\AjaxMin.4.60.4609.17023\lib\net20\AjaxMin.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette">
+      <HintPath>..\packages\Cassette.2.0.0\lib\net40-client\Cassette.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.Aspnet">
+      <HintPath>..\packages\Cassette.Aspnet.2.0.0\lib\net40\Cassette.Aspnet.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.MSBuild">
+      <HintPath>..\packages\Cassette.MSBuild.2.0.0\lib\net40\Cassette.MSBuild.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.Views">
+      <HintPath>..\packages\Cassette.Views.2.0.0\lib\net40\Cassette.Views.dll</HintPath>
     </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=2.5.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -152,7 +165,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>Binaries\NPOI\NPOI.dll</HintPath>
@@ -196,10 +209,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Optimization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
@@ -229,10 +238,6 @@
     <Reference Include="Twilio.Api, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Twilio.3.5.6\lib\3.5\Twilio.Api.dll</HintPath>
-    </Reference>
-    <Reference Include="WebGrease, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -383,7 +388,7 @@
     <Compile Include="Areas\Main\Models\Export\ExportPeople.cs" />
     <Compile Include="Areas\Main\Models\Export\ExportInvolvements.cs" />
     <Compile Include="Areas\Main\Models\Export\InvovementInfo.cs" />
-    <Compile Include="Areas\Main\Models\Export\QueryBitsExcelResult.cs" />
+    <Compile Include="Areas\Main\Models\Export\StatusFlagsExcelResult.cs" />
     <Compile Include="Areas\Main\Models\Export\MucketyMapResult.cs" />
     <Compile Include="Areas\Dialog\Models\SearchUsersModel.cs" />
     <Compile Include="Areas\Main\Models\Organization\ScheduleInfo.cs" />
@@ -476,6 +481,7 @@
     <Compile Include="Areas\Search\SearchAreaRegistration.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
     <Compile Include="Areas\Setup\Controllers\TwilioController.cs" />
+    <Compile Include="CassetteConfiguration.cs" />
     <Compile Include="Code\BundleConfig.cs" />
     <Compile Include="Code\BundleModel.cs">
       <SubType>Code</SubType>
@@ -495,7 +501,21 @@
     <EmbeddedResource Include="Areas\Public\Controllers\APITestPlan.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Areas\People\Views\Person\index.html" />
+    <Content Include="Content\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="images\chosen-sprite.png" />
+    <Content Include="Content\chosen.css" />
+    <Content Include="Content\font-awesome-ie7.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\font\fontawesome-webfont.svg" />
+    <Content Include="Content\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\moment-datepicker\datepicker.css" />
+    <Content Include="Content\normalize.css" />
+    <Content Include="index.html" />
     <Content Include="ckeditor2\build-config.js" />
     <Content Include="ckeditor2\ckeditor.js" />
     <Content Include="ckeditor2\config.js" />
@@ -653,78 +673,34 @@
     <Content Include="ckeditor2\skins\kama\images\toolbar_start.gif" />
     <Content Include="ckeditor2\styles.js" />
     <Content Include="Content\autocomplete\jquery-ui-1.10.2.custom.css" />
-    <Content Include="Content\autocomplete\jquery-ui-1.10.2.custom.js" />
-    <Content Include="Content\bootstrap\css\bootstrap-responsive.css" />
-    <Content Include="Content\bootstrap\css\bootstrap-responsive.min.css" />
-    <Content Include="Content\bootstrap\css\bootstrap.css" />
-    <Content Include="Content\bootstrap\css\bootstrap.min.css" />
-    <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
-    <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
-    <Content Include="Content\bootstrap\js\bootstrap.js" />
-    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Content\chosen\chosen-sprite%402x.png" />
-    <Content Include="Content\datepicker\css\datepicker.css" />
-    <Content Include="Content\datepicker\js\bootstrap-datepicker.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.bg.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.ca.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.cs.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.da.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.de.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.el.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.es.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.fi.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.fr.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.he.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.hr.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.hu.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.id.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.is.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.it.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.ja.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.kr.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.lt.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.lv.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.ms.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.nb.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.nl.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.pl.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.pt-BR.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.pt.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.ro.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.rs-latin.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.rs.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.ru.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.sk.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.sl.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.sv.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.sw.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.th.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.tr.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.uk.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.zh-CN.js" />
-    <Content Include="Content\datepicker\js\locales\bootstrap-datepicker.zh-TW.js" />
-    <Content Include="Content\ding.wav" />
+    <Content Include="Scripts\jquery-ui-1.10.0.custom.js" />
+    <Content Include="Scripts\jquery-ui-1.10.0.custom.min.js" />
+    <Content Include="Scripts\Autocomplete\jquery-ui-1.10.2.custom.js" />
+    <Content Include="Content\bootstrap-modal\css\bootstrap-modal.css" />
+    <Content Include="Content\bootstrap-modal\img\ajax-loader.gif" />
+    <Content Include="Scripts\bootstrap-modal.js" />
+    <Content Include="Scripts\bootstrap-modalmanager.js" />
+    <Content Include="Content\bvcms.css" />
+    <Content Include="images\ding.wav" />
+    <Content Include="Content\img\footer_powered.png" />
+    <Content Include="Content\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\img\glyphicons-halflings.png" />
+    <Content Include="Content\img\header_logo.png" />
+    <Content Include="Content\img\header_profile.png" />
+    <Content Include="Content\img\icon-map.png" />
+    <Content Include="Content\img\icon-phone.png" />
+    <Content Include="Content\img\samples\profile_profile.png" />
+    <Content Include="Content\img\samples\sidebar_chuck.png" />
+    <Content Include="Content\img\samples\sidebar_elizabeth.png" />
+    <Content Include="Content\img\samples\sidebar_elle.png" />
+    <Content Include="Content\img\samples\sidebar_john.png" />
     <Content Include="Content\styles\datepicker.css" />
-    <Content Include="Content\js\dialog-patch.js" />
-    <Content Include="Content\js\Images\cut.png" />
-    <Content Include="Content\js\Images\door.png" />
-    <Content Include="Content\js\Images\page_white_add.png" />
-    <Content Include="Content\js\Images\page_white_copy.png" />
-    <Content Include="Content\js\Images\page_white_delete.png" />
-    <Content Include="Content\js\Images\page_white_edit.png" />
-    <Content Include="Content\js\Images\page_white_paste.png" />
-    <Content Include="Content\js\jquery-1.9.1.js" />
-    <Content Include="Content\js\jquery-1.9.1.min.js" />
-    <Content Include="Content\js\jquery-migrate-1.1.0.js" />
-    <Content Include="Content\js\jquery.address-1.5.js" />
-    <Content Include="Content\js\jquery.alerts.js" />
-    <Content Include="Content\js\jquery.contextmenu.r2.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
+    <Content Include="Scripts\jquery.address-1.5.js" />
+    <Content Include="Scripts\jquery.alerts.js" />
     <Content Include="Content\styles\jquery.alerts.css" />
     <Content Include="Content\styles\person.css" />
     <Content Include="Content\styles\jquery.contextMenu.css" />
-    <Content Include="Content\js\jquery-ui-1.10.0.custom.js" />
-    <Content Include="Content\js\jquery-ui-1.10.0.custom.min.js" />
-    <Content Include="Content\js\jquery.simplemodal-1.4.4.js" />
     <Content Include="Content\styles\images\animated-overlay.gif" />
     <Content Include="Content\styles\jquery-ui-1.10.0.custom.css" />
     <Content Include="Content\styles\jquery-ui-1.10.0.custom.min.css" />
@@ -736,36 +712,10 @@
     <Content Include="Binaries\CookComputing.XmlRpcV2.dll" />
     <Content Include="Binaries\log4net.dll" />
     <Content Include="Binaries\Rackspace.CloudFiles.dll" />
-    <Content Include="Content\BUZZ.WAV" />
-    <Content Include="Content\chosen\chosen-sprite.png" />
-    <Content Include="Content\chosen\chosen.css" />
-    <Content Include="Content\chosen\chosen.jquery.js" />
-    <Content Include="Content\chosen\chosen.jquery.min.js" />
-    <Content Include="Content\chosen\chosen.proto.js" />
-    <Content Include="Content\chosen\chosen.proto.min.js" />
-    <Content Include="Content\font\font-awesome.min.css" />
-    <Content Include="Content\font\fontawesome-webfont.svg" />
-    <Content Include="Content\font\proximanova\fonts.css" />
-    <Content Include="Content\font\proximanova\License.txt" />
-    <Content Include="Content\font\proximanova\ProximaNova-Black-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-BlackIt-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-Bold-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-BoldIt-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-Light-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-LightIt-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-Reg-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-RegIt-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-Sbold-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-SboldIt-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-Thin-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-ThinIt-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-Xbold-webfont.svg" />
-    <Content Include="Content\font\proximanova\ProximaNova-XboldIt-webfont.svg" />
+    <Content Include="images\BUZZ.WAV" />
     <Content Include="Content\img\bvcms-provided.png" />
     <Content Include="Content\img\calendar.png" />
     <Content Include="Content\img\icon-user.png" />
-    <Content Include="Content\js\jquery.reveal.js" />
-    <Content Include="Content\js\jquery.simplemodal.1.4.4.min.js" />
     <Content Include="Content\styles\checkboxtree.css" />
     <Content Include="Content\styles\clockpick.css" />
     <Content Include="Content\styles\cmenu.css" />
@@ -898,9 +848,7 @@
     <Content Include="Content\styles\jquery.dataTables_themeroller.css" />
     <Content Include="Content\styles\jquery.jscrollpane.css" />
     <Content Include="Content\styles\jquery.mobile-1.2.0.css" />
-    <Content Include="Content\js\jquery.mobile-1.2.0.js" />
     <Content Include="Content\styles\jquery.mobile-1.2.0.min.css" />
-    <Content Include="Content\js\jquery.mobile-1.2.0.min.js" />
     <Content Include="Content\styles\jquery.mobile.structure-1.2.0.css" />
     <Content Include="Content\styles\jquery.mobile.structure-1.2.0.min.css" />
     <Content Include="Content\styles\jquery.mobile.theme-1.2.0.css" />
@@ -926,33 +874,50 @@
     <Content Include="Content\styles\thickbox.css" />
     <Content Include="Content\styles\touch.css" />
     <Content Include="Content\styles\ui.timepickr.css" />
-    <Content Include="Content\js\FixedHeader.js" />
-    <Content Include="Content\js\jquery-ui-timepicker-addon.js" />
-    <Content Include="Content\js\jquery.dataTables.js" />
-    <Content Include="Content\zylo.wav" />
+    <Content Include="images\zylo.wav" />
     <Content Include="images\calendar.gif" />
     <Content Include="images\Home.png" />
     <Content Include="images\RapidSSL_SEAL-90x50.gif" />
     <Content Include="images\unknownsm.jpg" />
     <Content Include="MembershipAutomation2.py" />
-    <Content Include="Scripts\ChurchAttendance.js" />
-    <Content Include="Scripts\compose.js" />
-    <Content Include="Scripts\Bundles.js" />
-    <Content Include="Scripts\Bundle.js" />
-    <Content Include="Scripts\AdvancedSearch.js" />
-    <Content Include="Scripts\Calendar2.js" />
-    <Content Include="Scripts\ManageVolunteer2.js" />
-    <Content Include="Scripts\headermenu2.js" />
-    <Content Include="Scripts\Person1.js" />
-    <Content Include="Scripts\Person2.js" />
-    <Content Include="Scripts\TotalsByRange.js" />
-    <Content Include="Scripts\dropdown.js" />
-    <Content Include="Content\js\jquery.joyride-1.0.5.js" />
-    <Content Include="Content\js\jquery.tmpl.js" />
-    <Content Include="Content\js\json2.js" />
-    <Content Include="Content\js\modernizr.mq.js" />
-    <Content Include="Content\js\tutorial.js" />
-    <Content Include="Content\js\jquery-ui-dialog-patch.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chosen.jquery.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
+    <Content Include="Scripts\jquery.contextmenu.r2.js" />
+    <Content Include="Scripts\jquery.form.js" />
+    <Content Include="Scripts\jquery.form2.js" />
+    <Content Include="Scripts\jquery.idle-timer.js" />
+    <Content Include="Scripts\jquery.jscrollpane.js" />
+    <Content Include="Scripts\jquery.showpassword.js" />
+    <Content Include="Scripts\js\ChurchAttendance.js" />
+    <Content Include="Scripts\js\compose.js" />
+    <Content Include="Scripts\js\Bundles.js" />
+    <Content Include="Scripts\js\Bundle.js" />
+    <Content Include="Scripts\js\AdvancedSearch.js" />
+    <Content Include="Scripts\js\Calendar2.js" />
+    <Content Include="Content\font\fontawesome-webfont.woff" />
+    <Content Include="Content\font\fontawesome-webfont.ttf" />
+    <Content Include="Content\font\fontawesome-webfont.eot" />
+    <Content Include="Content\font\FontAwesome.otf" />
+    <Content Include="Cassette.targets" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-migrate-1.1.1.js" />
+    <Content Include="Scripts\js\ManageVolunteer2.js" />
+    <Content Include="Scripts\js\headermenu2.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-datepicker.js" />
+    <Content Include="Scripts\moment-datepicker.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\js\Person1.js" />
+    <Content Include="Scripts\js\Person2.js" />
+    <Content Include="Scripts\js\TotalsByRange.js" />
+    <Content Include="Scripts\js\dropdown.js" />
+    <Content Include="Scripts\jquery.joyride-1.0.5.js" />
+    <Content Include="Scripts\tutorial.js" />
     <Compile Include="Code\Word2Pdf.cs" />
     <Compile Include="Areas\Finance\Controllers\QuickBooksController.cs" />
     <Compile Include="Models\HomeModel.cs" />
@@ -1259,19 +1224,14 @@
     <Content Include="Binaries\NPOI\NPOI.dll" />
     <Content Include="Binaries\NPOI\Read Me.txt" />
     <Content Include="Binaries\NPOI\Release Notes.txt" />
-    <Content Include="Content\bvcms132x55.png" />
-    <Content Include="Content\js\jquery.gmap.js" />
-    <Content Include="Content\js\jquery.gmap.min.js" />
-    <Content Include="Content\js\jquery.sb.js" />
-    <Content Include="Content\js\jquery.sortElements.js" />
-    <Content Include="Content\js\jquery.textarea.js" />
-    <Content Include="Content\js\jquery.tie.js" />
-    <Content Include="Content\js\jquery.transpose.js" />
-    <Content Include="Content\js\jquery.transpose.min.js" />
-    <Content Include="Content\js\jquery.ui.timepicker.js" />
+    <Content Include="images\bvcms132x55.png" />
+    <Content Include="Scripts\jquery.sortElements.js" />
+    <Content Include="Scripts\jquery.textarea.js" />
+    <Content Include="Scripts\jquery.transpose.js" />
+    <Content Include="Scripts\jquery.transpose.min.js" />
     <Content Include="constants.py" />
-    <Content Include="Content\Tutorials\_Home_Index_Menu.cshtml" />
-    <Content Include="Content\Tutorials\_Home_Index.cshtml" />
+    <Content Include="Tutorials\_Home_Index_Menu.cshtml" />
+    <Content Include="Tutorials\_Home_Index.cshtml" />
     <Content Include="EmailTemplates\BasicNewsletter.htm" />
     <Content Include="EmailTemplates\BasicWithHeader.htm" />
     <Content Include="EmailTemplates\Plain.htm" />
@@ -1284,12 +1244,9 @@
     <Content Include="images\linkselect_bkgrd.png" />
     <Content Include="Errors\SessionTimeout.htm" />
     <Content Include="favicon.ico" />
-    <Content Include="Content\js\jquery.jscrollpane.js" />
-    <Content Include="Content\js\jquery.mousewheel.js" />
+    <Content Include="Scripts\jquery.mousewheel.js" />
     <Content Include="images\magnifier.png" />
     <Content Include="images\Welcome.png" />
-    <Content Include="Content\js\jquery.ba-bbq.min.js" />
-    <Content Include="Content\js\jquery.bgiframe-2.1.2.js" />
     <Content Include="images\amex.jpg" />
     <Content Include="images\discovercard.jpg" />
     <Content Include="images\mastercard.jpg" />
@@ -1300,47 +1257,46 @@
     <Content Include="images\Up-down.png" />
     <Content Include="images\visa.jpg" />
     <Content Include="iTextAsian.dll" />
-    <Content Include="Scripts\Calendar.js" />
-    <Content Include="Scripts\CheckinActivity.js" />
-    <Content Include="Scripts\ContactSearch.js" />
-    <Content Include="Scripts\Contributions.js" />
-    <Content Include="Scripts\family.js" />
-    <Content Include="Scripts\HomeTest.js" />
-    <Content Include="Scripts\PeopleSearch.js" />
-    <Content Include="Scripts\Users.js" />
-    <Content Include="Scripts\QuickSearch.js" />
-    <Content Include="Scripts\meeting-ticket.js" />
-    <Content Include="Scripts\TotalsByFund.js" />
-    <Content Include="Scripts\ManageVolunteer.js" />
-    <Content Include="Scripts\headermenu.js" />
-    <Content Include="Scripts\merge.js" />
-    <Content Include="Scripts\TestAPI.js" />
-    <Content Include="Scripts\meeting-ipad.js" />
-    <Content Include="Scripts\SearchOrgs.js" />
-    <Content Include="Scripts\OrgChildren.js" />
-    <Content Include="Scripts\Meetings.js" />
-    <Content Include="Scripts\SearchDivisions.js" />
-    <Content Include="Scripts\Funds.js" />
-    <Content Include="Scripts\RegSetting.js" />
-    <Content Include="Scripts\markers.js" />
-    <Content Include="Scripts\meeting.js" />
-    <Content Include="Scripts\RegSettings.js" />
-    <Content Include="Scripts\SavedQuery.js" />
-    <Content Include="Scripts\SearchUsers.js" />
-    <Content Include="Scripts\Tags.js" />
-    <Content Include="Scripts\OnlineRegPayment.js" />
+    <Content Include="Scripts\js\Calendar.js" />
+    <Content Include="Scripts\js\CheckinActivity.js" />
+    <Content Include="Scripts\js\ContactSearch.js" />
+    <Content Include="Scripts\js\Contributions.js" />
+    <Content Include="Scripts\js\family.js" />
+    <Content Include="Scripts\js\HomeTest.js" />
+    <Content Include="Scripts\js\PeopleSearch.js" />
+    <Content Include="Scripts\js\Users.js" />
+    <Content Include="Scripts\js\QuickSearch.js" />
+    <Content Include="Scripts\js\meeting-ticket.js" />
+    <Content Include="Scripts\js\TotalsByFund.js" />
+    <Content Include="Scripts\js\ManageVolunteer.js" />
+    <Content Include="Scripts\js\headermenu.js" />
+    <Content Include="Scripts\js\merge.js" />
+    <Content Include="Scripts\js\TestAPI.js" />
+    <Content Include="Scripts\js\meeting-ipad.js" />
+    <Content Include="Scripts\js\SearchOrgs.js" />
+    <Content Include="Scripts\js\OrgChildren.js" />
+    <Content Include="Scripts\js\Meetings.js" />
+    <Content Include="Scripts\js\SearchDivisions.js" />
+    <Content Include="Scripts\js\Funds.js" />
+    <Content Include="Scripts\js\RegSetting.js" />
+    <Content Include="Scripts\js\markers.js" />
+    <Content Include="Scripts\js\meeting.js" />
+    <Content Include="Scripts\js\RegSettings.js" />
+    <Content Include="Scripts\js\SavedQuery.js" />
+    <Content Include="Scripts\js\SearchUsers.js" />
+    <Content Include="Scripts\js\Tags.js" />
+    <Content Include="Scripts\js\OnlineRegPayment.js" />
     <Content Include="Binaries\LumenWorks.Framework.IO.dll" />
-    <Content Include="Content\js\jquery.showpassword.js" />
     <Content Include="Errors\AccessDenied.htm" />
     <Content Include="Global.asax" />
     <Content Include="images\bvcms120.png" />
     <Content Include="images\bvcms130.png" />
     <Content Include="images\bvcms150.png" />
     <Content Include="images\req.gif" />
-    <Content Include="Scripts\Email.js" />
-    <Content Include="Scripts\TransactionHistory.js" />
-    <Content Include="Scripts\Transactions.js" />
-    <Content Include="Scripts\UserDialog.js" />
+    <Content Include="Scripts\js\Email.js" />
+    <Content Include="Scripts\js\TransactionHistory.js" />
+    <Content Include="Scripts\js\Transactions.js" />
+    <Content Include="Scripts\js\UserDialog.js" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ManageGiving.cshtml">
     </Content>
     <Content Include="Areas\OnlineReg\Views\OnlineReg\ConfirmManageGiving.cshtml">
@@ -1535,54 +1491,6 @@
     <Content Include="Areas\Search\Views\Advanced\CodesDropdown.cshtml" />
     <Content Include="Areas\Search\Views\Advanced\Divisions.cshtml" />
     <Content Include="Areas\Search\Views\Advanced\Organizations.cshtml" />
-    <Content Include="Content\font\.DS_Store" />
-    <Content Include="Content\font\fontawesome-webfont.eot" />
-    <Content Include="Content\font\fontawesome-webfont.ttf" />
-    <Content Include="Content\font\fontawesome-webfont.woff" />
-    <Content Include="Content\font\FontAwesome.otf" />
-    <Content Include="Content\font\proximanova\.DS_Store" />
-    <Content Include="Content\font\proximanova\ProximaNova-Black-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-Black-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-Black-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-BlackIt-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-BlackIt-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-BlackIt-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-Bold-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-Bold-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-Bold-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-BoldIt-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-BoldIt-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-BoldIt-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-Light-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-Light-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-Light-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-LightIt-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-LightIt-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-LightIt-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-Reg-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-Reg-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-Reg-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-RegIt-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-RegIt-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-RegIt-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-Sbold-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-Sbold-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-Sbold-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-SboldIt-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-SboldIt-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-SboldIt-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-Thin-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-Thin-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-Thin-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-ThinIt-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-ThinIt-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-ThinIt-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-Xbold-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-Xbold-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-Xbold-webfont.woff" />
-    <Content Include="Content\font\proximanova\ProximaNova-XboldIt-webfont.eot" />
-    <Content Include="Content\font\proximanova\ProximaNova-XboldIt-webfont.ttf" />
-    <Content Include="Content\font\proximanova\ProximaNova-XboldIt-webfont.woff" />
     <Content Include="Areas\Manage\Views\Display\ContentView.cshtml" />
     <Content Include="Areas\Search\Views\Advanced\EditCondition.cshtml" />
     <Content Include="ckeditor2\CHANGES.md" />
@@ -1631,11 +1539,51 @@
     <Content Include="Areas\Org\Views\Web.config" />
     <Content Include="Areas\Org\Views\Volunteers\Slot.cshtml" />
     <Content Include="Areas\Manage\Views\Volunteers\Slot.cshtml" />
-    <Content Include="Content\datepicker\less\datepicker.less" />
-    <None Include="Content\LibraryTemplate.xls" />
-    <Content Include="Content\Tutorials\_SearchAdd_Index.cshtml" />
+    <Content Include="Content\less\accordion.less" />
+    <Content Include="Content\less\alerts.less" />
+    <Content Include="Content\less\breadcrumbs.less" />
+    <Content Include="Content\less\button-groups.less" />
+    <Content Include="Content\less\buttons.less" />
+    <Content Include="Content\less\bvcms.less" />
+    <Content Include="Content\less\carousel.less" />
+    <Content Include="Content\less\close.less" />
+    <Content Include="Content\less\code.less" />
+    <Content Include="Content\less\component-animations.less" />
+    <Content Include="Content\less\dropdowns.less" />
+    <Content Include="Content\less\forms.less" />
+    <Content Include="Content\less\grid.less" />
+    <Content Include="Content\less\hero-unit.less" />
+    <Content Include="Content\less\labels-badges.less" />
+    <Content Include="Content\less\layouts.less" />
+    <Content Include="Content\less\media.less" />
+    <Content Include="Content\less\mixins.less" />
+    <Content Include="Content\less\modals.less" />
+    <Content Include="Content\less\navbar.less" />
+    <Content Include="Content\less\navs.less" />
+    <Content Include="Content\less\pager.less" />
+    <Content Include="Content\less\pagination.less" />
+    <Content Include="Content\less\popovers.less" />
+    <Content Include="Content\less\progress-bars.less" />
+    <Content Include="Content\less\reset.less" />
+    <Content Include="Content\less\responsive-1200px-min.less" />
+    <Content Include="Content\less\responsive-767px-max.less" />
+    <Content Include="Content\less\responsive-768px-979px.less" />
+    <Content Include="Content\less\responsive-navbar.less" />
+    <Content Include="Content\less\responsive-utilities.less" />
+    <Content Include="Content\less\responsive.less" />
+    <Content Include="Content\less\scaffolding.less" />
+    <Content Include="Content\less\sprites.less" />
+    <Content Include="Content\less\tables.less" />
+    <Content Include="Content\less\thumbnails.less" />
+    <Content Include="Content\less\tooltip.less" />
+    <Content Include="Content\less\type.less" />
+    <Content Include="Content\less\utilities.less" />
+    <Content Include="Content\less\variables.less" />
+    <Content Include="Content\less\wells.less" />
+    <None Include="images\LibraryTemplate.xls" />
+    <Content Include="Tutorials\_SearchAdd_Index.cshtml" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
-    <Content Include="Scripts\volunteering.js" />
+    <Content Include="Scripts\js\volunteering.js" />
     <Content Include="UploadPicture.aspx" />
     <Content Include="Areas\Manage\Views\Transactions\Index.cshtml">
     </Content>
@@ -2224,9 +2172,9 @@
     </Content>
     <Content Include="Areas\Main\Views\Reports\ExtraValues.cshtml">
     </Content>
-    <Content Include="Content\UpdatePeople.xls" />
+    <Content Include="images\UpdatePeople.xls" />
     <Content Include="packages.config" />
-    <Content Include="Content\MucketyTemplate.xls" />
+    <Content Include="images\MucketyTemplate.xls" />
     <Content Include="Areas\Main\Views\Tags\ConvertTagToExtraValue.cshtml">
     </Content>
     <Content Include="Areas\Manage\Views\Batch\ExtraValuesFromPeopleIds.cshtml">
@@ -2297,6 +2245,7 @@
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Shared\Notices.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\NewHeader2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
@@ -2314,85 +2263,12 @@
     <Content Include="images\12-em-cross.png" />
     <Content Include="images\border-2.gif" />
     <Content Include="images\border.gif" />
-    <Content Include="Content\bvorgfiles\archives.css" />
-    <Content Include="Content\bvorgfiles\background_blog_comments.gif" />
-    <Content Include="Content\bvorgfiles\background_blog_file.gif" />
-    <Content Include="Content\bvorgfiles\background_blog_rss.gif" />
-    <Content Include="Content\bvorgfiles\background_body.png" />
-    <Content Include="Content\bvorgfiles\background_coming_events.png" />
-    <Content Include="Content\bvorgfiles\background_container.gif" />
-    <Content Include="Content\bvorgfiles\background_container_ftr.png" />
-    <Content Include="Content\bvorgfiles\background_container_ftr_full.png" />
-    <Content Include="Content\bvorgfiles\background_container_hdr.gif" />
-    <Content Include="Content\bvorgfiles\background_content_full.gif" />
-    <Content Include="Content\bvorgfiles\background_downloads.jpg" />
-    <Content Include="Content\bvorgfiles\background_footer.png" />
-    <Content Include="Content\bvorgfiles\background_footer_home.png" />
-    <Content Include="Content\bvorgfiles\background_headlines.png" />
-    <Content Include="Content\bvorgfiles\background_home.png" />
-    <Content Include="Content\bvorgfiles\background_home_top.png" />
-    <Content Include="Content\bvorgfiles\background_html.jpg" />
-    <Content Include="Content\bvorgfiles\background_learn.png" />
-    <Content Include="Content\bvorgfiles\background_name.png" />
-    <Content Include="Content\bvorgfiles\background_search.png" />
-    <Content Include="Content\bvorgfiles\background_selected.png" />
-    <Content Include="Content\bvorgfiles\background_tag.jpg" />
-    <Content Include="Content\bvorgfiles\background_watch_listen.jpg" />
-    <Content Include="Content\bvorgfiles\bg_cluster_parent.gif" />
-    <Content Include="Content\bvorgfiles\bg_cluster_parent_open.gif" />
-    <Content Include="Content\bvorgfiles\blog.css" />
-    <Content Include="Content\bvorgfiles\buttonSkin.jpg" />
-    <Content Include="Content\bvorgfiles\buttonSkinRed.jpg" />
-    <Content Include="Content\bvorgfiles\checkBoxBackground.gif" />
-    <Content Include="Content\bvorgfiles\donation.css" />
-    <Content Include="Content\bvorgfiles\eventpop.css" />
-    <Content Include="Content\bvorgfiles\forms.css" />
-    <Content Include="Content\bvorgfiles\form_button.gif" />
-    <Content Include="Content\bvorgfiles\go.gif" />
-    <Content Include="Content\bvorgfiles\greenBackground.gif" />
-    <Content Include="Content\bvorgfiles\home.css" />
-    <Content Include="Content\bvorgfiles\layout.css" />
-    <Content Include="Content\bvorgfiles\li.gif" />
-    <Content Include="Content\bvorgfiles\lightGreyBackground.gif" />
-    <Content Include="Content\bvorgfiles\logo.png" />
-    <Content Include="Content\bvorgfiles\nav.css" />
-    <Content Include="Content\bvorgfiles\print.css" />
-    <Content Include="Content\bvorgfiles\radioButtonBackground.gif" />
-    <Content Include="Content\bvorgfiles\replaceActiveX.js" />
-    <Content Include="Content\bvorgfiles\required-1.gif" />
-    <Content Include="Content\bvorgfiles\required.gif" />
-    <Content Include="Content\bvorgfiles\sidenav.css" />
-    <Content Include="Content\bvorgfiles\staff.css" />
-    <Content Include="Content\bvorgfiles\style.css" />
-    <Content Include="Content\bvorgfiles\textFieldBackground.gif" />
-    <Content Include="Content\bvorgfiles\textFieldBorder.gif" />
-    <Content Include="Content\bvorgfiles\textFieldBorder250.gif" />
-    <Content Include="Content\bvorgfiles\textFieldBorder50.gif" />
-    <Content Include="Content\bvorgfiles\twitter_logo_icon.png" />
     <Content Include="images\header-gradient.png" />
-    <Content Include="Content\js\hoverIntent.js" />
-    <Content Include="Content\js\jqModal.js" />
-    <Content Include="Content\js\jQuery-cookie.js" />
-    <Content Include="Content\js\jquery.base64.js" />
-    <Content Include="Content\js\jquery.blockUI.js" />
-    <Content Include="Content\js\jquery.confirm-1.2.js" />
-    <Content Include="Content\js\jquery.dimensions.js" />
-    <Content Include="Content\js\jquery.form.js" />
-    <Content Include="Content\js\jquery.form2.js" />
-    <Content Include="Content\js\jquery.history.js" />
-    <Content Include="Content\js\jquery.jeditable.js" />
-    <Content Include="Content\js\jquery.MetaData.js" />
-    <Content Include="Content\js\jquery.pagination.js" />
-    <Content Include="Content\js\jquery.tooltip.js" />
-    <Content Include="Content\js\jquery.tooltip.min.js" />
-    <Content Include="Content\js\jquery.validate.js" />
-    <Content Include="Content\js\json.js" />
-    <Content Include="Content\js\MicrosoftAjax.debug.js" />
-    <Content Include="Content\js\MicrosoftAjax.js" />
-    <Content Include="Content\js\MicrosoftMvcAjax.debug.js" />
-    <Content Include="Content\js\MicrosoftMvcAjax.js" />
-    <Content Include="Content\js\simpletabs.js" />
-    <Content Include="Content\js\thickbox.js" />
+    <Content Include="Scripts\jquery.blockUI.js" />
+    <Content Include="Scripts\jquery.jeditable.js" />
+    <Content Include="Scripts\jquery.tooltip.js" />
+    <Content Include="Scripts\jquery.tooltip.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
     <Content Include="images\loading.gif" />
     <Content Include="images\navigation-shadow.png" />
     <Content Include="Contributions\Deposit.aspx" />
@@ -2465,30 +2341,10 @@
     <Content Include="BulkMail.aspx" />
     <Content Include="images\attention48.png" />
     <Content Include="images\blackredgradient.png" />
-    <Content Include="Content\bvorgfiles\black_bg_main_cm.jpg" />
     <Content Include="images\check48.png" />
-    <Content Include="Content\js\additional-methods.js" />
-    <Content Include="Content\js\center-plugin_1.0.1.js" />
-    <Content Include="Content\js\jquery-idleTimeout.js" />
-    <Content Include="Content\js\jquery.cookie.js" />
-    <Content Include="Content\js\jquery.dimensions.min.js" />
-    <Content Include="Content\js\jquery.hoverIntent.js" />
-    <Content Include="Content\js\jquery.styledButton.js" />
-    <Content Include="Content\js\jquery.idle-timer.js" />
-    <Content Include="Content\js\qunit.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="images\star.png" />
-    <Content Include="Content\js\fg.menu.js" />
-    <Content Include="Content\js\jquery.anchorHandler.js" />
-    <Content Include="Content\js\jquery.checkboxtree.js" />
-    <Content Include="Content\js\jquery.clockpick.1.2.1.js" />
-    <Content Include="Content\js\jquery.multiSelect.js" />
-    <Content Include="Content\js\jquery.strings.js" />
-    <Content Include="Content\js\jquery.timepickr.min.js" />
-    <Content Include="Content\js\jquery.tools.min.js" />
-    <Content Include="Content\js\jquery.treeview.js" />
-    <Content Include="Content\js\jquery.treeview.min.js" />
-    <Content Include="Content\js\jquery.utils.js" />
-    <Content Include="Content\js\ui.timepickr.js" />
+    <Content Include="Scripts\jquery.multiSelect.js" />
     <Content Include="Contributions\Reports\TotalsByFundAgeRange.aspx" />
     <Content Include="Contributions\Reports\Reports.Master" />
     <Content Include="Contributions\Web.config" />
@@ -2497,29 +2353,29 @@
     <Content Include="Areas\Manage\Views\Web.config" />
     <Content Include="Areas\Main\Views\Web.config" />
     <Content Include="Areas\OnlineReg\Views\Web.config" />
-    <Content Include="Scripts\Divisions.js" />
-    <Content Include="Scripts\PostBundle.js" />
-    <Content Include="Scripts\OrgGroups.js" />
-    <Content Include="Scripts\OrgMembers.js" />
-    <Content Include="Scripts\OrgMembersDialog.js" />
-    <Content Include="Scripts\OnlineReg.js" />
-    <Content Include="Scripts\Organization.js" />
-    <Content Include="Scripts\OrgSearch.js" />
-    <Content Include="Scripts\SearchAdd.js" />
-    <Content Include="Scripts\OrgMemberDialog.js" />
+    <Content Include="Scripts\js\Divisions.js" />
+    <Content Include="Scripts\js\PostBundle.js" />
+    <Content Include="Scripts\js\OrgGroups.js" />
+    <Content Include="Scripts\js\OrgMembers.js" />
+    <Content Include="Scripts\js\OrgMembersDialog.js" />
+    <Content Include="Scripts\js\OnlineReg.js" />
+    <Content Include="Scripts\js\Organization.js" />
+    <Content Include="Scripts\js\OrgSearch.js" />
+    <Content Include="Scripts\js\SearchAdd.js" />
+    <Content Include="Scripts\js\OrgMemberDialog.js" />
     <Content Include="Errors\PageNotFound.aspx" />
     <Content Include="ExportExcel.aspx" />
     <Content Include="Image.aspx" />
-    <Content Include="Scripts\CheckIn.js" />
-    <Content Include="Scripts\Event.js" />
-    <Content Include="Scripts\Pager.js" />
-    <Content Include="Scripts\Person.js" />
+    <Content Include="Scripts\js\CheckIn.js" />
+    <Content Include="Scripts\js\Event.js" />
+    <Content Include="Scripts\js\Pager.js" />
+    <Content Include="Scripts\js\Person.js" />
     <Content Include="Views\Shared\bvorg.Master" />
     <Content Include="Views\Shared\Site3b.Master" />
     <Content Include="Report\Reports.Master" />
-    <Content Include="Scripts\ExportToolBar.js" />
-    <Content Include="Scripts\QueryBuilder.js" />
-    <Content Include="Scripts\Task.js" />
+    <Content Include="Scripts\js\ExportToolBar.js" />
+    <Content Include="Scripts\js\QueryBuilder.js" />
+    <Content Include="Scripts\js\Task.js" />
     <Content Include="StaffOnly\Web.config" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Web.Debug.config">
@@ -2582,4 +2438,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="Cassette.targets" />
 </Project>

@@ -18,6 +18,7 @@ namespace CmsWeb.Models
         public string Sort { get; set; }
         public string Dir { get; set; }
         public bool NonTaxDeductible { get; set; }
+        public int Online { get; set; }
         public bool Pledges { get; set; }
         public bool IncUnclosedBundles { get; set; }
 
@@ -36,6 +37,7 @@ namespace CmsWeb.Models
         public IEnumerable<FundTotalInfo> TotalsByFund()
         {
             var q = from c in DbUtil.Db.GetTotalContributions2(Dt1, Dt2, CampusId, NonTaxDeductible, IncUnclosedBundles)
+                    where Online == 2 || (Online == 1 && c.OnLine == 1) || (Online == 0 && c.OnLine == 0)
                     group c by new { c.FundId, c.QBSynced}
                         into g
                         orderby g.Key.FundId, g.Key.QBSynced
@@ -45,7 +47,7 @@ namespace CmsWeb.Models
                                        QBSynced = g.Key.QBSynced,
                                        FundName = g.First().FundName,
                                        Total = g.Sum(t => t.Amount).Value,
-                                       Count = g.Count()
+                                       Count = g.Count(),
                                    };
             FundTotal = new FundTotalInfo
                             {
@@ -87,6 +89,7 @@ namespace CmsWeb.Models
         {
             public int FundId { get; set; }
             public int QBSynced { get; set; }
+            public int OnLine { get; set; }
             public string FundName { get; set; }
             public decimal? Total { get; set; }
             public int? Count { get; set; }

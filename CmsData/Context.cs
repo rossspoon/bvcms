@@ -1028,7 +1028,7 @@ namespace CmsData
 			}
 			return OrganizationMember.Load(this, PeopleId, OrgName);
 		}
-		public IEnumerable<string[]> QueryBitsFlags()
+		public IEnumerable<string[]> StatusFlags()
 		{
 			var q = from c in QueryBuilderClauses
 					where c.GroupId == null && c.Field == "Group"

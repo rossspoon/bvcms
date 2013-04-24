@@ -37,7 +37,7 @@
             <li><a href='/Export/UpdatePeople/@ViewData["queryid"]' title="For Doing a Mass Update"> Excel Update</a></li>
             <li><a href='/bulkmail.aspx?id=@ViewData["queryid"]' class="ChooseLabelType" title="Comma separated values text file, opens in excel, for bulk mailings"> Bulk (csv)</a></li>
             <li><a href='/ExportExcel.aspx?id=@ViewData["queryid"]&format=Library' title="For Atrium Library Import"> Excel Library</a></li>
-            <li><a href='/Export/QueryBits/@ViewData["queryid"]' title="SearchBits in Columns"> Search Bits Export</a></li>
+                <li><a href='/Export/StatusFlags/@ViewData["queryid"]' title="StatusFlags in Columns"> Status Flags Export</a></li>
             <li><a href='/Export/ExtraValues/@ViewData["queryid"]' title="ExtraValues in Columns"> Extra Values Export</a></li>
 @if ((bool?)ViewData["OrganizationContext"] == true)
 { 

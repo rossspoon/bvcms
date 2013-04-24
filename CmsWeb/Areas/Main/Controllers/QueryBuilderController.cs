@@ -191,7 +191,7 @@ namespace CmsWeb.Areas.Main.Controllers
             {
                 var Db = new CMSDataContext(Util.GetConnectionString(host));
                 Db.DeleteQueryBitTags();
-                foreach (var a in Db.QueryBitsFlags())
+                foreach (var a in Db.StatusFlags())
                 {
                     var t = Db.FetchOrCreateSystemTag(a[0]);
                     Db.TagAll(Db.PeopleQuery(a[0] + ":" + a[1]), t);

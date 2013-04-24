@@ -563,11 +563,26 @@ namespace UtilityExtensions
                 if (HttpContext.Current != null)
                     if (HttpContext.Current.Items[STR_jQueryDateFormat] != null)
                         return HttpContext.Current.Items[STR_jQueryDateFormat] as string;
-                return null;
+                return "m/d/yy";
             }
             set
             {
                 HttpContext.Current.Items[STR_jQueryDateFormat] = value;
+            }
+        }
+        private const string STR_jQueryDateFormat2 = "jQueryDateFormat2";
+        public static string jQueryDateFormat2
+        {
+            get
+            {
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Items[STR_jQueryDateFormat] != null)
+                        return HttpContext.Current.Items[STR_jQueryDateFormat2] as string;
+                return "M/D/YYYY";
+            }
+            set
+            {
+                HttpContext.Current.Items[STR_jQueryDateFormat2] = value;
             }
         }
         public static string GetConnectionString(string Host)

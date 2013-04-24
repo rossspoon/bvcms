@@ -658,6 +658,16 @@ namespace CmsWeb.Models
 		{
 			return MemberStatusCodes().AddNotSpecified();
 		}
+		public IEnumerable<CodeValueItem> StatusFlags()
+		{
+			return from ms in QueryBuilderClause.StatusFlags(DbUtil.Db)
+				   select new CodeValueItem
+				   {
+                       Id = ms.Value,
+					   Code = ms.Tag,
+					   Value = ms.Text
+				   };
+		}
 
 		public IEnumerable<CodeValueItem> Schedules()
 		{

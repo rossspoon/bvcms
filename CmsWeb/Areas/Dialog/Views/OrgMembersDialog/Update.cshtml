@@ -1,7 +1,9 @@
-﻿@using System.Web.Optimization
+﻿@using CmsWeb
+@{
+    CassetteConfiguration.BundleRefJs();
+}
 <html>
-    @Scripts.Render("~/bundles/js")
-
+    @Bundles.RenderScripts()
     <script type="text/javascript">
         $(function () {
             self.parent.RebindMemberGrids();

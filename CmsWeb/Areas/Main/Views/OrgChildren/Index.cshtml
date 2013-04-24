@@ -1,13 +1,10 @@
 ﻿@model CmsWeb.Models.OrgChildrenModel
-@using System.Web.Optimization
 @using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "OrgChildren";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/OrgChildren-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OrgChildren");
 }
 @section head
 {

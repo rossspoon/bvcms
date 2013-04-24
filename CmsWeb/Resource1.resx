@@ -209,4 +209,12 @@ qualifies as a part of the Southern Baptist Convention's group tax exemption rul
 Thank you for your faithfulness in the giving of your time, talents, and resources. Together we can share the love of Jesus with our city.
 &lt;/i&gt;&lt;/p&gt;</value>
   </data>
+  <data name="OrgMembersModel_SendMovedNotices" xml:space="preserve">
+    <value>&lt;p&gt;{name},&lt;/p&gt;
+&lt;p&gt;You have been assigned to {org} in room {room}. The leader's name is {leader}.&lt;/p&gt;
+&lt;p&gt;Please call {phone} if you have any questions.&lt;/p&gt;
+&lt;p&gt;Please print this and bring it with you as a reminder of your room number.&lt;/p&gt;
+&lt;p&gt;Thank you!&lt;br/&gt;
+{church}&lt;/p&gt;</value>
+  </data>
 </root>

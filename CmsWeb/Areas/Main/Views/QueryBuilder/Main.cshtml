@@ -1,19 +1,16 @@
-﻿@using System.Web.Optimization
-@using CmsWeb
+﻿@using CmsWeb
 @model CmsWeb.Models.QueryModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "SearchBuilder";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("querybuilder");
 }
 @section head 
 {
     <link href="/Content/styles/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
 }
 
-@section scripts
-{
-    @Scripts.Render("~/bundles/querybuilder-js")
-}
 @Html.Hidden("AutoRun")
 <form id="conditionForm" action="/QueryBuilder/Main" method="get">
     <div id="Description"><b>@Model.Description</b></div>

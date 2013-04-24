@@ -343,6 +343,8 @@ namespace CmsData
                                CompType,
                                c.CodeIds == "1");
                 // M -------------------
+                case QueryType.MatchAnything:
+                    return Expressions.MatchAnything(parm);
                 case QueryType.MembersUnderCurrentOrg:
                     return Expressions.MembersUnderCurrentOrg(parm, Db,
                                CompType,
@@ -639,8 +641,10 @@ namespace CmsData
                                c.Division,
                                c.Organization,
                                CompType, c.TextValue);
-                case QueryType.MatchAnything:
-                    return Expressions.MatchAnything(parm);
+                case QueryType.StatusFlag:
+                    return Expressions.StatusFlag(parm,
+                               CompType,
+                               c.CodeIntIds);
 
                 // U ----------------------
                 case QueryType.UserRole:

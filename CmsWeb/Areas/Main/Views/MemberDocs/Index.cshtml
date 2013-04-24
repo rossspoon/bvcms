@@ -1,12 +1,12 @@
 ﻿@model CmsWeb.Models.MemberDocs
+@using CmsWeb
 @using UtilityExtensions
 @{
     ViewBag.Title = "MembershipDocs";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
-}
-@section scripts
-{
-    <script type="text/javascript">
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+    @<script type="text/javascript">
         $(function () {
             $("a.delete").click(function (e) {
                 e.preventDefault();
@@ -25,7 +25,7 @@
                 height: 25
             });
         });
-    </script>
+    </script>);
 }
 @section head
 {

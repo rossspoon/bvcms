@@ -97,7 +97,7 @@ namespace CmsWeb.Models
 		public ManageGivingModel()
 		{
 			HeadingLabel = DbUtil.Db.Setting("ManageGivingHeaderLabel", "Giving Opportunities");
-			testing = ConfigurationManager.AppSettings["testing"].ToBool();
+			//testing = ConfigurationManager.AppSettings["testing"].ToBool();
 #if DEBUG2
             testing = true;
 #endif

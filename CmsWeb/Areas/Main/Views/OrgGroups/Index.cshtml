@@ -1,14 +1,11 @@
 ﻿@model CmsWeb.Models.OrgGroupsModel
-@using System.Web.Optimization
 @using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "OrgGroups";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OrgGroups");
 }           
-@section scripts
-{
-@Scripts.Render("~/bundles/single/OrgGroups-js")
-}
 @section head
 {
 <style>

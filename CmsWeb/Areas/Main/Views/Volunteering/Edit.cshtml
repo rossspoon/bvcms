@@ -1,4 +1,5 @@
 ﻿@using CmsData;
+@using CmsWeb
 @using UtilityExtensions
 @model CmsWeb.Areas.Main.Models.Other.VolunteerModel
 @{
@@ -6,10 +7,9 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     var s = from e in DbUtil.Db.VolApplicationStatuses
             select e;
-}
-@section scripts
-{
-<script type="text/javascript">
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+@<script type="text/javascript">
     $(function () {
         $(".bt").button();
         $(".datepicker").datepicker();
@@ -17,7 +17,7 @@
     function redirect() {
         window.location = "/Volunteering/Index/@Model.V.PeopleId";
     }
-</script>
+</script>);
 }
 <a href="/Person/Index/@Model.V.PeopleId">@Model.V.Person.Name</a><br />
 <br />

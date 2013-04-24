@@ -1,5 +1,4 @@
-﻿@using System.Web.Optimization
-@using CmsWeb;
+﻿@using CmsWeb;
 @using CmsData;
 @using UtilityExtensions;
 @model CmsWeb.Models.CheckinTimeModel
@@ -9,6 +8,8 @@
 
     var at = Model.AccessTypes();
     var atd = Model.AccessTypes(true);
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("checkinactivity");
 }
 @section head {
 	<style type="text/css">
@@ -20,10 +21,6 @@
 		.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 		tr.host { font-weight: bold; }
 	</style>
-}
-@section scripts
-{
-    @Scripts.Render("~/bundles/single/checkinactivity-js")
 }
 <form id="form" method="post" action="/Manage/CheckinTime/Index">
 @Html.Hidden("peopleid")

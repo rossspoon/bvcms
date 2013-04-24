@@ -1,7 +1,11 @@
-﻿@using System.Web.Optimization
+﻿@model SearchDivisionsModel
 @using CmsWeb.Models
 @using CmsWeb
-@model SearchDivisionsModel
+@{
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("SearchDivisions");
+}
 <html>
 <head>
 <title>Index</title>
@@ -10,7 +14,7 @@
         window.location.reload();
     }
 </script>
-    @Styles.Render("~/Content/styles/css")
+    @Bundles.RenderStylesheets()
 </head>
 <body>
 <form name="form1">
@@ -35,7 +39,6 @@
   </table>
 @Html.Partial("Results", Model)
 </form>
-    @Scripts.Render("~/bundles/js")
-    @Scripts.Render("~/bundles/single/SearchDivisions-js")
+    @Bundles.RenderScripts()
 </body>
 </html>

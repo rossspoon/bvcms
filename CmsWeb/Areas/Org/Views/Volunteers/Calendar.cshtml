@@ -1,10 +1,11 @@
-﻿@using System.Web.Optimization
-@using UtilityExtensions
+﻿@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Areas.Org.Models.VolunteerCommitmentsModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Volunteer Calendar";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("Calendar2");
 }
 @section head
 {
@@ -45,10 +46,6 @@ div.selectable h3 { color: blue; }
  /* Substitute */
 .commit-4 { color: #008000; }
 </style>
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/Calendar2-js")
 }
 <div id="managearea">
     @Html.Partial("ManageArea", Model)

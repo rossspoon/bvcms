@@ -153,7 +153,8 @@ namespace CmsData.API
 #if DEBUG2
                       where p.LastName.StartsWith("V") 
 #endif
-                      where (option == 1 && p.Amount > MinAmt) || (option == 2 && p.HohFlag == 1 && (p.Amount + p.SpouseAmount) > MinAmt)
+                      where (option == 1 && (p.Amount > MinAmt || p.GiftInKind == true)) 
+                            || (option == 2 && p.HohFlag == 1 && ((p.Amount + p.SpouseAmount) > MinAmt || p.GiftInKind == true))
                       orderby p.FamilyId, p.PositionInFamilyId, p.HohFlag, p.Age
                       select new ContributorInfo
                       {

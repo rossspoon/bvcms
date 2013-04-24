@@ -1,14 +1,11 @@
-﻿@using System.Web.Optimization
-@using CmsWeb
+﻿@using CmsWeb
 @model IEnumerable<CmsWeb.Areas.Manage.Controllers.RegSettingsController.RegSettingInfo>
 
 @{
     ViewBag.Title = "RegSettings";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/RegSettings-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("RegSettings");
 }
 <h2>RegSettings</h2>
 

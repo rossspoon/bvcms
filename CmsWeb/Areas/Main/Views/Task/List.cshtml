@@ -1,13 +1,10 @@
 ﻿@model CmsWeb.Models.TaskModel
-@using System.Web.Optimization
 @using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Tasks";
-}
-@section scripts
-{
-    @Scripts.Render("~/bundles/task-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("task");
 }
 
     <form id="form" action="/Task/List" method="get">

@@ -1,11 +1,12 @@
 ﻿@model CmsWeb.Models.TotalsByFundModel
-@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @using CmsData
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Donor Totals By Range";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("TotalsByRange");
 }
 @section head
 {
@@ -14,11 +15,6 @@
         span.noPrint { display: none; }
     </style>
 }
-@section scripts
-{
-@Scripts.Render("~/bundles/single/TotalsByRange-js")
-}
-
 <div class="roundbox floatleft">
     <h2>Donor Totals By Range</h2>
     <form id="totals">

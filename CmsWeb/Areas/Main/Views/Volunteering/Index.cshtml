@@ -1,9 +1,12 @@
 ﻿@using CmsData;
 @using CmsData.Classes.ProtectMyMinistry
+@using CmsWeb
 @model CmsWeb.Areas.Main.Models.Other.VolunteerModel
 @{
     ViewBag.Title = "Volunteer";
     Layout = "/Views/Shared/SiteLayout.cshtml";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("volunteering");
 
     IQueryable<BackgroundCheck> bg = null;
     IQueryable<BackgroundCheck> credit = null;
@@ -34,10 +37,6 @@
                      select e;
         }
     }    
-}
-@section scripts
-{
-    <script src="/Scripts/volunteering.js"></script>
 }
 @section head
 {

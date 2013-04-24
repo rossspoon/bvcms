@@ -1,31 +1,17 @@
-﻿@using System.Web.Optimization
-@using CmsWeb
+﻿@using CmsWeb
 @model CmsWeb.Areas.Search.Models.AdvancedModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Advanced Search";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("advancedsearch");
 }
 @section head 
 {
     <link href="/Content/styles/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
     <link href="/Content/styles/search.css" rel="stylesheet" type="text/css" />
-    <style>
-
-    </style>
 }
 
-@section scripts
-{
-    @Scripts.Render("~/bundles/single/advancedsearch-js")
-    @if (ViewBag.NewSearch == true)
-    {
-    <script>
-        $(function () {
-            
-        });
-    </script>
-    }
-}
 @Html.Hidden("AutoRun")
 <form id="conditionForm">
     <div id="Description"><b>@Model.Description</b></div>

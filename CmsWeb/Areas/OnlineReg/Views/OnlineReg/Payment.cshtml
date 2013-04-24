@@ -1,29 +1,24 @@
-﻿@using System.Web.Optimization
-@using UtilityExtensions
+﻿@using UtilityExtensions
 @using CmsWeb
 @using CmsData
 @model CmsWeb.Models.PaymentForm
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
-}
-@{
     var ServiceUOrgID = (Model.testing) ? DbUtil.Db.Setting("ServiceUOrgIDTest", "0") : DbUtil.Db.Setting("ServiceUOrgID", "0");
     var ServiceUOrgAccountID = (Model.testing) ? DbUtil.Db.Setting("ServiceUOrgAccountIDTest", "0") : DbUtil.Db.Setting("ServiceUOrgAccountID", "0");
-}
-
-@section scripts
-{
-    @Scripts.Render("~/bundles/single/onlineregpayment-js")
-    <script type="text/javascript">
-        $(function () {
-            $(document).bind("idle.idleTimer", function () {
-                window.location.href = '@ViewBag.Url';
-            });
-            var tmout = parseInt('@ViewBag.timeout');
-            $.idleTimer(tmout);
-        });
-    </script>
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("onlineregpayment");
+    Bundles.AddInlineScript(
+        @<script type="text/javascript">
+             $(function() {
+                 $(document).bind("idle.idleTimer", function() {
+                     window.location.href = '@ViewBag.Url';
+                 });
+                 var tmout = parseInt('@ViewBag.timeout');
+                 $.idleTimer(tmout);
+             });
+         </script>);
 }
     <h2>
         Payment Processing</h2>

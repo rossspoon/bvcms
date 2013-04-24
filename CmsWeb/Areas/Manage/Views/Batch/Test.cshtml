@@ -1,6 +1,7 @@
-﻿@using System.Web.Optimization
+﻿@using CmsWeb
 @{
     Layout = null;
+    CassetteConfiguration.BundleRefJs();
 }
 
 <!DOCTYPE html>
@@ -27,7 +28,7 @@
     height:5px;
 }
 </style>
-    @Scripts.Render("~/bundles/js")
+    @Bundles.RenderScripts()
     <script type="text/javascript">
         $(document).ready(function (ev) {
             $('#start').click(function () {

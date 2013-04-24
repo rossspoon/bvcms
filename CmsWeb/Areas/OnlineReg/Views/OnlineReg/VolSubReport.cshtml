@@ -1,10 +1,11 @@
 ﻿@model CmsWeb.Models.VolSubModel 
-@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Volunteer Substitute Report";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("ManageVolunteer");
 }
 @section head
 {
@@ -18,10 +19,6 @@
     padding: 0 0 5px 0;
 }
 </style>
-}
-@section scripts
-{
-    @Scripts.Render("~/bundles/single/ManageVolunteer-js")
 }
 <h2>@Model.org.OrganizationName</h2>
 <h3>@Model.person.Name on @Model.attend.MeetingDate.ToString("MMM d, yyyy") at @Model.attend.MeetingDate.ToString("h:mm tt")</h3>

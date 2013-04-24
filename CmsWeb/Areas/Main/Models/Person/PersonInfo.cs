@@ -18,6 +18,7 @@ namespace CmsWeb.Models.PersonPage
         public int PeopleId { get; set; }
         public int FamilyId { get; set; }
         public int? SpouseId { get; set; }
+        public string StatusFlags { get; set; }
 
         public bool Deceased { get; set; }
         public string Name { get; set; }
@@ -41,8 +42,10 @@ namespace CmsWeb.Models.PersonPage
         public AddressInfo PersonalAddr { get; set; }
         public static PersonInfo GetPersonInfo(int? id)
         {
+            var flags = DbUtil.Db.Setting("StatusFlags", "F04,F01,F02,F03");
 			var i = (from pp in DbUtil.Db.People
 					 let spouse = (from sp in pp.Family.People where sp.PeopleId == pp.SpouseId select sp.Name).SingleOrDefault()
+                     let statusflags = DbUtil.Db.StatusFlags(flags).Single(sf => sf.PeopleId == id).StatusFlags
 					 where pp.PeopleId == id
 					 select new
 					 {
@@ -50,6 +53,7 @@ namespace CmsWeb.Models.PersonPage
 						 f = pp.Family,
 						 spouse = spouse,
 						 pp.Picture.SmallId,
+                         statusflags
 					 }).FirstOrDefault();
             if (i == null)
                 return null;
@@ -65,6 +69,7 @@ namespace CmsWeb.Models.PersonPage
                 Name = p.Name,
                 SmallPicId = i.SmallId,
                 SpouseId = p.SpouseId,
+                StatusFlags = i.statusflags,
 
                 member = new MemberInfo
                 {

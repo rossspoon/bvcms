@@ -1,14 +1,11 @@
 ﻿@model CmsWeb.Models.MergeModel
-@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @{
     ViewBag.Title = "Merge Controller";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/merge-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("merge");
 }
 <h2>
     Merge Controller</h2>

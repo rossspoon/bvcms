@@ -1,7 +1,16 @@
-﻿@model CmsWeb.Models.CouponModel
+﻿@using CmsWeb
+@model CmsWeb.Models.CouponModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Coupon";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+@<script>
+    $(function () {
+        $(".bt").button();
+    });
+</script>
+    );
 }
     <h2>Coupons</h2>
     <form action="/Coupon/Create" method="post">
@@ -35,11 +44,3 @@
         </div>
         @Html.ActionLink("List", "List")
     </form>
-@section scripts
-{
-<script type="text/javascript">
-    $(function () {
-        $(".bt").button();
-    });
-</script>
-}

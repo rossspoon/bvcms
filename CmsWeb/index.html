@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        
+        <title>BVCMS</title>  
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <link rel="icon" type="image/png" href="favicon.png" />
+        
+        <link rel="stylesheet" href="css/normalize.css" />
+        <link rel="stylesheet" href="css/bvcms.css" />
+        <link rel="stylesheet" href="bootstrap-modal/css/bootstrap-modal.css">
+        <link rel="stylesheet" href="awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="chosen/chosen.css">
+        <link rel="stylesheet" href="moment-datepicker/datepicker.css">
+    </head>
+
+    <body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid container">
+            <ul class="nav">
+                <li id="top_nav_home"><a href="#" class="hide-text" title="">Dashboard</a></li>
+                <li ><a href="#" ><i class="icon-home"></i></a></li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">People <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/PeopleSearch/Index/150">Search</a></li>
+                        <li><a id="addpeople" href="#">Add People</a></li>
+                        <li><a href="/Tags/Index/150">Manage Tags</a></li>
+                        <li><a href="/Task">Tasks</a></li>
+                        <li><a href="/ContactSearch/Index/150">Contacts</a></li>
+
+                        <li class="divider"></li>
+                        <li><a href="/Person/Index/150">Kobe Bryant</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Organization <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/OrgSearch/Index/150">Search</a></li>
+                        <li><a id="addorg" href="#">Add Organization</a></li>
+                        <li><a href="/OrgMembers/Index/150">Org Members Management</a></li>
+                        <li><a href="/Coupon/Index/150">Coupons</a></li>
+                        <li><a href="/EnrollmentControlReport.aspx"> Enrollment Control Report </a></li>
+                        <li class="divider"></li>
+                    </ul>
+
+                </li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Reports/VitalStats">Vital Stats</a></li>
+                        <li><a href="/Reports/ChurchAttendance">Week at a Glance</a></li>
+                        <li><a href="/Reports/ChurchAttendance2">Average Week at a Glance</a></li>
+                        <li><a href="/Report/ChurchAttendanceRpt.aspx" target="_blank">Weekly Decisions</a></li>
+                        <li><a href="/Report/DecisionSummary.aspx" target="_blank">Decision Summary</a></li>
+                        <li><a href="/Home/NthTimeAttenders/1">First Time Attenders</a></li>
+                        <li><a href="/Home/NthTimeAttenders/2">Second Time Attenders</a></li>
+                        <li><a href="/Home/NthTimeAttenders/3">Third Time Attenders</a></li>
+                        <li><a href="/Reports/ExtraValues">Extra Values</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Contributions <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Bundles/Index/150">Bundles</a></li>
+                        <li><a href="/Finance/Contributions">All</a></li>
+                        <li class="header">Reports</li>
+                        <li class="divider"></li>
+                        <li><a href="/Statements/Index/150" target="_blank">Statements (All)</a></li>
+                        <li><a href="/Contributions/GLExtract.aspx">GL Extract</a></li>
+                        <li><a href="/FinanceReports/TotalsByFund">Totals by Fund</a></li>
+                        <li><a href="/FinanceReports/DonorTotalsByRange">Donor Totals by Range</a></li>
+                        <li><a href="/Contributions/Reports/TotalsByFundAgeRange.aspx" target="_blank">Totals by Fund Age Range</a></li>
+                        <li><a href="/Contributions/Reports/TotalsByFundAgeRange.aspx?pledged=both" target="_blank">Totals by Fund Age Range (pledges included)</a></li>
+                        <li><a href="/Contributions/Reports/TotalsByFundRange.aspx" target="_blank">Totals by Fund Range</a></li>
+                        <li><a href="/Contributions/Reports/TotalsByFundRange.aspx?pledged=true" target="_blank">Pledge Totals by Fund Range</a></li>
+                        <li><a href="/FinanceReports/PledgeReport" target="_blank">Pledge Report</a></li>
+                        <li><a href="/FinanceReports/ManagedGiving" target="_blank">Managed Giving</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Manage/Users">Users</a></li>
+                        <li><a href="/Setup/Program">Programs</a></li>
+                        <li><a href="/Setup/Division">Divisions</a></li>
+                        <li><a href="/Setup/Setting">Settings</a></li>
+                        <li><a href="/Setup/MetroZip">Metro Zips</a></li>
+                        <li><a class="hideAlt" href="/Setup/Twilio">Twilio Management</a></li>
+                        <li><a href="/Display/Index/150">Special Content</a></li>
+                        <li><a href="/Manage/Transactions">Transactions</a></li>
+                        <li><a href="/Manage/CheckinTime">Check-in Activity</a></li>
+                        <li><a href="/Manage/Emails">Emails</a></li>
+                        <li><a href="/Manage/SMS">SMS Messages</a></li>
+                        <li><a href="/Setup/Lookup">Lookups</a></li>
+                        <li><a href="/Batch/UpdateFields">Update for a Tag</a></li>
+                        <li><a href="/Admin/ToggleOrgMembersOnly.ashx">OrgMembersOnly is off</a></li>
+                        <li><a href="/Admin/ToggleOrgLeadersOnly.ashx">OrgLeadersOnly is off</a></li>
+                        <li><a href="/Batch/UpdateQueryBits">Update QueryBits</a></li>
+                        <li><a href="/Batch/TagPeopleIds">Tag PeopleIds</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <span class="caret"></span></a>
+                    <ul class="dropdown-menu anchor-right">
+                        <li><a href="http://www.bvcms.com/doc/_Person_index" target="_blank">Help Documentation</a></li>
+                        <li><a href="mailto:support@bvcms.com?Subject=Support request from Person at https://domain.bvcms.com/" target="_blank">Email Support</a></li>
+                        <li><a href="/Home/UseOldLook">Use Old Look</a></li>
+                        <li><a href="/Home/UseSearchBuilder">Use Search Builder</a></li>
+                        <li><a href="/Home/UseOldPersonPage">Use Old Person Page</a></li>
+                        <li><a href="/Home/About">About</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<header class="subhead">
+    <div class="container">
+        <div class="row-fluid">
+            <div id="brand" class="span6">
+                <h1>Bellevue Baptist Church</h1>
+                <h2>Son of a preacher man, it's time to take a stand</h2>
+            </div>
+            <form class="form-search span3" id="nav-search">
+                <div class="input-append">
+                        
+                    <input id="SearchText" type="text" class="input-large" value="Search" default="Search" name="search"/>
+                    <div id="nav-search-results">
+                        <ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0" style="top: 51px; left: 773px; z-index: 1002; width: 218px;"><li class="menu ui-menu-item" role="presentation"><a id="ui-id-20" class="ui-corner-all" tabindex="-1"><b>People Search</b></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-21" class="ui-corner-all" tabindex="-1"><b>Advanced Search</b></a></li><li class="ui-menu-item" role="presentation"><a id="ui-id-22" class="ui-corner-all" tabindex="-1"><b>Organization Search</b></a></li></ul>
+                    </div>
+
+                </div>
+
+            </form>
+            <div class="span3" id="nav-account">
+                <div class="btn-group">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Rusan <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a id="cleartag" href="#">Empty Active Tag</a></li>
+                        <li><a href="/Tags">Manage Active Tag</a></li>
+                            <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                        <li><a href="/Account/ChangePassword">Change Password</a></li>
+                        <li><a href="/Home/TargetPerson/False">Target Person Tab is OFF</a></li>
+                        <li><a href="/Home/NewQuickSearch/False">NewQuickSearch is OFF</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Account/LogOff/">Logout as dlowe</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- start page -->
+<div class="container">
+    <div class="row-fluid">
+        <div class="span3">
+            <div id="sidebar">
+                <div class="sidebar_title group">
+                    <h2>Family Members</h2>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus-sign"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                        <!-- dropdown menu links -->
+                            <li><a href="#">Add Family Member</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul id="family_members" class="nav nav-stacked nav-tabs">
+                    <li><a href="#"><img src="samples/img/sidebar_john.png" class="headshot" width="38" height="50">
+                        <span class="name">John</span>
+                        <span class="age">41</span>
+                    </a></li>
+                    <li class="active"><a href="#"><img src="samples/img/sidebar_elizabeth.png" class="headshot" width="38" height="50">
+                        <span class="name">Elizabeth</span>
+                        <span class="age">39</span>
+                    </a></li>
+                    <li><a href="#" class="group"><img src="samples/img/sidebar_elle.png" class="headshot" width="38" height="50">
+                        <span class="name">Elle</span>
+                        <span class="age">14</span>
+                    </a></li>
+                </ul>
+
+                <div class="sidebar_title group">
+                    <h2>Family Contact</h2>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus-sign"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                        <!-- dropdown menu links -->
+                            <li><a href="#">Add Address</a></li>
+                        </ul>
+                    </div>
+                </div><!-- //sidebar_title -->
+                <ul id="family_home" class="unstyled">
+                    <li class="address">
+                        <div class="btn-group">
+                            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-map-marker"></i>
+                                <span class="caret"></span>
+                            </a>
+                            
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Google Map</a></li>
+                                <li><a href='http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Google)</a></li>
+                                <li><a href="http://www.bing.com/maps/?q=511 Amsterdam Ave New York, NY 10024-3939" target="_blank">Bing Map</a></li>
+                                <li><a href='http://www.bing.com/maps/?rtp=adr.2000+Appling+Rd,+Cordova,+Tennessee+38016~adr.511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Bing)</a></li>
+                            </ul>
+                        </div>
+                        <p><span class="street">345 Maple Lane</span>
+                        <span class="city">Farmington</span>, <span class="state">AL</span> <span class="postal">35271</span></p>
+                    </li>
+                    <li class="phone landline">
+                        <i class="icon-phone"></i>
+                        <p>(345) 123-5566</p>
+                    </li>
+                    <li class="phone mobile">
+                        <div class="btn-group">
+                            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-mobile-phone"></i>
+                                <span class="caret"></span>
+                            </a>
+                            
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Send SMS</a></li>
+                            </ul>
+                        </div>
+                        <p>(345) 128-1134</p>
+                    </li>
+                </ul>
+
+                <div class="sidebar_title group">
+                    <h2>Related Families</h2>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus-sign"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                        <!-- dropdown menu links -->
+                            <li><a href="#">Add Family</a></li>
+                        </ul>
+                    </div>
+                </div><!-- //sidebar_title -->
+                <ul id="family_related" class="unstyled">
+                    <li>
+                        <div class="btn-group">
+                            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-cog"></i>
+                                <span class="caret"></span>
+                            </a>
+                        </div>
+                        <p>Nicolas &amp; Jessica Brody
+                            <span class="summary">Grandparents of Elizabeth on her mother's side</span>
+                        </p>
+                    </li>
+                    <li>
+                        <div class="btn-group">
+                            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-cog"></i>
+                                <span class="caret"></span>
+                            </a>
+                            
+                            <ul class="dropdown-menu">
+                                <li><a href="">Edit</a></li>
+                                <li><a href="">Split</a></li>
+                                <li><a href="">Delete</a></li>
+                            </ul>
+                        </div>
+                        <p>Bo &amp; Cassie Wiggin
+                            <span class="summary">Cousins</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="span9"><!--mainbody content-->
+            <div class="row-fluid">
+                <div class="span12" id="profile-header">
+                    <div class="span9">
+                        <img src="samples/img/profile_profile.png" width="102" height="140" />
+                        <h2>Elizabeth Smith</h2>
+                        <ul class="meta unstyled">
+                            <li class="role">Primary Adult</li>
+                            <li class="status"><strong>Member Status:</strong> Member</li>
+                            <li class="affiliation"><strong>Campus Affiliation:</strong> --- </li>
+                            <li class="badges">
+                                <span class="btn btn-danger btn-mini">Do Not Visit</span>
+                                <span class="btn btn-danger btn-mini">Do Not Call</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="span3" id="profile-actions">
+                        <p class="muted"><small>Record added 08/12/07</small></p>
+                    
+                        <div class="btn-group" class="pull-right">
+                          <button class="btn btn-inverse"><i class="icon-envelope-alt"></i></button>
+                          <button class="btn btn-inverse"><i class="icon-cloud-download"></i></button>
+                          <div class="btn btn-inverse dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Add New User</a></li>
+                                <li><a href="#">Impersonate</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Add New Address</a></li>
+                                <li><a href="#">Mark As Deceased</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Split</a></li>
+                                <li><a href="#">Merge</a></li>
+                                <li><a href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span12 ">
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#personal" data-toggle="tab">Personal</a></li>
+                            <li><a href="#involvement" data-toggle="tab">Involvement</a></li>
+                            <li><a href="#profile" data-toggle="tab">Member Profile</a></li>
+                            <li><a href="#giving" data-toggle="tab">Giving</a></li>
+                            <li><a href="#account" data-toggle="tab">Account</a></li>
+                            <li><a href="#comments" data-toggle="tab">Comments</a></li>
+                        </ul>
+                    
+                    <div class="tab-content">
+                        <div class="form-actions">
+                            <button class="btn btn-success">Save Changes</button>
+                            <button class="btn btn_spc">Cancel</button>  
+                        </div>  
+                        <div class="tab-pane active" id="personal">
+                          <p>
+                            <form class="form form-horizontal">   
+                                <div class="row-fluid">
+                                    <fieldset class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_title">Title</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_title" placeholder="Title">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_first">First Name</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_first" placeholder="Elizabeth">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_goes">Goes By</label>
+                                                <div class="controls">
+                                                <input type="text" id="personal_goes" value="Elizabeth">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_middle">Middle Name</label>
+                                            <div class="controls">
+                                            <input type="text" id="personal_middle" value="Irene">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_last">Last Name</label>
+                                                <div class="controls">
+                                                <input type="text" id="personal_last" value="Smith">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_alt">Alt Name</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_alt" value="">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_former">Former</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_former" value="Mitchell">
+                                            </div>    
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_suffix">Suffix</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_suffix" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_former">Gender</label>
+                                            <div class="controls">
+                                                <select name="gender"><option value="Male">Male</option><option value="Female">Female</option></select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_birthdate">Birthdate</label>
+                                            <div class="controls">
+                                                <div class="input-append date" data-date="04-05-1973" data-datepicker-format="DD-MM-YYYY">
+                                                    <input class="span8" size="16" type="text" value="04-05-1973" name="birthdate">
+                                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label nwrap" for="personal_maritalstatus">Marital Status</label>
+                                            <div class="controls">
+                                                <select name="maritalstatus" id=""><option value="married">Married</option><option value="single">Single</option><option value="separated">Separated</option></select>
+                                            </div>    
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_weddingdate">Wedding Date</label>
+                                            <div class="controls">
+                                                <div class="input-append date" data-date="08-10-1996" data-datepicker-format="DD-MM-YYYY">
+                                                    <input class="span8" size="16" type="text" value="08-10-1996" name="wedding_date">
+                                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_occupation">Occupation</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_occupation" placeholder="Actress">
+                                            </div>    
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_employer">Employer</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_employer" placeholder="Self-Employed">
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_school">School</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_school" placeholder="">
+                                            </div>    
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="personal_grade">Grade</label>
+                                            <div class="controls">
+                                                <input type="text" id="personal_grade" placeholder="">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="row-fluid">
+                                    <fieldset class="span12">
+                                       <div class="control-group span12">
+                                          <label for="" class="btn_spc control-label ln_ht">Do Not Contact By</label>
+                                          <div class="controls">
+                                            <label class="checkbox inline">
+                                              <input type="checkbox" id="inlineCheckbox1" value="email" > Email
+                                            </label>
+                                            <label class="checkbox inline">
+                                              <input type="checkbox" id="inlineCheckbox1" value="phone"> Telephone
+                                            </label>
+                                            <label class="checkbox inline">
+                                              <input type="checkbox" id="inlineCheckbox1" value="mail"> Mail
+                                            </label>
+                                            <label class="checkbox inline">
+                                              <input type="checkbox" id="inlineCheckbox1" value="mail"> In Person
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <label for="" class="control-label nwrap">Primary Email</label>
+                                          <div class="controls">
+                                            <div class="textcombo">
+                                              <input type="text" name="email_primary" class="text email">
+                                              <input type="checkbox" class="checkbox" name="email_primary_active">
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <label for="" class="control-label">Mobile</label>
+                                          <div class="controls">
+                                            <input type="text" name="mobile" class="text phone">
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <label for="" class="control-label">Alt Email</label>
+                                          <div class="controls">
+                                            <div class="textcombo">
+                                              <input type="text" name="email_secondary" class="text email lg">
+                                              <input type="checkbox" class="checkbox" name="email_secondary_active">
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <label for="" class="control-label">Work</label>
+                                          <div class="controls">
+                                            <input type="text" name="mobile" class="text phone">
+                                          </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="form-actions">
+                                    <button class="btn btn-success">Save Changes</button>
+                                    <button class="btn btn_spc">Cancel</button>  
+                                </div>  
+
+                            </form>
+                        </p>
+                        </div>
+                        <div class="tab-pane fade" id="involvement">
+                            <ul class="nav nav-tabs subnav">
+                                <li class="active"><a href="#current" data-toggle="tab">Current</a></li>
+                                <li><a href="#previous" data-toggle="tab">Previous</a></li>
+                                <li><a href="#pending" data-toggle="tab">Pending</a></li>
+                                <li><a href="#attends" data-toggle="tab">Attendance</a></li>
+                                <li><a href="#registrations" data-toggle="tab">Registrations</a></li>
+                            </ul>
+
+                        </div>
+                        <div class="tab-pane" id="profile">
+                          <h2>Profile tab</h2>
+                        </div>
+                        <div class="tab-pane" id="giving">
+                          <h2>Giving tab</h2>
+                        </div>
+                        <div class="tab-pane" id="account">
+                          <h2>Account tab</h2>
+                        </div>
+                        <div class="tab-pane" id="comments">
+                          <h2>Comments</h2>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end of span9-->
+    </div>
+    <div class="row-fluid">
+        <div class="span12 ">
+            <div class="footer">
+                <ul>
+                    <li>Bellevue Baptist Church</li>
+                    <li>2000 Appling Road, Cordova, TN 38016</li>
+                    <li>(901) 347-2000</li>
+                    <li><a href="#">webmaster@bellevue.org</a></li>
+                    <li><a href="#" class="hide-text">Powered By BVCMS</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal hide fade" id="sample-modal">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal" type="button" aria-hidden="true"></button>
+        <h3>Sample Dialog</h3>
+    </div>
+    <div class="modal-body">
+        <p>"Ah, if you would only go on with us!  An agent of the Peninsular Company, you know, can't stop on the way!  You were only going to Bombay, and here you are in China.  America is not far off, and from America to Europe is only a step."Fix looked intently at his companion, whose countenance was as serious as a clam."</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        <a href="#" class="btn btn-primary">Save changes</a>
+    </div>
+</div>
+
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/less-1.3.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+<script src="bootstrap-modal/js/bootstrap-modal.js"></script>
+<script src="moment/moment.min.js"></script>
+<script src="moment/langs.min.js"></script>
+<script src="moment-datepicker/moment-datepicker.min.js"></script>
+<script src="js/custom.min.js"></script>
+<script src="chosen/chosen.jquery.min.js"></script>
+<script src="js/custom.js"></script>
+</body>
+    
+</html>

@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<CmsWeb.Areas.Manage.Controllers.BatchController.FindInfo>
+@using CmsWeb
 @using UtilityExtensions
 @{
     ViewBag.Title = "FindTagPeople";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
-}
-@section scripts
-{
-<script type="text/javascript">
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+@<script type="text/javascript">
     $(function () {
         $("table.grid > tbody > tr:even").addClass("alt");
     });
-</script>
+</script>);
 }
 <h2>FindTagPeople</h2>
 

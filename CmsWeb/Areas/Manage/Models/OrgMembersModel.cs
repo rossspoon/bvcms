@@ -349,18 +349,13 @@ namespace CmsWeb.Models
             foreach (var i in q)
             {
                 string subj = "{0} room assignment".Fmt(i.OrganizationName);
-                var msg =
-@"{0},
-
-You have been assigned to {1} in room {2}. The leader's name is {3}.
-Please call {4} if you have any questions.
-Please print this and bring it with you as a reminder of your room number.
-
-Thank you!
-{5}
-".Fmt(i.Name, i.OrganizationName, i.Location, i.LeaderName, 
-	Util.PickFirst(i.PhoneNumber.FmtFone(), DbUtil.Db.Setting("ChurchPhone", "ChurchPhone")),
-	DbUtil.Db.Setting("NameOfChurch", "NameOfChurch"));
+                var msg = DbUtil.Db.ContentHtml("OrgMembersModel_SendMovedNotices", Resource1.OrgMembersModel_SendMovedNotices);
+                msg = msg.Replace("{name}", i.Name);
+                msg = msg.Replace("{org}", i.OrganizationName);
+                msg = msg.Replace("{room}", i.Location);
+                msg = msg.Replace("{leader}", i.LeaderName);
+                msg = msg.Replace("{phone}", Util.PickFirst(i.PhoneNumber.FmtFone(), DbUtil.Db.Setting("ChurchPhone", "ChurchPhone")));
+                msg = msg.Replace("{church}", DbUtil.Db.Setting("NameOfChurch", "NameOfChurch"));
 
                 if (i.om.Moved == true || EmailAllNotices)
                 {

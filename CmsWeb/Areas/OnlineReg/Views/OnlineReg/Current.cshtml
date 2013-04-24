@@ -1,13 +1,11 @@
-﻿@using System.Web.Optimization
-@model System.Collections.Generic.IEnumerable<CmsWeb.Areas.OnlineReg.Controllers.OnlineRegController.CurrentRegistration>
-
+﻿@model System.Collections.Generic.IEnumerable<CmsWeb.Areas.OnlineReg.Controllers.OnlineRegController.CurrentRegistration>
 @{
 	Layout = null;
+    CassetteConfiguration.BundleRefCss();
 }
 <html>
 	<head>
-    @Styles.Render("~/Content/styles/css")
-		
+    @Bundles.RenderStylesheets()
 	</head>
 	<body>
 <h2>Current Registrations</h2>

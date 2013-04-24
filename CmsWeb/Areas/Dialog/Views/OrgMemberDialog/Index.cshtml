@@ -1,13 +1,16 @@
-﻿@using System.Web.Optimization
-@using UtilityExtensions
+﻿@using UtilityExtensions
 @using CmsWeb
 @model CmsData.OrganizationMember
-
+@{
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OrgMemberDialog");
+}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-    @Styles.Render("~/Content/styles/css")
+    @Bundles.RenderStylesheets()
 <style type="text/css">
 .bt { font-size: 8pt; }
 body { margin: 1px; }
@@ -18,40 +21,39 @@ body { margin: 1px; }
 
 @{ string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId; }
 @Html.Hidden("from")
-<div class="roundbox">
-<h2>@Model.Person.Name</h2>
-<a class="helplink" target="_blank" href='@Util.HelpLink("UpdateOrgMember")'>help</a>
-<table cellspacing="5">
-    <tr>
-    <td colspan="3"><a href="/TransactionHistory/Index/@Model.PeopleId?oid=@Model.OrganizationId" 
-            target="_blank" style="font-family: Courier New">Attendance</a>: @Model.AttendStr
-        </td>
-    </tr>
-    <tr>
-    <td class="top">
-    <form class="DisplayEdit" action="/OrgMemberDialog/Update/@Model.OrganizationId&pid=@Model.PeopleId" method="post">
-     @Html.Partial("Display", Model) 
-    </form>
-    </td>
-    <td></td>
-    <td class="top">
-        <div style="border: solid 1px #555; padding:1em">
-        <strong>Groups:</strong><br />
-        <table>
-        @foreach (var mt in Model.Organization.MemberTags.OrderBy(t => t.Name))
-        { 
-           <tr><td><input id="smallgroup@(comboid)-@mt.Id" class="ckbox" type="checkbox" @(Model.OrgMemMemTags.Any(omt => omt.MemberTagId == mt.Id) ? "checked='checked'" : "") /></td>
-           <td>@mt.Name</td></tr>
-        }
+    <div class="roundbox">
+        <h2>@Model.Person.Name</h2>
+        <a class="helplink" target="_blank" href='@Util.HelpLink("UpdateOrgMember")'>help</a>
+        <table cellspacing="5">
+            <tr>
+                <td colspan="3"><a href="/TransactionHistory/Index/@Model.PeopleId?oid=@Model.OrganizationId" 
+                                   target="_blank" style="font-family: Courier New">Attendance</a>: @Model.AttendStr
+                </td>
+            </tr>
+            <tr>
+                <td class="top">
+                    <form class="DisplayEdit" action="/OrgMemberDialog/Update/@Model.OrganizationId&pid=@Model.PeopleId" method="post">
+                        @Html.Partial("Display", Model) 
+                    </form>
+                </td>
+                <td></td>
+                <td class="top">
+                    <div style="border: solid 1px #555; padding:1em">
+                        <strong>Groups:</strong><br />
+                        <table>
+                            @foreach (var mt in Model.Organization.MemberTags.OrderBy(t => t.Name))
+                            { 
+                                <tr><td><input id="smallgroup@(comboid)-@mt.Id" class="ckbox" type="checkbox" @(Model.OrgMemMemTags.Any(omt => omt.MemberTagId == mt.Id) ? "checked='checked'" : "") /></td>
+                                    <td>@mt.Name</td></tr>
+                            }
+                        </table>
+                    </div>
+                </td>
+            </tr>
         </table>
-        </div>
-    </td>
-    </tr>
-</table>
-</div>
-    @Scripts.Render("~/bundles/js")
+    </div>
+    @Bundles.RenderScripts()
     @Html.Partial("DatePickerDefaults")
-    @Scripts.Render("~/bundles/single/OrgMemberDialog-js")
 </body>
 </html>
 

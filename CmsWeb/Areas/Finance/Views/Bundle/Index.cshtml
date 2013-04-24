@@ -1,9 +1,11 @@
 ﻿@model CmsWeb.Areas.Finance.Models.BundleModel
-@using System.Web.Optimization
+@using CmsWeb
 @using UtilityExtensions
 @{
     ViewBag.Title = "Contribution Bundles";
     Layout = "/Views/Shared/SiteLayout.cshtml";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("bundle");
 }
 @section head 
 {
@@ -31,10 +33,6 @@
             max-width: 20em;
         }
     </style>
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/bundle-js")
 }
 <div class="roundbox">
     <a href="/Bundles">Back to Bundle List</a>

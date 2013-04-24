@@ -1,31 +1,24 @@
-﻿@using System.Web.Optimization
+﻿@{
+    var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs();
+    var bkcolor = DbUtil.Db.Setting("HeaderBackground", "#e4e2d5");
+}
 <!DOCTYPE html>
 <html>
 <head>
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    @{
-        var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
-    }
-    @if (newlook)
+    @Bundles.RenderStylesheets()
+    @RenderSection("head", required: false)
+    @if (bkcolor.HasValue())
     {
-        @Styles.Render("~/Content/styles/new/css")
-        <link href="~/Content/font/font-awesome.min.css" rel="stylesheet" />
-        @RenderSection("head", required: false)
-        <style type="text/css">
-            #header { background-color: @DbUtil.Db.Setting("HeaderBackground", "#e4e2d5"); }
-        </style>
-        @Scripts.Render("~/bundles/main-js")
-        @Html.Partial("DatePickerDefaults")
+    <style type="text/css">
+        #header { background-color: @bkcolor; }
+    </style>
     }
-    else
-    {
-        @Styles.Render("~/Content/styles/css")
-        @RenderSection("head", required: false)
-        @Scripts.Render("~/bundles/js")
-        @Html.Partial("DatePickerDefaults")
-    }
-    @RenderSection("scripts", required: false)
+    @Bundles.RenderScripts()
+    @Html.Partial("DatePickerDefaults")
 </head>
 <body>
     @Html.Partial("Notices")

@@ -1,11 +1,16 @@
 ﻿@model string
+@using UtilityExtensions
 @{
     var label = ViewData.ModelMetadata.AdditionalValues["label"];
     var classes = ViewData.ModelMetadata.AdditionalValues["classes"];
 }
 <div class="control-group @classes">
-    <label for="">@label</label>
+    <label class="control-label" for="">@label</label>
     <div class="controls">
-        @Html.TextBoxFor(m => m, new { @class = "text date2" })
+        @* Dave : is there any way to get these dates to pop above the textbox if it is at the bottom of the page? *@
+        <div class="input-append date" data-date="@Model" data-datepicker-format="@Util.jQueryDateFormat2">
+            @Html.TextBoxFor(m => m, new { @class = "span8", size="16" })
+            <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
     </div>
 </div>

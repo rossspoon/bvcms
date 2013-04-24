@@ -1,12 +1,16 @@
 ﻿@model CmsData.AddToOrgFromTagRun
-           @using System.Web.Optimization           @using CmsWeb
+@using CmsWeb
+@{
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs(); 
+    Bundles.Reference("OrgMembersDialog");
+}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-    @Styles.Render("~/Content/styles/css")
-    @Scripts.Render("~/bundles/js")
-@Scripts.Render("~/bundles/single/OrgMembersDialog-js")
+    @Bundles.RenderStylesheets()
+    @Bundles.RenderScripts()
 @if (Model.Running == 1)
 {
     <script type="text/javascript">

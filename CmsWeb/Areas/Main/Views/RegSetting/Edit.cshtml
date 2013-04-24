@@ -3,6 +3,15 @@
 @{
     ViewBag.Title = "EditRegSetting";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+    @<script type="text/javascript">
+        $(function () {
+            $("textarea").css("height", this.scrollHeight + "px");
+            $("textarea").tabby();
+            $(".bt").button();
+        });
+    </script>);
 }
 <h2>
     Editing Registration Settings for <a href="/Organization/Index/@ViewData["OrganizationId"]">@ViewData["orgname"]</a></h2>
@@ -12,13 +21,3 @@
 <p style="color: red">@TempData["error"]</p>
 @Html.TextArea("text", new { rows = "40", style = "width:90%", wrap="off" })
 </form>
-@section scripts
-{
-<script type="text/javascript">
-    $(function () {
-        $("textarea").css("height", this.scrollHeight + "px");
-        $("textarea").tabby();
-        $(".bt").button();
-    });
-</script>
-}

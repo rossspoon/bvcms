@@ -4,13 +4,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>CMS2</title>
-    <%: Styles.Render("~/Content/styles/css") %>
+    <% CassetteConfiguration.BundleRefCss();
+       CassetteConfiguration.BundleRefJs(); 
+    %>
+    <%: Bundles.RenderStylesheets() %>
     <link href='/Content/styles/style2.css' rel='stylesheet' type='text/css' />
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 
-    <%:Scripts.Render("~/bundles/js") %>
+    <%:Bundles.RenderScripts() %>
+    <%: Bundles.RenderStylesheets() %>
     <script type="text/javascript">
         $.dateFormat = '<%=Util.jQueryDateFormat%>';
         $(document).ready(function () {
@@ -66,7 +70,7 @@
                     <tr>
                         <td class="left">
                             <a href="/">
-                                <%=DbUtil.HeaderImage("<img src='/content/bvcms132x55.png' width='132' height='55' />") %></a>
+                                <%=DbUtil.HeaderImage("<img src='/images/bvcms132x55.png' width='132' height='55' />") %></a>
                         </td>
                         <td class="center">
                             <%=DbUtil.Header() %>
@@ -283,7 +287,7 @@
                                     <li><a href="/Admin/ToggleOrgLeadersOnly.ashx">
                                         <%= Util2.OrgLeadersOnly ? "OrgLeadersOnly is on" : "OrgLeadersOnly is off" %>
                                     </a></li>
-                                    <li><a href="/Batch/UpdateQueryBits">Update QueryBits
+                                    <li><a href="/Batch/UpdateStatusFlags">Update Status Flags
                                     </a></li>
                                     <li><a href="/Batch/TagPeopleIds">Tag PeopleIds
                                     </a></li>

@@ -2,47 +2,46 @@
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Promotion";
-}
-@section scripts
-{
-<script type="text/javascript">
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+        @<script type="text/javascript">
     //id=elements_id&value=user_edited_content
-    $(function() {
-        $(".clickEdit").editable("/Setup/Promotion/Edit/", {
-            indicator: "<img src='/images/loading.gif'>",
-            tooltip: "Click to edit...",
-            style: 'display: inline',
-            width: '200px',
-            height: 25
-        });
-        $(".clickSelect").editable("/Setup/Promotion/EditDiv/", {
-            indicator: '<img src="/images/loading.gif">',
-            loadtype: 'post',
-            loadurl: "/Setup/Promotion/DivisionCodes/",
-            loaddata: function() {
-                return { id: $('#Programs').val() };
-            },
-            type: "select",
-            submit: "OK",
-            style: 'display: inline'
-        });
-        $("a.delete").click(function(ev) {
-            if (confirm("are you sure?"))
-                $.post("/Setup/Promotion/Delete/" + $(this).attr("id"), null, function(ret) {
-                    window.location = "/Setup/Promotion/";
-                });
-            return false;
-        });
-        $("a.promote").click(function(ev) {
-            if (confirm("are you sure?"))
-                $.post("/Setup/Promotion/Promote/" + $(this).attr("id"), null, function(ret) {
-                    window.location = "/Setup/Promotion/";
-                });
-            return false;
-        });
-        $(".bt").button();
-    });
-</script>
+             $(function() {
+                 $(".clickEdit").editable("/Setup/Promotion/Edit/", {
+                     indicator: "<img src='/images/loading.gif'>",
+                     tooltip: "Click to edit...",
+                     style: 'display: inline',
+                     width: '200px',
+                     height: 25
+                 });
+                 $(".clickSelect").editable("/Setup/Promotion/EditDiv/", {
+                     indicator: '<img src="/images/loading.gif">',
+                     loadtype: 'post',
+                     loadurl: "/Setup/Promotion/DivisionCodes/",
+                     loaddata: function() {
+                         return { id: $('#Programs').val() };
+                     },
+                     type: "select",
+                     submit: "OK",
+                     style: 'display: inline'
+                 });
+                 $("a.delete").click(function(ev) {
+                     if (confirm("are you sure?"))
+                         $.post("/Setup/Promotion/Delete/" + $(this).attr("id"), null, function(ret) {
+                             window.location = "/Setup/Promotion/";
+                         });
+                     return false;
+                 });
+                 $("a.promote").click(function(ev) {
+                     if (confirm("are you sure?"))
+                         $.post("/Setup/Promotion/Promote/" + $(this).attr("id"), null, function(ret) {
+                             window.location = "/Setup/Promotion/";
+                         });
+                     return false;
+                 });
+                 $(".bt").button();
+             });
+         </script>);
 }
 <h2>Promotion Setup</h2>
 @Html.DropDownList("Programs", Model.Programs())

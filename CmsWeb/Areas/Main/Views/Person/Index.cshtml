@@ -1,5 +1,4 @@
-﻿@using System.Web.Optimization
-@using CmsWeb
+﻿@using CmsWeb
 @using CmsWeb.Models
 @using CmsData
 @using UtilityExtensions
@@ -7,6 +6,27 @@
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Person";
+    CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson;
+    var isaccess = User.IsInRole("Access");
+    var isadmin = User.IsInRole("Admin");
+    var isedit = User.IsInRole("Edit");
+    var isfinance = User.IsInRole("Finance");
+    var ismanager = User.IsInRole("Manager");
+    var memberedit = isadmin || User.IsInRole("Membership");
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("person");
+    if(memberedit)
+    {
+    Bundles.AddInlineScript(@<script type="text/javascript"> function ShowMemberDocs() { $("#memberdocs").show(); } </script>);
+    }
+    Bundles.AddInlineScript(
+    @<script type="text/javascript">
+        function ShowMemberExtras() {
+            if (window.ShowMemberDocs)
+                ShowMemberDocs();
+            $.extraEditable('#memberextras');
+        }
+    </script>);
 }
 @section head
 {
@@ -30,30 +50,6 @@ pre {
 </style>
 }
 
-@{ 
-    CmsWeb.Models.PersonPage.PersonInfo p = Model.displayperson;
-    var isaccess = User.IsInRole("Access");
-    var isadmin = User.IsInRole("Admin");
-    var isedit = User.IsInRole("Edit");
-    var isfinance = User.IsInRole("Finance");
-    var ismanager = User.IsInRole("Manager");
-    var memberedit = isadmin || User.IsInRole("Membership");
-}
-@section scripts
-{
-    @Scripts.Render("~/bundles/single/person-js")
-@if(memberedit)
-{
-    <script type="text/javascript"> function ShowMemberDocs() { $("#memberdocs").show(); } </script>
-}
-    <script type="text/javascript">
-        function ShowMemberExtras() {
-            if (window.ShowMemberDocs)
-                ShowMemberDocs();
-            $.extraEditable('#memberextras');
-        }
-    </script>
-}
 @Html.Hidden("PeopleId", p.PeopleId)
     <table cellspacing="5" class="roundbox floatleft">
         <tr><td colspan="5"> <h2>@Model.Name</h2> </td></tr>
@@ -223,7 +219,6 @@ pre {
             {
                 <li><a href="#membernotes-tab"><span>Notes</span></a></li>
                 <li><a href="#extras-tab"><span>Extra Values</span></a></li>
-                <li><a href="#querybits-tab"><span>QueryBits</span></a></li>
             }
             </ul>
             <div id="membersum-tab">
@@ -239,15 +234,6 @@ pre {
                 <form action="/Person/ExtrasGrid/@p.PeopleId">
                 </form>
             </div>
-        @if (isaccess)
-        {
-            <div id="querybits-tab">
-                @foreach (var b in p.member.QueryBits())
-                {
-                    @b[0] @:- @b[1]<br/>
-                }
-            </div>
-        }
         </div>
 @if (isaccess)
 { 

@@ -6,6 +6,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Data.Linq.SqlClient;
 using System.Linq;
 using UtilityExtensions;
 using System.Text;
@@ -431,6 +432,28 @@ namespace CmsData
         public bool CanRemove
         {
             get { return !IsFirst && !IsLastNode; }
+        }
+        public class FlagItem
+        {
+            public string Text { get; set; }
+            public int Value { get; set; }
+            public string Tag { get; set; }
+        }
+        public static IEnumerable<FlagItem> StatusFlags(CMSDataContext db)
+        {
+            var q = (from c in db.QueryBuilderClauses
+                     where c.GroupId == null && c.Field == "Group"
+                     where SqlMethods.Like(c.Description, "F[0-9][0-9]:%")
+                     let t = db.Tags.SingleOrDefault(tt => tt.Name == c.Description.Substring(0, 3))
+                     where t != null
+                     orderby c.Description
+                     select new FlagItem()
+                         {
+                             Tag = t.Name,
+                             Text = c.Description,
+                             Value = t.Id
+                         });
+            return q;
         }
     }
 }

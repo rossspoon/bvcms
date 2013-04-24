@@ -3,17 +3,35 @@
 @{
     var fm = new FamilyModel(Model.displayperson.PeopleId);
 }
-    <div class="group">
-        <h2>Related Families
-            <a href="" class="add" data-modal-id="addDialog"><i class="icon-plus-sign"></i></a>
-        </h2>
-        <ul class="related">
-            @foreach (var f in fm.RelatedFamilies())
-            {
-                <li><a href="" class="edit"><i class="icon-pencil"></i></a>
-                    <div class="label">@f.Name</div>
-                    <div class="summary">@f.Description</div>
-                </li>
-            }
+<div class="sidebar_title group">
+    <h2>Related Families</h2>
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus-sign"></i></a>
+        <ul class="dropdown-menu" role="menu">
+            <!-- dropdown menu links -->
+            <li><a href="#">Add Family</a></li>
         </ul>
     </div>
+</div>
+<!-- //sidebar_title -->
+<ul id="family_related" class="unstyled">
+    @foreach (var f in fm.RelatedFamilies())
+    {
+        <li>
+            <div class="btn-group">
+                <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-cog"></i>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Edit</a></li>
+                    <li><a href="#">Split</a></li>
+                    <li><a href="#">Delete</a></li>
+                </ul>
+            </div>
+            <p>@f.Name
+                <span class="summary">@f.Description</span>
+            </p>
+        </li>
+    }
+</ul>

@@ -209,9 +209,9 @@ namespace CmsWeb.Models.PersonPage
 			return QueryModel.ConvertToSelect(cv.NewMemberClassStatusCodes(), "Id");
 		}
 
-		public List<string[]> QueryBits()
+		public List<string[]> StatusFlags()
 		{
-			var q1 = (from f in DbUtil.Db.QueryBitsFlags()
+			var q1 = (from f in DbUtil.Db.StatusFlags()
 			          select f).ToList();
 			var q2 = (from t in DbUtil.Db.TagPeople
 			          where t.PeopleId == PeopleId

@@ -20,9 +20,9 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             return new MucketyMapResult(id);
         }
-        public ActionResult QueryBits(int id)
+        public ActionResult StatusFlags(int id)
         {
-            return new QueryBitsExcelResult(id);
+            return new StatusFlagsExcelResult(id);
         }
         public ActionResult ExtraValues(int id)
         {

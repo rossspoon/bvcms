@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Linq;
 using System.Linq.Expressions;
 using System.ComponentModel;
-using System.Text.RegularExpressions;
 
 namespace CmsData
 {
@@ -2194,6 +2193,17 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.StatusFlags", IsComposable = true)]
+		public IQueryable< View.StatusFlag > StatusFlags(
+            [Parameter(DbType="varchar")] string flags
+            )
+		{
+			return this.CreateMethodCallQuery< View.StatusFlag>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                flags
+                );
+		}
+
 		[Function(Name="dbo.SundayDates", IsComposable = true)]
 		public IQueryable< View.SundayDate > SundayDates(
             [Parameter(DbType="datetime")] DateTime? dt1,
@@ -3127,6 +3137,7 @@ namespace CmsData
                 meetingtime
                 ).ReturnValue));
 		}
+
 		[Function(Name="dbo.NextAnniversary", IsComposable = true)]
 		[return: Parameter(DbType = "datetime")]
 		public DateTime? NextAnniversary(
@@ -3148,6 +3159,18 @@ namespace CmsData
 			return ((int?)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 zipcode
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.StatusFlag", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string StatusFlag(
+            [Parameter(Name = "pid", DbType="int")] int? pid
+            )
+		{
+			return ((string)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                pid
                 ).ReturnValue));
 		}
 

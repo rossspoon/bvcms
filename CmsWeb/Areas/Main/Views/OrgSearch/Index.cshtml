@@ -1,13 +1,10 @@
 ﻿@model CmsWeb.Models.OrgSearchModel
-@using System.Web.Optimization
 @using CmsWeb
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "OrgSearch";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/OrgSearch-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OrgSearch");
 }
 <form id="orgsearchform" method="post">
   <table id="searchvalues" cellspacing="5" class="roundbox floatleft">

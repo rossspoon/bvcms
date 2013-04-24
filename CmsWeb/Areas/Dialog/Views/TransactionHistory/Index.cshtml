@@ -1,15 +1,21 @@
 ﻿@model CmsWeb.Areas.Dialog.Models.TransactionHistoryModel
-@using System.Web.Optimization
 @using CmsWeb
 @using UtilityExtensions
 @{
     Layout = null;
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+@<text>
+    @Html.Partial("DatePickerDefaults")
+</text>
+    );
+    Bundles.Reference("TransactionHistory");
 }
 <!DOCTYPE html>
 <html>
 <head>
     <title>History</title>
-    @Styles.Render("~/Content/styles/css")
     <link href="/Content/styles/style2.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -52,8 +58,5 @@
         <div>&nbsp;</div>
         @{Html.RenderPartial("History", Model.FetchHistory()); }
     </div>
-    @Scripts.Render("~/bundles/js")
-    @Html.Partial("DatePickerDefaults")
-    @Scripts.Render("~/bundles/single/TransactionHistory-js")
 </body>
 </html>

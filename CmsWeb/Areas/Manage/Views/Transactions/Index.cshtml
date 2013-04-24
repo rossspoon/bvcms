@@ -1,14 +1,11 @@
-﻿@using System.Web.Optimization
-@using CmsWeb;
+﻿@using CmsWeb;
 @using CmsWeb.Models
 @model CmsWeb.Models.TransactionsModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Transactions";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/Transactions-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("Transactions");
 }
 <form id="form" method="post" action="/Manage/Transactions/List">
 <div class="roundbox floatleft">

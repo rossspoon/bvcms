@@ -199,12 +199,7 @@ namespace CmsWeb.Models
         }
         public static bool IsExisting(string code)
         {
-            bool existing;
-            var q = from cp in DbUtil.Db.Coupons
-                    where cp.Id == code
-                    where cp.Used == null && cp.Canceled == null
-                    select cp;
-            existing = q.SingleOrDefault() != null;
+            bool existing = DbUtil.Db.Coupons.Any(cp => cp.Id == code && cp.Used == null && cp.Canceled == null);
             return existing;
         }
         public Coupon CreateCoupon()

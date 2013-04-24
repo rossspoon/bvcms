@@ -1,13 +1,11 @@
 ﻿@model CmsWeb.Areas.Finance.Models.BundlesModel
-@using System.Web.Optimization
+@using CmsWeb
 @using UtilityExtensions
 @{
     ViewBag.Title = "Contribution Bundles";
     Layout = "/Views/Shared/SiteLayout.cshtml";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/bundles-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("bundles");
 }
 <table class="roundbox">
     <tr><td nowrap="nowrap"><h2>Contribution Bundles</h2></td></tr>

@@ -4,7 +4,7 @@
     var classes = ViewData.ModelMetadata.AdditionalValues["classes"];
 }
 <div class="control-group @classes">
-    <label for="">@label</label>
+    <label class="control-label" for="">@label</label>
     <div class="controls">
         @Html.TextBoxFor(m => m)
     </div>

@@ -32,6 +32,8 @@ namespace CmsData.View
 		
 		private string _FundName;
 		
+		private int _OnLine;
+		
 		private int _QBSynced;
 		
 		private string _MainFellowship;
@@ -176,6 +178,23 @@ namespace CmsData.View
 			{
 				if (this._FundName != value)
 					this._FundName = value;
+			}
+
+		}
+
+		
+		[Column(Name="OnLine", Storage="_OnLine", DbType="int NOT NULL")]
+		public int OnLine
+		{
+			get
+			{
+				return this._OnLine;
+			}
+
+			set
+			{
+				if (this._OnLine != value)
+					this._OnLine = value;
 			}
 
 		}

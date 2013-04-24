@@ -1,10 +1,11 @@
-﻿@using System.Web.Optimization
-@using UtilityExtensions
+﻿@using UtilityExtensions
 @using CmsWeb
 @model CmsWeb.Models.PostBundleModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "PostBundle";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("PostBundle");
 }
 @section head 
 {
@@ -30,10 +31,6 @@
         max-width: 25em;
     }
 </style>
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/PostBundle-js")
 }
 @Html.Hidden("fundid", Model.bundle.FundId)
 @Html.Hidden("fundispledge", Model.FundName)

@@ -43,4 +43,14 @@
 {
     <a id="@id" data-item="@data">@text</a>
 }
-
+@helper ButtonLink(string text, string href, string target = null)
+{
+    if (target.HasValue())
+    {
+        <a href="@href" target="@target">@text</a>
+    }
+    else
+    {
+        <a href="@href">@text</a>
+    }
+}

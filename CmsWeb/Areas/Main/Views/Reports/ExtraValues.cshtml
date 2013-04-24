@@ -1,13 +1,11 @@
-﻿@model IEnumerable<CmsWeb.Areas.Main.Controllers.ReportsController.ExtraInfo>
+﻿@using CmsWeb
+@model IEnumerable<CmsWeb.Areas.Main.Controllers.ReportsController.ExtraInfo>
 @{
     ViewBag.Title = "ExtraValues";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
-}
-
-<h2>ExtraValues</h2>
-@section scripts
-{
-    <script type="text/javascript">
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+    @<script type="text/javascript">
         $(function () {
             $('table.grid tbody tr:even').addClass('alt');
             $("a.delete").click(function (ev) {
@@ -21,9 +19,10 @@
                     });
             });
         });
-    </script>
+    </script>);
 }
 
+<h2>ExtraValues</h2>
 <table class="grid">
 @foreach (var e in Model)
 {

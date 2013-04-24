@@ -1,12 +1,16 @@
 ﻿@model CmsWeb.Models.TestPlan
-@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
+@{
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("TestAPI");
+}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>API Tester</title>
-    @Styles.Render("~/Content/styles/css")
+    <title>API Tester</title>
+    @Bundles.RenderStylesheets()
 	<link rel="stylesheet" href="/Content/styles/faary.css?v=1" type="text/css" />
 	<style>
 	    div.section
@@ -16,8 +20,7 @@
             color:#eee;
 	    }
 	</style>
-    @Scripts.Render("~/bundles/js")
-    @Scripts.Render("~/bundles/single/TestAPI-js")
+    @Bundles.RenderScripts()
 </head>
 <body>
 

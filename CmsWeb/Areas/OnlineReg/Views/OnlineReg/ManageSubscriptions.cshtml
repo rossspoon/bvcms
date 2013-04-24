@@ -1,13 +1,10 @@
-﻿@using System.Web.Optimization
-@model CmsWeb.Models.ManageSubsModel 
+﻿@model CmsWeb.Models.ManageSubsModel 
 @using CmsWeb
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/OnlineReg-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("onlinereg");
 }
 <h2>@Model.Description()</h2>
 <div>@Html.Raw(Model.Instructions)</div>

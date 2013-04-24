@@ -1,14 +1,11 @@
 ﻿@model CmsWeb.Areas.Main.Models.Report.MeetingsModel
-@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @{
     ViewBag.Title = "Meetings";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/Meetings-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("Meetings");
 }
 <h2>Meetings</h2>
 <form>

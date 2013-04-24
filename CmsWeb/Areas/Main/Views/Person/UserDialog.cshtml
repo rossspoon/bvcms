@@ -1,14 +1,18 @@
-﻿@using System.Web.Optimization
-@using UtilityExtensions
+﻿@using UtilityExtensions
 @using CmsData
 @using CmsWeb
 @model CmsData.User
+@{
+    CassetteConfiguration.BundleRefCss();
+    Bundles.Reference("dialogcss");
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("UserDialog");
+}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Index</title>
-    @Styles.Render("~/Content/styles/css")
-    @Styles.Render("~/Content/styles/dialog-css")
+    @Bundles.RenderStylesheets()
     <style type="text/css">
         .wrap {
             float: left;
@@ -18,8 +22,7 @@
             padding: 0 0 5px 0;
         }
     </style>
-    @Scripts.Render("~/bundles/js")
-    @Scripts.Render("~/bundles/single/UserDialog-js")
+    @Bundles.RenderScripts()
 </head>
 <body>
     <a class="helplink" target="_blank" href='@Util.HelpLink("UserUpdate")'>help</a>

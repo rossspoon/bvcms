@@ -141,10 +141,8 @@ namespace CmsData
             var q2 = from p in People
                      where p.PeopleId == a[0]
                      select p.FromEmail;
-            if (q2.Count() == 0)
-                return (from p in CMSRoleProvider.provider.GetAdmins()
-                        orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
-                        select p.FromEmail).First();
+            if (!q2.Any())
+                return Setting("AdminMail", "support@bvcms.com");
             return q2.SingleOrDefault();
         }
         public List<Person> StaffPeopleForOrg(int orgid)
@@ -343,14 +341,13 @@ namespace CmsData
                     var qs = "OptOut/UnSubscribe/?enc=" + Util.EncryptForUrl("{0}|{1}".Fmt(To.PeopleId, from.Address));
                     var url = Util.URLCombine(CmsHost, qs);
                     var link = @"<a href=""{0}"">Unsubscribe</a>".Fmt(url);
-                    text = text.Replace("{unsubscribe}", link);
-                    text = text.Replace("{Unsubscribe}", link);
+                    text = text.Replace("{unsubscribe}", link, ignoreCase: true);
                     if (aa.Count > 0)
                     {
-                        text = text.Replace("{toemail}", aa[0].Address);
+                        text = text.Replace("{toemail}", aa[0].Address, ignoreCase: true);
                         text = text.Replace("%7Btoemail%7D", aa[0].Address);
                     }
-                    text = text.Replace("{fromemail}", from.Address);
+                    text = text.Replace("{fromemail}", from.Address, ignoreCase: true);
                     text = text.Replace("%7Bfromemail%7D", from.Address);
 
                     if (Setting("sendemail", "true") != "false")

@@ -1,12 +1,13 @@
-@using System.Web.Optimization
+@{
+    Bundles.Reference("OnlineRegister");
+}
 @if ((bool?)ViewData["hasshell"] == true)
 {
 @Html.Raw((string)ViewData["top"])
 @RenderSection("head", false)
 @RenderBody()
 @Html.Raw((string)ViewData["bottom"])
-
-@Scripts.Render("~/bundles/OnlineRegister-js")
+@Bundles.RenderScripts()
 @RenderSection("scripts", false)
 }
 else
@@ -26,7 +27,7 @@ else
 @Html.Raw((string)ViewData["top"])
 @RenderBody()
 @Html.Raw((string)ViewData["bottom"])
-@Scripts.Render("~/bundles/OnlineRegister-js")
+@Bundles.RenderScripts()
 @RenderSection("scripts", false)
 </body>
 </html>

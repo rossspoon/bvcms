@@ -1,233 +1,253 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Optimization;
+using Cassette.Scripts;
+using Cassette.Stylesheets;
 using CmsData;
 using UtilityExtensions;
+using Cassette;
+using Cassette.Views;
 
 namespace CmsWeb
 {
-    public static class BundleConfig
+
+    public class CassetteConfiguration : IConfiguration<BundleCollection>
     {
-        public static void RegisterBundles(BundleCollection bundles)
+        public void Configure(BundleCollection bundles)
         {
-            if(ConfigurationManager.AppSettings["testing"].ToBool())
-                BundleTable.EnableOptimizations = false;
+            bundles.Add<StylesheetBundle>("css", new[] 
+            { 
+                  "Content/styles/jquery-ui-1.10.0.custom.css"
+                , "Content/styles/dropdown.css"
+                , "Content/styles/site.css"
+                , "Content/styles/style2.css"
+                , "Content/styles/pager.css"
+                , "Content/styles/jquery.jscrollpane.css"
+                , "Content/styles/joyride-1.0.5.css"
+                , "Content/styles/jquery.multiselect.css"
+                , "Content/styles/jquery.tooltip.css"
+        	});
 
-            bundles.Add(new StyleBundle("~/Content/styles/css").Include(
-                "~/Content/styles/jquery-ui-1.10.0.custom.css"
-                , "~/Content/styles/dropdown.css"
-                , "~/Content/styles/site.css"
-                , "~/Content/styles/style2.css"
-                , "~/Content/styles/pager.css"
-                , "~/Content/styles/jquery.jscrollpane.css"
-                , "~/Content/styles/joyride-1.0.5.css"
-                , "~/Content/styles/jquery.multiselect.css"
-                , "~/Content/styles/jquery.tooltip.css"
-                            ));
-
-            bundles.Add(new StyleBundle("~/Content/styles/new/css").Include(
-                "~/Content/styles/jquery-ui-1.10.0.custom.css"
-                , "~/Content/styles/jquery.jscrollpane.css"
-                , "~/Content/styles/joyride-1.0.5.css"
-                , "~/Content/styles/jquery.multiselect.css"
-                , "~/Content/styles/jquery.tooltip.css"
-                , "~/Content/styles/jquery.alerts.css"
-                , "~/Content/styles/layout.css"
-                , "~/Content/styles/Main.css"
-                , "~/Content/styles/pager.css"
-                , "~/Content/font/proximanova/fonts.css"
-                , "~/Content/chosen/chosen.css"
-                            ));
-
-            bundles.Add(new StyleBundle("~/Content/styles/new2/css").Include(
-                "~/Content/styles/jquery.jscrollpane.css"
-                , "~/Content/bootstrap/css/bootstrap.css"
-                , "~/Content/styles/joyride-1.0.5.css"
-                , "~/Content/styles/jquery.multiselect.css"
-                , "~/Content/styles/jquery.tooltip.css"
-                , "~/Content/styles/jquery.alerts.css"
-                , "~/Content/styles/layout.css"
-                , "~/Content/styles/Main.css"
-                , "~/Content/datepicker/css/datepicker.css"
-                , "~/Content/styles/pager.css"
-                , "~/Content/font/proximanova/fonts.css"
-                , "~/Content/chosen/chosen.css"
-                , "~/Content/autocomplete/jquery-ui-1.10.2.custom.css"
-                            ));
-
-            bundles.Add(new StyleBundle("~/Content/styles/org-css").Include(
-                "~/Content/styles/organization.css"));
-
-            bundles.Add(new StyleBundle("~/Content/dialog-css").Include(
-                "~/Content/styles/Dialog.css"));
-
-            bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                "~/Content/js/jquery-1.9.1.js"
-                , "~/Content/js/jquery-migrate-1.1.0.js"
-                , "~/Content/js/jquery-ui-1.10.0.custom.js"
-                , "~/Content/js/jquery.cookie.js"
-                , "~/Content/js/jquery.blockUI.js"
-                , "~/Content/js/jquery.mousewheel.js"
-                , "~/Content/js/jquery.jscrollpane.js"
-                , "~/Content/js/jquery.jeditable.js"
-                , "~/Content/js/jquery.validate.js"
-                , "~/Content/js/jquery.joyride-1.0.5.js"
-                , "~/Content/js/modernizr.mq.js"
-                , "~/Content/js/tutorial.js"
-                , "~/Content/js/jquery.multiSelect.js"
-                , "~/Content/js/jquery.sortElements.js"
-                , "~/Content/js/jquery.textarea.js"
-                , "~/Content/js/jquery.transpose.js"
-                , "~/Content/js/jquery.tooltip.js"
-                , "~/Scripts/dropdown.js"
-                , "~/Scripts/ExportToolBar.js"
-                , "~/Scripts/Pager.js"
-                , "~/Scripts/headermenu.js"
-                            ));
-            bundles.Add(new ScriptBundle("~/bundles/main-js").Include(
-                "~/Content/js/jquery-1.9.1.js"
-                , "~/Content/js/jquery-migrate-1.1.0.js"
-                , "~/Content/js/jquery-ui-1.10.0.custom.js"
-                , "~/Content/js/jquery.cookie.js"
-                , "~/Content/js/jquery.blockUI.js"
-                , "~/Content/js/jquery.mousewheel.js"
-                , "~/Content/js/jquery.jscrollpane.js"
-                , "~/Content/js/jquery.jeditable.js"
-                , "~/Content/js/jquery.validate.js"
-                , "~/Content/js/jquery.joyride-1.0.5.js"
-                , "~/Content/js/modernizr.mq.js"
-                , "~/Content/js/tutorial.js"
-                , "~/Content/js/jquery.multiSelect.js"
-                , "~/Content/js/jquery.sortElements.js"
-                , "~/Content/js/jquery.textarea.js"
-                , "~/Content/js/jquery.tooltip.js"
-                , "~/Content/js/jquery.transpose.js"
-                , "~/Content/js/jquery.alerts.js"
-                //, "~/Content/js/jquery.simplemodal.1.4.4.js"
-                , "~/Scripts/dropdown.js"
-                , "~/Scripts/Pager.js"
-                , "~/Scripts/ExportToolBar.js"
-                , "~/Scripts/headermenu.js"
-                , "~/Content/chosen/chosen.jquery.js"
-                            ));
-
-            bundles.Add(new ScriptBundle("~/bundles/main2-js").Include(
-                "~/Content/js/jquery-1.9.1.js"
-                , "~/Content/js/jquery-migrate-1.1.0.js"
-                , "~/Content/bootstrap/js/bootstrap.js"
-                , "~/Content/js/jquery.cookie.js"
-                , "~/Content/js/jquery.blockUI.js"
-                , "~/Content/js/jquery.mousewheel.js"
-                , "~/Content/js/jquery.jscrollpane.js"
-                , "~/Content/js/jquery.jeditable.js"
-                , "~/Content/js/jquery.validate.js"
-                , "~/Content/js/jquery.joyride-1.0.5.js"
-                , "~/Content/js/modernizr.mq.js"
-                , "~/Content/js/tutorial.js"
-                // Dave: need a multiselect dropdown, chosen?
-                //, "~/Content/js/jquery.multiSelect.js"
-                , "~/Content/js/jquery.sortElements.js"
-                , "~/Content/js/jquery.textarea.js"
-                , "~/Content/js/jquery.tooltip.js"
-                , "~/Content/js/jquery.alerts.js"
-                //, "~/Content/js/jquery.simplemodal.1.4.4.js"
-                , "~/Content/datepicker/js/bootstrap-datepicker.js"
-                , "~/Scripts/dropdown.js"
-                , "~/Scripts/Pager.js"
-                // Dave: this is going to be a big deal to replace the ExportToolbar functionality
-                //, "~/Scripts/ExportToolBar.js"
-                , "~/Scripts/headermenu2.js"
-                , "~/Content/chosen/chosen.jquery.js"
-                , "~/Content/autocomplete/jquery-ui-1.10.2.custom.js"
-                            ));
-
-            bundles.Add(new ScriptBundle("~/bundles/onlineregister-js").Include(
-                "~/Content/js/jquery-1.9.1.js"
-                , "~/Content/js/jquery-migrate-1.1.0.js"
-                , "~/Content/js/jquery-ui-1.10.0.custom.js"
-                , "~/Content/js/jquery.validate.js"
-                , "~/Content/js/jquery.idle-timer.js"
-                , "~/Content/js/jquery.blockUI.js"
-                , "~/Content/js/jquery.sortElements.js"
-                , "~/Content/js/jquery.showpassword.js"
-                            ));
-
-            bundles.Add(new ScriptBundle("~/bundles/org-js").Include(
-                "~/Content/js/jquery-ui-timepicker-addon.js",
-                "~/Scripts/Organization.js",
-                "~/Scripts/SearchUsers.js",
-                "~/Scripts/RegSetting.js"
-                            ));
-
-            bundles.Add(new ScriptBundle("~/bundles/task-js").Include(
-                "~/Content/js/jquery.form.js",
-                "~/Content/js/jquery.form2.js",
-                "~/Scripts/Task.js"
-                            ));
-            bundles.Add(new ScriptBundle("~/bundles/querybuilder-js").Include(
-                "~/Content/js/jquery.contextmenu.r2.js",
-                "~/Scripts/QueryBuilder.js"
-                            ));
-
-            bundles.Add(new ScriptBundle("~/bundles/person-js").Include(
-                "~/Content/js/jquery.address-1.5"
-                ,"~/Scripts/person1.js"
-                ,"~/Scripts/person2.js"
-                            ));
-
-            bundles.AddOneScript("AdvancedSearch");
-            bundles.AddOneScript("Bundle");
-            bundles.AddOneScript("Bundles");
-            bundles.AddOneScript("Calendar");
-            bundles.AddOneScript("Calendar2");
-            bundles.AddOneScript("CheckIn");
-            bundles.AddOneScript("CheckinActivity");
-            bundles.AddOneScript("compose");
-            bundles.AddOneScript("ContactSearch");
-            bundles.AddOneScript("Contributions");
-            bundles.AddOneScript("Divisions");
-            bundles.AddOneScript("Email");
-            bundles.AddOneScript("family");
-            bundles.AddOneScript("Funds");
-            bundles.AddOneScript("ManageVolunteer");
-            bundles.AddOneScript("ManageVolunteer2");
-            bundles.AddOneScript("meeting-ticket");
-            bundles.AddOneScript("meeting");
-            bundles.AddOneScript("Meetings");
-            bundles.AddOneScript("merge");
-            bundles.AddOneScript("OnlineReg");
-            bundles.AddOneScript("OnlineRegPayment");
-            bundles.AddOneScript("OrgChildren");
-            bundles.AddOneScript("OrgGroups");
-            bundles.AddOneScript("OrgMembers");
-            bundles.AddOneScript("OrgMemberDialog");
-            bundles.AddOneScript("OrgMembersDialog");
-            bundles.AddOneScript("OrgSearch");
-            bundles.AddOneScript("PeopleSearch");
-            bundles.AddOneScript("Person");
-            bundles.AddOneScript("Person2");
-            bundles.AddOneScript("PostBundle");
-            bundles.AddOneScript("QuickSearch");
-            bundles.AddOneScript("RegSettings");
-            bundles.AddOneScript("SavedQuery");
-            bundles.AddOneScript("SearchAdd");
-            bundles.AddOneScript("SearchDivisions");
-            bundles.AddOneScript("SearchOrgs");
-            bundles.AddOneScript("SearchUsers");
-            bundles.AddOneScript("Tags");
-            bundles.AddOneScript("TestAPI");
-            bundles.AddOneScript("TotalsByFund");
-            bundles.AddOneScript("TotalsByRange");
-            bundles.AddOneScript("Transactions");
-            bundles.AddOneScript("TransactionHistory");
-            bundles.AddOneScript("UserDialog");
-            bundles.AddOneScript("Users");
+            bundles.Add<StylesheetBundle>("newcss", new[]
+            {
+                  "Content/styles/jquery-ui-1.10.0.custom.css"
+                , "Content/styles/jquery.jscrollpane.css"
+                , "Content/styles/joyride-1.0.5.css"
+                , "Content/styles/jquery.multiselect.css"
+                , "Content/styles/jquery.tooltip.css"
+                , "Content/styles/jquery.alerts.css"
+                , "Content/styles/layout.css"
+                , "Content/styles/Main.css"
+                , "Content/styles/pager.css"
+//              , "Content/awesome/css/font-awesome.css"
+                , "Content/chosen.css"
+            });
+            bundles.Add<StylesheetBundle>("new2css", new[]
+            {
+                  "Content/normalize.css"
+                , "Content/bvcms.css"
+                , "Content/bootstrap-modal/css/bootstrap-modal.css"
+              //, "Content/styles/joyride-1.0.5.css"
+                // Dave : need example of bootstrap tooltip
+              //, "Content/styles/jquery.tooltip.css"
+                // Dave : need example of alert
+              //, "Content/styles/jquery.alerts.css"
+                // Dave : where should I put any tweaks in css?
+              //, "Content/styles/Main.css"
+                , "Content/styles/pager.css"
+                , "Content/font-awesome.css"
+                , "Content/chosen.css"
+                , "Content/moment-datepicker/datepicker.css"
+                // Dave : this is here because of autocomplete
+                , "Content/autocomplete/jquery-ui-1.10.2.custom.css"
+            });
+            bundles.Add<StylesheetBundle>("orgcss", new[]
+            {
+                "Content/styles/organization.css"
+            });
+            bundles.Add<StylesheetBundle>("dialogcss", new[]
+            {
+                "Content/styles/Dialog.css"
+            });
+            bundles.Add<ScriptBundle>("js", new[]
+            {
+                  "Scripts/jquery-1.9.1.js"
+                , "Scripts/jquery-migrate-1.1.1.js"
+                , "Scripts/jquery-ui-1.10.0.custom.js"
+                , "Scripts/jquery.cookie.js"
+                , "Scripts/jquery.blockUI.js"
+                , "Scripts/jquery.mousewheel.js"
+                , "Scripts/jquery.jscrollpane.js"
+                , "Scripts/jquery.jeditable.js"
+                , "Scripts/jquery.validate.js"
+                , "Scripts/jquery.joyride-1.0.5.js"
+                , "Scripts/modernizr-2.6.2.js"
+                , "Scripts/tutorial.js"
+                , "Scripts/jquery.multiSelect.js"
+                , "Scripts/jquery.sortElements.js"
+                , "Scripts/jquery.textarea.js"
+                , "Scripts/jquery.transpose.js"
+                , "Scripts/jquery.tooltip.js"
+                , "Scripts/js/dropdown.js"
+                , "Scripts/js/ExportToolBar.js"
+                , "Scripts/js/Pager.js"
+                , "Scripts/js/headermenu.js"
+            });
+            bundles.Add<ScriptBundle>("main", new[]
+            {
+                  "Scripts/jquery-1.9.1.js"
+                , "Scripts/jquery-migrate-1.1.1.js"
+                , "Scripts/jquery-ui-1.10.0.custom.js"
+                , "Scripts/jquery.cookie.js"
+                , "Scripts/jquery.blockUI.js"
+                , "Scripts/jquery.mousewheel.js"
+                , "Scripts/jquery.jscrollpane.js"
+                , "Scripts/jquery.jeditable.js"
+                , "Scripts/jquery.validate.js"
+                , "Scripts/jquery.joyride-1.0.5.js"
+                , "Scripts/modernizr-2.6.2.js"
+                , "Scripts/tutorial.js"
+                , "Scripts/jquery.multiSelect.js"
+                , "Scripts/jquery.sortElements.js"
+                , "Scripts/jquery.textarea.js"
+                , "Scripts/jquery.tooltip.js"
+                , "Scripts/jquery.transpose.js"
+                , "Scripts/jquery.alerts.js"
+                , "Scripts/chosen.jquery.js"
+                , "Scripts/js/dropdown.js"
+                , "Scripts/js/Pager.js"
+                , "Scripts/js/ExportToolBar.js"
+                , "Scripts/js/headermenu.js"
+            });
+            bundles.Add<ScriptBundle>("main2", new[]
+            {
+                  "Scripts/jquery-1.9.1.js"
+                , "Scripts/jquery-migrate-1.1.1.js"
+                , "Scripts/bootstrap.js"
+                , "Scripts/bootstrap-modalmanager.js"
+                , "Scripts/bootstrap-modal.js"
+                , "Scripts/jquery.cookie.js"
+                , "Scripts/jquery.blockUI.js"
+                , "Scripts/jquery.mousewheel.js"
+                , "Scripts/jquery.jeditable.js"
+                , "Scripts/jquery.validate.js"
+                , "Scripts/jquery.joyride-1.0.5.js"
+                , "Scripts/modernizr-2.6.2.js"
+                , "Scripts/tutorial.js"
+                , "Scripts/jquery.sortElements.js"
+                , "Scripts/jquery.textarea.js"
+                , "Scripts/jquery.tooltip.js"
+                , "Scripts/jquery.alerts.js"
+                , "Scripts/moment.js"
+                , "Scripts/moment-datepicker.js"
+                , "Scripts/Autocomplete/jquery-ui-1.10.2.custom.js"
+                , "Scripts/chosen.jquery.js"
+                , "Scripts/js/Pager.js"
+              //, "Scripts/ExportToolBar.js"
+                , "Scripts/js/headermenu2.js"
+            });
+            bundles.Add<ScriptBundle>("onlineregister", new[]
+            {
+                  "Scripts/jquery-1.9.1.js"
+                , "Scripts/jquery-migrate-1.1.1.js"
+                , "Scripts/jquery-ui-1.10.0.custom.js"
+                , "Scripts/jquery.validate.js"
+                , "Scripts/jquery.idle-timer.js"
+                , "Scripts/jquery.blockUI.js"
+                , "Scripts/jquery.sortElements.js"
+                , "Scripts/jquery.showpassword.js"
+            });
+            bundles.Add<ScriptBundle>("org", new[]
+            {
+                "Scripts/jquery-ui-timepicker-addon.js",
+                "Scripts/js/Organization.js",
+                "Scripts/js/SearchUsers.js",
+                "Scripts/js/RegSetting.js"
+            });
+            bundles.Add<ScriptBundle>("task", new[]
+            {
+                "Scripts/jquery.form.js",
+                "Scripts/jquery.form2.js",
+                "Scripts/js/Task.js"
+            });
+            bundles.Add<ScriptBundle>("querybuilder", new[]
+            {
+                "Scripts/jquery.contextmenu.r2.js",
+                "Scripts/js/QueryBuilder.js"
+            });
+            bundles.Add<ScriptBundle>("person12", new[]
+            {
+                 "Scripts/jquery.address-1.5.js"
+                ,"Scripts/js/person1.js"
+//              ,"Scripts/js/person2.js"
+            });
+            AddOneScript(bundles, "AdvancedSearch");
+            AddOneScript(bundles, "Bundle");
+            AddOneScript(bundles, "Bundles");
+            AddOneScript(bundles, "Calendar");
+            AddOneScript(bundles, "Calendar2");
+            AddOneScript(bundles, "CheckIn");
+            AddOneScript(bundles, "CheckinActivity");
+            AddOneScript(bundles, "ChurchAttendance");
+            AddOneScript(bundles, "compose");
+            AddOneScript(bundles, "ContactSearch");
+            //AddOneScript(bundles, "Contributions");
+            AddOneScript(bundles, "Divisions");
+            AddOneScript(bundles, "Email");
+            AddOneScript(bundles, "family");
+            AddOneScript(bundles, "Funds");
+            AddOneScript(bundles, "HomeTest");
+            AddOneScript(bundles, "ManageVolunteer");
+            AddOneScript(bundles, "ManageVolunteer2");
+            AddOneScript(bundles, "meeting-ticket");
+            AddOneScript(bundles, "meeting");
+            AddOneScript(bundles, "Meetings");
+            AddOneScript(bundles, "merge");
+            AddOneScript(bundles, "OnlineReg");
+            AddOneScript(bundles, "OnlineRegPayment");
+            AddOneScript(bundles, "OrgChildren");
+            AddOneScript(bundles, "OrgGroups");
+            AddOneScript(bundles, "OrgMembers");
+            AddOneScript(bundles, "OrgMemberDialog");
+            AddOneScript(bundles, "OrgMembersDialog");
+            AddOneScript(bundles, "OrgSearch");
+            AddOneScript(bundles, "PeopleSearch");
+            AddOneScript(bundles, "Person");
+            AddOneScript(bundles, "Person2");
+            AddOneScript(bundles, "PostBundle");
+            AddOneScript(bundles, "QuickSearch");
+            AddOneScript(bundles, "RegSettings");
+            AddOneScript(bundles, "SavedQuery");
+            AddOneScript(bundles, "SearchAdd");
+            AddOneScript(bundles, "SearchDivisions");
+            AddOneScript(bundles, "SearchOrgs");
+            AddOneScript(bundles, "SearchUsers");
+            AddOneScript(bundles, "Tags");
+            AddOneScript(bundles, "TestAPI");
+            AddOneScript(bundles, "TotalsByFund");
+            AddOneScript(bundles, "TotalsByRange");
+            AddOneScript(bundles, "Transactions");
+            AddOneScript(bundles, "TransactionHistory");
+            AddOneScript(bundles, "UserDialog");
+            AddOneScript(bundles, "Users");
+            AddOneScript(bundles, "volunteering");
+        }
+        private static void AddOneScript(BundleCollection bundles, string f)
+        {
+            bundles.Add<ScriptBundle>(f, new[] { "Scripts/js/{0}.js".Fmt(f) });
+        }
+        public static void BundleRefJs()
+        {
+            var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
+            Bundles.Reference(newlook ? "main" : "js");
         }
 
-        private static void AddOneScript(this BundleCollection bundles, string f)
+        public static void BundleRefCss()
         {
-            var file = f + ".js";
-            bundles.Add(new ScriptBundle("~/bundles/single/{0}-js".Fmt(f)).Include("~/Scripts/" + file));
+            var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
+            Bundles.Reference(newlook ? "newcss" : "css");
         }
+
     }
 }

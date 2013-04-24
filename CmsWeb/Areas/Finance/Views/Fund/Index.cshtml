@@ -1,13 +1,10 @@
-﻿@using System.Web.Optimization
-@using CmsWeb
+﻿@using CmsWeb
 @model IEnumerable<CmsData.ContributionFund>
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Funds";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/Funds-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("Funds");
 }
 
 <h2>Funds</h2>

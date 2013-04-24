@@ -1,5 +1,4 @@
 ﻿@model CmsWeb.Models.TotalsByFundModel
-@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @using CmsData
@@ -8,6 +7,8 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Totals By Fund";
     var qbh = new QuickBooksHelper();
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("TotalsByFund");
 }
 @section head
 {
@@ -15,10 +16,6 @@
         input.noPrint { display: none; }
         span.noPrint { display: none; }
     </style>
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/TotalsByFund-js")
 }
 
 <div class="roundbox floatleft">
@@ -31,6 +28,12 @@
         Non Tax Deductible:@Html.CheckBox("NonTaxDeductible")
         Pledges:@Html.CheckBox("Pledges")
         Include Unclosed Bundles:@Html.CheckBox("IncUnclosedBundles")
+        Online:
+        <select name="Online">
+            <option value="2">Both</option>
+            <option value="1">Online</option>
+            <option value="0">Not Online</option>
+        </select>
         <p>
             <input id="run" type="submit" value="Run Report" class="bt" />
             <input id="exportdonordetails" type="submit" value="Export Donor Details" class="bt" />

@@ -4,11 +4,11 @@
     var classes = ViewData.ModelMetadata.AdditionalValues["classes"];
 }
 <div class="control-group @classes">
-    <label for="">@label</label>
+    <label class="control-label" for="">@label</label>
     <div class="controls">
         <div class="textcombo">
-            @Html.TextBoxFor(m => m.Address, new { @class = "text email" })
-            @Html.CheckBoxFor(m => m.Send )
+            @Html.TextBoxFor(m => m.Address, new { @class = "text email lg" })
+            @Html.CheckBoxFor(m => m.Send, new { @class="checkbox" })
         </div>
     </div>
 </div>

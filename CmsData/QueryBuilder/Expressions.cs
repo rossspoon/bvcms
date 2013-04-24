@@ -122,6 +122,17 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
+        internal static Expression StatusFlag(
+            ParameterExpression parm,
+            CompareType op,
+            params int[] ids)
+        {
+            Expression<Func<Person, bool>> pred = p => p.Tags.Any(tt => ids.Contains(tt.Id));
+            Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
+            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
+                expr = Expression.Not(expr);
+            return expr;
+        }
 
         internal static Expression MembOfOrgWithSched(
             ParameterExpression parm,

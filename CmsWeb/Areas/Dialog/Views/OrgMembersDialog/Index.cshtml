@@ -1,11 +1,15 @@
 ﻿@model CmsWeb.Models.OrgMembersDialogModel
-@using System.Web.Optimization
 @using CmsWeb
+@{
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OrgMembersDialog");
+}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
     <title>Index</title>
-    @Styles.Render("~/Content/styles/css")
+    @Bundles.RenderStylesheets()
 </head>
 <body>
 <form action="/OrgMembersDialog/Update" method="post">
@@ -74,9 +78,8 @@
 </table>
 </div>
 </form>
-    @Scripts.Render("~/bundles/js")
+    @Bundles.RenderScripts()
     @Html.Partial("DatePickerDefaults")
-    @Scripts.Render("~/bundles/single/OrgMembersDialog-js")
 </body>
 </html>
 

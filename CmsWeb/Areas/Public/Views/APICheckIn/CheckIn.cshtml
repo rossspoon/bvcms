@@ -1,13 +1,10 @@
-﻿@using System.Web.Optimization
-@using CmsWeb
+﻿@using CmsWeb
 @model CmsWeb.Models.CheckInRecModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Checkin";
-}
-@section scripts
-{
-    @Scripts.Render("~/bundles/single/CheckIn-js")
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("CheckIn");
 }
 
     @Html.Hidden("OrgId")

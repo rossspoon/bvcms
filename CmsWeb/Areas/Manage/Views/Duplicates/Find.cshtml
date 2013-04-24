@@ -2,19 +2,16 @@
 @{
     Layout = "/Views/Shared/Reports.cshtml";
     ViewBag.Title = "Contribution Statements";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+        @<script>
+             $(function() {
+                 $(".datepicker").datepicker();
+                 $("a.bt").button();
+             });
+         </script>);
 }
-@section scripts
-{
-    <script>
-        $(function() {
-            $(".datepicker").datepicker();
-            $("a.bt").button();
-        });
-    </script>
-}
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <title>Find Duplicates</title>

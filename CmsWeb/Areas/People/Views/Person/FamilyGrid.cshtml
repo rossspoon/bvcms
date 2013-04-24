@@ -3,37 +3,36 @@
 @{
     var fm = new FamilyModel(Model.displayperson.PeopleId);
 }
-<div class="group">
-    <h2>Family Members
-        <a href="#" class="add"><i class="icon-plus-sign"></i></a>
-    </h2>
-    <ul class="members">
-        @foreach (var m in fm.Members())
-        {
-            if (m.Id == fm.Person.PeopleId)
-            {
-                <li class="active">@PersonPictureAndLink(m)</li>
-            }
-            else
-            {
-                <li>@PersonPictureAndLink(m)</li>
-            }
-        }
-    </ul>
+<div class="sidebar_title group">
+    <h2>Family Members</h2>
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-plus-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Add Family Member</a></li>
+        </ul>
+    </div>
 </div>
+<ul id="family_members" class="nav nav-stacked nav-tabs">
+@foreach (var m in fm.Members())
+{
+    @* Dave : Need a way to indicate the currently selected person *@
+    var active = m.Id == fm.Person.PeopleId ? "class=active" : "";
+    <li @active>@PersonPictureAndLink(m)</li>
+}
+</ul>
 
 @helper PersonPictureAndLink(FamilyMemberInfo m)
 {
+    @* Dave : Need a way to change the position in family *@
     <a href="/People/Person/Index/@m.Id">
-        <img src="@m.Pictures.ThumbUrl" alt="" />
-        <span>@m.Name @Html.Raw(m.SpouseIndicator) @Age(@m.Age)<br/>
-        @m.Email</span>
+        <img src="@m.Pictures.ThumbUrl" class="headshot"/>
+        <span class="name">@m.Name @Html.Raw(m.SpouseIndicator)</span>
+        <span class="age">@m.Age</span>
     </a>
 }
 @helper Age(int? age)
 {
-    if (age.HasValue)
-    {
-        @:(@age)
-    }
+@:(@(age.HasValue ? age.ToString() : ""))
 }

@@ -1,18 +1,15 @@
-﻿@using System.Web.Optimization
-@using CmsWeb;
+﻿@using CmsWeb;
 @using UtilityExtensions;
 @model CmsWeb.Models.UsersModel
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Users";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("Users");
 }
 @section head 
 {
     <link href="/Content/styles/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/Users-js")
 }
 <form id="usersearch" method="post" action="/Manage/Users/Index">
 	<table class="roundbox" cellspacing="5">

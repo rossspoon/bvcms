@@ -9,7 +9,10 @@
     @foreach (var t in Model.TotalsByFund())
     {
         <tr>
-		<td><a href="/Contributions/Reports/JournalDetails.aspx?FundId=@t.FundId&dt1=@Model.Dt1&dt2=@Model.Dt2">@t.FundName</a> @(t.QBSynced == 1 ? " (QBSynced)" : "")  </td>
+            <td><a href="/Contributions/Reports/JournalDetails.aspx?FundId=@t.FundId&dt1=@Model.Dt1&dt2=@Model.Dt2">@t.FundName</a> 
+                @(t.QBSynced == 1 ? " (QBSynced)" : "")  
+                @(t.OnLine == 1 ? " (Online)" : "")  
+            </td>
 			<td class="right">@t.Total.ToString2("c")</td>
             <td class="right">@t.Count.ToString2("n0")</td>
         </tr>

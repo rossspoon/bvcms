@@ -33,6 +33,7 @@ namespace CmsWeb.Models
         public string birthdate { get; set; }
         public int campus { get; set; }
         public int memberstatus { get; set; }
+        public int[] statusflags { get; set; }
         public int marital { get; set; }
         public int gender { get; set; }
     }
@@ -73,45 +74,45 @@ namespace CmsWeb.Models
                 people = DbUtil.Db.OrgLeadersOnlyTag2().People(DbUtil.Db);
             else
                 people = DbUtil.Db.People.AsQueryable();
-            
+
             if (usersonly)
                 people = people.Where(p => p.Users.Count() > 0);
-            
+
             if (m.memberstatus > 0)
                 people = from p in people
-                        where p.MemberStatusId == m.memberstatus
-                        select p;
+                         where p.MemberStatusId == m.memberstatus
+                         select p;
             if (m.name.HasValue())
             {
-				if (m.name.StartsWith("e:"))
-				{
-					var name = m.name.Substring(2);
-					people = from p in people
-							 where p.EmployerOther.Contains(name)
-							 select p;
-				}
-				else
-				{
-                string First, Last;
-                NameSplit(m.name, out First, out Last);
-                if (First.HasValue())
+                if (m.name.StartsWith("e:"))
+                {
+                    var name = m.name.Substring(2);
                     people = from p in people
-                            where (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
-                                || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name))
-                            && (p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) || p.MiddleName.StartsWith(First)
-                                || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name))
-                            select p;
+                             where p.EmployerOther.Contains(name)
+                             select p;
+                }
                 else
-                    if (Last.AllDigits())
+                {
+                    string First, Last;
+                    NameSplit(m.name, out First, out Last);
+                    if (First.HasValue())
                         people = from p in people
-                                where p.PeopleId == Last.ToInt()
-                                select p;
+                                 where (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+                                     || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name))
+                                 && (p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) || p.MiddleName.StartsWith(First)
+                                     || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name))
+                                 select p;
                     else
-                        people = from p in people
-                                where p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
-                                    || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name)
-                                select p;
-				}
+                        if (Last.AllDigits())
+                            people = from p in people
+                                     where p.PeopleId == Last.ToInt()
+                                     select p;
+                        else
+                            people = from p in people
+                                     where p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+                                         || p.LastName.StartsWith(m.name) || p.MaidenName.StartsWith(m.name)
+                                     select p;
+                }
             }
             if (m.address.IsNotNull())
             {
@@ -123,23 +124,36 @@ namespace CmsWeb.Models
                 m.address = m.address.Trim();
                 if (m.address.HasValue())
                     people = from p in people
-                            where p.Family.AddressLineOne.Contains(m.address)
-                               || p.Family.AddressLineTwo.Contains(m.address)
-                               || p.Family.CityName.Contains(m.address)
-                               || p.Family.ZipCode.Contains(m.address)
-                            select p;
+                             where p.Family.AddressLineOne.Contains(m.address)
+                                || p.Family.AddressLineTwo.Contains(m.address)
+                                || p.Family.CityName.Contains(m.address)
+                                || p.Family.ZipCode.Contains(m.address)
+                             select p;
+            }
+            if (m.statusflags != null)
+            {
+                if (m.statusflags.Length >= 1 && m.statusflags[0] == 0)
+                    m.statusflags = m.statusflags.Where(cc => cc > 0).ToArray();
+            }
+            if (m.statusflags != null && m.statusflags.Length > 0)
+            {
+                people = from p in people
+                         let ac = p.Tags.Count(tt => m.statusflags.Contains(tt.Id))
+                         where ac == m.statusflags.Length
+                         select p;
+
             }
             if (m.communication.IsNotNull())
             {
                 m.communication = m.communication.Trim();
                 if (m.communication.HasValue())
                     people = from p in people
-                            where p.CellPhone.Contains(m.communication)
-                            || p.EmailAddress.Contains(m.communication)
-                            || p.EmailAddress2.Contains(m.communication)
-                            || p.Family.HomePhone.Contains(m.communication)
-                            || p.WorkPhone.Contains(m.communication)
-                            select p;
+                             where p.CellPhone.Contains(m.communication)
+                             || p.EmailAddress.Contains(m.communication)
+                             || p.EmailAddress2.Contains(m.communication)
+                             || p.Family.HomePhone.Contains(m.communication)
+                             || p.WorkPhone.Contains(m.communication)
+                             select p;
             }
             if (m.birthdate.HasValue() && m.birthdate.NotEqual("na"))
             {
@@ -169,7 +183,7 @@ namespace CmsWeb.Models
                 people = people.Where(p => p.MaritalStatusId == m.marital);
             return people;
         }
-        
+
         public IEnumerable<MailingController.TaggedPersonInfo> PeopleList()
         {
             var people = FetchPeople();
@@ -434,7 +448,7 @@ namespace CmsWeb.Models
                 }
             }
             if (m.campus > 0)
-                qb.AddNewClause(QueryType.CampusId, CompareType.Equal, 
+                qb.AddNewClause(QueryType.CampusId, CompareType.Equal,
                                 QueryModel.IdCode(cv.AllCampuses(), m.campus));
             else if (m.campus == -1)
                 qb.AddNewClause(QueryType.CampusId, CompareType.IsNull,
@@ -443,8 +457,11 @@ namespace CmsWeb.Models
                 qb.AddNewClause(QueryType.GenderId, CompareType.Equal,
                                 QueryModel.IdCode(cv.GenderCodes(), m.gender));
             if (m.marital != 99)
-                qb.AddNewClause(QueryType.MaritalStatusId, CompareType.Equal, 
+                qb.AddNewClause(QueryType.MaritalStatusId, CompareType.Equal,
                                 QueryModel.IdCode(cv.MaritalStatusCodes(), m.marital));
+            foreach (var f in m.statusflags)
+                qb.AddNewClause(QueryType.StatusFlag, CompareType.Equal,
+                                QueryModel.IdCode(cv.StatusFlags(), f));
             qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
             DbUtil.Db.SubmitChanges();
             return qb.QueryId;

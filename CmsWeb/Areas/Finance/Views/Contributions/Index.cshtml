@@ -1,10 +1,12 @@
 ﻿@model CmsWeb.Models.ContributionSearchModel
-@using System.Web.Optimization
 @using CmsWeb
 @using UtilityExtensions
 @{
     ViewBag.Title = "Contributions";
     Layout = "/Views/Shared/SiteLayout.cshtml";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+        @<script src="/Scripts/js/Contributions.js"></script>);
 }
 @section head
 {
@@ -14,10 +16,6 @@
             font-weight: bold;
         }
     </style>
-}
-@section scripts
-{
-    @Scripts.Render("~/bundles/single/Contributions-js")
 }
 
 <form action="" id="form">

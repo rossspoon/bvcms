@@ -1,11 +1,14 @@
 ﻿@model CmsWeb.Models.NewOrganizationModel
-@using System.Web.Optimization
 @using CmsWeb
 @using UtilityExtensions
+@{
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs();
+}
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Add Organization</title>
-    @Styles.Render("~/Content/styles/css")
+    @Bundles.RenderStylesheets()
 </head>
 <body>
 <form action="/AddOrganization/Submit/@Model.OrganizationId" method="post">
@@ -49,7 +52,7 @@
     </tr>
 </table>
 </form>
-    @Scripts.Render("~/bundles/js")
+    @Bundles.RenderScripts()
     @Html.Partial("DatePickerDefaults")
 </body>
 </html>

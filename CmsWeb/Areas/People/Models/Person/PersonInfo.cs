@@ -16,6 +16,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public int PeopleId { get; set; }
         public int FamilyId { get; set; }
         public int? SpouseId { get; set; }
+        public string[] StatusFlags { get; set; }
 
         public bool Deceased { get; set; }
         public string Name { get; set; }
@@ -46,8 +47,10 @@ namespace CmsWeb.Areas.People.Models.Person
         public static PersonInfo GetPersonInfo(int? id)
         {
             var cv = new CodeValueModel();
+            var flags = DbUtil.Db.Setting("StatusFlags", "F04,F01,F02,F03");
 			var i = (from pp in DbUtil.Db.People
 					 let spouse = (from sp in pp.Family.People where sp.PeopleId == pp.SpouseId select sp.Name).SingleOrDefault()
+                     let statusflags = DbUtil.Db.StatusFlags(flags).Single(sf => sf.PeopleId == id).StatusFlags
 					 where pp.PeopleId == id
 					 select new
 					 {
@@ -55,6 +58,7 @@ namespace CmsWeb.Areas.People.Models.Person
 						 f = pp.Family,
 						 spouse = spouse,
 						 pp.Picture,
+                         statusflags, 
 					 }).FirstOrDefault();
             if (i == null)
                 return null;
@@ -70,6 +74,7 @@ namespace CmsWeb.Areas.People.Models.Person
                 Name = p.Name,
                 Picture = i.Picture,
                 SpouseId = p.SpouseId,
+                StatusFlags = (i.statusflags ?? "").Split(','),
 
                 member = new MemberInfo
                 {
@@ -128,6 +133,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     Title = new CodeInfo(p.TitleCode, cv.TitleCodes(), "Value"),
                     WeddingDate = p.WeddingDate.FormatDate(),
                     WorkPhone = p.WorkPhone.FmtFone(),
+                    ReceiveSMS = p.ReceiveSMS,
                 },
                 growth = new GrowthInfo
                 {

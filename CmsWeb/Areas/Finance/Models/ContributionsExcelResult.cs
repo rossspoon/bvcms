@@ -12,6 +12,7 @@ namespace CmsWeb.Models
         public DateTime Dt2 { get; set; }
         public int fundid { get; set; }
     	public int campusid { get; set; }
+    	public int Online { get; set; }
     	public bool pledges { get; set; }
     	public bool nontaxdeductible { get; set; }
 		public bool IncUnclosedBundles { get; set; }

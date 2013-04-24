@@ -1,14 +1,22 @@
-﻿@using System.Web.Optimization
+﻿@using CmsData
 @using CmsWeb.Models
 @using CmsWeb
+@using UtilityExtensions
 @model PeopleSearchModel
 @{
 	ViewBag.Title = "People Search";
 	Layout = "~/Views/Shared/SiteLayout.cshtml";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("PeopleSearch");
 }
-@section scripts
+@section head 
 {
-@Scripts.Render("~/bundles/single/PeopleSearch-js")
+    <link href="/Content/styles/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+    <style>
+        #statusflags {
+            width: 275px;
+        }
+    </style>
 }
 <form id="peoplesearch" method="post" action="/PeopleSearch/Index">
 <table id="searchvalues" cellspacing="5" class="roundbox">
@@ -31,16 +39,29 @@
 	</tr>
 	<tr>
 		<th class="right"> Address: </th>
-		<td> @Html.TextBox("address", Model.m.address, new { title = "Any part of the address, city or zip" })</td>
+	    <td> @Html.TextBox("address", Model.m.address, new { title = "Any part of the address, city or zip" })</td>
 		<th class="right"> Gender: </th>
 		<td> @Html.DropDownList("gender", Model.GenderCodes()) </td>
+
+
 	</tr>
-	<tr>
-		<th class="right"> Date of Birth: </th>
-		<td> @Html.TextBox("birthdate", Model.m.birthdate, new { title = "YYYY or MM or MM/DD or MM/DD/YY" })</td>
-		<th class="right"> Married: </th>
-		<td> @Html.DropDownList("marital", Model.MaritalCodes())</td>
-	</tr>
+    <tr>
+        <th class="right"> Date of Birth: </th>
+        <td> @Html.TextBox("birthdate", Model.m.birthdate, new { title = "YYYY or MM or MM/DD or MM/DD/YY" })</td>
+        <th class="right"> Married: </th>
+        <td> @Html.DropDownList("marital", Model.MaritalCodes())</td>
+    </tr>
+    @if (DbUtil.Db.Setting("UseStatusFlags", "false").ToBool())
+    {
+    <tr>
+@*        <th class="right"> </th>
+        <td></td>*@
+        <th class="right" colspan="3"> Status Flags: </th>
+        <td>
+            @Html.DropDownList("statusflags", new SelectList(QueryBuilderClause.StatusFlags(DbUtil.Db), "Value", "Text"), new { multiple="multiple" })
+        </td>
+    </tr>
+    }
 	<tr>
 	  <td colspan="2" class="bottom"><b>Total Count: <span id="totalcount">@Model.Count().ToString("N0")</span></b></td>
 	  <td nowrap colspan="2"><br>

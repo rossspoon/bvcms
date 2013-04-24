@@ -1,42 +1,40 @@
-﻿@using System.Web.Optimization
-@model CmsWeb.Models.ManageGivingModel 
+﻿@model CmsWeb.Models.ManageGivingModel 
 @using CmsWeb
 @using UtilityExtensions
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/OnlineReg-js")
-<script type="text/javascript">
-    $.dateFormat = '@Util.jQueryDateFormat';
-    $(function () {
-        $.datepicker.setDefaults({
-            dateFormat: $.dateFormat,
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-95:+5",
-            showOn: "button",
-            buttonImage: "/images/calendar.gif",
-            buttonImageOnly: true
-        });
-        $(".datepicker").datepicker();
-        $("form").submit(function () {
-            $("#submitit").attr("disabled", "disabled");
-        });
-        $('#findidclick').click(function (ev) {
-            ev.preventDefault();
-            $("#findid").dialog({ width: 400 });
-            return false;
-        });
-        $('#findacctclick').click(function (ev) {
-            ev.preventDefault();
-            $("#findacct").dialog({ width: 450 });
-            return false;
-        });
-    });
-</script>
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OnlineReg");
+    Bundles.AddInlineScript(
+        @<script type="text/javascript">
+             $.dateFormat = '@Util.jQueryDateFormat';
+             $(function() {
+                 $.datepicker.setDefaults({
+                     dateFormat: $.dateFormat,
+                     changeMonth: true,
+                     changeYear: true,
+                     yearRange: "-95:+5",
+                     showOn: "button",
+                     buttonImage: "/images/calendar.gif",
+                     buttonImageOnly: true
+                 });
+                 $(".datepicker").datepicker();
+                 $("form").submit(function() {
+                     $("#submitit").attr("disabled", "disabled");
+                 });
+                 $('#findidclick').click(function(ev) {
+                     ev.preventDefault();
+                     $("#findid").dialog({ width: 400 });
+                     return false;
+                 });
+                 $('#findacctclick').click(function(ev) {
+                     ev.preventDefault();
+                     $("#findacct").dialog({ width: 450 });
+                     return false;
+                 });
+             });
+         </script>);
 }
 @section head
 {

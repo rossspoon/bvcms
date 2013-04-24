@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Optimization;
 using System.Web.Routing;
 using CmsData;
 using CmsData.Registration;
@@ -35,7 +34,9 @@ namespace CmsWeb
             ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+//            BundleTable.Bundles.IgnoreList.Clear();
+//            BundleConfig.AddDefaultIgnorePatterns(BundleTable.Bundles.IgnoreList);
+//            BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteTable.Routes.RouteExistingFiles = true;
             HttpRuntime.Cache.Remove("BuildDate");
 #if DEBUG
@@ -120,7 +121,14 @@ namespace CmsWeb
                 return;
             }
             var cul = DbUtil.Db.Setting("Culture", "en-US");
+
+            var df = DbUtil.Db.Setting("CulturejQueryDateFormat2", "M/D/YYYY").ToUpper();
+            if (df.EndsWith("/YY"))
+                df += "YY";
+            Util.jQueryDateFormat2 = df;
+
             Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
+
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
         }

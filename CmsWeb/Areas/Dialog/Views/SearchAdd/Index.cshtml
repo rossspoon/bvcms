@@ -1,10 +1,19 @@
 ﻿@model CmsWeb.Models.SearchModel
-@using System.Web.Optimization
 @using CmsWeb
+@{
+    CassetteConfiguration.BundleRefCss();
+    CassetteConfiguration.BundleRefJs();
+    Bundles.AddInlineScript(
+        @<text>
+            @Html.Partial("DatePickerDefaults")
+        </text>
+    );
+    Bundles.Reference("SearchAdd");
+}
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    @Styles.Render("~/Content/styles/css")
+    @Bundles.RenderStylesheets()
     <style>
         table.form > tbody > tr > td:nth-child(1) {
             text-align: right;
@@ -14,11 +23,9 @@
 </head>
 
 <body>
-<form action="/SearchAdd/Complete/" method="post" class="DisplayEdit">
- @Html.Partial("SearchPerson", Model) 
-</form>
-    @Scripts.Render("~/bundles/js")
-    @Html.Partial("DatePickerDefaults")
-    @Scripts.Render("~/bundles/single/SearchAdd-js")
+    <form action="/SearchAdd/Complete/" method="post" class="DisplayEdit">
+        @Html.Partial("SearchPerson", Model) 
+    </form>
+    @Bundles.RenderScripts()
 </body>
 </html>

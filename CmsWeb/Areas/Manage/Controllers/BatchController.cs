@@ -537,7 +537,7 @@ namespace CmsWeb.Areas.Manage.Controllers
 
         [AsyncTimeout(600000)]
         [Authorize(Roles = "Admin")]
-        public void UpdateQueryBitsAsync()
+        public void UpdateStatusFlagsAsync()
         {
             AsyncManager.OutstandingOperations.Increment();
             string host = Util.Host;
@@ -546,7 +546,7 @@ namespace CmsWeb.Areas.Manage.Controllers
             {
                 Util.SessionId = Guid.NewGuid().ToString();
                 var Db = new CMSDataContext(Util.GetConnectionString(host));
-                var qbits = Db.QueryBitsFlags().ToList();//.Where(bb => bb[0] == "F11").ToList();
+                var qbits = Db.StatusFlags().ToList();//.Where(bb => bb[0] == "F11").ToList();
                 foreach (var a in qbits)
                 {
                     var t = Db.FetchOrCreateSystemTag(a[0]);
@@ -555,7 +555,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                 AsyncManager.OutstandingOperations.Decrement();
             });
         }
-        public ActionResult UpdateQueryBitsCompleted()
+        public ActionResult UpdateStatusFlagsCompleted()
         {
             return Redirect("/");
         }

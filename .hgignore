@@ -1,5 +1,6 @@
 relre:/bin/
 relre:/obj/
+relre:/cassette-cache/
 relre:packages/.*
 relre:_ReSharper.*
 relre:Thumbs.db$

@@ -1,10 +1,11 @@
 ﻿@model CmsWeb.Models.VolunteerModel 
-@using System.Web.Optimization
 @using UtilityExtensions
 @using CmsWeb
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
+    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("ManageVolunteer");
 }
 @section head
 {
@@ -15,10 +16,6 @@
     .wk-4 { background-color: #FFFFDB; }
     .wk-5 { background-color: #E1E1E1; }
 </style>
-}
-@section scripts
-{
-@Scripts.Render("~/bundles/single/ManageVolunteer-js")
 }
 @if (Model.IsLeader)
 {

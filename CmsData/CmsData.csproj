@@ -32,6 +32,8 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -329,6 +331,7 @@
     <Compile Include="Generated\Functions\OrgMembersAsOfDate.cs" />
     <Compile Include="Generated\Functions\OrgVisitorsAsOfDate.cs" />
     <Compile Include="Generated\Functions\Pledges0.cs" />
+    <Compile Include="Generated\Functions\StatusFlag.cs" />
     <Compile Include="Generated\Views\OrganizationStructure.cs" />
     <Compile Include="Generated\VoluteerApprovalId.cs" />
     <Compile Include="Classes\QuickBooks\QBDHelper.cs" />
@@ -430,7 +433,6 @@
     <Compile Include="Generated\NewMemberClassStatus.cs" />
     <Compile Include="Generated\OrgContent.cs" />
     <Compile Include="Generated\OrgSchedule.cs" />
-    <Compile Include="Generated\PeopleQueryBit.cs" />
     <Compile Include="Generated\QueryStat.cs" />
     <Compile Include="Registration\Settings.cs" />
     <Compile Include="Transaction.cs" />
@@ -689,6 +691,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

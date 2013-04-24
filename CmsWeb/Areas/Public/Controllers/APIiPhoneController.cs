@@ -244,6 +244,7 @@ namespace CmsWeb.Areas.Public.Controllers
             }
             Attend.RecordAttendance(PeopleId, meeting.MeetingId, Present);
             DbUtil.Db.UpdateMeetingCounters(id);
+            DbUtil.LogActivity("Mobile RecAtt o:{0} p:{1} u:{2} a:{3}".Fmt(meeting.OrganizationId, PeopleId, Util.UserPeopleId, Present));
             var n = DbUtil.Db.Attends.Count(a => a.MeetingId == meeting.MeetingId && a.AttendanceFlag == true);
             if (n == 0)
             {

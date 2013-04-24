@@ -85,8 +85,8 @@ class LoginInfo(object):
 		w.Attr('Last', p.LastName)
 		w.Attr('EmailAddress', p.EmailAddress)
 		w.Attr('IsMember', p.MemberStatusId == 10)
-		for b in m.QueryBits(p.PeopleId):
-			w.Add('QueryBit', b);
+		for b in m.StatusFlags(p.PeopleId):
+			w.Add('StatusFlag', b);
 		w.End()
 		return w.ToString()
 ";
@@ -121,7 +121,21 @@ class LoginInfo(object):
         }
         public List<string> QueryBits(int PeopleId)
         {
-            var q1 = (from f in Db.QueryBitsFlags()
+            var q1 = (from f in Db.StatusFlags()
+                      select f).ToList();
+            var q2 = (from t in Db.TagPeople
+                      where t.PeopleId == PeopleId
+                      where t.Tag.TypeId == 100
+                      select t.Tag.Name).ToList();
+            var q = from t in q2
+                    join f in q1 on t equals f[0]
+                    select f[1];
+            var list = q.ToList();
+            return list;
+        }
+        public List<string> StatusFlags(int PeopleId)
+        {
+            var q1 = (from f in Db.StatusFlags()
                       select f).ToList();
             var q2 = (from t in Db.TagPeople
                       where t.PeopleId == PeopleId
@@ -295,7 +309,7 @@ class LoginInfo(object):
             public string username { get; set; }
             public string lastactive { get; set; }
             public string roles { get; set; }
-			public List<string> QueryBits { get; set; }
+			public List<string> StatusFlags { get; set; }
         }
         public IEnumerable<AccessUserInfo> AccessUsersData(bool includeNoAccess = false)
         {
@@ -352,7 +366,7 @@ class LoginInfo(object):
                          roles = string.Join(",", i1.roles),
 #if DEBUG
 #else
-						 QueryBits = (from qb in QueryBits(i1.PeopleId.Value) select qb).ToList()
+						 StatusFlags = (from qb in StatusFlags(i1.PeopleId.Value) select qb).ToList()
 #endif
                      };
             return q2;
