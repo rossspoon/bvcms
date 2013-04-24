@@ -109,7 +109,10 @@ namespace CmsCheckin
                 return;
             }
             if (textBox1.Text == "411")
-                this.Swap(namesearch);
+            {
+                if (Program.CheckAdminPIN())
+                    this.Swap(namesearch);
+            }
             else if (textBox1.Text.StartsWith("0") && textBox1.Text.Length > 1)
                 Print.MemberList(textBox1.Text.Substring(1));
             else
@@ -159,7 +162,8 @@ namespace CmsCheckin
 
         private void MagicButton_Click(object sender, EventArgs e)
         {
-            this.Swap(namesearch);
+            if (Program.CheckAdminPIN())
+                this.Swap(namesearch);
         }
 
         void first_GoBack(object sender, EventArgs e)

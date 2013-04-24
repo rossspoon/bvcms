@@ -41,6 +41,7 @@ namespace CmsCheckin
 		{
 			return string.Format(fmt, p);
 		}
+
 		public static XDocument GetDocument(this Control f, string page)
 		{
 			var wc = Util.CreateWebClient();
@@ -51,6 +52,18 @@ namespace CmsCheckin
 			var x = XDocument.Parse(str);
 			return x;
 		}
+
+        public static XDocument PostDocument(this Control f, string page, NameValueCollection post)
+        {
+            var wc = Util.CreateWebClient();
+            var url = new Uri(new Uri(Program.URL), page);
+
+            var str = wc.UploadValues(url,post);
+
+            var x = XDocument.Parse(Encoding.ASCII.GetString(str));
+            return x;
+        }
+
 		public static int ToInt(this string s)
 		{
 			int i = 0;

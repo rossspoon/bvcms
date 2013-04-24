@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using CmsCheckin.Dialogs;
 
 namespace CmsCheckin
 {
@@ -20,6 +21,8 @@ namespace CmsCheckin
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            AdminPINLastAccess = DateTime.Now.AddYears(-1);
 
             var login = new Login();
 
@@ -105,6 +108,50 @@ namespace CmsCheckin
             }
             Application.Run(b);
         }
+
+        public static bool CheckAdminPIN()
+        {
+            TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - AdminPINLastAccess.Ticks);
+
+            if (ts.TotalSeconds < AdminPINTimeout)
+            {
+                SetAdminLastAccess();
+                return true;
+            }
+
+            if (Program.AdminPIN.Length > 0)
+            {
+                PINDialog pd = new PINDialog();
+                var results = pd.ShowDialog();
+
+                if (results == DialogResult.OK)
+                {
+                    if (pd.sPIN == Program.AdminPIN)
+                    {
+                        SetAdminLastAccess();
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static void SetAdminLastAccess()
+        {
+            AdminPINLastAccess = DateTime.Now;
+        }
+
+        public static string AdminPIN { get; set; }
+        public static int AdminPINTimeout { get; set; }
+        public static DateTime AdminPINLastAccess { get; set; }
+
         public static string Username { get; set; }
         public static string Password { get; set; }
         public static string URL { get; set; }

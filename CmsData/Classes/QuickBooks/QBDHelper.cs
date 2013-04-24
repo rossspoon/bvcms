@@ -37,18 +37,29 @@ namespace CmsData.Classes.QuickBooks
             return lReturn;
         }
 
+        public Account GetAccountByID(string sAccountID)
+        {
+            Account acct = new Account();
+            acct.Id = new IdType { idDomain = idDomainEnum.QB, Value = sAccountID };
+
+            return getDataService().FindById<Account>(acct) as Account;
+        }
+
         public JournalEntryLine TranslateJournalEntry(QBJournalEntryLine qbjel, bool bCredit)
         {
+            Account acct = GetAccountByID(qbjel.sAccountID);
+
             JournalEntryLine jel = new JournalEntryLine();
             jel.Desc = qbjel.sDescrition;
             jel.Amount = qbjel.dAmount;
             jel.AmountSpecified = true;
-            jel.AccountId = new IdType() { Value = qbjel.sAccountID };
+            jel.AccountName = acct.Name;
             
             if( bCredit ) jel.PostingType = PostingTypeEnum.Credit;
-            else jel.PostingType = PostingTypeEnum.Credit;
+            else jel.PostingType = PostingTypeEnum.Debit;
 
             jel.PostingTypeSpecified = true;
+            jel.AccountTypeSpecified = true;
 
             return jel;
         }

@@ -7,13 +7,11 @@ using CmsWeb.Areas.Finance.Models.Report;
 using CmsData;
 using CmsData.Classes.QuickBooks;
 using System.IO;
-using Intuit.Ipp.Data.Qbo;
 using UtilityExtensions;
 using CmsWeb.Models;
 using System.Text;
 using System.Web.UI;
 using System.Data.SqlClient;
-using Intuit.Ipp.Data.Qbo;
 
 namespace CmsWeb.Areas.Finance.Controllers
 {
@@ -116,17 +114,25 @@ namespace CmsWeb.Areas.Finance.Controllers
 
                     qbjel.Add(jelCredit);
                     qbjel.Add(jelDebit);
-                }
 
-                lFunds.Add(item.FundId);
+                    lFunds.Add(item.FundId);
+                }
 			}
 
             int iJournalID = qbh.CommitJournalEntries( "Bundle from BVCMS", qbjel );
 
             if (iJournalID > 0)
             {
+                string sStart = m.Dt1.Value.ToString("u");
+                string sEnd = m.Dt2.Value.AddHours(23).AddMinutes(59).AddSeconds(59).ToString("u");
+
+                sStart = sStart.Substring(0, sStart.Length - 1);
+                sEnd = sEnd.Substring(0, sEnd.Length - 1);
+
                 string sFundList = string.Join( ",", lFunds.ToArray() );
-                DbUtil.Db.ExecuteCommand("UPDATE dbo.Contribution SET QBSyncID = " + iJournalID + " WHERE FundId IN (" + sFundList + ")");
+                string sUpdate = "UPDATE dbo.Contribution SET QBSyncID = " + iJournalID + " WHERE FundId IN (" + sFundList + ") AND ContributionDate BETWEEN '" + sStart + "' and '" + sEnd + "'";
+
+                DbUtil.Db.ExecuteCommand( sUpdate );
             }
 
             return View("TotalsByFund", m);

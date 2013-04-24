@@ -1,0 +1,27 @@
+﻿@using CmsWeb.Areas.Public.Models;
+@model CmsWeb.Areas.Public.Models.SmallGroupFinderModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Small Group Finder</title>
+</head>
+<body>
+    This is the small group finder.<br />
+    Name: @Model.getDivision().Name<br />
+    Setting Count: @Model.getCount( SmallGroupFinderModel.TYPE_SETTING )<br />
+    Filter Count: @Model.getCount( SmallGroupFinderModel.TYPE_FILTER )<br />
+    <br />
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td>
+                    Filters
+                </td>
+                <td>
+                    Content
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
