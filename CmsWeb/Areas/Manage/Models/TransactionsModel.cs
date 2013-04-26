@@ -150,6 +150,15 @@ namespace CmsWeb.Models
 			public string Description { get; set; }
 			public decimal Total { get; set; }
 		}
+		public class BatchDescriptionGroup
+		{
+			public int count { get; set; }
+			public DateTime? batchdate { get; set; }
+			public string BatchRef { get; set; }
+			public string BatchType { get; set; }
+			public string Description { get; set; }
+			public decimal Total { get; set; }
+		}
 		public IQueryable<DescriptionGroup> FetchTransactionsByDescription()
 		{
 			var q = from t in FetchTransactions()
@@ -163,6 +172,23 @@ namespace CmsWeb.Models
 					};
 			return q;
 		}
+        public IQueryable<BatchDescriptionGroup> FetchTransactionsByBatchDescription()
+        {
+			var q = from t in FetchTransactions()
+					group t by new { t.Batchref, t.Description } into g
+                    let f = g.First()
+					orderby f.Batch, f.Description descending
+					select new BatchDescriptionGroup()
+					{
+						count = g.Count(),
+						batchdate = f.Batch,
+						BatchRef = f.Batchref,
+						BatchType = f.Batchtyp,
+						Description = f.Description,
+						Total = g.Sum(gg => gg.Amt ?? 0)
+					};
+			return q;
+        }
 
 		private void CheckBatchDates(DateTime start, DateTime end)
 		{

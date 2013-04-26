@@ -62,16 +62,27 @@
 			</td>
     @if (t.Fromsage == true)
     {
-			<td><i title="from sage">@t.Description</i></td>
+        <td>
+            <i title="from sage"><a href="/OnlineReg/ConfirmTestXml/@t.DatumId">@t.Description</a></i>
+        </td>
     }
     else
 	{
-			<td>@t.Description</td>
+	    <td>
+	        <a href="/OnlineReg/RegPeople/@t.DatumId">@t.Description</a>
+	    </td>
 	}
             <td>
             @if (t.DatumId > 0)
             {
-                <a href="/OnlineReg/ConfirmTestXml/@t.DatumId">@t.FullName</a>
+                if (t.Person == null)
+                {
+                @t.FullName
+                }
+                else
+                {
+                <a href="/Person/Index/@t.Person.PeopleId">@t.FullName</a>
+                }
             }
             else
             {

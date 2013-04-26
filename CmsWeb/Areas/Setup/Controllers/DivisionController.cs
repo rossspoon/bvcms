@@ -29,11 +29,8 @@ namespace CmsWeb.Areas.Setup.Controllers
         public ActionResult Create(DivisionModel m)
         {
             var d = new Division { Name = "New Division" };
-            if (m.ProgramId > 0)
-            {
-                d.ProgId = m.ProgramId;
-                d.ProgDivs.Add(new ProgDiv { ProgId = m.ProgramId });
-            }
+            d.ProgId = m.ProgramId;
+            d.ProgDivs.Add(new ProgDiv { ProgId = m.ProgramId });
             DbUtil.Db.Divisions.InsertOnSubmit(d);
             DbUtil.Db.SubmitChanges();
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, d);

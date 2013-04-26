@@ -45,6 +45,17 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(m);
         }
         [HttpPost]
+        public ActionResult ReportByBatchDescription(DateTime? sdt, DateTime? edt)
+        {
+			var m = new TransactionsModel() 
+			{ 
+				startdt = sdt,
+				enddt = edt,
+				usebatchdates = true,
+			};
+            return View(m);
+        }
+        [HttpPost]
         public ActionResult List(TransactionsModel m)
         {
             UpdateModel(m.Pager);

@@ -1148,13 +1148,16 @@ namespace CmsData
             if (pledge)
                 typecode = BundleTypeCode.OnlinePledge;
 
+            var now = DateTime.Now;
             var d = Util.Now.Date;
             d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
             var q = from b in Db.BundleHeaders
                     where b.BundleHeaderTypeId == typecode
                     where b.BundleStatusId == BundleStatusCode.Open
                     where b.ContributionDate >= d
-                    where b.ContributionDate < Util.Now
+                    where b.ContributionDate < now
+                    where b.ContributionDate.Year == now.Year
+                    where b.ContributionDate.Month == now.Month
                     orderby b.ContributionDate descending
                     select b;
             var bundle = q.FirstOrDefault();
@@ -1166,8 +1169,8 @@ namespace CmsData
                     BundleStatusId = BundleStatusCode.Open,
                     CreatedBy = Util.UserId1,
                     ContributionDate = d,
-                    CreatedDate = DateTime.Now,
-                    DepositDate = DateTime.Now,
+                    CreatedDate = now,
+                    DepositDate = now,
                     FundId = Db.Setting("DefaultFundId", "1").ToInt(),
                     RecordStatus = false,
                     TotalCash = 0,
@@ -1198,7 +1201,7 @@ namespace CmsData
             {
                 BundleHeaderId = bundle.BundleHeaderId,
                 CreatedBy = FinanceManagerId.Value,
-                CreatedDate = DateTime.Now,
+                CreatedDate = now,
             };
             var typid = ContributionTypeCode.CheckCash;
             if (pledge)

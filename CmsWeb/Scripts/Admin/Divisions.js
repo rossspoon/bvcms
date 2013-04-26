@@ -9,6 +9,10 @@
     };
     $("#create").click(function(ev) {
         ev.preventDefault();
+        if ($("#TagProgramId").val() === "0") {
+            alert("choose a target program first (top of page)");
+            return false;
+        }
         var f = $('#progform');
         var q = f.serialize();
         $.post("/Setup/Division/Create/", q, function(ret) {

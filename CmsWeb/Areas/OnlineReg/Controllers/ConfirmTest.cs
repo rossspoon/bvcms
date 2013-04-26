@@ -73,8 +73,35 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 select i).SingleOrDefault();
             if (ed == null)
                 return Content("no data");
-            var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+            //var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
             return Content(ed.Data, contentType: "text/xml");
+        }
+        [Authorize(Roles = "ManageTransactions,Finance")]
+        public ActionResult RegPeople(int id)
+        {
+            var q = from i in DbUtil.Db.ExtraDatas
+                    where i.Id == id
+                    select i;
+            if (!q.Any())
+                return Content("no data");
+            var q2 = new List<ConfirmTestInfo>();
+            foreach (var ed in q)
+            {
+                try
+                {
+                    var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
+                    var i = new ConfirmTestInfo
+                    {
+                        ed = ed,
+                        m = m
+                    };
+                    q2.Add(i);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return View("ConfirmTest", q2);
         }
         //[Authorize(Roles = "Admin")]
         //public ActionResult ConfirmTest(int? start, int? count)
