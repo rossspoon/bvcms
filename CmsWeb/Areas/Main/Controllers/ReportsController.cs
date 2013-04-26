@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +12,7 @@ using CmsWeb.Areas.Main.Models.Report;
 using CmsData;
 using System.IO;
 using CmsWeb.Code;
+using Dapper;
 using UtilityExtensions;
 using System.Text;
 using System.Web.UI;
@@ -281,9 +283,13 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult RecentAbsents(int? id, int? divid, int? days)
         {
-            var q = from p in DbUtil.Db.RecentAbsents(id, divid, days ?? 36)
-                    orderby p.OrganizationName, p.OrganizationId, p.Consecutive, p.Name2
-                    select p;
+            var ca = DbUtil.Db.ConsecutiveAbsents(id, divid, days).AsEnumerable();
+
+            var cn = new SqlConnection(Util.ConnectionString);
+            cn.Open();
+            var q = cn.Query("RecentAbsentsSP",
+                                                           new {orgid = id, divid = divid, days = days ?? 36},
+                                                           commandType: CommandType.StoredProcedure, commandTimeout: 600);
             return View(q);
         }
         public ActionResult Meetings(MeetingsModel m)

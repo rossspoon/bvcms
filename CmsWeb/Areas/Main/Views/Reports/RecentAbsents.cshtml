@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CmsData.View.RecentAbsent>
+﻿@model IEnumerable<dynamic>
 @using UtilityExtensions
 @{
     ViewBag.Title = "RecentAbsents";
@@ -12,19 +12,28 @@
     if (item.OrganizationId != prevorgid)
     {
         prevorgid = item.OrganizationId;
-    <tr>
-        <td colspan="5"><hr/>
-            <a href="/Organization/Index/@item.OrganizationId">@item.OrganizationName</a> (@item.LeaderName) <br/>
-            Members with @item.ConsecutiveAbsentsThreshold or more consecutive absents on and before @item.Lastmeeting.Value.ToShortDateString()
-            <hr/>
-        </td>
-    </tr>
+        <tr>
+            <td colspan="6"><hr/>
+                <a href="/Organization/Index/@item.OrganizationId">@item.OrganizationName</a> (@item.LeaderName) <br/>
+                Members with @item.ConsecutiveAbsentsThreshold or more consecutive absents on and before @item.lastmeeting.ToShortDateString()
+                <hr/>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Absent</td>
+            <td>Last Attend</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
     }
     <tr>
         <td><a href="/Person/Index/@item.PeopleId" target="person">@item.Name2</a></td>
-        <td class="right"> @item.Consecutive times </td>
-        <td>@item.HomePhone.FmtFone(prefix:"H")</td>
-        <td>@item.CellPhone.FmtFone(prefix:"C")</td>
+        <td class="right"> @item.consecutive times </td>
+        <td class="right"> @item.lastattend.ToShortDateString()</td>
+        <td>@Util.FmtFone(item.HomePhone, prefix:"H")</td>
+        <td>@Util.FmtFone(item.CellPhone, prefix:"C")</td>
         <td><a href="mailto:@item.EmailAddress">@item.EmailAddress</a></td>
     </tr>
 }

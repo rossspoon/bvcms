@@ -28,7 +28,8 @@
             @Html.HiddenFor2(m => m.docphone);
             break;
         case "AskAllergies":
-            Html.HiddenFor2(m => m.medical);
+            var allergyname = Html.NameFor2(m => m.medical);
+			<input type="hidden" name="@(allergyname)" value="@Model.medical" />
             break;
         case "AskTylenolEtc":
             @Html.HiddenFor2(m => m.tylenol)

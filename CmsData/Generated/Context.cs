@@ -1700,6 +1700,21 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.ConsecutiveAbsents", IsComposable = true)]
+		public IQueryable< View.ConsecutiveAbsent > ConsecutiveAbsents(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? divid,
+            [Parameter(DbType="int")] int? days
+            )
+		{
+			return this.CreateMethodCallQuery< View.ConsecutiveAbsent>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                divid,
+                days
+                );
+		}
+
 		[Function(Name="dbo.ContactTypeTotals", IsComposable = true)]
 		public IQueryable< View.ContactTypeTotal > ContactTypeTotals(
             [Parameter(DbType="datetime")] DateTime? dt1,
@@ -2162,6 +2177,21 @@ namespace CmsData
             )
 		{
 			return this.CreateMethodCallQuery< View.RecentAbsent>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                orgid,
+                divid,
+                days
+                );
+		}
+
+		[Function(Name="dbo.RecentAbsents2", IsComposable = true)]
+		public IQueryable< View.RecentAbsents2 > RecentAbsents2(
+            [Parameter(DbType="int")] int? orgid,
+            [Parameter(DbType="int")] int? divid,
+            [Parameter(DbType="int")] int? days
+            )
+		{
+			return this.CreateMethodCallQuery< View.RecentAbsents2>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 orgid,
                 divid,
@@ -3162,18 +3192,6 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.StatusFlag", IsComposable = true)]
-		[return: Parameter(DbType = "varchar")]
-		public string StatusFlag(
-            [Parameter(Name = "pid", DbType="int")] int? pid
-            )
-		{
-			return ((string)(this.ExecuteMethodCall(this, 
-                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                pid
-                ).ReturnValue));
-		}
-
 		[Function(Name="dbo.SchoolGrade", IsComposable = true)]
 		[return: Parameter(DbType = "int")]
 		public int? SchoolGrade(
@@ -3304,6 +3322,18 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
+		[Function(Name="dbo.IsValidEmail", IsComposable = true)]
+		[return: Parameter(DbType = "bit")]
+		public bool? IsValidEmail(
+            [Parameter(Name = "addr", DbType="nvarchar")] string addr
+            )
+		{
+			return ((bool?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                addr
+                ).ReturnValue));
+		}
+
 		[Function(Name="dbo.PledgeAmount", IsComposable = true)]
 		[return: Parameter(DbType = "money")]
 		public decimal? PledgeAmount(
@@ -3410,15 +3440,15 @@ namespace CmsData
                 ).ReturnValue));
 		}
 
-		[Function(Name="dbo.IsValidEmail", IsComposable = true)]
-		[return: Parameter(DbType = "bit")]
-		public bool? IsValidEmail(
-            [Parameter(Name = "addr", DbType="nvarchar")] string addr
+		[Function(Name="dbo.StatusFlag", IsComposable = true)]
+		[return: Parameter(DbType = "varchar")]
+		public string StatusFlag(
+            [Parameter(Name = "pid", DbType="int")] int? pid
             )
 		{
-			return ((bool?)(this.ExecuteMethodCall(this, 
+			return ((string)(this.ExecuteMethodCall(this, 
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
-                addr
+                pid
                 ).ReturnValue));
 		}
 

@@ -10,13 +10,13 @@ using System.ComponentModel;
 
 namespace CmsData.View
 {
-	[Table(Name="RecentAbsents")]
-	public partial class RecentAbsent
+	[Table(Name="RecentAbsents2")]
+	public partial class RecentAbsents2
 	{
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		
-		private int _OrganizationId;
+		private int? _OrganizationId;
 		
 		private string _OrganizationName;
 		
@@ -24,7 +24,7 @@ namespace CmsData.View
 		
 		private int? _Consecutive;
 		
-		private int _PeopleId;
+		private int? _PeopleId;
 		
 		private string _Name2;
 		
@@ -34,21 +34,19 @@ namespace CmsData.View
 		
 		private string _EmailAddress;
 		
-		private DateTime? _Lastmeeting;
+		private int? _MeetingId;
 		
-		private int _MeetingId;
-		
-		private int? _ConsecutiveAbsentsThreshold;
+		private int? _ConsecutiveAbsentsThreshhold;
 		
 		
-		public RecentAbsent()
+		public RecentAbsents2()
 		{
 		}
 
 		
 		
-		[Column(Name="OrganizationId", Storage="_OrganizationId", DbType="int NOT NULL")]
-		public int OrganizationId
+		[Column(Name="OrganizationId", Storage="_OrganizationId", DbType="int")]
+		public int? OrganizationId
 		{
 			get
 			{
@@ -64,7 +62,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="OrganizationName", Storage="_OrganizationName", DbType="varchar(100) NOT NULL")]
+		[Column(Name="OrganizationName", Storage="_OrganizationName", DbType="varchar(70)")]
 		public string OrganizationName
 		{
 			get
@@ -81,7 +79,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="LeaderName", Storage="_LeaderName", DbType="varchar(50)")]
+		[Column(Name="LeaderName", Storage="_LeaderName", DbType="varchar(60)")]
 		public string LeaderName
 		{
 			get
@@ -115,8 +113,8 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="PeopleId", Storage="_PeopleId", DbType="int NOT NULL")]
-		public int PeopleId
+		[Column(Name="PeopleId", Storage="_PeopleId", DbType="int")]
+		public int? PeopleId
 		{
 			get
 			{
@@ -132,7 +130,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name2", Storage="_Name2", DbType="varchar(139)")]
+		[Column(Name="Name2", Storage="_Name2", DbType="varchar(50)")]
 		public string Name2
 		{
 			get
@@ -149,7 +147,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="HomePhone", Storage="_HomePhone", DbType="varchar(20)")]
+		[Column(Name="HomePhone", Storage="_HomePhone", DbType="varchar(15)")]
 		public string HomePhone
 		{
 			get
@@ -166,7 +164,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="CellPhone", Storage="_CellPhone", DbType="varchar(20)")]
+		[Column(Name="CellPhone", Storage="_CellPhone", DbType="varchar(15)")]
 		public string CellPhone
 		{
 			get
@@ -183,7 +181,7 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="varchar(150)")]
+		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="varchar(50)")]
 		public string EmailAddress
 		{
 			get
@@ -200,25 +198,8 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="lastmeeting", Storage="_Lastmeeting", DbType="datetime")]
-		public DateTime? Lastmeeting
-		{
-			get
-			{
-				return this._Lastmeeting;
-			}
-
-			set
-			{
-				if (this._Lastmeeting != value)
-					this._Lastmeeting = value;
-			}
-
-		}
-
-		
-		[Column(Name="MeetingId", Storage="_MeetingId", DbType="int NOT NULL")]
-		public int MeetingId
+		[Column(Name="MeetingId", Storage="_MeetingId", DbType="int")]
+		public int? MeetingId
 		{
 			get
 			{
@@ -234,18 +215,18 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="ConsecutiveAbsentsThreshold", Storage="_ConsecutiveAbsentsThreshold", DbType="int")]
-		public int? ConsecutiveAbsentsThreshold
+		[Column(Name="ConsecutiveAbsentsThreshhold", Storage="_ConsecutiveAbsentsThreshhold", DbType="int")]
+		public int? ConsecutiveAbsentsThreshhold
 		{
 			get
 			{
-				return this._ConsecutiveAbsentsThreshold;
+				return this._ConsecutiveAbsentsThreshhold;
 			}
 
 			set
 			{
-				if (this._ConsecutiveAbsentsThreshold != value)
-					this._ConsecutiveAbsentsThreshold = value;
+				if (this._ConsecutiveAbsentsThreshhold != value)
+					this._ConsecutiveAbsentsThreshhold = value;
 			}
 
 		}

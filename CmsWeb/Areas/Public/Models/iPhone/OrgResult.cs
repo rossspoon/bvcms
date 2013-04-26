@@ -34,9 +34,11 @@ namespace CmsWeb.Models.iPhone
                 q = from o in DbUtil.Db.Organizations
                     where o.LimitToRole == null || roles.Contains(o.LimitToRole)
                     let sc = o.OrgSchedules.FirstOrDefault() // SCHED
-                    where (o.OrganizationMembers.Any(om => om.PeopleId == pid // either a member
+                    where (o.OrganizationMembers.Any(om => om.PeopleId == pid // either a leader, who is not pending / inactive
                               && (om.Pending ?? false) == false
-                              && (om.MemberTypeId != MemberTypeCode.InActive))
+                              && (om.MemberTypeId != MemberTypeCode.InActive)
+                              && (om.MemberType.AttendanceTypeId == AttendTypeCode.Leader)
+                              )					 
                           || oids.Contains(o.OrganizationId)) // or a leader of a parent org
                     where o.SecurityTypeId != 3
                     select o;

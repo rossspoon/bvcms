@@ -8,7 +8,6 @@
 @RenderBody()
 @Html.Raw((string)ViewData["bottom"])
 @Bundles.RenderScripts()
-@RenderSection("scripts", false)
 }
 else
 {
@@ -28,7 +27,6 @@ else
 @RenderBody()
 @Html.Raw((string)ViewData["bottom"])
 @Bundles.RenderScripts()
-@RenderSection("scripts", false)
 </body>
 </html>
 }

@@ -1,0 +1,44 @@
+﻿@model SqlCommand
+@using System.Data.SqlClient
+@using CmsWeb;
+@using UtilityExtensions;
+@{
+    Layout = "/Views/Shared/SiteLayout.cshtml";
+    ViewBag.Title = "Last Activity";
+}
+    <div>
+		<form action="/Manage/Users/LastActivity" method="GET">@Html.TextBox("activity") <input id="filter" type="submit" name="activity" value="Search"/></form> 
+    <table class="grid" cellpadding="5">
+        <tr>
+            <td></td>
+            <td><a href="/Manage/Users/LastActivity">All</a></td>
+            <td nowrap="nowrap"></td>
+            <td nowrap="nowrap">@DateTime.Now.ToString("M/d h:mm:ss tt")</td>
+            <td></td>
+        </tr>
+    @{  
+        var n = 0;
+		using (var cn = new SqlConnection(Util.ConnectionString))
+		{
+			cn.Open();
+			Model.Connection = cn;
+			var rd = Model.ExecuteReader();
+        	while (rd.Read())
+            {
+                n++;
+                var Name = rd.GetString(0);
+                var UserId = rd.GetInt32(1);
+                var Activity = rd.GetString(2);
+                var Date = rd.GetDateTime(3);
+                var Machine = rd.GetString(4).ToLower();
+                <tr @(n % 2 == 0 ? "style='background-color: #eee'" : "" )>
+                    <td>@Machine</td>
+                    <td nowrap="nowrap"><a href="/Manage/Users/LastActivity?userid=@UserId">@Name</a></td>
+                    <td nowrap="nowrap">@Date.ToString("M/d h:mm:ss tt")</td>
+                    <td>@Activity</td>
+                </tr>
+            }
+		}
+    }
+    </table>
+    </div>

@@ -219,7 +219,7 @@ namespace CmsWeb.Models
                         break;
                     case "Grade":
                         q = from om in q
-                            orderby om.Grade, om.Organization.OrganizationName, om.Person.Name2
+                            orderby om.Person.Grade, om.Organization.OrganizationName, om.Person.Name2
                             select om;
                         break;
                     case "Gender":

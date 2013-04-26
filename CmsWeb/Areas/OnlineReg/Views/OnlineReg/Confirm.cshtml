@@ -4,7 +4,7 @@
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Transaction";
     var churchWebSite = DbUtil.Db.Setting("ChurchWebSite", "");
-    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OnlineRegister");
     Bundles.Reference("onlinereg");
     Bundles.AddInlineScript(
         @<script type="text/javascript">

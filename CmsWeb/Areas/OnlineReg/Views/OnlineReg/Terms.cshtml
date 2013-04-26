@@ -2,7 +2,7 @@
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Registration";
-    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OnlineRegister");
     Bundles.AddInlineScript(
         @<script type="text/javascript">
              $(function() {

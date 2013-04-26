@@ -142,9 +142,12 @@ namespace CmsWeb.Models
 						break;
 					case "AskGradeOptions":
 						if (setting.TargetExtraValues)
-							person.Grade = gradeoption.ToInt();
+						    person.Grade = gradeoption.ToInt();
 						else
+						{
 							om.Grade = gradeoption.ToInt();
+							person.Grade = gradeoption.ToInt();
+						}
 						break;
 				}
 			}

@@ -252,10 +252,10 @@ namespace CmsWeb.Areas.Public.Controllers
 			p.LogChanges(DbUtil.Db, psb, Util.UserPeopleId ?? 0);
 			p.Family.LogChanges(DbUtil.Db, fsb, p.PeopleId, Util.UserPeopleId ?? 0);
 			DbUtil.Db.SubmitChanges();
-            if (DbUtil.Db.Setting("NotifyCheckinChanges", "false").ToBool() && (psb.Length > 0 || fsb.Length > 0))
+            if (DbUtil.Db.Setting("NotifyCheckinChanges", "true").ToBool() && (psb.Length > 0 || fsb.Length > 0))
             {
                 DbUtil.Db.EmailRedacted(p.FromEmail, DbUtil.Db.GetNewPeopleManagers(),
-                    "Basic Person Info Changed on " + Util.Host,
+                    "Basic Person Info Changed during checkin on " + Util.Host,
                     "{0} changed the following information for {1} ({2}):<br />\n<table>{3}{4}</table>"
                     .Fmt(Util.UserName, p.PreferredName, p.LastName, psb.ToString(), fsb.ToString()));
             }

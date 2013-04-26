@@ -199,6 +199,7 @@ namespace CmsData.Registration
 				case Parser.RegKeywords.YesNoQuestions:
 					AskItems.Add(AskYesNoQuestions.Parse(parser));
 					break;
+				case Parser.RegKeywords.AskGradeOptions:
 				case Parser.RegKeywords.GradeOptions:
 					AskItems.Add(AskGradeOptions.Parse(parser));
 					break;

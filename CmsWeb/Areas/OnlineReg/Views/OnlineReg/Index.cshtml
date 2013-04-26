@@ -4,7 +4,7 @@
 @{
     Layout = "/Views/Shared/onlinereg.cshtml";
     ViewBag.Title = "Online Transaction";
-    CassetteConfiguration.BundleRefJs();
+    Bundles.Reference("OnlineRegister");
     Bundles.Reference("OnlineReg");
     Bundles.AddInlineScript(
         @<script type="text/javascript"> $.dateFormat = '@Util.jQueryDateFormat'; </script>);

@@ -246,6 +246,7 @@ namespace CmsWeb.Models
                             CityName = city.Disallow(na),
                             StateCode = state.Disallow(na),
                             ZipCode = zip.Disallow(na),
+                            CountryName = country,
                         };
 
             if (goesby != null)

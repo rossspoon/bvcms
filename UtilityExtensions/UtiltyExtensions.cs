@@ -1565,6 +1565,9 @@ namespace UtilityExtensions
         }
         public static string ToProper(this string s)
         {
+            // allow names that start with uppercase and are not all uppercase to skip the conversion
+            if (s.HasValue() && char.IsUpper(s[0]) && !char.IsUpper(s.Last()))
+                return s;
             var textinfo = Thread.CurrentThread.CurrentCulture.TextInfo;
             return textinfo.ToTitleCase(s.ToLower());
         }
