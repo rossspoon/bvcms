@@ -42,6 +42,8 @@ namespace CmsWeb.Areas.Public
             AddRoute(context, "VolunteerStart", "Volunteer", "Volunteer/{id}", "Start");
             AddRoute(context, "Volunteer");
 
+            AddRoute(context, "SmallGroupFinder");
+
             context.MapRoute(
                 "Public_default",
                 "Public/{controller}/{action}/{id}",
