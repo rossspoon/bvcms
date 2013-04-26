@@ -23,7 +23,7 @@ namespace CmsWeb.Models
         {
             this.queryid = QueryId;
         }
-        private static void ExecuteResultExtracted(NPOI.SS.UserModel.Sheet sheet, int r, MucketyItem p)
+        private static void ExecuteResultExtracted(NPOI.SS.UserModel.ISheet sheet, int r, MucketyItem p)
         {
             var row = sheet.CreateRow(r);
             row.CreateCell(0).SetCellValue(p.actor1);

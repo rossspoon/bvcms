@@ -6,8 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using System.IO;
-using System.Xml.Serialization;
 
 namespace CmsCheckin
 {

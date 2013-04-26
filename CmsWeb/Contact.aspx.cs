@@ -5,20 +5,12 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using UtilityExtensions;
 using CMSPresenter;
 using CmsData;
-using System.Drawing;
-using AjaxControlToolkit;
-using CustomControls;
-using System.Configuration;
-using System.Data;
-using System.Web.Security;
 using CmsData.Codes;
 
 namespace CmsWeb

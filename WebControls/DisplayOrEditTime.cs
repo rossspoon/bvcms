@@ -1,10 +1,8 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using System.ComponentModel;
 using UtilityExtensions;
 using System.Web.UI.WebControls;
-using AjaxControlToolkit;
 using System.Web.UI.HtmlControls;
 
 namespace CustomControls

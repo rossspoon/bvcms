@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 using CmsCheckin.Dialogs;
 
 namespace CmsCheckin

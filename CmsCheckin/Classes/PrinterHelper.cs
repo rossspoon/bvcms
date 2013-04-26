@@ -6,7 +6,8 @@ using System.Drawing.Printing;
 using System.Drawing;
 using System.Diagnostics;
 using System.Collections.Specialized;
-using BarcodeLib;
+using ZXing;
+using ZXing.Common;
 
 namespace CmsCheckin.Classes
 {
@@ -268,8 +269,11 @@ namespace CmsCheckin.Classes
 					{
 						float offsetX = 0, offsetY = 0;
 
-						Barcode bc = new Barcode();
-						Image ibc = bc.Encode(BarcodeLib.TYPE.CODE128, leItem.sText, Color.Black, Color.White, leItem.iWidth, leItem.iHeight);
+                        BarcodeWriter bw = new BarcodeWriter();
+                        bw.Format = BarcodeFormat.CODE_128;
+                        bw.Options = new EncodingOptions { Width = leItem.iWidth, Height = leItem.iHeight, PureBarcode = true };
+                      
+                        Image ibc = (Image)bw.Write(leItem.sText);
 
 						switch (leItem.iAlignX)
 						{
@@ -285,7 +289,7 @@ namespace CmsCheckin.Classes
 							case 3: offsetY = leItem.iHeight; break;
 						}
 
-						gPage.DrawImage(ibc, (iPageWidth * leItem.fStartX) - offsetX, (iPageHeight * leItem.fStartY) - offsetY);
+                        gPage.DrawImage( ibc, (iPageWidth * leItem.fStartX) - offsetX, (iPageHeight * leItem.fStartY) - offsetY);
 						break;
 					}
 				}
