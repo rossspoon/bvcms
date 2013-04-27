@@ -55,11 +55,14 @@
     });
     $(".bt").button();
 
-    $("a.delete").live("click", function () {
+    $("a.delete").live("click", function (ev) {
+        ev.preventDefault();
         var a = $(this);
-        $.post("/SavedQuery/Edit", { id: a.attr("id") }, function (ret) {
-            a.closest("tr").fadeOut().remove();
-        });
+        if(confirm("Delete this saved search?"))
+            $.post("/SavedQuery/Edit", { id: a.attr("id") }, function (ret) {
+                a.closest("tr").fadeOut().remove();
+            });
+        return false;
     });
     $.onready();
 });

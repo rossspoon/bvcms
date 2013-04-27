@@ -9,6 +9,8 @@
 <head>
     <title>Add Organization</title>
     @Bundles.RenderStylesheets()
+    @Bundles.RenderScripts()
+    @Html.Partial("DatePickerDefaults")
 </head>
 <body>
 <form action="/AddOrganization/Submit/@Model.OrganizationId" method="post">
@@ -52,7 +54,5 @@
     </tr>
 </table>
 </form>
-    @Bundles.RenderScripts()
-    @Html.Partial("DatePickerDefaults")
 </body>
 </html>

@@ -6,9 +6,9 @@
     CassetteConfiguration.BundleRefCss();
     CassetteConfiguration.BundleRefJs();
     Bundles.AddInlineScript(
-@<text>
-    @Html.Partial("DatePickerDefaults")
-</text>
+        @<text>
+            @Html.Partial("DatePickerDefaults")
+        </text>
     );
     Bundles.Reference("TransactionHistory");
 }
@@ -16,7 +16,9 @@
 <html>
 <head>
     <title>History</title>
+    @Bundles.RenderStylesheets()
     <link href="/Content/styles/style2.css" rel="stylesheet" type="text/css" />
+    @Bundles.RenderScripts()
 </head>
 <body>
     <div>

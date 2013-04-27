@@ -298,7 +298,7 @@ class OrgMembers(object):
             }
         }
 
-        public string NewOrganization(int divId, string name, string location, int? parentOrgId, int? campusId)
+        public string NewOrganization(int divId, string name, string location, int? parentOrgId, int? campusId, int? orgtype, int? leadertype, int? securitytype, string securityrole)
         {
             try
             {
@@ -309,6 +309,10 @@ class OrgMembers(object):
                 o.ParentOrgId = parentOrgId;
                 o.Location = location;
                 o.CampusId = campusId;
+                o.LimitToRole = securityrole;
+                o.LeaderMemberTypeId = leadertype;
+                o.OrganizationTypeId = orgtype;
+                o.SecurityTypeId = securitytype ?? 0;
                 Db.SubmitChanges();
                 return @"<NewOrganization id=""{0}"" status=""ok""></NewOrganization>".Fmt(o.OrganizationId);
             }
@@ -318,7 +322,7 @@ class OrgMembers(object):
                     .Fmt(HttpUtility.HtmlEncode(ex.Message));
             }
         }
-        public string UpdateOrganization(int orgid, string name, string campusid, string active, string location, string description)
+        public string UpdateOrganization(int orgid, string name, string campusid, string active, string location, string description, int? orgtype, int? leadertype, int? securitytype, string securityrole)
         {
             try
             {
@@ -330,6 +334,15 @@ class OrgMembers(object):
                     o.OrganizationStatusId = active.ToBool() ? Codes.OrgStatusCode.Active : Codes.OrgStatusCode.Inactive;
                 o.Location = location;
                 o.Description = description;
+
+                if (securityrole != null)
+                    o.LimitToRole = securityrole;
+                if(leadertype.HasValue)
+                    o.LeaderMemberTypeId = leadertype;
+                if (orgtype.HasValue)
+                    o.OrganizationTypeId = orgtype;
+                if(securitytype.HasValue)
+                    o.SecurityTypeId = securitytype.Value;
 
                 Db.SubmitChanges();
 

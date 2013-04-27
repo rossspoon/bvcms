@@ -31,39 +31,55 @@
     $(".bt").button();
     $('td.name').tooltip({ showBody: "|" });
     $(".ui-autocomplete-input").on("autocompleteopen", function () {
-    	var autocomplete = $( this ).data( "autocomplete" ),
+        var autocomplete = $(this).data("autocomplete"),
     		menu = autocomplete.menu;
-
-    	if ( !autocomplete.options.selectFirst ) {
-    		return;
-    	}
-
-    	menu.activate( $.Event({ type: "mouseenter" }), menu.element.children().first() );
+        if (!autocomplete.options.selectFirst) {
+            return;
+        }
+        menu.activate($.Event({ type: "mouseenter" }), menu.element.children().first());
+    });
+    $("#name").focus(function () {
+        $.enteredname = $(this).val();
     });
     $("#name").autocomplete({
         autoFocus: true,
-            minLength: 3,
-            source: function(request, response) {
-                $.post("/PostBundle/Names", request, function(ret) {
-                    if (!ret.length) {
-                        $.growlUI("Name", "Not Found");
-                        $('#pid').val('');
-                        $('#name').val('');
-                    }
-                    response(ret.slice(0, 10));
-                }, "json");
-            },
-            select: function( event, ui ) {
-                $( "#name" ).val( ui.item.Name );
-                $( "#pid" ).val( ui.item.Pid );
-                return false;
-            }
-        })
-        .data("uiAutocomplete")._renderItem = function (ul, item) {
-            return $( "<li>" )
-                .append( "<a>" + item.Name + "<br>" + item.Addr + "</a>" )
-                .appendTo( ul );
-        };
+        minLength: 3,
+        source: function (request, response) {
+            $.post("/PostBundle/Names", request, function (ret) {
+                response(ret.slice(0, 10));
+            }, "json");
+        },
+        select: function (event, ui) {
+            $("#name").val(ui.item.Name);
+            $("#pid").val(ui.item.Pid);
+            return false;
+        }
+    }).data("uiAutocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
+            .append("<a>" + item.Name + "<br>" + item.Addr + "</a>")
+            .appendTo(ul);
+    };
+    $("#name").blur(function () {
+        if ($('#pid').val() == '' && $(this).val() != '') {
+            $.growlUI("Name", "Not Found");
+            $('#name').focus();
+        }
+        else if ($(this).val() != $.enteredname && $.enteredname != '') {
+            var q = $('#pbform').serialize();
+            $.post("/PostBundle/GetNamePid/", q, function (ret) {
+                if (ret.error == 'not found') {
+                    $.growlUI("PeopleId", "Not Found");
+                    $('#name').focus();
+                    $('#pid').val('');
+                }
+                else {
+                    $('#name').val(ret.name);
+                    $('#pid').val(ret.PeopleId);
+                    $('#amt').focus();
+                }
+            });
+        }
+    });
 
     $.Stripe = function () {
         $('#bundle tbody tr').removeClass('alt');
@@ -123,12 +139,12 @@
         $('#pid').val($.trim($("a.pid", tr).text()));
         $('#name').val($("td.name", tr).text());
         $('#fund').val($("td.fund", tr).attr('val'));
-        
+
         var plnt = $("td.PLNT", tr).text();
         $("#entry .PLNT").html(plnt);
         plnt = plnt || "CN";
         $("input[name=PLNT][value=" + plnt + "]").prop('checked', true);
-        
+
         var a = $('#amt');
         a.val($("td.amt", tr).attr("val"));
         $('#checkno').val($("td.checkno", tr).text());

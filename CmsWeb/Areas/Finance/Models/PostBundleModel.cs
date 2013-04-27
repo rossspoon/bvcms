@@ -185,18 +185,64 @@ namespace CmsWeb.Models
         }
         public static IEnumerable<NamesInfo> Names(string q, int limit)
         {
-            var qu = from p in DbUtil.Db.People
-                     where p.Name2.StartsWith(q)
-                     let deceased = p.DeceasedDate.HasValue ? " [DECEASED]" : ""
+            string First, Last;
+            var qp = DbUtil.Db.People.AsQueryable();
+            qp = from p in qp
+                 where p.DeceasedDate == null
+                 select p;
+
+            Util.NameSplit(q, out First, out Last);
+            var hasfirst = First.HasValue();
+
+            if (q.AllDigits())
+            {
+                string phone = null;
+                if (q.HasValue() && q.AllDigits() && q.Length == 7)
+                    phone = q;
+                if (phone.HasValue())
+                {
+                    var id = Last.ToInt();
+                    qp = from p in qp
+                         where
+                             p.PeopleId == id
+                             || p.CellPhone.Contains(phone)
+                             || p.Family.HomePhone.Contains(phone)
+                             || p.WorkPhone.Contains(phone)
+                         select p;
+                }
+                else
+                {
+                    var id = Last.ToInt();
+                    qp = from p in qp
+                         where p.PeopleId == id
+                         select p;
+                }
+            }
+            else
+            {
+                qp = from p in qp
+                     where
+                         (
+                             (p.LastName.StartsWith(Last) || p.MaidenName.StartsWith(Last)
+                              || p.LastName.StartsWith(q) || p.MaidenName.StartsWith(q))
+                             &&
+                             (!hasfirst || p.FirstName.StartsWith(First) || p.NickName.StartsWith(First) ||
+                              p.MiddleName.StartsWith(First)
+                              || p.LastName.StartsWith(q) || p.MaidenName.StartsWith(q))
+                         )
+                     select p;
+            }
+
+            var rp = from p in qp
                      let age = p.Age.HasValue ? " (" + p.Age + ")" : ""
                      orderby p.Name2
                      select new NamesInfo()
                                 {
                                     Pid = p.PeopleId,
-                                    Name = p.Name2 + deceased + age,
+                                    Name = p.Name2 + age,
                                     Addr = p.PrimaryAddress ?? "",
                                 };
-            return qu.Take(limit);
+            return rp.Take(limit);
         }
 
         public object ContributionRowData(PostBundleController ctl, int cid, decimal? othersplitamt = null)

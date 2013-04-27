@@ -82,22 +82,22 @@ namespace CmsWeb.Areas.Public.Controllers
             return Content("ok");
         }
 		[HttpPost]
-		public ActionResult NewOrganization(int divId, string name, string location, int? parentOrgId, int? campusId)
+		public ActionResult NewOrganization(int divId, string name, string location, int? parentOrgId, int? campusId, int? orgtype, int? leadertype, int? securitytype, string securityrole)
 		{
 			var ret = AuthenticateDeveloper();
 			if (ret.StartsWith("!"))
 				return Content(@"<NewOrganization status=""error"">" + ret.Substring(1) + "</NewOrganization>");
 			DbUtil.LogActivity("APIOrganization NewOrganization");
-			return Content(new APIOrganization(DbUtil.Db).NewOrganization(divId, name, location, parentOrgId, campusId), "text/xml");
+			return Content(new APIOrganization(DbUtil.Db).NewOrganization(divId, name, location, parentOrgId, campusId, orgtype, leadertype, securitytype, securityrole), "text/xml");
 		}
         [HttpPost]
-        public ActionResult UpdateOrganization(int orgId, string name, string campusid, string active, string location, string description)
+        public ActionResult UpdateOrganization(int orgId, string name, string campusid, string active, string location, string description, int? orgtype, int? leadertype, int? securitytype, string securityrole)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
             new APIOrganization(DbUtil.Db)
-                .UpdateOrganization(orgId, name, campusid, active, location, description);
+                .UpdateOrganization(orgId, name, campusid, active, location, description, orgtype, leadertype, securitytype, securityrole);
 			DbUtil.LogActivity("APIOrg UpdateOrganization {0}".Fmt(orgId));
             return Content("ok");
         }

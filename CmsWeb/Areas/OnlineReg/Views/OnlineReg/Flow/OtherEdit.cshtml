@@ -331,7 +331,7 @@
         case "AskGradeOptions":
         <tr>
             <td>@(((AskGradeOptions)ask).Label)</td>
-			<td>@Html.DropDownListFor(m => m.gradeoption, Model.GradeOptions(ask));
+			<td>@Html.DropDownListFor(m => m.gradeoption, Model.GradeOptions(ask))
 				<div>@Html.ValidationMessageFor(m => m.gradeoption)</div>
 			</td>
         </tr>
