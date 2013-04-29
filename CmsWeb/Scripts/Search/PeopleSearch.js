@@ -31,7 +31,12 @@
         var f = $('#results').closest('form');
         var q = f.serialize();
         $.post($('#convert').attr('href'), q, function (ret) {
-            window.location = ret;
+            if (ret.startsWith("/"))
+                window.location = ret;
+            else {
+                $.block(ret);
+                $('.blockOverlay').attr('title', 'Click to unblock').click($.unblock);
+            }
         });
         return false;
     });

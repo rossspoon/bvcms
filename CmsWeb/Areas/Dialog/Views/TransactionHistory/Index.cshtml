@@ -3,8 +3,8 @@
 @using UtilityExtensions
 @{
     Layout = null;
-    CassetteConfiguration.BundleRefCss();
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefCss();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.AddInlineScript(
         @<text>
             @Html.Partial("DatePickerDefaults")

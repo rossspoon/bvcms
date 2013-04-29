@@ -4,8 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>CMS2</title>
-    <% CassetteConfiguration.BundleRefCss();
-       CassetteConfiguration.BundleRefJs(); 
+    <% CassetteBundleConfiguration.BundleRefCss();
+       CassetteBundleConfiguration.BundleRefJs(); 
     %>
     <%: Bundles.RenderStylesheets() %>
     <link href='/Content/styles/style2.css' rel='stylesheet' type='text/css' />

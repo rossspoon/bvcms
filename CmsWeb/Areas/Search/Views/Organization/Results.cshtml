@@ -1,7 +1,5 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Models.OrgSearchModel
-@section scripts
-{
     @if (User.IsInRole("edit"))
     {
     <script type="text/javascript">
@@ -10,7 +8,6 @@
         });
     </script>
     }
-}
 
 <table id="results" class="grid">
 <thead>

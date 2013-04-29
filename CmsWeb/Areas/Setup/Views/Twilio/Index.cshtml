@@ -6,7 +6,7 @@
     var gl = from e in DbUtil.Db.SMSGroups
              select e;
     int count = 0;
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.AddInlineScript(
         @<script type="text/javascript">
              $(document).ready(function() {

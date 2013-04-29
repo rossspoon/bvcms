@@ -26,8 +26,10 @@ namespace CmsWeb.Models
         }
         public decimal PayAmount()
         {
-            var amt = List.Sum(p => p.AmountToPay());
-            var max = List.Max(p => p.org != null ? p.setting.MaximumFee ?? 0 : 0);
+            decimal max = 0;
+            decimal amt = List.Sum(p => p.AmountToPay());
+            if (List.Count > 0) 
+                max = List.Max(p => p.org != null ? p.setting.MaximumFee ?? 0 : 0);
             if (max == 0)
                 return amt;
             var totalother = List.Sum(p => p.TotalOther());

@@ -7,7 +7,7 @@
     Layout = "/Views/Shared/SiteLayout.cshtml";
     var s = from e in DbUtil.Db.VolApplicationStatuses
             select e;
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.AddInlineScript(
 @<script type="text/javascript">
     $(function () {

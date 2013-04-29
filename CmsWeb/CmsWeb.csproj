@@ -69,7 +69,11 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cassette">
+    <Reference Include="AjaxMin">
+      <HintPath>..\packages\AjaxMin.4.60.4609.17023\lib\net20\AjaxMin.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette, Version=2.0.0.17974, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Cassette.2.0.0\lib\net40-client\Cassette.dll</HintPath>
     </Reference>
     <Reference Include="Cassette.Aspnet">
@@ -152,11 +156,17 @@
       <HintPath>..\packages\LumenWorks.Framework.IO.3.8.0\lib\net20\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>..\packages\NPOI.1.2.5\lib\net40\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="Rackspace.CloudFiles">
-      <HintPath>..\packages\csharp-cloudfiles.2.0.0.45\lib\net35\Rackspace.CloudFiles.dll</HintPath>
+    <Reference Include="openstacknet">
+      <HintPath>..\packages\openstack.net.1.1.0.2\lib\net40\openstacknet.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleRESTServices">
+      <HintPath>..\packages\SimpleRESTServices.1.0.6.3\lib\net40\SimpleRESTServices.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -461,8 +471,7 @@
     <Compile Include="Areas\Search\SearchAreaRegistration.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
     <Compile Include="Areas\Setup\Controllers\TwilioController.cs" />
-    <Compile Include="CassetteConfiguration.cs" />
-    <Compile Include="Code\BundleConfig.cs" />
+    <Compile Include="Code\CassetteConfiguration.cs" />
     <Compile Include="Code\BundleModel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -485,6 +494,17 @@
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\images\icons-18-black.png" />
+    <Content Include="Content\images\icons-18-white.png" />
+    <Content Include="Content\images\icons-36-black.png" />
+    <Content Include="Content\images\icons-36-white.png" />
+    <Content Include="Content\jquery.mobile-1.3.0.css" />
+    <Content Include="Content\jquery.mobile-1.3.0.min.css" />
+    <Content Include="Content\jquery.mobile.structure-1.3.0.css" />
+    <Content Include="Content\jquery.mobile.structure-1.3.0.min.css" />
+    <Content Include="Content\jquery.mobile.theme-1.3.0.css" />
+    <Content Include="Content\jquery.mobile.theme-1.3.0.min.css" />
     <Content Include="images\chosen-sprite.png" />
     <Content Include="Content\chosen.css" />
     <Content Include="Content\font-awesome-ie7.min.css" />
@@ -653,6 +673,29 @@
     <Content Include="ckeditor2\skins\kama\images\toolbar_start.gif" />
     <Content Include="ckeditor2\styles.js" />
     <Content Include="Content\autocomplete\jquery-ui-1.10.2.custom.css" />
+    <Content Include="Scripts\Bootstrap\bootstrap.min.js.map">
+      <DependentUpon>bootstrap.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Chosen\chosen.jquery.min.js.map">
+      <DependentUpon>chosen.jquery.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jQuery\jquery-1.9.1.min.js.map">
+      <DependentUpon>jquery-1.9.1.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jQuery\jquery-ui-1.10.0.custom.min.js.map">
+      <DependentUpon>jquery-ui-1.10.0.custom.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jQuery\jquery.tooltip.min.js.map">
+      <DependentUpon>jquery.tooltip.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jQuery\jquery.transpose.min.js.map">
+      <DependentUpon>jquery.transpose.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\Mobile\jquery-1.6.4.js" />
+    <Content Include="Scripts\Mobile\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\Mobile\jquery.mobile-1.3.0.js" />
+    <Content Include="Scripts\Mobile\jquery.mobile-1.3.0.min.js" />
     <Content Include="Scripts\jQuery\jquery-ui-1.10.0.custom.js" />
     <Content Include="Scripts\jQuery\jquery-ui-1.10.0.custom.min.js" />
     <Content Include="Scripts\Autocomplete\jquery-ui-1.10.2.custom.js" />
@@ -1183,6 +1226,18 @@
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Scripts\Mobile\jquery-1.6.4.min.js.map">
+      <DependentUpon>jquery-1.6.4.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Mobile\jquery.mobile-1.3.0.min.js.map">
+      <DependentUpon>jquery.mobile-1.3.0.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Moment\moment-datepicker.min.js.map">
+      <DependentUpon>moment-datepicker.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Moment\moment.min.js.map">
+      <DependentUpon>moment.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">

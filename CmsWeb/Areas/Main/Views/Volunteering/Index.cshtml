@@ -5,7 +5,7 @@
 @{
     ViewBag.Title = "Volunteer";
     Layout = "/Views/Shared/SiteLayout.cshtml";
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.Reference("volunteering");
 
     IQueryable<BackgroundCheck> bg = null;

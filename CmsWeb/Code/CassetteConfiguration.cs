@@ -1,18 +1,16 @@
-﻿using System;
-using System.Configuration;
-using System.Text.RegularExpressions;
-using System.Web;
+using Cassette;
 using Cassette.Scripts;
 using Cassette.Stylesheets;
+using Cassette.Views;
 using CmsData;
 using UtilityExtensions;
-using Cassette;
-using Cassette.Views;
 
 namespace CmsWeb
 {
-
-    public class CassetteConfiguration : IConfiguration<BundleCollection>
+    /// <summary>
+    /// Configures the Cassette asset bundles for the web application.
+    /// </summary>
+    public class CassetteBundleConfiguration : IConfiguration<BundleCollection>
     {
         public void Configure(BundleCollection bundles)
         {
@@ -257,6 +255,5 @@ namespace CmsWeb
             var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
             Bundles.Reference(newlook ? "newcss" : "css");
         }
-
     }
 }

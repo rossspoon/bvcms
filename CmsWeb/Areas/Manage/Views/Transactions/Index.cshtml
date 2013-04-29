@@ -4,7 +4,7 @@
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "Transactions";
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.Reference("Transactions");
 }
 <form id="form" method="post" action="/Manage/Transactions/List">

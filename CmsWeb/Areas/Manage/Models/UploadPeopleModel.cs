@@ -41,8 +41,29 @@ namespace CmsWeb.Models
         private void UpdateField(Person p, string[] a, string prop, string s, object value)
         {
             if (names.ContainsKey(s))
-                if (a[names[s]].HasValue())
+                if (value != null)
                     p.UpdateValue(psb, prop, value);
+        }
+
+        private void SetField(Family f, string[] a, string prop, string s)
+        {
+            if (names.ContainsKey(s))
+                if (a[names[s]].HasValue())
+                    Util.SetProperty(f, prop, a[names[s]]);
+        }
+
+        private void SetField(Person p, string[] a, string prop, string s)
+        {
+            if (names.ContainsKey(s))
+                if (a[names[s]].HasValue())
+                    Util.SetProperty(p, prop, a[names[s]]);
+        }
+
+        private void SetField(Person p, string[] a, string prop, string s, object value)
+        {
+            if (names.ContainsKey(s))
+                if (value != null)
+                    Util.SetProperty(p, prop, a[names[s]]);
         }
 
         private string GetDigits(string[] a, string s)
@@ -55,84 +76,100 @@ namespace CmsWeb.Models
 
         private int Gender(string[] a)
         {
-            if (names.ContainsKey("Gender"))
-                if (a[names["Gender"]].HasValue())
+            if (names.ContainsKey("gender"))
+                if (a[names["gender"]].HasValue())
                 {
-                    var v = a[names["Gender"]].TrimEnd();
+                    var v = a[names["gender"]].ToLower().TrimEnd();
                     switch (v)
                     {
-                        case "Male":
-                        case "M":
+                        case "male":
+                        case "m":
                             return 1;
-                        case "Female":
-                        case "F":
+                        case "female":
+                        case "f":
                             return 2;
                     }
                 }
             return 0;
         }
 
-        private int Marital(string i, string[] a)
+        private int Marital(string[] a)
         {
-            if (names.ContainsKey(i))
-                if (a[names[i]].HasValue())
+            if (names.ContainsKey("marital"))
+                if (a[names["marital"]].HasValue())
                 {
-                    var v = a[names[i]].TrimEnd();
+                    var v = a[names["marital"]].ToLower().TrimEnd();
                     switch (v)
                     {
-                        case "Married":
-                        case "M":
+                        case "married":
+                        case "m":
                             return 20;
-                        case "Single":
-                        case "S":
+                        case "single":
+                        case "s":
                             return 10;
-                        case "Widowed":
-                        case "W":
+                        case "widowed":
+                        case "w":
                             return 50;
-                        case "Divorced":
-                        case "D":
+                        case "divorced":
+                        case "d":
                             return 40;
-                        case "Separated":
+                        case "separated":
                             return 30;
                     }
                 }
             return 0;
         }
 
+        private string Title(string[] a)
+        {
+            if (names.ContainsKey("title"))
+                if (a[names["title"]].HasValue())
+                    return a[names["title"]].Truncate(10).TrimEnd();
+            return null;
+        }
+
         private int Position(string[] a)
         {
-            if (names.ContainsKey("Position"))
-                if (a[names["Position"]].HasValue())
+            if (names.ContainsKey("position"))
+                if (a[names["position"]].HasValue())
                 {
-                    var v = a[names["Position"]].TrimEnd();
+                    var v = a[names["position"]].TrimEnd();
                     switch (v)
                     {
-                        case "Primary":
+                        case "primary":
                             return 10;
-                        case "Secondary":
+                        case "secondary":
                             return 20;
-                        case "Child":
+                        case "child":
                             return 30;
                     }
                 }
             return 10;
         }
+        private int? Campus(string[] a)
+        {
+            if (names.ContainsKey("campus"))
+                if (a[names["campus"]].HasValue())
+                    return Campuses[a[names["campus"]]];
+            return null;
+        }
 
+        private Dictionary<string, int> Campuses; 
         public bool DoUpload(string text, bool testing = false)
         {
             var rt = Db.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
             var csv = new CsvReader(new StringReader(text), false, '\t');
             var list = csv.ToList();
 
-            var list0 = list.First().ToList();
+            var list0 = list.First().Select(kk => kk.ToLower()).ToList();
             names = list0.ToDictionary(i => i.TrimEnd(),
                                        i => list0.FindIndex(s => s == i));
 
-            if (names.ContainsKey("Campus"))
+            if (names.ContainsKey("campus"))
             {
                 var campuslist = (from li in list.Skip(1)
                                   where li.Length == names.Count
-                                  group li by li[names["Campus"]]
+                                  group li by li[names["campus"]]
                                       into campus
                                       where campus.Key.HasValue()
                                       select campus.Key).ToList();
@@ -156,49 +193,22 @@ namespace CmsWeb.Models
             var now = DateTime.Now;
             if (!testing)
                 Db.SubmitChanges();
-            var campuses = Db.Campus.ToDictionary(cp => cp.Description, cp => cp.Id);
+            Campuses = Db.Campus.ToDictionary(cp => cp.Description, cp => cp.Id);
 
             var q = (from li in list.Skip(1)
                      where li.Length == names.Count
-                     group li by li[names["FamilyId"]]
+                     group li by li[names["familyid"]]
                          into fam
                          select fam).ToList();
             rt.Count = q.Sum(ff => ff.Count());
 
             var standardnames = new List<string>
-			                    	{
-			                    		"FamilyId",
-			                    		"Title",
-			                    		"First",
-			                    		"Last",
-			                    		"GoesBy",
-			                    		"AltName",
-			                    		"Gender",
-			                    		"Married",
-			                    		"Marital",
-			                    		"MaidenName",
-			                    		"Address",
-			                    		"Address2",
-			                    		"City",
-			                    		"State",
-			                    		"Zip",
-			                    		"Position",
-			                    		"Birthday",
-			                    		"CellPhone",
-			                    		"HomePhone",
-			                    		"WorkPhone",
-			                    		"Email",
-			                    		"Email2",
-			                    		"Suffix",
-			                    		"Middle",
-			                    		"JoinDate",
-			                    		"DropDate",
-			                    		"BaptismDate",
-			                    		"WeddingDate",
-			                    		"MemberStatus",
-										"Employer",
-										"Occupation",
-			                    	};
+        	{
+        		"familyid", "title", "first", "last", "goesby", "altname", "gender", "marital", "maidenName",
+        		"address", "address2", "city", "state", "zip", "position", "birthday", "cellphone", "homephone",
+        		"workphone", "email", "email2", "suffix", "middle", "joindate", "dropdate", "baptismdate", "weddingdate",
+        		"memberstatus", "employer", "occupation",
+        	};
 
             foreach (var fam in q)
             {
@@ -206,12 +216,12 @@ namespace CmsWeb.Models
 
                 foreach (var a in fam)
                 {
-                    var first = a[names["First"]];
-                    var last = a[names["Last"]];
+                    var first = a[names["first"]];
+                    var last = a[names["last"]];
                     DateTime dt;
                     DateTime? dob = null;
-                    if (names.ContainsKey("Birthday"))
-                        if (DateTime.TryParse(a[names["Birthday"]], out dt))
+                    if (names.ContainsKey("birthday"))
+                        if (DateTime.TryParse(a[names["birthday"]], out dt))
                         {
                             dob = dt;
                             if (dob.Value < SqlDateTime.MinValue)
@@ -220,46 +230,44 @@ namespace CmsWeb.Models
                     string email = null;
                     string cell = null;
                     string homephone = null;
-                    if (names.ContainsKey("Email"))
-                        email = a[names["Email"]].Trim();
-                    if (names.ContainsKey("CellPhone"))
-                        cell = a[names["CellPhone"]].GetDigits();
-                    if (names.ContainsKey("HomePhone"))
-                        homephone = a[names["HomePhone"]].GetDigits();
+                    if (names.ContainsKey("email"))
+                        email = a[names["email"]].Trim();
+                    if (names.ContainsKey("cellphone"))
+                        cell = a[names["cellphone"]].GetDigits();
+                    if (names.ContainsKey("homephone"))
+                        homephone = a[names["homephone"]].GetDigits();
                     Person p = null;
                     var pid = Db.FindPerson3(first, last, dob, email, cell, homephone, null).FirstOrDefault();
+
                     if (pid != null) // found
                     {
                         p = Db.LoadPersonById(pid.PeopleId.Value);
                         psb = new StringBuilder();
                         fsb = new StringBuilder();
 
-                        UpdateField(p, a, "TitleCode", "Title");
-                        UpdateField(p, a, "FirstName", "First");
-                        UpdateField(p, a, "NickName", "GoesBy");
-                        UpdateField(p, a, "LastName", "Last");
-                        UpdateField(p, a, "EmailAddress", "Email");
-                        UpdateField(p, a, "EmailAddress2", "Email2");
-                        UpdateField(p, a, "DOB", "Birthday");
-                        UpdateField(p, a, "AltName", "AltName");
-                        UpdateField(p, a, "SuffixCode", "Suffix");
-                        UpdateField(p, a, "MiddleName", "Middle");
+                        UpdateField(p, a, "TitleCode", "title");
+                        UpdateField(p, a, "FirstName", "first");
+                        UpdateField(p, a, "NickName", "goesby");
+                        UpdateField(p, a, "LastName", "last");
+                        UpdateField(p, a, "EmailAddress", "email");
+                        UpdateField(p, a, "EmailAddress2", "email2");
+                        UpdateField(p, a, "DOB", "birthday");
+                        UpdateField(p, a, "AltName", "altname");
+                        UpdateField(p, a, "SuffixCode", "suffix");
+                        UpdateField(p, a, "MiddleName", "middle");
 
-                        UpdateField(p, a, "CellPhone", "CellPhone", GetDigits(a, "CellPhone"));
-                        UpdateField(p, a, "WorkPhone", "WorkPhone", GetDigits(a, "WorkPhone"));
-                        UpdateField(p, a, "GenderId", "Gender", Gender(a));
-                        UpdateField(p, a, "MaritalStatusId", "Married", Marital("Married", a));
-                        UpdateField(p, a, "MaritalStatusId", "Marital", Marital("Marital", a));
-                        UpdateField(p, a, "PositionInFamilyId", "Position", Position(a));
-                        if (names.ContainsKey("Campus"))
-                            if (a[names["Campus"]].HasValue())
-                                UpdateField(p, a, "CampusId", "Campus", campuses[a[names["Campus"]]]);
+                        UpdateField(p, a, "CellPhone", "cellphone", GetDigits(a, "cellphone"));
+                        UpdateField(p, a, "WorkPhone", "workphone", GetDigits(a, "workphone"));
+                        UpdateField(p, a, "GenderId", "gender", Gender(a));
+                        UpdateField(p, a, "MaritalStatusId", "marital", Marital( a));
+                        UpdateField(p, a, "PositionInFamilyId", "position", Position(a));
+                        UpdateField(p, a, "CampusId", "campus", Campus(a));
 
-                        UpdateField(p.Family, a, "AddressLineOne", "Address");
-                        UpdateField(p.Family, a, "AddressLineTwo", "Address2");
-                        UpdateField(p.Family, a, "CityName", "City");
-                        UpdateField(p.Family, a, "StateCode", "State");
-                        UpdateField(p.Family, a, "ZipCode", "Zip");
+                        UpdateField(p.Family, a, "AddressLineOne", "address");
+                        UpdateField(p.Family, a, "AddressLineTwo", "address2");
+                        UpdateField(p.Family, a, "CityName", "city");
+                        UpdateField(p.Family, a, "StateCode", "state");
+                        UpdateField(p.Family, a, "ZipCode", "zip");
 
                         //UpdateField(p, a, "AddressLineOne", "Address");
                         //UpdateField(p, a, "AddressLineTwo", "Address2");
@@ -277,85 +285,57 @@ namespace CmsWeb.Models
                     }
                     else // new person
                     {
-                        if (f == null || !a[names["FamilyId"]].HasValue())
+                        if (f == null || !a[names["familyid"]].HasValue())
                         {
                             f = new Family();
-                            if (names.ContainsKey("Address") && a[names["Address"]].HasValue())
-                                f.AddressLineOne = a[names["Address"]];
-                            if (names.ContainsKey("Address2") && a[names["Address2"]].HasValue())
-                                f.AddressLineTwo = a[names["Address2"]];
-                            if (names.ContainsKey("City") && a[names["City"]].HasValue())
-                                f.CityName = a[names["City"]];
-                            if (names.ContainsKey("State") && a[names["State"]].HasValue())
-                                f.StateCode = a[names["State"]];
-                            if (names.ContainsKey("Zip") && a[names["Zip"]].HasValue())
-                                f.ZipCode = a[names["Zip"]];
-                            if (names.ContainsKey("HomePhone") && a[names["HomePhone"]].HasValue())
-                                f.HomePhone = a[names["HomePhone"]].GetDigits();
+                            SetField(p.Family, a, "AddressLineOne", "address");
+                            SetField(p.Family, a, "AddressLineTwo", "address2");
+                            SetField(p.Family, a, "CityName", "city");
+                            SetField(p.Family, a, "StateCode", "state");
+                            SetField(p.Family, a, "ZipCode", "zip");
+                            SetField(p.Family, a, "HomePhone", "homephone");
                             Db.Families.InsertOnSubmit(f);
                             if (!testing)
-                            {
                                 Db.SubmitChanges();
-                            }
                         }
 
                         string goesby = null;
-                        if (names.ContainsKey("GoesBy"))
-                            goesby = a[names["GoesBy"]];
+                        if (names.ContainsKey("goesby"))
+                            goesby = a[names["goesby"]];
                         p = Person.Add(Db, false, f, 10, null,
-                                       a[names["First"]],
+                                       a[names["first"]],
                                        goesby,
-                                       a[names["Last"]],
+                                       a[names["last"]],
                                        dob.FormatDate(),
                                        0, 0, 0, null, testing);
                         p.FixTitle();
-                        if (names.ContainsKey("AltName"))
-                            p.AltName = a[names["AltName"]];
 
-                        if (names.ContainsKey("Suffix"))
-                            p.SuffixCode = a[names["Suffix"]];
-                        if (names.ContainsKey("Middle"))
-                            p.MiddleName = a[names["Middle"]];
-                        if (names.ContainsKey("MaidenName"))
-                            p.MaidenName = a[names["MaidenName"]];
+                        SetField(p, a, "AltName", "altname");
+                        if (names.ContainsKey("altname"))
+                            p.AltName = a[names[""]];
 
-                        if (names.ContainsKey("Employer"))
-                            p.EmployerOther = a[names["Employer"]];
-                        if (names.ContainsKey("Occupation"))
-                            p.OccupationOther = a[names["Occupation"]];
+                        SetField(p, a, "SuffixCode", "suffix");
+                        SetField(p, a, "MiddleName", "middle");
+                        SetField(p, a, "MaidenName", "maidenname");
+                        SetField(p, a, "EmployerOther", "employer");
+                        SetField(p, a, "OccupationOther", "occupation");
+                        SetField(p, a, "CellPhone", "cellphone", GetDigits(a, "cellphone"));
+                        SetField(p, a, "WorkPhone", "workphone", GetDigits(a, "workphone"));
+                        SetField(p, a, "EmailAddress", "email");
+                        SetField(p, a, "EmailAddress2", "email2");
+                        SetField(p, a, "GenderId", "gender", Gender(a));
+                        SetField(p, a, "MaritalStatusId", "marital", Marital(a));
+                        SetField(p, a, "WeddingDate", "weddingdate");
+                        SetField(p, a, "JoinDate", "joindate");
+                        SetField(p, a, "DropDate", "dropdate");
+                        SetField(p, a, "BaptismDate", "baptismdate");
+                        SetField(p, a, "PositionInFamilyId", "position", Position(a));
+                        SetField(p, a, "TitleCode", "title", Title(a));
+                        SetField(p, a, "CampusId", "campus", Campus(a));
 
-                        if (names.ContainsKey("CellPhone"))
-                            p.CellPhone = a[names["CellPhone"]].GetDigits();
-                        if (names.ContainsKey("WorkPhone"))
-                            p.WorkPhone = a[names["WorkPhone"]].GetDigits();
-                        if (names.ContainsKey("Email"))
-                            p.EmailAddress = a[names["Email"]].Trim();
-                        if (names.ContainsKey("Email2"))
-                            p.EmailAddress2 = a[names["Email2"]].Trim();
-                        if (names.ContainsKey("Gender"))
-                            p.GenderId = Gender(a);
-                        if (names.ContainsKey("Married"))
-                            p.MaritalStatusId = Marital("Married", a);
-                        if (names.ContainsKey("Marital"))
-                            p.MaritalStatusId = Marital("Marital", a);
-                        if (names.ContainsKey("WeddingDate"))
-                            p.WeddingDate = a[names["WeddingDate"]].ToDate();
-                        if (names.ContainsKey("JoinDate"))
-                            p.JoinDate = a[names["JoinDate"]].ToDate();
-                        if (names.ContainsKey("DropDate"))
-                            p.DropDate = a[names["DropDate"]].ToDate();
-                        if (names.ContainsKey("BaptismDate"))
-                            p.BaptismDate = a[names["BaptismDate"]].ToDate();
-                        if (names.ContainsKey("Position"))
-                            p.PositionInFamilyId = Position(a);
-                        if (names.ContainsKey("Title") && a[names["Title"]].HasValue())
-                            p.TitleCode = a[names["Title"]].Truncate(10);
-                        if (names.ContainsKey("Campus"))
-                            if (a[names["Campus"]].HasValue())
-                                p.CampusId = campuses[a[names["Campus"]]];
-                        if (names.ContainsKey("MemberStatus"))
+                        if (names.ContainsKey("memberstatus"))
                         {
-                            var ms = a[names["MemberStatus"]];
+                            var ms = a[names["memberstatus"]];
                             var qms = from mm in Db.MemberStatuses
                                       where mm.Description == ms
                                       select mm;

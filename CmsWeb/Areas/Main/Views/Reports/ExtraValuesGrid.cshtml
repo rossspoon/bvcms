@@ -6,7 +6,7 @@
     ViewBag.Title = "ExtraValuesGrid";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
     var target = Util2.TargetLinkPeople ? "target='people'" : "";
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.AddInlineScript(
     @<script src="/Content/js/FixedHeader.js" type="text/javascript"></script>);
     Bundles.AddInlineScript(

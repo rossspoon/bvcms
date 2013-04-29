@@ -459,9 +459,10 @@ namespace CmsWeb.Models
             if (m.marital != 99)
                 qb.AddNewClause(QueryType.MaritalStatusId, CompareType.Equal,
                                 QueryModel.IdCode(cv.MaritalStatusCodes(), m.marital));
-            foreach (var f in m.statusflags)
-                qb.AddNewClause(QueryType.StatusFlag, CompareType.Equal,
-                                QueryModel.IdCode(cv.StatusFlags(), f));
+            if(m.statusflags != null)
+                foreach (var f in m.statusflags)
+                    qb.AddNewClause(QueryType.StatusFlag, CompareType.Equal,
+                                    QueryModel.IdCode(cv.StatusFlags(), f));
             qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
             DbUtil.Db.SubmitChanges();
             return qb.QueryId;

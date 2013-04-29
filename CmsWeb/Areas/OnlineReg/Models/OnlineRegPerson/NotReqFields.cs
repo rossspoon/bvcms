@@ -10,42 +10,47 @@ namespace CmsWeb.Models
     public partial class OnlineRegPersonModel
     {
     	public bool RequiredAddr()
-        {
-            if (org != null)
-                return setting.NotReqAddr == false;
-            return !settings.Values.Any(o => o.NotReqAddr);
-        }
+    	{
+    	    return org != null 
+                       ? setting.NotReqAddr == false 
+                       : settings == null || !settings.Values.Any(o => o.NotReqAddr);
+    	}
+
         public bool RequiredDOB()
         {
             if (ComputesOrganizationByAge())
                 return true;
-            if (org != null)
-                return setting.NotReqDOB == false;
-            return !settings.Values.Any(i => i.NotReqDOB);
+            return org != null 
+                       ? setting.NotReqDOB == false : 
+                       settings == null || !settings.Values.Any(i => i.NotReqDOB);
         }
+
         public bool RequiredZip()
         {
-            if (org != null)
-                return setting.NotReqZip == false;
-            return !settings.Values.Any(o => o.NotReqZip);
+            return org != null 
+                       ? setting.NotReqZip == false 
+                       : settings == null || !settings.Values.Any(o => o.NotReqZip);
         }
+
         public bool RequiredMarital()
         {
-            if (org != null)
-                return setting.NotReqMarital == false;
-            return !settings.Values.Any(o => o.NotReqMarital);
+            return org != null
+                       ? setting.NotReqMarital == false
+                       : settings == null || !settings.Values.Any(o => o.NotReqMarital);
         }
+
         public bool RequiredGender()
         {
-            if (org != null)
-                return setting.NotReqGender == false;
-            return !settings.Values.Any(o => o.NotReqGender);
+            return org != null
+                       ? setting.NotReqGender == false
+                       : settings == null || !settings.Values.Any(o => o.NotReqGender);
         }
+
         public bool RequiredPhone()
         {
-            if (org != null)
-                return setting.NotReqPhone == false;
-            return !settings.Values.Any(o => o.NotReqPhone);
+            return org != null
+                       ? setting.NotReqPhone == false
+                       : settings == null || !settings.Values.Any(o => o.NotReqPhone);
         }
     }
 }

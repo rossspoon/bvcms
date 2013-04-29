@@ -5,7 +5,7 @@
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
     var newlook = DbUtil.Db.UserPreference("newlook3", "false").ToBool();
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.AddInlineScript(
         @<script type="text/javascript">
              $(document).ready(function() {

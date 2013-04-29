@@ -1,7 +1,7 @@
 ﻿@{
     var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
-    CassetteConfiguration.BundleRefCss();
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefCss();
+    CassetteBundleConfiguration.BundleRefJs();
     var bkcolor = DbUtil.Db.Setting("HeaderBackground", "#e4e2d5");
 }
 <!DOCTYPE html>

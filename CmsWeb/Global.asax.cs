@@ -34,9 +34,6 @@ namespace CmsWeb
             ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
-//            BundleTable.Bundles.IgnoreList.Clear();
-//            BundleConfig.AddDefaultIgnorePatterns(BundleTable.Bundles.IgnoreList);
-//            BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteTable.Routes.RouteExistingFiles = true;
             HttpRuntime.Cache.Remove("BuildDate");
 #if DEBUG

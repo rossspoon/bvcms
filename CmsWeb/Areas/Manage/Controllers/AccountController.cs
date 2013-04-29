@@ -10,7 +10,9 @@ using System.IO;
 using System.Web.Configuration;
 using System.Data.SqlClient;
 using CmsWeb.Models;
-using Rackspace.CloudFiles.Domain;
+using net.openstack.Core.Domain;
+using net.openstack.Providers.Rackspace;
+using User = CmsData.User;
 
 namespace CmsWeb.Areas.Manage.Controllers
 {
@@ -41,9 +43,9 @@ namespace CmsWeb.Areas.Manage.Controllers
 				baseurl = rackspacecdn;
 				var username = ConfigurationManager.AppSettings["RackspaceUser"];
 				var key = ConfigurationManager.AppSettings["RackspaceKey"];
-				var userCreds = new UserCredentials(username, key);
-	            var connection = new Rackspace.CloudFiles.Connection(userCreds);
-                connection.PutStorageItem("AllFiles", file.InputStream, fn);
+                var cloudIdentity = new CloudIdentity() { APIKey = key, Username = username };
+                var cloudFilesProvider = new CloudFilesProvider(cloudIdentity);
+                cloudFilesProvider.CreateObject("AllFiles", file.InputStream, fn);
 			}
 			else // local server
 			{

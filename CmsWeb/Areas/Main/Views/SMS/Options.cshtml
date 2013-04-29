@@ -8,7 +8,7 @@
 
     var groups = TwilioHelper.getAvailableLists(Util.UserId);
     var count = TwilioHelper.getSendCount(ViewBag.QBID);
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.AddInlineScript(
     @<script type="text/javascript">
         var maxSMS = 160;

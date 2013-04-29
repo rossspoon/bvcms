@@ -13,7 +13,7 @@
     var isfinance = User.IsInRole("Finance");
     var ismanager = User.IsInRole("Manager");
     var memberedit = isadmin || User.IsInRole("Membership");
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.Reference("person");
     if(memberedit)
     {

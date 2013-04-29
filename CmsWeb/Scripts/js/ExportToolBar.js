@@ -116,13 +116,14 @@
             message: message,
             overlayCSS: { opacity: 0 },
             css: {
-                border: 'none',
+                border: '3px',
                 padding: '15px',
-                backgroundColor: '#000',
+                backgroundColor: '#aaa',
                 '-webkit-border-radius': '10px',
                 '-moz-border-radius': '10px',
-                opacity: .5,
-                color: '#fff'
+                opacity: .9,
+                color: '#000',
+                width: '500px'
             }
         });
     };

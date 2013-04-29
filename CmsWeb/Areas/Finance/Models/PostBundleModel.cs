@@ -149,7 +149,7 @@ namespace CmsWeb.Models
         public object GetNamePidFromId()
         {
             IEnumerable<object> q;
-            if (pid.Length > 0 && (pid[0] == 'e' || pid[0] == '-'))
+            if (pid != null && pid.Length > 0 && (pid[0] == 'e' || pid[0] == '-'))
             {
                 var env = pid.Substring(1).ToInt();
                 q = from e in DbUtil.Db.PeopleExtras

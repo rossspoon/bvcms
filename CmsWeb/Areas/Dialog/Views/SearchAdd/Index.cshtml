@@ -1,8 +1,8 @@
 ﻿@model CmsWeb.Models.SearchModel
 @using CmsWeb
 @{
-    CassetteConfiguration.BundleRefCss();
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefCss();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.AddInlineScript(
         @<text>
             @Html.Partial("DatePickerDefaults")

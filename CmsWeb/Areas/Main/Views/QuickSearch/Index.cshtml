@@ -7,7 +7,7 @@
 	ViewBag.Title = "Quick Search";
 	Layout = "~/Views/Shared/SiteLayout.cshtml";
     var target = Util2.TargetLinkPeople ? "target='people'" : "";
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.Reference("QuickSearch");
 }
 <form id="quicksearch" method="post" action="/QuickSearch/Index">

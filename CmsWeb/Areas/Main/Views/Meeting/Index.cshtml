@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Meeting";
     Layout = "~/Views/Shared/SiteLayout.cshtml";
-    CassetteConfiguration.BundleRefJs();
+    CassetteBundleConfiguration.BundleRefJs();
     Bundles.Reference("meeting");
     if (!Model.meeting.GroupMeetingFlag)
     {
