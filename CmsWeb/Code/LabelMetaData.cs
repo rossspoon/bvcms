@@ -7,20 +7,20 @@ namespace CmsWeb.Code
     public class UIText : Attribute, IMetadataAware
     {
         private readonly string label;
-        private readonly string classes;
-        private readonly string labelclasses;
-        public UIText(string label, string classes, string labelclasses = null)
+//        private readonly string classes;
+//        private readonly string labelclasses;
+        public UIText(string label/*, string classes, string labelclasses = null*/)
         {
             this.label = label;
-            this.classes = classes;
-            this.labelclasses = labelclasses;
+//            this.classes = classes;
+//            this.labelclasses = labelclasses;
         }
 
         public void OnMetadataCreated(ModelMetadata metadata)
         {
             metadata.AdditionalValues["label"] = label;
-            metadata.AdditionalValues["classes"] = classes;
-            metadata.AdditionalValues["labelclasses"] = labelclasses;
+//            metadata.AdditionalValues["classes"] = classes;
+//            metadata.AdditionalValues["labelclasses"] = labelclasses;
             metadata.TemplateHint = "Text";
         }
     }

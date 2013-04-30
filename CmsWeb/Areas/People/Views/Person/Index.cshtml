@@ -11,7 +11,8 @@
 }
 @section head
 {
-    @*    <link href="~/Content/styles/person.css" rel="stylesheet" />*@
+    @*    <link href="~/Content/styles/person.css" rel="stylesheet" />*@        
+    <script src="http://use.edgefonts.net/asap.js"></script>
 }
 @Html.Hidden("newlook", "true")
 @Html.Hidden("PeopleId", Model.displayperson.PeopleId)
@@ -33,11 +34,10 @@
         <div class="span9">
             <div class="row-fluid">
                 <div class="span12" id="profile-header">
-                    <div class="span9">
+                    <div class="span8">
                         @Html.Partial("Snapshot", Model.displayperson)
                     </div>
-                    <div class="span3" id="profile-actions">
-                        <p class="meta">Record added @Model.displayperson.basic.Created.FormatDate()</p>
+                    <div class="span4" id="profile-actions">
                         @Html.Partial("Toolbar", Model)
                     </div>
                 </div>

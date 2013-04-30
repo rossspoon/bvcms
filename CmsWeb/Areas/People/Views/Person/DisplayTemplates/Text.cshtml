@@ -1,12 +1,7 @@
 ﻿@using UtilityExtensions
 @model string
-@{
-    var label = ViewData.ModelMetadata.AdditionalValues["label"];
-    var classes = ViewData.ModelMetadata.AdditionalValues["classes"];
-    var labelclasses = (string)ViewData.ModelMetadata.AdditionalValues["labelclasses"];
-}
-<div class="control-group @classes">
-    <label class="control-label @labelclasses">@label</label>
+<div class="control-group">
+    @Html.LabelFor(m => m, new { @class="control-label"})
     <div class="controls">
         <p>@Model</p>
     </div>

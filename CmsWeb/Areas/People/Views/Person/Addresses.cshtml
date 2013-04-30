@@ -25,8 +25,9 @@ May want to change whole data structure, but need to postpone that for now (lots
 </div>
 @* Dave : How do we highlight preferred address, personal vs home *@
 @* Dave : where bad address flag, resident code, effective dates, country? *@
+@* Dave: How should I indicate the preferred address? *@
 <ul id="family_home" class="unstyled">
-    <li class="address">
+    <li class="address@(p.FamilyAddr.BadAddress == true? " warning" : "")">
         <div class="btn-group">
             <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
                 <i class="icon-map-marker"></i>
@@ -57,7 +58,7 @@ May want to change whole data structure, but need to postpone that for now (lots
 
     @if (p.PersonalAddr.Address1.HasValue())
     {
-    <li class="address">
+    <li class="address@(p.PersonalAddr.BadAddress == true? " warning" : "")">
         <div class="btn-group">
             <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
                 <i class="icon-map-marker"></i>
@@ -81,7 +82,7 @@ May want to change whole data structure, but need to postpone that for now (lots
         </p>
     </li>
     }
-    @if (p.basic.CellPhone.HasValue())
+    @if (p.basic.Mobile.HasValue())
     {
     <li class="phone mobile">
         <div class="btn-group">
@@ -93,7 +94,7 @@ May want to change whole data structure, but need to postpone that for now (lots
                 <li><a href="#">Send SMS</a></li>
             </ul>
         </div>
-        <p>@p.basic.CellPhone.FmtFone()</p>
+        <p>@p.basic.Mobile.FmtFone()</p>
     </li>
     }
 </ul>

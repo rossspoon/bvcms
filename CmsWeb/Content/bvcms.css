@@ -36,7 +36,7 @@
 }
 body {
   margin: 0;
-  font-family: "Proxima Nova", Helvetica, Arial, sans-serif;
+  font-family: asap, "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.5;
   color: #333333;
@@ -795,7 +795,7 @@ h5,
 h6 {
   margin: 0.75 0;
   font-family: inherit;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1.5;
   color: inherit;
   text-rendering: optimizelegibility;
@@ -1082,7 +1082,7 @@ input,
 button,
 select,
 textarea {
-  font-family: "Proxima Nova", Helvetica, Arial, sans-serif;
+  font-family: asap, "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 label {
   display: block;
@@ -4492,7 +4492,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-search .search-query {
   margin-bottom: 0;
   padding: 4px 14px;
-  font-family: "Proxima Nova", Helvetica, Arial, sans-serif;
+  font-family: asap, "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 1;
@@ -7910,6 +7910,12 @@ header.subhead #nav-search #nav-search-results {
 #brand {
   height: 70px;
 }
+#brand img {
+  max-height: 60px;
+  margin-top: 5px;
+  float: left;
+  margin-right: 10px;
+}
 #brand h1 {
   font-size: 24px;
   margin-bottom: 6px;
@@ -7948,6 +7954,16 @@ header.subhead #nav-search #nav-search-results {
   min-height: 100%;
 }
 #sidebar ul {
+  margin: 0;
+}
+#sidebar > ul > li {
+  min-height: 39px;
+}
+#sidebar > ul > li.warning {
+  color: #900;
+}
+#sidebar > ul > li p {
+  padding: 8px 0;
   margin: 0;
 }
 #sidebar .sidebar_title {
@@ -8021,9 +8037,6 @@ header.subhead #nav-search #nav-search-results {
   color: #404040;
   font-weight: bold;
 }
-#sidebar #family_home > li {
-  margin-bottom: 20px;
-}
 #sidebar #family_home > li p {
   max-width: 190px;
   font-size: 12px;
@@ -8051,7 +8064,11 @@ header.subhead #nav-search #nav-search-results {
 #sidebar #family_home li.phone > i {
   position: absolute;
   left: 6px;
-  top: 0;
+  top: 8px;
+}
+#sidebar #family_home li.address > i,
+#sidebar #family_home li.phone > i {
+  top: 15px;
 }
 #sidebar #family_home li.address div.btn-group a.map,
 #sidebar #family_home li.phone div.btn-group a.map,
@@ -8078,19 +8095,22 @@ header.subhead #nav-search #nav-search-results {
   top: 15;
   right: 0;
 }
+#sidebar #family_home li.phone p {
+  padding-top: 14px;
+}
 #sidebar #family_home li:last-child {
   margin-bottom: 0;
 }
 #sidebar #family_related > li {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   position: relative;
   padding-left: 65px;
   font-size: 90%;
 }
 #sidebar #family_related > li div.btn-group {
-  top: 0;
+  top: 8px;
   position: absolute;
-  left: 8px;
+  left: 6px;
 }
 #sidebar #family_related > li span.summary {
   display: block;
@@ -8099,6 +8119,13 @@ header.subhead #nav-search #nav-search-results {
 }
 #sidebar #family_related li:last-child {
   margin-bottom: 0;
+}
+/* ALERTS */
+.alert {
+  margin-bottom: 1em;
+}
+.alert .close {
+  top: -5px;
 }
 /* FORMS */
 .form-actions {
@@ -8137,6 +8164,10 @@ header.subhead #nav-search #nav-search-results {
 .form-horizontal .controls {
   margin-left: 0;
   float: left;
+}
+.form-horizontal .controls p {
+  margin: 0;
+  line-height: 31px;
 }
 fieldset .control-group.halfsy {
   width: 50%;
@@ -8191,6 +8222,34 @@ fieldset .control-group .textcombo input.checkbox {
 #profile-header li.badges {
   padding-top: 6px;
 }
+#profile-header .muted {
+  margin: 0;
+}
+#profile-header .contact {
+  margin-top: 8px;
+  border: 1px solid #CDCDCD;
+  background: #EFEFEF;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  padding: 6px;
+  text-align: left;
+}
+#profile-header .contact h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+  padding-top: 0.5em;
+}
+#profile-header .contact p {
+  font-size: 11px;
+  color: #666;
+  margin: 0;
+  padding: 0.5em 0;
+}
 #profile-actions {
   text-align: right;
 }
@@ -8206,6 +8265,7 @@ fieldset .control-group .textcombo input.checkbox {
 }
 #profile-actions .btn-group .dropdown-menu {
   margin-left: -105px;
+  text-align: left;
 }
 #profile_tabs {
   background-color: #e5e5e5;
@@ -8239,8 +8299,19 @@ fieldset .control-group .textcombo input.checkbox {
 .icon_margin {
   padding-top: 5px;
 }
-.nav-tabs {
-  border-bottom: 1px solid #ddd;
+/* NAV */
+.nav-tabs.subnav {
+  margin-top: 0;
+  border-color: #CCC;
+  background: #CDCDCD;
+  font-size: 90%;
+}
+.nav-tabs.subnav > li > a {
+  color: #555;
+}
+.nav-tabs.subnav > .active > a {
+  color: #333;
+  background-color: #FFF;
 }
 .nav-tabs > li {
   margin-bottom: -1px;
@@ -8261,9 +8332,9 @@ fieldset .control-group .textcombo input.checkbox {
   border-right: 1px solid #bdbdbd;
   border-radius: 0px;
 }
-.nav-tabs > .active > a,
-.nav-tabs > .active > a:hover,
-.nav-tabs > .active > a:focus {
+.nav-tabs > .active a,
+.nav-tabs > .active a:hover,
+.nav-tabs > .active a:focus {
   color: #555555;
   background-color: #dddddd;
   cursor: default;
@@ -8335,6 +8406,28 @@ fieldset .control-group .textcombo input.checkbox {
 ----------------------------------*/
 .ui-state-disabled {
   cursor: default !important;
+}
+.edit-inline {
+  cursor: pointer;
+}
+.edit-inline:hover:after,
+.edit-inline:focus:after {
+  color: #0287d0;
+  border: 1px solid #DDD;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+.edit-inline:after {
+  font-family: FontAwesome;
+  content: "\f040";
+  display: inline-block;
+  color: #CCC;
+  padding: 1px 8px;
+  border: 1px solid #FFF;
+  margin-left: 5px;
 }
 /* Misc visuals
 ----------------------------------*/
@@ -8429,4 +8522,22 @@ fieldset .control-group .textcombo input.checkbox {
   margin: 0;
   padding: 0;
   width: 100%;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  header.subhead {
+    position: static;
+    margin-bottom: 20px;
+  }
+  #profile-actions .btn-group {
+    display: inline-block;
+    *display: inline;
+    /* IE7 inline-block hack */
+  
+    *zoom: 1;
+  }
 }

@@ -4,25 +4,26 @@
 <img src="@Model.Picture.SmallUrl" alt="" />
 <h2>@Model.Name</h2>
 <ul class="meta unstyled">
-    <li class="role">@Model.basic.person.FamilyPosition.Description</li>
+    <li class="role"><span class="edit-inline">@Model.basic.person.FamilyPosition.Description</span></li>
     <li class="status"><strong>Member Status:</strong> @Model.member.MemberStatus</li>
     <li class="affiliation"><strong>Campus Affiliation:</strong> @Model.basic.Campus</li>
+    <li class="meta"><small>Record added @Model.basic.Created.FormatDate()</small></li>
     <li class="badges">
         @foreach (var status in Model.StatusFlags)
         {
-            <span class="btn btn-success btn-mini">@status</span>
+            <span class="label label-success">@status</span>
         }
         @if (Model.basic.DoNotVisitFlag)
         {
-            <span class="btn btn-danger btn-mini">Do Not Visit</span>
+            <span class="label label-important">Do Not Visit</span>
         }
         @if (Model.basic.DoNotCallFlag)
         {
-            <span class="btn btn-danger btn-mini">Do Not Call</span>
+            <span class="label label-important">Do Not Call</span>
         }
         @if (Model.basic.DoNotMailFlag)
         {
-            <span class="btn btn-danger btn-mini">Do Not Mail</span>
+            <span class="label label-important">Do Not Mail</span>
         }
     </li>
 </ul>

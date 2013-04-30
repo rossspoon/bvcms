@@ -3,16 +3,16 @@
 <div class="row-fluid">
     <fieldset class="display">
         @Html.EditorFor(m => m.Title)
-        @Html.EditorFor(m => m.First)
-        @Html.EditorFor(m => m.NickName)
-        @Html.EditorFor(m => m.Middle)
-        @Html.EditorFor(m => m.Last)
+        @Html.EditorFor(m => m.FirstName)
+        @Html.EditorFor(m => m.GoesBy)
+        @Html.EditorFor(m => m.MiddleName)
+        @Html.EditorFor(m => m.LastName)
         @Html.EditorFor(m => m.AltName)
-        @Html.EditorFor(m => m.Maiden)
+        @Html.EditorFor(m => m.FormerName)
         @Html.EditorFor(m => m.Suffix)
         @Html.EditorFor(m => m.Gender)
         @Html.EditorFor(m => m.Birthday)
-        @Html.EditorFor(m => m.MaritalStatus)
+        @Html.EditorFor(m => m.Marital)
         @Html.EditorFor(m => m.WeddingDate)
         @Html.EditorFor(m => m.Occupation)
         @Html.EditorFor(m => m.Employer)
@@ -24,12 +24,12 @@
     <fieldset class="display">
         @if (Model.DoNotContactAny)
         {
-            @Html.EditorFor(m => m.DoNotContactBy)
+            @Html.EditorFor(m => m.DoNotContact)
         }
-        @Html.EditorFor(m => m.Email1)
-        @Html.EditorFor(m => m.CellPhone)
-        @Html.EditorFor(m => m.Email2)
-        @Html.EditorFor(m => m.WorkPhone)
+        @Html.EditorFor(m => m.PrimaryEmail)
+        @Html.EditorFor(m => m.Mobile)
+        @Html.EditorFor(m => m.AltEmail)
+        @Html.EditorFor(m => m.Work)
     </fieldset>
 </div>
 @FormAction()

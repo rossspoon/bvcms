@@ -19,3 +19,14 @@
         </ul>
     </div>
 </div>
+<div class="contact">
+    <h3>Primary Address</h3>
+    <p>@Model.Person.PrimaryAddress<br/>
+       @if (Model.Person.PrimaryAddress2.HasValue())
+       {
+           @Model.Person.PrimaryAddress2<br/>
+       }
+       @Util.FormatCSZ(Model.Person.PrimaryCity, Model.Person.PrimaryState, Model.Person.PrimaryZip)</p>
+@*    <h3>Primary Phone</h3>*@
+@*    <p>(345) 128-5566</p>*@
+</div>

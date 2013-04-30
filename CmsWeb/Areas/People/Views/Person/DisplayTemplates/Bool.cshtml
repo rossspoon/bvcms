@@ -1,11 +1,6 @@
 ﻿@model string
-@{
-    var truetext = ViewData.ModelMetadata.AdditionalValues["truetext"];
-    var falsetext = ViewData.ModelMetadata.AdditionalValues["falsetext"];
-    var classes = ViewData.ModelMetadata.AdditionalValues["classes"];
-}
-<div class="control-group @classes">
-    <label for="">@falsetext</label>
+<div class="control-group">
+    @Html.LabelFor(m=> m, new { @class = "control-label"})
     <div class="controls">
         <p>@Model</p>
     </div>

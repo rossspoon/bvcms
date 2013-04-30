@@ -66,56 +66,55 @@ namespace CmsWeb.Areas.People.Models.Person
         public int PeopleId { get; set; }
         public CmsData.Person person { get; set; }
 
-        [UICode("Title", "half")]
+        [UIHint("Code")]
         public CodeInfo Title { get; set; }
+        [UIHint("Text")]
+        public string FirstName { get; set; }
 
-        [UIText("First Name", "half")]
-        public string First { get; set; }
+        [UIHint("Text")]
+        public string GoesBy { get; set; }
 
-        [UIText("Goes By", "half")]
-        public string NickName { get; set; }
+        [UIHint("Text")]
+        public string MiddleName { get; set; }
 
-        [UIText("Middle Name", "half")]
-        public string Middle { get; set; }
+        [UIHint("Text")]
+        public string LastName { get; set; }
 
-        [UIText("Last Name", "half")]
-        public string Last { get; set; }
-
-        [UIText("Alt Name", "half")]
+        [UIHint("Text")]
         public string AltName { get; set; }
 
-        [UIText("Former Name", "half")]
-        public string Maiden { get; set; }
+        [UIHint("Text")]
+        public string FormerName { get; set; }
 
-        [UIText("Suffix", "em")]
+        [UIHint("Text")]
         public string Suffix { get; set; }
 
-        [UICode("Gender", "half")]
+        [UIHint("Code")]
         public CodeInfo Gender { get; set; }
 
-        [UIDate("Birthdate", "half")]
+        [UIHint("Date")]
         public string Birthday { get; set; }
 
-        [UICode("Marital", "half")]
-        public CodeInfo MaritalStatus { get; set; }
+        [UIHint("Code")]
+        public CodeInfo Marital { get; set; }
 
-        [UIDate("Wedding Date", "half")]
+        [UIHint("Date")]
         public string WeddingDate { get; set; }
 
-        [UIText("Occupation", "half")]
+        [UIHint("Text")]
         public string Occupation { get; set; }
 
-        [UIText("Employer", "half")]
+        [UIHint("Text")]
         public string Employer { get; set; }
 
-        [UIText("School", "half")]
+        [UIHint("Text")]
         public string School { get; set; }
 
-        [UIText("Grade", "half")]
+        [UIHint("Text")]
         public string Grade { get; set; }
 
-        [UIText("Do Not Contact", "em", "lg")]
-        public string DoNotContactBy
+        [UIHint("Text")]
+        public string DoNotContact
         {
             get
             {
@@ -130,17 +129,17 @@ namespace CmsWeb.Areas.People.Models.Person
             }
         }
 
-        [UIEmail("Primary Email", "half halfsy")]
-        public EmailInfo Email1 { get; set; }
-        [UIEmail("Alt Email", "half halfsy")]
-        public EmailInfo Email2 { get; set; }
+        [UIHint("Email")]
+        public EmailInfo PrimaryEmail { get; set; }
+        [UIHint("Email")]
+        public EmailInfo AltEmail { get; set; }
+
 
         public string HomePhone { get; set; }
-
-        [UIText("Mobile", "half")]
-        public string CellPhone { get; set; }
-        [UIText("Work", "half")]
-        public string WorkPhone { get; set; }
+        [UIHint("Text")]
+        public string Mobile { get; set; }
+        [UIHint("Text")]
+        public string Work { get; set; }
 
         public DateTime? Created { get; set; }
         public bool DoNotCallFlag { get; set; }
@@ -190,28 +189,28 @@ namespace CmsWeb.Areas.People.Models.Person
                 Age = p.Age.ToString(),
                 Birthday = p.DOB,
                 CampusId = p.CampusId ?? 0,
-                CellPhone = p.CellPhone.FmtFone(),
+                Mobile = p.CellPhone.FmtFone(),
                 DeceasedDate = p.DeceasedDate,
                 DoNotCallFlag = p.DoNotCallFlag,
                 DoNotMailFlag = p.DoNotMailFlag,
                 DoNotVisitFlag = p.DoNotVisitFlag,
                 DoNotPublishPhones = p.DoNotPublishPhones ?? false,
-                Email1 = new EmailInfo(p.EmailAddress, p.SendEmailAddress1 ?? true),
-                Email2 = new EmailInfo(p.EmailAddress2, p.SendEmailAddress2 ?? false),
+                PrimaryEmail = new EmailInfo(p.EmailAddress, p.SendEmailAddress1 ?? true),
+                AltEmail = new EmailInfo(p.EmailAddress2, p.SendEmailAddress2 ?? false),
                 Employer = p.EmployerOther,
-                First = p.FirstName,
+                FirstName = p.FirstName,
                 Created = p.CreatedDate,
                 Grade = p.Grade.ToString(),
                 HomePhone = p.Family.HomePhone.FmtFone(),
                 JoinDate = p.JoinDate,
-                Last = p.LastName,
+                LastName = p.LastName,
                 AltName = p.AltName,
-                Maiden = p.MaidenName,
+                FormerName = p.MaidenName,
                 Gender = new CodeInfo(p.GenderId, cv.GenderCodesWithUnspecified()),
-                MaritalStatus = new CodeInfo(p.MaritalStatusId, cv.MaritalStatusCodes99()),
+                Marital = new CodeInfo(p.MaritalStatusId, cv.MaritalStatusCodes99()),
                 MemberStatus = new CodeInfo(p.MemberStatusId, cv.MemberStatusCodes0()),
-                Middle = p.MiddleName,
-                NickName = p.NickName,
+                MiddleName = p.MiddleName,
+                GoesBy = p.NickName,
                 Occupation = p.OccupationOther,
                 PeopleId = p.PeopleId,
                 School = p.SchoolOther,
@@ -219,7 +218,7 @@ namespace CmsWeb.Areas.People.Models.Person
                 Suffix = p.SuffixCode,
                 Title = new CodeInfo(p.TitleCode, cv.TitleCodes(), "Value"),
                 WeddingDate = p.WeddingDate.FormatDate(),
-                WorkPhone = p.WorkPhone.FmtFone(),
+                Work = p.WorkPhone.FmtFone(),
                 ReceiveSMS = p.ReceiveSMS,
             };
             pi.person = p;
@@ -240,28 +239,28 @@ namespace CmsWeb.Areas.People.Models.Person
             p.UpdateValue(psb, "DoNotMailFlag", DoNotMailFlag);
             p.UpdateValue(psb, "DoNotVisitFlag", DoNotVisitFlag);
             p.UpdateValue(psb, "DoNotPublishPhones", DoNotPublishPhones);
-            p.UpdateValue(psb, "EmailAddress", Email1.Address);
-            p.UpdateValue(psb, "EmailAddress2", Email2.Address);
-            p.UpdateValue(psb, "SendEmailAddress1", Email1.Send);
-            p.UpdateValue(psb, "SendEmailAddress2", Email2.Send);
-            p.UpdateValue(psb, "FirstName", First);
-            p.UpdateValue(psb, "LastName", Last);
+            p.UpdateValue(psb, "EmailAddress", PrimaryEmail.Address);
+            p.UpdateValue(psb, "EmailAddress2", AltEmail.Address);
+            p.UpdateValue(psb, "SendEmailAddress1", PrimaryEmail.Send);
+            p.UpdateValue(psb, "SendEmailAddress2", AltEmail.Send);
+            p.UpdateValue(psb, "FirstName", FirstName);
+            p.UpdateValue(psb, "LastName", LastName);
             p.UpdateValue(psb, "AltName", AltName);
             p.UpdateValue(psb, "GenderId", Gender.Value.ToInt2());
             p.UpdateValue(psb, "Grade", Grade.ToInt2());
-            p.UpdateValue(psb, "CellPhone", CellPhone.GetDigits());
+            p.UpdateValue(psb, "CellPhone", Mobile.GetDigits());
             p.Family.UpdateValue(fsb, "HomePhone", HomePhone.GetDigits());
-            p.UpdateValue(psb, "MaidenName", Maiden);
-            p.UpdateValue(psb, "MaritalStatusId", MaritalStatus.Value.ToInt2());
-            p.UpdateValue(psb, "MiddleName", Middle);
-            p.UpdateValue(psb, "NickName", NickName);
+            p.UpdateValue(psb, "MaidenName", FormerName);
+            p.UpdateValue(psb, "MaritalStatusId", Marital.Value.ToInt2());
+            p.UpdateValue(psb, "MiddleName", MiddleName);
+            p.UpdateValue(psb, "NickName", GoesBy);
             p.UpdateValue(psb, "OccupationOther", Occupation);
             p.UpdateValue(psb, "SchoolOther", School);
             p.UpdateValue(psb, "SuffixCode", Suffix);
             p.UpdateValue(psb, "EmployerOther", Employer);
             p.UpdateValue(psb, "TitleCode", Title.Value);
             p.UpdateValue(psb, "WeddingDate", WeddingDate.ToDate());
-            p.UpdateValue(psb, "WorkPhone", WorkPhone.GetDigits());
+            p.UpdateValue(psb, "WorkPhone", Work.GetDigits());
             if (p.DeceasedDateChanged)
             {
                 var ret = p.MemberProfileAutomation(DbUtil.Db);
@@ -282,7 +281,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     DbUtil.Db.EmailRedacted(p.FromEmail, DbUtil.Db.GetNewPeopleManagers(),
                         "Basic Person Info Changed on " + Util.Host,
                         "{0} changed the following information for {1} ({2}):<br />\n<table>{3}{4}</table>"
-                        .Fmt(Util.UserName, First + " " + Last, PeopleId, psb.ToString(), fsb.ToString()));
+                        .Fmt(Util.UserName, FirstName + " " + LastName, PeopleId, psb.ToString(), fsb.ToString()));
                 }
         }
         public static IEnumerable<SelectListItem> GenderCodes()
