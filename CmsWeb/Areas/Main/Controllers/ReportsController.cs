@@ -175,6 +175,12 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("no query");
             return new AveryResult { id = id };
         }
+        public ActionResult NameLabels(int? id)
+        {
+            if (!id.HasValue)
+                return Content("no query");
+            return new AveryResult { namesonly = true, id = id };
+        }
         public ActionResult Avery3(int? id)
         {
             if (!id.HasValue)

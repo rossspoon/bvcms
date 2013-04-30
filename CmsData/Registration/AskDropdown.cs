@@ -40,8 +40,6 @@ namespace CmsData.Registration
 				dd.list.Add(m);
 			}
             var q = (from i in dd.list
-                     where i.SmallGroup != "nocheckbox"
-                     where i.SmallGroup != "comment"
                      group i by i.SmallGroup into g
                      where g.Count() > 1
                      select g.Key).ToList();
@@ -49,6 +47,12 @@ namespace CmsData.Registration
 				throw parser.GetException("Duplicate SmallGroup in Dropdown: {0}".Fmt(string.Join(",", q)));
 			return dd;
 		}
+        public override List<string> SmallGroups()
+        {
+            var q = (from i in list
+                     select i.SmallGroup).ToList();
+            return q;
+        }
 		public DropdownItem SmallGroupChoice(List<string> choices)
 		{
             var v = list.SingleOrDefault(i => choices.Contains(i.SmallGroup, StringComparer.OrdinalIgnoreCase));

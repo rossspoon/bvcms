@@ -38,6 +38,12 @@ namespace CmsData.Registration
 			}
 			return ynq;
 		}
+        public override List<string> SmallGroups()
+        {
+            var q = (from i in list
+                     select i.SmallGroup).ToList();
+            return q;
+        }
 		public class YesNoQuestion
 		{
 			public string Name { get; set; }

@@ -26,5 +26,9 @@ namespace CmsData.Registration
 		{
 			Settings.AddValueCk(0, sb, Type, true);
 		}
+        public virtual List<string> SmallGroups()
+        {
+            return new List<string>();
+        }
 	}
 }

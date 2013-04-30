@@ -76,7 +76,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             //var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
             return Content(ed.Data, contentType: "text/xml");
         }
-        [Authorize(Roles = "ManageTransactions,Finance")]
+        [Authorize(Roles = "ManageTransactions,Finance,Admin")]
         public ActionResult RegPeople(int id)
         {
             var q = from i in DbUtil.Db.ExtraDatas

@@ -59,6 +59,14 @@ namespace CmsData.Registration
                 throw parser.GetException("Duplicate SmallGroup in Checkboxes: {0}".Fmt(string.Join(",", q)));
             return cb;
         }
+        public override List<string> SmallGroups()
+        {
+            var q = (from i in list
+                     where i.SmallGroup != "nocheckbox"
+                     where i.SmallGroup != "comment"
+                     select i.SmallGroup).ToList();
+            return q;
+        }
         public IEnumerable<CheckboxItem> CheckboxItemsChosen(IEnumerable<string> items)
         {
             var q = from i in items

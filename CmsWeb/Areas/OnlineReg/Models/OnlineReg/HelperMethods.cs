@@ -320,7 +320,10 @@ namespace CmsWeb.Models
             get
             {
                 if (masterorgid.HasValue)
-                    return Util.PickFirst("{0}".Fmt(settings[masterorgid.Value].Terms), "");
+                {
+                    if(settings.ContainsKey(masterorgid.Value))
+                        return Util.PickFirst("{0}".Fmt(settings[masterorgid.Value].Terms), "");
+                }
                 if (org != null)
                     return Util.PickFirst("{0}".Fmt(settings[org.OrganizationId].Terms),
                         div != null ? div.Terms : "");

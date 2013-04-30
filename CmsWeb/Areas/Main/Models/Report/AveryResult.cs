@@ -18,6 +18,7 @@ namespace CmsWeb.Areas.Main.Models.Report
     {
         public int? id;
         protected float W = 197f;
+        public bool namesonly;
 
         protected PdfContentByte dc;
         private Font font = FontFactory.GetFont(FontFactory.HELVETICA, 20);
@@ -45,26 +46,27 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             var q = DbUtil.Db.PeopleQuery(id.Value);
             var q2 = from p in q
-                    orderby p.Name2
-                    select new
-                    {
-                        First = p.PreferredName,
-                        Last = p.LastName,
-                        PeopleId = p.PeopleId,
-                        dob = p.DOB,
-                        Phone = p.CellPhone ?? p.HomePhone
-                    };
+                     orderby p.Name2
+                     select new
+                     {
+                         First = p.PreferredName,
+                         Last = p.LastName,
+                         p.PeopleId,
+                         dob = p.DOB,
+                         Phone = p.CellPhone.Length > 0 ? p.CellPhone : p.HomePhone,
+                         p.DoNotPublishPhones
+                     };
             if (!q2.Any())
                 document.Add(new Phrase("no data"));
-			else
-				foreach (var m in q2)
-					AddCell(t, m.First, m.Last, m.Phone, m.PeopleId);
+            else
+                foreach (var m in q2)
+                    AddCell(t, m.First, m.Last, m.Phone, m.PeopleId, m.DoNotPublishPhones);
             t.CompleteRow();
             document.Add(t);
 
             document.Close();
         }
-        public void AddCell(PdfPTable t, string fname, string lname, string phone, int pid)
+        public void AddCell(PdfPTable t, string fname, string lname, string phone, int pid, bool? DoNotPublishPhones)
         {
             var t2 = new PdfPTable(2);
             t2.WidthPercentage = 100f;
@@ -80,15 +82,18 @@ namespace CmsWeb.Areas.Main.Models.Report
             cc.Colspan = 2;
             t2.AddCell(cc);
 
-            var pcell = new PdfPCell(new Phrase(pid.ToString(), smallfont));
-            pcell.Border = PdfPCell.NO_BORDER;
-            pcell.HorizontalAlignment = Element.ALIGN_LEFT;
-            t2.AddCell(pcell);
+            if (!namesonly)
+            {
+                var pcell = new PdfPCell(new Phrase(pid.ToString(), smallfont));
+                pcell.Border = PdfPCell.NO_BORDER;
+                pcell.HorizontalAlignment = Element.ALIGN_LEFT;
+                t2.AddCell(pcell);
 
-            pcell = new PdfPCell(new Phrase(phone.FmtFone(), smallfont));
-            pcell.Border = PdfPCell.NO_BORDER;
-            pcell.HorizontalAlignment = Element.ALIGN_MIDDLE;
-            t2.AddCell(pcell);
+                pcell = new PdfPCell(new Phrase(DoNotPublishPhones != true ? phone.FmtFone() : "", smallfont));
+                pcell.Border = PdfPCell.NO_BORDER;
+                pcell.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                t2.AddCell(pcell);
+            }
 
             var cell = new PdfPCell(t2);
             cell.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;

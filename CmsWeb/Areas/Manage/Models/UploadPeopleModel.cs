@@ -63,7 +63,7 @@ namespace CmsWeb.Models
         {
             if (names.ContainsKey(s))
                 if (value != null)
-                    Util.SetProperty(p, prop, a[names[s]]);
+                    Util.SetProperty(p, prop, value);
         }
 
         private string GetDigits(string[] a, string s)
@@ -72,6 +72,18 @@ namespace CmsWeb.Models
                 if (a[names[s]].HasValue())
                     return a[names[s]].GetDigits();
             return "";
+        }
+
+        private DateTime? GetDate(string[] a, string s)
+        {
+            if (names.ContainsKey(s))
+                if (a[names[s]].HasValue())
+                {
+                    DateTime dt;
+                    if (DateTime.TryParse(a[names[s]], out dt))
+                        return dt;
+                }
+            return null;
         }
 
         private int Gender(string[] a)
@@ -154,7 +166,7 @@ namespace CmsWeb.Models
             return null;
         }
 
-        private Dictionary<string, int> Campuses; 
+        private Dictionary<string, int> Campuses;
         public bool DoUpload(string text, bool testing = false)
         {
             var rt = Db.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
@@ -259,7 +271,7 @@ namespace CmsWeb.Models
                         UpdateField(p, a, "CellPhone", "cellphone", GetDigits(a, "cellphone"));
                         UpdateField(p, a, "WorkPhone", "workphone", GetDigits(a, "workphone"));
                         UpdateField(p, a, "GenderId", "gender", Gender(a));
-                        UpdateField(p, a, "MaritalStatusId", "marital", Marital( a));
+                        UpdateField(p, a, "MaritalStatusId", "marital", Marital(a));
                         UpdateField(p, a, "PositionInFamilyId", "position", Position(a));
                         UpdateField(p, a, "CampusId", "campus", Campus(a));
 
@@ -285,68 +297,77 @@ namespace CmsWeb.Models
                     }
                     else // new person
                     {
-                        if (f == null || !a[names["familyid"]].HasValue())
+                        try
                         {
-                            f = new Family();
-                            SetField(p.Family, a, "AddressLineOne", "address");
-                            SetField(p.Family, a, "AddressLineTwo", "address2");
-                            SetField(p.Family, a, "CityName", "city");
-                            SetField(p.Family, a, "StateCode", "state");
-                            SetField(p.Family, a, "ZipCode", "zip");
-                            SetField(p.Family, a, "HomePhone", "homephone");
-                            Db.Families.InsertOnSubmit(f);
-                            if (!testing)
-                                Db.SubmitChanges();
-                        }
 
-                        string goesby = null;
-                        if (names.ContainsKey("goesby"))
-                            goesby = a[names["goesby"]];
-                        p = Person.Add(Db, false, f, 10, null,
-                                       a[names["first"]],
-                                       goesby,
-                                       a[names["last"]],
-                                       dob.FormatDate(),
-                                       0, 0, 0, null, testing);
-                        p.FixTitle();
-
-                        SetField(p, a, "AltName", "altname");
-                        if (names.ContainsKey("altname"))
-                            p.AltName = a[names[""]];
-
-                        SetField(p, a, "SuffixCode", "suffix");
-                        SetField(p, a, "MiddleName", "middle");
-                        SetField(p, a, "MaidenName", "maidenname");
-                        SetField(p, a, "EmployerOther", "employer");
-                        SetField(p, a, "OccupationOther", "occupation");
-                        SetField(p, a, "CellPhone", "cellphone", GetDigits(a, "cellphone"));
-                        SetField(p, a, "WorkPhone", "workphone", GetDigits(a, "workphone"));
-                        SetField(p, a, "EmailAddress", "email");
-                        SetField(p, a, "EmailAddress2", "email2");
-                        SetField(p, a, "GenderId", "gender", Gender(a));
-                        SetField(p, a, "MaritalStatusId", "marital", Marital(a));
-                        SetField(p, a, "WeddingDate", "weddingdate");
-                        SetField(p, a, "JoinDate", "joindate");
-                        SetField(p, a, "DropDate", "dropdate");
-                        SetField(p, a, "BaptismDate", "baptismdate");
-                        SetField(p, a, "PositionInFamilyId", "position", Position(a));
-                        SetField(p, a, "TitleCode", "title", Title(a));
-                        SetField(p, a, "CampusId", "campus", Campus(a));
-
-                        if (names.ContainsKey("memberstatus"))
-                        {
-                            var ms = a[names["memberstatus"]];
-                            var qms = from mm in Db.MemberStatuses
-                                      where mm.Description == ms
-                                      select mm;
-                            var m = qms.SingleOrDefault();
-                            if (m == null)
+                            if (f == null || !a[names["familyid"]].HasValue())
                             {
-                                var nx = Db.MemberStatuses.Max(mm => mm.Id) + 1;
-                                m = new MemberStatus { Id = nx, Description = ms, Code = nx.ToString() };
-                                Db.MemberStatuses.InsertOnSubmit(m);
+                                f = new Family();
+                                SetField(f, a, "AddressLineOne", "address");
+                                SetField(f, a, "AddressLineTwo", "address2");
+                                SetField(f, a, "CityName", "city");
+                                SetField(f, a, "StateCode", "state");
+                                SetField(f, a, "ZipCode", "zip");
+                                SetField(f, a, "HomePhone", "homephone");
+                                Db.Families.InsertOnSubmit(f);
+                                if (!testing)
+                                    Db.SubmitChanges();
                             }
-                            p.MemberStatusId = m.Id;
+
+                            string goesby = null;
+                            if (names.ContainsKey("goesby"))
+                                goesby = a[names["goesby"]];
+                            p = Person.Add(Db, false, f, 10, null,
+                                           a[names["first"]],
+                                           goesby,
+                                           a[names["last"]],
+                                           dob.FormatDate(),
+                                           0, 0, 0, null, testing);
+                            p.FixTitle();
+
+                            SetField(p, a, "AltName", "altname");
+                            if (names.ContainsKey("altname"))
+                                p.AltName = a[names[""]];
+
+                            SetField(p, a, "SuffixCode", "suffix");
+                            SetField(p, a, "MiddleName", "middle");
+                            SetField(p, a, "MaidenName", "maidenname");
+                            SetField(p, a, "EmployerOther", "employer");
+                            SetField(p, a, "OccupationOther", "occupation");
+                            SetField(p, a, "CellPhone", "cellphone", GetDigits(a, "cellphone"));
+                            SetField(p, a, "WorkPhone", "workphone", GetDigits(a, "workphone"));
+                            SetField(p, a, "EmailAddress", "email");
+                            SetField(p, a, "EmailAddress2", "email2");
+                            SetField(p, a, "GenderId", "gender", Gender(a));
+                            SetField(p, a, "MaritalStatusId", "marital", Marital(a));
+                            SetField(p, a, "WeddingDate", "weddingdate", GetDate(a, "weddingdate"));
+                            SetField(p, a, "JoinDate", "joindate", GetDate(a, "joindate"));
+                            SetField(p, a, "DropDate", "dropdate", GetDate(a, "dropdate"));
+                            SetField(p, a, "BaptismDate", "baptismdate", GetDate(a, "baptismdate"));
+                            SetField(p, a, "PositionInFamilyId", "position", Position(a));
+                            SetField(p, a, "TitleCode", "title", Title(a));
+                            SetField(p, a, "CampusId", "campus", Campus(a));
+
+                            if (names.ContainsKey("memberstatus"))
+                            {
+                                var ms = a[names["memberstatus"]];
+                                var qms = from mm in Db.MemberStatuses
+                                          where mm.Description == ms
+                                          select mm;
+                                var m = qms.SingleOrDefault();
+                                if (m == null)
+                                {
+                                    var nx = Db.MemberStatuses.Max(mm => mm.Id) + 1;
+                                    m = new MemberStatus { Id = nx, Description = ms, Code = nx.ToString() };
+                                    Db.MemberStatuses.InsertOnSubmit(m);
+                                }
+                                p.MemberStatusId = m.Id;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                            throw;
                         }
                     }
 

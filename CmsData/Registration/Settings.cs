@@ -137,6 +137,12 @@ namespace CmsData.Registration
 			SetUniqueIds("AskExtraQuestions");
 			SetUniqueIds("AskCheckboxes");
 			SetUniqueIds("AskMenu");
+		    var sglist = new List<string>();
+            AskItems.ForEach(a => sglist.AddRange(a.SmallGroups()));
+            var q = sglist.GroupBy(mi => mi).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+            if (q.Any())
+                throw parser.GetException("Duplicate SmallGroup: " + string.Join(",", q));
+
 			parser.data = null;
 		}
 

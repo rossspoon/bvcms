@@ -413,6 +413,11 @@
     <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
+<!--
+    <Field Name="RecentAttendDayOfWeek" Title="Recent Attend DayOfWeek" Type="Integer" DisplayAs="RecentAttendDayOfWeek({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType" >
+      Selects attendees based on an attendance on the specified day of week (1=Sun, 2=Mon...7=Sat)
+    </Field>
+-->
     <Field Name="AttendPct" Title="Attendance %" Type="Number" DisplayAs="AttendPct({0}, {1}, {2})" Params="Program,Division,Organization">
      Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization.
     </Field>

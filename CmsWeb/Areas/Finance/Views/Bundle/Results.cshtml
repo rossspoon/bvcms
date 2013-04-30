@@ -12,6 +12,7 @@
             <th>Fund</th>
             <th>Check</th>
             <th>Notes</th>
+            <th>Posted</th>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +31,7 @@
             <td>@c.Fund</td>
             <td>@c.Check</td>
             <td class="notes">@c.Notes</td>
+            <td>@c.PostingDate.FormatDate()</td>
         </tr>
     }
     </tbody>

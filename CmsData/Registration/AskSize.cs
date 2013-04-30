@@ -48,6 +48,12 @@ namespace CmsData.Registration
 				q.Output(sb);
 			sb.AppendLine();
 		}
+        public override List<string> SmallGroups()
+        {
+            var q = (from i in list
+                     select i.SmallGroup).ToList();
+            return q;
+        }
 
 		public class Size
 		{

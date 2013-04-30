@@ -1170,7 +1170,6 @@ namespace CmsData
                     CreatedBy = Util.UserId1,
                     ContributionDate = d,
                     CreatedDate = now,
-                    DepositDate = now,
                     FundId = Db.Setting("DefaultFundId", "1").ToInt(),
                     RecordStatus = false,
                     TotalCash = 0,
