@@ -334,6 +334,7 @@
     <Compile Include="Classes\QuickBooks\QBDHelper.cs" />
     <Compile Include="Classes\QuickBooks\QBOHelper.cs" />
     <Compile Include="Picture.cs" />
+    <Compile Include="QueryBuilder\Serialize.cs" />
     <Compile Include="Volunteer.cs" />
     <Compile Include="FamilyExtra.cs" />
     <Compile Include="Generated\BackgroundCheck.cs" />

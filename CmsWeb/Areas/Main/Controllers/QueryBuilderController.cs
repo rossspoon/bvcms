@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.Mvc;
+using Elmah;
 using UtilityExtensions;
 using CmsWeb.Models;
 using CmsData;
@@ -221,9 +222,18 @@ namespace CmsWeb.Areas.Main.Controllers
                 return Content("Something went wrong<br><p>" + ex.Message + "</p>");
             }
             m.LoadScratchPad();
-
             var starttime = DateTime.Now;
-            m.PopulateResults();
+            try
+            {
+                m.PopulateResults();
+            }
+            catch (Exception ex)
+            {
+				var ex2 = new Exception("SearchBuilder error:\n" + m.Qb.Serialize(), ex);
+				ErrorLog errorLog = ErrorLog.GetDefault(null);
+				errorLog.Log(new Error(ex2));
+                return Content("Something went wrong<br><p>" + ex.Message + "</p>");
+            }
             DbUtil.LogActivity("QB Results ({0:N1}, {1})".Fmt(DateTime.Now.Subtract(starttime).TotalSeconds, m.QueryId));
             return View(m);
         }
