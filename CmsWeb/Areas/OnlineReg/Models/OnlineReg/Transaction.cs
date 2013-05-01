@@ -68,6 +68,8 @@ namespace CmsWeb.Models
         }
         public TransactionInfo GetTransactionInfo()
         {
+            if (List.Count == 0)
+                return null;
 			var p = List[0];
 			var pp = p.person;
             var r = new TransactionInfo();

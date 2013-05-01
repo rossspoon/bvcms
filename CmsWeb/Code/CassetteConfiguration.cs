@@ -38,13 +38,13 @@ namespace CmsWeb
                 , "Content/styles/layout.css"
                 , "Content/styles/Main.css"
                 , "Content/styles/pager.css"
-//              , "Content/awesome/css/font-awesome.css"
-                , "Content/chosen.css"
+                , "Content/css/font-awesome.css"
+//              , "Content/css/chosen.css"
             });
             bundles.Add<StylesheetBundle>("new2css", new[]
             {
-                  "Content/normalize.css"
-                , "Content/bvcms.css"
+                  "Content/css/normalize.css"
+                , "Content/css/bvcms.css"
                 , "Content/bootstrap-modal/css/bootstrap-modal.css"
               //, "Content/styles/joyride-1.0.5.css"
                 // Dave : need example of bootstrap tooltip
@@ -54,8 +54,8 @@ namespace CmsWeb
                 // Dave : where should I put any tweaks in css?
               //, "Content/styles/Main.css"
                 , "Content/styles/pager.css"
-                , "Content/font-awesome.css"
-                , "Content/chosen.css"
+                , "Content/css/font-awesome.css"
+                , "Content/css/chosen.css"
                 , "Content/moment-datepicker/datepicker.css"
             });
             bundles.Add<StylesheetBundle>("orgcss", new[]

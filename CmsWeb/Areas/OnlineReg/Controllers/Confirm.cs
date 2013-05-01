@@ -22,7 +22,9 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 {
 	public partial class OnlineRegController
 	{
-		public ActionResult ProcessPayment(PaymentForm pf)
+	    private string confirm;
+
+	    public ActionResult ProcessPayment(PaymentForm pf)
 		{
 			if (Session["FormId"] != null)
 				if ((Guid)Session["FormId"] == pf.FormId)
@@ -107,9 +109,17 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
     			}
 				Session["FormId"] = pf.FormId;
 				if (pf.DatumId > 0)
-					return View(ConfirmTransaction(m, ti.TransactionId));
+				{
+				    confirm = ConfirmTransaction(m, ti.TransactionId);
+				    if (confirm.StartsWith("error:"))
+				    {
+				        TempData["error"] = confirm.Substring(6);
+				        return Redirect("/Error");
+				    }
+				    return View(confirm);
+				}
 
-				ConfirmDuePaidTransaction(ti, ti.TransactionId, sendmail: true);
+			    ConfirmDuePaidTransaction(ti, ti.TransactionId, sendmail: true);
 				return View("ConfirmDuePaid", ti);
 			}
 			catch (Exception ex)
@@ -225,6 +235,8 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		private string ConfirmTransaction(OnlineRegModel m, string TransactionID, ExtraDatum ed = null)
 		{
 			m.ParseSettings();
+		    if (m.List.Count == 0)
+		        return "error: unexpected, no registrants found in confirmation";
 			string confirm = "Confirm";
 			var managingsubs = m.ManagingSubscriptions();
 			var choosingslots = m.ChoosingSlots();
@@ -423,7 +435,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
 			var confirm = ConfirmTransaction(m, transactionId, ed);
 			if (confirm.StartsWith("error:"))
-				return Content(confirm);
+			{
+			    TempData["error"] = confirm.Substring(6);
+			    return Redirect("/Error");
+			}
 			ViewBag.Url = m.URL;
 
 			//DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);

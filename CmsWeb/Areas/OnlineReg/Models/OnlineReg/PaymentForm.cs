@@ -171,6 +171,8 @@ namespace CmsWeb.Models
         public static PaymentForm CreatePaymentForm(OnlineRegModel m)
         {
             var r = m.GetTransactionInfo();
+            if (r == null)
+                return null;
 
             var pf = new PaymentForm
             {

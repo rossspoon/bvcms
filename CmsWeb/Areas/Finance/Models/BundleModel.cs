@@ -125,7 +125,8 @@ namespace CmsWeb.Areas.Finance.Models
                          Status = c.ContributionStatus.Description,
                          Check = c.CheckNo,
                          Notes = c.ContributionDesc,
-                         ReversedReturned = c.ContributionStatusId > 0
+                         ReversedReturned = c.ContributionStatusId > 0,
+                         PostingDate = c.PostingDate
                      };
             return q3;
         }

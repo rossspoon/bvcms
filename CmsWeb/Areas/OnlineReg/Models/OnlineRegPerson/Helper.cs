@@ -24,6 +24,9 @@ namespace CmsWeb.Models
 				if (_settings == null)
 				{
 					_settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, Settings>;
+                    if(_settings == null)
+                        Parent.ParseSettings();
+                    _settings = HttpContext.Current.Items["RegSettings"] as Dictionary<int, Settings>;
 				}
 				return _settings;
 			}
