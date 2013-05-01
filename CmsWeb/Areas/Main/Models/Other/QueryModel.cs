@@ -55,10 +55,11 @@ namespace CmsWeb.Models
     public class QueryModel : IQBUpdateable
     {
         private CMSDataContext Db;
-        public QueryBuilderClause Qb;
+        private QueryBuilderClause Qb;
         private int TagTypeId { get; set; }
         private string TagName { get; set; }
         private int? TagOwner { get; set; }
+        public QueryBuilderClause GetTopClause() { return Qb; } 
 
         public QueryModel()
         {

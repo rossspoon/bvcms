@@ -229,7 +229,7 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             catch (Exception ex)
             {
-				var ex2 = new Exception("SearchBuilder error:\n" + m.Qb.Serialize(), ex);
+				var ex2 = new Exception("SearchBuilder error:\n" + m.GetTopClause().ToXml(), ex);
 				ErrorLog errorLog = ErrorLog.GetDefault(null);
 				errorLog.Log(new Error(ex2));
                 return Content("Something went wrong<br><p>" + ex.Message + "</p>");

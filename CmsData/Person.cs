@@ -1150,7 +1150,6 @@ namespace CmsData
 
             var now = DateTime.Now;
             var d = Util.Now.Date;
-            d = d.AddDays(-(int)d.DayOfWeek); // prev sunday
             var q = from b in Db.BundleHeaders
                     where b.BundleHeaderTypeId == typecode
                     where b.BundleStatusId == BundleStatusCode.Open

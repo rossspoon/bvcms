@@ -614,6 +614,8 @@ namespace CmsWeb.Areas.Main.Controllers
 			var a = id.SplitStr("-", 2);
 			var b = a[1].SplitStr(".", 2);
 			var p = DbUtil.Db.LoadPersonById(b[1].ToInt());
+		    if (p == null)
+		        return Content(null);
 			switch (a[0])
 			{
 				case "s":

@@ -11,7 +11,7 @@ namespace CmsData
 {
     public partial class QueryBuilderClause
     {
-        public string Serialize()
+        public string ToXml()
         {
             XmlWriter w;
             var settings = new XmlWriterSettings();
@@ -27,7 +27,7 @@ namespace CmsData
             }
             return sb.ToString();
         }
-        public void Serialize(XmlWriter w)
+        public void ToXml(XmlWriter w)
         { 
             using (w)
             {
