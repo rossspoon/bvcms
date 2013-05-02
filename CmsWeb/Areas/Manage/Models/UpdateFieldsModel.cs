@@ -46,6 +46,8 @@ namespace CmsWeb.Models
                 "Occupation",
                 "School",
                 "ReceiveSMS",
+                "Background Check Date",
+                "Approval Codes",
             }.Select(x => new { value = x, text = x }),
                 "value", "text");
         }
@@ -80,6 +82,7 @@ namespace CmsWeb.Models
                 new TitleItems { title = "Contribution Statement Options", items = Model.EnvelopeOptions() },
                 new TitleItems { title = "Envelope Options", items = Model.EnvelopeOptions() },
                 new TitleItems { title = "Entry Point Codes", items = Model.EntryPoints() },
+                new TitleItems { title = "Approval Codes (negative to remove)", items = Model.VolunteerCodes() },
             };
         }
     }
