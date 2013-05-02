@@ -471,7 +471,7 @@
     <Compile Include="Areas\Search\SearchAreaRegistration.cs" />
     <Compile Include="Areas\Setup\Controllers\RolesController.cs" />
     <Compile Include="Areas\Setup\Controllers\TwilioController.cs" />
-    <Compile Include="Code\CassetteConfiguration.cs" />
+    <Compile Include="CassetteConfiguration.cs" />
     <Compile Include="Code\BundleModel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2322,7 +2322,7 @@
       <Name>CmsData</Name>
     </ProjectReference>
     <ProjectReference Include="..\CmsPresenter\CmsPresenter.csproj">
-      <Project>{947CFEF7-2731-493A-8876-C81FACBCF1F4}</Project>
+      <Project>{947cfef7-2731-493a-8876-c81facbcf1f4}</Project>
       <Name>CmsPresenter</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageData\ImageData.csproj">
@@ -2443,5 +2443,6 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="Cassette.targets" />
   <Import Project="Cassette.targets" />
 </Project>

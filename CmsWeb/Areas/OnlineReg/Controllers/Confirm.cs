@@ -434,12 +434,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			var m = Util.DeSerialize<OnlineRegModel>(ed.Data);
 			var confirm = ConfirmTransaction(m, transactionId, ed);
-			if (confirm.StartsWith("error:"))
-			{
-			    TempData["error"] = confirm.Substring(6);
-			    return Redirect("/Error");
-			}
-			ViewBag.Url = m.URL;
+            if (confirm.StartsWith("error"))
+            {
+                TempData["error"] = confirm.Substring(5);
+                return Redirect("/Error");
+            }
+            ViewBag.Url = m.URL;
 
 			//DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             ed.Completed = true;
