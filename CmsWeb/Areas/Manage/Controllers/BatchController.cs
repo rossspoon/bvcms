@@ -515,8 +515,14 @@ namespace CmsWeb.Areas.Manage.Controllers
                                     DbUtil.Db.VoluteerApprovalIds.DeleteOnSubmit(app);
                             }
                             else if (code > 0)
+                            {
                                 if (app == null)
                                     p.VoluteerApprovalIds.Add(new VoluteerApprovalId { ApprovalId = code,  });
+                            }
+                            else if (code == 0)
+                            {
+                                DbUtil.Db.VoluteerApprovalIds.DeleteAllOnSubmit(p.VoluteerApprovalIds);
+                            }
                         }
                         break;
                     case "Background Check Date":
