@@ -52,7 +52,6 @@ _ReSharper*/
 
 #NuGet
 packages/
-.nuget/
 
 #other
 secrets.config
