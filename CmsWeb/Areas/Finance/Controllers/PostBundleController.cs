@@ -48,6 +48,27 @@ namespace CmsWeb.Areas.Finance.Controllers
         {
             return Json(m.DeleteContribution());
         }
+        [HttpPost]
+        public ActionResult Move(int id, int? moveto)
+        {
+            var b = DbUtil.Db.BundleHeaders.SingleOrDefault(bb => bb.BundleHeaderId == moveto);
+            if (b == null)
+                return Content("cannot find bundle");
+            var bd = DbUtil.Db.BundleDetails.Single(dd => dd.ContributionId == id);
+            var pbid = bd.BundleHeaderId;
+            bd.BundleHeaderId = b.BundleHeaderId;
+            DbUtil.Db.SubmitChanges();
+            var q = (from d in DbUtil.Db.BundleDetails
+                     where d.BundleHeaderId == pbid
+                     group d by d.BundleHeaderId into g
+                     select new
+                     {
+                         totalitems = g.Sum(d =>
+                             d.Contribution.ContributionAmount).ToString2("N2"),
+                         itemcount = g.Count(),
+                     }).Single();
+            return Json(new { status = "ok", q.totalitems, q.itemcount });
+        }
         public ActionResult Names(string term)
         {
             var n = PostBundleModel.Names(term, 10).ToArray();
@@ -111,8 +132,8 @@ namespace CmsWeb.Areas.Finance.Controllers
                     case "a":
                         c.ContributionAmount = value.ToDecimal();
                         DbUtil.Db.SubmitChanges();
-                		var m = new PostBundleModel();
-                		return Json(m.ContributionRowData(this, iid));
+                        var m = new PostBundleModel();
+                        return Json(m.ContributionRowData(this, iid));
                     case "f":
                         c.FundId = value.ToInt();
                         DbUtil.Db.SubmitChanges();

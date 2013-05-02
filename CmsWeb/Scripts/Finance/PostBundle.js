@@ -324,8 +324,21 @@
     });
     $("#moveit").click(function(ev) {
         ev.preventDefault();
-        $.unblockUI();
-        alert("moved or failed");
+        $.post("/PostBundle/Move/" + $("#editid").val(), { moveto: $("#moveto").val() }, function(ret) {
+            $.unblockUI();
+            if (ret.status === "ok") {
+                $('#editid').val('');
+                $('#entry input').val('');
+                $('#fund').val($('#fundid').val());
+                $('#pid').focus();
+                $('#totalitems').text(ret.totalitems);
+                $('#itemcount').text(ret.itemcount);
+                keyallowed = true;
+                $.growlUI("Contribution", "Contribution Moved");
+            } else {
+                $.growlUI("Move To Bundle", ret);
+            }
+        });
     });
     $("#movecancel").click(function(ev) {
         ev.preventDefault();
