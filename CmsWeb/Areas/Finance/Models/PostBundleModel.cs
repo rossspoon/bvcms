@@ -37,6 +37,7 @@ namespace CmsWeb.Models
         public string PLNT { get; set; }
         public string notes { get; set; }
         public string checkno { get; set; }
+        public DateTime? contributiondate { get; set; }
         private BundleHeader _bundle;
         public string FundName { get; set; }
         public bool DefaultFundIsPledge { get; set; }
@@ -91,6 +92,7 @@ namespace CmsWeb.Models
                         Zip = d.Contribution.Person.PrimaryZip,
                         Age = d.Contribution.Person.Age,
                         extra = d.Contribution.ExtraDatum.Data,
+                        Date = d.Contribution.ContributionDate,
                         PLNT = ContributionTypeCode.SpecialTypes.Contains(d.Contribution.ContributionTypeId) ? d.Contribution.ContributionType.Code : "",
                         memstatus = d.Contribution.Person.MemberStatus.Description,
                     };
@@ -314,7 +316,7 @@ namespace CmsWeb.Models
                     CreatedDate = bd.CreatedDate,
                     FundId = fund,
                     PeopleId = pid.ToInt2(),
-                    ContributionDate = bundle.ContributionDate,
+                    ContributionDate = contributiondate ?? bundle.ContributionDate,
                     ContributionAmount = amt,
                     ContributionStatusId = 0,
                     ContributionTypeId = type,
@@ -356,6 +358,7 @@ namespace CmsWeb.Models
             c.ContributionAmount = amt;
             c.ContributionTypeId = type;
             c.ContributionDesc = notes;
+            c.ContributionDate = contributiondate;
             c.CheckNo = checkno;
             DbUtil.Db.SubmitChanges();
             return ContributionRowData(ctl, c.ContributionId);
@@ -1180,6 +1183,7 @@ namespace CmsWeb.Models
             public string City { get; set; }
             public string State { get; set; }
             public string Zip { get; set; }
+            public DateTime? Date { get; set; }
             public string PLNT { get; set; }
             public string memstatus { get; set; }
             public string CityStateZip

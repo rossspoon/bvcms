@@ -89,7 +89,7 @@
                 </table>
             </td>
             <td>
-                <div style="border: 1px dotted red; margin-left: 2em; padding: 1em;font-style: italic;width: 24em">
+                <div style="border: 1px dotted red; margin-left: 2em; padding: 1em; font-style: italic; width: 24em">
                     <b>Please note:</b> the name search dropdown has changed to work like the Quick Search box up in the header.
                     You now search by last only, or first[space]last (partial names work), or a 7 digit phone number, or a peopleid.
                     GoesBy and Maiden names work too.
@@ -124,7 +124,27 @@
                     <input id="checkno" name="checkno" type="text" style="width: 4em" /></td>
                 <td>
                     <input id="notes" name="notes" type="text" style="width: 98%; min-width: 15em;" /></td>
-                <td colspan="3"><a class="update bt blue" href='#'>update</a></td>
+                <td colspan="2"><a class="update bt blue" href='#'>update</a></td>
+                <td>
+                    <a href="#" id="gear" class="trigger-dropdown" style="display: none">
+                        <i class="icon-cog icon-large"></i>
+                    </a>
+                    <div class="dropdown-menu has-tip">
+                        <ul>
+                            <li><a id="showmove" href="#">Move To Another Bundle</a></li>
+                            <li><a id="showdate" href="#">Edit Contribution Date</a></li>
+                        </ul>
+                    </div>
+                    <div id="movebundle" style="display:none">
+                        <p><label>BundleId:</label><input type="text" id="newbundleid"/></p>
+                        <p><a href="#" id="movecancel" class="bt">Cancel</a>
+                           <a href="#" id="moveit" class="bt blue">Move</a></p>
+                    </div>
+                    <div id="editdate" style="display:none; cursor: default">
+                        <p><label>Date:</label><input type="text" id="contributiondate" name="contributiondate" /></p>
+                        <p><a href="#" id="editdatedone" class="bt blue">Done</a></p>
+                    </div>
+                </td>
             </tr>
         </thead>
         <tbody>

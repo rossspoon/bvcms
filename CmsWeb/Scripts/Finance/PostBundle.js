@@ -138,6 +138,8 @@
         $('#editid').val(tr.attr("cid"));
         $('#pid').val($.trim($("a.pid", tr).text()));
         $('#name').val($("td.name", tr).text());
+        $('#contributiondate').val($(".date", tr).val());
+        $("#gear").show();
         $('#fund').val($("td.fund", tr).attr('val'));
 
         var plnt = $("td.PLNT", tr).text();
@@ -236,6 +238,7 @@
         }
     });
     $.PostRow = function (options) {
+        $("#gear").hide();
         if (!options.q) {
             var n = parseFloat($('#amt').val());
             var plnt = $("#entry .PLNT").text();
@@ -313,6 +316,31 @@
     });
     $("#totalitems").text($("#titems").val());
     $("#totalcount").text($("#tcount").val());
+
+    
+    $("#showmove").click(function(ev) {
+        ev.preventDefault();
+        $.blockUI({ message: $('#movebundle') });
+    });
+    $("#moveit").click(function(ev) {
+        ev.preventDefault();
+        $.unblockUI();
+        alert("moved or failed");
+    });
+    $("#movecancel").click(function(ev) {
+        ev.preventDefault();
+        $.unblockUI();
+    });
+    
+    $("#showdate").click(function(ev) {
+        ev.preventDefault();
+        $("#contributiondate").datepicker();
+        $.blockUI({ message: $('#editdate')});
+    });
+    $("#editdatedone").click(function(ev) {
+        ev.preventDefault();
+        $.unblockUI();
+    });
 });
 function AddSelected(ret) {
     $('#searchDialog').dialog("close");

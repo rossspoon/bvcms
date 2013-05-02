@@ -16,7 +16,9 @@
     </td>
     <td class="checkno">@Model.CheckNo</td>
     <td class="notes">@Model.Notes</td>
-    <td><small><a class="edit bt" href='#'>edit</a></small></td>
+    <td><small><a class="edit bt" href='#'>edit</a></small>
+        <input type="hidden" class="date" value="@Model.Date.FormatDate()"/>
+    </td>
     <td><small><a class="split bt" href='#'>split</a></small></td>
 	<td><a class="delete" href='#'><img src="/images/delete.gif"/></a></td>
 </tr>

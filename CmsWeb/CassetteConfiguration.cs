@@ -25,6 +25,7 @@ namespace CmsWeb
                 , "Content/styles/joyride-1.0.5.css"
                 , "Content/styles/jquery.multiselect.css"
                 , "Content/styles/jquery.tooltip.css"
+                , "Content/css/font-awesome.css"
         	});
 
             bundles.Add<StylesheetBundle>("newcss", new[]
