@@ -143,42 +143,42 @@ namespace CmsWeb.Areas.Manage.Controllers
         }
         [Authorize(Roles = "Admin")]
         public ActionResult UpdateOrg(string text)
-		{
-			if (Request.HttpMethod.ToUpper() == "GET")
-			{
-				ViewData["text"] = "";
-				return View();
-			}
-			var lines = text.Split('\n');
-			var names = lines[0].Split('\t');
+        {
+            if (Request.HttpMethod.ToUpper() == "GET")
+            {
+                ViewData["text"] = "";
+                return View();
+            }
+            var lines = text.Split('\n');
+            var names = lines[0].Split('\t');
 
-			for (var i = 1; i < lines.Length; i++)
-			{
-				var a = lines[i].Split('\t');
-				var oid = a[0].ToInt();
-				var o = DbUtil.Db.LoadOrganizationById(oid);
-				for (var c = 1; c < a.Length; c++)
-					switch (names[c].Trim())
-					{
-						case "Campus":
+            for (var i = 1; i < lines.Length; i++)
+            {
+                var a = lines[i].Split('\t');
+                var oid = a[0].ToInt();
+                var o = DbUtil.Db.LoadOrganizationById(oid);
+                for (var c = 1; c < a.Length; c++)
+                    switch (names[c].Trim())
+                    {
+                        case "Campus":
                             if (a[c].AllDigits())
                             {
                                 o.CampusId = a[c].ToInt();
                                 if (o.CampusId == 0)
                                     o.CampusId = null;
                             }
-							break;
-						case "CanSelfCheckin":
-							o.CanSelfCheckin = a[c].ToBool2();
-							break;
-						case "RegStart":
-							o.RegStart = a[c].ToDate();
-							break;
-						case "RegEnd":
-							o.RegEnd = a[c].ToDate();
-							break;
+                            break;
+                        case "CanSelfCheckin":
+                            o.CanSelfCheckin = a[c].ToBool2();
+                            break;
+                        case "RegStart":
+                            o.RegStart = a[c].ToDate();
+                            break;
+                        case "RegEnd":
+                            o.RegEnd = a[c].ToDate();
+                            break;
                         case "Schedule":
-                            if(a[c].HasValue() && a[c]!="None")
+                            if (a[c].HasValue() && a[c] != "None")
                             {
                                 var scin = Organization.ParseSchedule(a[c].TrimEnd());
                                 var sc = o.OrgSchedules.FirstOrDefault();
@@ -191,84 +191,84 @@ namespace CmsWeb.Areas.Manage.Controllers
                                     o.OrgSchedules.Add(scin);
                             }
                             break;
-						case "BirthDayStart":
-							o.BirthDayStart = a[c].ToDate();
-							break;
-						case "BirthDayEnd":
-							o.BirthDayEnd = a[c].ToDate();
-							break;
-						case "EntryPoint":
+                        case "BirthDayStart":
+                            o.BirthDayStart = a[c].ToDate();
+                            break;
+                        case "BirthDayEnd":
+                            o.BirthDayEnd = a[c].ToDate();
+                            break;
+                        case "EntryPoint":
                             if (a[c].AllDigits())
                             {
                                 var id = a[c].ToInt();
                                 if (id > 0)
                                     o.EntryPointId = id;
                             }
-							break;
-						case "LeaderType":
+                            break;
+                        case "LeaderType":
                             if (a[c].AllDigits())
                             {
                                 var id = a[c].ToInt();
                                 if (id > 0)
                                     o.LeaderMemberTypeId = id;
                             }
-							break;
-						case "SecurityType":
-							o.SecurityTypeId = string.Compare(a[c], "LeadersOnly", true) == 0 ? 2 : string.Compare(a[c], "UnShared", true) == 0 ? 3 : 0;
-							break;
-						case "FirstMeeting":
-							o.FirstMeetingDate = a[c].ToDate();
-							break;
-						case "Gender":
-							o.GenderId = a[c] == "Male" ? (int?)1 : a[c] == "Female" ? (int?)2 : null;
-							break;
-						case "GradeAgeStart":
-							o.GradeAgeStart = a[c].ToInt2();
-							break;
-						case "MainFellowshipOrg":
-							o.IsBibleFellowshipOrg = a[c].ToBool2();
-							break;
-						case "LastDayBeforeExtra":
-							o.LastDayBeforeExtra = a[c].ToDate();
-							break;
-						case "LastMeeting":
-							o.LastMeetingDate = a[c].ToDate();
-							break;
-						case "Limit":
-							o.Limit = a[c].ToInt2();
-							break;
-						case "Location":
-							o.Location = a[c];
-							break;
-						case "Name":
-							o.OrganizationName = a[c];
-							break;
-						case "NoSecurityLabel":
-							o.NoSecurityLabel = a[c].ToBool2();
-							break;
-						case "NumCheckInLabels":
-							o.NumCheckInLabels = a[c].ToInt2();
-							break;
-						case "NumWorkerCheckInLabels":
-							o.NumWorkerCheckInLabels = a[c].ToInt2();
-							break;
-						case "OnLineCatalogSort":
-							o.OnLineCatalogSort = a[c] == "0" ? (int?)null : a[c].ToInt2();
-							break;
-						case "OrganizationStatusId":
-							o.OrganizationStatusId = a[c].ToInt();
-							break;
-						case "PhoneNumber":
-							o.PhoneNumber = a[c];
-							break;
-						case "RollSheetVisitorWks":
-							o.RollSheetVisitorWks = a[c] == "0" ? (int?)null : a[c].ToInt2();
-							break;
-					}
-				DbUtil.Db.SubmitChanges();
-			}
-			return Redirect("/");
-		}
+                            break;
+                        case "SecurityType":
+                            o.SecurityTypeId = string.Compare(a[c], "LeadersOnly", true) == 0 ? 2 : string.Compare(a[c], "UnShared", true) == 0 ? 3 : 0;
+                            break;
+                        case "FirstMeeting":
+                            o.FirstMeetingDate = a[c].ToDate();
+                            break;
+                        case "Gender":
+                            o.GenderId = a[c] == "Male" ? (int?)1 : a[c] == "Female" ? (int?)2 : null;
+                            break;
+                        case "GradeAgeStart":
+                            o.GradeAgeStart = a[c].ToInt2();
+                            break;
+                        case "MainFellowshipOrg":
+                            o.IsBibleFellowshipOrg = a[c].ToBool2();
+                            break;
+                        case "LastDayBeforeExtra":
+                            o.LastDayBeforeExtra = a[c].ToDate();
+                            break;
+                        case "LastMeeting":
+                            o.LastMeetingDate = a[c].ToDate();
+                            break;
+                        case "Limit":
+                            o.Limit = a[c].ToInt2();
+                            break;
+                        case "Location":
+                            o.Location = a[c];
+                            break;
+                        case "Name":
+                            o.OrganizationName = a[c];
+                            break;
+                        case "NoSecurityLabel":
+                            o.NoSecurityLabel = a[c].ToBool2();
+                            break;
+                        case "NumCheckInLabels":
+                            o.NumCheckInLabels = a[c].ToInt2();
+                            break;
+                        case "NumWorkerCheckInLabels":
+                            o.NumWorkerCheckInLabels = a[c].ToInt2();
+                            break;
+                        case "OnLineCatalogSort":
+                            o.OnLineCatalogSort = a[c] == "0" ? (int?)null : a[c].ToInt2();
+                            break;
+                        case "OrganizationStatusId":
+                            o.OrganizationStatusId = a[c].ToInt();
+                            break;
+                        case "PhoneNumber":
+                            o.PhoneNumber = a[c];
+                            break;
+                        case "RollSheetVisitorWks":
+                            o.RollSheetVisitorWks = a[c] == "0" ? (int?)null : a[c].ToInt2();
+                            break;
+                    }
+                DbUtil.Db.SubmitChanges();
+            }
+            return Redirect("/");
+        }
         [Authorize(Roles = "Admin")]
         public ActionResult UpdatePeople0(string text)
         {
@@ -493,6 +493,43 @@ namespace CmsWeb.Areas.Manage.Controllers
                         break;
                     case "Envelope Options":
                         p.EnvelopeOptionsId = m.NewValue.ToInt();
+                        break;
+                    case "Approval Codes":
+                        {
+                            var i = p.Volunteers.SingleOrDefault();
+                            if (i == null)
+                            {
+                                i = new Volunteer { PeopleId = p.PeopleId };
+                                DbUtil.Db.Volunteers.InsertOnSubmit(i);
+                                DbUtil.Db.SubmitChanges();
+                            }
+
+                            var code = m.NewValue.ToInt();
+                            var app = (from v in DbUtil.Db.VoluteerApprovalIds
+                                       where v.ApprovalId == Math.Abs(code)
+                                       where v.PeopleId == p.PeopleId
+                                       select v).SingleOrDefault();
+                            if (code < 0)
+                            {
+                                if (app != null)
+                                    DbUtil.Db.VoluteerApprovalIds.DeleteOnSubmit(app);
+                            }
+                            else if (code > 0)
+                                if (app == null)
+                                    p.VoluteerApprovalIds.Add(new VoluteerApprovalId { ApprovalId = code,  });
+                        }
+                        break;
+                    case "Background Check Date":
+                        {
+                            var i = p.Volunteers.SingleOrDefault();
+                            if (i == null)
+                            {
+                                i = new Volunteer { PeopleId = p.PeopleId };
+                                DbUtil.Db.Volunteers.InsertOnSubmit(i);
+                                DbUtil.Db.SubmitChanges();
+                            }
+                            i.ProcessedDate = m.NewValue.ToDate();
+                        }
                         break;
                     case "Title":
                         p.TitleCode = m.NewValue;
