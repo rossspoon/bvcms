@@ -51,9 +51,12 @@ namespace CmsWeb.Areas.Finance.Controllers
         [HttpPost]
         public ActionResult Move(int id, int? moveto)
         {
-            var b = DbUtil.Db.BundleHeaders.SingleOrDefault(bb => bb.BundleHeaderId == moveto);
+            var b = (from h in DbUtil.Db.BundleHeaders
+                     where h.BundleStatusId == BundleStatusCode.Open
+                     where h.BundleHeaderId == moveto
+                     select h).SingleOrDefault();
             if (b == null)
-                return Content("cannot find bundle");
+                return Content("cannot find bundle, or not open");
             var bd = DbUtil.Db.BundleDetails.Single(dd => dd.ContributionId == id);
             var pbid = bd.BundleHeaderId;
             bd.BundleHeaderId = b.BundleHeaderId;
