@@ -12,6 +12,8 @@ td.left, th.left {
 td.center, th.center {
     text-align: center;
 }
+
+/* Dave: I am adding these so that the controls are not spaced so far apart */
 .control-group {
     margin-bottom: auto;
 }

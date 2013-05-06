@@ -187,6 +187,7 @@ namespace CmsWeb
             AddOneScript(bundles, "Admin/Users");
 
             AddOneScript(bundles, "Dialog/OrgMemberDialog");
+            AddOneScript(bundles, "Dialog/OrgMembersDialog");
             AddOneScript(bundles, "Dialog/UserDialog");
             AddOneScript(bundles, "Dialog/SearchAdd");
             AddOneScript(bundles, "Dialog/SearchDivisions");
