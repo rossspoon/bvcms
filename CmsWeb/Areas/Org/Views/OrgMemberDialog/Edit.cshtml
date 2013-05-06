@@ -3,8 +3,8 @@
 @using CmsData
 @model CmsData.OrganizationMember
 @{ 
-    string comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId;
-    Settings setting = new Settings(Model.Organization.RegSetting, DbUtil.Db, Model.OrganizationId);
+    var comboid = "-" + Model.OrganizationId + "-" + Model.PeopleId;
+    var setting = new Settings(Model.Organization.RegSetting, DbUtil.Db, Model.OrganizationId);
 }
 
 <table class="Design2" cellspacing="5">
@@ -72,7 +72,7 @@
     <tr>
         <th class='right'>ShirtSize:</th>
         <td>@Html.DropDownList("ShirtSize",
-                CmsWeb.Models.OnlineRegPersonModel.ShirtSizes(CmsData.DbUtil.Db, Model.Organization))</td>
+                CmsWeb.Models.OnlineRegPersonModel.ShirtSizes(DbUtil.Db, Model.Organization))</td>
     </tr>
 }
     <tr>
@@ -81,8 +81,8 @@
     </tr>
 <tr><td></td></tr>
     <tr><td colspan="2" class="right">
-            <a class="display btn" href="/OrgMemberDialog/Display/@Model.OrganizationId?pid=@Model.PeopleId">cancel</a>
-            <a href="/OrgMemberDialog/Update/@Model.OrganizationId?pid=@Model.PeopleId" class="submitbutton btn btn-primary">Save Changes</a>
+            <a class="display btn" href="/OrgMemberDialog2/Display/@Model.OrganizationId?pid=@Model.PeopleId">cancel</a>
+            <a class="submitbutton btn btn-primary" href="/OrgMemberDialog2/Update/@Model.OrganizationId?pid=@Model.PeopleId">Save Changes</a>
         </td>
     </tr>
 </table>

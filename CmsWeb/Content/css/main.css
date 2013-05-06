@@ -12,3 +12,9 @@ td.left, th.left {
 td.center, th.center {
     text-align: center;
 }
+.control-group {
+    margin-bottom: auto;
+}
+.form-horizontal .control-group {
+    margin-bottom: auto;
+}
