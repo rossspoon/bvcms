@@ -39,21 +39,21 @@ namespace CmsWeb.Areas.Manage.Controllers
 			{
 				Thread.CurrentThread.Priority = ThreadPriority.Lowest;
 				var Db = new CMSDataContext(Util.GetConnectionString(host));
-				try
-				{
+//				try
+//				{
 					var m = new UploadPeopleModel(Db, pid ?? 0);
 					m.DoUpload(text, testing: true);
 					Db.Dispose();
 					Db = new CMSDataContext(Util.GetConnectionString(host));
 					m = new UploadPeopleModel(Db, pid ?? 0);
 					m.DoUpload(text);
-				}
-				catch (Exception ex)
-				{
-					var rt = Db.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
-					rt.Error = ex.Message.Truncate(200);
-					Db.SubmitChanges();
-				}
+//				}
+//				catch (Exception ex)
+//				{
+//					var rt = Db.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
+//					rt.Error = ex.Message.Truncate(200);
+//					Db.SubmitChanges();
+//				}
 			});
 			return Redirect("/UploadPeople/Progress");
 		}

@@ -316,6 +316,8 @@
     <Compile Include="Areas\Org\OrgAreaRegistration.cs" />
     <Compile Include="Areas\People\Controllers\PersonController.cs" />
     <Compile Include="Areas\Org\Controllers\VolunteersController.cs" />
+    <Compile Include="Areas\People\Models\Person\OrgMemberInfo.cs" />
+    <Compile Include="Areas\People\Models\Person\PreviousEnrollments.cs" />
     <Compile Include="Areas\People\Models\Person\PictureResult.cs" />
     <Compile Include="Areas\People\Models\Person\AddressInfo.cs">
       <SubType>Code</SubType>
@@ -494,6 +496,7 @@
     <Content Include="Content\css\bootstrap-responsive.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\person.css" />
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\icons-18-black.png" />
     <Content Include="Content\images\icons-18-white.png" />
@@ -673,9 +676,12 @@
     <Content Include="ckeditor2\skins\kama\images\toolbar_start.gif" />
     <Content Include="ckeditor2\styles.js" />
     <Content Include="Content\autocomplete\jquery-ui-1.10.2.custom.css" />
+    <Content Include="Scripts\Bootstrap\bootstrap-ajax.js" />
     <Content Include="Scripts\Bootstrap\bootstrap.min.js.map">
       <DependentUpon>bootstrap.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\Bootstrap\bootstrapx-clickover.js" />
+    <Content Include="Scripts\Bootstrap\spin.min.js" />
     <Content Include="Scripts\Chosen\chosen.jquery.min.js.map">
       <DependentUpon>chosen.jquery.js</DependentUpon>
     </Content>
@@ -691,7 +697,11 @@
     <Content Include="Scripts\jQuery\jquery.transpose.min.js.map">
       <DependentUpon>jquery.transpose.js</DependentUpon>
     </Content>
+    <Content Include="Areas\People\Views\Person\PreviousEnrollments.cshtml" />
+    <Content Include="Areas\Dialog\Views\OrgMemberDialog\Index2.cshtml" />
+    <Content Include="Areas\Dialog\Views\OrgMemberDialog\Display2.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.min.js" />
     <Content Include="Scripts\Mobile\jquery.mobile-1.3.0.js" />
@@ -1238,6 +1248,7 @@
     <Content Include="Scripts\Moment\moment.min.js.map">
       <DependentUpon>moment.js</DependentUpon>
     </Content>
+    <Content Include="Views\Shared\Pager3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">
@@ -1467,7 +1478,6 @@
     <Content Include="Areas\People\Views\Person\Old\DuplicateRow.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\DuplicatesGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\ExtraValue.cshtml" />
-    <Content Include="Areas\People\Views\Person\Old\EnrollGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\ExtrasGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\FamilyGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\GrowthDisplay.cshtml" />
@@ -1544,7 +1554,7 @@
     <Content Include="Areas\People\Views\Person\Snapshot.cshtml" />
     <Content Include="Areas\People\Views\Person\Toolbar.cshtml" />
     <Content Include="Areas\People\Views\Person\Dialogs.cshtml" />
-    <Content Include="Areas\People\Views\Person\DisplayTemplates\CurrentEnrollments.cshtml" />
+    <Content Include="Areas\People\Views\Person\CurrentEnrollments.cshtml" />
     <Content Include="Areas\People\Views\Person\MemberProfile.cshtml" />
     <Content Include="Areas\Main\Views\Organization\EditorTemplates\DateTimePicker.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\OrganizationStructure.cshtml" />

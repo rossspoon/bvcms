@@ -162,7 +162,15 @@ namespace CmsWeb.Areas.People.Controllers
 			var m = new CurrentEnrollments(id);
 			UpdateModel(m.Pager);
 			DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
-			return View("DisplayTemplates/CurrentEnrollments", m);
+		    return View("CurrentEnrollments", m);
+		}
+		[HttpPost]
+		public ActionResult PrevEnrollGrid(int id)
+		{
+			var m = new PreviousEnrollments(id);
+			UpdateModel(m.Pager);
+			DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
+		    return View("PreviousEnrollments", m);
 		}
 //		[HttpPost]
 //		public ActionResult PrevEnrollGrid(int id)

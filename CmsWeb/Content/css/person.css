@@ -1,0 +1,33 @@
+﻿.section span {
+    font-style: italic;
+    font-size: 110%;
+}
+
+table.enrollments div.indent {
+    padding-left: 2em!important;
+}
+
+table.enrollments a[rel="reveal"] {
+    text-decoration: none;
+}
+
+table.enrollments tr.details td {
+    border-top: none;
+    padding: 0;
+}
+
+    table.enrollments tr.details td:first-child {
+        padding-left: 1em;
+    }
+
+table.enrollments tr.oddrow > td {
+    background-color: #f9f9f9;
+}
+
+#personal {
+    margin-top: -2.4em;
+}
+
+#fieldset1 {
+    margin-top: -3.5em;
+}

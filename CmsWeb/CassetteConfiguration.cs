@@ -140,7 +140,7 @@ namespace CmsWeb
                 , "Scripts/moment/moment-datepicker.js"
                 , "Scripts/Autocomplete/jquery-ui-1.10.2.custom.js"
                 , "Scripts/chosen/chosen.jquery.js"
-                , "Scripts/js/Pager.js"
+                , "Scripts/js/Pager3.js"
               //, "Scripts/ExportToolBar.js"
                 , "Scripts/js/headermenu2.js"
             });
@@ -177,6 +177,9 @@ namespace CmsWeb
             {
                  "Scripts/jquery/jquery.address-1.5.js"
                 ,"Scripts/People/person1.js"
+//                ,"Scripts/Bootstrap/bootstrap-ajax.js"
+//                ,"Scripts/Bootstrap/spin.min.js"
+//                ,"Scripts/Bootstrap/bootstrapx-clickover.js"
 //              ,"Scripts/js/person2.js"
             });
             AddOneScript(bundles, "Admin/Divisions");

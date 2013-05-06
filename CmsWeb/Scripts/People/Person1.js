@@ -1,8 +1,4 @@
 ﻿$(function () {
-    //    $("#involvement").tabs();
-    //    $("#nav-tab").tabs();
-    //    $("#nav-tab").show();
-    //$(".bt").button();
     //    $('#dialogbox').dialog({
     //        title: 'Search Dialog',
     //        bgiframe: true,
@@ -167,41 +163,32 @@
         var q = f.serialize();
         $.post(f.attr('action'), q, function (ret) {
             $(f).html(ret).ready(function () {
-                $('table.grid > tbody > tr:even', f).addClass('alt');
-                $('.bt').button();
-                $(".datepicker").datepicker();
-                $.extraEditable('#extravalues');
-                $('.tooltip', f).tooltip({ showURL: false, showBody: '|' });
+                $.setClickOvers();
+                //$.extraEditable('#extravalues');
             });
         });
         return false;
     };
-    //    $('#memberDialog').dialog({
-    //        title: 'Member Dialog',
-    //        bgiframe: true,
-    //        autoOpen: false,
-    //        width: 600,
-    //        height: 550,
-    //        modal: true,
-    //        overlay: {
-    //            opacity: 0.5,
-    //            background: "black"
-    //        }, close: function () {
-    //            $('iframe', this).attr("src", "");
-    //        }
-    //    });
-    //    $('form a.membertype').live("click", function (e) {
-    //        e.preventDefault();
-    //        var d = $('#memberDialog');
-    //        $('iframe', d).attr("src", this.href);
-    //        d.dialog("open");
-    //    });
-    //    $('#previous-tab form a.membertype').live("click", function (e) {
-    //        e.preventDefault();
-    //        var d = $('#memberDialog');
-    //        $('iframe', d).attr("src", this.href);
-    //        d.dialog("open");
-    //    });
+//        $('#memberDialog').dialog({
+//            title: 'Member Dialog',
+//            bgiframe: true,
+//            autoOpen: false,
+//            width: 600,
+//            height: 550,
+//            modal: true,
+//            overlay: {
+//                opacity: 0.5,
+//                background: "black"
+//            }, close: function () {
+//                $('iframe', this).attr("src", "");
+//            }
+//        });
+//        $('#previous-tab form a.membertype').live("click", function (e) {
+//            e.preventDefault();
+//            var d = $('#memberDialog');
+//            $('iframe', d).attr("src", this.href);
+//            d.dialog("open");
+//        });
 
     $(".CreateAndGo").click(function () {
         if (confirm($(this).attr("confirm")))
@@ -211,16 +198,48 @@
         return false;
     });
 
-    $("#enrollment-link").click(function () {
-        $.showTable($('#current-tab form'));
+    $.setClickOvers = function() {
+        $('tr a').not('a.evlink').click(function(e){
+            e.stopPropagation(); 
+        });
+        $('form a.membertype').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $("#OrgMemberDialog").modal({ remote: $(this).attr("href") });
+        });
+        $("tr.section.notshown").live("click", function(ev) {
+            ev.preventDefault();
+            $(this).removeClass("notshown").addClass("shown");
+            $(this).nextUntil("tr.section").find("div.collapse").collapse('show');
+        });
+        $("tr.section.shown").live("click", function(ev) {
+            ev.preventDefault();
+            $(this).nextUntil("tr.section").find("div.collapse").collapse('hide');
+            $(this).removeClass("shown").addClass("notshown");
+        });
+        $('a[rel="reveal"]').click(function(ev) {
+            ev.preventDefault();
+            $(this).parents("tr").next("tr").find("div.collapse").collapse('toggle');
+        });
+        $('tr.organization').click(function(ev) {
+            ev.preventDefault();
+            $(this).next("tr").find("div.collapse").collapse('toggle');
+        });
+        $('tr.details').click(function(ev) {
+            ev.preventDefault();
+            $(this).find("div.collapse").collapse('hide');
+        });
+    };
+    $("#currentLink").click(function () {
+        $.showTable($('#current form'));
     });
-    $("#previous-link").click(function () {
-        $.showTable($('#previous-tab form'));
+    $("#previousLink").click(function () {
+        $.showTable($('#previous form'));
     });
-    $("#pending-link").click(function () {
-        $.showTable($('#pending-tab form'));
+    $("#pendingLink").click(function () {
+        $.showTable($('#pending form'));
     });
-    $("#attendance-link").click(function () {
+    $("#attendanceLink").click(function () {
         $.showTable($('#attendance-tab form'));
     });
     $("#contacts-link").click(function () {
@@ -234,7 +253,6 @@
             $.post(f.attr('action'), null, function (ret) {
                 $(f).html(ret).ready(function () {
                     $.UpdateForSection(f);
-                    //ShowMemberExtras();
                 });
             });
             $.showTable($("#extras-tab form"));

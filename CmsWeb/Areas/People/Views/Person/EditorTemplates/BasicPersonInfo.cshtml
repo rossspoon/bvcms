@@ -1,7 +1,7 @@
 ﻿@model CmsWeb.Areas.People.Models.Person.BasicPersonInfo
 @FormAction()
 <div class="row-fluid">
-    <fieldset class="display">
+    <fieldset id="fieldset1" class="display">
         @Html.EditorFor(m => m.Title)
         @Html.EditorFor(m => m.FirstName)
         @Html.EditorFor(m => m.GoesBy)
