@@ -5,11 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using CmsData;
 using UtilityExtensions;
-using CmsWeb.Models;
 using CmsWeb.Models.OrganizationPage;
 using CmsData.Codes;
 
-namespace CmsWeb.Areas.Dialog.Controllers
+namespace CmsWeb.Areas.Org.Controllers
 {
     public class OrgMemberDialogController : CmsStaffController
     {
@@ -45,7 +44,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(int id, int pid)
         {
-            ViewData["MemberTypes"] = QueryModel.ConvertToSelect(CodeValueModel.MemberTypeCodes(), "Id");
+            ViewData["MemberTypes"] = CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.MemberTypeCodes(), "Id");
             var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == id);
             return View(om);
         }
@@ -67,7 +66,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             catch (Exception)
             {
-                ViewData["MemberTypes"] = QueryModel.ConvertToSelect(CodeValueModel.MemberTypeCodes(), "Id");
+                ViewData["MemberTypes"] = CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.MemberTypeCodes(), "Id");
                 return View("Edit", om);
             }
             return View("Display", om);

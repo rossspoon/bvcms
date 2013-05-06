@@ -53,8 +53,7 @@ namespace CmsWeb
                 // Dave : need example of alert
               //, "Content/styles/jquery.alerts.css"
                 // Dave : where should I put any tweaks in css?
-              //, "Content/styles/Main.css"
-                , "Content/styles/pager.css"
+                , "Content/css/main.css"
                 , "Content/css/font-awesome.css"
                 , "Content/css/chosen.css"
                 , "Content/moment-datepicker/datepicker.css"
@@ -188,7 +187,6 @@ namespace CmsWeb
             AddOneScript(bundles, "Admin/Users");
 
             AddOneScript(bundles, "Dialog/OrgMemberDialog");
-            AddOneScript(bundles, "Dialog/OrgMembersDialog");
             AddOneScript(bundles, "Dialog/UserDialog");
             AddOneScript(bundles, "Dialog/SearchAdd");
             AddOneScript(bundles, "Dialog/SearchDivisions");
@@ -224,6 +222,7 @@ namespace CmsWeb
             AddOneScript(bundles, "Org/OrgChildren");
             AddOneScript(bundles, "Org/OrgGroups");
             AddOneScript(bundles, "Org/OrgMembers");
+            AddOneScript(bundles, "Org/OrgMemberDialog2");
             AddOneScript(bundles, "Org/OrgSearch");
 
             AddOneScript(bundles, "People/family");

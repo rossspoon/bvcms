@@ -26,7 +26,7 @@
 @helper PersonPictureAndLink(FamilyMemberInfo m)
 {
     @* Dave : Need a way to change the position in family *@
-    <a href="/People/Person/Index/@m.Id">
+    <a href="/Person2/Index/@m.Id">
         <img src="@m.Pictures.ThumbUrl" class="headshot"/>
         <span class="name">@m.Name @Html.Raw(m.SpouseIndicator)</span>
         <span class="age">@m.Age</span>

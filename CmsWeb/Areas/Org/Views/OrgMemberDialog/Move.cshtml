@@ -1,0 +1,23 @@
+﻿@model List<CmsWeb.Areas.Dialog.Controllers.OrgMemberDialogController.OrgMove>
+<table class="Design2" cellspacing="5">
+    <tr>
+        <td><strong>@ViewData["Name"]</strong></td>
+        <td class="right"><a class="display bt" href='/OrgMemberDialog/Display/@ViewData["oid"]?pid=@ViewData["pid"]'>cancel</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+@if (Model != null)
+{
+    foreach (var o in Model)
+    { 
+        <a class="move" title="@o.Tip" href="/OrgMemberDialog/MoveSelect/@o.id">@o.OrgName</a><br />
+    }
+}
+else
+{
+        @:Organization must have a main division
+} 
+        </td>
+    </tr>
+</table>
+

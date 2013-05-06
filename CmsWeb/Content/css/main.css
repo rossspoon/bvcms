@@ -1,0 +1,14 @@
+﻿td.right, th.right {
+    text-align: right;
+}
+td.noborder, th.noborder {
+    border: none!important;
+}
+
+td.left, th.left {
+    text-align: left;
+}
+
+td.center, th.center {
+    text-align: center;
+}

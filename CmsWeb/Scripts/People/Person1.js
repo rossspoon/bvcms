@@ -315,11 +315,11 @@
         };
     };
     $.UpdateForSection = function (f) {
-        $('#Employer').typeahead($.options("/People/Person/Employers"));
-        $('#School', f).typeahead($.options("/People/Person/Schools"));
-        $('#Occupation', f).typeahead($.options("/People/Person/Occupations"));
-        $('#NewChurch', f).typeahead($.options("/People/Person/Churches"));
-        $('#PrevChurch', f).typeahead($.options("/People/Person/Churches"));
+        $('#Employer').typeahead($.options("/Person2/Employers"));
+        $('#School', f).typeahead($.options("/Person2/Schools"));
+        $('#Occupation', f).typeahead($.options("/Person2/Occupations"));
+        $('#NewChurch', f).typeahead($.options("/Person2/Churches"));
+        $('#PrevChurch', f).typeahead($.options("/Person2/Churches"));
         $("form select").chosen();
         moment.lang('en');
         $(".date").datepicker();

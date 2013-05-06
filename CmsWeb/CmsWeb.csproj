@@ -236,6 +236,8 @@
       <DependentUpon>ToggleOrgLeadersOnly.ashx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
+    <Compile Include="Areas\Org\Controllers\OrgMemberDialogController.cs" />
+    <Compile Include="Areas\Org\Controllers\OrgMembersDialogController.cs" />
     <Compile Include="Areas\Dialog\Controllers\DeleteMeetingController.cs" />
     <Compile Include="Areas\Dialog\Controllers\RepairTransactionsController.cs" />
     <Compile Include="Areas\Dialog\Controllers\SearchOrgsController.cs" />
@@ -313,6 +315,7 @@
     <Compile Include="Areas\Main\Controllers\ExportController.cs" />
     <Compile Include="Areas\Manage\Models\VolunteerRequestModel.cs" />
     <Compile Include="Areas\OnlineReg\Models\OnlineReg\VolSubModel.cs" />
+    <Compile Include="Areas\Org\Models\OrgMembersDialogModel.cs" />
     <Compile Include="Areas\Org\OrgAreaRegistration.cs" />
     <Compile Include="Areas\People\Controllers\PersonController.cs" />
     <Compile Include="Areas\Org\Controllers\VolunteersController.cs" />
@@ -496,6 +499,7 @@
     <Content Include="Content\css\bootstrap-responsive.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\main.css" />
     <Content Include="Content\css\person.css" />
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\icons-18-black.png" />
@@ -698,8 +702,13 @@
       <DependentUpon>jquery.transpose.js</DependentUpon>
     </Content>
     <Content Include="Areas\People\Views\Person\PreviousEnrollments.cshtml" />
-    <Content Include="Areas\Dialog\Views\OrgMemberDialog\Index2.cshtml" />
-    <Content Include="Areas\Dialog\Views\OrgMemberDialog\Display2.cshtml" />
+    <Content Include="Areas\Org\Views\OrgMembersDialog\Index.cshtml" />
+    <Content Include="Areas\Org\Views\OrgMembersDialog\Rows.cshtml" />
+    <Content Include="Areas\Org\Views\OrgMembersDialog\Update.cshtml" />
+    <Content Include="Areas\Org\Views\OrgMemberDialog\Display.cshtml" />
+    <Content Include="Areas\Org\Views\OrgMemberDialog\Edit.cshtml" />
+    <Content Include="Areas\Org\Views\OrgMemberDialog\Index.cshtml" />
+    <Content Include="Areas\Org\Views\OrgMemberDialog\Move.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />
@@ -923,6 +932,7 @@
     <Content Include="Scripts\Email\compose.js" />
     <Content Include="Scripts\Finance\Bundles.js" />
     <Content Include="Scripts\Finance\Bundle.js" />
+    <Content Include="Scripts\Org\OrgMemberDialog2.js" />
     <Content Include="Scripts\Search\AdvancedSearch.js" />
     <Content Include="Scripts\Volunteer\Calendar2.js" />
     <Content Include="Content\css\font\fontawesome-webfont.woff" />
