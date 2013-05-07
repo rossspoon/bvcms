@@ -53,8 +53,7 @@ namespace CmsWeb
                 // Dave : need example of alert
               //, "Content/styles/jquery.alerts.css"
                 // Dave : where should I put any tweaks in css?
-              //, "Content/styles/Main.css"
-                , "Content/styles/pager.css"
+                , "Content/css/main.css"
                 , "Content/css/font-awesome.css"
                 , "Content/css/chosen.css"
                 , "Content/moment-datepicker/datepicker.css"
@@ -140,7 +139,7 @@ namespace CmsWeb
                 , "Scripts/moment/moment-datepicker.js"
                 , "Scripts/Autocomplete/jquery-ui-1.10.2.custom.js"
                 , "Scripts/chosen/chosen.jquery.js"
-                , "Scripts/js/Pager.js"
+                , "Scripts/js/Pager3.js"
               //, "Scripts/ExportToolBar.js"
                 , "Scripts/js/headermenu2.js"
             });
@@ -177,6 +176,9 @@ namespace CmsWeb
             {
                  "Scripts/jquery/jquery.address-1.5.js"
                 ,"Scripts/People/person1.js"
+//                ,"Scripts/Bootstrap/bootstrap-ajax.js"
+//                ,"Scripts/Bootstrap/spin.min.js"
+//                ,"Scripts/Bootstrap/bootstrapx-clickover.js"
 //              ,"Scripts/js/person2.js"
             });
             AddOneScript(bundles, "Admin/Divisions");
@@ -221,6 +223,7 @@ namespace CmsWeb
             AddOneScript(bundles, "Org/OrgChildren");
             AddOneScript(bundles, "Org/OrgGroups");
             AddOneScript(bundles, "Org/OrgMembers");
+            AddOneScript(bundles, "Org/OrgMemberDialog2");
             AddOneScript(bundles, "Org/OrgSearch");
 
             AddOneScript(bundles, "People/family");

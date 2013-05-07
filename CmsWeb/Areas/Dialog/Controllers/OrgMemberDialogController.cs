@@ -13,13 +13,14 @@ namespace CmsWeb.Areas.Dialog.Controllers
 {
     public class OrgMemberDialogController : CmsStaffController
     {
-        public ActionResult Index(int id, int pid, string from)
+        public ActionResult Index(int id, int pid, string from, string page)
         {
             var m = DbUtil.Db.OrganizationMembers.SingleOrDefault(om => om.OrganizationId == id && om.PeopleId == pid);
             ViewData["from"] = from;
             if (m == null)
                 return Content("cannot find membership: id={0} pid={1}".Fmt(id, pid));
             return View(m);
+
         }
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CheckBoxChanged(string id, bool ck)

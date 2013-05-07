@@ -36,7 +36,7 @@ namespace CmsWeb.Areas.People.Controllers
 				return Content("no id");
             if (!DbUtil.Db.UserPreference("newlook3", "false").ToBool()
                 || !DbUtil.Db.UserPreference("newpeoplepage", "false").ToBool())
-                return Redirect(Request.RawUrl.ToLower().Replace("people/person", "person"));
+                return Redirect(Request.RawUrl.ToLower().Replace("person2", "person"));
 			var m = new PersonModel(id);
 			if (User.IsInRole("Access"))
 			{
@@ -162,7 +162,15 @@ namespace CmsWeb.Areas.People.Controllers
 			var m = new CurrentEnrollments(id);
 			UpdateModel(m.Pager);
 			DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
-			return View("DisplayTemplates/CurrentEnrollments", m);
+		    return View("CurrentEnrollments", m);
+		}
+		[HttpPost]
+		public ActionResult PrevEnrollGrid(int id)
+		{
+			var m = new PreviousEnrollments(id);
+			UpdateModel(m.Pager);
+			DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
+		    return View("PreviousEnrollments", m);
 		}
 //		[HttpPost]
 //		public ActionResult PrevEnrollGrid(int id)
@@ -322,13 +330,13 @@ namespace CmsWeb.Areas.People.Controllers
 		{
 			InitExportToolbar(id);
 			var m = BasicPersonInfo.GetBasicPersonInfo(id);
-			return View("DisplayTemplates/BasicPersonInfo", m);
+			return View("BasicPersonInfoDisplay", m);
 		}
 		[HttpPost]
 		public ActionResult BasicEdit(int id)
 		{
 			var m = BasicPersonInfo.GetBasicPersonInfo(id);
-			return View("EditorTemplates/BasicPersonInfo", m);
+			return View("BasicPersonInfoEdit", m);
 		}
 		[HttpPost]
 		public ActionResult BasicUpdate(int id)
@@ -339,7 +347,7 @@ namespace CmsWeb.Areas.People.Controllers
 			m = BasicPersonInfo.GetBasicPersonInfo(id);
 			DbUtil.LogActivity("Update Basic Info for: {0}".Fmt(m.person.Name));
 			InitExportToolbar(id);
-			return View("DisplayTemplates/BasicPersonInfo", m);
+			return View("BasicPersonInfoDisplay", m);
 		}
 		[HttpPost]
 		public ActionResult Reverse(int id, string field, string value, string pf)

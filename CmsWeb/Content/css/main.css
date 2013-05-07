@@ -1,0 +1,22 @@
+﻿td.right, th.right {
+    text-align: right;
+}
+td.noborder, th.noborder {
+    border: none!important;
+}
+
+td.left, th.left {
+    text-align: left;
+}
+
+td.center, th.center {
+    text-align: center;
+}
+
+/* Dave: I am adding these so that the controls are not spaced so far apart */
+.control-group {
+    margin-bottom: auto;
+}
+.form-horizontal .control-group {
+    margin-bottom: auto;
+}

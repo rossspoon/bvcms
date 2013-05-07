@@ -326,9 +326,6 @@ namespace CmsWeb.Models
                             p.FixTitle();
 
                             SetField(p, a, "AltName", "altname");
-                            if (names.ContainsKey("altname"))
-                                p.AltName = a[names[""]];
-
                             SetField(p, a, "SuffixCode", "suffix");
                             SetField(p, a, "MiddleName", "middle");
                             SetField(p, a, "MaidenName", "maidenname");
