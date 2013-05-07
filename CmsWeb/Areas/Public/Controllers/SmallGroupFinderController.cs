@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using CmsWeb.Areas.Public.Models;
+using System.Linq;
+using CmsData;
 
 namespace CmsWeb.Areas.Public.Controllers
 {
@@ -11,10 +10,34 @@ namespace CmsWeb.Areas.Public.Controllers
     {
         public SmallGroupFinderModel sgfm;
 
-        public ActionResult Index( string id )
+        public ActionResult Index(string id)
         {
+            var check = (from e in DbUtil.Db.Contents
+                         where e.Name == "SGF-" + id + ".xml"
+                         select e).SingleOrDefault();
+
+            if (check == null)
+                return new HttpNotFoundResult( "Page not found!" );
+
             SmallGroupFinderModel sgfm = new SmallGroupFinderModel();
             sgfm.load(id);
+
+            if (Request.Form.Count == 0)
+            {
+                sgfm.setDefaultSearch();
+            }
+            else
+            {
+                Dictionary<string, string> post = new Dictionary<string, string>();
+
+                foreach (string item in Request.Form)
+                {
+                    if (item.StartsWith("SGF:"))
+                        post.Add(item, Request[item]);
+                }
+
+                sgfm.setSearch(post);
+            }
 
             return View(sgfm);
         }
