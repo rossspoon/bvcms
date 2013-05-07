@@ -53,7 +53,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="personal">
                                 <form class="form form-horizontal DisplayEdit">
-                                    @Html.DisplayFor(m => m.displayperson.basic)
+                                    @Html.Partial("BasicPersonInfoDisplay", Model.displayperson.basic)
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="enrollment">
@@ -106,7 +106,7 @@
             </div>
         </div>
     </div>
-@*
+    @*
 
 <section id="person" class="twelve columns omega">
     <header class="container">
@@ -151,8 +151,9 @@
     </div>
 </section>
 *@
-@section PopupsPlaceholder
+    @section PopupsPlaceholder
 {
-    @Html.Partial("Dialogs")
-}
+        @Html.Partial("Dialogs")
+    }
+</div>
 

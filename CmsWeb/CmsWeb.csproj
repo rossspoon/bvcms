@@ -1474,8 +1474,8 @@
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\Address.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\AttendanceGrid.cshtml" />
-    <Content Include="Areas\People\Views\Person\DisplayTemplates\BasicPersonInfo.cshtml" />
-    <Content Include="Areas\People\Views\Person\EditorTemplates\BasicPersonInfo.cshtml" />
+    <Content Include="Areas\People\Views\Person\BasicPersonInfoDisplay.cshtml" />
+    <Content Include="Areas\People\Views\Person\BasicPersonInfoEdit.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\BusinessCard.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\ChangesGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\CommentsDisplay.cshtml" />

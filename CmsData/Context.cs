@@ -860,7 +860,29 @@ namespace CmsData
 			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), meetingId, peopleId, present);
 			return ((IMultipleResults)(result.ReturnValue));
 		}
-		public string RecordAttendance(int MeetingId, int PeopleId, bool present)
+		[Function(Name = "dbo.RecordAttendance")]
+		[ResultType(typeof(RecordAttendInfo))]
+		private IMultipleResults RecordAttendance(
+            [Parameter(DbType = "Int")] int? orgId, 
+            [Parameter(DbType = "Int")] int? peopleId, 
+            [Parameter(DbType = "DateTime")] DateTime meetingDate, 
+            [Parameter(DbType = "bit")] bool present, 
+            [Parameter(DbType = "Varchar(50)")] string location,
+            [Parameter(DbType = "Int")] int? userId)
+		{
+			var result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), orgId, peopleId, meetingDate, present, location, userId);
+			return ((IMultipleResults)(result.ReturnValue));
+		}
+
+	    public string RecordAttendance(
+	        int? orgId, int? peopleId, DateTime meetingDate, bool present, string location)
+	    {
+            var r = RecordAttendance(orgId, peopleId, meetingDate, present, location, Util.UserId1);
+			var s = r.GetResult<RecordAttendInfo>().First();
+			return s.ret;
+	    }
+
+	    public string RecordAttendance(int MeetingId, int PeopleId, bool present)
 		{
 			var r = RecordAttend(MeetingId, PeopleId, present);
 			var s = r.GetResult<RecordAttendInfo>().First();
