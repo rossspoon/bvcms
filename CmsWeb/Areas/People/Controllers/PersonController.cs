@@ -294,7 +294,22 @@ namespace CmsWeb.Areas.People.Controllers
 			var m = new PersonModel(id);
 			return View(m);
 		}
-		public JsonResult Schools(string query)
+
+	    [HttpPost]
+	    public ActionResult PostData(int pk, string name, string value)
+	    {
+	        var p = DbUtil.Db.LoadPersonById(pk);
+	        switch (name)
+	        {
+                case "position":
+	                p.PositionInFamilyId = value.ToInt();
+	                break;
+	        }
+            DbUtil.Db.SubmitChanges();
+	        return new EmptyResult();
+	    }
+
+	    public JsonResult Schools(string query)
 		{
 			var qu = from p in DbUtil.Db.People
 					 where p.SchoolOther.Contains(query)

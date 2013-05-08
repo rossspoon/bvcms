@@ -13,6 +13,21 @@
     //            $('iframe', this).attr("src", "");
     //        }
     //    });
+    $('#position').editable({ 
+        source: [{ 
+            value: 10, 
+            text: "Primary Adult" 
+        }, { 
+            value: 20, 
+            text: "Secondary Adult" 
+        }, { 
+            value: 30, 
+            text: "Child" 
+        }],
+        type: "select",
+        url: "/Person2/PostData",
+        name: "position"
+    });
     $("#clipaddr").live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
@@ -64,101 +79,101 @@
         return false;
     });
 
-    $.editable.addInputType('datepicker', {
-        element: function (settings, original) {
-            var input = $('<input>');
-            if (settings.width != 'none') { input.width(settings.width); }
-            if (settings.height != 'none') { input.height(settings.height); }
-            input.attr('autocomplete', 'off');
-            $(this).append(input);
-            return (input);
-        },
-        plugin: function (settings, original) {
-            var form = this;
-            settings.onblur = 'ignore';
-            $(this).find('input').datepicker().bind('click', function () {
-                $(this).datepicker('show');
-                return false;
-            }).bind('dateSelected', function (e, selectedDate, $td) {
-                $(form).submit();
-            });
-        }
-    });
-    $.editable.addInputType("multiselect", {
-        element: function (settings, original) {
-            var select = $('<select multiple="multiple" />');
-
-            if (settings.width != 'none') { select.width(settings.width); }
-            if (settings.size) { select.attr('size', settings.size); }
-
-            $(this).append(select);
-            return (select);
-        },
-        content: function (json, settings, original) {
-            for (var key in json) {
-                var option = $('<option />').val(key).text(key);
-                if (json[key] == true)
-                    option.attr("selected", true);
-                $('select', this).append(option);
-            }
-            $("select", this).multiselect({
-                close: function (event, ui) {
-                    var values = $("select").val();
-                },
-                position: {
-                    my: 'left bottom',
-                    at: 'left top'
-                }
-            });
-        }
-    });
-    $.extraEditable = function (table) {
-        $('.editarea', table).editable('/Person/EditExtra/', {
-            type: 'textarea',
-            submit: 'OK',
-            rows: 10,
-            width: 600,
-            indicator: '<img src="/images/loading.gif">',
-            tooltip: 'Click to edit...'
-        });
-        $(".clickEdit", table).editable("/Person/EditExtra/", {
-            indicator: "<img src='/images/loading.gif'>",
-            tooltip: "Click to edit...",
-            style: 'display: inline',
-            width: '300px',
-            height: 25,
-            submit: 'OK'
-        });
-        $(".clickDatepicker").editable('/Person/EditExtra/', {
-            type: 'datepicker',
-            tooltip: 'Click to edit...',
-            style: 'display: inline',
-            width: '300px',
-            submit: 'OK'
-        });
-        $(".clickSelect", table).editable("/Person/EditExtra/", {
-            indicator: '<img src="/images/loading.gif">',
-            loadurl: "/Person/ExtraValues/",
-            loadtype: "POST",
-            type: "select",
-            submit: "OK",
-            style: 'display: inline'
-        });
-        $(".clickCheckbox", table).editable('/Person/EditExtra', {
-            type: 'checkbox',
-            onblur: 'ignore',
-            submit: 'OK'
-        });
-        $('.clickMultiselect', table).editable('/Person/EditExtra', {
-            indicator: '<img src="/images/loading.gif">',
-            loadurl: "/Person/ExtraValues2/",
-            loadtype: "POST",
-            type: "multiselect",
-            submit: "OK",
-            onblur: 'ignore',
-            style: 'display: inline'
-        });
-    };
+//    $.editable.addInputType('datepicker', {
+//        element: function (settings, original) {
+//            var input = $('<input>');
+//            if (settings.width != 'none') { input.width(settings.width); }
+//            if (settings.height != 'none') { input.height(settings.height); }
+//            input.attr('autocomplete', 'off');
+//            $(this).append(input);
+//            return (input);
+//        },
+//        plugin: function (settings, original) {
+//            var form = this;
+//            settings.onblur = 'ignore';
+//            $(this).find('input').datepicker().bind('click', function () {
+//                $(this).datepicker('show');
+//                return false;
+//            }).bind('dateSelected', function (e, selectedDate, $td) {
+//                $(form).submit();
+//            });
+//        }
+//    });
+//    $.editable.addInputType("multiselect", {
+//        element: function (settings, original) {
+//            var select = $('<select multiple="multiple" />');
+//
+//            if (settings.width != 'none') { select.width(settings.width); }
+//            if (settings.size) { select.attr('size', settings.size); }
+//
+//            $(this).append(select);
+//            return (select);
+//        },
+//        content: function (json, settings, original) {
+//            for (var key in json) {
+//                var option = $('<option />').val(key).text(key);
+//                if (json[key] == true)
+//                    option.attr("selected", true);
+//                $('select', this).append(option);
+//            }
+//            $("select", this).multiselect({
+//                close: function (event, ui) {
+//                    var values = $("select").val();
+//                },
+//                position: {
+//                    my: 'left bottom',
+//                    at: 'left top'
+//                }
+//            });
+//        }
+//    });
+//    $.extraEditable = function (table) {
+//        $('.editarea', table).editable('/Person/EditExtra/', {
+//            type: 'textarea',
+//            submit: 'OK',
+//            rows: 10,
+//            width: 600,
+//            indicator: '<img src="/images/loading.gif">',
+//            tooltip: 'Click to edit...'
+//        });
+//        $(".clickEdit", table).editable("/Person/EditExtra/", {
+//            indicator: "<img src='/images/loading.gif'>",
+//            tooltip: "Click to edit...",
+//            style: 'display: inline',
+//            width: '300px',
+//            height: 25,
+//            submit: 'OK'
+//        });
+//        $(".clickDatepicker").editable('/Person/EditExtra/', {
+//            type: 'datepicker',
+//            tooltip: 'Click to edit...',
+//            style: 'display: inline',
+//            width: '300px',
+//            submit: 'OK'
+//        });
+//        $(".clickSelect", table).editable("/Person/EditExtra/", {
+//            indicator: '<img src="/images/loading.gif">',
+//            loadurl: "/Person/ExtraValues/",
+//            loadtype: "POST",
+//            type: "select",
+//            submit: "OK",
+//            style: 'display: inline'
+//        });
+//        $(".clickCheckbox", table).editable('/Person/EditExtra', {
+//            type: 'checkbox',
+//            onblur: 'ignore',
+//            submit: 'OK'
+//        });
+//        $('.clickMultiselect', table).editable('/Person/EditExtra', {
+//            indicator: '<img src="/images/loading.gif">',
+//            loadurl: "/Person/ExtraValues2/",
+//            loadtype: "POST",
+//            type: "multiselect",
+//            submit: "OK",
+//            onblur: 'ignore',
+//            style: 'display: inline'
+//        });
+//    };
     $.getTable = function (f) {
         var q = f.serialize();
         $.post(f.attr('action'), q, function (ret) {
@@ -489,24 +504,24 @@
             $(f).html(ret);
         });
     });
-    $.editable.addInputType("checkbox", {
-        element: function (settings, original) {
-            var input = $('<input type="checkbox">');
-            $(this).append(input);
-            $(input).click(function () {
-                var value = $(input).attr("checked") ? 'True' : 'False';
-                $(input).val(value);
-            });
-            return (input);
-        },
-        content: function (string, settings, original) {
-            var checked = string == "True" ? true : false;
-            var input = $(':input:first', this);
-            $(input).attr("checked", checked);
-            var value = $(input).attr("checked") ? 'True' : 'False';
-            $(input).val(value);
-        }
-    });
+//    $.editable.addInputType("checkbox", {
+//        element: function (settings, original) {
+//            var input = $('<input type="checkbox">');
+//            $(this).append(input);
+//            $(input).click(function () {
+//                var value = $(input).attr("checked") ? 'True' : 'False';
+//                $(input).val(value);
+//            });
+//            return (input);
+//        },
+//        content: function (string, settings, original) {
+//            var checked = string == "True" ? true : false;
+//            var input = $(':input:first', this);
+//            $(input).attr("checked", checked);
+//            var value = $(input).attr("checked") ? 'True' : 'False';
+//            $(input).val(value);
+//        }
+//    });
     $('#vtab>ul>li').click(function () {
         $('#vtab>ul>li').removeClass('selected');
         $(this).addClass('selected');

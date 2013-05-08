@@ -57,6 +57,7 @@ namespace CmsWeb
                 , "Content/css/font-awesome.css"
                 , "Content/css/chosen.css"
                 , "Content/moment-datepicker/datepicker.css"
+                , "Content/css/bootstrap-editable.css"
             });
             bundles.Add<StylesheetBundle>("orgcss", new[]
             {
@@ -123,10 +124,10 @@ namespace CmsWeb
                 , "Scripts/bootstrap/bootstrap.js"
                 , "Scripts/bootstrap/bootstrap-modalmanager.js"
                 , "Scripts/bootstrap/bootstrap-modal.js"
+                , "Scripts/bootstrap/bootstrap-editable.js"
                 , "Scripts/jquery/jquery.cookie.js"
                 , "Scripts/jquery/jquery.blockUI.js"
                 , "Scripts/jquery/jquery.mousewheel.js"
-                , "Scripts/jquery/jquery.jeditable.js"
                 , "Scripts/jquery/jquery.validate.js"
                 , "Scripts/jquery/jquery.joyride-1.0.5.js"
                 , "Scripts/modernizr-2.6.2.js"

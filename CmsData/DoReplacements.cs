@@ -51,6 +51,8 @@ namespace CmsData
                 if (text.Contains("{nextmeetingtime}", ignoreCase: true))
                     text = DoMeetingDate(text, emailqueueto);
             }
+            if (text.Contains("{today}", ignoreCase: true))
+                text = text.Replace("{today}", DateTime.Today.ToShortDateString());
             if (text.Contains("{createaccount}", ignoreCase: true))
                 text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
             if (text.Contains("{peopleid}", ignoreCase: true))

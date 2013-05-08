@@ -411,6 +411,9 @@ namespace CmsWeb.Models
         }
         public static int? BatchProcess(string text, DateTime date, int? fundid)
         {
+            if (DbUtil.Db.Setting("BankDepositFormat", "none") == "OakbrookChurch")
+                using (var csv = new CsvReader(new StringReader(text), true))
+                    return BatchProcessOakbrookChurch(csv, date, fundid);
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "BankOfNorthGeorgia")
                 return BatchProcessBankOfNorthGeorgia(text, date, fundid);
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "FBCStark")
@@ -778,6 +781,64 @@ namespace CmsWeb.Models
             FinishBundle(bh);
             return bh.BundleHeaderId;
         }
+        public static int? BatchProcessOakbrookChurch(CsvReader csv, DateTime date, int? fundid)
+        {
+            var cols = csv.GetFieldHeaders();
+
+            BundleHeader bh = null;
+
+            var qf = from f in DbUtil.Db.ContributionFunds
+                     where f.FundStatusId == 1
+                     orderby f.FundId
+                     select f.FundId;
+
+            while (csv.ReadNextRecord())
+            {
+                if (csv[16] == "Credit")
+                {
+                    if (bh != null)
+                        FinishBundle(bh);
+                    bh = GetBundleHeader(date, DateTime.Now);
+                    continue;
+                }
+
+                var bd = new BundleDetail
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                };
+
+                bd.Contribution = new Contribution
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                    ContributionDate = date,
+                    FundId = fundid ?? qf.First(),
+                    ContributionStatusId = 0,
+                    ContributionTypeId = ContributionTypeCode.CheckCash,
+                };
+
+
+                string ck, rt, ac;
+                rt = csv[11];
+                ac = csv[13];
+                ck = csv[14];
+                bd.Contribution.ContributionAmount = csv[15].GetAmount();
+
+                bd.Contribution.CheckNo = ck;
+                var eac = Util.Encrypt(rt + "|" + ac);
+                var q = from kc in DbUtil.Db.CardIdentifiers
+                        where kc.Id == eac
+                        select kc.PeopleId;
+                var pid = q.SingleOrDefault();
+                if (pid != null)
+                    bd.Contribution.PeopleId = pid;
+                bd.Contribution.BankAccount = eac;
+                bh.BundleDetails.Add(bd);
+            }
+            FinishBundle(bh);
+            return bh.BundleHeaderId;
+        }
         public static int? BatchProcessBankOfNorthGeorgia(string text, DateTime date, int? fundid)
         {
             BundleHeader bh = null;
@@ -803,7 +864,7 @@ namespace CmsWeb.Models
                 if (!csv[6].HasValue())
                     continue;
 
-                if(csv[21] == "VDP")
+                if (csv[21] == "VDP")
                 {
                     if (bh != null)
                         FinishBundle(bh);
