@@ -92,6 +92,9 @@ namespace CmsWeb.Areas.People.Models.Person
         [UIHint("Code")]
         public CodeInfo Gender { get; set; }
 
+        [UIHint("InlineCode")]
+        public CodeInfo FamilyPosition { get; set; }
+
         [UIHint("Date")]
         public string Birthday { get; set; }
 
@@ -209,6 +212,7 @@ namespace CmsWeb.Areas.People.Models.Person
                 Gender = new CodeInfo(p.GenderId, cv.GenderCodesWithUnspecified()),
                 Marital = new CodeInfo(p.MaritalStatusId, cv.MaritalStatusCodes99()),
                 MemberStatus = new CodeInfo(p.MemberStatusId, cv.MemberStatusCodes0()),
+                FamilyPosition = new CodeInfo(p.PositionInFamilyId, cv.FamilyPositionCodes()),
                 MiddleName = p.MiddleName,
                 GoesBy = p.NickName,
                 Occupation = p.OccupationOther,

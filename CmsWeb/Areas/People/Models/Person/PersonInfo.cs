@@ -114,6 +114,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     Gender = new CodeInfo(p.GenderId, cv.GenderCodesWithUnspecified()),
                     Marital = new CodeInfo(p.MaritalStatusId, cv.MaritalStatusCodes99()),
                     MemberStatus = new CodeInfo(p.MemberStatusId, cv.MemberStatusCodes0()),
+                    FamilyPosition = new CodeInfo(p.PositionInFamilyId, cv.FamilyPositionCodes()),
                     Employer = p.EmployerOther,
                     FirstName = p.FirstName,
                     Created = p.CreatedDate,
