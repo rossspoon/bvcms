@@ -7,21 +7,27 @@ using System.Xml.Serialization;
 
 namespace CmsData.Classes.SmallGroupFinder
 {
-    [XmlRoot("Finder")]
+    [XmlRoot("SGF")]
     public class SmallGroupFinder
     {
         [XmlAttribute]
         public int divisionid { get; set; }
 
-        [XmlArray]
-        public List<Setting> Settings { get; set; }
+        [XmlAttribute]
+        public string layout { get; set; }
+
+        [XmlAttribute]
+        public string gutter { get; set; }
 
         [XmlArray]
-        public List<Filter> Filters { get; set; }
+        public List<SGFSetting> SGFSettings { get; set; }
+
+        [XmlArray]
+        public List<SGFFilter> SGFFilters { get; set; }
     }
 
     [Serializable]
-    public class Setting
+    public class SGFSetting
     {
         [XmlAttribute]
         public string name { get; set; }
@@ -36,7 +42,7 @@ namespace CmsData.Classes.SmallGroupFinder
     }
 
     [Serializable]
-    public class Filter
+    public class SGFFilter
     {
         [XmlAttribute]
         public string name { get; set; }
@@ -45,17 +51,9 @@ namespace CmsData.Classes.SmallGroupFinder
         public string title { get; set; }
 
         [XmlAttribute]
-        public string value { get; set; }
-
-        [XmlAttribute]
         public bool locked { get; set; }
 
         [XmlAttribute]
         public string lockedvalue { get; set; }
-
-        public override string ToString()
-        {
-            return value;
-        }
     }
 }

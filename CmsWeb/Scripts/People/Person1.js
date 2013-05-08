@@ -213,6 +213,11 @@
         return false;
     });
 
+    $("a.editaddr").click(function(ev) {
+        ev.preventDefault();
+        $("#addressDialog").modal({ remote: $(this).attr("href") });
+    });
+
     $.setClickOvers = function() {
         $('tr a').not('a.evlink').click(function(e){
             e.stopPropagation(); 

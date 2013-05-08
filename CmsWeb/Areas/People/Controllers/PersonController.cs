@@ -377,11 +377,10 @@ namespace CmsWeb.Areas.People.Controllers
 			var m = AddressInfo.GetAddressInfo(id, type);
 			return View(m);
 		}
-		[HttpPost]
 		public ActionResult AddressEdit(int id, string type)
 		{
 			var m = AddressInfo.GetAddressInfo(id, type);
-			return View(m);
+			return View("EditorTemplates/Address", m);
 		}
 		[HttpPost]
 		public ActionResult AddressUpdate(int id, string type)

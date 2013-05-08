@@ -53,11 +53,11 @@ namespace CmsWeb
                 // Dave : need example of alert
               //, "Content/styles/jquery.alerts.css"
                 // Dave : where should I put any tweaks in css?
-                , "Content/css/main.css"
                 , "Content/css/font-awesome.css"
                 , "Content/css/chosen.css"
                 , "Content/moment-datepicker/datepicker.css"
                 , "Content/css/bootstrap-editable.css"
+                , "Content/css/main.css"
             });
             bundles.Add<StylesheetBundle>("orgcss", new[]
             {

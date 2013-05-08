@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Web;
-using CmsData;
-using System.Web.Mvc;
-using CmsWeb.Models;
-using UtilityExtensions;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Web;
+using System.Web.Mvc;
+using CmsData;
+using UtilityExtensions;
 
 namespace CmsWeb.Areas.People.Models.Person
 {
     public class AddressInfo
     {
-        private CodeValueModel cv = new CodeValueModel();
+        private CmsWeb.Models.CodeValueModel cv = new CmsWeb.Models.CodeValueModel();
 
         public int PeopleId { get; set; }
         public CmsData.Person person { get; set; }
@@ -38,19 +38,44 @@ namespace CmsWeb.Areas.People.Models.Person
             }
         }
 
+        public string Display
+        {
+            get
+            {
+                switch (Name)
+                {
+                    case "PersonalAddr": return "Personal Address";
+                    case "FamilyAddr": return "Family Address";
+                }
+                return "Address";
+            }
+        }
+
+        [UIHint("Text")]
         public string Address1 { get; set; }
+
+        [UIHint("Text")]
         public string Address2 { get; set; }
+
+        [UIHint("Text")]
         public string City { get; set; }
-        public string State { get; set; }
+
+        [UIHint("Code")]
+        public CodeInfo State { get; set; }
+
+        [UIHint("Text")]
         public string Zip { get; set; }
-        public string Country { get; set; }
+
+        [UIHint("Code")]
+        public CodeInfo Country { get; set; }
+
         public string CityStateZip()
         {
-            return Util.FormatCSZ(City, State, Zip);
+            return Util.FormatCSZ(City, State.Value, Zip);
         }
         public string CityStateZip4()
         {
-            return Util.FormatCSZ4(City, State, Zip);
+            return Util.FormatCSZ4(City, State.Value, Zip);
         }
         public string AddrCityStateZip()
         {
@@ -60,27 +85,33 @@ namespace CmsWeb.Areas.People.Models.Person
         {
             return Address2 + " " + CityStateZip();
         }
+
+        [UIHint("Bool")]
         public bool? BadAddress { get; set; }
-        public int? ResCodeId { get; set; }
-        public string ResCode
-        {
-            get { return CodeValueModel.ResidentCodesWithZero().ItemValue(ResCodeId ?? 0); }
-        }
+
+        [UIHint("Code")]
+        public CodeInfo ResCode { get; set; }
+
+        [UIHint("Bool")]
         public bool Preferred { get; set; }
+
+        [UIHint("Date")]
         public DateTime? FromDt { get; set; }
+
+        [UIHint("Date")]
         public DateTime? ToDt { get; set; }
 
         public static IEnumerable<SelectListItem> ResCodes()
         {
-            return QueryModel.ConvertToSelect(CodeValueModel.ResidentCodesWithZero(), "Id");
+            return CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.ResidentCodesWithZero(), "Id");
         }
         public static IEnumerable<SelectListItem> States()
         {
-            return QueryModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
+            return CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.GetStateList(), "Code");
         }
         public static IEnumerable<SelectListItem> Countries()
         {
-            var list = QueryModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
+            var list = CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.GetCountryList(), null);
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
             return list;
         }
@@ -99,10 +130,10 @@ namespace CmsWeb.Areas.People.Models.Person
                     a.ToDt = p.Family.AddressToDate;
                     a.BadAddress = p.Family.BadAddressFlag;
                     a.City = p.Family.CityName;
-                    a.State = p.Family.StateCode;
                     a.Zip = p.Family.ZipCode;
-                    a.Country = p.Family.CountryName;
-                    a.ResCodeId = p.Family.ResCodeId;
+                    a.State = new CodeInfo(p.Family.StateCode, StateCodes());
+                    a.Country = new CodeInfo(p.Family.CountryName, Countries());
+                    a.ResCode = new CodeInfo(p.Family.ResCodeId, ResCodes());
                     a.Preferred = p.AddressTypeId == 10;
                     break;
                 case "PersonalAddr":
@@ -113,10 +144,10 @@ namespace CmsWeb.Areas.People.Models.Person
                     a.ToDt = p.AddressToDate;
                     a.BadAddress = p.BadAddressFlag;
                     a.City = p.CityName;
-                    a.State = p.StateCode;
                     a.Zip = p.ZipCode;
-                    a.Country = p.CountryName;
-                    a.ResCodeId = p.ResCodeId;
+                    a.State = new CodeInfo(p.StateCode, StateCodes());
+                    a.Country = new CodeInfo(p.CountryName, Countries());
+                    a.ResCode = new CodeInfo(p.ResCodeId, ResCodes());
                     a.Preferred = p.AddressTypeId == 30;
                     break;
             }
@@ -125,25 +156,21 @@ namespace CmsWeb.Areas.People.Models.Person
 
         public void UpdateAddress(ModelStateDictionary ModelState)
         {
-            if (ResCodeId == 0)
-                ResCodeId = null;
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             var f = p.Family;
 
-            var addrok = false;
-            if (City.HasValue() && State.HasValue())
+            bool addrok = City.HasValue() && State.Value.HasValue() || Zip.HasValue();
+
+            if (!City.HasValue() && !State.Value.HasValue() && !Zip.HasValue())
                 addrok = true;
-            if (Zip.HasValue())
-                addrok = true;
-            if (!City.HasValue() && !State.HasValue() && !Zip.HasValue())
-                addrok = true;
+
             if (!addrok)
                 ModelState.AddModelError("zip", "city/state required or zip required (or \"na\" in all)");
 
-            if (Address1.HasValue() && (City.HasValue() || State.HasValue() || Zip.HasValue())
-                && (Country == "United States" || !Country.HasValue()))
+            if (Address1.HasValue() && (City.HasValue() || State.Value.HasValue() || Zip.HasValue())
+                && (Country.Value == "United States" || !Country.Value.HasValue()))
             {
-                var r = AddressVerify.LookupAddress(Address1, Address2, City, State, Zip);
+                var r = AddressVerify.LookupAddress(Address1, Address2, City, State.Value, Zip);
                 if (r.Line1 != "error")
                 {
                     if (!r.found)
@@ -166,10 +193,10 @@ namespace CmsWeb.Areas.People.Models.Person
                         ModelState.AddModelError("city", "city changed from '{0}'".Fmt(City));
                         City = r.City;
                     }
-                    if (r.State != (State ?? ""))
+                    if (r.State != (State.Value ?? ""))
                     {
-                        ModelState.AddModelError("state", "state changed from '{0}'".Fmt(State));
-                        State = r.State;
+                        ModelState.AddModelError("state", "state changed from '{0}'".Fmt(State.Value));
+                        State.Value = r.State;
                     }
                     if (r.Zip != (Zip ?? ""))
                     {
@@ -180,7 +207,7 @@ namespace CmsWeb.Areas.People.Models.Person
                         return;
                 }
             }
-            
+
 
             switch (Name)
             {
@@ -190,7 +217,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     UpdateValue(f, "AddressToDate", ToDt);
                     UpdateValue(f, "CityName", City);
                     UpdateValue(f, "StateCode", State);
-                    UpdateValue(f, "ResCodeId", ResCodeId);
+                    UpdateValue(f, "ResCodeId", ResCode.Value.ToInt());
                     UpdateValue(f, "ZipCode", Zip ?? "");
                     UpdateValue(f, "CountryName", Country);
                     if (Preferred)
@@ -205,7 +232,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     UpdateValue(p, "AddressToDate", ToDt);
                     UpdateValue(p, "CityName", City);
                     UpdateValue(p, "StateCode", State);
-                    UpdateValue(p, "ResCodeId", ResCodeId);
+                    UpdateValue(p, "ResCodeId", ResCode.Value.ToInt());
                     UpdateValue(p, "ZipCode", Zip ?? "");
                     UpdateValue(p, "CountryName", Country);
                     if (Preferred)
@@ -282,7 +309,7 @@ namespace CmsWeb.Areas.People.Models.Person
         }
         public static IEnumerable<SelectListItem> StateCodes()
         {
-            return QueryModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
+            return CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.GetStateList(), "Code");
         }
     }
 }
