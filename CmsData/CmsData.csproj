@@ -306,6 +306,7 @@
     <Compile Include="Batch\LinqToSqlExtensions.cs" />
     <Compile Include="Classes\QuickBooks\QBAccount.cs" />
     <Compile Include="Classes\QuickBooks\QBJournalEntryLine.cs" />
+    <Compile Include="Classes\SmallGroupFinder\SmallGroupFinder.cs" />
     <Compile Include="CMSMembershipProvider.cs" />
     <Compile Include="CMSRoleProvider.cs" />
     <Compile Include="Codes.cs" />

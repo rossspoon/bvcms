@@ -92,7 +92,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.0.5022.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\packages\DocumentFormat.OpenXml.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetOpenAuth, Version=3.4.7.11121, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DotNetOpenAuth.dll</HintPath>
@@ -376,6 +378,7 @@
     <Compile Include="Areas\Public\Controllers\APIMeetingController.cs" />
     <Compile Include="Areas\Public\Controllers\ExternalServicesController.cs" />
     <Compile Include="Areas\Public\Controllers\MobileAPIController.cs" />
+    <Compile Include="Areas\Public\Controllers\SmallGroupFinderController.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\AttendInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassResult.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\ClassesResult.cs" />
@@ -461,6 +464,7 @@
     <Compile Include="Areas\Public\Models\MobileAPI\MobileTaskStatus.cs" />
     <Compile Include="Areas\Public\Models\OrgContentInfo.cs" />
     <Compile Include="Areas\Public\Models\SGMapModel.cs" />
+    <Compile Include="Areas\Public\Models\SmallGroupFinderModel.cs" />
     <Compile Include="Areas\Search\Controllers\OrganizationController.cs" />
     <Compile Include="Areas\Search\Controllers\PeopleController.cs" />
     <Compile Include="Areas\Search\Controllers\AdvancedController.cs" />
@@ -716,6 +720,7 @@
     <Content Include="Areas\Org\Views\OrgMemberDialog\Move.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\InlineCode.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\InlineCode.cshtml" />
+    <Content Include="Areas\Public\Views\SmallGroupFinder\Index.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.IO;
+using System.Text.RegularExpressions;
 using CmsData;
 using CmsData.Classes.SmallGroupFinder;
-using System.Collections;
+using System.Web;
 
 namespace CmsWeb.Areas.Public.Models
 {
@@ -16,15 +14,53 @@ namespace CmsWeb.Areas.Public.Models
         public const int TYPE_SETTING = 1;
         public const int TYPE_FILTER = 2;
 
+        public const string SHOW_ALL = "-- All --";
+
         SmallGroupFinder sgf;
+        Dictionary<string, string> search;
+
+        string sTemplate;
+        string sGutter;
 
         public void load(string sName)
         {
             var xml = DbUtil.Content("SGF-" + sName + ".xml", "");
 
-            var xs = new XmlSerializer(typeof(SmallGroupFinder), new XmlRootAttribute("Finder"));
+            var xs = new XmlSerializer(typeof(SmallGroupFinder), new XmlRootAttribute("SGF"));
             var sr = new StringReader(xml);
             sgf = (SmallGroupFinder)xs.Deserialize(sr);
+
+            sTemplate = DbUtil.Content(sgf.layout, "");
+            sGutter = DbUtil.Content(sgf.gutter, "");
+        }
+
+        public void setSearch(Dictionary<string, string> newserach)
+        {
+            search = newserach;
+        }
+
+        public void setDefaultSearch()
+        {
+            search = new Dictionary<string,string>();
+
+            foreach (var item in getFilters())
+            {
+                if (item.locked)
+                    search.Add(item.name, item.lockedvalue);
+            }
+        }
+
+        public bool IsSelectedValue(string key, string value)
+        {
+            if (search.ContainsKey(key))
+            {
+                if (search[key] == value)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
         }
 
         public Division getDivision()
@@ -44,31 +80,46 @@ namespace CmsWeb.Areas.Public.Models
             {
                 case TYPE_SETTING:
                 {
-                    return sgf.Settings.Count();
+                    return sgf.SGFSettings.Count();
                 }
 
                 case TYPE_FILTER:
                 {
-                    return sgf.Filters.Count();
+                    return sgf.SGFFilters.Count();
                 }
 
                 default: return 0;
             }
         }
 
-        public CmsData.Classes.SmallGroupFinder.Setting getSetting(int id)
+        public List<SGFSetting> getSettings()
         {
-            return sgf.Settings[id];
+            return sgf.SGFSettings;
         }
 
-        public CmsData.Classes.SmallGroupFinder.Filter getFilter(int id)
+        public SGFSetting getSetting(int id)
         {
-            return sgf.Filters[id];
+            return sgf.SGFSettings[id];
+        }
+
+        public SGFSetting getSetting(string name)
+        {
+            return (from s in sgf.SGFSettings where s.name == name select s).FirstOrDefault();
+        }
+
+        public List<SGFFilter> getFilters()
+        {
+            return sgf.SGFFilters;
+        }
+
+        public SGFFilter getFilter(int id)
+        {
+            return sgf.SGFFilters[id];
         }
 
         public List<FilterItem> getFilterItems(int id)
         {
-            var f = sgf.Filters[id];
+            var f = getFilter(id);
             List<FilterItem> i = new List<FilterItem>();
 
             if (f.locked)
@@ -77,17 +128,81 @@ namespace CmsWeb.Areas.Public.Models
             }
             else
             {
-                //i = (from e in DbUtil.Db.OrganizationExtras
-               //      where e.Field == f.name
-                //     select 
+                i = (from e in DbUtil.Db.OrganizationExtras
+                     where e.Organization.DivOrgs.Any( ee => ee.DivId == sgf.divisionid )
+                     where e.Field == f.name
+                     select new FilterItem
+                     {
+                         value = e.Data
+                     }).ToList<FilterItem>();
+
+                i.Insert(0, new FilterItem { value = SHOW_ALL });
             }
 
             return i;
+        }
+
+        public List<Organization> getGroups()
+        {
+            var orgs = from o in DbUtil.Db.Organizations
+                       where o.DivOrgs.Any(ee => ee.DivId == sgf.divisionid)
+                       select o;
+
+            foreach (var filter in search)
+            {
+                if (filter.Value == SHOW_ALL) continue;
+
+                orgs = from g in orgs
+                       where g.OrganizationExtras.Any(oe => oe.Field == filter.Key && oe.Data == filter.Value)
+                       select g;
+            }
+
+            return orgs.ToList<Organization>();
+        }
+
+        public string ReplaceAndWrite(GroupLookup gl)
+        {
+            string temp = HttpUtility.HtmlDecode(string.Copy(sTemplate));
+
+            foreach( var item in gl.values)
+            {
+                temp = temp.Replace("[" + item.Key + "]", item.Value);
+            }
+
+            temp = Regex.Replace(temp, GroupLookup.PATTERN_CLEAN, "");
+
+            return temp;
+        }
+
+        public string GetGutter()
+        {
+            return sGutter;
         }
     }
 
     public class FilterItem
     {
         public string value;
+    }
+
+    public class GroupLookup
+    {
+        public const string PATTERN_CLEAN = @"\[SGF:\w*\]";
+
+        public Dictionary<string, string> values = new Dictionary<string, string>();
+
+        public void populateFromOrg(Organization org)
+        {
+            values.Add("SGF:Name", org.OrganizationName);
+            values.Add("SGF:Description", org.Description);
+            values.Add("SGF:Room", org.Location);
+            values.Add("SGF:Leader", org.LeaderName);
+
+            foreach (var extra in org.OrganizationExtras)
+            {
+                if (extra.Field.StartsWith("SGF:"))
+                    values.Add(extra.Field, extra.Data);
+            }
+        }
     }
 }
