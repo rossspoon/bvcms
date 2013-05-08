@@ -1483,7 +1483,6 @@
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRange.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRangeResults.cshtml" />
     <Content Include="Areas\People\Views\Web.config" />
-    <Content Include="Areas\People\Views\Person\DisplayTemplates\Address.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\Address.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\AttendanceGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\BasicPersonInfoDisplay.cshtml" />

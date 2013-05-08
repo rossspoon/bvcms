@@ -28,7 +28,7 @@
                 <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
                 <li><a href="http://www.bing.com/maps/?q=@p.FamilyAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
                 <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a href="#sample-modal" data-toggle="modal">Edit</a></li>
+                <li><a class="editaddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId?type=FamilyAddr">Edit</a></li>
             </ul>
         </div>
         @* Dave: How do we distinguish family address vs personal *@
@@ -62,7 +62,7 @@
                 <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
                 <li><a href="http://www.bing.com/maps/?q=@p.PersonalAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
                 <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a href="#sample-modal" data-toggle="modal">Edit</a></li>
+                <li><a class="editaddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId?type=PersonalAddr" >Edit</a></li>
             </ul>
         </div>
         <p>

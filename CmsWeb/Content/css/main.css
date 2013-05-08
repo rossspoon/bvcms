@@ -20,3 +20,10 @@ td.center, th.center {
 .form-horizontal .control-group {
     margin-bottom: auto;
 }
+
+.editable-click, 
+a.editable-click, 
+a.editable-click:hover {
+    text-decoration: none;
+    border-bottom: none;
+}

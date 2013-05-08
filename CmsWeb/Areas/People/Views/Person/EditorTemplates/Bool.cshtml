@@ -1,7 +1,7 @@
-﻿@model string
+﻿@model bool
 <div class="control-group">
     @Html.LabelFor(m => m, new { @class="control-label"})
     <div class="controls">
-        <p>@Model</p>
+        <p>@Html.CheckBoxFor(m => m)</p>
     </div>
 </div>

@@ -31,8 +31,14 @@ namespace CmsWeb.Areas.People.Models.Person
                 Value = value.ToString();
             Items = new SelectList(items, valuefield, "Value", value);
         }
+        public CodeInfo(object value, IEnumerable<SelectListItem> items, string valuefield = "Id")
+        {
+            if (value != null)
+                Value = value.ToString();
+            Items = items;
+        }
         public string Value { get; set; }
-        public SelectList Items { get; set; }
+        public IEnumerable<SelectListItem> Items { get; set; }
         public override string ToString()
         {
             var i = Items.SingleOrDefault(ii => ii.Value == Value);
