@@ -124,14 +124,14 @@
 				.css('overflow', '')
 				.css(prop, '');
 
-			var modalOverflow = $(window).height() - 10 < this.$element.height();
-
 			if (value){
 				this.$element.find('.modal-body')
 					.css('overflow', 'auto')
 					.css(prop, value);
 			}
 
+			var modalOverflow = $(window).height() - 10 < this.$element.height();
+            
 			if (modalOverflow || this.options.modalOverflow) {
 				this.$element
 					.css('margin-top', 0)
@@ -202,10 +202,6 @@
 		},
 
 		hideModal: function () {
-			this.$element
-				.hide()
-				.trigger('hidden');
-
 			var prop = this.options.height ? 'height' : 'max-height';
 			var value = this.options.height || this.options.maxHeight;
 
@@ -215,6 +211,9 @@
 					.css(prop, '');
 			}
 
+			this.$element
+				.hide()
+				.trigger('hidden');
 		},
 
 		removeLoading: function () {

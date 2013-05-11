@@ -177,6 +177,9 @@
             }
         });
     });
+    $.fn.alert = function (message) {
+        this.html('<div class="alert"><a class="close" data-dismiss="alert">×</a><span>' + message + '</span></div>');
+    };
 });
 
 function dimOff() {

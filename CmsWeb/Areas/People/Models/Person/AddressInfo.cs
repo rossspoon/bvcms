@@ -122,6 +122,18 @@ namespace CmsWeb.Areas.People.Models.Person
             a.person = p;
             switch (typeid)
             {
+                case "PrimaryAddr":
+                    a.Name = typeid;
+                    a.PeopleId = p.PeopleId;
+                    a.Address1 = p.PrimaryAddress;
+                    a.Address2 = p.PrimaryAddress2;
+                    a.BadAddress = p.PrimaryBadAddrFlag == 1;
+                    a.City = p.PrimaryCity;
+                    a.Zip = p.PrimaryZip;
+                    a.State = new CodeInfo(p.PrimaryState, StateCodes());
+                    a.Country = new CodeInfo(p.PrimaryCountry, Countries());
+                    a.ResCode = new CodeInfo(p.PrimaryResCode, ResCodes());
+                    break;
                 case "FamilyAddr":
                     a.Name = typeid;
                     a.PeopleId = p.PeopleId;
@@ -154,7 +166,7 @@ namespace CmsWeb.Areas.People.Models.Person
             return a;
         }
 
-        public void UpdateAddress(ModelStateDictionary ModelState)
+        public object UpdateAddress(Controller ctl)
         {
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             var f = p.Family;
@@ -165,49 +177,48 @@ namespace CmsWeb.Areas.People.Models.Person
                 addrok = true;
 
             if (!addrok)
-                ModelState.AddModelError("zip", "city/state required or zip required (or \"na\" in all)");
+                return new { confirm = "city/state required or zip required" };
 
             if (Address1.HasValue() && (City.HasValue() || State.Value.HasValue() || Zip.HasValue())
                 && (Country.Value == "United States" || !Country.Value.HasValue()))
             {
                 var r = AddressVerify.LookupAddress(Address1, Address2, City, State.Value, Zip);
-                if (r.Line1 != "error")
+                if (r.Line1 != "error") // no network error
                 {
                     if (!r.found)
-                    {
-                        ModelState.AddModelError("zip", r.address + ", if your address will not validate, change the country to 'USA, Not Validated'");
-                        return;
-                    }
+                        return new { confirm = r.address.Replace("\n", "<br/>\n") + "<br/>\nIf your address will not validate, change the country to 'USA, Not Validated'"};
+                    var b = false;
                     if (r.Line1 != Address1)
                     {
-                        ModelState.AddModelError("address1", "address changed from '{0}'".Fmt(Address1));
                         Address1 = r.Line1;
+                        b = true;
                     }
                     if (r.Line2 != (Address2 ?? ""))
                     {
-                        ModelState.AddModelError("address2", "address2 changed from '{0}'".Fmt(Address2));
                         Address2 = r.Line2;
+                        b = true;
                     }
                     if (r.City != (City ?? ""))
                     {
-                        ModelState.AddModelError("city", "city changed from '{0}'".Fmt(City));
                         City = r.City;
+                        b = true;
                     }
                     if (r.State != (State.Value ?? ""))
                     {
-                        ModelState.AddModelError("state", "state changed from '{0}'".Fmt(State.Value));
                         State.Value = r.State;
+                        b = true;
                     }
                     if (r.Zip != (Zip ?? ""))
                     {
-                        ModelState.AddModelError("zip", "zip changed from '{0}'".Fmt(Zip));
                         Zip = r.Zip;
+                        b = true;
                     }
-                    if (!ModelState.IsValid)
-                        return;
+                    if (b)
+                        return (new { confirm = r.address.Replace("\n", "<br/>\n") } );
                 }
             }
-
+            // at this point, we either have a network error to the validation web service or the address validated just fine.
+            // in either case, we are going to save the results.
 
             switch (Name)
             {
@@ -216,10 +227,10 @@ namespace CmsWeb.Areas.People.Models.Person
                     UpdateValue(f, "AddressLineTwo", Address2);
                     UpdateValue(f, "AddressToDate", ToDt);
                     UpdateValue(f, "CityName", City);
-                    UpdateValue(f, "StateCode", State);
+                    UpdateValue(f, "StateCode", State.Value);
                     UpdateValue(f, "ResCodeId", ResCode.Value.ToInt());
                     UpdateValue(f, "ZipCode", Zip ?? "");
-                    UpdateValue(f, "CountryName", Country);
+                    UpdateValue(f, "CountryName", Country.Value);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 10);
                     if (fsb.Length > 0)
@@ -231,10 +242,10 @@ namespace CmsWeb.Areas.People.Models.Person
                     UpdateValue(p, "AddressLineTwo", Address2);
                     UpdateValue(p, "AddressToDate", ToDt);
                     UpdateValue(p, "CityName", City);
-                    UpdateValue(p, "StateCode", State);
+                    UpdateValue(p, "StateCode", State.Value);
                     UpdateValue(p, "ResCodeId", ResCode.Value.ToInt());
                     UpdateValue(p, "ZipCode", Zip ?? "");
-                    UpdateValue(p, "CountryName", Country);
+                    UpdateValue(p, "CountryName", Country.Value);
                     if (Preferred)
                         UpdateValue(p, "AddressTypeId", 30);
                     if (psb.Length > 0)
@@ -270,10 +281,11 @@ namespace CmsWeb.Areas.People.Models.Person
             try
             {
                 DbUtil.Db.SubmitChanges();
+    			DbUtil.LogActivity("Update Address for: {0}".Fmt(person.Name));
             }
             catch (InvalidOperationException ex)
             {
-                ModelState.AddModelError("error", ex.Message);
+                return new {error = ex.Message};
             }
 
             if (!HttpContext.Current.User.IsInRole("Access"))
@@ -284,6 +296,11 @@ namespace CmsWeb.Areas.People.Models.Person
                         "{0} changed the following information:<br />\n<table>{1}{2}</table>"
                         .Fmt(Util.UserName, psb.ToString(), fsb.ToString()));
                 }
+            return new 
+            {
+                addr = ViewExtensions2.RenderPartialViewToString(ctl, "DisplayTemplates/Address", this),
+                primary = ViewExtensions2.RenderPartialViewToString(ctl, "DisplayTemplates/Address", GetAddressInfo(PeopleId, "PrimaryAddr"))
+            };
         }
         private StringBuilder fsb = new StringBuilder();
         private void UpdateValue(Family f, string field, object value)

@@ -125,6 +125,7 @@ namespace CmsWeb
                 , "Scripts/bootstrap/bootstrap-modalmanager.js"
                 , "Scripts/bootstrap/bootstrap-modal.js"
                 , "Scripts/bootstrap/bootstrap-editable.js"
+                , "Scripts/bootstrap/bootbox.js"
                 , "Scripts/jquery/jquery.cookie.js"
                 , "Scripts/jquery/jquery.blockUI.js"
                 , "Scripts/jquery/jquery.mousewheel.js"
