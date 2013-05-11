@@ -78,7 +78,7 @@ namespace CmsData
 					CreatedDate = Util.Now,
 					CreatedBy = Util.UserId1,
 					GroupMeetingFlag = false,
-					AttendCreditId = acr
+					AttendCreditId = acr ?? 1
 				};
 				Db.Meetings.InsertOnSubmit(meeting);
 				Db.SubmitChanges();
