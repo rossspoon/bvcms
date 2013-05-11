@@ -130,10 +130,9 @@ namespace CmsWeb.Models
         public static IEnumerable ExcelDonorFundTotals(DateTime startdt, DateTime enddt,
             int fundid, int campusid, bool pledges, bool nontaxdeductible, bool includeUnclosed)
         {
-            var q2 = from r in DbUtil.Db.GetTotalContributions2(startdt, enddt, campusid, nontaxdeductible, includeUnclosed)
+            var q2 = from r in DbUtil.Db.GetTotalContributions3(startdt, enddt, campusid, nontaxdeductible, includeUnclosed)
                      select new
                      {
-                         r.CreditGiverId,
                          Count = r.Count ?? 0,
                          Amount = r.Amount ?? 0m,
                          Pledged = r.PledgeAmount ?? 0m,

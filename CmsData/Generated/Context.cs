@@ -22,6 +22,10 @@ namespace CmsData
         partial void UpdateActivityLog(ActivityLog instance);
         partial void DeleteActivityLog(ActivityLog instance);
         
+        partial void InsertActivityOld(ActivityOld instance);
+        partial void UpdateActivityOld(ActivityOld instance);
+        partial void DeleteActivityOld(ActivityOld instance);
+        
         partial void InsertAddress(Address instance);
         partial void UpdateAddress(Address instance);
         partial void DeleteAddress(Address instance);
@@ -659,6 +663,12 @@ namespace CmsData
 		public Table< ActivityLog> ActivityLogs
 		{
 			get	{ return this.GetTable< ActivityLog>(); }
+
+		}
+
+		public Table< ActivityOld> ActivityOlds
+		{
+			get	{ return this.GetTable< ActivityOld>(); }
 
 		}
 
@@ -1559,6 +1569,12 @@ namespace CmsData
 	#endregion
 	#region Views
 		
+	    public Table< View.ActivityAll> ViewActivityAlls
+	    {
+		    get { return this.GetTable< View.ActivityAll>(); }
+
+	    }
+
 	    public Table< View.Church> ViewChurches
 	    {
 		    get { return this.GetTable< View.Church>(); }
@@ -1978,6 +1994,25 @@ namespace CmsData
             )
 		{
 			return this.CreateMethodCallQuery< View.GetTotalContributions2>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                fd,
+                td,
+                campusid,
+                nontaxded,
+                includeUnclosed
+                );
+		}
+
+		[Function(Name="dbo.GetTotalContributions3", IsComposable = true)]
+		public IQueryable< View.GetTotalContributions3 > GetTotalContributions3(
+            [Parameter(DbType="datetime")] DateTime? fd,
+            [Parameter(DbType="datetime")] DateTime? td,
+            [Parameter(DbType="int")] int? campusid,
+            [Parameter(DbType="bit")] bool? nontaxded,
+            [Parameter(DbType="bit")] bool? includeUnclosed
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTotalContributions3>(this, 
 			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 fd,
                 td,
