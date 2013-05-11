@@ -27,6 +27,7 @@ namespace CmsData
                     text = text.Replace("{first}", string.Empty, ignoreCase: true);
                 else
                     text = text.Replace("{first}", p.PreferredName, ignoreCase: true);
+            text = text.Replace("{last}", p.LastName, ignoreCase: true);
             if (text.Contains("{occupation}", ignoreCase: true))
                 text = text.Replace("{occupation}", p.OccupationOther, ignoreCase: true);
 
