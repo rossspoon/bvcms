@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace DbmlBuilder
 {
 
     internal class AutomaticConnectionScope
     {
-        private readonly DbConnection _dbConnection;
+        private readonly SqlConnection _dbConnection;
 
-        internal DbConnection Connection
+        internal SqlConnection Connection
         {
             get { return _dbConnection; }
         }
