@@ -16,29 +16,15 @@ namespace CmsData.View
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		
-		private string _Username;
+		private string _Machine;
 		
-		private int _UserId;
+		private DateTime? _ActivityDate;
 		
 		private string _Name;
 		
-		private string _Name2;
+		private int _UserId;
 		
-		private bool _IsApproved;
-		
-		private bool _MustChangePassword;
-		
-		private bool _IsLockedOut;
-		
-		private string _EmailAddress;
-		
-		private DateTime? _LastActivityDate;
-		
-		private int? _PeopleId;
-		
-		private string _Roles;
-		
-		private string _Db;
+		private string _Activity;
 		
 		
 		public ActivityAll()
@@ -47,18 +33,52 @@ namespace CmsData.View
 
 		
 		
-		[Column(Name="Username", Storage="_Username", DbType="varchar(50) NOT NULL")]
-		public string Username
+		[Column(Name="Machine", Storage="_Machine", DbType="varchar(50)")]
+		public string Machine
 		{
 			get
 			{
-				return this._Username;
+				return this._Machine;
 			}
 
 			set
 			{
-				if (this._Username != value)
-					this._Username = value;
+				if (this._Machine != value)
+					this._Machine = value;
+			}
+
+		}
+
+		
+		[Column(Name="ActivityDate", Storage="_ActivityDate", DbType="datetime")]
+		public DateTime? ActivityDate
+		{
+			get
+			{
+				return this._ActivityDate;
+			}
+
+			set
+			{
+				if (this._ActivityDate != value)
+					this._ActivityDate = value;
+			}
+
+		}
+
+		
+		[Column(Name="Name", Storage="_Name", DbType="varchar(50) NOT NULL")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+
+			set
+			{
+				if (this._Name != value)
+					this._Name = value;
 			}
 
 		}
@@ -81,171 +101,18 @@ namespace CmsData.View
 		}
 
 		
-		[Column(Name="Name", Storage="_Name", DbType="varchar(56)")]
-		public string Name
+		[Column(Name="Activity", Storage="_Activity", DbType="varchar(200)")]
+		public string Activity
 		{
 			get
 			{
-				return this._Name;
+				return this._Activity;
 			}
 
 			set
 			{
-				if (this._Name != value)
-					this._Name = value;
-			}
-
-		}
-
-		
-		[Column(Name="Name2", Storage="_Name2", DbType="varchar(57)")]
-		public string Name2
-		{
-			get
-			{
-				return this._Name2;
-			}
-
-			set
-			{
-				if (this._Name2 != value)
-					this._Name2 = value;
-			}
-
-		}
-
-		
-		[Column(Name="IsApproved", Storage="_IsApproved", DbType="bit NOT NULL")]
-		public bool IsApproved
-		{
-			get
-			{
-				return this._IsApproved;
-			}
-
-			set
-			{
-				if (this._IsApproved != value)
-					this._IsApproved = value;
-			}
-
-		}
-
-		
-		[Column(Name="MustChangePassword", Storage="_MustChangePassword", DbType="bit NOT NULL")]
-		public bool MustChangePassword
-		{
-			get
-			{
-				return this._MustChangePassword;
-			}
-
-			set
-			{
-				if (this._MustChangePassword != value)
-					this._MustChangePassword = value;
-			}
-
-		}
-
-		
-		[Column(Name="IsLockedOut", Storage="_IsLockedOut", DbType="bit NOT NULL")]
-		public bool IsLockedOut
-		{
-			get
-			{
-				return this._IsLockedOut;
-			}
-
-			set
-			{
-				if (this._IsLockedOut != value)
-					this._IsLockedOut = value;
-			}
-
-		}
-
-		
-		[Column(Name="EmailAddress", Storage="_EmailAddress", DbType="varchar(150)")]
-		public string EmailAddress
-		{
-			get
-			{
-				return this._EmailAddress;
-			}
-
-			set
-			{
-				if (this._EmailAddress != value)
-					this._EmailAddress = value;
-			}
-
-		}
-
-		
-		[Column(Name="LastActivityDate", Storage="_LastActivityDate", DbType="datetime")]
-		public DateTime? LastActivityDate
-		{
-			get
-			{
-				return this._LastActivityDate;
-			}
-
-			set
-			{
-				if (this._LastActivityDate != value)
-					this._LastActivityDate = value;
-			}
-
-		}
-
-		
-		[Column(Name="PeopleId", Storage="_PeopleId", DbType="int")]
-		public int? PeopleId
-		{
-			get
-			{
-				return this._PeopleId;
-			}
-
-			set
-			{
-				if (this._PeopleId != value)
-					this._PeopleId = value;
-			}
-
-		}
-
-		
-		[Column(Name="Roles", Storage="_Roles", DbType="varchar(500)")]
-		public string Roles
-		{
-			get
-			{
-				return this._Roles;
-			}
-
-			set
-			{
-				if (this._Roles != value)
-					this._Roles = value;
-			}
-
-		}
-
-		
-		[Column(Name="db", Storage="_Db", DbType="varchar(4) NOT NULL")]
-		public string Db
-		{
-			get
-			{
-				return this._Db;
-			}
-
-			set
-			{
-				if (this._Db != value)
-					this._Db = value;
+				if (this._Activity != value)
+					this._Activity = value;
 			}
 
 		}

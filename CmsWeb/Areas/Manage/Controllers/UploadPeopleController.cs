@@ -24,36 +24,41 @@ namespace CmsWeb.Areas.Manage.Controllers
 		public ActionResult Upload(string text)
 		{
 			string host = Util.Host;
-			var runningtotals = new UploadPeopleRun
-			                    	{
-			                    		Started = DateTime.Now,
-			                    		Count = 0,
-			                    		Processed = 0
-			                    	};
+			var runningtotals = new UploadPeopleRun { Started = DateTime.Now, Count = 0, Processed = 0 };
 			DbUtil.Db.UploadPeopleRuns.InsertOnSubmit(runningtotals);
 			DbUtil.Db.SubmitChanges();
 			var pid = Util.UserPeopleId;
-            
 
 			Alias.Task.Factory.StartNew(() =>
 			{
 				Thread.CurrentThread.Priority = ThreadPriority.Lowest;
 				var Db = new CMSDataContext(Util.GetConnectionString(host));
-//				try
-//				{
+				try
+				{
 					var m = new UploadPeopleModel(Db, pid ?? 0);
 					m.DoUpload(text, testing: true);
 					Db.Dispose();
 					Db = new CMSDataContext(Util.GetConnectionString(host));
+
+        			runningtotals = new UploadPeopleRun { Started = DateTime.Now, Count = 0, Processed = 0 };
+        			Db.UploadPeopleRuns.InsertOnSubmit(runningtotals);
+        			Db.SubmitChanges();
+
 					m = new UploadPeopleModel(Db, pid ?? 0);
 					m.DoUpload(text);
-//				}
-//				catch (Exception ex)
-//				{
-//					var rt = Db.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
-//					rt.Error = ex.Message.Truncate(200);
-//					Db.SubmitChanges();
-//				}
+				}
+				catch (Exception ex)
+				{
+					Db.Dispose();
+					Db = new CMSDataContext(Util.GetConnectionString(host));
+
+				    var q = from r in Db.UploadPeopleRuns
+				            where r.Id == Db.UploadPeopleRuns.Max(rr => rr.Id)
+				            select r;
+				    var rt = q.Single();
+					rt.Error = ex.Message.Truncate(200);
+        			Db.SubmitChanges();
+				}
 			});
 			return Redirect("/UploadPeople/Progress");
 		}

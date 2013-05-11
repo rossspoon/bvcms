@@ -44,6 +44,7 @@ namespace DbmlBuilder
             catch (Exception x)
             {
                 Console.WriteLine("Error Message: {0}", x);
+                Console.ReadKey();
             }
             timer.Stop();
             Console.WriteLine("Execution Time: " + timer.ElapsedMilliseconds + "ms");

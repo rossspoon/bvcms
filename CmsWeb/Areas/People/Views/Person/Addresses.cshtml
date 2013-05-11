@@ -28,17 +28,12 @@
                 <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
                 <li><a href="http://www.bing.com/maps/?q=@p.FamilyAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
                 <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a class="editaddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId?type=FamilyAddr">Edit</a></li>
+                <li><a class="editaddr" data-type="FamilyAddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId">Edit</a></li>
             </ul>
         </div>
         @* Dave: How do we distinguish family address vs personal *@
-        <p>
-            <span class="street">@p.FamilyAddr.Address1</span>
-            @if (p.FamilyAddr.Address2.HasValue())
-            {
-                <span class="street">@p.FamilyAddr.Address2</span>
-            }
-            <span class="city">@p.FamilyAddr.CityStateZip()</span>
+        <p id="familyaddress">
+            @Html.Partial("DisplayTemplates/Address", p.FamilyAddr)
         </p>
     </li>
     @* Dave: Should we put email address in this section? *@
@@ -62,16 +57,11 @@
                 <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
                 <li><a href="http://www.bing.com/maps/?q=@p.PersonalAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
                 <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a class="editaddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId?type=PersonalAddr" >Edit</a></li>
+                <li><a class="editaddr" type="PersonalAddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId">Edit</a></li>
             </ul>
         </div>
-        <p>
-            <span class="street">@p.PersonalAddr.Address1</span>
-            @if (p.PersonalAddr.Address2.HasValue())
-            {
-                <span class="street">@p.PersonalAddr.Address2</span>
-            }
-            <span class="city">@p.PersonalAddr.CityStateZip()</span>
+        <p id="personaladdress">
+            @Html.Partial("DisplayTemplates/Address", p.PersonalAddr)
         </p>
     </li>
     }
