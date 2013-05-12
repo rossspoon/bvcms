@@ -520,6 +520,8 @@
     <Content Include="Content\img\alert.gif" />
     <Content Include="Content\img\clear.png" />
     <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\jquery-dialog2\images\ajax-loader.gif" />
+    <Content Include="Content\jquery-dialog2\jquery.dialog2.css" />
     <Content Include="images\chosen-sprite.png" />
     <Content Include="Content\css\chosen.css" />
     <Content Include="Content\css\font-awesome-ie7.min.css" />
@@ -697,6 +699,8 @@
       <DependentUpon>bootstrap.js</DependentUpon>
     </Content>
     <Content Include="Scripts\Bootstrap\bootstrapx-clickover.js" />
+    <Content Include="Scripts\Bootstrap\jquery.dialog2.helpers.js" />
+    <Content Include="Scripts\Bootstrap\jquery.dialog2.js" />
     <Content Include="Scripts\Bootstrap\spin.min.js" />
     <Content Include="Scripts\Chosen\chosen.jquery.min.js.map">
       <DependentUpon>chosen.jquery.js</DependentUpon>
@@ -707,6 +711,7 @@
     <Content Include="Scripts\jQuery\jquery-ui-1.10.0.custom.min.js.map">
       <DependentUpon>jquery-ui-1.10.0.custom.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\jQuery\jquery.controls.js" />
     <Content Include="Scripts\jQuery\jquery.tooltip.min.js.map">
       <DependentUpon>jquery.tooltip.js</DependentUpon>
     </Content>
