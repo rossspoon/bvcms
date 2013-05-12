@@ -738,7 +738,7 @@ namespace CmsData
             DateTime? dt)
         {
             int n = number.ToInt2() ?? 1;
-            var cdt = Db.Setting("DbConversionDate", "1/1/1900").ToDate();
+            var cdt = Db.Setting("DbConvertedDate", "1/1/1900").ToDate();
 
             Expression<Func<Person, bool>> pred = null;
             switch (op)
@@ -785,7 +785,7 @@ namespace CmsData
         {
             int n = number.ToInt2() ?? 1;
             var dt = DateTime.Now.AddDays(-days);
-            var cdt = Db.Setting("DbConversionDate", "1/1/1900").ToDate();
+            var cdt = Db.Setting("DbConvertedDate", "1/1/1900").ToDate();
             Expression<Func<Person, bool>> pred = p => p.CreatedDate > cdt &&
                 p.Attends.Any(aa => aa.SeqNo == n && aa.MeetingDate > dt);
             Expression expr = Expression.Invoke(pred, parm);
