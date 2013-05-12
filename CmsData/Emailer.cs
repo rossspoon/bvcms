@@ -44,7 +44,7 @@ namespace CmsData
         {
             var From = Util.FirstAddress(from);
             if (From == null)
-                From = Util.FirstAddress(Util.SysFromEmail);
+                From = Util.FirstAddress(Setting("AdminMail", Util.SysFromEmail));
             var emailqueue = new EmailQueue
             {
                 Queued = DateTime.Now,
