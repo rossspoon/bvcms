@@ -91,17 +91,37 @@ namespace CmsWeb.Areas.Public.Controllers
 			return Content(new APIOrganization(DbUtil.Db).NewOrganization(divId, name, location, parentOrgId, campusId, orgtype, leadertype, securitytype, securityrole), "text/xml");
 		}
         [HttpPost]
-        public ActionResult UpdateOrganization(int orgId, string name, string campusid, string active, string location, string description, int? orgtype, int? leadertype, int? securitytype, string securityrole)
+        public ActionResult UpdateOrganization(int orgId, string name, string campusid, string active, string location, string description, int? orgtype, int? leadertype, int? securitytype, string securityrole, int? parentorg)
         {
             var ret = AuthenticateDeveloper();
             if (ret.StartsWith("!"))
                 return Content(ret.Substring(1));
             new APIOrganization(DbUtil.Db)
-                .UpdateOrganization(orgId, name, campusid, active, location, description, orgtype, leadertype, securitytype, securityrole);
+                .UpdateOrganization(orgId, name, campusid, active, location, description, orgtype, leadertype, securitytype, securityrole, parentorg);
 			DbUtil.LogActivity("APIOrg UpdateOrganization {0}".Fmt(orgId));
             return Content("ok");
         }
-		[HttpPost]
+
+        [HttpPost]
+        public ActionResult AddDivToOrg(int orgId, int divid)
+        {
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<AddDivToOrg status=""error"">" + ret.Substring(1) + "</AddDivToOrg>");
+			DbUtil.LogActivity("APIOrganization AddDivToOrg");
+            return Content(new APIOrganization(DbUtil.Db).AddDivToOrg(orgId, divid));
+        }
+        [HttpPost]
+        public ActionResult RemoveDivFromOrg(int orgId, int divid)
+        {
+			var ret = AuthenticateDeveloper();
+			if (ret.StartsWith("!"))
+				return Content(@"<RemoveDivFromOrg status=""error"">" + ret.Substring(1) + "</RemoveDivFromOrg>");
+			DbUtil.LogActivity("APIOrganization RemoveDivFromOrg");
+            return Content(new APIOrganization(DbUtil.Db).RemoveDivFromOrg(orgId, divid));
+        }
+
+        [HttpPost]
 		public ActionResult AddOrgMember(int OrgId, int PeopleId, string MemberType, bool? pending)
 		{
 			var ret = AuthenticateDeveloper();

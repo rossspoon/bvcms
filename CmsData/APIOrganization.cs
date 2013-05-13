@@ -322,7 +322,32 @@ class OrgMembers(object):
                     .Fmt(HttpUtility.HtmlEncode(ex.Message));
             }
         }
-        public string UpdateOrganization(int orgid, string name, string campusid, string active, string location, string description, int? orgtype, int? leadertype, int? securitytype, string securityrole)
+
+        public string AddDivToOrg(int orgid, int divid)
+        {
+            var div = Db.DivOrgs.SingleOrDefault(dd => dd.DivId == divid && dd.OrgId == orgid);
+            if (div == null)
+                Db.DivOrgs.InsertOnSubmit(new DivOrg {DivId = divid, OrgId = orgid});
+            var o = Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == orgid && oo.DivisionId == null);
+            if (o != null)
+                o.DivisionId = divid;
+            Db.SubmitChanges();
+            return "ok";
+        }
+
+        public string RemoveDivFromOrg(int orgid, int divid)
+        {
+            var div = Db.DivOrgs.SingleOrDefault(dd => dd.DivId == divid && dd.OrgId == orgid);
+            if (div != null)
+                Db.DivOrgs.DeleteOnSubmit(div);
+            var o = Db.Organizations.SingleOrDefault(oo => oo.OrganizationId == orgid && oo.DivisionId == divid);
+            if (o != null)
+                o.DivisionId = null;
+            Db.SubmitChanges();
+            return "ok";
+        }
+
+        public string UpdateOrganization(int orgid, string name, string campusid, string active, string location, string description, int? orgtype, int? leadertype, int? securitytype, string securityrole, int? parentorg)
         {
             try
             {
@@ -343,6 +368,8 @@ class OrgMembers(object):
                     o.OrganizationTypeId = orgtype;
                 if(securitytype.HasValue)
                     o.SecurityTypeId = securitytype.Value;
+                if (parentorg.HasValue)
+                    o.ParentOrgId = parentorg == 0 ? null : parentorg;
 
                 Db.SubmitChanges();
 
