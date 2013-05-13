@@ -25,7 +25,7 @@ namespace CmsWeb.Areas.Main.Models.Report
 {
     public class EnrollmentControlResult : ActionResult
     {
-        public int div, subdiv, schedule;
+        public EnrollmentControlModel model { get; set; }
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -38,11 +38,11 @@ namespace CmsWeb.Areas.Main.Models.Report
             var w = PdfWriter.GetInstance(doc, Response.OutputStream);
 
             string divtext = "", subdivtext = "";
-            divtext = DbUtil.Db.Programs.Single(p => p.Id == div).Name;
-            subdivtext = DbUtil.Db.Divisions.Where(p => p.Id == subdiv).Select(p => p.Name).SingleOrDefault();
+            divtext = DbUtil.Db.Programs.Single(p => p.Id == model.prog).Name;
+            subdivtext = DbUtil.Db.Divisions.Where(p => p.Id == model.div).Select(p => p.Name).SingleOrDefault();
 
             string scheduletext = String.Empty;
-            var sdt = CmsData.Organization.GetDateFromScheduleId(schedule);
+            var sdt = CmsData.Organization.GetDateFromScheduleId(model.schedule);
             if (sdt.HasValue)
                 scheduletext = sdt.Value.ToString("dddd h:mm tt");
 
@@ -65,7 +65,7 @@ namespace CmsWeb.Areas.Main.Models.Report
             t.AddCell(new Phrase("Location", boldfont));
             t.AddCell(new Phrase("Member Type", boldfont));
 
-            foreach (var m in list(subdiv, div, schedule))
+            foreach (var m in model.list())
             {
                 t.AddCell(new Phrase(m.Name, font));
                 t.AddCell(new Phrase(m.Organization, font));
@@ -77,32 +77,6 @@ namespace CmsWeb.Areas.Main.Models.Report
             else
                 doc.Add(new Phrase("no data"));
             doc.Close();
-        }
-        public class MemberInfo
-        {
-            public string Name { get; set; }
-            public int Id { get; set; }
-            public string Organization { get; set; }
-            public string Location { get; set; }
-            public string MemberType { get; set; }
-        }
-        IEnumerable<MemberInfo> list(int divid, int progid, int schedule)
-        {
-            var q = from m in DbUtil.Db.OrganizationMembers
-                    where m.Organization.DivOrgs.Any(t => t.DivId == divid) || divid == 0
-                    where m.Organization.DivOrgs.Any(t => t.Division.ProgId == progid)
-                    where m.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0
-                    where m.Organization.OrganizationStatusId == OrgStatusCode.Active
-                    orderby m.Person.Name2
-                    select new MemberInfo
-                    {
-                        Name = m.Person.Name2,
-                        Id = m.PeopleId,
-                        Organization = m.Organization.OrganizationName,
-                        Location = m.Organization.Location,
-                        MemberType = m.MemberType.Description,
-                    };
-            return q;
         }
         class HeadFoot : PdfPageEventHelper
         {

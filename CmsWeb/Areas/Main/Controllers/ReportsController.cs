@@ -11,8 +11,10 @@ using CmsWeb.Areas.Main.Models.Directories;
 using CmsWeb.Areas.Main.Models.Report;
 using CmsData;
 using System.IO;
+using CmsWeb.Areas.Manage.Controllers;
 using CmsWeb.Code;
 using Dapper;
+using NPOI.HSSF.UserModel;
 using UtilityExtensions;
 using System.Text;
 using System.Web.UI;
@@ -74,7 +76,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 sgprefix = sgprefix,
                 dt = dt2,
                 altnames = altnames,
-				highlightsg = highlight,
+                highlightsg = highlight,
             };
         }
         public ActionResult RallyRollsheet(int? id, string org, int? pid, int? div, int? schedule, string name, string dt, int? meetingid, int? bygroup, string sgprefix, bool? altnames)
@@ -125,19 +127,19 @@ namespace CmsWeb.Areas.Main.Controllers
         public ActionResult ShirtSizes(string org, int? div, int? schedule, string name)
         {
             var orgid = org == "curr" ? (int?)Util2.CurrentOrgId : null;
-			var q = from om in DbUtil.Db.OrganizationMembers
-					let o = om.Organization
-					where o.OrganizationName.Contains(name) || name.Length == 0
-					where o.OrganizationId == orgid || orgid == 0 || orgid == null
-					where o.DivOrgs.Any(t => t.DivId == div) || div == 0 || div == null
-					where om.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
-					group 1 by om.ShirtSize into g
-					select new ShirtSizeInfo
-					{
-						Size = g.Key,
-						Count = g.Count(),
-					}; 
-			return View(q);
+            var q = from om in DbUtil.Db.OrganizationMembers
+                    let o = om.Organization
+                    where o.OrganizationName.Contains(name) || name.Length == 0
+                    where o.OrganizationId == orgid || orgid == 0 || orgid == null
+                    where o.DivOrgs.Any(t => t.DivId == div) || div == 0 || div == null
+                    where om.Organization.OrgSchedules.Any(sc => sc.ScheduleId == schedule) || schedule == 0 || schedule == null
+                    group 1 by om.ShirtSize into g
+                    select new ShirtSizeInfo
+                    {
+                        Size = g.Key,
+                        Count = g.Count(),
+                    };
+            return View(q);
         }
         public ActionResult Roster1(int? queryid, int? org, int? div, int? schedule, string name, string tm)
         {
@@ -158,15 +160,6 @@ namespace CmsWeb.Areas.Main.Controllers
                 div = div,
                 schedule = schedule,
                 name = name,
-            };
-        }
-        public ActionResult EnrollmentControl(int div, int subdiv, int schedule)
-        {
-            return new EnrollmentControlResult
-            {
-                div = div,
-                schedule = schedule,
-                subdiv = subdiv
             };
         }
         public ActionResult Avery(int? id)
@@ -203,8 +196,8 @@ namespace CmsWeb.Areas.Main.Controllers
                 format = format,
                 titles = titles,
                 usephone = usephone ?? false,
-				skip = skipNum,
-				sortzip = sortzip
+                skip = skipNum,
+                sortzip = sortzip
             };
         }
         public ActionResult RollLabels(int? id, string format, bool? titles, bool? usephone, bool? sortzip)
@@ -217,7 +210,7 @@ namespace CmsWeb.Areas.Main.Controllers
                 format = format,
                 titles = titles ?? false,
                 usephone = usephone ?? false,
-				sortzip = sortzip
+                sortzip = sortzip
             };
         }
         public ActionResult Prospect(int? id, bool? Form, bool? Alpha)
@@ -293,9 +286,8 @@ namespace CmsWeb.Areas.Main.Controllers
 
             var cn = new SqlConnection(Util.ConnectionString);
             cn.Open();
-            var q = cn.Query("RecentAbsentsSP",
-                                                           new {orgid = id, divid = divid, days = days ?? 36},
-                                                           commandType: CommandType.StoredProcedure, commandTimeout: 600);
+            var q = cn.Query("RecentAbsentsSP", new { orgid = id, divid = divid, days = days ?? 36 },
+                commandType: CommandType.StoredProcedure, commandTimeout: 600);
             return View(q);
         }
         public ActionResult Meetings(MeetingsModel m)
@@ -323,7 +315,7 @@ namespace CmsWeb.Areas.Main.Controllers
         }
         public ActionResult ExtraValues()
         {
-        	var ev = StandardExtraValues.GetExtraValues();
+            var ev = StandardExtraValues.GetExtraValues();
             var q = from e in DbUtil.Db.PeopleExtras
                     where e.StrValue != null || e.BitValue != null
                     group e by new { e.Field, val = e.StrValue ?? (e.BitValue == true ? "1" : "0") } into g
@@ -334,11 +326,11 @@ namespace CmsWeb.Areas.Main.Controllers
                         Count = g.Count(),
                     };
 
-        	var list = from e in q.ToList()
-        	           let f = ev.SingleOrDefault(ff => ff.name == e.Field)
-					   where f == null || f.UserCanView()
-					   orderby e.Field
-        	           select e;
+            var list = from e in q.ToList()
+                       let f = ev.SingleOrDefault(ff => ff.name == e.Field)
+                       where f == null || f.UserCanView()
+                       orderby e.Field
+                       select e;
             return View(list);
         }
         public ActionResult ExtraValueQuery(string field, string val)
@@ -361,33 +353,33 @@ namespace CmsWeb.Areas.Main.Controllers
 
             var tag = DbUtil.Db.PopulateSpecialTag(id, DbUtil.TagTypeId_ExtraValues);
             var cmd = new SqlCommand("dbo.ExtraValues @p1, @p2, @p3");
-			cmd.Parameters.AddWithValue("@p1", tag.Id);
-			cmd.Parameters.AddWithValue("@p2", sort ?? "");
-			cmd.Parameters.AddWithValue("@p3", nodisplaycols);
+            cmd.Parameters.AddWithValue("@p1", tag.Id);
+            cmd.Parameters.AddWithValue("@p2", sort ?? "");
+            cmd.Parameters.AddWithValue("@p3", nodisplaycols);
             cmd.Connection = new SqlConnection(Util.ConnectionString);
             cmd.Connection.Open();
             var rdr = cmd.ExecuteReader();
-			ViewBag.queryid = id;
+            ViewBag.queryid = id;
             return View(rdr);
         }
-		public ActionResult FamilyDirectory(int id)
-		{
-			return new FamilyDir(id);
-		}
-		public ActionResult FamilyDirectoryCompact(int id)
-		{
-			return new CompactDir(id);
-		}
-		public ActionResult PictureDirectory(int id)
-		{
-			return new PictureDir(id);
-		}
-		public ActionResult EmployerAddress(int id)
-		{
-			return new EmployerAddress(id);
-		}
+        public ActionResult FamilyDirectory(int id)
+        {
+            return new FamilyDir(id);
+        }
+        public ActionResult FamilyDirectoryCompact(int id)
+        {
+            return new CompactDir(id);
+        }
+        public ActionResult PictureDirectory(int id)
+        {
+            return new PictureDir(id);
+        }
+        public ActionResult EmployerAddress(int id)
+        {
+            return new EmployerAddress(id);
+        }
 
-    	public class QueryStatsResult : ActionResult
+        public class QueryStatsResult : ActionResult
         {
             StringBuilder sb = new StringBuilder();
             public override void ExecuteResult(ControllerContext context)
@@ -443,6 +435,52 @@ namespace CmsWeb.Areas.Main.Controllers
                 }
                 Response.Write("</table>");
             }
+        }
+        public ActionResult EnrollmentControl(int pid, int? div, int? schedule, string name, bool? usecurrenttag, bool? excel)
+        {
+            var m = new EnrollmentControlModel()
+            {
+                prog = pid,
+                div = div ?? 0,
+                schedule = schedule ?? 0,
+                usecurrenttag = usecurrenttag ?? false
+            };
+
+            if (excel == true)
+            {
+                var d = from p in m.list()
+                        orderby p.Name
+                        select p;
+                var workbook = new HSSFWorkbook();
+                var sheet = workbook.CreateSheet("EnrollmentControl");
+                var rowIndex = 0;
+                var row = sheet.CreateRow(rowIndex);
+                row.CreateCell(0).SetCellValue("Name");
+                row.CreateCell(1).SetCellValue("Organization");
+                row.CreateCell(2).SetCellValue("Location");
+                row.CreateCell(3).SetCellValue("MemberType");
+                rowIndex++;
+
+                foreach (var i in d)
+                {
+                    row = sheet.CreateRow(rowIndex);
+                    row.CreateCell(0).SetCellValue(i.Name);
+                    row.CreateCell(1).SetCellValue(i.Organization);
+                    row.CreateCell(2).SetCellValue(i.Location);
+                    row.CreateCell(3).SetCellValue(i.MemberType);
+                    rowIndex++;
+                }
+                sheet.AutoSizeColumn(0);
+                sheet.AutoSizeColumn(1);
+                sheet.AutoSizeColumn(2);
+                sheet.AutoSizeColumn(3);
+                string saveAsFileName = string.Format("EnrollmentControl-{0:d}.xls", DateTime.Now);
+                var ms = new MemoryStream(); 
+                workbook.Write(ms); 
+                return File(ms.ToArray(), "application/vnd.ms-excel", "attachment;filename=" + saveAsFileName);
+            }
+            else
+                return new EnrollmentControlResult { model = m };
         }
     }
 }
