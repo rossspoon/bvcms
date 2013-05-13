@@ -19,10 +19,10 @@ namespace CmsWeb.Models
         private CMSDataContext Db2;
         private int PeopleId;
 
-        public UploadPeopleModel(CMSDataContext Db, int PeopleId)
+        public UploadPeopleModel(CMSDataContext Db, int PeopleId, string connectionstring)
         {
             this.Db = Db;
-            Db2 = new CMSDataContext(Db.Connection.ConnectionString);
+            Db2 = new CMSDataContext(connectionstring);
             this.PeopleId = PeopleId;
         }
 
