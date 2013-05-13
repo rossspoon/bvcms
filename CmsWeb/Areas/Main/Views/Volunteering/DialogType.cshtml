@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <td align="right top"><b>Type:</b></td>
-                        <td class="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.BACKGROUND_TYPES ) )</td>
+                        <td class="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.getCheckTypes( ProtectMyMinistryHelper.TYPE_BACKGROUND ), "code", "label" ) )</td>
                     </tr>
                     @if( labelEnabled ) {
                     <tr>
@@ -57,7 +57,7 @@
                     </tr>
                     <tr>
                         <td class="right top"><b>Type:</b></td>
-                        <td class="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.CREDIT_TYPES ) )</td>
+                        <td class="top">@Html.DropDownList("code",  new SelectList( ProtectMyMinistryHelper.getCheckTypes( ProtectMyMinistryHelper.TYPE_CREDIT ), "code", "label" ) )</td>
                     </tr>
                     @if( labelEnabled ) {
                     <tr>

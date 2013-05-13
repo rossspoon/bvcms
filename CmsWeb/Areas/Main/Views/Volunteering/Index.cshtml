@@ -89,15 +89,15 @@
         else
         {
             <tr>
-                <th width="8%" style="background-color: #EFF3FB;"><b>Updated</b></th>
+                <th width="7%" style="background-color: #EFF3FB;"><b>Updated</b></th>
                 @if (labelEnabled)
                 {
-                    <th width="25%" style="background-color: #EFF3FB;"><b>Label</b></th>
+                    <th width="22%" style="background-color: #EFF3FB;"><b>Label</b></th>
                 }
-                <th width="10%" style="background-color: #EFF3FB;"><b>Service</b></th>
+                <th width="16%" style="background-color: #EFF3FB;"><b>Service</b></th>
                 <th width="10%" style="background-color: #EFF3FB;"><b>Status</b></th>
-                <th width="8%" style="background-color: #EFF3FB;"><b>Report ID</b></th>
-                <th width="6%" style="background-color: #EFF3FB;"><b>Issues</b></th>
+                <th width="6%" style="background-color: #EFF3FB;"><b>Report ID</b></th>
+                <th width="4%" style="background-color: #EFF3FB;"><b>Issues</b></th>
                 <th style="background-color: #EFF3FB; white-space: nowrap;"><b>Report Link/Error</b></th>
                 <th width="8%" style="background-color: #EFF3FB;"><b>Action</b></th>
             </tr>
@@ -122,7 +122,7 @@
                         }
                     </td>
                 }
-                <td class="center">@check.ServiceCode</td>
+                <td class="center">@ProtectMyMinistryHelper.getDescription( check.ServiceCode )</td>
                 <td class="center" style="white-space: nowrap;">@ProtectMyMinistryHelper.getStatus(check.StatusID)</td>
                 <td class="center">@( check.ReportID > 0 ? check.ReportID.ToString() : "")</td>
                 <td class="center">@( check.IssueCount > 0 ? "Yes" : "No")</td>
@@ -186,15 +186,15 @@
         else
         {
             <tr>
-                <th width="8%" style="background-color: #EFF3FB;"><b>Created</b></th>
+                <th width="7%" style="background-color: #EFF3FB;"><b>Created</b></th>
                 @if (labelEnabled)
                 {
-                    <th width="25%" style="background-color: #EFF3FB;"><b>Label</b></th>
+                    <th width="22%" style="background-color: #EFF3FB;"><b>Label</b></th>
                 }
-                <th width="10%" style="background-color: #EFF3FB;"><b>Service</b></th>
+                <th width="16%" style="background-color: #EFF3FB;"><b>Service</b></th>
                 <th width="10%" style="background-color: #EFF3FB;"><b>Status</b></th>
-                <th width="8%" style="background-color: #EFF3FB;"><b>Report ID</b></th>
-                <th width="6%" style="background-color: #EFF3FB;"><b>Issues</b></th>
+                <th width="6%" style="background-color: #EFF3FB;"><b>Report ID</b></th>
+                <th width="4%" style="background-color: #EFF3FB;"><b>Issues</b></th>
                 <th style="background-color: #EFF3FB; white-space: nowrap;"><b>Report Link/Error</b></th>
                 <th width="8%" style="background-color: #EFF3FB;"><b>Action</b></th>
             </tr>
@@ -219,7 +219,7 @@
                         }
                     </td>
                 }
-                <td class="center">@check.ServiceCode</td>
+                <td class="center">@ProtectMyMinistryHelper.getDescription( check.ServiceCode )</td>
                 <td class="center" style="white-space: nowrap;">@ProtectMyMinistryHelper.getStatus(check.StatusID)</td>
                 <td class="center">@( check.ReportID > 0 ? check.ReportID.ToString() : "")</td>
                 <td class="center">@( check.IssueCount > 0 ? "Yes" : "No")</td>
