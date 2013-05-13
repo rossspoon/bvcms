@@ -356,6 +356,33 @@
         });
         return false;
     });
+    $('#enrollmentcontrol1').click(function (ev) {
+        ev.preventDefault();
+        hideDropdowns();
+        var d = $('#PanelEnrollmentControl');
+        d.dialog('open');
+        return false;
+    });
+    $('#enrollmentcontrol2').click(function (ev) {
+        ev.preventDefault();
+        hideDropdowns();
+        $('div.dialog').dialog('close');
+        var pid = $('#ProgramId').val();
+        var did = $('#DivisionId').val();
+        if (pid == '0') {
+            $.growlUI("error", 'must choose program');
+            return false;
+        }
+        var args = "?div=" + did + "&pid=" + pid +
+            "&schedule=" + $('#ScheduleId').val() +
+            "&name=" + $('#Name').val();
+        if ($('#enrcontrolfiltertag').is(":checked"))
+            args += "&usecurrenttag=true";
+        if ($('#enrcontrolexcel').is(":checked"))
+            args += "&excel=true";
+        window.open("/Reports/EnrollmentControl/" + args);
+        return false;
+    });
 });
 
 
