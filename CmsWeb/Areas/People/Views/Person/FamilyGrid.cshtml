@@ -15,24 +15,16 @@
     </div>
 </div>
 <ul id="family_members" class="nav nav-stacked nav-tabs">
-@foreach (var m in fm.Members())
-{
-    @* Dave : Need a way to indicate the currently selected person *@
-    var active = m.Id == fm.Person.PeopleId ? "class=active" : "";
-    <li @active>@PersonPictureAndLink(m)</li>
-}
+    @foreach (var m in fm.Members())
+    {
+        var active = m.Id == fm.Person.PeopleId ? "class=active" : "";
+        <li @active>
+            <a href="/Person2/Index/@m.Id">
+                <img src="@m.Pictures.ThumbUrl" class="headshot"/>
+                @* Dave: How do we indicate the position in family? *@
+                <span class="name">@m.Name @Html.Raw(m.SpouseIndicator)</span>
+                <span class="age">@m.Age</span>
+            </a>
+        </li>
+    }
 </ul>
-
-@helper PersonPictureAndLink(FamilyMemberInfo m)
-{
-    @* Dave : Need a way to change the position in family *@
-    <a href="/People/Person/Index/@m.Id">
-        <img src="@m.Pictures.ThumbUrl" class="headshot"/>
-        <span class="name">@m.Name @Html.Raw(m.SpouseIndicator)</span>
-        <span class="age">@m.Age</span>
-    </a>
-}
-@helper Age(int? age)
-{
-@:(@(age.HasValue ? age.ToString() : ""))
-}

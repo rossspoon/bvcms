@@ -1,0 +1,49 @@
+﻿@model CmsWeb.Models.PagerModel2
+<div class="pagination pagination-mini">
+    <ul>
+        @if (Model.Page > 1)
+        {
+            <li><a href='#' onclick=' return $.gotoPage(this, (@Model.Page - 1)) '>Prev</a></li>
+        }
+        else
+        {
+            <li class="disabled"><a>Prev</a></li>
+        }
+        @if (Model.Page < Model.LastPage())
+        {
+            <li><a href='#' onclick=' return $.gotoPage(this, @(Model.Page + 1)) '>Next</a></li>
+        }
+        else
+        {
+            <li class="disabled"><a>Next</a></li>
+        }
+            
+        @foreach (var p in Model.PageList())
+        {
+            if (p == 0)
+            { 
+                <li class="disabled"><a>&hellip;</a></li>
+            }
+            if (p > 0 && Model.Page != p)
+            { 
+                <li><a href='#' onclick='return $.gotoPage(this,@p)'>@p</a></li>
+            }
+            if (Model.Page == p)
+            { 
+                <li class="active"><a>@p</a></li>
+            }
+        }
+        @if (Model.ShowPageSize)
+        {
+            <li class="disabled"><a>&nbsp;Page Size:</a></li>
+            foreach (var i in Model.PageSizeList())
+            {
+                <li @(i.Selected ? "class=disabled" : "")><a href="#" onclick="$.setPageSize(this, @i.Text)">@i.Text</a></li>
+            }
+        }
+    </ul>
+</div>
+@Html.Hidden("PageSize")
+@Html.Hidden("Page")
+@Html.Hidden("Sort")
+@Html.Hidden("Direction")

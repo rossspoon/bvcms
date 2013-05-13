@@ -27,6 +27,7 @@ namespace CmsData
                     text = text.Replace("{first}", string.Empty, ignoreCase: true);
                 else
                     text = text.Replace("{first}", p.PreferredName, ignoreCase: true);
+            text = text.Replace("{last}", p.LastName, ignoreCase: true);
             if (text.Contains("{occupation}", ignoreCase: true))
                 text = text.Replace("{occupation}", p.OccupationOther, ignoreCase: true);
 
@@ -51,6 +52,8 @@ namespace CmsData
                 if (text.Contains("{nextmeetingtime}", ignoreCase: true))
                     text = DoMeetingDate(text, emailqueueto);
             }
+            if (text.Contains("{today}", ignoreCase: true))
+                text = text.Replace("{today}", DateTime.Today.ToShortDateString());
             if (text.Contains("{createaccount}", ignoreCase: true))
                 text = text.Replace("{createaccount}", DoCreateUserTag(CmsHost, emailqueueto));
             if (text.Contains("{peopleid}", ignoreCase: true))

@@ -4,15 +4,8 @@
 @{
     var p = Model.displayperson;
 }
-@* Dave : need to think through how to present address section
-Should we put email address in this section?
-Does this whole section change for each person?
-In other words do we displahy the home address for each person and their personal if they have one?
-May want to change whole data structure, but need to postpone that for now (lots of work)
-*@
 <div class="sidebar_title group">
     <h2>Family Contact</h2>
-    @* Dave : Only showing a way to add the personal address if they do not have one already *@
     @if (!p.PersonalAddr.Address1.HasValue())
     {
     <div class="dropdown">
@@ -23,9 +16,6 @@ May want to change whole data structure, but need to postpone that for now (lots
     </div>
     }
 </div>
-@* Dave : How do we highlight preferred address, personal vs home *@
-@* Dave : where bad address flag, resident code, effective dates, country? *@
-@* Dave: How should I indicate the preferred address? *@
 <ul id="family_home" class="unstyled">
     <li class="address@(p.FamilyAddr.BadAddress == true? " warning" : "")">
         <div class="btn-group">
@@ -38,20 +28,18 @@ May want to change whole data structure, but need to postpone that for now (lots
                 <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
                 <li><a href="http://www.bing.com/maps/?q=@p.FamilyAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
                 <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a href="#sample-modal" data-toggle="modal">Edit</a></li>
+                <li><a class="editaddr" data-type="FamilyAddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId">Edit</a></li>
             </ul>
         </div>
-        <p>
-            <span class="street">@p.FamilyAddr.Address1</span>
-            @if (p.FamilyAddr.Address2.HasValue())
-            {
-                <span class="street">@p.FamilyAddr.Address2</span>
-            }
-            <span class="city">@p.FamilyAddr.CityStateZip()</span>
+        @* Dave: How do we distinguish family address vs personal *@
+        <p id="familyaddress">
+            @Html.Partial("DisplayTemplates/Address", p.FamilyAddr)
         </p>
     </li>
+    @* Dave: Should we put email address in this section? *@
     <li class="phone landline">
         <i class="icon-phone"></i>
+        @* Dave: How do we distinguish between personal (cell) and home? *@
         <p>@p.basic.HomePhone.FmtFone()</p>
         <a href="#sample-modal" data-toggle="modal" class="edit"><i class="icon-pencil"></i></a>
     </li>
@@ -69,16 +57,11 @@ May want to change whole data structure, but need to postpone that for now (lots
                 <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
                 <li><a href="http://www.bing.com/maps/?q=@p.PersonalAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
                 <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a href="#sample-modal" data-toggle="modal">Edit</a></li>
+                <li><a class="editaddr" type="PersonalAddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId">Edit</a></li>
             </ul>
         </div>
-        <p>
-            <span class="street">@p.PersonalAddr.Address1</span>
-            @if (p.PersonalAddr.Address2.HasValue())
-            {
-                <span class="street">@p.PersonalAddr.Address2</span>
-            }
-            <span class="city">@p.PersonalAddr.CityStateZip()</span>
+        <p id="personaladdress">
+            @Html.Partial("DisplayTemplates/Address", p.PersonalAddr)
         </p>
     </li>
     }

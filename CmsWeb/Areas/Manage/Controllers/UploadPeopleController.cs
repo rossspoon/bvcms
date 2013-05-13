@@ -24,35 +24,44 @@ namespace CmsWeb.Areas.Manage.Controllers
 		public ActionResult Upload(string text)
 		{
 			string host = Util.Host;
-			var runningtotals = new UploadPeopleRun
-			                    	{
-			                    		Started = DateTime.Now,
-			                    		Count = 0,
-			                    		Processed = 0
-			                    	};
+			var runningtotals = new UploadPeopleRun { Started = DateTime.Now, Count = 0, Processed = 0 };
 			DbUtil.Db.UploadPeopleRuns.InsertOnSubmit(runningtotals);
 			DbUtil.Db.SubmitChanges();
 			var pid = Util.UserPeopleId;
-            
+		    var cs = Util.GetConnectionString(host);
 
 			Alias.Task.Factory.StartNew(() =>
 			{
 				Thread.CurrentThread.Priority = ThreadPriority.Lowest;
-				var Db = new CMSDataContext(Util.GetConnectionString(host));
+				var Db = new CMSDataContext(cs);
+			    Db.Host = host;
 				try
 				{
-					var m = new UploadPeopleModel(Db, pid ?? 0);
+					var m = new UploadPeopleModel(Db, pid ?? 0, cs);
 					m.DoUpload(text, testing: true);
 					Db.Dispose();
-					Db = new CMSDataContext(Util.GetConnectionString(host));
-					m = new UploadPeopleModel(Db, pid ?? 0);
+    				Db = new CMSDataContext(cs);
+    			    Db.Host = host;
+
+        			runningtotals = new UploadPeopleRun { Started = DateTime.Now, Count = 0, Processed = 0 };
+        			Db.UploadPeopleRuns.InsertOnSubmit(runningtotals);
+        			Db.SubmitChanges();
+
+					m = new UploadPeopleModel(Db, pid ?? 0, cs);
 					m.DoUpload(text);
 				}
 				catch (Exception ex)
 				{
-					var rt = Db.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
+					Db.Dispose();
+    				Db = new CMSDataContext(cs);
+    			    Db.Host = host;
+
+				    var q = from r in Db.UploadPeopleRuns
+				            where r.Id == Db.UploadPeopleRuns.Max(rr => rr.Id)
+				            select r;
+				    var rt = q.Single();
 					rt.Error = ex.Message.Truncate(200);
-					Db.SubmitChanges();
+        			Db.SubmitChanges();
 				}
 			});
 			return Redirect("/UploadPeople/Progress");

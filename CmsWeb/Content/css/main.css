@@ -1,0 +1,36 @@
+﻿td.right, th.right {
+    text-align: right;
+}
+td.noborder, th.noborder {
+    border: none!important;
+}
+
+td.left, th.left {
+    text-align: left;
+}
+
+td.center, th.center {
+    text-align: center;
+}
+
+/* Dave: I am adding these so that the controls are not spaced so far apart */
+.control-group {
+    margin-bottom: auto;
+}
+.form-horizontal .control-group {
+    margin-bottom: auto;
+}
+
+.editable-click, 
+a.editable-click, 
+a.editable-click:hover {
+    text-decoration: none;
+    border-bottom: none;
+}
+
+form.form-horizontal.onecol .control-group {
+    float: none;
+    width: auto;
+    *width: auto;
+    margin-bottom: 1em;
+}

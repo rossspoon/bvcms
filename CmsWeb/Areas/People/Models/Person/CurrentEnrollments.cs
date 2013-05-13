@@ -1,22 +1,43 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CmsData;
-using CmsWeb.Models;
 using UtilityExtensions;
 
 namespace CmsWeb.Areas.People.Models.Person
 {
     public class CurrentEnrollments
     {
+        public class OrgMemberInfo
+        {
+            public int OrgId { get; set; }
+            public int PeopleId { get; set; }
+            public string Name { get; set; }
+            public string Location { get; set; }
+            public string LeaderName { get; set; }
+            public DateTime? MeetingTime { get; set; }
+            public string Schedule { get { return "{0:ddd h:mm tt}".Fmt(MeetingTime); } }
+            public string SchComma { get { return MeetingTime.HasValue ? ", " : ""; } }
+            public string LocComma { get { return Location.HasValue() ? ", " : ""; } }
+            public string MemberType { get; set; }
+            public int? LeaderId { get; set; }
+            public DateTime? EnrollDate { get; set; }
+            public DateTime? DropDate { get; set; }
+            public Decimal? AttendPct { get; set; }
+            public string DivisionName { get; set; }
+            public string ProgramName { get; set; }
+        	public string OrgType { get; set; }
+        	public string HasDirectory { get; set; }
+        }
         private int PeopleId;
         public CmsData.Person person { get; set; }
-        public PagerModel2 Pager { get; set; }
+        public CmsWeb.Models.PagerModel2 Pager { get; set; }
         public CurrentEnrollments(int id)
         {
             PeopleId = id;
             person = DbUtil.Db.LoadPersonById(id);
-            Pager = new PagerModel2(Count);
+            Pager = new CmsWeb.Models.PagerModel2(Count);
         }
         private IQueryable<OrganizationMember> _enrollments;
         private IQueryable<OrganizationMember> FetchEnrollments()
@@ -64,7 +85,8 @@ namespace CmsWeb.Areas.People.Models.Person
                          LeaderId = om.Organization.LeaderId,
                          EnrollDate = om.EnrollmentDate,
                          AttendPct = om.AttendPct,
-                         DivisionName = om.Organization.Division.Program.Name + "/" + om.Organization.Division.Name,
+                         DivisionName = om.Organization.Division.Name,
+                         ProgramName = om.Organization.Division.Program.Name,
 						 OrgType = om.Organization.OrganizationType.Description ?? "Other"
                      };
             return q2;

@@ -2,7 +2,6 @@ using System;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
-using System.Data.Common;
 using DbmlBuilder.Utilities;
 using DbmlBuilder.TableSchema;
 using System.Configuration.Provider;
@@ -14,7 +13,7 @@ namespace DbmlBuilder
 {
     public class SqlDataProvider : ProviderBase
     {
-        internal DbConnection CreateConnection()
+        internal SqlConnection CreateConnection()
         {
             return new SqlConnection(DefaultConnectionString);
         }
@@ -693,9 +692,9 @@ WHERE routine_type = 'FUNCTION' and data_type <> 'TABLE'";
             set { functionNames = value; }
         }
         [ThreadStatic]
-        private static DbConnection __sharedConnection;
+        private static SqlConnection __sharedConnection;
 
-        public DbConnection CurrentSharedConnection
+        public SqlConnection CurrentSharedConnection
         {
             get { return __sharedConnection; }
 

@@ -12,9 +12,11 @@ namespace CmsWeb.Areas.People.Models.Person
     public class PersonModel
     {
         public PersonInfo displayperson;
+        public AddressInfo primaryaddress;
         public PersonModel(int? id)
         {
             displayperson = PersonInfo.GetPersonInfo(id);
+            primaryaddress = AddressInfo.GetAddressInfo(displayperson.PeopleId, "PrimaryAddr");
         }
         private CmsData.Person _person;
         public CmsData.Person Person

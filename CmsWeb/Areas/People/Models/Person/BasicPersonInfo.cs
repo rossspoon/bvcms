@@ -31,8 +31,14 @@ namespace CmsWeb.Areas.People.Models.Person
                 Value = value.ToString();
             Items = new SelectList(items, valuefield, "Value", value);
         }
+        public CodeInfo(object value, IEnumerable<SelectListItem> items, string valuefield = "Id")
+        {
+            if (value != null)
+                Value = value.ToString();
+            Items = items;
+        }
         public string Value { get; set; }
-        public SelectList Items { get; set; }
+        public IEnumerable<SelectListItem> Items { get; set; }
         public override string ToString()
         {
             var i = Items.SingleOrDefault(ii => ii.Value == Value);
@@ -91,6 +97,9 @@ namespace CmsWeb.Areas.People.Models.Person
 
         [UIHint("Code")]
         public CodeInfo Gender { get; set; }
+
+        [UIHint("InlineCode")]
+        public CodeInfo FamilyPosition { get; set; }
 
         [UIHint("Date")]
         public string Birthday { get; set; }
@@ -209,6 +218,7 @@ namespace CmsWeb.Areas.People.Models.Person
                 Gender = new CodeInfo(p.GenderId, cv.GenderCodesWithUnspecified()),
                 Marital = new CodeInfo(p.MaritalStatusId, cv.MaritalStatusCodes99()),
                 MemberStatus = new CodeInfo(p.MemberStatusId, cv.MemberStatusCodes0()),
+                FamilyPosition = new CodeInfo(p.PositionInFamilyId, cv.FamilyPositionCodes()),
                 MiddleName = p.MiddleName,
                 GoesBy = p.NickName,
                 Occupation = p.OccupationOther,

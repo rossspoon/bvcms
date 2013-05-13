@@ -66,26 +66,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			if (!AccountModel.AuthenticateMobile())
                 return Content("not authorized");
 			var u = DbUtil.Db.Users.Single(uu => uu.Username == AccountModel.UserName2);
-            var meeting = DbUtil.Db.Meetings.SingleOrDefault(m => m.OrganizationId == id && m.MeetingDate == datetime);
-            if (meeting == null)
-            {
-                var acr = (from s in DbUtil.Db.OrgSchedules
-                           where s.OrganizationId == id
-                           where s.SchedTime.Value.TimeOfDay == datetime.TimeOfDay
-                           where s.SchedDay == (int)datetime.DayOfWeek
-                           select s.AttendCreditId).SingleOrDefault();
-                meeting = new CmsData.Meeting
-                {
-                    OrganizationId = id,
-                    MeetingDate = datetime,
-                    CreatedDate = Util.Now,
-                    CreatedBy = u.UserId,
-                    GroupMeetingFlag = false,
-                    AttendCreditId = acr
-                };
-                DbUtil.Db.Meetings.InsertOnSubmit(meeting);
-                DbUtil.Db.SubmitChanges();
-            }
+            var meeting = Meeting.FetchOrCreateMeeting(DbUtil.Db, id, datetime);
             return new RollListResult(meeting);
         }
         [HttpPost]

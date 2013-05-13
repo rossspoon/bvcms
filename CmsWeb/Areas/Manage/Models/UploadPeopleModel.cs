@@ -16,11 +16,13 @@ namespace CmsWeb.Models
         private StringBuilder psb;
         private StringBuilder fsb;
         private CMSDataContext Db;
+        private CMSDataContext Db2;
         private int PeopleId;
 
-        public UploadPeopleModel(CMSDataContext Db, int PeopleId)
+        public UploadPeopleModel(CMSDataContext Db, int PeopleId, string connectionstring)
         {
             this.Db = Db;
+            Db2 = new CMSDataContext(connectionstring);
             this.PeopleId = PeopleId;
         }
 
@@ -74,14 +76,18 @@ namespace CmsWeb.Models
             return "";
         }
 
-        private DateTime? GetDate(string[] a, string s)
+        private DateTime? GetDate(Person p, string[] a, string s)
         {
             if (names.ContainsKey(s))
                 if (a[names[s]].HasValue())
                 {
                     DateTime dt;
                     if (DateTime.TryParse(a[names[s]], out dt))
+                    {
+                        if (dt.Year < 1800)
+                            throw new Exception("error on {0} {1}: [{2}]({3})".Fmt(p.FirstName, p.LastName, names[s], a[names[s]]));
                         return dt;
+                    }
                 }
             return null;
         }
@@ -169,7 +175,7 @@ namespace CmsWeb.Models
         private Dictionary<string, int> Campuses;
         public bool DoUpload(string text, bool testing = false)
         {
-            var rt = Db.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
+            var rt = Db2.UploadPeopleRuns.OrderByDescending(mm => mm.Id).First();
             var csv = new CsvReader(new StringReader(text), false, '\t');
             var list = csv.ToList();
 
@@ -213,6 +219,7 @@ namespace CmsWeb.Models
                          into fam
                          select fam).ToList();
             rt.Count = q.Sum(ff => ff.Count());
+            Db2.SubmitChanges();
 
             var standardnames = new List<string>
         	{
@@ -326,9 +333,6 @@ namespace CmsWeb.Models
                             p.FixTitle();
 
                             SetField(p, a, "AltName", "altname");
-                            if (names.ContainsKey("altname"))
-                                p.AltName = a[names[""]];
-
                             SetField(p, a, "SuffixCode", "suffix");
                             SetField(p, a, "MiddleName", "middle");
                             SetField(p, a, "MaidenName", "maidenname");
@@ -340,10 +344,10 @@ namespace CmsWeb.Models
                             SetField(p, a, "EmailAddress2", "email2");
                             SetField(p, a, "GenderId", "gender", Gender(a));
                             SetField(p, a, "MaritalStatusId", "marital", Marital(a));
-                            SetField(p, a, "WeddingDate", "weddingdate", GetDate(a, "weddingdate"));
-                            SetField(p, a, "JoinDate", "joindate", GetDate(a, "joindate"));
-                            SetField(p, a, "DropDate", "dropdate", GetDate(a, "dropdate"));
-                            SetField(p, a, "BaptismDate", "baptismdate", GetDate(a, "baptismdate"));
+                            SetField(p, a, "WeddingDate", "weddingdate", GetDate(p, a, "weddingdate"));
+                            SetField(p, a, "JoinDate", "joindate", GetDate(p, a, "joindate"));
+                            SetField(p, a, "DropDate", "dropdate", GetDate(p, a, "dropdate"));
+                            SetField(p, a, "BaptismDate", "baptismdate", GetDate(p, a, "baptismdate"));
                             SetField(p, a, "PositionInFamilyId", "position", Position(a));
                             SetField(p, a, "TitleCode", "title", Title(a));
                             SetField(p, a, "CampusId", "campus", Campus(a));
@@ -371,46 +375,52 @@ namespace CmsWeb.Models
                         }
                     }
 
-                    var nq = from name in names.Keys
-                             where !standardnames.Contains(name)
-                             select name;
-                    foreach (var name in nq)
+                    try
                     {
-                        var b = name.Split('.');
-                        if (name.EndsWith(".txt"))
-                            p.AddEditExtraData(b[0], a[names[name]].Trim());
-                        else if (name.EndsWith(".dt"))
+                        var nq = from name in names.Keys
+                                 where !standardnames.Contains(name)
+                                 select name;
+                        foreach (var name in nq)
                         {
-                            var d = a[names[name]].Trim().ToDate();
-                            if (d.HasValue)
-                                p.AddEditExtraDate(b[0], d.Value);
+                            var b = name.Split('.');
+                            if (name.EndsWith(".txt"))
+                                p.AddEditExtraData(b[0], a[names[name]].Trim());
+                            else if (name.EndsWith(".dt"))
+                            {
+                                var d = a[names[name]].Trim().ToDate();
+                                if (d.HasValue)
+                                    p.AddEditExtraDate(b[0], d.Value);
+                            }
+                            else if (name.EndsWith(".int"))
+                                p.AddEditExtraInt(b[0], a[names[name]].Trim().ToInt());
+                            else if (name.EndsWith(".bit"))
+                            {
+                                var v = a[names[name]];
+                                if (v.HasValue())
+                                    p.AddEditExtraBool(b[0], v.ToInt() == 1);
+                            }
+                            else
+                                p.AddEditExtraValue(name, a[names[name]].Trim());
                         }
-                        else if (name.EndsWith(".int"))
-                            p.AddEditExtraInt(b[0], a[names[name]].Trim().ToInt());
-                        else if (name.EndsWith(".bit"))
+                        rt.Processed++;
+                        Db2.SubmitChanges();
+                        if (!testing)
                         {
-                            var v = a[names[name]];
-                            if (v.HasValue())
-                                p.AddEditExtraBool(b[0], v.ToInt() == 1);
+                            Db.SubmitChanges();
+                            Person.Tag(Db, p.PeopleId, "InsertPeopleAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
                         }
-                        else
-                            p.AddEditExtraValue(name, a[names[name]].Trim());
                     }
-                    rt.Processed++;
-                    if (!testing)
+                    catch (Exception ex)
                     {
-                        Db.SubmitChanges();
-                        Person.Tag(Db, p.PeopleId, "InsertPeopleAdded", Util.UserPeopleId, DbUtil.TagTypeId_Personal);
+
+                        throw;
                     }
                 }
                 if (!testing)
                     Db.SubmitChanges();
             }
-            if (!testing)
-            {
-                rt.Completed = DateTime.Now;
-                Db.SubmitChanges();
-            }
+            rt.Completed = DateTime.Now;
+            Db2.SubmitChanges();
             return true;
         }
     }

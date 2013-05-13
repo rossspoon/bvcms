@@ -12,7 +12,7 @@
             return false;
         }
         if (confirm($(this).attr("confirm"))) {
-            $.post("Tags/Delete", null, function (ret) {
+            $.post("/Tags/Delete", null, function (ret) {
                 if (ret == "error") {
                     $.growlUI("Error", "cannot delete tag", 3000, null);
                 } else {
@@ -27,7 +27,7 @@
         ev.preventDefault();
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.post("Tags/SetShared", q, function (ret) {
+        $.post("/Tags/SetShared", q, function (ret) {
             $.getTable();
         });
         return false;
@@ -36,7 +36,7 @@
         ev.preventDefault();
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.post("Tags/NewTag", q, function (ret) {
+        $.post("/Tags/NewTag", q, function (ret) {
             $("#tag").replaceWith(ret);
             $.getTable();
             $("#tagname").val("");
@@ -47,7 +47,7 @@
         ev.preventDefault();
         var f = $('#results').closest('form');
         var q = f.serialize();
-        $.post("Tags/RenameTag", q, function (ret) {
+        $.post("/Tags/RenameTag", q, function (ret) {
             $("#tag").replaceWith(ret);
             $.getTable();
             $("#tagname").val("");

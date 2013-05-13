@@ -1,0 +1,13 @@
+﻿@using CmsWeb
+@{
+    CassetteBundleConfiguration.BundleRefJs();
+}
+<html>
+    @Bundles.RenderScripts()
+    <script type="text/javascript">
+        $(function () {
+            self.parent.RebindMemberGrids();
+        });
+    </script>
+</html>
+

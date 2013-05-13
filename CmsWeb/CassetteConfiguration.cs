@@ -53,11 +53,12 @@ namespace CmsWeb
                 // Dave : need example of alert
               //, "Content/styles/jquery.alerts.css"
                 // Dave : where should I put any tweaks in css?
-              //, "Content/styles/Main.css"
-                , "Content/styles/pager.css"
                 , "Content/css/font-awesome.css"
                 , "Content/css/chosen.css"
                 , "Content/moment-datepicker/datepicker.css"
+                , "Content/css/bootstrap-editable.css"
+                , "Content/jquery-dialog2/jquery.dialog2.css"
+                , "Content/css/main.css"
             });
             bundles.Add<StylesheetBundle>("orgcss", new[]
             {
@@ -124,11 +125,16 @@ namespace CmsWeb
                 , "Scripts/bootstrap/bootstrap.js"
                 , "Scripts/bootstrap/bootstrap-modalmanager.js"
                 , "Scripts/bootstrap/bootstrap-modal.js"
+                , "Scripts/bootstrap/bootstrap-editable.js"
+//                , "Scripts/bootstrap/bootbox.js"
+                , "Scripts/bootstrap/jquery.dialog2.js"
+                , "Scripts/bootstrap/jquery.dialog2.helpers.js"
                 , "Scripts/jquery/jquery.cookie.js"
                 , "Scripts/jquery/jquery.blockUI.js"
                 , "Scripts/jquery/jquery.mousewheel.js"
-                , "Scripts/jquery/jquery.jeditable.js"
                 , "Scripts/jquery/jquery.validate.js"
+                , "Scripts/jquery/jquery.controls.js"
+                , "Scripts/jquery/jquery.form.js"
                 , "Scripts/jquery/jquery.joyride-1.0.5.js"
                 , "Scripts/modernizr-2.6.2.js"
                 , "Scripts/tutorial.js"
@@ -140,8 +146,8 @@ namespace CmsWeb
                 , "Scripts/moment/moment-datepicker.js"
                 , "Scripts/Autocomplete/jquery-ui-1.10.2.custom.js"
                 , "Scripts/chosen/chosen.jquery.js"
-                , "Scripts/js/Pager.js"
-              //, "Scripts/ExportToolBar.js"
+                , "Scripts/js/Pager3.js"
+//                , "Scripts/ExportToolBar.js"
                 , "Scripts/js/headermenu2.js"
             });
             bundles.Add<ScriptBundle>("onlineregister", new[]
@@ -177,6 +183,9 @@ namespace CmsWeb
             {
                  "Scripts/jquery/jquery.address-1.5.js"
                 ,"Scripts/People/person1.js"
+//                ,"Scripts/Bootstrap/bootstrap-ajax.js"
+//                ,"Scripts/Bootstrap/spin.min.js"
+//                ,"Scripts/Bootstrap/bootstrapx-clickover.js"
 //              ,"Scripts/js/person2.js"
             });
             AddOneScript(bundles, "Admin/Divisions");
@@ -221,6 +230,7 @@ namespace CmsWeb
             AddOneScript(bundles, "Org/OrgChildren");
             AddOneScript(bundles, "Org/OrgGroups");
             AddOneScript(bundles, "Org/OrgMembers");
+            AddOneScript(bundles, "Org/OrgMemberDialog2");
             AddOneScript(bundles, "Org/OrgSearch");
 
             AddOneScript(bundles, "People/family");

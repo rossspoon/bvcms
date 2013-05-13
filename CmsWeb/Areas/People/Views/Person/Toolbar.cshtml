@@ -1,11 +1,9 @@
-﻿@using UtilityExtensions
-@model CmsWeb.Areas.People.Models.Person.PersonModel
+﻿@model CmsWeb.Areas.People.Models.Person.PersonModel
 <div class="btn-group">
     <button class="btn btn-inverse"><i class="icon-envelope-alt"></i></button>
     <button class="btn btn-inverse"><i class="icon-cloud-download"></i></button>
     <div class="btn btn-inverse dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i></a>
-        @* Dave : how to get the anchor point on this menu to position right aligned *@
         <ul class="dropdown-menu" role="menu">
             <li><a href="#">Add New User</a></li>
             <li><a href="#">Impersonate</a></li>
@@ -21,12 +19,9 @@
 </div>
 <div class="contact">
     <h3>Primary Address</h3>
-    <p>@Model.Person.PrimaryAddress<br/>
-       @if (Model.Person.PrimaryAddress2.HasValue())
-       {
-           @Model.Person.PrimaryAddress2<br/>
-       }
-       @Util.FormatCSZ(Model.Person.PrimaryCity, Model.Person.PrimaryState, Model.Person.PrimaryZip)</p>
-@*    <h3>Primary Phone</h3>*@
-@*    <p>(345) 128-5566</p>*@
+    <p id="primaryaddress">
+        @Html.Partial("DisplayTemplates/Address", Model.primaryaddress)
+    </p>
+    @*    <h3>Primary Phone</h3>*@
+    @*    <p>(345) 128-5566</p>*@
 </div>

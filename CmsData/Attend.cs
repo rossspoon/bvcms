@@ -94,7 +94,7 @@ namespace CmsData
 				i.a.Commitment = CommitId;
 			Db.SubmitChanges();
 		}
-		public static int RecordAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)
+		public static void RecordAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)
 		{
 			var q = from o in Db.Organizations
 					where o.OrganizationId == OrgId
@@ -112,12 +112,12 @@ namespace CmsData
 				if (info.OrgEntryPoint > 0)
 					p.EntryPointId = info.OrgEntryPoint;
 			}
-			var meeting = Meeting.FetchOrCreateMeeting(Db, OrgId, dt);
-			if (!meeting.Location.HasValue())
-				meeting.Location = info.Location;
-			RecordAttendance(Db, PeopleId, meeting.MeetingId, Present);
-			Db.UpdateMeetingCounters(meeting.MeetingId);
-			return meeting.MeetingId;
+//			var meeting = Meeting.FetchOrCreateMeeting(Db, OrgId, dt);
+//			if (!meeting.Location.HasValue())
+//				meeting.Location = info.Location;
+//			RecordAttendance(Db, PeopleId, meeting.MeetingId, Present);
+		    Db.RecordAttendance(OrgId, PeopleId, dt, Present, info.Location);
+//			return meeting.MeetingId;
 		}
 		public static int AddAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)
 		{

@@ -8,9 +8,9 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 .clearfix {
-  *zoom: 1; 
+  *zoom: 1;
 }
-.clearfix:before,
+.clearfix:before, 
 .clearfix:after {
   display: table;
   content: "";
@@ -29,7 +29,7 @@
 .input-block-level {
   display: block;
   width: 100%;
-  min-height: 11.5px;
+  min-height: 2.5em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -38,7 +38,7 @@ body {
   margin: 0;
   font-family: asap, "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.5em;
   color: #333333;
   background-color: #ffffff;
 }
@@ -309,7 +309,7 @@ a:focus {
 .row-fluid [class*="span"] {
   display: block;
   width: 100%;
-  min-height: 11.5px;
+  min-height: 2.5em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -492,7 +492,7 @@ a:focus {
 .row-fluid [class*="span"] {
   display: block;
   width: 100%;
-  min-height: 11.5px;
+  min-height: 2.5em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -723,13 +723,13 @@ a:focus {
   clear: both;
 }
 p {
-  margin: 0 0 0.75;
+  margin: 0 0 0.75em;
 }
 .lead {
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   font-size: 21px;
   font-weight: 200;
-  line-height: 2.25;
+  line-height: 2.25em;
 }
 small {
   font-size: 85%;
@@ -793,10 +793,10 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0.75 0;
+  margin: 0.75em 0;
   font-family: inherit;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.5em;
   color: inherit;
   text-rendering: optimizelegibility;
 }
@@ -813,7 +813,7 @@ h6 small {
 h1,
 h2,
 h3 {
-  line-height: 3;
+  line-height: 3em;
 }
 h1 {
   font-size: 38.5px;
@@ -846,14 +846,14 @@ h4 small {
   font-size: 14px;
 }
 .page-header {
-  padding-bottom: -0.25;
-  margin: 1.5 0 2.25;
+  padding-bottom: -0.25em;
+  margin: 1.5em 0 2.25em;
   border-bottom: 1px solid #fdfdfd;
 }
 ul,
 ol {
   padding: 0;
-  margin: 0 0 0.75 25px;
+  margin: 0 0 0.75em 25px;
 }
 ul ul,
 ul ol,
@@ -862,7 +862,7 @@ ol ul {
   margin-bottom: 0;
 }
 li {
-  line-height: 1.5;
+  line-height: 1.5em;
 }
 ul.unstyled,
 ol.unstyled {
@@ -885,17 +885,17 @@ ol.inline > li {
   padding-right: 5px;
 }
 dl {
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
 }
 dt,
 dd {
-  line-height: 1.5;
+  line-height: 1.5em;
 }
 dt {
   font-weight: bold;
 }
 dd {
-  margin-left: 0.75;
+  margin-left: 0.75em;
 }
 .dl-horizontal {
   *zoom: 1;
@@ -931,7 +931,7 @@ dd {
   margin-left: 180px;
 }
 hr {
-  margin: 1.5 0;
+  margin: 1.5em 0;
   border: 0;
   border-top: 1px solid #fdfdfd;
   border-bottom: 1px solid #ffffff;
@@ -947,7 +947,7 @@ abbr.initialism {
 }
 blockquote {
   padding: 0 0 0 15px;
-  margin: 0 0 1.5;
+  margin: 0 0 1.5em;
   border-left: 5px solid #fdfdfd;
 }
 blockquote p {
@@ -958,7 +958,7 @@ blockquote p {
 }
 blockquote small {
   display: block;
-  line-height: 1.5;
+  line-height: 1.5em;
   color: #999999;
 }
 blockquote small:before {
@@ -989,9 +989,9 @@ blockquote:after {
 }
 address {
   display: block;
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   font-style: normal;
-  line-height: 1.5;
+  line-height: 1.5em;
 }
 code,
 pre {
@@ -1014,10 +1014,10 @@ code {
 }
 pre {
   display: block;
-  padding: 0.25;
-  margin: 0 0 0.75;
+  padding: 0.25em;
+  margin: 0 0 0.75em;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.5em;
   word-break: break-all;
   word-wrap: break-word;
   white-space: pre;
@@ -1032,7 +1032,7 @@ pre {
   border-radius: 4px;
 }
 pre.prettyprint {
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
 }
 pre code {
   padding: 0;
@@ -1047,7 +1047,7 @@ pre code {
   overflow-y: scroll;
 }
 form {
-  margin: 0 0 1.5;
+  margin: 0 0 1.5em;
 }
 fieldset {
   padding: 0;
@@ -1058,15 +1058,15 @@ legend {
   display: block;
   width: 100%;
   padding: 0;
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   font-size: 21px;
-  line-height: 3;
+  line-height: 3em;
   color: #333333;
   border: 0;
   border-bottom: 1px solid #e5e5e5;
 }
 legend small {
-  font-size: 1.125;
+  font-size: 1.125em;
   color: #999999;
 }
 label,
@@ -1076,7 +1076,7 @@ select,
 textarea {
   font-size: 14px;
   font-weight: normal;
-  line-height: 1.5;
+  line-height: 1.5em;
 }
 input,
 button,
@@ -1106,11 +1106,11 @@ input[type="tel"],
 input[type="color"],
 .uneditable-input {
   display: inline-block;
-  height: 1.5;
+  height: 1.5em;
   padding: 4px 6px;
-  margin-bottom: 0.75;
+  margin-bottom: 0.75em;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.5em;
   color: #555555;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1200,13 +1200,13 @@ input[type="checkbox"] {
 }
 select,
 input[type="file"] {
-  height: 11.5px;
+  height: 2.5em;
   /* In IE7, the height of the select element cannot be changed by height, only font-size */
 
   *margin-top: 4px;
   /* For IE7, add top margin to align select with labels */
 
-  line-height: 11.5px;
+  line-height: 2.5em;
 }
 select {
   width: 220px;
@@ -1269,7 +1269,7 @@ textarea::-webkit-input-placeholder {
 }
 .radio,
 .checkbox {
-  min-height: 1.5;
+  min-height: 1.5em;
   padding-left: 20px;
 }
 .radio input[type="radio"],
@@ -1800,9 +1800,9 @@ select:focus:invalid:focus {
   box-shadow: 0 0 6px #f8b9b7;
 }
 .form-actions {
-  padding: 0.5 20px 1.5;
-  margin-top: 1.5;
-  margin-bottom: 1.5;
+  padding: 0.5em 20px 1.5em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
   background-color: /*#f5f5f5;*/ #ffffff;
   border-top: 1px solid #e5e5e5;
   *zoom: 1;
@@ -1831,7 +1831,7 @@ select:focus:invalid:focus {
 }
 .help-block {
   display: block;
-  margin-bottom: 0.75;
+  margin-bottom: 0.75em;
 }
 .help-inline {
   display: inline-block;
@@ -1845,7 +1845,7 @@ select:focus:invalid:focus {
 .input-append,
 .input-prepend {
   display: inline-block;
-  margin-bottom: 0.75;
+  margin-bottom: 0.75em;
   vertical-align: middle;
   font-size: 0;
   white-space: nowrap;
@@ -1890,12 +1890,12 @@ select:focus:invalid:focus {
 .input-prepend .add-on {
   display: inline-block;
   width: auto;
-  height: 1.5;
+  height: 1.5em;
   min-width: 16px;
   padding: 4px 5px;
   font-size: 14px;
   font-weight: normal;
-  line-height: 1.5;
+  line-height: 1.5em;
   text-align: center;
   text-shadow: 0 1px 0 #ffffff;
   background-color: #fdfdfd;
@@ -2116,14 +2116,14 @@ input.search-query {
   margin-left: 0;
 }
 .control-group {
-  margin-bottom: 0.75;
+  margin-bottom: 0.75em;
 }
 legend + .control-group {
-  margin-top: 1.5;
+  margin-top: 1.5em;
   -webkit-margin-top-collapse: separate;
 }
 .form-horizontal .control-group {
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   *zoom: 1;
 }
 .form-horizontal .control-group:before,
@@ -2168,7 +2168,7 @@ legend + .control-group {
 .form-horizontal .uneditable-input + .help-block,
 .form-horizontal .input-prepend + .help-block,
 .form-horizontal .input-append + .help-block {
-  margin-top: 0.75;
+  margin-top: 0.75em;
 }
 .form-horizontal .form-actions {
   padding-left: 180px;
@@ -2181,12 +2181,12 @@ table {
 }
 .table {
   width: 100%;
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
 }
 .table th,
 .table td {
   padding: 8px;
-  line-height: 1.5;
+  line-height: 1.5em;
   text-align: left;
   vertical-align: top;
   border-top: 1px solid #dddddd;
@@ -2927,7 +2927,7 @@ table th[class*="span"],
 .dropdown-menu .divider {
   *width: 100%;
   height: 1px;
-  margin: -0.25 1px;
+  margin: -0.25em 1px;
   *margin: -5px 0 5px;
   overflow: hidden;
   background-color: #333333;
@@ -2938,7 +2938,7 @@ table th[class*="span"],
   padding: 3px 20px;
   clear: both;
   font-weight: normal;
-  line-height: 1.5;
+  line-height: 1.5em;
   color: #fdfdfd;
   white-space: nowrap;
 }
@@ -3137,7 +3137,7 @@ table th[class*="span"],
   float: right;
   font-size: 20px;
   font-weight: bold;
-  line-height: 1.5;
+  line-height: 1.5em;
   color: #000000;
   text-shadow: 0 1px 0 #ffffff;
   opacity: 0.2;
@@ -3167,7 +3167,7 @@ button.close {
   padding: 4px 12px;
   margin-bottom: 0;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.5em;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
@@ -3685,8 +3685,8 @@ input[type="submit"].btn.btn-mini {
 }
 .btn-toolbar {
   font-size: 0;
-  margin-top: 0.75;
-  margin-bottom: 0.75;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
 }
 .btn-toolbar > .btn + .btn,
 .btn-toolbar > .btn-group + .btn,
@@ -3895,7 +3895,7 @@ input[type="submit"].btn.btn-mini {
 }
 .alert {
   padding: 8px 35px 8px 14px;
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   background-color: #fcf8e3;
   border: 1px solid #fbeed5;
@@ -3916,7 +3916,7 @@ input[type="submit"].btn.btn-mini {
   position: relative;
   top: -2px;
   right: -21px;
-  line-height: 1.5;
+  line-height: 1.5em;
 }
 .alert-success {
   background-color: #dff0d8;
@@ -3957,7 +3957,7 @@ input[type="submit"].btn.btn-mini {
 }
 .nav {
   margin-left: 0;
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   list-style: none;
 }
 .nav > li > a {
@@ -3979,7 +3979,7 @@ input[type="submit"].btn.btn-mini {
   padding: 3px 15px;
   font-size: 11px;
   font-weight: bold;
-  line-height: 1.5;
+  line-height: 1.5em;
   color: #999999;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
@@ -4015,7 +4015,7 @@ input[type="submit"].btn.btn-mini {
 .nav-list .divider {
   *width: 100%;
   height: 1px;
-  margin: -0.25 1px;
+  margin: -0.25em 1px;
   *margin: -5px 0 5px;
   overflow: hidden;
   background-color: #e5e5e5;
@@ -4069,7 +4069,7 @@ input[type="submit"].btn.btn-mini {
 .nav-tabs > li > a {
   padding-top: 8px;
   padding-bottom: 8px;
-  line-height: 1.5;
+  line-height: 1.5em;
   border: 1px solid transparent;
   -webkit-border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
@@ -4340,7 +4340,7 @@ input[type="submit"].btn.btn-mini {
 }
 .navbar {
   overflow: visible;
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   *position: relative;
   *z-index: 2;
 }
@@ -4914,7 +4914,7 @@ input[type="submit"].btn.btn-mini {
 }
 .breadcrumb {
   padding: 8px 15px;
-  margin: 0 0 1.5;
+  margin: 0 0 1.5em;
   list-style: none;
   background-color: #f5f5f5;
   -webkit-border-radius: 4px;
@@ -4939,7 +4939,7 @@ input[type="submit"].btn.btn-mini {
   color: #999999;
 }
 .pagination {
-  margin: 1.5 0;
+  margin: 1.5em 0;
 }
 .pagination ul {
   display: inline-block;
@@ -4965,7 +4965,7 @@ input[type="submit"].btn.btn-mini {
 .pagination ul > li > span {
   float: left;
   padding: 4px 12px;
-  line-height: 1.5;
+  line-height: 1.5em;
   text-decoration: none;
   background-color: #ffffff;
   border: 1px solid #dddddd;
@@ -5071,7 +5071,7 @@ input[type="submit"].btn.btn-mini {
   font-size: 10.5px;
 }
 .pager {
-  margin: 1.5 0;
+  margin: 1.5em 0;
   list-style: none;
   text-align: center;
   *zoom: 1;
@@ -5482,13 +5482,13 @@ input[type="submit"].btn.btn-mini {
 }
 .thumbnails > li {
   float: left;
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   margin-left: 20px;
 }
 .thumbnail {
   display: block;
   padding: 4px;
-  line-height: 1.5;
+  line-height: 1.5em;
   border: 1px solid #ddd;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -5681,8 +5681,8 @@ a.badge:focus {
 }
 .progress {
   overflow: hidden;
-  height: 1.5;
-  margin-bottom: 1.5;
+  height: 1.5em;
+  margin-bottom: 1.5em;
   background-color: #f7f7f7;
   background-image: -moz-linear-gradient(top, #f5f5f5, #f9f9f9);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#f9f9f9));
@@ -5832,7 +5832,7 @@ a.badge:focus {
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .accordion {
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
 }
 .accordion-group {
   margin-bottom: 2px;
@@ -5859,7 +5859,7 @@ a.badge:focus {
 }
 .carousel {
   position: relative;
-  margin-bottom: 1.5;
+  margin-bottom: 1.5em;
   line-height: 1;
 }
 .carousel-inner {
@@ -5977,7 +5977,7 @@ a.badge:focus {
 .carousel-caption h4,
 .carousel-caption p {
   color: #ffffff;
-  line-height: 1.5;
+  line-height: 1.5em;
 }
 .carousel-caption h4 {
   margin: 0 0 5px;
@@ -5990,7 +5990,7 @@ a.badge:focus {
   margin-bottom: 30px;
   font-size: 18px;
   font-weight: 200;
-  line-height: 2.25;
+  line-height: 2.25em;
   color: inherit;
   background-color: #fdfdfd;
   -webkit-border-radius: 6px;
@@ -6007,7 +6007,7 @@ a.badge:focus {
   letter-spacing: -1px;
 }
 .hero-unit li {
-  line-height: 2.25;
+  line-height: 2.25em;
 }
 .pull-right {
   float: right;
@@ -6058,7 +6058,7 @@ a.badge:focus {
 .input-block-level {
   display: block;
   width: 100%;
-  min-height: 11.5px;
+  min-height: 2.5em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -6357,7 +6357,7 @@ a.badge:focus {
   .row-fluid [class*="span"] {
     display: block;
     width: 100%;
-    min-height: 11.5px;
+    min-height: 2.5em;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -6540,7 +6540,7 @@ a.badge:focus {
   .row-fluid [class*="span"] {
     display: block;
     width: 100%;
-    min-height: 11.5px;
+    min-height: 2.5em;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -7080,7 +7080,7 @@ a.badge:focus {
   .row-fluid [class*="span"] {
     display: block;
     width: 100%;
-    min-height: 11.5px;
+    min-height: 2.5em;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -7263,7 +7263,7 @@ a.badge:focus {
   .row-fluid [class*="span"] {
     display: block;
     width: 100%;
-    min-height: 11.5px;
+    min-height: 2.5em;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -7625,7 +7625,7 @@ a.badge:focus {
   .uneditable-input {
     display: block;
     width: 100%;
-    min-height: 11.5px;
+    min-height: 2.5em;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -7661,7 +7661,7 @@ a.badge:focus {
   }
   .page-header h1 small {
     display: block;
-    line-height: 1.5;
+    line-height: 1.5em;
   }
   input[type="checkbox"],
   input[type="radio"] {
@@ -7715,10 +7715,10 @@ a.badge:focus {
     position: static;
   }
   .navbar-fixed-top {
-    margin-bottom: 1.5;
+    margin-bottom: 1.5em;
   }
   .navbar-fixed-bottom {
-    margin-top: 1.5;
+    margin-top: 1.5em;
   }
   .navbar-fixed-top .navbar-inner,
   .navbar-fixed-bottom .navbar-inner {
@@ -7738,7 +7738,7 @@ a.badge:focus {
   }
   .nav-collapse .nav {
     float: none;
-    margin: 0 0 0.75;
+    margin: 0 0 0.75em;
   }
   .nav-collapse .nav > li {
     float: none;
@@ -7833,8 +7833,8 @@ a.badge:focus {
   .nav-collapse .navbar-form,
   .nav-collapse .navbar-search {
     float: none;
-    padding: 0.75 15px;
-    margin: 0.75 0;
+    padding: 0.75em 15px;
+    margin: 0.75em 0;
     border-top: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
     -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 0 rgba(255,255,255,.1);
@@ -8147,7 +8147,6 @@ header.subhead #nav-search #nav-search-results {
   width: 65.74585635359117%;
   *width: 65.69266486422946%;
   margin-left: 2.127659574468085%;
-  padding-bottom: 10px;
 }
 .form-horizontal .control-group .control-label {
   float: left;
@@ -8167,13 +8166,7 @@ header.subhead #nav-search #nav-search-results {
 }
 .form-horizontal .controls p {
   margin: 0;
-  line-height: 31px;
-}
-fieldset .control-group.halfsy {
-  width: 50%;
-}
-fieldset .control-group.halfsy label {
-  width: 24%;
+  line-height: 34px;
 }
 fieldset {
   padding: 20px 0;
@@ -8192,10 +8185,10 @@ fieldset .control-group .textcombo input.text {
   padding: 0;
   outline: none;
   box-shadow: none;
-  width: 90%;
+  width: 89%;
 }
 fieldset .control-group .textcombo input.checkbox {
-  margin-left: -6px;
+  margin-top: -2px;
   margin-right: 6px;
 }
 .footer {
@@ -8226,29 +8219,31 @@ fieldset .control-group .textcombo input.checkbox {
   margin: 0;
 }
 #profile-header .contact {
-  margin-top: 8px;
-  border: 1px solid #CDCDCD;
+  margin: 8px 0;
   background: #EFEFEF;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  padding: 6px;
+  padding: 6px 12px;
   text-align: left;
 }
 #profile-header .contact h3 {
-  font-size: 12px;
+  font-size: 10px;
   text-transform: uppercase;
+  font-weight: 400;
   margin: 0;
   line-height: 1;
   padding-top: 0.5em;
+  color: #444;
 }
 #profile-header .contact p {
-  font-size: 11px;
-  color: #666;
+  font-size: 12px;
+  color: #222;
   margin: 0;
   padding: 0.5em 0;
+  font-weight: bold;
 }
 #profile-actions {
   text-align: right;
@@ -8343,8 +8338,8 @@ fieldset .control-group .textcombo input.checkbox {
 .datepicker.dropdown-menu {
   background: #FFF;
 }
-.input-append .add-on {
-  padding: 7px 6px 6px;
+.input-append .add-on i {
+  line-height: 1.4em;
 }
 .controls2 label {
   display: inline-block;
@@ -8480,7 +8475,7 @@ fieldset .control-group .textcombo input.checkbox {
 .ui-menu .divider {
   *width: 100%;
   height: 1px;
-  margin: -0.25 1px;
+  margin: -0.25em 1px;
   *margin: -5px 0 5px;
   overflow: hidden;
   background-color: #333333;
@@ -8491,7 +8486,7 @@ fieldset .control-group .textcombo input.checkbox {
   padding: 3px 20px;
   clear: both;
   font-weight: normal;
-  line-height: 1.5;
+  line-height: 1.5em;
   color: #fdfdfd;
   white-space: nowrap;
 }

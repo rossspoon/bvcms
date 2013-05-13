@@ -1,7 +1,7 @@
 ﻿@model CmsWeb.Areas.People.Models.Person.BasicPersonInfo
 @FormAction()
 <div class="row-fluid">
-    <fieldset class="span12 display">
+    <fieldset id="fieldset1" class="span12 display">
         @Html.DisplayFor(m => m.Title)
         @Html.DisplayFor(m => m.FirstName)
         @Html.DisplayFor(m => m.GoesBy)
@@ -16,6 +16,7 @@
         @Html.DisplayFor(m => m.WeddingDate)
         @Html.DisplayFor(m => m.Occupation)
         @Html.DisplayFor(m => m.Employer)
+        @* Dave: Look at what is happening when these get long and wrapped, line spacing problem, e.g. my record *@
         @Html.DisplayFor(m => m.School)
         @Html.DisplayFor(m => m.Grade)
     </fieldset>
