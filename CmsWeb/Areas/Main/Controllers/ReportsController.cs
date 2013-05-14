@@ -15,6 +15,7 @@ using CmsWeb.Areas.Manage.Controllers;
 using CmsWeb.Code;
 using Dapper;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
 using UtilityExtensions;
 using System.Text;
 using System.Web.UI;
@@ -455,25 +456,29 @@ namespace CmsWeb.Areas.Main.Controllers
                 var sheet = workbook.CreateSheet("EnrollmentControl");
                 var rowIndex = 0;
                 var row = sheet.CreateRow(rowIndex);
-                row.CreateCell(0).SetCellValue("Name");
-                row.CreateCell(1).SetCellValue("Organization");
-                row.CreateCell(2).SetCellValue("Location");
-                row.CreateCell(3).SetCellValue("MemberType");
+                row.CreateCell(0).SetCellValue("PeopleId");
+                row.CreateCell(1).SetCellValue("Name");
+                row.CreateCell(2).SetCellValue("Organization");
+                row.CreateCell(3).SetCellValue("Location");
+                row.CreateCell(4).SetCellValue("MemberType");
                 rowIndex++;
+                sheet.DisplayRowColHeadings = true;
 
                 foreach (var i in d)
                 {
                     row = sheet.CreateRow(rowIndex);
-                    row.CreateCell(0).SetCellValue(i.Name);
-                    row.CreateCell(1).SetCellValue(i.Organization);
-                    row.CreateCell(2).SetCellValue(i.Location);
-                    row.CreateCell(3).SetCellValue(i.MemberType);
+                    row.CreateCell(0).SetCellValue(i.Id);
+                    row.CreateCell(1).SetCellValue(i.Name);
+                    row.CreateCell(2).SetCellValue(i.Organization);
+                    row.CreateCell(3).SetCellValue(i.Location);
+                    row.CreateCell(4).SetCellValue(i.MemberType);
                     rowIndex++;
                 }
                 sheet.AutoSizeColumn(0);
                 sheet.AutoSizeColumn(1);
                 sheet.AutoSizeColumn(2);
                 sheet.AutoSizeColumn(3);
+                sheet.AutoSizeColumn(4);
                 string saveAsFileName = string.Format("EnrollmentControl-{0:d}.xls", DateTime.Now);
                 var ms = new MemoryStream(); 
                 workbook.Write(ms); 
