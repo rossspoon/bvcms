@@ -125,6 +125,7 @@ namespace CmsWeb
             Util.jQueryDateFormat2 = df;
 
             Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
+            Util.AdminMail = DbUtil.Db.Setting("AdminMail", "");
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);

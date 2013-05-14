@@ -11,6 +11,7 @@ using System.Text;
 using System.Web;
 using CmsData.View;
 using CmsWeb.Areas.Main.Controllers;
+using CmsWeb.Areas.Main.Models.Report;
 using UtilityExtensions;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -566,6 +567,13 @@ namespace CmsWeb.Models
                     select p;
             return ViewExtensions2.RenderPartialViewToString(c, "RecentAbsentsEmail", q);
         }
+        private static string RecentVisitsEmail(OrgSearchController c, IEnumerable<OrgVisitorsAsOfDate> list)
+        {
+            var q = from p in list
+                    orderby p.LastAttended, p.LastName, p.PreferredName
+                    select p;
+            return ViewExtensions2.RenderPartialViewToString(c, "RecentVisitsEmail", q);
+        }
         public void SendNotices(OrgSearchController c)
         {
             const int days = 36;
@@ -591,6 +599,8 @@ namespace CmsWeb.Models
                         orderby leaderlist.Key.Name2
                             select leaderlist;
 
+
+
             var sb2 = new StringBuilder("Notices sent to:</br>\n<table>\n");
             foreach (var p in plist)
             {
@@ -609,7 +619,9 @@ namespace CmsWeb.Models
                 foreach (var m in meetings)
                 {
                     var absents = alist.Where(a => a.OrganizationId == m.OrganizationId);
+                    var vlist = DbUtil.Db.OrgVisitorsAsOfDate(m.OrganizationId, m.Lastmeeting, NoCurrentMembers: true).ToList();
                     sb.Append(RecentAbsentsEmail(c, absents));
+                    sb.Append(RecentVisitsEmail(c, vlist));
                 }
                 DbUtil.Db.Email(DbUtil.Db.CurrentUser.Person.FromEmail, leader, null,
                                 "Attendance reports are ready for viewing", sb.ToString(), false);

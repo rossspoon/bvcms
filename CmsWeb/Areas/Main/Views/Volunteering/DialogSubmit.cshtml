@@ -9,13 +9,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>SubmitMVR</title>
+    <title>Submit Background Check</title>
 </head>
 <body>
     <form id="submitCheck" action="/Volunteering/SubmitCheck/@Model.Id" method="post">
         <input type="hidden" name="iPeopleID" value="@Model.PeopleID" />
         <table>
-             <tr>
+            <tr>
                 <th colspan="2"><div style="padding-bottom:5px;"><b><u>Person Information</u></b></div></th>
             </tr>
             <tr>
@@ -54,7 +54,7 @@
             <tr><td>&nbsp;</td></tr>
             <tr>
                 <td class="right" style="background-color:#EFF3FB; font-weight:bold;">DOB:</td>
-                <td>@( Model.Person.BDate != null ? Model.Person.BDate.Value.ToString("d") : "" )</td>
+                <td>@(Model.Person.BDate != null ? Model.Person.BDate.Value.ToString("d") : "" )</td>
             </tr>
             <tr>
                 <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Gender:</td>
@@ -64,6 +64,7 @@
                 <td class="right" style="background-color:#EFF3FB; font-weight:bold;">SSN:</td>
                 <td><input name="sSSN" size="12" value="@( Util.getMasked( Util.Decrypt( Model.Person.Ssn, "People" ), 4, true, "XXX-XX-" ) )" /></td>
             </tr>
+            @if( Model.ServiceCode == "MVR" ) {
             <tr>
                 <td class="right" style="background-color:#EFF3FB; font-weight:bold;">License Number:</td>
                 <td><input name="sDLN" size="15" value="@( Util.getMasked( Util.Decrypt( Model.Person.Dln, "People" ), 4, true, "XXXXX" ) )" /></td>
@@ -72,6 +73,23 @@
                 <td class="right" style="background-color:#EFF3FB; font-weight:bold;">State Code:</td>
                 <td>@Html.DropDownList( "iStateID", new SelectList( s, "ID", "Description", Model.Person.DLStateID ) )</td>
             </tr>
+            }
+            @if( Model.ServiceCode == "ComboPC" || Model.ServiceCode == "ComboPS" ) {
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <th colspan="2"><div style="padding-bottom:5px;"><b><u>Plus Package Options</u></b></div></th>
+                </tr>
+                if( Model.ServiceCode == "ComboPC" ) {
+                    <tr>
+                        <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Plus County:</td>
+                        <td><input name="sPlusCounty" size="20" /></td>
+                    </tr>
+                }
+                <tr>
+                    <td class="right" style="background-color:#EFF3FB; font-weight:bold;">Plus State Code:</td>
+                    <td>@Html.DropDownList( "sPlusState", new SelectList( s, "StateAbbr", "StateAbbr" ) )</td>
+                </tr>
+            }
             <tr><td>&nbsp;</td></tr>
             <tr>
                 <th colspan="2"><div style="padding-bottom:5px;"><b><u>Protect My Ministry Login</u></b></div></th>
@@ -86,7 +104,7 @@
             </tr>
             <tr><td>&nbsp;</td></tr>
             <tr>
-                <td colspan="2" class="center"><input class="bt" type="submit" value="Submit" /> &nbsp;&nbsp; <input class="bt" id="closeSubmitDialog" type="button" value="Cancel" /></td>
+                <td colspan="2" class="center"><input class="bt" type="submit" value="Submit" /> &nbsp;&nbsp; <input class="bt" id="closeSubmitDialog" type="button" value="Cancel"  /></td>
             </tr>
         </table>
     </form>

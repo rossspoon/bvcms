@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using CmsData;
 using CmsData.Classes.SmallGroupFinder;
 using System.Web;
+using System;
 
 namespace CmsWeb.Areas.Public.Models
 {
@@ -193,15 +194,17 @@ namespace CmsWeb.Areas.Public.Models
 
         public void populateFromOrg(Organization org)
         {
-            values.Add("SGF:Name", org.OrganizationName);
-            values.Add("SGF:Description", org.Description);
-            values.Add("SGF:Room", org.Location);
-            values.Add("SGF:Leader", org.LeaderName);
+            values["SGF:OrgID"] = org.OrganizationId.ToString();
+            values["SGF:Name"] = org.OrganizationName;
+            values["SGF:Description"] = org.Description;
+            values["SGF:Room"] = org.Location;
+            values["SGF:Leader"] = org.LeaderName;
+            values["SGF:DateStamp"] = DateTime.Now.ToString("yyyy-MM-dd");
 
             foreach (var extra in org.OrganizationExtras)
             {
                 if (extra.Field.StartsWith("SGF:"))
-                    values.Add(extra.Field, extra.Data);
+                    values[extra.Field] = extra.Data;
             }
         }
     }
