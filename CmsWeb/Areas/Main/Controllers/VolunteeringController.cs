@@ -147,7 +147,7 @@ namespace CmsWeb.Areas.Main.Controllers
             return Redirect("/Volunteering/Index/" + iPeopleID);
         }
 
-        public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0)
+        public ActionResult SubmitCheck(int id, int iPeopleID, string sSSN, string sDLN, string sUser = "", string sPassword = "", int iStateID = 0, string sPlusCounty = "", string sPlusState = "")
         {
             String sResponseURL = Request.Url.Scheme + "://" + Request.Url.Authority + ProtectMyMinistryHelper.PMM_Append;
 
@@ -190,13 +190,13 @@ namespace CmsWeb.Areas.Main.Controllers
 
             DbUtil.Db.SubmitChanges();
 
-            ProtectMyMinistryHelper.submit(id, sSSN, sDLN, sResponseURL, iStateID, sUser, sPassword);
+            ProtectMyMinistryHelper.submit(id, sSSN, sDLN, sResponseURL, iStateID, sUser, sPassword, sPlusCounty, sPlusState);
 
             BackgroundCheck bc = (from e in DbUtil.Db.BackgroundChecks
                                   where e.Id == id
                                   select e).Single();
 
-            if (bc != null && bc.ServiceCode == "Combo")
+            if (bc != null && (bc.ServiceCode == "Combo" || bc.ServiceCode == "ComboPC" || bc.ServiceCode == "ComboPS") )
             {
                 Volunteer vol = DbUtil.Db.Volunteers.SingleOrDefault(e => e.PeopleId == iPeopleID);
                 vol.ProcessedDate = DateTime.Now;
@@ -212,17 +212,7 @@ namespace CmsWeb.Areas.Main.Controllers
                                   where e.Id == id
                                   select e).Single();
 
-            switch (bc.ServiceCode)
-            {
-                case "Combo":
-                    return View("SubmitCombo", bc);
-                case "MVR":
-                    return View("SubmitMVR", bc);
-                case "Credit":
-                    return View("SubmitCredit", bc);
-                default:
-                    return Content("no view");
-            }
+            return View(bc);
         }
 
         public ActionResult DialogEdit(int id)

@@ -21,7 +21,11 @@ namespace CmsData.Classes.ProtectMyMinistry
         public const int TYPE_CREDIT = 2;
 
         public static readonly string[] STATUSES = { "Error", "Not Submitted", "Submitted", "Complete" };
-        public static readonly string[] BACKGROUND_TYPES = { "Combo", "MVR" };
+
+        public static readonly string[] BACKGROUND_TYPES_LABELS = { "National Combo (Basic)", "National Combo (Plus County)", "National Combo (Plus State)", "Motor Vehicle Record (MVR)" };
+        public static readonly string[] BACKGROUND_TYPES = { "Combo", "ComboPC", "ComboPS", "MVR" };
+
+        public static readonly string[] CREDIT_TYPES_LABELS = { "Credit History" };
         public static readonly string[] CREDIT_TYPES = { "Credit" };
 
         public static void create( int iPeopleID, string sServiceCode, int iType, int iLabel )
@@ -41,7 +45,7 @@ namespace CmsData.Classes.ProtectMyMinistry
             DbUtil.Db.SubmitChanges();
         }
 
-        public static bool submit( int iRequestID, string sSSN, string sDLN, string sResponseURL, int iStateID, string sUser, string sPassword )
+        public static bool submit( int iRequestID, string sSSN, string sDLN, string sResponseURL, int iStateID, string sUser, string sPassword, string sPlusCounty, string sPlusState )
         {
             if (sUser == null || sPassword == null) return false;
 
@@ -67,6 +71,8 @@ namespace CmsData.Classes.ProtectMyMinistry
             sb.sServiceCode = bc.ServiceCode;
             sb.sResponseURL = sResponseURL;
             sb.bTestMode = (DbUtil.Db.Setting("PMMTestMode", "true") == "true");
+            sb.sPlusCounty = sPlusCounty;
+            sb.sPlusState = sPlusState;
 
             // Get State (if MVR)
             if (bc.ServiceCode == "MVR" && iStateID > 0)
@@ -199,11 +205,41 @@ namespace CmsData.Classes.ProtectMyMinistry
                 xwWriter.WriteString("Basic");
                 xwWriter.WriteFullEndElement();
             }
+            else if (sb.sServiceCode == "ComboPC" || sb.sServiceCode == "ComboPS")
+            {
+                // Package Service Code - Only if a package (BASIC,PLUS) (Inside Order Section)
+                xwWriter.WriteStartElement("PackageServiceCode");
+                xwWriter.WriteAttributeString("OrderId", sOrderID);
+                xwWriter.WriteString("PLUS");
+                xwWriter.WriteFullEndElement();
+            }
 
-            // Order Detail (Inside Order Section)
-            xwWriter.WriteStartElement("OrderDetail");
-            xwWriter.WriteAttributeString("serviceCode", sb.sServiceCode);
-            xwWriter.WriteAttributeString("OrderId", sOrderID);
+            if (sb.sServiceCode == "ComboPC" || sb.sServiceCode == "ComboPS")
+            {
+                // Basic Package
+                xwWriter.WriteStartElement("OrderDetail");
+                xwWriter.WriteAttributeString("serviceCode", "Combo");
+                xwWriter.WriteAttributeString("OrderId", sOrderID);
+                xwWriter.WriteEndElement();
+
+                // Plus Package
+                xwWriter.WriteStartElement("OrderDetail");
+
+                if (sb.sServiceCode == "ComboPC") xwWriter.WriteAttributeString("serviceCode", "CountyCrim");
+                if (sb.sServiceCode == "ComboPS") xwWriter.WriteAttributeString("serviceCode", "StateCriminal");
+
+                xwWriter.WriteAttributeString("OrderId", sOrderID);
+
+                if (sb.sServiceCode == "ComboPC") xwWriter.WriteElementString("County", sb.sPlusCounty);
+                xwWriter.WriteElementString("State", sb.sPlusState);
+            }
+            else
+            {
+                // Basic Package
+                xwWriter.WriteStartElement("OrderDetail");
+                xwWriter.WriteAttributeString("serviceCode", sb.sServiceCode);
+                xwWriter.WriteAttributeString("OrderId", sOrderID);
+            }
 
             // MVR Option
             if (sb.sServiceCode == "MVR")
@@ -269,6 +305,46 @@ namespace CmsData.Classes.ProtectMyMinistry
         {
             return STATUSES[iStatusID];
         }
+
+        public static string getDescription(string sServiceCode)
+        {
+            for (int iX = 0; iX < BACKGROUND_TYPES.Length; iX++)
+            {
+                if (BACKGROUND_TYPES[iX] == sServiceCode) return BACKGROUND_TYPES_LABELS[iX];
+            }
+
+            for (int iX = 0; iX < CREDIT_TYPES.Length; iX++)
+            {
+                if (CREDIT_TYPES[iX] == sServiceCode) return CREDIT_TYPES_LABELS[iX];
+            }
+
+            return "";
+        }
+
+        public static List<CheckType> getCheckTypes(int category)
+        {
+            var types = new List<CheckType>();
+
+            if( category == TYPE_BACKGROUND )
+            {
+                for (int iX = 0; iX < BACKGROUND_TYPES.Length; iX++)
+                {
+                    var item = new CheckType { code = BACKGROUND_TYPES[iX], label = BACKGROUND_TYPES_LABELS[iX] };
+                    types.Add(item);
+                }
+            }
+
+            if( category == TYPE_CREDIT )
+            {
+                for (int iX = 0; iX < CREDIT_TYPES.Length; iX++)
+                {
+                    var item = new CheckType { code = CREDIT_TYPES[iX], label = CREDIT_TYPES_LABELS[iX] };
+                    types.Add(item);
+                }
+            }
+
+            return types;
+        }
     }
 
     public class SubmitBundle
@@ -276,18 +352,22 @@ namespace CmsData.Classes.ProtectMyMinistry
         // Internal
         public bool bTestMode = true;
 
-        public string sUser;
-        public string sPassword;
-        public string sServiceCode;
-        public string sBillingReference;
-        public string sResponseURL;
+        public string sUser = "";
+        public string sPassword = "";
+        public string sServiceCode = "";
+        public string sBillingReference = "";
+        public string sResponseURL = "";
 
         // Person
-        public int iPeopleID;
-        public string sSSN;
-        public string sDNL;
-        public string sStateCode;
-        public string sStateAbbr;
+        public int iPeopleID = 0;
+        public string sSSN = "";
+        public string sDNL = "";
+        public string sStateCode = "";
+        public string sStateAbbr = "";
+
+        // Plus
+        public string sPlusCounty = "";
+        public string sPlusState = "";
     }
 
     public class ResponseBundle
@@ -295,5 +375,11 @@ namespace CmsData.Classes.ProtectMyMinistry
         public bool bHasErrors = false;
         public string sErrors = "";
         public string sReportID = "0";        
+    }
+
+    public class CheckType
+    {
+        public string code { get; set; }
+        public string label { get; set; }
     }
 }

@@ -730,6 +730,7 @@
     <Content Include="Areas\People\Views\Person\DisplayTemplates\InlineCode.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\InlineCode.cshtml" />
     <Content Include="Areas\Public\Views\SmallGroupFinder\Index.cshtml" />
+    <Content Include="Areas\Main\Views\Volunteering\DialogSubmit.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\RecentVisitsEmail.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
@@ -1285,6 +1286,9 @@
     <Content Include="Scripts\jQuery\jquery.transpose.js" />
     <Content Include="Scripts\jQuery\jquery.transpose.min.js" />
     <Content Include="constants.py" />
+    <Content Include="secrets.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Tutorials\_Home_Index_Menu.cshtml" />
     <Content Include="Tutorials\_Home_Index.cshtml" />
     <Content Include="EmailTemplates\BasicNewsletter.htm" />
@@ -1454,8 +1458,6 @@
     <Content Include="Areas\Main\Views\Volunteering\DialogType.cshtml" />
     <Content Include="Areas\Main\Views\Volunteering\Edit.cshtml" />
     <Content Include="Areas\Main\Views\Volunteering\Index.cshtml" />
-    <Content Include="Areas\Main\Views\Volunteering\SubmitCombo.cshtml" />
-    <Content Include="Areas\Main\Views\Volunteering\SubmitMVR.cshtml" />
     <Content Include="Areas\OnlineReg\Views\OnlineReg\VolunteerSlots.cshtml" />
     <Content Include="Areas\Dialog\Views\AddAttendeesFromTag\Index.cshtml">
       <SubType>Code</SubType>
@@ -1480,7 +1482,6 @@
     <Content Include="Areas\Finance\Views\Bundle\Edit.cshtml" />
     <Content Include="Areas\Main\Views\MemberDirectory\Index.cshtml" />
     <Content Include="Areas\Main\Views\MemberDirectory\Results.cshtml" />
-    <Content Include="Areas\Main\Views\Volunteering\SubmitCredit.cshtml" />
     <Content Include="Areas\Main\Views\ContactSearch\ContactTypeTotals.cshtml" />
     <Content Include="Areas\Main\Views\Reports\RecentAbsents.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\RecentAbsentsEmail.cshtml" />
@@ -2278,9 +2279,6 @@
     </Content>
     <Content Include="Web.bvcms2.config">
       <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="secrets.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Finance\Views\QuickBooks\Index.cshtml" />
