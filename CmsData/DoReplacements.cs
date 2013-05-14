@@ -51,6 +51,8 @@ namespace CmsData
                     text = DoAddSmallGroup(text, emailqueueto);
                 if (text.Contains("{nextmeetingtime}", ignoreCase: true))
                     text = DoMeetingDate(text, emailqueueto);
+                if (text.Contains("{smallgroups", ignoreCase: true))
+                    text = DoSmallGroups(text, emailqueueto);
             }
             if (text.Contains("{today}", ignoreCase: true))
                 text = text.Replace("{today}", DateTime.Today.ToShortDateString());
@@ -95,7 +97,7 @@ namespace CmsData
             {
                 var qm = (from m in OrganizationMembers
                           where m.PeopleId == emailqueueto.PeopleId && m.OrganizationId == emailqueueto.OrgId
-                          select new {m.PayLink, m.Amount, m.AmountPaid, m.RegisterEmail}).SingleOrDefault();
+                          select new { m.PayLink, m.Amount, m.AmountPaid, m.RegisterEmail }).SingleOrDefault();
                 if (qm != null)
                 {
                     if (qm.PayLink.HasValue())
@@ -120,6 +122,26 @@ namespace CmsData
                            orderby aa.MeetingDate
                            select aa.MeetingDate).FirstOrDefault();
             text = text.Replace("{nextmeetingtime}", mt.ToString("g"));
+            return text;
+        }
+
+        private string DoSmallGroups(string text, EmailQueueTo emailqueueto)
+        {
+            const string RE = @"\{smallgroups(:\[(?<prefix>[^\]]*)\]){0,1}\}";
+            var re = new Regex(RE, RegexOptions.Singleline);
+            Match match = re.Match(text);
+            while (match.Success && emailqueueto.OrgId.HasValue)
+            {
+                string tag = match.Value;
+                string prefix = match.Groups["prefix"].Value;
+                var q = from mm in OrgMemMemTags
+                        where mm.OrgId == emailqueueto.OrgId
+                        where mm.PeopleId == emailqueueto.PeopleId
+                        where mm.MemberTag.Name.StartsWith(prefix) || prefix == null || prefix == ""
+                        select mm.MemberTag.Name.Substring(prefix.Length);
+                text = text.Replace(tag, string.Join("<br/>\n", q));
+                match = match.NextMatch();
+            }
             return text;
         }
 
@@ -250,7 +272,7 @@ namespace CmsData
             return text;
         }
 
-//&lt;votetag .*?&gt;(?<inside>.+?)&lt;/votetag&gt;
+        //&lt;votetag .*?&gt;(?<inside>.+?)&lt;/votetag&gt;
         private string DoVoteTag2(string text, string CmsHost, EmailQueueTo emailqueueto)
         {
             var list = new Dictionary<string, OneTimeLink>();
