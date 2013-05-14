@@ -43,8 +43,6 @@ namespace CmsData
         public void Email(string from, Person p, List<MailAddress> addmail, string subject, string body, bool redacted)
         {
             var From = Util.FirstAddress(from);
-            if (From == null)
-                From = Util.FirstAddress(Setting("AdminMail", Util.SysFromEmail));
             var emailqueue = new EmailQueue
             {
                 Queued = DateTime.Now,

@@ -1172,6 +1172,24 @@ namespace UtilityExtensions
             }
             return smtp;
         }
+        private const string STR_AdminMail = "UnNamed";
+        public static string AdminMail
+        {
+            get
+            {
+                var tag = ConfigurationManager.AppSettings["senderrorsto"];
+                if (HttpContext.Current != null)
+                    if (HttpContext.Current.Session != null)
+                        if (HttpContext.Current.Session[STR_AdminMail] != null)
+                            tag = HttpContext.Current.Session[STR_AdminMail].ToString();
+                return tag;
+            }
+            set
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Session[STR_AdminMail] = value;
+            }
+        }
         private const string STR_SysFromEmail = "UnNamed";
         public static string SysFromEmail
         {
@@ -1280,7 +1298,7 @@ namespace UtilityExtensions
         public static MailAddress FirstAddress(string addrs, string name)
         {
             if (!addrs.HasValue())
-                addrs = ConfigurationManager.AppSettings["senderrorsto"];
+                addrs = AdminMail;
             var a = addrs.SplitStr(",;");
             try
             {
@@ -1298,7 +1316,7 @@ namespace UtilityExtensions
         public static MailAddress FirstAddress2(string addrs, string name)
         {
             if (!addrs.HasValue())
-                addrs = ConfigurationManager.AppSettings["senderrorsto"];
+                addrs = AdminMail;
             var a = addrs.SplitStr(",;");
             try
             {
