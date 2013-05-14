@@ -731,6 +731,7 @@
     <Content Include="Areas\People\Views\Person\EditorTemplates\InlineCode.cshtml" />
     <Content Include="Areas\Public\Views\SmallGroupFinder\Index.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address.cshtml" />
+    <Content Include="Areas\Main\Views\OrgSearch\RecentVisitsEmail.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />

@@ -246,52 +246,6 @@ namespace CmsWeb.Areas.Main.Models.Report
 						Age = p.Age.ToString(),
 						LastAttended = p.LastAttended,
                    };
-//			var wks = 3; // default lookback
-//			var org = DbUtil.Db.Organizations.Single(o => o.OrganizationId == orgid);
-//			if (org.RollSheetVisitorWks.HasValue)
-//				wks = org.RollSheetVisitorWks.Value;
-//			var dt = MeetingDate.AddDays(wks * -7);
-//
-//// ReSharper disable ImplicitlyCapturedClosure
-//			var q = from p in DbUtil.Db.People
-//					where p.Attends.Any(a => (a.AttendanceFlag == true || a.Commitment == AttendCommitmentCode.Attending || a.Commitment == AttendCommitmentCode.Substitute)
-//						&& (a.MeetingDate >= dt && a.MeetingDate <= MeetingDate)
-//						&& a.OrganizationId == orgid
-//						&& (a.MeetingDate >= org.FirstMeetingDate || org.FirstMeetingDate == null)
-//						&& VisitAttendTypes.Contains(a.AttendanceTypeId.Value))
-//					where NoCurrentMembers == false || p.OrganizationMembers.All(om => om.OrganizationId != orgid)
-//                    let ch = UseAltNames && p.AltName != null && p.AltName.Length > 0
-//					orderby p.Name2, p.Name
-//					orderby p.LastName, p.FamilyId, p.Name2
-//					select new PersonVisitorInfo
-//					{
-//						VisitorType = p.MemberStatusId == MemberStatusCode.Member ? "VM" : "VS",
-//						PeopleId = p.PeopleId,
-//						Name = p.Name,
-//                        Name2 = ch ? p.AltName : p.Name2,
-//						BirthDate = Util.FormatBirthday(
-//							p.BirthYear,
-//							p.BirthMonth,
-//							p.BirthDay),
-//						Address = p.PrimaryAddress,
-//						Address2 = p.PrimaryAddress2,
-//						CityStateZip = Util.FormatCSZ(p.PrimaryCity, p.PrimaryState, p.PrimaryZip),
-//						PhonePref = p.PhonePrefId,
-//						HomePhone = p.HomePhone,
-//						CellPhone = p.CellPhone,
-//						WorkPhone = p.WorkPhone,
-//						MemberStatus = p.MemberStatus.Description,
-//						Email = p.EmailAddress,
-//						BFTeacher = p.BFClass.LeaderName,
-//						BFTeacherId = p.BFClass.LeaderId,
-//						Age = p.Age.ToString(),
-//						LastAttended = DbUtil.Db.LastAttended(orgid, p.PeopleId),
-//						HasTag = p.Tags.Any(t => t.Tag.Name == Util2.CurrentTagName && t.Tag.PeopleId == Util2.CurrentTagOwnerId),
-//						NameParent1 = p.Family.HohName(DbUtil.Db),
-//						NameParent2 = p.Family.People.FirstOrDefault(x => x.FamilyPosition.Id == PositionInFamily.PrimaryAdult
-//                                              && x.PeopleId != p.Family.HeadOfHouseholdId).Name,
-//					};
-// ReSharper restore ImplicitlyCapturedClosure
 			return q;
 		}
 		public static IEnumerable<AttendInfo> RollList(int? MeetingId, int OrgId, DateTime MeetingDate, bool SortByName = false, bool CurrentMembers = false)

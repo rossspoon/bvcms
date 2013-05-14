@@ -1179,15 +1179,14 @@ namespace UtilityExtensions
             {
                 var tag = ConfigurationManager.AppSettings["senderrorsto"];
                 if (HttpContext.Current != null)
-                    if (HttpContext.Current.Session != null)
-                        if (HttpContext.Current.Session[STR_AdminMail] != null)
-                            tag = HttpContext.Current.Session[STR_AdminMail].ToString();
+                        if (HttpContext.Current.Items[STR_AdminMail] != null)
+                            tag = HttpContext.Current.Items[STR_AdminMail].ToString();
                 return tag;
             }
             set
             {
                 if (HttpContext.Current != null)
-                    HttpContext.Current.Session[STR_AdminMail] = value;
+                    HttpContext.Current.Items[STR_AdminMail] = value;                
             }
         }
         private const string STR_SysFromEmail = "UnNamed";
