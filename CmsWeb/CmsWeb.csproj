@@ -1173,13 +1173,6 @@
     <Compile Include="Areas\Main\Controllers\QueryBuilderController.cs" />
     <Compile Include="Areas\Main\Controllers\TaskController.cs" />
     <Compile Include="Areas\Manage\Controllers\VolunteersController.cs" />
-    <Compile Include="EnrollmentControlReport.aspx.cs">
-      <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EnrollmentControlReport.aspx.designer.cs">
-      <DependentUpon>EnrollmentControlReport.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ExportExcel.aspx.cs">
       <DependentUpon>ExportExcel.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2307,7 +2300,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Contact.aspx" />
-    <Content Include="EnrollmentControlReport.aspx" />
     <Content Include="Errors\Error.aspx" />
   </ItemGroup>
   <ItemGroup>
