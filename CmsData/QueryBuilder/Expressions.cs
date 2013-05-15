@@ -2843,10 +2843,13 @@ namespace CmsData
                 q.QueryId == qid);
             if (savedquery == null)
                 return AlwaysFalse(parm);
-            var pred = savedquery.Predicate(Db);
-            Expression left = Expression.Invoke(pred, parm);
-            var right = Expression.Convert(Expression.Constant(tf), left.Type);
-            return Compare(left, op, right);
+
+            var q2 = Db.PeopleQuery(qid).Select(pp => pp.PeopleId);
+            var tag = Db.PopulateTemporaryTag(q2);
+
+            Expression<Func<Person, bool>> pred = p => p.Tags.Any(t => t.Id == tag.Id);
+            Expression expr = Expression.Invoke(pred, parm);
+            return expr;
         }
         internal static Expression SavedQueryPlus(ParameterExpression parm,
             CMSDataContext Db,
