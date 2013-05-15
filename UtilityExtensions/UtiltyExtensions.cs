@@ -244,6 +244,13 @@ namespace UtilityExtensions
                 return dt.Value.ToString("d");
             return "";
         }
+        public static string FormatDate(dynamic dyndt)
+        {
+            var dt = dyndt as DateTime?;
+            if (dt.HasValue)
+                return dt.Value.ToString("d");
+            return "";
+        }
 
         public static string ToSortableDate(this DateTime dt)
         {
