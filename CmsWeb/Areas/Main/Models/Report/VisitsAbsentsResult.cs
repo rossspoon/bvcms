@@ -74,9 +74,9 @@ namespace CmsWeb.Areas.Main.Models.Report
 
             w.PageEvent = new HeadFoot
             {
-                HeaderText = "Visits/Absents Report: {0} - {1} {2:g}".Fmt(
+                HeaderText = "Guests/Absents Report: {0} - {1} {2:g}".Fmt(
                     i.OrganizationName, i.LeaderName, i.MeetingDate),
-                FooterText = "Visits/Absents Report"
+                FooterText = "Guests/Absents Report"
             };
             doc.Open();
 
@@ -102,7 +102,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 t.AddHeader("Phone/Email", boldfont);
                 t.AddHeader("Last Att.", boldfont);
                 t.AddHeader("Birthday", boldfont);
-                t.AddHeader("Visit/Member", boldfont);
+                t.AddHeader("Guest/Member", boldfont);
                 mt.AddCell(t);
 
                 var color = BaseColor.BLACK;
@@ -120,7 +120,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     t.DefaultCell.BackgroundColor = color;
 
                     if (v != p.visitor)
-                        t.Add("             ------ {0} ------".Fmt(p.visitor == true ? "Visitors" : "Absents"), 6, bigboldfont);
+                        t.Add("             ------ {0} ------".Fmt(p.visitor == true ? "Guests" : "Absentees"), 6, bigboldfont);
                     v = p.visitor;
 
                     t.Add(p.Name, font);

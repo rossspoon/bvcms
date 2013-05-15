@@ -121,7 +121,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                     t.DefaultCell.BackgroundColor = color;
 
                     if (v != p.visitor)
-                        t.Add("             ------ {0} ------".Fmt(p.visitor == true ? "Visitors and Previous Members" : "Members"), 6, bigboldfont);
+                        t.Add("             ------ {0} ------".Fmt(p.visitor == true ? "Guests and Previous Members" : "Members"), 6, bigboldfont);
                     v = p.visitor;
 
                     t.Add(p.Name, font);

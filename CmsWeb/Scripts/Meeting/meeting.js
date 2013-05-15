@@ -66,7 +66,7 @@
 
     $(".bt").button();
     $('#visitorDialog').dialog({
-        title: 'Add Visitors Dialog',
+        title: 'Add Guests Dialog',
         bgiframe: true,
         autoOpen: false,
         width: 750,
@@ -82,7 +82,7 @@
     $('#addvisitor,#addregistered').click(function (e) {
         e.preventDefault();
         if (e.shiftKey) {
-            if (confirm("Are you sure you want to join all visitors to org?")) {
+            if (confirm("Are you sure you want to join all guests to org?")) {
                 $.post("/Meeting/JoinAllVisitors/" + $("#meetingid").val(), {}, function (ret) {
                     alert(ret);
                 });

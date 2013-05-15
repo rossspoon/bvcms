@@ -166,7 +166,7 @@ namespace CmsWeb.Models
                      where e.CheckInTimeX < dateEnd || dateEnd == null
                      select e;
 
-            var p = new ActivityCount() { name = "Total Visits", count = q3.Count() };
+            var p = new ActivityCount() { name = "Total Guests", count = q3.Count() };
             var q = new ActivityCount() { name = "Unique People", count = q2.Count() };
 
 
