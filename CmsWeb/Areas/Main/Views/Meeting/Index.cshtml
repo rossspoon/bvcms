@@ -86,13 +86,13 @@ This will allow you to mark them as members.
                         @Model.meeting.NumPresent
         }
                     </td>
-                    <td class="right">New Visitors:</td>
+                    <td class="right">New Guests:</td>
                     <td class="right" id="NumNewVisit"><span>@Model.meeting.NumNewVisit</span></td>
                     </tr>
                   <tr>
                     <td class="right">Members:</td>
                     <td class="right" id="NumMembers"><span>@Model.meeting.NumMembers</span></td>
-                    <td class="right">Repeat Visitors:</td>
+                    <td class="right">Repeat Guests:</td>
                     <td class="right" id="NumRepeatVst"><span>@Model.meeting.NumRepeatVst</span></td>
                     </tr>
                   <tr>
@@ -126,7 +126,7 @@ This will allow you to mark them as members.
                   </td>
                   <td class="right" nowrap>
                     <a id="addregistered" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=registered" class="bt hidden">Add Registered</a>
-                    <a id="addvisitor" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=visitor" class="bt" title="shift-click to Join All Visitors">Add Visitors</a>
+                    <a id="addvisitor" href="/SearchAdd/Index/@Model.meeting.MeetingId?type=visitor" class="bt" title="shift-click to Join All Guests">Add Guests</a>
                   </td>
                 </tr></table>
             </td></tr>
@@ -147,20 +147,20 @@ This will allow you to mark them as members.
                     }
                     <li><a href="/Reports/PastAttendee/@Model.meeting.OrganizationId" target="_blank">Recent Attendance Report</a></li>
                     <li><a href="/Reports/Attendee/@Model.meeting.MeetingId" target="_blank">Attendee Report</a></li>
-                    <li><a href="/Reports/VisitsAbsents/@Model.meeting.MeetingId" target="_blank">Visits/Absents Report</a></li>
-                    <li><a href="/Reports/VisitsAbsents2/@Model.meeting.MeetingId" target="_blank">Visits/Absents Contact Report</a></li>
+                    <li><a href="/Reports/VisitsAbsents/@Model.meeting.MeetingId" target="_blank">Guests/Absentees Report</a></li>
+                    <li><a href="/Reports/VisitsAbsents2/@Model.meeting.MeetingId" target="_blank">Guests/Absentees Contact Report</a></li>
                     <li><a href="/Meeting/AttendanceByGroups/@Model.meeting.MeetingId" target="_blank">AttendanceByGroups</a></li>
                     <li><a href="/Meeting/iPad/@Model.meeting.MeetingId">iPad Attendance</a></li>
                     <li><a href="/Meeting/tickets/@Model.meeting.MeetingId">Ticketing Attendance</a></li>
                     <li><a href="/AddAttendeesFromTag/Index/@Model.meeting.MeetingId" class="addfromtag">Add Attendees From Tag</a></li>
                     <li class="header"><span>Convert to Search</span></li>
                     <li><a href="/Meeting/QueryAttendees/@Model.meeting.MeetingId">Attendees</a></li>
-                    <li><a href="/Meeting/QueryVisitors/@Model.meeting.MeetingId">Visitors</a></li>
-                    <li><a href="/Meeting/QueryAbsents/@Model.meeting.MeetingId">Absents</a></li>
+                    <li><a href="/Meeting/QueryVisitors/@Model.meeting.MeetingId">Guests</a></li>
+                    <li><a href="/Meeting/QueryAbsents/@Model.meeting.MeetingId">Absentees</a></li>
                     <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Registered">Registered</a></li>
-                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Attends">Registered Attends</a></li>
-                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Absents">Registered Absents</a></li>
-                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=UnregisteredAttends">UnRegistered Attends</a></li>
+                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Attends">Registered Attendances</a></li>
+                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=Absents">Registered Absentees</a></li>
+                    <li><a href="/Meeting/QueryRegistered/@Model.meeting.MeetingId?type=UnregisteredAttends">UnRegistered Attendances</a></li>
                 </ul>
             </div>
         </div>
@@ -225,7 +225,7 @@ This will allow you to mark them as members.
 }
 </tbody>
 </table>
-<div id="visitorDialog" title="Add Visitors">
+<div id="visitorDialog" title="Add Guests">
 <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
 </div>
 <div id="AddFromTag">

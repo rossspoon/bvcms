@@ -84,7 +84,7 @@ namespace CmsWeb.Areas.Main.Models.Report
                 doc.Add(new Paragraph("no data"));
             else
             {
-                StartPageSet("Visits/Absents Contacts Report: {0} - {1} {2:g}".Fmt(
+                StartPageSet("Guests/Absentees Contact Report: {0} - {1} {2:g}".Fmt(
                     i.OrganizationName, i.LeaderName, i.MeetingDate));
 
                 foreach (var p in q)
