@@ -14,7 +14,7 @@ namespace CmsWeb.Areas.People
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            AddRoute(context, "Person", "Person2");
+            //AddRoute(context, "Person", "Person2");
             context.MapRoute(
                 "People_default",
                 "People/{controller}/{action}/{id}",

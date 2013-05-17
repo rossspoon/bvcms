@@ -25,17 +25,22 @@ namespace CmsData
 {
 	public class AddressVerify
 	{
-		public class AddressResult
-		{
-			public bool found { get; set; }
-			public string address { get; set; }
-			public string Line1 { get; set; }
-			public string Line2 { get; set; }
-			public string City { get; set; }
-			public string State { get; set; }
-			public string Zip { get; set; }
-		}
-		public static AddressResult LookupAddress(string line1, string line2, string city, string st, string zip)
+	    public class AddressResult
+	    {
+	        public bool found { get; set; }
+	        public string address { get; set; }
+	        public string Line1 { get; set; }
+	        public string Line2 { get; set; }
+	        public string City { get; set; }
+	        public string State { get; set; }
+	        public string Zip { get; set; }
+	        public bool Changed (string addr1, string addr2, string city, string state, string zip )
+            { 
+                return Line1 != addr1 || Line2 != (addr2 ?? "") || City != city || State != state || Zip != (zip ?? "");
+            }
+	    }
+
+	    public static AddressResult LookupAddress(string line1, string line2, string city, string st, string zip)
 		{
 			string url = ConfigurationManager.AppSettings["amiurl"];
 			string password = ConfigurationManager.AppSettings["amipassword"];

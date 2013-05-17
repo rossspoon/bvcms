@@ -72,6 +72,15 @@
     <Reference Include="AjaxMin">
       <HintPath>..\packages\AjaxMin.4.60.4609.17023\lib\net20\AjaxMin.dll</HintPath>
     </Reference>
+    <Reference Include="AttributeRouting">
+      <HintPath>..\packages\AttributeRouting.Core.3.5.6\lib\net40\AttributeRouting.dll</HintPath>
+    </Reference>
+    <Reference Include="AttributeRouting.Web">
+      <HintPath>..\packages\AttributeRouting.Core.Web.3.5.6\lib\net40\AttributeRouting.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="AttributeRouting.Web.Mvc">
+      <HintPath>..\packages\AttributeRouting.3.5.6\lib\net40\AttributeRouting.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Cassette, Version=2.0.0.17974, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Cassette.2.0.0\lib\net40-client\Cassette.dll</HintPath>
@@ -161,6 +170,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NotFoundMvc">
+      <HintPath>..\packages\NotFoundMvc.1.0.0\lib\net40\NotFoundMvc.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>..\packages\NPOI.1.2.5\lib\net40\NPOI.dll</HintPath>
     </Reference>
@@ -231,12 +243,16 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.0.0.0\lib\WebActivator.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\ToggleOrgLeadersOnly.ashx.cs">
       <DependentUpon>ToggleOrgLeadersOnly.ashx</DependentUpon>
     </Compile>
+    <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlModel.cs" />
     <Compile Include="Areas\Org\Controllers\OrgMemberDialogController.cs" />
@@ -1276,6 +1292,7 @@
       <DependentUpon>moment.js</DependentUpon>
     </Content>
     <Content Include="Views\Shared\Pager3.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">
@@ -1488,7 +1505,7 @@
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRange.cshtml" />
     <Content Include="Areas\Finance\Views\FinanceReports\DonorTotalsByRangeResults.cshtml" />
     <Content Include="Areas\People\Views\Web.config" />
-    <Content Include="Areas\People\Views\Person\EditorTemplates\Address.cshtml" />
+    <Content Include="Areas\People\Views\Person\AddressEdit.cshtml" />
     <Content Include="Areas\People\Views\Person\Old\AttendanceGrid.cshtml" />
     <Content Include="Areas\People\Views\Person\BasicPersonInfoDisplay.cshtml" />
     <Content Include="Areas\People\Views\Person\BasicPersonInfoEdit.cshtml" />

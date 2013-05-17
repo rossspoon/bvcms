@@ -25,6 +25,8 @@ namespace CmsWeb.Areas.People.Models.Person
     }
     public class CodeInfo
     {
+        private string _value;
+
         public CodeInfo(object value, IEnumerable<CodeValueItem> items, string valuefield = "Id")
         {
             if (value != null)
@@ -37,7 +39,13 @@ namespace CmsWeb.Areas.People.Models.Person
                 Value = value.ToString();
             Items = items;
         }
-        public string Value { get; set; }
+
+        public string Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
+
         public IEnumerable<SelectListItem> Items { get; set; }
         public override string ToString()
         {
