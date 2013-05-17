@@ -977,7 +977,7 @@ namespace CmsData
             CompareType op,
             int cnt)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
 
             var now = DateTime.Now;
@@ -1054,7 +1054,7 @@ namespace CmsData
             CompareType op,
             decimal amt)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
@@ -1120,7 +1120,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
 
             var q = from f in Db.FirstTimeGivers(days, fund)
@@ -1137,7 +1137,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
@@ -1155,7 +1155,7 @@ namespace CmsData
             CompareType op,
             int cnt)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
@@ -1231,7 +1231,7 @@ namespace CmsData
             CompareType op,
             decimal amt)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var now = DateTime.Now;
             var dt = now.AddDays(-days);
@@ -1298,7 +1298,7 @@ namespace CmsData
             CompareType op,
             decimal amt)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             IQueryable<int> q = null;
             switch (op)
@@ -1362,7 +1362,7 @@ namespace CmsData
             CompareType op,
             double pct)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return AlwaysFalse(parm);
             var q = Db.GivingCurrentPercentOfFormer(dt1, dt2,
                 op == CompareType.Greater ? ">" :
@@ -1396,7 +1396,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
             var mindt = Util.Now.AddDays(-days).Date;
@@ -1417,7 +1417,7 @@ namespace CmsData
             CompareType op,
             bool tf)
         {
-            if (Db.CurrentUser.Roles.All(rr => rr != "Finance"))
+            if (Db.CurrentUser == null || Db.CurrentUser.Roles.All(rr => rr != "Finance"))
                 return Expressions.CompareConstant(parm, "PeopleId", CompareType.Equal, 0);
 
             var mindt = Util.Now.AddDays(-days).Date;
