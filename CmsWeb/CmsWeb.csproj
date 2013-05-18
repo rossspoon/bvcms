@@ -749,6 +749,7 @@
     <Content Include="Areas\Main\Views\Volunteering\DialogSubmit.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\RecentVisitsEmail.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\ExtraValueData.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />

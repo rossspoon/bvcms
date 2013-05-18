@@ -227,9 +227,6 @@
         var target = $("#addressnew").data("target");
         $("#" + target).html($("#addressnew").html());
     });
-//$("#AddressEdit .form-actions > button.accept").live("click", function() {
-//
-//});
 
 $.setClickOvers = function () {
     $('tr a').not('a.evlink').click(function (e) {

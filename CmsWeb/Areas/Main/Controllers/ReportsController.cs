@@ -312,6 +312,7 @@ namespace CmsWeb.Areas.Main.Controllers
         {
             public string Field { get; set; }
             public string Value { get; set; }
+            public string type { get; set; }
             public int Count { get; set; }
         }
         public ActionResult ExtraValues()
@@ -319,11 +320,13 @@ namespace CmsWeb.Areas.Main.Controllers
             var ev = StandardExtraValues.GetExtraValues();
             var q = from e in DbUtil.Db.PeopleExtras
                     where e.StrValue != null || e.BitValue != null
-                    group e by new { e.Field, val = e.StrValue ?? (e.BitValue == true ? "1" : "0") } into g
+                    let TypeValue = e.StrValue != null ? "Code" : "Bit"
+                    group e by new { e.Field, val = e.StrValue ?? (e.BitValue == true ? "1" : "0"), TypeValue } into g
                     select new ExtraInfo
                     {
                         Field = g.Key.Field,
                         Value = g.Key.val,
+                        type =  g.Key.TypeValue,
                         Count = g.Count(),
                     };
 
@@ -334,13 +337,26 @@ namespace CmsWeb.Areas.Main.Controllers
                        select e;
             return View(list);
         }
-        public ActionResult ExtraValueQuery(string field, string val)
+        public ActionResult ExtraValueData()
         {
-            var qb = DbUtil.Db.QueryBuilderScratchPad();
-            qb.CleanSlate(DbUtil.Db);
-            qb.AddNewClause(QueryType.PeopleExtra, CompareType.Equal, "{0}:{1}".Fmt(field, val));
-            DbUtil.Db.SubmitChanges();
-            return Redirect("/QueryBuilder/Main/" + qb.QueryId);
+            var ev = StandardExtraValues.GetExtraValues();
+            var q = from e in DbUtil.Db.PeopleExtras
+                    where e.StrValue == null && e.BitValue == null
+                    let TypeValue = e.DateValue != null ? "Date" : e.Data != null ? "Text" : e.IntValue != null ? "Int" : "?"
+                    group e by new { e.Field, TypeValue } into g
+                    select new ExtraInfo
+                    {
+                        Field = g.Key.Field,
+                        type = g.Key.TypeValue,
+                        Count = g.Count(),
+                    };
+
+            var list = from e in q.ToList()
+                       let f = ev.SingleOrDefault(ff => ff.name == e.Field)
+                       where f == null || f.UserCanView()
+                       orderby e.Field
+                       select e;
+            return View(list);
         }
         public ActionResult ExtraValuesGrid(int id, string sort)
         {
