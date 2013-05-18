@@ -5,8 +5,8 @@
         var f = $(this).closest('form');
         var q = f.serialize();
         $.post($(this).attr('href'), q, function (ret) {
-            if (ret != "ok")
-                alert(ret);
+            if (ret != "ok") 
+                $.block(ret);
             else
                 self.parent.RebindUserInfoGrid();
         });

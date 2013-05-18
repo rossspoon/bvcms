@@ -1186,7 +1186,7 @@ namespace UtilityExtensions
             {
                 var tag = ConfigurationManager.AppSettings["senderrorsto"];
                 if (HttpContext.Current != null)
-                        if (HttpContext.Current.Items[STR_AdminMail] != null)
+                        if ((HttpContext.Current.Items[STR_AdminMail] as string).HasValue())
                             tag = HttpContext.Current.Items[STR_AdminMail].ToString();
                 return tag;
             }
