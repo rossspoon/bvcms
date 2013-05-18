@@ -84,7 +84,7 @@ else // get ready for editing
             @Html.EditorFor(m => m.ResCode)
             @Html.EditorFor(m => m.FromDt)
             @Html.EditorFor(m => m.ToDt)
-            @Html.EditorFor(m => m.Preferred)
+            @(Model.Preferred ? Html.DisplayFor(m => m.Preferred) : Html.EditorFor(m => m.Preferred))
         </fieldset>
         @if (!Model.addrok)
         {

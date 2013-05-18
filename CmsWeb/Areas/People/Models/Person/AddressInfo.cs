@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Linq;
 using System.Text;
@@ -53,9 +54,11 @@ namespace CmsWeb.Areas.People.Models.Person
         }
 
         [UIHint("Text")]
+        [DisplayName("Addr Line 1")]
         public string Address1 { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Addr Line 2")]
         public string Address2 { get; set; }
 
         [UIHint("Text")]
@@ -87,18 +90,23 @@ namespace CmsWeb.Areas.People.Models.Person
         public AddressVerify.AddressResult Result { get; set; }
 
         [UIHint("Bool")]
+        [DisplayName("Bad Address Flag")]
         public bool? BadAddress { get; set; }
 
         [UIHint("Code")]
+        [DisplayName("Resident Code")]
         public CodeInfo ResCode { get; set; }
 
         [UIHint("Bool")]
+        [DisplayName("Primary Address")]
         public bool Preferred { get; set; }
 
         [UIHint("Date")]
+        [DisplayName("From Date")]
         public DateTime? FromDt { get; set; }
 
         [UIHint("Date")]
+        [DisplayName("To Date")]
         public DateTime? ToDt { get; set; }
 
         public static IEnumerable<SelectListItem> ResCodes()
