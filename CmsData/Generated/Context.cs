@@ -1731,6 +1731,25 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.ContactSummary", IsComposable = true)]
+		public IQueryable< View.ContactSummary > ContactSummary(
+            [Parameter(DbType="datetime")] DateTime? dt1,
+            [Parameter(DbType="datetime")] DateTime? dt2,
+            [Parameter(DbType="int")] int? min,
+            [Parameter(DbType="int")] int? type,
+            [Parameter(DbType="int")] int? reas
+            )
+		{
+			return this.CreateMethodCallQuery< View.ContactSummary>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                dt1,
+                dt2,
+                min,
+                type,
+                reas
+                );
+		}
+
 		[Function(Name="dbo.ContactTypeTotals", IsComposable = true)]
 		public IQueryable< View.ContactTypeTotal > ContactTypeTotals(
             [Parameter(DbType="datetime")] DateTime? dt1,

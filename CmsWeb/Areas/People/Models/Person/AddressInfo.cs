@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -52,9 +54,11 @@ namespace CmsWeb.Areas.People.Models.Person
         }
 
         [UIHint("Text")]
+        [DisplayName("Addr Line 1")]
         public string Address1 { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Addr Line 2")]
         public string Address2 { get; set; }
 
         [UIHint("Text")]
@@ -69,36 +73,40 @@ namespace CmsWeb.Areas.People.Models.Person
         [UIHint("Code")]
         public CodeInfo Country { get; set; }
 
+        public string AddrCityStateZip()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(Address1);
+            if (Address2.HasValue())
+                sb.AppendLine(Address2);
+            sb.AppendLine(Util.FormatCSZ(City, State.Value, Zip));
+            return sb.ToString();
+        }
         public string CityStateZip()
         {
             return Util.FormatCSZ(City, State.Value, Zip);
         }
-        public string CityStateZip4()
-        {
-            return Util.FormatCSZ4(City, State.Value, Zip);
-        }
-        public string AddrCityStateZip()
-        {
-            return Address1 + " " + CityStateZip();
-        }
-        public string Addr2CityStateZip()
-        {
-            return Address2 + " " + CityStateZip();
-        }
+
+        public AddressVerify.AddressResult Result { get; set; }
 
         [UIHint("Bool")]
+        [DisplayName("Bad Address Flag")]
         public bool? BadAddress { get; set; }
 
         [UIHint("Code")]
+        [DisplayName("Resident Code")]
         public CodeInfo ResCode { get; set; }
 
         [UIHint("Bool")]
+        [DisplayName("Primary Address")]
         public bool Preferred { get; set; }
 
         [UIHint("Date")]
+        [DisplayName("From Date")]
         public DateTime? FromDt { get; set; }
 
         [UIHint("Date")]
+        [DisplayName("To Date")]
         public DateTime? ToDt { get; set; }
 
         public static IEnumerable<SelectListItem> ResCodes()
@@ -118,6 +126,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public static AddressInfo GetAddressInfo(int id, string typeid)
         {
             var p = DbUtil.Db.LoadPersonById(id);
+            DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
             var a = new AddressInfo();
             a.person = p;
             switch (typeid)
@@ -165,60 +174,61 @@ namespace CmsWeb.Areas.People.Models.Person
             }
             return a;
         }
+        public void SetAddressInfo(int id, string typeid)
+        {
+            Address1 = Result.Line1;
+            Address2 = Result.Line2;
+            City = Result.City;
+            Zip = Result.Zip;
+            State = new CodeInfo(Result.State, StateCodes());
+        }
 
-        public object UpdateAddress(Controller ctl)
+        public bool addrok
+        {
+            get { return City.HasValue() && State.Value.HasValue() || Zip.HasValue(); }
+        }
+
+        public string error { get; set; }
+        public bool saved { get; set; }
+        public bool? resultok { get; set; }
+        public bool resultchanged { get; set; }
+        public bool resultnotfound
+        {
+            get { return Result != null && !Result.found; }
+        }
+
+        public void UpdateAddress(bool forceSave = false)
         {
             var p = DbUtil.Db.LoadPersonById(PeopleId);
             var f = p.Family;
 
-            bool addrok = City.HasValue() && State.Value.HasValue() || Zip.HasValue();
-
-            if (!City.HasValue() && !State.Value.HasValue() && !Zip.HasValue())
-                addrok = true;
-
-            if (!addrok)
-                return new { confirm = "city/state required or zip required" };
-
-            if (Address1.HasValue() && (City.HasValue() || State.Value.HasValue() || Zip.HasValue())
-                && (Country.Value == "United States" || !Country.Value.HasValue()))
+            if (!forceSave)
             {
-                var r = AddressVerify.LookupAddress(Address1, Address2, City, State.Value, Zip);
-                if (r.Line1 != "error") // no network error
+                if (!addrok)
+                    return;
+
+                if (Address1.HasValue() && (City.HasValue() || State.Value.HasValue() || Zip.HasValue())
+                    && (Country.Value == "United States" || !Country.Value.HasValue()))
                 {
-                    if (!r.found)
-                        return new { confirm = r.address.Replace("\n", "<br/>\n") + "<br/>\nIf your address will not validate, change the country to 'USA, Not Validated'"};
-                    var b = false;
-                    if (r.Line1 != Address1)
+                    Result = AddressVerify.LookupAddress(Address1, Address2, City, State.Value, Zip);
+                    if (Result.Line1 == "error")
                     {
-                        Address1 = r.Line1;
-                        b = true;
+                        error = "network error";
+                        Result.address = AddrCityStateZip();
+                        return;
                     }
-                    if (r.Line2 != (Address2 ?? ""))
+                    if (resultnotfound)
+                        return;
+                    if (Result.Changed(Address1, Address2, City, State.Value, Zip))
                     {
-                        Address2 = r.Line2;
-                        b = true;
+                        resultchanged = true;
+                        SetAddressInfo(PeopleId, Name);
+                        return;
                     }
-                    if (r.City != (City ?? ""))
-                    {
-                        City = r.City;
-                        b = true;
-                    }
-                    if (r.State != (State.Value ?? ""))
-                    {
-                        State.Value = r.State;
-                        b = true;
-                    }
-                    if (r.Zip != (Zip ?? ""))
-                    {
-                        Zip = r.Zip;
-                        b = true;
-                    }
-                    if (b)
-                        return (new { confirm = r.address.Replace("\n", "<br/>\n") } );
                 }
+                // at this point the address validated just fine.
             }
-            // at this point, we either have a network error to the validation web service or the address validated just fine.
-            // in either case, we are going to save the results.
+
 
             switch (Name)
             {
@@ -281,12 +291,14 @@ namespace CmsWeb.Areas.People.Models.Person
             try
             {
                 DbUtil.Db.SubmitChanges();
-    			DbUtil.LogActivity("Update Address for: {0}".Fmt(person.Name));
+                DbUtil.LogActivity("Update Address for: {0}".Fmt(person.Name));
             }
             catch (InvalidOperationException ex)
             {
-                return new {error = ex.Message};
+                error = ex.Message;
+                return;
             }
+            saved = true;
 
             if (!HttpContext.Current.User.IsInRole("Access"))
                 if (psb.Length > 0 || fsb.Length > 0)
@@ -296,11 +308,6 @@ namespace CmsWeb.Areas.People.Models.Person
                         "{0} changed the following information:<br />\n<table>{1}{2}</table>"
                         .Fmt(Util.UserName, psb.ToString(), fsb.ToString()));
                 }
-            return new 
-            {
-                addr = ViewExtensions2.RenderPartialViewToString(ctl, "DisplayTemplates/Address", this),
-                primary = ViewExtensions2.RenderPartialViewToString(ctl, "DisplayTemplates/Address", GetAddressInfo(PeopleId, "PrimaryAddr"))
-            };
         }
         private StringBuilder fsb = new StringBuilder();
         private void UpdateValue(Family f, string field, object value)
@@ -324,6 +331,7 @@ namespace CmsWeb.Areas.People.Models.Person
             psb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>\n", field, o, value ?? "(null)");
             Util.SetProperty(p, field, value);
         }
+
         public static IEnumerable<SelectListItem> StateCodes()
         {
             return CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.GetStateList(), "Code");

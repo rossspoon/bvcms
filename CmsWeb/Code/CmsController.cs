@@ -199,8 +199,45 @@ namespace CmsWeb
 				Response.AddHeader("Content-Disposition", "attachment;filename=CMSPeople.xls");
 			}
 			Response.Charset = "";
+		    Response.Write(@"
+<html>
+<head>
+<style>
+body, html {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #222;
+}
+table, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+}
+table.grid {
+    border-collapse: collapse;
+    text-align: left;
+}
+    table.grid td {
+        padding: 5px;
+    }
+table.grid > tbody > tr:nth-child(odd) {
+    background-color: #eee;
+}
+table.grid tr:nth-child(1) {
+    border-bottom: 2px solid #555;
+    font-weight: bold;
+    color: #555;
+}
+</style>
+</head>
+<body>
+");
+		    dg.CssClass = @"grid";
 			dg.DataBind();
 			dg.RenderControl(new HtmlTextWriter(Response.Output));
+            Response.Write("</body></head>");
 		}
 	}
 	public class MyRequireHttpsAttribute : RequireHttpsAttribute

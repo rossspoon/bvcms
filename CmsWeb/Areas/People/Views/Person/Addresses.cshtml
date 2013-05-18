@@ -28,20 +28,19 @@
                 <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
                 <li><a href="http://www.bing.com/maps/?q=@p.FamilyAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
                 <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a class="editaddr" data-type="FamilyAddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId">Edit</a></li>
             </ul>
         </div>
         @* Dave: How do we distinguish family address vs personal *@
         <p id="familyaddress">
-            @Html.Partial("DisplayTemplates/Address", p.FamilyAddr)
+            @Html.Partial("DisplayTemplates/Address", p.FamilyAddr)        
         </p>
+        <a href="/Person2/AddressEdit/FamilyAddr/@Model.displayperson.PeopleId" class="editaddr edit"><i class="icon-pencil"></i></a>
     </li>
     @* Dave: Should we put email address in this section? *@
     <li class="phone landline">
         <i class="icon-phone"></i>
         @* Dave: How do we distinguish between personal (cell) and home? *@
         <p>@p.basic.HomePhone.FmtFone()</p>
-        <a href="#sample-modal" data-toggle="modal" class="edit"><i class="icon-pencil"></i></a>
     </li>
 
     @if (p.PersonalAddr.Address1.HasValue())
@@ -57,12 +56,12 @@
                 <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
                 <li><a href="http://www.bing.com/maps/?q=@p.PersonalAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
                 <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li><a class="editaddr" type="PersonalAddr" href="/Person2/AddressEdit/@Model.displayperson.PeopleId">Edit</a></li>
             </ul>
         </div>
         <p id="personaladdress">
             @Html.Partial("DisplayTemplates/Address", p.PersonalAddr)
         </p>
+        <a href="/Person2/AddressEdit/PersonalAddr/@Model.displayperson.PeopleId" class="editaddr edit"><i class="icon-pencil"></i></a>
     </li>
     }
     @if (p.basic.Mobile.HasValue())

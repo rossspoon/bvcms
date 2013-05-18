@@ -138,6 +138,7 @@ namespace CmsData
                         where mm.OrgId == emailqueueto.OrgId
                         where mm.PeopleId == emailqueueto.PeopleId
                         where mm.MemberTag.Name.StartsWith(prefix) || prefix == null || prefix == ""
+                        orderby mm.MemberTag.Name
                         select mm.MemberTag.Name.Substring(prefix.Length);
                 text = text.Replace(tag, string.Join("<br/>\n", q));
                 match = match.NextMatch();

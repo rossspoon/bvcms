@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AttributeRouting;
+using AttributeRouting.Web.Mvc;
 using CmsData;
 using CmsWeb.Areas.People.Models.Person;
 using CmsWeb.Models;
@@ -19,6 +21,7 @@ namespace CmsWeb.Areas.People.Controllers
 {
     [ValidateInput(false)]
     [SessionExpire]
+    [RouteArea("People", AreaUrl = "Person2")]
     public class PersonController : CmsStaffController
     {
         protected override void Initialize(RequestContext requestContext)
@@ -30,6 +33,7 @@ namespace CmsWeb.Areas.People.Controllers
         {
             return Redirect("/Person/Index/" + Util2.CurrentPeopleId);
         }
+        [GET("Index/{id}")]
         public ActionResult Index(int? id)
         {
             if (!id.HasValue)
@@ -149,14 +153,14 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
-        [HttpPost]
+        [POST("FamilyGrid/{id}")]
         public ActionResult FamilyGrid(int id)
         {
             var m = new FamilyModel(id);
             UpdateModel(m.Pager);
             return View(m);
         }
-        [HttpPost]
+        [POST("EnrollGrid/{id}")]
         public ActionResult EnrollGrid(int id)
         {
             var m = new CurrentEnrollments(id);
@@ -164,7 +168,7 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
             return View("CurrentEnrollments", m);
         }
-        [HttpPost]
+        [POST("PrevEnrollGrid/{id}")]
         public ActionResult PrevEnrollGrid(int id)
         {
             var m = new PreviousEnrollments(id);
@@ -288,14 +292,14 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("/Task/List/{0}".Fmt(t.Id));
         }
-        [HttpPost]
+        [POST("Snapshot/{id}")]
         public ActionResult Snapshot(int id)
         {
             var m = new PersonModel(id);
             return View(m);
         }
 
-        [HttpPost]
+        [POST("PostData")]
         public ActionResult PostData(int pk, string name, string value)
         {
             var p = DbUtil.Db.LoadPersonById(pk);
@@ -340,20 +344,20 @@ namespace CmsWeb.Areas.People.Controllers
                      select r.C;
             return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
+        [POST("BasicDisplay/{id}")]
         public ActionResult BasicDisplay(int id)
         {
             InitExportToolbar(id);
             var m = BasicPersonInfo.GetBasicPersonInfo(id);
             return View("BasicPersonInfoDisplay", m);
         }
-        [HttpPost]
+        [POST("BasicEdit/{id}")]
         public ActionResult BasicEdit(int id)
         {
             var m = BasicPersonInfo.GetBasicPersonInfo(id);
             return View("BasicPersonInfoEdit", m);
         }
-        [HttpPost]
+        [POST("BasicUpdate/{id}")]
         public ActionResult BasicUpdate(int id)
         {
             var m = BasicPersonInfo.GetBasicPersonInfo(id);
@@ -371,23 +375,34 @@ namespace CmsWeb.Areas.People.Controllers
             m.Reverse(field, value, pf);
             return View("ChangesGrid", m);
         }
-        [HttpPost]
+        [POST("AddressDisplay/{type}/{id}")]
         public ActionResult AddressDisplay(int id, string type)
         {
             var m = AddressInfo.GetAddressInfo(id, type);
             return View(m);
         }
+        [GET("AddressEdit/{type}/{id}")]
         public ActionResult AddressEdit(int id, string type)
         {
+            Response.NoCache();
             var m = AddressInfo.GetAddressInfo(id, type);
-            return View("EditorTemplates/Address", m);
+            return View(m);
         }
-        [HttpPost]
-        public JsonResult AddressUpdate(int id, string type)
+        [POST("AddressUpdate/{type}/{id}")]
+        public ActionResult AddressUpdate(int id, string type)
 		{
 			var m = AddressInfo.GetAddressInfo(id, type);
 			UpdateModel(m);
-			return Json(m.UpdateAddress(this));
+            m.UpdateAddress();
+            return View("AddressEdit", m);
+		}
+        [POST("AddressSave/{type}/{id}")]
+        public ActionResult AddressSave(int id, string type)
+		{
+			var m = AddressInfo.GetAddressInfo(id, type);
+			UpdateModel(m);
+            m.UpdateAddress(forceSave: true);
+            return View("AddressEdit", m);
 		}
 
         //		[HttpPost]
@@ -838,7 +853,8 @@ namespace CmsWeb.Areas.People.Controllers
                 useMinAmt = false,
             };
         }
-        public ActionResult Image(int id, int s)
+        [GET("Image/{s}/{id}/{v}")]
+        public ActionResult Image(int id, int s, string v)
         {
             return new PictureResult(id, s);
         }

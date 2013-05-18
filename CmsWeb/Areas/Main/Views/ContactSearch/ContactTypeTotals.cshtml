@@ -36,7 +36,7 @@
                 <td class="right">@i.Count</td>
                 <td class="right">@i.CountPeople</td>
                 <td>
-                    @if (ViewBag.candelete && i.Description.StartsWith("-"))
+                    @if (ViewBag.candelete == true)
                     {
                         <a class="delete" href="/ContactSearch/DeleteContactsForType/@i.Id"><img src="~/images/delete.gif"/></a>
                     }

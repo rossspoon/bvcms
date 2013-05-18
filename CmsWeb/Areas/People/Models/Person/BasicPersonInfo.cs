@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Routing;
@@ -25,6 +26,8 @@ namespace CmsWeb.Areas.People.Models.Person
     }
     public class CodeInfo
     {
+        private string _value;
+
         public CodeInfo(object value, IEnumerable<CodeValueItem> items, string valuefield = "Id")
         {
             if (value != null)
@@ -37,7 +40,13 @@ namespace CmsWeb.Areas.People.Models.Person
                 Value = value.ToString();
             Items = items;
         }
-        public string Value { get; set; }
+
+        public string Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
+
         public IEnumerable<SelectListItem> Items { get; set; }
         public override string ToString()
         {
@@ -75,21 +84,27 @@ namespace CmsWeb.Areas.People.Models.Person
         [UIHint("Code")]
         public CodeInfo Title { get; set; }
         [UIHint("Text")]
+        [DisplayName("First Name")]
         public string FirstName { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Goes By")]
         public string GoesBy { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Middle Name")]
         public string MiddleName { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Last Name")]
         public string LastName { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Alternate Name")]
         public string AltName { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Former Name")]
         public string FormerName { get; set; }
 
         [UIHint("Text")]
@@ -99,6 +114,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public CodeInfo Gender { get; set; }
 
         [UIHint("InlineCode")]
+        [DisplayName("Family Position")]
         public CodeInfo FamilyPosition { get; set; }
 
         [UIHint("Date")]
@@ -108,6 +124,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public CodeInfo Marital { get; set; }
 
         [UIHint("Date")]
+        [DisplayName("Wedding Date")]
         public string WeddingDate { get; set; }
 
         [UIHint("Text")]
@@ -123,6 +140,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public string Grade { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Do Not Contact")]
         public string DoNotContact
         {
             get
@@ -139,11 +157,15 @@ namespace CmsWeb.Areas.People.Models.Person
         }
 
         [UIHint("Email")]
+        [DisplayName("Primary Email")]
         public EmailInfo PrimaryEmail { get; set; }
         [UIHint("Email")]
+        [DisplayName("Alternate Email")]
         public EmailInfo AltEmail { get; set; }
 
 
+        [UIHint("Text")]
+        [DisplayName("Home Phone")]
         public string HomePhone { get; set; }
         [UIHint("Text")]
         public string Mobile { get; set; }

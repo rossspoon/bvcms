@@ -215,380 +215,359 @@
 
     $("a.editaddr").click(function (ev) {
         ev.preventDefault();
-        var addrtype = $(this).data('type');
-        $.post($(this).attr('href'), { type: addrtype }, function (ret) {
-            $("#addressDialog").replaceWith(ret).ready(function () {
-                $("#addressDialog").on("show", function () {
-                    .modal('show');
-                $("#saveAddress").click(function () {
-                    var q = $("#addressForm").serialize();
-                    $.post($(this).data("action"), q, function (ret2) {
-                        if (ret2.confirm) {
-                            bootbox.dialog(ret2.confirm, [{
-                                "label": "Cancel Editing",
-                                "callback": function () {
-                                    $('#addressDialog').modal("hide");
-                                }
-                            }, {
-                                "label": "Edit Address Again",
-                                "class": "btn-primary"
-                            }, {
-                                "label": "Save This Address",
-                                "class": "btn-success",
-                                "callback": function () {
-
-                                }
-                            }]);
-                        }
-                        else {
-                            $("#addressDialog").modal("hide");
-                        }
-                    });
-                });
-            });
+        var href = $(this).attr("href");
+        $('<div/>').dialog2({
+            id: "edit-address",
+            content: href,
+            type: "POST"
         });
+    });
+    $("#edit-address button.close-saved-address").live("click", function() {
+        $("#primaryaddress").html($("#primaryaddressnew").html());
+        var target = $("#addressnew").data("target");
+        $("#" + target).html($("#addressnew").html());
     });
 
-    $.setClickOvers = function () {
-        $('tr a').not('a.evlink').click(function (e) {
-            e.stopPropagation();
-        });
-        $('form a.membertype').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $("#OrgMemberDialog").modal({ remote: $(this).attr("href") });
-        });
-        $("tr.section.notshown").live("click", function (ev) {
-            ev.preventDefault();
-            $(this).removeClass("notshown").addClass("shown");
-            $(this).nextUntil("tr.section").find("div.collapse").collapse('show');
-        });
-        $("tr.section.shown").live("click", function (ev) {
-            ev.preventDefault();
-            $(this).nextUntil("tr.section").find("div.collapse").collapse('hide');
-            $(this).removeClass("shown").addClass("notshown");
-        });
-        $('a[rel="reveal"]').click(function (ev) {
-            ev.preventDefault();
-            $(this).parents("tr").next("tr").find("div.collapse").collapse('toggle');
-        });
-        $('tr.organization').click(function (ev) {
-            ev.preventDefault();
-            $(this).next("tr").find("div.collapse").collapse('toggle');
-        });
-        $('tr.details').click(function (ev) {
-            ev.preventDefault();
-            $(this).find("div.collapse").collapse('hide');
-        });
-    };
-    $("#currentLink").click(function () {
-        $.showTable($('#current form'));
+$.setClickOvers = function () {
+    $('tr a').not('a.evlink').click(function (e) {
+        e.stopPropagation();
     });
-    $("#previousLink").click(function () {
-        $.showTable($('#previous form'));
+    $('form a.membertype').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $("#OrgMemberDialog").modal({ remote: $(this).attr("href") });
     });
-    $("#pendingLink").click(function () {
-        $.showTable($('#pending form'));
-    });
-    $("#attendanceLink").click(function () {
-        $.showTable($('#attendance-tab form'));
-    });
-    $("#contacts-link").click(function () {
-        $("#contacts-tab form").each(function () {
-            $.showTable($(this));
-        });
-    });
-    $("#member-link").click(function () {
-        var f = $("#memberdisplay");
-        if ($("table", f).size() == 0) {
-            $.post(f.attr('action'), null, function (ret) {
-                $(f).html(ret).ready(function () {
-                    $.UpdateForSection(f);
-                });
-            });
-            $.showTable($("#extras-tab form"));
-            $.extraEditable('#extravalues');
-        }
-    });
-    $("#system-link").click(function () {
-        $.showTable($("#user-tab form"));
-    });
-    $("#changes-link").click(function () {
-        $.showTable($("#changes-tab form"));
-    });
-    $("#volunteer-link").click(function () {
-        $.showTable($("#volunteer-tab form"));
-    });
-    $("#duplicates-link").click(function () {
-        $.showTable($("#duplicates-tab form"));
-    });
-    $("#optouts-link").click(function () {
-        $.showTable($("#optouts-tab form"));
-    });
-    $('#family table.grid > tbody > tr:even').addClass('alt');
-    $("#recreg-link").click(function (ev) {
+    $("tr.section.notshown").live("click", function (ev) {
         ev.preventDefault();
-        var f = $('#recreg-tab form');
-        if ($('table', f).size() > 0)
-            return false;
-        var q = f.serialize();
-        $.post(f.attr('action'), q, function (ret) {
-            $(f).html(ret);
-            $(".bt", f).button();
-        });
-        return false;
+        $(this).removeClass("notshown").addClass("shown");
+        $(this).nextUntil("tr.section").find("div.collapse").collapse('show');
     });
-
-    $("a.displayedit").live('click', function (ev) {
+    $("tr.section.shown").live("click", function (ev) {
         ev.preventDefault();
-        var f = $(this).closest('form');
-        $.post($(this).attr('href'), null, function (ret) {
+        $(this).nextUntil("tr.section").find("div.collapse").collapse('hide');
+        $(this).removeClass("shown").addClass("notshown");
+    });
+    $('a[rel="reveal"]').click(function (ev) {
+        ev.preventDefault();
+        $(this).parents("tr").next("tr").find("div.collapse").collapse('toggle');
+    });
+    $('tr.organization').click(function (ev) {
+        ev.preventDefault();
+        $(this).next("tr").find("div.collapse").collapse('toggle');
+    });
+    $('tr.details').click(function (ev) {
+        ev.preventDefault();
+        $(this).find("div.collapse").collapse('hide');
+    });
+};
+$("#currentLink").click(function () {
+    $.showTable($('#current form'));
+});
+$("#previousLink").click(function () {
+    $.showTable($('#previous form'));
+});
+$("#pendingLink").click(function () {
+    $.showTable($('#pending form'));
+});
+$("#attendanceLink").click(function () {
+    $.showTable($('#attendance-tab form'));
+});
+$("#contacts-link").click(function () {
+    $("#contacts-tab form").each(function () {
+        $.showTable($(this));
+    });
+});
+$("#member-link").click(function () {
+    var f = $("#memberdisplay");
+    if ($("table", f).size() == 0) {
+        $.post(f.attr('action'), null, function (ret) {
             $(f).html(ret).ready(function () {
                 $.UpdateForSection(f);
             });
         });
+        $.showTable($("#extras-tab form"));
+        $.extraEditable('#extravalues');
+    }
+});
+$("#system-link").click(function () {
+    $.showTable($("#user-tab form"));
+});
+$("#changes-link").click(function () {
+    $.showTable($("#changes-tab form"));
+});
+$("#volunteer-link").click(function () {
+    $.showTable($("#volunteer-tab form"));
+});
+$("#duplicates-link").click(function () {
+    $.showTable($("#duplicates-tab form"));
+});
+$("#optouts-link").click(function () {
+    $.showTable($("#optouts-tab form"));
+});
+$('#family table.grid > tbody > tr:even').addClass('alt');
+$("#recreg-link").click(function (ev) {
+    ev.preventDefault();
+    var f = $('#recreg-tab form');
+    if ($('table', f).size() > 0)
         return false;
+    var q = f.serialize();
+    $.post(f.attr('action'), q, function (ret) {
+        $(f).html(ret);
+        $(".bt", f).button();
     });
-    $.options = function (url) {
-        return {
-            minLength: 3,
-            source: function (query, process) {
-                return $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: { query: query },
-                    dataType: 'json',
-                    success: function (jsonResult) {
-                        return typeof jsonResult == 'undefined' ? false : process(jsonResult);
-                    }
-                });
-            }
-        };
-    };
-    $.UpdateForSection = function (f) {
-        $('#Employer').typeahead($.options("/Person2/Employers"));
-        $('#School', f).typeahead($.options("/Person2/Schools"));
-        $('#Occupation', f).typeahead($.options("/Person2/Occupations"));
-        $('#NewChurch', f).typeahead($.options("/Person2/Churches"));
-        $('#PrevChurch', f).typeahead($.options("/Person2/Churches"));
-        $("form select").chosen();
-        moment.lang('en');
-        $(".date").datepicker();
-        return false;
-    };
-    $("form").on("click", "#verifyaddress", function () {
-        var ff = $(this).closest('form');
-        var q = ff.serialize();
-        $.post($(this).attr('href'), q, function (ret) {
-            if (confirm(ret.address + "\nUse this Address?")) {
-                $('#Address1', ff).val(ret.Line1);
-                $('#Address2', ff).val(ret.Line2);
-                $('#City', ff).val(ret.City);
-                $('#State', ff).val(ret.State);
-                $('#Zip', ff).val(ret.Zip);
-            }
-        });
-        return false;
-    });
-    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest('form');
-        if (!$(f).valid())
-            return false;
-        var q = f.serialize();
-        $.post($(this).attr('href'), q, function (ret) {
-            $(f).html(ret).ready(function () {
-                var bc = $('#businesscard');
-                $.post($(bc).attr("href"), null, function (ret) {
-                    $(bc).html(ret);
-                });
-                $(".submitbutton,.bt").button();
-            });
-        });
-        return false;
-    });
-    $("form").on('click', '#future', function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest('form');
-        var q = f.serialize();
-        $.post($(f).attr("action"), q, function (ret) {
-            $(f).html(ret);
-        });
-    });
-    $("form.DisplayEdit").submit(function () {
-        if (!$("#submitit").val())
-            return false;
-        return true;
-    });
-    $.validator.addMethod("date2", function (value, element, params) {
-        var v = $.DateValid(value);
-        return this.optional(element) || v;
-    }, $.format("Please enter valid date"));
+    return false;
+});
 
-    $.validator.setDefaults({
-        highlight: function (input) {
-            $(input).addClass("ui-state-highlight");
-        },
-        unhighlight: function (input) {
-            $(input).removeClass("ui-state-highlight");
-        },
-        rules: {
-            "NickName": { maxlength: 15 },
-            "Title": { maxlength: 10 },
-            "First": { maxlength: 25 },
-            "Middle": { maxlength: 15 },
-            "Last": { maxlength: 100, required: true },
-            "Suffix": { maxlength: 10 },
-            "AltName": { maxlength: 100 },
-            "Maiden": { maxlength: 20 },
-            "HomePhone": { maxlength: 20 },
-            "CellPhone": { maxlength: 20 },
-            "WorkPhone": { maxlength: 20 },
-            "EmailAddress": { maxlength: 150 },
-            "School": { maxlength: 60 },
-            "Employer": { maxlength: 60 },
-            "Occupation": { maxlength: 60 },
-            "WeddingDate": { date2: true },
-            "DeceasedDate": { date2: true },
-            "Grade": { number: true },
-            "Address1": { maxlength: 40 },
-            "Address2": { maxlength: 40 },
-            "City": { maxlength: 30 },
-            "Zip": { maxlength: 15 },
-            "FromDt": { date2: true },
-            "ToDt": { date2: true },
-            "DecisionDate": { date2: true },
-            "JoinDate": { date2: true },
-            "BaptismDate": { date2: true },
-            "BaptismSchedDate": { date2: true },
-            "DropDate": { date2: true },
-            "NewMemberClassDate": { date2: true }
-        }
-    });
-    $('#addrf').validate();
-    $('#addrp').validate();
-    $('#basic').validate();
-    $("body").on("change", '.atck', function (ev) {
-        var ck = $(this);
-        $.post("/Meeting/MarkAttendance/", {
-            MeetingId: $(this).attr("mid"),
-            PeopleId: $(this).attr("pid"),
-            Present: ck.is(':checked')
-        }, function (ret) {
-            if (ret.error) {
-                ck.attr("checked", !ck.is(':checked'));
-                alert(ret.error);
-            }
-            else {
-                var f = ck.closest('form');
-                var q = f.serialize();
-                $.post($(f).attr("action"), q, function (ret) {
-                    $(f).html(ret);
-                });
-            }
+$("a.displayedit").live('click', function (ev) {
+    ev.preventDefault();
+    var f = $(this).closest('form');
+    $.post($(this).attr('href'), null, function (ret) {
+        $(f).html(ret).ready(function () {
+            $.UpdateForSection(f);
         });
     });
-    //    $("#newvalueform").dialog({
-    //        autoOpen: false,
-    //        buttons: {
-    //            "Ok": function () {
-    //                var v = $("input[name='typeval']:checked").val();
-    //                var fn = $("#fieldname").val();
-    //                var va = $("#fieldvalue").val();
-    //                if (fn)
-    //                    $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: fn, type: v, value: va }, function (ret) {
-    //                        if (ret.startsWith("error"))
-    //                            alert(ret);
-    //                        else {
-    //                            $.getTable($("#extras-tab form"));
-    //                            $.extraEditable('#extravalues');
-    //                        }
-    //                        $("#fieldname").val("");
-    //                        $("#fieldvalue").val("");
-    //                    });
-    //                $(this).dialog("close");
-    //            }
-    //        }
-    //    });
-    //    $("body").on("click", '#newextravalue', function (ev) {
-    //        ev.preventDefault();
-    //        var d = $('#newvalueform');
-    //        d.dialog("open");
-    //    });
-    $("body").on("click", 'a.deleteextra', function (ev) {
-        ev.preventDefault();
-        if (confirm("are you sure?"))
-            $.post("/Person/DeleteExtra/" + $("#PeopleId").val(), { field: $(this).attr("field") }, function (ret) {
-                if (ret.startsWith("error"))
-                    alert(ret);
-                else {
-                    $.getTable($("#extras-tab form"));
-                    $.extraEditable('#extravalues');
+    return false;
+});
+$.options = function (url) {
+    return {
+        minLength: 3,
+        source: function (query, process) {
+            return $.ajax({
+                url: url,
+                type: 'post',
+                data: { query: query },
+                dataType: 'json',
+                success: function (jsonResult) {
+                    return typeof jsonResult == 'undefined' ? false : process(jsonResult);
                 }
             });
-        return false;
+        }
+    };
+};
+$.UpdateForSection = function (f) {
+    $('#Employer').typeahead($.options("/Person2/Employers"));
+    $('#School', f).typeahead($.options("/Person2/Schools"));
+    $('#Occupation', f).typeahead($.options("/Person2/Occupations"));
+    $('#NewChurch', f).typeahead($.options("/Person2/Churches"));
+    $('#PrevChurch', f).typeahead($.options("/Person2/Churches"));
+    $("form select").chosen();
+    moment.lang('en');
+    $(".date").datepicker();
+    return false;
+};
+$("form").on("click", "#verifyaddress", function () {
+    var ff = $(this).closest('form');
+    var q = ff.serialize();
+    $.post($(this).attr('href'), q, function (ret) {
+        if (confirm(ret.address + "\nUse this Address?")) {
+            $('#Address1', ff).val(ret.Line1);
+            $('#Address2', ff).val(ret.Line2);
+            $('#City', ff).val(ret.City);
+            $('#State', ff).val(ret.State);
+            $('#Zip', ff).val(ret.Zip);
+        }
     });
-    $("form").on('click', 'a.reverse', function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest('form');
-        $.post("/Person/Reverse", {
-            id: $("#PeopleId").val(),
-            field: $(this).attr("field"),
-            value: $(this).attr("value"),
-            pf: $(this).attr("pf")
-        }, function (ret) {
-            $(f).html(ret);
+    return false;
+});
+$("form.DisplayEdit a.submitbutton").live('click', function (ev) {
+    ev.preventDefault();
+    var f = $(this).closest('form');
+    if (!$(f).valid())
+        return false;
+    var q = f.serialize();
+    $.post($(this).attr('href'), q, function (ret) {
+        $(f).html(ret).ready(function () {
+            var bc = $('#businesscard');
+            $.post($(bc).attr("href"), null, function (ret) {
+                $(bc).html(ret);
+            });
+            $(".submitbutton,.bt").button();
         });
     });
-    //    $.editable.addInputType("checkbox", {
-    //        element: function (settings, original) {
-    //            var input = $('<input type="checkbox">');
-    //            $(this).append(input);
-    //            $(input).click(function () {
-    //                var value = $(input).attr("checked") ? 'True' : 'False';
-    //                $(input).val(value);
-    //            });
-    //            return (input);
-    //        },
-    //        content: function (string, settings, original) {
-    //            var checked = string == "True" ? true : false;
-    //            var input = $(':input:first', this);
-    //            $(input).attr("checked", checked);
-    //            var value = $(input).attr("checked") ? 'True' : 'False';
-    //            $(input).val(value);
-    //        }
-    //    });
-    $('#vtab>ul>li').click(function () {
-        $('#vtab>ul>li').removeClass('selected');
-        $(this).addClass('selected');
-        var index = $('#vtab>ul>li').index($(this));
-        $('#vtab>div').hide().eq(index).show();
+    return false;
+});
+$("form").on('click', '#future', function (ev) {
+    ev.preventDefault();
+    var f = $(this).closest('form');
+    var q = f.serialize();
+    $.post($(f).attr("action"), q, function (ret) {
+        $(f).html(ret);
     });
+});
+$("form.DisplayEdit").submit(function () {
+    if (!$("#submitit").val())
+        return false;
+    return true;
+});
+$.validator.addMethod("date2", function (value, element, params) {
+    var v = $.DateValid(value);
+    return this.optional(element) || v;
+}, $.format("Please enter valid date"));
 
-    //$.editable.addInputType("multiselect", {
-    //    element: function(settings, original) {
-    //        var textarea = $('<select />');
-    //        if (settings.rows) {
-    //            textarea.attr('rows', settings.rows);
-    //        } else {
-    //            textarea.height(settings.height);
-    //        }
-    //        if (settings.cols) {
-    //            textarea.attr('cols', settings.cols);
-    //        } else {
-    //            textarea.width(settings.width);
-    //        }
-    //        $(this).append(textarea);
-    //        return (textarea);
-    //    },
-    //    plugin: function(settings, original) {
-    //        $('textarea', this).multiselect();
-    //    },
-    //    submit: function(settings, original) {
-    //        var value = $('#hour_').val() + ':' + $('#min_').val();
-    //        $('input', this).val(value);
-    //    }
-    //});
+$.validator.setDefaults({
+    highlight: function (input) {
+        $(input).addClass("ui-state-highlight");
+    },
+    unhighlight: function (input) {
+        $(input).removeClass("ui-state-highlight");
+    },
+    rules: {
+        "NickName": { maxlength: 15 },
+        "Title": { maxlength: 10 },
+        "First": { maxlength: 25 },
+        "Middle": { maxlength: 15 },
+        "Last": { maxlength: 100, required: true },
+        "Suffix": { maxlength: 10 },
+        "AltName": { maxlength: 100 },
+        "Maiden": { maxlength: 20 },
+        "HomePhone": { maxlength: 20 },
+        "CellPhone": { maxlength: 20 },
+        "WorkPhone": { maxlength: 20 },
+        "EmailAddress": { maxlength: 150 },
+        "School": { maxlength: 60 },
+        "Employer": { maxlength: 60 },
+        "Occupation": { maxlength: 60 },
+        "WeddingDate": { date2: true },
+        "DeceasedDate": { date2: true },
+        "Grade": { number: true },
+        "Address1": { maxlength: 40 },
+        "Address2": { maxlength: 40 },
+        "City": { maxlength: 30 },
+        "Zip": { maxlength: 15 },
+        "FromDt": { date2: true },
+        "ToDt": { date2: true },
+        "DecisionDate": { date2: true },
+        "JoinDate": { date2: true },
+        "BaptismDate": { date2: true },
+        "BaptismSchedDate": { date2: true },
+        "DropDate": { date2: true },
+        "NewMemberClassDate": { date2: true }
+    }
+});
+$('#addrf').validate();
+$('#addrp').validate();
+$('#basic').validate();
+$("body").on("change", '.atck', function (ev) {
+    var ck = $(this);
+    $.post("/Meeting/MarkAttendance/", {
+        MeetingId: $(this).attr("mid"),
+        PeopleId: $(this).attr("pid"),
+        Present: ck.is(':checked')
+    }, function (ret) {
+        if (ret.error) {
+            ck.attr("checked", !ck.is(':checked'));
+            alert(ret.error);
+        }
+        else {
+            var f = ck.closest('form');
+            var q = f.serialize();
+            $.post($(f).attr("action"), q, function (ret) {
+                $(f).html(ret);
+            });
+        }
+    });
+});
+//    $("#newvalueform").dialog({
+//        autoOpen: false,
+//        buttons: {
+//            "Ok": function () {
+//                var v = $("input[name='typeval']:checked").val();
+//                var fn = $("#fieldname").val();
+//                var va = $("#fieldvalue").val();
+//                if (fn)
+//                    $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: fn, type: v, value: va }, function (ret) {
+//                        if (ret.startsWith("error"))
+//                            alert(ret);
+//                        else {
+//                            $.getTable($("#extras-tab form"));
+//                            $.extraEditable('#extravalues');
+//                        }
+//                        $("#fieldname").val("");
+//                        $("#fieldvalue").val("");
+//                    });
+//                $(this).dialog("close");
+//            }
+//        }
+//    });
+//    $("body").on("click", '#newextravalue', function (ev) {
+//        ev.preventDefault();
+//        var d = $('#newvalueform');
+//        d.dialog("open");
+//    });
+$("body").on("click", 'a.deleteextra', function (ev) {
+    ev.preventDefault();
+    if (confirm("are you sure?"))
+        $.post("/Person/DeleteExtra/" + $("#PeopleId").val(), { field: $(this).attr("field") }, function (ret) {
+            if (ret.startsWith("error"))
+                alert(ret);
+            else {
+                $.getTable($("#extras-tab form"));
+                $.extraEditable('#extravalues');
+            }
+        });
+    return false;
+});
+$("form").on('click', 'a.reverse', function (ev) {
+    ev.preventDefault();
+    var f = $(this).closest('form');
+    $.post("/Person/Reverse", {
+        id: $("#PeopleId").val(),
+        field: $(this).attr("field"),
+        value: $(this).attr("value"),
+        pf: $(this).attr("pf")
+    }, function (ret) {
+        $(f).html(ret);
+    });
+});
+//    $.editable.addInputType("checkbox", {
+//        element: function (settings, original) {
+//            var input = $('<input type="checkbox">');
+//            $(this).append(input);
+//            $(input).click(function () {
+//                var value = $(input).attr("checked") ? 'True' : 'False';
+//                $(input).val(value);
+//            });
+//            return (input);
+//        },
+//        content: function (string, settings, original) {
+//            var checked = string == "True" ? true : false;
+//            var input = $(':input:first', this);
+//            $(input).attr("checked", checked);
+//            var value = $(input).attr("checked") ? 'True' : 'False';
+//            $(input).val(value);
+//        }
+//    });
+$('#vtab>ul>li').click(function () {
+    $('#vtab>ul>li').removeClass('selected');
+    $(this).addClass('selected');
+    var index = $('#vtab>ul>li').index($(this));
+    $('#vtab>div').hide().eq(index).show();
+});
+
+//$.editable.addInputType("multiselect", {
+//    element: function(settings, original) {
+//        var textarea = $('<select />');
+//        if (settings.rows) {
+//            textarea.attr('rows', settings.rows);
+//        } else {
+//            textarea.height(settings.height);
+//        }
+//        if (settings.cols) {
+//            textarea.attr('cols', settings.cols);
+//        } else {
+//            textarea.width(settings.width);
+//        }
+//        $(this).append(textarea);
+//        return (textarea);
+//    },
+//    plugin: function(settings, original) {
+//        $('textarea', this).multiselect();
+//    },
+//    submit: function(settings, original) {
+//        var value = $('#hour_').val() + ':' + $('#min_').val();
+//        $('input', this).val(value);
+//    }
+//});
 
 });
 function RebindMemberGrids(from) {
