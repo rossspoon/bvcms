@@ -323,6 +323,7 @@
     <Compile Include="Generated\BuildingAccessType.cs" />
     <Compile Include="Generated\CheckInAccessType.cs" />
     <Compile Include="Generated\Functions\ConsecutiveAbsent.cs" />
+    <Compile Include="Generated\Functions\ContactSummary.cs" />
     <Compile Include="Generated\Functions\Contributions0.cs" />
     <Compile Include="Generated\Functions\GetTotalContributions3.cs" />
     <Compile Include="Generated\Functions\GetTotalContributionsDonor2.cs" />

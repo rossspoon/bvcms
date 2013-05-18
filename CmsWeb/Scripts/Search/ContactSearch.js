@@ -46,6 +46,19 @@
 
         return false;
     });
+    $("#ContactSummary").click(function (ev) {
+        ev.preventDefault();
+        var loc = window.location = $(this).attr('href') + 
+            "?ministry=" + $("#Ministry").val()
+            + "&typeid=" + $("#ContactType").val()
+            + "&reas=" + $("#ContactReason").val();
+        if ($("#StartDate").val())
+            loc = loc.appendQuery("start=" + $.SortableDate($("#StartDate").val()));
+        if ($("#EndDate").val())
+            loc = loc.appendQuery("end=" + $.SortableDate($("#EndDate").val()));
+        window.location = loc;
+        return false;
+    });
     $("#ContactTypeTotals").click(function (ev) {
         ev.preventDefault();
         var loc = window.location = $(this).attr('href') + "?ministry=" + $("#Ministry").val();

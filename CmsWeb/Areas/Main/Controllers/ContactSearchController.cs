@@ -138,8 +138,27 @@ namespace CmsWeb.Areas.Main.Controllers
 					};
 			return new DataGridResult(q);
 		}
+		public ActionResult ContactSummary(string start, string end, int ministry, int typeid, int reas)
+		{
+		    var sdt = start.ToDate();
+		    var edt = end.ToDate();
 
-		public ActionResult ContactTypeTotals(string start, string end, int? ministry)
+		    var q = DbUtil.Db.ContactSummary(sdt, edt, ministry, typeid, reas);
+		    var q2 = from i in q
+		             select new
+		                 {
+                             Count = i.Count ?? 0,
+                             i.ContactType,
+                             i.ReasonType,
+                             i.Ministry,
+                             HasComments = i.Comments,
+                             HasDate = i.ContactDate,
+                             HasContactor = i.Contactor,
+		                 };
+			return new DataGridResult(q2);
+		}
+
+		public ActionResult ContactTypeTotals(string start, string end, int? ministry, int? reason)
 		{
 		    var sdt = start.ToDate();
 		    var edt = end.ToDate();
