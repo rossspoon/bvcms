@@ -1315,7 +1315,9 @@ namespace UtilityExtensions
             }
             catch (Exception)
             {
-                return null;
+                if(name.HasValue())
+                    return new MailAddress(AdminMail, name);
+                return new MailAddress(AdminMail);
             }
         }
 
@@ -1330,7 +1332,9 @@ namespace UtilityExtensions
             }
             catch (Exception)
             {
-                return null;
+                if(name.HasValue())
+                    return new MailAddress(AdminMail, name);
+                return new MailAddress(AdminMail);
             }
         }
 
