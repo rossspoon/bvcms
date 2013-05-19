@@ -750,6 +750,7 @@
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\RecentVisitsEmail.cshtml" />
     <Content Include="Areas\Main\Views\Reports\ExtraValueData.cshtml" />
+    <Content Include="Areas\People\Views\Person\RelatedFamily.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />
@@ -1583,7 +1584,7 @@
     <Content Include="Areas\Setup\Views\Twilio\NumberDialog.cshtml" />
     <Content Include="Areas\Setup\Views\Twilio\RemoveDialog.cshtml" />
     <Content Include="Areas\Setup\Views\Twilio\UserDialog.cshtml" />
-    <Content Include="Areas\People\Views\Person\RelatedFamiliesGrid.cshtml" />
+    <Content Include="Areas\People\Views\Person\RelatedFamilies.cshtml" />
     <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\Text.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Text.cshtml" />

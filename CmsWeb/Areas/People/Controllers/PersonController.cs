@@ -858,5 +858,21 @@ namespace CmsWeb.Areas.People.Controllers
         {
             return new PictureResult(id, s);
         }
+        [POST("EditRelation/{id1}/{id2}")]
+        public ContentResult EditRelation(int id1, int id2, string value)
+        {
+            var r = DbUtil.Db.RelatedFamilies.SingleOrDefault(m => m.FamilyId == id1 && m.RelatedFamilyId == id2);
+            r.FamilyRelationshipDesc = value;
+            DbUtil.Db.SubmitChanges();
+            return Content(value);
+        }
+        [POST("DeleteRelation/{id1}/{id2}")]
+        public ContentResult DeleteRelation(int id1, int id2)
+        {
+            var r = DbUtil.Db.RelatedFamilies.SingleOrDefault(m => m.FamilyId == id1 && m.RelatedFamilyId == id2);
+            DbUtil.Db.RelatedFamilies.DeleteOnSubmit(r);
+            DbUtil.Db.SubmitChanges();
+            return Content("ok");
+        }
     }
 }

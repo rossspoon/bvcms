@@ -28,6 +28,26 @@
         url: "/Person2/PostData",
         name: "position"
     });
+
+    $("a.editfamily").live("click", function(ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+        $(this).closest('div.open').removeClass('open');
+        $(this).closest("li.relation-item").find("span.relation-description").editable("toggle");
+    });
+    $('span.relation-description').editable({
+        type: "textarea",
+        toggle: "manual",
+        name: "description",
+        url: function(params) {
+            var d = new $.Deferred;
+            $.post('/Person2/EditRelation/' + params.pk, {value: params.value}, function(data) {
+                d.resolve();
+            });
+            return d.promise();
+        }
+    });
+            //return d.promise();
     $("#clipaddr").live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
