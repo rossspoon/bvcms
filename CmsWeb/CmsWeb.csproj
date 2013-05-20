@@ -754,7 +754,6 @@
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address.cshtml" />
     <Content Include="Areas\Main\Views\OrgSearch\RecentVisitsEmail.cshtml" />
     <Content Include="Areas\Main\Views\Reports\ExtraValueData.cshtml" />
-    <Content Include="Areas\People\Views\SearchAdd\Index.cshtml" />
     <Content Include="Areas\Dialog\Views\SearchAdd\EditAddress.cshtml" />
     <Content Include="Areas\Dialog\Views\SearchAdd\EditPerson.cshtml" />
     <Content Include="Areas\Dialog\Views\SearchAdd\FormAbbreviated.cshtml" />
@@ -1615,16 +1614,8 @@
     <Content Include="Areas\Setup\Views\Twilio\UserDialog.cshtml" />
     <Content Include="Areas\People\Views\Person\RelatedFamilies.cshtml" />
     <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
-    <Content Include="Areas\People\Views\Person\EditorTemplates2\Text.cshtml" />
-    <Content Include="Areas\People\Views\Person\DisplayTemplates2\Text.cshtml" />
-    <Content Include="Areas\People\Views\Person\DisplayTemplates2\Date.cshtml" />
-    <Content Include="Areas\People\Views\Person\DisplayTemplates2\Bool.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\Email.cshtml" />
-    <Content Include="Areas\People\Views\Person\DisplayTemplates2\Code.cshtml" />
-    <Content Include="Areas\People\Views\Person\EditorTemplates2\Bool.cshtml" />
-    <Content Include="Areas\People\Views\Person\EditorTemplates2\Date.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Email.cshtml" />
-    <Content Include="Areas\People\Views\Person\EditorTemplates2\Code.cshtml" />
     <Content Include="Areas\People\Views\Person\Snapshot.cshtml" />
     <Content Include="Areas\People\Views\Person\Toolbar.cshtml" />
     <Content Include="Areas\People\Views\Person\Dialogs.cshtml" />
@@ -1888,27 +1879,15 @@
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\TryConditions.cshtml">
     </Content>
-    <Content Include="Areas\People\Views\SearchAdd\EditAddress.cshtml">
-    </Content>
-    <Content Include="Areas\People\Views\SearchAdd\EditPerson.cshtml">
-    </Content>
-    <Content Include="Areas\People\Views\SearchAdd\FormAbbreviated.cshtml">
-    </Content>
     <Content Include="Areas\People\Views\SearchAdd\FormFull.cshtml">
     </Content>
     <Content Include="Areas\People\Views\SearchAdd\HiddenPerson.cshtml">
-    </Content>
-    <Content Include="Areas\People\Views\SearchAdd\Index0.cshtml">
     </Content>
     <Content Include="Areas\People\Views\SearchAdd\List.cshtml">
     </Content>
     <Content Include="Areas\People\Views\SearchAdd\PersonDisplay.cshtml">
     </Content>
     <Content Include="Areas\People\Views\SearchAdd\Results.cshtml">
-    </Content>
-    <Content Include="Areas\People\Views\SearchAdd\ResultsFamily.cshtml">
-    </Content>
-    <Content Include="Areas\People\Views\SearchAdd\SearchFamily.cshtml">
     </Content>
     <Content Include="Areas\People\Views\SearchAdd\SearchPerson.cshtml">
       <SubType>Code</SubType>
