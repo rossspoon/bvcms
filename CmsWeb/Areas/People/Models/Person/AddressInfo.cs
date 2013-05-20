@@ -7,13 +7,14 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsWeb.Code;
 using UtilityExtensions;
 
 namespace CmsWeb.Areas.People.Models.Person
 {
     public class AddressInfo
     {
-        private CmsWeb.Models.CodeValueModel cv = new CmsWeb.Models.CodeValueModel();
+        private CmsWeb.Code.CodeValueModel cv = new CmsWeb.Code.CodeValueModel();
 
         public int PeopleId { get; set; }
         public CmsData.Person person { get; set; }
@@ -111,15 +112,15 @@ namespace CmsWeb.Areas.People.Models.Person
 
         public static IEnumerable<SelectListItem> ResCodes()
         {
-            return CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.ResidentCodesWithZero(), "Id");
+            return CodeValueModel.ConvertToSelect(CodeValueModel.ResidentCodesWithZero(), "Id");
         }
         public static IEnumerable<SelectListItem> States()
         {
-            return CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.GetStateList(), "Code");
+            return CodeValueModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
         }
         public static IEnumerable<SelectListItem> Countries()
         {
-            var list = CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.GetCountryList(), null);
+            var list = CodeValueModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
             return list;
         }
@@ -334,7 +335,7 @@ namespace CmsWeb.Areas.People.Models.Person
 
         public static IEnumerable<SelectListItem> StateCodes()
         {
-            return CmsWeb.Models.QueryModel.ConvertToSelect(CmsWeb.Models.CodeValueModel.GetStateList(), "Code");
+            return CodeValueModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
         }
     }
 }

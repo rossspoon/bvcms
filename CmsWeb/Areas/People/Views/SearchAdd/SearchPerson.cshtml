@@ -1,0 +1,26 @@
+﻿@model CmsWeb.Areas.People.Models.SearchAddModel
+<h1>Search For Person</h1>
+<a class="helplink pull-right" target="_blank" href='@Model.HelpLink("SearchPerson")'>help</a>
+@* Dave: note the onecol class, I had to put that in because basic forms from bootstrap seem to have been globally changed *@
+<form id="searchform" class="form-horizontal onecol ajax" action="/SearchAdd2/Results" method="POST">
+    <fieldset class="display">
+        @Html.Partial("HiddenMeta", Model)
+
+        @Html.EditorFor(m => m.Name)
+        <span class="help-inline">Starting letters of First <span class="label">space</span> Last or just Last</span>
+
+        @Html.EditorFor(m => m.Phone)
+        <span class="help-inline">Any part of any phone or email</span>
+
+        @Html.EditorFor(m => m.Address)
+        <span class="help-inline">Any part of the address, city or zip</span>
+
+        @Html.EditorFor(m => m.dob)
+        <span class="help-inline">YYYY or MM or MM/DD or MM/DD/YY</span>
+
+    </fieldset>
+    <div class="form-actions">
+        <a href="#" class="btn close-dialog">Close</a>
+        <input type="submit" class="btn btn-primary" value="Search" />
+    </div>
+</form>

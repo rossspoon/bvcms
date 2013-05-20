@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CmsData;
+using CmsWeb.Code;
 using UtilityExtensions;
 using CmsWeb.Models;
 using CmsWeb.Models.OrganizationPage;
@@ -45,7 +46,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(int id, int pid)
         {
-            ViewData["MemberTypes"] = QueryModel.ConvertToSelect(CodeValueModel.MemberTypeCodes(), "Id");
+            ViewData["MemberTypes"] = CodeValueModel.ConvertToSelect(CodeValueModel.MemberTypeCodes(), "Id");
             var om = DbUtil.Db.OrganizationMembers.Single(m => m.PeopleId == pid && m.OrganizationId == id);
             return View(om);
         }
@@ -67,7 +68,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             }
             catch (Exception)
             {
-                ViewData["MemberTypes"] = QueryModel.ConvertToSelect(CodeValueModel.MemberTypeCodes(), "Id");
+                ViewData["MemberTypes"] = CodeValueModel.ConvertToSelect(CodeValueModel.MemberTypeCodes(), "Id");
                 return View("Edit", om);
             }
             return View("Display", om);

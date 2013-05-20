@@ -109,15 +109,30 @@ namespace CmsData
 			if (info.EntryPointId == null)
 			{
 				var p = Db.LoadPersonById(PeopleId);
-				if (info.OrgEntryPoint > 0)
-					p.EntryPointId = info.OrgEntryPoint;
+			    if (info.OrgEntryPoint > 0)
+			    {
+			        p.EntryPointId = info.OrgEntryPoint;
+			        Db.SubmitChanges();
+			    }
 			}
-//			var meeting = Meeting.FetchOrCreateMeeting(Db, OrgId, dt);
-//			if (!meeting.Location.HasValue())
-//				meeting.Location = info.Location;
-//			RecordAttendance(Db, PeopleId, meeting.MeetingId, Present);
-		    Db.RecordAttendance(OrgId, PeopleId, dt, Present, info.Location);
-//			return meeting.MeetingId;
+			int ntries = 6;
+			while (true)
+			{
+				try
+				{
+        		    Db.RecordAttendance(OrgId, PeopleId, dt, Present, info.Location);
+				}
+				catch (SqlException ex)
+				{
+					if (ex.Number == 1205)
+						if (--ntries > 0)
+						{
+							System.Threading.Thread.Sleep(500);
+							continue;
+						}
+					throw;
+				}
+			}
 		}
 		public static int AddAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)
 		{

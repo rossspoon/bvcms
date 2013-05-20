@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CmsData;
 using System.Web.Mvc;
+using CmsWeb.Code;
 using UtilityExtensions;
 
 namespace CmsWeb.Models.PersonPage
@@ -51,7 +52,7 @@ namespace CmsWeb.Models.PersonPage
         }
         public static IEnumerable<SelectListItem> LetterStatuses()
         {
-            return QueryModel.ConvertToSelect(cv.LetterStatusCodes(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.LetterStatusCodes(), "Id");
         }
     }
 }

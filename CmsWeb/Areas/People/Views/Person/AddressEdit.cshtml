@@ -19,7 +19,7 @@
         <input name="BadAddress" type="hidden" value="@(Model.BadAddress == true ? "true" : "false")"/>
         <input name="Preferred" type="hidden" value="@(Model.Preferred ? "true" : "false")"/>
         <div class="form-actions">
-            <button class="btn close-dialog">Cancel</button>
+            <a href="#" class="btn close-dialog">Cancel</a>
             <input type="submit" class="btn btn-primary" value="@PrimaryButtonLabel" />
         </div>
     </form>
@@ -94,7 +94,7 @@ else // get ready for editing
             </div>
         }
         <div class="form-actions">
-            <button class="btn close-dialog">Close</button>
+            <a href="#" class="btn close-dialog">Close</a>
             <input type="submit" class="btn btn-primary" value="Save changes" />
         </div>
     </form>

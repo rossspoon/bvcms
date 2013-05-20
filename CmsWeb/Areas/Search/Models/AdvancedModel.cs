@@ -188,7 +188,7 @@ namespace CmsWeb.Areas.Search.Models
             TagsVisible = fieldMap.HasParam("Tags");
             if (TagsVisible)
             {
-                var cv = new CmsWeb.Models.CodeValueModel();
+                var cv = new CodeValueModel();
                 TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
             }
             StartDateVisible = fieldMap.HasParam("StartDate");
@@ -691,7 +691,7 @@ namespace CmsWeb.Areas.Search.Models
         }
         public List<SelectListItem> SavedQueries()
         {
-            var cv = new CmsWeb.Models.CodeValueModel();
+            var cv = new CodeValueModel();
             return ConvertToSelect(cv.UserQueries(), "Code");
         }
         public List<SelectListItem> Ministries()

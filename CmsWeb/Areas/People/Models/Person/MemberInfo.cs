@@ -7,6 +7,7 @@ using CmsWeb.Models;
 using UtilityExtensions;
 using System.Data.Linq;
 using System.Text;
+using CmsWeb.Code;
 
 namespace CmsWeb.Areas.People.Models.Person
 {
@@ -170,42 +171,42 @@ namespace CmsWeb.Areas.People.Models.Person
 
 		public static IEnumerable<SelectListItem> MemberStatuses()
 		{
-			return QueryModel.ConvertToSelect(cv.MemberStatusCodes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.MemberStatusCodes(), "Id");
 		}
 
 		public static IEnumerable<SelectListItem> BaptismStatuses()
 		{
-			return QueryModel.ConvertToSelect(cv.BaptismStatuses(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.BaptismStatuses(), "Id");
 		}
 
 		public static IEnumerable<SelectListItem> DecisionCodes()
 		{
-			return QueryModel.ConvertToSelect(cv.DecisionCodes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.DecisionCodes(), "Id");
 		}
 
 		public static IEnumerable<SelectListItem> EnvelopeOptions()
 		{
-			return QueryModel.ConvertToSelect(cv.EnvelopeOptions(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.EnvelopeOptions(), "Id");
 		}
 
 		public static IEnumerable<SelectListItem> JoinTypes()
 		{
-			return QueryModel.ConvertToSelect(cv.JoinTypes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.JoinTypes(), "Id");
 		}
 
 		public static IEnumerable<SelectListItem> BaptismTypes()
 		{
-			return QueryModel.ConvertToSelect(cv.BaptismTypes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.BaptismTypes(), "Id");
 		}
 
 		public static IEnumerable<SelectListItem> DropTypes()
 		{
-			return QueryModel.ConvertToSelect(cv.DropTypes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.DropTypes(), "Id");
 		}
 
 		public static IEnumerable<SelectListItem> NewMemberClassStatuses()
 		{
-			return QueryModel.ConvertToSelect(cv.NewMemberClassStatusCodes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.NewMemberClassStatusCodes(), "Id");
 		}
 
 		public List<string[]> StatusFlags()

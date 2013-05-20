@@ -1,0 +1,22 @@
+﻿@using CmsWeb.Areas.People.Models
+@model SearchAddModel
+<div>
+    <h1>Pending Selection List</h1>
+    <a class="helplink" target="_blank" href='@Model.HelpLink("List")'>help</a>
+    <form class="ajax" action="/SearchAdd2/ListNext" method="POST">
+        @Html.Partial("HiddenSearch", Model)
+        @Html.Partial("HiddenPeople", Model)
+        @Html.Partial("DisplayPeople", Model)
+        <div class="form-actions">
+            @if (!Model.OnlyOne)
+            {
+                <input type="submit" name="submit" class="btn btn-primary" value="Another Search" /> @:or 
+                if (Model.CanAdd)
+                { 
+                <input type="submit" name="submit" class="btn btn-primary" value="Add to Last Family" /> @:or 
+                }
+            }
+            <input type="submit" name="submit" class="btn btn-primary commit" value="Commit and Add" />
+        </div>
+    </form>
+</div>

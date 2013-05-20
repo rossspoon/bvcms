@@ -5,6 +5,7 @@
  * You may obtain a copy of the License at http://bvcms.codeplex.com/license 
  */
 using System;
+using System.Web.Mvc;
 using CmsData;
 using System.Data.Linq;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using System.Web.Security;
 using CmsData.Codes;
 using CmsData.Classes.ProtectMyMinistry;
 
-namespace CmsWeb.Models
+namespace CmsWeb.Code
 {
 	public class CodeValueModel
 	{
@@ -925,6 +926,32 @@ namespace CmsWeb.Models
 		{
 			return top.Union(GetOrganizationList(SubDivId));
 		}
+
+        public static List<SelectListItem> ConvertToSelect(object items, string valuefield)
+        {
+            var list = items as IEnumerable<CodeValueItem>;
+            if (list == null)
+                throw new Exception("items are null in ConvertToSelect");
+            List<SelectListItem> list2;
+            switch (valuefield)
+            {
+                case "IdCode":
+                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.IdCode }).ToList();
+                    break;
+                case "Id":
+                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Id.ToString() }).ToList();
+                    break;
+                case "Code":
+                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Code }).ToList();
+                    break;
+                default:
+                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Value }).ToList();
+                    break;
+            }
+            if (list2.Count > 0)
+                list2[0].Selected = true;
+            return list2;
+        }
 	}
 	public static class CodeValue
 	{

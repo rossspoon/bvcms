@@ -9,28 +9,28 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus-sign"></i></a>
         <ul class="dropdown-menu" role="menu">
             <!-- dropdown menu links -->
-            <li><a href="#">Add Family</a></li>
+            <li><a href="/SearchAdd2/RelatedFamily/@Model.displayperson.FamilyId" class="searchadd">Add Related Family</a></li>
         </ul>
     </div>
 </div>
-<!-- //sidebar_title -->
 <ul id="family_related" class="unstyled">
     @foreach (var f in fm.RelatedFamilies())
     {
-        <li>
+        <li class="relation-item">
             <div class="btn-group">
                 <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-cog"></i>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Edit</a></li>
-                    <li><a href="#">Split</a></li>
+                    <li><a class="editfamily" href="#">Edit</a></li>
                     <li><a href="#">Delete</a></li>
                 </ul>
             </div>
             <p>@f.Name
-                <span class="summary">@f.Description</span>
+                <span class="summary relation-description" data-value="@f.Description" data-toggle="manual" data-pk="@f.Id1/@f.Id2" title="Description of Relationship">
+                    @f.Description
+                </span>
             </p>
         </li>
     }

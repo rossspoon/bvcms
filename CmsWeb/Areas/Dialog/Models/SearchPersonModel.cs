@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CmsWeb.Code;
 using UtilityExtensions;
 using CmsData;
 using System.Text;
@@ -75,37 +76,37 @@ namespace CmsWeb.Models
 
         public IEnumerable<SelectListItem> TitleCodes()
         {
-            return QueryModel.ConvertToSelect(cv.TitleCodes(), "Code");
+            return CodeValueModel.ConvertToSelect(cv.TitleCodes(), "Code");
         }
 
         public IEnumerable<SelectListItem> GenderCodes()
         {
-            return QueryModel.ConvertToSelect(cv.GenderCodesWithUnspecified(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.GenderCodesWithUnspecified(), "Id");
         }
 
         public IEnumerable<SelectListItem> MaritalStatuses()
         {
-            return QueryModel.ConvertToSelect(cv.MaritalStatusCodes99(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.MaritalStatusCodes99(), "Id");
         }
 
         public IEnumerable<SelectListItem> CampusCodes()
         {
-            return QueryModel.ConvertToSelect(cv.AllCampuses0(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.AllCampuses0(), "Id");
         }
 
         public IEnumerable<SelectListItem> EntryPointCodes()
         {
-            return QueryModel.ConvertToSelect(cv.EntryPoints(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.EntryPoints(), "Id");
         }
 
         public IEnumerable<SelectListItem> StateCodes()
         {
-            return QueryModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
+            return CodeValueModel.ConvertToSelect(cv.GetStateListUnknown(), "Code");
         }
 
         public IEnumerable<SelectListItem> Countries()
         {
-            var list = QueryModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
+            var list = CodeValueModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
             list.Insert(0, new SelectListItem {Text = "(not specified)", Value = ""});
             return list;
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CmsData;
 using System.Web.Mvc;
+using CmsWeb.Code;
 using UtilityExtensions;
 
 namespace CmsWeb.Models.PersonPage
@@ -74,15 +75,15 @@ namespace CmsWeb.Models.PersonPage
         }
         public static IEnumerable<SelectListItem> InterestPoints()
         {
-            return QueryModel.ConvertToSelect(cv.InterestPoints(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.InterestPoints(), "Id");
         }
         public static IEnumerable<SelectListItem> Origins()
         {
-            return QueryModel.ConvertToSelect(cv.Origins(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.Origins(), "Id");
         }
         public static IEnumerable<SelectListItem> EntryPoints()
         {
-            return QueryModel.ConvertToSelect(cv.EntryPoints(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.EntryPoints(), "Id");
         }
     }
 }

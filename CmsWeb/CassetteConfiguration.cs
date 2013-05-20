@@ -183,6 +183,7 @@ namespace CmsWeb
             {
                  "Scripts/jquery/jquery.address-1.5.js"
                 ,"Scripts/People/person1.js"
+                ,"Scripts/People/SearchAdd2.js"
 //                ,"Scripts/Bootstrap/bootstrap-ajax.js"
 //                ,"Scripts/Bootstrap/spin.min.js"
 //                ,"Scripts/Bootstrap/bootstrapx-clickover.js"
@@ -236,6 +237,7 @@ namespace CmsWeb
             AddOneScript(bundles, "People/family");
             AddOneScript(bundles, "People/Person");
             AddOneScript(bundles, "People/Person2");
+            AddOneScript(bundles, "People/SearchAdd2");
 
             AddOneScript(bundles, "Search/AdvancedSearch");
             AddOneScript(bundles, "Search/ContactSearch");

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CmsData;
 using System.Web.Mvc;
+using CmsWeb.Code;
 using UtilityExtensions;
 using System.Data.Linq;
 using System.Text;
@@ -73,15 +74,15 @@ namespace CmsWeb.Models.PersonPage
 
         public static IEnumerable<SelectListItem> ResCodes()
         {
-            return QueryModel.ConvertToSelect(CodeValueModel.ResidentCodesWithZero(), "Id");
+            return CodeValueModel.ConvertToSelect(CodeValueModel.ResidentCodesWithZero(), "Id");
         }
         public static IEnumerable<SelectListItem> States()
         {
-            return QueryModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
+            return CodeValueModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
         }
         public static IEnumerable<SelectListItem> Countries()
         {
-            var list = QueryModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
+            var list = CodeValueModel.ConvertToSelect(CodeValueModel.GetCountryList(), null);
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
             return list;
         }
@@ -283,7 +284,7 @@ namespace CmsWeb.Models.PersonPage
         }
         public static IEnumerable<SelectListItem> StateCodes()
         {
-            return QueryModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
+            return CodeValueModel.ConvertToSelect(CodeValueModel.GetStateList(), "Code");
         }
     }
 }

@@ -28,6 +28,26 @@
         url: "/Person2/PostData",
         name: "position"
     });
+
+    $("a.editfamily").live("click", function(ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+        $(this).closest('div.open').removeClass('open');
+        $(this).closest("li.relation-item").find("span.relation-description").editable("toggle");
+    });
+    $('span.relation-description').editable({
+        type: "textarea",
+        toggle: "manual",
+        name: "description",
+        url: function(params) {
+            var d = new $.Deferred;
+            $.post('/Person2/EditRelation/' + params.pk, {value: params.value}, function(data) {
+                d.resolve();
+            });
+            return d.promise();
+        }
+    });
+            //return d.promise();
     $("#clipaddr").live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
@@ -355,20 +375,6 @@ $.UpdateForSection = function (f) {
     $(".date").datepicker();
     return false;
 };
-$("form").on("click", "#verifyaddress", function () {
-    var ff = $(this).closest('form');
-    var q = ff.serialize();
-    $.post($(this).attr('href'), q, function (ret) {
-        if (confirm(ret.address + "\nUse this Address?")) {
-            $('#Address1', ff).val(ret.Line1);
-            $('#Address2', ff).val(ret.Line2);
-            $('#City', ff).val(ret.City);
-            $('#State', ff).val(ret.State);
-            $('#Zip', ff).val(ret.Zip);
-        }
-    });
-    return false;
-});
 $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
     ev.preventDefault();
     var f = $(this).closest('form');
@@ -570,15 +576,18 @@ $('#vtab>ul>li').click(function () {
 //});
 
 });
-function RebindMemberGrids(from) {
+function RebindMemberGrids() {
     $.updateTable($('#current-tab form'));
     $.updateTable($('#pending-tab form'));
     $("#memberDialog").dialog('close');
 }
-function RebindUserInfoGrid(from) {
+function RebindUserInfoGrid() {
     $.updateTable($('#user-tab form'));
     $("#memberDialog").dialog('close');
 }
 function AddSelected(ret) {
     window.location = "/Merge?PeopleId1=" + $("#PeopleId").val() + "&PeopleId2=" + ret.pid;
+}
+function dialogError(arg) {
+    return arg;
 }
