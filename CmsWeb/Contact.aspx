@@ -292,11 +292,11 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSMinistryId" runat="server" SelectMethod="Ministries0"
-        TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
+        TypeName="CmsWeb.Code.CodeValueModel"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSContactTypeId" runat="server" SelectMethod="ContactTypeCodes"
-        TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
+        TypeName="CmsWeb.Code.CodeValueModel"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSContactReasonId" runat="server" SelectMethod="ContactReasonCodes"
-        TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
+        TypeName="CmsWeb.Code.CodeValueModel"></asp:ObjectDataSource>
     <asp:LinkButton ID="HiddenDoNothingButton" runat="server" Style="display: none"></asp:LinkButton>
     <div id="contactDialog" style="display:none">
     <iframe style="width:100%;height:99%;border-width:0px;"></iframe>
