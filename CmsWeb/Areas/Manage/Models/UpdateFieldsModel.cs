@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Web;
+using CmsWeb.Code;
 using UtilityExtensions;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -54,7 +55,7 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> Tags()
         {
             var cv = new CodeValueModel();
-            var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id");
+            var tg = CodeValueModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id");
             tg = tg.Select(tt => new SelectListItem { Text = "tag: {0}:{1}".Fmt(tt.Value, tt.Text) }).ToList();
             var q = from e in DbUtil.Db.PeopleExtras
                     where e.StrValue != null

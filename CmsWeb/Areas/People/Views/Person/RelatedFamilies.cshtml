@@ -9,11 +9,10 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-plus-sign"></i></a>
         <ul class="dropdown-menu" role="menu">
             <!-- dropdown menu links -->
-            <li><a href="#">Add Family</a></li>
+            <li><a href="/SearchAdd2/RelatedFamily/@Model.displayperson.FamilyId" class="searchadd">Add Related Family</a></li>
         </ul>
     </div>
 </div>
-<!-- //sidebar_title -->
 <ul id="family_related" class="unstyled">
     @foreach (var f in fm.RelatedFamilies())
     {

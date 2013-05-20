@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CmsData;
 using System.Web.Mvc;
-using CmsWeb.Models;
+using CmsWeb.Code;
 using UtilityExtensions;
 
 namespace CmsWeb.Areas.People.Models.Person
@@ -51,7 +51,7 @@ namespace CmsWeb.Areas.People.Models.Person
         }
         public static IEnumerable<SelectListItem> LetterStatuses()
         {
-            return QueryModel.ConvertToSelect(cv.LetterStatusCodes(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.LetterStatusCodes(), "Id");
         }
     }
 }

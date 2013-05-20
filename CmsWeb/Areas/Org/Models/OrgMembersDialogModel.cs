@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CmsData;
 using System.Web.Mvc;
+using CmsWeb.Code;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 using CmsData.Codes;
@@ -38,7 +39,7 @@ namespace CmsWeb.Models
         public IEnumerable<SelectListItem> Tags()
         {
             var cv = new CodeValueModel();
-            var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
+            var tg = CodeValueModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
             tg.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
             return tg;
         }

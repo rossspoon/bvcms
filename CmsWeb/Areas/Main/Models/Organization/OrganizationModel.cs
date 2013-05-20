@@ -6,6 +6,7 @@ using System.Web;
 using CmsData;
 using System.Web.Mvc;
 using CmsData.Registration;
+using CmsWeb.Code;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 using CmsData.Codes;
@@ -78,7 +79,7 @@ namespace CmsWeb.Models.OrganizationPage
 		public static IEnumerable<SelectListItem> Tags()
 		{
 			var cv = new CodeValueModel();
-			var tg = QueryModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
+			var tg = CodeValueModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Id").ToList();
 			if (HttpContext.Current.User.IsInRole("Edit"))
 				tg.Insert(0, new SelectListItem { Value = "-1", Text = "(last query)" });
 			tg.Insert(0, new SelectListItem { Value = "0", Text = "(not specified)" });
@@ -115,36 +116,36 @@ namespace CmsWeb.Models.OrganizationPage
 
 		public IEnumerable<SelectListItem> CampusList()
 		{
-			return QueryModel.ConvertToSelect(cv.AllCampuses0(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.AllCampuses0(), "Id");
 		}
 		public IEnumerable<SelectListItem> OrgStatusList()
 		{
-			return QueryModel.ConvertToSelect(cv.OrganizationStatusCodes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.OrganizationStatusCodes(), "Id");
 		}
 		public IEnumerable<SelectListItem> LeaderTypeList()
 		{
 			var items = CodeValueModel.MemberTypeCodes0().Select(c => new CodeValueItem { Code = c.Code, Id = c.Id, Value = c.Value });
-			return QueryModel.ConvertToSelect(items, "Id");
+			return CodeValueModel.ConvertToSelect(items, "Id");
 		}
 		public IEnumerable<SelectListItem> EntryPointList()
 		{
-			return QueryModel.ConvertToSelect(cv.EntryPoints(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.EntryPoints(), "Id");
 		}
 		public IEnumerable<SelectListItem> OrganizationTypes()
 		{
-			return QueryModel.ConvertToSelect(cv.OrganizationTypes0(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.OrganizationTypes0(), "Id");
 		}
 		public IEnumerable<SelectListItem> GenderList()
 		{
-			return QueryModel.ConvertToSelect(cv.GenderCodes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.GenderCodes(), "Id");
 		}
 		public IEnumerable<SelectListItem> AttendCreditList()
 		{
-			return QueryModel.ConvertToSelect(CodeValueModel.AttendCredits(), "Id");
+			return CodeValueModel.ConvertToSelect(CodeValueModel.AttendCredits(), "Id");
 		}
 		public IEnumerable<SelectListItem> SecurityTypeList()
 		{
-			return QueryModel.ConvertToSelect(cv.SecurityTypeCodes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.SecurityTypeCodes(), "Id");
 		}
 		public static string SpaceCamelCase(string s)
 		{
@@ -153,7 +154,7 @@ namespace CmsWeb.Models.OrganizationPage
 		public static IEnumerable<SelectListItem> RegistrationTypes()
 		{
 			var cv = new CodeValueModel();
-			return QueryModel.ConvertToSelect(cv.RegistrationTypes(), "Id");
+			return CodeValueModel.ConvertToSelect(cv.RegistrationTypes(), "Id");
 		}
 		public string NewMeetingTime
 		{

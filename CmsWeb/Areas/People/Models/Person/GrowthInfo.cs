@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CmsData;
 using System.Web.Mvc;
-using CmsWeb.Models;
+using CmsWeb.Code;
 using UtilityExtensions;
 
 namespace CmsWeb.Areas.People.Models.Person
@@ -73,15 +73,15 @@ namespace CmsWeb.Areas.People.Models.Person
         }
         public static IEnumerable<SelectListItem> InterestPoints()
         {
-            return QueryModel.ConvertToSelect(cv.InterestPoints(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.InterestPoints(), "Id");
         }
         public static IEnumerable<SelectListItem> Origins()
         {
-            return QueryModel.ConvertToSelect(cv.Origins(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.Origins(), "Id");
         }
         public static IEnumerable<SelectListItem> EntryPoints()
         {
-            return QueryModel.ConvertToSelect(cv.EntryPoints(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.EntryPoints(), "Id");
         }
     }
 }

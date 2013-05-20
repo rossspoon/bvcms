@@ -1,8 +1,9 @@
 ﻿@using CmsWeb.Areas.People.Models.Person
 @using UtilityExtensions
 @using CmsWeb
-@model CmsWeb.Areas.People.Models.Person.AddressInfo
+@model CmsWeb.Areas.People.Models.SearchAddModel
 
+@*
 @helper HiddenAddress(string PrimaryButtonLabel)
 {
     <form id="hidvalues" class="ajax" action="/Person2/AddressSave/@Model.Name/@Model.PeopleId" method="POST">
@@ -71,6 +72,7 @@ else if (Model.saved)
     </div>
 }
 else // get ready for editing
+*@
 {
     <h1>@Model.Display</h1>
     <form id="addressForm" class="form-horizontal onecol ajax" action="/Person2/AddressUpdate/@Model.Name/@Model.PeopleId" method="POST">

@@ -211,13 +211,13 @@ namespace CmsWeb.Models
             if (TagsVisible)
             {
                 var cv = new CodeValueModel();
-                TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
+                TagData = CodeValueModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
             }
             PmmLabelsVisible = fieldMap.HasParam("PmmLabels");
             if (PmmLabelsVisible)
             {
                 var cv = new CodeValueModel();
-                PmmLabelData = ConvertToSelect(cv.PmmLabels(), "Code");
+                PmmLabelData = CodeValueModel.ConvertToSelect(cv.PmmLabels(), "Code");
             }
             StartDateVisible = fieldMap.HasParam("StartDate");
             EndDateVisible = fieldMap.HasParam("EndDate");
@@ -228,7 +228,7 @@ namespace CmsWeb.Models
                 case FieldType.Bit:
                 case FieldType.NullBit:
                     CodeVisible = true;
-                    CodeData = ConvertToSelect(BitCodes, fieldMap.DataValueField);
+                    CodeData = CodeValueModel.ConvertToSelect(BitCodes, fieldMap.DataValueField);
                     break;
                 case FieldType.String:
                 case FieldType.StringEqual:
@@ -254,7 +254,7 @@ namespace CmsWeb.Models
                     else if (fieldMap.DataSource == "Campuses")
                         CodeData = Campuses();
                     else
-                        CodeData = ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
+                        CodeData = CodeValueModel.ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
                     break;
                 case FieldType.Date:
                 case FieldType.DateSimple:
@@ -262,7 +262,7 @@ namespace CmsWeb.Models
                     break;
                 case FieldType.DateField:
                     CodeVisible = true;
-                    CodeData = ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
+                    CodeData = CodeValueModel.ConvertToSelect(Util.CallMethod(cvctl, fieldMap.DataSource), fieldMap.DataValueField);
                     break;
             }
             var cc = Db.LoadQueryById(SelectedId);
@@ -280,29 +280,6 @@ namespace CmsWeb.Models
             AddToGroupEnabled = cc.IsGroup;
             AddEnabled = !cc.IsFirst;
             RemoveEnabled = !cc.IsFirst;
-        }
-        public static List<SelectListItem> ConvertToSelect(object items, string valuefield)
-        {
-            var list = items as IEnumerable<CodeValueItem>;
-            List<SelectListItem> list2;
-            switch (valuefield)
-            {
-                case "IdCode":
-                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.IdCode }).ToList();
-                    break;
-                case "Id":
-                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Id.ToString() }).ToList();
-                    break;
-                case "Code":
-                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Code }).ToList();
-                    break;
-                default:
-                    list2 = list.Select(c => new SelectListItem { Text = c.Value, Value = c.Value }).ToList();
-                    break;
-            }
-            if (list2.Count > 0)
-                list2[0].Selected = true;
-            return list2;
         }
         public static string IdCode(object items, int id)
         {
@@ -457,7 +434,7 @@ namespace CmsWeb.Models
                 if (c.Tags != null)
                     Tags = c.Tags.Split(';');
                 var cv = new CodeValueModel();
-                TagData = ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
+                TagData = CodeValueModel.ConvertToSelect(cv.UserTags(Util.UserPeopleId), "Code");
                 foreach (var i in TagData)
                     i.Selected = Tags.Contains(i.Value);
             }
@@ -466,7 +443,7 @@ namespace CmsWeb.Models
                 if (c.Tags != null)
                     PmmLabels = c.Tags.Split(',').Select(vv => vv).ToArray();
                 var cv = new CodeValueModel();
-                PmmLabelData = ConvertToSelect(cv.PmmLabels(), "Id");
+                PmmLabelData = CodeValueModel.ConvertToSelect(cv.PmmLabels(), "Id");
                 if(PmmLabels != null)
                     foreach (var i in PmmLabelData)
                         i.Selected = PmmLabels.Contains(i.Value);
@@ -710,7 +687,7 @@ namespace CmsWeb.Models
         public List<SelectListItem> SavedQueries()
         {
             var cv = new CodeValueModel();
-            return ConvertToSelect(cv.UserQueries(), "Code");
+            return CodeValueModel.ConvertToSelect(cv.UserQueries(), "Code");
         }
         public List<SelectListItem> Ministries()
         {

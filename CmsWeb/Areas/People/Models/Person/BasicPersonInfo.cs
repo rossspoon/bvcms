@@ -24,38 +24,6 @@ namespace CmsWeb.Areas.People.Models.Person
         public string Address { get; set; }
         public bool Send { get; set; }
     }
-    public class CodeInfo
-    {
-        private string _value;
-
-        public CodeInfo(object value, IEnumerable<CodeValueItem> items, string valuefield = "Id")
-        {
-            if (value != null)
-                Value = value.ToString();
-            Items = new SelectList(items, valuefield, "Value", value);
-        }
-        public CodeInfo(object value, IEnumerable<SelectListItem> items, string valuefield = "Id")
-        {
-            if (value != null)
-                Value = value.ToString();
-            Items = items;
-        }
-
-        public string Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
-
-        public IEnumerable<SelectListItem> Items { get; set; }
-        public override string ToString()
-        {
-            var i = Items.SingleOrDefault(ii => ii.Value == Value);
-            if (i == null)
-                return "";
-            return i.Text;
-        }
-    }
 
     public class BasicPersonInfo
     {
@@ -319,22 +287,22 @@ namespace CmsWeb.Areas.People.Models.Person
         public static IEnumerable<SelectListItem> GenderCodes()
         {
             var cv = new CodeValueModel();
-            return QueryModel.ConvertToSelect(cv.GenderCodes(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.GenderCodes(), "Id");
         }
         public static IEnumerable<SelectListItem> Campuses()
         {
             var cv = new CodeValueModel();
-            return QueryModel.ConvertToSelect(cv.AllCampuses0(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.AllCampuses0(), "Id");
         }
         public static IEnumerable<SelectListItem> MemberStatuses()
         {
             var cv = new CodeValueModel();
-            return QueryModel.ConvertToSelect(cv.MemberStatusCodes(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.MemberStatusCodes(), "Id");
         }
         public static IEnumerable<SelectListItem> MaritalStatuses()
         {
             var cv = new CodeValueModel();
-            return QueryModel.ConvertToSelect(cv.MaritalStatusCodes(), "Id");
+            return CodeValueModel.ConvertToSelect(cv.MaritalStatusCodes(), "Id");
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Linq;
 using System.ComponentModel;
 using UtilityExtensions;
 
-namespace CmsWeb.Models
+namespace CmsWeb.Code
 {
     public class CodeValueItem
     {

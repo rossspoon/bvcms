@@ -1,0 +1,8 @@
+﻿@using UtilityExtensions
+@model CmsWeb.Areas.People.Models.SearchAddModel
+@for (var n = 0; n < Model.List.Count; n++)
+{
+    var p = Model.List[n];
+    p.index = n;
+    @Html.Partial("HiddenPerson", p)
+}
