@@ -179,10 +179,10 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="StatusesODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="ContributionStatuses" TypeName="CmsWeb.Models.CodeValueModel">
+        SelectMethod="ContributionStatuses" TypeName="CmsWeb.Code.CodeValueModel">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="TypesODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="ContributionTypes" TypeName="CmsWeb.Models.CodeValueModel">
+        SelectMethod="ContributionTypes" TypeName="CmsWeb.Code.CodeValueModel">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="FundsODS" runat="server" OldValuesParameterFormatString="original_{0}"
         SelectMethod="Funds" TypeName="CmsWeb.Models.BundleModel">

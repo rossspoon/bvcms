@@ -162,6 +162,6 @@
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ODSFunds" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="Funds" TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="CampusIds" runat="server" SelectMethod="AllCampuses0" TypeName="CmsWeb.Models.CodeValueModel"></asp:ObjectDataSource>
+        SelectMethod="Funds" TypeName="CmsWeb.Code.CodeValueModel"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="CampusIds" runat="server" SelectMethod="AllCampuses0" TypeName="CmsWeb.Code.CodeValueModel"></asp:ObjectDataSource>
 </asp:Content>
