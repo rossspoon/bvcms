@@ -23,56 +23,50 @@ namespace CmsWeb.Areas.People.Controllers
     [RouteArea("People", AreaUrl = "SearchAdd2")]
     public class SearchAddController : CmsStaffController
     {
-        [GET("RelatedFamily/{familyid}")]
-        public ActionResult RelatedFamily(int familyid)
+        [POST("Index/{type}/{typeid}")]
+        public ActionResult Index(string type, string typeid)
         {
-            var m = new SearchAddModel { typeid = familyid.ToString(), type = "RelatedFamily" };
+            var m = new SearchAddModel { typeid = typeid, type = type };
+            Organization org = null;
+            m.CampusId = null;
+            switch (m.type)
+            {
+                case "addpeople":
+                    m.EntryPointId = 0;
+                    break;
+                case "addtotag":
+                    m.EntryPointId = null;
+                    break;
+                case "family":
+                case "relatedfamily":
+                    m.EntryPointId = 0;
+                    break;
+                case "org":
+                case "pending":
+                    org = DbUtil.Db.LoadOrganizationById(typeid.ToInt());
+                    m.CampusId = org.CampusId;
+                    m.EntryPointId = org.EntryPointId ?? 0;
+                    break;
+                case "visitor":
+                case "registered":
+                    org = (from meeting in DbUtil.Db.Meetings
+                           where meeting.MeetingId == typeid.ToInt()
+                           select meeting.Organization).Single();
+                    m.EntryPointId = org.EntryPointId ?? 0;
+                    m.CampusId = org.CampusId;
+                    break;
+                case "contactee":
+                    m.EntryPointId = 0;
+                    break;
+                case "contactor":
+                    m.EntryPointId = 0;
+                    break;
+                case "contributor":
+                    m.EntryPointId = 0;
+                    break;
+            }
             return View("SearchPerson", m);
         }
-
-//        public ActionResult Index(int? id, string type, string from)
-//        {
-//            var m = new SearchAddModel { typeid = id, type = type };
-//            Organization org = null;
-//            m.CampusId = null;
-//            switch (m.type)
-//            {
-//                case "addpeople":
-//                    m.EntryPointId = 0;
-//                    break;
-//                case "addtotag":
-//                    m.EntryPointId = null;
-//                    break;
-//                case "family":
-//                case "relatedfamily":
-//                    m.EntryPointId = 0;
-//                    break;
-//                case "org":
-//                case "pending":
-//                    org = DbUtil.Db.LoadOrganizationById(id);
-//                    m.CampusId = org.CampusId;
-//                    m.EntryPointId = org.EntryPointId ?? 0;
-//                    break;
-//                case "visitor":
-//                case "registered":
-//                    org = (from meeting in DbUtil.Db.Meetings
-//                           where meeting.MeetingId == id
-//                           select meeting.Organization).Single();
-//                    m.EntryPointId = org.EntryPointId ?? 0;
-//                    m.CampusId = org.CampusId;
-//                    break;
-//                case "contactee":
-//                    m.EntryPointId = 0;
-//                    break;
-//                case "contactor":
-//                    m.EntryPointId = 0;
-//                    break;
-//                case "contributor":
-//                    m.EntryPointId = 0;
-//                    break;
-//            }
-//            return View(m);
-//        }
         [POST("Results")]
         public ActionResult Results(SearchAddModel m)
         {
@@ -85,14 +79,16 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.Db.SetNoLock();
             return View(m);
         }
-        [POST("ResultsNext")]
-        public ActionResult ResultsNext(SearchAddModel m)
+        [POST("ResultsNext/{todo}")]
+        public ActionResult ResultsNext(string todo, SearchAddModel m)
         {
-            switch (m.submit.ToLower())
+            switch (todo)
             {
-                case "go back to search":
+                case "BackToSearch":
                     return View("SearchPerson", m);
-                case "add new family":
+                case "AddNewPerson":
+                    return View("SearchPerson", m);
+                case "AddNewFamily":
                     return View("SearchPerson", m);
             }
             m.dob = null;
@@ -100,17 +96,17 @@ namespace CmsWeb.Areas.People.Controllers
             m.Name = a[a.Length - 1];
             return Content("ok");
         }
-        [POST("ListNext")]
-        public ActionResult ListNext(SearchAddModel m)
+        [POST("ListNext/{todo}")]
+        public ActionResult ListNext(string todo, SearchAddModel m)
         {
-            switch (m.submit.ToLower())
+            switch (todo)
             {
-                case "commit and add":
+                case "CommitAdd":
                     return Complete(m);
-                case "another search":
+                case "AnotherSearch":
                     return View("SearchPerson", m);
-                case "add new family":
-                    return View("SearchPerson", m);
+                case "LastFamily":
+                    return AddToFamily(m);
             }
             m.dob = null;
             var a = m.Name.SplitStr(" ");
@@ -161,6 +157,8 @@ namespace CmsWeb.Areas.People.Controllers
                 Gender = new CodeInfo(p.GenderId, cv.GenderCodesWithUnspecified()),
                 Phone = p.CellPhone,
                 context = m.type,
+                EntryPoint = new CodeInfo(p.EntryPointId, cv.EntryPoints()),
+                Campus = new CodeInfo(p.CampusId, cv.AllCampuses0()),
             };
             s.LoadFamily();
             m.List.Add(s);
@@ -251,7 +249,7 @@ namespace CmsWeb.Areas.People.Controllers
 #endif
             return View(m);
         }
-        public ActionResult Complete(SearchAddModel m)
+        private ActionResult Complete(SearchAddModel m)
         {
             var id = m.typeid;
 			var iid = m.typeid.ToInt();

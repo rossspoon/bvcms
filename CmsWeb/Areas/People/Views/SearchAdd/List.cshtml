@@ -1,22 +1,26 @@
 ﻿@using CmsWeb.Areas.People.Models
 @model SearchAddModel
-<div>
-    <h1>Pending Selection List</h1>
-    <a class="helplink" target="_blank" href='@Model.HelpLink("List")'>help</a>
-    <form class="ajax" action="/SearchAdd2/ListNext" method="POST">
+<form class="ajax">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Pending Selection List</h3>
+    </div>
+    <div class="modal-body">
+        <a class="helplink" target="_blank" href='@Model.HelpLink("List")'>help</a>
         @Html.Partial("HiddenSearch", Model)
         @Html.Partial("HiddenPeople", Model)
         @Html.Partial("DisplayPeople", Model)
-        <div class="form-actions">
-            @if (!Model.OnlyOne)
-            {
-                <input type="submit" name="submit" class="btn btn-primary" value="Another Search" /> @:or 
-                if (Model.CanAdd)
-                { 
-                <input type="submit" name="submit" class="btn btn-primary" value="Add to Last Family" /> @:or 
-                }
+    </div>
+    <div class="modal-footer">
+        <a class="btn" data-dismiss="modal">Cancel</a>
+        @if (!Model.OnlyOne)
+        {
+            <a href="/SearchAdd2/ListNext/AnotherSearch" class="btn ajax">Another Search</a> @:or 
+            if (Model.CanAdd)
+            { 
+            <a href="/SearchAdd2/ListNext/LastFamily" class="btn ajax">Add to Last Family</a> @:or 
             }
-            <input type="submit" name="submit" class="btn btn-primary commit" value="Commit and Add" />
-        </div>
-    </form>
-</div>
+        }
+        <a href="/SearchAdd2/ListNext/CommitAdd" class="btn btn-primary commit ajax">Commit and Add</a>
+    </div>
+</form>

@@ -235,14 +235,11 @@
 
     $("a.editaddr").click(function (ev) {
         ev.preventDefault();
-        var href = $(this).attr("href");
-        $('<div/>').dialog2({
-            id: "edit-address",
-            content: href,
-            type: "POST"
+        $("<div class='modal fade hide' />").load($(this).attr("href"), {}, function () {
+            $(this).modal("show"); 
         });
     });
-    $("#edit-address button.close-saved-address").live("click", function() {
+    $("a.close-saved-address").live("click", function() {
         $("#primaryaddress").html($("#primaryaddressnew").html());
         var target = $("#addressnew").data("target");
         $("#" + target).html($("#addressnew").html());

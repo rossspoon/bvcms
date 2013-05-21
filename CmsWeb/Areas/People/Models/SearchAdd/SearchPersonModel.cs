@@ -289,6 +289,7 @@ namespace CmsWeb.Areas.People.Models
             City = family.CityName;
             State = new CodeInfo(family.StateCode, cv.GetStateListUnknown());
             Zip = family.ZipCode;
+            Country = new CodeInfo(family.CountryName, CodeValueModel.GetCountryList());
         }
 
         public string ToolTip

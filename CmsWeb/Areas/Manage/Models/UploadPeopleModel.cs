@@ -151,7 +151,7 @@ namespace CmsWeb.Models
             if (names.ContainsKey("position"))
                 if (a[names["position"]].HasValue())
                 {
-                    var v = a[names["position"]].TrimEnd();
+                    var v = a[names["position"]].ToLower().TrimEnd();
                     switch (v)
                     {
                         case "primary":
@@ -287,12 +287,6 @@ namespace CmsWeb.Models
                         UpdateField(p.Family, a, "CityName", "city");
                         UpdateField(p.Family, a, "StateCode", "state");
                         UpdateField(p.Family, a, "ZipCode", "zip");
-
-                        //UpdateField(p, a, "AddressLineOne", "Address");
-                        //UpdateField(p, a, "AddressLineTwo", "Address2");
-                        //UpdateField(p, a, "CityName", "City");
-                        //UpdateField(p, a, "StateCode", "State");
-                        //UpdateField(p, a, "ZipCode", "Zip");
 
                         if (!testing)
                         {

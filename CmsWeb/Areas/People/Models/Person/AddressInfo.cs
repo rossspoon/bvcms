@@ -230,6 +230,9 @@ namespace CmsWeb.Areas.People.Models.Person
                 // at this point the address validated just fine.
             }
 
+            int? ResCodeId = ResCode.Value.ToInt();
+            if (ResCodeId == 0)
+                ResCodeId = null;
 
             switch (Name)
             {
@@ -239,7 +242,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     UpdateValue(f, "AddressToDate", ToDt);
                     UpdateValue(f, "CityName", City);
                     UpdateValue(f, "StateCode", State.Value);
-                    UpdateValue(f, "ResCodeId", ResCode.Value.ToInt());
+                    UpdateValue(f, "ResCodeId", ResCodeId);
                     UpdateValue(f, "ZipCode", Zip ?? "");
                     UpdateValue(f, "CountryName", Country.Value);
                     if (Preferred)
@@ -254,7 +257,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     UpdateValue(p, "AddressToDate", ToDt);
                     UpdateValue(p, "CityName", City);
                     UpdateValue(p, "StateCode", State.Value);
-                    UpdateValue(p, "ResCodeId", ResCode.Value.ToInt());
+                    UpdateValue(p, "ResCodeId", ResCodeId);
                     UpdateValue(p, "ZipCode", Zip ?? "");
                     UpdateValue(p, "CountryName", Country.Value);
                     if (Preferred)

@@ -381,10 +381,9 @@ namespace CmsWeb.Areas.People.Controllers
             var m = AddressInfo.GetAddressInfo(id, type);
             return View(m);
         }
-        [GET("AddressEdit/{type}/{id}")]
+        [POST("AddressEdit/{type}/{id}")]
         public ActionResult AddressEdit(int id, string type)
         {
-            Response.NoCache();
             var m = AddressInfo.GetAddressInfo(id, type);
             return View(m);
         }

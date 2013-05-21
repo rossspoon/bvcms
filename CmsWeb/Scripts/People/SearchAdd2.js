@@ -1,29 +1,36 @@
 ﻿$(function () {
-    $("a.searchadd").click(function (ev) {
+    $("a.xsearchadd").click(function (ev) {
         ev.preventDefault();
         var href = $(this).attr("href");
-        $('<div/>').dialog2({
+        $('<div/>').dialog3({
             id: "search-add",
             content: href,
             type: "POST"
         });
     });
-    $("#search-add a.submit-post").live("click", function (ev) {
+    $("a.searchadd").click(function (ev) {
         ev.preventDefault();
-        var f = $(this).closest("form");
-        var q = f.serialize();
-        $("#search-add").dialog2("close");
-        $.post($(this).attr("href"), q, function (ret) {
-            $(ret).dialog2({ id: "search-add" });
+        $("<div id='search-add' class='modal fade hide' data-width='760' />")
+            .load($(this).attr("href"), {}, function () {
+            $(this).modal("show");
         });
     });
-    $("#search-add .commit").live("click", function (ev) {
+//    $("#search-add a.submit-post").live("click", function (ev) {
+//        ev.preventDefault();
+//        var f = $(this).closest("form");
+//        var q = f.serialize();
+//        $("#search-add").dialog2("close");
+//        $.post($(this).attr("href"), q, function (ret) {
+//            $(ret).dialog2({ id: "search-add" });
+//        });
+//    });
+    $("#search-add a.commit").live("click", function (ev) {
         ev.preventDefault();
         var f = $(this).closest("form");
         var q = f.serialize();
-        $("#search-add").dialog2("close");
+        var loc = $(this).attr("href");
         $.block();
-        $.post($(this).attr("href"), q, function (ret) {
+        $.post(loc, q, function (ret) {
             if (ret.close) {
                 if (ret.message) {
                     alert(ret.message);
