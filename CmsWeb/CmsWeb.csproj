@@ -720,8 +720,6 @@
       <DependentUpon>bootstrap.js</DependentUpon>
     </Content>
     <Content Include="Scripts\Bootstrap\bootstrapx-clickover.js" />
-    <Content Include="Scripts\Bootstrap\jquery.dialog2.helpers.js" />
-    <Content Include="Scripts\Bootstrap\jquery.dialog2.js" />
     <Content Include="Scripts\Bootstrap\spin.min.js" />
     <Content Include="Scripts\Chosen\chosen.jquery.min.js.map">
       <DependentUpon>chosen.jquery.js</DependentUpon>
@@ -732,7 +730,6 @@
     <Content Include="Scripts\jQuery\jquery-ui-1.10.0.custom.min.js.map">
       <DependentUpon>jquery-ui-1.10.0.custom.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\jQuery\jquery.controls.js" />
     <Content Include="Scripts\jQuery\jquery.tooltip.min.js.map">
       <DependentUpon>jquery.tooltip.js</DependentUpon>
     </Content>
@@ -770,6 +767,7 @@
     <Content Include="Areas\People\Views\SearchAdd\HiddenSearch.cshtml" />
     <Content Include="Areas\People\Views\SearchAdd\HiddenPeople.cshtml" />
     <Content Include="Areas\People\Views\SearchAdd\DisplayPeople.cshtml" />
+    <Content Include="Areas\People\Views\Person\HiddenAddress.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />

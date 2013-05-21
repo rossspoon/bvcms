@@ -1,55 +1,60 @@
 ﻿@model CmsWeb.Areas.People.Models.SearchAddModel
-<h1>Individual Search Results (top 20)</h1>
-<a class="helplink pull-right" target="_blank" href='@Model.HelpLink("Results")'>help</a>
-<p>
-    Showing @Model.Showcount of @Model.Count
-</p>
-@if (Model.Count == 0)
-{
-    <div class="alert">
-        <h5>No Matching Records</h5>
+<form class="form-horizontal onecol ajax" method="POST">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Individual Search Results (top 20)</h3>
     </div>
-}
-else
-{
-    <form class="ajax" action="/SearchAdd2/ResultsNext" method="POST">
-        <table id="people" class="table table-condensed">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Email</th>
-                    <th>Age</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var c in Model.PeopleList())
-                {
+    <div class="modal-body">
+        <a class="helplink pull-right" target="_blank" href='@Model.HelpLink("Results")'>help</a>
+        <p>
+            Showing @Model.Showcount of @Model.Count
+        </p>
+        @if (Model.Count == 0)
+        {
+            <div class="alert">
+                <h5>No Matching Records</h5>
+            </div>
+        }
+        else
+        {
+            <table id="people" class="table table-condensed">
+                <thead>
                     <tr>
-                        <td><a href="/SearchAdd2/Select/@c.PeopleId" class="submit-post">@c.Name</a></td>
-                        <td class="addrcol" title="@c.ToolTip">@c.Address</td>
-                        <td>@c.Email</td>
-                        <td>@c.Age</td>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Age</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model.PeopleList())
+                    {
+                        <tr>
+                            <td><a href="/SearchAdd2/Select/@c.PeopleId" class="ajax">@c.Name</a></td>
+                            <td class="addrcol" title="@c.ToolTip">@c.Address</td>
+                            <td>@c.Email</td>
+                            <td>@c.Age</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
         @Html.Partial("HiddenSearch", Model)
         @Html.Partial("HiddenPeople", Model)
-        <div class="form-actions">
-            @if (!Model.OnlyOne)
+    </div>
+    <div class="modal-footer">
+        @if (!Model.OnlyOne)
+        {
+            @:Click a link above to select that person or
+            <a  href="/SearchAdd2/ResultsNext/BackToSearch" class="btn ajax">Go Back to Search</a>
+            if (Model.type == "family")
             {
-                @:Click a link above to select that person or
-                <input type="submit" name="submit" class="btn" value="Go Back to Search" />
-                if (Model.type == "family")
-                {
-                    <input type="submit" name="submit" class="btn btn-primary" value="Add New Person" />
-                }
-                else
-                {
-                    <input type="submit" name="submit" class="btn btn-primary" value="Search For Family" />
-                }
+            <a  href="/SearchAdd2/ResultsNext/AddNewPerson" class="btn ajax">Add New Person</a>
             }
-        </div>
-    </form>
-}
+            else
+            {
+            <a  href="/SearchAdd2/ResultsNext/SearchFamily" class="btn ajax">Search For Family</a>
+            }
+        }
+    </div>
+</form>

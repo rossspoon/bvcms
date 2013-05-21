@@ -1,100 +1,104 @@
 ﻿@using CmsWeb.Areas.People.Models.Person
 @using UtilityExtensions
-@using CmsWeb
 @model CmsWeb.Areas.People.Models.Person.AddressInfo
 
-@helper HiddenAddress(string PrimaryButtonLabel)
+@if (Model.resultnotfound)
 {
-    <form id="hidvalues" class="ajax" action="/Person2/AddressSave/@Model.Name/@Model.PeopleId" method="POST">
-        <input name="Address1" type="hidden" value="@Model.Address1"/>
-        <input name="Address2" type="hidden" value="@Model.Address2"/>
-        <input name="City" type="hidden" value="@Model.City"/>
-        <input name="Zip" type="hidden" value="@Model.Zip"/>
-        <input name="State.Value" type="hidden" value="@Model.State.Value"/>
-        <input name="Country.Value" type="hidden" value="@Model.Country.Value"/>
-        <input name="ResCode.Value" type="hidden" value="@Model.ResCode.Value"/>
-        <input name="Preferred" type="hidden" value="@(Model.Preferred ? "true" : "false")"/>
-        <input name="FromDt" type="hidden" value="@Model.FromDt"/>
-        <input name="ToDt" type="hidden" value="@Model.ToDt"/>
-        <input name="BadAddress" type="hidden" value="@(Model.BadAddress == true ? "true" : "false")"/>
-        <input name="Preferred" type="hidden" value="@(Model.Preferred ? "true" : "false")"/>
-        <div class="form-actions">
-            <a href="#" class="btn close-dialog">Cancel</a>
-            <input type="submit" class="btn btn-primary" value="@PrimaryButtonLabel" />
+    <form class="ajax" action="/Person2/AddressSave/@Model.Name/@Model.PeopleId" method="POST">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>Address Not Found</h3>
+        </div>
+        <div class="modal-body">
+            <h5>What you entered:</h5>
+            <p>
+                @Html.Raw(Model.AddrCityStateZip().Replace("\n", "<br/>\n"))
+                <a class="ajax btn btn-mini" href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId">Edit Address Again</a>
+            </p>
+            <div class="alert">
+                <h5>What was returned:</h5>
+                @Html.Raw(Model.Result.address.Replace("\n", "<br/>\n"))<br />
+            </div>
+            @Html.Partial("HiddenAddress", Model)
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            <input type="submit" class="btn btn-primary" value="Use this Address Anyway" />
         </div>
     </form>
 }
-@if (Model.resultnotfound)
-{
-    <div id="AddressEdit">
-        <h1>Address Not Found</h1>
-        <h5>What you entered:</h5>
-        <p>
-            @Html.Raw(Model.AddrCityStateZip().Replace("\n", "<br/>\n"))
-            <a class="ajax btn btn-mini" href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId">Edit Address Again</a>
-        </p>
-        <div class="alert">
-            <h5>What was returned:</h5>
-            @Html.Raw(Model.Result.address.Replace("\n", "<br/>\n"))<br />
-        </div>
-        @HiddenAddress("Use this Address Anyway")
-    </div>
-}
 else if (Model.resultchanged)
 {
-    <div>
-        <h1>Address Found and Adjusted by USPS</h1>
-        <div class="info">
-            <h5>What was returned:</h5>
-            @Html.Raw(Model.Result.address.Replace("\n", "<br/>\n"))
-            <a class="btn btn-mini ajax" href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId">Edit Address Again</a>
+    <form class="ajax" action="/Person2/AddressSave/@Model.Name/@Model.PeopleId" method="POST">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>Address Found and Adjusted by USPS</h3>
         </div>
-        @HiddenAddress("Accept Address")
-    </div>
+        <div class="modal-body">
+            <div class="info">
+                <h5>What was returned:</h5>
+                @Html.Raw(Model.Result.address.Replace("\n", "<br/>\n"))
+                <a class="btn btn-mini ajax" href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId">Edit Address Again</a>
+            </div>
+            @Html.Partial("HiddenAddress", Model)
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            <input type="submit" class="btn btn-primary" value="Accept Address" />
+        </div>
+    </form>
 }
 else if (Model.saved)
 {
-    <div>
-        <h1>Address Saved</h1>
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Address Saved</h3>
+    </div>
+    <div class="modal-body">
         <p class="alert">
             @Html.Raw(Model.AddrCityStateZip().Replace("\n", "<br/>\n"))
         </p>
         <div id="addressnew" data-target="@(Model.Name == "FamilyAddr" ? "familyaddress" : "personaladdress")" style="display:none">
-           @Html.Partial("DisplayTemplates/Address", Model) 
+            @Html.Partial("DisplayTemplates/Address", Model)
         </div>
-        <div id="primaryaddressnew" style="display:none">
-           @Html.Partial("DisplayTemplates/Address", AddressInfo.GetAddressInfo(Model.PeopleId, "PrimaryAddr")) 
+        <div id="primaryaddressnew" style="display: none">
+            @Html.Partial("DisplayTemplates/Address", AddressInfo.GetAddressInfo(Model.PeopleId, "PrimaryAddr"))
         </div>
-        <div class="form-actions">
-            <button class="btn btn-success close-saved-address close-dialog">Close</button>
-        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-succes close-saved-address" data-dismiss="modal">Close</a>
     </div>
 }
 else // get ready for editing
-{
-    <h1>@Model.Display</h1>
+{    
     <form id="addressForm" class="form-horizontal onecol ajax" action="/Person2/AddressUpdate/@Model.Name/@Model.PeopleId" method="POST">
-        <fieldset class="display">
-            @Html.EditorFor(m => m.Address1)
-            @Html.EditorFor(m => m.Address2)
-            @Html.EditorFor(m => m.City)
-            @Html.EditorFor(m => m.State)
-            @Html.EditorFor(m => m.Country)
-            @Html.EditorFor(m => m.Zip)
-            @Html.EditorFor(m => m.ResCode)
-            @Html.EditorFor(m => m.FromDt)
-            @Html.EditorFor(m => m.ToDt)
-            @(Model.Preferred ? Html.DisplayFor(m => m.Preferred) : Html.EditorFor(m => m.Preferred))
-        </fieldset>
-        @if (!Model.addrok)
-        {
-            <div class="alert">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                City and State are required or Zip is required.
-            </div>
-        }
-        <div class="form-actions">
-            <a href="#" class="btn close-dialog">Close</a>
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>@Model.Display</h3>
+        </div>
+        <div class="modal-body">
+            <fieldset class="display">
+                @Html.EditorFor(m => m.Address1)
+                @Html.EditorFor(m => m.Address2)
+                @Html.EditorFor(m => m.City)
+                @Html.EditorFor(m => m.State)
+                @Html.EditorFor(m => m.Country)
+                @Html.EditorFor(m => m.Zip)
+                @Html.EditorFor(m => m.ResCode)
+                @Html.EditorFor(m => m.FromDt)
+                @Html.EditorFor(m => m.ToDt)
+                @(Model.Preferred ? Html.DisplayFor(m => m.Preferred) : Html.EditorFor(m => m.Preferred))
+            </fieldset>
+            @if (!Model.addrok)
+            {
+                <div class="alert">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    City and State are required or Zip is required.
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
             <input type="submit" class="btn btn-primary" value="Save changes" />
         </div>
     </form>
