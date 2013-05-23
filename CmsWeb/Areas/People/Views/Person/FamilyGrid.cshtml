@@ -21,9 +21,10 @@
         <li @active>
             <a href="/Person2/Index/@m.Id">
                 <img src="@m.Pictures.ThumbUrl" class="headshot"/>
-                @* Dave: How do we indicate the position in family? *@
                 <span class="name">@m.Name @Html.Raw(m.SpouseIndicator)</span>
-                <span class="age">@m.Age</span>
+                <span class="badge badge-small">@m.MemberStatus</span>
+                <div><span class="age">@m.Age</span> &bull; <span class="role">@m.PositionInFamily</span></div>
+                <span class="email email_display">@m.Email</span>
             </a>
         </li>
     }

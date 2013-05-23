@@ -46,6 +46,7 @@ namespace CmsWeb.Areas.People.Models
         public string Name { get; set; }
 
         [UIHint("Text")]
+        [DisplayName("Communication")]
         public string Phone { get; set; }
 
         [UIHint("Text")]

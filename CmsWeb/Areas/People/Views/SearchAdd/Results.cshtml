@@ -1,13 +1,14 @@
-﻿@model CmsWeb.Areas.People.Models.SearchAddModel
+﻿@using UtilityExtensions
+@model CmsWeb.Areas.People.Models.SearchAddModel
 <form class="form-horizontal onecol ajax" method="POST">
     <div class="modal-header">
         <a class="close" data-dismiss="modal">×</a>
-        <h3>Individual Search Results (top 20)</h3>
+        <h3>Individual Search Results</h3>
     </div>
     <div class="modal-body">
         <a class="helplink pull-right" target="_blank" href='@Model.HelpLink("Results")'>help</a>
         <p>
-            Showing @Model.Showcount of @Model.Count
+            Click a Name below to Select that Person
         </p>
         @if (Model.Count == 0)
         {
@@ -37,6 +38,13 @@
                         </tr>
                     }
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            Showing @Model.Showcount of @Model.Count.ToString("N0")
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         }
         @Html.Partial("HiddenSearch", Model)
@@ -45,15 +53,14 @@
     <div class="modal-footer">
         @if (!Model.OnlyOne)
         {
-            @:Click a link above to select that person or
-            <a  href="/SearchAdd2/ResultsNext/BackToSearch" class="btn ajax">Go Back to Search</a>
+            <a  href="/SearchAdd2/ResultsNext/BackToSearch" class="btn ajax">Go Back to Refine your Search</a>
             if (Model.type == "family")
             {
-            <a  href="/SearchAdd2/ResultsNext/AddNewPerson" class="btn ajax">Add New Person</a>
+                <a  href="/SearchAdd2/ResultsNext/AddNewPerson" class="btn ajax">Add New Person</a>
             }
             else
             {
-            <a  href="/SearchAdd2/ResultsNext/SearchFamily" class="btn ajax">Search For Family</a>
+                <a  href="/SearchAdd2/ResultsNext/SearchFamily" class="btn btn-primary ajax">Search for Family</a>
             }
         }
     </div>

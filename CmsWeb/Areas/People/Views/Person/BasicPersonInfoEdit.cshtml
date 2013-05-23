@@ -36,7 +36,6 @@
 
 @helper FormAction()
 {
-@* Dave: What about the order of buttons? and color of primary? *@
     <div class="form-actions">
         @Html.ActionLink("Cancel", "BasicDisplay", "Person", Model.RouteVals, Model.Classes("btn btn-neutral pull-right btn_spc displayedit"))
         @Html.ActionLink("Save Changes", "BasicUpdate", "Person", Model.RouteVals, Model.Classes("btn btn-primary pull-right submitbutton"))

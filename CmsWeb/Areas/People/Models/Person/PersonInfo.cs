@@ -105,7 +105,7 @@ namespace CmsWeb.Areas.People.Models.Person
                     Age = p.Age.ToString(),
                     Birthday = p.DOB,
                     CampusId = p.CampusId ?? 0,
-                    Mobile = p.CellPhone.FmtFone(),
+                    Mobile = new CellPhoneInfo(p.CellPhone.FmtFone(), p.ReceiveSMS),
                     DeceasedDate = p.DeceasedDate,
                     DoNotCallFlag = p.DoNotCallFlag,
                     DoNotMailFlag = p.DoNotMailFlag,

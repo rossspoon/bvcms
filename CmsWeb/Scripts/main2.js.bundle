@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<bundle minify="true" runOnBuild="true" output="main2.js">
+  <file>/Scripts/jquery/jquery-1.9.1.js</file>
+  <file>/Scripts/jquery/jquery-migrate-1.1.1.js</file>
+  <file>/Scripts/bootstrap/bootstrap.js</file>
+  <file>/Scripts/bootstrap/bootstrap-modalmanager.js</file>
+  <file>/Scripts/bootstrap/bootstrap-modal.js</file>
+  <file>/Scripts/bootstrap/bootstrap-editable.js</file>
+  <file>/Scripts/jquery/jquery.cookie.js</file>
+  <file>/Scripts/jquery/jquery.blockUI.js</file>
+  <file>/Scripts/jquery/jquery.mousewheel.js</file>
+  <file>/Scripts/jquery/jquery.validate.js</file>
+  <file>/Scripts/jquery/jquery.joyride-1.0.5.js</file>
+  <file>/Scripts/js/modernizr-2.6.2.js</file>
+  <file>/Scripts/js/tutorial.js</file>
+  <file>/Scripts/jquery/jquery.sortElements.js</file>
+  <file>/Scripts/jquery/jquery.textarea.js</file>
+  <file>/Scripts/jquery/jquery.tooltip.js</file>
+  <file>/Scripts/jquery/jquery.alerts.js</file>
+  <file>/Scripts/moment/moment.js</file>
+  <file>/Scripts/moment/moment-datepicker.js</file>
+  <file>/Scripts/Autocomplete/jquery-ui-1.10.2.custom.js</file>
+  <file>/Scripts/chosen/chosen.jquery.js</file>
+  <file>/Scripts/js/Pager3.js</file>
+  <file>/Scripts/js/headermenu2.js</file>
+</bundle>

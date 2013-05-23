@@ -11,6 +11,10 @@ namespace CmsWeb.Code
     {
         private string _value;
 
+        public CodeInfo()
+        {
+            
+        }
         public CodeInfo(object value, IEnumerable<CodeValueItem> items, string valuefield = "Id")
         {
             if (value != null)
@@ -33,6 +37,8 @@ namespace CmsWeb.Code
         public IEnumerable<SelectListItem> Items { get; set; }
         public override string ToString()
         {
+            if (Items == null)
+                return Value;
             var i = Items.SingleOrDefault(ii => ii.Value == Value);
             if (i == null)
                 return "";

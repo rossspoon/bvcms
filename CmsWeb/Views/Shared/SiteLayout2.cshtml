@@ -1,13 +1,9 @@
-﻿@{
-    Bundles.Reference("new2css");
-    Bundles.Reference("main2");
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    @Bundles.RenderStylesheets()
+    <link rel="stylesheet" href="@Fingerprint.Tag("/content/new2css.css")" />
     @RenderSection("head", required: false)
     <style type="text/css">
         @{ var bkcolor = DbUtil.Db.Setting("HeaderBackground", ""); }
@@ -16,7 +12,8 @@
             @:#header { background-color: @bkcolor; }
         }
     </style>
-    @Bundles.RenderScripts()
+    <script src="@Fingerprint.Tag("/Scripts/main2.js")"></script>
+    @RenderSection("scripts", required: false)
     @Html.Partial("DatePickerDefaults2")
 </head>
 <body>

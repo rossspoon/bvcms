@@ -3,12 +3,14 @@
 @{
     Layout = "/Views/Shared/SiteLayout.cshtml";
     ViewBag.Title = "SearchBuilder";
-    CassetteBundleConfiguration.BundleRefJs();
-    Bundles.Reference("querybuilder");
 }
 @section head 
 {
     <link href="/Content/styles/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+}
+@section scripts
+{
+    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/Search/querybuilder.js")"></script>
 }
 
 @Html.Hidden("AutoRun")

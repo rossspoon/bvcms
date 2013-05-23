@@ -9,17 +9,14 @@
         <fieldset class="display">
             @Html.Partial("HiddenMeta", Model)
 
-            @Html.EditorFor(m => m.Name)
-            <span class="help-inline">Starting letters of First <span class="label">space</span> Last or just Last</span>
+            @Html.EditorFor(m => m.Name, new { help = "<i>Starting letters of First &amp; Last or just Last, e.g. <u>Pe Smi</u></i>" })
 
-            @Html.EditorFor(m => m.Phone)
-            <span class="help-inline">Any part of any phone or email</span>
+            @Html.EditorFor(m => m.Phone, new { help = "<i>Any part of any Phone or Email</i>" })
 
-            @Html.EditorFor(m => m.Address)
-            <span class="help-inline">Any part of the address, city or zip</span>
+            @Html.EditorFor(m => m.Address, new { help = "<i>Any part of the Street Address, City or Zip</i>" })
 
-            @Html.EditorFor(m => m.dob)
-            <span class="help-inline">YYYY or MM or MM/DD or MM/DD/YY</span>
+            @Html.EditorFor(m => m.dob, new { help = "<i>YYYY or MM or MM/DD or MM/DD/YY</i>" })
+
             @Html.Partial("HiddenPeople", Model)
         </fieldset>
     </div>

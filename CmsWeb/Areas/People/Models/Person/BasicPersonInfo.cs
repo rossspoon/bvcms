@@ -24,6 +24,16 @@ namespace CmsWeb.Areas.People.Models.Person
         public string Address { get; set; }
         public bool Send { get; set; }
     }
+    public class CellPhoneInfo
+    {
+        public CellPhoneInfo(string number, bool active)
+        {
+            Number = number;
+            ReceiveText = active;
+        }
+        public string Number { get; set; }
+        public bool ReceiveText { get; set; }
+    }
 
     public class BasicPersonInfo
     {
@@ -135,8 +145,8 @@ namespace CmsWeb.Areas.People.Models.Person
         [UIHint("Text")]
         [DisplayName("Home Phone")]
         public string HomePhone { get; set; }
-        [UIHint("Text")]
-        public string Mobile { get; set; }
+        [UIHint("CellPhone")]
+        public CellPhoneInfo Mobile { get; set; }
         [UIHint("Text")]
         public string Work { get; set; }
 
@@ -188,7 +198,7 @@ namespace CmsWeb.Areas.People.Models.Person
                 Age = p.Age.ToString(),
                 Birthday = p.DOB,
                 CampusId = p.CampusId ?? 0,
-                Mobile = p.CellPhone.FmtFone(),
+                Mobile = new CellPhoneInfo(p.CellPhone.FmtFone(), p.ReceiveSMS),
                 DeceasedDate = p.DeceasedDate,
                 DoNotCallFlag = p.DoNotCallFlag,
                 DoNotMailFlag = p.DoNotMailFlag,
@@ -248,7 +258,8 @@ namespace CmsWeb.Areas.People.Models.Person
             p.UpdateValue(psb, "AltName", AltName);
             p.UpdateValue(psb, "GenderId", Gender.Value.ToInt2());
             p.UpdateValue(psb, "Grade", Grade.ToInt2());
-            p.UpdateValue(psb, "CellPhone", Mobile.GetDigits());
+            p.UpdateValue(psb, "CellPhone", Mobile.Number.GetDigits());
+            p.UpdateValue(psb, "ReciveSMS", Mobile.ReceiveText);
             p.Family.UpdateValue(fsb, "HomePhone", HomePhone.GetDigits());
             p.UpdateValue(psb, "MaidenName", FormerName);
             p.UpdateValue(psb, "MaritalStatusId", Marital.Value.ToInt2());

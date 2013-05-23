@@ -1,14 +1,13 @@
-﻿@using CmsWeb
-@using CmsWeb.Models
-@using CmsData
-@using UtilityExtensions
-@model CmsWeb.Areas.People.Models.Person.PersonModel
+﻿@model CmsWeb.Areas.People.Models.Person.PersonModel
 @{
     Layout = "/Views/Shared/SiteLayout2.cshtml";
     ViewBag.Title = "Person";
-    Bundles.Reference("main2");
-    Bundles.Reference("person12");
-    Bundles.Reference("OrgMemberDialog");
+}
+@section scripts
+{
+    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/main2.js")"></script>
+    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/person12.js")"></script>
+    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/Org/OrgMemberDialog2.js")"></script>
 }
 @section head
 {

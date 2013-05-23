@@ -2,6 +2,6 @@
 <div class="control-group">
     @Html.LabelFor(m => m, new { @class = "control-label"})
     <div class="controls">
-        @Html.TextBoxFor(m => m)
+        @Html.TextBoxFor(m => m)<span class="help-block">@Html.Raw(ViewData["help"])</span>
     </div>
 </div>

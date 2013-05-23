@@ -6,7 +6,7 @@
 {
     <form class="ajax" action="/Person2/AddressSave/@Model.Name/@Model.PeopleId" method="POST">
         <div class="modal-header">
-            <a class="close" data-dismiss="modal">×</a>
+            <a class="close" data-dismiss="modal">x</a>
             <h3>Address Not Found</h3>
         </div>
         <div class="modal-body">
@@ -31,7 +31,7 @@ else if (Model.resultchanged)
 {
     <form class="ajax" action="/Person2/AddressSave/@Model.Name/@Model.PeopleId" method="POST">
         <div class="modal-header">
-            <a class="close" data-dismiss="modal">×</a>
+            <a class="close" data-dismiss="modal">x</a>
             <h3>Address Found and Adjusted by USPS</h3>
         </div>
         <div class="modal-body">
@@ -51,7 +51,7 @@ else if (Model.resultchanged)
 else if (Model.saved)
 {
     <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
+        <a class="close" data-dismiss="modal">x</a>
         <h3>Address Saved</h3>
     </div>
     <div class="modal-body">
@@ -73,7 +73,7 @@ else // get ready for editing
 {    
     <form id="addressForm" class="form-horizontal onecol ajax" action="/Person2/AddressUpdate/@Model.Name/@Model.PeopleId" method="POST">
         <div class="modal-header">
-            <a class="close" data-dismiss="modal">×</a>
+            <a class="close" data-dismiss="modal">x</a>
             <h3>@Model.Display</h3>
         </div>
         <div class="modal-body">

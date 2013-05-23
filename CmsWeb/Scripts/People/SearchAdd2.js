@@ -10,7 +10,7 @@
     });
     $("a.searchadd").click(function (ev) {
         ev.preventDefault();
-        $("<div id='search-add' class='modal fade hide' data-width='760' />")
+        $("<div id='search-add' class='modal fade hide' data-width='600' />")
             .load($(this).attr("href"), {}, function () {
             $(this).modal("show");
         });

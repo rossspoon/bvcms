@@ -54,3 +54,19 @@
         <a href="@href">@text</a>
     }
 }
+@helper IncludeCss()
+{
+    var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
+    if (newlook)
+    {
+        <link rel="stylesheet" href="@Fingerprint.Tag("/content/newcss.css")" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="@Fingerprint.Tag("/content/css.css")" />
+    }
+}
+@helper IncludeJs()
+{
+    <script src="@Fingerprint.Tag("/Scripts/main.js")"></script>
+}

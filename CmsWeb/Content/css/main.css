@@ -13,7 +13,8 @@ td.center, th.center {
     text-align: center;
 }
 
-/* Dave: I am adding these so that the controls are not spaced so far apart */
+/* Dave: I am adding these so that the controls are not spaced so far apart 
+   todo: test remove this */
 .control-group {
     margin-bottom: auto;
 }
