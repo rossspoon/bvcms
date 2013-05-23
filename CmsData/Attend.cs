@@ -121,6 +121,7 @@ namespace CmsData
 				try
 				{
         		    Db.RecordAttendance(OrgId, PeopleId, dt, Present, info.Location);
+				    return;
 				}
 				catch (SqlException ex)
 				{
