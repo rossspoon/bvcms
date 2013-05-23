@@ -27,7 +27,24 @@ namespace CmsData
 		}
 		public static string RecordAttendance(CMSDataContext Db, int PeopleId, int MeetingId, bool attended)
 		{
-			return Db.RecordAttendance(MeetingId, PeopleId, attended);
+			int ntries = 6;
+			while (true)
+			{
+				try
+				{
+        			return Db.RecordAttendance(MeetingId, PeopleId, attended);
+				}
+				catch (SqlException ex)
+				{
+					if (ex.Number == 1205)
+						if (--ntries > 0)
+						{
+							System.Threading.Thread.Sleep(500);
+							continue;
+						}
+					throw;
+				}
+			}
 		}
 		public static void MarkRegistered(CMSDataContext Db, int OrgId, int PeopleId, DateTime MeetingDate, int? CommitId, bool AvoidRegrets = false)
 		{
@@ -98,7 +115,25 @@ namespace CmsData
 			        Db.SubmitChanges();
 			    }
 			}
-        	Db.RecordAttendance(OrgId, PeopleId, dt, Present, info.Location);
+			int ntries = 6;
+			while (true)
+			{
+				try
+				{
+        		    Db.RecordAttendance(OrgId, PeopleId, dt, Present, info.Location);
+				    return;
+				}
+				catch (SqlException ex)
+				{
+					if (ex.Number == 1205)
+						if (--ntries > 0)
+						{
+							System.Threading.Thread.Sleep(500);
+							continue;
+						}
+					throw;
+				}
+			}
 		}
 		public static int AddAttend(CMSDataContext Db, int PeopleId, int OrgId, bool Present, DateTime dt)
 		{
