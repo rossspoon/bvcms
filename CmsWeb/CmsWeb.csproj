@@ -1356,6 +1356,12 @@
     <Content Include="Scripts\Org\OrgMemberDialog2.js" />
     <Content Include="Scripts\People\SearchAdd2.js" />
     <Content Include="Scripts\Search\AdvancedSearch.js" />
+    <Content Include="Scripts\task.js">
+      <DependentUpon>task.js.bundle</DependentUpon>
+    </Content>
+    <Content Include="Scripts\task.min.js">
+      <DependentUpon>task.js.bundle</DependentUpon>
+    </Content>
     <Content Include="Scripts\Volunteer\Calendar.min.js">
       <DependentUpon>Calendar.js</DependentUpon>
     </Content>
@@ -1714,6 +1720,9 @@
     </Content>
     <Content Include="Scripts\Volunteer\volunteering.min.js.map">
       <DependentUpon>volunteering.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\task.min.js.map">
+      <DependentUpon>task.js.bundle</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
