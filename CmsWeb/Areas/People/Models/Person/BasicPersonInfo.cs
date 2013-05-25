@@ -215,10 +215,10 @@ namespace CmsWeb.Areas.People.Models.Person
                 LastName = p.LastName,
                 AltName = p.AltName,
                 FormerName = p.MaidenName,
-                Gender = new CodeInfo(p.GenderId, cv.GenderCodesWithUnspecified()),
-                Marital = new CodeInfo(p.MaritalStatusId, cv.MaritalStatusCodes99()),
-                MemberStatus = new CodeInfo(p.MemberStatusId, cv.MemberStatusCodes0()),
-                FamilyPosition = new CodeInfo(p.PositionInFamilyId, cv.FamilyPositionCodes()),
+                Gender = new CodeInfo(p.GenderId, "Gender"),
+                Marital = new CodeInfo(p.MaritalStatusId, "Marital"),
+                MemberStatus = new CodeInfo(p.MemberStatusId, "MemberStatus"),
+                FamilyPosition = new CodeInfo(p.PositionInFamilyId, "FamilyPosition"),
                 MiddleName = p.MiddleName,
                 GoesBy = p.NickName,
                 Occupation = p.OccupationOther,
@@ -226,7 +226,7 @@ namespace CmsWeb.Areas.People.Models.Person
                 School = p.SchoolOther,
                 Spouse = p.SpouseName(DbUtil.Db),
                 Suffix = p.SuffixCode,
-                Title = new CodeInfo(p.TitleCode, cv.TitleCodes(), "Value"),
+                Title = new CodeInfo(p.TitleCode, "Title"),
                 WeddingDate = p.WeddingDate.FormatDate(),
                 Work = p.WorkPhone.FmtFone(),
                 ReceiveSMS = p.ReceiveSMS,
@@ -259,7 +259,7 @@ namespace CmsWeb.Areas.People.Models.Person
             p.UpdateValue(psb, "GenderId", Gender.Value.ToInt2());
             p.UpdateValue(psb, "Grade", Grade.ToInt2());
             p.UpdateValue(psb, "CellPhone", Mobile.Number.GetDigits());
-            p.UpdateValue(psb, "ReciveSMS", Mobile.ReceiveText);
+            p.UpdateValue(psb, "ReceiveSMS", Mobile.ReceiveText);
             p.Family.UpdateValue(fsb, "HomePhone", HomePhone.GetDigits());
             p.UpdateValue(psb, "MaidenName", FormerName);
             p.UpdateValue(psb, "MaritalStatusId", Marital.Value.ToInt2());

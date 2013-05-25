@@ -5,14 +5,12 @@
 }
 @section scripts
 {
-    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/main2.js")"></script>
-    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/person12.js")"></script>
+    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/People/person1.js")"></script>
     <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/Org/OrgMemberDialog2.js")"></script>
 }
 @section head
 {
-    <link href="~/Content/css/person.css" rel="stylesheet" />
-    <script src="http://use.edgefonts.net/asap.js"></script>
+    <link href="@Fingerprint.Tag("/Content/css/person.css")" rel="stylesheet" />
 }
 @Html.Hidden("newlook", "true")
 @Html.Hidden("PeopleId", Model.displayperson.PeopleId)
@@ -23,7 +21,9 @@
             <div id="sidebar">
                 @Html.Partial("FamilyGrid", Model)
                 @Html.Partial("Addresses", Model)
-                @Html.Partial("RelatedFamilies", Model)
+                <div id="related-families-div">
+                    @Html.Partial("RelatedFamilies", Model)
+                </div>
             </div>
         </div>
         <div class="span9">

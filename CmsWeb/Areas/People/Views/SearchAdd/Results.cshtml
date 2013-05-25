@@ -31,7 +31,14 @@
                     @foreach (var c in Model.PeopleList())
                     {
                         <tr>
-                            <td><a href="/SearchAdd2/Select/@c.PeopleId" class="ajax">@c.Name</a></td>
+                            @if (Model.OnlyOne)
+                            {
+                                <td><a href="/SearchAdd2/Select/@c.PeopleId" class="commit">@c.Name</a></td>
+                            }
+                            else
+                            {
+                                <td><a href="/SearchAdd2/Select/@c.PeopleId" class="ajax">@c.Name</a></td>
+                            }
                             <td class="addrcol" title="@c.ToolTip">@c.Address</td>
                             <td>@c.Email</td>
                             <td>@c.Age</td>
@@ -48,6 +55,7 @@
             </table>
         }
         @Html.Partial("HiddenSearch", Model)
+        @Html.Partial("HiddenMeta", Model)
         @Html.Partial("HiddenPeople", Model)
     </div>
     <div class="modal-footer">

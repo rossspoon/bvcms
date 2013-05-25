@@ -59,14 +59,26 @@
     var newlook = DbUtil.Db.UserPreference("newlook3", "false") == "true";
     if (newlook)
     {
-        <link rel="stylesheet" href="@Fingerprint.Tag("/content/newcss.css")" />
+        <link rel="stylesheet" href="@Fingerprint.Tag("/content/styles/newcss.css")" />
+        <link rel="stylesheet" href="@Fingerprint.Tag("/content/css/font-awesome.css")" />
     }
     else
     {
-        <link rel="stylesheet" href="@Fingerprint.Tag("/content/css.css")" />
+        <link rel="stylesheet" href="@Fingerprint.Tag("/content/styles/css.css")" />
+        <link rel="stylesheet" href="@Fingerprint.Tag("/content/css/font-awesome.css")" />
     }
 }
 @helper IncludeJs()
 {
-    <script src="@Fingerprint.Tag("/Scripts/main.js")"></script>
+    <script src="@Fingerprint.Tag("/Scripts/jquery/main.js")"></script>
+    <script src="@Fingerprint.Tag("/Scripts/chosen/chosen.jquery.js")"></script>
+    <script src="@Fingerprint.Tag("/Scripts/js/main.custom.js")"></script>
+}
+@helper IncludeJs2()
+{
+    <script src="@Fingerprint.Tag("/Scripts/jquery/main2.js")"></script>
+    <script src="@Fingerprint.Tag("/Scripts/bootstrap/bootstrap-bundle.js")"></script>
+    <script src="@Fingerprint.Tag("/Scripts/moment/moment-bundle.js")"></script>
+    <script src="@Fingerprint.Tag("/Scripts/chosen/chosen.jquery.js")"></script>
+    <script src="@Fingerprint.Tag("/Scripts/js/main2.custom.js")"></script>
 }

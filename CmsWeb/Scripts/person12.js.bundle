@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<bundle minify="true" runOnBuild="true" output="person12.js">
-  <!--The order of the <file> elements determines the order of them when bundled.-->
-  <file>/Scripts/jquery/jquery.address-1.5.js</file>
-  <file>/Scripts/People/person1.js</file>
-  <file>/Scripts/People/SearchAdd2.js</file>
-</bundle>

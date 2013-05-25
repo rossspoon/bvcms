@@ -287,9 +287,9 @@ namespace CmsWeb.Areas.People.Models
             Address = family.AddressLineOne;
             Address2 = family.AddressLineTwo;
             City = family.CityName;
-            State = new CodeInfo(family.StateCode, cv.GetStateListUnknown());
+            State = new CodeInfo(family.StateCode, "State");
             Zip = family.ZipCode;
-            Country = new CodeInfo(family.CountryName, CodeValueModel.GetCountryList());
+            Country = new CodeInfo(family.CountryName, "Country");
         }
 
         public string ToolTip

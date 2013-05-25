@@ -140,9 +140,9 @@ namespace CmsWeb.Areas.People.Models.Person
                     a.BadAddress = p.PrimaryBadAddrFlag == 1;
                     a.City = p.PrimaryCity;
                     a.Zip = p.PrimaryZip;
-                    a.State = new CodeInfo(p.PrimaryState, StateCodes());
-                    a.Country = new CodeInfo(p.PrimaryCountry, Countries());
-                    a.ResCode = new CodeInfo(p.PrimaryResCode, ResCodes());
+                    a.State = new CodeInfo(p.PrimaryState, "State");
+                    a.Country = new CodeInfo(p.PrimaryCountry, "Country");
+                    a.ResCode = new CodeInfo(p.PrimaryResCode, "ResCode");
                     break;
                 case "FamilyAddr":
                     a.Name = typeid;
@@ -153,9 +153,9 @@ namespace CmsWeb.Areas.People.Models.Person
                     a.BadAddress = p.Family.BadAddressFlag;
                     a.City = p.Family.CityName;
                     a.Zip = p.Family.ZipCode;
-                    a.State = new CodeInfo(p.Family.StateCode, StateCodes());
-                    a.Country = new CodeInfo(p.Family.CountryName, Countries());
-                    a.ResCode = new CodeInfo(p.Family.ResCodeId, ResCodes());
+                    a.State = new CodeInfo(p.Family.StateCode, "State");
+                    a.Country = new CodeInfo(p.Family.CountryName, "Country");
+                    a.ResCode = new CodeInfo(p.Family.ResCodeId, "ResCode");
                     a.Preferred = p.AddressTypeId == 10;
                     break;
                 case "PersonalAddr":
@@ -167,9 +167,9 @@ namespace CmsWeb.Areas.People.Models.Person
                     a.BadAddress = p.BadAddressFlag;
                     a.City = p.CityName;
                     a.Zip = p.ZipCode;
-                    a.State = new CodeInfo(p.StateCode, StateCodes());
-                    a.Country = new CodeInfo(p.CountryName, Countries());
-                    a.ResCode = new CodeInfo(p.ResCodeId, ResCodes());
+                    a.State = new CodeInfo(p.StateCode, "State");
+                    a.Country = new CodeInfo(p.CountryName, "Country");
+                    a.ResCode = new CodeInfo(p.ResCodeId, "ResCode");
                     a.Preferred = p.AddressTypeId == 30;
                     break;
             }
@@ -181,7 +181,7 @@ namespace CmsWeb.Areas.People.Models.Person
             Address2 = Result.Line2;
             City = Result.City;
             Zip = Result.Zip;
-            State = new CodeInfo(Result.State, StateCodes());
+            State = new CodeInfo(Result.State, "State");
         }
 
         public bool addrok

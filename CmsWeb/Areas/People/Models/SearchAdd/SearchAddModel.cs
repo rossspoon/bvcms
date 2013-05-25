@@ -26,10 +26,10 @@ namespace CmsWeb.Areas.People.Models
         private string[] noaddtypes = { "relatedfamily", "mergeto", "contactor", "taskdelegate", "taskowner", "taskdelegate2" };
         private string[] usersonlytypes = { "taskdelegate", "taskowner", "taskdelegate2" };
         private string[] onlyonetypes = { "taskdelegate", "taskowner", "taskdelegate2", "mergeto", "relatedfamily" };
-        public bool CanAdd { get { return !noaddtypes.Contains(type); } }
+        public bool CanAdd { get { return !noaddtypes.Contains(type.ToLower()); } }
         public string typeid { get; set; }
-        public bool UsersOnly { get { return usersonlytypes.Contains(type); } }
-        public bool OnlyOne { get { return onlyonetypes.Contains(type); } }
+        public bool UsersOnly { get { return usersonlytypes.Contains(type.ToLower()); } }
+        public bool OnlyOne { get { return onlyonetypes.Contains(type.ToLower()); } }
         public string submit { get; set; }
 
         public int? EntryPointId { get; set; }
@@ -206,26 +206,28 @@ namespace CmsWeb.Areas.People.Models
                 }
             }
         }
-        public static void AddRelatedFamily(int familyId, int relatedPersonId)
+        public static string AddRelatedFamily(int peopleid, int relatedPersonId)
         {
-            var p = DbUtil.Db.LoadPersonById(relatedPersonId);
+            var p = DbUtil.Db.LoadPersonById(peopleid);
+            var p2 = DbUtil.Db.LoadPersonById(relatedPersonId);
             var rf = DbUtil.Db.RelatedFamilies.SingleOrDefault(r =>
-                (r.FamilyId == familyId && r.RelatedFamilyId == p.FamilyId)
-                || (r.FamilyId == p.FamilyId && r.RelatedFamilyId == familyId)
+                (r.FamilyId == p.FamilyId && r.RelatedFamilyId == p2.FamilyId)
+                || (r.FamilyId == p2.FamilyId && r.RelatedFamilyId == p.FamilyId)
                 );
             if (rf == null)
             {
                 rf = new RelatedFamily
                 {
-                    FamilyId = familyId,
-                    RelatedFamilyId = p.FamilyId,
-                    FamilyRelationshipDesc = "Add Description",
+                    FamilyId = p.FamilyId,
+                    RelatedFamilyId = p2.FamilyId,
+                    FamilyRelationshipDesc = "",
                     CreatedBy = Util.UserId1,
                     CreatedDate = Util.Now,
                 };
                 DbUtil.Db.RelatedFamilies.InsertOnSubmit(rf);
                 DbUtil.Db.SubmitChanges();
             }
+            return "#rf-{0}-{1}".Fmt(rf.FamilyId, rf.RelatedFamilyId);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace CmsWeb.Areas.People.Controllers
             var m = new SearchAddModel { typeid = typeid, type = type };
             Organization org = null;
             m.CampusId = null;
-            switch (m.type)
+            switch (m.type.ToLower())
             {
                 case "addpeople":
                     m.EntryPointId = 0;
@@ -149,16 +149,16 @@ namespace CmsWeb.Areas.People.Controllers
                 First = p.FirstName,
                 GoesBy = p.NickName,
                 Last = p.LastName,
-                Marital = new CodeInfo(p.GenderId, cv.MaritalStatusCodes99()),
+                Marital = new CodeInfo(p.MaritalStatusId, "Marital"),
                 Email = p.EmailAddress,
                 Suffix = p.SuffixCode,
                 Title = p.TitleCode,
                 dob = p.DOB,
-                Gender = new CodeInfo(p.GenderId, cv.GenderCodesWithUnspecified()),
+                Gender = new CodeInfo(p.GenderId, "Gender"),
                 Phone = p.CellPhone,
                 context = m.type,
-                EntryPoint = new CodeInfo(p.EntryPointId, cv.EntryPoints()),
-                Campus = new CodeInfo(p.CampusId, cv.AllCampuses0()),
+                EntryPoint = new CodeInfo(p.EntryPointId, "EntryPoint"),
+                Campus = new CodeInfo(p.CampusId, "Campus"),
             };
             s.LoadFamily();
             m.List.Add(s);
@@ -192,17 +192,17 @@ namespace CmsWeb.Areas.People.Controllers
             {
                 FamilyId = FamilyId,
                 index = m.List.Count,
-                Gender = new CodeInfo(99, cv.GenderCodesWithUnspecified()),
-                Marital = new CodeInfo(99, cv.MaritalStatusCodes99()),
-                Campus = new CodeInfo(m.CampusId, cv.AllCampuses0()),
-                EntryPoint = new CodeInfo(m.EntryPointId, cv.EntryPoints()),
+                Gender = new CodeInfo(99, "Gender"),
+                Marital = new CodeInfo(99, "Marital"),
+                Campus = new CodeInfo(m.CampusId, "Campus"),
+                EntryPoint = new CodeInfo(m.EntryPointId, "EntryPoint"),
                 context = m.type,
             };
 #if DEBUG
             p.First = "David";
             p.Last = "Carr." + DateTime.Now.Millisecond;
-            p.Gender = new CodeInfo(0, cv.GenderCodesWithUnspecified());
-            p.Marital = new CodeInfo(0, cv.MaritalStatusCodes99());
+            p.Gender = new CodeInfo(0, "Gender");
+            p.Marital = new CodeInfo(0, "Marital");
             p.dob = "na";
             p.Email = "na";
             p.Phone = "na";
@@ -253,7 +253,7 @@ namespace CmsWeb.Areas.People.Controllers
         {
             var id = m.typeid;
 			var iid = m.typeid.ToInt();
-            switch (m.type)
+            switch (m.type.ToLower())
             {
                 case "addpeople":
                     return AddPeople(m, OriginCode.MainMenu);
@@ -279,26 +279,26 @@ namespace CmsWeb.Areas.People.Controllers
                     return AddContributor(iid, m, OriginCode.Contribution);
                 case "taskdelegate":
                     if (m.List.Count > 0)
-                        return Json(new { close = true, how = "addselected", url="/Task/Delegate/", pid = m.List[0].PeopleId });
+                        return Json(new { close = true, how = "addselected", url = "/Task/Delegate/", pid = m.List[0].PeopleId, from = m.type });
                     break;
                 case "taskdelegate2":
                     if (m.List.Count > 0)
-                        return Json(new { close = true, how = "addselected2", url = "/Task/Action/", pid = m.List[0].PeopleId });
+                        return Json(new { close = true, how = "addselected2", url = "/Task/Action/", pid = m.List[0].PeopleId, from = m.type });
                     break;
                 case "taskabout":
                     if (m.List.Count > 0)
-                        return Json(new { close = true, how = "addselected", url = "/Task/ChangeAbout/", pid = m.List[0].PeopleId });
+                        return Json(new { close = true, how = "addselected", url = "/Task/ChangeAbout/", pid = m.List[0].PeopleId, from = m.type });
                     break;
                 case "mergeto":
                     if (m.List.Count > 0)
-						return Json(new { close = true, how = "addselected", pid = m.List[0].PeopleId });
+                        return Json(new { close = true, how = "addselected", pid = m.List[0].PeopleId, from = m.type });
                     break;
                 case "taskowner":
                     if (m.List.Count > 0)
-                        return Json(new { close = true, how = "addselected", url = "/Task/ChangeOwner/", pid = m.List[0].PeopleId });
+                        return Json(new { close = true, how = "addselected", url = "/Task/ChangeOwner/", pid = m.List[0].PeopleId, from = m.type });
                     break;
             }
-            return Json(new { close = true });
+            return Json(new { close = true, from = m.type });
         }
 
         private JsonResult AddContactees(int id, SearchAddModel m, int origin)
@@ -323,7 +323,7 @@ namespace CmsWeb.Areas.People.Controllers
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Json(new { close = true, how = "addselected" });
+            return Json(new { close = true, how = "addselected", from = m.type });
         }
         private JsonResult AddContactors(int id, SearchAddModel m, int origin)
         {
@@ -331,7 +331,7 @@ namespace CmsWeb.Areas.People.Controllers
             {
                 var c = DbUtil.Db.Contacts.SingleOrDefault(ct => ct.ContactId == id);
                 if (c == null)
-                    return Json(new { close = true, how = "CloseAddDialog" });
+                    return Json(new { close = true, how = "CloseAddDialog", from = m.type });
                 foreach (var p in m.List)
                 {
                     AddPerson(p, m.List, origin, m.EntryPointId);
@@ -349,7 +349,7 @@ namespace CmsWeb.Areas.People.Controllers
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Json(new { close = true, how = "addselected" });
+            return Json(new { close = true, how = "addselected", from = m.type });
         }
         private JsonResult AddFamilyMembers(int id, SearchAddModel m, int origin)
         {
@@ -380,27 +380,29 @@ namespace CmsWeb.Areas.People.Controllers
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Json(new { close = true, how = "addselected" });
+            return Json(new { close = true, how = "addselected", from = m.type });
         }
         private JsonResult AddRelatedFamilys(int id, SearchAddModel m, int origin)
         {
-            if (id > 0)
+            var p = m.List[0];
+            AddPerson(p, m.List, origin, m.EntryPointId);
+            var key = SearchAddModel.AddRelatedFamily(id, p.PeopleId.Value);
+            try
             {
-                foreach (var p in m.List)
-                {
-                    AddPerson(p, m.List, origin, m.EntryPointId);
-                    SearchAddModel.AddRelatedFamily(id, p.PeopleId.Value);
-                }
                 DbUtil.Db.SubmitChanges();
             }
-            return Json(new { close = true, how = "addselected" });
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return Json(new { from = m.type, pid = id, key });
         }
         private JsonResult AddPeople(SearchAddModel m, int origin)
         {
             foreach (var p in m.List)
                 AddPerson(p, m.List, origin, m.EntryPointId);
             DbUtil.Db.SubmitChanges();
-            return Json(new { close = true, how = "CloseAddDialog" });
+            return Json(new { close = true, how = "CloseAddDialog", from = m.type });
         }
         private JsonResult AddOrgMembers(int id, SearchAddModel m, bool pending, int origin)
         {
@@ -423,7 +425,7 @@ namespace CmsWeb.Areas.People.Controllers
                     if (om != null)
                     {
                         message = "Already a member of {0} (orgid) with same schedule".Fmt(om.OrganizationId);
-                        return Json(new { close = true, how = "CloseAddDialog", message = message });
+                        return Json(new { close = true, how = "CloseAddDialog", message = message, from = m.type });
                     }
                 }
                 foreach (var p in m.List)
@@ -435,7 +437,7 @@ namespace CmsWeb.Areas.People.Controllers
                 DbUtil.Db.SubmitChanges();
 				DbUtil.Db.UpdateMainFellowship(id);
             }
-            return Json(new { close = true, how = "rebindgrids", message = message });
+            return Json(new { close = true, how = "rebindgrids", message = message, from = m.type });
         }
         private JsonResult AddContributor(int id, SearchAddModel m, int origin)
         {
@@ -461,9 +463,9 @@ namespace CmsWeb.Areas.People.Controllers
                     ci.PeopleId = p.PeopleId;
                 }
                 DbUtil.Db.SubmitChanges();
-                return Json(new { close = true, how = "addselected", cid = id, pid = p.PeopleId, name = p.person.Name2 });
+                return Json(new { close = true, how = "addselected", cid = id, pid = p.PeopleId, name = p.person.Name2, from = m.type });
             }
-            return Json(new { close = true, how = "addselected" });
+            return Json(new { close = true, how = "addselected", from = m.type });
         }
         private JsonResult AddPeopleToTag(string id, SearchAddModel m, int origin)
         {
@@ -476,7 +478,7 @@ namespace CmsWeb.Areas.People.Controllers
                 }
                 DbUtil.Db.SubmitChanges();
             }
-			return Json(new { close = true, how = "addselected" });
+            return Json(new { close = true, how = "addselected", from = m.type });
         }
 
         private JsonResult AddVisitors(int id, SearchAddModel m, int origin)
@@ -498,7 +500,7 @@ namespace CmsWeb.Areas.People.Controllers
                 DbUtil.Db.SubmitChanges();
                 DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
             }
-            return Json(new { close = true, how = "addselected", error = sb.ToString() });
+            return Json(new { close = true, how = "addselected", error = sb.ToString(), from = m.type });
         }
         private JsonResult AddRegistered(int id, SearchAddModel m, int origin)
         {
@@ -516,7 +518,7 @@ namespace CmsWeb.Areas.People.Controllers
                 DbUtil.Db.SubmitChanges();
                 DbUtil.Db.UpdateMeetingCounters(meeting.MeetingId);
             }
-            return Json(new { close = true, how = "addselected" });
+            return Json(new { close = true, how = "addselected", from = m.type });
         }
         private void AddPerson(SearchPersonModel p, IList<SearchPersonModel> list, int originid, int? entrypointid)
         {

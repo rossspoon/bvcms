@@ -27,8 +27,8 @@ namespace CmsWeb.Areas.Public
         public ActionResult Edit(int id)
         {
             var o = OrgContentInfo.Get(id);
-            if (o == null || o.Inactive || !Util.UserPeopleId.HasValue || !o.IsMember || !o.CanEdit)
-                return Redirect("/OrgContent/Index" + id);
+            if (o == null || o.Inactive || !Util.UserPeopleId.HasValue || !o.CanEdit)
+                return Redirect("/OrgContent/Index/" + id);
             return View(o);
         }
         [HttpPost]

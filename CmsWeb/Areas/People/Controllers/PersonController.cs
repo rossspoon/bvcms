@@ -298,6 +298,12 @@ namespace CmsWeb.Areas.People.Controllers
             var m = new PersonModel(id);
             return View(m);
         }
+        [POST("RelatedFamilies/{id}")]
+        public ActionResult RelatedFamilies(int id)
+        {
+            var m = new PersonModel(id);
+            return View(m);
+        }
 
         [POST("PostData")]
         public ActionResult PostData(int pk, string name, string value)
@@ -865,13 +871,14 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(value);
         }
-        [POST("DeleteRelation/{id1}/{id2}")]
-        public ContentResult DeleteRelation(int id1, int id2)
+        [POST("DeleteRelation/{id}/{id1}/{id2}")]
+        public ActionResult DeleteRelation(int id, int id1, int id2)
         {
-            var r = DbUtil.Db.RelatedFamilies.SingleOrDefault(m => m.FamilyId == id1 && m.RelatedFamilyId == id2);
+            var r = DbUtil.Db.RelatedFamilies.SingleOrDefault(rf => rf.FamilyId == id1 && rf.RelatedFamilyId == id2);
             DbUtil.Db.RelatedFamilies.DeleteOnSubmit(r);
             DbUtil.Db.SubmitChanges();
-            return Content("ok");
+            var m = new PersonModel(id);
+            return View("RelatedFamilies", m);
         }
     }
 }

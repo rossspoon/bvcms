@@ -8,6 +8,7 @@
     <div class="modal-body">
         <a class="helplink" target="_blank" href='@Model.HelpLink("List")'>help</a>
         @Html.Partial("HiddenSearch", Model)
+        @Html.Partial("HiddenMeta", Model)
         @Html.Partial("HiddenPeople", Model)
         @Html.Partial("DisplayPeople", Model)
     </div>
@@ -21,6 +22,6 @@
             <a href="/SearchAdd2/ListNext/LastFamily" class="btn ajax">Add to Last Family</a> @:or 
             }
         }
-        <a href="/SearchAdd2/ListNext/CommitAdd" class="btn btn-primary commit ajax">Commit and Add</a>
+        <a href="/SearchAdd2/ListNext/CommitAdd" class="btn btn-primary commit">Commit and Add</a>
     </div>
 </form>
