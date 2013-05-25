@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (c == null)
                 return Json(new { error = "coupon not found" });
 
-            if (pf.OrgId.HasValue && c.Organization.OrgPickList.HasValue())
+            if (pf.OrgId.HasValue && c.Organization != null && c.Organization.OrgPickList.HasValue())
             {
                 var a = c.Organization.OrgPickList.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
                 if(!a.Contains(pf.OrgId.Value))
