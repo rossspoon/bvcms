@@ -3303,7 +3303,8 @@ table th[class*="span"],
 .dropdown-menu .divider {
   *width: 100%;
   height: 1px;
-  margin: -0.25em 1px;
+  /* Dave: I removed this to make it look like bootstrap's divider 
+  margin: -0.25em 1px;*/
   *margin: -5px 0 5px;
   overflow: hidden;
   background-color: #333333;
@@ -7641,7 +7642,7 @@ fieldset .control-group .textcombo input.checkbox {
   font-size: 18px;
 }
 #profile-actions .btn-group .dropdown-menu {
-  margin-left: -105px;
+  /* margin-left: -105px; */
   text-align: left;
 }
 #profile_tabs {
@@ -9793,22 +9794,6 @@ a.editable-click.editable-disabled:hover {
   height: 16px;
 }
 
-.modal {
-     display: none;
-     top: 20%;
-     margin: 0 0 0 -280px;
-}
-
-.modal.loading .modal-header .loader {
-    height: 36px;
-    width: 16px;
-    
-    margin-right: 10px;
-    
-    display: block;
-    float: left;
-    background: no-repeat scroll url('./images/ajax-loader.gif') center center;
-}
 td.right, th.right {
     text-align: right;
 }
@@ -9845,4 +9830,31 @@ form.form-horizontal.onecol .control-group {
     width: auto;
     *width: auto;
     margin-bottom: 1em;
+}
+.section span {
+    font-style: italic;
+    font-size: 110%;
+}
+
+table.expanding div.indent {
+    padding-left: 2em;
+}
+
+table.expanding a[rel="reveal"] {
+    text-decoration: none;
+}
+
+table.expanding tr.details td {
+    border-top: none;
+    padding: 0;
+}
+
+    table.enrollments tr.details td:first-child {
+        padding-left: 1em;
+    }
+
+/* Dave: I am using this to do my own table striping in this special case 
+    todo: test remove this*/
+table.expanding tr.oddrow > td {
+    background-color: #f9f9f9;
 }

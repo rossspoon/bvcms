@@ -6,7 +6,7 @@
 }
 @section scripts
 {
-    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/task.js")"></script>
+    @Helper.IncludeTaskJs()
 }
     <form id="form" action="/Task/List" method="get">
     @Html.Hidden("SortTask")

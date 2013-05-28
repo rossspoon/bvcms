@@ -33,7 +33,8 @@ namespace CmsWeb.Areas.People.Controllers
         {
             return Redirect("/Person/Index/" + Util2.CurrentPeopleId);
         }
-        [GET("Index/{id}")]
+        [GET("Person2/Index/{id}")]
+        [GET("{id}")]
         public ActionResult Index(int? id)
         {
             if (!id.HasValue)
@@ -153,27 +154,27 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.Db.SubmitChanges();
             return new EmptyResult();
         }
-        [POST("FamilyGrid/{id}")]
+        [POST("Person2/FamilyGrid/{id}")]
         public ActionResult FamilyGrid(int id)
         {
-            var m = new FamilyModel(id);
-            UpdateModel(m.Pager);
+            var m = new PersonModel(id);
+            //UpdateModel(m.Pager);
             return View(m);
         }
-        [POST("EnrollGrid/{id}")]
-        public ActionResult EnrollGrid(int id)
+        [POST("Person2/EnrollGrid/{id}/{page?}/{size?}/{sort?}/{dir?}")]
+        public ActionResult EnrollGrid(int id, int? page, int? size, string sort, string dir)
         {
             var m = new CurrentEnrollments(id);
-            UpdateModel(m.Pager);
+            m.Pager.Set("/Person2/EnrollGrid/" + id, page, size, sort, dir);
             DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
             return View("CurrentEnrollments", m);
         }
-        [POST("PrevEnrollGrid/{id}")]
-        public ActionResult PrevEnrollGrid(int id)
+        [POST("PrevEnrollGrid/{id}/{page?}/{size?}/{sort?}/{dir?}")]
+        public ActionResult PrevEnrollGrid(int id, int? page, int? size, string sort, string dir)
         {
             var m = new PreviousEnrollments(id);
-            UpdateModel(m.Pager);
-            DbUtil.LogActivity("Viewing Enrollments for: {0}".Fmt(m.person.Name));
+            m.Pager.Set("/Person2/PrevEnrollGrid/" + id, page, size, sort, dir);
+            DbUtil.LogActivity("Viewing Prev Enrollments for: {0}".Fmt(m.person.Name));
             return View("PreviousEnrollments", m);
         }
         //		[HttpPost]
@@ -350,20 +351,20 @@ namespace CmsWeb.Areas.People.Controllers
                      select r.C;
             return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
         }
-        [POST("BasicDisplay/{id}")]
+        [POST("Person2/BasicDisplay/{id}")]
         public ActionResult BasicDisplay(int id)
         {
             InitExportToolbar(id);
             var m = BasicPersonInfo.GetBasicPersonInfo(id);
             return View("BasicPersonInfoDisplay", m);
         }
-        [POST("BasicEdit/{id}")]
+        [POST("Person2/BasicEdit/{id}")]
         public ActionResult BasicEdit(int id)
         {
             var m = BasicPersonInfo.GetBasicPersonInfo(id);
             return View("BasicPersonInfoEdit", m);
         }
-        [POST("BasicUpdate/{id}")]
+        [POST("Person2/BasicUpdate/{id}")]
         public ActionResult BasicUpdate(int id)
         {
             var m = BasicPersonInfo.GetBasicPersonInfo(id);
@@ -381,19 +382,19 @@ namespace CmsWeb.Areas.People.Controllers
             m.Reverse(field, value, pf);
             return View("ChangesGrid", m);
         }
-        [POST("AddressDisplay/{type}/{id}")]
+        [POST("Person2/AddressDisplay/{type}/{id}")]
         public ActionResult AddressDisplay(int id, string type)
         {
             var m = AddressInfo.GetAddressInfo(id, type);
             return View(m);
         }
-        [POST("AddressEdit/{type}/{id}")]
+        [POST("Person2/AddressEdit/{type}/{id}")]
         public ActionResult AddressEdit(int id, string type)
         {
             var m = AddressInfo.GetAddressInfo(id, type);
             return View(m);
         }
-        [POST("AddressUpdate/{type}/{id}")]
+        [POST("Person2/AddressUpdate/{type}/{id}")]
         public ActionResult AddressUpdate(int id, string type)
 		{
 			var m = AddressInfo.GetAddressInfo(id, type);
@@ -401,7 +402,7 @@ namespace CmsWeb.Areas.People.Controllers
             m.UpdateAddress();
             return View("AddressEdit", m);
 		}
-        [POST("AddressSave/{type}/{id}")]
+        [POST("Person2/AddressSave/{type}/{id}")]
         public ActionResult AddressSave(int id, string type)
 		{
 			var m = AddressInfo.GetAddressInfo(id, type);
@@ -858,12 +859,12 @@ namespace CmsWeb.Areas.People.Controllers
                 useMinAmt = false,
             };
         }
-        [GET("Image/{s}/{id}/{v}")]
+        [GET("Person2/Image/{s}/{id}/{v}")]
         public ActionResult Image(int id, int s, string v)
         {
             return new PictureResult(id, s);
         }
-        [POST("EditRelation/{id1}/{id2}")]
+        [POST("Person2/EditRelation/{id1}/{id2}")]
         public ContentResult EditRelation(int id1, int id2, string value)
         {
             var r = DbUtil.Db.RelatedFamilies.SingleOrDefault(m => m.FamilyId == id1 && m.RelatedFamilyId == id2);
@@ -871,7 +872,7 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.Db.SubmitChanges();
             return Content(value);
         }
-        [POST("DeleteRelation/{id}/{id1}/{id2}")]
+        [POST("Person2/DeleteRelation/{id}/{id1}/{id2}")]
         public ActionResult DeleteRelation(int id, int id1, int id2)
         {
             var r = DbUtil.Db.RelatedFamilies.SingleOrDefault(rf => rf.FamilyId == id1 && rf.RelatedFamilyId == id2);
@@ -879,6 +880,29 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.Db.SubmitChanges();
             var m = new PersonModel(id);
             return View("RelatedFamilies", m);
+        }
+
+        [POST("Person2/Split/{id}")]
+        public ActionResult Split(int id)
+        {
+            var p = DbUtil.Db.LoadPersonById(id);
+            var f = new Family
+            {
+                CreatedDate = Util.Now,
+                CreatedBy = Util.UserId1,
+                AddressLineOne = p.PrimaryAddress,
+                AddressLineTwo = p.PrimaryAddress2,
+                CityName = p.PrimaryCity,
+                StateCode = p.PrimaryState,
+                ZipCode = p.PrimaryZip,
+                HomePhone = p.Family.HomePhone
+            };
+            f.People.Add(p);
+            DbUtil.Db.Families.InsertOnSubmit(f);
+            DbUtil.Db.SubmitChanges();
+            DbUtil.LogActivity("Splitting Family for {0}".Fmt(p.Name));
+            var m = new PersonModel(id);
+            return Content("/Person2/" + id);
         }
     }
 }

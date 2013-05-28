@@ -11,20 +11,20 @@ using System.Web.Routing;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using CmsData;
-using CmsWeb.Areas.People.Models;
+using CmsWeb.Areas.Search.Models;
 using CmsWeb.Code;
 using UtilityExtensions;
 using System.Text.RegularExpressions;
 using System.Data.Linq;
 using CmsData.Codes;
 
-namespace CmsWeb.Areas.People.Controllers
+namespace CmsWeb.Areas.Search.Controllers
 {
-    [RouteArea("People", AreaUrl = "SearchAdd2")]
+    [RouteArea("Search", AreaUrl = "SearchAdd2")]
     public class SearchAddController : CmsStaffController
     {
-        [POST("Index/{type}/{typeid}")]
-        public ActionResult Index(string type, string typeid)
+        [POST("SearchAdd2/Dialog/{type}/{typeid?}")]
+        public ActionResult Dialog(string type, string typeid)
         {
             var m = new SearchAddModel { typeid = typeid, type = type };
             Organization org = null;
@@ -32,6 +32,7 @@ namespace CmsWeb.Areas.People.Controllers
             switch (m.type.ToLower())
             {
                 case "addpeople":
+                case "menu":
                     m.EntryPointId = 0;
                     break;
                 case "addtotag":
@@ -67,59 +68,47 @@ namespace CmsWeb.Areas.People.Controllers
             }
             return View("SearchPerson", m);
         }
-        [POST("Results")]
-        public ActionResult Results(SearchAddModel m)
+
+        [POST("SearchAdd2/Results/{page?}/{size?}/{sort?}/{dir?}")]
+        public ActionResult Results(int? page, int? size, string sort, string dir, SearchAddModel m)
         {
-            DbUtil.Db.SetNoLock();
+            DbUtil.Db.SetNoLock();            
+            m.Pager.Set("/SearchAdd2/Results", page ?? 1, size ?? 15, "na", "na");
+            ModelState.Clear();
             return View(m);
         }
-        [HttpPost]
-        public ActionResult ResultsFamily(SearchAddModel m)
+        [POST("SearchAdd2/ResultsFamily/{page?}/{size?}/{sort?}/{dir?}")]
+        public ActionResult ResultsFamily(int? page, int? size, string sort, string dir, SearchAddModel m)
         {
             DbUtil.Db.SetNoLock();
+            m.Pager.Set("/SearchAdd2/ResultsFamily", page ?? 1, size ?? 15, "na", "na");
+            ModelState.Clear();
             return View(m);
         }
-        [POST("ResultsNext/{todo}")]
-        public ActionResult ResultsNext(string todo, SearchAddModel m)
+
+        [POST("SearchAdd2/SearchPerson")]
+        public ActionResult SearchPerson(SearchAddModel m)
         {
-            switch (todo)
-            {
-                case "BackToSearch":
-                    return View("SearchPerson", m);
-                case "AddNewPerson":
-                    return View("SearchPerson", m);
-                case "AddNewFamily":
-                    return View("SearchPerson", m);
-            }
-            m.dob = null;
-            var a = m.Name.SplitStr(" ");
-            m.Name = a[a.Length - 1];
-            return Content("ok");
+            ModelState.Clear();
+            return View(m);
         }
-        [POST("ListNext/{todo}")]
-        public ActionResult ListNext(string todo, SearchAddModel m)
+        [POST("SearchAdd2/SearchFamily")]
+        public ActionResult SearchFamily(SearchAddModel m)
         {
-            switch (todo)
-            {
-                case "CommitAdd":
-                    return Complete(m);
-                case "AnotherSearch":
-                    return View("SearchPerson", m);
-                case "LastFamily":
-                    return AddToFamily(m);
-            }
-            m.dob = null;
-            var a = m.Name.SplitStr(" ");
-            m.Name = a[a.Length - 1];
-            return Content("ok");
+            string first, last;
+            Util.NameSplit(m.Name, out first, out last);
+            m.Name = last;
+            ModelState.Clear();
+            return View(m);
         }
-        [HttpPost]
+
+        [POST("SearchAdd2/SearchCancel")]
         public ActionResult SearchCancel(SearchAddModel m)
         {
             if (m.List.Count > 0)
                 return View("List", m);
             m.typeid = "0";
-            return Complete(m);
+            return CommitAdd(m);
         }
         [HttpPost]
         public ActionResult SearchFamilyCancel(SearchAddModel m)
@@ -130,11 +119,12 @@ namespace CmsWeb.Areas.People.Controllers
         public ActionResult PersonCancel(int id, SearchAddModel m)
         {
             m.List.RemoveAt(id);
+            ModelState.Clear();
             if (m.List.Count > 0)
                 return View("List", m);
             return View("SearchPerson", m);
         }
-        [POST("Select/{id}")]
+        [POST("SearchAdd2/Select/{id}")]
         public ActionResult Select(int id, SearchAddModel m)
         {
             if (m.List.AsEnumerable().Any(li => li.PeopleId == id))
@@ -152,7 +142,7 @@ namespace CmsWeb.Areas.People.Controllers
                 Marital = new CodeInfo(p.MaritalStatusId, "Marital"),
                 Email = p.EmailAddress,
                 Suffix = p.SuffixCode,
-                Title = p.TitleCode,
+                Title = new CodeInfo(p.TitleCode, "Title"),
                 dob = p.DOB,
                 Gender = new CodeInfo(p.GenderId, "Gender"),
                 Phone = p.CellPhone,
@@ -163,83 +153,40 @@ namespace CmsWeb.Areas.People.Controllers
             s.LoadFamily();
             m.List.Add(s);
 			if (m.OnlyOne)
-				return Complete(m);
+				return CommitAdd(m);
+            ModelState.Clear();
             return View("List", m);
         }
 
-        [HttpPost]
+        [POST("SearchAdd2/AddNewFamily")]
         public ActionResult AddNewFamily(SearchAddModel m)
         {
             var p = m.List[m.List.Count - 1];
             p.ValidateModelForNew(ModelState, true);
             if (!ModelState.IsValid)
                 return View("FormFull", m);
-            return View("List", m);
+            ModelState.Clear();
+            return Redirect("/Person2/AddressEdit/NewFamily/-1");
         }
-        [HttpPost]
+        [POST("SearchAdd2/AddToFamily")]
         public ActionResult AddToFamily(SearchAddModel m)
         {
             var p = m.List[m.List.Count - 1];
             p.ValidateModelForNew(ModelState, false);
             if (!ModelState.IsValid)
-                return View("FormAbbreviated", m);
+                return FormAbbreviated(p.FamilyId, m);
+            ModelState.Clear();
             return View("List", m);
         }
-        private SearchPersonModel NewPerson(int FamilyId, SearchAddModel m)
+        [POST("SearchAdd2/FormAbbreviated/{familyid}")]
+        public ActionResult FormAbbreviated(int familyid, SearchAddModel m)
         {
-            var cv = new CodeValueModel();
-            var p = new SearchPersonModel
-            {
-                FamilyId = FamilyId,
-                index = m.List.Count,
-                Gender = new CodeInfo(99, "Gender"),
-                Marital = new CodeInfo(99, "Marital"),
-                Campus = new CodeInfo(m.CampusId, "Campus"),
-                EntryPoint = new CodeInfo(m.EntryPointId, "EntryPoint"),
-                context = m.type,
-            };
-#if DEBUG
-            p.First = "David";
-            p.Last = "Carr." + DateTime.Now.Millisecond;
-            p.Gender = new CodeInfo(0, "Gender");
-            p.Marital = new CodeInfo(0, "Marital");
-            p.dob = "na";
-            p.Email = "na";
-            p.Phone = "na";
-            p.Address = "na";
-            p.Zip = "na";
-            p.HomePhone = "na";
-#endif
-            m.List.Add(p);
-            return p;
-        }
-        [HttpPost]
-        public ActionResult FormAbbreviated(int id, SearchAddModel m)
-        {
-            var org = DbUtil.Db.LoadOrganizationById(id);
-            var p = NewPerson(id, m);
-            if (id < 0)
-            {
-                var f = m.List.FirstOrDefault(fm => fm.FamilyId == id);
-                p.Address = f.Address;
-                p.City = f.City;
-                p.State = f.State;
-                p.Zip = f.Zip;
-                p.HomePhone = f.HomePhone;
-            }
-            else
-                p.LoadFamily();
+            ModelState.Clear();
             return View(m);
         }
-        [POST("FormFull")]
+        [POST("SearchAdd2/FormFull")]
         public ActionResult FormFull(SearchAddModel m)
         {
-            int id = 0;
-            if (m.List.Count > 0)
-                id = m.List.Min(i => i.FamilyId) - 1;
-            if (id >= 0)
-                id = -1;
-            var p = NewPerson(id, m);
 #if DEBUG
             //p.address = "235 Riveredge Cv";
             //p.city = "Cordova";
@@ -247,14 +194,16 @@ namespace CmsWeb.Areas.People.Controllers
             //p.zip = "38018";
             //p.homephone = "9017581862";
 #endif
+            ModelState.Clear();
             return View(m);
         }
-        private ActionResult Complete(SearchAddModel m)
+        private ActionResult CommitAdd(SearchAddModel m)
         {
             var id = m.typeid;
 			var iid = m.typeid.ToInt();
             switch (m.type.ToLower())
             {
+                case "menu":
                 case "addpeople":
                     return AddPeople(m, OriginCode.MainMenu);
                 case "addtotag":
@@ -355,7 +304,7 @@ namespace CmsWeb.Areas.People.Controllers
         {
             if (id > 0)
             {
-                var f = DbUtil.Db.Families.Single(fa => fa.FamilyId == id);
+                var p = DbUtil.Db.LoadPersonById(id);
 
                 foreach (var i in m.List)
                 {
@@ -363,24 +312,23 @@ namespace CmsWeb.Areas.People.Controllers
                     AddPerson(i, m.List, origin, m.EntryPointId);
                     if (!isnew)
                     {
-                        var fm = f.People.SingleOrDefault(fa => fa.PeopleId == i.person.PeopleId);
+                        var fm = p.Family.People.SingleOrDefault(fa => fa.PeopleId == i.person.PeopleId);
                         if (fm != null)
                             continue; // already a member of this family
 
                         if (i.person.Age < 18)
                             i.person.PositionInFamilyId = PositionInFamily.Child;
-                        else if (i.family.People.Count(per =>
-                                    per.PositionInFamilyId == PositionInFamily.PrimaryAdult)
-                                    < 2)
+                        else if (p.Family.People.Count(per =>
+                                    per.PositionInFamilyId == PositionInFamily.PrimaryAdult) < 2)
                             i.person.PositionInFamilyId = PositionInFamily.PrimaryAdult;
                         else
                             i.person.PositionInFamilyId = PositionInFamily.SecondaryAdult;
-                        i.family.People.Add(i.person); // add selected person to target family
+                        p.Family.People.Add(i.person);
                     }
                 }
                 DbUtil.Db.SubmitChanges();
             }
-            return Json(new { close = true, how = "addselected", from = m.type });
+            return Json(new { pid = id, from = m.type });
         }
         private JsonResult AddRelatedFamilys(int id, SearchAddModel m, int origin)
         {

@@ -59,8 +59,8 @@ namespace CmsWeb.Areas.People.Models.Person
         public int PeopleId { get; set; }
         public CmsData.Person person { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo Title { get; set; }
+
         [UIHint("Text")]
         [DisplayName("First Name")]
         public string FirstName { get; set; }
@@ -88,7 +88,6 @@ namespace CmsWeb.Areas.People.Models.Person
         [UIHint("Text")]
         public string Suffix { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo Gender { get; set; }
 
         [UIHint("InlineCode")]
@@ -98,7 +97,6 @@ namespace CmsWeb.Areas.People.Models.Person
         [UIHint("Date")]
         public string Birthday { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo Marital { get; set; }
 
         [UIHint("Date")]

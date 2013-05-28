@@ -1,5 +1,4 @@
-﻿@using UtilityExtensions
-@model CmsWeb.Areas.People.Models.SearchAddModel
+﻿@model CmsWeb.Areas.Search.Models.SearchAddModel
 <table id="people" class="table table-condensed">
     <thead>
         <tr>
@@ -15,7 +14,7 @@
         {
             var p = Model.List[n];
             p.index = n;
-            @Html.Partial("PersonDisplay", p)
+            @Html.DisplayFor(m => m.List[n], "PersonDisplay")
         }
     </tbody>
 </table>

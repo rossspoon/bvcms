@@ -9,7 +9,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Web;
+using CmsWeb.Code;
+using CmsWeb.Models;
 using UtilityExtensions;
 using CmsData;
 using System.Web.Mvc;
@@ -18,10 +21,16 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Data.Linq;
 
-namespace CmsWeb.Areas.People.Models
+namespace CmsWeb.Areas.Search.Models
 {
     public class SearchAddModel
     {
+        public SearchAddModel()
+        {
+            Pager = new PagerModel2(Count);
+            Pager.ShowPageSize = false;
+        }
+        public PagerModel2 Pager { get; set; }
         public string type { get; set; }
         private string[] noaddtypes = { "relatedfamily", "mergeto", "contactor", "taskdelegate", "taskowner", "taskdelegate2" };
         private string[] usersonlytypes = { "taskdelegate", "taskowner", "taskdelegate2" };
@@ -34,6 +43,7 @@ namespace CmsWeb.Areas.People.Models
 
         public int? EntryPointId { get; set; }
         public int? CampusId { get; set; }
+        public int Index { get; set; }
 
         private IList<SearchPersonModel> list = new List<SearchPersonModel>();
         public IList<SearchPersonModel> List
@@ -69,6 +79,10 @@ namespace CmsWeb.Areas.People.Models
                         PeopleId = p.PeopleId,
                         FamilyId = p.FamilyId,
                         Name = p.Name,
+                        Middle = p.MiddleName,
+                        GoesBy = p.NickName,
+                        First = p.FirstName,
+                        Maiden = p.MaidenName,
                         Address = p.PrimaryAddress,
                         CityStateZip = p.PrimaryCity + ", " + p.PrimaryState + " " + p.PrimaryZip.Substring(0, 5),
                         Age = p.Age,
@@ -85,23 +99,22 @@ namespace CmsWeb.Areas.People.Models
 
         public IEnumerable<PeopleInfo> PeopleList()
         {
-            return PeopleList(ApplySearch().Take(Showcount));
+            var q = FetchPeople().Skip(Pager.StartRow).Take(Pager.PageSize);
+            return PeopleList(q);            
         }
 
-        private int? _count;
-        public int Count
+        private IQueryable<CmsData.Person> FetchPeople()
         {
-            get
-            {
-                if (!_count.HasValue)
-                    _count = ApplySearch().Count();
-                return _count.Value;
-            }
+            if (query == null)
+                query = ApplySearch();
+            return query;
         }
-        private const int SHOWCOUNT = 15;
-        public int Showcount
+        private int? _count;
+        public int Count()
         {
-            get { return Count > SHOWCOUNT ? SHOWCOUNT : Count; }
+            if (!_count.HasValue)
+                _count = FetchPeople().Count();
+            return _count.Value;
         }
 
         private IQueryable<CmsData.Person> query = null;
@@ -186,6 +199,10 @@ namespace CmsWeb.Areas.People.Models
             public int PeopleId { get; set; }
             public int FamilyId { get; set; }
             public string Name { get; set; }
+            public string Middle { get; set; }
+            public string Maiden { get; set; }
+            public string GoesBy { get; set; }
+            public string First { get; set; }
             public string Address { get; set; }
             public string CityStateZip { get; set; }
             public int? Age { get; set; }
@@ -197,12 +214,40 @@ namespace CmsWeb.Areas.People.Models
             public string BirthDate { get; set; }
             public string Email { get; set; }
 
-            public string ToolTip
+            public HtmlString ToolTip
             {
                 get
                 {
-                    return "{0}|PeopleId: {1}|Mobile Phone: {2}|Work Phone: {3}|Home Phone: {4}|BirthDate: {5:d}|Join Date: {6:d}|Status: {7}|{8}"
-                        .Fmt(Name, PeopleId, CellPhone.FmtFone(), WorkPhone.FmtFone(), HomePhone.FmtFone(), BirthDate, JoinDate, MemberStatus, CityStateZip);
+                    var ret = new StringBuilder();
+                    if (CellPhone.HasValue())
+                        ret.AppendFormat("{0}&nbsp;&nbsp;", CellPhone.FmtFone("C "));
+                    if (HomePhone.HasValue())
+                        ret.AppendFormat("{0}&nbsp;&nbsp;", HomePhone.FmtFone("H "));
+                    if (WorkPhone.HasValue())
+                        ret.AppendFormat("{0}&nbsp;&nbsp;", WorkPhone.FmtFone("W "));
+                    if (ret.Length > 0)
+                        ret.Append("<br>\n");
+
+                    var names = new StringBuilder();
+                    if (GoesBy.HasValue() && First != GoesBy)
+                        names.AppendFormat("{0}first: {1}", names.Length > 0 ? ", " : "", First);
+                    if (Middle.HasValue())
+                        names.AppendFormat("{0}middle: {1}", names.Length > 0 ? ", " : "", Middle);
+                    if (Maiden.HasValue())
+                        names.AppendFormat("{0}maiden: {1}", names.Length > 0 ? ", " : "", Maiden);
+                    if (names.Length > 0)
+                        ret.AppendFormat("{0}<br>\n", names);
+
+                    if (BirthDate.HasValue())
+                        ret.AppendFormat("Birthday: {0}&nbsp;&nbsp;", BirthDate);
+                    ret.AppendFormat("[<i>{0}</i>]&nbsp;&nbsp;", MemberStatus);
+                    if (JoinDate.HasValue)
+                        ret.Append("Joined: " + JoinDate.ToDate().FormatDate());
+
+                    if (CityStateZip.HasValue())
+                        ret.AppendFormat("<br>\n{0}", CityStateZip);
+
+                    return new HtmlString(ret.ToString());
                 }
             }
         }
@@ -228,6 +273,45 @@ namespace CmsWeb.Areas.People.Models
                 DbUtil.Db.SubmitChanges();
             }
             return "#rf-{0}-{1}".Fmt(rf.FamilyId, rf.RelatedFamilyId);
+        }
+        public SearchPersonModel NewPerson()
+        {
+            var p = new SearchPersonModel
+            {
+                FamilyId = typeid.ToInt(),
+                index = List.Count,
+                Gender = new CodeInfo(99, "Gender"),
+                Marital = new CodeInfo(99, "Marital"),
+                Campus = new CodeInfo(CampusId, "Campus"),
+                EntryPoint = new CodeInfo(EntryPointId, "EntryPoint"),
+                context = type,
+                Title = new CodeInfo("", "Title"),
+            };
+#if DEBUG
+            p.First = "David";
+            p.Last = "Carr." + DateTime.Now.Millisecond;
+            p.Gender = new CodeInfo(0, "Gender");
+            p.Marital = new CodeInfo(0, "Marital");
+            p.dob = "na";
+            p.Email = "na";
+            p.Phone = "na";
+            p.Address = "na";
+            p.Zip = "na";
+            p.HomePhone = "na";
+#endif
+            if (p.FamilyId < 0)
+            {
+                var f = List.FirstOrDefault(fm => fm.FamilyId == p.FamilyId);
+                p.Address = f.Address;
+                p.City = f.City;
+                p.State = f.State;
+                p.Zip = f.Zip;
+                p.HomePhone = f.HomePhone;
+            }
+            else
+                p.LoadFamily();
+            List.Add(p);
+            return p;
         }
     }
 }

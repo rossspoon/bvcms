@@ -180,56 +180,21 @@
     $.fn.alert = function (message) {
         this.html('<div class="alert"><a class="close" data-dismiss="alert">×</a><span>' + message + '</span></div>');
     };
-    $("a.searchadd").live("click", function (ev) {
-        ev.preventDefault();
-        $("<div id='search-add' class='modal fade hide' data-width='600' />")
-            .load($(this).attr("href"), {}, function () {
-                $(this).modal("show");
-                $(this).on('hidden', function() {
-                    $(this).remove();
-                });
-            });
-    });
-    $("#search-add a.clear").live('click', function (ev) {
-        ev.preventDefault();
-        $("#name").val('');
-        $("#phone").val('');
-        $("#address").val('');
-        $("#dob").val('');
-        return false;
-    });
-    $('form.ajax').live('submit', function(event) {
-        var $form = $(this);
-        var $target = $form.closest("div.modal");
-        $.ajax({
-            type: 'POST',
-            url: $form.attr('action'),
-            data: $form.serialize(),
-            success: function(data, status) {
-                //$target.removeClass("fade");
-                $target.html(data);
-                $target.css({ 'margin-top': ($(window).height() - $target.height()) / 2, 'top': '0' });
-            }
-        });
-        event.preventDefault();
-    });
-    $('form.ajax a.ajax').live('click', function(event) {
-        var $this = $(this);
-        var $form = $this.closest("form.ajax");
-        var $target = $form.closest("div.modal");
-        $.ajax({
-            type: 'POST',
-            url: $this[0].href,
-            data: $form.serialize(),
-            success: function(data, status) {
-                //$target.removeClass("fade");
-                $target.html(data);
-                $target.css({ 'margin-top': ($(window).height() - $target.height()) / 2, 'top': '0' });
-            }
-        });
-        event.preventDefault();
-    });
 });
+
+$(document).ajaxSend(function(event, request, settings) {
+   $('#loading-indicator')
+       .css({ 
+           'position': 'absolute',
+           'left': $(window).width() / 2, 
+           'top': $(window).height() / 2,
+           'z-index' : 2000
+       }).show();
+ });
+ 
+ $(document).ajaxComplete(function(event, request, settings) {
+   $('#loading-indicator').hide();
+ });
 
 function dimOff() {
     $("#darkLayer").hide();

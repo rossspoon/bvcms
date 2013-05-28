@@ -5,4 +5,5 @@
   <file>/Scripts/Bootstrap/bootstrap-modalmanager.js</file>
   <file>/Scripts/Bootstrap/bootstrap-modal.js</file>
   <file>/Scripts/Bootstrap/bootstrap-editable.js</file>
+  <file>/Scripts/Bootstrap/bootbox.js</file>
 </bundle>

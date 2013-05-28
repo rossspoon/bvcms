@@ -1,0 +1,27 @@
+﻿@model CmsWeb.Areas.Search.Models.SearchAddModel
+<form class="form-horizontal onecol ajax" method="POST">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Add Person to New Family</h3>
+    </div>
+    <div class="modal-body">
+        <a class="helplink pull-right" target="_blank" href='@Model.HelpLink("NewFamily")'>help</a>
+        <fieldset class="display">
+            @Html.EditorFor(m => m, "HiddenSearch")
+            @Html.EditorFor(m => m, "HiddenMeta")
+            @Html.EditorFor(m => m, "HiddenPeople")
+            @{
+                Model.NewPerson();
+                var n = Model.List.Count - 1;
+            }
+            @Html.EditorFor(m => Model.List[n], "EditPerson")
+            @Html.EditorFor(m => Model.List[n], "EditAddress")
+            <input type="hidden" name="List.Index" value="@n" />
+            <input type="hidden" name="List[@n].FamilyId" value="@Model.List[n].FamilyId" />
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <a href="/SearchAdd2/SearchPerson" class="btn ajax">Go Back to Search</a>
+        <a href="/SearchAdd2/AddNewFamily" class="btn btn-primary ajax">Add Address</a>
+    </div>
+</form>

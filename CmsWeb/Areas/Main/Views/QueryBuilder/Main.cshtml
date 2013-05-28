@@ -10,7 +10,7 @@
 }
 @section scripts
 {
-    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/querybuilder.js")"></script>
+    @Helper.IncludeQueryBuilderJs()
 }
 
 @Html.Hidden("AutoRun")

@@ -13,7 +13,7 @@ using System.Text;
 using System.Data.Linq;
 using CmsData.Codes;
 
-namespace CmsWeb.Areas.People.Models
+namespace CmsWeb.Areas.Search.Models
 {
     public class SearchPersonModel
     {
@@ -35,8 +35,7 @@ namespace CmsWeb.Areas.People.Models
         [UIHint("Text")]
         public string Last { get; set; }
 
-        [UIHint("Text")]
-        public string Title { get; set; }
+        public CodeInfo Title { get; set; }
 
         [UIHint("Text")]
         public string Suffix { get; set; }
@@ -51,16 +50,12 @@ namespace CmsWeb.Areas.People.Models
         [UIHint("Text")]
         public string Email { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo Gender { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo Marital { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo Campus { get; set; }
 
-        [UIHint("Code")]
         [DisplayName("Entry Point")]
         public CodeInfo EntryPoint { get; set; }
 
@@ -78,13 +73,11 @@ namespace CmsWeb.Areas.People.Models
         [UIHint("Text")]
         public string City { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo State { get; set; }
 
         [UIHint("Text")]
         public string Zip { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo Country { get; set; }
 
         private DateTime? _Birthday;
@@ -261,8 +254,8 @@ namespace CmsWeb.Areas.People.Models
             _Person = CmsData.Person.Add(f, position,
                                  null, First.Trim(), GoesBy, Last.Trim(), dob, false, Gender.Value.ToInt(),
                                  originid, entrypointid);
-            if (Title.HasValue())
-                person.TitleCode = Title;
+            if (Title.Value.HasValue())
+                person.TitleCode = Title.Value;
             person.EmailAddress = Email.Disallow(na);
             person.MaritalStatusId = Marital.Value.ToInt();
             person.SuffixCode = Suffix;
@@ -281,7 +274,7 @@ namespace CmsWeb.Areas.People.Models
 
         internal void LoadFamily()
         {
-            if (FamilyId < 0)
+            if (FamilyId <= 0)
                 return;
             HomePhone = family.HomePhone;
             Address = family.AddressLineOne;

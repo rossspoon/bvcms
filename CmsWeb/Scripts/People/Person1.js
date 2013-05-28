@@ -1,18 +1,83 @@
 ﻿$(function () {
-    //    $('#dialogbox').dialog({
-    //        title: 'Search Dialog',
-    //        bgiframe: true,
-    //        autoOpen: false,
-    //        width: 700,
-    //        height: 630,
-    //        modal: true,
-    //        overlay: {
-    //            opacity: 0.5,
-    //            background: "black"
-    //        }, close: function () {
-    //            $('iframe', this).attr("src", "");
-    //        }
-    //    });
+    $("#split").live("click", function (ev) {
+        ev.preventDefault();
+        var href = $(this).attr("href");
+        bootbox.confirm("Are you sure you want to split this person into their own family?", function (result) {
+            if (result === true) {
+                $.post(href, {}, function (ret) {
+                    window.location = ret;
+                });
+            }
+        });
+    });
+    $("#search-add a.commit").live("click", function (ev) {
+        ev.preventDefault();
+        var f = $(this).closest("form");
+        var q = f.serialize();
+        var loc = $(this).attr("href");
+        var tar = f.closest("div.modal");
+        $.block();
+        $.post(loc, q, function (ret) {
+            tar.modal("hide");
+            if (ret.message) {
+                alert(ret.message);
+            }
+            else
+                switch (ret.from) {
+                    case 'RelatedFamily':
+                        $("#related-families-div").load('/Person2/RelatedFamilies/' + ret.pid, {}, function () {
+                            $.SetRelationEditable();
+                            $(ret.key).editable("toggle");
+                        });
+                        break;
+                    case 'Family':
+                        $("#family-div").load('/Person2/FamilyGrid/' + ret.pid, {});
+                        break;
+                }
+            $.unblock();
+        });
+        return false;
+    });
+    $("a.delete-relation").live("click", function (ev) {
+        ev.preventDefault();
+        $("#related-families-div").load($(this).attr("href"), {});
+        return false;
+    });
+    $("a.editaddr").click(function (ev) {
+        ev.preventDefault();
+        $("<div class='modal fade hide' />").load($(this).attr("href"), {}, function () {
+            $(this).modal("show");
+            $(this).on('hidden', function () {
+                $(this).remove();
+            });
+            $(this).on("click", "a.close-saved-address", function () {
+                $("#primaryaddress").html($("#primaryaddressnew").html());
+                var target = $("#addressnew").data("target");
+                $("#" + target).html($("#addressnew").html());
+            });
+        });
+    });
+    $("a.editfamily").live("click", function (ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+        $(this).closest('div.open').removeClass('open');
+        $(this).closest("li.relation-item").find("span.relation-description").editable("toggle");
+    });
+    $.SetRelationEditable = function () {
+        $('span.relation-description').editable({
+            type: "textarea",
+            toggle: "manual",
+            name: "description",
+            url: function (params) {
+                var d = new $.Deferred;
+                $.post('/Person2/EditRelation/' + params.pk, { value: params.value }, function (data) {
+                    d.resolve();
+                });
+                return d.promise();
+            }
+        });
+    };
+    $.SetRelationEditable();
     $('#position').editable({
         source: [{
             value: 10,
@@ -26,7 +91,10 @@
         }],
         type: "select",
         url: "/Person2/PostData",
-        name: "position"
+        name: "position",
+        success: function (data) {
+            $("#family-div").load('/Person2/FamilyGrid/' + $("#position").data("pk"), {});
+        }
     });
 
     //return d.promise();
@@ -81,131 +149,17 @@
         return false;
     });
 
-    //    $.editable.addInputType('datepicker', {
-    //        element: function (settings, original) {
-    //            var input = $('<input>');
-    //            if (settings.width != 'none') { input.width(settings.width); }
-    //            if (settings.height != 'none') { input.height(settings.height); }
-    //            input.attr('autocomplete', 'off');
-    //            $(this).append(input);
-    //            return (input);
-    //        },
-    //        plugin: function (settings, original) {
-    //            var form = this;
-    //            settings.onblur = 'ignore';
-    //            $(this).find('input').datepicker().bind('click', function () {
-    //                $(this).datepicker('show');
-    //                return false;
-    //            }).bind('dateSelected', function (e, selectedDate, $td) {
-    //                $(form).submit();
-    //            });
-    //        }
-    //    });
-    //    $.editable.addInputType("multiselect", {
-    //        element: function (settings, original) {
-    //            var select = $('<select multiple="multiple" />');
-    //
-    //            if (settings.width != 'none') { select.width(settings.width); }
-    //            if (settings.size) { select.attr('size', settings.size); }
-    //
-    //            $(this).append(select);
-    //            return (select);
-    //        },
-    //        content: function (json, settings, original) {
-    //            for (var key in json) {
-    //                var option = $('<option />').val(key).text(key);
-    //                if (json[key] == true)
-    //                    option.attr("selected", true);
-    //                $('select', this).append(option);
-    //            }
-    //            $("select", this).multiselect({
-    //                close: function (event, ui) {
-    //                    var values = $("select").val();
-    //                },
-    //                position: {
-    //                    my: 'left bottom',
-    //                    at: 'left top'
-    //                }
-    //            });
-    //        }
-    //    });
-    //    $.extraEditable = function (table) {
-    //        $('.editarea', table).editable('/Person/EditExtra/', {
-    //            type: 'textarea',
-    //            submit: 'OK',
-    //            rows: 10,
-    //            width: 600,
-    //            indicator: '<img src="/images/loading.gif">',
-    //            tooltip: 'Click to edit...'
-    //        });
-    //        $(".clickEdit", table).editable("/Person/EditExtra/", {
-    //            indicator: "<img src='/images/loading.gif'>",
-    //            tooltip: "Click to edit...",
-    //            style: 'display: inline',
-    //            width: '300px',
-    //            height: 25,
-    //            submit: 'OK'
-    //        });
-    //        $(".clickDatepicker").editable('/Person/EditExtra/', {
-    //            type: 'datepicker',
-    //            tooltip: 'Click to edit...',
-    //            style: 'display: inline',
-    //            width: '300px',
-    //            submit: 'OK'
-    //        });
-    //        $(".clickSelect", table).editable("/Person/EditExtra/", {
-    //            indicator: '<img src="/images/loading.gif">',
-    //            loadurl: "/Person/ExtraValues/",
-    //            loadtype: "POST",
-    //            type: "select",
-    //            submit: "OK",
-    //            style: 'display: inline'
-    //        });
-    //        $(".clickCheckbox", table).editable('/Person/EditExtra', {
-    //            type: 'checkbox',
-    //            onblur: 'ignore',
-    //            submit: 'OK'
-    //        });
-    //        $('.clickMultiselect', table).editable('/Person/EditExtra', {
-    //            indicator: '<img src="/images/loading.gif">',
-    //            loadurl: "/Person/ExtraValues2/",
-    //            loadtype: "POST",
-    //            type: "multiselect",
-    //            submit: "OK",
-    //            onblur: 'ignore',
-    //            style: 'display: inline'
-    //        });
-    //    };
     $.getTable = function (f) {
-        var q = f.serialize();
-        $.post(f.attr('action'), q, function (ret) {
-            $(f).html(ret).ready(function () {
-                $.setClickOvers();
-                //$.extraEditable('#extravalues');
-            });
+        $.ajax({
+            type: 'POST',
+            url: f.attr("action"),
+            data: f.serialize(),
+            success: function (data, status) {
+                f.html(data);
+            }
         });
         return false;
     };
-    //        $('#memberDialog').dialog({
-    //            title: 'Member Dialog',
-    //            bgiframe: true,
-    //            autoOpen: false,
-    //            width: 600,
-    //            height: 550,
-    //            modal: true,
-    //            overlay: {
-    //                opacity: 0.5,
-    //                background: "black"
-    //            }, close: function () {
-    //                $('iframe', this).attr("src", "");
-    //            }
-    //        });
-    //        $('#previous-tab form a.membertype').live("click", function (e) {
-    //            e.preventDefault();
-    //            var d = $('#memberDialog');
-    //            $('iframe', d).attr("src", this.href);
-    //            d.dialog("open");
-    //        });
 
     $(".CreateAndGo").click(function () {
         if (confirm($(this).attr("confirm")))
@@ -215,44 +169,21 @@
         return false;
     });
 
-    $("a.close-saved-address").live("click", function() {
-        $("#primaryaddress").html($("#primaryaddressnew").html());
-        var target = $("#addressnew").data("target");
-        $("#" + target).html($("#addressnew").html());
+    $("form.ajax").on("click", "a.membertype", function (ev) {
+        ev.preventDefault();
+        $("<div class='modal fade hide' />").load($(this).attr("href"), {}, function () {
+            $(this).modal("show");
+            $(this).on('hidden', function () {
+                $(this).remove();
+            });
+            $(this).on("click", "a.close-saved-address", function () {
+                $("#primaryaddress").html($("#primaryaddressnew").html());
+                var target = $("#addressnew").data("target");
+                $("#" + target).html($("#addressnew").html());
+            });
+        });
     });
 
-    $.setClickOvers = function () {
-        $('tr a').not('a.evlink').click(function (e) {
-            e.stopPropagation();
-        });
-        $('form a.membertype').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $("#OrgMemberDialog").modal({ remote: $(this).attr("href") });
-        });
-        $("tr.section.notshown").live("click", function (ev) {
-            ev.preventDefault();
-            $(this).removeClass("notshown").addClass("shown");
-            $(this).nextUntil("tr.section").find("div.collapse").collapse('show');
-        });
-        $("tr.section.shown").live("click", function (ev) {
-            ev.preventDefault();
-            $(this).nextUntil("tr.section").find("div.collapse").collapse('hide');
-            $(this).removeClass("shown").addClass("notshown");
-        });
-        $('a[rel="reveal"]').click(function (ev) {
-            ev.preventDefault();
-            $(this).parents("tr").next("tr").find("div.collapse").collapse('toggle');
-        });
-        $('tr.organization').click(function (ev) {
-            ev.preventDefault();
-            $(this).next("tr").find("div.collapse").collapse('toggle');
-        });
-        $('tr.details').click(function (ev) {
-            ev.preventDefault();
-            $(this).find("div.collapse").collapse('hide');
-        });
-    };
     $("#currentLink").click(function () {
         $.showTable($('#current form'));
     });
@@ -446,33 +377,6 @@
             }
         });
     });
-    //    $("#newvalueform").dialog({
-    //        autoOpen: false,
-    //        buttons: {
-    //            "Ok": function () {
-    //                var v = $("input[name='typeval']:checked").val();
-    //                var fn = $("#fieldname").val();
-    //                var va = $("#fieldvalue").val();
-    //                if (fn)
-    //                    $.post("/Person/NewExtraValue/" + $("#PeopleId").val(), { field: fn, type: v, value: va }, function (ret) {
-    //                        if (ret.startsWith("error"))
-    //                            alert(ret);
-    //                        else {
-    //                            $.getTable($("#extras-tab form"));
-    //                            $.extraEditable('#extravalues');
-    //                        }
-    //                        $("#fieldname").val("");
-    //                        $("#fieldvalue").val("");
-    //                    });
-    //                $(this).dialog("close");
-    //            }
-    //        }
-    //    });
-    //    $("body").on("click", '#newextravalue', function (ev) {
-    //        ev.preventDefault();
-    //        var d = $('#newvalueform');
-    //        d.dialog("open");
-    //    });
     $("body").on("click", 'a.deleteextra', function (ev) {
         ev.preventDefault();
         if (confirm("are you sure?"))
@@ -498,24 +402,6 @@
             $(f).html(ret);
         });
     });
-    //    $.editable.addInputType("checkbox", {
-    //        element: function (settings, original) {
-    //            var input = $('<input type="checkbox">');
-    //            $(this).append(input);
-    //            $(input).click(function () {
-    //                var value = $(input).attr("checked") ? 'True' : 'False';
-    //                $(input).val(value);
-    //            });
-    //            return (input);
-    //        },
-    //        content: function (string, settings, original) {
-    //            var checked = string == "True" ? true : false;
-    //            var input = $(':input:first', this);
-    //            $(input).attr("checked", checked);
-    //            var value = $(input).attr("checked") ? 'True' : 'False';
-    //            $(input).val(value);
-    //        }
-    //    });
     $('#vtab>ul>li').click(function () {
         $('#vtab>ul>li').removeClass('selected');
         $(this).addClass('selected');
@@ -523,83 +409,6 @@
         $('#vtab>div').hide().eq(index).show();
     });
 
-    //$.editable.addInputType("multiselect", {
-    //    element: function(settings, original) {
-    //        var textarea = $('<select />');
-    //        if (settings.rows) {
-    //            textarea.attr('rows', settings.rows);
-    //        } else {
-    //            textarea.height(settings.height);
-    //        }
-    //        if (settings.cols) {
-    //            textarea.attr('cols', settings.cols);
-    //        } else {
-    //            textarea.width(settings.width);
-    //        }
-    //        $(this).append(textarea);
-    //        return (textarea);
-    //    },
-    //    plugin: function(settings, original) {
-    //        $('textarea', this).multiselect();
-    //    },
-    //    submit: function(settings, original) {
-    //        var value = $('#hour_').val() + ':' + $('#min_').val();
-    //        $('input', this).val(value);
-    //    }
-    //});
-    $("#search-add a.commit").live("click", function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest("form");
-        var q = f.serialize();
-        var loc = $(this).attr("href");
-        var tar = f.closest("div.modal");
-        $.block();
-        $.post(loc, q, function (ret) {
-            tar.modal("hide");
-            if (ret.message) {
-                alert(ret.message);
-            }
-            else
-                switch (ret.from) {
-                    case 'RelatedFamily': 
-                        $("#related-families-div").load('/Person2/RelatedFamilies/' + ret.pid, {}, function() {
-                            $(ret.key).editable("toggle");
-                        });
-                        break;
-                }
-            $.unblock();
-        });
-        return false;
-    });
-    $("a.delete-relation").live("click", function(ev) {
-        ev.preventDefault();
-        $("#related-families-div").load($(this).attr("href"), {});
-        return false;
-    });
-    $("a.editaddr").click(function (ev) {
-        ev.preventDefault();
-        $("<div class='modal fade hide' />").load($(this).attr("href"), {}, function () {
-            $(this).modal("show"); 
-        });
-    });
-    $("a.editfamily").live("click", function(ev) {
-        ev.stopPropagation();
-        ev.preventDefault();
-        $(this).closest('div.open').removeClass('open');
-        $(this).closest("li.relation-item").find("span.relation-description").editable("toggle");
-    });
-    $('span.relation-description').editable({
-        type: "textarea",
-        toggle: "manual",
-        name: "description",
-        url: function(params) {
-            var d = new $.Deferred;
-            $.post('/Person2/EditRelation/' + params.pk, {value: params.value}, function(data) {
-                d.resolve();
-            });
-            return d.promise();
-        }
-    });
 });
 
 function RebindMemberGrids() {

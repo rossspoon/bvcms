@@ -6,7 +6,7 @@
 }
 @section scripts
 {
-    <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/js/task.js")"></script>
+    @Helper.IncludeTaskJs()
     <script type="text/javascript">
         $(function() {
             $(".bt").button();

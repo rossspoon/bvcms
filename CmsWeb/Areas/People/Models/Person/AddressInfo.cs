@@ -65,13 +65,11 @@ namespace CmsWeb.Areas.People.Models.Person
         [UIHint("Text")]
         public string City { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo State { get; set; }
 
         [UIHint("Text")]
         public string Zip { get; set; }
 
-        [UIHint("Code")]
         public CodeInfo Country { get; set; }
 
         public string AddrCityStateZip()
@@ -94,7 +92,6 @@ namespace CmsWeb.Areas.People.Models.Person
         [DisplayName("Bad Address Flag")]
         public bool? BadAddress { get; set; }
 
-        [UIHint("Code")]
         [DisplayName("Resident Code")]
         public CodeInfo ResCode { get; set; }
 
@@ -171,6 +168,13 @@ namespace CmsWeb.Areas.People.Models.Person
                     a.Country = new CodeInfo(p.CountryName, "Country");
                     a.ResCode = new CodeInfo(p.ResCodeId, "ResCode");
                     a.Preferred = p.AddressTypeId == 30;
+                    break;
+                case "NewFamily":
+                    a.Name = typeid;
+                    a.PeopleId = -1;
+                    a.State = new CodeInfo(null, "State");
+                    a.Country = new CodeInfo(null, "Country");
+                    a.ResCode = new CodeInfo(null, "ResCode");
                     break;
             }
             return a;

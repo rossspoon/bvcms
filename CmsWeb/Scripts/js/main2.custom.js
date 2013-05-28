@@ -242,56 +242,21 @@ $(function () {
     $.fn.alert = function (message) {
         this.html('<div class="alert"><a class="close" data-dismiss="alert">×</a><span>' + message + '</span></div>');
     };
-    $("a.searchadd").live("click", function (ev) {
-        ev.preventDefault();
-        $("<div id='search-add' class='modal fade hide' data-width='600' />")
-            .load($(this).attr("href"), {}, function () {
-                $(this).modal("show");
-                $(this).on('hidden', function() {
-                    $(this).remove();
-                });
-            });
-    });
-    $("#search-add a.clear").live('click', function (ev) {
-        ev.preventDefault();
-        $("#name").val('');
-        $("#phone").val('');
-        $("#address").val('');
-        $("#dob").val('');
-        return false;
-    });
-    $('form.ajax').live('submit', function(event) {
-        var $form = $(this);
-        var $target = $form.closest("div.modal");
-        $.ajax({
-            type: 'POST',
-            url: $form.attr('action'),
-            data: $form.serialize(),
-            success: function(data, status) {
-                //$target.removeClass("fade");
-                $target.html(data);
-                $target.css({ 'margin-top': ($(window).height() - $target.height()) / 2, 'top': '0' });
-            }
-        });
-        event.preventDefault();
-    });
-    $('form.ajax a.ajax').live('click', function(event) {
-        var $this = $(this);
-        var $form = $this.closest("form.ajax");
-        var $target = $form.closest("div.modal");
-        $.ajax({
-            type: 'POST',
-            url: $this[0].href,
-            data: $form.serialize(),
-            success: function(data, status) {
-                //$target.removeClass("fade");
-                $target.html(data);
-                $target.css({ 'margin-top': ($(window).height() - $target.height()) / 2, 'top': '0' });
-            }
-        });
-        event.preventDefault();
-    });
 });
+
+$(document).ajaxSend(function(event, request, settings) {
+   $('#loading-indicator')
+       .css({ 
+           'position': 'absolute',
+           'left': $(window).width() / 2, 
+           'top': $(window).height() / 2,
+           'z-index' : 2000
+       }).show();
+ });
+ 
+ $(document).ajaxComplete(function(event, request, settings) {
+   $('#loading-indicator').hide();
+ });
 
 function dimOff() {
     $("#darkLayer").hide();
@@ -327,3 +292,123 @@ String.prototype.addCommas = function () {
     return x1 + x2;
 };
 
+///#source 1 1 /Scripts/Search/SearchAdd.js
+$(function () {
+    $("a.searchadd").live("click", function (ev) {
+        ev.preventDefault();
+        $("<div id='search-add' class='modal fade hide' data-width='600' />")
+            .load($(this).attr("href"), {}, function () {
+                $(this).modal("show");
+                $(this).on('hidden', function () {
+                    $(this).remove();
+                });
+            });
+    });
+    $("#search-add a.clear").live('click', function (ev) {
+        ev.preventDefault();
+        $("#name").val('');
+        $("#phone").val('');
+        $("#address").val('');
+        $("#dob").val('');
+        return false;
+    });
+    $("div.modal form.ajax").live("submit", function (event) {
+        var $form = $(this);
+        var $target = $form.closest("div.modal");
+        $.ajax({
+            type: 'POST',
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            success: function (data, status) {
+                //$target.removeClass("fade");
+                $target.html(data);
+                var top = ($(window).height() - $target.height()) / 2;
+                if (top < 10)
+                    top = 10;
+                $target.css({ 'margin-top': top, 'top': '0' });
+            }
+        });
+        event.preventDefault();
+    });
+    $("form.ajax a.ajax").live("click", function (event) {
+        var $this = $(this);
+        var $form = $this.closest("form.ajax");
+        var $modal = $form.closest("div.modal");
+        var url = $this[0].href;
+        var data = $form.serialize();
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(data, status) {
+                if ($modal.length > 0) {
+                    //$modal.removeClass("fade");
+                    $modal.html(data);
+                    var top = ($(window).height() - $modal.height()) / 2;
+                    if (top < 10)
+                        top = 10;
+                    $modal.css({ 'margin-top': top, 'top': '0' });
+                } else {
+                    $form.html(data);
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        });
+        event.preventDefault();
+    });
+
+    $("form.ajax tbody > tr a.reveal").live("click", function (e) {
+        e.stopPropagation();
+    });
+    $.NotReveal = function(ev) {
+        if ($(ev.target).is("a"))
+            if (!$(ev.target).is('.reveal'))
+                return;
+    };
+    $("form.ajax tr.section.notshown").live("click", function (ev) {
+        if ($.NotReveal(ev)) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        $(this).removeClass("notshown").addClass("shown");
+        $(this).nextUntil("tr.section").find("div.collapse")
+            .off("hidden")
+            .on("hidden", function(e) { e.stopPropagation(); })
+            .collapse('show');
+    });
+    $("form.ajax tr.section.shown").live("click", function (ev) {
+        if ($.NotReveal(ev)) return;
+        ev.preventDefault();
+        $(this).nextUntil("tr.section").find("div.collapse")
+            .off("hidden")
+            .on("hidden", function(e) { e.stopPropagation(); })
+            .collapse('hide');
+        $(this).removeClass("shown").addClass("notshown");
+    });
+    $('form.ajax a[rel="reveal"]').live("click", function (ev) {
+        ev.preventDefault();
+        $(this).parents("tr").next("tr").find("div.collapse")
+            .off('hidden')
+            .on("hidden", function(e) { e.stopPropagation(); })
+            .collapse("toggle");
+    });
+    $("form.ajax tr.master").live("click", function (ev) {
+        if ($.NotReveal(ev)) return;
+        ev.preventDefault();
+        $(this).next("tr").find("div.collapse")
+            .off('hidden')
+            .on("hidden", function(e) { e.stopPropagation(); })
+            .collapse("toggle");
+    });
+    $("form.ajax tr.details").live("click", function (ev) {
+        if ($.NotReveal(ev)) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        $(this).find("div.collapse")
+            .off("hidden")
+            .on("hidden", function(e) { e.stopPropagation(); })
+            .collapse('hide');
+    });
+});

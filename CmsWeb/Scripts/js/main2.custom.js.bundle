@@ -3,4 +3,5 @@
   <!--The order of the <file> elements determines the order of them when bundled.-->
   <file>/Scripts/js/Pager3.js</file>
   <file>/Scripts/js/headermenu2.js</file>
+  <file>/Scripts/Search/SearchAdd.js</file>
 </bundle>

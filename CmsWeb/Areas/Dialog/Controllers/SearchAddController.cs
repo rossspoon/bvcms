@@ -118,7 +118,7 @@ namespace CmsWeb.Areas.Dialog.Controllers
             {
                 PeopleId = id,
                 FamilyId = m.type == "family" ? m.typeid.Value : p.FamilyId,
-                first = p.FirstName,
+                First = p.FirstName,
                 goesby = p.NickName,
                 last = p.LastName,
                 marital = p.MaritalStatusId,
@@ -168,15 +168,15 @@ namespace CmsWeb.Areas.Dialog.Controllers
                 context = m.type,
             };
 #if DEBUG
-            p.first = "David";
+            p.First = "David";
             p.last = "Carr." + DateTime.Now.Millisecond;
             p.gender = 0;
             p.marital = 0;
             p.dob = "na";
             p.email = "na";
             p.phone = "na";
-            p.address = "na";
-            p.zip = "na";
+            p.Address = "na";
+            p.Zip = "na";
             p.homephone = "na";
 #endif
             m.List.Add(p);
@@ -190,10 +190,10 @@ namespace CmsWeb.Areas.Dialog.Controllers
             if (id < 0)
             {
                 var f = m.List.FirstOrDefault(fm => fm.FamilyId == id);
-                p.address = f.address;
-                p.city = f.city;
-                p.state = f.state;
-                p.zip = f.zip;
+                p.Address = f.Address;
+                p.City = f.City;
+                p.State = f.State;
+                p.Zip = f.Zip;
                 p.homephone = f.homephone;
             }
             else

@@ -3,7 +3,7 @@
 <head>
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="@Fingerprint.Tag("/content/css/new2css.css")" />
+    @Fingerprint.Css("/content/css/new2css.css")
     @RenderSection("head", required: false)
     <style type="text/css">
         @{ var bkcolor = DbUtil.Db.Setting("HeaderBackground", ""); }
@@ -27,5 +27,6 @@
     @Html.Partial("Footer")
     @Html.Partial("Dialogs")
     @RenderSection("PopupsPlaceholder", required: false)
+    <img src="/images/ajax-loader.gif" id="loading-indicator" style="display:none" />
 </body>
 </html>

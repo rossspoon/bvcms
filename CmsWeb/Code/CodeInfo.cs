@@ -23,13 +23,6 @@ namespace CmsWeb.Code
                 Value = value.ToString();
             ListName = listname;
         }
-//        public CodeInfo(object value, IEnumerable<SelectListItem> items, string valuefield = "Id")
-//        {
-//            if (value != null)
-//                Value = value.ToString();
-//            Items = items;
-//        }
-
         public string Value
         {
             get { return _value; }
@@ -60,6 +53,9 @@ namespace CmsWeb.Code
                     case "MemberStatus":
                         Items = new SelectList(cv.MemberStatusCodes0(), "Id", "Value", Value);
                         break;
+                    case "MemberType":
+                        Items = new SelectList(CodeValueModel.MemberTypeCodes0(), "Id", "Value", Value);
+                        break;
                     case "FamilyPosition":
                         Items = new SelectList(cv.FamilyPositionCodes(), "Id", "Value", Value);
                         break;
@@ -67,7 +63,7 @@ namespace CmsWeb.Code
                         Items = new SelectList(cv.TitleCodes(), "Value", "Value", Value);
                         break;
                     case "State":
-                        Items = new SelectList(cv.GetStateListUnknown(), "Value", "Value", Value);
+                        Items = new SelectList(cv.GetStateListUnknown(), "Code", "Value", Value);
                         break;
                     case "Country":
                         Items = new SelectList(CodeValueModel.GetCountryList(), "Value", "Value", Value);

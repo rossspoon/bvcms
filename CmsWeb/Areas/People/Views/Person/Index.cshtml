@@ -19,7 +19,9 @@
     <div class="row-fluid">
         <div class="span3">
             <div id="sidebar">
-                @Html.Partial("FamilyGrid", Model)
+                <div id="family-div">
+                    @Html.Partial("FamilyGrid", Model)
+                </div>
                 @Html.Partial("Addresses", Model)
                 <div id="related-families-div">
                     @Html.Partial("RelatedFamilies", Model)
@@ -65,24 +67,24 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="current">
-                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId">
+                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="previous">
-                                        <form action="/Person2/PrevEnrollGrid/@Model.displayperson.PeopleId">
+                                        <form action="/Person2/PrevEnrollGrid/@Model.displayperson.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="pending">
-                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId">
+                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="attends">
-                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId">
+                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="registrations">
                                         <h2>Registrations</h2>
-                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId">
+                                        <form action="/Person2/EnrollGrid/@Model.displayperson.PeopleId" class="non-modal ajax">
                                         </form>
                                     </div>
                                 </div>

@@ -1,4 +1,4 @@
-﻿@model CmsWeb.Areas.People.Models.SearchAddModel
+﻿@model CmsWeb.Areas.Search.Models.SearchAddModel
 @* Dave: note the onecol class, I had to put that in because basic forms from bootstrap seem to have been globally changed *@
 <form class="form-horizontal onecol ajax" action="/SearchAdd2/Results" method="POST">
     <div class="modal-header">
@@ -7,17 +7,12 @@
     </div>
     <div class="modal-body">
         <fieldset class="display">
-            @Html.Partial("HiddenMeta", Model)
-
             @Html.EditorFor(m => m.Name, new { help = "<i>Starting letters of First &amp; Last or just Last, e.g. <u>Pe Smi</u></i>" })
-
             @Html.EditorFor(m => m.Phone, new { help = "<i>Any part of any Phone or Email</i>" })
-
             @Html.EditorFor(m => m.Address, new { help = "<i>Any part of the Street Address, City or Zip</i>" })
-
             @Html.EditorFor(m => m.dob, new { help = "<i>YYYY or MM or MM/DD or MM/DD/YY</i>" })
-
-            @Html.Partial("HiddenPeople", Model)
+            @Html.EditorFor(m => m, "HiddenMeta")
+            @Html.EditorFor(m => m, "HiddenPeople")
         </fieldset>
     </div>
     <div class="modal-footer">
