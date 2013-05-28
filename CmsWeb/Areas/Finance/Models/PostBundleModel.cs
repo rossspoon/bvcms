@@ -411,6 +411,9 @@ namespace CmsWeb.Models
         }
         public static int? BatchProcess(string text, DateTime date, int? fundid)
         {
+            if (DbUtil.Db.Setting("BankDepositFormat", "none") == "Silverdale")
+                using (var csv = new CsvReader(new StringReader(text), true))
+                    return BatchProcessSilverdale(csv, date, fundid);
             if (DbUtil.Db.Setting("BankDepositFormat", "none") == "OakbrookChurch")
                 using (var csv = new CsvReader(new StringReader(text), true))
                     return BatchProcessOakbrookChurch(csv, date, fundid);
@@ -781,6 +784,76 @@ namespace CmsWeb.Models
             FinishBundle(bh);
             return bh.BundleHeaderId;
         }
+        public static int? BatchProcessSilverdale(CsvReader csv, DateTime date, int? fundid)
+        {
+            var cols = csv.GetFieldHeaders();
+            BundleHeader bh = null;
+            var firstfund = FirstFundId();
+            var fund = fundid ?? firstfund;
+
+            while (csv.ReadNextRecord())
+            {
+                var excludecol = csv[12] == "Virtual Credit Item";
+                var routing = csv[18];
+                var account = csv[19];
+                var amount = csv[20];
+                var checkno = csv[24];
+
+                if (excludecol)
+                {
+                    if (bh != null) FinishBundle(bh);
+                    bh = GetBundleHeader(date, DateTime.Now);
+                    continue;
+                }
+                if(bh == null)
+                    bh = GetBundleHeader(date, DateTime.Now);
+
+                var bd = AddContributionDetail(date, fund, amount, checkno, routing, account);
+                bh.BundleDetails.Add(bd);
+            }
+            FinishBundle(bh);
+            return bh.BundleHeaderId;
+        }
+
+        private static int FirstFundId()
+        {
+            var firstfund = (from f in DbUtil.Db.ContributionFunds
+                             where f.FundStatusId == 1
+                             orderby f.FundId
+                             select f.FundId).First();
+            return firstfund;
+        }
+
+        private static BundleDetail AddContributionDetail(DateTime date, int fundid,
+            string amount, string checkno, string routing, string account)
+        {
+            var bd = new BundleDetail
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                };
+            bd.Contribution = new Contribution
+                {
+                    CreatedBy = Util.UserId,
+                    CreatedDate = DateTime.Now,
+                    ContributionDate = date,
+                    FundId = fundid,
+                    ContributionStatusId = 0,
+                    ContributionTypeId = ContributionTypeCode.CheckCash,
+                };
+            bd.Contribution.ContributionAmount = amount.GetAmount();
+            bd.Contribution.CheckNo = checkno;
+            var eac = Util.Encrypt(routing + "|" + account);
+            var q = from kc in DbUtil.Db.CardIdentifiers
+                    where kc.Id == eac
+                    select kc.PeopleId;
+            var pid = q.SingleOrDefault();
+            if (pid != null)
+                bd.Contribution.PeopleId = pid;
+            bd.Contribution.BankAccount = eac;
+            return bd;
+        }
+
         public static int? BatchProcessOakbrookChurch(CsvReader csv, DateTime date, int? fundid)
         {
             var cols = csv.GetFieldHeaders();
@@ -801,6 +874,8 @@ namespace CmsWeb.Models
                     bh = GetBundleHeader(date, DateTime.Now);
                     continue;
                 }
+                if(bh == null)
+                    bh = GetBundleHeader(date, DateTime.Now);
 
                 var bd = new BundleDetail
                 {
