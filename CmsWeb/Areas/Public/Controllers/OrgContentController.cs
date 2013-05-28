@@ -43,6 +43,7 @@ namespace CmsWeb.Areas.Public
             switch (mimetype)
             {
                 case "image/jpeg":
+                case "image/png":
                 case "image/pjpeg":
                 case "image/gif":
                 case "text/plain":

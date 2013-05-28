@@ -12,8 +12,8 @@
             CKEDITOR.replace('Html', {
                 height: 400,
                 fullPage: false,
-                filebrowserUploadUrl: '/Account/CKEditorUpload/',
-                filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
+                filebrowserUploadUrl: '/OrgContent/CKEditorUpload/@Model.OrgId',
+                filebrowserImageUploadUrl: '/OrgContent/CKEditorUpload/@Model.OrgId'
             });
         });
     </script>
