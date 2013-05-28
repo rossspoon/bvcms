@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,75 +17,31 @@ namespace CmsWeb.Models
         private static CodeValueModel cv = new CodeValueModel();
 
         public int index { get; set; }
-
         public string context { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("")]
-        public string First { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("")]
+        public string first { get; set; }
         public string goesby { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("")]
         public string middle { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("")]
         public string last { get; set; }
-
         public string title { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("")]
         public string suffix { get; set; }
-
         public string dob { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("")]
         public string phone { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("")]
         public string email { get; set; }
-
         public int gender { get; set; }
-
         public int marital { get; set; }
-
         public int? campus { get; set; }
-
         public int? entrypoint { get; set; }
 
-        [UIHint("Text")]
-        [DisplayName("Home Phone")]
         public string homephone { get; set; }
-
-        [UIHint("Text")]
-        public string Address { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("Address Line 2")]
-        public string Address2 { get; set; }
-
-        [UIHint("Text")]
-        public string City { get; set; }
-
-        [UIHint("Code")]
-        public CodeInfo State { get; set; }
-
-        [UIHint("Text")]
-        public string Zip { get; set; }
-
-        [UIHint("Code")]
-        public CodeInfo Country { get; set; }
+        public string address { get; set; }
+        public string address2 { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
+        public string zip { get; set; }
+        public string country { get; set; }
 
         private DateTime? _Birthday;
 
-        [UIHint("Date")]
         public DateTime? birthday
         {
             get
@@ -190,7 +144,7 @@ namespace CmsWeb.Models
 
         internal void ValidateModelForNew(ModelStateDictionary ModelState, bool checkaddress)
         {
-            if (!First.HasValue())
+            if (!first.HasValue())
                 ModelState.AddModelError("name", "first name required");
 
             if (!last.HasValue())
@@ -204,7 +158,7 @@ namespace CmsWeb.Models
                 ModelState.AddModelError("phone", "7 or 10+ digits (or \"na\")");
 
             int count = 0;
-            PeopleSearchModel.FindPerson(First, last, birthday ?? DateTime.MinValue, string.Empty, phone.GetDigits(),
+            PeopleSearchModel.FindPerson(first, last, birthday ?? DateTime.MinValue, string.Empty, phone.GetDigits(),
                                          out count);
             if (count > 0)
                 ModelState.AddModelError("name", "name/dob already exists in db");
@@ -221,24 +175,24 @@ namespace CmsWeb.Models
             if (checkaddress)
             {
 
-                if (!Address.HasValue())
+                if (!address.HasValue())
                     ModelState.AddModelError("address", "address required (or \"na\")");
 
                 var addrok = false;
-                if (City.HasValue() && State.Value.HasValue())
+                if (city.HasValue() && state.HasValue())
                     addrok = true;
-                if (Zip.HasValue())
+                if (zip.HasValue())
                     addrok = true;
-                if (City.Equal("na") && State.Value.Equal("na") && Zip.Equal("na"))
+                if (city.Equal("na") && state.Equal("na") && zip.Equal("na"))
                     addrok = true;
                 if (!addrok)
                     ModelState.AddModelError("zip", "city/state required or zip required (or \"na\" in all)");
 
                 if (ModelState.IsValid
-                    && Address.NotEqual("na") && City.NotEqual("na") && State.Value.NotEqual("na")
-                    && (Country.Value.Equal("United States") || !Country.Value.HasValue()))
+                    && address.NotEqual("na") && city.NotEqual("na") && state.NotEqual("na")
+                    && (country.Equal("United States") || !country.HasValue()))
                 {
-                    var r = AddressVerify.LookupAddress(Address, Address2, City, State.Value, Zip);
+                    var r = AddressVerify.LookupAddress(address, address2, city, state, zip);
                     if (r.Line1 != "error")
                     {
                         if (!r.found)
@@ -248,30 +202,30 @@ namespace CmsWeb.Models
                                                      ", if your address will not validate, change the country to 'USA, Not Validated'");
                             return;
                         }
-                        if (r.Line1 != Address)
+                        if (r.Line1 != address)
                         {
-                            ModelState.AddModelError("address", "address changed from '{0}'".Fmt(Address));
-                            Address = r.Line1;
+                            ModelState.AddModelError("address", "address changed from '{0}'".Fmt(address));
+                            address = r.Line1;
                         }
-                        if (r.Line2 != (Address2 ?? ""))
+                        if (r.Line2 != (address2 ?? ""))
                         {
-                            ModelState.AddModelError("address2", "address2 changed from '{0}'".Fmt(Address2));
-                            Address2 = r.Line2;
+                            ModelState.AddModelError("address2", "address2 changed from '{0}'".Fmt(address2));
+                            address2 = r.Line2;
                         }
-                        if (r.City != (City ?? ""))
+                        if (r.City != (city ?? ""))
                         {
-                            ModelState.AddModelError("city", "city changed from '{0}'".Fmt(City));
-                            City = r.City;
+                            ModelState.AddModelError("city", "city changed from '{0}'".Fmt(city));
+                            city = r.City;
                         }
-                        if (r.State != (State.Value ?? ""))
+                        if (r.State != (state ?? ""))
                         {
-                            ModelState.AddModelError("state", "state changed from '{0}'".Fmt(State));
-                            State.Value = r.State;
+                            ModelState.AddModelError("state", "state changed from '{0}'".Fmt(state));
+                            state = r.State;
                         }
-                        if (r.Zip != (Zip ?? ""))
+                        if (r.Zip != (zip ?? ""))
                         {
-                            ModelState.AddModelError("zip", "zip changed from '{0}'".Fmt(Zip));
-                            Zip = r.Zip;
+                            ModelState.AddModelError("zip", "zip changed from '{0}'".Fmt(zip));
+                            zip = r.Zip;
                         }
                     }
                 }
@@ -288,12 +242,12 @@ namespace CmsWeb.Models
                 f = new Family
                         {
                             HomePhone = homephone.GetDigits(),
-                            AddressLineOne = Address.Disallow(na),
-                            AddressLineTwo = Address2,
-                            CityName = City.Disallow(na),
-                            StateCode = State.Value.Disallow(na),
-                            ZipCode = Zip.Disallow(na),
-                            CountryName = Country.Value,
+                            AddressLineOne = address.Disallow(na),
+                            AddressLineTwo = address2,
+                            CityName = city.Disallow(na),
+                            StateCode = state.Disallow(na),
+                            ZipCode = zip.Disallow(na),
+                            CountryName = country,
                         };
 
             if (goesby != null)
@@ -310,7 +264,7 @@ namespace CmsWeb.Models
                     position = PositionInFamily.SecondaryAdult;
 
             _Person = Person.Add(f, position,
-                                 null, First.Trim(), goesby, last.Trim(), dob, false, gender,
+                                 null, first.Trim(), goesby, last.Trim(), dob, false, gender,
                                  originid, entrypointid);
             if (title.HasValue())
                 person.TitleCode = title;
@@ -335,11 +289,11 @@ namespace CmsWeb.Models
             if (FamilyId < 0)
                 return;
             homephone = family.HomePhone;
-            Address = family.AddressLineOne;
-            Address2 = family.AddressLineTwo;
-            City = family.CityName;
-            State.Value = family.StateCode;
-            Zip = family.ZipCode;
+            address = family.AddressLineOne;
+            address2 = family.AddressLineTwo;
+            city = family.CityName;
+            state = family.StateCode;
+            zip = family.ZipCode;
         }
 
         public string ToolTip
@@ -347,8 +301,8 @@ namespace CmsWeb.Models
             get
             {
                 return "{0} {1}|{2}|{3}|Birthday: {4}|c {5}|h {6}|{7}|Gender: {8}|Marital: {9}".Fmt(
-                    goesby ?? First, last,
-                    Address,
+                    goesby ?? first, last,
+                    address,
                     CityStateZip,
                     birthday.FormatDate(),
                     phone.FmtFone(),
@@ -361,7 +315,7 @@ namespace CmsWeb.Models
 
         public string CityStateZip
         {
-            get { return "{0}, {1} {2}".Fmt(City, State, Zip); }
+            get { return "{0}, {1} {2}".Fmt(city, state, zip); }
         }
 
     }

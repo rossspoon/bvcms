@@ -1125,7 +1125,6 @@
     <Content Include="Scripts\People\Person1.min.js">
       <DependentUpon>Person1.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\People\person1.old.js" />
     <Content Include="Scripts\People\Person2.min.js">
       <DependentUpon>Person2.js</DependentUpon>
     </Content>
