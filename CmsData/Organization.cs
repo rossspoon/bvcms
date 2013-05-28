@@ -279,6 +279,13 @@ namespace CmsData
 			}
 			return mt;
 		}
+		public static Organization FetchOrCreateOrganization(CMSDataContext db, int divid, string organization)
+		{
+			var o = db.LoadOrganizationByName(organization);
+			if (o == null)
+				return CreateOrganization(db, divid, organization);
+			return o;
+		}
 		public static Organization FetchOrCreateOrganization(CMSDataContext Db, Division division, string organization)
 		{
 			var o = Db.LoadOrganizationByName(organization);
