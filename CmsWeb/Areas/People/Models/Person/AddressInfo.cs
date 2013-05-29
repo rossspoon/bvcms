@@ -14,8 +14,6 @@ namespace CmsWeb.Areas.People.Models.Person
 {
     public class AddressInfo
     {
-        private CmsWeb.Code.CodeValueModel cv = new CmsWeb.Code.CodeValueModel();
-
         public int PeopleId { get; set; }
         public CmsData.Person person { get; set; }
 
@@ -35,6 +33,8 @@ namespace CmsWeb.Areas.People.Models.Person
                         case "FamilyAddr":
                             _CanUserEditAddress = person.CanUserEditFamilyAddress;
                             break;
+                        default:
+                            return true;
                     }
                 }
                 return _CanUserEditAddress.Value;
@@ -121,6 +121,22 @@ namespace CmsWeb.Areas.People.Models.Person
             list.Insert(0, new SelectListItem { Text = "(not specified)", Value = "" });
             return list;
         }
+
+        public AddressInfo()
+        {
+            State = new CodeInfo("", "State");
+            Country = new CodeInfo("", "Country");
+        }
+        public AddressInfo(string address1, string address2, string city, string state, string zip, string country)
+        {
+            Address1 = address1;
+            Address2 = address2;
+            City = city;
+            State = new CodeInfo(state, "State");
+            Zip = zip;
+            Country = new CodeInfo(country, "Country");
+        }
+
         public static AddressInfo GetAddressInfo(int id, string typeid)
         {
             var p = DbUtil.Db.LoadPersonById(id);
@@ -169,13 +185,6 @@ namespace CmsWeb.Areas.People.Models.Person
                     a.ResCode = new CodeInfo(p.ResCodeId, "ResCode");
                     a.Preferred = p.AddressTypeId == 30;
                     break;
-                case "NewFamily":
-                    a.Name = typeid;
-                    a.PeopleId = -1;
-                    a.State = new CodeInfo(null, "State");
-                    a.Country = new CodeInfo(null, "Country");
-                    a.ResCode = new CodeInfo(null, "ResCode");
-                    break;
             }
             return a;
         }
@@ -188,18 +197,18 @@ namespace CmsWeb.Areas.People.Models.Person
             State = new CodeInfo(Result.State, "State");
         }
 
-        public bool addrok
-        {
-            get { return City.HasValue() && State.Value.HasValue() || Zip.HasValue(); }
-        }
-
-        public string error { get; set; }
-        public bool saved { get; set; }
-        public bool? resultok { get; set; }
-        public bool resultchanged { get; set; }
-        public bool resultnotfound
+        public bool? Addrok { get; set; }
+        public string Error { get; set; }
+        public bool Saved { get; set; }
+        public bool ResultChanged { get; set; }
+        public bool ResultNotFound
         {
             get { return Result != null && !Result.found; }
+        }
+
+        public bool HasIssues
+        {
+            get { return Addrok == false || ResultChanged || ResultNotFound; }
         }
 
         public void UpdateAddress(bool forceSave = false)
@@ -208,31 +217,8 @@ namespace CmsWeb.Areas.People.Models.Person
             var f = p.Family;
 
             if (!forceSave)
-            {
-                if (!addrok)
-                    return;
-
-                if (Address1.HasValue() && (City.HasValue() || State.Value.HasValue() || Zip.HasValue())
-                    && (Country.Value == "United States" || !Country.Value.HasValue()))
-                {
-                    Result = AddressVerify.LookupAddress(Address1, Address2, City, State.Value, Zip);
-                    if (Result.Line1 == "error")
-                    {
-                        error = "network error";
-                        Result.address = AddrCityStateZip();
-                        return;
-                    }
-                    if (resultnotfound)
-                        return;
-                    if (Result.Changed(Address1, Address2, City, State.Value, Zip))
-                    {
-                        resultchanged = true;
-                        SetAddressInfo(PeopleId, Name);
-                        return;
-                    }
-                }
-                // at this point the address validated just fine.
-            }
+                if (!ValidateAddress()) return;
+            // at this point the address validated just fine.
 
             int? ResCodeId = ResCode.Value.ToInt();
             if (ResCodeId == 0)
@@ -303,10 +289,10 @@ namespace CmsWeb.Areas.People.Models.Person
             }
             catch (InvalidOperationException ex)
             {
-                error = ex.Message;
+                Error = ex.Message;
                 return;
             }
-            saved = true;
+            Saved = true;
 
             if (!HttpContext.Current.User.IsInRole("Access"))
                 if (psb.Length > 0 || fsb.Length > 0)
@@ -317,6 +303,35 @@ namespace CmsWeb.Areas.People.Models.Person
                         .Fmt(Util.UserName, psb.ToString(), fsb.ToString()));
                 }
         }
+
+        public bool ValidateAddress()
+        {
+            Addrok = City.HasValue() && State.Value.HasValue() || Zip.HasValue();
+            if (Addrok == false)
+                return false;
+
+            if (Address1.HasValue() && (City.HasValue() || State.Value.HasValue() || Zip.HasValue())
+                && (Country.Value == "United States" || !Country.Value.HasValue()))
+            {
+                Result = AddressVerify.LookupAddress(Address1, Address2, City, State.Value, Zip);
+                if (Result.Line1 == "error")
+                {
+                    Error = "network error";
+                    Result.address = AddrCityStateZip();
+                    return false;
+                }
+                if (ResultNotFound)
+                    return false;
+                if (Result.Changed(Address1, Address2, City, State.Value, Zip))
+                {
+                    ResultChanged = false;
+                    SetAddressInfo(PeopleId, Name);
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private StringBuilder fsb = new StringBuilder();
         private void UpdateValue(Family f, string field, object value)
         {

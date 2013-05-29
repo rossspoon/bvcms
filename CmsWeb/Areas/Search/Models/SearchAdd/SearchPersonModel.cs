@@ -62,24 +62,6 @@ namespace CmsWeb.Areas.Search.Models
         [UIHint("Text")]
         public string HomePhone { get; set; }
 
-        [UIHint("Text")]
-        [DisplayName("Line 1")]
-        public string Address { get; set; }
-
-        [UIHint("Text")]
-        [DisplayName("Line 2")]
-        public string Address2 { get; set; }
-
-        [UIHint("Text")]
-        public string City { get; set; }
-
-        public CodeInfo State { get; set; }
-
-        [UIHint("Text")]
-        public string Zip { get; set; }
-
-        public CodeInfo Country { get; set; }
-
         private DateTime? _Birthday;
 
         public DateTime? birthday
@@ -111,7 +93,6 @@ namespace CmsWeb.Areas.Search.Models
 
         public int FamilyId { get; set; }
         private Family _family;
-
         public Family family
         {
             get
@@ -123,9 +104,8 @@ namespace CmsWeb.Areas.Search.Models
         }
 
         public int? PeopleId { get; set; }
-        private CmsData.Person _Person;
-
-        public CmsData.Person person
+        private Person _Person;
+        public Person person
         {
             get
             {
@@ -135,7 +115,9 @@ namespace CmsWeb.Areas.Search.Models
             }
         }
 
-        internal void ValidateModelForNew(ModelStateDictionary ModelState, bool checkaddress)
+        public AddressInfo AddressInfo { get; set; }
+
+        internal void ValidateModelForNew(ModelStateDictionary ModelState)
         {
             if (!First.HasValue())
                 ModelState.AddModelError("name", "first name required");
@@ -164,60 +146,15 @@ namespace CmsWeb.Areas.Search.Models
             if (Marital.Value == "99")
                 ModelState.AddModelError("marital", "specify marital status");
 
-            if (checkaddress)
-            {
-
-                if (!Address.HasValue())
-                    ModelState.AddModelError("address", "address required (or \"na\")");
-
-                bool addrok = (City.HasValue() && State.Value.HasValue()) 
-                            || Zip.HasValue() 
-                            || (City.Equal("na") && State.Value.Equal("na") && Zip.Equal("na"));
-                if (!addrok)
-                    ModelState.AddModelError("zip", "city/state required or zip required (or \"na\" in all)");
-
-                if (ModelState.IsValid
-                    && Address.NotEqual("na") && City.NotEqual("na") && State.Value.NotEqual("na")
-                    && (Country.Value.Equal("United States") || !Country.Value.HasValue()))
-                {
-                    var r = AddressVerify.LookupAddress(Address, Address2, City, State.Value, Zip);
-                    if (r.Line1 != "error")
-                    {
-                        if (!r.found)
-                        {
-                            ModelState.AddModelError("zip",
-                                 r.address +
-                                 ", if your address will not validate, change the country to 'USA, Not Validated'");
-                            return;
-                        }
-                        if (r.Line1 != Address)
-                        {
-                            ModelState.AddModelError("address", "address changed from '{0}'".Fmt(Address));
-                            Address = r.Line1;
-                        }
-                        if (r.Line2 != (Address2 ?? ""))
-                        {
-                            ModelState.AddModelError("address2", "address2 changed from '{0}'".Fmt(Address2));
-                            Address2 = r.Line2;
-                        }
-                        if (r.City != (City ?? ""))
-                        {
-                            ModelState.AddModelError("city", "city changed from '{0}'".Fmt(City));
-                            City = r.City;
-                        }
-                        if (r.State != (State.Value ?? ""))
-                        {
-                            ModelState.AddModelError("state", "state changed from '{0}'".Fmt(State));
-                            State.Value = r.State;
-                        }
-                        if (r.Zip != (Zip ?? ""))
-                        {
-                            ModelState.AddModelError("zip", "zip changed from '{0}'".Fmt(Zip));
-                            Zip = r.Zip;
-                        }
-                    }
-                }
-            }
+            if (AddressInfo == null)
+                return;
+            AddressInfo.ValidateAddress();
+            if (AddressInfo.ResultNotFound)
+                ModelState.AddModelError("address", "Address Not Found");
+            else if (AddressInfo.ResultChanged)
+                ModelState.AddModelError("address", "Address Found and Adjusted by USPS");
+            else if (AddressInfo.Addrok == false)
+                ModelState.AddModelError("address", "City and State are required or Zip is required");
         }
 
         internal void AddPerson(int originid, int? entrypointid, int? campusid)
@@ -230,12 +167,12 @@ namespace CmsWeb.Areas.Search.Models
                 f = new Family
                         {
                             HomePhone = HomePhone.GetDigits(),
-                            AddressLineOne = Address.Disallow(na),
-                            AddressLineTwo = Address2,
-                            CityName = City.Disallow(na),
-                            StateCode = State.Value.Disallow(na),
-                            ZipCode = Zip.Disallow(na),
-                            CountryName = Country.Value,
+                            AddressLineOne = AddressInfo.Address1.Disallow(na),
+                            AddressLineTwo = AddressInfo.Address2,
+                            CityName = AddressInfo.City.Disallow(na),
+                            StateCode = AddressInfo.State.Value.Disallow(na),
+                            ZipCode = AddressInfo.Zip.Disallow(na),
+                            CountryName = AddressInfo.Country.Value,
                         };
 
             if (GoesBy != null)
@@ -277,34 +214,34 @@ namespace CmsWeb.Areas.Search.Models
             if (FamilyId <= 0)
                 return;
             HomePhone = family.HomePhone;
-            Address = family.AddressLineOne;
-            Address2 = family.AddressLineTwo;
-            City = family.CityName;
-            State = new CodeInfo(family.StateCode, "State");
-            Zip = family.ZipCode;
-            Country = new CodeInfo(family.CountryName, "Country");
+            AddressInfo.Address1 = family.AddressLineOne;
+            AddressInfo.Address2 = family.AddressLineTwo;
+            AddressInfo.City = family.CityName;
+            AddressInfo.State = new CodeInfo(family.StateCode, "State");
+            AddressInfo.Zip = family.ZipCode;
+            AddressInfo.Country = new CodeInfo(family.CountryName, "Country");
         }
 
-        public string ToolTip
-        {
-            get
-            {
-                return "{0} {1}|{2}|{3}|Birthday: {4}|c {5}|h {6}|{7}|Gender: {8}|Marital: {9}".Fmt(
-                    GoesBy ?? First, Last,
-                    Address,
-                    CityStateZip,
-                    birthday.FormatDate(),
-                    Phone.FmtFone(),
-                    HomePhone.FmtFone(),
-                    Email,
-                    Gender.ToString(),
-                    Marital.ToString());
-            }
-        }
+        //public string ToolTip
+        //{
+        //    get
+        //    {
+        //        return "{0} {1}|{2}|{3}|Birthday: {4}|c {5}|h {6}|{7}|Gender: {8}|Marital: {9}".Fmt(
+        //            GoesBy ?? First, Last,
+        //            AddressInfo.Address,
+        //            CityStateZip,
+        //            birthday.FormatDate(),
+        //            Phone.FmtFone(),
+        //            HomePhone.FmtFone(),
+        //            Email,
+        //            Gender.ToString(),
+        //            Marital.ToString());
+        //    }
+        //}
 
         public string CityStateZip
         {
-            get { return "{0}, {1} {2}".Fmt(City, State, Zip); }
+            get { return "{0}, {1} {2}".Fmt(AddressInfo.City, AddressInfo.State.Value, AddressInfo.Zip); }
         }
 
     }

@@ -1778,6 +1778,7 @@
     <Content Include="Views\Shared\EditorTemplates\Int.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\TextArea.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TextArea.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\HiddenCodeInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">

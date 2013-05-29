@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Web;
+using CmsWeb.Areas.People.Models.Person;
 using CmsWeb.Code;
 using CmsWeb.Models;
 using UtilityExtensions;
@@ -44,6 +45,8 @@ namespace CmsWeb.Areas.Search.Models
         public int? EntryPointId { get; set; }
         public int? CampusId { get; set; }
         public int Index { get; set; }
+
+        public AddressInfo AddressInfo { get; set; }
 
         private IList<SearchPersonModel> list = new List<SearchPersonModel>();
         public IList<SearchPersonModel> List
@@ -292,24 +295,20 @@ namespace CmsWeb.Areas.Search.Models
             p.Last = "Carr." + DateTime.Now.Millisecond;
             p.Gender = new CodeInfo(0, "Gender");
             p.Marital = new CodeInfo(0, "Marital");
-            p.dob = "na";
-            p.Email = "na";
-            p.Phone = "na";
-            p.Address = "na";
-            p.Zip = "na";
-            p.HomePhone = "na";
 #endif
             if (p.FamilyId < 0)
             {
                 var f = List.FirstOrDefault(fm => fm.FamilyId == p.FamilyId);
-                p.Address = f.Address;
-                p.City = f.City;
-                p.State = f.State;
-                p.Zip = f.Zip;
-                p.HomePhone = f.HomePhone;
+                if (f != null)
+                {
+                    p.AddressInfo = new AddressInfo(f.AddressInfo.Address1, f.AddressInfo.Address2, f.AddressInfo.City, f.AddressInfo.State.Value, f.AddressInfo.Zip, f.AddressInfo.Country.Value);
+                    p.HomePhone = f.HomePhone;
+                }
             }
             else
                 p.LoadFamily();
+            if (p.AddressInfo == null)
+                p.AddressInfo = new AddressInfo();
             List.Add(p);
             return p;
         }

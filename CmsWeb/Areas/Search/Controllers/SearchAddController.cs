@@ -11,6 +11,7 @@ using System.Web.Routing;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using CmsData;
+using CmsWeb.Areas.People.Models.Person;
 using CmsWeb.Areas.Search.Models;
 using CmsWeb.Code;
 using UtilityExtensions;
@@ -77,6 +78,7 @@ namespace CmsWeb.Areas.Search.Controllers
             ModelState.Clear();
             return View(m);
         }
+
         [POST("SearchAdd2/ResultsFamily/{page?}/{size?}/{sort?}/{dir?}")]
         public ActionResult ResultsFamily(int? page, int? size, string sort, string dir, SearchAddModel m)
         {
@@ -92,6 +94,7 @@ namespace CmsWeb.Areas.Search.Controllers
             ModelState.Clear();
             return View(m);
         }
+
         [POST("SearchAdd2/SearchFamily")]
         public ActionResult SearchFamily(SearchAddModel m)
         {
@@ -110,11 +113,13 @@ namespace CmsWeb.Areas.Search.Controllers
             m.typeid = "0";
             return CommitAdd(m);
         }
+
         [HttpPost]
         public ActionResult SearchFamilyCancel(SearchAddModel m)
         {
             return View("SearchPerson", m);
         }
+
         [HttpPost]
         public ActionResult PersonCancel(int id, SearchAddModel m)
         {
@@ -124,6 +129,7 @@ namespace CmsWeb.Areas.Search.Controllers
                 return View("List", m);
             return View("SearchPerson", m);
         }
+
         [POST("SearchAdd2/Select/{id}")]
         public ActionResult Select(int id, SearchAddModel m)
         {
@@ -159,44 +165,42 @@ namespace CmsWeb.Areas.Search.Controllers
         }
 
         [POST("SearchAdd2/AddNewFamily")]
-        public ActionResult AddNewFamily(SearchAddModel m)
+        public ActionResult AddNewFamily(string submit, SearchAddModel m)
         {
             var p = m.List[m.List.Count - 1];
-            p.ValidateModelForNew(ModelState, true);
+            p.ValidateModelForNew(ModelState);
             if (!ModelState.IsValid)
                 return View("FormFull", m);
             ModelState.Clear();
             return Redirect("/Person2/AddressEdit/NewFamily/-1");
         }
+
         [POST("SearchAdd2/AddToFamily")]
         public ActionResult AddToFamily(SearchAddModel m)
         {
             var p = m.List[m.List.Count - 1];
-            p.ValidateModelForNew(ModelState, false);
+            p.ValidateModelForNew(ModelState);
             if (!ModelState.IsValid)
                 return FormAbbreviated(p.FamilyId, m);
             ModelState.Clear();
             return View("List", m);
         }
+
         [POST("SearchAdd2/FormAbbreviated/{familyid}")]
         public ActionResult FormAbbreviated(int familyid, SearchAddModel m)
         {
             ModelState.Clear();
             return View(m);
         }
+
         [POST("SearchAdd2/FormFull")]
         public ActionResult FormFull(SearchAddModel m)
         {
-#if DEBUG
-            //p.address = "235 Riveredge Cv";
-            //p.city = "Cordova";
-            //p.state = "TN";
-            //p.zip = "38018";
-            //p.homephone = "9017581862";
-#endif
+            m.NewPerson();
             ModelState.Clear();
             return View(m);
         }
+
         private ActionResult CommitAdd(SearchAddModel m)
         {
             var id = m.typeid;
@@ -428,7 +432,6 @@ namespace CmsWeb.Areas.Search.Controllers
             }
             return Json(new { close = true, how = "addselected", from = m.type });
         }
-
         private JsonResult AddVisitors(int id, SearchAddModel m, int origin)
         {
             var sb = new StringBuilder();

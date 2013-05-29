@@ -2,7 +2,7 @@
 @using UtilityExtensions
 @model CmsWeb.Areas.People.Models.Person.AddressInfo
 
-@if (Model.resultnotfound)
+@if (Model.ResultNotFound)
 {
     <form class="ajax" action="/Person2/AddressSave/@Model.Name/@Model.PeopleId" method="POST">
         <div class="modal-header">
@@ -27,7 +27,7 @@
         </div>
     </form>
 }
-else if (Model.resultchanged)
+else if (Model.ResultChanged)
 {
     <form class="ajax" action="/Person2/AddressSave/@Model.Name/@Model.PeopleId" method="POST">
         <div class="modal-header">
@@ -48,7 +48,7 @@ else if (Model.resultchanged)
         </div>
     </form>
 }
-else if (Model.saved)
+else if (Model.Saved)
 {
     <div class="modal-header">
         <a class="close" data-dismiss="modal">x</a>
@@ -89,7 +89,7 @@ else // get ready for editing
                 @Html.EditorFor(m => m.ToDt)
                 @(Model.Preferred ? Html.DisplayFor(m => m.Preferred) : Html.EditorFor(m => m.Preferred))
             </fieldset>
-            @if (!Model.addrok)
+            @if (Model.Addrok == false)
             {
                 <div class="alert">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>

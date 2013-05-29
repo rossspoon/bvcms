@@ -9,30 +9,19 @@
 @Html.HiddenFor(m => m.Email)
 @Html.HiddenFor(m => m.Phone)
 @Html.HiddenFor(m => m.Suffix)
+
 @Html.HiddenFor(m => m.HomePhone)
-@Html.HiddenFor(m => m.Address)
-@Html.HiddenFor(m => m.Address2)
-@Html.HiddenFor(m => m.Zip)
-@Html.HiddenFor(m => m.City)
+@Html.HiddenFor(m => m.AddressInfo.Address1)
+@Html.HiddenFor(m => m.AddressInfo.Address2)
+@Html.HiddenFor(m => m.AddressInfo.Zip)
+@Html.HiddenFor(m => m.AddressInfo.City)
 
-@Html.HiddenFor(m => m.Title)
+@Html.EditorFor(m => m.Title, "HiddenCodeInfo")
+@Html.EditorFor(m => m.Marital, "HiddenCodeInfo")
+@Html.EditorFor(m => m.Gender, "HiddenCodeInfo")
+@Html.EditorFor(m => m.AddressInfo.State, "HiddenCodeInfo")
+@Html.EditorFor(m => m.AddressInfo.Country, "HiddenCodeInfo")
+@Html.EditorFor(m => m.Campus, "HiddenCodeInfo")
+@Html.EditorFor(m => m.EntryPoint, "HiddenCodeInfo")
 
-@Html.HiddenFor(m => m.Marital.Value)
-@Html.HiddenFor(m => m.Marital.ListName)
-
-@Html.HiddenFor(m => m.Gender.Value)
-@Html.HiddenFor(m => m.Gender.ListName)
-
-@Html.HiddenFor(m => m.State.Value)
-@Html.HiddenFor(m => m.State.ListName)
-
-@Html.HiddenFor(m => m.Country.Value)
-@Html.HiddenFor(m => m.Country.ListName)
-
-@Html.HiddenFor(m => m.Campus.Value)
-@Html.HiddenFor(m => m.Campus.ListName)
-
-@Html.HiddenFor(m => m.EntryPoint.Value)
-@Html.HiddenFor(m => m.EntryPoint.ListName)
-
-@Html.HiddenFor(m => m.context)
+@Html.EditorFor(m => m.context)
