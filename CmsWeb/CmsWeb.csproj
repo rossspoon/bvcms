@@ -768,6 +768,7 @@
     <Content Include="Areas\People\Views\SearchAdd\HiddenPeople.cshtml" />
     <Content Include="Areas\People\Views\SearchAdd\DisplayPeople.cshtml" />
     <Content Include="Areas\People\Views\Person\HiddenAddress.cshtml" />
+    <Content Include="Areas\Manage\Views\Batch\UpdateStatusFlags.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />
