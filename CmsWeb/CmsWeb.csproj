@@ -2846,7 +2846,7 @@
       <Name>UtilityExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebControls\CustomControls.csproj">
-      <Project>{E6957022-E83C-4FE9-94FC-6E9F8ADEB68C}</Project>
+      <Project>{e6957022-e83c-4fe9-94fc-6e9f8adeb68c}</Project>
       <Name>CustomControls</Name>
     </ProjectReference>
   </ItemGroup>

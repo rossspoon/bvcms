@@ -65,7 +65,7 @@ public class Fingerprint
             var d = path.Remove(path.LastIndexOf('/'));
             DateTime dt = File.GetLastWriteTime(absolute);
             string tag = "?v=" + dt.Ticks;
-            result.AppendFormat("{0}/{1}{2}{3}{4}", d, f, min, ext, tag);
+            result.AppendFormat("<script type=\"text/javascript\" src=\"{0}/{1}{2}{3}{4}\"></script>\n", d, f, min, ext, tag);
 #endif
             HttpRuntime.Cache.Insert(path, result.ToString(), new CacheDependency(absolute));
         }
@@ -96,7 +96,7 @@ public class Fingerprint
                 Debug.Assert(absolute != null, "absolute != null");
                 var fd = File.GetLastWriteTime(absolute);
                 string t = path + "?v=" + fd.Ticks;
-                result.AppendFormat("<script src=\"{0}\" type=\"text/javascript\"></script>\n", t);
+                result.AppendFormat("<link href=\"{0}\" rel=\"stylesheet\" />\n", t);
             }
 #else
             const string min = ".min";
@@ -105,7 +105,7 @@ public class Fingerprint
             var d = path.Remove(path.LastIndexOf('/'));
             DateTime dt = File.GetLastWriteTime(absolute);
             string tag = "?v=" + dt.Ticks;
-            result.AppendFormat("{0}/{1}{2}{3}{4}", d, f, min, ext, tag);
+            result.AppendFormat("<link href=\"{0}/{1}{2}{3}{4}\" rel=\"stylesheet\" />\n", d, f, min, ext, tag);
 #endif
             HttpRuntime.Cache.Insert(path, result.ToString(), new CacheDependency(absolute));
         }
