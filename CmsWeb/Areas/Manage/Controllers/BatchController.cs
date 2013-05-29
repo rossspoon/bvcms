@@ -517,7 +517,7 @@ namespace CmsWeb.Areas.Manage.Controllers
                             else if (code > 0)
                             {
                                 if (app == null)
-                                    p.VoluteerApprovalIds.Add(new VoluteerApprovalId { ApprovalId = code,  });
+                                    p.VoluteerApprovalIds.Add(new VoluteerApprovalId { ApprovalId = code, });
                             }
                             else if (code == 0)
                             {
@@ -578,29 +578,16 @@ namespace CmsWeb.Areas.Manage.Controllers
             return View(new UpdateFieldsModel().TitleItems());
         }
 
-        [AsyncTimeout(600000)]
         [Authorize(Roles = "Admin")]
-        public void UpdateStatusFlagsAsync()
+        public ActionResult UpdateStatusFlags()
         {
-            AsyncManager.OutstandingOperations.Increment();
-            string host = Util.Host;
-            var uid = Util.UserId;
-            ThreadPool.QueueUserWorkItem((e) =>
+            var qbits = DbUtil.Db.StatusFlags().ToList();
+            foreach (var a in qbits)
             {
-                Util.SessionId = Guid.NewGuid().ToString();
-                var Db = new CMSDataContext(Util.GetConnectionString(host));
-                var qbits = Db.StatusFlags().ToList();//.Where(bb => bb[0] == "F11").ToList();
-                foreach (var a in qbits)
-                {
-                    var t = Db.FetchOrCreateSystemTag(a[0]);
-                    Db.TagAll2(Db.PeopleQuery(a[0] + ":" + a[1]), t);
-                }
-                AsyncManager.OutstandingOperations.Decrement();
-            });
-        }
-        public ActionResult UpdateStatusFlagsCompleted()
-        {
-            return Redirect("/");
+                var t = DbUtil.Db.FetchOrCreateSystemTag(a[0]);
+                DbUtil.Db.TagAll2(DbUtil.Db.PeopleQuery(a[0] + ":" + a[1]), t);
+            }
+            return View();
         }
         [AsyncTimeout(600000)]
         [Authorize(Roles = "Admin")]
