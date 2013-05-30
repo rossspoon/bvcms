@@ -170,8 +170,7 @@ namespace CmsWeb.Areas.Search.Controllers
             var p = m.List[m.List.Count - 1];
             p.ValidateModelForNew(ModelState);
             if (!ModelState.IsValid)
-                return View("FormFull", m);
-            ModelState.Clear();
+                return View("NewPersonFamily", m);
             return Redirect("/Person2/AddressEdit/NewFamily/-1");
         }
 
@@ -180,21 +179,22 @@ namespace CmsWeb.Areas.Search.Controllers
         {
             var p = m.List[m.List.Count - 1];
             p.ValidateModelForNew(ModelState);
-            if (!ModelState.IsValid)
-                return FormAbbreviated(p.FamilyId, m);
+//            if (!ModelState.IsValid)
+//                return FormAbbreviated(p.FamilyId, m);
             ModelState.Clear();
             return View("List", m);
         }
 
-        [POST("SearchAdd2/FormAbbreviated/{familyid}")]
-        public ActionResult FormAbbreviated(int familyid, SearchAddModel m)
+        [POST("SearchAdd2/NewPerson/{familyid}")]
+        public ActionResult NewPerson(int familyid, SearchAddModel m)
         {
+            m.NewPerson();
             ModelState.Clear();
             return View(m);
         }
 
         [POST("SearchAdd2/FormFull")]
-        public ActionResult FormFull(SearchAddModel m)
+        public ActionResult NewPersonFamily(SearchAddModel m)
         {
             m.NewPerson();
             ModelState.Clear();

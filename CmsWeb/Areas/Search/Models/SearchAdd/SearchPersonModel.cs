@@ -23,6 +23,7 @@ namespace CmsWeb.Areas.Search.Models
         public string context { get; set; }
 
         [UIHint("Text")]
+        [Required]
         public string First { get; set; }
 
         [UIHint("Text")]
@@ -33,6 +34,7 @@ namespace CmsWeb.Areas.Search.Models
         public string Middle { get; set; }
 
         [UIHint("Text")]
+        [Required]
         public string Last { get; set; }
 
         public CodeInfo Title { get; set; }
@@ -42,6 +44,7 @@ namespace CmsWeb.Areas.Search.Models
 
         [UIHint("Date")]
         [DisplayName("Birthday")]
+        [RequiredDate]
         public string dob { get; set; }
 
         [UIHint("Text")]
@@ -243,6 +246,25 @@ namespace CmsWeb.Areas.Search.Models
         {
             get { return "{0}, {1} {2}".Fmt(AddressInfo.City, AddressInfo.State.Value, AddressInfo.Zip); }
         }
-
+        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+        sealed public class RequiredDateAttribute : ValidationAttribute
+        {
+            public override bool IsValid(object value)
+            {
+                var sdt = (string)value;
+                if (sdt == null)
+                    return false;
+                if (sdt == "na")
+                    return true;
+                DateTime dt;
+                if (!DateTime.TryParse(sdt, out dt))
+                    return false;
+                return true;
+            }
+            public override string FormatErrorMessage(string name)
+            {
+                return "enter a valid date or na";
+            }
+        }
     }
 }

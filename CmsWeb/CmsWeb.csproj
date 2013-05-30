@@ -925,9 +925,10 @@
     </Content>
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\EditAddress.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\EditPerson.cshtml" />
-    <Content Include="Areas\Search\Views\SearchAdd\FormAbbreviated.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\ResultsFamily.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\SearchFamily.cshtml" />
+    <Content Include="Areas\Search\Views\SearchAdd\NewPersonFamily.cshtml" />
+    <Content Include="Areas\Search\Views\SearchAdd\NewAddress.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
@@ -2336,7 +2337,7 @@
     </Content>
     <Content Include="Areas\Main\Views\QueryBuilder\TryConditions.cshtml">
     </Content>
-    <Content Include="Areas\Search\Views\SearchAdd\FormFull.cshtml">
+    <Content Include="Areas\Search\Views\SearchAdd\NewPerson.cshtml">
     </Content>
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenPerson.cshtml">
     </Content>

@@ -1,0 +1,79 @@
+﻿@model CmsWeb.Areas.Search.Models.SearchAddModel
+<form class="form-horizontal onecol ajax" action="/SearchAdd2/AddNewFamily" method="POST">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Add Person to New Family</h3>
+    </div>
+    <div class="modal-body">
+        <a class="helplink pull-right" target="_blank" href='@Model.HelpLink("NewFamily")'>help</a>
+        <fieldset class="display">
+            @Html.EditorFor(m => m, "HiddenSearch")
+            @Html.EditorFor(m => m, "HiddenMeta")
+            @{  var n = 0;
+                for (n = 0; n < Model.List.Count - 1; n++)
+                {
+                    @Html.EditorFor(m => m.List[n], "HiddenPerson")
+                }
+            }
+            @Html.HiddenFor(m => Model.List[n].FamilyId)
+            @Html.EditorFor(m => Model.List[n], "EditPerson")
+        </fieldset>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                @Html.ValidationSummary()
+                @if (Model.List[n].AddressInfo.ResultNotFound)
+                {
+                    <h4>Address Not Found</h4>
+                    <h6>What was returned:</h6>
+                    @Html.Raw(Model.AddressInfo.Result.address.Replace("\n", "<br/>\n"))
+                }
+                else if (Model.List[n].AddressInfo.ResultChanged)
+                {
+                    <h4>Address Found and Adjusted by USPS</h4>
+                    <h6><i>What was returned:</i></h6>
+                    @Html.Raw(Model.AddressInfo.Result.address.Replace("\n", "<br/>\n"))
+                }
+                else if (Model.List[n].AddressInfo.Addrok == false)
+                {
+                    <h4>Address Missing Information</h4>
+                    <h6>City and State are required or Zip is required</h6>
+                }
+            </div>
+        }
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Cancel All</a>
+        @if (Model.List[n].AddressInfo.ResultNotFound)
+        {
+            @UseAddressAsIs()
+            @Submit("Submit Again")
+        }
+        else if (Model.List[n].AddressInfo.ResultChanged)
+        {
+            @UseAddressAsIs()
+            @Submit("Use Changed Address")
+        }
+        else if (Model.List[n].AddressInfo.Addrok == false)
+        {
+            @UseAddressAsIs()
+            @Submit("Submit Again")
+        }
+        else
+        {
+            @Submit("Submit")
+        }
+    </div>
+</form>
+
+@helper Submit(string text)
+{
+    <input type="submit" name="submit" class="btn btn-primary" value="@text" />
+}
+@helper UseAddressAsIs()
+{
+    <input type="submit" name="submit" class="btn btn-danger" value="Use Address as Entered" />
+}
+
+
