@@ -42,9 +42,16 @@ namespace CmsWeb.Areas.Search.Models
         public bool OnlyOne { get { return onlyonetypes.Contains(type.ToLower()); } }
         public string submit { get; set; }
 
+        public int NewFamilyId { get; set; }
         public int? EntryPointId { get; set; }
         public int? CampusId { get; set; }
         public int Index { get; set; }
+
+        public int NextNewFamilyId()
+        {
+            NewFamilyId--;
+            return NewFamilyId;
+        }
 
         public AddressInfo AddressInfo { get; set; }
 
@@ -277,11 +284,11 @@ namespace CmsWeb.Areas.Search.Models
             }
             return "#rf-{0}-{1}".Fmt(rf.FamilyId, rf.RelatedFamilyId);
         }
-        public SearchPersonModel NewPerson()
+        public SearchPersonModel NewPerson(int? familyid = 0)
         {
             var p = new SearchPersonModel
             {
-                FamilyId = typeid.ToInt(),
+                FamilyId = familyid ?? -Index,
                 index = List.Count,
                 Gender = new CodeInfo(99, "Gender"),
                 Marital = new CodeInfo(99, "Marital"),
@@ -295,20 +302,10 @@ namespace CmsWeb.Areas.Search.Models
             p.Last = "Carr." + DateTime.Now.Millisecond;
             p.Gender = new CodeInfo(0, "Gender");
             p.Marital = new CodeInfo(0, "Marital");
+            p.dob = "na";
+            p.Email = "na";
+            p.Phone = "na";
 #endif
-            if (p.FamilyId < 0)
-            {
-                var f = List.FirstOrDefault(fm => fm.FamilyId == p.FamilyId);
-                if (f != null)
-                {
-                    p.AddressInfo = new AddressInfo(f.AddressInfo.Address1, f.AddressInfo.Address2, f.AddressInfo.City, f.AddressInfo.State.Value, f.AddressInfo.Zip, f.AddressInfo.Country.Value);
-                    p.HomePhone = f.HomePhone;
-                }
-            }
-            else
-                p.LoadFamily();
-            if (p.AddressInfo == null)
-                p.AddressInfo = new AddressInfo();
             List.Add(p);
             return p;
         }

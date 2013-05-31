@@ -18,7 +18,7 @@
             <a href="/SearchAdd2/SearchPerson" class="btn ajax">Another Search</a> @:or 
             if (Model.CanAdd)
             { 
-            <a href="/SearchAdd2/AddToLastFamily" class="btn ajax">Add to Last Family</a> @:or 
+            <a href="/SearchAdd2/NewPerson/@Model.List[Model.List.Count-1].FamilyId" class="btn ajax">Add to Last Family</a> @:or 
             }
         }
         <a href="/SearchAdd2/CommitAdd" class="btn btn-primary commit">Commit and Add</a>

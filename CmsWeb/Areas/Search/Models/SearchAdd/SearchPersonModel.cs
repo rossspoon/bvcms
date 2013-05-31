@@ -48,13 +48,17 @@ namespace CmsWeb.Areas.Search.Models
         public string dob { get; set; }
 
         [UIHint("Text")]
+        [RequiredPhone]
         public string Phone { get; set; }
 
         [UIHint("Text")]
+        [RequiredEmail]
         public string Email { get; set; }
 
+        [RequiredGender]
         public CodeInfo Gender { get; set; }
 
+        [RequiredMarital]
         public CodeInfo Marital { get; set; }
 
         public CodeInfo Campus { get; set; }
@@ -120,44 +124,26 @@ namespace CmsWeb.Areas.Search.Models
 
         public AddressInfo AddressInfo { get; set; }
 
-        internal void ValidateModelForNew(ModelStateDictionary ModelState)
+        public string PotentialDuplicate { get; set; }
+
+        internal void CheckDuplicate(ModelStateDictionary ModelState)
         {
-            if (!First.HasValue())
-                ModelState.AddModelError("name", "first name required");
-
-            if (!Last.HasValue())
-                ModelState.AddModelError("name", "last name required");
-
-            if (!birthday.HasValue && dob.NotEqual("na"))
-                ModelState.AddModelError("dob", "valid birthday (or \"na\")");
-
-            var d = Phone.GetDigits().Length;
-            if (d != 7 && d < 10 && Phone.NotEqual("na"))
-                ModelState.AddModelError("phone", "7 or 10+ digits (or \"na\")");
-
-            int count = 0;
-            var pids = DbUtil.Db.FindPerson(First, Last, birthday, Email, Phone.GetDigits());
+            var pids = DbUtil.Db.FindPerson(First, Last, birthday, null, Phone.GetDigits());
             if (pids.Any())
-                ModelState.AddModelError("name", "name/dob already exists in db");
+            {
+                var p = DbUtil.Db.LoadPersonById(pids.First().PeopleId.Value);
+                PotentialDuplicate = "e.g. {0} ({1}), {2}, age:{3}".Fmt(p.Name, p.PeopleId, p.PrimaryAddress, p.Age);
+            }
 
-            if (!Util.ValidEmail(Email) && Email.NotEqual("na"))
-                ModelState.AddModelError("email", "valid email address (or \"na\")");
-
-            if (Gender.Value == "99")
-                ModelState.AddModelError("gender", "specify gender");
-
-            if (Marital.Value == "99")
-                ModelState.AddModelError("marital", "specify marital status");
-
-            if (AddressInfo == null)
-                return;
-            AddressInfo.ValidateAddress();
-            if (AddressInfo.ResultNotFound)
-                ModelState.AddModelError("address", "Address Not Found");
-            else if (AddressInfo.ResultChanged)
-                ModelState.AddModelError("address", "Address Found and Adjusted by USPS");
-            else if (AddressInfo.Addrok == false)
-                ModelState.AddModelError("address", "City and State are required or Zip is required");
+//            if (AddressInfo == null)
+//                return;
+//            AddressInfo.ValidateAddress();
+//            if (AddressInfo.ResultNotFound)
+//                ModelState.AddModelError("address", "Address Not Found");
+//            else if (AddressInfo.ResultChanged)
+//                ModelState.AddModelError("address", "Address Found and Adjusted by USPS");
+//            else if (AddressInfo.Addrok == false)
+//                ModelState.AddModelError("address", "City and State are required or Zip is required");
         }
 
         internal void AddPerson(int originid, int? entrypointid, int? campusid)
@@ -212,17 +198,17 @@ namespace CmsWeb.Areas.Search.Models
             PeopleId = person.PeopleId;
         }
 
-        internal void LoadFamily()
+        public void LoadAddress()
         {
             if (FamilyId <= 0)
+            {
+                AddressInfo = new AddressInfo();
+                HomePhone = "";
                 return;
-            HomePhone = family.HomePhone;
-            AddressInfo.Address1 = family.AddressLineOne;
-            AddressInfo.Address2 = family.AddressLineTwo;
-            AddressInfo.City = family.CityName;
-            AddressInfo.State = new CodeInfo(family.StateCode, "State");
-            AddressInfo.Zip = family.ZipCode;
-            AddressInfo.Country = new CodeInfo(family.CountryName, "Country");
+            }
+            var f = family;
+            AddressInfo = new AddressInfo(f.AddressLineOne, f.AddressLineTwo, f.CityName, f.StateCode, f.ZipCode, f.CountryName);
+            HomePhone = f.HomePhone;
         }
 
         //public string ToolTip
@@ -251,19 +237,72 @@ namespace CmsWeb.Areas.Search.Models
         {
             public override bool IsValid(object value)
             {
-                var sdt = (string)value;
-                if (sdt == null)
-                    return false;
-                if (sdt == "na")
-                    return true;
+                var sval = (string)value;
+                if (sval == null) return false;
+                if (sval == "na") return true;
                 DateTime dt;
-                if (!DateTime.TryParse(sdt, out dt))
-                    return false;
-                return true;
+                return DateTime.TryParse(sval, out dt);
             }
             public override string FormatErrorMessage(string name)
             {
                 return "enter a valid date or na";
+            }
+        }
+        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+        sealed public class RequiredPhoneAttribute : ValidationAttribute
+        {
+            public override bool IsValid(object value)
+            {
+                var sval = (string)value;
+                if (sval == null) return false;
+                if (sval == "na") return true;
+                var d = sval.GetDigits().Length;
+                return d == 7 || d >= 10;
+            }
+            public override string FormatErrorMessage(string name)
+            {
+                return "Phone requires 7 or 10+ digits (or na)";
+            }
+        }
+        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+        sealed public class RequiredEmailAttribute : ValidationAttribute
+        {
+            public override bool IsValid(object value)
+            {
+                var sval = (string)value;
+                if (sval == null) return false;
+                if (sval == "na") return true;
+                return Util.ValidEmail(sval);
+            }
+            public override string FormatErrorMessage(string name)
+            {
+                return "valid email address (or na)";
+            }
+        }
+        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+        sealed public class RequiredGenderAttribute : ValidationAttribute
+        {
+            public override bool IsValid(object value)
+            {
+                var sval = (CodeInfo)value;
+                return sval.Value != "99";
+            }
+            public override string FormatErrorMessage(string name)
+            {
+                return "specify gender (or unknown)";
+            }
+        }
+        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+        sealed public class RequiredMaritalAttribute : ValidationAttribute
+        {
+            public override bool IsValid(object value)
+            {
+                var sval = (CodeInfo)value;
+                return sval.Value != "99";
+            }
+            public override string FormatErrorMessage(string name)
+            {
+                return "specify marital status (or unknown)";
             }
         }
     }

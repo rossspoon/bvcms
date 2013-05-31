@@ -4,7 +4,7 @@
     @{ var rownum = 0; }
     <div class="modal-header">
         <a class="close" data-dismiss="modal">×</a>
-        <h3>Individual Search Results</h3>
+        <h3>Family Search Results</h3>
     </div>
     <div class="modal-body">
         <a class="helplink pull-right" target="_blank" href='@Model.HelpLink("FamilyResults")'>help</a>
@@ -36,7 +36,7 @@
                         rownum++;
                         var oddrow = rownum % 2 == 0 ? "oddrow" : "";
                         <tr class="master @oddrow">
-                            <td><a rel="reveal" href="#" class="reveal"><i class="icon-info-sign"></i></a> <a href="/SearchAdd2/FormAbbreviated/@c.FamilyId" class="ajax">@c.Name</a></td>
+                            <td><a rel="reveal" href="#" class="reveal"><i class="icon-info-sign"></i></a> <a href="/SearchAdd2/NewPerson/@c.FamilyId" class="ajax">@c.Name</a></td>
                             <td class="addrcol" title="click for more info">@c.Address</td>
                             <td>@c.Age</td>
                         </tr>
@@ -66,7 +66,7 @@
         <a  href="/SearchAdd2/SearchFamily" class="btn ajax">Go Back to Refine your FamilySearch</a>
         @if (Model.CanAdd)
         { 
-            <a href="/SearchAdd2/FormFull/" class="btn btn-success ajax">Add New Family</a>
+            <a href="/SearchAdd2/NewPerson/0" class="btn btn-success ajax">Add New Family</a>
         } 
     </div>
 </form>

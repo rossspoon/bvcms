@@ -40,7 +40,12 @@
     });
     $("a.delete-relation").live("click", function (ev) {
         ev.preventDefault();
-        $("#related-families-div").load($(this).attr("href"), {});
+        var href = $(this).attr("href");
+        bootbox.confirm("Are you sure you want to remove this relationship?", function (result) {
+            if (result === true) {
+                $("#related-families-div").load(href, {});
+            }
+        });
         return false;
     });
     $("a.editaddr").click(function (ev) {

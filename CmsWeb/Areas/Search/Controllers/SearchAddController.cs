@@ -105,21 +105,6 @@ namespace CmsWeb.Areas.Search.Controllers
             return View(m);
         }
 
-        [POST("SearchAdd2/SearchCancel")]
-        public ActionResult SearchCancel(SearchAddModel m)
-        {
-            if (m.List.Count > 0)
-                return View("List", m);
-            m.typeid = "0";
-            return CommitAdd(m);
-        }
-
-        [HttpPost]
-        public ActionResult SearchFamilyCancel(SearchAddModel m)
-        {
-            return View("SearchPerson", m);
-        }
-
         [HttpPost]
         public ActionResult PersonCancel(int id, SearchAddModel m)
         {
@@ -156,7 +141,7 @@ namespace CmsWeb.Areas.Search.Controllers
                 EntryPoint = new CodeInfo(p.EntryPointId, "EntryPoint"),
                 Campus = new CodeInfo(p.CampusId, "Campus"),
             };
-            s.LoadFamily();
+            s.LoadAddress();
             m.List.Add(s);
 			if (m.OnlyOne)
 				return CommitAdd(m);
@@ -164,39 +149,24 @@ namespace CmsWeb.Areas.Search.Controllers
             return View("List", m);
         }
 
-        [POST("SearchAdd2/AddNewFamily")]
-        public ActionResult AddNewFamily(string submit, SearchAddModel m)
+        [POST("SearchAdd2/AddNewFamily/{noCheckDuplicate?}")]
+        public ActionResult AddNewFamily(SearchAddModel m, string noCheckDuplicate)
         {
             var p = m.List[m.List.Count - 1];
-            p.ValidateModelForNew(ModelState);
-            if (!ModelState.IsValid)
-                return View("NewPersonFamily", m);
-            return Redirect("/Person2/AddressEdit/NewFamily/-1");
-        }
-
-        [POST("SearchAdd2/AddToFamily")]
-        public ActionResult AddToFamily(SearchAddModel m)
-        {
-            var p = m.List[m.List.Count - 1];
-            p.ValidateModelForNew(ModelState);
-//            if (!ModelState.IsValid)
-//                return FormAbbreviated(p.FamilyId, m);
-            ModelState.Clear();
-            return View("List", m);
+            if(!noCheckDuplicate.HasValue())
+                p.CheckDuplicate(ModelState);
+            if (!ModelState.IsValid || p.PotentialDuplicate.HasValue())
+                return View("NewPerson", m);
+            p.LoadAddress();
+            return View("NewAddress", m);
         }
 
         [POST("SearchAdd2/NewPerson/{familyid}")]
         public ActionResult NewPerson(int familyid, SearchAddModel m)
         {
-            m.NewPerson();
-            ModelState.Clear();
-            return View(m);
-        }
-
-        [POST("SearchAdd2/FormFull")]
-        public ActionResult NewPersonFamily(SearchAddModel m)
-        {
-            m.NewPerson();
+            if (familyid == 0)
+                familyid = m.NextNewFamilyId();
+            m.NewPerson(familyid);
             ModelState.Clear();
             return View(m);
         }

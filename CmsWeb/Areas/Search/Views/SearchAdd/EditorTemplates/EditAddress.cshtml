@@ -1,4 +1,7 @@
 ﻿@model CmsWeb.Areas.Search.Models.SearchPersonModel
+<span class="address">
+    @Model.First @Model.GoesBy @Model.Last)
+</span>
 @Html.EditorFor(m => m.HomePhone)
 @Html.EditorFor(m => m.AddressInfo.Address1)
 @Html.EditorFor(m => m.AddressInfo.Address2)

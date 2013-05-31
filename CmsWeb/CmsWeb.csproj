@@ -927,8 +927,8 @@
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\EditPerson.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\ResultsFamily.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\SearchFamily.cshtml" />
-    <Content Include="Areas\Search\Views\SearchAdd\NewPersonFamily.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\NewAddress.cshtml" />
+    <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenAddress.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
@@ -2902,6 +2902,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
