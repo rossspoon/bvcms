@@ -849,7 +849,7 @@
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenSearch.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenPeople.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\DisplayTemplates\DisplayPeople.cshtml" />
-    <Content Include="Areas\People\Views\Person\HiddenAddress.cshtml" />
+    <Content Include="Areas\People\Views\Person\EditorTemplates\HiddenAddress.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\CellPhone.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\CellPhone.cshtml" />
     <Content Include="Scripts\jQuery\main.js">

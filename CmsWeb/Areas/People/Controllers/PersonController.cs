@@ -394,19 +394,21 @@ namespace CmsWeb.Areas.People.Controllers
             var m = AddressInfo.GetAddressInfo(id, type);
             return View(m);
         }
-        [POST("Person2/AddressUpdate/{type}/{id}")]
-        public ActionResult AddressUpdate(int id, string type)
+        [POST("Person2/AddressEditAgain")]
+        public ActionResult AddressEditAgain(AddressInfo m)
+        {
+            return View("AddressEdit", m);
+        }
+        [POST("Person2/AddressUpdate")]
+        public ActionResult AddressUpdate(AddressInfo m)
 		{
-			var m = AddressInfo.GetAddressInfo(id, type);
-			UpdateModel(m);
             m.UpdateAddress();
+            ModelState.Clear();
             return View("AddressEdit", m);
 		}
-        [POST("Person2/AddressSave/{type}/{id}")]
-        public ActionResult AddressSave(int id, string type)
+        [POST("Person2/AddressSave")]
+        public ActionResult AddressSave(AddressInfo m)
 		{
-			var m = AddressInfo.GetAddressInfo(id, type);
-			UpdateModel(m);
             m.UpdateAddress(forceSave: true);
             return View("AddressEdit", m);
 		}

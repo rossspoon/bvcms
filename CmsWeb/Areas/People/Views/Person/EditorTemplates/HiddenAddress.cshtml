@@ -1,4 +1,12 @@
 ﻿@model CmsWeb.Areas.People.Models.Person.AddressInfo
+@Html.HiddenFor(m => m.PeopleId)
+@Html.HiddenFor(m => m.Name)
+@Html.HiddenFor(m => m.Result.Line1)
+@Html.HiddenFor(m => m.Result.Line2)
+@Html.HiddenFor(m => m.Result.Zip)
+@Html.HiddenFor(m => m.Result.City)
+@Html.HiddenFor(m => m.Result.State)
+
 @Html.HiddenFor(m => m.Address1)
 @Html.HiddenFor(m => m.Address2)
 @Html.HiddenFor(m => m.Zip)

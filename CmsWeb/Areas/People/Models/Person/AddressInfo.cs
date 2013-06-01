@@ -14,7 +14,17 @@ namespace CmsWeb.Areas.People.Models.Person
 {
     public class AddressInfo
     {
-        public int PeopleId { get; set; }
+        public int PeopleId
+        {
+            get { return _peopleId; }
+            set 
+            { 
+                if(_peopleId != value)
+                    person = DbUtil.Db.LoadPersonById(value);
+                _peopleId = value;
+            }
+        }
+
         public CmsData.Person person { get; set; }
 
         public string Name { get; set; }
@@ -124,11 +134,13 @@ namespace CmsWeb.Areas.People.Models.Person
 
         public AddressInfo()
         {
+            Result = new AddressVerify.AddressResult();
             State = new CodeInfo("", "State");
             Country = new CodeInfo("", "Country");
         }
         public AddressInfo(string address1, string address2, string city, string state, string zip, string country)
         {
+            Result = new AddressVerify.AddressResult();
             Address1 = address1;
             Address2 = address2;
             City = city;
@@ -141,8 +153,7 @@ namespace CmsWeb.Areas.People.Models.Person
         {
             var p = DbUtil.Db.LoadPersonById(id);
             DbUtil.Db.Refresh(RefreshMode.OverwriteCurrentValues, p);
-            var a = new AddressInfo();
-            a.person = p;
+            var a = new AddressInfo {PeopleId = id};
             switch (typeid)
             {
                 case "PrimaryAddr":
@@ -188,7 +199,7 @@ namespace CmsWeb.Areas.People.Models.Person
             }
             return a;
         }
-        public void SetAddressInfo(int id, string typeid)
+        public void SetAddressInfo()
         {
             Address1 = Result.Line1;
             Address2 = Result.Line2;
@@ -203,7 +214,7 @@ namespace CmsWeb.Areas.People.Models.Person
         public bool ResultChanged { get; set; }
         public bool ResultNotFound
         {
-            get { return Result != null && !Result.found; }
+            get { return Result.found == false; }
         }
 
         public bool HasIssues
@@ -217,7 +228,10 @@ namespace CmsWeb.Areas.People.Models.Person
             var f = p.Family;
 
             if (!forceSave)
-                if (!ValidateAddress()) return;
+            {
+                if (!ValidateAddress()) 
+                    return;
+            }
             // at this point the address validated just fine.
 
             int? ResCodeId = ResCode.Value.ToInt();
@@ -324,8 +338,8 @@ namespace CmsWeb.Areas.People.Models.Person
                     return false;
                 if (Result.Changed(Address1, Address2, City, State.Value, Zip))
                 {
-                    ResultChanged = false;
-                    SetAddressInfo(PeopleId, Name);
+                    ResultChanged = true;
+                    SetAddressInfo();
                     return false;
                 }
             }
@@ -344,6 +358,8 @@ namespace CmsWeb.Areas.People.Models.Person
             Util.SetProperty(f, field, value);
         }
         private StringBuilder psb = new StringBuilder();
+        private int _peopleId;
+
         private void UpdateValue(CmsData.Person p, string field, object value)
         {
             var o = Util.GetProperty(p, field);
