@@ -68,7 +68,7 @@
     <p>
         If you have received a Cash Payment Code, please enter that number here and click
         the button below it:</p>
-    <input id="Coupon" name="Coupon" type="password" value="@Model.Coupon" autocomplete="off"  /> <br />
+    <input id="Coupon" name="Coupon" type="text" value="@Model.Coupon" autocomplete="off"  /> <br />
     <input type="button" href="/OnlineReg/PayWithCoupon/@Model.DatumId" class="submitbutton ajax" 
         value="Pay with coupon" />
     <span style="color: Red" id="validatecoupon"></span>

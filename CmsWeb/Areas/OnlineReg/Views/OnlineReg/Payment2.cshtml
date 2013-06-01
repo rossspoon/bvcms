@@ -44,7 +44,7 @@
     <form>
     @Html.Hidden("Amount")
     <p>If you have a coupon, please enter that number here and click the button below it:</p>
-    <input id="Coupon" name="Coupon" type="password" value="@ViewData["Coupon"]" autocomplete="off" /> 
+    <input id="Coupon" name="Coupon" type="text" value="@ViewData["Coupon"]" autocomplete="off" /> 
     <input type="button" href="/OnlineReg/PayWithCouponOld/@Model._datumid" class="submitbutton ajax" 
         value="Pay with coupon" />
     <span style="color:Red" id="validatecoupon"></span>
