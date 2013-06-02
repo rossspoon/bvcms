@@ -105,8 +105,8 @@ namespace CmsWeb.Areas.Search.Controllers
             return View(m);
         }
 
-        [HttpPost]
-        public ActionResult PersonCancel(int id, SearchAddModel m)
+        [POST("SearchAdd2/CancelPerson/{id}")]
+        public ActionResult CancelPerson(int id, SearchAddModel m)
         {
             m.List.RemoveAt(id);
             ModelState.Clear();
@@ -140,6 +140,7 @@ namespace CmsWeb.Areas.Search.Controllers
                 context = m.type,
                 EntryPoint = new CodeInfo(p.EntryPointId, "EntryPoint"),
                 Campus = new CodeInfo(p.CampusId, "Campus"),
+                BeenValidated = true
             };
             s.LoadAddress();
             m.List.Add(s);
@@ -149,29 +150,47 @@ namespace CmsWeb.Areas.Search.Controllers
             return View("List", m);
         }
 
-        [POST("SearchAdd2/AddNewFamily/{noCheckDuplicate?}")]
-        public ActionResult AddNewFamily(SearchAddModel m, string noCheckDuplicate)
-        {
-            var p = m.List[m.List.Count - 1];
-            if(!noCheckDuplicate.HasValue())
-                p.CheckDuplicate(ModelState);
-            if (!ModelState.IsValid || p.PotentialDuplicate.HasValue())
-                return View("NewPerson", m);
-            p.LoadAddress();
-            return View("NewAddress", m);
-        }
-
         [POST("SearchAdd2/NewPerson/{familyid}")]
         public ActionResult NewPerson(int familyid, SearchAddModel m)
         {
-            if (familyid == 0)
-                familyid = m.NextNewFamilyId();
             m.NewPerson(familyid);
             ModelState.Clear();
             return View(m);
         }
 
-        private ActionResult CommitAdd(SearchAddModel m)
+        [POST("SearchAdd2/AddNewPerson/{noCheckDuplicate?}")]
+        public ActionResult AddNewPerson(SearchAddModel m, string noCheckDuplicate)
+        {
+            var p = m.List[m.List.Count - 1];
+            if(!noCheckDuplicate.HasValue())
+                p.CheckDuplicate();
+            if (!ModelState.IsValid || p.PotentialDuplicate.HasValue())
+                return View("NewPerson", m);
+            p.LoadAddress();
+            p.BeenValidated = true;
+            if(p.isNewFamily)
+                return View("NewAddress", m);
+            return View("List", m);
+        }
+
+        [POST("SearchAdd2/AddNewAddress/{NoCheck?}")]
+        public ActionResult AddNewAddress(SearchAddModel m, string noCheck)
+        {
+            var p = m.List[m.List.Count - 1];
+            if(noCheck.HasValue() == false)
+                p.AddressInfo.ValidateAddress(ModelState);
+            if (!ModelState.IsValid)
+                return View("NewAddress", m);
+            if (p.AddressInfo.Error.HasValue())
+            {
+                ModelState.Clear();
+                return View("NewAddress", m);
+            }
+            return View("List", m);
+        }
+
+        [POST("SearchAdd2/CommitAdd")]
+        public ActionResult CommitAdd(SearchAddModel m)
         {
             var id = m.typeid;
 			var iid = m.typeid.ToInt();
@@ -324,7 +343,7 @@ namespace CmsWeb.Areas.Search.Controllers
             foreach (var p in m.List)
                 AddPerson(p, m.List, origin, m.EntryPointId);
             DbUtil.Db.SubmitChanges();
-            return Json(new { close = true, how = "CloseAddDialog", from = m.type });
+            return Json(new { pid = m.List[0].PeopleId, from = m.type });
         }
         private JsonResult AddOrgMembers(int id, SearchAddModel m, bool pending, int origin)
         {

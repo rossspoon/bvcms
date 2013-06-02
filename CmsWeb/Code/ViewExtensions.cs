@@ -447,7 +447,7 @@ namespace CmsWeb
                 b.InnerHtml = help;
             else
                 return new HelpMessage();
-            return new HelpMessage {message = new HtmlString(b.ToString()), errorClass = hasError ? "error" : ""};
+            return new HelpMessage { message = new HtmlString(b.ToString()), errorClass = hasError ? "error" : "" };
         }
 
         public static string RenderPartialViewToString(Controller controller, string viewName, object model)

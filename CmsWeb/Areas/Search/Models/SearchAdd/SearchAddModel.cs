@@ -284,11 +284,12 @@ namespace CmsWeb.Areas.Search.Models
             }
             return "#rf-{0}-{1}".Fmt(rf.FamilyId, rf.RelatedFamilyId);
         }
-        public SearchPersonModel NewPerson(int? familyid = 0)
+
+        public SearchPersonModel NewPerson(int familyid)
         {
             var p = new SearchPersonModel
             {
-                FamilyId = familyid ?? -Index,
+                FamilyId = familyid,
                 index = List.Count,
                 Gender = new CodeInfo(99, "Gender"),
                 Marital = new CodeInfo(99, "Marital"),
@@ -297,6 +298,11 @@ namespace CmsWeb.Areas.Search.Models
                 context = type,
                 Title = new CodeInfo("", "Title"),
             };
+            if (familyid == 0)
+            {
+                p.FamilyId = NextNewFamilyId();
+                p.isNewFamily = true;
+            }
 #if DEBUG
             p.First = "David";
             p.Last = "Carr." + DateTime.Now.Millisecond;

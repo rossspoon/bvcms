@@ -296,7 +296,7 @@ String.prototype.addCommas = function () {
 $(function () {
     $("a.searchadd").live("click", function (ev) {
         ev.preventDefault();
-        $("<div id='search-add' class='modal fade hide' data-width='600' />")
+        $("<div id='search-add' class='modal fade hide' data-width='600' data-keyboard='false' />")
             .load($(this).attr("href"), {}, function () {
                 $(this).modal("show");
                 $(this).on('hidden', function () {
@@ -366,7 +366,8 @@ $(function () {
     $.NotReveal = function(ev) {
         if ($(ev.target).is("a"))
             if (!$(ev.target).is('.reveal'))
-                return;
+                return true;
+        return false;
     };
     $("form.ajax tr.section.notshown").live("click", function (ev) {
         if ($.NotReveal(ev)) return;

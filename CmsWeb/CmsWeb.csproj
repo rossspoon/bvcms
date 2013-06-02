@@ -929,6 +929,8 @@
     <Content Include="Areas\Search\Views\SearchAdd\SearchFamily.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\NewAddress.cshtml" />
     <Content Include="Areas\Search\Views\SearchAdd\EditorTemplates\HiddenAddress.cshtml" />
+    <Content Include="Areas\People\Views\Person\DeletedPerson.cshtml" />
+    <Content Include="Areas\People\Views\Person\AddressSaved.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />

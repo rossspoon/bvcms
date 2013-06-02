@@ -34,7 +34,7 @@ namespace CmsWeb.Areas.People.Controllers
             return Redirect("/Person/Index/" + Util2.CurrentPeopleId);
         }
         [GET("Person2/Index/{id}")]
-        [GET("{id}")]
+        [GET("{id:int}")]
         public ActionResult Index(int? id)
         {
             if (!id.HasValue)
@@ -115,31 +115,6 @@ namespace CmsWeb.Areas.People.Controllers
             return Redirect("/");
         }
 
-        [Authorize(Roles = "Admin")]
-        public ActionResult Delete(int id)
-        {
-            Util.Auditing = false;
-            var person = DbUtil.Db.LoadPersonById(id);
-            if (person == null)
-                return Content("error, bad peopleid");
-
-            var p = person.Family.People.FirstOrDefault(m => m.PeopleId != id);
-            if (p != null)
-            {
-                Util2.CurrentPeopleId = p.PeopleId;
-                Session["ActivePerson"] = p.Name;
-            }
-            else
-            {
-                Util2.CurrentPeopleId = 0;
-                Session.Remove("ActivePerson");
-            }
-
-            DbUtil.Db.PurgePerson(id);
-
-            DbUtil.LogActivity("Deleted Record {0}".Fmt(person.PeopleId));
-            return Content("ok");
-        }
         [HttpPost]
         public ActionResult Tag(int id)
         {
@@ -399,17 +374,25 @@ namespace CmsWeb.Areas.People.Controllers
         {
             return View("AddressEdit", m);
         }
-        [POST("Person2/AddressUpdate")]
-        public ActionResult AddressUpdate(AddressInfo m)
+        [POST("Person2/AddressUpdate/{noCheck?}")]
+        public ActionResult AddressUpdate(AddressInfo m, string noCheck)
 		{
-            m.UpdateAddress();
-            ModelState.Clear();
-            return View("AddressEdit", m);
+            if(noCheck.HasValue() == false)
+                m.ValidateAddress(ModelState);
+            if (!ModelState.IsValid)
+                return View("AddressEdit", m);
+            if (m.Error.HasValue())
+            {
+                ModelState.Clear();
+                return View("AddressEdit", m);
+            }
+            m.UpdateAddress(ModelState);
+            return View("AddressSaved", m);
 		}
         [POST("Person2/AddressSave")]
         public ActionResult AddressSave(AddressInfo m)
 		{
-            m.UpdateAddress(forceSave: true);
+            m.UpdateAddress(ModelState, forceSave: true);
             return View("AddressEdit", m);
 		}
 
@@ -885,6 +868,7 @@ namespace CmsWeb.Areas.People.Controllers
         }
 
         [POST("Person2/Split/{id}")]
+        [Authorize(Roles = "Edit")]
         public ActionResult Split(int id)
         {
             var p = DbUtil.Db.LoadPersonById(id);
@@ -905,6 +889,38 @@ namespace CmsWeb.Areas.People.Controllers
             DbUtil.LogActivity("Splitting Family for {0}".Fmt(p.Name));
             var m = new PersonModel(id);
             return Content("/Person2/" + id);
+        }
+        [Authorize(Roles = "Admin")]
+        [POST("Person2/Delete/{id}")]
+        public ActionResult Delete(int id)
+        {
+            Util.Auditing = false;
+            var person = DbUtil.Db.LoadPersonById(id);
+            if (person == null)
+                return Content("error, bad peopleid");
+
+            var p = person.Family.People.FirstOrDefault(m => m.PeopleId != id);
+            if (p != null)
+            {
+                Util2.CurrentPeopleId = p.PeopleId;
+                Session["ActivePerson"] = p.Name;
+            }
+            else
+            {
+                Util2.CurrentPeopleId = 0;
+                Session.Remove("ActivePerson");
+            }
+
+            DbUtil.Db.PurgePerson(id);
+
+            DbUtil.LogActivity("Deleted Record {0}".Fmt(person.PeopleId));
+            return Content("/Person2/DeletedPerson");
+        }
+
+        [GET("Person2/DeletedPerson")]
+        public ActionResult DeletedPerson()
+        {
+            return View();
         }
     }
 }

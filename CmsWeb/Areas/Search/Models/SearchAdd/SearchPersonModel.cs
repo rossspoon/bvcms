@@ -15,7 +15,7 @@ using CmsData.Codes;
 
 namespace CmsWeb.Areas.Search.Models
 {
-    public class SearchPersonModel
+    public class SearchPersonModel : IValidatableObject
     {
         private static CodeValueModel cv = new CodeValueModel();
 
@@ -23,7 +23,6 @@ namespace CmsWeb.Areas.Search.Models
         public string context { get; set; }
 
         [UIHint("Text")]
-        [Required]
         public string First { get; set; }
 
         [UIHint("Text")]
@@ -34,7 +33,6 @@ namespace CmsWeb.Areas.Search.Models
         public string Middle { get; set; }
 
         [UIHint("Text")]
-        [Required]
         public string Last { get; set; }
 
         public CodeInfo Title { get; set; }
@@ -44,21 +42,16 @@ namespace CmsWeb.Areas.Search.Models
 
         [UIHint("Date")]
         [DisplayName("Birthday")]
-        [RequiredDate]
         public string dob { get; set; }
 
         [UIHint("Text")]
-        [RequiredPhone]
         public string Phone { get; set; }
 
         [UIHint("Text")]
-        [RequiredEmail]
         public string Email { get; set; }
 
-        [RequiredGender]
         public CodeInfo Gender { get; set; }
 
-        [RequiredMarital]
         public CodeInfo Marital { get; set; }
 
         public CodeInfo Campus { get; set; }
@@ -126,25 +119,24 @@ namespace CmsWeb.Areas.Search.Models
 
         public string PotentialDuplicate { get; set; }
 
-        internal void CheckDuplicate(ModelStateDictionary ModelState)
+        internal void CheckDuplicate()
         {
-            var pids = DbUtil.Db.FindPerson(First, Last, birthday, null, Phone.GetDigits());
-            if (pids.Any())
+            var pids = DbUtil.Db.FindPerson(First, Last, birthday, null, Phone.GetDigits()).Select(pp => pp.PeopleId).ToList();
+            var q = from p in DbUtil.Db.People
+                    where pids.Contains(p.PeopleId)
+                    select new { p.PeopleId, p.Name, p.PrimaryAddress, p.Age, };
+            var sb = new StringBuilder();
+            foreach (var p in q)
             {
-                var p = DbUtil.Db.LoadPersonById(pids.First().PeopleId.Value);
-                PotentialDuplicate = "e.g. {0} ({1}), {2}, age:{3}".Fmt(p.Name, p.PeopleId, p.PrimaryAddress, p.Age);
+                if (sb.Length == 0)
+                    sb.AppendLine("<ul>\n");
+                sb.AppendFormat("<li><a href=\"/Person2/{1}\" target=\"_blank\">{0}</a> ({1}), {2}, age:{3}</li>\n".Fmt(p.Name, p.PeopleId, p.PrimaryAddress, p.Age));
             }
-
-//            if (AddressInfo == null)
-//                return;
-//            AddressInfo.ValidateAddress();
-//            if (AddressInfo.ResultNotFound)
-//                ModelState.AddModelError("address", "Address Not Found");
-//            else if (AddressInfo.ResultChanged)
-//                ModelState.AddModelError("address", "Address Found and Adjusted by USPS");
-//            else if (AddressInfo.Addrok == false)
-//                ModelState.AddModelError("address", "City and State are required or Zip is required");
+            if (sb.Length > 0)
+                PotentialDuplicate = sb + "</ul>\n";
         }
+
+        public bool isNewFamily { get; set; }
 
         internal void AddPerson(int originid, int? entrypointid, int? campusid)
         {
@@ -204,6 +196,10 @@ namespace CmsWeb.Areas.Search.Models
             {
                 AddressInfo = new AddressInfo();
                 HomePhone = "";
+#if DEBUG
+                AddressInfo.Address1 = "235 revere";
+                AddressInfo.Zip = "38018";
+#endif
                 return;
             }
             var f = family;
@@ -232,78 +228,45 @@ namespace CmsWeb.Areas.Search.Models
         {
             get { return "{0}, {1} {2}".Fmt(AddressInfo.City, AddressInfo.State.Value, AddressInfo.Zip); }
         }
-        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-        sealed public class RequiredDateAttribute : ValidationAttribute
+
+        public bool BeenValidated { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            public override bool IsValid(object value)
-            {
-                var sval = (string)value;
-                if (sval == null) return false;
-                if (sval == "na") return true;
-                DateTime dt;
-                return DateTime.TryParse(sval, out dt);
-            }
-            public override string FormatErrorMessage(string name)
-            {
-                return "enter a valid date or na";
-            }
+            var results = new List<ValidationResult>();
+
+            if (BeenValidated)
+                return results;
+
+            if(Marital.Value == "99")
+                results.Add(ModelError("specify marital status (or unknown)", "Marital"));
+
+            if(Gender.Value == "99")
+                results.Add(ModelError("specify gender (or unknown)", "Gender"));
+
+            if (Email == null || (Email != "na" && !Util.ValidEmail(Email)))
+                results.Add(ModelError("valid email address (or na)", "Email"));
+
+            var d = Phone.GetDigits().Length;
+            if(Phone == null || (Phone != "na" && d != 7 && d < 10))
+                results.Add(ModelError("Phone requires 7 or 10+ digits (or na)", "Phone"));
+
+            DateTime dt;
+            if(dob == null || dob != "na" && DateTime.TryParse(dob, out dt))
+                results.Add(ModelError("enter a valid date or na", "dob"));
+
+            if(!First.HasValue())
+                results.Add(ModelError("enter a valid date or na", "First"));
+
+            if(!Last.HasValue())
+                results.Add(ModelError("enter a valid date or na", "Last"));
+
+            return results;
         }
-        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-        sealed public class RequiredPhoneAttribute : ValidationAttribute
+
+        private ValidationResult ModelError(string message, string field)
         {
-            public override bool IsValid(object value)
-            {
-                var sval = (string)value;
-                if (sval == null) return false;
-                if (sval == "na") return true;
-                var d = sval.GetDigits().Length;
-                return d == 7 || d >= 10;
-            }
-            public override string FormatErrorMessage(string name)
-            {
-                return "Phone requires 7 or 10+ digits (or na)";
-            }
-        }
-        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-        sealed public class RequiredEmailAttribute : ValidationAttribute
-        {
-            public override bool IsValid(object value)
-            {
-                var sval = (string)value;
-                if (sval == null) return false;
-                if (sval == "na") return true;
-                return Util.ValidEmail(sval);
-            }
-            public override string FormatErrorMessage(string name)
-            {
-                return "valid email address (or na)";
-            }
-        }
-        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-        sealed public class RequiredGenderAttribute : ValidationAttribute
-        {
-            public override bool IsValid(object value)
-            {
-                var sval = (CodeInfo)value;
-                return sval.Value != "99";
-            }
-            public override string FormatErrorMessage(string name)
-            {
-                return "specify gender (or unknown)";
-            }
-        }
-        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-        sealed public class RequiredMaritalAttribute : ValidationAttribute
-        {
-            public override bool IsValid(object value)
-            {
-                var sval = (CodeInfo)value;
-                return sval.Value != "99";
-            }
-            public override string FormatErrorMessage(string name)
-            {
-                return "specify marital status (or unknown)";
-            }
+            return new ValidationResult(message, new [] { field });
         }
     }
 }

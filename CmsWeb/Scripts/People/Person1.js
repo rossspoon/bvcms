@@ -10,13 +10,23 @@
             }
         });
     });
+    $("#deletePerson").live("click", function (ev) {
+        ev.preventDefault();
+        var href = $(this).attr("href");
+        bootbox.confirm("Are you sure you want to delete this record?", function (result) {
+            if (result === true) {
+                $.post(href, {}, function (ret) {
+                    window.location = ret;
+                });
+            }
+        });
+    });
     $("#search-add a.commit").live("click", function (ev) {
         ev.preventDefault();
         var f = $(this).closest("form");
         var q = f.serialize();
         var loc = $(this).attr("href");
         var tar = f.closest("div.modal");
-        $.block();
         $.post(loc, q, function (ret) {
             tar.modal("hide");
             if (ret.message) {
@@ -33,8 +43,10 @@
                     case 'Family':
                         $("#family-div").load('/Person2/FamilyGrid/' + ret.pid, {});
                         break;
+                    case 'Menu':
+                        window.location = '/Person2/' + ret.pid;
+                        break;
                 }
-            $.unblock();
         });
         return false;
     });
