@@ -296,7 +296,7 @@ String.prototype.addCommas = function () {
 $(function () {
     $("a.searchadd").live("click", function (ev) {
         ev.preventDefault();
-        $("<div id='search-add' class='modal fade hide' data-width='600' data-keyboard='false' />")
+        $("<div id='search-add' class='modal fade hide' data-width='600' data-keyboard='false' data-backdrop='static' />")
             .load($(this).attr("href"), {}, function () {
                 $(this).modal("show");
                 $(this).on('hidden', function () {
