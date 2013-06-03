@@ -45,7 +45,9 @@ namespace CmsWeb.Models
 						throw new Exception("no valid org");
 					if (settings == null)
 						throw new Exception("settings are null");
-					_setting = settings[org.OrganizationId];
+				    if (!settings.ContainsKey(org.OrganizationId))
+                        settings[org.OrganizationId] = new Settings(org.RegSetting, DbUtil.Db, org.OrganizationId);
+				    _setting = settings[org.OrganizationId];
 					AfterSettingConstructor();
 				}
 				return _setting;
