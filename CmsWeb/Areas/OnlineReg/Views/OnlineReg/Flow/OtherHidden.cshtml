@@ -52,7 +52,11 @@
             @Html.HiddenFor2(m => m.ntickets)
             break;
         case "AskSuggestedFee":
-            @Html.HiddenFor2(m => m.Suggestedfee)
+	        try 
+            { var h = Html.HiddenFor2(m => m.Suggestedfee); 
+              @h 
+            }
+	        catch (Exception) { }
             break;
         case "AskDropdown":
             <input type="hidden" name="@(prefix).option" value="@(((AskDropdown)ask).SmallGroupChoice(Model.option).SmallGroup)"/>
