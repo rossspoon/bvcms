@@ -295,6 +295,7 @@ namespace CmsWeb.Areas.People.Controllers
             return new EmptyResult();
         }
 
+        [POST("Person2/Schools")]
         public JsonResult Schools(string query)
         {
             var qu = from p in DbUtil.Db.People
@@ -303,6 +304,7 @@ namespace CmsWeb.Areas.People.Controllers
                      select g.Key;
             return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
         }
+        [POST("Person2/Employers")]
         public JsonResult Employers(string query)
         {
             var qu = from p in DbUtil.Db.People
@@ -311,6 +313,7 @@ namespace CmsWeb.Areas.People.Controllers
                      select g.Key;
             return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
         }
+        [POST("Person2/Occupations")]
         public JsonResult Occupations(string query)
         {
             var qu = from p in DbUtil.Db.People
@@ -319,6 +322,7 @@ namespace CmsWeb.Areas.People.Controllers
                      select g.Key;
             return Json(qu.Take(10).ToArray(), JsonRequestBehavior.AllowGet);
         }
+        [POST("Person2/Churches")]
         public JsonResult Churches(string query)
         {
             var qu = from r in DbUtil.Db.ViewChurches
@@ -356,12 +360,6 @@ namespace CmsWeb.Areas.People.Controllers
             var m = new PersonModel(id);
             m.Reverse(field, value, pf);
             return View("ChangesGrid", m);
-        }
-        [POST("Person2/AddressDisplay/{type}/{id}")]
-        public ActionResult AddressDisplay(int id, string type)
-        {
-            var m = AddressInfo.GetAddressInfo(id, type);
-            return View(m);
         }
         [POST("Person2/AddressEdit/{type}/{id}")]
         public ActionResult AddressEdit(int id, string type)

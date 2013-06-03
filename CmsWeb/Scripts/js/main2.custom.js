@@ -292,45 +292,46 @@ String.prototype.addCommas = function () {
     return x1 + x2;
 };
 
-///#source 1 1 /Scripts/Search/SearchAdd.js
-$(function () {
-    $("a.searchadd").live("click", function (ev) {
-        ev.preventDefault();
-        $("<div id='search-add' class='modal fade hide' data-width='600' data-keyboard='false' data-backdrop='static' />")
-            .load($(this).attr("href"), {}, function () {
-                $(this).modal("show");
-                $(this).on('hidden', function () {
-                    $(this).remove();
+///#source 1 1 /Scripts/js/form-ajax.js
+$(function() {
+    $.AttachFormElements = function(f) {
+        $("input.ajax-typeahead", f).typeahead({
+            minLength: 3,
+            source: function(query, process) {
+                return $.ajax({
+                    url: $(this.$element[0]).data("link"),
+                    type: 'post',
+                    data: { query: query },
+                    dataType: 'json',
+                    success: function(jsonResult) {
+                        return typeof jsonResult == 'undefined' ? false : process(jsonResult);
+                    }
                 });
-            });
-    });
-    $("#search-add a.clear").live('click', function (ev) {
-        ev.preventDefault();
-        $("#name").val('');
-        $("#phone").val('');
-        $("#address").val('');
-        $("#dob").val('');
-        return false;
-    });
-    $("div.modal form.ajax").live("submit", function (event) {
+            }
+        });
+        $("select", f).chosen();
+        $(".date", f).datepicker();
+    };
+    $("div.modal form.ajax").live("submit", function(event) {
         var $form = $(this);
         var $target = $form.closest("div.modal");
         $.ajax({
             type: 'POST',
             url: $form.attr('action'),
             data: $form.serialize(),
-            success: function (data, status) {
+            success: function(data, status) {
                 //$target.removeClass("fade");
                 $target.html(data);
                 var top = ($(window).height() - $target.height()) / 2;
                 if (top < 10)
                     top = 10;
                 $target.css({ 'margin-top': top, 'top': '0' });
+                $.AttachFormElements($form);
             }
         });
         event.preventDefault();
     });
-    $("form.ajax a.ajax").live("click", function (event) {
+    $("form.ajax a.ajax").live("click", function(event) {
         var $this = $(this);
         var $form = $this.closest("form.ajax");
         var $modal = $form.closest("div.modal");
@@ -351,6 +352,7 @@ $(function () {
                 } else {
                     $form.html(data);
                 }
+                $.AttachFormElements($form);
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -359,11 +361,32 @@ $(function () {
         });
         event.preventDefault();
     });
+});
+///#source 1 1 /Scripts/Search/SearchAdd.js
+$(function () {
+    $("a.searchadd").live("click", function (ev) {
+        ev.preventDefault();
+        $("<div id='search-add' class='modal fade hide' data-width='600' data-keyboard='false' data-backdrop='static' />")
+            .load($(this).attr("href"), {}, function () {
+                $(this).modal("show");
+                $(this).on('hidden', function () {
+                    $(this).remove();
+                });
+            });
+    });
+    $("#search-add a.clear").live('click', function (ev) {
+        ev.preventDefault();
+        $("#name").val('');
+        $("#phone").val('');
+        $("#address").val('');
+        $("#dob").val('');
+        return false;
+    });
 
     $("form.ajax tbody > tr a.reveal").live("click", function (e) {
         e.stopPropagation();
     });
-    $.NotReveal = function(ev) {
+    $.NotReveal = function (ev) {
         if ($(ev.target).is("a"))
             if (!$(ev.target).is('.reveal'))
                 return true;
@@ -376,7 +399,7 @@ $(function () {
         $(this).removeClass("notshown").addClass("shown");
         $(this).nextUntil("tr.section").find("div.collapse")
             .off("hidden")
-            .on("hidden", function(e) { e.stopPropagation(); })
+            .on("hidden", function (e) { e.stopPropagation(); })
             .collapse('show');
     });
     $("form.ajax tr.section.shown").live("click", function (ev) {
@@ -384,7 +407,7 @@ $(function () {
         ev.preventDefault();
         $(this).nextUntil("tr.section").find("div.collapse")
             .off("hidden")
-            .on("hidden", function(e) { e.stopPropagation(); })
+            .on("hidden", function (e) { e.stopPropagation(); })
             .collapse('hide');
         $(this).removeClass("shown").addClass("notshown");
     });
@@ -392,7 +415,7 @@ $(function () {
         ev.preventDefault();
         $(this).parents("tr").next("tr").find("div.collapse")
             .off('hidden')
-            .on("hidden", function(e) { e.stopPropagation(); })
+            .on("hidden", function (e) { e.stopPropagation(); })
             .collapse("toggle");
     });
     $("form.ajax tr.master").live("click", function (ev) {
@@ -400,7 +423,7 @@ $(function () {
         ev.preventDefault();
         $(this).next("tr").find("div.collapse")
             .off('hidden')
-            .on("hidden", function(e) { e.stopPropagation(); })
+            .on("hidden", function (e) { e.stopPropagation(); })
             .collapse("toggle");
     });
     $("form.ajax tr.details").live("click", function (ev) {
@@ -409,7 +432,7 @@ $(function () {
         ev.stopPropagation();
         $(this).find("div.collapse")
             .off("hidden")
-            .on("hidden", function(e) { e.stopPropagation(); })
+            .on("hidden", function (e) { e.stopPropagation(); })
             .collapse('hide');
     });
 });

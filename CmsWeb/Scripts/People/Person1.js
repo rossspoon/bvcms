@@ -114,7 +114,6 @@
         }
     });
 
-    //return d.promise();
     $("#clipaddr").live('click', function () {
         var inElement = $('#addrhidden')[0];
         if (inElement.createTextRange) {
@@ -259,60 +258,6 @@
         return false;
     });
 
-    $("a.displayedit").live('click', function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest('form');
-        $.post($(this).attr('href'), null, function (ret) {
-            $(f).html(ret).ready(function () {
-                $.UpdateForSection(f);
-            });
-        });
-        return false;
-    });
-    $.options = function (url) {
-        return {
-            minLength: 3,
-            source: function (query, process) {
-                return $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: { query: query },
-                    dataType: 'json',
-                    success: function (jsonResult) {
-                        return typeof jsonResult == 'undefined' ? false : process(jsonResult);
-                    }
-                });
-            }
-        };
-    };
-    $.UpdateForSection = function (f) {
-        $('#Employer').typeahead($.options("/Person2/Employers"));
-        $('#School', f).typeahead($.options("/Person2/Schools"));
-        $('#Occupation', f).typeahead($.options("/Person2/Occupations"));
-        $('#NewChurch', f).typeahead($.options("/Person2/Churches"));
-        $('#PrevChurch', f).typeahead($.options("/Person2/Churches"));
-        $("form select").chosen();
-        moment.lang('en');
-        $(".date").datepicker();
-        return false;
-    };
-    $("form.DisplayEdit a.submitbutton").live('click', function (ev) {
-        ev.preventDefault();
-        var f = $(this).closest('form');
-        if (!$(f).valid())
-            return false;
-        var q = f.serialize();
-        $.post($(this).attr('href'), q, function (ret) {
-            $(f).html(ret).ready(function () {
-                var bc = $('#businesscard');
-                $.post($(bc).attr("href"), null, function (ret) {
-                    $(bc).html(ret);
-                });
-                $(".submitbutton,.bt").button();
-            });
-        });
-        return false;
-    });
     $("form").on('click', '#future', function (ev) {
         ev.preventDefault();
         var f = $(this).closest('form');
@@ -320,11 +265,6 @@
         $.post($(f).attr("action"), q, function (ret) {
             $(f).html(ret);
         });
-    });
-    $("form.DisplayEdit").submit(function () {
-        if (!$("#submitit").val())
-            return false;
-        return true;
     });
     $.validator.addMethod("date2", function (value, element, params) {
         var v = $.DateValid(value);
