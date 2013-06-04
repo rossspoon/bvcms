@@ -166,15 +166,16 @@ else
     <tr><td colspan="2">&nbsp;</td></tr>
 @if (Model.AllowCoupon)
 {
-    <tr><td>Payment Code</td>
+    <tr><td>Coupon Code<br/>
+        (if you have one)
+        </td>
         <td>
-            <input id="pf_Coupon" name="pf.Coupon" type="password" autocomplete="off" data-typetoggle='#showpassword' value="@Model.Coupon" />
-            <input id="showpassword" type="checkbox" /><label>Show Code</label>
+            <input id="pf_Coupon" name="pf.Coupon" type="text" autocomplete="off" data-typetoggle='#showpassword' value="@Model.Coupon" />
         </td>
     </tr>
     <tr><td></td>
 		<td class="coupon">
-			<input id="ApplyCoupon" type="button" href="/OnlineReg/ApplyCoupon" class="submitbutton ajax" value="Apply Code" />
+			<input id="ApplyCoupon" type="button" href="/OnlineReg/ApplyCoupon" class="submitbutton ajax" value="Apply Coupon" />
 			<div class="right red" id="validatecoupon"></div>
         </td>
     </tr>
