@@ -181,9 +181,7 @@
                         if (ret.startsWith("error"))
                             alert(ret);
                         else {
-                            $('#extravalues').replace(ret).ready(function() {
-                                $.extraEditable('#extravalues');
-                            });
+                            window.location = "/Family/Index/" + $("#FamilyId").val();
                         }
                         $("#fieldname").val("");
                         $("#fieldvalue").val("");
@@ -204,8 +202,7 @@
                 if (ret.startsWith("error"))
                     alert(ret);
                 else {
-                    $.getTable($("#extras-tab form"));
-                    $.extraEditable('#extravalues');
+                    window.location = "/Family/Index/" + $("#FamilyId").val();
                 }
             });
         return false;

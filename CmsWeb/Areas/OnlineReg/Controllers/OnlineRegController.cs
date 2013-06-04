@@ -173,7 +173,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (ret is string)
 			{
 				ModelState.AddModelError("authentication", ret.ToString());
-				return View("Flow/List", m);
+			    return FlowList(m, "Login");
 			}
 			Session["OnlineRegLogin"] = true;
 			var user = ret as User;
@@ -208,7 +208,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             if (m.UserSelectsOrganization())
                 m.List[0].ValidateModelForFind(ModelState, m);
 			m.List[0].LoggedIn = true;
-			return View("Flow/List", m);
+		    return FlowList(m, "Login");
 		}
 		// Register without logging in
 		[HttpPost]
@@ -216,7 +216,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 		{
 			m.nologin = true;
 			m.CreateList();
-			return View("Flow/List", m);
+		    return FlowList(m, "NoLogin");
 		}
 		[HttpPost]
 		public ActionResult YesLogin(OnlineRegModel m)
@@ -226,7 +226,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #if DEBUG
 		    m.username = "trecord";
 #endif
-			return View("Flow/List", m);
+		    return FlowList(m, "NoLogin");
 		}
 		[HttpPost]
 		public ActionResult Register(int id, OnlineRegModel m)
@@ -237,12 +237,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			var p = m.LoadExistingPerson(id, index);
 			p.ValidateModelForFind(ModelState, m, selectfromfamily: true);
 			if (!ModelState.IsValid)
-				return View("Flow/List", m);
+    		    return FlowList(m, "Register");
 			m.List[index] = p;
 			if (p.ManageSubscriptions() && p.Found == true)
 			{
 				//p.OtherOK = true;
-				return View("Flow/List", m);
+    		    return FlowList(m, "Register");
 			}
 			if (p.org != null && p.Found == true)
 			{
@@ -253,11 +253,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					p.FillPriorInfo();
 				//if (!p.AnyOtherInfo())
 				//p.OtherOK = true;
-				return View("Flow/List", m);
+    		    return FlowList(m, "Register");
 			}
 			if (p.ShowDisplay() && p.org != null && p.ComputesOrganizationByAge())
 				p.classid = p.org.OrganizationId;
-			return View("Flow/List", m);
+		    return FlowList(m, "Register");
 		}
 		[HttpPost]
 		public ActionResult Cancel(int id, OnlineRegModel m)
@@ -270,8 +270,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					orgid = m.orgid,
 					masterorgid = m.masterorgid,
 					LoggedIn = m.UserPeopleId.HasValue,
+#if DEBUG
+                    first = "Another",
+                    last = "Child",
+                    dob = "12/1/02",
+                    email = "karen@bvcms.com",
+#endif
 				});
-			return View("Flow/List", m);
+		    return FlowList(m, "Cancel");
 		}
 		[HttpPost]
 		public ActionResult ShowMoreInfo(int id, OnlineRegModel m)
@@ -286,12 +292,12 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					ModelState.AddModelError(m.GetNameFor(mm => mm.List[id].dob), "Sorry, but registration is closed.");
 				if (p.Found == true)
 					p.FillPriorInfo();
-				return View("Flow/List", m);
+    		    return FlowList(m, "ShowMoreInfo");
 			}
 			if (!p.whatfamily.HasValue && (id > 0 || p.LoggedIn == true))
 			{
 				ModelState.AddModelError(m.GetNameFor(mm => mm.List[id].whatfamily), "Choose a family option");
-				return View("Flow/List", m);
+    		    return FlowList(m, "ShowMoreInfo");
 			}
 			switch (p.whatfamily)
 			{
@@ -322,17 +328,17 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					break;
 			}
 			p.ShowAddress = true;
-			return View("Flow/List", m);
+		    return FlowList(m, "ShowMoreInfo");
 		}
 		[HttpPost]
 		public ActionResult PersonFind(int id, OnlineRegModel m)
 		{
-			if (id >= m.List.Count)
-				return View("Flow/List", m);
+		    if (id >= m.List.Count)
+    		    return FlowList(m, "PersonFind");
 			DbUtil.Db.SetNoLock();
 			var p = m.List[id];
 		    if (p.IsValidForNew)
-    			return ErrorResult(m, "Unexpected onlinereg state: IsValidForNew is true and in PersonFind", "PersonFind, unexpected state");
+    			return ErrorResult(m, new Exception("Unexpected onlinereg state: IsValidForNew is true and in PersonFind"), "PersonFind, unexpected state");
 
 			if (p.classid.HasValue)
 			{
@@ -362,17 +368,17 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 
 			CheckSetFee(m, p);
 
-			return View("Flow/List", m);
+		    return FlowList(m, "PersonFind");
 		}
 
-	    private ActionResult ErrorResult(OnlineRegModel m, string errorMessage, string errorDisplay)
+	    private ActionResult ErrorResult(OnlineRegModel m, Exception ex, string errorDisplay)
 	    {
 	        var d = new ExtraDatum {Stamp = Util.Now};
 	        d.Data = Util.Serialize<OnlineRegModel>(m);
 	        DbUtil.Db.ExtraDatas.InsertOnSubmit(d);
 	        DbUtil.Db.SubmitChanges();
-	        var ex = new Exception(errorMessage + ", datum: " + d.Id);
-	        ErrorSignal.FromCurrentContext().Raise(ex);
+	        var ex2 = new Exception("{0}, {2}".Fmt(errorDisplay, d.Id, Util.ServerLink("/OnlineReg/RegPeople/") + d.Id), ex);
+	        ErrorSignal.FromCurrentContext().Raise(ex2);
 	        TempData["error"] = errorDisplay;
 	        return Content("/Error/");
 	    }
@@ -455,7 +461,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				p.classid = p.org.OrganizationId;
 			//if (!p.AnyOtherInfo())
 			//    p.OtherOK = ModelState.IsValid;
-			return View("Flow/List", m);
+		    return FlowList(m, "SubmitNew");
 		}
 		[HttpPost]
 		public ActionResult SubmitOtherInfo(int id, OnlineRegModel m)
@@ -463,14 +469,14 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (m.List.Count <= id)
 				return Content("<p style='color:red'>error: cannot find person on submit other info</p>");
 			m.List[id].ValidateModelForOther(ModelState);
-			return View("Flow/List", m);
+		    return FlowList(m, "SubmitOtherInfo");
 		}
 		[HttpPost]
 		public ActionResult AddAnotherPerson(OnlineRegModel m)
 		{
 			m.ParseSettings();
 			if (!ModelState.IsValid)
-				return View("Flow/List", m);
+    		    return FlowList(m, "AddAnotherPerson");
 #if DEBUG2
             m.List.Add(new OnlineRegPersonModel
             {
@@ -496,7 +502,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				LoggedIn = m.UserPeopleId.HasValue,
 			});
 #endif
-			return View("Flow/List", m);
+		    return FlowList(m, "AddAnotherPerson");
 		}
 		[HttpPost]
 		public ActionResult AskDonation(OnlineRegModel m)
@@ -633,5 +639,18 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			ViewBag.Url = ret;
 			return View();
 		}
+
+	    private ActionResult FlowList(OnlineRegModel m, string function)
+	    {
+		    try
+		    {
+    		    var view = ViewExtensions2.RenderPartialViewToString2(this, "Flow/List", m);
+    		    return Content(view);
+		    }
+		    catch (Exception ex)
+		    {
+		        return ErrorResult(m, ex, "In " + function + ex.Message);
+		    }
+	    }
 	}
 }
