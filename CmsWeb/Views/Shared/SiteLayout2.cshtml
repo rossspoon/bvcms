@@ -4,6 +4,7 @@
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     @Fingerprint.Css("/content/css/new2css.css")
+    @Fingerprint.Css("/content/css/main.css")
     @RenderSection("head", required: false)
     <style type="text/css">
         @{ var bkcolor = DbUtil.Db.Setting("HeaderBackground", ""); }

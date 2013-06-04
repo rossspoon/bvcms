@@ -516,6 +516,9 @@
     <Content Include="Content\css\images\ajax-loader.gif" />
     <Content Include="Content\css\img\ajax-loader.gif" />
     <Content Include="Content\css\main.css" />
+    <Content Include="Content\css\main.min.css">
+      <DependentUpon>main.css</DependentUpon>
+    </Content>
     <Content Include="Content\img\ajax-loader.gif" />
     <Content Include="Content\css\new2css.css">
       <DependentUpon>new2css.css.bundle</DependentUpon>

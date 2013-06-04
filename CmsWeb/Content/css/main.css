@@ -13,6 +13,12 @@ td.center, th.center {
     text-align: center;
 }
 
+  /* Dave: I am overriding this to make it look like bootstrap's divider */
+.dropdown-menu .divider {
+  /*margin: -0.25em 1px;*/
+    margin: auto;
+}
+
 /* Dave: I am adding these so that the controls are not spaced so far apart 
    todo: test remove this */
 .control-group {

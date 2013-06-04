@@ -12,6 +12,8 @@
             style="font-family: Courier New">Attendance</a>: @Model.AttendStr
         <a class="helplink pull-right" target="_blank" href='@Util.HelpLink("UpdateOrgMember")'>help</a>
         <fieldset class="display">
+            @Html.HiddenFor(m => m.OrgId)
+            @Html.HiddenFor(m => m.PeopleId)
             @Html.EditorFor(m => m.MemberType)
             @Html.EditorFor(m => m.InactiveDate)
             @Html.EditorFor(m => m.Enrollment)
@@ -38,7 +40,7 @@
                 @Html.DisplayFor(m => m.AmountDue)
                 if (Model.AmountDue > 0)
                 {
-                     @Html.DisplayFor(m => m.PayLink)
+                    @Html.DisplayFor(m => m.PayLink)
                 }
             }
             @if (Model.Setting.AskVisible("AskSize"))
@@ -50,11 +52,11 @@
     </div>
     <div class="modal-footer">
         <a href="/OrgMemberDialog2/Display/@Model.OrgId/@Model.PeopleId" class="btn ajax">Cancel Edit</a>
-        <a href="/OrgMemberDialog2/Edit/@Model.OrgId/@Model.PeopleId" class="btn btn-primary ajax">Save</a>
+        <a href="/OrgMemberDialog2/Update" class="btn btn-primary ajax">Save</a>
     </div>
 </form>
 
-@*
+@* Dave: how should I display the groups in the org member dialog?
 <div style="border: solid 1px #555; padding: 1em">
     <strong>Groups:</strong><br />
     <table>

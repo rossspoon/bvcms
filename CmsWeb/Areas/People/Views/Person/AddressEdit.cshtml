@@ -19,7 +19,7 @@
             @Html.EditorFor(m => m.ToDt)
             @(Model.Preferred ? Html.DisplayFor(m => m.Preferred) : Html.EditorFor(m => m.Preferred))
         </fieldset>
-        @Html.Raw(Model.Error);
+        @Html.Raw(Model.Error)
     </div>
     <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal">Cancel</a>

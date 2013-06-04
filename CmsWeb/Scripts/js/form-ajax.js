@@ -1,14 +1,14 @@
-﻿$(function() {
-    $.AttachFormElements = function(f) {
+﻿$(function () {
+    $.AttachFormElements = function (f) {
         $("input.ajax-typeahead", f).typeahead({
             minLength: 3,
-            source: function(query, process) {
+            source: function (query, process) {
                 return $.ajax({
                     url: $(this.$element[0]).data("link"),
                     type: 'post',
                     data: { query: query },
                     dataType: 'json',
-                    success: function(jsonResult) {
+                    success: function (jsonResult) {
                         return typeof jsonResult == 'undefined' ? false : process(jsonResult);
                     }
                 });
@@ -17,14 +17,14 @@
         $("select", f).chosen();
         $(".date", f).datepicker();
     };
-    $("div.modal form.ajax").live("submit", function(event) {
+    $("div.modal form.ajax").live("submit", function (event) {
         var $form = $(this);
         var $target = $form.closest("div.modal");
         $.ajax({
             type: 'POST',
             url: $form.attr('action'),
             data: $form.serialize(),
-            success: function(data, status) {
+            success: function (data, status) {
                 //$target.removeClass("fade");
                 $target.html(data);
                 var top = ($(window).height() - $target.height()) / 2;
@@ -36,7 +36,7 @@
         });
         event.preventDefault();
     });
-    $("form.ajax a.ajax").live("click", function(event) {
+    $("form.ajax a.ajax").live("click", function (event) {
         var $this = $(this);
         var $form = $this.closest("form.ajax");
         var $modal = $form.closest("div.modal");
@@ -46,7 +46,7 @@
             type: 'POST',
             url: url,
             data: data,
-            success: function(data, status) {
+            success: function (data, status) {
                 if ($modal.length > 0) {
                     //$modal.removeClass("fade");
                     $modal.html(data);
@@ -59,11 +59,24 @@
                 }
                 $.AttachFormElements($form);
             },
-            error: function(xhr, ajaxOptions, thrownError) {
+            error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
                 alert(thrownError);
             }
         });
         event.preventDefault();
+    });
+    $("body").on({
+        ajaxStart: function () {
+           $("#loading-indicator").css({ 
+               'position': 'absolute',
+               'left': $(window).width() / 2, 
+               'top': $(window).height() / 2,
+               'z-index' : 2000
+           }).show();
+        },
+        ajaxStop: function () {
+            $("#loading-indicator").hide();
+        }
     });
 });

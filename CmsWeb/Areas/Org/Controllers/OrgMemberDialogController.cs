@@ -16,11 +16,11 @@ namespace CmsWeb.Areas.Org.Controllers
 {    
     [RouteArea("Org", AreaUrl = "OrgMemberDialog2")]
     public class OrgMemberDialogController : CmsStaffController
-    {        
-        [POST("Display/{oid}/{pid}")]
+    {
+        [POST("OrgMemberDialog2/Display/{oid}/{pid}")]
         public ActionResult Display(int oid, int pid)
         {
-            var m = new OrgMemberModel(oid, pid);
+            var m = new OrgMemberModel {OrgId = oid, PeopleId = pid};
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -42,20 +42,17 @@ namespace CmsWeb.Areas.Org.Controllers
             DbUtil.Db.SubmitChanges();
             return Content("ok");
         }
-        
-        [POST("Edit/{oid}/{pid}")]
-        public ActionResult Edit(int oid, int pid)
+
+        [POST("OrgMemberDialog2/Edit")]
+        public ActionResult Edit(OrgMemberModel m)
         {
-            var m = new OrgMemberModel(oid, pid);
             return View(m);
         }
-        [POST("Update/{oid}/{pid}")]
-        public ActionResult Update(int id, int pid)
+        [POST("OrgMemberDialog2/Update")]
+        public ActionResult Update(OrgMemberModel m)
         {
-            var m = new OrgMemberModel(id, pid);
             try
             {
-                UpdateModel(m);
                 DbUtil.Db.SubmitChanges();
             }
             catch (Exception)

@@ -18,11 +18,13 @@ namespace CmsWeb.Areas.Org.Models
     public class OrgMemberModel
     {
         private CmsData.OrganizationMember om;
+        private int? _orgId;
+        private int? _peopleId;
 
-        public OrgMemberModel(int oid, int pid)
+        public void Populate()
         {
             var i = (from mm in DbUtil.Db.OrganizationMembers
-                     where mm.OrganizationId == oid && mm.PeopleId == pid
+                     where mm.OrganizationId == _orgId && mm.PeopleId == _peopleId
                      select new
                          {
                              mm,
@@ -31,19 +33,36 @@ namespace CmsWeb.Areas.Org.Models
                              mm.Organization.RegSetting
                          }).SingleOrDefault();
             if (i == null)
-                throw new Exception("missing OrgMember at oid={0}, pid={0}".Fmt(oid, pid));
+                throw new Exception("missing OrgMember at oid={0}, pid={0}".Fmt(_orgId, _peopleId));
             om = i.mm;
             Name = i.Name;
             OrgName = i.OrganizationName;
-            OrgId = oid;
-            PeopleId = pid;
             MemberType = new CodeInfo(om.MemberTypeId, "MemberType");
             AttendStr = om.AttendStr;
-            Setting = new Settings(i.RegSetting, DbUtil.Db, OrgId);
+            Setting = new Settings(i.RegSetting, DbUtil.Db, _orgId.Value);
         }
 
-        public int OrgId { get; set; }
-        public int PeopleId { get; set; }
+        public int? OrgId
+        {
+            get { return _orgId; }
+            set
+            {
+                _orgId = value;
+                if(_peopleId.HasValue)
+                    Populate();
+            }
+        }
+
+        public int? PeopleId
+        {
+            get { return _peopleId; }
+            set
+            {
+                _peopleId = value;
+                if(_orgId.HasValue)
+                    Populate();
+            }
+        }
 
         public string Name { get; set; }
         public string OrgName { get; set; }

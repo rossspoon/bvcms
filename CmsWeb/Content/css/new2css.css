@@ -3303,8 +3303,7 @@ table th[class*="span"],
 .dropdown-menu .divider {
   *width: 100%;
   height: 1px;
-  /* Dave: I removed this to make it look like bootstrap's divider 
-  margin: -0.25em 1px;*/
+  margin: -0.25em 1px;
   *margin: -5px 0 5px;
   overflow: hidden;
   background-color: #333333;
@@ -9794,67 +9793,3 @@ a.editable-click.editable-disabled:hover {
   height: 16px;
 }
 
-td.right, th.right {
-    text-align: right;
-}
-td.noborder, th.noborder {
-    border: none!important;
-}
-
-td.left, th.left {
-    text-align: left;
-}
-
-td.center, th.center {
-    text-align: center;
-}
-
-/* Dave: I am adding these so that the controls are not spaced so far apart 
-   todo: test remove this */
-.control-group {
-    margin-bottom: auto;
-}
-.form-horizontal .control-group {
-    margin-bottom: auto;
-}
-
-.editable-click, 
-a.editable-click, 
-a.editable-click:hover {
-    text-decoration: none;
-    border-bottom: none;
-}
-
-form.form-horizontal.onecol .control-group {
-    float: none;
-    width: auto;
-    *width: auto;
-    margin-bottom: 1em;
-}
-.section span {
-    font-style: italic;
-    font-size: 110%;
-}
-
-table.expanding div.indent {
-    padding-left: 2em;
-}
-
-table.expanding a[rel="reveal"] {
-    text-decoration: none;
-}
-
-table.expanding tr.details td {
-    border-top: none;
-    padding: 0;
-}
-
-    table.enrollments tr.details td:first-child {
-        padding-left: 1em;
-    }
-
-/* Dave: I am using this to do my own table striping in this special case 
-    todo: test remove this*/
-table.expanding tr.oddrow > td {
-    background-color: #f9f9f9;
-}

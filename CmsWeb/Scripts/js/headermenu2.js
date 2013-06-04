@@ -182,20 +182,6 @@
     };
 });
 
-$(document).ajaxSend(function(event, request, settings) {
-   $('#loading-indicator')
-       .css({ 
-           'position': 'absolute',
-           'left': $(window).width() / 2, 
-           'top': $(window).height() / 2,
-           'z-index' : 2000
-       }).show();
- });
- 
- $(document).ajaxComplete(function(event, request, settings) {
-   $('#loading-indicator').hide();
- });
-
 function dimOff() {
     $("#darkLayer").hide();
 }
