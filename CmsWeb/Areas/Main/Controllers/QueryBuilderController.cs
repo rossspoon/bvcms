@@ -229,9 +229,9 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             catch (Exception ex)
             {
-				var ex2 = new Exception("SearchBuilder error:\n" + m.GetTopClause().ToXml(), ex);
-				ErrorLog errorLog = ErrorLog.GetDefault(null);
-				errorLog.Log(new Error(ex2));
+                var ex2 = new Exception("SearchBuilder error:\n" + m.GetTopClause().ToXml(), ex);
+                ErrorLog errorLog = ErrorLog.GetDefault(null);
+                errorLog.Log(new Error(ex2));
                 return Content("Something went wrong<br><p>" + ex.Message + "</p>");
             }
             DbUtil.LogActivity("QB Results ({0:N1}, {1})".Fmt(DateTime.Now.Subtract(starttime).TotalSeconds, m.QueryId));
@@ -316,18 +316,21 @@ namespace CmsWeb.Areas.Main.Controllers
                 m.Errors.Add("Age", "must be integer");
 
 
-//            if (m.IntegerVisible && !m.Comparison.EndsWith("Null") && !int.TryParse(m.IntegerValue, out i))
-//                m.Errors.Add("IntegerValue", "need integer");
-
             if (m.TagsVisible && string.Join(",", m.Tags).Length > 500)
                 m.Errors.Add("tagvalues", "too many tags selected");
 
-//            decimal d;
-//            if (m.NumberVisible && !m.Comparison.EndsWith("Null") && !decimal.TryParse(m.NumberValue, out d))
-//                m.Errors.Add("NumberValue", "need number");
-
             if (m.CodesVisible && m.CodeValues.Length == 0)
                 m.Errors.Add("CodeValues", "must select item(s)");
+
+            if (m.NumberVisible && !m.NumberValue.HasValue())
+                m.Errors.Add("NumberValue", "must have a number value");
+            else
+            {
+                float f;
+                if (m.NumberVisible && m.NumberValue.HasValue())
+                    if (!float.TryParse(m.NumberValue, out f))
+                        m.Errors.Add("NumberValue", "must have a valid number value (no decoration)");
+            }
 
             if (m.DateVisible && !m.Comparison.EndsWith("Equal"))
                 if (!DateTime.TryParse(m.DateValue, out dt) || dt.Year <= 1900 || dt.Year >= 2200)
