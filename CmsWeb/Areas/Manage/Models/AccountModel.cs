@@ -376,7 +376,9 @@ namespace CmsWeb.Models
                 Util.SendMsg(ConfigurationManager.AppSettings["sysfromemail"],
                     DbUtil.Db.CmsHost, Util.FirstAddress(DbUtil.AdminMail),
                     "bvcms password reset link", message, addrlist, 0, null);
-                return Util.ObscureEmail(addrlist[0].Address);
+                if(addrlist.Count > 0)
+                    return Util.ObscureEmail(addrlist[0].Address);
+                return "no email address";
             }
         }
     }

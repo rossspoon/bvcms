@@ -313,8 +313,9 @@ namespace CmsWeb.Models
 						break;
 					case "AskYesNoQuestions":
 						foreach (var a in ((AskYesNoQuestions)ask).list)
-							sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Question,
-													   YesNoQuestion[a.SmallGroup] == true ? "Yes" : "No"));
+                            if(YesNoQuestion.ContainsKey(a.SmallGroup))
+    							sb.AppendFormat("<tr><td>{0}:</td><td>{1}</td></tr>\n".Fmt(a.Question,
+    													   YesNoQuestion[a.SmallGroup] == true ? "Yes" : "No"));
 						break;
 					case "AskExtraQuestions":
 						foreach (var a in ExtraQuestion[ask.UniqueId])
