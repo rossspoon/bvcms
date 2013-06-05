@@ -383,6 +383,22 @@
         window.open("/Reports/EnrollmentControl/" + args);
         return false;
     });
+    $('#enrollmentcontrol2i').click(function (ev) {
+        ev.preventDefault();
+        hideDropdowns();
+        $('div.dialog').dialog('close');
+        var pid = $('#ProgramId').val();
+        var did = $('#DivisionId').val();
+        if (pid == '0') {
+            $.growlUI("error", 'must choose program');
+            return false;
+        }
+        var args = "?div=" + did + "&pid=" + pid +
+            "&schedule=" + $('#ScheduleId').val() +
+            "&name=" + $('#Name').val();
+        window.open("/Reports/EnrollmentControl2/" + args);
+        return false;
+    });
 });
 
 

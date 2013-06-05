@@ -769,6 +769,7 @@
     <Content Include="Areas\People\Views\SearchAdd\DisplayPeople.cshtml" />
     <Content Include="Areas\People\Views\Person\HiddenAddress.cshtml" />
     <Content Include="Areas\Manage\Views\Batch\UpdateStatusFlags.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\EnrollmentControl2.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />
@@ -992,7 +993,11 @@
     <Content Include="Scripts\Email\compose.js" />
     <Content Include="Scripts\Finance\Bundles.js" />
     <Content Include="Scripts\Finance\Bundle.js" />
+    <Content Include="Scripts\Org\enroll-control-ipad.js" />
     <Content Include="Scripts\Org\OrgMemberDialog2.js" />
+    <Content Include="Scripts\Org\OrgSearch.min.js">
+      <DependentUpon>OrgSearch.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\People\SearchAdd2.js" />
     <Content Include="Scripts\Search\AdvancedSearch.js" />
     <Content Include="Scripts\Volunteer\Calendar2.js" />
@@ -1322,6 +1327,9 @@
     <Content Include="Views\Shared\EditorTemplates\Code.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Text.cshtml" />
+    <Content Include="Scripts\Org\OrgSearch.min.js.map">
+      <DependentUpon>OrgSearch.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">

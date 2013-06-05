@@ -503,5 +503,16 @@ namespace CmsWeb.Areas.Main.Controllers
             else
                 return new EnrollmentControlResult { model = m };
         }
+        public ActionResult EnrollmentControl2(int pid, int? div, int? schedule, string name, bool? usecurrenttag)
+        {
+            var m = new EnrollmentControlModel()
+            {
+                prog = pid,
+                div = div ?? 0,
+                schedule = schedule ?? 0,
+                usecurrenttag = usecurrenttag ?? false
+            };
+            return View(m);
+        }
     }
 }
