@@ -1114,9 +1114,6 @@
     <Content Include="Scripts\Org\OrgSearch.min.js">
       <DependentUpon>OrgSearch.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\Org\OrgSearch.min.js.map">
-      <DependentUpon>OrgSearch.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\People\family.min.js">
       <DependentUpon>family.js</DependentUpon>
     </Content>
@@ -1143,6 +1140,9 @@
     </Content>
     <Content Include="Scripts\People\Person1.min.js.map">
       <DependentUpon>Person1.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Org\OrgSearch.min.js.map">
+      <DependentUpon>OrgSearch.js</DependentUpon>
     </Content>
     <None Include="Scripts\querybuilder.js.bundle" />
     <Content Include="Scripts\querybuilder.js">
@@ -1193,6 +1193,7 @@
     </Content>
     <None Include="Scripts\task.js.bundle" />
     <Content Include="Areas\Manage\Views\Batch\UpdateStatusFlags.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\EnrollmentControl2.cshtml" />
     <None Include="Scripts\Mobile\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\js\Pager3.js" />
     <Content Include="Scripts\Mobile\jquery-1.6.4.js" />
@@ -1413,6 +1414,7 @@
     <Content Include="Scripts\Email\compose.js" />
     <Content Include="Scripts\Finance\Bundles.js" />
     <Content Include="Scripts\Finance\Bundle.js" />
+    <Content Include="Scripts\Org\enroll-control-ipad.js" />
     <Content Include="Scripts\Org\OrgMemberDialog2.js" />
     <Content Include="Scripts\Search\AdvancedSearch.js" />
     <Content Include="Scripts\task.js">

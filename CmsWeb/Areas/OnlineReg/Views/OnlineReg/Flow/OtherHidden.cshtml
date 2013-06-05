@@ -1,5 +1,6 @@
 ﻿@using CmsData.Registration
 @using CmsWeb
+@using UtilityExtensions
 @model CmsWeb.Models.OnlineRegPersonModel
 @{ 
     var prefix = ViewData.TemplateInfo.HtmlFieldPrefix;
@@ -52,14 +53,16 @@
             @Html.HiddenFor2(m => m.ntickets)
             break;
         case "AskSuggestedFee":
-	        try 
-            { var h = Html.HiddenFor2(m => m.Suggestedfee); 
-              @h 
-            }
-	        catch (Exception) { }
+            @Html.HiddenFor2(m => m.Suggestedfee) 
             break;
         case "AskDropdown":
-            <input type="hidden" name="@(prefix).option" value="@(((AskDropdown)ask).SmallGroupChoice(Model.option).SmallGroup)"/>
+	        var dd = ((AskDropdown) ask);
+	        var ddi = dd.SmallGroupChoice(Model.option);
+	        if (ddi == null)
+	        {
+	            throw new Exception("AskDropdown [{0}] choice is not found [{1}]".Fmt(string.Join(",", dd.list.Select(ii => ii.SmallGroup)), string.Join(",", Model.option)));
+	        }
+	        <input type="hidden" name="@(prefix).option" value="@ddi.SmallGroup"/>
             break;
         case "AskExtraQuestions":
 	        var eq = (AskExtraQuestions) ask;
