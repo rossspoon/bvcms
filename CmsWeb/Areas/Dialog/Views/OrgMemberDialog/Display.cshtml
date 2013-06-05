@@ -56,11 +56,11 @@
      var amtdue = @Model.AmountDue(DbUtil.Db);
     <tr>
         <th class='right'>Amount:</th>
-        <td>@Model.Amount.ToString2("N")</td>
+        <td>@Model.Amount.ToString2("N") (total fee for this registrant)</td>
     </tr>
     <tr>
         <th class="right top">AmountDue:</th>
-        <td>@amtdue.ToString2("N")
+        <td>@amtdue.ToString2("N") (total for transaction, all registrants)
         @if (amtdue > 0)
         { 
             <div><a href="@Model.PayLink" target="_blank">PayLink</a></div>
