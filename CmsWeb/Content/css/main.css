@@ -19,6 +19,10 @@ td.center, th.center {
     margin: auto;
 }
 
+.datepicker {
+    z-index: 2000;
+}
+
 /* Dave: I am adding these so that the controls are not spaced so far apart 
    todo: test remove this */
 .control-group {
