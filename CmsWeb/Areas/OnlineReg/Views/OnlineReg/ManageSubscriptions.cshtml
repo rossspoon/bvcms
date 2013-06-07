@@ -15,7 +15,6 @@
 {
     @Html.Hidden("specialedit", 1)
     @Html.Hidden("pid", Model.pid)
-    @Html.Hidden("divid", Model.divid)
     @Html.Hidden("masterorgid", Model.masterorgid)
    <table id="subs">
     @foreach (var o in Model.OrderSubs(Model.FetchSubs()))

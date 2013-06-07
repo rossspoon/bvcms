@@ -29,7 +29,7 @@ namespace CmsData
             get
             {
                 var h = ConfigurationManager.AppSettings["cmshost"];
-                return h.Replace("{church}", Host, ignoreCase:true);
+                return h.Replace("{church}", Host, ignoreCase: true);
             }
         }
         public void Email(string from, Person p, string subject, string body)
@@ -99,27 +99,15 @@ namespace CmsData
                     select p;
             return q;
         }
-        public List<Person> StaffPeopleForDiv(int divid)
-        {
-            var q = from o in Organizations
-                    where o.DivOrgs.Any(dd => dd.DivId == divid)
-                    where o.NotifyIds != null && o.NotifyIds != ""
-                    select o.NotifyIds;
-            var pids = string.Join(",", q);
-            var a = pids.SplitStr(",").Select(ss => ss.ToInt()).ToArray();
-            var q2 = from p in People
-                     where a.Contains(p.PeopleId)
-                     orderby p.PeopleId == a[0] descending
-                     select p;
-            if (q2.Count() == 0)
-                return AdminPeople();
-            return q2.ToList();
-        }
         public List<Person> AdminPeople()
         {
-            return (from p in CMSRoleProvider.provider.GetAdmins()
-                    orderby p.Users.Any(u => u.Roles.Contains("Developer")) ascending
-                    select p).ToList();
+            var list = (from p in CMSRoleProvider.provider.GetAdmins()
+                        where !p.EmailAddress.Contains("bvcms.com")
+                        select p).ToList();
+            if(list.Count == 0)
+                list = (from p in CMSRoleProvider.provider.GetAdmins()
+                        select p).ToList();
+            return list;
         }
         public List<Person> FinancePeople()
         {
@@ -143,8 +131,9 @@ namespace CmsData
                 return Setting("AdminMail", "support@bvcms.com");
             return q2.SingleOrDefault();
         }
-        public List<Person> StaffPeopleForOrg(int orgid)
+        public List<Person> StaffPeopleForOrg(int orgid, out bool usedAdmins)
         {
+            usedAdmins = false;
             var org = LoadOrganizationById(orgid);
             var pids = org.NotifyIds ?? "";
             var a = pids.Split(',').Select(ss => ss.ToInt()).ToArray();
@@ -152,11 +141,25 @@ namespace CmsData
                      where a.Contains(p.PeopleId)
                      orderby p.PeopleId == a.FirstOrDefault() descending
                      select p;
-            //if (q2.Count() == 0)
-            //    return (from p in CMSRoleProvider.provider.GetAdmins()
-            //            orderby p.Users.Any(u => u.Roles.Contains("Developer")) descending
-            //            select p).ToList();
-            return q2.ToList();
+            var list = q2.ToList();
+            // if we have notifids, return them
+            if (list.Count > 0)
+                return list;
+            // no notifyids, check master org
+            var masterOrgId = (from o in ViewMasterOrgs
+                               where o.PickListOrgId == orgid
+                               select o.OrganizationId).FirstOrDefault();
+            // so if the master id has notifyids, return them 
+            if (masterOrgId > 0)
+                return StaffPeopleForOrg(masterOrgId);
+            // there was no master notifyids either, so return admins
+            usedAdmins = true;
+            return AdminPeople();
+        }
+        public List<Person> StaffPeopleForOrg(int orgid)
+        {
+            bool usedAdmins;
+            return StaffPeopleForOrg(orgid, out usedAdmins);
         }
         public Person UserPersonFromEmail(string email)
         {
@@ -200,7 +203,7 @@ namespace CmsData
                 emailqueue.Body = re.Replace(body, link);
             }
 
-            var q = tag.People(this); 
+            var q = tag.People(this);
 
             var q2 = from p in q.Distinct()
                      where p.EmailAddress != null

@@ -27,7 +27,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #endif
 
 		// Main page
-		public ActionResult Index(int? id, int? div, bool? testing, int? o, int? d, string email, bool? nologin, bool? login, string registertag, bool? showfamily)
+		public ActionResult Index(int? id, bool? testing, int? o, int? d, string email, bool? nologin, bool? login, string registertag, bool? showfamily)
 		{
 #if DEBUG
             var om = DbUtil.Db.OrganizationMembers.SingleOrDefault(mm => mm.OrganizationId == 89469 && mm.PeopleId == 828612);
@@ -38,14 +38,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
 #endif
 			Util.NoCache(Response);
-			if (!id.HasValue && !div.HasValue)
+			if (!id.HasValue)
 				return Content("no organization");
-			var m = new OnlineRegModel
-			{
-				divid = div,
-				orgid = id,
-			};
-			if (m.org == null && m.div == null && m.masterorg == null)
+			var m = new OnlineRegModel { orgid = id };
+			if (m.org == null && m.masterorg == null)
 				return Content("invalid registration");
 
 			if (m.masterorg != null)
@@ -57,11 +53,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			{
 				if ((m.org.RegistrationTypeId ?? 0) == RegistrationTypeCode.None)
 					return Content("no registration allowed on this org");
-			}
-			else if (m.div != null)
-			{
-				if (!OnlineRegModel.UserSelectClasses(m.divid).Any())
-					return Content("no registration allowed on this div");
 			}
 			m.URL = Request.Url.OriginalString;
 
@@ -121,7 +112,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                     p = m.LoadExistingPerson(pid, 0);
                     p.ValidateModelForFind(ModelState, m);
                     p.LoggedIn = true;
-				    if (m.masterorg == null && !m.divid.HasValue)
+				    if (m.masterorg == null)
 				    {
                         if (m.List.Count == 0)
                             m.List.Add(p);
@@ -186,9 +177,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (m.ManagingSubscriptions())
 			{
 				TempData["ms"] = Util.UserPeopleId;
-				if (m.masterorgid.HasValue && m.masterorg.RegistrationTypeId == RegistrationTypeCode.ManageSubscriptions2)
-					return Content("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.masterorgid));
-				return Content("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.divid));
+				return Content("/OnlineReg/ManageSubscriptions/{0}".Fmt(m.masterorgid));
 			}
 			if (m.ChoosingSlots())
 			{
@@ -266,7 +255,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			if (m.List.Count == 0)
 				m.List.Add(new OnlineRegPersonModel
 				{
-					divid = m.divid,
 					orgid = m.orgid,
 					masterorgid = m.masterorgid,
 					LoggedIn = m.UserPeopleId.HasValue,
@@ -410,10 +398,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 					ViewData["CreatedAccount"] = m.List[0].CreatingAccount;
 					DbUtil.Db.SubmitChanges();
 					ViewData["email"] = m.List[0].person.EmailAddress;
-					if (m.masterorgid != null)
-						ViewData["orgname"] = m.masterorg.OrganizationName;
-					else
-						ViewData["orgname"] = m.div.Name;
+					ViewData["orgname"] = m.masterorg.OrganizationName;
 					ViewData["URL"] = m.URL;
 					ViewData["timeout"] = INT_timeout;
 					return View("ConfirmManageSub");
@@ -496,7 +481,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 #else
 			m.List.Add(new OnlineRegPersonModel
 			{
-				divid = m.divid,
 				orgid = m.orgid,
 				masterorgid = m.masterorgid,
 				LoggedIn = m.UserPeopleId.HasValue,

@@ -19,22 +19,6 @@ namespace CmsWeb.Models
 {
     public partial class OnlineRegModel
     {
-        public static IQueryable<Organization> UserSelectClasses(int? divid)
-        {
-            var a = new int[] 
-            { 
-                RegistrationTypeCode.UserSelectsOrganization,
-                RegistrationTypeCode.ComputeOrganizationByAge,
-                RegistrationTypeCode.ManageSubscriptions
-            };
-            var q = from o in DbUtil.Db.Organizations
-                    where o.DivOrgs.Any(od => od.DivId == divid)
-                    where o.OrganizationStatusId == OrgStatusCode.Active
-                    where a.Contains(o.RegistrationTypeId.Value)
-                    where o.OnLineCatalogSort != null || o.RegistrationTypeId == RegistrationTypeCode.ComputeOrganizationByAge
-                    select o;
-            return q;
-        }
         public static IQueryable<Organization> UserSelectClasses(Organization masterorg)
         {
             if (!masterorg.OrgPickList.HasValue())
@@ -71,27 +55,7 @@ namespace CmsWeb.Models
         }
         public IEnumerable<ClassInfo> Classes(int? cid)
         {
-            if (masterorgid.HasValue)
-                return Classes(masterorg, cid ?? 0);
-            return Classes(divid, cid ?? 0);
-        }
-        public static List<ClassInfo> Classes(int? divid, int id)
-        {
-            var q = from o in UserSelectClasses(divid)
-                    let hasroom = (o.ClassFilled ?? false) == false && ((o.Limit ?? 0) == 0 || o.Limit > (o.MemberCount ?? 0))
-                    orderby o.OnLineCatalogSort, o.OrganizationName
-                    select new ClassInfo
-                    {
-                        Id = o.OrganizationId,
-                        Text = ClassName(o),
-                        selected = o.OrganizationId == id,
-                        filled = !hasroom
-                    };
-            var list = q.ToList();
-            if (list.Count == 1)
-                return list;
-            list.Insert(0, new ClassInfo { Text = "Registration Options", Id = 0});
-            return list;
+            return Classes(masterorg, cid ?? 0);
         }
         public static List<ClassInfo> Classes(Organization masterorg, int id)
         {

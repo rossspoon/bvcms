@@ -25,6 +25,26 @@
                 filebrowserUploadUrl: '/Account/CKEditorUpload/',
                 filebrowserImageUploadUrl: '/Account/CKEditorUpload/'
             });
+            $("#insertvotelink").click(function (ev) {
+                ev.preventDefault();
+                var id = prompt("id");
+                var editor = CKEDITOR.instances["Body"];
+                var link = editor.document.createElement('a');
+                link.setAttribute( 'href', 'http://votelink' );
+                link.setAttribute( 'id', id );
+                var selection = editor.getSelection();
+                if (selection.getType() == CKEDITOR.SELECTION_ELEMENT) 
+                    link.setHtml( selection.getSelectedElement().$.outerHTML );
+                else if (selection.getType() == CKEDITOR.SELECTION_TEXT) {
+                    if (CKEDITOR.env.ie) {
+                        selection.unlock(true);
+                        link.setText(selection.getNative().createRange().text);
+                    } else 
+                        link.setText(selection.getNative());
+                }
+                editor.insertElement(link);
+                return false;
+            });
         });
     </script>
 }
@@ -66,8 +86,12 @@ You can include a file, image, mp3 or whatever you like in your email.
 } 
     <h4>VoteTag</h4>
     <p>You can now use votelinks and votetags by highlighting any of your text or an image, 
-    and then clicking on the hyperlink icon in the toolbar (looks like the world with a chain link). 
-    Then put the word votelink in the URL field and fill out the Special Links tab.</p>
+        and then clicking on the hyperlink icon in the toolbar (looks like the world with a chain link). 
+        Then put the word votelink in the URL field and fill out the Special Links tab.</p>
+    @if (User.IsInRole("Developer"))
+    {
+        <a id="insertvotelink" href="#" class="bt">Test Insert Votelink</a>
+    }
 </div>
 <div id="progress">
 <h2>Working...</h2>

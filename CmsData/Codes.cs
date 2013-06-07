@@ -135,11 +135,11 @@ namespace CmsData.Codes
     {
         public const int None = 0;
         public const int JoinOrganization = 1;
-        public const int UserSelectsOrganization = 3;
-        public const int ComputeOrganizationByAge = 4;
+//        public const int UserSelectsOrganization = 3;
+//        public const int ComputeOrganizationByAge = 4;
         public const int CreateAccount = 5;
         public const int ChooseVolunteerTimes = 6;
-        public const int ManageSubscriptions = 7;
+//        public const int ManageSubscriptions = 7;
         public const int OnlineGiving = 8;
         public const int OnlinePledge = 9;
         public const int UserSelectsOrganization2 = 10;
@@ -159,8 +159,8 @@ namespace CmsData.Codes
             yield return new KeyValuePair<int, string>(OnlinePledge, "Online Pledge");
             yield return new KeyValuePair<int, string>(ChooseVolunteerTimes, "Choose Volunteer Times");
             //yield return new KeyValuePair<int, string>(ChoosePrayerTime, "Choose Prayer Times");
-            yield return new KeyValuePair<int, string>(UserSelectsOrganization, "--old user selects org");
-            yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "--old compute org by bday");
+//            yield return new KeyValuePair<int, string>(UserSelectsOrganization, "--old user selects org");
+//            yield return new KeyValuePair<int, string>(ComputeOrganizationByAge, "--old compute org by bday");
         }
         public static string Lookup(int? id)
         {

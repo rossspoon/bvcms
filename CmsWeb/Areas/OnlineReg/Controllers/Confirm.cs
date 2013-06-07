@@ -411,9 +411,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				ViewData["email"] = m.List[0].person.EmailAddress;
 			else
 				ViewData["email"] = m.List[0].email;
-			ViewData["orgname"] = m.org != null ? m.org.OrganizationName
-								: m.masterorgid.HasValue ? m.masterorg.OrganizationName
-								: m.div.Name;
+		    ViewData["orgname"] = m.org != null ? m.org.OrganizationName : m.masterorg.OrganizationName;
 			if ((bool?)Session["OnlineRegLogin"] == true)
 			{
 				FormsAuthentication.SignOut();
@@ -441,13 +439,11 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             }
             ViewBag.Url = m.URL;
 
-			//DbUtil.Db.ExtraDatas.DeleteOnSubmit(ed);
             ed.Completed = true;
 			DbUtil.Db.SubmitChanges();
 
 			SetHeaders(m);
 			return View(confirm, m);
 		}
-
 	}
 }

@@ -125,8 +125,6 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             {
                 List<Person> Staff = null;
                 Staff = DbUtil.Db.StaffPeopleForOrg(m.OrgId);
-                if (Staff.Count == 0)
-                    Staff = DbUtil.Db.AdminPeople();
                 var staff = Staff[0];
 
                 var summary = m.Summary(this);
@@ -139,8 +137,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
                 text = text.Replace("{contactemail}", staff.EmailAddress, ignoreCase:true);
                 text = text.Replace("{contactphone}", m.Org.PhoneNumber.FmtFone(), ignoreCase:true);
                 text = text.Replace("{details}", summary, ignoreCase:true);
-                DbUtil.Db.Email(Staff.First().FromEmail, m.Person,
-                        m.setting.Subject, text);
+                DbUtil.Db.Email(staff.FromEmail, m.Person, m.setting.Subject, text);
 
                 DbUtil.Db.Email(m.Person.FromEmail, Staff, "Volunteer Commitments managed", @"{0} managed volunteer commitments to {1}<br/>
 The following Committments:<br/>
@@ -406,13 +403,7 @@ The following Committments:<br/>
         public ActionResult ConfirmSubscriptions(ManageSubsModel m)
         {
             m.UpdateSubscriptions();
-            List<Person> Staff = null;
-            if (m.masterorgid != null)
-                Staff = DbUtil.Db.StaffPeopleForOrg(m.masterorgid.Value);
-            else
-                Staff = DbUtil.Db.StaffPeopleForDiv(m.divid.Value);
-            if (Staff.Count == 0)
-                Staff = DbUtil.Db.AdminPeople();
+            var Staff = DbUtil.Db.StaffPeopleForOrg(m.masterorgid.Value);
 
             DbUtil.Db.Email(Staff.First().FromEmail, m.person,
                     "Subscription Confirmation",
@@ -424,17 +415,13 @@ You have the following subscriptions:<br/>
 You have the following subscriptions:<br/>
 {2}".Fmt(m.person.Name, m.Description(), m.Summary));
 
-            SetHeaders(m.divid ?? m.masterorgid.Value);
+            SetHeaders(m.masterorgid.Value);
             return View(m);
         }
         [HttpPost]
         public ActionResult ConfirmPledge(ManagePledgesModel m)
         {
             var staff = DbUtil.Db.StaffPeopleForOrg(m.orgid);
-            if (!staff.Any())
-                staff = DbUtil.Db.AdminPeople();
-
-            //OrganizationMember.InsertOrgMembers(DbUtil.Db, m.orgid, m.pid, 220, DateTime.Now, null, false);
 
             var desc = "{0}; {1}; {2}, {3} {4}".Fmt(
                 m.person.Name,
@@ -455,8 +442,7 @@ You have the following subscriptions:<br/>
             body = body.Replace("{amt}", pi.Pledged.ToString("N2"), ignoreCase:true);
             body = body.Replace("{org}", m.Organization.OrganizationName, ignoreCase:true);
             body = body.Replace("{first}", m.person.PreferredName, ignoreCase:true);
-            DbUtil.Db.EmailRedacted(staff.First().FromEmail, m.person,
-                m.setting.Subject, body);
+            DbUtil.Db.EmailRedacted(staff[0].FromEmail, m.person, m.setting.Subject, body);
 
             DbUtil.Db.Email(m.person.FromEmail, staff, "Online Pledge", @"{0} made a pledge to {1}".Fmt(m.person.Name, m.Organization.OrganizationName));
 
@@ -539,8 +525,6 @@ You have the following subscriptions:<br/>
                 msg = CmsData.API.APIOrganization.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", smallgroup);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
-                if (NotifyIds.Count == 0)
-                    NotifyIds = DbUtil.Db.AdminPeople();
 
                 DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
                 DbUtil.Db.Email(q.p.FromEmail, NotifyIds,
@@ -626,8 +610,6 @@ You have the following subscriptions:<br/>
                 msg = CmsData.API.APIOrganization.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", smallgroup);
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
-                if (NotifyIds.Count == 0)
-                    NotifyIds = DbUtil.Db.AdminPeople();
 
                 DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
                 DbUtil.Db.Email(q.p.FromEmail, NotifyIds,
@@ -741,8 +723,6 @@ emailid={2}
                 msg = CmsData.API.APIOrganization.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("f"));
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
-                if (NotifyIds.Count == 0)
-                    NotifyIds = DbUtil.Db.AdminPeople();
 
                 DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
                 DbUtil.Db.Email(q.p.FromEmail, NotifyIds,
@@ -806,8 +786,6 @@ emailid={2}
                 msg = CmsData.API.APIOrganization.MessageReplacements(q.p, q.org.DivisionName, q.org.OrganizationName, q.org.Location, msg);
                 msg = msg.Replace("{details}", q.meeting.MeetingDate.ToString2("f"));
                 var NotifyIds = DbUtil.Db.StaffPeopleForOrg(q.org.OrganizationId);
-                if (NotifyIds.Count == 0)
-                    NotifyIds = DbUtil.Db.AdminPeople();
 
                 DbUtil.Db.Email(NotifyIds[0].FromEmail, q.p, subject, msg); // send confirmation
                 DbUtil.Db.Email(q.p.FromEmail, NotifyIds,

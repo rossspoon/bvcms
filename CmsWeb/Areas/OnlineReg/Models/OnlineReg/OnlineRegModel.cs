@@ -47,17 +47,6 @@ namespace CmsWeb.Models
 				}
 			}
 		}
-		private int? _Divid;
-		public int? divid
-		{
-			get { return _Divid; }
-			set
-			{
-				_Divid = value;
-				if (value > 0)
-					ParseSettings();
-			}
-		}
         private int? _tranId;
 		public int? TranId
 		{
@@ -149,33 +138,12 @@ namespace CmsWeb.Models
 		public bool ShowFindInstructions;
 		public bool ShowLoginInstructions;
 		public bool ShowOtherInstructions;
-		private CmsData.Division _div;
-		public CmsData.Division div
-		{
-			get
-			{
-				if (_div == null && divid.HasValue)
-					_div = DbUtil.Db.Divisions.SingleOrDefault(d => d.Id == divid);
-				return _div;
-			}
-		}
 		public void ParseSettings()
 		{
 			if (HttpContext.Current.Items.Contains("RegSettings"))
 				return;
 			var list = new Dictionary<int, Settings>();
-			if (_Divid.HasValue)
-			{
-				var q = from o in DbUtil.Db.Organizations
-						where o.DivOrgs.Any(od => od.DivId == divid)
-						where o.OrganizationStatusId == OrgStatusCode.Active
-						where (o.RegistrationClosed ?? false) == false
-						where o.RegistrationTypeId != RegistrationTypeCode.None
-						select new { o.OrganizationId, o.RegSetting };
-				foreach (var i in q)
-					list[i.OrganizationId] = new Settings(i.RegSetting, DbUtil.Db, i.OrganizationId);
-			}
-			else if (masterorgid.HasValue)
+			if (masterorgid.HasValue)
 			{
 				var q = from o in UserSelectClasses(masterorg)
 						select new { o.OrganizationId, o.RegSetting };
@@ -296,7 +264,6 @@ namespace CmsWeb.Models
             {
                 new OnlineRegPersonModel
                 {
-                    divid = divid,
                     orgid = orgid,
                     masterorgid = masterorgid,
                     LoggedIn = false,

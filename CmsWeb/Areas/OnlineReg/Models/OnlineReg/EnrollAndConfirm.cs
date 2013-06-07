@@ -151,69 +151,21 @@ namespace CmsWeb.Models
             details.Append("\n</table>\n");
             Db.SubmitChanges();
 
-            string DivisionName = null;
-            if (masterorgid.HasValue)
-                DivisionName = masterorg.OrganizationName;
-            else if (div != null)
-                DivisionName = div.Name;
-            else if (org != null)
-                DivisionName = org.DivisionName;
+            var DivisionName = org.DivisionName;
 
-            string OrganizationName = null;
-            if (org != null)
-                OrganizationName = org.OrganizationName;
-            else if (div != null)
-                OrganizationName = DivisionName;
+            var os = settings[orgid.Value];
+            var EmailSubject = Util.PickFirst(os.Subject, "no subject");
+            var EmailMessage = Util.PickFirst(os.Body, "no body");
 
-            if (!OrganizationName.HasValue())
-                OrganizationName = DivisionName;
-
-            string EmailSubject = null;
-            string EmailMessage = null;
-
-            if (org != null && settings[orgid.Value].Body.HasValue())
-            {
-                var os = settings[orgid.Value];
-                EmailSubject = Util.PickFirst(os.Subject, "no subject");
-                EmailMessage = Util.PickFirst(os.Body, "no body");
-            }
-            else if (masterorgid.HasValue && settings[masterorgid.Value].Body.HasValue())
-            {
-                var os = settings[masterorgid.Value];
-                EmailSubject = Util.PickFirst(os.Subject, "no subject");
-                EmailMessage = Util.PickFirst(os.Body, "no body");
-            }
-            else if (div != null)
-            {
-                EmailSubject = div.EmailSubject;
-                EmailMessage = div.EmailMessage;
-            }
-
-            List<Person> NotifyIds = null;
-            if (div != null)
-                NotifyIds = Db.StaffPeopleForDiv(div.Id);
-            else if (masterorgid.HasValue)
-                NotifyIds = Db.StaffPeopleForOrg(masterorg.OrganizationId);
-            else if (org != null)
-                NotifyIds = Db.StaffPeopleForOrg(org.OrganizationId);
-            var hasnotifyids = true;
-            if (NotifyIds.Count() == 0)
-            {
-                NotifyIds = Db.AdminPeople();
-                hasnotifyids = false;
-            }
-            var notify = NotifyIds[0];
-
-            string Location = null;
-            if (div != null)
-                Location = List[0].org.Location;
-            else if (org != null)
-                Location = org.Location;
+            bool usedAdmins;
+            List<Person> NotifyIds = Db.StaffPeopleForOrg(org.OrganizationId, out usedAdmins);
+            
+            var Location = org.Location;
 
             var subject = Util.PickFirst(EmailSubject, "no subject");
             var message = Util.PickFirst(EmailMessage, "no message");
 
-            message = CmsData.API.APIOrganization.MessageReplacements(p0, DivisionName, OrganizationName, Location, message);
+            message = CmsData.API.APIOrganization.MessageReplacements(p0, DivisionName, org.OrganizationName, Location, message);
             subject = subject.Replace("{org}", org.OrganizationName);
 
 			message = message.Replace("{phone}", org.PhoneNumber.FmtFone7());
@@ -250,22 +202,19 @@ namespace CmsWeb.Models
                 }
                 message = message.Replace("{donation}", ti.Donate.ToString2("N2"));
                 // send donation confirmations
-                Db.Email(notify.FromEmail, NotifyIds, subject + "-donation",
+                Db.Email(NotifyIds[0].FromEmail, NotifyIds, subject + "-donation",
                     "${0:N2} donation received from {1}".Fmt(ti.Donate, ti.FullName));
             }
             else
                 message = re.Replace(message, "");
 
             // send confirmations
-            Db.Email(notify.FromEmail, p0, elist,
+            Db.Email(NotifyIds[0].FromEmail, p0, elist,
                 subject, message, false);
             // notify the staff
             foreach (var p in List)
             {
-				var orgstaff = Db.StaffPeopleForOrg(p.org.OrganizationId);
-				orgstaff.AddRange(NotifyIds);
-                Db.Email(Util.PickFirst(p.person.FromEmail, notify.FromEmail),
-                    orgstaff, Header,
+                Db.Email(Util.PickFirst(p.person.FromEmail, NotifyIds[0].FromEmail), NotifyIds, Header,
 @"{6}{0} has registered for {1}<br/>
 Feepaid for this registrant: {2:C}<br/>
 Total Fee for this registration: {3:C}<br/>
@@ -276,10 +225,13 @@ AmountDue: {4:C}<br/>
                TotalAmount(),
                amtdue, // Amount Due
                p.PrepareSummaryText(ti),
-               hasnotifyids? "" : @"<span style='color:red'>THERE ARE NO NOTIFY IDS ON THIS REGISTRATION!!</span><br/>
-<a href='http://www.bvcms.com/Doc/MessagesSettings'>see documentation</a><br/>"));
+               usedAdmins? @"<span style='color:red'>THERE ARE NO NOTIFY IDS ON THIS REGISTRATION!!</span><br/>
+<a href='http://www.bvcms.com/Doc/MessagesSettings'>see documentation</a><br/>" : ""));
             }
         }
+
+
+//---------------------------------------------------------------------------------------------------
         private void EnrollAndConfirm2()
         {
             var Db = DbUtil.Db;
@@ -354,23 +306,19 @@ AmountDue: {4:C}<br/>
                 string EmailSubject = null;
                 string message = null;
 
-				List<Person> NotifyIds = null;
                 if (p.setting.Body.HasValue())
                 {
                     EmailSubject = Util.PickFirst(p.setting.Subject, "no subject");
                     message = p.setting.Body;
-	                NotifyIds = Db.StaffPeopleForOrg(p.org.OrganizationId);
                 }
                 else
                 {
                     var os = settings[masterorgid.Value];
                     EmailSubject = Util.PickFirst(os.Subject, "no subject");
                     message = Util.PickFirst(os.Body, "no body");
-	                NotifyIds = Db.StaffPeopleForOrg(masterorgid.Value);
                 }
+                var NotifyIds = Db.StaffPeopleForOrg(p.org.OrganizationId);
 
-                if (NotifyIds.Count == 0)
-                    NotifyIds = Db.AdminPeople();
                 var notify = NotifyIds[0];
 
                 string Location = p.org.Location;
@@ -442,11 +390,7 @@ Total Fee paid for this registration session: {4:C}<br/>
                     @"Hi {name},
 <p>Here is your <a href=""{url}"">link</a> to manage your subscriptions. (note: it will only work once for security reasons)</p> ");
 
-            List<Person> Staff = null;
-            if (masterorgid != null)
-                Staff = DbUtil.Db.StaffPeopleForOrg(masterorgid.Value);
-            else
-                Staff = DbUtil.Db.StaffPeopleForDiv(divid.Value);
+            var Staff = DbUtil.Db.StaffPeopleForOrg(masterorgid.Value);
             p.SendOneTimeLink(
                 Staff.First().FromEmail,
                 Util.ServerLink("/OnlineReg/ManageSubscriptions/"), "Manage Your Subscriptions", message);
@@ -517,22 +461,15 @@ Total Fee paid for this registration session: {4:C}<br/>
         }
         public int GetEntryPoint()
         {
-            if (org != null)
-                return org.EntryPointId ?? 0;
-            if (masterorgid != null)
+            if (org.EntryPoint == null)
                 return masterorg.EntryPointId ?? 0;
-            var q = from o in GetOrgsInDiv()
-                    where o.RegistrationTypeId != RegistrationTypeCode.None
-                    where o.EntryPointId > 0
-                    select o.EntryPointId;
-            return q.FirstOrDefault() ?? 0;
+            return org.EntryPointId.Value;
         }
 
         public override string ToString()
         {
             var sb = new StringBuilder();
             sb.AppendFormat("orgid: {0}<br/>\n", this.orgid);
-            sb.AppendFormat("divid: {0}<br/>\n", this.divid);
             sb.AppendFormat("masterorgid: {0}<br/>\n", this.masterorgid);
             sb.AppendFormat("userid: {0}<br/>\n", this.UserPeopleId);
             foreach (var li in List)
