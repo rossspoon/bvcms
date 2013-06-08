@@ -105,7 +105,6 @@ namespace CmsWeb.Models
                         select pp.Name;
                 var others = string.Join(",", q.ToArray());
 
-                others += "(Total due {0:c})".Fmt(amtdue);
                 var om = p.Enroll(ti, paylink, testing, others);
                 details.AppendFormat(@"
 <tr><td colspan='2'><hr/></td></tr>

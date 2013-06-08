@@ -182,6 +182,7 @@ namespace CmsWeb.Models
 			if (om.AmountPaid > 0)
 			{
 				sb.AppendFormat("{0:c} ({1} id) transaction amount\n", ti.Amt, ti.Id);
+				sb.AppendFormat("{0:c} applied to this registrant\n", AmountToPay());
 				sb.AppendFormat("{0:c} total due all registrants\n", ti.Amtdue);
 				if (others.HasValue())
 					sb.AppendFormat("Others: {0}\n", others);
@@ -195,8 +196,8 @@ namespace CmsWeb.Models
 			if (om.AmountPaid > 0)
 			{
 				sbreg.AppendFormat("{0:c} ({1} id) transaction amount\n", ti.Amt, ti.Id);
+				sbreg.AppendFormat("{0:c} applied to this registrant\n", AmountToPay());
 				sbreg.AppendFormat("{0:c} total due all registrants\n", ti.Amtdue);
-				sbreg.AppendFormat("{0:c} total fee this registrant\n", TotalAmount());
 			}
 			if (paylink.HasValue())
 			{
