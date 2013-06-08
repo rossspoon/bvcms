@@ -295,9 +295,6 @@ table.grid tr:nth-child(1) {
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            var cs = ConfigurationManager.ConnectionStrings["CmsLogging"];
-            if (cs != null)
-            {
                 var routeData = filterContext.RouteData;
                 var ts = (DateTime.Now - start_time);
                 var duration = ts.TotalSeconds;
@@ -306,6 +303,11 @@ table.grid tr:nth-child(1) {
                 var action = (string)routeData.Values["action"];
                 var userid = Util.UserName;
                 var dbname = Util.Host;
+            if (action == "FetchPrintJobs")
+                return;
+            var cs = ConfigurationManager.ConnectionStrings["CmsLogging"];
+            if (cs != null)
+            {
                 var cn = new SqlConnection(cs.ConnectionString);
                 cn.Open();
                 var cmd = new SqlCommand("LogRequest", cn) {CommandType = CommandType.StoredProcedure};
