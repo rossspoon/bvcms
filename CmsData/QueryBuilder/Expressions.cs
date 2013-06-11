@@ -86,8 +86,6 @@ namespace CmsData
             if (sched == -1)
                 pred = p => (
                     from m in p.OrganizationMembers
-                    from dg in m.Organization.DivOrgs
-                    from pg in dg.Division.ProgDivs
                     where ids.Contains(m.MemberTypeId)
                     where (campus == 0
                             || m.Organization.CampusId == campus
@@ -95,16 +93,14 @@ namespace CmsData
                             )
                     where orgtype == 0 || m.Organization.OrganizationTypeId == orgtype
                     where org == 0 || m.OrganizationId == org
-                    where divid == 0 || dg.DivId == divid
-                    where progid == 0 || pg.ProgId == progid
+                    where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                    where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                     where !m.Organization.OrgSchedules.Any()
                     select m
                     ).Any();
             else
                 pred = p => (
                     from m in p.OrganizationMembers
-                    from dg in m.Organization.DivOrgs
-                    from pg in dg.Division.ProgDivs
                     where ids.Contains(m.MemberTypeId)
                     where (campus == 0
                             || m.Organization.CampusId == campus
@@ -112,8 +108,8 @@ namespace CmsData
                             )
                     where orgtype == 0 || m.Organization.OrganizationTypeId == orgtype
                     where org == 0 || m.OrganizationId == org
-                    where divid == 0 || dg.DivId == divid
-                    where progid == 0 || pg.ProgId == progid
+                    where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                    where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                     where sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched)
                     select m
                     ).Any();
@@ -144,11 +140,9 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p => (
                     from m in p.OrganizationMembers
-                    from dg in m.Organization.DivOrgs
-                    from pg in dg.Division.ProgDivs
                     where org == 0 || m.OrganizationId == org
-                    where divid == 0 || dg.DivId == divid
-                    where progid == 0 || pg.ProgId == progid
+                    where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                    where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                     where m.Organization.OrgSchedules.Any(os => ids.Contains(os.ScheduleId ?? 0))
                     select m
                     ).Any();
@@ -168,12 +162,10 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p => (
                 from m in p.OrganizationMembers
-                from dg in m.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where orgtype == 0 || m.Organization.OrganizationTypeId == orgtype
                 where org == 0 || m.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 where ids.Contains(m.Organization.CampusId ?? 0)
                     || (ids[0] == -1 && m.Organization.CampusId == null)
                 select m
@@ -199,8 +191,6 @@ namespace CmsData
             enddt = enddt.HasValue ? enddt.Value.AddDays(1) : startdt.Value.AddDays(1);
             Expression<Func<Person, bool>> pred = p => (
                 from et in p.EnrollmentTransactions
-                from dg in et.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where et.TransactionTypeId <= 3 // things that start a change
                 where et.TransactionStatus == false
                 where et.TransactionDate <= enddt // transaction starts <= looked for end
@@ -208,8 +198,8 @@ namespace CmsData
                 where (et.NextTranChangeDate ?? now) >= startdt // transaction ends >= looked for start
                 where orgtype == 0 || et.Organization.OrganizationTypeId == orgtype
                 where orgid == 0 || et.OrganizationId == orgid
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || et.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || et.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select et
                 ).Any();
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
@@ -233,8 +223,6 @@ namespace CmsData
 
             Expression<Func<Person, bool>> pred = p => (
                 from et in p.EnrollmentTransactions
-                from dg in et.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where et.TransactionTypeId <= 3 // things that start a change
                 where et.TransactionStatus == false
                 where frdt <= (et.NextTranChangeDate ?? Util.Now) // where it ends
@@ -243,8 +231,8 @@ namespace CmsData
                 where ids.Contains(et.MemberTypeId)  // what it's type was during that time
                 where orgtype == 0 || et.Organization.OrganizationTypeId == orgtype
                 where org == 0 || et.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || et.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || et.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select et
                 ).Any();
             Expression expr = Expression.Invoke(pred, parm);
@@ -267,8 +255,6 @@ namespace CmsData
             to = to.HasValue ? to.Value.AddDays(1) : from.Value.AddDays(1);
             Expression<Func<Person, bool>> pred = p => (
                 from a in p.Attends
-                from dg in a.Meeting.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where a.MeetingDate >= @from
                 where a.MeetingDate < to
                 where (a.AttendanceFlag
@@ -276,8 +262,8 @@ namespace CmsData
                 where ids.Contains(a.AttendanceTypeId ?? 0)
                 where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
                 where org == 0 || a.Meeting.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select a
                 ).Any();
             Expression expr = Expression.Invoke(pred, parm);
@@ -347,15 +333,13 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred = p => (
                 from a in p.Attends
-                from dg in a.Meeting.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where a.MeetingDate >= mindt
                 where a.AttendanceFlag || (ids.Length == 1 && ids[0] == AttendTypeCode.Offsite)
                 where ids.Contains(a.AttendanceTypeId ?? 0)
                 where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
                 where org == 0 || a.Meeting.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select a
                 ).Any();
             Expression expr = Expression.Invoke(pred, parm);
@@ -376,15 +360,13 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred = p => (
                 from a in p.Attends
-                from dg in a.Meeting.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where a.MeetingDate >= mindt
                 where a.AttendanceFlag == true
                 where a.MeetingDate.DayOfWeek == (DayOfWeek)(DayOfWeek - 1)
                 where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
                 where org == 0 || a.Meeting.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select a
                 ).Any();
             Expression expr = Expression.Invoke(pred, parm);
@@ -405,14 +387,12 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred = p => (
                 from m in p.OrganizationMembers
-                from dg in m.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where m.EnrollmentDate >= mindt
                 where ids.Contains(m.Organization.RegistrationTypeId ?? 0)
                 where orgtype == 0 || m.Organization.OrganizationTypeId == orgtype
                 where org == 0 || m.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select m
                 ).Any();
             Expression expr = Expression.Invoke(pred, parm);
@@ -693,14 +673,12 @@ namespace CmsData
             if (progid > 0)
                 pred = p => (
                                 from a in p.Attends
-                                from dg in a.Meeting.Organization.DivOrgs
-                                from pg in dg.Division.ProgDivs
                                 where a.MeetingDate >= mindt
                                 where a.AttendanceFlag
                                 where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
                                 where org == 0 || a.Meeting.OrganizationId == org
-                                where divid == 0 || dg.DivId == divid
-                                where progid == 0 || pg.ProgId == progid
+                                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                 select a
                             ).Count();
             else
@@ -729,14 +707,12 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, int>> pred = p => (
                 from a in p.Attends
-                from dg in a.Meeting.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where a.AttendanceFlag
                 where a.MeetingDate >= mindt
                 where sched == 0 || a.Meeting.AttendCreditId == sched
                 where org == 0 || a.Meeting.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select a
                 ).Count();
             Expression left = Expression.Invoke(pred, parm);
@@ -828,11 +804,9 @@ namespace CmsData
                 case CompareType.Greater:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Meeting.Organization.DivOrgs
-                                from pg in dg.Division.ProgDivs
                                 where org == 0 || a.Meeting.OrganizationId == org
-                                where divid == 0 || dg.DivId == divid
-                                where progid == 0 || pg.ProgId == progid
+                                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                 where a.AttendanceFlag
                                 where a.MeetingDate >= dt1
                                 select a
@@ -843,11 +817,9 @@ namespace CmsData
                 case CompareType.GreaterEqual:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Meeting.Organization.DivOrgs
-                                from pg in dg.Division.ProgDivs
                                 where org == 0 || a.Meeting.OrganizationId == org
-                                where divid == 0 || dg.DivId == divid
-                                where progid == 0 || pg.ProgId == progid
+                                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                 where a.AttendanceFlag
                                 where a.MeetingDate >= dt1
                                 select a
@@ -858,11 +830,9 @@ namespace CmsData
                 case CompareType.Less:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Meeting.Organization.DivOrgs
-                                from pg in dg.Division.ProgDivs
                                 where org == 0 || a.Meeting.OrganizationId == org
-                                where divid == 0 || dg.DivId == divid
-                                where progid == 0 || pg.ProgId == progid
+                                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                 where a.AttendanceFlag
                                 where a.MeetingDate >= dt1
                                 select a
@@ -873,11 +843,9 @@ namespace CmsData
                 case CompareType.LessEqual:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Meeting.Organization.DivOrgs
-                                from pg in dg.Division.ProgDivs
                                 where org == 0 || a.Meeting.OrganizationId == org
-                                where divid == 0 || dg.DivId == divid
-                                where progid == 0 || pg.ProgId == progid
+                                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                 where a.AttendanceFlag
                                 where a.MeetingDate >= dt1
                                 select a
@@ -888,11 +856,9 @@ namespace CmsData
                 case CompareType.Equal:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Meeting.Organization.DivOrgs
-                                from pg in dg.Division.ProgDivs
                                 where org == 0 || a.Meeting.OrganizationId == org
-                                where divid == 0 || dg.DivId == divid
-                                where progid == 0 || pg.ProgId == progid
+                                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                 where a.AttendanceFlag
                                 where a.MeetingDate >= dt1
                                 select a
@@ -903,11 +869,9 @@ namespace CmsData
                 case CompareType.NotEqual:
                     q = from p in Db.People
                         let g = from a in p.Attends
-                                from dg in a.Meeting.Organization.DivOrgs
-                                from pg in dg.Division.ProgDivs
                                 where org == 0 || a.Meeting.OrganizationId == org
-                                where divid == 0 || dg.DivId == divid
-                                where progid == 0 || pg.ProgId == progid
+                                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                 where a.AttendanceFlag
                                 where a.MeetingDate >= dt1
                                 select a
@@ -1557,14 +1521,12 @@ namespace CmsData
             var mindt = Util.Now.AddDays(-days).Date;
             Expression<Func<Person, bool>> pred = p => (
                 from a in p.Attends
-                from dg in a.Meeting.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where a.AttendanceFlag
                 where a.MeetingDate >= mindt
                 where ids.Contains(a.MemberTypeId)
                 where org == 0 || a.Meeting.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || a.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || a.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select a
                 ).Any();
             Expression expr = Expression.Invoke(pred, parm);
@@ -1713,8 +1675,8 @@ namespace CmsData
                             from m in p.OrganizationMembers
                             where m.OrgMemMemTags.Any(mt => mt.MemberTag.Name == name)
                             where org == 0 || m.OrganizationId == org
-                            where divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid)
-                            where progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))
+                            where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                            where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                             select m
                         ).Any();
                         break;
@@ -1723,8 +1685,8 @@ namespace CmsData
                             from m in p.OrganizationMembers
                             where m.OrgMemMemTags.Any(mt => mt.MemberTag.Name.StartsWith(name))
                             where org == 0 || m.OrganizationId == org
-                            where divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid)
-                            where progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))
+                            where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                            where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                             select m
                         ).Any();
                         break;
@@ -1740,8 +1702,8 @@ namespace CmsData
                             from m in p.OrganizationMembers
                             where !m.OrgMemMemTags.Any()
                             where org == 0 || m.OrganizationId == org
-                            where divid == 0 || m.Organization.DivOrgs.Any(t => t.DivId == divid)
-                            where progid == 0 || m.Organization.DivOrgs.Any(t => t.Division.ProgDivs.Any(d => d.ProgId == progid))
+                            where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                            where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                             select m
                         ).Any();
                 var expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
@@ -2062,11 +2024,9 @@ namespace CmsData
         {
             Expression<Func<Person, decimal>> pred = p => (
                 from om in p.OrganizationMembers
-                from dg in om.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
                 where org == 0 || om.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
+                where divid == 0 || om.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                where progid == 0 || om.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                 select om
                 ).Average(om => om.AttendPct).Value;
             Expression left = Expression.Invoke(pred, parm);
@@ -2087,16 +2047,14 @@ namespace CmsData
             if (!end.HasValue)
                 end = start.Value.AddDays(1);
             Expression<Func<Person, int>> pred = p => (
-                from a in p.Attends
-                from dg in a.Meeting.Organization.DivOrgs
-                from pg in dg.Division.ProgDivs
-                where a.AttendanceFlag
-                where a.MeetingDate >= start
-                where a.MeetingDate < end
-                where org == 0 || a.Meeting.OrganizationId == org
-                where divid == 0 || dg.DivId == divid
-                where progid == 0 || pg.ProgId == progid
-                select a
+                    from a in p.Attends
+                    where a.AttendanceFlag
+                    where a.MeetingDate >= start
+                    where a.MeetingDate < end
+                    where org == 0 || a.Meeting.OrganizationId == org
+                    where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                    where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
+                    select a
                 ).Count();
             Expression left = Expression.Invoke(pred, parm);
             var right = Expression.Convert(Expression.Constant(cnt), left.Type);
@@ -2119,16 +2077,14 @@ namespace CmsData
 
             var q = from p in Db.People
                     let m = from et in p.EnrollmentTransactions
-                            from dg in et.Organization.DivOrgs
-                            from pg in dg.Division.ProgDivs
                             where et.TransactionTypeId <= 3 // things that start a change
                             where et.TransactionStatus == false
                             where et.TransactionDate < end // transaction starts <= looked for end
                             where (et.Pending ?? false) == false
                             where (et.NextTranChangeDate ?? now) >= start // transaction ends >= looked for start
                             where org == 0 || et.OrganizationId == org
-                            where divid == 0 || dg.DivId == divid
-                            where progid == 0 || pg.ProgId == progid
+                            where divid == 0 || et.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                            where progid == 0 || et.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                             select et
                     where m.Any()
                     select p;
@@ -2139,13 +2095,11 @@ namespace CmsData
                 case CompareType.Greater:
                     q2 = from p in q
                          let g = from a in p.Attends
-                                 from dg in a.Meeting.Organization.DivOrgs
-                                 from pg in dg.Division.ProgDivs
                                  where a.MeetingDate >= start
                                  where a.MeetingDate <= end
                                  where org == 0 || a.Meeting.OrganizationId == org
-                                 where divid == 0 || dg.DivId == divid
-                                 where progid == 0 || pg.ProgId == progid
+                                 where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                 where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                  select a
                          let n = g.Count(aa => aa.EffAttendFlag == true)
                          let d = g.Count(aa => aa.EffAttendFlag != null)
@@ -2155,13 +2109,11 @@ namespace CmsData
                 case CompareType.GreaterEqual:
                     q2 = from p in q
                          let g = from a in p.Attends
-                                 from dg in a.Meeting.Organization.DivOrgs
-                                 from pg in dg.Division.ProgDivs
                                  where a.MeetingDate >= start
                                  where a.MeetingDate <= end
                                  where org == 0 || a.Meeting.OrganizationId == org
-                                 where divid == 0 || dg.DivId == divid
-                                 where progid == 0 || pg.ProgId == progid
+                                 where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                 where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                  select a
                          let n = g.Count(aa => aa.EffAttendFlag == true)
                          let d = g.Count(aa => aa.EffAttendFlag != null)
@@ -2171,13 +2123,11 @@ namespace CmsData
                 case CompareType.Less:
                     q2 = from p in q
                          let g = from a in p.Attends
-                                 from dg in a.Meeting.Organization.DivOrgs
-                                 from pg in dg.Division.ProgDivs
                                  where a.MeetingDate >= start
                                  where a.MeetingDate <= end
                                  where org == 0 || a.Meeting.OrganizationId == org
-                                 where divid == 0 || dg.DivId == divid
-                                 where progid == 0 || pg.ProgId == progid
+                                 where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                 where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                  select a
                          let n = g.Count(aa => aa.EffAttendFlag == true)
                          let d = g.Count(aa => aa.EffAttendFlag != null)
@@ -2187,13 +2137,11 @@ namespace CmsData
                 case CompareType.LessEqual:
                     q2 = from p in q
                          let g = from a in p.Attends
-                                 from dg in a.Meeting.Organization.DivOrgs
-                                 from pg in dg.Division.ProgDivs
                                  where a.MeetingDate >= start
                                  where a.MeetingDate <= end
                                  where org == 0 || a.Meeting.OrganizationId == org
-                                 where divid == 0 || dg.DivId == divid
-                                 where progid == 0 || pg.ProgId == progid
+                                 where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                 where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                                  select a
                          let n = g.Count(aa => aa.EffAttendFlag == true)
                          let d = g.Count(aa => aa.EffAttendFlag != null)
@@ -2320,7 +2268,7 @@ namespace CmsData
             Expression<Func<Person, bool>> hasapp = p => p.RecRegs.Count() > 0;
             Expression<Func<Person, bool>> pred = p =>
                     p.RecRegs.Any(v => v.ActiveInAnotherChurch == true)
-                    && p.RecRegs.Count() > 0;
+                    && p.RecRegs.Any();
             Expression expr1 = Expression.Convert(Expression.Invoke(hasapp, parm), typeof(bool));
             Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
@@ -2335,7 +2283,7 @@ namespace CmsData
             Expression<Func<Person, bool>> hasapp = p => p.RecRegs.Count() > 0;
             Expression<Func<Person, bool>> pred = p =>
                     p.RecRegs.Any(v => v.Coaching == true)
-                    && p.RecRegs.Count() > 0;
+                    && p.RecRegs.Any();
             Expression expr1 = Expression.Convert(Expression.Invoke(hasapp, parm), typeof(bool));
             Expression expr2 = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
@@ -2417,8 +2365,8 @@ namespace CmsData
             bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
-                p.Family.RelatedFamilies1.Count() > 0
-                || p.Family.RelatedFamilies2.Count() > 0;
+                p.Family.RelatedFamilies1.Any()
+                || p.Family.RelatedFamilies2.Any();
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -2455,7 +2403,7 @@ namespace CmsData
            bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
-                    p.Users.Count() > 0;
+                    p.Users.Any();
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -2714,7 +2662,7 @@ namespace CmsData
             bool tf)
         {
             Expression<Func<Person, bool>> pred = p =>
-                    p.Volunteers.Any(v => v.VolunteerForms.Count() > 0);
+                    p.Volunteers.Any(v => v.VolunteerForms.Any());
             Expression expr = Expression.Convert(Expression.Invoke(pred, parm), typeof(bool));
             if (!(op == CompareType.Equal && tf))
                 expr = Expression.Not(expr);
@@ -2778,7 +2726,7 @@ namespace CmsData
         {
             Expression<Func<Person, bool>> pred = p =>
                 p.Users.Any(u => u.UserRoles.Any(ur => ids.Contains(ur.RoleId))
-                    || (u.UserRoles.Count() == 0 && ids.Contains(0))
+                    || (!u.UserRoles.Any() && ids.Contains(0))
                 );
             Expression expr = Expression.Invoke(pred, parm);
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
