@@ -22,7 +22,7 @@
             @Html.EditorFor(m => Model.List[n], "EditAddress")
         </fieldset>
         @{ var p = Model.List[n]; }
-        @Html.Raw(p.AddressInfo.Error);
+        @Html.Raw(p.AddressInfo.Error)
     </div>
     <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal">Cancel All</a>
