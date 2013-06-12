@@ -7,6 +7,7 @@ using CmsData;
 using CmsData.Classes.SmallGroupFinder;
 using System.Web;
 using System;
+using MoreLinq;
 
 namespace CmsWeb.Areas.Public.Models
 {
@@ -135,7 +136,7 @@ namespace CmsWeb.Areas.Public.Models
                      select new FilterItem
                      {
                          value = e.Data
-                     }).ToList<FilterItem>();
+                     }).DistinctBy(n => n.value).ToList<FilterItem>();
 
                 i.Insert(0, new FilterItem { value = SHOW_ALL });
             }
