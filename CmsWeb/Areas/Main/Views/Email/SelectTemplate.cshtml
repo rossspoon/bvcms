@@ -15,13 +15,19 @@
 @section scripts
 {
     <script type="text/javascript">
-        $(document).ready(function() {
-            $("body").on("click", '[bvtemplate]', function(e) {
-                $("#templateID").val($(this).attr("template"));
-                $("#selectTemplate").submit();
-            });
-        });
-    </script>
+	     $(document).ready(function () {
+	         $("body").on("click", '[bvtemplate]', function (e) {
+	             $("#templateID").val($(this).attr("template"));
+	             $("#selectTemplate").submit();
+	         });
+	     });
+	</script>
+}
+@section head {
+	<style type="text/css">
+		div.templateItem { width:100px; height:150px; border:1px solid black; overflow:hidden; margin:auto; }
+		div.templateItem:hover { border-color:#0000ff; }
+	</style>
 }
 <h2>Select An Email Option</h2>
 <table width="100%" cellspacing="10">
@@ -35,7 +41,9 @@
 		<tr>
 			<td class="center">
 				Blank<br />
-				<div bvtemplate class="templateItem" template="0"></div>
+				<div bvtemplate class="templateItem" template="0">
+                    <img alt="portrait" border="0" width="100" height="150" src="/Image.aspx?id=0" />
+				</div>
 				<br />
 				<font color="blue"><b>Use this option to compose an email in the old way.</b></font>
 			</td>
@@ -61,10 +69,7 @@
 			<td width="@( 100/WRAP_COUNT )%" class="center">
 				@t.Name<br />
 				<div bvtemplate class="templateItem" template="@t.Id">
-				@if (t.ThumbID != 0)
-				{
-					<img alt="portrait" border="0" src="/Image.aspx?id=@t.ThumbID" />
-				}
+					<img alt="portrait" border="0" width="100" height="150" src="/Image.aspx?id=@t.ThumbID" />
 				</div>
 			</td>
 			wrapAt--;
