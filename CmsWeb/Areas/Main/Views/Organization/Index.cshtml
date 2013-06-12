@@ -73,6 +73,10 @@
                     <li class="hideAlt"><a href="/RepairTransactions/Index/@o.OrganizationId" id="RepairTransactions">Repair Transactions
                     </a></li>
                 }
+                @if (User.IsInRole("ministrEspace"))
+                {
+                    <li><a id="addMESEvent" href="#" orgid="@Model.OrganizationId">Add ministrEspace Event</a></li>
+                }
             </ul>
         </div>
     </div>
@@ -197,6 +201,7 @@
         </div>
     </div>
 </div>
+<div id="dialogHolder"></div>
 @section PopupsPlaceholder
 {
     <div id="NewMeetingDialog" class="roundbox" style="display: none">

@@ -183,6 +183,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DDay.iCal">
+      <HintPath>..\packages\DDay.iCal.1.0.2.575\lib\DDay.iCal.dll</HintPath>
+    </Reference>
     <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IPPDotNetDevKit.2.1.12.0\lib\DevDefined.OAuth.dll</HintPath>
@@ -304,6 +307,7 @@
     <Compile Include="AuthorizeNet.cs" />
     <Compile Include="Batch\ExpressionVisitor.cs" />
     <Compile Include="Batch\LinqToSqlExtensions.cs" />
+    <Compile Include="Classes\MinistrESpace\MinistrESpaceHelper.cs" />
     <Compile Include="Classes\QuickBooks\QBAccount.cs" />
     <Compile Include="Classes\QuickBooks\QBJournalEntryLine.cs" />
     <Compile Include="Classes\SmallGroupFinder\SmallGroupFinder.cs" />

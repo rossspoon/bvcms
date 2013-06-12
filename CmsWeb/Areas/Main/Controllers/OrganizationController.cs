@@ -745,5 +745,33 @@ namespace CmsWeb.Areas.Main.Controllers
             }
             return Content("ok");
         }
+        public ActionResult DialogAdd(int id, string type)
+        {
+            ViewBag.OrgID = id;
+            return View("DialogAdd" + type);
+        }
+        public ActionResult AddMESEvent(int id, string mesID)
+        {
+            OrganizationExtra ev;
+            string[] mesEvent = mesID.Split('|');
+            string name = "ministrEspace:" + mesEvent[0];
+            ev = (from e in DbUtil.Db.OrganizationExtras
+                  where e.Field == name
+                  select e).SingleOrDefault();
+            if (ev == null)
+            {
+                ev = new OrganizationExtra();
+                ev.OrganizationId = id;
+                ev.Field = name;
+                ev.Data = mesEvent[1];
+                DbUtil.Db.OrganizationExtras.InsertOnSubmit(ev);
+            }
+            else
+            {
+                ev.Data = mesEvent[1];
+            }
+            DbUtil.Db.SubmitChanges();
+            return RedirectToAction("Index", "Organization", new { id = id });
+        }
     }
 }

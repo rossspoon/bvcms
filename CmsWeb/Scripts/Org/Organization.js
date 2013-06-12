@@ -690,6 +690,23 @@ $(function () {
             });
         return false;
     });
+    // Add for ministrEspace
+    var submitDialog = $("#dialogHolder").dialog({ modal: true, width: 'auto', title: 'Select ministrEspace Event', autoOpen: false });
+    $("#addMESEvent").click(function (ev) {
+        ev.preventDefault();
+        var id = $(this).attr("orgid");
+        submitDialog.html("<div style='text-align:center; margin-top:20px;'>Loading...</div>");
+        submitDialog.dialog('open');
+        $.post("/Organization/DialogAdd/" + id + "?type=MES", null, function (data) {
+            submitDialog.html(data);
+            submitDialog.dialog({ position: { my: "center", at: "center" } });
+            $(".bt").button();
+        });
+    });
+    $(document).on("click", "#closeSubmitDialog", null, function (ev) {
+        ev.preventDefault();
+        $(submitDialog).dialog("close");
+    });
 });
 function RebindMemberGrids(from) {
     $.updateTable($('#Members-tab form'));
