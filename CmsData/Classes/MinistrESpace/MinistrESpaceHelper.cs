@@ -13,23 +13,21 @@ namespace CmsData.Classes.MinistrESpace
     {
         // Debug URLs
         
+#if DEBUG
         public const string URL_EVENTS = "http://ezdtest01.easydraft.com/ministrespace/{0}/api/Events?start={1}&end={2}";
         public const string URL_SPACES = "http://ezdtest01.easydraft.com/ministrespace/{0}/api/Spaces";
         public const string URL_RESOURCES = "http://ezdtest01.easydraft.com/ministrespace/{0}/api/Resources";
         public const string URL_SERVICES = "http://ezdtest01.easydraft.com/ministrespace/{0}/api/Sevices";
 
         public const string URL_EVENT_PAGE = "http://ezdtest01.easydraft.com/ministrespace/{0}/Login/Index.rails?EventId={1}";
-        
-
-        // Production URLs
-        /*
+#else
         public const string URL_EVENTS = "https://my.ministrespace.com/{0}/api/Events?start={1}&end={2}";
         public const string URL_SPACES = "https://my.ministrespace.com/{0}/api/Spaces";
         public const string URL_RESOURCES = "https://my.ministrespace.com/{0}/api/Resources";
         public const string URL_SERVICES = "https://my.ministrespace.com/{0}/api/Sevices";
         
         public const string URL_EVENT_PAGE = "https://my.ministrespace.com/{0}/Login/Index.rails?EventId={1}";
-        */
+#endif
 
         private string dateStart = "";
         private string dateEnd = "";
@@ -41,7 +39,7 @@ namespace CmsData.Classes.MinistrESpace
             church = DbUtil.Db.Setting("ministrEspaceID", "");
             key = DbUtil.Db.Setting("ministrEspaceKey", "");
 
-            setDateRange(DateTime.Now.AddMonths(-1), DateTime.Now);
+            setDateRange(DateTime.Now.AddMonths(-2), DateTime.Now.AddDays(90));
         }
 
         public void setDateRange(DateTime dtStart, DateTime dtEnd)
@@ -70,7 +68,7 @@ namespace CmsData.Classes.MinistrESpace
 
         }
 
-        public Dictionary<string, string> getUnigueEvents()
+        public Dictionary<string, string> getUniqueEvents()
         {
             var list = new Dictionary<string, string>();
 
@@ -92,9 +90,9 @@ namespace CmsData.Classes.MinistrESpace
 
         public List<Event> getUniqueEventList()
         {
-            List<Event> lEvents = new List<Event>();
+            var lEvents = new List<Event>();
 
-            foreach (var item in getUnigueEvents())
+            foreach (var item in getUniqueEvents())
             {
                 var e = new Event { ID = item.Key, Name = item.Value };
                 lEvents.Add(e);
@@ -110,7 +108,7 @@ namespace CmsData.Classes.MinistrESpace
 
         private WebClient createAuthClient()
         {
-            WebClient wc = new WebClient();
+            var wc = new WebClient();
             wc.Encoding = System.Text.Encoding.UTF8;
 
             string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(key + ":"));
