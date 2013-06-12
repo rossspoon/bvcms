@@ -1430,11 +1430,9 @@ namespace CmsData
             if (sched == -1)
                 pred = p => (
                     from m in p.OrganizationMembers
-                    from dg in m.Organization.DivOrgs
-                    from pg in dg.Division.ProgDivs
                     where org == 0 || m.OrganizationId == org
-                    where divid == 0 || dg.DivId == divid
-                    where progid == 0 || pg.ProgId == progid
+                                where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                                where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                     where (m.Pending ?? false) == false
                     where !m.Organization.OrgSchedules.Any()
                     select m
@@ -1442,11 +1440,9 @@ namespace CmsData
             else
                 pred = p => (
                     from m in p.OrganizationMembers
-                    from dg in m.Organization.DivOrgs
-                    from pg in dg.Division.ProgDivs
                     where org == 0 || m.OrganizationId == org
-                    where divid == 0 || dg.DivId == divid
-                    where progid == 0 || pg.ProgId == progid
+                    where divid == 0 || m.Organization.DivOrgs.Any(dg => dg.DivId == divid)
+                    where progid == 0 || m.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
                     where (m.Pending ?? false) == false
                     where sched == 0 || m.Organization.OrgSchedules.Any(os => os.ScheduleId == sched)
                     select m
@@ -1535,116 +1531,6 @@ namespace CmsData
             return expr;
         }
 
-        //internal static Expression OrgMemberCreatedDate(
-        //	ParameterExpression parm,
-        //	int? progid,
-        //	int? divid,
-        //	int? org,
-        //	CompareType op,
-        //	DateTime? date)
-        //{
-        //	Expression<Func<Person, bool>> pred = null;
-        //	switch (op)
-        //	{
-        //		case CompareType.Equal:
-        //			pred = p => (
-        //				from m in p.OrganizationMembers
-        //				from dg in m.Organization.DivOrgs
-        //				from pg in dg.Division.ProgDivs
-        //				where org == 0 || m.OrganizationId == org
-        //				where divid == 0 || dg.DivId == divid
-        //				where pg.ProgId == progid
-        //				where m.CreatedDate.Value.Date == date
-        //				select m
-        //				).Any();
-        //			break;
-        //		case CompareType.Greater:
-        //			pred = p => (
-        //				from m in p.OrganizationMembers
-        //				from dg in m.Organization.DivOrgs
-        //				from pg in dg.Division.ProgDivs
-        //				where org == 0 || m.OrganizationId == org
-        //				where divid == 0 || dg.DivId == divid
-        //				where pg.ProgId == progid
-        //				where m.CreatedDate.Value.Date > date
-        //				select m
-        //				).Any();
-        //			break;
-        //		case CompareType.GreaterEqual:
-        //			pred = p => (
-        //				from m in p.OrganizationMembers
-        //				from dg in m.Organization.DivOrgs
-        //				from pg in dg.Division.ProgDivs
-        //				where org == 0 || m.OrganizationId == org
-        //				where divid == 0 || dg.DivId == divid
-        //				where pg.ProgId == progid
-        //				where m.CreatedDate.Value.Date >= date
-        //				select m
-        //				).Any();
-        //			break;
-        //		case CompareType.Less:
-        //			pred = p => (
-        //				from m in p.OrganizationMembers
-        //				from dg in m.Organization.DivOrgs
-        //				from pg in dg.Division.ProgDivs
-        //				where org == 0 || m.OrganizationId == org
-        //				where divid == 0 || dg.DivId == divid
-        //				where pg.ProgId == progid
-        //				where m.CreatedDate.Value.Date < date
-        //				select m
-        //				).Any();
-        //			break;
-        //		case CompareType.LessEqual:
-        //			pred = p => (
-        //				from m in p.OrganizationMembers
-        //				from dg in m.Organization.DivOrgs
-        //				from pg in dg.Division.ProgDivs
-        //				where org == 0 || m.OrganizationId == org
-        //				where divid == 0 || dg.DivId == divid
-        //				where pg.ProgId == progid
-        //				where m.CreatedDate.Value.Date <= date
-        //				select m
-        //				).Any();
-        //			break;
-        //		case CompareType.NotEqual:
-        //			pred = p => (
-        //				from m in p.OrganizationMembers
-        //				from dg in m.Organization.DivOrgs
-        //				from pg in dg.Division.ProgDivs
-        //				where org == 0 || m.OrganizationId == org
-        //				where divid == 0 || dg.DivId == divid
-        //				where pg.ProgId == progid
-        //				where m.CreatedDate.Value.Date != date
-        //				select m
-        //				).Any();
-        //			break;
-        //		case CompareType.IsNull:
-        //			pred = p => (
-        //				from m in p.OrganizationMembers
-        //				from dg in m.Organization.DivOrgs
-        //				from pg in dg.Division.ProgDivs
-        //				where org == 0 || m.OrganizationId == org
-        //				where divid == 0 || dg.DivId == divid
-        //				where pg.ProgId == progid
-        //				where m.CreatedDate == null
-        //				select m
-        //				).Any();
-        //			break;
-        //		case CompareType.IsNotNull:
-        //			pred = p => (
-        //				from m in p.OrganizationMembers
-        //				from dg in m.Organization.DivOrgs
-        //				from pg in dg.Division.ProgDivs
-        //				where org == 0 || m.OrganizationId == org
-        //				where divid == 0 || dg.DivId == divid
-        //				where pg.ProgId == progid
-        //				where m.CreatedDate != null
-        //				select m
-        //				).Any();
-        //			break;
-        //	}
-        //	return Expression.Invoke(pred, parm);
-        //}
         internal static Expression CreatedBy(
             ParameterExpression parm, CMSDataContext Db,
             CompareType op,
