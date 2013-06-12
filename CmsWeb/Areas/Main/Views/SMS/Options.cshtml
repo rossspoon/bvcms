@@ -15,12 +15,13 @@
         var maxSMS = 160;
 
         $(document).ready(function () {
-            $("#sMessage").on("keydown", function (event) {
+             $("#sMessage").on("keypress", checkSize).on("input", checkSize);
+         });
+         function checkSize(event) {
                 if ($(this).val().length >= maxSMS)
                     $(this).val($(this).val().substring(0, maxSMS));
                 $("#charCount").html(($(this).val().length + "/" + maxSMS));
-            });
-        });
+         }
     </script>
 }
 <br />
