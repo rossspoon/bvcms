@@ -42,6 +42,7 @@ namespace CmsData
                 case FieldType.StringEqual:
                 case FieldType.StringEqualOrStartsWith:
                 case FieldType.Number:
+                case FieldType.NumberLG:
                 case FieldType.NullNumber:
                 case FieldType.Integer:
                 case FieldType.IntegerSimple:
@@ -97,6 +98,7 @@ namespace CmsData
                                c.Program,
                                c.Division,
                                c.Organization,
+                               c.Schedule,
                                c.StartDate,
                                c.EndDate,
                                CompType,
@@ -506,15 +508,15 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
-//                case QueryType.RecentAttendDayOfWeek:
-//                    return Expressions.RecentAttendDayOfWeek(parm,
-//                               c.Program,
-//                               c.Division,
-//                               c.Organization,
-//							   c.OrgType ?? 0,
-//                               c.Days,
-//                               CompType,
-//                               c.TextValue.ToInt());
+                case QueryType.RecentAttendDayOfWeek:
+                    return Expressions.RecentAttendDayOfWeek(parm,
+                               c.Program,
+                               c.Division,
+                               c.Organization,
+							   c.OrgType ?? 0,
+                               c.Days,
+                               CompType,
+                               c.TextValue.ToInt());
                 case QueryType.RecentContactMinistry:
                     return Expressions.RecentContactMinistry(parm,
                                c.Days,
@@ -585,11 +587,12 @@ namespace CmsData
                                CompType,
                                c.TextValue.ToInt());
                 case QueryType.RecentAttendCountAttCred:
-                    return Expressions.RecentAttendCountAttCred(parm,
+                    return Expressions.RecentAttendCountAttCred(parm, Db,
                                c.Program,
                                c.Division,
                                c.Organization,
 							   c.Quarters.ToInt(),
+                               c.Schedule,
                                c.Days,
                                CompType,
                                c.TextValue.ToInt());

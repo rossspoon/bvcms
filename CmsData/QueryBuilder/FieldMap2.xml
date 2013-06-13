@@ -344,7 +344,7 @@
     <Field Name="OrgInactiveDate" Title="Org Inactive Date" Type="Date" DisplayAs="OrgInactiveDate({0}, {1}, {2})" Params="Program,Division,Organization" >
       Selects members of an organization by date they become inactive.
     </Field>
-    <Field Name="RecentRegistrationType" Title="Recent Registration Type" Type="Code" DisplayAs="RecentOrgJoinDate({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType" DataSource="RegistrationTypes" DataValueField="IdCode">
+    <Field Name="RecentRegistrationType" Title="Recent Registration Type" Type="Code" DisplayAs="RecentOrgJoinDate({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType" DataSource="RegistrationTypes99" DataValueField="IdCode">
       Selects members of an organization with the RegistrationType who joined it before or after so many days ago. Specify the Program or Program/Division or Program/Division/Organization. 
     </Field>
     <Field Name="OrgJoinDateCompare" Title="Org Join Date Compared to Field" Type="DateField" DisplayAs="OrgJoinDateCompared({0}, {1}, {2})" Params="Program,Division,Organization" DataSource="DateFields" DataValueField="Code">
@@ -413,26 +413,24 @@
     <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
-<!--
     <Field Name="RecentAttendDayOfWeek" Title="Recent Attend DayOfWeek" Type="Integer" DisplayAs="RecentAttendDayOfWeek({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType" >
       Selects attendees based on an attendance on the specified day of week (1=Sun, 2=Mon...7=Sat)
     </Field>
--->
     <Field Name="AttendPct" Title="Attendance %" Type="Number" DisplayAs="AttendPct({0}, {1}, {2})" Params="Program,Division,Organization">
      Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization.
     </Field>
-    <Field Name="AttendPctHistory" Title="Attendance % History" Type="Number" DisplayAs="AttendPctHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="Program,Division,Organization,StartDate,EndDate">
+    <Field Name="AttendPctHistory" Title="Attendance % History" Type="NumberLG" DisplayAs="AttendPctHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="Program,Division,Organization,StartDate,EndDate">
       Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization for a specified date range. This does not have to be a current enrollment.
       This query runs very slow.
     </Field>
-    <Field Name="AttendCntHistory" Title="Attendance Count History" Type="Integer" DisplayAs="AttendCntHistory({0}, {1}, {2}, {3:d}, {4:d})" Params="Program,Division,Organization,StartDate,EndDate">
+    <Field Name="AttendCntHistory" Title="Attendance Count History" Type="Integer" DisplayAs="AttendCntHistory({0}, {1}, {2}, {3}, {4:d}, {5:d})" Params="Program,Division,Organization,Schedule,StartDate,EndDate">
       Selects attendees based on an attendance count within a Program, Program/Division or Program/Division/Organization for a specified date range. This does not have to be a current enrollment.
       This condition runs faster than the Attendance % History condition
     </Field>
     <Field Name="RecentAttendCount" Title="Recent Attendance Count" Type="Integer" DisplayAs="RecentAttendCount({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType">
       Selects people based on an attendance count within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
-    <Field Name="RecentAttendCountAttCred" Title="Recent Attendance Count for AttendCredit" Type="Integer" DisplayAs="RecentAttendCountAttCred({0}, {1}, {2}, {3}, {4})" QuartersLabel="Attend Credit Id" Params="Program,Division,Organization,Days,Quarters">
+    <Field Name="RecentAttendCountAttCred" Title="Recent Attendance Count for AttendCredit" Type="Integer" DisplayAs="RecentAttendCountAttCred({0}, {1}, {2}, {3}, {4}, {5})" QuartersLabel="Attend Credit Id" Params="Program,Division,Organization,Days,Quarters,Schedule">
       Selects people based on an Attendance Credit Schedule within a Program/Division/Organization/Schedule looking back a specified number of days.
     </Field>
     <Field Name="RecentNewVisitCount" Title="Recent New Visit Count" Type="Integer" DisplayAs="RecentNewVisitCount({0}, {1}, {2}, {3}, {4}, {5})" QuartersLabel="Number of days for no attendance" Params="Days,Quarters,Program,Division,Organization,OrgType">

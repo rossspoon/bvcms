@@ -152,7 +152,7 @@ namespace CmsData
         ReceiveSms,
         RecentAttendCount,
         RecentAttendCountAttCred,
-        //RecentAttendDayOfWeek,
+        RecentAttendDayOfWeek,
         RecentAttendMemberType,
         RecentAttendType,
         RecentContactMinistry,

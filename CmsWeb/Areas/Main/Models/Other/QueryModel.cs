@@ -237,6 +237,7 @@ namespace CmsWeb.Models
                     break;
                 case FieldType.NullNumber:
                 case FieldType.Number:
+                case FieldType.NumberLG:
                     NumberVisible = true;
                     break;
                 case FieldType.NullInteger:
@@ -327,6 +328,7 @@ namespace CmsWeb.Models
                     c.TextValue = IntegerValue;
                     break;
                 case FieldType.Number:
+                case FieldType.NumberLG:
                 case FieldType.NullNumber:
                     c.TextValue = NumberValue;
                     break;
@@ -390,6 +392,7 @@ namespace CmsWeb.Models
                     IntegerValue = c.TextValue;
                     break;
                 case FieldType.Number:
+                case FieldType.NumberLG:
                 case FieldType.NullNumber:
                     NumberValue = c.TextValue;
                     break;
