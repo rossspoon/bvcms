@@ -1960,7 +1960,8 @@ namespace CmsData
             int cnt)
         {
             if (!end.HasValue)
-                end = start.Value.AddDays(1);
+                end = start.Value;
+            end = end.Value.AddDays(1);
             var sc = Db.OrgSchedules.FirstOrDefault(cc => cc.ScheduleId == sched);
             DateTime? mtime = null;
             if (sc != null)
@@ -2010,7 +2011,8 @@ namespace CmsData
            double pct)
         {
             if (!end.HasValue)
-                end = start.Value.AddDays(1);
+                end = start.Value;
+            end = end.Value.AddDays(1);
             // note: this only works for members because visitors do not have att%
             var now = DateTime.Now;
 
@@ -2035,7 +2037,7 @@ namespace CmsData
                     q2 = from p in q
                          let g = from a in p.Attends
                                  where a.MeetingDate >= start
-                                 where a.MeetingDate <= end
+                                 where a.MeetingDate < end
                                  where org == 0 || a.Meeting.OrganizationId == org
                                  where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
                                  where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
@@ -2049,7 +2051,7 @@ namespace CmsData
                     q2 = from p in q
                          let g = from a in p.Attends
                                  where a.MeetingDate >= start
-                                 where a.MeetingDate <= end
+                                 where a.MeetingDate < end
                                  where org == 0 || a.Meeting.OrganizationId == org
                                  where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
                                  where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
@@ -2063,7 +2065,7 @@ namespace CmsData
                     q2 = from p in q
                          let g = from a in p.Attends
                                  where a.MeetingDate >= start
-                                 where a.MeetingDate <= end
+                                 where a.MeetingDate < end
                                  where org == 0 || a.Meeting.OrganizationId == org
                                  where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
                                  where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
@@ -2077,7 +2079,7 @@ namespace CmsData
                     q2 = from p in q
                          let g = from a in p.Attends
                                  where a.MeetingDate >= start
-                                 where a.MeetingDate <= end
+                                 where a.MeetingDate < end
                                  where org == 0 || a.Meeting.OrganizationId == org
                                  where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
                                  where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
