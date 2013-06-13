@@ -15,6 +15,11 @@
         $("#name").val($(this).text());
         $('#filter').click();
     });
+    $(".filterbatchdesc").live("click", function (e) {
+        e.preventDefault();
+        $("#description").val($(this).text());
+        $('#filter').click();
+    });
     $("body").on("click", '.filtertransaction', function (e) {
         e.preventDefault();
         $("#name").val($(this).attr("originalid"));

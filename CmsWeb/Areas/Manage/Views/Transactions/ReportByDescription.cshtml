@@ -25,7 +25,7 @@
 		@foreach (var r in Model.FetchTransactionsByDescription())
 		{
 			<tr>
-				<td>@r.Description</td>
+				<td><a href="#" class="filterbatchdesc">@r.Description</a></td>
 				<td class="right">@r.count</td>
 				<td class="right">@r.Total.ToString("N2")</td>
 			</tr>
