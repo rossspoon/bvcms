@@ -939,6 +939,7 @@
     <Content Include="Areas\People\Views\Person\DeletedPerson.cshtml" />
     <Content Include="Areas\People\Views\Person\AddressSaved.cshtml" />
     <Content Include="Areas\Main\Views\Organization\DialogAddMES.cshtml" />
+    <Content Include="Areas\People\Views\Person\DisplayTemplates\Address2.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />

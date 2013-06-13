@@ -3,8 +3,10 @@
     @Html.LabelFor(m => m, new { @class="control-label"})
     <div class="controls">
         <div class="textcombo">
-            @Html.TextBoxFor(m => m.Address, new { @class = "text email lg" })
-            @Html.CheckBoxFor(m => m.Send, new { @class="checkbox" })
+            @Html.TextBoxFor(m => m.Address, new { @class = "text email lg" })<br/>
+            <label class="addon">
+                @Html.CheckBoxFor(m => m.Send, new { @class="checkbox" }) <span>Active</span>
+            </label>
         </div>
     </div>
 </div>
