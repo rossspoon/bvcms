@@ -347,33 +347,6 @@ namespace CmsData
                 expr = Expression.Not(expr);
             return expr;
         }
-        internal static Expression RecentAttendDayOfWeek(
-            ParameterExpression parm,
-            int? progid,
-            int? divid,
-            int? org,
-            int orgtype,
-            int days,
-            CompareType op,
-            int DayOfWeek)
-        {
-            var mindt = Util.Now.AddDays(-days).Date;
-            Expression<Func<Person, bool>> pred = p => (
-                from a in p.Attends
-                where a.MeetingDate >= mindt
-                where a.AttendanceFlag == true
-                where a.MeetingDate.DayOfWeek == (DayOfWeek)(DayOfWeek - 1)
-                where orgtype == 0 || a.Meeting.Organization.OrganizationTypeId == orgtype
-                where org == 0 || a.Meeting.OrganizationId == org
-                where divid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.DivId == divid)
-                where progid == 0 || a.Meeting.Organization.DivOrgs.Any(dg => dg.Division.ProgDivs.Any(pg => pg.ProgId == progid))
-                select a
-                ).Any();
-            Expression expr = Expression.Invoke(pred, parm);
-            if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
-                expr = Expression.Not(expr);
-            return expr;
-        }
         internal static Expression RecentRegistrationType(
             ParameterExpression parm,
             int? progid,

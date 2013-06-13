@@ -508,15 +508,6 @@ namespace CmsData
                                c.Days,
                                CompType,
                                c.CodeIntIds);
-                case QueryType.RecentAttendDayOfWeek:
-                    return Expressions.RecentAttendDayOfWeek(parm,
-                               c.Program,
-                               c.Division,
-                               c.Organization,
-							   c.OrgType ?? 0,
-                               c.Days,
-                               CompType,
-                               c.TextValue.ToInt());
                 case QueryType.RecentContactMinistry:
                     return Expressions.RecentContactMinistry(parm,
                                c.Days,

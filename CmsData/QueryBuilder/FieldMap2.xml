@@ -413,9 +413,6 @@
     <Field Name="RecentAttendType" Title="Recent Attendance Type" Type="Code" DisplayAs="RecentAttendType({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType" DataSource="AttendanceTypeCodes" DataValueField="IdCode">
       Selects attendees based on an attendance type who have attended a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
-    <Field Name="RecentAttendDayOfWeek" Title="Recent Attend DayOfWeek" Type="Integer" DisplayAs="RecentAttendDayOfWeek({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType" >
-      Selects attendees based on an attendance on the specified day of week (1=Sun, 2=Mon...7=Sat)
-    </Field>
     <Field Name="AttendPct" Title="Attendance %" Type="Number" DisplayAs="AttendPct({0}, {1}, {2})" Params="Program,Division,Organization">
      Selects attendees based on an attendance % within a Program, Program/Division or Program/Division/Organization.
     </Field>
@@ -430,8 +427,8 @@
     <Field Name="RecentAttendCount" Title="Recent Attendance Count" Type="Integer" DisplayAs="RecentAttendCount({0}, {1}, {2}, {3}, {4})" Params="Days,Program,Division,Organization,OrgType">
       Selects people based on an attendance count within a Program, Program/Division or Program/Division/Organization looking back a specified number of days.
     </Field>
-    <Field Name="RecentAttendCountAttCred" Title="Recent Attendance Count for AttendCredit" Type="Integer" DisplayAs="RecentAttendCountAttCred({0}, {1}, {2}, {3}, {4}, {5})" QuartersLabel="Attend Credit Id" Params="Program,Division,Organization,Days,Quarters,Schedule">
-      Selects people based on an Attendance Credit Schedule within a Program/Division/Organization/Schedule looking back a specified number of days.
+    <Field Name="RecentAttendCountAttCred" Title="Recent Attendance Count for Schedule/AttendCredit" Type="Integer" DisplayAs="RecentAttendCountSchedule({0}, {1}, {2}, {3}, {4}, {5})" QuartersLabel="Attend Credit Id" Params="Program,Division,Organization,Days,Quarters,Schedule">
+      Selects people based on an Attendance Credit or Schedule within a Program/Division/Organization looking back a specified number of days.
     </Field>
     <Field Name="RecentNewVisitCount" Title="Recent New Visit Count" Type="Integer" DisplayAs="RecentNewVisitCount({0}, {1}, {2}, {3}, {4}, {5})" QuartersLabel="Number of days for no attendance" Params="Days,Quarters,Program,Division,Organization,OrgType">
       Find all who have had n # attends in the past # [Days] where they had no attends prior to that looking back so many days
