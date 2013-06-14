@@ -1053,6 +1053,7 @@
     <Content Include="Scripts\Bootstrap\bootstrap-editable.min.js.map">
       <DependentUpon>bootstrap-editable.js</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\production.pubxml" />
     <None Include="Scripts\Bootstrap\bootstrap-bundle.js.bundle" />
     <Content Include="Scripts\Bootstrap\bootstrap-bundle.min.js.map">
       <DependentUpon>bootstrap-bundle.js.bundle</DependentUpon>

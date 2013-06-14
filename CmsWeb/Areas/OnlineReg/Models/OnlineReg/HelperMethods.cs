@@ -88,18 +88,26 @@ namespace CmsWeb.Models
         }
         public bool IsEnded()
         {
-            return org.ClassFilled == true;
+            return IsEnded(masterorg) || IsEnded(org);
+        }
+        private bool IsEnded(Organization o)
+        {
+            if (o != null)
+                return o.ClassFilled == true;
+            return false;
+        }
+        private bool Filled(Organization o)
+        {
+            if(o != null)
+                if ((o.ClassFilled ?? false) || (o.Limit > 0 && o.Limit <= o.MemberCount))
+                    return true;
+            return false;
         }
         public string Filled()
         {
-            var msg = ((org.ClassFilled ?? false) || (org.Limit > 0 && org.Limit <= org.MemberCount)) ? "registration is full" : "";
-            if (msg.HasValue())
-            {
-                org.ClassFilled = true;
-                DbUtil.Db.SubmitChanges();
-            }
-            return msg;
+            return Filled(masterorg) || Filled(org) ? "registration is full" : "";
         }
+
         public bool NotAvailable()
         {
             var dt = DateTime.Now;
