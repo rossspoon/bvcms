@@ -1,86 +1,59 @@
-﻿@using CmsData
-@using UtilityExtensions
+﻿@using UtilityExtensions
 @model CmsWeb.Areas.People.Models.Person.PersonModel
-@{
-    var p = Model.displayperson;
-}
-<div class="sidebar_title group">
-    <h2>Family Contact</h2>
-@*
-    @if (!p.PersonalAddr.Address1.HasValue())
-    {
-    <div class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-plus-sign"></i> </a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Add Personal Address</a></li>
-        </ul>
-    </div>
-    }
-*@
-</div>
-<ul id="family_home" class="unstyled">
-    <li class="address@(p.FamilyAddr.BadAddress == true? " warning" : "")">
-        <div class="btn-group">
-            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-map-marker"></i>
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="http://www.google.com/maps?q=@p.FamilyAddr.AddrCityStateZip()" target="_blank">Google Map</a></li>
-                <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
-                <li><a href="http://www.bing.com/maps/?q=@p.FamilyAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
-                <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.FamilyAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-@*                <li class="divider"></li>*@
-@*                <li><a href="/Person2/AddressEdit/FamilyAddr/@Model.displayperson.PeopleId" class="editaddr">Edit Address</a></li>*@
-            </ul>
-        </div>
-        @* Dave: How do we distinguish family address vs personal *@
-        <p id="familyaddress">
-            @Html.Partial("DisplayTemplates/Address2", p.FamilyAddr)        
-        </p>
-    </li>
-    <li class="phone landline">
-        <i class="icon-phone"></i>
-        <p>@p.basic.HomePhone.FmtFone()</p>
-    </li>
 
-@*
-    @if (p.PersonalAddr.Address1.HasValue())
-    {
-    <li class="address@(p.PersonalAddr.BadAddress == true? " warning" : "")">
-        <div class="btn-group">
-            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-map-marker"></i>
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="http://www.google.com/maps?q=@p.PersonalAddr.AddrCityStateZip()" target="_blank">Google Map</a></li>
-                <li><a href='http://www.google.com/maps?f=d&saddr=@DbUtil.StartAddress&pw=2&daddr=@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Google)</a></li>
-                <li><a href="http://www.bing.com/maps/?q=@p.PersonalAddr.AddrCityStateZip()" target="_blank">Bing Map</a></li>
-                <li><a href='http://www.bing.com/maps/?rtp=adr.@DbUtil.StartAddress~adr.@p.PersonalAddr.AddrCityStateZip()' target="_blank">Driving Directions (Bing)</a></li>
-                <li class="divider"></li>
-                <li><a href="/Person2/AddressEdit/PersonalAddr/@Model.displayperson.PeopleId" class="editaddr">Edit Address</a></li>
-            </ul>
-        </div>
-        <p id="personaladdress">
-            @Html.Partial("DisplayTemplates/Address2", p.PersonalAddr)
-        </p>
+@helper ListItem(bool prim, string id, string icon)
+{
+    <li @(prim ? "class=active" : "")>
+        <a href="#@id" data-toggle="tab">
+            @if (prim)
+            {
+                <i class="icon-star"></i>
+            }
+            <i class="icon-@icon"></i>
+        </a>
     </li>
-    }
-    @if (p.basic.Mobile.Number.HasValue())
-    {
-    <li class="phone mobile">
-        <div class="btn-group">
-            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-mobile-phone"></i>
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="#">Send SMS</a></li>
-            </ul>
+}
+<div class="contact tabbable tabs-left">
+    <ul class="nav nav-tabs">
+        @ListItem(Model.displayperson.FamilyAddr.Preferred, "family-addr", "home")
+        @ListItem(Model.displayperson.PersonalAddr.Preferred, "personal-addr", "suitcase")
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="family-addr">
+            <!--<div class="btn-group">
+                                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                            <i class="icon-map-marker"></i>
+                                            <span class="caret"></span>
+                                        </a>
+                                        
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Google Map</a></li>
+                                            <li><a href='http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Google)</a></li>
+                                            <li><a href="http://www.bing.com/maps/?q=511 Amsterdam Ave New York, NY 10024-3939" target="_blank">Bing Map</a></li>
+                                            <li><a href='http://www.bing.com/maps/?rtp=adr.2000+Appling+Rd,+Cordova,+Tennessee+38016~adr.511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Bing)</a></li>
+                                        </ul>
+                                    </div>-->
+            <h3>Family Address</h3>
+            @Html.Partial("DisplayTemplates/Address", Model.displayperson.FamilyAddr)
         </div>
-        <p>@p.basic.Mobile.Number.FmtFone()</p>
-    </li>
-    }
-*@
-</ul>
+        <div class="tab-pane" id="personal-addr">
+            <!--<div class="btn-group">
+                                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                            <i class="icon-map-marker"></i>
+                                            <span class="caret"></span>
+                                        </a>
+                                        
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Google Map</a></li>
+                                            <li><a href='http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Google)</a></li>
+                                            <li><a href="http://www.bing.com/maps/?q=511 Amsterdam Ave New York, NY 10024-3939" target="_blank">Bing Map</a></li>
+                                            <li><a href='http://www.bing.com/maps/?rtp=adr.2000+Appling+Rd,+Cordova,+Tennessee+38016~adr.511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Bing)</a></li>
+                                        </ul>
+                                    </div>-->
+
+            <h3>Personal Address</h3>
+            @Html.Partial("DisplayTemplates/Address", Model.displayperson.PersonalAddr)
+        </div>
+    </div>
+    <p id="contact-phone-primary"><i class="icon-phone"></i>@Model.Person.CellPhone.FmtFone("C ")</p>
+</div>

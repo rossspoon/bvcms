@@ -22,7 +22,7 @@
                 <div id="family-div">
                     @Html.Partial("FamilyGrid", Model)
                 </div>
-                @Html.Partial("Addresses", Model)
+                @Html.Partial("FamilyContact", Model)
                 <div id="related-families-div">
                     @Html.Partial("RelatedFamilies", Model)
                 </div>
@@ -36,6 +36,7 @@
                     </div>
                     <div class="span4" id="profile-actions">
                         @Html.Partial("Toolbar", Model)
+                        @Html.Partial("Addresses", Model)
                     </div>
                 </div>
             </div>

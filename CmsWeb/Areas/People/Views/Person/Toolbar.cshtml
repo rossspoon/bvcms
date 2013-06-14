@@ -1,5 +1,4 @@
-﻿@using UtilityExtensions
-@model CmsWeb.Areas.People.Models.Person.PersonModel
+﻿@model CmsWeb.Areas.People.Models.Person.PersonModel
 <div class="btn-group">
     <button class="btn btn-inverse"><i class="icon-envelope-alt"></i></button>
     <button class="btn btn-inverse"><i class="icon-cloud-download"></i></button>
@@ -20,26 +19,4 @@
         <li><a id="deletePerson" href="/Person2/Delete/@Model.displayperson.PeopleId">Delete this duplicate</a></li>
         <li><a id="recordDeath" href="#">Mark As Deceased</a></li>
     </ul>
-
-</div>
-@{
-    var fprim = Model.displayperson.FamilyAddr.Preferred;
-    var pprim = Model.displayperson.PersonalAddr.Preferred;
-}
-<div class="contact tabbable tabs-left">
-    <ul class="nav nav-tabs">
-        <li class="@(fprim ? "active" : "")"><a href="#family-addr"><i class="@(fprim ? "icon-star" : "icon-star-empty")"></i><i class="icon-home"></i></a></li>
-        <li class="@(pprim ? "active" : "")"><a href="#personal-addr"><i class="@(pprim ? "icon-star" : "icon-star-empty")"></i><i class="icon-suitcase"></i></a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="group" id="family-addr">
-            <h3>Family Address</h3>
-            @Html.Partial("DisplayTemplates/Address", Model.displayperson.FamilyAddr)
-        </div>
-        <div class="group" id="personal-addr">
-            <h3>Personal Address</h3>
-            @Html.Partial("DisplayTemplates/Address", Model.displayperson.PersonalAddr)
-        </div>
-    </div>
-    <p id="contact-phone-primary"><i class="icon-phone"></i>@Model.Person.CellPhone.FmtFone("C ")</p>
 </div>

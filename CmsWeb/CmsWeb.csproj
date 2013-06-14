@@ -940,6 +940,7 @@
     <Content Include="Areas\People\Views\Person\AddressSaved.cshtml" />
     <Content Include="Areas\Main\Views\Organization\DialogAddMES.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address2.cshtml" />
+    <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
@@ -2086,7 +2087,7 @@
     <Content Include="Areas\Setup\Views\Twilio\RemoveDialog.cshtml" />
     <Content Include="Areas\Setup\Views\Twilio\UserDialog.cshtml" />
     <Content Include="Areas\People\Views\Person\RelatedFamilies.cshtml" />
-    <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
+    <Content Include="Areas\People\Views\Person\FamilyContact.cshtml" />
     <Content Include="Areas\People\Views\Person\EditorTemplates\Email.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Email.cshtml" />
     <Content Include="Areas\People\Views\Person\Snapshot.cshtml" />

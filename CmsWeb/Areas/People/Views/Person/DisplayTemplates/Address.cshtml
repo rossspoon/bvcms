@@ -1,6 +1,7 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Areas.People.Models.Person.AddressInfo
 <p>
+    <a href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId" class="editaddr pull-right"><i class="icon-pencil"></i></a>
     @Model.Address1<br />
     @if (Model.Address2.HasValue())
     {
