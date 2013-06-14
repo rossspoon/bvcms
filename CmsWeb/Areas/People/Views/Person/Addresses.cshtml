@@ -1,11 +1,13 @@
-﻿@using UtilityExtensions
+﻿@using CmsWeb.Areas.People.Models.Person
+@using UtilityExtensions
 @model CmsWeb.Areas.People.Models.Person.PersonModel
 
-@helper ListItem(bool prim, string id, string icon)
+@helper ListItem(AddressInfo a, string icon)
 {
-    <li @(prim ? "class=active" : "")>
+    var id = "tab-" + a.Name;
+    <li @(a.Preferred ? "class=active" : "")>
         <a href="#@id" data-toggle="tab">
-            @if (prim)
+            @if (a.Preferred)
             {
                 <i class="icon-star"></i>
             }
@@ -15,45 +17,12 @@
 }
 <div class="contact tabbable tabs-left">
     <ul class="nav nav-tabs">
-        @ListItem(Model.displayperson.FamilyAddr.Preferred, "family-addr", "home")
-        @ListItem(Model.displayperson.PersonalAddr.Preferred, "personal-addr", "suitcase")
+        @ListItem(Model.displayperson.FamilyAddr, "home")
+        @ListItem(Model.displayperson.PersonalAddr, "suitcase")
     </ul>
     <div class="tab-content">
-        <div class="tab-pane active" id="family-addr">
-            <!--<div class="btn-group">
-                                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                                            <i class="icon-map-marker"></i>
-                                            <span class="caret"></span>
-                                        </a>
-                                        
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Google Map</a></li>
-                                            <li><a href='http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Google)</a></li>
-                                            <li><a href="http://www.bing.com/maps/?q=511 Amsterdam Ave New York, NY 10024-3939" target="_blank">Bing Map</a></li>
-                                            <li><a href='http://www.bing.com/maps/?rtp=adr.2000+Appling+Rd,+Cordova,+Tennessee+38016~adr.511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Bing)</a></li>
-                                        </ul>
-                                    </div>-->
-            <h3>Family Address</h3>
-            @Html.Partial("DisplayTemplates/Address", Model.displayperson.FamilyAddr)
-        </div>
-        <div class="tab-pane" id="personal-addr">
-            <!--<div class="btn-group">
-                                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                                            <i class="icon-map-marker"></i>
-                                            <span class="caret"></span>
-                                        </a>
-                                        
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Google Map</a></li>
-                                            <li><a href='http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Google)</a></li>
-                                            <li><a href="http://www.bing.com/maps/?q=511 Amsterdam Ave New York, NY 10024-3939" target="_blank">Bing Map</a></li>
-                                            <li><a href='http://www.bing.com/maps/?rtp=adr.2000+Appling+Rd,+Cordova,+Tennessee+38016~adr.511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Bing)</a></li>
-                                        </ul>
-                                    </div>-->
-
-            <h3>Personal Address</h3>
-            @Html.Partial("DisplayTemplates/Address", Model.displayperson.PersonalAddr)
-        </div>
+        @Html.Partial("DisplayTemplates/Address", Model.displayperson.FamilyAddr)
+        @Html.Partial("DisplayTemplates/Address", Model.displayperson.PersonalAddr)
     </div>
     <p id="contact-phone-primary"><i class="icon-phone"></i>@Model.Person.CellPhone.FmtFone("C ")</p>
 </div>
