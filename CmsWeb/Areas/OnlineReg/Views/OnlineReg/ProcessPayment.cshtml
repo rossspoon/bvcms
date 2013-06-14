@@ -95,7 +95,7 @@
 @if (Model.PayBalance)
 {
     <tr><td>Enter amount to pay</td>
-		<td>@Html.TextBox("pf.AmtToPay", Model.AmtToPay.ToString2("N2"), Model.Autocomplete(small: true))</td>
+		<td>@Html.TextBox("pf.AmtToPay", Model.AmtToPay.ToString2("f2"), Model.Autocomplete(small: true))</td>
     </tr>
 }
 else

@@ -460,9 +460,11 @@ Total Fee paid for this registration session: {4:C}<br/>
         }
         public int GetEntryPoint()
         {
-            if (org.EntryPoint == null)
-                return masterorg.EntryPointId ?? 0;
-            return org.EntryPointId.Value;
+            if (org != null && org.EntryPointId != null)
+                return org.EntryPointId.Value;
+            if (masterorg != null && masterorg.EntryPointId != null)
+                return masterorg.EntryPointId.Value;
+            return 0;
         }
 
         public override string ToString()
