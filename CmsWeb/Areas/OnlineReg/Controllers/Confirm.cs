@@ -378,14 +378,10 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				m.EnrollAndConfirm();
 				if (m.List.Any(pp => pp.PeopleId == null))
 				{
-					if ((bool?)Session["OnlineRegLogin"] == true)
-					{
-						FormsAuthentication.SignOut();
-						Session.Abandon();
-					}
-					return "error: no person";
+				    LogOutOfOnlineReg();
+				    return "error: no person";
 				}
-				m.UseCoupon(t.TransactionId, t.Amt ?? 0);
+			    m.UseCoupon(t.TransactionId, t.Amt ?? 0);
 			}
 			else
 			{
@@ -398,11 +394,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 				m.EnrollAndConfirm();
 				if (m.List.Any(pp => pp.PeopleId == null))
 				{
-					if ((bool?)Session["OnlineRegLogin"] == true)
-					{
-						FormsAuthentication.SignOut();
-						Session.Abandon();
-					}
+				    LogOutOfOnlineReg();
 					return "error: no person";
 				}
 				m.UseCoupon(t.TransactionId, t.Amt ?? 0);
@@ -412,14 +404,20 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
 			else
 				ViewData["email"] = m.List[0].email;
 		    ViewData["orgname"] = m.org != null ? m.org.OrganizationName : m.masterorg.OrganizationName;
-			if ((bool?)Session["OnlineRegLogin"] == true)
-			{
-				FormsAuthentication.SignOut();
-				Session.Abandon();
-			}
+		    LogOutOfOnlineReg();
 			return confirm;
 		}
-		public ActionResult Confirm(int? id, string transactionId, decimal? amount)
+
+	    private void LogOutOfOnlineReg()
+	    {
+	        if ((bool?) Session["OnlineRegLogin"] == true)
+	        {
+	            FormsAuthentication.SignOut();
+	            Session.Abandon();
+	        }
+	    }
+
+	    public ActionResult Confirm(int? id, string transactionId, decimal? amount)
 		{
 			if (!id.HasValue)
 				return View("Unknown");
