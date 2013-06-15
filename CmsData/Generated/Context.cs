@@ -1716,6 +1716,32 @@ namespace CmsData
                 );
 		}
 
+		[Function(Name="dbo.CheckinFamilyMembers", IsComposable = true)]
+		public IQueryable< View.CheckinFamilyMember > CheckinFamilyMembers(
+            [Parameter(DbType="int")] int? familyid,
+            [Parameter(DbType="int")] int? campus,
+            [Parameter(DbType="int")] int? thisday
+            )
+		{
+			return this.CreateMethodCallQuery< View.CheckinFamilyMember>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                familyid,
+                campus,
+                thisday
+                );
+		}
+
+		[Function(Name="dbo.CheckinMatch", IsComposable = true)]
+		public IQueryable< View.CheckinMatch > CheckinMatch(
+            [Parameter(DbType="varchar")] string id
+            )
+		{
+			return this.CreateMethodCallQuery< View.CheckinMatch>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                id
+                );
+		}
+
 		[Function(Name="dbo.ConsecutiveAbsents", IsComposable = true)]
 		public IQueryable< View.ConsecutiveAbsent > ConsecutiveAbsents(
             [Parameter(DbType="int")] int? orgid,
@@ -1987,6 +2013,17 @@ namespace CmsData
                 orgid,
                 thisday,
                 kioskmode
+                );
+		}
+
+		[Function(Name="dbo.GetTodaysMeetingHours3", IsComposable = true)]
+		public IQueryable< View.GetTodaysMeetingHours3 > GetTodaysMeetingHours3(
+            [Parameter(DbType="int")] int? thisday
+            )
+		{
+			return this.CreateMethodCallQuery< View.GetTodaysMeetingHours3>(this, 
+			    ((MethodInfo)(MethodInfo.GetCurrentMethod())),
+                thisday
                 );
 		}
 
@@ -2445,6 +2482,16 @@ namespace CmsData
                 ((MethodInfo)(MethodInfo.GetCurrentMethod())),
                 orgid,
                 thisday
+                ).ReturnValue));
+		}
+
+		[Function(Name="dbo.AvgSunAttendance", IsComposable = true)]
+		[return: Parameter(DbType = "int")]
+		public int? AvgSunAttendance(
+            )
+		{
+			return ((int?)(this.ExecuteMethodCall(this, 
+                ((MethodInfo)(MethodInfo.GetCurrentMethod()))
                 ).ReturnValue));
 		}
 

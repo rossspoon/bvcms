@@ -1672,7 +1672,6 @@
     <Compile Include="Image.aspx.designer.cs">
       <DependentUpon>Image.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Public\Models\CheckIn\CheckInInfo.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\CheckInModel.cs" />
     <Compile Include="Areas\Public\Models\CheckIn\CheckInRecModel.cs" />
     <Compile Include="Areas\Main\Models\Other\PagerModel.cs" />

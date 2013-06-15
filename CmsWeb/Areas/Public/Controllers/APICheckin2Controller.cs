@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using CmsData;
+using CmsData.View;
 using UtilityExtensions;
 using CmsWeb.Models;
 using System.IO;
@@ -27,13 +28,20 @@ namespace CmsWeb.Areas.Public.Controllers
 			DbUtil.Db.SetNoLock();
 			DbUtil.LogActivity("checkin " + id);
 
-			var m = new CheckInModel();
-			var matches = m.Match(id, campus, thisday);
+            List<CheckinMatch> matches;
 
-			if (!matches.Any())
-				return new FamilyResult(0, campus, thisday, 0, false, false); // not found
+		    if (CheckInModel.UseOldCheckin())
+		    {
+		        var m = new CheckInModel();
+		        matches = m.MatchOld(id);
+		    }
+            else
+    		    matches = DbUtil.Db.CheckinMatch(id).ToList();
+
+		    if (!matches.Any())
+				return new FamilyResult(0, campus, thisday, 0, false); // not found
 			if (matches.Count() == 1)
-				return new FamilyResult(matches.Single().FamilyId, campus, thisday, 0, matches[0].Locked, kioskmode ?? false);
+				return new FamilyResult(matches.Single().Familyid.Value, campus, thisday, 0, matches[0].Locked ?? false);
 			return new MultipleResult(matches, page);
 		}
 
@@ -51,7 +59,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			if (!matches.Any())
                 return new FindResult(0, building, querybit);
 			if (matches.Count() == 1)
-                return new FindResult(matches.Single().FamilyId, building, querybit);
+                return new FindResult(matches.Single().Familyid.Value, building, querybit);
 
 			return new MultipleResult(matches, page);
 		}
@@ -63,7 +71,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			Response.NoCache();
 			DbUtil.Db.SetNoLock();
 			DbUtil.LogActivity("checkin fam " + id);
-			return new FamilyResult(id, campus, thisday, 0, false, kioskmode ?? false);
+			return new FamilyResult(id, campus, thisday, 0, false);
 		}
 
         public ActionResult SingleFamily(int id, string building, string querybit)

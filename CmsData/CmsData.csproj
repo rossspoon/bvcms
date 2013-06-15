@@ -322,13 +322,17 @@
     <Compile Include="APIPerson.cs" />
     <Compile Include="APIContribution.cs" />
     <Compile Include="BundleHeader.cs" />
+    <Compile Include="CheckinFamilyMember.cs" />
     <Compile Include="DoReplacements.cs" />
     <Compile Include="Generated\ActivityOld.cs" />
     <Compile Include="Generated\BuildingAccessType.cs" />
     <Compile Include="Generated\CheckInAccessType.cs" />
+    <Compile Include="Generated\Functions\CheckinFamilyMember.cs" />
+    <Compile Include="Generated\Functions\CheckinMatch.cs" />
     <Compile Include="Generated\Functions\ConsecutiveAbsent.cs" />
     <Compile Include="Generated\Functions\ContactSummary.cs" />
     <Compile Include="Generated\Functions\Contributions0.cs" />
+    <Compile Include="Generated\Functions\GetTodaysMeetingHours3.cs" />
     <Compile Include="Generated\Functions\GetTotalContributions3.cs" />
     <Compile Include="Generated\Functions\GetTotalContributionsDonor2.cs" />
     <Compile Include="Generated\Functions\MostRecentItem.cs" />
