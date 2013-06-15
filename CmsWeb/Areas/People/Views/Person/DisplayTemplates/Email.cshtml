@@ -3,15 +3,13 @@
     @Html.LabelFor(m=> m, new { @class = "control-label nwrap"})
     <div class="controls">
         <p>
-            @Model.Address
-            @* todo: use help text *@
             @if (Model.Send)
             {
-                <i class="icon-check"></i>
+                <span class="email_display">@Model.Address</span>
             }
             else
             {
-                <i class="icon-check-empty"></i>
+                <del class="email_display">@Model.Address</del>
             }
         </p>
     </div>

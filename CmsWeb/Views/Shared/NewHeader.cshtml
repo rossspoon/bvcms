@@ -234,7 +234,7 @@
                             <li><a href="/Tags">Manage Active Tag</a></li>
                             @if (User.IsInRole("Admin"))
                             {
-                                <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                                <li><a href="/Manage/Users/LastActivity">Activity Log</a></li>
                             }
                             <li><a href="/Account/ChangePassword">Change Password</a></li>
                             <li><a href="/Home/TargetPerson/@targetperson.ToString()">Target Person Tab is @(targetperson ? "ON" : "OFF")</a></li>

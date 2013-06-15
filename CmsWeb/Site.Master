@@ -46,6 +46,8 @@
             window.open(url, "_self");
         }
     </script>
+    <asp:ContentPlaceHolder ID="scripts" runat="server">
+    </asp:ContentPlaceHolder>
 
 </head>
 <body>
@@ -84,7 +86,7 @@
                                             <li><a href="/Account/ChangePassword">Change Password</a></li>
                                             <% if (Page.User.IsInRole("Admin"))
                                                { %>
-                                            <li><a href="/Admin/Activity.aspx">Activity Log</a></li>
+                                            <li><a href="/Manage/Users/LastActivity">Activity Log</a></li>
                                             <% } %>
                                         </ul>
                                     </div>

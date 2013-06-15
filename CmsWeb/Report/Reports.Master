@@ -5,7 +5,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>CMS Report</title>
-    <%: Helper.IncludeCss() %>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <style type="text/css" media="print">

@@ -1,7 +1,7 @@
 ﻿@model CmsWeb.Areas.People.Models.Person.BasicPersonInfo
 @FormAction()
 <div class="row-fluid">
-    <fieldset id="fieldset1" class="span12 display">
+    <fieldset id="fieldset1" class="span12 display form-columns">
         @Html.DisplayFor(m => m.Title)
         @Html.DisplayFor(m => m.FirstName)
         @Html.DisplayFor(m => m.GoesBy)
@@ -22,7 +22,7 @@
     </fieldset>
 </div>
 <div class="row-fluid">
-    <fieldset class="span12 display">
+    <fieldset class="span12 display form-columns">
         @if (Model.DoNotContactAny)
         {
             @Html.DisplayFor(m => m.DoNotContact)

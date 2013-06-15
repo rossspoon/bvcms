@@ -1,20 +1,27 @@
 ﻿@using UtilityExtensions
 @model CmsWeb.Areas.People.Models.Person.AddressInfo
-@if (Model.Name == "PrimaryAddr")
-{
-    @Model.Address1<br/>
-    if (Model.Address2.HasValue())
-    {
-        @Model.Address2<br/>
-    }
-    @Model.CityStateZip()
-}
-else
-{
-    <span class="street">@Model.Address1</span>
-    if (Model.Address2.HasValue())
-    {
-        <span class="street">@Model.Address2</span>
-    }
-    <span class="city">@Model.CityStateZip()</span>
-}
+<div class="tab-pane@(Model.Preferred ? " active" : "" )" id="tab-@Model.Name">
+    <!--<div class="btn-group">
+                                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                            <i class="icon-map-marker"></i>
+                                            <span class="caret"></span>
+                                        </a>
+                                        
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Google Map</a></li>
+                                            <li><a href='http://www.google.com/maps?f=d&saddr=2000+Appling+Rd,+Cordova,+Tennessee+38016&pw=2&daddr=511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Google)</a></li>
+                                            <li><a href="http://www.bing.com/maps/?q=511 Amsterdam Ave New York, NY 10024-3939" target="_blank">Bing Map</a></li>
+                                            <li><a href='http://www.bing.com/maps/?rtp=adr.2000+Appling+Rd,+Cordova,+Tennessee+38016~adr.511 Amsterdam Ave New York, NY 10024-3939' target="_blank">Driving Directions (Bing)</a></li>
+                                        </ul>
+                                    </div>-->
+    <h3>@Model.Display</h3>
+    <p>
+        <a href="/Person2/AddressEdit/@Model.Name/@Model.PeopleId" class="editaddr pull-right"><i class="icon-pencil"></i></a>
+        <a href="http://www.google.com/maps?q=@Model.MapAddrCityStateZip()" target="_blank">@Model.Address1</a><br />
+        @if (Model.Address2.HasValue())
+        {
+            @Model.Address2<br />
+        }
+        @Model.CityStateZip()
+    </p>
+</div>

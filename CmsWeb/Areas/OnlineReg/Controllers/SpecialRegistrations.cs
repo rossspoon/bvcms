@@ -397,6 +397,7 @@ The following Committments:<br/>
 <p>You should receive a confirmation email shortly.</p>";
             msg = msg.Replace("{first}", m.person.PreferredName, ignoreCase:true);
             ViewBag.Message = msg;
+            LogOutOfOnlineReg();
             return View(m);
         }
         [AcceptVerbs(HttpVerbs.Post)]

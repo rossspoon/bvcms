@@ -92,6 +92,10 @@ namespace CmsWeb.Areas.People.Models.Person
             sb.AppendLine(Util.FormatCSZ(City, State.Value, Zip));
             return sb.ToString();
         }
+        public string MapAddrCityStateZip()
+        {
+            return AddrCityStateZip().Replace("\n", ",");
+        }
         public string CityStateZip()
         {
             return Util.FormatCSZ(City, State.Value, Zip);

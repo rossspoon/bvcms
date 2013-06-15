@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web;
 using System.Xml;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using CmsData.View;
 using UtilityExtensions;
 using System.Linq;
 using CmsData;
@@ -14,16 +16,14 @@ namespace CmsWeb.Models
     {
         int fid, campus, thisday, page;
         bool waslocked;
-        bool kioskmode;
 
-        public FamilyResult(int fid, int campus, int thisday, int page, bool waslocked, bool kioskmode)
+        public FamilyResult(int fid, int campus, int thisday, int page, bool waslocked)
         {
             this.fid = fid;
             this.campus = campus;
             this.thisday = thisday;
             this.page = page;
             this.waslocked = waslocked;
-            this.kioskmode = kioskmode;
             if (fid > 0)
             {
                 var db = new CMSDataContext(Util.ConnectionString);
@@ -39,6 +39,8 @@ namespace CmsWeb.Models
                 db.SubmitChanges();
             }
         }
+
+
         public override void ExecuteResult(ControllerContext context)
         {
             context.HttpContext.Response.ContentType = "text/xml";
@@ -48,11 +50,10 @@ namespace CmsWeb.Models
             { 
                 w.WriteStartElement("Attendees");
                 var m = new CheckInModel();
-                List<Attendee> q;
-                if (kioskmode == true)
-                    q = m.FamilyMembersKiosk(fid, campus, thisday);
-                else
-                    q = m.FamilyMembers(fid, campus, thisday);
+                List<CheckinFamilyMember> q = CheckInModel.UseOldCheckin()
+                    ? m.FamilyMembersOld(fid, campus, thisday) 
+                    : m.FamilyMembers(fid, campus, thisday);
+                    
                 w.WriteAttributeString("familyid", fid.ToString());
                 w.WriteAttributeString("waslocked", waslocked.ToString());
 
@@ -93,17 +94,14 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("mv", c.MemberVisitor);
                     w.WriteAttributeString("name", c.DisplayName);
                     w.WriteAttributeString("preferredname", c.PreferredName);
-					if (accommodateCheckInBug) // bug in checkin requires this
-						w.WriteAttributeString("first", c.PreferredName); 
-					else
-	                    w.WriteAttributeString("first", c.First);
+                    w.WriteAttributeString("first", accommodateCheckInBug ? c.PreferredName : c.First);
                     w.WriteAttributeString("last", c.Last);
                     w.WriteAttributeString("org", c.DisplayClass);
                     w.WriteAttributeString("orgname", c.OrgName);
                     w.WriteAttributeString("leader", c.Leader);
                     w.WriteAttributeString("orgid", c.OrgId.ToString());
                     w.WriteAttributeString("loc", c.Location);
-                    w.WriteAttributeString("gender", c.gender.ToString());
+                    w.WriteAttributeString("gender", c.Gender);
                     w.WriteAttributeString("leadtime", leadtime.ToString());
                     w.WriteAttributeString("age", c.Age.ToString());
                     w.WriteAttributeString("numlabels", c.NumLabels.ToString());
@@ -112,22 +110,22 @@ namespace CmsWeb.Models
                     w.WriteAttributeString("transport", c.Transport.ToString());
                     w.WriteAttributeString("hour", c.Hour.FormatDateTm());
                     w.WriteAttributeString("requiressecuritylabel", c.RequiresSecurityLabel.ToString());
-                    w.WriteAttributeString("church", c.church);
+                    w.WriteAttributeString("church", c.Church);
 
-                    w.WriteAttributeString("email", c.email);
+                    w.WriteAttributeString("email", c.Email);
                     w.WriteAttributeString("dob", c.dob);
-                    w.WriteAttributeString("goesby", c.goesby);
-                    w.WriteAttributeString("addr", c.addr);
-                    w.WriteAttributeString("zip", c.zip);
-                    w.WriteAttributeString("home", c.home);
-                    w.WriteAttributeString("cell", c.cell);
-                    w.WriteAttributeString("marital", c.marital.ToString());
-                    w.WriteAttributeString("allergies", c.allergies);
-                    w.WriteAttributeString("grade", c.grade.ToString());
-                    w.WriteAttributeString("parent", c.parent);
-                    w.WriteAttributeString("emfriend", c.emfriend);
-                    w.WriteAttributeString("emphone", c.emphone);
-                    w.WriteAttributeString("activeother", c.activeother.ToString());
+                    w.WriteAttributeString("goesby", c.Goesby);
+                    w.WriteAttributeString("addr", c.Addr);
+                    w.WriteAttributeString("zip", c.Zip);
+                    w.WriteAttributeString("home", c.Home);
+                    w.WriteAttributeString("cell", c.Cell);
+                    w.WriteAttributeString("marital", c.Marital.ToString());
+                    w.WriteAttributeString("allergies", c.Allergies);
+                    w.WriteAttributeString("grade", c.Grade.ToString());
+                    w.WriteAttributeString("parent", c.Parent);
+                    w.WriteAttributeString("emfriend", c.Emfriend);
+                    w.WriteAttributeString("emphone", c.Emphone);
+                    w.WriteAttributeString("activeother", c.Activeother.ToString());
                     w.WriteAttributeString("haspicture", c.HasPicture.ToString());
 
                     w.WriteEndElement();
