@@ -245,6 +245,8 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="Areas\Dialog\Controllers\AddOrganizationController.cs" />
     <Compile Include="Areas\Dialog\Models\SearchModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\WeeklyDecisionsModel.cs" />
+    <Compile Include="Areas\Main\Models\Report\DecisionsModel.cs" />
     <Compile Include="Areas\Main\Models\Report\EnrollmentControlModel.cs" />
     <Compile Include="Areas\Org\Controllers\OrgMemberDialogController.cs" />
     <Compile Include="Areas\Org\Controllers\OrgMembersDialogController.cs" />
@@ -576,7 +578,6 @@
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\moment-datepicker\datepicker.css" />
     <Content Include="Content\css\normalize.css" />
-    <Content Include="index.html" />
     <Content Include="ckeditor2\build-config.js" />
     <Content Include="ckeditor2\ckeditor.js" />
     <Content Include="ckeditor2\config.js" />
@@ -941,6 +942,8 @@
     <Content Include="Areas\Main\Views\Organization\DialogAddMES.cshtml" />
     <Content Include="Areas\People\Views\Person\DisplayTemplates\Address2.cshtml" />
     <Content Include="Areas\People\Views\Person\Addresses.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\WeeklyDecisions.cshtml" />
+    <Content Include="Areas\Main\Views\Reports\Decisions.cshtml" />
     <None Include="Content\css\new2css.css.bundle" />
     <None Include="Content\styles\css.css.bundle" />
     <None Include="Content\styles\newcss.css.bundle" />
@@ -1574,27 +1577,6 @@
     </Compile>
     <Compile Include="Areas\Manage\Models\VolunteerCommitmentsModel.cs" />
     <Compile Include="Areas\Public\Controllers\TrackController.cs" />
-    <Compile Include="Admin\Activity.aspx.cs">
-      <DependentUpon>Activity.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Activity.aspx.designer.cs">
-      <DependentUpon>Activity.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\DeleteSpecialTags.aspx.cs">
-      <DependentUpon>DeleteSpecialTags.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\DeleteSpecialTags.aspx.designer.cs">
-      <DependentUpon>DeleteSpecialTags.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\LastActivity.aspx.cs">
-      <DependentUpon>LastActivity.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\LastActivity.aspx.designer.cs">
-      <DependentUpon>LastActivity.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\ToggleOrgMembersOnly.ashx.cs">
       <DependentUpon>ToggleOrgMembersOnly.ashx</DependentUpon>
     </Compile>
@@ -1689,13 +1671,6 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Report\ChurchAttendanceRpt.aspx.cs">
-      <DependentUpon>ChurchAttendanceRpt.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\ChurchAttendanceRpt.aspx.designer.cs">
-      <DependentUpon>ChurchAttendanceRpt.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\DecisionSummary.aspx.cs">
       <DependentUpon>DecisionSummary.aspx</DependentUpon>
@@ -2800,9 +2775,6 @@
     <Content Include="Errors\Error.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Admin\Activity.aspx" />
-    <Content Include="Admin\DeleteSpecialTags.aspx" />
-    <Content Include="Admin\LastActivity.aspx" />
     <Content Include="images\12-em-cross.png" />
     <Content Include="images\border-2.gif" />
     <Content Include="images\border.gif" />
@@ -2841,7 +2813,6 @@
     <Content Include="images\tags.png" />
     <Content Include="images\unknown.jpg" />
     <Content Include="images\work.gif" />
-    <Content Include="Report\ChurchAttendanceRpt.aspx" />
     <Content Include="Report\DecisionSummary.aspx" />
     <Content Include="Site.Master" />
     <Content Include="UserControls\GridPager.ascx" />

@@ -103,10 +103,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivityController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ChurchAttendanceController.cs" />
     <Compile Include="DecisionSummaryController.cs" />
     <Compile Include="InfoClasses\ContacteeInfo.cs" />
     <Compile Include="InfoClasses\ContactorInfo.cs" />

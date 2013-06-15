@@ -259,6 +259,12 @@ namespace CmsWeb.Areas.Main.Controllers
             var m = new ChurchAttendanceModel(dt2.Value);
             return View(m);
         }
+        public ActionResult WeeklyDecisions (string id)
+        {
+            var dt = id.ToDate();
+            var m = new WeeklyDecisionsModel(dt);
+            return View(m);
+        }
         public ActionResult ChurchAttendance2(string Dt1, string Dt2, string skipweeks)
         {
             var dt1 = Dt1.ToDate();

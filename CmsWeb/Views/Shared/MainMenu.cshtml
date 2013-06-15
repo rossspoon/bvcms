@@ -79,7 +79,7 @@
                     {
                         <li>@Helper.AnchorLink("Church Attendance Summary", "/Report/ChurchAttendanceSummaryRpt.aspx", "_blank")</li>
                     }
-                    <li>@Helper.AnchorLink("Weekly Decisions", "/Report/ChurchAttendanceRpt.aspx", "_blank")</li>
+                    <li>@Html.ActionLink("Weekly Decisions", "WeeklyDecisions", "Reports", new { Area = "Main" }, new { target = "_blank" })</li>
                     <li>@Helper.AnchorLink("Decision Summary", "/Report/DecisionSummary.aspx", "_blank")</li>
                     <li>@Html.ActionLink("First Time Attenders", "NthTimeAttenders", "Home", new { Area="", Id=1 }, null)</li>
                     <li>@Html.ActionLink("Second Time Attenders", "NthTimeAttenders", "Home", new { Area="", Id=2 }, null)</li>
