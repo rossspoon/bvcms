@@ -5,6 +5,7 @@ using System.Web;
 using System.Xml;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using CmsData.API;
 using CmsData.View;
 using UtilityExtensions;
 using System.Linq;
@@ -45,17 +46,20 @@ namespace CmsWeb.Models
         {
             context.HttpContext.Response.ContentType = "text/xml";
             var settings = new XmlWriterSettings() { Encoding = new System.Text.UTF8Encoding(false), Indent = true };
-
             using (var w = XmlWriter.Create(context.HttpContext.Response.OutputStream, settings))
             { 
-                w.WriteStartElement("Attendees");
+                var x = new APIWriter(w);
+                x.NoDefaults = true;
+                x.Start("Attendees");
                 var m = new CheckInModel();
-                List<CheckinFamilyMember> q = CheckInModel.UseOldCheckin()
-                    ? m.FamilyMembersOld(fid, campus, thisday) 
-                    : m.FamilyMembers(fid, campus, thisday);
-                    
-                w.WriteAttributeString("familyid", fid.ToString());
-                w.WriteAttributeString("waslocked", waslocked.ToString());
+                List<CheckinFamilyMember> q;
+                if (CheckInModel.UseOldCheckin()) 
+                    q = m.FamilyMembersOld(fid, campus, thisday);
+                else 
+                    q = m.FamilyMembers(fid, campus, thisday);
+
+                x.Attr("familyid", fid);
+                x.Attr("waslocked", waslocked);
 
                 var count = q.Count();
 
@@ -64,18 +68,18 @@ namespace CmsWeb.Models
                     const int INT_PageSize = 10;
                     var startrow = (page - 1) * INT_PageSize;
                     if (count > startrow + INT_PageSize)
-                        w.WriteAttributeString("next", (page + 1).ToString());
+                        x.Attr("next", (page + 1));
                     else
-                        w.WriteAttributeString("next", "");
+                        x.Attr("next", "");
                     if (page > 1)
-                        w.WriteAttributeString("prev", (page - 1).ToString());
+                        x.Attr("prev", (page - 1));
                     else
-                        w.WriteAttributeString("prev", "");
+                        x.Attr("prev", "");
                     q = q.Skip(startrow).Take(INT_PageSize).ToList();
                 }
-                w.WriteAttributeString("maxlabels", DbUtil.Db.Setting("MaxLabels", "6"));
+                x.Attr("maxlabels", DbUtil.Db.Setting("MaxLabels", "6"));
                 var code = DbUtil.Db.NextSecurityCode(DateTime.Today).Select(c => c.Code).Single();
-                w.WriteAttributeString("securitycode", code);
+                x.Attr("securitycode", code);
 
 				var accommodateCheckInBug = DbUtil.Db.Setting("AccommodateCheckinBug", "false").ToBool();
 
@@ -89,48 +93,48 @@ namespace CmsWeb.Models
                         leadtime = c.Hour.Value.Subtract(now).TotalHours;
                         leadtime -= DbUtil.Db.Setting("TZOffset", "0").ToInt(); // positive to the east, negative to the west
                     }
-                    w.WriteStartElement("attendee");
-                    w.WriteAttributeString("id", c.Id.ToString());
-                    w.WriteAttributeString("mv", c.MemberVisitor);
-                    w.WriteAttributeString("name", c.DisplayName);
-                    w.WriteAttributeString("preferredname", c.PreferredName);
-                    w.WriteAttributeString("first", accommodateCheckInBug ? c.PreferredName : c.First);
-                    w.WriteAttributeString("last", c.Last);
-                    w.WriteAttributeString("org", c.DisplayClass);
-                    w.WriteAttributeString("orgname", c.OrgName);
-                    w.WriteAttributeString("leader", c.Leader);
-                    w.WriteAttributeString("orgid", c.OrgId.ToString());
-                    w.WriteAttributeString("loc", c.Location);
-                    w.WriteAttributeString("gender", c.Gender);
-                    w.WriteAttributeString("leadtime", leadtime.ToString());
-                    w.WriteAttributeString("age", c.Age.ToString());
-                    w.WriteAttributeString("numlabels", c.NumLabels.ToString());
-                    w.WriteAttributeString("checkedin", c.CheckedIn.ToString());
-                    w.WriteAttributeString("custody", c.Custody.ToString());
-                    w.WriteAttributeString("transport", c.Transport.ToString());
-                    w.WriteAttributeString("hour", c.Hour.FormatDateTm());
-                    w.WriteAttributeString("requiressecuritylabel", c.RequiresSecurityLabel.ToString());
-                    w.WriteAttributeString("church", c.Church);
+                    x.Start("attendee");
+                    x.Attr("id", c.Id.ToString());
+                    x.Attr("mv", c.MemberVisitor);
+                    x.Attr("name", c.DisplayName);
+                    x.Attr("preferredname", c.PreferredName);
+                    x.Attr("first", accommodateCheckInBug ? c.PreferredName : c.First);
+                    x.Attr("last", c.Last);
+                    x.Attr("org", c.DisplayClass);
+                    x.Attr("orgname", c.OrgName);
+                    x.Attr("leader", c.Leader);
+                    x.Attr("orgid", c.OrgId.ToString());
+                    x.Attr("loc", c.Location);
+                    x.Attr("gender", c.Gender);
+                    x.Attr("leadtime", leadtime.ToString());
+                    x.Attr("age", c.Age.ToString());
+                    x.Attr("numlabels", c.NumLabels.ToString());
+                    x.Attr("checkedin", c.CheckedIn.ToString());
+                    x.Attr("custody", c.Custody.ToString());
+                    x.Attr("transport", c.Transport.ToString());
+                    x.Attr("hour", c.Hour.FormatDateTm());
+                    x.Attr("requiressecuritylabel", c.RequiresSecurityLabel.ToString());
+                    x.Attr("church", c.Church);
 
-                    w.WriteAttributeString("email", c.Email);
-                    w.WriteAttributeString("dob", c.dob);
-                    w.WriteAttributeString("goesby", c.Goesby);
-                    w.WriteAttributeString("addr", c.Addr);
-                    w.WriteAttributeString("zip", c.Zip);
-                    w.WriteAttributeString("home", c.Home);
-                    w.WriteAttributeString("cell", c.Cell);
-                    w.WriteAttributeString("marital", c.Marital.ToString());
-                    w.WriteAttributeString("allergies", c.Allergies);
-                    w.WriteAttributeString("grade", c.Grade.ToString());
-                    w.WriteAttributeString("parent", c.Parent);
-                    w.WriteAttributeString("emfriend", c.Emfriend);
-                    w.WriteAttributeString("emphone", c.Emphone);
-                    w.WriteAttributeString("activeother", c.Activeother.ToString());
-                    w.WriteAttributeString("haspicture", c.HasPicture.ToString());
+                    x.Attr("email", c.Email);
+                    x.Attr("dob", c.dob);
+                    x.Attr("goesby", c.Goesby);
+                    x.Attr("addr", c.Addr);
+                    x.Attr("zip", c.Zip);
+                    x.Attr("home", c.Home);
+                    x.Attr("cell", c.Cell);
+                    x.Attr("marital", c.Marital.ToString());
+                    x.Attr("allergies", c.Allergies);
+                    x.Attr("grade", c.Grade.ToString());
+                    x.Attr("parent", c.Parent);
+                    x.Attr("emfriend", c.Emfriend);
+                    x.Attr("emphone", c.Emphone);
+                    x.Attr("activeother", c.Activeother.ToString());
+                    x.Attr("haspicture", c.HasPicture.ToString());
 
-                    w.WriteEndElement();
+                    x.End();
                 }
-                w.WriteEndElement();
+                x.End();
             }
         }
     }

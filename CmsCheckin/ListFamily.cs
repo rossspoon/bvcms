@@ -110,49 +110,48 @@ namespace CmsCheckin
 
             foreach (var e in x.Descendants("attendee"))
             {
-                var a = new AttendLabel
+                var a = new AttendLabel();
+                a.cinfo = new ClassInfo
                 {
-                    cinfo = new ClassInfo
-                    {
-                        oid = e.Attribute("orgid").Value.ToInt(),
-                        pid = e.Attribute("id").Value.ToInt(),
-                        mv = e.Attribute("mv").Value,
-                    },
-                    name = e.Attribute("name").Value,
-                    first = e.Attribute("first").Value,
-                    last = e.Attribute("last").Value,
-                    dob = e.Attribute("dob").Value,
-                    church = e.Attribute("church").Value,
-
-                    preferredname = e.Attribute("preferredname").Value,
-                    goesby = e.Attribute("goesby").Value,
-                    email = e.Attribute("email").Value,
-                    addr = e.Attribute("addr").Value,
-                    zip = e.Attribute("zip").Value,
-                    home = e.Attribute("home").Value.FmtFone(),
-                    cell = e.Attribute("cell").Value.FmtFone(),
-                    gender = e.Attribute("gender").Value.ToInt(),
-                    marital = e.Attribute("marital").Value.ToInt(),
-                    emphone = e.Attribute("emphone").Value.FmtFone(),
-                    emfriend = e.Attribute("emfriend").Value,
-                    allergies = e.Attribute("allergies").Value,
-                    grade = e.Attribute("grade").Value,
-                    activeother = e.Attribute("activeother").Value,
-                    parent = e.Attribute("parent").Value,
-
-                    org = e.Attribute("org").Value,
-                    orgname = e.Attribute("orgname").Value,
-                    custody = bool.Parse(e.Attribute("custody").Value),
-                    transport = bool.Parse(e.Attribute("transport").Value),
-                    location = e.Attribute("loc").Value,
-                    leader = e.Attribute("leader").Value,
-                    NumLabels = int.Parse(e.Attribute("numlabels").Value),
-                    Row = list.Count,
-                    CheckedIn = bool.Parse(e.Attribute("checkedin").Value),
-                    HasPicture = bool.Parse(e.Attribute("haspicture").Value),
-                    RequiresSecurityLabel = bool.Parse(e.Attribute("requiressecuritylabel").Value),
-                    leadtime = double.Parse(e.Attribute("leadtime").Value),
+                    oid = e.Attribute("orgid").Value.ToInt(),
+                    pid = e.Attribute("id").Value.ToInt(),
+                    mv = e.Attribute("mv").Value,
                 };
+                a.name = e.Attribute("name").Value;
+                a.first = e.Attribute("first").Value;
+                a.last = e.Attribute("last").Value;
+                a.dob = e.Attribute("dob").Value;
+                a.church = e.Attribute("church").Value;
+
+                a.preferredname = e.Attribute("preferredname").Value;
+                a.goesby = e.Attribute("goesby").Value;
+                a.email = e.Attribute("email").Value;
+                a.addr = e.Attribute("addr").Value;
+                a.zip = e.Attribute("zip").Value;
+                a.home = e.Attribute("home").Value.FmtFone();
+                a.cell = e.Attribute("cell").Value.FmtFone();
+                a.gender = e.Attribute("gender").Value.ToInt();
+                a.marital = e.Attribute("marital").Value.ToInt();
+                a.emphone = e.Attribute("emphone").Value.FmtFone();
+                a.emfriend = e.Attribute("emfriend").Value;
+                a.allergies = e.Attribute("allergies").Value;
+                a.grade = e.Attribute("grade").Value;
+                a.activeother = e.Attribute("activeother").Value;
+                a.parent = e.Attribute("parent").Value;
+
+                a.org = e.Attribute("org").Value;
+                a.orgname = e.Attribute("orgname").Value;
+                a.custody = bool.Parse(e.Attribute("custody").Value);
+                a.transport = bool.Parse(e.Attribute("transport").Value);
+                a.location = e.Attribute("loc").Value;
+                a.leader = e.Attribute("leader").Value;
+                a.NumLabels = int.Parse(e.Attribute("numlabels").Value);
+                a.Row = list.Count;
+                a.CheckedIn = bool.Parse(e.Attribute("checkedin").Value);
+                a.HasPicture = bool.Parse(e.Attribute("haspicture").Value);
+                a.RequiresSecurityLabel = bool.Parse(e.Attribute("requiressecuritylabel").Value);
+                a.leadtime = double.Parse(e.Attribute("leadtime").Value);
+
                 DateTime dt;
                 if (DateTime.TryParse(e.Attribute("hour").Value, out dt))
                     a.cinfo.hour = dt;
@@ -421,28 +420,28 @@ namespace CmsCheckin
                 custody = c.custody,
                 transport = c.transport,
                 requiressecuritylabel = c.RequiresSecurityLabel,
-				securitycode = Program.SecurityCode,
+                securitycode = Program.SecurityCode,
             };
 
-			if (Program.UseNewLabels)
-			{
-				IEnumerable<LabelInfo> liList = new[] { li };
-				PrinterHelper.doPrinting(liList, true);
-			}
-			else
-			{
+            if (Program.UseNewLabels)
+            {
+                IEnumerable<LabelInfo> liList = new[] { li };
+                PrinterHelper.doPrinting(liList, true);
+            }
+            else
+            {
                 int iLabelSize = PrinterHelper.getPageHeight(Program.Printer);
 
-				using (var ms = new MemoryStream())
-				{
-					if ( iLabelSize >= 170 && iLabelSize <= 230 )
-						ms.LabelKiosk2(li);
-					else
-						ms.LabelKiosk(li);
-					PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
-				}
-			}
-	
+                using (var ms = new MemoryStream())
+                {
+                    if (iLabelSize >= 170 && iLabelSize <= 230)
+                        ms.LabelKiosk2(li);
+                    else
+                        ms.LabelKiosk(li);
+                    PrintRawHelper.SendDocToPrinter(Program.Printer, ms);
+                }
+            }
+
             RemoveMenu();
         }
 
@@ -562,10 +561,10 @@ namespace CmsCheckin
             Util.JoinUnJoin(c.cinfo, false);
             RemoveMenu();
 
-			if (Program.baseform.textbox.Parent is Home)
-				Program.home.family.ShowFamily(Program.FamilyId);
-			else if (Program.baseform.textbox.Parent is Home2)
-				Program.home2.family.ShowFamily(Program.FamilyId);
+            if (Program.baseform.textbox.Parent is Home)
+                Program.home.family.ShowFamily(Program.FamilyId);
+            else if (Program.baseform.textbox.Parent is Home2)
+                Program.home2.family.ShowFamily(Program.FamilyId);
         }
         void JoinThis_Click(object sender, EventArgs e)
         {
@@ -575,10 +574,10 @@ namespace CmsCheckin
 
             Util.JoinUnJoin(c.cinfo, true);
             RemoveMenu();
-			if (Program.baseform.textbox.Parent is Home)
-				Program.home.family.ShowFamily(Program.FamilyId);
-			else if (Program.baseform.textbox.Parent is Home2)
-				Program.home2.family.ShowFamily(Program.FamilyId);
+            if (Program.baseform.textbox.Parent is Home)
+                Program.home.family.ShowFamily(Program.FamilyId);
+            else if (Program.baseform.textbox.Parent is Home2)
+                Program.home2.family.ShowFamily(Program.FamilyId);
         }
 
         void CancelMenu_Click(object sender, EventArgs e)
@@ -628,7 +627,7 @@ namespace CmsCheckin
         {
             var c = list[(int)menu.Tag];
 
-			var home = Program.home;
+            var home = Program.home;
             Program.PeopleId = c.cinfo.pid;
             home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
             home.first.textBox1.Text = c.first;
@@ -692,10 +691,10 @@ namespace CmsCheckin
                         custody = c.custody,
                         transport = c.transport,
                         requiressecuritylabel = c.RequiresSecurityLabel,
-						securitycode = Program.SecurityCode,
-                        dob = ( c.dob != null && c.dob.Length > 0 ? DateTime.Parse( c.dob ) : DateTime.Now ),
+                        securitycode = Program.SecurityCode,
+                        dob = (c.dob != null && c.dob.Length > 0 ? DateTime.Parse(c.dob) : DateTime.Now),
                     };
-                       
+
             Util.UnLockFamily();
 
             if (Program.PrintMode == "Print To Server")
@@ -704,12 +703,12 @@ namespace CmsCheckin
                 return;
             }
 
-			if (Program.UseNewLabels)
-			{
-				PrinterHelper.doPrinting(q);
-			}
-			else
-			{
+            if (Program.UseNewLabels)
+            {
+                PrinterHelper.doPrinting(q);
+            }
+            else
+            {
                 int iLabelSize = PrinterHelper.getPageHeight(Program.Printer);
 
                 using (var ms = new MemoryStream())
@@ -732,7 +731,7 @@ namespace CmsCheckin
 					doprint.FinishUp(ms);
 				}
                  */
-			}
+            }
         }
         private void PrintingCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -783,10 +782,10 @@ namespace CmsCheckin
             Program.TimerStop();
             if (list.Count == 0)
             {
-				if (Program.baseform.textbox.Parent is Home)
-					this.Swap(Program.home.namesearch);
-				else if (Program.baseform.textbox.Parent is Home2)
-					this.Swap(Program.home2.namesearch);
+                if (Program.baseform.textbox.Parent is Home)
+                    this.Swap(Program.home.namesearch);
+                else if (Program.baseform.textbox.Parent is Home2)
+                    this.Swap(Program.home2.namesearch);
                 return;
             }
             foreach (var c in sucontrols)
@@ -814,8 +813,8 @@ namespace CmsCheckin
             SaveClasses();
             Util.UnLockFamily();
             RemoveMenu();
-			Program.home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
-			this.Swap(Program.home.first);
+            Program.home.SetFields(c.last, c.email, c.addr, c.zip, c.home, c.parent, c.emfriend, c.emphone, c.activeother, c.church);
+            this.Swap(Program.home.first);
         }
 
         private void CheckUnCheckDoWork(object sender, DoWorkEventArgs e)
@@ -898,7 +897,7 @@ namespace CmsCheckin
     // all of these come from the attribtues on the attendee element
     // attributes have the same name unless noted otherwise
     [Serializable]
-    public class LabelInfo 
+    public class LabelInfo
     {
         public int n { get; set; } // numlabels attribute
         public DateTime dob { get; set; } // dob
@@ -918,29 +917,29 @@ namespace CmsCheckin
             }
         }
 
-		public string date
-		{
-			get
-			{
+        public string date
+        {
+            get
+            {
                 if (hour != null) return hour.Value.ToString("d");
                 else return "";
-			}
-		}
+            }
+        }
 
-		public string time
-		{
-			get
-			{
+        public string time
+        {
+            get
+            {
                 if (hour != null) return hour.Value.ToString("t");
                 else return "";
-			}
-		}
+            }
+        }
 
         public string extra
         {
             get
             {
-                if (custody || transport || allergies.Length > 0) return ("Extra - " + (allergies.Length > 0 ? "A|" : "") + (custody ? "C|" : "") + (transport ? "T" : "")).TrimEnd( new char[] { '|' } );
+                if (custody || transport || allergies.Length > 0) return ("Extra - " + (allergies.Length > 0 ? "A|" : "") + (custody ? "C|" : "") + (transport ? "T" : "")).TrimEnd(new char[] { '|' });
                 else return "Extra";
             }
         }
@@ -978,13 +977,13 @@ namespace CmsCheckin
         public bool transport { get; set; }
         public bool custody { get; set; }
         public bool requiressecuritylabel { get; set; }
-		public string securitycode { get; set; }
+        public string securitycode { get; set; }
     }
     [Serializable]
     public class PrintJob
     {
         // securitycode comes from the attribute on the root element (Attendees)
-        public string securitycode { get; set; } 
+        public string securitycode { get; set; }
         // the following is a list of each person/class that was checked present
         public List<LabelInfo> list { get; set; }
     }
