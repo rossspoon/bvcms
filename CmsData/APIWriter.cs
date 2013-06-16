@@ -11,6 +11,8 @@ namespace CmsData.API
     {
         private XmlWriter w;
         private StringBuilder sb;
+        public bool NoDefaults { get; set; }
+
         public APIWriter()
         {
             var settings = new XmlWriterSettings();
@@ -36,7 +38,7 @@ namespace CmsData.API
         public APIWriter Attr(string attr, object i)
         {
             var s = tostr(i);
-            if (s.HasValue())
+            if (s.HasValue() || NoDefaults)
                 w.WriteAttributeString(attr, s);
             return this;
         }
@@ -54,7 +56,7 @@ namespace CmsData.API
         public APIWriter Add(string element, object i)
         {
             var s = tostr(i);
-            if (s.HasValue())
+            if (s.HasValue() || NoDefaults)
                 w.WriteElementString(element, s);
             return this;
         }
