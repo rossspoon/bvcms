@@ -286,7 +286,10 @@ namespace CmsWeb.Models
                 if (masterorgid.HasValue)
                     if (settings.ContainsKey(masterorgid.Value))
                         return Util.PickFirst(settings[masterorgid.Value].Terms, "");
-                return Util.PickFirst(settings[org.OrganizationId].Terms, "");
+                if(orgid.HasValue)
+                    if(settings.ContainsKey(orgid.Value))
+                        return Util.PickFirst(settings[org.OrganizationId].Terms, "");
+                return "";
             }
         }
         public OnlineRegPersonModel LoadExistingPerson(int id, int index)

@@ -32,6 +32,8 @@ namespace CmsWeb.Models
         }
         public static List<Organization> OrderedClasses(Organization masterorg)
         {
+            if (masterorg == null)
+                throw new Exception("masterorg is null in OrderedClasses");
             var cklist = masterorg.OrgPickList.Split(',').Select(oo => oo.ToInt()).ToList();
             var list = UserSelectClasses(masterorg).ToList();
             var d = new Dictionary<int, int>();
