@@ -164,7 +164,7 @@ namespace CmsWeb.Areas.Public.Controllers
 				null, m.first, m.goesby, m.last, m.dob, false, m.gender,
 					OriginCode.Visit, null);
 
-			UpdatePerson(p, m);
+			UpdatePerson(p, m, isNew: true);
 			return Content(f.FamilyId.ToString() + "." + p.PeopleId);
 		}
 		[HttpPost]
@@ -174,7 +174,7 @@ namespace CmsWeb.Areas.Public.Controllers
 				return Content("not authorized");
 			DbUtil.LogActivity("checkin EditPerson {0} {1} ({2})".Fmt(m.first, m.last, m.dob));
 			var p = DbUtil.Db.LoadPersonById(id);
-			UpdatePerson(p, m);
+			UpdatePerson(p, m, isNew:false);
 			return Content(p.FamilyId.ToString());
 		}
 		string Trim(string s)
@@ -184,7 +184,7 @@ namespace CmsWeb.Areas.Public.Controllers
 			else
 				return s;
 		}
-		private void UpdatePerson(Person p, PersonInfo m)
+		private void UpdatePerson(Person p, PersonInfo m, bool isNew)
 		{
 			var psb = new StringBuilder();
 			var fsb = new StringBuilder();
@@ -246,10 +246,13 @@ namespace CmsWeb.Areas.Public.Controllers
 					if (m.emphone != rr.Emphone)
 						p.SetRecReg().Emphone = m.emphone;
 			}
-			if (keys.Contains("campusid"))
-				if (m.campusid > 0)
-					UpdateField(psb, p, "CampusId", m.campusid);
-			if (m.AskChurch)
+		    if (isNew)
+		    {
+		        if (keys.Contains("campusid"))
+		            if (m.campusid > 0)
+		                UpdateField(psb, p, "CampusId", m.campusid);
+		    }
+		    if (m.AskChurch)
 				if (keys.Contains("activeother"))
 					if (m.activeother.ToBool() != rr.ActiveInAnotherChurch)
 						p.SetRecReg().ActiveInAnotherChurch = m.activeother.ToBool();
