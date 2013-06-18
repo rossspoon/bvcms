@@ -1771,6 +1771,7 @@
     <Content Include="Views\Shared\EditorTemplates\TextArea.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\HiddenCodeInfo.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Typeahead.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\datepicker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Manage\Views\Batch\UpdatePeople.cshtml">

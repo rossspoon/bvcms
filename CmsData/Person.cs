@@ -168,6 +168,12 @@ namespace CmsData
                 om2.Request = om.Request;
                 om2.Grade = om.Grade;
                 om2.Amount = om.Amount;
+                om2.AmountPaid = om.AmountPaid;
+                om2.PayLink = om.PayLink;
+                om2.Moved = om.Moved;
+                om2.InactiveDate = om.InactiveDate;
+                om.Pending = om.Pending;
+                om.Request = om.Request;
                 om2.RegisterEmail = om.RegisterEmail;
                 om2.ShirtSize = om.ShirtSize;
                 om2.Tickets = om.Tickets;
@@ -193,12 +199,11 @@ namespace CmsData
                     PeopleId = targetid,
                     Amt = t.Amt,
                     Id = t.Id,
-                    OrgId = t.Id,
-                });
-            db.TransactionPeople.DeleteAllOnSubmit(TransactionPeople);
-            TrySubmit(db, "TransactionPeopleDelete");
+                    OrgId = t.OrgId,
+                }).ToList();
             db.TransactionPeople.InsertAllOnSubmit(listtp);
-            TrySubmit(db, "TransactionPeopleInsert");
+            db.TransactionPeople.DeleteAllOnSubmit(TransactionPeople);
+            TrySubmit(db, "TransactionPeopleDeleteInsert");
 
             var q = from a in db.Attends
                     where a.PeopleId == this.PeopleId

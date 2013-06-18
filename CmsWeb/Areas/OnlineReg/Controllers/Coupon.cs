@@ -50,6 +50,7 @@ namespace CmsWeb.Areas.OnlineReg.Controllers
             var ti = pf.CreateTransaction(DbUtil.Db, c.Amount);
 			if (m != null) // Start this transaction in the chain
 			{
+                m.History.Add("ApplyCoupon");
 			    m.TranId = ti.OriginalId;
 			    ed.Data = Util.Serialize<OnlineRegModel>(m);
 			}
