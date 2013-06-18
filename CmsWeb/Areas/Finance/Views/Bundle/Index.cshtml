@@ -35,19 +35,16 @@
 @section scripts
 {
     <script type="text/javascript" src="@Fingerprint.Tag("/Scripts/Finance/Bundle.js")"></script>
+    @if ((bool?) TempData["createbundle"] == true)
+    {
+        <script> $(function() { $("#editbundle").click(); }); </script>
+    }
 }
 <div class="roundbox">
     <a href="/Bundles">Back to Bundle List</a>
     <h2>Contribution Bundle #@Model.BundleId</h2>
     <form id="bundleform">
-    @if ((bool?) TempData["createbundle"] == true)
-    {
-        @Html.Partial("Edit", Model)
-    }
-    else
-    {
         @Html.Partial("Display", Model)
-    }
     </form>
 </div>
 <form id="results">
