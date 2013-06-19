@@ -5,6 +5,18 @@
 }
 <script type="text/javascript">
     $(function () {
+        $.validator.methods.number = function(value, element) {
+            return this.optional(element) || /@Util.jQueryNumberValidation/.test(value);
+        };
+        $.validator.methods.date = function (value, element) {
+            try {
+                $.datepicker.parseDate( '@Util.jQueryDateFormat', value);
+                return true;
+            }
+            catch(e) {
+                return false;
+            }
+        };
         $.dateFormat = '@Util.jQueryDateFormat';
         $.NewQuickSearch = '@NewQuickSearch' === 'True';
         $.datepicker.setDefaults({

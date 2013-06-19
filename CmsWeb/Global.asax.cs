@@ -119,25 +119,10 @@ namespace CmsWeb
                 Response.Redirect("/Errors/DatabaseNotFound.aspx?dbname=" + Util.Host);
                 return;
             }
-//            var match = Regex.Match(url, @"([\S]+)(/v-[0-9]+/)([\S]+)", RegexOptions.IgnorePatternWhitespace);
-//            if (match.Success)
-//            {
-//                url = "{0}/{1}".Fmt(match.Groups[1].Value, match.Groups[3].Value);
-//                var uri = new Uri(url);
-//                url = "/" + uri.Host + uri.PathAndQuery;
-//                Context.RewritePath(url, false);
-//            }
 
-            var cul = DbUtil.Db.Setting("Culture", "en-US");
-
-            var df = DbUtil.Db.Setting("CulturejQueryDateFormat2", "M/D/YYYY").ToUpper();
-            if (df.EndsWith("/YY"))
-                df += "YY";
-            Util.jQueryDateFormat2 = df;
-
-            Util.jQueryDateFormat = DbUtil.Db.Setting("CulturejQueryDateFormat", "m/d/yy");
             Util.AdminMail = DbUtil.Db.Setting("AdminMail", "");
 
+            var cul = DbUtil.Db.Setting("Culture", "en-US");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(cul);
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cul);
         }

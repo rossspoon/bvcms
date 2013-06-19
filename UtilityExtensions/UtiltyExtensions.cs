@@ -562,34 +562,37 @@ namespace UtilityExtensions
                 HttpContext.Current.Items[STR_IsSage] = value;
             }
         }
-        private const string STR_jQueryDateFormat = "jQueryDateFormat";
         public static string jQueryDateFormat
         {
             get
             {
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Items[STR_jQueryDateFormat] != null)
-                        return HttpContext.Current.Items[STR_jQueryDateFormat] as string;
+                var dt = new DateTime(2002,1,30);
+                var s = dt.ToShortDateString();
+                if (s.StartsWith("30"))
+                    return "d/m/yy";
                 return "m/d/yy";
             }
-            set
-            {
-                HttpContext.Current.Items[STR_jQueryDateFormat] = value;
-            }
         }
-        private const string STR_jQueryDateFormat2 = "jQueryDateFormat2";
         public static string jQueryDateFormat2
         {
             get
             {
-                if (HttpContext.Current != null)
-                    if (HttpContext.Current.Items[STR_jQueryDateFormat] != null)
-                        return HttpContext.Current.Items[STR_jQueryDateFormat2] as string;
+
+                var dt = new DateTime(2002,1,30);
+                var s = dt.ToShortDateString();
+                if (s.StartsWith("30"))
+                    return "D/M/YYYY";
                 return "M/D/YYYY";
             }
-            set
+        }
+        public static string jQueryNumberValidation
+        {
+            get
             {
-                HttpContext.Current.Items[STR_jQueryDateFormat2] = value;
+                const decimal c = 1.23M;
+                if (c.ToString("c").StartsWith("1,23"))
+                    return @"^-?(?:\d+)?(?:,\d+)?$";
+                return @"^-?(?:\d+)?(?:\.\d+)?$";
             }
         }
         public static string GetConnectionString(string Host)
