@@ -3,7 +3,6 @@
     var onqb = (string)ViewData["OnQueryBuilder"] == "true";
     var headimage = DbUtil.HeaderImage("");
     var targetperson = DbUtil.Db.UserPreference("TargetLinkPeople", "false").ToBool();
-    var NewQuickSearch = DbUtil.Db.UserPreference("NewQuickSearch", "false").ToBool();
     if (!headimage.HasValue())
     {
         headimage = DbUtil.Header();
@@ -238,7 +237,6 @@
                             }
                             <li><a href="/Account/ChangePassword">Change Password</a></li>
                             <li><a href="/Home/TargetPerson/@targetperson.ToString()">Target Person Tab is @(targetperson ? "ON" : "OFF")</a></li>
-                            <li><a href="/Home/NewQuickSearch/@NewQuickSearch.ToString()">NewQuickSearch is @(NewQuickSearch ? "ON" : "OFF")</a></li>
                             <li class="divider"></li>
                             <li><a href="/Account/LogOff/">Logout as @Util.UserName</a></li>
                         </ul>
