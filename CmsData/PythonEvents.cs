@@ -65,7 +65,7 @@ namespace CmsData
 	    public void Email(string savedquery, int queuedBy, string fromaddr, string fromname, string subject, string body, bool transactional = false)
 	    {
             var from = new MailAddress(fromaddr, fromname);
-			var qB = Db.QueryBuilderClauses.FirstOrDefault(c => c.Description == savedquery && c.SavedBy == "public");
+			var qB = Db.QueryBuilderClauses.FirstOrDefault(c => c.Description == savedquery);
 	        if (qB == null)
 	            return;
             var q = Db.PeopleQuery(qB.QueryId);
@@ -84,7 +84,7 @@ namespace CmsData
 	    public void EmailContent(string savedquery, int queuedBy, string fromaddr, string fromname, string subject, string content)
 	    {
             var from = new MailAddress(fromaddr, fromname);
-			var qB = Db.QueryBuilderClauses.FirstOrDefault(cc => cc.Description == savedquery && cc.SavedBy == "public");
+			var qB = Db.QueryBuilderClauses.FirstOrDefault(cc => cc.Description == savedquery);
 	        if (qB == null)
 	            return;
             var q = Db.PeopleQuery(qB.QueryId);

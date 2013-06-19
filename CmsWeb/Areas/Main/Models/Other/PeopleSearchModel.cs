@@ -34,7 +34,7 @@ namespace CmsWeb.Models
         public string birthdate { get; set; }
         public int campus { get; set; }
         public int memberstatus { get; set; }
-        public int[] statusflags { get; set; }
+        public string[] statusflags { get; set; }
         public int marital { get; set; }
         public int gender { get; set; }
     }
@@ -133,13 +133,13 @@ namespace CmsWeb.Models
             }
             if (m.statusflags != null)
             {
-                if (m.statusflags.Length >= 1 && m.statusflags[0] == 0)
-                    m.statusflags = m.statusflags.Where(cc => cc > 0).ToArray();
+                if (m.statusflags.Length >= 1 && m.statusflags[0] == "0")
+                    m.statusflags = m.statusflags.Where(cc => cc != "0").ToArray();
             }
             if (m.statusflags != null && m.statusflags.Length > 0)
             {
                 people = from p in people
-                         let ac = p.Tags.Count(tt => m.statusflags.Contains(tt.Id))
+                         let ac = p.Tags.Count(tt => m.statusflags.Contains(tt.Tag.Name))
                          where ac == m.statusflags.Length
                          select p;
 
@@ -462,8 +462,7 @@ namespace CmsWeb.Models
                                 QueryModel.IdCode(cv.MaritalStatusCodes(), m.marital));
             if(m.statusflags != null)
                 foreach (var f in m.statusflags)
-                    qb.AddNewClause(QueryType.StatusFlag, CompareType.Equal,
-                                    QueryModel.IdCode(cv.StatusFlags(), f));
+                    qb.AddNewClause(QueryType.StatusFlag, CompareType.Equal, f);
             qb.AddNewClause(QueryType.IncludeDeceased, CompareType.Equal, "1,T");
             DbUtil.Db.SubmitChanges();
             return qb.QueryId;

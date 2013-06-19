@@ -121,9 +121,9 @@ namespace CmsData
         internal static Expression StatusFlag(
             ParameterExpression parm,
             CompareType op,
-            params int[] ids)
+            params string[] codes)
         {
-            Expression<Func<Person, bool>> pred = p => p.Tags.Any(tt => ids.Contains(tt.Id));
+            Expression<Func<Person, bool>> pred = p => p.Tags.Any(tt => codes.Contains(tt.Tag.Name) && tt.Tag.TypeId == 100);
             Expression expr = Expression.Invoke(pred, parm); // substitute parm for p
             if (op == CompareType.NotEqual || op == CompareType.NotOneOf)
                 expr = Expression.Not(expr);
